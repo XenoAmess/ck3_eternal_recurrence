@@ -105,7 +105,7 @@ final class FullParityCiTest {
         assertEquals("verify", verify.getLast());
         assertTrue(verify.contains("--fail-at-end"));
         assertFalse(verify.stream().anyMatch(argument -> argument.startsWith("-Dtest=") || argument.equals("-pl")));
-        List<String> capture = ControlBuild.reactorCaptureArguments(config, settings, snapshot, build, oracle.environment());
+        List<String> capture = historicalCaptureCommand(ControlBuild.reactorVerifyArguments(config, settings, snapshot, build, oracle.environment()));
         assertEquals("package", capture.getLast()); assertTrue(capture.contains("-DskipTests=true"));
         assertTrue(capture.contains("-Dmaven.test.skip=false"));
         var bindings = FullParityOracleBindings.fromRecordedArguments(capture);
@@ -121,7 +121,7 @@ final class FullParityCiTest {
     @Test void recordedCaptureRejectsDuplicateMissingMixedInterpreterAndSelectedTestArguments() throws Exception {
         Oracle oracle = oracle("bad-capture"); ControlBuild.Config config = config();
         Path settings = temporary.resolve("settings.xml"), snapshot = temporary.resolve("snapshot"), build = temporary.resolve("build");
-        List<String> capture = ControlBuild.reactorCaptureArguments(config, settings, snapshot, build, oracle.environment());
+        List<String> capture = historicalCaptureCommand(ControlBuild.reactorVerifyArguments(config, settings, snapshot, build, oracle.environment()));
         List<String> missing = capture.stream().filter(argument -> !argument.startsWith("-Dxar.native.producer.sha256=")).toList();
         assertThrows(IOException.class, () -> ControlBuild.completedCaptureArguments(config, settings, snapshot, build, missing));
         var duplicate = new ArrayList<>(capture); duplicate.add("-Dxar.python=" + oracle.python());
@@ -197,6 +197,15 @@ final class FullParityCiTest {
                 "2026-10-23T16:00:00Z", CompleteSourceGraph.SelectionStatus.SOURCE_SELECTION_ONLY, FULL,
                 new CompleteSourceGraph.Baseline(root.toString(), ControlBuild.FileRef.measure(inventory)),
                 CompleteSourceGraph.modules(FULL), selections, List.of()));
+    }
+
+    /** Original pre-policy command data keeps full-fixture historical replay and rejection coverage. */
+    private static List<String> historicalCaptureCommand(List<String> verify) {
+        var capture = new ArrayList<>(verify);
+        assertEquals("verify", capture.removeLast());
+        capture.addAll(List.of("-Dmaven.test.skip=false", "-DskipTests=true", "package"));
+        assertFalse(capture.stream().anyMatch(argument -> argument.startsWith("-Dxar.control.capture.commandPolicy=")));
+        return List.copyOf(capture);
     }
 
     private record Oracle(Path python, Path repository, Path nativeSource, Path m3Fixture, Path armyFixture) {

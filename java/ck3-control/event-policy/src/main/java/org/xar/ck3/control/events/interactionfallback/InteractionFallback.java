@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** Immutable, side-effect-free inputs and proposals. No object grants dispatch authority. */
 public final class InteractionFallback {
@@ -48,12 +49,13 @@ public final class InteractionFallback {
         public Binding {
             stable(snapshotId); stable(episodeRunId); uint64(revision); uint64(nativeRevision);
             uint64(dateRaw); uint64(connectionGeneration);
-            StrictJson.require(actorCharacterId > 0 && bridgePid > 0 && bridgePid <= 0xffff_ffffL,
-                    "positive actor and uint32 process identity required");
+            NativeCharacterId.of(actorCharacterId);
+            StrictJson.require(bridgePid > 0 && bridgePid <= 0xffff_ffffL,
+                    "uint32 process identity required");
         }
     }
     public record Pending(int instanceId, int senderCharacterId, Boolean autoAcceptNotification) {
-        public Pending { pendingId(instanceId); StrictJson.require(senderCharacterId > 0, "positive sender required"); }
+        public Pending { pendingId(instanceId); NativeCharacterId.of(senderCharacterId); }
     }
     public record Definition(String canonicalKey, long deterministicKeyHash) {
         public Definition {

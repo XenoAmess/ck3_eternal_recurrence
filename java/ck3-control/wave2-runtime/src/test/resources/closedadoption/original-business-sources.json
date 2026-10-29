@@ -1,0 +1,379 @@
+{
+  "cycles": [
+    {
+      "autoAfter": {
+        "ref": {
+          "bytes": 494,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11544-after-result.json",
+          "sha256": "0c5e49004d667eb6a9aebd2ef371372f11e73eaedcad4b2b8ab9c7ab4625c1ec"
+        }
+      },
+      "beforePlan": {
+        "ref": {
+          "bytes": 1231,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11544-0-plan.json",
+          "sha256": "7ccd2ff923d70e21ca07c4e8e116b1d40f33493d2a75c02bb3d592cc4b8bcb72"
+        }
+      },
+      "event": {
+        "ref": {
+          "bytes": 2779,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\CUMULATIVE-TURN-005183.json",
+          "sha256": "46161796225d60f8db384291c57747b9b8fd111acc158af08a95feedf4433498"
+        },
+        "resource": "actual-cycle-5183.json"
+      },
+      "metricsAfter": {
+        "ref": {
+          "bytes": 478,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11545-after-result.json",
+          "sha256": "edf3c66e3ec6923c7389d8dfa9aaad325d8d9c53036218a5c2e64a3f6b4baae8"
+        }
+      },
+      "ordinaryCredit": {
+        "ref": {
+          "bytes": 1302,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11544-ordinary-result-credit.json",
+          "sha256": "2df71a9c280d0e5cfcdb431fdd39abd0eb2c2df05e1a3fe623ed374c8b5fd06f"
+        }
+      },
+      "readonlySaveSkip": null
+    },
+    {
+      "autoAfter": {
+        "ref": {
+          "bytes": 497,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11546-after-result.json",
+          "sha256": "8930b92531a2cda469fdf5f3a796777700eca46f6554c247a880ead03f5061dd"
+        }
+      },
+      "beforePlan": {
+        "ref": {
+          "bytes": 1207,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11546-0-plan.json",
+          "sha256": "14ba87c11c52aa9402438a241de5496fd1ef14e188079014c9344e19baef5a53"
+        }
+      },
+      "event": {
+        "ref": {
+          "bytes": 2194,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\CUMULATIVE-TURN-005184.json",
+          "sha256": "94bc106e6417a043fe121e29ad37b6b706e7b3d924719175cf95917b3539132a"
+        },
+        "resource": "actual-cycle-5184.json"
+      },
+      "metricsAfter": {
+        "ref": {
+          "bytes": 478,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11547-after-result.json",
+          "sha256": "67f89c074897e181434ba44ed8f8e53bfc6eb8e8c13370e952eb54d466cb4477"
+        }
+      },
+      "ordinaryCredit": {
+        "ref": {
+          "bytes": 693,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11546-ordinary-result-credit.json",
+          "sha256": "e8e5d5bd412cb95c094ead7d1c34a58da9724132a726f89ec69a476e4496f1d2"
+        }
+      },
+      "readonlySaveSkip": null
+    },
+    {
+      "autoAfter": {
+        "ref": {
+          "bytes": 519,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11548-after-result.json",
+          "sha256": "ce64fdc8a85f90eed23386fc5f834ad4d6dd57c1c57fcfb879cbcf4a4b6fb9f1"
+        }
+      },
+      "beforePlan": {
+        "ref": {
+          "bytes": 1266,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11548-0-plan.json",
+          "sha256": "4701ff622852d1c113ae47062cec1d921ffc73c1a4349c3bbd467ab023fba3df"
+        }
+      },
+      "event": {
+        "ref": {
+          "bytes": 2139,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\CUMULATIVE-TURN-005185.json",
+          "sha256": "e9c5ce7ace1372f2c88fb71182788aaee68edbb605016db9e1f00c8aa7abe53f"
+        },
+        "resource": "actual-cycle-5185.json"
+      },
+      "metricsAfter": {
+        "ref": {
+          "bytes": 478,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11549-after-result.json",
+          "sha256": "f8f0883eef52a101b386147d60807541a9e246d01318f7009b7979ddd1f11c1e"
+        }
+      },
+      "ordinaryCredit": {
+        "ref": {
+          "bytes": 614,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11548-ordinary-result-credit.json",
+          "sha256": "5a4ae71aef07c9e3e5d7983610091c5f80b91af10cb96dc5632e9de196c0c2ca"
+        }
+      },
+      "readonlySaveSkip": {
+        "ref": {
+          "bytes": 411,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\CUMULATIVE-READONLY-SAVE-SKIP-005185.json",
+          "sha256": "490c67a431572c639f246274800c0b456b8cbf8eb8e116fecaebf27835a43c06"
+        }
+      }
+    },
+    {
+      "autoAfter": {
+        "ref": {
+          "bytes": 506,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11550-after-result.json",
+          "sha256": "7ef3afc0326a4b3f98fdf9582f7231142cf7ac913300011b579b9e3b474606e7"
+        }
+      },
+      "beforePlan": {
+        "ref": {
+          "bytes": 1831,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11550-0-plan.json",
+          "sha256": "6148c2cc6ef821543a4d7f48a0687763a088cd661b070ecdfb742b285a2ac17d"
+        }
+      },
+      "event": {
+        "ref": {
+          "bytes": 2101,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\CUMULATIVE-TURN-005186.json",
+          "sha256": "269ed26bbb48fccc29b289d60c4440eefa854e4817f95350166b83efe0f70ed0"
+        },
+        "resource": "actual-cycle-5186.json"
+      },
+      "metricsAfter": {
+        "ref": {
+          "bytes": 478,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11551-after-result.json",
+          "sha256": "5e183ea8fa287ffce469b85a94cdf5f547ac150ee9f0a03cecb545109c6311d0"
+        }
+      },
+      "ordinaryCredit": {
+        "ref": {
+          "bytes": 602,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11550-ordinary-result-credit.json",
+          "sha256": "799a47a89ec11a5e1c3bb09c572b47a87bcad1264dff0c4f9a0a8eb0a51151c0"
+        }
+      },
+      "readonlySaveSkip": null
+    },
+    {
+      "autoAfter": {
+        "ref": {
+          "bytes": 490,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11552-after-result.json",
+          "sha256": "1ce958507dc508b2703319bd24bbd3093e5ac3cca7e2812c3a43b8e720704404"
+        }
+      },
+      "beforePlan": {
+        "ref": {
+          "bytes": 1831,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11552-0-plan.json",
+          "sha256": "f59cbcdd7b8351322619c41f8632802cf30df6ab8a0bc87acdc0633433ae2d9f"
+        }
+      },
+      "event": {
+        "ref": {
+          "bytes": 2071,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\CUMULATIVE-TURN-005187.json",
+          "sha256": "a2ce9288dee2e6b0739c7c7a0afc64d7c579d4ad70bcba0b06cdd0db62fe9c21"
+        },
+        "resource": "actual-cycle-5187.json"
+      },
+      "metricsAfter": {
+        "ref": {
+          "bytes": 478,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11553-after-result.json",
+          "sha256": "54adee90e38207a2eeccf9f2e1f6bc7b89d3538f22296f20516650cfc34b814c"
+        }
+      },
+      "ordinaryCredit": {
+        "ref": {
+          "bytes": 586,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11552-ordinary-result-credit.json",
+          "sha256": "9962ed27f60d804a3cc5f980f80dbc53e8dcb7d106886558416773a7f45a9629"
+        }
+      },
+      "readonlySaveSkip": null
+    },
+    {
+      "autoAfter": {
+        "ref": {
+          "bytes": 539,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11554-after-result.json",
+          "sha256": "28079bfc87780fdb4ffeffb81cdad46321d4cd5b8eeeab315efdecd7aff41596"
+        }
+      },
+      "beforePlan": {
+        "ref": {
+          "bytes": 1973,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11554-0-plan.json",
+          "sha256": "7118aa1d393b0d42a3332dcef58ed7b7792a1a930b947ca10828ec138dd21b25"
+        }
+      },
+      "event": {
+        "ref": {
+          "bytes": 2176,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\CUMULATIVE-TURN-005188.json",
+          "sha256": "45a038257ce8aca13e20cf12a3ab183e52d58ea7120f669baf75e5028f294022"
+        },
+        "resource": "actual-cycle-5188.json"
+      },
+      "metricsAfter": {
+        "ref": {
+          "bytes": 478,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11555-after-result.json",
+          "sha256": "a9b860e2902223e76795b5a293c5892fe206d0f8acbdef64844f8d1d98d90b69"
+        }
+      },
+      "ordinaryCredit": {
+        "ref": {
+          "bytes": 635,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11554-ordinary-result-credit.json",
+          "sha256": "c4d469903a1bfc153a853fa44c386b16b9fc53dc3f256898069955de5166a1fb"
+        }
+      },
+      "readonlySaveSkip": null
+    },
+    {
+      "autoAfter": {
+        "ref": {
+          "bytes": 500,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11556-after-result.json",
+          "sha256": "1d37e0a1237a7576c88f6d94491c8066ebbe35bef0307face2ebb81d9833f793"
+        }
+      },
+      "beforePlan": {
+        "ref": {
+          "bytes": 1895,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11556-0-plan.json",
+          "sha256": "2be46cc87ac018dabd078ac0be891ecb2d2043afb0368dc0cfdf3d37e598a680"
+        }
+      },
+      "event": {
+        "ref": {
+          "bytes": 2087,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\CUMULATIVE-TURN-005189.json",
+          "sha256": "8b4b2b05d5266b3bf529080650c438597c6a08a9294ba3e787d22dbacb87ef13"
+        },
+        "resource": "actual-cycle-5189.json"
+      },
+      "metricsAfter": {
+        "ref": {
+          "bytes": 478,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11557-after-result.json",
+          "sha256": "14fcd9281901c5b583c4b8d62692dcaeec1e98e9cabf89689b495024ed6bc6bb"
+        }
+      },
+      "ordinaryCredit": {
+        "ref": {
+          "bytes": 596,
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\11556-ordinary-result-credit.json",
+          "sha256": "e66a2b747c3dca4f6881c840882451fea5bb5347d27a708c2fca018ca02a4b49"
+        }
+      },
+      "readonlySaveSkip": null
+    }
+  ],
+  "historical_observed_at_utc": "2026-10-22T12:46:28Z",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "prior_fixture_manifest": {
+    "ref": {
+      "bytes": 15697,
+      "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\admission-contracts\\src\\test\\resources\\closedpartial\\original-sources.json",
+      "sha256": "9a05399247539be0856428cc2916927a97edcede313cf2f131c277b18582bc47"
+    }
+  },
+  "schema": "xar.closed-adoption-source-fixture/v1",
+  "sources": {
+    "bound": {
+      "ref": {
+        "bytes": 1748,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\ROOT-C23-NORMAL-COLD-BOUND.json",
+        "sha256": "7d95dd9c248205f14406b691a4878ba0a56194182c95a4e2839ce28f3cf236a1"
+      }
+    },
+    "capabilities": {
+      "ref": {
+        "bytes": 62766,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11542-1-result.json",
+        "sha256": "db7f5cefd69d194a5ea47862a52d85aa9f89c80c94f264cb4d58562c2866b926"
+      }
+    },
+    "captureCleanup": {
+      "ref": {
+        "bytes": 18391,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\recordings\\06c24d02-3c09-4dbb-8f21-c23712eb2d5b\\cleanup.json",
+        "sha256": "4d21b52597621e4f535a12f9031d0088df85edec32f11df75b32354e253a8feb"
+      }
+    },
+    "captureProbe": {
+      "ref": {
+        "bytes": 429,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\recordings\\06c24d02-3c09-4dbb-8f21-c23712eb2d5b\\closed-file-probe.json",
+        "sha256": "9091504ff78e23aee94f9cf02c15ad7481d7318d5be4dcd0a9872a034cbf37cb"
+      }
+    },
+    "classifierPin": {
+      "ref": {
+        "bytes": 1356,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\ROOT-P37C23-CLASSIFIER-PIN.json",
+        "sha256": "cd2c4572a9d06c1ed4e53d26df5a40a3dba5aaf268fdb7c312c09653d203c0fd"
+      }
+    },
+    "classifierSource": {
+      "ref": {
+        "bytes": 260570,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\root_p37c11_prisoner_epoch_classifier.py",
+        "sha256": "0bff8fae24c072d5f05285ba62c503dfed408f8095690fb8dffec16fe72ec28b"
+      }
+    },
+    "governance": {
+      "ref": {
+        "bytes": 9776,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a39\\p37-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+        "sha256": "d27791e190fc6f693f7d8442c14a035a6d8d8dea2c0436da1269646d7a0e1a6f"
+      }
+    },
+    "lastCommittedEvent": {
+      "ref": {
+        "bytes": 38657,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\ROOT-CONTINUITY-WINDOW-EVENTS\\00000240.json",
+        "sha256": "8c30981b44e674b1af8b28b652910654f453a92b75abcf80af6320fd34883962"
+      }
+    },
+    "queueSource": {
+      "ref": {
+        "bytes": 280866,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\root_p37c23_sdk_queue.py",
+        "sha256": "5493ce58688ffcbf4711de6e17041e2019424334752ea77785a8f2eefb330867"
+      }
+    },
+    "seed": {
+      "ref": {
+        "bytes": 11343,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a39-runtime-prep01\\CURRENT-SAVED-MAINTENANCE-SEED01.json",
+        "sha256": "fc9a4c123047ea07fb859ce1f6dda22316d2bde1fc1bfd5cfb1a47e991c2904f"
+      }
+    },
+    "semantic": {
+      "ref": {
+        "bytes": 56132,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-responses\\11541-1-result.json",
+        "sha256": "e08df7791ec19d651200f384654f6924f8a7d2e1500451b7f6e233f951ca2057"
+      }
+    },
+    "writerSource": {
+      "ref": {
+        "bytes": 34988,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\root_continuity_window_c23_100.py",
+        "sha256": "6b0ece99075e425f84ad732e3112cf5ccdc883bbb09a884aa94e0df411e9ff6e"
+      }
+    }
+  }
+}

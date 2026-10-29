@@ -1,0 +1,123 @@
+{
+  "schema": "xar.route-reroute-original-callable-fixture/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "captured_at_utc": "2026-10-22T21:01:54.408218+00:00",
+  "origins": [
+    {
+      "original_file_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+        "bytes": 1049780,
+        "sha256": "52b4381758ee712dc8555ac3a31186e13adbe10c3c18dc93b23bca5147934111"
+      },
+      "callables": [
+        {
+          "name": "_effective_command",
+          "first_line": 484,
+          "last_line": 495
+        },
+        {
+          "name": "_history_after_latest_restore",
+          "first_line": 20524,
+          "last_line": 20534
+        },
+        {
+          "name": "_effective_command_result",
+          "first_line": 20537,
+          "last_line": 20560
+        },
+        {
+          "name": "_successful_merge_barrier",
+          "first_line": 21080,
+          "last_line": 21088
+        },
+        {
+          "name": "_fresh_move_route_preview",
+          "first_line": 21091,
+          "last_line": 21132
+        },
+        {
+          "name": "_same_frame_readonly_result_lease",
+          "first_line": 21135,
+          "last_line": 21151
+        }
+      ]
+    },
+    {
+      "original_file_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_contract.py",
+        "bytes": 241556,
+        "sha256": "b1b14953f01d66c9f6720e4c92cb6b30c26eb1946b20e9b4ba932c9b5e1f7937"
+      },
+      "callables": [
+        {
+          "name": "parse_preview_move_army_step",
+          "first_line": 2727,
+          "last_line": 2744
+        },
+        {
+          "name": "parse_merge_armies_step",
+          "first_line": 3066,
+          "last_line": 3087
+        }
+      ]
+    },
+    {
+      "original_file_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\public_unit_contract.py",
+        "bytes": 1885,
+        "sha256": "0de76f3bf10ae24d3202177bb527bcb3ec903432a38af64f55e08c95698cab4e"
+      },
+      "callables": [
+        {
+          "name": "canonical_public_cunit_decimal",
+          "first_line": 28,
+          "last_line": 32
+        }
+      ]
+    },
+    {
+      "original_file_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\Crusader Kings III\\game\\common\\defines\\ai\\00_ai.txt",
+        "bytes": 65153,
+        "sha256": "c78f9cd8df9938cc9f38e817bcb6e32cd13720b5bd9de077b85e3e1c6f030293"
+      },
+      "define_keys": [
+        "MIN_PATH_COST_TO_CONSIDER_WATER_PATH",
+        "MIN_PATH_COST_SAVINGS_TO_CONSIDER_WATER_PATH",
+        "MIN_PATH_COST_TO_CONSIDER_WATER_PATH_FOR_GHW",
+        "MIN_PATH_COST_SAVINGS_TO_CONSIDER_WATER_PATH_FOR_GHW",
+        "MAX_PATH_COST_FACTOR",
+        "MAX_PATH_COST_FACTOR_TO_CONSIDER_WATER_PATH",
+        "MIN_GOALS_PER_STACK",
+        "AVOID_BAD_ADJACENCY_MAX_PATHFIND_EXTRA_COST",
+        "PLAYER_SUPPORT_IGNORE_BAD_SUPPLY_WITHIN_STEPS"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "utf8": "def _effective_command(row: dict[str, object]) -> str | None:\n    command = row.get(\"command\")\n    if command != \"auto-turn\":\n        return command if isinstance(command, str) else None\n    result = row.get(\"result\")\n    if not isinstance(result, dict):\n        return None\n    auto_turn = result.get(\"auto_turn\")\n    if not isinstance(auto_turn, dict):\n        return None\n    selected = auto_turn.get(\"selected_step\")\n    return selected if isinstance(selected, str) else None\n\ndef _history_after_latest_restore(\n    commands: list[dict[str, object]],\n) -> list[dict[str, object]]:\n    for position in range(len(commands) - 1, -1, -1):\n        row = commands[position]\n        if (\n            _effective_command(row) == \"restore-checkpoint\"\n            and row.get(\"ok\") is True\n        ):\n            return commands[position + 1 :]\n    return commands\n\ndef _effective_command_result(row: dict[str, object]) -> dict[str, object] | None:\n    result = row.get(\"result\")\n    if row.get(\"command\") != \"auto-turn\":\n        return result if isinstance(result, dict) else None\n    if isinstance(result, dict):\n        # gameplay_runner decorates the actual executor result at the root and\n        # stores the plan under auto_turn.  Prefer factual root postconditions\n        # over any nested/planner-shaped payload.\n        if any(\n            isinstance(result.get(name), dict)\n            for name in (\n                \"assault_action\",\n                \"route_preview\",\n                \"war_action\",\n                \"war_progress_before\",\n                \"war_progress_after\",\n            )\n        ):\n            return result\n    auto_turn = result.get(\"auto_turn\") if isinstance(result, dict) else None\n    nested = auto_turn.get(\"result\") if isinstance(auto_turn, dict) else None\n    if isinstance(nested, dict):\n        return nested\n    return result if isinstance(result, dict) else None\n\ndef _successful_merge_barrier(\n    row: dict[str, object], army_id: int\n) -> bool:\n    parsed = parse_merge_armies_step(_effective_command(row))\n    return bool(\n        row.get(\"ok\") is True\n        and parsed is not None\n        and army_id in parsed\n    )\n\ndef _fresh_move_route_preview(\n    commands: list[dict[str, object]],\n    *,\n    army_id: int,\n    origin_province_id: int,\n    target_province_id: int,\n    date_raw: int | None,\n    snapshot: dict[str, object] | None = None,\n) -> dict[str, object] | None:\n    if date_raw is None:\n        return None\n    expected_step = (army_id, target_province_id)\n    for row in reversed(_history_after_latest_restore(commands)):\n        if _successful_merge_barrier(row, army_id):\n            return None\n        if parse_preview_move_army_step(_effective_command(row)) != expected_step:\n            continue\n        if row.get(\"ok\") is not True:\n            continue\n        result = _effective_command_result(row)\n        if snapshot is not None and not _same_frame_readonly_result_lease(result, snapshot):\n            continue\n        preview = result.get(\"route_preview\") if isinstance(result, dict) else None\n        if (\n            not isinstance(preview, dict)\n            or preview.get(\"status\") not in {\"available\", \"deferred\"}\n            or preview.get(\"army_id\") != army_id\n            or preview.get(\"origin_province_id\") != origin_province_id\n            or preview.get(\"target_province_id\") != target_province_id\n            or preview.get(\"previewed_date_raw\") != date_raw\n        ):\n            continue\n        if preview.get(\"status\") == \"deferred\":\n            return {**preview, \"route_province_ids\": []}\n        route = preview.get(\"route_province_ids\")\n        if not isinstance(route, list) or any(\n            isinstance(item, bool) or not isinstance(item, int) or item <= 0\n            for item in route\n        ):\n            continue\n        return {**preview, \"route_province_ids\": list(route)}\n    return None\n\ndef _same_frame_readonly_result_lease(\n    result: dict[str, object] | None,\n    snapshot: dict[str, object],\n) -> bool:\n    diagnostics = snapshot.get(\"diagnostics\")\n    generation = diagnostics.get(\"connection_generation\") if isinstance(diagnostics, dict) else None\n    episode = snapshot.get(\"episode_run_id\")\n    if (not isinstance(result, dict) or not isinstance(generation, int)\n            or isinstance(generation, bool) or not isinstance(episode, str) or not episode):\n        return False\n    return all(result.get(wire) == expected for wire, expected in (\n        (\"queried_snapshot_id\", snapshot.get(\"snapshot_id\")),\n        (\"queried_revision\", snapshot.get(\"revision\")),\n        (\"queried_native_revision\", snapshot.get(\"native_revision\")),\n        (\"queried_connection_generation\", generation),\n        (\"queried_episode_run_id\", episode),\n    ))\n",
+      "bytes": 4752,
+      "sha256": "448c388bd2b4d6968418228be863e25b7f902863222f77942cbdaec3bccf4183"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "utf8": "def parse_preview_move_army_step(step: object) -> tuple[int, int] | None:\n    if not isinstance(step, str) or not step.startswith(\"preview-move-army-\"):\n        return None\n    payload = step.removeprefix(\"preview-move-army-\")\n    army_text, separator, province_text = payload.partition(\"-to-\")\n    if (\n        not separator\n        or not canonical_public_cunit_decimal(army_text)\n        or not province_text.isascii()\n        or not province_text.isdigit()\n        or province_text.startswith(\"0\")\n    ):\n        return None\n    army_id = int(army_text)\n    province_id = int(province_text)\n    if not (0 <= army_id <= 2**31 - 1 and 0 < province_id <= 2**31 - 1):\n        return None\n    return army_id, province_id\n\ndef parse_merge_armies_step(step: object) -> tuple[int, int] | None:\n    if not isinstance(step, str) or not step.startswith(\"merge-armies-\"):\n        return None\n    payload = step.removeprefix(\"merge-armies-\")\n    destination_text, separator, source_text = payload.partition(\"-with-\")\n    if (\n        not separator\n        or not destination_text.isascii()\n        or not canonical_public_cunit_decimal(destination_text)\n        or not source_text.isascii()\n        or not canonical_public_cunit_decimal(source_text)\n    ):\n        return None\n    destination = int(destination_text)\n    source = int(source_text)\n    if not (\n        0 <= destination <= 2**31 - 1\n        and 0 <= source <= 2**31 - 1\n        and destination != source\n    ):\n        return None\n    return destination, source\n",
+      "bytes": 1518,
+      "sha256": "9de524e27d6f5273c9431d8beb73eeb5091fef5f22a6b3e2018cd3e12c56abf1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/public_unit_contract.py",
+      "utf8": "def canonical_public_cunit_decimal(value: str) -> bool:\n    return (\n        value == \"0\"\n        or bool(value and value.isascii() and value.isdigit() and value[0] != \"0\")\n    )\n",
+      "bytes": 179,
+      "sha256": "7cf0734fb7a5a2e0e9a4882e513c48f4ea5d27ccc696c632a81c2e74a01c0af3"
+    },
+    {
+      "path": "vanilla/00_ai.route-excerpt.txt",
+      "utf8": "\tMIN_PATH_COST_TO_CONSIDER_WATER_PATH = 120\n\tMIN_PATH_COST_SAVINGS_TO_CONSIDER_WATER_PATH = 65\n\tMIN_PATH_COST_TO_CONSIDER_WATER_PATH_FOR_GHW = 180\n\tMIN_PATH_COST_SAVINGS_TO_CONSIDER_WATER_PATH_FOR_GHW = 90\n\tMAX_PATH_COST_FACTOR = 5\n\tMAX_PATH_COST_FACTOR_TO_CONSIDER_WATER_PATH = 2.0\n\tMIN_GOALS_PER_STACK = 10\n\tAVOID_BAD_ADJACENCY_MAX_PATHFIND_EXTRA_COST = 180.0\n\tPLAYER_SUPPORT_IGNORE_BAD_SUPPLY_WITHIN_STEPS = 4\n",
+      "bytes": 413,
+      "sha256": "fe58abe2db6c61d024cca58d8307118ae200f9d72daec1fe6b89ec36c09c2b44"
+    }
+  ]
+}

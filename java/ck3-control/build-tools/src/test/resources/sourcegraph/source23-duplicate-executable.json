@@ -1,0 +1,27 @@
+{
+  "schema": "xar.source-graph.reserved-executable-negative/v1",
+  "original_spec_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/tools_c15/C23-SOURCE-SPEC01.json",
+    "bytes": 143133,
+    "sha256": "4a678d5a64c6e4ae1cc8436e08ef4553f8b77f3a829a52ba609bb41f2fccf7bf"
+  },
+  "original_terminal_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/g2-m4/tools_c15/c23-source01/terminal.json",
+    "bytes": 16123,
+    "sha256": "659e098a9f6f6baa3478e9bbb097729969d532d194d660c8ef60f917e536d559"
+  },
+  "actual_input_count": 501,
+  "actual_conflicting_input_index": 12,
+  "executable": {
+    "path": "C:/jdk-21/bin/java.exe",
+    "bytes": 50344,
+    "sha256": "bd3d87dfb44651a1c61c995e08ca4fcadb458437a373d46941381f9aeff9d6a0"
+  },
+  "conflicting_inputs": [
+    {
+      "path": "C:/jdk-21/bin/java.exe",
+      "bytes": 50344,
+      "sha256": "bd3d87dfb44651a1c61c995e08ca4fcadb458437a373d46941381f9aeff9d6a0"
+    }
+  ]
+}

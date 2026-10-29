@@ -12,7 +12,21 @@
   <artifactId>ck3-control-local-service</artifactId>
   <name>CK3 Control Local Service</name>
 
+  <properties>
+    <quarkus.package.main-class>finite-first-live</quarkus.package.main-class>
+  </properties>
+
   <dependencies>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>application</artifactId><version>${project.version}</version><type>test-jar</type><classifier>tests</classifier><scope>test</scope></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-build-tools</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>application</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>native-transport</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>adapters-storage</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>continuity-core</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>net.java.dev.jna</groupId><artifactId>jna</artifactId></dependency>
+    <dependency><groupId>net.java.dev.jna</groupId><artifactId>jna-platform</artifactId></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>g2-research</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>governance-policy</artifactId><version>${project.version}</version></dependency>
     <dependency>
       <groupId>org.xar.ck3.control</groupId>
       <artifactId>contracts</artifactId>
@@ -22,10 +36,91 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-rest-jackson</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave2-governance</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave3-governance</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave2-runtime</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave3-planning</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave2-development</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>war-budget</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave2-finance</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave2-events</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave3-runtime</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xar.ck3.control</groupId>
+      <artifactId>wave3-military</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency><groupId>org.junit.platform</groupId><artifactId>junit-platform-launcher</artifactId><version>6.1.3</version><scope>test</scope></dependency>
+    <dependency><groupId>org.apache.commons</groupId><artifactId>commons-compress</artifactId><version>1.28.0</version></dependency>
+    <dependency><groupId>org.tukaani</groupId><artifactId>xz</artifactId><version>1.12</version></dependency>
   </dependencies>
 
   <build>
+    <testResources>
+      <testResource><directory>src/test/resources</directory></testResource>
+      <testResource><directory>../g2-research/src/test/resources</directory></testResource>
+      <testResource><directory>../wave2-events/src/test/resources</directory><includes><include>unhandledevent/unhandled-event-golden-v1.json.gz</include></includes></testResource>
+      <testResource><directory>../continuity-core/src/test/resources</directory><includes><include>original-reducer-calls-v2.json.gz</include></includes></testResource>
+      <testResource><directory>../wave2-runtime/src/test/resources</directory><includes><include>closedadoption/**</include><include>clockreader/**</include></includes></testResource>
+      <testResource><directory>../wave2-runtime/src/test/resources/savedproof</directory><includes><include>n46-prior-basis.actual.json</include></includes></testResource>
+      <testResource><directory>../wave2-finance/src/test/resources</directory><includes><include>factionalerts/original-producer-golden.json</include></includes></testResource>
+      <testResource><directory>../governance-policy/src/test/resources</directory><includes><include>crownauthority/original-producer-golden.json</include></includes></testResource>
+      <testResource><directory>../wave3-governance/src/test/resources</directory><includes><include>governmentquery/original-producer-golden.json</include></includes></testResource>
+    </testResources>
     <plugins>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><executions><execution><id>default-jar</id><phase>process-test-classes</phase><goals><goal>jar</goal></goals></execution><execution><id>shared-existing-test-helpers</id><phase>test-compile</phase><goals><goal>test-jar</goal></goals></execution></executions></plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>${quarkus.platform.group-id}</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>

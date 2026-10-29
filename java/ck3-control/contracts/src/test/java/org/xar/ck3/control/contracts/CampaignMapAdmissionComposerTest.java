@@ -18,8 +18,8 @@ class CampaignMapAdmissionComposerTest {
         row.put("schema", CampaignMapAdmissionComposer.REQUEST_SCHEMA);
         row.put("machine_id", "xenoamess-full-tower-eb9d2c1186");
         row.put("observed_at_utc", "2026-10-22T12:00:00.123456+00:00");
-        row.set("native_launch", new GameGeneration(200332,
-                new PythonOnlyUInt64(new BigInteger("134371375868945259"))).toJson());
+        row.set("native_launch", PythonOpaqueGameGenerationV1.toJson(new GameGeneration(200332,
+                new PythonOnlyUInt64(new BigInteger("134371375868945259")))));
         row.put("recording_session_id", "recording-actual-session");
         row.set("actual_initial_frame", new SavedFrame("native:1", 2, 1,
                 53279400, 40526, "native-40526-1bec95182886").toJson());

@@ -70,7 +70,7 @@ public final class ProjectedContactPolicy {
             attackerArmyIds = ids(attackerArmyIds, true); defenderArmyIds = ids(defenderArmyIds, true);
             Objects.requireNonNull(transition, "transition"); Objects.requireNonNull(subjectSide, "side");
             require(attackerArmyIds.stream().noneMatch(defenderArmyIds::contains), "contact sides overlap");
-            if (selectedCurrentCombatId != null) { positive(selectedCurrentCombatId); }
+            if (selectedCurrentCombatId != null) { component(selectedCurrentCombatId); }
             if (selectedCurrentCombatArrayIndex != null) {
                 require(selectedCurrentCombatArrayIndex >= 0, "negative selected Combat index");
             }
@@ -160,7 +160,7 @@ public final class ProjectedContactPolicy {
 
     private static List<Integer> ids(List<Integer> values, boolean publicUnits) {
         List<Integer> result = List.copyOf(values);
-        for (Integer value : result) { if (publicUnits) { publicUnit(value); } else { positive(value); } }
+        for (Integer value : result) { if (publicUnits) { publicUnit(value); } else { component(value); } }
         require(new HashSet<>(result).size() == result.size(), "duplicate identity in native array");
         return result;
     }
@@ -169,6 +169,7 @@ public final class ProjectedContactPolicy {
                 && value.compareTo(StrictJson.UINT64_MAX) <= 0, "exact uint64 outside range");
     }
     private static void publicUnit(int value) { require(value >= 0, "public CUnit must be nonnegative int32"); }
+    private static void component(int value) { require(value != -1, "missing full ComponentID sentinel forbidden"); }
     private static void positive(int value) { require(value > 0, "positive int32 identity required"); }
     private static void require(boolean condition, String message) { StrictJson.require(condition, message); }
 }

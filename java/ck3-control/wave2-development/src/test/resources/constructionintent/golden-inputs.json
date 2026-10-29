@@ -1,0 +1,465 @@
+{
+  "schema": "xar.ck3.constructionintent-golden-inputs/v1",
+  "provenance": "Identity seeded from committed N40 P02 AUTO11 minimal fixture; branch variants are synthetic pure-function inputs.",
+  "cases": [
+    {
+      "name": "legacy-applied-without-explicit-flags",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "missing-ack-does-not-block",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true,
+        "native_ack": null
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "actor-mismatch-does-not-bind",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31255,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "candidate-mismatch-does-not-bind",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 3
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "action-mismatch-does-not-bind",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "other-action",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "applied-missing-actor-unknown",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": null,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "different-material",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "observed_mismatched_construction",
+        "postcondition_verified": false,
+        "requested_postcondition_verified": false,
+        "material_postcondition_verified": true,
+        "observed_material_tuple": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 596,
+          "slot_index": 1
+        }
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "restored-with-absent-actor-tuple",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "status": "restored_before_action",
+        "postcondition_verified": true
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "restore-not-applied",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "not_applied_after_restore",
+        "requested_postcondition_verified": false,
+        "material_postcondition_verified": false
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "unknown-does-not-authorize-replay",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "action_state_unknown"
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "explicit-false-cannot-use-legacy-applied",
+      "operation": "selected",
+      "selected_step": "private-query-player-construction-receipt-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true,
+        "material_postcondition_verified": false
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "unknown-selected-step",
+      "operation": "selected",
+      "selected_step": "life-advance",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "submission-result-keeps-null-query-new-submission",
+      "operation": "selected",
+      "selected_step": "private-submit-player-construction-v1",
+      "pending_action": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        }
+      },
+      "typed_result": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      },
+      "deferred_selected_step": "query-war-termination-options-16777326"
+    },
+    {
+      "name": "consumed-applied",
+      "operation": "consumed",
+      "receipt": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      }
+    },
+    {
+      "name": "consumed-missing-action-unknown",
+      "operation": "consumed",
+      "receipt": {
+        "action_request_id": null,
+        "episode_run_id": "native-31254-96253c58fd68",
+        "actor_character_id": 31254,
+        "candidate": {
+          "barony_title_id": 2195,
+          "province_id": 2644,
+          "building_type_id": 580,
+          "slot_index": 2
+        },
+        "status": "applied",
+        "postcondition_verified": true
+      }
+    },
+    {
+      "name": "consumed-restore-no-actor-tuple",
+      "operation": "consumed",
+      "receipt": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "status": "restored_before_action",
+        "postcondition_verified": true
+      }
+    },
+    {
+      "name": "consumed-empty-candidate-distinct-from-null",
+      "operation": "consumed",
+      "receipt": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "status": "applied",
+        "postcondition_verified": true,
+        "candidate": {}
+      }
+    },
+    {
+      "name": "consumed-null-candidate",
+      "operation": "consumed",
+      "receipt": {
+        "action_request_id": "construction-submit-411dad9f924845e79a26029025a89354",
+        "episode_run_id": "native-31254-96253c58fd68",
+        "status": "applied",
+        "postcondition_verified": true,
+        "candidate": null
+      }
+    }
+  ]
+}

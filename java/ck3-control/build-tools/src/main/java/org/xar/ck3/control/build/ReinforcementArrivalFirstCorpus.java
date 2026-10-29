@@ -89,7 +89,8 @@ public final class ReinforcementArrivalFirstCorpus {
         require(actual.equals(expected), "Complete FIRST directory differs from its exact seven original files");
         manifest.producerSourceRef().verify(); manifest.executableRef().verify();
         require(absolute(manifest.producerSourceRef().path()).getFileName().toString().equals("battle_reinforcement_arrival_first_12003.cpp"), "Exact original FIRST C++ producer source required");
-        var terminal = ControlBuild.strictMapper().readValue(read(manifest.executionRef(), 2 << 20), SharedOwnedCommand.Terminal.class);
+        var owned = SharedOwnedCommand.readNativeTerminal(manifest.executionRef(), 1 << 20);
+        var terminal = owned.terminal();
         require("xar.shared-owned-command-terminal/v2".equals(terminal.schema()) && terminal.machineId().equals(manifest.machineId())
                 && terminal.status() == SharedOwnedCommand.Status.PASS && terminal.childStarted() && terminal.child() != null && terminal.child().passed()
                 && terminal.failure() == null && terminal.inputPrecheck() == SharedOwnedCommand.Check.MATCH && terminal.inputPostcheck() == SharedOwnedCommand.Check.MATCH
@@ -100,7 +101,7 @@ public final class ReinforcementArrivalFirstCorpus {
             var runtime = ControlBuild.producerClosure(); require(runtime.size() == 6, "Complete actual manifest-publisher runtime required");
             for (FileRef ref : runtime) ref.verify();
         }
-        terminal.requestRef().verify(); var request = SharedOwnedCommand.parseRequest(ControlBuild.strictMapper().readTree(read(terminal.requestRef(), 1 << 20)));
+        terminal.requestRef().verify(); var request = owned.request();
         NativeFixtureCorpora.requireSettledOwnedProcess(manifest.machineId(), terminal, request);
         require(request.executable().equals(manifest.executableRef()) && request.arguments().size() == 1 && absolute(request.arguments().getFirst()).equals(root)
                 && terminal.effectiveArguments().equals(request.arguments()) && request.inputs().contains(manifest.producerSourceRef()), "FIRST execution changed its actual executable, original source or sole output-directory argument");

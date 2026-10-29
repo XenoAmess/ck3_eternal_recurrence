@@ -138,11 +138,28 @@ final class CompiledReferenceMainTest {
                 actualPath.toString(), limits, CompiledOriginalCapture.Mode.EXECUTE));
         assertEquals(CompiledOriginalCapture.Status.RED, actual.status()); assertFalse(actual.childStarted());
         assertNull(actual.commandResult()); assertNull(actual.proofRef());
+        assertEquals(CompiledOriginalCapture.RECEIPT_SCHEMA, actual.schema());
+        assertNull(actual.invocationEvidence());
         assertThrows(IOException.class, () -> CompiledOriginalCapture.acceptedReceipt(ControlBuild.FileRef.measure(actualPath), CompiledOriginalCapture.Mode.EXECUTE));
-        ObjectNode old = ControlBuild.strictMapper().valueToTree(actual);
-        old.put("schema", "xar.compiled-original-capture-actual/v2");
-        Path oldPath = temporary.resolve("old-receipt.json");
-        Files.write(oldPath, ControlBuild.strictMapper().writeValueAsBytes(old));
-        assertThrows(IOException.class, () -> CompiledOriginalCapture.acceptedReceipt(ControlBuild.FileRef.measure(oldPath), CompiledOriginalCapture.Mode.EXECUTE));
+        for(String historicalSchema:List.of("xar.compiled-original-capture-actual/v2","xar.compiled-original-capture-actual/v3",
+                "xar.compiled-original-capture-actual/v4","xar.compiled-original-capture-actual/v5")) {
+            ObjectNode old = ControlBuild.strictMapper().valueToTree(actual);
+            old.put("schema", historicalSchema);
+            if (!historicalSchema.endsWith("v4") && !historicalSchema.endsWith("v5")) old.remove("invocation_evidence");
+            String version = historicalSchema.substring(historicalSchema.lastIndexOf('/') + 1);
+            Path oldPath = temporary.resolve("old-receipt-" + version + "-no-preparation.json");
+            Files.write(oldPath, ControlBuild.strictMapper().writeValueAsBytes(old));
+            if (historicalSchema.endsWith("v4")) {
+                var historical = CompiledOriginalCapture.readHistoricalV4Metadata(ControlBuild.FileRef.measure(oldPath));
+                assertEquals(historicalSchema, historical.schema());
+                assertFalse(historical.childStarted()); assertNull(historical.invocationEvidence());
+            }
+            if (historicalSchema.endsWith("v5")) {
+                var historical = CompiledOriginalCapture.readHistoricalV5Metadata(ControlBuild.FileRef.measure(oldPath));
+                assertEquals(historicalSchema, historical.schema());
+                assertFalse(historical.childStarted()); assertNull(historical.invocationEvidence());
+            }
+            assertThrows(IOException.class, () -> CompiledOriginalCapture.acceptedReceipt(ControlBuild.FileRef.measure(oldPath), CompiledOriginalCapture.Mode.EXECUTE));
+        }
     }
 }

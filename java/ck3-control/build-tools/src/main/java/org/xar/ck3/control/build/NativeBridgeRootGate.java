@@ -29,7 +29,7 @@ public final class NativeBridgeRootGate implements NativeBridgeBuild.Gate, Close
             if (ownerTask == null || !ownerTask.matches("/root(?:/[a-z0-9_-]+)*"))
                 throw new IllegalArgumentException("Exact Root task owner required");
             Objects.requireNonNull(capacityEvidence); Objects.requireNonNull(deadline);
-            if (memoryLimitBytes < (64L << 20) || memoryLimitBytes > (4L << 30)
+            if (memoryLimitBytes < (64L << 20) || memoryLimitBytes > NativeBridgeBuild.MAX_MEMORY_LIMIT_BYTES
                     || outputAllocationLimitBytes < RECEIPT_RESERVE_BYTES
                     || timeoutSeconds < 1 || timeoutSeconds > 7200)
                 throw new IllegalArgumentException("Finite Root native stage limits required");
@@ -50,7 +50,7 @@ public final class NativeBridgeRootGate implements NativeBridgeBuild.Gate, Close
         this.censusRoots = List.copyOf(censusRoots); this.channel = channel; this.lock = lock;
     }
 
-    /** Opening checks the real release, volumes and allocation before creating the lock file. */
+    /** Opening checks the real release, volumes and allocation before preparing the single scratch directory and lock. */
     public static NativeBridgeRootGate open(ControlBuild.FileRef requestRef, Limits limits) throws IOException {
         Objects.requireNonNull(limits);
         var request = NativeBridgeBuild.readRequest(requestRef);
@@ -61,12 +61,11 @@ public final class NativeBridgeRootGate implements NativeBridgeBuild.Gate, Close
         Instant now = Instant.now();
         var release = validateEnvelope(request, grant, now, now);
         NativeBridgeBuild.require(request.machineId().equals(WindowsJobProcess.currentMachineId()), "Root gate machine differs");
-        NativeBridgeBuild.plainDirectory(request.scratchRoot());
         NativeBridgeBuild.require(Files.notExists(request.stageRoot(), LinkOption.NOFOLLOW_LINKS),
                 "Stage already has an INTENT or unknown outcome; reconcile without replay");
         List<Path> scopes = censusRoots(release);
         verifyLivePaths(request, release);
-        liveStorage(request, grant, release, scopes, true);
+        prepareScratch(request, grant, release, scopes);
         Path lockPath = request.scratchRoot().resolve("ROOT-NATIVE-BUILD.lock");
         SharedSourceFiles.plainAncestors(lockPath);
         FileChannel channel = FileChannel.open(lockPath, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
@@ -82,6 +81,22 @@ public final class NativeBridgeRootGate implements NativeBridgeBuild.Gate, Close
             try { channel.close(); } catch (IOException close) { failure.addSuppressed(close); }
             throw failure;
         }
+    }
+
+    /** Only the exact approved child is created; no attempt-specific mkdir or ancestor creation is required. */
+    private static void prepareScratch(NativeBridgeBuild.Request request, NativeBridgeBuild.Grant grant,
+            ControlBuild.CapacityRelease release, List<Path> scopes) throws IOException {
+        Path scratch = request.scratchRoot();
+        SharedSourceFiles.plainAncestors(scratch);
+        NativeBridgeBuild.plainDirectory(scratch.getParent());
+        boolean missing = Files.notExists(scratch, LinkOption.NOFOLLOW_LINKS);
+        NativeBridgeBuild.require(missing || Files.exists(scratch, LinkOption.NOFOLLOW_LINKS),
+                "Native scratch existence is unavailable");
+        long directoryReserve = missing ? Math.max(4096, NativeStorageGeometry.read(scratch.getParent()).clusterBytes()) : 0;
+        liveStorage(request, grant, release, scopes, true, directoryReserve);
+        if (missing) Files.createDirectory(scratch);
+        NativeBridgeBuild.plainDirectory(scratch);
+        liveStorage(request, grant, release, scopes, true);
     }
 
     @Override public synchronized NativeBridgeBuild.Grant acquire(NativeBridgeBuild.Request selected,
@@ -205,6 +220,12 @@ public final class NativeBridgeRootGate implements NativeBridgeBuild.Gate, Close
     }
     private static void liveStorage(NativeBridgeBuild.Request request, NativeBridgeBuild.Grant grant,
             ControlBuild.CapacityRelease release, List<Path> scopes, boolean reserveReceipt) throws IOException {
+        liveStorage(request, grant, release, scopes, reserveReceipt, 0);
+    }
+    private static void liveStorage(NativeBridgeBuild.Request request, NativeBridgeBuild.Grant grant,
+            ControlBuild.CapacityRelease release, List<Path> scopes, boolean reserveReceipt, long additionalPendingBytes) throws IOException {
+        NativeBridgeBuild.require(additionalPendingBytes >= 0 && additionalPendingBytes <= (2L << 20),
+                "Finite pending native scratch allocation required");
         NativeBridgeBuild.require(request.machineId().equals(WindowsJobProcess.currentMachineId())
                 && Instant.now().isBefore(grant.deadline()), "Fresh native machine/window guard failed");
         for (var entry : release.volumes().entrySet())
@@ -212,7 +233,7 @@ public final class NativeBridgeRootGate implements NativeBridgeBuild.Gate, Close
                     "Native output volume no longer has its shared free-space reserve");
         long allocation = allocation(scopes, grant.deadline());
         long pending = reserveReceipt ? RECEIPT_RESERVE_BYTES : 0;
-        NativeBridgeBuild.require(Math.addExact(allocation, pending) <= grant.outputAllocationLimitBytes(),
+        NativeBridgeBuild.require(Math.addExact(Math.addExact(allocation, pending), additionalPendingBytes) <= grant.outputAllocationLimitBytes(),
                 "Native output/ENTIRETMP allocation plus terminal receipt reserve exceeds its cap");
     }
     /** Native AllocationSize, including retained outputs and a directory guard; no link release credit. */

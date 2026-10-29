@@ -1,0 +1,532 @@
+"""Game-date stability window. Local evidence accounting only; never an MCP caller."""
+from __future__ import annotations
+import argparse
+from contextlib import contextmanager
+from copy import deepcopy
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import uuid
+
+SCHEMA = "root.ck3.continuity-window/v1"
+TARGET_DAYS = 10950  # CK3 fixed365:1066.9.15 to1096.9.15; native days use24 ticks.
+TARGET_RAW = TARGET_DAYS * 24
+MAX_RECEIPT_BYTES = 65536
+
+
+def integer(value, name, minimum=0):
+    if type(value) is not int or value < minimum:
+        raise ValueError("invalid " + name)
+    return value
+
+
+def digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def frame_binding(frame):
+    if not isinstance(frame, dict):
+        raise ValueError("settled frame must be an object")
+    return {"date_raw": integer(frame.get("date_raw"), "settled date"),
+        "actor_character_id": integer(frame.get("actor_character_id"), "actor", 1),
+        "episode_run_id": str(frame.get("episode_run_id") or ""),
+        "snapshot_id": frame.get("snapshot_id"), "revision": frame.get("revision"),
+        "native_revision": frame.get("native_revision")}
+
+
+def game_binding(value):
+    pid = integer(value.get("pid"), "Game PID", 1)
+    birth = value.get("creation_date")
+    if not isinstance(birth, str) or not birth:
+        raise ValueError("actual Game creation identity required")
+    return {"pid": pid, "creation_date": birth}
+
+
+def transition(previous, kind, details):
+    """Pure reducer. Only repair completion can open/reset a stability window."""
+    if not isinstance(details, dict) or not details.get("evidence_id") or not details.get("source"):
+        raise ValueError("exact source and evidence ID required")
+    state = deepcopy(previous)
+    if kind == "clean_campaign_started_verified":
+        if (state is not None or details.get("actual_new_campaign_verified") is not True
+                or details.get("old_campaign_credit") != 0 or details.get("completed_cycles") != 0):
+            raise ValueError("clean campaign initialization requires an actual new zero baseline")
+        frame = frame_binding(details["frame"])
+        return {"schema": SCHEMA, "machine_id": details["machine_id"], "window_id": 1,
+            "status": "running", "start_date_raw": frame["date_raw"],
+            "target_date_raw": frame["date_raw"] + TARGET_RAW, "target_days": TARGET_DAYS,
+            "target_years": 30, "calendar_year_days": 365,
+            "manual_repair_count": 0, "automatic_recovery_count": 0, "binding_lineage_count": 0,
+            "latest_binding": frame, "game_binding": game_binding(details["game"]), "sequence": 0,
+            "last_settled_date_raw": frame["date_raw"], "last_settled_cycles": 0,
+            "window_start_source": details["source"], "old_campaign_credit": 0}
+    if state is None:
+        if kind != "repair_required":
+            raise ValueError("initialize from the real blocking failure, not old campaign age")
+        state = {"schema": SCHEMA, "machine_id": details["machine_id"], "window_id": 0,
+            "status": "prepared", "start_date_raw": None, "target_date_raw": None,
+            "target_days": TARGET_DAYS, "target_years": 30, "calendar_year_days": 365,
+            "manual_repair_count": 0, "automatic_recovery_count": 0,
+            "binding_lineage_count": 0, "latest_binding": None,
+            "game_binding": game_binding(details["game"]), "sequence": 0}
+    if state.get("schema") != SCHEMA or state.get("target_days") != TARGET_DAYS:
+        raise ValueError("different continuity policy/schema")
+    if details.get("machine_id", state["machine_id"]) != state["machine_id"]:
+        raise ValueError("continuity machine identity changed")
+    if kind == "C23_saved_frontier_aligned":
+        frame = frame_binding(details["frame"]); new = game_binding(details["game"])
+        if (state != details["old_ledger"] or state["status"] != "repair_required"
+                or state["machine_id"] != "xenoamess-full-tower-eb9d2c1186"
+                or state["game_binding"] != {"pid": 30852, "creation_date": "20261019160615.902761+000"}
+                or details["game"].get("creation_filetime", 0) <= 134368995759027619
+                or state["start_date_raw"] != 53144328 or state["target_date_raw"] != 53407128
+                or state["last_settled_cycles"] != 4734 or state["last_settled_date_raw"] != 53274408
+                or frame["date_raw"] != 53274624 or frame["actor_character_id"] != 40526
+                or frame["episode_run_id"] != "native-40526-1bec95182886"
+                or details["source"]["predecessor"]["sha256"] != "51ee9a97aecbc0b14560110ddbb3f3fd41fc532f9c2647493efd0e2c3d0247e8"
+                or details["source"]["frontier"]["sha256"] != "312165ea447d2b1e94be0d0b7e0b749a8892f59b1034feb93df90a880f326fce"
+                or details["source"]["state"]["sha256"] != "c2c672d520267e6f860dd968ce2ccf1c06faca10fd1cd0552d213929b9a8dac8"
+                or details["source"]["SAVE10480"]["sha256"] != "5b0844c484d3ca23ab73e7b6af9db528398fe40eef62648128d3bd4e1578853b"):
+            raise ValueError("finite C23 saved-frontier alignment differs")
+        state.update(status="running", game_binding=new, latest_binding=frame,
+            last_settled_cycles=4753, last_settled_date_raw=53274624,
+            cold_handoff_count=state.get("cold_handoff_count", 0) + 1,
+            previous_interruption=state.get("interruption"),
+            C23_saved_frontier_alignment={"source": details["source"],
+                "historical_predecessor_cycles": 4734, "historical_predecessor_date_raw": 53274408,
+                "already_settled_saved_cycles": 4753, "already_settled_saved_date_raw": 53274624,
+                "already_settled_alignment_cycles": 19, "checkpoint_saved_count": 74,
+                "ordinary_cycle_credit": 0, "replayed_cycles": 0,
+                "failed10476_or_cycle4754_credit": 0, "new_FULL_success_inferred": False,
+                "monotonic_origin_inferred": False, "window_origin_reset": False})
+        return state
+    if kind == "C18_source_warm_verified":
+        frame=frame_binding(details["frame"])
+        if (state!=details["old_ledger"] or state["status"]!="repair_required"
+                or state["game_binding"]!=game_binding(details["game"]) or state["game_binding"]["pid"]!=30852
+                or state["start_date_raw"]!=53144328 or state["target_date_raw"]!=53407128
+                or state["last_settled_cycles"]!=4262 or state["last_settled_date_raw"]!=53244000
+                or frame["date_raw"]!=53244000 or frame["actor_character_id"]!=40526
+                or frame["episode_run_id"]!="native-40526-1bec95182886" or frame["native_revision"]<2668):
+            raise ValueError("finite C18 same-Game warm boundary differs")
+        state.update(status="running",latest_binding=frame,last_C18_source_warm=details["source"],
+            sameGame_source_handoff_count=state.get("sameGame_source_handoff_count",0)+1,
+            manual_repair_count=state.get("manual_repair_count",0)+1,previous_interruption=state.get("interruption"),
+            C18_source_warm={"failed_FULL":9400,"readonly_rejected_AUTO":9421,"observation_control":9422,
+                "fresh_SEM":9423,"partial9_already_accounted":True,"alliance_native_query_sent":False,
+                "ordinary_cycle_credit":0,"original_actions_replayed":False})
+        return state
+    if kind == "C17_source_warm_verified":
+        frame=frame_binding(details["frame"])
+        if (state!=details["old_ledger"] or state["status"]!="repair_required"
+                or state["game_binding"]!=game_binding(details["game"]) or state["game_binding"]["pid"]!=30852
+                or state["start_date_raw"]!=53144328 or state["target_date_raw"]!=53407128
+                or state["last_settled_cycles"]!=4013 or state["last_settled_date_raw"]!=53228640
+                or frame["date_raw"]!=53228640 or frame["actor_character_id"]!=40526
+                or frame["episode_run_id"]!="native-40526-1bec95182886" or frame["native_revision"]<1786):
+            raise ValueError("finite C17 same-Game warm boundary differs")
+        state.update(status="running",latest_binding=frame,last_C17_source_warm=details["source"],
+            sameGame_source_handoff_count=state.get("sameGame_source_handoff_count",0)+1,
+            manual_repair_count=state.get("manual_repair_count",0)+1,previous_interruption=state.get("interruption"),
+            C17_source_warm={"failed_FULL":8879,"blocked_AUTO":8890,"clear_control":8891,
+                "partial5_already_accounted":True,"ordinary_cycle_credit":0,"original_actions_replayed":False})
+        return state
+    if kind == "C16_war8496_observed_clear":
+        frame=frame_binding(details["frame"])
+        if (state!=details["old_ledger"] or state["status"]!="repair_required"
+                or state["game_binding"]!=game_binding(details["game"]) or state["game_binding"]["pid"]!=30852
+                or state["last_settled_cycles"]!=3828 or state["last_settled_date_raw"]!=53217048
+                or state["start_date_raw"]!=53144328 or state["target_date_raw"]!=53407128
+                or frame["date_raw"]!=53217072 or frame["native_revision"]!=1127 or frame["revision"]!=1128
+                or frame["actor_character_id"]!=40526 or frame["episode_run_id"]!="native-40526-1bec95182886"):
+            raise ValueError("exact C16 observation8496 continuation required")
+        state.update(status="running",latest_binding=frame,last_settled_date_raw=53217072,
+            last_C16_war8496=details["source"],previous_interruption=state.get("interruption"),
+            war8496_recovery={"failed_FULL":8476,"original_AUTO":8495,"partial9_already_accounted":True,
+                "original_close_replayed":False,"ordinary_cycle_credit":0,"ui_closure_credit":0,
+                "physical_date_drift_raw":24,"physical_drift_credited_as_cycle":False})
+        return state
+    if kind == "C16_SAVE6397_cold_verified":
+        frame=frame_binding(details["frame"]);new=game_binding(details["game"])
+        if (state!=details["old_ledger"] or state["game_binding"]["pid"]!=115472 or new["pid"]==115472
+                or state["start_date_raw"]!=53144328 or state["target_date_raw"]!=53407128
+                or frame["date_raw"]!=53202720 or frame["actor_character_id"]!=40526
+                or frame["episode_run_id"]!="native-40526-1bec95182886"):raise ValueError("finite C16 saved boundary differs")
+        state.update(status="running",game_binding=new,latest_binding=frame,last_settled_cycles=3039,last_settled_date_raw=53202720,
+            cold_handoff_count=state.get("cold_handoff_count",0)+1,last_C16_SAVE6397=details["source"],
+            C16_rollback_history={"old_ledger_cycles":state["last_settled_cycles"],"historical_cycles":3273,
+                "historical_date_raw":53204424,"checkpoint_cycles":3039,"unsaved_tail_cycles":234,"unsaved_tail_days":71,
+                "ordinary_credit":0,"unknown_AUTO":6874,"unknown_replayed":False,"old_game":state["game_binding"]},
+            previous_interruption=state.get("interruption"))
+        return state
+    if kind == "C15_cold6322_rollback_verified":
+        frame=frame_binding(details["frame"]);new=game_binding(details["game"])
+        if (state["status"]!="repair_required" or details["old_game"]!=state["game_binding"] or state["game_binding"]["pid"]!=15512
+                or new["pid"]!=115472 or state["last_settled_cycles"]!=3033 or state["last_settled_date_raw"]!=53202696
+                or state["start_date_raw"]!=53144328 or state["target_date_raw"]!=53407128
+                or frame["date_raw"]!=53202384 or frame["native_revision"]!=1 or frame["revision"]!=2
+                or frame["actor_character_id"]!=40526 or frame["episode_run_id"]!="native-40526-1bec95182886"):raise ValueError("exact C15 SAVE6322 rollback required")
+        state.update(status="running",game_binding=new,latest_binding=frame,last_settled_cycles=3023,last_settled_date_raw=53202384,
+            cold_handoff_count=state.get("cold_handoff_count",0)+1,last_C15_cold6322=details["source"],
+            C15_rollback_history={"ledger_cycles":3033,"historical_cycles":3037,"historical_date_raw":53202696,"checkpoint_cycles":3023,"unsaved_tail_cycles":14,"unsaved_tail_days":13,"ordinary_credit":0,"old_game":details["old_game"]},previous_interruption=state.get("interruption"))
+        return state
+    if kind == "C15_readonly6394_verified":
+        frame=frame_binding(details["frame"])
+        if (state["status"]!="repair_required" or game_binding(details["game"])!=state["game_binding"] or state["game_binding"]["pid"]!=115472
+                or state["last_settled_cycles"]!=3039 or state["last_settled_date_raw"]!=53202720 or frame["date_raw"]!=53202720
+                or frame["actor_character_id"]!=40526 or frame["episode_run_id"]!="native-40526-1bec95182886" or frame["native_revision"]<25):raise ValueError("exact C15 zero-credit recovery required")
+        state.update(status="running",latest_binding=frame,last_C15_readonly6394=details["source"],manual_repair_count=state.get("manual_repair_count",0)+1,previous_interruption=state.get("interruption"))
+        return state
+    if kind == "C12_sameGame_source2020_warm_verified":
+        frame=frame_binding(details["frame"])
+        if (state["status"]!="repair_required" or game_binding(details["game"])!=state["game_binding"]
+                or state["game_binding"]["pid"]!=15512 or state["start_date_raw"]!=53144328 or state["target_date_raw"]!=53407128
+                or state["last_settled_cycles"]!=2327 or details["completed_cycles"]!=2327
+                or state["last_settled_date_raw"]!=frame["date_raw"] or frame["date_raw"]!=53192808
+                or frame["actor_character_id"]!=40526 or frame["episode_run_id"]!="native-40526-1bec95182886"
+                or frame["native_revision"]<351):raise ValueError("exact sameGame C12 warm source required")
+        state.update(status="running",latest_binding=frame,
+            sameGame_source_handoff_count=state.get("sameGame_source_handoff_count",0)+1,
+            manual_repair_count=state.get("manual_repair_count",0)+1,
+            last_sameGame_source_handoff=details["source"],previous_interruption=state.get("interruption"))
+        return state
+    if kind == "C11_native29_cold1863_verified":
+        frame=frame_binding(details["frame"]);new=game_binding(details["game"])
+        if (state["status"]!="repair_required" or details["old_game"]!=state["game_binding"]
+                or state["game_binding"]["pid"]!=153556 or new["pid"]!=15512
+                or state["start_date_raw"]!=53144328 or state["target_date_raw"]!=53407128
+                or state["last_settled_cycles"]!=2010 or details["completed_cycles"]!=2010
+                or state["last_settled_date_raw"]!=frame["date_raw"] or frame["date_raw"]!=53189040
+                or frame["actor_character_id"]!=40526 or frame["episode_run_id"]!="native-40526-1bec95182886"
+                or frame["native_revision"]!=1):raise ValueError("exact C11 cold provenance required")
+        state.update(status="running",game_binding=new,latest_binding=frame,
+            cold_handoff_count=state.get("cold_handoff_count",0)+1,last_cold_handoff_source=details["source"],
+            last_cold_binding={"old_game":state["game_binding"],"new_game":new},previous_interruption=state.get("interruption"))
+        return state
+    if kind == "C11_prisoner4286_original_result_settled":
+        frame=frame_binding(details["frame"])
+        if (state["status"]!="repair_required" or game_binding(details["game"])!=state["game_binding"]
+                or state["start_date_raw"]!=53144328 or state["target_date_raw"]!=53407128
+                or state["last_settled_cycles"]!=2034 or details["completed_cycles"]!=2035
+                or state["last_settled_date_raw"]!=frame["date_raw"] or frame["date_raw"]!=53189232
+                or frame["actor_character_id"]!=40526 or frame["episode_run_id"]!="native-40526-1bec95182886"
+                or frame["native_revision"]!=27):raise ValueError("exact original4286 settlement required")
+        state.update(status="running",last_settled_cycles=2035,latest_binding=frame,
+            manual_repair_count=state.get("manual_repair_count",0)+1,last_C11_prisoner_resume=details["source"],
+            previous_interruption=state.get("interruption"))
+        return state
+    if kind == "C10_normal_source_day1821_handoff_verified":
+        frame=frame_binding(details["frame"])
+        if (details.get("source_bound_normal_C10_warm") is not True
+                or game_binding(details["game"])!=state["game_binding"]
+                or state.get("start_date_raw")!=53144328 or state.get("target_date_raw")!=53407128
+                or state.get("last_settled_cycles")!=1957 or details.get("completed_cycles")!=1957
+                or state.get("last_settled_date_raw")!=53188032 or frame["date_raw"]!=53188032
+                or frame["actor_character_id"]!=40526 or frame["episode_run_id"]!="native-40526-1bec95182886"
+                or frame["native_revision"]<3136 or state.get("status")!="repair_required"):
+            raise ValueError("exact C10 normal warm after LIFE4102 diagnosis required; preserve original origin and settled credit")
+        state.update(status="running",latest_binding=frame,
+            sameGame_source_handoff_count=state.get("sameGame_source_handoff_count",0)+1,
+            manual_repair_count=state.get("manual_repair_count",0)+1,
+            last_sameGame_source_handoff=details["source"],previous_interruption=state.get("interruption"))
+        return state
+    if kind == "C7_natural_successor1772_tail_verified":
+        frame=frame_binding(details["frame"])
+        if (details.get("source_bound_actual_tail") is not True
+                or game_binding(details["game"])!=state["game_binding"]
+                or state.get("start_date_raw")!=53144328 or state.get("target_date_raw")!=53407128
+                or details.get("completed_cycles")!=1839 or state["last_settled_cycles"]!=1839
+                or not 53186856<=frame["date_raw"]<=53186880
+                or frame["date_raw"]<state["last_settled_date_raw"]
+                or frame["actor_character_id"]!=40526 or frame["episode_run_id"]!="native-40526-1bec95182886"
+                or state.get("status")!="repair_required"):
+            raise ValueError("exact source-bound successor tail and original T0 required")
+        previous=state.get("latest_binding") or {}
+        changed=any(previous.get(k)!=frame[k] for k in ("actor_character_id","episode_run_id"))
+        state.update(status="running",latest_binding=frame,last_settled_date_raw=frame["date_raw"],
+            manual_repair_count=state.get("manual_repair_count",0)+1,
+            binding_lineage_count=state.get("binding_lineage_count",0)+int(changed),
+            natural_succession_resume_count=state.get("natural_succession_resume_count",0)+1,
+            last_natural_succession_resume=details["source"],previous_interruption=state.get("interruption"))
+        return state
+    if kind == "C7_map520_preflight_corrected":
+        frame=frame_binding(details["frame"])
+        if (details.get("source_bound_map520_cleared") is not True
+                or game_binding(details["game"])!=state["game_binding"]
+                or state.get("start_date_raw")!=53144328 or state.get("target_date_raw")!=53407128
+                or frame["date_raw"]!=53153472 or details.get("completed_cycles")!=219
+                or state["last_settled_date_raw"]!=frame["date_raw"] or state["last_settled_cycles"]!=219
+                or details.get("original_warm_source")!=state.get("last_sameGame_source_handoff")
+                or state.get("status")!="repair_required"):
+            raise ValueError("exact C7 map520 local preflight correction required")
+        state.update(status="running",latest_binding=frame,
+            local_preflight_resume_count=state.get("local_preflight_resume_count",0)+1,
+            last_local_preflight_resume=details["source"],previous_interruption=state.get("interruption"))
+        return state
+    if kind == "source_only381_C7_handoff_verified":
+        frame=frame_binding(details["frame"]);cycles=integer(details["completed_cycles"],"settled cycles")
+        if (details.get("source_bound_C7_warm") is not True
+                or game_binding(details["game"])!=state["game_binding"]
+                or state.get("start_date_raw")!=53144328 or state.get("target_date_raw")!=53407128
+                or frame["date_raw"]!=53153472 or cycles!=219
+                or state["last_settled_date_raw"]!=frame["date_raw"] or state["last_settled_cycles"]!=219
+                or frame["actor_character_id"]!=31254 or frame["episode_run_id"]!="native-31254-6271ac8cd441"
+                or state.get("status")!="repair_required"):
+            raise ValueError("exact C7 sameGame source-only handoff required; origin and credit preserved")
+        state.update(status="running",latest_binding=frame,
+            sameGame_source_handoff_count=state.get("sameGame_source_handoff_count",0)+1,
+            last_sameGame_source_handoff=details["source"],previous_interruption=state.get("interruption"))
+        return state
+    if kind == "completedMET286_sameGame_handoff_verified":
+        frame=frame_binding(details["frame"]);cycles=integer(details["completed_cycles"],"settled cycles")
+        if (details.get("source_bound_completedMET286_settlement") is not True
+                or game_binding(details["game"])!=state["game_binding"]
+                or state.get("start_date_raw")!=53144328 or state.get("target_date_raw")!=53407128
+                or frame["date_raw"]!=53146968 or cycles!=112
+                or state["last_settled_date_raw"]!=frame["date_raw"] or state["last_settled_cycles"]!=111):
+            raise ValueError("exact completedMET286 sameGame handoff required; origin cannot reset")
+        state.update(status="running",latest_binding=frame,last_settled_cycles=112,
+            sameGame_source_handoff_count=state.get("sameGame_source_handoff_count",0)+1,
+            last_sameGame_source_handoff=details["source"],previous_interruption=state.get("interruption"))
+        return state
+    if kind == "publisher251_sameGame_handoff_verified":
+        frame=frame_binding(details["frame"]);cycles=integer(details["completed_cycles"],"settled cycles")
+        if (details.get("source_bound_undispatched251") is not True
+                or game_binding(details["game"])!=state["game_binding"]
+                or state.get("start_date_raw")!=53144328 or state.get("target_date_raw")!=53407128
+                or frame["date_raw"]!=53146896 or cycles!=98
+                or state["last_settled_date_raw"]!=frame["date_raw"] or state["last_settled_cycles"]!=cycles):
+            raise ValueError("exact sameGame publisher251 handoff required; origin cannot reset")
+        state.update(status="running", latest_binding=frame,
+            sameGame_source_handoff_count=state.get("sameGame_source_handoff_count",0)+1,
+            last_sameGame_source_handoff=details["source"],previous_interruption=state.get("interruption"))
+        return state
+    if kind == "saved61_cold_handoff_verified":
+        frame = frame_binding(details["frame"])
+        cycles = integer(details["completed_cycles"], "settled cycles")
+        new_game = game_binding(details["game"])
+        if (details.get("cold_checkpoint_verified") is not True
+                or state.get("start_date_raw") != 53144328
+                or state.get("target_date_raw") != 53407128
+                or frame["date_raw"] != 53145792 or cycles != 74
+                or state["last_settled_date_raw"] != frame["date_raw"]
+                or state["last_settled_cycles"] != cycles
+                or not frame["episode_run_id"]):
+            raise ValueError("exact saved61 cold handoff required; campaign origin cannot reset")
+        if new_game == state["game_binding"]:
+            if state["status"] not in ("running", "complete"):
+                raise ValueError("same cold generation still has unresolved repair")
+            return state
+        if details.get("old_game") != state["game_binding"]:
+            raise ValueError("cold handoff old Game identity differs")
+        state.update(status="running", game_binding=new_game, latest_binding=frame,
+            last_settled_date_raw=frame["date_raw"], last_settled_cycles=cycles,
+            cold_handoff_count=state.get("cold_handoff_count", 0)+1,
+            last_cold_handoff_source=details["source"],
+            previous_interruption=state.get("interruption"))
+        return state
+    if "game" in details and game_binding(details["game"]) != state["game_binding"]:
+        raise ValueError("same-campaign Game generation changed; explicit handoff required")
+    if kind == "repair_required":
+        frame = frame_binding(details["frame"])
+        cycles = integer(details["completed_cycles"], "settled cycles")
+        state.update(status="prepared" if state["window_id"] == 0 else "repair_required", interrupted_window_id=state["window_id"],
+            interruption={"reason": details["reason"], "source": details["source"],
+                "evidence_id": details["evidence_id"], "last_settled_frame": frame,
+                "completed_cycles": cycles},
+            last_settled_date_raw=frame["date_raw"], last_settled_cycles=cycles)
+    elif kind == "attach_verified":
+        frame = frame_binding(details["frame"])
+        cycles = integer(details["completed_cycles"], "settled cycles")
+        if not frame["episode_run_id"]:
+            raise ValueError("actual episode binding required")
+        if state["status"] in ("prepared", "repair_required"):
+            state.update(window_id=state["window_id"] + 1, status="running",
+                start_date_raw=frame["date_raw"], target_date_raw=frame["date_raw"] + TARGET_RAW,
+                manual_repair_count=state["manual_repair_count"] + 1,
+                window_start_source=details["source"], previous_interruption=state.get("interruption"))
+        elif state["status"] not in ("running", "complete"):
+            raise ValueError("unsupported continuity status")
+        elif frame["date_raw"] < state["last_settled_date_raw"] or cycles < state["last_settled_cycles"]:
+            raise ValueError("verified handoff moved backwards without a recorded repair")
+        state.update(last_settled_date_raw=frame["date_raw"], last_settled_cycles=cycles)
+        old_binding = state.get("latest_binding")
+        if old_binding and any(frame[k] != old_binding[k] for k in ("actor_character_id", "episode_run_id")):
+            state["binding_lineage_count"] += 1
+        state["latest_binding"] = frame
+    elif kind in ("settled_batch", "automatic_recovery"):
+        if state["status"] not in ("running", "complete"):
+            raise ValueError("manual repair remains unresolved")
+        date = integer(details["date_raw"], "settled date")
+        cycles = integer(details["completed_cycles"], "settled cycles")
+        # A watchdog can reread an older, already settled original control.
+        # Such observation grants no additional date/cycle credit.
+        if date < state["last_settled_date_raw"] or cycles < state["last_settled_cycles"]:
+            if date <= state["last_settled_date_raw"] and cycles <= state["last_settled_cycles"]:
+                return state
+            raise ValueError("inconsistent settled date/cycle chain")
+        state.update(last_settled_date_raw=date, last_settled_cycles=cycles,
+            last_settled_source=details["source"])
+        if kind == "automatic_recovery":
+            state["automatic_recovery_count"] += 1
+        if isinstance(details.get("frame"), dict):
+            frame = frame_binding(details["frame"])
+            if frame["date_raw"] != date:
+                raise ValueError("settled frame/date mismatch")
+            old_binding = state.get("latest_binding")
+            if old_binding and any(frame[k] != old_binding[k] for k in ("actor_character_id", "episode_run_id")):
+                state["binding_lineage_count"] += 1
+            state["latest_binding"] = frame
+        if date >= state["target_date_raw"]:
+            state["status"] = "complete"
+    else:
+        raise ValueError("unsupported continuity transition")
+    return state
+
+
+def summary(state):
+    start = state.get("start_date_raw")
+    elapsed = 0 if start is None else max(0, state["last_settled_date_raw"] - start)
+    return {"window_id": state["window_id"], "status": state["status"],
+        "start_date_raw": start, "last_settled_date_raw": state["last_settled_date_raw"],
+        "last_settled_cycles": state["last_settled_cycles"], "target_date_raw": state["target_date_raw"],
+        "elapsed_days": elapsed / 24, "target_days": TARGET_DAYS,
+        "target_reached": state["status"] == "complete"}
+
+
+def read_small(path):
+    raw = Path(path).read_bytes()
+    if len(raw) > MAX_RECEIPT_BYTES:
+        raise ValueError("continuity receipt exceeds finite small bound")
+    value = json.loads(raw)
+    if not isinstance(value, dict):
+        raise ValueError("continuity receipt must be an object")
+    return value
+
+
+def pin(path, limit=1024**2):
+    path = Path(path)
+    raw = path.read_bytes()
+    if len(raw) > limit:
+        raise ValueError("named continuity evidence exceeds bound")
+    return {"path": str(path), "sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def _atomic(path, value, replace=False):
+    payload = (json.dumps(value, ensure_ascii=False, separators=(",", ":")) + "\n").encode("utf-8")
+    if len(payload) > MAX_RECEIPT_BYTES:
+        raise ValueError("continuity output exceeds finite small bound")
+    tmp = path.with_name(path.name + "." + uuid.uuid4().hex + ".pending")
+    with tmp.open("xb") as stream:
+        stream.write(payload)
+        stream.flush()
+        os.fsync(stream.fileno())
+    try:
+        if replace:
+            os.replace(tmp, path)
+        else:
+            tmp.rename(path)
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+class WindowLedger:
+    """Small atomic snapshot plus immutable, recoverable ordered transition receipts."""
+    def __init__(self, path):
+        self.path = Path(path)
+        self.events = self.path.with_name("ROOT-CONTINUITY-WINDOW-EVENTS")
+
+    @contextmanager
+    def locked(self):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        with self.path.with_suffix(".lock").open("a+b") as stream:
+            stream.seek(0)
+            if os.name == "nt":
+                import msvcrt
+                msvcrt.locking(stream.fileno(), msvcrt.LK_LOCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                stream.seek(0)
+                if os.name == "nt":
+                    msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
+
+    def _load(self):
+        state = read_small(self.path) if self.path.exists() else None
+        sequence = state["sequence"] if state else 0
+        # Recover only committed exact next receipts, without enumerating histories.
+        while (self.events / f"{sequence + 1:08d}.json").exists():
+            event = read_small(self.events / f"{sequence + 1:08d}.json")
+            if event["previous_sha256"] != digest(state) or event["after"]["sequence"] != sequence + 1:
+                raise ValueError("continuity event chain differs")
+            state = event["after"]
+            _atomic(self.path, state, replace=True)
+            sequence += 1
+        if state and sequence:
+            committed = read_small(self.events / f"{sequence:08d}.json")
+            key = digest({"kind": committed["kind"], "evidence_id": committed["details"]["evidence_id"]})
+            index = self.events / ("source-" + key + ".json")
+            if not index.exists():
+                _atomic(index, {"sequence": sequence, "identity": committed["identity"]})
+        return state
+
+    def apply(self, kind, details):
+        with self.locked():
+            self.events.mkdir(exist_ok=True)
+            previous = self._load()
+            identity = digest({"kind": kind, "details": details})
+            key = digest({"kind": kind, "evidence_id": details.get("evidence_id")})
+            index = self.events / ("source-" + key + ".json")
+            if index.exists():
+                if read_small(index)["identity"] != identity:
+                    raise ValueError("same continuity evidence ID changed contents")
+                return previous
+            after = transition(previous, kind, details)
+            if after == previous:
+                return previous
+            sequence = (previous["sequence"] if previous else 0) + 1
+            after.update(sequence=sequence, last_event_identity=identity)
+            event = {"sequence": sequence, "at_utc": datetime.now(timezone.utc).isoformat(),
+                "kind": kind, "details": details, "identity": identity,
+                "previous_sha256": digest(previous), "after": after}
+            _atomic(self.events / f"{sequence:08d}.json", event)
+            _atomic(self.path, after, replace=True)
+            _atomic(index, {"sequence": sequence, "identity": identity})
+            return after
+
+    def load(self):
+        with self.locked():
+            return self._load()
+
+
+def initialize_repair(ledger, state_path, failure_response, launch_path, machine_id, reason):
+    state = read_small(state_path)
+    launch = read_small(launch_path)
+    return WindowLedger(ledger).apply("repair_required", {
+        "machine_id": machine_id, "game": game_binding(launch), "frame": state["before"],
+        "completed_cycles": state["completed_cycles"], "reason": reason,
+        "evidence_id": "manual-repair:" + str(Path(failure_response).resolve()),
+        "source": {"settled_state": pin(state_path), "failure_response": pin(failure_response)}})
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--ledger", type=Path, required=True)
+    sub = parser.add_subparsers(dest="command", required=True)
+    init = sub.add_parser("initialize-repair")
+    for name in ("state", "failure-response", "launch"):
+        init.add_argument("--" + name, type=Path, required=True)
+    init.add_argument("--machine-id", required=True)
+    init.add_argument("--reason", required=True)
+    sub.add_parser("show")
+    args = parser.parse_args()
+    state = (initialize_repair(args.ledger, args.state, args.failure_response, args.launch, args.machine_id, args.reason)
+        if args.command == "initialize-repair" else WindowLedger(args.ledger).load())
+    print(json.dumps(summary(state), ensure_ascii=False, indent=2))

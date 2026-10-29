@@ -1,0 +1,81 @@
+{
+  "schema": "xar.public-gift-source-selection-regression/v1",
+  "original_corpus_sha256": "04e92400bda36b2ed4e7db021989728e43fc66f4937875f8a1cf9360adcc32a3",
+  "capture": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at": "2026-10-22T13:34:08.872018+00:00",
+    "method": "one-shot invocation of unchanged choose_faction_gift_v1; existing five original tests also executed",
+    "game_rpc_count": 0,
+    "ledger_writes": 0,
+    "historical_projection_machine_id": "unknown",
+    "historical_projection_boundary": "Candidate/frame/metrics/receipt are verbatim narrow actual projections. Pre-private life-advance plan, root-history/readiness envelopes and runtime process metadata are explicit synthetic wrappers; dangerous=true is a synthetic counterfactual. No runtime call or claimed avoided actual spend."
+  },
+  "case": {
+    "name": "actual-0515-observation-no-native-requery",
+    "input": {
+      "observations": [
+        {
+          "available": true,
+          "paused": true,
+          "snapshot_revision": 506,
+          "native_snapshot_revision": 506,
+          "observed_date_raw": 53153304,
+          "date_raw": 53153304,
+          "player_resources_query_complete": true,
+          "player_character_id": 31254,
+          "player_gold_raw": 25810153,
+          "player_gold_scale": 100000,
+          "source_faction_requery_complete": true,
+          "queried_source_faction_id": 54,
+          "source_faction_present": true,
+          "source_faction_target_character_id": 31254,
+          "source_faction_targeting_player": true,
+          "source_faction_at_war": false,
+          "source_faction_metrics_available": true,
+          "source_faction_power_raw": 2331400,
+          "source_faction_discontent_raw": 0,
+          "source_faction_metric_scale": 100000,
+          "recipient_identity_resolved": true,
+          "recipient_character_id": 33946,
+          "recipient_alive": true,
+          "recipient_is_ai": true,
+          "recipient_is_direct_landed_vassal": true,
+          "recipient_opinion_query_complete": true,
+          "recipient_opinion_of_player": -8,
+          "gift_opinion_present": false,
+          "gift_opinion_modifier_value": null,
+          "source_faction_leader_character_id": 33946,
+          "source_faction_member_character_ids": [
+            33946
+          ],
+          "gift_preview": {
+            "available": true,
+            "definition_key": "gift_interaction",
+            "definition_stable_hash": 2003662901,
+            "interaction_legal": true,
+            "auto_accept": true,
+            "gold_cost_raw": 10000000,
+            "gold_scale": 100000,
+            "opinion_delta": 15
+          }
+        }
+      ],
+      "complete_native_enumeration": true,
+      "minimum_gold_reserve_raw": 10000000
+    },
+    "expected": {
+      "status": "selected",
+      "reason": "one_budgeted_native_legal_faction_member",
+      "source_faction_id": 54,
+      "recipient_character_id": 33946,
+      "membership_role": "leader",
+      "snapshot_revision": 506,
+      "native_snapshot_revision": 506,
+      "date_raw": 53153304,
+      "player_character_id": 31254,
+      "definition_stable_hash": 2003662901,
+      "gold_cost_raw": 10000000,
+      "opinion_delta": 15
+    }
+  }
+}

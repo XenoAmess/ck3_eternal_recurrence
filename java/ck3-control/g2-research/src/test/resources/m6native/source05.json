@@ -1,0 +1,489 @@
+{
+  "schema": "xar.g2.m6.current-pe-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-23T19:30:17.692Z",
+  "status": "STATIC_ONLY_NOT_LIVE_QUALIFICATION",
+  "graph_id": "m6-native-12004-source05",
+  "exe": {
+    "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "image_base": "5368709120",
+    "build": "1.20.0.4",
+    "build_basis": "Inherited exact qualified build/executable pair; executable bytes independently rehashed in this read; no running Game observed"
+  },
+  "pe_sections": [
+    {
+      "name": ".text",
+      "virtual_size": 71141448,
+      "rva": 4096,
+      "raw_size": 71141888,
+      "file_offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 17123946,
+      "rva": 71147520,
+      "raw_size": 17124352,
+      "file_offset": 71142912
+    },
+    {
+      "name": ".data",
+      "virtual_size": 10040928,
+      "rva": 88272896,
+      "raw_size": 8571392,
+      "file_offset": 88267264
+    },
+    {
+      "name": ".pdata",
+      "virtual_size": 2933220,
+      "rva": 98316288,
+      "raw_size": 2933248,
+      "file_offset": 96838656
+    },
+    {
+      "name": "_RDATA",
+      "virtual_size": 1040,
+      "rva": 101253120,
+      "raw_size": 1536,
+      "file_offset": 99771904
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 79496,
+      "rva": 101257216,
+      "raw_size": 79872,
+      "file_offset": 99773440
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 1176160,
+      "rva": 101339136,
+      "raw_size": 1176576,
+      "file_offset": 99853312
+    }
+  ],
+  "prior_source_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/ai_scheme_m6_native04/NATIVE-SOURCE04.json",
+    "bytes": 19429,
+    "sha256": "a966d3167ff14b659d742664ed9a41b073e13aa13ca9c1509db3083b78fa6a94"
+  },
+  "code_spans": [
+    {
+      "id": "activity_type_parser_thunk",
+      "start": "3067BCC",
+      "end": "3067BD8",
+      "review": "complete_leaf_tailcall",
+      "bytes": 12,
+      "file_offset": 50753484,
+      "sha256": "34da401698b8766874fa6d3a02297a20ae5e70cc5790669c06af3b81c3b8a5ee",
+      "pdata_overlaps": []
+    },
+    {
+      "id": "activity_type_parser",
+      "start": "3110CD0",
+      "end": "3112118",
+      "review": "selected_is_shown_can_plan_can_start_failure_ai_will_do_intervals_on_complete_branches_only",
+      "bytes": 5192,
+      "file_offset": 51445968,
+      "sha256": "ad77ba58a04c4b115044b2226793c99298042761ad445bf186ed0ffaea04d5d7",
+      "pdata_overlaps": [
+        {
+          "begin": "3110CD0",
+          "end": "3112118",
+          "unwind_rva": "510FBC4",
+          "version": 1,
+          "flags": 0,
+          "chain_info": false
+        }
+      ]
+    },
+    {
+      "id": "cooldown_map_lookup",
+      "start": "1A74790",
+      "end": "1A7489B",
+      "review": "complete_leaf_no_pdata",
+      "bytes": 267,
+      "file_offset": 27736976,
+      "sha256": "8921e07312c215618990bdd9160a714ead39587cff0e3500819930ccc7dda2db",
+      "pdata_overlaps": []
+    },
+    {
+      "id": "cooldown_map_insert",
+      "start": "23E4890",
+      "end": "23E4B18",
+      "review": "complete_body_nested_allocator_rehash_helpers_not_semantically_reimplemented",
+      "bytes": 648,
+      "file_offset": 37633168,
+      "sha256": "7b467e7e31f7d30de5e31bd5e10eb08b09df85bae18615e9158f12760416e381",
+      "pdata_overlaps": [
+        {
+          "begin": "23E4890",
+          "end": "23E4B18",
+          "unwind_rva": "5135C28",
+          "version": 1,
+          "flags": 0,
+          "chain_info": false
+        }
+      ]
+    },
+    {
+      "id": "activity_cooldown_write_branch",
+      "start": "23F6170",
+      "end": "23F6362",
+      "review": "complete_initial_branch_not_complete_containing_function",
+      "bytes": 498,
+      "file_offset": 37705072,
+      "sha256": "128ab085313225f52a794b019684037a669359989ce10cb6c0517ac86c2befc9",
+      "pdata_overlaps": [
+        {
+          "begin": "23F6170",
+          "end": "23F68BB",
+          "unwind_rva": "52467D4",
+          "version": 1,
+          "flags": 2,
+          "chain_info": false
+        }
+      ]
+    },
+    {
+      "id": "activity_duration_seed",
+      "start": "31147C0",
+      "end": "3114836",
+      "review": "complete_body",
+      "bytes": 118,
+      "file_offset": 51461056,
+      "sha256": "a94beb565b857039a43a693ce2d55bad006c3f683a010eabf298feae4d33b439",
+      "pdata_overlaps": [
+        {
+          "begin": "31147C0",
+          "end": "3114836",
+          "unwind_rva": "5109614",
+          "version": 1,
+          "flags": 0,
+          "chain_info": false
+        }
+      ]
+    },
+    {
+      "id": "activity_duration_integer",
+      "start": "3114620",
+      "end": "31147BA",
+      "review": "complete_body_nested_duration_evaluator_delegation",
+      "bytes": 410,
+      "file_offset": 51460640,
+      "sha256": "51e1a39a1bdb95e84330ed646026cb634465ba5cb0c5841bc4bb28cbb488d3a3",
+      "pdata_overlaps": [
+        {
+          "begin": "3114620",
+          "end": "31147BA",
+          "unwind_rva": "52DDE08",
+          "version": 1,
+          "flags": 2,
+          "chain_info": false
+        }
+      ]
+    },
+    {
+      "id": "force_reevaluation_effect",
+      "start": "2CABD40",
+      "end": "2CABF5E",
+      "review": "complete_body",
+      "bytes": 542,
+      "file_offset": 46838080,
+      "sha256": "2f0fc0e2323a322278cacf80ccfeea5c6d9b638b164a1d304211522749d3ade3",
+      "pdata_overlaps": [
+        {
+          "begin": "2CABD40",
+          "end": "2CABF5E",
+          "unwind_rva": "52BB62C",
+          "version": 1,
+          "flags": 2,
+          "chain_info": false
+        }
+      ]
+    },
+    {
+      "id": "cooldown_map_remove",
+      "start": "25F3550",
+      "end": "25F367D",
+      "review": "complete_leaf_no_pdata",
+      "bytes": 301,
+      "file_offset": 39790928,
+      "sha256": "4e19df7e5d6587990a44262206c9423c4d07575b2e3260ea9c92ec49a84abb0f",
+      "pdata_overlaps": []
+    },
+    {
+      "id": "pending_type_set_insert",
+      "start": "241FDC0",
+      "end": "241FFBA",
+      "review": "complete_body_nested_rehash_allocator_not_semantically_reimplemented",
+      "bytes": 506,
+      "file_offset": 37876160,
+      "sha256": "61ffcb84cfd8946f17ae5ea3d7fb5f81b407a15e5516770a63922bf71abfbf96",
+      "pdata_overlaps": [
+        {
+          "begin": "241FDC0",
+          "end": "241FFBA",
+          "unwind_rva": "5135FCC",
+          "version": 1,
+          "flags": 0,
+          "chain_info": false
+        }
+      ]
+    },
+    {
+      "id": "force_reevaluation_description",
+      "start": "5C12A0",
+      "end": "5C1344",
+      "review": "complete_body",
+      "bytes": 164,
+      "file_offset": 6031008,
+      "sha256": "1ae048c4d6c9881a909654de7e069529d8c6ebb21afa0db9298a55164dfb9eb6",
+      "pdata_overlaps": [
+        {
+          "begin": "5C12A0",
+          "end": "5C1344",
+          "unwind_rva": "511FB18",
+          "version": 1,
+          "flags": 0,
+          "chain_info": false
+        }
+      ]
+    },
+    {
+      "id": "small_target_unsigned_sort",
+      "start": "FE86F0",
+      "end": "FE87A6",
+      "review": "complete_body_for_small_sort_case_only",
+      "bytes": 182,
+      "file_offset": 16677616,
+      "sha256": "0f706f9526bf26f623e53be2e4cb06263bc05d250d3c9a11adac59a82bc71988",
+      "pdata_overlaps": [
+        {
+          "begin": "FE86F0",
+          "end": "FE8709",
+          "unwind_rva": "513079C",
+          "version": 1,
+          "flags": 0,
+          "chain_info": false
+        },
+        {
+          "begin": "FE8709",
+          "end": "FE8785",
+          "unwind_rva": "5167A98",
+          "version": 1,
+          "flags": 4,
+          "chain_info": true
+        },
+        {
+          "begin": "FE8785",
+          "end": "FE8798",
+          "unwind_rva": "5167AB0",
+          "version": 1,
+          "flags": 4,
+          "chain_info": true
+        },
+        {
+          "begin": "FE8798",
+          "end": "FE87A6",
+          "unwind_rva": "5167AC4",
+          "version": 1,
+          "flags": 4,
+          "chain_info": true
+        }
+      ]
+    }
+  ],
+  "property_binding_instructions": [
+    {
+      "property": "IS_SHOWN",
+      "secondary_this_offset": "3F18",
+      "field": {
+        "rva": "3110EF7",
+        "file_offset": 51446519,
+        "bytes_hex": "488d8b28c1ffff"
+      },
+      "token": {
+        "rva": "3110D21",
+        "file_offset": 51446049,
+        "bytes_hex": "4181f87b050000"
+      }
+    },
+    {
+      "property": "CAN_PLAN",
+      "secondary_this_offset": "3F18",
+      "field": {
+        "rva": "3111ED7",
+        "file_offset": 51450583,
+        "bytes_hex": "488d8bf8c1ffff"
+      },
+      "token": {
+        "rva": "3111EA9",
+        "file_offset": 51450537,
+        "bytes_hex": "b98b3d0000"
+      }
+    },
+    {
+      "property": "CAN_START",
+      "secondary_this_offset": "3F18",
+      "field": {
+        "rva": "3111234",
+        "file_offset": 51447348,
+        "bytes_hex": "488d8bc8c2ffff"
+      },
+      "token": {
+        "rva": "3111206",
+        "file_offset": 51447302,
+        "bytes_hex": "b93d360000"
+      }
+    },
+    {
+      "property": "CAN_START_SHOWING_FAILURES_ONLY",
+      "secondary_this_offset": "3F18",
+      "field": {
+        "rva": "3111287",
+        "file_offset": 51447431,
+        "bytes_hex": "488d8b98c3ffff"
+      },
+      "token": {
+        "rva": "3111259",
+        "file_offset": 51447385,
+        "bytes_hex": "b93e360000"
+      }
+    },
+    {
+      "property": "ON_COMPLETE",
+      "secondary_this_offset": "3F18",
+      "field": {
+        "rva": "3110F81",
+        "file_offset": 51446657,
+        "bytes_hex": "488d8bc8c9ffff"
+      },
+      "token": {
+        "rva": "3110F53",
+        "file_offset": 51446611,
+        "bytes_hex": "b91f280000"
+      }
+    },
+    {
+      "property": "AI_WILL_DO",
+      "secondary_this_offset": "3F18",
+      "field": {
+        "rva": "3110FF5",
+        "file_offset": 51446773,
+        "bytes_hex": "4881c198d1ffff"
+      },
+      "token": {
+        "rva": "3110D0E",
+        "file_offset": 51446030,
+        "bytes_hex": "4181f8b2280000"
+      }
+    },
+    {
+      "property": "AI_CHECK_INTERVAL",
+      "secondary_this_offset": "3F18",
+      "field": {
+        "rva": "311104B",
+        "file_offset": 51446859,
+        "bytes_hex": "488d9148feffff"
+      },
+      "token": {
+        "rva": "311103E",
+        "file_offset": 51446846,
+        "bytes_hex": "4181f877330000"
+      }
+    },
+    {
+      "property": "AI_CHECK_INTERVAL_BY_TIER",
+      "secondary_this_offset": "3F18",
+      "field": {
+        "rva": "311104B",
+        "file_offset": 51446859,
+        "bytes_hex": "488d9148feffff"
+      },
+      "token": {
+        "rva": "3111D99",
+        "file_offset": 51450265,
+        "bytes_hex": "4181e82a3c0000"
+      }
+    }
+  ],
+  "data_spans": [
+    {
+      "id": "force_effect_vtable",
+      "rva": "482BB48",
+      "bytes": 184,
+      "file_offset": 75671880,
+      "sha256": "81d057ff3441f4c7239676141fb3970f74f22062e14b690b31622a9814cef5c3"
+    },
+    {
+      "id": "force_effect_col",
+      "rva": "4EB1730",
+      "bytes": 24,
+      "file_offset": 82511152,
+      "sha256": "6fd4cfe60e39ff7d9bbc5d513901557d801a3dfcdad31bff931acc981d7318e8"
+    },
+    {
+      "id": "force_effect_description",
+      "rva": "48299E0",
+      "bytes": 260,
+      "file_offset": 75663328,
+      "sha256": "fbe37c0da4ccfa67bb0bbe870b2381f2b0a215a0a880accb42e0088e0cf5a779"
+    },
+    {
+      "id": "force_effect_name",
+      "rva": "4829B28",
+      "bytes": 27,
+      "file_offset": 75663656,
+      "sha256": "a361a60bf82d68fd987ebfef74594bc7d34185d03f28aaa5964ee4f65d9d37fe"
+    }
+  ],
+  "force_effect_execute_cell": {
+    "rva": "482BBF8",
+    "slot": 22,
+    "absolute_pointer_decimal": "5415550272",
+    "target_rva": "2CABD40",
+    "instruction": {
+      "rva": "2CABDEA",
+      "file_offset": 46838250,
+      "bytes_hex": "e8617794ff"
+    },
+    "pending_insert_instruction": {
+      "rva": "2CABE94",
+      "file_offset": 46838420,
+      "bytes_hex": "e8273f77ff"
+    }
+  },
+  "installed_script_refs": [
+    {
+      "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/activities/activity_types/_activity_type.info",
+      "bytes": 39978,
+      "sha256": "b082e108a1f1ca8c3e2c6d20ce0b561bc031fc43bb83ee727547e7e24dd985fa",
+      "qualification": "INSTALLED_BYTES_ONLY_NOT_VERIFIED_VANILLA_DEPOT",
+      "contains_pam_sf": false
+    },
+    {
+      "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/activities/activity_types/feast.txt",
+      "bytes": 136921,
+      "sha256": "fbc2e6e3f74bc8c2db1bb1eb01609aa7cf50e9546671a12617301f175be84598",
+      "qualification": "INSTALLED_BYTES_ONLY_NOT_VERIFIED_VANILLA_DEPOT",
+      "contains_pam_sf": true
+    }
+  ],
+  "historical_fixture_ref": {
+    "path": "D:/codex-ck3-background-spill/native71-continuation-20261010/runtime-01/native84-resume-20261012/native89-r0104/state/active-scheme-sway-formal-private-v1.json",
+    "bytes": 7682,
+    "sha256": "6f1da9ee2c0e00839497a650cbcfaba527807342e85cce29d8a357344f55aad9",
+    "source_machine_id": "unknown",
+    "scope": "Immutable legacy input only; current source identity is not inferred from this path; exact old .3 receipt and later .4 planes remain historical only"
+  },
+  "execution": {
+    "native_queries": false,
+    "native_actions": false,
+    "game": false,
+    "jvm": false,
+    "tests": false
+  },
+  "review_limit": "Span hashing proves current byte identity and boundaries, not semantic review beyond each explicit review field. Parent source04 cache association is superseded; no old .2/.3 address translation was used."
+}

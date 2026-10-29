@@ -53,7 +53,7 @@ public final class FactionGiftPolicy {
     private static final ObjectMapper JSON = new ObjectMapper(JsonFactory.builder()
             .enable(StreamReadFeature.STRICT_DUPLICATE_DETECTION)
             .streamReadConstraints(StreamReadConstraints.builder().maxNestingDepth(32)
-                    .maxNumberLength(1024).maxStringLength(16_384).build()).build())
+                    .maxNumberLength(4300).maxStringLength(16_384).build()).build())
             .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
 
     private FactionGiftPolicy() { }

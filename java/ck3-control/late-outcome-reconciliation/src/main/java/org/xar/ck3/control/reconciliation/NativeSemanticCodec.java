@@ -12,6 +12,7 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.reconciliation.LateOutcome.Semantic;
 import org.xar.ck3.control.reconciliation.LateOutcome.WorldIdentity;
 
@@ -57,8 +58,8 @@ public final class NativeSemanticCodec {
                 SentinelCodec.bool(root.get("map_ready")), (int) StrictJson.integer(root.get("speed"), 1, 5),
                 StrictJson.integer(root.get("native_revision"), 0, StrictJson.MAX_SAFE_INTEGER),
                 StrictJson.integer(root.get("revision"), 0, StrictJson.MAX_SAFE_INTEGER), StrictJson.text(root.get("snapshot_id")),
-                (int) StrictJson.integer(root.get("episode_character_id"), 1, Integer.MAX_VALUE),
-                StrictJson.text(root.get("episode_run_id")), (int) StrictJson.integer(played.get("character_id"), 1, Integer.MAX_VALUE),
+                NativeCharacterId.fromJson(root.get("episode_character_id")).value(),
+                StrictJson.text(root.get("episode_run_id")), NativeCharacterId.fromJson(played.get("character_id")).value(),
                 SentinelCodec.bool(played.get("alive")), SentinelCodec.bool(root.get("one_life_terminal")),
                 SentinelCodec.bool(root.get("episode_identity_pending")), SentinelCodec.bool(diagnostics.get("connected")),
                 StrictJson.integer(diagnostics.get("connection_generation"), 1, StrictJson.MAX_SAFE_INTEGER),

@@ -1,0 +1,59 @@
+{
+  "step": "query-campaign-root-context-v1",
+  "accepted": true,
+  "status": "available",
+  "query_sequence": 18446744073709551615,
+  "snapshot_revision": 1,
+  "campaign_root_context": {
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 1,
+    "date_raw": 53144328,
+    "local_player_id": 0,
+    "player_character_id": 73,
+    "player_character_alive": true,
+    "primary_title": {
+      "title_id": 100,
+      "tier_raw": 2,
+      "tier_key": "county"
+    },
+    "capital_province_id": 42,
+    "immediate_liege_character_id": null,
+    "top_liege_character_id": 73,
+    "independent": true,
+    "government": {
+      "key": "feudal_government",
+      "flags": [],
+      "native_flag_count": 0
+    },
+    "selected_game_rule_tokens": [],
+    "native_selected_game_rule_token_count": 0,
+    "readiness": {
+      "capital_ready": true,
+      "government_ready": true,
+      "lieges_ready": true,
+      "player_identity_ready": true,
+      "primary_title_ready": true,
+      "ready": true,
+      "same_frame_ready": true,
+      "selected_game_rule_tokens_ready": true
+    },
+    "unavailable_reason": null,
+    "provenance": {
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "backend_id": "ck3-1.20.0.4-native-campaign-root-context-v1",
+      "primary_title_rva": "0x289DA10",
+      "capital_province_rva": "0x28B1CB0",
+      "immediate_liege_rva": "0x28BFC50",
+      "top_liege_rva": "0x28BFD80",
+      "government_rva": "0x28C2DF0",
+      "selected_game_rule_service_slot_rva": "0x5CB3D78"
+    },
+    "player_heir_candidate_v1": {
+      "SDK_parse_status": "unknown",
+      "unavailable_reason": "kept original unknown"
+    }
+  },
+  "backend_id": "native-headless"
+}

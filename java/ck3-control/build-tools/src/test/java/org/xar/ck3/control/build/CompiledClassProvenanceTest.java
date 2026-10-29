@@ -138,6 +138,57 @@ final class CompiledClassProvenanceTest {
                 CompiledClassProvenance.SourceSet.TEST, List.of(fixture.sourceRef())));
     }
 
+    @Test void declaredPackageAndActualCompilerInventoryAllowARealNoncanonicalSourceDirectory() throws Exception {
+        Path module = Files.createDirectories(temporary.resolve("legacy-layout"));
+        Path source = Files.writeString(Files.createDirectories(module.resolve("src/test/java/legacy-location")).resolve("Origins.java"),
+                SOURCE.replace("package sample;", "/* package comment.decoy; */\np" + (char) 92 + "u0061ckage sample;"));
+        Path build = Files.createDirectories(temporary.resolve("legacy-build"));
+        Path output = Files.createDirectories(build.resolve("legacy-artifact/test-classes"));
+        javac(output, true, source);
+        var sourceRef = ControlBuild.FileRef.measure(source);
+        Path pom = Files.writeString(module.resolve("pom.xml"), "<project><modelVersion>4.0.0</modelVersion><groupId>fixture</groupId>"
+                + "<artifactId>legacy-artifact</artifactId><version>1</version></project>");
+        Path status = Files.createDirectories(build.resolve("legacy-artifact/maven-status/maven-compiler-plugin/testCompile/default-testCompile"));
+        Files.writeString(status.resolve("inputFiles.lst"), source.toAbsolutePath() + "\n");
+        Files.writeString(status.resolve("createdFiles.lst"), "sample/Origins.class\nsample/Origins$Child.class\nsample/Sibling.class\n");
+        var actual = ControlBuild.collectTestCompilation("fixture-machine", module, build,
+                List.of(ControlBuild.FileRef.measure(pom), sourceRef));
+        assertEquals(1, actual.notRunTests().size());assertEquals(sourceRef, actual.notRunTests().getFirst().sourceRef());
+        assertEquals(3, actual.notRunTests().getFirst().compiledClassRefs().size());
+        assertEquals(ControlBuild.CaptureTestState.NOT_RUN, actual.notRunTests().getFirst().state());
+        for (var binary : actual.notRunTests().getFirst().compiledClassRefs())
+            assertEquals(sourceRef, CompiledClassProvenance.attest(output, binary, module,
+                    CompiledClassProvenance.SourceSet.TEST, List.of(sourceRef)).sourceRef());
+        assertEquals(actual, ControlBuild.strictMapper().readValue(ControlBuild.strictMapper().writeValueAsBytes(actual),
+                ControlBuild.TestCompilationManifest.class));
+        sourceRef.verify();
+        Files.writeString(source, SOURCE);
+        assertThrows(IOException.class, () -> CompiledClassProvenance.attest(output,
+                ControlBuild.FileRef.measure(output.resolve("sample/Origins.class")), module,
+                CompiledClassProvenance.SourceSet.TEST, List.of(sourceRef)));
+    }
+
+    @Test void noncanonicalSourceDeclarationRejectsAmbiguityOtherPackagesAndCommentDecoys() throws Exception {
+        Fixture original = compile("declarations", true);
+        Path binary = original.output().resolve("sample/Origins.class");
+        Path first = Files.writeString(Files.createDirectories(original.module().resolve("src/test/java/legacy-one")).resolve("Origins.java"), SOURCE);
+        Path second = Files.writeString(Files.createDirectories(original.module().resolve("src/test/java/legacy-two")).resolve("Origins.java"), SOURCE);
+        var classRef = ControlBuild.FileRef.measure(binary);
+        assertThrows(IOException.class, () -> CompiledClassProvenance.attest(original.output(), classRef, original.module(),
+                CompiledClassProvenance.SourceSet.TEST, List.of(original.sourceRef(), ControlBuild.FileRef.measure(first))));
+        Path conventional = Path.of(original.sourceRef().path());
+        Files.writeString(conventional, SOURCE.replace("package sample;", "/* package sample; */\npackage elsewhere;"));
+        assertThrows(IOException.class, () -> CompiledClassProvenance.attest(original.output(), classRef, original.module(),
+                CompiledClassProvenance.SourceSet.TEST, List.of(ControlBuild.FileRef.measure(conventional))));
+        assertThrows(IOException.class, () -> CompiledClassProvenance.attest(original.output(), classRef, original.module(),
+                CompiledClassProvenance.SourceSet.TEST, List.of(ControlBuild.FileRef.measure(first), ControlBuild.FileRef.measure(second))));
+        Files.writeString(second, SOURCE.replace("package sample;", "/* package sample; */\npackage elsewhere;"));
+        assertThrows(IOException.class, () -> CompiledClassProvenance.attest(original.output(), classRef, original.module(),
+                CompiledClassProvenance.SourceSet.TEST, List.of(ControlBuild.FileRef.measure(second))));
+        assertEquals(ControlBuild.FileRef.measure(first), CompiledClassProvenance.attest(original.output(), classRef, original.module(),
+                CompiledClassProvenance.SourceSet.TEST, List.of(ControlBuild.FileRef.measure(first), ControlBuild.FileRef.measure(second))).sourceRef());
+    }
+
     private record Fixture(Path module, Path output, ControlBuild.FileRef sourceRef) {}
     private Fixture compile(String name, boolean sourceAttribute) throws IOException {
         Path module = Files.createDirectories(temporary.resolve(name));

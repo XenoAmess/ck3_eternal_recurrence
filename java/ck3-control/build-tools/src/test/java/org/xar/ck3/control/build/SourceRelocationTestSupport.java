@@ -44,8 +44,13 @@ final class SourceRelocationTestSupport {
         Files.write(path, ControlBuild.strictMapper().writeValueAsBytes(value)); return FileRef.measure(path);
     }
     static Fixture fixture(Path directory) throws IOException {
+        return fixture(directory, PROFILE, 0);
+    }
+    static Fixture fixture(Path directory, Profile profile, int extraEmptyResources) throws IOException {
+        if (extraEmptyResources < 0 || extraEmptyResources > profile.maxFiles())
+            throw new IllegalArgumentException("Finite fixture source count required");
         Path root = Files.createDirectory(directory.resolve("baseline"));
-        List<String> modules = CompleteSourceGraph.modules(PROFILE);
+        List<String> modules = CompleteSourceGraph.modules(profile);
         StringBuilder roster = new StringBuilder();
         for (String module : modules) {
             roster.append("<module>").append(module).append("</module>");
@@ -62,7 +67,11 @@ final class SourceRelocationTestSupport {
         FileRef retained = write(root.resolve(BASE_OLD), "package org.example; final class Retained { }\n");
         FileRef duplicate = write(root.resolve(DUP_OLD), "package org.example; final class Duplicate { }\n");
         write(root.resolve(DUP_NEW), "package org.example; final class Duplicate { }\n");
-        List<FileRef> originals = ControlBuild.sourceManifest(root, PROFILE.sourceLimitProfile());
+        if (extraEmptyResources > 0) {
+            Path resources = Files.createDirectories(root.resolve("application/src/test/resources/r4-count"));
+            for (int i = 0; i < extraEmptyResources; i++) Files.createFile(resources.resolve("source-" + i + ".json"));
+        }
+        List<FileRef> originals = ControlBuild.sourceManifest(root, profile.sourceLimitProfile());
         Path inventory = directory.resolve("baseline.json.gz");
         try (var output = new GZIPOutputStream(Files.newOutputStream(inventory))) {
             output.write(ControlBuild.strictMapper().writeValueAsBytes(originals));
@@ -82,9 +91,9 @@ final class SourceRelocationTestSupport {
                     historicalAuthority, historicalFiles));
         }
         FileRef first = json(directory.resolve("plan16-request.json"), new Request(SourceGraphPlanProducer.REQUEST_SCHEMA,
-                MACHINE, WHEN, PROFILE, baseline, modules, history, List.of()));
+                MACHINE, WHEN, profile, baseline, modules, history, List.of()));
         FileRef original = json(directory.resolve("source07-request.json"), new Request(SourceGraphPlanProducer.REQUEST_SCHEMA,
-                MACHINE, WHEN, PROFILE, baseline, modules, history, List.of()));
+                MACHINE, WHEN, profile, baseline, modules, history, List.of()));
         FileRef consumer = write(directory.resolve("Consumer.java"), "package org.example; final class Consumer { }\n");
         List<Move> moves = List.of(new Move(BASE_OLD, BASE_NEW, retained), new Move(CURRENT_OLD, CURRENT_NEW, consumer),
                 new Move(DUP_OLD, DUP_NEW, duplicate), new Move(HISTORY_OLD, HISTORY_NEW, historical));
@@ -95,7 +104,7 @@ final class SourceRelocationTestSupport {
         List<Relocation> relocations = moves.stream().map(move -> new Relocation(move.oldTargetRelative(),
                 move.newTargetRelative(), move.sourceRef(), authority)).toList();
         Source08Assembly.Input input = new Source08Assembly.Input(Source08Assembly.RELOCATION_INPUT_SCHEMA, MACHINE,
-                WHEN, first, original, PROFILE, modules, List.of(new Source08Assembly.OwnerInput("current-owner",
+                WHEN, first, original, profile, modules, List.of(new Source08Assembly.OwnerInput("current-owner",
                 "/root/planner_owner", Component.COMMON, Source08Assembly.TargetScope.REACTOR_ONLY, authority)), List.of(), relocations);
         return new Fixture(directory, root, baseline, originals, List.copyOf(history), authority, files, input);
     }

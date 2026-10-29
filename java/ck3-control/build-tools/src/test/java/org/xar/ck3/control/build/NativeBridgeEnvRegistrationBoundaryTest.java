@@ -85,7 +85,8 @@ final class NativeBridgeEnvRegistrationBoundaryTest {
         assertTrue(NativeBridgeBuild.sameBuild(env, build));
         assertTrue(NativeBridgeBuild.sameBuild(registration, env));
         assertTrue(NativeBridgeBuild.sameBuild(registration, build));
-        var originalHelper = registration.defender();
+        var originalHelper = org.junit.jupiter.api.Assertions.assertInstanceOf(
+                NativeBridgeDefender.HelperRuntime.class, registration.defender());
         var otherHelper = new NativeBridgeDefender.HelperRuntime(temporary.resolve("different-register-base"),
                 temporary.resolve("different-register-venv"), originalHelper.python(), originalHelper.helper(),
                 originalHelper.completePythonFiles(), originalHelper.completeHelperSources());
@@ -128,6 +129,139 @@ final class NativeBridgeEnvRegistrationBoundaryTest {
         assertEquals(expected.getMessage(), live.getMessage());
         assertFalse(Files.exists(legacy.scratchRoot().resolve("ROOT-NATIVE-BUILD.lock")));
         assertFalse(Files.exists(legacy.stageRoot()));
+    }
+
+
+    @Test void explicitBoundRequestRoundTripsAndNeverSynthesizesItsRequiredBinding() throws IOException {
+        var request = boundRequest(NativeBridgeBuild.Stage.ENV, pin("binding.json", "unqualified codec fixture"));
+        var mapper = RootNativePlanJson.mapper();
+        assertEquals(request, NativeBridgeBuild.readRequest(pin("bound-env.json", mapper.writeValueAsString(request))));
+        for (String name : List.of("absent", "null", "boolean")) {
+            ObjectNode tree = mapper.valueToTree(request);
+            if (name.equals("absent")) tree.remove("compile_source_binding_ref");
+            else if (name.equals("null")) tree.putNull("compile_source_binding_ref");
+            else tree.put("compile_source_binding_ref", true);
+            var ref = pin("bound-" + name + ".json", mapper.writeValueAsString(tree));
+            assertThrows(IOException.class, () -> NativeBridgeBuild.readRequest(ref));
+        }
+        ObjectNode unknown = mapper.valueToTree(request); unknown.put("schema", "xar.native-bridge-build-request/v5");
+        assertThrows(IOException.class, () -> NativeBridgeBuild.readRequest(pin("unknown-bound.json", mapper.writeValueAsString(unknown))));
+    }
+
+    @Test void oldTagCompatibilityAddsOnlyTheNewAbsentFieldAndRejectsAnAcquiredBinding() throws IOException {
+        var request = request(NativeBridgeBuild.Stage.ENV, null);
+        var mapper = RootNativePlanJson.mapper(); ObjectNode old = mapper.valueToTree(request);
+        old.remove("compile_source_binding_ref");
+        assertEquals(request, NativeBridgeBuild.readRequest(pin("old-without-binding.json", mapper.writeValueAsString(old))));
+        ObjectNode acquired = mapper.valueToTree(request);
+        acquired.set("compile_source_binding_ref", mapper.valueToTree(pin("foreign-binding.json", "{}")));
+        assertThrows(IOException.class, () -> NativeBridgeBuild.readRequest(pin("old-acquired-binding.json", mapper.writeValueAsString(acquired))));
+        old.remove("defender");
+        assertThrows(IOException.class, () -> NativeBridgeBuild.readRequest(pin("old-missing-real-field.json", mapper.writeValueAsString(old))));
+    }
+
+    @Test void boundSameBuildRequiresTheSameExplicitBindingAcrossAllStages() throws IOException {
+        var binding = pin("same-binding.json", "unqualified codec fixture");
+        var env = boundRequest(NativeBridgeBuild.Stage.ENV, binding);
+        var build = boundRequest(NativeBridgeBuild.Stage.BUILD, binding);
+        var registration = boundRequest(NativeBridgeBuild.Stage.REGISTER, binding);
+        assertTrue(NativeBridgeBuild.sameBuild(env, build));
+        assertTrue(NativeBridgeBuild.sameBuild(env, registration));
+        assertTrue(NativeBridgeBuild.sameBuild(build, registration));
+        assertFalse(NativeBridgeBuild.sameBuild(env, boundRequest(NativeBridgeBuild.Stage.BUILD, pin("other-binding.json", "{}"))));
+        assertFalse(NativeBridgeBuild.sameBuild(env, request(NativeBridgeBuild.Stage.ENV, null)));
+    }
+
+    @Test void boundShapeAndDirectRuntimeDoNotQualifyAnInventedSourceBinding() throws IOException {
+        var request = boundRequest(NativeBridgeBuild.Stage.ENV, pin("unqualified-binding.json", "{}"));
+        NativeBridgeBuild.requireCurrentRequest(request);
+        assertThrows(IOException.class, () -> NativeBridgeBuild.validateSources(request));
+        Path output = temporary.resolve("unqualified-bound-output.json");
+        assertThrows(IOException.class, () -> NativeBridgeBuild.writeRequest(request, temporary, output));
+        assertFalse(Files.exists(output));
+        var base = request(NativeBridgeBuild.Stage.ENV, null);
+        assertThrows(NullPointerException.class, () -> new NativeBridgeBuild.Request(NativeBridgeBuild.BOUND_REQUEST_SCHEMA,
+                base.machineId(), base.stage(), base.canonicalRepository(), base.sourceRoot(), base.completeSources(),
+                base.buildRoot(), base.scratchRoot(), base.qualifiedToolsBuild(), base.tools(), base.definitions(), base.parallelJobs(),
+                null, null, (NativeBridgeDefender.Runtime) null, null));
+        assertThrows(IllegalArgumentException.class, () -> new NativeBridgeBuild.Request(NativeBridgeBuild.BOUND_REQUEST_SCHEMA,
+                base.machineId(), NativeBridgeBuild.Stage.REGISTER, base.canonicalRepository(), base.sourceRoot(), base.completeSources(),
+                base.buildRoot(), base.scratchRoot(), base.qualifiedToolsBuild(), base.tools(), base.definitions(), base.parallelJobs(),
+                pin("env-reference.json", "unqualified codec input"), pin("build-reference.json", "unqualified codec input"),
+                helperCodecFixture(), request.compileSourceBindingRef()));
+    }
+
+    @Test void directBaseProductionArgvMatchesTheObservedIsolatedHelperRoute() throws IOException {
+        var request = boundRequest(NativeBridgeBuild.Stage.REGISTER, pin("argv-binding.json", "{}"));
+        var manifest = new ControlBuild.FileRef(request.stageRoot().resolve("manifest.json").toString(), 2, "0".repeat(64));
+        var command = NativeBridgeDefender.command(request, manifest, request.stageRoot().resolve("helper-receipt.json"));
+        assertEquals(request.defender().python().path(), command.getFirst());
+        assertEquals(List.of("-E", "-s", "-B", "-X", "utf8"), command.subList(1, 6));
+        assertEquals(request.defender().helper().path(), command.get(6));
+        var old = request(NativeBridgeBuild.Stage.REGISTER, helperCodecFixture());
+        var oldManifest = new ControlBuild.FileRef(old.stageRoot().resolve("manifest.json").toString(), 2, "0".repeat(64));
+        assertEquals("-B", NativeBridgeDefender.command(old, oldManifest, old.stageRoot().resolve("helper-receipt.json")).get(1));
+    }
+
+
+    @Test void nativeProducerMainDispatchesTheTypedOriginalStageBeforeAnyRootClaim() throws Exception {
+        var base = boundRequest(NativeBridgeBuild.Stage.ENV, pin("cli-bound-source.json", "{}"));
+        var request = new NativeBridgeBuild.Request(base.schema(), WindowsJobProcess.currentMachineId(), base.stage(),
+                base.canonicalRepository(), base.sourceRoot(), base.completeSources(), base.buildRoot(), base.scratchRoot(),
+                base.qualifiedToolsBuild(), base.tools(), base.definitions(), base.parallelJobs(), null, null,
+                (NativeBridgeDefender.Runtime)null, base.compileSourceBindingRef());
+        var mapper = RootNativePlanJson.mapper();
+        var requestPin = pin("native-main-request.json", mapper.writeValueAsString(request));
+        var limits = new NativeBridgeRootGate.Limits("/root/native_execution", pin("native-main-capacity.json", "{}"),
+                Instant.now().plusSeconds(60), 64L << 20, 32L << 20, 20);
+        var spec = new NativeProjectExeUac.CurrentNativeStageSpec("xar.native-bridge-stage-command/v1",
+                request.machineId(), request.stage(), pin("unqualified-retained-source.json", "{}"), requestPin, limits);
+        var specPin = pin("native-main-stage-spec.json", mapper.writeValueAsString(spec));
+        var direct = assertThrows(IOException.class, () -> NativeBridgeBuild.executeStage(spec));
+        var cli = assertThrows(IOException.class, () -> NativeBridgeBuild.main(new String[]{"execute", specPin.path(),
+                Long.toString(specPin.bytes()), specPin.sha256()}));
+        assertEquals(direct.getMessage(), cli.getMessage());
+        assertFalse(Files.exists(request.stageRoot()));
+        assertFalse(Files.exists(request.scratchRoot().resolve("ROOT-NATIVE-BUILD.lock")));
+        assertThrows(IOException.class, () -> NativeBridgeBuild.main(new String[]{"arbitrary-command", specPin.path(),
+                Long.toString(specPin.bytes()), specPin.sha256()}));
+    }
+
+    @Test void causalPublicWriterKeepsExplicitBuildRegisterBranchesAndCannotInventAnEnvActual() throws Exception {
+        var metadata = pin("no-env-actual.json", "{}");
+        var input = new NativeBridgeBuild.CausalInput("xar.native-bridge-causal-request-input/v2",
+                WindowsJobProcess.currentMachineId(), NativeBridgeBuild.Stage.BUILD, metadata, metadata, null, null,
+                temporary, temporary.resolve("unproduced-causal-request.json"));
+        var mapper = RootNativePlanJson.mapper();
+        var inputPin = pin("current-causal-input.json", mapper.writeValueAsString(input));
+        assertThrows(IOException.class, () -> NativeBridgeBuild.main(new String[]{"write-request", inputPin.path(),
+                Long.toString(inputPin.bytes()), inputPin.sha256()}));
+        assertFalse(Files.exists(input.requestOutput()));
+        ObjectNode missing = mapper.valueToTree(input); missing.remove("runtime_inventory_ref");
+        assertThrows(IOException.class, () -> mapper.treeToValue(missing, NativeBridgeBuild.CausalInput.class));
+        assertThrows(IllegalArgumentException.class, () -> new NativeBridgeBuild.CausalInput(input.schema(), input.machineId(),
+                NativeBridgeBuild.Stage.REGISTER, metadata, metadata, null, null, temporary, input.requestOutput()));
+        assertThrows(IllegalArgumentException.class, () -> new NativeBridgeBuild.CausalInput("xar.native-bridge-causal-request-input/v1",
+                input.machineId(), input.stage(), metadata, metadata, null, null, temporary, input.requestOutput()));
+    }
+
+    private NativeBridgeBuild.Request boundRequest(NativeBridgeBuild.Stage stage, ControlBuild.FileRef binding) throws IOException {
+        var base = request(stage == NativeBridgeBuild.Stage.REGISTER ? NativeBridgeBuild.Stage.BUILD : stage, null);
+        NativeBridgeDefender.Runtime runtime = null;
+        if (stage == NativeBridgeBuild.Stage.REGISTER) {
+            Path pythonBase = temporary.resolve("bound-python-base");
+            Files.createDirectories(pythonBase);
+            Path python = pythonBase.resolve("python.exe"); Files.writeString(python, "unqualified codec input");
+            runtime = new NativeBridgeDefender.ManifestRuntime(NativeBridgeDefender.ManifestRuntime.DIRECT_SCHEMA,
+                    pythonBase, temporary.resolve("bound-venv"), ControlBuild.FileRef.measure(python),
+                    pin("bound-helper.py", "unqualified codec input"), pin("bound-runtime-inventory.json", "{}"));
+        }
+        return new NativeBridgeBuild.Request(NativeBridgeBuild.BOUND_REQUEST_SCHEMA, base.machineId(), stage,
+                base.canonicalRepository(), base.sourceRoot(), base.completeSources(), base.buildRoot(), base.scratchRoot(),
+                base.qualifiedToolsBuild(), base.tools(), base.definitions(), base.parallelJobs(),
+                stage == NativeBridgeBuild.Stage.ENV ? null : pin("env-reference.json", "unqualified codec input"),
+                stage == NativeBridgeBuild.Stage.REGISTER ? pin("build-reference.json", "unqualified codec input") : null,
+                runtime, binding);
     }
 
     private NativeBridgeBuild.Request request(NativeBridgeBuild.Stage stage,

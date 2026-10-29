@@ -1,0 +1,670 @@
+{
+  "base": {
+    "actor_character_id": 40526,
+    "date_raw": 53274960,
+    "readback": {
+      "active_scheme_count": 0,
+      "active_sway_instances": [],
+      "actor_character_id": 40526,
+      "date_raw": 53274960,
+      "exact_ck3_build": "1.20.0.4",
+      "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "matching_sway_active": false,
+      "native_complete_can_send": true,
+      "native_legal_now": true,
+      "schema": "active-scheme-sway-private-read-v1",
+      "target_character_id": 34973
+    },
+    "resolved": {
+      "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+      "actor_character_id": 40526,
+      "latest_instance_observation": {
+        "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+        "actor_character_id": 40526,
+        "exact_ck3_build": "1.20.0.4",
+        "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "instance_terminal_outcome_observed": false,
+        "native_observation": {
+          "actor_character_id": 40526,
+          "available": true,
+          "date_raw": 53274240,
+          "exact_ck3_build": "1.20.0.4",
+          "exact_instance_join_ready": false,
+          "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "instance_present": false,
+          "instance_source_observed": true,
+          "native_status_observed": false,
+          "native_status_raw": null,
+          "native_terminal_state_observed": false,
+          "schema": "xar.ck3.sway_completion.v1",
+          "scheme_instance_generation": 5,
+          "scheme_instance_id": 83887164,
+          "snapshot_revision": 4321,
+          "storage_slot_reused": true,
+          "target_character_id": 34973
+        },
+        "scheme_instance_generation": 5,
+        "scheme_instance_id": 83887164,
+        "source_date_raw": 53274240,
+        "source_native_revision": 4321,
+        "target_character_id": 34973,
+        "tracked_instance_active": false
+      },
+      "native_receipt": {
+        "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+        "exact_ck3_build": "1.20.0.4",
+        "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "post_capture_epoch": 208238,
+        "post_container_generation": 11680299756822511911,
+        "post_date_raw": 53217072,
+        "postcondition_verified": true,
+        "schema": "active-scheme-sway-formal-private-v1",
+        "scheme_instance_generation": 5,
+        "scheme_instance_id": 83887164,
+        "stage": "applied"
+      },
+      "post_capture_epoch": 208258,
+      "post_date_raw": 53217072,
+      "postcondition_verified": true,
+      "pre_capture_epoch": 208206,
+      "status": "applied",
+      "target_character_id": 34973,
+      "terminal_intervention": {
+        "instance_terminal_outcome_observed": false
+      }
+    }
+  },
+  "base_kind": "exact-consumed-field-projection-of-retained-ledger-plus-existing-integration-test-readback",
+  "cases": [
+    {
+      "expected": {
+        "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+        "actor_character_id": 40526,
+        "instance_terminal_outcome_observed": false,
+        "scheme_instance_generation": 5,
+        "scheme_instance_id": 83887164,
+        "source_date_raw": 53274240,
+        "source_native_revision": 4321,
+        "storage_slot_reused": true,
+        "target_character_id": 34973,
+        "terminal_cause": "unknown"
+      },
+      "id": "retained-full-ledger-projected",
+      "mutations": [],
+      "operation": "gap"
+    },
+    {
+      "expected": {
+        "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+        "actor_character_id": 40526,
+        "instance_terminal_outcome_observed": false,
+        "scheme_instance_generation": 5,
+        "scheme_instance_id": 83887164,
+        "source_date_raw": 53274240,
+        "source_native_revision": 4321,
+        "storage_slot_reused": true,
+        "target_character_id": 34973,
+        "terminal_cause": "unknown"
+      },
+      "id": "legal-empty-slot",
+      "mutations": [],
+      "operation": "fresh"
+    },
+    {
+      "expected": null,
+      "id": "unknown-status",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "status"
+          ],
+          "value": "pending"
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "unverified-applied",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "postcondition_verified"
+          ],
+          "value": false
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "actor-bool",
+      "mutations": [
+        {
+          "path": [
+            "actor_character_id"
+          ],
+          "value": true
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "date-float",
+      "mutations": [
+        {
+          "path": [
+            "date_raw"
+          ],
+          "value": 53274960.0
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "terminal-actually-observed",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "terminal_intervention",
+            "instance_terminal_outcome_observed"
+          ],
+          "value": true
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "receipt-action-drift",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "native_receipt",
+            "action_id"
+          ],
+          "value": "different-action"
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "receipt-epoch-equal-to-before",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "native_receipt",
+            "post_capture_epoch"
+          ],
+          "value": 208206
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "receipt-post-date-drift",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "native_receipt",
+            "post_date_raw"
+          ],
+          "value": 1
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "future-observation",
+      "mutations": [
+        {
+          "path": [
+            "date_raw"
+          ],
+          "value": 53274239
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "latest-instance-missing",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "scheme_instance_id"
+          ],
+          "remove": true
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "latest-generation-float",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "scheme_instance_generation"
+          ],
+          "value": 5.0
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "native-generation-bool",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "native_observation",
+            "scheme_instance_generation"
+          ],
+          "value": true
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "native-build-drift",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "native_observation",
+            "exact_ck3_build"
+          ],
+          "value": "1.20.0.3"
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "native-sha-drift",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "native_observation",
+            "exe_sha256"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "native-presence-true",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "native_observation",
+            "instance_present"
+          ],
+          "value": true
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "native-reuse-false",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "native_observation",
+            "storage_slot_reused"
+          ],
+          "value": false
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": {
+        "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+        "actor_character_id": 40526,
+        "instance_terminal_outcome_observed": false,
+        "scheme_instance_generation": 5,
+        "scheme_instance_id": 83887164,
+        "source_date_raw": 53274240,
+        "source_native_revision": 4321,
+        "storage_slot_reused": true,
+        "target_character_id": 34973,
+        "terminal_cause": "unknown"
+      },
+      "id": "native-status-missing",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "native_observation",
+            "native_status_raw"
+          ],
+          "remove": true
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "native-status-zero",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "native_observation",
+            "native_status_raw"
+          ],
+          "value": 0
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "zero-native-revision",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "latest_instance_observation",
+            "source_native_revision"
+          ],
+          "value": 0
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "fresh-count-bool",
+      "mutations": [
+        {
+          "path": [
+            "readback",
+            "active_scheme_count"
+          ],
+          "value": true
+        }
+      ],
+      "operation": "fresh"
+    },
+    {
+      "expected": null,
+      "id": "fresh-count-null",
+      "mutations": [
+        {
+          "path": [
+            "readback",
+            "active_scheme_count"
+          ],
+          "value": null
+        }
+      ],
+      "operation": "fresh"
+    },
+    {
+      "expected": null,
+      "id": "fresh-instances-null",
+      "mutations": [
+        {
+          "path": [
+            "readback",
+            "active_sway_instances"
+          ],
+          "value": null
+        }
+      ],
+      "operation": "fresh"
+    },
+    {
+      "expected": null,
+      "id": "fresh-instances-occupied",
+      "mutations": [
+        {
+          "path": [
+            "readback",
+            "active_sway_instances"
+          ],
+          "value": [
+            {}
+          ]
+        }
+      ],
+      "operation": "fresh"
+    },
+    {
+      "expected": null,
+      "id": "fresh-native-illegal",
+      "mutations": [
+        {
+          "path": [
+            "readback",
+            "native_legal_now"
+          ],
+          "value": false
+        }
+      ],
+      "operation": "fresh"
+    },
+    {
+      "expected": null,
+      "id": "fresh-matching-active",
+      "mutations": [
+        {
+          "path": [
+            "readback",
+            "matching_sway_active"
+          ],
+          "value": true
+        }
+      ],
+      "operation": "fresh"
+    },
+    {
+      "expected": null,
+      "id": "fresh-wrong-actor",
+      "mutations": [
+        {
+          "path": [
+            "readback",
+            "actor_character_id"
+          ],
+          "value": 40527
+        }
+      ],
+      "operation": "fresh"
+    },
+    {
+      "expected": {
+        "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+        "actor_character_id": 40526,
+        "instance_terminal_outcome_observed": false,
+        "scheme_instance_generation": 5,
+        "scheme_instance_id": 83887164,
+        "source_date_raw": 53274240,
+        "source_native_revision": 4321,
+        "storage_slot_reused": true,
+        "target_character_id": 34973,
+        "terminal_cause": "unknown"
+      },
+      "id": "recovered-independent-read-identity",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "native_receipt"
+          ],
+          "remove": true
+        },
+        {
+          "path": [
+            "resolved",
+            "recovered_instance_observation"
+          ],
+          "value": {
+            "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+            "active_instance": {
+              "is_exposed": false,
+              "is_frozen": false,
+              "progress": 0,
+              "progress_goal": 355,
+              "scheme_instance_generation": 5,
+              "scheme_instance_id": 83887164,
+              "target_character_id": 34973
+            },
+            "actor_character_id": 40526,
+            "schema": "xar.ck3.sway-recovered-instance-observation.v1",
+            "scheme_instance_generation": 5,
+            "scheme_instance_id": 83887164,
+            "source_kind": "matching_active_readback_recovery",
+            "source_read": {
+              "capture_epoch": 208258,
+              "container_generation": 11680299756822511911,
+              "date_raw": 53217072,
+              "exact_ck3_build": "1.20.0.4",
+              "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "post_snapshot_id": "native:1129",
+              "queried_native_revision": 1129,
+              "queried_revision": 1130,
+              "queried_snapshot_id": "native:1129",
+              "schema": "active-scheme-sway-private-read-v1",
+              "snapshot_revision": 1129
+            },
+            "submission_receipt_available": false,
+            "target_character_id": 34973
+          }
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": {
+        "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+        "actor_character_id": 40526,
+        "instance_terminal_outcome_observed": false,
+        "scheme_instance_generation": 5,
+        "scheme_instance_id": 83887164,
+        "source_date_raw": 53274240,
+        "source_native_revision": 4321,
+        "storage_slot_reused": true,
+        "target_character_id": 34973,
+        "terminal_cause": "unknown"
+      },
+      "id": "explicit-receipt-identities",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "native_receipt",
+            "actor_character_id"
+          ],
+          "value": 40526
+        },
+        {
+          "path": [
+            "resolved",
+            "native_receipt",
+            "target_character_id"
+          ],
+          "value": 34973
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "receipt-zero-instance",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "native_receipt",
+            "scheme_instance_id"
+          ],
+          "value": 0
+        }
+      ],
+      "operation": "gap"
+    },
+    {
+      "expected": null,
+      "id": "receipt-reserved-instance",
+      "mutations": [
+        {
+          "path": [
+            "resolved",
+            "native_receipt",
+            "scheme_instance_id"
+          ],
+          "value": 4294967295
+        }
+      ],
+      "operation": "gap"
+    }
+  ],
+  "full_ledger_gap_equal_to_projection": true,
+  "game_rpc_count": 0,
+  "ledger_write_count": 0,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T13:44:16.120988Z",
+  "producer": "xar_autoplayer.reused_sway_opportunity_v1",
+  "production_consumer_cutover": false,
+  "retained_evidence": {
+    "path": "docs/ck3-native-ai/evidence/m6-sway-closed-ledger-2026-10-20.json",
+    "sha256": "edfd6027bf508bda9ea9183c8820a18014192d20789f6ae929b4e0c503c63580"
+  },
+  "schema": "xar.java.sway-reuse-producer-golden.v1",
+  "sources": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/reused_sway_opportunity_v1.py",
+      "sha256": "a47ed49e8bdbeb7f9fcf1425a6519c6879b6d538ac7af252e89fcd537db12f0d"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py",
+      "sha256": "99ea0b435442d9b842ebc40cc19601ea03c92a112cb2a8f257550de8ec2d9ad8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py",
+      "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py",
+      "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_source27_master_integration_v1.py",
+      "sha256": "d9698bd196bbf9cbd78c49dc3db09b7c6e71786d96a67a1ba0a21a731df97333"
+    }
+  ]
+}

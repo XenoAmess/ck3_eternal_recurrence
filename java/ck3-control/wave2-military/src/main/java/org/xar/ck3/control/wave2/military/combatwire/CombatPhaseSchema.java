@@ -1,0 +1,36 @@
+package org.xar.ck3.control.wave2.military.combatwire;
+
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/** Frozen named-leaf schemas. These names are checked once at the JSON boundary. */
+final class CombatPhaseSchema {
+    private CombatPhaseSchema() { }
+    static final String MANIFEST = "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC";
+    static final String REQUIRED_SHA = "2B5E8445EFD14DC65D8BA4046242BBC37A0226C2BCD971D805D9A6F0064A1DD0";
+    static final String NATIVE_SHA = "E18C26667EF5F896564B21766E145A5B63C73ACDB5DD8B21ED25853CA793119E";
+    static final String OFFLINE_SHA = "368924B26875C74EEA9A631CAA528086829851233A48860671140E7842FF5CA6";
+    static final String POLICY = "81_exact_native_leaves_plus_51_offline_exact";
+    static final String ROOT = "schema_version contract_stage rules_manifest_sha256 base_inputs phase_event_inputs";
+    static final String PHASE = "status rules_source rules_manifest_sha256 required_state_refs state_ref_coverage scope_mode raw advantage_model unavailable_reason";
+    static final String ENRICHED = "state_ref_partition evaluation_contexts row_evaluations offline_admission";
+    static final String PRIVATE = "hard_casualty_winter hard_casualty_sides";
+    static final String SIDES = "side_index encounter_role ordered_army_ids ordered_character_ids ordered_commander_ids ordered_knight_ids primary_participant_character_id primary_source_army_id commander_character_id side_strength_raw side_army_size_raw participants candidate_source_proof";
+    static final String OPTIONAL_IDS = "house liege liege_house employer dynasty culture faith religion accolade hold_court_8050_knight employer_hold_court_8050_promise";
+    static final String CHARACTER_BOOLS = "alive is_ai warfare_legacy_3 stalwart_leader heritage_north_germanic knights_slightly_more_prone_to_injury death_is_glory tenet_warmonger germanic_religion blademaster_traits_more_common is_acclaimed can_be_acclaimed accolade_has_men_at_arms_category conqueror_variable_present ai_extreme_conqueror_modifier garuda_court_position government_is_nomadic";
+    static final String CHARACTER_I64 = "wounded_rank_raw fragile_bones_rank_raw fragile_bones_xp_raw lifestyle_blademaster_xp_raw tourney_bow_xp_raw tourney_foot_xp_raw tourney_horse_xp_raw liege_accolade_progress_raw";
+    static final String CHARACTERS = "character_id source_army_id source_regiment_id encounter_role phase_roles martial learning prowess traits_or_groups innovations traditions culture_parameters accolade_parameters attribute_unlock_variables "
+            + OPTIONAL_IDS + " " + CHARACTER_BOOLS + " " + CHARACTER_I64;
+    static final String TRAITS = "ambitious athletic berserker brave calm cautious_leader compassionate content craven desert_warrior disfigured education_martial_1 education_martial_2 education_martial_3 education_martial_4 education_martial_5 education_martial_prowess_1 education_martial_prowess_2 education_martial_prowess_3 education_martial_prowess_4 flexible_leader forest_fighter giant holy_warrior impatient incapable intellect_good_1 intellect_good_2 intellect_good_3 jungle_stalker lazy lifestyle_blademaster maimed nomadic_philosophy one_eyed one_legged open_terrain_expert patient physique_good reckless rough_terrain_expert sadistic scholar shieldmaiden shrewd strong temperate winter_soldier wrathful zealous aggressive_attacker wounded_1 wounded_2 wounded_3 fragile_bones tourney_participant";
+    static final String INNOVATIONS = "innovation_quilted_armor innovation_sarawit innovation_legionnaires innovation_arched_saddle innovation_valets innovation_tiefutu innovation_advanced_bowmaking innovation_repeating_crossbow innovation_war_camels innovation_elephantry innovation_gunpowder innovation_fire_medicine";
+    static final String TRADITIONS = "tradition_fp1_coastal_warriors tradition_hird tradition_futuwaa tradition_druzhina tradition_khadga_puja tradition_garuda_warriors tradition_himalayan_settlers tradition_mubarizuns tradition_burman_royal_army tradition_mountaineer_ruralism tradition_caucasian_wolves tradition_roman_legacy tradition_ep3_audacious_cadets tradition_ep3_imperial_tagmata";
+    static final String CULTURE = "knights_slightly_more_prone_to_injury blademaster_traits_more_common unlock_zhanmadao unlock_burenjia unlock_maa_cataphract_archers unlock_maa_black_armor_cavalry unlock_maa_horse_archers unlock_maa_mangudai unlock_emishi_horse_archers_units unlock_mounted_samurai_units";
+    static final String ATTRIBUTES = "skirmisher archer crossbowmen pike vanguard outrider lancer camelry elephantry horse_archer gunpowder fanatic valiant";
+    static final String ACCOLADE = "accolade_defends_family_low accolade_defends_family_medium accolade_defends_family_high accolade_increase_hostile_knight_death_low accolade_increase_hostile_knight_death_medium accolade_increase_hostile_knight_death_high";
+    static final String MAA = "skirmishers_raw pikemen_raw heavy_infantry_raw light_cavalry_raw heavy_cavalry_raw camel_cavalry_raw elephant_cavalry_raw archer_cavalry_raw gunpowder_raw crossbow_family_raw non_crossbow_archers_raw";
+    static final String ROOT_TRAITS = "ambitious berserker brave calm compassionate content craven disfigured giant impatient incapable lazy maimed one_eyed one_legged patient sadistic shieldmaiden temperate wrathful";
+    static final String DERIVED = "derived.accolade_qualification_wound_factor_raw derived.become_berserker_wound_factor_raw derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter derived.candidate_prowess_at_or_below_root_opponent_threshold derived.candidate_prowess_at_or_below_root_opponent_threshold_without_alive_filter derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists derived.enemy_hostile_knight_death_accolade_any_tier derived.enemy_hostile_knight_death_accolade_factor_raw derived.outnumbering_injury_factor_raw derived.own_side_more_than_five_times_enemy derived.own_side_stronger derived.qualifying_enemy_knight_exists derived.root_ai_stalwart derived.root_has_any_maim_injury derived.root_has_any_wounded_rank_1_2_3 derived.root_injury_factor_30_raw derived.root_injury_factor_30_with_garuda_raw derived.root_injury_factor_40_with_garuda_raw derived.root_is_wounded derived.root_player_stalwart derived.root_wounded_rank_3 derived.same_house_defends_family_any_tier derived.same_house_defends_family_factor_raw derived.same_house_defends_family_tier_high derived.same_house_defends_family_tier_low_only derived.same_house_defends_family_tier_medium_only derived.stock_enemy_knight_selection_weight_raw";
+    static final String OFFLINE_CONTAINERS = "root.house_and_liege_relations root.knight_army.maa_counts game_rules root.traits_and_culture_for_blademaster selected_enemy_knight.traits_and_culture_for_blademaster root.variables root.employer.variables root.ai_should_get_extreme_conqueror_bonuses combat_side.enemy_faiths combat_side.ordered_commanders_and_knights_with_accolade_parameters root.accolade_unlocks";
+    static Set<String> keys(String tokens) { return Arrays.stream(tokens.split(" ")).filter(s -> !s.isEmpty()).collect(Collectors.toUnmodifiableSet()); }
+}

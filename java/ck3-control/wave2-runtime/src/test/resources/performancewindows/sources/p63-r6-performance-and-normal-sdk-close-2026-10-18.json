@@ -1,0 +1,323 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-17T23:38:25.704946+00:00",
+  "scope": "R6 actual bounded receipts and sealed finite performance sample; no Driver, giant AUTO/SEM, SAVE, media, process observation or controls.",
+  "same_Game": {
+    "pid": 51028,
+    "creation_filetime": 134367033244212072,
+    "not_restarted": true
+  },
+  "same_recording_session_id": "da74988f-a20d-428e-9877-f2bc9d39b133",
+  "actual_R6_pair": [
+    {
+      "role": "sdk_queue",
+      "pid": 222180,
+      "creation_filetime": 134367519425113102,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+    },
+    {
+      "role": "sdk_application",
+      "pid": 157208,
+      "creation_filetime": 134367519448351563,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+    }
+  ],
+  "sources": {
+    "MET15": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r6-responses\\0015-1-result.json",
+      "bytes": 1685,
+      "sha256": "14ce5009e41a3071cac94a0c270fe149b347304e9e313a62f6c6389ba0b7095f"
+    },
+    "FULL16": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r6-responses\\0016-1-result.json",
+      "bytes": 1220,
+      "sha256": "8c1019a8ccee865756607e3ea9373f6052f0a9d0868d159171ecb0d744989835"
+    },
+    "AUTO33": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r6-responses\\0033-1-result.json",
+      "bytes": 108789,
+      "sha256": "0ad0ffaf92b3aadd5c9b06ce5d14bd57914fac7f481ee335f4d4697b999c460c"
+    },
+    "MET68": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r6-responses\\0068-1-result.json",
+      "bytes": 1630,
+      "sha256": "e5e14523d9313c3de0510502f651b42bcb4a9f7aba6b3f1f4ea65aa954eea85a"
+    },
+    "AUTO934": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r6-responses\\0934-1-result.json",
+      "bytes": 31549,
+      "sha256": "644a5e1862f9ab550a060ca2a4c0a80f6f985963f1ac2c1efe46ff3bba11df0b"
+    },
+    "Root_SEM935_review": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p62-sdk-only-rotation01\\ROOT-SEM935-CLEAR936-REVIEW.json",
+      "bytes": 23703,
+      "sha256": "92dd8e641ec11b8dea437d0b85251d4bf9ab84beb3581c6c9a5cb4f3894b66ed"
+    },
+    "clear936": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r6-responses\\0936-1-result.json",
+      "bytes": 1128,
+      "sha256": "d4cf6bbdfa64f21cd113b00756265f7fd33932c383fd0bf134a5e2e90df93f7e"
+    },
+    "SDK_owner_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P50R6-OWNER-CLOSED.json",
+      "bytes": 865,
+      "sha256": "8af30d3b7764dc00757244a62a0799ec08026a300f92529684e78c4a26a1115f"
+    },
+    "R6_reentry_summary": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p62-sdk-only-rotation01\\ROOT-CURRENT-P50R6-REENTRY02.json",
+      "bytes": 10684,
+      "sha256": "8c78303b25b0ce85a87a5c861efe651d1f3ffd4ad03b4454995756ef17ae1204"
+    },
+    "R6_fixed_window": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p63-first30-date-horizon01\\R6-CLOSED146-344-MET-STATS.json",
+      "bytes": 83765,
+      "sha256": "605a815ec5f5fc1fd78be24bcea2565618fedbe1e730be77867b3b6177af03df"
+    },
+    "R5_comparison_window": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p61-market-history-bounded01\\R5-CLOSED626-824-MET-STATS.json",
+      "bytes": 73311,
+      "sha256": "119ec78da2a30ec5d8fe60b2f13b3f2eb3c5240e10e2b83d0137daade4f3e33b"
+    }
+  },
+  "FULL16": {
+    "status": "bounded_loop_finished",
+    "ordinary_turns": 25,
+    "cumulative_cycles": 6718,
+    "actual_before_date_raw": 53362224,
+    "actual_after_date_raw": 53362296,
+    "actual_calendar_delta_days": 3,
+    "AUTO33_one_day_is_included_not_added_again": true
+  },
+  "AUTO33": {
+    "started_at_utc": "2026-10-17T23:15:33.620106+00:00",
+    "ended_at_utc": "2026-10-17T23:15:35.144579+00:00",
+    "elapsed_seconds": 1.5244746000971645,
+    "status": "executed",
+    "selected_step": "advance-route-contact-horizon-v1-167772577-to-2624-h-3-285213101-402653372-436207707",
+    "phase": "native_war_stationary_contact_horizon_progress",
+    "source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:10748",
+      "revision": 2,
+      "native_revision": 10748,
+      "date_raw": 53362224,
+      "actor_character_id": 40695,
+      "episode_run_id": "native-40695-9cf747ffe1ee",
+      "connection_generation": 17,
+      "bridge_pid": 51028
+    },
+    "starting_date_raw": 53362224,
+    "ending_date_raw": 53362248,
+    "elapsed_days": 1,
+    "native_stop": {
+      "state": "triggered",
+      "target_date_raw": 53362248,
+      "trigger_date_raw": 53362248,
+      "signed_date_delta_from_target_raw": 0,
+      "overshoot_days": 0,
+      "pause_observed": true,
+      "trigger_reasons": [
+        "date_deadline"
+      ]
+    },
+    "meaning": "Current2624 stationary horizon retained all three hostile IDs; exact one-day observation, not a move to2619 or an attack."
+  },
+  "Driver_stats": {
+    "MET15_bytes": 167377109,
+    "MET68_bytes": 13681508,
+    "this_is_whole_state_file_stat_not_projection_row_count_or_write_cost": true
+  },
+  "performance": {
+    "R6_window": {
+      "first": {
+        "sequence": 146,
+        "utc": "2026-10-17T23:17:36.380692+00:00",
+        "elapsed_seconds": 0.004410000052303076,
+        "date_raw": 53362416,
+        "native_revision": 10772,
+        "revision": 26,
+        "actor_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "connection_generation": 17,
+        "driver_state_bytes": 13904541,
+        "army_strengths_query_sequence": 1219
+      },
+      "last": {
+        "sequence": 344,
+        "utc": "2026-10-17T23:18:30.768980+00:00",
+        "elapsed_seconds": 0.01219639996998012,
+        "date_raw": 53362728,
+        "native_revision": 10811,
+        "revision": 65,
+        "actor_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "connection_generation": 17,
+        "driver_state_bytes": 14461191,
+        "army_strengths_query_sequence": 1232
+      },
+      "actual_days": 13.0,
+      "wall_seconds": 54.388288,
+      "actual_days_per_wall_second": 0.23902204827627593,
+      "wall_seconds_per_actual_day": 4.183714461538462,
+      "driver_growth_bytes": 556650,
+      "driver_growth_bytes_per_day": 42819.230769230766,
+      "response_bytes": 49488392,
+      "response_bytes_per_day": 3806799.3846153845
+    },
+    "R5_distinct_window": {
+      "first": {
+        "sequence": 626,
+        "utc": "2026-10-17T22:37:02.653438+00:00",
+        "elapsed_seconds": 0.010833899956196547,
+        "date_raw": 53360832,
+        "native_revision": 10569,
+        "revision": 242,
+        "actor_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "driver_state_bytes": 99128356
+      },
+      "last": {
+        "sequence": 824,
+        "utc": "2026-10-17T22:44:28.905398+00:00",
+        "elapsed_seconds": 0.004994800081476569,
+        "date_raw": 53361576,
+        "native_revision": 10670,
+        "revision": 343,
+        "actor_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "driver_state_bytes": 141131731
+      },
+      "actual_days": 31.0,
+      "wall_seconds": 446.25196,
+      "actual_days_per_wall_second": 0.06946748200276812,
+      "wall_seconds_per_actual_day": 14.395224516129032,
+      "driver_growth_bytes": 42003375,
+      "driver_growth_bytes_per_day": 1354947.5806451612,
+      "response_bytes": 121816119,
+      "response_bytes_per_day": 3929552.2258064514,
+      "conditional_days_to_256MiB_driver": 93.95472328116492
+    },
+    "same_state_AB": false,
+    "all_R6_wall_intervals_including_recoveries_retained": true,
+    "exact_recovery_action_count_or_market_only_growth_observed": false,
+    "raw_MCP_receipts_rewritten_or_bounded_by_history_projection": false,
+    "whole_campaign_or_future_rate_claimed": false
+  },
+  "AUTO934": {
+    "started_at_utc": "2026-10-17T23:21:43.682038+00:00",
+    "ended_at_utc": "2026-10-17T23:21:44.635511+00:00",
+    "status": "blocked",
+    "selected_step": null,
+    "phase": "native_war_general_battle_model_rejected",
+    "source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:10941",
+      "revision": 195,
+      "native_revision": 10941,
+      "date_raw": 53363736,
+      "actor_character_id": 40695,
+      "episode_run_id": "native-40695-9cf747ffe1ee",
+      "connection_generation": 17,
+      "bridge_pid": 51028
+    },
+    "reason": "战分-12；风险目标2230；现有兵力844/595。保留战争现金；雇佣报价、抵达与费用未齐。 the bounded whole-battle model exceeds the configured contact risk budget",
+    "forecast": {
+      "status": "estimated",
+      "model_fidelity": "research-only-bounded-core",
+      "native_parity": false,
+      "sample_count": 256,
+      "player_wins": 0,
+      "player_losses": 256,
+      "player_p90_hard_loss_fraction": 0.46883898104265403,
+      "player_stack_wipe_probability": 0.0703125,
+      "missing_required_domains": [
+        "loaded_phase_event_effect_transition",
+        "exact_build_original_trace_fixture"
+      ]
+    },
+    "actual_battle_loss_or_attack_submitted_claimed": false
+  },
+  "Root935_and_936": {
+    "review_observed_utc": "2026-10-17T23:32:36.239228+00:00",
+    "giant_SEM935_source_pin_only": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r6-responses\\0935-1-result.json",
+      "bytes": 26066209,
+      "sha256": "b75fe918f875bbc6b98c5dfc7778e1c5851c2f2d7ec73403a388fbe90ab6d6d9"
+    },
+    "giant_SEM935_body_read_by_this_task": false,
+    "fresh_semantic_summary": {
+      "revision": 195,
+      "native_revision": 10941,
+      "date_raw": 53363736,
+      "paused": true,
+      "map_ready": true,
+      "episode_run_id": "native-40695-9cf747ffe1ee"
+    },
+    "clear_status": "blocked_no_action_observed_replan_required",
+    "clear_at_utc": "2026-10-17T23:32:36.389038+00:00",
+    "cycles_unchanged": 7140,
+    "new_MCP_or_native_calls": 0,
+    "original_action_replayed": false,
+    "business_credit_added": false
+  },
+  "normal_SDK_close": {
+    "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED",
+    "normal": true,
+    "launcher_exit_code": 0,
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 222180,
+        "creation_filetime": 134367519425113102,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "kernel_exit_observed": true,
+        "wait_result": 0,
+        "exit_code": 0,
+        "observation_error": null
+      },
+      {
+        "role": "sdk_application",
+        "pid": 157208,
+        "creation_filetime": 134367519448351563,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "kernel_exit_observed": true,
+        "wait_result": 0,
+        "exit_code": 0,
+        "observation_error": null
+      }
+    ],
+    "Game_stopped": false,
+    "recording_stopped": false,
+    "receipt_has_exit_UTC": false,
+    "observation_UTC_is_this_projection_timestamp": true
+  },
+  "repair_status_at_this_checkpoint": {
+    "P65_R7": "Root-authorized source/qualification preparation; actual R7 success is not prefilled.",
+    "risk_budget_not_relaxed": true,
+    "goal": "Retain valid risk refusal; qualify safe stationary H1 observation/progress when appropriate, no blind attack.",
+    "first30_target_date_raw": 53407320,
+    "first30_reached": false,
+    "manual_permanent_SAVE_and_full_video_complete": false
+  },
+  "G2": {
+    "completed_items": 6,
+    "total_items": 8,
+    "M6": "useful Sway terminal/material closure still incomplete",
+    "M7": "one actual natural-succession subchain exists; complete cold/government/seed closure still incomplete",
+    "natural_succession_zero_claimed": false,
+    "new_G2_credit_from_performance_or_clear": 0
+  },
+  "parallel_responsibilities": {
+    "Root": "sole live publisher/actual semantic review/normal closure; next SDK adoption only after review",
+    "resume_namespace": "P65/R7 and future SDK03/host03 exact source/entry qualification",
+    "war_decision_improve": "risk refusal and bounded stationary continuation source/real-case review",
+    "performance_parallel": "bounded completed-window metrics, exact-date audit, preboundary source guard, durable reporting",
+    "g2_missing_parallel": "M6/M7 source adoption and offline consumer closure; no terminal credit from source",
+    "capacity_resume": "same160GiB reservation accounting and explicit component/expiry controls",
+    "resume_recording": "same-capture provenance and future SAVE/video closeout preparation",
+    "populist_loss_fix": "loss-prevention documentation and exact-commit CI watching"
+  },
+  "topology_is_task_ownership_not_continuous_process_liveness_claim": true
+}

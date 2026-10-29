@@ -1,0 +1,943 @@
+{
+  "schema": "xar.feast-ordinary-hosted-golden/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T14:15:40.512388+00:00",
+  "source_refs": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\activity_feast_stage5_start_private_transport.py",
+      "bytes": 43343,
+      "sha256": "656b02666880395c1bc1e0e3de4d9ff9d1a0d30e1393fc69e1d930aef43b8f3f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_activity_feast_stage5_start_private_transport.py",
+      "bytes": 9258,
+      "sha256": "c8b7816eb20d8503d9b53f5b3ffcf2fc2f1502c32af255e58f4fbdbb69d7ad39"
+    }
+  ],
+  "capture_scope": "actual _hosted producer invoked for every raw-token vector; no Game/RPC/native/ledger access",
+  "existing_tests": {
+    "run": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "name": "empty",
+      "input_json": "[]",
+      "accepted": true,
+      "result": [],
+      "error": null
+    },
+    {
+      "name": "existing_common_payload",
+      "input_json": "[{\"activity_id\":17,\"host_character_id\":29829,\"activity_type_key\":\"activity_hunt\"}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 17,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_hunt"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "identity_only",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "terminal_ongoing",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":true,\"native_completed\":false,\"native_invalidated\":false}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast",
+          "terminal_flags_observed": true,
+          "native_completed": false,
+          "native_invalidated": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "terminal_completed",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":true,\"native_completed\":true,\"native_invalidated\":false}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast",
+          "terminal_flags_observed": true,
+          "native_completed": true,
+          "native_invalidated": false
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "terminal_invalidated",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":true,\"native_completed\":false,\"native_invalidated\":true}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast",
+          "terminal_flags_observed": true,
+          "native_completed": false,
+          "native_invalidated": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "terminal_both",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":true,\"native_completed\":true,\"native_invalidated\":true}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast",
+          "terminal_flags_observed": true,
+          "native_completed": true,
+          "native_invalidated": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "stamp_unknown",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":false,\"native_completion_stamp_raw\":null}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast",
+          "native_completion_stamp_observed": false,
+          "native_completion_stamp_raw": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "stamp_zero",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":0}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast",
+          "native_completion_stamp_observed": true,
+          "native_completion_stamp_raw": 0
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "stamp_uint64_max",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":18446744073709551615}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast",
+          "native_completion_stamp_observed": true,
+          "native_completion_stamp_raw": 18446744073709551615
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "terminal_and_stamp",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":true,\"native_completed\":true,\"native_invalidated\":false,\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":134371430348828741}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast",
+          "terminal_flags_observed": true,
+          "native_completed": true,
+          "native_invalidated": false,
+          "native_completion_stamp_observed": true,
+          "native_completion_stamp_raw": 134371430348828741
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "identity_uint32_max",
+      "input_json": "[{\"activity_id\":4294967295,\"host_character_id\":4294967295,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 4294967295,
+          "host_character_id": 4294967295,
+          "activity_type_key": "activity_feast"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "other_activity_kind",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_hunt\"}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_hunt"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "unicode_63_codepoints",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥\"}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "maximum_64_rows",
+      "input_json": "[{\"activity_id\":1,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":2,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":3,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":4,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":5,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":6,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":7,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":8,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":9,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":10,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":11,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":12,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":13,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":14,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":15,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":16,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":17,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":19,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":20,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":21,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":22,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":23,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":24,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":25,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":26,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":27,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":28,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":29,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":30,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":31,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":32,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":33,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":34,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":35,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":36,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":37,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":38,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":39,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":40,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":41,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":42,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":43,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":44,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":45,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":46,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":47,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":48,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":49,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":50,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":51,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":52,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":53,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":54,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":55,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":56,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":57,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":58,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":59,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":60,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":61,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":62,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":63,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":64,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": true,
+      "result": [
+        {
+          "activity_id": 1,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 2,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 3,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 4,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 5,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 6,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 7,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 8,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 9,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 10,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 11,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 12,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 13,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 14,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 15,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 16,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 17,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 18,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 19,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 20,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 21,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 22,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 23,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 24,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 25,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 26,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 27,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 28,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 29,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 30,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 31,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 32,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 33,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 34,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 35,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 36,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 37,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 38,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 39,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 40,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 41,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 42,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 43,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 44,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 45,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 46,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 47,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 48,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 49,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 50,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 51,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 52,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 53,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 54,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 55,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 56,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 57,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 58,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 59,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 60,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 61,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 62,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 63,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        },
+        {
+          "activity_id": 64,
+          "host_character_id": 29829,
+          "activity_type_key": "activity_feast"
+        }
+      ],
+      "error": null
+    },
+    {
+      "name": "over_64_rows",
+      "input_json": "[{\"activity_id\":1,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":2,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":3,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":4,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":5,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":6,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":7,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":8,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":9,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":10,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":11,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":12,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":13,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":14,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":15,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":16,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":17,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":19,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":20,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":21,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":22,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":23,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":24,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":25,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":26,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":27,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":28,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":29,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":30,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":31,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":32,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":33,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":34,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":35,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":36,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":37,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":38,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":39,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":40,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":41,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":42,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":43,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":44,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":45,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":46,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":47,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":48,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":49,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":50,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":51,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":52,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":53,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":54,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":55,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":56,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":57,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":58,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":59,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":60,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":61,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":62,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":63,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":64,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":65,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identities malformed"
+      }
+    },
+    {
+      "name": "duplicate_identity",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"},{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "root_null",
+      "input_json": "null",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identities malformed"
+      }
+    },
+    {
+      "name": "root_object",
+      "input_json": "{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identities malformed"
+      }
+    },
+    {
+      "name": "row_null",
+      "input_json": "[null]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "missing_identity_field",
+      "input_json": "[{\"activity_id\":18,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "extra_field",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"unqualified\":true}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_id_zero",
+      "input_json": "[{\"activity_id\":0,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_id_negative",
+      "input_json": "[{\"activity_id\":-1,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_id_overflow",
+      "input_json": "[{\"activity_id\":4294967296,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_id_bool",
+      "input_json": "[{\"activity_id\":true,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_id_float",
+      "input_json": "[{\"activity_id\":18.0,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_id_string",
+      "input_json": "[{\"activity_id\":\"18\",\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_id_null",
+      "input_json": "[{\"activity_id\":null,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "host_character_id_zero",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":0,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "host_character_id_negative",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":-1,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "host_character_id_overflow",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":4294967296,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "host_character_id_bool",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":true,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "host_character_id_float",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":18.0,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "host_character_id_string",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":\"18\",\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "host_character_id_null",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":null,\"activity_type_key\":\"activity_feast\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_type_empty",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_type_long",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_type_null",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":null}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "activity_type_int",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":1}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "terminal_false_observed",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":false,\"native_completed\":false,\"native_invalidated\":false}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted terminal flags malformed"
+      }
+    },
+    {
+      "name": "terminal_partial",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":true,\"native_completed\":false}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "terminal_missing_observed",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completed\":false,\"native_invalidated\":false}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "terminal_null_completed",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":true,\"native_completed\":null,\"native_invalidated\":false}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted terminal flags malformed"
+      }
+    },
+    {
+      "name": "terminal_numeric_completed",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"terminal_flags_observed\":true,\"native_completed\":1,\"native_invalidated\":false}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted terminal flags malformed"
+      }
+    },
+    {
+      "name": "stamp_partial",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "stamp_without_observed",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_raw\":1}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast hosted identity malformed"
+      }
+    },
+    {
+      "name": "stamp_unobserved_with_zero",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":false,\"native_completion_stamp_raw\":0}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast native completion stamp malformed"
+      }
+    },
+    {
+      "name": "stamp_observed_null",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":null}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast native completion stamp malformed"
+      }
+    },
+    {
+      "name": "stamp_negative",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":-1}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast native completion stamp malformed"
+      }
+    },
+    {
+      "name": "stamp_overflow",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":18446744073709551616}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast native completion stamp malformed"
+      }
+    },
+    {
+      "name": "stamp_bool",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":true}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast native completion stamp malformed"
+      }
+    },
+    {
+      "name": "stamp_float",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":1.0}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast native completion stamp malformed"
+      }
+    },
+    {
+      "name": "stamp_string",
+      "input_json": "[{\"activity_id\":18,\"host_character_id\":29829,\"activity_type_key\":\"activity_feast\",\"native_completion_stamp_observed\":true,\"native_completion_stamp_raw\":\"1\"}]",
+      "accepted": false,
+      "result": null,
+      "error": {
+        "type": "BridgeUnavailableError",
+        "message": "private feast native completion stamp malformed"
+      }
+    }
+  ]
+}

@@ -132,35 +132,132 @@ public final class FreshSdkFixtureStage {
             absolute(request.path()); absolute(result.path());
         }
     }
+    @com.fasterxml.jackson.annotation.JsonTypeInfo(use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME,
+            include = com.fasterxml.jackson.annotation.JsonTypeInfo.As.EXISTING_PROPERTY, property = "schema", visible = true)
+    @com.fasterxml.jackson.annotation.JsonSubTypes({
+            @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = ProducerGoldenPlan.class, name = "xar.sdk-producer-golden-plan/v1"),
+            @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = CheckoutProducerGoldenSources.class, name = "xar.sdk-producer-golden-sources/v2")
+    })
+    public sealed interface ProducerGoldenSources permits ProducerGoldenPlan, CheckoutProducerGoldenSources {
+        String schema(); String machineId(); ControlBuild.FileRef contextInput(); ControlBuild.FileRef contextResult();
+        ControlBuild.FileRef evaluateRequest(); List<ProducerGoldenVector> vectors();
+    }
+    public static final String CHECKOUT_GOLDEN_SCHEMA = "xar.sdk-producer-golden-sources/v2";
+    /** Source data only; no original setup, client cohort or execution authority is asserted. */
+    public record CheckoutProducerGoldenSources(String schema, String machineId,
+            ControlBuild.FileRef contextInput, ControlBuild.FileRef contextResult,
+            ControlBuild.FileRef evaluateRequest, List<ProducerGoldenVector> vectors) implements ProducerGoldenSources {
+        public CheckoutProducerGoldenSources {
+            vectors = List.copyOf(vectors);
+            if (!CHECKOUT_GOLDEN_SCHEMA.equals(schema)) throw new IllegalArgumentException("Exact checkout golden data schema required");
+            goldenSourceShape(machineId, contextInput, contextResult, evaluateRequest, vectors);
+        }
+    }
     public record ProducerGoldenPlan(String schema, String machineId, ControlBuild.FileRef originalInstallMapRef,
             SdkSourceAssembly.Digest clientContent, SdkSourceAssembly.Digest testContent,
             ControlBuild.FileRef contextInput, ControlBuild.FileRef contextResult, ControlBuild.FileRef evaluateRequest,
-            List<ProducerGoldenVector> vectors) {
+            List<ProducerGoldenVector> vectors) implements ProducerGoldenSources {
         public ProducerGoldenPlan {
             vectors = List.copyOf(vectors);
-            if (!"xar.sdk-producer-golden-plan/v1".equals(schema) || machineId == null || machineId.isBlank()
-                    || clientContent == null || testContent == null || clientContent.bytes() < 1 || testContent.bytes() < 1
-                    || !vectors.stream().map(ProducerGoldenVector::milestone).toList().equals(List.of(GoldenMilestone.values())))
-                throw new IllegalArgumentException("Exact source-bound original producer plan and all eight ordered milestones required");
+            if (!"xar.sdk-producer-golden-plan/v1".equals(schema) || clientContent == null || testContent == null
+                    || clientContent.bytes() < 1 || testContent.bytes() < 1)
+                throw new IllegalArgumentException("Exact source-bound original producer plan required");
             absolute(originalInstallMapRef.path());
-            List<ControlBuild.FileRef> refs = new ArrayList<>(List.of(contextInput, contextResult, evaluateRequest));
-            for (var vector : vectors) refs.addAll(List.of(vector.request(), vector.result()));
-            unique(refs); long bytes = 0;
-            if (refs.stream().map(ref -> Path.of(ref.path()).normalize().toString().toLowerCase(java.util.Locale.ROOT)).distinct().count() != 19)
-                throw new IllegalArgumentException("Original nineteen fixture paths cannot have case aliases");
-            for (var ref : refs) {
-                absolute(ref.path());
-                if (ref.bytes() < 1 || ref.bytes() > 4 * MIB) throw new IllegalArgumentException("Nonempty bounded original producer bytes required");
-                bytes = Math.addExact(bytes, ref.bytes());
-            }
-            if (bytes > 4 * MIB) throw new IllegalArgumentException("Bounded complete nineteen-file producer fixture set required");
+            goldenSourceShape(machineId, contextInput, contextResult, evaluateRequest, vectors);
         }
     }
-    public static List<ControlBuild.FileRef> producerGoldenInputs(ProducerGoldenPlan plan) {
-        List<ControlBuild.FileRef> refs = new ArrayList<>(List.of(plan.contextInput(), plan.contextResult(), plan.evaluateRequest()));
-        for (var vector : plan.vectors()) refs.addAll(List.of(vector.request(), vector.result()));
+    private static List<ControlBuild.FileRef> goldenSourceInputs(ControlBuild.FileRef contextInput,
+            ControlBuild.FileRef contextResult, ControlBuild.FileRef evaluateRequest, List<ProducerGoldenVector> vectors) {
+        List<ControlBuild.FileRef> refs = new ArrayList<>(List.of(contextInput, contextResult, evaluateRequest));
+        for (var vector : vectors) refs.addAll(List.of(vector.request(), vector.result()));
         return List.copyOf(refs);
     }
+    private static void goldenSourceShape(String machineId, ControlBuild.FileRef contextInput,
+            ControlBuild.FileRef contextResult, ControlBuild.FileRef evaluateRequest, List<ProducerGoldenVector> vectors) {
+        if (machineId == null || machineId.isBlank()
+                || !vectors.stream().map(ProducerGoldenVector::milestone).toList().equals(List.of(GoldenMilestone.values())))
+            throw new IllegalArgumentException("One producer machine and eight ordered original milestones required");
+        var refs = goldenSourceInputs(contextInput, contextResult, evaluateRequest, vectors);
+        unique(refs); long bytes = 0;
+        if (refs.stream().map(ref -> Path.of(ref.path()).normalize().toString().toLowerCase(java.util.Locale.ROOT)).distinct().count() != 19)
+            throw new IllegalArgumentException("Original nineteen fixture paths cannot have case aliases");
+        for (var ref : refs) {
+            absolute(ref.path());
+            if (ref.bytes() < 1 || ref.bytes() > 4 * MIB) throw new IllegalArgumentException("Nonempty bounded original producer bytes required");
+            bytes = Math.addExact(bytes, ref.bytes());
+        }
+        if (bytes > 4 * MIB) throw new IllegalArgumentException("Bounded complete nineteen-file producer fixture set required");
+    }
+    public static List<ControlBuild.FileRef> producerGoldenInputs(ProducerGoldenPlan plan) {
+        return producerGoldenInputs((ProducerGoldenSources) plan);
+    }
+    public static List<ControlBuild.FileRef> producerGoldenInputs(ProducerGoldenSources plan) {
+        return goldenSourceInputs(plan.contextInput(), plan.contextResult(), plan.evaluateRequest(), plan.vectors());
+    }
+    static List<ControlBuild.FileRef> producerGoldenMetadataInputs(ProducerGoldenSources sources) {
+        return sources instanceof ProducerGoldenPlan legacy ? List.of(legacy.originalInstallMapRef()) : List.of();
+    }
+    static void requireDeclaredProducerMachine(ProducerGoldenSources sources, String runtimeMachineId) throws IOException {
+        if (sources instanceof ProducerGoldenPlan legacy && !legacy.machineId().equals(runtimeMachineId))
+            throw new IOException("Legacy producer golden machine differs from the selected runtime");
+    }
+    static void requireDeclaredProducerCohort(ProducerGoldenSources sources, SdkSourceAssembly.Digest client,
+            java.util.Optional<SdkSourceAssembly.Digest> test) throws IOException {
+        if (sources instanceof ProducerGoldenPlan legacy
+                && (!legacy.clientContent().equals(client) || test.isPresent() && !legacy.testContent().equals(test.orElseThrow())))
+            throw new IOException("Selected client/test differ from the declared original producer cohort");
+    }
+    public static ProducerGoldenSources readProducerGoldenSources(ControlBuild.FileRef sourceRef) throws IOException {
+        if (sourceRef.bytes() < 1 || sourceRef.bytes() > 4 * MIB) throw new IOException("Bounded golden source metadata required");
+        sourceRef.verify();
+        var node = read(Path.of(sourceRef.path()), com.fasterxml.jackson.databind.JsonNode.class);
+        String schema = node.path("schema").isTextual() ? node.path("schema").textValue() : "";
+        if ("xar.sdk-producer-golden-plan/v1".equals(schema)) return readProducerGoldenPlan(sourceRef);
+        if (!CHECKOUT_GOLDEN_SCHEMA.equals(schema)) throw new IOException("Unknown producer golden source schema");
+        var sources = ControlBuild.strictMapper().treeToValue(node, CheckoutProducerGoldenSources.class);
+        for (var source : producerGoldenInputs(sources)) {
+            source.verify();
+            var value = read(Path.of(source.path()), com.fasterxml.jackson.databind.JsonNode.class);
+            if (value == null || !value.isObject()) throw new IOException("Original golden JSON object required: " + source.path());
+            source.verify();
+        }
+        for (var vector : sources.vectors()) RootSoftwareFixtureInputsProducer.payload(vector.request(), "G2-" + vector.milestone().name());
+        sourceRef.verify(); return sources;
+    }
+
+    /** Publishes the nineteen original checkout files as source data, never as an installed SDK proof. */
+    public static ControlBuild.FileRef writeCheckoutProducerGoldenSources(Path javaSourceRoot, Path destination) throws IOException {
+        Path root = absolute(javaSourceRoot.toString()).toRealPath(), output = absolute(destination.toString());
+        ProjectStoragePolicy.requireBulkOutput(output.getParent()); SharedSourceFiles.plainAncestors(output);
+        var vectors = new ArrayList<ProducerGoldenVector>();
+        for (var milestone : GoldenMilestone.values()) {
+            Path directory = root.resolve("g2-research/src/test/resources/g2-http");
+            var request = checkoutGoldenObject(directory.resolve(milestone.name() + ".request.json"));
+            RootSoftwareFixtureInputsProducer.payload(request, "G2-" + milestone.name());
+            var result = checkoutGoldenObject(directory.resolve(milestone.name() + ".expected-result.json"));
+            vectors.add(new ProducerGoldenVector(milestone, request, result));
+        }
+        Path context = root.resolve("local-service/src/test/resources/g2-context");
+        var sources = new CheckoutProducerGoldenSources(CHECKOUT_GOLDEN_SCHEMA, WindowsJobProcess.currentMachineId(),
+                checkoutGoldenObject(context.resolve("context-input.json")),
+                checkoutGoldenObject(context.resolve("context-result.json")),
+                checkoutGoldenObject(context.resolve("evaluate-request.json")), vectors);
+        byte[] raw = ControlBuild.strictMapper().writeValueAsBytes(sources);
+        if (raw.length > 4 * MIB) throw new IOException("Bounded golden source metadata required");
+        Files.write(output, raw, StandardOpenOption.CREATE_NEW);
+        var ref = ControlBuild.FileRef.measure(output);
+        if (!sources.equals(readProducerGoldenSources(ref))) throw new IOException("Golden source metadata roundtrip differs");
+        return ref;
+    }
+
+    private static ControlBuild.FileRef checkoutGoldenObject(Path path) throws IOException {
+        var ref = ControlBuild.FileRef.measure(path);
+        if (ref.bytes() < 1 || ref.bytes() > 4 * MIB) throw new IOException("Bounded original golden object required");
+        var value = read(path, com.fasterxml.jackson.databind.JsonNode.class);
+        if (value == null || !value.isObject()) throw new IOException("Original golden JSON object required: " + path);
+        ref.verify(); return ref;
+    }
+
     public static ProducerGoldenPlan readProducerGoldenPlan(ControlBuild.FileRef planRef) throws IOException {
         planRef.verify(); ProducerGoldenPlan plan = read(Path.of(planRef.path()), ProducerGoldenPlan.class); planRef.verify();
         plan.originalInstallMapRef().verify(); var origin = read(Path.of(plan.originalInstallMapRef().path()), com.fasterxml.jackson.databind.JsonNode.class);
@@ -280,7 +377,7 @@ public final class FreshSdkFixtureStage {
     }
     private record PythonInput(String schema, Stage stage, List<String> importRoots, List<String> requiredModules,
             String observationPath, List<String> pytestArguments, ControlBuild.FileRef bootstrapRef,
-            ControlBuild.FileRef producerGoldenPlanRef, ProducerGoldenPlan producerGoldens,
+            ControlBuild.FileRef producerGoldenPlanRef, ProducerGoldenSources producerGoldens,
             ControlBuild.FileRef projectionClientTestRef, ScoreInputs scoreInputs, BudgetInputs budgetInputs, M0Inputs m0Inputs, List<ConsumerGroupInput> completeConsumers) {
         private PythonInput { completeConsumers = List.copyOf(completeConsumers); }
     }
@@ -567,7 +664,7 @@ public final class FreshSdkFixtureStage {
         List<String> args = pytestArguments(stage, Path.of(binding.assembly().graphRoot()), xml, scratch.resolve("pytest-temp"));
         write(input, new PythonInput("xar.sdk-python-origin-input/v7", stage, roots,
                 binding.required().stream().map(ExpectedModule::module).toList(), observation.toString(), args, config.rootBootstrapRef(),
-                config.producerGoldenPlanRef(), readProducerGoldenPlan(config.producerGoldenPlanRef()), source(binding, PROJECTION_TEST), stage == Stage.COMPLETE_CONTINUITY_FILES ? scoreInputs(binding) : null, stage == Stage.COMPLETE_CONTINUITY_FILES ? budgetInputs(config, binding) : null, m0Inputs(stage, binding, stageRoot), consumerGroups(stage, binding, stageRoot)), config, resources);
+                config.producerGoldenPlanRef(), readProducerGoldenSources(config.producerGoldenPlanRef()), source(binding, PROJECTION_TEST), stage == Stage.COMPLETE_CONTINUITY_FILES ? scoreInputs(binding) : null, stage == Stage.COMPLETE_CONTINUITY_FILES ? budgetInputs(config, binding) : null, m0Inputs(stage, binding, stageRoot), consumerGroups(stage, binding, stageRoot)), config, resources);
         Map<String, String> env = new TreeMap<>(String.CASE_INSENSITIVE_ORDER); env.putAll(System.getenv());
         env.keySet().removeIf(name -> name.toUpperCase(java.util.Locale.ROOT).startsWith("XAR_"));
         for (String name : List.of("PYTHONPATH", "PYTHONHOME", "PYTEST_ADDOPTS", "PYTEST_PLUGINS", "JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS")) env.remove(name);
@@ -616,7 +713,7 @@ public final class FreshSdkFixtureStage {
                 selected(binding, "ck3_autonomous_player/src/xar_autoplayer/" + name.replace('.', '/') + ".py", SdkSourceAssembly.SourceRole.SDK_SOURCE)));
         var helper = budgetTestSource(binding, BUDGET_HELPER, new SdkSourceAssembly.Digest(28524,
                 "3420dab5250ffe39246c30d9479c2cde73ee17eba1c16f6878a345db25fa010d"));
-        var receipt = ControlBuild.acceptedReceipt(Path.of(config.deploymentReceiptRef().path()));
+        var receipt = ControlBuild.verifiedCompletedReceipt(config.deploymentReceiptRef());
         var sourceCorpus = budgetCorpus(receipt.sourcePins(), Path.of(receipt.sourceRoot()).resolve(BUDGET_CORPUS));
         var compiledCorpus = budgetCorpus(receipt.compiledSourcePins(), Path.of(receipt.compiledSourceRoot()).resolve(BUDGET_CORPUS));
         return new BudgetInputs(new ExpectedModule(PROJECTION_CLIENT, source(binding, PROJECTION_CLIENT.replace('.', '/') + ".py")),
@@ -856,7 +953,7 @@ public final class FreshSdkFixtureStage {
         if (!views.consumerActualRef().equals(config.selectedAssemblyActualRef())) throw new IOException("Exact selected CONSUMER view required");
         var assembly = SdkSourceAssembly.readActual(config.selectedAssemblyActualRef());
         if (!Path.of(assembly.canonicalTestRepository()).toRealPath().equals(absolute(config.canonicalRepository()).toRealPath())) throw new IOException("Explicit canonical support repository differs");
-        var deployment = ControlBuild.acceptedReceipt(Path.of(config.deploymentReceiptRef().path()));
+        var deployment = ControlBuild.verifiedCompletedReceipt(config.deploymentReceiptRef());
         if (assembly.deploymentClosure().stream().noneMatch(item -> item.actualBuildReceipt().equals(config.deploymentReceiptRef())
                 && item.targetKind() == deployment.targetKind() && item.completeFiles().equals(deployment.completeDeployment()))) throw new IOException("Fresh view must bind this accepted deployment");
         Path work = absolute(config.workRoot());
@@ -899,13 +996,15 @@ public final class FreshSdkFixtureStage {
         }
         var bootstrap = RootSoftwareChildBootstrap.readConfiguration(config.rootBootstrapRef());
         sources.addAll(RootSoftwareChildBootstrap.inputRefs(bootstrap));
-        var golden = readProducerGoldenPlan(config.producerGoldenPlanRef());
+        var golden = readProducerGoldenSources(config.producerGoldenPlanRef());
         var client = required.stream().filter(row -> row.module().equals(PROJECTION_CLIENT)).findFirst().orElseThrow(() -> new IOException("Selected canonical client required")).source();
         var test = assembly.actualSourceClosure().stream().filter(row -> row.relativePath().equals(PROJECTION_TEST)).findFirst().orElseThrow().actual();
-        if (!golden.machineId().equals(config.machineId()) || !golden.clientContent().equals(new SdkSourceAssembly.Digest(client.bytes(), client.sha256()))
-                || !golden.testContent().equals(new SdkSourceAssembly.Digest(test.bytes(), test.sha256())) || !bootstrap.client().source().equals(client))
-            throw new IOException("One machine and selected client/test/Root bootstrap cohort required");
-        sources.add(golden.originalInstallMapRef()); sources.addAll(producerGoldenInputs(golden));
+        requireDeclaredProducerMachine(golden, config.machineId());
+        if (!bootstrap.client().source().equals(client))
+            throw new IOException("Selected canonical client/Root bootstrap required");
+        requireDeclaredProducerCohort(golden, new SdkSourceAssembly.Digest(client.bytes(), client.sha256()),
+                java.util.Optional.of(new SdkSourceAssembly.Digest(test.bytes(), test.sha256())));
+        sources.addAll(producerGoldenMetadataInputs(golden)); sources.addAll(producerGoldenInputs(golden));
         sources.addAll(List.of(config.pythonExecutable(), config.basePythonExecutable(), config.viewsActualRef(), config.selectedAssemblyActualRef(), config.deploymentReceiptRef(), config.supportContractRef(), config.executionCardRef(), config.rootBootstrapRef(), config.producerGoldenPlanRef()));
         sources.addAll(List.of(views.requestRef(), views.source32ReuseActualRef(), views.hardlinkAllocationActualRef(), views.storageEvidence()));
         sources.addAll(source32Metadata(read(Path.of(views.requestRef().path()), SdkSourceAssembly.ViewsRequest.class).source32Reuse(), views.sdkSourceViews()));
@@ -1056,7 +1155,7 @@ public final class FreshSdkFixtureStage {
             PythonInput expectedInput = new PythonInput("xar.sdk-python-origin-input/v7", stage, roots,
                     binding.required().stream().map(ExpectedModule::module).toList(), root.resolve("origins.json").toString(),
                     pytestArguments(stage, Path.of(binding.assembly().graphRoot()), root.resolve("pytest.xml"), root.resolve("scratch/pytest-temp")), config.rootBootstrapRef(),
-                    config.producerGoldenPlanRef(), readProducerGoldenPlan(config.producerGoldenPlanRef()), source(binding, PROJECTION_TEST), stage == Stage.COMPLETE_CONTINUITY_FILES ? scoreInputs(binding) : null, stage == Stage.COMPLETE_CONTINUITY_FILES ? budgetInputs(config, binding) : null, m0Inputs(stage, binding, root), consumerGroups(stage, binding, root));
+                    config.producerGoldenPlanRef(), readProducerGoldenSources(config.producerGoldenPlanRef()), source(binding, PROJECTION_TEST), stage == Stage.COMPLETE_CONTINUITY_FILES ? scoreInputs(binding) : null, stage == Stage.COMPLETE_CONTINUITY_FILES ? budgetInputs(config, binding) : null, m0Inputs(stage, binding, root), consumerGroups(stage, binding, root));
             if (!expectedInput.equals(read(Path.of(command.inputRef().path()), PythonInput.class))) throw new IOException("Actual fixed pytest/import plan differs");
             List<String> expectedArguments = List.of("-I", "-S", "-B", "-X", "utf8", "-X", "pycache_prefix=" + root.resolve("scratch/pycache-no-read"), "-c", OBSERVER, command.inputRef().path());
             if (!command.arguments().equals(expectedArguments)) throw new IOException("Actual independent SDK argv differs");

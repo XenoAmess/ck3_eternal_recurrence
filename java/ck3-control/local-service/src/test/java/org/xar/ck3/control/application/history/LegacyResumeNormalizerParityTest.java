@@ -1,0 +1,167 @@
+package org.xar.ck3.control.application.history;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.history.LegacyResumeNormalizer.*;
+import org.xar.ck3.control.contracts.StrictJson;
+
+/** Actual original Python pure consumer -> one Java complete canonical consumer.
+ * Required compatibility environment is explicit; missing Python/repository fails, never skips or passes.
+ * No Driver, native bridge, Game, writer, provider or persistent profile is constructed. */
+final class LegacyResumeNormalizerParityTest {
+    @TempDir Path directory;
+    private static final String PIPE="software-canonical-resume",SHA="a".repeat(64);
+    private record Case(String name,Obj payload,boolean includeHistory) {
+        Obj toJson(){return new Obj(Map.of("name",new Text(name),"payload",payload,"include_history",new Bool(includeHistory)));}
+    }
+    private static final String ORIGINAL="""
+        import hashlib,json,pathlib,sys
+        sys.dont_write_bytecode=True
+        root=pathlib.Path(sys.argv[1])
+        sys.path.insert(0,str(root/'ck3_autonomous_player'/'src'))
+        from xar_autoplayer.bridge.native_driver import load_native_driver_state_for_resume_payload
+        request=json.loads(pathlib.Path(sys.argv[2]).read_text(encoding='utf-8'))
+        output=[]
+        for case in request['cases']:
+            try:
+                normalized=load_native_driver_state_for_resume_payload(case['payload'],request['pipe'],include_command_history=case['include_history'])
+            except ValueError as failure:
+                row={'name':case['name'],'outcome':'rejected','error':str(failure)}
+            else:
+                row={'name':case['name'],'outcome':'ignored'} if normalized is None else {'name':case['name'],'outcome':'loaded','payload':normalized}
+            output.append(row)
+        source=root/'ck3_autonomous_player'/'src'/'xar_autoplayer'/'bridge'/'native_driver.py'
+        pathlib.Path(sys.argv[3]).write_text(json.dumps({'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'cases':output},ensure_ascii=False,allow_nan=False,separators=(',',':')),encoding='utf-8')
+        """;
+
+    @Test void actualOriginalCanonicalConsumerAndJavaAgreeOnFullPayloadHistoryMigrationManagedRestoreLifecycleAndGoals() throws Exception {
+        String configured=System.getProperty("xar.repository.root");
+        assertNotNull(configured,"required canonical whole-step property xar.repository.root; never skip");
+        assertFalse(configured.isBlank(),"canonical original repository property must be nonempty");
+        Path repository=Path.of(configured).toRealPath();
+        Path original=repository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py");
+        assertTrue(Files.isRegularFile(original),"actual original production consumer is required");
+        List<Case> cases=cases();Path input=directory.resolve("cases.json"),output=directory.resolve("original-results.json"),log=directory.resolve("original-process.log");
+        Files.write(input,DriverJson.encode(new Obj(Map.of("pipe",new Text(PIPE),"cases",new Arr(cases.stream().<Value>map(Case::toJson).toList())))));
+        String python=System.getProperty("xar.python");assertNotNull(python,"required canonical whole-step property xar.python; never skip");
+        assertFalse(python.isBlank());assertTrue(Path.of(python).isAbsolute(),"canonical Python must identify the exact interpreter");
+        var command=new ProcessBuilder(python,"-B","-c",ORIGINAL,repository.toString(),input.toString(),output.toString()).directory(repository.toFile()).redirectErrorStream(true).redirectOutput(log.toFile());
+        // The canonical properties are the only repository/interpreter inputs; these private process values
+        // are derived before importing any module that can freeze paths.
+        command.environment().put("PYTHONPATH",repository.resolve("ck3_autonomous_player/src").toString());
+        command.environment().put("XAR_SOURCE_REPOSITORY",repository.toString());
+        command.environment().put("PYTHONDONTWRITEBYTECODE","1");command.environment().put("PYTHONUTF8","1");
+        command.environment().put("PYTHONPYCACHEPREFIX",directory.resolve("unwritten-source-cache").toString());
+        Process process=command.start();process.getOutputStream().close();
+        boolean exited=process.waitFor(Duration.ofSeconds(60).toMillis(),TimeUnit.MILLISECONDS);
+        if(!exited){process.destroyForcibly();process.waitFor(5,TimeUnit.SECONDS);fail("original canonical compatibility process timed out");}
+        assertEquals(0,process.exitValue(),()->"original canonical compatibility process failed: "+readLog(log));
+        Obj result=DriverJson.object(Files.readAllBytes(output),4<<20);
+        assertEquals(new Text(DriverJson.sha256(Files.readAllBytes(original))),result.get("source_sha256"));
+        List<Value> expected=array(result.get("cases"),"original cases");assertEquals(cases.size(),expected.size());
+        for(int index=0;index<cases.size();index++) {
+            Case test=cases.get(index);Obj row=object(expected.get(index),"original result");assertEquals(new Text(test.name()),row.get("name"));
+            Result actual=LegacyResumeNormalizer.normalize(test.payload(),PIPE,test.includeHistory()?HistoryMaterialization.INCLUDE:HistoryMaterialization.OMIT);
+            String outcome=text(row.get("outcome"),"original outcome");
+            if(outcome.equals("loaded")) {
+                Loaded loaded=assertInstanceOf(Loaded.class,actual,test.name());Obj originalPayload=object(row.get("payload"),"original normalized payload");
+                assertEquals(DriverJson.toNode(originalPayload),DriverJson.toNode(loaded.normalizedPayload()),test.name());
+                assertEquals(loaded.normalizedPayload(),DriverJson.object(loaded.encode(),4<<20),test.name()+" full JSON type-domain roundtrip");
+            }else if(outcome.equals("ignored"))assertInstanceOf(Ignored.class,actual,test.name());
+            else assertInstanceOf(Rejected.class,actual,test.name());
+        }
+    }
+
+    @Test void missingNullUnknownAndUnboundEpisodeKeepDifferentCanonicalMeaningsWithoutConstructingComplete() {
+        Loaded legacy=loaded(base());assertEquals(Presence.MISSING,legacy.originalPresence().lifecycle());
+        assertTrue(legacy.lifecycleMigrationRequired());assertTrue(legacy.episode().isPresent());
+        assertInstanceOf(Rejected.class,LegacyResumeNormalizer.normalize(base().with("succession_lifecycle",Nil.INSTANCE),PIPE));
+        Loaded unknown=loaded(base().with("succession_lifecycle",unknownLifecycle()));
+        assertFalse(unknown.lifecycleMigrationRequired());assertEquals(new Text("unknown"),object(unknown.normalizedLifecycle(),"normalized unknown lifecycle").get("lifecycle"));
+        Loaded unbound=loaded(base().with("format_version",number(1)).with("episode_character_id",Nil.INSTANCE).with("episode_run_id",Nil.INSTANCE));
+        assertEquals(1,unbound.formatVersion());assertTrue(unbound.episode().isEmpty());
+        assertSame(Nil.INSTANCE,unbound.normalizedPayload().get("episode_character_id"));
+        assertInstanceOf(Rejected.class,LegacyResumeNormalizer.normalize(base().with("episode_character_id",Nil.INSTANCE),PIPE));
+    }
+
+    @Test void receiptOmissionStillValidatesEveryHistoryRowAndCannotMasqueradeAsAnEmptyHistory() {
+        Loaded receipt=assertInstanceOf(Loaded.class,LegacyResumeNormalizer.normalize(withHistory(),PIPE,HistoryMaterialization.OMIT));
+        assertFalse(receipt.normalizedPayload().members().containsKey("command_history"));
+        assertThrows(IllegalStateException.class,receipt::commandHistory);
+        var rows=new ArrayList<>(array(withHistory().get("command_history"),"history"));
+        rows.set(rows.size()-1,object(rows.getLast(),"last original row").with("ok",new Text("UNKNOWN")));
+        assertInstanceOf(Rejected.class,LegacyResumeNormalizer.normalize(withHistory().with("command_history",new Arr(rows)),PIPE,HistoryMaterialization.OMIT));
+    }
+
+    @Test void exactIntegerBoundariesAndLegacyWideAdvisoryDoNotRelaxTheExistingTypedPlanningDecoder() {
+        assertInstanceOf(Ignored.class,LegacyResumeNormalizer.normalize(base().with("format_version",new Bool(true)),PIPE));
+        assertInstanceOf(Rejected.class,LegacyResumeNormalizer.normalize(base().with("bridge_pid",new Bool(true)),PIPE));
+        assertInstanceOf(Rejected.class,LegacyResumeNormalizer.normalize(base().with("campaign_goal",goal().with("format_version",new Bool(true))),PIPE));
+        Obj wide=failure(52).with("war_id",new IntegerValue(BigInteger.ONE.shiftLeft(80))).with("original_extension",new Arr(List.of(Nil.INSTANCE,new DecimalValue("1.25"))));
+        assertEquals(wide,RollbackWarFailures.normalizeLegacyDriverFailure(wide).orElseThrow());
+        assertTrue(RollbackWarFailures.decode(wide).isEmpty(),"legacy DATA is not a narrowed typed retry permission");
+        assertTrue(RollbackWarFailures.normalizeLegacyDriverFailure(wide.with("army_id",new Bool(true))).isEmpty());
+        assertTrue(RollbackWarFailures.normalizeLegacyDriverFailure(wide.with("army_id",number(0))).isEmpty(),"the old persisted-advisory contract differs from the runtime public-CUnit-zero correction");
+    }
+
+    private static List<Case> cases() {
+        var cases=new ArrayList<Case>();cases.add(new Case("v1-unbound",base().with("format_version",number(1)).with("episode_character_id",Nil.INSTANCE).with("episode_run_id",Nil.INSTANCE),true));
+        cases.add(new Case("complete-unknown-history-and-goal-extensions",withHistory().with("campaign_goal",goal()),true));
+        cases.add(new Case("receipt-omits-only-history",withHistory().with("campaign_goal",goal()),false));
+        cases.add(new Case("missing-plural-completed-epochs",epochState(),true));
+        cases.add(new Case("legacy-wide-scope-completed-epochs",epochState().with("rollback_war_failure",failure(52).with("war_id",new IntegerValue(BigInteger.ONE.shiftLeft(80)))),true));
+        cases.add(new Case("plural-duplicates-and-scope",base().with("last_checkpoint",checkpoint()).with("rollback_war_failures",new Arr(List.of(failure(52),failure(52),failure(54),failure(55).with("war_id",number(9))))),true));
+        cases.add(new Case("managed-transaction-retained",managedState(),true));
+        cases.add(new Case("invalid-managed-normalizes-null",managedState().with("bridge_pid",number(99)),true));
+        cases.add(new Case("expectation-original-title-metadata",base().with("succession_expectation",expectation()),true));
+        cases.add(new Case("expectation-episode-mismatch",base().with("succession_expectation",expectation()).with("episode_run_id",new Text("other")),true));
+        cases.add(new Case("explicit-unknown-lifecycle",base().with("succession_lifecycle",unknownLifecycle()),true));
+        cases.add(new Case("explicit-null-lifecycle",base().with("succession_lifecycle",Nil.INSTANCE),true));
+        cases.add(new Case("wrong-pipe",base().with("pipe_name",new Text("different")),true));
+        cases.add(new Case("unsupported-v3",base().with("format_version",number(3)),true));
+        cases.add(new Case("boolean-version",base().with("format_version",new Bool(true)),true));
+        cases.add(new Case("bad-tail-in-receipt",base().with("command_history",new Arr(List.of(row(1,"unknown-original",Nil.INSTANCE).with("index",new Bool(true))))),false));
+        return List.copyOf(cases);
+    }
+    private static Obj base(){return json("{\"format_version\":2,\"pipe_name\":\""+PIPE+"\",\"bridge_pid\":42,\"episode_character_id\":7,\"episode_run_id\":\"e\",\"command_history\":[],\"last_checkpoint\":null}");}
+    private static Obj withHistory() {
+        Obj active=new Obj(Map.of("active_siege",new Obj(Map.of()),"original",new IntegerValue(BigInteger.ONE.shiftLeft(80))));
+        Obj inactive=new Obj(Map.of("active_siege",Nil.INSTANCE));
+        Obj war=new Obj(Map.of("objective_province_states",new Arr(List.of(active,inactive,new Bool(false))),"unknown_original",new DecimalValue("1.2500")));
+        Obj result=new Obj(Map.of("war_progress_after",new Obj(Map.of("wars",new Arr(List.of(war,new Text("retained non-object"))))),"raw_extension",Nil.INSTANCE));
+        return base().with("command_history",new Arr(List.of(row(1,"unknown-failed",Nil.INSTANCE).with("ok",new Bool(false)).with("error",new Text("UNKNOWN")),row(2,"query-original",result))));
+    }
+    private static Obj checkpoint(){return json("{\"sha256\":\""+SHA+"\",\"size\":17,\"date_raw\":24000,\"history_index\":1}");}
+    private static Obj failure(int target){return json("{\"status\":\"rolled_back_active_route\",\"episode_run_id\":\"e\",\"checkpoint_sha256\":\""+SHA+"\",\"war_id\":25,\"army_id\":304,\"restored_origin_province_id\":48,\"target_province_id\":"+target+",\"route_origin_province_id\":48,\"route_province_ids\":[50,"+target+"],\"restored_date_raw\":24000,\"extension\":{\"unknown\":[null,{},1.25]}}");}
+    private static Obj epochState() {
+        var history=new ArrayList<Value>();history.add(row(1,"save-checkpoint",new Obj(Map.of("checkpoint",checkpoint()))));
+        for(int target:List.of(52,54)) {
+            history.add(row(history.size()+1,"preview-move-army-304-to-"+target,json("{\"route_preview\":{\"status\":\"available\",\"army_id\":304,\"origin_province_id\":48,\"target_province_id\":"+target+",\"route_province_ids\":[50,"+target+"],\"previewed_date_raw\":24000}}")));
+            history.add(row(history.size()+1,"move-army-304-to-"+target,json("{\"war_action\":{\"status\":\"moving\",\"army_id\":304,\"target_province_id\":"+target+",\"submitted_date_raw\":24000},\"player_armies\":[{\"army_id\":304,\"move_target_province_id\":"+target+",\"route_province_ids\":["+target+"]}]}")));
+            history.add(row(history.size()+1,"restore-checkpoint",new Obj(Map.of("status",new Text("restored")))));
+        }return base().with("last_checkpoint",checkpoint()).with("command_history",new Arr(history)).with("rollback_war_failure",failure(52));
+    }
+    private static Obj managedState() {
+        Obj transaction=json("{\"status\":\"awaiting_checkpoint_rebind\",\"request_id\":\"restore-original\",\"source_bridge_pid\":42,\"replacement_bridge_pid\":43,\"checkpoint_sha256\":\""+SHA+"\",\"checkpoint_size\":17,\"checkpoint_date_raw\":24000,\"history_index\":1,\"episode_character_id\":7,\"episode_run_id\":\"e\",\"original_extension\":[null,{}]}");
+        return base().with("bridge_pid",number(43)).with("last_checkpoint",checkpoint()).with("command_history",new Arr(List.of(row(1,"save-checkpoint",new Obj(Map.of("checkpoint",checkpoint())))))).with("managed_restore_transaction",transaction);
+    }
+    private static Obj expectation(){return json("{\"schema\":\"xar.ck3.succession-expectation/v1\",\"status\":\"available\",\"binding\":{\"snapshot_id\":\"original\",\"revision\":18446744073709551615,\"native_revision\":1,\"date_raw\":24000,\"episode_run_id\":\"e\",\"episode_character_id\":7},\"expectation_state\":\"successor_expected\",\"predecessor_character_id\":7,\"expected_successor_character_id\":8,\"title_expectations\":[{\"title\":{\"title_id\":10,\"tier_raw\":\"unknown-original\",\"extension\":[null,{}]},\"first_heir_character_id\":8,\"primary\":true}],\"risk_state\":\"single_successor\",\"unavailable_reason\":null}");}
+    private static Obj goal(){return json("{\"format_version\":1,\"goal_key\":\"dynasty_continuity\",\"campaign_id\":\"original-campaign\",\"origin_character_id\":7,\"current_character_id\":7,\"progress\":{\"reconciled_successions\":900719925474099312345,\"last_succession\":{\"untyped_legacy_extension\":[null,{}]},\"unknown_progress\":true},\"unknown_goal\":[null,1.25]}");}
+    private static Obj unknownLifecycle(){return json("{\"schema\":\"xar.ck3.succession-lifecycle-binding/v1\",\"lifecycle\":\"unknown\",\"xar_enabled\":null,\"pact_contract\":\"unknown\",\"source\":\"unbound\",\"environment_sha256\":null}");}
+    private static Obj row(int index,String command,Value result){return new Obj(Map.of("index",number(index),"command",new Text(command),"ok",new Bool(true),"result",result));}
+    private static IntegerValue number(long value){return new IntegerValue(BigInteger.valueOf(value));}
+    private static Obj json(String raw){return DriverJson.object(raw.getBytes(java.nio.charset.StandardCharsets.UTF_8),4<<20);}
+    private static Loaded loaded(Obj original){return assertInstanceOf(Loaded.class,LegacyResumeNormalizer.normalize(original,PIPE));}
+    private static String readLog(Path path){try {byte[] bytes=Files.readAllBytes(path);return new String(bytes,0,Math.min(bytes.length,65536),java.nio.charset.StandardCharsets.UTF_8);}catch(java.io.IOException failed){return failed.toString();}}
+}

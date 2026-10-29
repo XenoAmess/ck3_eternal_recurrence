@@ -12,6 +12,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Software-only persistent CI route. All receipt and launch data below are synthetic. */
@@ -28,9 +30,9 @@ public final class NativeProjectExeRegistrationTest {
 
     @Test void originalProductionCallerRegression() throws Exception {
         Path report = temporary.resolve("regression.json");
-        NativeProjectExeUacRegression.main(new String[] {temporary.resolve("original-81").toString(), report.toString()});
+        NativeProjectExeUacRegression.main(new String[] {temporary.resolve("original-86").toString(), report.toString()});
         JsonNode actual = JSON.readTree(Files.readAllBytes(report));
-        assertEquals(81, actual.path("tests").intValue());
+        assertEquals(86, actual.path("tests").intValue());
         assertEquals(0, actual.path("failures").intValue());
         assertEquals(0, actual.path("uac_calls").longValue());
         assertEquals(0, actual.path("defender_calls").longValue());
@@ -131,6 +133,210 @@ public final class NativeProjectExeRegistrationTest {
         assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyBuildActual(cleanup));
         ObjectNode live = actual.deepCopy(); ((ObjectNode)live.get("result").get("accounting")).put("active_processes", 1);
         assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyBuildActual(live));
+    }
+
+    @Test void currentSingleInjectorTypedPlanRoundtripCannotWidenTheLegacyTargets() throws Exception {
+        String sourceRoot = "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/dev61/ck3_autonomous_player/native_bridge";
+        String buildRoot = "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/build61/dev";
+        ControlBuild.FileRef data = new ControlBuild.FileRef(temporary.resolve("DATA-only-not-a-live-input.json").toString(), 1, "0".repeat(64));
+        ControlBuild.FileRef tools = new ControlBuild.FileRef(temporary.resolve("DATA-only-S26-build.json").toString(), 202195,
+                "b88971ee1680a659363ba41a685a8ba4766c746787b46a9431aa730d8aefe461");
+        ControlBuild.FileRef injector = new ControlBuild.FileRef(Path.of(buildRoot).resolve("xar_ck3_bridge_injector.exe").toString(), 39936,
+                "5337dd8be7c5aa44e4b7f48f9086ba6ee973f085316a74ff86881f73db59a185");
+        var current = new NativeProjectExeUac.CurrentNativeBuild("xar.current-native-build-uac-input/v1",
+                sourceRoot, buildRoot, data, data, data, data, tools, injector);
+        String sid = "S-1-5-21-11-22-33-1001";
+        var plan = new NativeProjectExeUac.CurrentNativeBuildPlan("xar.current-native-build-uac-plan/v1", MACHINE,
+                START, DEADLINE, "/root/native_execution", sid, 2700, current, data, data, data, data,
+                List.of(data), List.of(data), "C:/jdk-21", List.of(data), temporary.toString(),
+                temporary.resolve("intent.json").toString(), temporary.resolve("launch.json").toString(),
+                temporary.resolve("result.json").toString(), temporary.resolve("child-intent.json").toString(),
+                temporary.resolve("child-outcome.json").toString(), temporary.resolve("shared.stdout").toString(),
+                temporary.resolve("shared.stderr").toString());
+        byte[] raw = JSON.writeValueAsBytes(plan);
+        assertEquals(plan, NativeProjectExeUac.parseCurrentNativeBuildPlan(raw));
+        ObjectNode value = (ObjectNode)JSON.readTree(raw);
+        ObjectNode badSid = value.deepCopy(); badSid.put("expected_owner_sid", 1001);
+        assertThrows(IOException.class, () -> NativeProjectExeUac.parseCurrentNativeBuildPlan(JSON.writeValueAsBytes(badSid)));
+        ObjectNode missing = value.deepCopy(); missing.remove("uac_capacity_ref");
+        assertThrows(IOException.class, () -> NativeProjectExeUac.parseCurrentNativeBuildPlan(JSON.writeValueAsBytes(missing)));
+        ObjectNode wrongWait = value.deepCopy(); wrongWait.put("wait_seconds", true);
+        assertThrows(IOException.class, () -> NativeProjectExeUac.parseCurrentNativeBuildPlan(JSON.writeValueAsBytes(wrongWait)));
+        ObjectNode widened = value.deepCopy();
+        ((ObjectNode)widened.get("current_native_build").get("injector")).put("path", "D:/arbitrary.exe");
+        assertThrows(IOException.class, () -> NativeProjectExeUac.parseCurrentNativeBuildPlan(JSON.writeValueAsBytes(widened)));
+        assertThrows(IllegalArgumentException.class, () -> new NativeProjectExeUac.NativeBuildRoot(buildRoot));
+        assertEquals(2700, plan.waitSeconds()); // DATA shape only: the original deadline/capacity qualification is not invoked.
+    }
+
+    @Test void successorCarrierUsesProductionCompletedProofAndRejectsCrossCarrierAndOldS26Execution() throws Exception {
+        // Existing fixture supplies a real native0/Job0 terminal and synthetic bounded archive.
+        // This tests software proof consumption, never a genuine Maven build or UAC launch.
+        var first = ControlBuildTest.completedReceiptFixture(temporary.resolve("provider-first"));
+        var other = ControlBuildTest.completedReceiptFixture(temporary.resolve("provider-other"));
+        var firstRef = first.receiptRef(); var otherRef = other.receiptRef();
+        assertEquals(first.receipt(), NativeProjectExeUac.qualifyCurrentCarrier(firstRef, firstRef, first.receipt().completeDeployment()));
+        assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyCurrentCarrier(
+                firstRef, otherRef, first.receipt().completeDeployment()), "A standing cannot substitute another qualified carrier");
+        assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyCurrentCarrier(
+                firstRef, firstRef, other.receipt().completeDeployment()), "Exact complete deployment identities cannot be crossed");
+        var successor = providerPlan(firstRef, true);
+        assertEquals(successor, NativeProjectExeUac.parseCurrentNativeBuildPlan(JSON.writeValueAsBytes(successor)));
+        NativeProjectExeUac.requireCurrentProviderExecution(successor);
+        var legacy = providerPlan(new ControlBuild.FileRef(temporary.resolve("historical-S26-ref.json").toString(), 202195,
+                "b88971ee1680a659363ba41a685a8ba4766c746787b46a9431aa730d8aefe461"), false);
+        assertThrows(IOException.class, () -> NativeProjectExeUac.requireCurrentProviderExecution(legacy),
+                "Original S26 v1 fields remain historical and cannot authorize another process");
+        assertThrows(IllegalArgumentException.class, () -> providerPlan(firstRef, false), "V1 must retain its original exact carrier pin");
+        assertThrows(IllegalArgumentException.class, () -> providerPlan(legacy.currentNativeBuild().qualifiedToolsBuildRef(), true),
+                "V2 must not relabel the old S26 carrier");
+        ObjectNode mixed = (ObjectNode) JSON.readTree(JSON.writeValueAsBytes(successor));
+        mixed.put("schema", "xar.current-native-build-uac-plan/v1");
+        assertThrows(IOException.class, () -> NativeProjectExeUac.parseCurrentNativeBuildPlan(JSON.writeValueAsBytes(mixed)));
+        ObjectNode missing = (ObjectNode) JSON.readTree(JSON.writeValueAsBytes(successor));
+        ((ObjectNode) missing.get("current_native_build")).remove("qualified_tools_build_ref");
+        assertThrows(IOException.class, () -> NativeProjectExeUac.parseCurrentNativeBuildPlan(JSON.writeValueAsBytes(missing)));
+        Path actualArchive = first.deploymentRoot().resolve("ck3-control-build-tools-0.1.0-SNAPSHOT.jar");
+        Files.writeString(actualArchive, "changed after the recorded completion");
+        assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyCurrentCarrier(firstRef, firstRef, first.receipt().completeDeployment()),
+                "Actual completed source/deployment/runtime/terminal proof checks must remain in the execution carrier reader");
+    }
+
+    @Test void publicCliDispatchesCurrentV2ReviewExecuteAndAdminChildBeforeAnyLaunchAndRejectsUnknownSchemas() throws Exception {
+        var carrier = new ControlBuild.FileRef(temporary.resolve("CLI-DATA-current-tools.json").toString(), 7, "1".repeat(64));
+        var plan = providerPlan(carrier, true);
+        ObjectNode wire = (ObjectNode) JSON.readTree(JSON.writeValueAsBytes(plan));
+        // A deterministic first current-plan business guard proves the real public dispatcher selected the v2 reader.
+        // The failure precedes all injector/runtime/native token reads and every process-launch path.
+        wire.put("expected_owner_sid", "not-a-Windows-account-SID");
+        Path path = temporary.resolve("cli-current-v2.json"); Files.write(path, JSON.writeValueAsBytes(wire));
+        var ref = ControlBuild.FileRef.measure(path);
+        IOException review = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{"review", path.toString()}));
+        assertEquals("full canonical Windows SID required", review.getMessage());
+        IOException execute = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{
+                "execute-approved-plan", path.toString(), ref.sha256(), plan.deadlineAtUtc()}));
+        assertEquals("full canonical Windows SID required", execute.getMessage());
+        IOException admin = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{
+                "current-native-build-admin-child", path.toString(), Long.toString(ref.bytes()), ref.sha256(), plan.deadlineAtUtc()}));
+        assertEquals("full canonical Windows SID required", admin.getMessage());
+        assertFalse(Files.exists(Path.of(plan.intentPath())));
+        assertFalse(Files.exists(Path.of(plan.adminChildIntentPath())));
+        for (String schema : List.of("xar.current-native-build-uac-plan/v99", "xar.current-native-build-uac-input/v2",
+                "xar.exact-two-exe-uac-plan/v99")) {
+            wire.put("schema", schema); Files.write(path, JSON.writeValueAsBytes(wire));
+            var wrong = ControlBuild.FileRef.measure(path);
+            IOException wrongReview = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{"review", path.toString()}));
+            assertEquals("unsupported versioned UAC plan schema", wrongReview.getMessage(), schema);
+            IOException wrongExecute = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{
+                    "execute-approved-plan", path.toString(), wrong.sha256(), plan.deadlineAtUtc()}));
+            assertEquals("unsupported versioned UAC plan schema", wrongExecute.getMessage(), schema);
+        }
+        var oldCarrier = new ControlBuild.FileRef(temporary.resolve("CLI-DATA-old-S26.json").toString(), 202195,
+                "b88971ee1680a659363ba41a685a8ba4766c746787b46a9431aa730d8aefe461");
+        var legacy = providerPlan(oldCarrier, false);
+        Files.write(path, JSON.writeValueAsBytes(legacy)); var legacyRef = ControlBuild.FileRef.measure(path);
+        IOException oldExecute = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{
+                "execute-approved-plan", path.toString(), legacyRef.sha256(), legacy.deadlineAtUtc()}));
+        assertTrue(oldExecute.getMessage().contains("historical only"));
+        IOException oldAdmin = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{
+                "current-native-build-admin-child", path.toString(), Long.toString(legacyRef.bytes()), legacyRef.sha256(), legacy.deadlineAtUtc()}));
+        assertTrue(oldAdmin.getMessage().contains("historical only"));
+        assertFalse(Files.exists(Path.of(legacy.intentPath())));
+        assertFalse(Files.exists(Path.of(legacy.adminChildIntentPath())));
+    }
+
+    private NativeProjectExeUac.CurrentNativeBuildPlan providerPlan(ControlBuild.FileRef carrier, boolean successor) {
+        String sourceRoot = "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/dev61/ck3_autonomous_player/native_bridge";
+        String buildRoot = "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/build61/dev";
+        var data = new ControlBuild.FileRef(temporary.resolve("provider-plan-DATA.json").toString(), 1, "0".repeat(64));
+        var injector = new ControlBuild.FileRef(Path.of(buildRoot).resolve("xar_ck3_bridge_injector.exe").toString(), 39936,
+                "5337dd8be7c5aa44e4b7f48f9086ba6ee973f085316a74ff86881f73db59a185");
+        var build = new NativeProjectExeUac.CurrentNativeBuild(
+                successor ? "xar.current-native-build-uac-input/v2" : "xar.current-native-build-uac-input/v1",
+                sourceRoot, buildRoot, data, data, data, data, carrier, injector);
+        return new NativeProjectExeUac.CurrentNativeBuildPlan(
+                successor ? "xar.current-native-build-uac-plan/v2" : "xar.current-native-build-uac-plan/v1",
+                MACHINE, START, DEADLINE, "/root/native_execution", "S-1-5-21-11-22-33-1001", 2700, build,
+                data, data, data, data, List.of(data), List.of(data), "C:/jdk-21", List.of(data), temporary.toString(),
+                temporary.resolve("provider-intent.json").toString(), temporary.resolve("provider-launch.json").toString(),
+                temporary.resolve("provider-result.json").toString(), temporary.resolve("provider-child-intent.json").toString(),
+                temporary.resolve("provider-child-outcome.json").toString(), temporary.resolve("provider-shared.stdout").toString(),
+                temporary.resolve("provider-shared.stderr").toString());
+    }
+
+    @Test void currentThreeSettingsUsesFullHelperIdentityAndPreservesNonPathSets() throws Exception {
+        var helper = new WindowsJobProcess.ProcessIdentity(1234, "18446744073709551615", temporary.resolve("DATA-python.exe").toString());
+        String sid = "S-1-5-21-11-22-33-1001";
+        ObjectNode receipt = currentSettingsData(sid, helper.pid());
+        var proof = NativeProjectExeUac.qualifyThreeSettings(JSON.readTree(JSON.writeValueAsBytes(receipt)), sid, helper);
+        assertEquals("1234", proof.processIdDecimal());
+        assertEquals(sid, proof.tokenUserSid());
+        assertEquals(proof, JSON.readValue(JSON.writeValueAsBytes(proof), NativeProjectExeUac.ThreeSettingsReadback.class));
+        ObjectNode reordered = receipt.deepCopy();
+        ((ObjectNode)reordered.get("after_settings")).putArray("ExclusionExtension").add(".a").add(".b").add(".a");
+        NativeProjectExeUac.qualifyThreeSettings(reordered, sid, helper);
+        for (Mutation mutation : List.<Mutation>of(
+                row -> row.put("settings_readback_complete", 1),
+                row -> row.put("settings_readback_process_id", true),
+                row -> row.put("settings_readback_process_id", 1235),
+                row -> row.put("settings_readback_token_user_sid", "S-1-5-21-99-22-33-1001"),
+                row -> row.put("observed_extensions_unchanged", false),
+                row -> row.put("settings_readback_error", "latched read failure"),
+                row -> row.putNull("before_settings"),
+                row -> row.remove("after_settings"),
+                row -> row.put("broker_schema", "DATA-broker-is-another-proof-scope"),
+                row -> ((ObjectNode)row.get("after_settings")).putArray("ExclusionProcess").add("changed.exe"),
+                row -> ((ObjectNode)row.get("after_settings")).put("ExclusionExtension", false),
+                row -> ((ObjectNode)row.get("after_settings")).putArray("ExclusionPath").add("different-original-path"))) {
+            ObjectNode changed = receipt.deepCopy(); mutation.apply(changed);
+            assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyThreeSettings(changed, sid, helper));
+        }
+        NativeProjectExeUac.requireSameOwnerSid(sid, sid);
+        assertThrows(IOException.class, () -> NativeProjectExeUac.requireSameOwnerSid(sid, "S-1-5-21-99-22-33-1001"));
+        assertThrows(IOException.class, () -> NativeProjectExeUac.requireCanonicalSid("S-1-5-21-11-22-33-01001"));
+        assertThrows(IOException.class, () -> NativeProjectExeUac.requireCanonicalSid("S-1-281474976710656-1"));
+        assertThrows(IOException.class, () -> NativeProjectExeUac.requireCanonicalSid("S-1-5-4294967296"));
+    }
+
+    @Test void originalS26V2JavaProducerFeedsOnlyItsExactVersionedDecoder() throws Exception {
+        ControlBuild.FileRef pin = new ControlBuild.FileRef(temporary.resolve("DATA-only-pin.json").toString(), 1, "0".repeat(64));
+        var identity = new WindowsJobProcess.ProcessIdentity(1234, "18446744073709551615", temporary.resolve("DATA-java.exe").toString());
+        var command = new WindowsJobProcess.CommandResult(identity, 0, .1,
+                new WindowsJobProcess.Accounting(1024, 0, 1L << 30, WindowsJobProcess.REQUIRED_FLAGS), null);
+        var producer = new SharedOwnedCommand.Terminal("xar.shared-owned-command-terminal/v2", MACHINE, START,
+                SharedOwnedCommand.Status.PASS, "/root/native_execution", "r4-slot1", null, pin, pin, pin, List.of(pin),
+                new SharedOwnedCommand.Outer("1234", 256L << 20, false, "DATA conservative outer reservation"),
+                true, command, new WindowsJobProcess.JobDiagnosticOutcome(WindowsJobProcess.DiagnosticWriteState.NOT_REQUESTED,
+                        null, null, null), SharedOwnedCommand.Check.MATCH, SharedOwnedCommand.Check.MATCH, SharedOwnedCommand.Check.MATCH,
+                null, List.of(), List.of("DATA-only-no-launch"), pin, pin, 1024, 0, 0);
+        byte[] raw = SharedOwnedCommand.encodeTerminal(producer, false);
+        var decoded = NativeProjectExeUac.parseCurrentSharedJavaTerminal(raw);
+        assertEquals(producer.schema(), decoded.schema());
+        assertEquals(producer.child(), decoded.child());
+        assertEquals(producer.outer(), decoded.outer());
+        assertEquals(26, JSON.readTree(raw).size());
+        for (Mutation mutation : List.<Mutation>of(
+                row -> row.put("schema", "xar.shared-owned-command-terminal/v4"),
+                row -> row.putNull("java_invocation_evidence_ref"),
+                row -> row.remove("runtime_postcheck"),
+                row -> row.put("child_started", 1))) {
+            ObjectNode changed = (ObjectNode)JSON.readTree(raw); mutation.apply(changed);
+            assertThrows(IOException.class, () -> NativeProjectExeUac.parseCurrentSharedJavaTerminal(JSON.writeValueAsBytes(changed)));
+        }
+    }
+
+    /** Exact new helper wire DATA; it grants no source, process-launch or current manifest qualification. */
+    private ObjectNode currentSettingsData(String sid, long pid) throws Exception {
+        ObjectNode receipt = (ObjectNode)JSON.readTree(evidence().raw());
+        receipt.put("settings_readback_schema", "xar.project-exe-three-settings-readback/v1");
+        receipt.put("settings_readback_complete", true); receipt.putNull("settings_readback_error");
+        receipt.put("observed_extensions_unchanged", true); receipt.put("observed_processes_unchanged", true);
+        receipt.put("settings_readback_process_id", pid); receipt.put("settings_readback_token_user_sid", sid);
+        ObjectNode before = receipt.putObject("before_settings"); before.set("ExclusionPath", receipt.get("before").deepCopy());
+        before.putArray("ExclusionExtension").add(".a").add(".b"); before.putArray("ExclusionProcess").add("old.exe");
+        ObjectNode after = receipt.putObject("after_settings"); after.set("ExclusionPath", receipt.get("after").deepCopy());
+        after.putArray("ExclusionExtension").add(".b").add(".a"); after.putArray("ExclusionProcess").add("old.exe");
+        return receipt;
     }
 
     private record Evidence(NativeProjectExeUac.Review review, NativeProjectExeUac.Intent intent,

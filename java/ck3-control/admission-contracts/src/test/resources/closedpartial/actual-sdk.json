@@ -1,0 +1,30 @@
+{
+  "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED",
+  "processes": [
+    {
+      "role": "sdk_queue",
+      "pid": 217936,
+      "creation_filetime": 134371434908911779,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "kernel_exit_observed": true,
+      "wait_result": 0,
+      "exit_code": 1,
+      "observation_error": null
+    },
+    {
+      "role": "sdk_application",
+      "pid": 213088,
+      "creation_filetime": 134371435189397838,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "kernel_exit_observed": true,
+      "wait_result": 0,
+      "exit_code": 0,
+      "observation_error": null
+    }
+  ],
+  "normal": false,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "launcher_exit_code": 1,
+  "Game_stopped": false,
+  "recording_stopped": false
+}

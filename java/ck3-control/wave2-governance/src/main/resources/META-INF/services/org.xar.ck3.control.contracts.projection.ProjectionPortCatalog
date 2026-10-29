@@ -1,0 +1,4 @@
+org.xar.ck3.control.wave2.governance.projection.GovernanceWave2ProjectionCatalog
+org.xar.ck3.control.wave2.governance.educationneeds.EducationProjectionPortCatalog
+org.xar.ck3.control.wave2.governance.betrothal.MarriageWave2ProjectionCatalog
+org.xar.ck3.control.wave2.governance.succession.SuccessionProjectionCatalog

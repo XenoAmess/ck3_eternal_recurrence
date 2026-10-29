@@ -1,0 +1,454 @@
+{
+  "schema": "xar.ck3.java-campaign-cadence-producer-inputs/v1",
+  "cases": [
+    {
+      "id": "date-1066.9.15",
+      "request": {
+        "operation": "date_to_raw",
+        "date": "1066.9.15"
+      }
+    },
+    {
+      "id": "date-1096.9.15",
+      "request": {
+        "operation": "date_to_raw",
+        "date": "1096.9.15"
+      }
+    },
+    {
+      "id": "date-1096.9.23",
+      "request": {
+        "operation": "date_to_raw",
+        "date": "1096.9.23"
+      }
+    },
+    {
+      "id": "date-1068.2.28",
+      "request": {
+        "operation": "date_to_raw",
+        "date": "1068.2.28"
+      }
+    },
+    {
+      "id": "date-0001.01.01",
+      "request": {
+        "operation": "date_to_raw",
+        "date": "0001.01.01"
+      }
+    },
+    {
+      "id": "roundtrip-first",
+      "request": {
+        "operation": "raw_to_date",
+        "raw": 53144328
+      }
+    },
+    {
+      "id": "bad-raw-subday",
+      "request": {
+        "operation": "raw_to_date",
+        "raw": 53144329
+      }
+    },
+    {
+      "id": "bad-leap-day",
+      "request": {
+        "operation": "date_to_raw",
+        "date": "1068.2.29"
+      }
+    },
+    {
+      "id": "bad-unicode-date",
+      "request": {
+        "operation": "date_to_raw",
+        "date": "١٠٦٦.9.15"
+      }
+    },
+    {
+      "id": "month-full",
+      "request": {
+        "operation": "month_boundaries",
+        "start_date": "1066.9.15",
+        "months": 360
+      }
+    },
+    {
+      "id": "month-clamp",
+      "request": {
+        "operation": "month_boundaries",
+        "start_date": "1068.1.31",
+        "months": 2
+      }
+    },
+    {
+      "id": "month-maxyear",
+      "request": {
+        "operation": "month_boundaries",
+        "start_date": "9999.12.31",
+        "months": 1
+      }
+    },
+    {
+      "id": "cap-shortened",
+      "request": {
+        "operation": "plan_advance_cap",
+        "current_raw": 53144976,
+        "proposed_target_raw": 53145168,
+        "start_date": "1066.9.15",
+        "next_sample_index": 1,
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-due",
+      "request": {
+        "operation": "plan_advance_cap",
+        "current_raw": 53145048,
+        "proposed_target_raw": 53145240,
+        "start_date": "1066.9.15",
+        "next_sample_index": 1,
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-cursor-settled",
+      "request": {
+        "operation": "plan_advance_cap",
+        "current_raw": 53145048,
+        "proposed_target_raw": 53145240,
+        "start_date": "1066.9.15",
+        "next_sample_index": 2,
+        "months": 360
+      }
+    },
+    {
+      "id": "missed-slot",
+      "request": {
+        "operation": "plan_advance_cap",
+        "current_raw": 53145072,
+        "proposed_target_raw": 53145264,
+        "start_date": "1066.9.15",
+        "next_sample_index": 1,
+        "months": 360
+      }
+    },
+    {
+      "id": "baseline-due",
+      "request": {
+        "operation": "plan_advance_cap",
+        "current_raw": 53144328,
+        "proposed_target_raw": 53144352,
+        "start_date": "1066.9.15",
+        "next_sample_index": 0,
+        "months": 360
+      }
+    },
+    {
+      "id": "endpoint-due",
+      "request": {
+        "operation": "plan_advance_cap",
+        "current_raw": 53407128,
+        "proposed_target_raw": 53407152,
+        "start_date": "1066.9.15",
+        "next_sample_index": 360,
+        "months": 360
+      }
+    },
+    {
+      "id": "endpoint-overshot",
+      "request": {
+        "operation": "plan_advance_cap",
+        "current_raw": 53407320,
+        "proposed_target_raw": 53407344,
+        "start_date": "1066.9.15",
+        "next_sample_index": 360,
+        "months": 360
+      }
+    },
+    {
+      "id": "all-slots-passed",
+      "request": {
+        "operation": "plan_advance_cap",
+        "current_raw": 53407320,
+        "proposed_target_raw": 53407344,
+        "start_date": "1066.9.15",
+        "next_sample_index": 0,
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-baseline",
+      "request": {
+        "operation": "ordinary_sample_candidate",
+        "snapshot": {
+          "date_raw": 53144328,
+          "paused": true,
+          "snapshot_id": "native:40",
+          "revision": 41,
+          "native_revision": 40,
+          "episode_run_id": "native-31254-fixture",
+          "episode_character_id": 31254,
+          "played_character": {
+            "character_id": 31254,
+            "alive": true
+          },
+          "played_character_gold": {
+            "raw": -12345,
+            "scale": 100000
+          },
+          "active_wars": []
+        },
+        "start_date": "1066.9.15",
+        "machine_id": "synthetic-fixture",
+        "observed_at_utc": "synthetic-capture-input",
+        "campaign_anchor": {
+          "campaign_id": "cadence-producer-software-fixture",
+          "founder_character_id": 31254,
+          "founding_house_id": null,
+          "founding_dynasty_id": null
+        },
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-negative-gold",
+      "request": {
+        "operation": "ordinary_sample_candidate",
+        "snapshot": {
+          "date_raw": 53145048,
+          "paused": true,
+          "snapshot_id": "native:40",
+          "revision": 41,
+          "native_revision": 40,
+          "episode_run_id": "native-31254-fixture",
+          "episode_character_id": 31254,
+          "played_character": {
+            "character_id": 31254,
+            "alive": true
+          },
+          "played_character_gold": {
+            "raw": -12345,
+            "scale": 100000
+          },
+          "active_wars": []
+        },
+        "start_date": "1066.9.15",
+        "machine_id": "synthetic-fixture",
+        "observed_at_utc": "synthetic-capture-input",
+        "campaign_anchor": {
+          "campaign_id": "cadence-producer-software-fixture",
+          "founder_character_id": 31254,
+          "founding_house_id": null,
+          "founding_dynasty_id": null
+        },
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-successor",
+      "request": {
+        "operation": "ordinary_sample_candidate",
+        "snapshot": {
+          "date_raw": 53145792,
+          "paused": true,
+          "snapshot_id": "native:40",
+          "revision": 41,
+          "native_revision": 40,
+          "episode_run_id": "native-40695-fixture",
+          "episode_character_id": 40695,
+          "played_character": {
+            "character_id": 40695,
+            "alive": true
+          },
+          "played_character_gold": {
+            "raw": 100000,
+            "scale": 100000
+          },
+          "active_wars": []
+        },
+        "start_date": "1066.9.15",
+        "machine_id": "synthetic-fixture",
+        "observed_at_utc": "synthetic-capture-input",
+        "campaign_anchor": {
+          "campaign_id": "cadence-producer-software-fixture",
+          "founder_character_id": 31254,
+          "founding_house_id": null,
+          "founding_dynasty_id": null
+        },
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-endpoint",
+      "request": {
+        "operation": "ordinary_sample_candidate",
+        "snapshot": {
+          "date_raw": 53407128,
+          "paused": true,
+          "snapshot_id": "native:40",
+          "revision": 41,
+          "native_revision": 40,
+          "episode_run_id": "native-31254-fixture",
+          "episode_character_id": 31254,
+          "played_character": {
+            "character_id": 31254,
+            "alive": true
+          },
+          "played_character_gold": {
+            "raw": -12345,
+            "scale": 100000
+          },
+          "active_wars": []
+        },
+        "start_date": "1066.9.15",
+        "machine_id": "synthetic-fixture",
+        "observed_at_utc": "synthetic-capture-input",
+        "campaign_anchor": {
+          "campaign_id": "cadence-producer-software-fixture",
+          "founder_character_id": 31254,
+          "founding_house_id": null,
+          "founding_dynasty_id": null
+        },
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-nonboundary",
+      "request": {
+        "operation": "ordinary_sample_candidate",
+        "snapshot": {
+          "date_raw": 53145072,
+          "paused": true,
+          "snapshot_id": "native:40",
+          "revision": 41,
+          "native_revision": 40,
+          "episode_run_id": "native-31254-fixture",
+          "episode_character_id": 31254,
+          "played_character": {
+            "character_id": 31254,
+            "alive": true
+          },
+          "played_character_gold": {
+            "raw": -12345,
+            "scale": 100000
+          },
+          "active_wars": []
+        },
+        "start_date": "1066.9.15",
+        "machine_id": "synthetic-fixture",
+        "observed_at_utc": "synthetic-capture-input",
+        "campaign_anchor": {
+          "campaign_id": "cadence-producer-software-fixture",
+          "founder_character_id": 31254,
+          "founding_house_id": null,
+          "founding_dynasty_id": null
+        },
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-wars",
+      "request": {
+        "operation": "ordinary_sample_candidate",
+        "snapshot": {
+          "date_raw": 53145048,
+          "paused": true,
+          "snapshot_id": "native:40",
+          "revision": 41,
+          "native_revision": 40,
+          "episode_run_id": "native-31254-fixture",
+          "episode_character_id": 31254,
+          "played_character": {
+            "character_id": 31254,
+            "alive": true
+          },
+          "played_character_gold": {
+            "raw": -12345,
+            "scale": 100000
+          },
+          "active_wars": [
+            {
+              "war_id": 73,
+              "player_side": "defender",
+              "primary_opponent_character_id": 29829,
+              "player_relative_war_score": -39
+            }
+          ]
+        },
+        "start_date": "1066.9.15",
+        "machine_id": "synthetic-fixture",
+        "observed_at_utc": "synthetic-capture-input",
+        "campaign_anchor": {
+          "campaign_id": "cadence-producer-software-fixture",
+          "founder_character_id": 31254,
+          "founding_house_id": null,
+          "founding_dynasty_id": null
+        },
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-unknown-wallet-wars",
+      "request": {
+        "operation": "ordinary_sample_candidate",
+        "snapshot": {
+          "date_raw": 53145048,
+          "paused": true,
+          "snapshot_id": "native:40",
+          "revision": 41,
+          "native_revision": 40,
+          "episode_run_id": "native-31254-fixture",
+          "episode_character_id": 31254,
+          "played_character": {
+            "character_id": 31254,
+            "alive": true
+          }
+        },
+        "start_date": "1066.9.15",
+        "machine_id": "synthetic-fixture",
+        "observed_at_utc": "synthetic-capture-input",
+        "campaign_anchor": {
+          "campaign_id": "cadence-producer-software-fixture",
+          "founder_character_id": 31254,
+          "founding_house_id": null,
+          "founding_dynasty_id": null
+        },
+        "months": 360
+      }
+    },
+    {
+      "id": "sample-unpaused-reject",
+      "request": {
+        "operation": "ordinary_sample_candidate",
+        "snapshot": {
+          "date_raw": 53145048,
+          "paused": false,
+          "snapshot_id": "native:40",
+          "revision": 41,
+          "native_revision": 40,
+          "episode_run_id": "native-31254-fixture",
+          "episode_character_id": 31254,
+          "played_character": {
+            "character_id": 31254,
+            "alive": true
+          },
+          "played_character_gold": {
+            "raw": -12345,
+            "scale": 100000
+          },
+          "active_wars": []
+        },
+        "start_date": "1066.9.15",
+        "machine_id": "synthetic-fixture",
+        "observed_at_utc": "synthetic-capture-input",
+        "campaign_anchor": {
+          "campaign_id": "cadence-producer-software-fixture",
+          "founder_character_id": 31254,
+          "founding_house_id": null,
+          "founding_dynasty_id": null
+        },
+        "months": 360
+      }
+    }
+  ]
+}

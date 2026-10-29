@@ -1,0 +1,819 @@
+{
+  "schema": "xar.ck3.heir-reproductive-preference.producer-golden.v1",
+  "capture": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-22T13:35:56.384195+00:00",
+    "source_kind": "source-shaped-inputs-through-actual-old-python-producer",
+    "game_action": false,
+    "native_requalification": false,
+    "production_consumer_cutover": false
+  },
+  "producer": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/first_heir_native_reproductive_preference.py",
+    "bytes": 2631,
+    "sha256": "e8b7e439e273593b902883b7e412fba05f2bd84aa3e814c831f535bb482ef0a9"
+  },
+  "input_sha256": "410ce72f991be92ffedf308d18f5f88b8e6911cc5f072acf084dbb9308749d09",
+  "cases": [
+    {
+      "name": "pass-partial-fail-stable-retains-every-choice",
+      "input": {
+        "choices": [
+          {
+            "candidate_character_id": 50331651,
+            "recipient_ai_accept_raw": 500000,
+            "value": "adult_marriage",
+            "unpriced": [
+              "child_dynasty_result",
+              "alliance_result"
+            ]
+          },
+          {
+            "candidate_character_id": 50331653,
+            "recipient_ai_accept_raw": 400000,
+            "value": "adult_marriage"
+          },
+          {
+            "candidate_character_id": 50331654,
+            "recipient_ai_accept_raw": 300000,
+            "value": "adult_marriage",
+            "immediate_generic_costs": {
+              "gold_raw": 0,
+              "raw_scale": 100000
+            }
+          },
+          {
+            "candidate_character_id": 50331655,
+            "recipient_ai_accept_raw": 200000,
+            "value": "adult_marriage"
+          },
+          {
+            "candidate_character_id": 50331656,
+            "recipient_ai_accept_raw": 100000,
+            "value": "adult_marriage"
+          }
+        ],
+        "rows": [
+          {
+            "candidate_character_id": 50331651,
+            "actor_character_id": 50331649,
+            "heir_character_id": 50331650,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "source": "derived_signed_native_fertility_floor_comparison",
+              "ready": true,
+              "passes": false
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "source": "derived_native_scorer_age_branch",
+              "ready": true,
+              "passes": true
+            }
+          },
+          {
+            "candidate_character_id": 50331653,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": false
+            }
+          },
+          {
+            "candidate_character_id": 50331654,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": true
+            }
+          },
+          {
+            "candidate_character_id": 50331655,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": true
+            }
+          },
+          {
+            "candidate_character_id": 50331656,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": false,
+              "passes": null
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": true
+            }
+          }
+        ]
+      },
+      "expected": [
+        {
+          "candidate_character_id": 50331654,
+          "recipient_ai_accept_raw": 300000,
+          "value": "adult_marriage",
+          "immediate_generic_costs": {
+            "gold_raw": 0,
+            "raw_scale": 100000
+          },
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 50331654,
+            "preference_class": 0,
+            "comparison_status": "observed_pass",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_considered": true
+          }
+        },
+        {
+          "candidate_character_id": 50331655,
+          "recipient_ai_accept_raw": 200000,
+          "value": "adult_marriage",
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 50331655,
+            "preference_class": 0,
+            "comparison_status": "observed_pass",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_considered": true
+          }
+        },
+        {
+          "candidate_character_id": 50331656,
+          "recipient_ai_accept_raw": 100000,
+          "value": "adult_marriage",
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 50331656,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": {
+              "ready": false,
+              "passes": null
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        },
+        {
+          "candidate_character_id": 50331651,
+          "recipient_ai_accept_raw": 500000,
+          "value": "adult_marriage",
+          "unpriced": [
+            "child_dynasty_result",
+            "alliance_result"
+          ],
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 50331651,
+            "preference_class": 2,
+            "comparison_status": "observed_fail",
+            "floor_comparison": {
+              "source": "derived_signed_native_fertility_floor_comparison",
+              "ready": true,
+              "passes": false
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        },
+        {
+          "candidate_character_id": 50331653,
+          "recipient_ai_accept_raw": 400000,
+          "value": "adult_marriage",
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 50331653,
+            "preference_class": 2,
+            "comparison_status": "observed_fail",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": true,
+              "passes": false
+            },
+            "age_considered": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "all-fail-is-stable-fallback-not-exclusion",
+      "input": {
+        "choices": [
+          {
+            "candidate_character_id": 8
+          },
+          {
+            "candidate_character_id": 2
+          },
+          {
+            "candidate_character_id": 5
+          }
+        ],
+        "rows": [
+          {
+            "candidate_character_id": 8,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": false
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": true,
+              "unused": "floor failed"
+            }
+          },
+          {
+            "candidate_character_id": 2,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": false
+            }
+          },
+          {
+            "candidate_character_id": 5,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": false
+            }
+          }
+        ]
+      },
+      "expected": [
+        {
+          "candidate_character_id": 8,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 8,
+            "preference_class": 2,
+            "comparison_status": "observed_fail",
+            "floor_comparison": {
+              "ready": true,
+              "passes": false
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        },
+        {
+          "candidate_character_id": 2,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 2,
+            "preference_class": 2,
+            "comparison_status": "observed_fail",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": true,
+              "passes": false
+            },
+            "age_considered": true
+          }
+        },
+        {
+          "candidate_character_id": 5,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 5,
+            "preference_class": 2,
+            "comparison_status": "observed_fail",
+            "floor_comparison": {
+              "ready": true,
+              "passes": false
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "missing-null-and-partial-preserve-stable-order-and-evidence",
+      "input": {
+        "choices": [
+          {
+            "candidate_character_id": 1,
+            "episode_run_id": "same-episode",
+            "future": {
+              "missing_observation": null,
+              "known_empty": [],
+              "text": "琉焰😀\n"
+            }
+          },
+          {
+            "candidate_character_id": 2
+          },
+          {
+            "candidate_character_id": 3
+          },
+          {
+            "candidate_character_id": 4
+          },
+          {
+            "candidate_character_id": 5
+          }
+        ],
+        "rows": [
+          {
+            "candidate_character_id": 1
+          },
+          {
+            "candidate_character_id": 2,
+            "candidate_native_fertility_floor_comparison_v1": null,
+            "candidate_native_scorer_age_branch_v1": null
+          },
+          {
+            "candidate_character_id": 3,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": false,
+              "passes": false
+            }
+          },
+          {
+            "candidate_character_id": 4,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": false,
+              "passes": null,
+              "first_comparison": {
+                "ready": false,
+                "passes": null
+              }
+            }
+          },
+          {
+            "candidate_character_id": 5,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "passes": true
+            }
+          }
+        ]
+      },
+      "expected": [
+        {
+          "candidate_character_id": 1,
+          "episode_run_id": "same-episode",
+          "future": {
+            "missing_observation": null,
+            "known_empty": [],
+            "text": "琉焰😀\n"
+          },
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 1,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": null,
+            "age_comparison": null,
+            "age_considered": false
+          }
+        },
+        {
+          "candidate_character_id": 2,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 2,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": null,
+            "age_comparison": null,
+            "age_considered": false
+          }
+        },
+        {
+          "candidate_character_id": 3,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 3,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": {
+              "ready": false,
+              "passes": false
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        },
+        {
+          "candidate_character_id": 4,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 4,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": false,
+              "passes": null,
+              "first_comparison": {
+                "ready": false,
+                "passes": null
+              }
+            },
+            "age_considered": true
+          }
+        },
+        {
+          "candidate_character_id": 5,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 5,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": {
+              "passes": true
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "selector-zero-uses-observed-branch-without-recomputing-unused-comparisons",
+      "input": {
+        "choices": [
+          {
+            "candidate_character_id": 1
+          },
+          {
+            "candidate_character_id": 2
+          }
+        ],
+        "rows": [
+          {
+            "candidate_character_id": 1,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "source": "derived_native_scorer_age_branch",
+              "ready": true,
+              "passes": true,
+              "selector_zero_bypass": true,
+              "first_comparison": {
+                "ready": false,
+                "passes": null
+              },
+              "second_comparison": {
+                "ready": false,
+                "passes": null,
+                "subject_adult_deficit_raw": null,
+                "adjusted_candidate_age_raw": null
+              }
+            }
+          },
+          {
+            "candidate_character_id": 2,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": false
+            }
+          }
+        ]
+      },
+      "expected": [
+        {
+          "candidate_character_id": 1,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 1,
+            "preference_class": 0,
+            "comparison_status": "observed_pass",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "source": "derived_native_scorer_age_branch",
+              "ready": true,
+              "passes": true,
+              "selector_zero_bypass": true,
+              "first_comparison": {
+                "ready": false,
+                "passes": null
+              },
+              "second_comparison": {
+                "ready": false,
+                "passes": null,
+                "subject_adult_deficit_raw": null,
+                "adjusted_candidate_age_raw": null
+              }
+            },
+            "age_considered": true
+          }
+        },
+        {
+          "candidate_character_id": 2,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 2,
+            "preference_class": 2,
+            "comparison_status": "observed_fail",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": true,
+              "passes": false
+            },
+            "age_considered": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "final-duplicate-row-wins-and-repeated-choice-retains-own-payload",
+      "input": {
+        "choices": [
+          {
+            "candidate_character_id": 1,
+            "original_choice": "first"
+          },
+          {
+            "candidate_character_id": 2
+          },
+          {
+            "candidate_character_id": 1,
+            "original_choice": "second"
+          }
+        ],
+        "rows": [
+          {
+            "candidate_character_id": 1,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": false
+            }
+          },
+          {
+            "candidate_character_id": 2
+          },
+          {
+            "candidate_character_id": 1,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": true
+            }
+          }
+        ]
+      },
+      "expected": [
+        {
+          "candidate_character_id": 1,
+          "original_choice": "first",
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 1,
+            "preference_class": 0,
+            "comparison_status": "observed_pass",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_considered": true
+          }
+        },
+        {
+          "candidate_character_id": 1,
+          "original_choice": "second",
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 1,
+            "preference_class": 0,
+            "comparison_status": "observed_pass",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_considered": true
+          }
+        },
+        {
+          "candidate_character_id": 2,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 2,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": null,
+            "age_comparison": null,
+            "age_considered": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "exact-large-integer-identities-are-never-rounded",
+      "input": {
+        "choices": [
+          {
+            "candidate_character_id": 9007199254740993
+          },
+          {
+            "candidate_character_id": 18446744073709551615
+          },
+          {
+            "candidate_character_id": 18446744073709551616
+          }
+        ],
+        "rows": [
+          {
+            "candidate_character_id": 9007199254740993,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": false
+            }
+          },
+          {
+            "candidate_character_id": 18446744073709551615,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": true
+            },
+            "candidate_native_scorer_age_branch_v1": {
+              "ready": true,
+              "passes": true
+            }
+          },
+          {
+            "candidate_character_id": 18446744073709551616
+          }
+        ]
+      },
+      "expected": [
+        {
+          "candidate_character_id": 18446744073709551615,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 18446744073709551615,
+            "preference_class": 0,
+            "comparison_status": "observed_pass",
+            "floor_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_comparison": {
+              "ready": true,
+              "passes": true
+            },
+            "age_considered": true
+          }
+        },
+        {
+          "candidate_character_id": 18446744073709551616,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 18446744073709551616,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": null,
+            "age_comparison": null,
+            "age_considered": false
+          }
+        },
+        {
+          "candidate_character_id": 9007199254740993,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 9007199254740993,
+            "preference_class": 2,
+            "comparison_status": "observed_fail",
+            "floor_comparison": {
+              "ready": true,
+              "passes": false
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "ready-null-and-passes-null-remain-unknown",
+      "input": {
+        "choices": [
+          {
+            "candidate_character_id": 1
+          },
+          {
+            "candidate_character_id": 2
+          }
+        ],
+        "rows": [
+          {
+            "candidate_character_id": 1,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": null,
+              "passes": true
+            }
+          },
+          {
+            "candidate_character_id": 2,
+            "candidate_native_fertility_floor_comparison_v1": {
+              "ready": true,
+              "passes": null
+            }
+          }
+        ]
+      },
+      "expected": [
+        {
+          "candidate_character_id": 1,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 1,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": {
+              "ready": null,
+              "passes": true
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        },
+        {
+          "candidate_character_id": 2,
+          "native_reproductive_branch_preference_v1": {
+            "source": "derived_observed_native_reproductive_comparison_preference",
+            "candidate_character_id": 2,
+            "preference_class": 1,
+            "comparison_status": "partial_or_absent",
+            "floor_comparison": {
+              "ready": true,
+              "passes": null
+            },
+            "age_comparison": null,
+            "age_considered": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "empty-choices-remain-empty",
+      "input": {
+        "choices": [],
+        "rows": []
+      },
+      "expected": []
+    }
+  ]
+}

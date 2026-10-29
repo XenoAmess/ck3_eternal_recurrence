@@ -1,0 +1,48 @@
+{
+  "schema": "xar.fake-cim-declared-nullable-case/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-26T23:27:58.846629+00:00",
+  "source_kind": "SOFTWARE_FAKE_CIM_ONLY_NOT_ADMINISTRATIVE_SYSTEM_EVIDENCE",
+  "process_id": 149424,
+  "python_executable": "D:\\ck3-state\\ck3-java-g2-r4-dependency-setup53\\test-venv54\\Scripts\\python.exe",
+  "producer_ref": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\register_project_exe_exclusions.py",
+    "bytes": 58596,
+    "sha256": "b6dd3d3dc7b4158f6646ab083925a2be898368c3c96b824071856e286960ddec"
+  },
+  "test_ref": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\test_register_project_exe_exclusions.py",
+    "bytes": 76508,
+    "sha256": "738803513191a8776159b3787cad69b7bcceb9564d8d2eecd8472715863e5382"
+  },
+  "case_ref": {
+    "path": "D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\helper-nullable-test01\\DECLARED-NULLABLE-V2-PYTHON02.json",
+    "bytes": 3802,
+    "sha256": "f78fd5539e654ecc5e19fd2c5dab478b3f7af9f2fe7bc5bd65a1882a770859dc"
+  },
+  "fake_cim_add_calls": [
+    "D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\helper-nullable-test01\\tmp\\tmpifdr8egh\\build\\xar_ck3_bridge_injector.exe"
+  ],
+  "fake_cim_queries": 3,
+  "actual_wmi_calls": 0,
+  "actual_add_calls": 0,
+  "actual_uac_calls": 0,
+  "source_bytes_sha_required": true,
+  "launcher_process_id": 259044,
+  "observation_ref": {
+    "path": "D:/ck3-state/ck3-java-g2-resume63-m0-native01/helper-nullable-test01/DECLARED-NULLABLE-V2-PYTHON02-OBSERVATION.json",
+    "bytes": 1360,
+    "sha256": "80ba0dc2661a00e048f29195da83b21803c29aaa0b419798213f3d9206e31153"
+  },
+  "actual_command_ref": {
+    "path": "D:/ck3-state/ck3-java-g2-resume63-m0-native01/helper-nullable-test01/READY02.json",
+    "bytes": 4935,
+    "sha256": "b00b5eea08e0b2dd7128c437c214d7bd8a5149a2061998693467d3fd4e7b4ebf"
+  },
+  "actual_command_index": 1,
+  "actual_result_ref": {
+    "path": "D:/ck3-state/ck3-java-g2-resume63-m0-native01/helper-nullable-test01/NULLABLE-TEST02-2-ACTUAL01.json",
+    "bytes": 2589,
+    "sha256": "f00d564e5484a11464e053cb9bef04697d85be7950745f967a1e30b961826bda"
+  }
+}

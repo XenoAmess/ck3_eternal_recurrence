@@ -97,8 +97,8 @@ public final class ProjectedContactCodec {
                 number(scope, "subject_army_id", 0, Integer.MAX_VALUE), positive(scope, "subject_native_carmy_id"),
                 positive(scope, "subject_owner_character_id"), positive(scope, "subject_current_province_id"),
                 positive(scope, "target_province_id"), positive(scope, "incoming_entry_province_id"),
-                ids(scope, "observed_target_public_cunit_ids", 0), ids(scope, "observed_target_combat_ids", 1),
-                transition(text(scope, "transition_kind")), nullableInteger(scope, "selected_current_combat_id", 1),
+                ids(scope, "observed_target_public_cunit_ids", 0), componentIds(scope, "observed_target_combat_ids"),
+                transition(text(scope, "transition_kind")), nullableComponent(scope, "selected_current_combat_id"),
                 nullableInteger(scope, "selected_current_combat_array_index", 0), side(text(scope, "projected_subject_side")),
                 observable, role, number(scope, "incoming_adjacency_kind_raw", 0, 3),
                 ids(scope, "projected_attacker_army_ids", 0), ids(scope, "projected_defender_army_ids", 0));
@@ -158,6 +158,18 @@ public final class ProjectedContactCodec {
     private static Integer nullableInteger(JsonNode value, String key, int low) {
         JsonNode field = value.get(key); StrictJson.require(field != null, "required nullable field missing: " + key);
         return field.isNull() ? null : number(value, key, low, Integer.MAX_VALUE);
+    }
+    private static Integer nullableComponent(JsonNode value, String key) {
+        JsonNode field=value.get(key);StrictJson.require(field!=null,"required nullable field missing: "+key);
+        if(field.isNull())return null;
+        int result=(int)StrictJson.integer(field,Integer.MIN_VALUE,Integer.MAX_VALUE);
+        StrictJson.require(result!=-1,"missing full ComponentID sentinel forbidden");return result;
+    }
+    private static List<Integer> componentIds(JsonNode value,String key) {
+        JsonNode items=value.get(key);StrictJson.require(items!=null&&items.isArray(),"full ComponentID array required: "+key);
+        List<Integer> result=new ArrayList<>();
+        for(JsonNode item:items){int id=(int)StrictJson.integer(item,Integer.MIN_VALUE,Integer.MAX_VALUE);StrictJson.require(id!=-1,"missing full ComponentID sentinel forbidden");result.add(id);}
+        return result;
     }
     private static boolean bool(JsonNode value, String key) {
         JsonNode field = value.get(key); StrictJson.require(field != null && field.isBoolean(), "JSON bool required: " + key);

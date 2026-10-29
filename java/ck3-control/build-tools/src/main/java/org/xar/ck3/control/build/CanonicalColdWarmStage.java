@@ -65,7 +65,35 @@ public final class CanonicalColdWarmStage {
             arguments = List.copyOf(arguments);
             if (index < 1 || index > 30 || invocation == null || state == null) throw new IllegalArgumentException("Exact indexed command outcome required");
             if (state == CommandState.NOT_RUN && (result != null || inputRef != null || stdoutRef != null || stderrRef != null || observationRef != null || observation != null || summary != null || !arguments.isEmpty())) throw new IllegalArgumentException("NOT_RUN cannot claim command evidence");
-            if (state == CommandState.PASS && (result == null || !result.passed() || inputRef == null || stdoutRef == null || stderrRef == null || observationRef == null || observation == null || observation.exitCode() != 0 || observation.error() != null || summary == null || !summary.accepted() || error != null)) throw new IllegalArgumentException("PASS needs actual clean terminal and outcomes");
+            if (state == CommandState.PASS) {
+                if (result == null || !result.passed() || inputRef == null || stdoutRef == null || stderrRef == null || observationRef == null || observation == null || observation.exitCode() != 0 || observation.error() != null || summary == null || !summary.accepted() || error != null) throw new IllegalArgumentException("PASS needs actual clean terminal and outcomes");
+                if (requiresTestSummary(invocation) && (summary.groups() == 0 || summary.tests() == 0)) throw new IllegalArgumentException("Proven test invocation requires non-empty summary");
+            }
+        }
+    }
+
+    static boolean requiresTestSummary(CanonicalPythonInvocation.Invocation invocation) {
+        if (invocation == null) return false;
+        switch (invocation.mode()) {
+            case MODULE:
+                return invocation.moduleName().equals("unittest");
+            case INLINE_SOURCE:
+                return invocation.inlineSource().contains("TextTestRunner");
+            case SCRIPT_FILE:
+                String script = invocation.relativeScript();
+                return script.equals("tools/g2_saved_campaign/candidates/native32_passive_journal_diagnostics_20261021/cold/test_observer_journal_v1.py")
+                    || script.equals("tools/g2_saved_campaign/candidates/native32_runtime_journal_adapter_20261021/test_native32_runtime_journal_adapter_v1.py")
+                    || script.equals("tools/g2_saved_campaign/candidates/native32_production_builder_20261021/test_recipe_v1.py")
+                    || script.equals("ck3_autonomous_player/tests/unit/test_cold_checkpoint_type_contract.py")
+                    || script.equals("ck3_autonomous_player/tests/unit/test_driver_resume_type_contract.py")
+                    || script.equals("tools/g2_saved_campaign/test_owner_prepare_contract_v1.py")
+                    || script.equals("ck3_autonomous_player/tests/unit/test_driver_state_wal_diagnostics.py")
+                    || script.equals("tools/g2_saved_campaign/candidates/native32_entry_registration_20261021/test_native32_entry_registration_v1.py")
+                    || script.equals("tools/g2_saved_campaign/test_source31_a19_cold_union_v1.py")
+                    || script.equals("tools/g2_saved_campaign/test_source31_a20_cold_union_v1.py")
+                    || script.equals("tools/g2_saved_campaign/test_saved_campaign_visual_text_preflight_v1.py");
+            default:
+                return false;
         }
     }
     public record Actual(String schema, String machineId, String startedAtUtc, String observedAtUtc,
@@ -193,7 +221,7 @@ public final class CanonicalColdWarmStage {
             catch (IOException | RuntimeException failure) { error = append(error, "Body/bootstrap observation: " + failure.getMessage()); }
             try {
                 summary = summary(text(out) + "\n" + text(err));
-                if ((invocation.originalCommand().contains("-m unittest") || invocation.originalCommand().contains("TextTestRunner")) && summary.groups() == 0) throw new IOException("Actual unittest summary missing");
+                if (requiresTestSummary(invocation) && (summary.groups() == 0 || summary.tests() == 0)) throw new IOException("Actual test summary missing for proven test invocation");
                 if (!summary.accepted()) throw new IOException("Original command skipped/expected-failed/unexpected-success/failed/empty");
             } catch (IOException | RuntimeException failure) { error = append(error, "Original test summary: " + failure.getMessage()); }
             try { inputRef.verify(); python.verify(); }
@@ -273,7 +301,7 @@ public final class CanonicalColdWarmStage {
             if (!read(Path.of(command.inputRef().path()), PythonInput.class).equals(expected)) throw new IOException("Original invocation or bootstrap input differs");
             Observation observed = read(Path.of(command.observationRef().path()), Observation.class); requireObservation(config.bootstrapMode(), config.rootBootstrapRef(), observed);
             Summary summary = summary(text(Path.of(command.stdoutRef().path())) + "\n" + text(Path.of(command.stderrRef().path())));
-            if (!summary.accepted() || ((invocation.originalCommand().contains("-m unittest") || invocation.originalCommand().contains("TextTestRunner")) && summary.groups() == 0)
+            if (!summary.accepted() || (requiresTestSummary(invocation) && (summary.groups() == 0 || summary.tests() == 0))
                     || !summary.equals(command.summary()) || !observed.equals(command.observation())) throw new IOException("Actual original outcomes changed");
         }
         requireAbsent(work.resolve("scratch/pycache-no-read")); return ControlBuild.FileRef.measure(path);

@@ -1,0 +1,756 @@
+{
+  "schema": "xar.ck3.java-timeline-owner-producer-inputs/v1",
+  "cases": [
+    {
+      "id": "unchanged-control",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": []
+    },
+    {
+      "id": "natural-date-change",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "date_raw"
+          ],
+          "operation": "set",
+          "value": 53170024
+        }
+      ]
+    },
+    {
+      "id": "date-regression",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "date_raw"
+          ],
+          "operation": "set",
+          "value": 53169976
+        }
+      ]
+    },
+    {
+      "id": "active-event-changed",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "active_event"
+          ],
+          "operation": "set",
+          "value": {
+            "instance_id": 9,
+            "option_count": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "paused-control-changed",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "paused"
+          ],
+          "operation": "set",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "speed-control-changed",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "speed"
+          ],
+          "operation": "set",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "id": "same-paused-episode",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": []
+    },
+    {
+      "id": "same-running-episode",
+      "operation": "pause_owner",
+      "base": "running",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": []
+    },
+    {
+      "id": "resume-owner-wrong-pause",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "paused"
+          ],
+          "operation": "set",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "bridge-generation-changed",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "diagnostics",
+            "connection_generation"
+          ],
+          "operation": "set",
+          "value": 99
+        }
+      ]
+    },
+    {
+      "id": "bridge-pid-changed",
+      "operation": "pause_owner",
+      "base": "running",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "diagnostics",
+            "bridge_pid"
+          ],
+          "operation": "set",
+          "value": 99
+        }
+      ]
+    },
+    {
+      "id": "episode-actor-changed",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "episode_character_id"
+          ],
+          "operation": "set",
+          "value": 999
+        }
+      ]
+    },
+    {
+      "id": "episode-run-changed",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "episode_run_id"
+          ],
+          "operation": "set",
+          "value": "another-episode"
+        }
+      ]
+    },
+    {
+      "id": "map-not-ready",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "map_ready"
+          ],
+          "operation": "set",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "terminal-present",
+      "operation": "pause_owner",
+      "base": "running",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "one_life_terminal_reason"
+          ],
+          "operation": "set",
+          "value": "death"
+        }
+      ]
+    },
+    {
+      "id": "both-missing-episode-not-an-identity",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "unavailable",
+      "compatibility": "missing_not_identity",
+      "mutations": [
+        {
+          "frame": "previous",
+          "path": [
+            "episode_run_id"
+          ],
+          "operation": "remove"
+        },
+        {
+          "frame": "refreshed",
+          "path": [
+            "episode_run_id"
+          ],
+          "operation": "remove"
+        }
+      ]
+    },
+    {
+      "id": "both-null-actor-not-an-identity",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "unavailable",
+      "compatibility": "missing_not_identity",
+      "mutations": [
+        {
+          "frame": "previous",
+          "path": [
+            "episode_character_id"
+          ],
+          "operation": "set",
+          "value": null
+        },
+        {
+          "frame": "refreshed",
+          "path": [
+            "episode_character_id"
+          ],
+          "operation": "set",
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "missing-terminal-not-explicit-null",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "unavailable",
+      "compatibility": "missing_not_identity",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "one_life_terminal_reason"
+          ],
+          "operation": "remove"
+        }
+      ]
+    },
+    {
+      "id": "missing-event-not-known-empty",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "unavailable",
+      "compatibility": "missing_not_identity",
+      "mutations": [
+        {
+          "frame": "previous",
+          "path": [
+            "active_event"
+          ],
+          "operation": "remove"
+        },
+        {
+          "frame": "refreshed",
+          "path": [
+            "active_event"
+          ],
+          "operation": "remove"
+        }
+      ]
+    },
+    {
+      "id": "boolean-speed-is-not-integer",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "rejected",
+      "compatibility": "strict_boundary",
+      "mutations": [
+        {
+          "frame": "previous",
+          "path": [
+            "speed"
+          ],
+          "operation": "set",
+          "value": true
+        },
+        {
+          "frame": "refreshed",
+          "path": [
+            "speed"
+          ],
+          "operation": "set",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "decimal-generation-not-integer",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "rejected",
+      "compatibility": "strict_boundary",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "diagnostics",
+            "connection_generation"
+          ],
+          "operation": "set",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "id": "boolean-paused-lookalike",
+      "operation": "resume_owner",
+      "base": "paused",
+      "java_expected": "rejected",
+      "compatibility": "strict_boundary",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "paused"
+          ],
+          "operation": "set",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "same-actual-popup-owner",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": []
+    },
+    {
+      "id": "zero-day-popup-owner",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "date_raw"
+          ],
+          "operation": "set",
+          "value": 53170000
+        },
+        {
+          "frame": "settled",
+          "path": [
+            "date_raw"
+          ],
+          "operation": "set",
+          "value": 53170000
+        }
+      ]
+    },
+    {
+      "id": "interaction-public-zero-identity",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "active_event"
+          ],
+          "operation": "set",
+          "value": null
+        },
+        {
+          "frame": "settled",
+          "path": [
+            "active_event"
+          ],
+          "operation": "set",
+          "value": null
+        },
+        {
+          "frame": "refreshed",
+          "path": [
+            "pending_character_interaction"
+          ],
+          "operation": "set",
+          "value": {
+            "interaction_id": 0,
+            "enabled": true
+          }
+        },
+        {
+          "frame": "settled",
+          "path": [
+            "pending_character_interaction"
+          ],
+          "operation": "set",
+          "value": {
+            "interaction_id": 0,
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "empty-popup-not-a-blocker",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "active_event"
+          ],
+          "operation": "set",
+          "value": {}
+        },
+        {
+          "frame": "settled",
+          "path": [
+            "active_event"
+          ],
+          "operation": "set",
+          "value": {}
+        }
+      ]
+    },
+    {
+      "id": "popup-instance-changed",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "settled",
+          "path": [
+            "active_event",
+            "instance_id"
+          ],
+          "operation": "set",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "id": "pending-interaction-shape-changed",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "settled",
+          "path": [
+            "pending_character_interaction"
+          ],
+          "operation": "set",
+          "value": {}
+        }
+      ]
+    },
+    {
+      "id": "popup-owner-generation-changed",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "settled",
+          "path": [
+            "diagnostics",
+            "connection_generation"
+          ],
+          "operation": "set",
+          "value": 99
+        }
+      ]
+    },
+    {
+      "id": "popup-date-not-settled",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "settled",
+          "path": [
+            "date_raw"
+          ],
+          "operation": "set",
+          "value": 53170048
+        }
+      ]
+    },
+    {
+      "id": "popup-public-revision-regressed",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "settled",
+          "path": [
+            "revision"
+          ],
+          "operation": "set",
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "popup-native-revision-regressed",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "settled",
+          "path": [
+            "native_revision"
+          ],
+          "operation": "set",
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "popup-actor-not-alive",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "played_character",
+            "alive"
+          ],
+          "operation": "set",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "popup-integer-paused-is-not-boolean",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "rejected",
+      "compatibility": "strict_boundary",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "paused"
+          ],
+          "operation": "set",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "popup-missing-local-identity",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "unavailable",
+      "compatibility": "missing_not_identity",
+      "mutations": [
+        {
+          "frame": "previous",
+          "path": [
+            "local_player_id"
+          ],
+          "operation": "remove"
+        },
+        {
+          "frame": "refreshed",
+          "path": [
+            "local_player_id"
+          ],
+          "operation": "remove"
+        },
+        {
+          "frame": "settled",
+          "path": [
+            "local_player_id"
+          ],
+          "operation": "remove"
+        }
+      ]
+    },
+    {
+      "id": "popup-decimal-type-is-not-integer-type",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "changed",
+      "compatibility": "typed_ui_identity",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "active_event",
+            "diagnostic"
+          ],
+          "operation": "set",
+          "value": {
+            "ratio": 1.0
+          }
+        },
+        {
+          "frame": "settled",
+          "path": [
+            "active_event",
+            "diagnostic"
+          ],
+          "operation": "set",
+          "value": {
+            "ratio": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "exact-huge-revisions",
+      "operation": "popup_owner",
+      "base": "popup",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "refreshed",
+          "path": [
+            "revision"
+          ],
+          "operation": "set",
+          "value": 18446744073709551615
+        },
+        {
+          "frame": "settled",
+          "path": [
+            "revision"
+          ],
+          "operation": "set",
+          "value": 18446744073709551615
+        },
+        {
+          "frame": "refreshed",
+          "path": [
+            "native_revision"
+          ],
+          "operation": "set",
+          "value": 18446744073709551615
+        },
+        {
+          "frame": "settled",
+          "path": [
+            "native_revision"
+          ],
+          "operation": "set",
+          "value": 18446744073709551615
+        }
+      ]
+    },
+    {
+      "id": "integer-date-beyond-double-exact",
+      "operation": "change",
+      "base": "paused",
+      "java_expected": "same_facts",
+      "compatibility": "equivalent",
+      "mutations": [
+        {
+          "frame": "previous",
+          "path": [
+            "date_raw"
+          ],
+          "operation": "set",
+          "value": 9007199254740993
+        },
+        {
+          "frame": "refreshed",
+          "path": [
+            "date_raw"
+          ],
+          "operation": "set",
+          "value": 9007199254740994
+        }
+      ]
+    }
+  ]
+}

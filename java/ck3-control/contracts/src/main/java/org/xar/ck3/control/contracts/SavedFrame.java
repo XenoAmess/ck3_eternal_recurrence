@@ -9,7 +9,7 @@ public record SavedFrame(String snapshotId, long revision, long nativeRevision, 
     public SavedFrame {
         StrictJson.text(snapshotId);
         StrictJson.safe(revision, 1); StrictJson.safe(nativeRevision, 1);
-        StrictJson.safe(dateRaw, 0); StrictJson.safe(actorCharacterId, 1);
+        StrictJson.safe(dateRaw, 0); NativeCharacterId.of(actorCharacterId);
         StrictJson.text(episodeRunId);
         StrictJson.require(snapshotId.equals("native:" + nativeRevision), "native snapshot identity");
     }
@@ -20,7 +20,7 @@ public record SavedFrame(String snapshotId, long revision, long nativeRevision, 
                 StrictJson.integer(row.get("revision"), 1, StrictJson.MAX_SAFE_INTEGER),
                 StrictJson.integer(row.get("native_revision"), 1, StrictJson.MAX_SAFE_INTEGER),
                 StrictJson.integer(row.get("date_raw"), 0, StrictJson.MAX_SAFE_INTEGER),
-                StrictJson.integer(row.get("actor_character_id"), 1, StrictJson.MAX_SAFE_INTEGER),
+                NativeCharacterId.fromJson(row.get("actor_character_id")).value(),
                 StrictJson.text(row.get("episode_run_id")));
     }
     public ObjectNode toJson() {

@@ -1,0 +1,34 @@
+{
+  "schema": "xar.interactive-task-owner/v1",
+  "role": "feeder",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "nonce": "b5bb0aca24d3452fb89907650ceb1cf0",
+  "task_name": "XARG2ManagedOwner-b5bb0aca24d3452fb89907650ceb1cf0",
+  "sid": "S-1-5-21-2908730481-166481001-1318755029-1001",
+  "session": 1,
+  "root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\feeder-owner01",
+  "cwd": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46",
+  "python": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "pythonw": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\pythonw.exe",
+  "python_file_id": {
+    "volume_serial": "5669105749829453645",
+    "file_id": "7c88130000003f000000000000000000"
+  },
+  "pythonw_file_id": {
+    "volume_serial": "5669105749829453645",
+    "file_id": "14891300000046000000000000000000"
+  },
+  "bootstrap": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\FEEDER-OWNER-BOOTSTRAP01.py",
+  "bootstrap_sha256": "7a36400ef563d05dcc309900e51970a87fcf5c01a09f6b92643c57ca3b2ec51b",
+  "stage": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\launch_current_saved_feeder_v1.py",
+  "stage_sha256": "69ec2968ea647771ba17c6b45dfc28e6e1c21eb18c9d516a9fedaeb6a37b2d56",
+  "stage_args": [
+    "--first-control-sequence",
+    "11543"
+  ],
+  "stop_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\STOP-CURRENT-SAVED-FEEDER",
+  "env": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Lib\\site-packages"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "contract": "raiktor-strategy-budget-profile-source-v2",
+  "profile_version": "1.0.0",
+  "activation": {
+    "kind": "repository_default",
+    "source": "G2-M0 GEN-034 repository policy",
+    "base_profile_id": null,
+    "base_profile_version": null
+  },
+  "profile_id": "raiktor-exit-balanced-v1",
+  "profile_provenance": "Versioned repository baseline for GEN-034. Values are planner policy inputs and remain replaceable by an explicit operator override; they are not CK3 observations.",
+  "pairwise_limits": {
+    "maximum_surrender_gold_transfer_raw": 30000000,
+    "maximum_surrender_prestige_loss_raw": 100000000,
+    "maximum_surrender_claims_removed": 1,
+    "allow_surrender_favor_hook": true,
+    "maximum_surrender_truce_days": 1825,
+    "maximum_continue_tail_loss_raw": 100,
+    "minimum_switch_margin_raw": 10
+  },
+  "white_peace_limits": {
+    "maximum_gold_transfer_raw": 0,
+    "maximum_prestige_loss_raw": 10000000,
+    "maximum_claims_removed": 0,
+    "allow_favor_hook": false,
+    "maximum_truce_days": 1825
+  }
+}

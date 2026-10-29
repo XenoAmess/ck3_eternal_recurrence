@@ -38,28 +38,34 @@ final class NativeFixtureCorporaTest {
     }
     @Test void reservationCannotReplaceRealChildJobOrCrossOriginalRequest() throws Exception {
         var mapper = ControlBuild.strictMapper(); var original = originalTerminal(); var command = originalRequest();
-        var outer = mapper.valueToTree(original);
+        var outer = mapper.readTree(resource("actual-owned-command-terminal-v2.json"));
         ((com.fasterxml.jackson.databind.node.ObjectNode)outer.get("outer")).put("hard_job_enforced", true);
-        var fakeOuter = mapper.treeToValue(outer, SharedOwnedCommand.Terminal.class);
+        var fakeOuter = decodeNative(outer);
         assertThrows(IllegalArgumentException.class, () -> NativeFixtureCorpora.requireSettledOwnedProcess(original.machineId(), fakeOuter, command));
         for (String field : List.of("active_processes", "limit_flags", "memory_limit_bytes")) {
-            var node = mapper.valueToTree(original); var accounting = (com.fasterxml.jackson.databind.node.ObjectNode)node.get("child").get("accounting");
+            var node = mapper.readTree(resource("actual-owned-command-terminal-v2.json")); var accounting = (com.fasterxml.jackson.databind.node.ObjectNode)node.get("child").get("accounting");
             if (field.equals("active_processes")) accounting.put(field, 1);
             else if (field.equals("limit_flags")) accounting.put(field, 0);
             else accounting.put(field, command.memoryLimitBytes() + 4096L);
-            var changed = mapper.treeToValue(node, SharedOwnedCommand.Terminal.class);
+            var changed = decodeNative(node);
             assertThrows(IllegalArgumentException.class, () -> NativeFixtureCorpora.requireSettledOwnedProcess(original.machineId(), changed, command), field);
         }
-        var crossed = mapper.valueToTree(original); ((com.fasterxml.jackson.databind.node.ObjectNode)crossed).put("slot_id", "another-slot");
-        var changed = mapper.treeToValue(crossed, SharedOwnedCommand.Terminal.class);
-        assertThrows(IllegalArgumentException.class, () -> NativeFixtureCorpora.requireSettledOwnedProcess(original.machineId(), changed, command));
-        var wrongInteger = mapper.valueToTree(original); ((com.fasterxml.jackson.databind.node.ObjectNode)wrongInteger.get("child").get("accounting")).put("active_processes", false);
-        assertThrows(IOException.class, () -> mapper.treeToValue(wrongInteger, SharedOwnedCommand.Terminal.class));
+        var crossed = mapper.readTree(resource("actual-owned-command-terminal-v2.json")); ((com.fasterxml.jackson.databind.node.ObjectNode)crossed).put("slot_id", "another-slot");
+        assertThrows(IOException.class, () -> decodeNative(crossed));
+        var wrongInteger = mapper.readTree(resource("actual-owned-command-terminal-v2.json")); ((com.fasterxml.jackson.databind.node.ObjectNode)wrongInteger.get("child").get("accounting")).put("active_processes", false);
+        assertThrows(IOException.class, () -> decodeNative(wrongInteger));
     }
     private SharedOwnedCommand.Terminal originalTerminal() throws Exception {
         byte[] raw = resource("actual-owned-command-terminal-v2.json");
         assertEquals("6b585e703816a12005a146ecf00ecaf07fc388922b938cd297a39dd51acad7f7", java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(raw)));
-        return ControlBuild.strictMapper().readValue(raw, SharedOwnedCommand.Terminal.class);
+        var decoded=SharedOwnedCommand.decodeNativeTerminal(raw,resource("actual-owned-command-request-v2.json"));
+        assertEquals(SharedOwnedCommand.NativeTerminalVersion.V2_ORIGINAL_26_FIELDS,decoded.version());
+        assertEquals(SharedOwnedCommand.NativeTerminalScope.OWNED_TOOL_PROCESS_OBSERVATION_NOT_JAVA_INVOCATION_CUSTODY,decoded.scope());
+        return decoded.terminal();
+    }
+    private SharedOwnedCommand.Terminal decodeNative(com.fasterxml.jackson.databind.JsonNode value) throws IOException {
+        return SharedOwnedCommand.decodeNativeTerminal(ControlBuild.strictMapper().writeValueAsBytes(value),
+                resource("actual-owned-command-request-v2.json")).terminal();
     }
     private SharedOwnedCommand.Request originalRequest() throws Exception {
         byte[] raw = resource("actual-owned-command-request-v2.json");

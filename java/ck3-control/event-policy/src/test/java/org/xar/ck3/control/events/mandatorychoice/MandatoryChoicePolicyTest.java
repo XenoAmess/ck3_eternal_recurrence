@@ -36,7 +36,13 @@ final class MandatoryChoicePolicyTest {
                     Mode mode = "unknown".equals(row.path("mode").textValue())
                             ? Mode.UNKNOWN_MANDATORY : Mode.EXISTING_NATIVE_DOMAIN;
                     byte[] encoded = MandatoryChoiceCodec.select(bytes(row.get("input")), mode, expected);
-                    assertEquals(row.get("output"), JSON.readTree(encoded), "actual legacy producer output");
+                    if ("disabled_first".equals(row.path("name").textValue())) {
+                        // The user's first-display instruction supersedes this original Python skip-disabled result.
+                        JsonNode blocked=JSON.readTree(encoded);
+                        assertEquals("mechanism_unavailable",blocked.path("status").textValue());
+                        assertEquals("first_displayed_native_choice_disabled",blocked.path("reason").textValue());
+                        assertTrue(blocked.path("selected_choice_id").isNull());
+                    } else assertEquals(row.get("output"), JSON.readTree(encoded), "actual legacy producer output");
                     NativeWindow window = MandatoryChoiceCodec.decode(bytes(row.get("input")));
                     assertEquals(row.get("input"), JSON.readTree(MandatoryChoiceCodec.encodeWindow(window)),
                             "complete native evidence survives serialization");

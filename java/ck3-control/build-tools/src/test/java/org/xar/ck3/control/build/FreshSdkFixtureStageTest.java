@@ -18,6 +18,113 @@ final class FreshSdkFixtureStageTest {
     private static final String CROWN_ORIGINAL = "tools/g2_saved_campaign/test_pending_material_crown_schema_adapter_v1.py";
     private static final String PROJECTION = "tools/g2_saved_campaign/test_java_projection_client_v1.py";
 
+    private ControlBuild.FileRef checkoutSources() throws IOException {
+        Path source = RootSoftwareFixtureInputsProducerTest.checkoutFixture(root.resolve("checkout"));
+        Path context = Files.createDirectories(source.resolve("local-service/src/test/resources/g2-context"));
+        for (String name : List.of("context-input.json", "context-result.json", "evaluate-request.json"))
+            Files.writeString(context.resolve(name), "{\"fixture\":\"" + name + "\"}");
+        for (var milestone : FreshSdkFixtureStage.GoldenMilestone.values())
+            Files.writeString(source.resolve("g2-research/src/test/resources/g2-http/" + milestone.name() + ".expected-result.json"),
+                    "{\"fixture\":\"" + milestone.name() + "\"}");
+        return FreshSdkFixtureStage.writeCheckoutProducerGoldenSources(source, root.resolve("checkout-sources.json"));
+    }
+
+    @Test void portableCheckoutSourceDataPublishesWithoutBorrowingRuntimeMachineAuthority() throws Exception {
+        var originalRef = checkoutSources(); var mapper = ControlBuild.strictMapper();
+        byte[] originalMetadata = Files.readAllBytes(Path.of(originalRef.path()));
+        var metadata = assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class, mapper.readTree(originalMetadata));
+        String originalMachine = metadata.get("machine_id").textValue();
+        String foreignMachine = originalMachine + "-portable-foreign-source";
+        metadata.put("machine_id", foreignMachine);
+        Path foreignPath = root.resolve("foreign-checkout-sources.json"); Files.write(foreignPath, mapper.writeValueAsBytes(metadata));
+        var foreignRef = ControlBuild.FileRef.measure(foreignPath);
+        var sources = assertInstanceOf(FreshSdkFixtureStage.CheckoutProducerGoldenSources.class,
+                FreshSdkFixtureStage.readProducerGoldenSources(foreignRef));
+        assertNotEquals(originalMachine, sources.machineId()); assertEquals(foreignMachine, sources.machineId());
+        FreshSdkFixtureStage.requireDeclaredProducerMachine(sources, originalMachine);
+        var produced = RootSoftwareFixtureInputsProducer.produce(foreignRef, root.resolve("portable-host-request"));
+        produced.requestRef().verify(); produced.probePayloadRef().verify();
+        var request = mapper.readValue(Files.readAllBytes(Path.of(produced.requestRef().path())), RootSoftwareFixtureHandoff.Request.class);
+        assertEquals(20, request.originalFixtureRefs().size()); assertEquals(8, request.originalRequestRefs().size());
+        assertTrue(request.originalFixtureRefs().containsAll(FreshSdkFixtureStage.producerGoldenInputs(sources)));
+        assertTrue(request.originalFixtureRefs().contains(foreignRef));
+        assertEquals(sources.vectors().stream().map(FreshSdkFixtureStage.ProducerGoldenVector::request).toList(), request.originalRequestRefs());
+        assertEquals(sources.vectors().getFirst().request(), request.probeRequestRef());
+        assertEquals(produced.probePayloadRef(), request.probePayloadRef());
+        assertArrayEquals(originalMetadata, Files.readAllBytes(Path.of(originalRef.path()))); originalRef.verify();
+        var legacy = goldenPlan();
+        FreshSdkFixtureStage.requireDeclaredProducerMachine(legacy, legacy.machineId());
+        assertThrows(IOException.class, () -> FreshSdkFixtureStage.requireDeclaredProducerMachine(legacy, legacy.machineId() + "-foreign"));
+    }
+
+    @Test void checkoutSourcesUseExactNineteenInputsAndRoundTripTheActualPrivatePythonInput() throws Exception {
+        var ref = checkoutSources(); var mapper = ControlBuild.strictMapper();
+        var current = assertInstanceOf(FreshSdkFixtureStage.CheckoutProducerGoldenSources.class,
+                FreshSdkFixtureStage.readProducerGoldenSources(ref));
+        assertEquals(19, FreshSdkFixtureStage.producerGoldenInputs(current).size());
+        assertEquals(List.of(FreshSdkFixtureStage.GoldenMilestone.values()), current.vectors().stream()
+                .map(FreshSdkFixtureStage.ProducerGoldenVector::milestone).toList());
+        assertTrue(FreshSdkFixtureStage.producerGoldenMetadataInputs(current).isEmpty());
+        assertFalse(Files.readString(Path.of(ref.path())).contains("original_install_map_ref"));
+        var legacy = goldenPlan();
+        var different = new SdkSourceAssembly.Digest(1, "a".repeat(64));
+        FreshSdkFixtureStage.requireDeclaredProducerCohort(current, different, java.util.Optional.of(different));
+        FreshSdkFixtureStage.requireDeclaredProducerCohort(legacy, legacy.clientContent(), java.util.Optional.of(legacy.testContent()));
+        assertThrows(IOException.class, () -> FreshSdkFixtureStage.requireDeclaredProducerCohort(legacy, different, java.util.Optional.empty()));
+        assertThrows(IOException.class, () -> FreshSdkFixtureStage.requireDeclaredProducerCohort(legacy,
+                legacy.clientContent(), java.util.Optional.of(different)));
+        Class<?> inputType = Class.forName(FreshSdkFixtureStage.class.getName() + "$PythonInput");
+        for (var sources : List.<FreshSdkFixtureStage.ProducerGoldenSources>of(current, legacy)) {
+            var input = mapper.createObjectNode(); input.put("schema", "xar.sdk-python-origin-input/v7"); input.put("stage", "IMPORT_PROBE");
+            input.putArray("import_roots"); input.putArray("required_modules"); input.put("observation_path", root.resolve("origins.json").toString());
+            input.putArray("pytest_arguments"); input.set("bootstrap_ref", mapper.valueToTree(current.contextInput()));
+            input.set("producer_golden_plan_ref", mapper.valueToTree(ref)); input.set("producer_goldens", mapper.valueToTree(sources));
+            input.set("projection_client_test_ref", mapper.valueToTree(current.contextResult()));
+            input.putNull("score_inputs"); input.putNull("budget_inputs"); input.putNull("m0_inputs"); input.putArray("complete_consumers");
+            Object decoded = mapper.treeToValue(input, inputType);
+            Path persisted = root.resolve(sources == current ? "current-private-input.json" : "legacy-private-input.json");
+            Files.write(persisted, mapper.writeValueAsBytes(decoded));
+            assertEquals(decoded, mapper.readValue(Files.readAllBytes(persisted), inputType));
+        }
+    }
+
+    @Test void checkoutSourceMetadataRejectsUnknownMissingExtraWrongTypedAndCrossedRoles() throws Exception {
+        var ref = checkoutSources(); var mapper = ControlBuild.strictMapper();
+        var original = assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class, mapper.readTree(Files.readAllBytes(Path.of(ref.path()))));
+        for (String kind : List.of("schema", "missing", "extra", "wrong-number", "crossed")) {
+            var bad = original.deepCopy();
+            switch (kind) {
+                case "schema" -> bad.put("schema", "xar.sdk-producer-golden-sources/v99");
+                case "missing" -> bad.remove("context_input");
+                case "extra" -> bad.put("original_install_map_ref", true);
+                case "wrong-number" -> assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class, bad.get("context_input")).put("bytes", 1.0);
+                case "crossed" -> {
+                    var first = assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class, bad.get("vectors").get(0));
+                    var second = assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class, bad.get("vectors").get(1));
+                    var saved = first.get("request").deepCopy(); first.set("request", second.get("request")); second.set("request", saved);
+                }
+                default -> throw new IllegalStateException(kind);
+            }
+            Path path = root.resolve("invalid-" + kind + ".json"); Files.write(path, mapper.writeValueAsBytes(bad));
+            assertThrows(IOException.class, () -> FreshSdkFixtureStage.readProducerGoldenSources(ControlBuild.FileRef.measure(path)), kind);
+        }
+    }
+
+    @Test void checkoutSourcesReaderRejectsChangedOrNonobjectOriginalBeforeHostPublication() throws Exception {
+        var ref = checkoutSources(); var mapper = ControlBuild.strictMapper();
+        var sources = FreshSdkFixtureStage.readProducerGoldenSources(ref);
+        Path input = Path.of(sources.contextInput().path()); Files.writeString(input, "[]");
+        assertThrows(IOException.class, () -> FreshSdkFixtureStage.readProducerGoldenSources(ref));
+        var data = assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class, mapper.readTree(Files.readAllBytes(Path.of(ref.path()))));
+        data.set("context_input", mapper.valueToTree(ControlBuild.FileRef.measure(input)));
+        Path nonobject = root.resolve("nonobject-source.json"); Files.write(nonobject, mapper.writeValueAsBytes(data));
+        var freshRef = ControlBuild.FileRef.measure(nonobject);
+        assertThrows(IOException.class, () -> FreshSdkFixtureStage.readProducerGoldenSources(freshRef));
+        Path output = root.resolve("invalid-host-request");
+        assertThrows(IOException.class, () -> RootSoftwareFixtureInputsProducer.produce(freshRef, output));
+        assertFalse(Files.exists(output));
+    }
+
     private FreshSdkFixtureStage.Config config(long memory, int timeout, int parents, String work) throws IOException {
         return config(memory, timeout, parents, work, List.of());
     }

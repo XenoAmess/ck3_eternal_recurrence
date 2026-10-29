@@ -1077,4 +1077,34 @@ final class CiBootstrapTest {
         }
         @Override public synchronized void close() { closed = true; notifyAll(); }
     }
+    @Test void mavenOnlyUsesTheActualInvocationAndTypedTerminalWithoutPipelineQualification(@TempDir Path temporary) throws Exception {
+        var arguments = List.of("--repo-root", temporary.toString(), "--work-root", temporary.resolve("work").toString(),
+                "--python-executable", temporary.resolve("python.exe").toString(),
+                "--system-growth-reserve-bytes", "1048576", "--max-project-bytes", "8388608");
+        var mode = new ArrayList<String>(); mode.add("--ensure-default-maven-only"); mode.addAll(arguments);
+        assertEquals(CiBootstrap.BootstrapMode.MAVEN_ONLY, CiBootstrap.invocation(mode.toArray(String[]::new)).mode());
+        assertEquals(CiBootstrap.BootstrapMode.PIPELINE, CiBootstrap.invocation(arguments.toArray(String[]::new)).mode());
+        assertEquals(CiBootstrap.BootstrapTerminalStatus.MAVEN_READY_NO_PIPELINE_QUALIFICATION,
+                CiBootstrap.completionStatus(CiBootstrap.BootstrapMode.MAVEN_ONLY, true, null));
+        assertEquals(CiBootstrap.BootstrapTerminalStatus.PIPELINE_EXIT_0,
+                CiBootstrap.completionStatus(CiBootstrap.BootstrapMode.PIPELINE, true, null));
+        assertEquals(CiBootstrap.BootstrapTerminalStatus.RED,
+                CiBootstrap.completionStatus(CiBootstrap.BootstrapMode.MAVEN_ONLY, false, null));
+        assertEquals(CiBootstrap.BootstrapTerminalStatus.RED,
+                CiBootstrap.completionStatus(CiBootstrap.BootstrapMode.MAVEN_ONLY, true, "actual failure"));
+        // DTO roundtrip only; this value is not a Maven observation or qualification.
+        var actual = new CiBootstrap.BootstrapActual("xar.java-control-CI-bootstrap-actual/v3", "fixture-machine",
+                Instant.now().toString(), Instant.now().toString(),
+                CiBootstrap.BootstrapTerminalStatus.MAVEN_READY_NO_PIPELINE_QUALIFICATION,
+                null, null, null, List.of(), false, false);
+        Path output = temporary.resolve("maven-only-terminal.json"); CiBootstrap.publish(output, actual);
+        var mapper = ControlBuild.strictMapper(); byte[] wire = Files.readAllBytes(output);
+        assertEquals(actual, mapper.readValue(wire, CiBootstrap.BootstrapActual.class));
+        var wrong = (com.fasterxml.jackson.databind.node.ObjectNode) mapper.readTree(wire);
+        wrong.put("status", "UNKNOWN"); assertThrows(IOException.class,
+                () -> mapper.treeToValue(wrong, CiBootstrap.BootstrapActual.class));
+        wrong.putNull("status"); assertThrows(IOException.class,
+                () -> mapper.treeToValue(wrong, CiBootstrap.BootstrapActual.class));
+    }
+
 }

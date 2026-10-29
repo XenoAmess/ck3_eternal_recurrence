@@ -103,13 +103,14 @@ public final class NativeFixtureCorpora {
     }
     private static void successful(String machine, Run run, List<String> expectedArguments) throws IOException {
         run.sourceRef().verify(); run.executableRef().verify();
-        var terminal = ControlBuild.strictMapper().readValue(read(run.terminalRef(), 2 << 20), SharedOwnedCommand.Terminal.class);
+        var owned = SharedOwnedCommand.readNativeTerminal(run.terminalRef(), MAX_BYTES);
+        var terminal = owned.terminal();
         require("xar.shared-owned-command-terminal/v2".equals(terminal.schema()) && machine.equals(terminal.machineId()) && terminal.status() == SharedOwnedCommand.Status.PASS
                 && terminal.childStarted() && terminal.child() != null && terminal.child().passed() && terminal.failure() == null
                 && terminal.inputPrecheck() == SharedOwnedCommand.Check.MATCH && terminal.inputPostcheck() == SharedOwnedCommand.Check.MATCH && terminal.runtimePostcheck() == SharedOwnedCommand.Check.MATCH
                 && terminal.gameRpcCalls() == 0 && terminal.actualDriverOrSaveBodyReads() == 0 && terminal.completeRuntime().size() == 6 && new HashSet<>(terminal.completeRuntime()).size() == 6, "Actual successful settled native Job and unchanged source/runtime required");
         for (FileRef ref : terminal.completeRuntime()) ref.verify();
-        var command = SharedOwnedCommand.parseRequest(ControlBuild.strictMapper().readTree(read(terminal.requestRef(), MAX_BYTES)));
+        var command = owned.request();
         requireSettledOwnedProcess(machine, terminal, command);
         require(command.executable().equals(run.executableRef()) && command.arguments().equals(expectedArguments) && terminal.effectiveArguments().equals(expectedArguments)
                 && command.inputs().contains(run.sourceRef()) && absolute(run.outputRef().path()).startsWith(command.outputRoot()), "Native run crossed its original executable/source/argv/output role");
@@ -132,8 +133,12 @@ public final class NativeFixtureCorpora {
                 "Shared v2 outer is the original 256MiB reservation; no outer hard Job is claimed");
         require(terminal.owner().equals(command.owner()) && terminal.slotId().equals(command.slotId())
                 && Objects.equals(terminal.borrowedSlotId(), command.borrowedSlotId())
-                && terminal.standingRef().equals(command.standingRef())
-                && terminal.launcherSourceRef().equals(command.launcherSourceRef())
+                && absolute(terminal.standingRef().path()).equals(absolute(command.standingRef().path()))
+                && terminal.standingRef().bytes()==command.standingRef().bytes()
+                && terminal.standingRef().sha256().equals(command.standingRef().sha256())
+                && absolute(terminal.launcherSourceRef().path()).equals(absolute(command.launcherSourceRef().path()))
+                && terminal.launcherSourceRef().bytes()==command.launcherSourceRef().bytes()
+                && terminal.launcherSourceRef().sha256().equals(command.launcherSourceRef().sha256())
                 && absolute(terminal.child().identity().executable()).equals(absolute(command.executable().path()))
                 && terminal.child().accounting().memoryLimitBytes() == command.memoryLimitBytes(),
                 "Actual child image, Job memory and owner/slot/authority must match its original request");

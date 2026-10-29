@@ -1,0 +1,97 @@
+{
+  "schema": "xar.original-auto-source-frame-oracle/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_ref": {
+    "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+    "bytes": 897392,
+    "sha256": "a8ebc680c41732a567eb1df2831fe210d7b0dc9f72f5418f1885f4b89a5e664e"
+  },
+  "producer": "GameplayBridgeService._observed_planning_source_frame actual AST function",
+  "producer_lines": [
+    692,
+    726
+  ],
+  "scope": "software-only; no Native, Game, writer or new Python module",
+  "cases": [
+    {
+      "input": {
+        "snapshot_id": "original-frame",
+        "revision": 18446744073709551615,
+        "native_revision": 18446744073709551615,
+        "date_raw": 53144328,
+        "played_character": {
+          "character_id": 73
+        },
+        "episode_run_id": "source-episode",
+        "diagnostics": {
+          "connection_generation": 18446744073709551615,
+          "bridge_pid": 42
+        }
+      },
+      "original": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "original-frame",
+        "revision": 18446744073709551615,
+        "native_revision": 18446744073709551615,
+        "date_raw": 53144328,
+        "actor_character_id": 73,
+        "episode_run_id": "source-episode",
+        "connection_generation": 18446744073709551615,
+        "bridge_pid": 42
+      },
+      "expected_public": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "original-frame",
+        "revision": "18446744073709551615",
+        "native_revision": "18446744073709551615",
+        "date_raw": 53144328,
+        "actor_character_id": 73,
+        "episode_run_id": "source-episode",
+        "connection_generation": "18446744073709551615",
+        "bridge_pid": 42
+      }
+    },
+    {
+      "input": {
+        "snapshot_id": "original-frame",
+        "revision": 18446744073709551615,
+        "native_revision": 18446744073709551615,
+        "date_raw": 53144328,
+        "played_character": {
+          "character_id": 73
+        },
+        "episode_run_id": "source-episode",
+        "diagnostics": {
+          "connection_generation": null,
+          "bridge_pid": 42
+        }
+      },
+      "original": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "partial",
+        "snapshot_id": "original-frame",
+        "revision": 18446744073709551615,
+        "native_revision": 18446744073709551615,
+        "date_raw": 53144328,
+        "actor_character_id": 73,
+        "episode_run_id": "source-episode",
+        "connection_generation": null,
+        "bridge_pid": 42
+      },
+      "expected_public": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "partial",
+        "snapshot_id": "original-frame",
+        "revision": "18446744073709551615",
+        "native_revision": "18446744073709551615",
+        "date_raw": 53144328,
+        "actor_character_id": 73,
+        "episode_run_id": "source-episode",
+        "connection_generation": null,
+        "bridge_pid": 42
+      }
+    }
+  ]
+}

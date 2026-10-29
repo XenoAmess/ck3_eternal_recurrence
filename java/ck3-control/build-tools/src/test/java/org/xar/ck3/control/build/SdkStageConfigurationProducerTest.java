@@ -1,6 +1,7 @@
 package org.xar.ck3.control.build;
 
 import static org.junit.jupiter.api.Assertions.*;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,6 +53,78 @@ final class SdkStageConfigurationProducerTest {
         return new SdkStageConfigurationProducer.ProductionInputs(SdkStageConfigurationProducer.SCHEMA, "fixture-machine",
                 Instant.now().plusSeconds(300).toString(), ref, ref, ref, constraint, frozen, 32L << 20, 4096, 4096,
                 ref, ref, List.of(), interpreter, fresh, canonical, List.of());
+    }
+    private SdkStageConfigurationProducer.ProductionPlan plan(SdkStageConfigurationProducer.ProductionInputs inputs,
+            String machine, String review) {
+        return new SdkStageConfigurationProducer.ProductionPlan(SdkStageConfigurationProducer.PLAN_SCHEMA, machine, review,
+                inputs.baselineIntentRef(), inputs.legacyIntentRef(), inputs.consumerIntentRef(), inputs.legacyConstraint(),
+                inputs.source32Reuse(), inputs.sharedViewPhysicalHardBytes(), inputs.allocationUnitBytes(), inputs.perDirectoryGuardBytes(),
+                inputs.producerGoldenPlanRef(), inputs.requiredReactorSources(), inputs.interpreter(), inputs.fresh(),
+                inputs.canonical(), inputs.bootstrapEnvironment());
+    }
+    @Test void preQualifiedSourcePlanHasNoFutureReceiptAndUsesTheSameExactSourceFields() throws Exception {
+        var inputs = inputs(); var plan = plan(inputs, inputs.machineId(), inputs.reviewAtUtc());
+        var mapper = ControlBuild.strictMapper(); byte[] bytes = mapper.writeValueAsBytes(plan);
+        assertEquals(plan, SdkStageConfigurationProducer.decodePlan(bytes));
+        var expected = (ObjectNode) mapper.readTree(mapper.writeValueAsBytes(inputs)); expected.remove("qualified_tools_build_ref");
+        expected.put("schema", SdkStageConfigurationProducer.PLAN_SCHEMA);
+        assertEquals(expected, mapper.readTree(bytes));
+        assertFalse(expected.has("qualified_tools_build_ref"));
+        var before = new ArrayList<>(plan.bootstrapEnvironment());
+        var copied = new SdkStageConfigurationProducer.ProductionPlan(plan.schema(), plan.machineId(), plan.reviewAtUtc(),
+                plan.baselineIntentRef(), plan.legacyIntentRef(), plan.consumerIntentRef(), plan.legacyConstraint(), plan.source32Reuse(),
+                plan.sharedViewPhysicalHardBytes(), plan.allocationUnitBytes(), plan.perDirectoryGuardBytes(), plan.producerGoldenPlanRef(),
+                new ArrayList<>(plan.requiredReactorSources()), plan.interpreter(), plan.fresh(), plan.canonical(), before);
+        before.add(new RootSoftwareChildBootstrap.Environment("CK3_M7_FORMAL_NATIVE_WIRE_DIR", root.toString()));
+        assertEquals(plan, copied); assertTrue(copied.bootstrapEnvironment().isEmpty());
+        // Shape-only source references are intentionally never accepted as a valid original source closure.
+    }
+    @Test void sourcePlanDecoderRejectsFutureReceiptFieldsOldWireAndIntegerLookalikes() throws Exception {
+        var plan = plan(inputs(), "fixture-machine", Instant.now().plusSeconds(300).toString());
+        var mapper = ControlBuild.strictMapper(); var valid = (ObjectNode) mapper.valueToTree(plan);
+        var malformed = new ArrayList<ObjectNode>();
+        var future = valid.deepCopy(); future.set("qualified_tools_build_ref", mapper.valueToTree(plan.producerGoldenPlanRef())); malformed.add(future);
+        var old = valid.deepCopy(); old.put("schema", SdkStageConfigurationProducer.SCHEMA); malformed.add(old);
+        var missingGolden = valid.deepCopy(); missingGolden.remove("producer_golden_plan_ref"); malformed.add(missingGolden);
+        var nullGolden = valid.deepCopy(); nullGolden.putNull("producer_golden_plan_ref"); malformed.add(nullGolden);
+        var missingUnit = valid.deepCopy(); missingUnit.remove("allocation_unit_bytes"); malformed.add(missingUnit);
+        var boolUnit = valid.deepCopy(); boolUnit.put("allocation_unit_bytes", true); malformed.add(boolUnit);
+        var floatUnit = valid.deepCopy(); floatUnit.put("allocation_unit_bytes", 4096.0); malformed.add(floatUnit);
+        var boolExtent = valid.deepCopy(); ((ObjectNode) boolExtent.get("producer_golden_plan_ref")).put("bytes", true); malformed.add(boolExtent);
+        for (var bad : malformed) {
+            byte[] raw = mapper.writeValueAsBytes(bad);
+            assertThrows(IOException.class, () -> SdkStageConfigurationProducer.decodePlan(raw));
+            Path original = root.resolve("invalid-plan.json"); Files.write(original, raw);
+            assertThrows(IOException.class, () -> SdkStageConfigurationProducer.readPlan(FileRef.measure(original)));
+        }
+        Path planOriginal = root.resolve("plan-only.json"); Files.write(planOriginal, mapper.writeValueAsBytes(plan));
+        assertThrows(IOException.class, () -> SdkStageConfigurationProducer.readInputs(FileRef.measure(planOriginal)));
+    }
+    @Test void actualCompletedToolsGuardRejectsAnUnqualifiedReceiptBeforeConstructingInputs() throws Exception {
+        var inputs = inputs(); var current = plan(inputs, WindowsJobProcess.currentMachineId(), inputs.reviewAtUtc());
+        var unqualified = pin("not-a-completed-tools-receipt.json"); var checks = new AtomicInteger();
+        assertThrows(IOException.class, () -> SdkStageConfigurationProducer.bindQualifiedTools(current, unqualified,
+                pending -> checks.incrementAndGet()));
+        assertTrue(checks.get() > 0); unqualified.verify();
+        // The real completed-receipt reader rejected this file; no mock receipt or alternative qualifier was used.
+        assertFalse(Files.exists(root.resolve("actual-production-inputs.json")));
+        assertThrows(IOException.class, () -> SdkStageConfigurationProducer.writePlan(current,
+                root.resolve("unbacked-source-plan.json"), pending -> { }));
+        assertFalse(Files.exists(root.resolve("unbacked-source-plan.json")));
+    }
+    @Test void expiredSourcePlanAndGuardFailureNeverStartBindingOrPublishMetadata() throws Exception {
+        var inputs = inputs(); String machine = WindowsJobProcess.currentMachineId(); var checks = new AtomicInteger();
+        var expired = plan(inputs, machine, Instant.now().minusSeconds(1).toString());
+        assertThrows(IOException.class, () -> SdkStageConfigurationProducer.bindQualifiedTools(expired,
+                inputs.qualifiedToolsBuildRef(), pending -> checks.incrementAndGet()));
+        assertEquals(0, checks.get());
+        var current = plan(inputs, machine, inputs.reviewAtUtc()); Path destination = root.resolve("not-written.json");
+        assertThrows(IOException.class, () -> SdkStageConfigurationProducer.writePlan(current, destination,
+                pending -> { throw new IOException("actual Root guard refused"); }));
+        assertFalse(Files.exists(destination));
+        assertThrows(IOException.class, () -> SdkStageConfigurationProducer.bindAndWriteInputs(
+                inputs.producerGoldenPlanRef(), inputs.qualifiedToolsBuildRef(), Path.of("relative.json"), pending -> { }));
+        assertFalse(Files.exists(root.resolve("relative.json")));
     }
     @Test void postReactorRebindingChangesOnlyNewOutputAndActualDeployment() throws Exception {
         var source = pin("source.py"); var old = pin("old-receipt.json"); var actual = pin("new-receipt.json");
@@ -157,4 +230,25 @@ final class SdkStageConfigurationProducerTest {
         assertThrows(IOException.class, () -> FreshSdkFixtureStage.coldParents(new SdkSourceAssembly.Digest(238250,
                 "854e3788d3fd22211dc5bba41dc7cf6c36554c95535d55055da3bd107047594c")));
     }
+    @Test void localBinderKeepsBothSdkGroupsOnTheExactOriginalRootCard() throws Exception {
+        var inputs = inputs(); var sdk = plan(inputs, inputs.machineId(), inputs.reviewAtUtc());
+        var card = sdk.fresh().executionCardRef();
+        ControlCi.requireRootLocalSdkCards(card, sdk);
+        var different = pin("different-root-card.json");
+        assertThrows(IOException.class, () -> ControlCi.requireRootLocalSdkCards(different, sdk));
+        assertThrows(IOException.class, () -> ControlCi.requireRootLocalSdkCards(null, sdk));
+        var changed = new FileRef(card.path(), card.bytes() + 1, card.sha256());
+        assertThrows(IOException.class, () -> ControlCi.requireRootLocalSdkCards(changed, sdk));
+        var canonical = sdk.canonical();
+        var other = new SdkStageConfigurationProducer.CanonicalInputs(canonical.gitExecutable(), canonical.workflowRef(),
+                canonical.reviewedWalRef(), canonical.canonicalSources(), different, canonical.commandMemoryBytes(), canonical.timeoutSeconds());
+        var mixed = new SdkStageConfigurationProducer.ProductionPlan(sdk.schema(), sdk.machineId(), sdk.reviewAtUtc(),
+                sdk.baselineIntentRef(), sdk.legacyIntentRef(), sdk.consumerIntentRef(), sdk.legacyConstraint(), sdk.source32Reuse(),
+                sdk.sharedViewPhysicalHardBytes(), sdk.allocationUnitBytes(), sdk.perDirectoryGuardBytes(), sdk.producerGoldenPlanRef(),
+                sdk.requiredReactorSources(), sdk.interpreter(), sdk.fresh(), other, sdk.bootstrapEnvironment());
+        assertThrows(IOException.class, () -> ControlCi.requireRootLocalSdkCards(card, mixed));
+        // Synthetic metadata tests exact identity only; it never grants actual Tools, reactor or Root authority.
+    }
+
+
 }

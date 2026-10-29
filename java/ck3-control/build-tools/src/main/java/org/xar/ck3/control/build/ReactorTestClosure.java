@@ -121,6 +121,14 @@ public final class ReactorTestClosure {
         result.add(new RequiredSuite("build-tools", "ck3-control-build-tools", "org.xar.ck3.control.build.CompleteSourceGraphResumedCardTest", 2));
         result.add(new RequiredSuite("build-tools", "ck3-control-build-tools", "org.xar.ck3.control.build.ReinforcementArrivalFirstCorpusTest", 2));
         result.add(new RequiredSuite("build-tools", "ck3-control-build-tools", "org.xar.ck3.control.build.NativeFixtureCorporaTest", 2));
+        result.add(new RequiredSuite("local-service", "ck3-control-local-service",
+                "org.xar.ck3.control.nativebridge.CleanRestartCanonicalWriterTest", 8));
+        result.add(new RequiredSuite("adapters-storage", "adapters-storage",
+                "org.xar.ck3.control.continuity.writer.HistoricalTransitionBatchTest", 2));
+        result.add(new RequiredSuite("adapters-storage", "adapters-storage",
+                "org.xar.ck3.control.continuity.writer.DomainReadSessionReuseTest", 2));
+        result.add(new RequiredSuite("local-service", "ck3-control-local-service",
+                "org.xar.ck3.control.nativebridge.SessionControllerDeferredCanonicalRecoveryTest", 1));
         return List.copyOf(result);
     }
 
@@ -148,7 +156,7 @@ public final class ReactorTestClosure {
         String machine = WindowsJobProcess.currentMachineId();
         String failure = null; Evaluation evaluation = null;
         try {
-            ControlBuild.BuildReceipt build = ControlBuild.acceptedReceipt(buildReceiptPath);
+            ControlBuild.BuildReceipt build = ControlBuild.verifiedCompletedReceipt(buildRef);
             if (build.targetKind() != ControlBuild.TargetKind.SERVICE_FAST_JAR)
                 throw new IOException("Complete service reactor build required");
             Path deployment = Path.of(build.deploymentRoot());
@@ -178,7 +186,7 @@ public final class ReactorTestClosure {
         if (actual.status() != Status.PASS || !actual.machineId().equals(WindowsJobProcess.currentMachineId())
                 || !actual.reactorBuildReceiptRef().equals(expectedBuild) || !actual.requirements().equals(expectedRequirements))
             throw new IOException("Current reactor test closure and exact requirements required");
-        ControlBuild.BuildReceipt build = ControlBuild.acceptedReceipt(expectedBuildReceiptPath);
+        ControlBuild.BuildReceipt build = ControlBuild.verifiedCompletedReceipt(expectedBuild);
         Path buildRoot = Path.of(build.deploymentRoot()).getParent().getParent();
         if (!actual.evaluation().equals(evaluate(Path.of(build.compiledSourceRoot()), build.compiledSourcePins(),
                 buildRoot, expectedRequirements))) throw new IOException("Actual emitted reactor test closure changed");

@@ -19,7 +19,12 @@ public final class MapAdmissionCi {
     private MapAdmissionCi() {}
 
     public record Config(Path repoRoot, Path buildReceipt, Path workRoot, Path javaExecutable,
-                         Path pythonExecutable, Instant leaseDeadline, int port) {
+                         Path pythonExecutable, Instant leaseDeadline, int port, CiBootstrap.PipelineProfile pipelineProfile) {
+        public Config(Path repoRoot, Path buildReceipt, Path workRoot, Path javaExecutable,
+                Path pythonExecutable, Instant leaseDeadline, int port) {
+            this(repoRoot, buildReceipt, workRoot, javaExecutable, pythonExecutable, leaseDeadline, port,
+                    CiBootstrap.PipelineProfile.LEGACY);
+        }
         public Config {
             Objects.requireNonNull(repoRoot);
             Objects.requireNonNull(buildReceipt);
@@ -27,6 +32,7 @@ public final class MapAdmissionCi {
             Objects.requireNonNull(javaExecutable);
             Objects.requireNonNull(pythonExecutable);
             Objects.requireNonNull(leaseDeadline);
+            Objects.requireNonNull(pipelineProfile);
             if (port < 1 || port > 65535) { throw new IllegalArgumentException("bounded explicit TCP port required"); }
         }
     }
@@ -143,9 +149,7 @@ public final class MapAdmissionCi {
         Path logs = Files.createDirectory(config.workRoot().resolve("logs"));
         Path scratch = Files.createDirectory(config.workRoot().resolve("scratch"));
         Map<String, String> environment = pythonEnvironment(config, scratch);
-        var service = MapAdmissionServiceOwner.startWithProjection(new MapAdmissionServiceOwner.Config(config.buildReceipt(),
-                config.workRoot().resolve("service"), config.javaExecutable(), config.leaseDeadline(), config.port(),
-                null, null, null, null, artifactInput));
+        var service = MapAdmissionServiceOwner.startWithProjection(serviceConfig(config, null, artifactInput));
         return retain(config, logs, scratch, environment, service, true);
     }
 
@@ -161,7 +165,15 @@ public final class MapAdmissionCi {
     private static Config normalized(Config requested) throws IOException {
         return new Config(requested.repoRoot().toRealPath(), requested.buildReceipt().toRealPath(),
                 requested.workRoot().toAbsolutePath().normalize(), requested.javaExecutable().toRealPath(),
-                requested.pythonExecutable().toRealPath(), requested.leaseDeadline(), requested.port());
+                requested.pythonExecutable().toRealPath(), requested.leaseDeadline(), requested.port(), requested.pipelineProfile());
+    }
+
+    /** Both consumer routes carry the original absolute lease and its admitted profile into the Owner. */
+    static MapAdmissionServiceOwner.Config serviceConfig(Config config, RootSoftwareFixtureHandoff.Request fixture,
+            ProjectionArtifactInputOwner.Config artifactInput) {
+        return new MapAdmissionServiceOwner.Config(config.buildReceipt(), config.workRoot().resolve("service"),
+                config.javaExecutable(), config.leaseDeadline(), config.port(), null, null, null, null,
+                artifactInput, fixture, config.pipelineProfile());
     }
 
     private static Map<String, String> pythonEnvironment(Config config, Path scratch) {
@@ -198,7 +210,7 @@ public final class MapAdmissionCi {
 
     private static Session runConsumers(Config requested, RootSoftwareFixtureHandoff.Request fixture, boolean retain) throws IOException {
         Config config = normalized(requested);
-        ControlBuild.acceptedReceipt(config.buildReceipt());
+        ControlBuild.verifiedCompletedReceipt(ControlBuild.FileRef.measure(config.buildReceipt()));
         String machine = WindowsJobProcess.currentMachineId();
         String started = Instant.now().toString();
         if (Files.exists(config.workRoot()) || config.workRoot().startsWith(config.repoRoot())) {
@@ -224,8 +236,7 @@ public final class MapAdmissionCi {
             if (!staticCheck.result().passed()) {
                 throw new IllegalStateException("whole Python client/regression strict command failed");
             }
-            var ownerConfig = new MapAdmissionServiceOwner.Config(config.buildReceipt(), config.workRoot().resolve("service"),
-                    config.javaExecutable(), config.leaseDeadline(), config.port(), null, null, null, null, null, fixture);
+            var ownerConfig = serviceConfig(config, fixture, null);
             service = retain(config, logs, scratch, environment, fixture == null
                     ? MapAdmissionServiceOwner.start(ownerConfig) : MapAdmissionServiceOwner.startWithProjection(ownerConfig), fixture != null);
             {

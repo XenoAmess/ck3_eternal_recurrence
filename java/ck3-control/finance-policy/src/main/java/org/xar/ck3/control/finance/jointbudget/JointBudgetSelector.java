@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** Pure M5 analytic selector. It neither reserves resources nor emits an action. */
 public final class JointBudgetSelector {
@@ -22,7 +23,7 @@ public final class JointBudgetSelector {
     }
 
     public record Frame(BigInteger player, BigInteger nativeRevision, BigInteger dateRaw) {
-        public Frame { positive(player); positive(nativeRevision); nonnegative(dateRaw); }
+        public Frame { NativeCharacterId.of(player); positive(nativeRevision); nonnegative(dateRaw); }
     }
 
     /** Null means the old producer's explicit get()/missing projection, never a numeric zero. */
@@ -36,8 +37,8 @@ public final class JointBudgetSelector {
             armyIds = Set.copyOf(armyIds); allyCharacterIds = Set.copyOf(allyCharacterIds);
             characterIds = Set.copyOf(characterIds); commitmentKeys = Set.copyOf(commitmentKeys);
             armyIds.forEach(JointBudgetSelector::nonnegative);
-            allyCharacterIds.forEach(JointBudgetSelector::positive);
-            characterIds.forEach(JointBudgetSelector::positive);
+            allyCharacterIds.forEach(value -> NativeCharacterId.of(value));
+            characterIds.forEach(value -> NativeCharacterId.of(value));
             commitmentKeys.forEach(value -> require(!value.isEmpty(), "empty commitment key"));
         }
         public boolean overlaps(Claims other) {
@@ -197,3 +198,4 @@ public final class JointBudgetSelector {
     private static void nonnegative(BigInteger value) { require(value != null && value.signum() >= 0, "nonnegative integer required"); }
     static void require(boolean condition, String message) { if (!condition) { throw new IllegalArgumentException(message); } }
 }
+

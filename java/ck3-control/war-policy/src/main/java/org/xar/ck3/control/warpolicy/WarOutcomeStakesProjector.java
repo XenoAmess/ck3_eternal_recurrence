@@ -6,6 +6,8 @@ import static org.xar.ck3.control.warpolicy.WarOutcomeStakesResult.Reason;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,23 +15,67 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.HexFormat;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.observation.ObservationReuse;
 
 /** In-process pure API. No per-war RPC, Game/Driver IO, effect evaluation or action submission. */
 public final class WarOutcomeStakesProjector {
     public static final String REQUEST_SCHEMA = "g2.war-outcome-stakes-request/v1";
+    private static final Set<String> REQUEST_FIELDS = Set.of("schema", "war_id", "snapshot",
+        "campaign_root", "current_source_sha256", "observation_context");
     private final ReviewedSourceRegistry registry;
 
     public WarOutcomeStakesProjector(ReviewedSourceRegistry registry) { this.registry = Objects.requireNonNull(registry); }
 
     /** Strict wrapper around existing SDK objects. Legacy object extensions stay source-bound. */
     public byte[] project(byte[] input) {
-        ObjectNode request = StrictJson.object(StrictJson.parse(input), Set.of("schema", "war_id", "snapshot",
-            "campaign_root", "current_source_sha256", "observation_context"));
+        ObjectNode request = StrictJson.object(StrictJson.parse(input), REQUEST_FIELDS);
         require(WarJson.textEquals(request.get("schema"), REQUEST_SCHEMA), "war stakes request schema differs");
         return project(request.get("snapshot"), WarJson.positive32(request.get("war_id")),
             request.get("campaign_root"), request.get("current_source_sha256"),
             ObservationContext.fromJson(request.get("observation_context"))).toCanonicalBytes();
+    }
+
+    /**
+     * Actual projection consumer under the original coordinator's read lease. The complete captured
+     * request, including source leaves, opaque extensions and list order, is the cache key. A hit
+     * avoids the request parse and original pure projection; it never omits a native observation.
+     * The owner retains Game lifetime, external writer versions and every invalidation boundary.
+     */
+    public ObservationReuse.Read<WarOutcomeStakesResult> projectScoped(
+            ObservationReuse<ObservationContext, WarObservationFrame, WarOutcomeStakesResult> owner,
+            ObservationReuse.Token<ObservationContext, WarObservationFrame> token, byte[] input) {
+        Objects.requireNonNull(owner); owner.requireCurrent(token);
+        Objects.requireNonNull(input);
+        require(input.length <= StrictJson.INPUT_MAX_BYTES, "original war request byte budget exceeded");
+        byte[] captured = input.clone();
+        var key = new ObservationReuse.InputKey(REQUEST_SCHEMA, sha256(captured));
+        return owner.read(token, key, () -> {
+            // Parse inside the real cache miss, so a malformed input revokes this lease just like
+            // an original projection failure. A previously complete exact-byte hit is immutable.
+            ObjectNode request = StrictJson.object(StrictJson.parse(captured), REQUEST_FIELDS);
+            require(WarJson.textEquals(request.get("schema"), REQUEST_SCHEMA), "war stakes request schema differs");
+            ObservationContext context = ObservationContext.fromJson(request.get("observation_context"));
+            WarObservationFrame frame = WarObservationFrame.fromSnapshot(request.get("snapshot"));
+            boolean sourceMatches = context.equals(token.scope().source());
+            boolean frameMatches = frame.equals(token.scope().frame());
+            if (!sourceMatches || !frameMatches) {
+                owner.observedDrift(token, sourceMatches ? ObservationReuse.Invalidation.FRAME_CHANGED
+                    : ObservationReuse.Invalidation.SOURCE_CHANGED);
+            }
+            require(sourceMatches && frameMatches,
+                "war projection source/frame differs from the owner's observation lease");
+            WarOutcomeStakesResult result = project(request.get("snapshot"), WarJson.positive32(request.get("war_id")),
+                request.get("campaign_root"), request.get("current_source_sha256"), context);
+            return result.status() == WarOutcomeStakesResult.Status.UNKNOWN
+                ? new ObservationReuse.Unknown<>(result, result.reason().name()) : new ObservationReuse.Complete<>(result);
+        });
+    }
+
+    private static String sha256(byte[] input) {
+        try { return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(input)); }
+        catch (NoSuchAlgorithmException exception) { throw new IllegalStateException("required SHA-256 unavailable", exception); }
     }
 
     public WarOutcomeStakesResult project(JsonNode snapshotValue, int warId,

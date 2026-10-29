@@ -1,0 +1,48 @@
+{
+  "schema": "xar.interactive-task-owner/v1",
+  "role": "display_owner",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "nonce": "e458207478364bfe9927aba01ae3e478",
+  "task_name": "XARG2ManagedOwner-e458207478364bfe9927aba01ae3e478",
+  "sid": "S-1-5-21-2908730481-166481001-1318755029-1001",
+  "session": 1,
+  "root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\display-owner01",
+  "cwd": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46",
+  "python": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "pythonw": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\pythonw.exe",
+  "python_file_id": {
+    "volume_serial": "5669105749829453645",
+    "file_id": "7c88130000003f000000000000000000"
+  },
+  "pythonw_file_id": {
+    "volume_serial": "5669105749829453645",
+    "file_id": "14891300000046000000000000000000"
+  },
+  "bootstrap": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\interactive_task_owner_a10_v1.py",
+  "bootstrap_sha256": "7a36400ef563d05dcc309900e51970a87fcf5c01a09f6b92643c57ca3b2ec51b",
+  "stage": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\presentation-c23\\start_new_game_display.py",
+  "stage_sha256": "e3cc656b64144abf592909f3e372752af3bb66cf21e06e3b53d9d81cdb3d2f6d",
+  "stage_args": [
+    "--game-launch",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\ROOT-ACTUAL-GAME-LAUNCH-C23.json",
+    "--placement",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\ROOT-GAME-PLACEMENT-C23.json",
+    "--obs-profile",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\ROOT-OBS-PROFILE-C23.json",
+    "--current-request",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\CURRENT-REQUEST-P37.json",
+    "--job-root",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\recordings",
+    "--ffprobe",
+    "C:\\Users\\xenoa\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-8.1.1-full_build\\bin\\ffprobe.exe",
+    "--game-pid",
+    "50688",
+    "--game-birth",
+    "134371430348828741"
+  ],
+  "stop_path": null,
+  "env": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Lib\\site-packages"
+  }
+}

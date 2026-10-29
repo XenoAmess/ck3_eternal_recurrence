@@ -1,0 +1,39 @@
+{
+  "schema": "xar.army-strengths.original-producer-oracle/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-23T18:21:11.184Z",
+  "python_source_root": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src",
+  "original_sources": [
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "bytes": 241556,
+      "sha256": "b1b14953f01d66c9f6720e4c92cb6b30c26eb1946b20e9b4ba932c9b5e1f7937"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/auto_army_core_validation_v1.py",
+      "bytes": 5328,
+      "sha256": "a18e2fcba28e65bbd47c28574ae97a173ccd76c5435c6d2fffc885a5e75c1bb0"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_strengths_manager_shared_wire.py",
+      "bytes": 5685,
+      "sha256": "c8de951bec611933c90fa606aec0ab534052007d77fe82467761324e34f1cd02"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_strengths_profile_contract.py",
+      "bytes": 2643,
+      "sha256": "fa77ddd12ffbae44d8805ee124af1d8cb7360e7ef447f5662f74d08a9c656bf6"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/public_unit_contract.py",
+      "bytes": 1885,
+      "sha256": "0de76f3bf10ae24d3202177bb527bcb3ec903432a38af64f55e08c95698cab4e"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_phase_contract_12004.py",
+      "bytes": 25149,
+      "sha256": "1a08699adb77baa4db219200e31abf719f270cf8ccbb35c52c290d0387552a4a"
+    }
+  ],
+  "scope": "Original Python compatibility oracle only; no production Python addition or Native/Game qualification"
+}

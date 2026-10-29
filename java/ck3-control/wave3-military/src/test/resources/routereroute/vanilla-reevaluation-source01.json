@@ -1,0 +1,25 @@
+{
+  "schema": "xar.route-reevaluation-vanilla-source-fixture/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "captured_at_utc": "2026-10-22T23:05:39.654913+00:00",
+  "origin": {
+    "path": "Z:\\ck3_mod_rewrite\\Crusader Kings III\\game\\common\\defines\\ai\\00_ai.txt",
+    "bytes": 65153,
+    "sha256": "c78f9cd8df9938cc9f38e817bcb6e32cd13720b5bd9de077b85e3e1c6f030293",
+    "line_ranges": [
+      [
+        186,
+        197
+      ],
+      [
+        1401,
+        1417
+      ]
+    ]
+  },
+  "excerpt": {
+    "utf8": "\t### Brief: GOALS_PER_TYPE ( Array of int32 )\n\t# Number goals per type (per tier)\n\t#\n\tGOALS_PER_TYPE = {\n\t\t0\n\t\t0\n\t\t1\n\t\t2\n\t\t3\n\t\t3\n\t\t3 # Hegemon\n\t}\n\n\t### Brief: RESUPPLY_COOLDOWN_DAYS ( int32 )\n\t# If supplying is interrupted due to insufficient supply, wait for\n\t# this long before trying to resupply again.\n\t#\n\tRESUPPLY_COOLDOWN_DAYS = 250\n\n\t### Brief: AVOID_BAD_ADJACENCY_COMBAT_PREDICTION_RATIO ( Fixed Point )\n\t# Below this combat prediction ratio the AI will try to find a\n\t# better way.\n\t#\n\tAVOID_BAD_ADJACENCY_COMBAT_PREDICTION_RATIO = 0.625\n\n\t### Brief: AVOID_BAD_ADJACENCY_MAX_PATHFIND_EXTRA_COST ( Fixed Point )\n\t# Max additional cost for a path that avoids going over a bad\n\t# adjacency just before the target destination.\n\t#\n\tAVOID_BAD_ADJACENCY_MAX_PATHFIND_EXTRA_COST = 180.0\n",
+    "bytes": 788,
+    "sha256": "2f64927583d4cdd84dbef31086c21988b406c41ecfe5f857146f0628fc9245ec"
+  }
+}

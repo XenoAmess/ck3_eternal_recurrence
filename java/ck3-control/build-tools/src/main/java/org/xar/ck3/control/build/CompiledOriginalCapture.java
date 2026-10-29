@@ -13,7 +13,10 @@ import java.util.Objects;
 /** Shared manifest-selected original capture adapter; actual native lifecycle lives in CompiledCaptureProcess. */
 public final class CompiledOriginalCapture {
     public static final String REQUEST_SCHEMA = "xar.compiled-original-capture-request/v3";
-    public static final String RECEIPT_SCHEMA = "xar.compiled-original-capture-actual/v3";
+    public static final String RECEIPT_SCHEMA = "xar.compiled-original-capture-actual/v6";
+    public static final String HISTORICAL_RECEIPT_SCHEMA_V5 = "xar.compiled-original-capture-actual/v5";
+    public static final String HISTORICAL_RECEIPT_SCHEMA_V3 = "xar.compiled-original-capture-actual/v3";
+    public static final String HISTORICAL_RECEIPT_SCHEMA_V4 = "xar.compiled-original-capture-actual/v4";
     public enum Mode { QUALIFY_ONLY, EXECUTE }
     public enum Status { PASS, RED, UNKNOWN }
     public enum Scope { MANIFEST_CLASS_CLOSURE_ONLY, ORIGINAL_SOURCE_EXPORT_ONLY, ORIGINAL_MAIN_OUTPUT_NOT_RESOURCE_ACCEPTANCE }
@@ -54,13 +57,25 @@ public final class CompiledOriginalCapture {
             ControlBuild.FileRef stdoutRef, ControlBuild.FileRef stderrRef,
             ControlBuild.FileRef outputRef, ControlBuild.FileRef outputDirectoryManifestRef,
             List<ControlBuild.FileRef> initialOwnedDirectoryManifestRefs,
-            List<ControlBuild.FileRef> ownedDirectoryManifestRefs, String error) {
+            List<ControlBuild.FileRef> ownedDirectoryManifestRefs, String error,
+            CompiledCaptureProcess.InvocationEvidence invocationEvidence) {
         public Receipt {
             if (!RECEIPT_SCHEMA.equals(schema) || machineId == null || machineId.isBlank()) throw new IllegalArgumentException("Typed actual capture receipt required");
             Instant.parse(observedAtUtc); Objects.requireNonNull(mode); Objects.requireNonNull(status); Objects.requireNonNull(scope);
             requestRef = CompiledOriginalCaptureProfile.ref(requestRef); Objects.requireNonNull(limits);
             ownedDirectoryManifestRefs = List.copyOf(ownedDirectoryManifestRefs);
             initialOwnedDirectoryManifestRefs = List.copyOf(initialOwnedDirectoryManifestRefs);
+            if (mode == Mode.QUALIFY_ONLY && childStarted) throw new IllegalArgumentException("Qualification never starts a child");
+            if ((mode == Mode.QUALIFY_ONLY || !childStarted) && invocationEvidence != null
+                    || mode == Mode.EXECUTE && childStarted && invocationEvidence == null) {
+                throw new IllegalArgumentException("Invocation evidence must describe exactly the actual started Java child");
+            }
+            if (commandResult != null && (invocationEvidence == null
+                    || !commandResult.identity().equals(invocationEvidence.actualProcess()))) {
+                throw new IllegalArgumentException("Invocation and terminal must belong to the same actual child");
+            }
+            if (commandResult == null && invocationEvidence != null && (invocationEvidence.preparation() != null || invocationEvidence.nativeSources() != null))
+                throw new IllegalArgumentException("Preparation witness requires the actual trusted child terminal");
             if (status == Status.PASS) {
                 if (error != null || proofRef == null || !postcheckSame) throw new IllegalArgumentException("Actual equal pre/post provenance required");
                 if (mode == Mode.QUALIFY_ONLY) {
@@ -68,12 +83,66 @@ public final class CompiledOriginalCapture {
                             || !ownedDirectoryManifestRefs.isEmpty() || stdoutRef != null || stderrRef != null
                             || scope != Scope.MANIFEST_CLASS_CLOSURE_ONLY) throw new IllegalArgumentException("Qualification starts no child and claims no artifact");
                 } else if (!childStarted || commandResult == null || !commandResult.passed()
+                        || invocationEvidence == null || invocationEvidence.preparation() == null || invocationEvidence.nativeSources() == null
                         || (outputRef == null) == (outputDirectoryManifestRef == null)
                         || stdoutRef == null || stderrRef == null || scope == Scope.MANIFEST_CLASS_CLOSURE_ONLY) {
                     throw new IllegalArgumentException("Actual successful native terminal/Job0/output required");
                 }
             } else if (error == null || error.isBlank()) throw new IllegalArgumentException("Actual failure reason required");
             if (status == Status.UNKNOWN && (!childStarted || commandResult != null)) throw new IllegalArgumentException("Unknown requires started child without trusted terminal");
+        }
+    }
+    /** Historical metadata only. This record contains no evidence of retained Java argv. */
+    public record HistoricalReceiptV3(String schema, String machineId, String observedAtUtc, Mode mode,
+            Status status, Scope scope, ControlBuild.FileRef requestRef, CompiledGoldenCapture.Limits limits,
+            boolean childStarted, WindowsJobProcess.CommandResult commandResult,
+            ControlBuild.FileRef proofRef, boolean postcheckSame,
+            ControlBuild.FileRef stdoutRef, ControlBuild.FileRef stderrRef,
+            ControlBuild.FileRef outputRef, ControlBuild.FileRef outputDirectoryManifestRef,
+            List<ControlBuild.FileRef> initialOwnedDirectoryManifestRefs,
+            List<ControlBuild.FileRef> ownedDirectoryManifestRefs, String error) {
+        public HistoricalReceiptV3 {
+            if (!HISTORICAL_RECEIPT_SCHEMA_V3.equals(schema) || machineId == null || machineId.isBlank())
+                throw new IllegalArgumentException("Explicit historical v3 metadata required");
+            Instant.parse(observedAtUtc); Objects.requireNonNull(mode); Objects.requireNonNull(status); Objects.requireNonNull(scope);
+            requestRef = CompiledOriginalCaptureProfile.ref(requestRef); Objects.requireNonNull(limits);
+            initialOwnedDirectoryManifestRefs = List.copyOf(initialOwnedDirectoryManifestRefs);
+            ownedDirectoryManifestRefs = List.copyOf(ownedDirectoryManifestRefs);
+        }
+    }
+    public record HistoricalReceiptV4(String schema, String machineId, String observedAtUtc, Mode mode,
+            Status status, Scope scope, ControlBuild.FileRef requestRef, CompiledGoldenCapture.Limits limits,
+            boolean childStarted, WindowsJobProcess.CommandResult commandResult,
+            ControlBuild.FileRef proofRef, boolean postcheckSame,
+            ControlBuild.FileRef stdoutRef, ControlBuild.FileRef stderrRef,
+            ControlBuild.FileRef outputRef, ControlBuild.FileRef outputDirectoryManifestRef,
+            List<ControlBuild.FileRef> initialOwnedDirectoryManifestRefs,
+            List<ControlBuild.FileRef> ownedDirectoryManifestRefs, String error, CompiledCaptureProcess.HistoricalInvocationV1 invocationEvidence) {
+        public HistoricalReceiptV4 {
+            if (!HISTORICAL_RECEIPT_SCHEMA_V4.equals(schema) || machineId == null || machineId.isBlank())
+                throw new IllegalArgumentException("Explicit historical v4 metadata required");
+            Instant.parse(observedAtUtc); Objects.requireNonNull(mode); Objects.requireNonNull(status); Objects.requireNonNull(scope);
+            requestRef = CompiledOriginalCaptureProfile.ref(requestRef); Objects.requireNonNull(limits);
+            initialOwnedDirectoryManifestRefs = List.copyOf(initialOwnedDirectoryManifestRefs);
+            ownedDirectoryManifestRefs = List.copyOf(ownedDirectoryManifestRefs);
+        }
+    }
+    /** Old v5 preparation opaque native_key is retained only as historical metadata. */
+    public record HistoricalReceiptV5(String schema, String machineId, String observedAtUtc, Mode mode,
+            Status status, Scope scope, ControlBuild.FileRef requestRef, CompiledGoldenCapture.Limits limits,
+            boolean childStarted, WindowsJobProcess.CommandResult commandResult,
+            ControlBuild.FileRef proofRef, boolean postcheckSame,
+            ControlBuild.FileRef stdoutRef, ControlBuild.FileRef stderrRef,
+            ControlBuild.FileRef outputRef, ControlBuild.FileRef outputDirectoryManifestRef,
+            List<ControlBuild.FileRef> initialOwnedDirectoryManifestRefs,
+            List<ControlBuild.FileRef> ownedDirectoryManifestRefs, String error, CompiledCaptureProcess.HistoricalInvocationV2 invocationEvidence) {
+        public HistoricalReceiptV5 {
+            if (!HISTORICAL_RECEIPT_SCHEMA_V5.equals(schema) || machineId == null || machineId.isBlank())
+                throw new IllegalArgumentException("Explicit historical v5 metadata required");
+            Instant.parse(observedAtUtc); Objects.requireNonNull(mode); Objects.requireNonNull(status); Objects.requireNonNull(scope);
+            requestRef = CompiledOriginalCaptureProfile.ref(requestRef); Objects.requireNonNull(limits);
+            initialOwnedDirectoryManifestRefs = List.copyOf(initialOwnedDirectoryManifestRefs);
+            ownedDirectoryManifestRefs = List.copyOf(ownedDirectoryManifestRefs);
         }
     }
     private CompiledOriginalCapture() { }
@@ -110,11 +179,13 @@ public final class CompiledOriginalCapture {
         Path receiptPath = CompiledOriginalCaptureProfile.canonical(spec.receiptPath());
         Path output = Path.of(request.outputPath()), stdout = root.resolve("original.stdout.log"), stderr = root.resolve("original.stderr.log");
         Path proofPath = root.resolve("original-proof.json"), reserved = root.resolve("original-reserved.json");
+        Path envelope = root.resolve("original-java-invocation.bin");
         for (Path path : List.of(receiptPath, output, stdout, stderr, proofPath, reserved)) {
             inside(root, path); require(!Files.exists(path, LinkOption.NOFOLLOW_LINKS), "Create-only capture paths already exist");
         }
         require(List.of(receiptPath, output, stdout, stderr, proofPath, reserved).stream().distinct().count() == 6, "Distinct capture artifact paths required");
         var paths = new ArrayList<Path>(List.of(receiptPath, output, stdout, stderr, proofPath, reserved));
+        paths.add(envelope);
         paths.add(root.resolve("original-output-directory.json")); int directoryIndex = 0;
         for (var directory : request.profile().directories()) if (directory.kind() == CompiledOriginalCaptureProfile.ArgumentKind.EXISTING_OWNED_DIRECTORY) {
             paths.add(root.resolve("original-initial-owned-" + directoryIndex + ".json"));
@@ -139,19 +210,25 @@ public final class CompiledOriginalCapture {
             require(proofBytes.length <= (4 << 20), "Finite actual compiler proof required");
             Files.write(proofPath, proofBytes, StandardOpenOption.CREATE_NEW); proofRef = ControlBuild.FileRef.measure(proofPath);
             if (spec.mode() == Mode.EXECUTE) {
-                var command = new ArrayList<String>();
-                command.add(before.javaExecutableRef().path()); command.add("-Xms16m"); command.add("-Xmx96m");
-                command.addAll(childTemporaryArguments(temporary));
-                command.add("-cp"); command.add(String.join(java.io.File.pathSeparator, before.childClasspath()));
-                command.add(OriginalCaptureInvoker.class.getName());
-                for (var pin : List.of(spec.requestRef(), proofRef)) {
-                    command.add(pin.path()); command.add(Long.toString(pin.bytes())); command.add(pin.sha256());
-                }
+                var command = childCommand(before.javaExecutableRef(), before.childClasspath(), temporary, spec.requestRef(), proofRef);
                 var plan = new CompiledCaptureProcess.Plan(command, request.cwd(), temporary.toString(), root.toString(),
                         stdout.toString(), stderr.toString(), output.toString(), request.maxOutputBytes(), request.maxTreeBytes(),
                         spec.limits().timeoutSeconds(), spec.limits().deadlineUtc(), spec.limits().childMemoryBytes(), request.environment());
-                result = CompiledCaptureProcess.run(plan, start);
+                var invocation = javaInvocation(before, temporary, spec.requestRef(), proofRef, root);
+                Path preparation = CiBootstrap.JavaUtf8Invocation.preparationPath(invocation.request());
+                require(paths.stream().noneMatch(preparation::equals), "Original artifacts collide with the shared invocation preparation artifact");
+                requireInvocationOutput(invocation, output);
+                var publication = CiBootstrap.JavaUtf8Invocation.publish(invocation.request(),
+                        invocation.request().evidenceRoot(), envelope.getFileName().toString(), pending -> {
+                            guard(spec.limits()); CompiledCaptureProcess.requireAdditionalBytes(root, request.maxTreeBytes(), pending);
+                        });
+                var launch = CiBootstrap.JavaUtf8Invocation.launch(publication, invocation.carrier(), invocation.vmOptions());
+                long invocationAllowance=invocationAllowance(spec,request,proofRef,initialOwned,stdout,stderr,root);
+                result = CompiledCaptureProcess.runJava(plan, launch, invocation.carrier(), invocation.vmOptions(), invocationAllowance, start);
                 require(result.passed(), "Original child failed, timed out or retained native Job members");
+                require(start.custodyFailure() == null, "Actual original child source custody failed: " + start.custodyFailure());
+                require(start.preparationFailure() == null, "Actual original child preparation failed: " + start.preparationFailure());
+                CompiledCaptureProcess.requireJavaInvocation(start.actualEvidence(), invocation.carrier(), invocation.vmOptions(), invocation.request());
                 if (request.outputKind() == OutputKind.FILE) {
                     require(Files.isRegularFile(output, LinkOption.NOFOLLOW_LINKS) && Files.size(output) > 0
                             && Files.size(output) <= request.maxOutputBytes(), "Bounded original output required");
@@ -166,6 +243,7 @@ public final class CompiledOriginalCapture {
             same = before.equals(after); require(same, "Original capture closure changed during operation");
         } catch (IOException | RuntimeException error) { failure = error.toString(); }
         finally {
+            if(result==null&&start.actualTerminal()!=null)result=start.actualTerminal();
             try {
                 spec.requestRef().verify();
                 if (before != null) {
@@ -183,9 +261,34 @@ public final class CompiledOriginalCapture {
                 spec.mode() == Mode.EXECUTE ? measured(stdout, 65536) : null,
                 spec.mode() == Mode.EXECUTE ? measured(stderr, 65536) : null,
                 spec.mode() == Mode.EXECUTE && request.outputKind() == OutputKind.FILE ? measured(output, request.maxOutputBytes()) : null,
-                directoryOutput, initialOwned, ownedOutputs, failure);
-        Files.write(receiptPath, ControlBuild.strictMapper().writeValueAsBytes(receipt), StandardOpenOption.CREATE_NEW);
+                directoryOutput, initialOwned, ownedOutputs, failure, start.actualEvidence());
+        byte[] actualReceipt=ControlBuild.strictMapper().writeValueAsBytes(receipt);
+        require(actualReceipt.length<=(256<<10),"Actual receipt exceeds its original readable limit");
+        guard(spec.limits());CompiledCaptureProcess.requireAdditionalBytes(root,request.maxTreeBytes(),actualReceipt.length);
+        Files.write(receiptPath, actualReceipt, StandardOpenOption.CREATE_NEW);
         return receipt;
+    }
+
+    /** Private allocation quote only. No future FileRef, process identity, output witness or qualification is minted. */
+    private static long invocationAllowance(RunSpec spec,Request request,ControlBuild.FileRef actualProof,
+            List<ControlBuild.FileRef> actualInitialOwned,Path stdout,Path stderr,Path root)throws IOException {
+        Scope scope=request.profile().invocation()==CompiledOriginalCaptureProfile.InvocationKind.SOURCE_EXPORT
+                ?Scope.ORIGINAL_SOURCE_EXPORT_ONLY:Scope.ORIGINAL_MAIN_OUTPUT_NOT_RESOURCE_ACCEPTANCE;
+        var metadata=new Receipt(RECEIPT_SCHEMA,request.machineId(),Instant.now().toString(),Mode.EXECUTE,Status.RED,scope,
+                spec.requestRef(),spec.limits(),false,null,actualProof,false,null,null,null,null,
+                actualInitialOwned,List.of(),"ALLOCATION_QUOTE_ONLY_NOT_AN_ACTUAL_RECEIPT",null);
+        var paths=new ArrayList<String>(List.of(stdout.toString(),stderr.toString(),request.outputKind()==OutputKind.FILE
+                ?request.outputPath():root.resolve("original-output-directory.json").toString()));
+        int index=0;for(var directory:request.profile().directories())
+            if(directory.kind()==CompiledOriginalCaptureProfile.ArgumentKind.EXISTING_OWNED_DIRECTORY)
+                paths.add(root.resolve("original-owned-directory-"+(index++)+".json").toString());
+        // Exact future path escaping plus bounded SHA/long/reference JSON fields, never invented physical refs.
+        long quote=Math.addExact(ControlBuild.strictMapper().writeValueAsBytes(metadata).length,
+                Math.addExact(ControlBuild.strictMapper().writeValueAsBytes(paths).length,Math.multiplyExact(256L,paths.size())));
+        long remaining=(256L<<10)-quote;
+        require(remaining>0,"Actual metadata leaves no original receipt invocation allowance");
+        // Native sources already include the original terminal; reserve another full invocation for its outer duplicate.
+        return remaining/2;
     }
 
     public static Receipt acceptedReceipt(ControlBuild.FileRef ref, Mode mode) throws IOException {
@@ -205,6 +308,13 @@ public final class CompiledOriginalCapture {
             require(initial.root().equals(owned.get(index).path()), "Initial owned directory differs"); initial.verifyRetained();
         }
         if (mode == Mode.EXECUTE) {
+            var invocation = javaInvocation(actual, Path.of(receipt.limits().temporaryRoot()), receipt.requestRef(), receipt.proofRef(),
+                    Path.of(receipt.limits().outputRoot()));
+            requireInvocationOutput(invocation, Path.of(request.outputPath()));
+            CompiledCaptureProcess.requireJavaInvocation(receipt.invocationEvidence(), invocation.carrier(), invocation.vmOptions(), invocation.request());
+            CompiledCaptureProcess.requireProcess(receipt.invocationEvidence(), receipt.commandResult());
+            require(Path.of(receipt.invocationEvidence().actualProcess().executable()).toRealPath()
+                    .equals(Path.of(actual.javaExecutableRef().path()).toRealPath()), "Actual child Java executable differs");
             require(receipt.commandResult().accounting().memoryLimitBytes() == receipt.limits().childMemoryBytes(), "Actual terminal memory binding differs");
             requireOutput(request, receipt.outputRef(), receipt.outputDirectoryManifestRef());
             receipt.stdoutRef().verify(); receipt.stderrRef().verify();
@@ -217,9 +327,74 @@ public final class CompiledOriginalCapture {
         ref.verify(); return receipt;
     }
 
+    public static HistoricalReceiptV3 readHistoricalV3Metadata(ControlBuild.FileRef ref) throws IOException {
+        var metadata = ControlBuild.strictMapper().readValue(CompiledGoldenCapture.readPinned(ref, 256 << 10), HistoricalReceiptV3.class);
+        ref.verify(); return metadata;
+    }
+    public static HistoricalReceiptV4 readHistoricalV4Metadata(ControlBuild.FileRef ref) throws IOException {
+        var metadata = ControlBuild.strictMapper().readValue(CompiledGoldenCapture.readPinned(ref, 256 << 10), HistoricalReceiptV4.class);
+        ref.verify(); return metadata;
+    }
+
+    public static HistoricalReceiptV5 readHistoricalV5Metadata(ControlBuild.FileRef ref)throws IOException {
+        var metadata=ControlBuild.strictMapper().readValue(CompiledGoldenCapture.readPinned(ref,256<<10),HistoricalReceiptV5.class);
+        ref.verify();return metadata;
+    }
+
+    record JavaInvocation(CiBootstrap.JavaUtf8Invocation.Request request,
+            CiBootstrap.JavaUtf8Invocation.ClassCarrier carrier, List<String> vmOptions) {
+        JavaInvocation { Objects.requireNonNull(request); Objects.requireNonNull(carrier); vmOptions = List.copyOf(vmOptions); }
+    }
+    static void requireInvocationOutput(JavaInvocation invocation, Path originalOutput) throws IOException {
+        Path preparation = CiBootstrap.JavaUtf8Invocation.preparationPath(invocation.request());
+        require(!preparation.startsWith(originalOutput) && !originalOutput.startsWith(preparation),
+                "Original output collides with the shared invocation preparation artifact");
+    }
+    static JavaInvocation javaInvocation(CompiledOriginalCaptureProfile.Proof actual, Path temporary,
+            ControlBuild.FileRef request, ControlBuild.FileRef proof, Path root) throws IOException {
+        return javaInvocation(actual.childClasspath(), actual.callerRuntime(), temporary, request, proof, root);
+    }
+
+    /** Typed projection of the same qualified argv; the shared engine alone encodes its UTF-8 envelope. */
+    static JavaInvocation javaInvocation(List<String> actualClasspath, List<ControlBuild.FileRef> actualCallerRuntime,
+            Path temporary, ControlBuild.FileRef request, ControlBuild.FileRef proof, Path root) throws IOException {
+        request.verify(); proof.verify();
+        var classpath = new ArrayList<CiBootstrap.JavaUtf8Invocation.ClasspathPin>();
+        CiBootstrap.JavaUtf8Invocation.ClasspathPin mainOrigin = null;
+        Path loadedOrigin;
+        try { loadedOrigin = Path.of(OriginalCaptureInvoker.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toRealPath(); }
+        catch (java.net.URISyntaxException | RuntimeException error) { throw new IOException("Actual original invoker origin unavailable", error); }
+        for (String entry : actualClasspath) {
+            Path path = Path.of(entry).toRealPath(); var pin = CiBootstrap.JavaUtf8Invocation.captureClasspath(path);
+            classpath.add(pin); if (path.equals(loadedOrigin)) mainOrigin = pin;
+        }
+        require(mainOrigin != null, "Actual original invoker absent from qualified ordered classpath");
+        var arguments = new ArrayList<String>();
+        for (var pin : List.of(request, proof)) { arguments.add(pin.path()); arguments.add(Long.toString(pin.bytes())); arguments.add(pin.sha256()); }
+        var target = new CiBootstrap.JavaUtf8Invocation.ClassTarget(OriginalCaptureInvoker.class.getName(), mainOrigin, List.copyOf(classpath));
+        var logical = new CiBootstrap.JavaUtf8Invocation.Request(target, List.of(), List.copyOf(arguments),
+                CiBootstrap.JavaUtf8Invocation.captureOutputRoot(root));
+        var options = new ArrayList<String>(List.of("-Xms16m", "-Xmx96m")); options.addAll(childTemporaryArguments(temporary));
+        return new JavaInvocation(logical, CompiledCaptureProcess.callerCarrier(actualCallerRuntime), List.copyOf(options));
+    }
+
     static List<String> childTemporaryArguments(Path temporary) throws IOException {
         Path owned = CompiledOriginalCaptureProfile.directory(temporary.toString());
         return List.of("-Djava.io.tmpdir=" + owned, "-Djna.tmpdir=" + owned);
+    }
+    /** One argv producer, after the caller has validated its actual compiled closure. This grants no capture authority. */
+    static List<String> childCommand(ControlBuild.FileRef javaExecutable, List<String> childClasspath,
+            Path temporary, ControlBuild.FileRef request, ControlBuild.FileRef proof) throws IOException {
+        Objects.requireNonNull(javaExecutable); Objects.requireNonNull(childClasspath);
+        var command = new ArrayList<String>();
+        command.add(javaExecutable.path()); command.add("-Xms16m"); command.add("-Xmx96m");
+        command.addAll(childTemporaryArguments(temporary));
+        command.add("-cp"); command.add(String.join(java.io.File.pathSeparator, childClasspath));
+        command.add(OriginalCaptureInvoker.class.getName());
+        for (var pin : List.of(request, proof)) {
+            command.add(pin.path()); command.add(Long.toString(pin.bytes())); command.add(pin.sha256());
+        }
+        return List.copyOf(command);
     }
     static void prepareDirectories(Request request, Path root, List<ControlBuild.FileRef> initialOwned) throws IOException {
         int index = 0;

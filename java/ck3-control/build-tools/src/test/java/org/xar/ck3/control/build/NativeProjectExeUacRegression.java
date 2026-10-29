@@ -256,6 +256,36 @@ public final class NativeProjectExeUacRegression {
         reject("missing-actual-shared-stage-deadline-rejected", () -> NativeProjectExeUac.requireSharedStageDeadline("2026-10-22T21:40:00Z", null));
         reject("source-empty-is-not-known-zero", () -> NativeProjectExeUac.verifySourceRefs(List.of()));
 
+        var currentSource = Path.of("D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native63/m0-dev01/src/ck3_autonomous_player/native_bridge");
+        var currentBuild = currentSource.getParent().getParent().getParent().resolve("build");
+        var sourcePin = new ControlBuild.FileRef(fixtures.resolve("source-proof.json").toString(), 1, "1".repeat(64));
+        var providerPin = new ControlBuild.FileRef(fixtures.resolve("current-tools.json").toString(), 1, "2".repeat(64));
+        var actualInjector = new ControlBuild.FileRef(currentBuild.resolve("xar_ck3_bridge_injector.exe").toString(), 45678, "3".repeat(64));
+        check("current-provider-structural-new-roots-and-real-future-size-not-old-native10", () -> {
+            var current = new NativeProjectExeUac.CurrentNativeBuild("xar.current-native-build-uac-input/v2",
+                    currentSource.toString(), currentBuild.toString(), sourcePin, sourcePin, sourcePin, sourcePin, providerPin, actualInjector);
+            equal(actualInjector, current.injector());
+            equal(current, RootNativePlanJson.mapper().readValue(RootNativePlanJson.mapper().writeValueAsBytes(current),
+                    NativeProjectExeUac.CurrentNativeBuild.class));
+        });
+        reject("current-provider-rejects-foreign-target-basename", () ->
+                new NativeProjectExeUac.CurrentNativeBuild("xar.current-native-build-uac-input/v2", currentSource.toString(), currentBuild.toString(),
+                        sourcePin, sourcePin, sourcePin, sourcePin, providerPin,
+                        new ControlBuild.FileRef(currentBuild.resolve("other.exe").toString(), 45678, "3".repeat(64))));
+        reject("current-provider-rejects-source-build-overlap", () ->
+                new NativeProjectExeUac.CurrentNativeBuild("xar.current-native-build-uac-input/v2", currentSource.toString(), currentSource.toString(),
+                        sourcePin, sourcePin, sourcePin, sourcePin, providerPin, actualInjector));
+        reject("current-provider-rejects-old-s26-carrier-even-with-new-roots", () ->
+                new NativeProjectExeUac.CurrentNativeBuild("xar.current-native-build-uac-input/v2", currentSource.toString(), currentBuild.toString(),
+                        sourcePin, sourcePin, sourcePin, sourcePin,
+                        new ControlBuild.FileRef(fixtures.resolve("historical-tools.json").toString(), 202195,
+                                "b88971ee1680a659363ba41a685a8ba4766c746787b46a9431aa730d8aefe461"), actualInjector));
+        reject("legacy-v1-cannot-acquire-new-native63-roots", () ->
+                new NativeProjectExeUac.CurrentNativeBuild("xar.current-native-build-uac-input/v1", currentSource.toString(), currentBuild.toString(),
+                        sourcePin, sourcePin, sourcePin, sourcePin,
+                        new ControlBuild.FileRef(fixtures.resolve("historical-tools.json").toString(), 202195,
+                                "b88971ee1680a659363ba41a685a8ba4766c746787b46a9431aa730d8aefe461"), actualInjector));
+
         Actual actual = new Actual("xar.native-uac-synthetic-regression/v2", WindowsJobProcess.currentMachineId(), Instant.now().toString(),
                 "actual production pure methods and tiny synthetic files only; no valid registration Plan, native launch, UAC, Defender or fixture", passed.size(), 0,
                 List.copyOf(passed), 0, 0, 0);

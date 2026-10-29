@@ -24,12 +24,23 @@ public final class CompiledCaptureQualificationCi {
     public record Report(String schema, String machineId, String observedAtUtc,
             ControlBuild.FileRef acceptedQualificationRef, int actualRequestsValidated,
             int distinctFinanceRuntimeClasses, int childrenStarted, List<Rejection> rejections,
-            List<ControlBuild.FileRef> negativeFixtureRefs, String scope) {
+            List<ControlBuild.FileRef> negativeFixtureRefs, String scope, int invocationEnvelopesInspected) {
         public Report {
-            if (!"xar.compiled-capture-actual-integration/v1".equals(schema) || actualRequestsValidated != 4
-                    || distinctFinanceRuntimeClasses != 9 || childrenStarted != 0 || rejections.size() != 9) {
+            if (!"xar.compiled-capture-actual-integration/v2".equals(schema) || actualRequestsValidated != 4
+                    || distinctFinanceRuntimeClasses != 9 || childrenStarted != 0 || rejections.size() != 13
+                    || invocationEnvelopesInspected != 4) {
                 throw new IllegalArgumentException("Complete genuine four-request/nine-class integration checks required");
             }
+            rejections = List.copyOf(rejections); negativeFixtureRefs = List.copyOf(negativeFixtureRefs);
+        }
+    }
+    public record Utf8CaptureReport(String schema, String machineId, String observedAtUtc,
+            ControlBuild.FileRef acceptedCaptureRef, WindowsJobProcess.ProcessIdentity actualOriginalChild,
+            int verificationChildrenStarted, List<Rejection> rejections, List<ControlBuild.FileRef> negativeFixtureRefs) {
+        public Utf8CaptureReport {
+            if (!"xar.compiled-golden-utf8-capture-integration/v3".equals(schema) || verificationChildrenStarted != 0
+                    || rejections.size() != 10) throw new IllegalArgumentException("Actual held-native capture and ten cold negatives required");
+            Objects.requireNonNull(actualOriginalChild);
             rejections = List.copyOf(rejections); negativeFixtureRefs = List.copyOf(negativeFixtureRefs);
         }
     }
@@ -123,15 +134,42 @@ public final class CompiledCaptureQualificationCi {
         var contaminated = new CompiledGoldenCapture.Request(row.id(), wrongCommand, row.cwd(), row.sourceRefs(), row.inputRefs(), row.outputPath(), row.maxOutputBytes());
         rejected.add(reject("actual-request-second-capture-classpath-root", () -> qualify(contaminated, profile)));
 
+        // Exercise the sole real envelope producer and inspector against all four genuine input proofs.
+        // These are no-child transport checks: no InvocationEvidence or successful process is fabricated.
+        int inspected = 0;
+        var envelopeRoot = CiBootstrap.JavaUtf8Invocation.captureOutputRoot(root);
+        for (int index = 0; index < batch.captures().size(); index++) {
+            var actualRow = batch.captures().get(index);
+            var actualProof = qualification.observations().get(index).before();
+            var logical = CompiledGoldenCapture.invocationRequest(actualRow, actualProof, qualification.limits());
+            var carrier = CompiledCaptureProcess.callerCarrier(actualProof.callerRuntimeClosure());
+            var vmOptions = CompiledGoldenCapture.asciiVmOptions(actualRow);
+            var publication = CiBootstrap.JavaUtf8Invocation.publish(logical, envelopeRoot,
+                    "qualification-" + actualRow.id() + "-invocation.bin",
+                    pending -> CompiledCaptureProcess.requireAdditionalBytes(root, 64L << 20, pending));
+            var launch = CiBootstrap.JavaUtf8Invocation.launch(publication, carrier, vmOptions);
+            require(logical.equals(CiBootstrap.JavaUtf8Invocation.inspect(launch.physicalArguments(), carrier, vmOptions)),
+                    "Actual original invocation envelope changed logical request during roundtrip");
+            fixtures.add(ControlBuild.FileRef.measure(Path.of(publication.envelope().path())));
+            inspected++;
+            var changed = new ArrayList<>(launch.physicalArguments());
+            // This fixed prefix is an actual startup option. The expected physical command must remain exact.
+            require(changed.getFirst().equals("-Xms16m"), "Actual invocation must retain its original VM options");
+            changed.set(0, "-Xms17m");
+            rejected.add(reject("actual-invocation-startup-option-changed-" + actualRow.id(),
+                    () -> CiBootstrap.JavaUtf8Invocation.inspect(changed, carrier, vmOptions)));
+        }
+
         // Full accepted readback after every negative, with original files untouched.
         CompiledGoldenCapture.acceptedReceipt(qualificationRef, CompiledGoldenCapture.Mode.QUALIFY_ONLY);
         for (ControlBuild.FileRef ref : fixtures) ref.verify();
-        return new Report("xar.compiled-capture-actual-integration/v1", qualification.machineId(), Instant.now().toString(),
+        return new Report("xar.compiled-capture-actual-integration/v2", qualification.machineId(), Instant.now().toString(),
                 qualificationRef, 4, 9, 0, rejected, fixtures,
                 "Genuine producer/profile/serialization/consumer checks; three manifest negatives execute the shared production finance-inventory sub-boundary "
                 + "after genuine whole-producer admission, without rebinding fixed manifest paths or claiming whole-receipt acceptance. Negative copies are explicitly not original receipts. "
                 + "Same-deployment callers/compiler receipts are allowed and each pin is tested independently; distinct deployments exercise actual closure swaps. "
-                + "No capture child, Game, service, SDK or writer admission. Actual extra caller-classpath JVM contamination remains a separate process case.");
+                + "Four genuine input-derived invocation envelopes traverse the sole binary publisher/inspector; four changed startup options are rejected. "
+                + "No capture child, Unicode execution, Game, service, SDK or writer admission. Actual extra caller-classpath JVM contamination remains a separate process case.", inspected);
     }
 
     private static Rejection rejectManifest(Path root, String name, ObjectNode manifest, ControlBuild.CaptureBuildReceipt compiler,
@@ -141,6 +179,96 @@ public final class CompiledCaptureQualificationCi {
                 ControlBuild.strictMapper().readValue(CompiledGoldenCapture.readPinned(manifestRef, 4 << 20), ControlBuild.TestCompilationManifest.class),
                 Path.of(profile.classRoot()), module, compiler.compiledSourcePins()));
     }
+
+    /** Requires a genuine already-completed UTF8 child; this verifier itself starts no child or original oracle. */
+    public static Utf8CaptureReport verifyUtf8Capture(ControlBuild.FileRef captureRef, Path newOutputRoot) throws IOException {
+        var capture = CompiledGoldenCapture.acceptedReceipt(captureRef, CompiledGoldenCapture.Mode.CAPTURE);
+        var row = capture.batch().captures().getFirst();
+        require(nonAscii(capture.batch().profileFor(row.id()).classRoot())
+                && row.command().subList(7, row.command().size()).stream().anyMatch(CompiledCaptureQualificationCi::nonAscii),
+                "Actual UTF8 capture must contain original Unicode class root/property and logical argument");
+        Path root = newOutputRoot.toAbsolutePath().normalize();
+        require(root.equals(newOutputRoot) && !Files.exists(root, LinkOption.NOFOLLOW_LINKS)
+                && root.getParent() != null && root.getParent().toRealPath().equals(root.getParent()), "New canonical cold verification output required");
+        Files.createDirectory(root);
+        var original = object(CompiledGoldenCapture.readPinned(captureRef, 1 << 20));
+        List<ControlBuild.FileRef> fixtures = new ArrayList<>(); List<Rejection> rejected = new ArrayList<>();
+
+        ObjectNode missing = original.deepCopy();
+        ((ObjectNode) missing.path("observations").get(0)).remove("invocation_evidence");
+        var missingRef = write(root.resolve("negative-current-missing-invocation.json"), missing, fixtures);
+        rejected.add(reject("current-capture-without-actual-argv", () -> CompiledGoldenCapture.acceptedReceipt(missingRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode missingPreparation = original.deepCopy();
+        ((ObjectNode) missingPreparation.path("observations").get(0).path("invocation_evidence")).remove("preparation");
+        var missingPreparationRef = write(root.resolve("negative-current-missing-actual-preparation.json"), missingPreparation, fixtures);
+        rejected.add(reject("current-capture-without-actual-loaded-origin-preparation",
+                () -> CompiledGoldenCapture.acceptedReceipt(missingPreparationRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode missingNative = original.deepCopy();
+        ((ObjectNode) missingNative.path("observations").get(0).path("invocation_evidence")).remove("native_sources");
+        var missingNativeRef = write(root.resolve("negative-current-missing-native-source-custody.json"), missingNative, fixtures);
+        rejected.add(reject("current-capture-without-actual-held-native-sources",
+                () -> CompiledGoldenCapture.acceptedReceipt(missingNativeRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode nullNative = original.deepCopy();
+        ((ObjectNode) nullNative.path("observations").get(0).path("invocation_evidence")).putNull("native_sources");
+        var nullNativeRef = write(root.resolve("negative-current-null-native-source-custody.json"), nullNative, fixtures);
+        rejected.add(reject("null-native-custody-does-not-promote-jdk-metadata",
+                () -> CompiledGoldenCapture.acceptedReceipt(nullNativeRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode memorySlot = original.deepCopy();
+        ((ObjectNode) memorySlot.path("observations").get(0)).putNull("historical_invocation_evidence");
+        var memorySlotRef = write(root.resolve("negative-wire-internal-history-slot.json"), memorySlot, fixtures);
+        rejected.add(reject("input-cannot-supply-the-internal-versioned-history-slot",
+                () -> CompiledGoldenCapture.acceptedReceipt(memorySlotRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode changed = original.deepCopy();
+        ((ArrayNode) changed.path("observations").get(0).path("invocation_evidence").path("physical_arguments")).set(0,
+                ControlBuild.strictMapper().getNodeFactory().textNode("-Xms17m"));
+        var changedRef = write(root.resolve("negative-current-changed-physical-argument.json"), changed, fixtures);
+        rejected.add(reject("actual-original-argv-changed", () -> CompiledGoldenCapture.acceptedReceipt(changedRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode foreign = original.deepCopy();
+        ObjectNode identity = (ObjectNode) foreign.path("observations").get(0).path("invocation_evidence").path("actual_process");
+        long pid = identity.path("pid").longValue(); identity.put("pid", pid == 0xffff_ffffL ? pid - 1 : pid + 1);
+        var foreignRef = write(root.resolve("negative-current-other-child.json"), foreign, fixtures);
+        rejected.add(reject("actual-original-invocation-belongs-to-another-child", () -> CompiledGoldenCapture.acceptedReceipt(foreignRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode historical = original.deepCopy(); historical.put("schema", CompiledGoldenCapture.HISTORICAL_RECEIPT_SCHEMA);
+        ((ObjectNode) historical.path("observations").get(0)).remove("invocation_evidence");
+        var historicalRef = write(root.resolve("explicit-v1-historical-metadata.json"), historical, fixtures);
+        require(CompiledGoldenCapture.historicalReceiptMetadata(historicalRef).observations().getFirst().invocationEvidence() == null,
+                "Historical metadata must retain its actual lack of invocation evidence");
+        rejected.add(reject("historical-no-argv-cannot-be-current-unicode", () -> CompiledGoldenCapture.acceptedReceipt(historicalRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode unprepared = original.deepCopy(); unprepared.put("schema", CompiledGoldenCapture.UNPREPARED_RECEIPT_SCHEMA);
+        ((ObjectNode) unprepared.path("observations").get(0).path("invocation_evidence")).remove("preparation");
+        ((ObjectNode) unprepared.path("observations").get(0).path("invocation_evidence")).remove("native_sources");
+        var unpreparedRef = write(root.resolve("explicit-v2-no-preparation-metadata.json"), unprepared, fixtures);
+        var v2Metadata = CompiledGoldenCapture.historicalReceiptMetadata(unpreparedRef);
+        require(v2Metadata.observations().getFirst().invocationEvidence() == null
+                        && v2Metadata.observations().getFirst().historicalInvocationEvidence().preparation() == null,
+                "Historical v2 preserves actual argv but has no actual preparation custody");
+        Path roundtrip = root.resolve("explicit-v2-versioned-roundtrip.json");
+        Files.write(roundtrip, CompiledGoldenCapture.encodeReceipt(v2Metadata), StandardOpenOption.CREATE_NEW);
+        var roundtripRef = ControlBuild.FileRef.measure(roundtrip); fixtures.add(roundtripRef);
+        require(v2Metadata.equals(CompiledGoldenCapture.historicalReceiptMetadata(roundtripRef)), "Historical v2 typed roundtrip changed recorded data");
+        rejected.add(reject("historical-argv-without-preparation-cannot-be-current-unicode",
+                () -> CompiledGoldenCapture.acceptedReceipt(unpreparedRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        ObjectNode jdkOnly = original.deepCopy(); jdkOnly.put("schema", CompiledGoldenCapture.JDK_ONLY_RECEIPT_SCHEMA);
+        var jdkOnlyRef = write(root.resolve("negative-new-native-witness-under-old-jdk-schema.json"), jdkOnly, fixtures);
+        rejected.add(reject("v3-cannot-contain-a-new-native-witness-or-grant-current-qualification",
+                () -> CompiledGoldenCapture.acceptedReceipt(jdkOnlyRef, CompiledGoldenCapture.Mode.CAPTURE)));
+
+        CompiledGoldenCapture.acceptedReceipt(captureRef, CompiledGoldenCapture.Mode.CAPTURE);
+        for (var ref : fixtures) ref.verify();
+        return new Utf8CaptureReport("xar.compiled-golden-utf8-capture-integration/v3", capture.machineId(), Instant.now().toString(),
+                captureRef, capture.observations().getFirst().result().identity(), 0, rejected, fixtures);
+    }
+
+    private static boolean nonAscii(String value) { return value.codePoints().anyMatch(point -> point > 127); }
     private static void qualify(CompiledGoldenCapture.Request row, CompiledCaptureInputProfile.Profile profile) throws IOException {
         CompiledGoldenCapture.qualify(row, profile);
     }
@@ -162,6 +290,12 @@ public final class CompiledCaptureQualificationCi {
     }
     private static void require(boolean condition, String message) throws IOException { if (!condition) throw new IOException(message); }
     public static void main(String[] args) throws IOException {
+        if (args.length == 3 && args[0].equals("--capture-utf8")) {
+            var result = verifyUtf8Capture(ControlBuild.FileRef.measure(Path.of(args[1])), Path.of(args[2]));
+            Files.write(Path.of(args[2]).resolve("actual-utf8-capture-integration.json"),
+                    ControlBuild.strictMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(result), StandardOpenOption.CREATE_NEW);
+            System.out.println(ControlBuild.strictMapper().writeValueAsString(result)); return;
+        }
         require(args.length == 2, "Usage: CompiledCaptureQualificationCi ACCEPTED_QUALIFY_RECEIPT NEW_OUTPUT_ROOT");
         var result = verify(ControlBuild.FileRef.measure(Path.of(args[0])), Path.of(args[1]));
         byte[] json = ControlBuild.strictMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(result);

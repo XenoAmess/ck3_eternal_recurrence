@@ -21,7 +21,10 @@ import java.util.Set;
  */
 public final class CompiledGoldenCapture {
     public static final String BATCH_SCHEMA = "xar.shared-compiled-golden-capture-batch/v1";
-    public static final String RECEIPT_SCHEMA = "xar.shared-compiled-golden-capture-actual/v1";
+    public static final String HISTORICAL_RECEIPT_SCHEMA = "xar.shared-compiled-golden-capture-actual/v1";
+    public static final String UNPREPARED_RECEIPT_SCHEMA = "xar.shared-compiled-golden-capture-actual/v2";
+    public static final String JDK_ONLY_RECEIPT_SCHEMA = "xar.shared-compiled-golden-capture-actual/v3";
+    public static final String RECEIPT_SCHEMA = "xar.shared-compiled-golden-capture-actual/v4";
     public enum Mode { QUALIFY_ONLY, CAPTURE }
     public enum Status { PASS, RED }
 
@@ -98,20 +101,50 @@ public final class CompiledGoldenCapture {
     public record Observation(String requestId, CompiledCaptureInputProfile.Proof before,
             CompiledCaptureInputProfile.Proof after, WindowsJobProcess.CommandResult result,
             ControlBuild.FileRef stdoutRef, ControlBuild.FileRef stderrRef,
-            ControlBuild.FileRef outputRef, String error) {
-        public Observation { Objects.requireNonNull(requestId); }
+            ControlBuild.FileRef outputRef, String error,
+            CompiledCaptureProcess.InvocationEvidence invocationEvidence,
+            CompiledCaptureProcess.HistoricalInvocationV2 historicalInvocationEvidence) {
+        public Observation {
+            Objects.requireNonNull(requestId);
+            if (invocationEvidence != null && historicalInvocationEvidence != null) {
+                throw new IllegalArgumentException("Current and historical invocation evidence are distinct type domains");
+            }
+        }
+        /** Historical/direct-qualification shape; cannot grant current CAPTURE acceptance. */
+        public Observation(String requestId, CompiledCaptureInputProfile.Proof before,
+                CompiledCaptureInputProfile.Proof after, WindowsJobProcess.CommandResult result,
+                ControlBuild.FileRef stdoutRef, ControlBuild.FileRef stderrRef,
+                ControlBuild.FileRef outputRef, String error) {
+            this(requestId, before, after, result, stdoutRef, stderrRef, outputRef, error, null, null);
+        }
     }
 
     public record Receipt(String schema, String machineId, String observedAtUtc, Mode mode, Status status,
             ControlBuild.FileRef batchRef, Batch batch, Limits limits, int childrenStarted,
             List<Observation> observations, String error) {
         public Receipt {
-            if (!RECEIPT_SCHEMA.equals(schema) || machineId == null || machineId.isBlank()) {
+            if ((!RECEIPT_SCHEMA.equals(schema) && !HISTORICAL_RECEIPT_SCHEMA.equals(schema)
+                    && !UNPREPARED_RECEIPT_SCHEMA.equals(schema) && !JDK_ONLY_RECEIPT_SCHEMA.equals(schema))
+                    || machineId == null || machineId.isBlank()) {
                 throw new IllegalArgumentException("Typed compiled capture receipt required");
             }
             Instant.parse(observedAtUtc); Objects.requireNonNull(mode); Objects.requireNonNull(status);
             batchRef = canonicalRef(batchRef); Objects.requireNonNull(batch); Objects.requireNonNull(limits);
             observations = List.copyOf(observations);
+            if (HISTORICAL_RECEIPT_SCHEMA.equals(schema) && observations.stream().anyMatch(item -> item.invocationEvidence() != null
+                    || item.historicalInvocationEvidence() != null)) {
+                throw new IllegalArgumentException("Historical schema cannot claim retained Java invocation evidence");
+            }
+            if (!RECEIPT_SCHEMA.equals(schema) && observations.stream().anyMatch(item -> item.invocationEvidence() != null)) {
+                throw new IllegalArgumentException("Historical invocation data cannot be represented as current native custody");
+            }
+            if (RECEIPT_SCHEMA.equals(schema) && observations.stream().anyMatch(item -> item.historicalInvocationEvidence() != null)) {
+                throw new IllegalArgumentException("Current receipt cannot use the historical invocation memory domain");
+            }
+            if (UNPREPARED_RECEIPT_SCHEMA.equals(schema) && observations.stream().anyMatch(item -> item.historicalInvocationEvidence() != null
+                    && item.historicalInvocationEvidence().preparation() != null)) {
+                throw new IllegalArgumentException("Historical v2 cannot claim actual preparation custody");
+            }
             if (childrenStarted < 0 || childrenStarted > 1 || observations.size() > 4) {
                 throw new IllegalArgumentException("A capture slot starts at most one child");
             }
@@ -125,13 +158,23 @@ public final class CompiledGoldenCapture {
                     }
                     if (mode == Mode.QUALIFY_ONLY) {
                         if (childrenStarted != 0 || observation.result() != null || observation.stdoutRef() != null
-                                || observation.stderrRef() != null || observation.outputRef() != null) {
+                                || observation.stderrRef() != null || observation.outputRef() != null || observation.invocationEvidence() != null
+                                || observation.historicalInvocationEvidence() != null) {
                             throw new IllegalArgumentException("Qualification must start zero children and claim no output");
                         }
                     } else if (childrenStarted != 1 || observations.size() != 1 || observation.result() == null
                             || !observation.result().passed() || observation.stdoutRef() == null
                             || observation.stderrRef() == null || observation.outputRef() == null) {
                         throw new IllegalArgumentException("Actual successful child terminal/Job0 and artifacts required");
+                    } else if (RECEIPT_SCHEMA.equals(schema) && (observation.invocationEvidence() == null
+                            || observation.invocationEvidence().preparation() == null
+                            || observation.invocationEvidence().nativeSources() == null
+                            || !observation.invocationEvidence().actualProcess().equals(observation.result().identity()))) {
+                        throw new IllegalArgumentException("Current capture requires the same child, actual preparation and held native source custody");
+                    } else if (JDK_ONLY_RECEIPT_SCHEMA.equals(schema) && (observation.historicalInvocationEvidence() == null
+                            || observation.historicalInvocationEvidence().preparation() == null
+                            || !observation.historicalInvocationEvidence().actualProcess().equals(observation.result().identity()))) {
+                        throw new IllegalArgumentException("Historical v3 must preserve its original child, argv and preparation metadata");
                     }
                 }
             } else if (error == null || error.isBlank()) throw new IllegalArgumentException("RED preserves actual failure");
@@ -167,6 +210,7 @@ public final class CompiledGoldenCapture {
         for (Request request : batch.captures()) {
             CompiledCaptureInputProfile.Proof before = null, after = null;
             WindowsJobProcess.CommandResult result = null;
+            CompiledCaptureProcess.InvocationEvidence invocationEvidence = null;
             Path stdout = root.resolve("capture-" + request.id() + ".stdout.log");
             Path stderr = root.resolve("capture-" + request.id() + ".stderr.log");
             Path output = Path.of(request.outputPath());
@@ -186,9 +230,24 @@ public final class CompiledGoldenCapture {
                             stdout.toString(), stderr.toString(), output.toString(), request.maxOutputBytes(), 8L << 20,
                             limits.timeoutSeconds(), limits.deadlineUtc(), limits.childMemoryBytes(), List.of());
                     var state = new CompiledCaptureProcess.StartState();
+                    var carrier = CompiledCaptureProcess.callerCarrier(before.callerRuntimeClosure());
+                    var logical = invocationRequest(request, before, limits);
+                    requireOutputDisjoint(output, logical);
+                    var publication = CiBootstrap.JavaUtf8Invocation.publish(logical,
+                            CiBootstrap.JavaUtf8Invocation.captureOutputRoot(root), "capture-" + request.id() + "-java-invocation.bin",
+                            pending -> CompiledCaptureProcess.requireAdditionalBytes(root, 8L << 20, pending));
+                    var launch = CiBootstrap.JavaUtf8Invocation.launch(publication, carrier, asciiVmOptions(request));
                     guard(deadline); batchRef.verify();
-                    try { result = CompiledCaptureProcess.run(plan, state); }
-                    finally { if (state.started()) started++; }
+                    long invocationAllowance = invocationEvidenceAllowance(batchRef, batch, limits, machine, request, before, stdout, stderr, output);
+                    try { result = CompiledCaptureProcess.runJava(plan, launch, carrier, asciiVmOptions(request), invocationAllowance, state); }
+                    finally {
+                        if (state.started()) started++;
+                        invocationEvidence = state.actualEvidence();
+                        if (result == null) result = state.actualTerminal();
+                    }
+                    require(state.custodyFailure() == null, "Actual native source custody failed: " + state.custodyFailure());
+                    require(state.preparationFailure() == null, "Actual child preparation evidence failed: " + state.preparationFailure());
+                    requireCurrentInvocation(request, before, limits, invocationEvidence, result);
                     require(result.passed(), "Actual capture child failed, timed out or retained Job members");
                     require(Files.isRegularFile(output, LinkOption.NOFOLLOW_LINKS) && Files.size(output) > 0
                             && Files.size(output) <= request.maxOutputBytes(), "Actual finite golden output required");
@@ -212,18 +271,22 @@ public final class CompiledGoldenCapture {
             observations.add(new Observation(request.id(), before, after, result,
                     mode == Mode.CAPTURE ? measuredOrNull(stdout, 65536) : null,
                     mode == Mode.CAPTURE ? measuredOrNull(stderr, 65536) : null,
-                    mode == Mode.CAPTURE ? measuredOrNull(output, request.maxOutputBytes()) : null, failure));
+                    mode == Mode.CAPTURE ? measuredOrNull(output, request.maxOutputBytes()) : null, failure, invocationEvidence, null));
             if (failure != null) break;
         }
         Receipt result = new Receipt(RECEIPT_SCHEMA, machine, Instant.now().toString(), mode,
                 failure == null ? Status.PASS : Status.RED, batchRef, batch, limits, started, observations, failure);
-        Files.write(receipt, ControlBuild.strictMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(result), StandardOpenOption.CREATE_NEW);
+        byte[] receiptBytes = encodeReceipt(result);
+        require(receiptBytes.length <= (1 << 20), "Actual capture receipt exceeds its original 1MiB reader bound");
+        CompiledCaptureProcess.requireAdditionalBytes(root, 8L << 20, receiptBytes.length);
+        Files.write(receipt, receiptBytes, StandardOpenOption.CREATE_NEW);
         return result;
     }
 
     /** Consumer revalidates genuine producer inputs; JSON shape or a recorded PASS is insufficient. */
     public static Receipt acceptedReceipt(ControlBuild.FileRef receiptRef, Mode expectedMode) throws IOException {
-        Receipt receipt = ControlBuild.strictMapper().readValue(readPinned(canonicalRef(receiptRef), 1 << 20), Receipt.class);
+        Receipt receipt = parseReceipt(readPinned(canonicalRef(receiptRef), 1 << 20));
+        require(RECEIPT_SCHEMA.equals(receipt.schema()), "Historical capture lacks current invocation/loading evidence; use explicit historical metadata reader");
         require(receipt.status() == Status.PASS && receipt.mode() == expectedMode
                 && receipt.machineId().equals(WindowsJobProcess.currentMachineId()), "Successful actual current-machine receipt of expected mode required");
         Batch actualBatch = parseBatch(readPinned(receipt.batchRef(), 256 << 10));
@@ -233,6 +296,7 @@ public final class CompiledGoldenCapture {
             CompiledCaptureInputProfile.Proof actual = qualify(request, actualBatch.profileFor(request.id()));
             require(actual.equals(observation.before()) && actual.equals(observation.after()), "Accepted producer/proof no longer matches actual complete inputs");
             if (expectedMode == Mode.CAPTURE) {
+                requireCurrentInvocation(request, actual, receipt.limits(), observation.invocationEvidence(), observation.result());
                 require(Path.of(observation.outputRef().path()).equals(Path.of(request.outputPath()))
                         && observation.outputRef().bytes() > 0 && observation.outputRef().bytes() <= request.maxOutputBytes(), "Output artifact must match the exact capture row");
                 observation.stdoutRef().verify(); observation.stderrRef().verify(); observation.outputRef().verify();
@@ -240,6 +304,128 @@ public final class CompiledGoldenCapture {
             }
         }
         receiptRef.verify(); return receipt;
+    }
+
+    /** Reads v1/v2/v3 metadata without granting current capture, Unicode, producer or native custody. */
+    public static Receipt historicalReceiptMetadata(ControlBuild.FileRef receiptRef) throws IOException {
+        Receipt receipt = parseReceipt(readPinned(canonicalRef(receiptRef), 1 << 20));
+        require(HISTORICAL_RECEIPT_SCHEMA.equals(receipt.schema()) || UNPREPARED_RECEIPT_SCHEMA.equals(receipt.schema())
+                        || JDK_ONLY_RECEIPT_SCHEMA.equals(receipt.schema()), "Explicit v1/v2/v3 historical receipt required");
+        receiptRef.verify(); return receipt;
+    }
+
+    /** One versioned receipt serializer preserves each historical schema's actual missing fields. */
+    public static byte[] encodeReceipt(Receipt receipt) throws IOException {
+        Objects.requireNonNull(receipt);
+        var mapper = ControlBuild.strictMapper();
+        com.fasterxml.jackson.databind.node.ObjectNode document = mapper.valueToTree(receipt);
+        for (int index = 0; index < receipt.observations().size(); index++) {
+            var item = (com.fasterxml.jackson.databind.node.ObjectNode) document.path("observations").get(index);
+            item.remove("historical_invocation_evidence");
+            var historical = receipt.observations().get(index).historicalInvocationEvidence();
+            if (HISTORICAL_RECEIPT_SCHEMA.equals(receipt.schema())) item.remove("invocation_evidence");
+            else if (UNPREPARED_RECEIPT_SCHEMA.equals(receipt.schema())) {
+                if (historical == null) item.putNull("invocation_evidence");
+                else item.set("invocation_evidence", mapper.readTree(CompiledCaptureProcess.encodeHistoricalInvocationV1(
+                        new CompiledCaptureProcess.HistoricalInvocationV1(historical.physicalArguments(), historical.actualProcess()))));
+            } else if (JDK_ONLY_RECEIPT_SCHEMA.equals(receipt.schema())) {
+                if (historical == null) item.putNull("invocation_evidence");
+                else item.set("invocation_evidence", mapper.readTree(CompiledCaptureProcess.encodeHistoricalInvocationV2(historical)));
+            }
+        }
+        return RECEIPT_SCHEMA.equals(receipt.schema()) ? mapper.writeValueAsBytes(document)
+                : mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(document);
+    }
+
+    static Receipt parseReceipt(byte[] raw) throws IOException {
+        var mapper = ControlBuild.strictMapper();
+        var document = mapper.readTree(raw);
+        require(document != null && document.isObject(), "Typed compiled capture receipt object required");
+        String schema = document.path("schema").asText();
+        require(RECEIPT_SCHEMA.equals(schema) || HISTORICAL_RECEIPT_SCHEMA.equals(schema)
+                || UNPREPARED_RECEIPT_SCHEMA.equals(schema) || JDK_ONLY_RECEIPT_SCHEMA.equals(schema), "Known exact capture receipt version required");
+        if (document.path("observations").isArray()) for (var item : document.path("observations")) {
+            require(item.isObject() && !item.has("historical_invocation_evidence"), "Historical invocation memory slot is never an input wire field");
+            var row = (com.fasterxml.jackson.databind.node.ObjectNode) item;
+            CompiledCaptureProcess.HistoricalInvocationV2 historical = null;
+            if (HISTORICAL_RECEIPT_SCHEMA.equals(schema)) {
+                require(!row.has("invocation_evidence"), "v1 invocation evidence is absent, never retroactively supplied");
+                row.putNull("invocation_evidence");
+            } else if (!RECEIPT_SCHEMA.equals(schema)) {
+                require(row.has("invocation_evidence"), "Recorded historical invocation field must preserve presence");
+                var evidence = row.get("invocation_evidence");
+                if (!evidence.isNull()) {
+                    byte[] original = mapper.writeValueAsBytes(evidence);
+                    if (UNPREPARED_RECEIPT_SCHEMA.equals(schema)) {
+                        var v1 = CompiledCaptureProcess.decodeHistoricalInvocationV1(original);
+                        historical = new CompiledCaptureProcess.HistoricalInvocationV2(v1.physicalArguments(), v1.actualProcess(), null);
+                    } else historical = CompiledCaptureProcess.decodeHistoricalInvocationV2(original);
+                }
+                row.putNull("invocation_evidence");
+            }
+            row.set("historical_invocation_evidence", mapper.valueToTree(historical));
+        }
+        return mapper.treeToValue(document, Receipt.class);
+    }
+
+    /** Logical data from an already genuine whole-input proof; this does not start a child. */
+    public static CiBootstrap.JavaUtf8Invocation.Request invocationRequest(Request request,
+            CompiledCaptureInputProfile.Proof actualProof, Limits limits) throws IOException {
+        Objects.requireNonNull(request); Objects.requireNonNull(actualProof); Objects.requireNonNull(limits);
+        var profile = actualProof.profile();
+        require(request.command().size() == 7 + profile.launcher().argumentCount()
+                && request.command().get(3).equals("-Dxar.capture.classRoot=" + profile.classRoot())
+                && request.command().get(4).equals("-cp") && request.command().get(5).equals(profile.classRoot())
+                && request.command().get(6).equals(profile.launcher().binaryName()), "Logical invocation must preserve the qualified exact command");
+        var classes = CiBootstrap.JavaUtf8Invocation.captureClasspath(Path.of(profile.classRoot()));
+        return new CiBootstrap.JavaUtf8Invocation.Request(
+                new CiBootstrap.JavaUtf8Invocation.ClassTarget(profile.launcher().binaryName(), classes, List.of(classes)),
+                List.of(new CiBootstrap.JavaUtf8Invocation.Property("xar.capture.classRoot", profile.classRoot())),
+                request.command().subList(7, request.command().size()),
+                CiBootstrap.JavaUtf8Invocation.captureOutputRoot(Path.of(limits.outputRoot())));
+    }
+
+    static List<String> asciiVmOptions(Request request) {
+        return List.copyOf(request.command().subList(1, 3));
+    }
+
+    static void requireOutputDisjoint(Path originalOutput, CiBootstrap.JavaUtf8Invocation.Request logical) throws IOException {
+        Path preparation = CiBootstrap.JavaUtf8Invocation.preparationPath(logical);
+        require(!originalOutput.startsWith(preparation) && !preparation.startsWith(originalOutput),
+                "Original golden output must be disjoint from the invocation preparation output");
+    }
+
+    /** Pure byte quotation only: these placeholder digests are never published or accepted as observed files. */
+    private static long invocationEvidenceAllowance(ControlBuild.FileRef batchRef, Batch batch, Limits limits, String machine,
+            Request request, CompiledCaptureInputProfile.Proof before, Path stdout, Path stderr, Path output) throws IOException {
+        String digestWidth = "0".repeat(64);
+        var metadata = new Observation(request.id(), before, before, null,
+                new ControlBuild.FileRef(stdout.toString(), 65536, digestWidth),
+                new ControlBuild.FileRef(stderr.toString(), 65536, digestWidth),
+                new ControlBuild.FileRef(output.toString(), request.maxOutputBytes(), digestWidth),
+                "byte-quotation-only", null, null);
+        var quote = new Receipt(RECEIPT_SCHEMA, machine, Instant.now().toString(), Mode.CAPTURE, Status.RED,
+                batchRef, batch, limits, 1, List.of(metadata), "byte-quotation-only");
+        long remaining = (1L << 20) - encodeReceipt(quote).length;
+        // The outer result repeats the same terminal already carried inside nativeSources.
+        // Reserve two complete invocation bounds; no second terminal field table or fixed headroom.
+        require(remaining >= 2, "Original receipt metadata leaves no room for actual native invocation evidence");
+        return remaining / 2;
+    }
+
+    /** Same child identity and sole engine inspector are mandatory for every current capture consumer. */
+    public static void requireCurrentInvocation(Request request, CompiledCaptureInputProfile.Proof actualProof,
+            Limits limits, CompiledCaptureProcess.InvocationEvidence actualEvidence,
+            WindowsJobProcess.CommandResult actualTerminal) throws IOException {
+        require(actualEvidence != null && actualTerminal != null, "Retained actual Java invocation and terminal required");
+        CompiledCaptureProcess.requireProcess(actualEvidence, actualTerminal);
+        require(Path.of(actualTerminal.identity().executable()).equals(Path.of(request.command().getFirst())),
+                "Actual invocation must use the originally pinned Java executable");
+        var logical = invocationRequest(request, actualProof, limits);
+        requireOutputDisjoint(Path.of(request.outputPath()), logical);
+        CompiledCaptureProcess.requireJavaInvocation(actualEvidence,
+                CompiledCaptureProcess.callerCarrier(actualProof.callerRuntimeClosure()), asciiVmOptions(request),
+                logical);
     }
 
     private static void guard(Instant deadline) { if (!Instant.now().isBefore(deadline)) throw new IllegalStateException("Shared capture deadline expired"); }
@@ -288,7 +474,7 @@ public final class CompiledGoldenCapture {
     public static void main(String[] arguments) throws Exception {
         if (arguments.length == 4 && arguments[0].equals("--accept-receipt") && arguments[2].equals("--expected-mode")) {
             Receipt receipt = acceptedReceipt(ControlBuild.FileRef.measure(canonicalPath(arguments[1])), Mode.valueOf(arguments[3]));
-            System.out.println(ControlBuild.strictMapper().writeValueAsString(receipt)); return;
+            System.out.println(new String(encodeReceipt(receipt), java.nio.charset.StandardCharsets.UTF_8)); return;
         }
         Map<String, String> options = new HashMap<>();
         require(arguments.length % 2 == 0, "Explicit option/value pairs required");
@@ -301,7 +487,7 @@ public final class CompiledGoldenCapture {
                 Integer.parseInt(options.get("--timeout-seconds")), Long.parseLong(options.get("--child-memory-bytes")));
         Receipt receipt = execute(ControlBuild.FileRef.measure(canonicalPath(options.get("--batch"))),
                 canonicalPath(options.get("--receipt")), limits, Mode.valueOf(options.get("--mode")));
-        System.out.println(ControlBuild.strictMapper().writeValueAsString(receipt));
+        System.out.println(new String(encodeReceipt(receipt), java.nio.charset.StandardCharsets.UTF_8));
         if (receipt.status() != Status.PASS) System.exit(1);
     }
 }

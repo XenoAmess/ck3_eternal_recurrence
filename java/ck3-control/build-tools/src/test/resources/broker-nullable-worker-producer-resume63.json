@@ -1,0 +1,112 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "broker_schema": "xar.project-exe-broker.receipt.v2",
+  "status": "verified",
+  "admin_token": true,
+  "system_token_sid": "S-1-5-18",
+  "before": [
+    "D:\\approved\\old.exe"
+  ],
+  "after": [
+    "D:\\approved\\old.exe",
+    "D:\\approved\\new.exe"
+  ],
+  "before_settings": {
+    "ExclusionPath": [
+      "D:\\approved\\old.exe"
+    ],
+    "ExclusionExtension": null,
+    "ExclusionProcess": []
+  },
+  "after_settings": {
+    "ExclusionPath": [
+      "D:\\approved\\old.exe",
+      "D:\\approved\\new.exe"
+    ],
+    "ExclusionExtension": null,
+    "ExclusionProcess": []
+  },
+  "calls": [
+    {
+      "path": "D:\\approved\\new.exe",
+      "method": "Add",
+      "return_value": null,
+      "return_value_available": false,
+      "return_object_absent": true,
+      "fresh_readback": {
+        "ExclusionPath": [
+          "D:\\approved\\old.exe",
+          "D:\\approved\\new.exe"
+        ],
+        "ExclusionExtension": null,
+        "ExclusionProcess": []
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "D:\\approved\\new.exe",
+      "size": 10,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "settings_success_is_runtime_trust": false,
+  "exclusion_types_written": [
+    "ExclusionPath exact files"
+  ],
+  "verified_requested_paths": [
+    "D:\\approved\\new.exe"
+  ],
+  "missing_requested_paths": [],
+  "observed_prior_settings_preserved": true,
+  "observed_extensions_unchanged": true,
+  "observed_processes_unchanged": true,
+  "partial_mutation": false,
+  "verification_source": "same SYSTEM/admin client actual fresh readback",
+  "settings_readback_complete": true,
+  "settings_readback_error": null,
+  "settings_readback_process_id": 95756,
+  "settings_readback_token_user_sid": "S-1-5-18",
+  "settings_readback_schema": "xar.project-exe-three-settings-readback/v2",
+  "before_property_observations": [
+    {
+      "name": "ExclusionPath",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "STRING_ARRAY"
+    },
+    {
+      "name": "ExclusionExtension",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "OBSERVED_NULLABLE_VALUE"
+    },
+    {
+      "name": "ExclusionProcess",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "STRING_ARRAY"
+    }
+  ],
+  "after_property_observations": [
+    {
+      "name": "ExclusionPath",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "STRING_ARRAY"
+    },
+    {
+      "name": "ExclusionExtension",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "OBSERVED_NULLABLE_VALUE"
+    },
+    {
+      "name": "ExclusionProcess",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "STRING_ARRAY"
+    }
+  ],
+  "nullable_observation_scope": "Same administrative WMI client, one MSFT_MpPreference instance and existing Name/CIMType8/IsArray=true properties. Python None is retained as an observed nullable CIM value, distinct from an empty array; raw VARIANT is not remeasured by this reader. No assertion that effective exclusions are empty or unconfigured."
+}

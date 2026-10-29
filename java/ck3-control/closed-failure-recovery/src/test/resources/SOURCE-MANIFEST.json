@@ -1,0 +1,29 @@
+{
+  "schema": "xar.closed-failure-recovery-portable-fixture-sources/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T13:36:16Z",
+  "scope": "Unchanged small original metadata and the frozen pure writer source. No Driver/SAVE body; no current N46 canonical qualification claimed. Synthetic provider is confined to tests.",
+  "runtime_source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime-a46",
+  "canonical_source": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/ROOT-CONTINUITY-WINDOW.json",
+  "prior_basis_source": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/current-saved-a46-runtime-prep01/CURRENT-SAVED-A46-CONTINUITY-BASIS01.json",
+  "prior_qualification_source": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/current-saved-a46-runtime-prep01/CURRENT-SAVED-A46-CONTINUITY-QUALIFICATION01.json",
+  "pins": [
+    {"file":"n46-head240.actual.json","bytes":37424,"sha256":"86af210b06d5d60b2d1f6ac5f1f0a6d31098b518583da06270596a71b068463a"},
+    {"file":"n46-prior-basis.actual.json","bytes":8894,"sha256":"4b53ffa1a422df36cd18d29f47737fed8417a257ff42d2dc4b7093de56d27afa"},
+    {"file":"n46-prior-qualification.actual.json","bytes":2329,"sha256":"a400b38300c6b43e66800b7365e854e046d2c3bd87f53adc4e14fac0e6d267d7"},
+    {"file":"n46-full-request11543.actual.json","bytes":69,"source_relative":"p37-requests/11543-1-result.json","sha256":"8f3007683072043b8ca63b14823bd439127db47873702557f9940f2477f86a63"},
+    {"file":"n46-full-failure11543.actual.json","bytes":1388,"source_relative":"p37-responses/11543-1-result.json","sha256":"4040c4c4046ebcb1ca46eb5b888270a33d9c61bfee1a29e31d1c56d311ee1120"},
+    {"file":"n46-auto-request11558.actual.json","bytes":112,"source_relative":"p37-requests/11558-1-result.json","sha256":"8fee7293debf9c4dc1963b1a5524ade426e6c43123492c021534832971a9569c"},
+    {"file":"n46-auto-failure11558.actual.json","bytes":8763,"source_relative":"p37-responses/11558-1-result.json","sha256":"a29abe49623a8da965af385526b2b9a22ad0ed30d321d0ac340d4149fc74d9de"},
+    {"file":"n46-raw-state.actual.json","bytes":10185,"source_relative":"p37-queue/ROOT-CUMULATIVE-LOOP-STATE.json","sha256":"7d62a0c1cf55f29094b8418aa1f716e1b966f03ddc4ab6e826ec415268d1066f"},
+    {"file":"n46-raw-governance.actual.json","bytes":810,"source_relative":"p37-queue/ROOT-GOVERNANCE-RESULT-STATE.json","sha256":"d1e5ca6463f0e9e3d46fffc4abfca5df1b190af0840786fb794bdbe261f4d6c5"},
+    {"file":"n46-next11559.actual.json","bytes":67,"source_relative":"NEXT-SEQUENCE-P37.json","sha256":"cecd7459be3d764f3696af3d0bd7c1092c72a8c57252a8e55704a2b8879695fc"},
+    {"file":"n46-frozen-writer-source.actual.txt","bytes":34988,"source_relative":"root_continuity_window_c23_100.py","sha256":"6b0ece99075e425f84ad732e3112cf5ccdc883bbb09a884aa94e0df411e9ff6e"}
+  ],
+  "source_paths_are_provenance_not_runtime_dependencies": true,
+  "oracle": "Independent Python process evaluates only the pinned original transition function on in-memory test payload; never WindowLedger.apply or .locked, no original runtime import",
+  "actual_Driver_SAVE_body_reads": 0,
+  "actual_current_original_SDK_qualification_executed": false,
+  "ledger_writes": 0,
+  "Game_RPC_calls": 0
+}

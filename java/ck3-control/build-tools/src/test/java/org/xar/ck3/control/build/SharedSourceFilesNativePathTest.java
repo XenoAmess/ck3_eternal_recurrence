@@ -89,9 +89,60 @@ final class SharedSourceFilesNativePathTest {
         finally { assertTrue(api.CloseHandle(held)); }
     }
 
+    @Test void heldSnapshotsStillRejectRealFileAndDirectoryRacesWithTypedFacts() throws Exception {
+        Path parent = Files.createDirectory(directory.resolve("native-facts"));
+        Path file = Files.write(parent.resolve("exact-file.bin"), new byte[1]);
+        Files.setLastModifiedTime(file, java.nio.file.attribute.FileTime.fromMillis(1000));
+        var api = com.sun.jna.platform.win32.Kernel32.INSTANCE;
+        var handle = api.CreateFile(SharedSourceFiles.nativePath(file), 0x80, 7, null, 3, 0x00200000, null);
+        assertNotEquals(com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE, handle);
+        try {
+            var mismatch = assertThrows(SharedSourceFiles.NativeFactsChangedException.class,
+                    () -> SharedSourceFiles.nativeHeldFile(handle, () -> Files.write(file, new byte[4096])));
+            assertEquals(1, mismatch.standardFacts().logicalBytes());
+            assertEquals(4096, mismatch.legacyFacts().logicalBytes());
+            assertTrue(mismatch.onlyMutableFactsChanged());
+            assertEquals(mismatch.standardFacts().creationFiletimeDecimal(), mismatch.legacyFacts().creationFiletimeDecimal());
+            assertEquals(4096, SharedSourceFiles.nativeHeldFile(handle).logicalBytes());
+        } finally { assertTrue(api.CloseHandle(handle)); }
+
+        Files.setLastModifiedTime(parent, java.nio.file.attribute.FileTime.fromMillis(1000));
+        var heldDirectory = api.CreateFile(SharedSourceFiles.nativePath(parent), 0x80, 7, null, 3, 0x02200000, null);
+        assertNotEquals(com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE, heldDirectory);
+        try {
+            var mismatch = assertThrows(SharedSourceFiles.NativeFactsChangedException.class,
+                    () -> SharedSourceFiles.nativeHeldDirectory(heldDirectory,
+                            () -> Files.write(parent.resolve("new-entry.bin"), new byte[1])));
+            assertTrue(mismatch.onlyMutableFactsChanged());
+            assertNotEquals(mismatch.standardFacts().lastWriteFiletimeDecimal(), mismatch.legacyFacts().lastWriteFiletimeDecimal());
+            assertEquals(SharedSourceFiles.nativeDirectory(parent).fileIdDecimal(),
+                    SharedSourceFiles.nativeHeldDirectory(heldDirectory).fileIdDecimal());
+        } finally { assertTrue(api.CloseHandle(heldDirectory)); }
+    }
+
     private Path longDirectory(String label) throws IOException {
         Path path = directory.resolve(label);
         while (path.toString().length() < 310) path = path.resolve("ordinary-native-source-path-segment");
         return Files.createDirectories(path);
     }
+    @Test void heldDeletePendingEntriesStayStrictAndCarryExactTypedFlags() throws Exception {
+        Path path = Files.write(directory.resolve("held-delete-pending.bin"), new byte[4096]);
+        var handle = com.sun.jna.platform.win32.Kernel32.INSTANCE.CreateFile(SharedSourceFiles.nativePath(path),
+                0x80, 7, null, 3, 0x00200000, null);
+        assertNotEquals(com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE, handle);
+        try {
+            assertTrue(com.sun.jna.platform.win32.Kernel32.INSTANCE.DeleteFile(SharedSourceFiles.nativePath(path)));
+            var failure = assertThrows(SharedSourceFiles.NativeEntryStateException.class,
+                    () -> SharedSourceFiles.nativeHeldFile(handle));
+            assertTrue(failure.state().onlyDeletePending()); assertFalse(failure.state().directory());
+            assertFalse(failure.state().reparse()); assertFalse(failure.state().expectedDirectory());
+            assertTrue(failure.getMessage().startsWith("ordinary non-reparse non-delete-pending source required"));
+        } finally {
+            assertTrue(com.sun.jna.platform.win32.Kernel32.INSTANCE.CloseHandle(handle));
+        }
+        assertThrows(IllegalArgumentException.class, () -> new SharedSourceFiles.NativeEntryStateException(
+                new SharedSourceFiles.NativeEntryState(false, false, false, false)));
+    }
+
 }
+

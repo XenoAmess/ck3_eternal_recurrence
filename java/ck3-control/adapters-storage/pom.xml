@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-parent</artifactId><version>0.1.0-SNAPSHOT</version><relativePath>../pom.xml</relativePath></parent>
+  <artifactId>adapters-storage</artifactId>
+  <dependencies>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>application</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>g2-research</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>planning-runtime</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>contracts</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>continuity-core</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>net.java.dev.jna</groupId><artifactId>jna</artifactId></dependency>
+    <dependency><groupId>net.java.dev.jna</groupId><artifactId>jna-platform</artifactId></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-build-tools</artifactId><version>${project.version}</version><scope>test</scope></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+  </dependencies>
+  <build>
+    <testResources>
+      <testResource><directory>src/test/resources</directory></testResource>
+      <testResource><directory>../continuity-core/src/test/resources</directory><includes><include>original-reducer-calls-v2.json.gz</include></includes></testResource>
+    </testResources>
+  </build>
+</project>

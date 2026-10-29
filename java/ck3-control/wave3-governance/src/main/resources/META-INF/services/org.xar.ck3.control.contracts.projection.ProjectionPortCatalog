@@ -1,0 +1,5 @@
+org.xar.ck3.control.wave3.governance.projection.GovernanceWave3ProjectionCatalog
+org.xar.ck3.control.wave3.governance.guardianskills.GuardianProjectionPortCatalog
+org.xar.ck3.control.wave3.governance.marriagenotice.MarriageWave3ProjectionCatalog
+org.xar.ck3.control.wave3.governance.lifecycle.SuccessionLifecycleProjectionCatalog
+org.xar.ck3.control.wave3.governance.heirranking.HeirProjectionCatalog

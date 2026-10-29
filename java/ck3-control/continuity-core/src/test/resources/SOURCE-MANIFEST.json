@@ -1,0 +1,55 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T23:10:13.633396+00:00",
+  "scope": "Preserved repository small metadata fixtures only; not current campaign authority",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\closed-failure-recovery\\src\\test\\resources\\n46-head240.actual.json",
+      "bytes": 37424,
+      "sha256": "86af210b06d5d60b2d1f6ac5f1f0a6d31098b518583da06270596a71b068463a",
+      "actual_Driver_SAVE_body": false
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\closed-failure-recovery\\src\\test\\resources\\n46-prior-basis.actual.json",
+      "bytes": 8894,
+      "sha256": "4b53ffa1a422df36cd18d29f47737fed8417a257ff42d2dc4b7093de56d27afa",
+      "actual_Driver_SAVE_body": false
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\closed-failure-recovery\\src\\test\\resources\\n46-raw-state.actual.json",
+      "bytes": 10185,
+      "sha256": "7d62a0c1cf55f29094b8418aa1f716e1b966f03ddc4ab6e826ec415268d1066f",
+      "actual_Driver_SAVE_body": false
+    }
+  ],
+  "original_pure_oracle": {
+    "raw_capture_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261023\\g2-m5\\migration_continuity\\oracle01\\original-reducer-calls.json.gz",
+      "bytes": 133622,
+      "sha256": "238520d5e4208e2882e08d59aed201859db38169b81871f82870c41676696c7d"
+    },
+    "terminal_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261023\\g2-m5\\migration_continuity\\oracle01\\terminal.json",
+      "bytes": 19695,
+      "sha256": "9bf413900574591fdb8b71e2ee353a4e6acb966cffc2acbdfc64d43eb7cf699e"
+    },
+    "compact_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\migration_continuity\\java\\ck3-control\\continuity-core\\src\\test\\resources\\original-reducer-calls-v2.json.gz",
+      "bytes": 20013,
+      "sha256": "d739df6b979031c7c55c4f2527691c418a3f2623482a7d1118d94496f435faa2"
+    },
+    "compact_terminal_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261023\\g2-m5\\migration_continuity\\compact01\\terminal.json",
+      "bytes": 16330,
+      "sha256": "438d23ca0f1fdddde61a5c79085ce166b92ced632e181a03a5f381eaa4c8062d"
+    },
+    "decoded_request_response_bytes_matches": 11,
+    "cases": 7,
+    "accepted": 4,
+    "rejected": 3,
+    "float_canonical_cases": 150,
+    "schema": "xar.continuity-original-reducer-delta-calls/v2",
+    "SDK_imports": 0,
+    "ledger_writes": 0
+  }
+}

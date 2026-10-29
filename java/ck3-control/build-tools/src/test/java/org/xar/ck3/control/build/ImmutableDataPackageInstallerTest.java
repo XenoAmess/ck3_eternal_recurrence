@@ -2,9 +2,10 @@ package org.xar.ck3.control.build;
 
 import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.sun.jna.Native;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinDef.DWORDByReference;
+import com.sun.jna.platform.win32.WinDef.DWORD;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -206,10 +207,181 @@ final class ImmutableDataPackageInstallerTest {
         assertFalse(Files.exists(fixture.data())); assertFalse(Files.exists(fixture.control()));
     }
 
+    @Test void exactAllocationRemainsBoundedWhileWriterAndAllReadCustodyHandlesAreStillOpen() throws Exception {
+        byte[] payload = new byte[1_310_721];
+        for (int i = 0; i < payload.length; i++) payload[i] = (byte) (i * 31);
+        Fixture fixture = fixture("live-held-allocation", payload);
+        List<AllocationSample> samples = new ArrayList<>();
+        Actual actual = ImmutableDataPackageInstaller.copy(fixture.plan(), (data, control) -> {
+            assertTrue(data <= fixture.request().maxDataNativeBytes());
+            assertTrue(control <= fixture.request().maxControlNativeBytes());
+        }, samples::add);
+        List<AllocationSample> blob = samples.stream().filter(s -> s.target().equals(fixture.data().resolve(BLOB))).toList();
+        assertEquals(List.of(AllocationPhase.PREALLOCATED, AllocationPhase.STREAMED_WRITER_HELD, AllocationPhase.READBACK_READER_HELD),
+                blob.stream().map(AllocationSample::phase).toList());
+        long cluster = NativeStorageGeometry.read(fixture.data()).clusterBytes();
+        long forecast = ((payload.length + cluster - 1) / cluster) * cluster;
+        assertEquals(0, blob.getFirst().actual().logicalBytes());
+        String identity = blob.getFirst().actual().identityKey();
+        for (AllocationSample sample : blob) {
+            assertEquals(identity, sample.actual().identityKey());
+            assertEquals(1, sample.actual().linkCount());
+            assertTrue(sample.actual().allocatedBytes() <= forecast, sample.toString());
+            if (sample.phase() != AllocationPhase.PREALLOCATED) assertEquals(payload.length, sample.actual().logicalBytes());
+            writeAllocationObservation(sample.phase().name(), sample.target(), sample.actual(), forecast);
+        }
+        // copy() has now closed its final reader. The result must already have satisfied
+        // the same bound at both earlier live stages, rather than relying on this cleanup.
+        NativeFile afterLastClose = SharedSourceFiles.nativeFile(fixture.data().resolve(BLOB));
+        writeAllocationObservation("AFTER_LAST_CLOSE_REOPEN", fixture.data().resolve(BLOB), afterLastClose, forecast);
+        assertEquals(blob.getLast().actual(), afterLastClose);
+        assertEquals(payload.length, afterLastClose.logicalBytes());
+        assertTrue(afterLastClose.allocatedBytes() <= forecast);
+        assertArrayEquals(payload, Files.readAllBytes(fixture.data().resolve(BLOB)));
+        assertEquals(actual, ImmutableDataPackageInstaller.readActual(FileRef.measure(fixture.control().resolve("actual.json"))));
+        assertEquals(2, actual.files().size()); assertTrue(actual.manifestCopiedLast());
+    }
+
+    @Test void exactEofAndAllocationAtNativeClusterAndStreamingEdgesSurviveColdConsumer() throws Exception {
+        long cluster = NativeStorageGeometry.read(temporary.toAbsolutePath().normalize()).clusterBytes();
+        var empty = assertThrows(IllegalArgumentException.class, () -> fixture("empty-rejected", new byte[0]));
+        assertEquals("finite opaque input extent required", empty.getMessage());
+        List<Integer> sizes = java.util.stream.Stream.of(1, Math.toIntExact(cluster - 1), Math.toIntExact(cluster),
+                Math.toIntExact(cluster + 1), 65535, 65536, 65537).distinct().toList();
+        for (int size : sizes) {
+            byte[] bytes = new byte[size]; java.util.Arrays.fill(bytes, (byte) 91);
+            Fixture fixture = fixture("exact-edge-" + size, bytes);
+            List<AllocationSample> live = new ArrayList<>();
+            Actual actual = ImmutableDataPackageInstaller.copy(fixture.plan(), (data, control) -> {
+                assertTrue(data <= fixture.request().maxDataNativeBytes()); assertTrue(control <= fixture.request().maxControlNativeBytes());
+            }, live::add);
+            long forecast = ((size + cluster - 1) / cluster) * cluster;
+            for (AllocationSample sample : live) if (sample.target().equals(fixture.data().resolve(BLOB))) {
+                assertTrue(sample.actual().allocatedBytes() <= forecast);
+                if (sample.phase() != AllocationPhase.PREALLOCATED) assertEquals(size, sample.actual().logicalBytes());
+            }
+            NativeFile reopened = SharedSourceFiles.nativeFile(fixture.data().resolve(BLOB));
+            assertEquals(size, reopened.logicalBytes()); assertTrue(reopened.allocatedBytes() <= forecast);
+            assertArrayEquals(bytes, Files.readAllBytes(fixture.data().resolve(BLOB)));
+            assertEquals(actual, ImmutableDataPackageInstaller.readActual(FileRef.measure(fixture.control().resolve("actual.json"))));
+        }
+    }
+
+    @Test void actualRetainedEmptyDirectoryDeniesRenameUntilItsProductionHandleCloses() throws Exception {
+        Path path = Files.createDirectory(temporary.resolve("isolated-directory-custody"));
+        NativeFile before = directory(path);
+        try (var held = ImmutableDataPackageInstaller.Held.open(path, true, false)) {
+            assertEquals(before.identityKey(), held.actual().identityKey());
+            assertRenameDenied(path);
+            held.reopenMatches();
+        }
+        assertMovedAndRestored(path);
+        assertEquals(before.identityKey(), directory(path).identityKey());
+    }
+
+    @Test void copyAndColdConsumerRetainDirectoryCustodyAndReleaseEveryHandleOnExit() throws Exception {
+        Fixture fixture = fixture("directory-custody-copy");
+        AtomicBoolean observed = new AtomicBoolean();
+        Actual actual = ImmutableDataPackageInstaller.copy(fixture.plan(), (data, control) -> {
+            assertTrue(data <= fixture.request().maxDataNativeBytes());
+            assertTrue(control <= fixture.request().maxControlNativeBytes());
+        }, sample -> {
+            if (sample.phase() == AllocationPhase.PREALLOCATED && observed.compareAndSet(false, true)) {
+                // No child is open in the still-empty control directory. A file handle in
+                // another directory cannot accidentally make this a passing custody test.
+                try (var entries = Files.list(fixture.control())) { assertEquals(0, entries.count()); }
+                assertRenameDenied(fixture.control());
+            }
+        });
+        assertTrue(observed.get());
+        AtomicBoolean read = new AtomicBoolean();
+        assertEquals(actual, ImmutableDataPackageInstaller.readActual(FileRef.measure(fixture.control().resolve("actual.json")), () -> {
+            assertRenameDenied(fixture.source());
+            assertRenameDenied(fixture.data());
+            assertRenameDenied(fixture.control());
+            read.set(true);
+        }));
+        assertTrue(read.get());
+        assertEquals(actual, ImmutableDataPackageInstaller.readActual(FileRef.measure(fixture.control().resolve("actual.json"))));
+        assertMovedAndRestored(fixture.source());
+        assertMovedAndRestored(fixture.data());
+        assertMovedAndRestored(fixture.control());
+        assertEquals("installed directory witness drifted", assertThrows(IOException.class,
+                () -> ImmutableDataPackageInstaller.readActual(FileRef.measure(fixture.control().resolve("actual.json")))).getMessage());
+    }
+
+    @Test void attributeOnlyFileObservationDoesNotPretendToGrantDeleteOrContentCustody() throws Exception {
+        Path path = temporary.resolve("attribute-only-file");
+        Files.writeString(path, "metadata-only observation");
+        NativeFile before = SharedSourceFiles.nativeFile(path);
+        // No production retained source/destination/metadata file uses this read=false
+        // branch. Unlike read=true it requests attributes only and is not a custody grant.
+        try (var observed = ImmutableDataPackageInstaller.Held.open(path, false, false)) {
+            assertMovedAndRestored(path);
+            observed.reopenMatches();
+            assertEquals(before.identityKey(), observed.actual().identityKey());
+        }
+        assertEquals("metadata-only observation", Files.readString(path));
+    }
+
+    private Path checkedRenameTarget(Path original) {
+        Path root = temporary.toAbsolutePath().normalize(), source = original.toAbsolutePath().normalize();
+        Path target = source.resolveSibling(source.getFileName() + ".rename-probe");
+        assertTrue(source.startsWith(root) && !source.equals(root) && target.startsWith(root));
+        assertEquals(source.getRoot(), target.getRoot());
+        assertFalse(Files.exists(target));
+        return target;
+    }
+    private void assertRenameDenied(Path original) throws IOException {
+        Path target = checkedRenameTarget(original);
+        Native.setLastError(0);
+        boolean moved = Kernel32.INSTANCE.MoveFileEx(SharedSourceFiles.nativePath(original), SharedSourceFiles.nativePath(target), new DWORD(0));
+        int error = Native.getLastError();
+        if (moved) {
+            boolean restored = Kernel32.INSTANCE.MoveFileEx(SharedSourceFiles.nativePath(target), SharedSourceFiles.nativePath(original), new DWORD(0));
+            assertTrue(restored, "unexpected rename must restore this self-owned fixture before reporting failure");
+        }
+        writeDirectoryCustodyObservation("RETAINED_RENAME_PROBE", original, moved, error);
+        assertFalse(moved, "actual retained directory must deny DELETE/rename access");
+        assertEquals(32, error, "expected actual ERROR_SHARING_VIOLATION");
+        assertTrue(Files.exists(original)); assertFalse(Files.exists(target));
+    }
+    private void assertMovedAndRestored(Path original) throws IOException {
+        Path target = checkedRenameTarget(original);
+        Native.setLastError(0);
+        boolean moved = Kernel32.INSTANCE.MoveFileEx(SharedSourceFiles.nativePath(original), SharedSourceFiles.nativePath(target), new DWORD(0));
+        int error = Native.getLastError();
+        assertTrue(moved, "self-owned fixture rename should be available when no custody is claimed; error=" + error);
+        boolean restored = Kernel32.INSTANCE.MoveFileEx(SharedSourceFiles.nativePath(target), SharedSourceFiles.nativePath(original), new DWORD(0));
+        assertTrue(restored, "self-owned fixture rename must restore its original path");
+        writeDirectoryCustodyObservation("RENAME_RELEASED_OR_ATTRIBUTES_ONLY", original, moved, error);
+        assertTrue(Files.exists(original)); assertFalse(Files.exists(target));
+    }
+    private void writeDirectoryCustodyObservation(String phase, Path target, boolean moved, int error) throws IOException {
+        ObjectNode row = ControlBuild.strictMapper().createObjectNode();
+        row.put("schema", "xar.immutable-data.actual-sharing-regression/v1");
+        row.put("machine_id", WindowsJobProcess.currentMachineId()); row.put("observed_at_utc", Instant.now().toString());
+        row.put("phase", phase); row.put("target", target.toString()); row.put("rename_returned", moved); row.put("win32_error", error);
+        NativeFile actual = Files.isDirectory(target) ? directory(target) : SharedSourceFiles.nativeFile(target);
+        row.set("actual_native", ControlBuild.strictMapper().valueToTree(actual));
+        System.out.println(ControlBuild.strictMapper().writeValueAsString(row));
+    }
+
+    private void writeAllocationObservation(String phase, Path target, NativeFile actual, long forecast) throws Exception {
+        ObjectNode row = ControlBuild.strictMapper().createObjectNode(); row.put("schema", "xar.immutable-data.actual-allocation-regression/v1");
+        row.put("machine_id", WindowsJobProcess.currentMachineId()); row.put("observed_at_utc", Instant.now().toString());
+        row.put("phase", phase); row.put("target", target.toString()); row.put("maximum_cluster_rounded_allocation_bytes", forecast);
+        row.set("actual_native", ControlBuild.strictMapper().valueToTree(actual));
+        System.out.println(ControlBuild.strictMapper().writeValueAsString(row));
+    }
+
     private Fixture fixture(String label) throws Exception {
+        return fixture(label, new byte[]{31, (byte) 139, 8, 1, 2, 3, 4, 5});
+    }
+    private Fixture fixture(String label, byte[] payload) throws Exception {
         Path root = Files.createDirectory(temporary.resolve(label)); Path source = Files.createDirectory(root.resolve("source"));
         Files.createDirectory(source.resolve("blobs")); Files.writeString(source.resolve("manifest_v1.json"), "{\"opaque_fixture\":true}\n");
-        Files.write(source.resolve(BLOB), new byte[]{31, (byte) 139, 8, 1, 2, 3, 4, 5});
+        Files.write(source.resolve(BLOB), payload);
         Path data = root.resolve("installed"), control = root.resolve("control");
         List<SourceFile> rows = new ArrayList<>(); long logical = 0, allocated = 0;
         for (String name : List.of("manifest_v1.json", BLOB)) {
@@ -237,17 +409,21 @@ final class ImmutableDataPackageInstallerTest {
         FileRef indexRef = FileRef.measure(indexPath); String review = Instant.now().plusSeconds(600).toString();
         List<FileRef> runtime = new ArrayList<>();
         for (int i = 0; i < 6; i++) runtime.add(FileRef.measure(Files.writeString(root.resolve("runtime-fixture-" + i), "synthetic " + i)));
-        long gib = 1L << 30, peak = 4L << 20;
+        Volume geometry = volume(data); long cluster = geometry.clusterBytes();
+        long dataCap = Math.max(2L << 20, ((payload.length + cluster - 1) / cluster) * cluster
+                + ((rows.getFirst().sourceRef().bytes() + cluster - 1) / cluster) * cluster + (256L << 10));
+        long controlCap = Math.max(2L << 20, 2 * cluster);
+        long gib = 1L << 30, peak = dataCap + controlCap;
         Admission card = new Admission(ImmutableDataPackageInstaller.ADMISSION_SCHEMA,
                 AdmissionStatus.RELEASED_SINGLE_COPY_IMMUTABLE_DATA_INSTALL, machine, "/root/fixture", now, review,
-                indexRef, data.toString(), control.toString(), List.of(), 256L << 10, 2L << 20, 2L << 20,
+                indexRef, data.toString(), control.toString(), List.of(), 256L << 10, dataCap, controlCap,
                 indexRef, data.getRoot().toString(), new CiBootstrap.VolumeBudget(1L << 40, 100 * gib, peak, 0, gib, gib,
                     1L << 20, 1L << 39, peak + 2 * gib), null, indexRef, indexRef,
                 new SharedOwnedCommandBinding.AuthorityExpectation("fixture-not-qualified", "FIXTURE_ONLY"), indexRef, indexRef, runtime);
         FileRef syntheticCard = FileRef.measure(Files.write(root.resolve("synthetic-admission.json"), ControlBuild.strictMapper().writeValueAsBytes(card)));
         Request request = new Request(ImmutableDataPackageInstaller.REQUEST_SCHEMA, machine, "/root/fixture", review,
                 Instant.now().plusSeconds(120).toString(), indexRef, syntheticCard, data.toString(), control.toString(), List.of(),
-                256L << 10, 2L << 20, 2L << 20);
+                256L << 10, dataCap, controlCap);
         FileRef requestRef = FileRef.measure(Files.write(root.resolve("request.json"), ControlBuild.strictMapper().writeValueAsBytes(request)));
         return new Fixture(index, request, requestRef, source, data, control);
     }
@@ -283,10 +459,8 @@ final class ImmutableDataPackageInstallerTest {
         try { return SharedSourceFiles.nativeHeldDirectory(handle); }
         finally { assertTrue(Kernel32.INSTANCE.CloseHandle(handle)); }
     }
-    private Volume volume(Path path) {
-        DWORDByReference sectors = new DWORDByReference(), bytes = new DWORDByReference(), free = new DWORDByReference(), total = new DWORDByReference();
-        assertTrue(Kernel32.INSTANCE.GetDiskFreeSpace(path.getRoot().toString(), sectors, bytes, free, total));
-        long sectorCount = sectors.getValue().longValue(), byteCount = bytes.getValue().longValue();
-        return new Volume(path.getRoot().toString(), sectorCount, byteCount, Math.multiplyExact(sectorCount, byteCount));
+    private Volume volume(Path path) throws IOException {
+        NativeStorageGeometry.Volume actual = NativeStorageGeometry.read(path.toAbsolutePath().normalize());
+        return new Volume(actual.root().toString(), actual.sectorsPerCluster(), actual.bytesPerSector(), actual.clusterBytes());
     }
 }

@@ -95,18 +95,83 @@ public final class SharedSourceFiles {
         if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("actual held directory handle required");
         return nativeHeldEntry(handle, true);
     }
+    /** Exact facts read by both existing identity APIs; this record grants no source authority. */
+    public record NativeFacts(long logicalBytes, String creationFiletimeDecimal,
+            String lastWriteFiletimeDecimal, long linkCount) implements java.io.Serializable {
+        private static final long serialVersionUID = 1L;
+        public NativeFacts {
+            if (logicalBytes < 0 || linkCount < 0) throw new IllegalArgumentException("Nonnegative native sizes/counts required");
+            unsignedDecimal(creationFiletimeDecimal, 64); unsignedDecimal(lastWriteFiletimeDecimal, 64);
+        }
+    }
+    /** Strict immutable decoding still rejects every mismatch; callers may only classify its typed facts. */
+    public static final class NativeFactsChangedException extends IOException {
+        private static final long serialVersionUID = 1L;
+        private final NativeFacts standardFacts;
+        private final NativeFacts legacyFacts;
+        NativeFactsChangedException(NativeFacts standard, NativeFacts legacy) {
+            super("native source facts changed between exact identity APIs; standard=" + standard + "; legacy=" + legacy);
+            standardFacts = standard; legacyFacts = legacy;
+        }
+        public NativeFacts standardFacts() { return standardFacts; }
+        public NativeFacts legacyFacts() { return legacyFacts; }
+        public boolean onlyMutableFactsChanged() {
+            return standardFacts.creationFiletimeDecimal().equals(legacyFacts.creationFiletimeDecimal());
+        }
+    }
+
+    /** Complete typed state for a rejected exact held entry; immutable callers always reject it. */
+    public record NativeEntryState(boolean reparse, boolean deletePending, boolean directory,
+            boolean expectedDirectory) implements java.io.Serializable {
+        public boolean onlyDeletePending() { return deletePending && !reparse && directory == expectedDirectory; }
+        public boolean rejected() { return reparse || deletePending || directory != expectedDirectory; }
+    }
+    public static final class NativeEntryStateException extends IOException {
+        private static final long serialVersionUID = 1L;
+        private final NativeEntryState state;
+        public NativeEntryStateException(NativeEntryState state) {
+            super("ordinary non-reparse non-delete-pending source required; state=" + state);
+            this.state = java.util.Objects.requireNonNull(state);
+            if (!state.rejected()) throw new IllegalArgumentException("Only actual rejected native entry state allowed");
+        }
+        public NativeEntryState state() { return state; }
+    }
+
+    @FunctionalInterface
+    interface MetadataReadObserver { void afterStandardRead() throws IOException; }
+    static NativeFile nativeHeldFile(HANDLE handle, MetadataReadObserver observer) throws IOException {
+        if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("actual held file handle required");
+        return nativeHeldEntry(handle, false, observer);
+    }
+    static NativeFile nativeHeldDirectory(HANDLE handle, MetadataReadObserver observer) throws IOException {
+        if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("actual held directory handle required");
+        return nativeHeldEntry(handle, true, observer);
+    }
     private static NativeFile nativeHeldEntry(HANDLE handle, boolean directory) throws IOException {
+        return nativeHeldEntry(handle, directory, () -> {});
+    }
+    private static NativeFile nativeHeldEntry(HANDLE handle, boolean directory, MetadataReadObserver observer) throws IOException {
         try (Memory id = new Memory(24); Memory basic = new Memory(40); Memory standard = new Memory(24); Memory legacy = new Memory(52)) {
-            if (!Api.VALUE.GetFileInformationByHandleEx(handle, 18, id, 24)
-                    || !Api.VALUE.GetFileInformationByHandleEx(handle, 0, basic, 40)
-                    || !Api.VALUE.GetFileInformationByHandleEx(handle, 1, standard, 24)
-                    || !Api.VALUE.GetFileInformationByHandle(handle, legacy)) throw new IOException("source metadata Win32=" + Native.getLastError());
-            if ((basic.getInt(32) & 0x400) != 0 || standard.getByte(20) != 0 || ((standard.getByte(21) != 0) != directory)) throw new IOException("ordinary non-reparse non-delete-pending source required");
+            if (!Api.VALUE.GetFileInformationByHandleEx(handle, 18, id, 24))
+                throw new IOException("GetFileInformationByHandleEx(FileIdInfo) Win32=" + Native.getLastError());
+            if (!Api.VALUE.GetFileInformationByHandleEx(handle, 0, basic, 40))
+                throw new IOException("GetFileInformationByHandleEx(FileBasicInfo) Win32=" + Native.getLastError());
+            if (!Api.VALUE.GetFileInformationByHandleEx(handle, 1, standard, 24))
+                throw new IOException("GetFileInformationByHandleEx(FileStandardInfo) Win32=" + Native.getLastError());
+            java.util.Objects.requireNonNull(observer).afterStandardRead();
+            if (!Api.VALUE.GetFileInformationByHandle(handle, legacy))
+                throw new IOException("GetFileInformationByHandle(BY_HANDLE_FILE_INFORMATION) Win32=" + Native.getLastError());
+            NativeEntryState state = new NativeEntryState((basic.getInt(32) & 0x400) != 0,
+                    standard.getByte(20) != 0, standard.getByte(21) != 0, directory);
+            if (state.rejected()) throw new NativeEntryStateException(state);
             byte[] little = id.getByteArray(8, 16), big = new byte[16];
             for (int index = 0; index < big.length; index++) big[index] = little[15 - index];
             long legacyBytes = (Integer.toUnsignedLong(legacy.getInt(32)) << 32) | Integer.toUnsignedLong(legacy.getInt(36));
-            if (legacyBytes != standard.getLong(8) || legacy.getLong(4) != basic.getLong(0) || legacy.getLong(20) != basic.getLong(16)
-                    || legacy.getInt(40) != standard.getInt(16)) throw new IOException("native source facts changed between exact identity APIs");
+            NativeFacts standardFacts = new NativeFacts(standard.getLong(8), Long.toUnsignedString(basic.getLong(0)),
+                    Long.toUnsignedString(basic.getLong(16)), Integer.toUnsignedLong(standard.getInt(16)));
+            NativeFacts legacyFacts = new NativeFacts(legacyBytes, Long.toUnsignedString(legacy.getLong(4)),
+                    Long.toUnsignedString(legacy.getLong(20)), Integer.toUnsignedLong(legacy.getInt(40)));
+            if (!standardFacts.equals(legacyFacts)) throw new NativeFactsChangedException(standardFacts, legacyFacts);
             return new NativeFile(Long.toUnsignedString(id.getLong(0)), new BigInteger(1, big).toString(), Integer.toUnsignedString(legacy.getInt(28)),
                     java.util.HexFormat.of().toHexDigits(legacy.getInt(44)) + java.util.HexFormat.of().toHexDigits(legacy.getInt(48)), Long.toUnsignedString(basic.getLong(0)),
                     Long.toUnsignedString(basic.getLong(16)), Long.toUnsignedString(basic.getLong(24)),
@@ -200,3 +265,4 @@ public final class SharedSourceFiles {
                 && before.nativeFile().lastWriteFiletimeDecimal().equals(after.nativeFile().lastWriteFiletimeDecimal());
     }
 }
+

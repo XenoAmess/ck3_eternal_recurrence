@@ -1,0 +1,31 @@
+{
+  "schema": "xar.java-metadata-golden-provenance/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T14:55:00Z",
+  "scope": "historical real producer JSON only; no current SDK or SAVE validation asserted",
+  "original_sources": [
+    {
+      "path": "java\\ck3-control\\wave2-runtime\\src\\test\\resources\\savedproof\\n46-prior-basis.actual.json",
+      "bytes": 8894,
+      "sha256": "4b53ffa1a422df36cd18d29f47737fed8417a257ff42d2dc4b7093de56d27afa",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "source_observed_at_utc": "2026-10-22T11:33:08.063149+00:00",
+      "original_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\CURRENT-SAVED-A46-CONTINUITY-BASIS01.json"
+    },
+    {
+      "path": "java\\ck3-control\\wave2-runtime\\src\\test\\resources\\savedproof\\n46-raw-state.actual.json",
+      "bytes": 10185,
+      "sha256": "7d62a0c1cf55f29094b8418aa1f716e1b966f03ddc4ab6e826ec415268d1066f",
+      "machine_id": null,
+      "source_observed_at_utc": null,
+      "source_document_machine_id": "unknown",
+      "original_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\p37-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+      "source_document_identity_note": "Original Queue document has no machine/time fields; preserved unchanged. Original closure source binding is independently verified by closed-adoption; this standalone fixture grants no machine or current runtime authority."
+    }
+  ],
+  "copy_source": "existing closed-failure-recovery/src/test/resources exact pinned producer fixtures",
+  "fixture_bytes_reencoded": false,
+  "current_driver_body_reads": 0,
+  "current_save_body_reads": 0,
+  "current_save_sha256_calls": 0
+}

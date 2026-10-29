@@ -1,0 +1,6 @@
+org.xar.ck3.control.wave2.events.projection.EventsProjectionPortCatalog
+org.xar.ck3.control.wave2.events.projection.FullEventSourceProjectionCatalog
+org.xar.ck3.control.wave2.events.projection.EventEvidenceProjectionCatalog
+org.xar.ck3.control.wave2.events.projection.InteractionProjectionPortCatalog
+org.xar.ck3.control.wave2.events.projection.UiRecoveryProjectionPortCatalog
+org.xar.ck3.control.wave2.events.projection.EventOptionClaimProjectionCatalog

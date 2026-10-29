@@ -1,0 +1,48 @@
+{
+  "tool": "ck3_submit_regular_maa_create",
+  "arguments": {
+    "type_index": 50,
+    "action_id": "robert-r43-v70-mangonel-20261005-023224-01",
+    "expected_revision": 2
+  },
+  "packet": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema\": \"xar.ck3.regular-maa-create-private-action.v1\",\n  \"exact_ck3_build\": \"1.20.0.3\",\n  \"exe_sha256\": \"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\",\n  \"status\": \"queued_pending\",\n  \"reason\": \"\",\n  \"request_id\": \"maa-create-7a432bc885064295b9643f00286f9b1c\",\n  \"action_id\": \"robert-r43-v70-mangonel-20261005-023224-01\",\n  \"player_character_id\": 29829,\n  \"type_index\": 50,\n  \"submitted\": true,\n  \"verification_pending\": true,\n  \"material_result\": false,\n  \"created_observed\": false,\n  \"payment_observed\": false,\n  \"native_submission\": {\n    \"schema_version\": 1,\n    \"status\": \"queued_pending\",\n    \"reason\": \"\",\n    \"command_class\": \"CCreateMAARegimentCommand\",\n    \"owner_character_id\": 29829,\n    \"type_index\": 50,\n    \"native_can_create\": true,\n    \"native_submit_accepted\": true,\n    \"command_pointer_consumed\": true\n  },\n  \"capture_epoch\": 14304,\n  \"automatic_retry\": false,\n  \"advertised\": false\n}"
+      }
+    ],
+    "structuredContent": {
+      "schema": "xar.ck3.regular-maa-create-private-action.v1",
+      "exact_ck3_build": "1.20.0.3",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "status": "queued_pending",
+      "reason": "",
+      "request_id": "maa-create-7a432bc885064295b9643f00286f9b1c",
+      "action_id": "robert-r43-v70-mangonel-20261005-023224-01",
+      "player_character_id": 29829,
+      "type_index": 50,
+      "submitted": true,
+      "verification_pending": true,
+      "material_result": false,
+      "created_observed": false,
+      "payment_observed": false,
+      "native_submission": {
+        "schema_version": 1,
+        "status": "queued_pending",
+        "reason": "",
+        "command_class": "CCreateMAARegimentCommand",
+        "owner_character_id": 29829,
+        "type_index": 50,
+        "native_can_create": true,
+        "native_submit_accepted": true,
+        "command_pointer_consumed": true
+      },
+      "capture_epoch": 14304,
+      "automatic_retry": false,
+      "advertised": false
+    },
+    "isError": false,
+    "resultType": "complete"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "xar.religion.original-python-state-inputs/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-24T05:24:41.965852+00:00",
+  "source_refs": [
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/player_holy_site_private_transport.py",
+      "bytes": 10830,
+      "sha256": "162e77f92086e57ee09fc152ec196edfa07f4a4f56fbdd3903c0297a8a8da299"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/nonwar_private_build.py",
+      "bytes": 2663,
+      "sha256": "fe1a53ca0f01e60ae37231e3b1a566442454f3bb77afd33b616849b25f6d53e9"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py",
+      "bytes": 2114,
+      "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/driver.py",
+      "bytes": 20803,
+      "sha256": "eed449063debf1a84216a350f0178d64a9a6602bbfcc266298a810a9bb736fb6"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/g2_private_query_transport.py",
+      "bytes": 4533,
+      "sha256": "02db15ca2b070f814df06cad10da2bb9b4c8e2e1aec621f9228a5ab12f971315"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_player_holy_site_12004_native_mcp.py",
+      "bytes": 7825,
+      "sha256": "a0a15720412627d7a37a3fad1a3a9e8da163041c8dc3ee423c743e88306a919f"
+    }
+  ],
+  "producer_source_refs": [
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_snapshot_test.cpp",
+      "bytes": 5992,
+      "sha256": "148a420b28cff5573411a9a087863f0b26268b49120087544b6ae8928c1600e4"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_snapshot.cpp",
+      "bytes": 11688,
+      "sha256": "e4b71513d1c5008c047fbd37a0fb026b2218a3f8ee3f886de5aa6fb2d56cd39b"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_snapshot_json.cpp",
+      "bytes": 6245,
+      "sha256": "da172ff89b61e32edda05dc6b7e7b9ff7c42a562235eb262fd08a363782cdbb8"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_holy_site_snapshot.hpp",
+      "bytes": 3573,
+      "sha256": "14a056e6a55b15854f2d57b8c841fd5d45fada140502fb484b4efe5f16ab32a6"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_religion_bindings.hpp",
+      "bytes": 4461,
+      "sha256": "4b8887daa7c5bdb0470772bcfeb82760a0ddb8f4cf7d49567a706e80ea437358"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 458437,
+      "sha256": "415a075c0cdf29b37a5a888d45add38174ed3e5af258ee15bfd04c6c9a879239"
+    }
+  ]
+}

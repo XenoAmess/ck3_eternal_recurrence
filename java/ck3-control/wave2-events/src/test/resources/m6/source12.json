@@ -1,0 +1,342 @@
+{
+  "schema": "xar.g2.m6.current-pe-native-graph/v1",
+  "graph_id": "m6-r3-native12-manager-scope",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-23T22:35:11Z",
+  "evidence_kind": "CURRENT_EXE_STATIC_READ_ONLY_NOT_RUNTIME_QUALIFICATION",
+  "exe": {
+    "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "previous_source_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m6_research/NATIVE-SOURCE11.json",
+    "bytes": 13698,
+    "sha256": "9f2d3615e817219d46fd5e2cfc08881a4de23552739320fb7e4ad44285a71e32"
+  },
+  "external_worker_source_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/combat_phase/M6-MANAGER-NATIVE01.json",
+    "bytes": 200693,
+    "sha256": "b7a8decce89c980e1214bea11fcec14ca040b814a522bc73358663e25cbf4e2f"
+  },
+  "external_worker_map_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/combat_phase/SOURCE-MAP01.json",
+    "bytes": 7411,
+    "sha256": "39f3909d0c4f7a5e0fa32418e6d738c7d8eb47942ddb0a99c068c87192149c68"
+  },
+  "external_worker_windows": [
+    {
+      "label": "manager_reset_leaf",
+      "begin": "0x29c2660",
+      "end_exclusive": "0x29c273c",
+      "kind": "leaf_ends_at_ret_no_pdata",
+      "bytes": 220,
+      "sha256": "36f896858b42831107d2ebeac17df21449a3d6b72b22563f3fb0c8deb67ed2e4",
+      "runtime_function_records": []
+    },
+    {
+      "label": "manager_rebuild",
+      "begin": "0x29c2740",
+      "end_exclusive": "0x29c28b7",
+      "kind": "complete_native_method",
+      "bytes": 375,
+      "sha256": "ad5a76a23532329ae64d1bef0c9f9998abf41f5671e8ec1c520fa914cdbe9b97",
+      "runtime_function_records": [
+        {
+          "index": 143411,
+          "record_rva": "0x5f67264",
+          "begin": "0x29c2740",
+          "end": "0x29c28b7",
+          "unwind": "0x51263c8",
+          "hex": "40279c02b7289c02c8631205",
+          "sha256": "08a2d1ec9c69dbe71a0eee3690d6de3046f3ff445e905fdd18dcd30dcf097983"
+        }
+      ]
+    },
+    {
+      "label": "manager_daily",
+      "begin": "0x29c2ba0",
+      "end_exclusive": "0x29c2c12",
+      "kind": "complete_native_method_fragmented_pdata",
+      "bytes": 114,
+      "sha256": "f3fae512bd2651f53ebc6c73a691cc9b037e1925778308754385363ccfde1ff8",
+      "runtime_function_records": [
+        {
+          "index": 143420,
+          "record_rva": "0x5f672d0",
+          "begin": "0x29c2ba0",
+          "end": "0x29c2baf",
+          "unwind": "0x514c4cc",
+          "hex": "a02b9c02af2b9c02ccc41405",
+          "sha256": "4d24485de4701ffa278515bdc299c6848b23ccf4bd0160f626b3eddd985d3c3d"
+        },
+        {
+          "index": 143421,
+          "record_rva": "0x5f672dc",
+          "begin": "0x29c2baf",
+          "end": "0x29c2c0c",
+          "unwind": "0x528e650",
+          "hex": "af2b9c020c2c9c0250e62805",
+          "sha256": "de01aeb4f54f49030b2df9087cdc280c4609cdeb6214b518ed5f7145b53a0132"
+        },
+        {
+          "index": 143422,
+          "record_rva": "0x5f672e8",
+          "begin": "0x29c2c0c",
+          "end": "0x29c2c12",
+          "unwind": "0x528e668",
+          "hex": "0c2c9c02122c9c0268e62805",
+          "sha256": "09cdab20c350be6e5f6d5763ce572f3d0f836807254e901e5d0791ea056379aa"
+        }
+      ]
+    },
+    {
+      "label": "manager_batch",
+      "begin": "0x29c0b00",
+      "end_exclusive": "0x29c196f",
+      "kind": "complete_native_method",
+      "bytes": 3695,
+      "sha256": "018dd1dfce17078f7ff96ff96a17c51921fbdd0085dc324a42a7fe6eeed72118",
+      "runtime_function_records": [
+        {
+          "index": 143391,
+          "record_rva": "0x5f67174",
+          "begin": "0x29c0b00",
+          "end": "0x29c196f",
+          "unwind": "0x528e424",
+          "hex": "000b9c026f199c0224e42805",
+          "sha256": "4d9c39bcebace8d92964f8b98ccfc564f28c5073c2ef0688683ae48f9784bd14"
+        }
+      ]
+    },
+    {
+      "label": "manager_merge",
+      "begin": "0x29c1970",
+      "end_exclusive": "0x29c1c01",
+      "kind": "complete_native_method_three_contiguous_runtime_function_records",
+      "bytes": 657,
+      "sha256": "80532e99c154b9227f3ae054e7831725e7bd08bd9fec08c81e2af150d8b716b1",
+      "runtime_function_records": [
+        {
+          "index": 143392,
+          "record_rva": "0x5f67180",
+          "begin": "0x29c1970",
+          "end": "0x29c1994",
+          "unwind": "0x51526f4",
+          "hex": "70199c0294199c02f4261505",
+          "sha256": "70512c390c57d89844aa89ae4be966c7d0eb4a2197a8ca11c6ccbd081621b7a5"
+        },
+        {
+          "index": 143393,
+          "record_rva": "0x5f6718c",
+          "begin": "0x29c1994",
+          "end": "0x29c1bf7",
+          "unwind": "0x528e470",
+          "hex": "94199c02f71b9c0270e42805",
+          "sha256": "167c50f2412a6bdae3c766d56e4098b672f3831dc327eea21e91257cd0746b92"
+        },
+        {
+          "index": 143394,
+          "record_rva": "0x5f67198",
+          "begin": "0x29c1bf7",
+          "end": "0x29c1c01",
+          "unwind": "0x528e498",
+          "hex": "f71b9c02011c9c0298e42805",
+          "sha256": "d8b4ad9e64d2f36ef861328139dd9d15dcda087c6e82cccf950365715a9ad89f"
+        }
+      ]
+    }
+  ],
+  "new_source_spans": [
+    {
+      "id": "actual_current_phase_record",
+      "rva": "23f9bb0",
+      "end_exclusive": "23f9d12",
+      "bytes": 354,
+      "file_offset": 37719984,
+      "sha256": "a209bd54539ff372e5da6b1affddf1fad80f74c3a359e3feb7cd801ae1d799b9",
+      "raw_hex": "48895c24084889742410574883ec2081790c697463417528837908ff7422486381e0030000486bc038480381c8030000488b5c2430488b7424384883c4205fc3bf1000000065488b042558000000488b18488d35488896038b041f39052f8896030f8fbc0000008b041f3905f09996037f17488d05ef999603488b5c2430488b7424384883c4205fc3488d0dd0999603e83f9ee201833dc4999603ff75d4488b053b4792038b4810488b1de15e9203488935b2999603890db4999603e8cf8cdcfe488905b899960333c0488905b79996038805b9999603f30f1005a1c75f02f30f1105ad999603488d05ea4f0e03488905a3999603488bd3488d0d69999603e8bc3f000090488d0d04dbf601e863a2e20190488d0d47999603e8569de201e94fffffff488d0d66879603e8a59de201833d5a879603ff0f852bffffff488bcee86cc2d100488d0d15dbf601e824a2e20190488d0d38879603e8179de201e905ffffff",
+      "scope": "FULL_BODY_SINGLE_PDATA",
+      "unwind": [
+        "23f9bb0",
+        "23f9d12",
+        "5246bb4"
+      ]
+    },
+    {
+      "id": "effect_context_wrapper",
+      "rva": "3765760",
+      "end_exclusive": "376585c",
+      "bytes": 252,
+      "file_offset": 58084192,
+      "sha256": "caa74b955b85e63e83d4300115d1991d8123b29f0de92e9eef4e0a90ac113dc0",
+      "raw_hex": "48895c24104889742418574881ec30040000488bda488bf94c8bc1488d8c2440040000e828fbffff488d4c2450e8ae08fdff488d8c2478010000e8f107fdff48899c242004000048895c242033f6488974242848895c2430488d44245048894424380fb60513835b0288442440488d8424400400004889442448488d542420488bcfe869060000904839b424780100007436488d8c2478010000e8411b27fd488b8c2488010000488b01448d4608488b942478010000ff50104889b4247801000089b42480010000488b5424504885d274158974245c488b4c2460488b0141b808000000ff50104c8d9c2430040000498b5b18498b7320498be35fc3",
+      "scope": "FULL_BODY_SINGLE_PDATA",
+      "unwind": [
+        "3765760",
+        "376585c",
+        "5353da4"
+      ]
+    },
+    {
+      "id": "effect_scope_dispatch",
+      "rva": "3765e50",
+      "end_exclusive": "37662f9",
+      "bytes": 1193,
+      "file_offset": 58085968,
+      "sha256": "b8596d2cf02947765fd384ba0274628df0618a566f174ea37041a29821cbb77f",
+      "raw_hex": "488bc448895808488970185557415441564157488da898fdffff4881ec400300000f2970c84c8bf2488bf10f1809488b1a0fb703488d3d85f4d8016685c00f84f5000000448bf8e8c4fb02004439780c7e12e8b9fb02004b8d14bf48c1e204480310eb03488bd7488b4210488bcbffd084c00f85c10000004d8b36410fb71ee88cfb020039580c7e10e882fb0200488d3c9b48c1e704480338488b4728498bd6488d4d90ffd0904c8d4d9048837da8104c0f434d904533ff4489bd200200004c8d058aeed300ba00020000488d4d20e89c6911fdb9ff0100003bc10f4fc1898520020000488d45204889442430488d4d2048c7c0ffffffff0f1f84000000000048ffc044383c0175f78944243844887c243c0f28442430660f7f442430488d542430488bcee8b6aefaff90488d4d90e8cc000ffde94f0300000f57c033c00f114424400f114424500f114424600f11442470488945804533ff3805297b5b0275094532e444886580eb4148c7442440590000000f1046100f114424480f104e200f114c24584c897c24680f57c0f20f11442470c644247801c6458001488d4c2440e8ca6327fd440fb66580498b1e488b06488bceff50280fb71b6685c07405663bc37451488b06488d542430488bceff5030488d4424304883380075104883c008488d4c2440483bc175eceb286685db0f8405010000488d43ff488bd048c1ea06243f0fb6c8488b44d430480fa3c80f83e60000004d8b4e28458b014169c0b385d64a418b49042bc88bd1c1ea0833d181c2a41de3688bc2c1e00833c269c8e9c4561b8bc1c1e80833c169c8a28cd6928bd1c1ea0833d1418d400141890169462c61420f000fbaf21f03c24489bd7c02000069c0b385d64ab99fbaa65e2bc88bd1c1ea0833d181c2a41de3688bc2c1e00833c269c8e9c4561b8bc1c1e80833c169c8a28cd6928bc1c1e80833c1898578020000450fb64e204d8b4618498b5610498b4e08498b06488945f048894df8488955004c89450844884d10488d857802000048894518488b06488d55f0488bceff90b0000000e9f8000000488b06488d5590488bceff50300f10000f29442430488d542430488d4dd0e842fe020090498b060fb718e8e6f8020039580c7e10e8dcf80200488d3c9b48c1e7044803388b0fe84a977e00488bd0488d4db0e85efd0efd90488d45d048837de810480f4345d04c8d4db048837dc8104c0f434db04489bd2002000048894424204c8d05de871c01ba00020000488d4d20e8e06611fdb9ff0100003bc10f4fc1898520020000488d45204889442430488d4d2048c7c0ffffffff48ffc0803c010075f789442438c644243c000f28442430660f7f442430488d542430488bcee802acfaff90488d4db0e818fe0efd90488d4dd0e80efe0efd904584e40f848c000000f20f104424700f28f0807c2478007550e84fbbab00488bd8e8670096004881fb809698007506486bc064eb1b489948f7fb4869c800ca9a3b4869c200ca9a3b489948f7fb4803c1482b4424680f57c0f2480f2ac0f20f5e0580052901f20f58c6f20f11442470c644247801f20f114424204c8d4c2448448b4424448b542440488b0d56a05302e8e9befdff904c8d9c2440030000498b5b30498b7340410f2873f0498be3415f415e415c5f5dc3",
+      "scope": "FULL_BODY_SINGLE_PDATA",
+      "unwind": [
+        "3765e50",
+        "37662f9",
+        "5353e3c"
+      ]
+    },
+    {
+      "id": "batch_activity_classify",
+      "rva": "29c07d0",
+      "end_exclusive": "29c0af2",
+      "bytes": 802,
+      "file_offset": 43776976,
+      "sha256": "636752a8dc0a8bdffc377c382ca215f2c0dc28dc831437fa2380011cb9d7c18f",
+      "raw_hex": "48895c2408488974241048897c24204c8944241855488d6c24a94881ecd0000000488bfa488bf14533c0b201488bcfe82c37a3ff84c00f8449010000803d07432f03000f842201000048c745d700000000660f6f05b7660302f30f7f45e7c645d7004c8d45d7b201488bcfe8f036a3ff488d0501c0d601488945c7c745cf12000000c645d300488d87a0030000488d8fa8030000488944243048894c2420488d55c7488d4d17e8a56ba4ff90ba5801000065488b042558000000488b08803c0a0075638b0543a12a03903da08601007d55b900000100e8c5f059014885c07446488d4dd748894c2430488d4d1748894c2428488d0dbf2ddb0148894c242041b90400000041b8de010000488d156f2ddb01488bc8e807b20ffeb801000000f00fc105e6a02a03488d4d17e85157e9fd90488b55ef4883fa10723148ffc2488b4dd7488bc14881fa0010000072194883c227488b49f8482bc14883c0f84883f81f0f87b6010000e8093686018b4708894577488d4e18488d5577e8c22314feb001e97801000033d2488bcfe8f132a3ff84c00f85640100003805ad412f030f844101000048c745f700000000660f6f055d650302f30f7f45078845f7488d55f7488bcfe8b932a3ff488d05aabed601488945c7c745cf12000000c645d300488d87a0030000488d8fa8030000488944243048894c2420488d55c7488d4d37e84e6aa4ff90488bcfe8d591a3ff488b088b5908e8fa9d5c018bd3488bc8e8e09c5c01488bd8b85801000065488b0c2558000000488b11803c100075698b0dcc9f2a039081f9a08601007d5ab900000100e84def59014885c0744b488d4df748894c2438488d4d3748894c243048895c2428488d0d6a2cdb0148894c242041b90400000041b8ee010000488d15f22bdb01488bc8e82a320fffb801000000f00fc105699f2a03488d4d37e8d455e9fd90488b550f4883fa10722d48ffc2488b4df7488bc14881fa0010000072154883c227488b49f8482bc14883c0f84883f81f7737e8903486018b4708894577488d4e30488d5577e8492214feb001eb0232c04c8d9c24d0000000498b5b10498b7318498b7b28498be35dc3e8851f8701cce87f1f8701cc",
+      "scope": "FULL_BODY_SINGLE_PDATA",
+      "unwind": [
+        "29c07d0",
+        "29c0af2",
+        "528e3cc"
+      ]
+    },
+    {
+      "id": "invalid_scope_diagnostic",
+      "rva": "44a4da0",
+      "end_exclusive": "44a4dc5",
+      "bytes": 37,
+      "file_offset": 71973792,
+      "sha256": "4b166d826157ff557b0a5b2602a95b8d36d8f6f61ae0acef2142ce1298468bec",
+      "raw_hex": "53636f706564206f626a656374206973206e6f742076616c69642e20547970653a20257300",
+      "scope": "DATA_RANGE",
+      "unwind": null
+    },
+    {
+      "id": "wrong_scope_diagnostic",
+      "rva": "492e9b0",
+      "end_exclusive": "492e9d8",
+      "bytes": 40,
+      "file_offset": 76732336,
+      "sha256": "a179f25b95a73befb2eb3126dd7816595fe99a662ac772fc211cd2b9f72cb0ed",
+      "raw_hex": "57726f6e672073636f706520666f72206566666563743a2025732c20657870656374656420257300",
+      "scope": "DATA_RANGE",
+      "unwind": null
+    }
+  ],
+  "scope_gate": {
+    "scope_kind": "unsigned WORD at actual context scope pointer+0",
+    "mask_bits": 128,
+    "declared_type": "unsigned WORD returned by actual effect vtable+28",
+    "allowed_mask": "2 QWORD returned by effect vtable+30",
+    "precondition": "Kind0 skips separate registry validity; kind>0 uses actual80-byte descriptor +10 callback. Failed validity logs invalid object and returns, before eligibility.",
+    "eligibility_branches": [
+      {
+        "source": "3766004..3766014",
+        "condition": "declaredType!=0 && declaredType==currentKind",
+        "result": "ELIGIBLE_MASK_GATE"
+      },
+      {
+        "source": "3766027..376603B",
+        "condition": "both mask words zero",
+        "result": "ELIGIBLE_MASK_GATE"
+      },
+      {
+        "source": "376603D..3766046",
+        "condition": "currentKind==0 with nonempty mask and no exact declared match",
+        "result": "INELIGIBLE_MASK_GATE"
+      },
+      {
+        "source": "3766046..376605F",
+        "condition": "1<=currentKind<=128 and mask bit(currentKind-1) set",
+        "result": "ELIGIBLE_MASK_GATE"
+      },
+      {
+        "source": "376605F",
+        "condition": "1<=currentKind<=128 and bit not set",
+        "result": "INELIGIBLE_MASK_GATE"
+      },
+      {
+        "source": "3766046..376605F",
+        "condition": "currentKind>128 and no earlier exact or empty-mask match",
+        "result": "OUT_OF_BOUNDS_UNQUALIFIED_NATIVE_DOMAIN"
+      }
+    ],
+    "eligible_dispatch": {
+      "rva": "3766140",
+      "slot_hex": "B0",
+      "return_credit": "no success receipt; virtual target/effect outcome unobserved"
+    },
+    "ineligible_dispatch": {
+      "invalid_object_diagnostic": "44a4da0",
+      "wrong_scope_diagnostic": "492e9b0",
+      "effect_B0_called": false
+    }
+  },
+  "manager_graph": [
+    {
+      "id": "actual_record_identity",
+      "facts": [
+        "23F9BB0 valid branch requires Acti tag/non-sentinel and returns Activity+3C8 + signed(Activity+3E0)*38h. Completion parent dereferences record[0] before +370; this is the current phase-record definition, not Activity+3A0 ActivityType. Source11 abbreviated type+370 is refined here.",
+        "Fallback branch constructs/uses static phase-record state through3115F60/23FDC70; it does not qualify an actual instance."
+      ]
+    },
+    {
+      "id": "index_rebuild_not_async_merge",
+      "facts": [
+        "29C2740 reconstructs actual+70 active pointers from typed slot storage, initializes child+98 via23FAFD0, then tail-calls29C1970(manager+148,manager).",
+        "29C1970 rebuilds30+7 bucket vectors at manager+148/+418 from unsigned fullActivityID modulo30/modulo7; it also uses Type+3BEC to append a separate manager+4C0 set, and +408 to maintain manager+4D8 fullID/date12-byte rows sorted signed raw-date then unsigned fullID.",
+        "No asynchronous job dispatch is present in these complete bodies. This does not identify every external scheduler/vcall owner or prove thread context."
+      ]
+    },
+    {
+      "id": "actual_daily_producer",
+      "facts": [
+        "29C2BA0 gates manager+10, obtains date through2AA5D90, iterates active+70 and calls23FF430(child+18,date), then synchronously calls29C0B00(batch=manager+88,manager,date).",
+        "29C0B00 resets batch counts+24,+3C,+54,+84,+9C,+B4; selects native day buckets using((dateRaw-29C55C0)/24) modulo30 and modulo7; uses a temporary FNV-1a hash set of complete pointer bytes to deduplicate lanes.",
+        "Due manager+4D8 rows first resolve fullID/Acti and choose a +48 reschedule lane based on23F3E30 and +420/host/participant checks. Other due pointers are inserted into the temporary set; no terminal credit is inferred from queue membership.",
+        "30-day bucket pointers not already handled call23F3E30 then29C07D0. If classification did not emit a queue item, timeout paths compare real +3FC or +3EC dates, +3F4 and settings; emit +18 fullIDs or +78 fullIDs. 7-day bucket pointers emit +90 fullIDs after23F3E30 exclusion.",
+        "Player-interface list goes through actual character lookup→28BEE30→full Activity lookup, requires Acti/non-sentinel and completed+421==0 before deduplicated29C07D0. Retention deadlines manager+500 emit indices into batch+A8, not Activity IDs."
+      ]
+    },
+    {
+      "id": "queue_classification_and_consumer",
+      "facts": [
+        "Full29C07D0 calls opaque native predicate23F3F30(activity,true,null). True appends actual activity fullID to batch+18 and returns true. Otherwise23F3C50(activity,null) false appends fullID to batch+30 and returns true; true returns false. Diagnostic-mode calls re-evaluate the same predicates only to generate text.",
+        "This helper emits pending work and does not set either terminal flag. The same concrete batch+88 is later consumed by22A14E3→29BF8B0. Native10 already pins actual full consumer and completed path29C03F0→23F6980.",
+        "The two opaque predicates and live eligibility/causal decisions are separate native branches, not renamed final/completion evidence; nested script predicates and exact external daily producer-to-consumer scheduling remain unqualified."
+      ]
+    },
+    {
+      "id": "generic_effect_may_return_without_execution",
+      "facts": [
+        "3765760 is a complete252-byte context wrapper; actual execution is3765E50..37662F9. It includes independent current-object validity and declared-scope/mask gates before effect virtual+B0.",
+        "Invalid object or incompatible scope produces its actual native diagnostic and returns without effect+B0; the outer completion parent does not condition +421 on a success return.",
+        "Only a guard-compatible dispatch attempt is established by the static B0 call. Dynamic virtual target/compiled AST/effect contents and actual named beneficiary remain UNKNOWN; Java State FINAL_UNATTRIBUTED and benefitObserved=false remain mandatory."
+      ]
+    }
+  ],
+  "java_consumer_boundary": "M6 sole ActivityFinalState/Root bridge unchanged beyond Source11 docs/regression. M2 owns one shared ScopeEligibility helper; source12 branch table may be consumed after its exact new API/source is pinned, never duplicate effect eligibility or make a native reader/Ready. No Game effect success is exposed by this artifact.",
+  "remaining": [
+    "External indirect daily/vcall caller and actual Root scheduling/worker thread identity.",
+    "Nested23F3F30/23F3C50/23F3E30 predicate closure and original causes, live guarded producer inputs.",
+    "Generic evaluator virtual target/compiled AST/current effect definition/beneficiary.",
+    "Root full Maven/typecheck/CI, loaded native/Game/SAVE and final M6 acceptance."
+  ],
+  "execution": {
+    "maven": false,
+    "jvm": false,
+    "typecheck": false,
+    "tests": false,
+    "native_build": false,
+    "game": false,
+    "ledger": false
+  }
+}

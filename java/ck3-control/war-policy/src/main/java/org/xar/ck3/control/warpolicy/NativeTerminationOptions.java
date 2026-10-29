@@ -10,19 +10,44 @@ import java.util.Optional;
 import java.util.Objects;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeInteractionRoles;
 
 /** Complete exact-.4 normalized query/cache contract; no material preview is inferred. */
 public record NativeTerminationOptions(int warId, WarSide side, boolean primary,
         int relativeScore, Truth activeCasusBelli, Optional<CasusBelli> casusBelli,
-        QueryBinding binding) {
+        QueryBinding binding, RecipientContexts recipientContexts) {
+    public NativeTerminationOptions(int warId, WarSide side, boolean primary, int relativeScore,
+            Truth activeCasusBelli, Optional<CasusBelli> casusBelli, QueryBinding binding) {
+        this(warId, side, primary, relativeScore, activeCasusBelli, casusBelli, binding, RecipientContexts.legacy());
+    }
     public NativeTerminationOptions {
         require(warId > 0, "positive query WarID required");
         Objects.requireNonNull(side, "query side"); Objects.requireNonNull(binding, "query binding");
         Objects.requireNonNull(activeCasusBelli, "active CB availability");
-        Objects.requireNonNull(casusBelli, "explicit CB observation");
+        Objects.requireNonNull(casusBelli, "explicit CB observation"); Objects.requireNonNull(recipientContexts);
         require(activeCasusBelli == Truth.TRUE || casusBelli.isEmpty(), "CB identity without observed active CB");
     }
     public enum Truth { TRUE, FALSE, UNKNOWN }
+
+    public record RecipientContexts(NativeInteractionRoles surrender, NativeInteractionRoles whitePeace,
+            NativeInteractionRoles victory) {
+        public RecipientContexts { NativeInteractionRoles.requireSameProfile(surrender, whitePeace, victory); }
+        public static RecipientContexts legacy() {
+            return new RecipientContexts(new NativeInteractionRoles.LegacyWithoutRoles(),
+                    new NativeInteractionRoles.LegacyWithoutRoles(), new NativeInteractionRoles.LegacyWithoutRoles());
+        }
+        public boolean reusableForNegativeAssessment() {
+            return surrender instanceof NativeInteractionRoles.LegacyWithoutRoles
+                    || surrender instanceof NativeInteractionRoles.Observed
+                    && whitePeace instanceof NativeInteractionRoles.Observed && victory instanceof NativeInteractionRoles.Observed;
+        }
+    }
+
+    private static RecipientContexts recipientContexts(ObjectNode row) {
+        ObjectNode choices = StrictJson.object(row.get("options"), Set.of("surrender", "white_peace", "victory"));
+        return new RecipientContexts(NativeInteractionRoles.fromOption(choices.get("surrender")),
+                NativeInteractionRoles.fromOption(choices.get("white_peace")), NativeInteractionRoles.fromOption(choices.get("victory")));
+    }
 
     public record CasusBelli(int databaseIndex, String canonicalKey) {
         public CasusBelli {
@@ -58,6 +83,10 @@ public record NativeTerminationOptions(int warId, WarSide side, boolean primary,
         "war_score_breakdown", "active_casus_belli_present", "active_casus_belli_identity",
         "cb_allows_white_peace", "options", "query_sequence", "queried_snapshot_id",
         "queried_revision", "queried_native_revision", "episode_run_id", "queried_connection_generation");
+    private static final Set<String> NATIVE_FIELDS = Set.of("war_id", "player_side", "player_is_primary_war_leader",
+        "player_relative_war_score", "war_duration_days", "absolute_war_scores_observable", "attacker_war_score",
+        "defender_war_score", "war_score_breakdown", "active_casus_belli_present", "active_casus_belli_identity",
+        "cb_allows_white_peace", "options");
     private static final Set<String> OPTION_FIELDS = Set.of("outcome", "hostage_variant",
         "context_constructed", "native_validator_passed", "available", "terms_observable", "terms",
         "ai_acceptance_observable", "ai_acceptance", "auto_accept_observable", "auto_accept", "recipient_response");
@@ -74,6 +103,36 @@ public record NativeTerminationOptions(int warId, WarSide side, boolean primary,
             StrictJson.text(row.get("queried_snapshot_id")), WarJson.positive64(row.get("queried_revision")),
             WarJson.positive64(row.get("queried_native_revision")), StrictJson.text(row.get("episode_run_id")),
             WarJson.positive64(row.get("queried_connection_generation")));
+        ObjectNode nativeRow = StrictJson.object();
+        for (String field : NATIVE_FIELDS) { nativeRow.set(field, row.get(field)); }
+        if (row.has("source")) { nativeRow.set("source", row.get("source")); }
+        NativePacket packet = normalizeNativePacket(nativeRow, expectedWarId);
+        return new NativeTerminationOptions(packet.warId(), packet.side(), packet.primary(), packet.relativeScore(),
+            packet.activeCasusBelli(), packet.casusBelli(), binding, packet.recipientContexts());
+    }
+
+    /** A validated atomic packet has no invented cache sequence or query binding and cannot authorize a command. */
+    public record NativePacket(int warId, WarSide side, boolean primary, int relativeScore,
+            Truth activeCasusBelli, Optional<CasusBelli> casusBelli, ObjectNode normalized) {
+        public NativePacket {
+            require(warId > 0, "positive native WarID required");
+            Objects.requireNonNull(side); Objects.requireNonNull(activeCasusBelli); Objects.requireNonNull(casusBelli);
+            normalized = Objects.requireNonNull(normalized).deepCopy();
+            NativeTerminationOptions.recipientContexts(normalized);
+        }
+        @Override public ObjectNode normalized() { return normalized.deepCopy(); }
+        public RecipientContexts recipientContexts() { return NativeTerminationOptions.recipientContexts(normalized); }
+    }
+
+    /** The single original native packet validator shared by cache ingestion and M0 input projection. */
+    public static NativePacket normalizeNativePacket(JsonNode value, int expectedWarId) {
+        ObjectNode raw = WarJson.record(value, "native termination packet");
+        Set<String> fields = new HashSet<>(NATIVE_FIELDS);
+        if (raw.has("source")) { fields.add("source"); }
+        ObjectNode row = StrictJson.object(raw, fields);
+        if (row.has("source")) { require(WarJson.textEquals(row.get("source"), "native"), "native query source required"); }
+        int warId = WarJson.positive32(row.get("war_id"));
+        require(warId == expectedWarId, "query WarID mismatch");
         WarSide side = WarSide.fromJson(row.get("player_side"));
         boolean primary = WarJson.bool(row.get("player_is_primary_war_leader"));
         int score = WarJson.signed32(row.get("player_relative_war_score"));
@@ -111,15 +170,21 @@ public record NativeTerminationOptions(int warId, WarSide side, boolean primary,
         boolean victory = option(options.get("victory"), side == WarSide.ATTACKER ? "attacker_victory" : "attacker_defeat");
         require(primary || !(surrender || whitePeace || victory), "nonprimary participant cannot construct exit contexts");
         require(whiteAllowed == Truth.TRUE || !whitePeace, "forbidden white peace context");
-        return new NativeTerminationOptions(warId, side, primary, score, active, cb, binding);
+        ObjectNode normalized = row.deepCopy(); normalized.put("source", "native");
+        return new NativePacket(warId, side, primary, score, active, cb, normalized);
     }
 
     private static boolean option(JsonNode value, String outcome) {
-        ObjectNode row = StrictJson.object(value, OPTION_FIELDS);
+        ObjectNode raw = WarJson.record(value, "native termination option");
+        Set<String> fields = new HashSet<>(OPTION_FIELDS);
+        if (raw.has(NativeInteractionRoles.FIELD)) fields.add(NativeInteractionRoles.FIELD);
+        ObjectNode row = StrictJson.object(raw, fields);
+        NativeInteractionRoles roles = NativeInteractionRoles.fromOption(row);
         require(WarJson.textEquals(row.get("outcome"), outcome), "outcome differs from player side");
         require(WarJson.textEquals(row.get("hostage_variant"), "none"), "only no-hostage option supported");
         boolean constructed = WarJson.bool(row.get("context_constructed"));
         Truth validator = nullableBool(row.get("native_validator_passed"));
+        require(constructed || !(roles instanceof NativeInteractionRoles.Observed), "observed roles require the actual constructed context");
         require(constructed || validator == Truth.UNKNOWN, "validator without constructed context");
         require(WarJson.bool(row.get("available")) == (constructed && validator == Truth.TRUE), "available/context/validator mismatch");
         require(!WarJson.bool(row.get("terms_observable")), "material terms must remain unobservable");
@@ -137,6 +202,9 @@ public record NativeTerminationOptions(int warId, WarSide side, boolean primary,
         else { require(row.get("auto_accept").isNull(), "unobservable auto-accept requires null"); }
         require(constructed || !(ai || automatic), "acceptance without constructed context");
         recipient(row.get("recipient_response"), constructed, validator);
+        require(!(roles instanceof NativeInteractionRoles.Unavailable)
+                || WarJson.textEquals(row.get("recipient_response").get("status"), "unavailable"),
+                "unavailable context roles cannot bind an available recipient answer");
         return constructed;
     }
 

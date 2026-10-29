@@ -15,6 +15,7 @@ import org.xar.ck3.control.build.ControlBuild.FileRef;
 /** Post-reactor SDK source/configuration producer. It never starts or closes a host or Python. */
 public final class SdkStageConfigurationProducer {
     public static final String SCHEMA = "xar.sdk-stage-production-inputs/v3";
+    public static final String PLAN_SCHEMA = "xar.sdk-stage-production-plan/v1";
     private static final long MAX_METADATA = 2L << 20;
     private static final String CLIENT = "tools/g2_saved_campaign/java_map_admission_client_v1.py";
     private static final String CONTINUITY = "tools/g2_saved_campaign/current_saved_continuity_v1.py";
@@ -62,6 +63,32 @@ public final class SdkStageConfigurationProducer {
                 throw new IllegalArgumentException("Original complete canonical source group required");
         }
     }
+    /** Source facts before the qualified-tools stage; this interface grants no build or runtime authority. */
+    public sealed interface SourceInputs permits ProductionPlan, ProductionInputs {
+        String machineId(); String reviewAtUtc();
+        FileRef baselineIntentRef(); FileRef legacyIntentRef(); FileRef consumerIntentRef();
+        SdkSourceAssembly.LegacyConstraint legacyConstraint(); SdkSourceAssembly.Source32Reuse source32Reuse();
+        long sharedViewPhysicalHardBytes(); long allocationUnitBytes(); long perDirectoryGuardBytes();
+        FileRef producerGoldenPlanRef(); List<SdkSourceIntent.RequiredReactorSource> requiredReactorSources();
+        InterpreterInputs interpreter(); FreshInputs fresh(); CanonicalInputs canonical();
+        List<RootSoftwareChildBootstrap.Environment> bootstrapEnvironment();
+    }
+    /** A closed source plan deliberately has no qualified-tools or reactor receipt field. */
+    public record ProductionPlan(String schema, String machineId, String reviewAtUtc,
+            FileRef baselineIntentRef, FileRef legacyIntentRef, FileRef consumerIntentRef,
+            SdkSourceAssembly.LegacyConstraint legacyConstraint, SdkSourceAssembly.Source32Reuse source32Reuse,
+            long sharedViewPhysicalHardBytes, long allocationUnitBytes, long perDirectoryGuardBytes,
+            FileRef producerGoldenPlanRef, List<SdkSourceIntent.RequiredReactorSource> requiredReactorSources,
+            InterpreterInputs interpreter, FreshInputs fresh,
+            CanonicalInputs canonical, List<RootSoftwareChildBootstrap.Environment> bootstrapEnvironment) implements SourceInputs {
+        public ProductionPlan {
+            if (!PLAN_SCHEMA.equals(schema)) throw new IllegalArgumentException("Exact pre-qualified SDK source-plan schema required");
+            requiredReactorSources = List.copyOf(requiredReactorSources); bootstrapEnvironment = List.copyOf(bootstrapEnvironment);
+            sourceShape(machineId, reviewAtUtc, baselineIntentRef, legacyIntentRef, consumerIntentRef, legacyConstraint,
+                    source32Reuse, sharedViewPhysicalHardBytes, allocationUnitBytes, perDirectoryGuardBytes,
+                    producerGoldenPlanRef, requiredReactorSources, interpreter, fresh, canonical, bootstrapEnvironment);
+        }
+    }
     public record ProductionInputs(String schema, String machineId, String reviewAtUtc,
             FileRef baselineIntentRef, FileRef legacyIntentRef, FileRef consumerIntentRef,
             SdkSourceAssembly.LegacyConstraint legacyConstraint, SdkSourceAssembly.Source32Reuse source32Reuse,
@@ -69,24 +96,14 @@ public final class SdkStageConfigurationProducer {
             FileRef producerGoldenPlanRef, FileRef qualifiedToolsBuildRef,
             List<SdkSourceIntent.RequiredReactorSource> requiredReactorSources,
             InterpreterInputs interpreter, FreshInputs fresh,
-            CanonicalInputs canonical, List<RootSoftwareChildBootstrap.Environment> bootstrapEnvironment) {
+            CanonicalInputs canonical, List<RootSoftwareChildBootstrap.Environment> bootstrapEnvironment) implements SourceInputs {
         public ProductionInputs {
-            if (!SCHEMA.equals(schema) || machineId == null || !machineId.matches("[a-z0-9][a-z0-9-]{2,127}"))
-                throw new IllegalArgumentException("Versioned same-machine SDK production intent required");
-            Instant.parse(reviewAtUtc);
-            Objects.requireNonNull(baselineIntentRef); Objects.requireNonNull(legacyIntentRef);
-            Objects.requireNonNull(consumerIntentRef); Objects.requireNonNull(legacyConstraint);
-            Objects.requireNonNull(source32Reuse); Objects.requireNonNull(producerGoldenPlanRef); Objects.requireNonNull(qualifiedToolsBuildRef);
-            requiredReactorSources = List.copyOf(requiredReactorSources);
-            if (requiredReactorSources.size() > 512 || requiredReactorSources.stream().map(value -> value.relativePath().toLowerCase(Locale.ROOT)).distinct().count() != requiredReactorSources.size())
-                throw new IllegalArgumentException("Unique bounded actual reactor source requirements required");
-            Objects.requireNonNull(interpreter); Objects.requireNonNull(fresh); Objects.requireNonNull(canonical);
-            bootstrapEnvironment = List.copyOf(bootstrapEnvironment);
-            if (sharedViewPhysicalHardBytes < 1 || sharedViewPhysicalHardBytes > 64L << 20
-                    || allocationUnitBytes < 1 || allocationUnitBytes > 1L << 20 || perDirectoryGuardBytes < 0
-                    || perDirectoryGuardBytes > 1L << 20 || bootstrapEnvironment.size() > 7
-                    || bootstrapEnvironment.stream().map(RootSoftwareChildBootstrap.Environment::name).distinct().count() != bootstrapEnvironment.size())
-                throw new IllegalArgumentException("Explicit bounded shared allocation and unique fixture environment required");
+            if (!SCHEMA.equals(schema)) throw new IllegalArgumentException("Exact qualified SDK production-input schema required");
+            Objects.requireNonNull(qualifiedToolsBuildRef);
+            requiredReactorSources = List.copyOf(requiredReactorSources); bootstrapEnvironment = List.copyOf(bootstrapEnvironment);
+            sourceShape(machineId, reviewAtUtc, baselineIntentRef, legacyIntentRef, consumerIntentRef, legacyConstraint,
+                    source32Reuse, sharedViewPhysicalHardBytes, allocationUnitBytes, perDirectoryGuardBytes,
+                    producerGoldenPlanRef, requiredReactorSources, interpreter, fresh, canonical, bootstrapEnvironment);
         }
     }
     public record BootstrapSelection(RootSoftwareChildBootstrap.ModuleSource client,
@@ -108,6 +125,52 @@ public final class SdkStageConfigurationProducer {
         ref.verify(); ProductionInputs result = ControlBuild.strictMapper().readValue(Files.readAllBytes(Path.of(ref.path())), ProductionInputs.class);
         ref.verify(); inputRefs(result); return result;
     }
+    public static ProductionPlan decodePlan(byte[] bytes) throws IOException {
+        Objects.requireNonNull(bytes);
+        if (bytes.length < 1 || bytes.length > MAX_METADATA) throw new IOException("Bounded SDK source plan required");
+        return ControlBuild.strictMapper().readValue(bytes, ProductionPlan.class);
+    }
+    public static ProductionPlan readPlan(FileRef ref) throws IOException {
+        Objects.requireNonNull(ref);
+        if (ref.bytes() < 1 || ref.bytes() > MAX_METADATA) throw new IOException("Bounded SDK source plan required");
+        SharedSourceFiles.plainAncestors(Path.of(ref.path())); ref.verify();
+        ProductionPlan plan = decodePlan(Files.readAllBytes(Path.of(ref.path())));
+        planInputRefs(plan); ref.verify(); return plan;
+    }
+    public static FileRef writePlan(ProductionPlan plan, Path destination, FreshSdkFixtureStage.ResourceGuard guard) throws IOException {
+        Objects.requireNonNull(plan); Objects.requireNonNull(guard);
+        requireDestination(destination);
+        requirePlanMachine(plan); check(plan, guard, 0); planInputRefs(plan);
+        ProjectStoragePolicy.requireBulkOutput(destination.toAbsolutePath().normalize().getParent());
+        SharedSourceFiles.plainAncestors(destination); FileRef ref = write(plan, destination, plan, guard);
+        if (!readPlan(ref).equals(plan)) throw new IOException("SDK source-plan serialization roundtrip differs");
+        check(plan, guard, 0); return ref;
+    }
+    /** Only the completed native-bound tools receipt can fill this field after the actual qualified-tools stage. */
+    public static ProductionInputs bindQualifiedTools(ProductionPlan plan, FileRef actualQualifiedToolsBuildRef,
+            FreshSdkFixtureStage.ResourceGuard guard) throws IOException {
+        Objects.requireNonNull(plan); Objects.requireNonNull(actualQualifiedToolsBuildRef); Objects.requireNonNull(guard);
+        requirePlanMachine(plan); check(plan, guard, 0);
+        // Validate the actual build before constructing an object that carries the qualified receipt.
+        List<FileRef> tools = qualifiedToolsInputs(actualQualifiedToolsBuildRef, plan.machineId());
+        List<FileRef> originals = planInputRefs(plan);
+        var inputs = new ProductionInputs(SCHEMA, plan.machineId(), plan.reviewAtUtc(), plan.baselineIntentRef(),
+                plan.legacyIntentRef(), plan.consumerIntentRef(), plan.legacyConstraint(), plan.source32Reuse(),
+                plan.sharedViewPhysicalHardBytes(), plan.allocationUnitBytes(), plan.perDirectoryGuardBytes(),
+                plan.producerGoldenPlanRef(), actualQualifiedToolsBuildRef, plan.requiredReactorSources(),
+                plan.interpreter(), plan.fresh(), plan.canonical(), plan.bootstrapEnvironment());
+        inputRefs(inputs); for (FileRef original : originals) original.verify(); for (FileRef tool : tools) tool.verify();
+        check(plan, guard, 0); return inputs;
+    }
+    public static FileRef bindAndWriteInputs(FileRef planRef, FileRef actualQualifiedToolsBuildRef, Path destination,
+            FreshSdkFixtureStage.ResourceGuard guard) throws IOException {
+        requireDestination(destination);
+        ProductionPlan plan = readPlan(planRef);
+        ProductionInputs inputs = bindQualifiedTools(plan, actualQualifiedToolsBuildRef, guard);
+        planRef.verify(); ProjectStoragePolicy.requireBulkOutput(destination.toAbsolutePath().normalize().getParent());
+        FileRef actual = writeInputs(inputs, destination, guard);
+        planRef.verify(); actualQualifiedToolsBuildRef.verify(); return actual;
+    }
     /** Source-intent owner/Root supplies actual typed inputs; this emits one new local input, never qualification. */
     public static FileRef writeInputs(ProductionInputs inputs, Path destination, FreshSdkFixtureStage.ResourceGuard guard) throws IOException {
         Objects.requireNonNull(guard); check(inputs, guard, 0);
@@ -120,6 +183,14 @@ public final class SdkStageConfigurationProducer {
     /** Includes templates, all original/overlay inputs, immutable SDK contract and complete test fixtures. */
     public static List<FileRef> inputRefs(ProductionInputs inputs) throws IOException {
         List<FileRef> refs = new ArrayList<>(qualifiedToolsInputs(inputs.qualifiedToolsBuildRef(), inputs.machineId()));
+        refs.addAll(sourceInputRefs(inputs)); return unique(refs);
+    }
+    /** Verifies only real source/fixture originals; no build is claimed by a pre-qualified plan. */
+    public static List<FileRef> planInputRefs(ProductionPlan plan) throws IOException {
+        return sourceInputRefs(Objects.requireNonNull(plan));
+    }
+    private static List<FileRef> sourceInputRefs(SourceInputs inputs) throws IOException {
+        List<FileRef> refs = new ArrayList<>();
         refs.addAll(List.of(inputs.baselineIntentRef(), inputs.legacyIntentRef(), inputs.consumerIntentRef(),
                 inputs.source32Reuse().baseFreezeRef(), inputs.source32Reuse().exporterSourceRef(), inputs.producerGoldenPlanRef(),
                 inputs.interpreter().pythonExecutable(), inputs.interpreter().basePythonExecutable(), inputs.fresh().supportContractRef(),
@@ -141,9 +212,9 @@ public final class SdkStageConfigurationProducer {
         }
         if (!inputs.requiredReactorSources().equals(List.copyOf(requirements.values())))
             throw new IOException("Production inputs must retain every exact source-intent reactor requirement");
-        var golden = FreshSdkFixtureStage.readProducerGoldenPlan(inputs.producerGoldenPlanRef());
-        if (!golden.machineId().equals(inputs.machineId())) throw new IOException("Original producer fixtures belong to a different machine");
-        refs.add(golden.originalInstallMapRef()); refs.addAll(FreshSdkFixtureStage.producerGoldenInputs(golden));
+        var golden = FreshSdkFixtureStage.readProducerGoldenSources(inputs.producerGoldenPlanRef());
+        FreshSdkFixtureStage.requireDeclaredProducerMachine(golden, inputs.machineId());
+        refs.addAll(FreshSdkFixtureStage.producerGoldenMetadataInputs(golden)); refs.addAll(FreshSdkFixtureStage.producerGoldenInputs(golden));
         List<FileRef> result = unique(refs); for (var ref : result) ref.verify(); return result;
     }
 
@@ -171,7 +242,7 @@ public final class SdkStageConfigurationProducer {
             BootstrapWriter bootstrapWriter, FreshSdkFixtureStage.ResourceGuard guard) throws IOException {
         Objects.requireNonNull(host); Objects.requireNonNull(gate); Objects.requireNonNull(bootstrapWriter); Objects.requireNonNull(guard);
         check(inputs, guard, 0); List<FileRef> originalInputs = inputRefs(inputs);
-        acceptedReactorRef.verify(); var reactor = ControlBuild.acceptedReceipt(Path.of(acceptedReactorRef.path()));
+        acceptedReactorRef.verify(); var reactor = ControlBuild.verifiedCompletedReceipt(acceptedReactorRef);
         if (!inputs.machineId().equals(WindowsJobProcess.currentMachineId()) || !reactor.machineId().equals(inputs.machineId())
                 || reactor.targetKind() != ControlBuild.TargetKind.SERVICE_FAST_JAR)
             throw new IOException("This machine's current accepted service reactor is required");
@@ -223,10 +294,9 @@ public final class SdkStageConfigurationProducer {
             throw new IOException("New consumer view did not retain this exact accepted reactor");
         var lineageBinding = source32Binding(inputs, views, consumer, metadata, generated, ni, guard);
         BootstrapSelection selection = selection(inputs, consumer, repository, lineageBinding);
-        var golden = FreshSdkFixtureStage.readProducerGoldenPlan(inputs.producerGoldenPlanRef());
+        var golden = FreshSdkFixtureStage.readProducerGoldenSources(inputs.producerGoldenPlanRef());
         FileRef test = selectedSource(consumer, CLIENT_TEST);
-        if (!golden.clientContent().equals(content(selection.client().source())) || !golden.testContent().equals(content(test)))
-            throw new IOException("Selected client and complete55 test differ from original producer plan cohort");
+        FreshSdkFixtureStage.requireDeclaredProducerCohort(golden, content(selection.client().source()), java.util.Optional.of(content(test)));
         check(inputs, guard, 1L << 20);
         Path bootstrapPath = metadata.resolve("root-bootstrap.json");
         FileRef bootstrapRef = bootstrapWriter.write(selection, host, bootstrapPath);
@@ -393,13 +463,44 @@ public final class SdkStageConfigurationProducer {
             }
         };
     }
-    private static FileRef write(Object value, Path path, ProductionInputs inputs, FreshSdkFixtureStage.ResourceGuard guard) throws IOException {
+    private static FileRef write(Object value, Path path, SourceInputs inputs, FreshSdkFixtureStage.ResourceGuard guard) throws IOException {
         byte[] raw = ControlBuild.strictMapper().writeValueAsBytes(value);
         if (raw.length > MAX_METADATA) throw new IOException("Bounded SDK production metadata required");
         check(inputs, guard, raw.length); Files.write(path, raw, StandardOpenOption.CREATE_NEW); return FileRef.measure(path);
     }
-    private static void check(ProductionInputs inputs, FreshSdkFixtureStage.ResourceGuard guard, long pending) throws IOException {
+    private static void check(SourceInputs inputs, FreshSdkFixtureStage.ResourceGuard guard, long pending) throws IOException {
         if (!Instant.now().isBefore(Instant.parse(inputs.reviewAtUtc()))) throw new IOException("SDK production input deadline expired"); guard.revalidate(pending);
+    }
+    private static void requirePlanMachine(ProductionPlan plan) throws IOException {
+        if (!plan.machineId().equals(WindowsJobProcess.currentMachineId()))
+            throw new IOException("SDK source plan belongs to another executing machine");
+    }
+    private static void requireDestination(Path destination) throws IOException {
+        Objects.requireNonNull(destination);
+        if (!destination.isAbsolute() || !destination.normalize().equals(destination) || destination.getParent() == null)
+            throw new IOException("Absolute normalized SDK metadata destination required");
+    }
+    private static void sourceShape(String machineId, String reviewAtUtc,
+            FileRef baselineIntentRef, FileRef legacyIntentRef, FileRef consumerIntentRef,
+            SdkSourceAssembly.LegacyConstraint legacyConstraint, SdkSourceAssembly.Source32Reuse source32Reuse,
+            long sharedViewPhysicalHardBytes, long allocationUnitBytes, long perDirectoryGuardBytes,
+            FileRef producerGoldenPlanRef, List<SdkSourceIntent.RequiredReactorSource> requiredReactorSources,
+            InterpreterInputs interpreter, FreshInputs fresh, CanonicalInputs canonical,
+            List<RootSoftwareChildBootstrap.Environment> bootstrapEnvironment) {
+        if (machineId == null || !machineId.matches("[a-z0-9][a-z0-9-]{2,127}"))
+            throw new IllegalArgumentException("Versioned same-machine SDK production intent required");
+        Instant.parse(reviewAtUtc);
+        Objects.requireNonNull(baselineIntentRef); Objects.requireNonNull(legacyIntentRef);
+        Objects.requireNonNull(consumerIntentRef); Objects.requireNonNull(legacyConstraint);
+        Objects.requireNonNull(source32Reuse); Objects.requireNonNull(producerGoldenPlanRef);
+        if (requiredReactorSources.size() > 512 || requiredReactorSources.stream().map(value -> value.relativePath().toLowerCase(Locale.ROOT)).distinct().count() != requiredReactorSources.size())
+            throw new IllegalArgumentException("Unique bounded actual reactor source requirements required");
+        Objects.requireNonNull(interpreter); Objects.requireNonNull(fresh); Objects.requireNonNull(canonical);
+        if (sharedViewPhysicalHardBytes < 1 || sharedViewPhysicalHardBytes > 64L << 20
+                || allocationUnitBytes < 1 || allocationUnitBytes > 1L << 20 || perDirectoryGuardBytes < 0
+                || perDirectoryGuardBytes > 1L << 20 || bootstrapEnvironment.size() > 7
+                || bootstrapEnvironment.stream().map(RootSoftwareChildBootstrap.Environment::name).distinct().count() != bootstrapEnvironment.size())
+            throw new IllegalArgumentException("Explicit bounded shared allocation and unique fixture environment required");
     }
     private static List<FileRef> unique(List<FileRef> refs) {
         var values = new LinkedHashMap<String, FileRef>();

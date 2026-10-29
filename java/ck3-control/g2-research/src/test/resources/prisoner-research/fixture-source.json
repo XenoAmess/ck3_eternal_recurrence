@@ -1,0 +1,13 @@
+{
+  "schema": "xar.prisoner-research-portable-fixture-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T21:09:13Z",
+  "stock_ref": {
+    "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/character_interactions/00_prison_interactions.txt",
+    "bytes": 222958,
+    "sha256": "1bb43b3c2061212af8d41b11314ff4e569af2a3506319f820d05877a7762abc5"
+  },
+  "exact_build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "scope": "Copied exact source and existing original fixture bytes for portable no-game CI; native producer historical machine remains unknown as retained source-pins says. This capture does not run native/Game or qualify installed files on another execution machine."
+}

@@ -42,6 +42,15 @@ public final class CampaignScoreCodec {
                 interval(row.get("U")), interval(row.get("D")), interval(row.get("H")));
     }
 
+    /** Single domain-field producer for arithmetic and state-score consumers. */
+    public static ObjectNode json(DomainScores scores) {
+        ObjectNode row = StrictJson.object();
+        row.set("L", json(scores.land())); row.set("E", json(scores.economy()));
+        row.set("M", json(scores.military())); row.set("U", json(scores.stability()));
+        row.set("D", json(scores.dynasty())); row.set("H", json(scores.heirs()));
+        return row;
+    }
+
     public static MonthlyHistory history(JsonNode node) {
         ObjectNode row = StrictJson.object(node, Set.of("samples", "endpoint"));
         JsonNode samples = row.get("samples");

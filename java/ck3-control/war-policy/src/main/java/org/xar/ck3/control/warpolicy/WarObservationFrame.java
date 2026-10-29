@@ -5,9 +5,10 @@ import static org.xar.ck3.control.contracts.StrictJson.require;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.math.BigInteger;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 
-/** This leaf's Python-only uint64 frame; deliberately not the map SavedFrame. */
+/** War observation DATA: uint64 revisions and the original signed public native character ID. */
 public record WarObservationFrame(String snapshotId, BigInteger revision,
         BigInteger nativeRevision, int dateRaw, String episodeRunId,
         int playedCharacterId, long bridgePid, BigInteger connectionGeneration) {
@@ -20,8 +21,8 @@ public record WarObservationFrame(String snapshotId, BigInteger revision,
         require(connectionGeneration != null && connectionGeneration.signum() > 0
                 && connectionGeneration.compareTo(StrictJson.UINT64_MAX) <= 0, "connection outside positive uint64");
         require(snapshotId.equals("native:" + nativeRevision), "snapshot/native revision mismatch");
-        require(playedCharacterId > 0 && bridgePid > 0 && bridgePid <= 4_294_967_295L,
-                "player or bridge identity outside contract");
+        NativeCharacterId.of(playedCharacterId);
+        require(bridgePid > 0 && bridgePid <= 4_294_967_295L, "bridge identity outside contract");
     }
 
     public static WarObservationFrame fromSnapshot(JsonNode raw) {
@@ -31,7 +32,7 @@ public record WarObservationFrame(String snapshotId, BigInteger revision,
         return new WarObservationFrame(StrictJson.text(snapshot.get("snapshot_id")),
             WarJson.positive64(snapshot.get("revision")), WarJson.positive64(snapshot.get("native_revision")),
             WarJson.signed32(snapshot.get("date_raw")), StrictJson.text(snapshot.get("episode_run_id")),
-            WarJson.positive32(player.get("character_id")),
+            NativeCharacterId.fromJson(player.get("character_id")).value(),
             StrictJson.integer(diagnostics.get("bridge_pid"), BigInteger.ONE, WarJson.UINT32_MAX).longValueExact(),
             WarJson.positive64(diagnostics.get("connection_generation")));
     }

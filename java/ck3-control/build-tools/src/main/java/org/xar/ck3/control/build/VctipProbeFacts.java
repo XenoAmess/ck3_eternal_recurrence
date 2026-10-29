@@ -28,12 +28,11 @@ public final class VctipProbeFacts {
             byte[] stdout, byte[] stderr) {
         return analyze(probeCase, result, stdout, stderr, VENDOR);
     }
-    /** The caller verifies this exact file pin before interpreting historical terminal evidence. */
+    /** Pure DATA interpretation; the public producer still supplies its exact installed vendor pin. */
     static Analysis analyze(ProbeCase probeCase, WindowsJobProcess.CommandResult result,
             byte[] stdout, byte[] stderr, ControlBuild.FileRef expectedVendor) {
-        if (probeCase == null || result == null || stdout == null || stderr == null
-                || expectedVendor == null || stdout.length > 65536 || stderr.length > 65536)
-            throw new IllegalArgumentException("bounded exact probe facts required");
+        if (probeCase == null || result == null || stdout == null || stderr == null || expectedVendor == null
+                || stdout.length > 65536 || stderr.length > 65536) throw new IllegalArgumentException("bounded exact probe facts required");
         boolean settled = result.stopReason() == null && result.accounting().activeProcesses() == 0
                 && Path.of(result.identity().executable()).toAbsolutePath().normalize()
                         .equals(Path.of(expectedVendor.path()).toAbsolutePath().normalize())

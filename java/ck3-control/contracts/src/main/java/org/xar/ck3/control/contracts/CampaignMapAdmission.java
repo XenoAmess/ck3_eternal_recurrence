@@ -2,10 +2,9 @@ package org.xar.ck3.control.contracts;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.math.BigInteger;
 import java.util.Set;
 
-/** Current produced map receipt, equal to Python build_campaign_map_admission_v1. */
+/** Established opaque Python-only map v1 receipt; this lane never passes through JavaScript Number. */
 public record CampaignMapAdmission(String machineId, GameGeneration game, String recordingSessionId,
                                    SavedFrame actualInitialFrame, String observedAtUtc) {
     public static final String SCHEMA = "xar.current-saved-root-map-review/v1";
@@ -23,7 +22,7 @@ public record CampaignMapAdmission(String machineId, GameGeneration game, String
         StrictJson.trueValue(row.get("Game_map_visible")); StrictJson.trueValue(row.get("decision_text_visible"));
         return new CampaignMapAdmission(StrictJson.text(row.get("machine_id")),
                 new GameGeneration(StrictJson.integer(row.get("game_pid"), 1, 4_294_967_295L),
-                        new PythonOnlyUInt64(StrictJson.integer(row.get("game_creation_filetime"), BigInteger.ONE, StrictJson.UINT64_MAX))),
+                        PythonOpaqueGameGenerationV1.filetime(row.get("game_creation_filetime"))),
                 StrictJson.text(row.get("recording_session_id")), SavedFrame.fromJson(row.get("actual_initial_frame")),
                 StrictJson.text(row.get("observed_at_utc")));
     }

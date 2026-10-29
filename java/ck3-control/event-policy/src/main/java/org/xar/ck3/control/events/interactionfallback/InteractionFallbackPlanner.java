@@ -1,6 +1,8 @@
 package org.xar.ck3.control.events.interactionfallback;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import static org.xar.ck3.control.events.interactionfallback.InteractionFallback.*;
 
 /** Produces a candidate only. It neither submits nor acknowledges any native action. */
@@ -28,22 +30,37 @@ public final class InteractionFallbackPlanner {
                 || !context.snapshotRevision().equals(binding.nativeRevision()) || !context.dateRaw().equals(binding.dateRaw())) {
             return new Result(Disposition.STALE_CONTEXT, null);
         }
-        ReviewedRule known = context.definition().canonicalKey().equals("request_clerical_chastity_interaction")
-                && context.definition().deterministicKeyHash() == CLERICAL_CHASTITY.deterministicKeyHash() ? CLERICAL_CHASTITY : null;
-        boolean notification = input.pending().autoAcceptNotification();
-        Action action = notification ? Action.ACKNOWLEDGE : Action.REJECT;
-        boolean legal = context.legality().forAction(action).enabled();
-        boolean reachable = input.actionSteps().contains(action.step());
-        Selection selected = new Selection(action, notification ? "only" : "left", 0,
-                notification ? "acknowledge_button" : "reject_button", legal, reachable);
+        ReviewedRule known = reviewedRule(context.definition()).orElse(null);
+        Selection selected = selectFirst(input.pending().autoAcceptNotification(), context.legality(), input.actionSteps()).orElseThrow();
+        Action action = selected.action(); boolean legal = selected.nativeLegal(); boolean reachable = selected.actionReachable();
         Phase phase = !legal ? Phase.DISABLED : !reachable ? Phase.UNSUPPORTED : known == null ? Phase.FALLBACK : Phase.REVIEWED;
-        List<ReplyOption> options = List.of(
-                new ReplyOption(Action.REJECT, "left", 0, "reject_button", "CharacterInteractionNotificationWindow.Reject",
-                        "CharacterInteractionNotificationWindow.CanReject", context.legality().reject()),
-                new ReplyOption(Action.ACCEPT, "right", 1, "accept_button", "CharacterInteractionNotificationWindow.Accept",
-                        "CharacterInteractionNotificationWindow.CanAccept", context.legality().accept()));
+        List<ReplyOption> options = replyOptions(context.legality());
         return new Result(Disposition.CANDIDATE, new Candidate(phase, selected.proposed() ? action.step() : null,
                 selected.proposed() ? known == null ? UNKNOWN_REASON : known.reason() : UNAVAILABLE_REASON,
                 input.pending(), binding, context.definition(), selected, options, known));
+    }
+
+    /** Shared actual left/only selection, also used when the legacy context has no definition identity. */
+    public static Optional<Selection> selectFirst(Boolean autoAcceptNotification, ReplyLegality legality, Set<String> actionSteps) {
+        java.util.Objects.requireNonNull(legality); java.util.Objects.requireNonNull(actionSteps);
+        if (autoAcceptNotification == null) return Optional.empty();
+        Action action = autoAcceptNotification ? Action.ACKNOWLEDGE : Action.REJECT;
+        return Optional.of(new Selection(action, autoAcceptNotification ? "only" : "left", 0,
+                autoAcceptNotification ? "acknowledge_button" : "reject_button", legality.forAction(action).enabled(), actionSteps.contains(action.step())));
+    }
+
+    public static Optional<ReviewedRule> reviewedRule(Definition definition) {
+        java.util.Objects.requireNonNull(definition);
+        return definition.canonicalKey().equals("request_clerical_chastity_interaction")
+                && definition.deterministicKeyHash() == CLERICAL_CHASTITY.deterministicKeyHash() ? Optional.of(CLERICAL_CHASTITY) : Optional.empty();
+    }
+
+    public static List<ReplyOption> replyOptions(ReplyLegality legality) {
+        java.util.Objects.requireNonNull(legality);
+        return List.of(
+                new ReplyOption(Action.REJECT, "left", 0, "reject_button", "CharacterInteractionNotificationWindow.Reject",
+                        "CharacterInteractionNotificationWindow.CanReject", legality.reject()),
+                new ReplyOption(Action.ACCEPT, "right", 1, "accept_button", "CharacterInteractionNotificationWindow.Accept",
+                        "CharacterInteractionNotificationWindow.CanAccept", legality.accept()));
     }
 }

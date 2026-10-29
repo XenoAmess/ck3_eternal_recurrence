@@ -8,9 +8,28 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>contracts</artifactId>
+  <properties>
+    <xar.legacy.windows.python>python.exe</xar.legacy.windows.python>
+    <xar.legacy.windows.riteSource>${maven.multiModuleProjectDirectory}/../../ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_private_v1.py</xar.legacy.windows.riteSource>
+  </properties>
   <dependencies>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-build-tools</artifactId><version>${project.version}</version></dependency>
     <dependency><groupId>com.fasterxml.jackson.core</groupId><artifactId>jackson-databind</artifactId></dependency>
     <dependency><groupId>com.fasterxml.jackson.core</groupId><artifactId>jackson-core</artifactId></dependency>
+    <dependency><groupId>net.java.dev.jna</groupId><artifactId>jna</artifactId><version>5.19.1</version></dependency>
     <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <xar.legacy.windows.python>${xar.legacy.windows.python}</xar.legacy.windows.python>
+            <xar.legacy.windows.riteSource>${xar.legacy.windows.riteSource}</xar.legacy.windows.riteSource>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

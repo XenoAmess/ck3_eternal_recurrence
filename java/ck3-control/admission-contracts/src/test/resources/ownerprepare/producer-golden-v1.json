@@ -1,0 +1,1231 @@
+{
+  "schema": "xar.owner-prepare-producer-golden/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-22T13:44:15.154200+00:00",
+  "producer": {
+    "path": "tools/g2_saved_campaign/owner_prepare_contract_v1.py",
+    "bytes": 2615,
+    "sha256": "3d19624797c122960e52266a8bd5c89c6786cf3dfbdcdf0521e77228bcbb6c92",
+    "callable": "validate_owner_prepare_inputs_v1"
+  },
+  "scope": "pure-input-validation-only-no-os-task-game-recovery-authority",
+  "cases": [
+    {
+      "id": "empty-list",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "empty-tuple",
+      "collection_kind": "tuple",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "argument-boundaries",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          "--qualify",
+          "value with spaces",
+          "",
+          "\t",
+          "back\\slash",
+          "quote\""
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          "--qualify",
+          "value with spaces",
+          "",
+          "\t",
+          "back\\slash",
+          "quote\""
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "tuple-argument-boundaries",
+      "collection_kind": "tuple",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          "--qualify",
+          "value with spaces"
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          "--qualify",
+          "value with spaces"
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "role-supervisor",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "supervisor",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "supervisor",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "role-display_owner",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "display_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "display_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "role-sdk_owner",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "role-feeder",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "feeder",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "feeder",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "role-native_build",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "native_build",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "native_build",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "sdk-wal-enabled",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": true
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": true
+      }
+    },
+    {
+      "id": "empty-pythonpath",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": "",
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": "",
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "unicode",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "机器🚀",
+        "role": "sdk_owner",
+        "stage_args": [
+          "中文",
+          "🚀"
+        ],
+        "pythonpath": "D:/依赖/😀",
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "机器🚀",
+        "role": "sdk_owner",
+        "stage_args": [
+          "中文",
+          "🚀"
+        ],
+        "pythonpath": "D:/依赖/😀",
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "preserve-whitespace",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": " \t node \r\n ",
+        "role": "sdk_owner",
+        "stage_args": [
+          " "
+        ],
+        "pythonpath": " ",
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": " \t node \r\n ",
+        "role": "sdk_owner",
+        "stage_args": [
+          " "
+        ],
+        "pythonpath": " ",
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "zero-width-space-is-not-blank",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "​",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "​",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "maximum-128-args",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x"
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": true,
+      "output": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x"
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      }
+    },
+    {
+      "id": "machine-empty",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner machine_id must be a nonempty string"
+    },
+    {
+      "id": "machine-ascii-blank",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": " \t\r\n",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner machine_id must be a nonempty string"
+    },
+    {
+      "id": "machine-unicode-blank",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "   ",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner machine_id must be a nonempty string"
+    },
+    {
+      "id": "machine-nul",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "bad\u0000id",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner machine_id must be a nonempty string"
+    },
+    {
+      "id": "machine-null",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": null,
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner machine_id must be a nonempty string"
+    },
+    {
+      "id": "machine-integer",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": 123,
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner machine_id must be a nonempty string"
+    },
+    {
+      "id": "machine-boolean",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": true,
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner machine_id must be a nonempty string"
+    },
+    {
+      "id": "machine-array",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": [],
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner machine_id must be a nonempty string"
+    },
+    {
+      "id": "role-invalid-fixture",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "fixture",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "exact admitted production role required"
+    },
+    {
+      "id": "role-invalid-case",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "SDK_OWNER",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "exact admitted production role required"
+    },
+    {
+      "id": "role-invalid-null",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": null,
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "exact admitted production role required"
+    },
+    {
+      "id": "role-invalid-integer",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": 1,
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "exact admitted production role required"
+    },
+    {
+      "id": "role-invalid-empty",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "exact admitted production role required"
+    },
+    {
+      "id": "argv-string",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": "--qualify",
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must be a bounded list or tuple of strings"
+    },
+    {
+      "id": "argv-null",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": null,
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must be a bounded list or tuple of strings"
+    },
+    {
+      "id": "argv-integer",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": 1,
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must be a bounded list or tuple of strings"
+    },
+    {
+      "id": "argv-object",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": {},
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must be a bounded list or tuple of strings"
+    },
+    {
+      "id": "argv-integer-item",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          1
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must contain only strings without NUL"
+    },
+    {
+      "id": "argv-boolean-item",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          true
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must contain only strings without NUL"
+    },
+    {
+      "id": "argv-float-item",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          1.0
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must contain only strings without NUL"
+    },
+    {
+      "id": "argv-null-item",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          null
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must contain only strings without NUL"
+    },
+    {
+      "id": "argv-nul-item",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          "bad\u0000arg"
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must contain only strings without NUL"
+    },
+    {
+      "id": "argv-129-args",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x",
+          "x"
+        ],
+        "pythonpath": null,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner stage_args must be a bounded list or tuple of strings"
+    },
+    {
+      "id": "pythonpath-integer",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": 1,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner pythonpath must be a string or None"
+    },
+    {
+      "id": "pythonpath-boolean",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": false,
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner pythonpath must be a string or None"
+    },
+    {
+      "id": "pythonpath-array",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": [],
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner pythonpath must be a string or None"
+    },
+    {
+      "id": "pythonpath-nul",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": "bad\u0000path",
+        "enable_driver_state_wal": false
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "owner pythonpath must be a string or None"
+    },
+    {
+      "id": "wal-invalid-zero",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": 0
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    },
+    {
+      "id": "wal-invalid-one",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": 1
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    },
+    {
+      "id": "wal-invalid-float",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": 1.0
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    },
+    {
+      "id": "wal-invalid-string",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": "false"
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    },
+    {
+      "id": "wal-invalid-null",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "sdk_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": null
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    },
+    {
+      "id": "wal-forbidden-supervisor",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "supervisor",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": true
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    },
+    {
+      "id": "wal-forbidden-display_owner",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "display_owner",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": true
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    },
+    {
+      "id": "wal-forbidden-feeder",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "feeder",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": true
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    },
+    {
+      "id": "wal-forbidden-native_build",
+      "collection_kind": "list",
+      "input": {
+        "machine_id": "synthetic-test-only",
+        "role": "native_build",
+        "stage_args": [],
+        "pythonpath": null,
+        "enable_driver_state_wal": true
+      },
+      "accepted": false,
+      "error_type": "ValueError",
+      "error_message": "WAL opt-in requires a boolean and the sdk_owner role"
+    }
+  ]
+}

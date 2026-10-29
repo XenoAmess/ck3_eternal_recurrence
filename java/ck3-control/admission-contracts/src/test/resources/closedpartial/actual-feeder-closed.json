@@ -1,0 +1,23 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "nonce": "b5bb0aca24d3452fb89907650ceb1cf0",
+  "spec_sha256": "ff2991a7a123bf8c9eca35a7423779021ee839648c577f5235582ccb11235881",
+  "utc": "2026-10-22T12:39:23.649265+00:00",
+  "child": {
+    "pid": 39432,
+    "creation_filetime": "134371462788228937",
+    "image": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "image_file_id": {
+      "volume_serial": "5669105749829453645",
+      "file_id": "7c88130000003f000000000000000000"
+    },
+    "session": 1,
+    "wait0": 258,
+    "exit_code": null
+  },
+  "child_exit_code": 0,
+  "normal_stop_forwarded": false,
+  "job_active_after_stage": 0,
+  "forced_remaining_cleanup": false,
+  "bootstrap_exit_code": 0
+}

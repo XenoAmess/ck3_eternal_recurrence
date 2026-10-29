@@ -1,6 +1,7 @@
 package org.xar.ck3.control.contracts;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.StreamReadConstraints;
 import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -28,8 +29,31 @@ public final class StrictJson {
     public static final int EXPLICIT_MAX_BYTES = 1_048_576;
     public static final long MAX_SAFE_INTEGER = 9_007_199_254_740_991L;
     public static final BigInteger UINT64_MAX = new BigInteger("18446744073709551615");
+    /**
+     * Opt-in numeric scope for the original actual-child export private channel.
+     * It is not the Map protocol, a safe-integer conversion, or general source JSON.
+     */
+    public enum NumericProfile {
+        PYTHON_CHILD_EXPORTS_4300(4_300);
+
+        private final int maximumDecimalDigits;
+
+        NumericProfile(int maximumDecimalDigits) { this.maximumDecimalDigits = maximumDecimalDigits; }
+
+        public int maximumDecimalDigits() { return maximumDecimalDigits; }
+    }
+
     private static final ObjectMapper MAPPER = new ObjectMapper(JsonFactory.builder()
             .enable(StreamReadFeature.STRICT_DUPLICATE_DETECTION).build())
+            .enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS)
+            .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+            .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
+
+    private static final ObjectMapper PYTHON_CHILD_EXPORTS_MAPPER = new ObjectMapper(JsonFactory.builder()
+            .enable(StreamReadFeature.STRICT_DUPLICATE_DETECTION)
+            .streamReadConstraints(StreamReadConstraints.builder()
+                    .maxNumberLength(NumericProfile.PYTHON_CHILD_EXPORTS_4300.maximumDecimalDigits()).build())
+            .build())
             .enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS)
             .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
             .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
@@ -42,12 +66,27 @@ public final class StrictJson {
 
     /** Explicit leaf budget; the default map input limit remains unchanged. */
     public static JsonNode parse(byte[] raw, int maximumBytes) {
+        return read(raw, maximumBytes, MAPPER);
+    }
+
+    /**
+     * Explicit original private-channel profile; both existing parse overloads retain
+     * their original mapper and number limits. This grants no OS/source qualification.
+     */
+    public static JsonNode parse(byte[] raw, int maximumBytes, NumericProfile profile) {
+        require(profile != null, "explicit scoped numeric profile required");
+        return switch (profile) {
+            case PYTHON_CHILD_EXPORTS_4300 -> read(raw, maximumBytes, PYTHON_CHILD_EXPORTS_MAPPER);
+        };
+    }
+
+    private static JsonNode read(byte[] raw, int maximumBytes, ObjectMapper mapper) {
         require(maximumBytes > 0 && maximumBytes <= EXPLICIT_MAX_BYTES, "explicit JSON input byte budget");
         require(raw != null && raw.length > 0 && raw.length <= maximumBytes, "bounded nonempty UTF-8 JSON required");
         try {
             String text = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
                     .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(raw)).toString();
-            JsonNode node = MAPPER.readTree(text);
+            JsonNode node = mapper.readTree(text);
             require(node != null, "JSON value required");
             return node;
         } catch (CharacterCodingException error) {
@@ -67,6 +106,14 @@ public final class StrictJson {
     }
 
     public static ObjectNode object() { return MAPPER.createObjectNode(); }
+    /** Exact required fields plus explicitly declared optional metadata; unknown fields remain errors. */
+    public static ObjectNode object(JsonNode node, Set<String> required, Set<String> optional) {
+        require(node instanceof ObjectNode,"JSON object required");
+        Set<String> allowed=new HashSet<>(required);allowed.addAll(optional);
+        ObjectNode result=(ObjectNode)node;Set<String> actual=new HashSet<>();result.fieldNames().forEachRemaining(actual::add);
+        require(actual.containsAll(required)&&allowed.containsAll(actual),"required and declared optional JSON fields required");
+        return result;
+    }
 
     public static String text(JsonNode value) {
         require(value != null && value.isTextual(), "JSON string required");

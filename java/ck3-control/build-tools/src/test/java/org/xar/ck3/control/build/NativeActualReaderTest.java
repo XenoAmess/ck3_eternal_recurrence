@@ -55,6 +55,19 @@ final class NativeActualReaderTest {
         ObjectNode cleaned = original.deepCopy(); cleaned.set("result", mapper.valueToTree(cleanup));
         cleaned.set("lifecycle", mapper.valueToTree(NativeLifecycleTerminal.assess(cleanup)));
         assertThrows(IOException.class, () -> NativeFixtureBuild.parseActual(mapper.writeValueAsBytes(cleaned), COMBAT));
+        var holyStage=NativeFixtureBuild.ActualStage.HOLY_FIXTURE_TARGET_BUILD;
+        ObjectNode holy=original.deepCopy();holy.put("stage_id",holyStage.wireId());
+        byte[] holyWire=mapper.writeValueAsBytes(holy);
+        assertEquals(holyStage.wireId(),NativeFixtureBuild.parseActual(holyWire,holyStage).stageId());
+        for(String field:List.of("environment_ref","configured_graph_ref")) {
+            ObjectNode absent=holy.deepCopy();absent.putNull(field);
+            String message=field.equals("environment_ref")?"stage environment reference required":"stage configured graph reference required";
+            assertEquals(message,assertThrows(IOException.class,
+                    ()->NativeFixtureBuild.parseActual(mapper.writeValueAsBytes(absent),holyStage)).getMessage());
+        }
+        Files.write(fixture.receipt(),holyWire);
+        assertEquals("Legacy authority cannot build current fixture",assertThrows(IOException.class,
+                ()->NativeFixtureBuild.readActual(fixture.receipt(),holyStage)).getMessage());
     }
 
     @Test void everyDirectAndManifestEvidenceFileRetainsItsOriginalBytes() throws Exception {
@@ -127,6 +140,7 @@ final class NativeActualReaderTest {
         Files.createDirectories(root);
         Path source = marker(root, "source-marker"), tool = marker(root, "tool-marker"), runtime = marker(root, "runtime-marker");
         Path card = marker(root, "resource-card-marker"), tools = marker(root, "tools-receipt-marker");
+        Files.writeString(card,"{\"schema\":\"xar.shared-native-stage-resource-card/v2\"}");
         Path env = marker(root, "environment-marker"), graph = marker(root, "configured-graph-marker");
         Path exe = marker(root, "synthetic-producer.exe"), raw = marker(root, "synthetic-wire-marker");
         Path stdout = marker(root, "stdout-marker"), stderr = marker(root, "stderr-marker");

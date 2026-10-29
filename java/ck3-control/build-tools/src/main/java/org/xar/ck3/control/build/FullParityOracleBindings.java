@@ -201,12 +201,12 @@ public final class FullParityOracleBindings {
         }
     }
     public static SelectedBindings fromEnvironment(ControlBuild.SourceLimitProfile profile, Map<String, String> environment, Path compiledRoot) {
-        return profile == ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R3
+        return profile.currentParity()
                 ? FullParityCurrentBindings.fromEnvironment(environment, compiledRoot) : fromEnvironment(profile, environment);
     }
     /** Historical R2 reader consults recorded argv only, including exact corpus manifest and root. */
     public static SelectedBindings fromRecordedArguments(ControlBuild.SourceLimitProfile profile, List<String> recordedArguments) {
-        if (profile == ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R3) return FullParityCurrentBindings.fromRecordedArguments(recordedArguments);
+        if (profile.currentParity()) return FullParityCurrentBindings.fromRecordedArguments(recordedArguments);
         if (profile == ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024) return fromRecordedArguments(recordedArguments);
         if (profile != ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R2)
             throw new IllegalArgumentException("Explicit full-parity profile required");

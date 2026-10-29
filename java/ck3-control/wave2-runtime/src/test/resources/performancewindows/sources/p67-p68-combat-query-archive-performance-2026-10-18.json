@@ -1,0 +1,315 @@
+{
+  "schema": "xar.ck3.p67-p68.sealed-performance-knowledge/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "documented_utc": "2026-10-18T00:01:54.413559+00:00",
+  "scope": "sealed small metadata only; no repeat original AUTO77/archive/Driver/SAVE/media reads or tests",
+  "sources": {
+    "P67_delivery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p67-r7-query-wait-audit01\\DELIVERY.json",
+      "bytes": 4296,
+      "sha256": "9ae3bb012d1d52cbf38bd9cbc7c8afba42cf4160d5f0442b23f2fd7b26f1819e"
+    },
+    "P67_once_structure": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p67-r7-query-wait-audit01\\AUTO77-ONCE-STRUCTURE.json",
+      "bytes": 59514,
+      "sha256": "8208f3200bda1a6f1faf513777aa7600847feb8b5514239af551b8790de8254f"
+    },
+    "P67_actual_archive_usage": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p67-r7-query-wait-audit01\\ACTUAL-ARCHIVE-USAGE01.json",
+      "bytes": 1705,
+      "sha256": "5304c2cba881bf0ac56cb8d9d9f46b3351fd8f2fa1319970e931d8843299074b"
+    },
+    "P67_small_result_and_log_tails": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p67-r7-query-wait-audit01\\SMALL-PLAN26-AND-LOG-TAILS01.json",
+      "bytes": 8461,
+      "sha256": "a474da3fd47cae203e558ae7122edd40fa574b0cc0f04536b70d4dfe7226d6a5"
+    },
+    "P67_source_review": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p67-r7-query-wait-audit01\\SOURCE-REVIEW.json",
+      "bytes": 3564,
+      "sha256": "908bcdb524ac00528dd74ca3df035ff53029ea2c2bb8c273dbe38645e7913bc6"
+    },
+    "P68_delivery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p68-archive-compression01\\DELIVERY.json",
+      "bytes": 5118,
+      "sha256": "99c82cd96b9f934019a8f7cf55b06f5de277893ae7dc435540f0336c3f54a2f7"
+    },
+    "P68_actual_bench": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p68-archive-compression01\\BENCH-RESULT.json",
+      "bytes": 6558,
+      "sha256": "d41fea7646867a3d0372f189c16bd7c0e95dcfeabf07b9412e56183be4e8925e"
+    }
+  },
+  "AUTO77": {
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-responses\\0077-1-result.json",
+      "bytes": 100646305,
+      "sha256": "7718048c9023d65eb7fbb35ae8378be4df61383e0f9d22446e56ecebcd61150d"
+    },
+    "single_scan_observed_utc": "2026-10-17T23:48:16.258802+00:00",
+    "started_at_utc": "2026-10-17T23:44:22.672118+00:00",
+    "ended_at_utc": "2026-10-17T23:45:50.486451+00:00",
+    "recorded_call_elapsed_seconds": 87.81435770005919,
+    "status": "executed",
+    "selected_step": "query-combat-simulation-inputs-v2-2619-2623-a-1-167772577-d-1-285213101",
+    "query_sequence": 7,
+    "structural_raw_encoded_bytes": {
+      "$.result.content.*.text": {
+        "values": 1,
+        "sum_bytes": 75645309,
+        "max_bytes": 75645309,
+        "kind": "string"
+      },
+      "$.result.structured_content": {
+        "values": 1,
+        "sum_bytes": 25000533,
+        "max_bytes": 25000533,
+        "kind": "object",
+        "sum_items": 9
+      },
+      "$.result.structured_content.plan": {
+        "values": 1,
+        "sum_bytes": 11471,
+        "max_bytes": 11471,
+        "kind": "object",
+        "sum_items": 23
+      },
+      "$.result.structured_content.result.combat_simulation_inputs": {
+        "values": 1,
+        "sum_bytes": 24986853,
+        "max_bytes": 24986853,
+        "kind": "object",
+        "sum_items": 15
+      },
+      "$.result.structured_content.result.combat_simulation_inputs.knight_stat_consumption_v1": {
+        "values": 1,
+        "sum_bytes": 24818879,
+        "max_bytes": 24818879,
+        "kind": "object",
+        "sum_items": 10
+      },
+      "$.result.structured_content.result.combat_simulation_inputs.knight_stat_consumption_v1.events": {
+        "values": 1,
+        "sum_bytes": 24818547,
+        "max_bytes": 24818547,
+        "kind": "array",
+        "sum_items": 16
+      },
+      "$.result.structured_content.result.combat_simulation_inputs.knight_stat_consumption_v1.events.*.contexts": {
+        "values": 16,
+        "sum_bytes": 24807616,
+        "max_bytes": 2401418,
+        "kind": "array",
+        "sum_items": 144
+      },
+      "$.result.structured_content.result.combat_simulation_inputs.knight_stat_consumption_v1.events.*.contexts.*.preparation_entry_inputs": {
+        "values": 144,
+        "sum_bytes": 12091779,
+        "max_bytes": 130951,
+        "kind": "object",
+        "sum_items": 2160
+      },
+      "$.result.structured_content.result.combat_simulation_inputs.knight_stat_consumption_v1.events.*.contexts.*.preparation_capture_at_consumption": {
+        "values": 144,
+        "sum_bytes": 12001914,
+        "max_bytes": 130327,
+        "kind": "object",
+        "sum_items": 4320
+      }
+    },
+    "parent_child_sizes_overlap_not_additive": true,
+    "original_large_body_passes_by_original_audit": 1,
+    "large_body_passes_by_this_documentation": 0,
+    "whole_JSON_decodes_by_original_audit": 0,
+    "history_or_mercenary_candidate_fanout_cause_claimed": false
+  },
+  "archive_usage": {
+    "observed_utc": "2026-10-17T23:49:56.511053+00:00",
+    "actual_config": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P50R7-COMBAT-RUNTIME-CONFIG.json",
+      "bytes": 1237,
+      "sha256": "8c7e4531101fae7ab312d5f2313d4be9c9f295849827dec32f4c5726bf372693"
+    },
+    "limits": {
+      "per_query_limit_bytes": 67108864,
+      "total_limit_bytes": 268435456,
+      "max_new_archives": 4
+    },
+    "files": [
+      {
+        "name": "combat-q3-0492c3112a904330a3e39c72225f8ccb.json",
+        "bytes": 26667669,
+        "inode": 0,
+        "mtime_ns": 1792279300829138400
+      },
+      {
+        "name": "combat-q4-754e70f0d6c34256a886872153f4792e.json",
+        "bytes": 26667668,
+        "inode": 0,
+        "mtime_ns": 1792280583894905200
+      },
+      {
+        "name": "combat-q5-ea829d37d0cc462baf5918603cc2f62d.json",
+        "bytes": 26667671,
+        "inode": 0,
+        "mtime_ns": 1792280601800202400
+      },
+      {
+        "name": "combat-q6-d4b6ec0ee4754b51809b124b7e603531.json",
+        "bytes": 26667819,
+        "inode": 0,
+        "mtime_ns": 1792280617704230300
+      }
+    ],
+    "stat_sum_bytes": 106670827,
+    "existing_count": 4,
+    "count_admits_new_archive": false,
+    "diagnosis": "4-file count gate exhausted before 256MiB byte cap; q7 full result consistent with source fallback, not private-event readback"
+  },
+  "timing_boundary": {
+    "source": "R7_queue:3609..3635",
+    "included": "session.call_tool, MCP transport/client decode and result.model_dump",
+    "excluded": "later whole-result JSON size encoding, atomic response persistence, classifier/display/credit",
+    "combat_query_stage_profile_enabled": false,
+    "Native_CPU_vs_pipe_vs_normalize_vs_copy_split_measured": false,
+    "selected_query_route_calls_whole_battle_model": false,
+    "comparison_AUTO26": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-responses\\0026-1-result.json",
+      "bytes": 40570,
+      "sha256": "f5184a34435d83bc3cf1e2892c638007b3562e8f1efb41457dd0e791d97cba47",
+      "started_at_utc": "2026-10-17T23:42:58.561300+00:00",
+      "ended_at_utc": "2026-10-17T23:43:08.911584+00:00",
+      "elapsed_seconds": 10.350287300068885,
+      "status": "executed",
+      "selected_step": "query-combat-simulation-inputs-v2-2619-2623-a-1-167772577-d-1-285213101",
+      "phase": "native_war_general_battle_inputs_query",
+      "query_sequence": 4
+    },
+    "same_state_AB": false
+  },
+  "readonly_inputs_preserved": {
+    "Native25_full_serialization": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+      "bytes": 1600530,
+      "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9"
+    },
+    "typed_contract": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\knight_stat_consumption_contract_12004.py",
+      "bytes": 56933,
+      "sha256": "087e160adf04c7416aa156130be922884e346f6f60499dd7515317e606e15093"
+    },
+    "model_consumer": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\simulation\\knight_stat_consumption_12004.py",
+      "bytes": 26832,
+      "sha256": "35971f35987406bb08ac7b2a28a17663b210133c72dbfb01f9de3cb373e1a17d"
+    },
+    "owned_consumption_capture_is_business_input": true,
+    "same_size_is_not_proof_of_content_equality": true,
+    "qualified_lossless_reference_contract_found": false,
+    "fields_removed": false
+  },
+  "P68_compression": {
+    "measurement_owner": "/root/archive_compression",
+    "reporter": "/root/performance_parallel",
+    "reporter_ran_measurement": false,
+    "started_at_utc": "2026-10-17T23:57:34.897132+00:00",
+    "observed_utc": "2026-10-17T23:57:41.946663+00:00",
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\native-session\\p55-combat-command-results\\combat-q6-d4b6ec0ee4754b51809b124b7e603531.json",
+      "volume_serial": 1186119383,
+      "file_id_64": 844424942201988,
+      "logical_bytes": 26667819,
+      "last_write_filetime": 134367542177042303,
+      "attributes": 32,
+      "hardlink_count": 1,
+      "FILE_ATTRIBUTE_COMPRESSED": false,
+      "compression_format": 0,
+      "FileCompressionInfo_CompressedFileSize": 26667819,
+      "GetCompressedFileSizeW_storage_bytes": 26667819,
+      "storage_byte_measurement_excludes_filesystem_metadata": true
+    },
+    "source_after": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\native-session\\p55-combat-command-results\\combat-q6-d4b6ec0ee4754b51809b124b7e603531.json",
+      "volume_serial": 1186119383,
+      "file_id_64": 844424942201988,
+      "logical_bytes": 26667819,
+      "last_write_filetime": 134367542177042303,
+      "attributes": 32,
+      "hardlink_count": 1,
+      "FILE_ATTRIBUTE_COMPRESSED": false,
+      "compression_format": 0,
+      "FileCompressionInfo_CompressedFileSize": 26667819,
+      "GetCompressedFileSizeW_storage_bytes": 26667819,
+      "storage_byte_measurement_excludes_filesystem_metadata": true
+    },
+    "new_fixture": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p68-archive-compression01\\combat-q6-transparent-compression-fixture.json",
+      "volume_serial": 1186119383,
+      "file_id_64": 562949965492464,
+      "logical_bytes": 26667819,
+      "last_write_filetime": 134367550581800734,
+      "attributes": 2080,
+      "hardlink_count": 1,
+      "FILE_ATTRIBUTE_COMPRESSED": true,
+      "compression_format": 2,
+      "FileCompressionInfo_CompressedFileSize": 6361088,
+      "GetCompressedFileSizeW_storage_bytes": 6361088,
+      "storage_byte_measurement_excludes_filesystem_metadata": true
+    },
+    "logical_bytes_and_sha256_equal": true,
+    "logical_bytes": 26667819,
+    "storage_bytes": 6361088,
+    "both_sha256": "3c90c2a0df841cb4cf8a605d34b249f2d8ab64a07b5a6b78eb8a409375863f5e",
+    "single_fixture_storage_to_logical_ratio": 0.2385304925010928,
+    "standard_JSON_reader": {
+      "function": "json.loads(bytes)",
+      "full_object_decoded": true,
+      "source_of_bytes": "same single fixture readback pass",
+      "combat_simulation_inputs_present": true
+    },
+    "source_body_passes_by_owner": 1,
+    "fixture_readback_passes_by_owner": 1,
+    "future_ratio_speed_CPU_claimed": false,
+    "helper": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p68-archive-compression01\\ntfs_new_archive_candidate.py",
+      "bytes": 2230,
+      "sha256": "1986a226262ad1af97daa3317088be9681b6d49bcb8d0fb5705d6f9602b43d59"
+    },
+    "patch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p68-archive-compression01\\producer-insertion.patch",
+      "bytes": 375,
+      "sha256": "bc70483df4719051c36752771184935d212e8c21c55f38c780bd175cb20bb814"
+    },
+    "future_budget_credit_bytes": 0,
+    "logical_budget_contract": {
+      "per_query_bytes": 67108864,
+      "total_bytes": 8589934592,
+      "count": 256
+    },
+    "installed_at_source_checkpoint": false,
+    "current_work_installed_anything": false,
+    "failure_behavior": "before any archive byte is written, API/readback failure raises OSError; preserve catches it and returns the existing explicit archive_failed_full_path_retained path, retaining the complete original result, without uncompressed retry or claimed success",
+    "retention": {
+      "category": "derived",
+      "state": "closed",
+      "owner_task": "/root/archive_compression",
+      "expires_at_utc": "2026-10-19T23:57:41.946663+00:00",
+      "active_references": [
+        "Root review of new-archive-only candidate"
+      ],
+      "protected_until_utc": "2026-10-19T23:57:41.946663+00:00",
+      "protection_reason": "one measured closed fixture; source remains unchanged",
+      "deletion_performed": false
+    }
+  },
+  "first30": {
+    "target_date_raw": 53407320,
+    "completion_claimed": false,
+    "permanent_manual_SAVE_or_full_video_claimed": false
+  },
+  "current_work": {
+    "MCP_Native_or_Game_calls": 0,
+    "runtime_source_mutations": 0,
+    "repeated_benchmark_tests": 0
+  }
+}

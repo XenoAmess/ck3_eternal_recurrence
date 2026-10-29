@@ -1,0 +1,523 @@
+{
+  "schema": "xar.ck3.java-scoreinputs-producer-spec/v1",
+  "cases": [
+    {
+      "id": "cash-matched",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": []
+    },
+    {
+      "id": "root-matched",
+      "operation": "frame_reason",
+      "base": "root",
+      "mutations": []
+    },
+    {
+      "id": "missing-source",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [],
+      "source_override": null
+    },
+    {
+      "id": "scalar-source",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [],
+      "source_override": 7
+    },
+    {
+      "id": "array-source",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [],
+      "source_override": []
+    },
+    {
+      "id": "incomplete-schema",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "schema"
+          ],
+          "action": "set",
+          "value": "old/v0"
+        }
+      ]
+    },
+    {
+      "id": "incomplete-status",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "status"
+          ],
+          "action": "set",
+          "value": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "current-unpaused",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "snapshot",
+          "path": [
+            "paused"
+          ],
+          "action": "set",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "map-not-ready",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "snapshot",
+          "path": [
+            "map_ready"
+          ],
+          "action": "set",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "actor-not-alive",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "snapshot",
+          "path": [
+            "played_character",
+            "alive"
+          ],
+          "action": "set",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "missing-diagnostics",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "snapshot",
+          "path": [
+            "diagnostics"
+          ],
+          "action": "remove"
+        }
+      ]
+    },
+    {
+      "id": "changed-snapshot_id",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "snapshot_id"
+          ],
+          "action": "set",
+          "value": "different"
+        }
+      ]
+    },
+    {
+      "id": "changed-revision",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "revision"
+          ],
+          "action": "set",
+          "value": 635
+        }
+      ]
+    },
+    {
+      "id": "changed-native_revision",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "native_revision"
+          ],
+          "action": "set",
+          "value": 737
+        }
+      ]
+    },
+    {
+      "id": "changed-date_raw",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "date_raw"
+          ],
+          "action": "set",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "changed-episode_run_id",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "episode_run_id"
+          ],
+          "action": "set",
+          "value": "other-episode"
+        }
+      ]
+    },
+    {
+      "id": "changed-actor_character_id",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "actor_character_id"
+          ],
+          "action": "set",
+          "value": 40000
+        }
+      ]
+    },
+    {
+      "id": "changed-bridge_pid",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "bridge_pid"
+          ],
+          "action": "set",
+          "value": 226541
+        }
+      ]
+    },
+    {
+      "id": "changed-connection_generation",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "connection_generation"
+          ],
+          "action": "set",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": "missing-revision",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "revision"
+          ],
+          "action": "remove"
+        }
+      ]
+    },
+    {
+      "id": "null-revision",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "revision"
+          ],
+          "action": "set",
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "bool-pid",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "bridge_pid"
+          ],
+          "action": "set",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "float-pid",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "bridge_pid"
+          ],
+          "action": "set",
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "string-connection",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "connection_generation"
+          ],
+          "action": "set",
+          "value": "4"
+        }
+      ]
+    },
+    {
+      "id": "zero-connection-valid",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "connection_generation"
+          ],
+          "action": "set",
+          "value": 0
+        },
+        {
+          "target": "snapshot",
+          "path": [
+            "diagnostics",
+            "connection_generation"
+          ],
+          "action": "set",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "zero-pid-invalid",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "bridge_pid"
+          ],
+          "action": "set",
+          "value": 0
+        },
+        {
+          "target": "snapshot",
+          "path": [
+            "diagnostics",
+            "bridge_pid"
+          ],
+          "action": "set",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "unused-extension",
+      "operation": "frame_reason",
+      "base": "cash",
+      "mutations": [
+        {
+          "target": "source",
+          "path": [
+            "extension"
+          ],
+          "action": "set",
+          "value": {
+            "unrelated": true
+          }
+        },
+        {
+          "target": "snapshot",
+          "path": [
+            "extension"
+          ],
+          "action": "set",
+          "value": {
+            "unrelated": "preserved"
+          }
+        }
+      ]
+    },
+    {
+      "id": "unknown-Q_realm",
+      "operation": "unknown_metric",
+      "metric": "Q_realm",
+      "reason": "缺少已有同帧输入：Q_realm"
+    },
+    {
+      "id": "unknown-K_dynasty",
+      "operation": "unknown_metric",
+      "metric": "K_dynasty",
+      "reason": "缺少已有同帧输入：K_dynasty"
+    },
+    {
+      "id": "unknown-legacy_ranks",
+      "operation": "unknown_metric",
+      "metric": "legacy_ranks",
+      "reason": "缺少已有同帧输入：legacy_ranks"
+    },
+    {
+      "id": "unknown-control_average",
+      "operation": "unknown_metric",
+      "metric": "control_average",
+      "reason": "缺少已有同帧输入：control_average"
+    },
+    {
+      "id": "unknown-rebel_share",
+      "operation": "unknown_metric",
+      "metric": "rebel_share",
+      "reason": "缺少已有同帧输入：rebel_share"
+    },
+    {
+      "id": "unknown-gold",
+      "operation": "unknown_metric",
+      "metric": "gold",
+      "reason": "缺少已有同帧输入：gold"
+    },
+    {
+      "id": "unknown-gross_income",
+      "operation": "unknown_metric",
+      "metric": "gross_income",
+      "reason": "缺少已有同帧输入：gross_income"
+    },
+    {
+      "id": "unknown-total_expenses",
+      "operation": "unknown_metric",
+      "metric": "total_expenses",
+      "reason": "缺少已有同帧输入：total_expenses"
+    },
+    {
+      "id": "unknown-military_current",
+      "operation": "unknown_metric",
+      "metric": "military_current",
+      "reason": "缺少已有同帧输入：military_current"
+    },
+    {
+      "id": "unknown-military_all_raised",
+      "operation": "unknown_metric",
+      "metric": "military_all_raised",
+      "reason": "缺少已有同帧输入：military_all_raised"
+    },
+    {
+      "id": "unknown-due_commitments",
+      "operation": "unknown_metric",
+      "metric": "due_commitments",
+      "reason": "缺少已有同帧输入：due_commitments"
+    },
+    {
+      "id": "unknown-P_quality",
+      "operation": "unknown_metric",
+      "metric": "P_quality",
+      "reason": "缺少已有同帧输入：P_quality"
+    },
+    {
+      "id": "unknown-continuation_legal",
+      "operation": "unknown_metric",
+      "metric": "continuation_legal",
+      "reason": "缺少已有同帧输入：continuation_legal"
+    },
+    {
+      "id": "unknown-backup_heirs",
+      "operation": "unknown_metric",
+      "metric": "backup_heirs",
+      "reason": "缺少已有同帧输入：backup_heirs"
+    },
+    {
+      "id": "unknown-u_discretionary",
+      "operation": "unknown_metric",
+      "metric": "u_discretionary",
+      "reason": "缺少已有同帧输入：u_discretionary"
+    },
+    {
+      "id": "unknown-realm_county_count",
+      "operation": "unknown_metric",
+      "metric": "realm_county_count",
+      "reason": "缺少已有同帧输入：realm_county_count"
+    },
+    {
+      "id": "unknown-dynasty_county_count",
+      "operation": "unknown_metric",
+      "metric": "dynasty_county_count",
+      "reason": "缺少已有同帧输入：dynasty_county_count"
+    },
+    {
+      "id": "unknown-house_anchor_id",
+      "operation": "unknown_metric",
+      "metric": "house_anchor_id",
+      "reason": "缺少已有同帧输入：house_anchor_id"
+    },
+    {
+      "id": "unknown-dynasty_anchor_id",
+      "operation": "unknown_metric",
+      "metric": "dynasty_anchor_id",
+      "reason": "缺少已有同帧输入：dynasty_anchor_id"
+    },
+    {
+      "id": "unknown-active_family_branches",
+      "operation": "unknown_metric",
+      "metric": "active_family_branches",
+      "reason": "缺少已有同帧输入：active_family_branches"
+    },
+    {
+      "id": "unknown-empty-reason",
+      "operation": "unknown_metric",
+      "metric": "gold",
+      "reason": ""
+    }
+  ]
+}

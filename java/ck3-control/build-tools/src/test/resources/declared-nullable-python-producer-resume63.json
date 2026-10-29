@@ -1,0 +1,106 @@
+{
+  "schema": "xar.project-exe-declared-path-exclusions/v1",
+  "status": "verified",
+  "method": "WMI MSFT_MpPreference.Add ExclusionPath only",
+  "namespace": "root\\Microsoft\\Windows\\Defender",
+  "proof_scope": "DECLARED_PROJECT_EXE_PATH_ONLY",
+  "settings_success_is_runtime_trust": false,
+  "admin_token": true,
+  "before": [
+    "C:\\old\\keep.exe"
+  ],
+  "after": [
+    "C:\\old\\keep.exe",
+    "D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\helper-nullable-test01\\tmp\\tmpifdr8egh\\build\\xar_ck3_bridge_injector.exe"
+  ],
+  "calls": [
+    {
+      "path": "D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\helper-nullable-test01\\tmp\\tmpifdr8egh\\build\\xar_ck3_bridge_injector.exe",
+      "method": "Add",
+      "return_value": 0,
+      "fresh_readback": [
+        "C:\\old\\keep.exe",
+        "D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\helper-nullable-test01\\tmp\\tmpifdr8egh\\build\\xar_ck3_bridge_injector.exe"
+      ]
+    }
+  ],
+  "declared_outputs": [
+    {
+      "path": "D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\helper-nullable-test01\\tmp\\tmpifdr8egh\\build\\xar_ck3_bridge_injector.exe",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "t1",
+      "expected_state": "ABSENT"
+    }
+  ],
+  "manifest_sha256": "096eab8ae98c1e96af858578ebff1ebfc2a2e0d61e2be28ed14f72fd8c642ce3",
+  "readback_visibility": "same administrative token and WMI client for before/after",
+  "verified_requested_paths": [
+    "D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\helper-nullable-test01\\tmp\\tmpifdr8egh\\build\\xar_ck3_bridge_injector.exe"
+  ],
+  "missing_requested_paths": [],
+  "observed_prior_settings_preserved": true,
+  "partial_mutation": false,
+  "observed_extensions_unchanged": true,
+  "observed_processes_unchanged": true,
+  "settings_readback_complete": true,
+  "settings_readback_error": null,
+  "settings_readback_process_id": 149424,
+  "settings_readback_token_user_sid": "S-1-5-21-101-102-103-1001",
+  "settings_readback_schema": "xar.project-exe-three-settings-readback/v2",
+  "before_settings": {
+    "ExclusionPath": [
+      "C:\\old\\keep.exe"
+    ],
+    "ExclusionExtension": null,
+    "ExclusionProcess": null
+  },
+  "after_settings": {
+    "ExclusionPath": [
+      "C:\\old\\keep.exe",
+      "D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\helper-nullable-test01\\tmp\\tmpifdr8egh\\build\\xar_ck3_bridge_injector.exe"
+    ],
+    "ExclusionExtension": null,
+    "ExclusionProcess": null
+  },
+  "before_property_observations": [
+    {
+      "name": "ExclusionPath",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "STRING_ARRAY"
+    },
+    {
+      "name": "ExclusionExtension",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "OBSERVED_NULLABLE_VALUE"
+    },
+    {
+      "name": "ExclusionProcess",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "OBSERVED_NULLABLE_VALUE"
+    }
+  ],
+  "after_property_observations": [
+    {
+      "name": "ExclusionPath",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "STRING_ARRAY"
+    },
+    {
+      "name": "ExclusionExtension",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "OBSERVED_NULLABLE_VALUE"
+    },
+    {
+      "name": "ExclusionProcess",
+      "cim_type": 8,
+      "is_array": true,
+      "value_state": "OBSERVED_NULLABLE_VALUE"
+    }
+  ],
+  "nullable_observation_scope": "Same administrative WMI client, one MSFT_MpPreference instance and existing Name/CIMType8/IsArray=true properties. Python None is retained as an observed nullable CIM value, distinct from an empty array; raw VARIANT is not remeasured by this reader. No assertion that effective exclusions are empty or unconfigured."
+}

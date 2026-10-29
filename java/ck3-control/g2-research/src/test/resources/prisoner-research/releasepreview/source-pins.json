@@ -1,0 +1,56 @@
+{
+  "schema": "xar.java.releasepreview.source-pins.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T14:32:03Z",
+  "observation": "Current source and copied resource SHA-256 read with certutil; existing native producer bytes copied without re-encoding. No producer, Python consumer or Java execution was performed by this leaf owner.",
+  "historical_producers": [
+    {
+      "resource_directory": "native12003",
+      "machine_id": "unknown",
+      "produced_at_utc": "2026-10-06T14:37:44Z",
+      "original_directory": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/prisoner-release/g104-first/sole-first-20261006T143706Z/native-whole5",
+      "receipt": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/prisoner-release/g104-first/sole-first-20261006T143706Z/FIRST-RECEIPT.json",
+      "boundary": "Historical native fixture plus registered MCP result; original machine was not recorded. Synthetic callbacks, definition identity and costs; no release or live credit. Current source hashes below do not rewrite its historical source pin."
+    },
+    {
+      "resource_directory": "native12004",
+      "machine_id": "unknown",
+      "produced_at_utc": "2026-10-06T21:33:05.639552Z",
+      "original_directory": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/joint-domain-first02/prisoner_collection/native",
+      "receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/joint-domain-first02/prisoner_collection/ROOT-DOMAIN-FIRST.json",
+      "boundary": "Historical actual4 native fixture plus registered MCP result; original machine was not recorded. No current machine or current Java execution qualification follows from that receipt."
+    }
+  ],
+  "vectors": [
+    {"resource":"native12003/gate_true.json","sha256":"7bff7b7abc59fc4b5262f3563e21fd36ddad108279500382a5ede4cc17100202"},
+    {"resource":"native12003/gate_false.json","sha256":"0453b5a515f97f19cc17e017f881626fb0fea97c5b0500d92380dd1c8f3b9bb3"},
+    {"resource":"native12003/old11.json","sha256":"9cdc2a61131f9f4a660a04f3c176bab533c52634f61125c0beba2cff3efb40c8"},
+    {"resource":"native12003/selected_change_prison.json","sha256":"ae32d2323566e95717f5d069871e98ebe84004f45e693021d5e02fc7a33d0697"},
+    {"resource":"native12003/puppet_role_mismatch.json","sha256":"2328952695a4288f116b06ad4503f9fc24842647a24802ad73cd7eeff5d493b4"},
+    {"resource":"native12004/gate_true.json","sha256":"694a8a87d141e982ccda9b602d6b6211726fa9f17564f1d8aaffedb9cc560443"},
+    {"resource":"native12004/gate_false.json","sha256":"645546adac363f126e53d408ebea8664ba9b2ab7d04420055a1d4ff2f69d49fd"},
+    {"resource":"native12004/old11.json","sha256":"2617a801c2d7f27207f4a0e636433d17dba16270f158f31fba01491125b25136"},
+    {"resource":"native12004/selected_change_prison.json","sha256":"836a0def505bdc30abe8add53ed1088b067ebbd33c3d0843c75ac3be4b6124b4"},
+    {"resource":"native12004/puppet_role_mismatch.json","sha256":"c807d17d9312b8783b84fa781a81827a7dbf0f9d5b77645e7261925dd69b7a45"}
+  ],
+  "sources": [
+    {"path":"ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner_release_preview_contract_12003.py","sha256":"d439a873559bfd9e8fdf221f03e8bc58e082c9f335f6eb33ce5dfa5e127b2dde"},
+    {"path":"ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner_native_kinship_contract_12003.py","sha256":"688e6100f3646f56377b10a50d9ed7e4fcc10f08546e1f225d93d0a734a5fe81"},
+    {"path":"ck3_autonomous_player/native_bridge/src/ck3_12003_prisoner_release_preview_serializer.cpp","sha256":"ceff863a534f7d791daca66dbde679bb3adc6921f5c6adba3cc2665884444bba"},
+    {"path":"ck3_autonomous_player/src/xar_autoplayer/bridge/player_prisoner_collection_private_transport.py","sha256":"27d52c5e493ef6cfd14e1a915041bfd0bf978939408b6c8defa612174280ffe6"},
+    {"path":"ck3_autonomous_player/native_bridge/src/ck3_12003_prisoner_release_preview_test.cpp","sha256":"12c9117669c34d6b319a4fc33495a411e1259ad4328ed1a3b7159d98b98ca332"},
+    {"path":"ck3_autonomous_player/native_bridge/src/ck3_12004_prisoner_collection_test.cpp","sha256":"a30d5c8b2ecb7be389eeaf4c6d918473ab09427c7135c60c1deb8fa3a253c101"},
+    {"path":"ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner_release_action_private_12004.py","sha256":"e2f478d39d5bdc1d008364b3612028e07b0b6489102ec4e494fa60b286f3f221"},
+    {"path":"ck3_autonomous_player/src/xar_autoplayer/prisoner_release_formal_consumer.py","sha256":"d9c8dc67336f73c3f74d83279d1b38502136f78575dceef9752c6175fa68808e"},
+    {"path":"ck3_autonomous_player/native_bridge/src/ck3_12003_prisoner_native_kinship_test.cpp","sha256":"6d96888610a9f84799e0f8526b685776590a57c5fc59c88d5b55a63a86617525"}
+  ],
+  "pending_vectors": {
+    "directory": "kinship12003",
+    "producer": "ck3_12003_prisoner_native_kinship_test",
+    "cases": ["nonchild_close_family", "unrelated", "sample_drift", "wrong_generation", "wrong_jailer", "not_paused"],
+    "execution_owner": "/root/storage_resume",
+    "status": "NOT_RUN_CURRENT_GOLDEN_CAPTURE_REQUIRED",
+    "missing_is_test_failure": true
+  },
+  "retention": {"category":"record","review_at_utc":"2027-04-20T14:28:00Z","automatic_renewal":false}
+}

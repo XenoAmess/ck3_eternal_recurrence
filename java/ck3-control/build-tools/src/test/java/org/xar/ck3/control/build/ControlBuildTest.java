@@ -24,6 +24,94 @@ import org.junit.jupiter.api.io.TempDir;
 final class ControlBuildTest {
     @TempDir Path temporary;
 
+    /** Run the two persistent timeout-contract tests with the real JUnit engine; default Surefire still runs all tests. */
+    public static void main(String[] arguments) throws IOException {
+        if (arguments.length != 0) throw new IOException("No timeout regression arguments are accepted");
+        // Initialize dispatch in the shared caller native root before the CLI test rebinds its owned scratch.
+        if (com.sun.jna.Native.POINTER_SIZE <= 0) throw new IOException("JNA native dispatch initialization required");
+        var request = org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder.request().selectors(
+                org.junit.platform.engine.discovery.DiscoverySelectors.selectMethod(ControlBuildTest.class,
+                        "explicitTargetTimeoutsSurviveStrictConfigAndKeepIntegerBoundariesClosed"),
+                org.junit.platform.engine.discovery.DiscoverySelectors.selectMethod(ControlBuildTest.class,
+                        "actualBuildCliKeepsDefault900AndAdmitsExplicitFiniteTarget3600")).build();
+        var listener = new org.junit.platform.launcher.listeners.SummaryGeneratingListener();
+        var launcher = org.junit.platform.launcher.core.LauncherFactory.create();
+        launcher.registerTestExecutionListeners(listener); launcher.execute(request);
+        var summary = listener.getSummary(); var output = new java.io.PrintWriter(System.out, true);
+        summary.printTo(output); summary.printFailuresTo(output);
+        if (summary.getTestsFoundCount() != 2 || summary.getTestsStartedCount() != 2
+                || summary.getTestsSucceededCount() != 2 || summary.getTestsFailedCount() != 0
+                || summary.getTestsSkippedCount() != 0 || summary.getTestsAbortedCount() != 0
+                || summary.getContainersFailedCount() != 0)
+            throw new IOException("Both persistent timeout-contract JUnit tests must execute successfully without skips");
+        System.out.println("CONTROL_BUILD_TARGET_TIMEOUT_REGRESSION_PASS tests=2");
+    }
+
+    @Test void explicitTargetTimeoutsSurviveStrictConfigAndKeepIntegerBoundariesClosed() throws Exception {
+        var json = ControlBuild.strictMapper();
+        var tools = new ControlBuild.Config(temporary.resolve("source"), temporary.resolve("work"),
+                temporary.resolve("release.json"), "timeout-boundary", "/root", null, temporary,
+                "3.10.0", 3600, ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME,
+                ControlBuild.SourceLimitProfile.STANDARD_8_MIB);
+        assertEquals(tools, json.readValue(json.writeValueAsBytes(tools), ControlBuild.Config.class));
+        for (int seconds : List.of(0, -1, 3601)) {
+            var wrong = (com.fasterxml.jackson.databind.node.ObjectNode) json.valueToTree(tools);
+            wrong.put("timeout_seconds", seconds);
+            assertThrows(IOException.class, () -> json.treeToValue(wrong, ControlBuild.Config.class));
+        }
+        for (String corruption : List.of("missing", "null", "boolean", "floating", "service-overflow")) {
+            var wrong = (com.fasterxml.jackson.databind.node.ObjectNode) json.valueToTree(tools);
+            switch (corruption) {
+                case "missing" -> wrong.remove("timeout_seconds");
+                case "null" -> wrong.putNull("timeout_seconds");
+                case "boolean" -> wrong.put("timeout_seconds", true);
+                case "floating" -> wrong.put("timeout_seconds", 3600.5);
+                case "service-overflow" -> { wrong.put("target_kind", "SERVICE_FAST_JAR"); wrong.put("timeout_seconds", 3601); }
+                default -> throw new AssertionError(corruption);
+            }
+            assertThrows(IOException.class, () -> json.treeToValue(wrong, ControlBuild.Config.class), corruption);
+        }
+        var service = (com.fasterxml.jackson.databind.node.ObjectNode) json.valueToTree(tools);
+        service.put("target_kind", "SERVICE_FAST_JAR");
+        for (int seconds : List.of(1, 900, 901, 1800, 3600)) {
+            service.put("timeout_seconds", seconds);
+            var produced = json.treeToValue(service, ControlBuild.Config.class);
+            assertEquals(seconds, produced.timeoutSeconds());
+            assertEquals(produced, json.readValue(json.writeValueAsBytes(produced), ControlBuild.Config.class));
+        }
+        for (var kind : ControlBuild.TargetKind.values()) assertEquals(3600, ControlBuild.maximumBuildTimeoutSeconds(kind));
+        assertThrows(IllegalArgumentException.class, () -> ControlBuild.maximumBuildTimeoutSeconds(null));
+    }
+
+    @Test void actualBuildCliKeepsDefault900AndAdmitsExplicitFiniteTarget3600() throws Exception {
+        Path source = Files.createDirectory(temporary.resolve("cli-source"));
+        Path work = Files.createDirectory(temporary.resolve("cli-work"));
+        Path scratch = Files.createDirectory(work.resolve("scratch"));
+        Path release = temporary.resolve("cli-release.json"); Files.writeString(release, "{}");
+        var base = new java.util.ArrayList<>(List.of("--source-root", source.toString(), "--work-root", work.toString(),
+                "--capacity-release", release.toString(), "--attempt", "cli-timeout", "--owner-task", "/root",
+                "--java-home", System.getProperty("java.home")));
+        String previous = System.getProperty("jna.tmpdir");
+        try {
+            System.setProperty("jna.tmpdir", scratch.toString());
+            assertEquals(900, ControlBuild.parseArguments(base.toArray(String[]::new)).timeoutSeconds());
+            var tools = new java.util.ArrayList<>(base);
+            tools.addAll(List.of("--target-kind", "BUILD_TOOLS_RUNTIME", "--timeout-seconds", "3600"));
+            assertEquals(3600, ControlBuild.parseArguments(tools.toArray(String[]::new)).timeoutSeconds());
+            var service = new java.util.ArrayList<>(base);
+            service.addAll(List.of("--target-kind", "SERVICE_FAST_JAR", "--timeout-seconds", "901"));
+            assertEquals(901, ControlBuild.parseArguments(service.toArray(String[]::new)).timeoutSeconds());
+            service.set(service.size() - 1, "3600");
+            assertEquals(3600, ControlBuild.parseArguments(service.toArray(String[]::new)).timeoutSeconds());
+            service.set(service.size() - 1, "3601");
+            assertThrows(IllegalArgumentException.class, () -> ControlBuild.parseArguments(service.toArray(String[]::new)));
+            tools.set(tools.size() - 1, "3601");
+            assertThrows(IllegalArgumentException.class, () -> ControlBuild.parseArguments(tools.toArray(String[]::new)));
+        } finally {
+            if (previous == null) System.clearProperty("jna.tmpdir"); else System.setProperty("jna.tmpdir", previous);
+        }
+    }
+
     @Test void measuredProducerRoundTripsThroughStrictConsumerAndDetectsSameSizeTampering() throws Exception {
         Path source = temporary.resolve("evidence.txt"); Files.writeString(source, "one");
         ControlBuild.FileRef produced = ControlBuild.FileRef.measure(source.toAbsolutePath());
@@ -413,6 +501,68 @@ final class ControlBuildTest {
         evidenceRef.verify();
     }
 
+    @Test void ciPackageAllocationUsesIssuedPermitAboveMetadataLimitAndStillRejectsCurrentResourceFailures() throws Exception {
+        Path repo = Files.createDirectories(temporary.resolve("ci-resource-source"));
+        Files.createDirectories(repo.resolve("java/ck3-control/build-tools"));
+        Path work = Files.createDirectory(temporary.resolve("ci-resource-work"));
+        for (String part : List.of("m2", "build", "tools", "scratch", "artifacts", "logs")) Files.createDirectory(work.resolve(part));
+        Path evidence = work.resolve("artifacts/actual-input.json"); Files.writeString(evidence, "retained-real-artifact");
+        ControlBuild.FileRef evidenceRef = ControlBuild.FileRef.measure(evidence);
+        Map<String, Long> caps = Map.of("m2", 1L << 20, "build", 1L << 20, "tools", 1L << 20,
+                "scratch", 1L << 20, "artifacts", 1L << 20, "logs", 1L << 20);
+        Map<String, Long> measured = ControlBuild.sizes(work, caps, () -> {}, new ControlBuild.InventoryIo() {});
+        long issuedUpper = 20L << 20, accounted = 2L << 20, pending = issuedUpper - accounted;
+        Path policy = temporary.resolve("ci-resource-policy.json");
+        Files.writeString(policy, "{\"schema\":\"xar-storage-retention-policy-v1\"}");
+        var mapper = ControlBuild.strictMapper();
+        var release = mapper.createObjectNode();
+        release.put("schema", "xar.java-phase1.manual-capacity-release/v1");
+        release.put("status", "RELEASED_JAVA_PHASE1_BOUNDED_BUILD_AND_LOCAL_SERVICE");
+        String machine = WindowsJobProcess.currentMachineId(); Instant now = Instant.now();
+        release.put("machine_id", machine); release.put("single_Maven_writer", "resource-test");
+        release.put("review_at_utc", now.plusSeconds(60).toString());
+        release.putArray("approved_output_roots").add(temporary.toString());
+        release.put("Maven_repository", work.resolve("m2").toString()); release.put("build_root", work.resolve("build").toString());
+        release.put("temporary_root", work.resolve("scratch").toString());
+        var parts = release.putObject("parts");
+        for (String part : List.of("m2", "build", "tools", "scratch")) parts.put(part, caps.get(part));
+        parts.put("artifacts", Math.addExact(measured.get("artifacts"), pending) + 1); parts.put("metadata_logs", caps.get("logs"));
+        release.set("policy_ref", mapper.valueToTree(ControlBuild.FileRef.measure(policy)));
+        var volume = release.putObject("volumes").putObject(work.getRoot().toString());
+        volume.put("required_free", (32L << 20) + 3); volume.put("this_write_peak", 32L << 20); volume.put("other_unspent_reservations", 1);
+        volume.put("system_growth_reserve", 1); volume.put("safety_reserve", 1);
+        volume.put("current_project_usage_conservative_upper", 1); volume.put("effective_project_quota", 128L << 20);
+        release.put("test_RAM_joint_hard_bytes", 256L << 20); release.put("Maven_heap_bytes", 96L << 20);
+        Path releasePath = temporary.resolve("ci-resource-release.json");
+        Files.write(releasePath, mapper.writeValueAsBytes(release));
+        CiBootstrap.FilePin pin = CiBootstrap.measure(policy);
+        CiBootstrap.Plan plan = new CiBootstrap.Plan(CiBootstrap.PLAN_SCHEMA, machine, now.toString(), now.plusSeconds(60).toString(),
+                repo.toString(), work.toString(), temporary.toString(), null, temporary.resolve("python.exe").toString(),
+                "resource-test", pin, Map.of(), Map.of(), Map.of(), List.of(pin), List.of(pin), false, false);
+        var permit = new org.xar.ck3.control.build.runtime.JavaRuntimePackage.WritePermit(machine,
+                work.resolve("artifacts/runtime-package").toString(), now.plusSeconds(60).toString(),
+                issuedUpper, 4096, 4096, evidenceRef);
+        var allocation = new ControlBuild.PackagePendingAllocation(permit, accounted);
+        ControlBuild.revalidateCiPackageResources(plan, releasePath, allocation);
+        IOException metadata = assertThrows(IOException.class, () -> ControlBuild.revalidateCiResources(plan, releasePath, pending));
+        assertTrue(metadata.getMessage().contains("bounded pending metadata"));
+        String foreignMachine = machine.equals("foreign-machine") ? "another-machine" : "foreign-machine";
+        var foreign = new org.xar.ck3.control.build.runtime.JavaRuntimePackage.WritePermit(foreignMachine,
+                permit.exactOutputRoot(), permit.expiresAtUtc(), issuedUpper, 4096, 4096, evidenceRef);
+        assertThrows(IOException.class, () -> ControlBuild.revalidateCiPackageResources(plan, releasePath,
+                new ControlBuild.PackagePendingAllocation(foreign, accounted)));
+        var expired = new org.xar.ck3.control.build.runtime.JavaRuntimePackage.WritePermit(machine,
+                permit.exactOutputRoot(), now.minusSeconds(1).toString(), issuedUpper, 4096, 4096, evidenceRef);
+        assertThrows(IOException.class, () -> ControlBuild.revalidateCiPackageResources(plan, releasePath,
+                new ControlBuild.PackagePendingAllocation(expired, accounted)));
+        assertThrows(IllegalArgumentException.class, () -> new ControlBuild.PackagePendingAllocation(permit, -1));
+        assertThrows(IllegalArgumentException.class, () -> new ControlBuild.PackagePendingAllocation(permit, issuedUpper + 1));
+        Files.write(work.resolve("artifacts/after-admission.bin"), new byte[]{1, 2});
+        IOException exhausted = assertThrows(IOException.class, () -> ControlBuild.revalidateCiPackageResources(plan, releasePath, allocation));
+        assertTrue(exhausted.getMessage().contains("artifact cap"));
+        evidenceRef.verify();
+    }
+
     @Test void actualDefaultMavenReceivesFailAtEndAndRetainsItsNonzeroTerminalExit() throws Exception {
         Path bin = Files.createDirectories(temporary.resolve("command-home/bin"));
         Files.writeString(bin.resolve("mvn.cmd"), "@echo off\r\nif not \"%~1\"==\"--fail-at-end\" exit /b 91\r\n"
@@ -585,6 +735,3 @@ final class ControlBuildTest {
     }
 
 }
-
-
-

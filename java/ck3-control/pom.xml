@@ -12,14 +12,39 @@
 
   <modules>
     <module>contracts</module>
+    <module>continuity-core</module>
+    <module>governance-policy</module>
+    <module>wave2-governance</module>
+    <module>closed-failure-recovery</module>
+    <module>admission-contracts</module>
+    <module>late-outcome-reconciliation</module>
+    <module>build-tools</module>
+    <module>wave2-runtime</module>
+    <module>wave2-development</module>
+    <module>wave3-governance</module>
+    <module>planning-runtime</module>
+    <module>finance-policy</module>
+    <module>campaign-score</module>
+    <module>war-budget</module>
+    <module>wave2-finance</module>
+    <module>wave2-planning</module>
+    <module>military-policy</module>
+    <module>war-policy</module>
+    <module>replenishment-policy</module>
+    <module>wave2-military</module>
+    <module>wave3-planning</module>
+    <module>g2-research</module>
     <module>local-service</module>
     <module>native-diagnostics</module>
-    <module>war-policy</module>
-    <module>campaign-score</module>
-    <module>finance-policy</module>
     <module>event-policy</module>
-    <module>military-policy</module>
-    <module>late-outcome-reconciliation</module>
+    <module>wave2-events</module>
+    <module>wave2-prisoners</module>
+    <module>wave3-development</module>
+    <module>wave3-runtime</module>
+    <module>wave3-military</module>
+    <module>adapters-storage</module>
+    <module>application</module>
+    <module>native-transport</module>
   </modules>
 
   <properties>
@@ -32,6 +57,7 @@
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.version>3.40.1.1</quarkus.platform.version>
+    <jna.version>5.19.1</jna.version>
   </properties>
 
   <dependencyManagement>
@@ -42,6 +68,16 @@
         <version>${quarkus.platform.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>net.java.dev.jna</groupId>
+        <artifactId>jna</artifactId>
+        <version>${jna.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.java.dev.jna</groupId>
+        <artifactId>jna-platform</artifactId>
+        <version>${jna.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -82,4 +118,23 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <profiles>
+    <profile>
+      <id>xar-compile-diagnostics</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <compilerArgs combine.children="append">
+                <arg>-XDshould-stop.ifError=FLOW</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

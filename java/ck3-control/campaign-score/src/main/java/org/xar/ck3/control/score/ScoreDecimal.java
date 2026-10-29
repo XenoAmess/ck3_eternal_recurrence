@@ -24,11 +24,21 @@ public record ScoreDecimal(BigDecimal value, boolean negativeZero) implements Co
 
     public static ScoreDecimal parse(String text) {
         StrictJson.require(text != null && !text.isEmpty() && text.length() <= 8192, "bounded decimal text required");
-        String normalized = text.strip().replace("_", "");
+        // CPython numeric_as_ascii strips Unicode whitespace before removing
+        // underscores, then transforms Unicode decimal digits/spaces. Java
+        // String.strip omits NBSP/NEL. Never strip again after underscores.
+        int start = 0, end = text.length();
+        while (start < end && pythonSpace(text.codePointAt(start))) { start += Character.charCount(text.codePointAt(start)); }
+        while (end > start && pythonSpace(text.codePointBefore(end))) { end -= Character.charCount(text.codePointBefore(end)); }
         StringBuilder ascii = new StringBuilder();
-        normalized.codePoints().forEach(point -> {
-            int digit = Character.digit(point, 10);
-            if (digit >= 0) { ascii.append((char) ('0' + digit)); }
+        text.substring(start, end).codePoints().forEach(point -> {
+            if (point == '_') { return; }
+            if (Character.getType(point) == Character.DECIMAL_DIGIT_NUMBER) {
+                ascii.append((char) ('0' + Character.digit(point, 10)));
+            }
+            else if (point >= 128 && pythonSpace(point)) {
+                ascii.append(' ');
+            }
             else { ascii.appendCodePoint(point); }
         });
         String number = ascii.toString();
@@ -40,6 +50,10 @@ public record ScoreDecimal(BigDecimal value, boolean negativeZero) implements Co
         } catch (NumberFormatException failure) {
             throw new org.xar.ck3.control.contracts.ContractViolationException("invalid decimal", failure);
         }
+    }
+
+    private static boolean pythonSpace(int point) {
+        return Character.isWhitespace(point) || Character.isSpaceChar(point) || point == 0x85;
     }
 
     public static ScoreDecimal integer(long value) { return new ScoreDecimal(BigDecimal.valueOf(value), false); }
@@ -65,15 +79,15 @@ public record ScoreDecimal(BigDecimal value, boolean negativeZero) implements Co
     @Override public int hashCode() { return value.stripTrailingZeros().hashCode(); }
     boolean negative() { return value.signum() < 0 || negativeZero; }
 
-    ScoreDecimal add(ScoreDecimal other, MathContext context) {
+    public ScoreDecimal add(ScoreDecimal other, MathContext context) {
         BigDecimal result = value.add(other.value, context);
         return new ScoreDecimal(result, result.signum() == 0 && negative() && other.negative());
     }
-    ScoreDecimal multiply(ScoreDecimal other, MathContext context) {
+    public ScoreDecimal multiply(ScoreDecimal other, MathContext context) {
         BigDecimal result = value.multiply(other.value, context);
         return new ScoreDecimal(result, result.signum() == 0 && negative() != other.negative());
     }
-    ScoreDecimal divide(ScoreDecimal other, MathContext context) {
+    public ScoreDecimal divide(ScoreDecimal other, MathContext context) {
         StrictJson.require(other.value.signum() != 0, "nonzero decimal divisor required");
         BigDecimal result = value.divide(other.value, context);
         return new ScoreDecimal(result, result.signum() == 0 && negative() != other.negative());

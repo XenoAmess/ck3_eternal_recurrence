@@ -1,10 +1,11 @@
 package org.xar.ck3.control.build;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinDef.DWORDByReference;
+import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
@@ -26,6 +27,7 @@ import java.util.HashSet;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.build.ControlBuild.FileRef;
 import org.xar.ck3.control.build.SharedSourceFiles.NativeFile;
@@ -280,8 +282,17 @@ public final class ImmutableDataPackageInstaller {
         }
     }
     @FunctionalInterface interface CapacityGuard { void check(long dataWritten, long controlWritten) throws IOException; }
+    enum AllocationPhase { PREALLOCATED, STREAMED_WRITER_HELD, READBACK_READER_HELD }
+    record AllocationSample(AllocationPhase phase, Path target, NativeFile actual) { }
+    @FunctionalInterface interface AllocationObserver { void observed(AllocationSample sample) throws IOException; }
 
     static Actual copy(CopyPlan plan, CapacityGuard guard) throws IOException {
+        return copyObserved(plan, guard, Optional.empty());
+    }
+    static Actual copy(CopyPlan plan, CapacityGuard guard, AllocationObserver observer) throws IOException {
+        return copyObserved(plan, guard, Optional.of(Objects.requireNonNull(observer)));
+    }
+    private static Actual copyObserved(CopyPlan plan, CapacityGuard guard, Optional<AllocationObserver> observer) throws IOException {
         Request request = plan.request(); SourceIndex index = plan.index();
         Path data = absolute(request.dataRoot()), control = absolute(request.controlRoot()), source = absolute(index.sourceRoot());
         List<Held> held = new ArrayList<>(), sources = new ArrayList<>(), outputs = new ArrayList<>(), dataDirectories = new ArrayList<>();
@@ -313,15 +324,24 @@ public final class ImmutableDataPackageInstaller {
             for (SourceFile row : order) {
                 checkTime(request); verifyHeldDirectories(held); guard.check(charge(outputs, dataDirectories), chargeControl(control));
                 long current = charge(outputs, List.of());
-                requireIo(Math.addExact(Math.addExact(current, request.dataDirectoryReserveBytes()), rounded(row.sourceRef().bytes(), index.targetVolume().clusterBytes())) <= request.maxDataNativeBytes(), "next single-copy allocation exceeds DATA ceiling");
+                long plannedFileAllocation = rounded(row.sourceRef().bytes(), index.targetVolume().clusterBytes());
+                requireIo(Math.addExact(Math.addExact(current, request.dataDirectoryReserveBytes()), plannedFileAllocation) <= request.maxDataNativeBytes(),
+                        "next single-copy allocation exceeds DATA ceiling: actualHeldFiles=" + current + " reservedDirectories=" + request.dataDirectoryReserveBytes()
+                        + " nextRounded=" + plannedFileAllocation + " ceiling=" + request.maxDataNativeBytes());
                 Held original = sources.get(index.files().indexOf(row)); assertSource(row, original.actual());
                 requireIo(original.initial.equals(original.actual()), "held source metadata changed after acquisition");
                 Path target = data.resolve(row.targetRelative());
                 Held output = Held.create(target); held.add(output); outputs.add(output);
+                reserveCreatedLength(output, row.sourceRef().bytes(), index.targetVolume().clusterBytes());
+                observeAllocation(observer, AllocationPhase.PREALLOCATED, output);
+                checkCeilings(request, outputs, dataDirectories, control);
                 guard.check(charge(outputs, dataDirectories), chargeControl(control));
-                copyOne(original, output, row.sourceRef(), request);
+                copyOne(original, output, row.sourceRef(), request, index.targetVolume().clusterBytes());
+                observeAllocation(observer, AllocationPhase.STREAMED_WRITER_HELD, output);
                 Readback readback = settleCreated(output, row.sourceRef(), request, held);
                 outputs.set(outputs.indexOf(output), readback.custody()); output = readback.custody();
+                requireHeldLength(output, row.sourceRef().bytes(), plannedFileAllocation, true);
+                observeAllocation(observer, AllocationPhase.READBACK_READER_HELD, output);
                 FileRef destination = readback.exactRef();
                 if (!destination.sha256().equals(row.sourceRef().sha256()) || output.initial.linkCount() != 1
                         || sourceIdentities.contains(output.initial.identityKey()) || !destinationIdentities.add(output.initial.identityKey()))
@@ -356,9 +376,9 @@ public final class ImmutableDataPackageInstaller {
                             + Math.max(4096, nativeDirectoryFile(control).allocatedBytes()) <= request.maxControlNativeBytes(), "bounded control receipt required");
                     guard.check(actual.dataNativeChargedBytes(), Math.max(controlCharge,
                             rounded(encoded.length, index.targetVolume().clusterBytes()) + Math.max(4096, nativeDirectoryFile(control).allocatedBytes())));
+                    reserveCreatedLength(receiptHandle, encoded.length, index.targetVolume().clusterBytes());
                     rewind(receiptHandle); writeNative(receiptHandle, encoded, encoded.length);
-                    if (!PositionApi.VALUE.SetEndOfFile(receiptHandle.handle) || !Kernel32.INSTANCE.FlushFileBuffers(receiptHandle.handle))
-                        throw new IOException("private control receipt truncate/flush Win32=" + Native.getLastError());
+                    finishCreatedLength(receiptHandle, encoded.length, index.targetVolume().clusterBytes());
                     receiptHandle.completeCreation();
                     if (chargeControl(control) == controlCharge) break;
                     encoded = null;
@@ -495,7 +515,9 @@ public final class ImmutableDataPackageInstaller {
             } catch (IllegalArgumentException error) { throw new IOException("shared storage formula rejected installation", error); }
         }
     }
-    private static final class Held implements AutoCloseable {
+    /** Package visibility permits native lifetime regressions against this actual production
+     * handle implementation. It grants no admission or alternate copy authority. */
+    static final class Held implements AutoCloseable {
         private final Path path; private final boolean directory; private final HANDLE handle; private final NativeFile birth; private final boolean created;
         private NativeFile initial;
         private boolean closed;
@@ -506,8 +528,19 @@ public final class ImmutableDataPackageInstaller {
             return openSharing(path, directory, read, directory ? 3 : 1);
         }
         static Held openSharing(Path path, boolean directory, boolean read, int share) throws IOException {
+            // READ_ATTRIBUTES alone is exempt from normal read/delete sharing checks.
+            // Every retained directory therefore requests FILE_LIST_DIRECTORY as well.
+            // File read=false is metadata observation only, never immutable-byte custody;
+            // all current retained source/destination/metadata files explicitly use read=true.
+            return openAccess(path, directory, directory ? 0x81 : read ? 0x80000000 : 0x80, share);
+        }
+        private static Held observeDirectory(Path path) throws IOException {
+            // A transient native attribute query is not a retained custody handle.
+            return openAccess(path, true, 0x80, 3);
+        }
+        private static Held openAccess(Path path, boolean directory, int access, int share) throws IOException {
             SharedSourceFiles.plainAncestors(path);
-            HANDLE handle = Kernel32.INSTANCE.CreateFile(SharedSourceFiles.nativePath(path), read ? 0x80000000 : 0x80,
+            HANDLE handle = Kernel32.INSTANCE.CreateFile(SharedSourceFiles.nativePath(path), access,
                     share, null, 3, 0x00200000 | (directory ? 0x02000000 : 0), null);
             if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("held DATA open Win32=" + Native.getLastError() + " path=" + path);
             try { return new Held(path, directory, handle, directory ? SharedSourceFiles.nativeHeldDirectory(handle) : SharedSourceFiles.nativeHeldFile(handle), false); }
@@ -551,12 +584,12 @@ public final class ImmutableDataPackageInstaller {
         requireIo(expected.sha256().equals(exact.sha256()) && settled.initial.equals(settled.actual()), "settled held destination bytes/native metadata differ");
         bridge.close(); settled.reopenMatches(); return new Readback(settled, exact);
     }
-    private static NativeFile nativeDirectoryFile(Path path) throws IOException { try (Held held = Held.open(path, true, false)) { return held.initial; } }
+    private static NativeFile nativeDirectoryFile(Path path) throws IOException { try (Held held = Held.observeDirectory(path)) { return held.initial; } }
     private static void assertSource(SourceFile row, NativeFile actual) throws IOException {
         requireIo(row.nativeIdentity().matches(actual) && row.nativeAllocationBytes() == actual.allocatedBytes()
                 && row.nativeLinks() == actual.linkCount() && row.sourceRef().bytes() == actual.logicalBytes(), "source original native witness changed: " + row.sourceRef().path());
     }
-    private static void copyOne(Held original, Held destination, FileRef expected, Request request) throws IOException {
+    private static void copyOne(Held original, Held destination, FileRef expected, Request request, long clusterBytes) throws IOException {
         MessageDigest digest = sha256(); long count = 0; byte[] buffer = new byte[65536]; IntByReference received = new IntByReference();
         while (true) {
             checkTime(request);
@@ -565,9 +598,46 @@ public final class ImmutableDataPackageInstaller {
             requireIo(length > 0 && length <= buffer.length, "invalid native read extent"); count = Math.addExact(count, length);
             requireIo(count <= expected.bytes(), "held source grew beyond exact input"); digest.update(buffer, 0, length);
             writeNative(destination, buffer, length);
+            requireHeldLength(destination, expected.bytes(), rounded(expected.bytes(), clusterBytes), false);
         }
         if (!Kernel32.INSTANCE.FlushFileBuffers(destination.handle)) throw new IOException("created DATA FlushFileBuffers Win32=" + Native.getLastError());
         requireIo(count == expected.bytes() && HexFormat.of().formatHex(digest.digest()).equals(expected.sha256()), "held source exact bytes differ");
+        finishCreatedLength(destination, expected.bytes(), clusterBytes);
+    }
+    /** The admitted forecast is cluster-rounded exact length, not NTFS streaming growth.
+     * Reserve that length before the first write; keep actual held AllocationSize bounded
+     * throughout. Last-reader close is never used as an allocation-release mechanism. */
+    private static void reserveCreatedLength(Held destination, long bytes, long clusterBytes) throws IOException {
+        requireIo(destination.created && destination.birth.identityKey().equals(destination.actual().identityKey()), "only original CREATE_NEW writer may reserve allocation");
+        long allocation = rounded(bytes, clusterBytes);
+        setCreatedSize(destination, 5, allocation); // FILE_ALLOCATION_INFO: independent of logical EOF.
+        requireHeldLength(destination, Math.max(bytes, destination.actual().logicalBytes()), allocation, false);
+    }
+    private static void finishCreatedLength(Held destination, long bytes, long clusterBytes) throws IOException {
+        requireIo(destination.created, "exact EOF belongs only to our original new writer");
+        setCreatedSize(destination, 6, bytes); // FILE_END_OF_FILE_INFO, no path-based reopen or replacement.
+        setCreatedSize(destination, 5, rounded(bytes, clusterBytes));
+        if (!Kernel32.INSTANCE.FlushFileBuffers(destination.handle)) throw new IOException("exact created allocation flush Win32=" + Native.getLastError());
+        requireHeldLength(destination, bytes, rounded(bytes, clusterBytes), true);
+    }
+    private static void setCreatedSize(Held destination, int informationClass, long bytes) throws IOException {
+        requireIo(destination.created && !destination.closed && bytes >= 0 && (informationClass == 5 || informationClass == 6), "finite original private size mutation required");
+        try (Memory value = new Memory(Long.BYTES)) {
+            value.setLong(0, bytes);
+            if (!Kernel32.INSTANCE.SetFileInformationByHandle(destination.handle, informationClass, value, new DWORD(Long.BYTES)))
+                throw new IOException("created exact size class=" + informationClass + " bytes=" + bytes + " Win32=" + Native.getLastError());
+        }
+    }
+    private static void requireHeldLength(Held destination, long logicalLimit, long allocationLimit, boolean exact) throws IOException {
+        NativeFile actual = destination.actual();
+        requireIo(destination.birth.identityKey().equals(actual.identityKey()) && actual.linkCount() == 1
+                && actual.logicalBytes() <= logicalLimit && (!exact || actual.logicalBytes() == logicalLimit)
+                && actual.allocatedBytes() <= allocationLimit,
+                "created held length/allocation exceeds forecast: target=" + destination.path + " logical=" + actual.logicalBytes()
+                + " allocated=" + actual.allocatedBytes() + " logicalLimit=" + logicalLimit + " allocationLimit=" + allocationLimit);
+    }
+    private static void observeAllocation(Optional<AllocationObserver> observer, AllocationPhase phase, Held output) throws IOException {
+        if (observer.isPresent()) observer.orElseThrow().observed(new AllocationSample(phase, output.path, output.actual()));
     }
     private static void rewind(Held held) throws IOException {
         if (!PositionApi.VALUE.SetFilePointerEx(held.handle, 0L, null, 0)) throw new IOException("same-held-object rewind Win32=" + Native.getLastError());
@@ -645,9 +715,9 @@ public final class ImmutableDataPackageInstaller {
         requireIo(blobs && actual.equals(expected), "closed package inventory differs");
     }
     private static void verifyVolume(Volume volume) throws IOException {
-        DWORDByReference sectors = new DWORDByReference(), bytes = new DWORDByReference(), free = new DWORDByReference(), total = new DWORDByReference();
-        if (!Kernel32.INSTANCE.GetDiskFreeSpace(absolute(volume.volumeRoot()).toString(), sectors, bytes, free, total)) throw new IOException("native cluster geometry Win32=" + Native.getLastError());
-        requireIo(sectors.getValue().longValue() == volume.sectorsPerCluster() && bytes.getValue().longValue() == volume.bytesPerSector(), "fresh native volume geometry differs");
+        NativeStorageGeometry.Volume actual = NativeStorageGeometry.read(absolute(volume.volumeRoot()));
+        requireIo(actual.sectorsPerCluster() == volume.sectorsPerCluster() && actual.bytesPerSector() == volume.bytesPerSector()
+                && actual.clusterBytes() == volume.clusterBytes(), "fresh native volume geometry differs");
     }
     private static void validateDestinations(String dataRoot, String controlRoot, List<String> ancestors) {
         Path data = absolute(dataRoot), control = absolute(controlRoot);

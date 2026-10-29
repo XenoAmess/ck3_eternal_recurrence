@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-parent</artifactId><version>0.1.0-SNAPSHOT</version><relativePath>../pom.xml</relativePath></parent>
+  <artifactId>wave2-planning</artifactId>
+  <description>Independently staged planning migration leaves; not a separate service.</description>
+  <dependencies>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-finance</artifactId><version>${project.version}</version><type>test-jar</type><classifier>tests</classifier><scope>test</scope></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>planning-runtime</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>finance-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>campaign-score</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-finance</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-governance</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave3-governance</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>contracts</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>com.fasterxml.jackson.core</groupId><artifactId>jackson-databind</artifactId></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+  </dependencies>
+  <build><testResources><testResource><directory>src/test/resources</directory></testResource><testResource><directory>${project.basedir}/../wave2-finance/src/test/resources</directory><includes><include>holyloan/original-v1.jsonl.gz</include></includes></testResource><testResource><directory>${project.basedir}/../g2-research/src/test/resources</directory><includes><include>warcashprovenance/golden.json</include></includes></testResource></testResources><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><compilerArgs><arg>-Xlint:all</arg><arg>-Werror</arg></compilerArgs></configuration></plugin><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><executions><execution><id>shared-existing-test-helpers</id><phase>test-compile</phase><goals><goal>test-jar</goal></goals></execution></executions></plugin></plugins></build>
+</project>

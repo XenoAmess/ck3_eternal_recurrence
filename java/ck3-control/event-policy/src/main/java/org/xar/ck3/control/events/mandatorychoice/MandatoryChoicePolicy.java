@@ -5,12 +5,11 @@ import static org.xar.ck3.control.events.mandatorychoice.MandatoryChoiceModel.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import org.xar.ck3.control.contracts.index.OrderedCandidateIndex;
 
 /** Pure presented-choice ordering. Calling this does not authorize a domain route or submit a token. */
 public final class MandatoryChoicePolicy {
@@ -20,6 +19,7 @@ public final class MandatoryChoicePolicy {
     private static final Set<String> PRESENTATION_PROOFS = Set.of(
             "native_event_rendered_order", "source_bound_stock_interaction_GUI_order");
     private static final BigInteger FALLBACK_RENDERED_INDEX = BigInteger.ONE.shiftLeft(63);
+    private record SelectionScope(FrameBinding frame) { }
     private MandatoryChoicePolicy() { }
 
     public static Decision selectUnknownMandatory(NativeWindow window, Optional<FrameBinding> expectedFrame) {
@@ -31,6 +31,25 @@ public final class MandatoryChoicePolicy {
     }
 
     public static Decision select(NativeWindow window, Optional<FrameBinding> expectedFrame, Mode mode) {
+        Objects.requireNonNull(window); Objects.requireNonNull(expectedFrame); Objects.requireNonNull(mode);
+        // Confined to this synchronous pure selection. It never qualifies a source, crosses a request,
+        // survives a submission, or grants the caller a reusable observation token.
+        SelectionScope scope = new SelectionScope(window.frame());
+        return IndexedNativeChoices.build(scope, current -> {
+            if (current != scope || !window.frame().equals(current.frame())) {
+                throw new IllegalStateException("mandatory-choice invocation frame changed");
+            }
+        }, window).select(expectedFrame, mode);
+    }
+
+    /** Package adapter owns the exact complete window/index pair and the live owner scope. */
+    static <S> Decision selectIndexed(NativeWindow window, Optional<FrameBinding> expectedFrame, Mode mode,
+            OrderedCandidateIndex<S, ChoiceIdentity, ChoiceEntry> candidates) {
+        return candidates.use(ignored -> selectInternal(window, expectedFrame, mode, candidates));
+    }
+
+    private static <S> Decision selectInternal(NativeWindow window, Optional<FrameBinding> expectedFrame, Mode mode,
+            OrderedCandidateIndex<S, ChoiceIdentity, ChoiceEntry> candidates) {
         Objects.requireNonNull(window); Objects.requireNonNull(expectedFrame); Objects.requireNonNull(mode);
         List<Excluded> excluded = new ArrayList<>();
         List<Duplicate> duplicates = new ArrayList<>();
@@ -55,15 +74,16 @@ public final class MandatoryChoicePolicy {
             return unavailable(window, excluded, duplicates, Optional.empty(), List.of(),
                     "native_complete_choice_list_unavailable", Status.MECHANISM_UNAVAILABLE);
         }
-        Map<ChoiceIdentity, NativeChoice> unique = new LinkedHashMap<>();
-        List<NativeChoice> eligible = new ArrayList<>();
-        for (ChoiceEntry row : window.choices()) {
+        List<NativeChoice> eligible = new ArrayList<>(), displayed = new ArrayList<>();
+        for (int inputPosition = 0; inputPosition < window.choices().size(); inputPosition++) {
+            ChoiceEntry row = window.choices().get(inputPosition);
             if (row instanceof NonChoiceRow nonChoice) {
                 excluded.add(new Excluded(nonChoice.inputIndex(), Optional.empty(), "not_native_choice_mapping"));
                 continue;
             }
             NativeChoice choice = (NativeChoice) row;
-            NativeChoice previous = unique.putIfAbsent(choice.identity(), choice);
+            var first = candidates.first(new OrderedCandidateIndex.Present<>(choice.identity())).orElseThrow();
+            NativeChoice previous = first.position() == inputPosition ? null : (NativeChoice) first.value();
             if (previous != null) {
                 if (!previous.original().equals(choice.original())) {
                     return unavailable(window, excluded, duplicates, Optional.empty(), List.of(),
@@ -72,11 +92,24 @@ public final class MandatoryChoicePolicy {
                 duplicates.add(new Duplicate(choice.inputIndex(), choice.identity()));
                 continue;
             }
+            if (generic && isTrue(choice.visible()) && isTrue(choice.isChoice())
+                    && !(choice.role().hasValue() && NONCHOICE_ROLES.contains(choice.role().value()))) displayed.add(choice);
             String reason = !isTrue(choice.visible()) ? "invisible"
                     : !isTrue(choice.enabled()) ? "disabled" : !isTrue(choice.isChoice()) ? "nonchoice"
                     : choice.role().hasValue() && NONCHOICE_ROLES.contains(choice.role().value()) ? "nonchoice_role" : null;
             if (reason == null) { eligible.add(choice); }
             else { excluded.add(new Excluded(choice.inputIndex(), Optional.of(choice.identity()), reason)); }
+        }
+        // User continuation chooses the actual first display, then checks legality; a disabled left row cannot be skipped.
+        if (generic && displayed.stream().anyMatch(choice -> !isTrue(choice.enabled()))) {
+            if (displayed.size() > 1 && displayed.stream().anyMatch(choice -> choice.geometry().isEmpty()))
+                return unavailable(window, excluded, duplicates, Optional.empty(), List.of(),
+                        "first_displayed_native_choice_order_unavailable", Status.MECHANISM_UNAVAILABLE);
+            if (displayed.size() > 1) displayed.sort(boundsOrder());
+            if (!isTrue(displayed.getFirst().enabled()))
+                return unavailable(window, excluded, duplicates, Optional.of(displayed.size()==1?"single_visible_native_choice_no_geometry_needed":"native_bounds_top_then_left"),
+                        displayed.stream().map(NativeChoice::identity).toList(),
+                        displayed.getFirst().enabled().hasValue()?"first_displayed_native_choice_disabled":"first_displayed_native_choice_enabled_state_unavailable", Status.MECHANISM_UNAVAILABLE);
         }
         if (eligible.isEmpty()) {
             return unavailable(window, excluded, duplicates, Optional.empty(), List.of(),
@@ -86,11 +119,7 @@ public final class MandatoryChoicePolicy {
         if (eligible.size() == 1) {
             order = "single_visible_enabled_native_choice_no_geometry_needed";
         } else if (eligible.stream().allMatch(choice -> choice.geometry().isPresent())) {
-            eligible.sort(Comparator.comparingDouble((NativeChoice choice) -> choice.geometry().orElseThrow().top())
-                    .thenComparingDouble(choice -> choice.geometry().orElseThrow().left())
-                    .thenComparing(choice -> choice.renderedIndex().hasValue()
-                            ? choice.renderedIndex().value() : FALLBACK_RENDERED_INDEX)
-                    .thenComparing(choice -> choice.identity().orderingKey(), MandatoryChoicePolicy::compareCodePoints));
+            eligible.sort(boundsOrder());
             order = "native_bounds_top_then_left";
         } else {
             boolean proof = !generic && window.presentationOrderKind().hasValue()
@@ -121,7 +150,16 @@ public final class MandatoryChoicePolicy {
                 + "; label semantics do not block the user's continuation policy.", Optional.of(chosen), evidence);
     }
 
+    private static Comparator<NativeChoice> boundsOrder() {
+        return Comparator.comparingDouble((NativeChoice choice) -> orderCoordinate(choice.geometry().orElseThrow().top()))
+                .thenComparingDouble(choice -> orderCoordinate(choice.geometry().orElseThrow().left()))
+                .thenComparing(choice -> choice.renderedIndex().hasValue()
+                        ? choice.renderedIndex().value() : FALLBACK_RENDERED_INDEX)
+                .thenComparing(choice -> choice.identity().orderingKey(), MandatoryChoicePolicy::compareCodePoints);
+    }
     private static boolean isTrue(Field<Boolean> value) { return value.hasValue() && value.value(); }
+    /** Python numeric ordering equates signed zeros; only the derived key changes, never source bits. */
+    private static double orderCoordinate(double value) { return value == 0.0 ? 0.0 : value; }
     /** Python compares Unicode code points; Java's default UTF-16 order differs for astral text. */
     private static int compareCodePoints(String left, String right) {
         int a = 0; int b = 0;

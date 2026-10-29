@@ -1,0 +1,4 @@
+org.xar.ck3.control.wave3.planning.m5peacetimeassembly.PeacetimeAssemblyProjectionCatalog
+org.xar.ck3.control.wave3.planning.realmmembership.RealmProjectionCatalog
+org.xar.ck3.control.wave3.planning.scorestate.ScoreStateProjectionPortCatalog
+org.xar.ck3.control.wave3.planning.military.MilitaryPlanningProjectionCatalog

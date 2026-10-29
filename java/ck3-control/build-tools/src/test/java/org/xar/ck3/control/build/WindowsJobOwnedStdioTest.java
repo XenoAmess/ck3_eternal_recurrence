@@ -51,6 +51,82 @@ final class WindowsJobOwnedStdioTest {
         assertFalse(result.commandResult().passed()); assertNotNull(result.commandResult().stopReason());
         assertEquals(0, result.commandResult().accounting().activeProcesses());
     }
+    @Test void actualEofImageDenialKeepsTheOriginalHeldRetirement() throws Exception {
+        var spec = spec("echo");
+        byte[] raw = "actual-eof-window\n".getBytes(StandardCharsets.UTF_8);
+        try (var channel = WindowsJobProcess.startOwnedStdio(spec);
+                var retained = WindowsJobProcess.retainReadOnlyProcess(channel.identity().pid())) {
+            assertEquals(channel.identity(), retained.identity());
+            assertNotEquals(0, retained.waitZero(), "echo peer must be waiting for actual stdin");
+            channel.write(raw, Instant.now().plusSeconds(3));
+            assertArrayEquals(raw, channel.readLine(Instant.now().plusSeconds(3)).rawBytes());
+            // Read the actual owner's existing handles/API. No field is replaced and no
+            // native reply is fabricated. Acquisition occurs while the peer waits for EOF.
+            var ownerField = WindowsJobProcess.OwnedStdio.class.getDeclaredField("owner");
+            ownerField.setAccessible(true);
+            WindowsJobProcess owner = WindowsJobProcess.class.cast(ownerField.get(channel));
+            var apiField = WindowsJobProcess.class.getDeclaredField("nativeApi");
+            var processField = WindowsJobProcess.class.getDeclaredField("process");
+            var jobField = WindowsJobProcess.class.getDeclaredField("job");
+            apiField.setAccessible(true); processField.setAccessible(true); jobField.setAccessible(true);
+            var api = WindowsJobProcess.JobKernel32.class.cast(apiField.get(owner));
+            var process = com.sun.jna.platform.win32.WinBase.PROCESS_INFORMATION.class.cast(processField.get(owner));
+            var job = com.sun.jna.platform.win32.WinNT.HANDLE.class.cast(jobField.get(owner));
+            char[] image = new char[32768];
+            var length = new com.sun.jna.ptr.IntByReference();
+            var belongs = new com.sun.jna.ptr.IntByReference();
+            var created = new com.sun.jna.platform.win32.WinBase.FILETIME();
+            var exited = new com.sun.jna.platform.win32.WinBase.FILETIME();
+            var kernel = new com.sun.jna.platform.win32.WinBase.FILETIME();
+            var user = new com.sun.jna.platform.win32.WinBase.FILETIME();
+            channel.closeInput();
+            long end = System.nanoTime() + Duration.ofSeconds(5).toNanos();
+            int checks = 0;
+            String nativeFailure = null;
+            IOException guardFailure = null;
+            while (System.nanoTime() < end) {
+                int before = api.WaitForSingleObject(process.hProcess, 0);
+                if (before == 0) break;
+                assertEquals(258, before, "original held process wait must be timeout or signalled");
+                String call = null;
+                int code = 0;
+                if (!api.GetProcessTimes(process.hProcess, created, exited, kernel, user)) {
+                    code = com.sun.jna.Native.getLastError(); call = "GetProcessTimes";
+                }
+                else {
+                    length.setValue(image.length);
+                    if (!api.QueryFullProcessImageName(process.hProcess, 0, image, length)) {
+                        code = com.sun.jna.Native.getLastError(); call = "QueryFullProcessImageName";
+                    } else if (!api.IsProcessInJob(process.hProcess, job, belongs)) {
+                        code = com.sun.jna.Native.getLastError(); call = "IsProcessInJob";
+                    } else if (belongs.getValue() == 0) call = "IsProcessInJob(result=0)";
+                }
+                if (call != null) {
+                    int after = api.WaitForSingleObject(process.hProcess, 0);
+                    nativeFailure = "call=" + call + "; win32=" + Integer.toUnsignedString(code)
+                            + "; before=" + Integer.toUnsignedString(before) + "; after=" + Integer.toUnsignedString(after);
+                    try { channel.verifyActualIdentityAndSources(); }
+                    catch (IOException failure) { guardFailure = failure; }
+                    break;
+                }
+                checks++;
+            }
+            var terminal = channel.awaitExit(null);
+            System.out.println("OWNED_STDIO_ACTUAL_NATIVE_EOF probes=" + checks
+                    + "; observation=" + nativeFailure + "; held_signal=" + retained.waitZero() + "; terminal=" + terminal);
+            assertEquals(0, retained.waitZero(), "the original retained process must actually signal");
+            assertEquals(0, terminal.commandResult().accounting().activeProcesses());
+            if (guardFailure != null)
+                throw new AssertionError("original guard failed during the actual EOF exit: " + terminal, guardFailure);
+            successful(terminal);
+            channel.verifyActualIdentityAndSources();
+            assertEquals(channel.identity(), retained.identity());
+            assertEquals(0, retained.exitCode());
+            assertArrayEquals(raw, Files.readAllBytes(spec.command().stdout()));
+            assertEquals("SOFTWARE_STDERR\n", Files.readString(spec.command().stderr()));
+        }
+    }
+
     @Test void rawEchoUsesOriginalJobAndIndependentStderr() throws Exception {
         var spec = spec("echo");
         byte[] raw = "{\"software\":\"\\u6c49\",\"n\":9007199254740993}\n".getBytes(StandardCharsets.UTF_8);

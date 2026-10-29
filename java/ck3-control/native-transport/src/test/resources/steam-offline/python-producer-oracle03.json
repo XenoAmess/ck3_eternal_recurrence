@@ -1,0 +1,470 @@
+{
+  "schema": "xar.steam-python-producer-oracle/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-24T20:50:41.494903+00:00",
+  "scope": "Frozen actual original production functions with existing offline fixtures and one original loopback socket test; no Steam/native live observation or Game admission.",
+  "nonce": "0123456789abcdef0123456789abcdef",
+  "getter_expression": "(() => {\nconst app = globalThis.App;\nif (!app || typeof app.GetCurrentUser !== \"function\" ||\n    typeof app.BIsOfflineMode !== \"function\") throw Error(\"no Steam App\");\nconst user = app.GetCurrentUser();\nif (!user) throw Error(\"no current Steam user\");\nreturn {nonce: \"0123456789abcdef0123456789abcdef\",\n direct: user.bIsOfflineMode, method: app.BIsOfflineMode()};\n})()",
+  "getter_cases": [
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef",
+        "direct": true,
+        "method": true
+      },
+      "status": "offline"
+    },
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef",
+        "direct": false,
+        "method": false
+      },
+      "status": "online"
+    },
+    {
+      "raw": null,
+      "status": "reject"
+    },
+    {
+      "raw": [],
+      "status": "reject"
+    },
+    {
+      "raw": {},
+      "status": "reject"
+    },
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef"
+      },
+      "status": "reject"
+    },
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef",
+        "direct": 1,
+        "method": true
+      },
+      "status": "reject"
+    },
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef",
+        "direct": false,
+        "method": 0
+      },
+      "status": "reject"
+    },
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef",
+        "direct": "false",
+        "method": false
+      },
+      "status": "reject"
+    },
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef",
+        "direct": null,
+        "method": null
+      },
+      "status": "reject"
+    },
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef",
+        "direct": true,
+        "method": false
+      },
+      "status": "reject"
+    },
+    {
+      "raw": {
+        "nonce": "stale",
+        "direct": true,
+        "method": true
+      },
+      "status": "reject"
+    },
+    {
+      "raw": {
+        "nonce": "0123456789abcdef0123456789abcdef",
+        "direct": true,
+        "method": true,
+        "other": 0
+      },
+      "status": "reject"
+    }
+  ],
+  "native_profile_producer_receipts": [
+    {
+      "schema": "xar.steam-offline-state-probe/v2",
+      "machine_id": "synthetic-profile-machine",
+      "observed_at_utc": "2026-10-24T20:50:41.480927+00:00",
+      "nonce": "nonce",
+      "status": "offline",
+      "offline_mode": true,
+      "reason": "observed",
+      "steam": {
+        "pid": 12001,
+        "birth_filetime": "134000000000000001",
+        "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+        "file_version": "10.96.30.42"
+      },
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+        "bytes": 18962584,
+        "sha256": "cb387adefbbac64a3c1490d4275d00daf3a1e0219b4580726ef7681db7429278",
+        "file_id": "1",
+        "mtime_ns": "2"
+      },
+      "endpoint": null,
+      "diagnostics": [],
+      "observation_method": "native_current_user_byte",
+      "native_evidence": {
+        "machine_id": "synthetic-profile-machine",
+        "observed_at_utc": "2026-10-24T20:50:41.480927+00:00",
+        "nonce": "nonce",
+        "module_base": "6442450944",
+        "module_size": 19238912,
+        "value_rva": "17970727",
+        "value_address": "6460421671",
+        "producer_rva": "6384908",
+        "producer_anchor_hex": "440fb60513c9b000488d157d3b7400488bcbe81d9e3b00",
+        "producer_anchor_sha256": "8c801c51b26ff58bfdc5d1c84e68f10f6d8c72396c692c94ab07bc4c784acc7d",
+        "raw_samples": [
+          1,
+          1
+        ],
+        "steam_before": {
+          "pid": 12001,
+          "birth_filetime": "134000000000000001",
+          "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+          "file_version": "10.96.30.42"
+        },
+        "steam_after": {
+          "pid": 12001,
+          "birth_filetime": "134000000000000001",
+          "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+          "file_version": "10.96.30.42"
+        },
+        "source_before": {
+          "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+          "bytes": 18962584,
+          "sha256": "cb387adefbbac64a3c1490d4275d00daf3a1e0219b4580726ef7681db7429278",
+          "file_id": "1",
+          "mtime_ns": "2"
+        },
+        "source_after": {
+          "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+          "bytes": 18962584,
+          "sha256": "cb387adefbbac64a3c1490d4275d00daf3a1e0219b4580726ef7681db7429278",
+          "file_id": "1",
+          "mtime_ns": "2"
+        },
+        "tray_manager_pointer_rva": "17963680",
+        "tray_manager_address": "8589934592",
+        "tray_state_offset": "340",
+        "tray_state_samples": [
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "schema": "xar.steam-offline-state-probe/v2",
+      "machine_id": "synthetic-profile-machine",
+      "observed_at_utc": "2026-10-24T20:50:41.481937+00:00",
+      "nonce": "nonce",
+      "status": "offline",
+      "offline_mode": true,
+      "reason": "observed",
+      "steam": {
+        "pid": 12001,
+        "birth_filetime": "134000000000000001",
+        "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+        "file_version": "11.12.30.7"
+      },
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+        "bytes": 19449496,
+        "sha256": "1b9457943205dc3af0bd53463ba331cbd2a381388699705c02271aac7a2b1252",
+        "file_id": "1",
+        "mtime_ns": "2"
+      },
+      "endpoint": null,
+      "diagnostics": [],
+      "observation_method": "native_current_user_byte",
+      "native_evidence": {
+        "machine_id": "synthetic-profile-machine",
+        "observed_at_utc": "2026-10-24T20:50:41.481937+00:00",
+        "nonce": "nonce",
+        "module_base": "6442450944",
+        "module_size": 19730432,
+        "value_rva": "18435783",
+        "value_address": "6460886727",
+        "producer_rva": "6548044",
+        "producer_anchor_hex": "440fb6057364b500488d150da37700488bcbe83d703d00",
+        "producer_anchor_sha256": "a61305daa160d9175e1ae4dcdcf5aabbda106e3ca759230fa07856e990a040c8",
+        "raw_samples": [
+          1,
+          1
+        ],
+        "steam_before": {
+          "pid": 12001,
+          "birth_filetime": "134000000000000001",
+          "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+          "file_version": "11.12.30.7"
+        },
+        "steam_after": {
+          "pid": 12001,
+          "birth_filetime": "134000000000000001",
+          "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+          "file_version": "11.12.30.7"
+        },
+        "source_before": {
+          "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+          "bytes": 19449496,
+          "sha256": "1b9457943205dc3af0bd53463ba331cbd2a381388699705c02271aac7a2b1252",
+          "file_id": "1",
+          "mtime_ns": "2"
+        },
+        "source_after": {
+          "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+          "bytes": 19449496,
+          "sha256": "1b9457943205dc3af0bd53463ba331cbd2a381388699705c02271aac7a2b1252",
+          "file_id": "1",
+          "mtime_ns": "2"
+        },
+        "tray_manager_pointer_rva": "18428640",
+        "tray_manager_address": "8589934592",
+        "tray_state_offset": "340",
+        "tray_state_samples": [
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "schema": "xar.steam-offline-state-probe/v2",
+      "machine_id": "synthetic-profile-machine",
+      "observed_at_utc": "2026-10-24T20:50:41.482943+00:00",
+      "nonce": "nonce",
+      "status": "offline",
+      "offline_mode": true,
+      "reason": "observed",
+      "steam": {
+        "pid": 12001,
+        "birth_filetime": "134000000000000001",
+        "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+        "file_version": "11.15.70.27"
+      },
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+        "bytes": 19452568,
+        "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id": "1",
+        "mtime_ns": "2"
+      },
+      "endpoint": null,
+      "diagnostics": [],
+      "observation_method": "native_current_user_byte",
+      "native_evidence": {
+        "machine_id": "synthetic-profile-machine",
+        "observed_at_utc": "2026-10-24T20:50:41.482943+00:00",
+        "nonce": "nonce",
+        "module_base": "6442450944",
+        "module_size": 19730432,
+        "value_rva": "18435783",
+        "value_address": "6460886727",
+        "producer_rva": "6548332",
+        "producer_anchor_hex": "440fb6055363b500488d155da67700488bcbe80d713d00",
+        "producer_anchor_sha256": "16316f5b39bac43273fac08a65f62c45af1d41938ce2d13d830ab16e1474966a",
+        "raw_samples": [
+          1,
+          1
+        ],
+        "steam_before": {
+          "pid": 12001,
+          "birth_filetime": "134000000000000001",
+          "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+          "file_version": "11.15.70.27"
+        },
+        "steam_after": {
+          "pid": 12001,
+          "birth_filetime": "134000000000000001",
+          "exe": "Z:\\ck3_mod_rewrite\\steam.exe",
+          "file_version": "11.15.70.27"
+        },
+        "source_before": {
+          "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+          "bytes": 19452568,
+          "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+          "file_id": "1",
+          "mtime_ns": "2"
+        },
+        "source_after": {
+          "path": "Z:\\ck3_mod_rewrite\\steamui.dll",
+          "bytes": 19452568,
+          "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+          "file_id": "1",
+          "mtime_ns": "2"
+        },
+        "tray_manager_pointer_rva": "18428640",
+        "tray_manager_address": "8589934592",
+        "tray_state_offset": "340",
+        "tray_state_samples": [
+          4,
+          4
+        ]
+      }
+    }
+  ],
+  "cef_receipts": [
+    {
+      "schema": "xar.steam-offline-state-probe/v2",
+      "machine_id": "test-machine-0123456789",
+      "observed_at_utc": "2026-10-20T15:00:00Z",
+      "nonce": "0123456789abcdef0123456789abcdef",
+      "reason": "observed",
+      "steam": {
+        "pid": 41,
+        "birth_filetime": "134369704160368681",
+        "exe": "C:/Steam/steam.exe",
+        "file_version": "10.96.30.42"
+      },
+      "source": {
+        "path": "C:/Steam/steamui/chunk.js",
+        "bytes": 14382868,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "file_id": "1407374883818107",
+        "mtime_ns": "1788653822000000000"
+      },
+      "endpoint": {
+        "pid": 42,
+        "birth_filetime": "134369704160368683",
+        "port": 9999,
+        "target_id": "Shared",
+        "target_url": "about:blank"
+      },
+      "diagnostics": [
+        "source_and_process_bound"
+      ],
+      "observation_method": "cef_app_getters",
+      "native_evidence": null,
+      "status": "offline",
+      "offline_mode": true
+    },
+    {
+      "schema": "xar.steam-offline-state-probe/v2",
+      "machine_id": "test-machine-0123456789",
+      "observed_at_utc": "2026-10-20T15:00:00Z",
+      "nonce": "0123456789abcdef0123456789abcdef",
+      "reason": "observed",
+      "steam": {
+        "pid": 41,
+        "birth_filetime": "134369704160368681",
+        "exe": "C:/Steam/steam.exe",
+        "file_version": "10.96.30.42"
+      },
+      "source": {
+        "path": "C:/Steam/steamui/chunk.js",
+        "bytes": 14382868,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "file_id": "1407374883818107",
+        "mtime_ns": "1788653822000000000"
+      },
+      "endpoint": {
+        "pid": 42,
+        "birth_filetime": "134369704160368683",
+        "port": 9999,
+        "target_id": "Shared",
+        "target_url": "about:blank"
+      },
+      "diagnostics": [
+        "source_and_process_bound"
+      ],
+      "observation_method": "cef_app_getters",
+      "native_evidence": null,
+      "status": "online",
+      "offline_mode": false
+    }
+  ],
+  "discovery": {
+    "version": {
+      "Browser": "Chrome/128.0",
+      "Protocol-Version": "1.3"
+    },
+    "targets": [
+      {
+        "type": "page",
+        "id": "good",
+        "title": "SharedJSContext",
+        "url": "about:blank",
+        "webSocketDebuggerUrl": "ws://127.0.0.1:9/devtools/page/good"
+      },
+      {
+        "type": "page",
+        "id": "other",
+        "title": "SharedJSContext",
+        "url": "about:blank",
+        "webSocketDebuggerUrl": "ws://127.0.0.1:9/devtools/page/good"
+      },
+      {
+        "type": "page",
+        "id": "good",
+        "title": "SharedJSContext",
+        "url": "https://steamloopback.host/index?auth=secret",
+        "webSocketDebuggerUrl": "ws://127.0.0.1:9/devtools/page/good"
+      },
+      {
+        "type": "page",
+        "id": "good",
+        "title": "SharedJSContext",
+        "url": "https://steamloopback.host.invalid/",
+        "webSocketDebuggerUrl": "ws://127.0.0.1:9/devtools/page/good"
+      }
+    ],
+    "expected": [
+      [
+        "good",
+        "about:blank",
+        "ws://127.0.0.1:9/devtools/page/good"
+      ]
+    ]
+  },
+  "original_socket_test": {
+    "run": 1,
+    "failures": 0,
+    "errors": 0
+  },
+  "producer_refs": [
+    {
+      "path": "Z:/ck3_mod_rewrite/tools/steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/tools/steam_offline_state_contract.py",
+      "bytes": 17615,
+      "sha256": "148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/tools/steam_offline_native_provider_v1.py",
+      "bytes": 16681,
+      "sha256": "e0766561e704164eb1ce4b34349e6546ad0791de1be89581d09c736f3af7963c"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/tools/steam_offline_native_profiles.py",
+      "bytes": 4643,
+      "sha256": "a5695987b363c10509fbbd95d5910f0ebcdf9609ff0a8fd24d7ddbece50b000c"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/tools/ck3_live_run_id.py",
+      "bytes": 18178,
+      "sha256": "8f95f3d24a9b853c38d6fe056bb04c006fce78fbf3cfd47e48f48f211979f4c1"
+    }
+  ]
+}

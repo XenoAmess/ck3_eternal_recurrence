@@ -1,0 +1,20 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T12:44:58.437671+00:00",
+  "command": [
+    "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\interactive_task_owner_a10_v1.py",
+    "unregister",
+    "--spec",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\display-owner01\\SPEC.json",
+    "--spec-sha",
+    "0194f837c991963dd6adc5f74e4fb6c38b4a1ace0e3d4aebac47ed01d1b681ca",
+    "--allow-production"
+  ],
+  "returncode": 0,
+  "stdout": "{\"machine_id\": \"xenoamess-full-tower-eb9d2c1186\", \"utc\": \"2026-10-22T12:44:58.421245+00:00\", \"task_name\": \"XARG2ManagedOwner-e458207478364bfe9927aba01ae3e478\", \"operation\": \"unregister\", \"actual\": {\"sid\": \"S-1-5-21-2908730481-166481001-1318755029-1001\", \"logon_type\": 3, \"run_level\": 0, \"actions\": 1, \"triggers\": 0, \"action_type\": 0, \"path\": \"C:\\\\Users\\\\xenoa\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\pythonw.exe\", \"arguments\": \"-B D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\robert30-v20261019-campaign01\\\\runtime-a46\\\\interactive_task_owner_a10_v1.py bootstrap --spec D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\p51-fresh1066-v20261019-prepare01\\\\c23-source23-native30-cold100\\\\current-saved-a46-runtime-prep01\\\\display-owner01\\\\SPEC.json --spec-sha 0194f837c991963dd6adc5f74e4fb6c38b4a1ace0e3d4aebac47ed01d1b681ca\", \"cwd\": \"D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\robert30-v20261019-campaign01\\\\runtime-a46\", \"hidden\": true, \"limit\": \"PT0S\", \"demand\": true, \"multiple\": 2, \"hard_terminate\": false, \"instances\": 0, \"last_result\": 0, \"absent_after\": true}}\n",
+  "stderr": ""
+}

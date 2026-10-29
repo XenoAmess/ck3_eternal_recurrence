@@ -1,0 +1,28 @@
+{
+  "schema": "xar.declaration-continuity.original-coalition-base/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source": "wave2-military/src/test/resources/coalitionreceipt/original-producer-golden01.json",
+  "source_sha256": "7b90bd8ca10faea6d70d687f803ebc2883ebb55c74820cc6104132d2dd42b703",
+  "scope": "Existing original Python-producer golden base, projected into a software Driver/canonical fixture; no native or Game qualification.",
+  "base": {
+    "declaration": {"casus_belli_index":17,"casus_belli_key":"county_conquest_cb","claimant_character_id":-1,"configuration_index":0,"declaration_id":"909-17-0","source":"native","target_character_id":909,"target_title_ids":[91]},
+    "expected_request_id":"unit-fresh-request",
+    "frame": {
+      "execution_receipt":{"capture_epoch":17,"query_sequence":13,"ticket":13},"ok":true,"protocol_version":1,"request_id":"unit-fresh-request","type":"command_result",
+      "result": {
+        "accepted":true,"advertised":true,"domain_key":"prewar_force_coalition_coverage_v2","private_build":false,"read_only":true,"status":"available","step":"query-prewar-force-coalition-coverage-v2",
+        "prewar_force_coalition_coverage_v2": {
+          "actor_character_id":29829,"actor_lower_soldiers":1500,"capture_epoch":17,"complete_initial_participants_ready":true,"date_raw":53171400,"declaration_id":"909-17-0","effective_target_character_id":null,"enemy_force_coverage_complete":true,"enemy_upper_soldiers":1000,
+          "executable_sha256":"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518","game_version":"1.20.0.4","missing_required_domains":[],"native_revision":5,"public_revision":6,"query_sequence":13,"read_only":true,"schema_version":2,"status":"available","ticket":13,
+          "final_cb_roles":{"available":true,"final_can_send":true,"native_fallback":false,"primary_attacker_character_id":29829,"primary_defender_character_id":909,"source":"finalized_selected_cb_context","unavailable_reason":null},
+          "native_mobilization_qualification":{"available":true,"component_combination":"maximum_proven_component","default_raise_province_id":1,"executable_lower_ready":true,"executable_lower_soldiers":1500,"native_raise_legal":true,"native_unraised_stock_ready":true,"native_unraised_stock_soldiers":1500,"physical_inventory_lower_soldiers":1500,"raised_commandable_lower_soldiers":null,"raised_lower_ready":false,"source":"actual4_raise_command_final_validator_and_owned_current_rosters","unavailable_reason":null,"unraised_lower_ready":true,"unraised_lower_soldiers":1500},
+          "owner_forces":[{"actor_lower_ready":true,"actor_lower_soldiers":1500,"inventory_scope":"same_frame_owned_current_inventory_v1","inventory_upper_ready":true,"inventory_upper_soldiers":1500,"owner_character_id":29829,"unavailable_reasons":[]},{"actor_lower_ready":false,"actor_lower_soldiers":null,"inventory_scope":"same_frame_owned_current_inventory_v1","inventory_upper_ready":true,"inventory_upper_soldiers":1000,"owner_character_id":909,"unavailable_reasons":[]}],
+          "potential_enemy_participants":{"additional_supporters_complete":true,"available":true,"collection_complete":true,"current_allies_complete":true,"holy_joiners_complete":true,"participants":[{"character_id":909,"sources":["primary_defender"]}],"selected_cb_initial_complete":true,"unavailable_reason":null},
+          "selected_declaration":{"casus_belli_index":17,"casus_belli_key":"county_conquest_cb","claimant_character_id":-1,"configuration_index":0,"target_character_id":909,"target_title_ids":[91]},
+          "two_round_observation":{"complete_dto_equal":true,"frame_binding_equal":true,"round_count":2,"unavailable_reason":null}
+        }
+      }
+    },
+    "snapshot":{"date_raw":53171400,"declarable_wars":[{"casus_belli_index":17,"casus_belli_key":"county_conquest_cb","claimant_character_id":-1,"configuration_index":0,"declaration_id":"909-17-0","source":"native","target_character_id":909,"target_title_ids":[91]}],"diagnostics":{"connection_generation":2,"hello":{"bridge_version":"0.1.0.4","expected_ck3_sha256":"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518","expected_ck3_version":"1.20.0.4"}},"map_ready":true,"native_revision":5,"paused":true,"played_character":{"alive":true,"character_id":29829},"revision":6}
+  }
+}

@@ -1,0 +1,4 @@
+# Preserve the original SHA-bound parser and source fixture bytes.
+original-request02.json -text
+historical-catalog320.json -text
+original-sources/*.txt -text

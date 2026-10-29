@@ -1,0 +1,30 @@
+{
+  "schema": "xar.ck3.capture-closed-before-media-hash/v1",
+  "at_utc": "2026-10-22T12:43:26.968854+00:00",
+  "session_id": "06c24d02-3c09-4dbb-8f21-c23712eb2d5b",
+  "game_pid": 50688,
+  "game_creation_filetime": 134371430348828741,
+  "obs_pid": 232676,
+  "obs_creation_filetime": 134371430730029878,
+  "output_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\recordings\\06c24d02-3c09-4dbb-8f21-c23712eb2d5b.mkv",
+  "output_bytes": 2096839914,
+  "closed_file_probe": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\recordings\\06c24d02-3c09-4dbb-8f21-c23712eb2d5b\\closed-file-probe.json",
+    "sha256": "9091504ff78e23aee94f9cf02c15ad7481d7318d5be4dcd0a9872a034cbf37cb"
+  },
+  "cleanup": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\recordings\\06c24d02-3c09-4dbb-8f21-c23712eb2d5b\\cleanup.json",
+    "sha256": "4d21b52597621e4f535a12f9031d0088df85edec32f11df75b32354e253a8feb"
+  },
+  "inputs_unbound": true,
+  "engine_close": {
+    "requested": true,
+    "actual_exit_code": 0,
+    "normal_exit_proven": true,
+    "forced_process_calls": 0
+  },
+  "media_sha256_pending": true,
+  "final_completed_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a46\\recordings\\06c24d02-3c09-4dbb-8f21-c23712eb2d5b\\completed.json",
+  "postprocessing_worker_pid": 72544,
+  "capture_custody_released_before_publication": true
+}

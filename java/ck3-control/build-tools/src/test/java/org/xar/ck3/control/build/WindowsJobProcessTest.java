@@ -1,11 +1,6 @@
 package org.xar.ck3.control.build;
 
 import static org.junit.jupiter.api.Assertions.*;
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Shell32Util;
-import com.sun.jna.win32.StdCallLibrary;
-import com.sun.jna.win32.W32APIOptions;
 import java.math.BigInteger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,15 +19,42 @@ import org.junit.jupiter.api.io.TempDir;
 final class WindowsJobProcessTest {
     @TempDir Path temporary;
     private enum DrainFailure { COMMAND_TIMEOUT, LEASE_EXPIRED, GUARD, INTERRUPTED }
-    public record DetachedArgv(String mode, List<String> nativeArguments,
-            List<String> launcherArguments, String nativeEncoding) {
+    public record DetachedArgv(String mode, List<String> arguments) {
         public DetachedArgv {
             if (!"detached-argv".equals(mode)) throw new IllegalArgumentException("Exact detached argv mode required");
-            nativeArguments = List.copyOf(nativeArguments); launcherArguments = List.copyOf(launcherArguments);
-            if (nativeEncoding == null || nativeEncoding.isBlank()) throw new IllegalArgumentException("Observed native encoding required");
+            arguments = List.copyOf(arguments);
         }
     }
-    public interface CommandLineKernel32 extends StdCallLibrary { Pointer GetCommandLineW(); }
+
+    /** Nullable VM properties mean the child did not publish that encoding. */
+    public record ArgvEncodings(int windowsAnsiCodePage, String defaultCharset,
+            String nativeEncoding, String stdoutEncoding, String stderrEncoding) {
+        public ArgvEncodings {
+            if (windowsAnsiCodePage <= 0 || defaultCharset == null || defaultCharset.isBlank())
+                throw new IllegalArgumentException("Actual child ANSI code page and default charset required");
+        }
+    }
+
+    /** Native Windows argv and Java launcher argv are independent observations. */
+    public record DetachedArgvObservation(String schema, DetachedArgv nativeArguments,
+            DetachedArgv javaMainArguments, ArgvEncodings encodings) {
+        public DetachedArgvObservation {
+            if (!"xar.windows-owned-argv-observation/v1".equals(schema)
+                    || nativeArguments == null || javaMainArguments == null || encodings == null)
+                throw new IllegalArgumentException("Both original argument observations and encodings required");
+        }
+    }
+
+    public interface ArgvKernel32 extends com.sun.jna.win32.StdCallLibrary {
+        com.sun.jna.Pointer GetCommandLineW();
+        int GetACP();
+        com.sun.jna.Pointer LocalFree(com.sun.jna.Pointer memory);
+    }
+
+    public interface ArgvShell32 extends com.sun.jna.win32.StdCallLibrary {
+        com.sun.jna.Pointer CommandLineToArgvW(com.sun.jna.WString original,
+                com.sun.jna.ptr.IntByReference count);
+    }
 
     @Test void actualChildExit42RetainsNativeBirthAndRejectsSuccess() throws Exception {
         Path output = temporary.resolve("exit42.stdout");
@@ -168,21 +190,32 @@ final class WindowsJobProcessTest {
         }
     }
 
-    @Test void detachedJavaIsTheOnlyOwnedMemberAndPreservesCompleteOutputAndArguments() throws Exception {
+    @Test void detachedCreateProcessWPreservesNativeArgumentsAndRetainsTheSeparateJavaLauncherObservation() throws Exception {
         Path output = temporary.resolve("detached-argv.stdout");
         Path gate = temporary.resolve("detached-argv.release");
-        List<String> expected = List.of("", "value with spaces", "中文 Ω", "\"quoted\"", "trailing\\", "slash\\\"mix");
+        List<String> expected = List.of("", "value with spaces", "中文 Ω 😀 e\u0301", "\"quoted\"", "trailing\\", "slash\\\"mix");
         List<String> childArguments = new ArrayList<>(List.of(gate.toString())); childArguments.addAll(expected);
         WindowsJobProcess.CommandSpec command = spec("detached-argv", output, childArguments);
         try (WindowsJobProcess owner = WindowsJobProcess.start(command, WindowsJobProcess.ConsoleMode.DETACHED);
                 WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(owner.identity().pid())) {
-            DetachedArgv actual = awaitDetachedArgv(output);
-            assertEquals("detached-argv", actual.mode()); assertEquals(expected, actual.nativeArguments());
-            assertEquals(expected.size(), actual.launcherArguments().size());
+            DetachedArgvObservation actual = awaitDetachedArgv(output);
+            // The producer promises CreateProcessW argv. OpenJDK's Windows launcher
+            // independently projects that UTF-16 command line through CP_ACP before main.
+            assertEquals(new DetachedArgv("detached-argv", expected), actual.nativeArguments());
+            assertEquals(expected.size(), actual.javaMainArguments().arguments().size());
             for (int index = 0; index < expected.size(); index++) {
                 if (expected.get(index).codePoints().allMatch(value -> value < 128))
-                    assertEquals(expected.get(index), actual.launcherArguments().get(index));
+                    assertEquals(expected.get(index), actual.javaMainArguments().arguments().get(index));
             }
+            assertTrue(actual.encodings().windowsAnsiCodePage() > 0);
+            if(actual.encodings().windowsAnsiCodePage()==1252){
+                assertNotEquals(expected,actual.javaMainArguments().arguments(),"The original CP1252 Java launcher loss must remain a real negative observation");
+                assertTrue(actual.javaMainArguments().arguments().get(2).contains("?"));
+            }else if(actual.encodings().windowsAnsiCodePage()==65001){
+                assertEquals(expected,actual.javaMainArguments().arguments());
+            }
+            System.out.write(ControlBuild.strictMapper().writeValueAsBytes(actual));
+            System.out.write('\n'); System.out.flush();
             assertEquals(owner.identity(), retained.identity()); assertEquals(258, retained.waitZero()); assertEquals(259, retained.exitCode());
             WindowsJobProcess.Accounting live = owner.accounting();
             assertEquals(1, live.activeProcesses(), "the live assigned Java root must be the one and only actual Job member");
@@ -194,7 +227,7 @@ final class WindowsJobProcessTest {
             WindowsJobProcess.CommandResult terminal = owner.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
             assertTrue(terminal.passed()); assertEquals(0, terminal.exitCode()); assertNull(terminal.stopReason());
             assertEquals(0, terminal.accounting().activeProcesses()); assertActuallyExitedChild(retained, 0);
-            assertEquals(actual, ControlBuild.strictMapper().readValue(Files.readAllBytes(output), DetachedArgv.class));
+            assertEquals(actual, ControlBuild.strictMapper().readValue(Files.readAllBytes(output), DetachedArgvObservation.class));
             assertTrue(Files.readString(command.stderr()).contains("DETACHED_STDERR_OK"));
         }
     }
@@ -237,14 +270,32 @@ final class WindowsJobProcessTest {
         }
     }
 
-    private static DetachedArgv awaitDetachedArgv(Path output) throws Exception {
+    private static DetachedArgvObservation awaitDetachedArgv(Path output) throws Exception {
         long deadline = System.nanoTime() + Duration.ofSeconds(10).toNanos();
         while (System.nanoTime() - deadline < 0) {
             if (Files.isRegularFile(output) && Files.readString(output).endsWith("\n"))
-                return ControlBuild.strictMapper().readValue(Files.readAllBytes(output), DetachedArgv.class);
+                return ControlBuild.strictMapper().readValue(Files.readAllBytes(output), DetachedArgvObservation.class);
             Thread.sleep(10);
         }
         throw new AssertionError("actual detached child output was not fully observed");
+    }
+
+    @Test void argumentObservationWireKeepsBothViewsAndRejectsMissingOrWrongTypes() throws Exception {
+        DetachedArgv unicode = new DetachedArgv("detached-argv", List.of("中文 Ω 😀", "", "\\\""));
+        DetachedArgvObservation observation = new DetachedArgvObservation("xar.windows-owned-argv-observation/v1",
+                unicode, unicode, new ArgvEncodings(65001, "UTF-8", "UTF-8", "UTF-8", "UTF-8"));
+        var mapper = ControlBuild.strictMapper();
+        byte[] original = mapper.writeValueAsBytes(observation);
+        assertEquals(observation, mapper.readValue(original, DetachedArgvObservation.class));
+        assertArrayEquals(original, mapper.writeValueAsBytes(mapper.readValue(original, DetachedArgvObservation.class)));
+        for (String missing : List.of("native_arguments", "java_main_arguments", "encodings")) {
+            var row = mapper.readTree(original).deepCopy();
+            ((com.fasterxml.jackson.databind.node.ObjectNode) row).remove(missing);
+            assertThrows(IOException.class, () -> mapper.readValue(mapper.writeValueAsBytes(row), DetachedArgvObservation.class));
+        }
+        var wrongType = (com.fasterxml.jackson.databind.node.ObjectNode) mapper.readTree(original);
+        ((com.fasterxml.jackson.databind.node.ObjectNode) wrongType.get("encodings")).put("windows_ansi_code_page", true);
+        assertThrows(IOException.class, () -> mapper.readValue(mapper.writeValueAsBytes(wrongType), DetachedArgvObservation.class));
     }
 
     private static void awaitRootExit(WindowsJobProcess owner) throws InterruptedException {
@@ -420,23 +471,55 @@ final class WindowsJobProcessTest {
 
     public static final class Child {
         private Child() {}
+
+        private static List<String> originalWideMainArguments() {
+            ArgvKernel32 kernel = com.sun.jna.Native.load("kernel32", ArgvKernel32.class,
+                    com.sun.jna.win32.W32APIOptions.UNICODE_OPTIONS);
+            ArgvShell32 shell = com.sun.jna.Native.load("shell32", ArgvShell32.class,
+                    com.sun.jna.win32.W32APIOptions.UNICODE_OPTIONS);
+            com.sun.jna.Pointer original = kernel.GetCommandLineW();
+            if (original == null) throw new com.sun.jna.platform.win32.Win32Exception(com.sun.jna.Native.getLastError());
+            String command = original.getWideString(0);
+            if (command.isEmpty() || command.length() >= 32768)
+                throw new IllegalStateException("Bounded actual Windows command line required");
+            var count = new com.sun.jna.ptr.IntByReference();
+            com.sun.jna.Pointer block = shell.CommandLineToArgvW(new com.sun.jna.WString(command), count);
+            if (block == null) throw new com.sun.jna.platform.win32.Win32Exception(com.sun.jna.Native.getLastError());
+            try {
+                if (count.getValue() < 1 || count.getValue() > 32768)
+                    throw new IllegalStateException("Bounded actual Windows argument count required");
+                List<String> words = new ArrayList<>();
+                for (int i = 0; i < count.getValue(); i++) {
+                    com.sun.jna.Pointer value = block.getPointer((long) i * com.sun.jna.Native.POINTER_SIZE);
+                    if (value == null) throw new IllegalStateException("Actual argument pointer missing");
+                    words.add(value.getWideString(0));
+                }
+                int main = words.indexOf(Child.class.getName());
+                if (main < 1 || main != words.lastIndexOf(Child.class.getName()) || main + 1 >= words.size())
+                    throw new IllegalStateException("Unique original child main class boundary required");
+                return List.copyOf(words.subList(main + 1, words.size()));
+            } finally {
+                if (kernel.LocalFree(block) != null)
+                    throw new com.sun.jna.platform.win32.Win32Exception(com.sun.jna.Native.getLastError());
+            }
+        }
+
         public static void main(String[] args) throws Exception {
             if (args[0].equals("detached-argv")) {
                 if (args.length < 2) throw new IllegalArgumentException("One explicit detached release gate required");
-                Path gate = Path.of(args[1]);
-                // JDK-8337506: Java 21 projects Windows argv through the ANSI code page.
-                // Observe CreateProcessW's UTF-16 arguments directly and retain that projection separately.
-                var api = Native.load("kernel32", CommandLineKernel32.class, W32APIOptions.UNICODE_OPTIONS);
-                List<String> nativeWords = List.of(Shell32Util.CommandLineToArgv(api.GetCommandLineW().getWideString(0)));
-                int mainClass = nativeWords.indexOf(Child.class.getName());
-                if (mainClass < 1 || nativeWords.lastIndexOf(Child.class.getName()) != mainClass)
-                    throw new IllegalStateException("Unique actual Java main class argument required");
-                List<String> nativeMain = nativeWords.subList(mainClass + 1, nativeWords.size());
-                if (nativeMain.size() != args.length || !nativeMain.get(0).equals(args[0]) || !nativeMain.get(1).equals(args[1]))
-                    throw new IllegalStateException("Native main arguments differ from the actual child invocation");
-                var actual = new DetachedArgv("detached-argv", nativeMain.subList(2, nativeMain.size()),
-                        List.of(args).subList(2, args.length), System.getProperty("native.encoding"));
-                System.out.write(ControlBuild.strictMapper().writeValueAsBytes(actual));
+                List<String> nativeArguments = originalWideMainArguments();
+                if (nativeArguments.size() != args.length || !nativeArguments.getFirst().equals("detached-argv"))
+                    throw new IllegalStateException("Native and launcher argument boundaries differ");
+                Path gate = Path.of(nativeArguments.get(1)); List<String> actual = new ArrayList<>();
+                for (int i = 2; i < args.length; i++) actual.add(args[i]);
+                ArgvKernel32 kernel = com.sun.jna.Native.load("kernel32", ArgvKernel32.class,
+                        com.sun.jna.win32.W32APIOptions.UNICODE_OPTIONS);
+                DetachedArgvObservation observation = new DetachedArgvObservation("xar.windows-owned-argv-observation/v1",
+                        new DetachedArgv("detached-argv", nativeArguments.subList(2, nativeArguments.size())),
+                        new DetachedArgv("detached-argv", actual), new ArgvEncodings(kernel.GetACP(),
+                                java.nio.charset.Charset.defaultCharset().name(), System.getProperty("native.encoding"),
+                                System.getProperty("stdout.encoding"), System.getProperty("stderr.encoding")));
+                System.out.write(ControlBuild.strictMapper().writeValueAsBytes(observation));
                 System.out.write('\n'); System.out.flush();
                 System.err.write("DETACHED_STDERR_OK\n".getBytes(java.nio.charset.StandardCharsets.UTF_8)); System.err.flush();
                 long deadline = System.nanoTime() + Duration.ofSeconds(20).toNanos();

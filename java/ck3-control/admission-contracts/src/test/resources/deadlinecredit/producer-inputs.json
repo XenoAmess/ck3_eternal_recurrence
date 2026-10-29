@@ -1,0 +1,33 @@
+{
+  "schema": "xar.ck3.java-deadline-producer-inputs/v1",
+  "configurations": [
+    {"id":"main","campaign_id":"software-fixture","start_date":"1066.9.15","months":360},
+    {"id":"clamp","campaign_id":"clamp-fixture","start_date":"1066.1.31","months":3}
+  ],
+  "cases": [
+    {"name":"founding-summary","operation":"configure","configuration_id":"main"},
+    {"name":"repeat-same-foundation","operation":"configure_repeat","configuration_id":"main"},
+    {"name":"replace-campaign-rejected","operation":"configure_replace","configuration_id":"main","changes":{"campaign_id":"foreign"}},
+    {"name":"replace-duration-rejected","operation":"configure_replace","configuration_id":"main","changes":{"months":12}},
+    {"name":"one-day-at-foundation","operation":"deadline","configuration_id":"main","current_day_offset":0,"proposed_day_offset":1},
+    {"name":"clip-first-month","operation":"deadline","configuration_id":"main","current_day_offset":0,"proposed_day_offset":45},
+    {"name":"exact-month-uses-next-month","operation":"deadline","configuration_id":"main","current_day_offset":30,"proposed_day_offset":75},
+    {"name":"one-day-before-month","operation":"deadline","configuration_id":"main","current_day_offset":29,"proposed_day_offset":31},
+    {"name":"many-months-skipped-not-reconstructed","operation":"deadline","configuration_id":"main","current_day_offset":400,"proposed_day_offset":445},
+    {"name":"endpoint-reached","operation":"deadline","configuration_id":"main","current_day_offset":10950,"proposed_day_offset":10951},
+    {"name":"endpoint-overshot","operation":"deadline","configuration_id":"main","current_day_offset":10951,"proposed_day_offset":10952},
+    {"name":"before-founding-rejected","operation":"deadline","configuration_id":"main","current_day_offset":-1,"proposed_day_offset":1},
+    {"name":"stationary-target-rejected","operation":"deadline","configuration_id":"main","current_day_offset":1,"proposed_day_offset":1},
+    {"name":"backward-target-rejected","operation":"deadline","configuration_id":"main","current_day_offset":2,"proposed_day_offset":1},
+    {"name":"fractional-start-rejected","operation":"deadline","configuration_id":"main","current_day_offset":1,"proposed_day_offset":2,"current_raw_adjustment":1},
+    {"name":"fractional-target-rejected","operation":"deadline","configuration_id":"main","current_day_offset":1,"proposed_day_offset":2,"proposed_raw_adjustment":1},
+    {"name":"beyond-long-requested-target","operation":"deadline","configuration_id":"main","current_day_offset":0,"proposed_day_offset":"1267650600228229401496703205376"},
+    {"name":"month-end-clamp-retains-anchor","operation":"deadline","configuration_id":"clamp","current_day_offset":28,"proposed_day_offset":75},
+    {"name":"month-end-third-boundary","operation":"deadline","configuration_id":"clamp","current_day_offset":59,"proposed_day_offset":65},
+    {"name":"no-configuration-is-unmodified","operation":"no_configuration"},
+    {"name":"endpoint-paused-zero-day","operation":"endpoint","configuration_id":"main","current_day_offset":10950,"proposed_day_offset":10951,"frame":{"paused":true,"snapshot_id":"native:123","revision":124}},
+    {"name":"endpoint-unpaused-zero-day","operation":"endpoint","configuration_id":"main","current_day_offset":10951,"proposed_day_offset":10952,"frame":{"paused":false,"snapshot_id":"native:124","revision":125}},
+    {"name":"endpoint-fields-missing-to-explicit-null","operation":"endpoint","configuration_id":"main","current_day_offset":10950,"proposed_day_offset":10951,"frame":{}},
+    {"name":"endpoint-fields-explicit-null","operation":"endpoint","configuration_id":"main","current_day_offset":10950,"proposed_day_offset":10951,"frame":{"paused":null,"snapshot_id":null,"revision":null}}
+  ]
+}

@@ -107,7 +107,7 @@ class CompiledGoldenCaptureTest {
         assertEquals(CompiledGoldenCapture.Status.RED, result.status()); assertEquals(0, result.childrenStarted());
         assertEquals(1, result.observations().size()); assertTrue(result.error().contains("caller.json"));
         assertFalse(Files.exists(Path.of(first.outputPath())));
-        var parsed = ControlBuild.strictMapper().readValue(Files.readAllBytes(receiptPath), CompiledGoldenCapture.Receipt.class);
+        var parsed = CompiledGoldenCapture.parseReceipt(Files.readAllBytes(receiptPath));
         assertEquals(result, parsed);
         assertThrows(IOException.class, () -> CompiledGoldenCapture.acceptedReceipt(ControlBuild.FileRef.measure(receiptPath), CompiledGoldenCapture.Mode.QUALIFY_ONLY));
         Path captureReceipt = temporary.resolve("capture-rejected.json");
@@ -132,6 +132,128 @@ class CompiledGoldenCaptureTest {
         assertThrows(IllegalArgumentException.class, () -> new CompiledGoldenCapture.Receipt(CompiledGoldenCapture.RECEIPT_SCHEMA,
                 good.machineId(), Instant.now().toString(), CompiledGoldenCapture.Mode.CAPTURE, CompiledGoldenCapture.Status.PASS,
                 ref(temporary.resolve("batch.json")), good, limits(), 0, List.of(), null));
+    }
+
+    @Test void actualLegacyNoChildReceiptRemainsHistoricalAndCannotBeRelabelledCurrent() throws Exception {
+        var all = batch(WindowsJobProcess.currentMachineId());
+        var one = new CompiledGoldenCapture.Batch(all.schema(), all.machineId(), List.of(all.captures().getFirst()),
+                List.of(all.compiledInputProfiles().getFirst()));
+        Path input = temporary.resolve("actual-missing-compiler-batch.json");
+        Files.write(input, ControlBuild.strictMapper().writeValueAsBytes(one));
+        Path current = temporary.resolve("actual-red-current.json");
+        var produced = CompiledGoldenCapture.execute(ControlBuild.FileRef.measure(input), current, limits(), CompiledGoldenCapture.Mode.QUALIFY_ONLY);
+        assertEquals(CompiledGoldenCapture.Status.RED, produced.status()); assertEquals(0, produced.childrenStarted());
+        assertEquals(null, produced.observations().getFirst().invocationEvidence());
+        ObjectNode legacy = ControlBuild.strictMapper().readValue(Files.readAllBytes(current), ObjectNode.class);
+        legacy.put("schema", CompiledGoldenCapture.HISTORICAL_RECEIPT_SCHEMA);
+        ((ObjectNode) legacy.path("observations").get(0)).remove("invocation_evidence");
+        Path historical = temporary.resolve("explicit-v1-historical.json");
+        Files.write(historical, ControlBuild.strictMapper().writeValueAsBytes(legacy));
+        var pin = ControlBuild.FileRef.measure(historical);
+        var metadata = CompiledGoldenCapture.historicalReceiptMetadata(pin);
+        assertEquals(CompiledGoldenCapture.HISTORICAL_RECEIPT_SCHEMA, metadata.schema());
+        assertEquals(produced.error(), metadata.error());
+        assertEquals(produced.observations().getFirst().before(), metadata.observations().getFirst().before());
+        assertEquals(null, metadata.observations().getFirst().invocationEvidence());
+        IOException rejection = assertThrows(IOException.class,
+                () -> CompiledGoldenCapture.acceptedReceipt(pin, CompiledGoldenCapture.Mode.CAPTURE));
+        assertTrue(rejection.getMessage().contains("Historical capture")); pin.verify();
+        Path roundtrip = temporary.resolve("historical-versioned-roundtrip.json");
+        Files.write(roundtrip, CompiledGoldenCapture.encodeReceipt(metadata));
+        assertEquals(metadata, CompiledGoldenCapture.historicalReceiptMetadata(ControlBuild.FileRef.measure(roundtrip)));
+        assertFalse(ControlBuild.strictMapper().readTree(Files.readAllBytes(roundtrip)).path("observations").get(0).has("invocation_evidence"));
+
+        // Adding a new-schema field to a v1 record never retroactively mints invocation custody.
+        ((ObjectNode) legacy.path("observations").get(0)).putNull("invocation_evidence");
+        Path relabelled = temporary.resolve("rejected-v1-new-field.json");
+        Files.write(relabelled, ControlBuild.strictMapper().writeValueAsBytes(legacy));
+        assertThrows(IOException.class, () -> CompiledGoldenCapture.historicalReceiptMetadata(ControlBuild.FileRef.measure(relabelled)));
+
+        // v2 records retain their actual argv field shape but cannot claim the new preparation custody.
+        ObjectNode unprepared = ControlBuild.strictMapper().readValue(Files.readAllBytes(current), ObjectNode.class);
+        unprepared.put("schema", CompiledGoldenCapture.UNPREPARED_RECEIPT_SCHEMA);
+        Path v2 = temporary.resolve("explicit-v2-unprepared-metadata.json");
+        Files.write(v2, ControlBuild.strictMapper().writeValueAsBytes(unprepared));
+        var v2Pin = ControlBuild.FileRef.measure(v2);
+        var v2Metadata = CompiledGoldenCapture.historicalReceiptMetadata(v2Pin);
+        assertEquals(CompiledGoldenCapture.UNPREPARED_RECEIPT_SCHEMA, v2Metadata.schema());
+        Path v2Roundtrip = temporary.resolve("unprepared-v2-roundtrip.json");
+        Files.write(v2Roundtrip, CompiledGoldenCapture.encodeReceipt(v2Metadata));
+        assertEquals(v2Metadata, CompiledGoldenCapture.historicalReceiptMetadata(ControlBuild.FileRef.measure(v2Roundtrip)));
+        assertThrows(IOException.class, () -> CompiledGoldenCapture.acceptedReceipt(v2Pin, CompiledGoldenCapture.Mode.CAPTURE));
+
+        // The genuine no-child RED producer also preserves v3's null original invocation.
+        // It never acquires a new native witness merely because the reader now understands v4.
+        ObjectNode jdkOnly = ControlBuild.strictMapper().readValue(Files.readAllBytes(current), ObjectNode.class);
+        jdkOnly.put("schema", CompiledGoldenCapture.JDK_ONLY_RECEIPT_SCHEMA);
+        Path v3 = temporary.resolve("explicit-v3-jdk-only-metadata.json");
+        Files.write(v3, ControlBuild.strictMapper().writeValueAsBytes(jdkOnly));
+        var v3Pin = ControlBuild.FileRef.measure(v3);
+        var v3Metadata = CompiledGoldenCapture.historicalReceiptMetadata(v3Pin);
+        assertEquals(CompiledGoldenCapture.JDK_ONLY_RECEIPT_SCHEMA, v3Metadata.schema());
+        assertEquals(produced.error(), v3Metadata.error());
+        assertEquals(null, v3Metadata.observations().getFirst().invocationEvidence());
+        assertEquals(null, v3Metadata.observations().getFirst().historicalInvocationEvidence());
+        Path v3Roundtrip = temporary.resolve("jdk-only-v3-roundtrip.json");
+        Files.write(v3Roundtrip, CompiledGoldenCapture.encodeReceipt(v3Metadata));
+        assertEquals(v3Metadata, CompiledGoldenCapture.historicalReceiptMetadata(ControlBuild.FileRef.measure(v3Roundtrip)));
+        assertThrows(IOException.class, () -> CompiledGoldenCapture.acceptedReceipt(v3Pin, CompiledGoldenCapture.Mode.CAPTURE));
+
+        ((ObjectNode) jdkOnly.path("observations").get(0)).putNull("historical_invocation_evidence");
+        Path memorySlot = temporary.resolve("rejected-wire-memory-slot.json");
+        Files.write(memorySlot, ControlBuild.strictMapper().writeValueAsBytes(jdkOnly));
+        assertThrows(IOException.class, () -> CompiledGoldenCapture.historicalReceiptMetadata(ControlBuild.FileRef.measure(memorySlot)));
+    }
+
+    @Test void actualUtf8EnvelopeProducerAndInspectorPreserveUnicodeAndRejectChangedArgvAndBody() throws Exception {
+        Path classes = Files.createDirectories(temporary.resolve("原始编译类-\uD83D\uDE80"));
+        String binaryName = CompiledGoldenCapture.class.getName();
+        String resource = binaryName.replace('.', '/') + ".class";
+        Path originalClass = classes.resolve(resource); Files.createDirectories(originalClass.getParent());
+        try (var input = CompiledGoldenCapture.class.getClassLoader().getResourceAsStream(resource)) {
+            if (input == null) throw new IOException("Actual compiled production main resource required");
+            Files.copy(input, originalClass);
+        }
+        var original = ControlBuild.FileRef.measure(originalClass);
+        var classpath = CiBootstrap.JavaUtf8Invocation.captureClasspath(classes);
+        var root = CiBootstrap.JavaUtf8Invocation.captureOutputRoot(temporary);
+        var request = new CiBootstrap.JavaUtf8Invocation.Request(
+                new CiBootstrap.JavaUtf8Invocation.ClassTarget(binaryName, classpath, List.of(classpath)),
+                List.of(new CiBootstrap.JavaUtf8Invocation.Property("xar.capture.classRoot", classes.toString())),
+                List.of("实际 Unicode 参数-\uD83D\uDE80", "space quote \" and slash \\"), root);
+        Path preparation = CiBootstrap.JavaUtf8Invocation.preparationPath(request);
+        assertThrows(IOException.class, () -> CompiledGoldenCapture.requireOutputDisjoint(preparation, request));
+        assertThrows(IOException.class, () -> CompiledGoldenCapture.requireOutputDisjoint(preparation.resolve("nested-golden.json"), request));
+        assertThrows(IOException.class, () -> CompiledGoldenCapture.requireOutputDisjoint(preparation.getParent(), request));
+        CompiledGoldenCapture.requireOutputDisjoint(temporary.resolve("actual-independent-golden.json"), request);
+        var publication = CiBootstrap.JavaUtf8Invocation.publish(request, root, "actual-utf8-envelope.bin",
+                pending -> CompiledCaptureProcess.requireAdditionalBytes(temporary, 8L << 20, pending));
+        Path actualCarrier = Path.of(CiBootstrap.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+        var carrier = new CiBootstrap.JavaUtf8Invocation.ClassCarrier(List.of(CiBootstrap.JavaUtf8Invocation.captureClasspath(actualCarrier)));
+        List<String> vmOptions = List.of("-Xms16m", "-Xmx64m");
+        var launch = CiBootstrap.JavaUtf8Invocation.launch(publication, carrier, vmOptions);
+        assertEquals(request, CiBootstrap.JavaUtf8Invocation.inspect(launch.physicalArguments(), carrier, vmOptions));
+        assertTrue(launch.physicalArguments().stream().allMatch(value -> value.codePoints().allMatch(point -> point >= 32 && point <= 126)));
+        var changed = new ArrayList<>(launch.physicalArguments()); changed.set(0, "-Xms17m");
+        assertThrows(IOException.class, () -> CiBootstrap.JavaUtf8Invocation.inspect(changed, carrier, vmOptions));
+        Path envelope = Path.of(publication.envelope().path()); byte[] raw = Files.readAllBytes(envelope);
+        byte[] substituted = raw.clone(); substituted[substituted.length - 1] ^= 1;
+        try {
+            Files.write(envelope, substituted);
+            assertThrows(IOException.class, () -> CiBootstrap.JavaUtf8Invocation.inspect(launch.physicalArguments(), carrier, vmOptions));
+        } finally { Files.write(envelope, raw); }
+        // Restoring bytes does not restore the immutable publication metadata.
+        Files.setLastModifiedTime(envelope, java.nio.file.attribute.FileTime.fromMillis(
+                Math.addExact(Files.getLastModifiedTime(envelope).toMillis(), 2000L)));
+        assertThrows(IOException.class, () -> CiBootstrap.JavaUtf8Invocation.inspect(launch.physicalArguments(), carrier, vmOptions));
+        var replacementPublication = CiBootstrap.JavaUtf8Invocation.publish(request, root, "actual-utf8-envelope-restored.bin",
+                pending -> CompiledCaptureProcess.requireAdditionalBytes(temporary, 8L << 20, pending));
+        var replacementLaunch = CiBootstrap.JavaUtf8Invocation.launch(replacementPublication, carrier, vmOptions);
+        assertEquals(request, CiBootstrap.JavaUtf8Invocation.inspect(replacementLaunch.physicalArguments(), carrier, vmOptions));
+        original.verify();
+        // This checks the actual binary transport only. No process identity or current capture is invented.
+        assertThrows(IOException.class, () -> CompiledGoldenCapture.requireCurrentInvocation(
+                batch("fixture-machine").captures().getFirst(), null, limits(), null, null));
     }
 
     private CompiledGoldenCapture.Limits limits() {

@@ -1,0 +1,158 @@
+{
+  "schema": "xar.army-strengths-supply.original-producers/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "execution": "SOURCE_ONLY_NOT_EXECUTED",
+  "repository_root": "Z:/ck3_mod_rewrite",
+  "python_source_root": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src",
+  "original_sources": [
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_current_province_supply_contributors_contract.py",
+      "bytes": 7992,
+      "sha256": "0e92208770187491de4073c6123a9e3e96a0fc7002a1a80247ee1f067de460c9"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_current_land_resupply_contract.py",
+      "bytes": 4344,
+      "sha256": "bcda4fdea2f2f0966dbe5e694f664caf46c69d9de8edb5164cbf69b9399724d8"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_callback_observations_contract.py",
+      "bytes": 5637,
+      "sha256": "ce5d436e91683852af266188bfd0404b62458ade5ee6b886a2bacde17db01a0c"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_parent_join_contract.py",
+      "bytes": 3346,
+      "sha256": "235e448d5e9b646b6d79975861d1a331a469a163d2705ef0c8359badf688e68c"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_callback_observation_summary.py",
+      "bytes": 4163,
+      "sha256": "86bf6cde6a79856b5dcef0ab6c35912294fb5aa9ff75944a1b15263a56feb9ae"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_next_land_stock_supply_budget_projection.py",
+      "bytes": 8678,
+      "sha256": "4fc3c617fb12504062f08d5c4cf6adfde333ccaf593492999b8a03ff7ff68cd6"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_full_land_supply_rate_projection.py",
+      "bytes": 7496,
+      "sha256": "149d98890289845182e76303e86173233ed1cc6b1761c9b476be1ca2855cc702"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_current_land_supply_rate_contract.py",
+      "bytes": 3840,
+      "sha256": "01856785773888d06b88e88f024267b8cf8d55fd20ad6037204cc3744930e6e4"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_replenishment_records_contract.py",
+      "bytes": 6011,
+      "sha256": "45e7f6a8390eeceb4d2ccf7a1d17994f6f9f0db4f62b24d8362653f098c63fac"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_regiment_character_role_12004.py",
+      "bytes": 8587,
+      "sha256": "def19cef18fc65643e1c38b5a86dabeae2d7096f342eacf1bab2fead678e3657"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_next_updater_write_projection.py",
+      "bytes": 9163,
+      "sha256": "eef86dad31957d37a1a8c4e7fb305c55b6674a61f0dcb238dfeedfd414bbe9d1"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_next_fleet_supply_budget_projection.py",
+      "bytes": 7558,
+      "sha256": "4230195b5c582fdf42c1e9d91b9c7eaf67974ded83162df0552ce766fa35987b"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_monthly_loss_budget_projection.py",
+      "bytes": 11487,
+      "sha256": "386fbc7757f7232cefa9056e235e757d28df7acf717077d12b110220e615b430"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_current_fleet_supply_tick_inputs_contract.py",
+      "bytes": 4129,
+      "sha256": "429d36dc5bb92b5814d0403008f7926bc21454c68643d29ae6b2398ed50aa7a5"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_source_derived_next_daily_supply_frame_contract.py",
+      "bytes": 4950,
+      "sha256": "1ac7e78238cd30a965508073fd13596cab3efd58d8feedf9e8753a974f2fb1ad"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_current_callback_supply_risk_projection.py",
+      "bytes": 10382,
+      "sha256": "105e05a8fa0abf2b5e174cded7eb4e4452683ec63c5c66bda72374debb89427d"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/army_current_callback_soldier_effects_projection.py",
+      "bytes": 4510,
+      "sha256": "c0bd8a79cad4c33c96110b909a41952791afcaa71d71fcf701fc32b2e33b4988"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 897392,
+      "sha256": "a8ebc680c41732a567eb1df2831fe210d7b0dc9f72f5418f1885f4b89a5e664e"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "bytes": 241556,
+      "sha256": "b1b14953f01d66c9f6720e4c92cb6b30c26eb1946b20e9b4ba932c9b5e1f7937"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/simulation/battle_trait_numeric_inputs_12003.py",
+      "bytes": 26427,
+      "sha256": "ae974dd51678fec9f05ea40c4991de30678ca356d30df298b97b88bb92a1810a"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_current_province_supply_contributors.py",
+      "bytes": 12159,
+      "sha256": "f0ad0849b62cbbfbe1eb99dd1f76b3c21d2f13c4ddc4477df8b7b991e5865c78"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_current_land_resupply_observer.py",
+      "bytes": 4243,
+      "sha256": "d15abc0ab56cdc76c4bb57a418b27553a1e516f39d95fa022b58ab501b2d8d65"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_current_full_land_supply_rate.py",
+      "bytes": 7814,
+      "sha256": "904ea608302cb7daaaccee28f69e9d03fda6013e8ebb8cb3d88d4ac8572cdcf2"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_actual_supply_parent_join_12004.py",
+      "bytes": 9919,
+      "sha256": "b48a67ec713eb7fa011acb7297aaddda9fac696a798c76b35b4410f50cc7b286"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_episode04_starvation_loss_12004.py",
+      "bytes": 8112,
+      "sha256": "ac33909a90648a7d3e17fa13030a0f5b706cf1a2407756204b670cb3a93a8454"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_starvation_loss_12004.py",
+      "bytes": 12265,
+      "sha256": "d7dfd110c3022ad0325f0316a61fb3f3943c1c4dcf39946bae62f0d3fbd24a0f"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_associated_refill_current_assembly.py",
+      "bytes": 7585,
+      "sha256": "3290de45c5e556fd322d0d27ba4b77d5ed60962440612d8088bd6641b36bb45b"
+    }
+  ],
+  "java_bundle_source": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/forecast_kernel/strengths_supply01/ArmyStrengthsSupply.java",
+    "bytes": 29308,
+    "sha256": "6ef431836b2fda9820bfd47ce918466cc09144f3a815803615fb95ac85a951d9"
+  },
+  "scope": "Mandatory unchanged original Python producers and two original complete tests for Java differential. Pure fixtures only; no compiled native fixture or Game execution claimed.",
+  "required_properties": [
+    "xar.python",
+    "xar.strengths.supply.oracle.manifest",
+    "xar.strengths.supply.oracle.manifest.sha256"
+  ],
+  "missing_sources_or_properties": "FAIL_NOT_SKIP",
+  "retention_review_at_utc": "2026-10-30T16:30:00Z",
+  "automatic_renewal": false
+}

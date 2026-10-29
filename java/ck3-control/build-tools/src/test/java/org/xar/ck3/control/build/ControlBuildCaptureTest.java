@@ -34,11 +34,69 @@ class ControlBuildCaptureTest {
         var config = new ControlBuild.Config(root.resolve("source"), root.resolve("work"), root.resolve("lease.json"),
                 "capture-fixture", "/root/build", null, Path.of(System.getProperty("java.home")), "3.10.0", 30,
                 ControlBuild.TargetKind.SERVICE_FAST_JAR, ControlBuild.SourceLimitProfile.STANDARD_8_MIB);
-        List<String> arguments = ControlBuild.reactorCaptureArguments(config, root.resolve("settings.xml"), root.resolve("snapshot"), root.resolve("build"));
+        var environment = Map.of("XAR_ORACLE_PYTHON", root.resolve("recorded/Scripts/python.exe").toString());
+        List<String> arguments = ControlBuild.reactorCaptureArguments(config, root.resolve("settings.xml"), root.resolve("snapshot"), root.resolve("build"), environment);
         assertEquals("package", arguments.getLast()); assertTrue(arguments.contains("-DskipTests=true"));
         assertTrue(arguments.contains("-Dmaven.test.skip=false")); assertFalse(arguments.contains("verify"));
         assertFalse(arguments.stream().anyMatch(arg -> arg.equals("-Dmaven.test.skip=true")));
-        assertEquals("verify", ControlBuild.reactorVerifyArguments(config, root.resolve("settings.xml"), root.resolve("snapshot"), root.resolve("build")).getLast());
+        assertEquals("verify", ControlBuild.reactorVerifyArguments(config, root.resolve("settings.xml"), root.resolve("snapshot"), root.resolve("build"), environment).getLast());
+    }
+
+    @Test void serviceBuildSelectsFrameworkMainAndToolsKeepTheirOriginalArgumentSequence() {
+        Path root = temporary.toAbsolutePath(), settings = root.resolve("settings.xml"),
+                snapshot = root.resolve("snapshot"), build = root.resolve("build");
+        var environment = Map.of("XAR_ORACLE_PYTHON", root.resolve("recorded/Scripts/python.exe").toString());
+        var service = mainSelectionConfig(root, ControlBuild.TargetKind.SERVICE_FAST_JAR);
+        var tools = mainSelectionConfig(root, ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME);
+        String selector = "-Dquarkus.package.main-class=io.quarkus.runner.GeneratedMain";
+        var serviceVerify = ControlBuild.reactorVerifyArguments(service, settings, snapshot, build, environment);
+        var serviceCapture = ControlBuild.reactorCaptureArguments(service, settings, snapshot, build, environment);
+        var toolsVerify = ControlBuild.reactorVerifyArguments(tools, settings, snapshot, build, environment);
+        var toolsCapture = ControlBuild.reactorCaptureArguments(tools, settings, snapshot, build, environment);
+        for (var command : List.of(serviceVerify, serviceCapture))
+            assertEquals(1, command.stream().filter(selector::equals).count());
+        assertEquals(toolsVerify, serviceVerify.stream().filter(argument -> !argument.equals(selector)).toList());
+        assertEquals(toolsCapture, serviceCapture.stream().filter(argument -> !argument.equals(selector)).toList());
+        assertFalse(toolsVerify.stream().anyMatch(argument -> argument.startsWith("-Dquarkus.package.main-class")));
+        assertFalse(toolsCapture.stream().anyMatch(argument -> argument.startsWith("-Dquarkus.package.main-class")));
+    }
+
+    @Test void completedServiceMainReplaysNewAndHistoricalShapesOnlyAsExactData() throws IOException {
+        Path root = temporary.toAbsolutePath(), settings = root.resolve("settings.xml"),
+                snapshot = root.resolve("snapshot"), build = root.resolve("build");
+        var service = mainSelectionConfig(root, ControlBuild.TargetKind.SERVICE_FAST_JAR);
+        var environment = Map.of("XAR_ORACLE_PYTHON", root.resolve("recorded/Scripts/python.exe").toString());
+        String selector = "-Dquarkus.package.main-class=io.quarkus.runner.GeneratedMain";
+        var verify = ControlBuild.reactorVerifyArguments(service, settings, snapshot, build, environment);
+        var capture = ControlBuild.reactorCaptureArguments(service, settings, snapshot, build, environment);
+        // Synthetic historical-shape DATA: removing only the new property preserves the pre-selector producer.
+        for (var current : List.of(verify, capture)) {
+            var historical = current.stream().filter(argument -> !argument.equals(selector)).toList();
+            assertEquals(current, ControlBuild.completedServiceMainArguments(service.targetKind(), current, current));
+            assertEquals(historical, ControlBuild.completedServiceMainArguments(service.targetKind(), current, historical));
+            for (String invalid : List.of("-Dquarkus.package.main-class=", "-Dquarkus.package.main-class=finite-first-live",
+                    selector + "-unknown", "-Dquarkus.package.main-class", "-Dquarkus.main=io.quarkus.runner.GeneratedMain")) {
+                var changed = new ArrayList<>(current); changed.set(changed.indexOf(selector), invalid);
+                assertThrows(IOException.class, () -> ControlBuild.completedServiceMainArguments(service.targetKind(), current, changed));
+            }
+            var duplicate = new ArrayList<>(current); duplicate.add(selector);
+            var misplaced = new ArrayList<>(current); misplaced.remove(selector); misplaced.add(selector);
+            var unrelated = new ArrayList<>(historical); unrelated.set(unrelated.indexOf("-Dck3.build.root=" + build), "-Dck3.build.root=drift");
+            for (var changed : List.of(duplicate, misplaced, unrelated))
+                assertThrows(IOException.class, () -> ControlBuild.completedServiceMainArguments(service.targetKind(), current, changed));
+            assertThrows(IOException.class, () -> ControlBuild.completedServiceMainArguments(ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME, current, current));
+        }
+        assertEquals(capture, ControlBuild.completedCaptureArguments(service, settings, snapshot, build, capture));
+        var historicalCapture = capture.stream().filter(argument -> !argument.equals(selector)).toList();
+        assertEquals(historicalCapture, ControlBuild.completedCaptureArguments(service, settings, snapshot, build, historicalCapture));
+        var wrongCapture = new ArrayList<>(capture); wrongCapture.add(selector);
+        assertThrows(IOException.class, () -> ControlBuild.completedCaptureArguments(service, settings, snapshot, build, wrongCapture));
+    }
+
+    private ControlBuild.Config mainSelectionConfig(Path root, ControlBuild.TargetKind target) {
+        return new ControlBuild.Config(root.resolve("source"), root.resolve("work"), root.resolve("lease.json"),
+                "main-selection", "/root/build", null, Path.of(System.getProperty("java.home")), "3.10.0", 30,
+                target, ControlBuild.SourceLimitProfile.STANDARD_8_MIB);
     }
 
     @Test void completedCaptureUsesItsExactRecordedPythonWithoutCurrentEnvironment() throws IOException {
@@ -72,6 +130,48 @@ class ControlBuildCaptureTest {
             List<String> changed = new ArrayList<>(original); changed.set(changed.indexOf(originalArgument), "drift");
             assertThrows(IOException.class, () -> ControlBuild.completedCaptureArguments(config, settings, snapshot, build, changed));
         }
+    }
+
+    @Test void fullR7CaptureOmitsExecutionFixturesAndReplaysOnlyItsExplicitNoRunPolicy() throws IOException {
+        Path root=temporary.toAbsolutePath(),settings=root.resolve("settings.xml"),snapshot=root.resolve("snapshot"),build=root.resolve("build");
+        var config=new ControlBuild.Config(root.resolve("source"),root.resolve("work"),root.resolve("lease.json"),
+                "capture-r7","/root/build",null,Path.of(System.getProperty("java.home")),"3.10.0",30,
+                ControlBuild.TargetKind.SERVICE_FAST_JAR,ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261025_R7);
+        String python=root.resolve("recorded/Scripts/python.exe").toString();
+        // Invalid execution inputs cannot become a capture prerequisite; no test or Native fixture is executed.
+        var environment=Map.of("XAR_ORACLE_PYTHON",python,"XAR_FULL_PARITY_CURRENT_INPUTS","not-an-actual-input",
+                "XAR_FULL_PARITY_CURRENT_INPUTS_SHA256","invalid");
+        var arguments=ControlBuild.reactorCaptureArguments(config,settings,snapshot,build,environment);
+        String marker="-Dxar.control.capture.commandPolicy=COMPILE_ONLY_WITHOUT_TEST_INPUTS";
+        assertEquals(1,arguments.stream().filter(marker::equals).count());
+        assertEquals("package",arguments.getLast());assertTrue(arguments.contains("-Dmaven.test.skip=false"));
+        assertTrue(arguments.contains("-DskipTests=true"));assertFalse(arguments.contains("verify"));
+        assertFalse(arguments.stream().anyMatch(value->value.startsWith("-Dxar.fullParity.")||value.startsWith("-Dxar.holyOrder.")));
+        assertEquals(arguments,ControlBuild.completedCaptureArguments(config,settings,snapshot,build,arguments));
+        assertThrows(IllegalArgumentException.class,()->ControlBuild.reactorVerifyArguments(config,settings,snapshot,build,environment));
+        var duplicate=new ArrayList<>(arguments);duplicate.add(marker);
+        var contaminated=new ArrayList<>(arguments);contaminated.add("-Dxar.fullParity.current.inputs=unbound");
+        var unknown=new ArrayList<>(arguments);unknown.set(unknown.indexOf(marker),marker+"-unknown");
+        var missing=arguments.stream().filter(value->!value.equals(marker)).toList();
+        for(var changed:List.of(duplicate,contaminated,unknown,missing))
+            assertThrows(IOException.class,()->ControlBuild.completedCaptureArguments(config,settings,snapshot,build,changed));
+    }
+
+    @Test void legacyFullParityCaptureReplaysOnlyItsOriginalRecordedFixtureCommand() throws IOException {
+        Path root=temporary.toAbsolutePath(),settings=root.resolve("settings.xml"),snapshot=root.resolve("snapshot"),build=root.resolve("build");
+        var config=new ControlBuild.Config(root.resolve("source"),root.resolve("work"),root.resolve("lease.json"),
+                "legacy-capture","/root/build",null,Path.of(System.getProperty("java.home")),"3.10.0",30,
+                ControlBuild.TargetKind.SERVICE_FAST_JAR,ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024);
+        String python=root.resolve("recorded/Scripts/python.exe").toString(),repository=root.resolve("recorded-repository").toString();
+        // Synthetic immutable recorded values exercise historical command reconstruction, never fixture or Maven qualification.
+        var fixtures=java.util.Arrays.stream(FullParityOracleBindings.FixtureRole.values()).map(role->
+                new FullParityOracleBindings.BoundFixture(role,new ControlBuild.FileRef(root.resolve(role.name()+".json").toString(),1,"0".repeat(64)))).toList();
+        var bindings=new FullParityOracleBindings.Bindings(python,repository,Path.of(repository).resolve(FullParityOracleBindings.NATIVE_RELATIVE).toString(),"0".repeat(64),fixtures);
+        var original=new ArrayList<>(ControlBuild.reactorVerifyArguments(config,settings,snapshot,build,python,bindings));
+        assertEquals("verify",original.removeLast());original.add("-Dmaven.test.skip=false");original.add("-DskipTests=true");original.add("package");
+        assertEquals(original,ControlBuild.completedCaptureArguments(config,settings,snapshot,build,original));
+        var changed=new ArrayList<>(original);changed.removeIf(value->value.startsWith("-Dxar.m3.timeline.nativeWholeSha256="));
+        assertThrows(IOException.class,()->ControlBuild.completedCaptureArguments(config,settings,snapshot,build,changed));
     }
 
     @Test void explicitMavenOverrideIsRefusedBeforeCaptureStartsAnyProcess() {
@@ -309,6 +409,61 @@ class ControlBuildCaptureTest {
 
     private ControlBuild.TestCompilationManifest collect(Fixture f, List<ControlBuild.FileRef> refs) throws IOException {
         return ControlBuild.collectTestCompilation("synthetic-compiler-fixture", f.snapshot(), f.build(), refs);
+    }
+
+    @Test void realCollectorAndCodecKeepThirtyFourModulesAnd2209NotRunSources() throws Exception {
+        // Real javac outputs with explicit synthetic compiler lists; no Maven success is claimed.
+        Path root = Files.createTempDirectory(temporary, "capture-cohort-").toAbsolutePath();
+        Path template = Files.createDirectories(root.resolve("template"));
+        Path binaries = Files.createDirectories(root.resolve("template-classes"));
+        List<String> arguments = new ArrayList<>(List.of("--release", "21", "-g:source",
+                "-encoding", "UTF-8", "-proc:none", "-d", binaries.toString()));
+        for (int index = 0; index < 65; index++) {
+            Path source = template.resolve("CaptureCase" + index + ".java");
+            Files.writeString(source, "package sample; class CaptureCase" + index + " { }\n");
+            arguments.add(source.toString());
+        }
+        var compiler = ToolProvider.getSystemJavaCompiler();
+        if (compiler == null) throw new IllegalStateException("Actual JDK compiler required");
+        assertEquals(0, compiler.run(null, null, null, arguments.toArray(String[]::new)));
+        Path snapshot = Files.createDirectories(root.resolve("source"));
+        Path build = Files.createDirectories(root.resolve("build"));
+        List<ControlBuild.FileRef> pins = new ArrayList<>();
+        StringBuilder modules = new StringBuilder();
+        for (int module = 0; module < 34; module++) {
+            String artifact = "capture-module-" + module;
+            Path home = snapshot.resolve(artifact), sourceBase = home.resolve("src/test/java/sample");
+            Files.createDirectories(sourceBase); modules.append("<module>").append(artifact).append("</module>");
+            Path pom = home.resolve("pom.xml");
+            Files.writeString(pom, "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"><modelVersion>4.0.0</modelVersion><artifactId>"
+                    + artifact + "</artifactId></project>");
+            pins.add(ControlBuild.FileRef.measure(pom));
+            Path output = Files.createDirectories(build.resolve(artifact + "/test-classes/sample"));
+            Path status = Files.createDirectories(build.resolve(artifact + "/maven-status/maven-compiler-plugin/testCompile/default-testCompile"));
+            List<String> inputs = new ArrayList<>(), created = new ArrayList<>();
+            for (int index = 0; index < (module == 33 ? 64 : 65); index++) {
+                String name = "CaptureCase" + index;
+                Path source = sourceBase.resolve(name + ".java");
+                Files.copy(template.resolve(name + ".java"), source);
+                Files.copy(binaries.resolve("sample/" + name + ".class"), output.resolve(name + ".class"));
+                pins.add(ControlBuild.FileRef.measure(source)); inputs.add(source.toString());
+                created.add("sample/" + name + ".class");
+            }
+            Files.writeString(status.resolve("inputFiles.lst"), String.join("\n", inputs) + "\n");
+            Files.writeString(status.resolve("createdFiles.lst"), String.join("\n", created) + "\n");
+        }
+        Path parent = snapshot.resolve("pom.xml");
+        Files.writeString(parent, "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"><modelVersion>4.0.0</modelVersion><artifactId>capture-parent</artifactId><packaging>pom</packaging><modules>"
+                + modules + "</modules></project>");
+        pins.add(ControlBuild.FileRef.measure(parent));
+        var actual = ControlBuild.collectTestCompilation(WindowsJobProcess.currentMachineId(), snapshot, build, pins);
+        assertEquals(34, actual.modules().size()); assertEquals(2209, actual.notRunTests().size());
+        assertEquals(ControlBuild.CaptureTestState.NOT_RUN, actual.tests());
+        assertTrue(actual.notRunTests().stream().allMatch(row -> row.state() == ControlBuild.CaptureTestState.NOT_RUN));
+        assertEquals(2209L, actual.notRunTests().stream().mapToLong(row -> row.compiledClassRefs().size()).sum());
+        byte[] wire = ControlBuild.strictMapper().writeValueAsBytes(actual);
+        assertTrue(wire.length <= (4 << 20));
+        assertEquals(actual, ControlBuild.strictMapper().readValue(wire, ControlBuild.TestCompilationManifest.class));
     }
 
     private Fixture fixture() throws Exception {

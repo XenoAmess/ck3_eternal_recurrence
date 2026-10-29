@@ -1,0 +1,16 @@
+[
+  {"name":"safe-normalize-origin","input":{"route_value":[1,2,3],"origin_province_id":1,"target_province_id":3,"enemies":[]}},
+  {"name":"invalid-bool-province","input":{"route_value":[1,true,3],"origin_province_id":1,"target_province_id":3,"enemies":[]}},
+  {"name":"invalid-float-province","input":{"route_value":[1,2.0,3],"origin_province_id":1,"target_province_id":3,"enemies":[]}},
+  {"name":"null-route","input":{"route_value":null,"origin_province_id":1,"target_province_id":3,"enemies":[]}},
+  {"name":"empty-remaining","input":{"route_value":[1],"origin_province_id":1,"target_province_id":3,"enemies":[]}},
+  {"name":"wrong-target","input":{"route_value":[1,2],"origin_province_id":1,"target_province_id":3,"enemies":[]}},
+  {"name":"enemy-current-and-target","input":{"route_value":[1,2,3],"origin_province_id":1,"target_province_id":3,"enemies":[{"army_id":9,"current_province_id":2,"move_target_province_id":3}]}},
+  {"name":"shared-next-hop","input":{"route_value":[1,2,3],"origin_province_id":1,"target_province_id":3,"enemies":[{"army_id":9,"current_province_id":8,"route_province_ids":[8,2,3]}]}},
+  {"name":"reverse-edge-repeated-last-and-first-hop","input":{"route_value":[1,2,3],"origin_province_id":1,"target_province_id":3,"enemies":[{"army_id":9,"current_province_id":2,"route_province_ids":[2,3,2,3,2]}]}},
+  {"name":"retreat-bit-precedes-combat-and-name","input":{"route_value":[1,3],"origin_province_id":1,"target_province_id":3,"enemies":[{"army_id":9,"current_province_id":3,"retreating":true,"in_combat":true,"army_state":"embarked"}]}},
+  {"name":"combat-bit-precedes-retreat-name","input":{"route_value":[1,3],"origin_province_id":1,"target_province_id":3,"enemies":[{"army_id":9,"current_province_id":3,"in_combat":true,"army_state":"retreating"}]}},
+  {"name":"retreat-code","input":{"route_value":[1,3],"origin_province_id":1,"target_province_id":3,"enemies":[{"army_id":9,"current_province_id":3,"army_state_code":6}]}},
+  {"name":"invalid-enemy-route-elements-are-filtered","input":{"route_value":[1,2,3],"origin_province_id":1,"target_province_id":3,"enemies":[{"army_id":9,"current_province_id":8,"route_province_ids":[8,true,2.0,-3,0,2,3]}]}},
+  {"name":"null-origin-unknown-enemy-and-duplicate-rows","input":{"route_value":[2,3],"origin_province_id":null,"target_province_id":3,"enemies":[{"army_id":true,"current_province_id":3},{"army_id":true,"current_province_id":3}]}}
+]

@@ -46,7 +46,11 @@ public final class CompleteSourceGraph {
         G2_STABILIZATION_20261023(2304, 32L << 20, 44L << 20),
         G2_FULL_PARITY_20261024(3072, 40L << 20, 56L << 20),
         G2_FULL_PARITY_20261024_R2(4096, 64L << 20, 80L << 20),
-        G2_FULL_PARITY_20261024_R3(4096, 64L << 20, 80L << 20);
+        G2_FULL_PARITY_20261024_R3(4096, 64L << 20, 80L << 20),
+        G2_FULL_PARITY_20261024_R4(5120, 64L << 20, 80L << 20),
+        G2_FULL_PARITY_20261024_R5(6144, 96L << 20, 112L << 20),
+        G2_FULL_PARITY_20261024_R6(6144, 96L << 20, 112L << 20),
+        G2_FULL_PARITY_20261025_R7(6144, 96L << 20, 112L << 20);
         private final int files;
         private final long logicalBytes;
         private final long nativeBytes;
@@ -58,7 +62,8 @@ public final class CompleteSourceGraph {
         public long maxNativeBytes() { return nativeBytes; }
         public boolean completeG2() { return this != JAVA29_REPAIR_20261023; }
         public boolean fullParity() { return this == G2_FULL_PARITY_20261024 || resumedParity(); }
-        private boolean resumedParity() { return this == G2_FULL_PARITY_20261024_R2 || this == G2_FULL_PARITY_20261024_R3; }
+        private boolean resumedParity() { return this == G2_FULL_PARITY_20261024_R2 || this == G2_FULL_PARITY_20261024_R3
+                || this == G2_FULL_PARITY_20261024_R4 || this == G2_FULL_PARITY_20261024_R5 || this == G2_FULL_PARITY_20261024_R6 || this == G2_FULL_PARITY_20261025_R7; }
         public int copyProofMaxBytes() { return resumedParity() ? 16 << 20 : 8 << 20; }
         public int childModules() { return modules(this).size(); }
         public int reactorProjects() { return childModules() + 1; }
@@ -70,6 +75,10 @@ public final class CompleteSourceGraph {
                 case G2_FULL_PARITY_20261024 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024;
                 case G2_FULL_PARITY_20261024_R2 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R2;
                 case G2_FULL_PARITY_20261024_R3 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R3;
+                case G2_FULL_PARITY_20261024_R4 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R4;
+                case G2_FULL_PARITY_20261024_R5 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R5;
+                case G2_FULL_PARITY_20261024_R6 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R6;
+                case G2_FULL_PARITY_20261025_R7 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261025_R7;
             };
         }
     }
@@ -107,10 +116,13 @@ public final class CompleteSourceGraph {
                 throw new IllegalArgumentException("current owner must explicitly export the old or new physical target");
             }
             String oldKind = javaSourceKind(oldTargetRelative), newKind = javaSourceKind(newTargetRelative);
+            boolean sameName=oldTargetRelative.substring(oldTargetRelative.lastIndexOf('/')+1)
+                    .equals(newTargetRelative.substring(newTargetRelative.lastIndexOf('/')+1));
+            // Test renames retain both exact source revisions and both explicit relocation/owner authorities.
+            // Production main renames remain forbidden; resolve still verifies every original/final content pin.
             if (!oldKind.equals(newKind) || oldTargetRelative.equalsIgnoreCase(newTargetRelative)
-                    || !oldTargetRelative.substring(oldTargetRelative.lastIndexOf('/') + 1)
-                            .equals(newTargetRelative.substring(newTargetRelative.lastIndexOf('/') + 1))) {
-                throw new IllegalArgumentException("same Java source name and main/test role at distinct module targets required");
+                    || (!oldKind.equals("test") && !sameName)) {
+                throw new IllegalArgumentException("Same main/test role and distinct module targets required; only explicit test authorities may rename");
             }
         }
         public Relocation(String oldTargetRelative, String newTargetRelative, FileRef sourceRef, FileRef selectionRef) {
@@ -388,12 +400,20 @@ public final class CompleteSourceGraph {
     private record DeclaredMove(String oldTargetRelative, String newTargetRelative, FileRef sourceRef) { }
 
     private static void verifyRelocations(Plan plan, Map<String, FileRef> selected) throws IOException {
+        validateRelocations(plan.machineId(),plan.modules(),plan.relocations(),selected);
+    }
+
+    /** The same complete authority validation for bounded producers using an existing selected graph. */
+    public static void validateRelocations(String machineId,List<String> modules,List<Relocation> relocations,
+            Map<String,FileRef> selected)throws IOException {
+        if(machineId==null||machineId.isBlank())throw new IllegalArgumentException("Explicit source machine required");
+        modules=List.copyOf(modules);relocations=List.copyOf(relocations);selected=Map.copyOf(selected);
         Set<String> oldTargets = new HashSet<>(), newTargets = new HashSet<>();
-        for (Relocation move : plan.relocations()) {
+        for (Relocation move : relocations) {
             String oldKey = move.oldTargetRelative().toLowerCase(java.util.Locale.ROOT);
             String newKey = move.newTargetRelative().toLowerCase(java.util.Locale.ROOT);
             if (!oldTargets.add(oldKey) || !newTargets.add(newKey)) throw new IOException("duplicate or case-aliased relocation endpoint");
-            targetModule(move.oldTargetRelative(), plan.modules()); targetModule(move.newTargetRelative(), plan.modules());
+            targetModule(move.oldTargetRelative(), modules); targetModule(move.newTargetRelative(), modules);
             FileRef old = selected.get(move.oldTargetRelative()), next = selected.get(move.newTargetRelative());
             if (old == null || next == null
                     || !(sameSource(old, move.sourceRef()) || move.finalOwnerTargetRelative().equals(move.oldTargetRelative())
@@ -406,19 +426,19 @@ public final class CompleteSourceGraph {
             move.sourceRef().verify(); move.selectionRef().verify();
             move.finalSourceRef().verify(); move.finalSelectionRef().verify();
             JsonNode current = ControlBuild.strictMapper().readTree(verifiedBytes(move.finalSelectionRef()));
-            if (!validOwner(current, plan.machineId())) throw new IOException("current revision owner/machine differs");
+            if (!validOwner(current, machineId)) throw new IOException("current revision owner/machine differs");
             requireOwnerFile(current, move.finalOwnerTargetRelative(), move.finalSourceRef());
         }
         for (String old : oldTargets) if (newTargets.contains(old)) throw new IOException("relocation chains and cycles are forbidden");
         Set<String> checkedAuthorities = new HashSet<>();
-        for (Relocation move : plan.relocations()) {
+        for (Relocation move : relocations) {
             String authority = absolute(move.selectionRef().path()).toString();
             if (!checkedAuthorities.add(authority)) continue;
             JsonNode root = ControlBuild.strictMapper().readTree(verifiedBytes(move.selectionRef()));
-            if (!validOwner(root, plan.machineId())
+            if (!validOwner(root, machineId)
                     || !root.path("relocations").isArray() || root.path("relocations").isEmpty()
                     || !root.path("selected_files").isArray()) throw new IOException("exact relocation owner/machine/declaration required");
-            List<Relocation> expected = plan.relocations().stream().filter(row -> sameSource(row.selectionRef(), move.selectionRef())).toList();
+            List<Relocation> expected = relocations.stream().filter(row -> sameSource(row.selectionRef(), move.selectionRef())).toList();
             if (expected.size() != root.path("relocations").size()) throw new IOException("complete authority relocation set required");
             Set<String> declared = new HashSet<>();
             for (JsonNode row : root.path("relocations")) {
@@ -592,3 +612,4 @@ public final class CompleteSourceGraph {
         return value;
     }
 }
+

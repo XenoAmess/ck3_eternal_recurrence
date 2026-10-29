@@ -1,0 +1,323 @@
+{
+  "schema": "xar.ck3.java-cashmetrics-producer-spec/v1",
+  "cases": [
+    {
+      "id": "retained-cash",
+      "mutations": []
+    },
+    {
+      "id": "two-wars-one-global-cost",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "active_war_ids"
+          ],
+          "action": "set",
+          "value": [
+            100,
+            200
+          ]
+        },
+        {
+          "target": "packet",
+          "path": [
+            "military_expenses",
+            "current",
+            "war_ids"
+          ],
+          "action": "set",
+          "value": [
+            100,
+            200
+          ]
+        },
+        {
+          "target": "packet",
+          "path": [
+            "military_expenses",
+            "all_raised",
+            "war_ids"
+          ],
+          "action": "set",
+          "value": [
+            100,
+            200
+          ]
+        },
+        {
+          "target": "snapshot",
+          "path": [
+            "active_wars"
+          ],
+          "action": "set",
+          "value": [
+            {
+              "war_id": 100
+            },
+            {
+              "war_id": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "partial-total-and-net",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "player_monthly_total_expenses"
+          ],
+          "action": "set",
+          "value": null
+        },
+        {
+          "target": "packet",
+          "path": [
+            "player_monthly_net_income"
+          ],
+          "action": "set",
+          "value": null
+        },
+        {
+          "target": "packet",
+          "path": [
+            "readiness",
+            "monthly_total_expenses_ready"
+          ],
+          "action": "set",
+          "value": false
+        },
+        {
+          "target": "packet",
+          "path": [
+            "readiness",
+            "monthly_net_income_ready"
+          ],
+          "action": "set",
+          "value": false
+        },
+        {
+          "target": "packet",
+          "path": [
+            "monthly_total_expenses_unavailable_reason"
+          ],
+          "action": "set",
+          "value": "reader unavailable"
+        },
+        {
+          "target": "packet",
+          "path": [
+            "monthly_net_income_unavailable_reason"
+          ],
+          "action": "set",
+          "value": "reader unavailable"
+        }
+      ]
+    },
+    {
+      "id": "military-exceeds-total",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "military_expenses",
+            "current",
+            "gold_raw"
+          ],
+          "action": "set",
+          "value": 30000
+        },
+        {
+          "target": "packet",
+          "path": [
+            "military_expenses",
+            "current",
+            "resource_raw_native",
+            0
+          ],
+          "action": "set",
+          "value": 30000
+        }
+      ]
+    },
+    {
+      "id": "missing-query-revision",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "queried_revision"
+          ],
+          "action": "remove"
+        }
+      ]
+    },
+    {
+      "id": "wallet-disagreement",
+      "mutations": [
+        {
+          "target": "snapshot",
+          "path": [
+            "played_character_gold",
+            "raw"
+          ],
+          "action": "set",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "snapshot-build-missing",
+      "mutations": [
+        {
+          "target": "snapshot",
+          "path": [
+            "diagnostics",
+            "hello",
+            "game_version"
+          ],
+          "action": "set",
+          "value": "unknown"
+        }
+      ]
+    },
+    {
+      "id": "missing-monthly-marker",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "monthly_income_semantics"
+          ],
+          "action": "remove"
+        }
+      ]
+    },
+    {
+      "id": "wrong-net-arithmetic",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "player_monthly_net_income",
+            "raw"
+          ],
+          "action": "set",
+          "value": 993374
+        }
+      ]
+    },
+    {
+      "id": "per-war-cost-scope",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "military_expenses",
+            "current",
+            "source_scope"
+          ],
+          "action": "set",
+          "value": "per_war"
+        }
+      ]
+    },
+    {
+      "id": "all-personal-rates-unknown",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "player_monthly_gross_income"
+          ],
+          "action": "set",
+          "value": null
+        },
+        {
+          "target": "packet",
+          "path": [
+            "player_monthly_total_expenses"
+          ],
+          "action": "set",
+          "value": null
+        },
+        {
+          "target": "packet",
+          "path": [
+            "player_monthly_net_income"
+          ],
+          "action": "set",
+          "value": null
+        },
+        {
+          "target": "packet",
+          "path": [
+            "readiness",
+            "monthly_gross_income_ready"
+          ],
+          "action": "set",
+          "value": false
+        },
+        {
+          "target": "packet",
+          "path": [
+            "readiness",
+            "monthly_total_expenses_ready"
+          ],
+          "action": "set",
+          "value": false
+        },
+        {
+          "target": "packet",
+          "path": [
+            "readiness",
+            "monthly_net_income_ready"
+          ],
+          "action": "set",
+          "value": false
+        },
+        {
+          "target": "packet",
+          "path": [
+            "monthly_gross_income_unavailable_reason"
+          ],
+          "action": "set",
+          "value": "reader unavailable"
+        },
+        {
+          "target": "packet",
+          "path": [
+            "monthly_total_expenses_unavailable_reason"
+          ],
+          "action": "set",
+          "value": "reader unavailable"
+        },
+        {
+          "target": "packet",
+          "path": [
+            "monthly_net_income_unavailable_reason"
+          ],
+          "action": "set",
+          "value": "reader unavailable"
+        }
+      ]
+    },
+    {
+      "id": "same-frame-not-ready",
+      "mutations": [
+        {
+          "target": "packet",
+          "path": [
+            "readiness",
+            "same_frame_ready"
+          ],
+          "action": "set",
+          "value": false
+        }
+      ]
+    }
+  ]
+}

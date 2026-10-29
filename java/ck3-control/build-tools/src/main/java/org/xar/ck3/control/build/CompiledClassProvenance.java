@@ -2,6 +2,12 @@ package org.xar.ck3.control.build;
 
 import java.io.IOException;
 import java.io.InputStream;
+import com.sun.source.util.JavacTask;
+import java.nio.charset.StandardCharsets;
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaFileObject;
+import javax.tools.ToolProvider;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
@@ -58,18 +64,52 @@ public final class CompiledClassProvenance {
         Path sourceBase = module.resolve(sourceSet == SourceSet.MAIN ? "src/main/java" : "src/test/java");
         Path expectedSource = sourceBase.resolve(packagePath + parsed.sourceFile()).normalize();
         if (!expectedSource.startsWith(sourceBase)) throw new IOException("Class source escaped its source set");
-        ControlBuild.FileRef source = null;
-        for (ControlBuild.FileRef candidate : compiledSourceRefs) {
-            Path candidatePath = Path.of(candidate.path()).toAbsolutePath().normalize();
-            if (!candidatePath.equals(expectedSource)) continue;
-            if (source != null) throw new IOException("Multiple compiled-source references match actual SourceFile");
-            source = candidate;
-        }
-        if (source == null) throw new IOException("Actual SourceFile absent from this compiled module/source-set inventory");
+        ControlBuild.FileRef source = resolveSource(sourceBase, parsed.sourceFile(),
+                packagePath.isEmpty() ? "" : packagePath.substring(0, packagePath.length() - 1).replace('/', '.'), compiledSourceRefs);
         source.verify();
-        if (!expectedSource.toRealPath().startsWith(module.toRealPath())) throw new IOException("Source escaped actual compiled module");
+        if (!Path.of(source.path()).toRealPath().startsWith(sourceBase.toRealPath())) throw new IOException("Source escaped actual compiled source set");
         classRef.verify(); source.verify();
         return new Origin(parsed.internalName().replace('/', '.'), parsed.sourceFile(), classRef, source, output.toRealPath().toString());
+    }
+
+    /** javac SourceFile binds a filename and declared package, not a mandatory physical package directory. */
+    private static ControlBuild.FileRef resolveSource(Path sourceBase, String filename,
+            String packageName, List<ControlBuild.FileRef> compiledSources) throws IOException {
+        var candidates = new java.util.ArrayList<ControlBuild.FileRef>();
+        for (var candidate : compiledSources) {
+            Path path = Path.of(candidate.path()).toAbsolutePath().normalize();
+            if (path.startsWith(sourceBase) && path.getFileName().toString().equals(filename)) candidates.add(candidate);
+        }
+        ControlBuild.FileRef selected = null;
+        for (var candidate : candidates) {
+            candidate.verify();
+            if (!Path.of(candidate.path()).toRealPath().startsWith(sourceBase.toRealPath()))
+                throw new IOException("Source escaped actual compiled source set");
+            if (!declaredPackage(candidate).equals(packageName)) continue;
+            if (selected != null) throw new IOException("Multiple compiled-source references match actual SourceFile and declared package");
+            selected = candidate;
+        }
+        if (selected == null) throw new IOException("Actual SourceFile absent from this compiled module/source-set inventory");
+        return selected;
+    }
+
+    /** Parse only: no source compilation, annotation processing, class loading or output is performed. */
+    private static String declaredPackage(ControlBuild.FileRef source) throws IOException {
+        var compiler = ToolProvider.getSystemJavaCompiler();
+        if (compiler == null) throw new IOException("Actual JDK source parser required for noncanonical SourceFile paths");
+        var diagnostics = new DiagnosticCollector<JavaFileObject>();
+        try (var files = compiler.getStandardFileManager(diagnostics, java.util.Locale.ROOT, StandardCharsets.UTF_8)) {
+            var work = compiler.getTask(null, files, diagnostics, List.of("-proc:none"), null,
+                    files.getJavaFileObjectsFromPaths(List.of(Path.of(source.path()))));
+            if (!(work instanceof JavacTask task)) throw new IOException("Actual JDK syntax parser required");
+            var units = task.parse().iterator();
+            if (!units.hasNext()) throw new IOException("One actual Java source declaration required");
+            var unit = units.next();
+            if (units.hasNext() || diagnostics.getDiagnostics().stream().anyMatch(row -> row.getKind() == Diagnostic.Kind.ERROR))
+                throw new IOException("Actual Java source declaration is malformed");
+            source.verify();
+            return unit.getPackageName() == null ? "" : unit.getPackageName().toString();
+        } catch (RuntimeException invalid) { throw new IOException("Actual Java source declaration is unavailable", invalid); }
     }
 
     private static Parsed parse(byte[] raw) throws IOException {

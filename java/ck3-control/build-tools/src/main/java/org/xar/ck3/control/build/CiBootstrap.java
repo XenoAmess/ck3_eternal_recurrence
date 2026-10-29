@@ -90,6 +90,15 @@ public final class CiBootstrap {
             return Map.copyOf(environment);
         }
 
+        /** Keep the explicit oracle repository when the selected Java source graph has a different root. */
+        public static Map<String, String> bindSelectedInterpreter(Path python, Map<String, String> inherited) throws IOException {
+            Inputs original = require(inherited);
+            Path selected = plainFile(python.toString());
+            if (!selected.equals(Path.of(original.python())))
+                throw new IOException("Selected CI interpreter differs from explicit XAR_ORACLE_PYTHON");
+            return bind(Path.of(original.repositoryRoot()), selected, inherited);
+        }
+
         private static String required(Map<String, String> environment, String name) throws IOException {
             String value = environment.get(name);
             if (value == null || value.isBlank()) throw new IOException("NOT EXECUTED: explicit " + name + " required");
@@ -119,6 +128,101 @@ public final class CiBootstrap {
     }
 
     public static final String PLAN_SCHEMA = "xar.java-control-CI-bootstrap-plan/v1";
+    public static final String COMPLETE_PLAN_SCHEMA = "xar.java-control-CI-bootstrap-plan/v2";
+    public static final String HISTORICAL_MANAGED_PLAN_SCHEMA = "xar.java-control-CI-bootstrap-plan/v3";
+    public static final String MANAGED_PLAN_SCHEMA = "xar.java-control-CI-bootstrap-plan/v4";
+    public static final String SOFTWARE_PLAN_SCHEMA = "xar.java-control-CI-software-plan/v1";
+    public static final String TOOLS_POSTQUALIFICATION_POLICY = "REAL_QUALIFIED_JAR_OWN_LARGE_INPUTS_JUNIT2_REQUIRED";
+    public enum ToolsPostqualificationState { MISSING_FULL_OWN_INPUTS }
+    public record ToolsPostqualificationAvailability(String schema,ToolsPostqualificationState state,
+            List<String> missingDependencies,boolean toolsAdopted,boolean actualJunitExecuted) {
+        public ToolsPostqualificationAvailability {
+            missingDependencies=List.copyOf(missingDependencies);
+            if(!"xar.control-ci-tools-postqualification-availability/v1".equals(schema)
+                    ||state!=ToolsPostqualificationState.MISSING_FULL_OWN_INPUTS||missingDependencies.isEmpty()||toolsAdopted||actualJunitExecuted)
+                throw new IllegalArgumentException("Missing actual full Own inputs grant no Tools adoption or JUnit execution");
+        }
+    }
+    public static ToolsPostqualificationAvailability missingToolsPostqualification() {
+        return new ToolsPostqualificationAvailability("xar.control-ci-tools-postqualification-availability/v1",
+                ToolsPostqualificationState.MISSING_FULL_OWN_INPUTS,List.of("original_full_own_producer_source","materialized_source_map",
+                "historical_completed_build","genuine_historical_capture","original_quota_lease","original_quota_rejection",
+                "original_quota_source_map","bounded_full_own_input_manifest","original_junit_jars","individual_original_inputs"),false,false);
+    }
+
+    /** Closed bounds from the existing complete production stages; these are limits, not measured runtimes. */
+    public record PipelineBudget(long bootstrapSeconds, long nativeBuildSeconds, long mapConsumerSeconds,
+            long pythonStaticSeconds, long supplementalSeconds, long preparationSeconds,
+            int freshCommands, long freshCommandSeconds, long canonicalSeconds,
+            long originalReviewSeconds, long settlementSeconds) {
+        public PipelineBudget {
+            if (bootstrapSeconds <= 0 || nativeBuildSeconds <= 0 || mapConsumerSeconds <= 0
+                    || pythonStaticSeconds <= 0 || supplementalSeconds <= 0 || preparationSeconds <= 0
+                    || freshCommands <= 0 || freshCommandSeconds <= 0 || canonicalSeconds <= 0
+                    || originalReviewSeconds <= 0 || settlementSeconds <= 0) {
+                throw new IllegalArgumentException("Positive complete pipeline stage bounds required");
+            }
+        }
+        public Duration minimumTotal() {
+            long seconds = Math.addExact(bootstrapSeconds, nativeBuildSeconds);
+            for (long value : new long[] {mapConsumerSeconds, pythonStaticSeconds, supplementalSeconds,
+                    preparationSeconds, Math.multiplyExact(freshCommands, freshCommandSeconds),
+                    canonicalSeconds, originalReviewSeconds, settlementSeconds}) {
+                seconds = Math.addExact(seconds, value);
+            }
+            return Duration.ofSeconds(seconds);
+        }
+    }
+
+    private static final PipelineBudget COMPLETE_BUDGET = new PipelineBudget(
+            3660, 8100, 670, 1200, 1620, 900, 4, 900, 2100, 900, 30);
+    public static Duration managedPipelineMinimum() {
+        return COMPLETE_BUDGET.minimumTotal().plusSeconds(4500+600+60+1800+1200+60);
+    }
+    public static boolean completeProfile(PipelineProfile profile) { return profile!=PipelineProfile.LEGACY; }
+
+    public enum PipelineProfile {
+        LEGACY(PLAN_SCHEMA, Duration.ofMinutes(45), Duration.ofHours(2)),
+        COMPLETE_CURRENT(COMPLETE_PLAN_SCHEMA, Duration.ofHours(8), Duration.ofHours(8)),
+        HOSTED_SOFTWARE(SOFTWARE_PLAN_SCHEMA, Duration.ofMinutes(300), Duration.ofMinutes(300)),
+        ROOT_MANAGED_COMPLETE(MANAGED_PLAN_SCHEMA, Duration.ofHours(12), Duration.ofHours(12));
+
+        private final String schema;
+        private final Duration maximumTotal;
+        private final Duration maximumServiceLease;
+        PipelineProfile(String schema, Duration maximumTotal, Duration maximumServiceLease) {
+            this.schema = schema; this.maximumTotal = maximumTotal; this.maximumServiceLease = maximumServiceLease;
+        }
+        public String schema() { return schema; }
+        public Duration maximumTotal() { return maximumTotal; }
+        public Duration maximumServiceLease() { return maximumServiceLease; }
+    }
+
+    public static PipelineBudget completePipelineBudget() { return COMPLETE_BUDGET; }
+
+    public static boolean supportedPlanSchema(String schema) {
+        return PLAN_SCHEMA.equals(schema) || COMPLETE_PLAN_SCHEMA.equals(schema)
+                || SOFTWARE_PLAN_SCHEMA.equals(schema) || MANAGED_PLAN_SCHEMA.equals(schema)
+                || HISTORICAL_MANAGED_PLAN_SCHEMA.equals(schema);
+    }
+
+    public static PipelineProfile pipelineProfile(Plan plan) {
+        Objects.requireNonNull(plan);
+        if (PLAN_SCHEMA.equals(plan.schema())) return PipelineProfile.LEGACY;
+        if (COMPLETE_PLAN_SCHEMA.equals(plan.schema())) return PipelineProfile.COMPLETE_CURRENT;
+        if (SOFTWARE_PLAN_SCHEMA.equals(plan.schema())) return PipelineProfile.HOSTED_SOFTWARE;
+        if (MANAGED_PLAN_SCHEMA.equals(plan.schema())) return PipelineProfile.ROOT_MANAGED_COMPLETE;
+        if (HISTORICAL_MANAGED_PLAN_SCHEMA.equals(plan.schema()))
+            throw new IllegalArgumentException("Historical eight-hour managed plan is DATA only; current execution requires " + MANAGED_PLAN_SCHEMA);
+        throw new IllegalArgumentException("Unknown pipeline profile");
+    }
+
+    static void requireCompletePipeline(Plan plan) {
+        if (!completeProfile(pipelineProfile(plan))) {
+            throw new IllegalArgumentException("Complete fixtures require an explicitly admitted complete software or managed pipeline window");
+        }
+        pipelineTiming(plan);
+    }
     public static final String MAVEN_VERSION = "3.10.0";
     public static final String MINIMUM_MAVEN_VERSION = "3.10.0";
     public static final String MAVEN_ZIP_SHA512 =
@@ -129,7 +233,6 @@ public final class CiBootstrap {
     private static final URI MAVEN_CHECKSUM = URI.create(MAVEN_ZIP + ".sha512");
     private static final long MIB = 1L << 20;
     private static final long GIB = 1L << 30;
-    private static final Duration PIPELINE_TOTAL = Duration.ofMinutes(45);
     private static final Duration PIPELINE_SETTLEMENT = Duration.ofSeconds(30);
     private static final Map<String, Long> PARTS = Map.of(
             "m2", 2 * GIB, "build", 768 * MIB, "tools", 128 * MIB,
@@ -176,10 +279,13 @@ public final class CiBootstrap {
                        List<FilePin> sourcePins, List<FilePin> bootstrapRuntimeClosure,
                        boolean bootstrapNativeJobHardBound, boolean bootstrapAloneGrantsPipelineQualification) {
         public Plan {
-            if (!PLAN_SCHEMA.equals(schema)) throw new IllegalArgumentException("unknown bootstrap plan");
+            if (!supportedPlanSchema(schema)) throw new IllegalArgumentException("unknown bootstrap plan");
             Objects.requireNonNull(machineId);
-            Instant.parse(observedAtUtc);
-            Instant.parse(reviewAtUtc);
+            Instant observed = Instant.parse(observedAtUtc);
+            Instant review = Instant.parse(reviewAtUtc);
+            if (HISTORICAL_MANAGED_PLAN_SCHEMA.equals(schema)
+                    && (!observed.isBefore(review) || Duration.between(observed, review).compareTo(Duration.ofHours(8)) > 0))
+                throw new IllegalArgumentException("Historical managed v3 retains its original finite eight-hour clock");
             volumes = Map.copyOf(volumes);
             quotaOverrides = Map.copyOf(quotaOverrides);
             parts = Map.copyOf(parts);
@@ -191,13 +297,20 @@ public final class CiBootstrap {
         }
     }
 
-    /** One deadline from the original entry observation; nested commands never restart its clock. */
-    public record PipelineTiming(Instant observedAt, Instant workDeadline, Instant outerDeadline) {
+    /** One original deadline; a profile selects finite bounds, never a new clock or resource authority. */
+    public record PipelineTiming(Instant observedAt, Instant workDeadline, Instant outerDeadline, PipelineProfile profile) {
+        public PipelineTiming(Instant observedAt, Instant workDeadline, Instant outerDeadline) {
+            this(observedAt, workDeadline, outerDeadline, PipelineProfile.LEGACY);
+        }
         public PipelineTiming {
             Objects.requireNonNull(observedAt); Objects.requireNonNull(workDeadline); Objects.requireNonNull(outerDeadline);
+            Objects.requireNonNull(profile);
+            Duration total = Duration.between(observedAt, outerDeadline);
             if (!observedAt.isBefore(workDeadline) || !workDeadline.plus(PIPELINE_SETTLEMENT).equals(outerDeadline)
-                    || outerDeadline.isAfter(observedAt.plus(PIPELINE_TOTAL))) {
-                throw new IllegalArgumentException("Finite shared pipeline window and terminal settlement reserve required");
+                    || total.compareTo(profile.maximumTotal()) > 0
+                    || completeProfile(profile) && total.compareTo(profile==PipelineProfile.ROOT_MANAGED_COMPLETE
+                            ? managedPipelineMinimum() : COMPLETE_BUDGET.minimumTotal()) < 0) {
+                throw new IllegalArgumentException("Finite original pipeline authority must admit every selected stage and settlement");
             }
         }
         public Duration remainingWork(Instant now) throws IOException { return remaining(now, workDeadline); }
@@ -209,12 +322,18 @@ public final class CiBootstrap {
     }
 
     public static PipelineTiming pipelineTiming(Plan plan) {
-        return pipelineTiming(Instant.parse(plan.observedAtUtc()), Instant.parse(plan.reviewAtUtc()));
+        return pipelineTiming(Instant.parse(plan.observedAtUtc()), Instant.parse(plan.reviewAtUtc()), pipelineProfile(plan));
     }
     private static PipelineTiming pipelineTiming(Instant observed, Instant review) {
-        Instant total = observed.plus(PIPELINE_TOTAL);
+        return pipelineTiming(observed, review, PipelineProfile.LEGACY);
+    }
+    private static PipelineTiming pipelineTiming(Instant observed, Instant review, PipelineProfile profile) {
+        Instant total = observed.plus(profile.maximumTotal());
+        if (completeProfile(profile) && review.isAfter(total)) {
+            throw new IllegalArgumentException("Complete pipeline review exceeds its finite profile");
+        }
         Instant outer = review.isBefore(total) ? review : total;
-        return new PipelineTiming(observed, outer.minus(PIPELINE_SETTLEMENT), outer);
+        return new PipelineTiming(observed, outer.minus(PIPELINE_SETTLEMENT), outer, profile);
     }
 
     /** Narrow the existing execution lease and any quota override; original plan/pins remain immutable. */
@@ -231,6 +350,34 @@ public final class CiBootstrap {
                 plan.javaHome(), plan.mavenCommand(), plan.pythonExecutable(), plan.ownerTask(), plan.policyRef(),
                 plan.volumes(), overrides, plan.parts(), plan.sourcePins(), plan.bootstrapRuntimeClosure(),
                 plan.bootstrapNativeJobHardBound(), plan.bootstrapAloneGrantsPipelineQualification());
+    }
+
+    static Duration hostedReviewDuration(byte[] raw, long requestedQuota, PipelineProfile pipelineProfile) throws IOException {
+        Objects.requireNonNull(pipelineProfile);
+        J profile = parse(raw);
+        String schema = string(field(profile, "schema"));
+        long minutes = integer(field(profile, "review_minutes"));
+        boolean legacy = schema.equals("xar.java-control-CI-profile/v1") && minutes == 90;
+        boolean complete = schema.equals("xar.java-control-CI-profile/v2") && minutes == 245;
+        boolean software = (schema.equals("xar.java-control-CI-profile/v3") || schema.equals("xar.java-control-CI-profile/v4")) && minutes == 300
+                && string(field(profile,"qualification_scope")).equals("SOFTWARE_ONLY_NOT_POSTQUALIFIED");
+        if(schema.equals("xar.java-control-CI-profile/v4")&&!TOOLS_POSTQUALIFICATION_POLICY.equals(string(field(profile,"tools_postqualification_policy"))))
+            throw new IOException("Explicit mandatory original full Own and large-input two-JUnit policy required");
+        if ((!legacy && !complete && !software) || integer(field(profile, "max_project_bytes")) != requestedQuota
+                || requestedQuota != 8 * GIB || !string(field(profile, "task")).equals("github-actions-java-ci")
+                || pipelineProfile == PipelineProfile.COMPLETE_CURRENT && !complete
+                || pipelineProfile == PipelineProfile.HOSTED_SOFTWARE && !software
+                || pipelineProfile == PipelineProfile.ROOT_MANAGED_COMPLETE) {
+            throw new IOException("Explicit approved versioned hosted CI quota and complete-stage review required");
+        }
+        return Duration.ofMinutes(pipelineProfile == PipelineProfile.LEGACY ? 90 : minutes);
+    }
+    static void requireToolsPostqualificationPolicy(byte[] raw,String requested)throws IOException {
+        J profile=parse(raw);
+        if(!"xar.java-control-CI-profile/v4".equals(string(field(profile,"schema")))
+                ||!TOOLS_POSTQUALIFICATION_POLICY.equals(requested)
+                ||!TOOLS_POSTQUALIFICATION_POLICY.equals(string(field(profile,"tools_postqualification_policy"))))
+            throw new IOException("Current hosted Tools adoption requires explicit v4 mandatory real full Own plus two-JUnit policy");
     }
 
     public record BootstrapActual(String schema, String machineId, String startedAtUtc,
@@ -332,6 +479,10 @@ public final class CiBootstrap {
     }
 
     public static void main(String[] arguments) throws Exception {
+        if (arguments.length > 0 && arguments[0].equals("--utf8-java-invocation")) {
+            JavaUtf8Invocation.run(JavaUtf8Invocation.entryPublication(arguments));
+            return;
+        }
         if (!System.getProperty("os.name").startsWith("Windows") || Runtime.version().feature() != 21) {
             throw new IllegalStateException("explicit installed Windows JDK21 required; no skip");
         }
@@ -346,9 +497,15 @@ public final class CiBootstrap {
             System.out.println("Verified " + count + " persisted Maven probe records; evidence integrity grants no pipeline qualification");
             return;
         }
-        Invocation invocation = invocation(arguments);
-        Map<String, String> values = invocation.values();
+        Invocation bootstrapInvocation = invocation(arguments);
+        Map<String, String> values = bootstrapInvocation.values();
         FilePin fixtureProduction = fixtureProductionPin(values);
+        FilePin plannedFixtureProduction = plannedFixtureProductionPin(values);
+        String qualification=values.get("--qualification-scope");
+        if(qualification!=null && !qualification.equals("SOFTWARE_ONLY_NOT_POSTQUALIFIED"))
+            throw new IllegalArgumentException("Hosted runner cannot request managed complete qualification");
+        PipelineProfile pipelineProfile = qualification!=null ? PipelineProfile.HOSTED_SOFTWARE
+                : fixtureProduction != null || plannedFixtureProduction != null ? PipelineProfile.COMPLETE_CURRENT : PipelineProfile.LEGACY;
         Path repo = Path.of(values.get("--repo-root")).toRealPath();
         Path root = Path.of(values.get("--work-root")).toAbsolutePath().normalize();
         Path python = Path.of(values.get("--python-executable")).toRealPath();
@@ -373,17 +530,22 @@ public final class CiBootstrap {
         Path policyPath = repo.resolve("docs/storage-retention-policy.json");
         Policy policy = readPolicy(Files.readAllBytes(policyPath));
         Path profilePath = repo.resolve("java/ck3-control/ci-profile.json");
-        J profile = parse(Files.readAllBytes(profilePath));
-        if (!string(field(profile, "schema")).equals("xar.java-control-CI-profile/v1")
-                || integer(field(profile, "max_project_bytes")) != requestedQuota || requestedQuota != 8 * GIB
-                || integer(field(profile, "review_minutes")) != 90
-                || !string(field(profile, "task")).equals("github-actions-java-ci")) {
-            throw new IOException("explicit approved versioned hosted CI quota profile required");
-        }
+        byte[] profileBytes = Files.readAllBytes(profilePath);
+        if(qualification!=null)requireToolsPostqualificationPolicy(profileBytes,values.get("--tools-postqualification-policy"));
+        J profile = parse(profileBytes);
+        Duration reviewDuration = hostedReviewDuration(profileBytes, requestedQuota, pipelineProfile);
         String machine = machineId(systemRoot);
         Instant observed = Instant.now();
-        Instant expiry = observed.plus(Duration.ofMinutes(90));
-        PipelineTiming timing = pipelineTiming(observed, expiry);
+        Instant expiry = observed.plus(reviewDuration);
+        if(pipelineProfile==PipelineProfile.HOSTED_SOFTWARE) {
+            System.out.println(emit(toJson(missingToolsPostqualification())));
+            System.out.println("SOFTWARE_ONLY_NOT_POSTQUALIFIED: PERSON10_ACTUAL NOT_EXECUTED; ROOT_INVOCATION_ACTUAL NOT_EXECUTED; FULL_CI_NOT_QUALIFIED");
+            if(fixtureProduction==null&&plannedFixtureProduction==null)
+                System.out.println("HOSTED_SOFTWARE_UNAVAILABLE: actual same-run current fixture production inputs were not supplied; nine-stage software qualification NOT_EXECUTED");
+            if(reviewDuration.compareTo(COMPLETE_BUDGET.minimumTotal())<0)
+                System.out.println("HOSTED_SOFTWARE_UNAVAILABLE: configured "+reviewDuration.toSeconds()+"s cannot admit complete software bounds "+COMPLETE_BUDGET.minimumTotal().toSeconds()+"s; no stage or timeout was shortened");
+        }
+        PipelineTiming timing = pipelineTiming(observed, expiry, pipelineProfile);
         QuotaOverride override = new QuotaOverride(string(field(profile, "owner")), string(field(profile, "task")),
                 string(field(profile, "reason")), requestedQuota, expiry.toString(), measure(profilePath));
         Map<String, QuotaOverride> overrides = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -406,7 +568,7 @@ public final class CiBootstrap {
             Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             environment.putAll(System.getenv());
             environment.put("JAVA_HOME", javaHome.toString());
-            environment.putAll(OracleEnvironment.bind(repo, python, environment));
+            environment.putAll(OracleEnvironment.bindSelectedInterpreter(python, environment));
             String scratch = root.resolve("scratch").toString();
             String jvm = "-Xms32m -Xmx512m -XX:MaxMetaspaceSize=192m -XX:ReservedCodeCacheSize=64m"
                     + " -XX:MaxDirectMemorySize=64m -Xss512k -Djava.io.tmpdir=" + scratch + " -Djna.tmpdir=" + scratch;
@@ -436,7 +598,7 @@ public final class CiBootstrap {
                         ordinal == 1 ? MavenProbePhase.BEFORE_ENSURE : MavenProbePhase.AFTER_IN_PLACE_UPGRADE,
                         true, mavenProbeRefs);
             }, observedInstallation -> installOfficialMaven(observedInstallation, root, machine, volumes, () -> guard(root, volumes, timing.workDeadline())));
-            if (invocation.mode() == BootstrapMode.MAVEN_ONLY) {
+            if (bootstrapInvocation.mode() == BootstrapMode.MAVEN_ONLY) {
                 if (!before.equals(sourcePins(source))) throw new IOException("bootstrap source changed during default Maven admission");
                 completed = true;
                 return;
@@ -449,7 +611,7 @@ public final class CiBootstrap {
                     + root.resolve("build/bootstrap-tools") + "\" verify\r\nexit /b %errorlevel%\r\n",
                     StandardOpenOption.CREATE_NEW);
             runPlain(List.of(systemRoot.resolve("System32/cmd.exe").toString(), "/d", "/c", batch.toString()),
-                    root.resolve("scratch"), environment, root.resolve("logs/bootstrap-verify.log"), Duration.ofMinutes(15), timing.workDeadline(), root, volumes);
+                    root.resolve("scratch"), environment, root.resolve("logs/bootstrap-verify.log"), Duration.ofSeconds(3600), timing.workDeadline(), root, volumes);
             if (!before.equals(sourcePins(source))) throw new IOException("bootstrap source changed during full verify");
             Path output = root.resolve("build/bootstrap-tools/ck3-control-build-tools");
             List<FilePin> runtime = new ArrayList<>();
@@ -462,16 +624,18 @@ public final class CiBootstrap {
                     runtime.add(measure(path));
                 }
             }
-            Plan plan = new Plan(PLAN_SCHEMA, machine, observed.toString(), expiry.toString(),
+            Plan plan = new Plan(pipelineProfile.schema(), machine, observed.toString(), expiry.toString(),
                     repo.toString(), root.toString(), javaHome.toString(), maven.toString(), python.toString(),
                     "github-actions-java-ci", measure(policyPath), volumes, overrides, PARTS, before, List.copyOf(runtime), false, false);
             planRef = publish(planPath, plan);
-            String classpath = String.join(";", runtime.stream().map(FilePin::path).toList());
-            List<String> command = new ArrayList<>(List.of(javaHome.resolve("bin/java.exe").toString(), "-Xms32m", "-Xmx128m",
-                    "-XX:MaxMetaspaceSize=96m", "-XX:ReservedCodeCacheSize=48m", "-XX:MaxDirectMemorySize=32m",
-                    "-Djava.io.tmpdir=" + scratch, "-Djna.tmpdir=" + scratch, "-cp", classpath,
-                    "org.xar.ck3.control.build.ControlCi", "--bootstrap-plan", planPath.toString()));
-            appendFixtureProduction(command, fixtureProduction);
+            var invocation=qualifiedInvocation(runtime,planPath,fixtureProduction,plannedFixtureProduction,root.resolve("logs"),Path.of(scratch),pending->{
+                guard(root,volumes,timing.workDeadline());
+                long existing;try(var entries=Files.walk(root.resolve("logs"))){existing=entries.filter(path->Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS)).mapToLong(path->{try{return Files.size(path);}catch(IOException error){throw new UncheckedIOException(error);}}).reduce(0L,Math::addExact);}
+                catch(UncheckedIOException error){throw error.getCause();}
+                if(Math.addExact(existing,pending)>PARTS.get("metadata_logs"))throw new IOException("UTF8 invocation exceeds the original finite metadata budget");
+                for(var volume:volumes.entrySet())if(Files.getFileStore(Path.of(volume.getKey())).getUsableSpace()<Math.addExact(volume.getValue().requiredFree(),pending))throw new IOException("Fresh free-space margin cannot admit the invocation outputs");
+            });
+            List<String> command=new ArrayList<>();command.add(javaHome.resolve("bin/java.exe").toString());command.addAll(invocation.physicalArguments());
             environment.remove("JAVA_TOOL_OPTIONS");
             runPlain(command, repo, environment, root.resolve("logs/qualified-pipeline.log"),
                     timing.remainingOuter(Instant.now()), timing.outerDeadline(), root, volumes);
@@ -483,7 +647,7 @@ public final class CiBootstrap {
             if (!completed && failure == null) failure = "bootstrap did not reach its requested terminal validation";
             publish(root.resolve("logs/bootstrap-actual.json"), new BootstrapActual(
                     "xar.java-control-CI-bootstrap-actual/v3", machine, started, Instant.now().toString(),
-                    completionStatus(invocation.mode(), completed, failure), failure, planRef, defaultMaven,
+                    completionStatus(bootstrapInvocation.mode(), completed, failure), failure, planRef, defaultMaven,
                     mavenProbeRefs, false, false));
         }
         if (!completed || failure != null) throw new IllegalStateException(failure);
@@ -1278,7 +1442,7 @@ public final class CiBootstrap {
         boolean mavenOnly = arguments.length > 0 && arguments[0].equals("--ensure-default-maven-only");
         String[] parameters = mavenOnly ? java.util.Arrays.copyOfRange(arguments, 1, arguments.length) : arguments;
         Map<String, String> values = arguments(parameters);
-        if (mavenOnly && values.containsKey("--fixture-production-request")) {
+        if (mavenOnly && (values.containsKey("--fixture-production-request") || values.containsKey("--planned-fixture-production-request"))) {
             throw new IllegalArgumentException("Maven-only admission cannot request fixture production");
         }
         return new Invocation(mavenOnly ? BootstrapMode.MAVEN_ONLY : BootstrapMode.PIPELINE, values);
@@ -1287,35 +1451,83 @@ public final class CiBootstrap {
     static Map<String, String> arguments(String[] arguments) {
         List<String> required = List.of("--repo-root", "--work-root", "--python-executable", "--system-growth-reserve-bytes", "--max-project-bytes");
         List<String> fixture = List.of("--fixture-production-request", "--fixture-production-request-bytes", "--fixture-production-request-sha256");
-        if (arguments.length != required.size() * 2 && arguments.length != (required.size() + fixture.size()) * 2) {
+        List<String> planned = List.of("--planned-fixture-production-request", "--planned-fixture-production-request-bytes", "--planned-fixture-production-request-sha256");
+        if (arguments.length%2!=0 || (arguments.length != required.size()*2 && arguments.length != (required.size()+fixture.size())*2
+                && arguments.length != (required.size()+1)*2 && arguments.length != (required.size()+fixture.size()+1)*2
+                && arguments.length != (required.size()+2)*2 && arguments.length != (required.size()+fixture.size()+2)*2)) {
             throw new IllegalArgumentException("All five bootstrap parameters and, when requested, all three exact fixture production fields required");
         }
         Map<String, String> result = new LinkedHashMap<>();
         for (int index = 0; index < arguments.length; index += 2) {
-            if ((!required.contains(arguments[index]) && !fixture.contains(arguments[index])) || result.putIfAbsent(arguments[index], arguments[index + 1]) != null) {
+            if ((!required.contains(arguments[index]) && !fixture.contains(arguments[index]) && !planned.contains(arguments[index])
+                    && !arguments[index].equals("--qualification-scope") && !arguments[index].equals("--tools-postqualification-policy")) || result.putIfAbsent(arguments[index], arguments[index + 1]) != null) {
                 throw new IllegalArgumentException("unknown or duplicate bootstrap parameter");
             }
         }
-        if (!result.keySet().containsAll(required) || (!java.util.Collections.disjoint(result.keySet(), fixture) && !result.keySet().containsAll(fixture))) {
+        boolean hasFixture = !java.util.Collections.disjoint(result.keySet(), fixture);
+        boolean hasPlanned = !java.util.Collections.disjoint(result.keySet(), planned);
+        if (!result.keySet().containsAll(required) || hasFixture && !result.keySet().containsAll(fixture)
+                || hasPlanned && !result.keySet().containsAll(planned) || hasFixture && hasPlanned) {
             throw new IllegalArgumentException("Complete bootstrap and fixture production parameters required");
         }
+        if(result.containsKey("--qualification-scope")&&!result.get("--qualification-scope").equals("SOFTWARE_ONLY_NOT_POSTQUALIFIED"))
+            throw new IllegalArgumentException("Hosted arguments cannot select managed full qualification");
+        if(result.containsKey("--tools-postqualification-policy")
+                &&(!result.containsKey("--qualification-scope")||!TOOLS_POSTQUALIFICATION_POLICY.equals(result.get("--tools-postqualification-policy"))))
+            throw new IllegalArgumentException("Exact hosted scope and mandatory full-Own/two-JUnit policy required");
         return Map.copyOf(result);
     }
 
     static FilePin fixtureProductionPin(Map<String, String> values) throws IOException {
-        String path = values.get("--fixture-production-request");
+        return fixtureProductionPin(values, "--fixture-production-request");
+    }
+
+    static FilePin plannedFixtureProductionPin(Map<String, String> values) throws IOException {
+        return fixtureProductionPin(values, "--planned-fixture-production-request");
+    }
+
+    private static FilePin fixtureProductionPin(Map<String, String> values, String flag) throws IOException {
+        String path = values.get(flag);
         if (path == null) return null;
-        String bytes = values.get("--fixture-production-request-bytes");
+        String bytes = values.get(flag + "-bytes");
         if (bytes == null || !bytes.matches("[1-9][0-9]{0,7}")) throw new IllegalArgumentException("Positive bounded fixture production bytes required");
-        FilePin pin = new FilePin(Path.of(path).toRealPath().toString(), Long.parseLong(bytes), values.get("--fixture-production-request-sha256"));
+        FilePin pin = new FilePin(Path.of(path).toRealPath().toString(), Long.parseLong(bytes), values.get(flag + "-sha256"));
         if (pin.bytes() > 4 * MIB || !pin.equals(measure(Path.of(pin.path())))) throw new IOException("Fixture production input changed or exceeds its bound");
         return pin;
     }
 
     static void appendFixtureProduction(List<String> command, FilePin pin) throws IOException {
+        appendFixtureProduction(command, pin, "--fixture-production-request");
+    }
+
+    static void appendPlannedFixtureProduction(List<String> command, FilePin pin) throws IOException {
+        appendFixtureProduction(command, pin, "--planned-fixture-production-request");
+    }
+
+    private static void appendFixtureProduction(List<String> command, FilePin pin, String flag) throws IOException {
         if (pin == null) return;
         if (!pin.equals(measure(Path.of(pin.path())))) throw new IOException("Fixture production input changed before forwarding");
-        command.addAll(List.of("--fixture-production-request", pin.path(), Long.toString(pin.bytes()), pin.sha256()));
+        command.addAll(List.of(flag, pin.path(), Long.toString(pin.bytes()), pin.sha256()));
+    }
+
+    /** Actual bootstrap producer, shared with its regression; the original runtime closure remains authoritative. */
+    static JavaUtf8Invocation.Launch qualifiedInvocation(List<FilePin> runtime,Path planPath,FilePin fixtureProduction,
+            Path evidenceRoot,Path scratch,JavaUtf8Invocation.OutputGuard guard)throws IOException {
+        return qualifiedInvocation(runtime,planPath,fixtureProduction,null,evidenceRoot,scratch,guard);
+    }
+    static JavaUtf8Invocation.Launch qualifiedInvocation(List<FilePin> runtime,Path planPath,FilePin fixtureProduction,FilePin plannedFixtureProduction,
+            Path evidenceRoot,Path scratch,JavaUtf8Invocation.OutputGuard guard)throws IOException {
+        if(fixtureProduction!=null&&plannedFixtureProduction!=null)throw new IllegalArgumentException("One production or planned fixture route required");
+        var pinnedClasspath=new ArrayList<JavaUtf8Invocation.ClasspathPin>();
+        for(FilePin pin:runtime){if(!pin.equals(measure(Path.of(pin.path()))))throw new IOException("Original bootstrap runtime pin drifted");pinnedClasspath.add(JavaUtf8Invocation.captureClasspath(Path.of(pin.path())));}
+        if(pinnedClasspath.isEmpty())throw new IOException("Actual complete bootstrap runtime closure required");
+        var arguments=new ArrayList<>(List.of("--bootstrap-plan",planPath.toString()));appendFixtureProduction(arguments,fixtureProduction);appendPlannedFixtureProduction(arguments,plannedFixtureProduction);
+        var evidence=JavaUtf8Invocation.captureOutputRoot(evidenceRoot);
+        var request=new JavaUtf8Invocation.Request(new JavaUtf8Invocation.ClassTarget("org.xar.ck3.control.build.ControlCi",pinnedClasspath.getFirst(),pinnedClasspath),List.of(),arguments,evidence);
+        var publication=JavaUtf8Invocation.publish(request,evidence,"qualified-pipeline-utf8.bin",guard);
+        return JavaUtf8Invocation.launch(publication,new JavaUtf8Invocation.ClassCarrier(pinnedClasspath),List.of(
+                "-Xms32m","-Xmx128m","-XX:MaxMetaspaceSize=96m","-XX:ReservedCodeCacheSize=48m","-XX:MaxDirectMemorySize=32m",
+                "-Djava.io.tmpdir="+scratch,"-Djna.tmpdir="+scratch));
     }
 
     static FilePin publish(Path path, Record value) throws IOException {
@@ -1490,6 +1702,380 @@ public final class CiBootstrap {
             if (Character.isHighSurrogate(character)) {
                 if (++index >= text.length() || !Character.isLowSurrogate(text.charAt(index))) throw new IOException("unpaired bootstrap Unicode surrogate");
             } else if (Character.isLowSurrogate(character)) throw new IOException("unpaired bootstrap Unicode surrogate");
+        }
+    }
+
+    /** One JDK-only codec and same-JVM entry. Pins are data; the original caller still owns admission and output guards. */
+    public static final class JavaUtf8Invocation {
+        private JavaUtf8Invocation() { }
+        public static final int MAXIMUM_ENVELOPE_BYTES = 4 << 20;
+        private static final int MAGIC = 0x584a5531, PREPARED_MAGIC = 0x584a5031;
+        private static final int MAXIMUM_FILES = 8192, MAXIMUM_CLASSPATH = 1024;
+        private static final String ENTRY = "--utf8-java-invocation";
+        /** These JDK observations never assert a Win32 FileID or continuously held native custody. */
+        public enum WitnessScope { JDK_METADATA_AND_CONTENT }
+        public record JdkFileMetadata(String createdAt,String modifiedAt,java.util.Optional<String> providerFileKey) {
+            public JdkFileMetadata { timestamp(createdAt);timestamp(modifiedAt);providerFileKey=optionalKey(providerFileKey); }
+        }
+        public record JdkDirectoryMetadata(String createdAt,java.util.Optional<String> providerFileKey) {
+            public JdkDirectoryMetadata { timestamp(createdAt);providerFileKey=optionalKey(providerFileKey); }
+        }
+        public record PinnedFile(String path,long bytes,String sha256,JdkFileMetadata metadata) {
+            public PinnedFile { absolute(path);Objects.requireNonNull(metadata);if(bytes<0||bytes>(2L<<30)||sha256==null||!sha256.matches("[0-9a-f]{64}"))throw new IllegalArgumentException("Exact bounded JDK content/metadata pin required"); }
+            public WitnessScope witnessScope(){return WitnessScope.JDK_METADATA_AND_CONTENT;}
+        }
+        public record DirectoryIdentity(String path,JdkDirectoryMetadata metadata) {
+            public DirectoryIdentity { absolute(path);Objects.requireNonNull(metadata); }
+            public WitnessScope witnessScope(){return WitnessScope.JDK_METADATA_AND_CONTENT;}
+        }
+        private static java.util.Optional<String> optionalKey(java.util.Optional<String> value){Objects.requireNonNull(value);value.ifPresent(JavaUtf8Invocation::text);return value;}
+        private static void timestamp(String value){text(value);try{java.time.Instant.parse(value);}catch(java.time.format.DateTimeParseException error){throw new IllegalArgumentException("JDK timestamp required",error);}}
+        private static JdkFileMetadata fileMetadata(java.nio.file.attribute.BasicFileAttributes value){return new JdkFileMetadata(value.creationTime().toString(),value.lastModifiedTime().toString(),java.util.Optional.ofNullable(value.fileKey()).map(Object::toString));}
+        private static JdkDirectoryMetadata directoryMetadata(java.nio.file.attribute.BasicFileAttributes value){return new JdkDirectoryMetadata(value.creationTime().toString(),java.util.Optional.ofNullable(value.fileKey()).map(Object::toString));}
+        public sealed interface ClasspathPin permits FileClasspath,DirectoryClasspath,JarClasspath { String path(); }
+        public record FileClasspath(PinnedFile file) implements ClasspathPin {
+            public FileClasspath { Objects.requireNonNull(file); }
+            public String path(){return file.path();}
+        }
+        public record DirectoryClasspath(DirectoryIdentity directory,List<PinnedFile> files) implements ClasspathPin {
+            public DirectoryClasspath { Objects.requireNonNull(directory);files=List.copyOf(files);if(files.size()>MAXIMUM_FILES)throw new IllegalArgumentException("Finite complete class directory required"); }
+            public String path(){return directory.path();}
+        }
+        /** A single original classpath root, retaining its complete manifest-ordered closure. */
+        public record JarClasspath(PinnedFile jar,List<ClasspathPin> manifestClasspath) implements ClasspathPin {
+            public JarClasspath { Objects.requireNonNull(jar);manifestClasspath=classpath(manifestClasspath);if(!manifestClasspath.getFirst().equals(new FileClasspath(jar))||manifestClasspath.stream().anyMatch(JarClasspath.class::isInstance))throw new IllegalArgumentException("Flat original JAR manifest closure required"); }
+            public String path(){return jar.path();}
+        }
+        public sealed interface Target permits ClassTarget,JarTarget,SourceTarget { }
+        public record ClassTarget(String mainClass,ClasspathPin mainOrigin,List<ClasspathPin> classpath) implements Target {
+            public ClassTarget { className(mainClass);Objects.requireNonNull(mainOrigin);classpath=JavaUtf8Invocation.classpath(classpath);if(!classpath.contains(mainOrigin))throw new IllegalArgumentException("Exact main origin must occur in runtime classpath"); }
+        }
+        public record JarTarget(PinnedFile jar,String mainClass,List<ClasspathPin> manifestClasspath) implements Target {
+            public JarTarget { Objects.requireNonNull(jar);className(mainClass);manifestClasspath=classpath(manifestClasspath);if(!manifestClasspath.getFirst().equals(new FileClasspath(jar)))throw new IllegalArgumentException("Executable JAR must be first effective classpath entry"); }
+        }
+        public record SourceTarget(PinnedFile source,String mainClass,List<ClasspathPin> classpath,
+                DirectoryIdentity compiledRoot,long maximumCompiledBytes) implements Target {
+            public SourceTarget { Objects.requireNonNull(source);className(mainClass);classpath=List.copyOf(classpath);Objects.requireNonNull(compiledRoot);if(classpath.size()>MAXIMUM_CLASSPATH||source.bytes()>(4<<20)||maximumCompiledBytes<1||maximumCompiledBytes>(64L<<20))throw new IllegalArgumentException("Bounded single-source Java21 compilation required"); }
+        }
+        public record Property(String name,String value) {
+            public Property { text(name);text(value);if(!name.matches("(?:xar|quarkus)\\.[A-Za-z0-9_.-]+"))throw new IllegalArgumentException("Only application properties may be applied after VM startup"); }
+        }
+        public record Request(Target target,List<Property> properties,List<String> arguments,DirectoryIdentity evidenceRoot) {
+            public Request { Objects.requireNonNull(target);properties=List.copyOf(properties);arguments=List.copyOf(arguments);Objects.requireNonNull(evidenceRoot);if(properties.size()>256||arguments.size()>4096)throw new IllegalArgumentException("Finite typed Java invocation required");var names=new java.util.HashSet<String>();for(Property property:properties)if(!names.add(property.name()))throw new IllegalArgumentException("Duplicate application property");arguments.forEach(JavaUtf8Invocation::text); }
+        }
+        public record Publication(PinnedFile envelope) { public Publication { Objects.requireNonNull(envelope);if(envelope.bytes()<1||envelope.bytes()>MAXIMUM_ENVELOPE_BYTES)throw new IllegalArgumentException("Finite invocation envelope required"); } }
+        public sealed interface Carrier permits ClassCarrier,SourceCarrier { }
+        public record ClassCarrier(List<ClasspathPin> classpath) implements Carrier { public ClassCarrier { classpath=JavaUtf8Invocation.classpath(classpath); } }
+        public record SourceCarrier(PinnedFile source) implements Carrier { public SourceCarrier { Objects.requireNonNull(source); } }
+        public record Launch(List<String> physicalArguments,Publication publication,Request logicalRequest) {
+            public Launch { physicalArguments=List.copyOf(physicalArguments);Objects.requireNonNull(publication);Objects.requireNonNull(logicalRequest); }
+        }
+        public record Preparation(PinnedFile envelope,String mode,String mainClass,String actualCodeSource,
+                List<ClasspathPin> effectiveClasspath,List<PinnedFile> compiledClasses) {
+            public Preparation { Objects.requireNonNull(envelope);if(!Set.of("CLASS","JAR","SOURCE").contains(mode))throw new IllegalArgumentException("Exact preparation mode required");className(mainClass);absolute(actualCodeSource);effectiveClasspath=List.copyOf(effectiveClasspath);compiledClasses=List.copyOf(compiledClasses);if(effectiveClasspath.isEmpty()||effectiveClasspath.size()>MAXIMUM_CLASSPATH||compiledClasses.size()>1024||(!mode.equals("SOURCE")&&!compiledClasses.isEmpty()))throw new IllegalArgumentException("Finite mode-bound preparation closure required"); }
+        }
+        @FunctionalInterface public interface OutputGuard { void require(long pendingBytes) throws IOException; }
+        private static void text(String value){if(value==null||value.indexOf('\0')>=0)throw new IllegalArgumentException("UTF8 text without NUL required");}
+        private static void absolute(String value){text(value);if(!Path.of(value).isAbsolute())throw new IllegalArgumentException("Absolute original path required");}
+        private static void className(String value){text(value);if(!javax.lang.model.SourceVersion.isName(value))throw new IllegalArgumentException("Exact Java binary main name required");}
+        private static List<ClasspathPin> classpath(List<ClasspathPin> input){var result=List.copyOf(input);if(result.isEmpty()||result.size()>MAXIMUM_CLASSPATH)throw new IllegalArgumentException("Finite original ordered runtime classpath required");return result;}
+        private static java.nio.file.attribute.BasicFileAttributes attributes(Path path)throws IOException {
+            var value=Files.readAttributes(path,java.nio.file.attribute.BasicFileAttributes.class,LinkOption.NOFOLLOW_LINKS);
+            if(value.isSymbolicLink()||value.isOther())throw new IOException("Plain JDK metadata required; links/other entries are unavailable");return value;
+        }
+        public static PinnedFile captureFile(Path input)throws IOException {
+            Path path=input.toRealPath(LinkOption.NOFOLLOW_LINKS);if(!path.equals(path.toRealPath()))throw new IOException("Linked source ancestry is unavailable");var before=attributes(path);
+            if(!before.isRegularFile()||before.size()>(2L<<30))throw new IOException("Bounded regular original file required");
+            var digest=digest();try(var stream=Files.newInputStream(path)){byte[] buffer=new byte[65536];for(int count;(count=stream.read(buffer))!=-1;)digest.update(buffer,0,count);}
+            var after=attributes(path);if(!fileMetadata(before).equals(fileMetadata(after))||before.size()!=after.size())throw new IOException("Original file changed during pin capture");
+            return new PinnedFile(path.toString(),before.size(),java.util.HexFormat.of().formatHex(digest.digest()),fileMetadata(before));
+        }
+        private static DirectoryIdentity directory(Path input)throws IOException {
+            Path path=input.toRealPath(LinkOption.NOFOLLOW_LINKS);if(!path.equals(path.toRealPath()))throw new IOException("Linked output ancestry is unavailable");var value=attributes(path);if(!value.isDirectory())throw new IOException("Existing plain directory required");return new DirectoryIdentity(path.toString(),directoryMetadata(value));
+        }
+        public static DirectoryIdentity captureOutputRoot(Path existingRoot)throws IOException {var result=directory(existingRoot);ascii(result.path());return result;}
+        public static ClasspathPin captureClasspath(Path input)throws IOException {
+            Path path=input.toRealPath(LinkOption.NOFOLLOW_LINKS);var value=attributes(path);if(value.isRegularFile()){
+                if(isArchive(path)){var closure=new LinkedHashMap<String,ClasspathPin>();jarClosure(path,closure,0);return new JarClasspath(captureFile(path),List.copyOf(closure.values()));}
+                return new FileClasspath(captureFile(path));
+            }
+            DirectoryIdentity identity=directory(path);var files=new ArrayList<PinnedFile>();
+            try(var walk=Files.walk(path)){var iterator=walk.iterator();while(iterator.hasNext()){Path next=iterator.next();var item=attributes(next);if(item.isRegularFile()){if(files.size()>=MAXIMUM_FILES)throw new IOException("Complete classpath inventory exceeded its finite limit");files.add(captureFile(next));}else if(!item.isDirectory())throw new IOException("Unsupported runtime classpath member");}}
+            files.sort(java.util.Comparator.comparing(PinnedFile::path));if(!identity.equals(directory(path)))throw new IOException("Original class directory changed identity");return new DirectoryClasspath(identity,files);
+        }
+        private static void verify(PinnedFile pin)throws IOException {if(!pin.equals(captureFile(Path.of(pin.path()))))throw new IOException("Exact source bytes/JDK metadata drifted: "+pin.path());}
+        private static void verify(DirectoryIdentity pin)throws IOException {if(!pin.equals(directory(Path.of(pin.path()))))throw new IOException("Original output directory JDK metadata drifted");}
+        private static void verify(ClasspathPin pin)throws IOException {if(pin instanceof FileClasspath file){verify(file.file());return;}if(!pin.equals(captureClasspath(Path.of(pin.path()))))throw new IOException("Complete original runtime classpath drifted: "+pin.path());}
+        private static void controlled(DirectoryIdentity pin)throws IOException {ascii(pin.path());verify(pin);}
+        private static void ascii(String value)throws IOException {if(value.codePoints().anyMatch(code->code<32||code>126))throw new IOException("Only the caller-admitted physical carrier/output roots may use this ASCII route");}
+        private static java.security.MessageDigest digest(){try{return java.security.MessageDigest.getInstance("SHA-256");}catch(java.security.NoSuchAlgorithmException error){throw new IllegalStateException(error);}}
+
+        private static java.util.jar.Manifest manifest(PinnedFile original)throws IOException {
+            verify(original);java.util.jar.Manifest result;
+            try(var jar=new java.util.jar.JarFile(Path.of(original.path()).toFile(),true)){result=jar.getManifest();}
+            verify(original);return result==null?new java.util.jar.Manifest():result;
+        }
+        private static boolean isArchive(Path path)throws IOException {try(var archive=new java.util.jar.JarFile(path.toFile(),true)){return archive.size()>=0;}catch(java.util.zip.ZipException notArchive){if(path.getFileName().toString().toLowerCase(java.util.Locale.ROOT).endsWith(".jar"))throw new IOException("Declared runtime JAR is not an intact archive",notArchive);return false;}}
+        private static void jarClosure(Path path,LinkedHashMap<String,ClasspathPin> result,int depth)throws IOException {
+            var file=captureFile(path);if(result.containsKey(file.path()))return;
+            if(depth>32||result.size()>=MAXIMUM_CLASSPATH)throw new IOException("Finite JAR manifest dependency closure exceeded");
+            result.put(file.path(),new FileClasspath(file));
+            var attributes=manifest(file).getMainAttributes();
+            // Module/native launcher attributes have no effect on classpath dependencies.
+            // Agent and boot-path declarations retain the existing conservative prohibition.
+            for(String unsupported:List.of("Launcher-Agent-Class","Boot-Class-Path"))
+                if(attributes.getValue(unsupported)!=null)throw new IOException("Unsupported launcher-only JAR manifest attribute: "+unsupported);
+            String declared=attributes.getValue(java.util.jar.Attributes.Name.CLASS_PATH);if(declared==null||declared.isBlank())return;
+            for(String token:declared.trim().split(" +")){
+                java.net.URI uri;try{uri=Path.of(file.path()).toUri().resolve(token);}catch(IllegalArgumentException error){throw new IOException("Malformed original manifest Class-Path",error);}
+                if(!"file".equalsIgnoreCase(uri.getScheme())||uri.getRawQuery()!=null||uri.getRawFragment()!=null)throw new IOException("Only exact local manifest dependencies are supported");
+                Path dependency;try{dependency=Path.of(uri).toRealPath(LinkOption.NOFOLLOW_LINKS);}catch(IllegalArgumentException error){throw new IOException("Invalid original manifest dependency",error);}
+                var item=attributes(dependency);if(result.containsKey(dependency.toString()))continue;
+                if(item.isDirectory()){if(result.size()>=MAXIMUM_CLASSPATH)throw new IOException("Finite manifest directory dependency count exceeded");result.put(dependency.toString(),captureClasspath(dependency));}
+                else if(item.isRegularFile())jarClosure(dependency,result,depth+1);
+                else throw new IOException("Unavailable original manifest classpath dependency");
+            }
+        }
+        public static JarTarget captureJar(Path path)throws IOException {
+            var jar=captureFile(path);var attributes=manifest(jar).getMainAttributes();
+            // The same-JVM engine cannot emulate java -jar launcher effects for the actual entry JAR.
+            for(String unsupported:List.of("Launcher-Agent-Class","Add-Exports","Add-Opens","Enable-Native-Access","Boot-Class-Path"))
+                if(attributes.getValue(unsupported)!=null)throw new IOException("Unsupported launcher-only JAR manifest attribute: "+unsupported);
+            var closure=new LinkedHashMap<String,ClasspathPin>();jarClosure(Path.of(jar.path()),closure,0);
+            String main=attributes.getValue(java.util.jar.Attributes.Name.MAIN_CLASS);
+            if(main==null||main.isBlank())throw new IOException("Original executable JAR Main-Class is missing");
+            try{return new JarTarget(jar,main.trim(),List.copyOf(closure.values()));}catch(IllegalArgumentException error){throw new IOException("Invalid executable JAR main",error);}
+        }
+        private static List<ClasspathPin> effective(List<ClasspathPin> roots)throws IOException {
+            var all=new LinkedHashMap<String,ClasspathPin>();for(var root:roots){verify(root);if(root instanceof FileClasspath&&isArchive(Path.of(root.path())))throw new IOException("A JAR root requires its exact manifest closure pin");if(root instanceof JarClasspath jar){for(var entry:jar.manifestClasspath())all.putIfAbsent(entry.path(),entry);}else all.putIfAbsent(root.path(),root);}
+            if(all.size()>MAXIMUM_CLASSPATH)throw new IOException("Effective runtime closure is too large");return List.copyOf(all.values());
+        }
+        /** Peak additional output reservation; callers retain their existing whole-scope storage guard. */
+        public static long maximumOutputBytes(Request request)throws IOException {
+            return Math.addExact(Math.addExact(encode(request).length,preparationUpperBound(request)+8192L),request.target() instanceof SourceTarget source?Math.addExact(source.maximumCompiledBytes(),1280L*4096):0L);
+        }
+        private static long preparationUpperBound(Request request)throws IOException {
+            if(request.target() instanceof SourceTarget)return MAXIMUM_ENVELOPE_BYTES;
+            String mode,main,origin;List<ClasspathPin> complete;
+            if(request.target() instanceof JarTarget target){mode="JAR";main=target.mainClass();origin=target.jar().path();complete=target.manifestClasspath();}
+            else {var target=(ClassTarget)request.target();mode="CLASS";main=target.mainClass();origin=target.mainOrigin().path();var entries=new LinkedHashMap<String,ClasspathPin>();for(var root:target.classpath())if(root instanceof JarClasspath jar){for(var item:jar.manifestClasspath())entries.putIfAbsent(item.path(),item);}else entries.putIfAbsent(root.path(),root);complete=List.copyOf(entries.values());}
+            // Only the not-yet-created path/provider key are unknown. JDK timestamps have bounded wire fields.
+            var placeholder=new PinnedFile(request.evidenceRoot().path(),0,"0".repeat(64),new JdkFileMetadata("2000-01-01T00:00:00Z","2000-01-01T00:00:00Z",java.util.Optional.empty()));
+            long known=encodePreparation(new Preparation(placeholder,mode,main,origin,complete,List.of())).length;
+            return Math.min(MAXIMUM_ENVELOPE_BYTES,Math.addExact(known,131328L-utf8(placeholder.path()).length));
+        }
+
+        public static Publication publish(Request request,DirectoryIdentity envelopeRoot,String fileName,OutputGuard guard)throws IOException {
+            Objects.requireNonNull(guard);controlled(envelopeRoot);controlled(request.evidenceRoot());if(!fileName.matches("[A-Za-z0-9][A-Za-z0-9._-]{0,127}"))throw new IOException("Exact controlled envelope filename required");
+            Path path=Path.of(envelopeRoot.path()).resolve(fileName);if(path.equals(preparationPath(request))||Files.exists(preparationPath(request),LinkOption.NOFOLLOW_LINKS))throw new IOException("Original invocation preparation output is already occupied");
+            if(request.target() instanceof SourceTarget source&&(path.startsWith(Path.of(source.compiledRoot().path()))||preparationPath(request).startsWith(Path.of(source.compiledRoot().path()))))throw new IOException("Compilation output must be disjoint from retained invocation evidence");
+            verifyRequest(request);byte[] raw=encode(request);guard.require(maximumOutputBytes(request));
+            Files.write(path,raw,StandardOpenOption.CREATE_NEW);verify(envelopeRoot);return new Publication(captureFile(path));
+        }
+        public static Path preparationPath(Request request){return preparationPath(request.evidenceRoot());}
+        public static Path preparationPath(DirectoryIdentity evidenceRoot){return Path.of(evidenceRoot.path()).resolve("java-utf8-prepared.bin");}
+        public static Request read(Publication publication)throws IOException {return decode(pinnedBytes(publication.envelope(),MAXIMUM_ENVELOPE_BYTES));}
+        private static byte[] pinnedBytes(PinnedFile pin,int maximum)throws IOException {
+            if(pin.bytes()>maximum)throw new IOException("Pinned input exceeds this bounded role");verify(pin);byte[] raw=Files.readAllBytes(Path.of(pin.path()));
+            if(raw.length!=pin.bytes()||!java.util.HexFormat.of().formatHex(digest().digest(raw)).equals(pin.sha256()))throw new IOException("Pinned input bytes changed while opening");verify(pin);return raw;
+        }
+        private static void verifyRequest(Request request)throws IOException {
+            controlled(request.evidenceRoot());
+            if(request.target() instanceof ClassTarget target)effective(target.classpath());
+            else if(request.target() instanceof JarTarget target){if(!target.equals(captureJar(Path.of(target.jar().path()))))throw new IOException("Executable JAR source closure changed");}
+            else {var target=(SourceTarget)request.target();verify(target.source());controlled(target.compiledRoot());effective(target.classpath());}
+        }
+        public static Launch launch(Publication publication,Carrier carrier,List<String> asciiVmOptions)throws IOException {
+            Request request=read(publication);verifyRequest(request);var args=new ArrayList<String>();
+            for(String option:asciiVmOptions){text(option);ascii(option);if(!option.startsWith("-")||option.equals("-cp")||option.equals("-classpath")||option.startsWith("--class-path")||option.equals("-jar")||option.equals("-m")||option.startsWith("--module")||option.startsWith("--source")||Set.of("--","-version","--version","-help","--help","-?","-X","--dry-run").contains(option))throw new IOException("Actual startup-only JVM options cannot override or skip the carrier entry");args.add(option);}
+            if(carrier instanceof ClassCarrier classes){for(var pin:classes.classpath()){ascii(pin.path());verify(pin);}args.add("-cp");args.add(String.join(java.io.File.pathSeparator,classes.classpath().stream().map(ClasspathPin::path).toList()));args.add(CiBootstrap.class.getName());}
+            else {var source=((SourceCarrier)carrier).source();ascii(source.path());verify(source);if(!Path.of(source.path()).getFileName().toString().equals("CiBootstrap.java"))throw new IOException("Single actual CiBootstrap source carrier required");args.add("--source");args.add("21");args.add(source.path());}
+            PinnedFile pin=publication.envelope();ascii(pin.path());args.add(ENTRY);args.add(pin.path());args.add(Long.toString(pin.bytes()));args.add(pin.sha256());args.add(java.util.Base64.getEncoder().encodeToString(metadataBytes(pin.metadata())));return new Launch(args,publication,request);
+        }
+        /** Finite original JDK input observations. Native callers separately acquire actual held OS witnesses. */
+        public record JdkInputs(List<PinnedFile> files,List<DirectoryIdentity> directories) {
+            public JdkInputs { files=List.copyOf(files);directories=List.copyOf(directories);if(files.size()>32768||directories.size()>4096)throw new IllegalArgumentException("Finite complete input set required"); }
+        }
+        public static JdkInputs inputSnapshot(Launch launch,Carrier carrier)throws IOException {
+            Request request=read(launch.publication());if(!request.equals(launch.logicalRequest()))throw new IOException("Launch is not its original published request");verifyRequest(request);
+            var files=new LinkedHashMap<String,PinnedFile>();var directories=new LinkedHashMap<String,DirectoryIdentity>();
+            addFile(files,launch.publication().envelope());directories.put(request.evidenceRoot().path(),request.evidenceRoot());
+            if(request.target() instanceof ClassTarget target){for(var pin:target.classpath())addInput(pin,files,directories);}
+            else if(request.target() instanceof JarTarget target){for(var pin:target.manifestClasspath())addInput(pin,files,directories);}
+            else {var target=(SourceTarget)request.target();addFile(files,target.source());directories.put(target.compiledRoot().path(),target.compiledRoot());for(var pin:target.classpath())addInput(pin,files,directories);}
+            if(carrier instanceof ClassCarrier classes){for(var pin:classes.classpath())addInput(pin,files,directories);}else addFile(files,((SourceCarrier)carrier).source());
+            for(var file:files.values())verify(file);for(var folder:directories.values())verify(folder);return new JdkInputs(List.copyOf(files.values()),List.copyOf(directories.values()));
+        }
+        private static void addFile(Map<String,PinnedFile> files,PinnedFile pin)throws IOException {var previous=files.putIfAbsent(pin.path(),pin);if(previous!=null&&!previous.equals(pin))throw new IOException("Conflicting same-path original file observations");}
+        private static void addInput(ClasspathPin pin,Map<String,PinnedFile> files,Map<String,DirectoryIdentity> directories)throws IOException {
+            verify(pin);if(pin instanceof FileClasspath file)addFile(files,file.file());else if(pin instanceof JarClasspath jar){for(var item:jar.manifestClasspath())addInput(item,files,directories);}else {var folder=(DirectoryClasspath)pin;var previous=directories.putIfAbsent(folder.path(),folder.directory());if(previous!=null&&!previous.equals(folder.directory()))throw new IOException("Conflicting same-path directory observations");for(var file:folder.files())addFile(files,file);}
+        }
+        /** New readers compare the complete physical command against their original expected carrier and VM options. */
+        public static Request inspect(List<String> physicalArguments,Carrier expectedCarrier,List<String> asciiVmOptions)throws IOException {
+            int start=physicalArguments.size()-5;if(start<1||!physicalArguments.get(start).equals(ENTRY)||physicalArguments.stream().filter(ENTRY::equals).count()!=1)throw new IOException("Exact explicit UTF8 carrier invocation required");
+            Publication publication=entryPublication(physicalArguments.subList(start,physicalArguments.size()).toArray(String[]::new));Launch expected=launch(publication,expectedCarrier,asciiVmOptions);if(!expected.physicalArguments().equals(physicalArguments))throw new IOException("Physical carrier/VM arguments differ from the original declaration");return expected.logicalRequest();
+        }
+        private static Publication entryPublication(String[] arguments)throws IOException {
+            if(arguments.length!=5||!ENTRY.equals(arguments[0])||!arguments[2].matches("[1-9][0-9]*"))throw new IOException("Exact pinned invocation entry arguments required");
+            for(String argument:arguments)ascii(argument);
+            try{return new Publication(new PinnedFile(arguments[1],Long.parseLong(arguments[2]),arguments[3],readMetadataBytes(java.util.Base64.getDecoder().decode(arguments[4]))));}
+            catch(IllegalArgumentException error){throw new IOException("Malformed pinned invocation entry",error);}
+        }
+        private static byte[] utf8(String value)throws IOException {
+            try {var encoded=StandardCharsets.UTF_8.newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT).encode(java.nio.CharBuffer.wrap(value));byte[] bytes=new byte[encoded.remaining()];encoded.get(bytes);return bytes;}
+            catch(java.nio.charset.CharacterCodingException error){throw new IOException("Malformed Unicode text in invocation",error);}
+        }
+        private static String decodeUtf8(byte[] bytes)throws IOException {
+            try{return StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(bytes)).toString();}
+            catch(java.nio.charset.CharacterCodingException error){throw new IOException("Malformed UTF8 invocation bytes",error);}
+        }
+        private static final class LimitedBytes extends java.io.ByteArrayOutputStream {
+            @Override public synchronized void write(int value){if(count>=MAXIMUM_ENVELOPE_BYTES)throw new IllegalArgumentException("Invocation exceeds its finite wire limit");super.write(value);}
+            @Override public synchronized void write(byte[] bytes,int offset,int length){if(length>MAXIMUM_ENVELOPE_BYTES-count)throw new IllegalArgumentException("Invocation exceeds its finite wire limit");super.write(bytes,offset,length);}
+        }
+        private static void string(java.io.DataOutputStream out,String value)throws IOException {byte[] bytes=utf8(value);if(bytes.length>65536)throw new IOException("Bounded invocation field required");out.writeInt(bytes.length);out.write(bytes);}
+        private static String string(java.io.DataInputStream in)throws IOException {int count=count(in,65536);return decodeUtf8(exact(in,count));}
+        private static int count(java.io.DataInputStream in,int maximum)throws IOException {int count=in.readInt();if(count<0||count>maximum)throw new IOException("Invocation field count outside declared bounds");return count;}
+        private static byte[] exact(java.io.DataInputStream in,int count)throws IOException {byte[] bytes=in.readNBytes(count);if(bytes.length!=count)throw new java.io.EOFException("Truncated invocation envelope");return bytes;}
+        private static void optional(java.io.DataOutputStream out,java.util.Optional<String> value)throws IOException {out.writeByte(value.isPresent()?1:0);if(value.isPresent())string(out,value.orElseThrow());}
+        private static java.util.Optional<String> optional(java.io.DataInputStream in)throws IOException {return switch(in.readUnsignedByte()){case 0->java.util.Optional.empty();case 1->java.util.Optional.of(string(in));default->throw new IOException("Unknown JDK provider-key presence tag");};}
+        private static void metadata(java.io.DataOutputStream out,JdkFileMetadata value)throws IOException {string(out,value.createdAt());string(out,value.modifiedAt());optional(out,value.providerFileKey());}
+        private static JdkFileMetadata metadata(java.io.DataInputStream in)throws IOException {return new JdkFileMetadata(string(in),string(in),optional(in));}
+        private static byte[] metadataBytes(JdkFileMetadata value)throws IOException {var bytes=new java.io.ByteArrayOutputStream();var out=new java.io.DataOutputStream(bytes);out.writeInt(2);metadata(out,value);out.flush();return bytes.toByteArray();}
+        private static JdkFileMetadata readMetadataBytes(byte[] raw)throws IOException {if(raw.length>131328)throw new IOException("Bounded JDK metadata entry required");var in=new java.io.DataInputStream(new java.io.ByteArrayInputStream(raw));if(in.readInt()!=2)throw new IOException("Unknown JDK metadata entry version; legacy nativeKey is not a Win32 witness");var value=metadata(in);if(in.read()!=-1||!java.util.Arrays.equals(raw,metadataBytes(value)))throw new IOException("Noncanonical or trailing JDK metadata entry");return value;}
+        private static void pin(java.io.DataOutputStream out,PinnedFile value)throws IOException {string(out,value.path());out.writeLong(value.bytes());string(out,value.sha256());metadata(out,value.metadata());}
+        private static PinnedFile pin(java.io.DataInputStream in)throws IOException {return new PinnedFile(string(in),in.readLong(),string(in),metadata(in));}
+        private static void dir(java.io.DataOutputStream out,DirectoryIdentity value)throws IOException {string(out,value.path());string(out,value.metadata().createdAt());optional(out,value.metadata().providerFileKey());}
+        private static DirectoryIdentity dir(java.io.DataInputStream in)throws IOException {return new DirectoryIdentity(string(in),new JdkDirectoryMetadata(string(in),optional(in)));}
+        private static void pins(java.io.DataOutputStream out,List<PinnedFile> files)throws IOException {out.writeInt(files.size());for(var file:files)pin(out,file);}
+        private static List<PinnedFile> pins(java.io.DataInputStream in)throws IOException {int size=count(in,MAXIMUM_FILES);var files=new ArrayList<PinnedFile>();for(int index=0;index<size;index++)files.add(pin(in));return List.copyOf(files);}
+        private static void cp(java.io.DataOutputStream out,ClasspathPin value)throws IOException {
+            if(value instanceof FileClasspath file){out.writeByte(1);pin(out,file.file());}
+            else if(value instanceof DirectoryClasspath folder){out.writeByte(2);dir(out,folder.directory());pins(out,folder.files());}
+            else {var jar=(JarClasspath)value;out.writeByte(3);pin(out,jar.jar());cps(out,jar.manifestClasspath());}
+        }
+        private static ClasspathPin cp(java.io.DataInputStream in,int depth)throws IOException {
+            if(depth>1)throw new IOException("Nested manifest closure is not a canonical invocation");
+            return switch(in.readUnsignedByte()){
+                case 1->new FileClasspath(pin(in));case 2->new DirectoryClasspath(dir(in),pins(in));
+                case 3->new JarClasspath(pin(in),cps(in,depth+1));default->throw new IOException("Unknown invocation classpath tag");};
+        }
+        private static void cps(java.io.DataOutputStream out,List<ClasspathPin> values)throws IOException {out.writeInt(values.size());for(var value:values)cp(out,value);}
+        private static List<ClasspathPin> cps(java.io.DataInputStream in,int depth)throws IOException {int size=count(in,MAXIMUM_CLASSPATH);var values=new ArrayList<ClasspathPin>();for(int index=0;index<size;index++)values.add(cp(in,depth));return List.copyOf(values);}
+        public static byte[] encode(Request request)throws IOException {
+            try {var bytes=new LimitedBytes();var out=new java.io.DataOutputStream(bytes);out.writeInt(MAGIC);out.writeInt(2);
+                if(request.target() instanceof ClassTarget target){out.writeByte(1);string(out,target.mainClass());cp(out,target.mainOrigin());cps(out,target.classpath());}
+                else if(request.target() instanceof JarTarget target){out.writeByte(2);pin(out,target.jar());string(out,target.mainClass());cps(out,target.manifestClasspath());}
+                else {var target=(SourceTarget)request.target();out.writeByte(3);pin(out,target.source());string(out,target.mainClass());cps(out,target.classpath());dir(out,target.compiledRoot());out.writeLong(target.maximumCompiledBytes());}
+                out.writeInt(request.properties().size());for(var property:request.properties()){string(out,property.name());string(out,property.value());}
+                out.writeInt(request.arguments().size());for(String argument:request.arguments())string(out,argument);dir(out,request.evidenceRoot());out.flush();return bytes.toByteArray();
+            }catch(IllegalArgumentException error){throw new IOException("Invocation is not a bounded canonical value",error);}
+        }
+        public static Request decode(byte[] original)throws IOException {
+            if(original.length<9||original.length>MAXIMUM_ENVELOPE_BYTES)throw new IOException("Bounded versioned invocation envelope required");
+            try {var in=new java.io.DataInputStream(new java.io.ByteArrayInputStream(original));if(in.readInt()!=MAGIC||in.readInt()!=2)throw new IOException("Unknown Java invocation schema/version; legacy v1 is not native-qualified");
+                Target target=switch(in.readUnsignedByte()){
+                    case 1->new ClassTarget(string(in),cp(in,0),cps(in,0));
+                    case 2->new JarTarget(pin(in),string(in),cps(in,0));
+                    case 3->new SourceTarget(pin(in),string(in),cps(in,0),dir(in),in.readLong());
+                    default->throw new IOException("Unknown Java invocation target");};
+                int propertyCount=count(in,256);var properties=new ArrayList<Property>();for(int index=0;index<propertyCount;index++)properties.add(new Property(string(in),string(in)));
+                int argumentCount=count(in,4096);var arguments=new ArrayList<String>();for(int index=0;index<argumentCount;index++)arguments.add(string(in));
+                var result=new Request(target,properties,arguments,dir(in));if(in.read()!=-1)throw new IOException("Trailing bytes in Java invocation envelope");
+                if(!java.util.Arrays.equals(original,encode(result)))throw new IOException("Noncanonical Java invocation envelope");return result;
+            }catch(IllegalArgumentException error){throw new IOException("Malformed typed Java invocation",error);}
+        }
+
+        private static byte[] encodePreparation(Preparation value)throws IOException {
+            try {var bytes=new LimitedBytes();var out=new java.io.DataOutputStream(bytes);out.writeInt(PREPARED_MAGIC);out.writeInt(2);pin(out,value.envelope());string(out,value.mode());string(out,value.mainClass());string(out,value.actualCodeSource());cps(out,value.effectiveClasspath());pins(out,value.compiledClasses());out.flush();return bytes.toByteArray();}
+            catch(IllegalArgumentException error){throw new IOException("Preparation proof exceeds its finite output reservation",error);}
+        }
+        /** This proves preparation/source binding only. It never substitutes for the original Job terminal result. */
+        public static Preparation readPreparation(PinnedFile original)throws IOException {
+            byte[] raw=pinnedBytes(original,MAXIMUM_ENVELOPE_BYTES);
+            try {var in=new java.io.DataInputStream(new java.io.ByteArrayInputStream(raw));if(in.readInt()!=PREPARED_MAGIC||in.readInt()!=2)throw new IOException("Unknown Java preparation proof version; legacy v1 is not native-qualified");
+                var value=new Preparation(pin(in),string(in),string(in),string(in),cps(in,0),pins(in));if(in.read()!=-1||!java.util.Arrays.equals(raw,encodePreparation(value)))throw new IOException("Noncanonical or trailing preparation bytes");verify(value.envelope());for(var entry:value.effectiveClasspath())verify(entry);for(var file:value.compiledClasses())verify(file);return value;
+            }catch(IllegalArgumentException error){throw new IOException("Malformed preparation proof",error);}
+        }
+        /** Rebinds the actual preparation proof to its original request. Still never grants a successful main/Job terminal. */
+        public static Preparation inspectPreparation(PinnedFile original,Publication publication)throws IOException {
+            Request request=read(publication);verifyRequest(request);Preparation proof=readPreparation(original);
+            if(!original.path().equals(preparationPath(request).toString())||!proof.envelope().equals(publication.envelope()))throw new IOException("Preparation is not the original invocation output");
+            String mode,main,origin;List<ClasspathPin> closure;List<PinnedFile> generated=List.of();
+            if(request.target() instanceof ClassTarget target){mode="CLASS";main=target.mainClass();origin=target.mainOrigin().path();closure=effective(target.classpath());}
+            else if(request.target() instanceof JarTarget target){mode="JAR";main=target.mainClass();origin=target.jar().path();closure=target.manifestClasspath();}
+            else {var target=(SourceTarget)request.target();mode="SOURCE";main=target.mainClass();origin=target.compiledRoot().path();var compiled=(DirectoryClasspath)captureClasspath(Path.of(origin));generated=compiled.files();var roots=new ArrayList<ClasspathPin>();roots.add(compiled);roots.addAll(target.classpath());closure=effective(roots);}
+            var expected=new Preparation(publication.envelope(),mode,main,origin,closure,generated);if(!expected.equals(proof))throw new IOException("Preparation mode/main/original code source or complete effective deployment differs");return proof;
+        }
+        private static final List<java.net.URLClassLoader> LIVE_LOADERS=new ArrayList<>();
+        private record Compiled(DirectoryClasspath classes,List<PinnedFile> generated) { }
+        private static Compiled compile(SourceTarget target)throws IOException {
+            String originalSource=decodeUtf8(pinnedBytes(target.source(),4<<20));controlled(target.compiledRoot());for(var pin:target.classpath())verify(pin);
+            Path output=Path.of(target.compiledRoot().path());try(var entries=Files.list(output)){if(entries.findAny().isPresent())throw new IOException("Single-source compilation requires its original empty controlled output directory");}
+            var compiler=javax.tools.ToolProvider.getSystemJavaCompiler();if(compiler==null||Runtime.version().feature()!=21)throw new IOException("Actual JDK21 compiler required for source mode");
+            var generated=new ArrayList<Path>();long[] written={0L};int[] newDirectories={0};var diagnostic=new LimitedBytes();
+            try(var standard=compiler.getStandardFileManager(null,java.util.Locale.ROOT,StandardCharsets.UTF_8)){
+                var manager=new javax.tools.ForwardingJavaFileManager<javax.tools.StandardJavaFileManager>(standard){
+                    @Override public javax.tools.JavaFileObject getJavaFileForOutput(javax.tools.JavaFileManager.Location location,String className,javax.tools.JavaFileObject.Kind kind,javax.tools.FileObject sibling)throws IOException {
+                        if(location!=javax.tools.StandardLocation.CLASS_OUTPUT||kind!=javax.tools.JavaFileObject.Kind.CLASS||generated.size()>=1024)throw new IOException("Unexpected or unbounded single-source compiler output");
+                        Path next=output.resolve(className.replace('.','/')+kind.extension).normalize();if(!next.startsWith(output)||next.equals(output))throw new IOException("Compiler output escaped the original root");
+                        controlled(target.compiledRoot());Path parent=next.getParent();Path relative=output.relativize(parent);Path current=output;
+                        for(Path segment:relative){current=current.resolve(segment);try{if(++newDirectories[0]>256)throw new IOException("Compiler output directory maximum exceeded");Files.createDirectory(current);}catch(java.nio.file.FileAlreadyExistsException existing){newDirectories[0]--;if(!attributes(current).isDirectory())throw new IOException("Compiler output parent is not an original directory",existing);}}
+                        generated.add(next);
+                        return new javax.tools.SimpleJavaFileObject(next.toUri(),kind){
+                            @Override public OutputStream openOutputStream()throws IOException {
+                                OutputStream raw=Files.newOutputStream(next,StandardOpenOption.CREATE_NEW);
+                                return new java.io.FilterOutputStream(raw){
+                                    private void reserve(int count)throws IOException {written[0]=Math.addExact(written[0],count);if(written[0]>target.maximumCompiledBytes())throw new IOException("Source compilation exceeded its admitted output maximum");}
+                                    @Override public void write(int value)throws IOException {reserve(1);out.write(value);}
+                                    @Override public void write(byte[] bytes,int offset,int count)throws IOException {reserve(count);out.write(bytes,offset,count);}
+                                };
+                            }
+                        };
+                    }
+                    @Override public javax.tools.FileObject getFileForOutput(javax.tools.JavaFileManager.Location location,String packageName,String relativeName,javax.tools.FileObject sibling)throws IOException {throw new IOException("No resource or annotation-processor output is admitted in single-source mode");}
+                };
+                var options=new ArrayList<String>(List.of("--release","21","-proc:none","-encoding","UTF-8","-implicit:none"));
+                if(!target.classpath().isEmpty()){options.add("-classpath");options.add(String.join(java.io.File.pathSeparator,target.classpath().stream().map(ClasspathPin::path).toList()));}
+                else {options.add("-classpath");options.add(output.toString());}
+                boolean success;try(var writer=new java.io.OutputStreamWriter(diagnostic,StandardCharsets.UTF_8)){
+                    var sourceUnit=new javax.tools.SimpleJavaFileObject(Path.of(target.source().path()).toUri(),javax.tools.JavaFileObject.Kind.SOURCE){@Override public CharSequence getCharContent(boolean ignoreEncodingErrors){return originalSource;}};
+                    success=Boolean.TRUE.equals(compiler.getTask(writer,manager,null,options,null,List.of(sourceUnit)).call());
+                }catch(RuntimeException error){throw new IOException("Single-source compilation failed within its original admitted output",error);}
+                if(!success)throw new IOException("Single-source compilation rejected original source: "+decodeUtf8(diagnostic.toByteArray()));
+            }
+            verify(target.source());controlled(target.compiledRoot());for(var pin:target.classpath())verify(pin);
+            var classes=(DirectoryClasspath)captureClasspath(output);if(classes.files().size()!=generated.size())throw new IOException("Unexpected source compilation output appeared");
+            for(Path generatedFile:generated)if(classes.files().stream().noneMatch(pin->pin.path().equals(generatedFile.toString())))throw new IOException("Compiled class is absent from its complete pinned inventory");
+            return new Compiled(classes,classes.files());
+        }
+        /** Same JVM entry. Target classes never delegate to the carrier's build-tools classloader. */
+        public static void run(Publication publication)throws Exception {
+            Request request=read(publication);controlled(request.evidenceRoot());String main;String mode;String expectedOrigin;
+            List<ClasspathPin> roots;List<ClasspathPin> complete;List<PinnedFile> generated=List.of();
+            if(request.target() instanceof ClassTarget target){main=target.mainClass();mode="CLASS";expectedOrigin=target.mainOrigin().path();roots=target.classpath();complete=effective(roots);}
+            else if(request.target() instanceof JarTarget target){
+                var current=captureJar(Path.of(target.jar().path()));if(!target.equals(current))throw new IOException("Original executable JAR main/manifest/deployment changed");
+                main=target.mainClass();mode="JAR";expectedOrigin=target.jar().path();roots=List.of(new FileClasspath(target.jar()));complete=target.manifestClasspath();
+                for(var pin:complete)verify(pin);
+            }else {var target=(SourceTarget)request.target();var compiled=compile(target);main=target.mainClass();mode="SOURCE";expectedOrigin=compiled.classes().path();generated=compiled.generated();var values=new ArrayList<ClasspathPin>();values.add(compiled.classes());values.addAll(target.classpath());roots=List.copyOf(values);complete=effective(roots);}
+            for(var property:request.properties())System.setProperty(property.name(),property.value());
+            // java.class.path is a target-observation property, not a substitute for actual startup VM options.
+            System.setProperty("java.class.path",String.join(java.io.File.pathSeparator,roots.stream().map(ClasspathPin::path).toList()));
+            java.net.URL[] urls=new java.net.URL[roots.size()];for(int index=0;index<roots.size();index++)urls[index]=Path.of(roots.get(index).path()).toUri().toURL();
+            var loader=new java.net.URLClassLoader(urls,ClassLoader.getPlatformClassLoader());
+            // Deliberately retained until JVM teardown: server main may return while its non-daemon threads still load classes.
+            synchronized(LIVE_LOADERS){LIVE_LOADERS.add(loader);}
+            Thread.currentThread().setContextClassLoader(loader);
+            Class<?> actual=Class.forName(main,false,loader);if(actual.getClassLoader()!=loader||actual.getProtectionDomain().getCodeSource()==null)throw new IOException("Main class did not originate in its exact target loader");
+            Path actualOrigin=Path.of(actual.getProtectionDomain().getCodeSource().getLocation().toURI()).toRealPath(LinkOption.NOFOLLOW_LINKS);
+            if(!actualOrigin.equals(Path.of(expectedOrigin)))throw new IOException("Target main was shadowed by another deployment member");
+            var entry=actual.getMethod("main",String[].class);if(!java.lang.reflect.Modifier.isStatic(entry.getModifiers())||entry.getReturnType()!=void.class)throw new IOException("Exact public static void main(String[]) entry required");
+            for(var pin:complete)verify(pin);verify(publication.envelope());controlled(request.evidenceRoot());
+            var prepared=new Preparation(publication.envelope(),mode,main,actualOrigin.toString(),complete,generated);
+            byte[] proof=encodePreparation(prepared);Files.write(preparationPath(request),proof,StandardOpenOption.CREATE_NEW);controlled(request.evidenceRoot());
+            try {entry.invoke(null,(Object)request.arguments().toArray(String[]::new));}
+            catch(InvocationTargetException error){Throwable cause=error.getCause();if(cause instanceof Exception exception)throw exception;if(cause instanceof Error fatal)throw fatal;throw new IOException("Target main failed",cause);}
         }
     }
 }

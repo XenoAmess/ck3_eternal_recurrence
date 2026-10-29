@@ -1,0 +1,90 @@
+{
+  "cases": [
+    {
+      "name": "pass-partial-fail-stable-retains-every-choice",
+      "input": {
+        "choices": [
+          {"candidate_character_id": 50331651, "recipient_ai_accept_raw": 500000, "value": "adult_marriage", "unpriced": ["child_dynasty_result", "alliance_result"]},
+          {"candidate_character_id": 50331653, "recipient_ai_accept_raw": 400000, "value": "adult_marriage"},
+          {"candidate_character_id": 50331654, "recipient_ai_accept_raw": 300000, "value": "adult_marriage", "immediate_generic_costs": {"gold_raw": 0, "raw_scale": 100000}},
+          {"candidate_character_id": 50331655, "recipient_ai_accept_raw": 200000, "value": "adult_marriage"},
+          {"candidate_character_id": 50331656, "recipient_ai_accept_raw": 100000, "value": "adult_marriage"}
+        ],
+        "rows": [
+          {"candidate_character_id": 50331651, "actor_character_id": 50331649, "heir_character_id": 50331650, "candidate_native_fertility_floor_comparison_v1": {"source": "derived_signed_native_fertility_floor_comparison", "ready": true, "passes": false}, "candidate_native_scorer_age_branch_v1": {"source": "derived_native_scorer_age_branch", "ready": true, "passes": true}},
+          {"candidate_character_id": 50331653, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": false}},
+          {"candidate_character_id": 50331654, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": true}},
+          {"candidate_character_id": 50331655, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": true}},
+          {"candidate_character_id": 50331656, "candidate_native_fertility_floor_comparison_v1": {"ready": false, "passes": null}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": true}}
+        ]
+      }
+    },
+    {
+      "name": "all-fail-is-stable-fallback-not-exclusion",
+      "input": {
+        "choices": [{"candidate_character_id": 8}, {"candidate_character_id": 2}, {"candidate_character_id": 5}],
+        "rows": [
+          {"candidate_character_id": 8, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": false}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": true, "unused": "floor failed"}},
+          {"candidate_character_id": 2, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": false}},
+          {"candidate_character_id": 5, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": false}}
+        ]
+      }
+    },
+    {
+      "name": "missing-null-and-partial-preserve-stable-order-and-evidence",
+      "input": {
+        "choices": [{"candidate_character_id": 1, "episode_run_id": "same-episode", "future": {"missing_observation": null, "known_empty": [], "text": "琉焰😀\n"}}, {"candidate_character_id": 2}, {"candidate_character_id": 3}, {"candidate_character_id": 4}, {"candidate_character_id": 5}],
+        "rows": [
+          {"candidate_character_id": 1},
+          {"candidate_character_id": 2, "candidate_native_fertility_floor_comparison_v1": null, "candidate_native_scorer_age_branch_v1": null},
+          {"candidate_character_id": 3, "candidate_native_fertility_floor_comparison_v1": {"ready": false, "passes": false}},
+          {"candidate_character_id": 4, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"ready": false, "passes": null, "first_comparison": {"ready": false, "passes": null}}},
+          {"candidate_character_id": 5, "candidate_native_fertility_floor_comparison_v1": {"passes": true}}
+        ]
+      }
+    },
+    {
+      "name": "selector-zero-uses-observed-branch-without-recomputing-unused-comparisons",
+      "input": {
+        "choices": [{"candidate_character_id": 1}, {"candidate_character_id": 2}],
+        "rows": [
+          {"candidate_character_id": 1, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"source": "derived_native_scorer_age_branch", "ready": true, "passes": true, "selector_zero_bypass": true, "first_comparison": {"ready": false, "passes": null}, "second_comparison": {"ready": false, "passes": null, "subject_adult_deficit_raw": null, "adjusted_candidate_age_raw": null}}},
+          {"candidate_character_id": 2, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": false}}
+        ]
+      }
+    },
+    {
+      "name": "final-duplicate-row-wins-and-repeated-choice-retains-own-payload",
+      "input": {
+        "choices": [{"candidate_character_id": 1, "original_choice": "first"}, {"candidate_character_id": 2}, {"candidate_character_id": 1, "original_choice": "second"}],
+        "rows": [
+          {"candidate_character_id": 1, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": false}},
+          {"candidate_character_id": 2},
+          {"candidate_character_id": 1, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": true}}
+        ]
+      }
+    },
+    {
+      "name": "exact-large-integer-identities-are-never-rounded",
+      "input": {
+        "choices": [{"candidate_character_id": 9007199254740993}, {"candidate_character_id": 18446744073709551615}, {"candidate_character_id": 18446744073709551616}],
+        "rows": [
+          {"candidate_character_id": 9007199254740993, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": false}},
+          {"candidate_character_id": 18446744073709551615, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": true}, "candidate_native_scorer_age_branch_v1": {"ready": true, "passes": true}},
+          {"candidate_character_id": 18446744073709551616}
+        ]
+      }
+    },
+    {
+      "name": "ready-null-and-passes-null-remain-unknown",
+      "input": {
+        "choices": [{"candidate_character_id": 1}, {"candidate_character_id": 2}],
+        "rows": [
+          {"candidate_character_id": 1, "candidate_native_fertility_floor_comparison_v1": {"ready": null, "passes": true}},
+          {"candidate_character_id": 2, "candidate_native_fertility_floor_comparison_v1": {"ready": true, "passes": null}}
+        ]
+      }
+    },
+    {"name": "empty-choices-remain-empty", "input": {"choices": [], "rows": []}}
+  ]
+}

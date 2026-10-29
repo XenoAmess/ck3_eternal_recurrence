@@ -1,0 +1,507 @@
+{
+  "schema": "xar.ck3.java-realmcompare-producer-spec/v1",
+  "cases": [
+    {
+      "id": "real-loss",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": []
+    },
+    {
+      "id": "real-gain",
+      "before_ids": [
+        2231,
+        2262
+      ],
+      "after_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "mutations": []
+    },
+    {
+      "id": "same-set-later",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "mutations": []
+    },
+    {
+      "id": "complete-empty-before",
+      "before_ids": [],
+      "after_ids": [
+        2231
+      ],
+      "mutations": []
+    },
+    {
+      "id": "complete-empty-after",
+      "before_ids": [
+        2231
+      ],
+      "after_ids": [],
+      "mutations": []
+    },
+    {
+      "id": "generation-id-not-storage-index",
+      "before_ids": [
+        16777227,
+        16777228
+      ],
+      "after_ids": [
+        11,
+        16777228
+      ],
+      "mutations": []
+    },
+    {
+      "id": "missing-previous",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [],
+      "previous_override": null
+    },
+    {
+      "id": "unknown-previous-schema",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "schema"
+          ],
+          "action": "set",
+          "value": "old/v0"
+        }
+      ]
+    },
+    {
+      "id": "previous-observation-unavailable",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "status"
+          ],
+          "action": "set",
+          "value": "unavailable"
+        }
+      ]
+    },
+    {
+      "id": "owner-actor_character_id",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "source_frame",
+            "actor_character_id"
+          ],
+          "action": "set",
+          "value": 7
+        }
+      ]
+    },
+    {
+      "id": "owner-episode_run_id",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "source_frame",
+            "episode_run_id"
+          ],
+          "action": "set",
+          "value": "other-episode"
+        }
+      ]
+    },
+    {
+      "id": "owner-bridge_pid",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "source_frame",
+            "bridge_pid"
+          ],
+          "action": "set",
+          "value": 99
+        }
+      ]
+    },
+    {
+      "id": "owner-connection_generation",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "source_frame",
+            "connection_generation"
+          ],
+          "action": "set",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "id": "negative-previous-revision",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "source_frame",
+            "revision"
+          ],
+          "action": "set",
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "missing-previous-snapshot",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "source_frame",
+            "snapshot_id"
+          ],
+          "action": "remove"
+        }
+      ]
+    },
+    {
+      "id": "query-not-earlier",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "query_sequence"
+          ],
+          "action": "set",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "date-future",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "source_frame",
+            "date_raw"
+          ],
+          "action": "set",
+          "value": 53144376
+        }
+      ]
+    },
+    {
+      "id": "native-not-earlier",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "source_frame",
+            "native_revision"
+          ],
+          "action": "set",
+          "value": 42
+        }
+      ]
+    },
+    {
+      "id": "partial-previous-membership",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "component",
+            "status"
+          ],
+          "action": "set",
+          "value": "unavailable"
+        },
+        {
+          "target": "previous",
+          "path": [
+            "component",
+            "complete"
+          ],
+          "action": "set",
+          "value": false
+        },
+        {
+          "target": "previous",
+          "path": [
+            "component",
+            "county_title_ids"
+          ],
+          "action": "set",
+          "value": null
+        },
+        {
+          "target": "previous",
+          "path": [
+            "component",
+            "unavailable_reason"
+          ],
+          "action": "set",
+          "value": "source_missing"
+        }
+      ]
+    },
+    {
+      "id": "unordered-previous-counties",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "component",
+            "county_title_ids"
+          ],
+          "action": "set",
+          "value": [
+            2262,
+            2231
+          ]
+        }
+      ]
+    },
+    {
+      "id": "duplicate-previous-counties",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "component",
+            "county_title_ids"
+          ],
+          "action": "set",
+          "value": [
+            2231,
+            2231
+          ]
+        }
+      ]
+    },
+    {
+      "id": "previous-component-scope",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "component",
+            "scope"
+          ],
+          "action": "set",
+          "value": "top_liege_realm"
+        }
+      ]
+    },
+    {
+      "id": "previous-provenance-differs",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "provenance",
+            "game_version"
+          ],
+          "action": "set",
+          "value": "unknown"
+        }
+      ]
+    },
+    {
+      "id": "previous-component-owner",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "mutations": [
+        {
+          "target": "previous",
+          "path": [
+            "component",
+            "actor_character_id"
+          ],
+          "action": "set",
+          "value": 7
+        }
+      ]
+    }
+  ]
+}

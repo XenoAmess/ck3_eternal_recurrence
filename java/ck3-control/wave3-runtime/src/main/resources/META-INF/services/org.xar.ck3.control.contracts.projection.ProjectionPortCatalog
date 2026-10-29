@@ -1,0 +1,3 @@
+org.xar.ck3.control.wave3.runtime.childexports.ChildExportProjectionCatalog
+org.xar.ck3.control.wave3.runtime.timelineowner.TimelineOwnerProjectionCatalog
+org.xar.ck3.control.wave3.runtime.armysummary.ArmyMcpSummaryProjectionCatalog

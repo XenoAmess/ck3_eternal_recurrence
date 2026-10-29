@@ -1,0 +1,46 @@
+[
+  {
+    "character_id": 29829,
+    "status": "none",
+    "actual_jailer_character_id": -1,
+    "alive": true,
+    "current_person_state": {
+      "scope": "current_character",
+      "effective_prowess": {"status":"available","points":0,"unavailable_reason":null},
+      "injury_traits": {
+        "status":"available",
+        "flags":{"wounded_1":false,"wounded_2":false,"wounded_3":false,"maimed":false,"one_legged":false,"one_eyed":false,"disfigured":false,"incapable":false},
+        "wounded_rank":0,"wounded_rank_unavailable_reason":null,"unavailable_reason":null
+      },
+      "death_record":{"status":"available","reason_key":"","unavailable_reason":null,"date_object_raw_u64":18446744073709551615,"killer_full_character_id_raw":-2147483648,"artifact_full_id_raw":2147483647},
+      "raw_numeric_inputs": {
+        "status":"available","raw_numeric_inputs_ready":true,"character_id":29829,"scratch_present":true,
+        "context_source":"fallback_static","unavailable_reason":null,
+        "base_points":[11,11,11,11,11,11],"caps":[61,62,63,64,65,66],"prowess_adjustment":0,
+        "category_counts":[0,0,0,0],"scratch_factor_numerator":0,"scratch_factor_denominator":1,
+        "context":{"aggregate_properties":{"keys_u16":[5],"values_q64":[800000],"count":1},"weighted_rows":[],"weighted_count":0}
+      },
+      "context_branch_inputs": {
+        "status":"available","ready":true,"character_id":29829,"flag14":false,"selected_index":null,
+        "selected_property_block":null,"group_counts":[0,0,0,0,0,0,0],"group_property_blocks":[null,null,null,null,null,null,null],
+        "unavailable_reason":null,
+        "census_inputs":{"status":"available","ready":true,"character_id":29829,"scratch_present":false,"model_present":null,"model_owner_present":null,
+          "model_owner_full_character_id_raw_i32":null,"model_owner_matches_character":null,"model_magic_raw_u32":null,"header_source":"static",
+          "title_count_raw_i32":0,"title_occurrences":[],"unavailable_reason":null}
+      },
+      "current_prior_context_inputs": {
+        "available":true,"reason":null,"character_full_id":29829,"base_property_block":{"rows":[{"key":65535,"value_raw":-9223372036854775808}]},
+        "common_property_blocks":[],"selector":{"available":true,"uses_18f8_source":false,"selected_header_offset":6560},"selected_property_blocks":[]
+      },
+      "current_stored_context_state": {
+        "available":true,"reason":null,"character_full_id":29829,"scratch_present":true,"scratch_address":10240,
+        "model_present":true,"model_address":12288,"context_address":12304,"owner_address":8192,
+        "owner_character_full_id":29829,"bound_to_requested_character":true,"pending_raw":0,"owned_count_raw":0,
+        "weighted":{"data_address":0,"capacity_raw":4,"count":0,"items":[]},
+        "key_array":{"data_address":16384,"capacity_raw":8,"count":2,"items":[4,5]},
+        "value_array":{"data_address":20480,"capacity_raw":4,"count":3,"items":[0,-200000,9900000]},
+        "reset_input":{"weighted_count_nonzero":false}
+      }
+    }
+  }
+]

@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Set;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import static org.xar.ck3.control.events.interactionfallback.InteractionFallback.*;
 
 /** Explicit projection boundary; never treats the unvalidated legacy context as an internal model. */
@@ -20,7 +21,7 @@ public final class InteractionFallbackCodec {
         ObjectNode root = object(StrictJson.parse(raw), "schema", "binding", "pending", "context", "original_plan", "action_steps");
         StrictJson.require(REQUEST_SCHEMA.equals(text(root, "schema")), "unsupported interaction request schema");
         ObjectNode p = object(root.get("pending"), "instance_id", "sender_character_id", "auto_accept_notification");
-        Pending pending = new Pending(id(p, "instance_id"), positiveId(p, "sender_character_id"), nullableBoolean(p.get("auto_accept_notification")));
+        Pending pending = new Pending(id(p, "instance_id"), characterId(p, "sender_character_id"), nullableBoolean(p.get("auto_accept_notification")));
         ObjectNode c = object(root.get("context"), "status", "snapshot_revision", "date_raw", "pending_interaction_id", "definition", "legality");
         ObjectNode d = object(c.get("definition"), "canonical_key", "deterministic_key_hash");
         Context context = new Context(status(c.get("status")), unsigned(c, "snapshot_revision"), unsigned(c, "date_raw"),
@@ -109,7 +110,7 @@ public final class InteractionFallbackCodec {
     private static Binding binding(JsonNode raw) {
         ObjectNode row = object(raw, "snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id", "paused", "map_ready", "actor_character_id", "connection_generation", "bridge_pid");
         return new Binding(text(row, "snapshot_id"), unsigned(row, "revision"), unsigned(row, "native_revision"), unsigned(row, "date_raw"),
-                text(row, "episode_run_id"), bool(row.get("paused")), bool(row.get("map_ready")), positiveId(row, "actor_character_id"),
+                text(row, "episode_run_id"), bool(row.get("paused")), bool(row.get("map_ready")), characterId(row, "actor_character_id"),
                 unsigned(row, "connection_generation"), StrictJson.integer(row.get("bridge_pid"), 1, 0xffff_ffffL));
     }
     private static ObjectNode binding(Binding value) {
@@ -154,7 +155,7 @@ public final class InteractionFallbackCodec {
     private static boolean bool(JsonNode node) { StrictJson.require(node != null && node.isBoolean(), "exact boolean required"); return node.booleanValue(); }
     private static Boolean nullableBoolean(JsonNode node) { StrictJson.require(node != null, "required nullable boolean missing"); return node.isNull() ? null : bool(node); }
     private static int id(ObjectNode row, String key) { int value = (int) StrictJson.integer(row.get(key), Integer.MIN_VALUE, Integer.MAX_VALUE); pendingId(value); return value; }
-    private static int positiveId(ObjectNode row, String key) { return (int) StrictJson.integer(row.get(key), 1, Integer.MAX_VALUE); }
+    private static int characterId(ObjectNode row, String key) { return NativeCharacterId.fromJson(row.get(key)).value(); }
     private static BigInteger unsigned(ObjectNode row, String key) { return StrictJson.integer(row.get(key), BigInteger.ZERO, StrictJson.UINT64_MAX); }
     private static Status status(JsonNode node) {
         return switch (StrictJson.text(node)) {

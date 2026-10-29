@@ -55,7 +55,7 @@ final class FullParityResumeCiTest {
         assertInstanceOf(FullParityOracleBindings.ResumedBindings.class, live);
         assertEquals(30, live.mavenArguments().size());
         var config = config(); Path settings = temporary.resolve("settings"), snapshot = temporary.resolve("snapshot"), build = temporary.resolve("build");
-        List<String> capture = ControlBuild.reactorCaptureArguments(config, settings, snapshot, build, inputs.environment());
+        List<String> capture = historicalCaptureCommand(ControlBuild.reactorVerifyArguments(config, settings, snapshot, build, inputs.environment()));
         assertEquals("package", capture.getLast()); assertTrue(capture.contains("-DskipTests=true"));
         assertFalse(capture.stream().anyMatch(argument -> argument.startsWith("-Dtest=") || argument.equals("-pl")));
         var recorded = FullParityOracleBindings.fromRecordedArguments(R2, capture);
@@ -84,7 +84,7 @@ final class FullParityResumeCiTest {
         Inputs inputs = inputs("generations");
         assertEquals(11, FullParityOracleBindings.fromEnvironment(inputs.environment()).mavenArguments().size());
         var config = config(); Path settings = temporary.resolve("s"), snapshot = temporary.resolve("t"), build = temporary.resolve("b");
-        List<String> capture = ControlBuild.reactorCaptureArguments(config, settings, snapshot, build, inputs.environment());
+        List<String> capture = historicalCaptureCommand(ControlBuild.reactorVerifyArguments(config, settings, snapshot, build, inputs.environment()));
         var missing = capture.stream().filter(value -> !value.startsWith("-Dxar.person10.nativeCorpus.manifest.sha256=")).toList();
         assertThrows(IOException.class, () -> ControlBuild.completedCaptureArguments(config, settings, snapshot, build, missing));
         var duplicate = new ArrayList<>(capture); duplicate.add(capture.stream().filter(value -> value.startsWith("-Dxar.battle.context.source.fixture=")).findFirst().orElseThrow());
@@ -147,6 +147,15 @@ final class FullParityResumeCiTest {
         terminal.put("source_limit_profile", R2.name()); terminal.put("error", "x".repeat(4 << 20));
         var tooLarge = mapper.treeToValue(terminal, ControlBuild.BuildReceipt.class);
         assertThrows(IOException.class, () -> ControlBuild.buildReceiptBytes(tooLarge));
+    }
+
+    /** Original pre-policy command data keeps full-fixture historical replay and rejection coverage. */
+    private static List<String> historicalCaptureCommand(List<String> verify) {
+        var capture = new ArrayList<>(verify);
+        assertEquals("verify", capture.removeLast());
+        capture.addAll(List.of("-Dmaven.test.skip=false", "-DskipTests=true", "package"));
+        assertFalse(capture.stream().anyMatch(argument -> argument.startsWith("-Dxar.control.capture.commandPolicy=")));
+        return List.copyOf(capture);
     }
 
     private record Inputs(Path python, Path repo, Path corpus, Path manifest, Map<String, String> environment, List<Path> originals) { }

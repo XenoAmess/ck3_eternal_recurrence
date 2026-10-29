@@ -1,0 +1,134 @@
+{
+  "bridge": {
+    "creation_date": "created",
+    "pid": 55
+  },
+  "cases": [
+    {
+      "after": {
+        "pending": null,
+        "resolved": {
+          "candidate_character_id": 399,
+          "episode_run_id": "robert-test",
+          "heir_character_id": 202,
+          "material_result": true,
+          "post_bridge_creation_date": "created",
+          "post_bridge_pid": 55,
+          "source_pending": {
+            "recipient_character_id": 400
+          },
+          "status": "marriage",
+          "warm_material_native_revision": 7,
+          "warm_material_transition": "betrothal_to_marriage"
+        },
+        "schema": "xar.ck3.first-heir-marriage-formal.v1"
+      },
+      "before": {
+        "pending": null,
+        "resolved": {
+          "alliance_result": {
+            "bridge_creation_date": "created",
+            "bridge_pid": 55,
+            "status": "allied"
+          },
+          "candidate_character_id": 399,
+          "episode_run_id": "robert-test",
+          "heir_character_id": 202,
+          "material_result": true,
+          "post_bridge_creation_date": "created",
+          "post_bridge_pid": 55,
+          "source_pending": {
+            "recipient_character_id": 400
+          },
+          "status": "betrothal"
+        },
+        "schema": "xar.ck3.first-heir-marriage-formal.v1"
+      },
+      "driver_calls": [
+        "relationship"
+      ],
+      "planned": {
+        "plan": {
+          "selected_step": "life-advance"
+        }
+      },
+      "relation": {
+        "advertised": false,
+        "betrothed_character_id": null,
+        "bilateral_verified": true,
+        "heir_character_id": 202,
+        "native_revision": 7,
+        "primary_spouse_character_id": 399,
+        "read_only": true,
+        "schema": "xar.ck3.current-first-heir-relationship.v1",
+        "spouse_character_ids": [],
+        "status": "available"
+      },
+      "result": {
+        "plan": {
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 202,
+            "native_revision": 7,
+            "primary_spouse_character_id": 399,
+            "read_only": true,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_resolved": {
+            "candidate_character_id": 399,
+            "episode_run_id": "robert-test",
+            "heir_character_id": 202,
+            "material_result": true,
+            "post_bridge_creation_date": "created",
+            "post_bridge_pid": 55,
+            "source_pending": {
+              "recipient_character_id": 400
+            },
+            "status": "marriage",
+            "warm_material_native_revision": 7,
+            "warm_material_transition": "betrothal_to_marriage"
+          },
+          "family_marriage_status": "actual_alliance_result_pending",
+          "phase": "first_heir_marriage_actual_alliance_read",
+          "reason": "read current player-recipient alliance after material heir relation",
+          "selected_step": "query-observed-first-heir-marriage-alliance-result-v1-private"
+        }
+      },
+      "snapshot": {
+        "active_event": null,
+        "active_wars": [],
+        "date_raw": 53215920,
+        "episode_run_id": "robert-test",
+        "map_ready": true,
+        "native_revision": 7,
+        "paused": true,
+        "pending_character_interaction": null,
+        "played_character": {
+          "character_id": 101
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "failures": [],
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "original_test": "FamilyConsumerTest.test_primary_spouse_without_array_entry_matures_betrothal",
+  "schema": "xar.java.family-warm-material-original-test/v1",
+  "scope": "Original unchanged Python unit fixture and actual plan producer; software seam only; no native/Game outcome",
+  "sources": {
+    "ck3_autonomous_player/src/xar_autoplayer/family_marriage_formal_consumer.py": {
+      "bytes": 61603,
+      "sha256": "c6d55a12b4450909641dbffe5b12e900878f29cde406aadd4a6d185bd78039b0"
+    },
+    "ck3_autonomous_player/tests/unit/test_family_marriage_formal_consumer.py": {
+      "bytes": 89022,
+      "sha256": "ab8266d89836d8bd7cbafcc8a6a074b6eab76ca6340594909c1ccd1ca6a8aabc"
+    }
+  },
+  "test_count": 1,
+  "observed_at_utc": "2026-10-29T14:05:35.331Z"
+}

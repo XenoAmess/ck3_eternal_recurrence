@@ -167,6 +167,78 @@ final class ReactorTestClosureTest {
         assertTrue(selected.stream().anyMatch(item -> item.testClass().endsWith("SavedContinuityHttpTest") && item.minimumTestCases() == 2));
     }
 
+    @Test void currentRestartRequirementRejectsTheHistoricalIncompleteSuite() throws Exception {
+        var historical = ReactorTestClosure.g2FullParityResumeRequirements();
+        var selected = ReactorTestClosure.g2FullParityCurrentRequirements();
+        assertEquals(historical, selected.subList(0, historical.size()));
+        var restart = selected.stream().filter(item -> item.testClass().equals(
+                "org.xar.ck3.control.nativebridge.CleanRestartCanonicalWriterTest")).findFirst().orElseThrow();
+        assertEquals(8, restart.minimumTestCases());
+        Fixture fixture = fixture();
+        Path source = fixture.source().resolve("local-service/src/test/java/" + restart.testClass().replace('.', '/') + ".java");
+        Files.createDirectories(source.getParent());
+        Files.writeString(source, "package org.xar.ck3.control.nativebridge; class CleanRestartCanonicalWriterTest {}\n");
+        var pins = new ArrayList<>(fixture.pins()); pins.add(ControlBuild.FileRef.measure(source));
+        report(fixture.build(), "ck3-control-local-service", HTTP, 2, "");
+        report(fixture.build(), restart.moduleArtifactId(), restart.testClass(), 7, "");
+        assertThrows(IOException.class, () -> ReactorTestClosure.evaluate(fixture.source(), pins,
+                fixture.build(), List.of(restart)));
+        report(fixture.build(), restart.moduleArtifactId(), restart.testClass(), 8, "");
+        var actual = ReactorTestClosure.evaluate(fixture.source(), pins, fixture.build(), List.of(restart));
+        assertEquals(10, actual.actualTestCases());
+        assertEquals(8, actual.requiredSuites().stream().filter(item -> item.requirement().equals(restart))
+                .findFirst().orElseThrow().actual().testCases());
+    }
+
+    @Test void currentCanonicalRecoveryRequirementsRejectIncompleteReports() throws Exception {
+        var expected = List.of(
+                new ReactorTestClosure.RequiredSuite("adapters-storage", "adapters-storage",
+                        "org.xar.ck3.control.continuity.writer.HistoricalTransitionBatchTest", 2),
+                new ReactorTestClosure.RequiredSuite("adapters-storage", "adapters-storage",
+                        "org.xar.ck3.control.continuity.writer.DomainReadSessionReuseTest", 2),
+                new ReactorTestClosure.RequiredSuite("local-service", "ck3-control-local-service",
+                        "org.xar.ck3.control.nativebridge.SessionControllerDeferredCanonicalRecoveryTest", 1));
+        var selected = ReactorTestClosure.g2FullParityCurrentRequirements().stream()
+                .filter(item -> expected.stream().anyMatch(required -> required.testClass().equals(item.testClass())))
+                .toList();
+        assertEquals(expected, selected);
+        Fixture fixture = fixture();
+        var pins = new ArrayList<>(fixture.pins());
+        Path storagePom = fixture.source().resolve("adapters-storage/pom.xml");
+        Files.createDirectories(storagePom.getParent());
+        Files.writeString(storagePom, "<project><artifactId>adapters-storage</artifactId></project>");
+        pins.add(ControlBuild.FileRef.measure(storagePom));
+        report(fixture.build(), "ck3-control-local-service", HTTP, 2, "");
+        for (var requirement : selected) {
+            Path source = fixture.source().resolve(requirement.moduleDirectory()).resolve("src/test/java/")
+                    .resolve(requirement.testClass().replace('.', '/') + ".java");
+            Files.createDirectories(source.getParent());
+            int split = requirement.testClass().lastIndexOf('.');
+            Files.writeString(source, "package " + requirement.testClass().substring(0, split) + "; class "
+                    + requirement.testClass().substring(split + 1) + " {}\n");
+            pins.add(ControlBuild.FileRef.measure(source));
+            report(fixture.build(), requirement.moduleArtifactId(), requirement.testClass(),
+                    requirement.minimumTestCases(), "");
+        }
+        for (var requirement : selected) {
+            Path emitted = report(fixture.build(), requirement.moduleArtifactId(), requirement.testClass(),
+                    requirement.minimumTestCases() - 1, "");
+            assertThrows(IOException.class, () -> ReactorTestClosure.evaluate(fixture.source(), pins,
+                    fixture.build(), selected));
+            Files.delete(emitted);
+            assertThrows(IOException.class, () -> ReactorTestClosure.evaluate(fixture.source(), pins,
+                    fixture.build(), selected));
+            report(fixture.build(), requirement.moduleArtifactId(), requirement.testClass(),
+                    requirement.minimumTestCases(), "");
+        }
+        var actual = ReactorTestClosure.evaluate(fixture.source(), pins, fixture.build(), selected);
+        assertEquals(7, actual.actualTestCases());
+        for (var requirement : selected) {
+            assertEquals(requirement.minimumTestCases(), actual.requiredSuites().stream()
+                    .filter(item -> item.requirement().equals(requirement)).findFirst().orElseThrow().actual().testCases());
+        }
+    }
+
     private record Fixture(Path source, Path build, List<ControlBuild.FileRef> pins) {}
 
     private Fixture fixture() throws IOException {

@@ -1,0 +1,178 @@
+{
+  "schema": "xar.ck3.java-datedsummary-producer-spec/v1",
+  "cases": [
+    {
+      "id": "current-loss",
+      "include_verified_input": true,
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ]
+    },
+    {
+      "id": "historical-revision",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "current_frame_mutations": [
+        {
+          "path": [
+            "revision"
+          ],
+          "value": 100
+        }
+      ]
+    },
+    {
+      "id": "no-current-frame",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "current_frame_override": null
+    },
+    {
+      "id": "extra-current-frame-field",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "current_frame_mutations": [
+        {
+          "path": [
+            "extension"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "first-observation",
+      "include_verified_input": true,
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "without_previous": true
+    },
+    {
+      "id": "complete-empty-after",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": []
+    },
+    {
+      "id": "gain-only",
+      "before_ids": [
+        2231
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ]
+    },
+    {
+      "id": "same-set",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262,
+        2488
+      ]
+    },
+    {
+      "id": "long-loss",
+      "before_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "after_ids": []
+    },
+    {
+      "id": "no-feedback",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "feedback_mode": "none"
+    },
+    {
+      "id": "unavailable-feedback",
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "feedback_mode": "unavailable"
+    },
+    {
+      "id": "repeated-observation",
+      "include_verified_input": true,
+      "before_ids": [
+        2231,
+        2262,
+        2488
+      ],
+      "after_ids": [
+        2231,
+        2262
+      ],
+      "current_native": 41,
+      "current_public": 9,
+      "current_date": 53144328,
+      "current_query": 1
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-parent</artifactId><version>0.1.0-SNAPSHOT</version><relativePath>../pom.xml</relativePath></parent>
+  <artifactId>application</artifactId>
+  <description>Single ordinary campaign application; hosted by the existing local service.</description>
+  <dependencies>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>admission-contracts</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-build-tools</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>continuity-core</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>contracts</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>event-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>finance-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>g2-research</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>governance-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>late-outcome-reconciliation</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>military-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>planning-runtime</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>war-budget</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>war-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-development</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-events</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-finance</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-governance</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-military</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-planning</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-prisoners</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-runtime</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave3-development</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave3-governance</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave3-military</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave3-planning</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave3-runtime</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+  </dependencies>
+  <build>
+    <testResources>
+      <testResource><directory>src/test/resources</directory></testResource>
+      <testResource><directory>../governance-policy/src/test/resources</directory><includes><include>marriage/python-golden-v1.json</include></includes></testResource>
+      <testResource><directory>../g2-research/src/test/resources</directory><includes><include>schemesway/**</include><include>g2/m0/original-producer01.json.gz</include></includes></testResource>
+      <testResource><directory>../wave2-military/src/test/resources</directory><includes><include>holyreinf/**</include><include>commander/**</include></includes></testResource>
+      <testResource><directory>../wave3-military/src/test/resources</directory><includes><include>holyobservation/**</include></includes></testResource>
+      <testResource><directory>../wave3-planning/src/test/resources</directory><includes><include>m5peacetimeassembly/**</include></includes></testResource>
+    </testResources>
+    <plugins>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><executions><execution><id>shared-existing-test-helpers</id><phase>test-compile</phase><goals><goal>test-jar</goal></goals></execution></executions></plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><compilerArgs><arg>-Xlint:all</arg><arg>-Werror</arg></compilerArgs></configuration></plugin></plugins></build>
+</project>

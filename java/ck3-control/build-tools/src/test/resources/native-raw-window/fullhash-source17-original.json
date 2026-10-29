@@ -1,0 +1,210 @@
+{
+  "schema": "xar.g2.m7.native-static-window-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-24T00:04:44.220851+00:00",
+  "status": "FRESH_SOURCE_MAPPED_STATIC_WINDOWS_ONLY",
+  "input": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+  "final_path": "\\\\?\\Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "ancestor_paths_checked_no_reparse": [
+    "Z:\\",
+    "Z:\\SteamLibrary",
+    "Z:\\SteamLibrary\\steamapps",
+    "Z:\\SteamLibrary\\steamapps\\common",
+    "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+    "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries"
+  ],
+  "handle_policy": "GENERIC_READ + FILE_SHARE_READ only; denied write/delete, same handle held across hash/read/objdump/prepost",
+  "before": {
+    "file_id64_decimal": "281474999561719",
+    "file_id128_decimal": "281474999561719",
+    "volume_serial64_decimal": "15312367356600444416",
+    "size": 101040248,
+    "creation_filetime": "134370709842966697",
+    "lastwrite_filetime": "134370709842966697",
+    "change_filetime": "134370711579008289",
+    "attributes": 32,
+    "links": 1
+  },
+  "after": {
+    "file_id64_decimal": "281474999561719",
+    "file_id128_decimal": "281474999561719",
+    "volume_serial64_decimal": "15312367356600444416",
+    "size": 101040248,
+    "creation_filetime": "134370709842966697",
+    "lastwrite_filetime": "134370709842966697",
+    "change_filetime": "134370711579008289",
+    "attributes": 32,
+    "links": 1
+  },
+  "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "file_version": "1.0.0.0",
+  "pe": {
+    "machine": "0x8664",
+    "coff_timestamp": 1791204405,
+    "image_base": "0x140000000",
+    "sections": [
+      {
+        "name": ".text",
+        "rva": 4096,
+        "virtual_size": 71141448,
+        "raw_size": 71141888,
+        "raw_pointer": 1024
+      },
+      {
+        "name": ".rdata",
+        "rva": 71147520,
+        "virtual_size": 17123946,
+        "raw_size": 17124352,
+        "raw_pointer": 71142912
+      },
+      {
+        "name": ".data",
+        "rva": 88272896,
+        "virtual_size": 10040928,
+        "raw_size": 8571392,
+        "raw_pointer": 88267264
+      },
+      {
+        "name": ".pdata",
+        "rva": 98316288,
+        "virtual_size": 2933220,
+        "raw_size": 2933248,
+        "raw_pointer": 96838656
+      },
+      {
+        "name": "_RDATA",
+        "rva": 101253120,
+        "virtual_size": 1040,
+        "raw_size": 1536,
+        "raw_pointer": 99771904
+      },
+      {
+        "name": ".rsrc",
+        "rva": 101257216,
+        "virtual_size": 79496,
+        "raw_size": 79872,
+        "raw_pointer": 99773440
+      },
+      {
+        "name": ".reloc",
+        "rva": 101339136,
+        "virtual_size": 1176160,
+        "raw_size": 1176576,
+        "raw_pointer": 99853312
+      }
+    ],
+    "exception_directory_rva": "0x5dc3000",
+    "exception_directory_size": 2933220
+  },
+  "objdump_version": "GNU objdump (GNU Binutils) 2.47.20260726",
+  "spans": [
+    {
+      "name": "daily_task_completion_join",
+      "start_rva": "0x29897f0",
+      "end_rva_exclusive": "0x2989be0",
+      "start_va": "0x1429897f0",
+      "end_va_exclusive": "0x142989be0",
+      "raw_offset": 43551728,
+      "section": ".text",
+      "bytes": 1008,
+      "sha256": "fa3578df47cbaa9c815ca620802d38ccd5da2a464c534be305e8b133120781e6",
+      "start_runtime_function": {
+        "index": 142612,
+        "begin_rva": "0x29897f0",
+        "end_rva": "0x2989be0",
+        "unwind_rva": "0x51c4680"
+      },
+      "last_runtime_function": {
+        "index": 142612,
+        "begin_rva": "0x29897f0",
+        "end_rva": "0x2989be0",
+        "unwind_rva": "0x51c4680"
+      },
+      "is_exact_one_pdata_function": true,
+      "command": [
+        "C:/cygwin64/bin/objdump.exe",
+        "-d",
+        "--no-show-raw-insn",
+        "--start-address=0x1429897f0",
+        "--stop-address=0x142989be0",
+        "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+      ],
+      "stderr": ""
+    },
+    {
+      "name": "parallel_dispatch_completion_callee",
+      "start_rva": "0x3f91ad0",
+      "end_rva_exclusive": "0x3f920d0",
+      "start_va": "0x143f91ad0",
+      "end_va_exclusive": "0x143f920d0",
+      "raw_offset": 66653904,
+      "section": ".text",
+      "bytes": 1536,
+      "sha256": "8a53b54e37c9affb7159d96ac49daae33e79ed146e7fc738cbf2b8ec272c1436",
+      "start_runtime_function": {
+        "index": 216570,
+        "begin_rva": "0x3f91ad0",
+        "end_rva": "0x3f91d06",
+        "unwind_rva": "0x54026c4"
+      },
+      "last_runtime_function": {
+        "index": 216572,
+        "begin_rva": "0x3f91ea0",
+        "end_rva": "0x3f9211b",
+        "unwind_rva": "0x5402714"
+      },
+      "is_exact_one_pdata_function": false,
+      "command": [
+        "C:/cygwin64/bin/objdump.exe",
+        "-d",
+        "--no-show-raw-insn",
+        "--start-address=0x143f91ad0",
+        "--stop-address=0x143f920d0",
+        "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+      ],
+      "stderr": ""
+    },
+    {
+      "name": "law_candidate_to_scoring_discriminator",
+      "start_rva": "0x30b39b0",
+      "end_rva_exclusive": "0x30b3bb0",
+      "start_va": "0x1430b39b0",
+      "end_va_exclusive": "0x1430b3bb0",
+      "raw_offset": 51064240,
+      "section": ".text",
+      "bytes": 512,
+      "sha256": "26fdef43b446c93f0ef6914c5ace520783141a1810c956f16962d4f8bbcce2e3",
+      "start_runtime_function": {
+        "index": 167023,
+        "begin_rva": "0x30b39b0",
+        "end_rva": "0x30b39f6",
+        "unwind_rva": "0x5135bd8"
+      },
+      "last_runtime_function": {
+        "index": 167026,
+        "begin_rva": "0x30b3ab0",
+        "end_rva": "0x30b3bb1",
+        "unwind_rva": "0x52d9c74"
+      },
+      "is_exact_one_pdata_function": false,
+      "command": [
+        "C:/cygwin64/bin/objdump.exe",
+        "-d",
+        "--no-show-raw-insn",
+        "--start-address=0x1430b39b0",
+        "--stop-address=0x1430b3bb0",
+        "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+      ],
+      "stderr": ""
+    }
+  ],
+  "budget": {
+    "one_full_sha_stream_bytes": 101040248,
+    "code_bytes": 3056,
+    "metadata_bytes_including_version_buffer": 2568,
+    "physical_io_total_bytes": null,
+    "physical_io_note": "full SHA streaming plus explicit windows and uninstrumented objdump/version API filesystem IO; not claimed 3056B/11248B physical IO"
+  },
+  "game_pid": "NOT_APPLICABLE_STATIC_FILE_RESEARCH",
+  "authority": "Static software source instructions only. No Game/live execution/global completion order/AI scoring qualification is granted by source identity alone."
+}

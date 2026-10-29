@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.contracts.CrossJsDecimalUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** Immutable facts supplied by the original Queue owner. Constructors confer no source authority. */
 public final class LateOutcome {
@@ -150,7 +151,7 @@ public final class LateOutcome {
             StrictJson.require(speed >= 1 && speed <= 5, "semantic speed 1..5");
             StrictJson.safe(nativeRevision, 0); StrictJson.safe(publicRevision, 0); StrictJson.text(snapshotId);
             StrictJson.require(dateRaw >= 0 && ownerDateRaw >= 0, "nonnegative semantic date");
-            StrictJson.require(actorId >= 1 && playedActorId >= 1, "actor IDs"); StrictJson.text(episodeId);
+            NativeCharacterId.of(actorId); NativeCharacterId.of(playedActorId); StrictJson.text(episodeId);
             StrictJson.safe(connectionGeneration, 1); uint32(bridgePid); uint32(heartbeatPid);
             Objects.requireNonNull(heartbeatSequence); Objects.requireNonNull(heartbeatMillis);
             Objects.requireNonNull(pumpEpoch); Objects.requireNonNull(verifiedPumpEpoch);

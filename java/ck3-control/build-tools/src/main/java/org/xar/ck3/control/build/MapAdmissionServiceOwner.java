@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.TreeMap;
 
 /** Shared Java service lifecycle; never depends on a Python or Java test runner. */
@@ -31,10 +32,268 @@ public final class MapAdmissionServiceOwner {
 
     private MapAdmissionServiceOwner() {}
 
+    /** Separate physical command evidence; the sole UTF-8 logical-request codec is CiBootstrap.JavaUtf8Invocation. */
+    public record JavaInvocationEvidence(String schema, String machineId, String observedAtUtc,
+            ControlBuild.FileRef javaExecutable, List<String> logicalArguments, List<String> physicalArguments,
+            SharedSourceFiles.Witness logicalRequest) {
+        public JavaInvocationEvidence {
+            if (!"xar.java-map-service-utf8-invocation/v2".equals(schema) || machineId == null || machineId.isBlank())
+                throw new IllegalArgumentException("exact Map service UTF-8 invocation evidence required");
+            Objects.requireNonNull(javaExecutable); requireDataWitness(logicalRequest);
+            if (logicalRequest.source().bytes() > CiBootstrap.JavaUtf8Invocation.MAXIMUM_ENVELOPE_BYTES)
+                throw new IllegalArgumentException("bounded sole invocation envelope required");
+            Instant.parse(Objects.requireNonNull(observedAtUtc));
+            logicalArguments = List.copyOf(logicalArguments); physicalArguments = List.copyOf(physicalArguments);
+            if (logicalArguments.stream().noneMatch(MapAdmissionServiceOwner::nonAscii)
+                    || physicalArguments.stream().anyMatch(MapAdmissionServiceOwner::nonAscii))
+                throw new IllegalArgumentException("Unicode logical argv and ASCII-only physical carrier required");
+        }
+    }
+    public record JavaPreparedEvidence(String schema, String machineId, String observedAtUtc,
+            SharedSourceFiles.Witness invocation, SharedSourceFiles.Witness preparation) {
+        public JavaPreparedEvidence {
+            if (!"xar.java-map-service-utf8-prepared/v1".equals(schema) || machineId == null || machineId.isBlank())
+                throw new IllegalArgumentException("exact Map preparation DATA evidence required");
+            Instant.parse(Objects.requireNonNull(observedAtUtc)); Objects.requireNonNull(invocation); Objects.requireNonNull(preparation);
+            requireDataWitness(invocation); requireDataWitness(preparation);
+            if (invocation.source().bytes() > MAX_SMALL_RECEIPT_BYTES || preparation.source().bytes() > CiBootstrap.JavaUtf8Invocation.MAXIMUM_ENVELOPE_BYTES)
+                throw new IllegalArgumentException("bounded existing invocation/preparation evidence required");
+        }
+    }
+    private static void requireDataWitness(SharedSourceFiles.Witness witness) {
+        Objects.requireNonNull(witness); Objects.requireNonNull(witness.source()); Objects.requireNonNull(witness.nativeFile());
+        if (witness.source().bytes() != witness.nativeFile().logicalBytes()) throw new IllegalArgumentException("consistent existing native file witness required");
+    }
+    private static byte[] readWitnessedBytes(SharedSourceFiles.Witness witness, int maximum) throws IOException {
+        if (witness.source().bytes() > maximum) throw new IOException("witness exceeds its existing bounded role");
+        SharedSourceFiles.assertUnchanged(witness);
+        byte[] raw;
+        try (var input = Files.newInputStream(Path.of(witness.source().path()))) { raw = input.readNBytes(maximum + 1); }
+        if (raw.length > maximum || raw.length != witness.source().bytes()) throw new IOException("original witnessed bounded bytes changed");
+        SharedSourceFiles.assertUnchanged(witness); return raw;
+    }
+
+    /** An explicit ASCII direct branch or one prepared UTF-8 invocation. It starts no process. */
+    static final class ServiceJavaInvocation {
+        private final WindowsJobProcess.CommandSpec command;
+        private final CiBootstrap.JavaUtf8Invocation.Launch launch;
+        private final CiBootstrap.JavaUtf8Invocation.ClassCarrier carrier;
+        private final List<String> vmOptions;
+        private final ControlBuild.FileRef evidenceRef;
+        private final JavaInvocationEvidence evidence;
+        private final SharedSourceFiles.Witness preparationRef;
+        private final ControlBuild.FileRef preparedReceipt;
+        private final Path outputRoot;
+        private ServiceJavaInvocation(WindowsJobProcess.CommandSpec command, CiBootstrap.JavaUtf8Invocation.Launch launch,
+                CiBootstrap.JavaUtf8Invocation.ClassCarrier carrier, List<String> vmOptions,
+                ControlBuild.FileRef evidenceRef, JavaInvocationEvidence evidence,
+                SharedSourceFiles.Witness preparationRef, ControlBuild.FileRef preparedReceipt, Path outputRoot) {
+            this.command = command; this.launch = launch; this.carrier = carrier; this.vmOptions = List.copyOf(vmOptions);
+            this.evidenceRef = evidenceRef; this.evidence = evidence;
+            this.preparationRef = preparationRef;
+            this.preparedReceipt = preparedReceipt; this.outputRoot = outputRoot;
+        }
+        WindowsJobProcess.CommandSpec command() { return command; }
+        Optional<ControlBuild.FileRef> evidenceRef() { return Optional.ofNullable(evidenceRef); }
+        Optional<CiBootstrap.JavaUtf8Invocation.Request> logicalRequest() {
+            return launch == null ? Optional.empty() : Optional.of(launch.logicalRequest());
+        }
+        Optional<SharedSourceFiles.Witness> preparationRef() { return Optional.ofNullable(preparationRef); }
+        Optional<ControlBuild.FileRef> preparedReceiptRef() { return Optional.ofNullable(preparedReceipt); }
+        JavaUtf8NativeCustody.Evidence readNativeEvidence(byte[] original) throws IOException {
+            if (launch == null) throw new IOException("ASCII invocation has no UTF-8 native evidence");
+            return readJavaNativeEvidence(original, evidence, carrier, vmOptions);
+        }
+        ServiceNativeSources acquireNativeSources(Path root, Path logs) throws IOException {
+            if (launch == null) return new ServiceNativeSources(this, null, root, logs, 0);
+            var held = JavaUtf8NativeCustody.acquire(launch, carrier);
+            try {
+                long reserved = held.maximumEvidenceBytes(command.executable());
+                requirePendingOutputBudget(root, reserved);
+                return new ServiceNativeSources(this, held, root, logs, reserved);
+            } catch (IOException | RuntimeException | Error failure) {
+                try { held.close(); } catch (IOException close) { failure.addSuppressed(close); } throw failure;
+            }
+        }
+        ServiceJavaInvocation withStartedPreparation(long nativeEvidenceReserve) throws IOException {
+            if (launch == null) return this;
+            if (preparationRef != null) throw new IOException("service UTF-8 preparation was already retained");
+            var pin = SharedSourceFiles.observe(
+                    CiBootstrap.JavaUtf8Invocation.preparationPath(launch.logicalRequest()));
+            SharedSourceFiles.assertUnchanged(pin);
+            CiBootstrap.JavaUtf8Invocation.inspectPreparation(CiBootstrap.JavaUtf8Invocation.captureFile(Path.of(pin.source().path())), launch.publication());
+            var prepared = new JavaPreparedEvidence("xar.java-map-service-utf8-prepared/v1", evidence.machineId(), Instant.now().toString(),
+                    SharedSourceFiles.observe(Path.of(evidenceRef.path())), pin);
+            byte[] raw = ControlBuild.strictMapper().writeValueAsBytes(prepared);
+            if (raw.length > MAX_SMALL_RECEIPT_BYTES || nativeEvidenceReserve < 0)
+                throw new IOException("bounded original Map preparation receipt and native reserve required");
+            requirePendingOutputBudget(outputRoot, Math.addExact(raw.length, nativeEvidenceReserve));
+            Path path = Path.of(launch.logicalRequest().evidenceRoot().path()).resolve("service-java-preparation.json");
+            Files.write(path, raw, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+            var result = new ServiceJavaInvocation(command, launch, carrier, vmOptions, evidenceRef, evidence, pin,
+                    ControlBuild.FileRef.measure(path), outputRoot);
+            result.verify(); return result;
+        }
+        void verify() throws IOException {
+            if (launch == null) return; // Original admitted ASCII argv has no invented UTF-8 receipt.
+            evidenceRef.verify();
+            evidence.javaExecutable().verify();
+            JavaInvocationEvidence reopened = readJavaInvocationEvidence(Files.readAllBytes(Path.of(evidenceRef.path())));
+            var publication = reopenPublication(reopened.logicalRequest());
+            if (!evidence.equals(reopened)
+                    || !publication.equals(launch.publication())
+                    || !CiBootstrap.JavaUtf8Invocation.read(publication).equals(launch.logicalRequest())
+                    || !CiBootstrap.JavaUtf8Invocation.inspect(command.arguments(), carrier, vmOptions).equals(launch.logicalRequest()))
+                throw new IOException("original service UTF-8 physical/logical invocation changed");
+            if (preparationRef != null) {
+                preparedReceipt.verify();
+                var actual = readJavaPreparedEvidence(Files.readAllBytes(Path.of(preparedReceipt.path())), evidence);
+                if (!actual.preparation().equals(preparationRef)) throw new IOException("original Map preparation witness differs");
+            }
+        }
+    }
+
+    /** Same actual service Job lifecycle. The explicit ASCII branch acquires no invented native capability. */
+    static final class ServiceNativeSources implements AutoCloseable {
+        private final ServiceJavaInvocation invocation;
+        private final JavaUtf8NativeCustody.Held held;
+        private final Path root, logs;
+        private long reserved;
+        private SharedSourceFiles.Witness terminalEvidence;
+        private ServiceNativeSources(ServiceJavaInvocation invocation, JavaUtf8NativeCustody.Held held,
+                Path root, Path logs, long reserved) {
+            this.invocation = invocation; this.held = held; this.root = root; this.logs = logs; this.reserved = reserved;
+        }
+        void attach(WindowsJobProcess child) throws IOException { if (held != null) held.attach(child); }
+        void requireCurrent() throws IOException {
+            if (held != null) { held.requireCurrent(); requirePendingOutputBudget(root, reserved); }
+        }
+        Runnable guard(Runnable original) {
+            Objects.requireNonNull(original);
+            if (held == null) return original;
+            return held.guard(() -> { requireOutputBudget(root); original.run();
+                try { requirePendingOutputBudget(root, reserved); } catch (IOException error) { throw new java.io.UncheckedIOException(error); }
+            });
+        }
+        Optional<SharedSourceFiles.Witness> terminalEvidenceRef() { return Optional.ofNullable(terminalEvidence); }
+        long reservedOutputBytes() { return reserved; }
+        void settle(WindowsJobProcess.CommandResult actual) throws IOException {
+            if (held == null) return;
+            var evidence = held.verifyTerminal(actual).evidence();
+            byte[] raw = JavaUtf8NativeCustody.encodeEvidence(evidence);
+            if (raw.length > reserved) throw new IOException("actual service native continuity evidence exceeded its retained quote");
+            requirePendingOutputBudget(root, raw.length);
+            Path path = logs.resolve("service-java-native-evidence.json");
+            Files.write(path, raw, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+            terminalEvidence = SharedSourceFiles.observe(path); reserved = 0;
+            readTerminalEvidence();
+        }
+        JavaUtf8NativeCustody.Evidence readTerminalEvidence() throws IOException {
+            if (terminalEvidence == null || held == null) throw new IOException("actual service native terminal evidence is absent");
+            return invocation.readNativeEvidence(readWitnessedBytes(terminalEvidence, JavaUtf8NativeCustody.MAXIMUM_EVIDENCE_BYTES));
+        }
+        @Override public void close() throws IOException { if (held != null) held.close(); }
+    }
+
+    private static CiBootstrap.JavaUtf8Invocation.Publication reopenPublication(SharedSourceFiles.Witness original) throws IOException {
+        SharedSourceFiles.assertUnchanged(original);
+        return new CiBootstrap.JavaUtf8Invocation.Publication(CiBootstrap.JavaUtf8Invocation.captureFile(Path.of(original.source().path())));
+    }
+
+    /** Cold DATA readback only. Decode/current source identity never recreates Held or permits a process replay. */
+    public static JavaUtf8NativeCustody.Evidence readJavaNativeEvidence(byte[] original, JavaInvocationEvidence invocation,
+            CiBootstrap.JavaUtf8Invocation.Carrier actualCarrier, List<String> originalVmOptions) throws IOException {
+        var evidence = JavaUtf8NativeCustody.decodeEvidence(original);
+        var publication = reopenPublication(invocation.logicalRequest());
+        var request = CiBootstrap.JavaUtf8Invocation.inspect(invocation.physicalArguments(), actualCarrier, originalVmOptions);
+        if (!request.equals(CiBootstrap.JavaUtf8Invocation.read(publication))) throw new IOException("native evidence original publication differs from actual physical command");
+        var launch = new CiBootstrap.JavaUtf8Invocation.Launch(invocation.physicalArguments(), publication, request);
+        JavaUtf8NativeCustody.requireCurrent(evidence, launch, actualCarrier);
+        invocation.javaExecutable().verify();
+        if (!evidence.machineId().equals(invocation.machineId())
+                || !Path.of(evidence.identity().executable()).toRealPath().equals(Path.of(invocation.javaExecutable().path()).toRealPath()))
+            throw new IOException("native service evidence machine/executable differs from original invocation");
+        return evidence;
+    }
+    public static JavaPreparedEvidence readJavaPreparedEvidence(byte[] raw, JavaInvocationEvidence invocation) throws IOException {
+        if (raw.length == 0 || raw.length > MAX_SMALL_RECEIPT_BYTES) throw new IOException("bounded Map preparation receipt required");
+        var actual = ControlBuild.strictMapper().readValue(raw, JavaPreparedEvidence.class);
+        if (!actual.machineId().equals(invocation.machineId())) throw new IOException("Map preparation machine differs");
+        if (!readJavaInvocationEvidence(readWitnessedBytes(actual.invocation(), MAX_SMALL_RECEIPT_BYTES)).equals(invocation))
+            throw new IOException("Map preparation belongs to a different original invocation");
+        SharedSourceFiles.assertUnchanged(actual.preparation());
+        CiBootstrap.JavaUtf8Invocation.inspectPreparation(CiBootstrap.JavaUtf8Invocation.captureFile(
+                Path.of(actual.preparation().source().path())), reopenPublication(invocation.logicalRequest()));
+        return actual;
+    }
+
+    /** The actual Jar caller boundary; configuration/environment/Job/log paths stay on the original CommandSpec. */
+    static ServiceJavaInvocation prepareJavaServiceInvocation(WindowsJobProcess.CommandSpec logical, String machine,
+            Path outputRoot, Path logs) throws IOException {
+        Objects.requireNonNull(logical); Objects.requireNonNull(machine);
+        if (logical.arguments().stream().noneMatch(MapAdmissionServiceOwner::nonAscii))
+            return new ServiceJavaInvocation(logical, null, null, List.of(), null, null, null, null, outputRoot);
+        List<String> arguments = logical.arguments(); int jar = arguments.indexOf("-jar");
+        if (jar < 0 || jar + 2 != arguments.size() || arguments.lastIndexOf("-jar") != jar)
+            throw new IOException("Map service must retain its exact one Jar entry and original empty application argv");
+        var properties = new ArrayList<CiBootstrap.JavaUtf8Invocation.Property>(); var vm = new ArrayList<String>();
+        for (String argument : arguments.subList(0, jar)) {
+            int separator = argument.startsWith("-D") ? argument.indexOf('=', 2) : -1;
+            String name = separator > 2 ? argument.substring(2, separator) : "";
+            if (name.startsWith("xar.") || name.startsWith("quarkus."))
+                properties.add(new CiBootstrap.JavaUtf8Invocation.Property(name, argument.substring(separator + 1)));
+            else {
+                if (nonAscii(argument)) throw new IOException("startup-only JVM options require the original admitted ASCII paths: " + name);
+                vm.add(argument);
+            }
+        }
+        Path root = outputRoot.toRealPath(), evidenceDirectory = logs.toRealPath();
+        if (!evidenceDirectory.startsWith(root)) throw new IOException("service invocation evidence escaped its actual output owner");
+        var evidenceRoot = CiBootstrap.JavaUtf8Invocation.captureOutputRoot(evidenceDirectory);
+        var target = CiBootstrap.JavaUtf8Invocation.captureJar(Path.of(arguments.get(jar + 1)));
+        var request = new CiBootstrap.JavaUtf8Invocation.Request(target, List.copyOf(properties), List.of(), evidenceRoot);
+        var carrier = serviceUtf8Carrier();
+        var publication = CiBootstrap.JavaUtf8Invocation.publish(request, evidenceRoot, "service-java-invocation.bin",
+                pending -> requirePendingOutputBudget(root, pending));
+        var launch = CiBootstrap.JavaUtf8Invocation.launch(publication, carrier, List.copyOf(vm));
+        var physical = new WindowsJobProcess.CommandSpec(logical.executable(), launch.physicalArguments(), logical.cwd(), logical.environment(),
+                logical.stdout(), logical.stderr(), logical.memoryLimitBytes());
+        var evidence = new JavaInvocationEvidence("xar.java-map-service-utf8-invocation/v2", machine, Instant.now().toString(),
+                ControlBuild.FileRef.measure(logical.executable()), arguments, physical.arguments(), SharedSourceFiles.observe(Path.of(publication.envelope().path())));
+        byte[] raw = ControlBuild.strictMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(evidence);
+        if (raw.length > MAX_SMALL_RECEIPT_BYTES) throw new IOException("service invocation command evidence exceeded its original small-receipt lane");
+        requirePendingOutputBudget(root, raw.length);
+        Path evidencePath = evidenceDirectory.resolve("service-java-invocation.json");
+        Files.write(evidencePath, raw, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+        var prepared = new ServiceJavaInvocation(physical, launch, carrier, vm, ControlBuild.FileRef.measure(evidencePath), evidence, null, null, root);
+        prepared.verify(); return prepared;
+    }
+
+    static JavaInvocationEvidence readJavaInvocationEvidence(byte[] raw) throws IOException {
+        if (raw.length > MAX_SMALL_RECEIPT_BYTES) throw new IOException("bounded original service invocation evidence required");
+        return ControlBuild.strictMapper().readValue(raw, JavaInvocationEvidence.class);
+    }
+    private static CiBootstrap.JavaUtf8Invocation.ClassCarrier serviceUtf8Carrier() throws IOException {
+        var domain = CiBootstrap.class.getProtectionDomain();
+        if (domain == null || domain.getCodeSource() == null) throw new IOException("actual loaded CiBootstrap carrier origin is unavailable");
+        try {
+            Path origin = Path.of(domain.getCodeSource().getLocation().toURI()).toRealPath();
+            return new CiBootstrap.JavaUtf8Invocation.ClassCarrier(List.of(CiBootstrap.JavaUtf8Invocation.captureClasspath(origin)));
+        } catch (java.net.URISyntaxException invalid) { throw new IOException("actual loaded CiBootstrap carrier path is invalid", invalid); }
+    }
+    private static boolean nonAscii(String value) { return value.chars().anyMatch(character -> character > 127); }
+
     public record Config(Path buildReceipt, Path workRoot, Path javaExecutable,
                          Instant leaseDeadline, int port, Path eventStateRoot, Path stockGameRoot, Path evidenceGrantsManifest,
                          ProjectionOfflineContext.Publishing offlinePublishing, ProjectionArtifactInputOwner.Config artifactInput,
-                         RootSoftwareFixtureHandoff.Request softwareFixture) {
+                         RootSoftwareFixtureHandoff.Request softwareFixture, CiBootstrap.PipelineProfile pipelineProfile) {
+        public Config(Path buildReceipt, Path workRoot, Path javaExecutable, Instant leaseDeadline, int port,
+                Path eventStateRoot, Path stockGameRoot, Path evidenceGrantsManifest,
+                ProjectionOfflineContext.Publishing offlinePublishing, ProjectionArtifactInputOwner.Config artifactInput,
+                RootSoftwareFixtureHandoff.Request softwareFixture) {
+            this(buildReceipt, workRoot, javaExecutable, leaseDeadline, port, eventStateRoot, stockGameRoot,
+                    evidenceGrantsManifest, offlinePublishing, artifactInput, softwareFixture, CiBootstrap.PipelineProfile.LEGACY);
+        }
         public Config(Path buildReceipt, Path workRoot, Path javaExecutable, Instant leaseDeadline, int port,
                 Path eventStateRoot, Path stockGameRoot, Path evidenceGrantsManifest,
                 ProjectionOfflineContext.Publishing offlinePublishing, ProjectionArtifactInputOwner.Config artifactInput) {
@@ -61,6 +320,7 @@ public final class MapAdmissionServiceOwner {
             Objects.requireNonNull(workRoot);
             Objects.requireNonNull(javaExecutable);
             Objects.requireNonNull(leaseDeadline);
+            Objects.requireNonNull(pipelineProfile);
             if ((eventStateRoot == null) != (stockGameRoot == null)
                     || (eventStateRoot != null && (!eventStateRoot.isAbsolute() || !stockGameRoot.isAbsolute()
                         || eventStateRoot.normalize().equals(stockGameRoot.normalize())))) {
@@ -75,7 +335,7 @@ public final class MapAdmissionServiceOwner {
                 throw new IllegalArgumentException("Explicit offline publishing requires fixed event roots and non-game knowledge/manifest roots");
             }
             if (port < 1 || port > 65535 || !leaseDeadline.isAfter(Instant.now())
-                    || leaseDeadline.isAfter(Instant.now().plus(Duration.ofHours(2)))) {
+                    || leaseDeadline.isAfter(Instant.now().plus(pipelineProfile.maximumServiceLease()))) {
                 throw new IllegalArgumentException("explicit fresh finite service authority and TCP port required");
             }
         }
@@ -256,7 +516,7 @@ public final class MapAdmissionServiceOwner {
                 return new ServiceInputs(value.machineId(), value.sourceRoot(), value.deploymentRoot(), value.sourcePins(),
                         value.completeDeployment(), value.javaExecutableRef(), ProjectionCaptureScope.Qualification.TEST_COMPILED_CAPTURE_ONLY, null, value);
             }
-            ControlBuild.BuildReceipt value = ControlBuild.acceptedReceipt(path);
+            ControlBuild.BuildReceipt value = ControlBuild.verifiedCompletedReceipt(ControlBuild.FileRef.measure(path));
             if (value.targetKind() != ControlBuild.TargetKind.SERVICE_FAST_JAR) throw new IOException("Actual service deployment required");
             return new ServiceInputs(value.machineId(), value.sourceRoot(), value.deploymentRoot(), value.sourcePins(),
                     value.completeDeployment(), value.javaExecutableRef(), ProjectionCaptureScope.Qualification.FULL_SOFTWARE, value, null);
@@ -287,6 +547,8 @@ public final class MapAdmissionServiceOwner {
         private final ProjectionArtifactInputOwner.Prepared artifactInput;
         private final RootSoftwareFixtureHandoff.Prepared softwareFixture;
         private final RootSoftwareFixtureHandoff.Admission softwareAdmission;
+        private final ServiceJavaInvocation javaInvocation;
+        private final ServiceNativeSources nativeSources;
         private boolean closed;
 
         private Session(Config config, WindowsJobProcess child,
@@ -295,7 +557,8 @@ public final class MapAdmissionServiceOwner {
                         String machine, ControlBuild.FileRef buildReceiptRef,
                         ControlBuild.FileRef javaExecutableRef, ProjectionAdmission projection,
                         ServiceInputs artifact, ProjectionCaptureScope.Bound captureScope, ProjectionArtifactInputOwner.Prepared artifactInput,
-                        RootSoftwareFixtureHandoff.Prepared softwareFixture, RootSoftwareFixtureHandoff.Admission softwareAdmission, MapOnlyProjectionProof.Admission mapOnly) {
+                        RootSoftwareFixtureHandoff.Prepared softwareFixture, RootSoftwareFixtureHandoff.Admission softwareAdmission, MapOnlyProjectionProof.Admission mapOnly,
+                        ServiceJavaInvocation javaInvocation, ServiceNativeSources nativeSources) {
             this.config = config;
             this.child = child;
             this.identity = child.identity();
@@ -313,6 +576,8 @@ public final class MapAdmissionServiceOwner {
             this.softwareFixture = softwareFixture;
             this.softwareAdmission = softwareAdmission;
             this.mapOnly = mapOnly;
+            this.javaInvocation = Objects.requireNonNull(javaInvocation);
+            this.nativeSources = Objects.requireNonNull(nativeSources);
         }
 
         public ProjectionCaptureScope.Qualification qualification() { return artifact.qualification(); }
@@ -322,6 +587,10 @@ public final class MapAdmissionServiceOwner {
         public ControlBuild.FileRef evidenceRef() { requireFullSoftwareBuild(); return evidenceRef; }
         public ControlBuild.FileRef manifestRef() { requireFullSoftwareBuild(); return manifestRef; }
         public WindowsJobProcess.ProcessIdentity identity() { return identity; }
+        public Optional<ControlBuild.FileRef> javaInvocationEvidenceRef() { return javaInvocation.evidenceRef(); }
+        public Optional<SharedSourceFiles.Witness> javaPreparationEvidenceRef() { return javaInvocation.preparationRef(); }
+        public Optional<ControlBuild.FileRef> javaPreparedReceiptRef() { return javaInvocation.preparedReceiptRef(); }
+        public Optional<SharedSourceFiles.Witness> javaNativeTerminalEvidenceRef() { return nativeSources.terminalEvidenceRef(); }
         public MapOnlyProjectionProof.Admission mapOnlyCaptureAdmission() {
             requireCurrent();
             if (mapOnly == null) throw new IllegalStateException("No MAP_ONLY_CAPTURE admission");
@@ -352,6 +621,8 @@ public final class MapAdmissionServiceOwner {
                 throw new IllegalStateException("actual Java service exceeded its hard Job memory bound");
             }
             requireOutputBudget(config.workRoot());
+            try { nativeSources.requireCurrent(); }
+            catch (IOException error) { throw new IllegalStateException("original service native source custody unavailable", error); }
             if (artifactInput != null) {
                 try { artifactInput.requireLive(identity); }
                 catch (IOException error) { throw new IllegalStateException("original artifact Owner or host lease unavailable", error); }
@@ -360,6 +631,8 @@ public final class MapAdmissionServiceOwner {
 
         /** Source/closure measurements run at boundaries, not once for every HTTP request. */
         public void verifyImmutableInputs() throws IOException {
+            javaInvocation.verify();
+            nativeSources.requireCurrent();
             if (softwareFixture != null) softwareFixture.pendingRef().verify();
             if (softwareAdmission != null) {
                 softwareAdmission.verify();
@@ -413,12 +686,13 @@ public final class MapAdmissionServiceOwner {
             try {
                 if (child.isRunning()) { child.terminate(75); }
                 WindowsJobProcess.CommandResult result = child.await(Duration.ofSeconds(10),
-                        Instant.now().plusSeconds(15), () -> {});
+                        Instant.now().plusSeconds(15), nativeSources.guard(() -> {}));
                 int active = result.accounting().activeProcesses();
                 long peak = result.accounting().peakJobMemoryBytes();
                 if (active != 0 || peak > MEMORY_LIMIT) {
                     throw new IllegalStateException("original Java service tree did not close within its Job bound");
                 }
+                nativeSources.settle(result);
                 publish(config.workRoot().resolve("logs/service-closed.json"), new ClosedReceipt(
                         "xar.java-map-service-owner-closed/v1", machine, Instant.now().toString(),
                         "CLOSED", ProcessWire.from(identity), result, active, peak, 0));
@@ -432,6 +706,10 @@ public final class MapAdmissionServiceOwner {
             } finally {
                 Throwable cleanupFailure = null;
                 try { child.close(); } catch (RuntimeException | Error error) { cleanupFailure = error; }
+                try { nativeSources.close(); } catch (IOException error) {
+                    var wrapped = new IllegalStateException("original Java native source custody closure unavailable", error);
+                    if (cleanupFailure == null) cleanupFailure = wrapped; else cleanupFailure.addSuppressed(wrapped);
+                }
                 if (artifactInput != null) try { artifactInput.close(); }
                 catch (IOException error) {
                     var wrapped = new IllegalStateException("artifact writer lock closure unavailable", error);
@@ -482,7 +760,7 @@ public final class MapAdmissionServiceOwner {
                 requested.leaseDeadline(), requested.port(),
                 requested.eventStateRoot() == null ? null : requested.eventStateRoot().toRealPath(),
                 requested.stockGameRoot() == null ? null : requested.stockGameRoot().toRealPath(),
-                requested.evidenceGrantsManifest() == null ? null : requested.evidenceGrantsManifest().toAbsolutePath().normalize(), requested.offlinePublishing(), requested.artifactInput(), requested.softwareFixture());
+                requested.evidenceGrantsManifest() == null ? null : requested.evidenceGrantsManifest().toAbsolutePath().normalize(), requested.offlinePublishing(), requested.artifactInput(), requested.softwareFixture(), requested.pipelineProfile());
         ServiceInputs build = ServiceInputs.read(config.buildReceipt(), captureScopePath != null);
         String machine = WindowsJobProcess.currentMachineId();
         ProjectionCaptureScope.Bound captureScope = captureScopePath == null ? null : ProjectionCaptureScope.read(captureScopePath, machine);
@@ -572,11 +850,26 @@ public final class MapAdmissionServiceOwner {
             arguments.add("-Dxar.projection.artifact-input.scope-sha256=" + artifactInput.scopeRef().sha256());
         }
         arguments.add("-jar"); arguments.add(deployment.resolve("quarkus-run.jar").toString());
-        WindowsJobProcess child;
-        try { child = WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(
+        WindowsJobProcess child = null;
+        ServiceNativeSources nativeSources = null;
+        ServiceJavaInvocation javaInvocation;
+        try {
+            javaInvocation = prepareJavaServiceInvocation(new WindowsJobProcess.CommandSpec(
                 config.javaExecutable(), arguments, deployment, Map.copyOf(environment),
-                logs.resolve("service.stdout.log"), logs.resolve("service.stderr.log"), MEMORY_LIMIT)); }
+                logs.resolve("service.stdout.log"), logs.resolve("service.stderr.log"), MEMORY_LIMIT), machine, config.workRoot(), logs);
+            nativeSources = javaInvocation.acquireNativeSources(config.workRoot(), logs);
+            nativeSources.requireCurrent();
+            if (!Instant.now().isBefore(config.leaseDeadline())) throw new IOException("original service lease expired before Java startup");
+            child = WindowsJobProcess.start(javaInvocation.command());
+            nativeSources.attach(child);
+        }
         catch (IOException | RuntimeException | Error failure) {
+            if (child != null) {
+                try { closeFailedStartup(config, child, machine, nativeSources); }
+                catch (IOException | RuntimeException | Error cleanup) { failure.addSuppressed(cleanup); }
+                try { child.close(); } catch (RuntimeException | Error cleanup) { failure.addSuppressed(cleanup); }
+            }
+            if (nativeSources != null) try { nativeSources.close(); } catch (IOException cleanup) { failure.addSuppressed(cleanup); }
             if (artifactInput != null) try { artifactInput.close(); } catch (IOException cleanup) { failure.addSuppressed(cleanup); }
             throw failure;
         }
@@ -587,6 +880,7 @@ public final class MapAdmissionServiceOwner {
             ProducerIdentity producer;
             long until = System.nanoTime() + Duration.ofSeconds(60).toNanos();
             while (true) {
+                nativeSources.requireCurrent();
                 if (!child.isRunning() || !Instant.now().isBefore(config.leaseDeadline())
                         || System.nanoTime() >= until) {
                     throw new IllegalStateException("actual Java service readiness did not complete in authority");
@@ -608,6 +902,7 @@ public final class MapAdmissionServiceOwner {
                     pause();
                 }
             }
+            javaInvocation = javaInvocation.withStartedPreparation(nativeSources.reservedOutputBytes());
             for (ControlBuild.FileRef reference : build.sourcePins()) { reference.verify(); }
             for (ControlBuild.FileRef reference : build.completeDeployment()) { reference.verify(); }
             ControlBuild.FileRef evidenceRef = null;
@@ -630,14 +925,15 @@ public final class MapAdmissionServiceOwner {
             buildRef.verify(); build.javaExecutableRef().verify();
             Session session = new Session(config, child, evidenceRef, manifestRef,
                     build.sourcePins(), build.completeDeployment(), machine, buildRef, build.javaExecutableRef(), projection,
-                    build, captureScope, artifactInput, softwareFixture, softwareAdmission, mapAdmission);
+                    build, captureScope, artifactInput, softwareFixture, softwareAdmission, mapAdmission, javaInvocation, nativeSources);
             session.requireCurrent();
             return session;
         } catch (IOException | RuntimeException | Error failure) {
-            try { closeFailedStartup(config, child, machine); }
+            try { closeFailedStartup(config, child, machine, nativeSources); }
             catch (IOException | RuntimeException | Error cleanup) { failure.addSuppressed(cleanup); }
             finally {
                 try { child.close(); } catch (RuntimeException | Error cleanup) { failure.addSuppressed(cleanup); }
+                try { nativeSources.close(); } catch (IOException cleanup) { failure.addSuppressed(cleanup); }
                 if (artifactInput != null) try { artifactInput.close(); } catch (IOException cleanup) { failure.addSuppressed(cleanup); }
             }
             throw failure;
@@ -645,14 +941,20 @@ public final class MapAdmissionServiceOwner {
     }
 
     static void closeFailedStartup(Config config, WindowsJobProcess child, String machine) throws IOException {
+        closeFailedStartup(config, child, machine, null);
+    }
+    private static void closeFailedStartup(Config config, WindowsJobProcess child, String machine,
+            ServiceNativeSources nativeSources) throws IOException {
         try {
             if (child.isRunning()) child.terminate(75);
-            WindowsJobProcess.CommandResult result = child.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
+            WindowsJobProcess.CommandResult result = child.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15),
+                    nativeSources == null ? () -> {} : nativeSources.guard(() -> {}));
             publish(config.workRoot().resolve("logs/service-start-failed-closed.json"), new ClosedReceipt(
                     "xar.java-map-service-owner-closed/v1", machine, Instant.now().toString(), "START_FAILED_CLOSED",
                     ProcessWire.from(child.identity()), result, result.accounting().activeProcesses(),
                     result.accounting().peakJobMemoryBytes(), 0));
             if (result.accounting().activeProcesses() != 0) throw new IOException("Failed service startup retained a live process tree");
+            if (nativeSources != null) nativeSources.settle(result);
         } catch (InterruptedException error) {
             Thread.currentThread().interrupt(); throw new IOException("Failed service startup cleanup interrupted", error);
         }
@@ -876,14 +1178,19 @@ public final class MapAdmissionServiceOwner {
 
     private static void requireOutputBudget(Path root) {
         try {
-            long[] entries = {0};
-            long bytes = ControlBuild.mutableInventoryBytes(root, path -> {
-                if (++entries[0] > 10000) throw new IOException("bounded original service metadata tree required");
-            });
-            if (bytes > OUTPUT_BUDGET) throw new IOException("service output budget exhausted");
+            requirePendingOutputBudget(root, 0);
         } catch (IOException error) {
             throw new IllegalStateException("actual service output budget unavailable", error);
         }
+    }
+
+    private static void requirePendingOutputBudget(Path root, long pending) throws IOException {
+        if (pending < 0 || pending > OUTPUT_BUDGET) throw new IOException("bounded pending service output required");
+        long[] entries = {0};
+        long bytes = ControlBuild.mutableInventoryBytes(root, path -> {
+            if (++entries[0] > 10000) throw new IOException("bounded original service metadata tree required");
+        });
+        if (bytes > OUTPUT_BUDGET - pending) throw new IOException("service output budget exhausted");
     }
 
     private static void pause() {

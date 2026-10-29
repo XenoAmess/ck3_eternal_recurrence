@@ -1,0 +1,2898 @@
+{
+  "schema": "xar.vanilla-sway-scheduler-golden/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+  "native_python_executable": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+  "fixture_scope": "synthetic ordinary frames and exact retained ledger replay; static authored numeric-line references are not a Paradox parser/evaluator; zero game IO",
+  "retained_source_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "retained_source_machine_evidence": "docs/ck3-native-ai/g2-m6-research-2026-10-19.md 2026-10-20 closed ledger supplement",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+      "bytes": 10142,
+      "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\reused_sway_opportunity_v1.py",
+      "bytes": 6173,
+      "sha256": "a47ed49e8bdbeb7f9fcf1425a6519c6879b6d538ac7af252e89fcd537db12f0d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\sway_formal_consumer.py",
+      "bytes": 35251,
+      "sha256": "99ea0b435442d9b842ebc40cc19601ea03c92a112cb2a8f257550de8ec2d9ad8"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\m6-sway-closed-ledger-2026-10-20.json",
+      "bytes": 21864,
+      "sha256": "edfd6027bf508bda9ea9183c8820a18014192d20789f6ae929b4e0c503c63580"
+    }
+  ],
+  "current_stock_source_ref": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_scheme_interactions.txt",
+    "bytes": 78098,
+    "sha256": "850bb20cae67eece4f4d423f0d2f5cee0c22a0457224b9b4eedcf109ad41e1d5"
+  },
+  "current_stock_authored_operands": [
+    {
+      "operation": "add",
+      "operand": "-20"
+    },
+    {
+      "operation": "add",
+      "operand": "10"
+    },
+    {
+      "operation": "add",
+      "operand": "30"
+    },
+    {
+      "operation": "add",
+      "operand": "10"
+    },
+    {
+      "operation": "add",
+      "operand": "20"
+    },
+    {
+      "operation": "add",
+      "operand": "30"
+    },
+    {
+      "operation": "factor",
+      "operand": "2"
+    },
+    {
+      "operation": "factor",
+      "operand": "3"
+    },
+    {
+      "operation": "factor",
+      "operand": "4"
+    },
+    {
+      "operation": "factor",
+      "operand": "0.5"
+    },
+    {
+      "operation": "factor",
+      "operand": "0.25"
+    },
+    {
+      "operation": "factor",
+      "operand": "0.5"
+    },
+    {
+      "operation": "factor",
+      "operand": "2"
+    },
+    {
+      "operation": "factor",
+      "operand": "0.75"
+    },
+    {
+      "operation": "factor",
+      "operand": "2"
+    },
+    {
+      "operation": "factor",
+      "operand": "0.25"
+    },
+    {
+      "operation": "factor",
+      "operand": "10"
+    },
+    {
+      "operation": "factor",
+      "operand": "10"
+    }
+  ],
+  "plan_cases": [
+    {
+      "id": "native-order-first",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 900,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "same-date-not-due",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 1,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1024,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "query_selected_target"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "opportunity_check_not_due",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 1,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1024,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "query_selected_target"
+        }
+      }
+    },
+    {
+      "id": "round-robin-second",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1024,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1024,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 1,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1024,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "query_selected_target"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 100,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 1,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1024,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "query_selected_target"
+        }
+      }
+    },
+    {
+      "id": "month-not-due",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1720,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1720,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 100,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1024,
+          "next_check_date_raw": 1744,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "query_selected_target"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "opportunity_check_not_due",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 100,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1024,
+          "next_check_date_raw": 1744,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "query_selected_target"
+        }
+      }
+    },
+    {
+      "id": "round-robin-third",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1744,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1744,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 100,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1024,
+          "next_check_date_raw": 1744,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "query_selected_target"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 500,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 100,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1024,
+          "next_check_date_raw": 1744,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "query_selected_target"
+        }
+      }
+    },
+    {
+      "id": "membership-change-rearms",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1024,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1024,
+          "direct_landed_vassal_character_ids": [
+            900,
+            500,
+            600
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 5000,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 500,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            500,
+            600,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "reorder-not-membership-change",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1024,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1024,
+          "direct_landed_vassal_character_ids": [
+            500,
+            900,
+            100
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 5000,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "opportunity_check_not_due",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 5000,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "actor-change-resets",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1024,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 8,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 8,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1024,
+          "direct_landed_vassal_character_ids": [
+            600,
+            100
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 5000,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 600,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 8,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            100,
+            600
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "war-selected-preserved",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "native-defend-war",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 5000,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "preserve_selected_step",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": 900,
+          "no_operation_count": 2,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 5000,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "mandatory-event-preserved",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": {
+              "instance_id": 9
+            },
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "preserve_mandatory_context",
+        "state": {}
+      }
+    },
+    {
+      "id": "unpaused-frame",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": false,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "frame_unavailable",
+        "state": {}
+      }
+    },
+    {
+      "id": "context-unavailable",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": null
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "preserve_mandatory_context",
+        "state": {}
+      }
+    },
+    {
+      "id": "pending-read-only",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": {
+            "actor_character_id": 7,
+            "target_character_id": 900,
+            "action_id": "synthetic-pending"
+          },
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "reconcile_pending",
+        "target_character_id": 900,
+        "action_id": "synthetic-pending",
+        "submit_allowed": false,
+        "reason": "existing_pending_read_only",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "pending-month-not-due",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1024,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": {
+            "actor_character_id": 7,
+            "target_character_id": 900,
+            "action_id": "synthetic-pending"
+          },
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "reconcile_pending"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "pending_read_not_due",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "reconcile_pending"
+        }
+      }
+    },
+    {
+      "id": "pending-month-due",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1720,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": {
+            "actor_character_id": 7,
+            "target_character_id": 900,
+            "action_id": "synthetic-pending"
+          },
+          "resolved": null
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "reconcile_pending"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "reconcile_pending",
+        "target_character_id": 900,
+        "action_id": "synthetic-pending",
+        "submit_allowed": false,
+        "reason": "existing_pending_read_only",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": "reconcile_pending"
+        }
+      }
+    },
+    {
+      "id": "quiet-preserves-pending",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": {
+            "actor_character_id": 7,
+            "target_character_id": 900,
+            "action_id": "synthetic-pending"
+          },
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": true
+      },
+      "expected": {
+        "job": null,
+        "reason": "preserve_original_pending",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "pending-other-actor",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": {
+            "actor_character_id": 8,
+            "target_character_id": 900,
+            "action_id": "synthetic-pending"
+          },
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "unresolved_other_actor",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "new-applied-first-observation",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "synthetic-original",
+              "actor_character_id": 7,
+              "target_character_id": 900,
+              "scheme_instance_id": 2,
+              "scheme_instance_generation": 0
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": false,
+            "reuse_gap": null
+          }
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "observe_applied",
+        "target_character_id": 900,
+        "action_id": "synthetic-original",
+        "submit_allowed": false,
+        "reason": "new_identity_or_monthly_observation",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "applied-month-not-due",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1024,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "synthetic-original",
+              "actor_character_id": 7,
+              "target_character_id": 900,
+              "scheme_instance_id": 2,
+              "scheme_instance_generation": 0
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": false,
+            "reuse_gap": null
+          }
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": "synthetic-original",
+          "last_terminal_action_id": null,
+          "last_job_kind": "observe_applied"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "monthly_observation_not_due",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": "synthetic-original",
+          "last_terminal_action_id": null,
+          "last_job_kind": "observe_applied"
+        }
+      }
+    },
+    {
+      "id": "applied-month-due",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1720,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "synthetic-original",
+              "actor_character_id": 7,
+              "target_character_id": 900,
+              "scheme_instance_id": 2,
+              "scheme_instance_generation": 0
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": false,
+            "reuse_gap": null
+          }
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": "synthetic-original",
+          "last_terminal_action_id": null,
+          "last_job_kind": "observe_applied"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "observe_applied",
+        "target_character_id": 900,
+        "action_id": "synthetic-original",
+        "submit_allowed": false,
+        "reason": "new_identity_or_monthly_observation",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": "synthetic-original",
+          "last_terminal_action_id": null,
+          "last_job_kind": "observe_applied"
+        }
+      }
+    },
+    {
+      "id": "resolved-other-actor-not-authority",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "synthetic-original",
+              "actor_character_id": 8,
+              "target_character_id": 500,
+              "scheme_instance_id": 2,
+              "scheme_instance_generation": 0
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": false,
+            "reuse_gap": null
+          }
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 900,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "terminal-same-day-remains-not-due",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "synthetic-original",
+              "actor_character_id": 7,
+              "target_character_id": 900,
+              "scheme_instance_id": 2,
+              "scheme_instance_generation": 0
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": true,
+            "reuse_gap": null
+          }
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": 1720,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": "synthetic-original",
+          "last_terminal_action_id": null,
+          "last_job_kind": "observe_applied"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "opportunity_check_not_due",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": "synthetic-original",
+          "last_terminal_action_id": "synthetic-original",
+          "last_job_kind": "observe_applied"
+        }
+      }
+    },
+    {
+      "id": "terminal-next-day-new-opportunity",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1024,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1024,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "synthetic-original",
+              "actor_character_id": 7,
+              "target_character_id": 900,
+              "scheme_instance_id": 2,
+              "scheme_instance_generation": 0
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": true,
+            "reuse_gap": null
+          }
+        },
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": "synthetic-original",
+          "last_terminal_action_id": "synthetic-original",
+          "last_job_kind": "observe_applied"
+        },
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 900,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": 1000,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            100,
+            500,
+            900
+          ],
+          "last_observation_attempt_action_id": "synthetic-original",
+          "last_terminal_action_id": "synthetic-original",
+          "last_job_kind": "observe_applied"
+        }
+      }
+    },
+    {
+      "id": "quiet-observed-terminal",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "synthetic-original",
+              "actor_character_id": 7,
+              "target_character_id": 900,
+              "scheme_instance_id": 2,
+              "scheme_instance_generation": 0
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": true,
+            "reuse_gap": null
+          }
+        },
+        "state": null,
+        "active_observation_only": true
+      },
+      "expected": {
+        "job": null,
+        "reason": "original_terminal_already_observed",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "quiet-no-applied",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": true
+      },
+      "expected": {
+        "job": null,
+        "reason": "no_applied_instance_to_observe",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "root-unavailable",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "same_frame_root_unavailable",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "root-public-used-as-native-rejected",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 4,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            100,
+            500
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "same_frame_root_unavailable",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "observed-empty-frontier",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": []
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "complete_no_relation",
+        "reason": "observed_empty_frontier",
+        "submit_allowed": false,
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": [],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "unknown-frontier-not-empty",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": null
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "frontier_unavailable",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "duplicate-frontier",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            900,
+            900
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "frontier_unavailable",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "actor-in-frontier",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            7,
+            900
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": null,
+        "reason": "frontier_unavailable",
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "high-full32-native-order",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 1000,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 7,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 7,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 1000,
+          "direct_landed_vassal_character_ids": [
+            2147483649,
+            100,
+            4294967295
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": null
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 2147483649,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 7,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            100,
+            2147483649,
+            4294967295
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "retained-slot-reused-unknown-can-nominate",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 53274960,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 40526,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": {
+          "status": "available",
+          "player_character_id": 40526,
+          "player_character_alive": true,
+          "snapshot_revision": 3,
+          "date_raw": 53274960,
+          "direct_landed_vassal_character_ids": [
+            34973,
+            2147483649
+          ]
+        },
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+              "actor_character_id": 40526,
+              "target_character_id": 34973,
+              "scheme_instance_id": 83887164,
+              "scheme_instance_generation": 5
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": false,
+            "reuse_gap": {
+              "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+              "actor_character_id": 40526,
+              "target_character_id": 34973,
+              "scheme_instance_id": 83887164,
+              "scheme_instance_generation": 5,
+              "source_native_revision": 4321,
+              "source_date_raw": 53274240,
+              "storage_slot_reused": true,
+              "instance_terminal_outcome_observed": false,
+              "terminal_cause": "unknown"
+            }
+          }
+        },
+        "state": null,
+        "active_observation_only": false
+      },
+      "expected": {
+        "job": "query_selected_target",
+        "target_character_id": 34973,
+        "submit_allowed": false,
+        "reason": "round_robin_direct_landed_vassal",
+        "native_ai_rank_claimed": false,
+        "state": {
+          "actor_character_id": 40526,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": [
+            34973,
+            2147483649
+          ],
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    },
+    {
+      "id": "retained-slot-reused-quiet-no-terminal",
+      "input": {
+        "source": {
+          "machine_id": "xenoamess-full-tower-eb9d2c1186",
+          "observed_at_utc": "2026-10-22T21:16:42.161656Z",
+          "exact_build": "1.20.0.4",
+          "source_ref": {
+            "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\ordinary_sway_schedule_v1.py",
+            "bytes": 10142,
+            "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+          }
+        },
+        "snapshot": {
+          "snapshot_id": "synthetic-public4-native3",
+          "revision": 4,
+          "native_revision": 3,
+          "date_raw": 53274960,
+          "paused": true,
+          "map_ready": true,
+          "played_character": {
+            "character_id": 40526,
+            "alive": true
+          },
+          "active_context": {
+            "active_event": null,
+            "pending_character_interaction": null
+          }
+        },
+        "selected_step": "life-advance",
+        "root": null,
+        "ledger": {
+          "pending": null,
+          "resolved": {
+            "identity": {
+              "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+              "actor_character_id": 40526,
+              "target_character_id": 34973,
+              "scheme_instance_id": 83887164,
+              "scheme_instance_generation": 5
+            },
+            "applied": true,
+            "postcondition_verified": true,
+            "terminal_observed": false,
+            "reuse_gap": {
+              "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+              "actor_character_id": 40526,
+              "target_character_id": 34973,
+              "scheme_instance_id": 83887164,
+              "scheme_instance_generation": 5,
+              "source_native_revision": 4321,
+              "source_date_raw": 53274240,
+              "storage_slot_reused": true,
+              "instance_terminal_outcome_observed": false,
+              "terminal_cause": "unknown"
+            }
+          }
+        },
+        "state": null,
+        "active_observation_only": true
+      },
+      "expected": {
+        "job": null,
+        "reason": "original_storage_reused_terminal_unknown",
+        "state": {
+          "actor_character_id": 40526,
+          "last_target_character_id": null,
+          "no_operation_count": 0,
+          "last_check_date_raw": null,
+          "next_check_date_raw": null,
+          "frontier_membership": null,
+          "last_observation_attempt_action_id": null,
+          "last_terminal_action_id": null,
+          "last_job_kind": null
+        }
+      }
+    }
+  ],
+  "complete_cases": [
+    {
+      "id": "first-complete-noop",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": null,
+        "no_operation_count": 0,
+        "last_check_date_raw": null,
+        "next_check_date_raw": null,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": null
+      },
+      "date_raw": 1000,
+      "job_kind": "query_selected_target",
+      "outcome": "no_operation",
+      "target_character_id": 900,
+      "action_id": null,
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": 900,
+        "no_operation_count": 1,
+        "last_check_date_raw": 1000,
+        "next_check_date_raw": 1024,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      }
+    },
+    {
+      "id": "second-noop-month",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": 900,
+        "no_operation_count": 1,
+        "last_check_date_raw": 1000,
+        "next_check_date_raw": 1024,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      },
+      "date_raw": 1024,
+      "job_kind": "query_selected_target",
+      "outcome": "no_operation",
+      "target_character_id": 100,
+      "action_id": null,
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": 100,
+        "no_operation_count": 2,
+        "last_check_date_raw": 1024,
+        "next_check_date_raw": 1744,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      }
+    },
+    {
+      "id": "saturated-month",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": 100,
+        "no_operation_count": 2,
+        "last_check_date_raw": 1024,
+        "next_check_date_raw": 1744,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      },
+      "date_raw": 1744,
+      "job_kind": "query_selected_target",
+      "outcome": "no_operation",
+      "target_character_id": 500,
+      "action_id": null,
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": 500,
+        "no_operation_count": 2,
+        "last_check_date_raw": 1744,
+        "next_check_date_raw": 2464,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      }
+    },
+    {
+      "id": "pending-month",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": null,
+        "no_operation_count": 0,
+        "last_check_date_raw": null,
+        "next_check_date_raw": null,
+        "frontier_membership": null,
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": null
+      },
+      "date_raw": 1000,
+      "job_kind": "reconcile_pending",
+      "outcome": "pending",
+      "target_character_id": null,
+      "action_id": null,
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": null,
+        "no_operation_count": 0,
+        "last_check_date_raw": 1000,
+        "next_check_date_raw": 1720,
+        "frontier_membership": null,
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "reconcile_pending"
+      }
+    },
+    {
+      "id": "unavailable-observation-month",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": null,
+        "no_operation_count": 0,
+        "last_check_date_raw": null,
+        "next_check_date_raw": null,
+        "frontier_membership": null,
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": null
+      },
+      "date_raw": 1000,
+      "job_kind": "observe_applied",
+      "outcome": "unavailable",
+      "target_character_id": null,
+      "action_id": "synthetic-original",
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": null,
+        "no_operation_count": 0,
+        "last_check_date_raw": 1000,
+        "next_check_date_raw": 1720,
+        "frontier_membership": null,
+        "last_observation_attempt_action_id": "synthetic-original",
+        "last_terminal_action_id": null,
+        "last_job_kind": "observe_applied"
+      }
+    },
+    {
+      "id": "unavailable-not-noop",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": null,
+        "no_operation_count": 0,
+        "last_check_date_raw": null,
+        "next_check_date_raw": null,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": null
+      },
+      "date_raw": 1000,
+      "job_kind": "query_selected_target",
+      "outcome": "unavailable",
+      "target_character_id": null,
+      "action_id": null,
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": null,
+        "no_operation_count": 0,
+        "last_check_date_raw": 1000,
+        "next_check_date_raw": 1720,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      }
+    },
+    {
+      "id": "applied-month-count-reset",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": 100,
+        "no_operation_count": 2,
+        "last_check_date_raw": 1024,
+        "next_check_date_raw": 1744,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      },
+      "date_raw": 1744,
+      "job_kind": "query_selected_target",
+      "outcome": "applied",
+      "target_character_id": 500,
+      "action_id": null,
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": 500,
+        "no_operation_count": 0,
+        "last_check_date_raw": 1744,
+        "next_check_date_raw": 2464,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      }
+    },
+    {
+      "id": "old-date-not-recorded",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": 100,
+        "no_operation_count": 2,
+        "last_check_date_raw": 1024,
+        "next_check_date_raw": 1744,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      },
+      "date_raw": 1000,
+      "job_kind": "query_selected_target",
+      "outcome": "no_operation",
+      "target_character_id": 500,
+      "action_id": null,
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": 100,
+        "no_operation_count": 2,
+        "last_check_date_raw": 1024,
+        "next_check_date_raw": 1744,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      }
+    },
+    {
+      "id": "duplicate-day-not-recorded",
+      "state": {
+        "actor_character_id": 7,
+        "last_target_character_id": 900,
+        "no_operation_count": 1,
+        "last_check_date_raw": 1000,
+        "next_check_date_raw": 1024,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      },
+      "date_raw": 1000,
+      "job_kind": "query_selected_target",
+      "outcome": "no_operation",
+      "target_character_id": 100,
+      "action_id": null,
+      "expected": {
+        "actor_character_id": 7,
+        "last_target_character_id": 900,
+        "no_operation_count": 1,
+        "last_check_date_raw": 1000,
+        "next_check_date_raw": 1024,
+        "frontier_membership": [
+          100,
+          500,
+          900
+        ],
+        "last_observation_attempt_action_id": null,
+        "last_terminal_action_id": null,
+        "last_job_kind": "query_selected_target"
+      }
+    }
+  ],
+  "game_queries": 0,
+  "submits": 0,
+  "driver_or_save_reads": 0
+}

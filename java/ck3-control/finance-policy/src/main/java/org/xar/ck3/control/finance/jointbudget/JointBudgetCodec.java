@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Army;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.AssessedInput;
@@ -129,14 +130,22 @@ public final class JointBudgetCodec {
                 nonnegative(source.get("supply_cost_units")), nonnegative(source.get("long_term_cost_units")));
     }
     private static Claims claims(ObjectNode source) {
-        return new Claims(numericClaims(source.get("army_ids"), false), numericClaims(source.get("ally_character_ids"), true),
-                numericClaims(source.get("character_ids"), true), stringClaims(source.get("commitment_keys")));
+        return new Claims(numericClaims(source.get("army_ids")), characterClaims(source.get("ally_character_ids")),
+                characterClaims(source.get("character_ids")), stringClaims(source.get("commitment_keys")));
     }
-    private static Set<BigInteger> numericClaims(JsonNode source, boolean positive) {
+    private static Set<BigInteger> numericClaims(JsonNode source) {
         Set<BigInteger> result = new HashSet<>();
         for (JsonNode item : array(source)) {
             BigInteger value = integer(item);
-            require(value.signum() >= (positive ? 1 : 0), "claim outside integer domain");
+            require(value.signum() >= 0, "claim outside integer domain");
+            require(result.add(value), "duplicate resource claim");
+        }
+        return result;
+    }
+    private static Set<BigInteger> characterClaims(JsonNode source) {
+        Set<BigInteger> result = new HashSet<>();
+        for (JsonNode item : array(source)) {
+            BigInteger value = NativeCharacterId.fromJson(item).asBigInteger();
             require(result.add(value), "duplicate resource claim");
         }
         return result;
@@ -192,3 +201,4 @@ public final class JointBudgetCodec {
     }
     private static void require(boolean condition, String message) { JointBudgetSelector.require(condition, message); }
 }
+

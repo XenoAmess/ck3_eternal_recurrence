@@ -1,0 +1,371 @@
+{
+  "schema": "xar.legacy-windows-path-original-reference/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "cpython": "3.13.2",
+  "unicode_data": "15.1.0",
+  "casing_unicode_version": "WINDOWS_NLS_UNICODE_VERSION_NOT_EXPOSED",
+  "nls_signature": {
+    "nls": "00060403",
+    "defined": "00060403",
+    "effective": "0000007f",
+    "custom": "01000000ee575c1e00b4d0000bb1e11e"
+  },
+  "rite_source": "Z:/ck3_mod_rewrite/ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_private_v1.py",
+  "rite_source_sha256": "1712e0de76e2975baa9e8185bf7ee7746c1b8697e2369349f5d807085a2c9f81",
+  "oracle_expression": "AST-selected _binding: ntpath.normcase(ntpath.normpath(managed[state_dir]))",
+  "oracle_script_sha256": "2ffcae786aaa756c3c4f8e4fe97236b8c3c450f8992ae875843ce386a5f076cc",
+  "independent_original_process_runs": [
+    {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "pid": 266244,
+      "observed_utc": "2026-10-24T03:36:12.227521+00:00",
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "executable_sha256": "7d96a4ed35d6e596cd9dd8933feafc66349cc21f75be3b15c89fd336e50140c1",
+      "ntpath_source": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\ntpath.py",
+      "ntpath_source_sha256": "512b9e7e5cd142a182be15aa479ac3e66261036a36b7426e5f3d9d22b177df4a",
+      "windows": [
+        10,
+        0,
+        22631,
+        2,
+        ""
+      ]
+    },
+    {
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "pid": 129544,
+      "observed_utc": "2026-10-24T03:36:12.349598+00:00",
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "executable_sha256": "7d96a4ed35d6e596cd9dd8933feafc66349cc21f75be3b15c89fd336e50140c1",
+      "ntpath_source": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\ntpath.py",
+      "ntpath_source_sha256": "512b9e7e5cd142a182be15aa479ac3e66261036a36b7426e5f3d9d22b177df4a",
+      "windows": [
+        10,
+        0,
+        22631,
+        2,
+        ""
+      ]
+    }
+  ],
+  "java_differential_execution": "NOT_RUN_SOURCE_ONLY",
+  "cases": [
+    {
+      "case": "empty",
+      "input": "",
+      "output": "."
+    },
+    {
+      "case": "dot",
+      "input": ".",
+      "output": "."
+    },
+    {
+      "case": "dot-separators",
+      "input": ".///",
+      "output": "."
+    },
+    {
+      "case": "relative",
+      "input": "A/B",
+      "output": "a\\b"
+    },
+    {
+      "case": "trailing",
+      "input": "A/B///",
+      "output": "a\\b"
+    },
+    {
+      "case": "parent",
+      "input": "A/B/../../END",
+      "output": "end"
+    },
+    {
+      "case": "leading-parent",
+      "input": "../../A/..",
+      "output": "..\\.."
+    },
+    {
+      "case": "root-parent",
+      "input": "/../../A/..",
+      "output": "\\"
+    },
+    {
+      "case": "drive-relative",
+      "input": "C:A/../B",
+      "output": "c:b"
+    },
+    {
+      "case": "drive-only",
+      "input": "C:",
+      "output": "c:"
+    },
+    {
+      "case": "drive-dot",
+      "input": "C:.",
+      "output": "c:"
+    },
+    {
+      "case": "drive-parent",
+      "input": "C:../A",
+      "output": "c:..\\a"
+    },
+    {
+      "case": "drive-root",
+      "input": "C:/",
+      "output": "c:\\"
+    },
+    {
+      "case": "drive-absolute",
+      "input": "C:/A/../../B",
+      "output": "c:\\b"
+    },
+    {
+      "case": "odd-drive",
+      "input": "1:/A/../B",
+      "output": "1:\\b"
+    },
+    {
+      "case": "unc",
+      "input": "//Server/Share/A/../B",
+      "output": "\\\\server\\share\\b"
+    },
+    {
+      "case": "unc-root",
+      "input": "//Server/Share/",
+      "output": "\\\\server\\share\\"
+    },
+    {
+      "case": "unc-incomplete",
+      "input": "//Server",
+      "output": "\\\\server"
+    },
+    {
+      "case": "unc-share-parent",
+      "input": "//Server/Share/../..",
+      "output": "\\\\server\\share\\"
+    },
+    {
+      "case": "three-leading",
+      "input": "///Server/Share/A",
+      "output": "\\\\\\server\\share\\a"
+    },
+    {
+      "case": "four-leading",
+      "input": "////Server/Share/A",
+      "output": "\\\\\\\\server\\share\\a"
+    },
+    {
+      "case": "unc-double-middle",
+      "input": "//Server//Share///A",
+      "output": "\\\\server\\\\share\\a"
+    },
+    {
+      "case": "device",
+      "input": "//./Device/A/../B",
+      "output": "\\\\.\\device\\b"
+    },
+    {
+      "case": "device-drive",
+      "input": "//?/C:/A/../B",
+      "output": "\\\\?\\c:\\b"
+    },
+    {
+      "case": "device-unc",
+      "input": "//?/UNC/Server/Share/A/../B",
+      "output": "\\\\?\\unc\\server\\share\\b"
+    },
+    {
+      "case": "device-unc-mixed",
+      "input": "//?/uNc/Server/Share/../../B",
+      "output": "\\\\?\\unc\\server\\share\\b"
+    },
+    {
+      "case": "device-unc-prefix",
+      "input": "//?/UNC/",
+      "output": "\\\\?\\unc\\"
+    },
+    {
+      "case": "device-incomplete",
+      "input": "//?",
+      "output": "\\\\?"
+    },
+    {
+      "case": "nt-device",
+      "input": "/??/C:/A/../B",
+      "output": "\\??\\c:\\b"
+    },
+    {
+      "case": "pipe",
+      "input": "//./pipe/Name",
+      "output": "\\\\.\\pipe\\name"
+    },
+    {
+      "case": "three-dots",
+      "input": "A/.../../B",
+      "output": "a\\b"
+    },
+    {
+      "case": "trailing-spaces",
+      "input": "C:/A. /B ",
+      "output": "c:\\a. \\b "
+    },
+    {
+      "case": "reserved",
+      "input": "C:/CON/PRN/NUL",
+      "output": "c:\\con\\prn\\nul"
+    },
+    {
+      "case": "ads",
+      "input": "C:/Name:Stream",
+      "output": "c:\\name:stream"
+    },
+    {
+      "case": "no-environment-expansion",
+      "input": "%USERPROFILE%/A/~",
+      "output": "%userprofile%\\a\\~"
+    },
+    {
+      "case": "unicode-dotted-i",
+      "input": "C:/\u0130/END",
+      "output": "c:\\\u0130\\end"
+    },
+    {
+      "case": "unicode-dotless-i",
+      "input": "C:/I\u0131i",
+      "output": "c:\\i\u0131i"
+    },
+    {
+      "case": "unicode-greek-context",
+      "input": "C:/\u039f\u03a3/\u03a3\u039f\u03a3",
+      "output": "c:\\\u03bf\u03c3\\\u03c3\u03bf\u03c3"
+    },
+    {
+      "case": "unicode-kelvin",
+      "input": "C:/\u212a/\u212b",
+      "output": "c:\\\u212a\\\u212b"
+    },
+    {
+      "case": "unicode-sharp-s",
+      "input": "C:/\u1e9e/\u00df",
+      "output": "c:\\\u1e9e\\\u00df"
+    },
+    {
+      "case": "unicode-supplementary",
+      "input": "C:/\ud801\udc00/\ud801\udc27",
+      "output": "c:\\\ud801\udc28\\\ud801\udc4f"
+    },
+    {
+      "case": "unicode-modern",
+      "input": "C:/\u1c89/\ud83a\udd00",
+      "output": "c:\\\u1c89\\\ud83a\udd00"
+    },
+    {
+      "case": "unicode-combining",
+      "input": "C:/A\u0307/\u00c4",
+      "output": "c:\\a\u0307\\\u00e4"
+    },
+    {
+      "case": "high-surrogate",
+      "input": "C:/\ud800/END",
+      "output": "c:\\\ud800\\end"
+    },
+    {
+      "case": "low-surrogate",
+      "input": "C:/\udfff/END",
+      "output": "c:\\\udfff\\end"
+    },
+    {
+      "case": "nul-only",
+      "input": "\u0000",
+      "output": "\u0000"
+    },
+    {
+      "case": "nul-middle",
+      "input": "C:/AB\u0000CD/END",
+      "output": "c:\\ab\u0000cd\\end"
+    },
+    {
+      "case": "nul-parent",
+      "input": "A\u0000B/../END",
+      "output": "end"
+    },
+    {
+      "case": "nul-drive",
+      "input": "\u0000:/A/../END",
+      "output": "\u0000:\\end"
+    },
+    {
+      "case": "nul-after-dot",
+      "input": "A/.\u0000/END",
+      "output": "a\\.\u0000\\end"
+    },
+    {
+      "case": "nul-after-parent",
+      "input": "A/..\u0000/END",
+      "output": "a\\..\u0000\\end"
+    },
+    {
+      "case": "nul-double",
+      "input": "\u0000/\u0000",
+      "output": "\u0000\\\u0000"
+    },
+    {
+      "case": "colon",
+      "input": "::/A/..",
+      "output": "::\\"
+    },
+    {
+      "case": "slash-only",
+      "input": "/",
+      "output": "\\"
+    },
+    {
+      "case": "backslash-only",
+      "input": "\\",
+      "output": "\\"
+    },
+    {
+      "case": "two-slashes",
+      "input": "//",
+      "output": "\\\\"
+    },
+    {
+      "case": "mixed-prefix",
+      "input": "/\\Server/Share/A/..",
+      "output": "\\\\server\\share\\"
+    },
+    {
+      "case": "trailing-parent",
+      "input": "A/..",
+      "output": "."
+    },
+    {
+      "case": "repeated-parent",
+      "input": "A/../../B",
+      "output": "..\\b"
+    },
+    {
+      "case": "relative-double-parent",
+      "input": "../A/../..",
+      "output": "..\\.."
+    },
+    {
+      "case": "bare-root",
+      "input": "C:////",
+      "output": "c:\\"
+    },
+    {
+      "case": "bare-unc",
+      "input": "\\\\",
+      "output": "\\\\"
+    },
+    {
+      "case": "forward-device",
+      "input": "\\\\?\\C:\\A\\..\\END",
+      "output": "\\\\?\\c:\\end"
+    }
+  ]
+}

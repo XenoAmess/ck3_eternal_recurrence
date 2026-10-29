@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f"
+    },
+    "last_sequence": 8214,
+    "next_step": "",
+    "pid": 247916,
+    "repo": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\host-checkout",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "N46_closed_native_clock_failure_no_new_SAVE",
+    "task_id": "robert-source32-a46-screen-20261022",
+    "updated_at_utc": "2026-10-22T12:46:28.817008+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 8214,
+    "event_id": "a9b7d0cfbe194bb8b15aa94c2c857a1d",
+    "timestamp_utc": "2026-10-22T12:46:28.818052+00:00",
+    "kind": "completed",
+    "task_id": "robert-source32-a46-screen-20261022",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "N46_closed_native_clock_failure_no_new_SAVE",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\host-checkout",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f"
+    }
+  }
+}

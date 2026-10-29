@@ -12,16 +12,15 @@ import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/** Explicit synthetic file-bound fixtures; never starts a vendor, CMD, compiler, or Native stage. */
+/** Explicit owned codec DATA fixtures; no installed vendor, process, compiler or Native stage is required. */
 final class NativeVendorTimeoutTest {
     private static final String MACHINE = "xenoamess-full-tower-eb9d2c1186";
     @TempDir Path temporary;
-    private record Fixture(Path cohort, Path first, Path second, Path firstStdout, ControlBuild.FileRef vendor,
-            ObjectNode firstWire, ObjectNode cohortWire) { }
+    private record Fixture(Path cohort, Path first, Path second, Path firstStdout, ObjectNode firstWire, ObjectNode cohortWire, ControlBuild.FileRef vendor) { }
 
     @Test void twoTypedTerminalsAndRawAnalysisRoundTripWithoutGrantingConfigureAuthority() throws Exception {
         Fixture fixture = fixture();
-        var value = NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor());
+        var value = read(fixture);
         assertEquals(NativeFixtureBuild.VendorTimeoutStatus.NATURAL_CASES_OBSERVED_NOT_CONFIGURE_QUALIFIED, value.status());
         assertEquals(VctipProbeFacts.Qualification.NONE, value.firstAnalysis().qualification());
         assertEquals(VctipProbeFacts.Qualification.NONE, value.secondAnalysis().qualification());
@@ -40,26 +39,17 @@ final class NativeVendorTimeoutTest {
         assertEquals(16L << 20, NativeFixtureBuild.stageScratchLimit(NativeFixtureBuild.Stage.VENDOR_TIMEOUTS));
     }
 
-    @Test void expectedFilePinAndFixedProductionVendorCannotBeSubstituted() throws Exception {
-        Fixture fixture = fixture();
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort()));
-        var other = ControlBuild.FileRef.measure(marker("other-vendor-evidence.txt"));
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), other));
-        Files.writeString(Path.of(fixture.vendor().path()), "changed synthetic file evidence");
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
-    }
-
     @Test void helpWrongArgumentAndWrongStageCannotSubstituteForTheFirstIdleCase() throws Exception {
         Fixture fixture = fixture();
         for (String argument : List.of("-?", "-timeout:2")) {
             ObjectNode wire = fixture.firstWire().deepCopy();
             wire.putArray("command").add(fixture.firstWire().path("command").get(0).textValue()).add(argument);
             rewriteFirst(fixture, wire);
-            assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
+            assertThrows(IOException.class, () -> read(fixture));
         }
         ObjectNode wrongStage = fixture.firstWire().deepCopy(); wrongStage.put("stage_id", "version-cl-help");
         rewriteFirst(fixture, wrongStage);
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
+        assertThrows(IOException.class, () -> read(fixture));
     }
 
     @Test void cleanupLiveJobLowMemoryEarlyExitAndMissingRawMarkerCannotBecomeObservedTimeout() throws Exception {
@@ -74,33 +64,51 @@ final class NativeVendorTimeoutTest {
             var lifecycle = NativeLifecycleTerminal.assess(result); wire.set("lifecycle", mapper.valueToTree(lifecycle));
             if (!lifecycle.successful()) { wire.put("status", "RED"); wire.put("error", "opaque synthetic non-natural terminal"); }
             rewriteFirst(fixture, wire);
-            assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
+            assertThrows(IOException.class, () -> read(fixture));
         }
         Files.writeString(fixture.firstStdout(), "opaque unit output without server timeout observation");
         ObjectNode missingMarker = fixture.firstWire().deepCopy();
         missingMarker.set("stdout_ref", mapper.valueToTree(ControlBuild.FileRef.measure(fixture.firstStdout())));
         rewriteFirst(fixture, missingMarker);
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
+        assertThrows(IOException.class, () -> read(fixture));
     }
 
     @Test void originalDeadlineSameEnvironmentDistinctProcessesAndBothOriginalReceiptsAreMandatory() throws Exception {
         Fixture fixture = fixture(); var mapper = ControlBuild.strictMapper();
         ObjectNode renewed = fixture.firstWire().deepCopy(); renewed.put("stage_deadline_at_utc", Instant.now().plusSeconds(120).toString());
         rewriteFirst(fixture, renewed);
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
+        assertThrows(IOException.class, () -> read(fixture));
         ObjectNode changedEnvironment = fixture.firstWire().deepCopy();
         Path other = marker("different-environment");
         changedEnvironment.set("environment_ref", mapper.valueToTree(ControlBuild.FileRef.measure(other)));
         rewriteFirst(fixture, changedEnvironment);
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
+        assertThrows(IOException.class, () -> read(fixture));
         ObjectNode sameProcess = fixture.firstWire().deepCopy();
         var identity = new WindowsJobProcess.ProcessIdentity(18, "2", fixture.vendor().path());
         sameProcess.set("owner_identity", mapper.valueToTree(identity));
         ((ObjectNode) sameProcess.path("result")).set("identity", mapper.valueToTree(identity));
         rewriteFirst(fixture, sameProcess);
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
+        assertThrows(IOException.class, () -> read(fixture));
         rewriteFirst(fixture, fixture.firstWire()); Files.delete(fixture.second());
-        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor()));
+        assertThrows(IOException.class, () -> read(fixture));
+    }
+
+    @Test void publicFixedVendorEntryCannotAcceptAnOwnedSyntheticCodecExecutable() throws Exception {
+        Fixture fixture = fixture();
+        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort()));
+        assertEquals(VctipProbeFacts.Qualification.NONE, read(fixture).firstAnalysis().qualification());
+    }
+
+    @Test void explicitExpectedExecutableAndItsOriginalBytesRemainMandatory() throws Exception {
+        Fixture fixture = fixture();
+        var other = ControlBuild.FileRef.measure(marker("different-synthetic-executable.exe"));
+        assertThrows(IOException.class, () -> NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), other));
+        Files.writeString(Path.of(fixture.vendor().path()), "changed original synthetic codec executable");
+        assertThrows(IOException.class, () -> read(fixture));
+    }
+
+    private static NativeFixtureBuild.VendorTimeouts read(Fixture fixture) throws IOException {
+        return NativeFixtureBuild.readVendorTimeouts(fixture.cohort(), fixture.vendor());
     }
 
     private static void rewriteFirst(Fixture fixture, ObjectNode wire) throws IOException {
@@ -111,13 +119,14 @@ final class NativeVendorTimeoutTest {
     }
 
     private Path marker(String name) throws IOException {
-        Path path = temporary.resolve(name); Files.writeString(path, "opaque unit marker: " + name); return path;
+        Path path = temporary.resolve(name); Files.writeString(path, "opaque unit marker: " + name, java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE); return path;
     }
 
     private Fixture fixture() throws IOException {
         var mapper = ControlBuild.strictMapper();
-        var vendor = ControlBuild.FileRef.measure(marker("vendor-evidence-marker.txt"));
+        var vendor = ControlBuild.FileRef.measure(marker("owned-synthetic-vctip.exe"));
         Path source = marker("source-marker"), runtime = marker("runtime-marker"), card = marker("resource-card-marker");
+        Files.writeString(card,"{\"schema\":\"xar.shared-native-stage-resource-card/v2\"}");
         Path tools = marker("tools-receipt-marker"), env = marker("environment-marker");
         Path manifest = temporary.resolve("source-manifest.json");
         Files.write(manifest, mapper.writeValueAsBytes(new NativeFixtureBuild.SourceManifest("xar.native-stage-source-manifest/v1", MACHINE,
@@ -132,9 +141,9 @@ final class NativeVendorTimeoutTest {
         var value = new NativeFixtureBuild.VendorTimeouts("xar.native-vendor-timeouts/v1", MACHINE, Instant.now().toString(),
                 NativeFixtureBuild.VendorTimeoutStatus.NATURAL_CASES_OBSERVED_NOT_CONFIGURE_QUALIFIED, deadline, vendor,
                 first.sourceManifestRef(), first.toolsReceiptRef(), first.environmentRef(), ControlBuild.FileRef.measure(firstPath),
-                analysis(first, VctipProbeFacts.ProbeCase.IDLE_ONE, vendor), ControlBuild.FileRef.measure(secondPath), analysis(second, VctipProbeFacts.ProbeCase.IDLE_TWO, vendor));
+                analysis(first, VctipProbeFacts.ProbeCase.IDLE_ONE), ControlBuild.FileRef.measure(secondPath), analysis(second, VctipProbeFacts.ProbeCase.IDLE_TWO));
         Path cohort = temporary.resolve("synthetic-vendor-observations.json"); Files.write(cohort, mapper.writeValueAsBytes(value));
-        return new Fixture(cohort, firstPath, secondPath, Path.of(first.stdoutRef().path()), vendor, mapper.valueToTree(first), mapper.valueToTree(value));
+        return new Fixture(cohort, firstPath, secondPath, Path.of(first.stdoutRef().path()), mapper.valueToTree(first), mapper.valueToTree(value), vendor);
     }
 
     private NativeFixtureBuild.Actual actual(NativeFixtureBuild.ActualStage stage, VctipProbeFacts.ProbeCase probe,
@@ -152,9 +161,7 @@ final class NativeVendorTimeoutTest {
                 true, ControlBuild.FileRef.measure(stdout), ControlBuild.FileRef.measure(stderr), List.of(), null);
     }
 
-    private static VctipProbeFacts.Analysis analysis(NativeFixtureBuild.Actual actual, VctipProbeFacts.ProbeCase probe,
-            ControlBuild.FileRef vendor) throws IOException {
-        return VctipProbeFacts.analyze(probe, actual.result(), Files.readAllBytes(Path.of(actual.stdoutRef().path())),
-                Files.readAllBytes(Path.of(actual.stderrRef().path())), vendor);
+    private static VctipProbeFacts.Analysis analysis(NativeFixtureBuild.Actual actual, VctipProbeFacts.ProbeCase probe) throws IOException {
+        return VctipProbeFacts.analyze(probe, actual.result(), Files.readAllBytes(Path.of(actual.stdoutRef().path())), Files.readAllBytes(Path.of(actual.stderrRef().path())), actual.toolRefs().getFirst());
     }
 }

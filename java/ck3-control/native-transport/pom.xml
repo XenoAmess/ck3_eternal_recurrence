@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-parent</artifactId><version>0.1.0-SNAPSHOT</version><relativePath>../pom.xml</relativePath></parent>
+  <artifactId>native-transport</artifactId>
+  <name>Direct Java Native protocol transport</name>
+  <dependencies>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>adapters-storage</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-military</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave3-military</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>replenishment-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>wave2-finance</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>war-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>planning-runtime</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>governance-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>g2-research</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>finance-policy</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>contracts</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>application</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>application</artifactId><version>${project.version}</version><type>test-jar</type><classifier>tests</classifier><scope>test</scope></dependency>
+    <dependency><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-build-tools</artifactId><version>${project.version}</version></dependency>
+    <dependency><groupId>net.java.dev.jna</groupId><artifactId>jna</artifactId></dependency>
+    <dependency><groupId>net.java.dev.jna</groupId><artifactId>jna-platform</artifactId></dependency>
+    <dependency><groupId>com.fasterxml.jackson.core</groupId><artifactId>jackson-databind</artifactId></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><scope>test</scope></dependency>
+  </dependencies>
+  <build>
+    <testResources>
+      <testResource><directory>src/test/resources</directory></testResource>
+      <testResource>
+        <directory>../wave2-finance/src/test/resources</directory>
+        <includes><include>factionalerts/original-producer-golden.json</include></includes>
+      </testResource>
+    </testResources>
+    <plugins><plugin><artifactId>maven-compiler-plugin</artifactId><configuration><compilerArgs><arg>-Xlint:all</arg><arg>-Werror</arg><arg>-Xmaxerrs</arg><arg>1000</arg></compilerArgs></configuration></plugin></plugins>
+  </build>
+</project>

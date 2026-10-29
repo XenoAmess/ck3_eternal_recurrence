@@ -16,6 +16,7 @@ public final class OwnedStdioSoftwarePeer {
             }
             case "partial" -> { System.out.write("unfinished".getBytes(StandardCharsets.UTF_8)); System.out.flush(); }
             case "exit7" -> System.exit(7);
+            case "exit7-after-eof" -> { System.in.read(); System.exit(7); }
             case "silent", "no-read" -> Thread.sleep(60_000);
             default -> throw new IllegalArgumentException("Unknown software peer mode");
         }

@@ -135,6 +135,18 @@ public final class WindowsJobProcess implements AutoCloseable {
     public record AwaitResult(CommandResult commandResult, JobDiagnosticOutcome diagnostic) {
         public AwaitResult { Objects.requireNonNull(commandResult); Objects.requireNonNull(diagnostic); }
     }
+    public record AuxiliaryAwaitResult(AwaitResult original, MsvcAuxiliaryPolicy.Outcome auxiliaryCleanup) {
+        public AuxiliaryAwaitResult { Objects.requireNonNull(original); Objects.requireNonNull(auxiliaryCleanup); }
+        public boolean passed() { return original.commandResult().passed() && auxiliaryCleanup.completed(); }
+    }
+    private static final class AuxiliaryContext {
+        private final MsvcAuxiliaryPolicy.HeldBinding lease;
+        private MsvcAuxiliaryPolicy.Outcome outcome;
+        private AuxiliaryContext(MsvcAuxiliaryPolicy.HeldBinding lease) {
+            this.lease = Objects.requireNonNull(lease);
+            this.outcome = MsvcAuxiliaryPolicy.notEntered(lease.binding(), "Original root completion has not entered auxiliary policy");
+        }
+    }
     public record RootDiagnostic(ProcessIdentity identity, Long waitZero, Long exitCode, Long win32Error, String error) {
         public RootDiagnostic {
             Objects.requireNonNull(identity); checkDword(waitZero); checkDword(exitCode); checkDword(win32Error); checkDiagnosticError(error);
@@ -290,6 +302,56 @@ public final class WindowsJobProcess implements AutoCloseable {
         public ProcessIdentity identity() { return identity; }
         public Instant deadline() { return deadline; }
     }
+    /** DATA only; only the opaque RetiredCustody below retains original OS ownership. */
+    public record RetirementObservation(ProcessIdentity identity, String sessionNonce, String machineId,
+            String observedAtUtc, long exitCode, Accounting accounting) {
+        public RetirementObservation {
+            Objects.requireNonNull(identity); Objects.requireNonNull(observedAtUtc); Objects.requireNonNull(accounting);
+            if (!Instant.parse(observedAtUtc).toString().equals(observedAtUtc))
+                throw new IllegalArgumentException("Canonical UTC instant string required");
+            if (sessionNonce == null || !sessionNonce.matches("[0-9a-f]{64}")
+                    || machineId == null || !machineId.matches("[a-z0-9][a-z0-9-]{0,63}") || machineId.equals("unknown")
+                    || exitCode < 0 || exitCode > 0xffff_ffffL || accounting.activeProcesses() != 0
+                    || accounting.limitFlags() != REQUIRED_FLAGS
+                    || accounting.peakJobMemoryBytes() > accounting.memoryLimitBytes())
+                throw new IllegalArgumentException("Actual zero-member original owned Job retirement required");
+        }
+    }
+    /** Read-only duplicate of the original held process object, never a PID lookup. */
+    public static final class RetiredCustody implements AutoCloseable {
+        private final OwnedStdio original;
+        private final HANDLE readOnlyProcess;
+        private final RetirementObservation first;
+        private boolean closed;
+        private RetiredCustody(OwnedStdio original, HANDLE readOnlyProcess) throws IOException {
+            this.original = original; this.readOnlyProcess = readOnlyProcess;
+            first = original.observeRetirement(readOnlyProcess);
+        }
+        public OwnedStdioSpec spec() { return original.spec(); }
+        public synchronized RetirementObservation observation() throws IOException { requireCurrent(); return first; }
+        public synchronized void requireCurrent() throws IOException {
+            if (closed) throw new IOException("original retirement custody closed");
+            RetirementObservation actual = original.observeRetirement(readOnlyProcess);
+            if (!actual.identity().equals(first.identity()) || !actual.sessionNonce().equals(first.sessionNonce())
+                    || !actual.machineId().equals(first.machineId()) || actual.exitCode() != first.exitCode())
+                throw new IOException("original held retirement identity/exit differs");
+        }
+        /** Settles only this exact original stdio owner and its already observed await result. */
+        synchronized void requireOriginal(OwnedStdio expected, CommandResult actual) throws IOException {
+            if (original != expected) throw new IOException("Retirement custody belongs to another original stdio owner");
+            synchronized (original) {
+                requireCurrent();
+                if (actual == null || original.terminal == null || !original.terminal.commandResult().equals(actual))
+                    throw new IOException("Original owned stdio await terminal must be consumed before native source settlement");
+            }
+        }
+        /** Only the duplicated read handle is closed. The original owner/Job/stdio are untouched. */
+        @Override public synchronized void close() {
+            if (closed) return;
+            closed = true;
+            require(original.owner.nativeApi.CloseHandle(readOnlyProcess));
+        }
+    }
     public static final class WriteReceipt {
         private final long bytesWritten;
         private final ProcessIdentity identity;
@@ -348,39 +410,124 @@ public final class WindowsJobProcess implements AutoCloseable {
                 catch (IOException | RuntimeException failure) { owner.nativeApi.CloseHandle(result); throw failure; }
             }
         }
+        /** No guard, fail, await, input close or termination path is entered by this API. */
+        public synchronized RetiredCustody observeRetiredCustody() throws IOException {
+            if (closed || failed != null) throw new IOException("original owned stdio is closed or failed");
+            var duplicate = new WinNT.HANDLEByReference();
+            HANDLE current = owner.nativeApi.GetCurrentProcess();
+            if (!owner.nativeApi.DuplicateHandle(current, owner.process.hProcess, current, duplicate,
+                    0x1000 | 0x100000, false, 0))
+                throw new IOException("original read-only process duplicate Win32=" + Native.getLastError());
+            HANDLE held = requireHandle(duplicate.getValue());
+            try { return new RetiredCustody(this, held); }
+            catch (IOException | RuntimeException | Error failure) {
+                try { require(owner.nativeApi.CloseHandle(held)); }
+                catch (RuntimeException cleanup) { failure.addSuppressed(cleanup); }
+                throw failure;
+            }
+        }
+        private synchronized RetirementObservation observeRetirement(HANDLE held) throws IOException {
+            if (closed || failed != null) throw new IOException("original owned stdio is closed or failed");
+            try {
+                int signal = owner.nativeApi.WaitForSingleObject(held, 0);
+                if (signal == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
+                if (signal != 0) throw new IOException("original Python/runtime producer is not observed retired");
+                long pid = Integer.toUnsignedLong(owner.nativeApi.GetProcessId(held));
+                String birth = creationFiletime(owner.nativeApi, held);
+                if (pid != identity().pid() || !birth.equals(identity().creationFiletimeDecimal()))
+                    throw new IOException("original retired process handle birth/PID differs");
+                IntByReference code = new IntByReference();
+                require(owner.nativeApi.GetExitCodeProcess(held, code));
+                Accounting actual = owner.accounting();
+                if (actual.activeProcesses() != 0 || actual.limitFlags() != REQUIRED_FLAGS
+                        || actual.memoryLimitBytes() != spec.command().memoryLimitBytes()
+                        || actual.peakJobMemoryBytes() > actual.memoryLimitBytes())
+                    throw new IOException("original Job is not empty or its no-breakaway limits differ");
+                for (SharedSourceFiles.Witness source : sources) SharedSourceFiles.assertUnchanged(source);
+                return new RetirementObservation(identity(), nonce, currentMachineId(), Instant.now().toString(),
+                        Integer.toUnsignedLong(code.getValue()), actual);
+            } catch (RuntimeException failure) {
+                throw new IOException("read-only original retirement observation unavailable", failure);
+            }
+        }
         public synchronized void verifyActualIdentityAndSources() throws IOException {
-            try { verifyPinnedResource(); }
+            verifyActualIdentityAndSources(deadline());
+        }
+        private void verifyActualIdentityAndSources(Instant until) throws IOException {
+            try { verifyPinnedResource(until); }
             catch (IOException failure) { fail(failure); throw failure; }
             catch (RuntimeException failure) {
                 IOException invalid = new IOException("owned stdio native/source guard failed: " + failure, failure);
                 fail(invalid); throw invalid;
             }
         }
-        private void verifyPinnedResource() throws IOException {
+        private void verifyPinnedResource(Instant until) throws IOException {
             if (closed) throw new IOException("owned stdio resource closed");
             if (failed != null) throw new IOException("owned stdio outcome unknown: " + failed);
-            verifyHeldProcess();
+            verifyHeldProcess(until);
+            verifyLimitsAndSources();
+        }
+        private void verifyLimitsAndSources() throws IOException {
             Accounting accounting = owner.accounting();
             if (accounting.limitFlags() != REQUIRED_FLAGS || accounting.memoryLimitBytes() != spec.command().memoryLimitBytes()
                     || accounting.peakJobMemoryBytes() > accounting.memoryLimitBytes()) throw new IOException("owned stdio Job limits drift");
             for (SharedSourceFiles.Witness source : sources) SharedSourceFiles.assertUnchanged(source);
             spec.guard().verify();
         }
-        private void verifyHeldProcess() throws IOException {
-            int signal = owner.nativeApi.WaitForSingleObject(owner.process.hProcess, 0);
-            if (signal == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
-            if (signal == WAIT_TIMEOUT) {
-                try {
-                    ProcessIdentity actual = WindowsJobProcess.identity(owner.nativeApi, owner.process.hProcess, owner.identity().pid());
-                    if (!actual.equals(owner.identity())) throw new IOException("owned stdio child identity drift");
-                    IntByReference belongs = new IntByReference();
-                    require(owner.nativeApi.IsProcessInJob(owner.process.hProcess, owner.job, belongs));
-                    if (belongs.getValue() == 0) throw new IOException("live stdio child is outside its owned Job");
-                    return;
-                } catch (IOException | RuntimeException racedExit) {
-                    if (owner.nativeApi.WaitForSingleObject(owner.process.hProcess, 0) != 0) throw racedExit;
+        private void verifyHeldProcess(Instant until) throws IOException {
+            while (true) {
+                int signal = owner.nativeApi.WaitForSingleObject(owner.process.hProcess, 0);
+                if (signal == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
+                if (signal == WAIT_TIMEOUT) {
+                    Win32Exception imageUnavailable = null;
+                    try {
+                        String birth = creationFiletime(owner.nativeApi, owner.process.hProcess);
+                        if (!birth.equals(owner.identity().creationFiletimeDecimal()))
+                            throw new IOException("owned stdio child identity drift");
+                        String image = null;
+                        try { image = processImage(owner.nativeApi, owner.process.hProcess); }
+                        catch (Win32Exception failure) {
+                            if (failure.getErrorCode() != 5) throw failure;
+                            imageUnavailable = failure;
+                        }
+                        if (imageUnavailable == null) {
+                            ProcessIdentity actual = new ProcessIdentity(owner.identity().pid(), birth, image);
+                            if (!actual.equals(owner.identity())) throw new IOException("owned stdio child identity drift");
+                            IntByReference belongs = new IntByReference();
+                            require(owner.nativeApi.IsProcessInJob(owner.process.hProcess, owner.job, belongs));
+                            if (belongs.getValue() == 0) throw new IOException("live stdio child is outside its owned Job");
+                            return;
+                        }
+                    } catch (IOException | RuntimeException racedExit) {
+                        if (owner.nativeApi.WaitForSingleObject(owner.process.hProcess, 0) != 0) throw racedExit;
+                        verifyRetiredHeldProcess(); return;
+                    }
+                    // QueryFullProcessImageName can become unavailable before the original
+                    // process object signals. Error 5 alone never establishes retirement.
+                    Objects.requireNonNull(imageUnavailable);
+                    checkImageResolutionDeadline(until, imageUnavailable);
+                    verifyLimitsAndSources();
+                    checkImageResolutionDeadline(until, imageUnavailable);
+                    Duration remaining = Duration.between(Instant.now(), until);
+                    int waitMillis = remaining.compareTo(Duration.ofMillis(10)) >= 0 ? 10
+                            : (int) Math.max(0, remaining.toMillis());
+                    int waited = owner.nativeApi.WaitForSingleObject(owner.process.hProcess, waitMillis);
+                    if (waited == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
+                    if (waited != 0 && waited != WAIT_TIMEOUT) throw new IOException("unexpected owned process signal");
+                    checkImageResolutionDeadline(until, imageUnavailable);
+                    continue;
                 }
-            } else if (signal != 0) throw new IOException("unexpected owned process signal");
+                if (signal != 0) throw new IOException("unexpected owned process signal");
+                verifyRetiredHeldProcess(); return;
+            }
+        }
+        private void checkImageResolutionDeadline(Instant until, Win32Exception original) throws IOException {
+            if (Thread.currentThread().isInterrupted())
+                throw new IOException("owned stdio image retirement observation interrupted", original);
+            if (!Instant.now().isBefore(until))
+                throw new IOException("owned stdio deadline expired during image retirement observation", original);
+        }
+        private void verifyRetiredHeldProcess() throws IOException {
             // The original held handle still binds its process object after exit. Live-only
             // image/membership queries can then fail. PID and birth use that same handle;
             // pre-resume/live membership and the unchanged no-breakaway Job remain mandatory.
@@ -392,7 +539,7 @@ public final class WindowsJobProcess implements AutoCloseable {
         private Instant operationDeadline(Instant requested) throws IOException {
             Objects.requireNonNull(requested);
             Instant effective = requested.isBefore(deadline()) ? requested : deadline();
-            Win32StdioPipes.check(effective, this::verifyActualIdentityAndSources); return effective;
+            Win32StdioPipes.check(effective, () -> verifyActualIdentityAndSources(effective)); return effective;
         }
         private void fail(IOException failure) {
             if (failed == null) {
@@ -410,11 +557,11 @@ public final class WindowsJobProcess implements AutoCloseable {
                 if (original.length == 0 || original.length > spec.maxSentBytes() - sent) throw new IOException("owned stdin aggregate byte limit exceeded");
                 int offset = 0;
                 while (offset < original.length) {
-                    int count = pipes.write(original, offset, original.length - offset, until, this::verifyActualIdentityAndSources);
+                    int count = pipes.write(original, offset, original.length - offset, until, () -> verifyActualIdentityAndSources(until));
                     if (count <= 0) throw new IOException("owned stdin made no write progress");
                     offset += count; sent += count;
                 }
-                Win32StdioPipes.check(until, this::verifyActualIdentityAndSources);
+                Win32StdioPipes.check(until, () -> verifyActualIdentityAndSources(until));
                 return new WriteReceipt(offset, identity(), nonce);
             } catch (IOException failure) { fail(failure); throw failure; }
             catch (InterruptedException interrupted) {
@@ -426,7 +573,7 @@ public final class WindowsJobProcess implements AutoCloseable {
                 Instant until = operationDeadline(requestedDeadline);
                 if (awaitEntered) throw new IOException("owned stdout terminal was already requested");
                 while (frames.isEmpty()) {
-                    byte[] chunk = pipes.read(until, this::verifyActualIdentityAndSources);
+                    byte[] chunk = pipes.read(until, () -> verifyActualIdentityAndSources(until));
                     if (chunk == null) throw new IOException(partial.size() == 0 ? "owned stdout EOF before next line" : "owned stdout EOF inside line");
                     if (chunk.length > spec.maxReceivedBytes() - received) throw new IOException("owned stdout aggregate byte limit exceeded");
                     received += chunk.length; audit.write(chunk); audit.flush();
@@ -439,7 +586,7 @@ public final class WindowsJobProcess implements AutoCloseable {
                         }
                     }
                 }
-                Win32StdioPipes.check(until, this::verifyActualIdentityAndSources);
+                Win32StdioPipes.check(until, () -> verifyActualIdentityAndSources(until));
                 sequence = Math.addExact(sequence, 1);
                 return new Arrival(frames.removeFirst(), sequence, nonce, identity(), until);
             } catch (IOException failure) { fail(failure); throw failure; }
@@ -652,6 +799,20 @@ public final class WindowsJobProcess implements AutoCloseable {
      */
     public AwaitResult await(Duration timeout, Instant leaseDeadline, Runnable periodicGuard, Path diagnosticSidecar,
             RootExitDrainPolicy rootExitDrainPolicy) throws InterruptedException {
+        return awaitInternal(timeout, leaseDeadline, periodicGuard, diagnosticSidecar, rootExitDrainPolicy, null);
+    }
+
+    /** Explicit compiler-only choice. The real three-file lease must precede process creation in its caller. */
+    public AuxiliaryAwaitResult awaitWithMsvcAuxiliaries(Duration timeout, Instant leaseDeadline, Runnable periodicGuard,
+            Path diagnosticSidecar, MsvcAuxiliaryPolicy.HeldBinding imageLease) throws IOException, InterruptedException {
+        imageLease.requireBefore(started);
+        AuxiliaryContext auxiliary = new AuxiliaryContext(imageLease);
+        AwaitResult actual = awaitInternal(timeout, leaseDeadline, periodicGuard, diagnosticSidecar,
+                RootExitDrainPolicy.DEFAULT_FIVE_SECONDS, auxiliary);
+        return new AuxiliaryAwaitResult(actual, auxiliary.outcome);
+    }
+    private AwaitResult awaitInternal(Duration timeout, Instant leaseDeadline, Runnable periodicGuard, Path diagnosticSidecar,
+            RootExitDrainPolicy rootExitDrainPolicy, AuxiliaryContext auxiliary) throws InterruptedException {
         ensureOpen(); Objects.requireNonNull(leaseDeadline); Objects.requireNonNull(periodicGuard);
         Objects.requireNonNull(rootExitDrainPolicy);
         if (timeout.isZero() || timeout.isNegative()) throw new IllegalArgumentException("Finite positive timeout required");
@@ -675,8 +836,30 @@ public final class WindowsJobProcess implements AutoCloseable {
         if (reason != null) {
             diagnostic = captureBeforeCleanup(diagnosticSidecar, reason, diagnostic);
             terminate(124);
+            if (auxiliary != null) auxiliary.outcome = auxiliary.outcome.withFailureTermination();
         }
-        if (reason == null && rootExitDrainPolicy == RootExitDrainPolicy.UNTIL_COMMAND_DEADLINE) {
+        if (reason == null && auxiliary != null) {
+            MsvcAuxiliaryPolicy.Budget budget = new MsvcAuxiliaryPolicy.Budget(deadline, leaseDeadline);
+            try {
+                budget.check(); auxiliary.lease.verify(); budget.check();
+                auxiliary.outcome = MsvcAuxiliaryPolicy.finish(new OwnedAuxiliaryBackend(budget, periodicGuard),
+                        auxiliary.lease.binding(), budget, () -> {
+                            try { auxiliary.lease.verify(); } catch (IOException failure) { throw new IllegalStateException(failure); }
+                            periodicGuard.run();
+                        });
+            } catch (IOException | RuntimeException failure) {
+                auxiliary.outcome = new MsvcAuxiliaryPolicy.Outcome("xar.exact-msvc-owned-auxiliary-outcome/v1",
+                        MsvcAuxiliaryPolicy.State.FAILED, auxiliary.lease.binding(), null, List.of(), null, false,
+                        diagnosticText(failure.toString()));
+            }
+            if (!auxiliary.outcome.completed()) {
+                reason = diagnosticText("msvc_auxiliary_cleanup_failed: " + auxiliary.outcome.error());
+                diagnostic = captureBeforeCleanup(diagnosticSidecar, reason, diagnostic);
+                terminate(124); // Failure only; a successful auxiliary policy never terminates the Job.
+                auxiliary.outcome = auxiliary.outcome.withFailureTermination();
+            }
+        }
+        if (reason == null && auxiliary == null && rootExitDrainPolicy == RootExitDrainPolicy.UNTIL_COMMAND_DEADLINE) {
             while (true) {
                 if (System.nanoTime() >= deadline || !Instant.now().isBefore(leaseDeadline)) {
                     reason = "timeout_or_release_expired"; break;
@@ -706,20 +889,30 @@ public final class WindowsJobProcess implements AutoCloseable {
                 terminate(124);
             }
         }
-        for (int i = 0; i < 50 && accounting().activeProcesses() != 0; i++) {
+        for (int i = 0; auxiliary == null && i < 50 && accounting().activeProcesses() != 0; i++) {
             try { Thread.sleep(100); } catch (InterruptedException error) { interrupted = true; }
         }
         if (accounting().activeProcesses() != 0) {
             reason = reason == null ? "root_exited_with_live_children" : reason;
             diagnostic = captureBeforeCleanup(diagnosticSidecar, reason, diagnostic);
-            terminate(125);
-            for (int i = 0; i < 50 && accounting().activeProcesses() != 0; i++) {
+            if (auxiliary == null || !auxiliary.outcome.failureJobTerminationRequested()) terminate(125);
+            if (auxiliary != null) auxiliary.outcome = auxiliary.outcome.withFailureTermination();
+            for (int i = 0; i < 50 && accounting().activeProcesses() != 0
+                    && (auxiliary == null || (System.nanoTime() < deadline && Instant.now().isBefore(leaseDeadline))); i++) {
+                if (auxiliary != null) {
+                    long commandMillis = (deadline - System.nanoTime()) / 1_000_000L;
+                    long leaseMillis = Duration.between(Instant.now(), leaseDeadline).toMillis();
+                    long remaining = Math.min(commandMillis, leaseMillis);
+                    if (remaining <= 0) break;
+                    try { Thread.sleep(Math.min(100, remaining)); } catch (InterruptedException error) { interrupted = true; break; }
+                    continue;
+                }
                 try { Thread.sleep(100); } catch (InterruptedException error) { interrupted = true; }
             }
         }
         // Job accounting can reach zero before the root process object becomes signalled.
         // Observe that independent terminal state before consuming its exit code.
-        int rootSignal = nativeApi.WaitForSingleObject(process.hProcess, 5000);
+        int rootSignal = nativeApi.WaitForSingleObject(process.hProcess, auxiliary == null ? 5000 : 0);
         if (rootSignal == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
         if (rootSignal == WAIT_TIMEOUT) reason = "root_exit_not_observed";
         IntByReference exit = new IntByReference();
@@ -731,6 +924,103 @@ public final class WindowsJobProcess implements AutoCloseable {
                 finalState, reason);
         if (interrupted) Thread.currentThread().interrupt();
         return new AwaitResult(result, diagnostic);
+    }
+
+    /** No global process enumeration. Each mutation handle originates in this exact original Job list. */
+    private final class OwnedAuxiliaryBackend implements MsvcAuxiliaryPolicy.Backend {
+        private final MsvcAuxiliaryPolicy.Budget budget;
+        private final Runnable guard;
+        private OwnedAuxiliaryBackend(MsvcAuxiliaryPolicy.Budget budget, Runnable guard) { this.budget = budget; this.guard = guard; }
+        @Override public MsvcAuxiliaryPolicy.Root root() throws IOException {
+            budget.check();
+            int signal = nativeApi.WaitForSingleObject(process.hProcess, 0);
+            if (signal == WAIT_FAILED) throw new IOException("Original root wait Win32=" + Native.getLastError());
+            IntByReference exit = new IntByReference(); require(nativeApi.GetExitCodeProcess(process.hProcess, exit));
+            if (Integer.toUnsignedLong(nativeApi.GetProcessId(process.hProcess)) != identity().pid()
+                    || !creationFiletime(nativeApi, process.hProcess).equals(identity().creationFiletimeDecimal()))
+                throw new IOException("Original retained root generation changed");
+            budget.check(); return new MsvcAuxiliaryPolicy.Root(identity(), Integer.toUnsignedLong(signal), Integer.toUnsignedLong(exit.getValue()));
+        }
+        @Override public int active() throws IOException { budget.check(); int active = accounting().activeProcesses(); budget.check(); return active; }
+        @Override public List<Long> members() throws IOException {
+            budget.check();
+            try (Memory buffer = new Memory(8L + MsvcAuxiliaryPolicy.MAXIMUM_MEMBERS * Native.POINTER_SIZE)) {
+                buffer.clear();
+                if (!nativeApi.QueryInformationJobObject(job, 3, buffer, (int) buffer.size(), null))
+                    throw new IOException("Complete owned auxiliary member list Win32=" + Native.getLastError());
+                long assigned = Integer.toUnsignedLong(buffer.getInt(0)), listed = Integer.toUnsignedLong(buffer.getInt(4));
+                if (assigned != listed || listed > MsvcAuxiliaryPolicy.MAXIMUM_MEMBERS)
+                    throw new IOException("Incomplete or oversized owned auxiliary member list");
+                List<Long> pids = new ArrayList<>();
+                for (int index = 0; index < listed; index++) {
+                    long pid = buffer.getLong(8L + index * Native.POINTER_SIZE);
+                    if (pid <= 0 || pid > 0xffff_ffffL || pids.contains(pid)) throw new IOException("Invalid/duplicate original Job member PID");
+                    pids.add(pid);
+                }
+                budget.check(); return List.copyOf(pids);
+            }
+        }
+        @Override public MsvcAuxiliaryPolicy.Member retain(long pid) throws IOException {
+            budget.check();
+            if (pid <= 0 || pid > 0xffff_ffffL) throw new IOException("DWORD owned member PID required");
+            HANDLE handle = nativeApi.OpenProcess(0x100000 | 0x1000 | 1, false, (int) pid);
+            if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("Retain enumerated owned member Win32=" + Native.getLastError());
+            return new OwnedAuxiliaryMember(handle, pid);
+        }
+        private final class OwnedAuxiliaryMember implements MsvcAuxiliaryPolicy.Member {
+            private final HANDLE handle;
+            private final long listedPid;
+            private ProcessIdentity original;
+            private boolean closed;
+            private OwnedAuxiliaryMember(HANDLE handle, long listedPid) { this.handle = handle; this.listedPid = listedPid; }
+            private void liveOwned() throws IOException {
+                budget.check(); if (closed) throw new IOException("Original retained auxiliary handle closed");
+                IntByReference belongs = new IntByReference(); require(nativeApi.IsProcessInJob(handle, job, belongs));
+                if (belongs.getValue() == 0 || nativeApi.WaitForSingleObject(handle, 0) != WAIT_TIMEOUT
+                        || Integer.toUnsignedLong(nativeApi.GetProcessId(handle)) != listedPid)
+                    throw new IOException("Retained generation is not live inside this exact original Job");
+            }
+            @Override public MsvcAuxiliaryPolicy.MemberObservation observe() throws IOException {
+                liveOwned(); ProcessIdentity actual = WindowsJobProcess.identity(nativeApi, handle, listedPid);
+                if (original != null && !original.equals(actual)) throw new IOException("Same auxiliary handle birth/image drift");
+                if (original == null) original = actual;
+                long millis = Math.min((budget.effectiveDeadline - System.nanoTime()) / 1_000_000L,
+                        Duration.between(Instant.now(), budget.leaseDeadline).toMillis());
+                if (millis <= 0) throw new IOException("Original auxiliary image observation deadline exhausted");
+                MsvcAuxiliaryPolicy.Image image = MsvcAuxiliaryPolicy.observeImage(Path.of(actual.executable()),
+                        Instant.now().plusMillis(millis), guard);
+                liveOwned(); budget.check(); return new MsvcAuxiliaryPolicy.MemberObservation(actual, image, true, WAIT_TIMEOUT);
+            }
+            @Override public MsvcAuxiliaryPolicy.Termination terminate74() throws IOException {
+                liveOwned();
+                if (original == null || !original.equals(WindowsJobProcess.identity(nativeApi, handle, listedPid)))
+                    throw new IOException("Auxiliary terminate requires the identical already-verified original handle");
+                budget.check();
+                try {
+                    if(nativeApi.TerminateProcess(handle,MsvcAuxiliaryPolicy.TERMINATION_EXIT_CODE))
+                        return new MsvcAuxiliaryPolicy.Termination(true,null,null);
+                    long error=Integer.toUnsignedLong(Native.getLastError());
+                    return new MsvcAuxiliaryPolicy.Termination(false,error,"TerminateProcess74 Win32="+error);
+                } catch(RuntimeException failure) {
+                    return new MsvcAuxiliaryPolicy.Termination(false,null,diagnosticText("TerminateProcess74 entered: "+failure));
+                }
+            }
+            @Override public long waitZero() throws IOException {
+                budget.check(); if (closed) throw new IOException("Auxiliary wait handle closed");
+                int wait = nativeApi.WaitForSingleObject(handle, 0);
+                if (wait == WAIT_FAILED) throw new IOException("Auxiliary terminal wait Win32=" + Native.getLastError());
+                budget.check(); return Integer.toUnsignedLong(wait);
+            }
+            @Override public long exitCode() throws IOException {
+                if (waitZero() != 0) throw new IOException("Actual auxiliary signal required before exit code");
+                IntByReference exit = new IntByReference(); require(nativeApi.GetExitCodeProcess(handle, exit));
+                budget.check(); return Integer.toUnsignedLong(exit.getValue());
+            }
+            @Override public void close() throws IOException {
+                if (closed) return; closed = true;
+                if (!nativeApi.CloseHandle(handle)) throw new IOException("Close original auxiliary handle Win32=" + Native.getLastError());
+            }
+        }
     }
 
     private JobDiagnosticOutcome captureBeforeCleanup(Path sidecar, String trigger, JobDiagnosticOutcome previous) {
@@ -1012,9 +1302,12 @@ public final class WindowsJobProcess implements AutoCloseable {
 
     private static ProcessIdentity identity(Kernel32 api, HANDLE process, long pid) {
         String filetime = creationFiletime(api, process);
+        return new ProcessIdentity(pid, filetime, processImage(api, process));
+    }
+    private static String processImage(Kernel32 api, HANDLE process) {
         char[] image = new char[32768]; IntByReference count = new IntByReference(image.length);
         require(api.QueryFullProcessImageName(process, 0, image, count));
-        return new ProcessIdentity(pid, filetime, new String(image, 0, count.getValue()));
+        return new String(image, 0, count.getValue());
     }
     private static String creationFiletime(Kernel32 api, HANDLE process) {
         WinBase.FILETIME created = new WinBase.FILETIME();

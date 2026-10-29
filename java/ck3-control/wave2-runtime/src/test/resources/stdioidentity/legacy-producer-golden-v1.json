@@ -1,0 +1,669 @@
+{
+  "schema": "xar.stdioidentity-legacy-producer-golden/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-22T14:29:31.904730+00:00",
+  "producer": {
+    "path": "tools/g2_saved_campaign/sdk_process_custody.py",
+    "bytes": 14743,
+    "sha256": "55e4409b2b0920085d432cd4a7ef9eef316a49762856db33e07d802128c274cc",
+    "callable": "RetainedProcessGeneration.capture(...injected_api).identity(role)"
+  },
+  "scope": "legacy pure identity validation with injected API; no actual Win32 observation, stdio ownership, Game or recovery qualification",
+  "cases": [
+    {
+      "id": "baseline",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": true,
+      "output": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "normalized_executable": "c:\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "maximum-dword-pid",
+      "input": {
+        "role": "MCPApp",
+        "pid": 4294967295,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":4294967295,\"role\":\"MCPApp\"}",
+      "accepted": true,
+      "output": {
+        "role": "MCPApp",
+        "pid": 4294967295,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "normalized_executable": "c:\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "maximum-uint64-birth",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 18446744073709551615,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":18446744073709551615,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": true,
+      "output": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 18446744073709551615,
+        "executable": "C:/Python/python.exe"
+      },
+      "normalized_executable": "c:\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "whitespace-role",
+      "input": {
+        "role": " ",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\" \"}",
+      "accepted": true,
+      "output": {
+        "role": " ",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "normalized_executable": "c:\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "Queue-role",
+      "input": {
+        "role": "Queue",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"Queue\"}",
+      "accepted": true,
+      "output": {
+        "role": "Queue",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "normalized_executable": "c:\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "case-insensitive-image",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "c:/PYTHON/Python.EXE"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"c:/PYTHON/Python.EXE\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": true,
+      "output": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "c:/PYTHON/Python.EXE"
+      },
+      "normalized_executable": "c:\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "normalized-image",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/temp/../python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/temp/../python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": true,
+      "output": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/temp/../python.exe"
+      },
+      "normalized_executable": "c:\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "unicode-image",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "D:/依赖/机器🚀/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"D:/依赖/机器🚀/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": true,
+      "output": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "D:/依赖/机器🚀/python.exe"
+      },
+      "normalized_executable": "d:\\依赖\\机器🚀\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "unc-image",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "\\\\server\\share\\Python\\python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"\\\\\\\\server\\\\share\\\\Python\\\\python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": true,
+      "output": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "\\\\server\\share\\Python\\python.exe"
+      },
+      "normalized_executable": "\\\\server\\share\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "root-image-is-only-a-path-claim",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": true,
+      "output": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/"
+      },
+      "normalized_executable": "c:\\",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "nul-role-is-not-an-image-or-native-proof",
+      "input": {
+        "role": "a\u0000b",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"a\\u0000b\"}",
+      "accepted": true,
+      "output": {
+        "role": "a\u0000b",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "normalized_executable": "c:\\python\\python.exe",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "pid-zero",
+      "input": {
+        "role": "MCPApp",
+        "pid": 0,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":0,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "pid must be a positive integer no larger than 4294967295",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "pid-negative",
+      "input": {
+        "role": "MCPApp",
+        "pid": -1,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":-1,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "pid must be a positive integer no larger than 4294967295",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "pid-overflow",
+      "input": {
+        "role": "MCPApp",
+        "pid": 4294967296,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":4294967296,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "pid must be a positive integer no larger than 4294967295",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "pid-true",
+      "input": {
+        "role": "MCPApp",
+        "pid": true,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":true,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "pid must be a positive integer no larger than 4294967295",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "pid-false",
+      "input": {
+        "role": "MCPApp",
+        "pid": false,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":false,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "pid must be a positive integer no larger than 4294967295",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "pid-float",
+      "input": {
+        "role": "MCPApp",
+        "pid": 1.0,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":1.0,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "pid must be a positive integer no larger than 4294967295",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "pid-string",
+      "input": {
+        "role": "MCPApp",
+        "pid": "1",
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":\"1\",\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "pid must be a positive integer no larger than 4294967295",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "pid-null",
+      "input": {
+        "role": "MCPApp",
+        "pid": null,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":null,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "pid must be a positive integer no larger than 4294967295",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "birth-zero",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 0,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":0,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "expected_creation_filetime must be a positive integer no larger than 18446744073709551615",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "birth-negative",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": -1,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":-1,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "expected_creation_filetime must be a positive integer no larger than 18446744073709551615",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "birth-overflow",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 18446744073709551616,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":18446744073709551616,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "expected_creation_filetime must be a positive integer no larger than 18446744073709551615",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "birth-true",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": true,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":true,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "expected_creation_filetime must be a positive integer no larger than 18446744073709551615",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "birth-false",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": false,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":false,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "expected_creation_filetime must be a positive integer no larger than 18446744073709551615",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "birth-float",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 1.0,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":1.0,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "expected_creation_filetime must be a positive integer no larger than 18446744073709551615",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "birth-string",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": "1",
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":\"1\",\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "expected_creation_filetime must be a positive integer no larger than 18446744073709551615",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "birth-null",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": null,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":null,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "creation_filetime must be a positive integer no larger than 18446744073709551615",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "image-empty",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": ""
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process executable must be an absolute Windows path",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "image-relative",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process executable must be an absolute Windows path",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "image-drive-relative",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process executable must be an absolute Windows path",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "image-root-without-drive",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "\\python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"\\\\python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process executable must be an absolute Windows path",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "image-posix-root",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"/python.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process executable must be an absolute Windows path",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "image-null",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": null
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":null,\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process executable must be an absolute Windows path",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "image-false",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": false
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":false,\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process executable must be an absolute Windows path",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "image-nul",
+      "input": {
+        "role": "MCPApp",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/bad\u0000.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/bad\\u0000.exe\",\"pid\":17,\"role\":\"MCPApp\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process executable must be an absolute Windows path",
+      "injected_open_count": 0,
+      "injected_close_count": 0
+    },
+    {
+      "id": "role-empty",
+      "input": {
+        "role": "",
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":\"\"}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process role must be a nonempty string",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "role-null",
+      "input": {
+        "role": null,
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":null}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process role must be a nonempty string",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "role-false",
+      "input": {
+        "role": false,
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":false}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process role must be a nonempty string",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "role-integer",
+      "input": {
+        "role": 1,
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":1}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process role must be a nonempty string",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    },
+    {
+      "id": "role-float",
+      "input": {
+        "role": 1.0,
+        "pid": 17,
+        "creation_filetime": 134371502550367280,
+        "executable": "C:/Python/python.exe"
+      },
+      "raw_input_json": "{\"creation_filetime\":134371502550367280,\"executable\":\"C:/Python/python.exe\",\"pid\":17,\"role\":1.0}",
+      "accepted": false,
+      "error_type": "ProcessCustodyError",
+      "error_message": "process role must be a nonempty string",
+      "injected_open_count": 1,
+      "injected_close_count": 1
+    }
+  ]
+}

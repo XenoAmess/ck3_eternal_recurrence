@@ -1,0 +1,20 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T12:44:58.583640+00:00",
+  "command": [
+    "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\FEEDER-OWNER-BOOTSTRAP01.py",
+    "unregister",
+    "--spec",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\feeder-owner01\\SPEC.json",
+    "--spec-sha",
+    "ff2991a7a123bf8c9eca35a7423779021ee839648c577f5235582ccb11235881",
+    "--allow-production"
+  ],
+  "returncode": 0,
+  "stdout": "{\"machine_id\": \"xenoamess-full-tower-eb9d2c1186\", \"utc\": \"2026-10-22T12:44:58.566794+00:00\", \"task_name\": \"XARG2ManagedOwner-b5bb0aca24d3452fb89907650ceb1cf0\", \"operation\": \"unregister\", \"actual\": {\"sid\": \"S-1-5-21-2908730481-166481001-1318755029-1001\", \"logon_type\": 3, \"run_level\": 0, \"actions\": 1, \"triggers\": 0, \"action_type\": 0, \"path\": \"C:\\\\Users\\\\xenoa\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\pythonw.exe\", \"arguments\": \"-B D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\p51-fresh1066-v20261019-prepare01\\\\c23-source23-native30-cold100\\\\current-saved-a46-runtime-prep01\\\\FEEDER-OWNER-BOOTSTRAP01.py bootstrap --spec D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\p51-fresh1066-v20261019-prepare01\\\\c23-source23-native30-cold100\\\\current-saved-a46-runtime-prep01\\\\feeder-owner01\\\\SPEC.json --spec-sha ff2991a7a123bf8c9eca35a7423779021ee839648c577f5235582ccb11235881\", \"cwd\": \"D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\robert30-v20261019-campaign01\\\\runtime-a46\", \"hidden\": true, \"limit\": \"PT0S\", \"demand\": true, \"multiple\": 2, \"hard_terminate\": false, \"instances\": 0, \"last_result\": 0, \"absent_after\": true}}\n",
+  "stderr": ""
+}

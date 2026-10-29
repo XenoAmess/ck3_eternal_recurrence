@@ -1,0 +1,1 @@
+{"actual_domain_rejected":true,"exception_class":"org.xar.ck3.control.contracts.ContractViolationException","http_executed":false,"message":"ordinary campaign goal requires the matched predecessor","operation":"goal_continue","schema":"xar.m7-http2-local-rejection/v1","unknown_action_replayed":false,"verdict":"unknown"}

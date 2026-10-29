@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -260,5 +261,88 @@ final class SdkSourceAssemblyTest {
         assertEquals(first.nativeFile().linkCount() + 8, SharedSourceFiles.nativeFile(original).linkCount());
         Files.write(original, bytes("changed body\n"));
         assertThrows(IOException.class, () -> SharedSourceFiles.assertUnchanged(first));
+    }
+
+    @Test void allThreeAssemblyWritersRejectTheActualSystemVolumeBeforeSourceReviewOrCapacity() throws Exception {
+        String systemRoot = System.getenv("SystemRoot");
+        org.junit.jupiter.api.Assumptions.assumeTrue(systemRoot != null && !systemRoot.isBlank(),
+                "Actual Windows system-volume regression requires SystemRoot; skipped is not a pass");
+        Path blocked = Path.of(systemRoot).toAbsolutePath().getRoot()
+                .resolve("xar-sdk-assembly-must-not-create-" + java.util.UUID.randomUUID());
+        Path input = temporary.resolve("not-a-qualified-source-or-tools-receipt.json");
+        Files.write(input, bytes("{}")); FileRef unread = FileRef.measure(input);
+        String machine = WindowsJobProcess.currentMachineId(), now = java.time.Instant.now().toString();
+        String root = temporary.toAbsolutePath().normalize().toString();
+        String producer = "tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py";
+        var source = new SdkSourceAssembly.Source(producer, SdkSourceAssembly.SourceRole.PRODUCER,
+                SdkSourceAssembly.InputOrigin.CURRENT_CANONICAL, unread, List.of());
+        var request = new SdkSourceAssembly.Request(SdkSourceAssembly.REQUEST_SCHEMA, machine, root,
+                "a".repeat(40), root, blocked.toString(), root, "ck3_autonomous_player/src",
+                List.of(".", "ck3_autonomous_player/src"), List.of(root),
+                java.util.Arrays.stream(SdkSourceAssembly.ProtectedRole.values())
+                        .map(role -> new SdkSourceAssembly.ProtectedRoot(role, temporary.resolve(role.name()).toString())).toList(),
+                List.of(source), List.of(new SdkSourceAssembly.ImportRoute(
+                        "tools.g2_saved_campaign.prepare_current_saved_campaign_cold_v1", producer,
+                        SdkSourceAssembly.ImportSourceLocation.FRESH_GRAPH, true)),
+                List.of(new SdkSourceAssembly.Deployment("unread-tools", unread, ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME)),
+                new SdkSourceAssembly.ProducerReuse(producer,
+                        "tools.g2_saved_campaign.prepare_current_saved_campaign_cold_v1", "compose_v1",
+                        "tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1", "validate_current_saved_cold_owner_v1"),
+                32L << 20);
+        var quote = new SdkSourceAssembly.Quote(0, 2L << 20, 1, 1, 32L << 20);
+        var declared = new SdkSourceAssembly.Review(SdkSourceAssembly.REVIEW_SCHEMA, machine, now, request,
+                unread, List.of(), new SdkSourceAssembly.SdkInventory(root, 0, 0, unread.sha256(), List.of()),
+                List.of(), unread.sha256(), quote, false, false);
+        Path singlePath = temporary.resolve("blocked-assembly-review.json");
+        Files.write(singlePath, ControlBuild.strictMapper().writeValueAsBytes(declared));
+        FileRef single = FileRef.measure(singlePath);
+
+        // Constructor-valid declarations only: no source review, exporter or accepted tools receipt is supplied.
+        // The output policy must reject before any of those deliberately unavailable inputs are reopened.
+        var digest = new Digest(unread.bytes(), unread.sha256());
+        var views = new SdkSourceAssembly.ViewsRequest(SdkSourceAssembly.VIEWS_SCHEMA, machine, blocked.toString(),
+                single, single, single, new SdkSourceAssembly.LegacyConstraint("native.py", digest, "fixture.py", digest),
+                new SdkSourceAssembly.Source32Reuse(unread, new FileRef(
+                        temporary.resolve("unread-exporter.py").toString(), 1,
+                        "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432")),
+                SdkDerivedSource32.SourcePurpose.PARENT_NATIVE_UNCHANGED,
+                new SdkDerivedSource32.NativeDriverIntent(digest, digest), 32L << 20);
+        Path viewsPath = temporary.resolve("blocked-views-request.json");
+        Files.write(viewsPath, ControlBuild.strictMapper().writeValueAsBytes(views));
+        FileRef viewsRef = FileRef.measure(viewsPath);
+        var referenceRequest = new SdkSourceAssembly.ReferenceRequest("xar.sdk-reference-request/v1", machine,
+                "/root/sdk_execution", SdkSourceAssembly.ReferencePurpose.LEGACY_REFERENCE_ONLY,
+                unread, unread, null, blocked.toString(), List.of(root), List.of(), List.of(), List.of());
+        var reference = new SdkSourceAssembly.ReferenceReview("xar.sdk-reference-review/v1", machine, now,
+                unread, referenceRequest, declared, quote, unread.sha256());
+        Path referencePath = temporary.resolve("blocked-reference-review.json");
+        Files.write(referencePath, ControlBuild.strictMapper().writeValueAsBytes(reference));
+        FileRef referenceRef = FileRef.measure(referencePath);
+        var capacity = new SdkSourceAssembly.CapacityGate() {
+            public SdkSourceAssembly.WritePermit acquire(SdkSourceAssembly.Review review) { throw new AssertionError("No capacity before output policy"); }
+            public void revalidate(SdkSourceAssembly.WritePermit permit, long consumed) { throw new AssertionError("No writer before output policy"); }
+        };
+        var sharedCapacity = new SdkSourceAssembly.SharedCapacityGate() {
+            public SdkSourceAssembly.WritePermit acquire(SdkSourceAssembly.SharedQuote actual, FileRef original) { throw new AssertionError("No shared capacity before output policy"); }
+            public void revalidate(SdkSourceAssembly.WritePermit permit, long consumed) { throw new AssertionError("No shared writer before output policy"); }
+        };
+        var referenceCapacity = new SdkSourceAssembly.ReferenceCapacityGate() {
+            public SdkSourceAssembly.WritePermit acquire(SdkSourceAssembly.ReferenceReview review) { throw new AssertionError("No reference capacity before output policy"); }
+            public void revalidate(SdkSourceAssembly.WritePermit permit, long consumed) { throw new AssertionError("No reference writer before output policy"); }
+        };
+        String property = ProjectStoragePolicy.FORBID_SYSTEM_VOLUME_BULK, before = System.getProperty(property);
+        try {
+            System.setProperty(property, "true");
+            for (org.junit.jupiter.api.function.Executable operation : List.<org.junit.jupiter.api.function.Executable>of(
+                    () -> SdkSourceAssembly.assemble(single, capacity),
+                    () -> SdkSourceAssembly.assembleViews(viewsRef, sharedCapacity),
+                    () -> SdkSourceAssembly.assembleReference(referenceRef, referenceCapacity))) {
+                IOException failure = assertThrows(IOException.class, operation);
+                assertTrue(failure.getMessage().toLowerCase(java.util.Locale.ROOT).contains("system"), failure.getMessage());
+                assertFalse(Files.exists(blocked));
+            }
+        } finally {
+            if (before == null) System.clearProperty(property); else System.setProperty(property, before);
+        }
     }
 }

@@ -41,8 +41,9 @@ public final class CompleteSourceGraphMaterializer {
             Objects.requireNonNull(sourceStandingRef); Objects.requireNonNull(rootAllocationRef);
             Objects.requireNonNull(materializerSourceRef); Objects.requireNonNull(graphContractSourceRef);
             if ((operation == Operation.INDEPENDENT_AUDIT) != (producerActualRef != null)
-                    || (maxSourceNativeBytes != (36L << 20) && maxSourceNativeBytes != (44L << 20)
-                            && maxSourceNativeBytes != (56L << 20) && maxSourceNativeBytes != (80L << 20))
+                    || java.util.Arrays.stream(CompleteSourceGraph.Profile.values())
+                            .filter(CompleteSourceGraph.Profile::completeG2)
+                            .noneMatch(profile -> profile.maxNativeBytes() == maxSourceNativeBytes)
                     || maxMetadataNativeBytes <= 0
                     || maxMetadataNativeBytes > (4L << 20)) {
                 throw new IllegalArgumentException("finite G2 source/native metadata branch required");

@@ -244,7 +244,7 @@ public final class SdkSourceAssembly {
         for (String importRoot : actual.importRoots()) if (!Path.of(importRoot).toAbsolutePath().normalize().startsWith(root)) throw new IOException("source graph import roots must all belong to the selected fresh view");
         for (DeploymentEvidence deployment : actual.deploymentClosure()) {
             deployment.actualBuildReceipt().verify();
-            ControlBuild.BuildReceipt accepted = ControlBuild.acceptedReceipt(Path.of(deployment.actualBuildReceipt().path()));
+            ControlBuild.BuildReceipt accepted = ControlBuild.verifiedCompletedReceipt(deployment.actualBuildReceipt());
             if (!accepted.completeDeployment().equals(deployment.completeFiles()) || accepted.targetKind() != deployment.targetKind()
                     || !accepted.machineId().equals(actual.machineId())) throw new IOException("actual accepted deployment closure differs");
         }
@@ -329,7 +329,7 @@ public final class SdkSourceAssembly {
             }
             verifyInputs(fresh.request());
             if (!completeSdkInventory(fresh.request()).equals(fresh.completeSdkInputInventory())) throw new IOException("complete original SDK source inventory changed during materialization");
-            for (Deployment deployment : fresh.request().deployments()) ControlBuild.acceptedReceipt(Path.of(deployment.actualBuildReceipt().path()));
+            for (Deployment deployment : fresh.request().deployments()) ControlBuild.verifiedCompletedReceipt(deployment.actualBuildReceipt());
             requireExactOutputSet(root, outputs);
             guard(liveCapacityGate, permit, charged);
         } catch (IOException | RuntimeException error) {
@@ -422,6 +422,83 @@ public final class SdkSourceAssembly {
                               long privateChangedLogicalBytes, long allViewLogicalBytes,
                               int sourcePathCount, int directories, long metadataHardBytes,
                               long cumulativePhysicalHardBytes) { }
+
+    /** Digest-only cost input. Declared forecasts carry no source review or native reuse authority. */
+    public record SourceCost(String relativePath, Digest result) {
+        public SourceCost { ExactSourcePatch.relative(relativePath); Objects.requireNonNull(result); }
+    }
+    public record SourceViewCosts(List<SourceCost> sources, int directories) {
+        public SourceViewCosts {
+            sources = List.copyOf(sources);
+            if (sources.isEmpty() || directories < 1) throw new IllegalArgumentException("Nonempty source costs and rooted directories required");
+            Set<String> paths = new HashSet<>();
+            for (SourceCost source : sources) if (!paths.add(source.relativePath().toLowerCase(java.util.Locale.ROOT)))
+                throw new IllegalArgumentException("Distinct source cost paths required");
+        }
+        public long logicalBytes() { long sum = 0; for (SourceCost source : sources) sum = Math.addExact(sum, source.result().bytes()); return sum; }
+    }
+    public record ReviewedSharedPrice(FileRef viewsRequestRef, SharedQuote quote, long allocationUnitBytes,
+                                     long perDirectoryGuardBytes, long allocationUpperBytes) { }
+
+    /** The assembly gate and pre-execution forecast use this same source cost algorithm. */
+    public static SharedQuote sourceQuote(String machineId, String groupRoot, SourceViewCosts baseline,
+            SourceViewCosts legacy, SourceViewCosts consumer, int reusedFiles, long reusedLogical, long hardBytes) {
+        absolute(groupRoot);
+        if (machineId == null || machineId.isBlank() || reusedFiles < 0 || reusedFiles > baseline.sources().size()
+                || reusedLogical < 0 || reusedLogical > baseline.logicalBytes() || hardBytes <= 0)
+            throw new IllegalArgumentException("Bounded exact source quote inputs required");
+        Map<String, Digest> base = costMap(baseline); long changed = 0;
+        for (SourceViewCosts view : List.of(legacy, consumer)) for (SourceCost source : view.sources())
+            if (!source.result().equals(base.get(source.relativePath()))) changed = Math.addExact(changed, source.result().bytes());
+        return new SharedQuote(machineId, groupRoot, Math.subtractExact(baseline.logicalBytes(), reusedLogical), reusedFiles,
+                reusedLogical, changed, Math.addExact(baseline.logicalBytes(), Math.addExact(legacy.logicalBytes(), consumer.logicalBytes())),
+                Math.addExact(baseline.sources().size(), Math.addExact(legacy.sources().size(), consumer.sources().size())),
+                Math.addExact(1, Math.addExact(baseline.directories(), Math.addExact(legacy.directories(), consumer.directories()))),
+                6L * MAX_METADATA + 3L * 1_048_576, hardBytes);
+    }
+    /** Native allocation upper, never an observation. Extra link reserve supports a no-reuse-credit forecast. */
+    public static long sourceAllocationUpper(SharedQuote quote, SourceViewCosts baseline, SourceViewCosts legacy,
+            SourceViewCosts consumer, Set<String> reusedOutputs, long unit, long directoryGuard, int extraReuseLinkReserve) {
+        if (unit < 1 || unit > 1L << 20 || directoryGuard < 0 || extraReuseLinkReserve < 0
+                || extraReuseLinkReserve > baseline.sources().size()) throw new IllegalArgumentException("Finite native allocation geometry required");
+        Map<String, Digest> base = costMap(baseline);
+        if (!base.keySet().containsAll(reusedOutputs) || reusedOutputs.size() != quote.reusedBaselineSourceFiles())
+            throw new IllegalArgumentException("Exact baseline reuse paths required");
+        long reusedLogical = 0;
+        for (String path : reusedOutputs) reusedLogical = Math.addExact(reusedLogical, base.get(path).bytes());
+        if (!sourceQuote(quote.machineId(), quote.groupRoot(), baseline, legacy, consumer, reusedOutputs.size(),
+                reusedLogical, quote.cumulativePhysicalHardBytes()).equals(quote))
+            throw new IllegalArgumentException("Source quote differs from the same cost inputs");
+        long total = Math.addExact(Math.multiplyExact((long) quote.directories() + quote.sourcePathCount(), directoryGuard), round(quote.metadataHardBytes(), unit));
+        for (SourceCost source : baseline.sources()) if (!reusedOutputs.contains(source.relativePath()))
+            total = Math.addExact(total, round(source.result().bytes(), unit));
+        for (SourceViewCosts view : List.of(legacy, consumer)) for (SourceCost source : view.sources())
+            if (!source.result().equals(base.get(source.relativePath()))) total = Math.addExact(total, round(source.result().bytes(), unit));
+        return Math.addExact(total, Math.multiplyExact((long) reusedOutputs.size() + 2L * base.size() + extraReuseLinkReserve, unit));
+    }
+    /** Reopens actual reviews, original bytes and native reuse witnesses; no output or child is created. */
+    public static ReviewedSharedPrice priceViews(FileRef viewsRequestRef, long unit, long directoryGuard) throws IOException {
+        ViewsRequest request = JSON.readValue(read(viewsRequestRef, MAX_METADATA), ViewsRequest.class);
+        if (NativeStorageGeometry.read(Path.of(request.groupRoot())).clusterBytes() != unit)
+            throw new IOException("Price geometry differs from the actual group volume");
+        ThreeReviews reviews = threeReviews(request);
+        FrozenReuseState frozen = inspectSource32Reuse(request, reviews.baseline());
+        SharedQuote quote = sharedQuote(request, reviews, frozen);
+        long upper = sourceAllocationUpper(quote, costs(reviews.baseline()), costs(reviews.legacy()), costs(reviews.consumer()),
+                frozen.reusableByOutput().keySet(), unit, directoryGuard, 0);
+        viewsRequestRef.verify();
+        return new ReviewedSharedPrice(viewsRequestRef, quote, unit, directoryGuard, upper);
+    }
+    private static SourceViewCosts costs(Review review) {
+        return new SourceViewCosts(review.sourceClosure().stream().map(source -> new SourceCost(source.relativePath(), source.result())).toList(),
+                review.quote().directoryCount());
+    }
+    private static Map<String, Digest> costMap(SourceViewCosts view) {
+        Map<String, Digest> result = new LinkedHashMap<>();
+        for (SourceCost source : view.sources()) result.put(source.relativePath(), source.result());
+        return result;
+    }
+
     public interface SharedCapacityGate {
         WritePermit acquire(SharedQuote actualQuote, FileRef viewsRequestRef) throws IOException;
         void revalidate(WritePermit permit, long consumedAllocationUpperBytes) throws IOException;
@@ -701,7 +778,7 @@ public final class SdkSourceAssembly {
         }
         verifyInputs(review.request()); verifyFrozen(frozen);
         if (!completeSdkInventory(review.request()).equals(review.completeSdkInputInventory())) throw new IOException("canonical SDK inventory changed while the immutable baseline was assembled");
-        for (Deployment deployment : review.request().deployments()) ControlBuild.acceptedReceipt(Path.of(deployment.actualBuildReceipt().path()));
+        for (Deployment deployment : review.request().deployments()) ControlBuild.verifiedCompletedReceipt(deployment.actualBuildReceipt());
         requireExactOutputSet(root, outputs); sharedGuard(gate, permit, charged[0]);
         return actualFor(review, reviewRef, outputs, permit, charged[0], started, null);
     }
@@ -836,24 +913,14 @@ public final class SdkSourceAssembly {
         return actual;
     }
     private static SharedQuote sharedQuote(ViewsRequest request, ThreeReviews reviews, FrozenReuseState frozen) {
-        Map<String, ReviewedSource> baseline = reviewedMap(reviews.baseline()); long changed = 0, all = reviews.baseline().quote().sourceLogicalBytes();
-        for (Review view : List.of(reviews.legacy(), reviews.consumer())) {
-            all = Math.addExact(all, view.quote().sourceLogicalBytes());
-            for (ReviewedSource source : view.sourceClosure()) if (!baseline.containsKey(source.relativePath()) || !baseline.get(source.relativePath()).result().equals(source.result())) changed = Math.addExact(changed, source.result().bytes());
-        }
-        long reused = frozen.reusableByOutput().values().stream().mapToLong(witness -> witness.source().bytes()).sum();
-        return new SharedQuote(request.machineId(), request.groupRoot(), Math.subtractExact(reviews.baseline().quote().sourceLogicalBytes(), reused), frozen.reusableByOutput().size(), reused, changed, all,
-                reviews.baseline().sourceClosure().size() + reviews.legacy().sourceClosure().size() + reviews.consumer().sourceClosure().size(),
-                1 + reviews.baseline().quote().directoryCount() + reviews.legacy().quote().directoryCount() + reviews.consumer().quote().directoryCount(), 6L * MAX_METADATA + 3L * 1_048_576, request.cumulativePhysicalHardBytes());
+        long reused = 0;
+        for (var witness : frozen.reusableByOutput().values()) reused = Math.addExact(reused, witness.source().bytes());
+        return sourceQuote(request.machineId(), request.groupRoot(), costs(reviews.baseline()), costs(reviews.legacy()), costs(reviews.consumer()),
+                frozen.reusableByOutput().size(), reused, request.cumulativePhysicalHardBytes());
     }
     private static long sharedUpper(SharedQuote quote, ThreeReviews reviews, FrozenReuseState frozen, WritePermit permit) {
-        long total = Math.addExact(Math.multiplyExact((long) quote.directories() + quote.sourcePathCount(), permit.perDirectoryGuardBytes()), round(quote.metadataHardBytes(), permit.allocationUnitBytes()));
-        Map<String, ReviewedSource> baseline = reviewedMap(reviews.baseline());
-        for (ReviewedSource source : baseline.values()) if (!frozen.reusableByOutput().containsKey(source.relativePath())) total = Math.addExact(total, round(source.result().bytes(), permit.allocationUnitBytes()));
-        for (Review view : List.of(reviews.legacy(), reviews.consumer())) for (ReviewedSource source : view.sourceClosure()) if (!baseline.containsKey(source.relativePath()) || !baseline.get(source.relativePath()).result().equals(source.result())) total = Math.addExact(total, round(source.result().bytes(), permit.allocationUnitBytes()));
-        // Reserve one actual-volume allocation unit for each link operation; a larger observed change rejects.
-        total = Math.addExact(total, Math.multiplyExact((long) frozen.reusableByOutput().size() + 2L * baseline.size(), permit.allocationUnitBytes()));
-        return total;
+        return sourceAllocationUpper(quote, costs(reviews.baseline()), costs(reviews.legacy()), costs(reviews.consumer()),
+                frozen.reusableByOutput().keySet(), permit.allocationUnitBytes(), permit.perDirectoryGuardBytes(), 0);
     }
     private static Map<String, SharedSourceFiles.Witness> linkView(Actual baseline, Review view, SharedCapacityGate gate, WritePermit permit, long[] charged, LinkAccounting accounting) throws IOException {
         Path root = Path.of(view.request().outputRoot()); SharedSourceFiles.plainAncestors(root);
@@ -983,7 +1050,7 @@ public final class SdkSourceAssembly {
         for (Deployment deployment : request.deployments()) {
             if (!names.add(deployment.name())) throw new IOException("duplicate external deployment name");
             deployment.actualBuildReceipt().verify();
-            ControlBuild.BuildReceipt actual = ControlBuild.acceptedReceipt(Path.of(deployment.actualBuildReceipt().path()));
+            ControlBuild.BuildReceipt actual = ControlBuild.verifiedCompletedReceipt(deployment.actualBuildReceipt());
             if (actual.targetKind() != deployment.targetKind() || !actual.machineId().equals(request.machineId())) throw new IOException("actual deployment kind/machine differs");
             host |= actual.targetKind() == ControlBuild.TargetKind.SERVICE_FAST_JAR;
             result.add(new DeploymentEvidence(deployment.name(), deployment.actualBuildReceipt(), actual.targetKind(), actual.deploymentRoot(),
@@ -1525,3 +1592,4 @@ public final class SdkSourceAssembly {
   }
 
 }
+
