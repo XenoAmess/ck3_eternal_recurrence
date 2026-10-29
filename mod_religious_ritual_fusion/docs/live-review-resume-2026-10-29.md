@@ -107,3 +107,10 @@ R0054关闭后精确回收3740个可重建shader文件、原生分配155353904B�
 首次pretty JSON汇总触1MiB输出守卫，原工具exit1，尚未创建oracle或公共response。Root只将同一完整事实改为紧凑编码，b03成功，保留原失败和全部守卫；没有重放Game，不称生产故障或实机重跑。说明原件为`metadata/cold-business-candidate-a01/SEAL-b02-size-guard-and-b03-encoding.actual.json`。
 
 18:10:33.426334Z后台新鲜原生探针再次确认Steam offline=true，PID7032／出生FILETIME`134376848388036198`、客户端11.15.70.27，原件`metadata/R58-postclose-Steam-offline.actual.json`。原12项／20项incomplete、SDK continuation的episode缺失／save_binding_mismatch、county地图实际颜色样本及Steam缓存闭环缺口不变；county[]不构成地图着色样本。正式0.2发布包和新媒体尚未生成、Steam没有上线，后续见[0.2准备记录](publication-0.2.0-alpha-prepared-2026-10-29.md)。
+
+
+## 18:32后继离线正式封包（非新增实机）
+
+`machine_id: 4-8e1c2f1861`。R0057／R0058之后，Root将八份文档普通提交／push为clean Source A `b31664ba659f5a20a188527719367c831734b8c1`，annotated tag `religious-ritual-fusion-v0.2.0-alpha-publish1`已创建并普通push，tag object`de305138b17238ef3804cd98894c4b832688dff1`、peeled Source A。18:32:09Z既有JAR完成validate／build／verify，原PID16288／3544／4152、原wait均0；90文件manifest的size实际求和1,289,918B，SHA`3ce7412e8bbaefca8efdd9ed465b398496955ccb603afdd1e75840715280b808`。没有Maven、Native编译或新Game／测试；55项Java图和module JAR未变，236项产品及131项共享修复回归沿原执行证据引用。
+
+完整content+metadata payload已由现生产parser离线消费，无Steam API初始化或网络，尚未admitted或publish；四张最终JPEG均已由Root查看、未公开。正式包／tag／manifest已生成的后继事实取代此前准备时PENDING表述，详见[离线正式封包与阻断](publication-0.2.0-alpha-prepared-2026-10-29.md)及[永久changelog](../../docs/release-changelogs/religious-ritual-fusion/0.2.0.md)。后续文档commit只记事实，不改变Source A的tag或该包来源；本轮不重建canonical。Steam仍离线，新内容未上传、缓存NOTRUN，历史12／20 incomplete及SDK／county缺口不变。
