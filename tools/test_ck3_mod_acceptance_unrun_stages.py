@@ -1748,6 +1748,207 @@ class SerialNativeBirthSinglePhasePrelaunchTests(unittest.TestCase):
             self.produce()
 
 
+class RegistrySupportRecoveryTests(unittest.TestCase):
+    """Actual producer/reducer/lock with authored, unselected registry inputs."""
+
+    def setUp(self) -> None:
+        owner = SerialNativeBirthSinglePhasePrelaunchTests('runTest')
+        owner.setUp(); self.addCleanup(owner.doCleanups)
+        self.owner = owner
+        self.fixture = f = owner.fixture
+        self.base = owner.owner
+        self.repo = f.source.resolve(); self.repo.mkdir(parents=True)
+        self.blobs: dict[str, bytes] = {}
+        self.current_registry: dict[str, bytes] = {}
+        prepare = self.repo/'tools/ck3_mod_acceptance_prepare.py'
+        self.prepare = f.write_path(prepare, {'authored':'same frozen prepare'})
+        files = member(f.freeze, 'files')
+        manifest = f.write('predecessor-runtime-manifest.json',
+            {'source_commit':self.base.commit, 'machine_id':f.machine})
+        f.freeze['runtime_manifest'] = json_object(manifest)
+        files[manifest['path']] = {'bytes':manifest['bytes'], 'sha256':manifest['sha256']}
+        files[str(prepare)] = {'bytes':self.prepare['bytes'], 'sha256':self.prepare['sha256']}
+        for relative in ('tools/ck3_mod_acceptance_unrun.py', 'tools/ck3_mod_acceptance_allocate.py'):
+            path = self.repo/relative
+            old = b'authored original recovery reader\n'
+            path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(old)
+            ref = subject._ttl_pin(path)
+            files[str(path)] = {'bytes':ref['bytes'], 'sha256':ref['sha256']}
+            self.blobs[relative] = old
+            path.write_bytes(b'authored current recovery reader\n')
+        for relative in subject._registry_support_paths():
+            before: JsonObject = {'schema':'ck3-xqol-original-followup-case-v1',
+                'case':Path(relative).stem.removeprefix('xqol_'), 'original_budgets':{'timeout':300},
+                'fixture_files':['unchanged.fixture'], 'full_product_pass_from_cell':False,
+                'support_files':{'../ck3_mod_acceptance_prepare.py':{'bytes':1,'sha256':'a'*64},
+                    'unchanged.py':{'bytes':2,'sha256':'b'*64}}}
+            path = self.repo/relative; path.parent.mkdir(parents=True, exist_ok=True)
+            old = json.dumps(before).encode()
+            path.write_bytes(old); ref = subject._ttl_pin(path)
+            files[str(path)] = {'bytes':ref['bytes'], 'sha256':ref['sha256']}
+            self.blobs[relative] = old
+            member(before, 'support_files')['../ck3_mod_acceptance_prepare.py'] = {
+                'bytes':self.prepare['bytes'], 'sha256':self.prepare['sha256']}
+            raw = json.dumps(before).encode(); path.write_bytes(raw)
+            self.current_registry[relative] = raw
+        unknown = self.repo/'tools/ck3_mod_acceptance_cases/xqol_unknown.json'
+        unknown.write_bytes(b'{"fixture":"unknown is never waived"}')
+        unknown_ref = subject._ttl_pin(unknown)
+        files[str(unknown)] = {'bytes':unknown_ref['bytes'], 'sha256':unknown_ref['sha256']}
+        adapter = f.write_path(self.repo/'tools/ck3_mod_acceptance_cases/generic_product_adapter.py',
+            {'fixture':'selected generic adapter, never executed'})
+        contract = f.write('serial-contract.json', {'schema':'ck3-mod-acceptance-product-case-v1',
+            'product':'living-artifacts', 'case_id':'cold_reload', 'gui_phases':[{'id':'phase-1'}]})
+        f.prepared = f.write('prepared.json', {'schema':'ck3-mod-acceptance-prepared-case-v1',
+            'product':'living-artifacts', 'case':'cold_reload', 'contract':json_object(contract),
+            'runtime_manifest':f.freeze['runtime_manifest'], 'adapter':json_object(adapter)})
+        for ref in (adapter, contract, f.prepared):
+            files[ref['path']] = {'bytes':ref['bytes'], 'sha256':ref['sha256']}
+        f.freeze['cell'] = 'cold_reload'
+        self.refresh_context()
+
+        def git(command: list[str], *, capture_output: bool, check: bool) -> subprocess.CompletedProcess[bytes]:
+            if (len(command) != 6 or command[:4] != ['git','-C',str(self.repo),'cat-file']
+                    or command[4] not in ('-s','blob') or not capture_output or not check):
+                raise AssertionError('Only authored exact immutable Git blob observations allowed')
+            commit, relative = command[5].split(':', 1)
+            if commit != self.base.commit:
+                raise AssertionError('Original fixture commit differs')
+            raw = self.blobs[relative]
+            return subprocess.CompletedProcess(command, 0,
+                stdout=str(len(raw)).encode() if command[4] == '-s' else raw)
+        self.git_patch = patch.object(subprocess, 'run', side_effect=git)
+        self.git_patch.start(); self.addCleanup(self.git_patch.stop)
+
+    def refresh_context(self) -> None:
+        f, base = self.fixture, self.base
+        frozen = f.write_live('frozen-argv.json', f.freeze)
+        ready = json_object(json.loads((f.live/'ready-context.json').read_bytes()))
+        ready.update({'schema':'ck3-mod-acceptance-run-context-v1',
+            'prepared_case':json_object(f.prepared), 'case':'cold_reload', 'frozen_argv':json_object(frozen)})
+        base.ready = f.write_live('ready-context.json', ready)
+        f.write_live('allocated-context.json', ready)
+        armed_path = base.execution/'COLD-GUARD-0.ARMED.actual.json'
+        armed = json_object(json.loads(armed_path.read_bytes())); armed['ready_context'] = json_object(base.ready)
+        ref = f.write_path(armed_path, armed)
+        (base.execution/'COLD-GUARD-0.stdout.log').write_text('ROOT_DEADLINE_GUARD_ARMED '+json.dumps(ref)+'\n', encoding='utf8')
+
+    def test_v2_real_producer_full_reducer_roundtrip_and_original_writer_lock(self) -> None:
+        report = self.owner.produce()
+        bundle = json_object(json.loads(Path(report['bundle']['path']).read_bytes()))
+        evolution = member(bundle, 'recovery_reader_evolution')
+        self.assertEqual(evolution['schema'], 'ck3-prelaunch-recovery-reader-evolution-v2')
+        changes = evolution['registry_support_changes']
+        if not isinstance(changes, list): raise AssertionError('Typed changes required')
+        self.assertEqual(len(changes), 7)
+        self.assertEqual(bundle, json.loads(json.dumps(bundle)))
+        for raw in changes:
+            row = json_object(raw)
+            self.assertNotEqual(member(row, 'original_snapshot')['sha256'], member(row, 'current_source')['sha256'])
+        self.assertFalse(member(report['validation'], 'failure_cleanup')['business_pass'])
+        with patch.object(self.base, 'produce', side_effect=self.owner.produce):
+            record, observations = self.base.claim()
+        self.assertEqual(observations, [True]); self.assertTrue((record/'intent.json').exists())
+
+    def test_old_v1_two_reader_branch_and_registry_only_v2_remain_explicit(self) -> None:
+        for relative, raw in self.current_registry.items():
+            (self.repo/relative).write_bytes(self.blobs[relative])
+        first = self.owner.produce()
+        old = member(json_object(json.loads(Path(first['bundle']['path']).read_bytes())), 'recovery_reader_evolution')
+        self.assertEqual(old['schema'], 'ck3-prelaunch-recovery-reader-evolution-v1')
+        self.assertNotIn('registry_support_changes', old)
+        for relative, raw in self.current_registry.items(): (self.repo/relative).write_bytes(raw)
+        for relative in ('tools/ck3_mod_acceptance_unrun.py', 'tools/ck3_mod_acceptance_allocate.py'):
+            (self.repo/relative).write_bytes(self.blobs[relative])
+        second = self.owner.produce()
+        new = member(json_object(json.loads(Path(second['bundle']['path']).read_bytes())), 'recovery_reader_evolution')
+        self.assertEqual(new['changed_recovery_sources'], [])
+        self.assertEqual(new['schema'], 'ck3-prelaunch-recovery-reader-evolution-v2')
+
+    def test_other_fields_types_unknown_registry_and_unfrozen_prepare_are_rejected(self) -> None:
+        relative = subject._registry_support_paths()[0]; path = self.repo/relative
+        raw = path.read_bytes()
+        mutations: list[tuple[str, JsonValue]] = [('schema','wrong'),('extra',False),('full_product_pass_from_cell',0),
+            ('original_budgets',{'timeout':300.0}),('fixture_files',['changed.fixture']),
+            ('support_files',{'../ck3_mod_acceptance_prepare.py':{'bytes':True,'sha256':self.prepare['sha256']}})]
+        for field, bad in mutations:
+            row = json_object(json.loads(raw)); row[field] = bad; self.fixture.write_path(path, row)
+            with self.subTest(field=field), self.assertRaises(ValueError): self.owner.produce()
+            path.write_bytes(raw)
+        path.write_bytes(raw[:-1]+b',"schema":"ck3-xqol-original-followup-case-v1"}')
+        with self.assertRaisesRegex(ValueError, 'Duplicate'): self.owner.produce()
+        path.write_bytes(raw)
+        unknown = self.repo/'tools/ck3_mod_acceptance_cases/xqol_unknown.json'
+        original_unknown = unknown.read_bytes(); unknown.write_bytes(b'changed unknown registry')
+        with self.assertRaisesRegex(ValueError, 'Immutable original input changed'): self.owner.produce()
+        unknown.write_bytes(original_unknown)
+        prepare = Path(self.prepare['path']); prepare.write_bytes(prepare.read_bytes()+b' ')
+        with self.assertRaisesRegex(ValueError, 'frozen prepare'): self.owner.produce()
+
+    def test_active_xqol_actual_launch_and_false_original_git_blob_reject(self) -> None:
+        ready_path = self.fixture.live/'ready-context.json'; original = ready_path.read_bytes()
+        ready = json_object(json.loads(original)); ready['product'] = 'xqol'; self.fixture.write_path(ready_path, ready)
+        with self.assertRaisesRegex(ValueError, 'selected case'): self.owner.produce()
+        ready_path.write_bytes(original)
+        launch = self.fixture.live/'launch-intent.json'; launch.write_text('{}', encoding='utf8')
+        with self.assertRaisesRegex(ValueError, 'launch/native/control/Save'): self.owner.produce()
+        launch.unlink()
+        relative = subject._registry_support_paths()[0]
+        self.blobs[relative] = self.blobs[relative]+b' '
+        with self.assertRaisesRegex(ValueError, 'Git blob size'): self.owner.produce()
+
+    def test_registry_pin_drift_and_unknown_evolution_reject_inside_original_lock(self) -> None:
+        def mutate() -> None:
+            path = self.repo/subject._registry_support_paths()[0]
+            row = json_object(json.loads(path.read_bytes())); row['fixture_files'] = ['late mutation']
+            self.fixture.write_path(path, row)
+        with patch.object(self.base, 'produce', side_effect=self.owner.produce):
+            with self.assertRaises(ValueError): self.base.claim(mutate)
+        self.assertFalse((self.fixture.root/'admission/machine.json').exists())
+
+    def test_original_resource_waits_precede_registry_exception_and_unknown_schema_refuses(self) -> None:
+        path = self.base.execution/'COLD-GUARD-0.original-wait.actual.json'
+        original = path.read_bytes(); row = json_object(json.loads(original)); row['original_wait_returncode'] = 0
+        self.fixture.write_path(path, row)
+        with patch.object(subject, '_recovery_input_validation', wraps=subject._recovery_input_validation) as observe:
+            with self.assertRaises(ValueError): self.owner.produce()
+            observe.assert_not_called()
+        path.write_bytes(original)
+        report = self.owner.produce()
+        bundle = json_object(json.loads(Path(report['bundle']['path']).read_bytes()))
+        member(bundle, 'recovery_reader_evolution')['schema'] = 'unknown-version'
+        with self.assertRaisesRegex(ValueError, 'evolution differs'):
+            subject._recovery_input_validation(self.fixture.live, self.fixture.freeze,
+                Path(report['bundle']['path']), bundle, registry_support=True)
+
+    def test_complete_typed_registry_evolution_scope_is_strict(self) -> None:
+        from mypy import api
+        path = Path(subject.__file__); tree = ast.parse(path.read_text(encoding='utf8'))
+        names = {'TTLRecoverySource','TTLRecoveryEvolutionFields','TTLReaderEvolution','RecoveryContentPin',
+            'RegistrySupportChange','RegistrySelectedCase','TTLRegistrySupportEvolution',
+            '_registry_support_paths','_registry_json_pairs','_registry_json','_registry_content_pin',
+            '_recovery_git_snapshot','_registry_selected_case','_registry_support_change',
+            '_ttl_recovery_sources','_recovery_input_validation'}
+        nodes: list[ast.stmt] = [node for node in tree.body if isinstance(node,(ast.ClassDef,ast.FunctionDef)) and node.name in names
+            or isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='TTLRecoveryEvolution' for t in node.targets)]
+        self.assertEqual({n.name for n in nodes if isinstance(n,(ast.ClassDef,ast.FunctionDef))}, names)
+        prelude = '''from __future__ import annotations
+from pathlib import Path
+from collections.abc import Mapping
+from typing import Literal, TypedDict
+import hashlib, json, re, subprocess
+from ck3_mod_acceptance import same_directory_control_peer
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field
+from ck3_mod_acceptance_unrun import _integer, _ttl_pin, _pinned_object
+'''
+        source = prelude+ast.unparse(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])))
+        repo = path.resolve().parent.parent
+        with patch.dict(os.environ, {'MYPYPATH':os.pathsep.join((str(repo/'tools'), str(repo/'ck3_autonomous_player/src')))}):
+            stdout, stderr, code = api.run(['--strict','--strict-equality','--follow-imports=silent',
+                '--no-incremental','--cache-dir','nul','-c',source])
+        self.assertEqual(code, 0, stdout+stderr)
+
+
 class SerialCapturedKnownWaitPrelaunchTests(unittest.TestCase):
     """Armed guards retain the earlier CAS task and later administrative DONE."""
 

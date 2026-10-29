@@ -1350,8 +1350,7 @@ class TTLRecoverySource(TypedDict):
     current_source: FilePin
 
 
-class TTLReaderEvolution(TypedDict):
-    schema: Literal['ck3-prelaunch-recovery-reader-evolution-v1']
+class TTLRecoveryEvolutionFields(TypedDict):
     original_runtime_manifest: FilePin
     original_source_commit: str
     source_root: str
@@ -1361,7 +1360,175 @@ class TTLReaderEvolution(TypedDict):
     actual_running_input_contract: FilePin
 
 
-def _ttl_recovery_sources(freeze: JsonObject, close_path: Path, *, produce: bool) -> TTLReaderEvolution | None:
+class TTLReaderEvolution(TTLRecoveryEvolutionFields):
+    schema: Literal['ck3-prelaunch-recovery-reader-evolution-v1']
+
+
+class RecoveryContentPin(TypedDict):
+    bytes: int
+    sha256: str
+
+
+class RegistrySupportChange(TTLRecoverySource):
+    original_support: RecoveryContentPin
+    current_support: RecoveryContentPin
+
+
+class RegistrySelectedCase(TypedDict):
+    ready: FilePin
+    prepared: FilePin
+    contract: FilePin
+    adapter: FilePin
+    product: str
+    case: str
+    unchanged_frozen_prepare: FilePin
+
+
+class TTLRegistrySupportEvolution(TTLRecoveryEvolutionFields):
+    schema: Literal['ck3-prelaunch-recovery-reader-evolution-v2']
+    registry_scope: Literal['unselected-xqol-prepare-support-only-resource-recovery']
+    selected_case: RegistrySelectedCase
+    registry_support_changes: list[RegistrySupportChange]
+
+
+TTLRecoveryEvolution = TTLReaderEvolution | TTLRegistrySupportEvolution
+
+
+def _registry_support_paths() -> tuple[str, ...]:
+    return tuple('tools/ck3_mod_acceptance_cases/'+name+'.json' for name in (
+        'xqol_administrative_appointments', 'xqol_liege_shared_ransom',
+        'xqol_meritocratic_appointments', 'xqol_pam_negative', 'xqol_pam_positive',
+        'xqol_prison_payment', 'xqol_selfpaid_ransom'))
+
+
+def _registry_json_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError('Duplicate recovery registry JSON key')
+        result[key] = value
+    return result
+
+
+def _registry_json(raw: bytes) -> JsonObject:
+    if len(raw) > 1048576:
+        raise ValueError('Bounded recovery registry JSON required')
+    return json_object(json.loads(raw.decode('utf-8-sig'), object_pairs_hook=_registry_json_pairs))
+
+
+def _registry_content_pin(value: object) -> RecoveryContentPin:
+    row = json_object(value)
+    if set(row) != {'bytes', 'sha256'}:
+        raise ValueError('Exact recovery ContentPin fields required')
+    size = _integer(row.get('bytes'), 'Recovery ContentPin bytes')
+    digest = text_field(row, 'sha256')
+    if re.fullmatch('[a-f0-9]{64}', digest) is None:
+        raise ValueError('Exact recovery ContentPin digest required')
+    return RecoveryContentPin(bytes=size, sha256=digest)
+
+
+def _recovery_git_snapshot(repo: Path, commit: str, path: Path, relative: str,
+        original: FilePin, close_path: Path, *, produce: bool) -> FilePin:
+    object_name = commit + ':' + relative
+    size = subprocess.run(['git', '-C', str(repo), 'cat-file', '-s', object_name],
+        capture_output=True, check=True).stdout.strip()
+    if not size.isdigit() or int(size) != original['bytes'] or int(size) > 1048576:
+        raise ValueError('Original recovery Git blob size differs from frozen input')
+    raw = subprocess.run(['git', '-C', str(repo), 'cat-file', 'blob', object_name],
+        capture_output=True, check=True).stdout
+    if len(raw) != original['bytes'] or hashlib.sha256(raw).hexdigest() != original['sha256']:
+        raise ValueError('Original recovery Git blob differs from frozen input')
+    snapshot = close_path.parent/'original-recovery-sources'/path.name
+    if produce:
+        snapshot.parent.mkdir(exist_ok=True)
+        with snapshot.open('xb') as stream:
+            stream.write(raw)
+    retained = _ttl_pin(snapshot)
+    if retained['bytes'] != original['bytes'] or retained['sha256'] != original['sha256']:
+        raise ValueError('Retained original recovery source differs')
+    return retained
+
+
+def _registry_selected_case(previous: Path, freeze: JsonObject, repo: Path) -> RegistrySelectedCase:
+    """The exception belongs to an unlaunched, frozen, non-XQOL selected case."""
+    ready_ref = _ttl_pin(previous/'ready-context.json')
+    ready = json_object(json.loads(Path(ready_ref['path']).read_bytes()))
+    actual_frozen = json_object(json.loads((previous/'frozen-argv.json').read_bytes()))
+    if json.dumps(actual_frozen, sort_keys=True) != json.dumps(freeze, sort_keys=True):
+        raise ValueError('Actual original frozen registry context differs')
+    prepared_ref = file_pin(ready.get('prepared_case'))
+    prepared = json_object(_pinned_object(prepared_ref, 'Selected original Prepared'))
+    contract_ref = file_pin(prepared.get('contract'))
+    contract = json_object(_pinned_object(contract_ref, 'Selected original contract'))
+    adapter_ref = file_pin(prepared.get('adapter'))
+    product, case = text_field(ready, 'product'), text_field(ready, 'case')
+    if (ready.get('schema') != 'ck3-mod-acceptance-run-context-v1'
+            or ready.get('run_id') != previous.name or ready.get('run_id') != freeze.get('run_id')
+            or Path(text_field(ready, 'run_dir')).resolve() != previous
+            or file_pin(ready.get('frozen_argv')) != _ttl_pin(previous/'frozen-argv.json')
+            or prepared.get('schema') != 'ck3-mod-acceptance-prepared-case-v1'
+            or prepared.get('product') != product or prepared.get('case') != case
+            or contract.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or contract.get('product') != product or contract.get('case_id') != case
+            or product == 'xqol' or freeze.get('mod_key') != product or freeze.get('cell') != case
+            or file_pin(prepared.get('runtime_manifest')) != file_pin(freeze.get('runtime_manifest'))
+            or Path(contract_ref['path']).resolve() in {(repo/name).resolve() for name in _registry_support_paths()}
+            or Path(adapter_ref['path']).resolve() != repo/'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'):
+        raise ValueError('Original selected case is not an exact unselected-XQOL resource context')
+    files = object_field(freeze, 'files')
+    for ref in (prepared_ref, contract_ref, adapter_ref):
+        if (file_pin({'path':ref['path'], **object_field(files, ref['path'])}) != ref
+                or _ttl_pin(Path(ref['path'])) != ref):
+            raise ValueError('Original selected case input differs from frozen full table')
+    state = Path(text_field(freeze, 'state_dir')).resolve()
+    forbidden = ('launch-intent.json','launch.json','host-started.json','host-supervisor.json',
+        'host-supervisor-started.json','supervisor.json','host-original-process-exit.json',
+        'native-report.json','native-report.session.log','case-output')
+    if (any((previous/name).exists() for name in forbidden)
+            or any((state/name).exists() for name in ('control','native-session'))
+            or not (previous/'controls').is_dir() or any((previous/'controls').iterdir())
+            or any(path.exists() and any(path.iterdir()) for path in
+                (state/'profile'/name for name in ('save games','logs','run')))):
+        raise ValueError('Registry support recovery refuses any actual launch/native/control/Save evidence')
+    prepare_path = repo/'tools/ck3_mod_acceptance_prepare.py'
+    prepare_ref = file_pin({'path':str(prepare_path), **object_field(files, str(prepare_path))})
+    if _ttl_pin(prepare_path) != prepare_ref:
+        raise ValueError('Registry support requires raw byte-equal frozen prepare source')
+    return RegistrySelectedCase(ready=ready_ref, prepared=prepared_ref, contract=contract_ref,
+        adapter=adapter_ref, product=product, case=case, unchanged_frozen_prepare=prepare_ref)
+
+
+def _registry_support_change(repo: Path, relative: str, original: FilePin, retained: FilePin,
+        current: FilePin, prepare: FilePin) -> RegistrySupportChange:
+    if (relative not in _registry_support_paths()
+            or Path(original['path']).resolve() != (repo/relative).resolve()
+            or Path(current['path']).resolve() != (repo/relative).resolve()
+            or retained['bytes'] != original['bytes'] or retained['sha256'] != original['sha256']):
+        raise ValueError('Exact allowed registry path/original snapshot required')
+    before = _registry_json(Path(retained['path']).read_bytes())
+    after = _registry_json(Path(current['path']).read_bytes())
+    key = '../ck3_mod_acceptance_prepare.py'
+    old_support = _registry_content_pin(object_field(before, 'support_files').get(key))
+    new_support = _registry_content_pin(object_field(after, 'support_files').get(key))
+    expected_support = RecoveryContentPin(bytes=prepare['bytes'], sha256=prepare['sha256'])
+    if (before.get('schema') != 'ck3-xqol-original-followup-case-v1'
+            or before.get('case') != Path(relative).stem.removeprefix('xqol_')
+            or new_support != expected_support or old_support == new_support):
+        raise ValueError('Only exact XQOL prepare support ContentPin renewal is admissible')
+    expected = json_object(before)
+    support = object_field(expected, 'support_files'); support[key] = json_object(new_support)
+    expected['support_files'] = support
+    if json.dumps(expected, sort_keys=True, allow_nan=False) != json.dumps(after, sort_keys=True, allow_nan=False):
+        raise ValueError('Unselected registry changed outside its prepare support ContentPin')
+    if _ttl_pin(Path(current['path'])) != current or _ttl_pin(Path(prepare['path'])) != prepare:
+        raise ValueError('Current registry/prepare changed during recovery observation')
+    return RegistrySupportChange(original_path=str((repo/relative).resolve()),
+        repository_relative_path=relative, original_snapshot=retained, current_source=current,
+        original_support=old_support, current_support=new_support)
+
+
+def _ttl_recovery_sources(freeze: JsonObject, close_path: Path, *, produce: bool,
+        previous: Path | None = None, registry_support: bool = False) -> TTLRecoveryEvolution | None:
     """Retain old Git bytes for two recovery readers, without editing the freeze.
 
     This exception belongs only to the unlaunched recovery reducers. Every
@@ -1377,7 +1544,15 @@ def _ttl_recovery_sources(freeze: JsonObject, close_path: Path, *, produce: bool
         original = file_pin({'path': str(path), **object_field(files, str(path))})
         if _ttl_pin(path) != original:
             changed.append((path, relative, original))
-    if not changed:
+    registry_changed: list[tuple[Path, str, FilePin]] = []
+    if registry_support:
+        for relative in _registry_support_paths():
+            path = (repo/relative).resolve()
+            if str(path) in files:
+                original = file_pin({'path':str(path), **object_field(files, str(path))})
+                if _ttl_pin(path) != original:
+                    registry_changed.append((path, relative, original))
+    if not changed and not registry_changed:
         return None
     manifest_ref = file_pin(freeze.get('runtime_manifest'))
     manifest_path = Path(manifest_ref['path'])
@@ -1390,23 +1565,7 @@ def _ttl_recovery_sources(freeze: JsonObject, close_path: Path, *, produce: bool
         raise ValueError('Original recovery Git source commit/machine differs')
     sources: list[TTLRecoverySource] = []
     for path, relative, original in changed:
-        object_name = commit + ':' + relative
-        size = subprocess.run(['git', '-C', str(repo), 'cat-file', '-s', object_name],
-            capture_output=True, check=True).stdout.strip()
-        if not size.isdigit() or int(size) != original['bytes'] or int(size) > 1048576:
-            raise ValueError('Original recovery Git blob size differs from frozen input')
-        raw = subprocess.run(['git', '-C', str(repo), 'cat-file', 'blob', object_name],
-            capture_output=True, check=True).stdout
-        if len(raw) != original['bytes'] or hashlib.sha256(raw).hexdigest() != original['sha256']:
-            raise ValueError('Original recovery Git blob differs from frozen input')
-        snapshot = close_path.parent / 'original-recovery-sources' / path.name
-        if produce:
-            snapshot.parent.mkdir(exist_ok=True)
-            with snapshot.open('xb') as stream:
-                stream.write(raw)
-        retained = _ttl_pin(snapshot)
-        if retained['bytes'] != original['bytes'] or retained['sha256'] != original['sha256']:
-            raise ValueError('Retained original recovery source differs')
+        retained = _recovery_git_snapshot(repo, commit, path, relative, original, close_path, produce=produce)
         sources.append(TTLRecoverySource(original_path=str(path), repository_relative_path=relative,
             original_snapshot=retained, current_source=_ttl_pin(path)))
     from xar_autoplayer.bridge import runtime_input_contract_v1
@@ -1415,23 +1574,40 @@ def _ttl_recovery_sources(freeze: JsonObject, close_path: Path, *, produce: bool
     allocator_source = allocator.__file__
     if not isinstance(contract_source, str) or not isinstance(allocator_source, str):
         raise ValueError('Actual recovery consumer source unavailable')
-    return TTLReaderEvolution(schema='ck3-prelaunch-recovery-reader-evolution-v1',
-        original_runtime_manifest=manifest_ref, original_source_commit=commit, source_root=str(repo),
+    common = TTLRecoveryEvolutionFields(original_runtime_manifest=manifest_ref,
+        original_source_commit=commit, source_root=str(repo),
         changed_recovery_sources=sources, actual_recovery_reader=_ttl_pin(Path(__file__).resolve()),
         actual_allocator_consumer=_ttl_pin(Path(allocator_source).resolve()),
         actual_running_input_contract=_ttl_pin(Path(contract_source).resolve()))
+    if not registry_changed:
+        return TTLReaderEvolution(**common, schema='ck3-prelaunch-recovery-reader-evolution-v1')
+    if previous is None:
+        raise ValueError('Exact original selected case required for registry recovery')
+    selected = _registry_selected_case(previous.resolve(), freeze, repo)
+    registry_changes: list[RegistrySupportChange] = []
+    for path, relative, original in registry_changed:
+        retained = _recovery_git_snapshot(repo, commit, path, relative, original, close_path, produce=produce)
+        registry_changes.append(_registry_support_change(repo, relative, original, retained,
+            _ttl_pin(path), selected['unchanged_frozen_prepare']))
+    return TTLRegistrySupportEvolution(**common, schema='ck3-prelaunch-recovery-reader-evolution-v2',
+        registry_scope='unselected-xqol-prepare-support-only-resource-recovery',
+        selected_case=selected, registry_support_changes=registry_changes)
 
 
 def _recovery_input_validation(previous: Path, freeze: JsonObject, close_path: Path,
-        bundle: Mapping[str, object]) -> tuple[TTLReaderEvolution | None, JsonObject]:
+        bundle: Mapping[str, object], *, registry_support: bool = False) -> tuple[TTLRecoveryEvolution | None, JsonObject]:
     """Use retained original reader bytes; every other frozen input remains exact."""
     from xar_autoplayer.bridge.runtime_input_contract_v1 import FileIdentity, identity, validate_running_inputs
-    evolution = _ttl_recovery_sources(freeze, close_path, produce=False)
+    evolution = _ttl_recovery_sources(freeze, close_path, produce=False,
+        previous=previous, registry_support=registry_support)
     if ((evolution is None and 'recovery_reader_evolution' in bundle)
             or (evolution is not None and bundle.get('recovery_reader_evolution') != json_object(evolution))):
         raise ValueError('Recovery reader evolution differs from original Git inputs/current consumers')
     retained_sources: dict[Path, FilePin] = {} if evolution is None else {
         Path(row['original_path']): row['original_snapshot'] for row in evolution['changed_recovery_sources']}
+    if evolution is not None and evolution['schema'] == 'ck3-prelaunch-recovery-reader-evolution-v2':
+        for change in evolution['registry_support_changes']:
+            retained_sources[Path(change['original_path'])] = change['original_snapshot']
 
     def observe_input(path: Path) -> FileIdentity:
         if path not in retained_sources:
@@ -2480,8 +2656,6 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
         refusal_evidence=validate_prelaunch_orchestrator(bundle,previous=previous,keeper=keeper_root,machine=machine,
             ready_at=_timestamp(keeper_ready.get('at_utc'),'Prelaunch keeper ready'),
             keeper_closed_at=_timestamp(keeper.get('at_utc'),'Prelaunch keeper finished'))
-        if 'prelaunch_orchestrator_started' in bundle:
-            _recovery_input_validation(previous, json_object(freeze), Path(close_path), bundle)
     else:
         idle=_exact(bundle,'idle_timeout',previous/'allocation-unused-idle-timeout.json')
         stop=bundle['keeper_STOP'];need(Path(stop['path']).resolve()==keeper_root/'STOP','Original STOP crossed keeper')
@@ -2546,6 +2720,11 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
     inventory={**runtime_process_inventory(psutil,os.getpid()),'machine_id':machine,
                'observed_at_utc':datetime.now(timezone.utc).isoformat()}
     need(not inventory['blockers'],'Allocated-unrun predecessor process still running: '+repr(inventory['blockers']))
+    # Registry evolution is a resource-only recovery qualification, after the
+    # complete actual waits, selected product, no-Game, SCREEN and OS checks.
+    if prelaunch and 'prelaunch_orchestrator_started' in bundle:
+        _recovery_input_validation(previous, json_object(freeze), Path(close_path), bundle,
+            registry_support=serial)
     return {'mode':('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if prelaunch else
         'previous-shared-allocated-unrun-launcher-pin-refused' if cooperative else 'previous-shared-allocated-unrun-idle'),'actual_process_inventory':inventory,
         'failure_cleanup':{'close':pin(close_path),'original_evidence':{**{k:v for k,v in bundle.items() if k!='counter' and isinstance(v,dict) and 'sha256' in v},**refusal_evidence},
@@ -2762,7 +2941,8 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
         **{key:False for key in ('host_started','native_session_started','game_started',
             'normal_close_qualified','original_host_exit0','business_pass')}, **proofs,
         **{key:_ttl_pin(path) for key, path in paths.items()}})
-    evolution = _ttl_recovery_sources(frozen, output/'ALLOCATED-UNRUN.actual.json', produce=True)
+    evolution = _ttl_recovery_sources(frozen, output/'ALLOCATED-UNRUN.actual.json', produce=True,
+        previous=live, registry_support=True)
     if evolution is not None:
         row['recovery_reader_evolution'] = json_object(evolution)
     bundle = _write(output/'ALLOCATED-UNRUN.actual.json', row)

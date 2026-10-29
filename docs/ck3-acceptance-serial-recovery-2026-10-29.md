@@ -27,3 +27,13 @@ Root另于04:38Z明确审查新 G2有限期08Z，因为原READY最迟04:40无法
 最终a08已完整通过92条原始命令、968项测试，零跳过；原Popen均0，12份本轮源码与workflow前后摘要不变，真实外部fixture输入也前后一致。完整证明 `cold-R0046-final-a01/metadata/runtime-preparation-a01/shared-CI-complete-a08/COMMAND-VALIDATION.actual.json` 为37696 B，SHA `1e6257f60ff9c13ad15dcaf9b756911582d17721ef81dce68b25f60d992c4f1e`。此前各轮FAIL仍是原始失败，不被该次结果改写；全模块strict37ERROR也继续保留。
 
 本次执行发生在基于3079d09b的工作树，后续提交只封存这些同字节输入；没有将其声称为未来提交重新执行。Native CL、link及Maven重新编译数均为0。实际R0047恢复、来源绑定和新的CK3业务仍须另取真实结果，不能由软件验证推断CK3已启动。
+
+提交7b926后的实际共享恢复a02原Popen13324退出1：冻结输入表含七份未选中的XQOL case，它们此前唯一的prepare support摘要修复仍触发了原始输入不变守卫。完整原失败保留；没有修改冻结表、原件或SDK通用守卫。
+
+CAS328限定继续修复现有unrun及其stages测试。新增v2资源恢复分支逐一保留原Git blob、当前文件与内层ContentPin；完整JSON仅允许该一个prepare support摘要变化，当前prepare仍须与冻结原件raw一致。实际READY→Prepared→contract/adapter/runtime/product/case/run身份必须完整吻合，拒绝选中XQOL或活动launch/native/control/Save。消费者在原始终态、无Game、SCREEN释放、进程检查之后验证，下一allocator继续在原writer锁内重验。原v1两reader分支保留；没有给其他输入漂移增加例外。
+
+局部完整stages原Popen18280／wait0，73项、零跳过；其中新增七项执行真实producer→reducer→writer锁，并检查序列化往返、当前及旧字节变化、错误字段/类型和越界语义。新增16个class/def及一个union的完整提取范围strict通过，原serial提取范围strict通过；整个stages测试模块原Popen17904／wait0、strict通过。整个旧unrun模块没有据此宣称strict全绿。新源码冻结后正在完整重跑92条CI命令，不能沿用a08代替新源码验证。
+
+Root于05:31:45Z重新明确审查G2有限期08:30Z，替代未采用的08Z候选；当时HEAD仍07Z，没有自动延长原G1、Native或旧失败。新G2仍须实际完整CI、clean commit、共享恢复0、完整fresh scan和容量CAS，原8400／8220秒及keeper完整预测守卫保持。
+
+a09现已完整通过全部92条原始命令、975项测试，零跳过，Root持有的原工具session2364实际退出0。证明 `shared-CI-complete-a09/COMMAND-VALIDATION.actual.json` 为37695 B，SHA `44e69f76ad856cc9781b7bf756fbeebeb5e8e96d58a821ac6241047fc00a3c09`；12份源码与workflow前后相同。执行基于7b926工作树，后续提交封存同字节输入。局部闭写证明 `recovery-registry-support-fix-a01/LOCAL-VALIDATION.actual.json` 为6664 B，SHA `a030ffa09df48795973e5e5c9fd764cb52ffb88366ca68c8a7d4a07d2da6f104`。该次PASS不覆盖前述37项历史全模块strict错误，也不代表游戏或业务已经通过。
