@@ -22,7 +22,7 @@ public final class ContentValidator {
     private static final Pattern SCRIPTED_GUI = Pattern.compile("GetScriptedGui\\(\\s*'(?<name>rrf_[A-Za-z0-9_]+)'\\s*\\)");
     private static final Pattern LOCALIZATION = Pattern.compile("^ ([A-Za-z_][A-Za-z0-9_]*):[0-9]* \\\"((?:[^\\\"\\\\]|\\\\.)*)\\\"\\s*$");
     private static final Pattern PROTECTED_TOKEN = Pattern.compile("\\[[^\\[\\]\\r\\n]+\\]|\\$[^$\\r\\n]+\\$|@[A-Za-z0-9_.:/-]+!|#[A-Za-z0-9_]+|#!|§.|\\\\.");
-    private static final Pattern LOC_REFERENCE = Pattern.compile("(?:\\$((?:rrf_|RRF_)[A-Za-z0-9_]+)\\$|\\b(?:text|desc|tooltip|title|confirm_text)\\s*=\\s*\\\"?((?:rrf_|RRF_)[A-Za-z0-9_]+)\\\"?)");
+    private static final Pattern LOC_REFERENCE = Pattern.compile("(?:\\$((?:rrf_|RRF_)[A-Za-z0-9_]+)\\$|\\b(?:text|desc|tooltip|title|confirm_text|localization_key)\\s*=\\s*\\\"?((?:rrf_|RRF_)[A-Za-z0-9_]+)\\\"?)");
     private ContentValidator() { }
     public record Validation(String version, int runtimeFiles, int definitions, int blockedDefinitions) { }
     public record RuntimeProduct(Product product, List<String> files, Catalog catalog) {

@@ -16,6 +16,24 @@ rrf_actor_eligible_trigger = {
     }
 }
 
+rrf_has_same_faith_source_trigger = {
+    faith = {
+        any_faith_rite = {
+            this != root.rite
+            can_convert_to_rite = yes
+        }
+    }
+}
+
+rrf_has_other_faith_source_trigger = {
+    any_religion_global = {
+        any_faith = {
+            this != root.faith
+            any_faith_rite = { can_convert_to_rite = yes }
+        }
+    }
+}
+
 rrf_target_common_trigger = {
     exists = scope:selected_item
     scope:selected_item != rite

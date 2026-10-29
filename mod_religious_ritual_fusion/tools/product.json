@@ -13,6 +13,7 @@
     "common/scripted_triggers/rrf_draft_triggers.txt",
     "common/script_values/rrf_values.txt",
     "common/decisions/rrf_decisions.txt",
+    "common/customizable_localization/rrf_decision_status_loc.txt",
     "common/scripted_guis/rrf_scripted_guis.txt",
     "gui/rrf_fusion_window.gui",
     "gui/scripted_widgets/rrf_widgets.txt",

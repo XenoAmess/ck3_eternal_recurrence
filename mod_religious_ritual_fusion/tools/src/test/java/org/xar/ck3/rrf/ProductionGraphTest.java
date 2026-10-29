@@ -3,6 +3,7 @@ package org.xar.ck3.rrf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -36,6 +37,15 @@ final class ProductionGraphTest {
         ReleaseBuilder.BuildResult built = new ReleaseBuilder().build(replay, directory.resolve("staging"), new Contracts.ReleaseIdentity("3826756673", "synthetic-v0.1.0", "b".repeat(40)), provenance);
         assertEquals(before.runtimeFiles(), new ReleaseBuilder().verify(replay, Path.of(built.staging()), Path.of(built.manifest())).files());
         assertEquals(List.copyOf(ContentValidator.inventory(actual, false).keySet()).stream().sorted().toList(), List.copyOf(ContentValidator.inventory(Path.of(built.staging()), true).keySet()).stream().sorted().toList());
+        String customPath = "common/customizable_localization/rrf_decision_status_loc.txt";
+        Clausewitz.Block staged = Clausewitz.parse(Files.readString(Path.of(built.staging()).resolve(customPath)));
+        assertEquals("character", staged.block("RrfCooldownStatus").atom("type", ""));
+        Path custom = replay.resolve(customPath);
+        String valid = Files.readString(custom);
+        assertTrue(valid.contains("localization_key = RRF_ENTRY_COOLDOWN"));
+        Files.writeString(custom, valid.replace("localization_key = RRF_ENTRY_COOLDOWN", "localization_key = RRF_MISSING_STATUS_KEY"));
+        IllegalArgumentException missing = assertThrows(IllegalArgumentException.class, () -> ContentValidator.validate(replay));
+        assertTrue(missing.getMessage().contains("RRF_MISSING_STATUS_KEY"));
     }
 
     @Test void actualProducerSurvivesGitLfCheckoutWithoutWeakeningSourceHash() throws IOException, InterruptedException {

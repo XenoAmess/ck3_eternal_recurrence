@@ -10,12 +10,7 @@
 		rrf_actor_eligible_trigger = yes
 		custom_description = {
 			text = RRF_REQUIRE_SAME_FAITH_SOURCE
-			faith = {
-				any_faith_rite = {
-					this != root.rite
-					can_convert_to_rite = yes
-				}
-			}
+			rrf_has_same_faith_source_trigger = yes
 		}
 	}
 	widget = {
@@ -89,12 +84,7 @@ rrf_begin_faith_fusion_decision = {
 		rrf_actor_eligible_trigger = yes
 		custom_description = {
 			text = RRF_REQUIRE_OTHER_FAITH_SOURCE
-			any_religion_global = {
-				any_faith = {
-					this != root.faith
-					any_faith_rite = { can_convert_to_rite = yes }
-				}
-			}
+			rrf_has_other_faith_source_trigger = yes
 		}
 	}
 	widget = {

@@ -1,0 +1,39 @@
+﻿RrfRiteSourceStatus = {
+    type = character
+    text = {
+        trigger = { rrf_has_same_faith_source_trigger = yes }
+        localization_key = RRF_RITE_SOURCE_SELECT
+    }
+    text = { fallback = yes localization_key = RRF_RITE_SOURCE_MISSING }
+}
+
+RrfFaithSourceStatus = {
+    type = character
+    text = {
+        trigger = { rrf_has_other_faith_source_trigger = yes }
+        localization_key = RRF_FAITH_SOURCE_SELECT
+    }
+    text = { fallback = yes localization_key = RRF_FAITH_SOURCE_MISSING }
+}
+
+RrfCooldownStatus = {
+    type = character
+    text = {
+        trigger = { has_character_flag = rrf_fusion_cooldown }
+        localization_key = RRF_ENTRY_COOLDOWN
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}
+
+RrfPendingStatus = {
+    type = character
+    text = {
+        trigger = { var:rrf_state ?= flag:committing }
+        localization_key = RRF_COMMITTING
+    }
+    text = {
+        trigger = { var:rrf_state ?= flag:unresolved }
+        localization_key = RRF_UNRESOLVED
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}
