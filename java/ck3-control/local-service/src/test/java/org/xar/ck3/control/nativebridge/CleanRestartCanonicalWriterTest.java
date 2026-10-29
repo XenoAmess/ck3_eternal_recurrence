@@ -507,6 +507,86 @@ final class CleanRestartCanonicalWriterTest {
             });
         }
     }
+    @Test void restartCaptureRetainsLargeActualKnownAndKeepsOrdinaryTransportBound()throws Exception {
+        String step="preview-move-army-0-to-4",capability="game.command.preview-move-army-N-to-N";
+        var installed=new java.util.concurrent.atomic.AtomicReference<ReadContract<MilitaryReadObservation>>();
+        var scenario=new ActionWriterIntegrationFixture.SoftwareReadScenario("0".repeat(64),"captured-actual-read-history",source->{
+            java.util.function.Function<PlanningReadReceipt,MilitaryReadObservation> decode=receipt->{
+                Obj raw=DriverJson.object(receipt.original().originalResultToken().orElseThrow().bytes(),DriverJson.MAX_NATIVE_BYTES);
+                var frame=receipt.request().before().frame();
+                Obj value=raw.with("queried_snapshot_id",new Text(frame.snapshotId())).with("queried_revision",new IntegerValue(frame.revision()))
+                        .with("queried_native_revision",new IntegerValue(frame.identity().nativeRevision()))
+                        .with("queried_connection_generation",new IntegerValue(receipt.before().binding().connectionGeneration()))
+                        .with("queried_episode_run_id",new Text(frame.episodeRunId()));
+                return new MilitaryReadObservation(MilitaryReadObservation.Kind.ROUTE_PREVIEW,value);
+            };
+            var contract=new ReadContract<MilitaryReadObservation>("actual-captured-route-read",new OperationKey(step),Optional.of(capability),capability,
+                    ReadContract.PermissionMode.ADVERTISED_CAPABILITY,ReadContract.WireProfile.EXECUTE_STEP,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,source,
+                    (request,id)->new NativeRequest(step,Optional.of(capability),new RawJson(new byte[]{'{','}'})),decode,decode,
+                    (original,value,current,semantic)->StrictJson.require(current.before().equals(original.request().before())
+                            &&current.source().equals(original.request().source())&&current.sessionId().equals(original.request().sessionId())
+                            &&current.arguments().equals(original.request().arguments()),"software original READ operands changed"));
+            installed.set(contract);return List.of(contract);
+        },request->new RawJson(DriverJson.encode(new Obj(java.util.Map.of("step",new Text(step),"accepted",new Bool(true),"status",new Text("available"),"controlled_known_DATA",new Text("x".repeat(49152)),
+                "route_preview",new Obj(java.util.Map.of("army_id",new IntegerValue(BigInteger.ZERO),"origin_province_id",new IntegerValue(BigInteger.ONE),
+                "target_province_id",new IntegerValue(BigInteger.valueOf(4)),"status",new Text("available"),
+                "route_province_ids",new Arr(List.of(new IntegerValue(BigInteger.ONE),new IntegerValue(BigInteger.valueOf(4)))))))))));
+        var initialFrame=new ActionWriterIntegrationFixture.SoftwareActionScenario(new OperationKey("pause-map"),"game.command.pause-map",
+                (command,attempt,dispatch)->new ActionPorts.Pending("original software ACK remains unresolved",List.of(attempt.guard().nativeEvidence())),
+                ()->{},Optional.empty(),Optional.empty(),true,Optional.empty());
+        try(var fixture=new ActionWriterIntegrationFixture(root.resolve("large-known-restart"),false,scenario,List.of(initialFrame),Duration.ofSeconds(60))) {
+            var input=inputs(fixture);var contract=installed.get();
+            var publisher=new DriverReadHistoryPublisher(fixture.driverAuthority(),fixture.archive,fixture.reads.catalog(),List.of(contract.sourceRef()));
+            fixture.bindAdditionalTransitionAuthority(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_READ_HISTORY_KIND,publisher);
+            fixture.writer.locked(same->{
+                fixture.collector.current(same,input.observed().before(),Instant.now().plusSeconds(60),lease->{
+                    var configuration=new DynamicCapabilities.Configuration(Optional.empty(),Optional.empty(),3,3,false,false);
+                    var session=new CapabilitySessionPresentation(false,Optional.empty(),Optional.of(CapabilitySessionPresentation.RestoreKind.NEW_EPISODE),
+                            CapabilitySessionPresentation.BindingState.ACTIVE_NEW,Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty());
+                    var policy=fixture.archive.preserveMaterial(new RawJson(StrictJson.canonical(StrictJson.object().put("actual_capture_read_start_policy",true))));
+                    var produced=DriverCapabilityStateProducer.initializeNewEpisode(lease.frame(),lease.driver(),configuration,session,policy,fixture.archive.withSession(same));
+                    fixture.driverAuthority().publishCapabilityInputs(same,lease.driver().stamp(),produced.expectedAuxiliarySha256(),produced);return null;
+                });return null;
+            });
+            var before=fixture.writer.locked(same->fixture.driverAuthority().withFrozenFacts(same,frozen->(DriverSnapshotFacts.Known)frozen.state()));
+            fixture.writer.locked(same->{
+                fixture.collector.current(same,input.observed().before(),Instant.now().plusSeconds(60),lease->{
+                    for(int ordinal=0;ordinal<6;ordinal++) {
+                        var request=new PlanningReadRequest(lease.frame().identity(),lease.frame().source(),lease.frame().sessionId(),contract.operation(),new Obj(java.util.Map.of()),Instant.now().plusSeconds(60));
+                        var result=fixture.reads.read(same,contract,request);
+                        if(!(result instanceof PlanningReadResult.Known<MilitaryReadObservation> known))throw new AssertionError(result);
+                        publisher.enqueue(same,contract,known);
+                    }
+                    return null;
+                });assertTrue(publisher.flushActualReads(same).isPresent());return null;
+            });
+            // Publication deliberately clears old receive custody; use the real collector for a current observation.
+            dirtyReady(fixture,Instant.now().plusSeconds(60));
+            var current=fixture.writer.locked(same->fixture.driverAuthority().withFrozenFacts(same,frozen->(DriverSnapshotFacts.Known)frozen.state()));
+            assertEquals(before.driver().commandHistory().size()+6,current.driver().commandHistory().size());
+            assertTrue(current.observation().isPresent());assertTrue(current.driver().encode().length>ContinuityJson.TRANSPORT_MAX_BYTES);
+            var durable=new DriverSnapshotFacts.Known(current.driver(),current.stamp(),current.originalHistoryBasis(),current.actionRows(),current.auxiliary(),current.loop(),Optional.empty());
+            byte[] expected=DriverSnapshotFacts.encodeKnownOriginal(durable).bytes();
+            assertTrue(expected.length>ContinuityJson.TRANSPORT_MAX_BYTES);
+            var ticket=fixture.writer.locked(same->input.controller().captureCleanRestart(same,"large-known-worker",0));
+            var admitted=fixture.writer.locked(same->input.batches().admitCleanRestart(same,ticket));
+            assertTrue(admitted.manifest().driverFacts().bytes()>ContinuityJson.TRANSPORT_MAX_BYTES);
+            assertArrayEquals(expected,fixture.archive.loadFullMaterial(admitted.manifest().driverFacts()).bytes());
+            assertArrayEquals(current.driver().encode(),fixture.archive.loadFullMaterial(admitted.manifest().fullDriver()).bytes());
+            assertArrayEquals(current.driver().encode(),admitted.facts().driver().encode());assertEquals(current.stamp(),admitted.facts().stamp());
+            assertEquals(current.auxiliary(),admitted.facts().auxiliary());assertEquals(current.loop(),admitted.facts().loop());
+            assertEquals(current.actionRows(),admitted.facts().actionRows());assertEquals(current.originalHistoryBasis(),admitted.facts().originalHistoryBasis());
+            var head=fixture.writer.locked(same->same.head().digest());
+            var ordinary=StrictJson.object().put("evidence_id","ordinary-transport-does-not-inherit-known-material").put("source","actual-ordinary-transport-test");
+            var ordinaryRequest=new org.xar.ck3.control.continuity.writer.WriterContracts.Request("fixture.ordinary_transport",ContinuityJson.canonical(ordinary),List.of(admitted.manifest().driverFacts()));
+            assertThrows(IOException.class,()->fixture.writer.locked(same->same.preview(ordinaryRequest)));
+            Files.writeString(Path.of(admitted.manifest().driverFacts().path()),"{}");
+            assertThrows(IOException.class,()->fixture.writer.locked(same->input.batches().admitCleanRestart(same,ticket)));
+            assertEquals(head,fixture.writer.locked(same->same.head().digest()));
+            assertEquals(6,fixture.scenarioReadWrites());assertEquals(0,fixture.nativeActionWrites());
+        }
+    }
+
     @Test void capturedRecoveryRetainsLargeSemanticDataAndKeepsOrdinaryTransportBound()throws Exception {
         try(var fixture=fixture(root.resolve("large-semantic-recovery"))) {
             var first=dirtyReady(fixture,Instant.now().plusSeconds(60));var owner=fixture.observationIdentity();

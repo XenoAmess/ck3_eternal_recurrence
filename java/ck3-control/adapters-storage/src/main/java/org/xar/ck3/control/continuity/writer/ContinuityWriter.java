@@ -545,10 +545,12 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                         && receipt.eventIdentity().equals(request.identity()), "an actual durable event receipt is required");
             }
             verifyHistoricalSources(original);
-            Head actual = store.head();
+            Head actual = head();
             java.util.Optional<ContinuityEvent> committed = store.duplicate(request, actual);
             if (committed.isEmpty()) {
-                verifyHistoricalSources(original); requireSameHead(actual, store.head());
+                verifyHistoricalSources(original);
+                for (Pin pin : actual.documents()) LedgerFiles.verify(pin);
+                for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
                 return java.util.Optional.empty(); // Absence is not permission to dispatch or retry an unknown native action.
             }
             ContinuityEvent event = committed.orElseThrow();
@@ -571,7 +573,9 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             if (receipt.disposition() == Disposition.COMMITTED)
                 StrictJson.require(ContinuityJson.same(receipt.head().toJson(), event.after().toJson()),
                         "COMMITTED receipt must bind the event's own complete resulting head");
-            verifyHistoricalSources(original); requireSameHead(actual, store.head());
+            verifyHistoricalSources(original);
+            for (Pin pin : actual.documents()) LedgerFiles.verify(pin);
+            for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
             return java.util.Optional.of(receipt);
         }
         private ContinuityState capturedStateAt(Head actual, long sequence) throws IOException {
@@ -877,6 +881,21 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     "original_native_packet", "driver_stamp", "original_driver", "observed_at"));
             for (String field : List.of("semantic", "original_native_packet", "driver_stamp", "original_driver"))
                 fullMaterials.add(ExactRef.fromJson(originals.get(field)));
+        }
+        if (ORDINARY_BATCH_KIND.equals(request.kind())
+                && "WORKER_RESTART_CAPTURE".equals(StrictJson.text(details.get("boundary")))) {
+            // The existing closed restart manifest identifies complete Controller and Driver DATA.
+            ExactRef manifestRef = ExactRef.fromJson(details.get("restart_manifest"));
+            ObjectNode manifest = ContinuityJson.parseObject(
+                    LedgerFiles.exact(manifestRef, ContinuityJson.DOCUMENT_MAX_BYTES).bytes(),
+                    ContinuityJson.DOCUMENT_MAX_BYTES);
+            var fields = java.util.Set.of("schema", "controller", "driver_facts", "full_driver",
+                    "previous_transport", "public_revision", "native_revision", "observation_version", "date_raw", "source");
+            StrictJson.object(manifest, fields, fields);
+            StrictJson.require("xar.java-clean-batch-restart/v1".equals(StrictJson.text(manifest.get("schema"))),
+                    "restart manifest schema differs");
+            for (String field : List.of("controller", "driver_facts", "full_driver"))
+                fullMaterials.add(ExactRef.fromJson(manifest.get(field)));
         }
         List<Pin> result = new ArrayList<>();
         for (ExactRef reference : request.evidence()) {

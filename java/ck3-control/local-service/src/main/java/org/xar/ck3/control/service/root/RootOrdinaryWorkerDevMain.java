@@ -97,10 +97,9 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
         } finally {
             // Shutdown timeouts/observer exceptions NEVER run this cleanup on the old worker's behalf.
             synchronized(this) {
-                if(failure==null&&exit==0) {
-                    try { removeOwnStop(); }
-                    catch(Throwable cleanup) { failure=merge(failure,cleanup); }
-                }
+                // The adapter's stop ends with this delegate; failure/UNKNOWN stays in the original business result.
+                try { removeOwnStop(); }
+                catch(Throwable cleanup) { failure=merge(failure,cleanup); }
                 failure=closeOwnership(failure);
                 emitObservation(Phase.DELEGATE_COMPLETED, delegateReturned ? exit : null, failure);
                 if(failure==null)completion.complete(exit);
@@ -133,7 +132,7 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
         if(exit!=0)System.err.println("ordinary-worker-dev retained non-clean worker exit "+exit+"; no clean restart was claimed");
     }
 
-    // Called only after the real worker has returned cleanly, before unlocking or notifying waiters.
+    // Called only after the actual worker has returned, before unlocking or notifying waiters.
     private void removeOwnStop() throws IOException {
         if(ownStop&&Files.exists(configuration.stopPath())
                 &&Arrays.equals(Files.readAllBytes(configuration.stopPath()),stopBody))Files.delete(configuration.stopPath());

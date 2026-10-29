@@ -166,4 +166,45 @@ class HistoricalCommittedProofTest {
         assertEquals(WriterFixture.state().get("pending_cycle"), committed.head().toJson().get("pending_cycle"));
         }
     }
+
+    @Test void sameSessionHistoricalProofSeesTheNextActualCommitWithoutResubmittingAbsence() throws Exception {
+        WriterFixture fixture = new WriterFixture(root.resolve("retained-next-head"));
+        Prepared first = fixture.writer.preview(WriterFixture.settled("retained-first", 1024, 2));
+        Receipt firstReceipt = fixture.writer.commit(first);
+        fixture.writer.locked(same -> {
+            same.requireCommitted(first, firstReceipt);
+            same.requireCommitted(first, firstReceipt);
+            assertEquals(1L, same.head().state().sequence());
+            Prepared next = same.preview(WriterFixture.settled("retained-next", 1048, 3));
+            assertTrue(same.queryCommitted(next).isEmpty());
+            assertFalse(Files.exists(fixture.layout.event(2)));
+            Receipt nextReceipt = same.commit(next);
+            assertEquals(Disposition.COMMITTED, nextReceipt.disposition());
+            same.requireCommitted(first, firstReceipt);
+            same.requireCommitted(next, nextReceipt);
+            Receipt retained = same.queryCommitted(first).orElseThrow();
+            assertEquals(Disposition.ALREADY_COMMITTED, retained.disposition());
+            assertEquals(2L, retained.head().sequence());
+            assertEquals(0, retained.writes());
+            assertEquals(2L, same.head().state().sequence());
+            return null;
+        });
+        assertFalse(Files.exists(fixture.layout.event(3)));
+    }
+    @Test void retainedHistoricalProofRejectsEqualByteEventReplacementWithinTheSameSession() throws Exception {
+        WriterFixture fixture = new WriterFixture(root.resolve("retained-event-identity"));
+        Prepared original = fixture.writer.preview(WriterFixture.settled("retained-original", 1024, 2));
+        Receipt receipt = fixture.writer.commit(original);
+        byte[] snapshot = Files.readAllBytes(fixture.layout.snapshot());
+        fixture.writer.locked(same -> {
+            same.requireCommitted(original, receipt);
+            Path replacement = root.resolve("equal-event-with-new-native-identity.json");
+            Files.copy(fixture.layout.event(1), replacement);
+            Files.move(replacement, fixture.layout.event(1), StandardCopyOption.REPLACE_EXISTING);
+            assertThrows(IOException.class, () -> same.requireCommitted(original, receipt));
+            return null;
+        });
+        assertArrayEquals(snapshot, Files.readAllBytes(fixture.layout.snapshot()));
+        assertFalse(Files.exists(fixture.layout.event(2)));
+    }
 }

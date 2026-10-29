@@ -151,6 +151,122 @@ class OnlineOrdinaryDecisionSelectorTest {
         }
     }
 
+    @Test void modelSnapshotDropsOnlyTheExactDuplicateAndRetainsAllOriginalHistory(@TempDir Path root) throws Exception {
+        try (LocalModel model = new LocalModel()) {
+            for (boolean equal : List.of(true, false)) {
+                Fixture fixture = fixture(false);
+                var row = new OpportunityJson.Obj(Map.of("read_id", new OpportunityJson.Text("controlled-complete-read"),
+                        "original_response", new OpportunityJson.Obj(Map.of("raw_value", new OpportunityJson.Text("complete-original-response"))),
+                        "wide_integer", new OpportunityJson.IntegerValue(new java.math.BigInteger("18446744073709551615"))));
+                List<OpportunityJson.Obj> history = List.of(row);
+                var complete = new OpportunityJson.Arr(List.of(row));
+                var different = new OpportunityJson.Arr(List.of(row.with("read_id", new OpportunityJson.Text("another-original-read"))));
+                var snapshot = fixture.request().observations().snapshot().with("native_command_history", equal ? complete : different);
+                byte[] originalSnapshot = OpportunityJson.encode(snapshot), originalHistory = OpportunityJson.encode(complete);
+                var old = fixture.request().observations();
+                var observations = new PlanningObservation(snapshot, history, old.actionSteps(), old.bridgeCapabilities(),
+                        old.battleSpeedReadiness(), old.actionFacts(), old.campaignGoal(), old.crossRunPlan(), old.initialLifestyleFocusRequired());
+                var request = new PlanningRequest(fixture.request().before(), fixture.request().source(), fixture.request().sessionId(),
+                        fixture.request().deadline(), observations);
+                model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+                fixture.planner().bindSelector(provider(model, root.resolve(equal ? "equal" : "unequal"), Duration.ofSeconds(2)));
+                var selected = assertInstanceOf(PlanningResult.ActionSelected.class, fixture.planner().plan(request));
+                assertSame(fixture.command(), selected.command());
+                assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+                var sent = org.xar.ck3.control.contracts.FullJsonTree.parse(model.request.get().get("messages").get(1)
+                        .get("content").textValue().getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+                assertEquals(org.xar.ck3.control.contracts.FullJsonTree.parse(originalHistory, StrictJson.EXPLICIT_MAX_BYTES), sent.get("history"));
+                if (equal) assertTrue(!sent.get("snapshot").has("native_command_history"));
+                else assertEquals(org.xar.ck3.control.contracts.FullJsonTree.parse(OpportunityJson.encode(different), StrictJson.EXPLICIT_MAX_BYTES),
+                        sent.get("snapshot").get("native_command_history"));
+                org.junit.jupiter.api.Assertions.assertArrayEquals(originalSnapshot, OpportunityJson.encode(request.observations().snapshot()));
+                org.junit.jupiter.api.Assertions.assertArrayEquals(originalHistory, OpportunityJson.encode(
+                        new OpportunityJson.Arr(new ArrayList<OpportunityJson.Value>(request.observations().history()))));
+                assertEquals(ActionCodec.bodySha256(fixture.command()), sent.get("body_sha256").textValue());
+            }
+            assertEquals(2, model.calls.get());
+        }
+    }
+
+    @Test void modelRootDictionaryIsLosslessAndLeavesUnknownRowsComplete(@TempDir Path root) throws Exception {
+        Fixture fixture = fixture(false);
+        ObjectNode first = StrictJson.object();
+        first.put("command", "query-campaign-root-context-v1"); first.put("index", 1); first.put("ok", true);
+        ObjectNode source = first.putObject("read_history_source");
+        source.put("schema", "xar.driver-read-history-source/v1"); source.put("kind", "CAMPAIGN_ROOT_CONTEXT");
+        source.put("payload_field", "campaign_root_context"); source.put("query_sequence", 19);
+        ObjectNode frame = source.putObject("source_frame"); frame.put("machine_id", "explicit-software-frame");
+        frame.putObject("game").put("pid", 17); frame.putObject("frame").put("native_revision", "18446744073709551615");
+        source.putObject("original_receipt").put("path", "software-original-metadata-retained");
+        source.putArray("supporting_evidence").add("complete-software-evidence");
+        ObjectNode result = first.putObject("result"); result.put("status", "available"); result.put("accepted", true);
+        ObjectNode facts = result.putObject("campaign_root_context"); facts.put("status", "available");
+        facts.put("snapshot_revision", new java.math.BigInteger("18446744073709551615"));
+        facts.put("player_character_id", 1234); facts.put("treasury", 47);
+        facts.putObject("provenance").put("source", "unknown-full-ROOT-field-retained");
+        facts.putArray("future_fact").addNull().add(true).add(new java.math.BigInteger("18446744073709551614"));
+        facts.putObject("player_heir_candidate_v1").put("snapshot_revision", new java.math.BigInteger("18446744073709551615"))
+                .put("getter_rva", "complete-technical-root-data-retained");
+        ObjectNode second = first.deepCopy(); second.put("index", 2);
+        ((ObjectNode) second.get("result").get("campaign_root_context")).put("snapshot_revision", 98);
+        ((ObjectNode) second.get("result").get("campaign_root_context").get("player_heir_candidate_v1")).put("snapshot_revision", 99);
+        ((ObjectNode) second.get("read_history_source").get("source_frame").get("frame")).put("native_revision", "98");
+        ObjectNode changed = first.deepCopy(); changed.put("index", 3);
+        ((ObjectNode) changed.get("result").get("campaign_root_context")).put("treasury", 48);
+        ObjectNode unknown = first.deepCopy(); unknown.put("index", 4); unknown.put("ok", false);
+        ((ObjectNode) unknown.get("result")).put("status", "UNKNOWN");
+        ObjectNode nonRead = first.deepCopy(); nonRead.put("index", 5); nonRead.put("command", "actual-non-read-operation");
+        ObjectNode missingStamp = first.deepCopy(); missingStamp.put("index", 6);
+        ((ObjectNode) missingStamp.get("result").get("campaign_root_context")).remove("snapshot_revision");
+        ObjectNode boolStamp = first.deepCopy(); boolStamp.put("index", 7);
+        ((ObjectNode) boolStamp.get("result").get("campaign_root_context").get("player_heir_candidate_v1")).put("snapshot_revision", true);
+        ObjectNode missingOk = first.deepCopy(); missingOk.put("index", 8); missingOk.remove("ok");
+        ObjectNode badFrame = first.deepCopy(); badFrame.put("index", 9);
+        ((ObjectNode) badFrame.get("read_history_source")).putArray("source_frame").add("unfamiliar-shape");
+        ObjectNode unfamiliar = first.deepCopy(); unfamiliar.put("index", 10); unfamiliar.put("unknown", true);
+        List<ObjectNode> originals = List.of(first, second, changed, unknown, nonRead, missingStamp, boolStamp, missingOk, badFrame, unfamiliar);
+        var history = new ArrayList<OpportunityJson.Obj>();
+        for (var row : originals) history.add(OpportunityJson.object(OpportunityJson.parse(
+                org.xar.ck3.control.contracts.FullJsonTree.encode(row, StrictJson.EXPLICIT_MAX_BYTES)), "software dictionary row DATA"));
+        var complete = new OpportunityJson.Arr(new ArrayList<OpportunityJson.Value>(history));
+        var snapshot = fixture.request().observations().snapshot().with("native_command_history", complete);
+        byte[] beforeSnapshot = OpportunityJson.encode(snapshot), beforeHistory = OpportunityJson.encode(complete);
+        var old = fixture.request().observations();
+        var observations = new PlanningObservation(snapshot, history, old.actionSteps(), old.bridgeCapabilities(), old.battleSpeedReadiness(),
+                old.actionFacts(), old.campaignGoal(), old.crossRunPlan(), old.initialLifestyleFocusRequired());
+        var request = new PlanningRequest(fixture.request().before(), fixture.request().source(), fixture.request().sessionId(), fixture.request().deadline(), observations);
+        try (LocalModel model = new LocalModel()) {
+            model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+            fixture.planner().bindSelector(provider(model, root, Duration.ofSeconds(2)));
+            var selected = assertInstanceOf(PlanningResult.ActionSelected.class, fixture.planner().plan(request));
+            assertSame(fixture.command(), selected.command()); assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+            var sent = org.xar.ck3.control.contracts.FullJsonTree.parse(model.request.get().get("messages").get(1).get("content")
+                    .textValue().getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+            assertEquals("xar.model-root-history-dictionary/v1", sent.get("history_projection_schema").textValue());
+            assertEquals(2, sent.get("root_facts").size()); assertEquals(10, sent.get("history").size());
+            assertTrue(!sent.get("snapshot").has("native_command_history"), "exact duplicate is compared before dictionary projection");
+            assertTrue(model.request.get().get("messages").get(0).get("content").textValue().contains("root_facts[root_ref]"));
+            for (int index = 0; index < originals.size(); index++) {
+                ObjectNode expanded = sent.get("history").get(index).deepCopy();
+                if (index < 3) {
+                    ObjectNode reference = (ObjectNode) expanded.get("result").get("campaign_root_context");
+                    assertEquals(index == 2 ? 1 : 0, reference.get("root_ref").intValue());
+                    ObjectNode restored = sent.get("root_facts").get(reference.get("root_ref").intValue()).deepCopy();
+                    restored.set("snapshot_revision", reference.get("snapshot_revision"));
+                    ((ObjectNode) restored.get("player_heir_candidate_v1")).set("snapshot_revision", reference.get("player_heir_candidate_v1_snapshot_revision"));
+                    ((ObjectNode) expanded.get("result")).set("campaign_root_context", restored);
+                }
+                var expected = org.xar.ck3.control.contracts.FullJsonTree.parse(org.xar.ck3.control.contracts.FullJsonTree.encode(
+                        originals.get(index), StrictJson.EXPLICIT_MAX_BYTES), StrictJson.EXPLICIT_MAX_BYTES);
+                assertEquals(expected, expanded, "lossless full JSON value row, including original source refs/frame and unknown facts: " + index);
+            }
+            assertEquals(ActionCodec.bodySha256(fixture.command()), sent.get("body_sha256").textValue());
+            assertEquals(org.xar.ck3.control.contracts.FullJsonTree.parse(ActionCodec.encodeCommand(fixture.command()), ActionCodec.MAX_COMMAND_BYTES), sent.get("proposal"));
+            org.junit.jupiter.api.Assertions.assertArrayEquals(beforeSnapshot, OpportunityJson.encode(request.observations().snapshot()));
+            org.junit.jupiter.api.Assertions.assertArrayEquals(beforeHistory, OpportunityJson.encode(new OpportunityJson.Arr(new ArrayList<OpportunityJson.Value>(request.observations().history()))));
+        }
+    }
+
     private static RootOnlineDecisionSelector provider(LocalModel model, Path directory, Duration timeout)
             throws IOException {
         Files.createDirectories(directory);

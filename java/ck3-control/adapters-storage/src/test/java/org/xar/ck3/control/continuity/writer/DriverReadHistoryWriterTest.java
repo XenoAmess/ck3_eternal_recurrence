@@ -140,6 +140,7 @@ final class DriverReadHistoryWriterTest {
         Head head=writer.locked(ContinuityStorePort.Session::head);
         ObjectNode details=StrictJson.object();details.put("evidence_id",evidence);details.put("source","actual-temp-originals-kernel-fixture");
         details.put("expected_head",head.digest());details.put("before_version",proof.beforeVersion());details.put("after_version",proof.afterVersion());
+        details.set("before_driver",proof.before().reference().toJson());details.set("after_driver",proof.after().reference().toJson());
         return new Request(DRIVER_READ_HISTORY_KIND,ContinuityJson.canonical(details),proof.originals().stream().map(Pin::reference).toList());
     }
     @Test void factualHistoryCommitUsesHeadRevalidationAndOnlyItsRegistryChanges() throws Exception {
@@ -148,6 +149,8 @@ final class DriverReadHistoryWriterTest {
         Request request=request(writer,fixture.proof(),"fixture-factual-read");
         Prepared prepared=writer.preview(request);assertEquals(1,checks.get());
         Receipt receipt=writer.commit(prepared);assertEquals(2,checks.get());assertEquals(Disposition.COMMITTED,receipt.disposition());
+        writer.locked(same->{same.requireCommitted(prepared,receipt);same.requireCommitted(prepared,receipt);return null;});
+        assertEquals(2,checks.get(),"historical READ proof cannot revalidate or replay the actual reducer");
         assertEquals(1,receipt.head().sequence());assertEquals(1000,receipt.head().settledDateRaw());assertEquals(1,receipt.head().settledCycles());
         ObjectNode before=prepared.predecessor().state().toJson(),after=receipt.head().toJson();
         Set<String> keys=new HashSet<>();before.fieldNames().forEachRemaining(keys::add);after.fieldNames().forEachRemaining(keys::add);
