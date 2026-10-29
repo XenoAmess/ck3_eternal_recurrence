@@ -1,7 +1,7 @@
 {
   "schema": "rrf-publication-actual-evidence-v2",
   "machine_id": "4-8e1c2f1861",
-  "observed_at_utc": "2026-10-29T20:18:08.420613+00:00",
+  "observed_at_utc": "2026-10-29T20:58:35.354834+00:00",
   "version": "0.2.0-alpha",
   "workshop_id": "3826756673",
   "app_id": "1158310",
@@ -59,18 +59,51 @@
     "gross_history_refund_bytes": 0
   },
   "cache_menu": {
-    "status": "FAILED_BEFORE_GAME_REPAIR_IN_PROGRESS",
-    "failed_run_id": "4-8e1c2f1861--religious-ritual-fusion--R0059",
-    "host_original_returncode": 1,
-    "public_original_returncode": 2,
-    "root_original_returncode": 1,
-    "keeper_original_returncode": 0,
+    "status": "PASS_COMBINED_MANAGED_CACHE_PROFILE_AND_ACTUAL_MAIN_MENU_LOAD",
+    "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0060",
+    "runtime_source_commit": "2ef9cd84b724ce6fd3fe14bcdb2e66d5964e25ee",
+    "ck3_version": "1.20.0.4",
+    "ck3_pid": 17756,
+    "process_create_time_seconds": "1793306861.5385168",
+    "public_returncode": 0,
+    "verify_returncode": 0,
+    "host_original_returncode": 0,
+    "keeper_returncode": 0,
     "allocator_original_returncode": 0,
-    "screen_release_sequence": 14671,
-    "game_started": false,
-    "cache_menu_case_pass": false,
+    "normal_GUI_Quit": true,
+    "native_cleanup_zero": true,
+    "independent_retained_os_zero": true,
+    "normal_close_qualified": true,
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "load_evidence_kind": "COMBINED_MANAGED_CACHE_PROFILE_AND_ACTUAL_MAIN_MENU_LOAD",
+    "independent_engine_vfs_path_readback": "UNKNOWN",
+    "actual_cache_mount_proven_by_independent_vfs": false,
+    "business_contract_applicable": false,
     "business_pass": false,
-    "product_release_pass": false
+    "product_release_pass": false,
+    "original_serial_returncode": 1,
+    "original_root_holder_returncode": 1,
+    "original_wrapper_race_preserved": true,
+    "Root_same_scene_completion_original_returncode": 0,
+    "game_or_action_replayed": false,
+    "screen_release_sequence": 14676,
+    "campaign_started": false,
+    "new_save_count": 0,
+    "prior_failed_before_Game": {
+      "status": "FAILED_BEFORE_GAME_REPAIR_IN_PROGRESS",
+      "failed_run_id": "4-8e1c2f1861--religious-ritual-fusion--R0059",
+      "host_original_returncode": 1,
+      "public_original_returncode": 2,
+      "root_original_returncode": 1,
+      "keeper_original_returncode": 0,
+      "allocator_original_returncode": 0,
+      "screen_release_sequence": 14671,
+      "game_started": false,
+      "cache_menu_case_pass": false,
+      "business_pass": false,
+      "product_release_pass": false
+    }
   },
   "historical_gaps": [
     "Original registered 12/20 complete business matrices remain incomplete",
@@ -208,6 +241,81 @@
       "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\menu-host-fix-a01\\ACTUAL-REDUCER-DRYRUN.actual.json",
       "bytes": 13018,
       "sha256": "ab8692a2c21d24d8e34efe8efb50f8adb6f6e02ac253ff271860f43762ec1365"
+    },
+    "P21_writers_closed": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\runtime-preparation-b02\\PREPARATION-WRITERS-CLOSED.actual.json",
+      "bytes": 20351,
+      "sha256": "12822bca7df5cbd17f2a09a769409c225fe0246eb0d2b912513c5ce8aa5bcc94"
+    },
+    "P21_runtime": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\runtime-preparation-b02\\runtime-a01\\runtime.local.json",
+      "bytes": 12757,
+      "sha256": "c55bc197ee57f5a1f6b8dafd4eebf1dad891244034af9ba16e366b34c3149599"
+    },
+    "P21_true_cache_exact": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\runtime-preparation-b02\\prepared-workshop-cache-a01\\workshop-cache-exact-formal.json",
+      "bytes": 25135,
+      "sha256": "313f9b24f15a8c5fdc347c48bc5653445628a0281844ec8436c1956aabfbfb73"
+    },
+    "R0060_case_result": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0060\\case-output\\workshop-cache-case-result.json",
+      "bytes": 102941,
+      "sha256": "dc34eec7002613fed63ccdc8607214902050b1e15cefea68adbf638694b5c045"
+    },
+    "R0060_public_verify": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\public-operations-a01\\root-completion-a72-a01\\PUBLIC-VERIFY.stdout.log",
+      "bytes": 117548,
+      "sha256": "e43c9cf1fe15d5d9ee237cb86973a9be3ceab1c0057dd4434012326c6fd06348"
+    },
+    "R0060_public_verify_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\public-operations-a01\\root-completion-a72-a01\\PUBLIC-VERIFY.original-wait.actual.json",
+      "bytes": 1865,
+      "sha256": "76fef2ff28b016d02d812e2a0697f9363ca472c15a4f376e7f49402c02d22475"
+    },
+    "R0060_normal_close": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0060\\case-output\\normal-close-result.json",
+      "bytes": 10723,
+      "sha256": "b4506aa93ffe89d61cef60f7ff24bebe4305184ee7e9e02d4b1db5fff6308b1f"
+    },
+    "R0060_retained_os0": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0060\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "d6814f954854d068a40de726393ba85147497a5cbf9265c3df27aeff7cbc08ac"
+    },
+    "R0060_host_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0060\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "c3608523e9aac94ead9b768c2b0bd810ee5f3b56d4389e216e833f3f71162a31"
+    },
+    "R0060_original_root_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\ROOT-SERIAL-MENU-a72-original-b02\\ROOT-SERIAL.original-wait.actual.json",
+      "bytes": 821,
+      "sha256": "72e48095f542ee617f3d1ab58cb0284895fa442f1a8ae455c587c70c94c416cc"
+    },
+    "R0060_same_scene_completion_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\ROOT-COMPLETION-a72-original-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 557,
+      "sha256": "81f0eb2dc141853a7715fcf15b89bd9af268af8f3acdfc04016b2c10ef088d74"
+    },
+    "R0060_all_terminals": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\public-operations-a01\\root-completion-a72-a01\\ALL-ORIGINAL-TERMINALS.actual.json",
+      "bytes": 3501,
+      "sha256": "229f57be141d5bf68d79069f6a9fa57fa5e3d00c93b53d7f2b49b7f5a4eac381"
+    },
+    "R0060_screen_release": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\public-operations-a01\\root-completion-a72-a01\\SCREEN-RELEASE.stdout.log",
+      "bytes": 1495,
+      "sha256": "55fa663275e25b488ab56ee3559a5b7677781a8bbb0af5d60b2880ac3fd406d7"
+    },
+    "R0060_offline_after_close": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\R0060-POSTCLOSE-STEAM-OFFLINE.actual.json",
+      "bytes": 2433,
+      "sha256": "fcddf6edc3ae7b487025b1984bec30334fc8ef1ac68932cf27fa4b59237c1f61"
+    },
+    "R0060_storage_close": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\final-close-and-integration-a01\\SCOPED-NATIVE-CLOSE.actual.json",
+      "bytes": 4389,
+      "sha256": "8417a3c058b3ba1ff07bee75fabec216323f538c0cff2f2b49ae482d34151fe0"
     }
   },
   "runtime_repair": {
@@ -219,5 +327,13 @@
     "actual_R0059_reducer_pass": true,
     "administrative_resource_admission_only": true,
     "business_pass": false
+  },
+  "operational_deviations": {
+    "GUI_CLI_initial_invalid_flags_rejected_before_input": true,
+    "PNG_planned_count": 2,
+    "PNG_actual_count": 3,
+    "reason": "Fresh replacement before-frame after mapper CLI rejected move-only reviewed-region flags. Original before retained; PNG byte caps satisfied. No retroactive count qualification.",
+    "normal_close_subcaps_unchanged": true,
+    "finite_Root_normal_close_metadata_forecast_bytes": 4194304
   }
 }
