@@ -568,7 +568,9 @@ public final class CiBootstrap {
             Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             environment.putAll(System.getenv());
             environment.put("JAVA_HOME", javaHome.toString());
-            environment.putAll(OracleEnvironment.bindSelectedInterpreter(python, environment));
+            if (bootstrapInvocation.mode() == BootstrapMode.PIPELINE) {
+                environment.putAll(OracleEnvironment.bindSelectedInterpreter(python, environment));
+            }
             String scratch = root.resolve("scratch").toString();
             String jvm = "-Xms32m -Xmx512m -XX:MaxMetaspaceSize=192m -XX:ReservedCodeCacheSize=64m"
                     + " -XX:MaxDirectMemorySize=64m -Xss512k -Djava.io.tmpdir=" + scratch + " -Djna.tmpdir=" + scratch;
