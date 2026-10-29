@@ -647,7 +647,15 @@ def request_fields(operation: str, expected_source_rite_id: int, **selectors: ob
         if type(name) is not str or name not in NAME_FIELDS or type(text) is not str:
             raise ValueError("invalid actual name field")
         maximum = 4096 if name == "description" else 256
-        if len(text.encode("utf-8")) > maximum or any(ord(c) < 32 and not (name == "description" and c in "\n\t") for c in text):
+        maximum_characters = 240 if name == "description" else 30
+        try:
+            encoded = text.encode("utf-8")
+        except UnicodeEncodeError as error:
+            raise ValueError("name text must contain valid Unicode scalars") from error
+        # Native Utf8Text counts decoded scalars, including newline/tab, and
+        # rejects DEL in addition to C0 controls. Valid UTF-8 makes len exact.
+        if (len(encoded) > maximum or len(text) > maximum_characters
+                or any(ord(c) == 127 or (ord(c) < 32 and not (name == "description" and c in "\n\t")) for c in text)):
             raise ValueError("name text exceeds bounded UTF-8 input or contains control bytes")
     if operation in ("prepare_confirmation", "confirm_once"):
         token, kind = selectors["expected_preview_identity"], selectors["expected_outcome_kind"]

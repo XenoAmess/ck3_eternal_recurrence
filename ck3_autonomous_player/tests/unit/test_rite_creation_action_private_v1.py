@@ -262,6 +262,37 @@ class RiteCreationAdapterTests(unittest.TestCase):
         self.assertEqual(action.request_fields("select_core_tenet", RITE,
             core_slot_index=99, tenet_key="tenet_adaptive")["core_slot_index"], 99)
 
+    def test_authored_name_text_matches_native_scalar_and_control_limits(self) -> None:
+        for field in action.NAME_FIELDS:
+            maximum = 240 if field == "description" else 30
+            for scalar in ("a", "融", "\U0001f30c"):
+                with self.subTest(field=field, scalar=scalar):
+                    text = scalar * maximum
+                    self.assertEqual(action.request_fields("set_name_field", RITE,
+                        name_field=field, text=text)["text"], text)
+                    with self.assertRaisesRegex(ValueError, "bounded UTF-8"):
+                        action.request_fields("set_name_field", RITE,
+                            name_field=field, text=text + scalar)
+            for text in ("x\x7fy", "\ud800", "\udfff", "\ud83d\ude00"):
+                with self.subTest(field=field, invalid=repr(text)), self.assertRaises(ValueError):
+                    action.request_fields("set_name_field", RITE, name_field=field, text=text)
+        multiline = "\n\t" * 120
+        self.assertEqual(action.request_fields("set_name_field", RITE,
+            name_field="description", text=multiline)["text"], multiline)
+        with self.assertRaises(ValueError):
+            action.request_fields("set_name_field", RITE, name_field="description", text=multiline + "x")
+        with self.assertRaises(ValueError):
+            action.request_fields("set_name_field", RITE, name_field="name", text="\n\t")
+
+    def test_actual_r0045_overlength_name_is_rejected_before_native_send(self) -> None:
+        # Exact intact request from R0045: byte-only validation admitted 35 scalars.
+        text = "诺曼底诸传统共融与宗族学统传承星辰奥秘及共同体精神和永恒轮回之联合礼仪"
+        self.assertEqual((len(text), len(text.encode("utf-8"))), (35, 105))
+        driver, endpoint = self.driver()
+        with self.assertRaisesRegex(ValueError, "bounded UTF-8"):
+            self.call(driver, "set_name_field", name_field="name", text=text)
+        self.assertEqual(endpoint.requests, [])
+
     def test_existing_acceptance_case_requires_explicit_boolean_and_all_three_tools(self):
         path = Path(__file__).resolve().parents[3] / "tools/ck3_mod_acceptance.py"
         text = SOURCE_TEXT_OVERRIDE if SOURCE_TEXT_OVERRIDE is not None else path.read_text(encoding="utf-8")
@@ -681,6 +712,31 @@ class RiteCreationMcpTests(unittest.IsolatedAsyncioTestCase):
     setUp = RiteCreationAdapterTests.setUp
     driver = RiteCreationAdapterTests.driver
     actual_mcp_summaries = []
+
+    async def test_real_mcp_name_limits_reject_before_send_and_preserve_valid_utf8(self) -> None:
+        driver, endpoint = self.driver()
+        public = driver.take_snapshot_without_native_command_history()["revision"]
+        write = "ck3_execute_player_rite_creation_action_v1"
+        async with Client(create_server(driver)) as client:
+            for field, text in (("name", "融" * 31), ("description", "融" * 241),
+                                ("name", "x\x7fy"), ("description", "x\x7fy")):
+                rejected = await client.session.call_tool(write, {"operation": "set_name_field",
+                    "expected_revision": public, "expected_source_rite_id": RITE,
+                    "name_field": field, "text": text})
+                self.assertTrue(rejected.is_error, str(rejected))
+                self.assertEqual(endpoint.requests, [])
+            for field, text in (("name", "融" * 30), ("adjective", "\U0001f30c" * 30),
+                                ("description", "融" * 240), ("description", "\n\t" * 120)):
+                accepted = await client.session.call_tool(write, {"operation": "set_name_field",
+                    "expected_revision": public, "expected_source_rite_id": RITE,
+                    "name_field": field, "text": text})
+                self.assertFalse(accepted.is_error, str(accepted))
+                sent = endpoint.requests[-1]
+                self.assertEqual((sent["name_field"], sent["text"]), (field, text))
+                self.assertEqual(json.loads(json.dumps(sent, ensure_ascii=False).encode("utf-8"))["text"], text)
+                self.assertFalse(any(value is None for value in sent.values()))
+        self.assertEqual(len(endpoint.requests), 4)
+        self.assertEqual(list(Path(self.temp.name).rglob("*.claim.json")), [])
 
     async def test_real_mcp_sparse_slot99_retained_claim_and_native_catalogue_readback(self) -> None:
         driver, endpoint = self.driver()
