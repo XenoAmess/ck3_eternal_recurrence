@@ -34,21 +34,32 @@ import org.xar.ck3.rrf.save.SaveContracts.Scope;
 final class SavedSelectionTest {
     @TempDir Path directory;
     @Test void coldSnapshotManifestAndPreparedRequestReachTheRealDecoderAndRejectWalletEvidenceDriftBeforeLaunch() throws Exception {
+        snapshotThroughDecoder(4);
+    }
+    @Test void completedSnapshotManifestAndPreparedRequestReachTheRealDecoderWithoutChangingLegacyVersionFour() throws Exception {
+        snapshotThroughDecoder(5);
+    }
+    private void snapshotThroughDecoder(int version) throws Exception {
         Inputs original = inputs("core-rite", "wallet-parent");
         ExpectedSelection selection = new ExpectedSelection(List.of(new TenetKey("tenet_esotericism"), new TenetKey("tenet_astrology"), new TenetKey("tenet_communal_identity")));
         String common = saved(selection).replace("date=1066.9.16", "playthrough_id=\"authored-cold-campaign\" date=1066.9.17")
                 .replace("alive_data={variables={data={", "alive_data={piety={currency=5400} variables={data={"
                         + "{flag=\"rrfa_piety_before\" data={type=value identity=600000000}}{flag=\"rrf_charged_cost\" data={type=value identity=50000000}}");
+        if (version == 5) common = common.replace("153={faith=13 data={", "153={faith=13 data={doctrine=\"doctrine_divorce_allowed\" ")
+                .replace("list={{name=\"rrf_origin_core_tenets\"", "list={{name=\"rrf_origin_doctrines\" item={type=doctrine key=\"doctrine_divorce_disallowed\"} item={type=doctrine key=\"doctrine_monogamy\"}}{name=\"rrf_origin_core_tenets\"");
         FixtureContracts.FilePin before = coldReport(original.repository(), "wallet-before", common.replace("currency=5400", "currency=6000")
                 .replace("living={31254={rite=153", "living={31254={rite=150").replace(reference("rrf_last_result_rite", "153"), ""));
-        FixtureContracts.FilePin after = coldReport(original.repository(), "wallet-after", common.replace("currency=5400", "currency=5500"));
-        FixtureContracts.FilePin current = coldReport(original.repository(), "wallet-current", common);
+        FixtureContracts.FilePin after = coldReport(original.repository(), "wallet-after", common.replace("currency=5400", "currency=5500"), version == 5);
+        FixtureContracts.FilePin current = coldReport(original.repository(), "wallet-current", common, version == 5);
         var observed = org.xar.ck3.save.SaveJson.read(Files.readAllBytes(Path.of(current.path())), org.xar.ck3.save.Inspection.Report.class);
         var source = observed.decoded().save();
-        var setup = new FixtureContracts.SavedSnapshotSetup(new org.xar.ck3.save.SaveContracts.NativeId("31254"),
-                new FixtureContracts.FilePin(source.path(), source.bytes(), source.sha256()), current, new FixtureContracts.PietyAmount("5400"),
-                new FixtureContracts.CreationWalletHistory(new FixtureContracts.PietyAmount("6000"), new FixtureContracts.PietyAmount("5500"), 500, before, after));
-        var fixtureRequest = new FixtureContracts.Request(4, FixtureContracts.CaseKind.COLD_RELOAD, FixtureContracts.Mode.RITE,
+        var id = new org.xar.ck3.save.SaveContracts.NativeId("31254");
+        var save = new FixtureContracts.FilePin(source.path(), source.bytes(), source.sha256());
+        var piety = new FixtureContracts.PietyAmount("5400");
+        var history = new FixtureContracts.CreationWalletHistory(new FixtureContracts.PietyAmount("6000"), new FixtureContracts.PietyAmount("5500"), 500, before, after);
+        FixtureContracts.Setup setup = version == 4 ? new FixtureContracts.SavedSnapshotSetup(id, save, current, piety, history)
+                : new FixtureContracts.CompletedSnapshotSetup(id, save, current, piety, history);
+        var fixtureRequest = new FixtureContracts.Request(version, FixtureContracts.CaseKind.COLD_RELOAD, FixtureContracts.Mode.RITE,
                 new FixtureContracts.ActorHistoryId("1128"), setup, selection);
         FixtureEmitter.Emission emitted = FixtureEmitter.emit(original.repository(), directory.resolve("cold-wallet-fixture"), original.request().machineId(), fixtureRequest);
         Request request = new Request(2, original.request().machineId(), original.request().repository(),
@@ -70,9 +81,14 @@ final class SavedSelectionTest {
         assertFalse(launched.get());
     }
     private FixtureContracts.FilePin coldReport(Path repository, String name, String text) throws IOException {
+        return coldReport(repository, name, text, false);
+    }
+    private FixtureContracts.FilePin coldReport(Path repository, String name, String text, boolean selectRite) throws IOException {
         Path save = directory.resolve(name + ".ck3"); Files.writeString(save, text);
-        var selection = new org.xar.ck3.save.SaveContracts.Selection(List.of(new org.xar.ck3.save.SaveContracts.TableSelection(
-                org.xar.ck3.save.SaveContracts.ScopeKind.ACTOR, List.of("living"), List.of(new org.xar.ck3.save.SaveContracts.NativeId("31254")), true)), List.of(), true, false, List.of());
+        List<org.xar.ck3.save.SaveContracts.TableSelection> tables = new ArrayList<>();
+        tables.add(new org.xar.ck3.save.SaveContracts.TableSelection(org.xar.ck3.save.SaveContracts.ScopeKind.ACTOR, List.of("living"), List.of(new org.xar.ck3.save.SaveContracts.NativeId("31254")), true));
+        if (selectRite) tables.add(new org.xar.ck3.save.SaveContracts.TableSelection(org.xar.ck3.save.SaveContracts.ScopeKind.RITE, List.of("rites", "database"), List.of(new org.xar.ck3.save.SaveContracts.NativeId("153")), true));
+        var selection = new org.xar.ck3.save.SaveContracts.Selection(tables, List.of(), true, false, List.of());
         var pin = org.xar.ck3.save.FilePins.pin(save);
         var request = new org.xar.ck3.save.Inspection.Request(4, "synthetic-fixture-machine", repository.toString(), pin, pin, selection);
         var projection = new org.xar.ck3.save.SaveStream(new java.io.StringReader(text), selection).read();

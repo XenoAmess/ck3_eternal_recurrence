@@ -37,18 +37,19 @@ public final class FixtureContracts {
     }
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
     @JsonSubTypes({@JsonSubTypes.Type(value = FreshSetup.class, name = "fresh"), @JsonSubTypes.Type(value = SavedSetup.class, name = "saved"),
-            @JsonSubTypes.Type(value = SavedSnapshotSetup.class, name = "saved_snapshot")})
-    public sealed interface Setup permits FreshSetup, SavedSetup, SavedSnapshotSetup { }
+            @JsonSubTypes.Type(value = SavedSnapshotSetup.class, name = "saved_snapshot"),
+            @JsonSubTypes.Type(value = CompletedSnapshotSetup.class, name = "completed_snapshot")})
+    public sealed interface Setup permits FreshSetup, SavedSetup, SavedSnapshotSetup, CompletedSnapshotSetup { }
     public record FreshSetup(int piety) implements Setup {
         public FreshSetup { if (piety < 0 || piety > 10000) throw new IllegalArgumentException("fixture piety must be 0..10000"); }
     }
     public record SavedSetup() implements Setup { }
-    /** Canonical fixed-point amount; JSON numbers and script fragments are never accepted. */
+    /** Canonical signed fixed-point wallet amount; JSON numbers and script fragments are never accepted. */
     public record PietyAmount(String value) {
         public PietyAmount {
-            if (value == null || !value.matches("(?:0|[1-9][0-9]{0,6})(?:\\.[0-9]{0,4}[1-9])?")
-                    || new BigDecimal(value).compareTo(BigDecimal.valueOf(1_000_000)) > 0)
-                throw new IllegalArgumentException("canonical nonnegative piety string up to 1000000 required");
+            if (value == null || !value.matches("-?(?:0|[1-9][0-9]{0,6})(?:\\.[0-9]{0,4}[1-9])?") || value.equals("-0")
+                    || new BigDecimal(value).abs().compareTo(BigDecimal.valueOf(1_000_000)) > 0)
+                throw new IllegalArgumentException("canonical signed piety string with magnitude up to 1000000 required");
         }
         @JsonCreator(mode = JsonCreator.Mode.DELEGATING) public static PietyAmount fromJson(JsonNode node) {
             if (node == null || !node.isTextual()) throw new IllegalArgumentException("piety amount must be a canonical string");
@@ -62,18 +63,45 @@ public final class FixtureContracts {
         public CreationWalletHistory {
             Objects.requireNonNull(before); Objects.requireNonNull(after);
             Objects.requireNonNull(beforeInspection); Objects.requireNonNull(afterInspection);
-            if (chargedCost <= 0 || before.amount().subtract(after.amount()).compareTo(BigDecimal.valueOf(chargedCost)) != 0)
+            if (before.amount().signum() < 0 || after.amount().signum() < 0 || chargedCost <= 0
+                    || before.amount().subtract(after.amount()).compareTo(BigDecimal.valueOf(chargedCost)) != 0)
                 throw new IllegalArgumentException("creation before/after must prove the declared single charge");
         }
+    }
+    public interface SnapshotEvidence {
+        org.xar.ck3.save.SaveContracts.NativeId actorId();
+        FilePin sourceSave();
+        FilePin sourceInspection();
+        PietyAmount expectedCurrentPiety();
+        CreationWalletHistory creationHistory();
     }
     /** Version 4 only: independently observed cold wallet, distinct from creation history. */
     public record SavedSnapshotSetup(org.xar.ck3.save.SaveContracts.NativeId actorId, FilePin sourceSave,
                                      FilePin sourceInspection, PietyAmount expectedCurrentPiety,
-                                     CreationWalletHistory creationHistory) implements Setup {
+                                     CreationWalletHistory creationHistory) implements Setup, SnapshotEvidence {
         public SavedSnapshotSetup {
             Objects.requireNonNull(actorId); Objects.requireNonNull(sourceSave); Objects.requireNonNull(sourceInspection);
             Objects.requireNonNull(expectedCurrentPiety); Objects.requireNonNull(creationHistory);
         }
+    }
+    /** Version 5 explicitly observes both the completed Rite and its creation origin. */
+    public record CompletedSnapshotSetup(org.xar.ck3.save.SaveContracts.NativeId actorId, FilePin sourceSave,
+                                         FilePin sourceInspection, PietyAmount expectedCurrentPiety,
+                                         CreationWalletHistory creationHistory) implements Setup, SnapshotEvidence {
+        public CompletedSnapshotSetup {
+            Objects.requireNonNull(actorId); Objects.requireNonNull(sourceSave); Objects.requireNonNull(sourceInspection);
+            Objects.requireNonNull(expectedCurrentPiety); Objects.requireNonNull(creationHistory);
+        }
+    }
+    public enum DivorceRule {
+        ALLOWED("doctrine_divorce_allowed"), DISALLOWED("doctrine_divorce_disallowed");
+        private final String doctrine;
+        DivorceRule(String doctrine) { this.doctrine = doctrine; }
+        public String doctrine() { return doctrine; }
+        public DivorceRule opposite() { return this == ALLOWED ? DISALLOWED : ALLOWED; }
+    }
+    public record DivorceRules(DivorceRule result, DivorceRule origin) {
+        public DivorceRules { Objects.requireNonNull(result); Objects.requireNonNull(origin); }
     }
     /** A CK3 character: script link uses a history definition key, not a native runtime handle. */
     public record ActorHistoryId(String value) {
@@ -89,12 +117,14 @@ public final class FixtureContracts {
     }
     public record Request(int schemaVersion, CaseKind kind, Mode mode, ActorHistoryId actorHistoryId, Setup setup, ExpectedSelection expectedSelection) {
         public Request {
-            if (schemaVersion != 3 && schemaVersion != 4) throw new IllegalArgumentException("fixture request schemaVersion 3 or 4 required");
+            if (schemaVersion != 3 && schemaVersion != 4 && schemaVersion != 5) throw new IllegalArgumentException("fixture request schemaVersion 3, 4 or 5 required");
             if (kind == null || mode == null || actorHistoryId == null || setup == null || expectedSelection == null) throw new IllegalArgumentException("fixture kind/mode/actorHistoryId/setup/expectedSelection required");
             expectedSelection.requireSources(SOURCE_A, SOURCE_B);
-            if ((schemaVersion == 4) != (setup instanceof SavedSnapshotSetup)) throw new IllegalArgumentException("version 4 requires the explicit saved_snapshot setup; version 3 retains its original setup contract");
-            if ((kind == CaseKind.COLD_RELOAD) != (setup instanceof SavedSetup || setup instanceof SavedSnapshotSetup)) throw new IllegalArgumentException("cold_reload requires saved setup; fresh cases require fresh setup");
-            if (setup instanceof SavedSnapshotSetup snapshot && snapshot.creationHistory().chargedCost() != mode.cost())
+            if ((schemaVersion == 4) != (setup instanceof SavedSnapshotSetup)
+                    || (schemaVersion == 5) != (setup instanceof CompletedSnapshotSetup))
+                throw new IllegalArgumentException("version 4 requires saved_snapshot; version 5 requires completed_snapshot; version 3 retains its original setup contract");
+            if ((kind == CaseKind.COLD_RELOAD) != (setup instanceof SavedSetup || setup instanceof SnapshotEvidence)) throw new IllegalArgumentException("cold_reload requires saved setup; fresh cases require fresh setup");
+            if (setup instanceof SnapshotEvidence snapshot && snapshot.creationHistory().chargedCost() != mode.cost())
                 throw new IllegalArgumentException("creation history charge differs from the selected mode");
             if (kind == CaseKind.CORE && setup instanceof FreshSetup fresh && fresh.piety() < mode.cost()) throw new IllegalArgumentException("positive core fixture must be able to pay its mode cost");
         }

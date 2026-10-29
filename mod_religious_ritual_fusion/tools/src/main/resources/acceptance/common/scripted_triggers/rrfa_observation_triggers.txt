@@ -41,8 +41,7 @@ rrfa_common_success_trigger = {
     NOT = { has_variable_list = rrf_selected_doctrines }
     rite = {
         rrfa_result_core_trigger = yes
-        rite_has_doctrine = doctrine_divorce_allowed
-        NOT = { rite_has_doctrine = doctrine_divorce_disallowed }
+        ${EXPECTED_RESULT_DIVORCE}
         var:rrf_rules_version = 1
         var:rrf_origin_a = root.var:rrfa_source_a
         var:rrf_origin_b = root.var:rrfa_expected_b
@@ -51,8 +50,7 @@ rrfa_common_success_trigger = {
         var:rrf_origin_mode = flag:${MODE}
         var:rrf_origin_founder = root
         ${EXPECTED_ORIGIN_CORE}
-        is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:doctrine_divorce_allowed }
-        NOT = { is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:doctrine_divorce_disallowed } }
+        ${EXPECTED_ORIGIN_DIVORCE}
     }
 }
 rrfa_rite_success_trigger = {

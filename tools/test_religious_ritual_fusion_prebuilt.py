@@ -71,6 +71,12 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=150, check=False)
 
     def test_real_java_cold_snapshot_wallet_crosses_saved_prepare_and_complete_ast_consumer(self) -> None:
+        self.verify_real_java_snapshot_wallet(4)
+
+    def test_real_java_completed_snapshot_crosses_frozen_reader_saved_prepare_and_complete_ast_consumer(self) -> None:
+        self.verify_real_java_snapshot_wallet(5)
+
+    def verify_real_java_snapshot_wallet(self, version: Literal[4, 5]) -> None:
         repository = Path(__file__).resolve().parents[1]
         cli = Path(os.environ.get('RRF_FIXTURE_CLI_JAR', str(
             repository / 'mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar'))).resolve()
@@ -84,20 +90,33 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
             'alive_data={variables={data={', 'alive_data={piety={currency=5400} variables={data={'
             '{flag="rrfa_piety_before" data={type=value identity=600000000}}'
             '{flag="rrf_charged_cost" data={type=value identity=50000000}}')
+        if version == 5:
+            current_text = current_text.replace('153={faith=13 data={',
+                '153={faith=13 data={doctrine="doctrine_divorce_allowed" ').replace(
+                'list={{name="rrf_origin_core_tenets" ',
+                'list={{name="rrf_origin_doctrines" item={type=doctrine key="doctrine_divorce_disallowed"}'
+                ' item={type=doctrine key="doctrine_monogamy"} duration={24}}{name="rrf_origin_core_tenets" ')
+        after_text = current_text.replace('currency=5400', 'currency=5500')
+        if version == 5:
+            after_text = after_text.replace('data={doctrine="doctrine_divorce_allowed" ',
+                                            'data={doctrine="doctrine_divorce_disallowed" ')
         observations: dict[str, JsonObject] = {}
         saves: dict[str, Path] = {}
         for label, text in (
                 ('before', current_text.replace('currency=5400', 'currency=6000').replace(
                     'living={31254={rite=153', 'living={31254={rite=150').replace(
                     authored_reference('rrf_last_result_rite', '153'), '')),
-                ('after', current_text.replace('currency=5400', 'currency=5500')),
+                ('after', after_text),
                 ('current', current_text)):
             save = self.root / ('cold-' + label + '-AUTHORED.ck3')
             save.write_text(text, encoding='utf-8'); saves[label] = save
+            tables: list[JsonObject] = [json_object({'kind': 'ACTOR', 'path': ['living'], 'ids': ['31254'], 'required': True})]
+            if version == 5 and label in ('after', 'current'):
+                tables.append(json_object({'kind': 'RITE', 'path': ['rites', 'database'], 'ids': ['153'], 'required': True}))
             request = json_object({'schemaVersion': 4, 'machineId': 'authored-machine',
                 'repository': str(repository), 'save': file_identity(save),
                 'decoder': file_identity(Path(sys.executable)),
-                'selection': {'tables': [{'kind': 'ACTOR', 'path': ['living'], 'ids': ['31254'], 'required': True}],
+                'selection': {'tables': tables,
                               'projections': [], 'metadataRequired': True, 'structureCensus': False, 'structureRoots': []}})
             child = self.inspect_cli(java, cli, request, 'cold-' + label, command='inspect-save-v4')
             self.assertEqual(child.returncode, 0, child.stderr.decode('utf-8', errors='replace'))
@@ -105,12 +124,25 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
             observed = json_object(json.loads(report_path.read_bytes()))
             self.assertEqual(observed['businessAssessment'], 'NOT_ASSESSED')
             observations[label] = json_object(file_identity(report_path))
-        fixture_request = json_object({'schemaVersion': 4, 'kind': 'cold_reload', 'mode': 'rite', 'actorHistoryId': '1128',
-            'setup': {'type': 'saved_snapshot', 'actorId': '31254', 'sourceSave': file_identity(saves['current']),
+        fixture_request = json_object({'schemaVersion': version, 'kind': 'cold_reload', 'mode': 'rite', 'actorHistoryId': '1128',
+            'setup': {'type': 'saved_snapshot' if version == 4 else 'completed_snapshot',
+                      'actorId': '31254', 'sourceSave': file_identity(saves['current']),
                       'sourceInspection': observations['current'], 'expectedCurrentPiety': '5400',
                       'creationHistory': {'before': '6000', 'after': '5500', 'chargedCost': 500,
                                           'beforeInspection': observations['before'], 'afterInspection': observations['after']}},
             'expectedSelection': {'coreTenets': cores}})
+        crossed = json_object(copy.deepcopy(fixture_request))
+        crossed_setup = json_object(crossed['setup'])
+        crossed_setup['type'] = 'completed_snapshot' if version == 4 else 'saved_snapshot'
+        crossed['setup'] = crossed_setup
+        crossed_path = self.root / 'crossed-snapshot.request.json'
+        crossed_path.write_text(json.dumps(crossed), encoding='utf-8')
+        crossed_output = self.root / 'crossed-snapshot'
+        rejected = subprocess.run([java, '-jar', str(cli), 'fixture', '--repo-root', str(repository),
+            '--output', str(crossed_output), '--machine-id', 'authored-machine', '--inputs', str(crossed_path)],
+            cwd=self.root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120, check=False)
+        self.assertNotEqual(rejected.returncode, 0, 'Actual Java contract must refuse crossed schema/setup')
+        self.assertFalse(crossed_output.exists())
         inputs = self.root / 'cold-fixture.request.json'; inputs.write_text(json.dumps(fixture_request), encoding='utf-8')
         fixture = self.root / 'java-cold-wallet'
         child = subprocess.run([java, '-jar', str(cli), 'fixture', '--repo-root', str(repository),
@@ -131,6 +163,13 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
         self.assertFalse(json_object(emitted['receipt'])['fixture_contains_business_effects'])
         trigger = fixture / 'common/scripted_triggers/rrfa_observation_triggers.txt'
         self.assertIn('piety = 5400\n    var:rrfa_piety_before = 6000', trigger.read_text(encoding='utf-8-sig'))
+        canonical = json_object(json.loads((fixture / '_rrfa_request.json').read_bytes()))
+        self.assertEqual(canonical['schemaVersion'], version)
+        self.assertEqual(json_object(canonical['setup']), json_object(fixture_request['setup']))
+        if version == 5:
+            trigger_text = trigger.read_text(encoding='utf-8-sig')
+            self.assertIn('rite_has_doctrine = doctrine_divorce_allowed', trigger_text)
+            self.assertIn('name = rrf_origin_doctrines target = doctrine:doctrine_divorce_disallowed', trigger_text)
         product = self.root / 'cold-product'; product.mkdir()
         (product / 'descriptor.mod').write_text('name="Authored cold product"\n', encoding='utf-8')
         plain: JsonObject = {}

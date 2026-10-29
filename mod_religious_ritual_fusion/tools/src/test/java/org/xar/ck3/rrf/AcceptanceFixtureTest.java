@@ -1,6 +1,7 @@
 package org.xar.ck3.rrf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -90,12 +91,190 @@ final class AcceptanceFixtureTest {
                 json.replace("\"chargedCost\" : 500", "\"chargedCost\" : true"),
                 json.replace("\"chargedCost\" : 500", "\"chargedCost\" : 400")))
             assertThrows(IOException.class, () -> Json.read(invalid.getBytes(StandardCharsets.UTF_8), Request.class));
-        for (String invalid : List.of("5400.0", "-1", "1e3", "NaN", "5400 # injected", "1000001"))
+        for (String invalid : List.of("5400.0", "-0", "1e3", "NaN", "5400 # injected", "1000001", "-1000001"))
             assertThrows(IllegalArgumentException.class, () -> new FixtureContracts.PietyAmount(invalid));
         assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, directory.resolve("wrong-machine-wallet"), "different-machine", request));
         var crossed = new FixtureContracts.SavedSnapshotSetup(new org.xar.ck3.save.SaveContracts.NativeId("31255"), setup.sourceSave(), setup.sourceInspection(), setup.expectedCurrentPiety(), setup.creationHistory());
         assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, directory.resolve("wrong-actor-wallet"), "synthetic-fixture-machine", new Request(4, CaseKind.COLD_RELOAD, Mode.RITE, ROBERT, crossed, DEFAULT_SELECTION)));
         FixtureEmitter.emit(repository, directory.resolve("fractional-wallet"), "synthetic-fixture-machine", request);
+    }
+    @Test void signedCurrentWalletAndOmittedCreationZeroCrossTheActualFrozenFixtureReader() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        var setup = faithColdEvidence(repository, "signed-wallet", "piety={currency=-0.4 accumulated=1850}", "-0.4");
+        Request request = new Request(4, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup,
+                bundledRequest(repository, "cold-faith-four").expectedSelection());
+        assertEquals(request, Json.read(Json.write(request), Request.class));
+        byte[] afterBytes = Files.readAllBytes(Path.of(setup.creationHistory().afterInspection().path()));
+        var after = org.xar.ck3.save.SaveJson.read(afterBytes, org.xar.ck3.save.Inspection.Report.class);
+        var actor = after.decoded().projection().scopes().stream()
+                .filter(scope -> scope.kind() == org.xar.ck3.save.SaveContracts.ScopeKind.ACTOR).findFirst().orElseThrow().ast();
+        assertTrue(actor.block("alive_data").block("piety").named("currency").isEmpty());
+        assertEquals("1850", actor.block("alive_data").block("piety").atom("accumulated", ""));
+        var emitted = FixtureEmitter.emit(repository, directory.resolve("signed-current-fixture"), "synthetic-fixture-machine", request);
+        assertEquals(8, emitted.payload().files().size());
+        String trigger = Files.readString(emitted.fixture().resolve("common/scripted_triggers/rrfa_observation_triggers.txt"));
+        assertTrue(trigger.contains("piety = -0.4\n    var:rrfa_piety_before = 1000"));
+        assertTrue(trigger.contains("var:rrf_charged_cost = 1000"));
+        assertReadOnly(keys(Clausewitz.parse(trigger)));
+        var bound = org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(manifestPin(emitted.manifest()), "synthetic-fixture-machine", repository);
+        assertEquals(request, bound.request());
+        var inputs = Json.read(Files.readAllBytes(Path.of(emitted.fixture() + ".inputs.json")), FixtureContracts.PrebuiltInputs.class);
+        assertEquals(org.xar.ck3.rrf.acceptance.ColdSnapshotReader.inputPins(request), inputs.inputPins());
+        assertTrue(inputs.inputPins().contains(setup.creationHistory().afterInspection()));
+        assertArrayEquals(afterBytes, Files.readAllBytes(Path.of(setup.creationHistory().afterInspection().path())));
+        for (String wrong : List.of("0", "-0.40001")) {
+            var crossed = new FixtureContracts.SavedSnapshotSetup(setup.actorId(), setup.sourceSave(), setup.sourceInspection(),
+                    new FixtureContracts.PietyAmount(wrong), setup.creationHistory());
+            Path output = directory.resolve("wrong-signed-" + wrong);
+            assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, output, "synthetic-fixture-machine",
+                    new Request(4, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, crossed, request.expectedSelection())));
+            assertFalse(Files.exists(output));
+        }
+        for (String zero : List.of("piety={accumulated=1850}", "piety={}")) {
+            var zeroSetup = faithColdEvidence(repository, "zero-" + zero.length(), zero, "0");
+            FixtureEmitter.emit(repository, directory.resolve("zero-fixture-" + zero.length()), "synthetic-fixture-machine",
+                    new Request(4, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, zeroSetup, request.expectedSelection()));
+        }
+    }
+    @Test void signedWalletCanonicalStringsDoNotRelaxNonnegativeCreationHistoryOrItsSingleBill() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        var setup = faithColdEvidence(repository, "history-sign", "piety={currency=-0.4}", "-0.4");
+        for (String amount : List.of("-0.4", "-1", "0", "1000000", "-1000000", "-0.00001")) {
+            var value = new FixtureContracts.PietyAmount(amount);
+            var snapshot = new FixtureContracts.SavedSnapshotSetup(setup.actorId(), setup.sourceSave(), setup.sourceInspection(), value, setup.creationHistory());
+            Request request = new Request(4, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, snapshot, DEFAULT_SELECTION);
+            assertEquals(request, Json.read(Json.write(request), Request.class));
+        }
+        for (String invalid : List.of("-0", "-0.0", "-01", "+1", "--1", "-1.0", "-0.400000", "-1000001", "-1000000.00001", "NaN", "1e3"))
+            assertThrows(IllegalArgumentException.class, () -> new FixtureContracts.PietyAmount(invalid));
+        String serialized = new String(Json.write(new Request(4, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, DEFAULT_SELECTION)), StandardCharsets.UTF_8);
+        for (String invalidJson : List.of("-0.4", "true", "null", "{}", "[]")) {
+            String invalid = serialized.replace("\"expectedCurrentPiety\" : \"-0.4\"", "\"expectedCurrentPiety\" : " + invalidJson);
+            assertFalse(invalid.equals(serialized));
+            assertThrows(IOException.class, () -> Json.read(invalid.getBytes(StandardCharsets.UTF_8), Request.class));
+        }
+        var before = setup.creationHistory().beforeInspection(); var after = setup.creationHistory().afterInspection();
+        for (List<String> pair : List.of(List.of("-1", "-1001"), List.of("0", "-1000")))
+            assertThrows(IllegalArgumentException.class, () -> new FixtureContracts.CreationWalletHistory(
+                    new FixtureContracts.PietyAmount(pair.getFirst()), new FixtureContracts.PietyAmount(pair.getLast()), 1000, before, after));
+        for (int wrong : List.of(0, 500, 1001))
+            assertThrows(IllegalArgumentException.class, () -> new FixtureContracts.CreationWalletHistory(
+                    new FixtureContracts.PietyAmount("1000"), new FixtureContracts.PietyAmount("0"), wrong, before, after));
+        assertThrows(IllegalArgumentException.class, () -> new Request(4, CaseKind.COLD_RELOAD, Mode.RITE, ROBERT, setup, DEFAULT_SELECTION));
+    }
+    @Test void omittedCurrencyRequiresAnExistingUniqueWalletBlockAndExplicitCurrencyRemainsStrict() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        // These two expressions are invalid save ASTs and are rejected by the
+        // actual inspection parser before a V4 report can reach the wallet reader.
+        for (String invalidSyntax : List.of("piety>= {}", "piety={currency>=0}"))
+            assertThrows(IOException.class, () -> faithColdEvidence(repository, "invalid-wallet-syntax-" + invalidSyntax.length(), invalidSyntax, "0"));
+        List<String> malformed = List.of("", "piety=0", "piety={} piety={}", "piety={currency={}}",
+                "piety={currency=0 currency=0}", "piety={currency=true}",
+                "piety={currency=\"0\"}", "piety={currency=-0}", "piety={currency=0.0}", "piety={currency=1e3}");
+        for (int index = 0; index < malformed.size(); index++) {
+            var setup = faithColdEvidence(repository, "malformed-wallet-" + index, malformed.get(index), "0");
+            Path output = directory.resolve("malformed-wallet-fixture-" + index);
+            assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, output, "synthetic-fixture-machine",
+                    new Request(4, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, DEFAULT_SELECTION)));
+            assertFalse(Files.exists(output));
+        }
+    }
+    @Test void completedSnapshotKeepsCurrentAndHistoricalDivorceSeparateAcrossSerdeAndFrozenReader() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        List<String> origin = completedOrigin();
+        assertEquals(24, origin.size());
+        var setup = completedEvidence(repository, "completed", origin, origin, true, true);
+        Request request = new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, bundledRequest(repository, "cold-faith-four").expectedSelection());
+        assertEquals(request, Json.read(Json.write(request), Request.class));
+        var rules = org.xar.ck3.rrf.acceptance.ColdSnapshotReader.verifiedDivorceRules(request, "synthetic-fixture-machine", repository);
+        assertEquals(FixtureContracts.DivorceRule.ALLOWED, rules.result());
+        assertEquals(FixtureContracts.DivorceRule.DISALLOWED, rules.origin());
+        var emitted = FixtureEmitter.emit(repository, directory.resolve("completed-fixture"), "synthetic-fixture-machine", request);
+        assertEquals(8, emitted.payload().files().size());
+        String trigger = Files.readString(emitted.fixture().resolve("common/scripted_triggers/rrfa_observation_triggers.txt"));
+        assertTrue(trigger.contains("rite_has_doctrine = doctrine_divorce_allowed"));
+        assertTrue(trigger.contains("name = rrf_origin_doctrines target = doctrine:doctrine_divorce_disallowed"));
+        assertTrue(trigger.contains("piety = -0.4"));
+        assertTrue(trigger.contains("var:rrf_charged_cost = 1000"));
+        assertTrue(trigger.contains("has_character_flag = rrf_fusion_cooldown"));
+        assertTrue(trigger.contains("variable_list_size = { name = rrf_origin_core_tenets value = 4 }"));
+        assertReadOnly(keys(Clausewitz.parse(trigger)));
+        assertEquals(request, org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(manifestPin(emitted.manifest()), "synthetic-fixture-machine", repository).request());
+        var inputs = Json.read(Files.readAllBytes(Path.of(emitted.fixture() + ".inputs.json")), FixtureContracts.PrebuiltInputs.class);
+        assertEquals(org.xar.ck3.rrf.acceptance.ColdSnapshotReader.inputPins(request), inputs.inputPins());
+        for (int version : List.of(3, 4))
+            assertThrows(IllegalArgumentException.class, () -> new Request(version, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, request.expectedSelection()));
+        var legacySetup = new FixtureContracts.SavedSnapshotSetup(setup.actorId(), setup.sourceSave(), setup.sourceInspection(), setup.expectedCurrentPiety(), setup.creationHistory());
+        assertThrows(IllegalArgumentException.class, () -> new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, legacySetup, request.expectedSelection()));
+    }
+    @Test void completedSnapshotRejectsMissingFullRiteAndChangedOrDuplicateOriginWithoutStrengtheningVersionFour() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        List<String> origin = completedOrigin();
+        for (boolean afterRite : List.of(false, true)) {
+            var setup = completedEvidence(repository, "missing-rite-" + afterRite, origin, origin, afterRite, !afterRite);
+            assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, directory.resolve("missing-rite-fixture-" + afterRite), "synthetic-fixture-machine",
+                    new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, DEFAULT_SELECTION)));
+            var legacy = new FixtureContracts.SavedSnapshotSetup(setup.actorId(), setup.sourceSave(), setup.sourceInspection(), setup.expectedCurrentPiety(), setup.creationHistory());
+            FixtureEmitter.emit(repository, directory.resolve("legacy-no-new-rite-requirement-" + afterRite), "synthetic-fixture-machine",
+                    new Request(4, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, legacy, DEFAULT_SELECTION));
+        }
+        List<String> reversed = new ArrayList<>(origin); java.util.Collections.reverse(reversed);
+        List<String> duplicate = new ArrayList<>(origin); duplicate.add(origin.getFirst());
+        for (List<String> changed : List.of(reversed, duplicate)) {
+            var setup = completedEvidence(repository, "origin-" + changed.size(), origin, changed, true, true);
+            assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, directory.resolve("wrong-origin-" + changed.size()), "synthetic-fixture-machine",
+                    new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, DEFAULT_SELECTION)));
+        }
+        var setup = completedEvidence(repository, "coverage", origin, origin, true, true);
+        for (String defect : List.of("selection", "coverage", "status", "id")) {
+            JsonNode json = Json.read(Files.readAllBytes(Path.of(setup.sourceInspection().path())), JsonNode.class);
+            String pointer = defect.equals("selection") ? "/request/selection/tables" : defect.equals("coverage") ? "/decoded/projection/scopes" : "/decoded/projection/records";
+            for (JsonNode row : json.at(pointer)) {
+                if (!row.path("kind").asText().equals("RITE")) continue;
+                if (!(row instanceof com.fasterxml.jackson.databind.node.ObjectNode object)) throw new AssertionError("typed report row required");
+                switch (defect) {
+                    case "selection" -> object.set("ids", object.arrayNode().add("156"));
+                    case "coverage" -> object.put("coverage", "DIRECT_SCALARS");
+                    case "status" -> object.put("status", "NOT_FOUND");
+                    case "id" -> object.put("id", "156");
+                    default -> throw new AssertionError(defect);
+                }
+            }
+            Path malformed = directory.resolve("coverage-" + defect + ".json"); Files.write(malformed, Json.write(json));
+            var crossed = new FixtureContracts.CompletedSnapshotSetup(setup.actorId(), setup.sourceSave(), manifestPin(malformed), setup.expectedCurrentPiety(), setup.creationHistory());
+            assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, directory.resolve("coverage-fixture-" + defect), "synthetic-fixture-machine",
+                    new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, crossed, DEFAULT_SELECTION)));
+        }
+    }
+    private static List<String> completedOrigin() {
+        List<String> keys = new ArrayList<>(List.of("doctrine_divorce_disallowed", "doctrine_monogamy"));
+        for (int index = 2; index < 24; index++) keys.add("doctrine_authored_origin_" + index);
+        return List.copyOf(keys);
+    }
+    private FixtureContracts.CompletedSnapshotSetup completedEvidence(Path repository, String name, List<String> afterOrigin,
+            List<String> currentOrigin, boolean afterRite, boolean currentRite) throws IOException {
+        var before = coldReport(repository, name + "-before", "piety={currency=1000}", false, 1000, 1000, 155);
+        var after = coldReport(repository, name + "-after", "piety={accumulated=1850}", true, 1000, 1000, 155, completedRite(afterOrigin, false), afterRite);
+        var current = coldReport(repository, name + "-current", "piety={currency=-0.4}", true, 1000, 1000, 155, completedRite(currentOrigin, true), currentRite);
+        var source = org.xar.ck3.save.SaveJson.read(Files.readAllBytes(Path.of(current.path())), org.xar.ck3.save.Inspection.Report.class).decoded().save();
+        return new FixtureContracts.CompletedSnapshotSetup(new org.xar.ck3.save.SaveContracts.NativeId("31254"),
+                new FixtureContracts.FilePin(source.path(), source.bytes(), source.sha256()), current, new FixtureContracts.PietyAmount("-0.4"),
+                new FixtureContracts.CreationWalletHistory(new FixtureContracts.PietyAmount("1000"), new FixtureContracts.PietyAmount("0"), 1000, before, after));
+    }
+    private static String completedRite(List<String> origin, boolean completed) {
+        StringBuilder items = new StringBuilder();
+        for (String key : origin) items.append("item={type=doctrine key=\"").append(key).append("\"}");
+        return " rites={database={155={data={doctrine=\"doctrine_divorce_" + (completed ? "allowed" : "disallowed")
+                + "\"} variables={list={{name=\"rrf_origin_doctrines\" " + items + "}}}}}}";
+    }
+    private FixtureContracts.SavedSnapshotSetup faithColdEvidence(Path repository, String name, String currentWallet, String expectedCurrent) throws IOException {
+        FixtureContracts.FilePin before = coldReport(repository, name + "-before", "piety={currency=1000 accumulated=1850}", false, 1000, 1000, 155);
+        FixtureContracts.FilePin after = coldReport(repository, name + "-after", "piety={accumulated=1850}", true, 1000, 1000, 155);
+        FixtureContracts.FilePin observed = coldReport(repository, name + "-current", currentWallet, true, 1000, 1000, 155);
+        var source = org.xar.ck3.save.SaveJson.read(Files.readAllBytes(Path.of(observed.path())), org.xar.ck3.save.Inspection.Report.class).decoded().save();
+        return new FixtureContracts.SavedSnapshotSetup(new org.xar.ck3.save.SaveContracts.NativeId("31254"),
+                new FixtureContracts.FilePin(source.path(), source.bytes(), source.sha256()), observed, new FixtureContracts.PietyAmount(expectedCurrent),
+                new FixtureContracts.CreationWalletHistory(new FixtureContracts.PietyAmount("1000"), new FixtureContracts.PietyAmount("0"), 1000, before, after));
     }
     private FixtureContracts.SavedSnapshotSetup coldEvidence(Path repository, String name, String current) throws IOException {
         FixtureContracts.FilePin before = coldReport(repository, name + "-before", "6000", false);
@@ -108,13 +287,21 @@ final class AcceptanceFixtureTest {
                 new FixtureContracts.CreationWalletHistory(new FixtureContracts.PietyAmount("6000"), new FixtureContracts.PietyAmount("5500"), 500, before, after));
     }
     private FixtureContracts.FilePin coldReport(Path repository, String name, String piety, boolean created) throws IOException {
-        String data = "{flag=\"rrfa_piety_before\" data={type=value identity=600000000}}"
-                + (created ? "{flag=\"rrf_charged_cost\" data={type=value identity=50000000}}{flag=\"rrf_last_result_rite\" data={type=rite identity=153}}" : "");
+        return coldReport(repository, name, "piety={currency=" + piety + "}", created, 6000, 500, 153);
+    }
+    private FixtureContracts.FilePin coldReport(Path repository, String name, String wallet, boolean created, int before, int cost, int result) throws IOException {
+        return coldReport(repository, name, wallet, created, before, cost, result, "", false);
+    }
+    private FixtureContracts.FilePin coldReport(Path repository, String name, String wallet, boolean created, int before, int cost, int result, String rites, boolean selectRite) throws IOException {
+        String data = "{flag=\"rrfa_piety_before\" data={type=value identity=" + before * 100000L + "}}"
+                + (created ? "{flag=\"rrf_charged_cost\" data={type=value identity=" + cost * 100000L + "}}{flag=\"rrf_last_result_rite\" data={type=rite identity=" + result + "}}" : "");
         String text = "meta_data={version=\"1.20.0.4\"} playthrough_id=\"authored-wallet-campaign\" date=1066.9.17 living={31254={rite="
-                + (created ? "153" : "150") + " alive_data={piety={currency=" + piety + "} variables={data={" + data + "}}}}}";
+                + (created ? Integer.toString(result) : "150") + " alive_data={" + wallet + " variables={data={" + data + "}}}}}" + rites;
         Path save = directory.resolve(name + ".ck3"); Files.writeString(save, text);
-        var selected = new org.xar.ck3.save.SaveContracts.Selection(List.of(new org.xar.ck3.save.SaveContracts.TableSelection(
-                org.xar.ck3.save.SaveContracts.ScopeKind.ACTOR, List.of("living"), List.of(new org.xar.ck3.save.SaveContracts.NativeId("31254")), true)), List.of(), true, false, List.of());
+        List<org.xar.ck3.save.SaveContracts.TableSelection> tables = new ArrayList<>();
+        tables.add(new org.xar.ck3.save.SaveContracts.TableSelection(org.xar.ck3.save.SaveContracts.ScopeKind.ACTOR, List.of("living"), List.of(new org.xar.ck3.save.SaveContracts.NativeId("31254")), true));
+        if (selectRite) tables.add(new org.xar.ck3.save.SaveContracts.TableSelection(org.xar.ck3.save.SaveContracts.ScopeKind.RITE, List.of("rites", "database"), List.of(new org.xar.ck3.save.SaveContracts.NativeId(Integer.toString(result))), true));
+        var selected = new org.xar.ck3.save.SaveContracts.Selection(tables, List.of(), true, false, List.of());
         var pin = org.xar.ck3.save.FilePins.pin(save);
         var request = new org.xar.ck3.save.Inspection.Request(4, "synthetic-fixture-machine", repository.toString(), pin, pin, selected);
         var projection = new org.xar.ck3.save.SaveStream(new java.io.StringReader(text), selected).read();

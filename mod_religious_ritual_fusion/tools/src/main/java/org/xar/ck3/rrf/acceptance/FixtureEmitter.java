@@ -57,7 +57,7 @@ public final class FixtureEmitter {
     public static Emission emit(Path repository, Path output, String machineId, Request request) throws IOException {
         FixtureContracts.machine(machineId);
         Path repo = repository.toRealPath(); Path destination = output.toAbsolutePath().normalize();
-        ColdSnapshotReader.verify(request, machineId, repo);
+        FixtureContracts.DivorceRules divorce = ColdSnapshotReader.verifiedDivorceRules(request, machineId, repo);
         Path manifest = Path.of(destination + ".fixture.json"); Path snapshot = Path.of(destination + ".request.json");
         Path inputs = Path.of(destination + ".inputs.json");
         for (Path target : List.of(destination, manifest, snapshot, inputs)) if (Files.exists(target, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("unused fixture output required: " + target);
@@ -87,6 +87,10 @@ public final class FixtureEmitter {
                     .replace("${EXPECTED_RESULT_CORE}", corePredicate(request.expectedSelection().coreTenets()))
                     .replace("${EXPECTED_ORIGIN_CORE}", originPredicate(request.expectedSelection()))
                     .replace("${PIETY_READBACK}", ColdSnapshotReader.walletPredicate(request))
+                    .replace("${EXPECTED_RESULT_DIVORCE}", "rite_has_doctrine = " + divorce.result().doctrine()
+                            + "\n        NOT = { rite_has_doctrine = " + divorce.result().opposite().doctrine() + " }")
+                    .replace("${EXPECTED_ORIGIN_DIVORCE}", "is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:" + divorce.origin().doctrine() + " }"
+                            + "\n        NOT = { is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:" + divorce.origin().opposite().doctrine() + " } }")
                     .replace("${SOURCE_SHARED_ONE}", FixtureContracts.SOURCE_A.get(0).value())
                     .replace("${SOURCE_SHARED_TWO}", FixtureContracts.SOURCE_A.get(1).value())
                     .replace("${SOURCE_A_EXCLUSIVE}", FixtureContracts.SOURCE_A.get(2).value())
@@ -112,7 +116,7 @@ public final class FixtureEmitter {
         }
         Manifest result = new Manifest("ck3-mod-acceptance-prebuilt-fixture-v1", "religious-ritual-fusion", request.kind().wire(), machineId, Instant.now().toString(), destination.toString(), pins, files, new Receipt(markers, Map.of(), request.kind() != CaseKind.COLD_RELOAD));
         Files.write(manifest, Json.write(result), StandardOpenOption.CREATE_NEW); Files.write(snapshot, Json.write(request), StandardOpenOption.CREATE_NEW);
-        if (request.schemaVersion() == 4) Files.write(inputs, Json.write(new FixtureContracts.PrebuiltInputs(
+        if (request.schemaVersion() == 4 || request.schemaVersion() == 5) Files.write(inputs, Json.write(new FixtureContracts.PrebuiltInputs(
                 "rrf-prebuilt-fixture-inputs-v1", pin(manifest), pin(destination.resolve(FixtureContracts.REQUEST_FILE)),
                 ColdSnapshotReader.inputPins(request))), StandardOpenOption.CREATE_NEW);
         return new Emission(destination, manifest, snapshot, result);

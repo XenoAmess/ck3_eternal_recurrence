@@ -200,7 +200,7 @@ def _prebuilt_checked_pin(value: object) -> FilePin:
 
 
 def prebuilt_fixture_inputs(case_inputs: object) -> PrebuiltFixtureInputs | None:
-    """Bind Java's v4 request-derived external inputs; business validation stays in Java.
+    """Bind Java's v4/v5 request-derived inputs; business validation stays in Java.
 
     Both materialization and public Selection use this single parser. The receipt is
     outside the deployed eight-file fixture and never becomes a producer source.
@@ -229,17 +229,18 @@ def prebuilt_fixture_inputs(case_inputs: object) -> PrebuiltFixtureInputs | None
         raise ValueError('Canonical fixture request exceeds read budget')
     frozen = json_object(json.loads(Path(request['path']).read_text(encoding='utf-8-sig')))
     version = frozen.get('schemaVersion')
-    if type(version) is not int or version not in (3, 4):
+    if type(version) is not int or version not in (3, 4, 5):
         raise ValueError('Canonical fixture request version must be an exact supported integer')
     if version == 3:
         if 'prebuilt_fixture_inputs' in inputs:
             raise ValueError('Version 3 forbids snapshot input receipts')
         return None
     if frozen.get('kind') != 'cold_reload' or row.get('case_id') != 'cold_reload':
-        raise ValueError('Version 4 input receipt requires cold_reload')
+        raise ValueError('Snapshot input receipt requires cold_reload')
     setup = object_field(frozen, 'setup')
-    if setup.get('type') != 'saved_snapshot':
-        raise ValueError('Version 4 requires saved_snapshot')
+    expected_setup = 'saved_snapshot' if version == 4 else 'completed_snapshot'
+    if setup.get('type') != expected_setup:
+        raise ValueError(f'Version {version} requires {expected_setup}')
     history = object_field(setup, 'creationHistory')
     references: list[FilePin] = []
     for value in (setup.get('sourceSave'), setup.get('sourceInspection'),

@@ -133,6 +133,51 @@ class SavedProfileV2Tests(unittest.TestCase):
             self.assertEqual(result["status"], "IMMUTABLE_SAVE_COPIED_TO_FRESH_VANILLA_PROFILE")
             self.assertIs(result["source_game_state_claimed"], False)
 
+    def test_completed_snapshot_passive_fixture_keeps_v2_role_and_exact_host_copy(self) -> None:
+        from ck3_mod_acceptance_background_types import json_object
+        import ck3_mod_acceptance_prepare as fixture_prepare
+        from test_prebuilt_fixture_prepare import authored_snapshot_fixture
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            inputs = authored_snapshot_fixture(root / 'snapshot-input', 5)
+            binding = fixture_prepare.prebuilt_fixture_inputs(json.loads(json.dumps(inputs)))
+            self.assertIsNotNone(binding)
+            if binding is None:
+                self.fail('Completed snapshot must preserve its external input binding')
+            manifest = mapping(json.loads(Path(binding['manifest']['path']).read_bytes()))
+            fixture = Path(str(manifest['fixture_root']))
+            configs: dict[str, dict[str, object]] = {}
+            for index, name in enumerate(fixture_prepare.CONFIG_NAMES):
+                path = root / ('plain-' + str(index))
+                path.write_bytes(b'AUTHORED CONFIGURATION; NOT A GAME RUN\n')
+                configs[name] = dict(fixture_prepare.pin(path))
+            prepared = materialize_saved_profile_v2({'state_dir': str(root / 'state'), 'output': str(root / 'prepared')},
+                fixture, configs, source_role='case_fixture')
+            profile = Path(prepared['profile'])
+            inventory = parse_inventory(json.loads(Path(prepared['product_inventory']['path']).read_bytes()))
+            self.assertEqual(parse_inventory(json.loads(json.dumps(inventory.to_json()))), inventory)
+            self.assertEqual(verify_inventory(inventory, profile=profile, actual_enabled_mods=['mod/product.mod']), inventory)
+            projections = mapping(inventory.to_json())['projections']
+            self.assertIsInstance(projections, list)
+            if not isinstance(projections, list):
+                self.fail('Explicit inventory projection list required')
+            self.assertEqual(mapping(projections[0])['source_role'], 'case_fixture')
+            original_request = (fixture / '_rrfa_request.json').read_bytes()
+            copied_request = profile / 'mod-content/product/_rrfa_request.json'
+            self.assertEqual(copied_request.read_bytes(), original_request)
+            self.assertEqual(json_object(json.loads(original_request))['schemaVersion'], 5)
+            source = json_object(json.loads(original_request))['setup']
+            selected_save = json_object(json_object(source)['sourceSave'])
+            args = argparse.Namespace(saved_campaign_save=Path(str(selected_save['path'])),
+                saved_campaign_save_bytes=selected_save['bytes'], saved_campaign_save_sha256=selected_save['sha256'],
+                saved_campaign_player_id=31254, saved_campaign_date_raw=53144376,
+                saved_campaign_product_inventory=Path(prepared['product_inventory']['path']))
+            result = mapping(actual_host_preparer()(args, ProfileSpec(profile, Path(prepared['state_dir']))))
+            self.assertEqual(Path(str(result['copied_save_path'])).read_bytes(), Path(str(selected_save['path'])).read_bytes())
+            self.assertIs(result['product_acceptance_proven'], False)
+            self.assertEqual(copied_request.read_bytes(), original_request)
+
     def test_wrong_file_integer_types_are_rejected_by_actual_host_before_copy(self) -> None:
         invalid: tuple[object, ...] = (True, False, 1.0, "1", None)
         for index, wrong in enumerate(invalid):

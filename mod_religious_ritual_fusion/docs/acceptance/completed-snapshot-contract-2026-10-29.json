@@ -1,0 +1,124 @@
+{
+  "schema": "rrf-completed-snapshot-software-validation-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-29T03:20:04.455486+00:00",
+  "scope": "v5 completed_snapshot and signed zero-day wallet; software only",
+  "software_pass": true,
+  "Game_started": false,
+  "cold_business_pass": false,
+  "release_pass": false,
+  "source_base_commit": "9c5d27d484cb18a66b8aa1e7a087f16d229e138f",
+  "source_identity": "SCOPED_WORKING_TREE",
+  "source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureContracts.java",
+      "bytes": 12374,
+      "sha256": "eed47fe83a84502ee7bba004377356d4374e09fa4d10889425f2b3bed7ed926b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+      "bytes": 15666,
+      "sha256": "c8c4ffcc57105caef95599ec27a91223fab90996090e4a8bc4d319f7138e1665"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureEmitter.java",
+      "bytes": 15065,
+      "sha256": "0f23b79c802da5fd5a2925d79275c99975bcb27acbb05e03a701df20222b2257"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FrozenFixtureReader.java",
+      "bytes": 10991,
+      "sha256": "0e3ce38a27f4bb875cd9fcc8b76418f6172d4d6d5cf8bd444b7a81883810ccde"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\scripted_triggers\\rrfa_observation_triggers.txt",
+      "bytes": 3357,
+      "sha256": "5c3f3bd30c0e0b11e0cd328fdc60b48f83e4d3c3a73e8a710c66fb582ce3520c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+      "bytes": 61248,
+      "sha256": "28dab16f387a705f35322ed16d1ba4d23001e7cd1d094ed6758611c6219d6f35"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\save\\SavedSelectionTest.java",
+      "bytes": 25811,
+      "sha256": "78857f9cfb390332c2aabebf8709fe0d8c0f0c9f731709a262ba7186e3871849"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 37844,
+      "sha256": "092f87430af32d2125143e45d63e1c54709ec2f368aa3bb7f431949dd7f6dbda"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_religious_ritual_fusion_prebuilt.py",
+      "bytes": 31090,
+      "sha256": "6d60874a715869ede0c002b531b0d99733390e46fbd2f1b546c11db2c39cb7a8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_prebuilt_fixture_prepare.py",
+      "bytes": 24681,
+      "sha256": "3cce8e40dcf705f88562e788181212bba461d29262d97e7e888ca2da777f9570"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_saved_campaign_profile_inventory_v2.py",
+      "bytes": 17585,
+      "sha256": "944d18a4c3edcd34a8d4b1c5b582fb31126e494009642943c5ed72eea003b45e"
+    }
+  ],
+  "command_validation": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\review-validation-a19\\metadata\\final-wallet-CI-a01\\COMMAND-VALIDATION.actual.json",
+    "bytes": 10444,
+    "sha256": "b3092c4676fac14b3fa2e770657727df5f3da5851cf1df79be06ba2dcb175a25"
+  },
+  "command_source_execution": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\review-validation-a19\\metadata\\final-wallet-CI-a01\\COMMAND-SOURCE-EXECUTION.actual.json",
+    "bytes": 8447,
+    "sha256": "b02c1a8c621387790c621629e81c8e8791c577b9a93ce3b61c5654e7b74941bb"
+  },
+  "writer_closure": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\review-validation-a19\\metadata\\final-wallet-CI-a01\\WRITES-CLOSED.actual.json",
+    "bytes": 8474,
+    "sha256": "faba39aa91c843147d664f068fd1f4f90d1f6990dc85d13b71527b6792d0eaf4"
+  },
+  "artifact_graph": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\review-validation-a19\\metadata\\final-wallet-CI-a01\\ARTIFACT-GRAPH.actual.json",
+    "bytes": 21233,
+    "sha256": "d7491ad3d4dd8825c034e3e37ca7ff50d0f3ed6d8caa0f4da209bf80a26db383"
+  },
+  "test_counts": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\review-validation-a19\\metadata\\final-wallet-CI-a01\\TEST-COUNTS.actual.json",
+    "bytes": 11555,
+    "sha256": "b8d56785270720eee23bc3c647d3fd704d260e564b4c931a9ac1838c3f7e9727"
+  },
+  "summary": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\review-validation-a19\\metadata\\final-wallet-CI-a01\\FINAL-VALIDATION-SUMMARY.actual.md",
+    "bytes": 7578,
+    "sha256": "b2f15544232dc116a0af7f207c98813d23ed7e4fa8f0b9e0d3a623ed40206b82"
+  },
+  "counts": {
+    "Java": 120,
+    "Python": 63,
+    "skipped": 0,
+    "strict_compatibility_exit": 0,
+    "strict_modified_prepare_helper_nodes": 8
+  },
+  "budget": {
+    "method": "conservative rounded4096 file sizes plus4096 per directory; same admission accounting; sampled maxima retained without refunds",
+    "initial_actual_directory_bytes": 126152704,
+    "retained_paid_basis_bytes": 176611328,
+    "current_sample_bytes": 163786752,
+    "observed_peak_bytes": 167567360,
+    "new_growth_upper_bytes": 41414656,
+    "cumulative_charged_upper_bytes": 218025984,
+    "cap_bytes": 268435456,
+    "early_stop_bytes": 251658240,
+    "volume_free_bytes": 123678081024,
+    "expires_at_utc": "2026-10-29T04:00:00Z"
+  },
+  "historical_failed_original_wait": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\review-validation-a19\\metadata\\final-wallet-CI-a01\\03-complete-product-verify.original-wait.actual.json",
+    "bytes": 5773,
+    "sha256": "3c7af8a962a817aecda443c908048305c96239c78e951b99523f9afa66469706"
+  }
+}

@@ -44,7 +44,7 @@ public final class FrozenFixtureReader {
                 || !text(compiled, "case").equals(fixture.request().kind().wire())) throw new IOException("prepared fixture product/case differs");
         JsonNode emitter = compiled.get("emitter");
         if (emitter == null || !emitter.isObject() || !jsonPin(emitter.get("manifest")).equals(fixture.manifestPin())) throw new IOException("prepared fixture emitter manifest differs");
-        if (fixture.request().schemaVersion() == 4) {
+        if (fixture.request().schemaVersion() == 4 || fixture.request().schemaVersion() == 5) {
             FilePin receipt = inputReceipt(fixture.manifestPin(), fixture.requestPin(), fixture.request());
             if (!jsonPin(emitter.get("input_receipt")).equals(receipt)
                     || !jsonPin(emitter.get("fixture_request")).equals(fixture.requestPin()))
@@ -97,7 +97,7 @@ public final class FrozenFixtureReader {
         Catalog definitions = Json.read(Files.readAllBytes(catalog), Catalog.class);
         FixtureEmitter.validateCatalog(definitions); request.expectedSelection().requireCatalog(definitions);
         ColdSnapshotReader.verify(request, machineId, repo);
-        if (request.schemaVersion() == 4) inputReceipt(expected, pin(requestPath), request);
+        if (request.schemaVersion() == 4 || request.schemaVersion() == 5) inputReceipt(expected, pin(requestPath), request);
         return new BoundRequest(expected, pin(requestPath), request);
     }
     private static FilePin inputReceipt(FilePin manifest, FilePin requestPin, Request request) throws IOException {

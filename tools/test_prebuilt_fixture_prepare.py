@@ -7,9 +7,12 @@ from __future__ import annotations
 
 import copy
 import argparse
+import ast
 import hashlib
 import json
+import os
 from pathlib import Path
+import subprocess
 import tempfile
 from types import ModuleType
 import unittest
@@ -26,6 +29,46 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'ck3_autonomous_pla
 def file_identity(path: Path) -> FilePin:
     raw = path.read_bytes()
     return FilePin(path=str(path.resolve()), bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+
+
+def authored_snapshot_fixture(root: Path, version: int) -> JsonObject:
+    """Authored filesystem contract only; actual Java business validation is tested separately."""
+    if version not in (4, 5):
+        raise ValueError('Authored snapshot version must be explicit')
+    root = root.resolve()
+    producer = root / 'repo/FixtureEmitter.java'
+    producer.parent.mkdir(parents=True)
+    producer.write_text('final class FixtureEmitter {}\n', encoding='utf-8')
+    external: dict[str, FilePin] = {}
+    for label in ('current-save', 'current', 'before', 'after'):
+        path = root / (label + ('.ck3' if label == 'current-save' else '.json'))
+        path.write_text('AUTHORED CONTRACT INPUT; NO GAME OR JAVA OBSERVATION\n', encoding='utf-8')
+        external[label] = file_identity(path)
+    fixture = root / 'snapshot'
+    fixture.mkdir()
+    (fixture / 'descriptor.mod').write_text('name="Authored passive snapshot"\n', encoding='utf-8')
+    request = fixture / '_rrfa_request.json'
+    request.write_text(json.dumps({'schemaVersion': version, 'kind': 'cold_reload', 'mode': 'rite',
+        'actorHistoryId': '1128', 'setup': {
+            'type': 'saved_snapshot' if version == 4 else 'completed_snapshot', 'actorId': '31254',
+            'sourceSave': external['current-save'], 'sourceInspection': external['current'],
+            'expectedCurrentPiety': '5400', 'creationHistory': {'before': '6000', 'after': '5500',
+                'chargedCost': 500, 'beforeInspection': external['before'], 'afterInspection': external['after']}},
+        'expectedSelection': {'coreTenets': ['tenet_esotericism', 'tenet_astrology', 'tenet_communal_identity']}}), encoding='utf-8')
+    manifest = root / 'snapshot.fixture.json'
+    files = {path.name: {'bytes': file_identity(path)['bytes'], 'sha256': file_identity(path)['sha256']}
+             for path in sorted(fixture.iterdir())}
+    manifest.write_text(json.dumps({'schema': 'ck3-mod-acceptance-prebuilt-fixture-v1',
+        'product': 'religious-ritual-fusion', 'case_id': 'cold_reload', 'machine_id': 'authored-machine',
+        'observed_at_utc': '2026-10-29T00:00:00Z', 'fixture_root': str(fixture),
+        'producer_source_pins': [file_identity(producer)], 'files': files,
+        'receipt': {'required_markers': ['RRFAT: TEST PASS faith_persisted_readback'],
+            'required_product_markers_minimum': {}, 'fixture_contains_business_effects': False}}), encoding='utf-8')
+    sidecar = root / 'snapshot.inputs.json'
+    sidecar.write_text(json.dumps({'schema': 'rrf-prebuilt-fixture-inputs-v1', 'manifest': file_identity(manifest),
+        'request': file_identity(request), 'input_pins': list(external.values())}), encoding='utf-8')
+    return json_object({'prebuilt_fixture_manifest': file_identity(manifest),
+                        'prebuilt_fixture_inputs': file_identity(sidecar)})
 
 
 class PrebuiltFixtureTests(unittest.TestCase):
@@ -64,6 +107,81 @@ class PrebuiltFixtureTests(unittest.TestCase):
 
     def materialize(self) -> tuple[Path, prepare.PrebuiltFixtureReceipt, prepare.PrebuiltFixtureMaterialization]:
         return prepare.materialize_prebuilt_fixture(self.context, self.frozen_manifest(), self.root / 'copied')
+
+    def test_snapshot_contract_helpers_are_strictly_type_checked_from_actual_ast(self) -> None:
+        source = Path(prepare.__file__).resolve()
+        tree = ast.parse(source.read_text(encoding='utf-8-sig'))
+        names = {'PrebuiltFixtureReceipt', 'PrebuiltFixtureMaterialization', 'PrebuiltFixtureInputs',
+            '_prebuilt_checked_pin', 'prebuilt_fixture_inputs', 'prebuilt_fixture_source_pins',
+            '_prebuilt_relative_path', 'pin'}
+        nodes = [node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name in names]
+        self.assertEqual({node.name for node in nodes}, names)
+        imports = ('from __future__ import annotations\nfrom pathlib import Path\nimport json, hashlib\n'
+            'from typing import Literal, NotRequired, TypedDict\n'
+            'from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field\n')
+        target = self.root / 'actual_snapshot_contract_boundary.py'
+        body: list[ast.stmt] = list(nodes)
+        target.write_text(imports + ast.unparse(ast.Module(body=body, type_ignores=[])), encoding='utf-8')
+        environment = dict(os.environ)
+        environment['MYPYPATH'] = str(Path(__file__).resolve().parent)
+        child = subprocess.run([sys.executable, '-B', '-X', 'utf8', '-m', 'mypy', '--strict',
+            '--strict-equality', '--follow-imports=silent', '--no-incremental', '--cache-dir', os.devnull, str(target)],
+            capture_output=True, text=True, encoding='utf-8', env=environment, timeout=60)
+        self.assertEqual(child.returncode, 0, child.stdout + child.stderr)
+
+    def test_snapshot_versions_keep_the_existing_sidecar_and_json_roundtrip(self) -> None:
+        for version in (4, 5):
+            with self.subTest(version=version):
+                root = self.root / ('snapshot-v' + str(version))
+                inputs = authored_snapshot_fixture(root, version)
+                binding = prepare.prebuilt_fixture_inputs(inputs)
+                self.assertIsNotNone(binding)
+                if binding is None:
+                    self.fail('Explicit snapshot binding required')
+                self.assertEqual(prepare.prebuilt_fixture_inputs(json.loads(json.dumps(inputs))), binding)
+                self.assertEqual(len(prepare.prebuilt_fixture_source_pins(inputs)), 7)
+                context = json_object({**self.context, 'product': 'religious-ritual-fusion', 'case': 'cold_reload',
+                    'repo_root': str(root / 'repo'), 'case_inputs': inputs})
+                destination, receipt, materialized = prepare.materialize_prebuilt_fixture(
+                    context, inputs['prebuilt_fixture_manifest'], root / 'copied')
+                self.assertFalse(receipt['fixture_contains_business_effects'])
+                self.assertEqual(materialized['input_receipt'], binding['receipt'])
+                self.assertEqual(materialized['input_pins'], binding['input_pins'])
+                frozen = json_object(json.loads((destination / '_rrfa_request.json').read_bytes()))
+                self.assertEqual(frozen['schemaVersion'], version)
+                self.assertEqual(json_object(frozen['setup'])['type'],
+                                 'saved_snapshot' if version == 4 else 'completed_snapshot')
+
+    def test_snapshot_schema_and_setup_cannot_cross_versions(self) -> None:
+        changes: tuple[tuple[JsonValue, JsonValue], ...] = (
+            (4, 'completed_snapshot'), (5, 'saved_snapshot'), (5, 'saved'),
+            (True, 'completed_snapshot'), (5.0, 'completed_snapshot'), ('5', 'completed_snapshot'),
+            (None, 'completed_snapshot'))
+        for index, (version, setup_type) in enumerate(changes):
+            with self.subTest(version=version, setup_type=setup_type):
+                root = self.root / ('crossed-' + str(index))
+                inputs = authored_snapshot_fixture(root, 5)
+                request_path = root / 'snapshot/_rrfa_request.json'
+                request = json_object(json.loads(request_path.read_bytes()))
+                request['schemaVersion'] = version
+                setup = json_object(request['setup']); setup['type'] = setup_type; request['setup'] = setup
+                request_path.write_text(json.dumps(request), encoding='utf-8')
+                manifest_path = root / 'snapshot.fixture.json'
+                manifest = json_object(json.loads(manifest_path.read_bytes()))
+                files = json_object(manifest['files'])
+                identity = file_identity(request_path)
+                files['_rrfa_request.json'] = {'bytes': identity['bytes'], 'sha256': identity['sha256']}
+                manifest['files'] = files
+                manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+                inputs['prebuilt_fixture_manifest'] = json_object(file_identity(manifest_path))
+                sidecar_path = root / 'snapshot.inputs.json'
+                sidecar = json_object(json.loads(sidecar_path.read_bytes()))
+                sidecar['manifest'] = json_object(file_identity(manifest_path))
+                sidecar['request'] = json_object(file_identity(request_path))
+                sidecar_path.write_text(json.dumps(sidecar), encoding='utf-8')
+                inputs['prebuilt_fixture_inputs'] = json_object(file_identity(sidecar_path))
+                with self.assertRaisesRegex(ValueError, 'Version [45] requires|version must be an exact supported integer'):
+                    prepare.prebuilt_fixture_inputs(inputs)
 
     def test_real_generic_prepare_consumes_roundtripped_manifest(self) -> None:
         product = self.root / 'product'
