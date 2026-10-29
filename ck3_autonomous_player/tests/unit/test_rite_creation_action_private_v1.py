@@ -367,7 +367,7 @@ class RiteCreationAdapterTests(unittest.TestCase):
         self.assertEqual(endpoint.requests, [])
         self.assertEqual(list(Path(self.temp.name).rglob("*.claim.json")), [])
 
-    def test_claim_fsync_precedes_send_and_unknown_cannot_escape_via_revision_or_restart(self):
+    def test_claim_fsync_precedes_send_and_unknown_cannot_escape_via_revision_or_restart(self) -> None:
         driver, endpoint = self.driver()
         original_episode = driver.take_snapshot_without_native_command_history()["episode_run_id"]
         with patch.object(action.os, "fsync", wraps=os.fsync) as fsync:
@@ -389,9 +389,44 @@ class RiteCreationAdapterTests(unittest.TestCase):
         self.assertEqual(restarted.take_snapshot_without_native_command_history()["episode_run_id"], original_episode)
         with self.assertRaises(BridgeUnavailableError): self.confirm(restarted, 10, token="c" * 64)
         self.assertEqual(other.requests, [])
+        # A new interpreter must read the original persisted claim too. Reusing
+        # only another driver in this interpreter does not test that boundary.
+        import subprocess
+        script = """import json,sys
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
+from test_rite_creation_action_private_v1 import (
+    RiteCreationAdapterTests, action, BridgeUnavailableError, MACHINE)
+case=RiteCreationAdapterTests('runTest')
+case.temp=SimpleNamespace(name=sys.argv[1])
+root=Path(sys.argv[1])
+before={str(p.relative_to(root)):p.read_bytes() for p in root.rglob('*.claim.json')}
+if len(before)!=1: raise RuntimeError('original durable claim missing')
+with patch.object(action,'_machine_id',return_value=MACHINE):
+    driver,endpoint=case.driver(10)
+    try:
+        try: case.confirm(driver,10,token='d'*64)
+        except BridgeUnavailableError as error:
+            if 'unknown' not in str(error): raise
+        else: raise RuntimeError('independent process replayed unknown confirmation')
+        if endpoint.requests: raise RuntimeError('independent process sent a native action')
+        after={str(p.relative_to(root)):p.read_bytes() for p in root.rglob('*.claim.json')}
+        if before!=after: raise RuntimeError('independent process changed original claim')
+    finally: case.doCleanups()
+print(json.dumps({'independent_process_continuation':'PASS','native_send_count':0}))
+"""
+        environment = os.environ.copy()
+        environment["PYTHONPATH"] = str(Path(__file__).resolve().parent) + os.pathsep + environment.get("PYTHONPATH", "")
+        completed = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", script, self.temp.name],
+            env=environment, capture_output=True, text=True, encoding="utf-8", timeout=30)
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+        self.assertEqual(json.loads(completed.stdout),
+            {"independent_process_continuation": "PASS", "native_send_count": 0})
         self.transport_summaries.append({"case": "durable_unknown", "claim_fsync_before_send": True,
             "changed_native_revision_rejected": True, "new_preview_token_rejected": True,
-            "new_driver_same_episode_rejected": True, "wire_send_count": 1,
+            "new_driver_same_episode_rejected": True, "independent_process_unknown_rejected": True,
+            "wire_send_count": 1,
             "new_native_action_or_game_evidence": False})
 
     def test_late_result_collection_waits_original_request_without_resend(self):
