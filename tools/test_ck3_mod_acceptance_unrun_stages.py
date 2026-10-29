@@ -1622,6 +1622,7 @@ import argparse, ast, hashlib, json, math, re
 from ck3_mod_acceptance import same_directory_control_peer
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field, strings_field
 from ck3_mod_acceptance_unrun import (SCHEMA, PRELAUNCH_KIND, SERIAL_PRELAUNCH_FORMAT, UnrunBundleReport,
+    CAPACITY_WAIT_KIND, CAPACITY_WAIT_FORMAT, _capacity_wait_root_paths,
     PrelaunchGuardState, _prelaunch_guard_state,
     _timestamp, _integer, _ttl_pin, _ttl_allocator_stdout, _captured_release, _sequence,
     _journal_events, _ttl_recovery_sources, _write, validate_allocated_unrun)

@@ -1,0 +1,634 @@
+"""Root a66 independent UI supplement candidate operation, based on the preserved unexecuted candidate.
+Only existing public CLI; Root capacity receipt consumer; no cold guard/scanner.
+No import-time allocation, process, Game, SCREEN or CAS actions.
+"""
+from __future__ import annotations
+import argparse
+import ast
+import contextlib
+import ctypes
+from dataclasses import dataclass
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import runpy
+import subprocess
+import sys
+import time
+import traceback
+from typing import BinaryIO, Callable, TypedDict
+
+C=Path("C:/workspace/rrf-development-20261024/review-fixes-a01/review-completion-b01")
+C17=C.parent/"ui-creation-blocker-final-a01"
+C16=C.parent/"ui-tooltip-final-a01"
+E=C/"metadata/public-operations-a01/root-execution-a66"
+PRELAUNCH=C/"metadata/prelaunch-ui-a66"
+REPO=Path("C:/workspace/ck3_eternal_recurrence")
+PY=REPO/"tools/.venv/Scripts/python.exe"
+BASE_PY=Path(sys._base_executable)
+MACHINE="4-8e1c2f1861"
+PUBLIC=[str(PY),"-B","-X","utf8","tools/ck3_mod_acceptance.py"]
+SOURCE_ORIGINAL=C16/"metadata/generic-ui-serial-candidate-a01/serial-ui-a63.once.py"
+SOURCE_A64=C17/"metadata/generic-ui-serial-resume-b01/serial-ui-a64.once.py"
+PREVIOUS_LIVE=C/"live/4-8e1c2f1861--religious-ritual-fusion--R0055"
+PREVIOUS_KEEPER=C/"keepers/a65"
+
+class FilePin(TypedDict):
+    path: str
+    bytes: int
+    sha256: str
+
+@dataclass
+class Held:
+    label: str
+    argv: list[str]
+    process: subprocess.Popen[bytes]
+    stdout: BinaryIO
+    stderr: BinaryIO
+    began: float
+    birth_filetime: str
+    waited: bool=False
+    code: int | None=None
+    wait_receipt_attempted: bool=False
+    wait_receipt_written: bool=False
+
+# Only original Popen objects enter this registry. The entry-point finally keeps
+# them alive even if a receipt, cleanup operation, or interrupt itself fails.
+ORIGINAL_HANDLES: list[Held]=[]
+NORMAL_FACTS_READER: Callable[[], dict[str,object] | None] | None=None
+
+def now() -> datetime:
+    return datetime.now(timezone.utc)
+
+def require(ok: bool, message: str) -> None:
+    if not ok:
+        raise RuntimeError(message)
+
+def obj(value: object) -> dict[str, object]:
+    if not isinstance(value,dict) or any(not isinstance(k,str) for k in value):
+        raise TypeError("JSON object with text keys required")
+    return value
+
+def read(path: Path) -> dict[str, object]:
+    return obj(json.loads(path.read_text(encoding="utf-8-sig")))
+
+def pin(path: Path) -> FilePin:
+    path=path.resolve(strict=True)
+    require(path.is_file() and not path.is_symlink() and not path.is_junction(),"Ordinary pinned input")
+    before=path.stat()
+    data=path.read_bytes()
+    after=path.stat()
+    require(before.st_size==after.st_size==len(data) and before.st_mtime_ns==after.st_mtime_ns,
+            "Input changed while reading")
+    return {"path":str(path),"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()}
+
+def checked(path: Path, expected: str, size: int | None=None) -> FilePin:
+    value=pin(path)
+    require(value["sha256"]==expected and (size is None or value["bytes"]==size),"Exact input Pin: "+str(path))
+    return value
+
+def ref(value: object) -> FilePin:
+    row=obj(value)
+    require(set(row)=={"path","bytes","sha256"},"Exact FilePin fields")
+    path,size,sha=row["path"],row["bytes"],row["sha256"]
+    require(isinstance(path,str) and type(size) is int and isinstance(sha,str),"FilePin types")
+    if not isinstance(path,str) or type(size) is not int or not isinstance(sha,str):
+        raise TypeError("FilePin types")
+    return checked(Path(path),sha,size)
+
+def put(name: str, value: dict[str, object]) -> None:
+    document={"machine_id":MACHINE,"observed_at_utc":now().isoformat(),**value}
+    with (E/(name+".actual.json")).open("x",encoding="utf-8") as stream:
+        json.dump(document,stream,ensure_ascii=False,indent=2,allow_nan=False)
+        stream.write("\n")
+
+def creation(process: subprocess.Popen[bytes]) -> str:
+    class FT(ctypes.Structure):
+        _fields_=[("low",ctypes.c_uint32),("high",ctypes.c_uint32)]
+    k=ctypes.WinDLL("kernel32",use_last_error=True)
+    k.GetProcessTimes.argtypes=[ctypes.c_void_p,*([ctypes.POINTER(FT)]*4)]
+    k.GetProcessTimes.restype=ctypes.c_int
+    a,b,c,d=FT(),FT(),FT(),FT()
+    # Original Popen handle, including a fast exited child; no PID reopen/reuse.
+    if not k.GetProcessTimes(int(process._handle),ctypes.byref(a),ctypes.byref(b),ctypes.byref(c),ctypes.byref(d)):
+        raise ctypes.WinError(ctypes.get_last_error())
+    return str((a.high<<32)|a.low)
+
+def creation_seconds(filetime: str) -> str:
+    seconds,fraction=divmod(int(filetime)-116444736000000000,10000000)
+    return (str(seconds)+"."+str(fraction).zfill(7)).rstrip("0").rstrip(".")
+
+def consume_original(item: Held) -> int:
+    if not item.waited:
+        item.code=item.process.wait()
+        item.waited=True
+    if item.code is None:
+        raise RuntimeError("Consumed wait missing actual code")
+    item.stdout.close();item.stderr.close()
+    if not item.wait_receipt_attempted:
+        item.wait_receipt_attempted=True
+        put(item.label+".original-wait",{"pid":item.process.pid,
+            "process_creation_filetime_100ns":item.birth_filetime,
+            "original_wait_returncode":item.code,"elapsed_seconds":time.monotonic()-item.began,
+            "finished_at_utc":now().isoformat()})
+        item.wait_receipt_written=True
+    return item.code
+
+def drain_original_handles() -> None:
+    if not ORIGINAL_HANDLES:
+        return
+    actual_public=any(item.label=="PUBLIC-RUN" for item in ORIGINAL_HANDLES)
+    if actual_public:
+        # Never turn a failure/interrupt into public or Game termination. If the
+        # normal closure reader itself failed, Root must close the real session.
+        last=0.0
+        while True:
+            try:
+                if NORMAL_FACTS_READER is not None and NORMAL_FACTS_READER() is not None:
+                    break
+                if time.monotonic()-last>=60:
+                    print("FINAL_SAFETY_HOLD_PUBLIC_ORIGINALS_ROOT_ACTUAL_LIFECYCLE_REQUIRED",flush=True)
+                    last=time.monotonic()
+                time.sleep(.25)
+            except BaseException:
+                traceback.print_exc()
+    for item in ORIGINAL_HANDLES:
+        while not item.waited:
+            try:
+                print("FINAL_SAFETY_RETAIN_ORIGINAL_WAIT "+item.label+" PID="+str(item.process.pid),flush=True)
+                consume_original(item)
+            except BaseException:
+                traceback.print_exc()
+                # Only the original handle is waited. No STOP, kill, replay,
+                # resource release or guessed return code occurs in this drain.
+                if not item.waited:
+                    try:
+                        time.sleep(.25)
+                    except BaseException:
+                        traceback.print_exc()
+        try:
+            consume_original(item)
+        except BaseException:
+            traceback.print_exc()
+        print("ORIGINAL_WAIT_ACTUAL "+json.dumps({"label":item.label,"pid":item.process.pid,
+            "process_creation_filetime_100ns":item.birth_filetime,"returncode":item.code,
+            "receipt_written":item.wait_receipt_written},sort_keys=True),flush=True)
+
+
+
+def capacity_gate(path: Path, stage: str, grant_ref: FilePin, grant: dict[str, object],
+                  source_commit: str, minimum: int, expected_sha: str | None = None,
+                  context: Path | None = None, allocation_stdout: Path | None = None,
+                  run_id: str | None = None) -> dict[str, object]:
+    actual = pin(path)
+    if expected_sha is not None:
+        require(actual["sha256"] == expected_sha, "Actual Root capacity gate Pin")
+    gate = read(path)
+    observed = datetime.fromisoformat(str(gate["observed_at_utc"]).replace("Z", "+00:00"))
+    current = now()
+    require(gate.get("schema") == "rrf-root-scene-capacity-gate-v1" and gate.get("stage") == stage
+            and gate.get("machine_id") == MACHINE and gate.get("source_commit") == source_commit
+            and Path(str(gate["approved_root"])).resolve() == C
+            and 0 <= (current-observed).total_seconds() <= 180, "Fresh exact Root capacity gate")
+    require(ref(gate["grant"]) == grant_ref, "Gate binds unchanged actual G")
+    head_ref = ref(gate["storage_head"])
+    head = read(Path(head_ref["path"]))
+    require(Path(head_ref["path"]).resolve() == REPO.parent/".codex-task-bus/storage/volume-C-current.json"
+            and head.get("machine_id") == MACHINE and head.get("source_commit") == source_commit
+            and head.get("source_pending_fix") is False
+            and head.get("new_scope_producer_grant") == grant_ref, "Current actual storage head binds G/source")
+    ref(gate["capacity_evidence"])
+    checks = obj(gate["checks"])
+    required = {"physical", "owned", "gross", "quota", "component_caps", "metadata_subcaps",
+                "system_paging", "writers_closed", "future_bounds", "deadline"}
+    require(required <= set(checks) and all(v is True for v in checks.values()), "Every actual capacity check true")
+    expiry = datetime.fromisoformat(str(grant["expires_at_utc"]).replace("Z", "+00:00"))
+    latest = datetime.fromisoformat(str(gate["effective_latest_launch_utc"]).replace("Z", "+00:00"))
+    require((expiry-current).total_seconds() >= minimum and current < latest
+            and (expiry-latest).total_seconds() >= 6720, "Actual finite capacity/deadline reserve")
+    if stage == "prelaunch":
+        require(context is not None and allocation_stdout is not None and gate.get("run_id") == run_id,
+                "Postallocate capacity binds actual run")
+        require(ref(gate["ready_context"]) == pin(context)
+                and ref(gate["allocation_stdout"]) == pin(allocation_stdout), "Actual READY/allocation capacity binding")
+    require(pin(path) == actual and pin(Path(head_ref["path"])) == head_ref, "Gate/head stable while consumed")
+    return {"receipt": actual, "gate": gate}
+
+
+def main() -> int:
+    global NORMAL_FACTS_READER
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--grant", type=Path, required=True)
+    parser.add_argument("--grant-sha256", required=True)
+    parser.add_argument("--ready", type=Path, required=True)
+    parser.add_argument("--ready-sha256", required=True)
+    parser.add_argument("--preallocate-capacity", type=Path, required=True)
+    parser.add_argument("--preallocate-capacity-sha256", required=True)
+    parser.add_argument("--prelaunch-capacity", type=Path, required=True)
+    parser.add_argument("--previous-session-closure", type=Path, required=True)
+    parser.add_argument("--previous-session-closure-sha256", required=True)
+    parser.add_argument("--previous-release", type=Path, required=True)
+    parser.add_argument("--previous-release-sha256", required=True)
+    parser.add_argument("--previous-release-sequence", type=int, required=True)
+    parser.add_argument("--latest-screen-release", type=Path)
+    parser.add_argument("--latest-screen-release-sha256")
+    args = parser.parse_args()
+    require(args.source_commit == "c2245a5a756745f14f0ba1769ce31ee05cdcbdcc", "Exact c224 source commit for this independent candidate")
+    checked(SOURCE_ORIGINAL, "96b6c13374b0aa2056949e01430cb71620b3bd994c2136d0a8b84ddb0a524cb0", 36308)
+    checked(SOURCE_A64, "22e23d4c4daa8d87c317e3abdede584c8f3ca175373b14d589cc1f3b65263035", 36319)
+    grant_ref = checked(args.grant, args.grant_sha256)
+    ready_ref = checked(args.ready, args.ready_sha256)
+    grant, ready = read(args.grant), read(args.ready)
+    require(grant.get("schema") == "rrf-live-scene-storage-producer-grant-v1" and grant.get("active") is True
+            and grant.get("machine_id") == ready.get("machine_id") == MACHINE
+            and grant.get("source_commit") == ready.get("source_commit") == args.source_commit,
+            "Actual independent generic scene G and READY source/machine")
+    require(Path(str(grant["approved_root"])).resolve() == C, "Only independently admitted C18 root")
+    state = Path(str(grant["state_dir"])).resolve()
+    require(state == C/"managed-states/review-zh-creation-blocker499-b01/state", "Exact independently prepared C18 UI state")
+    expiry = datetime.fromisoformat(str(grant["expires_at_utc"]).replace("Z", "+00:00"))
+    observed = datetime.fromisoformat(str(grant["observed_at_utc"]).replace("Z", "+00:00"))
+    require(observed <= now() < expiry and expiry == datetime(2026,10,29,18,20,0,tzinfo=timezone.utc), "New independent finite1820Z admission; no old-G extension")
+    require(type(grant["minimum_remaining_before_READY_pipeline_seconds"]) is int
+            and grant["minimum_remaining_before_READY_pipeline_seconds"] == 6900
+            and type(grant["minimum_remaining_before_actual_new_launch_seconds"]) is int
+            and grant["minimum_remaining_before_actual_new_launch_seconds"] == 6720, "Root fixed READY/launch reserves")
+    caps = obj(grant["scene_component_caps_bytes"])
+    expected_caps = {
+        "native_five_profile_save_slots_plus_one_atomic_or_postclose_export":456*1024**2,
+        "cold_saved_campaign_real_input":72*1024**2,
+        "cold_graphics_cache":320*1024**2,
+        "wire_native_reports":96*1024**2,
+        "screenshots_PNG":32*1024**2,
+        "metadata_fixtures_logs_and_normal_close":176*1024**2}
+    require(set(caps) == set(expected_caps) and all(type(caps[k]) is int and caps[k] == v for k,v in expected_caps.items())
+            and sum(caps.values()) == 1152*1024**2,
+            "Actual complete C18 1152MiB scene component cap including retained cold output")
+    require(grant["metadata_subcaps_bytes"] == {"public_preparation":40*1024**2,"keeper":104*1024**2,"normal_close":32*1024**2},
+            "Actual40/104/32MiB metadata partition")
+    slots = obj(grant["native_slot_model"])
+    expected_slots = {"new_final_game_save_slots":1,"SDK_episode_seed_slots":1,"new_atomic_slots":1,
+                      "slot_bytes":128*1024**2,"canonical_export_slots":0,"real_input_separate":True}
+    require(set(slots) == set(expected_slots) and all(type(slots[k]) is type(v) and slots[k] == v for k,v in expected_slots.items()),
+            "Canonical six-key new UI128MiB three-slot model; external day35 input separate")
+    require(caps["native_five_profile_save_slots_plus_one_atomic_or_postclose_export"] ==
+            72*1024**2 + (slots["new_final_game_save_slots"] + slots["SDK_episode_seed_slots"] + slots["new_atomic_slots"])*slots["slot_bytes"],
+            "Total native456MiB includes retained cold SDK72MiB plus new UI3x128MiB")
+    require(type(grant.get("normal_close_reserve_seconds")) is int and grant["normal_close_reserve_seconds"] == 1200
+            and type(grant.get("watchdog_seconds")) is int and grant["watchdog_seconds"] == 5520,
+            "Independent UI watchdog5520 plus normal reserve1200")
+    runtime, products, prepared = ref(ready["runtime"]), ref(ready["products"]), ref(ready["prepared_case"])
+    require(all(Path(v["path"]).resolve().is_relative_to(C) for v in (runtime,products,prepared)), "C18 runtime/product/prepared roots")
+    require(Path(prepared["path"]).resolve() == C/"metadata/runtime-preparation-b01/prepared-ui-b01/prepared-case.json"
+            and prepared["bytes"] == 54385 and prepared["sha256"] == "78142c59548e8016ab7072d0d01a9f44d22f300b46b804f36643a883621a98c9",
+            "Exact frozen C18 UI Prepared; never cold Prepared")
+    actual_prepared = read(Path(prepared["path"]))
+    require(actual_prepared.get("product") == "religious-ritual-fusion" and actual_prepared.get("case") == "ui_rejection"
+            and ref(grant["prepared_case"]) == prepared, "Game G positively binds actual generic Prepared; no cold input field")
+    startup = obj(actual_prepared["startup"])
+    require(startup.get("mode") == "fixture" and "saved_campaign" not in startup
+            and Path(str(startup["state_dir"])).resolve() == state, "Fresh UI fixture startup; no cold saved input")
+    budgets = obj(actual_prepared["effective_budgets"])
+    for key, value in {"readiness_timeout":1800,"timeout":3600,"hold_seconds":1800}.items():
+        require(type(budgets.get(key)) is int and budgets[key] == value, "Actual registered UI budget: "+key)
+    require(budgets["timeout"]+budgets["hold_seconds"]+120 == 5520, "Actual watchdog5520")
+    prior_ref = checked(args.previous_session_closure, args.previous_session_closure_sha256)
+    release_ref = checked(args.previous_release, args.previous_release_sha256)
+    previous = read(args.previous_session_closure)
+    require(previous.get("machine_id") == MACHINE and previous.get("run_id") == MACHINE+"--religious-ritual-fusion--R0055"
+            and previous.get("normal_close_qualified") is True and previous.get("business_pass") is False
+            and previous.get("public_returncode") == 2 and previous.get("verify_returncode") == 2
+            and previous.get("actual_host_returncode") == 0 and previous.get("allocator_returncode") == 0,
+            "Actual R55/a65 normal resource closure; original public2 verify2 businessfalse retained")
+    previous_sequence = grant.get("previous_SCREEN_release_sequence")
+    require(type(previous_sequence) is int and previous_sequence > 0
+            and args.previous_release_sequence == previous_sequence
+            and ref(previous["screen_release"]) == release_ref,
+            "Exact predecessor SCREEN sequence bound to this new G and actual R55 closure")
+    require(args.previous_session_closure.resolve() == PREVIOUS_LIVE.parent.parent/"metadata/public-operations-a01/root-execution-a65/ALL-ORIGINAL-TERMINALS.actual.json",
+            "Actual predecessor original terminals")
+    sys.path[:0] = [str(REPO/"tools"),str(REPO/"ck3_autonomous_player/src"),str(REPO)]
+    from ck3_mod_acceptance_allocate import read_failed_runtime_release
+    actual_release = obj(read_failed_runtime_release(args.previous_release))
+    task, event = obj(actual_release["task"]), obj(actual_release["event"])
+    require(actual_release.get("ok") is True and task.get("task_id") == event.get("task_id") == "ck3-acceptance-a65"
+            and type(task.get("last_sequence")) is int and type(event.get("sequence")) is int
+            and task["last_sequence"] == event["sequence"] == previous_sequence and task.get("resources") == []
+            and task.get("state") == "done", "Actual released predecessor resource state")
+    latest_release = None
+    if args.latest_screen_release is not None:
+        require(args.latest_screen_release_sha256 is not None, "Actual separate latest SCREEN Pin")
+        latest_release = checked(args.latest_screen_release,args.latest_screen_release_sha256)
+        require(latest_release != release_ref, "Do not provide predecessor epoch twice")
+    else:
+        require(args.latest_screen_release_sha256 is None, "No orphan latest SCREEN digest")
+    require(subprocess.check_output(["git","rev-parse","HEAD"],cwd=REPO,text=True).strip() == args.source_commit,
+            "Actual clean Root source commit")
+    require(not subprocess.check_output(["git","status","--porcelain"],cwd=REPO), "Clean source required")
+    pre = capacity_gate(args.preallocate_capacity,"preallocate",grant_ref,grant,args.source_commit,6900,args.preallocate_capacity_sha256)
+    require(args.preallocate_capacity.resolve() == PRELAUNCH/"PREALLOCATE-CAPACITY.actual.json"
+            and args.prelaunch_capacity.resolve() == PRELAUNCH/"PRELAUNCH-CAPACITY.actual.json"
+            and not args.prelaunch_capacity.exists(), "Exact unused postallocate capacity output")
+    import win32api, win32con
+    keeper_target = C/"keepers/a66"
+    require(not E.exists() and not keeper_target.exists(), "Unused a66 attempt")
+    PRELAUNCH.mkdir(parents=True,exist_ok=True)
+    E.mkdir(parents=True)
+    env = dict(os.environ)
+    env.pop("PYTHONPATH",None)
+    held = ORIGINAL_HANDLES
+    guards: list[Held] = []
+    allocation: dict[str,object] | None = None
+    live: Path | None = None
+    keeper: Path | None = None
+    before: dict[str,int] | None = None
+    public: Held | None = None
+    finalization_started = False
+    cas_attempted = False
+    common = ["--runtime",runtime["path"],"--products",products["path"],"--product","religious-ritual-fusion",
+              "--case","ui_rejection","--prepared-case",prepared["path"]]
+    def start(label: str, argv: list[str], ttl_end: float | None=None) -> Held:
+        put(label+".intent",{"argv":argv,"source_commit":args.source_commit,"started_at_utc":now().isoformat()})
+        out=(E/(label+".stdout.log")).open("xb")
+        err=(E/(label+".stderr.log")).open("xb")
+        try:
+            if ttl_end is not None:
+                require(time.monotonic()<=ttl_end,"Display/probe/public30s TTL expired")
+            process=subprocess.Popen(argv,cwd=REPO,env=env,stdout=out,stderr=err)
+        except BaseException:
+            out.close();err.close()
+            raise
+        item=Held(label,argv,process,out,err,time.monotonic(),"UNAVAILABLE")
+        held.append(item)  # Retain before any identity/receipt operation can fail.
+        item.birth_filetime=creation(process)
+        put(label+".started",{"pid":process.pid,"process_creation_filetime_100ns":item.birth_filetime,
+             "process_create_time_seconds":creation_seconds(item.birth_filetime),
+             "started_at_utc":now().isoformat(),"original_wait_pending":True})
+        return item
+
+    def wait(item: Held) -> int:
+        return consume_original(item)
+
+    def run(label: str, argv: list[str]) -> Held:
+        item=start(label,argv)
+        require(wait(item)==0,"Original command failed: "+label)
+        return item
+
+    def await_json(path: Path, item: Held, seconds: int) -> dict[str,object]:
+        end=time.monotonic()+seconds
+        while time.monotonic()<end:
+            try:
+                return read(path)
+            except (FileNotFoundError,json.JSONDecodeError):
+                require(item.process.poll() is None,"Original child ended before "+str(path))
+                time.sleep(.1)
+        raise TimeoutError(str(path))
+
+    def normal_facts() -> dict[str,object] | None:
+        """Read two actual terminal branches; failure cleanup never grants normal/business credit."""
+        if live is None:
+            return None
+        try:
+            close=read(live/"case-output/normal-close-result.json")
+            retained=read(live/"case-output/actual-retained-handle-os-exit.json")
+            host=read(live/"host-original-process-exit.json")
+        except (FileNotFoundError,json.JSONDecodeError):
+            return None
+        common=(close.get("cleanup_ok") is True and close.get("managed_thread_finished") is True
+                and retained.get("actual_retained_os0") is True
+                and type(retained.get("exit_code")) is int and retained["exit_code"]==0
+                and host.get("actual_original_popen_wait") is True
+                and type(host.get("returncode")) is int
+                and host.get("run_id")==live.name)
+        if not common:
+            return None
+        if close.get("normal_close_qualified") is True and host["returncode"]==0:
+            return {"kind":"normal","normal":close,"retained":retained,"host":host}
+        if (close.get("normal_close_qualified") is False and close.get("business_pass") is False
+                and close.get("failure_preserved") is True and close.get("failure_lifecycle_completed") is True
+                and host["returncode"]==1):
+            proof=obj(close.get("failure_shutdown_proof"))
+            native=obj(proof.get("process_exit_zero_proof"))
+            shutdown=obj(native.get("shutdown"))
+            birth=retained.get("creation_filetime_100ns")
+            embedded=obj(close.get("retained_handle"))
+            if (proof.get("failure_preserved") is True and proof.get("business_pass") is False
+                    and proof.get("normal_close_qualified") is False and proof.get("alive_or_business_credit") is False
+                    and native.get("managed_session_done") is True
+                    and type(native.get("process_exit_code")) is int and native["process_exit_code"]==0
+                    and type(retained.get("pid")) is int and native.get("pid")==retained["pid"]
+                    and shutdown.get("ck3_pid")==retained["pid"] and shutdown.get("ck3_exit_code")==0
+                    and shutdown.get("ok") is True and shutdown.get("cleanup_proven") is True
+                    and shutdown.get("tree_gone") is True and shutdown.get("job_active_processes_final")==0
+                    and isinstance(birth,str) and re.fullmatch("[1-9][0-9]*",birth) is not None
+                    and embedded.get("pid")==retained["pid"] and embedded.get("actual_retained_os0") is True
+                    and embedded.get("exit_code")==0 and embedded.get("creation_filetime_100ns")==birth):
+                return {"kind":"preserved_failure","normal":close,"retained":retained,"host":host}
+        return None
+
+    NORMAL_FACTS_READER=normal_facts
+
+    def hold_for_normal() -> dict[str,object]:
+        last=0.0
+        while True:
+            facts=normal_facts()
+            if facts is not None:
+                return facts
+            if time.monotonic()-last>=60:
+                print("ROOT_HOLDS_ORIGINAL_HANDLES_UNTIL_ACTUAL_NORMAL_OR_PRESERVED_FAILURE_CLEANUP",flush=True)
+                last=time.monotonic()
+            try:
+                time.sleep(.25)
+            except BaseException:
+                # Interrupts do not silently drop original public/allocator handles.
+                traceback.print_exc()
+
+    def restore_display() -> None:
+        if before is None:
+            return
+        mode=win32api.EnumDisplaySettings(None,win32con.ENUM_CURRENT_SETTINGS)
+        if (mode.PelsWidth,mode.PelsHeight,mode.DisplayFrequency,mode.BitsPerPel)!=(
+                before["width"],before["height"],before["frequency"],before["bits"]):
+            mode.PelsWidth,mode.PelsHeight=before["width"],before["height"]
+            mode.DisplayFrequency,mode.BitsPerPel=before["frequency"],before["bits"]
+            require(win32api.ChangeDisplaySettings(mode,0)==0,"Restore original display")
+        mode=win32api.EnumDisplaySettings(None,win32con.ENUM_CURRENT_SETTINGS)
+        require((mode.PelsWidth,mode.PelsHeight)==(before["width"],before["height"]),"Actual restored display")
+        put("DISPLAY-RESTORED",{"before":before,"actual":[mode.PelsWidth,mode.PelsHeight]})
+
+    def stop_keeper(message: str) -> None:
+        if keeper is not None and not (keeper/"STOP").exists():
+            with (keeper/"STOP").open("x",encoding="utf-8") as stream:
+                stream.write(message+"\n")
+
+    def cancel_own_guards() -> None:
+        return  # No external cold guard is created for this independent UI hold1800.
+
+    def finalize() -> int:
+        nonlocal finalization_started,cas_attempted
+        facts=normal_facts()
+        require(public is not None and facts is not None,"Actual normal or preserved-failure lifecycle before finalization")
+        normal=facts["kind"]=="normal"
+        finalization_started=True
+        public_code=wait(public)
+        for item in guards:
+            wait(item)
+        verified=start("PUBLIC-VERIFY",PUBLIC+["verify"]+common+["--run-context",str(reviewed)])
+        verify_code=wait(verified)
+        stop_keeper("Root consumed actual nativeOS0/retainedOS0 and original host terminal; normal="+str(normal)+
+                    "; preserved failure/business flags remain actual. Original public/guard waits consumed.")
+        allocate_code=wait(allocator)
+        require(allocate_code==0 and read(live/"keeper-actual-parent-exit.json")["keeper_actual_exit_code"]==0,
+                "Actual original allocator/keeper0")
+        restore_display()
+        ki=read(keeper/"inputs.json")
+        bus=[str(PY),"-B","-X","utf8",str(ki["source_cli"]),"--bus-dir",str(ki["bus_dir"]),
+             "--expected-cli-sha256",str(ki["bus_cli_sha256"])]
+        run("SCREEN-LIST",bus+["list","--require-existing","--stale-after","600"])
+        tasks=read(E/"SCREEN-LIST.stdout.log")["tasks"]
+        rows=[row for row in tasks if row["task_id"]==allocation["task"]]
+        require(len(rows)==1 and rows[0]["resources"]==["ck3-screen:acquired"],"Actual fresh own SCREEN")
+        cas_attempted=True
+        run("SCREEN-RELEASE",bus+["release-screen-cas","--task",str(allocation["task"]),
+            "--expected-sequence",str(rows[0]["last_sequence"]),"--summary",
+            "Actual nativeOS0 retainedOS0 host terminal keeper0 allocator0; normal="+str(normal)+
+            "; display restored; original business/failure result retained"])
+        put("ALL-ORIGINAL-TERMINALS",{"run_id":live.name,"public_returncode":public_code,
+            "verify_returncode":verify_code,"allocator_returncode":allocate_code,
+            "screen_release":pin(E/"SCREEN-RELEASE.stdout.log"),"normal_close_qualified":normal,
+            "business_pass":normal and public_code==verify_code==0,
+            "failure_preserved":facts["kind"]=="preserved_failure",
+            "actual_lifecycle_kind":facts["kind"],"actual_host_returncode":obj(facts["host"])["returncode"],
+            "lifecycle_facts":facts,
+            "original_handles":[{"label":x.label,"pid":x.process.pid,"birth_filetime":x.birth_filetime,
+                "actual_original_popen_wait":x.waited,"returncode":x.code,
+                "stdout_closed":x.stdout.closed,"stderr_closed":x.stderr.closed} for x in held]})
+        print("ACTUAL_CLOSED "+live.name+" "+str(facts["kind"]),flush=True)
+        return 0 if normal and public_code==verify_code==0 else 2
+
+    put("STATIC-INPUTS-PRECOMPILED",{"source_commit":args.source_commit,"grant":grant_ref,"ready":ready_ref,
+        "original_a63":pin(SOURCE_ORIGINAL),"original_a64":pin(SOURCE_A64),"previous_session_closure":prior_ref,"previous_release":release_ref,
+        "preallocate_capacity":pre["receipt"],"postallocate_capacity_path":str(args.prelaunch_capacity),
+        "new_capacity_scanner_created":False,"cold_guard_used":False,"original_Popen_registry_retained":True})
+    try:
+        # The public allocator itself revalidates previous closure under its original writer lock.
+        allocator = start("ALLOCATE", PUBLIC+["allocate"]+common+["--attempt","a66","--keeper-output",str(keeper_target),
+            "--previous-live",str(PREVIOUS_LIVE),"--previous-keeper",str(PREVIOUS_KEEPER),
+            "--previous-release",str(args.previous_release)]+(
+            ["--latest-screen-release",str(args.latest_screen_release)] if latest_release is not None else []))
+        allocation = await_json(E/"ALLOCATE.stdout.log",allocator,180)
+        require(allocation.get("status") == "ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN"
+                and allocation.get("game_started") is False and allocator.process.poll() is None, "Original allocator READY")
+        live = Path(str(allocation["live"]));context = live/"ready-context.json";keeper = Path(str(allocation["keeper_root"]))
+        require(live.parent == C/"live" and re.fullmatch(MACHINE+"--religious-ritual-fusion--R[0-9]+",live.name) is not None
+                and keeper == keeper_target, "Actual allocated C18/a66 identity")
+        put("ALLOCATION-CONSUMED",{"actual":allocation,"source":pin(E/"ALLOCATE.stdout.log")})
+        put("AWAITING-ROOT-PRELAUNCH-CAPACITY",{"run_id":live.name,"ready_context":pin(context),
+            "allocation_stdout":pin(E/"ALLOCATE.stdout.log"),"grant":grant_ref,
+            "expected_output":str(args.prelaunch_capacity),"maximum_wait_seconds":180,
+            "Game_not_started":True,"capacity_collector_owner":"/root"})
+        print("ACTUAL_READY_ROOT_CAPACITY_REQUIRED "+live.name,flush=True)
+        gate_deadline = time.monotonic()+180
+        while True:
+            require(allocator.process.poll() is None, "Original allocator ended before Root capacity")
+            if args.prelaunch_capacity.is_file():
+                try:
+                    cap = capacity_gate(args.prelaunch_capacity,"prelaunch",grant_ref,grant,args.source_commit,6720,
+                        context=context,allocation_stdout=E/"ALLOCATE.stdout.log",run_id=live.name)
+                    break
+                except json.JSONDecodeError:
+                    pass
+            if time.monotonic() >= gate_deadline:
+                raise TimeoutError("Root postallocate capacity not delivered within180s; no public run")
+            time.sleep(.1)
+        mode = win32api.EnumDisplaySettings(None,win32con.ENUM_CURRENT_SETTINGS)
+        before = {"width":mode.PelsWidth,"height":mode.PelsHeight,"frequency":mode.DisplayFrequency,"bits":mode.BitsPerPel}
+        mode.PelsWidth,mode.PelsHeight = 2560,1440
+        require(win32api.ChangeDisplaySettings(mode,win32con.CDS_TEST) == 0 and win32api.ChangeDisplaySettings(mode,0) == 0,
+                "Actual approved display change")
+        mode = win32api.EnumDisplaySettings(None,win32con.ENUM_CURRENT_SETTINGS)
+        require((mode.PelsWidth,mode.PelsHeight) == (2560,1440), "Actual capture display")
+        put("DISPLAY-MODE",{"before":before,"actual":[mode.PelsWidth,mode.PelsHeight]})
+        ttl_end = time.monotonic()+30
+        offline = E/"STEAM-OFFLINE.prelaunch.actual.json"
+        run("STEAM-PROBE",[str(PY),"-B","-X","utf8","tools/steam_offline_state_probe.py","--receipt",str(offline)])
+        steam = read(offline);age = (now()-datetime.fromisoformat(str(steam["observed_at_utc"]))).total_seconds()
+        require(steam.get("status") == "offline" and steam.get("offline_mode") is True
+                and steam.get("machine_id") == MACHINE and 0 <= age <= 30, "Fresh background offline receipt")
+        reviewed = live/"reviewed-context-root.json"
+        value = read(context);value.update(reviewer="/root",reviewed_at_utc=now().isoformat(),steam_offline_receipt=str(offline))
+        with reviewed.open("x",encoding="utf-8") as stream:
+            json.dump(value,stream,allow_nan=False)
+        require(pin(args.grant) == grant_ref and now() < datetime.fromisoformat(str(obj(cap["gate"])["effective_latest_launch_utc"]).replace("Z","+00:00"))
+                and (expiry-now()).total_seconds() >= 6720, "Actual final capacity/launch reserve")
+        put("LAUNCH-GATES-CONSUMED",{"capacity":cap["receipt"],"offline":pin(offline),"offline_age_seconds":age,
+            "original_ready":pin(keeper/"ready.json"),"generic_UI_case":True,"cold_guard_used":False})
+        public = start("PUBLIC-RUN",PUBLIC+["run"]+common+["--run-context",str(reviewed)],ttl_end)
+        print("ACTUAL_PUBLIC_RUNNING "+live.name,flush=True)
+        hold_for_normal()
+        return finalize()
+    except BaseException as error:
+        # Determine public-start from the retained registry even if started receipt failed.
+        actual_public=next((item for item in held if item.label=="PUBLIC-RUN"),None)
+        try:
+            put("ROOT-SERIAL-FAILURE",{"error":repr(error),"public_started":actual_public is not None,
+                "display_before":before,"no_automatic_replay":True,"screen_CAS_attempted":cas_attempted,
+                "original_handles":[{"label":x.label,"pid":x.process.pid,"birth_filetime":x.birth_filetime,
+                    "original_wait_consumed":x.waited,"actual_returncode":x.code} for x in held]})
+        except BaseException:
+            traceback.print_exc()
+        traceback.print_exc()
+        if actual_public is not None:
+            public=actual_public
+            print("ROOT_RETAINS_PUBLIC_ALLOCATOR_GUARDS_UNTIL_ROOT_ACTUAL_LIFECYCLE",flush=True)
+            hold_for_normal()
+            if not finalization_started:
+                try:
+                    return finalize()
+                except BaseException:
+                    traceback.print_exc()
+            # Finalization fault/possibly dispatched CAS: never reissue an unknown operation.
+            # Root must finish keeper/resource recovery externally. This process keeps every handle.
+            print("ROOT_MANUAL_FINALIZATION_REQUIRED_NO_REPLAY",flush=True)
+            for item in held:
+                if not item.waited:
+                    wait(item)
+            return 1
+        # No public Popen exists. Only a proven owned, never-Game keeper is stopped.
+        if live is None:
+            try:
+                value=read(E/"ALLOCATE.stdout.log")
+                if value.get("status")=="ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN" and value.get("game_started") is False:
+                    live=Path(str(value["live"]));keeper=Path(str(value["keeper_root"]))
+            except (FileNotFoundError,json.JSONDecodeError):
+                pass
+        safe=live is not None and keeper==keeper_target and live.parent==C/"live" and not any(
+            (live/name).exists() for name in ("launch-intent.json","launch.json","host-started.json","native-report.json"))
+        if safe:
+            stop_keeper("Root pre-public failure; original allocation proves own never-Game keeper; no continuation qualification.")
+            cancel_own_guards()
+            for item in held:
+                if not item.waited:
+                    wait(item)
+            restore_display()
+            return 1
+        print("ROOT_UNKNOWN_PREPUBLIC_STATE_RETAINS_ORIGINAL_HANDLES_MANUAL_CLOSE_REQUIRED",flush=True)
+        # An already-ended allocator can always have its original wait consumed.
+        # An ambiguous live allocator is held, not blindly terminated/STOPped.
+        for item in held:
+            if not item.waited:
+                wait(item)
+        return 1
+
+
+
+if __name__ == "__main__":
+    try:
+        result = main()
+    finally:
+        drain_original_handles()
+    raise SystemExit(result)

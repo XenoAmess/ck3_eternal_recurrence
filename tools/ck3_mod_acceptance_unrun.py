@@ -20,6 +20,8 @@ CLOSED_KEEPER_ABORTED_KIND: Literal['wrapper-aborted-before-launch-with-closed-k
 OFFLINE_TTL_KIND: Literal['pre-intent-background-offline-ttl-refused'] = 'pre-intent-background-offline-ttl-refused'
 PRELAUNCH_KIND: Literal['prelaunch-orchestrator-failed-with-observed-waits'] = 'prelaunch-orchestrator-failed-with-observed-waits'
 SERIAL_PRELAUNCH_FORMAT: Literal['root-serial-prepublic-original-waits-v1'] = 'root-serial-prepublic-original-waits-v1'
+CAPACITY_WAIT_KIND: Literal['root-capacity-wait-timeout-before-public'] = 'root-capacity-wait-timeout-before-public'
+CAPACITY_WAIT_FORMAT: Literal['root-serial-external-capacity-wait-v1'] = 'root-serial-external-capacity-wait-v1'
 PrelaunchGuardState = Literal['armed-cancelled', 'failed-before-armed']
 
 
@@ -2030,9 +2032,9 @@ def need(value: object, message: object) -> None:
 def _read(path: str | Path) -> JsonObject:
     path=Path(path);need(path.stat().st_size<=1024*1024,'Small original metadata required')
     return json_object(read_json(path))
-def _exact(bundle, key, path):
-    ref=bundle[key];need(Path(ref['path']).resolve()==Path(path).resolve(),'Unrun original path differs: '+key)
-    check_pin(Path(path),ref);return _read(path)
+def _exact(bundle: Mapping[str, object], key: str, path: Path) -> JsonObject:
+    ref=file_pin(bundle.get(key));need(Path(ref['path']).resolve()==path.resolve(),'Unrun original path differs: '+key)
+    check_pin(path,dict(ref));return _read(path)
 
 
 @dataclass(frozen=True)
@@ -2606,9 +2608,242 @@ def validate_aborted_allocation_v1(previous: Path, freeze_value: object, close_p
             'administrative_resource_admission_only':True}})
 
 
-def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release, bus_packet, *, next_state=None):
+def _capacity_wait_source(reference: object) -> None:
+    """Attest the recorder's wait/STOP/timeout control flow, never execute it.
+
+    The AST signatures describe reusable recorder functions and the bounded
+    capacity loop. They contain no machine, attempt, path, PID or source commit.
+    A different recorder requires its own reviewed receipt format.
+    """
+    tree = ast.parse(_serial_raw(reference).decode('utf-8-sig'))
+    mains = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'main']
+    if len(mains) != 1:
+        raise ValueError('One original capacity-wait recorder main required')
+    nodes: dict[str, ast.AST] = {n.name:n for n in tree.body if isinstance(n, ast.FunctionDef)}
+    nodes.update({'main.'+n.name:n for n in mains[0].body if isinstance(n, ast.FunctionDef)})
+    tries = [n for n in mains[0].body if isinstance(n, ast.Try)]
+    if len(tries) != 1:
+        raise ValueError('One original capacity-wait failure boundary required')
+    observed = tries[0]
+    waits = [i for i,n in enumerate(observed.body) if isinstance(n, ast.While)]
+    if len(waits) != 1 or waits[0] < 4:
+        raise ValueError('One bounded original capacity-wait loop required')
+    nodes['capacity_wait'] = ast.Module(body=observed.body[waits[0]-4:waits[0]+1], type_ignores=[])
+    nodes['failure_handlers'] = ast.Try(body=[], handlers=observed.handlers, orelse=[], finalbody=[])
+    expected = {
+        'consume_original':'7ca90dfbace6c5a25fb52b0fac1b8f7a651dc2e5d03d7e023296f420e12f5f75',
+        'creation_seconds':'4e0ae5561a49af6f8fb112df1362a8351c134e51232209058faf77ce9ae08437',
+        'put':'6c0188db154c453d052468c202902a64186a7fdc5e9cc30e287c1756ce17e7a6',
+        'drain_original_handles':'398b962452a7071067f33fa1ad471b7c9db930b4cab40c7e42f9cef5c062513d',
+        'main.start':'daba89c3dbcf116ca1a5d6550a682b54b186029eb491b6b758ca3a4e3b839af7',
+        'main.wait':'3a5a340bdbcb0e16ff3c362b02399cec5feef75cf28cfde7c5e0419f260b1326',
+        'main.stop_keeper':'9e66a70ccd3cf6ea0e5d4ee98b6e4120f70e5ef6fa341ffc3654485a2f3b10bc',
+        'main.cancel_own_guards':'7b4fa35d78b00cd3d77d0c36549737a007b4d6224cc802c02c250949659a33f5',
+        'capacity_wait':'37865d0687bc3e56f5079fa56643f881cf1f7f0e800b2444c7d428b2d7d8021e',
+        'failure_handlers':'0e402a2d10a853bfe943fe7e3c888f7dbde61dbd4c1adb1b655e3e7c4efb0486',
+    }
+    if any(name not in nodes or hashlib.sha256(ast.dump(nodes[name], include_attributes=False).encode()).hexdigest()!=sha
+           for name,sha in expected.items()):
+        raise ValueError('Original capacity-wait recorder source AST differs')
+    popens = [n for n in ast.walk(tree) if isinstance(n, ast.Call)
+        and isinstance(n.func, ast.Attribute) and n.func.attr == 'Popen']
+    if len(popens) != 1:
+        raise ValueError('Original capacity-wait recorder must retain its single Popen producer')
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in ('exec','eval','setattr','delattr'):
+            raise ValueError('Capacity-wait recorder dynamic source mutation refused')
+        if isinstance(n, ast.Name) and isinstance(n.ctx,(ast.Store,ast.Del)) and n.id in ('subprocess','time','json','datetime','Path'):
+            raise ValueError('Capacity-wait recorder imported binding changed')
+
+
+def _capacity_wait_root_paths(wait: Path) -> tuple[Path, Path, Path]:
+    if wait.name != 'ROOT-SERIAL.original-wait.actual.json':
+        raise ValueError('Exact external-capacity Root recorder filename required')
+    return (wait.with_name('ROOT-SERIAL.started.actual.json'),
+        wait.with_name('ROOT-SERIAL.stdout.log'), wait.with_name('ROOT-SERIAL.stderr.log'))
+
+
+def _capacity_wait_ready_prefix(reference: object, complete: object) -> None:
+    """The original READY pin predates the appended actual keeper wait result."""
+    prefix=file_pin(reference);whole=file_pin(complete)
+    raw=_serial_raw(whole)
+    if (Path(prefix['path']).resolve()!=Path(whole['path']).resolve()
+            or not 0<prefix['bytes']<len(raw)
+            or hashlib.sha256(raw[:prefix['bytes']]).hexdigest()!=prefix['sha256']):
+        raise ValueError('Original capacity READY stdout prefix changed')
+    initial=json_object(json.loads(raw[:prefix['bytes']]))
+    first,_=json.JSONDecoder().raw_decode(raw.decode('utf-8-sig').lstrip())
+    if initial!=json_object(first) or initial.get('status')!='ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN':
+        raise ValueError('Capacity stdout prefix must be exactly the original complete READY JSON')
+
+
+def validate_capacity_wait(bundle: Mapping[str, object], *, previous: Path,
+        keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> dict[str, FilePin]:
+    """Observe a real external-capacity timeout; no guard/idle/DONE projection."""
+    if bundle.get('closure_kind') != CAPACITY_WAIT_KIND or bundle.get('receipt_format') != CAPACITY_WAIT_FORMAT:
+        raise ValueError('Exact external-capacity-wait closure kind/format required')
+    if any(key in bundle for key in ('serial_guards','prelaunch_guard_state','idle_timeout','admin_done')):
+        raise ValueError('Capacity-wait closure cannot claim a guard, idle timeout or administrative DONE')
+    evidence: dict[str,FilePin] = {}
+    def original(key: str, path: Path | None = None) -> JsonObject:
+        ref,value = _serial_original(bundle.get(key),path);evidence[key]=ref;return value
+    root_wait = Path(file_pin(bundle.get('prelaunch_orchestrator_wait'))['path'])
+    root_start,stdout_path,stderr_path = _capacity_wait_root_paths(root_wait)
+    start=original('prelaunch_orchestrator_started',root_start)
+    waited=original('prelaunch_orchestrator_wait',root_wait)
+    base={'machine_id','argv','pid','process_create_time_seconds','started_at_utc'}
+    if (set(start)!=base|{'original_wait_pending'} or set(waited)!=base|{
+            'actual_original_popen_wait','original_wait_returncode','finished_at_utc'}
+            or start.get('machine_id')!=machine or waited.get('machine_id')!=machine
+            or start.get('original_wait_pending') is not True or waited.get('actual_original_popen_wait') is not True
+            or type(waited.get('original_wait_returncode')) is not int or waited['original_wait_returncode']!=1
+            or _integer(start.get('pid'),'Capacity Root PID',1)!=_integer(waited.get('pid'),'Waited capacity Root PID',1)
+            or start.get('argv')!=waited.get('argv') or start.get('started_at_utc')!=waited.get('started_at_utc')
+            or start.get('process_create_time_seconds')!=waited.get('process_create_time_seconds')):
+        raise ValueError('Exact original capacity Root start/birth/wait1 required')
+    birth=text_field(start,'process_create_time_seconds')
+    if re.fullmatch(r'(?:0|[1-9][0-9]{0,12})(?:\.[0-9]{1,7})?',birth) is None:
+        raise ValueError('Original capacity Root birth must be a canonical decimal string')
+    def epoch(stamp: datetime) -> Decimal:
+        delta=stamp-datetime(1970,1,1,tzinfo=timezone.utc)
+        return Decimal(delta.days*86400+delta.seconds)+Decimal(delta.microseconds)/1000000
+    began=_timestamp(start.get('started_at_utc'),'Root capacity start')
+    finished=_timestamp(waited.get('finished_at_utc'),'Root capacity finish')
+    if not epoch(began)<=Decimal(birth)<=epoch(finished):
+        raise ValueError('Original capacity Root birth chronology differs')
+    argv=tuple(strings_field(start,'argv'));source=file_pin(bundle.get('prelaunch_orchestrator_source'))
+    _capacity_wait_source(source);evidence['prelaunch_orchestrator_source']=source
+    if len(argv)<5 or argv[1:4]!=('-B','-X','utf8') or Path(argv[4]).resolve()!=Path(source['path']).resolve():
+        raise ValueError('Capacity Root source/argv differs')
+    commit=_serial_argument(argv,'--source-commit')
+    frozen=original('frozen',previous/'frozen-argv.json')
+    _,manifest=_serial_original(frozen.get('runtime_manifest'))
+    if re.fullmatch('[a-f0-9]{40}',commit) is None or manifest.get('source_commit')!=commit:
+        raise ValueError('Capacity Root source differs from original frozen runtime')
+    allocated=_serial_allocator(bundle,machine,commit)
+    terminal=_ttl_allocator_stdout(json_object({'allocator_stdout':bundle.get('allocator_stdout')}))
+    parent=original('keeper_parent_exit',previous/'keeper-actual-parent-exit.json')
+    if (type(parent.get('keeper_actual_exit_code')) is not int or parent['keeper_actual_exit_code']!=0
+            or any(terminal.get(key)!=value for key,value in parent.items())):
+        raise ValueError('Capacity allocator original stdout crossed keeper original wait0')
+    execution=Path(file_pin(bundle.get('allocator_intent'))['path']).parent
+    static=original('serial_static',execution/'STATIC-INPUTS-PRECOMPILED.actual.json')
+    failure=original('serial_failure',execution/'ROOT-SERIAL-FAILURE.actual.json')
+    awaiting=original('capacity_wait_awaiting',execution/'AWAITING-ROOT-PRELAUNCH-CAPACITY.actual.json')
+    if (static.get('machine_id')!=machine or static.get('source_commit')!=commit
+            or static.get('new_capacity_scanner_created') is not False or static.get('cold_guard_used') is not False
+            or static.get('original_Popen_registry_retained') is not True
+            or any(key in static for key in ('guard_original','guard_interpreter','capacity_original'))):
+        raise ValueError('Capacity-wait original static scope differs')
+    for field,flag in (('grant','--grant'),('ready','--ready'),('preallocate_capacity','--preallocate-capacity')):
+        ref=file_pin(static.get(field));_serial_raw(ref,Path(_serial_argument(argv,flag)))
+        if ref['sha256']!=_serial_argument(argv,flag+'-sha256'):
+            raise ValueError('Capacity-wait original launch input binding differs')
+        evidence['capacity_bound_'+field]=ref
+    requested=Path(_serial_argument(argv,'--prelaunch-capacity'))
+    fields={'machine_id','observed_at_utc','run_id','ready_context','allocation_stdout','grant','expected_output',
+        'maximum_wait_seconds','Game_not_started','capacity_collector_owner'}
+    if (set(awaiting)!=fields or awaiting.get('machine_id')!=machine or awaiting.get('run_id')!=previous.name
+            or awaiting.get('Game_not_started') is not True or awaiting.get('capacity_collector_owner')!='/root'
+            or type(awaiting.get('maximum_wait_seconds')) is not int or awaiting['maximum_wait_seconds']!=180
+            or Path(text_field(awaiting,'expected_output')).resolve()!=requested.resolve()
+            or static.get('postallocate_capacity_path')!=str(requested)
+            or requested.exists() or file_pin(awaiting.get('ready_context'))!=file_pin(bundle.get('ready'))
+            or file_pin(awaiting.get('grant'))!=file_pin(static.get('grant'))):
+        raise ValueError('Exact original capacity wait/READY/requested output differs')
+    _capacity_wait_ready_prefix(awaiting.get('allocation_stdout'),bundle.get('allocator_stdout'))
+    expected_error=repr(TimeoutError('Root postallocate capacity not delivered within180s; no public run'))
+    failure_fields={'machine_id','observed_at_utc','error','public_started','display_before','no_automatic_replay',
+        'screen_CAS_attempted','original_handles'}
+    handle={'label':'ALLOCATE','pid':allocated.pid,'birth_filetime':allocated.birth_filetime,
+        'original_wait_consumed':False,'actual_returncode':None}
+    handles=failure.get('original_handles')
+    actual_handle=json_object(handles[0]) if isinstance(handles,list) and len(handles)==1 else {}
+    if (set(failure)!=failure_fields or failure.get('machine_id')!=machine or failure.get('error')!=expected_error
+            or failure.get('public_started') is not False or failure.get('display_before') is not None
+            or failure.get('no_automatic_replay') is not True or failure.get('screen_CAS_attempted') is not False
+            or type(actual_handle.get('pid')) is not int or actual_handle.get('original_wait_consumed') is not False
+            or failure.get('original_handles')!=[handle]):
+        raise ValueError('Capacity-wait original failure/retained allocator differs')
+    waiting_at=_timestamp(awaiting.get('observed_at_utc'),'Original capacity waiting start')
+    failed_at=_timestamp(failure.get('observed_at_utc'),'Original capacity wait timeout')
+    if (not began<=allocated.started_at<=ready_at<=waiting_at<=failed_at<=keeper_closed_at<=allocated.finished_at<=finished
+            or not 180<=(failed_at-waiting_at).total_seconds()<=210):
+        raise ValueError('Actual bounded capacity wait/Root/allocator/keeper chronology differs')
+    stdout=_serial_raw(bundle.get('serial_root_stdout'),stdout_path).decode('utf-8')
+    stderr=_serial_raw(bundle.get('serial_root_stderr'),stderr_path).decode('utf-8')
+    terminals=[json_object(json.loads(line.removeprefix('ORIGINAL_WAIT_ACTUAL '))) for line in stdout.splitlines()
+        if line.startswith('ORIGINAL_WAIT_ACTUAL ')]
+    typed_terminal=(len(terminals)==1 and type(terminals[0].get('pid')) is int
+        and type(terminals[0].get('returncode')) is int and terminals[0].get('receipt_written') is True)
+    if (stdout.splitlines().count('ACTUAL_READY_ROOT_CAPACITY_REQUIRED '+previous.name)!=1
+            or any(line.startswith('ACTUAL_PUBLIC') for line in stdout.splitlines())
+            or not typed_terminal or terminals!=[{'label':'ALLOCATE','pid':allocated.pid,'process_creation_filetime_100ns':allocated.birth_filetime,
+                'receipt_written':True,'returncode':0}]
+            or not stderr.replace('\r\n','\n').endswith('TimeoutError: Root postallocate capacity not delivered within180s; no public run\n')):
+        raise ValueError('Original capacity Root stdout/timeout/allocator terminal differs')
+    for key in ('serial_root_stdout','serial_root_stderr','keeper_STOP'):
+        ref=file_pin(bundle.get(key));_serial_raw(ref);evidence[key]=ref
+    if _serial_raw(bundle.get('keeper_STOP'),keeper/'STOP').decode('utf-8').replace('\r\n','\n')!='Root pre-public failure; original allocation proves own never-Game keeper; no continuation qualification.\n':
+        raise ValueError('Actual capacity-wait cooperative STOP differs')
+    if (any(execution.glob('*GUARD*')) or any(execution.glob('CAPACITY*')) or any((execution/name).exists() for name in
+            ('PUBLIC-RUN.intent.actual.json','PUBLIC-RUN.started.actual.json','LAUNCH-GATES-CONSUMED.actual.json',
+             'DISPLAY-MODE.actual.json','STEAM-OFFLINE.prelaunch.actual.json'))):
+        raise ValueError('Capacity-wait original scope contains guard/public/display activity')
+    return evidence
+
+
+def _capacity_wait_release(bundle: Mapping[str,object], keeper: JsonObject, released: JsonObject,
+        packet: JsonObject, task: str) -> JsonObject:
+    """Old heartbeat age is separate from a fresh global SCREEN/OS observation."""
+    ref=file_pin(bundle.get('resource_release'));canonical=json_object(_serial_resources().read_failed_runtime_release(Path(ref['path'])))
+    _serial_raw(ref)
+    task_row=object_field(canonical,'task');event=object_field(canonical,'event')
+    retirement=object_field(event,'retirement')
+    if (canonical!=released or canonical.get('ok') is not True or task_row.get('task_id')!=task
+            or event.get('task_id')!=task or task_row.get('state')!='waiting' or event.get('state')!='waiting'
+            or task_row.get('resources')!=[] or event.get('resources')!=[] or event.get('kind')!='status'
+            or set(retirement)!={'kind','business_status','prior_sequence'}
+            or retirement.get('kind')!='expired-own-claim-released' or retirement.get('business_status')!='unresolved_red'
+            or _sequence(retirement,'prior_sequence')!=_sequence(keeper,'last_sequence')
+            or _sequence(event,'sequence')<=_sequence(retirement,'prior_sequence')
+            or _sequence(task_row,'last_sequence')!=_sequence(event,'sequence')
+            or _timestamp(event.get('timestamp_utc'),'Expired release')<_timestamp(keeper.get('at_utc'),'Closed keeper')):
+        raise ValueError('Exact expired waiting resource release/retirement chronology required')
+    original_ref=file_pin(bundle.get('serial_release_original'))
+    original=json_object(_serial_resources().read_failed_runtime_release(Path(original_ref['path'])))
+    _serial_raw(original_ref)
+    if any(original.get(key)!=canonical.get(key) for key in ('schema','ok','task','event')):
+        raise ValueError('Original expired resource release differs from canonical event')
+    tasks=packet.get('tasks')
+    if not isinstance(tasks,list):
+        raise ValueError('Fresh global SCREEN observation required')
+    rows=[json_object(row) for row in tasks]
+    for row in rows:
+        resources=row.get('resources')
+        if not isinstance(resources,list) or any(not isinstance(value,str) for value in resources):
+            raise ValueError('Current SCREEN resource observation has invalid fields')
+        if 'ck3-screen:acquired' in resources:
+            raise ValueError('Current SCREEN owner revived after capacity-wait closure')
+    matches=[row for row in rows if row.get('task_id')==task]
+    snapshot=matches[0] if len(matches)==1 else {}
+    age=snapshot.get('age_seconds');stale=snapshot.get('stale')
+    if (len(matches)!=1 or set(snapshot)!=set(task_row)|{'age_seconds','stale'}
+            or any(snapshot.get(key)!=value for key,value in task_row.items())
+            or type(age) is not int or not isinstance(age,int) or age<0 or type(stale) is not bool):
+        raise ValueError('Current historical closed task fields/age/stale types differ')
+    return json_object({'receipt_format':CAPACITY_WAIT_FORMAT,'original_root_exit_code':1,
+        'original_allocator_exit_code':0,'guard_original_wait_codes':[],
+        'normal_close_qualified':False,'release_pass':False,'closed_task_age_seconds':age,
+        'closed_task_stale':stale,'expired_waiting_release_sequence':_sequence(event,'sequence')})
+
+
+def validate_allocated_unrun(previous: Path, freeze: object, close_path: Path, keeper_root: Path,
+        release: object, bus_packet: object, *, next_state: Path | None = None) -> JsonObject:
+    freeze=json_object(freeze);release=json_object(release);bus_packet=json_object(bus_packet)
+    capacity_wait = _read(close_path).get('closure_kind') == CAPACITY_WAIT_KIND
     serial = _read(close_path).get('receipt_format') == SERIAL_PRELAUNCH_FORMAT
-    if serial:
+    if serial or capacity_wait:
         state = Path(text_field(json_object(freeze), 'state_dir')).resolve()
         if (not isinstance(next_state, Path) or next_state.resolve() == state
                 or next_state.resolve().is_relative_to(state) or state.is_relative_to(next_state.resolve())):
@@ -2622,21 +2857,25 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
         if not isinstance(next_state,Path):raise ValueError('Aborted allocation requires a new separate state')
         return validate_aborted_allocation_v1(Path(previous),freeze,Path(close_path),Path(keeper_root),release,bus_packet,next_state)
     control_allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
-    read_failed_runtime_release, runtime_process_inventory = control_allocator.read_failed_runtime_release, control_allocator.runtime_process_inventory
+    process_reader: object=control_allocator.runtime_process_inventory
+    if not isinstance(process_reader,_UnrunProcessInventory):
+        raise ValueError('Actual unrun process inventory provider required')
+    resources=_serial_resources()
     import ck3_live_run_id as ids
     previous,keeper_root=Path(previous).resolve(),Path(keeper_root).resolve()
-    bundle=_read(close_path);machine=ids.current_machine_id();run=freeze['run_id'];task=freeze['screen_task']
+    bundle=_read(close_path);machine=ids.current_machine_id();run=text_field(freeze,'run_id');task=text_field(freeze,'screen_task')
     need(bundle.get('schema')==SCHEMA and bundle.get('run_id')==run and bundle.get('machine_id')==machine
-         ==freeze.get('identity_allocation',{}).get('machine_id'),'Unrun full run/machine identity differs')
+         ==object_field(freeze,'identity_allocation').get('machine_id'),'Unrun full run/machine identity differs')
     need(all(bundle.get(k) is False for k in ('host_started','native_session_started','game_started',
          'normal_close_qualified','original_host_exit0','business_pass')),'Allocated-only closure cannot grant game/host credit')
     ready=_exact(bundle,'ready',previous/'ready-context.json')
     _exact(bundle,'frozen',previous/'frozen-argv.json')
     context=_exact(bundle,'allocated_context',previous/'allocated-context.json')
-    need(ready['run_id']==context['run_id']==run and Path(ready['run_dir']).resolve()==previous
-         and Path(ready['keeper_root']).resolve()==keeper_root and ready['frozen_argv']==bundle['frozen']
+    need(ready['run_id']==context['run_id']==run and Path(text_field(ready,'run_dir')).resolve()==previous
+         and Path(text_field(ready,'keeper_root')).resolve()==keeper_root and ready['frozen_argv']==bundle['frozen']
          and ready['prepared_case']==context['prepared_case'],'Original allocated-only READY differs')
-    check_pin(Path(ready['prepared_case']['path']),ready['prepared_case'])
+    prepared_ref=file_pin(ready.get('prepared_case'))
+    check_pin(Path(prepared_ref['path']),dict(prepared_ref))
     keeper=_exact(bundle,'keeper',keeper_root/'report.json')
     parent=_exact(bundle,'keeper_parent_exit',previous/'keeper-actual-parent-exit.json')
     need(keeper.get('task_id')==task and keeper.get('thread_exited') is True and keeper.get('failure') is None
@@ -2645,10 +2884,14 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
          and parent.get('keeper_report')==keeper,'Original idle keeper STOP/wait0 unavailable')
     cooperative=bundle.get('closure_kind')=='launcher-pin-admission-refused-before-launch-intent'
     prelaunch=bundle.get('closure_kind')==PRELAUNCH_KIND
-    need(bundle.get('closure_kind') is None or cooperative or prelaunch,'Unknown allocated-unrun closure kind')
+    need(bundle.get('closure_kind') is None or cooperative or prelaunch or capacity_wait,'Unknown allocated-unrun closure kind')
     refusal_evidence={}
     keeper_ready=_exact(bundle,'keeper_ready',keeper_root/'ready.json')
-    if cooperative:
+    if capacity_wait:
+        refusal_evidence=validate_capacity_wait(bundle,previous=previous,keeper=keeper_root,machine=machine,
+            ready_at=_timestamp(keeper_ready.get('at_utc'),'Capacity keeper ready'),
+            keeper_closed_at=_timestamp(keeper.get('at_utc'),'Capacity keeper finished'))
+    elif cooperative:
         refusal_evidence=validate_launcher_pin_refusal(bundle['launcher_pin_refusal'],frozen=freeze,
             live=previous,keeper=keeper_root,machine_id=machine)
         need(bundle['keeper_STOP']==refusal_evidence['keeper_stop'],'Cooperative STOP references differ')
@@ -2658,28 +2901,29 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
             keeper_closed_at=_timestamp(keeper.get('at_utc'),'Prelaunch keeper finished'))
     else:
         idle=_exact(bundle,'idle_timeout',previous/'allocation-unused-idle-timeout.json')
-        stop=bundle['keeper_STOP'];need(Path(stop['path']).resolve()==keeper_root/'STOP','Original STOP crossed keeper')
-        check_pin(keeper_root/'STOP',stop)
+        stop=file_pin(bundle.get('keeper_STOP'));need(Path(stop['path']).resolve()==keeper_root/'STOP','Original STOP crossed keeper')
+        check_pin(keeper_root/'STOP',dict(stop))
         need((keeper_root/'STOP').read_text(encoding='utf-8')=='Unused allocation idle deadline; no game/native/normal credit.\n'
              and idle.get('reason')=='NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT' and idle.get('idle_seconds')==600
              and all(idle.get(k) is False for k in ('game_started','native_session_started','normal_close_qualified','business_pass')),
              'Original unused idle STOP differs')
-    stamps=[datetime.fromisoformat(v) for v in ((keeper_ready['at_utc'],keeper['at_utc']) if cooperative or prelaunch else
+    stamps=[_timestamp(v,'Original unused interval') for v in ((keeper_ready['at_utc'],keeper['at_utc']) if cooperative or prelaunch or capacity_wait else
         (keeper_ready['at_utc'],idle['utc'],keeper['at_utc']))]
     need(all(x.tzinfo is not None for x in stamps) and stamps==sorted(stamps)
-         and (cooperative or prelaunch or (stamps[1]-stamps[0]).total_seconds()>=600),'Original unused interval unproven')
-    argv=_allocator_argv(bundle,machine,stamps)
-    def argument(name):
+         and (cooperative or prelaunch or capacity_wait or (stamps[1]-stamps[0]).total_seconds()>=600),'Original unused interval unproven')
+    argv=list(_serial_allocator(bundle,machine).argv) if capacity_wait else _allocator_argv(bundle,machine,stamps)
+    def argument(name: str) -> str:
         need(argv.count(name)==1 and argv.index(name)+1<len(argv),'Original allocator argument missing: '+name)
         return argv[argv.index(name)+1]
-    need(Path(argument('--prepared-case')).resolve()==Path(ready['prepared_case']['path']).resolve()
+    need(Path(argument('--prepared-case')).resolve()==Path(prepared_ref['path']).resolve()
          and Path(argument('--keeper-output')).resolve()==keeper_root,'Actual original allocator wait0 differs')
-    stdout=bundle['allocator_stdout'];check_pin(Path(stdout['path']),stdout)
+    stdout=file_pin(bundle.get('allocator_stdout'));check_pin(Path(stdout['path']),dict(stdout))
     allocated,end=json.JSONDecoder().raw_decode(Path(stdout['path']).read_text(encoding='utf-8-sig').lstrip())
+    allocated=json_object(allocated)
     need(allocated.get('status')=='ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN' and allocated.get('task')==task
-         and Path(allocated['live']).resolve()==previous and Path(allocated['keeper_root']).resolve()==keeper_root,
+         and Path(text_field(allocated,'live')).resolve()==previous and Path(text_field(allocated,'keeper_root')).resolve()==keeper_root,
          'Actual original allocator READY output differs')
-    state=Path(freeze['state_dir']).resolve()
+    state=Path(text_field(freeze,'state_dir')).resolve()
     absent={name:not (previous/name).exists() for name in ('launch-intent.json','launch.json','host-started.json',
         'host-supervisor.json','host-supervisor-started.json','supervisor.json','host-original-process-exit.json',
         'native-report.json','native-report.session.log','case-output')}
@@ -2689,49 +2933,59 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
     for name in ('save games','logs','run'):
         path=state/'profile'/name;absent['profile/'+name]=not path.exists() or not any(path.iterdir())
     need(all(absent.values()),'Allocated-unrun predecessor has actual host/native/control/Save evidence')
-    identity=freeze['identity_allocation'];root=ids.default_state_root().resolve()
-    need(Path(identity['state_root']).resolve()==root,'Actual machine counter namespace differs')
+    identity=object_field(freeze,'identity_allocation');root=ids.default_state_root().resolve()
+    need(Path(text_field(identity,'state_root')).resolve()==root,'Actual machine counter namespace differs')
     products=Path(argument('--products')).resolve();product_key=argument('--product')
-    need(str(products) in freeze['files'],'Original allocated product registry pin missing')
-    check_pin(products,freeze['files'][str(products)])
-    product=_read(products)['products'][product_key];external_mod=product.get('external_mod',False)
+    need(str(products) in object_field(freeze,'files'),'Original allocated product registry pin missing')
+    check_pin(products,object_field(object_field(freeze,'files'),str(products)))
+    product=object_field(object_field(_read(products),'products'),product_key);external_mod=product.get('external_mod',False)
+    if type(external_mod) is not bool or not isinstance(external_mod,bool):
+        raise ValueError('Product external_mod must be an exact boolean')
     need(type(external_mod) is bool and product_key==ready['product']
          and (product.get('runtime_mod_key') or product_key)==freeze['mod_key'],
          'Original allocated product namespace differs')
-    counter=root/machine/freeze['mod_key']/'counter.json';row=_exact(bundle,'counter',counter)
+    counter=root/machine/text_field(freeze,'mod_key')/'counter.json';row=_exact(bundle,'counter',counter)
     need(row.get('machine_id')==machine and row.get('mod_key')==freeze['mod_key']
-         and ids.format_run_id(machine,freeze['mod_key'],row['last_sequence'],external_mod=external_mod)==run,
+         and ids.format_run_id(machine,text_field(freeze,'mod_key'),_integer(row.get('last_sequence'),'Actual last allocation sequence',1),external_mod=external_mod)==run,
          'Allocated-unrun run is not the latest actual machine/product counter')
-    cas=read_failed_runtime_release(Path(bundle['CAS_release']['path']))
-    done=read_failed_runtime_release(Path(bundle['admin_done']['path']))
-    for key in ('CAS_release','admin_done'):
-        check_pin(Path(bundle[key]['path']),bundle[key])
-    _release_stages(keeper,cas,done,_read(bundle['CAS_release']['path']),
-        _read(bundle['admin_done']['path']),release,task,cooperative_pin_refusal=cooperative)
-    current=[x for x in bus_packet.get('tasks',[]) if x.get('task_id')==task]
-    # The canonical list command adds only age_seconds/stale to raw task files.
-    # Keep every original field exact, and reject undeclared or invalid extras.
-    original=done['task'];snapshot=current[0] if len(current)==1 else {}
-    need(len(current)==1 and set(snapshot)==set(original)|{'age_seconds','stale'}
-         and {key:snapshot[key] for key in original}==original
-         and type(snapshot['age_seconds']) is int and snapshot['age_seconds']>=0
-         and snapshot['stale'] is False,'Current allocated-unrun task readback differs')
+    capacity_cleanup: JsonObject = {}
+    if capacity_wait:
+        capacity_cleanup=_capacity_wait_release(bundle,keeper,json_object(release),json_object(bus_packet),task)
+    else:
+        cas_ref=file_pin(bundle.get('CAS_release'));done_ref=file_pin(bundle.get('admin_done'))
+        cas=json_object(resources.read_failed_runtime_release(Path(cas_ref['path'])))
+        done=json_object(resources.read_failed_runtime_release(Path(done_ref['path'])))
+        for key in ('CAS_release','admin_done'):
+            ref=file_pin(bundle.get(key));check_pin(Path(ref['path']),dict(ref))
+        _release_stages(keeper,cas,done,_read(cas_ref['path']),
+            _read(done_ref['path']),release,task,cooperative_pin_refusal=cooperative)
+        values=bus_packet.get('tasks')
+        if not isinstance(values,list):
+            raise ValueError('Current unrun tasks must be an array')
+        current=[json_object(x) for x in values if json_object(x).get('task_id')==task]
+        # The canonical list command adds only age_seconds/stale to raw task files.
+        # Keep every original field exact, and reject undeclared or invalid extras.
+        original=object_field(done,'task');snapshot=current[0] if len(current)==1 else {}
+        need(len(current)==1 and set(snapshot)==set(original)|{'age_seconds','stale'}
+             and {key:snapshot[key] for key in original}==original
+             and type(snapshot.get('age_seconds')) is int and _integer(snapshot.get('age_seconds'),'Closed task age')>=0
+             and snapshot['stale'] is False,'Current allocated-unrun task readback differs')
     import psutil
-    inventory={**runtime_process_inventory(psutil,os.getpid()),'machine_id':machine,
+    inventory={**json_object(process_reader(psutil,os.getpid())),'machine_id':machine,
                'observed_at_utc':datetime.now(timezone.utc).isoformat()}
     need(not inventory['blockers'],'Allocated-unrun predecessor process still running: '+repr(inventory['blockers']))
     # Registry evolution is a resource-only recovery qualification, after the
     # complete actual waits, selected product, no-Game, SCREEN and OS checks.
-    if prelaunch and 'prelaunch_orchestrator_started' in bundle:
+    if (prelaunch or capacity_wait) and 'prelaunch_orchestrator_started' in bundle:
         _recovery_input_validation(previous, json_object(freeze), Path(close_path), bundle,
-            registry_support=serial)
-    return {'mode':('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if prelaunch else
+            registry_support=serial or capacity_wait)
+    return json_object({'mode':('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if prelaunch or capacity_wait else
         'previous-shared-allocated-unrun-launcher-pin-refused' if cooperative else 'previous-shared-allocated-unrun-idle'),'actual_process_inventory':inventory,
         'failure_cleanup':{'close':pin(close_path),'original_evidence':{**{k:v for k,v in bundle.items() if k!='counter' and isinstance(v,dict) and 'sha256' in v},**refusal_evidence},
             'absent_launch_native_control_Save':absent,'original_keeper_wait_proven':True,'original_keeper_exit_code':0,
             'host_started':False,'native_session_started':False,'original_host_exit_code':None,
             'original_ck3_exit_code':None,'typed_normal_exit_proven':False,'business_pass':False,
-            **(_serial_cleanup_waits(bundle) if serial else {})}}
+            **(_serial_cleanup_waits(bundle) if serial else capacity_cleanup)}})
 
 def _write(path: str | Path, value: object) -> FilePin:
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
@@ -2839,11 +3093,14 @@ def _serial_required_path(args: argparse.Namespace, name: str) -> Path:
 def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport:
     """The normal unrun producer, using the distinct modern original format."""
     import ck3_live_run_id as ids
+    capacity_wait = getattr(args,'capacity_wait_root_wait',None) is not None
+    if capacity_wait and getattr(args,'serial_prelaunch_root_wait',None) is not None:
+        raise ValueError('One exact original serial receipt format required')
     live, keeper, output, root_wait, source, root_release, next_state, bus_root = (
         _serial_required_path(args, name) for name in ('previous_live', 'keeper_root', 'output',
-            'serial_prelaunch_root_wait', 'prelaunch_orchestrator_source', 'root_screen_release',
+            'capacity_wait_root_wait' if capacity_wait else 'serial_prelaunch_root_wait', 'prelaunch_orchestrator_source', 'root_screen_release',
             'next_state', 'task_bus_root'))
-    root_start, root_stdout, root_stderr = _serial_root_paths(root_wait)
+    root_start, root_stdout, root_stderr = (_capacity_wait_root_paths(root_wait) if capacity_wait else _serial_root_paths(root_wait))
     if output.exists():
         raise ValueError('New serial prelaunch output required')
     frozen = json_object(json.loads((live/'frozen-argv.json').read_bytes()))
@@ -2872,15 +3129,17 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
         raw = raw[length:]
     sequences = json_object({'release':getattr(args, 'release_sequence', None),
         'done':getattr(args, 'done_sequence', None)})
-    release_sequence, done_sequence = _sequence(sequences, 'release'), _sequence(sequences, 'done')
+    release_sequence = _sequence(sequences,'release')
+    done_sequence = release_sequence if capacity_wait else _sequence(sequences,'done')
     lines = _journal_events(raw, start, release_sequence, done_sequence)
     _, _, release_event = lines[release_sequence]
     original_release = _captured_release(root_release, release_event, task, release_sequence)
     admin_original = (_serial_required_path(args, 'admin_release')
-        if guard_state == 'failed-before-armed' or getattr(args, 'admin_release', None) is not None else None)
+        if not capacity_wait and (guard_state == 'failed-before-armed' or getattr(args, 'admin_release', None) is not None) else None)
     output.mkdir(parents=True)
     proofs: JsonObject = {}
-    for key, sequence in (('CAS_release', release_sequence), ('admin_done', done_sequence)):
+    release_roles = (('resource_release',release_sequence),) if capacity_wait else (('CAS_release',release_sequence),('admin_done',done_sequence))
+    for key, sequence in release_roles:
         offset, line, event = lines[sequence]
         if admin_original is not None:
             original = root_release if key == 'CAS_release' else admin_original
@@ -2912,7 +3171,11 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
     guards: list[SerialPrelaunchGuardEvidence | SerialUnarmedGuardEvidence] = []
     if admin_original is not None:
         paths['serial_admin_original'] = admin_original
-    if guard_state == 'failed-before-armed':
+    if capacity_wait:
+        if any(execution.glob('*GUARD*')):
+            raise ValueError('External capacity wait cannot reuse guard receipts')
+        paths['capacity_wait_awaiting']=execution/'AWAITING-ROOT-PRELAUNCH-CAPACITY.actual.json'
+    elif guard_state == 'failed-before-armed':
         unarmed_label: Literal['CORE-GUARD-0', 'COLD-GUARD-0'] = 'CORE-GUARD-0' if core_unarmed else 'COLD-GUARD-0'
         guards.append(SerialUnarmedGuardEvidence(label=unarmed_label,
             intent=_ttl_pin(execution/(unarmed_label+'.intent.actual.json')),
@@ -2934,9 +3197,11 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
                 original_wait=_ttl_pin(execution/(label+'.original-wait.actual.json')),
                 armed=_ttl_pin(execution/(label+'.ARMED.actual.json')),
                 stdout=_ttl_pin(execution/(label+'.stdout.log')), stderr=_ttl_pin(execution/(label+'.stderr.log'))))
-    row = json_object({'schema':SCHEMA, 'closure_kind':PRELAUNCH_KIND, 'receipt_format':SERIAL_PRELAUNCH_FORMAT,
+    row = json_object({'schema':SCHEMA, 'closure_kind':CAPACITY_WAIT_KIND if capacity_wait else PRELAUNCH_KIND,
+        'receipt_format':CAPACITY_WAIT_FORMAT if capacity_wait else SERIAL_PRELAUNCH_FORMAT,
         'machine_id':machine, 'observed_at_utc':datetime.now(timezone.utc).isoformat(),
-        'run_id':text_field(frozen, 'run_id'), 'serial_guards':guards, 'prelaunch_guard_state':guard_state,
+        'run_id':text_field(frozen,'run_id'),
+        **({} if capacity_wait else {'serial_guards':guards,'prelaunch_guard_state':guard_state}),
         'serial_release_original':original_release,
         **{key:False for key in ('host_started','native_session_started','game_started',
             'normal_close_qualified','original_host_exit0','business_pass')}, **proofs,
@@ -2951,7 +3216,7 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
     bus_entry = object_field(object_field(frozen, 'files'), str(bus))
     packet = allocator.current_screen_absent(Path(text_field(frozen, 'lease_anchor')), bus_root,
         text_field(bus_entry, 'sha256'), None)
-    admin = file_pin(proofs['admin_done'])
+    admin = file_pin(proofs['resource_release' if capacity_wait else 'admin_done'])
     release = allocator.read_failed_runtime_release(Path(admin['path']))
     reducer: object = validate_allocated_unrun
     if not isinstance(reducer, _SerialUnrunReducer):
@@ -2962,7 +3227,7 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
 
 
 def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
-    if getattr(args, 'serial_prelaunch_root_wait', None):
+    if getattr(args,'capacity_wait_root_wait',None) or getattr(args,'serial_prelaunch_root_wait',None):
         return build_serial_prelaunch_bundle(args)
     if getattr(args,'aborted_wrapper',None):
         return build_aborted_bundle_v1(args)
@@ -3140,8 +3405,11 @@ def main() -> None:
     p.add_argument('--prelaunch-orchestrator-intent',type=Path)
     p.add_argument('--prelaunch-orchestrator-started',type=Path)
     p.add_argument('--prelaunch-orchestrator-wait',type=Path)
-    p.add_argument('--serial-prelaunch-root-wait',type=Path,
+    roots=p.add_mutually_exclusive_group()
+    roots.add_argument('--serial-prelaunch-root-wait',type=Path,
         help='Known original serial root1/allocator0/guards1/keeper0 before any public run; no idle claim')
+    roots.add_argument('--capacity-wait-root-wait',type=Path,
+        help='Original Root capacity180s timeout/allocator0/keeper0, no guard or Game, expired waiting release')
     p.add_argument('--pre-intent-offline-run-result',type=Path)
     p.add_argument('--public-run-stdout',type=Path)
     p.add_argument('--public-run-stderr',type=Path)
@@ -3149,7 +3417,7 @@ def main() -> None:
     allocator.add_argument('--allocator-intent',type=Path)
     p.add_argument('--allocator-process',type=Path);p.add_argument('--allocator-exit',type=Path)
     p.add_argument('--allocator-stdout',type=Path,required=True);p.add_argument('--task-bus-root',type=Path,required=True)
-    p.add_argument('--release-sequence',type=int,required=True);p.add_argument('--done-sequence',type=int,required=True)
+    p.add_argument('--release-sequence',type=int,required=True);p.add_argument('--done-sequence',type=int)
     p.add_argument('--output',type=Path,required=True)
     print(json.dumps(build_bundle(p.parse_args()),ensure_ascii=False,indent=2))
 if __name__=='__main__':main()
