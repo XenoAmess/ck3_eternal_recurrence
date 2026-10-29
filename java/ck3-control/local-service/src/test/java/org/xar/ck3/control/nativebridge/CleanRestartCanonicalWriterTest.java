@@ -507,6 +507,53 @@ final class CleanRestartCanonicalWriterTest {
             });
         }
     }
+    @Test void capturedRecoveryRetainsLargeSemanticDataAndKeepsOrdinaryTransportBound()throws Exception {
+        try(var fixture=fixture(root.resolve("large-semantic-recovery"))) {
+            var first=dirtyReady(fixture,Instant.now().plusSeconds(60));var owner=fixture.observationIdentity();
+            var verifier=new org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier((same,ref,max)->fixture.archive.readArtifact(same,ref,max));
+            var cycles=new OrdinaryCycleTransitions(fixture.archive,verifier,
+                    (same,session,pair,proof)->{throw new AssertionError("large semantic recovery cannot SAVE");},
+                    new OriginalWindowReducer.Policy(10958),fixture.writer::requireSession);
+            cycles.bindTerminalFrameLoader(fixture.frameLoader());for(String kind:cycles.kinds())fixture.bindAdditionalTransitionAuthority(kind,cycles);
+            var batches=new ContinuityBatchJournal(fixture.writer,cycles);
+            var controller=controller(fixture,batches,owner,first.request().source().sourceRef());
+            var ticket=fixture.writer.locked(same->controller.captureCleanRestart(same,"large-worker",0));
+            var captured=fixture.writer.locked(same->batches.admitCleanRestart(same,ticket));
+            batches.commit(new JournalInput(owner,"large-worker-0",JournalKind.BATCH_STARTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
+            batches.commit(new JournalInput(owner,"large-worker-0",JournalKind.BATCH_INTERRUPTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
+            var admission=fixture.writer.locked(same->batches.admitInitialNoDispatchRecovery(same,owner));
+            var nativeOriginal=first.semanticEvidence().orElseThrow().originalNativePacket();
+            var nativeFrame=(NativeWire.Snapshot)NativeWire.decode(Files.readAllBytes(Path.of(nativeOriginal.path())));
+            var packet=StrictJson.object();packet.put("type","state_snapshot");packet.put("protocol_version",1);
+            packet.put("snapshot_id","actual-large-semantic");packet.put("revision",nativeFrame.revision().add(BigInteger.ONE));
+            var state=FullJsonTree.parse(nativeFrame.state().value(),DriverJson.MAX_NATIVE_BYTES);
+            ((com.fasterxml.jackson.databind.node.ObjectNode)state).put("controlled_semantic_DATA","x".repeat(266240));packet.set("state",state);
+            fixture.enqueueSoftwareNativePacket(NativeWire.packet(FullJsonTree.encode(packet,DriverJson.MAX_NATIVE_BYTES)));
+            var semantic=dirtyReady(fixture,Instant.now().plusSeconds(60)).semanticEvidence().orElseThrow();
+            assertTrue(semantic.semantic().bytes()>ContinuityJson.TRANSPORT_MAX_BYTES);
+            assertTrue(semantic.semantic().bytes()<=org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);
+            var before=fixture.writer.locked(same->same.head().state());
+            fixture.writer.locked(same->{batches.finishInitialNoDispatchRecovery(same,admission,semantic);return null;});
+            var after=fixture.writer.locked(same->same.head().state());
+            assertEquals(before.sequence()+1,after.sequence());assertEquals(org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING,after.status());
+            assertEquals(before.settledCycles(),after.settledCycles());assertEquals(before.settledDateRaw(),after.settledDateRaw());
+            var retained=fixture.writer.locked(same->batches.admitInitialNoDispatchRecovery(same,owner));
+            var retainedDigest=fixture.writer.locked(same->same.head().digest());
+            fixture.writer.locked(same->{batches.finishInitialNoDispatchRecovery(same,retained,semantic);return null;});
+            assertEquals(retainedDigest,fixture.writer.locked(same->same.head().digest()));
+            var ordinary=StrictJson.object().put("evidence_id","ordinary-transport-does-not-inherit-full-semantic").put("source","actual-ordinary-transport-test");
+            var ordinaryRequest=new org.xar.ck3.control.continuity.writer.WriterContracts.Request("fixture.ordinary_transport",ContinuityJson.canonical(ordinary),List.of(semantic.semantic()));
+            assertThrows(IOException.class,()->fixture.writer.locked(same->same.preview(ordinaryRequest)));
+            batches.commit(new JournalInput(owner,"large-worker-1",JournalKind.BATCH_STARTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
+            batches.commit(new JournalInput(owner,"large-worker-1",JournalKind.BATCH_INTERRUPTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
+            var next=fixture.writer.locked(same->batches.admitInitialNoDispatchRecovery(same,owner));
+            assertEquals(2,next.nextBatchSequence());var interrupted=fixture.writer.locked(same->same.head().digest());
+            Files.writeString(Path.of(semantic.semantic().path()),"{}");
+            assertThrows(IOException.class,()->fixture.writer.locked(same->{batches.finishInitialNoDispatchRecovery(same,next,semantic);return null;}));
+            assertEquals(interrupted,fixture.writer.locked(same->same.head().digest()));
+            assertEquals(captured.controller(),next.capturedController().orElseThrow());assertEquals(0,fixture.nativeActionWrites());
+        }
+    }
     @Test void aLaterActualCanonicalBatchHeadCannotReuseTheEarlierRestartTicket()throws Exception {
         try(var fixture=fixture(root.resolve("changed-head"))){
             var input=inputs(fixture);var ticket=fixture.writer.locked(same->input.controller().captureCleanRestart(same,"worker",0));

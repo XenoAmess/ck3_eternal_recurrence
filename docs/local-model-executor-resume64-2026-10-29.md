@@ -18,6 +18,16 @@ SDK current首轮在15:03:49Z的目录观察为0B；最终结束后读回SSE实�
 
 2026-10-29T16:14:55–16:15:28Z，首次MCP metadata selector调用连续三次实际HTTP502，按配置分别退避10.880、22.219、40.874秒。16:16:09Z第四次POST前实测running7/waiting25/KV16.54%，caller exit75，第四次未POST；16:16:42Z REA代理两包也在POST前以running32/KV65.4–66.0%拒绝入队。16:20:39Z再读实际running32/waiting0/KV68.56%，全局暂停新POST及下一次HTTP重试。八个客户端槽不是远端最多八个请求的证明；失联/502是否留下远端任务未知，不能根据本地client0宣称服务器空闲。仅协调岗在真实消化后逐步恢复，不重启远端服务。
 
+该selector随后由owner移除一处隐式verify，严格两源javac0、原whole3由1P2F到3P并S/Z SOURCE STOP。中央明确取消未发第四次及后继HTTP，标为`superseded_after_owner_adoption`，保留三次502原件。模型候选/采用0；这是暂错后owner完成的任务，不能追认为模型修复，亦不从三次网关502推出能力/API合同失败。Outer Definitions与reader在当时仍未完，后续owner完成与取消事实见文末。
+
+后继服务恢复只作一个真实请求：16:36:03Z GET HTTP200、0running/0waiting/KV0，明确仅放REA代理的Construction06；16:37:28–16:37:48Z该请求200/stop，18,631输入/3,023输出、TTFT3.367s/总20.439s，原件`rea-construction-signed06`，即时送owner。实际单TEST严格javac1/1.847s，私有NATIVE_FIELDS与缺List等问题真实拒收，未跑JUnit；准备中的真实反馈02随后由owner接管取消未POST，不追认为模型原稿通过。16:38:56Z指标GET再502，16:41:04Z又实际32running/0waiting/KV65.63%，16:47:10Z为24running/8waiting/KV49.81%，16:54:08Z为32running/0waiting/KV69.39%，其余槽一直未解除。期间本树仅此一个新POST；这些新的32不能归因本树又发32次。不同样本process_start_time_seconds也不同，仅记录服务进程标记变化，不猜原因或自行重启服务器。
+
+同时发现调用器的明确缺陷：原metrics解析缺指标时sum返回0，且未验证GET状态，502空body可能被当成空服务。已在原CurrentModelCall窄修，HTTP非200、transport失败、缺失/非有限/负指标都记录admission_unknown并在POST前exit75。离线Java21编译0/0.970s，10个包括真实metrics与非metrics JSON的向量通过/0.811s，验证过程模型POST0/Game0；原件`metrics-admission-check01/ACTUAL.json`。这只约束模型HTTP入队，不是游戏、普通运行或编译前置，配置的最多6次请求暂错重试保持。
+
+17:07:07Z实际metrics为0/0/KV0；FamilyPool首轮及17:19 Finance真实200表明Chat可用性不能仅由另一时刻metrics路径502判定。Application Producer首次授权在17:15因GET502直接75、POST0，未进入模型POST暂错重试。Root因此明确批准原caller增加`--single-request-unknown-metrics-probe`：仅在中央确认本树client0、明确授权一个真实未完逻辑请求时，unknown保持unknown并可执行一次有限POST探测，原最多6次暂错退避串行保留，其余客户端暂停；有效已知过载仍禁止，不能循环补位8个。追加离线18向量全部通过（编译0/0.911s、运行0/0.615s，模型POST0），原件`metrics-admission-check01/PROBE-POLICY-ACTUAL02.json`。这是对先前一律fail-closed未知策略的明确变更，不新增调度平台或项目运行资格。
+
+中央据此于17:28:08–17:28:31Z实际执行Application Producer R1：HTTP200/stop，13,717输入/3,747输出、headers2.143s/TTFT2.147s/总23.245s，cache未报告。该次前置metrics实际200、known=true，不能冒称线上验证了unknown分支。R1原稿严格编译仅一处FileRef/ExactRef API错误；17:34:04Z纠错R2即使带probe flag仍在有效31running/KV86.657%前POST拒绝（exit75，POST0）。owner随后最小纠正该API并完成16P采用，取消未POST的R2。17:40:59Z新有效读数为32running/0waiting/KV88.721%，`METRICS-RECOVERY-PROBE07.txt`；本树HTTP0仍不等于远端空闲，已知过载HOLD继续。原caller/HTTP失败、候选API错误和最终采用分别保留。
+
 最新小型状态入口为原件根下`CONTROL-NOW.json`，目录计数快照为`STATUS-NOW.json`；同一父根`LOCAL-MODEL-CALLS.jsonl`确已持续记录到16:16:42Z及后继协调事件，旧工具展示末尾15:29不是日志停写的证据。16:16:58Z目录快照为116个有终态目录/119个结果attempt（104 stop、11 length，其余失败）；不等于116次采用或116个owner已消费。Migration最近十包、Integration既有终态已逐包核交件，余额各0；代理继续直接交sole owner，中央逐叶ACK不作前置。
 
 派发延迟是本轮真实协调缺陷：Legacy actor-zero完整请求等待约38分钟，owner最后人工修单TEST并实测6P、S/Z SOURCE STOP，中央仍未POST。未调用请求已取消，保留原prepared与manual先后；此例是派发与状态反馈延迟，模型调用0、能力试验0，不归为服务/API失败或模型成功。另SDKGoal原件曾因lead转交滞后未及时消费，现已补交。总调用数不能替代可用候选实际送达、编测与采用。
@@ -47,7 +57,13 @@ SDK current首轮在15:03:49Z的目录观察为0B；最终结束后读回SSE实�
 | MCP bridge诊断 | 首轮生产3操作加owner decode顺序纠正；03返回窄TEST再加owner两处纠正 | strict3源0，6个不同测试通过，双叶S/Z SOURCE STOP。01/02错误TEST未编，不能记自主测试成功 |
 | Lifecycle public result | 01 API/节点类型/数组断言错误拒收；02两hunk原样、一个显式null边界由owner纠正 | strict TEST0/1.682s，原whole7由5P1F1E到7P/0skip、2.277s；仅TEST S/Z SOURCE STOP，生产0、Game0 |
 | 历史批读P0 | 模型提出batch及Journal两consumer结构；owner修模块/锚点、序号、有限不可变集合及末尾exact pins/absent，保旧single API | 最终javac0/2.630s、新adapter2P/4.453s，3prod+新TEST S/Z SOURCE STOP。较早prior-head cohort另2P/115.010s，不能混作最终性能证明；实际71链由runtime后续同Game验 |
-| Fresh proof相邻去重08 | 单代码hunk采用，owner仅纠注释说明两个真实caller；原分析漏识第二caller | 两consumer严格javac0/2.596s，Fresh单叶16:14:00Z S/Z SOURCE STOP；新hunk JUnit待FS，旧1P不追认新行为，更不声称125s实测加速 |
+| Fresh proof相邻去重08 | 单代码hunk采用，owner仅纠注释说明两个真实caller；原分析漏识第二caller | 两consumer严格javac0/2.596s，Fresh单叶16:14:00Z S/Z SOURCE STOP；最终store/domain/history/child cohort的原4HELLO captured/current-date方法实际1P/Java22.261s（17:23:03Z结束）。不外推dirty非空、actor继承、实机或125s提速 |
+| SDK Goal observation signed | Goal01四个精确生产hunk原样采用，owner生产修改0 | 原模型TEST实际多余Frame参数编译1，int边界回绕/遗漏0/M7绕消费者另静审拒；owner修三个新增TEST保原14，baseline whole17=16P1F到17P，2叶16:26:51Z S/Z SOURCE STOP。仅四production hunk授模型贡献，不授原TEST自主通过；见[实际采用](handover/2026-10-30-resume64-sdk-goal-observation.md) |
+| M4 FamilyProposalPool | 首轮四个精确生产操作原样应用，strict0/1.249s、原四方法由1P3F到4P/2.543s，owner修正0 | 最终owner只将重复角色合同委托现有NativeCharacterId；原两类19=18P1F，唯一F为原资源缺失、未到目标producer。2叶17:22:11Z S/Z STOP，TEST是owner先写真实RED。02未POST取消；见[FamilyPool实际记录](rea-ck3-research/resume64-m4-family-pool.md) |
+| Finance public helper04 | 窄单方法原样D采用，实际API/数值/业务public→candidate Native源审通过 | 单TEST strict0/1.975s，尚未JUnit或S/Z采用。首轮大TEST退化与本次窄helper分开，不以类型通过当writer行为通过 |
+| Application Producer DATA | R1是主要生产实现来源；原稿strict4src1，owner仅纠FileRef.equals API及注释/unused清理 | 最终strict4src0/2.330s、原12+新DATA4=16P/0skip、进程5.477s，17:37:00Z S/Z3叶STOP。初15P1F是TEST将1.0重新序列化成1，修为真实输入字节；R2已知过载POST0取消。owner独立D备用未供prompt、未编未采，不混作模型来源。见[实际DATA发布](maintenance/2026-10-30-java-application-producer-data-resume64.md) |
+| Private pending11软件发行 | 模型单hunk采用到D，owner补actual before Known、同parent及新episode等真实断言 | helper严格javac0/2.645s；未以此授B发行。后续实际Pending14因heartbeat缺席1E，不能把Construction fullRoot 4P或旧A当合法B。Heartbeat15只拟授权、工具执行前owner接管，POST0取消 |
+| Collector403 retained Known | 模型七槽内容比较经owner inline后采用，runtime补首槽拒因；后续实际Batch23反证其中aux比较 | strict3src0/3.213s，真实同packet assembler重新包装baseline2=1P1F（403）到2P/0skip、Java2.504s，18:24:51Z结束。实际Game合法pubcaps同stamp更新aux后仍拒绝，runtime/latency按真实唯一mutator及typed CAS契约删除aux比较。该后继是owner纠正，不把软件2P外推为真实游戏正确或给模型新修复信用 |
 
 所有采用归因区分模型原样操作、模型方向后owner纠正、owner自写测试和仅独立复核。S/Z源码采用、隔离软件回归、主构建产物、同Game运行分别记录。
 
@@ -59,6 +75,12 @@ SDK current首轮在15:03:49Z的目录观察为0B；最终结束后读回SSE实�
 - Council第一轮发明API并误处理Obj/ObjectNode；第二轮length；第三轮两个call edits可取但helper仍错。owner helper/fixture/测试与模型调用插入分开记录，不以HTTP200算完成。
 - M2 paired factory两轮忽略真实TU/匿名namespace可见性和精确路径反馈，均未编未采用，owner接管4个窄hunk。不存在“HTTP200且JSON完整即Native可编”的推论。
 - Actor首轮适配器只检查两个键并静默丢字段，违反exact role/类型合同；Registry大输入TEST候选存在Java保留字、错误text block及字节数组比较；War H1第一轮生产操作可取，但TEST包含不存在API、删除absence回归、把合法seq10当非法等。静态拒绝与实际javac/JUnit失败严格区分。
+- SAVE Confirmed首轮19,140输入/1,222输出、HTTP200/stop、TTFT2.913s/总12.366s，仍再次调用checkpoint、误用Fixture.archive与boolean.textValue、缺checked边界/同writer物料断言，静态拒绝、未编未采用。Unknown首轮13,782输入/3,400输出、HTTP200/length、TTFT15.289s/总78.129s，同一不存在receiptRef猜测出现29次，无完整changes候选；不裁剪残稿。原Unknown上下文缺正式Archive声明是owner责任，后继已补真实API；两轮均不给独立owner已编代码采用信用。精确评审在`D:/ck3-state/ck3-java-g2-resume64-save-contract01/MODEL-REVIEW01.json`与`MODEL-REVIEW02.json`。
+- Native full-role04提供实际.4源码及58checks30F，66,524输入/7,000输出、HTTP200/length、TTFT8.645s/总46.530s。完整JSON未闭、同一ValidRelatedCharacters上下文重复23次并虚构递增行号，整份拒收，未编/采用0；不是有限尾部截断或HTTP暂错，不六轮重放。窄05/06随后owner接管且从未POST，保实际失败与人工后继分别归因。
+- Startup Producer R1 HTTP200/stop、12,623输入/2,044输出、TTFT2.019s/总13.385s，归一化后返回原生产源码，仍保留原历史门却notes声称实现；新direct prepare API缺失导致真实3个编译错误，未JUnit/未采用。R2未POST，后继owner实现5P；不能把前述Application Producer R1的16P移给这一独立任务。
+- Trace预算首轮HTTP200/stop、13,615输入/2,816输出、TTFT2.083s/总19.074s，两核心hunk方向可取但缺FullJsonTree/JsonNode import。实际strict两源exit1/2.432s（四错、两deprecation警告），TEST只测通用utility不调用真实Trace路径。R2补actual诊断准备件从未POST，后续取消旁支；没有模型原样通过或行为验证。
+- ActionGuard02真实三源javac两错；03在真实诊断和补齐frame API后改进实际Probe/lock/round/DATA路径，但仍8个实际API错误；04纠正这些API后又实际9个缺import错误。owner纠正两个import、七处非法空expected、真实玩家ID反控及精确断言/counters，最终candidate/baseline strict0。实际旧实现XML为1E（tests1/errors1/failures0，Console failed1），首因是真实旧source pin IOException；最终新四方法4P/0skip、进程47.405s。模型04的23.8k TEST主体采用真实Probe/lock/current DATA/action metadata，但不是原稿可编或独立全绿。三轮分别32.037/28.881/27.452s、cache均未报，不自动第五轮；原件`D:/ck3-state/ck3-java-g2-resume65-action-source01/ACTUAL-RED-GREEN01.json`及`MODEL04-OWNER-ADAPTATION01.json`。
+- Shared typedwait首轮HTTP200/stop、33,569输入/1,939输出、TTFT4.480s/总16.582s；future软期限空queue却构造Elapsed、过期有queue仍读、无依据monotonic标记，另TEST是无返回类型/无断言占位。静态整拒、模型hunk采用0，未造javac失败；必要owner短修与真实focused验证另记，不为补次数再派。
 
 方法分派继续提高复杂度和实际采用倾向：完整相关源码仍保留，输出优先有限JSON操作、目标方法或多个精确hunk；较复杂任务分轮做生产与真实测试，而非要求模型反复输出大文件。真实诊断返工不改变当前源码以追缓存；已由owner完成的工作不再伪装成模型首写任务。
 
@@ -66,10 +88,114 @@ SDK current首轮在15:03:49Z的目录观察为0B；最终结束后读回SSE实�
 
 首轮提供14份当前相关合同/源码，83,581输入token、10,949输出token，HTTP200/stop、TTFT13.758s、总108.415s。实际候选是一个51,183字符TEST文件，含7个@Test（复制原6例）和9次直接Journal.commit，违反要求的单例真实Controller producer边界；Clock推进/空planner/observer逻辑也不能触发目标post-planner预算End。实际修正harness依赖后仍有6个候选javac错误，未执行该7例或FS。输入83k不等于模型完成83k改写。
 
-将实际编译诊断和具体语义反馈放在最后，稳定前两消息不变，第二轮83,929输入、3,395输出，HTTP200/stop、TTFT10.962s、总31.064s；原件`model-coordinator64/controller-deferred02`。第二轮收敛为一个@Test且无手工边界commit，但实际javac仍7个错误，未执行FS。owner窄修当前API、baseline/facts与真正Blocked预算边界后D javac0/3.369s，尚无行为通过。第三轮prepared请求在POST前取消，避免挡住生产P0；不把长JSON或第二次stop计为复杂集成能力通过。
+将实际编译诊断和具体语义反馈放在最后，稳定前两消息不变，第二轮83,929输入、3,395输出，HTTP200/stop、TTFT10.962s、总31.064s；原件`model-coordinator64/controller-deferred02`。第二轮收敛为一个@Test且无手工边界commit，但实际javac仍7个错误，未运行该错误原稿。owner窄修当前API、baseline/facts与真正Blocked预算边界，再纠正JNA harness，最终显式当前Controller/history三叶/fixture/support+单TEST javac0/3.850s；真实单例1P/0skip、JUnit20.663s，16:25:15Z结束。此P属于owner审修后的模型02流程，不能授原稿自主编测通过。第三轮prepared请求在POST前取消，避免挡住生产P0；旧源已变化，不补调用。完整失败、owner修正及真实producer→canonical→recovery范围见[Controller DEFERRED实验](local-model-experiments/2026-10-30-controller-deferred-producer64.md)。
 
 原生fixture首轮后审还受输入时序限制：输入混列pre-edit共享Event与post-edit owner D，且未给当前Frontend的7577B/3.11s独立观察；首轮不能全部归因模型。新增采用0、实际`Thread.join(5, TimeUnit.SECONDS)`在Java21编译失败，真实来源/HTTP量测及公平边界见[原生fixture后审](local-model-native-fixture-postreview-2026-10-30.md)。准备中的纠错与已POST严格分开。
 
-中央`OWNER-REVIEWS64-01.json`已由统一锁writer追加到原调用日志，包含原样采用、部分owner纠正、静态拒绝、真实javac/JUnit失败、取消未发等分层结果；原HTTP结果和错误候选从未改写成成功。后继group lead各保独占2HTTP执行slot，直接交sole owner，不把中央逐叶ACK作为执行前置。
+16:24:38Z只读`/v1/models`实际报告当前`qwen38-coder`别名的`max_model_len=1048576`，原件`MODELS-LIMITS-HOLD.json`。这是当前服务声明的上下文上限，不是已验证的复杂任务能力或可用资源；不因臆测128k上限静默截断GUI/继承完整相关源码，也不因声明1M就要求每包扩大输入。输出仍为有限token、明确方法/hunk，实际入队继续服从服务metrics。
+
+后续HOLD期间owner继续推进必要工作，未发请求不追补：Outer Definitions 13P、reader先后6P与7P、Kernel 24P、Held原两RED 2P、Events/GUI/SDK/Publisher等接管或替代项分别由owner维护来源。Integration代理16:59:14Z已确认清空ready、HTTP0；新实际诊断再交当前源码。首轮真实HTTP、静态拒绝、实际编译失败以及人工后继都保留，不能把取消的prepared请求补算模型调用或能力失败。
+
+中央`OWNER-REVIEWS64-01.json`及后继追加记录通过统一锁writer写入原调用日志，包含原样采用、部分owner纠正、静态拒绝、真实javac/JUnit失败、取消未发等分层结果；原HTTP结果和错误候选从未改写成成功。各组代理保留原执行槽归属，但当前并不具有自动派发授权；仅明确单请求恢复有效，终态直接交sole owner，不把中央逐叶ACK作为执行前置。Estates两轮的Native三操作/错误TEST/截断Roles/owner接管与各自实际cohort另见[精确归因](local-model-experiments/2026-10-30-estates-native-signed-role64.md)。
 
 本文仍在更新；当前Game/业务进度由运行岗记录，本协调岗未执行游戏动作。
+
+用户随后明确取消强维60，实际同Game决策与自动游玩故障优先。18:25:15Z fresh HTTP200/0running/0waiting/KV0后只给TypedWait与Action04两个命名任务，均用默认known-only入队，unknown仍exit75，未同时启用unknown双probe；授权上限2不代表实际曾同时在途2。两调用均已自然结束并直接交owner，随后停止边角/SDK/CI/WarEntry/actor-v2等新POST与自动补位；未选请求只保唯一输入交接，不晚发已解答案。最后状态入口`CONTROL-NOW.json`分开标控制更新时间、实际本树client0和历史metrics样本时间，不能把旧0当当前远端空闲。此收束不是实际游戏目标已完成。
+
+后继最高P0是Root正在接的真实在线decision provider：OrdinaryPlanner.planBound之后、finalizePlan之前，消费真实PlanningRequest与合法ActionSelected，只选原proposal或WAIT，采用严格JSON与Java HTTP。协调岗优先两窄方法/合同候选，不另起平台；运行期真实Game决策优先，coding仅小并行1。这里的保留容量是coding协调安排，不声称远端已签发配额；coding的metrics入队控制绝不成为Game新启动或运行资格。当前仅记录接线任务与优先级，未收到实际运行请求/响应前不报告本地模型在线决策已接通。
+
+### 在线决策接线与真实Census阻断（18:44–19:04Z）
+
+本节机器仍为`xenoamess-full-tower-eb9d2c1186`；远端模型机器身份未知。外部严格四字段回执成功值为`SELECT_PROPOSAL`、内部映射`Choice.ACCEPT`，或`WAIT`；选中时保留原command/Draft同引用。运行期`stream=true`以首个非空`delta.content`测TTFT，headers与总耗时分开，操作采用自己的有限期限，不能借用coding长watchdog或metrics作为Game新门。
+
+真实TEST03于18:44:43.981–18:45:24.736Z返回HTTP200/stop，18,417输入/6,041输出、headers2.556s/TTFT2.559s/总40.755s。首稿有不存在的`addHandler`/`HttpResponseHandler`、占位handler与dummy SOURCE sink、错误Optional及缺import，静态拒绝且未编译。运行期SSE合同是在该POST后新增，不能把这项时序变化也算模型API失败。后续真实JDK/SSE纠错04未POST，owner必要接管，不为完成的TEST再生成复述。原始结果位于`model-coordinator64/online-decision-tests03`。
+
+实现A01于18:50:11.667–18:51:17.474Z实际HTTP200/length，28,494输入/10,000输出、headers4.409s/TTFT4.413s/总65.807s。55,712B内容的第二个provider类从imports开始反复退化，没有类体或Planner edits，整份JSON未闭，不能修JSON后算采用，也不作暂错六轮重放。只有第一个完整`OrdinaryDecisionSelector`接口块由owner按精确span逐字partial保留；HTTP/SSE、Planner及B接线为必要owner实现。owner后报全七源strict0、真实HTTP/SSE加M7原四方法4P，19:07:04Z S/Z SOURCE STOP；这项部分采用只是一份接口，不能写成模型实现两完整文件。原件`model-coordinator64/online-decision-provider-a01`；owner的`D:/ck3-state/online-decision-provider65/A01-PARTIAL-REVIEW.json`保精确span。DEV61宿主加载与实际ActionSelected/模型请求仍分开，未到后者时runtime LLM HTTP为0。
+
+实际Game随后被ordinary allocation/log Census拒绝。runtime先交83KB真实生产请求，但首包没有有限`max_tokens`，caller本地拒绝、POST0；用现有override4000只补预算后，18:58:01.849Z metrics GET502触发75，仍POST0。此包实载Guard和Census两份完整源，第三StorageWriteGuard误路径被包装脚本跳过，由提交owner明确承认，不算模型漏查。中央准备唯一unknown探测时runtime已必要owner接管，探测工具未执行，立即取消；独立124KB TEST同样未POST后由sole owner接管。该TEST后实际单源strict0/1.383s、1P/0skip/3.512s，587次正常日志写与构造/两次publish真实重叠，预算前拒无输出及第二owner拒均覆盖，19:05:44.690Z TEST S/Z STOP。软件结果归必要owner，模型贡献0，生产history独立。保留原件`model-coordinator64/runtime-ordinary-storage-live01`及`host_integration/signed-calendar64/ordinary-live-next/P0-REVIEW01.json`，不能称为Chat失败或模型逻辑失败。
+
+19:03:23.341Z唯一仍未完成的在线B01接线请求得到新的有效metrics：running16/waiting16/KV34.9805%；caller带已批准unknown-probe flag仍按已知过载exit75，POST0，无TTFT及模型结果。owner随即接管Config/Core/Opened/two factories窄接线，中央撤销待发，不对后写实现补模型作者信用。原件`model-coordinator64/online-decision-wiring-b01`。19:04:22Z既有`CONTROL-NOW.json`已分别记录控制更新时间、本树client0及19:03真实metrics时刻；后者只是点时观察，不外推之后远端空闲。当前没有自动补位或coding队列，新的实际Game故障才产生下一必要任务。
+
+### Batch24 LIFE pure replay真实下一窄题
+
+19:21:40.091–19:21:46.064Z，Root新授权实际Batch24故障的`GovernancePlanningReads` factory窄候选返回HTTP200/stop：10,617输入/616输出、headers2.313s/TTFT2.317s/总5.972s，无暂错重试、cache未报。目标是将既有纯original decoder显式同时接decode/replay，保held guard、wire和类型，不据此宣称被资格错误遮蔽的Native read已成功。前置metrics该次HTTP200/known=true，并未使用unknown flag。
+
+首包system不等固定模板，先在本地preflight拒绝、POST0；协调岗只替换配置中的固定system，stable源码和变化task逐字未动，保`LOCAL-PREFLIGHT-TEMPLATE01.json`及原system。真实候选立即交latency65、runtime和Root，原件为`model-coordinator64/game-lifestyle-pure-replay01`。raw使用`var decoder = (receipt) -> ...`缺target type，实际原稿strict javac1/1.279s。owner仅补`Function<PlanningReadReceipt,OpportunityJson.Obj>`及当前pureReplay构造器要求的双参数BiFunction适配两行，最终strict0/1.332s，原纯decoder双接结构采用到D。原错误与owner纠正分别保留，不为确定性标注再POST。Military的真实factory→negativeACK→heldguard回归在途，尚未授行为或Native成功。
+
+同一真实回归随后在Collector832暴露缺active held scope：已有planningRound捕获未接现有held分支。Root只授权`currentHeldOriginal`在已有capture时调用既有`retainedPlanningRead`全套guard后进入原scope，不新增capture、Native查询或类型。43KB完整当前请求于19:27:21.402–19:27:26.732Z实际HTTP200/stop，8,403输入/638输出、headers1.498s/TTFT1.501s/总5.330s，cache未报、单次无retry。原件`model-coordinator64/game-lifestyle-held-round02`。模型方法采用到D，owner只加`round.captured!=null`避免未捕获round误入retained路径；Collector加factory双源strict0/1.879s。实际negativeACK→heldguard回归仍待结果，不能把decoder测试通过记作该完整失败链通过。
+
+另一个同Game真实cap故障使用223,848B、三份当前源的请求：历史publisher sources/definitionSource/decoderSource只保metadata，不再作为每次hash的大DLL evidence；实际row/read/Driver/Native DATA保留，禁止全局扩cap。19:28:04.895–19:28:24.324Z真实HTTP200/length，43,843输入/2,500输出、headers5.837s/TTFT5.841s/总19.434s，cache未报、没有暂错重试。raw前两个实际删代码evidence操作完整，随后重复同一`source.evidence`自映射no-op直到JSON截断，属于输出退化，不是单纯有限尾截断。原件`model-coordinator64/game-read-history-data01`已直交runtime；未补JSON或解析整件。sole owner随后独立精确消费前两操作，Publisher两行D实际单源strict0/2.011s，SHA`105449b55766416fae0b68fbd4d9dbdee8057806577c7d97e262ef7dd77ac613`，`D:/ck3-state/runtime64-read-history-data01`保REQUEST/D/JAVAC。只记partial两操作，producer→writer行为由Integration另验，不能授整件或行为通过。不原题六轮重放，也不把223KB上下文当改写量。
+
+### 实际LIFE episode全线路组的失败与接管
+
+下一真实negative ACK由Java逻辑局名不满足当前loaded Native63的`native-<actor>-`线名约束触发。请求一次提供107,545B当前三Java类及实际Native guard/last-query初始化上下文，目标覆盖query发行/严格回映、action preparation以及effect ACK/receipt全线，保现Game/actor/logical episode稳定映射，不改Native、Driver或UNKNOWN。19:39:39.580–19:40:25.988Z实际HTTP200/length，22,781输入/8,000输出、headers3.347s/TTFT3.350s/总46.408s，cache未报、单次POST无retry；原件`model-coordinator64/game-lifestyle-episode01`。
+
+owner实际只找到一个完整edit，但helper参数使用`Complete`而不是当前`ObservationIdentity`，hash仅actor+episode又漏machine/Game；后续重建Complete时巨量重复`Optional.empty()`直到JSON未闭。整件静态拒绝、生产ops采用0，没有候选编译失败的虚构记录；不能将一个完整但错误的edit也记partial。必要owner接管现三类窄组，不对同全文再次POST，也不把输出退化当暂时HTTP错。中央只按配置修过fixed system，stable源码/task逐字不变，适配记录在该run的`PREPARED-CENTRAL01.json`。完整上下文与有限输出预算保留，单次失败不作永久能力上限；实际同Game修复/编测由owner另报。
+
+后继必要owner以当前typed `ObservationIdentity`实现稳定machine/Game/logical episode/actual actor的wire映射，严格原件校验后完整回映logical身份；strict0/1.599s，真实consumer分层2P与1P分别保留。runtime于19:48:04Z S/Z采用三生产加TEST，同Game智能体热reload实际200/5.511s，next25另由runtime消费。这些实现和软件P全归owner，不追认为本次失败模型生成源码，更不把reload的HTTP200冒充一次运行期模型决策。精确归因在`D:/ck3-state/ck3-java-g2-resume65-lifestyle-episode02/FINAL-VERIFICATION01.json`。
+
+### 实际Maven-only bootstrap窄故障
+
+Root另指定Dynastic Esotericism Static40942319309的真实`--ensure-default-maven-only`故障：CiBootstrap.main在MAVEN_ONLY return之前无条件绑定Oracle interpreter，缺`XAR_ORACLE_PYTHON`即拒。sole owner先交24,684B、四个当前源码section的小请求，无预写实现。19:50:02.945–19:50:06.267Z实际HTTP200/stop，5,015输入/367输出、headers0.918s/TTFT0.922s/总3.321s，cache未报、一次无retry，原件`model-coordinator64/ci-bootstrap-maven-only01`。候选只将原bind语句包在PIPELINE模式分支；源码中Invocation实际在main500已定义，before语句在571，非凭模型notes推定作用域。
+
+sole owner实际消费模型单hunk到D，原发布source和新TEST strict2src0，原主入口缺Oracle真实1F精确报`XAR_ORACLE_PYTHON`；候选strict2src0/1.419s、三方法3P/0skip/2.729s。PIPELINE仍先拒、显式verify仍拒，0S/Z/MB/index/Game写，不升级为GitHub CI或完整hosted runner通过。当前机器实际默认`mvn --version`读回3.10.0、home为`C:/apache-maven`，这里只是带机器身份的观察，不锁生产命令路径，无upgrade/verify/reactor执行。唯一采用/验证交接为`D:/ck3-state/ci-bootstrap-maven-only65/HANDOFF.json`，`modelaccepted_hunks=1`；不恢复current19，也不新POST返工。此调用优先级低于真实Game P0，单请求完即无后继自动队列。
+
+### Batch25 commit投影与private action实际后继
+
+suffix按真实dump提交157,784B、九份完整相关源码的`commitPrepared`单方法组：只移除冗余Store.head全链投影，保initial fresh/final readback、全部exact pins/absences、writer锁与UNKNOWN，无泛缓存或全局cap变更。19:56:08.964–19:56:18.610Z实际HTTP200/stop，31,505输入/909输出、headers4.218s/TTFT4.222s/总9.645s，cache未报、单次无retry，原件`model-coordinator64/game-commit-recheck01`。
+
+JSON完整和stop并未满足任务：production new仍保留`requireSameHead(actual, store.head())`，只在它前面增加docs/absences验证，和reason声称已经替换/移除相反。owner实际核对old anchor匹配0、TEST处于错误stage；未编原稿，不能制造javac失败。首包不可采用，只可记exact pins/absences结构参考。owner接管正确anchor、保实际665 precondition，唯一672改exact docs加absences，重写真实second-revalidate阶段才做equal-bytes新fileId替换/缺席index出现的TEST。首次新TEST的parseObject漏bound为owner错误，COMPILE01=1E。COMMIT64-COMPILE02实际javac0/2.310s，参数为`-Xlint:all`、无`-Werror`，含五个旧manifest路径及一个既有unused-lock warning；此前称strict0不准确，已据原件更正，不为口径重测。必要writer三方法3P/0skip/4.954s，含READ/duplicate/repair。`D:/ck3-state/ck3-java-g2-resume63-journal-dirty-suffix01/commit-recheck64/READY64.json`保原件。`REQUEST2.json`明确未POST取消，不为确定机械删除再叫模型复述。source只少一轮full JSON解析，仍线性校验SHA bytes，三P不是生产提速证明；后继runtime采用/reload与另一个Journal恢复问题分开记录。
+
+另一个实际Batch25问题是private governance五项ActionBinding已装，但Dynamic候选仅从HELLO广告推得，导致focus缺actionSteps而停。Root授权通用窄语义：paused时从真实installed metadata加入`Kind.ACTION`、gameplay guard且`requiredCapability.empty`的操作，随后仍走原exact安装交集；不白名单、不造cap或新增API，不改Native/policy guard。32,379B完整当前请求于19:57:29.403–19:57:32.434Z实际HTTP200/stop，6,453输入/290输出、headers1.210s/TTFT1.213s/总3.031s，cache未报、无retry。原件`model-coordinator64/game-private-action-projection01`已交latency65/runtime/Root。raw真实javac1/1.337s，`InstalledStep`嵌套类型未qualify且header未import `ReadContract`；owner只改为`ExecutableStepBindings.InstalledStep`并加import，最终strict0/1.507s，候选语义D采用。后继Military真实GovBindings.freeze→Dynamic.project→Opening命令whole2P/0skip、Java0/1.579s，20:01:50.577Z结束；旧project缺privateFOCUS真RED保留。`D:/ck3-state/ck3-java-g2-resume65-private-action-projection03/FINAL-VERIFICATION01.json`记精确验证，source/TEST已交runtime sole采用；实际Game动作与在线provider另验，不把本次coding HTTP当决策调用。两题均结束后coding HTTP0，不自动轮转，不为确定性类型修正再POST。
+
+### READ suffix恢复与当前Scene consumer
+
+真实committed READ后reload的零suffix恢复拒绝`java_driver_read_history`，suffix先提供317,843B当前完整相关组，Root授权三leaf保captured A原件、私发retained postREAD facts/ref给Fresh及Bootstrap防rewind。20:12:51.322–20:13:26.245Z实际HTTP200/stop，66,138输入/4,664输出、headers8.498s/TTFT8.501s/总34.922s，cache未报、单次无retry，原件`model-coordinator64/game-read-suffix65`。owner完整静审后0hunk采用、未编原稿：registry是每次publication而非累计，候选的prefix/存在一致会拒实际无field→86/87各2→1；Bootstrap仍选manifest A并要求retainedDriver相等，facts别名未解rewind；以afterDriver构建又允许session/checkpoint变化，缺before/after version、epoch、metadata、originalReceipt以及retainedFullDriver ref，另exact anchors和imports不符。只记方案参考，必要owner接管当前三leaf，不对同全文再POST，也不把stop当恢复行为通过。
+
+owner后继明确实际Assembler892/925写durable aux marker的方法没有包含在原包，这是相关producer上下文缺口，须与前述错误分别归因。完整三leaf人工纠正的current05 javac0/3.131s，`-Xlint:all`、无`-Werror`，含五条旧path warning，不能称strict0。真实capture→Publisher2+1→interrupt→Journal新方法1P/28.210s，current Driver/stamp/aux/loop/actions与实际publisher全等，captured A不变且archived row篡改拒绝。`D:/ck3-state/ck3-java-g2-resume63-journal-dirty-suffix01/read-suffix65/READY65.json`保原件；原UNKNOWN1P和新fixture pre-capture1F分开保留，不写whole final2。Fresh/Bootstrap/newHELLO完整consumer仍独立，不能由Journal1P外推。
+
+runtime随后先给Mandatory fullframe潜点42KB请求，但真实因果又精确定位为GovCollector127–131把whole70,468B snapshot加history传入ConstructionSceneCodec显式65,536B byte lane。Mandatory在POST前撤销，metrics0/POST0。其本地打包校验失败后，协调岗未检查exit仍启动caller，因转换件不存在在HTTP前退出；这是明确协调错误，已记录`model-coordinator64/game-mandatory-fullframe26/LOCAL-PREFLIGHT-CANCEL01.json`，不归模型或服务，不修/重发已撤题。后续已经改为先检查打包退出再启动依赖caller。
+
+真正Scene包60,207B、三份当前源码，只修两个existing类：byte decode保持原cap和同一形状/字段validator，增加typed tree overload；Gov用现有DriverJson.toNode进入该完整树lane，不删字段/history、不全局扩cap或新type。原包只有system+一个合并source/task user；本地正确停在检查阶段，随后在明确末尾三换行加`TASK:`的位置57,102拆为固定三消息，原两个文字片段拼接与原user逐字相等，未重写任务。20:19:12.390–20:19:19.756Z实际HTTP200/stop，12,785输入/951输出、headers1.943s/TTFT1.947s/总7.367s，cache未报、一次无retry。原件`model-coordinator64/game-governance-scene26`已即时交runtime；两语义hunk D精确消费，owner静审补Gov漏DriverJson import，未故意编译已知缺import原稿。最终两生产源实际javac0/1.629s，`-Xlint:all,-path -Werror`，`D:/ck3-state/runtime64-governance-scene26/JAVAC01-ACTUAL.json`保原件，Codec/Gov hash前缀为8bcaa3df/f53f8f48。Military实际70k ROOT→Collector回归待报，未S/Z，不由本次200或type pass授Game通过。
+
+### READ fullconsumer真实TEST首轮
+
+Recovery于20:21准备134,583B当前API/完整target，但普通`send_message`没有唤醒已结束的协调岗；此前未有caller/POST，20:26的取消和后来撤回均保先后，不把这段协调方式错误记为服务排队或模型能力试验。真正`NEW_TASK`明确目标SHA仍未改并撤销取消后，才启动第一次候选，目标仅D新增真实publisher2+1→newHELLO Journal/Fresh/Bootstrap→Controller保READ历史的TEST，不改生产或伪造Game/Guard/token。
+
+20:30:20.785–20:31:01.974Z真实HTTP200/length，26,464输入/6,500输出、headers4.440s/TTFT4.443s/总41.189s，cache未报、一次无retry，原件`model-coordinator64/game-read-consumer65`。owner静态整拒、采用0、未编原稿：杜撰actual.collector/driverAuthority/adopted.session/router.catalog、empty OriginalEvidencePort构造及错误G2Source类型；旧Peer不支持heartbeat/READ、flush在frozen scope、变量越界/rows误取actionRows、capture签名错误。要求输出整块旧方法又放大输出量，属于实质API/流程退化，不只是有限尾截断；不裁补JSON、不重复旧包。必要owner接管真实fixture/TEST，后继真实编测另报，不把Journal1P或HTTP200移作完整consumer通过。当前coding HTTP0。
+
+该TEST的owner后继最终为D ONLY/NOT_ADOPTED。新D TEST COMPILE02实际strict javac0/3.002s；JUNIT01继承旧split selector错选旧date绿例，owner检查后撤回新coverage并保`CORRECTION-JUNIT01.json`，这是owner调度错误，不算模型代码错误。正确新method的JUNIT02软件WriteFile死锁到outer150s，JUNIT03实际1F/native zero-dispatch snapshot mismatch，最终JUNIT04 exact新method XML为1E/36.665s，collector等待软件snapshot超时，未到重连consumer。`host_integration/dirty-current-recovery01/read-history65/HANDOFF.json`、`MODEL-REVIEW.json`及各actual/XML保事实；runtime实际DEV62同Game HELLO66/LOOP26是独立生产进展，Root要求停止fixture迭代，无新POST，不追认为模型或该TEST绿票。
+
+### Batch26 canonical read实现source metadata
+
+实际Batch26的named-source失败由registry实现class历史18,417B与当前19,394B触发，runtime只交`canonicalReadWitness`434–436删除implementation source physical pin loop的窄题，保source metadata、全部typed Native/current/DATA及UNKNOWN。120,623B当前Publisher全源与末尾实际诊断，输出预算700。20:51:25.405–20:51:29.362Z实际HTTP200/stop，23,916输入/112输出、headers3.369s/TTFT3.372s/总3.957s，cache未报、一次无retry，原件`model-coordinator64/game-canonical-read-metadata27`。候选为一个精确删除操作，已即时交runtime sole审编测，不主动改owner源码，不以112token/HTTP200授实际业务通过。该时runtime尚未到ActionSelected、运行期模型HTTP0，coding调用与真实决策调用分开；当前协调岗coding HTTP0。
+
+### Batch27 Choice内部完整节点链
+
+真实Batch27于20:58:28.726–20:59:06.853Z以38.127s终止于`bounded UTF-8 planning request required`，栈为ChoicePlanningJson.require296→parse273→decode46→EventPolicies.foreground165/evaluateCollected135→OrdinaryPlanner；该批运行期模型HTTP、动作、游戏日均0。Root另静态核实同一可达consumer的history143–164逐原件document→bytes另64KiB限制，read281又走parse273，要求完整处理而不是每批撞下一处。runtime提供90,844B、四份完整当前源与typed models，实际snapshot104,169B/fullDriver80,609B加五条READ原件；内部已有bounded typed节点应复用全部原validators，外部decode(byte[])/encode原64KiB预算保留，不删snapshot/history、不全局扩cap或新增平台。Root和owner已明确到这些方法，不能把这次候选描述成模型自主定位了调用链。
+
+首轮21:05:59.720–21:06:06.155Z实际HTTP200/stop，17,974输入/668输出、headers2.742s/TTFT2.747s/总6.435s，cache未报、一次无retry；`model-coordinator64/game-choice-planning28`保原件。owner静审整拒0op、未编原稿：新typed decode漏exact-fields/domain校验，新增document(ObjectNode)仍完全调用bytes64k且是no-op，read(EvidenceDocument)仍parse64k。JSON完整及stop不授链修复。
+
+将首候选和实际逐项诊断放在最后、完整源码前缀不变，owner明确只续一次真实返工。21:07:57.157–21:08:02.138Z R2实际HTTP200/stop，18,818输入/687输出、headers1.158s/TTFT2.345s/总4.980s，cache仍未报、单次无retry；`model-coordinator64/game-choice-planning28-rework02`保原件。这是新真实反馈任务，不是HTTP暂错六轮重放。R2补了typed decode的exactObject并改document为JSON.writeValueAsString，静态仍未给read(EvidenceDocument)内parse64k的修改。runtime最终确认三个hunk结构采用，owner补typed decode的validateJsonDomain，以及read(EvidenceDocument) strict mapper/domain的内部大原件路径，内部document序列化保完整材料；外部raw decode/encode原64KiB预算仍保。归因为R1拒0op、R2部分采用加owner补全，不改写为R2原样全链成功，不再R3。两次headers/TTFT变化也不据此推断缓存命中。
+
+最终两个生产源实际strict javac0/1.602s，21:09:29Z结束，ChoicePlanningJson/EventPolicies hash前缀为f30e978b/44ab7045。真实同形wrapper87,903B、完整五row79,769B及同轮59 actions/134 caps的同selector回归，旧实现1F/2.837s到新1P/2.808s；实际frame和五row逐字保留，真实Planner返回NoCandidate，外部raw原拒、exact-field与NaN反控保。这里只授该必要软件行为，不能授全组、CI或真实Game决策通过。两个生产源21:14:18.309Z S/Z SOURCE STOP；DEV62/reload02编译21:14:39.721Z真实END，Root报告同Game PID171676的loop28在途，并未授批完成。
+
+最终运行边界只写已确认模型选择/动作/新增游戏日均0。运行期模型HTTP是否在途不能从缺少attempt原件推断，因为attempt在exchange返回后落盘，不能将文件缺席写成HTTP actual0；该次Root采样为模型选择前的Native READ归档force0。中央coding HTTP为0，保留以上真实headers/TTFT/SSE/RESULT原件，不新增HTTP、测试或派发，完成本题经验补记后结束。
+
+### M7 ordinary supplier真实暂错重试与独立候选
+
+后续Root最高P0实际定位到`RootCampaignPoliciesFactory.Installed.goal`：普通runtime的optional source metadata缺席是正常分支，不能据此丢弃已捕获的实际current request/fullDriver/M7KernelInputs。sole owner先交135,370B、十份当前源、有限4,500输出token的完整请求，尚未写生产候选；保actual planning/session/native/fullDriver/M7，不伪造Known或忽略M7。21:30:30Z首次默认caller的metrics GET502触发exit75，POST0，原件保`model-coordinator64/game-m7-ordinary-supplier65`，不是模型候选失败。
+
+在本树coding client0且只此真实未完任务时，按Root已批准的唯一logical unknown-metrics probe使用同一现有caller；未知仍记未知，不当0，也不放开已知有效过载。`model-coordinator64/game-m7-ordinary-supplier65-probe`保全部五次真实POST及原请求。前四次各自metrics GET502未知，随后POST分别在21:31:56.530、21:32:07.835、21:32:28.783、21:33:12.754Z真实返回502，总耗时54/41/46/42ms，TTFT均无；沿既有最多六次的串行暂错退避继续，没有新并发或游戏动作重放。第五次前21:34:22.825Z metrics已经HTTP200且指标可读，不能写成在未知metrics下取得HTTP200。第五POST于21:34:22.859–21:34:30.954Z返回HTTP200/stop、CLI0，29,107输入/617输出，headers4.385s/TTFT4.389s/单次总8.094s，cache未报；从第一次POST到成功总墙钟约154.424s，成功后不需要第六次。这是一件真实任务的五次HTTP尝试，不是五项能力试验。
+
+R5独立候选的唯一exact before匹配原baseline，`optionalMetadata.map`到`projectGoal`语义/API正确，没有杜撰类型；`test_edits`为空且未保原cause。Root已在暂错期间授权owner并行D fallback，原模型请求冻结且从未含owner答案。模型返回时owner已有等价备用实现，最终owner另抽`Installed.goal(request, OptionalMetadata)`纯边界并补`initCause`，实际两源strict javac0、supplier→CampaignPolicy/M7Consumer正控和foreign birth/frame拒绝共2P/0skip。`D:/ck3-state/m7-ordinary-supplier65/READY01.json`已交runtime。归因为独立模型候选有效及四次暂错后恢复成功；不授raw hunk原样编测采用，不事后将预存owner实现归给模型，也不由该两P授运行期模型选择、动作或新增游戏日。
+
+重试期间runtime另交272,082B/17row fullDriver两个refs误用transport上限的真实请求，但始终没有该包caller/GET/POST；owner紧急完成D修复后明确取消，Root随后撤回“等M7结束再首发”的安排。`runtime64-read-full-driver30/REQUEST01.json`保未发输入，中央控制保CANCEL_BEFORE_POST、POST0，不在M7成功后让模型复述已完成答案。M7终态已直交owner/Root/runtime，`OWNER-REVIEWS64-20.json`追加到原调用日志；以上coding结果与当前Game运行HTTP分别记录。
+
+### HELLO69后完整semantic DATA恢复故障
+
+runtime随后另交真正未完成的bootstrap P0：HELLO69后`OrdinaryCycleTransitions.commitInitialNoDispatchRecovery`→Writer.capture把263,703B完整semantic DATA按262,144B transport读取而拒绝，尚未进入loop30。283,744B、四份当前完整源码、固定三消息、2,200输出token的请求明确保先前Driver READ两个fullDriver ref修复；使用既有完整material bound分类实际Cycle可达通道的四个semantic原件角色，其他evidence保transport，不新增公共API/schema/type或扩大全局cap。source owner提交时尚未写答案，协调岗原样preflight后仅执行这一逻辑请求，没有复活先前已完成的cap30题。
+
+`model-coordinator64/game-recovery-semantic31`保全部原件：前四次metrics均502未知，按已有Root唯一unknown-probe许可得到四次真实POST502，分别21:43:51.848、21:44:02.852、21:44:23.429、21:45:06.545Z开始，总89/45/40/46ms，均无TTFT。保持同一冻结请求、既有六次上限串行退避，owner可并行必要D fallback。第五次前21:46:12.816Z metrics已HTTP200、指标可读；随后21:46:12.817–21:46:24.174Z实际POST HTTP200/stop、CLI0，56,106输入/600输出，headers7.909s/TTFT7.912s/单次11.357s，cache未报；逻辑总墙钟约152.326s，未发生第六次。不能把这次成功说成未知metrics下的200，也不能将五次HTTP当五项能力任务。
+
+runtime实际静审R5整拒0op、未编raw：唯一exact anchor虽匹配，但候选不限制事件kind而对任意`details.semantic`扩大full pin，且漏`BATCH.completed_cycle_proof.semantic`，没有覆盖原任务明确的同组实际通道。保有效JSON/stop与静态语义拒绝两层事实，不制造javac错误。并行owner fallback于21:45:54已javac0/1.480s，按CYCLE/NEXT/BATCH既有合同限定四material角色、其余保持transport；它先于模型终态存在，不能追认为模型源码。suffix的必要真实恢复case仍在做，尚不授行为或Game通过。owner明确不R2、不晚发已完成方法复述；`OWNER-REVIEWS64-21.json`保HTTP终态，后继22追加实际静审和来源，原RESULT的历史review字段不改。终态已直交runtime/Root/suffix，当前coding caller0、无新授权或自动队列。

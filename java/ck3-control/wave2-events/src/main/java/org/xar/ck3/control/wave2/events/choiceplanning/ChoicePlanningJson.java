@@ -43,7 +43,12 @@ public final class ChoicePlanningJson {
     private ChoicePlanningJson() { }
 
     public static PlanningInput decode(byte[] raw) {
-        ObjectNode row = exactObject(parse(raw), Set.of("schema", "snapshot", "commands", "action_steps", "bridge_capabilities"));
+        return decode(exactObject(parse(raw), Set.of("schema", "snapshot", "commands", "action_steps", "bridge_capabilities")));
+    }
+
+    public static PlanningInput decode(ObjectNode row) {
+        validateJsonDomain(row, 0);
+        exactObject(row, Set.of("schema", "snapshot", "commands", "action_steps", "bridge_capabilities"));
         require(SCHEMA.equals(text(row.get("schema"))), "planning schema");
         Optional<Snapshot> snapshot = row.get("snapshot").isNull() ? Optional.empty() : Optional.of(snapshot(object(row.get("snapshot"))));
         JsonNode commands = row.get("commands"); require(commands.isArray() && commands.size() <= 256, "bounded command history required");
@@ -278,7 +283,12 @@ public final class ChoicePlanningJson {
             validateJsonDomain(node, 0); return node;
         } catch (IOException error) { throw new IllegalArgumentException("invalid UTF-8/duplicate/trailing planning JSON", error); }
     }
-    private static JsonNode read(EvidenceDocument document) { return parse(document.json().getBytes(StandardCharsets.UTF_8)); }
+    private static JsonNode read(EvidenceDocument document) {
+        try {
+            JsonNode node = JSON.readTree(document.json()); require(node != null, "JSON value required");
+            validateJsonDomain(node, 0); return node;
+        } catch (IOException error) { throw new IllegalArgumentException("invalid internal planning JSON", error); }
+    }
     private static void validateJsonDomain(JsonNode node, int depth) {
         require(depth <= 64, "bounded planning JSON nesting");
         if (node.isTextual() && !node.textValue().isEmpty()) { StrictJson.text(node.textValue()); }
@@ -287,7 +297,10 @@ public final class ChoicePlanningJson {
         if (node.isContainerNode()) { node.forEach(child -> validateJsonDomain(child, depth + 1)); }
     }
     private static JsonNode valueOrNull(JsonNode value) { return value == null ? JSON.getNodeFactory().nullNode() : value; }
-    private static EvidenceDocument document(JsonNode node) { return new EvidenceDocument(new String(bytes(node), StandardCharsets.UTF_8)); }
+    private static EvidenceDocument document(JsonNode node) {
+        try { return new EvidenceDocument(JSON.writeValueAsString(node)); }
+        catch (IOException error) { throw new IllegalArgumentException("JSON serialization failed", error); }
+    }
     private static JsonNode selector(Decision decision) { return parse(MandatoryChoiceCodec.encodeDecision(decision)); }
     private static byte[] bytes(JsonNode value) {
         try { byte[] raw = JSON.writeValueAsBytes(value); require(raw.length <= MAX_BYTES, "planning receipt byte budget"); return raw; }

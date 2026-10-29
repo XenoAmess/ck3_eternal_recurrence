@@ -97,11 +97,17 @@ public final class RootCampaignPoliciesFactory {
             try{return context.withSession(same->context.collector().currentPlanning(same,request,request.deadline(),(original,lease)->{
                 requireRequest(request,original);
                 var metadata=context.sources().optionalCurrentMetadata(same);
-                if(metadata.isEmpty())return Optional.<GoalInput>empty();
-                var historical=metadata.orElseThrow();
-                var projected=M7CampaignPolicies.projectGoal(request,historical.ownerSourceEpoch(),historical.gameExecutable(),Optional.empty());
+                var projected=goal(request,metadata);
                 context.writer().requireSession(same);return projected;
             }));}catch(IOException|UncheckedIOException|IllegalStateException failure){throw unavailable("actual source-qualified M7 goal projection is unavailable",failure);}
+        }
+        /** Pure projection used only inside the actual held currentPlanning callback above.
+         * Ordinary native DATA has no historical source epoch/executable qualification. */
+        static Optional<GoalInput> goal(PlanningRequest request,
+                Optional<RootNativeSourceAuthority.QualifiedMetadata> metadata) {
+            Objects.requireNonNull(request);Objects.requireNonNull(metadata);
+            return M7CampaignPolicies.projectGoal(request,metadata.map(RootNativeSourceAuthority.QualifiedMetadata::ownerSourceEpoch),
+                    metadata.map(RootNativeSourceAuthority.QualifiedMetadata::gameExecutable),Optional.empty());
         }
         private void requireRequest(PlanningRequest expected,PlanningRequest original)throws IOException {
             StrictJson.require(expected==original,"campaign policy left its actual collector planning request");
@@ -110,7 +116,8 @@ public final class RootCampaignPoliciesFactory {
                     &&expected.source().equals(context.source())&&expected.sessionId().equals(context.game().sessionId()),"campaign policy crossed actual Game/source/session");
         }
         private static M7CampaignPolicies.InputUnavailable unavailable(String prefix,Exception failure){
-            return new M7CampaignPolicies.InputUnavailable(prefix+": "+failure.getMessage());
+            var unavailable=new M7CampaignPolicies.InputUnavailable(prefix+": "+failure.getMessage());
+            unavailable.initCause(failure);return unavailable;
         }
     }
 }

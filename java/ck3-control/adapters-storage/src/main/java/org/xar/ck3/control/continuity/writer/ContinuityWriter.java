@@ -622,7 +622,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         private Prepared previewInternal(Request request, TransitionAuthority selectedAuthority) throws IOException {
             checkOpen(); Objects.requireNonNull(request);
-            Head before = store.head(); List<Pin> actualSources = captureDomain(sources), evidence = capture(request.evidence());
+            Head before = store.head(); List<Pin> actualSources = captureDomain(sources), evidence = capture(request);
             var committed = store.duplicate(request, before);
             if (committed.isPresent()) {
                 // Like the original WindowLedger.apply, recover an exact durable outcome before
@@ -855,9 +855,34 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         for (ExactRef reference : references) pins.add(LedgerFiles.exact(reference, MAX_PIN_BYTES).pin());
         return List.copyOf(pins);
     }
-    private static List<Pin> capture(List<ExactRef> references) throws IOException {
+    private static List<Pin> capture(Request request) throws IOException {
+        // Complete Driver and typed SemanticEvidence originals retain their material bound.
+        // Every other evidence reference keeps the transport bound.
+        ObjectNode details = request.detailsObject();
+        List<ExactRef> fullMaterials = new ArrayList<>();
+        if (DRIVER_READ_HISTORY_KIND.equals(request.kind())) {
+            fullMaterials.add(ExactRef.fromJson(details.get("before_driver")));
+            fullMaterials.add(ExactRef.fromJson(details.get("after_driver")));
+        }
+        com.fasterxml.jackson.databind.JsonNode semantic = null;
+        if (ORDINARY_CYCLE_KIND.equals(request.kind()) || ORDINARY_NEXT_BASELINE_KIND.equals(request.kind())) {
+            semantic = details.get("semantic");
+        } else if (ORDINARY_BATCH_KIND.equals(request.kind())) {
+            var proof = details.get("completed_cycle_proof");
+            if (proof != null && !proof.isNull()) semantic = proof.get("semantic");
+        }
+        if (semantic != null && !semantic.isNull()) {
+            // The persisted SemanticEvidence contract names four complete archived DATA originals.
+            ObjectNode originals = StrictJson.object(semantic, java.util.Set.of("frame", "semantic",
+                    "original_native_packet", "driver_stamp", "original_driver", "observed_at"));
+            for (String field : List.of("semantic", "original_native_packet", "driver_stamp", "original_driver"))
+                fullMaterials.add(ExactRef.fromJson(originals.get(field)));
+        }
         List<Pin> result = new ArrayList<>();
-        for (ExactRef reference : references) result.add(LedgerFiles.exact(reference, ContinuityJson.TRANSPORT_MAX_BYTES).pin());
+        for (ExactRef reference : request.evidence()) {
+            int maximum = fullMaterials.contains(reference) ? MAX_PIN_BYTES : ContinuityJson.TRANSPORT_MAX_BYTES;
+            result.add(LedgerFiles.exact(reference, maximum).pin());
+        }
         return List.copyOf(result);
     }
     static void requireSameHead(Head expected, Head actual) {

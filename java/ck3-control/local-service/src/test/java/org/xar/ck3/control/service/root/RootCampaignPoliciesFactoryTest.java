@@ -97,4 +97,77 @@ final class RootCampaignPoliciesFactoryTest {
         cache.put(path,actual);return actual;
     }
     private static ExactRef ref(String name,byte[] raw){return new ExactRef("D:/software-fixtures/"+name,raw.length,ActionCodec.sha256(raw));}
+    @Test void ordinarySupplierWithoutHistoricalMetadataReachesTheRealM7Consumer() {
+        var request=ordinaryGoalRequest(new BigInteger("18446744073709551615"),"ordinary-current-frame");
+        var original=ordinaryFocus(request);
+        var policy=new org.xar.ck3.control.application.planning.campaign.M7CampaignPolicies.CampaignAdvancePolicy(
+                ref("policy",new byte[]{1}),ignored->Optional.empty(),
+                (r,old,step,cap)->{throw new AssertionError("FOCUS is not an advance rewrite");},
+                r->RootCampaignPoliciesFactory.Installed.goal(r,Optional.empty()));
+        var changed=assertInstanceOf(org.xar.ck3.control.application.planning.OrdinaryPolicy.Replace.class,
+                policy.evaluate(request,original)).draft();
+        assertSame(original.command().orElseThrow(),changed.command().orElseThrow());
+        assertEquals(ActionCodec.bodySha256(original.command().orElseThrow()),ActionCodec.bodySha256(changed.command().orElseThrow()));
+        var encoded=org.xar.ck3.control.planning.opportunity.OpportunityJson.encode(changed.detail().get("m7_kernel_plan_consumption"));
+        var consumed=org.xar.ck3.control.g2.m7.M7KernelPlanConsumer.decode(encoded);
+        assertEquals(Optional.empty(),consumed.observation().sourceEpoch());
+        assertEquals(Optional.empty(),consumed.observation().executable());
+        assertEquals(request.observations().campaignGoal().orElseThrow(),consumed.observation().goal());
+        assertEquals(request.before().game().creationFiletime().value().toString(),consumed.observation().game().creationFiletime());
+        assertEquals(request.before().frame().snapshotId(),consumed.observation().snapshotId());
+        assertEquals("private-select-player-lifestyle-stock-focus-v1",consumed.selectedStep());
+        assertFalse(consumed.gameActionsSubmitted());assertFalse(consumed.coldAuthorityGranted());
+        assertFalse(consumed.replayAuthorized());assertEquals(0,consumed.savedDayCredit());
+        assertEquals(consumed,org.xar.ck3.control.g2.m7.M7KernelPlanConsumer.decode(
+                org.xar.ck3.control.g2.m7.M7KernelPlanConsumer.encode(consumed)));
+    }
+    @Test void ordinarySupplierCannotPromoteARealProjectionFromAnotherGameBirthOrFrame() {
+        var birth=new BigInteger("18446744073709551615");
+        var request=ordinaryGoalRequest(birth,"ordinary-current-frame");
+        for(var foreign:List.of(ordinaryGoalRequest(birth.subtract(BigInteger.ONE),"ordinary-current-frame"),
+                ordinaryGoalRequest(birth,"a-different-current-frame"))) {
+            var supplied=RootCampaignPoliciesFactory.Installed.goal(foreign,Optional.empty()).orElseThrow();
+            var policy=new org.xar.ck3.control.application.planning.campaign.M7CampaignPolicies.CampaignAdvancePolicy(
+                    ref("policy",new byte[]{1}),ignored->Optional.empty(),
+                    (r,old,step,cap)->{throw new AssertionError("FOCUS is not an advance rewrite");},ignored->Optional.of(supplied));
+            assertThrows(IllegalArgumentException.class,()->policy.evaluate(request,ordinaryFocus(request)));
+        }
+    }
+    private static org.xar.ck3.control.application.planning.PlanningRequest ordinaryGoalRequest(BigInteger birth,String snapshotId) {
+        var goal=org.xar.ck3.control.g2.m7.OrdinaryCampaignGoal.newGoal("ordinary-software-campaign",31254);
+        BigInteger raw=CONFIG.founding().startDateRaw(),nativeRevision=BigInteger.valueOf(224),revision=BigInteger.valueOf(54);
+        var snapshot=StrictJson.object();snapshot.put("snapshot_id",snapshotId);snapshot.put("episode_run_id","ordinary-software-episode");
+        snapshot.put("revision",revision);snapshot.put("native_revision",nativeRevision);snapshot.put("date_raw",raw);
+        snapshot.put("paused",true);snapshot.put("map_ready",true);
+        snapshot.putObject("played_character").put("character_id",31254).put("alive",true);
+        snapshot.putArray("active_wars");snapshot.putArray("player_armies");
+        snapshot.putObject("diagnostics").put("bridge_pid",11).put("connection_generation",1);
+        snapshot.set("campaign_goal",StrictJson.parse(org.xar.ck3.control.g2.m7.GoalCodec.encodeGoal(goal)));
+        var semantic=org.xar.ck3.control.planning.opportunity.OpportunityJson.object(
+                org.xar.ck3.control.planning.opportunity.OpportunityJson.parse(StrictJson.canonical(snapshot)),"software current native DATA");
+        var frame=new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame(
+                new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame(BigInteger.valueOf(31254),nativeRevision,raw),
+                snapshotId,revision,"ordinary-software-episode");
+        var before=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity("ordinary-supplier-software",
+                new org.xar.ck3.control.contracts.GameGeneration(11,new org.xar.ck3.control.contracts.PythonOnlyUInt64(birth)),frame,3);
+        var source=new org.xar.ck3.control.g2.common.G2Source("ordinary-supplier-software","2026-10-30T00:00:00Z",
+                "software-only",ref("software-current-source",new byte[]{1}));
+        var observation=new org.xar.ck3.control.application.planning.PlanningObservation(semantic,List.of(),java.util.Set.of(),
+                java.util.Set.of(),Optional.empty(),List.of(),Optional.of(goal),Optional.empty(),true);
+        return new org.xar.ck3.control.application.planning.PlanningRequest(before,source,"ordinary-software-session",
+                java.time.Instant.parse("2099-01-01T00:00:00Z"),observation);
+    }
+    private static org.xar.ck3.control.application.planning.OrdinaryPolicy.Draft ordinaryFocus(
+            org.xar.ck3.control.application.planning.PlanningRequest request) {
+        var empty=new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of());
+        var expected=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition(1,request.before(),request.source(),"software-only/v1",
+                List.of(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean(new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("paused"),true)));
+        var command=new org.xar.ck3.control.application.action.ActionCommand("ordinary-existing-focus",request.before(),request.source(),
+                request.sessionId(),new org.xar.ck3.control.application.action.OperationKey("private-select-player-lifestyle-stock-focus-v1"),empty,expected,
+                new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Claims(java.util.Set.of(),java.util.Set.of(),java.util.Set.of(),java.util.Set.of()),request.deadline());
+        return new org.xar.ck3.control.application.planning.OrdinaryPolicy.Draft("software-existing-focus","focus","same legal FOCUS proposal",
+                org.xar.ck3.control.application.planning.OrdinaryPolicy.Kind.OPENING_FOCUS,Optional.of(command),
+                org.xar.ck3.control.application.planning.OrdinaryPolicy.Purpose.WORLD_ACTION,Optional.empty(),empty);
+    }
+
 }

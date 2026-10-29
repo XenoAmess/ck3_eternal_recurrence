@@ -47,7 +47,8 @@ final class LedgerFiles {
     }
     static Document read(Path path, int limit) throws IOException {
         FileIdentity before = identity(path);
-        if (before.bytes() > limit) throw new IOException("named ledger source exceeds finite cap");
+        if (before.bytes() > limit) throw new IOException("named ledger source exceeds finite cap: path=" + path.toAbsolutePath().normalize()
+                + ", actual_bytes=" + before.bytes() + ", cap=" + limit);
         byte[] raw;
         try (var input = Files.newInputStream(path, StandardOpenOption.READ)) { raw = input.readNBytes(limit + 1); }
         if (raw.length > limit || raw.length != before.bytes()) throw new IOException("ledger source size drift");
