@@ -20,7 +20,11 @@ public final class ConstructionSceneCodec {
     private ConstructionSceneCodec() { }
 
     public static SceneInput decodeScene(byte[] raw) {
-        JsonNode node = StrictJson.object(StrictJson.parse(raw, MAX_BYTES), Set.of("schema", "snapshot", "history"));
+        return decodeScene(StrictJson.parse(raw, MAX_BYTES));
+    }
+
+    public static SceneInput decodeScene(JsonNode node) {
+        StrictJson.object(node, Set.of("schema", "snapshot", "history"));
         StrictJson.require(SCENE_SCHEMA.equals(text(node.get("schema"))), "construction scene schema required");
         JsonNode history = node.get("history"); StrictJson.require(history.isArray(), "history must be an array");
         List<HistoryRow> rows = new ArrayList<>();

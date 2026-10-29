@@ -20,6 +20,7 @@ import java.util.TreeSet;
 import org.xar.ck3.control.application.action.ExecutableStepBindings;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.OperationKey;
+import org.xar.ck3.control.application.action.ReadContract;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
 import org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known;
@@ -264,6 +265,15 @@ public final class DynamicCapabilities {
         FreshCapabilityHistory.Occupation occupation = caps.contains(NativeActionSteps.OCCUPATION)
                 ? FreshCapabilityHistory.occupation(semantic,tail) : new FreshCapabilityHistory.Occupation(Set.of(),List.of());
         Set<String> candidates = new TreeSet<>(NativeActionSteps.candidates(new NativeActionSteps.Input(caps,semantic,inputs.marriageChoices(),occupation.opposingOccupiedTargets())));
+        if (yes(semantic, "paused")) {
+            for (ExecutableStepBindings.InstalledStep step : installed.installed()) {
+                if (step.kind() == ExecutableStepBindings.Kind.ACTION
+                        && step.guardMode() == ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP
+                        && step.requiredCapability().isEmpty()) {
+                    candidates.add(step.operation().value());
+                }
+            }
+        }
         candidates.remove("research-arm-tactical-daily-sentinel-v1-N");
         if (caps.contains(NativeActionSteps.ASSAULT_STATE) && caps.contains(NativeActionSteps.OCCUPATION))
             NativeActionSteps.addAssaults(candidates,occupation.holdingSiegeStates(),caps.contains("game.command.start-assault-N") && caps.contains("game.command.stop-assault-N"),caps.contains("game.command.stop-assault-N"));

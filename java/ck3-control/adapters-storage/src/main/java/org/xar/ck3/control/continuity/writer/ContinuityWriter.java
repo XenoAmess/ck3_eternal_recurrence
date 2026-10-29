@@ -669,7 +669,10 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             // Re-read sources after actual validation/reduction, before durable mutation.
             for (Pin pin : prepared.sources()) LedgerFiles.verify(pin);
             for (Pin pin : prepared.evidence()) LedgerFiles.verify(pin);
-            requireSameHead(actual, store.head());
+            // This held operation already projected the full history. Recheck its exact
+            // bytes/native identities and every absence without parsing that history again.
+            for (Pin pin : actual.documents()) LedgerFiles.verify(pin);
+            for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
             long sequence = Math.addExact(actual.state().sequence(), 1);
             ObjectNode after = reduced.toJson(); after.put("sequence", sequence); after.put("last_event_identity", request.identity());
             ContinuityState committed = ContinuityState.fromJson(after, layout.machineId());

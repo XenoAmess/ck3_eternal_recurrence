@@ -69,8 +69,6 @@ public final class RootActionGuard implements ActionPorts.GuardPort {
                         "actual public pause issuer changed its exact parent guard");
                 return binding;
             }
-            RootGuardChecks.source(session, definition.implementationSource());
-            RootGuardChecks.source(session, definition.decoderSource()); RootGuardChecks.source(session, expectedSource.sourceRef());
             var sameWriterArchive = archive.withSession(session);
             boolean reservedPause = definition.kind() == ExecutableStepBindings.Kind.ACTION
                     && command.operation().value().equals("pause-map")

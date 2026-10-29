@@ -768,7 +768,26 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     public synchronized ObservedFrame observe(Instant deadline, java.time.Duration maximumAge) throws InterruptedException {
         Objects.requireNonNull(maximumAge, "maximumAge");
         if (maximumAge.isNegative() || maximumAge.isZero()) throw new IllegalArgumentException("maximumAge must be positive");
-        var actual = observe(deadline);
+        ObservedFrame actual;
+        var retained = acceptedSnapshotFrame;
+        if (retained == null || snapshotUndelivered) actual = observe(deadline);
+        else {
+            try {
+                awaitHello(deadline);
+                Instant staleAt = retained.observedAt().plus(maximumAge);
+                if (staleAt.isAfter(Instant.now())) {
+                    // Consume a new push if one arrives, but let a zero-prefix age boundary
+                    // reach the existing independent READ before the operation expires.
+                    if (staleAt.isBefore(deadline)) {
+                        var waited = waitForSnapshot(staleAt, deadline);
+                        actual = waited instanceof NativeSnapshotWaitPort.Received received
+                                ? received.frame() : retained;
+                    } else actual = observe(deadline);
+                } else actual = retained;
+            } catch (IOException failure) {
+                throw new UncheckedIOException("Native observation unavailable; no Python fallback", failure);
+            }
+        }
         if (actual.observedAt().plus(maximumAge).isAfter(Instant.now())) return actual;
         var fresh = readFreshFullState(deadline);
         if (fresh instanceof NativeFreshSnapshotPort.Received) return ((NativeFreshSnapshotPort.Received) fresh).originalFrame();

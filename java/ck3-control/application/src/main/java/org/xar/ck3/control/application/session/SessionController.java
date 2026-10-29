@@ -664,10 +664,11 @@ public final class SessionController {
             Thread.currentThread().interrupt(); quarantineUnresolved(); run.terminal = Terminal.INTERNAL_FAILURE;
             run.detail = "owner thread interrupted; no action/save replay";
         } catch (IOException failure) {
-            quarantineUnresolved();run.journalUnknown=true; run.terminal = Terminal.WRITER_UNKNOWN; run.detail = failure.toString();
+            run.failIo(failure);
         } catch (java.io.UncheckedIOException failure) {
-            quarantineUnresolved();run.journalUnknown=true;run.terminal=Terminal.WRITER_UNKNOWN;run.detail=failure.toString();
+            run.failIo(failure);
         } catch (RuntimeException failure) {
+            failure.printStackTrace(System.err);
             quarantineUnresolved(); run.terminal = Terminal.INTERNAL_FAILURE; run.detail = failure.toString();
         } finally {
             if (run.cyclePending) quarantineUnresolved();
@@ -720,6 +721,16 @@ public final class SessionController {
                 Optional<TerminalConstraint> terminalConstraint,boolean pendingOnly) {
             this.limits = limits; this.began = began; this.untilNanos = untilNanos; this.initialCommittedDays = initialCommittedDays;
             this.terminalConstraint=terminalConstraint;this.pendingOnly=pendingOnly;
+        }
+        void failIo(Throwable failure) {
+            failure.printStackTrace(System.err);
+            detail = failure.toString();
+            if (!journalUnknown && !cyclePending && !quarantined && !localUnresolved && pendingReadParent.isEmpty()
+                    && org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(failure)) {
+                terminal = Terminal.OBSERVATION_UNAVAILABLE;
+                return;
+            }
+            quarantineUnresolved(); journalUnknown = true; terminal = Terminal.WRITER_UNKNOWN;
         }
         PlanningRound planRound(boolean checkpointsEnabled) throws IOException,InterruptedException {
             if(pendingOnly)throw new End(Terminal.ACTION_REJECTED,"pending-only call has no ordinary planning scope");
@@ -878,10 +889,16 @@ public final class SessionController {
         }
         Observation available(boolean stoppingForSave) throws IOException,InterruptedException {
             long readyUntil = Math.min(untilNanos, clock.now().elapsedNanos() + limits.readinessTimeout().toNanos());
+            String waitingReason = "readiness deadline expired before observation";
             while (true) {
                 if (!stoppingForSave && stopRequested.get()) throw new End(dirty ? Terminal.CHECKPOINT_DEFERRED : Terminal.OPERATOR_STOP,
                         "operator stop observed during readiness; no new gameplay submitted");
-                requireTime(); live(); Instant until = deadline();
+                requireTime(); live();
+                if (clock.now().elapsedNanos() >= readyUntil) {
+                    requireTime();
+                    throw new End(Terminal.READINESS_TIMEOUT, waitingReason);
+                }
+                Instant until = began.utc().plusNanos(readyUntil - began.elapsedNanos());
                 Observation result = measured(Phase.OBSERVATION, () -> observations.observe(identity, until));
                 if (result instanceof Ready ready) {
                     identity.require(ready.request()); StrictJson.require(!ready.request().deadline().isAfter(until), "observation extended caller deadline");
@@ -915,7 +932,8 @@ public final class SessionController {
                     latest=Optional.empty();lastPlan=Optional.empty();lastTerminal=Optional.empty();return pending;
                 }
                 if (result instanceof ObservationUnavailable unavailable) throw new End(Terminal.OBSERVATION_UNAVAILABLE, unavailable.reason());
-                if (clock.now().elapsedNanos() >= readyUntil) throw new End(Terminal.READINESS_TIMEOUT, ((Waiting) result).reason());
+                waitingReason = ((Waiting) result).reason();
+                if (clock.now().elapsedNanos() >= readyUntil) throw new End(Terminal.READINESS_TIMEOUT, waitingReason);
                 pause();
             }
         }

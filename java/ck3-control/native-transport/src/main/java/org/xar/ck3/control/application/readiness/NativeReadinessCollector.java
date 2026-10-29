@@ -400,7 +400,17 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         require(lifecycle.inspect(identity.game(), deadline) instanceof GameLifecycle.Running, "actual planning Game is no longer Running");
         transport.acceptedSnapshotRevision(captured.physical().original()).requireOriginal(transport.currentSnapshot(deadline));
         return driver.withFrozenFacts(borrowed, frozen -> {
-            require(frozen.state() == captured.lease().driver(), "planning round lost its actual frozen full Driver");
+            require(frozen.state() instanceof Known, "planning round lost its actual frozen full Driver: kind");
+            Known current = (Known) frozen.state();
+            Known retained = captured.lease().driver();
+            // Capability publication may update auxiliary under the sole owner CAS while this round keeps
+            // its original captured frame. Every other Driver fact and unresolved action stays frozen.
+            require(current.stamp().equals(retained.stamp()), "planning round lost its actual frozen full Driver: stamp");
+            require(Arrays.equals(current.driver().encode(), retained.driver().encode()), "planning round lost its actual frozen full Driver: fullDriver");
+            require(current.originalHistoryBasis().equals(retained.originalHistoryBasis()), "planning round lost its actual frozen full Driver: historyBasis");
+            require(current.actionRows().equals(retained.actionRows()), "planning round lost its actual frozen full Driver: actionRows");
+            require(current.loop().equals(retained.loop()), "planning round lost its actual frozen full Driver: loop");
+            require(current.observation().equals(retained.observation()), "planning round lost its actual frozen full Driver: observation");
             require(DriverStateAssembler.projectObservation(captured.lease().driver(), frozen.actions(), frozen.activeActionId())
                     instanceof DriverStateSnapshot.Complete, "unresolved actions cannot reuse a planning lease");
             return inPlanningScope(borrowed, captured, same -> borrowedPlanningRead(planningReadScope.get(), borrowed, expected, deadline, work));
@@ -817,8 +827,15 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         ObservationSessionAuthority actualWriter = observationSession;
         require(actualWriter != null, "actual writer observation authority is not installed"); actualWriter.require(borrowed);
         HeldReadScope active = heldReadScope.get();
-        if (active == null && planningReadScope.get()!=null)
-            return withHeldReadScope(borrowed,identity,original.deadline(),frame -> currentHeldOriginal(borrowed,original,work));
+        if (active == null && planningReadScope.get() != null)
+            return withHeldReadScope(borrowed, identity, original.deadline(), frame -> currentHeldOriginal(borrowed, original, work));
+        if (active == null && planningReadScope.get() == null) {
+            PlanningRoundScope round = planningRoundScope.get();
+            if (round != null && round.captured != null) {
+                return retainedPlanningRead(round, borrowed, original.before(), original.deadline(),
+                        lease -> currentHeldOriginal(borrowed, original, work));
+            }
+        }
         require(active != null, "original read requires an already active actual held scope; Native refresh is forbidden");
         require(active.completeHistory() && active.readiness().ready(),
                 "actual held original-read admission is unavailable: " + active.readiness().reason());
@@ -1183,7 +1200,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         try { actual = transport.observe(deadline, validity); }
         catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt(); InterruptedIOException failure = new InterruptedIOException("native readiness interrupted"); failure.initCause(interrupted); throw failure;
-        } catch (UncheckedIOException failure) { throw failure.getCause(); }
+        } catch (UncheckedIOException failure) { throw org.xar.ck3.control.application.planning.PlanningReadFailure.physical(failure); }
         require(actual.session().machineId().equals(identity.machineId()) && actual.session().game().equals(identity.game())
                 && actual.session().sessionId().equals(identity.sessionId()), "actual held Native crossed collector session");
         ExactRef original = preserve(borrowed, ReadinessArchive.Role.NATIVE_PACKET, actual.originalPacket());

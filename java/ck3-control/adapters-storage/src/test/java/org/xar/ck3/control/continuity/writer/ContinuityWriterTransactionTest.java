@@ -60,6 +60,51 @@ class ContinuityWriterTransactionTest {
         assertEquals(2, committed.head().sequence()); assertTrue(committed.recoveredCommittedReceipt()); assertEquals(5, committed.writes());
         assertTrue(Files.exists(fixture.layout.sourceIndex(request.sourceKey())));
     }
+    @Test void commitRechecksHistoricalIdentityAndMissingIndexAfterActualRevalidation() throws Exception {
+        assertTrue(Platform.isWindows());
+        for (boolean appearIndex : List.of(false, true)) {
+            WriterFixture fixture = new WriterFixture(root.resolve(appearIndex ? "appeared-index" : "replaced-event"));
+            Request first = WriterFixture.settled("committed-before-revalidation", 1024, 2);
+            Receipt committed = fixture.writer.commit(fixture.writer.preview(first));
+            assertEquals(Disposition.COMMITTED, committed.disposition());
+            assertEquals(1, committed.head().sequence());
+            byte[] snapshot = Files.readAllBytes(fixture.layout.snapshot());
+            byte[] event = Files.readAllBytes(fixture.layout.event(1));
+            Path index = fixture.layout.sourceIndex(first.sourceKey());
+            byte[] indexBytes = Files.readAllBytes(index);
+            if (appearIndex) Files.delete(index);
+            java.util.concurrent.atomic.AtomicInteger checks = new java.util.concurrent.atomic.AtomicInteger();
+            ContinuityWriter guarded = new ContinuityWriter(fixture.layout,
+                    List.of(LedgerFiles.read(fixture.source, 65_536).pin().reference()), new TransitionAuthority() {
+                @Override public String revalidate(ContinuityState predecessor, Request request) throws java.io.IOException {
+                    if (checks.incrementAndGet() == 2) {
+                        if (appearIndex) Files.write(index, indexBytes);
+                        else {
+                            Path replacement = fixture.layout.snapshot().getParent().resolve("equal-original-replacement.json");
+                            Files.write(replacement, event);
+                            Files.move(replacement, fixture.layout.event(1), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                        }
+                    }
+                    return ContinuityJson.digest(request.detailsObject());
+                }
+                @Override public ContinuityState reduce(ContinuityState predecessor, Request request) {
+                    return OriginalWindowReducer.reduce(predecessor, request);
+                }
+            }, StorageWriteGuardTestSupport.forLayout(fixture.layout));
+            Request next = WriterFixture.settled("must-not-publish-after-head-change", 1048, 3);
+            Prepared prepared = guarded.preview(next);
+            assertEquals(1, checks.get());
+            assertThrows(java.io.IOException.class, () -> guarded.commit(prepared));
+            assertEquals(2, checks.get(), "mutation occurred after the commit's first fresh projection");
+            assertArrayEquals(snapshot, Files.readAllBytes(fixture.layout.snapshot()));
+            assertArrayEquals(event, Files.readAllBytes(fixture.layout.event(1)));
+            assertFalse(Files.exists(fixture.layout.event(2)));
+            assertFalse(Files.exists(fixture.layout.sourceIndex(next.sourceKey())));
+            assertTrue(ContinuityJson.same(committed.head().toJson().get("pending_cycle"),
+                    ContinuityJson.parseObject(snapshot, ContinuityJson.LEDGER_MAX_BYTES).get("pending_cycle")));
+            assertEquals(11559, committed.head().toJson().get("NEXT").intValue());
+        }
+    }
     @Test void immutableEventConflictNeverOverwritesAndPendingRemovalIsRejected() throws Exception {
         assertTrue(Platform.isWindows()); WriterFixture fixture = new WriterFixture(root);
         Path target = fixture.layout.event(1); StorageWriteGuardTestSupport.atomic(target, "{}".getBytes(java.nio.charset.StandardCharsets.UTF_8), false);

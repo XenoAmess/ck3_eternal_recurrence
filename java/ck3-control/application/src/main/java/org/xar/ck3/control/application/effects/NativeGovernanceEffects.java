@@ -45,6 +45,15 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         this.sessions = Objects.requireNonNull(sessions); this.privateCouncil = Objects.requireNonNull(privateCouncil);
         this.preparationEvidence = Objects.requireNonNull(preparationEvidence);
     }
+    /** Stable Native correlation key; logical Root episodes and archived wire originals are unchanged. */
+    public static String lifestyleWireEpisode(org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity actual) {
+        Objects.requireNonNull(actual);
+        var frame = actual.frame();
+        ObjectNode stable = StrictJson.object().put("machine_id", actual.machineId())
+                .put("episode_run_id", frame.episodeRunId()).put("player_character_id", frame.identity().player());
+        stable.set("game", actual.game().toJson());
+        return "native-" + frame.identity().player() + "-" + ActionCodec.sha256(StrictJson.canonical(stable)).substring(0,32);
+    }
     public static Optional<Kind> kind(OperationKey operation) {
         return switch (operation.value()) {
             case "private-select-player-lifestyle-stock-focus-v1" -> Optional.of(Kind.FOCUS);
@@ -105,7 +114,7 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         if (selected == Kind.CROWN) fields.put("submitted_request_id", originalId);
         else if (selected == Kind.FOCUS || selected == Kind.PERK) {
             fields.put("action_request_id", originalId); fields.put("expected_snapshot_id", "native:" + after.identity().frame().identity().nativeRevision());
-            fields.put("expected_episode_run_id", after.identity().frame().episodeRunId());
+            fields.put("expected_episode_run_id", lifestyleWireEpisode(after.identity()));
         }
         if (selected != Kind.COUNCIL) {
             fields.put("expected_date_raw", after.identity().frame().identity().dateRaw());
@@ -143,6 +152,7 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         ObjectNode compatible = result.deepCopy();
         if (selected == Kind.FOCUS || selected == Kind.PERK) compatible.put("kind", selected == Kind.FOCUS ? "focus" : "perk")
                 .put("target_key", StrictJson.text(EffectJson.object(command.arguments()).get("target_key")))
+                .put("episode_run_id", command.before().frame().episodeRunId())
                 .put("post_date_raw", after.identity().frame().identity().dateRaw());
         return NativeEffectSnapshots.observed(command, attempt, after, SCHEMA, actual, read.requestId(), EffectJson.raw(compatible), List.of());
     }
@@ -289,7 +299,7 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         StrictJson.trueValue(result.get("private_build")); StrictJson.require(!EffectJson.bool(result.get("advertised")), "private LIFE flag drift");
         equal(result.get("action_request_id"), requestId); equal(result.get("post_snapshot_id"), "native:" + after.identity().frame().identity().nativeRevision());
         equal(result.get("post_public_revision"), after.identity().frame().identity().nativeRevision());
-        equal(result.get("episode_run_id"), after.identity().frame().episodeRunId()); equal(result.get("status"), "applied");
+        equal(result.get("episode_run_id"), lifestyleWireEpisode(after.identity())); equal(result.get("status"), "applied");
         StrictJson.trueValue(result.get("postcondition_verified"));
         StrictJson.require(result.get("reason").isTextual() && result.get("reason").textValue().isEmpty(), "applied LIFE receipt carries a failure reason");
         EffectJson.bool(result.get("post_target_perk_owned")); EffectJson.bool(result.get("post_has_current_focus"));
@@ -316,7 +326,7 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         equal(result.get("target_key"), StrictJson.text(EffectJson.object(command.arguments()).get("target_key")));
         equal(result.get("pre_snapshot_id"), "native:" + command.before().frame().identity().nativeRevision());
         equal(result.get("pre_public_revision"), command.before().frame().identity().nativeRevision());
-        equal(result.get("episode_run_id"), command.before().frame().episodeRunId());
+        equal(result.get("episode_run_id"), lifestyleWireEpisode(command.before()));
     }
     private static List<ExpectedValue> council(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome dispatch,
             String id, Complete after, ObjectNode result) {

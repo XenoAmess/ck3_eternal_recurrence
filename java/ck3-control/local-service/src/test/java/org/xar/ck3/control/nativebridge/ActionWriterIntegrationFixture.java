@@ -43,7 +43,12 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     public record SoftwareReadScenario(String profileSha256, String adapterId,
             java.util.function.Function<ExactRef, List<ReadContract<?>>> contracts,
             java.util.function.Function<NativeRequest, RawJson> result, Optional<String> expectedCk3Version, Set<String> extraHelloCapabilities,
-            java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies) {
+            java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies, Optional<String> controlledReviewedSource) {
+        public SoftwareReadScenario(String profileSha256,String adapterId,java.util.function.Function<ExactRef,List<ReadContract<?>>> contracts,
+                java.util.function.Function<NativeRequest,RawJson> result,Optional<String> expectedCk3Version,Set<String> extraHelloCapabilities,
+                java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies) {
+            this(profileSha256,adapterId,contracts,result,expectedCk3Version,extraHelloCapabilities,dynamicFamilies,Optional.empty());
+        }
         public SoftwareReadScenario(String profileSha256,String adapterId,java.util.function.Function<ExactRef,List<ReadContract<?>>> contracts,
                 java.util.function.Function<NativeRequest,RawJson> result,Optional<String> expectedCk3Version,Set<String> extraHelloCapabilities) {
             this(profileSha256,adapterId,contracts,result,expectedCk3Version,extraHelloCapabilities,ignored->List.of());
@@ -57,6 +62,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             StrictJson.require(adapterId != null && adapterId.matches("[A-Za-z0-9._-]{1,128}"), "software adapter token required");
             java.util.Objects.requireNonNull(contracts); java.util.Objects.requireNonNull(result);
             java.util.Objects.requireNonNull(dynamicFamilies);
+            controlledReviewedSource=java.util.Objects.requireNonNull(controlledReviewedSource);
+            controlledReviewedSource.ifPresent(value->StrictJson.require(!value.isBlank(),"controlled source text required"));
             expectedCk3Version = java.util.Objects.requireNonNull(expectedCk3Version);
             expectedCk3Version.ifPresent(StrictJson::text);
             extraHelloCapabilities = Set.copyOf(extraHelloCapabilities); extraHelloCapabilities.forEach(StrictJson::text);
@@ -141,6 +148,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     private final OriginalEvidencePort actualOriginals;
     private final Map<OperationKey, SoftwareActionScenario> installedActionScenarios;
     private final RootReadContractCatalog actualReadCatalog;
+    private final RootExecutableBindings actualBindings;
     private final AtomicReference<ActionContinuityAuthority> actualActionAuthority = new AtomicReference<>();
     private final AtomicReference<PhysicalActionRegistry> actualPhysicalActions = new AtomicReference<>();
     private final ActionPorts.GuardPort physicalSoftwareGuards;
@@ -328,7 +336,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         Set<OperationKey> executable = Set.copyOf(executableBuilder);
         this.root = root; Files.createDirectory(root);
         Path driverFile = root.resolve("original-driver.json"); Files.writeString(driverFile, DRIVER, StandardOpenOption.CREATE_NEW);
-        Path sourceFile = root.resolve("reviewed-fixture-source.txt"); Files.writeString(sourceFile, "controlled fixture source, never a live package qualification", StandardOpenOption.CREATE_NEW);
+        Path sourceFile = root.resolve("reviewed-fixture-source.txt"); Files.writeString(sourceFile, scenario.flatMap(SoftwareReadScenario::controlledReviewedSource)
+                .orElse("controlled fixture source, never a live package qualification"), StandardOpenOption.CREATE_NEW);
         ExactRef originalDriver = reference(driverFile), reviewed = reference(sourceFile);
         softwareDomains=List.copyOf(java.util.Objects.requireNonNull(actualDomains).apply(reviewed));
         StrictJson.require(softwareDomains.size()<=16
@@ -354,7 +363,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                 &&dynamicFamilies.stream().allMatch(value->value.definitionSource().equals(reviewed)&&value.decoderSource().equals(reviewed)),
                 "finite unique dynamic read families must retain the exact reviewed definition/decoder source");
         StrictJson.require(extraReadContracts.size() <= 16
-                && extraReadContracts.stream().map(ReadContract::operation).distinct().count() == extraReadContracts.size()
+                && extraReadContracts.stream().map(ReadContract::contractId).distinct().count() == extraReadContracts.size()
+                && extraReadContracts.stream().map(read -> java.util.Map.entry(read.operation(),read.guardMode())).distinct().count() == extraReadContracts.size()
                 && extraReadContracts.stream().noneMatch(value -> value.operation().equals(QUERY))
                 && extraReadContracts.stream().allMatch(value -> value.sourceRef().equals(reviewed)),
                 "finite exact software read contracts must share the actual controlled source, without aliases");
@@ -524,8 +534,10 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                 new NativeSemanticEvidenceVerifier((borrowed, ref, maximum) -> archive.readArtifact(borrowed, ref, maximum)),
                 (borrowed, expected, frame, known, received, process, deadline) -> {
                     writer.requireSession(borrowed); assertEquals(identity, expected); assertEquals(GAME, process.measured());
-                    var pin = borrowed.capturePin(reviewed, 65_536); borrowed.verifyPin(pin);
-                    var proof = archive.preserveArtifact(borrowed, CONTROLLED_SOURCE_PROOF.value(), 65_536);
+                    Optional<ExactRef> earlyProof = scenario.flatMap(SoftwareReadScenario::controlledReviewedSource).isPresent()
+                            ? Optional.of(archive.preserveArtifact(borrowed, CONTROLLED_SOURCE_PROOF.value(), 65_536)) : Optional.empty();
+                    var pin = borrowed.capturePin(earlyProof.orElse(reviewed), 65_536); borrowed.verifyPin(pin);
+                    var proof = earlyProof.isPresent() ? earlyProof.orElseThrow() : archive.preserveArtifact(borrowed, CONTROLLED_SOURCE_PROOF.value(), 65_536);
                     return new NativeReadinessCollector.SourceQualification(proof, same -> {
                         assertSame(borrowed, same); writer.requireSession(same); same.verifyPin(pin); sourceChecks.incrementAndGet();
                     });
@@ -562,6 +574,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             allCompositeBindings.add(new RootExecutableBindings.CompositeBinding(installed.handler(),selected.guardMode(),selected.requiredCapability(),reviewed,reviewed));
         }
         var bindings=RootExecutableBindings.freeze(actionBindings,catalog,List.copyOf(allCompositeBindings),List.copyOf(extraVerifiers.values()),List.of(),64);
+        actualBindings=bindings;
         var guards = new RootActionGuard(collector, journal::borrowedWriterSession, archive, source, Clock.systemUTC(), AUTHORITY, originals, bindings);
         ActionPorts.GuardPort trackedGuards = (head, command) -> {
             assertEquals(command, ActionCommandScope.current().orElseThrow());
@@ -750,6 +763,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     public DriverStateAssembler driverAuthority() { return actualDriver; }
     public G2Source observationSource() { return source; }
     public RootReadContractCatalog actualReadCatalog() { return actualReadCatalog; }
+    public RootExecutableBindings actualBindings() { return actualBindings; }
     /** Observe the original successful central read. The actual observer may enqueue it for the sole publisher. */
     public void bindKnownReadObserver(PlanningReadCoordinator.KnownReadObserver actual) throws IOException {
         java.util.Objects.requireNonNull(actual);
@@ -821,6 +835,14 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             StrictJson.require(same.head().state().sequence()==0,
                     "scenario ACTION receive failure installs before the first canonical event");
             packets.loseActionAckOnce();return null;
+        });
+    }
+    /** Reject one matching actual scenario ACTION with its own native request ID; no caller supplies a packet. */
+    public void rejectNextActionNativeAckOnce(OperationKey exactOperation,String nonemptyError)throws IOException {
+        writer.locked(same->{
+            StrictJson.require(same.head().state().sequence()==0,
+                    "scenario ACTION rejection installs before the first canonical event");
+            packets.rejectNextActionNativeAckOnce(exactOperation,nonemptyError);return null;
         });
     }
     /** Release exactly the retained original ACTION packet after that real receive failure; never send a new request. */
@@ -973,7 +995,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     private static RawJson raw(String value) { return new RawJson(bytes(value)); }
     private static byte[] bytes(String value) { return value.getBytes(StandardCharsets.UTF_8); }
     private static byte[] packet(String value) { try { return NativeWire.packet(bytes(value)); } catch (IOException failure) { throw new UncheckedIOException(failure); } }
-    private static final class ScriptedPackets implements NativePacketPort {
+    static final class ScriptedPackets implements NativePacketPort {
         private record GuardedRead(ReadContract<?> contract,PlanningReadRequest request,PlanningReadGuard guard) { }
         private final ThreadLocal<GuardedRead> guardedRead=new ThreadLocal<>();
         private enum ReadAckLoss { UNBOUND, ARMED, AWAITING_READ_FAILURE, HELD, RELEASED }
@@ -981,6 +1003,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         private enum ReadRejectionKind { ORDINARY, STALE_REVISION }
         private enum MalformedReadResult { UNBOUND, ARMED, PRODUCED }
         private enum ActionAckLoss { UNBOUND, ARMED, AWAITING_READ_FAILURE, HELD, RELEASED }
+        private enum ActionRejection { UNBOUND, ARMED, REJECTED }
+        private record NativeActionRejection(OperationKey operation,String error) { }
         final ArrayDeque<byte[]> queue = new ArrayDeque<>(); final boolean loseAck; final OperationKey action; int actionWrites; int readWrites; int packetReads; int continuationWrites;
         boolean loseContinuationAck; String lostResult; int scenarioReadWrites;
         private ReadAckLoss readAckLoss=ReadAckLoss.UNBOUND; private byte[] retainedReadAck;
@@ -989,6 +1013,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         private MalformedReadResult malformedReadResult=MalformedReadResult.UNBOUND;
         private int rejectedReadOccurrence; private int malformedReadOccurrence;
         private ActionAckLoss actionAckLoss=ActionAckLoss.UNBOUND;private byte[] retainedActionAck;
+        private ActionRejection actionRejection=ActionRejection.UNBOUND;
+        private Optional<NativeActionRejection> rejectedAction=Optional.empty();
         final Optional<SoftwareReadScenario> scenario; final java.util.function.Supplier<RootReadContractCatalog> issuedReadCatalog;
         final Map<OperationKey, SoftwareActionScenario> actionScenarios; private byte[] latestSnapshot;
         private BigInteger noticeSequence = BigInteger.ZERO;
@@ -1033,9 +1059,18 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             queue.addFirst(retainedReadAck); retainedReadAck=null; readAckLoss=ReadAckLoss.RELEASED;
         }
         synchronized void loseActionAckOnce()throws IOException {
-            StrictJson.require(!actionScenarios.isEmpty()&&!loseAck&&actionWrites==0&&actionAckLoss==ActionAckLoss.UNBOUND,
+            StrictJson.require(!actionScenarios.isEmpty()&&!loseAck&&actionWrites==0&&actionAckLoss==ActionAckLoss.UNBOUND
+                    &&actionRejection==ActionRejection.UNBOUND,
                     "one explicit scenario ACTION receive loss requires normal write completion, once before action writes");
             actionAckLoss=ActionAckLoss.ARMED;
+        }
+        synchronized void rejectNextActionNativeAckOnce(OperationKey exactOperation,String nonemptyError)throws IOException {
+            java.util.Objects.requireNonNull(exactOperation);java.util.Objects.requireNonNull(nonemptyError);
+            StrictJson.require(actionScenarios.containsKey(exactOperation)&&!nonemptyError.isBlank()
+                    &&!loseAck&&actionWrites==0&&actionAckLoss==ActionAckLoss.UNBOUND&&actionRejection==ActionRejection.UNBOUND,
+                    "one registered scenario ACTION rejection requires a nonempty native error before action writes, without ACK loss");
+            rejectedAction=Optional.of(new NativeActionRejection(exactOperation,nonemptyError));
+            actionRejection=ActionRejection.ARMED;
         }
         synchronized void releaseLateActionAck()throws IOException {
             StrictJson.require(actionAckLoss==ActionAckLoss.HELD&&retainedActionAck!=null,
@@ -1106,6 +1141,15 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             }
             return actual;
         }
+        @Override public synchronized NativePacketPort.WaitResult readPacketUntil(Instant waitUntil, Instant captureUntil) throws IOException, InterruptedException {
+            java.util.Objects.requireNonNull(waitUntil); java.util.Objects.requireNonNull(captureUntil);
+            if (Thread.interrupted()) throw new InterruptedException("software packet wait interrupted before packet read");
+            Instant observedAt = Instant.now();
+            if (!observedAt.isBefore(captureUntil))
+                throw new NativePacketPort.DeadlineExpired(new NativeActionPort.DeadlineObservation(captureUntil, observedAt, false));
+            if (!observedAt.isBefore(waitUntil)) return new NativePacketPort.Elapsed(waitUntil, observedAt);
+            return new NativePacketPort.Packet(readPacket(captureUntil));
+        }
         @Override public synchronized void writePacket(byte[] original, Instant deadline) throws IOException {
             var request = NativeWire.parse(Arrays.copyOfRange(original, 4, original.length)); String step = NativeWire.text(request.get("step"));
             var wire=NativeWire.decodeExecuteRequest(original);var fields=new RawJson(wire.normalizedAdditionalFields().value());
@@ -1140,8 +1184,10 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                 extraResult = java.util.Objects.requireNonNull(scenario.orElseThrow().result().apply(actualRequest));
                 extraResult.objectFieldNames(); readWrites++; scenarioReadWrites++; scenarioRead=true;
             }
-            if (mutation && selectedAction != null) selectedAction.originalDispatch().run();
-            if (mutation && selectedAction != null && selectedAction.originalResult().isPresent()) {
+            boolean rejectAction=mutation&&selectedAction!=null&&actionRejection==ActionRejection.ARMED
+                    &&rejectedAction.orElseThrow().operation().equals(selectedAction.operation());
+            if (mutation && selectedAction != null && !rejectAction) selectedAction.originalDispatch().run();
+            if (mutation && selectedAction != null && !rejectAction && selectedAction.originalResult().isPresent()) {
                 extraResult = java.util.Objects.requireNonNull(selectedAction.originalResult().orElseThrow().get()); extraResult.objectFieldNames();
             }
             if (mutation && loseAck) throw new IOException("controlled write entered; ACK unavailable");
@@ -1151,6 +1197,14 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                 result="[]";
             }
             String response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"" + NativeWire.text(request.get("request_id")) + "\",\"ok\":true,\"result\":" + result + "}";
+            if(rejectAction) {
+                ObjectNode rejection=StrictJson.object();
+                rejection.put("type","command_result").put("protocol_version",1)
+                        .put("request_id",NativeWire.text(request.get("request_id")))
+                        .put("ok",false).put("error",rejectedAction.orElseThrow().error());
+                response=new String(StrictJson.canonical(rejection),StandardCharsets.UTF_8);
+                actionRejection=ActionRejection.REJECTED;
+            }
             if(scenarioRead&&readRejection==ReadRejection.ARMED&&scenarioReadWrites==rejectedReadOccurrence) {
                 readRejection=ReadRejection.REJECTED;
                 String rejection=readRejectionKind==ReadRejectionKind.STALE_REVISION

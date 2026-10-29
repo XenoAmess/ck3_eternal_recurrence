@@ -16,6 +16,10 @@ import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.checkpoint.*;
 import org.xar.ck3.control.application.driver.*;
+import org.xar.ck3.control.application.capabilities.*;
+import org.xar.ck3.control.application.planning.military.MilitaryReadObservation;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
+import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 import org.xar.ck3.control.application.planning.*;
 import org.xar.ck3.control.application.planning.campaign.M7CampaignPolicies.RealmLifecycle;
 import org.xar.ck3.control.application.session.*;
@@ -416,6 +420,91 @@ final class CleanRestartCanonicalWriterTest {
                 assertEquals(ticket,input.batches().admitCleanRestart(same,ticket).ticket());return null;
             });
             assertEquals(0,fixture.nativeActionWrites());
+        }
+    }
+    @Test void capturedReadSuffixRetainsActualPublishedDriverWithoutReplayingReads()throws Exception {
+        String step="preview-move-army-0-to-4",capability="game.command.preview-move-army-N-to-N";
+        var installed=new java.util.concurrent.atomic.AtomicReference<ReadContract<MilitaryReadObservation>>();
+        var scenario=new ActionWriterIntegrationFixture.SoftwareReadScenario("0".repeat(64),"captured-actual-read-history",source->{
+            java.util.function.Function<PlanningReadReceipt,MilitaryReadObservation> decode=receipt->{
+                Obj raw=DriverJson.object(receipt.original().originalResultToken().orElseThrow().bytes(),DriverJson.MAX_NATIVE_BYTES);
+                var frame=receipt.request().before().frame();
+                Obj value=raw.with("queried_snapshot_id",new Text(frame.snapshotId())).with("queried_revision",new IntegerValue(frame.revision()))
+                        .with("queried_native_revision",new IntegerValue(frame.identity().nativeRevision()))
+                        .with("queried_connection_generation",new IntegerValue(receipt.before().binding().connectionGeneration()))
+                        .with("queried_episode_run_id",new Text(frame.episodeRunId()));
+                return new MilitaryReadObservation(MilitaryReadObservation.Kind.ROUTE_PREVIEW,value);
+            };
+            var contract=new ReadContract<MilitaryReadObservation>("actual-captured-route-read",new OperationKey(step),Optional.of(capability),capability,
+                    ReadContract.PermissionMode.ADVERTISED_CAPABILITY,ReadContract.WireProfile.EXECUTE_STEP,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,source,
+                    (request,id)->new NativeRequest(step,Optional.of(capability),new RawJson(new byte[]{'{','}'})),decode,decode,
+                    (original,value,current,semantic)->StrictJson.require(current.before().equals(original.request().before())
+                            &&current.source().equals(original.request().source())&&current.sessionId().equals(original.request().sessionId())
+                            &&current.arguments().equals(original.request().arguments()),"software original READ operands changed"));
+            installed.set(contract);return List.of(contract);
+        },request->new RawJson(DriverJson.encode(new Obj(java.util.Map.of("step",new Text(step),"accepted",new Bool(true),"status",new Text("available"),
+                "route_preview",new Obj(java.util.Map.of("army_id",new IntegerValue(BigInteger.ZERO),"origin_province_id",new IntegerValue(BigInteger.ONE),
+                "target_province_id",new IntegerValue(BigInteger.valueOf(4)),"status",new Text("available"),
+                "route_province_ids",new Arr(List.of(new IntegerValue(BigInteger.ONE),new IntegerValue(BigInteger.valueOf(4)))))))))));
+        var initialFrame=new ActionWriterIntegrationFixture.SoftwareActionScenario(new OperationKey("pause-map"),"game.command.pause-map",
+                (command,attempt,dispatch)->new ActionPorts.Pending("original software ACK remains unresolved",List.of(attempt.guard().nativeEvidence())),
+                ()->{},Optional.empty(),Optional.empty(),true,Optional.empty());
+        try(var fixture=new ActionWriterIntegrationFixture(root.resolve("actual-read-suffix"),false,scenario,List.of(initialFrame),Duration.ofSeconds(60))) {
+            var input=inputs(fixture);var contract=installed.get();
+            var publisher=new DriverReadHistoryPublisher(fixture.driverAuthority(),fixture.archive,fixture.reads.catalog(),List.of(contract.sourceRef()));
+            fixture.bindAdditionalTransitionAuthority(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_READ_HISTORY_KIND,publisher);
+            fixture.writer.locked(same->{
+                fixture.collector.current(same,input.observed().before(),Instant.now().plusSeconds(60),lease->{
+                    var configuration=new DynamicCapabilities.Configuration(Optional.empty(),Optional.empty(),3,3,false,false);
+                    var session=new CapabilitySessionPresentation(false,Optional.empty(),Optional.of(CapabilitySessionPresentation.RestoreKind.NEW_EPISODE),
+                            CapabilitySessionPresentation.BindingState.ACTIVE_NEW,Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty());
+                    var policy=fixture.archive.preserveMaterial(new RawJson(StrictJson.canonical(StrictJson.object().put("actual_capture_read_start_policy",true))));
+                    var produced=DriverCapabilityStateProducer.initializeNewEpisode(lease.frame(),lease.driver(),configuration,session,policy,fixture.archive.withSession(same));
+                    fixture.driverAuthority().publishCapabilityInputs(same,lease.driver().stamp(),produced.expectedAuxiliarySha256(),produced);return null;
+                });return null;
+            });
+            var ticket=fixture.writer.locked(same->input.controller().captureCleanRestart(same,"read-worker",0));
+            var captured=fixture.writer.locked(same->input.batches().admitCleanRestart(same,ticket));
+            byte[] captureOriginal=Files.readAllBytes(Path.of(ticket.manifest().path()));
+            var owner=captured.controller().owner();
+            input.batches().commit(new JournalInput(owner,"read-worker-0",JournalKind.BATCH_STARTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
+            fixture.writer.locked(same->{
+                for(int count:List.of(2,1)) {
+                    fixture.collector.current(same,input.observed().before(),Instant.now().plusSeconds(60),lease->{
+                        for(int ordinal=0;ordinal<count;ordinal++) {
+                            var request=new PlanningReadRequest(lease.frame().identity(),lease.frame().source(),lease.frame().sessionId(),contract.operation(),new Obj(java.util.Map.of()),Instant.now().plusSeconds(60));
+                            var result=fixture.reads.read(same,contract,request);
+                            if(!(result instanceof PlanningReadResult.Known<MilitaryReadObservation> known))throw new AssertionError(result);
+                            publisher.enqueue(same,contract,known);
+                        }
+                        return null;
+                    });assertTrue(publisher.flushActualReads(same).isPresent());
+                }
+                return null;
+            });
+            input.batches().commit(new JournalInput(owner,"read-worker-0",JournalKind.BATCH_INTERRUPTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
+            int readWrites=fixture.scenarioReadWrites();
+            var recovered=fixture.writer.locked(same->input.batches().admitInitialNoDispatchRecovery(same,owner));
+            var retained=recovered.retainedFacts().orElseThrow();
+            var latest=fixture.writer.locked(same->fixture.driverAuthority().withFrozenFacts(same,frozen->(DriverSnapshotFacts.Known)frozen.state()));
+            assertArrayEquals(latest.driver().encode(),retained.driver().encode());assertEquals(latest.stamp(),retained.stamp());
+            assertEquals(latest.auxiliary(),retained.auxiliary());assertEquals(latest.loop(),retained.loop());assertEquals(latest.actionRows(),retained.actionRows());
+            assertEquals(captured.facts().stamp().driverVersion()+2,retained.stamp().driverVersion());
+            assertEquals(captured.facts().driver().commandHistory().size()+3,retained.driver().commandHistory().size());
+            assertArrayEquals(captured.facts().driver().encode(),recovered.capturedFacts().orElseThrow().driver().encode());
+            assertEquals(captured.manifest(),recovered.capturedManifest().orElseThrow());
+            assertArrayEquals(captureOriginal,Files.readAllBytes(Path.of(ticket.manifest().path())));
+            assertArrayEquals(retained.driver().encode(),fixture.archive.loadFullMaterial(recovered.retainedFullDriver().orElseThrow()).bytes());
+            assertEquals(captured.controller(),recovered.capturedController().orElseThrow());
+            assertEquals(List.of("read-worker-0"),recovered.consumedBatchIds());assertEquals(1,recovered.nextBatchSequence());
+            assertEquals(readWrites,fixture.scenarioReadWrites());assertEquals(0,fixture.nativeActionWrites());
+            fixture.writer.locked(same->{
+                recovered.requireCurrent(same);
+                var publication=same.head().state().toJson().get(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_READ_HISTORY_FIELD);
+                var row=ExactRef.fromJson(publication.get("read_rows").get(0).get("row"));
+                Files.writeString(Path.of(row.path()),"{}");
+                assertThrows(IOException.class,()->recovered.requireCurrent(same));return null;
+            });
         }
     }
     @Test void aLaterActualCanonicalBatchHeadCannotReuseTheEarlierRestartTicket()throws Exception {

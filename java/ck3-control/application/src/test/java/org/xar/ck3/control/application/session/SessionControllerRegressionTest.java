@@ -159,6 +159,27 @@ final class SessionControllerRegressionTest {
         assertEquals(0, fixture.submitted.get()); assertEquals(0, report.committedSavedDays());
         assertTrue(report.phases().stream().anyMatch(span -> span.phase() == BatchReport.Phase.IDLE_WAIT));
     }
+    @Test void readinessPollDoesNotInvokeObserverAfterTheOperationDeadline() {
+        Fixture fixture = new Fixture(false);
+        fixture.time.passive = true;
+        fixture.observer = (expected, until) -> {
+            fixture.observed.incrementAndGet();
+            if (!fixture.time.now().utc().isBefore(until))
+                throw new IOException("actual downstream rejected the already expired observation deadline");
+            fixture.time.waitFor(Duration.ofMillis(999));
+            return new Waiting("map still waiting just before the readiness deadline", REF);
+        };
+        SessionController controller = fixture.controller();
+        BatchReport report = controller.runBatch(new BatchLimits("readiness-poll-over-boundary", 2,
+                Duration.ofSeconds(5), Duration.ofSeconds(1), Duration.ofMillis(5), 3));
+        assertAll(
+                () -> assertEquals(BatchReport.Terminal.READINESS_TIMEOUT, report.terminal(), report::detail),
+                () -> assertEquals(1, fixture.observed.get(), "expired readiness must not invoke the downstream observer again"),
+                () -> assertFalse(controller.isQuarantined(), "a completed readiness wait is not a writer failure"),
+                () -> assertEquals(JournalKind.BATCH_DEFERRED, fixture.journal.getLast().kind()),
+                () -> assertEquals(0, fixture.submitted.get()),
+                () -> assertEquals(0, report.committedSavedDays()));
+    }
     @Test void missingFullProductionStageIsTerminalAndDoesNotPollOrSubmit() {
         Fixture fixture = new Fixture(false); BatchReport report = fixture.controller().runBatch(limits("missing"));
         assertEquals(BatchReport.Terminal.INCOMPLETE_MIGRATION, report.terminal());
@@ -726,6 +747,40 @@ final class SessionControllerRegressionTest {
         assertEquals(1,fixture.journal.size());assertEquals(JournalKind.BATCH_STARTED,fixture.journal.getFirst().kind());
         assertEquals(0,fixture.submitted.get());assertTrue(report.turns().isEmpty());assertEquals(0,fixture.scopeDepth);
     }
+    @Test void completedPhysicalReadPublicationDefersWithoutWriterQuarantineOrRequestReplay() {
+        Fixture fixture=new Fixture(false);fixture.completePhysicalReadPublication=true;
+        var original=new IOException("original Native READ has no returned response; identity retained");
+        fixture.observer=(owner,until)->{fixture.observed.incrementAndGet();throw org.xar.ck3.control.application.planning.PlanningReadFailure.physical(original);};
+        SessionController controller=fixture.controller();var report=controller.runBatch(limits("physical-read-completed-publication"));
+        assertEquals(BatchReport.Terminal.OBSERVATION_UNAVAILABLE,report.terminal());assertFalse(controller.isQuarantined());
+        assertEquals(2,fixture.journal.size());assertEquals(JournalKind.BATCH_DEFERRED,fixture.journal.getLast().kind());
+        assertEquals(1,fixture.observed.get());assertEquals(0,fixture.submitted.get());assertEquals(0,fixture.reconciled.get());
+        assertTrue(report.turns().isEmpty());assertEquals(0,report.committedSavedDays());
+        assertSame(report,controller.runBatch(limits("physical-read-completed-publication")));
+        assertEquals(1,fixture.observed.get());assertEquals(2,fixture.journal.size());
+    }
+    @Test void physicalReadWithoutCompletedOriginalPublicationKeepsWriterUnknownAndDoesNotFinalize() {
+        Fixture fixture=new Fixture(false);
+        fixture.observer=(owner,until)->{fixture.observed.incrementAndGet();throw org.xar.ck3.control.application.planning.PlanningReadFailure.physical(new IOException("original READ unresolved"));};
+        var controller=fixture.controller();var report=controller.runBatch(limits("physical-read-publication-unproven"));
+        assertEquals(BatchReport.Terminal.WRITER_UNKNOWN,report.terminal());assertTrue(controller.isQuarantined());
+        assertEquals(1,fixture.journal.size());assertEquals(1,fixture.observed.get());assertEquals(0,fixture.submitted.get());
+    }
+    @Test void suppressedWriterFailureOverridesCompletedPhysicalReadPublicationAndPreventsAnotherWrite() {
+        Fixture fixture=new Fixture(false);fixture.completePhysicalReadPublication=true;
+        fixture.afterPhysicalPublicationFailure=new IOException("actual writer release completion lost");
+        fixture.observer=(owner,until)->{fixture.observed.incrementAndGet();throw org.xar.ck3.control.application.planning.PlanningReadFailure.physical(new IOException("physical READ failed"));};
+        var controller=fixture.controller();var report=controller.runBatch(limits("physical-read-suppressed-writer"));
+        assertEquals(BatchReport.Terminal.WRITER_UNKNOWN,report.terminal());assertTrue(controller.isQuarantined());
+        assertEquals(1,fixture.journal.size());assertEquals(1,fixture.observed.get());assertEquals(0,fixture.submitted.get());
+    }
+    @Test void untypedObservationIoIsNotPromotedToProvenReadFailure() {
+        Fixture fixture=new Fixture(false);fixture.completePhysicalReadPublication=true;
+        fixture.observer=(owner,until)->{fixture.observed.incrementAndGet();throw new IOException("unclassified observer or writer failure");};
+        var controller=fixture.controller();var report=controller.runBatch(limits("untyped-observation-io"));
+        assertEquals(BatchReport.Terminal.WRITER_UNKNOWN,report.terminal());assertTrue(controller.isQuarantined());
+        assertEquals(1,fixture.journal.size());assertEquals(0,fixture.submitted.get());
+    }
     @Test void actualDomainCheckpointRequirementDoesNotCreateAnImplicitSaveInPublicAutoTurn() {
         Fixture fixture=new Fixture(true);fixture.requireCheckpoint=true;
         BatchReport report=fixture.controller().autoTurn(BASE.plusSeconds(5)).execution();
@@ -890,7 +945,8 @@ final class SessionControllerRegressionTest {
     }
     private static final class TestClock implements SessionClock {
         long nanos;
-        @Override public Tick now() { nanos += 1_000_000; return new Tick(nanos, BASE.plusNanos(nanos)); }
+        boolean passive;
+        @Override public Tick now() { if (!passive) nanos += 1_000_000; return new Tick(nanos, BASE.plusNanos(nanos)); }
         @Override public void waitFor(Duration duration) { nanos += duration.toNanos(); }
     }
     private static final class Fixture {
@@ -898,14 +954,30 @@ final class SessionControllerRegressionTest {
         final List<JournalInput> journal = new ArrayList<>(); final boolean completePlanner; boolean withBaseline = true; boolean reconcileExisting; boolean cycleAvailable = true;
         int planningPublications,episodeCalls,scopeEntries,scopeDepth;ActionCommand terminalOriginal,readParentOriginal;boolean blockPlanning,publishFirstPlan,publishFirstScope,failScopePublication,requireCheckpoint,readRefreshBeforeDispatch,readRefreshIssued,refreshHasParent;final List<ActionReceipt> completedReceipts=new ArrayList<>();
         int continuationCalls;
+        boolean completePhysicalReadPublication;IOException afterPhysicalPublicationFailure;
         Duration planningDelay=Duration.ZERO,planningCompletionDelay=Duration.ZERO,planningScopeExitDelay=Duration.ZERO;
         java.util.function.BiFunction<SessionIdentity,Instant,Optional<PendingSuccessorUi>> pendingProbe=(owner,until)->Optional.empty();
         Optional<java.util.function.Function<CompositeContinuationToken,CompositeContinuationReport>> continuationProvider=Optional.empty();
         final org.xar.ck3.control.application.planning.OrdinaryPlanCompletion.PlanningScope completion=new org.xar.ck3.control.application.planning.OrdinaryPlanCompletion.PlanningScope() {
             @Override public <T> ScopeResult<T> inPlanningScope(ScopeWork<T> work) throws IOException,InterruptedException {
                 assertEquals(0,scopeDepth);scopeEntries++;scopeDepth++;
-                try{T result=work.run();time.waitFor(planningScopeExitDelay);if(failScopePublication)throw new IOException("actual read publication completion lost");return new ScopeResult<>(result,publishFirstScope&&scopeEntries==1?Optional.of(publication()):Optional.empty());}
-                finally{scopeDepth--;}
+                try {
+                    T result;
+                    try {result=work.run();}
+                    catch(IOException|java.io.UncheckedIOException failure) {
+                        if(completePhysicalReadPublication) {
+                            var completed=org.xar.ck3.control.application.planning.PlanningReadFailure.afterPublication(failure);
+                            if(completed.isPresent()) {
+                                var actual=completed.orElseThrow();
+                                if(afterPhysicalPublicationFailure!=null)actual.addSuppressed(afterPhysicalPublicationFailure);
+                                throw actual;
+                            }
+                        }
+                        throw failure;
+                    }
+                    time.waitFor(planningScopeExitDelay);if(failScopePublication)throw new IOException("actual read publication completion lost");
+                    return new ScopeResult<>(result,publishFirstScope&&scopeEntries==1?Optional.of(publication()):Optional.empty());
+                } finally{scopeDepth--;}
             }
             @Override public PlanningDisposition afterPlanning(PlanningRequest original,org.xar.ck3.control.application.planning.PlanningResult planned) {
                 assertEquals(1,scopeDepth);

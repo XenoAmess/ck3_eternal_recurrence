@@ -855,7 +855,8 @@ public final class DriverBootstrap {
         StrictJson.require(Instant.now().isBefore(deadline),"initial recovery deadline expired");
         var entry=actual.entry();var original=actual.facts();var current=transport.awaitHello(deadline);
         var captured=actual.initialNoDispatchRecovery().flatMap(value->value.capturedManifest());
-        var fullDriver=captured.map(value->value.fullDriver()).orElse(entry.fullDriver());
+        var fullDriver=actual.initialNoDispatchRecovery().flatMap(value->value.retainedFullDriver())
+                .orElseGet(()->captured.map(value->value.fullDriver()).orElse(entry.fullDriver()));
         var previousConnection=captured.map(value->value.previousTransport().connectionGeneration()).orElse(entry.connectionGeneration());
         var minimumNative=captured.map(value->value.nativeRevision()).orElse(entry.nativeRevision());
         StrictJson.require(current.machineId().equals(entry.machineId())&&current.game().equals(entry.game())

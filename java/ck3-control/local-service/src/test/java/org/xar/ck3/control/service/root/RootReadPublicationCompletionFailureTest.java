@@ -29,6 +29,49 @@ final class RootReadPublicationCompletionFailureTest {
         },()->false));
         assertSame(original,received);assertArrayEquals(new Throwable[]{publication},received.getSuppressed());assertEquals(1,calls.get());
     }
+    @Test void typedPhysicalReadIsDistinctOnlyAfterTheOriginalPublicationReturns() {
+        var original=new IOException("the retained Native READ response was not returned");
+        var physical=org.xar.ck3.control.application.planning.PlanningReadFailure.physical(original);
+        var calls=new AtomicInteger();
+        var received=assertThrows(org.xar.ck3.control.application.planning.PlanningReadFailure.class,
+                ()->RootReadPublicationCompletion.finishOriginalWork(()->{throw physical;},()->{calls.incrementAndGet();return Optional.empty();},()->false));
+        assertTrue(org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(received));
+        assertTrue(received.toString().contains(original.toString()));
+        assertSame(physical,received.getCause());assertSame(original,physical.getCause());assertEquals(1,calls.get());
+        var wrapped=new UncheckedIOException("actual Root planning-read authority unavailable",physical);
+        var wrappedReceived=assertThrows(org.xar.ck3.control.application.planning.PlanningReadFailure.class,
+                ()->RootReadPublicationCompletion.finishOriginalWork(()->{throw wrapped;},Optional::empty,()->false));
+        assertTrue(org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(wrappedReceived));
+        assertTrue(wrappedReceived.toString().contains(original.toString()));
+        assertSame(wrapped,wrappedReceived.getCause());
+    }
+    @Test void physicalReadWithSuppressedWriterFailureNeverClaimsCompletedPublication() {
+        var original=org.xar.ck3.control.application.planning.PlanningReadFailure.physical(new IOException("physical READ failed"));
+        var writer=new IOException("actual read publication writer completion lost");var calls=new AtomicInteger();
+        var received=assertThrows(IOException.class,()->RootReadPublicationCompletion.finishOriginalWork(()->{throw original;},()->{
+            calls.incrementAndGet();throw writer;
+        },()->false));
+        assertSame(original,received);assertArrayEquals(new Throwable[]{writer},received.getSuppressed());assertEquals(1,calls.get());
+        assertFalse(org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(received));
+        assertTrue(org.xar.ck3.control.application.planning.PlanningReadFailure.afterPublication(received).isEmpty());
+    }
+    @Test void alreadyFailedPhysicalReadPublicationDoesNotRetryOrClaimCompletion() {
+        var original=org.xar.ck3.control.application.planning.PlanningReadFailure.physical(new IOException("original physical READ failed"));
+        var received=assertThrows(IOException.class,()->RootReadPublicationCompletion.finishOriginalWork(()->{throw original;},()->{
+            throw new AssertionError("the same failed publication must not be retried");
+        },()->true));
+        assertSame(original,received);assertFalse(org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(received));
+    }
+    @Test void transportWrapperSuppressedFailureSurvivesPhysicalProvenanceAndPreventsDowngrade() {
+        var nativeFailure=new IOException("Native response deadline expired");
+        var transport=new UncheckedIOException(nativeFailure);var writer=new IOException("suppressed original writer failure");
+        transport.addSuppressed(writer);
+        var physical=org.xar.ck3.control.application.planning.PlanningReadFailure.physical(transport);
+        var received=assertThrows(IOException.class,()->RootReadPublicationCompletion.finishOriginalWork(()->{throw physical;},Optional::empty,()->false));
+        assertSame(physical,received);assertSame(transport,physical.getCause());assertSame(nativeFailure,transport.getCause());
+        assertArrayEquals(new Throwable[]{writer},transport.getSuppressed());
+        assertFalse(org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(received));
+    }
     @Test void normalOrAlreadyFailedPublicationNeverBlindlyRetries() {
         var publication=new IOException("normal flush failure");var calls=new AtomicInteger();
         assertSame(publication,assertThrows(IOException.class,()->RootReadPublicationCompletion.finishOriginalWork(()->"result",()->{

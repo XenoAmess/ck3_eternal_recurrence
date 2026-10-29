@@ -59,7 +59,9 @@ final class LedgerFiles {
         Document actual = read(Path.of(expected.path()), maximum);
         if (actual.pin().reference().bytes() != expected.bytes() || !actual.pin().reference().sha256().equals(expected.sha256())
                 || !Path.of(expected.path()).toAbsolutePath().normalize().equals(Path.of(actual.pin().reference().path())))
-            throw new IOException("named source bytes/SHA/path changed");
+            throw new IOException("named source bytes/SHA/path changed: path=" + expected.path()
+                    + ", expected_bytes=" + expected.bytes() + ", actual_bytes=" + actual.pin().reference().bytes()
+                    + ", expected_sha256=" + expected.sha256() + ", actual_sha256=" + actual.pin().reference().sha256());
         return new Document(new Pin(expected, actual.pin().identity()), actual.bytes());
     }
     static Optional<Document> optional(Path path) throws IOException {

@@ -15,6 +15,26 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public final class RootOrdinaryRuntimeConfiguration {
 
+    /** Runtime model endpoint is the base /v1 URI; the provider appends /chat/completions. */
+    public record DecisionProvider(java.net.URI endpoint, String model, Duration timeout,
+            int maximumAttempts, Duration retryBackoff) {
+        public DecisionProvider {
+            java.util.Objects.requireNonNull(endpoint); StrictJson.text(model);
+            java.util.Objects.requireNonNull(timeout); java.util.Objects.requireNonNull(retryBackoff);
+            StrictJson.require(endpoint.isAbsolute() && endpoint.getHost() != null
+                    && ("http".equalsIgnoreCase(endpoint.getScheme()) || "https".equalsIgnoreCase(endpoint.getScheme()))
+                    && endpoint.getRawUserInfo() == null && endpoint.getRawQuery() == null && endpoint.getRawFragment() == null,
+                    "absolute HTTP(S) model endpoint without userinfo/query/fragment required");
+            StrictJson.require(!timeout.isNegative() && !timeout.isZero() && timeout.compareTo(Duration.ofMillis(120000)) <= 0,
+                    "model timeout must be 1..120000 milliseconds");
+            StrictJson.require(timeout.compareTo(Duration.ofMillis(1)) >= 0 && maximumAttempts >= 1 && maximumAttempts <= 6,
+                    "finite model timeout and 1..6 attempts required");
+            StrictJson.require(!retryBackoff.isNegative() && retryBackoff.compareTo(Duration.ofMillis(10000)) <= 0,
+                    "model retry backoff must be 0..10000 milliseconds");
+        }
+    }
+
+
     private static final Set<String> REQUIRED_ROOT_FIELDS = Set.of(
         "schema", "machine_id", "state_dir", "stock_game_root", "native_implementation",
         "launch_plan_file", "initial_policy_file", "campaign_deadline_file",
@@ -25,7 +45,7 @@ public final class RootOrdinaryRuntimeConfiguration {
         "stop_path", "retained_frames", "retained_origins", "operation_timeout_ms",
         "freshness_ms", "heartbeat_maximum_age_ms", "batch_id_prefix", "maximum_turns",
         "batch_wall_ms", "readiness_timeout_ms", "poll_interval_ms", "checkpoint_every_advances",
-        "maximum_frames_per_operation", "maximum_submissions", "maximum_storage_bytes"
+        "maximum_frames_per_operation", "maximum_submissions", "maximum_storage_bytes", "decision_provider"
     );
 
     private final Path configurationFile;
@@ -50,6 +70,7 @@ public final class RootOrdinaryRuntimeConfiguration {
     private final int maximumSubmissions;
     private final long maximumStorageBytes;
     private final RootOrdinaryWorkerLoop.Configuration loopConfig;
+    private final java.util.Optional<DecisionProvider> decisionProvider;
 
     public static RootOrdinaryRuntimeConfiguration read(Path configPath) throws IOException {
         try {
@@ -130,6 +151,17 @@ public final class RootOrdinaryRuntimeConfiguration {
         Path initialPolicyFile = resolvePath(root.get("initial_policy_file"), configParent);
         InitialEpisodePolicy initialPolicy = readInitialPolicy(initialPolicyFile);
 
+        java.util.Optional<DecisionProvider> decisionProvider = java.util.Optional.empty();
+        if (root.has("decision_provider")) {
+            JsonNode provider = StrictJson.object(root.get("decision_provider"),
+                    Set.of("endpoint", "model", "timeout_ms"), Set.of("maximum_attempts", "retry_backoff_ms"));
+            decisionProvider = java.util.Optional.of(new DecisionProvider(
+                    java.net.URI.create(StrictJson.text(provider.get("endpoint"))), StrictJson.text(provider.get("model")),
+                    Duration.ofMillis(StrictJson.integer(provider.get("timeout_ms"), 1, 120000)),
+                    provider.has("maximum_attempts") ? (int) StrictJson.integer(provider.get("maximum_attempts"), 1, 6) : 3,
+                    Duration.ofMillis(provider.has("retry_backoff_ms") ? StrictJson.integer(provider.get("retry_backoff_ms"), 0, 10000) : 200)));
+        }
+
         return new RootOrdinaryRuntimeConfiguration(
             absoluteConfigPath,
             machineId,
@@ -152,7 +184,7 @@ public final class RootOrdinaryRuntimeConfiguration {
             maximumFramesPerOperation,
             maximumSubmissions,
             maximumStorageBytes,
-            loopConfig
+            loopConfig, decisionProvider
         );
     }
 
@@ -232,7 +264,8 @@ public final class RootOrdinaryRuntimeConfiguration {
         int maximumFramesPerOperation,
         int maximumSubmissions,
         long maximumStorageBytes,
-        RootOrdinaryWorkerLoop.Configuration loopConfig
+        RootOrdinaryWorkerLoop.Configuration loopConfig,
+        java.util.Optional<DecisionProvider> decisionProvider
     ) {
         this.configurationFile = configurationFile;
         this.machineId = machineId;
@@ -256,6 +289,7 @@ public final class RootOrdinaryRuntimeConfiguration {
         this.maximumSubmissions = maximumSubmissions;
         this.maximumStorageBytes = maximumStorageBytes;
         this.loopConfig = loopConfig;
+        this.decisionProvider = java.util.Objects.requireNonNull(decisionProvider);
     }
 
     public Path configurationFile() { return configurationFile; }
@@ -280,4 +314,5 @@ public final class RootOrdinaryRuntimeConfiguration {
     public int maximumSubmissions() { return maximumSubmissions; }
     public long maximumStorageBytes() { return maximumStorageBytes; }
     public RootOrdinaryWorkerLoop.Configuration loop() { return loopConfig; }
+    public java.util.Optional<DecisionProvider> decisionProvider() { return decisionProvider; }
 }

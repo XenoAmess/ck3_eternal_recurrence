@@ -10,6 +10,7 @@ import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ExplicitOriginalProtocolId;
 import org.xar.ck3.control.application.action.ProtocolRequestIdentity;
+import org.xar.ck3.control.application.effects.NativeGovernanceEffects;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.application.action.NativeRequest;
 import org.xar.ck3.control.application.action.RawJson;
@@ -174,7 +175,7 @@ public final class GovernanceActionPreparation implements ActionPorts.Preparatio
             ObjectNode observedFocus = object(query.get("focus_query")); StrictJson.trueValue(observedFocus.get("native_legal"));
             StrictJson.require(text(observedFocus, "target_key").equals(target), "LIFE target differs from its final focus query");
         } else StrictJson.require(AuthoredPerkCatalog.perks().containsKey(target) && AuthoredPerkCatalog.perks().get(target).wire().equals(lifestyle), "perk outside pinned original catalog/lifestyle");
-        return StrictJson.object().put("expected_snapshot_id", "native:" + identity.nativeRevision()).put("expected_episode_run_id", expected.episodeRunId())
+        return StrictJson.object().put("expected_snapshot_id", "native:" + identity.nativeRevision()).put("expected_episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(command.before()))
                 .put("expected_date_raw", identity.dateRaw()).put("expected_player_character_id", identity.player())
                 .put("expected_native_revision", identity.nativeRevision()).put("expected_proof_epoch", identity.nativeRevision())
                 .put("kind", focus ? "focus" : "perk").put("target_key", target);

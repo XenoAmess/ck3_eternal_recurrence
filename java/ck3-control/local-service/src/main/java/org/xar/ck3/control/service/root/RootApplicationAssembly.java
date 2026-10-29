@@ -111,6 +111,7 @@ public final class RootApplicationAssembly {
         private Instant coldBootstrapDeadline;
         private final ReconciliationLink initialReconciliation = new ReconciliationLink();
         private final ThreadLocal<ContinuityStorePort.Session> planningSession = new ThreadLocal<>();
+        private org.xar.ck3.control.application.planning.OrdinaryDecisionSelector decisionSelector;
         private final Set<DriverBootstrap.Adopted> adopted = Collections.newSetFromMap(new IdentityHashMap<>());
         private boolean staged;
         private boolean finished;
@@ -173,6 +174,13 @@ public final class RootApplicationAssembly {
             checkpointVerifiers=new RootCheckpointVerifierRouter(writer);
         }
         public StorageWriteGuard storageGuard(){return writer.storageGuard();}
+        public synchronized void bindDecisionSelector(org.xar.ck3.control.application.planning.OrdinaryDecisionSelector actual) {
+            StrictJson.require(decisionSelector == null, "per-Game ordinary selector already bound");
+            decisionSelector = Objects.requireNonNull(actual);
+        }
+        public synchronized Optional<org.xar.ck3.control.application.planning.OrdinaryDecisionSelector> decisionSelector() {
+            return Optional.ofNullable(decisionSelector);
+        }
         public ContinuityWriter writer() { return writer; }
         public NativeOutcomeArchive archive() { return archive; }
         public ArchiveOriginalEvidencePort originals() { return originals; }
@@ -2114,8 +2122,10 @@ public final class RootApplicationAssembly {
                 SessionPorts.ObservationPort observations = new RootSessionObservationPort(core,collector,lifecycle,terminalDecisions,driver.authority(),game.nativeTransport(),
                         Objects.requireNonNull(actualLifecycleRuntime));
                 RootControllerActions controllerActions = new RootControllerActions(core, identity, coordinator);
+                var ordinaryPlanner = pipeline.create(core.clock);
+                core.decisionSelector().ifPresent(ordinaryPlanner::bindSelector);
                 SessionController controller = new SessionController(identity, (owned, until) -> game.inspect(owned.game(), until), observations,
-                        pipeline.create(core.clock), controllerActions, checkpoints, requests, batches, offline, sessionClock, baseline, admittedSavedDays, readCompletion, episodes);
+                        ordinaryPlanner, controllerActions, checkpoints, requests, batches, offline, sessionClock, baseline, admittedSavedDays, readCompletion, episodes);
                 controller.bindDecisionDisplay(core.audienceDisplay());
                 core.finished = true;
                 RootApplicationSession result = new RootApplicationSession(core, core.submissions, view, batches, core.savedLoader, actualLoader, restoration,nextEpisode,

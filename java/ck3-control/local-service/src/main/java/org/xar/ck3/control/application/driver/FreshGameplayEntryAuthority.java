@@ -154,7 +154,7 @@ public final class FreshGameplayEntryAuthority implements WriterContracts.Transi
             java.util.Optional<InitialNoDispatchRecovery> proof)throws IOException {
         if(proof.isPresent()&&proof.orElseThrow().capturedFacts().isPresent()) {
             // Both callers validate the proof in requireInitialRecoveryHead within this held writer scope.
-            return proof.orElseThrow().capturedFacts().orElseThrow();
+            return proof.orElseThrow().retainedFacts().orElseThrow();
         }
         return loadInitialRecoveryFacts(same,entry);
     }

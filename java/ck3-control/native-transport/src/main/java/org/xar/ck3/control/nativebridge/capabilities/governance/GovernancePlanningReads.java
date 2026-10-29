@@ -7,7 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.effects.NativeGovernanceEffects;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.governance.council.CouncilCodec;
@@ -43,20 +45,23 @@ public final class GovernancePlanningReads {
     public ReadContract<OpportunityJson.Obj> crown() { return crown; }
     public List<ReadContract<?>> all() { return List.of(formal, state, wealth, martial, crown); }
     private static ReadContract<OpportunityJson.Obj> contract(String step, ExactRef source, String version, String sha256) {
+        Function<PlanningReadReceipt, OpportunityJson.Obj> decoder = receipt -> {
+            ObjectNode result = original(receipt);
+            ObjectNode normalized = step.equals(CROWN) ? crown(result, receipt.request(), version, sha256)
+                    : step.equals(FORMAL) || step.equals(STATE) ? life(result, receipt.request(), step) : focus(result, receipt.request(), step);
+            return (OpportunityJson.Obj) OpportunityJson.parse(StrictJson.canonical(normalized));
+        };
         return new ReadContract<>("governance.planning." + step, new OperationKey(step), Optional.empty(), step,
-                ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE, ReadContract.WireProfile.EXECUTE_STEP, source,
-                request -> {
+                ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE, ReadContract.WireProfile.EXECUTE_STEP, ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP, source,
+                (request, requestId) -> {
                     StrictJson.require(request.arguments().members().isEmpty(), "native governance read takes no caller wire arguments");
                     var frame = request.before().frame(); var id = frame.identity();
                     ObjectNode fields = StrictJson.object().put("expected_date_raw", id.dateRaw()).put("expected_player_character_id", id.player());
-                    if (!step.equals(CROWN)) fields.put("expected_snapshot_id", "native:" + id.nativeRevision()).put("episode_run_id", frame.episodeRunId());
+                    if (!step.equals(CROWN)) fields.put("expected_snapshot_id", "native:" + id.nativeRevision()).put("episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(request.before()));
                     return new NativeRequest(step, Optional.empty(), new RawJson(StrictJson.canonical(fields)));
-                }, receipt -> {
-                    ObjectNode result = original(receipt);
-                    ObjectNode normalized = step.equals(CROWN) ? crown(result, receipt.request(), version, sha256)
-                            : step.equals(FORMAL) || step.equals(STATE) ? life(result, receipt.request(), step) : focus(result, receipt.request(), step);
-                    return (OpportunityJson.Obj) OpportunityJson.parse(StrictJson.canonical(normalized));
-                });
+                },
+                decoder,
+                decoder);
     }
     private static ObjectNode original(PlanningReadReceipt receipt) {
         var full = StrictJson.object(StrictJson.parse(receipt.original().originalFrame().bytes()), Set.of("type", "protocol_version", "request_id", "ok", "result"));
@@ -98,15 +103,15 @@ public final class GovernancePlanningReads {
     }
     public static ObjectNode life(ObjectNode result, PlanningReadRequest request, String step) {
         equal(result, "step", step); StrictJson.trueValue(result.get("private_build")); StrictJson.require(!CouncilCodec.bool(result.get("advertised")), "LIFE private envelope changed");
-        equal(result, "status", "available"); var frame = request.before().frame(); var id = frame.identity(); equal(result, "episode_run_id", frame.episodeRunId());
+        equal(result, "status", "available"); var frame = request.before().frame(); var id = frame.identity(); equal(result, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(request.before()));
         ObjectNode snapshot = CouncilCodec.object(result.get("snapshot")); equal(snapshot, "status", "available"); nativeBinding(snapshot, request, true); validateLifeSnapshot(snapshot);
         ObjectNode projected = snapshot.deepCopy().put("snapshot_id", frame.snapshotId()).put("public_revision", frame.revision()).put("episode_run_id", frame.episodeRunId());
         ObjectNode normalized = StrictJson.object().put("status", "available").put("step", step).put("episode_run_id", frame.episodeRunId());
         if (step.equals(FORMAL)) {
             normalized.set("formal_precondition_status", result.get("formal_precondition_status")); StrictJson.text(result.get("formal_precondition_status"));
             if (result.hasNonNull("all_lifestyle_progress_v3")) {
-                var progress = CouncilCodec.object(result.get("all_lifestyle_progress_v3")); nativeBinding(progress, request, false); equal(progress, "episode_run_id", frame.episodeRunId());
-                projected.set("all_lifestyle_progress_v3", progress.deepCopy().put("snapshot_id", frame.snapshotId()));
+                var progress = CouncilCodec.object(result.get("all_lifestyle_progress_v3")); nativeBinding(progress, request, false); equal(progress, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(request.before()));
+                projected.set("all_lifestyle_progress_v3", progress.deepCopy().put("snapshot_id", frame.snapshotId()).put("episode_run_id", frame.episodeRunId()));
                 ObjectNode wrapper = StrictJson.object().put("schema", LifestylePerksCodec.INPUT_SCHEMA); wrapper.set("snapshot", projected); wrapper.set("owned", projected.get("owned_perk_keys"));
                 ObjectNode binding = wrapper.putObject("binding");
                 for (String key : List.of("snapshot_id", "episode_run_id", "public_revision", "native_revision", "proof_epoch", "date_raw", "player_character_id")) binding.set("expected_" + key, projected.get(key));
@@ -132,7 +137,7 @@ public final class GovernancePlanningReads {
     public static ObjectNode focus(ObjectNode result, PlanningReadRequest request, String step) {
         equal(result, "step", step); StrictJson.trueValue(result.get("private_build")); StrictJson.trueValue(result.get("read_only")); StrictJson.trueValue(result.get("policy_scoped"));
         StrictJson.require(!CouncilCodec.bool(result.get("advertised")), "focus advertised private source");
-        var frame = request.before().frame(); equal(result, "snapshot_id", "native:" + frame.identity().nativeRevision()); equal(result, "episode_run_id", frame.episodeRunId());
+        var frame = request.before().frame(); equal(result, "snapshot_id", "native:" + frame.identity().nativeRevision()); equal(result, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(request.before()));
         String target = step.equals(WEALTH) ? "stewardship_wealth_focus" : "martial_authority_focus", lifestyle = step.equals(WEALTH) ? "stewardship_lifestyle" : "martial_lifestyle";
         equal(result, "target_key", target); equal(result, "target_lifestyle_key", lifestyle);
         String status = CouncilCodec.text(result, "status"); StrictJson.require(Set.of("observed_native_legal", "observed_native_illegal").contains(status)
@@ -143,7 +148,7 @@ public final class GovernancePlanningReads {
         for (String key : List.of("xp_total_raw", "xp_within_level_raw", "unspent_perk_points", "used_perk_points")) StrictJson.integer(progress.get(key), BigInteger.ZERO, BigInteger.valueOf(Long.MAX_VALUE));
         BigInteger perLevel = StrictJson.integer(progress.get("xp_per_level"), BigInteger.ONE, BigInteger.valueOf(Long.MAX_VALUE));
         StrictJson.require(progress.get("xp_within_level_raw").bigIntegerValue().compareTo(perLevel.multiply(BigInteger.valueOf(100000))) < 0, "focus within-level XP outside native fixed scale");
-        ObjectNode projected = result.deepCopy().put("status", "observed"); projected.set("source_frame", source(request));
+        ObjectNode projected = result.deepCopy().put("status", "observed").put("episode_run_id", frame.episodeRunId()); projected.set("source_frame", source(request));
         return projected;
     }
     public static ObjectNode combine(ObjectNode state, ObjectNode focus) {

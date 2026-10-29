@@ -26,6 +26,14 @@ public final class OrdinaryPlanner {
     private final EnumMap<PlanningStage, OrdinaryPolicy> policies;
     private final Clock clock;
     private final RealmLifecycle realmLifecycle;
+    private volatile OrdinaryDecisionSelector selector;
+
+    /** One per-Game provider is shared by both actual planner factories. */
+    public synchronized void bindSelector(OrdinaryDecisionSelector actual) {
+        Objects.requireNonNull(actual);
+        StrictJson.require(selector == null, "ordinary decision selector already bound");
+        selector = actual;
+    }
 
     public OrdinaryPlanner(List<OrdinaryPolicy> implementations, Clock clock, RealmLifecycle realmLifecycle) {
         Objects.requireNonNull(implementations); this.clock = Objects.requireNonNull(clock);
@@ -65,6 +73,8 @@ public final class OrdinaryPlanner {
         RealmLifecycle.Scope scope = realmLifecycle.begin(request);
         try {
             PlanningResult result = planBound(request, completedOptional);
+            if (result instanceof ActionSelected selected && selector != null)
+                result = selectProposal(request, selected);
             realmLifecycle.finalizePlan(scope, result);
             return result;
         } catch (RuntimeException | Error failure) {
@@ -72,6 +82,37 @@ public final class OrdinaryPlanner {
             catch (RuntimeException | Error cancellation) { failure.addSuppressed(cancellation); }
             throw failure;
         }
+    }
+
+    private PlanningResult selectProposal(PlanningRequest request, ActionSelected proposed) {
+        OrdinaryDecisionSelector.Selection selection;
+        try { selection = Objects.requireNonNull(selector.select(request, proposed)); }
+        catch (RuntimeException failure) {
+            selection = new OrdinaryDecisionSelector.Selection(OrdinaryDecisionSelector.Choice.WAIT,
+                    "model_provider_failure:" + failure.getClass().getSimpleName(), Optional.empty());
+        }
+        List<StageVisit> visits = new ArrayList<>(proposed.trace().visits());
+        if (selection.evidence().isPresent() && !visits.isEmpty()) {
+            int last = visits.size() - 1;
+            StageVisit visit = visits.get(last);
+            org.xar.ck3.control.contracts.ExactRef ref = selection.evidence().orElseThrow();
+            org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj evidence = visit.evidence()
+                    .orElseGet(() -> new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of()));
+            evidence = evidence.with("model_decision_receipt", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(
+                    java.util.Map.of("path", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(ref.path()),
+                    "bytes", new org.xar.ck3.control.planning.opportunity.OpportunityJson.IntegerValue(java.math.BigInteger.valueOf(ref.bytes())),
+                    "sha256", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(ref.sha256()))));
+            visits.set(last, new StageVisit(visit.stage(), visit.outcome(), visit.reason(), visit.source(), Optional.of(evidence)));
+        }
+        Draft original = proposed.trace().finalPlan().orElseThrow();
+        if (selection.choice() == OrdinaryDecisionSelector.Choice.ACCEPT
+                && clock.instant().isBefore(request.deadline()) && clock.instant().isBefore(proposed.command().deadline()))
+            return new ActionSelected(proposed.command(), new PlanTrace(proposed.trace().before(), visits, Optional.of(original)));
+        String reason = selection.choice() == OrdinaryDecisionSelector.Choice.ACCEPT
+                ? "model_decision_original_command_deadline_expired" : selection.reason();
+        Draft waiting = new Draft(original.policy(), original.phase(), reason, original.kind(), Optional.empty(),
+                Purpose.READ_ONLY, original.domain(), original.detail());
+        return new ReadOnlyWait(request.before(), reason, new PlanTrace(proposed.trace().before(), visits, Optional.of(waiting)));
     }
 
     private PlanningResult planBound(PlanningRequest request, Optional<PlanningStage> completedOptional) {

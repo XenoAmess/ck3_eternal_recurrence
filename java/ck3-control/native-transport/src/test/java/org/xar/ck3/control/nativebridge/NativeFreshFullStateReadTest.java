@@ -22,12 +22,76 @@ import org.xar.ck3.control.contracts.StrictJson;
 /** Actual sole Java receiver with a software packet boundary. These packets are DATA, not a C++/Game oracle.
  * The independently owned native producer regression and actual Root private-source chain remain mandatory. */
 final class NativeFreshFullStateReadTest {
+    private static final String FOUR_SHA="98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518";
+    private static final String FOUR_ADAPTER="ck3-1.20.0.4-msvc-x64";
+    private static Replay exactFourReplay()throws IOException {
+        var replay=valid();replay.packets.clear();
+        replay.add(hello().put("expected_ck3_version","1.20.0.4").put("expected_ck3_sha256",FOUR_SHA).put("game_adapter_id",FOUR_ADAPTER));
+        replay.add(snapshot("old-four",5,null));return replay;
+    }
+    @Test void consumedStaleSnapshotRefreshesOnTheSameConnectionBeforeWaitingForAnotherPush()throws Exception {
+        var replay=exactFourReplay();
+        try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            var before=assertDoesNotThrow(()->actual.observe(deadline()),
+                    ()->"initial packet admission: "+actual.diagnostics().production().orElseThrow().lastRejectedSnapshot());
+            replay.holdEmptyUntilDeadline=true; // Only after real public consume sets snapshotUndelivered=false.
+            assertEquals(0,replay.writes);assertEquals(1,replay.helloPacketsRead);
+            Instant until=Instant.now().plusMillis(750);
+            var fresh=assertDoesNotThrow(()->actual.observe(until,java.time.Duration.ofNanos(1)),
+                    ()->"consumed snapshot path: reads="+replay.reads+", writes="+replay.writes
+                            +", empty_waits="+replay.emptyDeadlineWaits+", empty_wait_nanos="+replay.emptyWaitNanos
+                            +", requested_deadline="+until+", empty_read_deadline="+replay.emptyReadDeadline
+                            +", empty_read_expired_at="+replay.emptyReadExpiredAt);
+            assertEquals(before.session(),fresh.session());assertEquals("native:6",fresh.snapshotId());
+            assertEquals(1,replay.helloPacketsRead);assertEquals(1,replay.writes);assertEquals(0,replay.emptyDeadlineWaits);
+            assertEquals(NativeFreshSnapshotPort.STEP,replay.request.path("step").textValue());
+        }
+    }
+    @Test void maxAgeStillReceivesTheOriginalHelloAndFirstFreshPacketWithoutARequestWrite()throws Exception {
+        var replay=exactFourReplay();
+        try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            var first=actual.observe(deadline(),java.time.Duration.ofMinutes(1));
+            assertEquals("old-four",first.snapshotId());assertEquals(1,replay.helloPacketsRead);
+            assertEquals(0,replay.writes);assertNull(replay.request);assertEquals(0,replay.emptyDeadlineWaits);
+            assertEquals(BigInteger.ONE,actual.diagnostics().session().orElseThrow().connectionGeneration());
+        }
+    }
+    @Test void staleMaxAgeObservationCannotResubmitAnExistingUnknownFreshRead()throws Exception {
+        var replay=exactFourReplay();
+        try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            actual.observe(deadline());replay.producer=(ignored,request)->{};
+            var unavailable=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
+            var original=assertInstanceOf(NativeActionPort.Unknown.class,unavailable.dispatch());assertEquals(1,replay.writes);
+            replay.holdEmptyUntilDeadline=true;
+            assertThrows(java.io.UncheckedIOException.class,()->actual.observe(Instant.now().plusMillis(100),java.time.Duration.ofNanos(1)));
+            var retained=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
+            assertSame(original,retained.dispatch());assertEquals(1,replay.writes);assertEquals(1,replay.helloPacketsRead);
+        }
+    }
+    @Test void consumedFreshSnapshotWaitsOnlyToItsAgeBoundaryThenUsesAnIndependentRead()throws Exception {
+        var replay=exactFourReplay();
+        try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            var before=actual.observe(deadline());replay.holdEmptyUntilDeadline=true;
+            var originalAt=before.observedAt();var originalRevision=before.nativeRevision();
+            var maximumAge=java.time.Duration.between(originalAt,Instant.now()).plusMillis(500);
+            Instant softUntil=originalAt.plus(maximumAge), until=softUntil.plusMillis(1000);
+            var fresh=assertDoesNotThrow(()->actual.observe(until,maximumAge),
+                    ()->"fresh-to-stale path: writes="+replay.writes+", soft_waits="+replay.softWaits
+                            +", empty_waits="+replay.emptyDeadlineWaits+", empty_wait_nanos="+replay.emptyWaitNanos);
+            assertEquals(1,replay.softWaits);assertEquals(softUntil,replay.softWaitUntil);
+            assertTrue(!replay.softWaitReturnedAt.isBefore(softUntil));assertTrue(replay.softWaitReturnedAt.isBefore(until));
+            assertEquals(0,replay.emptyDeadlineWaits);assertEquals(1,replay.writes);assertEquals(1,replay.helloPacketsRead);
+            assertEquals(before.session(),fresh.session());assertEquals("native:6",fresh.snapshotId());
+            assertTrue(fresh.observedAt().isAfter(originalAt));
+            assertEquals(originalAt,before.observedAt());assertEquals(originalRevision,before.nativeRevision());
+        }
+    }
     private static final String SHA="2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
     private static final String ADAPTER="ck3-1.19.0.6-msvc-x64";
     private static final String STATE="""
         {"date_raw":53144328,"speed":3,"paused":true,"map_ready":true,"played_character":{"character_id":73,"alive":true},
         "active_event":null,"pending_character_interaction":null,"one_life_terminal_reason":null,"one_life_settlement":null,
-        "played_character_gold":0,"played_character_prestige":0,"played_character_piety":0,"history":[],
+        "played_character_gold":{"raw":0,"scale":100000},"played_character_prestige":{"raw":0,"scale":100000},"played_character_piety":{"raw":0,"scale":100000},"history":[],
         "active_wars":[],"player_armies":[],"diagnostics":{}}
         """;
     @FunctionalInterface private interface Producer {void write(Replay actual,ObjectNode originalRequest)throws IOException;}
@@ -35,10 +99,35 @@ final class NativeFreshFullStateReadTest {
         final ArrayDeque<byte[]> packets=new ArrayDeque<>();Producer producer;int reads,writes;ObjectNode request;
         byte[] snapshotPacket,ackPacket;boolean failWrite;
         Replay(Producer producer)throws IOException {this.producer=producer;add(hello());add(snapshot("old",5,null));}
-        void add(ObjectNode row)throws IOException{packets.add(NativeWire.packet(StrictJson.canonical(row)));}
+        void add(ObjectNode row)throws IOException{byte[] packet=NativeWire.packet(StrictJson.canonical(row));if("hello".equals(row.path("type").textValue()))originalHelloPacket=packet;packets.add(packet);}
         @Override public void verify(){}
         @Override public void awaitConnection(Instant deadline){}
-        @Override public byte[] readPacket(Instant deadline)throws IOException {reads++;if(packets.isEmpty())throw new IOException("software original read deadline/error");return packets.remove();}
+        boolean holdEmptyUntilDeadline; int emptyDeadlineWaits, helloPacketsRead, softWaits; byte[] originalHelloPacket;
+        Instant emptyReadDeadline, emptyReadExpiredAt; long emptyWaitNanos;
+        Instant softWaitUntil, softWaitReturnedAt;
+        @Override public NativePacketPort.WaitResult readPacketUntil(Instant waitUntil,Instant captureUntil)throws IOException {
+            softWaits++;softWaitUntil=waitUntil;
+            while(packets.isEmpty()&&Instant.now().isBefore(waitUntil)) {
+                if(!Instant.now().isBefore(captureUntil))throw new IOException("software capture deadline expired");
+                java.util.concurrent.locks.LockSupport.parkNanos(1_000_000);
+            }
+            if(!packets.isEmpty())return new NativePacketPort.Packet(readPacket(captureUntil));
+            softWaitReturnedAt=Instant.now();
+            if(!softWaitReturnedAt.isBefore(captureUntil))throw new IOException("software capture deadline expired");
+            return new NativePacketPort.Elapsed(waitUntil,softWaitReturnedAt);
+        }
+        @Override public byte[] readPacket(Instant deadline)throws IOException {
+            reads++;
+            if(packets.isEmpty()) {
+                if(holdEmptyUntilDeadline) {
+                    emptyDeadlineWaits++; emptyReadDeadline=deadline; long start=System.nanoTime();
+                    while(Instant.now().isBefore(deadline)) java.util.concurrent.locks.LockSupport.parkNanos(1_000_000);
+                    emptyReadExpiredAt=Instant.now(); emptyWaitNanos=System.nanoTime()-start;
+                }
+                throw new IOException("software original read deadline/error");
+            }
+            byte[] packet=packets.remove();if(packet==originalHelloPacket)helloPacketsRead++;return packet;
+        }
         @Override public void writePacket(byte[] packet,Instant deadline)throws IOException {
             writes++;request=NativeWire.object(NativeWire.parse(java.util.Arrays.copyOfRange(packet,4,packet.length)));
             var keys=new java.util.HashSet<String>();for(var field:request.properties())keys.add(field.getKey());
@@ -224,7 +313,7 @@ final class NativeFreshFullStateReadTest {
                 actual.fresh(frame,response);
             });try(var actual=transport(replay)) {
                 actual.observe(deadline());var failed=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()),failure);
-                assertInstanceOf(NativeActionPort.AckReceived.class,failed.dispatch());assertEquals(1,replay.writes);
+                assertInstanceOf(NativeActionPort.AckReceived.class,failed.dispatch(),failure);assertEquals(1,replay.writes);
                 assertArrayEquals(replay.ackPacket,((NativeActionPort.AckReceived)failed.dispatch()).originalPacket());
             }
         }

@@ -17,6 +17,7 @@ import org.xar.ck3.control.application.action.ReadContract;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.governance.crownauthority.CrownAuthorityCodec;
 import org.xar.ck3.control.governance.lifestyle.LifestyleMinCodec;
 import org.xar.ck3.control.governance.lifestyle.LifestyleMinPolicy;
@@ -128,7 +129,7 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
         List<Value> sceneRows = new ArrayList<>(request.observations().history()); sceneRows.add(historyRow);
         Obj scene = new Obj(Map.of()).with("schema", new Text(ConstructionSceneCodec.SCENE_SCHEMA))
                 .with("snapshot", request.observations().snapshot()).with("history", new Arr(sceneRows));
-        var source = ConstructionSceneCodec.decodeScene(encode(scene));
+        var source = ConstructionSceneCodec.decodeScene(DriverJson.toNode(scene));
         var assessment = opening || !request.observations().bridgeCapabilities().contains(LifestyleScopePolicy.ALL_LIFESTYLE_CAPABILITY)
                 ? LifestyleScopePolicy.sameFrameFeudalLifestyleScope(source) : LifestyleScopePolicy.sameFramePlayerLifestylePerkScope(source);
         Obj scope = object(parse(ConstructionSceneCodec.encodeRootScope(assessment.root())), "lifestyle root scope");

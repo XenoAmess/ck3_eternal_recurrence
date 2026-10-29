@@ -431,9 +431,7 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
         StrictJson.require(installed.size()==1,"one actual original decoder source required for a cached read");
         ActionPorts.OutcomeArchive originals=archive.withSession(same);
         StrictJson.require(java.time.Instant.now().isBefore(current.deadline()),"canonical lookup current query deadline expired");
-        for(ExactRef source:List.of(current.source().sourceRef(),identicalInstalled.sourceRef(),installed.getFirst().decoderSource())) {
-            var pin=same.capturePin(source,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);
-        }
+
         return authority.withFrozenFacts(same,frozen -> {
             StrictJson.require(frozen.state() instanceof Known,"canonical read requires the actual complete Driver owner");Known known=(Known)frozen.state();
             StrictJson.require(DriverStateAssembler.projectObservation(known,frozen.actions(),frozen.activeActionId()) instanceof DriverStateSnapshot.Complete,
@@ -972,13 +970,13 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
             details.put("predecessor_head_sha256",queue.commitHead.digest());details.put("read_head_sha256",queue.head.digest());details.put("read_head_sequence",queue.head.state().sequence());details.put("before_version",queue.before.stamp().driverVersion());
             details.put("after_version",Math.addExact(queue.before.stamp().driverVersion(),1));details.put("episode_epoch",queue.before.stamp().episodeEpoch());
             details.set("before_driver",beforeRef.toJson());details.set("after_driver",afterRef.toJson());
-            LinkedHashSet<ExactRef> evidence=new LinkedHashSet<>(sources);evidence.add(beforeRef);evidence.add(afterRef);
+            LinkedHashSet<ExactRef> evidence=new LinkedHashSet<>();evidence.add(beforeRef);evidence.add(afterRef);
             var rows=details.putArray("read_rows");var rowMetadata=new ArrayList<ObjectNode>();
             for(Item item:queue.items) {
                 Candidate candidate=item.candidate();ObjectNode row=StrictJson.object();rowMetadata.add(row);row.put("index",candidate.row().index());row.put("contract_id",item.contract().contractId());
                 row.set("row",candidate.rowReference().toJson());row.set("read",candidate.readReference().toJson());
                 row.set("definition_source",candidate.definitionSource().toJson());row.set("decoder_source",candidate.decoderSource().toJson());
-                evidence.add(candidate.rowReference());evidence.add(candidate.readReference());evidence.add(candidate.definitionSource());evidence.add(candidate.decoderSource());
+                evidence.add(candidate.rowReference());evidence.add(candidate.readReference());
                 evidence.addAll(candidate.provenance().supportingEvidence());
             }
             for(ObservedItem item:queue.observed) {

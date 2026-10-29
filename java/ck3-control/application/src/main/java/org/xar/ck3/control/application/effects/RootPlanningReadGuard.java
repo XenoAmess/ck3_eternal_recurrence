@@ -46,7 +46,6 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
         StrictJson.require(originalReadSource.get()==null,"Council read cannot replace an active physical source callback");
         try {
             var session=RootGuardChecks.session(borrowedSession,actualLockedHead);
-            RootGuardChecks.source(session,contract.sourceRef());RootGuardChecks.source(session,expectedSource.sourceRef());
             return authority.withOriginalReadSource(session,request,lease -> {
                 // This selects the held guard only while the actual source producer owns its physical scope.
                 originalReadSource.set(request);
@@ -88,7 +87,7 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
         StrictJson.require(request.origin() instanceof CommandOrigin.Gameplay && contract.guardMode() == ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,
                 "frontend query requires the independent frontend authority");
         try {
-            var session = RootGuardChecks.session(borrowedSession, actualLockedHead); RootGuardChecks.source(session, contract.sourceRef()); RootGuardChecks.source(session, expectedSource.sourceRef());
+            var session = RootGuardChecks.session(borrowedSession, actualLockedHead);
             var sameWriterArchive = archive.withSession(session);
             return authority.current(session, request.before(), request.deadline(), lease -> {
                 if (isLocalRootPreflight(contract,request)) {
@@ -123,7 +122,6 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
                 &&contract.hasPureReplay(),"held original query requires its actual paused-map contract and pure original replay");
         try {
             var session=RootGuardChecks.session(borrowedSession,actualLockedHead);
-            RootGuardChecks.source(session,contract.sourceRef());RootGuardChecks.source(session,expectedSource.sourceRef());
             var sameArchive=archive.withSession(session);
             return authority.currentHeldOriginal(session,request,lease->{
                 RootGuardChecks.livingPaused(lease);

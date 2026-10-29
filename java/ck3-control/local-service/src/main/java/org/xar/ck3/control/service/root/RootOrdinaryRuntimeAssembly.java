@@ -279,6 +279,15 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             if(noDispatch.isPresent()&&!noDispatch.orElseThrow().batchPrefix().equals(owner.config.loop().batchIdPrefix()))
                 throw new IOException("initial no-dispatch recovery changed the original batch prefix");
             consumed=true;
+            if (owner.config.decisionProvider().isPresent()) {
+                var selector = new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(), owner.clock, raw -> {
+                    var writer = owner.core.writer();
+                    var active = writer.activeSession();
+                    if (active.isPresent()) return owner.core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                    return writer.locked(same -> owner.core.archive().withSession(same).preserveMaterial(raw));
+                });
+                owner.core.bindDecisionSelector(selector);
+            }
             installed=runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->
                     owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);

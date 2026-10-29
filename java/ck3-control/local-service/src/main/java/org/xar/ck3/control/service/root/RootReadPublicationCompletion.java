@@ -22,6 +22,15 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         private final ContinuityStorePort.Session session;private boolean flushFailed;
         private PlanningRound(ContinuityStorePort.Session session){this.session=session;}
     }
+    /** A completed physical-read failure leaves the writer callback as DATA, so writer release errors remain primary. */
+    private record ScopeExit<T>(Optional<ScopeResult<T>> result,
+            Optional<org.xar.ck3.control.application.planning.PlanningReadFailure> readFailure) {
+        private ScopeExit {Objects.requireNonNull(result);Objects.requireNonNull(readFailure);StrictJson.require(result.isPresent()!=readFailure.isPresent(),"one original scope outcome required");}
+        private ScopeResult<T> released() throws IOException {
+            if(readFailure.isPresent())throw readFailure.orElseThrow();
+            return result.orElseThrow();
+        }
+    }
     private final ThreadLocal<PlanningRound> round=new ThreadLocal<>();
     public RootReadPublicationCompletion(RootApplicationAssembly.Core originalCore,DriverReadHistoryPublisher actualReadPublisher,
             OrdinaryPlanCompletion actualDomainCompletion,org.xar.ck3.control.application.readiness.NativeReadinessCollector actualCollector) {
@@ -31,12 +40,17 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     }
     @Override public <T> ScopeResult<T> inPlanningScope(ScopeWork<T> work) throws IOException,InterruptedException {
         Objects.requireNonNull(work);StrictJson.require(round.get()==null,"one actual original-writer planning round per thread");
-        return core.withBorrowed(()->{
+        ScopeExit<T> actual=core.withBorrowed(()->{
             ContinuityStorePort.Session borrowed=core.writer().borrowedSession();core.writer().requireSession(borrowed);
             PlanningRound current=new PlanningRound(borrowed);round.set(current);
-            try { return finishOriginalWork(()->collector.withPlanningRound(borrowed,work::run),()->flushInSession(borrowed),()->current.flushFailed); }
+            try { return new ScopeExit<T>(Optional.of(finishOriginalWork(()->collector.withPlanningRound(borrowed,work::run),()->flushInSession(borrowed),()->current.flushFailed)),Optional.empty()); }
+            catch(org.xar.ck3.control.application.planning.PlanningReadFailure failure) {
+                if(!org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(failure))throw failure;
+                return new ScopeExit<T>(Optional.empty(),Optional.of(failure));
+            }
             finally{round.remove();}
         });
+        return actual.released();
     }
     @FunctionalInterface interface PublicationFlush { Optional<Published> flush()throws IOException; }
     /** Same production control flow; package-only for failure-preservation regression, never source/Ready authority. */
@@ -46,9 +60,14 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         try { result=Objects.requireNonNull(work.run(),"actual planning round result required"); }
         catch(IOException|InterruptedException|RuntimeException|Error failure) {
             // The work's physical freeze has exited before this original writer callback runs.
-            if(!alreadyFailed.getAsBoolean())try { publication.flush(); }
+            boolean publicationCompleted=false;
+            if(!alreadyFailed.getAsBoolean())try { publication.flush(); publicationCompleted=true; }
             catch(IOException|RuntimeException|Error publicationFailure) {
                 if(publicationFailure!=failure)failure.addSuppressed(publicationFailure);
+            }
+            if(publicationCompleted) {
+                var readFailure=org.xar.ck3.control.application.planning.PlanningReadFailure.afterPublication(failure);
+                if(readFailure.isPresent())throw readFailure.orElseThrow();
             }
             throw failure;
         }
