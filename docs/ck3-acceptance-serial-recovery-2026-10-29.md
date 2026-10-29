@@ -37,3 +37,5 @@ CAS328限定继续修复现有unrun及其stages测试。新增v2资源恢复分�
 Root于05:31:45Z重新明确审查G2有限期08:30Z，替代未采用的08Z候选；当时HEAD仍07Z，没有自动延长原G1、Native或旧失败。新G2仍须实际完整CI、clean commit、共享恢复0、完整fresh scan和容量CAS，原8400／8220秒及keeper完整预测守卫保持。
 
 a09现已完整通过全部92条原始命令、975项测试，零跳过，Root持有的原工具session2364实际退出0。证明 `shared-CI-complete-a09/COMMAND-VALIDATION.actual.json` 为37695 B，SHA `44e69f76ad856cc9781b7bf756fbeebeb5e8e96d58a821ac6241047fc00a3c09`；12份源码与workflow前后相同。执行基于7b926工作树，后续提交封存同字节输入。局部闭写证明 `recovery-registry-support-fix-a01/LOCAL-VALIDATION.actual.json` 为6664 B，SHA `a030ffa09df48795973e5e5c9fd764cb52ffb88366ca68c8a7d4a07d2da6f104`。该次PASS不覆盖前述37项历史全模块strict错误，也不代表游戏或业务已经通过。
+
+R47实际恢复a03原Popen5164／wait1：Root额外传入同一stdout作为可选`--admin-release`，与单次completed事件的既有canonical-reconstruction要求不符；原失败保留。a04只移除此可选参数，沿现有生产者从实际journal重建同一事件并保留原始stdout，原Popen18028／wait0、真实reducer通过，无新管理事件或源码修改。`recovery-R47-a04/ALLOCATED-UNRUN.actual.json` 为22019 B／`cb1f1a0c2b3d5c85a4d84513dd85e43dd23c3757f729e7926db68a44741b60bc`，完整reducer stdout为15788 B／`fedf6849f50019a4bb6efb486a4bca69f33d27158bf9cdfbad19d962e61d76c2`。模式为`previous-shared-allocated-unrun-prelaunch-orchestrator-failed`，`SDK_or_launch=false`；原R47仍无游戏、正常关闭或业务PASS。
