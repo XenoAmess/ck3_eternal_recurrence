@@ -1,0 +1,629 @@
+{
+  "schema": "xar.java-g2-vacation-handoff-source-index/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-29T14:26:36.138Z",
+  "phase": "STOPPED_BY_USER_HANDOVER",
+  "user_instruction": "你要去度假了。温和地收尾手上的工作，梳理交接文档到docs中。",
+  "purpose": "Navigation to the saved current state, software results, unadopted candidates and unresolved live failures. This index is documentation, never a new startup preflight or authorization to replay commands.",
+  "entrypoint": "Z:/ck3_mod_rewrite/docs/handover/2026-10-29-java-g2-resume63-vacation-handoff.md",
+  "scope_limits": [
+    "Pins describe files read at the recorded time, not a frozen SDK/build graph or future file identity.",
+    "SOURCE STOP, S adoption, Z synchronization, MB compilation, software tests, Native deployment and actual gameplay are separate states.",
+    "No new Main318, dev58, ordinary worker, Game START, SAVE, RESTORE, DLL deployment or model POST was launched for this handoff.",
+    "The independent CK3 and its supervisor are intentionally retained. Their latest process observation is in the runtime handoff; owner birth values were not freshly re-observed.",
+    "No full-tree audit, final full reactor acceptance, cleanup, Git commit/push/fetch/merge or remote model restart was done.",
+    "The source-index is not self-pinned to avoid a content fixed point."
+  ],
+  "roots": {
+    "repository": "Z:/ck3_mod_rewrite",
+    "development_source": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r5/java/ck3-control",
+    "build_output": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/complete35-candidate31-h5r5",
+    "maven_repository": "D:/codex-ck3-demos/2026-10-22-java-phase1/m2",
+    "build_temporary": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/complete35-candidate31-h5r5-tmp",
+    "live_state": "D:/ck3-state/ck3-java-g2-resume63-vanilla01",
+    "integration": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration",
+    "rea": "D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01"
+  },
+  "current_facts": {
+    "latest_process_observation_utc": "2026-10-29T14:14:37Z",
+    "game_pid": 171676,
+    "game_creation_filetime_owner_binding": "134376899432680684",
+    "supervisor_pid": 147108,
+    "game_profile": "vanilla_no_mods_robert1066",
+    "game_mod_basis": "Existing dlc_load enabled_mods=[] and original live session debug evidence; not rescanned during wind-down.",
+    "worker57": {
+      "pid": 287096,
+      "exited_at_utc": "2026-10-29T13:58:41.917Z",
+      "exit_code": 4,
+      "clean_stop": false
+    },
+    "last_main_compile": {
+      "attempt": 317,
+      "exit_code": 0,
+      "wall_ms": 127846,
+      "reactor_concurrency": 2,
+      "actual_javac_modules": 10,
+      "tests_executed": 0,
+      "final_full_acceptance": false
+    },
+    "main318": "NOT_STARTED",
+    "dev58": "NOT_STARTED",
+    "next_worker": "NOT_STARTED",
+    "ledger": {
+      "sequence": 71,
+      "status": "repair_required",
+      "last_batch": 20,
+      "last_event": "BATCH_INTERRUPTED",
+      "actual_suffix_contains_deferred": true,
+      "edited_for_handoff": false
+    },
+    "restart_ticket": {
+      "sequence": 57,
+      "status": "OLD_NOT_CURRENT_CLEAN",
+      "edited_for_handoff": false
+    },
+    "worker_stop_marker": {
+      "latest_observation": "ABSENT",
+      "consumed_at_utc": "2026-10-29T14:04:15.620Z",
+      "scope": "Only Runtime63 owned token removed before the wind-down request; failed exit4 preserved."
+    },
+    "actual_gameplay": {
+      "confirmed_business_actions": 0,
+      "confirmed_new_game_days": 0,
+      "last_actor": 31254,
+      "last_date_raw": 53144328,
+      "last_native_revision": 182
+    },
+    "deadline_diagnosis": "Startup lifetime explanation withdrawn. RuntimeContext checks caller batch deadline. Post-planner time classification is a D-only hypothesis; javac argument preparation failed, regression NOT_RUN.",
+    "final_sync": {
+      "delivery_unique_files": 37,
+      "delivery_adoptions": 40,
+      "unsynced_leaves": 17,
+      "unsynced_groups": [
+        "Mercenary 7",
+        "PublicSemantic TEST 1",
+        "Events read-reason 9"
+      ]
+    },
+    "execution_policy": "No new commands or concurrency refill after user wind-down; select one runtime owner when explicitly resuming."
+  },
+  "local_model": {
+    "config": "docs/local-model-executor-config.json",
+    "base_url": "http://192.168.1.7:8080/v1",
+    "model": "qwen38-coder",
+    "authentication_required": false,
+    "required_client_placeholder": "local",
+    "previous_base_url": "http://192.168.1.7:8000/v1",
+    "same_service_and_capabilities": true,
+    "fallback_to_old_address": false,
+    "new_posts_and_next_retries": "HOLD",
+    "latest_preserved_queue_observation": {
+      "observed_at_utc": "2026-10-29T13:56:20Z",
+      "running": 32,
+      "waiting": 8,
+      "kv_percent_approx": 66.7
+    },
+    "queue_at_close": "UNKNOWN",
+    "server_restarted_for_handoff": false,
+    "prompt_order": "Fixed system, current stable source first, changing task and real diagnostics last.",
+    "retry_scope": "Model HTTP only; never native/game actions."
+  },
+  "storage_close_observation": {
+    "observed_at_utc": "2026-10-29T14:10:57.264Z",
+    "volumes": [
+      {
+        "path": "D:/",
+        "total_bytes": "14000483987456",
+        "available_bytes": "624422957056"
+      },
+      {
+        "path": "C:/",
+        "total_bytes": "998748684288",
+        "available_bytes": "171490455552"
+      },
+      {
+        "path": "Z:/",
+        "total_bytes": "4096787476480",
+        "available_bytes": "137813942272"
+      }
+    ],
+    "full_project_usage_scanned": false,
+    "data_deleted": false,
+    "policy": "docs/storage-retention-policy.json",
+    "existing_development_pool_review_at_utc": "2026-10-31T09:19:20.886406Z",
+    "evidence_retention": "Use existing purpose/review deadlines documented in the group handoffs; no automatic renewal or deletion."
+  },
+  "first_resume_tasks": [
+    "Read the main and runtime handoffs; consume actual same-Game owner and canonical seq71 suffix without fabricating a clean ticket or replaying UNKNOWN.",
+    "Review and validate the D-only DEFERRED recovery and deadline classification candidates; preserve actual business state.",
+    "Integrate the S-adopted event reason cut and necessary consumers, respecting the 17 unsynchronized Z leaves.",
+    "Use the existing source/build/m2 cache for the next incremental Main318, then resume the same ordinary Java campaign and confirm real action aftermath and a real new game day.",
+    "Use the tested Quarkus dev entry mutually exclusively with plain worker; actual Game hot reload remains unverified.",
+    "Continue REA M0-M7 and local-model exploration independently of the live critical path when work is explicitly resumed."
+  ],
+  "refs": [
+    {
+      "id": "handoff_main",
+      "path": "docs/handover/2026-10-29-java-g2-resume63-vacation-handoff.md",
+      "status": "HANDOFF_NAVIGATION",
+      "observed_at_utc": "2026-10-29T14:26:36.036Z",
+      "bytes": 18474,
+      "modified_at_utc": "2026-10-29T14:26:05.451Z",
+      "availability": "READABLE",
+      "sha256": "79692b0364ed69495670f93127ff540d13206bf5d1fd962215a36e7824895b93"
+    },
+    {
+      "id": "handoff_runtime",
+      "path": "docs/handover/2026-10-29-java-g2-resume63-runtime-handoff.md",
+      "status": "CURRENT_RUNTIME_OBSERVATION",
+      "observed_at_utc": "2026-10-29T14:26:36.037Z",
+      "bytes": 13567,
+      "modified_at_utc": "2026-10-29T14:19:10.860Z",
+      "availability": "READABLE",
+      "sha256": "71f66066f17f48685c4a9b786ed65969814bd570a70508e9d121722e5cd81471"
+    },
+    {
+      "id": "handoff_root_group",
+      "path": "docs/handover/2026-10-29-java-g2-root-group-close.md",
+      "status": "GROUP_CLOSE",
+      "observed_at_utc": "2026-10-29T14:26:36.037Z",
+      "bytes": 15232,
+      "modified_at_utc": "2026-10-29T14:26:05.452Z",
+      "availability": "READABLE",
+      "sha256": "d83c2188874a3107ddfd5c6e29e739afe6cbbb01d7ef445c5cc0c89920de49d8"
+    },
+    {
+      "id": "handoff_migration_group",
+      "path": "docs/handover/2026-10-29-java-g2-migration-group-close.md",
+      "status": "GROUP_CLOSE",
+      "observed_at_utc": "2026-10-29T14:26:36.037Z",
+      "bytes": 22240,
+      "modified_at_utc": "2026-10-29T14:22:38.879Z",
+      "availability": "READABLE",
+      "sha256": "aa12ee3a00e98c90bacd14627499db218a5eeb5cadc354436633898e1c4680bd"
+    },
+    {
+      "id": "handoff_rea",
+      "path": "docs/handover/2026-10-29-java-g2-rea-m0-m7-close.md",
+      "status": "GROUP_CLOSE",
+      "observed_at_utc": "2026-10-29T14:26:36.038Z",
+      "bytes": 27718,
+      "modified_at_utc": "2026-10-29T14:20:49.505Z",
+      "availability": "READABLE",
+      "sha256": "1bc98fa4ab893e892fc2536d939e2b1a288844c137a6cf40a724bad569f9466a"
+    },
+    {
+      "id": "progress",
+      "path": "docs/autonomous-agent-progress/2026-10-26-java-g2-resume63-current.md",
+      "status": "APPEND_ONLY_HISTORY",
+      "observed_at_utc": "2026-10-29T14:26:36.038Z",
+      "bytes": 76018,
+      "modified_at_utc": "2026-10-29T14:26:05.580Z",
+      "availability": "READABLE",
+      "sha256": "b3d388e25fe5cfd4fa26ec50dda9fad06debb45dddabb64c5cdc8c748cec5e93"
+    },
+    {
+      "id": "instructions",
+      "path": "AGENTS.md",
+      "status": "LATEST_USER_MEMORY",
+      "observed_at_utc": "2026-10-29T14:26:36.038Z",
+      "bytes": 118895,
+      "modified_at_utc": "2026-10-29T14:16:54.658Z",
+      "availability": "READABLE",
+      "sha256": "9c3c547f5972ef65dba186763fae3b337fa02532fb4793ccf16c8efda531f634"
+    },
+    {
+      "id": "build317",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/MAINDEV317-COMPILE-ACTUAL.json",
+      "status": "COMPILE_EXIT0_NO_TESTS",
+      "observed_at_utc": "2026-10-29T14:26:36.038Z",
+      "bytes": 3086,
+      "modified_at_utc": "2026-10-29T13:35:29.215Z",
+      "availability": "READABLE",
+      "sha256": "1c38fd1fec888cedf23eaf1648b3d459029ed62690cc90bcebe18df2be527c7b"
+    },
+    {
+      "id": "current_build",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/CURRENT-MAVEN-STATUS.json",
+      "status": "NO_NEW_EXECUTION_HANDOFF",
+      "observed_at_utc": "2026-10-29T14:26:36.038Z",
+      "bytes": 588,
+      "modified_at_utc": "2026-10-29T14:14:40.344Z",
+      "availability": "READABLE",
+      "sha256": "8ad8e49d7ef968df32103e0d24362f46655801fde6e6b0c878b9cf2f384c3cb8"
+    },
+    {
+      "id": "worker57_terminal",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-vanilla01/artifacts/persistent-java02/worker-resume57/terminal.json",
+      "status": "WORKER_EXIT4",
+      "observed_at_utc": "2026-10-29T14:26:36.039Z",
+      "bytes": 349,
+      "modified_at_utc": "2026-10-29T13:58:41.944Z",
+      "availability": "READABLE",
+      "sha256": "6696581a9225f3bb906f9ac7273a7033d3967e2b0a29d2444618f7c753761321"
+    },
+    {
+      "id": "stop57_consumed",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-vanilla01/artifacts/persistent-java02/runtime-handoff58/STOP57-OWNER-CONSUMED01.json",
+      "status": "OWN_TOKEN_STOP_REMOVAL_BEFORE_WIND_DOWN",
+      "observed_at_utc": "2026-10-29T14:26:36.063Z",
+      "bytes": 1295,
+      "modified_at_utc": "2026-10-29T14:04:15.621Z",
+      "availability": "READABLE",
+      "sha256": "12e4ea6fe0fca3e1811626b3e40ef1de379e0ce6be3fc239ad0787b34233f7bd"
+    },
+    {
+      "id": "game_owner",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-vanilla01/state/game-supervisor02/owner.json",
+      "status": "SAME_GAME_NAVIGATION_NOT_REQUALIFICATION",
+      "observed_at_utc": "2026-10-29T14:26:36.066Z",
+      "bytes": 3268,
+      "modified_at_utc": "2026-10-28T19:39:03.960Z",
+      "availability": "READABLE",
+      "sha256": "4de6ef6e0c35a6ebbeff3e38d0d33e6965a87e3cf70f3cb2d1a7594041c1da37"
+    },
+    {
+      "id": "old_restart_ticket",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-vanilla01/state/worker-restart-ticket.json",
+      "status": "OLD_NOT_CURRENT_CLEAN",
+      "observed_at_utc": "2026-10-29T14:26:36.066Z",
+      "bytes": 583,
+      "modified_at_utc": "2026-10-29T11:15:55.837Z",
+      "availability": "READABLE",
+      "sha256": "882ab7a9ac3914c63fa50430956ad89c12f567d040b903ef1df306203c6bd4a5"
+    },
+    {
+      "id": "dirty_journal_candidate",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-journal-dirty-suffix01/CLOSE-HANDOFF01.json",
+      "status": "NOT_ADOPTED_REDS_PRESERVED",
+      "observed_at_utc": "2026-10-29T14:26:36.067Z",
+      "bytes": 7035,
+      "modified_at_utc": "2026-10-29T14:12:34.173Z",
+      "availability": "READABLE",
+      "sha256": "d1b5bb4b689850f799cb83312892a705fb363221d7ec8cffc3f6038d4846cd9a"
+    },
+    {
+      "id": "dirty_recovery_prepare",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/dirty-current-recovery01/PREPARED-ACTUAL03.json",
+      "status": "CONSUMERS_UNMODIFIED_NEW_TESTS_NOT_RUN",
+      "observed_at_utc": "2026-10-29T14:26:36.067Z",
+      "bytes": 1330,
+      "modified_at_utc": "2026-10-29T14:08:47.871Z",
+      "availability": "READABLE",
+      "sha256": "fcbc3df72be355ceb338eae63ae76796f25777ea26afc426c16cb85689c3b63d"
+    },
+    {
+      "id": "deadline_candidate",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/local-model-boundary-experiments/PLANNING_DEADLINE22/candidate/SessionController.java",
+      "status": "D_ONLY_NOT_COMPILED_NOT_TESTED",
+      "observed_at_utc": "2026-10-29T14:26:36.068Z",
+      "bytes": 90003,
+      "modified_at_utc": "2026-10-29T14:10:05.234Z",
+      "availability": "READABLE",
+      "sha256": "75c4576361e1f1881dea0624972b93d19f546b59b86a2e9cfbf31f208614737a"
+    },
+    {
+      "id": "event_reason_source",
+      "path": "D:/ck3-state/events63-war-window-read01/read-reason318/SOURCE-ADOPT01.json",
+      "status": "SOURCE_ADOPTED_MAIN318_NOT_STARTED",
+      "observed_at_utc": "2026-10-29T14:26:36.069Z",
+      "bytes": 4779,
+      "modified_at_utc": "2026-10-29T14:07:55.042Z",
+      "availability": "READABLE",
+      "sha256": "b88e3012642028abfe53641d4b0feaae2bcd1606860aa323bc885894bcc0d8dd"
+    },
+    {
+      "id": "finance_source",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/finance-imported-body-runtime-tests/SOURCE-ADOPTED-STOP01.json",
+      "status": "MAIN317_COMPILED_FINANCE_GATE_PASSED",
+      "observed_at_utc": "2026-10-29T14:26:36.069Z",
+      "bytes": 6397,
+      "modified_at_utc": "2026-10-29T13:27:25.181Z",
+      "availability": "READABLE",
+      "sha256": "a21118184811fe1428fda628bf0c0725aa5caf806deddec3ae8577fd6fd35608"
+    },
+    {
+      "id": "readiness_source",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-readiness-evidence-native-packet01/SOURCE-STOP-ACTUAL01.json",
+      "status": "SOURCE_ADOPTED_SOFTWARE4P_NO_GAME_CREDIT",
+      "observed_at_utc": "2026-10-29T14:26:36.069Z",
+      "bytes": 2478,
+      "modified_at_utc": "2026-10-29T13:54:16.786Z",
+      "availability": "READABLE",
+      "sha256": "e09db67f0bcf6eceb18ccda9817996d68aa458b952514a7c62b1348114a1c59f"
+    },
+    {
+      "id": "dirty_capture_tests",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-dirty-clean-restart01/FINAL-ACTUAL01.json",
+      "status": "SOFTWARE5P",
+      "observed_at_utc": "2026-10-29T14:26:36.071Z",
+      "bytes": 1482,
+      "modified_at_utc": "2026-10-29T13:03:48.279Z",
+      "availability": "READABLE",
+      "sha256": "04c48c9b44a4747d2e407bdbaaa96e093756de12bb23c2346797192260de70bd"
+    },
+    {
+      "id": "dirty_loop_source",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-worker-dirty-stop01/SOURCE-ADOPTED-ACTUAL.json",
+      "status": "LOOP_ADOPTED_MAIN_BRANCH_PENDING",
+      "observed_at_utc": "2026-10-29T14:26:36.102Z",
+      "bytes": 1291,
+      "modified_at_utc": "2026-10-29T13:55:38.288Z",
+      "availability": "READABLE",
+      "sha256": "56e9cba6680cf44542aadbb564d9d021eaaf862ebe40234734194d985d30b5c9"
+    },
+    {
+      "id": "mercenary_source",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/mercenary-unknown01/SOURCE-ADOPTION-ACTUAL.json",
+      "status": "S_ADOPTED_Z_NOT_SYNCED_NO_GAME",
+      "observed_at_utc": "2026-10-29T14:26:36.104Z",
+      "bytes": 4375,
+      "modified_at_utc": "2026-10-29T14:05:18.090Z",
+      "availability": "READABLE",
+      "sha256": "50408b46aa6089e6a417623ccf83cc70f98c3a0925b7e83f7fc59497a0c907b1"
+    },
+    {
+      "id": "dev_invocation",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/quarkus-worker-dev01/PRODUCTION-DEV-INVOCATION03.json",
+      "status": "REUSABLE_ARGS_NOT_GAME_DEV_PASS",
+      "observed_at_utc": "2026-10-29T14:26:36.105Z",
+      "bytes": 2971,
+      "modified_at_utc": "2026-10-29T08:41:25.277Z",
+      "availability": "READABLE",
+      "sha256": "590873e5eb0da70d31e705cd49869244eadcd977f02c920ed86bf2f4f33e61b8"
+    },
+    {
+      "id": "dev_multimodule",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/quarkus-worker-dev01/multimodule-v4-09/evidence03/ACTUAL.json",
+      "status": "SOFTWARE_RELOAD_ONLY",
+      "observed_at_utc": "2026-10-29T14:26:36.106Z",
+      "bytes": 9466,
+      "modified_at_utc": "2026-10-29T11:50:07.182Z",
+      "availability": "READABLE",
+      "sha256": "70036aa81950edf772e9bd432ae110d06076a99ecee72e9c5e750b2d5aef8759"
+    },
+    {
+      "id": "model_config",
+      "path": "docs/local-model-executor-config.json",
+      "status": "8080_QWEN38_CODER_SAME_BACKEND_AS_OLD8000",
+      "observed_at_utc": "2026-10-29T14:26:36.107Z",
+      "bytes": 3330,
+      "modified_at_utc": "2026-10-29T05:15:06.819Z",
+      "availability": "READABLE",
+      "sha256": "3a87dec4a65f3b25bc61e5333a440fe18c39ce7a5bfe1cef5870da9117368302"
+    },
+    {
+      "id": "model_experience",
+      "path": "docs/local-model-capability-boundary-2026-10-28.md",
+      "status": "ACTUAL_EXPERIENCE_WITH_FAILURES",
+      "observed_at_utc": "2026-10-29T14:26:36.107Z",
+      "bytes": 405314,
+      "modified_at_utc": "2026-10-29T14:08:47.871Z",
+      "availability": "READABLE",
+      "sha256": "2779f1e1b811074f0538f1d1bf6e0bdad17f422390769684fa4db1c3e6634846"
+    },
+    {
+      "id": "model_calls",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/LOCAL-MODEL-CALLS.jsonl",
+      "status": "APPEND_ONLY_CLIENT_LOG_SERVER_QUEUE_UNKNOWN",
+      "observed_at_utc": "2026-10-29T14:26:36.108Z",
+      "bytes": 2509288,
+      "modified_at_utc": "2026-10-29T14:14:33.032Z",
+      "availability": "READABLE",
+      "sha256": null,
+      "hash_note": "Over 2MiB: metadata only to avoid bulk read"
+    },
+    {
+      "id": "rea_readme",
+      "path": "docs/rea-ck3-research/README.md",
+      "status": "RESEARCH_NAVIGATION",
+      "observed_at_utc": "2026-10-29T14:26:36.108Z",
+      "bytes": 11914,
+      "modified_at_utc": "2026-10-29T14:23:03.468Z",
+      "availability": "READABLE",
+      "sha256": "fc805b4c039dfa3cf0068eaa9f07f4212baaa8abe4d355a51ebda4be693c2eb2"
+    },
+    {
+      "id": "rea_methodology",
+      "path": "docs/rea-ck3-research/methodology.md",
+      "status": "REA_WORKFLOW",
+      "observed_at_utc": "2026-10-29T14:26:36.108Z",
+      "bytes": 8421,
+      "modified_at_utc": "2026-10-26T13:26:01.562Z",
+      "availability": "READABLE",
+      "sha256": "9498117cc2dabb72e22d5c3d77d24b6e9590fd30b56ef167566833578c36875c"
+    },
+    {
+      "id": "m7_analysis",
+      "path": "D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m7-callback-setup38509c0-01/M7-ANALYSIS01.json",
+      "status": "107_OPS_443B_NO_SAVE_SUCCESS",
+      "observed_at_utc": "2026-10-29T14:26:36.108Z",
+      "bytes": 5991,
+      "modified_at_utc": "2026-10-29T14:00:06.454Z",
+      "availability": "READABLE",
+      "sha256": "6e741a56e3b2f6cd81a74a2f682f3d40a7ee004600e928251e4305c521b92738"
+    },
+    {
+      "id": "storage_policy",
+      "path": "docs/storage-retention-policy.json",
+      "status": "COMMON_POLICY",
+      "observed_at_utc": "2026-10-29T14:26:36.104Z",
+      "bytes": 4022,
+      "modified_at_utc": "2026-10-10T06:40:05.936Z",
+      "availability": "READABLE",
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    {
+      "id": "development_pool",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/capacity/ORDINARY-D-DEVELOPMENT-SHARED-POOL01.json",
+      "status": "REVIEW_OCT31_NOT_AUTORENEWED",
+      "observed_at_utc": "2026-10-29T14:26:36.106Z",
+      "bytes": 4531,
+      "modified_at_utc": "2026-10-29T09:20:43.121Z",
+      "availability": "READABLE",
+      "sha256": "e12d6f997598cd1d7acd8badef6b830dfb73e3aff454f4d3f9424312cd23ec45"
+    },
+    {
+      "id": "m0_topic",
+      "path": "docs/ck3-native-ai/2026-10-26-m0-rea-resume63.md",
+      "status": "PARTIAL_RESEARCH_NOT_8M_GAME_ACCEPTANCE",
+      "observed_at_utc": "2026-10-29T14:26:36.106Z",
+      "bytes": 39520,
+      "modified_at_utc": "2026-10-29T12:36:55.427Z",
+      "availability": "READABLE",
+      "sha256": "aa1ebcca02324db7c36879b55eef9e23e9f3631e61103fba1ad95ba627b5f595"
+    },
+    {
+      "id": "m1_topic",
+      "path": "docs/ck3-native-ai/2026-10-26-m1-rea-resume63.md",
+      "status": "PARTIAL_RESEARCH_NOT_8M_GAME_ACCEPTANCE",
+      "observed_at_utc": "2026-10-29T14:26:36.106Z",
+      "bytes": 35055,
+      "modified_at_utc": "2026-10-29T12:27:19.754Z",
+      "availability": "READABLE",
+      "sha256": "e2e9d93334725c835c1f32140cb0cfb95d591a2dc1e09e5decfa3c92660c41c5"
+    },
+    {
+      "id": "m2_topic",
+      "path": "docs/ck3-native-ai/2026-10-26-m2-rea-resume63.md",
+      "status": "PARTIAL_RESEARCH_NOT_8M_GAME_ACCEPTANCE",
+      "observed_at_utc": "2026-10-29T14:26:36.106Z",
+      "bytes": 32703,
+      "modified_at_utc": "2026-10-27T01:06:05.858Z",
+      "availability": "READABLE",
+      "sha256": "658a0bb7a1794e993e52960ed7ca601ae509558ebc1bb8fc37a9a673aca37e49"
+    },
+    {
+      "id": "m3_topic",
+      "path": "docs/ck3-native-ai/2026-10-26-m3-rea-resume63.md",
+      "status": "PARTIAL_RESEARCH_NOT_8M_GAME_ACCEPTANCE",
+      "observed_at_utc": "2026-10-29T14:26:36.107Z",
+      "bytes": 32609,
+      "modified_at_utc": "2026-10-27T01:11:21.282Z",
+      "availability": "READABLE",
+      "sha256": "7de6a4b1460ec7a87604c42c1a4563abeb215e7360af4430d5ea2f0ee02bee20"
+    },
+    {
+      "id": "m4_topic",
+      "path": "docs/ck3-native-ai/2026-10-26-m4-rea-resume63.md",
+      "status": "PARTIAL_RESEARCH_NOT_8M_GAME_ACCEPTANCE",
+      "observed_at_utc": "2026-10-29T14:26:36.107Z",
+      "bytes": 32404,
+      "modified_at_utc": "2026-10-29T13:57:24.352Z",
+      "availability": "READABLE",
+      "sha256": "7b915a8ab3dc6f6dea07bffac48d47412abca9166f7634b08456dd51dea5307d"
+    },
+    {
+      "id": "m5_topic",
+      "path": "docs/ck3-native-ai/2026-10-26-m5-rea-resume63.md",
+      "status": "PARTIAL_RESEARCH_NOT_8M_GAME_ACCEPTANCE",
+      "observed_at_utc": "2026-10-29T14:26:36.107Z",
+      "bytes": 47574,
+      "modified_at_utc": "2026-10-29T14:04:38.501Z",
+      "availability": "READABLE",
+      "sha256": "ac641fe51d05e7787e96c40d23cee894443090bc7585860e77a5fb0027c2b506"
+    },
+    {
+      "id": "m6_topic",
+      "path": "docs/ck3-native-ai/2026-10-26-m6-rea-resume63.md",
+      "status": "PARTIAL_RESEARCH_NOT_8M_GAME_ACCEPTANCE",
+      "observed_at_utc": "2026-10-29T14:26:36.107Z",
+      "bytes": 47037,
+      "modified_at_utc": "2026-10-29T13:59:14.777Z",
+      "availability": "READABLE",
+      "sha256": "a2444fe06407c1dd701fc699a4ed4674e96780154bbfa6c48deeb7ae539407d4"
+    },
+    {
+      "id": "m7_topic",
+      "path": "docs/ck3-native-ai/2026-10-26-m7-rea-resume63.md",
+      "status": "PARTIAL_RESEARCH_NOT_8M_GAME_ACCEPTANCE",
+      "observed_at_utc": "2026-10-29T14:26:36.108Z",
+      "bytes": 36865,
+      "modified_at_utc": "2026-10-29T11:49:35.961Z",
+      "availability": "READABLE",
+      "sha256": "93d562ebe1e2e28f3b6b41b980d526aeab7e1ec739da360ab28b61b9dd098bbe"
+    },
+    {
+      "id": "dev_handoff",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/quarkus-worker-dev01/HANDOFF-MULTIMODULE09.json",
+      "status": "SOFTWARE_ONLY_HANDOFF",
+      "observed_at_utc": "2026-10-29T14:26:36.135Z",
+      "bytes": 4628,
+      "modified_at_utc": "2026-10-29T11:52:57.680Z",
+      "availability": "READABLE",
+      "sha256": "cae90c3caa456372c56c56e21cec9030d862d9025aa52126684722ba13a381aa"
+    },
+    {
+      "id": "delivery_state",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/delivery-canonical-integration01/working-diff01.json",
+      "status": "37_UNIQUE_SYNCED_17_LEAVES_UNSYNCED",
+      "observed_at_utc": "2026-10-29T14:26:36.137Z",
+      "bytes": 2321140,
+      "modified_at_utc": "2026-10-29T14:18:26.779Z",
+      "availability": "READABLE",
+      "sha256": null,
+      "hash_note": "Over 2MiB: metadata only to avoid bulk read"
+    },
+    {
+      "id": "continuity_current",
+      "path": "D:/ck3-state/ck3-java-g2-resume63-vanilla01/continuity/continuity.json",
+      "status": "REPAIR_REQUIRED_SEQ71_NOT_EDITED",
+      "observed_at_utc": "2026-10-29T14:26:36.137Z",
+      "bytes": 87857,
+      "modified_at_utc": "2026-10-29T13:58:39.664Z",
+      "availability": "READABLE",
+      "sha256": "13b72cf971b9028d5dc84fb62207652f837c8d78594011570c25dd0887e4f5c9"
+    },
+    {
+      "id": "rea_sources",
+      "path": "docs/rea-ck3-research/sources.json",
+      "status": "REA_SOURCE_NAVIGATION",
+      "observed_at_utc": "2026-10-29T14:26:36.137Z",
+      "bytes": 62503,
+      "modified_at_utc": "2026-10-29T14:23:03.473Z",
+      "availability": "READABLE",
+      "sha256": "b64d9ac78dd622e0f05402398002ed2c1057731a8f64094cee2087d3ee37c247"
+    },
+    {
+      "id": "m2_current_topic",
+      "path": "docs/rea-ck3-research/resume63-m2-query-carrier-2026-10-29.md",
+      "status": "CURRENT_M2_STATIC_SOFTWARE_BOUNDARIES",
+      "observed_at_utc": "2026-10-29T14:26:36.138Z",
+      "bytes": 30521,
+      "modified_at_utc": "2026-10-29T13:52:59.762Z",
+      "availability": "READABLE",
+      "sha256": "57c9e1335e8c1582340066eece1cb43e26f069ae56a0e368e3a475242fb62236"
+    },
+    {
+      "id": "m2_notice_fixture",
+      "path": "D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/builds/resume63-m2-event-locator01/notice-factory03/FIXTURE-ACTUAL01.json",
+      "status": "NATIVE_SOFTWARE_FIVE_STAGES_PASS_NO_GAME",
+      "observed_at_utc": "2026-10-29T14:26:36.138Z",
+      "bytes": 7246,
+      "modified_at_utc": "2026-10-29T14:02:08.171Z",
+      "availability": "READABLE",
+      "sha256": "edbb831416184eacf60e1dfd4efbc2c4e88f58bdfe088a1333f801b0872484ba"
+    },
+    {
+      "id": "m2_notice_z",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/m2-native-locator-witness-tests01/NOTICE-Z-ADOPTED01.json",
+      "status": "Z_SOURCE_ONLY_NOT_LOADED_DLL",
+      "observed_at_utc": "2026-10-29T14:26:36.138Z",
+      "bytes": 2574,
+      "modified_at_utc": "2026-10-29T14:05:23.821Z",
+      "availability": "READABLE",
+      "sha256": "188c10d802981ac658edd6294effdf0f3df3a27006cb1b6de96359662fbd8762"
+    },
+    {
+      "id": "sdk_ci30",
+      "path": "D:/ck3-state/sdk_continuation60/c30-current01/ORIGINAL-CI30-ACTUAL01.json",
+      "status": "ORIGINAL_COMPAT_CI_513P_NOT_ALL_JAVA",
+      "observed_at_utc": "2026-10-29T14:26:36.138Z",
+      "bytes": 4214,
+      "modified_at_utc": "2026-10-29T12:37:14.573Z",
+      "availability": "READABLE",
+      "sha256": "3425a9de3ef678681ec980adc9ac89aecdbb3355470ae8131bdf8b02f7f86430"
+    }
+  ]
+}
+
