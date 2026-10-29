@@ -14,22 +14,22 @@ import org.junit.jupiter.api.Test;
 
 /** Replays the actual R0011 producer fault through the release byte consumer. */
 final class GuiQuotedEscapeValidationTest {
-    private record ObservedFailure(String relative, String localizationKey, int observedLine) { }
+    private record ObservedFailure(String relative, String quotedPrefix, int observedLine) { }
 
     @Test void actualProductionTooltipsRejectTheObservedEscapeAtTheActualFilenameAndLine() throws IOException {
         Path source = Path.of(System.getProperty("rrf.source"));
         for (ObservedFailure observed : List.of(
-                new ObservedFailure("gui/rrf_fusion_window.gui", "RRF_COMMIT_TT", 352),
-                new ObservedFailure("gui/window_rite_creation.gui", "RRF_NATIVE_SETUP_APPLY_TT", 483),
-                new ObservedFailure("gui/rrf_result_window.gui", "RRF_INVITE_VASSALS_TT", 151))) {
+                new ObservedFailure("gui/rrf_fusion_window.gui", "RRF_COMMIT_HOVER", 352),
+                new ObservedFailure("gui/window_rite_creation.gui", "[Localize( 'RRF_NATIVE_SETUP_APPLY_TT' )] ", 483),
+                new ObservedFailure("gui/rrf_result_window.gui", "[Localize( 'RRF_INVITE_VASSALS_TT' )] ", 151))) {
             byte[] actual = Files.readAllBytes(source.resolve(observed.relative()));
             assertDoesNotThrow(() -> ContentValidator.validateBytes(observed.relative(), actual));
             String text = new String(actual, StandardCharsets.UTF_8);
-            String marker = "[Localize( '" + observed.localizationKey() + "' )] ";
+            String marker = observed.quotedPrefix();
             int offset = text.indexOf(marker);
             assertTrue(offset >= 0, observed.toString());
             assertEquals(offset, text.lastIndexOf(marker), observed.toString());
-            String malformed = text.substring(0, offset) + marker.substring(0, marker.length() - 1)
+            String malformed = text.substring(0, offset) + marker
                     + "\\n\\n" + text.substring(offset + marker.length());
             int escape = malformed.indexOf("\\n\\n", offset);
             long line = malformed.substring(0, escape).chars().filter(c -> c == '\n').count() + 1;
