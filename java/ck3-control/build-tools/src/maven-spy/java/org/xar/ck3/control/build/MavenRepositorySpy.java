@@ -32,8 +32,8 @@ public final class MavenRepositorySpy implements EventSpy {
     private static final Pattern ANSI = Pattern.compile("\u001b\\[[0-?]*[ -/]*[@-~]");
     private static final Pattern MANAGER = Pattern.compile("Using manager (.+?) for (.+)$");
     private static final Pattern INSTALL = Pattern.compile("Installing .+ to (.+ck3-save-core-0\\.1\\.0\\.(?:jar|pom))$");
-    private static final Pattern LOAD = Pattern.compile("\\[class,load] ([A-Za-z0-9_.$]+) source: (.+)$");
-    private static final Pattern LOAD_PID = Pattern.compile("^\\[[^\\]]+]\\[([1-9][0-9]{0,18})]\\[info]\\[class,load]");
+    private static final Pattern LOAD = Pattern.compile("\\[class,load[ ]*] ([A-Za-z0-9_.$]+) source: (.+)$");
+    private static final Pattern LOAD_PID = Pattern.compile("^\\[[^\\]]+]\\[([1-9][0-9]{0,18})]\\[info]\\[class,load[ ]*]");
     private static final Set<String> RESOLVERS = Set.of(
             "io.quarkus.bootstrap.resolver.maven.BootstrapMavenContext",
             "io.quarkus.bootstrap.resolver.maven.MavenArtifactResolver",

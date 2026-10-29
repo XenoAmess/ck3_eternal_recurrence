@@ -45,6 +45,7 @@ public final class SharedRuntimeComposer {
             "XAR_ENABLE_RELIGION_UI12004_PRESENTATION", "XAR_ENABLE_RITE_CREATION_ACTIONS12004",
             "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1", "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1");
     private static final List<String> TOOLS = List.of(
+            "ck3_query_campaign_root_context_v1",
             "ck3_open_ingame_decisions_v1", "ck3_query_ingame_decision_item_v1",
             "ck3_select_ingame_decision_item_v1", "ck3_confirm_ingame_decision_outcome_v1",
             "ck3_select_event_option", "ck3_query_player_religion_context_v1",

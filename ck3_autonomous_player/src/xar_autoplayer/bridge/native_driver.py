@@ -5188,8 +5188,12 @@ class NativeHeadlessGameplayDriver:
             army_query = self._army_strength_cache_for_snapshot(
                 snapshot, episode_run_id=snapshot.get("episode_run_id"),
             )
+            assault_supported: bool = _war_objective_capability_flags(
+                set(_string_list(self.state.capabilities().get("bridge_capabilities")))
+            )["war_objective_assault_supported"]
             return {
                 **snapshot, "episode_projection": "native_campaign",
+                "war_objective_assault_supported": assault_supported,
                 **self._army_strength_snapshot_fields(army_query),
                 **self._prewar_force_coalition_v2_snapshot_fields(snapshot),
                 **self._war_declared_overview_snapshot_fields(snapshot),

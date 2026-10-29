@@ -96,6 +96,52 @@ final class MavenRepositoryDiagnosticTest {
         assertEquals(false, invoke("isObservedTarget", new Class<?>[] {String.class}, "io.quarkus.maven.QuarkusBootstrapProvider$UnlistedNested"));
     }
 
+    @Test void actualUnifiedLogTagPaddingKeepsPidBindingAndSourceRejections(@TempDir Path root) throws Exception {
+        String target = "io.quarkus.bootstrap.resolver.maven.BootstrapMavenContext";
+        StringBuilder lines = new StringBuilder();
+        for (int spaces : List.of(0, 1, 2, 8)) {
+            lines.append("[4.381s][16336][info][class,load").append(" ".repeat(spaces)).append("] ")
+                    .append(target).append(" source: file:/padding-").append(spaces).append(".jar\n");
+        }
+        lines.append("[4.382s][16337][info][class,load  ] ").append(target).append(" source: file:/child.jar\n");
+        lines.append("[4.383s][info][class,load  ] ").append(target).append(" source: file:/no-pid.jar\n");
+        lines.append("[4.384s][016336][info][class,load  ] ").append(target).append(" source: file:/noncanonical-pid.jar\n");
+        lines.append("[4.385s][16336][info][class,load  ] ").append(target).append(" source: __JVM_DefineClass__\n");
+        for (String tag : List.of("class,loader", "class,load,init", "class,load\t", "class,load x")) {
+            lines.append("[4.386s][16336][info][").append(tag).append("] ").append(target).append(" source: file:/lookalike.jar\n");
+        }
+        lines.append("Candidate classpath: ").append(target).append(" source: file:/not-observed.jar\n");
+        lines.append("[4.387s][16336][info][class,load  ] ").append(target).append(" source file:/missing-colon.jar\n");
+        lines.append("[4.388s][16336][info][class,load  ] ").append(target).append(" source: \n");
+        lines.append("[4.389s][16336][info][class,load  ] ").append(target).append("Other source: file:/unlisted.jar\n");
+        Path log = root.resolve("actual-padding.stdout.log"); Files.writeString(log, lines);
+        Object facts = invoke("logFacts", new Class<?>[]{Path.class, String.class, String.class}, log, "product", "stdout");
+        Object value = accessor(facts, "loadedClasses");
+        if (!(value instanceof List<?> classes)) throw new AssertionError("Typed class observations required");
+        assertEquals(8, classes.size(), "Only exact tags/targets and nonempty source declarations count");
+        for (int index = 0; index < 4; index++) {
+            Object observed = classes.get(index);
+            assertEquals("16336", accessor(observed, "processIdDecimal"));
+            assertEquals(true, invoke("isOriginalJvmClass", new Class<?>[]{observed.getClass(), String.class}, observed, "16336"));
+        }
+        assertEquals("file:/padding-2.jar", accessor(classes.get(2), "source"), "Real two-space tag preserves its declared source");
+        assertEquals("16337", accessor(classes.get(4), "processIdDecimal"));
+        assertNull(accessor(classes.get(5), "processIdDecimal"));
+        assertNull(accessor(classes.get(6), "processIdDecimal"));
+        for (int index = 4; index <= 6; index++) {
+            Object observed = classes.get(index);
+            assertEquals(false, invoke("isOriginalJvmClass", new Class<?>[]{observed.getClass(), String.class}, observed, "16336"));
+        }
+        Object generatedSource = classes.get(7);
+        assertEquals("__JVM_DefineClass__", accessor(generatedSource, "source"));
+        Object rejected = invoke("inspectClass", new Class<?>[]{generatedSource.getClass(), Path.class, int.class},
+                generatedSource, root, 9);
+        assertEquals("__JVM_DefineClass__", accessor(rejected, "observedSource"));
+        assertEquals("IOException: Actual local file-scheme JAR class code-source required", accessor(rejected, "unavailable"));
+        assertNull(accessor(rejected, "jarRef")); assertNull(accessor(rejected, "javapRef"));
+        assertEquals(lines.toString(), Files.readString(log), "Source log remains unchanged");
+    }
+
     @Test void originalNonzeroProcessWaitCannotBecomeObserverPass(@TempDir Path root) throws Exception {
         Path cmd = Path.of(System.getenv("SystemRoot"), "System32/cmd.exe").toRealPath();
         Object result = invoke("capture", new Class<?>[] {List.class, Path.class, Path.class, Path.class, long.class, long.class, Path.class},
@@ -143,7 +189,7 @@ final class MavenRepositoryDiagnosticTest {
         Files.writeString(root.resolve("maven-jvm.pid"), "1234", StandardCharsets.US_ASCII);
         Files.writeString(root.resolve("leaf.stdout.log"), "[DEBUG] Using manager EnhancedLocalRepositoryManager for " + repository + "\n");
         Files.writeString(root.resolve("leaf.stderr.log"), "");
-        String originalLog = "[0.221s][1234][info][class,load] " + target + " source: __JVM_DefineClass__\n"
+        String originalLog = "[0.221s][1234][info][class,load  ] " + target + " source: __JVM_DefineClass__\n"
                 + "[0.222s][1234][info][class,load] " + generated + " source: __JVM_DefineClass__\n";
         Files.writeString(root.resolve("product.stdout.log"), originalLog);
         Files.writeString(root.resolve("product.stderr.log"), "");

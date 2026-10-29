@@ -102,6 +102,20 @@ final class SharedRuntimeComposerTest {
                     rejected=Selection(candidate_runtime,products_path,'authored-product','core').preflight()
                     assert rejected['status']=='BLOCKED',rejected
                     assert rejected['blockers']==[failure],rejected
+                root_tool='ck3_query_campaign_root_context_v1'
+                root_status=result['tool_status'][root_tool]
+                assert root_status['source_build_ready'] is True and root_status['actual_live_qualified'] is False
+                root_failure='Required MCP tool has no shared build-ready evidence: '+root_tool
+                for label,value in [('root-missing',None),('root-false',False),('root-integer',1),('root-null',None)]:
+                    candidate_manifest=copy.deepcopy(original_manifest)
+                    if label=='root-missing':del candidate_manifest['capabilities'][root_tool]
+                    else:candidate_manifest['capabilities'][root_tool]={'source_build_ready':value,'actual_live_qualified':False}
+                    mp=runtime_path.parent/(label+'-manifest.json')
+                    mp.write_text(json.dumps(candidate_manifest),encoding='utf-8')
+                    candidate=copy.deepcopy(original_runtime);candidate['manifest']=pin(mp)
+                    rp=runtime_path.parent/(label+'-runtime.json');rp.write_text(json.dumps(candidate),encoding='utf-8')
+                    rejected=Selection(rp,products_path,'authored-product','core').preflight()
+                    assert rejected['status']=='BLOCKED' and rejected['blockers']==[root_failure],rejected
                 assert manifest_path.read_bytes()==original_bytes
                 sys.path[:0]=[str(repository/'ck3_autonomous_player/src'),
                               str(repository/'ck3_autonomous_player/tests/unit')]
@@ -203,6 +217,15 @@ final class SharedRuntimeComposerTest {
                     resumed=Selection(runtime_path,catalog,'dynastic-esotericism',case_id,prepared_path=prepared_path)
                     assert resumed.prepared['contract']==prepared['contract']
                     assert resumed.prepared['adapter']==prepared['adapter']
+                    if case_id in ('sect_presets','initial_reform'):
+                        preflight=resumed.preflight()
+                        assert preflight['blockers']==[],preflight
+                        assert preflight['status']=='READY_FOR_EXISTING_REVIEWED_LAUNCH',preflight
+                        assert preflight['business_acceptance']=='NOT_ASSESSED',preflight
+                        root_status=preflight['tool_status']['ck3_query_campaign_root_context_v1']
+                        assert root_status['source_build_ready'] is True,root_status
+                        assert root_status['actual_live_qualified'] is False,root_status
+                        assert pin(Path(root_status['evidence']['path']))==root_status['evidence']
                     assert prepared['preparation']['business_pass'] is False and prepared['runtime_status']=='NOT_RUN'
                     prepared_cases.append((case_id,catalog,prepared_path,preset_selected.adapter_config))
                     print('actual '+case_id+' Java fixture/release -> normal registry Selection.prepare -> generic consumer -> Prepared exact pins and composer index; gate/source corruption negatives; live false')
@@ -650,6 +673,12 @@ final class SharedRuntimeComposerTest {
                 result.qualification());
         assertFalse(actualManifest.path("capabilities").path("ck3_execute_player_rite_creation_action_v1").path("actual_live_qualified").booleanValue());
         assertEquals(retainedCapability, actualManifest.path("capabilities").path("ck3_take_snapshot"));
+        JsonNode campaignRoot = actualManifest.path("capabilities").path("ck3_query_campaign_root_context_v1");
+        assertTrue(campaignRoot.path("source_build_ready").isBoolean());
+        assertTrue(campaignRoot.path("source_build_ready").booleanValue());
+        assertTrue(campaignRoot.path("actual_live_qualified").isBoolean());
+        assertFalse(campaignRoot.path("actual_live_qualified").booleanValue());
+        assertEquals(pin(output.resolve("SOURCE-BUILD-ADMISSION.json")), campaignRoot.path("evidence"));
         JsonNode members = actualManifest.path("capabilities").path("ck3_query_player_rite_members_v1");
         assertTrue(members.path("source_build_ready").isBoolean());
         assertTrue(members.path("source_build_ready").booleanValue());
@@ -667,7 +696,7 @@ final class SharedRuntimeComposerTest {
         write(plan, JSON.createArrayNode());
         selectedCase.put("initial_plan", plan.toString());
         selectedCase.putArray("required_mcp_tools").add("ck3_take_snapshot").add("ck3_query_player_rite_members_v1")
-                .add("ck3_query_player_prisoner_collection_private_v1");
+                .add("ck3_query_player_prisoner_collection_private_v1").add("ck3_query_campaign_root_context_v1");
         selectedCase.putArray("opt_in_read_only_mcp_tools").add("ck3_query_player_rite_members_v1")
                 .add("ck3_query_player_prisoner_collection_private_v1");
         selectedCase.putObject("budgets").put("command_timeout", 300).put("readiness_timeout", 1800)
