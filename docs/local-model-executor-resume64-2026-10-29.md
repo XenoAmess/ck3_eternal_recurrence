@@ -236,4 +236,32 @@ suffix独占新增一例必要TEST，原十方法保留但未重跑。实际coll
 
 该任务另外明确只有合格READ的read_history_source五种已知技术审计字段可在模型视图省略，其余未知字段仍保；完整ROOT provenance只存一次。因此可完整展开的是每行ROOT Game facts及其原stamp，不能声称省略了这些审计字段后整行字节仍与原件完全相同。审计原件与不可变输入均保留。131,247B真实请求包含当前完整provider/必要API、真实两行原件及实际FIELD-SIZES，有限5,500输出；机械计量没有交模型。22:42:54.289–22:43:10.573Z首POST实际HTTP200/stop、CLI0，34,667输入/1,989输出，headers4.533s/TTFT4.537s/总16.285s，cache未报、无retry，前置metrics实际HTTP200/known；`model-coordinator64/game-provider-lossless-history67`保REQUEST/SSE/CONTENT/RESULT/SUMMARY并即时交owner/Root，没有等待整个861KB日志或额外可用性调查。
 
-原稿JSON完整但不能授无损：对missing ok缺null防护，missing/非整型stamp默认0，JsonNode mutation及新MAPPER/JsonGenerator等API不符，且先压缩history会干扰既有snapshot重复history等值去除。owner静审拒绝直接原样采用，未制造raw javac失败；按Root已授权的必要owner修正保共享字典结构的模型来源，原稿独立保留，不R2或把完成代码回灌复述。实际strict编译、受控HTTP/SSE与完整四十七行ROOT展开验证尚待报告，不能把结构参考授完整源码成功、实际模型超时改善或Game动作。`OWNER-REVIEWS64-31.json`保终态，32追加静审与接管边界；当前coding caller0、无后继自动请求。
+原稿JSON完整但不能授无损：对missing ok缺null防护，missing/非整型stamp默认0，JsonNode mutation及新MAPPER/JsonGenerator等API不符，且先压缩history会干扰既有snapshot重复history等值去除。owner静审拒绝直接原样采用，未制造raw javac失败；按Root已授权的必要owner修正保共享字典结构的模型来源，原稿独立保留，不R2或把完成代码回灌复述。最终owner用JsonNode.equals、严格shape全量fallback、原history先exact duplicate比较，不补stamp0，并保留全部技术source refs，连原先允许省略的五字段也没有删。归因为模型共享字典/显式引用结构加owner必要实现纠正，不授raw原样通过。
+
+后继已实际读回`D:/ck3-state/provider-payload-analysis67/READY01.json`及`FINAL-EDITS.json`所指结果。四源strict javac0/1.871s，22:48:27.255Z结束；受控真实HttpClient/SSE的新dictionary方法加旧dup方法2P/0skip、Java0/2.120s，22:48:29.482Z结束，不外推旧whole所有方法。早FINAL01新TEST因手造IntNode与parsed BigIntegerNode表示比较产生1F，owner把expected也经同FullJsonTree JSON域规范后通过，production没有因这项TEST修正改变。该错误为owner TEST表示域问题，不记模型生产故障。
+
+同一实际归档输入的actual47/ACTUAL.json只离线变换、不发HTTP：原请求861,028B到226,437B，四十七行均保留，history加字典166,224B，完整ROOT事实只有一组；连ROOT未知字段/provenance、全部source refs、逐行frame/stamps都可展开回原JSON值，proposal/bodySHA/snapshot与原文件未变。生产D SHA为`a1ee4f1d5cfad8295f2aad63a7413656d442fd259d399d6151916de6b83fe942`，已交runtime sole采用，本岗无S/Z写。这个实际字节缩减和软件SSE不证明远端真实模型延迟、SELECT、游戏动作或日推进。31/32保历史终态与待验，33追加实际结果，原RESULT不改；当前coding caller0、无R2或后继自动请求。
+
+### 已采生产Dev worker生命周期的独立新TEST首轮
+
+normalexit委托的是尚未实现的JUnit lifecycle TEST，生产DevMain SHA`592e66c1ed03cae910267111fb56b8df1829c754e56f9587658c1b7472c7862c`已完成，只作为真实上下文，不交模型复述生产修复。目标同包直接start/shutdown、真实缺owner令WorkerMain在prepare/Native attach前失败，借实际DELEGATE_STARTED输出+latch暂时阻塞真实业务线程，覆盖own marker仅在delegate完成后删除、预置operator保留、own被operator替换正文后保留。不得反射私有completion/removeOwnStop、stub WorkerMain或新runner，不涉及已打开Native资源finally，也不让这份测试成为Game装载前置。Root明确工作包内常规owner委托可直接执行，不将逐次grant/ACK作为新门。
+
+中央实际打包63,538B、固定三消息、55,580字符必要当前源/API前缀，提供完整DevMain/WorkerMain/RuntimeConfiguration及真实InitialPolicy/Build/BatchLimits摘录；LaunchMode与MicroProfile Config API由当前JDK21 javap读出，合法小policy/配置字段及三场景路线均明确给出。唯一新JUnit类优先120行、有限5,000输出，不先写TEST答案。输入原件`D:/ck3-state/dev-worker-lifecycle-model68/REQUEST01.json`、外部PREPARED保源SHA。22:53:37.473–22:53:46.625Z实际首POST HTTP200/stop、CLI0，13,503输入/1,167输出，headers2.016s/TTFT2.019s/总9.150s，cache未报、无retry，前置metrics实际HTTP200/known；`model-coordinator64/game-dev-worker-lifecycle68`保REQUEST/SSE/CONTENT/RESULT/SUMMARY并立即交owner。
+
+owner静态整拒、采用0，未编raw：start后才换System.out且没有DELEGATE_STARTED barrier；latch无人countDown，无界while等错目录marker；shutdown两lambda未处理checked Exception；Config builder未注册；Java assert不作为JUnit有效断言且前后矛盾；完全漏operator两场景，notes反而错读已有FileAlreadyExists处理。还未释放/收敛线程、Config及原LaunchMode等全局状态，不能把短代码或notes当真实生命周期TEST。输出未碰token上限，不能仅归为长度限制，也不据一次失败外推能力上限。owner按既有授权接管真实三场景，不第二POST、不回灌完成代码；34保实际调用与静审成本，后继编测单独记录，coding caller0、无新队列。
+
+owner最终实测已读回`D:/ck3-state/dev-own-stop68-focused/ACTUAL01.json`及`HANDOFF01.md`：实际592e66c1 adapter三场景3P/0F/0skip、Java0/1.694s；保存的旧adapter只选OWN方法，Java1/1.331s、1F，准确断言“失败delegate结束后own marker仍残留”。实际marker和FileLock在业务线程停于DELEGATE_STARTED时保持，真实shutdown等待；释放后真实Main因缺owner抛NoSuchFileException，own marker才删除，两个operator场景原字节保，线程收敛、锁可再次取得。DELEGATE_COMPLETED保failure_type/null exit_code，stderr仍failure/exit4、不生成clean ticket。只授实际start/shutdown与资源构建前失败，不授已打开Native资源finally、CDI启动、热reload或Game。
+
+TEST单源最终javac0/1.470s、release21，参数`-Xlint:all,-path,-try,-classfile -Werror`，排除类别如实保留。先前shell引号在JVM前失败、javac把`-J`放argfile的exit2，以及MicroProfile classfile缺bnd annotation在Werror下失败，都是owner准备/外部依赖诊断，不是模型raw编译失败；最终显式排除classfile warning，源码未有告警。独立JUnit结束后晚到的JBoss LogManager warning在baseline/candidate日志都保留，不据它改写测试结果。TEST为owner独立D-only，S/Z/MB写与Game/Native/reload请求均0，模型首稿仍采用0；35追加此终态，未新增HTTP或重测。
+
+### 真实在线长reason耗尽输出预算
+
+最新实服dictionary输入已生效，312,750B/七十一row/一ROOT group的实际请求取得HTTP200，headers16.105s/TTFT16.106s/总17.689s；但256输出token被冗长reason用尽，finish_reason=length、JSON未闭，严格provider保持WAIT。文本虽出现SELECT_PROPOSAL及原proposal/id/SHA，不算通过合同的模型选择或Game动作。原操作归档时只余17.963s、首content后约1.857s；不能盲加512输出或延长Native TTL去掩盖。source owner提交新未完成的单POLICY输出前缀题，保全部字典解释、原四字段/identity、max_tokens256、parser/stop检验、期限与HTTP重试，只要求紧凑单行JSON、短非空reason后立刻闭合。
+
+56,561B完整当前provider/TEST固定三消息、有限1,800输出的首POST于23:00:15.240–23:00:21.842Z实际HTTP200/stop、CLI0，11,920输入/826输出，headers1.846s/TTFT1.849s/总6.603s，cache未报、无retry，metrics实际HTTP200/known；`model-coordinator64/game-provider-output-contract68`保原件已立即交owner。原稿给一个完整POLICY hunk，保字典解释后缀，但`80 characters or 12 words`的or有上限歧义，rationale声称“ensures完成”超过实际证据。owner实际采用POLICY主体，仅or→and明确同时满足两项短句上限；没有R2，也不把提示词要求当模型必然遵守或实际远端期限通过。
+
+随后Root另给两项确定性指令，由owner实现，不归作本轮模型新增hunk：模型JSON稳定history/root_facts/schema/caps/routable/action_facts在先，易变snapshot/proposal/id/SHA/deadline在末，`setAll`保全部原字段/值及未来额外字段；仅合格成功ROOT READ副本省略decoder_source、definition_source、original_receipt、supporting_evidence、source五种技术refs，并相应在POLICY明示。五字段名已在lossless67原任务中明确给模型，原稿也曾提出同一省略；当前根据真实度量才由Root明确采用，不能写成模型自主发现。非READ/UNKNOWN/坏形状全文保、原Driver/ledger及审计原件不动，不递归删名为source/provenance的字段。最终版本不再是整行无损；完整Game facts、ROOT未知字段/provenance、frame及两个stamp可完整展开。
+
+已实际读回`D:/ck3-state/provider-output-contract68/READY03.json`和`FINAL-EDITS03.json`。四源strict javac0/2.215s；必要compact方法含三次真实本地Java HttpClient/SSE：不完整JSON+length保持WAIT/无M7 pending、完整JSON+length仍WAIT、紧凑短reason+stop才SELECT并保原command/Draft和实际Realm pending。连同必要dictionary方法共2P/0skip、Java0/2.541s，23:03:43.710Z结束；精确11字段顺序/全原值、max_tokens256与字典解释都断言，不外推全类或CI。离线同一四十七行实际输入由861,028B到122,323B，history加字典由749,969B到71,049B，仍47行/1ROOT group；完整facts/frame/stamps/provenance展开相等，只有约定五refs在合格READ模型副本中省略，所有五refs在UNKNOWN/非READ/坏形状中仍保留。没有对远端模型发验证HTTP，也不从字段顺序推缓存命中。
+
+最终D生产SHA`3f4b092ad6d3cce3b81c8eb7c821b13bf68b2bce9e1ee716ff72b41dba2a1f06`、TEST SHA`bc314a76f941936def5b28a6c0923cedfab846429cd8f7913f0fbf36f64d542a`已交runtime sole采用，共享源码写回执尚未报。本轮模型POLICY主体采用、owner一词澄清、Root后继确定性字段投影/顺序和owner TEST各自分列；36保首终态、37追加实际结果，原RESULT不改。未新增模型HTTP/测试，不授真实服务必快、合法Game SELECT或日推进；当前coding caller0、无自动新请求。

@@ -49,7 +49,9 @@ import org.xar.ck3.control.service.root.RootOrdinaryRuntimeConfiguration;
 class OnlineOrdinaryDecisionSelectorTest {
     private record Fixture(OrdinaryPlanner planner, RealmLifecycle realm, PlanningRequest request,
             ActionCommand command, OrdinaryPolicy.Draft draft) { }
-    private record Reply(String inner, long contentDelayMillis) { }
+    private record Reply(String inner, long contentDelayMillis, String finishReason) {
+        private Reply(String inner, long contentDelayMillis) { this(inner, contentDelayMillis, "stop"); }
+    }
 
     @Test void streamedSelectionRetainsTheOriginalCommandAndRealmDraft(@TempDir Path root) throws Exception {
         Fixture fixture = fixture(false);
@@ -197,6 +199,9 @@ class OnlineOrdinaryDecisionSelectorTest {
         source.put("payload_field", "campaign_root_context"); source.put("query_sequence", 19);
         ObjectNode frame = source.putObject("source_frame"); frame.put("machine_id", "explicit-software-frame");
         frame.putObject("game").put("pid", 17); frame.putObject("frame").put("native_revision", "18446744073709551615");
+        source.putObject("decoder_source").put("path", "software-code-reference");
+        source.putObject("definition_source").put("path", "software-native-code-reference");
+        source.putObject("source").put("path", "software-implementation-source-reference");
         source.putObject("original_receipt").put("path", "software-original-metadata-retained");
         source.putArray("supporting_evidence").add("complete-software-evidence");
         ObjectNode result = first.putObject("result"); result.put("status", "available"); result.put("accepted", true);
@@ -258,12 +263,61 @@ class OnlineOrdinaryDecisionSelectorTest {
                 }
                 var expected = org.xar.ck3.control.contracts.FullJsonTree.parse(org.xar.ck3.control.contracts.FullJsonTree.encode(
                         originals.get(index), StrictJson.EXPLICIT_MAX_BYTES), StrictJson.EXPLICIT_MAX_BYTES);
-                assertEquals(expected, expanded, "lossless full JSON value row, including original source refs/frame and unknown facts: " + index);
+                if (index < 3) ((ObjectNode) expected.get("read_history_source")).remove(List.of(
+                        "decoder_source", "definition_source", "original_receipt", "supporting_evidence", "source"));
+                assertEquals(expected, expanded, "all game facts/frame/unknown fields equal; only qualifying READ five technical refs omitted: " + index);
             }
             assertEquals(ActionCodec.bodySha256(fixture.command()), sent.get("body_sha256").textValue());
             assertEquals(org.xar.ck3.control.contracts.FullJsonTree.parse(ActionCodec.encodeCommand(fixture.command()), ActionCodec.MAX_COMMAND_BYTES), sent.get("proposal"));
             org.junit.jupiter.api.Assertions.assertArrayEquals(beforeSnapshot, OpportunityJson.encode(request.observations().snapshot()));
             org.junit.jupiter.api.Assertions.assertArrayEquals(beforeHistory, OpportunityJson.encode(new OpportunityJson.Arr(new ArrayList<OpportunityJson.Value>(request.observations().history()))));
+        }
+    }
+
+    @Test void compactCompleteSelectionAcceptsButLengthTruncationNeverDispatches(@TempDir Path root) throws Exception {
+        try (LocalModel model = new LocalModel()) {
+            for (String transport : List.of("partial-length", "complete-length", "compact-stop")) {
+                Fixture fixture = fixture(false);
+                ObjectNode response = inner(fixture.command(), "SELECT_PROPOSAL");
+                response.put("reason", "Legal focus ready.");
+                String raw = response.toString();
+                if (transport.equals("partial-length")) raw = raw.substring(0, raw.length() - 2);
+                model.reply.set(new Reply(raw, 0, transport.equals("compact-stop") ? "stop" : "length"));
+                fixture.planner().bindSelector(provider(model, root.resolve(transport), Duration.ofSeconds(2)));
+                PlanningResult planned = fixture.planner().plan(fixture.request());
+                if (transport.equals("compact-stop")) {
+                    var selected = assertInstanceOf(PlanningResult.ActionSelected.class, planned);
+                    assertSame(fixture.command(), selected.command());
+                    assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+                    assertEquals("original_query_not_confirmed", completion(fixture));
+                    assertEquals("original_query_plan_slot_unavailable", completion(fixture));
+                } else assertWait(fixture, planned);
+                var data = org.xar.ck3.control.contracts.FullJsonTree.parse(model.request.get().get("messages").get(1).get("content")
+                        .textValue().getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+                var keys = new ArrayList<String>(); data.fieldNames().forEachRemaining(keys::add);
+                assertEquals(List.of("history", "root_facts", "history_projection_schema", "capabilities", "routable_operations",
+                        "action_facts", "snapshot", "proposal", "proposal_id", "body_sha256", "planning_deadline"), keys,
+                        "complete stable data precedes all varying proposal fields with the exact original field set");
+                assertEquals(org.xar.ck3.control.contracts.FullJsonTree.parse(OpportunityJson.encode(fixture.request().observations().snapshot()),
+                        StrictJson.EXPLICIT_MAX_BYTES), data.get("snapshot"));
+                assertTrue(fixture.request().observations().history().isEmpty() && data.get("history").isEmpty());
+                assertTrue(data.get("root_facts").isEmpty());
+                assertEquals("xar.model-root-history-dictionary/v1", data.get("history_projection_schema").textValue());
+                var expected = StrictJson.object();
+                var caps = expected.putArray("capabilities"); fixture.request().observations().bridgeCapabilities().stream().sorted().forEach(caps::add);
+                var routes = expected.putArray("routable_operations"); fixture.request().observations().actionSteps().stream().map(Object::toString).sorted().forEach(routes::add);
+                assertEquals(expected.get("capabilities"), data.get("capabilities")); assertEquals(expected.get("routable_operations"), data.get("routable_operations"));
+                assertTrue(fixture.request().observations().actionFacts().isEmpty() && data.get("action_facts").isEmpty());
+                assertEquals(org.xar.ck3.control.contracts.FullJsonTree.parse(ActionCodec.encodeCommand(fixture.command()), ActionCodec.MAX_COMMAND_BYTES), data.get("proposal"));
+                assertEquals(fixture.command().actionId(), data.get("proposal_id").textValue());
+                assertEquals(ActionCodec.bodySha256(fixture.command()), data.get("body_sha256").textValue());
+                assertEquals(fixture.request().deadline().toString(), data.get("planning_deadline").textValue());
+                assertEquals(256, model.request.get().get("max_tokens").intValue(), "original finite token cap is unchanged");
+                String policy = model.request.get().get("messages").get(0).get("content").textValue();
+                assertTrue(policy.contains("compact") && policy.contains("reason"), "fixed prompt requests compact output");
+                assertTrue(policy.contains("root_facts[root_ref]"), "existing complete dictionary interpretation remains");
+            }
+            assertEquals(3, model.calls.get(), "real Java HttpClient and SSE transport exercised all three terminal branches");
         }
     }
 
@@ -366,7 +420,7 @@ class OnlineOrdinaryDecisionSelectorTest {
                 ObjectNode finish = StrictJson.object();
                 ObjectNode choice = finish.putArray("choices").addObject();
                 choice.putObject("delta");
-                choice.put("finish_reason", "stop");
+                choice.put("finish_reason", planned.finishReason());
                 exchange.getResponseBody().write(("data: " + finish + "\n\n").getBytes(StandardCharsets.UTF_8));
                 ObjectNode usage = StrictJson.object();
                 usage.putArray("choices");
