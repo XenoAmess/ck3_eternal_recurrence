@@ -82,7 +82,7 @@ public final class DriverPublicExecuteFailureRowProducerTest {
     private static Obj result(){return new Obj(Map.of()).with("step",new Text(LOGICAL)).with("accepted",new Bool(false))
             .with("status",new Text("blocked")).with("queried_revision",new IntegerValue(U64_MAX));}
     private static Obj without(Obj original,String key){var fields=new LinkedHashMap<String,Value>(original.members());fields.remove(key);return new Obj(fields);}
-    private static Map<String,FileBytes> files(Path root)throws Exception {
+    private static Map<String,FileBytes> files(Path root)throws java.io.IOException {
         var result=new TreeMap<String,FileBytes>();
         try(var paths=Files.walk(root)){
             for(Path path:paths.filter(Files::isRegularFile).toList()){
@@ -249,10 +249,10 @@ public final class DriverPublicExecuteFailureRowProducerTest {
             var absentRow=new RawHistoryRow(data.row().index(),absent,data.row().result());
             fixture.writer.locked(same->fixture.archive.inSession(same,bound->{
                 ExactRef retained=bound.preserveMaterial(RawJson.fullMaterial(absentRow.encode()));
-                int reads=fixture.scenarioReadWrites();var files=files(fixture.root.resolve("artifacts"));
+                int reads=fixture.scenarioReadWrites();var files=assertDoesNotThrow(()->files(fixture.root.resolve("artifacts")));
                 var cold=DriverPublicExecuteFailureRowProducer.decode(bound.loadFullMaterial(retained).bytes());
                 assertEquals(absentRow,DriverPublicExecuteFailureRowProducer.replayOriginals(bound,cold));
-                assertEquals(reads,fixture.scenarioReadWrites());assertEquals(files,files(fixture.root.resolve("artifacts")));return null;
+                assertEquals(reads,fixture.scenarioReadWrites());assertEquals(files,assertDoesNotThrow(()->files(fixture.root.resolve("artifacts"))));return null;
             }));
         }
     }

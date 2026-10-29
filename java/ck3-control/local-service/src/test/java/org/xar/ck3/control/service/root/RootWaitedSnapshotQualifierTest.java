@@ -104,7 +104,7 @@ final class RootWaitedSnapshotQualifierTest {
             var ready=fixture.ready();var physical=fixture.physicalInputs();
             fixture.writer.locked(same->{
                 var source=fixture.collector.current(same,ready.request().before(),Instant.now().plusSeconds(20),
-                        lease->new SourceData(lease.originalHello(),lease.originalHeartbeat(),lease.originalSourceQualification()));
+                        lease->new SourceData(lease.originalHello(),lease.originalHeartbeat(),lease.originalSourceQualification().orElseThrow()));
                 var held=new HeldDriverObservationPort(physical.transport(),fixture.driverAuthority(),actual->fixture.archive.withSession(same).preserveNativeFrame(actual),physical.observationAssembler(),8);
                 int before=fixture.nativePacketReads();String head=same.head().digest();
                 Instant wait=Instant.now().plusSeconds(20),capture=wait.plusSeconds(20);FullSnapshot actual;

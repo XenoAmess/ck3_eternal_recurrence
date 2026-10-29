@@ -52,8 +52,8 @@ final class GuiDecisionWriterOriginalsTest {
    invocation=new GuiService.Invocation(c,c.before().frame().revision(),true,true);var snapshot=actual.observations().snapshot();
    beforeSource=GuiPublicMetadata.beforeSource(PublicDataJson.encodeFullMaterial(snapshot),PublicDataJson.encodeFullMaterial(OpportunityJson.object(snapshot.get("diagnostics"),"actual diagnostics")));
    ActionCoordinatorPort borrowedActions=new ActionCoordinatorPort(){
-    @Override public ActionReceipt execute(ActionCommand command){return fixture.coordinator.execute(fixture.writer.borrowedSession(),command);}
-    @Override public ActionReceipt reconcile(String actionId){return fixture.coordinator.reconcile(fixture.writer.borrowedSession(),actionId);}
+    @Override public ActionReceipt execute(ActionCommand command){try{return fixture.coordinator.execute(fixture.writer.borrowedSession(),command);}catch(java.io.IOException failure){throw new java.io.UncheckedIOException(failure);}}
+    @Override public ActionReceipt reconcile(String actionId){try{return fixture.coordinator.reconcile(fixture.writer.borrowedSession(),actionId);}catch(java.io.IOException failure){throw new java.io.UncheckedIOException(failure);}}
    };
    service=new GuiService(new GuiCapabilities(borrowedActions,fixture.reads,contracts),contracts,fixture.reads,borrowedActions,()->fixture.archive.withSession(fixture.writer.borrowedSession()),Optional.empty(),Optional.empty(),Optional.empty());
    ObjectNode args=StrictJson.object().put("expected_revision",invocation.publicRevision()).put("decision_key",KEY);

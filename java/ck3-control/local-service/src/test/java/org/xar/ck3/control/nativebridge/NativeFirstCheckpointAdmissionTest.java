@@ -101,7 +101,7 @@ final class NativeFirstCheckpointAdmissionTest {
             assertEquals(frame.identity().frame().episodeRunId(), known.stamp().episodeRunId());
             assertEquals(BigInteger.valueOf(73), known.driver().session().actorId());
             assertEquals(frame.source(), probe.actual.physicalInputs().source());
-            source.guard().assertCurrent(same); probe.verifier.verify(same, owner, actualSemantic);
+            source.guard().orElseThrow().assertCurrent(same); probe.verifier.verify(same, owner, actualSemantic);
             semantic = actualSemantic; physical.incrementAndGet(); return actor;
         }
     }

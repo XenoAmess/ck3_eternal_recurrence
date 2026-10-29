@@ -193,8 +193,16 @@ public final class RootPhysicalStatusReadAuthorityActualTest {
     private static void rejectMissingOriginalExecutableClosure(Input input,ContinuityStorePort.Session same,GuardEvidence original)throws IOException {
         var context=input.context();var identity=original.origin().requirePhysicalStatusOnly();
         assertEquals(identity,input.authority().verifyArchived(original,context.archive().withSession(same),same,context.originals()));
+        if(identity.sourceQualification().isEmpty()) {
+            // Without a source proof, any actual epoch remains independent metadata.
+            var supplied=org.xar.ck3.control.contracts.StrictJson.object().put("schema","invalid-supplied-historical-source");
+            var altered=withSourceProof(context,same,original,supplied,java.util.Optional.empty());
+            assertThrows(IOException.class,()->input.authority().verifyArchived(altered,context.archive().withSession(same),same,context.originals()),
+                    "a supplied historical source cannot omit its actual epoch metadata");
+            return;
+        }
         var parsed=org.xar.ck3.control.application.driver.DriverJson.toNode(
-                org.xar.ck3.control.application.driver.DriverJson.object(context.originals().read(same,identity.sourceQualification(),16<<20),16<<20));
+                org.xar.ck3.control.application.driver.DriverJson.object(context.originals().read(same,identity.sourceQualification().orElseThrow(),16<<20),16<<20));
         assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class,parsed);
         var proof=(com.fasterxml.jackson.databind.node.ObjectNode)parsed;
         var executable=org.xar.ck3.control.contracts.ExactRef.fromJson(proof.get("game_executable"));
@@ -206,7 +214,7 @@ public final class RootPhysicalStatusReadAuthorityActualTest {
         }
         assertEquals(1,removed,"real complete native qualification must contain its unique original executable");
         assertFalse(closure.isEmpty(),"regression must exercise a nonempty incomplete closure, not the existing empty-closure guard");
-        var altered=withSourceProof(context,same,original,proof);
+        var altered=withSourceProof(context,same,original,proof,identity.epochManifest());
         assertThrows(IllegalArgumentException.class,()->input.authority().verifyArchived(altered,context.archive().withSession(same),same,context.originals()),
                 "a nonempty closure that lost the actual HELLO executable must not pass archived source qualification");
     }
@@ -214,23 +222,32 @@ public final class RootPhysicalStatusReadAuthorityActualTest {
     /** Keep the real source bytes and all hashes, then remove the durable Witness contract. No v2 upgrade is inferred. */
     private static void rejectLegacyHashOnlySourceProof(Input input,ContinuityStorePort.Session same,GuardEvidence original)throws IOException {
         var context=input.context();var identity=original.origin().requirePhysicalStatusOnly();
-        byte[] bytes=context.originals().read(same,identity.sourceQualification(),16<<20);
+        if(identity.sourceQualification().isEmpty()) {
+            var epoch=context.archive().preserveArtifact(same,new byte[]{'{','}'},16<<20);
+            var legacy=org.xar.ck3.control.contracts.StrictJson.object().put("schema","xar.java-root-native-source-proof/v2");
+            var altered=withSourceProof(context,same,original,legacy,java.util.Optional.of(epoch));
+            assertThrows(IOException.class,()->input.authority().verifyArchived(altered,context.archive().withSession(same),same,context.originals()),
+                    "optional metadata, when supplied, cannot invent a v3 Witness contract from malformed v2 data");
+            return;
+        }
+        byte[] bytes=context.originals().read(same,identity.sourceQualification().orElseThrow(),16<<20);
         var actual=org.xar.ck3.control.application.readiness.NativeSourceProofCodec.decode(bytes);
         assertFalse(actual.liveWitnesses().isEmpty(),"the actual producer must retain native identities before this negative regression");
         var proof=assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class,
                 org.xar.ck3.control.application.driver.DriverJson.toNode(org.xar.ck3.control.application.driver.DriverJson.object(bytes,16<<20)));
         proof.put("schema","xar.java-root-native-source-proof/v2");proof.remove("live_witnesses");
-        var altered=withSourceProof(context,same,original,proof);
+        var altered=withSourceProof(context,same,original,proof,identity.epochManifest());
         assertThrows(IOException.class,()->input.authority().verifyArchived(altered,context.archive().withSession(same),same,context.originals()),
                 "original v2 hashes cannot be assigned new Witness/FileID identity or current qualification");
     }
 
     private static GuardEvidence withSourceProof(RootRuntimeContext context,ContinuityStorePort.Session same,
-            GuardEvidence original,com.fasterxml.jackson.databind.node.ObjectNode proof)throws IOException {
+            GuardEvidence original,com.fasterxml.jackson.databind.node.ObjectNode proof,
+            java.util.Optional<org.xar.ck3.control.contracts.ExactRef> epochManifest)throws IOException {
         var identity=original.origin().requirePhysicalStatusOnly();
         var badProof=context.archive().preserveArtifact(same,org.xar.ck3.control.application.driver.DriverJson.encodeNode(proof),16<<20);
         var changed=new PhysicalStatusIdentity(identity.transport(),identity.snapshotId(),identity.nativeRevision(),identity.source(),identity.nativeEvidence(),
-                identity.helloEvidence(),identity.heartbeatEvidence(),badProof,identity.epochManifest(),identity.observedAt());
+                identity.helloEvidence(),identity.heartbeatEvidence(),java.util.Optional.of(badProof),epochManifest,identity.observedAt());
         var basis=org.xar.ck3.control.contracts.StrictJson.parse(context.originals().read(same,original.supportingEvidence().getFirst(),128<<10),128<<10);
         assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class,basis);
         ((com.fasterxml.jackson.databind.node.ObjectNode)basis).set("identity",PhysicalStatusIdentityCodec.encode(changed));

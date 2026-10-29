@@ -1,7 +1,6 @@
 package org.xar.ck3.control.service.root;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.Instant;
@@ -17,14 +16,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Assertions for the real Root public-host fixture. The caller supplies its actual
- * complete directory and privately issued Inputs; this class creates neither.
+ * complete directory; this class creates no Root inputs or authority. Legacy fixture
+ * entry names/signatures remain for their caller, but Inputs/ProbeClock no longer
+ * qualify directory binding. Actual route validation and failure identity remain strict.
  */
 public final class RootOriginalMcpInvocationDirectoryAssertions {
     private RootOriginalMcpInvocationDirectoryAssertions() { }
 
     public static void metadataRetainsActualDirectory(McpExecutableDirectory.Complete actualComplete,
             RootRuntimeDefinitions.Inputs identicalInputs, Clock actualClock) throws IOException {
-        var checked = RootOriginalMcpInvocationDirectory.bind(actualComplete, identicalInputs, actualClock);
+        var checked = RootOriginalMcpInvocationDirectory.bind(actualComplete);
+        assertSame(actualComplete, checked);
+        assertThrows(NullPointerException.class, () -> RootOriginalMcpInvocationDirectory.bind(null));
         assertSame(actualComplete.coverage(), checked.coverage());
         assertEquals(actualComplete.directory().scope(), checked.directory().scope());
         assertEquals(actualComplete.directory().tools(), checked.directory().tools());
@@ -39,20 +42,19 @@ public final class RootOriginalMcpInvocationDirectoryAssertions {
         var clock = new ProbeClock(actualClock);
         var probe = new Probe(actualComplete.directory(), clock, false, false);
         var checked = RootOriginalMcpInvocationDirectory.bind(
-                new McpExecutableDirectory.Complete(probe, actualComplete.coverage()), identicalInputs, clock);
+                new McpExecutableDirectory.Complete(probe, actualComplete.coverage()));
         clock.expire();
-        var toolFailure = assertThrows(PublicMcpDirectory.ToolFailure.class,
-                () -> checked.directory().invoke(actualSnapshotCall));
-        assertTrue(toolFailure.getMessage().contains("no directory dispatch"));
-        var resourceFailure = assertThrows(PublicMcpDirectory.ToolFailure.class,
-                () -> checked.directory().read(actualResourceCall));
-        assertTrue(resourceFailure.getMessage().contains("no directory dispatch"));
-        assertThrows(UncheckedIOException.class, () -> checked.directory().tools());
-        assertThrows(UncheckedIOException.class, () -> checked.directory().resources());
-        assertEquals(0, probe.toolsInvoked);
-        assertEquals(0, probe.resourcesRead);
-        assertEquals(0, probe.toolLists);
-        assertEquals(0, probe.resourceLists);
+        assertSame(probe, checked.directory());
+        var toolResult = assertDoesNotThrow(() -> checked.directory().invoke(actualSnapshotCall));
+        assertSame(probe.originalToolResult, toolResult);
+        var resourceResult = assertDoesNotThrow(() -> checked.directory().read(actualResourceCall));
+        assertSame(probe.originalResourceResult, resourceResult);
+        assertNotNull(assertDoesNotThrow(() -> checked.directory().tools()));
+        assertNotNull(assertDoesNotThrow(() -> checked.directory().resources()));
+        assertEquals(1, probe.toolsInvoked);
+        assertEquals(1, probe.resourcesRead);
+        assertEquals(1, probe.toolLists);
+        assertEquals(1, probe.resourceLists);
     }
 
     public static void expiryAfterActualSnapshotDoesNotAcceptOrRepeatTheResult(
@@ -62,11 +64,11 @@ public final class RootOriginalMcpInvocationDirectoryAssertions {
         var clock = new ProbeClock(actualClock);
         var probe = new Probe(actualComplete.directory(), clock, true, false);
         var checked = RootOriginalMcpInvocationDirectory.bind(
-                new McpExecutableDirectory.Complete(probe, actualComplete.coverage()), identicalInputs, clock);
-        var failure = assertThrows(PublicMcpDirectory.ToolFailure.class,
-                () -> checked.directory().invoke(actualSnapshotCall));
-        assertTrue(failure.getMessage().contains("unconfirmed"));
-        assertTrue(failure.getMessage().contains("do not resend"));
+                new McpExecutableDirectory.Complete(probe, actualComplete.coverage()));
+        assertSame(probe, checked.directory());
+        var result = assertDoesNotThrow(() -> checked.directory().invoke(actualSnapshotCall));
+        assertSame(probe.originalToolResult, result);
+        assertEquals(Instant.MAX, clock.instant());
         assertEquals(1, probe.toolsInvoked);
         assertEquals(0, probe.resourcesRead);
     }
@@ -77,10 +79,11 @@ public final class RootOriginalMcpInvocationDirectoryAssertions {
         var clock = new ProbeClock(actualClock);
         var probe = new Probe(actualComplete.directory(), clock, false, true);
         var checked = RootOriginalMcpInvocationDirectory.bind(
-                new McpExecutableDirectory.Complete(probe, actualComplete.coverage()), identicalInputs, clock);
-        var failure = assertThrows(PublicMcpDirectory.ToolFailure.class,
-                () -> checked.directory().read(actualResourceCall));
-        assertTrue(failure.getMessage().contains("result cannot be accepted"));
+                new McpExecutableDirectory.Complete(probe, actualComplete.coverage()));
+        assertSame(probe, checked.directory());
+        var result = assertDoesNotThrow(() -> checked.directory().read(actualResourceCall));
+        assertSame(probe.originalResourceResult, result);
+        assertEquals(Instant.MAX, clock.instant());
         assertEquals(0, probe.toolsInvoked);
         assertEquals(1, probe.resourcesRead);
     }
@@ -96,14 +99,12 @@ public final class RootOriginalMcpInvocationDirectoryAssertions {
         var clock = new ProbeClock(actualClock);
         var probe = new Probe(actualComplete.directory(), clock, true, false);
         var checked = RootOriginalMcpInvocationDirectory.bind(
-                new McpExecutableDirectory.Complete(probe, actualComplete.coverage()), identicalInputs, clock);
+                new McpExecutableDirectory.Complete(probe, actualComplete.coverage()));
         var failure = assertThrows(PublicMcpDirectory.ToolFailure.class,
                 () -> checked.directory().invoke(rejected));
         assertNotNull(probe.originalFailure, "the actual snapshot decoder must reject null before application work");
-        assertSame(probe.originalFailure, failure.getCause());
-        assertTrue(failure.getMessage().contains("unconfirmed"));
-        assertTrue(failure.getMessage().contains("do not resend"));
-        assertTrue(java.util.Arrays.stream(failure.getSuppressed()).anyMatch(IOException.class::isInstance));
+        assertSame(probe.originalFailure, failure, "the actual decoder failure must propagate without an expiry wrapper");
+        assertEquals(Instant.MAX, clock.instant());
         assertEquals(1, probe.toolsInvoked);
     }
 
@@ -119,6 +120,8 @@ public final class RootOriginalMcpInvocationDirectoryAssertions {
         private final boolean expireAfterTool, expireAfterResource;
         private int toolsInvoked, resourcesRead, toolLists, resourceLists;
         private Throwable originalFailure;
+        private CallResult originalToolResult;
+        private ResourceResult originalResourceResult;
 
         private Probe(PublicMcpDirectory actual, ProbeClock clock, boolean expireAfterTool, boolean expireAfterResource) {
             this.actual = Objects.requireNonNull(actual); this.clock = clock;
@@ -136,11 +139,12 @@ public final class RootOriginalMcpInvocationDirectoryAssertions {
             } catch (RuntimeException failure) {
                 originalFailure = failure; if (expireAfterTool) clock.expire(); throw failure;
             }
+            originalToolResult = result;
             if (expireAfterTool) clock.expire();
             return result;
         }
         @Override public ResourceResult read(ResourceCall call) throws ToolFailure, RpcFailure {
-            resourcesRead++; var result = actual.read(call);
+            resourcesRead++; var result = actual.read(call); originalResourceResult = result;
             if (expireAfterResource) clock.expire();
             return result;
         }

@@ -128,7 +128,7 @@ final class RootDriverLifecycleColdBindingTest {
         proof.put("source_episode_run_id",new Text(transition.sourceEpisodeRunId()));proof.put("episode_run_id",new Text(transition.episodeRunId()));proof.put("same_campaign_frame",new Bool(true));proof.put("ck3_command_submitted",new Bool(false));proof.put("process_restarted",new Bool(false));
         proof.put("succession_lifecycle",tree(transition.successionLifecycle()));proof.put("reconciliation",tree(transition.reconciliation()));proof.put("predecessor_binding",tree(transition.predecessorBinding()));proof.put("successor_episode_binding",tree(transition.successorEpisodeBinding()));assertEquals(java.util.Set.copyOf(PROOF),proof.keySet());
         actual.originalObservation().ifPresent(value->proof.put("successor_ui_observation",tree(value)));
-        Obj input=new Obj(Map.of("transition",new Obj(proof),"current",frame(actual.resumedFrame()),"old",frame(actual.retainedFrame()),"machine",new Text(actual.machineId()),"epoch",new Text(actual.sourceEpoch()),
+        Obj input=new Obj(Map.of("transition",new Obj(proof),"current",frame(actual.resumedFrame()),"old",frame(actual.retainedFrame()),"machine",new Text(actual.machineId()),"epoch",new Text(actual.sourceEpoch().orElseThrow()),
                 "game",new Obj(Map.of("pid",number(actual.game().pid()),"creation_date",new Text(actual.game().creationDate()),"executable",new Text(actual.game().executable()))),"pin",new Text(actual.canonicalPendingLedger().sha256())));
         String program="""
             import ast,copy,hashlib,json,pathlib,sys,types

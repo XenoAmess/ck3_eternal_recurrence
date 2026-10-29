@@ -24,7 +24,7 @@ final class PendingNaturalFinalProofTest {
                 Integer.MAX_VALUE,ref(1),ref(2),ref(3),ref(4),
                 new ExactRef("D:/software-final-originals/full-known.json",2_000_000,"c".repeat(64)),
                 new ExactRef("D:/software-final-originals/full-sem.json",6_000_000,"d".repeat(64)),
-                ref(7),ref(8),ref(9),ref(10),ref(11),closed?List.of(ref(12),ref(13)):List.of(),
+                ref(7),ref(8),ref(9),Optional.of(ref(10)),ref(11),closed?List.of(ref(12),ref(13)):List.of(),
                 closed?Optional.of(ref(14)):Optional.empty(),closed?Optional.of(ref(15)):Optional.empty(),closed?Optional.of(ref(16)):Optional.empty());
     }
     private static byte[] encode(FinalProofDocument value){return RootPendingNaturalSuccessionQualification.encodeFinalProof(value);}
@@ -42,7 +42,7 @@ final class PendingNaturalFinalProofTest {
             var refs=decoded.materialReferences();assertEquals(closed?16:11,refs.size());
             assertTrue(refs.containsAll(List.of(decoded.actualOrdinarySnapshot(),decoded.actualObservation(),decoded.currentRoot(),
                     decoded.currentRootRead(),decoded.originalKnown(),decoded.originalSemantic(),decoded.pendingContinueReceipt(),
-                    decoded.pendingContinueDriver(),decoded.canonicalPublication(),decoded.sourceQualification(),decoded.initialTimeline())));
+                    decoded.pendingContinueDriver(),decoded.canonicalPublication(),decoded.sourceQualification().orElseThrow(),decoded.initialTimeline())));
             decoded.close().ifPresent(value->assertTrue(refs.contains(value)));decoded.verifiedDateAdvance().ifPresent(value->assertTrue(refs.contains(value)));
             decoded.finalTimelineAfterDateAdvance().ifPresent(value->assertTrue(refs.contains(value)));assertTrue(refs.containsAll(decoded.postqueries()));
             assertThrows(UnsupportedOperationException.class,()->refs.add(ref(99)));
@@ -52,11 +52,21 @@ final class PendingNaturalFinalProofTest {
     }
     @Test void oldSchemaMissingNullAliasesAndMalformedReferencesDoNotSupplyHistoricalMaterials() {
         for(String field:List.of("writer_head_sequence","current_root_read","original_known","original_semantic","actual_observation",
-                "actual_ordinary_snapshot","source_qualification","postqueries","close","verified_date_advance","final_timeline_after_date_advance")) {
+                "actual_ordinary_snapshot","postqueries","close","verified_date_advance","final_timeline_after_date_advance")) {
             var missing=row(false);missing.remove(field);rejected(missing);
         }
-        for(String field:List.of("current_root_read","original_known","original_semantic","actual_observation","actual_ordinary_snapshot","source_qualification","postqueries")) {
+        for(String field:List.of("current_root_read","original_known","original_semantic","actual_observation","actual_ordinary_snapshot","postqueries")) {
             var explicitNull=row(false);explicitNull.putNull(field);rejected(explicitNull);
+        }
+        for(boolean closed:List.of(false,true)) {
+            var missingSource=row(closed);missingSource.remove("source_qualification");
+            var withoutSource=decode(StrictJson.canonical(missingSource));
+            assertTrue(withoutSource.sourceQualification().isEmpty());
+            assertEquals(closed?15:10,withoutSource.materialReferences().size());
+            missingSource.putNull("source_qualification");assertEquals(withoutSource,decode(StrictJson.canonical(missingSource)));
+            assertEquals(withoutSource,decode(encode(withoutSource)));
+            var malformedSource=row(closed);malformedSource.put("source_qualification",true);rejected(malformedSource);
+            var emptySource=row(closed);assertInstanceOf(ObjectNode.class,emptySource.get("source_qualification")).put("bytes",0);rejected(emptySource);
         }
         var legacy=row(false);legacy.put("schema","xar.java.post-continue-natural-finalization/v1");rejected(legacy);
         var alias=row(false);alias.set("root_read",alias.remove("current_root_read"));rejected(alias);

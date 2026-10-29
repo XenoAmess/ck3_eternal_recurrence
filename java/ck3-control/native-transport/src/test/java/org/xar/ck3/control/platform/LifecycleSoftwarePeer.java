@@ -24,7 +24,7 @@ public final class LifecycleSoftwarePeer {
             case "wait" -> Thread.sleep(10000);
             case "job-memory-overflow" -> {
                 try(var unexpected=new com.sun.jna.Memory(128L<<20)){
-                    throw new IllegalStateException("native allocation unexpectedly exceeded the actual Job limit");
+                    throw new IllegalStateException("native allocation unexpectedly exceeded the actual Job limit: " + unexpected.size());
                 }catch(OutOfMemoryError actual){
                     System.out.println("JOB_MEMORY_ALLOCATION_REJECTED");System.out.flush();
                     Thread.sleep(10000);

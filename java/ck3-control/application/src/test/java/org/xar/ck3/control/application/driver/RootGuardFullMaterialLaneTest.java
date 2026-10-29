@@ -39,7 +39,7 @@ final class RootGuardFullMaterialLaneTest {
         assertEquals(new RootGuardEvidence.WriterPoint(f.head.state().sequence(),f.head.digest()),RootGuardEvidence.writerPoint(guard,f.archive));
         assertEquals(f.frame,RootGuardEvidence.loadFrame(guard,f.archive,RootGuardFullMaterialLaneTest::rebuild));
         assertTrue(f.archive.fullReads.containsAll(full));assertFalse(f.archive.fullReads.contains(basis));
-        for(ExactRef metadata:List.of(f.semantic.driverStamp(),f.originals.capabilities(),f.originals.sourceQualification())) {
+        for(ExactRef metadata:List.of(f.semantic.driverStamp(),f.originals.capabilities(),f.originals.sourceQualification().orElseThrow())) {
             assertTrue(f.archive.ordinaryReads.contains(metadata));assertFalse(f.archive.fullReads.contains(metadata));
         }
         for(ExactRef original:full)assertFalse(f.archive.ordinaryReads.contains(original));

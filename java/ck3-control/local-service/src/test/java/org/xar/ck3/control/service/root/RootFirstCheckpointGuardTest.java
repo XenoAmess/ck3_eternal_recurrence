@@ -90,7 +90,7 @@ final class RootFirstCheckpointGuardTest {
                         NativeReadinessCollector.SourceQualification sources, Instant deadline) throws IOException {
                     requireStage(same, expected, deadline); assertEquals(frame.identity(), semantic.frame());
                     assertEquals(owner.game(), known.stamp().game()); assertEquals(inputs.source(), frame.source());
-                    sources.guard().assertCurrent(same); return known.driver().session().actorId();
+                    sources.guard().orElseThrow().assertCurrent(same); return known.driver().session().actorId();
                 }
             });
             first = deadline -> {

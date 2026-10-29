@@ -73,7 +73,8 @@ final class PublicFullSnapshotExportTest {
         assertThrows(IllegalArgumentException.class,()->PublicSnapshotCodec.exportFull(substituted,true));
     }
     @Test void missingPhysicalProofAndMalformedPublicRolesRemainUnavailable(){
-        var originals=originals("null");var absent=new ExactRef(originals.originalSourceQualification().path(),0,originals.originalSourceQualification().sha256());
+        var originals=originals("null");ExactRef sourceQualification=originals.originalSourceQualification().orElseThrow();
+        var absent=new ExactRef(sourceQualification.path(),0,sourceQualification.sha256());
         assertThrows(IllegalArgumentException.class,()->new PublicSnapshotCodec.FullSnapshotOriginals(originals.actual(),originals.originalHello(),
                 originals.originalHeartbeat(),absent,originals.originalFacts(),originals.originalDriver()));
         var encoded=PublicSnapshotCodec.encode(PublicSnapshotCodec.exportFull(originals,false));

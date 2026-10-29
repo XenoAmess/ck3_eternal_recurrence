@@ -99,7 +99,7 @@ final class DriverRichReadPublicationTest {
             @Override public ArmyQueryHistoryStore.StoredFile writeExclusive(Path target,long maximum,ArmyQueryHistoryStore.WriteBody body){throw new AssertionError("zero must not write");}
         };
         // Real software store and settings, directly installed; this is not a Root configured Bound.
-        var store=new ArmyQueryHistoryStore(new ArmyQueryHistoryStore.Settings(directory.resolve("never-created"),0),()->{admissions.incrementAndGet();var held=java.util.Objects.requireNonNull(storageScope.get());var pin=held.same().capturePin(held.lease().originalSourceQualification(),WriterContracts.MAX_PIN_BYTES);held.same().verifyPin(pin);},io);
+        var store=new ArmyQueryHistoryStore(new ArmyQueryHistoryStore.Settings(directory.resolve("never-created"),0),()->{admissions.incrementAndGet();var held=java.util.Objects.requireNonNull(storageScope.get());var pin=held.same().capturePin(held.lease().originalSourceQualification().orElseThrow(),WriterContracts.MAX_PIN_BYTES);held.same().verifyPin(pin);},io);
         try(var fixture=new ActionWriterIntegrationFixture(directory.resolve("summary-ab"),false,scenario(installed,sequence,false,Optional.of(store)))) {
             var publisher=publisher(fixture);var initial=fixture.ready();var scope=new AtomicReference<Scope>();
             var knowns=new ArrayList<PlanningReadResult.Known<?>>();
@@ -632,7 +632,7 @@ final class DriverRichReadPublicationTest {
                         new RawJson(DriverJson.encode(actual.frame().semantic()))),fixture.physicalInputs().transport().originalHello()));
             }catch(IOException failure){throw new UncheckedIOException(failure);}
         };
-        var gate=new ArmyPrivateScalarControl(current,ignored->java.util.Objects.requireNonNull(active.get()).lease().originalSourceQualification());
+        var gate=new ArmyPrivateScalarControl(current,ignored->java.util.Objects.requireNonNull(active.get()).lease().originalSourceQualification().orElseThrow());
         return new ArmyStrengthsService(current,fixture.reads,fixture.reads.catalog(),installed.contracts(),new ArmyStrengthsCache(),installed.pipeline(),gate,publisher);
     }
     private static <T> void replay(ActionWriterIntegrationFixture fixture,Session same,ReadContract<T> actual,DriverReadHistoryRowProducer.RawHistoryRow row) {

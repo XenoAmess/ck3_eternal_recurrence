@@ -43,7 +43,7 @@ final class ReconciliationContractTest {
     private static GuardEvidence binding(ReconciliationIdentity identity) {
         return new GuardEvidence(new CommandOrigin.Reconciliation(identity), identity.source(), identity.sessionId(), identity.connectionGeneration(),
                 OPERATION, identity.nativeEvidence(), identity.capabilityEvidence(), "reconciliation-data-fixture",
-                identity.observedAt(), identity.observedAt().plusSeconds(30), List.of(identity.evidence().completeSourceQualification()));
+                identity.observedAt(), identity.observedAt().plusSeconds(30), List.of(identity.evidence().completeSourceQualification().orElseThrow()));
     }
     private static ReadContract<String> contract(ReconciliationIdentity identity, ReadContract.GuardMode mode) {
         return new ReadContract<>("army:commander:reconciliation/v1", OPERATION, Optional.of("game.command." + OPERATION.value()),

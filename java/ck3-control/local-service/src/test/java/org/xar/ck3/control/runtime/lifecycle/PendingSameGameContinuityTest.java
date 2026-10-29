@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.readiness.NativeSourceFileIdentity;
 import org.xar.ck3.control.application.readiness.NativeSourceFileIdentity.SourceWitness;
@@ -47,12 +48,24 @@ final class PendingSameGameContinuityTest {
         assertThrows(UnsupportedOperationException.class,()->binding.materialReferences().clear());
     }
 
-    @Test void everyFieldIsRequiredAndAuthorityAliasesOrNullAreRejected()throws Exception {
+    @Test void requiredFieldsAndOptionalSourceMetadataKeepTheirDistinctContracts()throws Exception {
         var valid=json();
+        var optionalSources=List.of("original_source_qualification","current_source_qualification","source_epoch_manifest");
         for(var fields=valid.fieldNames();fields.hasNext();) {
-            String field=fields.next();var missing=valid.deepCopy();missing.remove(field);reject(missing);
-            var nullable=valid.deepCopy();nullable.putNull(field);reject(nullable);
+            String field=fields.next();var missing=valid.deepCopy();missing.remove(field);
+            var nullable=valid.deepCopy();nullable.putNull(field);
+            if(optionalSources.contains(field)) {
+                var absent=PendingSameGameContinuity.decode(StrictJson.canonical(missing));
+                assertEquals(absent,PendingSameGameContinuity.decode(StrictJson.canonical(nullable)));
+                assertEquals(binding().materialReferences().size()-1,absent.materialReferences().size());
+                var malformed=valid.deepCopy();malformed.put(field,true);reject(malformed);
+            } else { reject(missing);reject(nullable); }
         }
+        var noSource=valid.deepCopy();optionalSources.forEach(noSource::remove);
+        var plain=PendingSameGameContinuity.decode(StrictJson.canonical(noSource));
+        assertTrue(plain.originalSourceQualification().isEmpty());assertTrue(plain.currentSourceQualification().isEmpty());
+        assertTrue(plain.sourceEpochManifest().isEmpty());assertEquals(5,plain.materialReferences().size());
+        assertEquals(plain,PendingSameGameContinuity.decode(PendingSameGameContinuity.encode(plain)));
         var extra=json();extra.put("current_authorized",true);reject(extra);
         var old=json();old.put("schema","xar.java.pending-same-game-continuity/v0");reject(old);
     }
@@ -115,7 +128,7 @@ final class PendingSameGameContinuityTest {
     }
     private static PendingSameGameContinuity.Binding binding() {
         return new PendingSameGameContinuity.Binding("machine",Instant.parse("2026-10-25T00:00:02Z"),17,MAX,GAME,ref("cause"),
-                "old-session","18446744073709551614","new-session",MAX,ref("old-source-proof"),ref("new-source-proof"),EPOCH,
+                "old-session","18446744073709551614","new-session",MAX,Optional.of(ref("old-source-proof")),Optional.of(ref("new-source-proof")),Optional.of(EPOCH),
                 ref("old-native"),ref("new-native"),ref("new-known"),ref("new-observation"),19,"new-run",3,11,SHA,7);
     }
     private static NativeSourceProofDocument source(String session,String observed,NativeSourceFileIdentity identity) {
