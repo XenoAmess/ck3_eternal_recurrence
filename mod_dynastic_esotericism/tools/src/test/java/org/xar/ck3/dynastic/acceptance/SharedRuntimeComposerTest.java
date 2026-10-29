@@ -46,13 +46,30 @@ final class SharedRuntimeComposerTest {
         String interpreter = System.getProperty("dynastic.python", "python");
         List<String> command = new ArrayList<>(List.of(interpreter, "-B", "-X", "utf8", "-c", program));
         command.addAll(arguments);
-        Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-        if (!process.waitFor(30, TimeUnit.SECONDS)) {
-            process.destroyForcibly();
-            process.waitFor();
-            throw new IOException("Existing public Selection consumer timed out");
+        Path captured = Files.createTempFile("des-selection-consumer-", ".log");
+        try {
+            Process process = new ProcessBuilder(command).redirectErrorStream(true)
+                    .redirectOutput(captured.toFile()).start();
+            boolean completed = process.waitFor(30, TimeUnit.SECONDS);
+            if (!completed) {
+                process.destroyForcibly();
+                process.waitFor();
+            }
+            if (Files.size(captured) > 1_048_576) {
+                throw new IOException("Public Selection consumer output exceeded 1 MiB");
+            }
+            String output = Files.readString(captured, StandardCharsets.UTF_8);
+            if (!completed) throw new IOException("Existing public Selection consumer timed out: " + output);
+            return new PythonResult(process.exitValue(), output);
+        } finally {
+            Files.deleteIfExists(captured);
         }
-        return new PythonResult(process.exitValue(), new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
+    }
+
+    @Test void consumerOutputLargerThanThePipeDoesNotBlockItsOriginalWait() throws Exception {
+        PythonResult result = python("import sys; sys.stdout.write('x' * 65536)", List.of());
+        assertEquals(0, result.exitCode());
+        assertEquals("x".repeat(65536), result.output());
     }
 
     private static void assertPublicSelectionConsumesProducedRuntime(Path runtime, Path products,
@@ -133,9 +150,10 @@ final class SharedRuntimeComposerTest {
                 from pathlib import Path
                 import copy,json,sys
                 repository,runtime_path,preset_manifest,initial_reform_manifest,core_manifest,preset_product=map(Path,sys.argv[1:])
-                sys.path.insert(0,str(repository/'tools'))
-                from ck3_mod_acceptance import Selection,pin
                 original_runtime=json.loads(runtime_path.read_bytes())
+                source=Path(original_runtime['paths']['source_root'])
+                sys.path[:0]=[str(source/'ck3_autonomous_player/src'),str(repository/'tools')]
+                from ck3_mod_acceptance import Selection,pin
                 original_manifest=json.loads(Path(original_runtime['manifest']['path']).read_bytes())
                 # Use the normal registry templates and unchanged runtime.repo_root.
                 # Prepared pins are the actual consumer inputs; the composer index
@@ -347,30 +365,28 @@ final class SharedRuntimeComposerTest {
         Files.createDirectories(sdk);
         Files.createDirectories(tools.resolve("ck3_mod_acceptance_cases"));
         Path changed = sdk.resolve("__init__.py");
-        Files.writeString(changed, "# actual source now differs\n");
-        Path currentFactory = sdk.resolve("bridge/mcp_server.py");
-        Files.createDirectories(currentFactory.getParent());
         Path actualRepository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
-        Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"), currentFactory);
-        for (String name : List.of("native_driver.py", "player_prisoner_collection_private_transport.py",
-                "prisoner_release_preview_contract_12003.py", "prisoner_negotiated_preview_contract_12003.py",
-                "prisoner_selected_quote_source_contract_12004.py", "frontend_fixture_start_contract.py", "frontend_fixture_scenario_start_v1.py")) {
-            Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge").resolve(name),
-                    currentFactory.getParent().resolve(name));
+        Path actualSdkSource = actualRepository.resolve("ck3_autonomous_player/src");
+        int sdkSourceCount;
+        try (var files = Files.walk(actualSdkSource)) {
+            List<Path> selected = files.filter(Files::isRegularFile).filter(path ->
+                    List.of(".py", ".json", ".txt", ".yml").stream()
+                            .anyMatch(suffix -> path.getFileName().toString().endsWith(suffix))).toList();
+            sdkSourceCount = selected.size();
+            for (Path file : selected) {
+                Path destination = repo.resolve("ck3_autonomous_player/src").resolve(actualSdkSource.relativize(file));
+                Files.createDirectories(destination.getParent());
+                Files.copy(file, destination);
+            }
         }
+        int expectedSourceFiles = sdkSourceCount + 24;
+        Path currentFactory = sdk.resolve("bridge/mcp_server.py");
         // Cold profile preparation consumes this real tool/model pair lazily.
         // Include both in the actual Java composer input, not ambient SDK fallback.
-        Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py"),
-                sdk.resolve("saved_campaign_profile_inventory_v2.py"));
         Files.copy(actualRepository.resolve("tools/ck3_mod_acceptance_saved_profile_v2.py"),
                 tools.resolve("ck3_mod_acceptance_saved_profile_v2.py"));
         String fixtureMachine = JSON.readTree(actualRepository.resolve("tools/fixtures/ck3_r11_failed_resource_closure.json").toFile())
                 .path("machine_id").textValue();
-        for (String name : List.of("normal_exit_process_observer_v1.py", "normal_exit_contract_v1.py",
-                "normal_exit_public_wire_v2.py", "normal_exit_pending_observer_v1.py")) {
-            Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge").resolve(name),
-                    currentFactory.getParent().resolve(name));
-        }
         Path canonicalHost = repo.resolve("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py");
         Files.createDirectories(canonicalHost.getParent());
         Files.copy(actualRepository.resolve("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"),
@@ -481,10 +497,14 @@ final class SharedRuntimeComposerTest {
         manifest.put("schema", "ck3-mod-acceptance-shared-runtime-v1");
         manifest.put("machine_id", fixtureMachine);
         manifest.putObject("native");
-        ObjectNode retainedCapability = manifest.putObject("capabilities").putObject("ck3_take_snapshot");
+        ObjectNode parentCapabilities = manifest.putObject("capabilities");
+        ObjectNode retainedCapability = parentCapabilities.putObject("ck3_take_snapshot");
         retainedCapability.put("source_build_ready", true);
         retainedCapability.put("actual_live_qualified", false);
         retainedCapability.put("parent_marker", "preserve exact parent capability");
+        for (String tool : List.of("ck3_execute_step", "ck3_query_current_event_window_context_v1", "ck3_save_checkpoint")) {
+            parentCapabilities.set(tool, retainedCapability.deepCopy());
+        }
         manifest.putObject("host_features");
         manifest.putObject("source_root").put("path_key", "source_root");
         ObjectNode parentSourceMetadata = manifest.putObject("source_index");
@@ -616,8 +636,8 @@ final class SharedRuntimeComposerTest {
         assertEquals("retain exactly", actualManifest.path("preserved_unknown_parent_field").textValue());
         assertEquals(7, actual.path("allocation").path("preserved_allocation_field").intValue());
         assertEquals(1, actualIndex.path("actual_changed_parent_files").size());
-        assertEquals(38, result.copiedFiles(),
-                "36 existing sources plus frontend_fixture_start_contract.py and frontend_fixture_scenario_start_v1.py");
+        assertEquals(expectedSourceFiles, result.copiedFiles(),
+                "24 host/tool/case sources plus the complete selected SDK closure");
         assertEquals("ck3-common-source-index-v1", actualIndex.path("schema").textValue());
         assertTrue(actualIndex.path("files").isObject());
         assertEquals(result.copiedFiles(), actualIndex.path("files").size());
@@ -651,7 +671,7 @@ final class SharedRuntimeComposerTest {
         assertEquals(2, normalExitBuilderMetadata.size());
         assertEquals(frozenNormalExitBuilderPin.path("bytes"), normalExitBuilderMetadata.path("bytes"));
         assertEquals(frozenNormalExitBuilderPin.path("sha256"), normalExitBuilderMetadata.path("sha256"));
-        assertEquals(38, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
+        assertEquals(expectedSourceFiles, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
                 output.resolve("source"), fixtureMachine).size());
         assertEquals(pin(Path.of(result.sourceIndex())).path("sha256"), actualManifest.path("source_index").path("sha256"));
         assertEquals(pin(Path.of(result.manifest())), actual.path("manifest"));
@@ -673,6 +693,9 @@ final class SharedRuntimeComposerTest {
                 result.qualification());
         assertFalse(actualManifest.path("capabilities").path("ck3_execute_player_rite_creation_action_v1").path("actual_live_qualified").booleanValue());
         assertEquals(retainedCapability, actualManifest.path("capabilities").path("ck3_take_snapshot"));
+        for (String tool : List.of("ck3_execute_step", "ck3_query_current_event_window_context_v1", "ck3_save_checkpoint")) {
+            assertEquals(parentCapabilities.path(tool), actualManifest.path("capabilities").path(tool));
+        }
         JsonNode campaignRoot = actualManifest.path("capabilities").path("ck3_query_campaign_root_context_v1");
         assertTrue(campaignRoot.path("source_build_ready").isBoolean());
         assertTrue(campaignRoot.path("source_build_ready").booleanValue());
