@@ -4,6 +4,8 @@
 
 开发版本为 **0.2.0 Alpha**，正在落实[人工审核八项整改与验收方案](docs/manual-review-followup-2026-10-25.md)。已公开版本仍为 **0.1.0 Alpha**，Workshop ID **3826756673**。历史R0008已观察到礼仪实际创建、扣费及保存，R0010已冷加载并对比持久化对象；两场的完整公共验收为GAP，不能外推本轮新界面、原生定制及联合模组已通过。历史边界见[实机结果](docs/acceptance/live-results-2026-10-25.md)和[发布准备](docs/release-preparation-0.1.0-alpha-2026-10-25.md)。
 
+2026-10-29，`machine_id: 4-8e1c2f1861`的R0057五项UI补验与R0058三项冷载补验分别通过并正常关闭，见[续工记录](docs/live-review-resume-2026-10-29.md)。这些局部补验不改写原12项／20项完整矩阵的incomplete；SDK续行、county宗教地图颜色样本及真实Steam缓存闭环仍有缺口。0.2正式包／tag／manifest尚未生成，发布与缓存加载均未完成；当前仅进行离线正式封包准备，见[0.2发布准备](docs/publication-0.2.0-alpha-prepared-2026-10-29.md)和[永久changelog](../docs/release-changelogs/religious-ritual-fusion/0.2.0.md)。
+
 - [可行性分析报告](docs/feasibility-2026-10-24.md)
 - [编码方案](docs/implementation-plan-2026-10-24.md)
 - [测试验收方案](docs/test-acceptance-plan-2026-10-24.md)

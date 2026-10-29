@@ -126,3 +126,37 @@ Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a0
 约01:50Z无痕未登录页面确认15图顺序；原13图保留，本次未重复下载其字节。两张新原图匿名HTTP200，与冻结JPEG逐字节相同。完整说明2535字符／43行与匿名API逐字一致，末尾九张明确为未发布0.2.0预览，下载仍0.1.0-alpha；没有上传内容或Notes。01:51:48Z后台Steam仍离线，浏览器SCREEN14546释放。[公开回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-R0046-2026-10-29.json)。
 
 第一图在1066.9.17的免费编辑阶段拍摄，第四核心卡片部分超出可视区；第二图为1066.10.22，四项核心名称和家属当前礼仪均可见。原图分别4216917 B／`778da58e452784751b1594ebbae51aacd777307d3404ecf935e531725bfd356b`和4215085 B／`fbfdcf559ea68a6b399aa8c61ce798df7d37f6ba9f8f0dfeb31dae0524a05804`。[原生截图身份](../mod_religious_ritual_fusion/docs/media/screenshots-R0046-2026-10-29.json)；[业务实情](../mod_religious_ritual_fusion/docs/live-review-R0046-native-DES-2026-10-29.md)。窗口重叠、地图提示及确认弹窗诊断图没有发布。本场仍incomplete，截图不授最终冷载或八项总验收通过。
+
+
+## 2026-10-29 R0057／R0058：四张本地合格补验图，尚未公开
+
+`machine_id: 4-8e1c2f1861`；来源均为`7bcbc067656d0a090bbb8fe6559f805e482e2a84`。四张均为原始2560×1440全幅PNG，Root已实际查看；不裁切、缩放或生成像素。本次追加本地素材身份。Root于18:25:50Z完成四张本地JPEG，仅格式编码；尚未上传或新增公开顺序／preview ID／URL，现有15图历史保持。PNG与JPEG的独立SHA分别记录。
+
+C19=`C:/workspace/rrf-development-20261024/review-fixes-a01/shared-unrun-recovery-b01`。
+
+| 本地原图（相对C19） | 捕获UTC／内容 | bytes／PNG SHA-256 |
+| --- | --- | --- |
+| `screenshots/ui-R0057/01-default-draft-disabled-create.png` | 17:30:46Z，499虔诚三核心，B贡献及500费用阻断 | 4227276／`12dfc19206ebfb0cf667ab0704d4d7cc544d46a73845818b0ffb306470fcaace` |
+| `screenshots/ui-R0057/02-two-core-disabled-create.png` | 17:31:31Z，两核心，额外显示数量原因 | 4234955／`98bed2a628b2a79b0a52d16a7e7c2d9b6436aee3dacb2dbbaaf225415ae65ed6` |
+| `screenshots/cold-R0058/01-same-faith-disabled.png` | 18:04:25Z，day35冷载，同Faith无其他可用Rite及冷却提示 | 5192542／`ff4682a0a89f4d8ae00b323ee780a16672737b92050c5f2e6506973fc5d3dfd8` |
+| `screenshots/cold-R0058/02-cross-faith-disabled.png` | 18:04:52Z，跨Faith冷却提示；打开免费、成功后收费 | 5209587／`78200633214e90b9f7a35f9c09f75ce10db18e83566b338df2568ba37cee0e0c` |
+
+每图同名`.actual.json`及`.png.json`保留当场PID／出生、SCREEN、native widget generation、坐标映射和悬停读回。R0057 CK3 PID17912／出生`1793294547.5532284`，R0058 PID4944／出生`1793296555.0889328`。R0058两标签自然禁用不表示整行不能打开详情；同信仰缺来源及冷却、跨信仰冷却的语义按完整提示，不把负虔诚误认成开草稿费用。
+
+R0057五项UI与R0058三项冷载补验分别通过并正常关闭；原12／20完整矩阵incomplete、SDK续行、county地图颜色与Steam缓存缺口不变。[续工实际记录](../mod_religious_ritual_fusion/docs/live-review-resume-2026-10-29.md)及[0.2准备状态](../mod_religious_ritual_fusion/docs/publication-0.2.0-alpha-prepared-2026-10-29.md)记录原件。四张本地JPEG已经导出，见下表；后续仍须Root查看导出图及同条目提交／匿名回读后另记实际公开顺序，本表不预填公开事实。
+
+
+### 四张本地JPEG实际导出（未公开）
+
+`machine_id: 4-8e1c2f1861`；2026-10-29T18:25:50.565594Z。两次Java源码启动严格串行，原Popen4248／9340均wait0；原PNG前后SHA相同。ImageIO quality0.90、2560×1440，仅格式编码，没有裁切、缩放或生成像素。导出不证明已上传或完整验收。
+
+JPEG根为`C:/workspace/rrf-development-20261024/publication-0.2.0-alpha-publish1-a01/media/R0057-R0058`。
+
+| JPEG文件 | bytes／SHA-256 |
+| --- | --- |
+| `R0057-01-default-draft-disabled-create.jpg` | 620813／`9fcf292d9592168c6289994eb5bb2b2faf9474ca01e8828952a257160fe66499` |
+| `R0057-02-two-core-disabled-create.jpg` | 630427／`0b265a454569aa976d4f87f64b84a7b54bab5a3fcb4df255b04a31ddc1f7aa83` |
+| `R0058-01-same-faith-disabled.jpg` | 753049／`7bfb3e3b56ab7d7521de1b868f0d4b89b5268546872c318293840f0c81cbb052` |
+| `R0058-02-cross-faith-disabled.jpg` | 754693／`0112146f918d95079806d1a84738e46045f008ade3fed8e83d7a42cdf389078e` |
+
+原导出回执`publication-0.2.0-alpha-publish1-a01/metadata/media-export-a01/MEDIA-EXPORT.actual.json`4923B，SHA`90e3e51c819d1b1ea58f31014c3d243828c881a0a49b0616e6565a5420067a59`。JPEG未复制进仓库，暂无这些四图的公开URL、preview ID或回读结论。

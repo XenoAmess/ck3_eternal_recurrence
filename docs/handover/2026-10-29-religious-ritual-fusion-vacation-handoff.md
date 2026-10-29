@@ -1,5 +1,8 @@
 # 宗教礼仪融合：2026-10-29 休假交接
 
+> **2026-10-29续工入口**：后续R0057五项UI和R0058三项冷载补验已分别通过、正常关闭；原12／20完整矩阵、SDK续行、county地图颜色及Steam缓存仍有缺口。最新事实见[续工实机记录](../../mod_religious_ritual_fusion/docs/live-review-resume-2026-10-29.md)与[0.2正式发布准备](../../mod_religious_ritual_fusion/docs/publication-0.2.0-alpha-prepared-2026-10-29.md)。0.2正式包和上传尚未执行；四张补验图已本地导出JPEG、未公开。**以下正文保留交接当时状态，不以续工补验倒改原场次。**
+
+
 用户最新要求：“你要去度假了。温和地收尾手上的工作，梳理交接文档到docs中。”因此停止继续实机、发布及下载，让已运行命令正常结束后交接。**产品尚未完成最终验收，0.2.0-alpha 尚未发布。** 续工先读本文；[10月26日交接](2026-10-26-religious-ritual-fusion-review-handoff.md)保留历史效力，其“最后一次游戏”已不是当前状态。
 
 `machine_id: 4-8e1c2f1861`；本机观察时间均为UTC。仓库 `C:/workspace/ck3_eternal_recurrence`，本机获准工作根在C盘，不套用另一台机器的D盘映射。最后生产代码提交 **`16e74ec285fd727b886a41f2e38652e41e246494`**，已普通push至origin/master；本文之后的文档提交不追认为此前构建或游戏的源码提交。

@@ -82,3 +82,28 @@ SCREEN释放前两次分别因缺CLI SHA参数、小写SHA而在CAS前拒绝，�
 R0054关闭后精确回收3740个可重建shader文件、原生分配155353904B；四目录、三存档、截图与失败原件保留。删除原wait0，CAS361只记一次gross addback，总值12318605440B，不降低highwater。原载荷已不可读取，原件在`metadata/R54-retirement-execution-b01`。
 
 本任务只读PowerShell格式化命令PID5388/出生`1793284319.0585272`未退出，曾占约25GB RAM并使分页增长超过旧16GiB预留。原exec session ID被丢弃，**原Popen wait不可恢复**；确认身份及命令后仅终止该辅助进程，新打开OS句柄实际退出1，不冒充原wait。可用RAM恢复约27.5GB、分页回落，原容量失败及进程前后证据保留。不能概称本轮所有辅助命令均有原wait；以上保护复核期限仍不自动延长。
+
+
+## R0057：五项创建原因补验通过
+
+同机器`4-8e1c2f1861`，2026-10-29 UTC，clean来源`7bcbc067656d0a090bbb8fe6559f805e482e2a84`，外部根为`C:/workspace/rrf-development-20261024/review-fixes-a01/shared-unrun-recovery-b01`（C19）。R0057/a69沿真实生产选择器打开fresh499草案，玩家31254、Rite150／Faith13／Religion8。默认三核心显示B贡献和500费用阻断，减为两核心额外显示数量原因；原生创建按钮均禁用。取消一次后窗口隐藏，钱包499及业务内容不变；`rrfa.30`一次PASS、零FAIL，单checkpoint经held V4原wait0核对。Root已看两张原始2560×1440全幅正确禁用提示图，身份见[截图清单](../../workshop/religious_ritual_fusion_screenshots.md)。
+
+本场public0、verify0、Root PID10396原wait0并正常关闭；SCREEN实际释放14640。终态`metadata/public-operations-a01/root-execution-a69/ALL-ORIGINAL-TERMINALS.actual.json`13612B、SHA`b67875b36ea4d53602a6cf7b4c49b3f43c3646a6fd6f5c5164cd5f42c6ef6088`；Root原wait为`metadata/ROOT-SERIAL-UI-a69-original-a01/ROOT-SERIAL.original-wait.actual.json`2398B、SHA`5385ca0feebadc2bf1b2e81c5fac79e14bbb401d708385ac2d41f8d47255d3c9`。只授五项UI补验，R0053失败、R0054／R0055退出2及原注册12项／20项incomplete不变。
+
+## R0058：三项最终冷载补验通过
+
+同机器、同一clean来源，R0058/a70从真实day35存档冷载，不初始化fixture业务、不补虔诚。原生玩家31254、date_raw53145216、暂停、Rite155／Faith106／Religion8，虔诚raw=-40000／scale100000。Rite／Faith的48名成员前后全集合相同，county均为空；信条、教义、钱包与日期不变。只关闭一次loaded结果GUI，移除展示旗标`rrf_result_dialog`，不宣称所有旗标不变。没有打开草稿、创建、付费、编辑、resume、apply、保存或推进日期。
+
+只读`rrfa.22`恰一次`faith_persisted_readback` PASS、零FAIL。实际独立融合组内同信仰在前、跨信仰在后，两标签自然灰显；标签禁用不外推整行不可打开详情。同信仰完整提示为当前Faith无其他eligible Rite及十年冷却未结束；跨信仰为十年冷却未结束。两项都说明打开免费、创建仅成功扣费，无原始no_item_selected或将负虔诚作为入口费用的原因。Root已看两张2560×1440全幅图与原生控件、PID/birth、SCREEN、坐标及悬停sidecar。
+
+18:08:27Z正常闭场，public0、verify0、allocator0、host0，Root PID13448／出生`1793296512.9558861`原wait0，原tool session12048已消费；显示恢复并释放SCREEN14648。三项assertions均true，**只授该三项补验，不追认原20项完整矩阵**。
+
+| C19相对原件 | bytes／SHA-256 |
+| --- | --- |
+| `metadata/normal-close-a01/root-business-oracles-R0058/R0058-DAY35-BUSINESS.actual.json` | 773576／`78ce9ec3c56f406e315cfb21226538588f12e73ac88ed914a4b221ae8ae09d4c` |
+| `metadata/public-operations-a01/root-execution-a70/ALL-ORIGINAL-TERMINALS.actual.json` | SHA`94cdc42d45cc9f1af8d2c491aaecf0df8d9cb216c3b8e49ba57a5645cde9108a` |
+| `metadata/ROOT-SERIAL-COLD-a70-original-a01/ROOT-SERIAL.original-wait.actual.json` | SHA`4552be50fd85fff885815ed7eeea455c489d0bd64975d2af0b6e5f7f535f88da` |
+
+首次pretty JSON汇总触1MiB输出守卫，原工具exit1，尚未创建oracle或公共response。Root只将同一完整事实改为紧凑编码，b03成功，保留原失败和全部守卫；没有重放Game，不称生产故障或实机重跑。说明原件为`metadata/cold-business-candidate-a01/SEAL-b02-size-guard-and-b03-encoding.actual.json`。
+
+18:10:33.426334Z后台新鲜原生探针再次确认Steam offline=true，PID7032／出生FILETIME`134376848388036198`、客户端11.15.70.27，原件`metadata/R58-postclose-Steam-offline.actual.json`。原12项／20项incomplete、SDK continuation的episode缺失／save_binding_mismatch、county地图实际颜色样本及Steam缓存闭环缺口不变；county[]不构成地图着色样本。正式0.2发布包和新媒体尚未生成、Steam没有上线，后续见[0.2准备记录](publication-0.2.0-alpha-prepared-2026-10-29.md)。

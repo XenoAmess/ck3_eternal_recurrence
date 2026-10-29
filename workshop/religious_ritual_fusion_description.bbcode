@@ -1,43 +1,46 @@
-[h1]宗教礼仪融合 · 0.1.0 Alpha[/h1]
-把双方的信条与教义带进同一份草稿，创建属于你的融合结果。
+[h1]宗教礼仪融合 · 0.2.0 Alpha[/h1]
+对照双方的信条与教义，创建融合结果，再通过原生编辑器定制同一礼仪。
 
-[b]这是早期测试版，尚未完成完整实机验收。请先备份存档，建议使用独立测试存档。[/b]
+[b]早期测试版，完整实机验收仍未完成。请备份存档，并使用独立测试存档。[/b]
 
 [h2]两种融合[/h2]
 [list]
 [*][b]礼仪融合[/b]：与同一信仰下的另一礼仪融合，创建新的礼仪。
-[*][b]宗教融合[/b]：与另一信仰的礼仪融合；设计上也允许跨宗教选取来源。新信仰归属创始者当前的宗教。
+[*][b]宗教融合[/b]：与另一信仰的礼仪融合，创建新信仰。新信仰归属创始者当前的单一宗教；跨宗教来源属于设计范围，尚未完成实机验收。
 [/list]
 
-[h2]对照、选择、创建[/h2]
-使用有领地的玩家角色，在决议中打开[b]“融合宗教礼仪”[/b]或[b]“融合宗教信仰”[/b]，选择另一来源，再进入融合窗口。
+[h2]选择、查看原因、创建[/h2]
+使用有领地的玩家角色，在独立融合决议组中选择来源，再进入草稿。同信仰入口在前，其他信仰入口在后。打开草稿免费，不要求先付创建费用。
 
 [list]
-[*]对照双方的核心信条与教义，恰好选择三个不同的核心信条。
-[*]双方各需贡献至少一项独有的最终信条或教义，共同内容不计独有贡献。
-[*]每组教义选择一项；知识、DLC、教义限制及互斥规则仍然适用。
-[*]打开草稿不收费；礼仪融合默认消耗500虔诚，宗教融合默认消耗1000虔诚，成功后角色进入十年冷却。
-[*]融合后可以通过“查看最近的融合”查看结果与双方来源。
+[*]普通环境恰好选择三个不同核心信条；搭配More Tenets Slots时支持3–100项实际信条，不用空槽充数。实机覆盖四项，未验证100项选择。
+[*]双方各需贡献至少一项独有的最终信条或教义；共同内容不算独有贡献。每组教义选择一项，知识、DLC、教义限制及互斥规则继续适用。
+[*]选择后自动校验。页面与创建按钮悬停共同显示实际阻断，包括核心数量、双方贡献与真实费用，无需另点“检查选项”。
+[*]默认礼仪融合500虔诚、宗教融合1000虔诚，仅成功创建扣费，成功后十年冷却。取消草稿不创建结果、不扣创建费用。
 [/list]
 
-创始者采用融合结果，不强制双方全部信徒、封臣和领地改宗。原版改宗规则可能影响近亲。未选中的原核心信条可能继续作为“获准”存在；跨宗教融合产生单一宗教归属的新信仰。
+[h2]同一结果的原生定制[/h2]
+融合后进入同一结果的一次免费原生定制会话，设置名称、形容词、信徒称呼、说明、图标和颜色，并查看原生教义、美德与罪恶。已选核心保留，双方独有贡献仍须成立。未完成的定制可从历史入口继续；结果尚待核验时，请保留存档并查看未决融合，不要重复提交。
 
-[h2]Alpha 已观察到的结果与未验范围[/h2]
-已在1.20.0.4中观察到礼仪实际创建、一次性扣费、保存，以及重新启动游戏后读回同一结果、来源和核心／教义。完整公共验收仍有未完成项，不能视为全部通过。
+结果页展示双方来源、最终核心与教义，以及至亲采用和封臣邀请的实际状态。至亲沿原版改宗规则处理；封臣邀请由玩家选择，接受度预览不等于已经改信，未确认的邀请不会自动重发。不会强制双方所有信徒、封臣和领地一起改宗。
 
-[b]宗教融合、跨宗教融合、完整拒绝用例、冷却到期、AI、多人及旧存档兼容尚未完成实机验收。[/b]当前融合入口仅向玩家开放。若提示结果尚待核验，请保留存档，通过“查看未决融合”检查，不要重复提交同一次融合。
+[h2]联合模组与语言[/h2]
+搭配More Tenets Slots或“宗族化密教 / Dynastic Esotericism”时，将它们排在本模组上方。宗族化密教联合环境默认保持非宗族化，玩家可在原生教义组中选择宗族化。标准教义扩展沿原生动态类别显示；任意第三方自定义GUI、额外脚本效果及未知信条仍需单独适配和核验。
 
-[h2]版本、语言与兼容[/h2]
-适配声明：CK3 1.20.0.*；本次实机版本：1.20.0.4。其他版本和其他模组组合未验收。
+适配声明：CK3 1.20.0.*；已观察实机版本1.20.0.4。玩家无需Java或开发工具。附带九语言文件；新增文案优先简中、英文，其他七语新增键为英文占位，尚未逐语人工审校或实机验收。
 
-附带游戏九种语言的本地化文件。简体中文、英文之外的七种翻译已进行键和格式检查，尚未逐语人工审校或实机验收。玩家运行模组无需安装Java或开发工具。
+[h2]已通过的补验与Alpha边界[/h2]
+已观察到礼仪及同宗教内的新信仰创建、一次性收费、保存读回；四核心结果的同对象免费编辑、长名称、图标与RGB读回、七美德／七罪恶，以及搭配宗族化密教自然推进35天的维护。
 
-页面原有六张游戏画面展示0.1.0 Alpha。末尾九张为尚未发布的0.2.0开发界面预览：新版融合结果页、同一礼仪的信仰面板、核心信条选择、分组教义选择、冷载后五日的家属采用结果、当前礼仪的美德与罪恶、搭配More Tenets Slots时恰好选择四项核心的宗教融合草稿，以及长名称的免费后置定制与自然推进35天后的四核心结果页。四核心草稿实测四项，不代表100项容量已验收。当前下载仍是0.1.0-alpha；开发预览不代表0.2.0已发布或完整验收已通过。所有游戏画面均为真实实机截图；方形封面为AI生成宣传插画。
+本轮[b]五项界面补验与三项冷载补验通过[/b]：499虔诚时，三核心草稿正确显示来源贡献和500费用阻断，改为两核心会再显示数量原因，取消后钱包与业务状态不变。载入第35天存档后，结果、成员、信条与教义保持；同信仰入口明确提示缺少可用来源及冷却，其他信仰入口提示冷却。两项都说明打开免费、成功创建才扣费，不把当前负虔诚误写成入口收费条件。
 
-[h2]Religious & Ritual Fusion — Alpha[/h2]
-Compare two rites, choose three core tenets and one doctrine per category, then create a fused rite or faith. Both sources must contribute unique content. Default costs: 500 / 1000 piety; ten-year cooldown. Existing knowledge, DLC and doctrine restrictions apply.
+[b]这些补验不代表历史完整验收矩阵全部通过。SDK续行资格、领地宗教地图实际颜色样本及真实Steam缓存下载／加载闭环仍未完成。跨宗教融合、100核心、完整拒绝矩阵、冷却到期、AI、多人及旧存档兼容尚未完整实机验收。[/b]
 
-Early test release for CK3 1.20.0.*. Rite creation and persistence have been observed in 1.20.0.4, while complete acceptance remains unfinished. Faith fusion, cross-religion fusion, AI, multiplayer and old-save compatibility are not live-validated. Back up your saves and use a test campaign.
+截图涵盖0.1.0历史画面与0.2.0开发及补验，各图仅证明其记录范围，不代表完整验收通过。游戏画面均为真实实拍；方形封面为AI生成宣传插画。
 
-[h2]Unreleased UI development preview[/h2]
-The final nine screenshots show the development build's updated fusion result, native faith panel, core tenet selection, grouped doctrine selection, family adoption five days after reloading, the current rite's virtues and sins, a faith-fusion draft with exactly four core tenets selected alongside More Tenets Slots, free post-creation editing with a long name, and the four-core result after 35 naturally advanced days. Four selections were live-tested; the displayed capacity of 100 is not a claim that 100 selections were validated. The current download remains 0.1.0-alpha. These are genuine CK3 gameplay captures, not a 0.2.0 release or a claim of complete acceptance.
+[h2]Religious & Ritual Fusion — 0.2.0 Alpha[/h2]
+Compare two rites, choose core tenets and grouped doctrines, then customize the same result through the native editor. Both sources must contribute unique content. Default creation costs are 500 / 1000 piety with a ten-year cooldown; opening or cancelling a draft is free.
+
+Normally three core tenets are required. More Tenets Slots supports 3–100; four were live-tested, not 100. Load More Tenets Slots and Dynastic Esotericism above this mod. Dynastic affiliation is optional. Standard doctrine categories are supported; arbitrary custom GUIs require separate compatibility work.
+
+Five UI checks and three cold-load checks passed, covering disabled-button reasons, cancellation, saved results and cooldown/source tooltips. Historical full acceptance matrices remain incomplete. SDK continuation, county religion map colour samples and the Steam cache-loading loop are unfinished. Cross-religion sources, 100 cores, AI, multiplayer and old saves are not fully live-validated. Early test version for CK3 1.20.0.*; observed on 1.20.0.4. Back up your saves.
