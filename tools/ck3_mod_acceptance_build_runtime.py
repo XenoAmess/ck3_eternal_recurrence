@@ -1563,6 +1563,30 @@ if _args.normal_exit_managed_profile is not None or _args.normal_exit_managed_pr
                 raise ValueError('Allocated normal-exit validation branch unavailable')
             validation.orelse = statement.body[1:]
             statement.body = [validation]
+    # A retained tail may already contain the allocated-profile conversion.
+    # Frontend observation has no campaign identity to derive. Keep explicit
+    # profile validation above intact, and delegate the profile-free menu mode
+    # to the ordinary shared host. Normalize both original and converted tails.
+    profile_test = ast.parse('if _args.normal_exit_managed_profile is not None or _args.normal_exit_managed_profile_sha256 is not None:\n    pass').body[0]
+    menu_test = ast.parse('if not _args.frontend_mod_load_observation:\n    pass').body[0]
+    if not isinstance(profile_test, ast.If) or not isinstance(menu_test, ast.If):
+        raise ValueError('Normal-exit startup branch unavailable')
+    for node in tail_tree.body:
+        if not isinstance(node, ast.FunctionDef) or node.name != 'main':
+            continue
+        for branch in ast.walk(node):
+            if (not isinstance(branch, ast.If)
+                    or ast.dump(branch.test) != ast.dump(profile_test.test) or not branch.orelse):
+                continue
+            fallback = branch.orelse
+            if (len(fallback) == 1 and isinstance(fallback[0], ast.If)
+                    and ast.dump(fallback[0].test) == ast.dump(menu_test.test)):
+                continue
+            if not any(isinstance(call, ast.Call) and isinstance(call.func, ast.Name)
+                       and call.func.id == '_faith_prepare_actual_normal_exit_binding'
+                       for statement in fallback for call in ast.walk(statement)):
+                raise ValueError('Existing normal-exit derive fallback differs')
+            branch.orelse = [ast.If(test=menu_test.test, body=fallback, orelse=[])]
     tail = marker + '\n' + ast.unparse(ast.fix_missing_locations(tail_tree)) + '\n'
     sentinel = 'if __name__ == "__main__":\n    raise SystemExit(main())'
     require(canonical.count(sentinel) == 1, "Actual shared host entry boundary differs")
