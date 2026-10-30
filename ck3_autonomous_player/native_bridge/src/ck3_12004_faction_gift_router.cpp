@@ -273,6 +273,8 @@ std::string SerializeResult(const Query &query, std::string_view step,
           ck3_11906::SerializeFactionGiftMitigationReceiptV1(query.receipt)) : "null") + "}}";
 }
 
+// Private character fields use raw uint32 FullID bits; public signed JSON
+// is converted explicitly by its caller, never accepted as an alternate token.
 bool ReadFrameRequest(std::string_view payload, const game::Snapshot &frame,
     std::uint64_t revision) noexcept {
   std::uint64_t requested_revision = 0, date = 0, actor = 0;
@@ -280,8 +282,9 @@ bool ReadFrameRequest(std::string_view payload, const game::Snapshot &frame,
       bridge::JsonUnsignedField(payload, "expected_date_raw", date) &&
       bridge::JsonUnsignedField(payload, "expected_player_character_id", actor) &&
       revision != 0 && requested_revision == revision && frame.date_raw >= 0 &&
-      date == static_cast<std::uint64_t>(frame.date_raw) && actor != 0 &&
-      actor == static_cast<std::uint64_t>(frame.played_character_id) && frame.paused &&
+      date == static_cast<std::uint64_t>(frame.date_raw) &&
+      actor < (std::numeric_limits<std::uint32_t>::max)() &&
+      actor == static_cast<std::uint32_t>(frame.played_character_id) && frame.paused &&
       frame.map_ready && frame.has_played_character && frame.played_character_alive;
 }
 
@@ -289,9 +292,9 @@ bool ReadIds(std::string_view payload, std::uint32_t &source, std::uint32_t &rec
   std::uint64_t source_raw = 0, recipient_raw = 0;
   if (!bridge::JsonUnsignedField(payload, "source_faction_id", source_raw) ||
       !bridge::JsonUnsignedField(payload, "recipient_character_id", recipient_raw) ||
-      source_raw == 0 || recipient_raw == 0 ||
+      source_raw == 0 ||
       source_raw > (std::numeric_limits<std::uint32_t>::max)() ||
-      recipient_raw > (std::numeric_limits<std::uint32_t>::max)()) return false;
+      recipient_raw >= (std::numeric_limits<std::uint32_t>::max)()) return false;
   source = static_cast<std::uint32_t>(source_raw);
   recipient = static_cast<std::uint32_t>(recipient_raw);
   return true;

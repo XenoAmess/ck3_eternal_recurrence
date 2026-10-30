@@ -32,16 +32,6 @@ bool ValidRole(MembershipRole value) noexcept {
          value == MembershipRole::character_member;
 }
 
-bool StrictlyIncreasingNonZero(
-    const std::vector<std::uint32_t> &values) noexcept {
-  if (values.empty()) return true;
-  if (values.front() == 0) return false;
-  for (std::size_t index = 1; index < values.size(); ++index) {
-    if (values[index] == 0 || values[index - 1] >= values[index]) return false;
-  }
-  return true;
-}
-
 bool Contains(const std::vector<std::uint32_t> &values,
               std::uint32_t value) noexcept {
   return std::binary_search(values.begin(), values.end(), value);
@@ -110,7 +100,7 @@ AckStatus ValidateBoundObservation(
       observation.source_faction_target_character_id !=
           request.player_character_id ||
       observation.source_faction_at_war ||
-      !StrictlyIncreasingNonZero(
+      !FactionGiftRawMemberIdsValidV1(
           observation.source_faction_member_character_ids)) {
     return Reject(request, FailureClass::faction_binding,
                   "not_a_bound_peacetime_targeting_faction", {}, ack);
@@ -208,8 +198,8 @@ AckStatus ExecuteFactionGiftMitigationActionV1(
         !ValidToken(request.idempotency_key) ||
         request.expected_revision == 0 ||
         request.expected_native_revision == 0 ||
-        request.player_character_id == 0 || request.source_faction_id == 0 ||
-        request.recipient_character_id == 0 ||
+        request.player_character_id == UINT32_MAX || request.source_faction_id == 0 ||
+        request.recipient_character_id == UINT32_MAX ||
         request.recipient_character_id == request.player_character_id ||
         !ValidRole(request.membership_role) ||
         request.expected_definition_key !=
@@ -313,6 +303,16 @@ AckStatus ExecuteFactionGiftMitigationActionV1(
   }
 }
 
+bool FactionGiftRawMemberIdsValidV1(
+    const std::vector<std::uint32_t> &member_character_ids) noexcept {
+  for (std::size_t index = 0; index < member_character_ids.size(); ++index) {
+    if (member_character_ids[index] == 0xFFFFFFFFU ||
+        (index != 0 && member_character_ids[index - 1] >=
+                           member_character_ids[index])) return false;
+  }
+  return true;
+}
+
 ReceiptStatus VerifyFactionGiftMitigationReceiptV1(
     const game::FactionGiftMitigationAckV1 &ack,
     const game::FactionGiftMitigationObservationV1 &post,
@@ -372,7 +372,7 @@ ReceiptStatus VerifyFactionGiftMitigationReceiptV1(
   if (post.source_faction_present) {
     if (!post.source_faction_metrics_available ||
         post.source_faction_metric_scale == 0 ||
-        !StrictlyIncreasingNonZero(
+        !FactionGiftRawMemberIdsValidV1(
             post.source_faction_member_character_ids)) {
       return fail("same_faction_requery_incomplete");
     }

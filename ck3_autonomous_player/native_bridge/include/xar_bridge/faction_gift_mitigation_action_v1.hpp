@@ -235,6 +235,12 @@ game::FactionGiftMitigationAckStatusV1 ExecuteFactionGiftMitigationActionV1(
     const game::FactionGiftMitigationRequestV1 &request,
     game::FactionGiftMitigationAckV1 &ack) noexcept;
 
+// Faction member sets retain the private uint32 FullID representation.
+// Zero is a valid character identity; all-ones is the missing-ID sentinel.
+// Ordering is unsigned; eligibility remains with the bound observer/validator.
+bool FactionGiftRawMemberIdsValidV1(
+    const std::vector<std::uint32_t> &member_character_ids) noexcept;
+
 game::FactionGiftMitigationReceiptStatusV1
 VerifyFactionGiftMitigationReceiptV1(
     const game::FactionGiftMitigationAckV1 &ack,

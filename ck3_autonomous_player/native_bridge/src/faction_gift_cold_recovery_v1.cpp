@@ -82,6 +82,11 @@ FactionGiftColdRecoveryTerminalV1 EvaluateFactionGiftColdRecoveryV1(
   if (!BaseFacts(request, post))
     return unresolved("process_or_independent_entity_facts_unproven");
   const auto &value = post.observation;
+  if (value.source_faction_present &&
+      !FactionGiftRawMemberIdsValidV1(
+          value.source_faction_member_character_ids)) {
+    return unresolved("independent_faction_member_id_set_incomplete");
+  }
   if (value.player_gold_raw ==
           request.pre_player_gold_raw - request.expected_gold_cost_raw &&
       value.gift_opinion_present &&

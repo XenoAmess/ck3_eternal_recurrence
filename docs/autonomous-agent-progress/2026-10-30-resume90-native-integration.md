@@ -217,3 +217,34 @@ Evidence: `D:/ck3-state/resume90-m3-native/getter-producer/{SOURCE-INDEX90.json,
 the same M3 root. The new owned-image fixtures remain D cases rather than a
 new persistent CI target. The existing shared reader/serializer contract is
 unchanged, and no DLL or Game deployment occurred.
+
+## M1 private raw-character action path
+
+The four-leaf private candidate was adopted by exact hunks at 14:48:48.784Z.
+Its character requests remain unsigned raw full32 words `[0,FFFFFFFE]`, with
+FFFFFFFF absent. Public alerts remain canonical signed int32. The router now
+compares request actor words with the actual `int32_t` Snapshot actor's uint32
+projection, and admits raw recipient zero. One shared member-set validator
+accepts zero, rejects FFFFFFFF, and enforces unsigned strict ordering in
+Execute, Verify and cold reconciliation. Source-faction rules and actual
+identity/legality/resource/idempotency/one-submit checks are retained; native
+source/validator/submit bindings and ABI certification are unchanged.
+
+All four publication-base sources matched current Z. The adopted bodies match
+the actual qualified candidates: the whole Handler path moved from 2 successful
+worlds/4 failures to 6 matching worlds, each preview → pending ACK → duplicate
+rejection → independent receipt → cold query, with one clone/queue attempt.
+Twenty-four actual command-result/anonymous-pipe WriteFrame packets and 153
+rejection checks (57 malformed requests) are retained. Existing action six suites
+and cold test also passed. Native I/O/transport callbacks and post-state inputs
+are software-authored; the result does not grant live submission or Game credit.
+The new whole-path fixture is still a D case; its persistent CI packaging is a
+separate follow-up.
+
+An integration review initially assumed Snapshot actor was int64 and requested
+wide-frame guards. The actual `game_contract.hpp:2286` field is int32; the
+attempted wide fixture assignment was rejected at `/WX` compile time. The owner
+withdrew that incorrect regression claim and redundant runtime guards. The
+original qualified production candidate was preserved, and the type-review
+failure is not counted as a production RED. See
+`D:/ck3-state/resume90-m1-native/action-identity/{DELIVERY.json,ACTION-PRIVATE-RAW32-CANDIDATE.patch,FRAME-TYPE-REVIEW-CORRECTION01.json}`.
