@@ -8,11 +8,13 @@ import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.PlanningWire;
 import org.xar.ck3.control.application.planning.family.FamilyNativePreparation;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
+import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** One physical Game's actual planner producer archives full requests before returning family commands. */
 public final class RootFamilyPlanningOriginals implements FamilyNativePreparation.PlanningOriginalCapture {
+    private static final int MAX_PLANNING_ORIGINAL_BYTES=Math.min(PlanningWire.MAX_BYTES,WriterContracts.MAX_PIN_BYTES);
     private final RootRuntimeContext context;
     private final LinkedHashMap<String,ExactRef> retained=new LinkedHashMap<>();
     public RootFamilyPlanningOriginals(RootRuntimeContext actual) {context=Objects.requireNonNull(actual);}
@@ -21,7 +23,7 @@ public final class RootFamilyPlanningOriginals implements FamilyNativePreparatio
         var same=context.borrowedSession();context.writer().requireSession(same);
         context.collector().currentPlanning(same,original,command,command.deadline(),(exact,lease)->{
             FamilyNativePreparation.requireCommandFrame(command,lease.frame().semantic());
-            ExactRef ref=context.archive().preserveArtifact(same,PlanningWire.encodeRequest(exact),PlanningWire.MAX_BYTES);
+            ExactRef ref=context.archive().preserveArtifact(same,PlanningWire.encodeRequest(exact),MAX_PLANNING_ORIGINAL_BYTES);
             synchronized(retained) {
                 String key=key(command);ExactRef prior=retained.putIfAbsent(key,ref);
                 StrictJson.require(prior==null || prior.equals(ref),"same immutable family command changed its complete captured planning request");
@@ -38,7 +40,7 @@ public final class RootFamilyPlanningOriginals implements FamilyNativePreparatio
     }
     public PlanningRequest original(Session same,ActionCommand command,ExactRef ref)throws IOException {
         context.writer().requireSession(same);
-        var original=PlanningWire.decodeRequest(context.archive().readArtifact(same,ref,PlanningWire.MAX_BYTES));
+        var original=PlanningWire.decodeRequest(context.archive().readArtifact(same,ref,MAX_PLANNING_ORIGINAL_BYTES));
         StrictJson.require(original.before().equals(command.before())&&original.source().equals(command.source())
                 &&original.sessionId().equals(command.sessionId())&&original.deadline().equals(command.deadline())
                 &&original.observations().actionSteps().contains(command.operation()),"archived complete family planning request differs from immutable command");
