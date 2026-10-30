@@ -85,11 +85,8 @@ final class NativeFinanceRefundSourceRouteTest {
         Set<Integer> available = Set.of(0, 1, 2, 3, 10, 11);
         for (int scenario = 0; scenario < 13; ++scenario) {
             ObjectNode full = frame(rows, scenario);
-            if (scenario == 10) {
-                // Preserve native CharacterID0; the actual shared planner Frame still refuses it.
-                assertThrows(IllegalArgumentException.class, () -> receipt(contract, full, 0)); continue;
-            }
-            var result = contract.decode(receipt(contract, full, 17));
+            long actor = scenario == 10 ? 0 : 17;
+            var result = contract.decode(receipt(contract, full, actor));
             if (!available.contains(scenario)) {
                 var unavailable = assertInstanceOf(ConstructionRefundSource.Unavailable.class, result);
                 var persisted = StrictJson.object(StrictJson.parse(unavailable.toJson()), Set.of("schema", "planning_frame", "native_observation"));
@@ -102,7 +99,7 @@ final class NativeFinanceRefundSourceRouteTest {
             assertEquals(BigInteger.valueOf(19), candidate.frame().revision());
             assertEquals(BigInteger.valueOf(7), candidate.frame().nativeRevision());
             assertEquals(EPOCH, candidate.captureEpoch()); assertEquals(2, candidate.provinceId());
-            assertEquals(17, candidate.receiver().characterId()); assertFalse(candidate.finalCancelGateObserved());
+            assertEquals(actor, candidate.receiver().characterId()); assertFalse(candidate.finalCancelGateObserved());
             assertFalse(candidate.submissionQualified()); assertFalse(candidate.receivedFundsVerified()); assertEquals(0, candidate.fundingCreditRaw());
             var restored = assertInstanceOf(ConstructionRefundSource.Candidate.class,
                     ConstructionRefundSource.decode(candidate.toJson(), candidate.frame(), EPOCH, 2));
@@ -114,6 +111,34 @@ final class NativeFinanceRefundSourceRouteTest {
             if (scenario == 11) assertEquals(0, candidate.receiver().currentGoldRaw().orElseThrow());
             if (scenario != 2) assertNotEquals(candidate.receiver().characterId(),
                     candidate.activeRecord().orElseThrow().recordedBuilderCharacterId());
+        }
+    }
+    @Test void actualSignedNativeReceiptsTraverseTheSharedDecoderInExplicitSoftwareEnvelopes() throws Exception {
+        String path = System.getProperty("xar.construction.refund.signed.golden");
+        String sha = System.getProperty("xar.construction.refund.signed.golden.sha256");
+        assertNotNull(path); assertNotNull(sha);
+        byte[] bytes = Files.readAllBytes(Path.of(path));
+        assertEquals(sha, HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes)));
+        ObjectNode signed = StrictJson.object(StrictJson.parse(bytes), Set.of("cases"));
+        var contract = contract();
+        for (JsonNode row : signed.get("cases")) {
+            String name = StrictJson.text(row.get("case"));
+            assertEquals(name.equals("negative-two-typed-data") ? "typed-serialize-data" : "native-read",
+                    StrictJson.text(row.get("source_kind")));
+            // The exact C++ source receipt is unchanged; only this command envelope/guard is software DATA.
+            ObjectNode envelope = frame(rows(), 0);
+            ((ObjectNode) envelope.get("result")).set("construction_refund_source_v1", row.get("receipt").deepCopy());
+            boolean available = row.get("receipt").get("available").booleanValue();
+            ((ObjectNode) envelope.get("result")).put("status", available ? "source_available" : "source_unavailable");
+            long actor = available ? row.get("receipt").get("actor_character_id").longValue() : 17;
+            var result = contract.decode(receipt(contract, envelope, actor));
+            if (!available) { assertInstanceOf(ConstructionRefundSource.Unavailable.class, result); continue; }
+            var candidate = assertInstanceOf(ConstructionRefundSource.Candidate.class, result);
+            assertEquals(actor, candidate.receiver().characterId()); assertEquals(BigInteger.valueOf(actor), candidate.frame().actorCharacterId());
+            var saved = StrictJson.parse(candidate.toJson()); assertEquals(row.get("receipt"), saved.get("native_observation"));
+            assertFalse(candidate.submissionQualified()); assertFalse(candidate.receivedFundsVerified()); assertEquals(0, candidate.fundingCreditRaw());
+            assertArrayEquals(candidate.toJson(), assertInstanceOf(ConstructionRefundSource.Candidate.class,
+                    ConstructionRefundSource.decode(candidate.toJson(), candidate.frame(), EPOCH, 2)).toJson());
         }
     }
     @Test void actualOutboundProvinceAndOriginalReturnPacketCannotBeReplaced() throws Exception {

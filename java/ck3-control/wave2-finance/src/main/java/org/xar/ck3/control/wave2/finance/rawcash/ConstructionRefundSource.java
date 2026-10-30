@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.Set;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.wave2.finance.holyloan.HolyLoanCodec;
 import org.xar.ck3.control.wave2.finance.holyloan.LoanFinancingCodec.PlanningFrame;
@@ -69,7 +70,7 @@ public final class ConstructionRefundSource {
     }
     public record Receiver(long characterId, Optional<Pointer> componentPointer, OptionalLong currentGoldRaw) {
         public Receiver {
-            StrictJson.require(characterId >= 0 && characterId < 0xffff_ffffL, "actual command actor full ID required");
+            NativeCharacterId.of(characterId);
             Objects.requireNonNull(componentPointer, "componentPointer"); Objects.requireNonNull(currentGoldRaw, "currentGoldRaw");
             StrictJson.require(componentPointer.isPresent() == currentGoldRaw.isPresent(),
                     "missing receiver component differs from an observed zero balance");
@@ -257,7 +258,7 @@ public final class ConstructionRefundSource {
         }
         StrictJson.require(node.get("unavailable_reason").isNull(), "available source cannot carry an unavailable reason");
         BigInteger revision = decimal(node.get("native_revision"), BigInteger.ONE, StrictJson.UINT64_MAX);
-        BigInteger actor = StrictJson.integer(node.get("actor_character_id"), BigInteger.ZERO, UINT32_MAX.subtract(BigInteger.ONE));
+        BigInteger actor = NativeCharacterId.fromJson(node.get("actor_character_id")).asBigInteger();
         BigInteger date = StrictJson.integer(node.get("date_raw"), BigInteger.ZERO, BigInteger.valueOf(Integer.MAX_VALUE));
         if (!revision.equals(expected.nativeRevision()) || !actor.equals(expected.actorCharacterId()) || !date.equals(expected.dateRaw())) {
             return new Refused(Refusal.FRAME_DRIFT);
@@ -309,7 +310,7 @@ public final class ConstructionRefundSource {
         Optional<Pointer> component = node.get("component_pointer").isNull() ? Optional.empty() : Optional.of(pointer(node.get("component_pointer")));
         OptionalLong gold = node.get("current_gold_raw").isNull() ? OptionalLong.empty()
                 : OptionalLong.of(StrictJson.integer(node.get("current_gold_raw"), Long.MIN_VALUE, Long.MAX_VALUE));
-        return new Receiver(StrictJson.integer(node.get("character_id"), 0, 0xffff_fffeL), component, gold);
+        return new Receiver(NativeCharacterId.fromJson(node.get("character_id")).value(), component, gold);
     }
     private static Pointer pointer(JsonNode value) { return new Pointer(decimal(value, BigInteger.ONE, StrictJson.UINT64_MAX)); }
     private static BigInteger decimal(JsonNode value, BigInteger minimum, BigInteger maximum) {
@@ -326,7 +327,7 @@ public final class ConstructionRefundSource {
         Objects.requireNonNull(frame, "frame"); StrictJson.text(frame.snapshotId()); StrictJson.text(frame.episodeRunId());
         unsigned(frame.revision(), BigInteger.ZERO, StrictJson.UINT64_MAX); unsigned(frame.nativeRevision(), BigInteger.ONE, StrictJson.UINT64_MAX);
         unsigned(frame.connectionGeneration(), BigInteger.ZERO, StrictJson.UINT64_MAX); unsigned(epoch, BigInteger.ONE, StrictJson.UINT64_MAX);
-        unsigned(frame.actorCharacterId(), BigInteger.ZERO, UINT32_MAX.subtract(BigInteger.ONE));
+        NativeCharacterId.of(frame.actorCharacterId());
         unsigned(frame.bridgePid(), BigInteger.ONE, UINT32_MAX); unsigned(frame.dateRaw(), BigInteger.ZERO, BigInteger.valueOf(Integer.MAX_VALUE));
         StrictJson.require(province > 0, "positive requested province required");
     }
@@ -345,7 +346,7 @@ public final class ConstructionRefundSource {
         return new PlanningFrame(StrictJson.text(node.get("snapshot_id")), decimal(node.get("revision"), BigInteger.ZERO, StrictJson.UINT64_MAX),
                 decimal(node.get("native_revision"), BigInteger.ONE, StrictJson.UINT64_MAX),
                 StrictJson.integer(node.get("date_raw"), BigInteger.ZERO, BigInteger.valueOf(Integer.MAX_VALUE)),
-                StrictJson.integer(node.get("actor_character_id"), BigInteger.ZERO, UINT32_MAX.subtract(BigInteger.ONE)),
+                NativeCharacterId.fromJson(node.get("actor_character_id")).asBigInteger(),
                 StrictJson.text(node.get("episode_run_id")), StrictJson.integer(node.get("bridge_pid"), BigInteger.ONE, UINT32_MAX),
                 decimal(node.get("connection_generation"), BigInteger.ZERO, StrictJson.UINT64_MAX));
     }

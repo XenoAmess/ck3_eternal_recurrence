@@ -34,7 +34,7 @@ final class NativeFinanceRefundArchiveTest {
     private static final BigInteger EPOCH = new BigInteger("18446744073709551614");
 
     private static ActionWriterIntegrationFixture.SoftwareReadScenario scenario(AtomicReference<NativeFinanceReads> owner) {
-        return new ActionWriterIntegrationFixture.SoftwareReadScenario(HolyLoanCodec.SHA256,
+        return new ActionWriterIntegrationFixture.SoftwareReadScenario(HolyLoanCodec.SHA256.toLowerCase(java.util.Locale.ROOT),
                 "controlled-refund-archive-12004", source -> {
                     var actual = new NativeFinanceReads(source);
                     assertTrue(owner.compareAndSet(null, actual));
@@ -54,7 +54,19 @@ final class NativeFinanceRefundArchiveTest {
 
     private static PlanningReadResult.Known<ConstructionRefundSource.Result> read(
             ActionWriterIntegrationFixture fixture, NativeFinanceReads owner, BigInteger epoch) throws Exception {
-        var before = fixture.ready().request();
+        if (fixture.scenarioReadWrites() > 0) {
+            // Consume the existing software packet producer again between independent reads; do not rewrite frame time.
+            var transport = fixture.physicalInputs().transport();
+            var previous = transport.latestObservedSnapshot().orElseThrow().observedAt();
+            for (int attempt = 0; attempt < 2 && !transport.latestObservedSnapshot().orElseThrow().observedAt().isAfter(previous); attempt++)
+                assertInstanceOf(org.xar.ck3.control.application.action.NativeSnapshotWaitPort.Received.class,
+                        transport.waitForSnapshot(java.time.Instant.now().plusSeconds(5), java.time.Instant.now().plusSeconds(120)));
+            assertTrue(transport.latestObservedSnapshot().orElseThrow().observedAt().isAfter(previous),
+                    "the actual software receiver must accept a new packet occurrence");
+        }
+        // Real file-backed archive work on the data volume can exceed the fixture's generic 20-second helper.
+        var before = assertInstanceOf(org.xar.ck3.control.application.session.SessionPorts.Ready.class,
+                fixture.collector.observe(fixture.observationIdentity(), java.time.Instant.now().plusSeconds(120))).request();
         return fixture.writer.locked(same -> {
             var request = new PlanningReadRequest(before.before(), before.source(), before.sessionId(),
                     owner.cancelQuote().operation(), new NativeFinanceReads.CancelQuoteRequest(2, epoch).arguments(),
@@ -68,7 +80,7 @@ final class NativeFinanceRefundArchiveTest {
 
     @Test void actualCentralReadOriginalArchiveAndAssessmentRoundTripWithoutFundingOrLedgerWrites() throws Exception {
         var owner = new AtomicReference<NativeFinanceReads>();
-        try (var fixture = new ActionWriterIntegrationFixture(root.resolve("roundtrip"), false, scenario(owner))) {
+        try (var fixture = new ActionWriterIntegrationFixture(root.resolve("roundtrip"), false, scenario(owner), List.of(), java.time.Duration.ofSeconds(60))) {
             var known = read(fixture, owner.get(), EPOCH);
             byte[] ledger = fixture.ledgerBytes();
             int queries = fixture.scenarioReadWrites();
@@ -109,7 +121,7 @@ final class NativeFinanceRefundArchiveTest {
 
     @Test void foreignLocatorsCrossedCurrentCopiesAndTamperedRecordsRefuseWithoutRepair() throws Exception {
         var owner = new AtomicReference<NativeFinanceReads>();
-        try (var fixture = new ActionWriterIntegrationFixture(root.resolve("integrity"), false, scenario(owner))) {
+        try (var fixture = new ActionWriterIntegrationFixture(root.resolve("integrity"), false, scenario(owner), List.of(), java.time.Duration.ofSeconds(60))) {
             var first = read(fixture, owner.get(), EPOCH);
             var second = read(fixture, owner.get(), EPOCH.subtract(BigInteger.ONE));
             byte[] ledger = fixture.ledgerBytes();
