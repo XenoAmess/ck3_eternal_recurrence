@@ -55,3 +55,14 @@ runtime-install104完整模型候选16.634s返回：factor activeGame与catalog�
 当前以真实新任务并行测试：小方法修复、实际编译诊断纠错、纯数值ASM重现、单TU typed fixture、多文件consumer合同及同World HELLO/fullSnapshot装配。提供输入大小仅说明上下文，不等于实际改写规模。完整ASM ABI/内存布局重建仍由owner主导；模型负责独立可核的小段，较大候选隔离验收，不阻塞同Game接续。
 
 尚未POST的worker launcher维护在runtime owner接管采用后取消，不能追认模型实现；已人工完成Ranking亦未重发。源码候选与运行期qwen selector分开计数，本岗没有Game动作或运行期决策HTTP。
+
+
+### 用户更新模型 IP：192.168.1.11 的实际首请求
+
+用户于 2026-10-31 本地日期两次指定新 IP 并要求记入运营；Root 已改唯一配置与 AGENTS。后续源码 HTTP 从配置读 `http://192.168.1.11:8080/v1` / `qwen38-coder`，不继续旧1.7重试、不回8000。旧 command106 五次503+一次reset保留原接口失败归属；未POST的 archive107 在 owner 完成后取消，不补调用。
+
+新地址首真实 P0 `runtime-storage-hotpath108`：UTC20:17:28.587641→20:17:38.031662，HTTP200stop/SSE DONE/JSON，headers3.612s、TTFT3.614s、总9.444s，25828in955out、cached未知、实际OSexit0。四完整源117152字符，末任务仅普通storage两方法；未授编测/采用/加速/Game信用。候选结束即直交Java writer，首答root-loop编辑可用但漏lock-path重复stat，owner已交窄纠错，未将漏项当接口失败。原件 `D:/ck3-state/model-dispatch91/runtime-storage-hotpath108/`；迁移receipt为同根 `NEW-IP-MIGRATION91.json`，call91事件自此显式记录base_url。
+
+此后新IP真实候选按到达独立派发：M5三叶只保留Unavailable/IOException原因，Storage第二方法纠错与M6自然START单方法曾并发，canonical108只删两个纯本地查询的旧deadline guard；各终态已立即直交原owner。运行期HTTP仍归runtime，本岗不调用Game。新地址首成功不是长期服务稳定性或模型能力上限结论，正式经验反链：[可行性](../local-model-executor-feasibility-2026-10-28.md)、[能力边界](../local-model-capability-boundary-2026-10-28.md)。
+
+Storage后继最终回执：第二轮8.943秒/481out，root/lock两hunk分别原语义采入，owner生产语义改0；三源strict0/3.664秒。首跑7P1F、owner修测试清理后仅失败1P/2.185秒，非同JVM8P。Runtime S/Z及正式FF `2377f74ccf` 分记；未授量化提速，MB109 loop/新增日另记。

@@ -52,10 +52,31 @@
   },
   "latest_connection_observation": {
     "machine_id": "xenoamess-full-tower-eb9d2c1186",
-    "observed_at_utc": "2026-10-28T14:21:49.623Z",
+    "observed_at_utc": "2026-10-30T20:17:38.031662+00:00",
+    "base_url": "http://192.168.1.11:8080/v1",
+    "model": "qwen38-coder",
+    "task_id": "runtime-storage-hotpath108",
     "http_status": 200,
-    "response_id": "chatcmpl-9baab6b77c75b1fb"
+    "response_id": "chatcmpl-ba50aaf173ce40c0",
+    "finish_reason": "stop",
+    "sse_done": true,
+    "http_headers_ms": 3612.0030996389687,
+    "first_nonempty_content_delta_ms": 3613.5425996035337,
+    "total_ms": 9443.532399833202,
+    "prompt_tokens": 25828,
+    "completion_tokens": 955,
+    "cached_prompt_tokens_if_reported": null,
+    "scope": "real source candidate; connection observation does not grant compilation, adoption, performance or Game credit",
+    "evidence_root": "D:/ck3-state/model-dispatch91/runtime-storage-hotpath108"
   },
+  "connection_observation_history": [
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-28T14:21:49.623Z",
+      "http_status": 200,
+      "response_id": "chatcmpl-9baab6b77c75b1fb"
+    }
+  ],
   "prompting": {
     "layout_version": "stable-prefix-v1",
     "system_template": "You are a Java engineering collaborator. Use only the supplied current source and contracts. Return a precise candidate or analysis for the final task. Do not invent APIs, missing facts, successful tests, or game outcomes. Distinguish observations from assumptions. Follow the requested output format.",

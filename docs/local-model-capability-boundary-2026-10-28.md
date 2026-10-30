@@ -23,3 +23,12 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。本节只归并有实际请求�
 actual105大输入预算修复体现的边界是“完整当前source+准确数据量+真实栈”可以产生跨两消费者的小edit，但模型首轮漏import、未保裸IllegalArgumentException到公开ContractViolationException的映射。不是只证明812KiB材料可读：owner先复现正链，再用非法UTF8/duplicate发现4个真实负例回归，精确反馈后模型7edit原样通过actual105完整链+6负例和既有Lineage10P。输入13文件138201chars只是上下文；实际改写为几个parse调用/helper，不应称13文件自主改写或全图恢复。owner补2import成本与第二轮原样方法采用分别记。
 
 这轮还证明传输/交付/采用是三件事：首HTTP9.017s后的约3分钟通知延迟属于协调；第二轮10.503s快速直达仍等编测才授采用。M5后继显式large-input入口及4叶传播在4.043s/7.288s返回时尚未授采用；后续实际5叶+probe严格编译0、1.395MB输入→565953B结果/563211B selector/2250B analysis及7负向通过，owner import/historical128修正与原六hunk传播分记。五叶FF17f70beeb4及runtime的MB106七源编译0/16.667s另有回执；旧FormalIntake8P4F既有红保留，仍不称整个模块或Game业务通过。基础env一行候选经单源strict0而无需镜像测试，同样不外推自主工具能力或上限。实际JSON字节、输入token、完整source数、owner提示/修正和语义验证分开保留。
+
+
+### resume91 运营补记：地址切换与能力证据分离
+
+用户于 2026-10-31 本地日期指定新 IP `192.168.1.11`；后续唯一地址为 `http://192.168.1.11:8080/v1`，模型 `qwen38-coder`，保留合并实验历史。旧 IP `192.168.1.7` 下 command106 的五次503和一次reset仅为传输证据，无候选，不能作推理能力失败或新服务失败。
+
+新 IP 首实际源码任务 `runtime-storage-hotpath108` 于 UTC `2026-10-30T20:17:28.587641Z` 开始，9.444 秒完整200/stop/SSE/JSON，TTFT3.614秒，25828in/955out，cached未知，真实客户端exit0。四完整源117152字符是上下文规模，实际待改仅普通storage两个方法；首答只闭root重复stat分支，漏lock-path重复stat，owner据源审给第二个窄任务。传输完成与部分源审、后继编测/采用/性能/真实游玩分别记账；此观察不改变 owner-led 全ASM/layout分工，也不构成能力或并发上限。详见 [可行性运营段](local-model-executor-feasibility-2026-10-28.md) 与 [resume91 模型页](autonomous-agent-progress/2026-10-31-resume91-models.md)，原件为 `D:/ck3-state/model-dispatch91/runtime-storage-hotpath108/`。
+
+后继 Storage 采用补记：第二轮8.943秒/481out后，两轮各一个生产hunk原语义采用，owner语义纠正0，三源strict0/3.664秒；首测试7P1F属owner测试清理，修后只失败项1P/2.185秒，不写同JVM8P。最小S/Z及FF `2377f74ccf` 已回执，未测量性能收益，MB109/实际游玩单列。这是完整上下文内两方法补齐的实测，不是首轮完整实现成功或多模块能力上限。

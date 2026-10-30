@@ -96,3 +96,14 @@ actual105 Family链提供833行真实排名、实际preview原件与两完整消
 首轮19:13:11已传输完成但约19:16才通知owner的延迟属于协调交付，不能归HTTP慢；后继P0让结果子岗最高优先单任务SUMMARY/CONTENT直达，异常类型轮与M5 intake/propagation轮均先直接交owner再索引。M5二叶大collection入口4.043s及后继四叶传播7.288s在返回时只授完整传输；其后两轮候选经owner补import/保留historical128并实际采用五叶，传播六hunk仅CRLF适配。5叶+probe严格编译0/2.100s、Java0/1.215s；actual105材料的source-derived最小plan832852B→pool832967B→input1395039B/result565953B/selector563211B/analysis2250B及7负向/默认检查通过。旧FormalIntake整类8P4F（旧cachedpositiveID/缺golden）保持，不声称整类绿。五叶正式FF17f70beeb4；Family两叶与M5五叶共7src由runtime采用，MB106真实END0/16.667s、业务106同Game接续启动，安装/编译不授ActionSelected/receipt/新日。
 
 基础单方法还有独立证据：NativeBridgeBuild.clean子进程env补一个flag请求925输入/249输出，1.891s完整，原样采一行；单源Java21严格编译0/10.209s，普通FF67b4a9d984，无新增镜像测试、全局环境/SDK/Game修改。这是精确代码/任务下的小修改，不是自主模块构建闭环。原件见D:/ck3-state/resume91-runtime/obligations105与D:/ck3-state/resume91-java-delivery/native-env-compile；详细结果继续由REVIEWS91归并。
+
+
+### resume91 运营补记：用户更新 IP 为 192.168.1.11
+
+2026-10-31 本地日期，用户两次明确将模型 IP 更新为 `192.168.1.11` 并要求记入运营。唯一配置现为 `http://192.168.1.11:8080/v1` / `qwen38-coder`，端口、模型、认证与稳定三消息规则保持；后续调用从配置读取，不向旧 `192.168.1.7` 发新请求/重试，也不回退 8000。Root 已更新地址迁移和 AGENTS；本岗只补真实连接观察，旧观察移入 history，旧实验保留。
+
+新 IP 首个真实任务 `runtime-storage-hotpath108` 于 UTC `2026-10-30T20:17:28.587641Z` POST，`20:17:38.031662Z` 完整结束：HTTP200、stop、SSE DONE、JSON，headers 3.612 秒、首个有效内容 3.614 秒、总 9.444 秒，25828 input / 955 output tokens，cached tokens 未报告，客户端实际 exit0。输入为四份完整当前源 117152 字符，实际任务仅普通 storage 两方法候选；固定 system 正规化为唯一配置，原完整源和末任务未改。连接成功本身不授源码采用、测试、性能改善或 Game 信用；首答源审仅 root 分支可用，漏 lock-path 热路径，已另交真实窄纠错。
+
+此前 `runtime-command106` 的五次 HTTP503 和最后一次 reset 归旧 IP；六次均无有效候选，不是新 IP 失败或模型推理失败。新首轮成功也不证明长期稳定、并发上限或缓存命中。原请求、SSE、结果及迁移记录在 `D:/ck3-state/model-dispatch91/runtime-storage-hotpath108/` 与 `NEW-IP-MIGRATION91.json`；运营明细见 [resume91 模型页](autonomous-agent-progress/2026-10-31-resume91-models.md)。
+
+后继 Storage 窄纠错原件：第二轮8.943秒/481out，首答root分支与第二答lock方法两生产hunk均原语义采用，owner生产语义纠正0；三源strict javac0/3.664秒。必要测试首跑7P1F，owner修正测试清理后只重跑首失败1P/2.185秒，不能写同一JVM8P；S/Z最小采用和正式FF `2377f74ccf` 已独立回执。此结果没有量化加速，MB109实际loop与Game进展另记。

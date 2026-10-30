@@ -43,4 +43,24 @@ P0 Family105两完整消费者最小patch正常发表 `966015a93b`：lineage与d
 
 M2 GUI协商3叶正常发表 `147e648b3c`：独立精确capability才选择既有v2，安装读取一次现有HELLO diagnostics并将List转Set；没有新I/O、启动门或Native广告。模型constant/selector仅常规缩进，安装语句owner纠正；首API错误、返工退回旧v1以及owner误写Set的真实编译红都保留。复用owner4显式源strict0/5.714s、原3+新2同JVM5P/0skip/3.135s，不重绿。Native63未广告该token时继续v1。
 
-restart/episode 等仍按原交接的准确manifest链审阅，不能因上述包发表便称正式D已包含全部运行修复。后继反向同步只接精确最小diff，不整叶覆盖S或Z。
+历史restart101五叶已正常FF为 `e5bdb7ea70`：Journal26行解释原idle restart capture，保留真实batch frontier、Driver/action/source/transport；两新helper与376399B gzip原样，新增未被loader读取的metadata改名restart98-manifest.json，保留既有settled35 manifest。当前单Journal必要strict all/Werror0/4.085s，与旧完整候选差异只有已发表SEM103两行。旧actual98单1P与portable单1P分别保留，不重绿或称一次2P。
+
+incident99/ACKv3历史链按7个原patch准确前置顺序采用，独立正常FF `39a81a1b61`：2生产叶、原test、POM共享8个既有wave2-events gzip，资源不复制。先empty-progress test再lazy test再v3 acknowledgement，直接跳lazy测试的apply-check失败已保留，未修改测试逻辑。当前2显式生产源strict all/Werror0/3.745s，旧affected13P、lazy2P、v3 ACK2P各组未重。
+
+## 实际108热路径与新IP后继
+
+用户将本地模型IP明确更新为192.168.1.11后，配置/AGENTS唯一已有运营行最小更新正常FF `ea59a947e4`；不追加正式历史缺席的旧运营段，不回退旧IP/8000。新首请求与旧连接观察分别保留，HTTP与工程采用仍分开。
+
+P0真实command106/Archive107已分别正常FF `a5938377b1`/`fc76365b92`。前者只将arguments边界对齐既有command1MiB；833399B四字段参数→835520B直接body为source-derived窄测，不是最终Factory intent。后者capture/read共同取PlanningWire256MiB与CAS64MiB+4的较小role预算，不改全局；1110855B往返也是source-derived，actual107完整request大小仍null。运行岗107实际越过命令构造，随后修归档；不把有限探针当真实action。
+
+同108故障的prisoner借活Session两叶 `b647cea784` 与M5三叶原因传播 `c0a6fdb90d` 已正常FF。前者保legacy Store委托，只安装read-only port，不import/初始化/清空ledger；复用旧真实writer probe/reader5P。后者原样模型三hunk只保Unavailable.reason与IOException cause，owner三源strict0/6.585s，不授底层不可用已修。两者本岗不重绿。
+
+Root给出108归档嵌套路径的一次真实栈，定位RootRuntimeStorageGuard每层重复root/native lock身份stat；这不是量化根因或测得加速。本岗以runtime fc/b确认S/Z同字节的完整当前类、ordinary/legacy两测试及StorageWriteGuard合同四源117152字符交新IP。首模型9.444s/25828in955out只闭root-loop，部分源审采用；第二个精准一方法反馈8.943s/25602in481out闭lock-path。生产两hunk原样、owner语义0：普通分支仍保closed、真实FileLock有效与channel开放、唯一writer、UNKNOWN、容量及实际写结果；legacy cards分支行为源审保持，未重旧全套。
+
+必要验证仅D隔离：3显式源strict0/3.664s；首8case7P1F/0skip/3.957s，唯一失败是本岗新增closedChannel负例在AfterEach的FileLock.release清理抛ClosedChannelException，body已拒callback。只修该新test清理，单test strict0/1.639s、只此前失败method1P/0skip/2.185s，七绿不重，不能称一次最终8P。原红/准确两hunk/模型原文/完整回执在 `D:/ck3-state/resume91-java-delivery/storage-hotpath/DELIVERY.json`。正式最小生产+三个必要锁活性负例正常FF `2377f74ccf`，正式D较旧的其它ordinary inventory改动未整叶覆盖。
+
+canonical纯归档lookup两个旧wall-clock guard删除及原首方法回归扩展正常FF `9f9728ecc7`，模型两edit原样；owner真实baseline1F在旧448→candidate strict0/3.928s、新选1P/0skip/20.530s，保wrong args miss、expired Native零dispatch拒绝与fresh Native正控。本岗不重该方法。runtime将Storage、canonical及其它7生产源合MB109实际0/10.784s、20:27:05Z同Game LOOP_START/next22；安装9.980s不作为本岗测得Storage加速或新增日信用。
+
+Root新要求提高本地模型实际并发后，已复用packet_review91独占D封两个真实未完Focus后继：完整当前installed verifier/material ownership adapter，及settled receipt后publication→opening COMPLETE的闭合helper。旧API发明误归因撤回、缺方法/完整effect与producer closure缺口保留于 `D:/ck3-state/resume91-java-delivery/FOCUS-REVIEW91.json`。首包17完整API+7精确excerpt约466004字符、末任务11464字符，20:34:22Z已由本岗复用call91.py直接向新IP实际POST（id java-focus-material-next91/max6000）；第二包继续独立封装，不等齐。此处规模为输入上下文，不是17文件改写，结果未回不授实现、编测或Focus COMPLETE。HTTP与候选可以并行，所有本地编测仍按唯一槽/P0优先。
+
+后继反向同步仍只接精确最小diff，不整叶覆盖S或Z；不能因本页各包发表便称正式D已与全部运行修复等同。
