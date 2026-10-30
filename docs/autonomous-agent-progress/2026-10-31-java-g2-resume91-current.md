@@ -26,6 +26,24 @@ deadline两叶严格javac0/6.911秒，既有PhaseDeadlineTest4P/0F/0skip后S/Z�
 
 19:13Z证据补充：运行岗按105启动时间有界读取188个新CAS小原件，实际找到obligations Native preview的packet1300B/result1199B/registered receipt5869B/permission admission2309B（D:/ck3-state/resume91-runtime/OBLIGATIONS105-ORIGINALS.json）。因此105已实际越过SHA并完成该只读preview；因未到其canonical publication，单看canonical event105只有ROOT不能否定该Native READ。后继lineage816446B、diagnostic812421B已真实StrictJson/read85 RED，完整prepare测试改用真packet替代unavailable软件stub。模型P0已独立POST当前13源138201chars与真实栈，待最小decode+大材料重编码修复/验收；不授新普通动作、qwen运行决策或新增日。
 
+19:35Z续行：Family两叶实际105主链最终GREEN，保留CVE/cause后非法JSON/UTF8/duplicate/boolID/跨帧等6负例与未改Lineage原类10P通过；Diagnostic原golden缺席未假造整类绿。M5 actual105材料驱动的source-derived producer链（不冒充完整actual Draft）得到plan832852B→pool832967B→collection1395039B，原128KiB入口RED；最终5叶显式完整通道后result565953B、selector input563211B、small analysis2250B，strict编译0与7项必要负例通过。既有FormalIntake整类8P4F/0skip，四旧ID/classpath/缺资源问题保留，不扩为恢复前置。
+
+普通selector本地投影组件也已实际取值：105 snapshot44929B、history60197B、root_facts12732B，subset117963B/外层字符串129199B；缺实际command时proposal与完整payload标null，未发伪请求。selector当前64MiB编码、ActionCodec.command另1MiB边界分别记录；不凭此预授普通运行模型成功。
+
+Family两叶966015a93b、M5五叶17f70beeb4均已精确FF发表并按序S/Z采用。MB106于19:34:51.325Z–19:35:07.993Z局部增编0/16.667秒，默认mvn -T2 -pl local-service -am，复用缓存/无clean；随后worker106同Game next17接续，安装阶段暂停新研究编译。真实loop、qwen HTTP、动作/日以106后续回执为准，当前本轮新增日与普通动作仍0。
+
+106实际终态补录：worker106/PID168224于19:36:04.660258Z–19:37:49.523659Z运行104.863秒、exit4；19:36:58.5325493Z已真实ORDINARY_WORKER_LOOP_START/next17。批17在19:36:58.6649886Z–19:37:48.8728429Z运行50.207秒后SOURCE_CONTRACT_REJECTED，错误为family `projection JSON exceeds explicit role budget`，attempt/applied0、native63/public67/date53144328，next18；stderr空、Game stop false。原件R90 WORKER106-END.json与worker106.stdout.log，未因END重启Game。
+
+运行岗按106时间有界找到94个新CAS小原件中的8个READ，Root/legality/projection/relation/preview均同native63/public67，索引D:/ck3-state/resume91-runtime/command106/READS106.json。确定具体命令边界：ActionCommand构造器以768KiB=786432B验证完整arguments，FamilyPolicy327实际args保833行legality/projection/relationship；后续ActionCodec完整command另1MiB。正在同106材料重建精确args→构造器首红→codec往返→selector本地payload并交模型最小候选，尚不授107。Root独立读ProjectionJson后提示8MiB/64MiB角色参数误用可能性，已由运行岗排除，不记为本次根因；公共JSON根类不盲放大。
+
+普通qwen HTTP/运行期模型选择、普通动作、新游戏日与SAVE截至该终态仍0。106 stdout同时保留prisoner借用会话失败/missing domain ledger的现场细节，当前先修已实际终止的命令budget，不将未执行的后继路径当已修。研究始终只用全局一个小编译槽，P0增编与安装时暂停新研究编译。
+
+19:57Z补记与范围纠正：106四字段args按真实Family327消费者重建为833399B，比768KiB上限多46967B；直接ActionCommand→codec body835520B严格往返通过，3预算负例通过。该窄测并非最终Factory intent，后者还把完整plan封入planning_proof，因此不能以835520B声称最终命令完整大小。ActionCommand只将参数上限对齐既有ActionCodec.MAX_COMMAND_BYTES=1MiB，完整codec上限及Projection全局8MiB未改；数值原类3P1F，旧MB同为signed-zero旧红，未掩盖。单叶a5938377b1已发表，MB107于19:53:14.860Z–19:53:20.422Z增编0/5.562秒、复用缓存无clean。
+
+worker107于19:53:43.4109686Z真实进入同Game next18，启动20.194秒；批18运行47.332秒，在19:54:31.379Z worker END4/68.161秒，SOURCE_CONTRACT_REJECTED family `finite immutable artifact bound required`，attempt0/native65/public70/date53144328/next19、stderr空。Factory命令构造已实际越过，但尚未HTTP/提交。确定RootFamilyPlanningOriginals.capture/read把PlanningWire.MAX_BYTES=268435456传给CAS最大67108868，limit先拒任何小材料；当前仅修该叶两处共同有限role预算并用真实材料往返，不放大全局CAS、不等模型、不重启Game。
+
+源码模型command106于19:48:18.135Z真实POST；前两次均HTTP503，分别81.057秒/81.021秒，无有效content，按配置退避后第三次重试中。它没有模型候选，owner独立修复不授模型采用信用。运行期qwen尚未调用，不能把源码服务503当作已发生的运行决策失败；如果后继真实provider终态被服务不可用阻塞，可明确记录后切既有Java普通策略，仅重启业务同Game接续，不伪造模型决策。
+
 ## 并行制作与交付
 
 八个M各有独立owner，按真实未闭实现/研究并行，不依据旧编制自动补足60。各岗只写独占D候选，正式Java/Native按具体文件由交付owner集成，Game与生产MB不与研究混写。
@@ -54,6 +72,8 @@ Native交付复用delivery90正式GUI产物，原休假尚未START的dispatch CT
 18:54:37.667Z实测：42真实任务/42尝试、18终态（12完整stop JSON、6length截断），24客户端在途/峰值24；服务同刻running24/waiting0/KV57.6%。滚动扩发按实际终态、错误与资源调整，不将客户端连接峰值当永久服务能力。M3 converter120首轮原样模型候选已离线编0/1.813秒、run0/1.111秒；20场景含100业务语义检查，另263基础设施检查，总363，不授收入或Game验收。
 
 19:00:42.566Z的STATUS快照记68任务、92次尝试、59完整传输/9最终失败、客户端峰值25；19:06:52Z快照为97任务/121尝试、82完整JSON/15length、峰值25，24次ConnectionReset保留partial后第二尝试完整。两个有限快照各自当时在途0，后续真实新任务/纠错继续POST，不将它们外推为当前服务空闲。M0 trait原87B新组合、M3 succession142、M7 special三方法均取得各自D离线采用/执行结果，详见专页；不授当前Game或完整M里程碑。若干owner曾把外层JSON显示转义误当源码、把实际存在API误判缺失，均保留勘误并从模型推理失败分类撤回。截断、请求末尾schema冲突、静态审阅、真实编译/行为失败分别记录。
+
+19:22:11Z有限快照为110任务/134尝试、95完整JSON/15length、峰值25，之后Family/M5同材料真实P0仍逐项短请求。M5入口与后续传播分别4.043秒/7.288秒完整回包并实际采用；P0由现有结果岗优先直接向owner交付。19:13:11已结束的Family首次回复曾迟报数分钟，已作为协调交付成本保留并修正，不算HTTP耗时或模型推理失败。两全局经验文件本次精确新增段由3101536eba正式发表，旧未发表Z历史未整文件覆盖。
 
 能力探索继续覆盖单方法、实际诊断修复、跨文件合同和组件装配；ABI多文件重建由owner负责，模型可接可验证窄叶。旧scale候选实际javac失败，隔离语法修正后1789组/17890槽有12718不符，已作为真实失败反馈；不会从一次成败推断能力上限。更多请求、审阅、采用与返工见 [模型记录](2026-10-31-resume91-models.md)。
 

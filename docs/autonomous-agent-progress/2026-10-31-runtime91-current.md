@@ -38,3 +38,37 @@ Root有界资源实读 `D:/ck3-state/resume91-root/P0-RESOURCE-OBSERVATION01.jso
 - worker105/PID323888于 `19:05:18.446439Z` 同Game启动；`19:05:50.0109348Z` 已真实emit `ORDINARY_WORKER_LOOP_START` / next16，启动后31.564秒。105实际越过104的catalog安装故障。开始实际普通batch16，Game不重启、旧FOCUS不重放。
 - Root在105安装阶段暂缓研究新编译；进入loop后恢复统一单研究编译槽/P0优先。该资源处理不外推为I/O根因证明。
 - qwen普通selector已配置；尚无新的实际HTTP/模型决策/动作/新增游戏日回执，不把LOOP_START当游玩完成。
+
+## 105批16与同一Family大材料的后继消费者
+
+105于 `19:06:55.785325Z` 真实exit4/97.338886秒；批16本身为 `19:05:50.2145085Z`–`19:06:55.1265209Z` /64.912012秒，明确 `PLANNER_STOPPED / SOURCE_CONTRACT_REJECTED: family source/contract rejected: bounded nonempty UTF-8 JSON required`。attempt/applied0、committed_saved_days0，Driver native61/public64/date53144328。实际canonical106/repair_required/BATCH_INTERRUPTED16、next17，pending null、原dirty Focus保持，无Game重启。
+
+先前未凭canonical新增ROOT publication推断其它READ已发布。随后仅按105启动时间有界读取188个新CAS小原件，实际找到同native61/public64的Root、legality、projection与registered obligations READ。后者packet1300B/result1199B/receipt5869B，`query_status=available`、`complete_can_send=true`，subject40526/candidate40408，child dynasty174。这些是真实只读预览，未成为world ACTION或游戏日信用。它们未写入新的canonical read publication，不能与ROOT已发布行混同。索引 `D:/ck3-state/resume91-runtime/OBLIGATIONS105-ORIGINALS.json` 保存精确refs。
+
+原102完整833行材料的新鲜隔离探针已排除Ranking小输出与preference路径：choices2944B、rejectionReasons281B、preference输入18038B/输出6004B均通过。确定后继两个实际完整材料消费者仍用默认小预算：lineage输入816446B在 `HeirLineageConsumerPort.evaluate:41` 红；diagnostic输入812421B在 `HeirCandidateDiagnosticConsumerPort.decode:83` 红，后者还有小预算整份opaque编码。现将同一合同的parse/encode必要传播一并交模型候选；用105同帧真实READ重放完整prepare链，避免混用102/105材料授绿。106未启动，MB未为下一候选重编。
+
+## 105同帧修复闭合与106真实终态
+
+上述lineage/diagnostic最终以105同帧原件验证：lineage816386B→3973B且选40408，diagnostic814987B→15387B。首模型漏import，补import后发现非法UTF8/duplicate等4个异常类型回归；模型第二轮保留CVE/cause后实际完整链与6负例全绿，既有Lineage整类10P/0F/0skip。Diagnostic缺失既有golden资源，未补造整类绿色。两叶最小S/Z采用并正常发表 `966015a93b`，索引 `D:/ck3-state/resume91-runtime/obligations105/DELIVERY.json`。
+
+同材料后继M5经过生产pool的source-derived有限fixture实测：plan832852B→pool832967B→intake1395039B，先在Intake128KiB入口红；首两叶修复后在ObservedOpportunitySelector128KiB红。因此补齐五叶显式完整输入入口，默认/historical128KiB及小analysis/reservation保持。最终strict0/2.100秒、Java0/1.215秒，intake1395039B→完整result565953B/selector563211B/analysis2250B；7个UTF8/duplicate/type/default预算与数值token检查通过。既有整类真实8P4F（旧positive-only ID三类、缺golden资源），未扩修或伪绿。此fixture不是actual105完整PlanningRequest或完整FamilyPolicy Draft。五叶已S/Z最小patch采用并正常发表 `17f70beeb4`。
+
+ordinary模型producer的离线实测只覆盖105已存原件：投影snapshot44929B/history60197B/root_facts12732B，subset117963B/作为字符串129199B。未造proposal/fullpayload，二者大小为null；未发HTTP。详情 `D:/ck3-state/resume91-runtime/selector105-size/SELECTOR105-SIZE.md`。
+
+MB106于 `19:34:51.325344Z`–`19:35:07.992652Z` 真实exit0/16.667秒，实际仅重编上述7源码，六相关模块复用原输出，未clean。worker106/PID168224于 `19:36:04.660258Z` 同Game启动；`19:36:58.533Z` 真实LOOP_START/next17。批17于 `19:36:58.6649886Z`–`19:37:48.8728429Z` 真实50.207854秒后SOURCE_CONTRACT_REJECTED，worker `19:37:49.523659Z` exit4/104.863405秒。新明确错误为family `projection JSON exceeds explicit role budget`，attempt/applied0、native63/public67/date53144328、next18；无新模型决策/普通动作/新增日。
+
+不把ProjectionJson根角色上限8MiB盲目放大。已查最强实际调用为ActionCommand构造器：独立arguments上限768KiB，而FamilyPolicy327仍将完整833legality与projection/relationship放入实际command args；由provider91以106同帧真实原件重建/定位精确bytes和构造器栈，核ActionCodec既有1MiB总body预算及直接消费者后再作最小候选。当前Game/DLL保持，未起107。
+
+## 106精确命令预算与107同Game接续
+
+106同帧Root/legality/projection/relationship/preview原件经生产consumer解码，按FamilyPolicy327构造source-derived arguments833399B（833行legality、choice40408、relationship18790B）。旧ActionCommand50以786432B角色预算真实抛ProjectionProtocolException；baseline strict0/2.387秒、Java0/1.780秒，确定不是误传64MiB。没有提交命令或伪造完整实际Draft。证据 `D:/ck3-state/resume91-runtime/command106/READS106.json`、`baseline-RESULT.json`。
+
+模型任务runtime-command106真实POST后遇503并按配置异步重试，未产生可采用候选；不以HTTP等待阻断实机。owner最小候选只将ActionCommand.MAX_ARGUMENT_BYTES绑定既有ActionCodec.MAX_COMMAND_BYTES（1MiB），完整body上限不变，其他字段/来源/身份/UNKNOWN合同不动。候选strict0/2.774秒；同arguments构造通过，body835520B，精确Codec往返通过；参数越限、整包越限、ProjectionJson声明64MiB角色三个负例均真实拒绝。既有numeric测试候选与原768KiB基线均3P1F，保留同一旧signed-zero预期断言失败，未改测试授绿。
+
+生产selector本地有限fixture输出payload1024975B/user955030B，完整arguments保留。它仅是actual106 snapshot/history上的source-derived command/request，未重建全能力/目标/readiness；actual runtime payload bytes仍null、HTTP0。该统计不作为107前置。详见 `candidate-RESULT.json`，模型源码候选与运行期决策分记。
+
+进一步窄读纠正范围：833399B是FamilyPolicy327四字段参数，并非FamilyCommands最终命令payload。真实Factory会将完整selected plan放入FamilyMarriageIntent.planning_proof；上述835520B只能称直接source-derived command body，不能称actualFactory结果。107实际进入Family原件capture说明该次真实命令构造已经通过，但仍无最终command/body的留存测量或提交信用。
+
+单叶已S/Z最小采用，并正常FF发表a5938377b1。MB107于 `19:53:14.860480Z`–`19:53:20.422352Z` 真实exit0/5.562秒，默认mvn -T2 -pl local-service -am，复用MB/no clean，实际仅application的1源重编。worker107/PID250236于 `19:53:23.217308Z` 同原Game启动、qwen ordinary selector已配置、next18；尚待LOOP_START与实际业务读回。研究编译新start在MB/安装阶段HOLD，已在途短任务自然终结，不重启Game。
+
+107于 `19:53:43.4109686Z` 真实LOOP_START/next18，安装20.194秒。批18从 `19:53:43.4702988Z` 至 `19:54:30.8027945Z` /47.332秒后SOURCE_CONTRACT_REJECTED：family `finite immutable artifact bound required`。worker `19:54:31.378721Z` exit4/68.161秒，next19，native65/public70/date53144328，attempt/applied/newdays仍0，stderr空。精确定位RootFamilyPlanningOriginals.capture把PlanningWire.MAX_BYTES（256MiB）声明传给CAS，后者只接受WriterContracts.MAX_PIN_BYTES（64MiB+4）；original读回同声明也需传播。不抬全局CAS或重启Game，继续同局修这个实际调用合同。
