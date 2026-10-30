@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.ContractViolationException;
 
 /** The original complete war-spending-priority producer. It grants no procurement or army action. */
 public final class OrdinaryWarPriority {
@@ -22,7 +24,7 @@ public final class OrdinaryWarPriority {
         public Input {
             snapshot = Objects.requireNonNull(snapshot).clone();
             nullableCampaignRoot = Objects.requireNonNull(nullableCampaignRoot).clone();
-            record(StrictJson.parse(snapshot, StrictJson.EXPLICIT_MAX_BYTES));
+            record(parseFull(snapshot));
             JsonNode root = StrictJson.parse(nullableCampaignRoot, StrictJson.EXPLICIT_MAX_BYTES);
             input(root.isNull() || root.isObject(), "nullable current campaign root required");
         }
@@ -36,7 +38,7 @@ public final class OrdinaryWarPriority {
             this.originalSnapshot = snapshot.deepCopy(); this.priority = priority.deepCopy();
         }
         public byte[] toJson() { return encode(priority); }
-        public byte[] sourceSnapshot() { return encode(originalSnapshot); }
+        public byte[] sourceSnapshot() { return FullJsonTree.encode(originalSnapshot, FullJsonTree.MAXIMUM_BYTES); }
         public boolean deferredOptionalConstruction() { return yes(priority.get("defer_new_economic_construction")); }
         public boolean actionAuthority() { return false; }
         public java.util.Optional<BigInteger> countCurrentMembers(List<Integer> unitIds, java.util.Optional<BigInteger> enemyWar) {
@@ -85,7 +87,7 @@ public final class OrdinaryWarPriority {
     }
     /** The existing shared finance arithmetic, with no copied reserve formula or policy alteration. */
     public static byte[] finance(FinanceRequest request) {
-        ObjectNode snapshot = record(StrictJson.parse(request.observations().snapshot(), StrictJson.EXPLICIT_MAX_BYTES));
+        ObjectNode snapshot = record(parseFull(request.observations().snapshot()));
         JsonNode root = StrictJson.parse(request.observations().nullableCampaignRoot(), StrictJson.EXPLICIT_MAX_BYTES);
         JsonNode price = request.price().<JsonNode>map(com.fasterxml.jackson.databind.node.BigIntegerNode::valueOf)
                 .orElse(com.fasterxml.jackson.databind.node.NullNode.instance);
@@ -97,7 +99,7 @@ public final class OrdinaryWarPriority {
 
 
     public static Observation observe(Input input) {
-        ObjectNode snapshot = record(StrictJson.parse(input.snapshot(), StrictJson.EXPLICIT_MAX_BYTES));
+        ObjectNode snapshot = record(parseFull(input.snapshot()));
         JsonNode suppliedRoot = StrictJson.parse(input.nullableCampaignRoot(), StrictJson.EXPLICIT_MAX_BYTES);
         List<ObjectNode> own = rows(get(snapshot, "player_armies")), active = rows(get(snapshot, "active_wars"));
         BigInteger ownCount = get(snapshot, "player_armies").isArray() ? count(own, snapshot, "player", null) : null;
@@ -267,6 +269,15 @@ public final class OrdinaryWarPriority {
     private static byte[] encode(ObjectNode value) {
         try { return JSON.writeValueAsBytes(value); }
         catch (java.io.IOException failure) { throw new IllegalStateException("priority encoding failed", failure); }
+    }
+
+    private static JsonNode parseFull(byte[] raw) {
+        try {
+            return FullJsonTree.parse(raw, FullJsonTree.MAXIMUM_BYTES);
+        } catch (IllegalArgumentException failure) {
+            if (failure instanceof ContractViolationException) throw failure;
+            throw new ContractViolationException("invalid complete JSON material", failure);
+        }
     }
     private static BigInteger sum(List<ObjectNode> rows, String key) { return rows.stream().map(r -> number(r, key)).reduce(BigInteger.ZERO, BigInteger::add); }
     static List<JsonNode> rowsOrValues(JsonNode value) { if (!value.isArray()) return List.of(); List<JsonNode> out = new ArrayList<>(); value.forEach(out::add); return out; }

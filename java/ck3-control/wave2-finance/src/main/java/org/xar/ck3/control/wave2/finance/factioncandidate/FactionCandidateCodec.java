@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.cfg.JsonNodeFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.finance.factiongift.FactionGiftChoice;
 import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.NativeFactionId;
@@ -48,7 +49,7 @@ public final class FactionCandidateCodec {
     }
 
     public static RootSearch decodeRootSearch(byte[] bytes) {
-        JsonNode request = parse(bytes);
+        JsonNode request = FullJsonTree.parse(bytes, FullJsonTree.MAXIMUM_BYTES);
         exact(request, Set.of("snapshot", "history"));
         JsonNode snapshot = request.get("snapshot");
         Optional<Frame> snapshotFrame = snapshotFrame(snapshot);
@@ -72,7 +73,7 @@ public final class FactionCandidateCodec {
     }
 
     public static CandidateInput decodeCandidateInput(byte[] bytes) {
-        JsonNode request = parse(bytes);
+        JsonNode request = FullJsonTree.parse(bytes, FullJsonTree.MAXIMUM_BYTES);
         exact(request, Set.of("snapshot", "root", "private_result", "minimum_gold_reserve_raw"));
         JsonNode root = request.get("root");
         if (!root.isObject()) throw invalid("root must be object");
@@ -85,12 +86,12 @@ public final class FactionCandidateCodec {
                                                             byte[] privateResultJson, BigInteger minimumGoldReserveRaw) {
         java.util.Objects.requireNonNull(root, "root");
         java.util.Objects.requireNonNull(minimumGoldReserveRaw, "minimumGoldReserveRaw");
-        ObjectNode request = JSON.createObjectNode();
-        request.set("snapshot", parse(snapshotJson));
-        request.set("root", parse(root.original().json()));
-        request.set("private_result", parse(privateResultJson));
-        request.put("minimum_gold_reserve_raw", minimumGoldReserveRaw);
-        return choosePrivateCandidate(decodeCandidateInput(encodeTree(request)), existingJavaGiftDecision());
+        JsonNode snapshot = FullJsonTree.parse(snapshotJson, FullJsonTree.MAXIMUM_BYTES);
+        JsonNode privateResult = parse(privateResultJson);
+        JsonNode rootNode = parse(root.original().json());
+        if (!rootNode.isObject()) throw invalid("root must be object");
+        return choosePrivateCandidate(new CandidateInput(snapshotFrame(snapshot), projectRoot(rootNode), projectPreview(privateResult),
+                Optional.of(minimumGoldReserveRaw)), existingJavaGiftDecision());
     }
 
     public static byte[] encodeRootView(RootView view) {
