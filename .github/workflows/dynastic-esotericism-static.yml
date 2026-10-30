@@ -138,6 +138,8 @@ jobs:
         if: always()
         run: java -Xms32m -Xmx256m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --product-maven-diagnostic collect "%GITHUB_WORKSPACE%" "%RUNNER_TEMP%\des-save-resolver-diagnostic" "%RUNNER_TEMP%\dynastic-esotericism-maven" --observed-default-maven
       - name: Verify the shared prebuilt fixture consumer
+        env:
+          MYPYPATH: tools;ck3_autonomous_player/src
         run: python -B -X utf8 tools/test_prebuilt_fixture_prepare.py
       - name: Verify the canonical host producer and actual SDK factory
         run: python -B -X utf8 tools/test_canonical_host_successor.py
