@@ -291,3 +291,34 @@ sources match the `tested-only/candidate` bytes after text normalization. See
 and `tested-only/{TESTED-ONLY.patch,TESTED-ONLY-ACTUAL.json}`. This supplies
 software tuple continuity, not a native terminal cause, useful gain, live ABI,
 DLL deployment or Game result.
+
+The M1 private raw-ID regression is now adopted as two persistent test targets
+with nine CTest registrations and an exact addition to the existing Native CI
+step. Only the new tests enable dynamic fixture IDs; the existing fixture keeps
+its constant-ID default. The newly packaged whole route uses a distinct outer
+receipt-query ID while preserving the inner action ID, matching the actual Java
+after-read consumer. Its two changed fixture TUs were strictly compiled and
+linked against the existing narrow sixteen-provider closure; all six whole and
+three control entry points passed. The whole routes each queue/clone once and
+balance six destructions against five constructions plus the owned clone.
+Controls retain 153 checks/57 malformed rejections with no queue; the actual
+24 packets passed 277 semantic assertions. No older whole/getter matrix or
+Bridge build was repeated. See M1 action-identity `CI-DELIVERY02.json`,
+`CI-WRAPPERS-RUN02-ACTUAL.json` and `CI-PACKET-SEMANTICS02.json`.
+
+The existing Native66 CMake cache configured/generated successfully in 19.866
+seconds at 15:10:01Z, producing the nine actual registrations with the expected
+arguments. The CMake target binaries and complete CI step were not built/run
+here; the D entry-point executions are reported separately. The publication
+workflow has an older Native step than Z, so only the two new targets, two
+existing feature flags and new CTest invocation were propagated to that step.
+Other unpublished Z workflow changes were preserved and excluded.
+
+M6 material-layout research remains unresolved. Actual CActiveOpinion slot5
+reads a child-row array/count, which raised a container/row distinction in the
+reader's accepted vptr list. Subsequent actual CTemporaryOpinion deleting-dtor
+evidence (54 bytes, size 0x30, no child scan or +8 rewrite) is compatible with
+the single-row layout. This does not establish a production rejection or justify
+a shared reader guard change. Real group-child production/Temporary construction
+is still missing; the earlier owned-memory material tests grant no live layout
+credit. Common root encoding is a separate contract change.

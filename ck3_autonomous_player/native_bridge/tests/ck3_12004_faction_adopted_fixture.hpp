@@ -14,8 +14,13 @@
 
 namespace {
 using namespace xar::ck3_12004;
+#if defined(XAR_CK3_FACTION_GIFT_DYNAMIC_FIXTURE_IDS)
+std::uint32_t actor_id = 0x03000001;
+std::uint32_t recipient_id = 0x04000002;
+#else
 constexpr std::uint32_t actor_id = 0x03000001;
 constexpr std::uint32_t recipient_id = 0x04000002;
+#endif
 constexpr std::int32_t definition_hash = kFactionGiftDefinitionStableHashV1;
 template <typename T> void Put(void *base, std::size_t offset, T value) {
   std::memcpy(static_cast<std::byte *>(base) + offset, &value, sizeof(T));
@@ -54,6 +59,10 @@ void *Lookup(void *db, std::int32_t hash) {
 void *Construct(void *storage, void *def, std::int32_t actor,
     std::int32_t recipient, void *extra, bool redirect_roles) {
   assert(def == definition && extra == nullptr && redirect_roles);
+#if defined(XAR_CK3_FACTION_GIFT_DYNAMIC_FIXTURE_IDS)
+  assert(static_cast<std::uint32_t>(actor) == actor_id &&
+      static_cast<std::uint32_t>(recipient) == recipient_id);
+#endif
   ++constructs;
   Put(storage, 0, def); Put(storage, 0x2D8, actor);
   Put(storage, 0x2DC, recipient); Put(storage, 0x2E0, std::int32_t{-1});
@@ -172,8 +181,8 @@ struct Fixture {
     Put(player_entry.data(), 0xD8, std::int32_t{7}); Put(player_entry.data(), 0xB0, actor_id);
     Put(store.data(), 0x20, slots.data()); Put(store.data(), 0x2C, std::int32_t{8});
     Put(characters[0].data(), 0x18, actor_id); Put(characters[1].data(), 0x18, recipient_id);
-    Put(slots.data(), 1 * 0x10 + 8, characters[0].data());
-    Put(slots.data(), 2 * 0x10 + 8, characters[1].data());
+    Put(slots.data(), (actor_id & 0x00FFFFFFU) * 0x10ULL + 8, characters[0].data());
+    Put(slots.data(), (recipient_id & 0x00FFFFFFU) * 0x10ULL + 8, characters[1].data());
     Put(gift_definition.data(), 0x14, definition_hash);
     const std::string_view key = "gift_interaction";
     Put(gift_definition.data() + 0x18, 0, key.data());
