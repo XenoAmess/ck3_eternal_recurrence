@@ -9,6 +9,7 @@ import org.xar.ck3.control.g2.m5.M5ReservationCodec;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 import org.xar.ck3.control.wave2.planning.jointintake.FormalProposalIntake;
+import org.xar.ck3.control.contracts.FullJsonTree;
 
 /** Actual strict intake -> actual frame dispatcher; retains the original analytic-only reservation contract. */
 public final class M5FormalCollection {
@@ -17,8 +18,8 @@ public final class M5FormalCollection {
         public Collected {Objects.requireNonNull(originalSources);Objects.requireNonNull(originalIntake);Objects.requireNonNull(dispatch);Objects.requireNonNull(receipt);}
     }
     public static Collected collect(G2Source provenance,Obj snapshot,Obj sources) {
-        Obj intake=OpportunityJson.object(OpportunityJson.parse(FormalProposalIntake.collect(OpportunityJson.encode(
-                obj(f("schema",text(FormalProposalIntake.REQUEST_SCHEMA)),f("snapshot",snapshot),f("sources",sources))))),"complete original formal intake");
+        Obj intake=OpportunityJson.object(OpportunityJson.parseComplete(FormalProposalIntake.collect(OpportunityJson.encode(
+                obj(f("schema",text(FormalProposalIntake.REQUEST_SCHEMA)),f("snapshot",snapshot),f("sources",sources)))), FullJsonTree.MAXIMUM_BYTES),"complete original formal intake");
         Obj selector=OpportunityJson.object(intake.get("selector_request"),"actual original selector request");
         M5FrameDispatcher owner=new M5FrameDispatcher(provenance,snapshot,OpportunityJson.object(sources.get("existing_commitments"),"actual commitments"));
         M5FrameDispatcher.Dispatch selected=owner.chooseObserved(provenance,selector);

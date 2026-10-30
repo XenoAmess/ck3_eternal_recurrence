@@ -43,6 +43,9 @@ public final class OpportunityJson {
         require(bytes != null && bytes.length <= 131072, "request exceeds 128 KiB");
         return fromMaterialNode(FullJsonTree.parse(bytes,131072),0);
     }
+    public static Value parseComplete(byte[] bytes, int maximumBytes) {
+        return fromMaterialNode(FullJsonTree.parse(bytes, maximumBytes), 0);
+    }
     private static Value fromMaterialNode(JsonNode node,int depth) {
         require(depth<=32,"JSON nesting exceeds 32");
         if(node.isObject()) {Map<String,Value> fields=new LinkedHashMap<>();node.properties().forEach(e->fields.put(e.getKey(),fromMaterialNode(e.getValue(),depth+1)));return new Obj(fields);}

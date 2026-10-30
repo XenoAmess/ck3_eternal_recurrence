@@ -51,6 +51,9 @@ public final class ObservedOpportunitySelector {
     public static byte[] select(byte[] requestBody) {
         return OpportunityJson.encode(encode(select(decode(OpportunityJson.parse(requestBody)))));
     }
+    public static byte[] selectComplete(byte[] requestBody, int maximumBytes) {
+        return OpportunityJson.encode(encode(select(decode(OpportunityJson.parseComplete(requestBody, maximumBytes)))));
+    }
     /** Shared normalizer for the existing shortlist consumer; grants no selection or execution authority. */
     public static byte[] normalizeProposal(byte[] requestBody) {
         Obj request = object(OpportunityJson.parse(requestBody), "normalization request");

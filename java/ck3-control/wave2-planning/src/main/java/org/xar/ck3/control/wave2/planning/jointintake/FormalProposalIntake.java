@@ -4,6 +4,7 @@ import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 import static org.xar.ck3.control.wave2.planning.jointintake.IntakeWire.*;
 
 import java.math.BigInteger;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +34,7 @@ public final class FormalProposalIntake {
         return collect(requestBody,true);
     }
     private static byte[] collect(byte[] requestBody,boolean historical) {
-        Obj request = object(OpportunityJson.parse(requestBody), "intake request");
+        Obj request = object(historical ? OpportunityJson.parse(requestBody) : OpportunityJson.parseComplete(requestBody, FullJsonTree.MAXIMUM_BYTES), "intake request");
         require(request.members().keySet().equals(Set.of("schema", "snapshot", "sources")), "exact intake request fields");
         equalsValue(request.get("schema"), new Text(historical?HISTORICAL_REQUEST_SCHEMA:REQUEST_SCHEMA), "exact declared intake request schema");
         Obj snapshot = object(request.get("snapshot"), "snapshot"), sources = object(request.get("sources"), "sources");
@@ -88,7 +89,7 @@ public final class FormalProposalIntake {
                 f("gold_reserve_raw", number(budget.goldReserveRaw())), f("max_active_wars", number(budget.maxActiveWars())));
         // Reuse the existing selector, including all commitment/claim validation and stable ordering.
         // This is analytic execution only; the original dispatcher still owns its single reservation.
-        Value analysis = OpportunityJson.parse(ObservedOpportunitySelector.select(OpportunityJson.encode(selectorRequest)));
+        Value analysis = OpportunityJson.parse(ObservedOpportunitySelector.selectComplete(OpportunityJson.encode(selectorRequest), FullJsonTree.MAXIMUM_BYTES));
         Collection collection = new Collection(frame, identities, budget);
         Obj result = obj(f("schema", new Text(RESULT_SCHEMA)), f("projection_not_original_collection_receipt", new Bool(true)), f("frame", frameNode(frame)),
                 f("collected_domains", strings(collection.domains())), f("collected_candidate_ids", strings(collection.candidateIds())), f("selector_request", selectorRequest),

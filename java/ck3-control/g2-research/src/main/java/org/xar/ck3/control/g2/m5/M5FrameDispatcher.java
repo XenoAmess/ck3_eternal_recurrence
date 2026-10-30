@@ -14,6 +14,7 @@ import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Claims;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Commitments;
 import org.xar.ck3.control.planning.opportunity.ObservedOpportunitySelector;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.wave2.planning.jointintake.IntakeModel.Domain;
 import org.xar.ck3.control.wave2.planning.jointintake.IntakeModel.Frame;
 
@@ -88,7 +89,7 @@ public final class M5FrameDispatcher {
         require(frame.equals(frame(current, false)) && snapshot.equals(current), "reservation snapshot differs from the owner observation");
         require(commitments.equals(commitments(object(selectorRequest.get("commitments"), "current commitments"), frame)), "reservation commitments differ from the owner observation");
         if (reservation != null) return new Dispatch(Status.already_reserved_this_frame, frame, Optional.empty(), Optional.of(reservation), Optional.empty());
-        Obj analysis = M5PayloadCodec.parseObject(ObservedOpportunitySelector.select(OpportunityJson.encode(selectorRequest)), "actual observed selector result");
+        Obj analysis = M5PayloadCodec.parseObject(ObservedOpportunitySelector.selectComplete(OpportunityJson.encode(selectorRequest), FullJsonTree.MAXIMUM_BYTES), "actual observed selector result");
         Value selectedId = analysis.get("selected_candidate_id");
         if (selectedId == Nil.INSTANCE) return new Dispatch(Status.wait, frame, Optional.empty(), Optional.empty(), Optional.of(analysis));
         String candidate = text(selectedId, "selected candidate");
