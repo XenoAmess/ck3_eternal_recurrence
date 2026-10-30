@@ -329,6 +329,97 @@ class PrebuiltFixtureTests(unittest.TestCase):
         self.assertFalse((profile / 'mod-content/product').exists())
         self.assertFalse(result['business_pass'])
 
+    def test_pre_product_seed_prepare_run_and_verify_preserves_absent_product_pins(self) -> None:
+        """Offline transport exercises the exact completion path that failed in R43."""
+        contract_path = Path(prepare.__file__).parent / 'ck3_mod_acceptance_cases/dynastic_esotericism_pre_product_seed.json'
+        original = json_object(json.loads(contract_path.read_bytes()))
+        original['product'] = self.context['product']
+        self.context['case'] = 'pre_product_seed'
+        self.manifest['case_id'] = 'pre_product_seed'
+        self.manifest['receipt'] = {'required_markers': ['DESAF: TEST PASS legacy_seed_ready'],
+            'required_product_markers_minimum': {}, 'fixture_contains_business_effects': False}
+        plain: JsonObject = {}
+        for index, relative in enumerate(prepare.CONFIG_NAMES):
+            path = self.root / ('seed-plain-' + str(index))
+            path.write_text('authored configuration\n', encoding='utf-8')
+            plain[relative] = json_object(file_identity(path))
+        product = self.root / 'seed-product'
+        product.mkdir()
+        (product / 'descriptor.mod').write_text('name="Authored product"\n', encoding='utf-8')
+
+        from ck3_mod_acceptance_client import CaseClient
+
+        class CompletionClient(CaseClient):
+            def __init__(self, output: Path) -> None:
+                self.output = output
+                self.requests: list[JsonObject] = []
+
+            def snapshot(self, allow_actor_change: bool = False,
+                         require_event_free: bool = True) -> JsonObject:
+                return {'date_raw': 53144328, 'paused': True, 'active_event': None,
+                        'pending_character_interaction': None}
+
+            def root_checkpoint(self, name: str, request: JsonObject, reserve: int = 90,
+                                *, read_only_appointment: bool = False) -> JsonObject:
+                self.requests.append(request)
+                raw = request['required_assertions']
+                if not isinstance(raw, list) or not all(isinstance(key, str) for key in raw):
+                    raise ValueError('Original typed Root assertions required')
+                evidence = self.output / 'authored-root-evidence.txt'
+                evidence.write_text('Offline Root transport only; no CK3 or Save qualification.\n', encoding='utf-8')
+                return json_object({'run_id': 'authored-seed-run', 'reviewer': '/root',
+                    'assertions': {str(key): True for key in raw}, 'evidence': [file_identity(evidence)]})
+
+            def checkpoint(self, name: str, value: JsonObject) -> Path:
+                path = self.output / (name + '.json')
+                path.write_text(json.dumps(value, allow_nan=False), encoding='utf-8')
+                return path
+
+            def log_bytes(self, name: str = 'debug.log', maximum: int = 64 * 1024 * 1024) -> bytes:
+                return b'DESAF: TEST PASS legacy_seed_ready\n'
+
+        for loading in ('absent', 'present'):
+            with self.subTest(product_loading=loading):
+                contract = copy.deepcopy(original)
+                contract['product_loading'] = loading
+                state = self.root / ('seed-state-' + loading)
+                context = json_object({**self.context, 'state_dir': str(state),
+                    'output': str(self.root / ('seed-prepare-' + loading)), 'case_contract': contract,
+                    'case_spec': {'budgets': {'command_timeout': 300}},
+                    'case_inputs': {'product_dir': None if loading == 'absent' else str(product),
+                        'plain_configuration': plain, 'prebuilt_fixture_manifest': self.frozen_manifest()}})
+                with patch.object(prepare, '_engine', return_value=(ModuleType('authored_engine'),
+                        {'game_version': 'authored-only-no-game', 'exe_sha256': '0' * 64})):
+                    prepared = adapter.prepare_case(context)
+                self.assertIs(prepared['business_pass'], False)
+                output = self.root / ('seed-run-' + loading)
+                output.mkdir()
+                context.update(run_id='authored-seed-run', output=str(output))
+                client = CompletionClient(output)
+                actual = adapter.run_case(context, client)
+                self.assertEqual(len(client.requests), 1)
+                self.assertIs(actual['case_contract_qualified'], True)
+                self.assertIs(actual['gui_contract_qualified'], True)
+                frames = actual['actual_native_frames']
+                if not isinstance(frames, list):
+                    self.fail('Actual fixture completion frame list required')
+                self.assertEqual(len(frames), 2)
+                self.assertEqual(json_object(frames[0])['day'], 0)
+                persisted = json.loads((output / 'generic-product-case-result.json').read_bytes())
+                self.assertEqual(persisted, json.loads(json.dumps(actual, allow_nan=False)))
+                for key, relative in (('product_outer', 'mod/product.mod'),
+                                      ('product_inner', 'mod-content/product/descriptor.mod')):
+                    self.assertIn(key, persisted)
+                    if loading == 'absent':
+                        self.assertIsNone(persisted[key])
+                    else:
+                        self.assertEqual(persisted[key], file_identity(state / 'profile' / relative))
+                verified = adapter.verify_case(context)
+                self.assertEqual(verified['product_outer'], persisted['product_outer'])
+                self.assertEqual(verified['product_inner'], persisted['product_inner'])
+                self.assertIs(verified['business_pass'], False)
+                self.assertIs(verified['product_release_pass'], False)
+
     def test_wrong_product_machine_and_fields_rejected(self) -> None:
         baseline = copy.deepcopy(self.manifest)
         variants: list[tuple[str, JsonValue]] = [('product', 'other'), ('case_id', 'other'), ('machine_id', 'other'),

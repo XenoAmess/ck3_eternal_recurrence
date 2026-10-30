@@ -610,13 +610,17 @@ def _run_fixture_case(context, client):
             frames.append({'day': (frame['date_raw'] - initial_date) / 24, 'sequence': sequence, 'snapshot': frame})
         observed = marker_observation(client.log_bytes(), compiled)
         require(observed['qualified'], 'Original marker assertions remain incomplete after GUI/day work')
+    product_absent = config.get('product_loading', 'present') == 'absent'
+    if product_absent:
+        require(not (profile / 'mod/product.mod').exists() and not (profile / 'mod-content/product').exists(),
+                'Pre-product campaign unexpectedly mounted a product')
     process = getattr(client, '_process', None)
     facts = {'schema': 'ck3-mod-acceptance-product-case-facts-v1', 'run_id': context['run_id'],
         'product': context['product'], 'case': context['case'], 'compiled_contract': binding,
         'acceptance_scope': config['acceptance_scope'], 'business_contract_applicable': not static_load_only,
         'load_boundary_qualified': True, 'actual_native_frames': frames, 'actual_process': process,
-        'enabled_mods': enabled, 'product_outer': pin(profile / 'mod/product.mod'),
-        'product_inner': pin(profile / 'mod-content/product/descriptor.mod'),
+        'enabled_mods': enabled, 'product_outer': None if product_absent else pin(profile / 'mod/product.mod'),
+        'product_inner': None if product_absent else pin(profile / 'mod-content/product/descriptor.mod'),
         'marker_observation': observed, 'root_phases': phases,
         'case_contract_qualified': observed['qualified'], 'gui_contract_qualified': static_load_only or all(
             phase['id'] in phases for phase in config['gui_phases']),
