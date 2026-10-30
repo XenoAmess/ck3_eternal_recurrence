@@ -98,7 +98,7 @@ bool VisitFactionGiftCandidates(const game::CampaignRootContextV1 &root,
       alerts.snapshot_revision != root.snapshot_revision || alerts.date_raw != root.date_raw ||
       alerts.player_character_id != root.player_character_id) return false;
   const auto eligible = [&](std::int32_t id) {
-    return id > 0 && id != *root.player_character_id && std::find(
+    return id != -1 && id != *root.player_character_id && std::find(
         root.direct_landed_vassal_character_ids.begin(), root.direct_landed_vassal_character_ids.end(),
         id) != root.direct_landed_vassal_character_ids.end();
   };
