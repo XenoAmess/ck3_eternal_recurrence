@@ -298,7 +298,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     private record PublicScope(ContinuityStorePort.Session borrowed, PublicPlanningFrame frame, List<Pin> pins,
             String head, Instant deadline) { }
     private record PublicAttempt<T>(boolean ordinary, T result) { }
-    private enum CaptureMode { ORDINARY, FIRST_CHECKPOINT }
+    private enum CaptureMode { ORDINARY, FIRST_CHECKPOINT, CURRENT }
     @FunctionalInterface private interface CaptureWork<T> { T run(Captured captured) throws IOException; }
     @FunctionalInterface private interface PhysicalWork<T> { T run(PhysicalCapture captured) throws IOException; }
     @FunctionalInterface private interface PublicFrameWork<T> { T run(PublicPlanningFrame actual) throws IOException; }
@@ -967,7 +967,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         if (active != null) return borrowedPlanningRead(active, borrowed, expected, deadline, work);
         PlanningRoundScope round = planningRoundScope.get();
         if (round != null && round.captured != null) return retainedPlanningRead(round, borrowed, expected, deadline, work);
-        return capture(borrowed, deadline, captured -> {
+        return captureCurrent(borrowed, deadline, captured -> {
             NativeReadiness.Assessment stable = gate.observe(captured.assessment());
             require(captured.assessment().ready(), "actual held frame does not pass native readiness: " + captured.assessment().reason());
             ObservationIdentity actual = captured.lease().frame().identity();
@@ -1228,6 +1228,10 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     private <T> T capture(ContinuityStorePort.Session borrowed, Instant deadline, CaptureWork<T> work) throws IOException {
         return capture(borrowed, deadline, deadline, work);
     }
+    private <T> T captureCurrent(ContinuityStorePort.Session borrowed, Instant deadline, CaptureWork<T> work) throws IOException {
+        try { return capturePhysical(borrowed, deadline, deadline, CaptureMode.CURRENT, physical -> fromPhysical(borrowed, deadline, physical, work)); }
+        catch (IOException | RuntimeException failure) { gate.reset(); throw failure; }
+    }
     private <T> T capture(ContinuityStorePort.Session borrowed, Instant ioDeadline, Instant scopeDeadline, CaptureWork<T> work) throws IOException {
         try { return captureActual(borrowed, ioDeadline, scopeDeadline, work); }
         catch (IOException | RuntimeException failure) { gate.reset(); throw failure; }
@@ -1272,15 +1276,20 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         require(clock.instant().isBefore(ioDeadline), "actual readiness deadline expired");
         String lockedHead = borrowed.head().digest();
         org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame actual;
-        try { actual = transport.observe(ioDeadline, validity); }
-        catch (InterruptedException interrupted) {
+        try {
+            if (mode == CaptureMode.CURRENT) {
+                actual = transport.currentSnapshot(ioDeadline);
+            } else {
+                actual = transport.observe(ioDeadline, validity);
+            }
+        } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt(); InterruptedIOException failure = new InterruptedIOException("native readiness interrupted"); failure.initCause(interrupted); throw failure;
         } catch (UncheckedIOException failure) { throw org.xar.ck3.control.application.planning.PlanningReadFailure.physical(failure); }
         require(actual.session().machineId().equals(identity.machineId()) && actual.session().game().equals(identity.game())
                 && actual.session().sessionId().equals(identity.sessionId()), "actual held Native crossed collector session");
         ExactRef original = preserve(borrowed, ReadinessArchive.Role.NATIVE_PACKET, actual.originalPacket());
         DriverStateAssembler.ObservationWork<T> join = frozen -> {
-            if (mode == CaptureMode.ORDINARY)
+            if (mode != CaptureMode.FIRST_CHECKPOINT)
                 require(frozen.projection() instanceof DriverStateSnapshot.Complete, "complete canonical history/Driver is not available; unresolved actions cannot become ready");
             return qualifyPhysical(borrowed, ioDeadline, scopeDeadline, lockedHead, actual, frozen.state(), frozen.facts(), original, work);
         };

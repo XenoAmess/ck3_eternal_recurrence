@@ -140,6 +140,34 @@ final class NativeReadinessDriverCaptureIdentityTest {
         }); }
     }
 
+    @Test void actionGuardAfterAcquisitionAgeUsesCurrentAcceptedPacketWithoutRefreshingIt() throws Exception {
+        try(var f=new Fixture(Duration.ofSeconds(1))) {
+            var ready=f.store.locked(same->{try{return f.ready();}catch(InterruptedException failure){throw new IOException(failure);}});
+            var original=f.transport.currentSnapshot(f.deadline);
+            while(!Instant.now().isAfter(original.observedAt().plusSeconds(1)))Thread.sleep(20);
+            int reads=f.packets.reads;
+            var actual=f.store.locked(same->f.collector.current(same,ready.request().before(),f.deadline,lease->lease));
+            assertEquals(ready.request().before(),actual.frame().identity());
+            assertEquals(original.observedAt(),actual.frame().observedAt());
+            assertArrayEquals(original.originalPacket(),f.original(actual.semantic().originalNativePacket(),DriverJson.MAX_NATIVE_BYTES));
+            assertEquals(reads,f.packets.reads,"a command guard must not acquire a replacement snapshot");
+            assertEquals(0,f.packets.writes);
+        }
+    }
+
+    @Test void currentGuardReturnsActualNewerAcceptedFrameRatherThanItsRequestedOldFrame() throws Exception {
+        try(var f=new Fixture()) {
+            var ready=f.store.locked(same->{try{return f.ready();}catch(InterruptedException failure){throw new IOException(failure);}});
+            f.packets.queue.add(NativeWire.packet(bytes("{\"type\":\"state_snapshot\",\"protocol_version\":1,\"snapshot_id\":\"memory-newer\",\"revision\":10,\"state\":"+STATE+"}")));
+            var newer=f.transport.observe(f.deadline);
+            var actual=f.store.locked(same->f.collector.current(same,ready.request().before(),f.deadline,lease->lease.frame()));
+            assertEquals(newer.snapshotId(),actual.identity().frame().snapshotId());
+            assertEquals(newer.nativeRevision(),actual.identity().frame().identity().nativeRevision());
+            assertNotEquals(ready.request().before(),actual.identity(),"the coordinator must still see the actual mismatch");
+            assertEquals(0,f.packets.writes);
+        }
+    }
+
     private static byte[] bytes(String value){return value.getBytes(StandardCharsets.UTF_8);}
     private static final class Fixture implements AutoCloseable {
         final Instant deadline=Instant.now().plusSeconds(20);
@@ -149,7 +177,8 @@ final class NativeReadinessDriverCaptureIdentityTest {
         final DriverFactsRepository repository;final Journal journal;final DriverStateAssembler driver;
         final NativeGameTransport transport;final NativeReadinessCollector collector;
         DriverSnapshotFacts.Known published;
-        Fixture()throws IOException {
+        Fixture()throws IOException {this(Duration.ofSeconds(30));}
+        Fixture(Duration validity)throws IOException {
             var config=new NativePipeEndpoint.Config("\\\\.\\pipe\\pure-retained-driver-memory",MACHINE,GAME,SESSION,"memory","0".repeat(64),"memory");
             transport=NativeTransportReplayTestFactory.create(packets,config,32,16);
             var auxiliary=new Obj(Map.of("capability_session_paths",new Obj(Map.of("queue_dir",Nil.INSTANCE,"driver_state_path",Nil.INSTANCE)),
@@ -176,7 +205,7 @@ final class NativeReadinessDriverCaptureIdentityTest {
                     (same,frame,current,received,until)->new NativeReadinessCollector.ExecutableCapabilities(Set.of(),Set.of(),Optional.empty()),
                     (same,frame,current,received,until)->new NativeReadinessCollector.PlanningInputs(Set.of(),Set.of(),Optional.empty(),List.of(),
                             Optional.empty(),Optional.empty(),false,Optional.empty()),
-                    new NativeReadiness.Policy(false,false,Optional.of(BigInteger.valueOf(73)),Duration.ZERO,false),Duration.ofSeconds(30),Clock.systemUTC());
+                    new NativeReadiness.Policy(false,false,Optional.of(BigInteger.valueOf(73)),Duration.ZERO,false),validity,Clock.systemUTC());
             collector.bindObservationSession(store::requireSession);
             collector.bindReadyPublication((same,request,frame,current,sources)->{store.requireSession(same);published=current;});
             collector.bindPlanningEvidence((same,request,lease)->{store.requireSession(same);assertEquals(request.before(),lease.frame().identity());});
