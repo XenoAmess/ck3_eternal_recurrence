@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.projection.ProjectionJson;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.Identity;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.NativeSubject;
@@ -28,21 +29,21 @@ final class M6InputValidation {
     static void validate(Inputs inputs, Identity identity, ObservationIdentity queried) {
         require(queried.frame().identity().player().equals(BigInteger.valueOf(identity.actorCharacterId())), "Sway query player differs");
         inputs.completion().ifPresent(raw -> {
-            JsonNode read = parse(raw); exactIdentity(read, identity, true); queryStamp(read, queried);
+            JsonNode read = parse(raw); exactIdentity(read, identity.nativeSubject(), true, true); queryStamp(read, queried);
             M6SourceProducer.fromRawCompletion(raw.bytes(), identity);
         });
         inputs.execution().ifPresent(raw -> queryStamp(parse(journal(raw, identity.nativeSubject(), true)), queried));
         inputs.termination().ifPresent(raw -> queryStamp(parse(journal(raw, identity.nativeSubject(), false)), queried));
         inputs.opinion().ifPresent(raw -> {
             JsonNode read = parse(raw); actual4(read); textEquals(read, "schema", "xar.ck3.sway-outcome-opinion-v1");
-            exactIdentity(read, identity, false); queryStamp(read, queried); bool(read, "available");
+            exactIdentity(read, identity.nativeSubject(), false, true); queryStamp(read, queried); bool(read, "available");
             named(read.get("scheme_sway_opinion")); named(read.get("sway_blocker_opinion"));
             if (read.get("target_opinion_of_actor") != null && !read.get("target_opinion_of_actor").isNull()) signed(read, "target_opinion_of_actor");
         });
     }
     static ProjectionJson journal(ProjectionJson raw, NativeSubject identity, boolean execution) {
         JsonNode read = M6TerminalSourceComposition.journal(parse(raw), execution);
-        exactIdentity(read, identity, true);
+        exactIdentity(read, identity, true, !execution);
         if (read.has("read_only")) require(bool(read, "read_only"), "Sway journal is read-only");
         if (read.has("material_effect_observed")) require(!bool(read, "material_effect_observed"), "execution journal supplies no material");
         if (execution && read.has("native_terminal_state_observed")) require(!bool(read, "native_terminal_state_observed"), "execution journal supplies no terminal");
@@ -54,7 +55,7 @@ final class M6InputValidation {
         for (JsonNode row : read.get("records")) {
             BigInteger sequence = u64(row, "sequence", 1);
             require(sequence.compareTo(previous) > 0 && sequence.compareTo(earliest) >= 0 && sequence.compareTo(latest) <= 0, "Sway journal row order differs");
-            exactIdentity(row, identity, true); signed(row, "date_raw");
+            exactIdentity(row, identity, true, !execution); signed(row, "date_raw");
             if (execution) execution(row); else termination(row);
             previous = sequence;
         }
@@ -106,8 +107,12 @@ final class M6InputValidation {
         exactIdentity(read, identity.nativeSubject(), instance);
     }
     static void exactIdentity(JsonNode read, NativeSubject identity, boolean instance) {
-        require(integer(read, "actor_character_id", 0, 0xffff_fffeL) == identity.actorCharacterId()
-                && integer(read, "target_character_id", 0, 0xffff_fffeL) == identity.targetCharacterId(), "Sway actor or target differs");
+        exactIdentity(read, identity, instance, false);
+    }
+    private static void exactIdentity(JsonNode read,NativeSubject identity,boolean instance,boolean signedCharacters) {
+        long actor=signedCharacters?NativeCharacterId.fromJson(read.get("actor_character_id")).value():integer(read,"actor_character_id",0,0xffff_fffeL);
+        long target=signedCharacters?NativeCharacterId.fromJson(read.get("target_character_id")).value():integer(read,"target_character_id",0,0xffff_fffeL);
+        require(actor == identity.actorCharacterId() && target == identity.targetCharacterId(), "Sway actor or target differs");
         if (instance) require(integer(read, "scheme_instance_id", 0, 0xffff_fffeL) == identity.schemeInstanceId()
                 && integer(read, "scheme_instance_generation", 0, 255) == identity.schemeInstanceGeneration(), "Sway full instance or generation differs");
     }

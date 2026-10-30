@@ -57,3 +57,9 @@ M4 refund 采用 provider90 单生产叶和三测试叶精确 patch，check0/app
 M4 已普通 push/独立读回 `56bff55e7ee94af6722918cff1cbab621197dbf6`。
 
 M1 private raw32 组审阅并采用8生产叶、2测试叶和79份原包资源。原 patch 换行不适用于 LF Git tree，规范为 LF 后 check0/apply0；资源另按 DELIVERY.json 的 tests 根逐字复制，TESTS.patch 本身只含两个 Java 测试。当前8完整生产类 `-Xlint:all -Werror` javac0/7.809 秒；为了验证实际导入的 binary packet/classloader 包，严格编译新完整类并在 D checkout 运行15P0F/5.836秒，六世界24份 Native WriteFrame 原包字节、payload/token 经 pending/cold/resolved 消费链保存。复用 owner 六原整类33项分批全P，未重复这些绿色回归。public signed int32 与 private raw uint32 显式转换，拒绝 FFFFFFFF/-1/范围及错类型别名，member 按实际 raw 顺序；sourceFaction 独立非零uint32。opaque、动作准入、预算、唯一 writer、generation 与 UNKNOWN 不重放门不变。普通 proposal/war-cash producer 后继真实缺口另由 M1 D-only 组推进，不能把本包48项结果冒充全部普通规划已闭合。
+
+M1 private 组已普通 push/独立读回 `eb9161511e60edce17882367bdfb7bd36eeb8e82`。
+
+M6 Java signed terminal 依序采用四份实际候选 `FINAL → ORDINARY → OPINION-ORDINARY → COMMON-END`，每步 LF check0、apply0。六完整生产类严格 javac0/2.848 秒；completion、termination 和它们实际普通输入验证接受 canonical signed Character/0，内部 owner/raw_u32 按同一完整位模式比较。EXECUTION、invalidation、Start/Stop 等未证域保持原限制，CommonEnd 只提供 neutral terminal，不派生 cause。保留既有 opinion 修复。
+
+复用 owner 四阶段实际原包回归：FINAL 新4P/旧兼容7P，ordinary terminal4P，ordinary opinion2P，common3P；不把这些分批写成单次总数。为了验证最后组合在正式 application 测试位置的跨包 helper/classloader 与6份资源，D checkout 仅复验 common 两完整类，严格 javac0/2.040 秒、3P0F/3.312 秒；其余绿组未重跑。Native 来源是15份公开 terminal serializer packet、3份完整 mailbox opinion response、5份 copied CommonEnd public packet；均明确 owned-memory/seam，未执行 installer/CALL、当前 DLL 或 Game。资源元数据和真实字段保留，缺失 core frame/caller/cause 仍缺失，不用它们补资格。

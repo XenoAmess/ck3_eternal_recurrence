@@ -91,14 +91,10 @@ final class SwaySignedNativeOpinionTest {
         assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.Actors(7, -1));
     }
 
-    @Test void opinionSupportDoesNotWidenCompletionJournalOrOldTargetAndStopRoutes() {
+    @Test void opinionSupportDoesNotWidenUnprovenExecutionOrOldTargetAndStopRoutes() {
         for (long signed : new long[]{Integer.MIN_VALUE, -2, 0}) {
-            assertThrows(IllegalArgumentException.class, () -> new SwayPublicCodec.DirectRequest(SwayObservationReads.Kind.COMPLETION, BigInteger.ONE, signed, OptionalLong.of(1)));
-            assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.CompletionSubject(new NativeSubject(signed, 7, 1, 0)));
-            assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.CompletionSubject(new NativeSubject(7, signed, 1, 0)));
             assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.JournalQuery(SwayObservationReads.Kind.EXECUTION, new NativeSubject(signed, 7, 1, 0), BigInteger.ZERO));
             assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.InvalidationQuery(new NativeSubject(signed, 7, 1, 0), BigInteger.ZERO));
-            assertThrows(IllegalArgumentException.class, () -> SwayObservationReads.contract(SOURCE, SwayObservationReads.Query.current(SwayObservationReads.Kind.COMPLETION, new Identity("software-positive-only-completion", signed, 7, 1, 0))));
             assertThrows(IllegalArgumentException.class, () -> SwayNativeWire.currentCharacter(signed));
         }
     }

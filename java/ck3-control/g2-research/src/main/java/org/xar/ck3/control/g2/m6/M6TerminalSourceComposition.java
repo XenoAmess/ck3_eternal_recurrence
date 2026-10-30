@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.projection.ProjectionJson;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.Identity;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.NativeSubject;
@@ -184,7 +185,10 @@ public final class M6TerminalSourceComposition {
         actual4(read); textEquals(read, "schema", execution ? "xar.ck3.sway-completion-execution.v1" : "xar.ck3.sway-completion-termination.v1");
         bool(read, "available"); bool(read, "retention_gap"); array(read.get("records"));
         for (JsonNode row : read.get("records")) object(row);
-        for (String field : IDS.subList(0, 3)) integer(read, field, 0, 0xffff_fffeL);
+        for (String field : IDS.subList(0, 3)) {
+            if (!execution && !field.equals("scheme_instance_id")) NativeCharacterId.fromJson(read.get(field));
+            else integer(read, field, 0, 0xffff_fffeL);
+        }
         long generation = integer(read, "scheme_instance_id", 0, 0xffff_fffeL) >> 24;
         if (read.has("scheme_instance_generation")) require(integer(read, "scheme_instance_generation", 0, 255) == generation, "journal generation differs");
         read.put("scheme_instance_generation", generation); return read;

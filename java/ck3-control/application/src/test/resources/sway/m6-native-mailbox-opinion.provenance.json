@@ -1,0 +1,26 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "native_receipt": "D:\\ck3-state\\resume90-m6-native\\mailbox-route\\FINAL-ACTUAL01.json",
+  "native_checks": 94,
+  "native_failures": 0,
+  "game_calls": 0,
+  "aggregation": "Three complete actual Native serializer responses joined into JSON array without field edits; receipt SHA checked",
+  "packets": [
+    {
+      "source": "D:\\ck3-state\\resume90-m6-native\\mailbox-route\\wire\\pair-0.response.json",
+      "bytes": 730,
+      "sha256": "c6d1f1c4c9eed4561675452e2ace7b26118fdb390d21f4692488158d462dff16"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m6-native\\mailbox-route\\wire\\pair-1.response.json",
+      "bytes": 738,
+      "sha256": "33d1f62e20203ebc0300fb103b236eedee85c40df95ae3610cb4451e267714d4"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m6-native\\mailbox-route\\wire\\pair-2.response.json",
+      "bytes": 748,
+      "sha256": "545aa4e2e3368d11e99faa3189b788dec7aab7daeeb63cd9b0d0301a30135b8f"
+    }
+  ],
+  "qualification": "Owned-memory software route only; matching values across independent fixtures do not imply same live Game, gain or Start evidence."
+}

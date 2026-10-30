@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** Exact actual4 copied common entry/return normalization; this family never names a cause. */
 final class M6CommonEndSources {
@@ -35,7 +36,8 @@ final class M6CommonEndSources {
         JsonNode reason = family.get("unavailable_reason"); require(reason.isTextual() && reason.textValue().isEmpty() == bool(family, "available"), "common end availability reason differs");
         for (String field : List.of("observer_session_identity", "after_sequence", "earliest_sequence", "latest_sequence")) u64(family, field, 0);
         integer(family, "owner_thread_id", 0, 0xffff_ffffL);
-        for (String field : IDS.subList(0, 3)) require(integer(family, field, 0, 0xffff_ffffL) == integer(context, field, 0, 0xffff_ffffL), "common end query identity differs");
+        for (String field : IDS.subList(0, 2)) require(NativeCharacterId.fromJson(family.get(field)).equals(NativeCharacterId.fromJson(context.get(field))), "common end query identity differs");
+        require(integer(family, "scheme_instance_id", 0, 0xffff_ffffL) == integer(context, "scheme_instance_id", 0, 0xffff_ffffL), "common end query identity differs");
         require(integer(family, "scheme_instance_generation", 0, 255) == integer(family, "scheme_instance_id", 0, 0xffff_ffffL) >> 24, "common end generation differs");
         require(u64(family, "after_sequence", 0).signum() == 0, "common end independent sequence begins at zero"); array(family.get("records"));
         if (bool(family, "available")) require(bool(family, "observer_attached") && u64(family, "observer_session_identity", 0).signum() > 0
@@ -58,8 +60,8 @@ final class M6CommonEndSources {
             nullableInteger(row, "incoming_dl_observed", "incoming_dl_raw_u8", 0, 255);
             JsonNode entry = frame(row.get("entry")), returned = frame(row.get("returned"));
             require(bool(entry, "scheme_full_id_observed") && integer(entry, "scheme_full_id_raw_u32", 0, 0xffff_ffffL) == integer(family, "scheme_instance_id", 0, 0xffff_ffffL)
-                    && bool(entry, "owner_observed") && integer(entry, "owner_character_full_id_raw_u32", 0, 0xffff_ffffL) == integer(family, "actor_character_id", 0, 0xffff_ffffL)
-                    && bool(entry, "target_observed") && integer(entry, "target_character_full_id_raw_u32", 0, 0xffff_ffffL) == integer(family, "target_character_id", 0, 0xffff_ffffL), "common entry differs from original identities");
+                    && bool(entry, "owner_observed") && integer(entry, "owner_character_full_id_raw_u32", 0, 0xffff_ffffL) == Integer.toUnsignedLong(NativeCharacterId.fromJson(family.get("actor_character_id")).value())
+                    && bool(entry, "target_observed") && integer(entry, "target_character_full_id_raw_u32", 0, 0xffff_ffffL) == Integer.toUnsignedLong(NativeCharacterId.fromJson(family.get("target_character_id")).value()), "common entry differs from original identities");
             JsonNode sameId = row.get("return_same_scheme_full_id");
             if (bool(row, "return_same_scheme_full_id_observed")) {
                 require(sameId.isBoolean() && bool(entry, "scheme_header_observed") && bool(returned, "scheme_header_observed")
@@ -103,7 +105,7 @@ final class M6CommonEndSources {
                     && exactIntegerEquals(frame.get("scheme_instance_generation_u8"), original.get("scheme_instance_generation"));
             if (!matches || !bool(returned, "status_observed") || signed(returned, "status_raw_i32") != 1 || !bool(returned, "owner_observed")) continue;
             long owner = integer(returned, "owner_character_full_id_raw_u32", 0, 0xffff_ffffL);
-            if (owner != integer(original, "actor_character_id", 0, 0xffff_ffffL) && owner != 0xffff_ffffL) continue;
+            if (owner != Integer.toUnsignedLong(NativeCharacterId.fromJson(original.get("actor_character_id")).value()) && owner != 0xffff_ffffL) continue;
             ObjectNode result = StrictJson.object(); result.set("original_instance", original); result.put("source_kind", "copied_common_native_end_original_return");
             result.put("native_status_raw", 1); result.put("native_status_key", "terminated_unattributed");
             result.put("native_terminal_state_observed", true); result.put("terminal_cause_observed", false);

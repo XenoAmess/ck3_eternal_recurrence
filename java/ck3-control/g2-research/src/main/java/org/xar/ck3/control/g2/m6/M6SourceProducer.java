@@ -150,7 +150,7 @@ public final class M6SourceProducer {
         Optional<Long> owner = nullableInteger(read, "native_owner_raw", 0, 0xffff_ffffL);
         if (available && sourceObserved && present && exact && !reused && statusObserved && status.isPresent()) {
             long value = status.orElseThrow();
-            boolean ownerMatches = owner.isPresent() && (owner.orElseThrow() == expected.actorCharacterId()
+            boolean ownerMatches = owner.isPresent() && (owner.orElseThrow() == Integer.toUnsignedLong(NativeCharacterId.of(expected.actorCharacterId()).value())
                     || value == 1 && owner.orElseThrow() == 0xffff_ffffL);
             if ((value == 0 || value == 1) && ownerMatches) {
                 require(terminal == (value == 1), "native status and terminal bit disagree");

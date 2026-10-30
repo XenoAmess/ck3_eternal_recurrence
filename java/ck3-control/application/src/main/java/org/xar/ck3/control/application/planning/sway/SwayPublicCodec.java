@@ -18,18 +18,18 @@ public final class SwayPublicCodec {
             long schemeInstanceId,BigInteger afterSequence) {
         public JournalRequest {
             Objects.requireNonNull(kind);require(kind==SwayObservationReads.Kind.EXECUTION||kind==SwayObservationReads.Kind.TERMINATION,"selected original public journal required");
-            SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.u64(afterSequence,0);SwayNativeWire.currentCharacter(targetCharacterId);
+            SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.u64(afterSequence,0);if(kind==SwayObservationReads.Kind.TERMINATION)NativeCharacterId.of(targetCharacterId);else SwayNativeWire.currentCharacter(targetCharacterId);
             SwayNativeWire.instance(schemeInstanceId,(int)(schemeInstanceId>>24));
         }
     }
     public record DirectRequest(SwayObservationReads.Kind kind,BigInteger expectedRevision,long targetCharacterId,java.util.OptionalLong schemeInstanceId) {
-        public DirectRequest {Objects.requireNonNull(kind);Objects.requireNonNull(schemeInstanceId);SwayNativeWire.u64(expectedRevision,1);if(kind==SwayObservationReads.Kind.OPINION)NativeCharacterId.of(targetCharacterId);else SwayNativeWire.currentCharacter(targetCharacterId);
+        public DirectRequest {Objects.requireNonNull(kind);Objects.requireNonNull(schemeInstanceId);SwayNativeWire.u64(expectedRevision,1);NativeCharacterId.of(targetCharacterId);
             require(kind==SwayObservationReads.Kind.COMPLETION&&schemeInstanceId.isPresent()||kind==SwayObservationReads.Kind.OPINION&&schemeInstanceId.isEmpty(),"completion and opinion have distinct original public fields");schemeInstanceId.ifPresent(value->SwayNativeWire.instance(value,(int)(value>>24)));}
     }
     public static DirectRequest decodeDirect(SwayObservationReads.Kind kind,RawJson arguments) {
         require(kind==SwayObservationReads.Kind.COMPLETION||kind==SwayObservationReads.Kind.OPINION,"only original completion/opinion direct read");
         var row=StrictJson.object(StrictJson.parse(arguments.bytes(),65536),kind==SwayObservationReads.Kind.COMPLETION?Set.of("expected_revision","target_character_id","scheme_instance_id"):Set.of("expected_revision","target_character_id"));
-        long target = kind == SwayObservationReads.Kind.OPINION ? NativeCharacterId.fromJson(row.get("target_character_id")).value() : StrictJson.integer(row.get("target_character_id"),1,Integer.MAX_VALUE);
+        long target = NativeCharacterId.fromJson(row.get("target_character_id")).value();
         return new DirectRequest(kind,publicUInt64(row.get("expected_revision"),1),target,kind==SwayObservationReads.Kind.COMPLETION?java.util.OptionalLong.of(StrictJson.integer(row.get("scheme_instance_id"),0,0xffff_fffeL)):java.util.OptionalLong.empty());
     }
     public static RawJson encodeDirectRequest(DirectRequest request) {
@@ -62,7 +62,7 @@ public final class SwayPublicCodec {
         var node=StrictJson.parse(arguments.bytes(),65536);require(node.isObject(),"public journal arguments must be an object");
         var fields=node.has("after_sequence")?Set.of("expected_revision","target_character_id","scheme_instance_id","after_sequence"):Set.of("expected_revision","target_character_id","scheme_instance_id");
         var row=StrictJson.object(node,fields);
-        return new JournalRequest(kind,publicUInt64(row.get("expected_revision"),1),StrictJson.integer(row.get("target_character_id"),1,Integer.MAX_VALUE),
+        return new JournalRequest(kind,publicUInt64(row.get("expected_revision"),1),kind==SwayObservationReads.Kind.TERMINATION?NativeCharacterId.fromJson(row.get("target_character_id")).value():StrictJson.integer(row.get("target_character_id"),1,Integer.MAX_VALUE),
                 StrictJson.integer(row.get("scheme_instance_id"),0,0xffff_fffeL),row.has("after_sequence")?publicUInt64(row.get("after_sequence"),0):BigInteger.ZERO);
     }
     public static RawJson encodeFinishRequest(SwaySelectedFinish.Request request) {
