@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.xar.ck3.control.contracts.ContractViolationException;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.warpolicy.NativeTerminationOptions;
 import org.xar.ck3.control.warpolicy.WarSide;
@@ -32,7 +33,11 @@ public final class DefenderExitObservationCodec {
 
     /** Accepts the complete extensible SDK snapshot, not a synthetic GREEN qualification flag. */
     public static Result decodeAndObserve(byte[] raw) {
-        JsonNode snapshot = StrictJson.parse(raw);
+        JsonNode snapshot;
+        try { snapshot = FullJsonTree.parse(raw, FullJsonTree.MAXIMUM_BYTES); }
+        catch (IllegalArgumentException invalidJson) {
+            throw new ContractViolationException("invalid complete defender-exit snapshot JSON", invalidJson);
+        }
         if (!snapshot.isObject() || !actualTrue(snapshot.get("paused"))
                 || !absentOrNull(snapshot.get("active_event"))
                 || !absentOrNull(snapshot.get("pending_character_interaction"))

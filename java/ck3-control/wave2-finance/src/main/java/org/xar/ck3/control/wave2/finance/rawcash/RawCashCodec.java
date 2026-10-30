@@ -125,7 +125,7 @@ public final class RawCashCodec {
     }
 
     public static NormalizedCurrentCash normalize(byte[] currentBytes, byte[] snapshotBytes) {
-        JsonNode current = object(StrictJson.parse(currentBytes)), snapshot = object(StrictJson.parse(snapshotBytes));
+        JsonNode current = object(StrictJson.parse(currentBytes)), snapshot = object(org.xar.ck3.control.contracts.FullJsonTree.parse(snapshotBytes, org.xar.ck3.control.contracts.FullJsonTree.MAXIMUM_BYTES));
         MonthlySource source = monthlySource(current);
         Frame frame = source.frame();
         require(frame.gameVersion().equals(snapshotBuild(snapshot)), "war cash native source belongs to another build");

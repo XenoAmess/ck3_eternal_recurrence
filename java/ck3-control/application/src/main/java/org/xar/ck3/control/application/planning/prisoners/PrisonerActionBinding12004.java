@@ -257,7 +257,7 @@ public final class PrisonerActionBinding12004 implements CommandBinding, ActionP
         prepare(command);return command;
     }
     public static BigInteger gold(OpportunityJson.Obj snapshot) {
-        JsonNode row = StrictJson.parse(OpportunityJson.encode(snapshot)).get("played_character_gold");
+        JsonNode row = org.xar.ck3.control.contracts.FullJsonTree.parse(OpportunityJson.encode(snapshot), org.xar.ck3.control.contracts.FullJsonTree.MAXIMUM_BYTES).get("played_character_gold");
         StrictJson.require(row != null && row.isObject(), "observed player gold baseline absent");
         StrictJson.integer(row.get("scale"), 100000, 100000); return signed(row.get("raw"));
     }

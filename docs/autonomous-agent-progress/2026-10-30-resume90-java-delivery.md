@@ -73,3 +73,9 @@ M6 assessment 组已普通 push/独立远端读回 `647c6eb24fe67ee6d47544ce4b48
 M0 保留原包的可移植回归已导入 local-service：三个 test-only Java 叶与21份原资源，无生产叶变更。直接复用 reader90 在最终 classloader 包上的严格 javac0、21P0F（2026-10-30T14:45:57Z—14:46:02Z），不重复绿色运行。20份 Native 软件 command_result 原字节只加 LE4，经真实 NativeGameTransport、已安装 reader、PlayerClaims、Root public binding/codec；5 available、1 typed unavailable/null、14 Native 原错误，permit 重用不重发。固定原 request ID 的 test permit、软件 HELLO/snapshot 和最终 Root callback 是明确测试 seam；不是随机 coordinator、Managed Root、物理 mailbox 或 Game 验收。默认 classloader 资源不依赖 D 路径、C++ 或服务，缺资源失败，已有 Surefire 默认测试命名负责持久入口，Maven 整合尚未执行。
 
 M1 ordinary 后继七叶初次 check/apply 均失败且未修改任何叶：其声明的 eb916 仅代表前一 private 包，实际 baseline 还包含 Z 中尚未发表的 public signed 角色前置和 RootSignedGiftConsumerTest。已将精确差异反馈原 owner，要求提供当前远端到最终候选的完整必要闭包和证据；未将 Z 状态追认为 Git 基线，未启动失败 patch 的候选构建。
+
+M0 持久 Java 回归已普通 push/独立读回 `814134b324c2fe04fdb9d619c80c0057e8b988ea`。
+
+完整 SDK snapshot 三个消费者改用既有 FullJsonTree 64MiB 上限：DefenderExitObservationCodec、RawCashCodec.normalize 的 snapshot 入参及 PrisonerActionBinding12004.gold。小型 receipt 的 StrictJson 上限、JSON 类型/金额/帧校验保持原合同。仅重放三处 parser 最小差异，未带入 Prisoner 候选另一个旧 signed-self 比较 hunk；完整三生产类当前严格 javac0/2.517 秒。runtime90 明确三处已 S/Z 采用，Defender已 MB 编译，cash/gold等待运行岗下一组合构建，本岗不写其输出。
+
+随同导入三个便携完整 snapshot 测试类、六方法，无新资源或本机原 snapshot 依赖。复用原岗 Defender red32P2F→green34P 和 cash/gold red12P4F→green16P 的完整实际组；后者包括四个便携新方法、两个 D-only 原件方法及十个既有方法，不把16都称为新增。未重复绿色回归。原92550字节实机 snapshot 仅作为故障证据留 D，不纳入 CI；软件 contextual source 不授现金或 Game 资格。
