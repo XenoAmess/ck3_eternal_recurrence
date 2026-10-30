@@ -30,6 +30,7 @@ import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 import org.xar.ck3.control.application.driver.DriverObservationFacts;
+import org.xar.ck3.control.application.driver.DriverTransportNoticeStability;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
 import org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known;
 import org.xar.ck3.control.application.driver.DriverStateAssembler;
@@ -266,6 +267,11 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     @FunctionalInterface public interface PlanningEvidenceVerifier {
         /** Actual shared manifest/original reader, with only its explicitly versioned evidence-wrapper equivalence. */
         void requireEquivalent(ContinuityStorePort.Session borrowed, PlanningRequest original, LeaseSnapshot actualLease) throws IOException;
+        /** Existing verifiers retain their strong contract; Root can compare the already-held planning DATA. */
+        default void requireEquivalent(ContinuityStorePort.Session borrowed, PlanningRequest original, LeaseSnapshot actualLease,
+                Set<String> nativeOwnedNoticeKeys) throws IOException {
+            requireEquivalent(borrowed,original,actualLease);
+        }
     }
     /** Pure current-frame projection only. This port must not call planning reads or their guards. */
     public record ExecutableCapabilities(Set<OperationKey> actionSteps, Set<String> bridgeCapabilities, Optional<Obj> battleSpeedReadiness) {
@@ -294,7 +300,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     private record PhysicalCapture(Complete frame, Known driver, RootNativeCapabilities.Projection received,
             SemanticEvidence semantic, ExactRef hello, ExactRef heartbeat, SourceQualification source,
             Optional<Pin> sourceProof, String lockedHead, Instant deadline, Instant validUntil,
-            org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame original) { }
+            org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame original,Set<String> nativeOwnedNoticeKeys) { }
     private record PublicScope(ContinuityStorePort.Session borrowed, PublicPlanningFrame frame, List<Pin> pins,
             String head, Instant deadline) { }
     private record PublicAttempt<T>(boolean ordinary, T result) { }
@@ -423,7 +429,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
             // Capability publication may update auxiliary under the sole owner CAS while this round keeps
             // its original captured frame. Every other Driver fact and unresolved action stays frozen.
             require(current.stamp().equals(retained.stamp()), "planning round lost its actual frozen full Driver: stamp");
-            require(Arrays.equals(current.driver().encode(), retained.driver().encode()), "planning round lost its actual frozen full Driver: fullDriver");
+            require(current.driver().equals(retained.driver()), "planning round lost its actual frozen full Driver: fullDriver");
             require(current.originalHistoryBasis().equals(retained.originalHistoryBasis()), "planning round lost its actual frozen full Driver: historyBasis");
             require(current.actionRows().equals(retained.actionRows()), "planning round lost its actual frozen full Driver: actionRows");
             require(current.loop().equals(retained.loop()), "planning round lost its actual frozen full Driver: loop");
@@ -1081,7 +1087,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
                     && original.sessionId().equals(lease.frame().sessionId()), "current planning origin/source/session drift requires a new ordinary plan");
             PlanningEvidenceVerifier verifier = planningEvidence;
             require(verifier != null, "actual complete planning manifest/original verifier is not installed");
-            verifier.requireEquivalent(borrowed, original, lease);
+            verifier.requireEquivalent(borrowed, original, lease, planningReadScope.get().captured().physical().nativeOwnedNoticeKeys());
             require(original.observations().actionSteps().equals(lease.executableSteps())
                     && original.observations().bridgeCapabilities().equals(lease.bridgeCapabilities()),
                     "actual executable planning projection changed; re-enter ordinary planning");
@@ -1339,7 +1345,8 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         require(checkedAt.isBefore(validUntil) && checkedAt.isBefore(scopeDeadline), "readiness/source verification exhausted its actual freshness window: observed_at=" + frame.observedAt() + ", joined_at=" + now + ", source_done=" + sourceCheckedAt + ", originals_preserved_at=" + originalsPreservedAt + ", semantic_verified_at=" + semanticVerifiedAt + ", checked_at=" + checkedAt + ", valid_until=" + validUntil + ", deadline=" + scopeDeadline + ", qualified.proof().isPresent()=" + qualified.proof().isPresent());
         qualified.assertCurrent(borrowed); verifyOptionalPin(borrowed,sourceProof);
         T result = work.run(new PhysicalCapture(frame, known, received, evidence, hello, heartbeat, qualified, sourceProof,
-                lockedHead, scopeDeadline, validUntil, actual));
+                lockedHead, scopeDeadline, validUntil, actual, DriverTransportNoticeStability.nativeOwnedNoticeKeys(
+                        DriverJson.object(actual.state().bytes(),DriverJson.MAX_NATIVE_BYTES))));
         qualified.assertCurrent(borrowed); verifyOptionalPin(borrowed,sourceProof);
         Instant publishedAt = clock.instant();
         require(publishedAt.isBefore(validUntil) && publishedAt.isBefore(scopeDeadline), "readiness publication crossed its actual freshness/deadline: observed_at=" + frame.observedAt() + ", joined_at=" + now + ", source_done=" + sourceCheckedAt + ", originals_preserved_at=" + originalsPreservedAt + ", semantic_verified_at=" + semanticVerifiedAt + ", checked_at=" + publishedAt + ", valid_until=" + validUntil + ", deadline=" + scopeDeadline + ", qualified.proof().isPresent()=" + qualified.proof().isPresent());

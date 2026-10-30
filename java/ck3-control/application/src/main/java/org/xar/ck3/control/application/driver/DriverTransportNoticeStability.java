@@ -26,6 +26,31 @@ public final class DriverTransportNoticeStability {
         Kind(String key,String type,Set<String> wrappers){this.key=key;this.type=type;this.wrappers=wrappers;}
     }
     private record Notice(Kind kind,OpportunityJson.Obj payload) { }
+    /** Native diagnostic ownership DATA from an already received state; an explicit null is still Native-owned. */
+    public static Set<String> nativeOwnedNoticeKeys(OpportunityJson.Obj actualState) {
+        java.util.Objects.requireNonNull(actualState);
+        var owned=new java.util.HashSet<String>();
+        if(actualState.get("diagnostics") instanceof OpportunityJson.Obj diagnostics)
+            for(Kind kind:Kind.values())if(diagnostics.members().containsKey(kind.key))owned.add(kind.key);
+        return Set.copyOf(owned);
+    }
+    /** Pure semantic DATA comparison. Manifest reference identity is retained by the held facts, not replayed here. */
+    public static OpportunityJson.Obj heldSemantic(OpportunityJson.Obj semantic,Set<String> nativeOwnedNoticeKeys,long actualPid) {
+        java.util.Objects.requireNonNull(semantic);java.util.Objects.requireNonNull(nativeOwnedNoticeKeys);
+        var fields=new LinkedHashMap<>(semantic.members());
+        var diagnostics=OpportunityJson.object(fields.get("diagnostics"),"actual held diagnostics");
+        var stable=new LinkedHashMap<>(diagnostics.members());
+        for(Kind kind:Kind.values()) {
+            if(nativeOwnedNoticeKeys.contains(kind.key)||!diagnostics.members().containsKey(kind.key))continue;
+            Notice notice=notice(kind,diagnostics.get(kind.key),actualPid);
+            var payload=new LinkedHashMap<>(notice.payload().members());
+            for(String field:kind.wrappers)payload.remove(field);
+            stable.put(kind.key,new OpportunityJson.Obj(payload));
+        }
+        fields.put("diagnostics",new OpportunityJson.Obj(stable));
+        fields.remove("java_driver_facts_evidence");
+        return new OpportunityJson.Obj(fields);
+    }
     /** This projection supplies no capability or observation authority. Raw Native fields, including same-name diagnostic keys, stay strict. */
     public static OpportunityJson.Obj originalFields(DriverObservationFacts facts,NativeObservationPort.ObservedFrame actual) {
         StrictJson.require(facts.transport().equals(actual.session())&&facts.snapshotId().equals(actual.snapshotId())

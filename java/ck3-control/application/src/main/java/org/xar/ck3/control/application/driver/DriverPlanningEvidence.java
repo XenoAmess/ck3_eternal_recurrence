@@ -3,6 +3,7 @@ package org.xar.ck3.control.application.driver;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.effects.OriginalEvidencePort;
 import org.xar.ck3.control.application.planning.PlanningRequest;
@@ -17,6 +18,45 @@ public final class DriverPlanningEvidence {
     private DriverPlanningEvidence() { }
     private record Verified(DriverObservationAssembler.Complete frame,DriverObservationFacts facts,
             OpportunityJson.Obj manifest,org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame nativeFrame) { }
+    /** Pure comparison of the already-held planning DATA; the collector retains current execution authority. */
+    public static void requireHeldEquivalent(PlanningRequest original, LeaseSnapshot actual, Set<String> nativeOwnedNoticeKeys) {
+        Objects.requireNonNull(original); Objects.requireNonNull(actual); Objects.requireNonNull(nativeOwnedNoticeKeys);
+        var frame = actual.frame(); var known = actual.driver();
+        StrictJson.require(original.before().equals(frame.identity()) && original.source().equals(frame.source())
+                && original.sessionId().equals(frame.sessionId()), "held planning request differs from lease frame");
+
+        // Compare semantic DATA excluding the manifest reference identity and Java-owned notice wrappers.
+        var originalSemantic = original.observations().snapshot();
+        var currentSemantic = frame.semantic();
+
+        // 1. Manifest reference must match current held facts, not necessarily the original request's manifest ref.
+        var facts = known.observation().orElseThrow(() -> new IllegalArgumentException("held lease has no actual observation facts"));
+        StrictJson.require(facts.semanticFactsEvidence().equals(
+                DriverObservationEvidenceReader.reference(currentSemantic.get("java_driver_facts_evidence"))), "held evidence reference mismatch");
+
+        StrictJson.require(new OpportunityJson.Text("native-headless").equals(facts.originalSemanticFields().get("backend_id"))
+                &&new OpportunityJson.Text("injected-dll-named-pipe").equals(facts.originalSemanticFields().get("source")),
+                "notice wrappers require the actual source-defined Java Native producer");
+        // 2. Normalize both semantics by removing java_driver_facts_evidence and applying stable notice projection.
+        var normalizedOriginal = DriverTransportNoticeStability.heldSemantic(originalSemantic, nativeOwnedNoticeKeys, frame.identity().game().pid());
+        var normalizedCurrent = DriverTransportNoticeStability.heldSemantic(currentSemantic, nativeOwnedNoticeKeys, frame.identity().game().pid());
+
+        StrictJson.require(normalizedOriginal.equals(normalizedCurrent), "held planning semantic differs from lease frame");
+
+        StrictJson.require(facts.driver().equals(known.driver()), "held lease driver/observation mismatch");
+        StrictJson.require(facts.transport().game().equals(frame.identity().game()) && facts.transport().machineId().equals(frame.identity().machineId())
+                && facts.transport().sessionId().equals(frame.sessionId()) && facts.transport().connectionGeneration().equals(frame.connectionGeneration()),
+                "held observation transport crossed lease frame");
+        StrictJson.require(facts.snapshotId().equals(frame.identity().frame().snapshotId()) && facts.nativeRevision().equals(frame.identity().frame().identity().nativeRevision())
+                && facts.publicRevision().equals(frame.identity().frame().revision()) && facts.observationVersion() == frame.identity().observationVersion()
+                && facts.source().equals(frame.source()), "held observation facts crossed lease frame");
+        var stamp = known.stamp();
+        StrictJson.require(stamp.driverVersion() == facts.driverVersion() && stamp.episodeEpoch() == facts.episodeEpoch()
+                && stamp.game().equals(frame.identity().game()) && stamp.episodeRunId().equals(frame.identity().frame().episodeRunId()), "held stamp crossed lease facts");
+        var session = known.driver().session();
+        StrictJson.require(session.actorId().equals(frame.identity().frame().identity().player()) && session.bridgePid() == frame.identity().game().pid()
+                && session.episodeRunId().equals(frame.identity().frame().episodeRunId()), "held driver session crossed lease frame");
+    }
     public static void requireEquivalent(ContinuityStorePort.Session borrowed,PlanningRequest original,
             LeaseSnapshot actual,OriginalEvidencePort originals) throws IOException {
         Objects.requireNonNull(borrowed);Objects.requireNonNull(original);Objects.requireNonNull(actual);Objects.requireNonNull(originals);

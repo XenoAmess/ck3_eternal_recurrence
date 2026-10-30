@@ -118,7 +118,16 @@ public final class RootInstalledCatalog {
         domainCatalog=new RootPlanningDomainCatalog(context,bindings,this.domains,save,this.aub,this.remaining.riteCreation(),
                 this.additionalDomains.driverRegistry().product(RootDriverRegistryPublicProducts.Kind.TRANSPORT,RootDriverTransportRuntimeFactory.Runtime.class),
                 this.additionalDomains.gui(),this.additionalDomains.religion(),this.militaryControls,this.publicPauseClassifier);
-        planningEvidence=(same,original,lease)->DriverPlanningEvidence.requireEquivalent(same,original,lease,context.originals());
+        planningEvidence=new NativeReadinessCollector.PlanningEvidenceVerifier() {
+            @Override public void requireEquivalent(ContinuityStorePort.Session borrowed,PlanningRequest original,
+                    org.xar.ck3.control.application.readiness.ReadinessAuthority.LeaseSnapshot lease)throws IOException {
+                DriverPlanningEvidence.requireEquivalent(borrowed,original,lease,context.originals());
+            }
+            @Override public void requireEquivalent(ContinuityStorePort.Session borrowed,PlanningRequest original,
+                    org.xar.ck3.control.application.readiness.ReadinessAuthority.LeaseSnapshot lease,Set<String> nativeOwnedNoticeKeys) {
+                DriverPlanningEvidence.requireHeldEquivalent(original,lease,nativeOwnedNoticeKeys);
+            }
+        };
     }
     public RootRuntimeContext context() { return context; }
     /** The exact pre-Core definitions already used for this installed catalog; this creates no producer. */
