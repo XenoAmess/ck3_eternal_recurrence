@@ -76,9 +76,9 @@ public final class NativeEventPostconditionPort implements EventPolicies.NativeE
         values.add(new ExpectedBoolean(new FieldKey("old_instance_advanced"), true));
         values.add(new ExpectedInteger(new FieldKey("actor_id"), before.frame().identity().player()));
         values.add(new ExpectedText(new FieldKey("connection_generation_decimal"), integer(object(actualSnapshot.get("diagnostics")).get("connection_generation")).toString()));
-        // The primitive action consumes this window. Its material result is recorded separately by
+        // Independent observation establishes current-window advancement. Its material result is recorded separately by
         // NativeEventEffects through the same original-source evaluator as Python. An unavailable or
-        // failed material effect cannot erase an independently observed consumption and trigger replay.
+        // failed material effect cannot erase independently observed current-window advancement and trigger replay.
         Objects.requireNonNull(traitMaterial); Objects.requireNonNull(plan);
         return Optional.of(new ExpectedPostcondition(1, before, source, schema, values));
     }

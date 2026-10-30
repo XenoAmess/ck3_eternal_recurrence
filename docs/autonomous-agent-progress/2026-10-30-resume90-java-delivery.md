@@ -89,3 +89,7 @@ Gift ordinary 组改按真实 Git 基线的完整九生产叶采用：补齐 Fac
 另一个 Admission 单叶包的 baseline 也来自旧 Z，`git show d961` 与 `git log` 证明 actor/recipient 的 NativeCharacterId 修复早在 aa4c60e86e 已发表；其人为旧基线8P6F不能报告为当前 production 缺陷，生产 patch 未采用。只导入新完整 Collector 八项与逐字原 alert corpus。为消除旧缓存干扰，本岗新编当前已发表 Admission 与三个 Alert 完整生产类，严格 javac0/2.776秒；正式 checkout 新 Collector 整类严格 javac0/5.433秒、8P0F0skip/9.272秒。实际 `current→ROOT/budget/market/priority→gift→Admission→cash/checkpoint→effects.prepare` 路径使用本次 Gift-only 九叶；public ROOT/alert/市场及guard/ledger包装为明确测试 DATA，private 原包保留原字节。没有授予真实动作或新游戏日。
 
 本组交付九生产、四测试、十五资源；新增 RootSigned 旧缺原件和六独立 receipt packet 随类进入默认 Surefire 位置，旧79包不重交。完整 Maven 整合仍待当前开发图稳定后增编，未将源码/JUnit通过写成 Game 已通过。
+
+Gift ordinary 组已普通 push/独立远端读回 `5b760718b0487a3bdfa763b30803256972f1dc85`。首次 commit 遇瞬时 index.lock 后未删除锁，下一次观察锁已自然消失，再正常提交；失败后的 rebase 拒绝与无变化 push 不作成功证据。
+
+Root 指定的 M7 open_blocker 仅一个字符串按当前 Git 文档最小纠正：2026-10-30 明确续行已覆盖历史 owner-play 暂停，原五 daily SAVE、自然寿命/更广矩阵缺口与6/8状态保留。未从大 dirty Z 整份覆盖。M2 新原字节 remove/current 研究另促使 NativeEventPostconditionPort 两条注释收窄为独立 current-window advancement：另一个 Event 被移除可能导致 current 更换而旧对象仍存活，因此该字段不证明对象已删除或物质效果。仅注释，行为/字段/UNKNOWN 不重放保持，不为文字变更重跑绿测。
