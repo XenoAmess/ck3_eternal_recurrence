@@ -35,3 +35,7 @@ Piety 的 NativePietyRootConsumer、NativePietyRootOriginals、NativePietyDirect
 Piety 普通 push 及独立远端读回为 `add37381e4d6f700df3bd1ab9bab1f72036fc1c2`。
 
 Routable operations 两叶旧候选按精确 LF patch 应用，RootOnlineDecisionSelector 完整生产类严格 javac0/2.790 秒。请求中的操作名使用 `OperationKey.value()`，与 proposal.operation 的 wire 名一致。复用休假前 owner 已保存的整类7P、原目标1F→7P结果，未为重复绿色回归请求任何服务；新测试断言随生产同交付。本轮模型 HTTP/探测/重试为0，既有候选采用与运行期决策分开。
+
+Routable operations 已普通 push/独立远端读回 `f15bf6fcc90d1f52e3ec2c3a5eba6a9ffbe0f541`。
+
+Root 的 saved replacement deadline 候选按两个最小 hunk 应用：子启动计划和新的 SteamOfflineProbe.Plan 都使用本次 replacement requestedDeadline，不继承已过期 startup deadline。完整 NativeLaunchPlan 在本岗当前开发依赖上严格 javac0/2.067 秒；新持久测试随组交付，复用 Root 已完成的两完整类 baseline3P4F→候选7P0F，没有重跑已绿回归。已过期、较短请求仍保留，不授额外时长。没有实际 SAVE/RESTORE、Game replacement 或 Steam 探测；普通同 Game 重启不因此新增门。

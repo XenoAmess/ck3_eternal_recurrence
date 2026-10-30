@@ -149,10 +149,11 @@ public record NativeLaunchPlan(String requestId, String sessionId, LaunchSourceB
         Path path=Path.of(save.path());String name=path.getFileName().toString();
         if(!name.endsWith(".ck3")||!path.normalize().getParent().equals(profileDirectory.resolve("save games").normalize()))throw new IOException("Replacement SAVE must be the exact original configured profile file");
         String child=JavaGameLifecycle.replacementRequestId(parentLifecycleIntentId);
-        Instant until=requestedDeadline.isBefore(deadline)?requestedDeadline:deadline;
+        Instant until=requestedDeadline;
+        var replacementSteam=new SteamOfflineProbe.Plan(steam.machineId(),steam.steamExecutable(),until);
         return new NativeLaunchPlan(child,"session-"+child,sources,profileDirectory,stateDirectory,
                 evidenceRoot.getParent().resolve(child),pipeName,bridgeVersion,adapterId,new SavedGame(name.substring(0,name.length()-4),save),
-                debugMode,windowPolicy,environment,gameMemoryBytes,injectorMemoryBytes,until,injectorTimeout,startupTimeout,steam,preparedProfile,maximumEvidenceRows);
+                debugMode,windowPolicy,environment,gameMemoryBytes,injectorMemoryBytes,until,injectorTimeout,startupTimeout,replacementSteam,preparedProfile,maximumEvidenceRows);
     }
     static List<String> arguments(Path profileDirectory,Load load,boolean debugMode) {
         List<String> args = new ArrayList<>();
