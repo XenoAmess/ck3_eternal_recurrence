@@ -1,0 +1,11 @@
+{
+  "schema": "xar.settled-recovery-software-fixture-template/v1",
+  "resource": "restart98-template.json.gz",
+  "template_bytes": 10534606,
+  "compressed_bytes": 376399,
+  "files": 774,
+  "original_loaded_artifacts": 319,
+  "external_metadata_replacements": 150,
+  "semantics": "derived software fixture; no original Game/Native/source qualification",
+  "portable_paths": true
+}

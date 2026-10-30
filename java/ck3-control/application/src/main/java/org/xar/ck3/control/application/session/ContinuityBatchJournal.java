@@ -1015,6 +1015,32 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         StrictJson.require(openBatch==null&&batch.equals(batchPrefix+"-"+used.size())&&used.add(batch),
                                 "settled recovery cannot reuse or skip an actual batch");
                         openBatch=batch;
+                    } else if(JournalKind.WORKER_RESTART_CAPTURE.name().equals(boundary)) {
+                        StrictJson.require(openBatch==null&&pending==null&&batchPrefix!=null,
+                                "settled restart capture requires its actual idle batch frontier");
+                        var manifest=CleanBatchRestart.decode(originals.loadMaterial(ExactRef.fromJson(details.get("restart_manifest"))).bytes());
+                        var captured=ControllerRestartState.decode(originals.loadMaterial(manifest.controller()).bytes());
+                        StrictJson.require(captured.owner().equals(owner)&&captured.batchPrefix().equals(batchPrefix)
+                                &&captured.nextBatchSequence()==used.size()&&captured.usedBatches().equals(used)
+                                &&batch.equals(batchPrefix+":restart:"+captured.nextBatchSequence())
+                                &&captured.savedPair().isEmpty()&&!captured.quarantined()&&!captured.localUnresolved()
+                                &&!captured.stopRequested(),"settled restart capture differs from its actual retained Controller");
+                        transitions.requireCapturedRestartFrame(same,edge.after(),captured,manifest);
+                        var capturedOriginal=originals.loadFullMaterial(manifest.driverFacts());
+                        var capturedKnown=DriverSnapshotFacts.decodeKnownOriginal(capturedOriginal,Optional.empty());
+                        byte[] capturedFull=originals.loadFullMaterial(manifest.fullDriver()).bytes();
+                        StrictJson.require(sameKnownRestartOriginal(capturedOriginal.bytes(),capturedKnown)
+                                &&java.util.Arrays.equals(capturedFull,capturedKnown.driver().encode())
+                                &&java.util.Arrays.equals(capturedFull,retained.facts().driver().encode())
+                                &&capturedKnown.stamp().equals(retained.facts().stamp())
+                                &&capturedKnown.originalHistoryBasis().equals(retained.facts().originalHistoryBasis())
+                                &&capturedKnown.actionRows().equals(retained.facts().actionRows())
+                                &&manifest.source().equals(source)&&manifest.previousTransport().machineId().equals(owner.machineId())
+                                &&manifest.previousTransport().game().equals(owner.game())
+                                &&manifest.previousTransport().sessionId().equals(owner.sessionId()),
+                                "settled restart capture changed its original Driver/action/source owner");
+                        retained=new RetainedReadDriver(capturedKnown,manifest.fullDriver());
+                        previousTransport=manifest.previousTransport();
                     } else {
                         boolean closed=JournalKind.BATCH_INTERRUPTED.name().equals(boundary)
                                 ||retainedRecovery!=null&&java.util.Set.of(JournalKind.BATCH_FINISHED.name(),
