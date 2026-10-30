@@ -10,6 +10,7 @@ if(BUILD_TESTING AND WIN32 AND
     tests/faction_fullid/faction_fullid_whole09.cpp
     tests/faction_fullid/faction_fullid_ci_main133.cpp
     tests/faction_fullid/faction_fullid_legacy_abort129.cpp
+    tests/faction_fullid/faction_fullid_native_liege17.cpp
     src/ck3_12004_faction_gift_router.cpp
     src/ck3_12004_faction_mailbox.cpp
     src/ck3_12002_faction_alerts.cpp
@@ -128,4 +129,12 @@ if(BUILD_TESTING AND WIN32 AND
   add_test(NAME xar_ck3_12004_faction_fullid_surrender_war-zero
     COMMAND ${target} --character-surrender 0 war-zero
       "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/surrender/war-zero")
+  # Native liege CI137 entry
+  foreach(selector IN ITEMS holder-zero top-min roundtrip-refusal)
+    add_test(NAME xar_ck3_12004_faction_fullid_native_liege_${selector}
+      COMMAND ${target} --native-liege ${selector}
+        "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/native-liege/${selector}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/faction_fullid/native-allocator-assets"
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/faction_fullid/native-liege-assets/new-028BFC50-028BFCC6.bin")
+  endforeach()
 endif()
