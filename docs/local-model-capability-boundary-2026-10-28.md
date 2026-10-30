@@ -17,3 +17,9 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。本节只归并有实际请求�
 强提示的数值纠错另保范围：M4 scale/selector请求在失败后给精确one-opIMUL高低语义、Math.multiplyHigh及已闭定点/threshold合同，不能将后继候选说成独立逆向。当前源码接受、严格编译、实际差分、生产采用与Game分别记录，不从完整JSON或单次返回直接越级。
 
 审阅/封包失误单列：M2 random-Java及JavaJSON/CASE的显示层转义误读已撤回；M2第二轮因此无实际源码diff。hashJava第一次最终schema冲突由协调者负责，第二次无冲突后的具体错误独立审。GUI02缺新selector正文的上下文缺口不授简单语句失败上限。24次10054重试与15次length在对应观察点分记接口/输出问题，均不是工程采用；cached未知不猜测。此轮没有可支持的整体成功率或能力上限统计。
+
+### resume91 补记：同一实际链的正负合同传播
+
+actual105大输入预算修复体现的边界是“完整当前source+准确数据量+真实栈”可以产生跨两消费者的小edit，但模型首轮漏import、未保裸IllegalArgumentException到公开ContractViolationException的映射。不是只证明812KiB材料可读：owner先复现正链，再用非法UTF8/duplicate发现4个真实负例回归，精确反馈后模型7edit原样通过actual105完整链+6负例和既有Lineage10P。输入13文件138201chars只是上下文；实际改写为几个parse调用/helper，不应称13文件自主改写或全图恢复。owner补2import成本与第二轮原样方法采用分别记。
+
+这轮还证明传输/交付/采用是三件事：首HTTP9.017s后的约3分钟通知延迟属于协调；第二轮10.503s快速直达仍等编测才授采用。M5后继显式large-input入口及4叶传播在4.043s/7.288s返回时尚未授采用；后续实际5叶+probe严格编译0、1.395MB输入→565953B结果/563211B selector/2250B analysis及7负向通过，owner import/historical128修正与原六hunk传播分记。五叶FF17f70beeb4及runtime的MB106七源编译0/16.667s另有回执；旧FormalIntake8P4F既有红保留，仍不称整个模块或Game业务通过。基础env一行候选经单源strict0而无需镜像测试，同样不外推自主工具能力或上限。实际JSON字节、输入token、完整source数、owner提示/修正和语义验证分开保留。

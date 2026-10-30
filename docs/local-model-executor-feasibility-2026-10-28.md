@@ -88,3 +88,11 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。用户明确续行并恢复高�
 审阅也是需要校准的工作：M2/Java JSON字符串曾被owner误读外层JSON转义，实际提取源码确认后撤回；M2因此多发的第二轮逐字无diff，不能记新修复，随后真实javac字符字面量错误才触发第三轮。Java material曾误报不存在API，逐声明确认Binding/FrameLoader/Original getters/settled都存在后撤回，最终未编拒绝原因是authority/证据closure不完整。协调者hashJava末任务叠加另一Return schema造成冲突，缺源码归封包错误，不归模型Java编译失败；新任务整份替换末消息为唯一schema。GUI02缺首轮已接受selector正文而只给无工具模型响应路径，属上下文缺口。这些成本和勘误都保留在REVIEWS，不能全算模型推理失败。
 
 大图候选出现实质ABI/指针/返回值误读和重复imports/正文直至length；对应链在重复具体失败后由owner接管，后继只派仍未完成的typed小方法、数值reproducer或实际诊断。HTTP高并发按真实需求、队列、错误和资源滚动；未以已完成分析、无需求调用或每岗配额维持数量。没有证据支持全工程成功率、净token节省或永久能力上限。
+
+### resume91 补记：actual105 大材料与异常类型闭环
+
+actual105 Family链提供833行真实排名、实际preview原件与两完整消费者时，模型13完整源/31661输入token首候选9.017s返回3处最小FullJsonTree读取/去小budget全量编码修改。原样严格编译因漏2个import真实失败；owner只补import后正链通过，但必要非法UTF8/重复key负例揭示4处公开异常类型回归。第二轮5完整当前源/12554输入token、10.503s返回7个精确edit，由owner原样采入，严格编译0；同105完整Root/legality/projection/preview→lineage选择40408→diagnostic及6负向通过，既有Lineage整类10P/0skip。Diagnostic旧golden缺席未宣称整类绿。两轮与owner import成本分记，不把首轮完整JSON当首次通过，也不为普通接续增加来源门。
+
+首轮19:13:11已传输完成但约19:16才通知owner的延迟属于协调交付，不能归HTTP慢；后继P0让结果子岗最高优先单任务SUMMARY/CONTENT直达，异常类型轮与M5 intake/propagation轮均先直接交owner再索引。M5二叶大collection入口4.043s及后继四叶传播7.288s在返回时只授完整传输；其后两轮候选经owner补import/保留historical128并实际采用五叶，传播六hunk仅CRLF适配。5叶+probe严格编译0/2.100s、Java0/1.215s；actual105材料的source-derived最小plan832852B→pool832967B→input1395039B/result565953B/selector563211B/analysis2250B及7负向/默认检查通过。旧FormalIntake整类8P4F（旧cachedpositiveID/缺golden）保持，不声称整类绿。五叶正式FF17f70beeb4；Family两叶与M5五叶共7src由runtime采用，MB106真实END0/16.667s、业务106同Game接续启动，安装/编译不授ActionSelected/receipt/新日。
+
+基础单方法还有独立证据：NativeBridgeBuild.clean子进程env补一个flag请求925输入/249输出，1.891s完整，原样采一行；单源Java21严格编译0/10.209s，普通FF67b4a9d984，无新增镜像测试、全局环境/SDK/Game修改。这是精确代码/任务下的小修改，不是自主模块构建闭环。原件见D:/ck3-state/resume91-runtime/obligations105与D:/ck3-state/resume91-java-delivery/native-env-compile；详细结果继续由REVIEWS91归并。

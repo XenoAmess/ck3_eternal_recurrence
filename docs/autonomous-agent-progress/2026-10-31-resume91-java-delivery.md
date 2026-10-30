@@ -31,4 +31,16 @@ Root docs01 的6叶独立提交 `7d30b58e67` 已正常发表：3个新文档及 
 
 Root docs02 15页小快照已比较，14变化、与本岗当前逐字相同的一页跳过；独立docs提交 `9ea537867d` 正常发表，未夹带待编源码。新页保持各owner的观察时点，不外推当前Game后态。
 
-restart/intake/ranking/episode 等仍按原交接的准确 manifest 链审阅，不能因 material12 或新 P0 两行发表便称正式 D 已包含全部运行修复。后继反向同步只接精确最小 diff，不整叶覆盖 S 或 Z。
+## 后续正式交付与当前边界
+
+material12及3个标准JUnit源最终正常FF为 `1ef65a9548`。M6 Java9 DATA 两新叶另发 `9b5736f9aa`：owner单test严格编译0/1.846s、新2P/0skip/2.355s；方法经历两轮真实模型纠错，owner补4个遗漏原请求断言。仅验证真实9包DATA和typed raw/public codecs，不授尚未到达的Stop positive guards、Start canonical writer、Finish或Game信用。
+
+模型全局经验以精确小段另发 `3101536eba`，没有覆盖Z历史文件。Java `NativeBridgeBuild.clean` 单行子进程telemetry flag原样模型采用为 `67b4a9d984`：925输入/249输出、1.891s完整；单生产源strict all/Werror0/10.209s，不新增镜像测试或修改全局环境。模型调用速度、源码采用、局部工程验证分别计。
+
+P0 Family105两完整消费者最小patch正常发表 `966015a93b`：lineage与diagnostic读取完整原材料，保留非法输入的公开ContractViolationException；owner实际同105完整链选择40408、6负例及既有Lineage10P，Diagnostic缺旧golden不宣称整类绿。随后M5大材料边界5叶正常发表 `17f70beeb4`，明确complete入口复用现有typed converter、历史/default128KiB和小analysis边界保持。owner实际source-derived1.395MB输入→565953B结果/563211B selector/2250B analysis及7负向通过，旧整类8P4F保留，不外推全类绿。本岗不抢P0重编；runtime七源MB106真实END0/16.667s另记。worker106随后真实END4/104.863s，越过旧Family错误后在command.prepare遇到新角色预算，runtime正在修；未新增游戏日信用。
+
+历史Intake/Ranking逆向同步 `edcc9c0b0b` 已正常发表：2生产叶、3测试源、4资源。完整输入使用FullJsonTree，紧凑输出边界保持，异常仍映射ContractViolationException。按Native唯一槽明确授权，当前D两显式生产源strict all/Werror0/1.877s，证据 `D:/ck3-state/resume91-java-delivery/heir-consumers`；未重旧833行绿。原证据仍是Intake实际ACK398672B→397922B输入2P及异常兼容单独1P、Ranking实际812041B链2P与derived portable单独2P，不合称一次组合通过。
+
+M2 GUI协商3叶正常发表 `147e648b3c`：独立精确capability才选择既有v2，安装读取一次现有HELLO diagnostics并将List转Set；没有新I/O、启动门或Native广告。模型constant/selector仅常规缩进，安装语句owner纠正；首API错误、返工退回旧v1以及owner误写Set的真实编译红都保留。复用owner4显式源strict0/5.714s、原3+新2同JVM5P/0skip/3.135s，不重绿。Native63未广告该token时继续v1。
+
+restart/episode 等仍按原交接的准确manifest链审阅，不能因上述包发表便称正式D已包含全部运行修复。后继反向同步只接精确最小diff，不整叶覆盖S或Z。
