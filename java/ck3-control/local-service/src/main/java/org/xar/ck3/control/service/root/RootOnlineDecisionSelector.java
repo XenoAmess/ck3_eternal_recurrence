@@ -98,7 +98,9 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             for (int attempt = 1; attempt <= config.maximumAttempts(); attempt++) {
                 long left = remaining(wallEnd, nanoEnd);
                 if (left <= 0) { reason = "model_decision_deadline_exhausted"; break; }
+                String attemptStartedAt = beginProgress(machineId, identity, attempt, wallEnd, payload.length);
                 Exchange exchange = call(payload, wallEnd, nanoEnd);
+                endProgress(machineId, identity, attempt, attemptStartedAt, wallEnd, payload.length, exchange);
                 ObjectNode raw = object();
                 raw.put("schema", "xar.ordinary-model-http-attempt/v1"); raw.put("attempt", attempt);
                 raw.put("machine_id", machineId); raw.put("observed_at_utc", clock.instant().toString());
@@ -352,4 +354,58 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     }
     private long remaining(Instant deadline, long nanoEnd) { return Math.min(nanosUntil(deadline), nanoEnd - System.nanoTime()); }
     private static long elapsed(long start) { return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start); }
+
+    private String beginProgress(String machineId, String proposalId, int attempt, Instant deadline, int payloadBytes) {
+        try {
+            String startedAt = clock.instant().toString();
+            ObjectNode event = object();
+            event.put("schema", "xar.ordinary-model-http-progress/v1");
+            event.put("status", "ORDINARY_MODEL_HTTP_BEGIN");
+            event.put("machine_id", machineId);
+            event.put("proposal_id", proposalId);
+            event.put("attempt", attempt);
+            event.put("endpoint", completionEndpoint.toString());
+            event.put("model", config.model());
+            event.put("started_at_utc", startedAt);
+            event.put("deadline_utc", deadline.toString());
+            event.put("payload_bytes", payloadBytes);
+            emitEvent(event);
+            return startedAt;
+        } catch (RuntimeException | IOException ignored) { return null; }
+    }
+
+    private void endProgress(String machineId, String proposalId, int attempt, String startedAt, Instant deadline, int payloadBytes, Exchange exchange) {
+        if (startedAt == null) return;
+        try {
+            ObjectNode event = object();
+            event.put("schema", "xar.ordinary-model-http-progress/v1");
+            event.put("status", "ORDINARY_MODEL_HTTP_END");
+            event.put("machine_id", machineId);
+            event.put("proposal_id", proposalId);
+            event.put("attempt", attempt);
+            event.put("endpoint", completionEndpoint.toString());
+            event.put("model", config.model());
+            event.put("started_at_utc", startedAt);
+            event.put("deadline_utc", deadline.toString());
+            event.put("payload_bytes", payloadBytes);
+            event.put("http_status", exchange.status());
+            if (exchange.headersMs() < 0) event.putNull("headers_ms"); else event.put("headers_ms", exchange.headersMs());
+            if (exchange.ttftMs() == null) event.putNull("ttft_ms"); else event.put("ttft_ms", exchange.ttftMs());
+            event.put("total_ms", exchange.totalMs());
+            event.put("complete", exchange.complete());
+            event.put("transient_failure", exchange.transientFailure());
+            event.put("response_wire_bytes", exchange.raw().length);
+            emitEvent(event);
+        } catch (RuntimeException | IOException ignored) { }
+    }
+
+    private void emitEvent(ObjectNode event) throws IOException {
+        byte[] line = StrictJson.canonical(event, StrictJson.EXPLICIT_MAX_BYTES);
+        java.io.PrintStream out = System.out;
+        synchronized (out) {
+            out.write(line);
+            out.write(10);
+            out.flush();
+        }
+    }
 }

@@ -43,6 +43,7 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.service.root.RootOnlineDecisionSelector;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.service.root.RootOrdinaryRuntimeConfiguration;
 
 /** Real HTTP provider/planner/M7 consumers with explicit software proposals; no Native or canonical submit. */
@@ -398,6 +399,9 @@ class OnlineOrdinaryDecisionSelectorTest {
         private final AtomicInteger headersSent = new AtomicInteger();
         private final AtomicReference<ObjectNode> request = new AtomicReference<>();
         private boolean closed;
+        volatile java.util.concurrent.CountDownLatch requestReached;
+        volatile java.util.concurrent.CountDownLatch releaseResponse;
+        volatile boolean firstUnavailable;
         LocalModel() throws IOException {
             server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
             server.setExecutor(workers);
@@ -409,7 +413,20 @@ class OnlineOrdinaryDecisionSelectorTest {
             try {
                 byte[] raw = exchange.getRequestBody().readNBytes(StrictJson.EXPLICIT_MAX_BYTES + 1);
                 request.set((ObjectNode) StrictJson.parse(raw, StrictJson.EXPLICIT_MAX_BYTES));
-                calls.incrementAndGet();
+                int actualCall = calls.incrementAndGet();
+                if (requestReached != null) requestReached.countDown();
+                if (releaseResponse != null) {
+                    try {
+                        if (!releaseResponse.await(5, java.util.concurrent.TimeUnit.SECONDS)) throw new java.io.IOException("release timeout");
+                    } catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        throw new java.io.IOException("release interrupted", interrupted);
+                    }
+                }
+                if (firstUnavailable && actualCall == 1) {
+                    exchange.sendResponseHeaders(503, -1);
+                    return;
+                }
                 Reply planned = reply.get();
                 exchange.getResponseHeaders().set("Content-Type", "text/event-stream; charset=UTF-8");
                 exchange.sendResponseHeaders(200, 0);
@@ -448,4 +465,185 @@ class OnlineOrdinaryDecisionSelectorTest {
             if (!closed) { closed = true; server.stop(0); workers.shutdownNow(); }
         }
     }
+
+@Test @org.junit.jupiter.api.parallel.ResourceLock(org.junit.jupiter.api.parallel.Resources.SYSTEM_OUT)
+void httpProgressBeginsBeforeResponseAndEndsBeforeArchive(@TempDir Path root) throws Exception {
+    Fixture fixture = fixture(false);
+    java.io.PrintStream originalOut = System.out;
+    java.io.ByteArrayOutputStream capture = new java.io.ByteArrayOutputStream();
+    java.util.concurrent.CountDownLatch requestReached = new java.util.concurrent.CountDownLatch(1);
+    java.util.concurrent.CountDownLatch releaseResponse = new java.util.concurrent.CountDownLatch(1);
+    java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor();
+    java.util.concurrent.Future<PlanningResult> future = null;
+    LocalModel model = null;
+    try {
+        System.setOut(new java.io.PrintStream(capture, true, StandardCharsets.UTF_8));
+        model = new LocalModel();
+        model.requestReached = requestReached;
+        model.releaseResponse = releaseResponse;
+        ObjectNode reply = inner(fixture.command(), "SELECT_PROPOSAL");
+        reply.put("reason", "sensitive-marker-no-stdout");
+        model.reply.set(new Reply(reply.toString(), 0));
+        var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(
+                model.endpoint(), "qwen38-coder", Duration.ofSeconds(5), 1, Duration.ZERO), Clock.systemUTC(), raw -> {
+            var material = FullJsonTree.parse(raw.bytes(), org.xar.ck3.control.application.action.RawJson.MAXIMUM_BYTES);
+            if ("xar.ordinary-model-http-attempt/v1".equals(material.path("schema").asText())) {
+                var progress = capture.toString(StandardCharsets.UTF_8).lines().filter(line -> !line.isBlank())
+                        .map(line -> StrictJson.parse(line.getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES)).toList();
+                assertEquals(2, progress.size(), "actual END precedes attempt material I/O");
+                assertEquals("ORDINARY_MODEL_HTTP_END", progress.get(1).get("status").textValue());
+            }
+            byte[] bytes = raw.bytes();
+            Path path = root.resolve("http-progress-material-" + java.util.UUID.randomUUID() + ".json");
+            Files.write(path, bytes, java.nio.file.StandardOpenOption.CREATE_NEW);
+            return new ExactRef(path.toAbsolutePath().toString(), bytes.length, ActionCodec.sha256(bytes));
+        });
+        fixture.planner().bindSelector((request, proposal) -> selector.select(request, proposal));
+        future = executor.submit(() -> fixture.planner().plan(fixture.request()));
+        assertTrue(requestReached.await(5, java.util.concurrent.TimeUnit.SECONDS), "HTTP handler reached before response");
+        var lines = capture.toString(java.nio.charset.StandardCharsets.UTF_8).lines().filter(l -> !l.isBlank())
+                .map(l -> (ObjectNode) org.xar.ck3.control.contracts.StrictJson.parse(l.getBytes(java.nio.charset.StandardCharsets.UTF_8), org.xar.ck3.control.contracts.StrictJson.EXPLICIT_MAX_BYTES)).toList();
+        assertEquals(1, lines.size(), "exactly one BEGIN event before response");
+        var begin = lines.get(0);
+        assertEquals("xar.ordinary-model-http-progress/v1", begin.get("schema").textValue());
+        assertEquals("ORDINARY_MODEL_HTTP_BEGIN", begin.get("status").textValue());
+        assertEquals(fixture.command().origin().machineId(), begin.get("machine_id").textValue());
+        assertEquals(fixture.command().actionId(), begin.get("proposal_id").textValue());
+        assertEquals(1, begin.get("attempt").intValue());
+        assertEquals(model.endpoint().toString() + "/chat/completions", begin.get("endpoint").textValue());
+        assertEquals("qwen38-coder", begin.get("model").textValue());
+        java.time.Instant.parse(begin.get("started_at_utc").textValue());
+        java.time.Instant.parse(begin.get("deadline_utc").textValue());
+        assertTrue(begin.get("payload_bytes").intValue() > 0);
+        assertTrue(!begin.has("proposal") && !begin.has("messages") && !begin.has("history") && !begin.has("snapshot") && !begin.has("wire_base64") && !begin.has("content") && !begin.has("reason"));
+        assertTrue(!future.isDone(), "planner blocked waiting for response");
+        releaseResponse.countDown();
+        var planned = future.get(5, java.util.concurrent.TimeUnit.SECONDS);
+        var selected = assertInstanceOf(PlanningResult.ActionSelected.class, planned);
+        assertSame(fixture.command(), selected.command());
+        assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+        var finalLines = capture.toString(java.nio.charset.StandardCharsets.UTF_8).lines().filter(l -> !l.isBlank())
+                .map(l -> (ObjectNode) org.xar.ck3.control.contracts.StrictJson.parse(l.getBytes(java.nio.charset.StandardCharsets.UTF_8), org.xar.ck3.control.contracts.StrictJson.EXPLICIT_MAX_BYTES)).toList();
+        assertEquals(2, finalLines.size(), "one BEGIN and one END event");
+        var end = finalLines.get(1);
+        assertEquals("ORDINARY_MODEL_HTTP_END", end.get("status").textValue());
+        assertEquals(begin.get("machine_id"), end.get("machine_id"));
+        assertEquals(begin.get("proposal_id"), end.get("proposal_id"));
+        assertEquals(begin.get("attempt"), end.get("attempt"));
+        assertEquals(begin.get("endpoint"), end.get("endpoint"));
+        assertEquals(begin.get("model"), end.get("model"));
+        assertEquals(begin.get("started_at_utc"), end.get("started_at_utc"));
+        assertEquals(begin.get("deadline_utc"), end.get("deadline_utc"));
+        assertEquals(begin.get("payload_bytes"), end.get("payload_bytes"));
+        assertEquals(200, end.get("http_status").intValue());
+        assertTrue(end.get("complete").booleanValue());
+        assertTrue(!end.get("transient_failure").booleanValue());
+        assertTrue(end.get("total_ms").longValue() >= 0);
+        if (!end.get("headers_ms").isNull()) assertTrue(end.get("headers_ms").longValue() >= 0);
+        if (!end.get("ttft_ms").isNull()) assertTrue(end.get("ttft_ms").longValue() >= 0);
+        assertTrue(!end.has("proposal") && !end.has("messages") && !end.has("history") && !end.has("snapshot") && !end.has("wire_base64") && !end.has("content") && !end.has("reason"));
+        assertTrue(!capture.toString(StandardCharsets.UTF_8).contains("sensitive-marker-no-stdout"), "payload stays out of progress");
+        boolean markerPreserved = false;
+        try (var files = Files.list(root)) {
+            for (Path file : files.toList()) {
+                if (Files.readString(file, StandardCharsets.UTF_8).contains("sensitive-marker-no-stdout")) markerPreserved = true;
+            }
+        }
+        assertTrue(markerPreserved, "normal response materials retain original evidence");
+    } finally {
+        System.setOut(originalOut);
+        if (releaseResponse != null) releaseResponse.countDown();
+        if (model != null) model.close();
+        if (executor != null) executor.shutdownNow();
+    }
+}
+
+@Test @org.junit.jupiter.api.parallel.ResourceLock(org.junit.jupiter.api.parallel.Resources.SYSTEM_OUT)
+void httpProgressPairsActualRetryAndSkipsExpiredRequest(@TempDir Path root) throws Exception {
+    Fixture fixture = fixture(false);
+    java.io.PrintStream originalOut = System.out;
+    try (LocalModel model = new LocalModel()) {
+        model.firstUnavailable = true;
+        model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+        java.io.ByteArrayOutputStream capture = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(capture, true, StandardCharsets.UTF_8));
+        var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(
+                model.endpoint(), "qwen38-coder", Duration.ofSeconds(5), 2, Duration.ofMillis(1)), Clock.systemUTC(),
+                raw -> {
+                    Path path = root.resolve("retry-material-" + java.util.UUID.randomUUID() + ".json");
+                    byte[] bytes = raw.bytes();
+                    Files.write(path, bytes, java.nio.file.StandardOpenOption.CREATE_NEW);
+                    return new ExactRef(path.toAbsolutePath().toString(), bytes.length, ActionCodec.sha256(bytes));
+                });
+        fixture.planner().bindSelector(selector);
+        var planned = fixture.planner().plan(fixture.request());
+        var selected = assertInstanceOf(PlanningResult.ActionSelected.class, planned);
+        assertSame(fixture.command(), selected.command());
+        assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+        assertEquals(2, model.calls.get());
+        String log = capture.toString(StandardCharsets.UTF_8);
+        var lines = log.split("\n");
+        assertEquals(4, lines.length);
+        var e1 = FullJsonTree.parse(lines[0].getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+        var e2 = FullJsonTree.parse(lines[1].getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+        var e3 = FullJsonTree.parse(lines[2].getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+        var e4 = FullJsonTree.parse(lines[3].getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+        assertEquals("xar.ordinary-model-http-progress/v1", e1.get("schema").textValue());
+        assertEquals("ORDINARY_MODEL_HTTP_BEGIN", e1.get("status").textValue());
+        assertEquals("ORDINARY_MODEL_HTTP_END", e2.get("status").textValue());
+        assertEquals("ORDINARY_MODEL_HTTP_BEGIN", e3.get("status").textValue());
+        assertEquals("ORDINARY_MODEL_HTTP_END", e4.get("status").textValue());
+        assertEquals(1, e1.get("attempt").intValue()); assertEquals(2, e3.get("attempt").intValue());
+        assertEquals(e1.get("machine_id"), e2.get("machine_id")); assertEquals(e1.get("machine_id"), e3.get("machine_id"));
+        assertEquals(e1.get("proposal_id"), e2.get("proposal_id")); assertEquals(e1.get("proposal_id"), e3.get("proposal_id"));
+        assertEquals(e1.get("endpoint"), e2.get("endpoint")); assertEquals(e1.get("model"), e2.get("model"));
+        assertEquals(e1.get("deadline_utc"), e2.get("deadline_utc")); assertEquals(e1.get("payload_bytes"), e2.get("payload_bytes"));
+        assertEquals(e1.get("started_at_utc"), e2.get("started_at_utc"));
+        assertEquals(e3.get("started_at_utc"), e4.get("started_at_utc"));
+        for (String field : List.of("machine_id", "proposal_id", "endpoint", "model", "deadline_utc", "payload_bytes")) {
+            assertEquals(e3.get(field), e4.get(field), "second attempt pair " + field);
+        }
+        assertEquals(503, e2.get("http_status").intValue()); assertTrue(e2.get("transient_failure").booleanValue());
+        assertTrue(!e2.get("complete").booleanValue()); assertTrue(e2.get("headers_ms").isNumber()); assertTrue(e2.get("ttft_ms").isNull());
+        assertEquals(200, e4.get("http_status").intValue()); assertTrue(e4.get("complete").booleanValue());
+        assertTrue(!e4.get("transient_failure").booleanValue()); assertTrue(e4.get("headers_ms").isNumber());
+        assertTrue(e4.get("ttft_ms").isNumber()); assertTrue(e4.get("total_ms").isNumber());
+        for (var event : List.of(e1, e2, e3, e4)) {
+            assertTrue(!event.has("proposal") && !event.has("content") && !event.has("reason") && !event.has("wire")
+                    && !event.has("messages") && !event.has("prompt") && !event.has("history") && !event.has("snapshot"));
+        }
+        int logLength = capture.size();
+        int callsBefore = model.calls.get();
+        var expired = new PlanningRequest(fixture.request().before(), fixture.request().source(), fixture.request().sessionId(),
+                Instant.now().minusSeconds(1), fixture.request().observations());
+        var waitResult = selector.select(expired, selected);
+        assertEquals(OrdinaryDecisionSelector.Choice.WAIT, waitResult.choice());
+        assertEquals(logLength, capture.size());
+        assertEquals(callsBefore, model.calls.get());
+    } finally {
+        System.setOut(originalOut);
+    }
+}
+
+@Test @org.junit.jupiter.api.parallel.ResourceLock(org.junit.jupiter.api.parallel.Resources.SYSTEM_OUT)
+void httpProgressWriteFailureDoesNotChangeSelection(@TempDir Path root) throws Exception {
+    var originalOut = System.out;
+    try (LocalModel model = new LocalModel()) {
+        Fixture fixture = fixture(false);
+        model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+        var selector = provider(model, root, Duration.ofSeconds(5));
+        fixture.planner().bindSelector(selector);
+        System.setOut(new java.io.PrintStream(new java.io.ByteArrayOutputStream(), true, StandardCharsets.UTF_8) {
+            @Override public void write(byte[] bytes) throws java.io.IOException { throw new java.io.IOException("controlled log-only failure"); }
+        });
+        var result = fixture.planner().plan(fixture.request());
+        var selected = assertInstanceOf(PlanningResult.ActionSelected.class, result);
+        assertSame(fixture.command(), selected.command());
+        assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+        assertEquals(1, model.calls.get());
+        try (var files = Files.list(root)) { assertTrue(files.findAny().isPresent()); }
+    } finally {
+        System.setOut(originalOut);
+    }
+}
 }
