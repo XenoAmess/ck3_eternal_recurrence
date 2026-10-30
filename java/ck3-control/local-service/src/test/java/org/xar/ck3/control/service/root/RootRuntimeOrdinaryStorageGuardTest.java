@@ -143,4 +143,98 @@ class RootRuntimeOrdinaryStorageGuardTest {
     assertThrows(IOException.class, () -> ContinuityWriter.initializeFresh(plan, ref, init, guard));
     assertArrayEquals(ab, Files.readAllBytes(anc)); assertEquals(0, calls.get());
 }
+
+@Test void test6_nestedCreateFillRename() throws IOException {
+  Fixture f = new Fixture();
+  var g = f.guard(1024L * 1024L);
+  f.init(g);
+  var temp = f.state.resolve("temp.bin");
+  var finalTarget = f.state.resolve("final.bin");
+  var expectedBytes = new byte[]{1, 2, 3, 4, 5, 6, 7, 8};
+  var outerPlan = new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(
+    new StorageWriteGuard.FileCreate(temp, 8L),
+    new StorageWriteGuard.FileFillExistingEmpty(temp, 8L),
+    new StorageWriteGuard.FileRename(temp, finalTarget, false)
+  ));
+  g.write(outerPlan, () -> {
+    // Child 1: Create empty
+    g.write(new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(new StorageWriteGuard.FileCreate(temp, 8L))), () -> {
+      Files.write(temp, new byte[0], StandardOpenOption.CREATE_NEW);
+      return null;
+    });
+    // Child 2: Fill existing empty
+    g.write(new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(new StorageWriteGuard.FileFillExistingEmpty(temp, 8L))), () -> {
+      Files.write(temp, expectedBytes, StandardOpenOption.WRITE);
+      return null;
+    });
+    // Child 3: Rename
+    g.write(new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(new StorageWriteGuard.FileRename(temp, finalTarget, false))), () -> {
+      Files.move(temp, finalTarget);
+      return null;
+    });
+    return null;
+  });
+  assertFalse(Files.exists(temp));
+  assertTrue(Files.exists(finalTarget));
+  assertEquals(expectedBytes.length, Files.size(finalTarget));
+  assertArrayEquals(expectedBytes, Files.readAllBytes(finalTarget));
+  assertEquals(RootRuntimeStorageGuard.Status.ADMITTED, g.accounting().status());
+  assertEquals(0, g.accounting().unresolvedWrites());
+}
+
+@Test void test7_falseSuccessNoOp() throws IOException {
+  Fixture f = new Fixture();
+  var g = f.guard(1024L * 1024L);
+  f.init(g);
+  var target = f.state.resolve("no-op.bin");
+  var plan = new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(new StorageWriteGuard.FileCreate(target, 100L)));
+  assertThrows(IOException.class, () -> g.write(plan, () -> null));
+  assertFalse(Files.exists(target));
+  assertEquals(RootRuntimeStorageGuard.Status.UNKNOWN_WRITE, g.accounting().status());
+  assertTrue(g.accounting().unresolvedWrites() > 0);
+  var target2 = f.state.resolve("next.bin");
+  var plan2 = new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(new StorageWriteGuard.FileCreate(target2, 100L)));
+  var flag = new AtomicBoolean(false);
+  assertThrows(IOException.class, () -> g.write(plan2, () -> { flag.set(true); return null; }));
+  assertFalse(flag.get());
+}
+
+@Test void test8_nestedPartialFailureSwallowed() throws IOException {
+  Fixture f = new Fixture();
+  var g = f.guard(1024L * 1024L);
+  f.init(g);
+  var target = f.state.resolve("partial.bin");
+  var outerPlan = new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(new StorageWriteGuard.FileCreate(target, 100L)));
+  assertThrows(IOException.class, () -> g.write(outerPlan, () -> {
+    try {
+      g.write(new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(new StorageWriteGuard.FileCreate(target, 100L))), () -> {
+        Files.write(target, new byte[]{1, 2, 3}, StandardOpenOption.CREATE_NEW);
+        throw new IOException("child fail");
+      });
+    } catch (IOException ignored) {
+      // Swallow child failure
+    }
+    return null;
+  }));
+  assertTrue(Files.exists(target));
+  assertEquals(3, Files.size(target));
+  assertEquals(RootRuntimeStorageGuard.Status.UNKNOWN_WRITE, g.accounting().status());
+  assertTrue(g.accounting().unresolvedWrites() > 0);
+}
+
+@Test void test9_oversizedWritePostCheck() throws IOException {
+  Fixture f = new Fixture();
+  var g = f.guard(1024L * 1024L);
+  f.init(g);
+  var target = f.state.resolve("oversized.bin");
+  var plan = new StorageWriteGuard.WritePlan(f.app.ledger().lock(), List.of(new StorageWriteGuard.FileCreate(target, 10L)));
+  assertThrows(IOException.class, () -> g.write(plan, () -> {
+    Files.write(target, new byte[100], StandardOpenOption.CREATE_NEW);
+    return null;
+  }));
+  assertTrue(Files.exists(target));
+  assertEquals(100, Files.size(target));
+  assertEquals(RootRuntimeStorageGuard.Status.UNKNOWN_WRITE, g.accounting().status());
+  assertTrue(g.accounting().unresolvedWrites() > 0);
+}
 }

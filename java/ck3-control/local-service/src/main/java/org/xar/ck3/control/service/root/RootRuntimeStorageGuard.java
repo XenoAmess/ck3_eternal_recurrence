@@ -92,14 +92,17 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     private final ThreadLocal<PhysicalPlan> activePhysical=new ThreadLocal<>();
     private final List<PhysicalPlan> unresolvedPhysical=new ArrayList<>();
     private static final class VirtualPath {
-        final boolean directory;final long maximumBytes;final String identity;
-        VirtualPath(boolean directory,long maximumBytes,String identity){this.directory=directory;this.maximumBytes=maximumBytes;this.identity=identity;}
+        final boolean directory;final long maximumBytes;final String identity;final boolean observed;
+        VirtualPath(boolean directory,long maximumBytes,String identity){this(directory,maximumBytes,identity,false);}
+        VirtualPath(boolean directory,long maximumBytes,String identity,boolean observed){this.directory=directory;this.maximumBytes=maximumBytes;this.identity=identity;this.observed=observed;}
     }
     private static final class PhysicalPlan {
         final WritePlan original;
         final Map<Integer,PendingWrite> reservations=new LinkedHashMap<>();
         final Map<Path,VirtualPath> after=new LinkedHashMap<>();
         final Map<Path,String> knownIdentities=new HashMap<>();
+        final Map<Path,MeasuredPath> measured=new HashMap<>();
+        boolean verifiedByChildren;
         final Set<Path> paths=new HashSet<>();
         final Set<Integer> consumed=new HashSet<>();
         final Set<Path> newRenameTargets=new HashSet<>();
@@ -239,7 +242,9 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         try{result=actualIO.run();}
         catch(IOException|RuntimeException failure){synchronized(this){outer.failed=true;status=Status.UNKNOWN_WRITE;}throw failure;}
         try{synchronized(this){
-            requireAllocationOwner();verifyPhysical(actual,outer);
+            requireAllocationOwner();
+            actual.verifiedByChildren=indices.stream().allMatch(outer.consumed::contains);
+            verifyPhysical(actual,outer);
             for(int index:indices)settle(outer,index);
             checkCapacity(0,null);
         }}catch(IOException|RuntimeException failure){synchronized(this){outer.failed=true;status=Status.UNKNOWN_WRITE;}throw failure;}
@@ -259,6 +264,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
             plan.reservations.clear();throw rejected;
         }
     }
+    private record MeasuredPath(boolean directory,SharedSourceFiles.NativeFile file) { }
     private PhysicalPlan preflight(WritePlan plan)throws IOException {
         var result=new PhysicalPlan(plan);requireLock(plan.originalLock());
         for(Mutation mutation:plan.mutations()){
@@ -271,7 +277,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
                 if(before!=null)throw new IOException("persistent file CREATE_NEW target already exists");
                 result.after.put(target,new VirtualPath(false,create.maxLogicalBytes(),null));
             }else if(mutation instanceof FileFillExistingEmpty fill){
-                if(before==null||before.directory||before.identity!=null&&before.maximumBytes!=0)
+                if(before==null||before.directory||(before.identity!=null||before.observed)&&before.maximumBytes!=0)
                     throw new IOException("persistent fill requires the actual original empty file");
                 // A preceding bounded CREATE_NEW may deliberately create zero bytes. Its real empty FileID
                 // must then be captured by a primitive child before the fill, never inferred from the quote.
@@ -282,7 +288,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
                 VirtualPath source=virtual(result,rename.source());
                 if(source==null||source.directory||before!=null&&(before.directory||!rename.replace()))
                     throw new IOException("persistent rename source/target does not match its complete plan");
-                if(!declared(rename.source()).identity.volumeSerialDecimal().equals(declared(target).identity.volumeSerialDecimal()))
+                if(cards!=null&&!declared(rename.source()).identity.volumeSerialDecimal().equals(declared(target).identity.volumeSerialDecimal()))
                     throw new IOException("persistent rename cannot cross actual native volumes");
                 result.after.put(rename.source(),null);result.after.put(target,source);
                 result.newRenameTargets.remove(rename.source());if(source.identity==null)result.newRenameTargets.add(target);
@@ -292,6 +298,14 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     }
     private VirtualPath virtual(PhysicalPlan plan,Path path)throws IOException {
         if(plan.after.containsKey(path))return plan.after.get(path);
+        if(ordinaryBudget!=null){
+            final java.nio.file.attribute.BasicFileAttributes actual;
+            try{actual=Files.readAttributes(path,java.nio.file.attribute.BasicFileAttributes.class,LinkOption.NOFOLLOW_LINKS);}
+            catch(java.nio.file.NoSuchFileException absent){plan.after.put(path,null);return null;}
+            if(!actual.isDirectory()&&!actual.isRegularFile())throw new IOException("ordinary physical target has an unsupported type");
+            var known=new VirtualPath(actual.isDirectory(),actual.isDirectory()?0:actual.size(),null,true);
+            plan.after.put(path,known);return known;
+        }
         if(!Files.exists(path,LinkOption.NOFOLLOW_LINKS)){plan.after.put(path,null);return null;}
         SharedSourceFiles.plainAncestors(path);
         if(Files.isDirectory(path,LinkOption.NOFOLLOW_LINKS)){
@@ -309,6 +323,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     }
     private void parent(PhysicalPlan plan,Path target)throws IOException {
         Path parent=target.getParent();
+        if(ordinaryBudget!=null){declared(parent);return;}
         VirtualPath prior=plan.after.get(parent);
         if(prior!=null&&prior.directory)return;
         RootRuntimeAllocationCensus.realDirectory(parent);
@@ -316,6 +331,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     }
     private void verifyPhysical(PhysicalPlan plan,PhysicalPlan retained)throws IOException {
         assertAllocationCurrent();
+        if(ordinaryBudget!=null){verifyOrdinaryPhysical(plan,retained);return;}
         for(Path target:plan.paths){
             VirtualPath expected=plan.after.get(target);
             if(expected==null){
@@ -345,10 +361,14 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     private void settle(PhysicalPlan plan,int index)throws IOException {
         if(!plan.consumed.add(index))return; // A composite child returns after its already-verified primitive children.
         Mutation mutation=plan.original.mutations().get(index);
-        updateMeasured(mutation.target());if(mutation instanceof FileRename rename)updateMeasured(rename.source());
+        if(ordinaryBudget!=null){
+            settleOrdinaryMeasured(plan,mutation.target());
+            if(mutation instanceof FileRename rename)settleOrdinaryMeasured(plan,rename.source());
+        }else{updateMeasured(mutation.target());if(mutation instanceof FileRename rename)updateMeasured(rename.source());}
         PendingWrite original=plan.reservations.remove(index);if(original!=null)removePending(original);
     }
     private void updateMeasured(Path path)throws IOException {
+        if(ordinaryBudget!=null){applyOrdinaryMeasured(path,observeOrdinary(path));return;}
         RootState root=declared(path);SharedSourceFiles.NativeFile previous=root.files.remove(path);
         if(previous!=null)root.charged=Math.subtractExact(root.charged,previous.allocatedBytes());
         boolean oldDirectory=root.directories.remove(path);if(oldDirectory)root.charged=Math.subtractExact(root.charged,DIRECTORY_GUARD);
@@ -359,6 +379,57 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         }
         if(roots.values().stream().mapToLong(value->value.files.size()+value.directories.size()).sum()>maximumEntries())
             throw new IOException("persistent controlled inventory exceeds the signed complete runtime bound");
+    }
+    /** Only a changed target is observed. Ordinary writes do not requalify its ancestors or native identity. */
+    private MeasuredPath observeOrdinary(Path path)throws IOException {
+        final java.nio.file.attribute.BasicFileAttributes actual;
+        try{actual=Files.readAttributes(path,java.nio.file.attribute.BasicFileAttributes.class,LinkOption.NOFOLLOW_LINKS);}
+        catch(java.nio.file.NoSuchFileException absent){return null;}
+        if(actual.isDirectory())return new MeasuredPath(true,null);
+        if(!actual.isRegularFile())throw new IOException("ordinary physical result is not a regular file/directory");
+        return new MeasuredPath(false,ordinaryFileResult(path));
+    }
+    private SharedSourceFiles.NativeFile ordinaryFileResult(Path path)throws IOException {
+        var kernel=com.sun.jna.platform.win32.Kernel32.INSTANCE;
+        var handle=kernel.CreateFile(path.toString(),0x80,7,null,3,0x00200000,null);
+        if(com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE.equals(handle))
+            throw new IOException("ordinary file result open Win32="+com.sun.jna.Native.getLastError()+" path="+path);
+        try{return SharedSourceFiles.nativeHeldFile(handle);}
+        finally{if(!kernel.CloseHandle(handle))throw new IOException("ordinary file result close Win32="+com.sun.jna.Native.getLastError());}
+    }
+    private void verifyOrdinaryPhysical(PhysicalPlan plan,PhysicalPlan retained)throws IOException {
+        boolean reuse=plan.verifiedByChildren||plan==retained&&plan.consumed.size()==plan.original.mutations().size();
+        for(Path target:plan.paths){
+            MeasuredPath actual;
+            if(reuse&&retained.measured.containsKey(target))actual=retained.measured.get(target);
+            else actual=observeOrdinary(target);
+            VirtualPath expected=plan.after.get(target);
+            if(expected==null){if(actual!=null)throw new IOException("ordinary rename source still exists");}
+            else if(actual==null||actual.directory()!=expected.directory)
+                throw new IOException("ordinary write has no actual target result of the declared type");
+            else if(!actual.directory()&&(actual.file().logicalBytes()>expected.maximumBytes
+                    ||actual.file().allocatedBytes()>charge(expected.maximumBytes,Path.of(declared(target).definition.path()))))
+                throw new IOException("ordinary write actual bytes/allocation exceed the finite declared result");
+            plan.measured.put(target,actual);retained.measured.put(target,actual);
+        }
+    }
+    private void settleOrdinaryMeasured(PhysicalPlan plan,Path path)throws IOException {
+        if(!plan.measured.containsKey(path))throw new IOException("ordinary settlement lacks its actual changed-target observation");
+        applyOrdinaryMeasured(path,plan.measured.get(path));
+    }
+    private void applyOrdinaryMeasured(Path path,MeasuredPath actual)throws IOException {
+        RootState root=declared(path);var previous=root.files.remove(path);
+        if(previous!=null)root.charged=Math.subtractExact(root.charged,previous.allocatedBytes());
+        if(root.directories.remove(path))root.charged=Math.subtractExact(root.charged,DIRECTORY_GUARD);
+        if(actual!=null){
+            if(actual.directory()){root.directories.add(path);root.charged=add(root.charged,DIRECTORY_GUARD);}
+            else{root.files.put(path,actual.file());root.charged=add(root.charged,actual.file().allocatedBytes());}
+            Path parent=path.getParent();
+            if(parent!=null&&parent.startsWith(Path.of(root.definition.path()))&&root.directories.add(parent))
+                root.charged=add(root.charged,DIRECTORY_GUARD);
+        }
+        if(roots.values().stream().mapToLong(value->value.files.size()+value.directories.size()).sum()>maximumEntries())
+            throw new IOException("ordinary controlled inventory exceeds its finite bound");
     }
     private static boolean subset(Mutation child,Mutation parent){
         if(!child.target().equals(parent.target()))return false;
@@ -373,7 +444,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
                 .findFirst().orElseThrow(()->new IOException("persistent output escaped every actual issuer-declared runtime root: "+path));
     }
     private void checkPhysicalTarget(Path path)throws IOException {
-        normalized(path);SharedSourceFiles.plainAncestors(path);declared(path);
+        normalized(path);if(cards!=null)SharedSourceFiles.plainAncestors(path);declared(path);
         if(path.equals(allocationLockPath)||roots.values().stream().anyMatch(root->path.equals(Path.of(root.definition.path()))))
             throw new IOException("persistent mutation cannot replace a runtime root or its exclusive allocation owner");
     }
@@ -540,7 +611,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     public void requireManagedRoots(List<Path> actualRoots)throws IOException {
         Objects.requireNonNull(actualRoots);assertOriginals();
         for(Path path:actualRoots){
-            normalized(path);RootRuntimeAllocationCensus.realDirectory(path);
+            normalized(path);if(cards!=null)RootRuntimeAllocationCensus.realDirectory(path);
             if(managedRoots().stream().noneMatch(root->path.startsWith(Path.of(root.path()))))
                 throw new IOException("actual runtime writer path is outside its issuer-declared allocation roots: "+path);
         }
@@ -550,7 +621,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     public void requireDeclaredPaths(List<Path> actualPaths)throws IOException {
         Objects.requireNonNull(actualPaths);assertOriginals();
         if(actualPaths.isEmpty()||actualPaths.size()>64)throw new IOException("bounded explicit runtime output paths required");
-        for(Path path:actualPaths){normalized(path);SharedSourceFiles.plainAncestors(path);
+        for(Path path:actualPaths){normalized(path);if(cards!=null)SharedSourceFiles.plainAncestors(path);
             if(managedRoots().stream().noneMatch(root->path.startsWith(Path.of(root.path()))))
                 throw new IOException("actual runtime output path is outside its finite issuer-declared roots: "+path);}
     }
@@ -569,7 +640,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
             synchronized(this){
                 admit(same);
                 if(roots.values().stream().anyMatch(root->target.equals(Path.of(root.definition.path())))){
-                    RootRuntimeAllocationCensus.realDirectory(target);return null;
+                    if(cards!=null)RootRuntimeAllocationCensus.realDirectory(target);return null;
                 }
                 original=targetRoot(target);
                 Path owner=Path.of(original.definition.path()),cursor=target;
@@ -578,8 +649,8 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
                         throw new IOException("runtime directory creation exceeds its bounded admitted ancestry");
                     missing.add(cursor);cursor=cursor.getParent();
                 }
-                RootRuntimeAllocationCensus.realDirectory(cursor);
-                if(missing.isEmpty()){RootRuntimeAllocationCensus.realDirectory(target);return null;}
+                if(cards!=null)RootRuntimeAllocationCensus.realDirectory(cursor);
+                if(missing.isEmpty())return null;
                 if(roots.values().stream().mapToLong(root->root.files.size()+root.directories.size()).sum()+missing.size()
                         >maximumEntries())throw new IOException("runtime directory creation exceeds the complete census inventory bound");
                 long peak=multiply(missing.size(),DIRECTORY_GUARD);checkCapacity(peak,original);
@@ -587,8 +658,10 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
             }
             try{
                 for(int index=missing.size()-1;index>=0;index--){
-                    Path directory=missing.get(index);RootRuntimeAllocationCensus.realDirectory(directory.getParent());
-                    Files.createDirectory(directory);RootRuntimeAllocationCensus.realDirectory(directory);
+                    Path directory=missing.get(index);if(cards!=null)RootRuntimeAllocationCensus.realDirectory(directory.getParent());
+                    Files.createDirectory(directory);
+                    if(cards!=null)RootRuntimeAllocationCensus.realDirectory(directory);
+                    else if(!Files.isDirectory(directory,LinkOption.NOFOLLOW_LINKS))throw new IOException("ordinary directory create has no actual directory result");
                     synchronized(this){assertCurrent(same);RootState actual=owned(reservation.rootId());
                         if(!actual.directories.add(directory))throw new IOException("new runtime directory was already present in its retained allocation inventory");
                         actual.charged=add(actual.charged,DIRECTORY_GUARD);
@@ -605,7 +678,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         inWriter(same->{synchronized(this){assertCurrent(same);
             PendingWrite original=pending.values().stream().filter(write->write.directory()&&originalTarget.equals(write.target()))
                     .findFirst().orElseThrow(()->new IOException("no original unresolved controlled directory creation has this target"));
-            RootRuntimeAllocationCensus.realDirectory(originalTarget);if(ordinaryBudget!=null)updateMeasured(originalTarget);else refresh(false);removePending(original);
+            if(ordinaryBudget!=null)updateMeasured(originalTarget);else{RootRuntimeAllocationCensus.realDirectory(originalTarget);refresh(false);}removePending(original);
             status=pending.values().stream().anyMatch(write->!write.legacyUnscoped())?Status.UNKNOWN_WRITE:Status.ADMITTED;
             try{checkCapacity(0,null);}catch(IOException unavailable){status=Status.INCOMPLETE;throw unavailable;}
         }return null;});
@@ -719,7 +792,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     private RootState defaultRoot()throws IOException {return owned(defaultWriteRootId());}
     private RootState owned(String id)throws IOException {RootState result=roots.get(id);if(result==null)throw new IOException("runtime allocation root has not been actually admitted: "+id);return result;}
     private RootState targetRoot(Path target)throws IOException {
-        normalized(target);SharedSourceFiles.plainAncestors(target);
+        normalized(target);if(cards!=null)SharedSourceFiles.plainAncestors(target);
         return roots.values().stream().filter(root->target.startsWith(Path.of(root.definition.path()))&&!target.equals(Path.of(root.definition.path())))
                 .findFirst().orElseThrow(()->new IOException("file write escaped every actual managed runtime root: "+target));
     }
@@ -797,9 +870,11 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         return inWriter(same->{
             PendingWrite reservation;
             synchronized(this){admit(same);requireWrapped();RootState root=targetRoot(target);
-                RootRuntimeAllocationCensus.realDirectory(target.getParent());
-                if(!root.directories.contains(target.getParent())){if(ordinaryBudget!=null)updateMeasured(target.getParent());else refresh(false);root=targetRoot(target);}
-                if(replace&&Files.exists(target,LinkOption.NOFOLLOW_LINKS)&&SharedSourceFiles.nativeFile(target).linkCount()!=1)
+                if(cards!=null){
+                    RootRuntimeAllocationCensus.realDirectory(target.getParent());
+                    if(!root.directories.contains(target.getParent())){refresh(false);root=targetRoot(target);}
+                }
+                if(cards!=null&&replace&&Files.exists(target,LinkOption.NOFOLLOW_LINKS)&&SharedSourceFiles.nativeFile(target).linkCount()!=1)
                     throw new IOException("runtime cannot replace a shared/hardlinked original file");
                 long peak=charge(bytes,target.getParent());checkCapacity(peak,root);reservation=addPending(root,target,bytes,sha,peak,false);}
             try{
@@ -807,8 +882,9 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
                 if(!Path.of(actual.reference().path()).equals(target)||actual.reference().bytes()!=bytes||!actual.reference().sha256().equalsIgnoreCase(sha))
                     throw new IOException("physical runtime file result differs from the original reserved target/body");
                 synchronized(this){assertCurrent(same);RootState root=owned(reservation.rootId());
-                    SharedSourceFiles.NativeFile measured=SharedSourceFiles.nativeFile(target);var previous=root.files.put(target,measured);
-                    root.charged=add(Math.subtractExact(root.charged,previous==null?0:previous.allocatedBytes()),measured.allocatedBytes());
+                    if(ordinaryBudget!=null)applyOrdinaryMeasured(target,new MeasuredPath(false,ordinaryFileResult(target)));
+                    else{SharedSourceFiles.NativeFile measured=SharedSourceFiles.nativeFile(target);var previous=root.files.put(target,measured);
+                        root.charged=add(Math.subtractExact(root.charged,previous==null?0:previous.allocatedBytes()),measured.allocatedBytes());}
                     removePending(reservation);checkCapacity(0,null);}
                 return actual;
             }catch(IOException|RuntimeException failure){synchronized(this){status=pending.containsKey(reservation.id())?Status.UNKNOWN_WRITE:Status.INCOMPLETE;}throw failure;}
