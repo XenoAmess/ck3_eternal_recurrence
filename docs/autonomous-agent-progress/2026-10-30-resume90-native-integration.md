@@ -600,3 +600,40 @@ existing CI target/regex additions are adopted. Native66 configuration generated
 the actual CTest registration with timeout15, exit0 in 25.039 seconds at
 16:40:38Z. This root configuration did not rerun the passing three-scene test or
 the old thirteen-scene matrix, and the complete hosted CI step remains unrun.
+
+
+The M3 persistent group was normally published and independently read back as
+`b6b0ee6b84145b2aaa4cd4423d41acbdfba4e21a` at 16:42:42Z.
+
+## M6 actual4 actor resource domain
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`. On 2026-10-30 the real actual4
+resolver accepted character -2 and 0 while its shared resource leaf rejected
+both through a legacy positive-ID check. The three-scene baseline failed two
+cases. The shared reader now has an explicit typed domain overload; actual4
+selects canonical signed full32 except -1, while the existing five-argument
+entry keeps the .2/.3 positive domain. All native memory reads remain in one
+implementation, including exact full-generation identity comparison. Failed
+shared reads preserve output; the actual4 wrapper retains its clear-output
+contract. A null resource extension remains a lawful observed zero.
+
+The isolated candidate passed 21 checks for signed/zero/positive IDs, null
+extension, generation mismatch, sentinel, invalid domain and failed-read output.
+Its repo-only four-TU target built and CTest passed 1/1 with the same 21 checks;
+the saved resource observations match the earlier candidate bytes. Only three
+production leaves, that test and its CMake module are adopted, plus precise
+root include and existing CI target/regex additions. Temporary materialized
+production copies and the validation CMake root are excluded. Native66 cached
+configuration/generation passed in 17.531 seconds at 17:18:54Z; this integration
+did not repeat the passing test matrix or the complete CI step.
+
+Evidence is M6 `target-identity/action-public-route-next/resource-fullid-red-next/`
+`{INDEX.json,RESULT.md,persistent-ci/DELIVERY.json}`. Actual complete Native
+snapshot packets for -2 and 0 also preserve stress7 through Java NativeWire and
+the semantic decoder. A first independent Driver attempt lacked real HELLO
+diagnostics and was honestly rejected; its later separate same-process original
+HelloFrame/descriptor/WriteFrame plus full snapshot reached the actual held
+transport, fact producer and Assembler.Complete. The remaining Java context
+positive-ID consumer is a separately owned follow-up. Neither this separate
+software chain nor the resource fix proves current Game execution or a loaded
+DLL change. No Game, deployment or local-model operation ran.

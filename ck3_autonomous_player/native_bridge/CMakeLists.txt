@@ -10039,6 +10039,7 @@ include(cmake/sway_common_termination_callsite_12004_failure.cmake)
 include(cmake/sway_action_public_route12004.cmake)
 include(cmake/sway_opinion_mailbox_route12004.cmake)
 include(cmake/monthly_piety_total_abi_12004.cmake)
+include(cmake/actor_resource_canonical_domain12004.cmake)
 include(cmake/war_declared_owner_tree_v1.cmake)
 
 include(cmake/root_adjacency_12004.cmake)

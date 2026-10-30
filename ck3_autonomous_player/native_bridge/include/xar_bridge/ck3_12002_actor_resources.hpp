@@ -8,6 +8,11 @@ namespace xar::ck3_12002 {
 using ActorResourceReadMemory12002 = bool (*)(
     void *, std::uintptr_t, void *, std::size_t) noexcept;
 
+enum class ActorResourceCharacterDomain12002 {
+  legacy_positive,
+  canonical_signed_full32,
+};
+
 struct ActorResourceBalances12002 {
   std::int64_t gold_raw = 0;
   std::int64_t prestige_raw = 0;
@@ -23,6 +28,14 @@ struct ActorResourceBalances12002 {
 bool ReadActorResourceBalances12002(
     ActorResourceReadMemory12002 read_memory, void *context,
     std::uintptr_t actor, std::int32_t expected_full_id,
+    ActorResourceBalances12002 &output) noexcept;
+
+// Explicit profile domain. The existing five-argument entry preserves its
+// legacy positive-only contract; actual4 opts into canonical signed full IDs.
+bool ReadActorResourceBalances12002(
+    ActorResourceReadMemory12002 read_memory, void *context,
+    std::uintptr_t actor, std::int32_t expected_full_id,
+    ActorResourceCharacterDomain12002 character_domain,
     ActorResourceBalances12002 &output) noexcept;
 
 } // namespace xar::ck3_12002

@@ -16,10 +16,15 @@ bool Read(ActorResourceReadMemory12002 callback, void *context,
 bool ReadActorResourceBalances12002(
     ActorResourceReadMemory12002 read_memory, void *context,
     std::uintptr_t actor, std::int32_t expected_full_id,
+    ActorResourceCharacterDomain12002 character_domain,
     ActorResourceBalances12002 &output) noexcept {
   std::int32_t observed_id = -1;
   std::uintptr_t extension = 0;
-  if (expected_full_id <= 0 ||
+  const bool valid_id = character_domain == ActorResourceCharacterDomain12002::legacy_positive
+      ? expected_full_id > 0
+      : character_domain == ActorResourceCharacterDomain12002::canonical_signed_full32 &&
+            expected_full_id != -1;
+  if (!valid_id ||
       !Read(read_memory, context, actor, 0x18, observed_id) ||
       observed_id != expected_full_id ||
       !Read(read_memory, context, actor, 0x1B0, extension))
@@ -33,6 +38,14 @@ bool ReadActorResourceBalances12002(
     return false;
   output = sampled;
   return true;
+}
+
+bool ReadActorResourceBalances12002(
+    ActorResourceReadMemory12002 read_memory, void *context,
+    std::uintptr_t actor, std::int32_t expected_full_id,
+    ActorResourceBalances12002 &output) noexcept {
+  return ReadActorResourceBalances12002(read_memory, context, actor,
+      expected_full_id, ActorResourceCharacterDomain12002::legacy_positive, output);
 }
 
 } // namespace xar::ck3_12002

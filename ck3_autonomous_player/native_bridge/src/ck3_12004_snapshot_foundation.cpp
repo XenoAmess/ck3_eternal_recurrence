@@ -159,7 +159,8 @@ bool ReadActorResourceBalances(const CoreBindings &core,
   // null-extension zero. The shared leaf reads only those proven fields;
   // it performs no old-image binding, hash substitution or native dispatch.
   return ck3_12002::ReadActorResourceBalances12002(ReadResourceMemory, nullptr,
-      actor, played_character_id, output);
+      actor, played_character_id,
+      ck3_12002::ActorResourceCharacterDomain12002::canonical_signed_full32, output);
 }
 
 bool ReadWarCashTreasury(const CoreBindings &core,
