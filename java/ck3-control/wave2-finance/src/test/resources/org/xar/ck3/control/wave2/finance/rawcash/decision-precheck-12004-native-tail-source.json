@@ -1,0 +1,26 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-30T16:02:33.675391Z",
+  "exe_sha256_inherited": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "fresh_exe_reads": 0,
+  "game_requests": 0,
+  "original_function_rva": "0x1aca990",
+  "original_function_bytes": 335,
+  "original_function_sha256": "af9b67f19990b0787dfaff99899abbcd0fc8568bf88373740b95211622367b1f",
+  "original_function_hex": "48895c240855488d6c24a94881ec00010000498bd8488d8288140000488d8ae81d0000483bc174200f1f84000000000083b8c0000000000f85f80000004805f0000000483bc175e8b001b9700a000041b84814000084c0410f44c84803ca0f57c00f1145070f1145170f1145270f1145370f1145470f1145b70f1145c70f1145d70f1145e70f1145f74c8d45b7498bd1e89b2464010f1045b70f2945070f104dc70f294d170f1055d70f2955270f105de70f295d370f1065f70f296547660fd6442420660f73d808660fd6442428660fd64d87660fd6558f660f73da08660fd65597660fd65d9f660fd665a7660f73dc08660fd665af32c00f1f840000000000480fbec8488d14cd00000000488b4c14204885c97e06483b0c1a7d20fec03c0875deb001488b9c24100100004881c4000100005dc332c0e90effffff32c0488b9c24100100004881c4000100005dc3",
+  "executed_original_tail_rva": [
+    "0x1acaa25",
+    "0x1acaadf"
+  ],
+  "executed_original_tail_bytes": 186,
+  "owned_wrapper_bytes": 246,
+  "original_prologue_bytes": 21,
+  "software_input_seam": "Authored input copy places ten costs at the original RBP-49 local. R8 is an owned eight-budget input. Earlier AI gates and cost production are not executed.",
+  "live_tail_branches": "Both boolean returns are original; no original tail instruction is patched. The earlier-reject trampoline in the retained block is not entered by this tail.",
+  "vectors": 86,
+  "accepted_precheck_only": 37,
+  "rejected": 49,
+  "corpus_sha256": "efcea7fc4a50077522f9658e7323b145f0342572b2b3ff6c069fe965aec9cbbc",
+  "legacy_negative_control": "Append two zeros to the eight budgets solely to satisfy the old ten-slot shape. The old production study then disagrees with 13/86 original-tail outputs.",
+  "scope": "Offline AI precheck only; no affordability, funds, native action or live Game qualification."
+}

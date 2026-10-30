@@ -3,7 +3,6 @@ package org.xar.ck3.control.wave2.finance.rawcash;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.wave2.finance.rawcash.DecisionCadenceStudy12004.Due;
@@ -68,20 +67,29 @@ class DecisionCadenceStudy12004Test {
         assertThrows(IllegalArgumentException.class, () -> new ScheduleInputs(0xffff_ffffL, 1, 1, 72));
     }
 
-    @Test void nativeEightSlotPrecheckRejectsEqualityAndPreservesUninspectedSlots() {
-        List<Long> resources = new ArrayList<>(List.of(100L,100L,100L,100L,100L,100L,100L,100L,0L,0L));
-        List<Long> costs = new ArrayList<>(List.of(0L,0L,0L,0L,0L,0L,0L,0L,Long.MAX_VALUE,Long.MAX_VALUE));
+    @Test void nativeProjectionAndSignedComparisonMatchOriginalMachineCodeCorpus() throws Exception {
+        try (var input = getClass().getResourceAsStream("decision-precheck-12004-native-tail.txt")) {
+            assertNotNull(input, "actual owned native-tail corpus");
+            var lines = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8).lines().toList();
+            assertEquals(87, lines.size());
+            for (String row : lines.subList(1, lines.size())) {
+                String[] fields = row.split("\\|", -1);
+                List<Long> costs = java.util.Arrays.stream(fields[1].split(",")).map(Long::valueOf).toList();
+                List<Long> budget = java.util.Arrays.stream(fields[2].split(",")).map(Long::valueOf).toList();
+                assertEquals(ResourcePrecheck.valueOf(fields[3]),
+                        DecisionCadenceStudy12004.resourcePrecheck(costs, budget), fields[0]);
+            }
+        }
+    }
+
+    @Test void contextBudgetRequiresEightSlotsRatherThanTenResourceWallet() {
+        List<Long> costs = java.util.Collections.nCopies(10, 0L);
         assertEquals(ResourcePrecheck.NATIVE_FINAL_GATES_REQUIRED,
-                DecisionCadenceStudy12004.resourcePrecheck(costs, resources));
-        costs.set(0, 100L);
-        assertEquals(ResourcePrecheck.REJECTED, DecisionCadenceStudy12004.resourcePrecheck(costs, resources));
-        costs.set(0, 99L);
-        assertEquals(ResourcePrecheck.NATIVE_FINAL_GATES_REQUIRED,
-                DecisionCadenceStudy12004.resourcePrecheck(costs, resources));
-        costs.set(0, Long.MIN_VALUE);
-        assertEquals(ResourcePrecheck.NATIVE_FINAL_GATES_REQUIRED,
-                DecisionCadenceStudy12004.resourcePrecheck(costs, resources));
-        assertThrows(IllegalArgumentException.class, () -> DecisionCadenceStudy12004.resourcePrecheck(List.of(0L), resources));
+                DecisionCadenceStudy12004.resourcePrecheck(costs, java.util.Collections.nCopies(8, 0L)));
+        assertThrows(IllegalArgumentException.class, () -> DecisionCadenceStudy12004.resourcePrecheck(
+                costs, java.util.Collections.nCopies(10, 0L)));
+        assertThrows(IllegalArgumentException.class, () -> DecisionCadenceStudy12004.resourcePrecheck(
+                java.util.Collections.nCopies(8, 0L), java.util.Collections.nCopies(8, 0L)));
     }
 
     @Test void percentChanceAndFixedFloorDoNotTurnIntoCandidateRanking() {

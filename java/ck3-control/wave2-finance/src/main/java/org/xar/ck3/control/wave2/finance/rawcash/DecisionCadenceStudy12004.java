@@ -7,6 +7,8 @@ import java.util.Objects;
 public final class DecisionCadenceStudy12004 {
     private DecisionCadenceStudy12004() { }
 
+    private static final List<Integer> AI_COST_INDICES = List.of(0, 1, 2, 4, 5, 6, 8, 9);
+
     public enum IndexPartition { INTERVAL_TIER, GOAL_PARTITION }
     public enum Due { DISABLED_BY_INTERVAL, NOT_DUE, NATIVE_EVALUATION_REQUIRED }
     public enum ResourcePrecheck { REJECTED, NATIVE_FINAL_GATES_REQUIRED }
@@ -66,14 +68,16 @@ public final class DecisionCadenceStudy12004 {
     }
 
     /**
-     * 1ACA990..ADE checks only the first eight signed slots using cost >= available.
-     * This is an AI precheck, not the ten-resource CanAfford contract; equality is rejected here.
+     * 1ACAA25..ADE projects the ten signed costs into context budget order
+     * [0,1,2,4,5,6,8,9]. The actual caller supplies eight context budgets,
+     * not a ten-resource wallet. Positive costs must be strictly below budget;
+     * nonpositive costs skip comparison. Final native gates remain required.
      */
-    public static ResourcePrecheck resourcePrecheck(List<Long> nativeTenCosts, List<Long> nativeTenResources) {
-        List<Long> costs = ten(nativeTenCosts), resources = ten(nativeTenResources);
-        for (int index = 0; index < 8; index++) {
-            long cost = costs.get(index), available = resources.get(index);
-            if (cost > 0 && cost >= available) { return ResourcePrecheck.REJECTED; }
+    public static ResourcePrecheck resourcePrecheck(List<Long> nativeTenCosts, List<Long> nativeContextBudget) {
+        List<Long> costs = slots(nativeTenCosts, 10), budget = slots(nativeContextBudget, 8);
+        for (int index = 0; index < AI_COST_INDICES.size(); index++) {
+            long cost = costs.get(AI_COST_INDICES.get(index));
+            if (cost > 0 && cost >= budget.get(index)) { return ResourcePrecheck.REJECTED; }
         }
         return ResourcePrecheck.NATIVE_FINAL_GATES_REQUIRED;
     }
@@ -94,9 +98,9 @@ public final class DecisionCadenceStudy12004 {
         return (int) Math.floorDiv(nativeFixedRaw, 100_000L);
     }
 
-    private static List<Long> ten(List<Long> values) {
-        Objects.requireNonNull(values, "ten resource slots");
-        if (values.size() != 10) { throw new IllegalArgumentException("exact ten signed resource slots required"); }
+    private static List<Long> slots(List<Long> values, int count) {
+        Objects.requireNonNull(values, "native signed slots");
+        if (values.size() != count) { throw new IllegalArgumentException("exact " + count + " signed slots required"); }
         return List.copyOf(values);
     }
 }

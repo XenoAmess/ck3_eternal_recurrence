@@ -133,3 +133,7 @@ producer 原12:51采用回执、实际seq31/32链与scope边界由 `runtime64-op
 GiftPendingFramePolicy 的必要两处角色合同同步采用：public Frame actor 用 NativeCharacterId，private pending baseline 比较时才显式转 raw bits；Codec/WaitSource 无语义改动。当前完整 Policy 严格 javac0/1.957秒，复用 owner 完整软件 writer/Driver/lease/consumeFresh/private ready-marker/ReadonlyPlanningRetry 路径 baseline6P3F→candidate9P；另外 constructor-only 隔离证明剩余 raw 比较高位两例仍拒，最终才同时修两处。旧 fixture 日期1000违反现日历合同，测试精准迁移53186400，setup失败保留，未改生产日历。
 
 一生产、一既有测试及三真实 Native WriteFrame binary 角色原包随组交付，原包不重编码。软件测试断言零command/query/replay；既有stale lease/source负控仍保留。没有完整Installer、Game、cold恢复或新的opaque/Ready动作资格，当前同Game不因这组等待SAVE。
+
+Root 独立完成的 M4 offline study 修正已按最小 patch 审阅采用：十cost投影 [0,1,2,4,5,6,8,9] 对八个实际context预算，正cost严格小于budget，非正cost跳过。当前完整研究类严格 javac0/1.774秒；复用 Root 相同完整类 baseline4P2F→6P0F。86行 corpus 来自原335B函数内186B投影/比较尾部实执行，37过/49拒；旧budget补两零仍13/86不同的负控排除仅长度报错。原前置gates/cost producer/Context预算构造和Game未执行，不把该离线模型接成runtime规则。
+
+交付源、测试、86原尾部CSV、原字节来源JSON与专用研究doc五叶，旧actor月门/interval/抽签逻辑保持。此研究类仍无runtime调用者，Root不要求S/MB/当前worker采用，未重跑已绿6项。原M4 scope核对和后继实际研究修正分开保留。
