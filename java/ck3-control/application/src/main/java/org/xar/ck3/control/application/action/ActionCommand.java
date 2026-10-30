@@ -15,8 +15,8 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 public record ActionCommand(String actionId, CommandOrigin origin, G2Source source, String sessionId,
         OperationKey operation, OpportunityJson.Obj arguments, CommandExpectation expectation, Claims claims,
         Instant deadline, ProtocolRequestIdentity protocolIdentity) {
-    /** Composed original construction request/result and candidate, distinct from the full Driver bound. */
-    public static final int MAX_ARGUMENT_BYTES = 768 * 1024;
+    /** Complete arguments share the finite command-body ceiling; ActionCodec still bounds the whole encoded body. */
+    public static final int MAX_ARGUMENT_BYTES = ActionCodec.MAX_COMMAND_BYTES;
     public ActionCommand {
         StrictJson.require(actionId != null && actionId.matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,127}"), "bounded action ID required");
         Objects.requireNonNull(origin); Objects.requireNonNull(source); StrictJson.text(sessionId);
