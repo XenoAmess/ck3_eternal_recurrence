@@ -274,7 +274,7 @@ public final class RootRuntimeCatalogFactory {
         RootRuntimeContext context=attempt.context;
         StrictJson.require(context.core()==actual && context.game()==game && context.source().equals(source)
                 && context.reads()==reads && context.clock()==clock,"same physical Game cannot acquire another runtime context");
-        context.requireCurrent(deadline);
+        context.requireActiveGame();
         if(attempt.installed!=null)return attempt.installed;
         if(attempt.entered)throw new IOException("actual runtime installation already entered; failed partial bindings are not replayed",attempt.failure);
         attempt.entered=true;
@@ -376,7 +376,7 @@ public final class RootRuntimeCatalogFactory {
             publicProducts.addAll(RootRouteContactAdvancePublicProducts.install(completed));
             publicProducts.addAll(RootPublicPauseStepProducts.install(completed));
             completed.bindPublicSteps(new RootPublicStepExecution.Catalog(context,publicProducts));
-            context.requireCurrent(deadline);actual.retainCatalogResources(completed);attempt.installed=completed;return completed;
+            context.requireActiveGame();actual.retainCatalogResources(completed);attempt.installed=completed;return completed;
         } catch(IOException failure) {attempt.failure=closeFailedResources(installedAdditional,installedArmy,failure);throw attempt.failure;}
         catch(RuntimeException failure) {attempt.failure=closeFailedResources(installedAdditional,installedArmy,new IOException("actual per-Game runtime installation failed",failure));throw attempt.failure;}
     }

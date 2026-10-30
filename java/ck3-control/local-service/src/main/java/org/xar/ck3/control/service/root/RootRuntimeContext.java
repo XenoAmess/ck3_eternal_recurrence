@@ -355,7 +355,12 @@ public final class RootRuntimeContext {
         game.verify();return actual.binding();
     }
     public void requireCurrent(Instant deadline)throws IOException {
-        StrictJson.require(clock.instant().isBefore(Objects.requireNonNull(deadline)),"runtime context deadline expired");game.verify();
+        StrictJson.require(clock.instant().isBefore(Objects.requireNonNull(deadline)),"runtime context deadline expired");
+        requireActiveGame();
+    }
+    /** Local assembly verifies the living Game without borrowing an operation's expired time budget. */
+    void requireActiveGame()throws IOException {
+        game.verify();
         synchronized(this) {
             StrictJson.require(session==null || !session.isRetired(),"runtime belongs to a retired physical Game");
         }
