@@ -142,7 +142,7 @@ public final class SwayLifecycle {
         Optional<TerminalKind> newKind = terminalKind(result);
         if (terminal.isEmpty() && newKind.isPresent()) terminal = Optional.of(new Terminal(proof, newKind.orElseThrow(), Optional.empty(), UNCONSUMED));
         else if (terminal.isPresent() && result.cause().isPresent() && !terminal.orElseThrow().terminalCauseObserved()) {
-            Terminal old = terminal.orElseThrow(); terminal = Optional.of(new Terminal(old.proof(), old.kind(), Optional.of(proof), old.consumption()));
+            Terminal old = terminal.orElseThrow(); terminal = Optional.of(new Terminal(old.proof(), old.kind(), Optional.of(proof), UNCONSUMED));
         }
         MaterialUpdate named = updateMaterial(state, proof, terminal.isPresent());
         Optional<Phase> phase = state.phase();
@@ -200,9 +200,16 @@ public final class SwayLifecycle {
     public static State consumeFollowing(State state, ObservationIdentity after) {
         sameScope(state.origin(), after);
         return new State(state.identity(), state.origin(), state.latest().map(value -> new Instance(value.proof(), value.state(), consume(value.consumption(), value.source(), after))),
-                state.terminal().map(value -> new Terminal(value.proof(), value.kind(), value.causeProof(), consume(value.consumption(), value.source(), after))),
+                state.terminal().map(value -> new Terminal(value.proof(), value.kind(), value.causeProof(), consumeTerminal(value, after))),
                 state.material().map(value -> consumed(value, after)), state.firstGain().map(value -> new Gain(value.baseline(), value.before(), value.baselineProof(), consumed(value.observed(), after))),
                 state.phase().map(value -> new Phase(value.proof(), value.sequence(), value.executionDateRaw(), value.branch(), consume(value.consumption(), value.source(), after))));
+    }
+    private static Consumption consumeTerminal(Terminal value, ObservationIdentity after) {
+        if (value.consumption().nextTurnConsumed()) return value.consumption();
+        Stamp following = stamp(after);
+        if (!following.laterThan(stamp(value.proof().source()))) return value.consumption();
+        if (value.causeProof().filter(cause -> !following.laterThan(stamp(cause.source()))).isPresent()) return value.consumption();
+        return new Consumption(true, Optional.of(following));
     }
     /** Caller additionally verifies current target-read matching_sway_active before proposing typed Stop. */
     public static boolean mayFinish(State state, ObservationIdentity current, int targetOpinion) {

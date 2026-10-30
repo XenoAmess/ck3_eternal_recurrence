@@ -169,6 +169,177 @@ public final class SwayLifecycleTest {
         assertEquals(state, SwayLifecycle.decode(SwayLifecycle.encode(state)));
     }
 
+    @Test void lateQualifiedCauseCannotBorrowEarlierFollowingAndRetainsOriginalTerminal() {
+        Episode episode = episode(0);
+        ObservationIdentity initial = source(REV, DATE, 8000);
+        var state = SwayLifecycle.empty(episode.identity(), initial);
+
+        // 1. Initial completion terminal at REV/DATE, assert unknown cause, retain original Terminal proof/kind
+        state = observe(state, episode, initial, 1, 0, false);
+        assertTrue(state.terminal().isPresent());
+        assertFalse(state.terminal().orElseThrow().terminalCauseObserved());
+        assertEquals(SwayLifecycle.TerminalKind.CURRENT_STATUS, state.terminal().orElseThrow().kind());
+        var originalTerminal = state.terminal().orElseThrow();
+
+        // 2. consumeFollowing at REV+1/DATE+24, assert terminal.consumption.nextTurnConsumed true
+        ObservationIdentity firstConsume = source(REV.add(BigInteger.ONE), DATE + 24, 8000);
+        state = SwayLifecycle.consumeFollowing(state, firstConsume);
+        assertTrue(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+
+        // 3. Qualified cause inputs at REV+3/DATE+72 using strict valid synthetic journals
+        ObservationIdentity causeSource = source(REV.add(BigInteger.valueOf(3)), DATE + 72, 8000);
+        ObjectNode execJournal = M6TerminalSourceCompositionTest.journal(episode, true);
+        execJournal.put("snapshot_revision", causeSource.frame().identity().nativeRevision());
+        execJournal.put("date_raw", causeSource.frame().identity().dateRaw());
+        execJournal.withArray("records").add(M6TerminalSourceCompositionTest.parent(episode));
+
+        ObjectNode termJournal = M6TerminalSourceCompositionTest.journal(episode, false);
+        termJournal.put("snapshot_revision", causeSource.frame().identity().nativeRevision());
+        termJournal.put("date_raw", causeSource.frame().identity().dateRaw());
+        ObjectNode endRow = M6TerminalSourceCompositionTest.end(episode, true);
+        endRow.put("sequence", 1);
+        endRow.put("material_effect_observed", false);
+        endRow.putNull("specific_invalidation_reason");
+        termJournal.withArray("records").add(endRow);
+
+        var inputs = new M6TerminalSourceComposition.Inputs(
+            Optional.empty(),
+            Optional.of(json(execJournal)),
+            Optional.of(json(termJournal)),
+            Optional.empty()
+        );
+
+        // 4. Observe qualified input: assert terminal consumption FALSE, cause present, original proof/kind/source unchanged, no material invented
+        state = SwayLifecycle.observe(state, episode, inputs, causeSource);
+        assertTrue(state.terminal().isPresent());
+        assertTrue(state.terminal().orElseThrow().terminalCauseObserved());
+        assertFalse(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+        assertEquals(originalTerminal.proof(), state.terminal().orElseThrow().proof());
+        assertEquals(originalTerminal.kind(), state.terminal().orElseThrow().kind());
+        assertEquals(originalTerminal.source(), state.terminal().orElseThrow().source());
+        assertTrue(state.material().isEmpty());
+
+        // Encode/decode pending state equals itself and remains pending
+        byte[] persisted = SwayLifecycle.encode(state);
+        var cold = SwayLifecycle.decode(persisted);
+        assertEquals(state, cold);
+        assertTrue(SwayLifecycle.hasPendingFollowing(cold));
+
+        // 5. consumeFollowing at REV+2/DATE+48 then at exact cause source: assert TERMINAL consumption false after BOTH calls
+        ObservationIdentity earlier = source(REV.add(BigInteger.TWO), DATE + 48, 8000);
+        state = SwayLifecycle.consumeFollowing(state, earlier);
+        assertFalse(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+        state = SwayLifecycle.consumeFollowing(state, causeSource);
+        assertFalse(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+
+        // 6. Following REV+4/DATE+96: terminal consumption true and following Stamp equals that source
+        ObservationIdentity later = source(REV.add(BigInteger.valueOf(4)), DATE + 96, 8000);
+        state = SwayLifecycle.consumeFollowing(state, later);
+        assertTrue(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+        assertEquals(later.frame().identity().nativeRevision(), state.terminal().orElseThrow().consumption().following().orElseThrow().nativeRevision());
+        assertEquals(later.frame().identity().dateRaw().intValueExact(), state.terminal().orElseThrow().consumption().following().orElseThrow().dateRaw());
+
+        // Repeat same qualified input does NOT rearm terminal
+        state = SwayLifecycle.observe(state, episode, inputs, causeSource);
+        assertTrue(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+
+        // Cold consumed roundtrip equals itself
+        byte[] persistedConsumed = SwayLifecycle.encode(state);
+        var coldConsumed = SwayLifecycle.decode(persistedConsumed);
+        assertEquals(state, coldConsumed);
+        assertTrue(coldConsumed.terminal().orElseThrow().consumption().nextTurnConsumed());
+
+        // 7. Keep another state with original unattributed terminal and valid empty journals; it remains cause unknown
+        var otherState = SwayLifecycle.empty(episode.identity(), initial);
+        otherState = observe(otherState, episode, initial, 1, 0, false);
+        ObjectNode emptyExec = M6TerminalSourceCompositionTest.journal(episode, true);
+        ObjectNode emptyTerm = M6TerminalSourceCompositionTest.journal(episode, false);
+        emptyExec.put("snapshot_revision", initial.frame().identity().nativeRevision());
+        emptyExec.put("date_raw", initial.frame().identity().dateRaw());
+        emptyTerm.put("snapshot_revision", initial.frame().identity().nativeRevision());
+        emptyTerm.put("date_raw", initial.frame().identity().dateRaw());
+        var otherInputs = new M6TerminalSourceComposition.Inputs(
+            Optional.empty(),
+            Optional.of(json(emptyExec)),
+            Optional.of(json(emptyTerm)),
+            Optional.empty()
+        );
+        otherState = SwayLifecycle.observe(otherState, episode, otherInputs, initial);
+        assertTrue(otherState.terminal().isPresent());
+        assertFalse(otherState.terminal().orElseThrow().terminalCauseObserved());
+        assertEquals(SwayLifecycle.TerminalKind.CURRENT_STATUS, otherState.terminal().orElseThrow().kind());
+    }
+
+    @Test void olderQualifiedCauseCannotEraseOriginalTerminalFollowingBoundary() {
+        Episode episode = episode(0);
+        ObservationIdentity initial = source(REV, DATE, 8000);
+        var state = SwayLifecycle.empty(episode.identity(), initial);
+
+        // 1. Establish original CURRENT_STATUS terminal at REV+3/DATE+72
+        ObservationIdentity terminalSource = source(REV.add(BigInteger.valueOf(3)), DATE + 72, 8000);
+        state = observe(state, episode, terminalSource, 1, 0, false);
+        assertTrue(state.terminal().isPresent());
+        assertFalse(state.terminal().orElseThrow().terminalCauseObserved());
+        assertEquals(SwayLifecycle.TerminalKind.CURRENT_STATUS, state.terminal().orElseThrow().kind());
+        var originalTerminal = state.terminal().orElseThrow();
+
+        // 2. Provide valid synthetic execution/termination cause journals queried at REV+1/DATE+24 (older than terminal)
+        ObservationIdentity causeSource = source(REV.add(BigInteger.ONE), DATE + 24, 8000);
+        ObjectNode execJournal = M6TerminalSourceCompositionTest.journal(episode, true);
+        execJournal.put("snapshot_revision", causeSource.frame().identity().nativeRevision());
+        execJournal.put("date_raw", causeSource.frame().identity().dateRaw());
+        execJournal.withArray("records").add(M6TerminalSourceCompositionTest.parent(episode));
+
+        ObjectNode termJournal = M6TerminalSourceCompositionTest.journal(episode, false);
+        termJournal.put("snapshot_revision", causeSource.frame().identity().nativeRevision());
+        termJournal.put("date_raw", causeSource.frame().identity().dateRaw());
+        ObjectNode endRow = M6TerminalSourceCompositionTest.end(episode, true);
+        endRow.put("sequence", 1);
+        endRow.put("material_effect_observed", false);
+        endRow.putNull("specific_invalidation_reason");
+        termJournal.withArray("records").add(endRow);
+
+        var inputs = new M6TerminalSourceComposition.Inputs(
+            Optional.empty(),
+            Optional.of(json(execJournal)),
+            Optional.of(json(termJournal)),
+            Optional.empty()
+        );
+
+        // 3. Observe qualified input: assert cause exists but terminal pending (not consumed by older cause)
+        state = SwayLifecycle.observe(state, episode, inputs, causeSource);
+        assertTrue(state.terminal().isPresent());
+        assertTrue(state.terminal().orElseThrow().terminalCauseObserved());
+        assertFalse(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+        assertEquals(originalTerminal.proof(), state.terminal().orElseThrow().proof());
+        assertEquals(originalTerminal.kind(), state.terminal().orElseThrow().kind());
+        assertEquals(originalTerminal.source(), state.terminal().orElseThrow().source());
+        assertTrue(state.material().isEmpty());
+
+        // 4. Following at REV+2/DATE+48 (later than cause, earlier than terminal) must NOT consume terminal
+        ObservationIdentity intermediate = source(REV.add(BigInteger.TWO), DATE + 48, 8000);
+        state = SwayLifecycle.consumeFollowing(state, intermediate);
+        assertFalse(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+
+        // 5. Following at exactly original terminal REV+3/DATE+72 must NOT consume terminal (boundary)
+        state = SwayLifecycle.consumeFollowing(state, terminalSource);
+        assertFalse(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+
+        // 6. Following at REV+4/DATE+96 (later than terminal) MAY consume
+        ObservationIdentity later = source(REV.add(BigInteger.valueOf(4)), DATE + 96, 8000);
+        state = SwayLifecycle.consumeFollowing(state, later);
+        assertTrue(state.terminal().orElseThrow().consumption().nextTurnConsumed());
+        assertEquals(later.frame().identity().nativeRevision(), state.terminal().orElseThrow().consumption().following().orElseThrow().nativeRevision());
+        assertEquals(later.frame().identity().dateRaw().intValueExact(), state.terminal().orElseThrow().consumption().following().orElseThrow().dateRaw());
+
+        // 7. Cold state roundtrip preserves the consumed terminal and original proof
+        byte[] persisted = SwayLifecycle.encode(state);
+        var cold = SwayLifecycle.decode(persisted);
+        assertEquals(state, cold);
+        assertTrue(cold.terminal().orElseThrow().consumption().nextTurnConsumed());
+        assertEquals(originalTerminal.proof(), cold.terminal().orElseThrow().proof());
+    }
+
     private static SwayLifecycle.State observe(SwayLifecycle.State state, Episode episode, ObservationIdentity source, int status, int points, boolean material) {
         return SwayLifecycle.observe(state, episode, inputs(completion(episode, source, status), material ? opinion(episode, source, points) : null), source);
     }
