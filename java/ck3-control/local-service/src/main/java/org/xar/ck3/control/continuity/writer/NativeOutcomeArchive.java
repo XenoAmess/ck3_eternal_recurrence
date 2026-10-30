@@ -252,10 +252,9 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         return artifacts.publish(original, maximumBytes).reference();
     }
     public byte[] readArtifact(ContinuityStorePort.Session session, ExactRef original, int maximumBytes) throws IOException {
-        requireSession(session); Objects.requireNonNull(original); artifacts.requireReference(original, maximumBytes);
-        Pin pin = session.capturePin(original, maximumBytes);
-        byte[] result = artifacts.read(pin, maximumBytes);
-        rememberReadOriginal(session, pin); return result;
+        requireSession(session); Objects.requireNonNull(original);
+        LedgerFiles.Document result = artifacts.readOriginal(original, maximumBytes);
+        rememberReadOriginal(session, result.pin()); return result.bytes();
     }
     private void rememberReadOriginal(ContinuityStorePort.Session session, Pin pin) throws IOException {
         ReadOriginalCapture capture = readOriginalCapture.get();

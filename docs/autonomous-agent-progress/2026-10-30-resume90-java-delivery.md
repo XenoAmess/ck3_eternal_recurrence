@@ -162,4 +162,8 @@ IO98上层journal小包最小采用单生产叶+新五方法持久回归：只�
 
 该scope依赖原archive不可变/唯一writer合同；同head内重复snapshot不重新读取已解码artifact，不能把它说成新filesystem custody。closed session/lease、真实append失效、decode失败不缓存及UNKNOWN不重放已在原回归覆盖；未造同sequence异digest Head或Game结果。候选精确patch和fixture依赖见D:/ck3-state/resume90-runtime/regression/io98-journal/{FILES.json,HANDOFF.md}。新测试归local-service默认CI，无新增resource/POM，本次未重跑已绿/完整Maven，不作为业务worker前置。
 
+IO98下层最终采用 reader-io98 的实测v2两源+既有测试两方法新增，非旧未测proposal。先对当前基线83a12a00…/580c75d6…核字节相同，v1精确patch apply0并各完整类编译0；收到Root/runtime授权且独立12P的v2后，仅顺序套after-v1单hunk与新测试diff，最终Store SHA8407449b…、Archive3a6d4c78…不变。Store narrow readOriginal返回现有实际readCommitted的Document，Archive同一结果记录其真实Pin与detached bytes；去除额外payload capture，以及同read内第二次完整metadata/最终root重复读。首次root/边界、metadata schema/self identity/expectedref与真实payload SHA/Pin仍由原readCommitted验证，无跨call缓存或CAS内部算法修改；readPinned另一路重复未混入。
+
+本岗最终Store完整类编译0/2.619秒，仅排既存constructor held的try lint，Archive当前完整类严格0/3.507秒，v2不再改它；现有测试类含新增两方法在当前组合上仅编译0/3.046秒（fixture模式排try/classfile，未重跑）。v1原11P只保历史；复用v2-green02实际全12P/0skip（物理发布/替换/篡改/expected-ref/JSON、预算/root、UNKNOWN、closed/foreign/thread、detachedbytes及READ Pin tracker）。这些12项确为v2新跑，不把旧11扩成12。source路径计数payload2→1、metadata2→1、完整identity观察11→5是静态次数，非worker系统调用/提速或新增游戏日。完整证据V2-HANDOFF.md/V2-CANDIDATE.json，生产采用仍运行owner负责；无模型/Native/Game动作。
+
 交付源、测试、86原尾部CSV、原字节来源JSON与专用研究doc五叶，旧actor月门/interval/抽签逻辑保持。此研究类仍无runtime调用者，Root不要求S/MB/当前worker采用，未重跑已绿6项。原M4 scope核对和后继实际研究修正分开保留。

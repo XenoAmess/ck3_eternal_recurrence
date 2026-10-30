@@ -223,6 +223,10 @@ public final class ImmutableArtifactStore {
     public byte[] read(ExactRef expected, int maximumBytes) throws IOException {
         return readCommitted(Objects.requireNonNull(expected), limit(maximumBytes)).bytes();
     }
+    /** One actual committed read retains its verified Pin and detached bytes for the same-package archive. */
+    LedgerFiles.Document readOriginal(ExactRef expected, int maximumBytes) throws IOException {
+        return readCommitted(Objects.requireNonNull(expected), limit(maximumBytes));
+    }
     /** Reject foreign paths and invalid bounds before a same-writer caller attempts to capture a Pin.
      * This reads no payload and grants no committed-object or file-identity authority.
      */
@@ -236,8 +240,7 @@ public final class ImmutableArtifactStore {
         Path index = commit(expected.sha256()); LedgerFiles.Document metadata = LedgerFiles.read(index, COMMIT_LIMIT);
         Commit bound = decode(metadata); if (!bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
         LedgerFiles.Document data = verifyRaw(bound.payload(), maximum);
-        LedgerFiles.Document again = LedgerFiles.exact(metadata.pin().reference(), COMMIT_LIMIT); requirePin(again.pin(), metadata.pin());
-        checkRoot(); return data;
+        return data;
     }
     private LedgerFiles.Document verifyRaw(Pin pin, int maximum) throws IOException {
         LedgerFiles.Document value = LedgerFiles.exact(pin.reference(), maximum); requirePin(value.pin(), pin); return value;

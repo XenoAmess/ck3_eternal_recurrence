@@ -270,4 +270,54 @@ final class NativeOutcomeArchiveTest {
         }));
         assertArrayEquals(original.originalPacket(), ((NativeActionPort.AckReceived) f.archive.load(ref)).originalPacket());
     }
+    @Test void verifiedStoreResultSharesItsActualPinAndDetachedBytesWithTheLiveSession() throws Exception {
+        Fixture f=fixture("single-committed-read");byte[] original="{\"schema\":\"read-pin-fixture/v1\",\"value\":73}".getBytes(StandardCharsets.UTF_8);
+        Pin retained=f.writer.locked(same->f.artifacts.publish(original,1024));
+        byte[] ledger=Files.readAllBytes(f.layout.snapshot());var escaped=new AtomicReference<ContinuityStorePort.Session>();
+        f.writer.locked(same->{
+            escaped.set(same);var result=f.artifacts.readOriginal(retained.reference(),1024);
+            assertEquals(retained,result.pin());assertArrayEquals(original,result.bytes());
+            byte[] caller=result.bytes();caller[0]^=1;assertArrayEquals(original,result.bytes(),"the held result must keep its own immutable bytes");
+            try {
+                var holder=NativeOutcomeArchive.class.getDeclaredField("readOriginalCapture");holder.setAccessible(true);
+                Object trackerObject=holder.get(f.archive);if(!(trackerObject instanceof ThreadLocal<?> tracker))throw new AssertionError("actual READ capture holder absent");
+                Class<?> captureClass=Class.forName(NativeOutcomeArchive.class.getName()+"$ReadOriginalCapture");
+                var constructor=captureClass.getDeclaredConstructor(ContinuityStorePort.Session.class,List.class);constructor.setAccessible(true);
+                Object capture=constructor.newInstance(same,List.of());ThreadLocal.class.getMethod("set",Object.class).invoke(tracker,capture);
+                try {
+                    assertArrayEquals(original,f.archive.readArtifact(same,retained.reference(),1024));
+                    var pins=captureClass.getDeclaredField("pins");pins.setAccessible(true);
+                    assertEquals(Map.of(retained.reference(),retained),pins.get(capture),"READ evidence must receive the exact verified committed payload Pin");
+                } finally {tracker.remove();}
+            } catch(ReflectiveOperationException failure){throw new IOException("test-only capture observation failed",failure);}
+            assertThrows(IOException.class,()->f.archive.readArtifact(same,retained.reference(),original.length-1));
+            assertThrows(IOException.class,()->f.archive.readArtifact(same,f.source,1024));
+            assertThrows(IllegalArgumentException.class,()->f.archive.readArtifact(same,retained.reference(),0));
+            assertArrayEquals(ledger,Files.readAllBytes(f.layout.snapshot()));return null;
+        });
+        assertThrows(IllegalArgumentException.class,()->f.archive.readArtifact(escaped.get(),retained.reference(),1024));
+        assertArrayEquals(original,f.artifacts.readOriginal(retained.reference(),1024).bytes());
+        assertArrayEquals(ledger,Files.readAllBytes(f.layout.snapshot()));
+        System.out.println("PASS verified CAS Pin+detached bytes, READ tracker, exact bounds/root and closed Session; no ledger mutation");
+    }
+    @Test void firstCommittedMetadataAndDeclaredPayloadReferenceStillRejectMalformedOriginals() throws Exception {
+        for(String change:List.of("schema","payload-ref")) {
+            Fixture f=fixture("v2-first-metadata-"+change);byte[] original="{\"value\":73}".getBytes(StandardCharsets.UTF_8);
+            Pin retained=f.writer.locked(same->f.artifacts.publish(original,1024));
+            Path commit=Path.of(retained.reference().path()).resolveSibling(retained.reference().sha256()+".commit.json");
+            byte[] before=Files.readAllBytes(f.layout.snapshot());
+            var metadata=StrictJson.object(StrictJson.parse(Files.readAllBytes(commit)),Set.of("schema","payload","payload_identity","commit_identity"));
+            if(change.equals("schema"))metadata.put("schema","wrong-existing-schema");
+            else metadata.set("payload",new ExactRef(retained.reference().path(),retained.reference().bytes(),"0".repeat(64)).toJson());
+            byte[] changed=StrictJson.canonical(metadata);Files.write(commit,changed,StandardOpenOption.TRUNCATE_EXISTING);
+            f.writer.locked(same->{
+                if(change.equals("schema"))assertThrows(IllegalArgumentException.class,()->f.archive.readArtifact(same,retained.reference(),1024));
+                else assertThrows(IOException.class,()->f.archive.readArtifact(same,retained.reference(),1024));
+                return null;
+            });
+            assertArrayEquals(changed,Files.readAllBytes(commit));assertArrayEquals(original,Files.readAllBytes(Path.of(retained.reference().path())));
+            assertArrayEquals(before,Files.readAllBytes(f.layout.snapshot()));
+        }
+        System.out.println("PASS first CAS metadata schema and exact expected payload ref reject malformed originals without repair or ledger mutation");
+    }
 }
