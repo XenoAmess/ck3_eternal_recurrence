@@ -1,0 +1,22 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "scope": "Actual extracted Native StateSnapshotFrame+production WriteFrame owned fixture; not live full Driver qualification",
+  "native_root": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\unified-snapshot-next",
+  "raw": {
+    "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\unified-snapshot-next\\wire\\canonical-minus2.state-snapshot.json",
+    "bytes": 627,
+    "sha256": "9baeba768f5647f35628a705e4f4cdb94a576ab786944e8e5e980cea0587a159"
+  },
+  "framed": {
+    "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\unified-snapshot-next\\wire\\canonical-minus2.state-snapshot.frame.bin",
+    "bytes": 631,
+    "sha256": "d06eb02b1561afb18561f6b5c9ef0b951e59789f371202545d2e46c46fc1e5cc"
+  },
+  "resource_sha256": "27c7df1ab4d727b06f64268a706517d927c899bbd7d9a79e15dda10677201406",
+  "native_index": {
+    "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\unified-snapshot-next\\INDEX.json",
+    "bytes": 12576,
+    "sha256": "09ce1aa184f9e877a287de1dc91cce3d2fb1519ad0eacd384424a516a63e9fe8"
+  },
+  "consumer_result": "Native snapshot decoded and actual InitialDriverState/full Driver/manifest decoded; DriverAssembler Incomplete on original stress=-1. Canonical context/writer not reached."
+}
