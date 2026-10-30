@@ -55,10 +55,10 @@ public final class IdentityBearingFileAttributes {
         }
         Path path = supplied.toAbsolutePath().normalize();
         try {
-            WindowsStamp first = windows(path);
-            BasicFileAttributes after = Files.readAttributes(supplied, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
-            WindowsStamp second = windows(path);
-            return validated(path, before, after, first, second);
+            // One metadata observation supplies this read's identity. Content readers already
+            // observe before and after their actual I/O; do not nest another two-pass audit here.
+            WindowsStamp observed = windows(path);
+            return new Snapshot(before, observed.key());
         } catch (LinkageError unavailable) { throw new IOException("Windows source identity provider unavailable", unavailable); }
     }
     /**

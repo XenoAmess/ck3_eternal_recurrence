@@ -156,4 +156,6 @@ Family六源组6c2da0f960与M6 action组15e9a06332已正常push，独立远端�
 
 随后正常fetch纳入Native纯测试b6b0ee6，无Java生产差异；另采用M6 whole-snapshot三test-only叶。实际627B/631B StateSnapshot原包与帧严格互等，经实际NativeWire→InitialDriverState→完整Driver/manifest解码后，Assembler因原stress=-1明确Incomplete。该1P是保留拒绝边界，不是接受的canonical context/writer正例；不改原JSON或stress规则。来源 canonical-context-next/DELIVERY.json 的原1P复用，本岗只在当前发布源码/缓存上编译测试源0/3.244秒（旧fixture模式仅排try/classfile lint，未执行JUnit），确保持久模块API可编；默认local-service Surefire可发现。Root已同意Life三叶尚缺public入口闭环/持久包装，暂不套；fresh-afterStatus四叶亦等待完整来源组合，不用半链授游玩信用。本地模型持续暂停。
 
+Root 的 identity-once 候选按当前Git最小单hunk采用：普通 IdentityBearingFileAttributes.read 各一次NIO与WindowsStamp，调用方实际内容I/O前后的观察/长度/SHA仍由原内容读取者负责；不把单次元数据观察说成原子稳定快照。专用父路径API和其他Win32身份/长路径/句柄行为不变。本岗当前完整类strict javac0/1.992秒；复用Root两个完整physical类13P/0skip（真实文件、junction、406字符路径、同内容mtime替换），不重复绿色测试、不追加全Maven。候选测试副本未发表，仅生产一叶和原维护报告，加本交付记录三叶；来源D:/ck3-state/resume90-root/identity-once/DELIVERY.json。没有缓存新门/模型/Native/Game动作，整批提速未测，S/MB采用归runtime90。
+
 交付源、测试、86原尾部CSV、原字节来源JSON与专用研究doc五叶，旧actor月门/interval/抽签逻辑保持。此研究类仍无runtime调用者，Root不要求S/MB/当前worker采用，未重跑已绿6项。原M4 scope核对和后继实际研究修正分开保留。
