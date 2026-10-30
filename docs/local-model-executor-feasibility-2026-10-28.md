@@ -107,3 +107,16 @@ actual105 Family链提供833行真实排名、实际preview原件与两完整消
 此前 `runtime-command106` 的五次 HTTP503 和最后一次 reset 归旧 IP；六次均无有效候选，不是新 IP 失败或模型推理失败。新首轮成功也不证明长期稳定、并发上限或缓存命中。原请求、SSE、结果及迁移记录在 `D:/ck3-state/model-dispatch91/runtime-storage-hotpath108/` 与 `NEW-IP-MIGRATION91.json`；运营明细见 [resume91 模型页](autonomous-agent-progress/2026-10-31-resume91-models.md)。
 
 后继 Storage 窄纠错原件：第二轮8.943秒/481out，首答root分支与第二答lock方法两生产hunk均原语义采用，owner生产语义纠正0；三源strict javac0/3.664秒。必要测试首跑7P1F，owner修正测试清理后只重跑首失败1P/2.185秒，不能写同一JVM8P；S/Z最小采用和正式FF `2377f74ccf` 已独立回执。此结果没有量化加速，MB109实际loop与Game进展另记。
+
+
+### resume91 增并发：owner 直接调用与更大真实任务
+
+用户再次要求加大并发后，Root 于本轮20:27Z附近解除中央逐包封装/启动瓶颈：模型运营继续由 models91 归总，八M、Java与runtime的源码owner可在各自唯一task目录直接复用既有 `call91.py`；不新建平台。调用器从唯一配置读取1.11地址/固定system/model/defaults，支持已有三消息body或source_files/task_path有限spec，最后REQUEST实际包含完整当前源和唯一末任务。启动通知无需等中央ACK，终态由原owner和results91即时转交；已有EVENTS目录拒重复派发，运行决策HTTP仍由runtime独占。
+
+UTC20:37:22.912观察：新IP客户端实际峰8（20:36:59.164561），当刻在途4；同一次有限服务metrics为running4/waiting0、KV原值0.1489899。随后20:37:31的EVENTS快照为新IP39逻辑任务/41次实际BEGIN、39END、在途2。二者采样时点不同，不能把累计、旧IP峰25或客户端区间当服务器推理并发；24–32目标尚未达到。运行留一位是调度意图，无服务端硬reserved证明。
+
+输入/输出规模已实际扩大：queue闭包29源366020字符、105690prompt/6500out，HTTP200但length，81.093秒/TTFT19.472秒，原件不拼接；Focus MaterialSource 17完整API+7excerpt、95820prompt/1698out，完整stop54.942秒，连接完成未授编测/采用。ledger109的13完整源218436B、55611prompt/3259out，完整stop66.547秒，但首候选漏实际head/persistedHead路径，源审拒绝未编。NamedValue266B组件完整候选12015prompt/6249out、stop92.104秒，源审发现虚构字段/descriptor/RX与偏移问题，未编；后继owner固定ABI宿主，再派真实callback/case方法。大输入不是实际改写规模，完整输出不是采用，cached均未知。
+
+新IP已确认的P0采用：canonical108两local guard删除原样采用，strict基线0P1F到必要1P/20.530秒，保真实Native过期拒绝/新鲜对照，S/Z后正式FF `9f9728ecc7`。Storage两轮各一个生产hunk原语义采用、owner生产语义改0，三源strict0/3.663884秒；首8case为7P1F，owner修测试AfterEach清理后只重跑失败1P，非同JVM8P；正式FF `2377f74ccf`。没有量化提速或新增Game日信用。原件见 `D:/ck3-state/model-dispatch91/`、各owner DELIVERY，汇总与操作入口见 [resume91模型页](autonomous-agent-progress/2026-10-31-resume91-models.md)。
+
+后继 Army cohort04 已真实完整200/stop：52份源387857字符、116097prompt/4330out/120427total，82.321秒/TTFT14.863秒、cached未知。owner审12个实际undefined符号到producer路径及14obj模板可用，已物化D配置；编译/链接尚0，不授闭包PASS或生产采用，拒其未验证self-contained保证。源数不是改写文件数，120427接受也不是最大context声明。

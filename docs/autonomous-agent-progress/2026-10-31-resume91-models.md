@@ -75,3 +75,6 @@ Storage后继最终回执：第二轮8.943秒/481out，root/lock两hunk分别原
 UTC20:37:22.912新IP实际客户端峰8@20:36:59.164561、在途4，有限metrics running4/waiting0/KV原值0.1489899；20:37:31稍后快照39任务/41BEGIN39END、在途2。旧IP峰25不计新IP；24–32目标未达到，运行预留一位只是调度意图。29源闭包105690in6500out虽200但length，81.093秒；Focus95820in1698out完整54.942秒；ledger13源55611in3259out完整66.547秒但源审拒；NamedValue完整候选6249out/92.104秒仍源审拒未编。保真实大任务探索，不把输入规模写成改写规模或把完整输出当采用。
 
 canonical108原样两edit实际必要1P并正式FF `9f9728ecc7`，Storage两轮各一生产hunk原语义、owner生产改0，三源strict0、首7P1F后owner清理修正仅失败项1P，FF `2377f74ccf`，无加速/新增日推断。ledger纠错POST后Root取消fullproof重复审计，晚到scope另记。新IP首运营三append/config观察已正式FF `b1acb0d826`，旧观察保history；本节及两全局经验只EOF新增，不覆盖正式旧字节。
+
+
+后继 Army cohort04：52源/116097prompt4330out完整stop82.321秒，owner将12真undefined生产者/14obj模板配置物化D，实际编/链0，仍待验证，不授生产/Game。新服务实际接受120427总tokens，窗口声明上限仍未知。

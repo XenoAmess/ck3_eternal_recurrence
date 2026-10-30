@@ -32,3 +32,16 @@ actual105大输入预算修复体现的边界是“完整当前source+准确数�
 新 IP 首实际源码任务 `runtime-storage-hotpath108` 于 UTC `2026-10-30T20:17:28.587641Z` 开始，9.444 秒完整200/stop/SSE/JSON，TTFT3.614秒，25828in/955out，cached未知，真实客户端exit0。四完整源117152字符是上下文规模，实际待改仅普通storage两个方法；首答只闭root重复stat分支，漏lock-path重复stat，owner据源审给第二个窄任务。传输完成与部分源审、后继编测/采用/性能/真实游玩分别记账；此观察不改变 owner-led 全ASM/layout分工，也不构成能力或并发上限。详见 [可行性运营段](local-model-executor-feasibility-2026-10-28.md) 与 [resume91 模型页](autonomous-agent-progress/2026-10-31-resume91-models.md)，原件为 `D:/ck3-state/model-dispatch91/runtime-storage-hotpath108/`。
 
 后继 Storage 采用补记：第二轮8.943秒/481out后，两轮各一个生产hunk原语义采用，owner语义纠正0，三源strict0/3.664秒；首测试7P1F属owner测试清理，修后只失败项1P/2.185秒，不写同JVM8P。最小S/Z及FF `2377f74ccf` 已回执，未测量性能收益，MB109/实际游玩单列。这是完整上下文内两方法补齐的实测，不是首轮完整实现成功或多模块能力上限。
+
+
+### resume91 大包与窄纠正的证据边界
+
+新1.11实际接收过105690prompt+6500out（29源闭包，200/length），这只证明该次上下文被接受，不是服务声明的最大窗口，也不能以字节数替代tokens或把length单独当推理失败。另一95820prompt的Focus候选完整stop54.942秒，仍需具体API/authority/材料闭包审阅和实际编测；没有因大输入就授多文件实现成功。
+
+完整NamedValue候选12015in6249out/92.104秒虽stop，仍因Probe.bias、descriptor、未做thunk/RX和copy偏移等真实源审问题拒绝，未编；有限probe11290in788out/7.720秒由owner删虚构include后只保D源部分。ledger109首55611in3259out/66.547秒完整但漏head/persistedHead实际热路径且锁论证过度，源审拒绝。correct1已POST后Root明确取消每newSession全量身份proof审计，属晚到合同修正；原请求和原答保留，不能把按旧once-full-proof要求作答当成新scope失败，也不能将owner删审计追认模型完成。
+
+与这些失败并列，canonical108最小两edit原样通过必要正负回归并正式FF `9f9728ecc7`；Storage首答root分支部分采用、第二答补lock路径，两生产hunk语义owner改0并FF `2377f74ccf`，测试清理的7P1F→仅失败项1P归owner成本。这些是当前可用分工的证据，仍保完整ABI/layout由owner负责；不以单个大包、一次成功、接口/请求错误或尚未编候选画全局上限。
+
+运营已允许owner唯一目录复用同caller直接并发，models91归总，runtime决策独占；UTC20:37:31新IP39任务/41BEGIN39END、客户端峰8/当刻2在途是冻结快照，不混旧峰25。cached未知不归因缓存，客户端在途不等服务器推理数。证据在标准 `D:/ck3-state/model-dispatch91/<task>/` 和REVIEWS91；[可行性运营](local-model-executor-feasibility-2026-10-28.md)、[resume91模型页](autonomous-agent-progress/2026-10-31-resume91-models.md)保留交付和owner勘误。
+
+后继 Army cohort04 的116097in4330out/120427total已被新服务完整接收，owner据真实12个LNK将producer/14obj模板物化D配置；仍pending build、0生产源码采用，不能据此授完整链接闭包行为通过，也不从已接受窗口推最大上限。它与29源length、NamedValue完整源审拒绝并列保留。
