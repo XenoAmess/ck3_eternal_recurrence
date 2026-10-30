@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import org.xar.ck3.control.contracts.ContractViolationException;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.wave2.finance.factionculture.FactionCultureCodec;
 import org.xar.ck3.control.wave2.finance.factionculture.FactionCultureModel.CultureRelation;
@@ -53,7 +54,7 @@ public final class FactionAlertsCodec {
             int date = (int) number(root.get("date_raw"), Integer.MIN_VALUE, Integer.MAX_VALUE);
             StrictJson.require(date == expected.dateRaw(), "date_raw does not match paused frame");
             StrictJson.require(readiness.identityReady() && readiness.targetingCountReady() && readiness.sameFrameReady(), "available frame requires same-frame identity and count");
-            int actor = positive(root.get("player_character_id")); int count = (int) number(root.get("targeting_faction_count"), 0, Integer.MAX_VALUE);
+            int actor = character(root.get("player_character_id")); int count = (int) number(root.get("targeting_faction_count"), 0, Integer.MAX_VALUE);
             List<TargetingFaction> targets = new ArrayList<>();
             if (readiness.targetingRowsReady()) for (JsonNode row : rawTargets) targets.add(target(row));
             else StrictJson.require(rawTargets.isEmpty() && reasons.targetingRows().filter(value -> value.value().equals(ROWS_UNAVAILABLE)).isPresent(), "unready targeting rows must be empty and explain why");
@@ -143,8 +144,8 @@ public final class FactionAlertsCodec {
     }
     private static TargetingFaction target(JsonNode node) {
         ObjectNode root = object(node, TARGET_FIELDS, Set.of("county_member_observations", "surrender_impact"));
-        int factionId = positive(root.get("faction_id")); StableKey type = key(root.get("faction_type_key")); int actor = positive(root.get("target_character_id"));
-        Optional<Integer> leader = optionalPositive(root.get("leader_character_id")); boolean human = bool(root.get("leader_is_human"));
+        int factionId = positive(root.get("faction_id")); StableKey type = key(root.get("faction_type_key")); int actor = character(root.get("target_character_id"));
+        Optional<Integer> leader = optionalCharacter(root.get("leader_character_id")); boolean human = bool(root.get("leader_is_human"));
         boolean atWar = bool(root.get("faction_at_war")); Optional<Integer> war = optionalPositive(root.get("faction_war_id"));
         FixedPoint monthly = fixed(root.get("discontent_per_month"), SCALE, 64, false);
         Optional<Integer> months = optionalInt(root.get("months_until_max_discontent"), 0, Integer.MAX_VALUE);
@@ -160,9 +161,9 @@ public final class FactionAlertsCodec {
             List<Integer> observedIds = ids(members.stream().map(CountyMember::countyTitleId).toList());
             StrictJson.require(counties.containsAll(observedIds), "county observations must follow member title IDs"); observations = Optional.of(List.copyOf(members));
         }
-        return new TargetingFaction(factionId, type, actor, leader, human, optionalPositive(root.get("special_character_id")), optionalPositive(root.get("special_title_id")), atWar, war,
+        return new TargetingFaction(factionId, type, actor, leader, human, optionalCharacter(root.get("special_character_id")), optionalPositive(root.get("special_title_id")), atWar, war,
                 fixed(root.get("power"), SCALE, 64, true), fixed(root.get("power_threshold"), SCALE, 64, true), fixed(root.get("discontent"), SCALE, 64, true), monthly,
-                months, idList(root.get("character_member_ids")), counties, danger, reason, observations,
+                months, characterList(root.get("character_member_ids")), counties, danger, reason, observations,
                 root.has("surrender_impact") ? Optional.of(impact(root.get("surrender_impact"))) : Optional.empty());
     }
     private static CountyExposure exposure(JsonNode node) {
@@ -172,12 +173,12 @@ public final class FactionAlertsCodec {
         Optional<StableKey> reason = optionalKey(root.get("danger_reason"));
         StrictJson.require(type.value().equals("populist_faction") && power.raw() > threshold.raw() && danger
                 && reason.filter(value -> value.value().equals("player_county_in_powerful_liege_targeting_populist_faction")).isPresent(), "not a stock dangerous county exposure");
-        return new CountyExposure(positive(root.get("county_title_id")), positive(root.get("faction_id")), type, positive(root.get("target_character_id")), power, threshold, danger, reason.orElseThrow());
+        return new CountyExposure(positive(root.get("county_title_id")), positive(root.get("faction_id")), type, character(root.get("target_character_id")), power, threshold, danger, reason.orElseThrow());
     }
     private static CountyMember county(JsonNode node) {
         ObjectNode root = object(node, COUNTY_FIELDS, FactionCultureCodec.CULTURE_FIELDS);
         Optional<CultureRelation> culture = FactionCultureCodec.normalizeRelation(StrictJson.canonical(root, MAX_BYTES), "county_member_observation");
-        return new CountyMember(positive(root.get("county_title_id")), optionalPositive(root.get("capital_province_id")), optionalPositive(root.get("holder_character_id")),
+        return new CountyMember(positive(root.get("county_title_id")), optionalPositive(root.get("capital_province_id")), optionalCharacter(root.get("holder_character_id")),
                 optionalFixed(root.get("county_opinion"), 1, 32), optionalFixed(root.get("native_county_join_score"), SCALE, 64),
                 optionalBool(root.get("can_add_county")), optionalBool(root.get("removal_queued")), optionalFixed(root.get("native_leave_score_threshold"), 1, 32),
                 materialStatus(root.get("opinion_status")), materialStatus(root.get("native_final_status")), culture);
@@ -199,7 +200,7 @@ public final class FactionAlertsCodec {
     }
     private static SurrenderTitle title(JsonNode node) {
         ObjectNode root = exact(node, "title_id", "tier_raw", "de_jure_parent_title_id", "duchy_title_id", "kingdom_title_id", "holder_character_id", "top_liege_character_id");
-        return new SurrenderTitle(positive(root.get("title_id")), (int) number(root.get("tier_raw"), 1, 5), optionalPositive(root.get("de_jure_parent_title_id")), optionalPositive(root.get("duchy_title_id")), optionalPositive(root.get("kingdom_title_id")), optionalPositive(root.get("holder_character_id")), optionalPositive(root.get("top_liege_character_id")));
+        return new SurrenderTitle(positive(root.get("title_id")), (int) number(root.get("tier_raw"), 1, 5), optionalPositive(root.get("de_jure_parent_title_id")), optionalPositive(root.get("duchy_title_id")), optionalPositive(root.get("kingdom_title_id")), optionalCharacter(root.get("holder_character_id")), optionalCharacter(root.get("top_liege_character_id")));
     }
     private static SubrealmCounties subrealm(JsonNode node, int actor, ExpectedFrame expected) {
         return FactionSubrealmCodec.parse(node, actor, expected.nativeRevision(), expected.dateRaw());
@@ -221,6 +222,11 @@ public final class FactionAlertsCodec {
     private static boolean bool(JsonNode node) { StrictJson.require(node != null && node.isBoolean(), "boolean token required"); return node.booleanValue(); }
     private static Optional<Boolean> optionalBool(JsonNode node) { return node.isNull() ? Optional.empty() : Optional.of(bool(node)); }
     private static long number(JsonNode node, long min, long max) { return StrictJson.integer(node, min, max); }
+    private static int character(JsonNode node) { return NativeCharacterId.fromJson(node).value(); }
+    private static Optional<Integer> optionalCharacter(JsonNode node) { return node.isNull() ? Optional.empty() : Optional.of(character(node)); }
+    private static List<Integer> characterList(JsonNode node) {
+        List<Integer> result = new ArrayList<>(); for (JsonNode value : array(node)) result.add(character(value)); return characterIds(result);
+    }
     private static int positive(JsonNode node) { return (int) number(node, 1, Integer.MAX_VALUE); }
     private static Optional<Integer> optionalInt(JsonNode node, int min, int max) { return node.isNull() ? Optional.empty() : Optional.of((int) number(node, min, max)); }
     private static Optional<Integer> optionalPositive(JsonNode node) { return optionalInt(node, 1, Integer.MAX_VALUE); }

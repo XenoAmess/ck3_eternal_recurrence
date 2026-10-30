@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** Joins an existing, qualified alert observation to a gift proposal; never submits gameplay. */
 public final class FactionThreatObserver {
@@ -33,14 +34,14 @@ public final class FactionThreatObserver {
     public record Frame(BigInteger nativeRevision, int dateRaw, BigInteger playerCharacterId) {
         public Frame {
             positiveWithin(nativeRevision, UINT64_MAX, "nativeRevision");
-            positiveWithin(playerCharacterId, UINT32_MAX, "playerCharacterId");
+            NativeCharacterId.of(playerCharacterId);
         }
     }
 
     public record SelectedGift(BigInteger sourceFactionId, BigInteger recipientCharacterId) {
         public SelectedGift {
             positiveWithin(sourceFactionId, UINT32_MAX, "sourceFactionId");
-            positiveWithin(recipientCharacterId, UINT32_MAX, "recipientCharacterId");
+            NativeCharacterId.of(recipientCharacterId);
         }
     }
 

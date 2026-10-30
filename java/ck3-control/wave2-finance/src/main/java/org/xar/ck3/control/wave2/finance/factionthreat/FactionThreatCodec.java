@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import static org.xar.ck3.control.wave2.finance.factionthreat.FactionThreatObserver.*;
 
 /** Strict token checks for decision fields, declared projection of extensible SDK containers. */
@@ -51,13 +52,13 @@ public final class FactionThreatCodec {
                 || !candidate.path("choice").isObject()) return new NoSelectedGift();
         JsonNode choice = candidate.get("choice");
         SelectedGift gift = new SelectedGift(positive(choice.get("source_faction_id"), UINT32_MAX, "source_faction_id"),
-                positive(choice.get("recipient_character_id"), UINT32_MAX, "recipient_character_id"));
+                NativeCharacterId.fromJson(choice.get("recipient_character_id")).asBigInteger());
         JsonNode snapshot = root.get("snapshot");
         object(snapshot, "snapshot");
         JsonNode actor = snapshot.get("played_character");
         object(actor, "played_character");
         Frame frame = new Frame(positive(snapshot.get("native_revision"), UINT64_MAX, "native_revision"),
-                signedDate(snapshot.get("date_raw")), positive(actor.get("character_id"), UINT32_MAX, "character_id"));
+                signedDate(snapshot.get("date_raw")), NativeCharacterId.fromJson(actor.get("character_id")).asBigInteger());
         BigInteger expected = positive(root.get("expected_revision"), UINT64_MAX, "expected_revision");
         JsonNode history = root.get("history");
         if (!history.isArray() || history.size() > MAX_HISTORY) throw invalid("history must be a bounded array");
@@ -113,13 +114,13 @@ public final class FactionThreatCodec {
         for (JsonNode row : rows) {
             if (!row.isObject()) continue; // Matches the original mapping-only candidate filter.
             Optional<BigInteger> faction = optionalPositive(row.get("faction_id"), UINT32_MAX, "faction_id");
-            Optional<BigInteger> target = optionalPositive(row.get("target_character_id"), UINT32_MAX, "target_character_id");
-            Optional<BigInteger> leader = optionalPositive(row.get("leader_character_id"), UINT32_MAX, "leader_character_id");
+            Optional<BigInteger> target = optionalCharacter(row.get("target_character_id"));
+            Optional<BigInteger> leader = optionalCharacter(row.get("leader_character_id"));
             List<BigInteger> members = new ArrayList<>();
             JsonNode memberNodes = row.get("character_member_ids");
             if (memberNodes != null) {
                 if (!memberNodes.isArray() || memberNodes.size() > MAX_ROWS) throw invalid("character_member_ids must be an array");
-                for (JsonNode member : memberNodes) members.add(positive(member, UINT32_MAX, "member identity"));
+                for (JsonNode member : memberNodes) members.add(NativeCharacterId.fromJson(member).asBigInteger());
             }
             projected.add(new NativeFactionRow(faction, target, leader, members,
                     truth(row.get("dangerous_by_stock_rule"), "dangerous_by_stock_rule"),
@@ -130,7 +131,7 @@ public final class FactionThreatCodec {
 
     private static Optional<Frame> frame(JsonNode raw) {
         Optional<BigInteger> revision = optionalPositive(raw.get("snapshot_revision"), UINT64_MAX, "snapshot_revision");
-        Optional<BigInteger> player = optionalPositive(raw.get("player_character_id"), UINT32_MAX, "player_character_id");
+        Optional<BigInteger> player = optionalCharacter(raw.get("player_character_id"));
         JsonNode date = raw.get("date_raw");
         if (revision.isEmpty() || player.isEmpty() || date == null || date.isNull()) return Optional.empty();
         return Optional.of(new Frame(revision.get(), signedDate(date), player.get()));
@@ -149,6 +150,10 @@ public final class FactionThreatCodec {
 
     private static Optional<BigInteger> optionalPositive(JsonNode value, BigInteger maximum, String field) {
         return value == null || value.isNull() ? Optional.empty() : Optional.of(positive(value, maximum, field));
+    }
+
+    private static Optional<BigInteger> optionalCharacter(JsonNode value) {
+        return value == null || value.isNull() ? Optional.empty() : Optional.of(NativeCharacterId.fromJson(value).asBigInteger());
     }
 
     private static BigInteger positive(JsonNode value, BigInteger maximum, String field) {

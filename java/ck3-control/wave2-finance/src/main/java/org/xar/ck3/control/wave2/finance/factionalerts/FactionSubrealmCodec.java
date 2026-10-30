@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import static org.xar.ck3.control.wave2.finance.factionalerts.FactionAlertModel.*;
 
 /** Single original _subrealm_counties_component validator shared by alert and membership consumers. */
@@ -18,7 +19,8 @@ public final class FactionSubrealmCodec {
     private static final Set<String> FIELDS = Set.of("status", "complete", "scope", "source", "snapshot_revision", "date_raw", "actor_character_id", "county_title_ids", "unavailable_reason");
     private FactionSubrealmCodec() { }
     public static ObjectNode toJson(SubrealmCounties component, int actor, BigInteger nativeRevision, int dateRaw) {
-        StrictJson.require(component != null && actor > 0 && nativeRevision != null && nativeRevision.signum() > 0
+        NativeCharacterId.of(actor);
+        StrictJson.require(component != null && nativeRevision != null && nativeRevision.signum() > 0
                 && nativeRevision.compareTo(StrictJson.UINT64_MAX) <= 0, "validated subrealm component/owner/revision required");
         ObjectNode root = StrictJson.object(); boolean complete = component instanceof CompleteCounties;
         root.put("status", complete ? "available" : "unavailable"); root.put("complete", complete);
@@ -30,13 +32,14 @@ public final class FactionSubrealmCodec {
         return root;
     }
     public static SubrealmCounties parse(JsonNode raw, int actor, BigInteger nativeRevision, int dateRaw) {
-        StrictJson.require(actor > 0 && nativeRevision != null && nativeRevision.signum() > 0
+        NativeCharacterId.of(actor);
+        StrictJson.require(nativeRevision != null && nativeRevision.signum() > 0
                 && nativeRevision.compareTo(StrictJson.UINT64_MAX) <= 0, "validated expected subrealm owner/revision required");
         if (!(raw instanceof ObjectNode root)) throw refusal("subrealm county component fields are invalid");
         Set<String> fields = new HashSet<>(); root.fieldNames().forEachRemaining(fields::add);
         if (!fields.equals(FIELDS)) throw refusal("subrealm county component fields are invalid");
         if (!text(root.get("scope"), COUNTY_SCOPE) || !text(root.get("source"), COUNTY_SOURCE)
-                || !integer(root.get("actor_character_id"), "subrealm.actor", BigInteger.ONE, BigInteger.valueOf(Integer.MAX_VALUE)).equals(BigInteger.valueOf(actor))
+                || !character(root.get("actor_character_id")).equals(BigInteger.valueOf(actor))
                 || !integer(root.get("snapshot_revision"), "subrealm.revision", BigInteger.ONE, StrictJson.UINT64_MAX).equals(nativeRevision)
                 || !integer(root.get("date_raw"), "subrealm.date", BigInteger.valueOf(Integer.MIN_VALUE), BigInteger.valueOf(Integer.MAX_VALUE)).equals(BigInteger.valueOf(dateRaw))) {
             throw refusal("subrealm county source does not match the owner frame");
@@ -64,6 +67,10 @@ public final class FactionSubrealmCodec {
             ordered &= id > previous; previous = id; ids.add(id);
         }
         if (!ordered) throw refusal("subrealm.county_title_ids must be sorted and unique"); return List.copyOf(ids);
+    }
+    private static BigInteger character(JsonNode node) {
+        try { return NativeCharacterId.fromJson(node).asBigInteger(); }
+        catch (IllegalArgumentException error) { throw refusal("subrealm.actor must be an exact present native character identity"); }
     }
     private static BigInteger integer(JsonNode node, String field, BigInteger minimum, BigInteger maximum) {
         if (node == null || !node.isIntegralNumber() || node.bigIntegerValue().compareTo(minimum) < 0 || node.bigIntegerValue().compareTo(maximum) > 0) {

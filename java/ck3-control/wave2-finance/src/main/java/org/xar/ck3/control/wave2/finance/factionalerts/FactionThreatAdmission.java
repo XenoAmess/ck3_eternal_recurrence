@@ -1,6 +1,7 @@
 package org.xar.ck3.control.wave2.finance.factionalerts;
 
 import java.util.Objects;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import static org.xar.ck3.control.wave2.finance.factionalerts.FactionAlertModel.*;
 
@@ -16,8 +17,9 @@ public final class FactionThreatAdmission {
             Objects.requireNonNull(expected, "expected native query frame");
             StrictJson.require(expected.connectedBuild().orElse(null) == Build.CK3_12004,
                     "exact current CK3 1.20.0.4 source required");
-            StrictJson.require(actorCharacterId > 0 && factionId > 0 && recipientCharacterId > 0,
-                    "existing faction contract positive int32 identities required");
+            NativeCharacterId.of(actorCharacterId);
+            NativeCharacterId.of(recipientCharacterId);
+            StrictJson.require(factionId > 0, "positive int32 faction identity required");
             StrictJson.require(actorCharacterId != recipientCharacterId, "gift cannot target its actor");
         }
     }
@@ -34,7 +36,9 @@ public final class FactionThreatAdmission {
         public Missing { Objects.requireNonNull(reason); }
     }
 
-    /** Only the validated original producer path can construct this current observation. */
+    /** Only the validated original producer path can construct this current observation.
+     * Public danger/member observations do not grant private gift-preview or submission eligibility.
+     */
     public static final class Admitted implements Result {
         private final Request request;
         private final TargetingFaction faction;

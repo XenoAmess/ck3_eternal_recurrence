@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.contracts.ContractViolationException;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.wave2.finance.factionculture.FactionCultureModel.CultureRelation;
 
 /** Complete immutable native v1 alert contract. This validates observations, never gameplay capability. */
@@ -86,7 +87,7 @@ public final class FactionAlertModel {
                                Optional<FixedPoint> nativeLeaveThreshold, MaterialStatus opinionStatus,
                                MaterialStatus nativeFinalStatus, Optional<CultureRelation> culture) {
         public CountyMember {
-            positive(countyTitleId); optionalId(capitalProvinceId); optionalId(holderCharacterId);
+            positive(countyTitleId); optionalId(capitalProvinceId); optionalCharacter(holderCharacterId);
             Objects.requireNonNull(countyOpinion); Objects.requireNonNull(nativeJoinScore); Objects.requireNonNull(canAddCounty);
             Objects.requireNonNull(removalQueued); Objects.requireNonNull(nativeLeaveThreshold); Objects.requireNonNull(opinionStatus);
             Objects.requireNonNull(nativeFinalStatus); Objects.requireNonNull(culture);
@@ -98,7 +99,7 @@ public final class FactionAlertModel {
         public SurrenderTitle {
             positive(titleId); if (tierRaw < 1 || tierRaw > 5) throw new ContractViolationException("title tier");
             optionalId(deJureParentTitleId); optionalId(duchyTitleId); optionalId(kingdomTitleId);
-            optionalId(holderCharacterId); optionalId(topLiegeCharacterId);
+            optionalCharacter(holderCharacterId); optionalCharacter(topLiegeCharacterId);
         }
     }
     public record KingdomImpact(SurrenderTitle title, List<Integer> deJureCountyTitleIds,
@@ -129,11 +130,11 @@ public final class FactionAlertModel {
                                    List<Integer> countyMemberTitleIds, boolean dangerous, StableKey dangerReason,
                                    Optional<List<CountyMember>> countyMemberObservations, Optional<SurrenderImpact> surrenderImpact) {
         public TargetingFaction {
-            positive(factionId); Objects.requireNonNull(factionTypeKey); positive(targetCharacterId); optionalId(leaderCharacterId);
-            optionalId(specialCharacterId); optionalId(specialTitleId); optionalId(factionWarId);
+            positive(factionId); Objects.requireNonNull(factionTypeKey); character(targetCharacterId); optionalCharacter(leaderCharacterId);
+            optionalCharacter(specialCharacterId); optionalId(specialTitleId); optionalId(factionWarId);
             Objects.requireNonNull(power); Objects.requireNonNull(powerThreshold); Objects.requireNonNull(discontent); Objects.requireNonNull(discontentPerMonth);
             Objects.requireNonNull(monthsUntilMaxDiscontent); monthsUntilMaxDiscontent.ifPresent(value -> { if (value < 0) throw new ContractViolationException("negative months"); });
-            characterMemberIds = ids(characterMemberIds); countyMemberTitleIds = ids(countyMemberTitleIds); Objects.requireNonNull(dangerReason);
+            characterMemberIds = characterIds(characterMemberIds); countyMemberTitleIds = ids(countyMemberTitleIds); Objects.requireNonNull(dangerReason);
             countyMemberObservations = Objects.requireNonNull(countyMemberObservations).map(List::copyOf); Objects.requireNonNull(surrenderImpact);
             if (!factionAtWar && factionWarId.isPresent()) throw new ContractViolationException("war identity requires faction war");
             if (leaderCharacterId.isEmpty() && leaderIsHuman) throw new ContractViolationException("human leader identity required");
@@ -142,7 +143,7 @@ public final class FactionAlertModel {
     public record CountyExposure(int countyTitleId, int factionId, StableKey factionTypeKey, int targetCharacterId,
                                  FixedPoint power, FixedPoint powerThreshold, boolean dangerous, StableKey dangerReason) {
         public CountyExposure {
-            positive(countyTitleId); positive(factionId); Objects.requireNonNull(factionTypeKey); positive(targetCharacterId);
+            positive(countyTitleId); positive(factionId); Objects.requireNonNull(factionTypeKey); character(targetCharacterId);
             Objects.requireNonNull(power); Objects.requireNonNull(powerThreshold); Objects.requireNonNull(dangerReason);
         }
     }
@@ -164,7 +165,7 @@ public final class FactionAlertModel {
                             Planner planner, Readiness readiness, Reasons reasons, Build provenance,
                             Optional<SubrealmCounties> subrealmCounties) implements Frame {
         public Available {
-            revision(snapshotRevision); positive(playerCharacterId); if (targetingFactionCount < 0) throw new ContractViolationException("targeting count");
+            revision(snapshotRevision); character(playerCharacterId); if (targetingFactionCount < 0) throw new ContractViolationException("targeting count");
             targetingFactions = List.copyOf(targetingFactions); countyExposures = List.copyOf(countyExposures);
             Objects.requireNonNull(planner); Objects.requireNonNull(readiness); Objects.requireNonNull(reasons);
             Objects.requireNonNull(provenance); Objects.requireNonNull(subrealmCounties);
@@ -184,6 +185,13 @@ public final class FactionAlertModel {
         for (int id : result) { positive(id); if (id <= previous) throw new ContractViolationException("sorted unique identities required"); previous = id; }
         return result;
     }
+    static List<Integer> characterIds(List<Integer> values) {
+        List<Integer> result = List.copyOf(values); Integer previous = null;
+        for (int id : result) { character(id); if (previous != null && id <= previous) throw new ContractViolationException("sorted unique character identities required"); previous = id; }
+        return result;
+    }
+    private static void character(int value) { NativeCharacterId.of(value); }
+    private static void optionalCharacter(Optional<Integer> value) { Objects.requireNonNull(value).ifPresent(FactionAlertModel::character); }
     private static void positive(int value) { if (value <= 0) throw new ContractViolationException("positive int32 identity required"); }
     private static void optionalId(Optional<Integer> value) { Objects.requireNonNull(value).ifPresent(FactionAlertModel::positive); }
     private static void revision(BigInteger value) {
