@@ -30,7 +30,10 @@ final class M6CommonEndSources {
 
     static JsonNode normalize(JsonNode family, JsonNode context) {
         StrictJson.object(family, FAMILY); textEquals(family, "schema", "xar.ck3.sway-common-native-end.v1");
-        textEquals(family, "source_contract", "actual_2a48877_2a4adf0_v1");
+        JsonNode source = family.get("source_contract");
+        require(source.isTextual(), "common native source contract must be text");
+        boolean twoSites = source.textValue().equals("actual_2a48877_2a48c7b_2a4adf0_v2");
+        require(twoSites || source.textValue().equals("actual_2a48877_2a4adf0_v1"), "common native source contract differs");
         for (String flag : List.of("available", "read_only", "observer_attached", "retention_gap", "session_records_only")) bool(family, flag);
         require(bool(family, "read_only") && bool(family, "session_records_only"), "common end read-only session required");
         JsonNode reason = family.get("unavailable_reason"); require(reason.isTextual() && reason.textValue().isEmpty() == bool(family, "available"), "common end availability reason differs");
@@ -46,15 +49,18 @@ final class M6CommonEndSources {
         require((earliest.signum() == 0) == (latest.signum() == 0) && earliest.compareTo(latest) <= 0
                 && (bool(family, "available") || family.get("records").isEmpty()), "common ring bounds differ");
         BigInteger previous = BigInteger.ZERO;
+        boolean purgeSiteObserved = false;
         for (JsonNode row : family.get("records")) {
             StrictJson.object(row, RECORD); BigInteger sequence = u64(row, "sequence", 1);
             require(u64(row, "observer_session_identity", 1).equals(u64(family, "observer_session_identity", 0))
                     && integer(row, "owner_thread_id", 1, 0xffff_ffffL) == integer(family, "owner_thread_id", 0, 0xffff_ffffL), "common invocation session/thread differs");
             u64(row, "original_invocation_id", 1);
             require(sequence.compareTo(earliest) >= 0 && sequence.compareTo(latest) <= 0 && sequence.compareTo(previous) > 0, "common record sequence differs");
-            require(u64(row, "callsite_rva", 0).equals(BigInteger.valueOf(0x2a48877))
-                    && u64(row, "callee_rva", 0).equals(BigInteger.valueOf(0x2a4adf0))
-                    && u64(row, "call_return_rva", 0).equals(BigInteger.valueOf(0x2a4887c)), "common native source edges differ");
+            BigInteger site = u64(row, "callsite_rva", 0), returnedTo = u64(row, "call_return_rva", 0);
+            boolean primary = site.equals(BigInteger.valueOf(0x2a48877)) && returnedTo.equals(BigInteger.valueOf(0x2a4887c));
+            boolean purge = site.equals(BigInteger.valueOf(0x2a48c7b)) && returnedTo.equals(BigInteger.valueOf(0x2a48c80));
+            require((primary || twoSites && purge) && u64(row, "callee_rva", 0).equals(BigInteger.valueOf(0x2a4adf0)), "common native source edges differ");
+            purgeSiteObserved |= purge;
             for (String flag : List.of("incoming_return_address_observed", "incoming_dl_observed", "original_forwarded_once", "original_returned", "return_same_scheme_full_id_observed")) bool(row, flag);
             require(!bool(row, "incoming_return_address_observed") && row.get("caller_return_rva").isNull(), "common unobserved caller was filled");
             nullableInteger(row, "incoming_dl_observed", "incoming_dl_raw_u8", 0, 255);
@@ -70,6 +76,7 @@ final class M6CommonEndSources {
             } else require(sameId.isNull(), "unobserved same-id diagnostic was filled");
             previous = sequence;
         }
+        require(twoSites == purgeSiteObserved, "common native source contract differs from retained sites");
         return family.deepCopy();
     }
 

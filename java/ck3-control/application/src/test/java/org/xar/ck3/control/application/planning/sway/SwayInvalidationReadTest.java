@@ -61,7 +61,7 @@ final class SwayInvalidationReadTest {
             }
             assertThrows(IllegalArgumentException.class,()->contract.decode(receipt(contract,request(contract,"1.20.0.2",QUERY),packet)),defect);
         }
-        assertThrows(IllegalArgumentException.class,()->contract.prepare(request(contract,"1.20.0.4",QUERY),"software-unsupported"));
+        assertThrows(IllegalArgumentException.class,()->contract.prepare(request(contract,"1.20.0.5",QUERY),"software-unsupported"));
         var disabled=SwayObservationReads.invalidationContract(SOURCE,QUERY,false);
         assertThrows(IllegalArgumentException.class,()->disabled.prepare(request(disabled,"1.20.0.2",QUERY),"software-disabled"));
         var old3=vector("dead");((ObjectNode)old3.get("result")).put("build_version","1.20.0.3").put("executable_sha256","94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6");

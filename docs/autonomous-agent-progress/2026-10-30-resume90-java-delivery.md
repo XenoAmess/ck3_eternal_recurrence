@@ -117,3 +117,11 @@ M4 静态核对：已发表 DecisionCadenceStudy12004.resourcePrecheck 仍将 te
 Family 单叶按与当前 Git 等价的原 before-S 精确 patch 采用，check0/apply0，当前完整 RootFamilyBridge 严格 javac0/2.103秒。小 manifest 使用65KiB receipt API预算，完整 SEM 仍以64MiB DriverJson 解析；实际 typed semantic 比较保留值/类型/数组顺序，允许对象键序差异。原 Complete、诊断 PID/连接、held native packet、source frame、guard 与 writer 检查保持，不新增 Root/lease 资格。
 
 随同导入五个便携测试/资源叶，复用原岗完整 FrameLoader→Complete→实际 codec 1P及便携整类3P，不重复绿色测试。便携输入为四份94小原件派生模板，@TempDir重建引用，无原机器路径依赖；没有 fake Root、lease、Native请求或preserve调用，不将 pure codec 验收写成完整当前 Root/游玩通过。实际 S/MB 采用由运行岗已另记录，本岗只正式发表开发源。
+
+Family 组已普通 push/独立远端读回 `9ae14e43ec247caa4b7ae1d34a2d9ad6dc5f04d9`。
+
+M6 两个后继严格按最终包采用：`NS80-SIGNED-COMPLETE` 十一叶自带此前未采用的 .4 mapping/tests/resources，`COMMON-PURGE` 更新六叶自带五个新增 edge 原包，未叠旧NS80或Common四叶包。三完整生产类严格 javac0/2.406秒；正式 D classloader/资源位置组合两个新整类严格编译0/3.078秒、7P0F0skip/3.964秒。旧兼容四方法与 primary 一方法复用，不重复旧宽绿组。
+
+NS80 仅实际 .4 reason request/body/row 支持 canonical signed/0 Character，.2/.3 的 prepare/decode 保持正域。九个实际 Native 公共响应覆盖 (-2,0)、(0,MAX)、(MIN,MAX) 三对×dead/war/range，五个 notification outcome 全false；没有编造负target正例，reason不是cause。实际旧320-tool schema为无min/max的integer，未改service metadata。原 Native index 后加发表布局元数据的hash变化及包装首错已保留，九个原响应path/bytes/SHA未变，不把新index说成先前原始index。
+
+Common 两site逐row校验 exact call/return/callee，raw DL2/1 只保留原字节，original_returned 不授RAX含义。Native serializer 是按本次filtered records是否含第二site决定v2，empty/primary-only输出v1；Java保持该动态合同。新增真实 failed-install filteredempty、successfulsecond、sessionrotation unavailableempty、recoveredprimaryonly与filteredempty五包实际覆盖这些分支。Native 的 restore_unproven partial-install 漏口已由实际fault seam复现并以per-site callbacks_admitted修复；本岗不靠旧3包或静态推断代替这个新覆盖。两组仍为 caller-owned软件内存/接口/队列回放，无当前DLL、installer/Game、cause、成功Start或物质收益信用。发表顺序等待Native最终两组先正常提交，再普通rebase交付Java。

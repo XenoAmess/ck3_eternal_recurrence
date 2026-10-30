@@ -300,16 +300,17 @@ public final class SwayObservationReads {
     private static final Set<String> NOTIFICATION_RECORD=Set.of("sequence","source_branch","authored_command","authored_title","authored_reason_key","date_raw","actor_character_id","target_character_id","scheme_instance_id","scheme_instance_generation","root_scope_kind","scheme_scope_kind","selected_notification_branch_observed","exact_scope_join_ready","message_enqueue_observed","render_observed","material_effect_observed","native_end_cause_observed","native_terminal_state_observed");
     /** Actionless full native identity. These selected notification records never become an M6 causal proof. */
     public record InvalidationQuery(NativeSubject subject,BigInteger afterSequence) {
-        public InvalidationQuery {Objects.requireNonNull(subject);SwayNativeWire.currentCharacter(subject.actorCharacterId());SwayNativeWire.currentCharacter(subject.targetCharacterId());new Actors(subject.actorCharacterId(),subject.targetCharacterId());SwayNativeWire.instance(subject.schemeInstanceId(),subject.schemeInstanceGeneration());SwayNativeWire.u64(afterSequence,0);}
+        public InvalidationQuery {Objects.requireNonNull(subject);new Actors(subject.actorCharacterId(),subject.targetCharacterId());SwayNativeWire.instance(subject.schemeInstanceId(),subject.schemeInstanceGeneration());SwayNativeWire.u64(afterSequence,0);}
     }
     public record InvalidationPlane(InvalidationQuery query,PlanningReadReceipt original,ProjectionJson normalized) {
         public InvalidationPlane {Objects.requireNonNull(query);Objects.requireNonNull(original);Objects.requireNonNull(normalized);}
     }
-    /** Original Python accepts precisely these version/SHA pairs. This is DATA selection, never native admission. */
+    /** Retained producer inputs bind these version/SHA pairs. This is DATA selection, never native admission. */
     private static String invalidationExecutable(String version) {
         return switch(version) {
             case "1.20.0.2"->"AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D";
             case "1.20.0.3"->"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6";
+            case "1.20.0.4"->SwayNativeWire.EXE;
             default->throw new IllegalArgumentException("Original Sway invalidation notification query has no qualified implementation for this exact build");
         };
     }
@@ -321,10 +322,11 @@ public final class SwayObservationReads {
         return OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(row)),"typed selected Sway notification query");
     }
     private static void requireInvalidationArguments(PlanningReadRequest request,InvalidationQuery query) {
-        invalidationExecutable(request.source().exactBuild());
+        String version=request.source().exactBuild();invalidationExecutable(version);
+        if(!SwayNativeWire.BUILD.equals(version)){SwayNativeWire.currentCharacter(query.subject().actorCharacterId());SwayNativeWire.currentCharacter(query.subject().targetCharacterId());}
         var row=SwayNativeBindings.args(request.arguments(),Set.of("target_character_id","scheme_instance_id","after_sequence"));
         require(request.before().frame().identity().player().longValueExact()==query.subject().actorCharacterId()
-                &&SwayNativeWire.integer(row,"target_character_id",1,Integer.MAX_VALUE)==query.subject().targetCharacterId()
+                &&(SwayNativeWire.BUILD.equals(version)?NativeCharacterId.fromJson(row.get("target_character_id")).value():SwayNativeWire.integer(row,"target_character_id",1,Integer.MAX_VALUE))==query.subject().targetCharacterId()
                 &&SwayNativeWire.integer(row,"scheme_instance_id",0,0xffff_fffeL)==query.subject().schemeInstanceId()
                 &&decimalCursor(row.get("after_sequence")).equals(query.afterSequence()),"selected notification request changed original actor/target/fullID/cursor");
     }
@@ -364,7 +366,7 @@ public final class SwayObservationReads {
         SwayNativeWire.string(body,"unavailable_reason");SwayNativeWire.bool(body,"observer_attached");SwayNativeWire.bool(body,"retention_gap");
         require(SwayNativeWire.bool(body,"read_only")&&SwayNativeWire.bool(body,"session_records_only"),"notification inputs retain read-only current-session scope");
         for(String field:NOTIFICATION_OUTCOMES)require(!SwayNativeWire.bool(body,field),"selected notification inputs do not prove enqueue/render/material/end cause or terminal");
-        pair(body,query.subject());require(SwayNativeWire.wide(body,"after_sequence",0).equals(query.afterSequence()),"selected notification echoed another original cursor");
+        invalidationPair(body,query.subject(),version);require(SwayNativeWire.wide(body,"after_sequence",0).equals(query.afterSequence()),"selected notification echoed another original cursor");
         var earliest=SwayNativeWire.wide(body,"earliest_sequence",0);var latest=SwayNativeWire.wide(body,"latest_sequence",0);
         require((earliest.signum()==0)==(latest.signum()==0)&&earliest.compareTo(latest)<=0,"selected notification native retention bounds");
         require(body.get("records").isArray()&&body.get("records").size()<=4096,"bounded selected notification records");
@@ -379,7 +381,7 @@ public final class SwayObservationReads {
                 default->throw new IllegalArgumentException("Unknown original selected notification branch");
             };
             SwayNativeWire.equals(row,"authored_reason_key",reason);SwayNativeWire.equals(row,"authored_command","send_interface_toast");SwayNativeWire.equals(row,"authored_title","sway_invalidated_title");
-            SwayNativeWire.signed(row,"date_raw");pair(row,query.subject());require(SwayNativeWire.integer(row,"scheme_instance_generation",0,255)==query.subject().schemeInstanceGeneration(),"selected notification fullID generation differs");
+            SwayNativeWire.signed(row,"date_raw");invalidationPair(row,query.subject(),version);require(SwayNativeWire.integer(row,"scheme_instance_generation",0,255)==query.subject().schemeInstanceGeneration(),"selected notification fullID generation differs");
             SwayNativeWire.integer(row,"root_scope_kind",4,4);SwayNativeWire.integer(row,"scheme_scope_kind",9,9);
             require(SwayNativeWire.bool(row,"selected_notification_branch_observed")&&SwayNativeWire.bool(row,"exact_scope_join_ready"),"selected notification source lacks its original exact scope join");
             for(String field:NOTIFICATION_OUTCOMES)require(!SwayNativeWire.bool(row,field),"selected notification record cannot assign a terminal or universal cause");
@@ -388,5 +390,11 @@ public final class SwayObservationReads {
         body.put("queried_snapshot_id",request.before().frame().snapshotId());body.put("queried_revision",request.before().frame().revision());body.put("queried_native_revision",request.before().frame().identity().nativeRevision());
         for(String field:java.util.List.of("backend_id","status","snapshot_revision","date_raw","build_version","executable_sha256","private_build","advertised"))body.set(field,result.get(field));
         return new InvalidationPlane(query,original,SwayNativeWire.json(body));
+    }
+    private static void invalidationPair(JsonNode row,NativeSubject identity,String version) {
+        if(!SwayNativeWire.BUILD.equals(version)){pair(row,identity);return;}
+        require(NativeCharacterId.fromJson(row.get("actor_character_id")).value()==identity.actorCharacterId()
+                &&NativeCharacterId.fromJson(row.get("target_character_id")).value()==identity.targetCharacterId()
+                &&SwayNativeWire.integer(row,"scheme_instance_id",0,0xffff_fffeL)==identity.schemeInstanceId(),"selected notification actor/target/fullID differs");
     }
 }

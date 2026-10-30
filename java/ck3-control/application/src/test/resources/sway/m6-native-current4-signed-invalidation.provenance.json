@@ -1,0 +1,118 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-30T15:39:57.344482+00:00",
+  "native_index": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\PACKETS.json",
+  "native_index_sha256": "843067dde9c4b83f536940dd0b80055ff7fa60d665a156f2e01101504613b5df",
+  "aggregation": "Nine complete actual Native public handler/queue/pump serializer response bytes joined into JSON array, no field edits",
+  "qualification": "software actual4 native reader -> real recorder Append/Query -> public handler -> original queue/pump/Enter/Finish -> two production serializers; frozen mailbox layout; no installer/attachLifetime/Game/DLL",
+  "native_new_checks": 174,
+  "native_old46": "NOT_RUN",
+  "role_domain": "actual4 canonical int32 excluding -1; legacy2/3 original positive request domain; raw owner/target uint32 retained; scheme0..FFFFFFFE/revision/cursor domains unchanged",
+  "five_false": "message_enqueue_observed,render_observed,material_effect_observed,native_end_cause_observed,native_terminal_state_observed",
+  "packets": [
+    {
+      "pair": 0,
+      "reason": "dead",
+      "actor": -2,
+      "target": 0,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-0-dead.response.json",
+      "bytes": 1597,
+      "sha256": "7e908791ec2a79b33ce8742fbec4707cec42a2fdf7c1cb08bf20d2d5b8006311",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-0-dead.request.json"
+    },
+    {
+      "pair": 0,
+      "reason": "war",
+      "actor": -2,
+      "target": 0,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-0-war.response.json",
+      "bytes": 1605,
+      "sha256": "72c7b45a45f1b59239bf1054bbfc82fa5624d323bad5f58c5496bd5b31c4acdb",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-0-war.request.json"
+    },
+    {
+      "pair": 0,
+      "reason": "range",
+      "actor": -2,
+      "target": 0,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-0-range.response.json",
+      "bytes": 1615,
+      "sha256": "e921c50b46ca4755bddfaf62118dbee877a4bce0a6351544c32762470edd01e8",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-0-range.request.json"
+    },
+    {
+      "pair": 1,
+      "reason": "dead",
+      "actor": 0,
+      "target": 2147483647,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-1-dead.response.json",
+      "bytes": 1613,
+      "sha256": "be4874631b467f58cb1f076eabfaa2828452757e6be1847cbe632d61509a03a5",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-1-dead.request.json"
+    },
+    {
+      "pair": 1,
+      "reason": "war",
+      "actor": 0,
+      "target": 2147483647,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-1-war.response.json",
+      "bytes": 1621,
+      "sha256": "5f012f7237ebacc0425c71d025a61fe62f933c7f92321ae76ebe5b5093703c48",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-1-war.request.json"
+    },
+    {
+      "pair": 1,
+      "reason": "range",
+      "actor": 0,
+      "target": 2147483647,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-1-range.response.json",
+      "bytes": 1631,
+      "sha256": "92178c103e446b3f62a975c3c1b0d44842eeab4b4d7d7ad210e1ad872ec09183",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-1-range.request.json"
+    },
+    {
+      "pair": 2,
+      "reason": "dead",
+      "actor": -2147483648,
+      "target": 2147483647,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-2-dead.response.json",
+      "bytes": 1633,
+      "sha256": "0cbfe71c61109159eb298477f83bf34a9c745509f6551a850b7315401c301cf8",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-2-dead.request.json"
+    },
+    {
+      "pair": 2,
+      "reason": "war",
+      "actor": -2147483648,
+      "target": 2147483647,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-2-war.response.json",
+      "bytes": 1641,
+      "sha256": "62a3580b4bd5f06451a033f15412fd957e79e10952a43bdc533a2a9802204946",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-2-war.request.json"
+    },
+    {
+      "pair": 2,
+      "reason": "range",
+      "actor": -2147483648,
+      "target": 2147483647,
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-2-range.response.json",
+      "bytes": 1651,
+      "sha256": "0604a95c4f0a4c23f4ea74a52d632da3614f9b0cd6cdd54f93e490810103e3d0",
+      "request": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\signed-reason01\\wire\\pair-2-range.request.json"
+    }
+  ],
+  "unresolved": "publication-layout variant pending; actual installer/handler attachLifetime, live notification and causal/material/terminal attribution remain unproved",
+  "import_native_index_sha256": "2f2b2aa61e23a630576e16a8858379c2ea1377f9f376ab93c36c2704e7f503ea",
+  "native_index_updated_after_replay": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-30T15:47:40.316643+00:00",
+    "import_index_sha256": "2f2b2aa61e23a630576e16a8858379c2ea1377f9f376ab93c36c2704e7f503ea",
+    "current_index_sha256": "843067dde9c4b83f536940dd0b80055ff7fa60d665a156f2e01101504613b5df",
+    "import_index_full_bytes_retained": false,
+    "all_nine_packet_entries_equal": true,
+    "all_nine_wire_hashes_still_equal": true,
+    "change_scope": "Native publication/cohort index metadata updated after Java replay; actual nine response files unchanged",
+    "action": "Freeze current exact index bytes; preserve old digest and imported packet fields; no Java test rerun for metadata-only update"
+  },
+  "current_index_qualification": "software actual4 native reader -> real recorder Append/Query -> public handler -> original queue/pump/Enter/Finish -> two production serializers; frozen mailbox layout; no installer/attachLifetime/Game/DLL"
+}

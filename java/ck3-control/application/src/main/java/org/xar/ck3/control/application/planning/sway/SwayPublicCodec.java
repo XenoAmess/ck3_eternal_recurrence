@@ -36,12 +36,12 @@ public final class SwayPublicCodec {
         var row=StrictJson.object();row.put("expected_revision",request.expectedRevision().toString());row.put("target_character_id",request.targetCharacterId());request.schemeInstanceId().ifPresent(value->row.put("scheme_instance_id",value));return raw(row);
     }
     public record InvalidationRequest(BigInteger expectedRevision,long targetCharacterId,long schemeInstanceId,BigInteger afterSequence) {
-        public InvalidationRequest {SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.currentCharacter(targetCharacterId);SwayNativeWire.instance(schemeInstanceId,(int)(schemeInstanceId>>24));SwayNativeWire.u64(afterSequence,0);}
+        public InvalidationRequest {SwayNativeWire.u64(expectedRevision,1);NativeCharacterId.of(targetCharacterId);SwayNativeWire.instance(schemeInstanceId,(int)(schemeInstanceId>>24));SwayNativeWire.u64(afterSequence,0);}
     }
     public static InvalidationRequest decodeInvalidation(RawJson original) {
         var node=StrictJson.parse(original.bytes(),65536);require(node.isObject(),"original selected notification arguments must be an object");
         var row=StrictJson.object(node,node.has("after_sequence")?Set.of("expected_revision","target_character_id","scheme_instance_id","after_sequence"):Set.of("expected_revision","target_character_id","scheme_instance_id"));
-        return new InvalidationRequest(publicUInt64(row.get("expected_revision"),1),StrictJson.integer(row.get("target_character_id"),1,Integer.MAX_VALUE),
+        return new InvalidationRequest(publicUInt64(row.get("expected_revision"),1),NativeCharacterId.fromJson(row.get("target_character_id")).value(),
                 StrictJson.integer(row.get("scheme_instance_id"),0,0xffff_fffeL),row.has("after_sequence")?publicUInt64(row.get("after_sequence"),0):BigInteger.ZERO);
     }
     public static RawJson encodeInvalidationRequest(InvalidationRequest request) {

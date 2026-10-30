@@ -94,7 +94,6 @@ final class SwaySignedNativeOpinionTest {
     @Test void opinionSupportDoesNotWidenUnprovenExecutionOrOldTargetAndStopRoutes() {
         for (long signed : new long[]{Integer.MIN_VALUE, -2, 0}) {
             assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.JournalQuery(SwayObservationReads.Kind.EXECUTION, new NativeSubject(signed, 7, 1, 0), BigInteger.ZERO));
-            assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.InvalidationQuery(new NativeSubject(signed, 7, 1, 0), BigInteger.ZERO));
             assertThrows(IllegalArgumentException.class, () -> SwayNativeWire.currentCharacter(signed));
         }
     }

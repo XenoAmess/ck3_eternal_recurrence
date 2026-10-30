@@ -143,12 +143,10 @@ final class SwaySignedNativeTerminalTest {
         }
     }
 
-    @Test void unprovenExecutionInvalidationAndStopDomainsStayUnchanged() {
+    @Test void unprovenExecutionAndStopDomainsStayUnchanged() {
         for (long value : new long[]{Integer.MIN_VALUE, -2, 0}) {
             assertThrows(IllegalArgumentException.class, () -> new SwayPublicCodec.JournalRequest(SwayObservationReads.Kind.EXECUTION, BigInteger.ONE, value, 1, BigInteger.ZERO));
             assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.JournalQuery(SwayObservationReads.Kind.EXECUTION, new NativeSubject(value, 7, 1, 0), BigInteger.ZERO));
-            assertThrows(IllegalArgumentException.class, () -> new SwayObservationReads.InvalidationQuery(new NativeSubject(value, 7, 1, 0), BigInteger.ZERO));
-            assertThrows(IllegalArgumentException.class, () -> new SwayPublicCodec.InvalidationRequest(BigInteger.ONE, value, 1, BigInteger.ZERO));
             assertThrows(IllegalArgumentException.class, () -> SwayNativeWire.currentCharacter(value));
         }
     }

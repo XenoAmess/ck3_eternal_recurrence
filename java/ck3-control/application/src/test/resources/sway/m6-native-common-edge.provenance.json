@@ -1,0 +1,217 @@
+{
+  "schema" : "xar.m6-two-site-failure-session-packets/v1",
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "created_at_utc" : "2026-10-30T15:42:11.627441200Z",
+  "origin" : "Same new owned native-code fixture, complete actual observer source and a mechanically applied two-API Win32 fault seam. Real E9/stub execution, native original, callbacks, recorder, query/pump and serializers; no response edits.",
+  "fault" : "Actual patch write succeeds; only target FlushInstructionCache acknowledgement and rollback VirtualProtect return fail. All other native API calls use real OS. Install returnsfalse with installed=true and real backing retained.",
+  "fix" : "Independent per-state callbacks_admitted is enabled only after successful installation. Failed retained stub forwards original but cannot publish through a recorder attached by another successful site.",
+  "old79_rerun" : false,
+  "Game" : 0,
+  "cause_credit" : 0,
+  "red_stdout" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/red/build/RUN/stdout.txt",
+  "green_stdout" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/build/RUN/stdout.txt",
+  "baseline_failed_site_response" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/red/wire/failed-primary-filtered.response.json",
+  "packets" : [ {
+    "name" : "failed-primary-filtered",
+    "common_available" : true,
+    "records" : 0,
+    "source_contract" : "actual_2a48877_2a4adf0_v1",
+    "response" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/failed-primary-filtered.response.json",
+    "response_sha256" : "38c98221b5cfd979a1f5701ff6f05321bcfaa173a20a4dc323e7e0dfecc96212",
+    "request" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/failed-primary-filtered.request.json",
+    "request_sha256" : "ebcc34529a30757f8fbca1d5fa924c99baf2cc43d9c09ff8a718fe9de0bdedf0",
+    "termination_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/failed-primary-filtered.termination.body.json",
+    "termination_body_sha256" : "94928630a5fe7b2b62d56323b909d7e64f896217bb1e81ca56322ffdfb317efa",
+    "termination_exact_slice_sha256" : "c3868fa8efdc4478a1ae109f3b84e403bce15feb38e36efd2b3cc2e378c0522c",
+    "common_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/failed-primary-filtered.common.body.json",
+    "common_body_sha256" : "b016ff0081ea02101c2f0c65767699678ea044d542598f83239cefb8700fdfcf",
+    "common_exact_slice_sha256" : "69407fee4dbf2db67e11c126f551a98eae881fd1707ba23b621350da8109f4e0"
+  }, {
+    "name" : "second-success",
+    "common_available" : true,
+    "records" : 1,
+    "source_contract" : "actual_2a48877_2a48c7b_2a4adf0_v2",
+    "response" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/second-success.response.json",
+    "response_sha256" : "d88eed286de3fc71af5f511ad8ddd4c076a78e77565e841d039ae7ea3960b083",
+    "request" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/second-success.request.json",
+    "request_sha256" : "ebcc34529a30757f8fbca1d5fa924c99baf2cc43d9c09ff8a718fe9de0bdedf0",
+    "termination_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/second-success.termination.body.json",
+    "termination_body_sha256" : "e86234f28686cb7be0b2d747f4852e2d7301581e2f7202284fdcc38a871d71df",
+    "termination_exact_slice_sha256" : "f7000c544ad96d630967d4651fd9c13c41e10f29fbedf647081b2d9070c30185",
+    "common_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/second-success.common.body.json",
+    "common_body_sha256" : "7c905e6bdfe8f01ca8062bb2a0522d73055017f783cb6bbb182c30bacd429a95",
+    "common_exact_slice_sha256" : "7f8afed093b66abacbd57b9ffb0f4bdf0785b624458bb129f76f3b1c088e068e"
+  }, {
+    "name" : "session-rotated",
+    "common_available" : false,
+    "records" : 0,
+    "source_contract" : "actual_2a48877_2a4adf0_v1",
+    "response" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/session-rotated.response.json",
+    "response_sha256" : "a043f8bdc6231d35cd64a9739aa484856348bb0158e1be6f44cb7fed6af512f8",
+    "request" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/session-rotated.request.json",
+    "request_sha256" : "ebcc34529a30757f8fbca1d5fa924c99baf2cc43d9c09ff8a718fe9de0bdedf0",
+    "termination_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/session-rotated.termination.body.json",
+    "termination_body_sha256" : "648787a3e206b1cfb105b79d2f29e5acd2a3bcb21d18b6ae1e2ced642f0c5de2",
+    "termination_exact_slice_sha256" : "2cf219cf20b49427e31b0df4c3bf0f4f4c4522da71fe775120b1219a546fa37e",
+    "common_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/session-rotated.common.body.json",
+    "common_body_sha256" : "c331f64b73dc1e330bbc2c85116255ae1649fcc81e68dfde6d1439fab1593cd0",
+    "common_exact_slice_sha256" : "753c6653a55ebd68c7a306b1e0c42c538d09ae7b5c58c47fc199d4b93297f7e4"
+  }, {
+    "name" : "recovered-primary",
+    "common_available" : true,
+    "records" : 1,
+    "source_contract" : "actual_2a48877_2a4adf0_v1",
+    "response" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/recovered-primary.response.json",
+    "response_sha256" : "f862af501830f69400f611b7dea82460abc7bc71c9fccc3240f85b1b99d08e53",
+    "request" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/recovered-primary.request.json",
+    "request_sha256" : "ebcc34529a30757f8fbca1d5fa924c99baf2cc43d9c09ff8a718fe9de0bdedf0",
+    "termination_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/recovered-primary.termination.body.json",
+    "termination_body_sha256" : "483e292d2b799f8e496d597c00faee5581555d8b7391bd1167244e8c5a45eb5b",
+    "termination_exact_slice_sha256" : "e728075a5aeace4bc7554ea8d0c93fa408fa320225fd31f08a53a9ee4357b9ed",
+    "common_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/recovered-primary.common.body.json",
+    "common_body_sha256" : "5d086e797ccfbe96204d4df440b42522bd456c23e6ce496f61a2c019f66ddfe1",
+    "common_exact_slice_sha256" : "f2b1ac3e6d5eaa875bd6611af125e47afce81be14c1854dab26dc917145008ea"
+  }, {
+    "name" : "filtered-empty",
+    "common_available" : true,
+    "records" : 0,
+    "source_contract" : "actual_2a48877_2a4adf0_v1",
+    "response" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/filtered-empty.response.json",
+    "response_sha256" : "73796ee59d76e0285e1963a9cc493c51e02349a436a31580aa0a3d991145a4d4",
+    "request" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/filtered-empty.request.json",
+    "request_sha256" : "2fd0cf5c6476fddc93189264acfd1aeb737894d28991bd4b528495d13f32541e",
+    "termination_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/filtered-empty.termination.body.json",
+    "termination_body_sha256" : "f5609990aef57560055eef5141b7fde2215240745d8884cf6af9990e953a4c10",
+    "termination_exact_slice_sha256" : "dbbcb491a8eb02acf479827e198e324687df0fcd9690c3835a7a8ec0446ce9fe",
+    "common_body" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/purge-site-next/edge-next/green/wire/filtered-empty.common.body.json",
+    "common_body_sha256" : "74b638204e8aef4cd628183d667ce09c7caaf3e847515d1bc5df806311e7c623",
+    "common_exact_slice_sha256" : "359061fdfe37352ccd83ffac96116f2c4f71e6c2927072c94045022b16fd83c3"
+  } ],
+  "stages" : [ {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "stage" : "RED-COMPILE",
+    "started_at_utc" : "2026-10-30T15:39:11.465527500Z",
+    "completed_at_utc" : "2026-10-30T15:39:27.669000800Z",
+    "actual" : {
+      "identity" : {
+        "pid" : 41928,
+        "creationFiletimeDecimal" : "134378483519662592",
+        "executable" : "C:\\Windows\\System32\\cmd.exe"
+      },
+      "exitCode" : 0,
+      "elapsedSeconds" : 15.7272111,
+      "accounting" : {
+        "peakJobMemoryBytes" : 566308864,
+        "activeProcesses" : 0,
+        "memoryLimitBytes" : 1073741824,
+        "limitFlags" : 8704
+      },
+      "stopReason" : null
+    }
+  }, {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "stage" : "RED-LINK",
+    "started_at_utc" : "2026-10-30T15:39:27.761351800Z",
+    "completed_at_utc" : "2026-10-30T15:39:33.086119400Z",
+    "actual" : {
+      "identity" : {
+        "pid" : 250504,
+        "creationFiletimeDecimal" : "134378483677668331",
+        "executable" : "C:\\Windows\\System32\\cmd.exe"
+      },
+      "exitCode" : 0,
+      "elapsedSeconds" : 5.3230494,
+      "accounting" : {
+        "peakJobMemoryBytes" : 88207360,
+        "activeProcesses" : 0,
+        "memoryLimitBytes" : 1073741824,
+        "limitFlags" : 8704
+      },
+      "stopReason" : null
+    }
+  }, {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "stage" : "RED-RUN",
+    "started_at_utc" : "2026-10-30T15:39:33.090330400Z",
+    "completed_at_utc" : "2026-10-30T15:39:33.516708Z",
+    "actual" : {
+      "identity" : {
+        "pid" : 218828,
+        "creationFiletimeDecimal" : "134378483731220558",
+        "executable" : "D:\\ck3-state\\resume90-m6-native\\action-abi\\common-next\\purge-site-next\\edge-next\\red\\build\\edge-site.exe"
+      },
+      "exitCode" : 1,
+      "elapsedSeconds" : 0.4252527,
+      "accounting" : {
+        "peakJobMemoryBytes" : 7155712,
+        "activeProcesses" : 0,
+        "memoryLimitBytes" : 1073741824,
+        "limitFlags" : 8704
+      },
+      "stopReason" : null
+    }
+  }, {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "stage" : "GREEN-COMPILE",
+    "started_at_utc" : "2026-10-30T15:40:19.359073900Z",
+    "completed_at_utc" : "2026-10-30T15:40:32.987290800Z",
+    "actual" : {
+      "identity" : {
+        "pid" : 208596,
+        "creationFiletimeDecimal" : "134378484195548520",
+        "executable" : "C:\\Windows\\System32\\cmd.exe"
+      },
+      "exitCode" : 0,
+      "elapsedSeconds" : 13.4512323,
+      "accounting" : {
+        "peakJobMemoryBytes" : 566370304,
+        "activeProcesses" : 0,
+        "memoryLimitBytes" : 1073741824,
+        "limitFlags" : 8704
+      },
+      "stopReason" : null
+    }
+  }, {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "stage" : "GREEN-LINK",
+    "started_at_utc" : "2026-10-30T15:40:33.066231500Z",
+    "completed_at_utc" : "2026-10-30T15:40:37.140536800Z",
+    "actual" : {
+      "identity" : {
+        "pid" : 248160,
+        "creationFiletimeDecimal" : "134378484330701523",
+        "executable" : "C:\\Windows\\System32\\cmd.exe"
+      },
+      "exitCode" : 0,
+      "elapsedSeconds" : 4.0728885,
+      "accounting" : {
+        "peakJobMemoryBytes" : 88649728,
+        "activeProcesses" : 0,
+        "memoryLimitBytes" : 1073741824,
+        "limitFlags" : 8704
+      },
+      "stopReason" : null
+    }
+  }, {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "stage" : "GREEN-RUN",
+    "started_at_utc" : "2026-10-30T15:40:37.146584300Z",
+    "completed_at_utc" : "2026-10-30T15:40:37.683363500Z",
+    "actual" : {
+      "identity" : {
+        "pid" : 63424,
+        "creationFiletimeDecimal" : "134378484371892153",
+        "executable" : "D:\\ck3-state\\resume90-m6-native\\action-abi\\common-next\\purge-site-next\\edge-next\\green\\build\\edge-site.exe"
+      },
+      "exitCode" : 0,
+      "elapsedSeconds" : 0.5358494,
+      "accounting" : {
+        "peakJobMemoryBytes" : 7122944,
+        "activeProcesses" : 0,
+        "memoryLimitBytes" : 1073741824,
+        "limitFlags" : 8704
+      },
+      "stopReason" : null
+    }
+  } ]
+}

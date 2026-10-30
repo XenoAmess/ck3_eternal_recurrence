@@ -1,0 +1,42 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "native_index": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\NATIVE-PACKETS-AND-COHORT.json",
+  "native_index_sha256": "5cd84355007abe3492e6cf37b38503eb5a271cc0f46a4d8ae16a1e2347e30ab9",
+  "aggregation": "Three complete actual Native serializer responses joined without field edits",
+  "software_fixture_checks": 46,
+  "native_runtime_installer_executed": false,
+  "Game_calls": 0,
+  "outcome_scope": "Selected notification inputs only; all five enqueue/render/material/native-end-cause/native-terminal flags false",
+  "packets": [
+    {
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\wire\\current4-reason-dead-command-result.json",
+      "bytes": 1624,
+      "sha256": "3a9f0e3eeb32c4ed1ce26cb3e7e9a3fcfde2ec4eefb3b9f37b10e9e0e9795838",
+      "request_id": "fixture-current4-reason-dead",
+      "native_revision": 7101,
+      "date_raw": 53289936,
+      "sequence": 1,
+      "all_five_outcomes_false": true
+    },
+    {
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\wire\\current4-reason-war-command-result.json",
+      "bytes": 1632,
+      "sha256": "f59ae807b0d0b2e1997dfa90b0b1856d6ab5f1c049c5309f536d2b67bb95891f",
+      "request_id": "fixture-current4-reason-war",
+      "native_revision": 7102,
+      "date_raw": 53289936,
+      "sequence": 2,
+      "all_five_outcomes_false": true
+    },
+    {
+      "path": "D:\\ck3-state\\resume90-m6-native\\event-domain\\alternative-terminal-source\\invalidation80-reuse\\wire\\current4-reason-range-command-result.json",
+      "bytes": 1642,
+      "sha256": "dc28e9f39b35616fc7a21d3d43510b9748bcf08a01c0f695098be42a468a6bb2",
+      "request_id": "fixture-current4-reason-range",
+      "native_revision": 7103,
+      "date_raw": 53289936,
+      "sequence": 3,
+      "all_five_outcomes_false": true
+    }
+  ]
+}
