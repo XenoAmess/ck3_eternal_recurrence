@@ -92,8 +92,6 @@ public final class ArmyWindowAttempts {
         }
         private Optional<Attempt> current(Complete actual,ArmyWindowCodec.Kind kind)throws IOException{
             Attempt value=attempts.get(kind);if(value==null||!value.same(actual))return Optional.empty();if(unavailable.containsKey(kind))throw new IOException(unavailable.get(kind));
-            NativeRequest original=archive.loadRequest(value.preparedRequest);require(original.step().equals(value.operation().value()),"archived window prepared request differs");
-            if(value.originalOutcome.isPresent()){var outcome=archive.load(value.originalOutcome.orElseThrow());require(outcome.requestId().equals(value.requestId),"archived window outcome crossed request identity");}
             return Optional.of(value);
         }
     }
