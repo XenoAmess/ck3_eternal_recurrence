@@ -386,4 +386,12 @@ Root实际49模型HTTP输入277,920B开始时只余约9.7s，03:07:57.854有效W
 
 实际唯一调用使用`D:/ck3-state/canonical-witness76/ROOT-PREPARED-REQUEST.json`，03:18:57.952–03:19:03.741Z HTTP200/stop、CLI0，2,224输入/962输出，headers0.521s/TTFT0.524s/总5.789s，cache未报、无retry、metrics known。`model-coordinator64/game-canonical-witness76`实际出站REQUEST/CONTENT/RESULT/SSE即交Root；Root包随后若再更新，冻结body保持原样，不补调用。原稿仅CanonicalRead整class before/after，保了fast单目标loadRead与receipt等值，但漏唯一构造call同步、裸Known等imports待核、未显式保noUNKNOWN/active/Complete，fallback又在冻结回调内调用完整冻结证明，存在nestedfreeze风险。中央即时提醒，不编坏稿、不授采用、未写源码/TEST或自动R2；57保真实调用及准备错误边界，实际采用由Root另验。
 
+Root后续实际用该class hunk，补唯一构造same/known/same.head与explicitComplete/noUNKNOWN状态守卫。生产strict0/2.249s、TESTstrict0/2.257s，原existing consumer两方法2P/0skip/31.451s，含PUBLIC_ROOT canonical、改code元数据仍可用、改originalReceipt DATA实际IOException且保NativeOutcomeArchive.readArtifact错误。单叶S/Z STOP03:21:30.897Z，DEV66/reload02 HTTP200/3.803s；均来源Root验收消息，不为此另开模型或测试。模型class加owner必要守卫/构造同步分列，实际Game动作仍无信用。
+
+### DEADLINE77初始readiness期限泄漏planning
+
+Root实际50得到模型SELECT/ACCEPT后原request只余5s，caller readiness deadline expired在任何Native query前拦住，canonical无pending、0动作/next51。Root直接备34,713B固定三消息请求，含Controller.available/SessionPorts/Collector的精确观察链，要求区分初始Native IO readiness60s与实际wholebatch300s planning scope，不改配置、sameM7实际request/accepted原包或UNKNOWN。中央本次无提取器/搜索/二次打包，直接唯一POST。
+
+03:51:40.713–03:52:06.261Z HTTP200/stop、CLI0，7,676输入/4,377输出，headers1.559s/TTFT1.566s/总25.547s，cache未报、无retry、metrics known。`model-coordinator64/game-readiness-planning-deadline77`原件自然返回即交Root。JSON完整10hunks/3classes，但Controller把long untilNanos传给新增Instant参数；observeBorrowed仍选旧三参capture，未把planningDeadline传入scope链；capturePhysical/qualifyPhysical改签名漏旧调用兼容；接口default又把planning期限传旧observe，初始IO cap语义有风险。中央静审已即时提醒，未编坏稿/写源/TEST或自动R2，不授200为期限故障已修。58保调用与既有76采用消息，coding0，Root实际集成另验。
+
 HEAD70实际采用候选后继：云端owner遭服务容量错误后，Root接管唯一D Writer叶，采用模型前两hunk主体；补充仅COMMITTED成功保readback，其它disposition仍清，direct duplicate入口先清缓存，保原recovery/失败行为。未采用模型NO_CHANGE缓存actual或扩大duplicate缓存优化。最终生产c312ccb1…，单源Java21/all,-path编译0/1.772s，保旧try资源warning，未宣称Werror；新TEST68efdda7…严格Werror编译0/1.458s。实际原存储write callback返回边界取当前Head，旧源1F/3.076s精确检出commit finally清缓存；最终1P/0skip/3.974s，三次真实物理commit、下一Head替换/原历史proof、实际storage return Error后丢缓存/查询已有durable结果不重提、等byte新FileID事件替换被拒均通过。首runner selector含slash导致双方exit2/0tests，只算参数错误，修后才上述R/G；全四hunk原稿未直接编测，不制造raw模型失败。`D:/ck3-state/writer-session-head70/READY01.json`已01:40:04Z直交运行岗，不等文档/来源签发/whole测试；真实Game性能与动作/日期效果仍待采用和业务重载实测。本段machine_id沿本文件本机标注，不授另一机器信用。

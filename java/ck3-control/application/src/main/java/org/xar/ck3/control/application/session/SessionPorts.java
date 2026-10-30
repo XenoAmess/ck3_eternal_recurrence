@@ -175,6 +175,10 @@ public final class SessionPorts {
     @FunctionalInterface public interface ObservationPort {
         /** Real complete observation assembler; no Python planner or fallback. */
         Observation observe(SessionIdentity expected, Instant deadline) throws IOException, InterruptedException;
+        /** Readiness wait bounds initial native acquisition; planning deadline bounds request publication. */
+        default Observation observe(SessionIdentity expected, Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
+            return observe(expected, readinessDeadline);
+        }
         /** Default deny. Only this installed Root observation source may reopen its private canonical operator execution. */
         default SemanticEvidence requireOperatorRebound(SessionIdentity expected,ActionReceipt actual,Instant deadline)throws IOException,InterruptedException {
             Objects.requireNonNull(expected);Objects.requireNonNull(actual);Objects.requireNonNull(deadline);

@@ -899,9 +899,10 @@ public final class SessionController {
                     throw new End(Terminal.READINESS_TIMEOUT, waitingReason);
                 }
                 Instant until = began.utc().plusNanos(readyUntil - began.elapsedNanos());
-                Observation result = measured(Phase.OBSERVATION, () -> observations.observe(identity, until));
+                Instant planningUntil = deadline();
+                Observation result = measured(Phase.OBSERVATION, () -> observations.observe(identity, until, planningUntil));
                 if (result instanceof Ready ready) {
-                    identity.require(ready.request()); StrictJson.require(!ready.request().deadline().isAfter(until), "observation extended caller deadline");
+                    identity.require(ready.request()); StrictJson.require(!ready.request().deadline().isAfter(planningUntil), "observation extended batch planning deadline");
                     ready.offlineAnalysis().ifPresent(batch -> {
                         StrictJson.require(captured.size() < 32 || captured.containsKey(batch.batchId()), "bounded captured analysis work per batch");
                         BatchRequest previous = captured.get(batch.batchId());

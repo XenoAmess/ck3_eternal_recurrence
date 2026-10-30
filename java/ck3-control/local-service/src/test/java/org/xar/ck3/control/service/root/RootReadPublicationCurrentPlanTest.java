@@ -146,7 +146,17 @@ final class RootReadPublicationCurrentPlanTest {
                 public ActionReceipt reconcile(String id){throw new AssertionError("UNKNOWN must not replay/reconcile automatically");}
             };
             var controller=new SessionController(owner,(actual,until)->new GameLifecycle.Running(owner.game(),source.get()),
-                    (actual,until)->fixture.collector.observe(held.get(),actual,until),planner,coordinator,checkpoint,
+                    new ObservationPort() {
+                        public Observation observe(SessionIdentity actual,Instant until)throws IOException,InterruptedException {
+                            return fixture.collector.observe(held.get(),actual,until);
+                        }
+                        public Observation observe(SessionIdentity actual,Instant readinessUntil,Instant planningUntil)throws IOException,InterruptedException {
+                            assertTrue(readinessUntil.isBefore(planningUntil),"readiness acquisition and full planning budgets differ");
+                            Observation result=fixture.collector.observe(held.get(),actual,readinessUntil,planningUntil);
+                            if(result instanceof Ready ready)assertEquals(planningUntil,ready.request().deadline(),"publish the actual full planning deadline through the same Native producer");
+                            return result;
+                        }
+                    },planner,coordinator,checkpoint,
                     new CheckpointRequestFactory(directory.resolve("unused.ck3"),save),batches,work->{throw new AssertionError("no incident");},
                     new SessionClock.SystemClock(),Optional.empty(),0,completion,(actual,receipt,until)->{throw new AssertionError("no episode");});
             controller.bindRetainedIncidents(List::of);controller.bindRestartDriver(fixture.driverAuthority());

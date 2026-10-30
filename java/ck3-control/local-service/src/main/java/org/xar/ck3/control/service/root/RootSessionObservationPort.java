@@ -65,14 +65,17 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
         });
     }
     @Override public SessionPorts.Observation observe(SessionPorts.SessionIdentity expected,Instant deadline) throws IOException,InterruptedException {
-        return core.withBorrowed(()->observeBorrowed(core.activeBorrowedSession(),expected,deadline));
+        return observe(expected,deadline,deadline);
     }
-    private SessionPorts.Observation observeBorrowed(ContinuityStorePort.Session same,SessionPorts.SessionIdentity expected,Instant deadline) throws IOException,InterruptedException {
+    @Override public SessionPorts.Observation observe(SessionPorts.SessionIdentity expected,Instant readinessDeadline,Instant planningDeadline) throws IOException,InterruptedException {
+        return core.withBorrowed(()->observeBorrowed(core.activeBorrowedSession(),expected,readinessDeadline,planningDeadline));
+    }
+    private SessionPorts.Observation observeBorrowed(ContinuityStorePort.Session same,SessionPorts.SessionIdentity expected,Instant deadline,Instant planningDeadline) throws IOException,InterruptedException {
         writer.requireSession(same);
         StrictJson.require(ordinary.identity().equals(expected),"session observer crossed its actual physical owner");
         var pending=lifecycleRuntime.pending(same,expected);
         if(pending.isPresent())return pending.orElseThrow();
-        SessionPorts.Observation observed=ordinary.observe(same,expected,deadline);
+        SessionPorts.Observation observed=ordinary.observe(same,expected,deadline,planningDeadline);
         if(observed instanceof SessionPorts.TerminalReady)return observed;
         boolean terminalReady=observed instanceof SessionPorts.Ready ready
                 &&ready.checkpointEligibility()==SessionPorts.CheckpointEligibility.TERMINAL_PENDING;

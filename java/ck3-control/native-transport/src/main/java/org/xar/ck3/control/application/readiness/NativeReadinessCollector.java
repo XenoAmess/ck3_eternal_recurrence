@@ -436,19 +436,29 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
 
     @Override public SessionPorts.Observation observe(SessionIdentity expected, Instant deadline) throws IOException, InterruptedException {
         require(identity.equals(expected), "collector belongs to another owned session");
-        try { return store.locked(borrowed -> observeBorrowed(borrowed, expected, deadline)); }
+        try { return store.locked(borrowed -> observeBorrowed(borrowed, expected, deadline, deadline)); }
         catch (InterruptedIOException interrupted) { throw interrupted(interrupted); }
     }
     /** Borrows the caller's still-active original writer. The returned observation has left the frozen Driver scope. */
     public SessionPorts.Observation observe(ContinuityStorePort.Session borrowed, SessionIdentity expected,
             Instant deadline) throws IOException, InterruptedException {
-        try { return observeBorrowed(borrowed, expected, deadline); }
+        try { return observeBorrowed(borrowed, expected, deadline, deadline); }
+        catch (InterruptedIOException interrupted) { throw interrupted(interrupted); }
+    }
+    public SessionPorts.Observation observe(ContinuityStorePort.Session borrowed, SessionIdentity expected,
+            Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
+        try { return observeBorrowed(borrowed, expected, readinessDeadline, planningDeadline); }
+        catch (InterruptedIOException interrupted) { throw interrupted(interrupted); }
+    }
+    @Override public SessionPorts.Observation observe(SessionIdentity expected, Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
+        require(identity.equals(expected), "collector belongs to another owned session");
+        try { return store.locked(borrowed -> observeBorrowed(borrowed, expected, readinessDeadline, planningDeadline)); }
         catch (InterruptedIOException interrupted) { throw interrupted(interrupted); }
     }
     /** The two public entries share this one actual producer; it never opens another writer lock. */
     private SessionPorts.Observation observeBorrowed(ContinuityStorePort.Session borrowed, SessionIdentity expected,
-            Instant deadline) throws IOException {
-        Objects.requireNonNull(borrowed); Objects.requireNonNull(expected); Objects.requireNonNull(deadline);
+            Instant readinessDeadline, Instant planningDeadline) throws IOException {
+        Objects.requireNonNull(borrowed); Objects.requireNonNull(expected); Objects.requireNonNull(readinessDeadline); Objects.requireNonNull(planningDeadline);
         require(identity.equals(expected), "collector belongs to another owned session");
         ObservationSessionAuthority actualWriter = observationSession;
         require(actualWriter != null, "actual original writer observation authority is not installed");
@@ -461,10 +471,10 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
                     "planning round already holds its original Ready observation");
             if (round != null && round.retainedPacket != null) {
                 var original = round.retainedPacket; round.retainedPacket = null;
-                return rejoinRetained(borrowed, original, deadline, round);
+                return rejoinRetained(borrowed, original, planningDeadline, round);
             }
-            return capture(borrowed, deadline, captured -> inPlanningScope(borrowed, captured, sameCapture -> {
-                SessionPorts.Observation result = createObservation(borrowed, sameCapture, deadline);
+            return capture(borrowed, readinessDeadline, planningDeadline, captured -> inPlanningScope(borrowed, captured, sameCapture -> {
+                SessionPorts.Observation result = createObservation(borrowed, sameCapture, planningDeadline);
                 if (round != null && result instanceof SessionPorts.Ready) round.captured = sameCapture;
                 return result;
             }));
@@ -1216,11 +1226,14 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     }
 
     private <T> T capture(ContinuityStorePort.Session borrowed, Instant deadline, CaptureWork<T> work) throws IOException {
-        try { return captureActual(borrowed, deadline, work); }
+        return capture(borrowed, deadline, deadline, work);
+    }
+    private <T> T capture(ContinuityStorePort.Session borrowed, Instant ioDeadline, Instant scopeDeadline, CaptureWork<T> work) throws IOException {
+        try { return captureActual(borrowed, ioDeadline, scopeDeadline, work); }
         catch (IOException | RuntimeException failure) { gate.reset(); throw failure; }
     }
-    private <T> T captureActual(ContinuityStorePort.Session borrowed, Instant deadline, CaptureWork<T> work) throws IOException {
-        return capturePhysical(borrowed, deadline, CaptureMode.ORDINARY, physical -> fromPhysical(borrowed, deadline, physical, work));
+    private <T> T captureActual(ContinuityStorePort.Session borrowed, Instant ioDeadline, Instant scopeDeadline, CaptureWork<T> work) throws IOException {
+        return capturePhysical(borrowed, ioDeadline, scopeDeadline, CaptureMode.ORDINARY, physical -> fromPhysical(borrowed, scopeDeadline, physical, work));
     }
     private <T> T fromPhysical(ContinuityStorePort.Session borrowed, Instant deadline, PhysicalCapture physical,
             CaptureWork<T> work) throws IOException {
@@ -1243,7 +1256,11 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     }
     private <T> T capturePhysical(ContinuityStorePort.Session borrowed, Instant deadline, CaptureMode mode,
             PhysicalWork<T> work) throws IOException {
-        Objects.requireNonNull(borrowed); Objects.requireNonNull(deadline); Objects.requireNonNull(work);
+        return capturePhysical(borrowed,deadline,deadline,mode,work);
+    }
+    private <T> T capturePhysical(ContinuityStorePort.Session borrowed, Instant ioDeadline, Instant scopeDeadline, CaptureMode mode,
+            PhysicalWork<T> work) throws IOException {
+        Objects.requireNonNull(borrowed); Objects.requireNonNull(ioDeadline); Objects.requireNonNull(scopeDeadline); Objects.requireNonNull(work);
         ObservationSessionAuthority actualWriter = observationSession;
         require(actualWriter != null, "actual original writer observation authority is not installed");
         actualWriter.require(borrowed);
@@ -1252,10 +1269,10 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
                 "first-checkpoint physical admission cannot recursively capture another observation");
         require(planningReadScope.get() == null && heldReadScope.get() == null && publicPlanningScope.get() == null,
                 "a frozen read observation cannot capture another native sample");
-        require(clock.instant().isBefore(deadline), "actual readiness deadline expired");
+        require(clock.instant().isBefore(ioDeadline), "actual readiness deadline expired");
         String lockedHead = borrowed.head().digest();
         org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame actual;
-        try { actual = transport.observe(deadline, validity); }
+        try { actual = transport.observe(ioDeadline, validity); }
         catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt(); InterruptedIOException failure = new InterruptedIOException("native readiness interrupted"); failure.initCause(interrupted); throw failure;
         } catch (UncheckedIOException failure) { throw org.xar.ck3.control.application.planning.PlanningReadFailure.physical(failure); }
@@ -1265,7 +1282,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         DriverStateAssembler.ObservationWork<T> join = frozen -> {
             if (mode == CaptureMode.ORDINARY)
                 require(frozen.projection() instanceof DriverStateSnapshot.Complete, "complete canonical history/Driver is not available; unresolved actions cannot become ready");
-            return qualifyPhysical(borrowed, deadline, lockedHead, actual, frozen.state(), frozen.facts(), original, work);
+            return qualifyPhysical(borrowed, ioDeadline, scopeDeadline, lockedHead, actual, frozen.state(), frozen.facts(), original, work);
         };
         return mode == CaptureMode.FIRST_CHECKPOINT ? driver.withFrozenRawObservation(actual, borrowed, join)
                 : driver.withFrozenObservation(actual, borrowed, join);
@@ -1274,20 +1291,25 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     private <T> T qualifyPhysical(ContinuityStorePort.Session borrowed, Instant deadline, String lockedHead,
             org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame actual, Known known,
             DriverObservationFacts facts, ExactRef original, PhysicalWork<T> work) throws IOException {
+        return qualifyPhysical(borrowed,deadline,deadline,lockedHead,actual,known,facts,original,work);
+    }
+    private <T> T qualifyPhysical(ContinuityStorePort.Session borrowed, Instant ioDeadline, Instant scopeDeadline, String lockedHead,
+            org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame actual, Known known,
+            DriverObservationFacts facts, ExactRef original, PhysicalWork<T> work) throws IOException {
         require(known.stamp().driverVersion() == facts.driverVersion() && known.stamp().episodeEpoch() == facts.episodeEpoch()
                 && Arrays.equals(known.driver().encode(), facts.driver().encode()), "physical originals crossed the actual frozen full Driver version");
         DriverObservationAssembler.Result assembled = assembler.assemble(actual, facts, original);
         require(assembled instanceof Complete, "actual native/Driver observation join is incomplete: " + assembled);
         Complete frame = (Complete) assembled;
         Instant now = clock.instant();
-        require(now.isBefore(deadline) && !frame.observedAt().isAfter(now) && !frame.observedAt().isAfter(deadline), "actual native observation freshness/deadline failed: observed_at=" + frame.observedAt() + ", checked_at=" + now + ", deadline=" + deadline);
-        GameLifecycle.Observation observed = lifecycle.inspect(identity.game(), deadline);
+        require(now.isBefore(ioDeadline) && !frame.observedAt().isAfter(now) && !frame.observedAt().isAfter(ioDeadline), "actual native observation freshness/deadline failed: observed_at=" + frame.observedAt() + ", checked_at=" + now + ", deadline=" + ioDeadline);
+        GameLifecycle.Observation observed = lifecycle.inspect(identity.game(), ioDeadline);
         require(observed instanceof GameLifecycle.Running, "actual Game is not independently measured Running");
         NativeGameTransport.TransportDiagnostics diagnostics = transport.diagnostics();
         RootNativeCapabilities.Projection received = RootNativeCapabilities.project(frame, known, diagnostics,
-                (GameLifecycle.Running) observed, now, deadline, validity);
+                (GameLifecycle.Running) observed, now, ioDeadline, validity);
         SourceQualification qualified = Objects.requireNonNull(sourceAuthority.verify(borrowed, identity, frame,
-                known, diagnostics, (GameLifecycle.Running) observed, deadline), "actual source authority returned no qualification");
+                known, diagnostics, (GameLifecycle.Running) observed, ioDeadline), "actual source authority returned no qualification");
         qualified.assertCurrent(borrowed);
         Optional<Pin> sourceProof = sourcePin(borrowed,qualified);
         Instant sourceCheckedAt = clock.instant();
@@ -1302,16 +1324,16 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         ExactRef hello = preserve(borrowed, ReadinessArchive.Role.HELLO, diagnostics.originalHello().orElseThrow().original().packet().value());
         ExactRef heartbeat = preserve(borrowed, ReadinessArchive.Role.HEARTBEAT, diagnostics.latestHeartbeat().orElseThrow().original().packet().value());
         // The unchanged packet remains inside this writer callback; cache age is not its operation budget.
-        Instant validUntil = deadline;
+        Instant validUntil = scopeDeadline;
         require(lockedHead.equals(borrowed.head().digest()), "writer changed before readiness publication");
         Instant checkedAt = clock.instant();
-        require(checkedAt.isBefore(validUntil) && checkedAt.isBefore(deadline), "readiness/source verification exhausted its actual freshness window: observed_at=" + frame.observedAt() + ", joined_at=" + now + ", source_done=" + sourceCheckedAt + ", originals_preserved_at=" + originalsPreservedAt + ", semantic_verified_at=" + semanticVerifiedAt + ", checked_at=" + checkedAt + ", valid_until=" + validUntil + ", deadline=" + deadline + ", qualified.proof().isPresent()=" + qualified.proof().isPresent());
+        require(checkedAt.isBefore(validUntil) && checkedAt.isBefore(scopeDeadline), "readiness/source verification exhausted its actual freshness window: observed_at=" + frame.observedAt() + ", joined_at=" + now + ", source_done=" + sourceCheckedAt + ", originals_preserved_at=" + originalsPreservedAt + ", semantic_verified_at=" + semanticVerifiedAt + ", checked_at=" + checkedAt + ", valid_until=" + validUntil + ", deadline=" + scopeDeadline + ", qualified.proof().isPresent()=" + qualified.proof().isPresent());
         qualified.assertCurrent(borrowed); verifyOptionalPin(borrowed,sourceProof);
         T result = work.run(new PhysicalCapture(frame, known, received, evidence, hello, heartbeat, qualified, sourceProof,
-                lockedHead, deadline, validUntil, actual));
+                lockedHead, scopeDeadline, validUntil, actual));
         qualified.assertCurrent(borrowed); verifyOptionalPin(borrowed,sourceProof);
         Instant publishedAt = clock.instant();
-        require(publishedAt.isBefore(validUntil) && publishedAt.isBefore(deadline), "readiness publication crossed its actual freshness/deadline: observed_at=" + frame.observedAt() + ", joined_at=" + now + ", source_done=" + sourceCheckedAt + ", originals_preserved_at=" + originalsPreservedAt + ", semantic_verified_at=" + semanticVerifiedAt + ", checked_at=" + publishedAt + ", valid_until=" + validUntil + ", deadline=" + deadline + ", qualified.proof().isPresent()=" + qualified.proof().isPresent());
+        require(publishedAt.isBefore(validUntil) && publishedAt.isBefore(scopeDeadline), "readiness publication crossed its actual freshness/deadline: observed_at=" + frame.observedAt() + ", joined_at=" + now + ", source_done=" + sourceCheckedAt + ", originals_preserved_at=" + originalsPreservedAt + ", semantic_verified_at=" + semanticVerifiedAt + ", checked_at=" + publishedAt + ", valid_until=" + validUntil + ", deadline=" + scopeDeadline + ", qualified.proof().isPresent()=" + qualified.proof().isPresent());
         require(lockedHead.equals(borrowed.head().digest()), "writer changed inside observation-only readiness scope");
         return result;
     }
