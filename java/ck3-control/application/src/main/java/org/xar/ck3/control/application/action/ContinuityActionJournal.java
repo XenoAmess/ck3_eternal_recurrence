@@ -76,7 +76,7 @@ public final class ContinuityActionJournal implements ActionJournal {
                     ObjectNode details = StrictJson.object(); details.put("evidence_id", command.actionId() + ":" + candidate.sequence());
                     details.set("source", ProposalLifecycleCodec.source(command.source()));
                     details.set("receipt_ref", recordRef.toJson());
-                    List<org.xar.ck3.control.contracts.ExactRef> evidence = new ArrayList<>(); evidence.add(command.source().sourceRef());
+                    List<org.xar.ck3.control.contracts.ExactRef> evidence = new ArrayList<>();
                     evidence.add(recordRef); evidence.add(receiptRef); record.previous().ifPresent(evidence::add);
                     if (next instanceof PhysicalActionState physical) evidence.addAll(PhysicalActionCodec.references(physical, archive));
                     ActionTransitions.attempt(next).ifPresent(attempt -> { evidence.add(attempt.guard().nativeEvidence()); evidence.add(attempt.guard().capabilityEvidence()); evidence.addAll(attempt.guard().supportingEvidence()); evidence.add(archive.requestReferenceOf(attempt.preparedRequest())); evidence.addAll(attempt.preparedRequest().preparationEvidence()); });

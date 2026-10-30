@@ -434,3 +434,10 @@ machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。Root 
 machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。独占 owner observation_deadline_test65 真唤完整当前 REQUEST01 后，仅一次 known-only fresh admission，未依据较早82 busy样本推定当前状态，也未重试82。GAME81-RECOVERY-PHASE2-DOMAIN01：05:20:19.918217900→05:20:36.849484600Z，HTTP200/stop/CLI0，headers3657ms、TTFT3660ms、total16931ms，23276输入/1351输出，cache未报，attempt1/0retry。原件 CONTENT/RESULT/SSE/REQUEST 位于 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-recovery-phase2-domain81，终态立即交 owner+Root。
 
 完整JSON只含1个Journal hunk，冻结源码 old exact数为 1，插入phase2 DomainBodies.IMPORT_KIND 分支而不发布/重放；既有共同ancestry/业务字段与UNKNOWN边界须owner实际核验。Opening接续仅分析，混合action.empty/AWAIT_RECEIPT/new actionId/Unchanged，不能作为已实现、合法重发或丢弃旧prepared的许可。未做raw javac/TEST，未授源码或行为采用；OWNER-REVIEWS64-63.json保独立候选与原件耗时，当前coding0，不自动R2或后题。
+
+
+### RECOVERY81 Opening R2 真实返工与静审
+
+machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。owner 按Root完整闭Opening消费者要求给独立小包 OPENING-REQUEST02.json/max1800，中央直接一次fresh admission调用，未重放旧大包。GAME81-RECOVERY-OPENING02：05:24:30.794842100→05:24:37.352731400Z，HTTP200/stop/CLI0，headers799ms、TTFT802ms、total6557ms，4528输入/959输出，cache未报，attempt1/0retry。原始 CONTENT/RESULT/SSE/REQUEST 在 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-recovery-opening81-r2，返回即交 owner+Root。
+
+完整JSON两叶两hunk，冻结old匹配 1/1。静审首hunk仍先调用actualAction，canonical absent原throw发生在新增action.empty分支之前，实际门仍未修；第二hunk对canonical absent以旧command再发PENDING，没有实际新plan/frame消费。notes声称满足Gate/变AWAIT_SUBMIT不是行为证据，不授旧command重放或闭环。中央未编坏稿、未改source/TEST、未授采用，不自动R3。OWNER-REVIEWS64-64.json保存实际返工/静审缺口，coding0。

@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
+import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningGate;
 import org.xar.ck3.control.continuity.writer.DomainBodies;
@@ -34,7 +38,7 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                 Optional<ActionReceipt> action=actualAction(context,borrowed,document);
                 action.ifPresent(receipt->StrictJson.require(receipt.command().before().equals(document.observed())
                         && receipt.command().source().equals(document.source()),"opening ordinary consumer changed its original command"));
-                return new OpeningGate(document.observed().frame().episodeRunId(),document.observed().frame().identity().dateRaw(),document.stage(),action,document.checkpoint());
+                return openingGate(document,document.observed(),action);
             } catch(InterruptedException interrupted) {
                 Thread.currentThread().interrupt();throw new IllegalStateException("actual opening restoration check interrupted",interrupted);
             } catch(IOException unavailable) {throw new IllegalStateException("actual opening body unavailable",unavailable);}
@@ -59,7 +63,7 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                     && receipt.command().source().equals(document.source()),"opening pending receipt is not its exact original action/source");
             document.checkpoint().ifPresent(checkpoint->StrictJson.require(checkpoint.actionId().equals(receipt.command().actionId()),"opening checkpoint/action differs"));
         });
-        OpeningGate gate=new OpeningGate(actual.frame().episodeRunId(),document.observed().frame().identity().dateRaw(),document.stage(),action,document.checkpoint());
+        OpeningGate gate=openingGate(document,actual,action);
         StrictJson.require(head.equals(capture.session().persistedHead()),"opening input reads changed the writer head");
         return new RootPlanningInputsFactory.OpeningObservation(new RootPlanningInputsFactory.FieldSource(actual,capture.frame().source(),
                 capture.frame().sessionId(),originals.stream().distinct().toList()),gate);
@@ -93,12 +97,27 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
     }
     private static Optional<ActionReceipt> actualAction(RootRuntimeContext context,org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
             GovernanceOpeningDocument.Document document)throws IOException {
-        if(document.preparedCommand().isEmpty())return context.archive().inSession(same,archive->document.actionReceipt().map(archive::loadReceipt));
-        var command=context.archive().inSession(same,archive->org.xar.ck3.control.application.action.ActionCodec.decodeCommand(archive.loadMaterial(document.preparedCommand().orElseThrow()).bytes()));
-        var state=same.head().state();var canonical=context.archive().inSession(same,archive->org.xar.ck3.control.application.action.ContinuityActionJournal.lookup(state,command.actionId(),archive));
-        if(canonical.isEmpty())throw new IOException("opening prepared original has no canonical INTENT; no receipt or replay permission is fabricated");
+        return actualAction(context.archive().withSession(same),same.head().state(),document);
+    }
+    static Optional<ActionReceipt> actualAction(ActionPorts.OutcomeArchive archive,ContinuityState state,
+            GovernanceOpeningDocument.Document document)throws IOException {
+        if(document.preparedCommand().isEmpty())return document.actionReceipt().map(archive::loadReceipt);
+        var command=org.xar.ck3.control.application.action.ActionCodec.decodeCommand(archive.loadMaterial(document.preparedCommand().orElseThrow()).bytes());
+        var canonical=org.xar.ck3.control.application.action.ContinuityActionJournal.lookup(state,command.actionId(),archive);
+        if(canonical.isEmpty()) {
+            StrictJson.require(document.stage()==OpeningStage.AWAIT_RECEIPT&&document.actionReceipt().isEmpty()&&document.checkpoint().isEmpty(),
+                    "opening receipted/checkpointed original lost its canonical action");
+            return Optional.empty();
+        }
         org.xar.ck3.control.contracts.StrictJson.require(java.util.Arrays.equals(org.xar.ck3.control.application.action.ActionCodec.encodeCommand(command),
                 org.xar.ck3.control.application.action.ActionCodec.encodeCommand(canonical.orElseThrow().command())),"opening pending command crossed its canonical receipt");
         return canonical;
     }
+    static OpeningGate openingGate(GovernanceOpeningDocument.Document document,ObservationIdentity current,Optional<ActionReceipt> action) {
+        boolean preparedOnly=document.stage()==OpeningStage.AWAIT_RECEIPT&&document.preparedCommand().isPresent()
+                &&document.actionReceipt().isEmpty()&&document.checkpoint().isEmpty()&&action.isEmpty();
+        return new OpeningGate(current.frame().episodeRunId(),document.observed().frame().identity().dateRaw(),
+                preparedOnly?OpeningStage.AWAIT_SUBMIT:document.stage(),action,document.checkpoint());
+    }
+
 }

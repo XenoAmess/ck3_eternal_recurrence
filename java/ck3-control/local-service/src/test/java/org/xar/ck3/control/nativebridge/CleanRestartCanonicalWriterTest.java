@@ -449,7 +449,11 @@ final class CleanRestartCanonicalWriterTest {
         var initialFrame=new ActionWriterIntegrationFixture.SoftwareActionScenario(new OperationKey("pause-map"),"game.command.pause-map",
                 (command,attempt,dispatch)->new ActionPorts.Pending("original software ACK remains unresolved",List.of(attempt.guard().nativeEvidence())),
                 ()->{},Optional.empty(),Optional.empty(),true,Optional.empty());
-        try(var fixture=new ActionWriterIntegrationFixture(root.resolve("actual-read-suffix"),false,scenario,List.of(initialFrame),Duration.ofSeconds(60))) {
+        String domainSchema="xar.actual-phase2-domain/v1";
+        byte[] domainOriginal=ContinuityJson.canonical(StrictJson.object().put("schema",domainSchema).put("prepared_only",true));
+        try(var fixture=new ActionWriterIntegrationFixture(root.resolve("actual-read-suffix"),false,scenario,List.of(initialFrame),List.of(),source->List.of(
+                new org.xar.ck3.control.continuity.writer.DomainBodies.Registration(org.xar.ck3.control.continuity.writer.DomainBodies.Slot.FACTION,domainSchema,65536,List.of(source),
+                        (head,previous,request,raw)->{assertTrue(previous.isEmpty());assertArrayEquals(domainOriginal,raw);assertArrayEquals(domainOriginal,request.producerInput());return ActionCodec.sha256(raw);})) )) {
             var input=inputs(fixture);var contract=installed.get();
             var publisher=new DriverReadHistoryPublisher(fixture.driverAuthority(),fixture.archive,fixture.reads.catalog(),List.of(contract.sourceRef()));
             fixture.bindAdditionalTransitionAuthority(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_READ_HISTORY_KIND,publisher);
@@ -482,9 +486,21 @@ final class CleanRestartCanonicalWriterTest {
                 }
                 return null;
             });
+            var domainRef=fixture.writer.locked(same->{
+                var body=fixture.archive.withSession(same).preserveMaterial(new RawJson(domainOriginal));
+                var imported=new org.xar.ck3.control.continuity.writer.DomainBodies.ImportRequest(org.xar.ck3.control.continuity.writer.DomainBodies.Slot.FACTION,domainSchema,body,domainOriginal,
+                        List.of(input.observed().source().sourceRef()),"actual-phase2-pending");
+                var prepared=same.previewImport(imported);var committed=same.commitImport(prepared);same.requireCommitted(prepared,committed);return body;
+            });
             input.batches().commit(new JournalInput(owner,"read-worker-0",JournalKind.BATCH_INTERRUPTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
             int readWrites=fixture.scenarioReadWrites();
+            String beforeRecovery=fixture.writer.locked(same->same.head().digest());
             var recovered=fixture.writer.locked(same->input.batches().admitInitialNoDispatchRecovery(same,owner));
+            fixture.writer.locked(same->{
+                assertEquals(beforeRecovery,same.head().digest());
+                var domain=assertInstanceOf(org.xar.ck3.control.continuity.writer.DomainBodies.Available.class,same.readDomain(org.xar.ck3.control.continuity.writer.DomainBodies.Slot.FACTION));
+                assertEquals(domainRef,domain.reference().payload());assertArrayEquals(domainOriginal,domain.canonicalBody());return null;
+            });
             var retained=recovered.retainedFacts().orElseThrow();
             var latest=fixture.writer.locked(same->fixture.driverAuthority().withFrozenFacts(same,frozen->(DriverSnapshotFacts.Known)frozen.state()));
             assertArrayEquals(latest.driver().encode(),retained.driver().encode());assertEquals(latest.stamp(),retained.stamp());

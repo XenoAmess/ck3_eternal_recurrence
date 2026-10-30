@@ -54,7 +54,10 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
             if(document.stage()==OpeningStage.COMPLETE)return new Unchanged("opening complete at its actual published frontier");GovernanceOpeningDocument.requireSameEpisode(document,request.before(),request.source());
             if(document.preparedCommand().isPresent()){
                 var command=command(same,document.preparedCommand().orElseThrow());var retained=canonical(same,command.actionId());
-                if(retained.isEmpty()||!retained.orElseThrow().settled())return new Unchanged("opening exact original pending/UNKNOWN preserved");var actual=retained.orElseThrow();var original=receiptRef(same,actual);
+                if(retained.isEmpty()) {
+                    requireExisting(document,retained);
+                } else {
+                if(!retained.orElseThrow().settled())return new Unchanged("opening exact original pending/UNKNOWN preserved");var actual=retained.orElseThrow();var original=receiptRef(same,actual);
                 if(document.actionReceipt().isEmpty()||!document.actionReceipt().orElseThrow().equals(original)){var payload=StrictJson.object();payload.set("receipt",original.toJson());return planning(same,Kind.RECEIPT,before,payload);}
                 if(actual.outcome()!=ActionReceipt.Outcome.APPLIED_CONFIRMED)return new Unchanged("opening confirmed rejection retained without completion credit");
                 if(document.checkpoint().isEmpty()){
@@ -81,6 +84,7 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
                     return planning(same,Kind.CHECKPOINT,before,checkpointPayload(same,request,pair,actual));
                 }
                 return planning(same,Kind.CONSUME,before,current(same,request));
+                }
             }
             if(planned.trace().finalPlan().isEmpty())return new Unchanged("opening has no actual existing-focus producer plan");
             var intent=planned.trace().finalPlan().orElseThrow().detail().get("opening_required_gate_intent");
@@ -124,18 +128,18 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         StrictJson.require(Arrays.equals(expected,body),"actual opening reducer differs from proposed body");return ActionCodec.sha256(StrictJson.canonical(StrictJson.object().put("head",head.digest()).put("body",ActionCodec.sha256(body)).put("input",ActionCodec.sha256(request.producerInput()))));}
     private byte[] reduce(ContinuityStorePort.Session same,WriterContracts.Head head,DomainBodies.BodyRef previous,Input input)throws IOException{
         requireRetainedPrevious(head,previous,input.previous());
-        var old=GovernanceOpeningDocument.decode(readBody(same,previous.payload()));var payload=StrictJson.parse(load(same,input.original()));var refs=new ArrayList<>(old.originals());refs.add(input.original());
-        if(input.kind()==Kind.PENDING){StrictJson.object(payload,Set.of("command"));var original=ExactRef.fromJson(payload.get("command"));var command=command(same,original);GovernanceOpeningDocument.requireSameEpisode(old,command.before(),command.source());
-            StrictJson.require(command.operation().equals(GovernancePolicies.FOCUS)&&command.origin() instanceof CommandOrigin.Gameplay&&old.stage()!=OpeningStage.COMPLETE
-                    &&(old.preparedCommand().isEmpty()||old.preparedCommand().orElseThrow().equals(original)),"opening pending cannot overwrite another original or completed gate");refs.add(original);
-            return encode(old,command.before(),OpeningStage.AWAIT_RECEIPT,Optional.empty(),Optional.empty(),refs,Optional.of(original),Optional.empty());}
+        var old=GovernanceOpeningDocument.decode(readBody(same,previous.payload()));var payload=StrictJson.parse(load(same,input.original()));var refs=new ArrayList<>(old.originals());old.preparedCommand().ifPresent(refs::add);refs.add(input.original());
+        if(input.kind()==Kind.PENDING){StrictJson.object(payload,Set.of("command"));var original=ExactRef.fromJson(payload.get("command"));var command=command(same,original);
+            Optional<ActionReceipt> previousCanonical=Optional.empty();
+            if(old.preparedCommand().isPresent())previousCanonical=canonical(same,command(same,old.preparedCommand().orElseThrow()).actionId());
+            return pending(old,command,original,refs,previousCanonical,canonical(same,command.actionId()));}
         if(input.kind()==Kind.RECEIPT){StrictJson.object(payload,Set.of("receipt"));var original=ExactRef.fromJson(payload.get("receipt"));var actual=receipt(same,original);validate(same,actual);
             var command=command(same,old.preparedCommand().orElseThrow(()->new IOException("opening result has no original prepared command")));StrictJson.require(Arrays.equals(ActionCodec.encodeCommand(command),ActionCodec.encodeCommand(actual.command()))&&actual.settled(),"opening result differs from original command or remains UNKNOWN");refs.add(original);
             return encode(old,old.observed(),actual.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED?OpeningStage.AWAIT_CONSUMPTION:OpeningStage.AWAIT_RECEIPT,Optional.of(original),Optional.empty(),refs,old.preparedCommand(),old.existingObserved());}
         PlanningRequest current=PlanningWire.decodeRequest(load(same,ExactRef.fromJson(payload.get("request"))));SemanticEvidence proof=semantic(payload.get("semantic"));
         GovernanceOpeningDocument.requireSameEpisode(old,current.before(),current.source());StrictJson.require(proof.frame().equals(current.before()),"opening formal request differs from actual semantic frame");
         context.semanticVerifier().verify(same,new SessionIdentity(current.before().machineId(),current.before().game(),current.sessionId()),proof);refs.addAll(proof.references());refs.add(ExactRef.fromJson(payload.get("request")));
-        if(input.kind()==Kind.EXISTING){StrictJson.object(payload,Set.of("request","semantic","query"));StrictJson.require(old.preparedCommand().isEmpty()&&old.actionReceipt().isEmpty(),"submitted opening action precedes observing existing focus");
+        if(input.kind()==Kind.EXISTING){StrictJson.object(payload,Set.of("request","semantic","query"));requireExisting(old,old.preparedCommand().isPresent()?canonical(same,command(same,old.preparedCommand().orElseThrow()).actionId()):Optional.empty());
             var read=context.archive().inSession(same,archive->archive.loadRead(ExactRef.fromJson(payload.get("query"))));StrictJson.require(read.request().before().equals(current.before())&&read.request().source().equals(current.source()),"existing focus read crossed its actual frame/source");
             var query=Objects.requireNonNull(nativeGovernance,"actual LIFE replay missing").planningReads().formal().decode(read);StrictJson.require(GovernancePolicies.existingFocus(query),"actual LIFE read has no qualified existing focus/progress");refs.add(ExactRef.fromJson(payload.get("query")));
             boolean following=old.existingObserved().isPresent()&&!old.existingObserved().orElseThrow().frame().snapshotId().equals(current.before().frame().snapshotId());
@@ -164,6 +168,21 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
             return encode(old,old.observed(),consumed?OpeningStage.COMPLETE:OpeningStage.AWAIT_CONSUMPTION,old.actionReceipt(),Optional.of(fact),refs,old.preparedCommand(),old.existingObserved());}
         StrictJson.object(payload,Set.of("request","semantic"));StrictJson.require(input.kind()==Kind.CONSUME&&old.checkpoint().isPresent()&&GovernanceReceipts.consume(focus,current,old.checkpoint(),true).status()==GovernanceReceipts.Status.CONSUMED,"opening has not reached actual following-turn action/checkpoint consumption");
         return encode(old,old.observed(),OpeningStage.COMPLETE,old.actionReceipt(),old.checkpoint(),refs,old.preparedCommand(),old.existingObserved());}
+    static void requireExisting(GovernanceOpeningDocument.Document document,Optional<ActionReceipt> canonical) {
+        StrictJson.require(document.actionReceipt().isEmpty()&&document.checkpoint().isEmpty()
+                &&(document.preparedCommand().isEmpty()||document.stage()==OpeningStage.AWAIT_RECEIPT&&canonical.isEmpty()),
+                "submitted opening action precedes observing existing focus");
+    }
+    static byte[] pending(GovernanceOpeningDocument.Document old,ActionCommand command,ExactRef original,List<ExactRef> refs,
+            Optional<ActionReceipt> previousCanonical,Optional<ActionReceipt> nextCanonical) {
+        GovernanceOpeningDocument.requireSameEpisode(old,command.before(),command.source());
+        StrictJson.require(command.operation().equals(GovernancePolicies.FOCUS)&&command.origin() instanceof CommandOrigin.Gameplay&&old.stage()!=OpeningStage.COMPLETE
+                &&(old.preparedCommand().isEmpty()||old.preparedCommand().orElseThrow().equals(original)
+                    ||old.stage()==OpeningStage.AWAIT_RECEIPT&&old.actionReceipt().isEmpty()&&old.checkpoint().isEmpty()
+                        &&previousCanonical.isEmpty()&&nextCanonical.isEmpty()),"opening pending cannot overwrite another original or completed gate");
+        var retained=new ArrayList<>(refs);old.preparedCommand().ifPresent(retained::add);retained.add(original);
+        return encode(old,command.before(),OpeningStage.AWAIT_RECEIPT,Optional.empty(),Optional.empty(),retained,Optional.of(original),Optional.empty());
+    }
     private static byte[] encode(GovernanceOpeningDocument.Document old,ObservationIdentity observed,OpeningStage stage,Optional<ExactRef> action,Optional<CheckpointFact> checkpoint,List<ExactRef> refs,Optional<ExactRef> command,Optional<ObservationIdentity> existing){return GovernanceOpeningDocument.encode(new GovernanceOpeningDocument.Document(observed,old.source(),old.sessionId(),stage,action,checkpoint,refs.stream().distinct().toList(),command,existing));}
     private void validate(ContinuityStorePort.Session same,ActionReceipt actual)throws IOException{var canonical=canonical(same,actual.command().actionId()).orElseThrow(()->new IOException("opening result absent from canonical actions"));context.archive().inSession(same,archive->{StrictJson.require(Arrays.equals(ActionReceiptCodec.encodeReceipt(actual,archive),ActionReceiptCodec.encodeReceipt(canonical,archive)),"opening caller receipt is not canonical");return Boolean.TRUE;});
         if(actual.state() instanceof ActionState.Settled settled)ActionEffects.validate(actual.command(),settled.attempt(),settled.settlement());if(actual.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED&&actual.command().operation().equals(GovernancePolicies.FOCUS))context.bindings().actualArchivedVerifier(actual.command().operation()).orElseThrow(()->new IOException("actual native material replay missing")).verifier().verify(same.head(),actual,context.archive().withSession(same));}

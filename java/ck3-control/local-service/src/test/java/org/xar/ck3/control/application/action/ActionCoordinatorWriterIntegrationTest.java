@@ -36,6 +36,31 @@ final class ActionCoordinatorWriterIntegrationTest {
             assertArrayEquals(persisted, fixture.ledgerBytes()); assertEquals(1, fixture.nativeActionWrites());
         }
     }
+    @Test void intentRetainsHistoricalSourceMetadataWithoutPinningRebuiltBusinessBytes() throws Exception {
+        try (var fixture=new ActionWriterIntegrationFixture(temporary.resolve("source-metadata"),false)) {
+            var original=fixture.command("metadata-intent");
+            Path implementation=temporary.resolve("historical-business.class");
+            java.nio.file.Files.writeString(implementation,"original implementation");
+            byte[] bytes=java.nio.file.Files.readAllBytes(implementation);
+            var ref=new org.xar.ck3.control.contracts.ExactRef(implementation.toString(),bytes.length,ActionCodec.sha256(bytes));
+            var source=new org.xar.ck3.control.g2.common.G2Source(original.source().machineId(),
+                    Instant.now().toString(),original.source().exactBuild(),ref);
+            var expected=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition(
+                    1,original.before(),source,"paused/v1",original.expected().values());
+            var command=new ActionCommand(original.actionId(),original.before(),source,original.sessionId(),
+                    original.operation(),original.arguments(),expected,original.claims(),original.deadline());
+            java.nio.file.Files.writeString(implementation,"rebuilt implementation has different bytes");
+            var receipt=fixture.journal.locked(locked->locked.append(command,ActionCodec.bodySha256(command),new ActionState.IntentDurable()));
+            assertInstanceOf(ActionState.IntentDurable.class,receipt.state());
+            assertEquals(source,receipt.command().source());assertEquals(0,fixture.nativeActionWrites());
+            assertEquals(receipt,fixture.snapshot().actions().getFirst());
+            assertEquals(receipt,fixture.archive.loadReceipt(fixture.archive.receiptReferenceOf(receipt)));
+            var record=fixture.journal.locked(locked->ContinuityActionJournal.recordHead(locked.head().state()).orElseThrow());
+            java.nio.file.Files.writeString(Path.of(record.path()),"changed actual action record");
+            assertThrows(RuntimeException.class,fixture::snapshot,"actual canonical record DATA still has to match");
+            assertEquals(0,fixture.nativeActionWrites());
+        }
+    }
     @Test void installedReadIdentityAndPhysicalReceiptSurviveTheActualNestedCollector() throws Exception {
         try (var fixture = new ActionWriterIntegrationFixture(temporary.resolve("reads"), false)) {
             var command = fixture.command("query-basis"); var read = fixture.lastNestedRead.get();

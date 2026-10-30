@@ -275,6 +275,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 readDriver=retainCapturedRead(same,owner,edge,readDriver,originals,readPins);
             }else if(phase==1&&edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
                 // Real historical import is retained; no replayed publication is produced.
+            }else if(phase==2&&edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
+                // Real historical domain import is retained; no replayed publication is produced.
             }else {
                 StrictJson.require(edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)&&(phase==1||phase==2),"captured recovery refuses action/read/SAVE or unrelated suffix");
                 var boundary=StrictJson.text(details.get("boundary"));
