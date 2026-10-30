@@ -1,0 +1,452 @@
+[
+    {
+        "actor":  -2,
+        "target":  0,
+        "generation":  1,
+        "pid":  303040,
+        "filetime":  "134378623747009051",
+        "hello_original_utf8":  "{\"type\":\"hello\",\"protocol_version\":1,\"bridge_version\":\"0.1.0\",\"pid\":303040,\"session_generation\":0,\"connection_generation\":1,\"architecture\":\"x86_64-windows-msvc\",\"expected_ck3_version\":\"1.20.0.4\",\"expected_ck3_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"game_adapter_id\":\"ck3-1.20.0.4-msvc-x64\",\"game_adapter_status\":\"ready\",\"ck3_build_match\":true,\"capabilities\":[\"bridge.identity\",\"bridge.heartbeat\",\"bridge.ping\",\"game.query.core-frame.v1\",\"game.state.snapshot\",\"game.state.xar-one-life-settlement\",\"game.state.map-ready\",\"game.state.played-character\",\"game.state.active-event\",\"game.state.pending-character-interaction\",\"game.state.active-wars\",\"game.state.war-primary-opponent\",\"game.state.war-objectives\",\"game.state.war-objective-occupation\",\"game.state.war-objective-fort-level\",\"game.state.war-objective-garrison\",\"game.state.war-objective-siege-progress\",\"game.state.war-objective-assault\",\"game.state.player-armies\",\"game.state.army-routes\",\"game.command.query-army-strengths-v1\",\"game.command.query-army-strengths-private-auto-scalar-v1\",\"game.command.query-army-strengths-scoped-v1\",\"game.command.query-title-holder-v1-N\",\"game.command.query-player-claims-v1-IDS\",\"game.command.query-title-own-laws-v1-ID\",\"game.command.query-raiktor-actual-truce-expiry-v1-N\",\"game.command.query-pending-character-interaction-context-v1\",\"game.command.query-current-event-window-context-v1\",\"game.command.center-map-on-landed-title-v1\",\"game.presentation.realm-camera-mailbox.v1\",\"game.command.query-steward-develop-county-candidates-v1\",\"game.command.select-event-option-N\",\"game.command.accept-pending-character-interaction\",\"game.command.reject-pending-character-interaction\",\"game.command.acknowledge-pending-character-interaction\",\"game.command.navigate-ingame-ui-v1\",\"game.command.query-ingame-ui-window-v1\",\"game.command.query-current-title-appointment-v1\",\"game.command.query-route-contact-horizon-v1-N\",\"game.command.query-actual-contact-scope-v1-N\",\"game.command.query-projected-contact-scope-v1-N\",\"game.command.query-army-commander-candidates-v1-for-army-N\",\"game.command.query-army-commander-candidates-v1-for-army-N-at-province-P\",\"game.command.assign-army-commander-v1-army-N-to-character-N\",\"game.command.query-player-mercenary-context-v1\",\"game.command.hire-mercenary-v1\",\"game.command.hire-holy-order-v1\",\"game.command.query-loaded-feature-manifest-v1\",\"game.command.research-arm-tactical-daily-sentinel-v1-N\",\"game.command.research-query-tactical-daily-sentinel-v1\",\"game.command.research-cancel-tactical-daily-sentinel-v1-generation-N\",\"game.command.query-campaign-root-context-v1\",\"game.command.query-combat-simulation-inputs-v2-N\",\"game.command.query-player-default-raise-v1\",\"game.command.raise-troops-default\",\"game.command.preview-move-army-N-to-N\",\"game.command.move-army-N-to-N\",\"game.command.halt-army-N\",\"game.command.disband-army-N\",\"game.command.split-army-half-N\",\"game.command.merge-armies-N-with-N\",\"game.command.start-assault-N\",\"game.command.stop-assault-N\",\"game.command.query-battle-control-snapshot-v1-N\",\"game.command.query-battle-transition-v1-N\",\"game.command.query-battle-terminal-transition-v1\",\"game.command.query-battle-reinforcement-assignment-v1-N\",\"game.command.query-war-entry-assessments-v1-N\",\"game.command.query-declarable-wars\",\"game.command.declare-war-N\",\"game.command.enforce-demands-N\",\"game.command.query-arrange-marriage-choices\",\"game.command.arrange-marriage-N\",\"game.command.query-war-occupation-targets-v1-N\",\"game.command.query-war-termination-options-N\",\"game.command.query-war-termination-terms-v1-N\",\"game.command.surrender-war-N\",\"game.command.offer-white-peace-N\",\"game.adapter.exact-build\",\"game.adapter.minimized-headless\",\"game.command.pause-map\",\"game.command.resume-map\",\"game.command.set-speed-1\",\"game.command.set-speed-2\",\"game.command.set-speed-3\",\"game.command.set-speed-4\",\"game.command.set-speed-5\",\"game.command.save-checkpoint\"]}",
+        "hello_sha256":  "c4c5314f95f7b32fab76eabce8ac20866ac2a43ed02d5c2d0e0de5fa67c3c79b",
+        "hello_frame_base64":  "ZA8AAHsidHlwZSI6ImhlbGxvIiwicHJvdG9jb2xfdmVyc2lvbiI6MSwiYnJpZGdlX3ZlcnNpb24iOiIwLjEuMCIsInBpZCI6MzAzMDQwLCJzZXNzaW9uX2dlbmVyYXRpb24iOjAsImNvbm5lY3Rpb25fZ2VuZXJhdGlvbiI6MSwiYXJjaGl0ZWN0dXJlIjoieDg2XzY0LXdpbmRvd3MtbXN2YyIsImV4cGVjdGVkX2NrM192ZXJzaW9uIjoiMS4yMC4wLjQiLCJleHBlY3RlZF9jazNfc2hhMjU2IjoiOTg3MDJGODhBNTQ3Q0RFMkVBRjI5QTg1RjkzQjg1RjY4RUU0Q0Y4MTQ4MzM2QTRGN0FGQUVCNzUzMTlERDUxOCIsImdhbWVfYWRhcHRlcl9pZCI6ImNrMy0xLjIwLjAuNC1tc3ZjLXg2NCIsImdhbWVfYWRhcHRlcl9zdGF0dXMiOiJyZWFkeSIsImNrM19idWlsZF9tYXRjaCI6dHJ1ZSwiY2FwYWJpbGl0aWVzIjpbImJyaWRnZS5pZGVudGl0eSIsImJyaWRnZS5oZWFydGJlYXQiLCJicmlkZ2UucGluZyIsImdhbWUucXVlcnkuY29yZS1mcmFtZS52MSIsImdhbWUuc3RhdGUuc25hcHNob3QiLCJnYW1lLnN0YXRlLnhhci1vbmUtbGlmZS1zZXR0bGVtZW50IiwiZ2FtZS5zdGF0ZS5tYXAtcmVhZHkiLCJnYW1lLnN0YXRlLnBsYXllZC1jaGFyYWN0ZXIiLCJnYW1lLnN0YXRlLmFjdGl2ZS1ldmVudCIsImdhbWUuc3RhdGUucGVuZGluZy1jaGFyYWN0ZXItaW50ZXJhY3Rpb24iLCJnYW1lLnN0YXRlLmFjdGl2ZS13YXJzIiwiZ2FtZS5zdGF0ZS53YXItcHJpbWFyeS1vcHBvbmVudCIsImdhbWUuc3RhdGUud2FyLW9iamVjdGl2ZXMiLCJnYW1lLnN0YXRlLndhci1vYmplY3RpdmUtb2NjdXBhdGlvbiIsImdhbWUuc3RhdGUud2FyLW9iamVjdGl2ZS1mb3J0LWxldmVsIiwiZ2FtZS5zdGF0ZS53YXItb2JqZWN0aXZlLWdhcnJpc29uIiwiZ2FtZS5zdGF0ZS53YXItb2JqZWN0aXZlLXNpZWdlLXByb2dyZXNzIiwiZ2FtZS5zdGF0ZS53YXItb2JqZWN0aXZlLWFzc2F1bHQiLCJnYW1lLnN0YXRlLnBsYXllci1hcm1pZXMiLCJnYW1lLnN0YXRlLmFybXktcm91dGVzIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWFybXktc3RyZW5ndGhzLXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWFybXktc3RyZW5ndGhzLXByaXZhdGUtYXV0by1zY2FsYXItdjEiLCJnYW1lLmNvbW1hbmQucXVlcnktYXJteS1zdHJlbmd0aHMtc2NvcGVkLXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXRpdGxlLWhvbGRlci12MS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXBsYXllci1jbGFpbXMtdjEtSURTIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXRpdGxlLW93bi1sYXdzLXYxLUlEIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXJhaWt0b3ItYWN0dWFsLXRydWNlLWV4cGlyeS12MS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXBlbmRpbmctY2hhcmFjdGVyLWludGVyYWN0aW9uLWNvbnRleHQtdjEiLCJnYW1lLmNvbW1hbmQucXVlcnktY3VycmVudC1ldmVudC13aW5kb3ctY29udGV4dC12MSIsImdhbWUuY29tbWFuZC5jZW50ZXItbWFwLW9uLWxhbmRlZC10aXRsZS12MSIsImdhbWUucHJlc2VudGF0aW9uLnJlYWxtLWNhbWVyYS1tYWlsYm94LnYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXN0ZXdhcmQtZGV2ZWxvcC1jb3VudHktY2FuZGlkYXRlcy12MSIsImdhbWUuY29tbWFuZC5zZWxlY3QtZXZlbnQtb3B0aW9uLU4iLCJnYW1lLmNvbW1hbmQuYWNjZXB0LXBlbmRpbmctY2hhcmFjdGVyLWludGVyYWN0aW9uIiwiZ2FtZS5jb21tYW5kLnJlamVjdC1wZW5kaW5nLWNoYXJhY3Rlci1pbnRlcmFjdGlvbiIsImdhbWUuY29tbWFuZC5hY2tub3dsZWRnZS1wZW5kaW5nLWNoYXJhY3Rlci1pbnRlcmFjdGlvbiIsImdhbWUuY29tbWFuZC5uYXZpZ2F0ZS1pbmdhbWUtdWktdjEiLCJnYW1lLmNvbW1hbmQucXVlcnktaW5nYW1lLXVpLXdpbmRvdy12MSIsImdhbWUuY29tbWFuZC5xdWVyeS1jdXJyZW50LXRpdGxlLWFwcG9pbnRtZW50LXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXJvdXRlLWNvbnRhY3QtaG9yaXpvbi12MS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWFjdHVhbC1jb250YWN0LXNjb3BlLXYxLU4iLCJnYW1lLmNvbW1hbmQucXVlcnktcHJvamVjdGVkLWNvbnRhY3Qtc2NvcGUtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS1hcm15LWNvbW1hbmRlci1jYW5kaWRhdGVzLXYxLWZvci1hcm15LU4iLCJnYW1lLmNvbW1hbmQucXVlcnktYXJteS1jb21tYW5kZXItY2FuZGlkYXRlcy12MS1mb3ItYXJteS1OLWF0LXByb3ZpbmNlLVAiLCJnYW1lLmNvbW1hbmQuYXNzaWduLWFybXktY29tbWFuZGVyLXYxLWFybXktTi10by1jaGFyYWN0ZXItTiIsImdhbWUuY29tbWFuZC5xdWVyeS1wbGF5ZXItbWVyY2VuYXJ5LWNvbnRleHQtdjEiLCJnYW1lLmNvbW1hbmQuaGlyZS1tZXJjZW5hcnktdjEiLCJnYW1lLmNvbW1hbmQuaGlyZS1ob2x5LW9yZGVyLXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWxvYWRlZC1mZWF0dXJlLW1hbmlmZXN0LXYxIiwiZ2FtZS5jb21tYW5kLnJlc2VhcmNoLWFybS10YWN0aWNhbC1kYWlseS1zZW50aW5lbC12MS1OIiwiZ2FtZS5jb21tYW5kLnJlc2VhcmNoLXF1ZXJ5LXRhY3RpY2FsLWRhaWx5LXNlbnRpbmVsLXYxIiwiZ2FtZS5jb21tYW5kLnJlc2VhcmNoLWNhbmNlbC10YWN0aWNhbC1kYWlseS1zZW50aW5lbC12MS1nZW5lcmF0aW9uLU4iLCJnYW1lLmNvbW1hbmQucXVlcnktY2FtcGFpZ24tcm9vdC1jb250ZXh0LXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWNvbWJhdC1zaW11bGF0aW9uLWlucHV0cy12Mi1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXBsYXllci1kZWZhdWx0LXJhaXNlLXYxIiwiZ2FtZS5jb21tYW5kLnJhaXNlLXRyb29wcy1kZWZhdWx0IiwiZ2FtZS5jb21tYW5kLnByZXZpZXctbW92ZS1hcm15LU4tdG8tTiIsImdhbWUuY29tbWFuZC5tb3ZlLWFybXktTi10by1OIiwiZ2FtZS5jb21tYW5kLmhhbHQtYXJteS1OIiwiZ2FtZS5jb21tYW5kLmRpc2JhbmQtYXJteS1OIiwiZ2FtZS5jb21tYW5kLnNwbGl0LWFybXktaGFsZi1OIiwiZ2FtZS5jb21tYW5kLm1lcmdlLWFybWllcy1OLXdpdGgtTiIsImdhbWUuY29tbWFuZC5zdGFydC1hc3NhdWx0LU4iLCJnYW1lLmNvbW1hbmQuc3RvcC1hc3NhdWx0LU4iLCJnYW1lLmNvbW1hbmQucXVlcnktYmF0dGxlLWNvbnRyb2wtc25hcHNob3QtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS1iYXR0bGUtdHJhbnNpdGlvbi12MS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWJhdHRsZS10ZXJtaW5hbC10cmFuc2l0aW9uLXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWJhdHRsZS1yZWluZm9yY2VtZW50LWFzc2lnbm1lbnQtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS13YXItZW50cnktYXNzZXNzbWVudHMtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS1kZWNsYXJhYmxlLXdhcnMiLCJnYW1lLmNvbW1hbmQuZGVjbGFyZS13YXItTiIsImdhbWUuY29tbWFuZC5lbmZvcmNlLWRlbWFuZHMtTiIsImdhbWUuY29tbWFuZC5xdWVyeS1hcnJhbmdlLW1hcnJpYWdlLWNob2ljZXMiLCJnYW1lLmNvbW1hbmQuYXJyYW5nZS1tYXJyaWFnZS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXdhci1vY2N1cGF0aW9uLXRhcmdldHMtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS13YXItdGVybWluYXRpb24tb3B0aW9ucy1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXdhci10ZXJtaW5hdGlvbi10ZXJtcy12MS1OIiwiZ2FtZS5jb21tYW5kLnN1cnJlbmRlci13YXItTiIsImdhbWUuY29tbWFuZC5vZmZlci13aGl0ZS1wZWFjZS1OIiwiZ2FtZS5hZGFwdGVyLmV4YWN0LWJ1aWxkIiwiZ2FtZS5hZGFwdGVyLm1pbmltaXplZC1oZWFkbGVzcyIsImdhbWUuY29tbWFuZC5wYXVzZS1tYXAiLCJnYW1lLmNvbW1hbmQucmVzdW1lLW1hcCIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtMSIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtMiIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtMyIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtNCIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtNSIsImdhbWUuY29tbWFuZC5zYXZlLWNoZWNrcG9pbnQiXX0=",
+        "hello_frame_sha256":  "08d0867492baa32b62d94a297ff32c5cc3cdb8263af29e94a8bb70ed3567fee4",
+        "original_utf8":  "{\"type\":\"state_snapshot\",\"protocol_version\":1,\"snapshot_id\":\"native:7\",\"revision\":7,\"state\":{\"date_raw\":53220000,\"speed\":1,\"paused\":true,\"local_player_id\":0,\"map_ready\":true,\"played_character\":{\"character_id\":-2,\"alive\":true,\"stress_points\":0,\"event_trait_membership\":{\"schema\":\"xar.ck3.player-event-trait-membership/v1\",\"game_version\":\"1.20.0.4\",\"executable_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"status\":\"unavailable\",\"snapshot_revision\":7,\"date_raw\":53220000,\"played_character_id\":-2,\"traits\":null,\"unavailable_reason\":\"current_player_frame_unavailable\"},\"betrothed_id\":null,\"primary_spouse_id\":null,\"spouse_ids\":[]},\"played_character_gold\":{\"raw\":0,\"scale\":100000},\"played_character_prestige\":{\"raw\":0,\"scale\":100000},\"played_character_piety\":{\"raw\":0,\"scale\":100000},\"one_life_settlement\":null,\"active_event\":null,\"pending_character_interaction\":null,\"active_wars\":[],\"player_armies\":[],\"last_checkpoint_submission\":null,\"history\":[]}}",
+        "sha256":  "e6d906dfe9162a444f34512f9565aa0d3776c741687bd8c9557f89a56ad0fb3f",
+        "frame_base64":  "0QMAAHsidHlwZSI6InN0YXRlX3NuYXBzaG90IiwicHJvdG9jb2xfdmVyc2lvbiI6MSwic25hcHNob3RfaWQiOiJuYXRpdmU6NyIsInJldmlzaW9uIjo3LCJzdGF0ZSI6eyJkYXRlX3JhdyI6NTMyMjAwMDAsInNwZWVkIjoxLCJwYXVzZWQiOnRydWUsImxvY2FsX3BsYXllcl9pZCI6MCwibWFwX3JlYWR5Ijp0cnVlLCJwbGF5ZWRfY2hhcmFjdGVyIjp7ImNoYXJhY3Rlcl9pZCI6LTIsImFsaXZlIjp0cnVlLCJzdHJlc3NfcG9pbnRzIjowLCJldmVudF90cmFpdF9tZW1iZXJzaGlwIjp7InNjaGVtYSI6Inhhci5jazMucGxheWVyLWV2ZW50LXRyYWl0LW1lbWJlcnNoaXAvdjEiLCJnYW1lX3ZlcnNpb24iOiIxLjIwLjAuNCIsImV4ZWN1dGFibGVfc2hhMjU2IjoiOTg3MDJGODhBNTQ3Q0RFMkVBRjI5QTg1RjkzQjg1RjY4RUU0Q0Y4MTQ4MzM2QTRGN0FGQUVCNzUzMTlERDUxOCIsInN0YXR1cyI6InVuYXZhaWxhYmxlIiwic25hcHNob3RfcmV2aXNpb24iOjcsImRhdGVfcmF3Ijo1MzIyMDAwMCwicGxheWVkX2NoYXJhY3Rlcl9pZCI6LTIsInRyYWl0cyI6bnVsbCwidW5hdmFpbGFibGVfcmVhc29uIjoiY3VycmVudF9wbGF5ZXJfZnJhbWVfdW5hdmFpbGFibGUifSwiYmV0cm90aGVkX2lkIjpudWxsLCJwcmltYXJ5X3Nwb3VzZV9pZCI6bnVsbCwic3BvdXNlX2lkcyI6W119LCJwbGF5ZWRfY2hhcmFjdGVyX2dvbGQiOnsicmF3IjowLCJzY2FsZSI6MTAwMDAwfSwicGxheWVkX2NoYXJhY3Rlcl9wcmVzdGlnZSI6eyJyYXciOjAsInNjYWxlIjoxMDAwMDB9LCJwbGF5ZWRfY2hhcmFjdGVyX3BpZXR5Ijp7InJhdyI6MCwic2NhbGUiOjEwMDAwMH0sIm9uZV9saWZlX3NldHRsZW1lbnQiOm51bGwsImFjdGl2ZV9ldmVudCI6bnVsbCwicGVuZGluZ19jaGFyYWN0ZXJfaW50ZXJhY3Rpb24iOm51bGwsImFjdGl2ZV93YXJzIjpbXSwicGxheWVyX2FybWllcyI6W10sImxhc3RfY2hlY2twb2ludF9zdWJtaXNzaW9uIjpudWxsLCJoaXN0b3J5IjpbXX19",
+        "frame_sha256":  "e1dde58d93f05903daaa42acd434ae75869d746dcfcc87747e886e4ea8de5e21",
+        "chain_prefix":  "minus2-zero",
+        "chain_originals":  [
+                                {
+                                    "step":  "01.query0",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.01.query0.request.json",
+                                                                       "bytes":  23,
+                                                                       "sha256":  "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1",
+                                                                       "original_utf8":  "{\"expected_revision\":7}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.01.query0.response.json",
+                                                                        "bytes":  708,
+                                                                        "sha256":  "5734272a5191efbbfdc5d41376c2cdcef7aecf1b92e31f7412fa6713253cf471",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-1-query0\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private-0\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":3,\"container_generation\":18300436759549338012,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":37,\"active_scheme_count\":0,\"matching_sway_active\":false,\"native_complete_can_send\":true,\"native_legal_now\":true,\"native_failure_classification\":\"\",\"active_sway_instances\":[]},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.01.query0.request-id.txt",
+                                                                         "bytes":  25,
+                                                                         "sha256":  "467e6e90706abc6b952e2cade8c84b7f8c5b8398664ceab1508cdec02b6550e3",
+                                                                         "original_utf8":  "flow-minus2-zero-1-query0"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "02.start",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.02.start.request.json",
+                                                                       "bytes":  179,
+                                                                       "sha256":  "8cf226b847613e2ade55a7bc6088a067c251cff2204323c9217db099c5502793",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"action_id\":\"sway-flow-minus2-zero\",\"expected_capture_epoch\":3,\"expected_container_generation\":18300436759549338012,\"expected_target_opinion_of_actor\":\"37\"}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.02.start.response.json",
+                                                                        "bytes":  626,
+                                                                        "sha256":  "ccbb0cbd9c129f82c517bb194a24623de55b48dd4ed57cce4fd9aeb65db81e0e",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-2-start\",\"ok\":true,\"result\":{\"step\":\"submit-active-scheme-sway-v1-private-0\",\"accepted\":true,\"status\":\"submitted_verification_pending\",\"private_build\":true,\"advertised\":false,\"active_scheme_sway_formal\":{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"submitted_verification_pending\",\"action_id\":\"sway-flow-minus2-zero\",\"actor_character_id\":-2,\"target_character_id\":0,\"pre_capture_epoch\":4,\"pre_container_generation\":18300436759549338012,\"pre_date_raw\":53220000,\"submit_call_count\":1,\"receipt_pending\":true},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.02.start.request-id.txt",
+                                                                         "bytes":  24,
+                                                                         "sha256":  "86cb02edf3aa4fff18a41d31247f4333fce023d6ee0bafeb4bec346b2c3ddea5",
+                                                                         "original_utf8":  "flow-minus2-zero-2-start"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "03.receipt",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.03.receipt.request.json",
+                                                                       "bytes":  59,
+                                                                       "sha256":  "37dba7b389164894508805f041bb740d91155d3e0a3b6c2a78d12c8f08c01659",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"action_id\":\"sway-flow-minus2-zero\"}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.03.receipt.response.json",
+                                                                        "bytes":  577,
+                                                                        "sha256":  "82b9649a94199d323fb97dc47921f675a9f45364ac91fe0d6069d9260bbaf314",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-3-receipt\",\"ok\":true,\"result\":{\"step\":\"receipt-active-scheme-sway-v1-private-0\",\"accepted\":true,\"status\":\"applied\",\"private_build\":true,\"advertised\":false,\"active_scheme_sway_formal\":{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"applied\",\"action_id\":\"sway-flow-minus2-zero\",\"post_capture_epoch\":5,\"post_container_generation\":15189419816273770301,\"post_date_raw\":53220000,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"postcondition_verified\":true},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.03.receipt.request-id.txt",
+                                                                         "bytes":  26,
+                                                                         "sha256":  "5fcb55626ea749917a233eaed722f4943f4f8f5b08a98b4a006d24f855df758f",
+                                                                         "original_utf8":  "flow-minus2-zero-3-receipt"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "04.post-start",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.04.post-start.request.json",
+                                                                       "bytes":  23,
+                                                                       "sha256":  "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1",
+                                                                       "original_utf8":  "{\"expected_revision\":7}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.04.post-start.response.json",
+                                                                        "bytes":  860,
+                                                                        "sha256":  "eafa18428a5f8719dbfc9a16d54589af985bb40d243b2640d4577a60816535d7",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-4-post-start\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private-0\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":6,\"container_generation\":15189419816273770301,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":73,\"active_scheme_count\":1,\"matching_sway_active\":true,\"native_complete_can_send\":true,\"native_legal_now\":false,\"native_failure_classification\":\"\",\"active_sway_instances\":[{\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"target_character_id\":0,\"progress\":1,\"progress_goal\":10,\"is_exposed\":false,\"is_frozen\":false}]},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.04.post-start.request-id.txt",
+                                                                         "bytes":  29,
+                                                                         "sha256":  "96af73c58ae6a530afb4e151ac3882658f4729866ab905e801e64df553256c7f",
+                                                                         "original_utf8":  "flow-minus2-zero-4-post-start"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "05.finish-target",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.05.finish-target.request.json",
+                                                                       "bytes":  23,
+                                                                       "sha256":  "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1",
+                                                                       "original_utf8":  "{\"expected_revision\":7}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.05.finish-target.response.json",
+                                                                        "bytes":  863,
+                                                                        "sha256":  "c15f222d0e52f2613bb9a0e2f59bf683d1559a0dc2e1f07bf586ba5059fd6977",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-5-finish-target\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private-0\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":7,\"container_generation\":15189419816273770301,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":73,\"active_scheme_count\":1,\"matching_sway_active\":true,\"native_complete_can_send\":true,\"native_legal_now\":false,\"native_failure_classification\":\"\",\"active_sway_instances\":[{\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"target_character_id\":0,\"progress\":1,\"progress_goal\":10,\"is_exposed\":false,\"is_frozen\":false}]},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.05.finish-target.request-id.txt",
+                                                                         "bytes":  32,
+                                                                         "sha256":  "be78375308538469e6cc5da6b5caa69b61eb402bbc6c4d15cca1cc7472e3f0e3",
+                                                                         "original_utf8":  "flow-minus2-zero-5-finish-target"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "06.finish-completion",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.06.finish-completion.request.json",
+                                                                       "bytes":  94,
+                                                                       "sha256":  "b0fedb180637f20a0893b891bb5a501e79a104154fc242cbceacde472a8b63de",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.06.finish-completion.response.json",
+                                                                        "bytes":  1448,
+                                                                        "sha256":  "b2e2495cee8aa009f6668f3845f50b1627ad21713d4c0d726a38fdabbb160bf9",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-6-finish-completion\",\"ok\":true,\"result\":{\"step\":\"query-sway-completion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_completion\":{\"schema\":\"xar.ck3.sway_completion.v1\",\"schema_version\":1,\"build_version\":\"1.20.0.4\",\"executable_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"adapter_id\":\"ck3-1.20.0.4-msvc-x64\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"native_source_kind\":\"native_scheme_storage\",\"current_instance_retention\":\"until_native_manager_purge\",\"instance_source_observed\":true,\"instance_present\":true,\"storage_slot_reused\":false,\"exact_instance_join_ready\":true,\"native_owner_raw\":4294967294,\"owner_matches_actor\":true,\"owner_cleared\":false,\"native_status_observed\":true,\"native_status_raw\":0,\"native_status_key\":\"continue\",\"native_terminal_state_observed\":false,\"native_success_chance_observed\":false,\"native_success_chance_raw\":null,\"native_success_chance_scale\":100000,\"native_success_chance_unit\":\"percent\",\"native_can_continue_observed\":false,\"native_can_continue\":null,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.06.finish-completion.request-id.txt",
+                                                                         "bytes":  36,
+                                                                         "sha256":  "fd74a6c045aec889ecfd8aef862e7f7a8a15634838fb2db2972a86436a0109cd",
+                                                                         "original_utf8":  "flow-minus2-zero-6-finish-completion"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "07.finish-opinion",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.07.finish-opinion.request.json",
+                                                                       "bytes":  71,
+                                                                       "sha256":  "5e8e9e73fdec817cd966142d53210a724d203cb8f0dece0ca91cba490b2dfc4e",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"actor_character_id\":-2,\"target_character_id\":0}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.07.finish-opinion.response.json",
+                                                                        "bytes":  746,
+                                                                        "sha256":  "407d93facd7a1e95a326dab7def7c6f621ce2d39312186667e9fd27de1cce4bd",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-7-finish-opinion\",\"ok\":true,\"result\":{\"step\":\"query-sway-outcome-opinion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_outcome_opinion\":{\"schema\":\"xar.ck3.sway-outcome-opinion-v1\",\"build\":\"1.20.0.4\",\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":73,\"scheme_sway_opinion\":{\"observed\":true,\"present\":true,\"value\":12},\"sway_blocker_opinion\":{\"observed\":true,\"present\":false,\"value\":null},\"instance_terminal_outcome_observed\":false,\"cancel_outcome_observed\":false},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.07.finish-opinion.request-id.txt",
+                                                                         "bytes":  33,
+                                                                         "sha256":  "e4c62ecf4dd4a078d4690f867c4b63ad2c1e12d1572341dce76e9c11990ac8a3",
+                                                                         "original_utf8":  "flow-minus2-zero-7-finish-opinion"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "08.stop",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.08.stop.request.json",
+                                                                       "bytes":  166,
+                                                                       "sha256":  "b53322f3597ff2a7c6c08bccd5ec8ad3a8d0061051104853aed3b513d460509f",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"action_id\":\"stop-sway-flow-minus2-zero\",\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0,\"scheme_instance_generation\":0}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.08.stop.response.json",
+                                                                        "bytes":  837,
+                                                                        "sha256":  "9cd387ef6938eaa2a34783634756ad515c6b1fbdb91276979949475e72cedf93",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-8-stop\",\"ok\":true,\"error\":\"\",\"result\":{\"step\":\"stop-active-scheme-sway-v1-private\",\"accepted\":true,\"private_build\":true,\"advertised\":false,\"read_only\":false,\"backend_id\":\"native-headless\",\"status\":\"submitted_verification_pending\",\"sway_stop\":{\"schema\":\"xar.ck3.selected-sway-stop.v1\",\"action_id\":\"stop-sway-flow-minus2-zero\",\"status\":\"submitted_verification_pending\",\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"snapshot_revision\":7,\"date_raw\":53220000,\"exact_ck3_build\":\"1.20.0.4\",\"exe_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"submit_call_count\":1,\"postcondition_verified\":false,\"terminal_observed\":false,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"}}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.08.stop.request-id.txt",
+                                                                         "bytes":  23,
+                                                                         "sha256":  "8b9fd24dcbfbef7a20d3521d47891f283094b127bf79314d938ea9e4a77ab927",
+                                                                         "original_utf8":  "flow-minus2-zero-8-stop"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "09.post-stop",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.09.post-stop.request.json",
+                                                                       "bytes":  94,
+                                                                       "sha256":  "b0fedb180637f20a0893b891bb5a501e79a104154fc242cbceacde472a8b63de",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.09.post-stop.response.json",
+                                                                        "bytes":  1440,
+                                                                        "sha256":  "5b7ab738bba503eab8294a3b1dc5bac8d49554f63b2512fb06a3e75f43aba2ba",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-9-post-stop\",\"ok\":true,\"result\":{\"step\":\"query-sway-completion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_completion\":{\"schema\":\"xar.ck3.sway_completion.v1\",\"schema_version\":1,\"build_version\":\"1.20.0.4\",\"executable_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"adapter_id\":\"ck3-1.20.0.4-msvc-x64\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"native_source_kind\":\"native_scheme_storage\",\"current_instance_retention\":\"until_native_manager_purge\",\"instance_source_observed\":true,\"instance_present\":true,\"storage_slot_reused\":false,\"exact_instance_join_ready\":true,\"native_owner_raw\":4294967294,\"owner_matches_actor\":true,\"owner_cleared\":false,\"native_status_observed\":true,\"native_status_raw\":0,\"native_status_key\":\"continue\",\"native_terminal_state_observed\":false,\"native_success_chance_observed\":false,\"native_success_chance_raw\":null,\"native_success_chance_scale\":100000,\"native_success_chance_unit\":\"percent\",\"native_can_continue_observed\":false,\"native_can_continue\":null,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/minus2-zero.09.post-stop.request-id.txt",
+                                                                         "bytes":  28,
+                                                                         "sha256":  "3d0c3c97ab740ddf17df095fef23defca2aa1d1f2c59b12f11015af9dc82f1ff",
+                                                                         "original_utf8":  "flow-minus2-zero-9-post-stop"
+                                                                     }
+                                              }
+                                }
+                            ]
+    },
+    {
+        "actor":  0,
+        "target":  -2,
+        "generation":  2,
+        "pid":  303040,
+        "filetime":  "134378623747009051",
+        "hello_original_utf8":  "{\"type\":\"hello\",\"protocol_version\":1,\"bridge_version\":\"0.1.0\",\"pid\":303040,\"session_generation\":0,\"connection_generation\":2,\"architecture\":\"x86_64-windows-msvc\",\"expected_ck3_version\":\"1.20.0.4\",\"expected_ck3_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"game_adapter_id\":\"ck3-1.20.0.4-msvc-x64\",\"game_adapter_status\":\"ready\",\"ck3_build_match\":true,\"capabilities\":[\"bridge.identity\",\"bridge.heartbeat\",\"bridge.ping\",\"game.query.core-frame.v1\",\"game.state.snapshot\",\"game.state.xar-one-life-settlement\",\"game.state.map-ready\",\"game.state.played-character\",\"game.state.active-event\",\"game.state.pending-character-interaction\",\"game.state.active-wars\",\"game.state.war-primary-opponent\",\"game.state.war-objectives\",\"game.state.war-objective-occupation\",\"game.state.war-objective-fort-level\",\"game.state.war-objective-garrison\",\"game.state.war-objective-siege-progress\",\"game.state.war-objective-assault\",\"game.state.player-armies\",\"game.state.army-routes\",\"game.command.query-army-strengths-v1\",\"game.command.query-army-strengths-private-auto-scalar-v1\",\"game.command.query-army-strengths-scoped-v1\",\"game.command.query-title-holder-v1-N\",\"game.command.query-player-claims-v1-IDS\",\"game.command.query-title-own-laws-v1-ID\",\"game.command.query-raiktor-actual-truce-expiry-v1-N\",\"game.command.query-pending-character-interaction-context-v1\",\"game.command.query-current-event-window-context-v1\",\"game.command.center-map-on-landed-title-v1\",\"game.presentation.realm-camera-mailbox.v1\",\"game.command.query-steward-develop-county-candidates-v1\",\"game.command.select-event-option-N\",\"game.command.accept-pending-character-interaction\",\"game.command.reject-pending-character-interaction\",\"game.command.acknowledge-pending-character-interaction\",\"game.command.navigate-ingame-ui-v1\",\"game.command.query-ingame-ui-window-v1\",\"game.command.query-current-title-appointment-v1\",\"game.command.query-route-contact-horizon-v1-N\",\"game.command.query-actual-contact-scope-v1-N\",\"game.command.query-projected-contact-scope-v1-N\",\"game.command.query-army-commander-candidates-v1-for-army-N\",\"game.command.query-army-commander-candidates-v1-for-army-N-at-province-P\",\"game.command.assign-army-commander-v1-army-N-to-character-N\",\"game.command.query-player-mercenary-context-v1\",\"game.command.hire-mercenary-v1\",\"game.command.hire-holy-order-v1\",\"game.command.query-loaded-feature-manifest-v1\",\"game.command.research-arm-tactical-daily-sentinel-v1-N\",\"game.command.research-query-tactical-daily-sentinel-v1\",\"game.command.research-cancel-tactical-daily-sentinel-v1-generation-N\",\"game.command.query-campaign-root-context-v1\",\"game.command.query-combat-simulation-inputs-v2-N\",\"game.command.query-player-default-raise-v1\",\"game.command.raise-troops-default\",\"game.command.preview-move-army-N-to-N\",\"game.command.move-army-N-to-N\",\"game.command.halt-army-N\",\"game.command.disband-army-N\",\"game.command.split-army-half-N\",\"game.command.merge-armies-N-with-N\",\"game.command.start-assault-N\",\"game.command.stop-assault-N\",\"game.command.query-battle-control-snapshot-v1-N\",\"game.command.query-battle-transition-v1-N\",\"game.command.query-battle-terminal-transition-v1\",\"game.command.query-battle-reinforcement-assignment-v1-N\",\"game.command.query-war-entry-assessments-v1-N\",\"game.command.query-declarable-wars\",\"game.command.declare-war-N\",\"game.command.enforce-demands-N\",\"game.command.query-arrange-marriage-choices\",\"game.command.arrange-marriage-N\",\"game.command.query-war-occupation-targets-v1-N\",\"game.command.query-war-termination-options-N\",\"game.command.query-war-termination-terms-v1-N\",\"game.command.surrender-war-N\",\"game.command.offer-white-peace-N\",\"game.adapter.exact-build\",\"game.adapter.minimized-headless\",\"game.command.pause-map\",\"game.command.resume-map\",\"game.command.set-speed-1\",\"game.command.set-speed-2\",\"game.command.set-speed-3\",\"game.command.set-speed-4\",\"game.command.set-speed-5\",\"game.command.save-checkpoint\"]}",
+        "hello_sha256":  "1a6c8933a68b8d3514eef49bb1a14a0cc423c5e8a3e0f71d27a3e1a0114ebc4c",
+        "hello_frame_base64":  "ZA8AAHsidHlwZSI6ImhlbGxvIiwicHJvdG9jb2xfdmVyc2lvbiI6MSwiYnJpZGdlX3ZlcnNpb24iOiIwLjEuMCIsInBpZCI6MzAzMDQwLCJzZXNzaW9uX2dlbmVyYXRpb24iOjAsImNvbm5lY3Rpb25fZ2VuZXJhdGlvbiI6MiwiYXJjaGl0ZWN0dXJlIjoieDg2XzY0LXdpbmRvd3MtbXN2YyIsImV4cGVjdGVkX2NrM192ZXJzaW9uIjoiMS4yMC4wLjQiLCJleHBlY3RlZF9jazNfc2hhMjU2IjoiOTg3MDJGODhBNTQ3Q0RFMkVBRjI5QTg1RjkzQjg1RjY4RUU0Q0Y4MTQ4MzM2QTRGN0FGQUVCNzUzMTlERDUxOCIsImdhbWVfYWRhcHRlcl9pZCI6ImNrMy0xLjIwLjAuNC1tc3ZjLXg2NCIsImdhbWVfYWRhcHRlcl9zdGF0dXMiOiJyZWFkeSIsImNrM19idWlsZF9tYXRjaCI6dHJ1ZSwiY2FwYWJpbGl0aWVzIjpbImJyaWRnZS5pZGVudGl0eSIsImJyaWRnZS5oZWFydGJlYXQiLCJicmlkZ2UucGluZyIsImdhbWUucXVlcnkuY29yZS1mcmFtZS52MSIsImdhbWUuc3RhdGUuc25hcHNob3QiLCJnYW1lLnN0YXRlLnhhci1vbmUtbGlmZS1zZXR0bGVtZW50IiwiZ2FtZS5zdGF0ZS5tYXAtcmVhZHkiLCJnYW1lLnN0YXRlLnBsYXllZC1jaGFyYWN0ZXIiLCJnYW1lLnN0YXRlLmFjdGl2ZS1ldmVudCIsImdhbWUuc3RhdGUucGVuZGluZy1jaGFyYWN0ZXItaW50ZXJhY3Rpb24iLCJnYW1lLnN0YXRlLmFjdGl2ZS13YXJzIiwiZ2FtZS5zdGF0ZS53YXItcHJpbWFyeS1vcHBvbmVudCIsImdhbWUuc3RhdGUud2FyLW9iamVjdGl2ZXMiLCJnYW1lLnN0YXRlLndhci1vYmplY3RpdmUtb2NjdXBhdGlvbiIsImdhbWUuc3RhdGUud2FyLW9iamVjdGl2ZS1mb3J0LWxldmVsIiwiZ2FtZS5zdGF0ZS53YXItb2JqZWN0aXZlLWdhcnJpc29uIiwiZ2FtZS5zdGF0ZS53YXItb2JqZWN0aXZlLXNpZWdlLXByb2dyZXNzIiwiZ2FtZS5zdGF0ZS53YXItb2JqZWN0aXZlLWFzc2F1bHQiLCJnYW1lLnN0YXRlLnBsYXllci1hcm1pZXMiLCJnYW1lLnN0YXRlLmFybXktcm91dGVzIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWFybXktc3RyZW5ndGhzLXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWFybXktc3RyZW5ndGhzLXByaXZhdGUtYXV0by1zY2FsYXItdjEiLCJnYW1lLmNvbW1hbmQucXVlcnktYXJteS1zdHJlbmd0aHMtc2NvcGVkLXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXRpdGxlLWhvbGRlci12MS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXBsYXllci1jbGFpbXMtdjEtSURTIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXRpdGxlLW93bi1sYXdzLXYxLUlEIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXJhaWt0b3ItYWN0dWFsLXRydWNlLWV4cGlyeS12MS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXBlbmRpbmctY2hhcmFjdGVyLWludGVyYWN0aW9uLWNvbnRleHQtdjEiLCJnYW1lLmNvbW1hbmQucXVlcnktY3VycmVudC1ldmVudC13aW5kb3ctY29udGV4dC12MSIsImdhbWUuY29tbWFuZC5jZW50ZXItbWFwLW9uLWxhbmRlZC10aXRsZS12MSIsImdhbWUucHJlc2VudGF0aW9uLnJlYWxtLWNhbWVyYS1tYWlsYm94LnYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXN0ZXdhcmQtZGV2ZWxvcC1jb3VudHktY2FuZGlkYXRlcy12MSIsImdhbWUuY29tbWFuZC5zZWxlY3QtZXZlbnQtb3B0aW9uLU4iLCJnYW1lLmNvbW1hbmQuYWNjZXB0LXBlbmRpbmctY2hhcmFjdGVyLWludGVyYWN0aW9uIiwiZ2FtZS5jb21tYW5kLnJlamVjdC1wZW5kaW5nLWNoYXJhY3Rlci1pbnRlcmFjdGlvbiIsImdhbWUuY29tbWFuZC5hY2tub3dsZWRnZS1wZW5kaW5nLWNoYXJhY3Rlci1pbnRlcmFjdGlvbiIsImdhbWUuY29tbWFuZC5uYXZpZ2F0ZS1pbmdhbWUtdWktdjEiLCJnYW1lLmNvbW1hbmQucXVlcnktaW5nYW1lLXVpLXdpbmRvdy12MSIsImdhbWUuY29tbWFuZC5xdWVyeS1jdXJyZW50LXRpdGxlLWFwcG9pbnRtZW50LXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXJvdXRlLWNvbnRhY3QtaG9yaXpvbi12MS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWFjdHVhbC1jb250YWN0LXNjb3BlLXYxLU4iLCJnYW1lLmNvbW1hbmQucXVlcnktcHJvamVjdGVkLWNvbnRhY3Qtc2NvcGUtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS1hcm15LWNvbW1hbmRlci1jYW5kaWRhdGVzLXYxLWZvci1hcm15LU4iLCJnYW1lLmNvbW1hbmQucXVlcnktYXJteS1jb21tYW5kZXItY2FuZGlkYXRlcy12MS1mb3ItYXJteS1OLWF0LXByb3ZpbmNlLVAiLCJnYW1lLmNvbW1hbmQuYXNzaWduLWFybXktY29tbWFuZGVyLXYxLWFybXktTi10by1jaGFyYWN0ZXItTiIsImdhbWUuY29tbWFuZC5xdWVyeS1wbGF5ZXItbWVyY2VuYXJ5LWNvbnRleHQtdjEiLCJnYW1lLmNvbW1hbmQuaGlyZS1tZXJjZW5hcnktdjEiLCJnYW1lLmNvbW1hbmQuaGlyZS1ob2x5LW9yZGVyLXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWxvYWRlZC1mZWF0dXJlLW1hbmlmZXN0LXYxIiwiZ2FtZS5jb21tYW5kLnJlc2VhcmNoLWFybS10YWN0aWNhbC1kYWlseS1zZW50aW5lbC12MS1OIiwiZ2FtZS5jb21tYW5kLnJlc2VhcmNoLXF1ZXJ5LXRhY3RpY2FsLWRhaWx5LXNlbnRpbmVsLXYxIiwiZ2FtZS5jb21tYW5kLnJlc2VhcmNoLWNhbmNlbC10YWN0aWNhbC1kYWlseS1zZW50aW5lbC12MS1nZW5lcmF0aW9uLU4iLCJnYW1lLmNvbW1hbmQucXVlcnktY2FtcGFpZ24tcm9vdC1jb250ZXh0LXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWNvbWJhdC1zaW11bGF0aW9uLWlucHV0cy12Mi1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXBsYXllci1kZWZhdWx0LXJhaXNlLXYxIiwiZ2FtZS5jb21tYW5kLnJhaXNlLXRyb29wcy1kZWZhdWx0IiwiZ2FtZS5jb21tYW5kLnByZXZpZXctbW92ZS1hcm15LU4tdG8tTiIsImdhbWUuY29tbWFuZC5tb3ZlLWFybXktTi10by1OIiwiZ2FtZS5jb21tYW5kLmhhbHQtYXJteS1OIiwiZ2FtZS5jb21tYW5kLmRpc2JhbmQtYXJteS1OIiwiZ2FtZS5jb21tYW5kLnNwbGl0LWFybXktaGFsZi1OIiwiZ2FtZS5jb21tYW5kLm1lcmdlLWFybWllcy1OLXdpdGgtTiIsImdhbWUuY29tbWFuZC5zdGFydC1hc3NhdWx0LU4iLCJnYW1lLmNvbW1hbmQuc3RvcC1hc3NhdWx0LU4iLCJnYW1lLmNvbW1hbmQucXVlcnktYmF0dGxlLWNvbnRyb2wtc25hcHNob3QtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS1iYXR0bGUtdHJhbnNpdGlvbi12MS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWJhdHRsZS10ZXJtaW5hbC10cmFuc2l0aW9uLXYxIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LWJhdHRsZS1yZWluZm9yY2VtZW50LWFzc2lnbm1lbnQtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS13YXItZW50cnktYXNzZXNzbWVudHMtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS1kZWNsYXJhYmxlLXdhcnMiLCJnYW1lLmNvbW1hbmQuZGVjbGFyZS13YXItTiIsImdhbWUuY29tbWFuZC5lbmZvcmNlLWRlbWFuZHMtTiIsImdhbWUuY29tbWFuZC5xdWVyeS1hcnJhbmdlLW1hcnJpYWdlLWNob2ljZXMiLCJnYW1lLmNvbW1hbmQuYXJyYW5nZS1tYXJyaWFnZS1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXdhci1vY2N1cGF0aW9uLXRhcmdldHMtdjEtTiIsImdhbWUuY29tbWFuZC5xdWVyeS13YXItdGVybWluYXRpb24tb3B0aW9ucy1OIiwiZ2FtZS5jb21tYW5kLnF1ZXJ5LXdhci10ZXJtaW5hdGlvbi10ZXJtcy12MS1OIiwiZ2FtZS5jb21tYW5kLnN1cnJlbmRlci13YXItTiIsImdhbWUuY29tbWFuZC5vZmZlci13aGl0ZS1wZWFjZS1OIiwiZ2FtZS5hZGFwdGVyLmV4YWN0LWJ1aWxkIiwiZ2FtZS5hZGFwdGVyLm1pbmltaXplZC1oZWFkbGVzcyIsImdhbWUuY29tbWFuZC5wYXVzZS1tYXAiLCJnYW1lLmNvbW1hbmQucmVzdW1lLW1hcCIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtMSIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtMiIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtMyIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtNCIsImdhbWUuY29tbWFuZC5zZXQtc3BlZWQtNSIsImdhbWUuY29tbWFuZC5zYXZlLWNoZWNrcG9pbnQiXX0=",
+        "hello_frame_sha256":  "80c10c40b971e5202bdcfc07426e01e0d83915cddc8f682c9a037f45d4cc0ec1",
+        "original_utf8":  "{\"type\":\"state_snapshot\",\"protocol_version\":1,\"snapshot_id\":\"native:7\",\"revision\":7,\"state\":{\"date_raw\":53220000,\"speed\":1,\"paused\":true,\"local_player_id\":0,\"map_ready\":true,\"played_character\":{\"character_id\":0,\"alive\":true,\"stress_points\":0,\"event_trait_membership\":{\"schema\":\"xar.ck3.player-event-trait-membership/v1\",\"game_version\":\"1.20.0.4\",\"executable_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"status\":\"unavailable\",\"snapshot_revision\":7,\"date_raw\":53220000,\"played_character_id\":0,\"traits\":null,\"unavailable_reason\":\"current_player_frame_unavailable\"},\"betrothed_id\":null,\"primary_spouse_id\":null,\"spouse_ids\":[]},\"played_character_gold\":{\"raw\":0,\"scale\":100000},\"played_character_prestige\":{\"raw\":0,\"scale\":100000},\"played_character_piety\":{\"raw\":0,\"scale\":100000},\"one_life_settlement\":null,\"active_event\":null,\"pending_character_interaction\":null,\"active_wars\":[],\"player_armies\":[],\"last_checkpoint_submission\":null,\"history\":[]}}",
+        "sha256":  "5753896df04cf43401bb152670cbe47a84ea7d82dbe32ecb87c20f5024edd005",
+        "frame_base64":  "zwMAAHsidHlwZSI6InN0YXRlX3NuYXBzaG90IiwicHJvdG9jb2xfdmVyc2lvbiI6MSwic25hcHNob3RfaWQiOiJuYXRpdmU6NyIsInJldmlzaW9uIjo3LCJzdGF0ZSI6eyJkYXRlX3JhdyI6NTMyMjAwMDAsInNwZWVkIjoxLCJwYXVzZWQiOnRydWUsImxvY2FsX3BsYXllcl9pZCI6MCwibWFwX3JlYWR5Ijp0cnVlLCJwbGF5ZWRfY2hhcmFjdGVyIjp7ImNoYXJhY3Rlcl9pZCI6MCwiYWxpdmUiOnRydWUsInN0cmVzc19wb2ludHMiOjAsImV2ZW50X3RyYWl0X21lbWJlcnNoaXAiOnsic2NoZW1hIjoieGFyLmNrMy5wbGF5ZXItZXZlbnQtdHJhaXQtbWVtYmVyc2hpcC92MSIsImdhbWVfdmVyc2lvbiI6IjEuMjAuMC40IiwiZXhlY3V0YWJsZV9zaGEyNTYiOiI5ODcwMkY4OEE1NDdDREUyRUFGMjlBODVGOTNCODVGNjhFRTRDRjgxNDgzMzZBNEY3QUZBRUI3NTMxOURENTE4Iiwic3RhdHVzIjoidW5hdmFpbGFibGUiLCJzbmFwc2hvdF9yZXZpc2lvbiI6NywiZGF0ZV9yYXciOjUzMjIwMDAwLCJwbGF5ZWRfY2hhcmFjdGVyX2lkIjowLCJ0cmFpdHMiOm51bGwsInVuYXZhaWxhYmxlX3JlYXNvbiI6ImN1cnJlbnRfcGxheWVyX2ZyYW1lX3VuYXZhaWxhYmxlIn0sImJldHJvdGhlZF9pZCI6bnVsbCwicHJpbWFyeV9zcG91c2VfaWQiOm51bGwsInNwb3VzZV9pZHMiOltdfSwicGxheWVkX2NoYXJhY3Rlcl9nb2xkIjp7InJhdyI6MCwic2NhbGUiOjEwMDAwMH0sInBsYXllZF9jaGFyYWN0ZXJfcHJlc3RpZ2UiOnsicmF3IjowLCJzY2FsZSI6MTAwMDAwfSwicGxheWVkX2NoYXJhY3Rlcl9waWV0eSI6eyJyYXciOjAsInNjYWxlIjoxMDAwMDB9LCJvbmVfbGlmZV9zZXR0bGVtZW50IjpudWxsLCJhY3RpdmVfZXZlbnQiOm51bGwsInBlbmRpbmdfY2hhcmFjdGVyX2ludGVyYWN0aW9uIjpudWxsLCJhY3RpdmVfd2FycyI6W10sInBsYXllcl9hcm1pZXMiOltdLCJsYXN0X2NoZWNrcG9pbnRfc3VibWlzc2lvbiI6bnVsbCwiaGlzdG9yeSI6W119fQ==",
+        "frame_sha256":  "babf02f9661bafdf1f7c9ec1d2b57f1b739266536cca25f0116eff3e0962a2fd",
+        "chain_prefix":  "zero-minus2",
+        "chain_originals":  [
+                                {
+                                    "step":  "01.query0",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.01.query0.request.json",
+                                                                       "bytes":  23,
+                                                                       "sha256":  "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1",
+                                                                       "original_utf8":  "{\"expected_revision\":7}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.01.query0.response.json",
+                                                                        "bytes":  708,
+                                                                        "sha256":  "b8e35463e324a9b472d7660522b2212f204ba512b2208c410e8c0db4e5064fe9",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-1-query0\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private--2\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":3,\"container_generation\":9808874869469701221,\"date_raw\":53220000,\"actor_character_id\":0,\"target_character_id\":-2,\"target_opinion_of_actor\":37,\"active_scheme_count\":0,\"matching_sway_active\":false,\"native_complete_can_send\":true,\"native_legal_now\":true,\"native_failure_classification\":\"\",\"active_sway_instances\":[]},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.01.query0.request-id.txt",
+                                                                         "bytes":  25,
+                                                                         "sha256":  "933ec66d0244f388972a4485a0fd7b2dc463726d11dc302c9f3382948d2ac5f7",
+                                                                         "original_utf8":  "flow-zero-minus2-1-query0"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "02.start",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.02.start.request.json",
+                                                                       "bytes":  178,
+                                                                       "sha256":  "e95c5f298d1de51f161ced661a30e2f7f639e0b3c88766f08570200044c0fefc",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"action_id\":\"sway-flow-zero-minus2\",\"expected_capture_epoch\":3,\"expected_container_generation\":9808874869469701221,\"expected_target_opinion_of_actor\":\"37\"}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.02.start.response.json",
+                                                                        "bytes":  626,
+                                                                        "sha256":  "cb97b4dd378cb17d2e3b44a76c089867c06caca6a9f6c355895a3a96060d142f",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-2-start\",\"ok\":true,\"result\":{\"step\":\"submit-active-scheme-sway-v1-private--2\",\"accepted\":true,\"status\":\"submitted_verification_pending\",\"private_build\":true,\"advertised\":false,\"active_scheme_sway_formal\":{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"submitted_verification_pending\",\"action_id\":\"sway-flow-zero-minus2\",\"actor_character_id\":0,\"target_character_id\":-2,\"pre_capture_epoch\":4,\"pre_container_generation\":9808874869469701221,\"pre_date_raw\":53220000,\"submit_call_count\":1,\"receipt_pending\":true},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.02.start.request-id.txt",
+                                                                         "bytes":  24,
+                                                                         "sha256":  "2ba68ecc11df6113eead4ca51957c4295fcf83cb57d8918a4e0f341b02cc62b8",
+                                                                         "original_utf8":  "flow-zero-minus2-2-start"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "03.receipt",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.03.receipt.request.json",
+                                                                       "bytes":  59,
+                                                                       "sha256":  "7fd6f3a5dd73e661de56be6c28e27c0baf769ff86b978460d22a8c107a9805e3",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"action_id\":\"sway-flow-zero-minus2\"}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.03.receipt.response.json",
+                                                                        "bytes":  577,
+                                                                        "sha256":  "b345d90c8f3bd9c32b1c231d15c3792100104926480f1607894d447dbd320fa0",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-3-receipt\",\"ok\":true,\"result\":{\"step\":\"receipt-active-scheme-sway-v1-private--2\",\"accepted\":true,\"status\":\"applied\",\"private_build\":true,\"advertised\":false,\"active_scheme_sway_formal\":{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"applied\",\"action_id\":\"sway-flow-zero-minus2\",\"post_capture_epoch\":5,\"post_container_generation\":7122294161688811748,\"post_date_raw\":53220000,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"postcondition_verified\":true},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.03.receipt.request-id.txt",
+                                                                         "bytes":  26,
+                                                                         "sha256":  "e862c8e2d57246e85d2ff0ae6f1fba638dbb3d5e85415ca761d884b25465c503",
+                                                                         "original_utf8":  "flow-zero-minus2-3-receipt"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "04.post-start",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.04.post-start.request.json",
+                                                                       "bytes":  23,
+                                                                       "sha256":  "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1",
+                                                                       "original_utf8":  "{\"expected_revision\":7}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.04.post-start.response.json",
+                                                                        "bytes":  861,
+                                                                        "sha256":  "cff0acb2fc1c47ba5b655c52ba6e277ed9832ee84d457416e206b1787b6c5754",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-4-post-start\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private--2\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":6,\"container_generation\":7122294161688811748,\"date_raw\":53220000,\"actor_character_id\":0,\"target_character_id\":-2,\"target_opinion_of_actor\":73,\"active_scheme_count\":1,\"matching_sway_active\":true,\"native_complete_can_send\":true,\"native_legal_now\":false,\"native_failure_classification\":\"\",\"active_sway_instances\":[{\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"target_character_id\":-2,\"progress\":1,\"progress_goal\":10,\"is_exposed\":false,\"is_frozen\":false}]},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.04.post-start.request-id.txt",
+                                                                         "bytes":  29,
+                                                                         "sha256":  "4ca8598bf4f6e6bb0d912b637e1978206b6a5fb087ca7d79cbb511014c04d1d9",
+                                                                         "original_utf8":  "flow-zero-minus2-4-post-start"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "05.finish-target",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.05.finish-target.request.json",
+                                                                       "bytes":  23,
+                                                                       "sha256":  "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1",
+                                                                       "original_utf8":  "{\"expected_revision\":7}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.05.finish-target.response.json",
+                                                                        "bytes":  864,
+                                                                        "sha256":  "b8586ef9d3d8759bf4c90ef95c71c5bcd90bf9f44fe2735b4fb870748ac3d6dd",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-5-finish-target\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private--2\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":7,\"container_generation\":7122294161688811748,\"date_raw\":53220000,\"actor_character_id\":0,\"target_character_id\":-2,\"target_opinion_of_actor\":73,\"active_scheme_count\":1,\"matching_sway_active\":true,\"native_complete_can_send\":true,\"native_legal_now\":false,\"native_failure_classification\":\"\",\"active_sway_instances\":[{\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"target_character_id\":-2,\"progress\":1,\"progress_goal\":10,\"is_exposed\":false,\"is_frozen\":false}]},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.05.finish-target.request-id.txt",
+                                                                         "bytes":  32,
+                                                                         "sha256":  "3961b9053baaf9423471a5e0ee172a05e2e79850b0825289bce76432eed4f46d",
+                                                                         "original_utf8":  "flow-zero-minus2-5-finish-target"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "06.finish-completion",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.06.finish-completion.request.json",
+                                                                       "bytes":  94,
+                                                                       "sha256":  "54f2713b1e1c6cf0816a81b68d68ed1066574b8fe1d7ebe9c9020e67a710e9ee",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"actor_character_id\":0,\"target_character_id\":-2,\"scheme_instance_id\":0}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.06.finish-completion.response.json",
+                                                                        "bytes":  1439,
+                                                                        "sha256":  "d87543b39ccd38df074d595089fe9807ceb52c1a08ae1fcf8a265f16d374a90e",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-6-finish-completion\",\"ok\":true,\"result\":{\"step\":\"query-sway-completion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_completion\":{\"schema\":\"xar.ck3.sway_completion.v1\",\"schema_version\":1,\"build_version\":\"1.20.0.4\",\"executable_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"adapter_id\":\"ck3-1.20.0.4-msvc-x64\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":0,\"target_character_id\":-2,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"native_source_kind\":\"native_scheme_storage\",\"current_instance_retention\":\"until_native_manager_purge\",\"instance_source_observed\":true,\"instance_present\":true,\"storage_slot_reused\":false,\"exact_instance_join_ready\":true,\"native_owner_raw\":0,\"owner_matches_actor\":true,\"owner_cleared\":false,\"native_status_observed\":true,\"native_status_raw\":0,\"native_status_key\":\"continue\",\"native_terminal_state_observed\":false,\"native_success_chance_observed\":false,\"native_success_chance_raw\":null,\"native_success_chance_scale\":100000,\"native_success_chance_unit\":\"percent\",\"native_can_continue_observed\":false,\"native_can_continue\":null,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.06.finish-completion.request-id.txt",
+                                                                         "bytes":  36,
+                                                                         "sha256":  "e52c1e5e02e15e718cdc553bfabba4507ad3289ab9c9624c5f88069b29f08c7a",
+                                                                         "original_utf8":  "flow-zero-minus2-6-finish-completion"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "07.finish-opinion",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.07.finish-opinion.request.json",
+                                                                       "bytes":  71,
+                                                                       "sha256":  "3aa12a4198211b389bd1520d0c33ff5b2bfeba0e388ba0cd17f5cfa4636301a3",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"actor_character_id\":0,\"target_character_id\":-2}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.07.finish-opinion.response.json",
+                                                                        "bytes":  746,
+                                                                        "sha256":  "ea67690dcad0136aeff1dafeb0e1beb855f61b77a28944c80927714a53a8393f",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-7-finish-opinion\",\"ok\":true,\"result\":{\"step\":\"query-sway-outcome-opinion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_outcome_opinion\":{\"schema\":\"xar.ck3.sway-outcome-opinion-v1\",\"build\":\"1.20.0.4\",\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":0,\"target_character_id\":-2,\"target_opinion_of_actor\":73,\"scheme_sway_opinion\":{\"observed\":true,\"present\":true,\"value\":12},\"sway_blocker_opinion\":{\"observed\":true,\"present\":false,\"value\":null},\"instance_terminal_outcome_observed\":false,\"cancel_outcome_observed\":false},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.07.finish-opinion.request-id.txt",
+                                                                         "bytes":  33,
+                                                                         "sha256":  "fe52cbd1edd77a164da768cb630f2955f5b78cd000b65d17f62d8d92bd684f41",
+                                                                         "original_utf8":  "flow-zero-minus2-7-finish-opinion"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "08.stop",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.08.stop.request.json",
+                                                                       "bytes":  166,
+                                                                       "sha256":  "ea20690c0eaf5f296b753ba4211943e2c433ab3015726be4432446e6f6be940d",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"action_id\":\"stop-sway-flow-zero-minus2\",\"actor_character_id\":0,\"target_character_id\":-2,\"scheme_instance_id\":0,\"scheme_instance_generation\":0}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.08.stop.response.json",
+                                                                        "bytes":  837,
+                                                                        "sha256":  "7b8c1b338a44dcde5e7289d7249fa2d16500fb4d14bc9bd5cc3e31d52004f8dd",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-8-stop\",\"ok\":true,\"error\":\"\",\"result\":{\"step\":\"stop-active-scheme-sway-v1-private\",\"accepted\":true,\"private_build\":true,\"advertised\":false,\"read_only\":false,\"backend_id\":\"native-headless\",\"status\":\"submitted_verification_pending\",\"sway_stop\":{\"schema\":\"xar.ck3.selected-sway-stop.v1\",\"action_id\":\"stop-sway-flow-zero-minus2\",\"status\":\"submitted_verification_pending\",\"actor_character_id\":0,\"target_character_id\":-2,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"snapshot_revision\":7,\"date_raw\":53220000,\"exact_ck3_build\":\"1.20.0.4\",\"exe_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"submit_call_count\":1,\"postcondition_verified\":false,\"terminal_observed\":false,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"}}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.08.stop.request-id.txt",
+                                                                         "bytes":  23,
+                                                                         "sha256":  "e899d557971aa43dba0a8db72f9a4fa303239ddc176d7b7a524a6438c8bf27f8",
+                                                                         "original_utf8":  "flow-zero-minus2-8-stop"
+                                                                     }
+                                              }
+                                },
+                                {
+                                    "step":  "09.post-stop",
+                                    "files":  {
+                                                  "request.json":  {
+                                                                       "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.09.post-stop.request.json",
+                                                                       "bytes":  94,
+                                                                       "sha256":  "54f2713b1e1c6cf0816a81b68d68ed1066574b8fe1d7ebe9c9020e67a710e9ee",
+                                                                       "original_utf8":  "{\"expected_revision\":7,\"actor_character_id\":0,\"target_character_id\":-2,\"scheme_instance_id\":0}"
+                                                                   },
+                                                  "response.json":  {
+                                                                        "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.09.post-stop.response.json",
+                                                                        "bytes":  1431,
+                                                                        "sha256":  "0e0168907a66c9106556adc8f317492585783650e4dcb68e741e2aae3e8a1bfa",
+                                                                        "original_utf8":  "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-zero-minus2-9-post-stop\",\"ok\":true,\"result\":{\"step\":\"query-sway-completion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_completion\":{\"schema\":\"xar.ck3.sway_completion.v1\",\"schema_version\":1,\"build_version\":\"1.20.0.4\",\"executable_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"adapter_id\":\"ck3-1.20.0.4-msvc-x64\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":0,\"target_character_id\":-2,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"native_source_kind\":\"native_scheme_storage\",\"current_instance_retention\":\"until_native_manager_purge\",\"instance_source_observed\":true,\"instance_present\":true,\"storage_slot_reused\":false,\"exact_instance_join_ready\":true,\"native_owner_raw\":0,\"owner_matches_actor\":true,\"owner_cleared\":false,\"native_status_observed\":true,\"native_status_raw\":0,\"native_status_key\":\"continue\",\"native_terminal_state_observed\":false,\"native_success_chance_observed\":false,\"native_success_chance_raw\":null,\"native_success_chance_scale\":100000,\"native_success_chance_unit\":\"percent\",\"native_can_continue_observed\":false,\"native_can_continue\":null,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"},\"backend_id\":\"native-headless\"}}"
+                                                                    },
+                                                  "request-id.txt":  {
+                                                                         "source":  "D:/ck3-state/resume91-m6-native/sameworld/wire/zero-minus2.09.post-stop.request-id.txt",
+                                                                         "bytes":  28,
+                                                                         "sha256":  "97765ee41f959f851d18592b90f4449166e6444a6f381b1f2b95f3ca55b34996",
+                                                                         "original_utf8":  "flow-zero-minus2-9-post-stop"
+                                                                     }
+                                              }
+                                }
+                            ]
+    }
+]
