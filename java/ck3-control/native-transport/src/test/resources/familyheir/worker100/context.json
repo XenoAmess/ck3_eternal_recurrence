@@ -1,0 +1,80 @@
+{
+  "schema": "xar.worker100-heir-intake-fixture/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "request": {
+    "arguments_ref": {
+      "bytes": 612,
+      "path": "opaque-retained-original/4d7d48a154ec2389005392349f0b1a5b34cb125a3e254c13dc427d77b6630b03",
+      "sha256": "4d7d48a154ec2389005392349f0b1a5b34cb125a3e254c13dc427d77b6630b03"
+    },
+    "before": {
+      "frame": {
+        "date_raw": "53144328",
+        "episode_run_id": "resume85_vanilla_game01_20261030",
+        "native_revision": "52",
+        "played_character_id": "31254",
+        "revision": "57",
+        "snapshot_id": "native:52"
+      },
+      "game": {
+        "creation_filetime": "134378397668266369",
+        "pid": 71464
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observation_version": 3
+    },
+    "deadline": "2026-10-30T17:36:39.641205900Z",
+    "operation": "query-observed-first-heir-marriage-legality-v1",
+    "session_id": "resume85_vanilla_game01_20261030",
+    "source": {
+      "exact_build": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-30T13:27:57.698762700Z",
+      "source_ref": {
+        "bytes": 19394,
+        "path": "opaque-retained-original/800ea150da5e8be786b34ced36ab28fa25ac22ed3c98654fe417e5b41f89f052",
+        "sha256": "800ea150da5e8be786b34ced36ab28fa25ac22ed3c98654fe417e5b41f89f052"
+      }
+    }
+  },
+  "arguments": {
+    "group_context": {
+      "build": "CROZIER4",
+      "connection_generation": 15,
+      "controls": {
+        "paused": true,
+        "map_ready": true,
+        "alive": true,
+        "speed": 3,
+        "episode_character_id": 31254,
+        "episode_run_id": "resume85_vanilla_game01_20261030",
+        "active_event": false,
+        "local_player_id": 1,
+        "betrothed_id": null,
+        "spouse_ids": [
+          36311
+        ],
+        "pending": null
+      }
+    },
+    "first_heir_id": 40526,
+    "root_query_sequence": 29,
+    "root_evidence": {
+      "path": "opaque-retained-original/6b47e7a4fde6bddf84933fe07c000783e77eaaec6f420b86d2a3a83c2e7c8c21",
+      "bytes": 5850,
+      "sha256": "6b47e7a4fde6bddf84933fe07c000783e77eaaec6f420b86d2a3a83c2e7c8c21"
+    }
+  },
+  "original_acknowledgement": {
+    "bytes": 398672,
+    "sha256": "43e3676399979cd98bc995495218af641d8488e36bd616ffd9cc547881dd71ab"
+  },
+  "expected": {
+    "request_id": "step-6-c733b0c606c0",
+    "subject_character_id": 40526,
+    "candidate_rows": 833,
+    "native_legal_rows": 833,
+    "query_sequence": 1
+  },
+  "scope": "Archived Native packet plus recorded request DATA; relocated ExactRef descriptions are opaque and never opened. No Root Known, entry, binding authority, live receipt or lease is constructed."
+}

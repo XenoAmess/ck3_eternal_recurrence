@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.wave3.governance.heirranking.HeirCandidateRanking.Adulthood;
 import org.xar.ck3.control.wave3.governance.heirranking.HeirCandidateRanking.AlliancePair;
 import org.xar.ck3.control.wave3.governance.heirranking.HeirCandidateRanking.LegalRow;
@@ -48,9 +50,8 @@ public final class HeirCandidateRankingConsumerPort {
     public static Evaluation evaluate(byte[] input) { return evaluate(decode(input)); }
 
     public static Request decode(byte[] input) {
-        ObjectNode request = StrictJson.object(StrictJson.parse(input),
+        ObjectNode request = StrictJson.object(parseInput(input),
                 Set.of("legality", "projection", "rejected_candidate_ids"));
-        encodeOpaqueJson(request);
         ObjectNode legality = object(request.get("legality"));
         ObjectNode projection = object(request.get("projection"));
         Set<BigInteger> rejected = new HashSet<>();
@@ -82,7 +83,7 @@ public final class HeirCandidateRankingConsumerPort {
 
     public static Evaluation evaluate(Request decoded) {
         if (!decoded.available()) { return empty(); }
-        ObjectNode request = object(StrictJson.parse(decoded.sourceJson()));
+        ObjectNode request = object(parseInput(decoded.sourceJson()));
         ArrayNode projectedJson = array(object(request.get("projection")).get("rows"));
         List<LegalRow> legalRows = decoded.legalRows();
         List<ProjectedRow> rows = decoded.rows();
@@ -113,6 +114,14 @@ public final class HeirCandidateRankingConsumerPort {
             unpriced.add("child_dynasty_result").add("alliance_result").add("alliance_war_obligation").add("betrothal_break_cost");
         }
         return new Evaluation(encodeOpaqueJson(choices), encodeOpaqueJson(reasons));
+    }
+
+    private static JsonNode parseInput(byte[] input) {
+        try { return FullJsonTree.parse(input, FullJsonTree.MAXIMUM_BYTES); }
+        catch (ContractViolationException failure) { throw failure; }
+        catch (IllegalArgumentException failure) {
+            throw new ContractViolationException("invalid heir ranking JSON", failure);
+        }
     }
 
     /** Shared strict compact-row projection; it conveys no native provenance or action authority. */

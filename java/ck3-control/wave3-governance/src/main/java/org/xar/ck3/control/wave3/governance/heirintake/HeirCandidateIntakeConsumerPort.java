@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.wave3.governance.heirranking.HeirCandidateRanking;
 import org.xar.ck3.control.wave3.governance.heirranking.HeirCandidateRanking.LegalRow;
 import org.xar.ck3.control.wave3.governance.heirranking.HeirCandidateRankingConsumerPort;
@@ -38,8 +40,7 @@ public final class HeirCandidateIntakeConsumerPort {
     public static Evaluation evaluate(byte[] input) { return evaluate(decode(input)); }
 
     public static Request decode(byte[] input) {
-        ObjectNode request = StrictJson.object(StrictJson.parse(input), Set.of("legal_rows", "rejected_candidate_ids"));
-        HeirCandidateRankingConsumerPort.encodeOpaqueJson(request);
+        ObjectNode request = StrictJson.object(parseInput(input), Set.of("legal_rows", "rejected_candidate_ids"));
         JsonNode legalRows = request.get("legal_rows");
         JsonNode rejectedIds = request.get("rejected_candidate_ids");
         StrictJson.require(legalRows instanceof ArrayNode && rejectedIds instanceof ArrayNode, "explicit candidate arrays required");
@@ -54,7 +55,7 @@ public final class HeirCandidateIntakeConsumerPort {
     }
 
     public static Evaluation evaluate(Request decoded) {
-        JsonNode legalRows = StrictJson.parse(decoded.sourceJson()).get("legal_rows");
+        JsonNode legalRows = parseInput(decoded.sourceJson()).get("legal_rows");
         var intake = HeirCandidateIntake.pick(decoded.legalRows(), decoded.rejected());
         ObjectNode result = StrictJson.object();
         ArrayNode picked = result.putArray("picked");
@@ -69,5 +70,12 @@ public final class HeirCandidateIntakeConsumerPort {
         ranking.put("conclusion", statistics.conclusion().wire());
         ranking.put("projected_count", statistics.projectedCount());
         return new Evaluation(HeirCandidateRankingConsumerPort.encodeOpaqueJson(result), intake.nextRichCandidateIds());
+    }
+    private static JsonNode parseInput(byte[] input) {
+        try { return FullJsonTree.parse(input, FullJsonTree.MAXIMUM_BYTES); }
+        catch (ContractViolationException failure) { throw failure; }
+        catch (IllegalArgumentException failure) {
+            throw new ContractViolationException("invalid heir intake JSON", failure);
+        }
     }
 }

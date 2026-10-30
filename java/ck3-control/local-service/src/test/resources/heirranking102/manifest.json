@@ -1,0 +1,10 @@
+{
+  "schema": "xar.family-ranking102-software-fixture/v1",
+  "original_inputs": 28,
+  "original_bytes": 2414819,
+  "template_bytes": 2292811,
+  "compressed_bytes": 83591,
+  "metadata_replacements": 157,
+  "floats": "exact original decimal tokens retained as symbolic decimal nodes",
+  "software_only": true
+}
