@@ -74,3 +74,17 @@ Codex CLI 的非交互模式支持 JSONL 事件输出和按 JSON Schema 请求�
 建议首轮选择少量已有明确验收标准的真实任务，覆盖日志分析、调用链检索、单模块修复和回归补充。记录任务通过率、云端用量、完整耗时、返工次数及本地资源峰值，再决定扩大哪些任务。先试一个本地执行器，优先复用现有工具，不把建设完整调度平台作为试验前提。
 
 开始实际接入需要明确服务地址、模型标识、接口类型、认证方式、上下文上限与并发容量。凭据通过执行环境提供，不写入文档。当前没有已验证的模型选型、服务部署或性能结论。
+
+## 2026-10-31 resume91：高并发、真实采用与审阅成本
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。用户明确续行并恢复高并发模型使用；源码HTTP统一由`/root/models91`协调，运行期selector仍由runtime独占，源码候选不计游玩决策。详细逐次事实见[resume91记录](autonomous-agent-progress/2026-10-31-resume91-models.md)、D:/ck3-state/model-dispatch91/STATUS91.json与REVIEWS91.json，能力对照见[能力边界](local-model-capability-boundary-2026-10-28.md#2026-10-31-resume91方法与整图候选的实际对照)。
+
+19:06:52.777474Z这一明确观察点已97真实任务/121HTTP尝试；82个stop/完整JSON，15个length截断。客户端POST_BEGIN→ATTEMPT_END区间峰值25；18:54:37独立服务metrics为running24/waiting0/KV57.58%。客户端区间含网络/等待，不能等同服务推理数。第三批24次首流ConnectionReset10054保留partial后按配置各重试一次；接口失败与length/语义失败分记。继续使用8080/qwen38-coder、固定三消息完整源码前缀、有限max_tokens，SSE有效content TTFT/headers/总耗时及usage分别保留；cached未报告，不从耗时推缓存或吞吐收益。
+
+本轮已有多种真实局部采用，不能把完整JSON数当工程成功数：SEM103两行typed完整SEM parser/reference候选经actual canonical102全readSettledSameGame、529451B历史SEM transport与错Game guard2P后S/Z采用；install104 activeGame抽取及catalog末尾候选由owner补本地入口/可见性，strict2叶编译0与既有deadline4P，真实慢catalog仍由105现场检验。Family source首轮rawSHA目标有帮助但大小写错误，owner补后1P，未POST第二轮取消，不能记模型原样成功。
+
+其它有原件的软件结果包括：Context纠错guard/fixture后28P（owner新增反控）；liege17纠错header对原118B8分支；Surrender反馈后新单方法3参数3P；converter120原样20场景100业务语义检查，另263基础设施；succession窄callback原样，owner映射/main后2case、26总检查=22语义+4身份；special三Java raw-return方法原样36断言；death图/期望/次数保留，owner仅namespace和8name后8组原278B差分及guardedcycle。Java JSON从整类真实编译失败收窄为imports/helper/2constants后原样装配，strict2source0、2P；4.306s窄响应与62.051s整类响应上下文/输出均不同，仅作事实，不据此宣称加速比或缓存收益。旧pair132本轮原样Java对原71B12270例/0差异属于旧候选新验证，不增加本轮POST。
+
+审阅也是需要校准的工作：M2/Java JSON字符串曾被owner误读外层JSON转义，实际提取源码确认后撤回；M2因此多发的第二轮逐字无diff，不能记新修复，随后真实javac字符字面量错误才触发第三轮。Java material曾误报不存在API，逐声明确认Binding/FrameLoader/Original getters/settled都存在后撤回，最终未编拒绝原因是authority/证据closure不完整。协调者hashJava末任务叠加另一Return schema造成冲突，缺源码归封包错误，不归模型Java编译失败；新任务整份替换末消息为唯一schema。GUI02缺首轮已接受selector正文而只给无工具模型响应路径，属上下文缺口。这些成本和勘误都保留在REVIEWS，不能全算模型推理失败。
+
+大图候选出现实质ABI/指针/返回值误读和重复imports/正文直至length；对应链在重复具体失败后由owner接管，后继只派仍未完成的typed小方法、数值reproducer或实际诊断。HTTP高并发按真实需求、队列、错误和资源滚动；未以已完成分析、无需求调用或每岗配额维持数量。没有证据支持全工程成功率、净token节省或永久能力上限。

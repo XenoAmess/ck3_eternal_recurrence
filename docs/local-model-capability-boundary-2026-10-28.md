@@ -1,0 +1,19 @@
+
+## 2026-10-31 resume91：方法与整图候选的实际对照
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。本节只归并有实际请求、原始输出及owner审阅/编测的事实；更多逐次指标见[resume91模型记录](autonomous-agent-progress/2026-10-31-resume91-models.md)和[可行性本轮补记](local-model-executor-feasibility-2026-10-28.md#2026-10-31-resume91高并发真实采用与审阅成本)。中央索引为D:/ck3-state/model-dispatch91/REVIEWS91.json，各REQUEST是真正发出的三消息，所有partial/length/重试仍保留。
+
+| 实际任务范围 | 结果与owner成本 | 可支持的分配判断 |
+| --- | --- | --- |
+| 完整SEM预算两行修复 | SEM103首轮typed parser/ref原样接受，strict0、actualcanonical102全链与错Game2P，S/Z采用；输入有确切栈、相邻API和完整reader声明 | 精确诊断与完整API下的小方法可以直接产生可用候选；不能外推完整continuity图自主恢复。 |
+| 本地catalog期限与真实操作期限分离 | install104抽取/尾端有用；owner补入口和helper可见性，2叶strict0与既有4P；慢catalog现场另记 | 跨两叶小合同修改可辅助，但遗漏另一个实际入口的传播成本必须算owner。 |
+| Consumer/fixture实际编译纠错 | Context首轮捏造canonical方法且byte[]身份比较，第二轮原样guard/fixture通过28P；liege17首轮数组118/119与假文件路径拒绝，第二轮header通过原码8分支；Surrender反馈后原样3P | 一次静态/编译失败不等能力上限；提供确切声明和真实诊断后的窄纠错有成功证据，未形成自主工具测试闭环。 |
+| 单typed方法与fixture装配 | converter120原样20scene/100语义；succession73行callback原样、owner映射/main后22语义+4身份；special3Java方法原样36断言但解释metadata拒绝；death9图owner修namespace/name后8原码+1guarded通过 | 源码、解释和验收范围分别采用；fixture总Check不能全部写业务语义。owner提供布局、ABI、oracle/main必须计提示和人工成本。 |
+| JSON完整测试类→小槽纠错 | 完整类两轮真实javac失败，窄imports/helper/constants机械装配后strict0/2P；常量旧误判撤回，golden保持 | 缩输出并保实际API可能闭合任务；上下文与输出变动的耗时不能用来量化模型能力、缓存或加速。 |
+| 大范围ASM/多源图 | M0wrapper两完整候选错布局/loader、M6mode4两语义轮错ABI/逻辑、M7preload两轮错参数/分支、bank31两轮错LEA/数据流，owner接管 | 当前fullASM/layout仍owner主导；不继续让模型复述已由owner完成的答案。局部失败仅支持当前任务与条件的分配，不给永久推理上限。 |
+| 整文件/整图输出控制 | router10500输出抄原正文，Java9重复imports至9000length，另有6500回归重复includes；后继改真小源helper/core和method-only | length是输出控制失败，不能当可编候选或拼partial；只对真实未完成小方法作有诊断的新任务。 |
+| 跨21源码的Focus装配 | task1只回显事实/任务、无实现；material所用API实际存在但缺authority/journal/对象同一性/证据及producerclosure，未编未采用 | 输入规模不是实现规模；整图连续性/closure由owner收敛，后继可派具体helper。不得把owner撤回的API误报计模型发明。 |
+
+强提示的数值纠错另保范围：M4 scale/selector请求在失败后给精确one-opIMUL高低语义、Math.multiplyHigh及已闭定点/threshold合同，不能将后继候选说成独立逆向。当前源码接受、严格编译、实际差分、生产采用与Game分别记录，不从完整JSON或单次返回直接越级。
+
+审阅/封包失误单列：M2 random-Java及JavaJSON/CASE的显示层转义误读已撤回；M2第二轮因此无实际源码diff。hashJava第一次最终schema冲突由协调者负责，第二次无冲突后的具体错误独立审。GUI02缺新selector正文的上下文缺口不授简单语句失败上限。24次10054重试与15次length在对应观察点分记接口/输出问题，均不是工程采用；cached未知不猜测。此轮没有可支持的整体成功率或能力上限统计。

@@ -2,6 +2,8 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。源码模型 HTTP 唯一协调为 `/root/models91`；运行期决策 HTTP 由 `/root/runtime91` 独占并预留至少一个请求位。用户本次明确续行并要求高并发使用本地模型，旧休假 STOP 只作历史保存，未改写旧队列或原件。
 
+本轮可复用经验已归入既有[可行性记录](../local-model-executor-feasibility-2026-10-28.md#2026-10-31-resume91高并发真实采用与审阅成本)与[能力边界记录](../local-model-capability-boundary-2026-10-28.md#2026-10-31-resume91方法与整图候选的实际对照)，并与此页互链。两全局文件只追加有原件的本轮结论，owner审阅勘误、schema冲突与真实模型错误分别归因。
+
 采用 `docs/local-model-executor-config.json` 的 `8080/qwen38-coder`、固定三消息源码前缀、temperature0、thinking=false、有限 max_tokens、SSE 有效内容 TTFT/headers/总耗时/usage 分记；cached 字段未报告时保持未知。复用旧 call90.py 的维护副本 `D:/ck3-state/model-dispatch91/call91.py`，未新增调度服务。每一实际请求的完整 body 为各任务目录 `REQUEST.json`，变化任务真实位于最后消息；不是仅 POST 路径或 manifest。
 
 ## 19:06:52Z 后继观察与审阅勘误
