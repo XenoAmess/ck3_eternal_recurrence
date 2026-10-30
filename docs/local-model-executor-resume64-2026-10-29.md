@@ -362,4 +362,22 @@ Root明确实际Supplier API方向并要求缩窄R2：Prepared持有真实clock/
 
 R2 JSON完整三个class hunk，主Supplier链/actual.requireCurrent与requireArchive之后唯一get已实现，现有body沿用同一deadline；没有新helper、Core clock或硬编码60。但实际after直接替换原Instant签名，没补明确要求的兼容重载；caller_migration自己承认遗漏并称will add，代码中并未增加，10个原测试不能据该说明算兼容。supplier及返回Instant也未补要求的非null契约。52保原样候选、实际锚计数与待Root必要适配/编测；中央未改源/跑TEST/授采用，不自动R3或续旧题，当前coding caller0。
 
+Root后继报告R2三个主体hunk实际采用，owner补Core/Driver两Instant兼容重载及supplier/result非null，无R3。三prod `-Xlint:all,-path -Werror` javac0/3.425s；原TEST Peer.close旧try warning首Werror1保留，仅排该既有try后TEST编译0/2.334s。唯一必要真实Win32管道/Driver/writer用例1P/0skip/5.862s：过期Instant拒绝0新Native、archive拒绝supplier0调用、正常fresh supplier1调用、同Game新HELLO完整Driver与原总三write/无START重放。四叶S/Z STOP02:21:10.976Z，reload03实际HTTP200/4.633s；来源为Root实际结果消息，未伪称中央另跑或已读未提供路径的子回执。模型主链+owner兼容修正与真实软件P分列，不授raw model compile/TEST P或实际Game动作/游戏日。53追加事实，不新HTTP/测试。
+
+### HEAD74同captured Head历史状态校验
+
+实际47线程原件`.../dev-resume65/reload03/THREAD47-ONE.txt`显示DriverReadOnlyLineage.verifyBetween206→Session.requireHistoricalState340→Store.head→全History.preview；Gov已真经finance.readPort，非旧绕过推测。Root后报47在02:26:14.183Z以canonical lookup current query deadline expired返回INTERNAL_FAILURE、worker exit4/next48返回，同Game保留。中央按Root只给当前S Writer4fed18d2的六个完整相关方法、Head/Pin/Session与Ledger必要声明、两个同类TEST方法和关键栈，27,252B/稳定17,913字符，有限2,200输出，不全类/全环境/新TEST。
+
+02:45:53.550–02:45:59.401Z唯一首POST HTTP200/stop、CLI0，6,036输入/826输出，headers0.968s/TTFT0.977s/总5.850s，cache未报、无retry、metrics实际HTTP200/known；`model-coordinator64/game-historical-state-head74`原CONTENT/RESULT/SSE自然返回即交Root编测。完整单方法hunk把两store.head换this.head，返回前逐实际Head.documents的每个Pin做LedgerFiles.verify、逐absent requireAbsent，再sameHead；保sequence/digest、实际target读取、writer锁和原异常包装。Head实际为List<Pin>/List<Path>，未用缓存metadata冒称全DATA已验。54记待Root实际编测/采用，中央0源写/TEST/自动后题，不据200或减少parse方向授性能/Game推进。
+
+### HEAD75由Root纠正全账本审计要求
+
+Root报告HEAD74已载入DEV66，同Game48线程已越过JSON parse，却耗在新加全部documents的LedgerFiles.verify/JNA identity。两条全账本循环原为Root明确要求，因此该成本是Root设计方向纠正，不记模型raw失败。Root要求删只读历史状态中的两for，保exclusive Session.head、capturedStateAt/capturedEventAt/readPinned对实际目标anchor/event的bytes/pin和expectedDigest、前后head/CAS；真实提交仍查全部原pins/absent，不新加无关WAL audit。48后在02:57:50.041Z以runtime context deadline expired/INCOMPLETE_MIGRATION返回、0动作，不能把线程热点称Windows身份API故障。
+
+HEAD75只给必要方法/字段合同和实际栈关键段，11,317B、稳定7,198字符、有限1,500输出。打包器先误限private readPinned、再误认LedgerFiles.read返回byte[]，实际public/Document声明已修；两次均POST前错误，非模型/服务失败，没有错误调用后重复POST。03:01:31.462–03:01:34.636Z实际首POST HTTP200/stop、CLI0，2,336输入/324输出，headers0.957s/TTFT0.960s/总3.174s，cache未报、无retry、metrics known。`model-coordinator64/game-historical-target-head75`完整原件自然返回即交Root。
+
+原样单hunk仅删两for，提供前缀exact1；模型diagnosis称identity failures过强，中央已提醒实际仅证明全扫成本和期限失败。55记当前待Root目标引用篡改用例/采用，不授raw编测或Game成功；中央0源写/测试/自动后题。
+
+Root最终实际采用该两for删除，内容原样，仅在requireHistoricalState方法作用域exact1应用；原hunk全Writer有2处匹配，未删除queryCommitted等相似循环。提供的窄前缀exact1不代表全文件唯一，作用域适配归owner。生产javac0/1.759s（既有try警告类别显式排除）、TEST0/1.571s，必要整类3P/0skip/4.954s：目标历史pin实际替换、错误digest/未来sequence均拒，真实commit前态/物理证据/失败cache清理保留。两叶S/Z STOP03:03:06.600Z，DEV66/reload01实际HTTP200/3.837s，来源为Root验收消息；尚非Game动作，49待实际。56追加原样删除采用+owner作用域处理/软件验收，不改原HTTP/TTFT或追加模型/测试，当前coding0并结束，无自动后题。
+
 HEAD70实际采用候选后继：云端owner遭服务容量错误后，Root接管唯一D Writer叶，采用模型前两hunk主体；补充仅COMMITTED成功保readback，其它disposition仍清，direct duplicate入口先清缓存，保原recovery/失败行为。未采用模型NO_CHANGE缓存actual或扩大duplicate缓存优化。最终生产c312ccb1…，单源Java21/all,-path编译0/1.772s，保旧try资源warning，未宣称Werror；新TEST68efdda7…严格Werror编译0/1.458s。实际原存储write callback返回边界取当前Head，旧源1F/3.076s精确检出commit finally清缓存；最终1P/0skip/3.974s，三次真实物理commit、下一Head替换/原历史proof、实际storage return Error后丢缓存/查询已有durable结果不重提、等byte新FileID事件替换被拒均通过。首runner selector含slash导致双方exit2/0tests，只算参数错误，修后才上述R/G；全四hunk原稿未直接编测，不制造raw模型失败。`D:/ck3-state/writer-session-head70/READY01.json`已01:40:04Z直交运行岗，不等文档/来源签发/whole测试；真实Game性能与动作/日期效果仍待采用和业务重载实测。本段machine_id沿本文件本机标注，不授另一机器信用。

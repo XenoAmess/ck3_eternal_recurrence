@@ -61,6 +61,34 @@ final class WriterCommitReadbackRetentionTest {
         });
     }
 
+    @Test void historicalStateVerifiesTheRequestedEventAndRefusesItsPhysicalReplacement() throws Exception {
+        WriterFixture fixture = new WriterFixture(directory.resolve("historical"));
+        var writer = new ContinuityWriter(fixture.layout,
+                List.of(LedgerFiles.read(fixture.source, 65536).pin().reference()), new TransitionAuthority() {
+            @Override public String revalidate(ContinuityState before, Request request) {
+                return ContinuityJson.digest(request.detailsObject());
+            }
+            @Override public ContinuityState reduce(ContinuityState before, Request request) {
+                return OriginalWindowReducer.reduce(before, request);
+            }
+        }, StorageWriteGuardTestSupport.forLayout(fixture.layout));
+        writer.locked(same -> {
+            Receipt first = same.commit(same.preview(WriterFixture.settled("historical-first", 1024, 2)));
+            Receipt second = same.commit(same.preview(WriterFixture.settled("historical-second", 1048, 3)));
+            assertEquals(first.head().toJson(), same.requireHistoricalState(1, ContinuityJson.digest(first.head().toJson())).toJson());
+            assertEquals(second.head().toJson(), same.requireHistoricalState(2, ContinuityJson.digest(second.head().toJson())).toJson());
+            assertThrows(IOException.class, () -> same.requireHistoricalState(1, "0".repeat(64)));
+            assertThrows(IOException.class, () -> same.requireHistoricalState(3, ContinuityJson.digest(second.head().toJson())));
+            Path original = fixture.layout.event(1);
+            Path replacement = original.resolveSibling("historical-replacement.json");
+            Files.write(replacement, Files.readAllBytes(original));
+            Files.move(replacement, original, StandardCopyOption.REPLACE_EXISTING);
+            assertThrows(IOException.class, () -> same.requireHistoricalState(1, ContinuityJson.digest(first.head().toJson())));
+            assertFalse(Files.exists(fixture.layout.event(3)));
+            return null;
+        });
+    }
+
     @Test void completedReadbackSurvivesCommitReturnButFailureAndChangedDataDoNotBorrowIt() throws Exception {
         WriterFixture fixture = new WriterFixture(directory.resolve("actual-commits"));
         StorageWriteGuard delegate = StorageWriteGuardTestSupport.forLayout(fixture.layout);

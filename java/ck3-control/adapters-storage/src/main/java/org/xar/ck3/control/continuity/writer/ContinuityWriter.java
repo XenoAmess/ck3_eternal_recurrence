@@ -331,13 +331,13 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             if (sequence < 0 || expectedDigest == null || !expectedDigest.matches("[0-9a-f]{64}"))
                 throw new IOException("exact finite historical sequence and lowercase state digest required");
             try {
-                Head actual = store.head();
+                Head actual = this.head();
                 if (sequence > actual.state().sequence())
                     throw new IOException("requested historical state is beyond the actual canonical head");
                 ContinuityState retained = capturedStateAt(actual, sequence);
                 if (!ContinuityJson.digest(retained.toJson()).equals(expectedDigest))
                     throw new IOException("historical state differs from the exact expected canonical digest");
-                requireSameHead(actual, store.head());
+                requireSameHead(actual, this.head());
                 return retained;
             } catch (org.xar.ck3.control.contracts.ContractViolationException invalidHistory) {
                 throw new IOException("actual finite canonical historical state is unavailable", invalidHistory);
