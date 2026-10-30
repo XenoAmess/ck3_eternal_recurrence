@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.25)
+project(xar_sway_common_callsite_failure_fixture LANGUAGES CXX)
+include(CTest)
+if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+  message(FATAL_ERROR "The Sway common callsite fixture requires Windows x64 MSVC")
+endif()
+include("${CMAKE_CURRENT_LIST_DIR}/../sway_common_termination_callsite_12004_failure.cmake")

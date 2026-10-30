@@ -175,6 +175,7 @@
 #include "ck3_12002_feast_planner_private_transport_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
+#include "xar_bridge/sway_invalidation_branch_12004.hpp"
 #include "xar_bridge/sway_common_termination_callsite_observer_12004.hpp"
 #endif
 #include "xar_bridge/ck3_12002_war_entry.hpp"
@@ -701,8 +702,14 @@ static xar::ck3_12002::SwayTerminationInstall12002
     g_sway_completion_termination_install12002{};
 static xar::ck3_12004::SwayCommonTerminationCallsiteObserver12004State
     g_sway_common_termination_callsite_observer12004{};
+static xar::ck3_12004::SwayCommonTerminationCallsiteObserver12004State
+    g_sway_common_termination_purge_callsite_observer12004{};
+enum class SwayInvalidationReasonSinkBuildV1 { legacy, actual4 };
 struct SwayInvalidationReasonSinkContext12002 {
+  SwayInvalidationReasonSinkBuildV1 build =
+      SwayInvalidationReasonSinkBuildV1::legacy;
   xar::ck3_12002::SwayInvalidationReasonBindings12002 bindings{};
+  xar::ck3_12002::SwayExecutionBindings12002 actual4_bindings{};
   xar::ck3_12002::SwayInvalidationReasonRecorder12002 recorder{};
 };
 static SwayInvalidationReasonSinkContext12002
@@ -710,6 +717,15 @@ static SwayInvalidationReasonSinkContext12002
 static void CaptureSwayInvalidationReasonSink12002(
     void *opaque, const void *effect, const void *effect_context) noexcept {
   auto &context = *static_cast<SwayInvalidationReasonSinkContext12002 *>(opaque);
+  if (context.build == SwayInvalidationReasonSinkBuildV1::actual4) {
+    if (!context.recorder.ObserverAttached()) return;
+    xar::ck3_12002::SwayInvalidationReasonSource12002 source{};
+    if (xar::ck3_12004::CaptureSwayInvalidationReason12004(
+            context.actual4_bindings, effect, effect_context, source) ==
+        xar::ck3_12002::SwayInvalidationReasonCapture12002::captured)
+      (void)context.recorder.Append(source);
+    return;
+  }
   (void)xar::ck3_12002::CaptureAndRecordSwayInvalidationReason12002(
       context.bindings, effect, effect_context, context.recorder);
 }
@@ -717,9 +733,13 @@ struct SwayCompletionExecutionWorkerLifetime12002 {
   ~SwayCompletionExecutionWorkerLifetime12002() noexcept {
     // Ordinary Stop has no suspended-primary proof; retain process-lifetime
     // backing and publish detached availability without claiming restoration.
-    const bool common_restored =
+    const bool common_primary_restored =
         xar::ck3_12004::UninstallSwayCommonTerminationCallsiteObserver12004(
             g_sway_common_termination_callsite_observer12004, false);
+    const bool common_purge_restored =
+        xar::ck3_12004::UninstallSwayCommonTerminationCallsiteObserver12004(
+            g_sway_common_termination_purge_callsite_observer12004, false);
+    const bool common_restored = common_primary_restored && common_purge_restored;
     g_sway_completion_termination_recorder12002
         .SetCommonNativeEndObserverAttached12004(
             false, common_restored
@@ -30614,9 +30634,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
       return FALSE;
     }
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
-    if (!xar::ck3_12002::InstallSwayCompletionExecution12004(
+    g_sway_invalidation_reason_sink12002.build =
+        SwayInvalidationReasonSinkBuildV1::actual4;
+    g_sway_invalidation_reason_sink12002.actual4_bindings =
+        xar::ck3_12004::BindSwayInvalidationBranchImage12004(base, sha);
+    if (!g_sway_invalidation_reason_sink12002.actual4_bindings.enabled)
+      return FALSE;
+    if (!xar::ck3_12002::InstallSwayCompletionExecutionWithSecondarySink12004(
             base, sha, g_sway_completion_execution_recorder12002,
-            g_sway_completion_execution_install12002))
+            g_sway_completion_execution_install12002,
+            &CaptureSwayInvalidationReasonSink12002,
+            &g_sway_invalidation_reason_sink12002))
       return FALSE;
     xar::ck3_12004::SwayCommonTerminationCallsiteObserver12004Environment
         sway_common_environment{};
@@ -30628,10 +30656,20 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     if (sway_common_environment_ready) {
       // This existing PrepareStartup call runs before the primary is resumed.
       sway_common_environment.primary_thread_suspended_proven = true;
-      sway_common_installed =
+      const bool sway_common_primary_installed =
           xar::ck3_12004::InstallSwayCommonTerminationCallsiteObserver12004(
               g_sway_common_termination_callsite_observer12004,
               sway_common_environment);
+      auto sway_common_purge_environment = sway_common_environment;
+      sway_common_purge_environment.site =
+          xar::ck3_12004::SwayCommonTerminationSite12004::call_2a48c7b;
+      const bool sway_common_purge_installed =
+          xar::ck3_12004::InstallSwayCommonTerminationCallsiteObserver12004(
+              g_sway_common_termination_purge_callsite_observer12004,
+              sway_common_purge_environment);
+      // Retained uncertain patch backing is not successful observation setup.
+      sway_common_installed =
+          sway_common_primary_installed || sway_common_purge_installed;
     }
     g_sway_completion_termination_recorder12002
         .SetCommonNativeEndObserverAttached12004(
@@ -30643,12 +30681,15 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
             base, sha, g_sway_completion_termination_recorder12002,
             g_sway_completion_termination_install12002))
       return FALSE;
+    g_sway_invalidation_reason_sink12002.recorder.SetObserverAttached(true);
 #endif
     return xar::ck3_12002::InstallBattleTerminalJournalV1(
         g_battle_terminal_journal_12002_v1, environment) ? TRUE : FALSE;
   }
   if (xar::game::IsReviewedCrozierAdapter(*game)) {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+    g_sway_invalidation_reason_sink12002.build =
+        SwayInvalidationReasonSinkBuildV1::legacy;
     g_sway_invalidation_reason_sink12002.bindings =
         xar::ck3_12002::BindSwayInvalidationReasonImage12002(
             reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),

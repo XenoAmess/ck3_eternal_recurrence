@@ -68,6 +68,14 @@ bool InstallSwayCompletionExecutionWithSecondarySink12002(
     SwayCompletionSecondarySink12002 secondary_sink,
     void *secondary_sink_context) noexcept;
 
+// Actual.4 uses its admitted slots and preserves its causal observer session.
+bool InstallSwayCompletionExecutionWithSecondarySink12004(
+    std::uintptr_t image_base, std::string_view executable_sha256,
+    SwayExecutionRecorder12002 &recorder,
+    SwayCompletionExecutionInstall12002 &state,
+    SwayCompletionSecondarySink12002 secondary_sink,
+    void *secondary_sink_context) noexcept;
+
 bool InstallSwayCompletionExecutionFixtureWithSecondarySink12002(
     const SwayExecutionBindings12002 &bindings,
     const std::array<SwayCompletionNativeExecute12002 *, 3> &slots,

@@ -203,6 +203,15 @@ bool InstallSwayCompletionExecutionFixture12002(
 bool InstallSwayCompletionExecution12004(
     std::uintptr_t base, std::string_view sha, SwayExecutionRecorder12002 &recorder,
     SwayCompletionExecutionInstall12002 &state) noexcept {
+  return InstallSwayCompletionExecutionWithSecondarySink12004(
+      base, sha, recorder, state, nullptr, nullptr);
+}
+
+bool InstallSwayCompletionExecutionWithSecondarySink12004(
+    std::uintptr_t base, std::string_view sha, SwayExecutionRecorder12002 &recorder,
+    SwayCompletionExecutionInstall12002 &state,
+    SwayCompletionSecondarySink12002 secondary_sink,
+    void *secondary_sink_context) noexcept {
   const auto bindings = ck3_12004::BindSwayExecutionImage12004(base, sha);
   std::array<SwayCompletionNativeExecute12002 *, 3> slots{};
   std::array<SwayCompletionNativeExecute12002, 3> originals{};
@@ -212,7 +221,8 @@ bool InstallSwayCompletionExecution12004(
     originals[index] = reinterpret_cast<SwayCompletionNativeExecute12002>(
         base + ck3_12004::kSwayExecutionExecuteRvas12004[index]);
   }
-  if (!Install(bindings, slots, originals, recorder, state, false, nullptr, nullptr))
+  if (!Install(bindings, slots, originals, recorder, state, false,
+               secondary_sink, secondary_sink_context))
     return false;
   state.observer_session_identity = ck3_12004::BeginSwayCausalObserverSession12004();
   if (state.observer_session_identity == 0) {

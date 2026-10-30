@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/sway_common_termination_observation_12004.hpp"
+
 #include <array>
 #include <atomic>
 #include <cstddef>
@@ -21,6 +23,9 @@ inline constexpr std::size_t kSwayCommonTerminationObserverStubCapacity12004 = 3
 using SwayCommonTerminationCallsiteBefore12004 = void (*)(
     void *callback_context, std::uintptr_t actual_rcx,
     std::uint64_t actual_rdx) noexcept;
+using SwayCommonTerminationCallsiteBeforeAtSite12004 = void (*)(
+    void *callback_context, std::uintptr_t actual_rcx,
+    std::uint64_t actual_rdx, SwayCommonTerminationSite12004 site) noexcept;
 using SwayCommonTerminationCallsiteAfter12004 = void (*)(
     void *callback_context, std::uint64_t returned_rax_bits) noexcept;
 
@@ -31,6 +36,10 @@ struct SwayCommonTerminationCallsiteObserver12004Environment {
   void *callback_context = nullptr;
   SwayCommonTerminationCallsiteBefore12004 before = nullptr;
   SwayCommonTerminationCallsiteAfter12004 after = nullptr;
+  SwayCommonTerminationSite12004 site = SwayCommonTerminationSite12004::call_2a48877;
+  // Required for a second-site callback so a legacy primary callback cannot
+  // silently label a second native CALL as the primary one.
+  SwayCommonTerminationCallsiteBeforeAtSite12004 before_at_site = nullptr;
 };
 
 enum SwayCommonTerminationCallsiteObserverFailure12004 : std::uint32_t {
@@ -52,6 +61,10 @@ enum SwayCommonTerminationCallsiteObserverFailure12004 : std::uint32_t {
 // backing release. Ordinary Stop supplies no suspended-primary-thread proof.
 struct SwayCommonTerminationCallsiteObserver12004State {
   std::atomic<bool> installed{false};
+  // Kept backing after an unproved restore is not successful installation.
+  // Such a stub still forwards its original, but cannot publish observations
+  // merely because another site's recorder attachment succeeded.
+  std::atomic<bool> callbacks_admitted{false};
   std::atomic<std::uint32_t> failure_flags{0};
   std::atomic<std::uint64_t> before_count{0};
   std::atomic<std::uint64_t> returned_count{0};

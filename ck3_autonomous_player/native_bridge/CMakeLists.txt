@@ -10034,6 +10034,8 @@ include(cmake/council_task_owner_monthly_piety_12004.cmake)
 include(cmake/native71_continuation_12004.cmake)
 include(cmake/faction_danger_priority_12004.cmake)
 include(cmake/faction_gift_raw_identity_12004.cmake)
+include(cmake/sway_invalidation_reason_signed_12004.cmake)
+include(cmake/sway_common_termination_callsite_12004_failure.cmake)
 include(cmake/war_declared_owner_tree_v1.cmake)
 
 include(cmake/root_adjacency_12004.cmake)

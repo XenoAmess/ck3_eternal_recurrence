@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12002_sway_completion_invalidation_reason.hpp"
 
 #include <cstring>
+#include <bit>
 #include <sstream>
 #include <windows.h>
 
@@ -195,8 +196,8 @@ std::string SerializeSwayInvalidationReason12002(const SwayInvalidationReasonQue
   std::ostringstream out;
   out << "{\"schema\":\"xar.ck3.sway-invalidation-notification-source.v1\",\"available\":" << (r.available ? "true" : "false")
       << ",\"unavailable_reason\":\"" << r.unavailable_reason << "\",\"read_only\":true,\"observer_attached\":"
-      << (r.observer_attached ? "true" : "false") << ",\"actor_character_id\":" << r.request.actor_character_id
-      << ",\"target_character_id\":" << r.request.target_character_id << ",\"scheme_instance_id\":" << r.request.scheme_id
+      << (r.observer_attached ? "true" : "false") << ",\"actor_character_id\":" << std::bit_cast<std::int32_t>(r.request.actor_character_id)
+      << ",\"target_character_id\":" << std::bit_cast<std::int32_t>(r.request.target_character_id) << ",\"scheme_instance_id\":" << r.request.scheme_id
       << ",\"after_sequence\":" << r.request.after_sequence << ",\"earliest_sequence\":" << r.earliest_sequence
       << ",\"latest_sequence\":" << r.latest_sequence << ",\"retention_gap\":" << (r.retention_gap ? "true" : "false")
       << ",\"session_records_only\":true,\"message_enqueue_observed\":false,\"render_observed\":false"
@@ -208,7 +209,7 @@ std::string SerializeSwayInvalidationReason12002(const SwayInvalidationReasonQue
     out << "{\"sequence\":" << record.sequence << ",\"source_branch\":\"" << SwayInvalidationNotificationBranchKey12002(s.branch)
         << "\",\"authored_command\":\"send_interface_toast\",\"authored_title\":\"sway_invalidated_title\",\"authored_reason_key\":\""
         << SwayInvalidationAuthoredReasonKey12002(s.branch) << "\",\"date_raw\":" << s.date_raw
-        << ",\"actor_character_id\":" << s.actor_character_id << ",\"target_character_id\":" << s.target_character_id
+        << ",\"actor_character_id\":" << std::bit_cast<std::int32_t>(s.actor_character_id) << ",\"target_character_id\":" << std::bit_cast<std::int32_t>(s.target_character_id)
         << ",\"scheme_instance_id\":" << s.scheme_id << ",\"scheme_instance_generation\":" << (s.scheme_id >> 24)
         << ",\"root_scope_kind\":" << s.root.kind << ",\"scheme_scope_kind\":" << s.scheme.kind
         << ",\"selected_notification_branch_observed\":true,\"exact_scope_join_ready\":true"

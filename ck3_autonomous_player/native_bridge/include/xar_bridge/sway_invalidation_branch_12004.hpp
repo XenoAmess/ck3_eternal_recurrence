@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/sway_complete_branch_12004.hpp"
+#include "xar_bridge/ck3_12002_sway_completion_invalidation_reason.hpp"
 
 namespace xar::ck3_12004 {
 
@@ -28,5 +29,13 @@ ck3_12002::SwayExecutionCaptureResult12002 CaptureSwayInvalidationBranch12004(
     const ck3_12002::SwayExecutionBindings12002 &bindings,
     const void *effect, const void *effect_context,
     SwayInvalidationBranchSource12004 &output) noexcept;
+
+// In the same executing Toast frame, copy one supported direct reason child.
+// Exact current class/command/final stored key and inherited scope joins are
+// required. This supplies authored notification input, not its later outcome.
+ck3_12002::SwayInvalidationReasonCapture12002 CaptureSwayInvalidationReason12004(
+    const ck3_12002::SwayExecutionBindings12002 &bindings,
+    const void *effect, const void *effect_context,
+    ck3_12002::SwayInvalidationReasonSource12002 &output) noexcept;
 
 } // namespace xar::ck3_12004

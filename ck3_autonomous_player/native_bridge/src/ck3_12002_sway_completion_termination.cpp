@@ -7,6 +7,7 @@
 #include "xar_bridge/sway_common_termination_callsite_observer_12004.hpp"
 #include <intrin.h>
 
+#include <algorithm>
 #include <atomic>
 #include <cstring>
 #include <sstream>
@@ -100,6 +101,11 @@ void CommonNativeEndBefore12004(void *context, std::uintptr_t receiver,
   if (context) static_cast<SwayTerminationRecorder12002 *>(context)->
       CaptureCommonNativeEndBefore12004(receiver, rdx);
 }
+void CommonNativeEndBeforeAtSite12004(void *context, std::uintptr_t receiver,
+    std::uint64_t rdx, ck3_12004::SwayCommonTerminationSite12004 site) noexcept {
+  if (context) static_cast<SwayTerminationRecorder12002 *>(context)->
+      CaptureCommonNativeEndBeforeAtSite12004(receiver, rdx, site);
+}
 void CommonNativeEndAfter12004(void *context, std::uint64_t rax) noexcept {
   if (context) static_cast<SwayTerminationRecorder12002 *>(context)->
       CaptureCommonNativeEndAfter12004(rax);
@@ -150,7 +156,11 @@ void SerializeCommonFrame12004(std::ostream &out,
 void SerializeCommonNativeEnd12004(std::ostream &out,
     const SwayTerminationQuery12002 &request,
     const SwayCommonNativeEndQueryResult12004 &r) {
-  out << "{\"schema\":\"xar.ck3.sway-common-native-end.v1\",\"source_contract\":\"actual_2a48877_2a4adf0_v1\""
+  const bool has_second_site = std::any_of(r.records.begin(), r.records.end(),
+      [](const auto &row) { return row.observation.callsite_rva == 0x2A48C7B; });
+  out << "{\"schema\":\"xar.ck3.sway-common-native-end.v1\",\"source_contract\":\""
+      << (has_second_site ? "actual_2a48877_2a48c7b_2a4adf0_v2" :
+                            "actual_2a48877_2a4adf0_v1") << '"'
       << ",\"available\":" << (r.available ? "true" : "false") << ",\"unavailable_reason\":";
   CommonQuoted(out, r.unavailable_reason);
   out << ",\"read_only\":true,\"observer_attached\":" << (r.observer_attached ? "true" : "false")
@@ -167,9 +177,9 @@ void SerializeCommonNativeEnd12004(std::ostream &out,
     const auto &s = o.stamp;
     out << "{\"sequence\":" << row.sequence << ",\"observer_session_identity\":" << s.observer_session_identity
         << ",\"owner_thread_id\":" << s.owner_thread_id << ",\"original_invocation_id\":" << s.invocation_id
-        << ",\"callsite_rva\":" << ck3_12004::kSwayCommonTerminationCallsiteRva12004
+        << ",\"callsite_rva\":" << o.callsite_rva
         << ",\"callee_rva\":" << ck3_12004::kSwayCommonTerminationOriginalRva12004
-        << ",\"call_return_rva\":" << ck3_12004::kSwayCommonTerminationCallerReturnRva12004
+        << ",\"call_return_rva\":" << (o.callsite_rva + 5)
         << ",\"incoming_return_address_observed\":" << (s.incoming_return_address_observed ? "true" : "false")
         << ",\"caller_return_rva\":";
     CommonObserved(out, s.incoming_return_address_observed, s.caller_return_rva);
@@ -425,6 +435,12 @@ void SwayTerminationRecorder12002::SetCommonNativeEndObserverAttached12004(
 }
 void SwayTerminationRecorder12002::CaptureCommonNativeEndBefore12004(
     std::uintptr_t receiver, std::uint64_t rdx) noexcept {
+  CaptureCommonNativeEndBeforeAtSite12004(receiver, rdx,
+      ck3_12004::SwayCommonTerminationSite12004::call_2a48877);
+}
+void SwayTerminationRecorder12002::CaptureCommonNativeEndBeforeAtSite12004(
+    std::uintptr_t receiver, std::uint64_t rdx,
+    ck3_12004::SwayCommonTerminationSite12004 site) noexcept {
   if (common_pending_count == common_pending.size()) { ++common_pending_overflow; return; }
   auto &pending = common_pending[common_pending_count++];
   pending = {};
@@ -448,6 +464,9 @@ void SwayTerminationRecorder12002::CaptureCommonNativeEndBefore12004(
   (void)ck3_12004::CaptureSwayCommonTerminationBefore12004(
       bindings, stamp, reinterpret_cast<const void *>(receiver),
       static_cast<std::uint8_t>(rdx & 0xFFU), nullptr, pending.observation);
+  pending.observation.callsite_rva =
+      ck3_12004::SwayCommonTerminationCallsiteRva12004(site);
+  if (pending.observation.callsite_rva == 0) pending.capture_attempted = false;
 }
 void SwayTerminationRecorder12002::CaptureCommonNativeEndAfter12004(
     std::uint64_t returned_rax_bits) noexcept {
@@ -479,7 +498,8 @@ bool SwayTerminationRecorder12002::AppendCommonNativeEnd12004(
       o.stamp.owner_thread_id == 0 || o.stamp.owner_thread_id != GetCurrentThreadId() ||
       o.stamp.owner_thread_id != common_owner_thread_id_.load(std::memory_order_acquire) ||
       o.stamp.invocation_id == 0 || o.stamp.incoming_return_address_observed ||
-      o.stamp.caller_return_rva != 0) return false;
+      o.stamp.caller_return_rva != 0 ||
+      (o.callsite_rva != 0x2A48877 && o.callsite_rva != 0x2A48C7B)) return false;
   const auto at = (common_first_ + common_count_) % common_records_.size();
   common_records_[at] = {common_next_sequence_++, o};
   if (common_count_ < common_records_.size()) ++common_count_;
@@ -536,6 +556,7 @@ bool BuildSwayCommonTerminationObserverEnvironment12004(
   out.callback_context = &recorder;
   out.before = &CommonNativeEndBefore12004;
   out.after = &CommonNativeEndAfter12004;
+  out.before_at_site = &CommonNativeEndBeforeAtSite12004;
   // Suspension proof belongs to the cold Bridge caller, never this factory.
   return true;
 }

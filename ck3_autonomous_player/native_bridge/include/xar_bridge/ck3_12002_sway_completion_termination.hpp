@@ -155,6 +155,8 @@ public:
       const char *unavailable_reason = nullptr) noexcept;
   void CaptureCommonNativeEndBefore12004(std::uintptr_t actual_scheme,
       std::uint64_t actual_rdx) noexcept;
+  void CaptureCommonNativeEndBeforeAtSite12004(std::uintptr_t actual_scheme,
+      std::uint64_t actual_rdx, ck3_12004::SwayCommonTerminationSite12004 site) noexcept;
   void CaptureCommonNativeEndAfter12004(std::uint64_t returned_rax_bits) noexcept;
   bool AppendCommonNativeEnd12004(
       const ck3_12004::SwayCommonTerminationObservation12004 &observation) noexcept;

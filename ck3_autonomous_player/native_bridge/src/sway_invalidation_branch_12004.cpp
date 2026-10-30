@@ -3,8 +3,8 @@
 #include <cstring>
 #include <windows.h>
 
-// The source-first delta selects the authored invalidation title only.
-// Reason-child types and an invalidator-to-end relation are independently unbound.
+// The title reader and reason reader share the admitted actual.4 parent/frame.
+// Neither reader establishes an invalidator-to-end or material-effect relation.
 
 namespace xar::ck3_12004 {
 namespace {
@@ -12,6 +12,10 @@ using ck3_12002::CoreSnapshotPrefix;
 using ck3_12002::SwayExecutionBindings12002;
 using ck3_12002::SwayExecutionCaptureResult12002;
 using ck3_12002::SwayExecutionScopeToken12002;
+using ck3_12002::SwayInvalidationNotificationBranch12002;
+using ck3_12002::SwayInvalidationReasonCapture12002;
+using ck3_12002::SwayInvalidationReasonSource12002;
+using ck3_12002::SwayInvalidationToken12002;
 
 bool Copy(std::uintptr_t address, void *output, std::size_t size) noexcept {
   if (address == 0 || output == nullptr) return false;
@@ -83,8 +87,45 @@ SwayExecutionCaptureResult12002 Unavailable(SwayInvalidationBranchSource12004 &o
   out.unavailable_reason = reason;
   return SwayExecutionCaptureResult12002::unavailable;
 }
+SwayExecutionCaptureResult12002 ReasonChild(const SwayExecutionBindings12002 &b,
+    std::uintptr_t effect, SwayInvalidationNotificationBranch12002 &branch) noexcept {
+  std::uintptr_t children{}, child{}, table{};
+  std::int32_t count{};
+  if (!Read(effect + 0x30, children) || !Read(effect + 0x3C, count))
+    return SwayExecutionCaptureResult12002::unavailable;
+  if (count != 1) return SwayExecutionCaptureResult12002::ignored;
+  if (children == 0 || !Read(children, child) || child == 0 || !Read(child, table))
+    return SwayExecutionCaptureResult12002::unavailable;
+  const bool tooltip = table == b.image_base + 0x4931928;
+  const bool description = table == b.image_base + 0x4931D20;
+  if (!tooltip && !description) return SwayExecutionCaptureResult12002::ignored;
+  std::int32_t nested_count{}, command_id{};
+  std::uint8_t mode{};
+  if (!Read(child + 0x3C, nested_count) || !Read(child + 0x0C, mode) ||
+      !Read(child + 0x08, command_id))
+    return SwayExecutionCaptureResult12002::unavailable;
+  if (nested_count != 0 || mode != 0) return SwayExecutionCaptureResult12002::ignored;
+  Key command, reason;
+  if (!Command(b, command_id, command)) return SwayExecutionCaptureResult12002::unavailable;
+  if ((tooltip && !command.Is("custom_tooltip")) ||
+      (description && !command.Is("custom_description_no_bullet")))
+    return SwayExecutionCaptureResult12002::ignored;
+  if (!ReadKey(child + 0x50, reason)) return SwayExecutionCaptureResult12002::unavailable;
+  if (tooltip && reason.Is("sway_invalidated_dead"))
+    branch = SwayInvalidationNotificationBranch12002::target_dead_notification_source;
+  else if (tooltip && reason.Is("sway_invalidated_war"))
+    branch = SwayInvalidationNotificationBranch12002::opaque_existing_stock_notification_source;
+  else if (description && reason.Is("scheme_target_not_in_diplomatic_range"))
+    branch = SwayInvalidationNotificationBranch12002::out_of_range_notification_source;
+  else return SwayExecutionCaptureResult12002::ignored;
+  return SwayExecutionCaptureResult12002::captured;
+}
+SwayInvalidationToken12002 ReasonToken(const SwayExecutionScopeToken12002 &token) noexcept {
+  return {token.type, token.subtype, token.reserved, token.payload};
+}
 SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
-    std::uintptr_t effect, std::uintptr_t context, SwayInvalidationBranchSource12004 &out) {
+    std::uintptr_t effect, std::uintptr_t context, SwayInvalidationBranchSource12004 &out,
+    SwayInvalidationReasonSource12002 *reason_output = nullptr) {
   if (!b.enabled || !b.core.enabled || b.image_base == 0 || effect == 0 || context == 0 ||
       b.effect_vtable_rvas != kSwayExecutionVtableRvas12004 ||
       b.title_wrapper_vtable_rva != kSwayExecutionTitleWrapperRva12004 ||
@@ -148,11 +189,28 @@ SwayExecutionCaptureResult12002 Capture(const SwayExecutionBindings12002 &b,
       out.actor_character_id == 0xFFFFFFFFu || out.target_character_id == 0xFFFFFFFFu ||
       out.scheme_id == 0xFFFFFFFFu)
     return Unavailable(out, "sway_invalidation_full_scope_join_unavailable");
+  auto branch = SwayInvalidationNotificationBranch12002::none;
+  if (reason_output != nullptr) {
+    const auto result = ReasonChild(b, effect, branch);
+    if (result != SwayExecutionCaptureResult12002::captured) return result;
+  }
   CoreSnapshotPrefix after{};
   if (!Core(b, after) || !SameFrame(before, after))
     return Unavailable(out, "sway_invalidation_actor_date_changed");
   out.date_raw = before.clock.date_raw;
   out.executing_input_observed = true;
+  if (reason_output != nullptr) {
+    reason_output->branch = branch;
+    reason_output->date_raw = out.date_raw;
+    reason_output->actor_character_id = out.actor_character_id;
+    reason_output->target_character_id = out.target_character_id;
+    reason_output->scheme_id = out.scheme_id;
+    reason_output->root = ReasonToken(out.root);
+    reason_output->scheme = ReasonToken(out.scheme);
+    reason_output->owner = ReasonToken(out.owner);
+    reason_output->target = ReasonToken(out.target);
+    reason_output->selected_notification_branch_observed = true;
+  }
   return SwayExecutionCaptureResult12002::captured;
 }
 } // namespace
@@ -168,6 +226,25 @@ ck3_12002::SwayExecutionCaptureResult12002 CaptureSwayInvalidationBranch12004(
   try { return Capture(b, reinterpret_cast<std::uintptr_t>(effect),
                        reinterpret_cast<std::uintptr_t>(context), output); }
   catch (...) { return Unavailable(output, "sway_invalidation_capture_internal_error"); }
+}
+
+ck3_12002::SwayInvalidationReasonCapture12002 CaptureSwayInvalidationReason12004(
+    const ck3_12002::SwayExecutionBindings12002 &b, const void *effect,
+    const void *context, ck3_12002::SwayInvalidationReasonSource12002 &output) noexcept {
+  output = {};
+  try {
+    SwayInvalidationBranchSource12004 parent;
+    switch (Capture(b, reinterpret_cast<std::uintptr_t>(effect),
+                    reinterpret_cast<std::uintptr_t>(context), parent, &output)) {
+    case SwayExecutionCaptureResult12002::ignored:
+      return SwayInvalidationReasonCapture12002::ignored;
+    case SwayExecutionCaptureResult12002::unavailable:
+      return SwayInvalidationReasonCapture12002::unavailable;
+    case SwayExecutionCaptureResult12002::captured:
+      return SwayInvalidationReasonCapture12002::captured;
+    }
+  } catch (...) { output = {}; }
+  return SwayInvalidationReasonCapture12002::unavailable;
 }
 
 } // namespace xar::ck3_12004

@@ -24,6 +24,18 @@ inline constexpr std::uintptr_t kSwayCommonTerminationOriginalRva12004 =
 inline constexpr std::uintptr_t kSwayCommonTerminationCallerReturnRva12004 =
     0x2A4887C;
 
+enum class SwayCommonTerminationSite12004 : std::uint8_t {
+  call_2a48877, call_2a48c7b,
+};
+inline constexpr std::uintptr_t SwayCommonTerminationCallsiteRva12004(
+    SwayCommonTerminationSite12004 site) noexcept {
+  switch (site) {
+  case SwayCommonTerminationSite12004::call_2a48877: return 0x2A48877;
+  case SwayCommonTerminationSite12004::call_2a48c7b: return 0x2A48C7B;
+  }
+  return 0;
+}
+
 // Owned copies from the actual Scheme operand at one native boundary.
 // No native Scheme, definition, storage or current-frame pointer is retained.
 // Every raw field has its own read flag; a default value is never a read.
@@ -66,6 +78,9 @@ struct SwayCommonTerminationObservation12004 {
   // even true does not assert current storage membership or a terminal cause.
   bool return_same_scheme_full_id_observed = false;
   bool return_same_scheme_full_id = false;
+  // Reviewed static CALL identity, copied from the installed site's callback.
+  // This is separate from a captured native incoming return-address witness.
+  std::uintptr_t callsite_rva = kSwayCommonTerminationCallsiteRva12004;
 };
 
 static_assert(std::is_trivially_copyable_v<SwayEndInvocationStamp12004>);

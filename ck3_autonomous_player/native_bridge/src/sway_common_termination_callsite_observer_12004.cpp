@@ -13,7 +13,7 @@ namespace {
 static_assert(sizeof(void *) == 8, "The fixed Sway common callsite is x64-only");
 using State = SwayCommonTerminationCallsiteObserver12004State;
 using Stub = std::array<std::uint8_t, kSwayCommonTerminationObserverStubCapacity12004>;
-std::atomic<State *> g_active{nullptr};
+std::array<std::atomic<State *>, 2> g_active{};
 
 // Actual12004 parent2A48660, instructions520..540. The preceding2A4F100
 // CALL is only checked; all15 preceding bytes stay in place. Only the final
@@ -22,6 +22,30 @@ constexpr std::array<std::uint8_t, 20> kActualAnchor{
     0x48, 0x8B, 0xCF, 0xE8, 0x90, 0x68, 0x00, 0x00,
     0x40, 0x0F, 0xB6, 0xD6, 0x48, 0x8B, 0xCF,
     0xE8, 0x74, 0x25, 0x00, 0x00};
+
+// Current .4 source2A48C76: mov dl,1; mov rcx,rsi; call2A4ADF0.
+// Its actual return2A48C80 precedes later destruction and zeroing.
+constexpr std::array<std::uint8_t, 10> kSecondActualAnchor{
+    0xB2, 0x01, 0x48, 0x8B, 0xCE, 0xE8, 0x70, 0x21, 0x00, 0x00};
+struct SiteProfile {
+  std::size_t index = 2;
+  std::uintptr_t anchor = 0, call = 0, continuation = 0;
+  const std::uint8_t *bytes = nullptr;
+  std::size_t size = 0;
+};
+SiteProfile Profile(SwayCommonTerminationSite12004 site) noexcept {
+  switch (site) {
+  case SwayCommonTerminationSite12004::call_2a48877:
+    return {0, kSwayCommonTerminationObserverAnchorRva12004,
+        kSwayCommonTerminationObserverCallRva12004,
+        kSwayCommonTerminationObserverContinueRva12004,
+        kActualAnchor.data(), kActualAnchor.size()};
+  case SwayCommonTerminationSite12004::call_2a48c7b:
+    return {1, 0x2A48C76, 0x2A48C7B, 0x2A48C80,
+        kSecondActualAnchor.data(), kSecondActualAnchor.size()};
+  }
+  return {};
+}
 
 void Fail(State &state, SwayCommonTerminationCallsiteObserverFailure12004 flag) noexcept {
   state.failure_flags.fetch_or(static_cast<std::uint32_t>(flag), std::memory_order_acq_rel);
@@ -168,18 +192,31 @@ void Restore(Stub &code, std::size_t &cursor) noexcept {
 
 extern "C" void SwayCommonTerminationBeforeThunk12004(
     void *context, std::uintptr_t rcx, std::uint64_t rdx) noexcept {
-  auto *state = g_active.load(std::memory_order_acquire);
+  auto *state = static_cast<State *>(context);
   if (state == nullptr) return;
+  const auto profile = Profile(state->environment.site);
+  if (profile.index >= g_active.size() ||
+      g_active[profile.index].load(std::memory_order_acquire) != state) return;
   state->before_count.fetch_add(1, std::memory_order_relaxed);
-  if (state->environment.before != nullptr) state->environment.before(context, rcx, rdx);
+  if (!state->callbacks_admitted.load(std::memory_order_acquire)) return;
+  const auto &environment = state->environment;
+  if (environment.before_at_site != nullptr)
+    environment.before_at_site(environment.callback_context, rcx, rdx, environment.site);
+  else if (environment.before != nullptr)
+    environment.before(environment.callback_context, rcx, rdx);
 }
 
 extern "C" void SwayCommonTerminationAfterThunk12004(
     void *context, std::uint64_t rax) noexcept {
-  auto *state = g_active.load(std::memory_order_acquire);
+  auto *state = static_cast<State *>(context);
   if (state == nullptr) return;
+  const auto profile = Profile(state->environment.site);
+  if (profile.index >= g_active.size() ||
+      g_active[profile.index].load(std::memory_order_acquire) != state) return;
   state->returned_count.fetch_add(1, std::memory_order_relaxed);
-  if (state->environment.after != nullptr) state->environment.after(context, rax);
+  if (!state->callbacks_admitted.load(std::memory_order_acquire)) return;
+  if (state->environment.after != nullptr)
+    state->environment.after(state->environment.callback_context, rax);
 }
 
 std::size_t BuildStub(State &state, Stub &code) noexcept {
@@ -189,7 +226,7 @@ std::size_t BuildStub(State &state, Stub &code) noexcept {
   Emit(code, cursor, {0x4C, 0x8B, 0xC2}); // R8=actual incoming RDX, all64 bits
   Emit(code, cursor, {0x48, 0x8B, 0xD1}); // RDX=actual incoming RCX
   Emit(code, cursor, {0x48, 0xB9});
-  U64(code, cursor, reinterpret_cast<std::uintptr_t>(state.environment.callback_context));
+  U64(code, cursor, reinterpret_cast<std::uintptr_t>(&state));
   Emit(code, cursor, {0x48, 0xB8});
   U64(code, cursor, reinterpret_cast<std::uintptr_t>(&SwayCommonTerminationBeforeThunk12004));
   Emit(code, cursor, {0xFF, 0xD0});
@@ -204,7 +241,7 @@ std::size_t BuildStub(State &state, Stub &code) noexcept {
   // Saved native RAX is192-16=176 (B0) bytes above this callback RSP.
   Emit(code, cursor, {0x48, 0x8B, 0x94, 0x24, 0xB0, 0x00, 0x00, 0x00});
   Emit(code, cursor, {0x48, 0xB9});
-  U64(code, cursor, reinterpret_cast<std::uintptr_t>(state.environment.callback_context));
+  U64(code, cursor, reinterpret_cast<std::uintptr_t>(&state));
   Emit(code, cursor, {0x48, 0xB8});
   U64(code, cursor, reinterpret_cast<std::uintptr_t>(&SwayCommonTerminationAfterThunk12004));
   Emit(code, cursor, {0xFF, 0xD0});
@@ -258,6 +295,7 @@ bool ReleaseUnusedBacking(State &state) noexcept {
     Fail(state, sway_common_observer_failure_restore);
     return false;
   }
+  state.callbacks_admitted.store(false, std::memory_order_release);
   state.stub = nullptr;
   state.stub_bytes = 0;
   state.patch_target = 0;
@@ -276,6 +314,7 @@ bool InstallSwayCommonTerminationCallsiteObserver12004(
     return false;
   }
   state.failure_flags.store(0, std::memory_order_relaxed);
+  state.callbacks_admitted.store(false, std::memory_order_release);
   if (!environment.exact_12004_build_admitted || environment.module_base == 0) {
     Fail(state, sway_common_observer_failure_exact_build);
     return false;
@@ -284,22 +323,30 @@ bool InstallSwayCommonTerminationCallsiteObserver12004(
     Fail(state, sway_common_observer_failure_suspension);
     return false;
   }
-  if (environment.before == nullptr || environment.after == nullptr) {
+  const auto profile = Profile(environment.site);
+  if (profile.index >= g_active.size()) {
+    Fail(state, sway_common_observer_failure_anchor);
+    return false;
+  }
+  if ((environment.before == nullptr && environment.before_at_site == nullptr) ||
+      (profile.index != 0 && environment.before_at_site == nullptr) ||
+      environment.after == nullptr) {
     Fail(state, sway_common_observer_failure_callbacks);
     return false;
   }
+  auto &active = g_active[profile.index];
   std::uintptr_t anchor = 0;
-  if (!Add(environment.module_base, kSwayCommonTerminationObserverAnchorRva12004, anchor) ||
-      !Add(environment.module_base, kSwayCommonTerminationObserverCallRva12004, state.patch_target) ||
+  if (!Add(environment.module_base, profile.anchor, anchor) ||
+      !Add(environment.module_base, profile.call, state.patch_target) ||
       !Add(environment.module_base, kSwayCommonTerminationObserverCalleeRva12004, state.native_target) ||
-      !Add(environment.module_base, kSwayCommonTerminationObserverContinueRva12004, state.continue_target) ||
-      !Equal(anchor, kActualAnchor.data(), kActualAnchor.size()) ||
+      !Add(environment.module_base, profile.continuation, state.continue_target) ||
+      !Equal(anchor, profile.bytes, profile.size) ||
       !CopyFrom(state.patch_target, state.original_patch.data(), state.original_patch.size())) {
     Fail(state, sway_common_observer_failure_anchor);
     return false;
   }
   State *expected = nullptr;
-  if (!g_active.compare_exchange_strong(expected, &state, std::memory_order_acq_rel)) {
+  if (!active.compare_exchange_strong(expected, &state, std::memory_order_acq_rel)) {
     Fail(state, sway_common_observer_failure_already_owned);
     return false;
   }
@@ -310,7 +357,7 @@ bool InstallSwayCommonTerminationCallsiteObserver12004(
   if (state.stub == nullptr) {
     Fail(state, sway_common_observer_failure_near_allocation);
     (void)ReleaseUnusedBacking(state);
-    g_active.store(nullptr, std::memory_order_release);
+    active.store(nullptr, std::memory_order_release);
     return false;
   }
   Stub bytes{};
@@ -321,20 +368,21 @@ bool InstallSwayCommonTerminationCallsiteObserver12004(
   if (!protected_stub || previous != PAGE_READWRITE || !Flush(state.stub, bytes.size())) {
     Fail(state, sway_common_observer_failure_stub);
     (void)ReleaseUnusedBacking(state);
-    g_active.store(nullptr, std::memory_order_release);
+    active.store(nullptr, std::memory_order_release);
     return false;
   }
   std::int32_t relative = 0;
   if (!Relative32(reinterpret_cast<std::uintptr_t>(state.stub), state.continue_target, relative)) {
     Fail(state, sway_common_observer_failure_near_allocation);
     (void)ReleaseUnusedBacking(state);
-    g_active.store(nullptr, std::memory_order_release);
+    active.store(nullptr, std::memory_order_release);
     return false;
   }
   state.installed_patch[0] = 0xE9;
   std::memcpy(state.installed_patch.data() + 1, &relative, sizeof(relative));
   const auto written = WritePatch(state, state.original_patch.data(), state.installed_patch.data());
   if (written == WriteResult::success) {
+    state.callbacks_admitted.store(true, std::memory_order_release);
     state.installed.store(true, std::memory_order_release);
     return true;
   }
@@ -343,7 +391,7 @@ bool InstallSwayCommonTerminationCallsiteObserver12004(
     return false; // Retain backing/ownership for an uncertain installed patch.
   }
   (void)ReleaseUnusedBacking(state);
-  g_active.store(nullptr, std::memory_order_release);
+  active.store(nullptr, std::memory_order_release);
   return false;
 }
 
@@ -353,17 +401,21 @@ bool UninstallSwayCommonTerminationCallsiteObserver12004(
     Fail(state, sway_common_observer_failure_suspension);
     return false;
   }
-  if (!state.installed.load(std::memory_order_acquire) || g_active.load(std::memory_order_acquire) != &state) {
+  const auto profile = Profile(state.environment.site);
+  if (profile.index >= g_active.size() ||
+      !state.installed.load(std::memory_order_acquire) ||
+      g_active[profile.index].load(std::memory_order_acquire) != &state) {
     Fail(state, sway_common_observer_failure_already_owned);
     return false;
   }
+  auto &active = g_active[profile.index];
   const auto restored = WritePatch(state, state.installed_patch.data(), state.original_patch.data());
   if (restored != WriteResult::success) {
     Fail(state, sway_common_observer_failure_restore);
     return false;
   }
   state.installed.store(false, std::memory_order_release);
-  g_active.store(nullptr, std::memory_order_release);
+  active.store(nullptr, std::memory_order_release);
   return ReleaseUnusedBacking(state);
 }
 
