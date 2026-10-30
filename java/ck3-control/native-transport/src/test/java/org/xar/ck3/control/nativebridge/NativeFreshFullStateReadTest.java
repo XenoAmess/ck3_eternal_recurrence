@@ -68,24 +68,83 @@ final class NativeFreshFullStateReadTest {
             assertSame(original,retained.dispatch());assertEquals(1,replay.writes);assertEquals(1,replay.helloPacketsRead);
         }
     }
-    @Test void consumedFreshSnapshotWaitsOnlyToItsAgeBoundaryThenUsesAnIndependentRead()throws Exception {
-        var replay=exactFourReplay();
-        try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
-            var before=actual.observe(deadline());replay.holdEmptyUntilDeadline=true;
-            var originalAt=before.observedAt();var originalRevision=before.nativeRevision();
-            var maximumAge=java.time.Duration.between(originalAt,Instant.now()).plusMillis(500);
-            Instant softUntil=originalAt.plus(maximumAge), until=softUntil.plusMillis(1000);
-            var fresh=assertDoesNotThrow(()->actual.observe(until,maximumAge),
-                    ()->"fresh-to-stale path: writes="+replay.writes+", soft_waits="+replay.softWaits
-                            +", empty_waits="+replay.emptyDeadlineWaits+", empty_wait_nanos="+replay.emptyWaitNanos);
-            assertEquals(1,replay.softWaits);assertEquals(softUntil,replay.softWaitUntil);
-            assertTrue(!replay.softWaitReturnedAt.isBefore(softUntil));assertTrue(replay.softWaitReturnedAt.isBefore(until));
-            assertEquals(0,replay.emptyDeadlineWaits);assertEquals(1,replay.writes);assertEquals(1,replay.helloPacketsRead);
-            assertEquals(before.session(),fresh.session());assertEquals("native:6",fresh.snapshotId());
-            assertTrue(fresh.observedAt().isAfter(originalAt));
-            assertEquals(originalAt,before.observedAt());assertEquals(originalRevision,before.nativeRevision());
+    @Test void freshConsumedSnapshotReturnsWithoutAnyIoBeforeOrBeyondAgeBoundary()throws Exception {
+        for(boolean boundaryBeforeDeadline:new boolean[]{true,false}) {
+            var replay=exactFourReplay();try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+                var before=actual.observe(deadline());replay.holdEmptyUntilDeadline=true;
+                var age=boundaryBeforeDeadline?java.time.Duration.between(before.observedAt(),Instant.now()).plusMillis(300):java.time.Duration.ofMinutes(1);
+                Instant until=boundaryBeforeDeadline?before.observedAt().plus(age).plusSeconds(1):Instant.now().plusMillis(300);
+                int reads=replay.reads;var observed=actual.observe(until,age);
+                assertSame(before,observed);assertEquals(reads,replay.reads);assertEquals(0,replay.softWaits);
+                assertEquals(0,replay.emptyDeadlineWaits);assertEquals(0,replay.writes);assertEquals(1,replay.helloPacketsRead);
+                assertEquals(before.observedAt(),observed.observedAt());assertEquals(before.nativeRevision(),observed.nativeRevision());
+            }
         }
     }
+    @Test void realPendingFreshPacketIsConsumedAndFollowingExplicitWaitStillElapses()throws Exception {
+        var replay=exactFourReplay();try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            actual.observe(deadline());var fresh=assertInstanceOf(NativeFreshSnapshotPort.Received.class,actual.readFreshFullState(deadline()));
+            int reads=replay.reads,writes=replay.writes;
+            assertSame(fresh.originalFrame(),actual.observe(deadline(),java.time.Duration.ofMinutes(1)));
+            assertEquals(reads,replay.reads);assertEquals(writes,replay.writes);
+            assertInstanceOf(org.xar.ck3.control.application.action.NativeSnapshotWaitPort.Elapsed.class,
+                    actual.waitForSnapshot(Instant.now().minusMillis(1),deadline()));
+            assertEquals(1,replay.softWaits);assertEquals(writes,replay.writes);
+        }
+    }
+    @Test void actualMutationInvalidatesFreshCachedFrameAndOnlyIndependentReadClearsIt()throws Exception {
+        var replay=actionReplay();try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            var before=actual.observe(deadline());var permit=mutationPermit(actual,before,"cache-world-ack");
+            var outcome=actual.submit(permit,permit.preparedRequest(),deadline());
+            assertInstanceOf(NativeActionPort.AckReceived.class,outcome);assertTrue(permit.consumed());assertEquals(1,replay.writes);
+            var after=actual.observe(deadline(),java.time.Duration.ofMinutes(1));
+            assertEquals(2,replay.writes);assertEquals(1,replay.actionWrites);assertEquals("native:6",after.snapshotId());assertNotSame(before,after);
+            int reads=replay.reads;assertSame(after,actual.observe(deadline(),java.time.Duration.ofMinutes(1)));
+            assertEquals(2,replay.writes);assertEquals(reads,replay.reads);assertEquals(0,replay.softWaits);
+        }
+    }
+    @Test void unknownWorldActionIsNotReplayedAndUnknownFreshReadCannotClearInvalidation()throws Exception {
+        var replay=actionReplay();replay.actionUnknown=true;
+        try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            var before=actual.observe(deadline());var permit=mutationPermit(actual,before,"cache-world-unknown");
+            assertInstanceOf(NativeActionPort.Unknown.class,actual.submit(permit,permit.preparedRequest(),deadline()));
+            assertEquals(1,replay.actionWrites);assertTrue(permit.consumed());
+            replay.producer=(ignored,request)->{};
+            assertThrows(java.io.UncheckedIOException.class,()->actual.observe(deadline(),java.time.Duration.ofMinutes(1)));
+            assertEquals(2,replay.writes);assertEquals(1,replay.actionWrites);
+            assertThrows(java.io.UncheckedIOException.class,()->actual.observe(deadline(),java.time.Duration.ofMinutes(1)));
+            assertEquals(2,replay.writes);assertEquals(1,replay.actionWrites);
+            assertInstanceOf(NativeActionPort.Unknown.class,actual.submit(permit,permit.preparedRequest(),deadline()));assertEquals(2,replay.writes);
+        }
+    }
+    private static Replay actionReplay()throws IOException {
+        var replay=exactFourReplay();replay.packets.clear();var advertised=hello().put("expected_ck3_version","1.20.0.4").put("expected_ck3_sha256",FOUR_SHA).put("game_adapter_id",FOUR_ADAPTER);
+        ((com.fasterxml.jackson.databind.node.ArrayNode)advertised.get("capabilities")).add("game.command.pause-map");
+        replay.add(advertised);replay.add(snapshot("old-four",5,null));replay.allowAction=true;return replay;
+    }
+    private static org.xar.ck3.control.application.action.SubmissionPermit mutationPermit(NativeGameTransport actual,
+            org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame before,String id)throws Exception {
+        var session=before.session();var sourceRef=exact("fixture-source",new byte[]{1});
+        var source=new org.xar.ck3.control.g2.common.G2Source(session.machineId(),Instant.now().toString(),"fresh-cache-software",sourceRef);
+        var identity=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity(session.machineId(),session.game(),
+                new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame(new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame(
+                        BigInteger.valueOf(73),before.nativeRevision(),BigInteger.valueOf(53144328)),before.snapshotId(),BigInteger.valueOf(5),"cache-episode"),1);
+        var operation=new org.xar.ck3.control.application.action.OperationKey("pause-map");
+        var guard=new org.xar.ck3.control.application.action.GuardEvidence(identity,source,session.sessionId(),session.connectionGeneration(),operation,
+                exact("fixture-before",before.originalPacket()),exact("fixture-hello",actual.originalHello().packet().value()),"fixture-cache-root",Instant.now(),deadline());
+        var expected=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition(1,identity,source,"fixture-cache/v1",
+                List.of(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean(new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("paused"),true)));
+        var command=new org.xar.ck3.control.application.action.ActionCommand(id,identity,source,session.sessionId(),operation,
+                new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of()),expected,
+                new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Claims(Set.of(),Set.of(),Set.of(),Set.of()),guard.validUntil());
+        var request=new org.xar.ck3.control.application.action.NativeRequest("pause-map",java.util.Optional.of("game.command.pause-map"),
+                new org.xar.ck3.control.application.action.RawJson(new byte[]{'{','}'}));
+        return org.xar.ck3.control.application.action.NativeTransportSubmissionFixture.issue(command,guard,request,id);
+    }
+    private static org.xar.ck3.control.contracts.ExactRef exact(String path,byte[] bytes) {
+        return new org.xar.ck3.control.contracts.ExactRef(path,bytes.length,org.xar.ck3.control.application.driver.DriverJson.sha256(bytes));
+    }
+
     private static final String SHA="2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
     private static final String ADAPTER="ck3-1.19.0.6-msvc-x64";
     private static final String STATE="""
@@ -97,7 +156,7 @@ final class NativeFreshFullStateReadTest {
     @FunctionalInterface private interface Producer {void write(Replay actual,ObjectNode originalRequest)throws IOException;}
     private static final class Replay implements NativePacketPort {
         final ArrayDeque<byte[]> packets=new ArrayDeque<>();Producer producer;int reads,writes;ObjectNode request;
-        byte[] snapshotPacket,ackPacket;boolean failWrite;
+        byte[] snapshotPacket,ackPacket;boolean failWrite;boolean allowAction,actionUnknown;int actionWrites;
         Replay(Producer producer)throws IOException {this.producer=producer;add(hello());add(snapshot("old",5,null));}
         void add(ObjectNode row)throws IOException{byte[] packet=NativeWire.packet(StrictJson.canonical(row));if("hello".equals(row.path("type").textValue()))originalHelloPacket=packet;packets.add(packet);}
         @Override public void verify(){}
@@ -131,6 +190,11 @@ final class NativeFreshFullStateReadTest {
         @Override public void writePacket(byte[] packet,Instant deadline)throws IOException {
             writes++;request=NativeWire.object(NativeWire.parse(java.util.Arrays.copyOfRange(packet,4,packet.length)));
             var keys=new java.util.HashSet<String>();for(var field:request.properties())keys.add(field.getKey());
+            if(allowAction&&"pause-map".equals(request.path("step").textValue())) {
+                actionWrites++;assertEquals(BigInteger.valueOf(5),request.get("expected_revision").bigIntegerValue());
+                if(!actionUnknown)add(object("{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\""+id()+"\",\"ok\":true,\"result\":{\"paused\":true}}"));
+                return;
+            }
             assertEquals(Set.of("type","protocol_version","request_id","step","expected_revision"),keys);
             assertEquals("execute_step",request.get("type").textValue());assertEquals(NativeFreshSnapshotPort.STEP,request.get("step").textValue());
             assertEquals(BigInteger.ZERO,request.get("expected_revision").bigIntegerValue());

@@ -113,6 +113,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private BigInteger statePublicRevision = BigInteger.ZERO;
     private boolean stateConnected;
     private boolean stateRevisionAvailable=true;
+    private boolean heldSnapshotInvalidated = false;
     public enum StateRevisionKind { HELLO, SNAPSHOT, DISCONNECTED }
     /** Unified packet and actual non-packet source revision DATA, never a live/readiness grant. */
     public static final class StateRevision {
@@ -664,7 +665,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(capture.frame==null||capture.received==null)return freshUnavailable(capture,"positive ACK has no independently received matching original state packet");
         try {
             var received=new NativeFreshSnapshotPort.Received((AckReceived)outcome,capture.frame,capture.received);
-            pendingFreshSnapshot=null;return received;
+            pendingFreshSnapshot=null;
+            heldSnapshotInvalidated = false;
+            return received;
         } catch(IOException|RuntimeException failure){return freshUnavailable(capture,reason(failure));}
     }
     private NativeFreshSnapshotPort.Unavailable freshUnavailable(FreshSnapshotCapture capture,String reason) {
@@ -787,27 +790,20 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     public synchronized ObservedFrame observe(Instant deadline, java.time.Duration maximumAge) throws InterruptedException {
         Objects.requireNonNull(maximumAge, "maximumAge");
         if (maximumAge.isNegative() || maximumAge.isZero()) throw new IllegalArgumentException("maximumAge must be positive");
-        ObservedFrame actual;
-        var retained = acceptedSnapshotFrame;
-        if (retained == null || snapshotUndelivered) actual = observe(deadline);
-        else {
-            try {
-                awaitHello(deadline);
-                Instant staleAt = retained.observedAt().plus(maximumAge);
-                if (staleAt.isAfter(Instant.now())) {
-                    // Consume a new push if one arrives, but let a zero-prefix age boundary
-                    // reach the existing independent READ before the operation expires.
-                    if (staleAt.isBefore(deadline)) {
-                        var waited = waitForSnapshot(staleAt, deadline);
-                        actual = waited instanceof NativeSnapshotWaitPort.Received received
-                                ? received.frame() : retained;
-                    } else actual = observe(deadline);
-                } else actual = retained;
-            } catch (IOException failure) {
-                throw new UncheckedIOException("Native observation unavailable; no Python fallback", failure);
+        if (!heldSnapshotInvalidated) {
+            ObservedFrame actual;
+            var retained = acceptedSnapshotFrame;
+            if (retained == null || snapshotUndelivered) actual = observe(deadline);
+            else {
+                try {
+                    awaitHello(deadline);
+                    actual = retained;
+                } catch (IOException failure) {
+                    throw new UncheckedIOException("Native observation unavailable; no Python fallback", failure);
+                }
             }
+            if (actual.observedAt().plus(maximumAge).isAfter(Instant.now())) return actual;
         }
-        if (actual.observedAt().plus(maximumAge).isAfter(Instant.now())) return actual;
         var fresh = readFreshFullState(deadline);
         if (fresh instanceof NativeFreshSnapshotPort.Received) return ((NativeFreshSnapshotPort.Received) fresh).originalFrame();
         throw new UncheckedIOException(new IOException("actual stale snapshot refresh unavailable: " + fresh));
@@ -923,7 +919,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             byte[] packet = NativeWire.execute(id, request.step(), permit.expectedRevision(), request.additionalFields().bytes());
             // Every check above is before the irreversible boundary. No application request is sent by observe/hello.
             latestReadEvidence = null;
-            DispatchOutcome original = dispatch(id, packet, deadline, permit::consumeOnce);
+            DispatchOutcome original = dispatch(id, packet, deadline, () -> {
+                permit.consumeOnce();
+                heldSnapshotInvalidated = true;
+            });
             if (COUNCIL_ASSIGN.equals(request.step()) && request.requiredCapability().isEmpty()
                     && original instanceof AckReceived ack && isCouncilPending(ack)) {
                 // Actual canonical SUBMITTING permit and private source permission were checked above.
