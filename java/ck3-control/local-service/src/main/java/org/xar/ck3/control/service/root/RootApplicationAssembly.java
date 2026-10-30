@@ -525,8 +525,14 @@ public final class RootApplicationAssembly {
 
         public synchronized DriverBootstrap.Adopted adoptInitialRecovery(ManagedGameSession game, int retainedFrames,
                 OriginalWindowReducer.Policy cyclePolicy, Instant deadline) throws IOException {
+            Objects.requireNonNull(deadline);
+            return adoptInitialRecovery(game,retainedFrames,cyclePolicy,()->deadline);
+        }
+
+        public synchronized DriverBootstrap.Adopted adoptInitialRecovery(ManagedGameSession game, int retainedFrames,
+                OriginalWindowReducer.Policy cyclePolicy, java.util.function.Supplier<Instant> deadlineSupplier) throws IOException {
             StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty(), "recovery Driver binds once to the unused Core");
-            Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);Objects.requireNonNull(deadline);
+            Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);Objects.requireNonNull(deadlineSupplier);
             return writer.locked(same -> {
                 OrdinaryCycleTransitions recoveryCycles = null;
                 ContinuityBatchJournal recoveryBatches = null;
@@ -550,7 +556,7 @@ public final class RootApplicationAssembly {
                         : admission.facts().observation().orElseThrow(()->new IOException("entry recovery lost its actual original observation")).source();
                 DriverBootstrap.Adopted result;
                 try {
-                    result = DriverBootstrap.adoptInitialRecovery(admission, same, actions, game.nativeTransport(), source, archive, retainedFrames, deadline);
+                    result = DriverBootstrap.adoptInitialRecovery(admission, same, actions, game.nativeTransport(), source, archive, retainedFrames, deadlineSupplier);
                 } catch (InterruptedException interrupted) {
                     Thread.currentThread().interrupt();
                     var failure = new java.io.InterruptedIOException("same-Game recovery adoption interrupted");

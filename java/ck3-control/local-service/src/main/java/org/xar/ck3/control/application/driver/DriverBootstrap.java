@@ -851,7 +851,15 @@ public final class DriverBootstrap {
     public static Adopted adoptInitialRecovery(FreshGameplayEntryAuthority.RecoveryAdmission actual,
             ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,G2Source source,
             ActionPorts.OutcomeArchive archive,int retainedFrames,Instant deadline)throws IOException,InterruptedException {
+        Objects.requireNonNull(deadline);
+        return adoptInitialRecovery(actual,same,actions,transport,source,archive,retainedFrames,()->deadline);
+    }
+
+    public static Adopted adoptInitialRecovery(FreshGameplayEntryAuthority.RecoveryAdmission actual,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,G2Source source,
+            ActionPorts.OutcomeArchive archive,int retainedFrames,java.util.function.Supplier<Instant> deadlineSupplier)throws IOException,InterruptedException {
         Objects.requireNonNull(actual);Objects.requireNonNull(source);actual.requireCurrent(same);actual.requireArchive(archive);
+        var deadline = Objects.requireNonNull(Objects.requireNonNull(deadlineSupplier).get());
         StrictJson.require(Instant.now().isBefore(deadline),"initial recovery deadline expired");
         var entry=actual.entry();var original=actual.facts();var current=transport.awaitHello(deadline);
         var captured=actual.initialNoDispatchRecovery().flatMap(value->value.capturedManifest());

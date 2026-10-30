@@ -332,4 +332,34 @@ owner实际确认raw三prod edit/0TEST、boolean相加非法及old锚不匹配�
 
 中央静读提醒NO_CHANGE之前可能store.recover修复过snapshot/index，notes声称“no writes”不能直接成立；direct commitImport→recoverDuplicate分支的Error失效也需owner真实核对，不能只看IO/Runtime。48保存原候选、提供源码中的exact anchor匹配数及待owner分支审阅，未故意编坏稿、自动R2、增加重回归或回灌已完成代码。当前coding caller0，后继仅消费必要实际采用/失败事实。
 
+### 同Game新preview热点的HEAD71窄候选
+
+Root后继明确HEAD70已实际采用并热载Writer `c312ccb1c4199f8439498c381a4d11d3dbd1c8fb2ec2b7e1599b75ea740cb9e5`，同Game45仍WALL_TIMEOUT/0动作；01:48:13唯一实际线程已移到Publisher.flush918→Session.previewInternal629→Store.head→History.preview。旧readback缓存已保，但preview/commit读和入口失效仍绕开复用。这是新的当前热点，不是重复已采HEAD70，也不据该线程样本先授整批唯一性能因果。Root成为唯一Writer D/live owner、尚未写HEAD71答案，中央仅打包/调用/归档，不等停止岗ACK。
+
+按Root要求复用HEAD70完整六源前缀，仅把Writer块替成实际当前Z完整88,823B源码，hash精确为c312ccb1；其余五源和原consumer摘录逐字保持、固定system不改，实际元数据在外。新`D:/ck3-state/writer-session-head71/REQUEST01.json`142,940B，稳定136,328字符、实际新诊断及任务3,095字符在末，有限3,500输出。目标最小消除previewInternal/commitPrepared/入口不必要全History解析，只在真实物理写入前失效，成功actual readback重建，同exclusive Session原native snapshot identity/nextabsence/pins/absences/DATA/CAS/UNKNOWN及失败清理全部保；不扩timeout、全historical helpers或缓存平台。
+
+01:52:41.403–01:52:54.389Z首POST HTTP200/stop、SSEdone、CLI0，28,156输入/1,449输出，headers3.960s/TTFT3.964s/总12.986s，cache未报、无retry、metrics实际HTTP200/known。`model-coordinator64/game-writer-session-head71`保PREPARED/REQUEST/SSE/CONTENT/RESULT/SUMMARY，原件立即直交Root。JSON完整两个hunks，只把previewInternal和commitPrepared的store.head改this.head；仍明确保commitInternal入口retainedHead=null，未实现仅physicalwrite前失效，commit前重复parse仍可能保留；this.head还会先填prewriteactual，未提供实际写前清cache hunk。branch_review对commitImport路径/失效覆盖的说法需按真实源审，不能用说明代替分支证据。未编raw、未执行测试或授采用/性能/Game信用；49保原候选及锚计数，Root实际决策另记，不自动R2。
+
+### READ72真实Governance ROOT绕过已装canonical链
+
+Root离线读实际45 fullDriver 6fd3c6...bin的128条history，末六行index123–128为ROOT成功，source_frame/native296/revision49/obsVersion3、SourceRef、connection78和original receipt native_evidence bc6c2126...均相同，实际重复不是Native帧变化。该事实来源明确为source owner读原件，中央不冒称自己又读了binary或完成Game证明。真正生产Gov回调仍把context.reads()传给definitions.read，绕过FinanceRuntimeInstaller已安装的CanonicalRootReads；RootPeacetimeWarEntryRuntime已有finance.readPort()真实消费示例。READ69的软件case自有canonical支路，不能证明真实Gov已接齐。
+
+Root未写本叶答案，要求此真实新题优先，不续HEAD71。中央读当前Z完整FinanceReadContracts、FinanceRuntimeInstaller、GovernanceOrdinaryRuntimeInstaller、RootPeacetimeWarEntryRuntime，以固定contract/producer/target/reference顺序给105,936字符稳定源码前缀，2,901字符实际诊断/任务在末，固定三消息111,296B、有限2,200输出。仅普通Gov ROOT调用接已有readPort，不新增缓存、平台、类型或合同，不改需要fresh的其他公共/动作查询，也不碰Writer/provider。
+
+02:00:28.126–02:00:33.705Z首POST实际HTTP200/stop、CLI0，21,952输入/328输出，headers3.545s/TTFT3.549s/总5.578s，cache未报、无retry、metrics实际HTTP200/known。`model-coordinator64/game-governance-canonical-read72`保四源SHA/PREPARED及REQUEST/SSE/CONTENT/RESULT/SUMMARY，终态立即直交Root。原样JSON完整一hunk，前缀exact1：保definitions.read、same、ROOT及request，只把第三参数context.reads()换finance.readPort()；needed_context为空。模型说明既有canonical/fresh/failure语义仍不代替实际编测或live采用，中央未改生产源、未跑测试或自动R2。50保真实调用及待Root验收，当前coding caller0。
+
+### RECOVERY73真实恢复期限与窄Supplier纠错
+
+Root报告HEAD71及READ72已采用并DEV65/reload02装载；中央实际读`D:/ck3-state/ck3-java-g2-resume63-vanilla01/artifacts/persistent-java02/dev-resume65/reload02/ACTUAL-WORKER-FAILURE.txt`，DELEGATE_STARTED02:04:21.812Z，同Game171676，02:05:34.891Z自然WORKER_FAILED。栈在RootOrdinaryRuntimeAssembly→Core writer.locked只读head/InitialNoDispatch/admitRecovery→DriverBootstrap855的initial recovery deadline expired，awaitHello/readFreshFullState还在后面。实际恢复没有因此授成功或Game重启；60s Native等待上限不能靠扩预算、删guard或刷新已接受命令处理。
+
+首题按Root要求真实给完整RootOrdinaryRuntimeAssembly23,434B、Core/RootApplicationAssembly198,284B、DriverBootstrap87,097B，共308,815B主源；另RecoveryAdmission必要声明/requireCurrent与10个direct TEST调用摘录和生产调用清单，没有造全环境。稳定324,662字符，实际340,574B请求，诊断/任务在末、有限3,500输出。02:12:56.495–02:13:18.409Z首POST HTTP200/stop、CLI0，63,907输入/2,388输出，headers8.271s/TTFT8.279s/总21.913s，cache未报、无retry、metrics实际HTTP200/known。`model-coordinator64/game-initial-recovery-deadline73`保完整原件并立即交Root。
+
+R1三个edit只涉及两个class，全部owner静审拒0采用、不编raw：新deferred helper与旧helper完全一样eager now+timeout；Core没有可用clock却引用它，并硬编码60忽略配置/原参数；仍在DriverBootstrap实际requireCurrent/requireArchive前mint，没修真实边界。其caller迁移说明声称延期不成立。各before锚匹配并不能授语义可用；本次非length/HTTP暂错或实际上下文超限，源码输入体量不代表修改规模或能力成功。51保真实成本与整拒。
+
+Root明确实际Supplier API方向并要求缩窄R2：Prepared持有真实clock/config，生产call传configured Supplier；Core透传不get；DriverBootstrap在current/archive重检查后首次Native等待前唯一get，非null/future检查，所得同一deadline给HELLO和fresh full read，不能60+60或再次续期。既有Instant入口以委托重载保绝对deadline语义及10个现有direct测试，不能造新public type/platform。中央只重新给三个当前完整方法、准确imports/Prepared字段和RecoveryAdmission检查，稳定18,288字符/实际23,067B包，未再复制308KB前缀；没有写生产答案或TEST。
+
+02:18:31.738–02:18:47.801Z R2首POST HTTP200/stop、CLI0，4,738输入/2,618输出，headers0.835s/TTFT0.839s/总16.064s，cache未报、无retry、metrics实际HTTP200/known。`model-coordinator64/game-initial-recovery-deadline73-r2`原件自然返回即直交Root接实际编测，不等二次grant。输入明显收窄与TTFT不同各按实际记，不从两次时间差推前缀缓存命中。
+
+R2 JSON完整三个class hunk，主Supplier链/actual.requireCurrent与requireArchive之后唯一get已实现，现有body沿用同一deadline；没有新helper、Core clock或硬编码60。但实际after直接替换原Instant签名，没补明确要求的兼容重载；caller_migration自己承认遗漏并称will add，代码中并未增加，10个原测试不能据该说明算兼容。supplier及返回Instant也未补要求的非null契约。52保原样候选、实际锚计数与待Root必要适配/编测；中央未改源/跑TEST/授采用，不自动R3或续旧题，当前coding caller0。
+
 HEAD70实际采用候选后继：云端owner遭服务容量错误后，Root接管唯一D Writer叶，采用模型前两hunk主体；补充仅COMMITTED成功保readback，其它disposition仍清，direct duplicate入口先清缓存，保原recovery/失败行为。未采用模型NO_CHANGE缓存actual或扩大duplicate缓存优化。最终生产c312ccb1…，单源Java21/all,-path编译0/1.772s，保旧try资源warning，未宣称Werror；新TEST68efdda7…严格Werror编译0/1.458s。实际原存储write callback返回边界取当前Head，旧源1F/3.076s精确检出commit finally清缓存；最终1P/0skip/3.974s，三次真实物理commit、下一Head替换/原历史proof、实际storage return Error后丢缓存/查询已有durable结果不重提、等byte新FileID事件替换被拒均通过。首runner selector含slash导致双方exit2/0tests，只算参数错误，修后才上述R/G；全四hunk原稿未直接编测，不制造raw模型失败。`D:/ck3-state/writer-session-head70/READY01.json`已01:40:04Z直交运行岗，不等文档/来源签发/whole测试；真实Game性能与动作/日期效果仍待采用和业务重载实测。本段machine_id沿本文件本机标注，不授另一机器信用。

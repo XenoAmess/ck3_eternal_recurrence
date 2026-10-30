@@ -150,9 +150,21 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
                     assertInstanceOf(ObservedGameplayEntry.Origin.CurrentMap.class,admission.entry().origin());
                     assertFalse(admission.entry().toJson().has("start_ack"));
                     try {
+                        var actions=new ActionSnapshotReader(new ContinuityActionJournal(original.writer(),original.archive()));
+                        int writesBefore=peer.writes.get();
+                        var expired=assertThrows(ContractViolationException.class,()->DriverBootstrap.adoptInitialRecovery(
+                                admission,same,actions,second.nativeTransport(),original.driver().source(),original.archive(),8,Instant.EPOCH));
+                        assertEquals("initial recovery deadline expired",expired.getMessage());
+                        assertEquals(writesBefore,peer.writes.get(),"an expired explicit deadline cannot write to Native");
+                        var deadlineCalls=new AtomicInteger();
+                        java.util.function.Supplier<Instant> freshDeadline=()->{deadlineCalls.incrementAndGet();return deadline();};
+                        assertThrows(ContractViolationException.class,()->DriverBootstrap.adoptInitialRecovery(
+                                admission,same,actions,second.nativeTransport(),original.driver().source(),null,8,freshDeadline));
+                        assertEquals(0,deadlineCalls.get(),"admission and archive checks finish before starting Native time");
+                        assertEquals(writesBefore,peer.writes.get());
                         var driver=DriverBootstrap.adoptInitialRecovery(admission,same,
-                                new ActionSnapshotReader(new ContinuityActionJournal(original.writer(),original.archive())),
-                                second.nativeTransport(),original.driver().source(),original.archive(),8,deadline());
+                                actions,second.nativeTransport(),original.driver().source(),original.archive(),8,freshDeadline);
+                        assertEquals(1,deadlineCalls.get(),"HELLO and full read share one finite Native deadline");
                         driver.requireInitialRecovery(admission);
                         var after=driver.authority().withFrozenFacts(same,frozen->(DriverSnapshotFacts.Known)frozen.state());
                         assertArrayEquals(original.produced().driver().encode(),after.driver().encode());

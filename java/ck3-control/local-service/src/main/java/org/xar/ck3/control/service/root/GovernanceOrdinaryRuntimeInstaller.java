@@ -207,7 +207,7 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             collector=new GovernanceCollector(context.reads(),context.archive(),states,reads,scope,nativeGovernance.lifestyleReads(),request->{
                 try {
                     var same=prepared.session();requireCurrent(request.deadline());
-                    var result=finance.definitions().read(same,FinanceReadContracts.Query.ROOT,context.reads(),request);
+                    var result=finance.definitions().read(same,FinanceReadContracts.Query.ROOT,finance.readPort(),request);
                     if(result instanceof PlanningReadResult.Unavailable<FinanceReadContracts.Packet> unavailable)return new Unavailable<>(unavailable.reason());
                     var known=(PlanningReadResult.Known<FinanceReadContracts.Packet>)result;
                     return new Known<>(known.value().result(),List.of(known.originalReceipt(),finance.definitions().contract(FinanceReadContracts.Query.ROOT).sourceRef()));

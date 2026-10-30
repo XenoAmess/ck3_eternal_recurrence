@@ -188,8 +188,7 @@ public Running openSameGameBootstrap(ManagedGameSession actual, Optional<Continu
         return new Opened(this, driver.source()).finish(driver, Optional.of(opened.core().cleanRestartAdmission(driver)), deadline);
     }
     if (opened.core().hasCanonicalGameplayEntry()) {
-        var driver = runOperationPhase(clock,config.operationTimeout(),phaseDeadline->
-                opened.core().adoptInitialRecovery(actual,config.retainedFrames(),cyclePolicy,phaseDeadline));
+        var driver = opened.core().adoptInitialRecovery(actual,config.retainedFrames(),cyclePolicy, () -> clock.instant().plus(config.operationTimeout()));
         return new Opened(this,driver.source()).finish(driver, Optional.empty(), deadline);
     }
     var outcome = runOperationPhase(clock,config.operationTimeout(),actual.nativeTransport()::readFreshFullState);

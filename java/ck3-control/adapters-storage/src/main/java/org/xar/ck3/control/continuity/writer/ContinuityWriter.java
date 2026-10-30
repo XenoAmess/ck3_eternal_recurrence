@@ -626,7 +626,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         private Prepared previewInternal(Request request, TransitionAuthority selectedAuthority) throws IOException {
             checkOpen(); Objects.requireNonNull(request);
-            Head before = store.head(); List<Pin> actualSources = captureDomain(sources), evidence = capture(request);
+            Head before = this.head(); List<Pin> actualSources = captureDomain(sources), evidence = capture(request);
             var committed = store.duplicate(request, before);
             if (committed.isPresent()) {
                 // Like the original WindowLedger.apply, recover an exact durable outcome before
@@ -647,7 +647,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             return commitInternal(prepared, authority);
         }
         private Receipt commitInternal(Prepared prepared, TransitionAuthority selectedAuthority) throws IOException {
-            checkOpen();retainedHead=null;
+            checkOpen();
             try {
                 Receipt receipt = commitPrepared(prepared,selectedAuthority);
                 if (receipt.disposition() != Disposition.COMMITTED) retainedHead = null;
@@ -667,7 +667,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             StrictJson.require(prepared.sources().stream().map(Pin::reference).toList().equals(sources), "configured source closure");
             for (Pin pin : prepared.evidence()) LedgerFiles.verify(pin);
             StrictJson.require(prepared.evidence().stream().map(Pin::reference).toList().equals(request.evidence()), "evidence closure");
-            Head actual = store.head();
+            Head actual = this.head();
             // Exact duplicate only repairs already committed persistence; no reducer rerun or new credit.
             if (store.duplicate(request, actual).isPresent()) {
                 return recoverDuplicate(request, actual);
@@ -707,6 +707,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 if(writes.isEmpty())return new Receipt(Disposition.NO_CHANGE,actual.state(),request.identity(),0,false);
                 // Quote the entire physical commit/recovery before the first pending file is created.
                 return storageGuard.write(LedgerFiles.plan(layout.lock(),writes),()->{
+                    retainedHead=null;
                     int recovered=store.recover(recovery,storageGuard);
                     if(unchanged)return new Receipt(Disposition.NO_CHANGE,actual.state(),request.identity(),recovered,recovered>0);
                     LedgerFiles.atomic(storageGuard,layout.lock(),eventWrite);

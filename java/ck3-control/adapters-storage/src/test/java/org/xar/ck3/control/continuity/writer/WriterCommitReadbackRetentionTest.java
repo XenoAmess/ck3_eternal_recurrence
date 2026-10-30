@@ -20,6 +20,47 @@ import org.xar.ck3.control.continuity.OriginalWindowReducer;
 final class WriterCommitReadbackRetentionTest {
     @TempDir Path directory;
 
+    @Test void previewAndCommitRevalidationRetainTheActualPrewriteHeadAndRejectChangedEvidence() throws Exception {
+        WriterFixture fixture = new WriterFixture(directory.resolve("preview-commit"));
+        var held = new AtomicReference<ContinuityStorePort.Session>();
+        var expected = new AtomicReference<Head>();
+        var writer = new ContinuityWriter(fixture.layout,
+                List.of(LedgerFiles.read(fixture.source, 65536).pin().reference()), new TransitionAuthority() {
+            @Override public String revalidate(Head actual, Request request) throws IOException {
+                if (expected.get() != null) assertSame(expected.get(), actual,
+                        "commit must reuse the actual preview head before any physical mutation");
+                return ContinuityJson.digest(request.detailsObject());
+            }
+            @Override public String revalidate(ContinuityState before, Request request) {
+                return ContinuityJson.digest(request.detailsObject());
+            }
+            @Override public ContinuityState reduce(ContinuityState before, Request request) {
+                return OriginalWindowReducer.reduce(before, request);
+            }
+        }, StorageWriteGuardTestSupport.forLayout(fixture.layout));
+        writer.locked(same -> {
+            held.set(same);
+            Head observed = same.head();
+            Prepared first = same.preview(WriterFixture.settled("preview-current", 1024, 2));
+            assertSame(observed, first.predecessor(), "preview must retain the already observed complete head");
+            expected.set(observed);
+            Receipt receipt = same.commit(first);
+            same.requireCommitted(first, receipt);
+            assertEquals(1, same.head().state().sequence());
+            expected.set(null);
+            Path evidence = directory.resolve("changed-data.txt");
+            Files.writeString(evidence, "actual-before");
+            Request source = WriterFixture.settled("changed-before-write", 1048, 3);
+            Prepared next = same.preview(new Request(source.kind(), source.details(),
+                    List.of(LedgerFiles.read(evidence, 65536).pin().reference())));
+            Files.writeString(evidence, "actual-after");
+            assertThrows(IOException.class, () -> same.commit(next));
+            assertEquals(1, same.head().state().sequence());
+            assertFalse(Files.exists(fixture.layout.event(2)));
+            return null;
+        });
+    }
+
     @Test void completedReadbackSurvivesCommitReturnButFailureAndChangedDataDoNotBorrowIt() throws Exception {
         WriterFixture fixture = new WriterFixture(directory.resolve("actual-commits"));
         StorageWriteGuard delegate = StorageWriteGuardTestSupport.forLayout(fixture.layout);
