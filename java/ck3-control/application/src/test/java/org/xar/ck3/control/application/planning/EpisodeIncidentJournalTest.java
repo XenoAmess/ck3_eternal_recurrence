@@ -280,6 +280,113 @@ final class EpisodeIncidentJournalTest {
         Files.write(path, StrictJson.canonical(report));
         return EpisodeIncidentJournal.measure(path);
     }
+    @Test void fullSemanticUnsettledRetainsActualAckWithoutGrantingAfterOrReplay() throws Exception {
+        Fixture f = fixture();
+        var ack = new org.xar.ck3.control.application.action.NativeActionPort.AckReceived("unsettled-request", false,
+                Optional.empty(), new org.xar.ck3.control.application.action.RawJson("{}".getBytes(java.nio.charset.StandardCharsets.UTF_8)), new byte[]{1});
+        ExactRef retained = preserveLargeUnsettled(f, new OpportunityJson.IntegerValue(BigInteger.valueOf(41)),
+                new OpportunityJson.Obj(java.util.Map.of("instance_id", new OpportunityJson.IntegerValue(BigInteger.valueOf(41)))), ack);
+        JsonNode row = StrictJson.parse(Files.readAllBytes(Path.of(retained.path())));
+        assertTrue(row.path("original_instance_present").booleanValue());
+        assertEquals(BigInteger.valueOf(41), row.path("original_instance_id").bigIntegerValue());
+        assertEquals("ACK_RECEIVED", row.path("dispatch_kind").textValue());
+        assertFalse(row.path("native_ok").booleanValue());
+        assertFalse(row.path("independent_postcondition_verified").booleanValue());
+        assertFalse(row.path("replay_allowed").booleanValue());
+        assertEquals(retained, preserveLargeUnsettled(f, new OpportunityJson.IntegerValue(BigInteger.valueOf(41)),
+                new OpportunityJson.Obj(java.util.Map.of("instance_id", new OpportunityJson.IntegerValue(BigInteger.valueOf(41)))), ack));
+        assertFalse(Files.exists(Path.of(retained.path().replace(".unsettled.json", ".after.json"))));
+        assertEquals(1, f.journal().scan(bind(f.request())).incompleteAfter());
+    }
+
+    @Test void largeSemanticAfterNullKeepsUnknownDispatchAndExplicitAbsence() throws Exception {
+        Fixture f = fixture();
+        var unknown = new org.xar.ck3.control.application.action.NativeActionPort.Unknown(
+                "unsettled-request", "synthetic unconfirmed return", new byte[]{1}, Optional.empty());
+        ExactRef retained = preserveLargeUnsettled(f, new OpportunityJson.IntegerValue(BigInteger.valueOf(41)), OpportunityJson.Nil.INSTANCE, unknown);
+        JsonNode row = StrictJson.parse(Files.readAllBytes(Path.of(retained.path())));
+        assertFalse(row.path("original_instance_present").booleanValue());
+        assertTrue(row.path("native_ok").isNull());
+        assertEquals("UNKNOWN", row.path("dispatch_kind").textValue());
+        assertFalse(row.path("independent_postcondition_verified").booleanValue());
+        assertFalse(row.path("replay_allowed").booleanValue());
+        assertTrue(retained.bytes() < StrictJson.INPUT_MAX_BYTES, "full SEM is read but never copied into the small diagnostic body");
+    }
+
+    @Test void largeSemanticDecimalAfterInstanceIsUnknownRatherThanRoundedToTheOldId() throws Exception {
+        Fixture f = fixture();
+        var unknown = new org.xar.ck3.control.application.action.NativeActionPort.Unknown(
+                "unsettled-request", "synthetic unconfirmed return", new byte[]{1}, Optional.empty());
+        ExactRef retained = preserveLargeUnsettled(f, new OpportunityJson.IntegerValue(BigInteger.valueOf(41)),
+                new OpportunityJson.Obj(java.util.Map.of("instance_id", new OpportunityJson.DecimalValue("41.0"))), unknown);
+        JsonNode row = StrictJson.parse(Files.readAllBytes(Path.of(retained.path())));
+        assertTrue(row.path("original_instance_present").isNull());
+        assertFalse(row.path("replay_allowed").booleanValue());
+    }
+
+    @Test void largeSemanticOriginalInstanceStillRejectsDecimalBooleanStringAndNull() throws Exception {
+        Fixture f = fixture();
+        var unknown = new org.xar.ck3.control.application.action.NativeActionPort.Unknown(
+                "unsettled-request", "synthetic unconfirmed return", new byte[]{1}, Optional.empty());
+        for (OpportunityJson.Value invalid : List.of(new OpportunityJson.DecimalValue("41.0"),
+                new OpportunityJson.Bool(true), new OpportunityJson.Text("41"), OpportunityJson.Nil.INSTANCE)) {
+            IOException failure = assertThrows(IOException.class, () -> preserveLargeUnsettled(f, invalid, OpportunityJson.Nil.INSTANCE, unknown));
+            assertEquals("original full native instance required", failure.getMessage());
+        }
+        try (var files = Files.list(f.configured().incidentRoot())) {
+            assertTrue(files.noneMatch(path -> path.getFileName().toString().endsWith(".unsettled.json")));
+        }
+    }
+
+    @Test void completeSemanticIngressStillRejectsDuplicateFieldsAndReceiptLaneStaysSmall() {
+        byte[] large = ("{\"padding\":\"" + "x".repeat(70_000) + "\"}").getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        assertTrue(DriverJson.object(large, DriverJson.MAX_NATIVE_BYTES).get("padding") instanceof OpportunityJson.Text);
+        assertThrows(IllegalArgumentException.class, () -> StrictJson.parse(large));
+        byte[] duplicate = "{\"active_event\":null,\"active_event\":{}}".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        assertThrows(IllegalArgumentException.class, () -> DriverJson.object(duplicate, DriverJson.MAX_NATIVE_BYTES));
+        byte[] trailing = "{\"active_event\":null}{}".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        assertThrows(IllegalArgumentException.class, () -> DriverJson.object(trailing, DriverJson.MAX_NATIVE_BYTES));
+    }
+
+    /** Synthetic full semantic DATA exercises the real incident producer, never Native custody or Game outcomes. */
+    private ExactRef preserveLargeUnsettled(Fixture f, OpportunityJson.Value originalInstance, OpportunityJson.Value afterForeground,
+            org.xar.ck3.control.application.action.NativeActionPort.DispatchOutcome dispatch) throws Exception {
+        ActionCommand command = command(f.request());
+        f.journal().before(command).orElseThrow();
+        ExactRef beforeNative = syntheticOriginal("unsettled-before-native.json"), beforeFacts = syntheticOriginal("unsettled-before-facts.json");
+        ExactRef afterNative = syntheticOriginal("unsettled-after-native.json"), afterFacts = syntheticOriginal("unsettled-after-facts.json");
+        ExactRef originalDispatch = syntheticOriginal("unsettled-dispatch.json");
+        var old = command.before(); var frame = old.frame();
+        var afterFrame = new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame(
+                new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame(frame.identity().player(),
+                        frame.identity().nativeRevision().add(BigInteger.ONE), frame.identity().dateRaw()),
+                "snapshot-unsettled-after", frame.revision().add(BigInteger.ONE), frame.episodeRunId());
+        var afterIdentity = new org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity(old.machineId(), old.game(), afterFrame, old.observationVersion());
+        OpportunityJson.Obj beforeSemantic = largeUnsettledSemantic(new OpportunityJson.Obj(java.util.Map.of("instance_id", originalInstance)), beforeFacts);
+        OpportunityJson.Obj afterSemantic = largeUnsettledSemantic(afterForeground, afterFacts);
+        assertTrue(DriverJson.encode(beforeSemantic).length > StrictJson.INPUT_MAX_BYTES);
+        assertTrue(DriverJson.encode(afterSemantic).length > StrictJson.INPUT_MAX_BYTES);
+        var before = new org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete(old, command.source(), command.sessionId(),
+                BigInteger.ONE, beforeSemantic, beforeNative, PlanningFixtures.NOW, "a".repeat(64));
+        var after = new org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete(afterIdentity, command.source(), command.sessionId(),
+                BigInteger.ONE, afterSemantic, afterNative, PlanningFixtures.NOW.plusSeconds(1), "b".repeat(64));
+        var guard = new org.xar.ck3.control.application.action.GuardEvidence(old, command.source(), command.sessionId(), BigInteger.ONE,
+                command.operation(), beforeNative, f.request().source().sourceRef(), "synthetic-unsettled-authority", PlanningFixtures.NOW, command.deadline());
+        var attempt = new org.xar.ck3.control.application.action.ActionState.Attempt("unsettled-request", PlanningFixtures.NOW, guard,
+                new org.xar.ck3.control.application.action.NativeRequest(command.operation().value(), Optional.empty(),
+                        new org.xar.ck3.control.application.action.RawJson("{}".getBytes(java.nio.charset.StandardCharsets.UTF_8))));
+        var pair = new org.xar.ck3.control.application.effects.NativeEffectSnapshots.Pair(before, after);
+        return f.journal().observedUnsettled(command, attempt,
+                new org.xar.ck3.control.application.effects.NativeEventEffects.UnsettledObservation(pair, dispatch, "synthetic full SEM unresolved"), originalDispatch);
+    }
+
+    private static OpportunityJson.Obj largeUnsettledSemantic(OpportunityJson.Value foreground, ExactRef facts) {
+        return new OpportunityJson.Obj(java.util.Map.of("active_event", foreground, "padding", new OpportunityJson.Text("x".repeat(70_000)),
+                "opaque_decimal", new OpportunityJson.DecimalValue("1.2500"), "opaque_boolean", new OpportunityJson.Bool(true),
+                "opaque_null", OpportunityJson.Nil.INSTANCE, "java_driver_facts_evidence",
+                org.xar.ck3.control.application.driver.DriverObservationEvidenceReader.reference(facts)));
+    }
+
     private static Binding bind(PlanningRequest request) { return new Binding(request.before(), request.source(), request.sessionId()); }
     private static ActionCommand command(PlanningRequest request) {
         var identity = request.before().frame();

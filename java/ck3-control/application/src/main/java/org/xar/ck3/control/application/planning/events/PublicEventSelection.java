@@ -9,6 +9,7 @@ import org.xar.ck3.control.application.planning.OrdinaryHistory;
 import org.xar.ck3.control.application.planning.OrdinaryPolicy;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.wave2.events.eventoutcome.RegisteredEventMaterial;
 import org.xar.ck3.control.wave2.events.registered.RegisteredEventKnowledge;
@@ -58,7 +59,7 @@ public final class PublicEventSelection {
         StrictJson.require(optionNumber > 0 && optionNumber <= 4096, "bounded authored native option number required");
         expectedInstance.ifPresent(value -> StrictJson.require(value > 0, "positive full int32 event instance required"));
         StrictJson.require(actual.paused(), "public event selection requires its original paused planning frame");
-        ObjectValue snapshot = retained(actual.snapshot());
+        ObjectValue snapshot = retainedSnapshot(actual.snapshot());
         Value rawEvent = snapshot.contains("active_event") ? snapshot.get("active_event") : snapshot.get("current_event");
         StrictJson.require(rawEvent instanceof ObjectValue, "actual active event required");
         ObjectValue event = (ObjectValue) rawEvent;
@@ -129,6 +130,13 @@ public final class PublicEventSelection {
         return plan;
     }
     private static Value field(ObjectValue value, String object, String key) { return RetainedJson.object(value.get(object)).getOrNull(key); }
+    private static ObjectValue retainedSnapshot(OpportunityJson.Obj value) {
+        // Explicit full-native role resource lease for the complete snapshot conversion.
+        // DriverJson.MAX_NATIVE_BYTES is 64 MiB. Depth 128 preserves the retained parser contract.
+        // Visited values bound equals max input bytes (conservative for JSON values representable by byte-bound).
+        var budget = new RetainedJson.ParseBudget(DriverJson.MAX_NATIVE_BYTES, DriverJson.MAX_NATIVE_BYTES, 128);
+        return RetainedJson.object(RetainedJson.parse(OpportunityJson.encode(value), budget));
+    }
     private static ObjectValue retained(OpportunityJson.Obj value) { return RetainedJson.object(RetainedJson.parse(OpportunityJson.encode(value))); }
     private static OpportunityJson.Obj opportunity(ObjectValue value) { return OpportunityJson.object(OpportunityJson.parse(RetainedJson.encode(value)), "public exact native event plan"); }
     private static BigInteger integer(Value value) { StrictJson.require(value instanceof IntegerValue, "exact event integer required"); return ((IntegerValue)value).value(); }

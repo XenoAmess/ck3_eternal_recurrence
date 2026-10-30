@@ -45,6 +45,7 @@ import org.xar.ck3.control.wave2.events.eventtraits.EventTraitMembership;
 import org.xar.ck3.control.wave2.events.eventtraits.EventTraitMembershipCodec;
 import org.xar.ck3.control.wave2.events.eventtraits.PoetTraitOutcome;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson;
+import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
 import org.xar.ck3.control.wave2.events.unhandledevent.SourceReviewedEventConsumer;
 import org.xar.ck3.control.wave2.events.unhandledevent.SourceReviewedInteractionContinuation;
@@ -259,7 +260,7 @@ public final class EventPolicies {
             bool(frame.get("paused")), bool(frame.get("map_ready")), integer(frame.get("actor_character_id")));
         var sourceContext = context.orElseThrow();
         var input = new UnhandledEventFallback.Request(new UnhandledEventFallback.Snapshot(binding,
-            new UnhandledEventFallback.ActiveEvent(integer(event.get("instance_id")), integer(event.get("option_count"))), retained(snapshot)),
+            new UnhandledEventFallback.ActiveEvent(integer(event.get("instance_id")), integer(event.get("option_count"))), retainedSnapshot(snapshot)),
             new UnhandledEventFallback.Context(integer(sourceContext.get("current_event_instance_id")), integer(sourceContext.get("snapshot_revision")),
                 integer(sourceContext.get("date_raw")), sourceContext.path("event_definition_key").asText(null), options, retained(sourceContext)),
             retained((ObjectNode) event), retained(previousPlan(previous)), steps(request));
@@ -268,7 +269,7 @@ public final class EventPolicies {
         ObjectNode fallbackPlan = (ObjectNode) parse(UnhandledEventCodec.encode(fallback));
         if (trusted.isPresent()) {
             try {
-                var reviewed = SourceReviewedEventConsumer.continueWithExistingPlan(retained(fallbackPlan), retained(snapshot), steps(request), trusted.orElseThrow());
+                var reviewed = SourceReviewedEventConsumer.continueWithExistingPlan(retained(fallbackPlan), retainedSnapshot(snapshot), steps(request), trusted.orElseThrow());
                 return Optional.of(new FirstDisplayed(opportunityPlan(nativeEventArguments((ObjectNode) parse(reviewed.encode()), context.orElseThrow())), Optional.of(reviewed.status())));
             } catch (TrustedEventSourceContext.UnavailableException unavailable) {
                 if (fallback.orElseThrow().selectedStep() == null) {
@@ -360,7 +361,7 @@ public final class EventPolicies {
         if (!(actualDecision instanceof OpportunityJson.Obj decision))
             return incomplete("poet material requires the original source-bound registered event decision; a reconstructed recommendation is not evidence");
         Optional<PoetTraitOutcome.Expectation> expected = RegisteredEventMaterial.poet(
-            RetainedJson.object(RetainedJson.parse(OpportunityJson.encode(decision))), retained(snapshot));
+            RetainedJson.object(RetainedJson.parse(OpportunityJson.encode(decision))), retainedSnapshot(snapshot));
         if (expected.isEmpty()) return incomplete("the dedicated trait material route did not handle its exact source-reviewed option");
         OpportunityJson.Obj arguments = old.arguments().with("event_material_postcondition", OpportunityJson.parse(PoetTraitOutcome.encode(expected.orElseThrow())));
         Optional<ExpectedPostcondition> nativeExpected = observations.expected(request, old.operation(), arguments, expected);
@@ -496,6 +497,9 @@ public final class EventPolicies {
     private static List<String> steps(EventDecisionInput request){return request.actionSteps().stream().map(OperationKey::value).sorted().toList();}
     private static List<String> steps(PlanningRequest request) { return request.observations().actionSteps().stream().map(OperationKey::value).sorted().toList(); }
     private static RetainedJson.ObjectValue retained(ObjectNode node) { return RetainedJson.object(RetainedJson.parse(bytes(node))); }
+    private static RetainedJson.ObjectValue retainedSnapshot(ObjectNode node) {
+        return RetainedJson.object(RetainedJson.parse(bytes(node), new RetainedJson.ParseBudget(DriverJson.MAX_NATIVE_BYTES, DriverJson.MAX_NATIVE_BYTES, 128)));
+    }
     private static OpportunityJson.Obj object(OpportunityJson.Value value) { return OpportunityJson.object(value, "event native projection object"); }
     private static OrdinaryPolicy.Replace readNeeded(String step) {
         return new OrdinaryPolicy.Replace(new OrdinaryPolicy.Draft("native-read-collector", step, "collect the registered typed query synchronously in the original paused frame",

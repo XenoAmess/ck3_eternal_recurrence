@@ -168,7 +168,7 @@ public final class EventRuntimeInstaller {
         var windowBinding=new EventReadBinding<>(windowMaterial,(request,value)->value);
         var religionBinding=new EventReadBinding<>(religionMaterial,(request,value,actualEncoded)-> {
             OpportunityJson.Obj result=object(actualEncoded);
-            var observed=RiteGrowthMaterial.observe(StrictJson.parse(actualEncoded.bytes()),StrictJson.parse(OpportunityJson.encode(request.observations().snapshot())));
+            var observed=RiteGrowthMaterial.observe(StrictJson.parse(actualEncoded.bytes()),DriverJson.toNode(request.observations().snapshot()));
             var detached=OpportunityJson.parse(RiteGrowthMaterial.encode(observed));
             return new EventPolicies.ReadPublication(result,Optional.of(request.observations().snapshot().with(RiteGrowthMaterial.SNAPSHOT_FIELD,detached)));
         });
@@ -639,7 +639,7 @@ public final class EventRuntimeInstaller {
             if(plan.get("event_decision") instanceof OpportunityJson.Obj decision)
                 trait=RegisteredEventMaterial.poet(
                         org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.object(org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.parse(DriverJson.encode(decision))),
-                        org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.object(org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.parse(DriverJson.encode(withRead.observations().snapshot()))));
+                        org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.object(org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.parse(DriverJson.encode(withRead.observations().snapshot()),new org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.ParseBudget(DriverJson.MAX_NATIVE_BYTES,DriverJson.MAX_NATIVE_BYTES,128))));
             var expected=expectations.expected(withRead,requested.operation(),plan,trait);
             if(expected.isEmpty()) {
                 OpportunityJson.Obj unavailable=plan.with("unsubmitted_candidate_step",plan.get("selected_step")).with("selected_step",OpportunityJson.Nil.INSTANCE);

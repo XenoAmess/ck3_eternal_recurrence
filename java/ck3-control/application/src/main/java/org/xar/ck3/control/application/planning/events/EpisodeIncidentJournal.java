@@ -378,8 +378,8 @@ public final class EpisodeIncidentJournal {
                 require(ExactRef.fromJson(prior.get("original_dispatch_ref")).equals(originalDispatch),"unsettled original dispatch changed");return retained;
             }
             String field=ticket.kind()==Kind.EVENT?"active_event":"pending_character_interaction";
-            ObjectNode old=object(StrictJson.parse(DriverJson.encode(pair.before().semantic())).get(field));
-            JsonNode oldId=old.get("instance_id"),next=StrictJson.parse(DriverJson.encode(pair.after().semantic())).get(field);
+            ObjectNode old=object(object(DriverJson.toNode(pair.before().semantic(), DriverJson.MAX_NATIVE_BYTES)).get(field));
+            JsonNode oldId=old.get("instance_id"),next=object(DriverJson.toNode(pair.after().semantic(), DriverJson.MAX_NATIVE_BYTES)).get(field);
             require(oldId!=null&&oldId.isIntegralNumber(),"original full native instance required");
             ObjectNode row=binding(ticket.origin());row.put("schema",UNSETTLED_SCHEMA).put("incident_id",ticket.incidentId()).put("kind",ticket.kind().name())
                     .put("action_id",command.actionId()).put("arguments_sha256",digest(DriverJson.encode(command.arguments())))

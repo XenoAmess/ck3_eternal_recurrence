@@ -84,7 +84,7 @@ public final class PendingUiEventPreparation {
                 throw rejected(current,actual.originalReceipt(),blocked);
             }
         }
-        var initial=new SourceReviewedInteractionContinuation.Input(Optional.of(retained(frame.semantic())),Optional.of(retained(context)),previous,steps,true);
+        var initial=new SourceReviewedInteractionContinuation.Input(Optional.of(retainedFullSemantic(frame.semantic())),Optional.of(retained(context)),previous,steps,true);
         var result=SourceReviewedInteractionContinuation.plan(initial,trusted).orElseThrow(()->rejected(current,actual.originalReceipt(),new OpportunityJson.Obj(java.util.Map.of("phase",new OpportunityJson.Text("pending_interaction_source_presentation_unavailable"),"selected_step",OpportunityJson.Nil.INSTANCE,"pending_context",context))));
         OpportunityJson.Obj plan=retain(current,actual.originalReceipt(),opportunity(result));
         if(!(plan.get("selected_step") instanceof OpportunityJson.Text selected))throw new EventActionPreparation.PendingSelectionRejected(plan,actual.originalReceipt());
@@ -97,7 +97,7 @@ public final class PendingUiEventPreparation {
     private static EventActionPreparation.PendingPrepared command(PendingUiEvent.Current current,PlanningReadReceipt read,ExactRef originalRead,
             EventActionPreparation.PendingPresentation presentation,OperationKey operation,OpportunityJson.Obj plan,String id,Instant deadline){
         var frame=current.frame();Optional<PoetTraitOutcome.Expectation> trait=Optional.empty();
-        if(plan.get("event_decision") instanceof OpportunityJson.Obj decision)trait=RegisteredEventMaterial.poet(retained(decision),retained(frame.semantic()));
+        if(plan.get("event_decision") instanceof OpportunityJson.Obj decision)trait=RegisteredEventMaterial.poet(retained(decision),retainedFullSemantic(frame.semantic()));
         var expected=NativeEventPostconditionPort.expected(frame.identity(),frame.source(),frame.semantic(),operation,plan,trait)
                 .orElseThrow(()->new EventActionPreparation.PendingSelectionRejected(plan,originalRead));
         var claims=new Claims(Set.of(),Set.of(),Set.of(frame.identity().frame().identity().player()),Set.of("foreground-window"));
@@ -149,6 +149,10 @@ public final class PendingUiEventPreparation {
         return plan.with("pending_ui_event_source",source);
     }
     private static EventActionPreparation.PendingSelectionRejected rejected(PendingUiEvent.Current current,ExactRef read,OpportunityJson.Obj plan){return new EventActionPreparation.PendingSelectionRejected(retain(current,read,plan),read);}
-    private static RetainedJson.ObjectValue retained(OpportunityJson.Obj value){return RetainedJson.object(RetainedJson.parse(DriverJson.encode(value)));}
+    private static RetainedJson.ObjectValue retained(OpportunityJson.Obj value){return RetainedJson.object(RetainedJson.parse(DriverJson.encode(value)));
+    }
+    private static RetainedJson.ObjectValue retainedFullSemantic(OpportunityJson.Obj value){
+        return RetainedJson.object(RetainedJson.parse(DriverJson.encode(value), new RetainedJson.ParseBudget(DriverJson.MAX_NATIVE_BYTES, DriverJson.MAX_NATIVE_BYTES, 128)));
+    }
     private static OpportunityJson.Obj opportunity(RetainedJson.ObjectValue value){return DriverJson.object(RetainedJson.encode(value),ActionCommand.MAX_ARGUMENT_BYTES);}
 }
