@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Predicate;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel;
 import org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel.PendingAction;
 import org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel.PendingStatus;
@@ -19,7 +20,7 @@ public final class GiftPendingFramePolicy {
             boolean activeEventAbsent, boolean pendingInteractionAbsent, BigInteger bridgePid, BigInteger connectionGeneration) {
         public Frame {
             GiftPendingModel.positive(publicRevision); GiftPendingModel.positive(nativeRevision); GiftPendingModel.nonnegative(dateRaw);
-            GiftPendingModel.nonempty(episodeRunId); GiftPendingModel.positive(actorCharacterId);
+            GiftPendingModel.nonempty(episodeRunId); NativeCharacterId.of(actorCharacterId);
             GiftPendingModel.positive(bridgePid); GiftPendingModel.positive(connectionGeneration);
         }
         public boolean ready() { return actorAlive && paused && mapReady && activeEventAbsent && pendingInteractionAbsent; }
@@ -48,7 +49,7 @@ public final class GiftPendingFramePolicy {
         var pre = pending.baseline();
         StrictJson.require(source.nativeRevision().compareTo(pre.nativeSnapshotRevision()) <= 0
                 && source.dateRaw().equals(pre.dateRaw()) && source.episodeRunId().equals(pending.episodeRunId())
-                && source.actorCharacterId().equals(pre.playerCharacterId()) && source.ready()
+                && GiftPendingModel.rawCharacterIdFromPublic(source.actorCharacterId()).equals(pre.playerCharacterId()) && source.ready()
                 && source.bridgePid().equals(pending.sourceProcess().pid()),
                 "private faction pending frame changed before receipt");
     }

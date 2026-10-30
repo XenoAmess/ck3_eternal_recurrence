@@ -21,6 +21,8 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.driver.*;
@@ -47,12 +49,25 @@ final class GiftPendingFrameProducerConsumerTest {
     private static BigInteger n(long value){return BigInteger.valueOf(value);}
     private static byte[] bytes(String value){return value.getBytes(StandardCharsets.UTF_8);}
     private static byte[] packet(String value)throws IOException{return NativeWire.packet(bytes(value));}
-    private static String state(long player){return "{\"played_character\":{\"character_id\":"+player+",\"alive\":true},\"paused\":true,\"map_ready\":true,\"speed\":1,\"date_raw\":1000,\"active_event\":null,\"pending_character_interaction\":null,\"one_life_terminal_reason\":null,\"one_life_terminal\":false,\"succession_reconciliation\":null,\"one_life_settlement\":null,\"active_wars\":[],\"player_armies\":[],\"diagnostics\":{\"bridge_pid\":42,\"connection_generation\":5}}";}
+    private record ActorBits(long publicSigned,BigInteger privateRaw) { }
+    private static ActorBits originalActor(String world)throws IOException {
+        try(var stream=GiftPendingFrameProducerConsumerTest.class.getResourceAsStream("/gift-pending-frame/native-roles/"+world+".bin")) {
+            assertNotNull(stream,"actual Native WriteFrame original required");byte[] packet=stream.readAllBytes();
+            var wire=assertInstanceOf(NativeWire.CommandResult.class,NativeWire.decode(packet));assertArrayEquals(packet,wire.packet().value());
+            var nativeResult=StrictJson.parse(wire.result().token().orElseThrow().value()).get("native");
+            BigInteger raw=nativeResult.path("observation").get("player_character_id").bigIntegerValue();
+            long signed=nativeResult.path("direct_targeting_rows").get("player_character_id").longValue();
+            assertEquals(raw,NativeCharacterId.of(signed).asRawUInt32());return new ActorBits(signed,raw);
+        }
+    }
+
+    private static String state(long player){return "{\"played_character\":{\"character_id\":"+player+",\"alive\":true},\"paused\":true,\"map_ready\":true,\"speed\":1,\"date_raw\":53186400,\"active_event\":null,\"pending_character_interaction\":null,\"one_life_terminal_reason\":null,\"one_life_terminal\":false,\"succession_reconciliation\":null,\"one_life_settlement\":null,\"active_wars\":[],\"player_armies\":[],\"diagnostics\":{\"bridge_pid\":42,\"connection_generation\":5}}";}
     private static final class Packets implements NativePacketPort {
         final ArrayDeque<byte[]> incoming=new ArrayDeque<>();int reads,writes;boolean replaced;
-        Packets()throws IOException {
+        Packets()throws IOException {this(73);}
+        Packets(long actor)throws IOException {
             incoming.add(packet("{\"type\":\"hello\",\"protocol_version\":1,\"pid\":42,\"connection_generation\":5,\"bridge_version\":\"gift-frame-fixture\",\"expected_ck3_sha256\":\""+SHA+"\",\"game_adapter_id\":\"gift-frame-fixture\",\"game_adapter_status\":\"ready\",\"ck3_build_match\":true,\"capabilities\":[\"game.state.snapshot\"]}"));
-            incoming.add(packet("{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":1}"));publish(7,73);
+            incoming.add(packet("{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":1}"));publish(7,actor);
         }
         void publish(int revision,long player)throws IOException{incoming.add(packet("{\"type\":\"state_snapshot\",\"protocol_version\":1,\"snapshot_id\":\"gift-frame-"+revision+"\",\"revision\":"+revision+",\"state\":"+state(player)+"}"));}
         @Override public void awaitConnection(Instant deadline) { }
@@ -70,14 +85,15 @@ final class GiftPendingFrameProducerConsumerTest {
         final NativeGameTransport transport;final ContinuityWriter writer;final NativeOutcomeArchive archive;
         final RootLifecycleAuthority physical;final StorageWriteGuardTestSupport storage;final PendingAction pending;
         final AtomicInteger sourceChecks=new AtomicInteger();
-        Fixture(Path root)throws IOException {
+        Fixture(Path root)throws IOException {this(root,new ActorBits(73,n(73)));}
+        Fixture(Path root,ActorBits actor)throws IOException {
             Files.createDirectory(root);sourceFile=root.resolve("source.java");Files.writeString(sourceFile,"finite reviewed Gift source",StandardOpenOption.CREATE_NEW);reviewed=ref(sourceFile);
-            Path driverFile=root.resolve("driver.json");var driver=StrictJson.object();driver.put("format_version",2);driver.put("pipe_name",PIPE);driver.put("bridge_pid",42);driver.put("episode_character_id",73);driver.put("episode_run_id","gift-episode");driver.putNull("last_checkpoint");driver.putArray("command_history");
+            Path driverFile=root.resolve("driver.json");var driver=StrictJson.object();driver.put("format_version",2);driver.put("pipe_name",PIPE);driver.put("bridge_pid",42);driver.put("episode_character_id",actor.publicSigned());driver.put("episode_run_id","gift-episode");driver.putNull("last_checkpoint");driver.putArray("command_history");
             for(String key:List.of("rollback_war_failure","managed_restore_transaction","succession_expectation","campaign_goal"))driver.putNull(key);
             Files.write(driverFile,StrictJson.canonical(driver,65536),StandardOpenOption.CREATE_NEW);ExactRef driverRef=ref(driverFile);
-            var seed=StrictJson.object();seed.put("schema","root.ck3.continuity-window/v1");seed.put("machine_id",MACHINE);seed.put("sequence",0);seed.put("window_id",1);seed.put("status","running");seed.put("target_days",10958);seed.put("target_years",30);seed.put("calendar_year_days",365.25);seed.put("start_date_raw",1000);seed.put("target_date_raw",263992);seed.put("last_settled_date_raw",1000);seed.put("last_settled_cycles",0);seed.put("manual_repair_count",0);seed.put("automatic_recovery_count",0);seed.put("binding_lineage_count",0);var game=seed.putObject("game_binding");game.put("pid",42);game.put("creation_date","2026-10-24T00:00:00Z");seed.putNull("latest_binding");seed.putNull("pending_cycle");seed.put("NEXT",1);seed.set("java_driver_history_baseline",driverRef.toJson());
+            var seed=StrictJson.object();seed.put("schema","root.ck3.continuity-window/v1");seed.put("machine_id",MACHINE);seed.put("sequence",0);seed.put("window_id",1);seed.put("status","running");seed.put("target_days",10958);seed.put("target_years",30);seed.put("calendar_year_days",365.25);seed.put("start_date_raw",53186400);seed.put("target_date_raw",53449392);seed.put("last_settled_date_raw",53186400);seed.put("last_settled_cycles",0);seed.put("manual_repair_count",0);seed.put("automatic_recovery_count",0);seed.put("binding_lineage_count",0);var game=seed.putObject("game_binding");game.put("pid",42);game.put("creation_date","2026-10-24T00:00:00Z");seed.putNull("latest_binding");seed.putNull("pending_cycle");seed.put("NEXT",1);seed.set("java_driver_history_baseline",driverRef.toJson());
             byte[] initial=ContinuityJson.canonical(seed);Path snapshot=root.resolve("ROOT-CONTINUITY-WINDOW.json"),anchor=root.resolve("anchor.json");Files.write(snapshot,initial,StandardOpenOption.CREATE_NEW);Files.write(anchor,initial,StandardOpenOption.CREATE_NEW);Files.write(root.resolve("ROOT-CONTINUITY-WINDOW.lock"),new byte[0],StandardOpenOption.CREATE_NEW);Files.createDirectory(root.resolve("ROOT-CONTINUITY-WINDOW-EVENTS"));Files.createDirectory(root.resolve("artifacts"));
-            Baseline baseline=new Baseline(n(1),n(99),n(7),n(7),n(1000),n(73),n(100),n(0),n(1),n(1),List.of(n(99)),n(10),n(1));
+            Baseline baseline=new Baseline(n(1),n(99),n(7),n(7),n(53186400),actor.privateRaw(),n(100),n(0),n(1),n(1),List.of(n(99)),n(10),n(1));
             Ledger ledger=GiftPendingReducer.begin(Ledger.empty(),new BeginRequest("original-gift-1","gift-episode","R1",GiftProcessIdentity.actual(GAME),baseline,n(10),"a".repeat(64)));
             pending=GiftPendingCodec.decodeLedger(GiftPendingCodec.encodeLedger(ledger)).pending().orElseThrow();
             var registration=new DomainBodies.Registration(DomainBodies.Slot.FACTION,GiftPendingModel.SCHEMA,GiftPendingCodec.MAX_BYTES,List.of(reviewed),(head,previous,request,raw)->{
@@ -89,7 +105,7 @@ final class GiftPendingFrameProducerConsumerTest {
                 @Override public String revalidate(ContinuityState old,Request request){throw new AssertionError("Gift wait cannot write canonical business events");}
                 @Override public ContinuityState reduce(ContinuityState old,Request request){throw new AssertionError("Gift wait cannot reduce canonical business events");}
             },Clock.systemUTC(),new ContinuityWriter.Extensions(List.of(registration),Optional.of(artifacts),Optional.empty()),storage);
-            archive=new NativeOutcomeArchive(artifacts,writer);source=new G2Source(MACHINE,Instant.now().toString(),"software-fixture",reviewed);packets=new Packets();
+            archive=new NativeOutcomeArchive(artifacts,writer);source=new G2Source(MACHINE,Instant.now().toString(),"software-fixture",reviewed);packets=new Packets(actor.publicSigned());
             transport=NativeGoalObservationFixture.receive(packets,new NativePipeEndpoint.Config(PIPE,MACHINE,GAME,SESSION,"gift-frame-fixture",SHA,"gift-frame-fixture"),32,64);
             var repository=new DriverFactsRepository(DriverFactsRepository.imported(driverRef,Files.readAllBytes(driverFile),1,2,GAME,new OpportunityJson.Obj(Map.of())));
             var journal=new ContinuityActionJournal(writer,archive);var producer=new NativeDriverObservationProducer(repository,transport,source,raw->archive.preserveMaterial(new RawJson(raw)));
@@ -119,8 +135,16 @@ final class GiftPendingFrameProducerConsumerTest {
         }));
     }
     @Test void originalPendingAndNativeWaitFullProducerReachThePrivateOneRetryConsumerWithoutAnyCommand()throws Exception {
-        try(var f=new Fixture(temporary.resolve("actual-middle"))) {
-            Captured captured=capture(f);f.packets.publish(8,73);AtomicInteger plans=new AtomicInteger();AtomicReference<RuntimeException> escaped=new AtomicReference<>();
+        runActualPendingProducer(new ActorBits(73,n(73)),"actual-middle");
+    }
+    @ParameterizedTest
+    @ValueSource(strings={"actor-zero","actor-min","both-high"})
+    void actualNativePublicAndPrivateActorBitsReachTheExistingWriterWaitAndPrivateRetryConsumer(String world)throws Exception {
+        runActualPendingProducer(originalActor(world),"actual-"+world);
+    }
+    private void runActualPendingProducer(ActorBits actor,String folder)throws Exception {
+        try(var f=new Fixture(temporary.resolve(folder),actor)) {
+            Captured captured=capture(f);f.packets.publish(8,actor.publicSigned());AtomicInteger plans=new AtomicInteger();AtomicReference<RuntimeException> escaped=new AtomicReference<>();
             RawJson answer=ReadonlyPlanningRetry.plan(()->{
                 if(plans.incrementAndGet()>1)return new RawJson(bytes("{\"snapshot_id\":\"fresh-whole-plan\",\"revision\":3}"));
                 return f.writer.locked(same->{
@@ -161,7 +185,7 @@ final class GiftPendingFrameProducerConsumerTest {
         }
     }
     @Test void missingForegroundAndBooleanRevisionNeverBecomeACompleteSourceFrame() {
-        var valid=DriverJson.object(bytes("{\"revision\":1,\"native_revision\":7,\"date_raw\":1000,\"episode_run_id\":\"gift-episode\",\"played_character\":{\"character_id\":73,\"alive\":true},\"paused\":true,\"map_ready\":true,\"active_event\":null,\"pending_character_interaction\":null,\"diagnostics\":{\"bridge_pid\":42,\"connection_generation\":5}}"),65536);
+        var valid=DriverJson.object(bytes("{\"revision\":1,\"native_revision\":7,\"date_raw\":53186400,\"episode_run_id\":\"gift-episode\",\"played_character\":{\"character_id\":73,\"alive\":true},\"paused\":true,\"map_ready\":true,\"active_event\":null,\"pending_character_interaction\":null,\"diagnostics\":{\"bridge_pid\":42,\"connection_generation\":5}}"),65536);
         var fields=new java.util.LinkedHashMap<>(valid.members());fields.remove("active_event");assertThrows(IllegalArgumentException.class,()->GiftPendingFrameWaitSource.frame(new OpportunityJson.Obj(fields)));
         assertThrows(IllegalArgumentException.class,()->GiftPendingFrameWaitSource.frame(valid.with("native_revision",new OpportunityJson.Bool(true))));
         for(var constructor:GiftPendingFrameReadyFailure.class.getDeclaredConstructors())assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));

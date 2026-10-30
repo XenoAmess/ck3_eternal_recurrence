@@ -129,3 +129,7 @@ Common 两site逐row校验 exact call/return/callee，raw DL2/1 只保留原字�
 早前 noSAVE opening producer 的其余三生产与两测试叶已独立采用：同一physical Game只在原APPLIED focus后续正式帧消费，不强制SAVE；原 UNKNOWN、不同行为/机器/局、已保留 checkpoint 的校验和替换进程分支仍保持。Document 已在恢复组最小采用，此次精确排除，未重交整叶。GovernancePolicies/Receipts/OpeningTransitions 三完整类严格 javac0/3.602秒，当前 Policy/Transitions 与原最终候选语义完全相同；复用原 `opening-samegame66/VERIFICATION.json` 两完整类29P，不重绿或请求模型。原历史模型只贡献已复核的一个accessor修正，不代表当前服务已恢复使用。本轮HTTP/探测/重试仍0。
 
 producer 原12:51采用回执、实际seq31/32链与scope边界由 `runtime64-opening-samegame86/SOURCE-STOP.json` 和 `resume90-runtime/opening-provenance95/FINDING.json` 说明；本次仅正式开发源交付，不重新执行Focus/开局或授新Game进展。前文“余三producer未交”的边界在本组普通发表后解除，原历史事实保留。
+
+GiftPendingFramePolicy 的必要两处角色合同同步采用：public Frame actor 用 NativeCharacterId，private pending baseline 比较时才显式转 raw bits；Codec/WaitSource 无语义改动。当前完整 Policy 严格 javac0/1.957秒，复用 owner 完整软件 writer/Driver/lease/consumeFresh/private ready-marker/ReadonlyPlanningRetry 路径 baseline6P3F→candidate9P；另外 constructor-only 隔离证明剩余 raw 比较高位两例仍拒，最终才同时修两处。旧 fixture 日期1000违反现日历合同，测试精准迁移53186400，setup失败保留，未改生产日历。
+
+一生产、一既有测试及三真实 Native WriteFrame binary 角色原包随组交付，原包不重编码。软件测试断言零command/query/replay；既有stale lease/source负控仍保留。没有完整Installer、Game、cold恢复或新的opaque/Ready动作资格，当前同Game不因这组等待SAVE。
