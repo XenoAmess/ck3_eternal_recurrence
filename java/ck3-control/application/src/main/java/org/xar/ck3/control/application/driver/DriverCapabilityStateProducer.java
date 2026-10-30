@@ -553,7 +553,9 @@ public final class DriverCapabilityStateProducer {
         for(var field:cache.members().entrySet())require(Objects.equals(owner.get(field.getKey()),field.getValue()),"saved cache differs from full original private owner auxiliary: "+field.getKey());
         BigInteger version=decimal(state.get("state_version"),"state_version");ExactRef inputs=decodeReference(object(state.get("inputs"),"inputs"));
         RawJson raw=readMaterial(archive,inputs);DynamicCapabilities.DriverInputs decoded=DynamicCapabilities.DriverInputs.decode(originalFrame,originalDriver,inputs,raw.bytes());
-        require(version.equals(decoded.stateVersion()) && Arrays.equals(raw.bytes(),DriverRuntimeCapabilities.encode(originalFrame,originalDriver,version,fields(cache)).bytes()),"cached values differ from original complete runtime capsule");
+        require(version.equals(decoded.stateVersion()) && DriverJson.object(raw.bytes(),DriverJson.MAX_NATIVE_BYTES).equals(
+                DriverJson.object(DriverRuntimeCapabilities.encode(originalFrame,originalDriver,version,fields(cache)).bytes(),DriverJson.MAX_NATIVE_BYTES)),
+                "cached values differ from original complete runtime capsule");
         readMaterial(archive,decodeReference(object(cache.get(INITIAL),INITIAL)));
         ExactRef semantic=decodeReference(object(state.get("semantic_source"),"semantic_source"));RawJson manifest=readMaterial(archive,semantic);
         var nativeFrame=DriverObservationEvidenceReader.nativeFrame(semantic,manifest,archive.loadNativeFrame(originalFrame.originalEvidence()));

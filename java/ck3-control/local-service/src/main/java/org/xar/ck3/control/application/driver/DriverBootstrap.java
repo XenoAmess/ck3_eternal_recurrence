@@ -578,6 +578,11 @@ public final class DriverBootstrap {
         private NextTransfer nextTransfer;
         private org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission cleanRestart;
         private FreshGameplayEntryAuthority.RecoveryAdmission initialRecovery;
+        private org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData settledSameGame;
+        public void requireSettledSameGame(org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData actual) {
+            StrictJson.require(settledSameGame==Objects.requireNonNull(actual),
+                    "Driver was not reconstructed from this actual settled same-Game history");
+        }
         public void requireInitialNoDispatchRecovery(org.xar.ck3.control.application.session.ContinuityBatchJournal.InitialNoDispatchRecovery actual){
             Objects.requireNonNull(actual);
             StrictJson.require(initialRecovery!=null&&initialRecovery.initialNoDispatchRecovery().filter(value->value==actual).isPresent(),
@@ -957,6 +962,74 @@ public final class DriverBootstrap {
         var adopted = new Adopted(seed, captured.source(), retainedFullDriver, repository, authority, producer, held, first,
                 AdoptionStatus.READ_ONLY_UNRESOLVED, reasons);
         
+        return adopted;
+    }
+
+    /** Reattaches a settled dirty Driver using its new HELLO and independent physical read. */
+    public static Adopted adoptSettledSameGame(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline)
+            throws IOException,InterruptedException {
+        Objects.requireNonNull(data);Objects.requireNonNull(same);Objects.requireNonNull(actions);
+        Objects.requireNonNull(transport);Objects.requireNonNull(archive);Objects.requireNonNull(currentSession);
+        Objects.requireNonNull(deadline);
+        var retained=data.retainedFacts();var old=data.previousTransport();
+        var current=transport.awaitHello(deadline);
+        StrictJson.require(current.machineId().equals(old.machineId())&&current.game().equals(old.game())
+                &&current.sessionId().equals(old.sessionId())
+                &&current.connectionGeneration().compareTo(old.connectionGeneration())>0,
+                "settled continuation requires the same Game PID/birth and a new actual HELLO generation");
+        StrictJson.require(retained.stamp().game().equals(current.game())
+                &&retained.driver().session().bridgePid()==current.game().pid()
+                &&retained.driver().session().pipeName().equals(transport.pipeName()),
+                "settled retained Driver belongs to another physical Game or pipe");
+        actions.withFrozen(same,lease->{
+            StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
+                    &&basis.originalDriverHistory().equals(retained.originalHistoryBasis())
+                    &&lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),
+                    "settled continuation cannot replace history or replay an unresolved original action");
+            lease.assertCurrent();return null;
+        });
+        var repository=new DriverFactsRepository(retained);
+        var producer=new NativeDriverObservationProducer(repository,transport,data.source(),
+                wire->borrowedArchive(archive,currentSession).preserveMaterial(RawJson.fullMaterial(wire)));
+        producer.bindSettledSameGame(data,same);
+        var authority=new DriverStateAssembler(actions,repository,producer);
+        var held=new HeldDriverObservationPort(transport,authority,
+                frame->borrowedArchive(archive,currentSession).preserveNativeFrame(frame),
+                new DriverObservationAssembler(),retainedFrames);
+        transport.startHandshake(deadline);
+        var result=transport.readFreshFullState(deadline);
+        if(!(result instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received))
+            throw new IOException("settled continuation independent native full-state read unavailable");
+        var raw=received.originalFrame();
+        StrictJson.require(raw.session().equals(current),"settled continuation received another current connection");
+        var first=authority.withFrozenRawObservation(raw,same,frozen->{
+            ExactRef nativeOriginal=archive.withSession(same).preserveNativeFrame(raw);
+            var assembler=new DriverObservationAssembler();
+            var full=assembler.projectFull(raw,frozen.facts(),nativeOriginal);
+            var projected=assembler.assemble(raw,frozen.facts(),nativeOriginal);
+            StrictJson.require(projected instanceof DriverObservationAssembler.Complete,
+                    "settled continuation actual physical Driver projection is incomplete");
+            var complete=(DriverObservationAssembler.Complete)projected;
+            held.retainVerified(full,complete);return complete;
+        });
+        StrictJson.require(first.identity().game().equals(retained.stamp().game())
+                &&first.identity().frame().episodeRunId().equals(retained.stamp().episodeRunId())
+                &&first.identity().frame().identity().player().equals(retained.driver().session().actorId())
+                &&first.identity().observationVersion()==data.latestObservedFrame().observationVersion()
+                &&first.identity().frame().identity().dateRaw().compareTo(data.latestObservedFrame().frame().identity().dateRaw())>=0
+                &&first.identity().frame().identity().nativeRevision().compareTo(data.latestObservedFrame().frame().identity().nativeRevision())>=0
+                &&first.identity().frame().revision().compareTo(data.latestObservedFrame().frame().revision())>=0
+                &&first.source().equals(data.source())&&first.sessionId().equals(current.sessionId()),
+                "settled continuation physical read crossed the retained Game/episode/actor or regressed its latest observation");
+        var seed=new Seed(data.retainedFullDriver(),retained.originalHistoryBasis(),retained.stamp().driverVersion(),
+                retained.stamp().episodeEpoch(),current,retained.auxiliary(),retained.loop());
+        var adopted=new Adopted(seed,data.source(),data.retainedFullDriver(),repository,authority,producer,held,first,
+                AdoptionStatus.QUALIFICATION_REQUIRED,List.of());
+        adopted.settledSameGame=data;
+        producer.recordAdoptionObserved(current,data.source());
         return adopted;
     }
 

@@ -309,6 +309,45 @@ public final class NativeDriverObservationProducer implements DriverObservationF
         });
     }
 
+    synchronized void bindSettledSameGame(org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data, ContinuityStorePort.Session same) throws IOException {
+        Objects.requireNonNull(data);
+        Objects.requireNonNull(same);
+        StrictJson.require(acceptedSession == null && lastProjectedReceipt == null && publicRevision.signum() == 0 && transportRevisionOffset.signum() == 0,
+                "settled same-game baseline binds once before the new producer observes");
+
+        // Verify current repository state is Known with exact retained stamp and source
+        repository.locked(state -> {
+            StrictJson.require(state instanceof DriverSnapshotFacts.Known known && known.stamp().equals(data.retainedFacts().stamp())
+                    && source.equals(data.source()),
+                    "settled same-game producer crossed its actual retained Driver stamp or source");
+            StrictJson.require(source.machineId().equals(data.controller().owner().machineId()),
+                    "settled same-game producer crossed its controller owner machine ID");
+            return true;
+        });
+
+        // A READ after SETTLE can already have a higher revision than the cycle.
+        // Keep the actual latest historical observation as this transport's offset.
+        var latestRevision = data.latestObservedFrame().frame().revision();
+        var retainedObservation = data.retainedFacts().observation();
+        var baseline = latestRevision;
+
+        if (retainedObservation.isPresent()) {
+            var obs = retainedObservation.get();
+            StrictJson.require(obs.observationVersion() == data.latestObservedFrame().observationVersion(),
+                    "retained observation version crossed latest historical observation");
+            if (obs.publicRevision().compareTo(latestRevision) > 0) {
+                baseline = obs.publicRevision();
+            }
+        }
+
+        // Validate and assign baseline
+        new PublicRevision(baseline);
+        publicRevision = baseline;
+        transportRevisionOffset = baseline;
+
+        cleanNativeCampaign = data.latestObservedFrame().observationVersion() == DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION;
+    }
+
     synchronized void bindCleanRestart(org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission actual,
             org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same)throws IOException {
         Objects.requireNonNull(actual);actual.requireCurrent(same);

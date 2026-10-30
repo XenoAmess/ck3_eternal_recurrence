@@ -837,6 +837,19 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
         } finally {calls.unlock();}
     }
 
+    /** Restores the original dirty counters before Host publication; original actions/cycles remain settled. */
+    public void restoreSettledSameGame(ContinuityStorePort.Session same,ContinuityBatchJournal.SettledSameGameData data)
+            throws IOException,InterruptedException {
+        calls.lockInterruptibly();
+        try {
+            writer.requireSession(same);owner.requirePublicWork(this);requireNoPendingCheckpointAdoption();
+            StrictJson.require(installedHost==null&&!controller.isRetired()&&!controller.isRunning(),
+                    "settled continuation requires this unused pre-Host Root owner");
+            driver.requireSettledSameGame(data);
+            controller.restoreSettledSameGame(same,data);
+        }finally{calls.unlock();}
+    }
+
     public void restoreUnresolvedSameGame(ContinuityBatchJournal.UnresolvedSameGameData data) throws IOException, InterruptedException {
         calls.lockInterruptibly();
         try {

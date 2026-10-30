@@ -33,8 +33,9 @@ public final class GovernanceOpeningDocument {
                     "pending opening lifecycle requires its original authoritative action receipt");
             StrictJson.require(stage!=OpeningStage.AWAIT_SUBMIT || actionReceipt.isEmpty() && preparedCommand.isEmpty() && checkpoint.isEmpty(),
                     "fresh opening gate cannot discard or contain a prior action/checkpoint");
-            StrictJson.require(stage!=OpeningStage.COMPLETE || actionReceipt.isPresent() && checkpoint.isPresent() || existingObserved.isPresent(),
-                    "complete opening needs actual action/checkpoint or following-turn existing-focus evidence");
+            StrictJson.require(stage!=OpeningStage.COMPLETE || actionReceipt.isPresent()
+                    && (checkpoint.isPresent() || preparedCommand.isPresent()) || existingObserved.isPresent(),
+                    "complete opening needs its consumed original action/command, checkpoint or following-turn existing-focus evidence");
             StrictJson.require(stage!=OpeningStage.AWAIT_CONSUMPTION || actionReceipt.isPresent(),
                     "opening consumption requires its actual settled focus receipt; a prepared command is insufficient");
             if(existingObserved.isPresent()) {

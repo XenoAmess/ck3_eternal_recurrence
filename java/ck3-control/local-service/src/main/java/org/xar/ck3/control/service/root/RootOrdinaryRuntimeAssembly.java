@@ -187,6 +187,13 @@ public Running openSameGameBootstrap(ManagedGameSession actual, Optional<Continu
                 opened.core().adoptCleanRestart(actual,pointer.orElseThrow(),config.retainedFrames(),cyclePolicy,phaseDeadline));
         return new Opened(this, driver.source()).finish(driver, Optional.of(opened.core().cleanRestartAdmission(driver)), deadline);
     }
+    var settled = opened.core().readSettledSameGame(actual,cyclePolicy);
+    if(settled.isPresent()) {
+        var data=settled.orElseThrow();
+        var driver=runOperationPhase(clock,config.operationTimeout(),phaseDeadline->
+                opened.core().adoptSettledSameGame(actual,data,config.retainedFrames(),cyclePolicy,phaseDeadline));
+        return new Opened(this,driver.source()).finishSettledSameGame(driver,data,deadline);
+    }
     // Check for unresolved same-game data before initial/fresh recovery
     var unresolved = opened.core().readUnresolvedSameGame(actual,cyclePolicy);
     if (unresolved.isPresent()) {
@@ -222,7 +229,7 @@ public Running openSameGameBootstrap(ManagedGameSession actual, Optional<Continu
             Path state=config.stateDirectory();
             var checkpoints=new RootStartupConfiguration.CheckpointPaths(state.resolve("driver/checkpoint.json"),
                     state.resolve("checkpoints/evidence"),state.resolve("checkpoints/attachments"),config.authorityId()+"-lineage",
-                    plan.profileDirectory().resolve("save games/tutorial/ordinary.ck3"));
+                    plan.profileDirectory().resolve("save games/xar_checkpoint.ck3"));
             for(Path directory:List.of(checkpoints.driverCheckpoint().getParent(),checkpoints.checkpointEvidence(),
                     checkpoints.attachmentEvidence(),checkpoints.save().getParent()))storage.createManagedDirectories(directory);
             return new RootApplicationAssembly.FreshSessionConfiguration(config.authorityId(),policy,config.freshness(),checkpoints,cyclePolicy,deadline);
@@ -316,6 +323,27 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             long next=restart.isPresent()?restart.orElseThrow().controller().nextBatchSequence():
                     noDispatch.map(ContinuityBatchJournal.InitialNoDispatchRecovery::nextBatchSequence).orElse(0L);
             return new Running(owner,session,prefix,next);
+        }
+
+        private Running finishSettledSameGame(DriverBootstrap.Adopted driver,
+                ContinuityBatchJournal.SettledSameGameData data,Instant deadline)throws IOException,InterruptedException {
+            consumed=true;
+            if(owner.config.decisionProvider().isPresent()) {
+                var selector=new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(),owner.clock,raw->{
+                    var writer=owner.core.writer();var active=writer.activeSession();
+                    if(active.isPresent())return owner.core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                    return writer.locked(same->owner.core.archive().withSession(same).preserveMaterial(raw));
+                });
+                owner.core.bindDecisionSelector(selector);
+            }
+            installed=runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->
+                    owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
+            var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
+            var session=owner.core.finishSettledSameGame(installed,driver,configuration,owner.services(source));
+            runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{
+                session.install(new OrdinarySessionHost(),phaseDeadline);return null;
+            });
+            return new Running(owner,session,data.controller().batchPrefix(),data.controller().nextBatchSequence());
         }
 
         private Running finishUnresolvedSameGame(DriverBootstrap.Adopted driver, ContinuityBatchJournal.UnresolvedSameGameData data, Instant deadline) throws IOException, InterruptedException {

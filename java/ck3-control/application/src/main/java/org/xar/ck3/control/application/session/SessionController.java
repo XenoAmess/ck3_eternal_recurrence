@@ -318,6 +318,26 @@ public final class SessionController {
         } finally { running.set(false); }
     }
 
+    /** Restore settled dirty gameplay after an ordinary interruption without SAVE or action dispatch. */
+    public void restoreSettledSameGame(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.SettledSameGameData data) throws IOException {
+        Objects.requireNonNull(same); Objects.requireNonNull(data);
+        StrictJson.require(running.compareAndSet(false, true), "settled same-game recovery requires an idle Controller");
+        try {
+            StrictJson.require(!retired && usedBatches.isEmpty() && lastReport.isEmpty()
+                    && unsavedGameplayActions.isEmpty() && pendingReadParent.isEmpty() && publicCheckpointUnknown.isEmpty()
+                    && !dirty && !quarantined && !localUnresolved,
+                    "settled recovery cannot overwrite an executed Controller");
+            StrictJson.require(journal instanceof ContinuityBatchJournal,
+                    "settled recovery requires the actual ContinuityBatchJournal");
+            ((ContinuityBatchJournal) journal).requireSettledSameGameRecovery(same, data, identity);
+            var restored = data.controller();
+            StrictJson.require(identity.equals(restored.owner()) && !restored.quarantined() && !restored.localUnresolved(),
+                    "settled recovery cannot clear an unresolved original or change its owner");
+            restoreCapturedController(same, restored);
+        } finally { running.set(false); }
+    }
+
     public ActionReceipt reconcileUnresolvedOriginal(ContinuityBatchJournal.UnresolvedSameGameData data, Instant deadline) throws IOException, InterruptedException {
         Objects.requireNonNull(data); Objects.requireNonNull(deadline);
         StrictJson.require(running.compareAndSet(false, true), "unresolved original reconciliation requires an idle Controller");

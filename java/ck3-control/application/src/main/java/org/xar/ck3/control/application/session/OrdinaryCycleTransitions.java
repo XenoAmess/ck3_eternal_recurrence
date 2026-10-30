@@ -64,6 +64,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     private static final String OPERATOR_ORIGIN_SCHEMA="xar.java-ordinary-operator-origin/v1";
     private static final String TRANSPORT_ORIGIN_SCHEMA="xar.java-ordinary-transport-origin/v1";
     private volatile SameGameTransportContinuity.Port transportRebindPort;
+    private record SettledObservation(SessionIdentity owner, String cycleStateDigest, ObservationIdentity frame) { }
+    private volatile SettledObservation settledObservation;
     private record TransportContext(SameGameTransportContinuity.Scope scope,SameGameTransportContinuity.Evidence evidence) { }
     private final ThreadLocal<TransportContext> transportContext=new ThreadLocal<>();
     /** The actual Root installs its sole NS/M3 adapter, never a caller-provided DATA proof. */
@@ -180,6 +182,253 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 "initial no-dispatch recovery operation/frontier differs");
     }
 
+    private static final String SETTLED_SAME_GAME_OPERATION = "SETTLED_SAME_GAME_RECOVERY";
+    private final ThreadLocal<WriterContracts.HistoricalTransition> openReadOnlyRecovery = new ThreadLocal<>();
+
+    /** Consume one actual unfinished read-only batch; its original STARTED fact remains canonical. */
+    WriterContracts.Receipt commitSettledSameGameRecovery(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.SettledSameGameData data, SemanticEvidence semantic,
+            WriterContracts.HistoricalTransition anchor) throws IOException {
+        StrictJson.require(active.get() == same && openReadOnlyRecovery.get() == null,
+                "unfinished batch recovery requires the original idle recovery writer scope");
+        Objects.requireNonNull(anchor);
+        openReadOnlyRecovery.set(anchor);
+        try { return commitSettledSameGameRecovery(same, data, semantic); }
+        finally { openReadOnlyRecovery.remove(); }
+    }
+
+    /** Recover an already completed dirty cycle; no action or cycle is executed again. */
+    WriterContracts.Receipt commitSettledSameGameRecovery(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.SettledSameGameData data, SemanticEvidence semantic) throws IOException {
+        StrictJson.require(active.get() == same, "settled recovery requires the original journal writer scope");
+        Objects.requireNonNull(data); Objects.requireNonNull(semantic);
+        requireObservedContinuation(data.latestObservedFrame(), semantic.frame());
+        var head = same.head();
+        StrictJson.require(head.state().sequence() == data.canonicalSequence()
+                && head.digest().equals(data.canonicalHeadDigest()), "settled recovery predecessor changed");
+        var owner = data.controller().owner();
+        var branch = state(head.state(), owner);
+        requireSettledRecoveryFrontier(head.state(), owner, branch);
+        if (head.state().status() == ContinuityState.Status.RUNNING)
+            requireOpenReadOnlyRecovery(same, head.state(), owner, branch);
+        StrictJson.require(branch.head().isPresent()
+                && load(branch.head().orElseThrow()).semantic().equals(data.latestCycleSemantic()),
+                "settled recovery changed its actual completed cycle");
+        var canonicalActions = ContinuityActionJournal.receipts(head.state(), archive.withSession(same));
+        StrictJson.require(new HashSet<>(canonicalActions).equals(new HashSet<>(data.settledActions())),
+                "settled recovery changed its retained original action set");
+        var boundary = head.state().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        StrictJson.require(StrictJson.text(boundary.get("batch_id")).equals(data.controller().batchPrefix()
+                + "-" + (data.controller().nextBatchSequence() - 1)), "settled recovery changed its actual consumed batch sequence");
+        ObjectNode row = StrictJson.object();
+        row.put("evidence_id", "settled-same-game:" + head.digest());
+        row.put("source", "java-settled-same-game-recovery/v1");
+        row.set("session", sessionToJson(owner));
+        row.put("operation", SETTLED_SAME_GAME_OPERATION);
+        row.put("predecessor_head_digest", head.digest());
+        row.put("batch_id", StrictJson.text(boundary.get("batch_id")));
+        row.put("next_sequence", data.controller().nextBatchSequence());
+        row.set("cycle_record_ref", branch.head().orElseThrow().toJson());
+        row.set("semantic", semanticToJson(semantic));
+        var refs = new ArrayList<ExactRef>(data.history());
+        refs.addAll(semantic.references());
+        refs.add(branch.head().orElseThrow());
+        canonicalActions.forEach(action -> refs.add(archive.receiptReferenceOf(action)));
+        var request = new WriterContracts.Request(CYCLE_KIND, ContinuityJson.canonical(row), refs.stream().distinct().toList());
+        var prepared = same.preview(request);
+        var receipt = same.commit(prepared);
+        same.requireCommitted(prepared, receipt);
+        return receipt;
+    }
+
+    /** Adopt the retained recovery after a later business process restart; no ledger event is repeated. */
+    void requireSettledSameGameReady(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.SettledSameGameData data, SemanticEvidence fresh,
+            WriterContracts.HistoricalTransition recovery) throws IOException {
+        StrictJson.require(active.get() == same, "settled adoption requires the original journal writer scope");
+        Objects.requireNonNull(data); Objects.requireNonNull(fresh); Objects.requireNonNull(recovery);
+        var head = same.head();
+        var owner = data.controller().owner();
+        StrictJson.require(head.state().status() == ContinuityState.Status.RUNNING
+                && head.state().sequence() == data.canonicalSequence()
+                && head.digest().equals(data.canonicalHeadDigest()), "settled adoption frontier changed");
+        requireSettledSameGameHistoryEdge(recovery, owner);
+        same.requireHistoricalState(recovery.sequence(), ContinuityJson.digest(recovery.after().toJson()));
+        var branch = state(head.state(), owner);
+        requireOwner(head.state(), owner); requireFrontier(head.state(), branch); requireLegacyPendingClear(head.state(), branch);
+        StrictJson.require(branch.pending().isEmpty() && branch.head().isPresent()
+                && load(branch.head().orElseThrow()).semantic().equals(data.latestCycleSemantic()),
+                "settled adoption changed its already completed cycle");
+        validateChain(branch);
+        var actions = ContinuityActionJournal.receipts(head.state(), archive.withSession(same));
+        StrictJson.require(actions.stream().allMatch(ActionReceipt::settled)
+                && new HashSet<>(actions).equals(new HashSet<>(data.settledActions()))
+                && new HashSet<>(actions).equals(new HashSet<>(ContinuityActionJournal.receipts(
+                        recovery.after(), archive.withSession(same)))),
+                "settled adoption changed its retained original actions");
+        var details = ContinuityJson.parseObject(recovery.details(), ContinuityJson.LEDGER_MAX_BYTES);
+        long recoveredNext = number(details, "next_sequence");
+        String recoveredBatch = text(details, "batch_id");
+        StrictJson.require(branch.toJson().equals(state(recovery.after(), owner).toJson())
+                && recoveredBatch.equals(data.controller().batchPrefix() + "-" + (recoveredNext - 1))
+                && data.controller().usedBatches().contains(recoveredBatch)
+                && recoveredNext <= data.controller().nextBatchSequence(),
+                "settled adoption changed its recovered batch or cycle frontier");
+        var retained = semanticFromJson(details.get("semantic"));
+        var checked = verify(same, owner, fresh);
+        requireObservedContinuation(retained.frame(), checked.frame());
+        requireObservedContinuation(data.latestObservedFrame(), checked.frame());
+        StrictJson.require(!checked.observedAt().isBefore(retained.observedAt()), "settled adoption SEM predates its committed recovery");
+        requireObservedBindingNotRegressed(head.state(), checked.frame());
+        data.retainedFacts().observation().ifPresent(observation -> StrictJson.require(
+                observation.observationVersion() == checked.frame().observationVersion()
+                        && checked.frame().frame().identity().nativeRevision().compareTo(observation.nativeRevision()) >= 0,
+                "settled adoption regressed its retained Driver observation"));
+        settledObservation = new SettledObservation(owner, ContinuityJson.digest(branch.toJson()), checked.frame());
+    }
+
+    private String revalidateSettledSameGameRecovery(ContinuityStorePort.Session same,
+            WriterContracts.Head head, ObjectNode details) throws IOException {
+        strictSettledSameGameRecovery(details);
+        var owner = sessionFromJson(details.get("session"));
+        var branch = state(head.state(), owner);
+        requireSettledRecoveryFrontier(head.state(), owner, branch);
+        if (head.state().status() == ContinuityState.Status.RUNNING)
+            requireOpenReadOnlyRecovery(same, head.state(), owner, branch);
+        StrictJson.require(head.digest().equals(text(details, "predecessor_head_digest"))
+                && branch.head().filter(ExactRef.fromJson(details.get("cycle_record_ref"))::equals).isPresent()
+                && text(details, "batch_id").equals(StrictJson.text(head.state().toJson()
+                        .get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).get("batch_id"))),
+                "settled recovery changed its retained canonical frontier");
+        var fresh = semanticFromJson(details.get("semantic"));
+        var checked = verify(same, owner, fresh);
+        var retained = load(branch.head().orElseThrow()).semantic();
+        requireObservedContinuation(retained.frame(), checked.frame());
+        StrictJson.require(!checked.observedAt().isBefore(retained.observedAt()),
+                "settled recovery SEM predates the completed cycle");
+        var proof = StrictJson.object();
+        proof.put("predecessor", head.digest());
+        proof.put("semantic", checked.materialDigest());
+        proof.set("cycle_record_ref", details.get("cycle_record_ref"));
+        return ContinuityJson.digest(proof);
+    }
+
+    private void requireSettledRecoveryFrontier(ContinuityState head, SessionIdentity owner, CycleState branch) {
+        requireOwner(head, owner); requireFrontier(head, branch); requireLegacyPendingClear(head, branch);
+        StrictJson.require((head.status() == ContinuityState.Status.REPAIR_REQUIRED || isOpenReadOnlyBatch(head))
+                && branch.pending().isEmpty() && branch.head().isPresent(),
+                "settled recovery requires a completed interrupted cycle");
+        validateChain(branch);
+        var actions = ContinuityActionJournal.receipts(head, archive);
+        StrictJson.require(!actions.isEmpty() && actions.stream().allMatch(ActionReceipt::settled),
+                "settled recovery cannot discard an UNKNOWN or pending original");
+        for (var action : actions) {
+            StrictJson.require(action.command().sessionId().equals(owner.sessionId())
+                    && action.command().origin().game().equals(owner.game())
+                    && action.command().origin().machineId().equals(owner.machineId()),
+                    "settled recovery crossed an original action owner");
+            if (action.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && action.visibleGameplay())
+                StrictJson.require(find(branch, archive.receiptReferenceOf(action)).isPresent(),
+                        "settled recovery cannot discard a visible action without its completed cycle");
+        }
+    }
+
+    private static boolean isOpenReadOnlyBatch(ContinuityState state) {
+        if (state.status() != ContinuityState.Status.RUNNING) return false;
+        var boundary = state.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        return boundary != null && boundary.isObject()
+                && JournalKind.BATCH_STARTED.name().equals(StrictJson.text(boundary.get("boundary")));
+    }
+
+    private void requireOpenReadOnlyRecovery(ContinuityStorePort.Session same, ContinuityState current,
+            SessionIdentity owner, CycleState branch) throws IOException {
+        var anchor = openReadOnlyRecovery.get();
+        StrictJson.require(anchor != null && isOpenReadOnlyBatch(current),
+                "unfinished batch requires this actual recovery producer and its retained canonical anchor");
+        requireSettledSameGameHistoryEdge(anchor, owner);
+        same.requireHistoricalState(anchor.sequence(), ContinuityJson.digest(anchor.after().toJson()));
+        StrictJson.require(branch.toJson().equals(state(anchor.after(), owner).toJson())
+                && new HashSet<>(ContinuityActionJournal.receipts(current, archive.withSession(same)))
+                        .equals(new HashSet<>(ContinuityActionJournal.receipts(anchor.after(), archive.withSession(same))))
+                && current.settledCycles() == anchor.after().settledCycles()
+                && current.settledDateRaw() == anchor.after().settledDateRaw()
+                && Objects.equals(current.toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),
+                        anchor.after().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)),
+                "unfinished read-only batch changed original actions, completed cycles or saved credit");
+    }
+
+    private ContinuityState reduceSettledSameGameRecovery(ContinuityState predecessor, ObjectNode details) {
+        strictSettledSameGameRecovery(details);
+        var owner = sessionFromJson(details.get("session"));
+        var branch = state(predecessor, owner);
+        StrictJson.require((predecessor.status() == ContinuityState.Status.REPAIR_REQUIRED || isOpenReadOnlyBatch(predecessor))
+                && ContinuityJson.digest(predecessor.toJson()).equals(text(details, "predecessor_head_digest"))
+                && branch.pending().isEmpty()
+                && branch.head().filter(ExactRef.fromJson(details.get("cycle_record_ref"))::equals).isPresent(),
+                "settled recovery predecessor or completed cycle changed");
+        var fresh = semanticFromJson(details.get("semantic"));
+        requireObservedContinuation(load(branch.head().orElseThrow()).semantic().frame(), fresh.frame());
+        var recovery = StrictJson.object();
+        recovery.put("evidence_id", text(details, "evidence_id"));
+        // The original reducer already has this no-credit completed-cycle recovery.
+        recovery.put("source", "java-reconciled-original-cycle/v1");
+        recovery.put("machine_id", owner.machineId());
+        recovery.set("session", details.get("session"));
+        recovery.put("batch_id", text(details, "batch_id"));
+        recovery.put("completed_cycles", predecessor.settledCycles());
+        recovery.set("cycle_record_ref", details.get("cycle_record_ref"));
+        recovery.set("frame", originalFrame(fresh.frame()));
+        final ObjectNode next;
+        if (isOpenReadOnlyBatch(predecessor)) {
+            var boundary = StrictJson.object(predecessor.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD),
+                    Set.of("evidence_id", "session", "batch_id", "boundary"));
+            StrictJson.require(sessionFromJson(boundary.get("session")).equals(owner)
+                    && text(boundary, "batch_id").equals(text(details, "batch_id")),
+                    "unfinished batch recovery crossed its actual STARTED batch");
+            requireObservedBindingNotRegressed(predecessor, fresh.frame());
+            next = predecessor.toJson();
+            next.set("latest_binding", originalFrame(fresh.frame()));
+        } else next = OriginalWindowReducer.reduce(predecessor.toJson(), "reconciled_original_cycle", recovery, policy);
+        StrictJson.require(number(next, "last_settled_cycles") == predecessor.settledCycles()
+                && number(next, "last_settled_date_raw") == predecessor.settledDateRaw()
+                && next.get(STATE_FIELD).equals(predecessor.toJson().get(STATE_FIELD)),
+                "settled same-game recovery cannot change saved credit or the completed cycle");
+        return ContinuityState.fromJson(next, predecessor.machineId());
+    }
+
+    /** The retained committed recovery is replayed as DATA, without completing its cycle again. */
+    void requireSettledSameGameHistoryEdge(WriterContracts.HistoricalTransition edge, SessionIdentity owner) {
+        var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.LEDGER_MAX_BYTES);
+        strictSettledSameGameRecovery(details);
+        StrictJson.require(edge.kind().equals(CYCLE_KIND) && sessionFromJson(details.get("session")).equals(owner),
+                "historical settled recovery crossed its actual session");
+        var replay = reduceSettledSameGameRecovery(edge.before(), details).toJson();
+        replay.put("sequence", edge.sequence()); replay.put("last_event_identity", edge.eventIdentity());
+        StrictJson.require(ContinuityJson.same(replay, edge.after().toJson()),
+                "historical settled recovery differs from its actual reducer edge");
+    }
+
+    private static void strictSettledSameGameRecovery(ObjectNode row) {
+        var fields = Set.of("evidence_id", "source", "session", "operation", "predecessor_head_digest",
+                "batch_id", "next_sequence", "cycle_record_ref", "semantic");
+        StrictJson.object(row, fields, fields);
+        text(row, "evidence_id"); text(row, "batch_id");
+        StrictJson.require(SETTLED_SAME_GAME_OPERATION.equals(text(row, "operation"))
+                && "java-settled-same-game-recovery/v1".equals(text(row, "source"))
+                && number(row, "next_sequence") >= 1, "settled same-game recovery fields differ");
+        WriterContracts.requireDigest(text(row, "predecessor_head_digest"));
+        ExactRef.fromJson(row.get("cycle_record_ref"));
+        sessionFromJson(row.get("session")); semanticFromJson(row.get("semantic"));
+    }
+
+    private static void requireObservedContinuation(ObservationIdentity retained, ObservationIdentity fresh) {
+        requireSameOwner(retained, fresh);
+        StrictJson.require(retained.observationVersion() == fresh.observationVersion()
+                && fresh.frame().identity().nativeRevision().compareTo(retained.frame().identity().nativeRevision()) >= 0
+                && fresh.frame().identity().dateRaw().compareTo(retained.frame().identity().dateRaw()) >= 0,
+                "fresh same-game observation regressed its retained native revision or date");
+    }
+
     private record RestartCapture(ExactRef manifest, ControllerRestartState controller) { }
     private final ThreadLocal<RestartCapture> restartCapture=new ThreadLocal<>();
     org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive restartArchive(ContinuityStorePort.Session same){
@@ -211,6 +460,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         ObjectNode proof = StrictJson.object(); proof.put("head_digest", actualHead.digest()); proof.put("request", request.identity());
         if (request.kind().equals(NEXT_BASELINE_KIND)) return revalidateNextBaseline(session,actualHead,details);
         if (request.kind().equals(CYCLE_KIND)) {
+            if (SETTLED_SAME_GAME_OPERATION.equals(text(details, "operation"))) return revalidateSettledSameGameRecovery(session, actualHead, details);
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return revalidateInitialNoDispatchRecovery(session,actualHead,details);
             if (text(details,"operation").equals("TRANSPORT_REBIND")) return revalidateTransport(session,actualHead,details);
             if (text(details, "operation").equals("OPERATOR_REBIND")) return revalidateOperator(session,actualHead,details);
@@ -226,7 +476,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 StrictJson.require(details.get("semantic").isNull() && details.get("cycle_record_ref").isNull() && details.get("cycle_record").isNull(), "RETAIN cannot claim a completed SEM");
                 StrictJson.require(state.pending().isEmpty() || state.pending().orElseThrow().equals(receiptRef), "another AUTO already awaits its fresh SEM");
                 StrictJson.require(find(state, receiptRef).isEmpty(), "a canonical AUTO already completed in this cycle branch cannot be counted again");
-                requireCurrentFrame(actualHead.state(), state, receipt.command().before());
+                if (!matchesSettledActionContinuation(state, receipt))
+                    requireCurrentFrame(actualHead.state(), state, receipt.command().before());
             } else {
                 StrictJson.require(operation.equals("SETTLE"), "unknown ordinary cycle operation");
                 validateChain(state);
@@ -272,6 +523,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireOwner(predecessor, owner); ObjectNode next = predecessor.toJson();
         if (request.kind().equals(NEXT_BASELINE_KIND)) return reduceNextBaseline(predecessor,details);
         if (request.kind().equals(CYCLE_KIND)) {
+            if (SETTLED_SAME_GAME_OPERATION.equals(text(details, "operation"))) return reduceSettledSameGameRecovery(predecessor, details);
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return reduceInitialNoDispatchRecovery(predecessor,details);
             if (text(details,"operation").equals("TRANSPORT_REBIND")) return reduceTransport(predecessor,details);
             if (text(details, "operation").equals("OPERATOR_REBIND")) return reduceOperator(predecessor,details);
@@ -1401,9 +1653,111 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     private void requireCurrentFrame(ContinuityState predecessor, CycleState state, ObservationIdentity frame) {
         requireFrontier(predecessor, state);
         if(usesSavedControlBridge(predecessor,state,frame))return;
-        if (state.head().isPresent()) requireSameIdentity(load(state.head().orElseThrow()).semantic().frame(), frame);
-        else if(state.originFrame().isPresent())requireSameIdentity(state.originFrame().orElseThrow(),frame);
+        if (state.head().isPresent()) {
+            var retained = load(state.head().orElseThrow()).semantic().frame();
+            if (matchesObservedBinding(predecessor, retained, frame)) return;
+            if (matchesSettledObservedBinding(state, frame)) return;
+            if (matchesPublishedReadBinding(predecessor, state.session(), retained, frame)) return;
+            requireSameIdentity(retained, frame);
+        }
+        else if(state.originFrame().isPresent()) {
+            var retained = state.originFrame().orElseThrow();
+            if (matchesObservedBinding(predecessor, retained, frame)) return;
+            requireSameIdentity(retained, frame);
+        }
         else requireSettledBinding(predecessor, frame);
+    }
+
+    /** Canonical same-game recovery can retain a newer observed frontier without another completed cycle. */
+    private static boolean matchesObservedBinding(ContinuityState actual, ObservationIdentity retained, ObservationIdentity frame) {
+        var binding = actual.toJson().get("latest_binding");
+        if (binding == null || binding.isNull()) return false;
+        var row = StrictJson.object(binding, Set.of("date_raw", "actor_character_id", "episode_run_id",
+                "snapshot_id", "revision", "native_revision"));
+        var nativeRevision = row.get("native_revision");
+        if (nativeRevision.isNull()) return false;
+        var revision = StrictJson.integer(nativeRevision, BigInteger.ZERO, StrictJson.UINT64_MAX);
+        var identity = frame.frame().identity();
+        boolean matches = number(row, "date_raw") == identity.dateRaw().longValueExact()
+                && number(row, "actor_character_id") == identity.player().longValueExact()
+                && text(row, "episode_run_id").equals(frame.frame().episodeRunId())
+                && revision.equals(identity.nativeRevision());
+        if (!matches) return false;
+        requireObservedContinuation(retained, frame);
+        return true;
+    }
+
+    private static void requireObservedBindingNotRegressed(ContinuityState actual, ObservationIdentity frame) {
+        var binding = StrictJson.object(actual.toJson().get("latest_binding"), Set.of("date_raw", "actor_character_id",
+                "episode_run_id", "snapshot_id", "revision", "native_revision"));
+        var identity = frame.frame().identity();
+        StrictJson.require(number(binding, "actor_character_id") == identity.player().longValueExact()
+                && text(binding, "episode_run_id").equals(frame.frame().episodeRunId())
+                && identity.dateRaw().compareTo(BigInteger.valueOf(number(binding, "date_raw"))) >= 0
+                && identity.nativeRevision().compareTo(StrictJson.integer(binding.get("native_revision"),
+                        BigInteger.ZERO, StrictJson.UINT64_MAX)) >= 0,
+                "settled adoption regressed or changed its canonical observed binding");
+    }
+
+    private SettledObservation settledObservation(CycleState branch) {
+        var adopted = settledObservation;
+        return adopted != null && adopted.owner().equals(branch.session())
+                && adopted.cycleStateDigest().equals(ContinuityJson.digest(branch.toJson())) ? adopted : null;
+    }
+
+    private boolean matchesSettledObservedBinding(CycleState branch, ObservationIdentity frame) {
+        var adopted = settledObservation(branch);
+        return adopted != null && sameIdentity(adopted.frame(), frame)
+                && frame.frame().revision().compareTo(adopted.frame().frame().revision()) >= 0;
+    }
+
+    /** The caller has already resolved this exact APPLIED original through canonicalReceipt. */
+    private boolean matchesSettledActionContinuation(CycleState branch, ActionReceipt original) {
+        var adopted = settledObservation(branch);
+        if (adopted == null) return false;
+        var before = original.command().before();
+        requireObservedContinuation(adopted.frame(), before);
+        StrictJson.require(before.frame().revision().compareTo(adopted.frame().frame().revision()) >= 0,
+                "canonical action regressed its adopted observation's public revision");
+        return true;
+    }
+
+    /** A canonical READ retains its actual observation while leaving saved/cycle bindings untouched. */
+    private boolean matchesPublishedReadBinding(ContinuityState actual, SessionIdentity owner,
+            ObservationIdentity retained, ObservationIdentity frame) {
+        var publication = actual.toJson().get(WriterContracts.DRIVER_READ_HISTORY_FIELD);
+        if (publication == null || publication.isNull()) return false;
+        var row = StrictJson.object(publication, Set.of("schema", "evidence_id", "token", "source", "predecessor_head_sha256",
+                "read_head_sha256", "read_head_sequence", "before_version", "after_version", "episode_epoch",
+                "before_driver", "after_driver", "read_rows"));
+        var reads = row.get("read_rows");
+        StrictJson.require(reads.isArray() && !reads.isEmpty() && reads.size() <= 128, "finite canonical READ rows required");
+        for (int index = reads.size() - 1; index >= 0; index--) {
+            var item = reads.get(index);
+            if (item.has("row_kind") && !Set.of(
+                    org.xar.ck3.control.application.driver.DriverReadHistoryPublisher.SUMMARY_ROW_KIND,
+                    org.xar.ck3.control.application.driver.DriverReadHistoryPublisher.EXECUTE_ROW_KIND)
+                    .contains(StrictJson.text(item.get("row_kind")))) continue;
+            var reference = item.get("read");
+            if (reference == null || reference.isNull()) continue;
+            var readRef = ExactRef.fromJson(reference);
+            var read = archive.loadRead(readRef);
+            var observed = read.after().binding().observed();
+            if (!sameIdentity(observed, frame)) continue;
+            StrictJson.require(readRef.equals(archive.readReferenceOf(read))
+                    && read.request().origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
+                    && read.request().sessionId().equals(owner.sessionId())
+                    && read.request().before().machineId().equals(owner.machineId())
+                    && read.request().before().game().equals(owner.game())
+                    && read.before().paused() && read.after().paused() && read.before().mapReady() && read.after().mapReady()
+                    && read.before().playerAlive() && read.after().playerAlive()
+                    && frame.frame().revision().compareTo(observed.frame().revision()) >= 0,
+                    "canonical READ continuation crossed its actual owner, guarded map or public revision");
+            requireObservedContinuation(retained, observed);
+            requireObservedContinuation(read.request().before(), observed);
+            return true;
+        }
+        return false;
     }
     private void requireSavedProofFrame(ContinuityState actual,CycleState saved,ObservationIdentity frame) {
         if(usesSavedControlBridge(actual,saved,frame))return;

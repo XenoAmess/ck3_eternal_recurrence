@@ -99,3 +99,15 @@ Root 指定的 M7 open_blocker 仅一个字符串按当前 Git 文档最小纠�
 当前开发源整合 Maven 读窗实际为 2026-10-30T15:38:47.414Z—15:42:41Z，`local-service -am -T2 compile`、Xmx2GiB，复用 revision66/build 与 m2，exit0/233.914秒。34个 reactor 条目成功，31个模块因 contracts/API 变更实际重新编译，另外两个编译模块及聚合 pom 复用/无编译；不是把 reactor 条目全算重编。来源为冻结 4bb46d 开发源，未做 package、完整 CI 或 Game 验收。START/ACTUAL/完整日志在 `D:/ck3-state/resume90-java-delivery/INTEGRATION90-COMPILE-*`。Source/index 在实际窗口内未切换，END 已直发依赖该缓存的岗；新 Life fixture 两次读取中间输出的编译红不作为业务失败，后继只重编失败 fixture。
 
 窗口结束后独立采用 CanonicalGiftColdProvider 一个比较差异：保存 frame 的 public signed player 显式转换为 private raw32，再比较原 pending baseline。当前完整类严格 javac0/3.367秒；复用 owner 六份真实 WriteFrame 原包经 Pending codec/reducer 与持久 ObservationIdentity codec 的表示诊断，高位两例旧比较不同、新转换六例相同。没有完整 SavedMaterial/RestoreBinding fixture，完整 `produce` 和实际 cold restore 未执行，不授 Ready、恢复或动作资格。本单叶不计入前述已经结束的 Maven 编译；同 Game 游玩不依赖 SAVE，不因此等待。
+
+冷 Gift 组已普通 push/独立远端读回 `7598067516941ae5978ae37fb01b8f5d6044a6c5`。
+
+运行岗锁定 PRODUCTION95-MANIFEST 的九处核心恢复变化已逐 hunk 审阅并采用：以原 Driver/WAL 重建已结算 dirty 状态、保留已用批次/未保存动作、独立新 HELLO 观察与实际最后读帧、恢复 capability auxiliary，Root router 封口后才调用恢复。READY 重入不追加 recovery，已有 read-only open batch 保留其 STARTED 原件，不伪造终态/动作/SAVE或 saved credit。runtime checkpoint 默认文件名差异随 RootOrdinaryRuntimeAssembly 同步。九完整生产类严格 javac0/9.926秒。
+
+正式 checkout 的三个便携恢复整类首次实际0P16F，统一卡在 Git 旧 GovernanceOpeningDocument：它拒绝真实 COMPLETE/action_receipt+prepared_command/checkpoint=null。没有修改 portable 原件或造假 SAVE；补入运行岗锁定的旧未发表 Document 最小一hunk后，完整类严格 javac0/1.840秒，相同三个整类严格编译0/2.654秒、16P0F0skip/36.219秒。原0/16日志完整保留。来源 `runtime64-opening-samegame86/SOURCE-STOP.json` 与 resume89 source-index159 明确为早前 S/Z/MB 已采用但未发表，不能追认为旧24f提交已有；实际seq32保留无SAVE opening原件。
+
+本恢复交付共十生产和八便携测试/资源叶。模板支持35/38/42，285符号文件由81份小原件派生、路径映射 @TempDir；fresh SEM 为明确 verifier test double，软件恢复43再开始批次4@44不授 Game 进度。16P是本次完整组合结果，旧owner11/cap3/open2历史分批记录仍保留。新回归进入既有 local-service Surefire/closure 入口，未改pom/workflow。
+
+边界：本组读取和恢复已真实存在的 noSAVE opening。Git 的 GovernancePolicies/Receipts/OpeningTransitions 仍缺早前 consumeOpeningSameGame producer 三叶，不能据此说 Git 已能重新生产同一状态；该原四生产两测试29P包将独立审阅后继，绝不重造当前开局。本组也不包含尚待交付的 Retreat/Family/M6 后继，当前 Game 采用和实际日期以运行岗为准。
+
+M4 静态核对：已发表 DecisionCadenceStudy12004.resourcePrecheck 仍将 ten 输入直接 loop0..7，与新原生映射 [0,1,2,4,5,6,8,9] 及 mode3预算来源不符。当前 origin/master 仅本类和专用 Test 引用，未接普通 planner/runtime；不称游玩故障。Root 已独立接手研究代码/oracle修正，本岗不并发修改该方法。

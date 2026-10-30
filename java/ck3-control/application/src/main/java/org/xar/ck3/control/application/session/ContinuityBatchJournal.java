@@ -7,6 +7,11 @@ import java.util.Optional;
 import java.time.Instant;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.driver.DriverCapabilityStateProducer;
+import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler;
+import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
+import org.xar.ck3.control.application.driver.DriverSnapshotFacts;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.RestoreBinding;
 import org.xar.ck3.control.application.lifecycle.LifecycleEpisodeInputs;
@@ -767,6 +772,340 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     state.sequence(), head.digest(), usedBatches, nextSeq, java.util.List.of(focusAction));
         });
     }
+    /** Read-only reconstruction; this DATA is neither a clean ticket nor a replay permission. */
+    public record SettledSameGameData(
+            org.xar.ck3.control.continuity.ObservedGameplayEntry.Details entry,
+            ControllerRestartState controller,
+            org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known retainedFacts,
+            ExactRef retainedFullDriver,
+            org.xar.ck3.control.application.action.NativeObservationPort.TransportSession previousTransport,
+            org.xar.ck3.control.g2.common.G2Source source,
+            SemanticEvidence latestCycleSemantic,
+            ObservationIdentity latestObservedFrame,
+            java.util.List<ActionReceipt> settledActions,
+            long canonicalSequence, String canonicalHeadDigest, java.util.List<ExactRef> history) {
+        public SettledSameGameData {
+            Objects.requireNonNull(entry);Objects.requireNonNull(controller);Objects.requireNonNull(retainedFacts);
+            Objects.requireNonNull(retainedFullDriver);Objects.requireNonNull(previousTransport);
+            Objects.requireNonNull(source);Objects.requireNonNull(latestCycleSemantic);Objects.requireNonNull(latestObservedFrame);
+            settledActions=java.util.List.copyOf(settledActions);history=java.util.List.copyOf(history);
+            StrictJson.safe(canonicalSequence,1);WriterContracts.requireDigest(canonicalHeadDigest);
+        }
+    }
+
+    private SettledSameGameData committedSettledSameGameData;
+    private WriterContracts.Receipt committedSettledSameGameReceipt;
+    private SettledSameGameData issuedSettledSameGameData;
+    private WriterContracts.HistoricalTransition issuedSettledSameGameRecovery;
+    private boolean issuedSettledSameGameOpenBatch;
+    private long acceptedSettledSameGameSequence;
+    private String acceptedSettledSameGameDigest;
+
+    public Optional<WriterContracts.Receipt> recoverSettledSameGame(ContinuityStorePort.Session same,
+            SettledSameGameData data, SemanticEvidence fresh) throws IOException {
+        store.requireSession(same);Objects.requireNonNull(data);Objects.requireNonNull(fresh);
+        return transitions.withLocked(same,()->{
+            StrictJson.require(committedSettledSameGameData==null&&data==issuedSettledSameGameData,
+                    "settled recovery binds this journal's actual read DATA once");
+            requireSettledObservedContinuation(data.latestObservedFrame(),fresh.frame());
+            if(same.head().state().status()==ContinuityState.Status.RUNNING&&!issuedSettledSameGameOpenBatch) {
+                StrictJson.require(issuedSettledSameGameRecovery!=null,"READY recovery requires its actual committed history");
+                transitions.requireSettledSameGameReady(same,data,fresh,issuedSettledSameGameRecovery);
+                committedSettledSameGameData=data;
+                acceptedSettledSameGameSequence=data.canonicalSequence();
+                acceptedSettledSameGameDigest=data.canonicalHeadDigest();
+                return Optional.empty();
+            }
+            var receipt=issuedSettledSameGameOpenBatch
+                    ?transitions.commitSettledSameGameRecovery(same,data,fresh,issuedSettledSameGameRecovery)
+                    :transitions.commitSettledSameGameRecovery(same,data,fresh);
+            committedSettledSameGameData=data;committedSettledSameGameReceipt=receipt;
+            acceptedSettledSameGameSequence=receipt.head().sequence();
+            acceptedSettledSameGameDigest=ContinuityJson.digest(receipt.head().toJson());
+            return Optional.of(receipt);
+        });
+    }
+
+    void requireSettledSameGameRecovery(ContinuityStorePort.Session same,SettledSameGameData data,
+            SessionIdentity owner) throws IOException {
+        store.requireSession(same);
+        StrictJson.require(data==committedSettledSameGameData&&acceptedSettledSameGameDigest!=null
+                &&data.controller().owner().equals(owner),"Controller must restore this journal's actual settled recovery");
+        same.requireDomainImportContinuation(acceptedSettledSameGameSequence,acceptedSettledSameGameDigest);
+    }
+
+    /** Historical observation DATA stays separate from the immutable completed-cycle SEM. */
+    private static void requireSettledObservedContinuation(ObservationIdentity retained,ObservationIdentity next) {
+        var before=retained.frame();var after=next.frame();
+        StrictJson.require(retained.machineId().equals(next.machineId())&&retained.game().equals(next.game())
+                &&retained.observationVersion()==next.observationVersion()
+                &&before.identity().player().equals(after.identity().player())
+                &&before.episodeRunId().equals(after.episodeRunId())
+                &&after.identity().dateRaw().compareTo(before.identity().dateRaw())>=0
+                &&after.identity().nativeRevision().compareTo(before.identity().nativeRevision())>=0
+                &&after.revision().compareTo(before.revision())>=0,
+                "settled recovery observation regressed its actual Game, subject, version, date or revision");
+    }
+
+    private static org.xar.ck3.control.application.action.NativeObservationPort.TransportSession settledSemanticTransport(
+            SemanticEvidence semantic,SessionIdentity owner,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        var body=ContinuityJson.parseObject(originals.loadFullMaterial(semantic.semantic()).bytes(),ContinuityJson.LEDGER_MAX_BYTES);
+        var manifestRef=ExactRef.fromJson(body.get("java_driver_facts_evidence"));
+        var manifest=originals.loadFullMaterial(manifestRef);
+        var transport=org.xar.ck3.control.application.driver.DriverObservationEvidenceReader.nativeFrame(
+                manifestRef,manifest,originals.loadNativeFrame(semantic.originalNativePacket())).session();
+        StrictJson.require(transport.machineId().equals(owner.machineId())&&transport.game().equals(owner.game())
+                &&transport.sessionId().equals(owner.sessionId()),"settled semantic packet crossed the actual Game");
+        return transport;
+    }
+
+    /** Replays the actual capability/persistent owner captured by a completed cycle, without reinitializing the episode. */
+    private static RetainedReadDriver retainSettledCapabilities(SemanticEvidence semantic,RetainedReadDriver previous,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        var body=DriverJson.object(originals.loadFullMaterial(semantic.semantic()).bytes(),DriverJson.MAX_NATIVE_BYTES);
+        var manifestRef=DriverObservationEvidenceReader.reference(body.get("java_driver_facts_evidence"));
+        var manifest=originals.loadFullMaterial(manifestRef);
+        var actual=DriverObservationEvidenceReader.nativeFrame(manifestRef,manifest,originals.loadNativeFrame(semantic.originalNativePacket()));
+        var observed=DriverObservationEvidenceReader.decode(manifestRef,manifest,originals.loadFullMaterial(semantic.originalDriver()),actual);
+        var sourceValue=observed.originalSemanticFields().get(DriverCapabilityStateProducer.STATE_SOURCE);
+        if(sourceValue==null)return previous;
+        var known=previous.facts();
+        StrictJson.require(observed.driverVersion()==known.stamp().driverVersion()
+                &&observed.episodeEpoch()==known.stamp().episodeEpoch()
+                &&java.util.Arrays.equals(observed.driver().encode(),known.driver().encode()),
+                "settled capability source crossed the retained complete Driver");
+        var source=DriverObservationEvidenceReader.reference(sourceValue);
+        var state=DriverJson.object(originals.loadFullMaterial(source).bytes(),DriverJson.MAX_NATIVE_BYTES);
+        var originalManifestRef=DriverObservationEvidenceReader.reference(state.get("semantic_source"));
+        var originalManifest=originals.loadFullMaterial(originalManifestRef);
+        var originalNative=DriverObservationEvidenceReader.nativeFrame(originalManifestRef,originalManifest,
+                originals.loadNativeFrame(semantic.originalNativePacket()));
+        var originalFacts=DriverObservationEvidenceReader.decode(originalManifestRef,originalManifest,
+                originals.loadFullMaterial(previous.fullDriver()),originalNative);
+        var originalKnown=new DriverSnapshotFacts.Known(known.driver(),known.stamp(),known.originalHistoryBasis(),
+                known.actionRows(),known.auxiliary(),known.loop(),Optional.of(originalFacts));
+        var projected=new DriverObservationAssembler().assemble(originalNative,originalFacts,semantic.originalNativePacket());
+        StrictJson.require(projected instanceof DriverObservationAssembler.Complete,
+                "settled capability source lost its original complete physical frame");
+        var restored=DriverCapabilityStateProducer.replay((DriverObservationAssembler.Complete)projected,originalKnown,source,originals);
+        for(var field:restored.members().entrySet())StrictJson.require(
+                Objects.equals(observed.originalSemanticFields().get(field.getKey()),field.getValue()),
+                "settled capability replay differs from the actual cycle observation: "+field.getKey());
+        return new RetainedReadDriver(new DriverSnapshotFacts.Known(known.driver(),known.stamp(),known.originalHistoryBasis(),
+                known.actionRows(),restored,known.loop(),Optional.empty()),previous.fullDriver());
+    }
+
+    public SettledSameGameData readSettledSameGame(ContinuityStorePort.Session same,
+            SessionIdentity owner) throws IOException {
+        store.requireSession(same);Objects.requireNonNull(owner);
+        return transitions.withLocked(same,()->{
+            var head=same.head();var state=head.state();var whole=state.toJson();
+            StrictJson.require((state.status()==ContinuityState.Status.REPAIR_REQUIRED||state.status()==ContinuityState.Status.RUNNING)
+                    &&state.settledCycles()==0,"settled initial recovery retains the unsaved interrupted frontier");
+            var entry=org.xar.ck3.control.continuity.ObservedGameplayEntry.decode(
+                    whole.get(WriterContracts.GAMEPLAY_ENTRY_FIELD));
+            StrictJson.require(entry.machineId().equals(owner.machineId())&&entry.game().equals(owner.game())
+                    &&entry.sessionId().equals(owner.sessionId()),"settled recovery crossed the actual Game owner");
+            var originals=transitions.restartArchive(same);
+            var actions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state,originals);
+            StrictJson.require(!actions.isEmpty()&&actions.stream().allMatch(ActionReceipt::settled),
+                    "settled recovery cannot discard an unresolved action");
+            for(var action:actions)StrictJson.require(action.command().origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
+                    &&action.command().origin().machineId().equals(owner.machineId())
+                    &&action.command().origin().game().equals(owner.game())
+                    &&action.command().sessionId().equals(owner.sessionId()),
+                    "settled recovery action crossed the current gameplay owner");
+            var source=actions.getFirst().command().source();
+            StrictJson.require(actions.stream().allMatch(action->action.command().source().equals(source)),
+                    "settled recovery cannot merge different original sources");
+            var openingRef=ExactRef.fromJson(whole.path(org.xar.ck3.control.continuity.writer.DomainBodies.FIELD)
+                    .path("entries").path("OPENING_GATE").get("payload"));
+            var opening=org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.decode(
+                    originals.loadMaterial(openingRef).bytes());
+            StrictJson.require(opening.stage()==org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage.COMPLETE
+                    &&opening.sessionId().equals(owner.sessionId())&&opening.source().equals(source)
+                    &&opening.checkpoint().isEmpty()&&opening.actionReceipt().isPresent()
+                    &&actions.contains(originals.loadReceipt(opening.actionReceipt().orElseThrow())),
+                    "settled recovery must retain the actually consumed opening action without a SAVE");
+
+            // Start from the actual first-map Known, then apply already committed Driver DATA.
+            var knownOriginal=originals.loadFullMaterial(entry.driverFacts());
+            var observationRef=org.xar.ck3.control.application.driver.DriverSnapshotFacts
+                    .observationOriginalReference(knownOriginal).orElseThrow(
+                            ()->new IOException("initial settled recovery observation DATA unavailable"));
+            var observationOriginal=originals.loadFullMaterial(observationRef);
+            var initialFull=originals.loadFullMaterial(entry.fullDriver());
+            var nativeFrame=org.xar.ck3.control.application.driver.DriverObservationEvidenceReader.nativeFrame(
+                    observationRef,observationOriginal,originals.loadNativeFrame(entry.nativeFrame()));
+            var observation=org.xar.ck3.control.application.driver.DriverObservationEvidenceReader.decode(
+                    observationRef,observationOriginal,initialFull,nativeFrame);
+            var known=org.xar.ck3.control.application.driver.DriverSnapshotFacts.decodeKnownOriginal(
+                    knownOriginal,Optional.of(observation));
+            StrictJson.require(known.originalHistoryBasis().equals(entry.fullDriver())
+                    &&java.util.Arrays.equals(known.driver().encode(),initialFull.bytes())
+                    &&known.stamp().game().equals(owner.game()),
+                    "initial settled recovery full Driver differs from its original entry");
+
+            var directory=java.nio.file.Path.of(same.persistedHead().path()).toAbsolutePath().normalize()
+                    .resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
+            var pins=new java.util.TreeMap<Long,WriterContracts.Pin>();
+            for(var pin:head.documents()) {
+                var path=java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize();
+                if(directory.equals(path.getParent())&&path.getFileName().toString().matches("[0-9]{8}\\.json"))
+                    pins.put(Long.parseLong(path.getFileName().toString().substring(0,8)),pin);
+            }
+            var requested=new java.util.ArrayList<WriterContracts.Pin>();
+            for(long sequence=1;sequence<=state.sequence();sequence++) {
+                var pin=pins.get(sequence);
+                StrictJson.require(pin!=null,"settled initial recovery requires its actual canonical event history");
+                requested.add(pin);
+            }
+            var edges=same.readHistoricalTransitions(requested);
+            var retained=new RetainedReadDriver(known,entry.fullDriver());
+            var latestObserved=new ObservationIdentity(owner.machineId(),owner.game(),
+                    new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame(
+                            new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame(
+                                    java.math.BigInteger.valueOf(entry.actorId()),entry.nativeRevision(),java.math.BigInteger.valueOf(entry.dateRaw())),
+                            entry.snapshotId(),java.math.BigInteger.valueOf(entry.revision()),entry.episodeId()),observation.observationVersion());
+            var previousTransport=nativeFrame.session();
+            WriterContracts.HistoricalTransition retainedRecovery=null;
+            var used=new java.util.LinkedHashSet<String>();
+            String batchPrefix=null,openBatch=null;
+            var history=new java.util.ArrayList<ExactRef>();
+            var cycleReceipts=new java.util.HashSet<ExactRef>();
+            ExactRef pending=null,lastCycleRef=null;
+            SemanticEvidence latest=null;
+            long completedCycles=0;
+            for(int i=0;i<edges.size();i++) {
+                var edge=edges.get(i);history.add(requested.get(i).reference());
+                var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
+                if(edge.kind().equals(org.xar.ck3.control.continuity.ObservedGameplayEntry.KIND)) {
+                    StrictJson.require(edge.sequence()==1,"settled initial recovery has another gameplay entry");
+                } else if(edge.kind().equals(WriterContracts.DRIVER_READ_HISTORY_KIND)) {
+                    retained=retainCapturedRead(same,owner,edge,retained,originals,java.util.List.of(),false);
+                    for(var row:details.get("read_rows")) {
+                        var read=originals.loadRead(ExactRef.fromJson(row.get("read")));
+                        for(var guard:java.util.List.of(read.before().binding(),read.after().binding())) {
+                            requireSettledObservedContinuation(latestObserved,guard.observed());
+                            latestObserved=guard.observed();
+                            previousTransport=new org.xar.ck3.control.application.action.NativeObservationPort.TransportSession(
+                                    owner.machineId(),owner.game(),guard.connectionGeneration(),owner.sessionId());
+                        }
+                    }
+                } else if(edge.kind().equals(WriterContracts.DRIVER_ACTION_HISTORY_KIND)) {
+                    StrictJson.require(retainedRecovery==null,
+                            "closed settled continuation cannot add another ACTION publication after its original recovery");
+                    retained=retainCapturedAction(edge,retained,actions,originals);
+                } else if(edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
+                    // Domain DATA does not submit another gameplay action.
+                } else if(edge.kind().equals(WriterContracts.ACTION_LIFECYCLE_KIND)) {
+                    StrictJson.require(retainedRecovery==null,
+                            "closed settled continuation cannot change original actions after its recovery");
+                } else if(edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)) {
+                    StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)
+                            &&details.get("checkpoint_pair").isNull()&&details.get("completed_cycle_proof").isNull(),
+                            "settled initial recovery cannot replace a saved or foreign batch");
+                    String boundary=StrictJson.text(details.get("boundary")),batch=StrictJson.text(details.get("batch_id"));
+                    if(JournalKind.BATCH_STARTED.name().equals(boundary)) {
+                        if(batchPrefix==null) {
+                            StrictJson.require(batch.endsWith("-0"),"initial recovery batch sequence must start at zero");
+                            batchPrefix=batch.substring(0,batch.length()-2);
+                        }
+                        StrictJson.require(openBatch==null&&batch.equals(batchPrefix+"-"+used.size())&&used.add(batch),
+                                "settled recovery cannot reuse or skip an actual batch");
+                        openBatch=batch;
+                    } else {
+                        boolean closed=JournalKind.BATCH_INTERRUPTED.name().equals(boundary)
+                                ||retainedRecovery!=null&&java.util.Set.of(JournalKind.BATCH_FINISHED.name(),
+                                        JournalKind.BATCH_DEFERRED.name()).contains(boundary);
+                        StrictJson.require(closed&&batch.equals(openBatch),
+                                "settled recovery requires its actual closed batch terminal boundary");
+                        openBatch=null;
+                    }
+                } else if(edge.kind().equals(OrdinaryCycleTransitions.CYCLE_KIND)) {
+                    String operation=StrictJson.text(details.get("operation"));
+                    if("SETTLED_SAME_GAME_RECOVERY".equals(operation)) {
+                        StrictJson.require((openBatch==null||retainedRecovery!=null&&openBatch.equals(used.getLast()))
+                                &&pending==null&&latest!=null&&!used.isEmpty()
+                                &&StrictJson.text(details.get("batch_id")).equals(used.getLast())
+                                &&StrictJson.integer(details.get("next_sequence"),1,StrictJson.MAX_SAFE_INTEGER)==used.size()
+                                &&ExactRef.fromJson(details.get("cycle_record_ref")).equals(lastCycleRef),
+                                "settled recovery history changed its completed cycle or consumed batches");
+                        transitions.requireSettledSameGameHistoryEdge(edge,owner);
+                        var recovered=OrdinaryCycleTransitions.semanticFromJson(details.get("semantic"));
+                        requireSettledObservedContinuation(latestObserved,recovered.frame());
+                        latestObserved=recovered.frame();
+                        previousTransport=settledSemanticTransport(recovered,owner,originals);
+                        // This real canonical recovery row closes an unfinished read-only batch.
+                        openBatch=null;
+                        retainedRecovery=edge;
+                        continue;
+                    }
+                    StrictJson.require(openBatch!=null&&OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner),
+                            "settled cycle crossed its real active batch");
+                    var receiptRef=ExactRef.fromJson(details.get("receipt_ref"));
+                    if("RETAIN".equals(operation)) {
+                        StrictJson.require(pending==null,"settled recovery cannot overwrite a pending cycle");
+                        pending=receiptRef;
+                    } else {
+                        StrictJson.require("SETTLE".equals(operation)&&receiptRef.equals(pending)&&cycleReceipts.add(receiptRef),
+                                "settled recovery cannot repeat or skip the original cycle");
+                        var receipt=originals.loadReceipt(receiptRef);
+                        StrictJson.require(actions.contains(receipt)&&receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED,
+                                "settled cycle must retain its original applied action");
+                        var record=details.get("cycle_record");
+                        String classification=receipt.eligibleAdvance()?"ELIGIBLE_ADVANCE":receipt.visibleGameplay()?"VISIBLE_GAMEPLAY":"CONTROL_ONLY";
+                        completedCycles=Math.addExact(completedCycles,"CONTROL_ONLY".equals(classification)?0:1);
+                        StrictJson.require(StrictJson.text(record.get("classification")).equals(classification)
+                                &&StrictJson.integer(record.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
+                                &&ExactRef.fromJson(record.get("receipt_ref")).equals(receiptRef),
+                                "settled recovery cannot grant new cycle credit");
+                        latest=OrdinaryCycleTransitions.semanticFromJson(details.get("semantic"));
+                        retained=retainSettledCapabilities(latest,retained,originals);
+                        requireSettledObservedContinuation(latestObserved,latest.frame());
+                        latestObserved=latest.frame();
+                        previousTransport=settledSemanticTransport(latest,owner,originals);
+                        lastCycleRef=ExactRef.fromJson(details.get("cycle_record_ref"));
+                        pending=null;
+                    }
+                } else {
+                    throw new IOException("settled initial recovery cannot reinterpret canonical transition "+edge.kind());
+                }
+            }
+            var cycle=whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+            StrictJson.require(state.status()!=ContinuityState.Status.RUNNING||retainedRecovery!=null,
+                    "READY settled recovery requires its actual prior recovery transition");
+            boolean unfinishedReadOnlyBatch=openBatch!=null;
+            StrictJson.require((!unfinishedReadOnlyBatch||retainedRecovery!=null&&state.status()==ContinuityState.Status.RUNNING)
+                    &&!used.isEmpty()&&pending==null&&latest!=null
+                    &&cycle.get("pending_receipt").isNull()
+                    &&StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
+                    &&ExactRef.fromJson(cycle.get("head")).equals(lastCycleRef),
+                    "settled recovery requires the actual closed cycle frontier");
+            var unsaved=new java.util.LinkedHashSet<String>();boolean dirty=false;int eligible=0;
+            for(var action:actions) {
+                if(!action.visibleGameplay()&&!action.eligibleAdvance())continue;
+                StrictJson.require(cycleReceipts.contains(originals.receiptReferenceOf(action)),
+                        "settled gameplay action lacks its already completed ordinary cycle");
+                if(unsaved.add(action.command().actionId())) {
+                    dirty|=action.visibleGameplay();
+                    if(action.eligibleAdvance())eligible=Math.addExact(eligible,1);
+                }
+            }
+            var controller=new ControllerRestartState(owner,batchPrefix,used.size(),used,unsaved,
+                    Optional.empty(),Optional.of(same.persistedHead()),eligible,dirty,false,false,0,
+                    java.util.Set.of(),false);
+            StrictJson.require(same.head().state().sequence()==state.sequence()&&same.head().digest().equals(head.digest()),
+                    "settled canonical recovery head changed during read");
+            var data=new SettledSameGameData(entry,controller,retained.facts(),retained.fullDriver(),previousTransport,
+                    source,latest,latestObserved,actions,state.sequence(),head.digest(),history);
+            issuedSettledSameGameData=data;issuedSettledSameGameRecovery=retainedRecovery;
+            issuedSettledSameGameOpenBatch=unfinishedReadOnlyBatch;
+            return data;
+        });
+    }
+
     @Override public JournalCommit commit(JournalInput input) throws IOException {
         return store.locked(session -> commit(session,input));
     }

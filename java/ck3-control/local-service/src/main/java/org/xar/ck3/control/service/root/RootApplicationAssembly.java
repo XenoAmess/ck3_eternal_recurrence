@@ -132,6 +132,11 @@ public final class RootApplicationAssembly {
         private ContinuityBatchJournal unresolvedSameGameBatches;
         private ContinuityBatchJournal.UnresolvedSameGameData unresolvedSameGameData;
         private OriginalWindowReducer.Policy unresolvedSameGamePolicy;
+        private OrdinaryCycleTransitions settledSameGameCycles;
+        private ContinuityBatchJournal settledSameGameBatches;
+        private ContinuityBatchJournal.SettledSameGameData settledSameGameData;
+        private SessionPorts.SemanticEvidence settledSameGameSemantic;
+        private OriginalWindowReducer.Policy settledSameGamePolicy;
         private ContinuityBatchJournal.InitialNoDispatchRecovery initialNoDispatchProof;
         private OrdinaryCycleTransitions initialNoDispatchCycles;
         private ContinuityBatchJournal initialNoDispatchBatches;
@@ -649,6 +654,61 @@ public final class RootApplicationAssembly {
             });
         }
 
+        /** Reads a closed dirty batch directly from its real Driver/WAL without a clean capture. */
+        public synchronized Optional<ContinuityBatchJournal.SettledSameGameData> readSettledSameGame(
+                ManagedGameSession game,OriginalWindowReducer.Policy cyclePolicy)throws IOException {
+            StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty(),
+                    "settled continuation reads the unused actual Core");
+            Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
+            return writer.locked(same->{
+                var cycle=same.head().state().toJson().get(OrdinaryCycleTransitions.STATE_FIELD);
+                var status=same.head().state().status();
+                if((status!=org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED
+                        &&status!=org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING)
+                        ||cycle==null||cycle.get("head")==null||cycle.get("head").isNull()
+                        ||cycle.get("pending_receipt")==null||!cycle.get("pending_receipt").isNull())
+                    return Optional.empty();
+                boolean settled=actions.withFrozen(same,lease->{
+                    boolean result=!lease.snapshot().actions().isEmpty()
+                            &&lease.snapshot().actions().stream().allMatch(ActionReceipt::settled);
+                    lease.assertCurrent();return result;
+                });
+                if(!settled)return Optional.empty();
+                var cycles=new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,cyclePolicy,writer::requireSession);
+                cycles.bindTerminalFrameLoader(frames);
+                var batches=new ContinuityBatchJournal(writer,cycles);
+                // The Journal decides whether READY is a retained settled recovery. A catalog
+                // failure after repair must return through this path without a clean capture.
+                var data=batches.readSettledSameGame(same,new SessionIdentity(game.machineId(),game.generation(),game.sessionId()));
+                settledSameGameCycles=cycles;settledSameGameBatches=batches;
+                settledSameGameData=data;settledSameGamePolicy=cyclePolicy;
+                return Optional.of(data);
+            });
+        }
+
+        public synchronized DriverBootstrap.Adopted adoptSettledSameGame(ManagedGameSession game,
+                ContinuityBatchJournal.SettledSameGameData data,int retainedFrames,
+                OriginalWindowReducer.Policy cyclePolicy,Instant deadline)throws IOException,InterruptedException {
+            StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty(),
+                    "settled continuation Driver binds once to the unused Core");
+            StrictJson.require(data==settledSameGameData&&settledSameGameCycles!=null&&settledSameGameBatches!=null
+                    &&settledSameGamePolicy.equals(cyclePolicy),
+                    "settled continuation retains its actual history reader and cycle policy");
+            return writer.locked(same->{
+                final DriverBootstrap.Adopted result;
+                try {
+                    result=DriverBootstrap.adoptSettledSameGame(data,same,actions,game.nativeTransport(),archive,
+                            writer::borrowedSession,retainedFrames,deadline);
+                }catch(InterruptedException interrupted){
+                    Thread.currentThread().interrupt();
+                    var failure=new java.io.InterruptedIOException("settled same-Game Driver adoption interrupted");
+                    failure.initCause(interrupted);throw failure;
+                }
+                settledSameGameSemantic=initialRecoverySemantic(same,result,data.controller().owner());
+                adopted.add(result);return result;
+            });
+        }
+
         public synchronized Optional<ContinuityBatchJournal.UnresolvedSameGameData> readUnresolvedSameGame(
                 ManagedGameSession game, OriginalWindowReducer.Policy cyclePolicy) throws IOException {
             StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty(), "unresolved reconstruction reads the unused actual Core");
@@ -1020,6 +1080,14 @@ public final class RootApplicationAssembly {
             return finishObserved(installed, driver, configuration, services, Optional.of(cleanRestartAdmission));
         }
 
+        public RootApplicationSession finishSettledSameGame(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,
+                FreshSessionConfiguration configuration,FreshSessionServices services)throws IOException,InterruptedException {
+            StrictJson.require(settledSameGameData!=null&&settledSameGamePolicy.equals(configuration.cyclePolicy()),
+                    "settled continuation retains its actual data and cycle policy");
+            driver.requireSettledSameGame(settledSameGameData);
+            return finishObserved(installed,driver,configuration,services,Optional.empty());
+        }
+
         public RootApplicationSession finishUnresolvedSameGame(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services)throws IOException,InterruptedException{
             StrictJson.require(unresolvedSameGameData != null, "unresolved same-game data required");
             StrictJson.require(unresolvedSameGamePolicy.equals(configuration.cyclePolicy()), "unresolved same-game policy mismatch");
@@ -1081,6 +1149,17 @@ public final class RootApplicationAssembly {
                         failure.initCause(interrupted);throw failure;
                     }
                     runtime.capabilities().initializePlanning(same,driver.first());
+                } else if(settledSameGameData!=null) {
+                    // Staged.finish has now sealed this Core's real cycle authority router.
+                    settledSameGameBatches.recoverSettledSameGame(same,settledSameGameData,
+                            Objects.requireNonNull(settledSameGameSemantic,"actual settled adoption SEM is missing"));
+                    try {root.restoreSettledSameGame(same,settledSameGameData);}
+                    catch(InterruptedException interrupted){
+                        Thread.currentThread().interrupt();
+                        var failure=new java.io.InterruptedIOException("settled same-Game Controller restoration interrupted");
+                        failure.initCause(interrupted);throw failure;
+                    }
+                    runtime.capabilities().restoreRetainedPlanning(same);
                 } else if (unresolvedSameGameData != null) {
                     // Restore the existing per-graph reader without capture/publication or canonical head changes.
                     runtime.capabilities().restoreRetainedPlanning(same);
@@ -2151,6 +2230,10 @@ public final class RootApplicationAssembly {
                     StrictJson.require(core.cleanRestartPolicy.equals(cyclePolicy),"clean restart retains its actual cycle policy");
                     cycles=core.cleanRestartCycles;
                 }
+                else if(core.settledSameGameCycles!=null){
+                    StrictJson.require(core.settledSameGamePolicy.equals(cyclePolicy),"settled continuation retains its actual cycle policy");
+                    cycles=core.settledSameGameCycles;
+                }
                 else if(core.unresolvedSameGameCycles!=null){
                     StrictJson.require(core.unresolvedSameGamePolicy.equals(cyclePolicy),"unresolved reconstruction retains its actual cycle policy");
                     cycles=core.unresolvedSameGameCycles;
@@ -2203,8 +2286,9 @@ public final class RootApplicationAssembly {
                 knownReads.bind(capabilities); if (!restoring) inputs.bind(capabilities, planningInputs);
                 if(!restoring&&!next)cycles.bindOperatorAuthority(core.operatorAuthority());
                 ContinuityBatchJournal batches = next?nextEpisode.batches:(core.cleanRestartBatches != null ? core.cleanRestartBatches :
+                        (core.settledSameGameBatches != null ? core.settledSameGameBatches :
                         (core.unresolvedSameGameBatches != null ? core.unresolvedSameGameBatches :
-                        (core.initialNoDispatchBatches != null ? core.initialNoDispatchBatches : new ContinuityBatchJournal(core.writer, cycles))));
+                        (core.initialNoDispatchBatches != null ? core.initialNoDispatchBatches : new ContinuityBatchJournal(core.writer, cycles)))));
                 SessionPorts.ObservationPort observations = new RootSessionObservationPort(core,collector,lifecycle,terminalDecisions,driver.authority(),game.nativeTransport(),
                         Objects.requireNonNull(actualLifecycleRuntime));
                 RootControllerActions controllerActions = new RootControllerActions(core, identity, coordinator);
