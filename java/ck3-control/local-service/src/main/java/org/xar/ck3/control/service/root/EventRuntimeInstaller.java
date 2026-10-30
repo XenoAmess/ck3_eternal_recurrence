@@ -129,7 +129,7 @@ public final class EventRuntimeInstaller {
         this.knowledge=Objects.requireNonNull(knowledge);this.trusted=Objects.requireNonNull(trusted);this.eventSources=Objects.requireNonNull(eventSources);
         this.sameKnown=Objects.requireNonNull(sameKnown);Objects.requireNonNull(sameArmy);Objects.requireNonNull(sameSharedBinding);
         sameKnown.bindIncidents(incidents);
-        window=EventWindowRead.contract(sources.windowRead(),this::admit);
+        window=EventWindowRead.contractForCapabilities(sources.windowRead(),this::admit,sameTransport.diagnostics().originalHello().map(observed->java.util.Set.copyOf(observed.original().capabilities())).orElse(java.util.Set.of()));
         windowService=new EventWindowService(context.reads(),window,this::currentWindow,receipt ->
                 org.xar.ck3.control.nativebridge.capabilities.events.EventOptionLocatorDiagnostics.project(
                         org.xar.ck3.control.nativebridge.capabilities.diagnostics.BridgeDiagnosticsCapture.capture(

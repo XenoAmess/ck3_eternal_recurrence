@@ -34,6 +34,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 public final class EventWindowRead {
     public static final String STEP="query-current-event-window-context-v1";
     public static final String CAPABILITY="game.command.query-current-event-window-context-v1";
+    public static final String GUI_OBSERVATION_CAPABILITY = "game.command.query-current-event-window-gui-observation-v2";
     private static final List<String> MIRRORS=List.of("schema","schema_version","date_raw","current_event_instance_id","window_match_count","unavailable_reason","event_definition_key","calculated_event_id","runtime_stats_ordinal","root_scope","saved_scopes","options","readiness","provenance");
     private EventWindowRead() { }
     /** Root verifies current build/capability, actual collector authority and lifecycle under its writer lock. */
@@ -54,6 +55,15 @@ public final class EventWindowRead {
                 if(guiObservation) fields.put("gui_observation_version",2);
                 return new NativeRequest(STEP,Optional.of(CAPABILITY),raw(fields)); },
             receipt->decode(receipt,guiObservation),receipt->decode(receipt,guiObservation));
+    }
+    public static ReadContract<EventPolicies.ReadPublication> contractForCapabilities(ExactRef source, Admission admission, java.util.Set<String> advertisedCapabilities) {
+        Objects.requireNonNull(source);
+        Objects.requireNonNull(admission);
+        Objects.requireNonNull(advertisedCapabilities);
+        if (advertisedCapabilities.contains(GUI_OBSERVATION_CAPABILITY)) {
+            return contractWithGuiObservation(source, admission);
+        }
+        return contract(source, admission);
     }
     private static String contractId(boolean guiObservation) { return guiObservation?"native/event-window-v2":"native/event-window-v1"; }
     /** Source snapshot is the complete semantic snapshot; no separately supplied event ID can override it. */

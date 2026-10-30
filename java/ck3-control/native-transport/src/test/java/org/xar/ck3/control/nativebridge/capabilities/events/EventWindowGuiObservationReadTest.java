@@ -126,4 +126,26 @@ final class EventWindowGuiObservationReadTest {
         var extraFlag=receipt(legacy,ack(legacy.result(),REQUEST,NATIVE,EVENT,flag()));
         assertThrows(IllegalArgumentException.class,()->legacy.contract().decode(extraFlag));
     }
+    @Test void capabilitySelectionKeepsOldAndUnrelatedNativeOnV1()throws Exception {
+        Fixture f=fixture(false);AtomicInteger admissions=new AtomicInteger();
+        for(java.util.Set<String> names:List.of(java.util.Set.<String>of(),java.util.Set.of(EventWindowRead.CAPABILITY),
+                java.util.Set.of(EventWindowRead.CAPABILITY,EventWindowRead.GUI_OBSERVATION_CAPABILITY+"-unrelated"))) {
+            var contract=EventWindowRead.contractForCapabilities(f.contract().sourceRef(),request->admissions.incrementAndGet(),names);
+            assertEquals("native/event-window-v1",contract.contractId());
+            ObjectNode sent=EventWindowCodec.parse(contract.prepare(f.request(),REQUEST).additionalFields());
+            assertEquals(1,sent.size());assertFalse(sent.has("gui_observation_version"));
+            assertEquals(EVENT,sent.get("event_instance_id").intValue());
+        }
+        assertEquals(3,admissions.get());
+    }
+    @Test void exactGuiCapabilitySelectsV2AndRetainsTheBoundRequest()throws Exception {
+        Fixture f=fixture(false);AtomicInteger admissions=new AtomicInteger();
+        java.util.Set<String> capabilities=java.util.Set.of(EventWindowRead.CAPABILITY,EventWindowRead.GUI_OBSERVATION_CAPABILITY);
+        var contract=EventWindowRead.contractForCapabilities(f.contract().sourceRef(),request->{assertEquals(f.request(),request);admissions.incrementAndGet();},capabilities);
+        assertEquals("native/event-window-v2",contract.contractId());
+        ObjectNode sent=EventWindowCodec.parse(contract.prepare(f.request(),REQUEST).additionalFields());
+        assertEquals(2,sent.size());assertEquals(EVENT,sent.get("event_instance_id").intValue());
+        assertTrue(sent.get("gui_observation_version").isIntegralNumber());assertEquals(2,sent.get("gui_observation_version").intValue());
+        assertEquals(1,admissions.get());assertEquals(f.contract().sourceRef(),contract.sourceRef());
+    }
 }
