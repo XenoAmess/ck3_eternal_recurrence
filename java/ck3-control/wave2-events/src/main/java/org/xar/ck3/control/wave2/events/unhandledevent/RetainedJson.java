@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 
 /** Immutable diagnostic JSON domain. Business identities are separately decoded as exact integers. */
 public final class RetainedJson {
@@ -94,6 +95,10 @@ public final class RetainedJson {
     }
     public static byte[] encode(Value value) {
         return encodeBounded(value, StrictJson.EXPLICIT_MAX_BYTES);
+    }
+    public static byte[] encode(Value value, int maximumBytes) {
+        StrictJson.require(maximumBytes > 0 && maximumBytes <= FullJsonTree.MAXIMUM_DRIVER_BYTES, "finite complete JSON material lease required");
+        return encodeBounded(value, maximumBytes);
     }
     static byte[] encodeOfflineMetadata(Value value) { return encodeBounded(value, 2_097_152); }
     private static byte[] encodeBounded(Value value, int maximum) {

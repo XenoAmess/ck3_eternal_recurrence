@@ -23,6 +23,7 @@ import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.PlanningResult;
 import org.xar.ck3.control.application.planning.warentry.WarEntryCollector;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.wave2.events.registered.BookmarkRaiktorPolicy;
 import org.xar.ck3.control.wave2.events.eventtraits.EventEffectPhase;
@@ -365,8 +366,12 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
     private static ArrayValue retainedHistory(PlanningRequest request) { return new ArrayValue(OrdinaryHistory.collect(request.observations().history()).rows().stream().map(RegisteredEventCore::retained).map(Value.class::cast).toList()); }
     private static Set<String> steps(PlanningRequest request) { return request.observations().actionSteps().stream().map(OperationKey::value).collect(java.util.stream.Collectors.toUnmodifiableSet()); }
     private static boolean available(PlanningRequest request,String step) { return step!=null && request.observations().actionSteps().contains(new OperationKey(step)); }
-    private static ObjectValue retained(OpportunityJson.Obj value) { return RetainedJson.object(RetainedJson.parse(OpportunityJson.encode(value))); }
-    private static OpportunityJson.Obj opportunity(ObjectValue value) { return OpportunityJson.object(OpportunityJson.parse(RetainedJson.encode(value)),"complete event proposal"); }
+    private static ObjectValue retained(OpportunityJson.Obj value) {
+        return RetainedJson.object(RetainedJson.parse(OpportunityJson.encode(value), new RetainedJson.ParseBudget(FullJsonTree.MAXIMUM_BYTES, FullJsonTree.MAXIMUM_BYTES, 128)));
+    }
+    private static OpportunityJson.Obj opportunity(ObjectValue value) {
+        return OpportunityJson.object(OpportunityJson.parseComplete(RetainedJson.encode(value, FullJsonTree.MAXIMUM_BYTES), FullJsonTree.MAXIMUM_BYTES),"complete event proposal");
+    }
     private static Value get(Value value,String key) { return value instanceof ObjectValue object ? object.getOrNull(key) : RetainedJson.NULL; }
     private static boolean positive(Value value) { BigInteger n=integer(value);return n!=null&&n.signum()>0; }
     private static boolean yes(Value value) { return value instanceof BooleanValue booleanValue&&booleanValue.value(); }
