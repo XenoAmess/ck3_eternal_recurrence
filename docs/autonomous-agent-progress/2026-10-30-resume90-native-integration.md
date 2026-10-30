@@ -342,3 +342,38 @@ addresses are retained provenance rather than reviewed game causes. That new
 94-check case needs no Native source change and does not authorize the deferred
 cause-role draft. See M6 `action-abi/common-next/{COMMON-ROOT-ONLY.patch,
 FINAL-ACTUAL.json,PACKETS.json}` and `cause-next/{RESULT.md,FINAL-ACTUAL.json}`.
+
+The M1 persistent CI group was normally published as
+`e7c5ad9fda1a8c0376de5df7d7f68e94154e9b1a`; CommonEnd root encoding followed as
+`c7ad9418040a710325e40d342653411c4462f88b`. Independent remote readback at
+15:12:17.902Z returned c7ad9418040a and the Native delivery tree was clean.
+
+M0's new persistent semantic-claims fixture exercises the actual public
+WorkerAdapter, player_claims enum, ExecuteSemanticAdapter12002, owned real pump,
+query mailbox, wait/reclaim and current claims reader/serializer. It has eight
+scenes/90 checks, with synthetic snapshot/getter inputs. Its packaged output
+uses a fresh PID/tick directory. Only the changed flattened fixture was rebuilt
+for packaging (11.367 seconds), linked with the eight existing production
+objects (2.807 seconds) and executed once (0.545 seconds); all eight result
+bodies matched the initial actual run byte for byte.
+
+The published physical-mailbox source/header lacked two unrelated refund
+executor tail fields present in Z. These dirty fields were preserved and
+excluded. A necessary independent published-layout variant recompiled only five
+affected TUs, reused the four independent claims/serializer/heir objects and
+the existing archive boundary, then linked and passed the same eight scenes/
+90 checks. Compile/link/run were 38.375/4.971/1.895 seconds, exit0; its eight
+bodies also match exactly. No full Bridge or Runtime rebuild is inferred.
+The private software target sets WAR_DECLARED_OVERVIEW=0, equivalent to the
+undefined macro in the actual variant's three guarded code locations. It
+preserves the other Runtime definitions and makes no all-features claim.
+
+The exact final fixture and nine-source CMake target are adopted, with one
+include inside the existing BUILD_TESTING/WIN32 block and a small addition to
+the existing Native CI target/CTest command. Reusing Native66, configuration
+and generation passed in 16.122 seconds at 15:15:18.535Z. Its target binary and
+the complete CI step were not built/run through CMake here. See M0
+`bridge-producer/mailbox-followup/{CANDIDATE-MANIFEST.json,PACKAGING-ACTUAL.json}`
+and `published-variant/{PUBLISHED-ACTUAL.json,RESULT.md}`. This is a persistent
+software producer regression, not full Bridge dispatcher, live getter, Game,
+DLL deployment or runtime enablement evidence.

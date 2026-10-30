@@ -9787,6 +9787,7 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_ck3_12004_player_claims_v1_test
     COMMAND $<TARGET_FILE:xar_ck3_12004_player_claims_v1_test>
       "${CMAKE_CURRENT_BINARY_DIR}/wire/player_claims_v1-focused-first")
+  include(cmake/player_claims_semantic_mailbox_v1.cmake)
 endif()
 
 # Exercise both complete binders before injection can reach the worker pipe.
