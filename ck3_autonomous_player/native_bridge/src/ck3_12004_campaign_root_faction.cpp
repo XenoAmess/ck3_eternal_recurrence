@@ -41,7 +41,7 @@ bool ReadDirectVassals(const CampaignRootFactionBindings12004 &bindings,
     std::int32_t id = -1;
     void *death = nullptr;
     if (!Read(access, character, 0x18, id)) return false;
-    if (id <= 0 || (static_cast<std::uint32_t>(id) & 0xFFFFFFU) !=
+    if (id == -1 || (static_cast<std::uint32_t>(id) & 0xFFFFFFU) !=
                        static_cast<std::uint32_t>(index)) continue;
     if (!Read(access, character, 0x1D0, death)) return false;
     if (death || bindings.immediate_liege(character) != player) continue;
@@ -104,7 +104,7 @@ bool ReadCampaignRootFaction12004(
         !access.capture_frame(access.context, before) ||
         before.snapshot_revision != request.expected_snapshot_revision ||
         !before.paused || !before.map_ready || !before.has_played_character ||
-        !before.played_character_alive || before.played_character_id <= 0 ||
+        !before.played_character_alive || before.played_character_id == -1 ||
         !ck3_12004::ReadCoreSnapshot(bindings.core, native_before) ||
         !Matches(native_before, before)) return false;
     void *player = ck3_12004::ResolveCoreCharacter(

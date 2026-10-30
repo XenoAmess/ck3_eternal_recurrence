@@ -63,7 +63,7 @@ bool DefinitionIdentity(const void *definition, std::uintptr_t primary,
 }
 
 void *Character(const CoreBindings &core, std::uint32_t id) noexcept {
-  if (id == 0 || id == 0xFFFFFFFFU) return nullptr;
+  if (id == 0xFFFFFFFFU) return nullptr;
   return ck3_12004::ResolveCoreCharacter(core, static_cast<std::int32_t>(id));
 }
 

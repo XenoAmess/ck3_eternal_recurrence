@@ -17,12 +17,12 @@ does not acquire deployed or live status through publication.
 | --- | --- | --- | --- |
 | M0 | `/root/m0_native90` | FullID/truce/claims | Existing published fixes retained; new evidence awaited |
 | M1 | `/root/m1_native90` | Faction/member/gift | Adopt only the previously verified signed/zero selector hunk |
-| M2 | `/root/m2_native90` | Event instance registration/lifetime/options | Positive instance contract retained; no invented repair |
-| M3 | M3 team assigned by Root | Council/piety owner and lifecycle | Existing published fix retained; engine/writer evidence pending |
-| M4 | M4 team assigned by Root | Construction cancel/scope/accounting | No net-refund claim or speculative repair |
-| M5 | M5 team assigned by Root | Object aliases/current power/ABI | Partial fragments remain partial evidence |
-| M6 | M6 team assigned by Root | Sway opinion/Event material | Published opinion-only signed parser retained; Event uint domain retained |
-| M7 | M7 team assigned by Root | Normal exit/save/unwind | Existing latch fix retained; no SAVE completion claim |
+| M2 | `/root/m2_native90` | Event instance registration/lifetime/options | Full32 counter writer newly found; positive instance contract retained |
+| M3 | `/root/m3_native90` | Council/piety owner and lifecycle | Existing published fix retained; engine/writer evidence pending |
+| M4 | `/root/m4_native90` | Construction cancel/scope/accounting | Actual signed/zero producer packets delivered to Java; no Native defect or net-refund claim |
+| M5 | `/root/m5_native90` | Object aliases/current power/ABI | New 24B write probe reviewed; no production hunk or Game-alias claim |
+| M6 | `/root/m6_native90` | Sway opinion/Event material | Published opinion-only signed parser retained; Event uint domain retained |
+| M7 | `/root/m7_native90` | Normal exit/save/unwind | Existing latch fix retained; no SAVE completion claim |
 
 `/root/runtime90` owns Game/Native deployment decisions and S/MB. Java publication
 is owned by `/root/java_delivery90`; the two publishers coordinate short normal
@@ -67,3 +67,84 @@ was D 621,267,423,232 bytes and Z 136,421,556,224 bytes; expected task output is
 under 64 MiB. No heavy PE export or new full source graph was created. Review
 this small package after integration consumption or 2026-11-06 under storage
 policy 1.0.0; that date does not authorize automatic deletion or protection renewal.
+
+At 14:09:22.597Z the two-leaf selector/document change was normally pushed as
+`ba9332b5174b48728eec8646a6c08233e279ca27`; independent `ls-remote` at
+14:09:31.210Z returned that exact SHA. The detached Native delivery tree was
+clean. Java's owner received the new base and the publication window was released.
+
+M1 then found the actual `ReadCampaignRootFaction12004` producer still rejects
+nonpositive player IDs and filters nonpositive direct-vassal IDs. Its underlying
+`ResolveCoreCharacter` and actual `ReadCoreSnapshot` in
+`ck3_12004_abi_profile.cpp` already preserve full signed IDs and reject the `-1`
+sentinel. The selector's earlier authored CampaignRoot cannot establish that
+producer path. M1 is preparing a D-only producer candidate and real producer
+software regression; this newly identified gap has not been adopted, built,
+deployed or declared fixed by the selector publication.
+
+## M6 published-source synchronization
+
+The previous M6 publication explicitly left Z untouched. This round confirmed
+that the shared Z reader/parser still had the old opinion-only guards. After
+the M6 owner confirmed its new regression reads only its D copy, the original
+two-leaf `SWAY-MATERIAL-ADOPTED03.patch` was applied at 14:12:45.062Z. This changes
+only the already published opinion-reader sentinel and opinion-only signed
+parser; the Event branch retains its unsigned domain. The resulting normalized
+reader/parser SHA-256 values are respectively
+`3d4e90b00b2eb085b2ed6404e7d33fbe97919c17fc7f209a5e91b2957f95c258` and
+`a3b338003df3afd248fbd1121e50606b9aca064d525d255da626664e6b72dbec`, exactly
+matching the previously verified `green01` sources and published `84a6b941717c`.
+No changed implementation warranted another green run, and the already
+published production hunk is not submitted a second time. Original 75-check
+software/parser results and complete mailbox-TU compilation retain their
+stated limits. M6 is separately extending the previously uncovered public
+handler/real queue/pump software route under D; that is not yet a live result.
+
+The new M6 route completed 94 checks/0 failures on 14:14:22.230Z. It compiles the
+unchanged full published mailbox and exercises the public handler, actual
+queue/pump, envelope entry/finish, material reader, reclaim and response
+serializer. The explicit seams are FrameAdapter, image binding patched to owned
+memory/callbacks and aborting unused link symbols (unused-call count zero).
+Three complete public response packets preserve `-2/0`, `0/MAX`, `MIN/MAX` pairs.
+These were forwarded to Java's publication owner for independent consumption.
+Earlier fixture mistakes (registration default and two generations in one slot)
+remain recorded; there was no production correction. See
+`D:/ck3-state/resume90-m6-native/mailbox-route/{README.md,FINAL-ACTUAL01.json,wire/}`.
+The D case is not a persistent CI target, live ABI proof or Game result.
+
+## M1 actual producer and private preview
+
+The next M1 source change removes two nonpositive-character filters in the
+actual CampaignRootFaction producer and only the zero-character filter in the
+private gift-opinion resolver. The producer still requires full slot identity,
+alive direct liege membership, title pointer/full-ID roundtrip and matching
+before/after frames. The private reader keeps raw uint32 ABI and FFFFFFFF
+absence; the router, Execute and Submit admission guards are unchanged here.
+
+Both production sources matched current Z and the publication base exactly
+before applying their small patches. The Root candidate's real
+`ReadCoreSnapshot`/`ResolveCoreCharacter` → complete producer software regression
+changed six valid signed/zero failures to 13 matching worlds/65 checks. The
+private candidate's complete preview and actual named readers changed actor-zero
+and recipient-zero failures to 8 matching worlds/1320 checks. Its native
+constructor/evaluator callbacks remain authored memory callbacks. The separately
+executed original 91-byte character predicate had 9 matching worlds; that does
+not prove the original gift constructor/evaluator or a Game action.
+
+The exact already executed fixtures are now persistent test sources with CMake
+entries in `faction_adopted_12004.cmake`. Reusing the existing Native integration
+cache, configuration with the two existing faction feature flags ON passed in
+19.370 seconds. Only the independent Root target's three TUs were compiled
+(`--parallel 1`, 20.080 seconds); its registered CTest passed, 1/1, in 0.28
+seconds. No Runtime library or Bridge target was built. The private preview
+CTest was registered/configured but not run through CMake in this integration;
+its exact D source, full real-library link and 8-world result are reused without
+claiming a local CTest execution or complete CI run.
+
+Sources/results:
+`D:/ck3-state/resume90-m1-native/root-producer/{PRODUCTION.patch,RESULT.md}` and
+`D:/ck3-state/resume90-m1-native/preview-abi/{PRIVATE-GETTER-CANDIDATE.patch,RESULT.md,RESULT.json}`.
+The new integration configure/build/CTest command receipts are under
+`D:/ck3-state/resume90-native-integration/m1-*.actual.txt`. These are source and
+owned-memory software results; Game, DLL deployment, submission qualification
+and natural inheritance remain untested by this package.
