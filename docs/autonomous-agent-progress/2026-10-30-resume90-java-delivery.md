@@ -67,3 +67,9 @@ M6 Java signed terminal 依序采用四份实际候选 `FINAL → ORDINARY → O
 M6 terminal 组已普通 push/独立远端读回 `f315c040481fdceab882dc6144cd46377c1d2f1a`。
 
 M6 assessment caller 的独立单叶候选已采用：composer 已验证的 cause 只为 evidence 中原已存在的 independentNatural/terminalObserved 临时投影归因，end 日期不能晚于原terminal或早于已观测first gain；不新造terminal、增益或消费。Result.evidence、originalLedger、原观察和材料日期保持不变。当前完整 M6ServiceIntegration 严格 javac0/4.577秒；在已集成 terminal/common 六叶上编译新完整 service 回归并实际6P0F/3.979秒，包含 encode→G2Wire→research dispatch→assessment 两正路径与缺原terminal/消费/素材/日期的负控。复用原owner Composition10P、Integration7P1既有F的事实；唯一旧F是历史raw closed-ledger token外空白被G2Wire先拒，baseline同失败，未trim原件或放宽G2Wire。未把该软件caller修复说成当前Native cause或Game因果已验。
+
+M6 assessment 组已普通 push/独立远端读回 `647c6eb24fe67ee6d47544ce4b48a9dd5af81d5d`。
+
+M0 保留原包的可移植回归已导入 local-service：三个 test-only Java 叶与21份原资源，无生产叶变更。直接复用 reader90 在最终 classloader 包上的严格 javac0、21P0F（2026-10-30T14:45:57Z—14:46:02Z），不重复绿色运行。20份 Native 软件 command_result 原字节只加 LE4，经真实 NativeGameTransport、已安装 reader、PlayerClaims、Root public binding/codec；5 available、1 typed unavailable/null、14 Native 原错误，permit 重用不重发。固定原 request ID 的 test permit、软件 HELLO/snapshot 和最终 Root callback 是明确测试 seam；不是随机 coordinator、Managed Root、物理 mailbox 或 Game 验收。默认 classloader 资源不依赖 D 路径、C++ 或服务，缺资源失败，已有 Surefire 默认测试命名负责持久入口，Maven 整合尚未执行。
+
+M1 ordinary 后继七叶初次 check/apply 均失败且未修改任何叶：其声明的 eb916 仅代表前一 private 包，实际 baseline 还包含 Z 中尚未发表的 public signed 角色前置和 RootSignedGiftConsumerTest。已将精确差异反馈原 owner，要求提供当前远端到最终候选的完整必要闭包和证据；未将 Z 状态追认为 Git 基线，未启动失败 patch 的候选构建。

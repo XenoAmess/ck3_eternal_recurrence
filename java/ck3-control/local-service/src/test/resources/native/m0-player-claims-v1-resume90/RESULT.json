@@ -1,0 +1,198 @@
+{
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc" : "2026-10-30T14:20:23.081091200Z",
+  "stage" : "D_SOFTWARE_FRAGMENT_VERIFIED_NO_PRODUCTION_DEFECT_FOUND",
+  "native_scenarios" : 20,
+  "native_checks" : 135,
+  "json_documents_parsed" : 20,
+  "available" : 5,
+  "unavailable" : 1,
+  "rejected" : 14,
+  "wires" : [ {
+    "path" : "wire02/completion_date_changed.json",
+    "bytes" : 147,
+    "sha256" : "50994133c7c677513337b4feaf93269aeb531424a0342a2591c7f0854b146c85"
+  }, {
+    "path" : "wire02/dead_actor.json",
+    "bytes" : 163,
+    "sha256" : "b698803ba8f935b55b58c2d587df2b68357f46962df4445e90be03bf5491c759"
+  }, {
+    "path" : "wire02/missing_previous.json",
+    "bytes" : 119,
+    "sha256" : "ba267d028d9a04678fba641cd46a52916735867ce3268f8a903ae0b1af891077"
+  }, {
+    "path" : "wire02/negative_title.json",
+    "bytes" : 159,
+    "sha256" : "16b7501941bd25231f6cbc5a79aa5d5b646806d5eb0187b44096be8d1ccdea41"
+  }, {
+    "path" : "wire02/negative_zero_title.json",
+    "bytes" : 159,
+    "sha256" : "16b7501941bd25231f6cbc5a79aa5d5b646806d5eb0187b44096be8d1ccdea41"
+  }, {
+    "path" : "wire02/not_paused.json",
+    "bytes" : 163,
+    "sha256" : "b698803ba8f935b55b58c2d587df2b68357f46962df4445e90be03bf5491c759"
+  }, {
+    "path" : "wire02/overflow_title.json",
+    "bytes" : 159,
+    "sha256" : "16b7501941bd25231f6cbc5a79aa5d5b646806d5eb0187b44096be8d1ccdea41"
+  }, {
+    "path" : "wire02/positive.json",
+    "bytes" : 741,
+    "sha256" : "4a16afccfb3a0697ac520c7252928aa816996fb17fbda3a0349fb7355645cf51"
+  }, {
+    "path" : "wire02/sentinel.json",
+    "bytes" : 163,
+    "sha256" : "b698803ba8f935b55b58c2d587df2b68357f46962df4445e90be03bf5491c759"
+  }, {
+    "path" : "wire02/signed80.json",
+    "bytes" : 747,
+    "sha256" : "92c3537a7f3eea72e8bbf0ef42a578a9af79f9baad04b32e977cc7fcc87a7838"
+  }, {
+    "path" : "wire02/signedff.json",
+    "bytes" : 745,
+    "sha256" : "e1cf4764709665a97161a37476b90ca7d5b14f92b13a4e26376f481f5b4e1609"
+  }, {
+    "path" : "wire02/source_actor_changed.json",
+    "bytes" : 140,
+    "sha256" : "bce121074ad1a15210236d6036bf7921ba22055e62ed8e477098c61aa3179e08"
+  }, {
+    "path" : "wire02/source_date_changed.json",
+    "bytes" : 140,
+    "sha256" : "bce121074ad1a15210236d6036bf7921ba22055e62ed8e477098c61aa3179e08"
+  }, {
+    "path" : "wire02/source_titles_changed.json",
+    "bytes" : 140,
+    "sha256" : "bce121074ad1a15210236d6036bf7921ba22055e62ed8e477098c61aa3179e08"
+  }, {
+    "path" : "wire02/stale_actor.json",
+    "bytes" : 163,
+    "sha256" : "b698803ba8f935b55b58c2d587df2b68357f46962df4445e90be03bf5491c759"
+  }, {
+    "path" : "wire02/stale_revision.json",
+    "bytes" : 119,
+    "sha256" : "ba267d028d9a04678fba641cd46a52916735867ce3268f8a903ae0b1af891077"
+  }, {
+    "path" : "wire02/typed_mailbox_unavailable.json",
+    "bytes" : 689,
+    "sha256" : "831d64a1707d0eef530bdd56968432004dd01a93a05023a48c951807aadc082a"
+  }, {
+    "path" : "wire02/wrong_descriptor.json",
+    "bytes" : 159,
+    "sha256" : "16b7501941bd25231f6cbc5a79aa5d5b646806d5eb0187b44096be8d1ccdea41"
+  }, {
+    "path" : "wire02/zero_actor.json",
+    "bytes" : 737,
+    "sha256" : "6c4d3211c0af4b6d7a3025feaa66bcb40bd6d0095eec34d1b217c09251df6ecb"
+  }, {
+    "path" : "wire02/zero_title.json",
+    "bytes" : 717,
+    "sha256" : "d7bc0b059fdc7b5b3c873c621ce2410c948d0820e6510a71b3d5ad12eb2150a3"
+  } ],
+  "full_tu_compile" : {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "begin_utc" : "2026-10-30T14:13:50.161139800Z",
+    "end_utc" : "2026-10-30T14:14:26.849380400Z",
+    "command_file" : "D:/ck3-state/resume90-m0-native/bridge-producer/compile-real.cmd",
+    "exit_code" : 0,
+    "wall_seconds" : 36.687248,
+    "compiler_parallelism" : 1,
+    "game_calls" : 0,
+    "live_native_calls" : 0,
+    "model_http_calls" : 0
+  },
+  "full_tu_link_failure" : {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "begin_utc" : "2026-10-30T14:14:36.589122300Z",
+    "end_utc" : "2026-10-30T14:14:45.097264Z",
+    "command_file" : "D:/ck3-state/resume90-m0-native/bridge-producer/link-real.cmd",
+    "exit_code" : 1120,
+    "wall_seconds" : 8.507604,
+    "compiler_parallelism" : 1,
+    "game_calls" : 0,
+    "live_native_calls" : 0,
+    "model_http_calls" : 0
+  },
+  "export_only_object_verification" : {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc" : "2026-10-30T14:15:49.260255Z",
+    "object" : "obj/real-bridge-noexports.obj",
+    "purpose" : "test-link object with exactly five /EXPORT directive tokens removed",
+    "object_bytes" : 28705848,
+    "export_tokens_removed" : 5,
+    "changed_bytes" : 144,
+    "all_changes_confined_to_exact_export_tokens" : true,
+    "all_other_object_bytes_identical" : true,
+    "code_sections_compared" : 25286,
+    "all_code_sections_identical" : true,
+    "concatenated_code_sha256" : "199dcb0487c2bc04b95d7e1fc9c7e7682a006c83e6de68f8fac29b57b475fa87"
+  },
+  "noexports_link_failure" : {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "begin_utc" : "2026-10-30T14:15:49.921725800Z",
+    "end_utc" : "2026-10-30T14:16:01.158431Z",
+    "command_file" : "D:/ck3-state/resume90-m0-native/bridge-producer/link-noexports.cmd",
+    "exit_code" : 1120,
+    "wall_seconds" : 11.235951,
+    "compiler_parallelism" : 1,
+    "game_calls" : 0,
+    "live_native_calls" : 0,
+    "model_http_calls" : 0
+  },
+  "projection_compile" : {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "begin_utc" : "2026-10-30T14:17:56.953813300Z",
+    "end_utc" : "2026-10-30T14:18:10.118406400Z",
+    "command_file" : "D:/ck3-state/resume90-m0-native/bridge-producer/compile-projection.cmd",
+    "exit_code" : 0,
+    "wall_seconds" : 13.164363,
+    "compiler_parallelism" : 1,
+    "game_calls" : 0,
+    "live_native_calls" : 0,
+    "model_http_calls" : 0
+  },
+  "projection_run" : {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "begin_utc" : "2026-10-30T14:18:27.612321700Z",
+    "end_utc" : "2026-10-30T14:18:28.599340500Z",
+    "command_file" : "D:/ck3-state/resume90-m0-native/bridge-producer/run-projection02.cmd",
+    "exit_code" : 0,
+    "wall_seconds" : 0.98695,
+    "compiler_parallelism" : 1,
+    "game_calls" : 0,
+    "live_native_calls" : 0,
+    "model_http_calls" : 0
+  },
+  "source_projection" : {
+    "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc" : "2026-10-30T14:19:23.928441300Z",
+    "current_source_functions_byte_identical" : true,
+    "bridge_functions" : [ {
+      "signature" : "void AppendJsonString(",
+      "start_line" : 2076,
+      "end_line" : 2092,
+      "sha256" : "512e805e3929ebc80c48679a0030913a7e05f02361a2f9f8144a21f371983e24"
+    }, {
+      "signature" : "std::string CommandResultFrame(",
+      "start_line" : 6085,
+      "end_line" : 6105,
+      "sha256" : "fbc3767d9e0964809b65113fe262ff5ad65950c00404204359e0294da92c8270"
+    }, {
+      "signature" : "std::string RunPlayerClaimsQueryV1(",
+      "start_line" : 14827,
+      "end_line" : 14888,
+      "sha256" : "7f84c9c5aa250e3427de0263c16ca894635283a60985d6c7b8004a60bcbd615e"
+    } ],
+    "actual_worker_state" : "full TU compiled but not linked; executed projection supplies exactly three consumed fields"
+  },
+  "scope" : "Current full Bridge TU compiled only. Executed exact projected function bodies for RunPlayerClaimsQueryV1, CommandResultFrame, AppendJsonString and actual revision parser; current production claims reader/serializer and existing resolver objects; owned-memory synthetic adapter/getter. Not full Bridge/pipe or WorkerAdapter/mailbox execution.",
+  "production_changes" : 0,
+  "shared_writes" : 0,
+  "game_calls" : 0,
+  "live_native_calls" : 0,
+  "dll_deployments" : 0,
+  "model_http_calls" : 0,
+  "retention_review_at_utc" : "2026-11-06T14:19:23Z",
+  "free_bytes_D_at_close" : "621164769280",
+  "owned_tree_bytes_before_result" : 61343107
+}
