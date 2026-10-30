@@ -61,6 +61,7 @@ def child_environment(build_dir: Path) -> dict[str, str]:
         "PYTHONUTF8": "1",
         "PYTHONIOENCODING": "utf-8",
         "VSLANG": "1033",
+        "VSCMD_SKIP_SENDTELEMETRY": "1",
     })
     return environment
 
