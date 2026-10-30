@@ -102,7 +102,7 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
             rememberWartimeReview(review, previous, result);
             return result;
         } catch (IllegalArgumentException invalid) {
-            clearWartimeReview(); return incomplete("family source/contract rejected: " + invalid.getMessage());
+            clearWartimeReview(); return new Stop(PlanningResult.StopReason.SOURCE_CONTRACT_REJECTED, "family source/contract rejected: " + invalid.getMessage());
         }
     }
     private Decision evaluateDocuments(PlanningRequest request, Draft previous, Documents docs, Optional<BigInteger> actualCandidate) {
@@ -359,7 +359,9 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
                     || !observed.operation().equals(query.operation()) || !observed.arguments().equals(submittedArguments)) throw new IllegalArgumentException("family read receipt crossed actual request");
             return new ObservedRead(known.value(), known.receipt(), known.originalReceipt());
         }
-        throw new MissingInput("native family read unavailable: " + query.operation().value());
+        if(result instanceof PlanningReadResult.Unavailable<Obj> unavailable)
+            throw new MissingInput("native family read unavailable: " + query.operation().value()+"; "+unavailable.reason());
+        throw new IllegalStateException("unrecognized family read result");
     }
     static Obj originalRef(ExactRef ref) { return obj("path", t(ref.path()), "bytes", n(ref.bytes()), "sha256", t(ref.sha256())); }
     Decision select(PlanningRequest request, Draft previous, String step, Obj args, Obj detail, String phase, String reason, Purpose purpose) {
@@ -439,6 +441,16 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
     static Obj warContext(Obj snapshot, Obj choice) {
         return obj("active_wars", snapshot.get("active_wars"), "treasury_observed", nil(snapshot.get("played_character_gold")),
                 "future_war_cash_reserve_raw", Nil.INSTANCE, "prospective_ally_war_obligation", t("unknown"), "proposal", choice);
+    }
+    /** Keeps a decoder rejection distinct while the optional M5 collector calls this policy. */
+    public static final class SourceContractFailure extends IllegalStateException {
+        private static final long serialVersionUID=1L;
+        private SourceContractFailure(Stop stopped){super(stopped.reason());}
+        public Stop stopped(){return new Stop(PlanningResult.StopReason.SOURCE_CONTRACT_REJECTED,getMessage());}
+    }
+    public static void propagateSourceContractFailure(Decision decision) {
+        if(decision instanceof Stop stopped&&stopped.stopReason()==PlanningResult.StopReason.SOURCE_CONTRACT_REJECTED)
+            throw new SourceContractFailure(stopped);
     }
     static Decision incomplete(String reason) { return new Stop(PlanningResult.StopReason.INCOMPLETE_PRODUCTION_CHAIN, reason); }
     private static Decision optionalMissing(PlanningRequest request, Draft previous, Documents docs, String reason) {

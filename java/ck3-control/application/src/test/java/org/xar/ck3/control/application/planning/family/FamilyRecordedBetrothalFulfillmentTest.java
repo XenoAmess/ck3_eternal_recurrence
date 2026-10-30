@@ -109,6 +109,7 @@ final class FamilyRecordedBetrothalFulfillmentTest {
     private static final class Fixture {
         private Obj relation = relationship();
         private boolean resultUnavailable;
+        private boolean relationUnavailable;
         private Optional<Obj> resultOverride = Optional.empty();
         private final List<Query> readQueries = new ArrayList<>();
         private final List<ActionCommand> commands = new ArrayList<>();
@@ -121,6 +122,8 @@ final class FamilyRecordedBetrothalFulfillmentTest {
                 projections.put(query, new ProjectedSource() {
                     @Override public ProjectedRead read(PlanningRequest actual, Obj arguments) {
                         readQueries.add(query);
+                        if(query==Query.CURRENT_RELATION&&relationUnavailable)
+                            return new ProjectedRead(arguments,new PlanningReadResult.Unavailable<>("software relation material still preparing",Optional.empty()));
                         if (query == Query.FAMILY_RESULT && resultUnavailable)
                             return new ProjectedRead(arguments, new PlanningReadResult.Unavailable<>("software unknown result", Optional.empty()));
                         Obj value = switch (query) {
@@ -273,6 +276,52 @@ final class FamilyRecordedBetrothalFulfillmentTest {
         assertInstanceOf(OrdinaryPolicy.Wait.class, f.policy.evaluate(request(snapshot()), baseline()));
         assertEquals(before, f.documents.family()); assertTrue(f.commands.isEmpty());
     }
+    @Test void malformedGenericCostsHaveAnExplicitSourceContractReason() {
+        Fixture malformed=new Fixture();Obj actionability=object(malformed.relation.get("betrothal_actionability"));
+        malformed.relation=malformed.relation.with("betrothal_actionability",actionability.with("generic_costs",
+                object(actionability.get("generic_costs")).with("gold_raw",new Bool(false))));
+        var rejected=assertInstanceOf(OrdinaryPolicy.Stop.class,malformed.policy.evaluate(request(snapshot()),baseline()));
+        assertEquals(PlanningResult.StopReason.SOURCE_CONTRACT_REJECTED,rejected.stopReason());
+        assertTrue(rejected.reason().contains("family source/contract rejected"));assertTrue(malformed.commands.isEmpty());
+    }
+    @Test void anUnavailableRelationPreservesTheActualReasonWithoutBecomingAContractFailure() {
+        Fixture unavailable=new Fixture();unavailable.relationUnavailable=true;
+        var deferred=assertInstanceOf(OrdinaryPolicy.Wait.class,unavailable.policy.evaluate(request(snapshot()),baseline()));
+        assertTrue(deferred.reason().contains("software relation material still preparing"));
+        assertTrue(unavailable.commands.isEmpty());
+    }
+    @Test void sourceContractFailureSurvivesTheOptionalM5CollectorAndThePublicWire() {
+        Fixture malformed=new Fixture();Obj actionability=object(malformed.relation.get("betrothal_actionability"));
+        malformed.relation=malformed.relation.with("betrothal_actionability",actionability.with("generic_costs",
+                object(actionability.get("generic_costs")).with("gold_raw",new Bool(false))));
+        OrdinaryPolicy.Decision decision=malformed.policy.evaluate(request(snapshot()),baseline());
+        var rejected=assertThrows(FamilyOrdinaryPolicy.SourceContractFailure.class,
+                ()->FamilyOrdinaryPolicy.propagateSourceContractFailure(decision));
+        var readAdapter=(org.xar.ck3.control.application.planning.military.MilitaryPlanningDecision.ApplicationAdapter)
+                (actual,previous,selected)->{throw new AssertionError("no replacement action is prepared for a rejected source");};
+        var sourceCollector=new org.xar.ck3.control.application.planning.military.M5PeacetimePolicy.SourceCollector(){
+            @Override public org.xar.ck3.control.application.planning.military.M5PeacetimePolicy.Prior prior(PlanningRequest actual,OrdinaryPolicy.Draft previous){throw rejected;}
+            @Override public org.xar.ck3.control.application.planning.military.M5PeacetimePolicy.Capture capture(PlanningRequest actual,OrdinaryPolicy.Draft previous,
+                    org.xar.ck3.control.application.planning.military.M5PeacetimePolicy.Prior prior){throw new AssertionError("source rejection cannot produce a capture");}
+        };
+        var m5=new org.xar.ck3.control.application.planning.military.M5PeacetimePolicy(SOURCE,
+                new org.xar.ck3.control.application.planning.military.M5PeacetimePolicy.Options(true,false,false),sourceCollector,
+                new org.xar.ck3.control.application.planning.military.M5PeacetimePolicy.Consumers(
+                    unusedPolicy(PlanningStage.CONSTRUCTION),unusedPolicy(PlanningStage.FACTION_GIFT),malformed.policy),readAdapter);
+        var forwarded=assertInstanceOf(OrdinaryPolicy.Stop.class,m5.evaluate(request(snapshot()),baseline()));
+        assertEquals(rejected.stopped(),forwarded);
+        var input=request(snapshot());var stopped=new PlanningResult.Stopped(input.before(),forwarded.stopReason(),forwarded.reason(),
+                new PlanTrace(input.before(),List.of(),Optional.empty()));
+        assertEquals(stopped,PlanningWire.decodeResult(PlanningWire.encodeResult(stopped)));
+        assertDoesNotThrow(()->FamilyOrdinaryPolicy.propagateSourceContractFailure(
+                new OrdinaryPolicy.Stop(PlanningResult.StopReason.INCOMPLETE_PRODUCTION_CHAIN,"ordinary input still pending")));
+        assertTrue(malformed.commands.isEmpty());
+    }
+    private static OrdinaryPolicy unusedPolicy(PlanningStage stage){return new OrdinaryPolicy(){
+        @Override public PlanningStage stage(){return stage;}
+        @Override public ExactRef implementationSource(){return SOURCE;}
+        @Override public Decision evaluate(PlanningRequest actual,Draft previous){throw new AssertionError("unrelated spending consumer is not called");}
+    };}
     @Test void fixedPairAdultLegalityAndUnknownReadsRetainTheirExistingGates() {
         Fixture minor = new Fixture(); Obj value = object(minor.relation.get("betrothal_actionability"));
         minor.relation = minor.relation.with("betrothal_actionability", value.with("heir_is_adult", new Bool(false))

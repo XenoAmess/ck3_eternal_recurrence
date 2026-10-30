@@ -220,6 +220,7 @@ public final class MilitaryPeacetimeRuntime implements M5PeacetimePolicy.SourceC
         if(result==null) {
             if(decision instanceof OrdinaryPolicy.Keep||decision instanceof OrdinaryPolicy.NotApplicable)
                 return new PeacetimeAssembly.Family("actual_consumer_retained_baseline",Optional.empty(),List.of());
+            org.xar.ck3.control.application.planning.family.FamilyOrdinaryPolicy.propagateSourceContractFailure(decision);
             throw new IllegalStateException("actual M5 family source requires its independent continuation: "+decision);
         }
         if(new Text(M5PeacetimePolicy.FAMILY).equals(result.detail().get("selected_step")))return M5FamilyCandidatePool.collect(result.detail()).family();

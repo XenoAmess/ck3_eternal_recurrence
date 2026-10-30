@@ -733,6 +733,36 @@ final class SessionControllerRegressionTest {
         assertEquals(terminal,actual.current());assertTrue(report.turns().isEmpty());assertEquals(1,fixture.completedReceipts.size());
         assertEquals(0,fixture.planningPublications);assertEquals(0,fixture.episodeCalls);assertEquals(0,report.committedSavedDays());
     }
+    @Test void anExplicitSourceContractFailureSurvivesCompletedScopeReadPublication() {
+        Fixture fixture=new Fixture(true);fixture.publishFirstScope=true;
+        fixture.plannerStopReason=PlanningResult.StopReason.SOURCE_CONTRACT_REJECTED;
+        BatchReport report=fixture.controller().runBatch(limits("contract-stop-scope-publication"));
+        assertEquals(BatchReport.Terminal.PLANNER_STOPPED,report.terminal(),report::detail);
+        assertTrue(report.detail().contains("SOURCE_CONTRACT_REJECTED: actual malformed relation material"));
+        assertEquals(1,fixture.scopeEntries);assertEquals(1,fixture.observed.get());
+        assertEquals(1,fixture.planningPublications);assertEquals(0,fixture.scopeDepth);
+        assertEquals(0,fixture.submitted.get());assertTrue(report.turns().isEmpty());
+        assertEquals(0,report.committedSavedDays());
+        assertEquals(JournalKind.BATCH_INTERRUPTED,fixture.journal.getLast().kind());
+    }
+    @Test void anExplicitSourceContractFailureSurvivesCompletedDomainPublication() {
+        Fixture fixture=new Fixture(true);fixture.publishFirstPlan=true;
+        fixture.plannerStopReason=PlanningResult.StopReason.SOURCE_CONTRACT_REJECTED;
+        BatchReport report=fixture.controller().runBatch(limits("contract-stop-domain-publication"));
+        assertEquals(BatchReport.Terminal.PLANNER_STOPPED,report.terminal(),report::detail);
+        assertEquals(1,fixture.scopeEntries);assertEquals(1,fixture.observed.get());
+        assertEquals(1,fixture.planningPublications);assertEquals(0,fixture.submitted.get());
+        assertTrue(report.turns().isEmpty());assertEquals(0,report.committedSavedDays());
+    }
+    @Test void ordinaryMissingInputStillReplansAfterItsReadPublication() {
+        Fixture fixture=new Fixture(true);fixture.publishFirstScope=true;
+        fixture.plannerStopReason=PlanningResult.StopReason.INCOMPLETE_PRODUCTION_CHAIN;
+        BatchReport report=fixture.controller().runBatch(limits("missing-input-scope-publication"));
+        assertEquals(BatchReport.Terminal.INCOMPLETE_MIGRATION,report.terminal(),report::detail);
+        assertEquals(2,fixture.scopeEntries);assertEquals(2,fixture.observed.get());
+        assertEquals(2,fixture.planningPublications);assertEquals(0,fixture.submitted.get());
+        assertTrue(report.turns().isEmpty());
+    }
     @Test void actualScopePublicationDiscardsTheWholeCapturedPlanAndReobservesBeforeAnyDispatch() {
         Fixture fixture=new Fixture(true);fixture.publishFirstScope=true;
         BatchReport report=fixture.controller().runBatch(limits("scope-publication"));
@@ -954,6 +984,7 @@ final class SessionControllerRegressionTest {
         final List<JournalInput> journal = new ArrayList<>(); final boolean completePlanner; boolean withBaseline = true; boolean reconcileExisting; boolean cycleAvailable = true;
         int planningPublications,episodeCalls,scopeEntries,scopeDepth;ActionCommand terminalOriginal,readParentOriginal;boolean blockPlanning,publishFirstPlan,publishFirstScope,failScopePublication,requireCheckpoint,readRefreshBeforeDispatch,readRefreshIssued,refreshHasParent;final List<ActionReceipt> completedReceipts=new ArrayList<>();
         int continuationCalls;
+        PlanningResult.StopReason plannerStopReason;
         boolean completePhysicalReadPublication;IOException afterPhysicalPublicationFailure;
         Duration planningDelay=Duration.ZERO,planningCompletionDelay=Duration.ZERO,planningScopeExitDelay=Duration.ZERO;
         java.util.function.BiFunction<SessionIdentity,Instant,Optional<PendingSuccessorUi>> pendingProbe=(owner,until)->Optional.empty();
@@ -1044,6 +1075,7 @@ final class SessionControllerRegressionTest {
                 @Override public Decision evaluate(PlanningRequest input, Draft previous) {
                     if (stage != PlanningStage.ORDINARY_CORE) return new Keep("test preserves preceding plan");
                     time.waitFor(planningDelay);
+                    if(plannerStopReason!=null)return new Stop(plannerStopReason,"actual malformed relation material");
                     if (reconcileExisting) return new ReconcileExisting("original-action", new OpportunityJson.Obj(Map.of()), "read original pending action only");
                     return new Replace(new Draft("fixture", "fixture", "fixture", Kind.ORDINARY, Optional.of(command(input)), Purpose.WORLD_ACTION, Optional.empty(), new OpportunityJson.Obj(Map.of())), "fixture actual action selection");
                 }

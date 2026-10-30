@@ -123,6 +123,7 @@ public final class M5PeacetimePolicy implements OrdinaryPolicy {
             M5FormalCollection.Collected collection=M5FormalCollection.collect(request.source(),snapshot,originalSources);
             return route(request,previous,baseline,capture.cash(),collection,rootUnavailable);
         }catch(org.xar.ck3.control.application.action.PreSubmissionRevisionMismatchException changed){throw changed;}
+        catch(FamilyOrdinaryPolicy.SourceContractFailure rejected){return rejected.stopped();}
         catch(IllegalArgumentException|IllegalStateException|java.io.UncheckedIOException unavailable){return blocked(previous,"M5 private proposal collection RED: "+unavailable.getMessage());}
     }
     private Decision route(PlanningRequest request,Draft previous,Obj baseline,ConstructionEconomyModel.QuoteCashObservation cash,

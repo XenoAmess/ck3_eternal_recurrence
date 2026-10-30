@@ -623,7 +623,10 @@ public final class SessionController {
                 }
                 if(pendingOnly)throw new End(Terminal.ACTION_REJECTED,"pending-only call cannot enter ordinary planning, terminal selection or SAVE");
                 var scoped=planningScope.inPlanningScope(()->run.planRound(checkpointsEnabled));
-                if(scoped.readPublication().isPresent()){run.replanAfterPublication();continue;} // The whole captured decision is invalidated.
+                if(scoped.readPublication().isPresent()){
+                    if(scoped.value() instanceof PlannedRound decided)run.requireNoSourceContractFailure(decided.planned());
+                    run.replanAfterPublication();continue;
+                } // Selected actions require a new frame; an explicit contract failure remains a failure.
                 PlanningRound round=scoped.value();
                 run.requireTime();
                 if(round instanceof TerminalRound terminal){run.terminalTurn(terminal.ready());continue;}
@@ -635,7 +638,7 @@ public final class SessionController {
                 PlannedRound decided=(PlannedRound)round;Ready ready=decided.ready();PlanningResult planned=decided.planned();
                 var publication=decided.disposition();
                 Objects.requireNonNull(publication,"actual planning completion disposition required");
-                if(publication instanceof OrdinaryPlanCompletion.Published){run.replanAfterPublication();continue;}
+                if(publication instanceof OrdinaryPlanCompletion.Published){run.requireNoSourceContractFailure(planned);run.replanAfterPublication();continue;}
                 if(publication instanceof OrdinaryPlanCompletion.Blocked blocked)throw new End(Terminal.INCOMPLETE_MIGRATION,"actual plan publication blocked: "+blocked.reason());
                 if(publication instanceof OrdinaryPlanCompletion.CheckpointRequired required){
                     ActionReceipt focus=required.original();
@@ -912,6 +915,11 @@ public final class SessionController {
                     "actual successor UI finalization requires its committed CONTINUE proof");
             completeCycle(actual.parent());
             quarantined=false;localUnresolved=false; // completeCycle used the actual same-Game EpisodeContinuation; no day or SAVE credit is inferred.
+        }
+        void requireNoSourceContractFailure(PlanningResult planned) {
+            if(planned instanceof PlanningResult.Stopped stopped
+                    &&stopped.reason()==PlanningResult.StopReason.SOURCE_CONTRACT_REJECTED)
+                throw new End(Terminal.PLANNER_STOPPED,stopped.reason()+": "+stopped.detail());
         }
         void replanAfterPublication(){if(++currentTurnReadReplans>128)throw new End(Terminal.PLANNER_STOPPED,"finite actual publication replan bound reached before dispatch");}
         void reconcileReadParent(PendingReadParent original) throws IOException,InterruptedException {
