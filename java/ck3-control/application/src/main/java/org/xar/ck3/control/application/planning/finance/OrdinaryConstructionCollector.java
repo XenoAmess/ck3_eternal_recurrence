@@ -163,7 +163,7 @@ public final class OrdinaryConstructionCollector {
                     "peaceful M5 source requires the actual paused idle map with no active war or player army");
             var nativeRead = finance.query(session, FinanceReadContracts.Query.CONSTRUCTION, request);
             if (!(nativeRead instanceof OrdinaryFinanceCollector.Known<FinanceReadContracts.Packet> known))
-                return new PeacetimeMissing("registered actual construction query unavailable");
+                return new PeacetimeMissing("registered actual construction query unavailable: " + ((OrdinaryFinanceCollector.Unavailable<?>) nativeRead).missing().reason());
             stableReceipt(request, known.value().receipt());
             Obj current = ending.readCurrent(session, request); requireStableSnapshot(request, current);
             Obj input = obj("schema", new Text(ConstructionQueryCodec.SCHEMA), "starting_snapshot", request.observations().snapshot(),

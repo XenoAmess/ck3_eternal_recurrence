@@ -78,7 +78,7 @@ public final class MilitaryPeacetimeRuntime implements M5PeacetimePolicy.SourceC
             // Compose now, while these exact original bodies and current writer are still held.
             PeacetimeAssembly.compose(actual);
             return new M5PeacetimePolicy.Capture(actual,build.cash(),Optional.empty());
-        });}catch(IOException unavailable){throw new UncheckedIOException("actual M5 proposal sources unavailable",unavailable);}
+        });}catch(IOException unavailable){throw new UncheckedIOException("actual M5 proposal sources unavailable: " + unavailable.getMessage(),unavailable);}
     }
     private PeacetimeAssembly.Ledgers ledgers(Session same,PlanningRequest request,Obj actualConstruction) {
         var state=context.finance().collector().state(same,request);

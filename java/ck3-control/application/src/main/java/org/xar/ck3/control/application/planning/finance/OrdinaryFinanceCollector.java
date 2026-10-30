@@ -98,7 +98,7 @@ public final class OrdinaryFinanceCollector {
         PlanningReadResult<FinanceReadContracts.Packet> value = session.isPresent()
                 ? definitions.read(session.orElseThrow(), query, reads, request) : definitions.read(query, reads, request);
         if (value instanceof PlanningReadResult.Known<FinanceReadContracts.Packet> known) return new Known<>(known.value());
-        return missing("registered current Native read unavailable: " + query.name());
+        return missing("registered current Native read unavailable: " + query.name() + "; reason: " + ((PlanningReadResult.Unavailable<?>) value).reason());
     }
     public FinanceStatePort.Result state(PlanningRequest request) {
         var session=borrowedSession();
