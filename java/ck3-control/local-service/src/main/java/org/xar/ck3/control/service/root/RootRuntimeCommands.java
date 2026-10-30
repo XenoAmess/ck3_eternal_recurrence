@@ -47,7 +47,7 @@ public final class RootRuntimeCommands implements MilitaryPlanningDecision.Comma
     private final ArmyOrdinaryActionService army;
     private final LifeAdvanceCommands life;
     private final CommanderBindings commander;
-    private record Held(PlanningRequest request, OperationKey operation, Obj originalArguments, Obj originalPlan,
+    record Held(PlanningRequest request, OperationKey operation, Obj originalArguments, Obj originalPlan,
             ActionCommand command, Optional<ActionCommand> originalProposal, Optional<CampaignDeadline.Cap> deadlineCap) { }
     private final Map<String, Held> prepared = new LinkedHashMap<>();
     private final Map<String, RootSaveCheckpointCommandProducer.Prepared> checkpointPrepared = new LinkedHashMap<>();
@@ -146,7 +146,7 @@ public final class RootRuntimeCommands implements MilitaryPlanningDecision.Comma
             return context.withSession(same -> {
                 requireRequest(request);
                 requireNewAction(same, proposed.actionId(), proposed.operation());
-                Held held = held(proposed.actionId());
+                Held held = held(proposed.actionId(), request);
                 if (held != null) {
                     StrictJson.require(held.request() == request && held.operation().equals(proposed.operation())
                             && (held.command().equals(proposed) || held.originalProposal().filter(proposed::equals).isPresent()),
@@ -184,7 +184,7 @@ public final class RootRuntimeCommands implements MilitaryPlanningDecision.Comma
             return context.withSession(same -> {
                 requireRequest(request);
                 requireNewAction(same, actionId, selection.operation());
-                Held held = held(actionId);
+                Held held = held(actionId, request);
                 if (held != null) {
                     StrictJson.require(held.request() == request && held.operation().equals(selection.operation())
                             && held.originalArguments().equals(selection.arguments()) && held.originalPlan().equals(selection.detail())
@@ -202,6 +202,16 @@ public final class RootRuntimeCommands implements MilitaryPlanningDecision.Comma
     }
 
     private synchronized Held held(String actionId) { return prepared.get(actionId); }
+    private synchronized Held held(String actionId, PlanningRequest request) {
+        return currentHeld(actionId, request, prepared, checkpointPrepared);
+    }
+    static Held currentHeld(String actionId, PlanningRequest request, Map<String, Held> prepared,
+            Map<String, RootSaveCheckpointCommandProducer.Prepared> checkpoints) {
+        // An equal frame may start a new planning round. Only the actual request owns temporary preparations.
+        prepared.entrySet().removeIf(row -> row.getValue().request() != request);
+        checkpoints.entrySet().removeIf(row -> row.getValue().original() != request);
+        return prepared.get(actionId);
+    }
     private synchronized RootSaveCheckpointCommandProducer.Prepared checkpoint(String actionId) {
         var actual=checkpointPrepared.get(actionId);
         StrictJson.require(actual!=null,"original typed checkpoint preparation is unavailable");return actual;

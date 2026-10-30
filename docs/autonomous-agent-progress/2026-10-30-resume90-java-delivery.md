@@ -136,4 +136,8 @@ GiftPendingFramePolicy 的必要两处角色合同同步采用：public Frame ac
 
 Root 独立完成的 M4 offline study 修正已按最小 patch 审阅采用：十cost投影 [0,1,2,4,5,6,8,9] 对八个实际context预算，正cost严格小于budget，非正cost跳过。当前完整研究类严格 javac0/1.774秒；复用 Root 相同完整类 baseline4P2F→6P0F。86行 corpus 来自原335B函数内186B投影/比较尾部实执行，37过/49拒；旧budget补两零仍13/86不同的负控排除仅长度报错。原前置gates/cost producer/Context预算构造和Game未执行，不把该离线模型接成runtime规则。
 
+2026-10-30T16:30Z，machine_id: `xenoamess-full-tower-eb9d2c1186`。接续 Native 已发表 4277932 的基线，最小采用当前规划请求缓存及撤退 held-frame 两生产叶、两个持久回归叶。RootRuntimeCommands 只清理不属于实际 PlanningRequest 对象的临时准备/检查点；持久 intent、UNKNOWN、requireNewAction 和同请求参数/计划检查不变。OrdinaryRetreatRuntime 在 collector.currentPlanning 的已持帧内读取实际 domain，避免额外取帧漂移；私有异常补 serialVersionUID。候选 CRLF patch 首次 apply-check1 未写入，改用已审当前 Git→锁定候选 LF diff 后各 apply-check/apply0，没有整叶覆盖。
+
+本岗当前两完整生产类编译分别0/3.686秒、0/3.287秒；后者仅排除既存 CommandUnavailable.operation 的 serial lint，未改无关字段。ActionWriterIntegrationFixture 当前完整 SHA 7670d6af… 精确等于已验证夹具。两个测试原样接入 local-service 默认 Surefire，复用 wiring 的 cache2P 和 retreat 三新方法所在4P组，未为包装重复绿色测试；不把它们说成一次6P或完整 RootRuntimeContext/直接 runtime.read 验收。来源为 wiring/request-cache 与 regression/{request-cache-durable,retreat-held-durable}。运行岗已采用的真实 worker 后态由 runtime90 独立报告，本次无 Game/Native/模型请求。
+
 交付源、测试、86原尾部CSV、原字节来源JSON与专用研究doc五叶，旧actor月门/interval/抽签逻辑保持。此研究类仍无runtime调用者，Root不要求S/MB/当前worker采用，未重跑已绿6项。原M4 scope核对和后继实际研究修正分开保留。

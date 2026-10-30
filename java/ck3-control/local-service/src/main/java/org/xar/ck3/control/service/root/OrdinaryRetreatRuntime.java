@@ -26,7 +26,8 @@ public final class OrdinaryRetreatRuntime implements OrdinaryActiveRetreatPolicy
         service=Objects.requireNonNull(actualService);frames=Objects.requireNonNull(actualFrames);
     }
     @Override public OrdinaryActiveRetreatPolicy.DomainRead read(PlanningRequest request) {
-        try {return locked(request,session->{current(request);return new OrdinaryActiveRetreatPolicy.KnownDomain(request.before(),domain.read(session).state());});}
+        try {return locked(request,session->runtime.collector().currentPlanning(session,request,request.deadline(),
+                (original,lease)->new OrdinaryActiveRetreatPolicy.KnownDomain(original.before(),domain.read(session).state())));}
         catch(IOException|IllegalArgumentException failure){return new OrdinaryActiveRetreatPolicy.UnavailableDomain(failure.getMessage());}
         catch(InterruptedException interrupted){Thread.currentThread().interrupt();return new OrdinaryActiveRetreatPolicy.UnavailableDomain("current retreat domain observation interrupted");}
     }
@@ -70,5 +71,8 @@ public final class OrdinaryRetreatRuntime implements OrdinaryActiveRetreatPolicy
         catch(InterruptedIo interrupted){throw (InterruptedException)interrupted.getCause();}
     }
     private static String message(Exception failure){return failure.getMessage()==null?failure.getClass().getSimpleName():failure.getMessage();}
-    private static final class InterruptedIo extends IOException {InterruptedIo(InterruptedException cause){super(cause);}}
+    private static final class InterruptedIo extends IOException {
+        private static final long serialVersionUID=1L;
+        InterruptedIo(InterruptedException cause){super(cause);}
+    }
 }
