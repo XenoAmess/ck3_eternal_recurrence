@@ -6,7 +6,8 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。
 
 ## 当前有限验证与本地模型任务
 
-- 原 `java-json-fixture` 模型响应实际编译失败：静态方法调用 `getClass()`，以及非法 `List<byte>`。以当前 `D:/r64d` 的真实 `NativeWire.java` 和候选单测试同编，未读 MB/旧 overlay。exit1/1605ms，原始诊断位于 `D:/ck3-state/resume91-java-delivery/java-json-fixture/attempt1/compile.log`。第二个实际模型纠错已移除 `List<byte>`、采用 try-with-resources/readAllBytes，但遗漏 `InputStream` import 且仍静态调用 `getClass()`，strict javac exit1/1453ms/3errors；classloader 前导 `/` 仍不匹配其选用的 ClassLoader API。第二候选的两个 Java 字面量已逐字符核对正确；此前把外层 JSON 转义误当源码错误的审阅判断已明确撤回。两次失败候选均未采用，已进一步缩为 helper/import 与常量四槽任务。
+- 原 `java-json-fixture` 模型响应实际编译失败：静态方法调用 `getClass()`，以及非法 `List<byte>`。以当前 `D:/r64d` 的真实 `NativeWire.java` 和候选单测试同编，未读 MB/旧 overlay。exit1/1605ms，原始诊断位于 `D:/ck3-state/resume91-java-delivery/java-json-fixture/attempt1/compile.log`。第二个实际模型纠错已移除 `List<byte>`、采用 try-with-resources/readAllBytes，但遗漏 `InputStream` import 且仍静态调用 `getClass()`，strict javac exit1/1453ms/3errors；classloader 前导 `/` 仍不匹配其选用的 ClassLoader API。第二候选的两个 Java 字面量已逐字符核对正确；此前把外层 JSON 转义误当源码错误的审阅判断已明确撤回。两次失败候选均未采用。
+- 第三项真实需求缩为 helper/import/两常量四槽：`java-json-narrow-slots03` 首次HTTP完整 stop/4.306s、1326输入+223输出token。原样四槽机械装配到第二候选，owner未改Java语义；按Native明确单槽取得后，strict真实NativeWire+测试2源 exit0/1245ms，两JUnit2P/0skip、进程0/1210ms。回执 `D:/ck3-state/resume91-java-delivery/java-json-fixture/attempt3`。测试及两canonical原golden共3叶正常发表 `eb406589f0`，Native正式fixture继续消费同字节；旧错误原件未覆盖。上下文/输出规模和任务难度均改变，不从这三个不同请求推断缓存收益或通用能力上限。
 - Focus/Entry/Opening 仍是 D-only Win32 软件 peer 制作，不使用实际 Game 或旧 Game42 票。当前插入 FocusPeer 后的源码首轮缺显式测试 helper，第二轮仅 helper 的既有 try lint 警告；显式编现有 `StorageWriteGuardTestSupport`，排除 D90 全部旧 overlays，第三轮 `-Xlint:all,-try -Werror` exit0/6021ms。路径 `D:/ck3-state/resume90-java-delivery/life-entry-opening/resume91-compile03`。这只证明当前源码可编译；完整 `completeSameOwnerFocusOpeningFromActualPeer` 方法仍未实现，未执行 fixture，未完成 Focus/Opening。
 - 原 Focus 两任务此前从未 POST。本轮两项各经首轮连接重置/部分流保留后，在 attempt2 完整 stop。samepeer 输出只复述任务，缺完整 Java 方法，拒绝；material 输出实际声明可对应的接口草案，但漏 authority/journal 与 installed action/replay 对象同一性、完整 Driver facts/原 effect basis 和 producer closure，未采用/未编。最初误将实际存在的 Binding/FrameLoader/Original getters 记为 API 发明的源审判断已逐声明纠正，不能计为模型 API 失败。完整连续性装配仍由 owner 负责，后继只把真实独立小 helper 交模型。原件位于 `D:/ck3-state/model-dispatch91/java-focus-{samepeer-method,material-adapter}`；没有 Focus COMPLETE 或行为验收。
 
@@ -26,4 +27,8 @@ M1 Surrender 增量随后在 Native M1 `e2818cf865` 之后发表为 `f46dd8f3cc`
 
 Root docs01 的6叶独立提交 `7d30b58e67` 已正常发表：3个新文档及 AGENTS/README/W44 各自标题后精确插入新段，不覆盖 Z 历史 dirty；首次 push 连接 reset 保留，正常重试成功。
 
-历史 runtime material12 已只读确认现 `D:/r64d` apply-check0，尚未采用；restart/intake/ranking/episode 等仍按原交接的准确 manifest 链审阅，不能因本岗新 P0 两行发表便称正式 D 已包含全部运行修复。后继反向同步只接精确最小 diff，不整叶覆盖 S 或 Z。
+历史 runtime material12 已按 `SOURCE-ADOPTED.json` 和 LF 派生最小 patch 采用12生产叶，并复制 `regression/material100-durable/FILES.json` 对应3个标准JUnit源。closed v4 retained material 只在真实 live Coordinator 成功ACK/guards之后捕获一次，v1-v3构造兼容保留，pureReplay只读不可变CAS。新枚举/record公共合同的全部实际消费者已查阅，没有遗漏的穷举switch。当前D12显式生产源首次strict all/Werror编译只因未改的 Store try-resource warning失败（8.090s）；经Native明确重新授槽后，仅对该既有lint类使用 all,-try/Werror，第二次exit0/3.382s；两次原日志/argfile独立保留于 `D:/ck3-state/resume91-java-delivery/material12-compile`。没有重跑旧绿色方法或运行Maven。旧行为证据仍是archive首2P1F→只修该失败1P、capture1P、pureReplay1P各组，不能合称一次5P；标准CI的完整执行另待安排。
+
+Root docs02 15页小快照已比较，14变化、与本岗当前逐字相同的一页跳过；独立docs提交 `9ea537867d` 正常发表，未夹带待编源码。新页保持各owner的观察时点，不外推当前Game后态。
+
+restart/intake/ranking/episode 等仍按原交接的准确 manifest 链审阅，不能因 material12 或新 P0 两行发表便称正式 D 已包含全部运行修复。后继反向同步只接精确最小 diff，不整叶覆盖 S 或 Z。

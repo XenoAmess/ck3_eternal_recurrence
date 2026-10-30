@@ -96,6 +96,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     private static final String READ_SCHEMA = "xar.planning-read-archive/v1";
     private static final String READ_WITH_ADOPTION_SCHEMA = "xar.planning-read-archive/v2";
     private static final String PHYSICAL_STATUS_READ_SCHEMA = "xar.planning-read-archive/v3";
+    private static final String RETAINED_MATERIAL_READ_SCHEMA = "xar.planning-read-archive/v4";
     private final ImmutableArtifactStore artifacts;
     private final ContinuityWriter sameWriter;
     private final NativeOutcomeArchive owner;
@@ -674,7 +675,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             Objects.requireNonNull(original);
             return switch (original.archiveVersion()) {
                 case HISTORICAL_V1 -> reference(readBytes(original, false), META_LIMIT);
-                case CURRENT_V2, PHYSICAL_STATUS_V3 -> publish(readBytes(original, true), META_LIMIT);
+                case CURRENT_V2, PHYSICAL_STATUS_V3, RETAINED_MATERIAL_V4 -> publish(readBytes(original, true), META_LIMIT);
             };
         }));
     }
@@ -687,8 +688,9 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         if (historical && (preserve || original.adoption().isPresent()))
             throw new IOException("historical v1 reads cannot publish new originals or carry adoption");
         boolean physical = original.archiveVersion() == PlanningReadReceipt.ArchiveVersion.PHYSICAL_STATUS_V3;
+        boolean material = original.archiveVersion() == PlanningReadReceipt.ArchiveVersion.RETAINED_MATERIAL_V4;
         ObjectNode row = StrictJson.object(); row.put("schema", historical ? READ_SCHEMA
-                : physical ? PHYSICAL_STATUS_READ_SCHEMA : READ_WITH_ADOPTION_SCHEMA);
+                : physical ? PHYSICAL_STATUS_READ_SCHEMA : material ? RETAINED_MATERIAL_READ_SCHEMA : READ_WITH_ADOPTION_SCHEMA);
         row.put("contract_id", original.contractId()); row.put("request_id", original.requestId());
         row.set("request", planningRequest(original.request(), preserve));
         row.set("before", CommandOriginCodec.planningGuard(original.before())); row.set("after", CommandOriginCodec.planningGuard(original.after()));
@@ -696,6 +698,11 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         if (!historical && !physical) {
             if (original.adoption().isPresent()) row.set("adoption", adoption(original.adoption().orElseThrow(), preserve));
             else row.putNull("adoption");
+        }
+        if (material) {
+            PlanningReadReceipt.RetainedMaterial retained = original.retainedMaterial().orElseThrow();
+            ObjectNode attachment = StrictJson.object(); attachment.put("kind", retained.kind().name());
+            attachment.set("original", retained.original().toJson()); row.set("retained_material", attachment);
         }
         return encoded(row);
     }
@@ -992,6 +999,9 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         return bytes;
     }
     private void verifyReadOriginals(PlanningReadReceipt original) throws IOException {
+        // The actual live decoder preserved this source-owned material before publishing the
+        // READ. Reopening follows that retained Ref; it never consults a current export path.
+        if (original.retainedMaterial().isPresent()) loadMaterial(original.retainedMaterial().orElseThrow().original());
         if (original.adoption().isPresent()) {
             PlanningReadAdoption adopted = original.adoption().orElseThrow(); adopted.requireReceipt(original);
             ContinuityStorePort.Session same = activeSession();

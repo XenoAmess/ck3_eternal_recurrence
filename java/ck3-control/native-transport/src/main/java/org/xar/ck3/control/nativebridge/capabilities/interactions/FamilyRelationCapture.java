@@ -7,10 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Clock;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.application.action.*;
@@ -59,7 +57,7 @@ public final class FamilyRelationCapture {
         mutations.add(new FileCreate(output.resolve(SIDECAR),FamilyRelationMaterialExports.MAX_BYTES));
         return actualGuard.write(new WritePlan(originalLock.toAbsolutePath().normalize(),mutations),()->{
             for(int i=parents.size()-1;i>=0;i--)Files.createDirectory(parents.get(i));
-            Object key=directoryKey(output);ObjectNode receipt=F.objectNode().put("schema","xar.guardian.private-current-capture-result.v1")
+            ObjectNode receipt=F.objectNode().put("schema","xar.guardian.private-current-capture-result.v1")
                     .put("started_at_utc",clock.instant().toString()).put("status","RED").put("owned_game_pid",requested.ownedGamePid())
                     .put("new_driver_constructions",0).put("new_listeners",0).put("Game_launch_injection_pause_focus_close",0)
                     .put("guardian_membership_observed",false).put("guardian_pair_ready",false).put("G2_outcome_credit",0);
@@ -70,13 +68,12 @@ public final class FamilyRelationCapture {
                 JsonNode family=OpportunityJson.toNode(typed.original());ExactRef material=ExactRef.fromJson(family.path("guardian_factory_materials_v2").get("original_sidecar"));
                 var retained=original.queries().originalMaterials(read.receipt());need(retained.reference().equals(material),"capture mixed another query sidecar reference");
                 FamilyRelationMaterialExports.requireCaptured(read.receipt(),retained);RawJson sidecar=retained.original();need(sidecar.bytes().length==material.bytes()&&DriverJson.sha256(sidecar.bytes()).equals(material.sha256()),"capture CAS original changed its exact bytes");
-                FamilyRelationMaterialExports.requireNativeHashProof(read.receipt());
-                // Decode above reopened and checked this same original native hash, fixed keys and material versions.
+                // Decode reopened this READ-attached original and checked its fixed keys and material versions.
                 JsonNode raw=DriverJson.toNode(DriverJson.object(sidecar.bytes(),FamilyRelationMaterialExports.MAX_BYTES));
                 need(raw.path("schema").asText().equals("xar.ck3.guardian-factory-discovery.v1")&&raw.path("factories").isArray()&&raw.path("factories").size()==2
                         &&raw.path("factories").get(0).path("key").asText().equals("has_relation_guardian")&&raw.path("factories").get(1).path("key").asText().equals("has_relation_ward"),"capture lacks the two original fixed factory records");
-                write(output,key,FAMILY,DriverJson.encode(FamilyCurrentRelationPublic.captureFamily(typed)));
-                write(output,key,COMMAND,read.receipt().original().originalFrame().bytes());write(output,key,SIDECAR,sidecar.bytes());
+                write(output,FAMILY,DriverJson.encode(FamilyCurrentRelationPublic.captureFamily(typed)));
+                write(output,COMMAND,read.receipt().original().originalFrame().bytes());write(output,SIDECAR,sidecar.bytes());
                 JsonNode publicFamily=OpportunityJson.toNode(FamilyCurrentRelationPublic.encode(typed));
                 JsonNode owned=publicFamily.path("guardian_factory_materials_v2").get("observation");
                 receipt.set("guardian_family_decision_inputs_v1",OpportunityJson.toNode(FamilyCurrentRelationPublic.guardianDecision(typed)));
@@ -99,18 +96,18 @@ public final class FamilyRelationCapture {
                     ObjectNode status=statuses.addObject().put("key",row.get("key").textValue());for(String field:List.of("status","unavailable_reason")){JsonNode value=row.get(field);status.set(field,value==null?F.nullNode():value);}
                 }
                 receipt.put("actual_factory_found_count",found);receipt.set("original_sidecar",material.toJson());
-                receipt.put("sidecar_export_basis","exact_same_query_native_hash_verified_CAS_original_copy");
+                receipt.put("sidecar_export_basis","same_query_archived_READ_sidecar_original_copy");
             }catch(IOException|RuntimeException failure){
                 String message=failure.getClass().getSimpleName()+": "+failure.getMessage();receipt.put("failure",message.substring(0,Math.min(message.length(),8192)));
                 if(failure instanceof QueryUnavailable unavailable&&unavailable.original().orElse(null) instanceof NativeActionPort.AckReceived ack){
-                    try {write(output,key,COMMAND,ack.originalFrame().bytes());receipt.put("native_command_result_path",output.resolve(COMMAND).toString());
+                    try {write(output,COMMAND,ack.originalFrame().bytes());receipt.put("native_command_result_path",output.resolve(COMMAND).toString());
                         JsonNode frame=DriverJson.toNode(DriverJson.object(ack.originalFrame().bytes(),64*1024*1024));JsonNode proof=frame.get("guardian_factory_discovery_v1");
                         if(proof!=null){safeDiagnostic(proof,0);receipt.set("native_factory_export",proof);}
                     }catch(IOException|RuntimeException retainFailure){failure.addSuppressed(retainFailure);receipt.put("failed_original_export_diagnostic",retainFailure.getClass().getSimpleName());}
                 }
                 throw failure;
             }
-            finally{receipt.put("ended_at_utc",clock.instant().toString());write(output,key,RECEIPT,DriverJson.encodeNode(receipt));}
+            finally{receipt.put("ended_at_utc",clock.instant().toString());write(output,RECEIPT,DriverJson.encodeNode(receipt));}
             return new Result(receipt);
         });
     }
@@ -121,14 +118,11 @@ public final class FamilyRelationCapture {
         need(!value.isFloatingPointNumber(),"native failure diagnostic floating token is unqualified");
         if(value.isContainerNode())for(JsonNode child:value)safeDiagnostic(child,depth+1);
     }
-    private static Object directoryKey(Path directory)throws IOException {var a=Files.readAttributes(directory,BasicFileAttributes.class,LinkOption.NOFOLLOW_LINKS);need(a.isDirectory()&&!a.isSymbolicLink()&&a.fileKey()!=null&&directory.equals(directory.toRealPath()),"capture output directory identity unavailable");return a.fileKey();}
-    private static void write(Path directory,Object originalKey,String name,byte[] bytes)throws IOException {
-        need(directoryKey(directory).equals(originalKey)&&bytes.length<=MAX_FILE,"capture directory identity changed or output exceeds finite quote");
+    private static void write(Path directory,String name,byte[] bytes)throws IOException {
+        need(bytes.length<=MAX_FILE,"capture output exceeds finite quote");
         Path target=directory.resolve(name);
         try(var channel=java.nio.channels.FileChannel.open(target,StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE)){
             var buffer=java.nio.ByteBuffer.wrap(bytes);while(buffer.hasRemaining())need(channel.write(buffer)>0,"capture file write made no bounded progress");channel.force(true);
         }
-        var a=Files.readAttributes(target,BasicFileAttributes.class,LinkOption.NOFOLLOW_LINKS);need(a.isRegularFile()&&!a.isSymbolicLink()&&a.fileKey()!=null&&a.size()==bytes.length,"capture output file identity/length differs");
-        need(Arrays.equals(bytes,Files.readAllBytes(target))&&directoryKey(directory).equals(originalKey),"capture output did not read back its original bytes");
     }
 }

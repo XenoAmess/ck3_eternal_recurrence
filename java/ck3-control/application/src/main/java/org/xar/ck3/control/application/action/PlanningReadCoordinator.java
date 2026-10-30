@@ -337,7 +337,8 @@ public final class PlanningReadCoordinator implements PlanningReadPort {
                     return new PlanningReadAttempt<>(unavailable(locked,contract,request,"native query returned unavailable or an unbound ACK",
                             Optional.ofNullable(original),observer,attempted,Optional.empty(),observedAfter), ticket);
                 StrictJson.require(after != null, "actual successful READ after guard is absent");
-                PlanningReadReceipt receipt = new PlanningReadReceipt(request, contract.contractId(), requestId, before, after, ack);
+                PlanningReadReceipt receipt = contract.captureRetainedMaterial(
+                        new PlanningReadReceipt(request, contract.contractId(), requestId, before, after, ack));
                 T decoded;
                 try { decoded = contract.decode(receipt); }
                 catch (RuntimeException failure) {

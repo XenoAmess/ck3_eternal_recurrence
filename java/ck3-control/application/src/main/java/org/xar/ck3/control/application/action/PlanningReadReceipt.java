@@ -2,19 +2,34 @@ package org.xar.ck3.control.application.action;
 
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Retains the original native read; only the registered domain decoder may interpret its proof. */
 public record PlanningReadReceipt(PlanningReadRequest request, String contractId, String requestId,
         PlanningReadGuard before, PlanningReadGuard after, NativeActionPort.AckReceived original,
-        Optional<PlanningReadAdoption> adoption, ArchiveVersion archiveVersion) {
+        Optional<PlanningReadAdoption> adoption, ArchiveVersion archiveVersion, Optional<RetainedMaterial> retainedMaterial) {
     /** Original storage version is explicit DATA so strict historical locators never drift to v2. */
-    public enum ArchiveVersion { HISTORICAL_V1, CURRENT_V2, PHYSICAL_STATUS_V3 }
+    public enum ArchiveVersion { HISTORICAL_V1, CURRENT_V2, PHYSICAL_STATUS_V3, RETAINED_MATERIAL_V4 }
+    /** The one source-owned immutable export retained after the actual successful query. It grants no current authority. */
+    public record RetainedMaterial(Kind kind, ExactRef original) {
+        public enum Kind { FAMILY_RELATION_EXPORT }
+        public RetainedMaterial {
+            Objects.requireNonNull(kind);Objects.requireNonNull(original);
+            StrictJson.require(original.bytes()>0&&java.nio.file.Path.of(original.path()).isAbsolute(),
+                    "retained query material requires its nonempty immutable original reference");
+        }
+    }
     public PlanningReadReceipt {
         Objects.requireNonNull(request); StrictJson.text(contractId); StrictJson.text(requestId);
         Objects.requireNonNull(before); Objects.requireNonNull(after); Objects.requireNonNull(original);
         adoption = Objects.requireNonNull(adoption);
         Objects.requireNonNull(archiveVersion);
+        retainedMaterial=Objects.requireNonNull(retainedMaterial);
+        StrictJson.require(retainedMaterial.isPresent()==(archiveVersion==ArchiveVersion.RETAINED_MATERIAL_V4),
+                "retained query material requires its exact v4 archive version");
+        StrictJson.require(retainedMaterial.isEmpty()||request.origin() instanceof CommandOrigin.Gameplay&&adoption.isEmpty(),
+                "retained query material belongs to its original ordinary query, never a late-read or physical-status substitute");
         boolean physical = request.origin() instanceof CommandOrigin.PhysicalStatusOnly;
         StrictJson.require(physical == (archiveVersion == ArchiveVersion.PHYSICAL_STATUS_V3),
                 "physical status requires its exact v3 read receipt and cannot alias historical or ordinary reads");
@@ -37,6 +52,19 @@ public record PlanningReadReceipt(PlanningReadRequest request, String contractId
                 && request.operation().equals(before.binding().operation()) && request.operation().equals(after.binding().operation()), "query receipt binding drift");
         StrictJson.require(before.binding().connectionGeneration().equals(after.binding().connectionGeneration())
                 && before.binding().authorityId().equals(after.binding().authorityId()), "query receipt crossed native connection or installed authority");
+    }
+    /** Existing v1-v3 storage callers retain their original shape and constructor. */
+    public PlanningReadReceipt(PlanningReadRequest request,String contractId,String requestId,
+            PlanningReadGuard before,PlanningReadGuard after,NativeActionPort.AckReceived original,
+            Optional<PlanningReadAdoption> adoption,ArchiveVersion archiveVersion) {
+        this(request,contractId,requestId,before,after,original,adoption,archiveVersion,Optional.empty());
+    }
+    /** DATA carrier only; the installed source captures this once in the Coordinator, never during replay. */
+    PlanningReadReceipt withRetainedMaterial(RetainedMaterial material) {
+        StrictJson.require(archiveVersion==ArchiveVersion.CURRENT_V2&&retainedMaterial.isEmpty()&&adoption.isEmpty(),
+                "only the original current successful query may retain its actual captured export");
+        return new PlanningReadReceipt(request,contractId,requestId,before,after,original,adoption,
+                ArchiveVersion.RETAINED_MATERIAL_V4,Optional.of(Objects.requireNonNull(material)));
     }
     /** Current ordinary receipts have no late-read provenance; v1 readers set their explicit version. */
     public PlanningReadReceipt(PlanningReadRequest request, String contractId, String requestId,

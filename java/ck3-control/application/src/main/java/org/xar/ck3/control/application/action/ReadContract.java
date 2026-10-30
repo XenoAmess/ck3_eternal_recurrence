@@ -1,5 +1,6 @@
 package org.xar.ck3.control.application.action;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -25,6 +26,10 @@ public final class ReadContract<T> {
     private final Optional<Function<PlanningReadReceipt, T>> pureReplay;
     private final Optional<CanonicalReuse<T>> canonicalReuse;
     private final Optional<DeclaredOriginalHistory<T>> originalHistory;
+    @FunctionalInterface public interface RetainedMaterialCapture {
+        PlanningReadReceipt.RetainedMaterial capture(PlanningReadReceipt successfulOriginal) throws IOException;
+    }
+    private final Optional<RetainedMaterialCapture> retainedMaterialCapture;
     @FunctionalInterface public interface PostKnownFailureProjection<T> {
         Optional<org.xar.ck3.control.application.history.DriverPostKnownReadFailureMaterial.Failure> project(
                 PlanningReadReceipt original,T replayed,java.util.List<PlanningReadReceipt> actualEarlier);
@@ -112,6 +117,15 @@ public final class ReadContract<T> {
             BiFunction<PlanningReadRequest,String,NativeRequest> prepare,Function<PlanningReadReceipt,T> decode,
             Optional<Function<PlanningReadReceipt,T>> pureReplay,Optional<CanonicalReuse<T>> canonicalReuse,
             Optional<DeclaredOriginalHistory<T>> originalHistory,Optional<DeclaredPostKnownFailure<T>> postKnownFailure) {
+        this(contractId,operation,requiredCapability,permissionKey,permissionMode,wireProfile,guardMode,sourceRef,
+                prepare,decode,pureReplay,canonicalReuse,originalHistory,postKnownFailure,Optional.empty());
+    }
+    private ReadContract(String contractId,OperationKey operation,Optional<String> requiredCapability,String permissionKey,
+            PermissionMode permissionMode,WireProfile wireProfile,GuardMode guardMode,ExactRef sourceRef,
+            BiFunction<PlanningReadRequest,String,NativeRequest> prepare,Function<PlanningReadReceipt,T> decode,
+            Optional<Function<PlanningReadReceipt,T>> pureReplay,Optional<CanonicalReuse<T>> canonicalReuse,
+            Optional<DeclaredOriginalHistory<T>> originalHistory,Optional<DeclaredPostKnownFailure<T>> postKnownFailure,
+            Optional<RetainedMaterialCapture> retainedMaterialCapture) {
         this.contractId = StrictJson.text(contractId); this.operation = Objects.requireNonNull(operation);
         this.requiredCapability = Objects.requireNonNull(requiredCapability); requiredCapability.ifPresent(StrictJson::text);
         NativeStepDiscriminator.requireRegistration(operation, ExecutableStepBindings.Kind.READ, requiredCapability);
@@ -133,6 +147,10 @@ public final class ReadContract<T> {
         this.pureReplay = Objects.requireNonNull(pureReplay); this.canonicalReuse = Objects.requireNonNull(canonicalReuse);
         this.originalHistory = Objects.requireNonNull(originalHistory);
         this.postKnownFailure=Objects.requireNonNull(postKnownFailure);
+        this.retainedMaterialCapture=Objects.requireNonNull(retainedMaterialCapture);
+        StrictJson.require(retainedMaterialCapture.isEmpty()||guardMode==GuardMode.GAMEPLAY_PAUSED_MAP
+                &&permissionMode==PermissionMode.SOURCE_QUALIFIED_PRIVATE&&pureReplay.isPresent(),
+                "retained export capture requires its actual private ordinary query and pure archival decoder");
         if(postKnownFailure.isPresent())requirePostKnownSource();
         StrictJson.require(originalHistory.isEmpty() || pureReplay.isPresent(), "source-owned original history requires an explicit pure decoder");
         if (guardMode == GuardMode.STATUS_ONLY) {
@@ -168,18 +186,42 @@ public final class ReadContract<T> {
     }
     public T decode(PlanningReadReceipt receipt) {
         requireReceipt(receipt);
+        requireRetainedMaterial(receipt);
         T value = Objects.requireNonNull(decode.apply(receipt), "typed query decoder cannot silently turn missing input into null");
         requireAdoptedReuse(receipt, value); return value;
     }
     /** Never invokes the live decoder; callers must still resolve this exact installed catalog instance. */
     public T replay(PlanningReadReceipt receipt) {
         requireReceipt(receipt);
+        requireRetainedMaterial(receipt);
         Function<PlanningReadReceipt, T> decoder = pureReplay.orElseThrow(
                 () -> new IllegalStateException("this exact read contract has no explicitly installed pure replay decoder"));
         T value = Objects.requireNonNull(decoder.apply(receipt), "pure query replay cannot silently turn missing input into null");
         requireAdoptedReuse(receipt, value); return value;
     }
     public boolean hasPureReplay() { return pureReplay.isPresent(); }
+    /** The installed source declares its one live export capture before catalog installation. No replay calls this hook. */
+    public synchronized ReadContract<T> withRetainedMaterialCapture(RetainedMaterialCapture actual) {
+        StrictJson.require(retainedMaterialCapture.isEmpty()&&originalContracts.isEmpty(),
+                "retained export capture installs once before its original contract catalog");
+        return new ReadContract<>(contractId,operation,requiredCapability,permissionKey,permissionMode,wireProfile,guardMode,sourceRef,
+                prepare,decode,pureReplay,canonicalReuse,originalHistory,postKnownFailure,Optional.of(Objects.requireNonNull(actual)));
+    }
+    /** Sole live Coordinator call, after its successful ACK and actual before/after guards. */
+    PlanningReadReceipt captureRetainedMaterial(PlanningReadReceipt successfulOriginal) throws IOException {
+        requireReceipt(successfulOriginal);
+        if(retainedMaterialCapture.isEmpty())return successfulOriginal;
+        StrictJson.require(successfulOriginal.archiveVersion()==PlanningReadReceipt.ArchiveVersion.CURRENT_V2
+                &&successfulOriginal.adoption().isEmpty()&&successfulOriginal.retainedMaterial().isEmpty(),
+                "live export capture cannot rehydrate an old, adopted or already captured query");
+        var material=Objects.requireNonNull(retainedMaterialCapture.orElseThrow().capture(successfulOriginal),
+                "actual retained export producer returned no material");
+        return successfulOriginal.withRetainedMaterial(material);
+    }
+    private void requireRetainedMaterial(PlanningReadReceipt receipt) {
+        StrictJson.require(retainedMaterialCapture.isEmpty()||receipt.retainedMaterial().isPresent(),
+                "this source requires its original retained query export; replay cannot capture current files");
+    }
     /** Declared by the actual installed source factory, never inferred from a runtime value class or receipt. */
     public Optional<org.xar.ck3.control.application.history.DriverReadHistoryRichMaterial.Kind> originalHistoryKind() {
         return originalHistory.map(DeclaredOriginalHistory::kind);
@@ -193,7 +235,7 @@ public final class ReadContract<T> {
         Objects.requireNonNull(declared); Objects.requireNonNull(actual);
         StrictJson.require(originalHistory.isEmpty() && originalContracts.isEmpty(), "source projector cannot replace an installed history/escrow identity");
         return new ReadContract<>(contractId, operation, requiredCapability, permissionKey, permissionMode, wireProfile,
-                guardMode, sourceRef, prepare, decode, pureReplay, canonicalReuse, Optional.of(new DeclaredOriginalHistory<>(declared, actual)),postKnownFailure);
+                guardMode, sourceRef, prepare, decode, pureReplay, canonicalReuse, Optional.of(new DeclaredOriginalHistory<>(declared, actual)),postKnownFailure,retainedMaterialCapture);
     }
     /** Source configuration happens before installation; this returns a new immutable contract identity. */
     public synchronized ReadContract<T> withPostKnownFailureProjection(
@@ -202,7 +244,7 @@ public final class ReadContract<T> {
         StrictJson.require(postKnownFailure.isEmpty()&&originalContracts.isEmpty(),
                 "post-Known verifier cannot replace an installed source/family identity");
         return new ReadContract<>(contractId,operation,requiredCapability,permissionKey,permissionMode,wireProfile,guardMode,sourceRef,
-                prepare,decode,pureReplay,canonicalReuse,originalHistory,Optional.of(new DeclaredPostKnownFailure<>(kind,actual)));
+                prepare,decode,pureReplay,canonicalReuse,originalHistory,Optional.of(new DeclaredPostKnownFailure<>(kind,actual)),retainedMaterialCapture);
     }
     public Optional<org.xar.ck3.control.application.history.DriverPostKnownReadFailureMaterial.Kind> postKnownFailureKind(){
         return postKnownFailure.map(DeclaredPostKnownFailure::kind);

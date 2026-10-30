@@ -53,7 +53,7 @@ final class FamilyRelationJson {
     // The normalized education projection may exceed the original 8 MiB pipe
     // packet while remaining within the existing 64 MiB owned-material lane.
     static OpportunityJson.Obj retain(JsonNode n){return DriverJson.object(object(n).toString().getBytes(java.nio.charset.StandardCharsets.UTF_8),RawJson.MAXIMUM_BYTES);}
-    static ObjectNode nativeObject(OpportunityJson.Obj value){return object(StrictJson.parse(DriverJson.encode(value),RawJson.MAXIMUM_BYTES));}
+    static ObjectNode nativeObject(OpportunityJson.Obj value){return object(OpportunityJson.toNode(value));}
     static long fullBits(BigInteger signed){return range(signed,I32_MIN,U32).and(U32).longValueExact();}
     static BigInteger signedFull(BigInteger raw){range(raw,BigInteger.ZERO,U32);return raw.testBit(31)?raw.subtract(BigInteger.ONE.shiftLeft(32)):raw;}
     static void nilOptional(JsonNode n,String...keys){for(String key:keys)need(absent(maybe(n,key)),"unobserved relation value must remain null: "+key);}

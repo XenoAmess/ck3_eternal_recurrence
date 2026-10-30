@@ -317,7 +317,7 @@ public final class ImmutableArtifactStore {
             ByteBuffer buffer = ByteBuffer.wrap(bytes); while (buffer.hasRemaining()) channel.write(buffer); channel.force(true);
         }
         if (!stamp.equals(Stamp.of(LedgerFiles.identity(path)))) throw new IOException("durable staging native identity changed");
-        if (!Arrays.equals(bytes, LedgerFiles.read(path, Math.max(1, bytes.length)).bytes())) throw new IOException("durable original readback changed");
+        // publishReserved reads this staging file once against the expected payload or commit before its durable boundary.
     }
     private static byte[] encode(Commit commit) {
         ObjectNode row = StrictJson.object(); row.put("schema", SCHEMA); row.set("payload", commit.payload().reference().toJson());

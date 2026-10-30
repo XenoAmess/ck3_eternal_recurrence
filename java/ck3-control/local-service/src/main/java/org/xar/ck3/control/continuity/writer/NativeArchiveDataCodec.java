@@ -28,6 +28,7 @@ public final class NativeArchiveDataCodec {
     private static final String READ_SCHEMA = "xar.planning-read-archive/v1";
     private static final String READ_WITH_ADOPTION_SCHEMA = "xar.planning-read-archive/v2";
     private static final String PHYSICAL_STATUS_READ_SCHEMA = "xar.planning-read-archive/v3";
+    private static final String RETAINED_MATERIAL_READ_SCHEMA = "xar.planning-read-archive/v4";
     /** Byte lookup only. Every return is independently bounded and matched to its exact ref.
      * This port carries no writer, source, transport, replay or Game authority. */
     @FunctionalInterface public interface OriginalBytes {
@@ -64,6 +65,8 @@ public final class NativeArchiveDataCodec {
         readBytes(read.request().source().sourceRef(), WriterContracts.MAX_PIN_BYTES);
         if (read.adoption().isPresent())
             readBytes(read.adoption().orElseThrow().currentRequest().source().sourceRef(), WriterContracts.MAX_PIN_BYTES);
+        if (read.retainedMaterial().isPresent())
+            readBytes(read.retainedMaterial().orElseThrow().original(), RawJson.MAXIMUM_BYTES);
         return new ReadData(original, read);
     }
     private byte[] readBytes(ExactRef original, int maximumBytes) throws IOException {
@@ -160,21 +163,30 @@ public final class NativeArchiveDataCodec {
     }
     PlanningReadReceipt decodeRead(ExactRef original) throws IOException {
             ObjectNode row = metadata(original); String version = text(row, "schema");
-             StrictJson.require(READ_SCHEMA.equals(version) || READ_WITH_ADOPTION_SCHEMA.equals(version)
-                     || PHYSICAL_STATUS_READ_SCHEMA.equals(version), "exact planning-read archive version required");
+              StrictJson.require(READ_SCHEMA.equals(version) || READ_WITH_ADOPTION_SCHEMA.equals(version)
+                      || PHYSICAL_STATUS_READ_SCHEMA.equals(version) || RETAINED_MATERIAL_READ_SCHEMA.equals(version), "exact planning-read archive version required");
             boolean historical = READ_SCHEMA.equals(version);
              boolean physical = PHYSICAL_STATUS_READ_SCHEMA.equals(version);
+              boolean material = RETAINED_MATERIAL_READ_SCHEMA.equals(version);
              StrictJson.object(row, historical || physical ? Set.of("schema", "contract_id", "request_id", "request", "before", "after", "original_ref")
-                    : Set.of("schema", "contract_id", "request_id", "request", "before", "after", "original_ref", "adoption"));
+                     : material ? Set.of("schema", "contract_id", "request_id", "request", "before", "after", "original_ref", "adoption", "retained_material")
+                     : Set.of("schema", "contract_id", "request_id", "request", "before", "after", "original_ref", "adoption"));
             PlanningReadRequest request = planningRequest(row.get("request"));
             NativeActionPort.DispatchOutcome dispatch = decodeDispatchData(ref(row, "original_ref"));
             if (!(dispatch instanceof NativeActionPort.AckReceived ack)) throw new IOException("planning read requires its actual original ACK");
             PlanningReadReceipt result = new PlanningReadReceipt(request, text(row, "contract_id"), text(row, "request_id"),
-                    CommandOriginCodec.planningGuard(row.get("before")), CommandOriginCodec.planningGuard(row.get("after")), ack,
+                     CommandOriginCodec.planningGuard(row.get("before")), CommandOriginCodec.planningGuard(row.get("after")), ack,
                      historical || physical ? Optional.empty() : adoption(row.get("adoption")), historical
                              ? PlanningReadReceipt.ArchiveVersion.HISTORICAL_V1 : physical
-                                     ? PlanningReadReceipt.ArchiveVersion.PHYSICAL_STATUS_V3 : PlanningReadReceipt.ArchiveVersion.CURRENT_V2);
+                                      ? PlanningReadReceipt.ArchiveVersion.PHYSICAL_STATUS_V3 : material
+                                              ? PlanningReadReceipt.ArchiveVersion.RETAINED_MATERIAL_V4 : PlanningReadReceipt.ArchiveVersion.CURRENT_V2,
+                     material ? Optional.of(retainedMaterial(row.get("retained_material"))) : Optional.empty());
             return result;
+    }
+    private static PlanningReadReceipt.RetainedMaterial retainedMaterial(JsonNode value) {
+        ObjectNode row = StrictJson.object(value, Set.of("kind", "original"));
+        PlanningReadReceipt.RetainedMaterial.Kind kind = PlanningReadReceipt.RetainedMaterial.Kind.valueOf(text(row, "kind"));
+        return new PlanningReadReceipt.RetainedMaterial(kind, ref(row, "original"));
     }
     static void verifyAck(NativeActionPort.AckReceived ack) throws IOException {
         NativeWire.Frame decoded = NativeWire.decode(ack.originalPacket());
