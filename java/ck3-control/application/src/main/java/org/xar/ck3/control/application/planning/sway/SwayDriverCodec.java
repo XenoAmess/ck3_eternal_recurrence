@@ -14,14 +14,14 @@ import org.xar.ck3.control.contracts.StrictJson;
 public final class SwayDriverCodec {
     private SwayDriverCodec() { }
     public record TargetRequest(BigInteger expectedRevision,long targetCharacterId) {
-        public TargetRequest {SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.character(targetCharacterId);}
+        public TargetRequest {SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.actionCharacter(targetCharacterId);}
     }
     public record ReceiptRequest(BigInteger expectedRevision,long targetCharacterId,String actionId,BigInteger preCaptureEpoch) {
-        public ReceiptRequest {SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.character(targetCharacterId);SwayNativeWire.action(actionId,false);SwayNativeWire.u64(preCaptureEpoch,1);}
+        public ReceiptRequest {SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.actionCharacter(targetCharacterId);SwayNativeWire.action(actionId,false);SwayNativeWire.u64(preCaptureEpoch,1);}
     }
     /** The complete original public bytes remain available for an exact producer recomputation at the archive boundary. */
     public record Quote(BigInteger expectedRevision,long targetCharacterId,ExactRef originalRead,RawJson presentation) {
-        public Quote {SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.character(targetCharacterId);Objects.requireNonNull(originalRead);Objects.requireNonNull(presentation);require(originalRead.bytes()>0,"nonempty original target receipt required");}
+        public Quote {SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.actionCharacter(targetCharacterId);Objects.requireNonNull(originalRead);Objects.requireNonNull(presentation);require(originalRead.bytes()>0,"nonempty original target receipt required");}
     }
     public record StartRequest(Quote readback,String actionId) {
         public StartRequest {Objects.requireNonNull(readback);SwayNativeWire.action(actionId,false);}
@@ -71,7 +71,7 @@ public final class SwayDriverCodec {
     public static RawJson startResult(ActionReceipt actual,ActionPorts.OutcomeArchive originals) {
         var command=actual.command();require(command.operation().value().startsWith(SwayNativeWire.START),"actual Start result required");
         var arguments=SwayNativeBindings.args(command.arguments(),Set.of("schema","target_character_id","original_target_read"));SwayNativeBindings.startAdmission(arguments);
-        long target=StrictJson.integer(arguments.get("target_character_id"),1,0xffff_ffffL);var original=originals.loadRead(ExactRef.fromJson(arguments.get("original_target_read")));
+        long target=SwayNativeWire.actionCharacter(arguments,"target_character_id");var original=originals.loadRead(ExactRef.fromJson(arguments.get("original_target_read")));
         var quote=SwayNativeWire.target(original.original().originalFrame().bytes(),original.requestId(),SwayNativeBindings.bind(original,new OperationKey(SwayNativeWire.TARGET+target)),target);
         ObjectNode row;
         var acknowledgement=ack(actual,quote);
@@ -95,6 +95,6 @@ public final class SwayDriverCodec {
         for(String name:Set.of("snapshot_revision","capture_epoch","container_generation","pre_capture_epoch","pre_container_generation","post_capture_epoch","post_container_generation"))if(row.has(name))row.put(name,StrictJson.integer(row.get(name),BigInteger.ONE,StrictJson.UINT64_MAX).toString());
         return raw(row);
     }
-    private static long id(JsonNode value){return StrictJson.integer(value,1,0xffff_ffffL);}
+    private static long id(JsonNode value){return org.xar.ck3.control.contracts.NativeCharacterId.fromJson(value).value();}
     private static RawJson raw(ObjectNode value){return new RawJson(StrictJson.canonical(value,SwayNativeWire.MAX));}
 }

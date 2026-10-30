@@ -147,8 +147,6 @@ public final class M6TerminalSourceComposition {
     private static ObjectNode original(JsonNode resolved, Identity identity) {
         object(resolved); textEquals(resolved, "status", "applied"); require(bool(resolved, "postcondition_verified"), "original Start was verified");
         textEquals(resolved, "action_id", identity.actionId());
-        require(integer(resolved, "actor_character_id", 1, 0xffff_fffeL) == identity.actorCharacterId()
-                && integer(resolved, "target_character_id", 1, 0xffff_fffeL) == identity.targetCharacterId(), "original actor/target differ");
         JsonNode receipt = resolved.get("native_receipt");
         boolean recovered = receipt == null || receipt.isNull();
         JsonNode observed = recovered ? resolved.get("recovered_instance_observation") : receipt;
@@ -162,6 +160,13 @@ public final class M6TerminalSourceComposition {
         String build = text(origin, "exact_ck3_build"), digest = text(origin, "exe_sha256");
         require((BUILD.equals(build) && EXE.equalsIgnoreCase(digest)) || ("1.20.0.3".equals(build)
                 && "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6".equalsIgnoreCase(digest)), "original exact build pair differs");
+        if (BUILD.equals(build)) {
+            require(NativeCharacterId.fromJson(resolved.get("actor_character_id")).value() == identity.actorCharacterId()
+                    && NativeCharacterId.fromJson(resolved.get("target_character_id")).value() == identity.targetCharacterId(), "original actor/target differ");
+        } else {
+            require(integer(resolved, "actor_character_id", 1, 0xffff_fffeL) == identity.actorCharacterId()
+                    && integer(resolved, "target_character_id", 1, 0xffff_fffeL) == identity.targetCharacterId(), "original actor/target differ");
+        }
         ObjectNode result = identityJson(identity); result.put("original_exact_ck3_build", build); result.put("original_exe_sha256", digest);
         if (recovered) { result.put("original_identity_source_kind", "matching_active_readback_recovery");
             result.put("submission_receipt_available", false); result.set("recovered_instance_observation", observed); }

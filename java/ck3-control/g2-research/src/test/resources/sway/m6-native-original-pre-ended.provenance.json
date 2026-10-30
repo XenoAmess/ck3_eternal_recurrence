@@ -1,0 +1,32 @@
+{
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "created_at_utc" : "2026-10-30T16:20:35.859964Z",
+  "kind" : "actual native bare serializer body from original875 RX pre1-only owned fixture",
+  "packets" : [ {
+    "body" : {
+      "path" : "D:/ck3-state/resume90-m6-native/action-abi/common-next/original-store-next/wire/original-pre1.json",
+      "bytes" : 2064,
+      "sha256" : "ccc7c5969244f5c53bd7fafe41210211ca5bf3e45ede324e25de13770711f515"
+    },
+    "body_producer" : "real SwayTerminationRecorder12002::Query -> SerializeSwayCompletionTermination12002",
+    "outer_public_handler" : "NOT_RUN in this new face; original second-site79/fault70 existing public packets remain separate",
+    "query_actor_character_id" : -2,
+    "query_target_character_id" : 0,
+    "query_scheme_instance_id" : 0,
+    "query_after_sequence" : 0,
+    "records" : 1,
+    "source_contract" : "actual_2a48877_2a48c7b_2a4adf0_v2",
+    "callsite_rva" : 44338299,
+    "callee_rva" : 44346864,
+    "call_return_rva" : 44338304,
+    "incoming_dl_raw_u8" : 1,
+    "entry_status" : 1,
+    "returned_status" : 1,
+    "entry_owner_raw_u32" : 4294967294,
+    "returned_owner_raw_u32" : 4294967294,
+    "terminal_records" : 0,
+    "cause_relation_field" : "absent: neutral CommonEnd family does not serialize terminal cause",
+    "native_stack_witness" : false,
+    "game_credit" : 0
+  } ]
+}

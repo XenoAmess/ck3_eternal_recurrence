@@ -1,0 +1,22 @@
+[
+  {
+    "role": "query",
+    "sha256": "a6b25c10e23b9c5f565ecadf15db4a060215b533f1ff9f04c11da87d38f2391b",
+    "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"m6-public-action\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private-0\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":3,\"container_generation\":18300436759549338012,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":37,\"active_scheme_count\":0,\"matching_sway_active\":false,\"native_complete_can_send\":true,\"native_legal_now\":true,\"native_failure_classification\":\"\",\"active_sway_instances\":[]},\"backend_id\":\"native-headless\"}}\n"
+  },
+  {
+    "role": "submit",
+    "sha256": "32649e0e5a1f250a6f26282191c43b946dec95ed5d6c02a642065dd2b5dbea4a",
+    "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"m6-public-action\",\"ok\":true,\"result\":{\"step\":\"submit-active-scheme-sway-v1-private-0\",\"accepted\":true,\"status\":\"submitted_verification_pending\",\"private_build\":true,\"advertised\":false,\"active_scheme_sway_formal\":{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"submitted_verification_pending\",\"action_id\":\"sway-canonical-minus2-zero\",\"actor_character_id\":-2,\"target_character_id\":0,\"pre_capture_epoch\":4,\"pre_container_generation\":18300436759549338012,\"pre_date_raw\":53220000,\"submit_call_count\":1,\"receipt_pending\":true},\"backend_id\":\"native-headless\"}}\n"
+  },
+  {
+    "role": "receipt",
+    "sha256": "03bb9015201b6615420f6d51772c3b343dd21b85006a80ab262434ca1a12a4c3",
+    "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"m6-public-action\",\"ok\":true,\"result\":{\"step\":\"receipt-active-scheme-sway-v1-private-0\",\"accepted\":true,\"status\":\"applied\",\"private_build\":true,\"advertised\":false,\"active_scheme_sway_formal\":{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"applied\",\"action_id\":\"sway-canonical-minus2-zero\",\"post_capture_epoch\":5,\"post_container_generation\":15189419816273770301,\"post_date_raw\":53220000,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"postcondition_verified\":true},\"backend_id\":\"native-headless\"}}\n"
+  },
+  {
+    "role": "post-query",
+    "sha256": "48d9749829d0b485d62753a78e90087ea3a155ae710d4eae2cc9579962044bcb",
+    "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"m6-public-action\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private-0\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":6,\"container_generation\":15189419816273770301,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":37,\"active_scheme_count\":1,\"matching_sway_active\":true,\"native_complete_can_send\":true,\"native_legal_now\":false,\"native_failure_classification\":\"\",\"active_sway_instances\":[{\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"target_character_id\":0,\"progress\":1,\"progress_goal\":10,\"is_exposed\":false,\"is_frozen\":false}]},\"backend_id\":\"native-headless\"}}\n"
+  }
+]

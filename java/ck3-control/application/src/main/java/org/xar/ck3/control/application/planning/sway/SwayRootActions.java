@@ -10,7 +10,7 @@ import org.xar.ck3.control.contracts.StrictJson;
 
 /** One actual dynamic Start family and one selected Stop action/replay pair for the Root inventory. */
 public final class SwayRootActions {
-    public record Target(long characterId) { public Target { SwayNativeWire.character(characterId); } }
+    public record Target(long characterId) { public Target { SwayNativeWire.actionCharacter(characterId); } }
     public record Sources(ExactRef preparation, ExactRef decoder, ExactRef observerAndReplay) {
         public Sources { for (ExactRef source : List.of(preparation, decoder, observerAndReplay)) StrictJson.require(source.bytes() > 0, "actual Sway executable source closure required"); }
     }

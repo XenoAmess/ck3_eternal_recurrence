@@ -42,7 +42,7 @@ public final class SwayFormalCodec {
     }
     public static SwayNativeWire.TargetRead target(JsonNode value) {
         StrictJson.object(value, Set.of("binding", "native_body")); SwayNativeWire.Binding binding = SwayNativeWire.binding(value.get("binding"));
-        JsonNode body = value.get("native_body"); long target = SwayNativeWire.integer(body, "target_character_id", 1, 0xffff_ffffL);
+        JsonNode body = value.get("native_body"); long target = SwayNativeWire.actionCharacter(body, "target_character_id");
         return SwayNativeWire.target(payload(SwayNativeWire.TARGET + target, "available", "active_scheme_sway", body, true, false), "persisted-payload", binding, target);
     }
     public static ObjectNode receipt(SwayNativeWire.AppliedReceipt value) {
@@ -161,7 +161,7 @@ public final class SwayFormalCodec {
     }
     static G2M6Contracts.Identity identity(JsonNode row) {
         StrictJson.object(row, Set.of("action_id", "actor_character_id", "target_character_id", "scheme_instance_id", "scheme_instance_generation"));
-        return new G2M6Contracts.Identity(SwayNativeWire.string(row, "action_id"), SwayNativeWire.integer(row, "actor_character_id", 1, 0xffff_ffffL), SwayNativeWire.integer(row, "target_character_id", 1, 0xffff_ffffL), SwayNativeWire.integer(row, "scheme_instance_id", 0, 0xffff_fffeL), Math.toIntExact(SwayNativeWire.integer(row, "scheme_instance_generation", 0, 255)));
+        return new G2M6Contracts.Identity(SwayNativeWire.string(row, "action_id"), SwayNativeWire.actionCharacter(row, "actor_character_id"), SwayNativeWire.actionCharacter(row, "target_character_id"), SwayNativeWire.integer(row, "scheme_instance_id", 0, 0xffff_fffeL), Math.toIntExact(SwayNativeWire.integer(row, "scheme_instance_generation", 0, 255)));
     }
     /** Pure stored-body decoding reuses the same strict payload parser. This frame is never archived as a native original. */
     static byte[] payload(String step, String status, String key, JsonNode body, boolean readOnly, boolean stop) {

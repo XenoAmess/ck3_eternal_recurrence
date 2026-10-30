@@ -13,9 +13,9 @@ import org.xar.ck3.control.g2.m6.G2M6Contracts.Identity;
 
 /** The identical frozen Root families issue dynamic targets and original-action receipts. No prefix grants permission. */
 public final class SwayRootReads implements SwayActionLifecycle.RegisteredReads {
-    public record Target(long characterId) { public Target { SwayNativeWire.character(characterId); } }
+    public record Target(long characterId) { public Target { SwayNativeWire.actionCharacter(characterId); } }
     public record Receipt(long target, String actionId, BigInteger preCaptureEpoch) {
-        public Receipt { SwayNativeWire.character(target); SwayNativeWire.action(actionId, false); SwayNativeWire.u64(preCaptureEpoch, 1); }
+        public Receipt { SwayNativeWire.actionCharacter(target); SwayNativeWire.action(actionId, false); SwayNativeWire.u64(preCaptureEpoch, 1); }
     }
     public record Sources(ExactRef definitions, ExactRef nativeDecoder, ExactRef observations) {
         public Sources { for (ExactRef source : List.of(definitions, nativeDecoder, observations)) StrictJson.require(source.bytes() > 0, "actual Sway read implementation/decoder source required"); }

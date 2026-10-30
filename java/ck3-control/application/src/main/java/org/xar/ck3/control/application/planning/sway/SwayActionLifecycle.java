@@ -61,7 +61,7 @@ public final class SwayActionLifecycle {
                 ActionPorts.OutcomeArchive originals = archive.withSession(session); JsonNode row = StrictJson.parse(OpportunityJson.encode(command.arguments()));
                 if (command.operation().value().startsWith(SwayNativeWire.START)) {
                     var admission=SwayNativeBindings.startAdmission(row); SwayNativeWire.action(command.actionId(), false);
-                    long target = SwayNativeWire.integer(row, "target_character_id", 1, 0xffff_ffffL); require(command.operation().value().equals(SwayNativeWire.START + target), "exact native Sway Start differs");
+                    long target = SwayNativeWire.actionCharacter(row, "target_character_id"); require(command.operation().value().equals(SwayNativeWire.START + target), "exact native Sway Start differs");
                     ExactRef readRef = ExactRef.fromJson(row.get("original_target_read")); PlanningReadReceipt read = originals.loadRead(readRef);
                     require(read.request().before().equals(command.before()) && read.request().source().equals(command.source()) && read.request().sessionId().equals(command.sessionId()), "Sway Start input crossed command origin");
                     SwayNativeWire.TargetRead targetRead = SwayNativeWire.target(read.original().originalFrame().bytes(), read.requestId(), SwayNativeBindings.bind(read, new OperationKey(SwayNativeWire.TARGET + target)), target);

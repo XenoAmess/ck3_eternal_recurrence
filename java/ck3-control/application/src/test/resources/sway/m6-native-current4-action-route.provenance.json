@@ -1,0 +1,40 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "imported_at": "2026-10-30T16:06:50.722098+00:00",
+  "source_index": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\INDEX.json",
+  "source_index_pending": false,
+  "source_index_bytes": 9793,
+  "source_index_sha256": "c81c4bb166717ff39cd0e9bc4157e5fd6f1667755c9657d11b7edbda03de35a8",
+  "packets": [
+    {
+      "role": "query",
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\wire\\canonical-minus2-zero.query.response.json",
+      "bytes": 700,
+      "sha256": "a6b25c10e23b9c5f565ecadf15db4a060215b533f1ff9f04c11da87d38f2391b",
+      "request_id": "m6-public-action"
+    },
+    {
+      "role": "submit",
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\wire\\canonical-minus2-zero.submit.response.json",
+      "bytes": 624,
+      "sha256": "32649e0e5a1f250a6f26282191c43b946dec95ed5d6c02a642065dd2b5dbea4a",
+      "request_id": "m6-public-action"
+    },
+    {
+      "role": "receipt",
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\wire\\canonical-minus2-zero.receipt.response.json",
+      "bytes": 573,
+      "sha256": "03bb9015201b6615420f6d51772c3b343dd21b85006a80ab262434ca1a12a4c3",
+      "request_id": "m6-public-action"
+    },
+    {
+      "role": "post-query",
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\wire\\canonical-minus2-zero.post-query.response.json",
+      "bytes": 848,
+      "sha256": "48d9749829d0b485d62753a78e90087ea3a155ae710d4eae2cc9579962044bcb",
+      "request_id": "m6-public-action"
+    }
+  ],
+  "resource_sha256": "4e14c8fdc8e383049e13ffbe946f86cae374261d0e3bac6aa9034942119d0a3c",
+  "qualification": "Actual owned-world public Native route only; Java custody metadata remains a seam. No installed Game/native factory credit."
+}

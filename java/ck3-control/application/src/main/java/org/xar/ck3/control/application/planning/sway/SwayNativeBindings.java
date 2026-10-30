@@ -21,18 +21,18 @@ public final class SwayNativeBindings {
     private SwayNativeBindings() { }
 
     public static ReadContract<SwayNativeWire.TargetRead> target(ExactRef definitionSource, long target) {
-        SwayNativeWire.character(target); OperationKey key = new OperationKey(SwayNativeWire.TARGET + target);
+        SwayNativeWire.actionCharacter(target); OperationKey key = new OperationKey(SwayNativeWire.TARGET + target);
         return new ReadContract<>("sway-target-actual4:" + target, key, Optional.empty(), "allow_private_active_scheme_sway_query",
                 ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE, ReadContract.WireProfile.EXECUTE_STEP, definitionSource,
                 (request, requestId) -> {
                     JsonNode args = args(request.arguments(), Set.of("target_character_id"));
-                    require(SwayNativeWire.integer(args, "target_character_id", 1, 0xffff_ffffL) == target, "installed Sway target differs");
+                    require(SwayNativeWire.actionCharacter(args, "target_character_id") == target, "installed Sway target differs");
                     return new NativeRequest(key.value(), Optional.empty(), new RawJson(StrictJson.canonical(StrictJson.object())));
                 }, original -> SwayNativeWire.target(original.original().originalFrame().bytes(), original.requestId(), bind(original, key), target));
     }
     /** Receipt is read-only even though its original historical wire lacks read_only. It never sends Start. */
     public static ReadContract<SwayNativeWire.AppliedReceipt> receipt(ExactRef definitionSource, long target, String actionId, BigInteger preCaptureEpoch) {
-        SwayNativeWire.character(target); SwayNativeWire.action(actionId, false); SwayNativeWire.u64(preCaptureEpoch, 1);
+        SwayNativeWire.actionCharacter(target); SwayNativeWire.action(actionId, false); SwayNativeWire.u64(preCaptureEpoch, 1);
         OperationKey key = new OperationKey(SwayNativeWire.RECEIPT + target);
         return new ReadContract<>("sway-receipt-actual4:" + target + ":" + actionId, key, Optional.empty(), "allow_private_active_scheme_sway_action",
                 ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE, ReadContract.WireProfile.EXECUTE_STEP, definitionSource,
@@ -48,7 +48,7 @@ public final class SwayNativeBindings {
         return command -> {
             JsonNode row = args(command.arguments(), Set.of("schema", "target_character_id", "original_target_read"));
             var admission=startAdmission(row); SwayNativeWire.action(command.actionId(), false);
-            long target = SwayNativeWire.integer(row, "target_character_id", 1, 0xffff_ffffL);
+            long target = SwayNativeWire.actionCharacter(row, "target_character_id");
             require(command.operation().value().equals(SwayNativeWire.START + target), "Sway Start exact operation differs");
             PlanningReadReceipt original = archive.loadRead(ExactRef.fromJson(row.get("original_target_read")));
             require(original.request().before().equals(command.before()) && original.request().source().equals(command.source())

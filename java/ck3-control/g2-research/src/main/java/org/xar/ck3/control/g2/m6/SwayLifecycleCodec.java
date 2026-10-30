@@ -50,7 +50,7 @@ final class SwayLifecycleCodec {
         StrictJson.object(root, Set.of("schema", "identity", "origin", "proofs", "latest", "terminal", "material", "first_gain", "phase"));
         textEquals(root, "schema", SwayLifecycle.SCHEMA);
         JsonNode identity = root.get("identity"); StrictJson.object(identity, Set.of("action_id", "actor_character_id", "target_character_id", "scheme_instance_id", "scheme_instance_generation"));
-        Identity tuple = new Identity(text(identity, "action_id"), integer(identity, "actor_character_id", 1, 0xffff_fffeL), integer(identity, "target_character_id", 1, 0xffff_fffeL),
+        Identity tuple = new Identity(text(identity, "action_id"), org.xar.ck3.control.contracts.NativeCharacterId.fromJson(identity.get("actor_character_id")).value(), org.xar.ck3.control.contracts.NativeCharacterId.fromJson(identity.get("target_character_id")).value(),
                 integer(identity, "scheme_instance_id", 0, 0xffff_fffeL), Math.toIntExact(integer(identity, "scheme_instance_generation", 0, 255)));
         JsonNode table = root.get("proofs"); require(table.isArray() && table.size() <= 16, "finite Sway proof table required");
         List<Proof> proofs = new ArrayList<>(); for (JsonNode row : table) { Proof value = proof(row); require(!proofs.contains(value), "duplicate copied Sway proof refused"); proofs.add(value); }

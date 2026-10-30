@@ -58,7 +58,8 @@ final class SwayPublicDriverTest {
             assertThrows(IllegalArgumentException.class,()->SwayDriverCodec.decodeTarget(text("{\"expected_revision\":"+value+",\"target_character_id\":50331650}")));
             assertThrows(IllegalArgumentException.class,()->SwayDriverCodec.decodeReceipt(text("{\"expected_revision\":8,\"target_character_id\":50331650,\"action_id\":\"sway-fixture-start\",\"pre_capture_epoch\":"+value+"}")));
         }
-        var target=new SwayDriverCodec.TargetRequest(StrictJson.UINT64_MAX,0xffff_ffffL);assertEquals(target,SwayDriverCodec.decodeTarget(SwayDriverCodec.encode(target)));
+        assertThrows(IllegalArgumentException.class,()->new SwayDriverCodec.TargetRequest(StrictJson.UINT64_MAX,0xffff_ffffL));
+        var target=new SwayDriverCodec.TargetRequest(StrictJson.UINT64_MAX,Integer.MAX_VALUE);assertEquals(target,SwayDriverCodec.decodeTarget(SwayDriverCodec.encode(target)));
         var receipt=new SwayDriverCodec.ReceiptRequest(StrictJson.UINT64_MAX,TARGET,"sway-fixture-start",StrictJson.UINT64_MAX);assertEquals(receipt,SwayDriverCodec.decodeReceipt(SwayDriverCodec.encode(receipt)));
         assertThrows(IllegalArgumentException.class,()->SwayDriverCodec.decodeStart(text("{\"readback\":null,\"action_id\":\"sway-fixture-start\"}")));
         assertThrows(IllegalArgumentException.class,()->SwayDriverCodec.decodeTarget(text("{\"expected_revision\":8,\"target_character_id\":50331650,\"action_id\":\"forged\"}")));

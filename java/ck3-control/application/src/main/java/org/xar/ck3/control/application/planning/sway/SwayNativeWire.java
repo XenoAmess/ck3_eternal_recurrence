@@ -51,14 +51,14 @@ public final class SwayNativeWire {
     }
     public record Instance(long fullId, int generation, long target, int progress, int progressGoal, boolean exposed, boolean frozen) {
         public Instance {
-            instance(fullId, generation); character(target); require(progress >= 0 && progressGoal > 0 && progress <= progressGoal, "Sway progress interval");
+            instance(fullId, generation); actionCharacter(target); require(progress >= 0 && progressGoal > 0 && progress <= progressGoal, "Sway progress interval");
         }
     }
     public record TargetRead(Binding binding, BigInteger captureEpoch, BigInteger containerGeneration, long target,
             int targetOpinion, int activeCount, boolean matching, boolean canSend, boolean legal, String failure,
             List<Instance> instances, ProjectionJson body) {
         public TargetRead {
-            Objects.requireNonNull(binding); u64(captureEpoch, 1); u64(containerGeneration, 1); character(target);
+            Objects.requireNonNull(binding); u64(captureEpoch, 1); u64(containerGeneration, 1); actionCharacter(target);
             require(binding.actor() != target, "Sway actor differs from target"); require(targetOpinion >= -100 && targetOpinion <= 100, "Sway opinion range");
             require(activeCount >= 0 && activeCount <= 32, "native scheme count range"); instances = List.copyOf(instances);
             require(instances.size() <= activeCount && matching == instances.stream().anyMatch(row -> row.target() == target), "matching Sway rows differ");
@@ -71,7 +71,7 @@ public final class SwayNativeWire {
     }
     public record StartAck(String actionId, long actor, long target, BigInteger preCaptureEpoch,
             BigInteger preContainerGeneration, int preDateRaw, ProjectionJson body) {
-        public StartAck { action(actionId, false); character(actor); character(target); u64(preCaptureEpoch, 1); u64(preContainerGeneration, 1); Objects.requireNonNull(body); }
+        public StartAck { action(actionId, false); actionCharacter(actor); actionCharacter(target); u64(preCaptureEpoch, 1); u64(preContainerGeneration, 1); Objects.requireNonNull(body); }
         public boolean applied() { return false; }
         @Override public boolean equals(Object other) { return other instanceof StartAck row && actionId.equals(row.actionId) && actor == row.actor && target == row.target && preCaptureEpoch.equals(row.preCaptureEpoch) && preContainerGeneration.equals(row.preContainerGeneration) && preDateRaw == row.preDateRaw && java.util.Arrays.equals(body.bytes(), row.body.bytes()); }
         @Override public int hashCode() { return Objects.hash(actionId, actor, target, preCaptureEpoch, preContainerGeneration, preDateRaw, java.util.Arrays.hashCode(body.bytes())); }
@@ -80,7 +80,7 @@ public final class SwayNativeWire {
             BigInteger postContainerGeneration, int postDateRaw, long fullId, int generation, ProjectionJson body) {
         public AppliedReceipt {
             Objects.requireNonNull(binding); action(actionId, false); u64(postCaptureEpoch, 1); u64(postContainerGeneration, 1);
-            instance(fullId, generation); require(fullId != 0, "actual native Start receipt excludes zero"); Objects.requireNonNull(body);
+            instance(fullId, generation); Objects.requireNonNull(body);
         }
         @Override public boolean equals(Object other) { return other instanceof AppliedReceipt row && binding.equals(row.binding) && actionId.equals(row.actionId) && postCaptureEpoch.equals(row.postCaptureEpoch) && postContainerGeneration.equals(row.postContainerGeneration) && postDateRaw == row.postDateRaw && fullId == row.fullId && generation == row.generation && java.util.Arrays.equals(body.bytes(), row.body.bytes()); }
         @Override public int hashCode() { return Objects.hash(binding, actionId, postCaptureEpoch, postContainerGeneration, postDateRaw, fullId, generation, java.util.Arrays.hashCode(body.bytes())); }
@@ -93,14 +93,14 @@ public final class SwayNativeWire {
     }
 
     public static TargetRead target(byte[] rawFrame, String requestId, Binding binding, long target) {
-        character(target); ObjectNode row = envelope(rawFrame, requestId, TARGET + target, "available", "active_scheme_sway", true, false);
+        actionCharacter(target); ObjectNode row = envelope(rawFrame, requestId, TARGET + target, "available", "active_scheme_sway", true, false);
         StrictJson.object(row, TARGET_FIELDS); equals(row, "schema", "active-scheme-sway-private-read-v1"); frame(row, binding, target);
         JsonNode entries = row.get("active_sway_instances"); require(entries.isArray() && entries.size() <= 32, "bounded active Sway rows");
         List<Instance> instances = new ArrayList<>(); Set<Long> identities = new HashSet<>();
         for (JsonNode value : entries) {
             StrictJson.object(value, Set.of("scheme_instance_id", "scheme_instance_generation", "target_character_id", "progress", "progress_goal", "is_exposed", "is_frozen"));
             long id = integer(value, "scheme_instance_id", 0, 0xffff_fffeL); require(identities.add(id), "duplicate full Sway instance");
-            instances.add(new Instance(id, Math.toIntExact(integer(value, "scheme_instance_generation", 0, 255)), integer(value, "target_character_id", 1, 0xffff_ffffL),
+            instances.add(new Instance(id, Math.toIntExact(integer(value, "scheme_instance_generation", 0, 255)), actionCharacter(value, "target_character_id"),
                     Math.toIntExact(integer(value, "progress", 0, Integer.MAX_VALUE)), Math.toIntExact(integer(value, "progress_goal", 1, Integer.MAX_VALUE)), bool(value, "is_exposed"), bool(value, "is_frozen")));
         }
         return new TargetRead(binding, wide(row, "capture_epoch", 1), wide(row, "container_generation", 1), target,
@@ -111,7 +111,7 @@ public final class SwayNativeWire {
         ObjectNode row = envelope(rawFrame, requestId, START + before.target(), "submitted_verification_pending", "active_scheme_sway_formal", false, false);
         StrictJson.object(row, Set.of("schema", "stage", "action_id", "actor_character_id", "target_character_id", "pre_capture_epoch", "pre_container_generation", "pre_date_raw", "submit_call_count", "receipt_pending"));
         equals(row, "schema", "active-scheme-sway-formal-private-v1"); equals(row, "stage", "submitted_verification_pending"); equals(row, "action_id", actionId);
-        require(integer(row, "actor_character_id", 1, 0xffff_ffffL) == before.binding().actor() && integer(row, "target_character_id", 1, 0xffff_ffffL) == before.target(), "Sway Start ACK actor/target drift");
+        require(actionCharacter(row, "actor_character_id") == before.binding().actor() && actionCharacter(row, "target_character_id") == before.target(), "Sway Start ACK actor/target drift");
         BigInteger epoch = wide(row, "pre_capture_epoch", 1), generation = wide(row, "pre_container_generation", 1);
         require(epoch.compareTo(before.captureEpoch()) > 0 && generation.equals(before.containerGeneration()) && signed(row, "pre_date_raw") == before.binding().date(), "Sway Start ACK lost source read");
         require(integer(row, "submit_call_count", 1, 1) == 1 && bool(row, "receipt_pending"), "Sway Start ACK is pending once");
@@ -124,7 +124,7 @@ public final class SwayNativeWire {
         require(bool(row, "postcondition_verified") && wide(row, "post_capture_epoch", 1).compareTo(preCaptureEpoch) > 0, "Sway receipt independent native epoch");
         require(signed(row, "post_date_raw") == binding.date(), "Sway receipt paused date changed");
         return new AppliedReceipt(binding, actionId, wide(row, "post_capture_epoch", 1), wide(row, "post_container_generation", 1), signed(row, "post_date_raw"),
-                integer(row, "scheme_instance_id", 1, 0xffff_fffeL), Math.toIntExact(integer(row, "scheme_instance_generation", 0, 255)), json(row));
+                integer(row, "scheme_instance_id", 0, 0xffff_fffeL), Math.toIntExact(integer(row, "scheme_instance_generation", 0, 255)), json(row));
     }
     public static StopAck stopAck(byte[] rawFrame, String requestId, Binding binding, String actionId, long target, long fullId, int generation) {
         currentCharacter(binding.actor()); currentCharacter(target); instance(fullId, generation);
@@ -150,7 +150,7 @@ public final class SwayNativeWire {
     }
     static void frame(JsonNode row, Binding binding, long target) {
         require(wide(row, "snapshot_revision", 1).equals(binding.revision()) && signed(row, "date_raw") == binding.date()
-                && integer(row, "actor_character_id", 1, 0xffff_ffffL) == binding.actor() && integer(row, "target_character_id", 1, 0xffff_ffffL) == target, "Sway native payload crossed complete actor/date/revision frame");
+                && actionCharacter(row, "actor_character_id") == binding.actor() && actionCharacter(row, "target_character_id") == target, "Sway native payload crossed complete actor/date/revision frame");
     }
     public static ObjectNode bindingJson(Binding value) {
         ObjectNode row = StrictJson.object(); row.set("before", ProposalLifecycleCodec.observation(value.before())); row.put("session_id", value.sessionId());
@@ -162,6 +162,8 @@ public final class SwayNativeWire {
         return new Binding(ProposalLifecycleCodec.decodeObservation(value.get("before")), string(value, "session_id"), new BigInteger(generation), string(value, "authority_id"), string(value, "exact_build"), string(value, "exe_sha256"));
     }
     static void instance(long fullId, int generation) { require(fullId >= 0 && fullId < 0xffff_ffffL && generation >= 0 && generation <= 255 && generation == fullId >>> 24, "full Sway instance/generation mismatch"); }
+    static void actionCharacter(long value) { org.xar.ck3.control.contracts.NativeCharacterId.of(value); }
+    static int actionCharacter(JsonNode row, String name) { return org.xar.ck3.control.contracts.NativeCharacterId.fromJson(row.get(name)).value(); }
     static void character(long value) { require(value > 0 && value <= 0xffff_ffffL, "full uint32 Sway character required"); }
     static void currentCharacter(long value) { require(value > 0 && value <= Integer.MAX_VALUE, "current native Sway entry requires positive int32 character"); }
     static void action(String value, boolean stop) { org.xar.ck3.control.contracts.NativeSwayActionId.require(value, stop ? org.xar.ck3.control.contracts.NativeSwayActionId.Kind.SELECTED_STOP : org.xar.ck3.control.contracts.NativeSwayActionId.Kind.START); }

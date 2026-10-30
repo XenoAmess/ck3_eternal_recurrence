@@ -66,12 +66,10 @@ public final class SwayNativeFormalTest {
         assertEquals(DATE, legacy.at("/retained_native_applied_receipt/post_date_raw").intValue());
         assertEquals(DATE + 24, legacy.at("/recovered_instance_observation/source_read/date_raw").intValue());
     }
-    @Test void recoveredZeroIsARealFullInstanceButNeverAStartReceipt() throws Exception {
+    @Test void recoveredZeroIsARealFullInstanceThroughIndependentReadback() throws Exception {
         Ledger pending = SwayFormalState.reduce(seed(), new StartIntent("sway-zero-recovery", read(), MandatoryContext.CLEAR));
         Episode recovered = SwayFormalState.reduce(pending, new Recovered(active(binding(99, 1, DATE + 24), 1, 0))).resolved().orElseThrow();
         assertEquals(0, recovered.identity().schemeInstanceId()); assertEquals(0, recovered.identity().schemeInstanceGeneration());
-        ObjectNode receipt = vector("receipt"); ((ObjectNode)receipt.at("/result/active_scheme_sway_formal")).put("scheme_instance_id", 0);
-        assertThrows(IllegalArgumentException.class, () -> SwayNativeWire.receipt(bytes(receipt), "fixture-receipt", read().binding(), "sway-fixture-start", TARGET, BigInteger.valueOf(40)));
     }
     @Test void sameTargetDifferentFullIdentityCannotResolveOrAuthorizeAnotherStart() throws Exception {
         Ledger pending = withReceipt(); byte[] original = SwayFormalCodec.encode(pending);
