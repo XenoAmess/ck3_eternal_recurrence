@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.xar.ck3</groupId>
+  <artifactId>ck3-product-build</artifactId>
+  <version>0.1.0</version>
+  <packaging>pom</packaging>
+  <name>Shared Save Core and Product Build Reactor</name>
+  <!-- Aggregation only: each module retains its own build and dependency contract. -->
+  <modules>
+    <module>../ck3-save-core</module>
+    <module>../../mod_dynastic_esotericism/tools</module>
+    <module>../../mod_religious_ritual_fusion/tools</module>
+  </modules>
+</project>

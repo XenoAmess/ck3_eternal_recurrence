@@ -6,6 +6,7 @@ on:
     paths:
       - 'mod_religious_ritual_fusion/**'
       - 'java/ck3-save-core/**'
+      - 'java/product-build/**'
       - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt'
@@ -24,6 +25,7 @@ on:
     paths:
       - 'mod_religious_ritual_fusion/**'
       - 'java/ck3-save-core/**'
+      - 'java/product-build/**'
       - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt'
@@ -80,8 +82,9 @@ jobs:
         # The observer records only safe effective settings/session fields, never full settings XML.
         run: java -Xms32m -Xmx256m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --product-maven-diagnostic prepare "%GITHUB_WORKSPACE%" "%RUNNER_TEMP%\rrf-save-resolver-diagnostic" "%RUNNER_TEMP%\rrf-maven" --observed-default-maven
       - name: Compile and verify the actual product builder and fixture producer
-        # Preserve the original complete verify. Java captures its actual exit and bounded stdout.
-        run: java -Xms32m -Xmx256m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --product-maven-diagnostic run "%GITHUB_WORKSPACE%" "%RUNNER_TEMP%\rrf-save-resolver-diagnostic" "%RUNNER_TEMP%\rrf-maven" --observed-default-maven -- --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom.xml -Drrf.build.root=${{ runner.temp }}/rrf-build "-Dmaven.repo.local=%QUARKUS_LOCAL_REPO%" verify
+        # Keep the full verify and expose the exact shared save module to Quarkus's test workspace.
+        # Java preserves the actual exit and bounded stdout; the independent leaf install remains above.
+        run: java -Xms32m -Xmx256m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --product-maven-diagnostic run "%GITHUB_WORKSPACE%" "%RUNNER_TEMP%\rrf-save-resolver-diagnostic" "%RUNNER_TEMP%\rrf-maven" --observed-default-maven -- --batch-mode --no-transfer-progress -f java/product-build/pom.xml -pl :religious-ritual-fusion-tools -am "-Dsave.build.root=%RUNNER_TEMP%/ck3-save-core-build" -Drrf.build.root=${{ runner.temp }}/rrf-build "-Dmaven.repo.local=%QUARKUS_LOCAL_REPO%" verify
       - name: Observe actual Maven session and loaded Quarkus resolver bytecode
         if: always()
         run: java -Xms32m -Xmx256m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --product-maven-diagnostic collect "%GITHUB_WORKSPACE%" "%RUNNER_TEMP%\rrf-save-resolver-diagnostic" "%RUNNER_TEMP%\rrf-maven" --observed-default-maven
