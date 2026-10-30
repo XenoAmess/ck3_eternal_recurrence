@@ -207,7 +207,7 @@ bool ReadSwayOutcomeOpinionV1(const SwayOutcomeBindings &bindings,
   output.build_version = bindings.build_version;
   try {
     if (!bindings.event_window.events.core.enabled || bindings.target_opinion == nullptr ||
-        actor_id <= 0 || target_id <= 0 || actor_id == target_id) {
+        actor_id == -1 || target_id == -1 || actor_id == target_id) {
       output.unavailable_reason = "sway_opinion_bindings_or_pair_invalid";
       return false;
     }

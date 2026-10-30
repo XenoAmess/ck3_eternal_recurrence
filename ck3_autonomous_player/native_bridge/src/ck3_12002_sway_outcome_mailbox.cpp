@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12004_sway.hpp"
 #include "xar_bridge/protocol.hpp"
 
+#include <charconv>
 #include <limits>
 #include <windows.h>
 
@@ -21,7 +22,44 @@ std::string Quoted(std::string_view value) {
   return output + '"';
 }
 
+bool OpinionCharacterField(std::string_view json, std::string_view key,
+                           std::int32_t &output) noexcept {
+  const std::string needle = "\"" + std::string(key) + "\":";
+  const auto field = json.find(needle);
+  if (field == std::string_view::npos) return false;
+  auto begin = field + needle.size();
+  const auto space = [](char c) noexcept {
+    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+  };
+  while (begin < json.size() && space(json[begin])) ++begin;
+  auto end = begin;
+  if (end < json.size() && json[end] == '-') ++end;
+  const auto digits = end;
+  while (end < json.size() && json[end] >= '0' && json[end] <= '9') ++end;
+  if (end == digits || (end - digits > 1 && json[digits] == '0')) return false;
+  auto delimiter = end;
+  while (delimiter < json.size() && space(json[delimiter])) ++delimiter;
+  if (delimiter == json.size() || (json[delimiter] != ',' && json[delimiter] != '}')) return false;
+  std::int32_t value{};
+  const auto parsed = std::from_chars(json.data() + begin, json.data() + end, value);
+  if (parsed.ec != std::errc{} || parsed.ptr != json.data() + end || value == -1) return false;
+  output = value;
+  return true;
+}
+
+
 bool Parse(std::string_view payload, bool opinion_only, SwayOutcomeRequestV1 &request) noexcept {
+  if (opinion_only) {
+    std::uint64_t revision{};
+    std::int32_t actor{}, target{};
+    if (!bridge::JsonUnsignedField(payload, "expected_revision", revision) || !revision ||
+        !OpinionCharacterField(payload, "actor_character_id", actor) ||
+        !OpinionCharacterField(payload, "target_character_id", target) || actor == target) return false;
+    request.expected_revision = revision;
+    request.event_instance_id = 0; request.scheme_id = 0;
+    request.actor_character_id = actor; request.target_character_id = target;
+    return true;
+  }
   using bridge::JsonUnsignedField;
   std::uint64_t event{}, actor{}, target{}, scheme{};
   if (!JsonUnsignedField(payload, "expected_revision", request.expected_revision) ||
