@@ -122,6 +122,8 @@ public final class RootNormalExitRuntime implements RootDriverRegistryPublicProd
     }
     static Optional<NormalExitPhaseObservation.Outcome> phaseOutcome(Action action,Observation ack,Observation after){
         if(action==Action.QUERY_CONTEXT||action==Action.CONFIRM_DESKTOP||ack.action()!=action||ack.status()==Status.UNAVAILABLE||after.action()!=Action.QUERY_CONTEXT||after.status()!=Status.CONTEXT_OBSERVED||!sameProcessSource(ack.binding(),after.binding()))return Optional.empty();
+        // Diagnostic UNKNOWN preserves the former constructor requirements before phase settlement.
+        if(ack.status()==Status.DISPATCH_UNKNOWN_CLAIMED && (!ack.proof().complete()||ack.pumpEpoch().signum()==0||ack.contextSignature().isEmpty())) return Optional.empty();
         boolean modal=after.confirmationVisible()&&after.targets().get(2).complete()&&!after.stageConsumed().get(2);
         return switch(action){
             case PREPARE_CONFIRMATION -> modal&&(ack.confirmationVisible()||ack.dispatches().get(0).invoked()||ack.dispatches().get(1).invoked())?Optional.of(NormalExitPhaseObservation.Outcome.CONFIRMATION_VISIBLE)

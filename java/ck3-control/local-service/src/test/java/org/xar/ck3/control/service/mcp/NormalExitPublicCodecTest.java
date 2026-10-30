@@ -86,7 +86,7 @@ final class NormalExitPublicCodecTest {
             else if(variant==3)memory.put("reason","Bridge error: original native response / 原始错误");
             var actual=NormalExitPublicCodec.fromMemory(raw(memory));var wire=NormalExitPublicCodec.encode(actual);
             var round=NormalExitPublicCodec.decode(wire,Optional.of(BIRTH));
-            ObjectNode restored=(ObjectNode)StrictJson.parse(round.memory().bytes());assertEquals(memory,restored);
+            ObjectNode restored=(ObjectNode)StrictJson.parse(round.memory().bytes());assertEquals(StrictJson.parse(StrictJson.canonical(memory)),restored);
             assertEquals(variant!=0,restored.has("reason"));
             if(variant==1)assertTrue(restored.get("reason").isNull());
             if(variant>=2)assertEquals(memory.get("reason").textValue(),restored.get("reason").textValue());

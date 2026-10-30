@@ -17,3 +17,11 @@ Sway 新 signed 原包类、DirectObservation 与 PublicCodec 三完整类严格
 最初额外类测试因本地记录器遗漏 `xar.repository.root`、`xar.python`、`jna.tmpdir` 和错误按字符串选择 JNA 版本而逐次失败；均保留原日志，补齐后保留上述真实 2P1F。没有因测试失败重放原生或游戏动作。原件：`D:/ck3-state/resume90-java-delivery/SWAY90-*`。完整软件验收不证明 Native DLL 部署、当前 Game pipe 或游戏日推进。
 
 Root 随后要求本岗直接最小纠正该既有测试：每个 case 按保留原包的 after_sequence 建立请求、Python 原消费者使用同一原游标、断言原包 sequence 1/2/3。仅测试叶变更，没有改生产 cursor 门或原包。严格 javac0/1.840 秒；只重跑此前失败的 InvalidationRead 完整类，3P0F0skip/exit0，8.836 秒。连同前述三个已通过整类，Sway 四类共13P，未重复绿类。
+
+Sway 已正常 rebase 到 Native M1 `ba9332b5174b` 后普通 push，独立远端读回 `e3d14f623475c4545d8ceb8dcd185361401cfaf1`；未触运行 S/MB。
+
+Exitclaim 原 CRLF patch 初次 apply/check 失败；本岗误把随后的原源 `local-service -am -T2` 构建仍启动，已保留失败与实际构建记录，不能将它当候选验证。该原源构建自然 exit0/508.099 秒，实际重编 application757、adapters-storage9、native-transport447、local-service625，其余 reactor 模块复用。随后将明确两个 patch 输入规范为 LF，check0、apply0，才编候选：完整 NormalExitProtocol 与 RootNormalExitRuntime 严格 javac0/4.388 秒，输出为隔离 overlay，不改 Maven/运行产物。
+
+Exitclaim 接受丢失完整 frame/signature 的 UNKNOWN 原包为诊断，仍保留 mutation signature 校验，正 epoch/完整 proof/非空签名才可结算 phase。三份真实 Native 软件 UNKNOWN 原包经 NativeWire→协议→phase projector→public roundtrip 新四项通过；既有 Protocol 六项、phase 纯 projector 两项通过。PublicCodec 既有一项以 ObjectNode 数值节点实现类比较完整 uint64 JSON 而失败，测试改为统一严格 JSON 解析域后整类4P。累计16P。
+
+额外完整 phase 类中的 file-backed 三阶段软件链仍有1F，不能写全绿：原 fixture 的20秒调用期限在49.648秒 publication 时过期。曾在本岗 D 测试叶试用合法60秒 freshness、独立120秒 caller 与真实 Clock，后继在143.921秒失败于软件 transport 的 stale snapshot refresh（`RejectedBeforeDispatch: nonempty JSON string required`），未到完整 phase 结算；120秒 freshness 超原合同的失败也保留。未为通过放宽生产 guard，未重放 UNKNOWN；这段未成功的 test-only 探索已逐行恢复，未交付。三生产/测试失败日志均保留于 `EXITCLAIM90-*`，后继若修 fixture 可据此续行；候选 owner 原18项结果与本轮完整类结果分别记录。

@@ -86,8 +86,14 @@ public final class NormalExitProtocol {
             Objects.requireNonNull(contextSignature);Objects.requireNonNull(reason);targets=List.copyOf(targets);dispatches=List.copyOf(dispatches);stageConsumed=List.copyOf(stageConsumed);Objects.requireNonNull(exitAutosave);
             require(targets.size()==3&&dispatches.size()==3&&stageConsumed.size()==3,"three fixed exit stages required");
             require(!orderlyExitVerified&&!autosaveVerified,"native ACK cannot prove orderly exit or save integrity");
-            if(status!=Status.UNAVAILABLE){sha(contextSignature);require(proof.complete()&&pumpEpoch.signum()>0,"available exit lacks actual owner/source/frame proofs");}
-            else if(!contextSignature.isEmpty())sha(contextSignature);
+            if(status!=Status.UNAVAILABLE){
+                if(status==Status.DISPATCH_UNKNOWN_CLAIMED){
+                    if(!contextSignature.isEmpty())sha(contextSignature);
+                } else {
+                    sha(contextSignature);
+                    require(proof.complete()&&pumpEpoch.signum()>0,"available exit lacks actual owner/source/frame proofs");
+                }
+            } else if(!contextSignature.isEmpty())sha(contextSignature);
             if(action==Action.QUERY_CONTEXT){require(dispatches.stream().noneMatch(value->value.claimLatched()||value.invoked()),"query cannot claim or dispatch");
                 exitAutosave.ifPresent(value->require(!value.invoked()&&!value.postconditionObserved(),"query cannot toggle autosave"));}
             if(action!=Action.QUERY_CONTEXT&&status!=Status.UNAVAILABLE)require(contextSignatureVerified,"mutation requires verified backend context signature");
