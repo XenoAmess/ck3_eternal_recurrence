@@ -6110,21 +6110,20 @@ std::string SnapshotPublishDiagnosticFrame(
 std::string CommandResultFrame(std::string_view request_id,
                                std::string_view step, bool ok,
                                std::string_view status) {
-  std::string result = "{\"type\":\"command_result\",\"protocol_version\":1,"
-                       "\"request_id\":\"";
-  result += request_id;
-  result += "\",\"ok\":";
+  std::string result = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":";
   result += ok ? "true" : "false";
   if (ok) {
-    result += ",\"result\":{\"step\":\"";
-    result += step;
-    result += "\",\"accepted\":true,\"status\":\"";
-    result += status;
-    result += "\"}}";
+    result += ",\"result\":{\"step\":";
+    AppendJsonString(result, step);
+    result += ",\"accepted\":true,\"status\":";
+    AppendJsonString(result, status);
+    result += "}}";
   } else {
-    result += ",\"error\":\"";
-    result += status;
-    result += "\"}";
+    result += ",\"error\":";
+    AppendJsonString(result, status);
+    result += '}';
   }
   return result;
 }
