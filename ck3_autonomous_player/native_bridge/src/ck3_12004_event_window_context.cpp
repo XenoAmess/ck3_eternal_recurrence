@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_events.hpp"
 #include "xar_bridge/ck3_12004_faction_alerts.hpp"
 #include "xar_bridge/ck3_12004_snapshot_foundation.hpp"
+#include "xar_bridge/ck3_12004_event_window_context_v2.hpp"
 
 namespace xar::ck3_12004 {
 namespace {
@@ -102,6 +103,19 @@ EventWindowBindings BindEventWindowImage12004(
   result.resolve_script_identifier_name =
       reinterpret_cast<ck3_12002::EventResolveIdentifierName>(
           image_base + kEventScriptIdentifierNameResolverRva12004V1);
+  return result;
+}
+
+ck3_12002::EventWindowGuiBindingsV2 BindEventWindowImage12004V2(
+    std::uintptr_t image_base, std::string_view executable_sha256) noexcept {
+  ck3_12002::EventWindowGuiBindingsV2 result{};
+  result.presentation = BindEventWindowImage12004(image_base, executable_sha256);
+  if (result.presentation.events.core.enabled) {
+    // This .4 owner gate was independently captured at1856E40/125B.
+    // No .2/.3/legacy factory inherits this executable address.
+    result.read_owner_gate =
+        reinterpret_cast<ck3_12002::EventGuiOwnerGateV2>(image_base + 0x1856E40);
+  }
   return result;
 }
 

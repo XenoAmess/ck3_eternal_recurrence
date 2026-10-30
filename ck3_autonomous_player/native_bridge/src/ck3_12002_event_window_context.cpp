@@ -5,6 +5,7 @@
 
 
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12002_event_window_context_v2.hpp"
 #include <algorithm>
 #include <array>
 #include <charconv>
@@ -768,9 +769,46 @@ bool ReadEffectIndicators(
   return true;
 }
 
+struct GuiObservationCaptureV2 {
+  const EventWindowGuiBindingsV2 &bindings;
+  const EventWindowGuiAccessV2 &access;
+  std::vector<game::EventOptionGuiObservationV2> &observations;
+  const void *owner = nullptr;
+};
+
+game::EventGuiAvailabilityObservationV2 ObserveGuiAvailabilityV2(
+    const GuiObservationCaptureV2 &capture, const void *owner,
+    bool enabled, bool fallback) noexcept {
+  using Failure = game::EventGuiAvailabilityFailureV2;
+  if (capture.bindings.read_owner_gate == nullptr) {
+    return game::EventGuiAvailabilityUnobservedV2{
+        Failure::native_binding_unavailable};
+  }
+  if (capture.access.is_owning_thread == nullptr ||
+      !capture.access.is_owning_thread(capture.access.context)) {
+    return game::EventGuiAvailabilityUnobservedV2{
+        Failure::native_read_unavailable};
+  }
+  // This is the stock IsValid short circuit, not raw-enabled normalization.
+  // The gate may call widget virtual18 and is not a pure memory getter.
+  try {
+    const bool valid = (enabled || fallback) &&
+        capture.bindings.read_owner_gate(owner, nullptr);
+    if (!capture.access.is_owning_thread(capture.access.context)) {
+      return game::EventGuiAvailabilityUnobservedV2{
+          Failure::native_read_unavailable};
+    }
+    return game::EventGuiAvailabilityObservedV2{valid};
+  } catch (...) {
+    return game::EventGuiAvailabilityUnobservedV2{
+        Failure::native_read_unavailable};
+  }
+}
+
 bool ReadMatchingData(const EventWindowBindings &bindings, const void *event_data,
                       const void *data, std::int32_t expected_event_id,
-                      game::EventWindowContextV1 &candidate) {
+                      game::EventWindowContextV1 &candidate,
+                      GuiObservationCaptureV2 *gui = nullptr) {
   if (event_data == nullptr || data == nullptr) {
     return false;
   }
@@ -802,6 +840,10 @@ bool ReadMatchingData(const EventWindowBindings &bindings, const void *event_dat
   try {
     candidate.options.clear();
     candidate.options.reserve(static_cast<std::size_t>(count));
+    if (gui != nullptr) {
+      gui->observations.clear();
+      gui->observations.reserve(static_cast<std::size_t>(count));
+    }
   } catch (...) {
     return false;
   }
@@ -858,17 +900,19 @@ bool ReadMatchingData(const EventWindowBindings &bindings, const void *event_dat
       return false;
     }
   }
+  if (gui != nullptr) gui->owner = data;
   return true;
 }
 
 bool ReadMatchingWindow(const EventWindowBindings &bindings, const void *event_data,
                         void *window, std::int32_t expected_event_id,
-                        game::EventWindowContextV1 &candidate) {
+                        game::EventWindowContextV1 &candidate,
+                        GuiObservationCaptureV2 *gui = nullptr) {
   return window != nullptr &&
          LoadAt<std::uintptr_t>(window, 0) == bindings.event_window_primary_vtable &&
          ReadMatchingData(bindings, event_data,
                           static_cast<std::byte *>(window) + kWindowDataOffset,
-                          expected_event_id, candidate);
+                          expected_event_id, candidate, gui);
 }
 
 struct SplashObservation {
@@ -1022,10 +1066,11 @@ EventWindowBindings BindEventWindowImage(std::uintptr_t image_base,
   return result;
 }
 
-game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
+static game::ReadEventWindowContextResultV1 ReadEventWindowContextImpl(
     const EventWindowBindings &bindings, std::uint64_t expected_snapshot_revision,
     std::int32_t expected_event_instance_id,
-    game::EventWindowContextV1 &output) noexcept {
+    game::EventWindowContextV1 &output,
+    GuiObservationCaptureV2 *gui = nullptr) noexcept {
   output = {};
   output.snapshot_revision = expected_snapshot_revision;
   output.current_event_instance_id = expected_event_instance_id;
@@ -1128,7 +1173,7 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
       void *const window = LoadAt<void *>(
           windows, static_cast<std::size_t>(index) * sizeof(void *));
       if (!ReadMatchingWindow(bindings, identity_before.event_data, window,
-                              expected_event_instance_id, candidate)) {
+                              expected_event_instance_id, candidate, gui)) {
         SetUnavailable(output, "event_window_layout_invalid");
         return game::ReadEventWindowContextResultV1::unavailable;
       }
@@ -1144,7 +1189,7 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     }
     if (splash_before.data != nullptr &&
          (!ReadMatchingData(bindings, identity_before.event_data, splash_before.data,
-                            expected_event_instance_id, candidate) ||
+                            expected_event_instance_id, candidate, gui) ||
           (LoadAt<std::int32_t>(splash_before.data, kDataInstanceIdOffset) ==
                expected_event_instance_id &&
            LoadAt<void *>(splash_before.event, kActiveEventDataOffset) !=
@@ -1157,7 +1202,7 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
         (activity_before.has_open_event &&
          !ReadMatchingData(bindings, identity_before.event_data,
                            activity_before.insert, expected_event_instance_id,
-                           candidate))) {
+                           candidate, gui))) {
       SetUnavailable(output, "event_window_layout_invalid");
       return game::ReadEventWindowContextResultV1::unavailable;
     }
@@ -1167,6 +1212,17 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
                                  ? "event_window_not_materialized"
                                  : "event_window_ambiguous");
       return game::ReadEventWindowContextResultV1::unavailable;
+    }
+    if (gui != nullptr) {
+      // Gates may call widget virtual18. Invoke them only for the unique copied
+      // view, then retain the existing identity/scope/frame post-observation
+      // checks below. V1 never supplies this capture and never invokes them.
+      for (const auto &option : candidate.options) {
+        gui->observations.push_back(game::EventOptionGuiObservationV2{
+            option.rendered_index, option.native_option_index,
+            ObserveGuiAvailabilityV2(*gui, gui->owner,
+                                     option.enabled, option.fallback)});
+      }
     }
     EventDefinitionIdentityObservationV1 identity_after{};
     if (!ReadEventDefinitionIdentity(bindings, expected_event_instance_id,
@@ -1223,6 +1279,27 @@ game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
     SetUnavailable(output, "internal_error");
     return game::ReadEventWindowContextResultV1::unavailable;
   }
+}
+
+game::ReadEventWindowContextResultV1 ReadEventWindowContextV1(
+    const EventWindowBindings &bindings, std::uint64_t revision,
+    std::int32_t event_id, game::EventWindowContextV1 &output) noexcept {
+  return ReadEventWindowContextImpl(bindings, revision, event_id, output);
+}
+
+game::ReadEventWindowContextResultV1 ReadEventWindowContextV2(
+    const EventWindowGuiBindingsV2 &bindings,
+    const EventWindowGuiAccessV2 &access, std::uint64_t revision,
+    std::int32_t event_id, game::EventWindowContextV2 &output) noexcept {
+  output = {};
+  GuiObservationCaptureV2 capture{bindings, access, output.gui_observations};
+  const auto result = ReadEventWindowContextImpl(
+      bindings.presentation, revision, event_id, output.presentation,
+      &capture);
+  if (result != game::ReadEventWindowContextResultV1::available) {
+    output.gui_observations.clear();
+  }
+  return result;
 }
 
 bool ParseEventWindowContextRequestV1(

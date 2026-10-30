@@ -224,6 +224,8 @@
 #include "xar_bridge/ck3_12004_pending_context.hpp"
 #include "xar_bridge/ck3_12004_world.hpp"
 #include "xar_bridge/ck3_12004_event_window_context.hpp"
+#include "xar_bridge/ck3_12004_event_window_context_v2.hpp"
+#include "xar_bridge/ck3_12002_event_window_context_v2_query.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12004_campaign.hpp"
@@ -8869,8 +8871,12 @@ std::string PendingCharacterInteractionContextResultFrame(
 std::string EventWindowContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::EventWindowContextV1 &context,
-    bool crozier = false, bool allow_null_saved_character_scope = false) {
-  const auto payload = crozier
+    bool crozier = false, bool allow_null_saved_character_scope = false,
+    const xar::game::EventWindowContextV2 *gui = nullptr) {
+  const auto payload = gui != nullptr
+      ? xar::ck3_12002::SerializeEventWindowContextV2(
+            *gui, allow_null_saved_character_scope)
+      : crozier
       ? xar::ck3_12002::SerializeEventWindowContextV1(
             context, allow_null_saved_character_scope)
       : xar::ck3_11906::SerializeEventWindowContextV1(context);
@@ -11404,6 +11410,8 @@ struct TypedQuery12002 {
   xar::ck3_11906::LoadedFeatureManifestRequestV1 loaded_request{};
   xar::ck3_12002::PendingCharacterInteractionContextRequestV1 pending_request{};
   std::int32_t event_instance_id = -1;
+  xar::ck3_12002::EventWindowGuiRequestVersionV2 event_gui_version =
+      xar::ck3_12002::EventWindowGuiRequestVersionV2::presentation_v1;
   xar::game::TitleMapNavigationCommandV1 title_command{};
   std::string_view title_failure_stage{};
   std::uint64_t title_dispatch_ticket = 0;
@@ -11428,6 +11436,7 @@ struct TypedQuery12002 {
   xar::game::LoadedFeatureManifestV1 loaded{};
   xar::game::PendingCharacterInteractionContextV1 pending{};
   xar::game::EventWindowContextV1 event{};
+  xar::game::EventWindowContextV2 event_gui{};
 };
 
 template <class Frame>
@@ -11788,9 +11797,14 @@ bool ExecuteTypedQuery12002(
       const auto bindings = actual4
           ? xar::ck3_12004::BindEventWindowImage12004(query.image_base, sha)
           : xar::ck3_12002::BindEventWindowImage(query.image_base, sha);
-      xar::ck3_12002::ReadEventWindowContextV1(
-          bindings,
-          envelope->expected_snapshot_revision, query.event_instance_id, query.event);
+      xar::ck3_12002::EventWindowGuiBindingsV2 gui_bindings{bindings};
+      if (actual4 && query.event_gui_version ==
+                        xar::ck3_12002::EventWindowGuiRequestVersionV2::gui_v2)
+        gui_bindings = xar::ck3_12004::BindEventWindowImage12004V2(
+            query.image_base, sha);
+      (void)xar::ck3_12002::ReadVersionedEventWindowInQueryV2(
+          query.event_gui_version, gui_bindings, *envelope,
+          query.event_instance_id, query.event, query.event_gui);
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::title_map) {
       const bool previously_dispatched = query.title_command.dispatched;
@@ -13575,7 +13589,9 @@ bool ParseTypedQuery12002(std::string_view step, std::string_view payload,
     return xar::ck3_11906::ParsePendingCharacterInteractionContextRequestV1(
         payload, revision, query.pending_request.pending_interaction_id);
   case QueryKind12002::event_window:
-    return xar::ck3_11906::ParseEventWindowContextRequestV1(
+    return xar::ck3_12002::ParseEventWindowGuiRequestVersionV2(
+               payload, query.event_gui_version) &&
+           xar::ck3_11906::ParseEventWindowContextRequestV1(
         payload, revision, query.event_instance_id);
   case QueryKind12002::title_map:
     if (!xar::ck3_11906::ParseTitleMapNavigationRequestV1(
@@ -14023,7 +14039,10 @@ std::string RunTypedQuery12002(
     response = EventWindowContextResultFrame(request_id,
         ++state.event_window_context_query_sequence, query.event, true,
         xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
-        xar::game::IsCk3_12004Descriptor(game.descriptor())); break;
+        xar::game::IsCk3_12004Descriptor(game.descriptor()),
+        query.event_gui_version ==
+                xar::ck3_12002::EventWindowGuiRequestVersionV2::gui_v2
+            ? &query.event_gui : nullptr); break;
   case QueryKind12002::title_map: {
     const auto status = query.title_command.status;
     if (status != xar::game::TitleMapNavigationCommandStatusV1::centered &&

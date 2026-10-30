@@ -780,3 +780,109 @@ and shared preimages. Native66 cached configuration/generation passed in 19.901
 seconds at 17:48:16Z and generated the exact CTest registration with timeout30.
 Neither the passing 259-check matrix nor the complete hosted CI step was rerun
 for publication. No DLL deployment, Game action or local-model call occurred.
+
+
+The actual4 Stop group was normally published and independently read back as
+`3ffd71fec93b12b5267187f1f30da77dd3d8e4bb` at 17:50:23Z.
+
+## Explicit GUI observation v2
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`. Root explicitly authorized the
+mature GUI source group for normal publication. The existing operation and its
+default v1 behavior remain unchanged. Only a literal integer field
+gui_observation_version:2 requests the separate current-event-window-context-v2
+schema. The original raw enabled byte remains in the v1 presentation; each v2
+option independently records Observed(is_valid) or Unobserved with the exact
+binding/read reason. There is no invented true/false value for legacy NotReported
+and no new startup requirement. The active Native63 DLL still uses v1.
+
+The actual stock owner gate can invoke a widget callback. V2 invokes it only
+after identifying exactly one copied view and checking the actual mailbox
+owning-thread predicate, then retains the existing definition/scope/frame checks.
+Missing binding or ownership produces typed Unobserved. The .4 factory alone
+binds its independently captured gate address; the original v1 DTO and binding
+layout are unchanged. The .4 factory was separately linked and its getter ran
+two new owned-image cases through the original125B gate at its original RVA.
+That binder test does not claim a live .4 GUI or snapshot.
+
+Publication review found that the first freeze03 source inherited unpublished
+Locator work and lacked newer published named Character-scope/token retention.
+The accepted variant04 was rebased onto published reader/serializer sources,
+keeps the named identity_unavailable and raw-token double observation, and omits
+Locator from publication. Its repo-only public-reader fixture compiles four TUs
+and passes nine scenes, including rawfalse/fallbacktrue, ambiguous zero-gate,
+both Unobserved reasons, named unresolved identity and raw-token drift. The
+original 13 packets remain byte-identical, with three new named-scope packets.
+Original renamed baseline copies are not included in the permanent regression.
+
+The other repo-only target directly includes the actual new request/query
+helpers and compiles seven TUs with real QueryMailbox Enter/Finish/ownership,
+the reader, serializers and .3/.4 ABI support. Its 21 raw-token cases and three
+dispatch cases pass 102 checks. Bool, floating/exponent2, string, null, other
+integers, arrays/objects, noncanonical tokens and duplicate feature fields are
+rejected before normalization. V1 calls no GUI gate; the owning v2 path calls
+one, and a nonowner returns Unobserved without a gate. The final necessary
+published-base two-TU replacement/link/new-wrapper execution passed in
+12.948/2.635/0.238 seconds. It reuses five qualified objects and no Runtime or
+Bridge archive. These are direct helper executions, not physical submit/pump,
+the complete anonymous Bridge executor or a WorkerMain/Game test.
+
+The publication Bridge candidate strictly compiled as one complete TU in
+30.472 seconds. Shared Z receives only the corresponding merge, retaining its
+separate Locator/refund work and restoring published named-scope semantics.
+That full shared Bridge combination strictly compiled in 32.600 seconds. Its
+combined reader was separately compiled once and passed the same nine scenes;
+all16 packet files match publication bytes. The first combined-reader run failed
+only to write a missing harness directory; the corrected directory/existing EXE
+run passed without source or compilation changes. Neither combination grants
+dynamic Locator coverage. The future queued callback seam remains a separate
+D-only follow-up and is excluded from this group.
+
+The two ordinary BUILD_TESTING/Windows targets and precise existing-CI additions
+are locally adopted and staged, not committed or pushed. Four-TU target
+compiler/link options match the verified narrow recipe. After the controlled
+resource window reopened, Native66 configuration passed in19.864 seconds,
+the four-TU reader target built/linked in28.527 seconds and its CTest passed1/1
+in0.21 seconds with nine scenes. The seven-TU dispatch target was already
+running when the vacation STOP arrived and ended0 at18:20:11.446Z after51.263
+seconds. Its CTest had not started and was cancelled. Complete hosted CI was
+not run. Formal Native66 uses the explicitly described shared combination;
+publication-only fixture results remain separately recorded. The final Java
+matrix has65 unique leaves (27 production,12 JUnit
+classes,26 resources) across six modules. Its exact assembled Maven compile
+ended0 in383.216 seconds,34 reactor entries succeeded and31 Java modules really
+recompiled. Separate component results10/2/110/3/12/4 are retained, not presented
+as one full CI/cold/assembly run. JavaDelivery owns its subsequent publication.
+
+Evidence: M2 `options/gui-observation-v2-90/`
+`{published-v2-variant04/PUBLISHED-V2-RESULT04.json,shared-combination05/RESULT05.json}`;
+M0 `bridge-producer/event-gui-dispatch-v2/`
+`{published-variant-actual/RESULT.json,persistent-candidate/CI-INTEGRATION.md}`;
+M2 `java-gui-v2-90/JAVA-V2-LEAF-MATRIX109.json`; this owner
+`gui-v2-bridge-compile.actual.txt` and `gui-shared-bridge-compile.actual.txt`.
+
+New heavy local writes were throttled for runtime102, while held source work
+and small source delivery continued. The isolated integration budget increased
+from64 to80 MiB solely to retain one necessary second Bridge compilation object;
+the actual root was68,721,804 bytes at18:05:05Z, with the original November6
+review deadline and no automatic renewal. No DLL/Game operation occurred.
+The user's later instruction restored local-model use: resources90 coordinates
+all HTTP. Two genuinely unimplemented JSON escaping persistent tests were handed
+to that coordinator with complete current producer/consumer/failure inputs;
+their candidates still require review and execution. Earlier model-pause notes
+describe the earlier interval, not the current instruction.
+
+## Vacation STOP, 2026-10-31 local date
+
+The user's latest vacation instruction stops new implementation, compilation,
+testing, model requests and task replacement. The last already-running dispatch
+build ended successfully as recorded above; no Native command remains running.
+Surrender136 and the reverse-canonical fixture were prepared but never started
+and their queue reservations are cancelled. The two coordinated model JSON
+test responses remain unreviewed candidates without compilation or adoption.
+
+Delivery90 remains at3ffd71fec93b12b5267187f1f30da77dd3d8e4bb with nineteen
+GUI leaves staged and no GUI commit. The independent remote read is
+7b93fe8bfca80025931c4ef41f6bbdd94f8c9754. No push, DLL deployment, restart
+or Game action is added for closure. The precise restart entry is
+docs/handover/2026-10-31-resume90-native-delivery-handoff.md.

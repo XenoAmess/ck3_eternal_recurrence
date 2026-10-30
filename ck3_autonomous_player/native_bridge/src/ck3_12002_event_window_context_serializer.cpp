@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_event_window_context.hpp"
 
+#include "xar_bridge/ck3_12002_event_window_context_v2.hpp"
 #include <algorithm>
 #include <array>
 #include <charconv>
@@ -302,15 +303,17 @@ bool ValidSavedScopes(const std::vector<game::EventSavedScopeV1> &scopes,
 
 } // namespace
 
-std::string SerializeEventWindowContextV1(
+static std::string SerializeEventWindowContextImplV2(
     const game::EventWindowContextV1 &context,
-    bool allow_null_saved_character_scope) {
+    bool allow_null_saved_character_scope,
+    const std::vector<game::EventOptionGuiObservationV2> *observations) {
   if (context.snapshot_revision == 0 ||
       context.current_event_instance_id <= 0) {
     return {};
   }
   const bool available =
       context.status == game::EventWindowContextStatusV1::available;
+  if (observations != nullptr && observations->size() != context.options.size()) return {};
   const bool partial_definition_identity =
       !available &&
       context.unavailable_reason == "event_saved_scope_invalid" &&
@@ -358,8 +361,9 @@ std::string SerializeEventWindowContextV1(
   }
   std::string output;
   output.reserve(4096);
-  output += "{\"schema\":\"current-event-window-context-v1\","
-            "\"schema_version\":1,\"status\":";
+  output += observations == nullptr
+      ? "{\"schema\":\"current-event-window-context-v1\",\"schema_version\":1,\"status\":"
+      : "{\"schema\":\"current-event-window-context-v2\",\"schema_version\":2,\"status\":";
   AppendString(output, available ? "available" : "unavailable");
   output += ",\"snapshot_revision\":" + Number(context.snapshot_revision);
   output += ",\"date_raw\":" + Number(context.date_raw);
@@ -419,6 +423,36 @@ std::string SerializeEventWindowContextV1(
       output += option.fallback ? "true" : "false";
       output += ",\"cancel\":";
       output += option.cancel ? "true" : "false";
+      if (observations != nullptr) {
+        const auto &observation = (*observations)[index];
+        if (observation.rendered_index != option.rendered_index ||
+            observation.native_option_index != option.native_option_index) {
+          return {};
+        }
+        output += ",\"gui_availability\":{";
+        if (const auto *observed = std::get_if<
+                game::EventGuiAvailabilityObservedV2>(
+                &observation.gui_availability)) {
+          output += "\"status\":\"observed\",\"is_valid\":";
+          output += observed->is_valid ? "true}" : "false}";
+        } else if (const auto *unobserved = std::get_if<
+                       game::EventGuiAvailabilityUnobservedV2>(
+                       &observation.gui_availability)) {
+          output += "\"status\":\"unobserved\",\"reason\":";
+          switch (unobserved->reason) {
+          case game::EventGuiAvailabilityFailureV2::native_binding_unavailable:
+            output += "\"native_binding_unavailable\"}";
+            break;
+          case game::EventGuiAvailabilityFailureV2::native_read_unavailable:
+            output += "\"native_read_unavailable\"}";
+            break;
+          default:
+            return {};
+          }
+        } else {
+          return {};
+        }
+      }
       output += ",\"resolved_name\":";
       AppendString(output, option.resolved_name);
       output += ",\"unavailable_reason\":";
@@ -479,6 +513,21 @@ std::string SerializeEventWindowContextV1(
       "\"manager_offset\":\"+0x28\","
       "\"backend_id\":\"ck3-1.20.0.2-native-event-window-v1\"}}";
   return output;
+}
+
+std::string SerializeEventWindowContextV1(
+    const game::EventWindowContextV1 &context,
+    bool allow_null_saved_character_scope) {
+  return SerializeEventWindowContextImplV2(
+      context, allow_null_saved_character_scope, nullptr);
+}
+
+std::string SerializeEventWindowContextV2(
+    const game::EventWindowContextV2 &context,
+    bool allow_null_saved_character_scope) {
+  return SerializeEventWindowContextImplV2(
+      context.presentation, allow_null_saved_character_scope,
+      &context.gui_observations);
 }
 
 } // namespace xar::ck3_12002

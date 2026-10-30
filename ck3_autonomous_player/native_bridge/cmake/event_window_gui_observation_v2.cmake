@@ -1,0 +1,18 @@
+if(BUILD_TESTING AND WIN32)
+add_executable(xar_ck3_event_window_gui_observation_v2_test
+  tests/ck3_event_window_gui_observation_v2_test.cpp
+  tests/support/event_window_gui_unused_outer_v2.cpp
+  src/ck3_12002_event_window_context.cpp
+  src/ck3_12002_event_window_context_serializer.cpp)
+target_include_directories(xar_ck3_event_window_gui_observation_v2_test PRIVATE include tests src research)
+target_compile_features(xar_ck3_event_window_gui_observation_v2_test PRIVATE cxx_std_20)
+target_compile_definitions(xar_ck3_event_window_gui_observation_v2_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+target_link_libraries(xar_ck3_event_window_gui_observation_v2_test PRIVATE kernel32)
+if(MSVC)
+  target_compile_options(xar_ck3_event_window_gui_observation_v2_test PRIVATE /O2 /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8 /MP1 /Gy)
+  target_link_options(xar_ck3_event_window_gui_observation_v2_test PRIVATE /OPT:REF)
+endif()
+add_test(NAME xar_ck3_event_window_gui_observation_v2 COMMAND xar_ck3_event_window_gui_observation_v2_test)
+set_tests_properties(xar_ck3_event_window_gui_observation_v2 PROPERTIES TIMEOUT 15)
+
+endif()
