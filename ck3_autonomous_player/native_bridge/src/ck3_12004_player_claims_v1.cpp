@@ -10,7 +10,7 @@ namespace {
 bool Ready(const CoreSnapshotPrefix &frame) noexcept {
   return frame.clock.paused && frame.map_ready && frame.has_played_character &&
       frame.played_character_alive && frame.local_player_id >= 0 &&
-      frame.played_character_id >= 0;
+      frame.played_character_id != -1;
 }
 bool Same(const CoreSnapshotPrefix &a, const CoreSnapshotPrefix &b) noexcept {
   return Ready(a) && Ready(b) && a.clock.date_raw == b.clock.date_raw &&

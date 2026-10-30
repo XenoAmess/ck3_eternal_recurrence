@@ -4,6 +4,7 @@
 #include "ck3_12004_foundation_fixture_support.hpp"
 
 #include <array>
+#include <bit>
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -399,9 +400,56 @@ void ChangesBetweenObservations(const std::filesystem::path &wire) {
     ++scenarios;
   }
 }
+
+int SignedCurrentPlayerProbe() {
+  struct Case { const char *name; std::int32_t actor; bool stale; bool available; };
+  constexpr auto negative_a = std::bit_cast<std::int32_t>(
+      static_cast<std::uint32_t>(kActor) | 0x80000000U);
+  constexpr auto negative_b = std::bit_cast<std::int32_t>(
+      static_cast<std::uint32_t>(kActor) | 0xFF000000U);
+  constexpr std::array cases{
+      Case{"positive_control", kActor, false, true},
+      Case{"negative_generation_80", negative_a, false, true},
+      Case{"negative_generation_FF", negative_b, false, true},
+      Case{"minus1_sentinel", -1, false, false},
+      Case{"same_slot_stale_negative_generation", negative_a, true, false}};
+  int failed = 0;
+  for (const auto &c : cases) {
+    Fixture f;
+    f.core.SetPlayingCharacterFullId(c.actor);
+    if (c.stale) f.core.SetCharacterFullId(negative_b);
+    const auto actor = current::ResolveCoreCharacter(f.bindings.core, c.actor);
+    current::CoreSnapshotPrefix frame{};
+    const bool frame_read = current::ReadCoreSnapshot(f.bindings.core, frame);
+    game::PlayerClaimsV1 out{};
+    const std::array ids{kStrongExplicit};
+    const auto result = current::ReadPlayerClaimsV1(f.bindings, ids, out);
+    const bool callbacks_match = f.observed_actors ==
+        std::vector<std::int32_t>{c.actor, c.actor};
+    const bool pass = c.available ? frame_read && actor != nullptr &&
+        frame.has_played_character && frame.played_character_id == c.actor &&
+        result == Result::available && out.available && out.actor_character_id == c.actor &&
+        out.claims.size() == 1 && out.claims[0].title_id == kStrongExplicit &&
+        out.claims[0].state == "strong_explicit" && f.getter_calls == 2 &&
+        f.destructor_calls == 2 && !f.bad_destructor_call && callbacks_match :
+        result == Result::unavailable && !out.available && out.claims.empty() &&
+        actor == nullptr && f.getter_calls == 0 && f.destructor_calls == 0;
+    if (!pass) ++failed;
+    const auto wire = game::SerializePlayerClaimsV1(out, result, 1, kRevision, Step(ids));
+    std::printf("{\"case\":\"%s\",\"actor\":%d,\"resolved\":%s,\"frame_read\":%s,\"frame_actor\":%d,\"getter_calls\":%llu,\"destructor_calls\":%llu,\"pass\":%s,\"result\":%s}\n",
+        c.name, static_cast<int>(c.actor), actor != nullptr ? "true" : "false",
+        frame_read ? "true" : "false", static_cast<int>(frame.played_character_id),
+        static_cast<unsigned long long>(f.getter_calls),
+        static_cast<unsigned long long>(f.destructor_calls), pass ? "true" : "false", wire.c_str());
+  }
+  return failed == 0 ? 0 : 1;
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 2 && std::strcmp(argv[1], "--signed-current-player") == 0)
+    return SignedCurrentPlayerProbe();
   try {
     Check(argc == 2, "usage: xar_ck3_12004_player_claims_v1_test <new-wire-output-dir>");
     const std::filesystem::path wire(argv[1]);
@@ -413,6 +461,7 @@ int main(int argc, char **argv) {
     MissingAndStaleTitle(wire);
     MalformedOptionalLifetime(wire);
     ChangesBetweenObservations(wire);
+    Check(SignedCurrentPlayerProbe() == 0, "SignedCurrentPlayerProbe failed");
     std::cout << "PASS checks=" << checks << " scenarios=" << scenarios
               << " wires=" << wire_sequence
               << "; synthetic component/getter memory, production reader/resolvers/parser/serializer"

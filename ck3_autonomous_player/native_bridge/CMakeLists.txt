@@ -9775,7 +9775,7 @@ if(BUILD_TESTING AND WIN32)
     src/player_claims_v1_serializer.cpp
     src/ck3_12004_abi_profile.cpp
     src/ck3_12002_province.cpp)
-  target_include_directories(xar_ck3_12004_player_claims_v1_test PRIVATE include)
+  target_include_directories(xar_ck3_12004_player_claims_v1_test PRIVATE include src research)
   target_compile_features(xar_ck3_12004_player_claims_v1_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_12004_player_claims_v1_test PRIVATE
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
