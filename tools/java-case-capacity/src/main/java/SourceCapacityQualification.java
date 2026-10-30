@@ -1,0 +1,15 @@
+import com.fasterxml.jackson.databind.node.ObjectNode;import java.nio.file.*;import java.time.*;import java.util.*;
+/** Actual strict Maven/pure command receipts; no full observer or publication. */
+public final class SourceCapacityQualification{
+ private SourceCapacityQualification(){}
+ public static void main(String[] a)throws Exception{
+  if(a.length!=3)throw new IllegalArgumentException("unique qualification filename machine sourceHEAD");Path own=SourceContinuationCapacity.own();String cp=System.getProperty("java.class.path");String dep=cp.substring(cp.indexOf(';')+1);String machine=a[1],head=a[2];SourceContinuationCapacity.need(machine.equals(ExactClosedLeafCleanup20261027CandidateA03.Win.machine())&&head.matches("[0-9a-f]{40}"),"Actual qualification machine and explicit observation source");
+  var m=SourceContinuationCapacity.child(machine,head,List.of("cmd.exe","/d","/c","mvn","-B","-o","-f",own.resolve("pom.xml").toString(),"-Dqualified.classpath="+dep,"compiler:compile","compiler:testCompile"),own.resolve("STRICT-MAVEN-a01"),180);
+  var p=SourceContinuationCapacity.child(machine,head,List.of(Path.of(System.getProperty("java.home"),"bin/java.exe").toString(),"--enable-native-access=ALL-UNNAMED","-XX:-UsePerfData","-cp",own.resolve("target/test-classes")+";"+cp,"SourceContinuationCapacityTest","--pure"),own.resolve("PURE-a01"),120);
+  ObjectNode q=SourceContinuationCapacity.JSON.createObjectNode().put("schema","xar.source-continuation-capacity-qualified-code.v1").put("machine_id",machine).put("observed_at_utc",Instant.now().toString()).put("classpath",cp).put("strict_maven_compile_passed",true).put("pure_passed",true).put("collector_CAS_or_Game_executed",false).put("configured_source_independent",true);
+  SourceContinuationCapacity.put(q,"code",SourceContinuationCapacity.code());var tests=new ArrayList<F15ReadOnlyBuildBudget20261029.Pin>();tests.add(SourceContinuationCapacity.pin(own.resolve("src/test/java/SourceContinuationCapacityTest.java")));try(var w=Files.walk(own.resolve("target/test-classes"))){for(Path x:w.filter(Files::isRegularFile).sorted().toList())tests.add(SourceContinuationCapacity.pin(x));}SourceContinuationCapacity.put(q,"test_inputs",tests);q.put("test_classpath",own.resolve("target/test-classes")+";"+cp).put("production_depends_on_test_runner",false);SourceContinuationCapacity.put(q,"inherited_C35_code",SourceContinuationCapacity.pin(C35Source98Inventory200k20261030A01.O.resolve("CODE.json")));SourceContinuationCapacity.put(q,"strict_maven_original_wait",SourceContinuationCapacity.pin(own.resolve("STRICT-MAVEN-a01.original-wait.json")));SourceContinuationCapacity.put(q,"pure_original_wait",SourceContinuationCapacity.pin(own.resolve("PURE-a01.original-wait.json")));SourceContinuationCapacity.put(q,"maven",m);SourceContinuationCapacity.put(q,"pure",p);SourceContinuationCapacity.create(own.resolve(a[0]),q,262144);System.out.println(SourceContinuationCapacity.JSON.writeValueAsString(SourceContinuationCapacity.pin(own.resolve(a[0]))));
+ }
+}
+
+
+

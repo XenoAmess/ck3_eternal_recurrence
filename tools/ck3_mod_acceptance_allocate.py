@@ -1557,9 +1557,10 @@ class _PrelaunchUnrunAdmissionReducer(Protocol):
 def revalidate_prelaunch_unrun_admission(selection: Selection, args: argparse.Namespace,
         closure: JsonObject) -> JsonObject:
     """Repeat the actual allocated-unrun reducer inside the machine writer lock."""
-    mode = 'previous-shared-allocated-unrun-prelaunch-orchestrator-failed'
-    if closure.get('mode') != mode:
-        raise ValueError('Exact prelaunch-orchestrator recovery mode required')
+    mode = text_field(closure, 'mode')
+    if mode not in ('previous-shared-allocated-unrun-prelaunch-orchestrator-failed',
+                    'previous-shared-allocated-unrun-root-cooperative-stop'):
+        raise ValueError('Exact prelaunch or Root cooperative-stop recovery mode required')
     configured = object_field(json_object(selection.runtime), 'allocation')
     bus_ref = object_field(configured, 'task_bus')
     base = selection.runtime_path.parent
@@ -3951,7 +3952,8 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
             closure.update(revalidate_failed_live_resource_admission(selection,args,closure))
         if closure['mode']=='previous-shared-allocated-pre-intent-offline-ttl-refused':
             closure.update(revalidate_pre_intent_offline_ttl_admission(selection,args,closure))
-        if closure['mode']=='previous-shared-allocated-unrun-prelaunch-orchestrator-failed':
+        if closure['mode'] in ('previous-shared-allocated-unrun-prelaunch-orchestrator-failed',
+                'previous-shared-allocated-unrun-root-cooperative-stop'):
             closure.update(revalidate_prelaunch_unrun_admission(selection,args,closure))
         if closure['mode']=='previous-shared-recorder-pre-ready-failure':
             closure.update(revalidate_recorder_pre_ready_admission(selection,args,closure))

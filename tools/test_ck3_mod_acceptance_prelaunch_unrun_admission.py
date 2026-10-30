@@ -24,6 +24,8 @@ class LockProvider(Protocol):
 
 
 class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
+    root_cooperative_stop = False
+    expected_mode = 'previous-shared-allocated-unrun-prelaunch-orchestrator-failed'
     observed_root = False
     phase_guards = False
     intent_root = False
@@ -35,6 +37,14 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
         self.fixture = fixture
         bundle, self.live, self.keeper, _ = fixture.prelaunch_fixture(observed_root=self.observed_root,
             phase_guards=self.phase_guards, intent_root=self.intent_root, phase_count=self.phase_count)
+        if self.root_cooperative_stop:
+            ready = json_object(json.loads((self.keeper / 'ready.json').read_text(encoding='utf-8')))
+            stop = self.keeper / 'STOP'
+            stop.write_text(json.dumps({'machine_id': fixture.machine,
+                'reason': 'Root stopped the allocated fixture before public run',
+                'observed_at_utc': text_field(ready, 'at_utc')}), encoding='utf-8')
+            bundle['closure_kind'] = unrun.ROOT_COOPERATIVE_STOP_KIND
+            bundle['keeper_STOP'] = fixture.reference(stop)
         self.bundle = json_object(bundle)
         self.close = fixture.root / 'closure.json'
         self.close.write_text(json.dumps(bundle), encoding='utf-8')
@@ -124,7 +134,7 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
         self.assertEqual(self.reducer_under_lock, [True])
         intent = json_object(json.loads((record / 'intent.json').read_text(encoding='utf-8')))
         self.assertEqual(object_field(intent, 'closure')['mode'],
-            'previous-shared-allocated-unrun-prelaunch-orchestrator-failed')
+            self.expected_mode)
         self.assertFalse(intent['business_pass'])
 
     def test_host_evidence_appearing_inside_lock_rejects_before_consuming_intent(self) -> None:
@@ -167,6 +177,11 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
 
 class ObservedRootPrelaunchUnrunWriterAdmissionTests(PrelaunchUnrunWriterAdmissionTests):
     observed_root = True
+
+
+class RootCooperativeStopWriterAdmissionTests(PrelaunchUnrunWriterAdmissionTests):
+    root_cooperative_stop = True
+    expected_mode = 'previous-shared-allocated-unrun-root-cooperative-stop'
 
 
 class ThreePhaseRootPrelaunchUnrunWriterAdmissionTests(ObservedRootPrelaunchUnrunWriterAdmissionTests):
