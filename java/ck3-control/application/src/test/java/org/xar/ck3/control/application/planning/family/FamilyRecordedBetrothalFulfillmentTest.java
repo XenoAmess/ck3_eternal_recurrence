@@ -148,7 +148,10 @@ final class FamilyRecordedBetrothalFulfillmentTest {
                 }
             }, new Reads(Map.of(), projections), actual -> new KnownDocuments(documents), producer,
                     (actual, query, arguments, observed) -> {
-                        Obj reduced = FamilyResultReducer.reduce(query, documents.family(), arguments, observed.value(), documents.bridge(), observed.receipt().request().before().frame().identity().dateRaw());
+                        var observedFrame=observed.receipt().request().before().frame();
+                        Obj reduced=query==Query.CURRENT_RELATION
+                                ?FamilyResultReducer.matureWarm(documents.family(),observed.value(),documents.bridge(),observedFrame.episodeRunId(),observedFrame.identity().nativeRevision())
+                                :FamilyResultReducer.reduce(query,documents.family(),arguments,observed.value(),documents.bridge(),observedFrame.identity().dateRaw());
                         family(reduced); return true;
                     }, new Settings(true, true, false, false, Optional.empty()));
         }
@@ -348,9 +351,14 @@ final class FamilyRecordedBetrothalFulfillmentTest {
         assertTrue(malformed.commands.isEmpty(), "a boolean cannot pass the actual integer cost decoder");
         Fixture changedPair = new Fixture();
         changedPair.relation = changedPair.relation.with("betrothed_character_id", n(5)).with("primary_spouse_character_id", n(2));
-        Obj changedDetail = retainedBaselineObservation(changedPair);
-        assertEquals(changedPair.documents.family().get("resolved"), changedDetail.get("family_marriage_result_consumed"));
-        assertNull(changedDetail.get("current_betrothal_choice"), "prior material cannot authorize fulfillment of another current pair");
+        var matured=assertInstanceOf(OrdinaryPolicy.Refresh.class,changedPair.policy.evaluate(request(snapshot()),baseline()));
+        assertTrue(matured.reason().contains("betrothal-to-marriage"));
+        Obj actualResolved=object(changedPair.documents.family().get("resolved"));
+        assertEquals(t("marriage"),actualResolved.get("status"));assertEquals(n(2),actualResolved.get("candidate_character_id"));
+        assertEquals(t("betrothal_to_marriage"),actualResolved.get("warm_material_transition"));
+        assertNull(actualResolved.get("alliance_result"));
+        assertEquals(List.of(Query.CURRENT_RELATION),changedPair.readQueries);
+        assertTrue(changedPair.commands.isEmpty(),"recording the original observed spouse must not submit a different current pair");
     }
 }
 

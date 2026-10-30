@@ -418,14 +418,19 @@ final class SessionControllerRegressionTest {
     }
     @Test void lateObservationCannotEnqueueActualJournalDataUnderAnExtendedDeadline() throws IOException {
         Fixture fixture = new Fixture(true);
-        fixture.observer = (expected, until) -> {
-            CapturedOffline actual = capturedOffline("late-extended-deadline", until); fixture.time.waitFor(Duration.ofSeconds(6));
-            var extended = new PlanningRequest(actual.request().before(), actual.request().source(), actual.request().sessionId(),
-                    until.plusNanos(1), actual.request().observations());
-            return new Ready(extended, CheckpointEligibility.SAFE, Optional.of(actual.batch()), Optional.empty());
+        fixture.observer = new ObservationPort() {
+            @Override public Observation observe(SessionIdentity expected,Instant until){throw new AssertionError("planning deadline must reach this observation");}
+            @Override public Observation observe(SessionIdentity expected,Instant readinessUntil,Instant planningUntil) throws IOException {
+                assertTrue(readinessUntil.isBefore(planningUntil));
+                CapturedOffline actual=capturedOffline("late-extended-deadline",planningUntil);
+                fixture.time.waitFor(Duration.ofSeconds(6));
+                var extended=new PlanningRequest(actual.request().before(),actual.request().source(),actual.request().sessionId(),
+                        planningUntil.plusNanos(1),actual.request().observations());
+                return new Ready(extended,CheckpointEligibility.SAFE,Optional.of(actual.batch()),Optional.empty());
+            }
         };
         BatchReport report = fixture.controller().runBatch(limits("late-extended-deadline"));
-        assertEquals(BatchReport.Terminal.INTERNAL_FAILURE, report.terminal()); assertTrue(report.detail().contains("observation extended caller deadline"));
+        assertEquals(BatchReport.Terminal.INTERNAL_FAILURE, report.terminal()); assertTrue(report.detail().contains("observation extended batch planning deadline"));
         assertTrue(report.pendingAnalysisBatchIds().isEmpty()); assertTrue(report.completedAnalyses().isEmpty());
         assertEquals(0, fixture.submitted.get()); assertEquals(0, fixture.planningPublications); assertEquals(0, report.committedSavedDays());
     }
@@ -1106,6 +1111,7 @@ final class SessionControllerRegressionTest {
             EpisodeContinuation episodes=(owner,receipt,after)->{episodeCalls++;throw new IOException("fixture has no live committed private lifecycle producer");};
             ObservationPort actualObserver=new ObservationPort() {
                 @Override public Observation observe(SessionIdentity expected,Instant until)throws IOException,InterruptedException{return observer.observe(expected,until);}
+                @Override public Observation observe(SessionIdentity expected,Instant readinessUntil,Instant planningUntil)throws IOException,InterruptedException{return observer.observe(expected,readinessUntil,planningUntil);}
                 @Override public Optional<PendingSuccessorUi> pendingSuccessorUi(SessionIdentity expected,Instant until){assertEquals(0,scopeDepth);return pendingProbe.apply(expected,until);}
             };
             var controller = new SessionController(SESSION, life, actualObserver, planner, actions, service, factory, writer, analysis, time, withBaseline ? Optional.of(baseline) : Optional.empty(), 0,completion,episodes);
