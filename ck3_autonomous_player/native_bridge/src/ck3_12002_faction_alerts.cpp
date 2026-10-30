@@ -167,7 +167,7 @@ bool InvokeDanger(NativeFactionDanger12002 function, void *faction,
 bool InvokeHuman(NativeFactionCharacterBool12002 function, std::int32_t character_id,
                  bool &output) noexcept {
   output = false;
-  if (!function || character_id <= 0) return false;
+  if (!function || character_id == -1) return false;
 #if defined(_MSC_VER)
   __try {
 #endif
@@ -240,13 +240,13 @@ bool ReadMembers(const PlayerFactionAlertsNativeEnvironmentV1 &environment,
     if (!Read(access, data, offset + 8, member_id) ||
         (county ? (!Read(access, data, offset + 0x10, owner) || owner != faction)
                 : (!Read(access, data, offset + 0x0C, owner_id) || owner_id != faction_id)) ||
-        member_id <= 0 ||
+        (county ? member_id <= 0 : member_id == -1) ||
         !Resolve(access,
                  county ? environment.landed_title_storage_slot
                         : environment.character_storage_slot,
                  county ? environment.landed_title_fallback_slot
                         : environment.character_fallback_slot,
-                 member_id, county ? 0x10 : 0x18, member) || !member)
+                 member_id, county ? 0x10 : 0x18, member, !county) || !member)
       return false;
     output.push_back(member_id);
     if (county && environment.county_observations_12003 && observations) {
@@ -257,7 +257,7 @@ bool ReadMembers(const PlayerFactionAlertsNativeEnvironmentV1 &environment,
           environment, access, member_id, opinion);
       if (opinion.capital_province_id > 0)
         observation.capital_province_id = opinion.capital_province_id;
-      if (opinion.holder_character_id > 0)
+      if (opinion.holder_character_id != -1)
         observation.holder_character_id = opinion.holder_character_id;
       if (opinion_available) {
         observation.county_opinion = opinion.county_opinion;
@@ -325,13 +325,13 @@ ReadFactionEntityResult12002 ReadEntitySample(
       !Read(access, faction, 0x40, row.target_character_id) ||
       !Resolve(access, environment.character_storage_slot,
                environment.character_fallback_slot, row.target_character_id,
-               0x18, target) || !target)
+               0x18, target, true) || !target)
     return ReadFactionEntityResult12002::unavailable;
   std::int32_t leader_id = -1;
   void *leader = nullptr;
   if (!Read(access, faction, 0x44, leader_id) ||
       !Resolve(access, environment.character_storage_slot,
-               environment.character_fallback_slot, leader_id, 0x18, leader))
+               environment.character_fallback_slot, leader_id, 0x18, leader, true))
     return ReadFactionEntityResult12002::unavailable;
   if (leader) {
     row.leader_character_id = leader_id;
@@ -438,7 +438,7 @@ bool ReadSubrealmCountyIds(
     void *land = nullptr;
     if (!Resolve(access, environment.character_storage_slot,
                  environment.character_fallback_slot, characters[cursor], 0x18,
-                 character) || !character ||
+                 character, true) || !character ||
         !Read(access, character, 0x1C0, land)) return false;
     // A missing land state does not prove an empty geographical realm.
     if (!land) return false;
@@ -481,7 +481,7 @@ bool ReadSubrealmCountyIds(
           !vassal || !Read(access, vassal, 0x18, vassal_id) ||
           !Resolve(access, environment.character_storage_slot,
                    environment.character_fallback_slot, vassal_id, 0x18,
-                   round_trip) || round_trip != vassal) return false;
+                   round_trip, true) || round_trip != vassal) return false;
       void *actual_liege = nullptr;
       if (!InvokeLiege(environment.immediate_liege, vassal, actual_liege) ||
           actual_liege != character || vassal_id == actor_id) return false;
@@ -541,10 +541,10 @@ bool ReadSurrenderTitle(
       if (parent_id > 0) output.de_jure_parent_title_id = parent_id;
       std::int32_t holder_id = -1;
       if (!Read(access, title, 0x128, holder_id)) return false;
-      if (holder_id > 0) {
+      if (holder_id != -1) {
         void *holder = nullptr;
         if (!Resolve(access, environment.character_storage_slot,
-                     environment.character_fallback_slot, holder_id, 0x18, holder) ||
+                     environment.character_fallback_slot, holder_id, 0x18, holder, true) ||
             !holder) return false;
         output.holder_character_id = holder_id;
         std::vector<std::int32_t> lieges;
@@ -565,7 +565,7 @@ bool ReadSurrenderTitle(
           void *round_trip = nullptr;
           if (!Resolve(access, environment.character_storage_slot,
                        environment.character_fallback_slot, liege_id, 0x18,
-                       round_trip) || round_trip != liege) return false;
+                       round_trip, true) || round_trip != liege) return false;
           holder = liege; holder_id = liege_id;
         }
         if (!output.top_liege_character_id) return false;
@@ -663,7 +663,7 @@ bool ReadSurrenderImpact(
   void *leader = nullptr;
   if (!Resolve(access, environment.character_storage_slot,
                environment.character_fallback_slot, *faction.leader_character_id,
-               0x18, leader) || !leader) return false;
+               0x18, leader, true) || !leader) return false;
   if (!InvokeSurrenderPredicates(environment, access, actor, leader, output)) {
     output.unavailable_reason = "surrender_branch_predicates_unavailable";
     return false;
@@ -800,7 +800,7 @@ bool ReadSample(const PlayerFactionAlertsNativeEnvironmentV1 &environment,
   output = {};
   void *actor = nullptr;
   if (!Resolve(access, environment.character_storage_slot,
-               environment.character_fallback_slot, actor_id, 0x18, actor) ||
+               environment.character_fallback_slot, actor_id, 0x18, actor, true) ||
       !actor) return false;
   output.player_character_id = actor_id;
   output.player_identity_round_trip = true;
@@ -928,7 +928,7 @@ bool ReadCountyMemberOpinion12003(
                                         row, title, county) ||
         !Read(access, title, 0x128, row.holder_character_id) ||
         !Resolve(access, environment.character_storage_slot,
-                 environment.character_fallback_slot, row.holder_character_id, 0x18, holder) ||
+                 environment.character_fallback_slot, row.holder_character_id, 0x18, holder, true) ||
         !holder) return false;
     output = row;
     // Signed whole-point final opinion: negative and zero are material.
@@ -961,7 +961,7 @@ bool ReadCountyMemberCulture12003(
     void *target = nullptr;
     if (Resolve(access, environment.character_storage_slot,
                 environment.character_fallback_slot, target_character_id,
-                0x18, target) && target)
+                0x18, target, true) && target)
       read_culture(target, 0xB0, output.target_culture_id);
 
     FactionCountyOpinionMaterial12003 identity{};
@@ -1018,7 +1018,7 @@ game::ReadPlayerFactionAlertsResultV1 ReadPlayerFactionAlertsV1(
     if (before.snapshot_revision != request.expected_snapshot_revision)
       return reject(Failure::snapshot_revision_mismatch);
     if (!before.paused || !before.map_ready || !before.has_played_character ||
-        !before.played_character_alive || before.played_character_id <= 0)
+        !before.played_character_alive || before.played_character_id == -1)
       return reject(Failure::paused_player_unavailable);
     SourceSample first{}, second{};
     if (!ReadSample(environment, access, before.played_character_id, first) ||
@@ -1042,7 +1042,7 @@ bool ReadSubrealmCountyIdsV1(
     const PlayerFactionAlertsAccessV1 &access, std::int32_t actor_id,
     std::vector<std::int32_t> &output) noexcept {
   output.clear();
-  if (!environment.exact_build_admitted || actor_id <= 0) return false;
+  if (!environment.exact_build_admitted || actor_id == -1) return false;
   try { return ReadSubrealmCountyIds(environment, access, actor_id, output); }
   catch (...) { output.clear(); return false; }
 }

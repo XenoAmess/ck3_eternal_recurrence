@@ -17,6 +17,8 @@ using Result = game::ReadPlayerFactionAlertsResultV1;
 bool PositiveIdentity(std::int32_t value) noexcept { return value > 0; }
 // Native public faction FullID preserves all signed int32 values except -1.
 bool FactionIdentity(std::int32_t value) noexcept { return value != -1; }
+// Native public character FullID is signed int32; only -1 is absent.
+bool CharacterIdentity(std::int32_t value) noexcept { return value != -1; }
 
 bool StableKey(std::string_view value) noexcept {
   if (value.empty()) {
@@ -46,9 +48,17 @@ bool PositiveUnique(const std::vector<std::int32_t> &values) {
   return true;
 }
 
+bool CharacterUnique(const std::vector<std::int32_t> &values) {
+  std::unordered_set<std::int32_t> seen;
+  for (const auto value : values) {
+    if (!CharacterIdentity(value) || !seen.insert(value).second) return false;
+  }
+  return true;
+}
+
 Failure ValidateSample(const PlayerFactionAlertsSourceSampleV1 &sample,
                        std::int32_t expected_player) noexcept {
-  if (!PositiveIdentity(sample.player_character_id) ||
+  if (!CharacterIdentity(sample.player_character_id) ||
       sample.player_character_id != expected_player ||
       !sample.player_identity_round_trip || sample.targeting_faction_count < 0 ||
       static_cast<std::size_t>(sample.targeting_faction_count) !=
@@ -68,16 +78,16 @@ Failure ValidateSample(const PlayerFactionAlertsSourceSampleV1 &sample,
   for (const auto &source : sample.targeting_factions) {
     const auto &row = source.row;
     if (!FactionIdentity(row.faction_id) ||
-        !PositiveIdentity(row.target_character_id) ||
+        !CharacterIdentity(row.target_character_id) ||
         row.target_character_id != expected_player ||
         !source.faction_identity_round_trip ||
         !source.target_identity_round_trip ||
         (row.leader_character_id.has_value() &&
-         (!PositiveIdentity(row.leader_character_id.value()) ||
+         (!CharacterIdentity(row.leader_character_id.value()) ||
           !source.leader_identity_round_trip)) ||
         (!row.leader_character_id.has_value() && row.leader_is_human) ||
         (row.special_character_id.has_value() &&
-         (!PositiveIdentity(row.special_character_id.value()) ||
+         (!CharacterIdentity(row.special_character_id.value()) ||
           !source.special_character_identity_round_trip)) ||
         (row.special_title_id.has_value() &&
          (!PositiveIdentity(row.special_title_id.value()) ||
@@ -94,7 +104,7 @@ Failure ValidateSample(const PlayerFactionAlertsSourceSampleV1 &sample,
         !ValidFixedPoint(row.discontent_per_month, false) ||
         (row.months_until_max_discontent.has_value() &&
          row.months_until_max_discontent.value() < 0) ||
-        !PositiveUnique(row.character_member_ids) ||
+        !CharacterUnique(row.character_member_ids) ||
         !PositiveUnique(row.county_member_title_ids)) {
       return Failure::identity_round_trip_failed;
     }
@@ -107,7 +117,7 @@ Failure ValidateSample(const PlayerFactionAlertsSourceSampleV1 &sample,
     const auto &row = source.row;
     if (!PositiveIdentity(row.county_title_id) ||
         !FactionIdentity(row.faction_id) ||
-        !PositiveIdentity(row.target_character_id) ||
+        !CharacterIdentity(row.target_character_id) ||
         !source.county_identity_round_trip ||
         !source.faction_identity_round_trip ||
         !source.target_identity_round_trip ||
@@ -319,7 +329,7 @@ game::ReadPlayerFactionAlertsResultV1 ReadPlayerFactionAlertsV1(
     }
     if (!before.paused || !before.map_ready ||
         !before.has_played_character || !before.played_character_alive ||
-        !PositiveIdentity(before.played_character_id)) {
+        !CharacterIdentity(before.played_character_id)) {
       return fail(Failure::paused_player_unavailable);
     }
 

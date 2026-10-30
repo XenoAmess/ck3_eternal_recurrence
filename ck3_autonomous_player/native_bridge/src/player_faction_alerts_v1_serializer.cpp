@@ -73,6 +73,21 @@ bool StrictlyIncreasingFactions(const std::vector<std::int32_t> &values) {
   return std::is_sorted(values.begin(), values.end());
 }
 
+// Signed native public character identity, preserving zero and the sign bit.
+bool CharacterIdentity(std::int32_t value) noexcept { return value != -1; }
+
+bool CharacterUnique(const std::vector<std::int32_t> &values) {
+  std::unordered_set<std::int32_t> seen;
+  for (const auto value : values) {
+    if (!CharacterIdentity(value) || !seen.insert(value).second) return false;
+  }
+  return true;
+}
+
+bool StrictlyIncreasingCharacters(const std::vector<std::int32_t> &values) {
+  return CharacterUnique(values) && std::is_sorted(values.begin(), values.end());
+}
+
 bool PositiveUnique(const std::vector<std::int32_t> &values) {
   std::unordered_set<std::int32_t> seen;
   for (const auto value : values) {
@@ -102,7 +117,7 @@ bool ValidCountyObservations(const game::PlayerTargetingFactionV1 &row) {
         (county.capital_province_id.has_value() &&
          county.capital_province_id.value() <= 0) ||
         (county.holder_character_id.has_value() &&
-         county.holder_character_id.value() <= 0) ||
+         !CharacterIdentity(county.holder_character_id.value())) ||
         !ValidCountyObservationStatus(county.opinion_status) ||
         !ValidCountyObservationStatus(county.native_final_status)) {
       return false;
@@ -114,13 +129,14 @@ bool ValidCountyObservations(const game::PlayerTargetingFactionV1 &row) {
 
 bool ValidTargetingRow(const game::PlayerTargetingFactionV1 &row,
                        std::int32_t player_character_id) {
-  if (!FactionIdentity(row.faction_id) || row.target_character_id != player_character_id ||
+  if (!FactionIdentity(row.faction_id) || !CharacterIdentity(row.target_character_id) ||
+      row.target_character_id != player_character_id ||
       !StableKey(row.faction_type_key) ||
       (row.leader_character_id.has_value() &&
-       row.leader_character_id.value() <= 0) ||
+       !CharacterIdentity(row.leader_character_id.value())) ||
       (!row.leader_character_id.has_value() && row.leader_is_human) ||
       (row.special_character_id.has_value() &&
-       row.special_character_id.value() <= 0) ||
+       !CharacterIdentity(row.special_character_id.value())) ||
       (row.special_title_id.has_value() &&
        row.special_title_id.value() <= 0) ||
       (row.faction_war_id.has_value() && row.faction_war_id.value() <= 0) ||
@@ -131,7 +147,7 @@ bool ValidTargetingRow(const game::PlayerTargetingFactionV1 &row,
       !ValidFixedPoint(row.discontent_per_month, false) ||
       (row.months_until_max_discontent.has_value() &&
        row.months_until_max_discontent.value() < 0) ||
-      !StrictlyIncreasing(row.character_member_ids) ||
+      !StrictlyIncreasingCharacters(row.character_member_ids) ||
       !StrictlyIncreasing(row.county_member_title_ids) ||
       !ValidCountyObservations(row) ||
       !StableKey(row.danger_reason)) {
@@ -161,7 +177,7 @@ bool ValidTargetingRow(const game::PlayerTargetingFactionV1 &row,
 bool ValidCountyExposure(const game::PlayerFactionCountyExposureV1 &row,
                          std::int32_t player_character_id) {
   return row.county_title_id > 0 && FactionIdentity(row.faction_id) &&
-         row.target_character_id > 0 &&
+         CharacterIdentity(row.target_character_id) &&
          row.target_character_id != player_character_id &&
          row.faction_type_key == "populist_faction" &&
          ValidFixedPoint(row.power, true) &&
@@ -206,7 +222,7 @@ std::string_view WireUnavailableReason(
 bool ValidAvailable(const game::PlayerFactionAlertsV1 &value) {
   if (value.snapshot_revision == 0 || !value.date_raw.has_value() ||
       !value.player_character_id.has_value() ||
-      value.player_character_id.value() <= 0 ||
+      !CharacterIdentity(value.player_character_id.value()) ||
       !value.targeting_faction_count.has_value() ||
       value.targeting_faction_count.value() < 0 ||
       value.unavailable_reason !=

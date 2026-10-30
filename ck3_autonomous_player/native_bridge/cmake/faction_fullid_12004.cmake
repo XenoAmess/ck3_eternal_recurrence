@@ -8,6 +8,7 @@ if(BUILD_TESTING AND WIN32 AND
   # These providers are the exact existing 16-object narrow fixture closure.
   add_executable(${target}
     tests/faction_fullid/faction_fullid_whole09.cpp
+    tests/faction_fullid/faction_fullid_ci_main133.cpp
     tests/faction_fullid/faction_fullid_legacy_abort129.cpp
     src/ck3_12004_faction_gift_router.cpp
     src/ck3_12004_faction_mailbox.cpp
@@ -38,6 +39,7 @@ if(BUILD_TESTING AND WIN32 AND
   target_compile_definitions(${target} PRIVATE
     $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+    XAR_CK3_FACTION_FULLID_ENTRY=FactionFullIdTargetingMain09
     TrySubmitMainThreadQueryV1=FactionIdentityFixtureSubmit12004
     WaitForMainThreadQueryV1=FactionIdentityFixtureWait12004
     ReclaimMainThreadQueryV1=FactionIdentityFixtureReclaim12004)
@@ -66,4 +68,64 @@ if(BUILD_TESTING AND WIN32 AND
       COMMAND ${target} ${raw_${case}} ${mode}
         "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/${case}")
   endforeach()
+  # County joined/exposure scenarios share this target and native allocator assets.
+  foreach(case IN ITEMS fid-zero fid-zero-stale fid-min fid-min-stale fid-81 fid-81-stale fid-ff fid-ff-stale joined-absent joined-duplicate title-zero joined-empty joined-mixed)
+    add_test(NAME xar_ck3_12004_faction_fullid_county_${case}
+      COMMAND ${target} --county ${case}
+        "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/county/${case}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/faction_fullid/native-allocator-assets")
+  endforeach()
+  # Character cases use the same fixture TU and original whole serializer.
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_candidate-actor-min
+    COMMAND ${target} --character-public 2147483648 67108866 leader
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/candidate-actor-min")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_candidate-actor-zero
+    COMMAND ${target} --character-public 0 67108866 leader
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/candidate-actor-zero")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_candidate-leader-min
+    COMMAND ${target} --character-public 50331649 2147483648 leader
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/candidate-leader-min")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_candidate-leader-zero
+    COMMAND ${target} --character-public 50331649 0 leader
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/candidate-leader-zero")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_candidate-member-min
+    COMMAND ${target} --character-public 50331649 2147483648 member
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/candidate-member-min")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_candidate-member-zero
+    COMMAND ${target} --character-public 50331649 0 member
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/candidate-member-zero")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_candidate-mixed-members
+    COMMAND ${target} --character-public 50331649 2147483648 mixed-members
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/candidate-mixed-members")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_control-absent-actor
+    COMMAND ${target} --character-public 0 67108866 absent-actor
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/control-absent-actor")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_control-absent-member
+    COMMAND ${target} --character-public 50331649 0 absent-member
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/control-absent-member")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_control-duplicate-member
+    COMMAND ${target} --character-public 50331649 0 duplicate-member
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/control-duplicate-member")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_control-stale-actor-min
+    COMMAND ${target} --character-public 2147483648 67108866 stale-actor
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/control-stale-actor-min")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_control-stale-actor-zero
+    COMMAND ${target} --character-public 0 67108866 stale-actor
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/control-stale-actor-zero")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_control-stale-recipient-min
+    COMMAND ${target} --character-public 50331649 2147483648 stale-recipient
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/control-stale-recipient-min")
+  add_test(NAME xar_ck3_12004_faction_fullid_character_public_control-stale-recipient-zero
+    COMMAND ${target} --character-public 50331649 0 stale-recipient
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/character-public/control-stale-recipient-zero")
+  # Surrender leader identity and the unchanged positive war domain.
+  add_test(NAME xar_ck3_12004_faction_fullid_surrender_leader-zero
+    COMMAND ${target} --character-surrender 0 ordinary
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/surrender/leader-zero")
+  add_test(NAME xar_ck3_12004_faction_fullid_surrender_leader-min
+    COMMAND ${target} --character-surrender 2147483648 ordinary
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/surrender/leader-min")
+  add_test(NAME xar_ck3_12004_faction_fullid_surrender_war-zero
+    COMMAND ${target} --character-surrender 0 war-zero
+      "${CMAKE_CURRENT_BINARY_DIR}/faction-fullid/surrender/war-zero")
 endif()

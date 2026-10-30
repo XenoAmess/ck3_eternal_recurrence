@@ -144,7 +144,22 @@ std::string ReplaceSource09(std::string value, std::string_view replacement) {
 }
 }
 
-int main(int argc, char **argv) {
+#include "character_public_cases14.hpp"
+
+int FactionFullIdCharacterPublicMain14(int argc, char **argv) {
+  return CharacterPublicCase14(argc, argv);
+}
+
+#include "surrender_cases15.hpp"
+
+int FactionFullIdSurrenderMain15(int argc, char **argv) {
+  return SurrenderCase15(argc, argv);
+}
+
+#ifndef XAR_CK3_FACTION_FULLID_ENTRY
+#define XAR_CK3_FACTION_FULLID_ENTRY main
+#endif
+int XAR_CK3_FACTION_FULLID_ENTRY(int argc, char **argv) {
   if (argc < 4) return 90;
   const auto raw = static_cast<std::uint32_t>(std::stoull(argv[1]));
   const bool stale = std::string_view(argv[2]) == "stale";
