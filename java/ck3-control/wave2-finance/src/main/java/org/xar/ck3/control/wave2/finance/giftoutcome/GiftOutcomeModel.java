@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.NativeFactionId;
 import org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel;
 
 /** Immutable decision projection of the existing resolved-gift observer. */
@@ -180,7 +181,7 @@ public final class GiftOutcomeModel {
         public PairUnavailable { Objects.requireNonNull(error); }
     }
     public record AlertRow(Optional<BigInteger> factionId, WireValue original) {
-        public AlertRow { Objects.requireNonNull(factionId); Objects.requireNonNull(original); }
+        public AlertRow { Objects.requireNonNull(factionId); factionId.ifPresent(NativeFactionId::of); Objects.requireNonNull(original); }
     }
     public record Alert(Optional<String> status, Optional<BigInteger> snapshotRevision, Optional<BigInteger> dateRaw,
                         Optional<BigInteger> playerId, Truth sameFrameReady, Truth targetingRowsReady,

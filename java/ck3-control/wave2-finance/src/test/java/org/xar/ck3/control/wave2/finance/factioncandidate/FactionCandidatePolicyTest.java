@@ -122,8 +122,10 @@ final class FactionCandidatePolicyTest {
         RootProjection projected = FactionCandidateCodec.decodeRootProjection(JSON.writeValueAsBytes(input.path("root")));
         assertEquals(projected.frame().orElseThrow().nativeRevision(), BigInteger.valueOf(412));
         assertThrows(IllegalArgumentException.class, () -> new RootView(RootStatus.KNOWN_EMPTY, Optional.empty()));
-        Frame exact = new Frame(BigInteger.ONE.shiftLeft(100), BigInteger.valueOf(-1), BigInteger.ONE.shiftLeft(80));
+        Frame exact = new Frame(BigInteger.ONE.shiftLeft(100), BigInteger.valueOf(-1), BigInteger.valueOf(Integer.MIN_VALUE));
         assertEquals(BigInteger.ONE.shiftLeft(100), exact.nativeRevision());
+        assertThrows(IllegalArgumentException.class, () -> new Frame(
+                BigInteger.ONE.shiftLeft(100), BigInteger.valueOf(-1), BigInteger.ONE.shiftLeft(80)));
     }
 
     @Test

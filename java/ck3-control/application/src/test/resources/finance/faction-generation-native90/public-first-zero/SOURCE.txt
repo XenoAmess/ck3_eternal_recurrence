@@ -1,0 +1,5 @@
+machine_id: xenoamess-full-tower-eb9d2c1186
+observed_at_utc: 2026-10-30T17:08:33.462468400Z
+Actual original: D:\ck3-state\resume90-m1-native\faction-fullid-producer09\run\public-only-zero\public-alerts.json.packet.bin
+Producer summary: D:/ck3-state/resume90-m1-native/faction-fullid-producer09/run/public-only-zero/SUMMARY.json
+Retained verbatim, no JSON or frame re-encoding. This public allocator0 first packet does not claim private submit or a full Collector whole-result envelope.

@@ -2,6 +2,7 @@ package org.xar.ck3.control.finance.factiongift;
 
 import java.math.BigInteger;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.NativeFactionId;
 import java.util.Objects;
 
 /** A proposed choice only. This type neither authorizes nor submits a gift. */
@@ -56,7 +57,7 @@ public sealed interface FactionGiftChoice permits FactionGiftChoice.Selected, Fa
                     BigInteger playerCharacterId, BigInteger definitionStableHash,
                     BigInteger goldCostRaw, BigInteger opinionDelta) implements FactionGiftChoice {
         public Selected {
-            positive(sourceFactionId, "sourceFactionId");
+            NativeFactionId.of(sourceFactionId);
             NativeCharacterId.of(recipientCharacterId);
             Objects.requireNonNull(membershipRole, "membershipRole");
             positive(snapshotRevision, "snapshotRevision");

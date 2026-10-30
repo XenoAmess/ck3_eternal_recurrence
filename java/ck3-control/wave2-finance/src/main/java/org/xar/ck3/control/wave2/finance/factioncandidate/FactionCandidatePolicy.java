@@ -2,6 +2,7 @@ package org.xar.ck3.control.wave2.finance.factioncandidate;
 
 import org.xar.ck3.control.finance.factiongift.FactionGiftChoice;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.NativeFactionId;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -112,6 +113,7 @@ public final class FactionCandidatePolicy {
             Objects.requireNonNull(recipientId, "recipientId");
             recipientId.ifPresent(NativeCharacterId::of);
             Objects.requireNonNull(sourceFactionId, "sourceFactionId");
+            sourceFactionId.ifPresent(NativeFactionId::of);
         }
     }
 
@@ -121,6 +123,7 @@ public final class FactionCandidatePolicy {
         public PrivatePreview {
             Objects.requireNonNull(status, "status");
             Objects.requireNonNull(nativeSourceId, "nativeSourceId");
+            nativeSourceId.ifPresent(NativeFactionId::of);
             Objects.requireNonNull(nativeRecipientId, "nativeRecipientId");
             nativeRecipientId.ifPresent(NativeCharacterId::of);
             Objects.requireNonNull(observation, "observation");

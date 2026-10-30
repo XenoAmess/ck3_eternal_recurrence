@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.NativeFactionId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.wave2.finance.factionculture.FactionCultureCodec;
 import org.xar.ck3.control.wave2.finance.factionculture.FactionCultureModel.CultureRelation;
@@ -96,7 +97,7 @@ public final class FactionAlertsCodec {
         Readiness ready = frame.readiness(); Reasons reasons = frame.reasons();
         if (ready.targetingRowsReady()) {
             StrictJson.require(reasons.targetingRows().isEmpty(), "ready targeting rows cannot carry reason");
-            ids(frame.targetingFactions().stream().map(TargetingFaction::factionId).toList());
+            factionIds(frame.targetingFactions().stream().map(TargetingFaction::factionId).toList());
             StrictJson.require(frame.targetingFactions().size() == frame.targetingFactionCount(), "targeting rows do not match count");
             for (TargetingFaction row : frame.targetingFactions()) StrictJson.require(row.targetCharacterId() == frame.playerCharacterId(), "target must be played character");
         }
@@ -132,8 +133,8 @@ public final class FactionAlertsCodec {
     private static Planner planner(JsonNode node) {
         ObjectNode root = exact(node, "status", "present", "dangerous", "dangerous_faction_ids", "watch_faction_ids", "war_handoff_faction_ids", "exposed_county_title_ids", "exact_ultimatum_timing_ready");
         Status status = status(root.get("status")); Optional<Boolean> present = optionalBool(root.get("present")); Optional<Boolean> danger = optionalBool(root.get("dangerous"));
-        List<Integer> dangerous = idList(root.get("dangerous_faction_ids")); List<Integer> watch = idList(root.get("watch_faction_ids"));
-        List<Integer> war = idList(root.get("war_handoff_faction_ids")); List<Integer> exposed = idList(root.get("exposed_county_title_ids"));
+        List<Integer> dangerous = factionIdList(root.get("dangerous_faction_ids")); List<Integer> watch = factionIdList(root.get("watch_faction_ids"));
+        List<Integer> war = factionIdList(root.get("war_handoff_faction_ids")); List<Integer> exposed = idList(root.get("exposed_county_title_ids"));
         StrictJson.require(!bool(root.get("exact_ultimatum_timing_ready")), "planner cannot claim exact ultimatum timing");
         if (status == Status.UNAVAILABLE) {
             StrictJson.require(present.isEmpty() && danger.isEmpty() && dangerous.isEmpty() && watch.isEmpty() && war.isEmpty() && exposed.isEmpty(), "unavailable planner must not guess alerts");
@@ -144,7 +145,7 @@ public final class FactionAlertsCodec {
     }
     private static TargetingFaction target(JsonNode node) {
         ObjectNode root = object(node, TARGET_FIELDS, Set.of("county_member_observations", "surrender_impact"));
-        int factionId = positive(root.get("faction_id")); StableKey type = key(root.get("faction_type_key")); int actor = character(root.get("target_character_id"));
+        int factionId = faction(root.get("faction_id")); StableKey type = key(root.get("faction_type_key")); int actor = character(root.get("target_character_id"));
         Optional<Integer> leader = optionalCharacter(root.get("leader_character_id")); boolean human = bool(root.get("leader_is_human"));
         boolean atWar = bool(root.get("faction_at_war")); Optional<Integer> war = optionalPositive(root.get("faction_war_id"));
         FixedPoint monthly = fixed(root.get("discontent_per_month"), SCALE, 64, false);
@@ -173,7 +174,7 @@ public final class FactionAlertsCodec {
         Optional<StableKey> reason = optionalKey(root.get("danger_reason"));
         StrictJson.require(type.value().equals("populist_faction") && power.raw() > threshold.raw() && danger
                 && reason.filter(value -> value.value().equals("player_county_in_powerful_liege_targeting_populist_faction")).isPresent(), "not a stock dangerous county exposure");
-        return new CountyExposure(positive(root.get("county_title_id")), positive(root.get("faction_id")), type, character(root.get("target_character_id")), power, threshold, danger, reason.orElseThrow());
+        return new CountyExposure(positive(root.get("county_title_id")), faction(root.get("faction_id")), type, character(root.get("target_character_id")), power, threshold, danger, reason.orElseThrow());
     }
     private static CountyMember county(JsonNode node) {
         ObjectNode root = object(node, COUNTY_FIELDS, FactionCultureCodec.CULTURE_FIELDS);
@@ -233,6 +234,10 @@ public final class FactionAlertsCodec {
     private static BigInteger uint64(JsonNode node) { return StrictJson.integer(node, BigInteger.ONE, StrictJson.UINT64_MAX); }
     private static List<Integer> idList(JsonNode node) {
         List<Integer> result = new ArrayList<>(); for (JsonNode value : array(node)) result.add(positive(value)); return ids(result);
+    }
+    private static int faction(JsonNode node) { return NativeFactionId.fromJson(node).value(); }
+    private static List<Integer> factionIdList(JsonNode node) {
+        List<Integer> result = new ArrayList<>(); for (JsonNode value : array(node)) result.add(faction(value)); return factionIds(result);
     }
     private static FixedPoint fixed(JsonNode node, int scale, int bits, boolean nonnegative) {
         ObjectNode root = exact(node, "raw", "scale"); long value = number(root.get("raw"), bits == 32 ? Integer.MIN_VALUE : Long.MIN_VALUE, bits == 32 ? Integer.MAX_VALUE : Long.MAX_VALUE);

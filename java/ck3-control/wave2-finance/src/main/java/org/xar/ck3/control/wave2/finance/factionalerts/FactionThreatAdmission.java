@@ -2,6 +2,7 @@ package org.xar.ck3.control.wave2.finance.factionalerts;
 
 import java.util.Objects;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.NativeFactionId;
 import org.xar.ck3.control.contracts.StrictJson;
 import static org.xar.ck3.control.wave2.finance.factionalerts.FactionAlertModel.*;
 
@@ -19,7 +20,7 @@ public final class FactionThreatAdmission {
                     "exact current CK3 1.20.0.4 source required");
             NativeCharacterId.of(actorCharacterId);
             NativeCharacterId.of(recipientCharacterId);
-            StrictJson.require(factionId > 0, "positive int32 faction identity required");
+            NativeFactionId.of(factionId);
             StrictJson.require(actorCharacterId != recipientCharacterId, "gift cannot target its actor");
         }
     }

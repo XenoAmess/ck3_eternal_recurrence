@@ -1,0 +1,10 @@
+machine_id: xenoamess-full-tower-eb9d2c1186
+source_variant: Published e046 baseline plus only Faction deltas; no unpublished Character36 migration.
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\published-variant12\run\published-zero\public-alerts-whole.json.packet.bin -> query-player-faction-alerts-v1.json.packet.bin bytes=2189
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\published-variant12\run\published-zero\public-alerts-post-whole.json.packet.bin -> query-player-faction-alerts-post-v1.json.packet.bin bytes=2190
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\published-variant12\run\published-zero\private-preview.json.packet.bin -> private-query-faction-gift-member-v1.json.packet.bin bytes=2329
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\published-variant12\run\published-zero\private-submit.json.packet.bin -> private-submit-faction-gift-member-v1.json.packet.bin bytes=3025
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\published-variant12\run\published-zero\private-receipt.json.packet.bin -> private-query-faction-gift-receipt-v1.json.packet.bin bytes=2678
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\published-variant12\run\published-zero\private-cold.json.packet.bin -> private-query-faction-gift-cold-recovery-v1.json.packet.bin bytes=2074
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\published-variant12\run\published-zero\public-alerts-cold-whole.json.packet.bin -> query-player-faction-alerts-cold-v1.json.packet.bin bytes=2190
+Actual allocator/readers/private Handler/WriteFrame and exact extracted Whole serializer; public whole Handle not executed; engine callbacks/state/membership/ROOT/SEM/Driver wrappers remain software/authored. Old35 developer packets are unchanged and are not relabelled published.

@@ -126,7 +126,7 @@ public final class GiftOutcomeQuery {
         }
         AlertRow match = null;
         for (AlertRow row : raw.targetingRows().orElseThrow()) {
-            if (row.factionId().filter(source::equals).isPresent()) {
+            if (row.factionId().map(GiftPendingModel::rawSourceFactionIdFromPublic).filter(source::equals).isPresent()) {
                 if (match != null) return new AlertUnavailable("current_alert_identity_ambiguous");
                 match = row;
             }

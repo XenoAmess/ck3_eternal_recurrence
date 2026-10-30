@@ -54,9 +54,15 @@ final class FactionGiftPolicyTest {
                         ArrayNode members = (ArrayNode) observation.get("source_faction_member_character_ids");
                         for (int index = 0; index < members.size(); index++) if (oldRecipient.equals(members.get(index))) members.set(index, JSON.getNodeFactory().numberNode(4294967294L));
                     }
-                    // Private Native roles use raw32 while the persisted public choice retains signed -2.
-                    // All original large faction/revision/hash values must survive.
-                    expected = ((ObjectNode) expected.deepCopy()).put("recipient_character_id", -2);
+                    // The original unbounded faction still cannot identify any native uint32 faction.
+                    assertInstanceOf(FactionGiftChoice.Declined.class,
+                            FactionGiftPolicy.choose(JSON.writeValueAsBytes(modernInput)));
+                    for (JsonNode value : modernInput.path("observations"))
+                        ((ObjectNode) value).put("queried_source_faction_id", 4294967294L);
+                    // Native identity fields have raw32 input and signed32 public output; keep the
+                    // independent original large revision/hash values unchanged.
+                    expected = ((ObjectNode) expected.deepCopy()).put("recipient_character_id", -2)
+                            .put("source_faction_id", -2);
                 }
                 byte[] input = JSON.writeValueAsBytes(modernInput);
                 FactionGiftChoice actual = FactionGiftPolicy.choose(input);
@@ -165,7 +171,7 @@ final class FactionGiftPolicyTest {
     void typedModelCannotConstructPartialOrInvalidSelectedOutcome() {
         assertThrows(IllegalArgumentException.class, () -> new FactionGiftChoice.Declined(FactionGiftChoice.Reason.SELECTED));
         assertThrows(IllegalArgumentException.class, () -> new FactionGiftChoice.Selected(
-                BigInteger.ZERO, BigInteger.ONE, FactionGiftChoice.MembershipRole.LEADER,
+                BigInteger.valueOf(-1), BigInteger.ONE, FactionGiftChoice.MembershipRole.LEADER,
                 BigInteger.ONE, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE,
                 BigInteger.ONE, BigInteger.ONE, BigInteger.ONE));
     }

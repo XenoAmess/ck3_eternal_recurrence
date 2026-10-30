@@ -1,0 +1,11 @@
+machine_id: xenoamess-full-tower-eb9d2c1186
+observed_at_utc: 2026-10-30T17:24:58.463452500Z
+world: faction-zero-final
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\run\fixed-zero\public-alerts-whole.json.packet.bin -> query-player-faction-alerts-v1.json.packet.bin bytes=2189
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\run\fixed-zero\public-alerts-post-whole.json.packet.bin -> query-player-faction-alerts-post-v1.json.packet.bin bytes=2190
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\run\fixed-zero\private-preview.json.packet.bin -> private-query-faction-gift-member-v1.json.packet.bin bytes=2329
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\run\fixed-zero\private-submit.json.packet.bin -> private-submit-faction-gift-member-v1.json.packet.bin bytes=3025
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\run\fixed-zero\private-receipt.json.packet.bin -> private-query-faction-gift-receipt-v1.json.packet.bin bytes=2678
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\run\fixed-zero\private-cold.json.packet.bin -> private-query-faction-gift-cold-recovery-v1.json.packet.bin bytes=2074
+D:\ck3-state\resume90-m1-native\faction-fullid-producer09\run\fixed-zero\public-alerts-cold-whole.json.packet.bin -> query-player-faction-alerts-cold-v1.json.packet.bin bytes=2190
+Original seven WriteFrame packets retained verbatim; no JSON/frame re-encoding. Software allocator/readers/private Handler and exact extracted public Whole serializer boundaries remain those of the original SUMMARY; public Whole Handle, Game and real engine callbacks are not executed.

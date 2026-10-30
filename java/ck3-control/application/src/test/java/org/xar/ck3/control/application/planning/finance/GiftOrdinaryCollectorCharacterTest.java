@@ -195,7 +195,9 @@ final class GiftOrdinaryCollectorCharacterTest {
         }
         assertThrows(IllegalArgumentException.class,()->new FactionThreatAdmission.Request(frame,-1,1,2));
         assertThrows(IllegalArgumentException.class,()->new FactionThreatAdmission.Request(frame,2,1,-1));
-        for(int faction:new int[]{0,-1,-2})assertThrows(IllegalArgumentException.class,()->new FactionThreatAdmission.Request(frame,2,faction,3));
+        for(int faction:new int[]{0,Integer.MIN_VALUE,-2,Integer.MAX_VALUE})
+            assertEquals(faction,new FactionThreatAdmission.Request(frame,2,faction,3).factionId());
+        assertThrows(IllegalArgumentException.class,()->new FactionThreatAdmission.Request(frame,2,-1,3));
         assertThrows(IllegalArgumentException.class,()->new FactionThreatAdmission.Request(new FactionAlertModel.ExpectedFrame(1,BigInteger.ONE,Optional.of(FactionAlertModel.Build.CK3_11906)),2,1,3));
     }
 }

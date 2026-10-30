@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.NativeFactionId;
 import org.xar.ck3.control.wave2.finance.factionculture.FactionCultureModel.CultureRelation;
 
 /** Complete immutable native v1 alert contract. This validates observations, never gameplay capability. */
@@ -77,8 +78,8 @@ public final class FactionAlertModel {
                                    List<Integer> watchFactionIds, List<Integer> warHandoffFactionIds,
                                    List<Integer> exposedCountyTitleIds) implements Planner {
         public AvailablePlanner {
-            dangerousFactionIds = ids(dangerousFactionIds); watchFactionIds = ids(watchFactionIds);
-            warHandoffFactionIds = ids(warHandoffFactionIds); exposedCountyTitleIds = ids(exposedCountyTitleIds);
+            dangerousFactionIds = factionIds(dangerousFactionIds); watchFactionIds = factionIds(watchFactionIds);
+            warHandoffFactionIds = factionIds(warHandoffFactionIds); exposedCountyTitleIds = ids(exposedCountyTitleIds);
         }
     }
     public record CountyMember(int countyTitleId, Optional<Integer> capitalProvinceId, Optional<Integer> holderCharacterId,
@@ -130,7 +131,7 @@ public final class FactionAlertModel {
                                    List<Integer> countyMemberTitleIds, boolean dangerous, StableKey dangerReason,
                                    Optional<List<CountyMember>> countyMemberObservations, Optional<SurrenderImpact> surrenderImpact) {
         public TargetingFaction {
-            positive(factionId); Objects.requireNonNull(factionTypeKey); character(targetCharacterId); optionalCharacter(leaderCharacterId);
+            faction(factionId); Objects.requireNonNull(factionTypeKey); character(targetCharacterId); optionalCharacter(leaderCharacterId);
             optionalCharacter(specialCharacterId); optionalId(specialTitleId); optionalId(factionWarId);
             Objects.requireNonNull(power); Objects.requireNonNull(powerThreshold); Objects.requireNonNull(discontent); Objects.requireNonNull(discontentPerMonth);
             Objects.requireNonNull(monthsUntilMaxDiscontent); monthsUntilMaxDiscontent.ifPresent(value -> { if (value < 0) throw new ContractViolationException("negative months"); });
@@ -143,7 +144,7 @@ public final class FactionAlertModel {
     public record CountyExposure(int countyTitleId, int factionId, StableKey factionTypeKey, int targetCharacterId,
                                  FixedPoint power, FixedPoint powerThreshold, boolean dangerous, StableKey dangerReason) {
         public CountyExposure {
-            positive(countyTitleId); positive(factionId); Objects.requireNonNull(factionTypeKey); character(targetCharacterId);
+            positive(countyTitleId); faction(factionId); Objects.requireNonNull(factionTypeKey); character(targetCharacterId);
             Objects.requireNonNull(power); Objects.requireNonNull(powerThreshold); Objects.requireNonNull(dangerReason);
         }
     }
@@ -190,6 +191,12 @@ public final class FactionAlertModel {
         for (int id : result) { character(id); if (previous != null && id <= previous) throw new ContractViolationException("sorted unique character identities required"); previous = id; }
         return result;
     }
+    static List<Integer> factionIds(List<Integer> values) {
+        List<Integer> result = List.copyOf(values); Integer previous = null;
+        for (int id : result) { faction(id); if (previous != null && id <= previous) throw new ContractViolationException("sorted unique faction identities required"); previous = id; }
+        return result;
+    }
+    private static void faction(int value) { NativeFactionId.of(value); }
     private static void character(int value) { NativeCharacterId.of(value); }
     private static void optionalCharacter(Optional<Integer> value) { Objects.requireNonNull(value).ifPresent(FactionAlertModel::character); }
     private static void positive(int value) { if (value <= 0) throw new ContractViolationException("positive int32 identity required"); }

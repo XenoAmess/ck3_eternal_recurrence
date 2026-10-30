@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.NativeFactionId;
 
 /** Immutable v1 material. No native submission, file access, or writer authority. */
 public final class GiftPendingModel {
@@ -119,10 +120,11 @@ public final class GiftPendingModel {
         return NativeCharacterId.of(signedValue).asRawUInt32();
     }
     public static BigInteger rawSourceFactionId(BigInteger value) {
-        StrictJson.require(value != null && value.signum() > 0
-                && value.compareTo(new BigInteger("4294967295")) <= 0,
-                "private Gift source faction requires its nonzero uint32 identity");
-        return value;
+        return NativeFactionId.fromRawUInt32(value).asRawUInt32();
+    }
+    /** Explicit public FactionID to private raw32 boundary, distinct from character and title roles. */
+    public static BigInteger rawSourceFactionIdFromPublic(BigInteger signedValue) {
+        return NativeFactionId.of(signedValue).asRawUInt32();
     }
     public static List<BigInteger> rawMemberCharacterIds(List<BigInteger> values) {
         List<BigInteger> retained = List.copyOf(values);

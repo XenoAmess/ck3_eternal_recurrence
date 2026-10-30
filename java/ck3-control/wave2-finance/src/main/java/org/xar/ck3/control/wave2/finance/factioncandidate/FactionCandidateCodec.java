@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xar.ck3.control.finance.factiongift.FactionGiftChoice;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.NativeFactionId;
 import org.xar.ck3.control.finance.factiongift.FactionGiftPolicy;
 
 import java.io.IOException;
@@ -163,9 +164,9 @@ public final class FactionCandidateCodec {
                 : Optional.of(new Observation(document(observation),
                 privateFrame(observation),
                 privateCharacter(observation.get("recipient_character_id")),
-                integer(observation.get("queried_source_faction_id"), true)));
+                privateFaction(observation.get("queried_source_faction_id"))));
         return new PrivatePreview(envelope, status, true, ready,
-                integer(nativeResult.get("source_faction_id"), true),
+                privateFaction(nativeResult.get("source_faction_id")),
                 privateCharacter(nativeResult.get("recipient_character_id")), projected);
     }
 
@@ -200,6 +201,11 @@ public final class FactionCandidateCodec {
     private static Optional<BigInteger> privateCharacter(JsonNode value) {
         if (value == null || !value.isIntegralNumber()) return Optional.empty();
         try { return Optional.of(NativeCharacterId.fromRawUInt32(value.bigIntegerValue()).asBigInteger()); }
+        catch (IllegalArgumentException invalid) { return Optional.empty(); }
+    }
+    private static Optional<BigInteger> privateFaction(JsonNode value) {
+        if (value == null || !value.isIntegralNumber()) return Optional.empty();
+        try { return Optional.of(NativeFactionId.fromRawUInt32(value.bigIntegerValue()).asBigInteger()); }
         catch (IllegalArgumentException invalid) { return Optional.empty(); }
     }
 

@@ -1,0 +1,3 @@
+machine_id: xenoamess-full-tower-eb9d2c1186
+observed_at_utc: 2026-10-30T17:10:40.935478300Z
+Existing CampaignRootContextJsonTest.originalActual4RootFixture producer DATA retained once. Legacy fixture inputs are from the existing repository oracle, not current Java production baseline and not Native generation packets. Per-world Java tests author public frame/actor/direct-vassal changes. No new source or qualification guard is added.
