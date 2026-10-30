@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.wave2.events.eventmaterial.Bookmark1070Material;
 import org.xar.ck3.control.wave2.events.eventmaterial.RiteGrowthMaterial;
 import org.xar.ck3.control.wave2.events.eventtraits.EventTraitMembership;
@@ -19,7 +20,7 @@ public final class RegisteredEventMaterial {
     private RegisteredEventMaterial() { }
     public static Optional<ObjectValue> plan(ObjectValue decision,ObjectValue snapshot) {
         Objects.requireNonNull(decision);Objects.requireNonNull(snapshot);
-        JsonNode choice=StrictJson.parse(RetainedJson.encode(decision)),frame=StrictJson.parse(RetainedJson.encode(snapshot));
+        JsonNode choice=StrictJson.parse(RetainedJson.encode(decision)),frame=FullJsonTree.parse(RetainedJson.encode(snapshot, FullJsonTree.MAXIMUM_BYTES), FullJsonTree.MAXIMUM_BYTES);
         if(!"recommended".equals(text(choice,"status")))return Optional.empty();
         String key=text(choice,"event_definition_key"),build=text(choice,"ck3_build");BigInteger index=integer(choice,"selected_native_option_index");
         if(Bookmark1070Material.EVENT.equals(key)&&"1.20.0.4".equals(build)&&BigInteger.TWO.equals(index))
@@ -48,7 +49,7 @@ public final class RegisteredEventMaterial {
     }
     public static Optional<PoetTraitOutcome.Expectation> poet(ObjectValue decision,ObjectValue snapshot) {
         Objects.requireNonNull(decision);Objects.requireNonNull(snapshot);
-        JsonNode choice=StrictJson.parse(RetainedJson.encode(decision)),frame=StrictJson.parse(RetainedJson.encode(snapshot));BigInteger index=integer(choice,"selected_native_option_index");
+        JsonNode choice=StrictJson.parse(RetainedJson.encode(decision)),frame=FullJsonTree.parse(RetainedJson.encode(snapshot, FullJsonTree.MAXIMUM_BYTES), FullJsonTree.MAXIMUM_BYTES);BigInteger index=integer(choice,"selected_native_option_index");
         if(!"recommended".equals(text(choice,"status"))||!PoetTraitOutcome.EVENT.equals(text(choice,"event_definition_key"))||!"1.20.0.4".equals(text(choice,"ck3_build"))
             ||!(BigInteger.ZERO.equals(index)||BigInteger.ONE.equals(index)))return Optional.empty();
         JsonNode character=frame.get("played_character");StrictJson.require(character!=null&&character.isObject(),"poet requires actual played-character projection");
