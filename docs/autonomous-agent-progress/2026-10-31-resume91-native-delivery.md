@@ -39,3 +39,13 @@ Root 因真实 D 随机 I/O 与 worker104 类加载压力，先暂停研究新 C
 ## MSVC 调用环境
 
 M0实证第三方 `VsDevCmd.bat` 默认路径可能在 `VSCMD_SKIP_SENDTELEMETRY` 空时启动 PowerShell 遥测。已向八 M 传达今后在bootstrap前进程环境明确设为1，不修改SDK或全局环境、不为此重跑旧绿，不将未观测旧spawn写成“已证明没有”。本岗D中两编译cmd原已设1；正式现存 `tools/run_native_msvc.py` 的 `child_environment` 缺此字段，本岗只新增同一键值，独立正常 FF 发表 **`c31f3735fb`**。Java宿主同类缺口交JavaDelivery消费模型窄候选。
+
+## 后续有限队列与真实失败（20:23Z）
+
+Java宿主同类环境修复已以模型原样单行采用、单源严格编译exit0/10.209秒，发表 `67b4a9d984`。M1 getter17只重编断言修正夹具并跑此前未通过的局部roundtrip拒绝例，实际exit0；M2 GUI HELLO协商已发表 `147e648b3c`，没有Native能力广告，缺token仍走v1。M6新sameworld producer和Java fresh receiver已真实闭合：PID303040的新HELLO/fullSnapshot及54链进入receiver/assembler/context，两peer CLEAR；Java单方法1P，资源与生产未改。这些是软件离线组合，不是Game新动作。
+
+运行岗后继106/107均实际终态，108于 `19:59:29.254Z` 真正LOOP_START后恢复唯一短研究槽。P0 obligations实际BEGIN时再次暂停研究新START；在途自然收，不以候选审阅或旧loop标签代替实际占槽。随后Storage与canonical必要短验证完成，MB109七源exit0/10.784秒，109于 `20:27:05.237Z` 真正LOOP_START、安装9.980秒后再次恢复单槽。最新Game动作/日期结论由运行岗给出，本岗无部署/业务操作。
+
+M0 queued-v2原baseline的6个必要新TU现全部严格CL exit0，复用7旧对象；不是13TU重编。TU03..06各6.430120/5.915744/7.632873/8.265346秒，四个CL耗时之和28.244083秒，含消息边界的真实跨段wall为100.404374秒。LINK01首执行exit1120/2.533338秒，完整三个factory TU引入7个未执行reader/wrapper依赖；尚未产生EXE或执行唯一case，不能称行为RED或队列通过。原件 `D:/ck3-state/resume91-m0-native/bridge-queue/queue-actual/{COMPILE-TU01..06-01,LINK01}.json/.stdout`。保持原对象、只收敛真实链接闭包；未采用原seam。当前Z另有Locator与14表，和正式旧D无Locator/13表的兼容候选严格分开，不混对象或信用。
+
+M6 actual4 Sway signed target router候选1TU与新formal test1TU分别CL exit0/8.602/9.120秒；两个真实legacy parser TU增编exit0/11.633秒，另4个common对象按必要源/头和编译档比对后只读复用。BASELINE-LINK首执行exit1120/2.547秒，完整legacy transport引入12个未执行binder/receipt依赖，未开始行为RED/GREEN。真实dumpbin确认router/test不引用legacy executor，正收敛按唯一双签名从当前源提取原parser函数的单TU方案，实际Router/Handler不改、不得加桩掩盖缺口。原件 `D:/ck3-state/resume91-m6-native/router/build/{CANDIDATE-FORMAL-COMPILE,COMMON-PARSER-COMPILE,TEST-FORMAL-COMPILE,BASELINE-LINK}/ACTUAL.json`。未采用/发表该候选，旧绿不重跑。
