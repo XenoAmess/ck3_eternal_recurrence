@@ -560,3 +560,43 @@ are selected. Existing unrelated Z changes are excluded. Native66 configuration
 and generation passed in 15.819 seconds at 16:21:06Z. Generated CTest timeouts
 are 30 seconds for the two M6 tests and 60 seconds for M0's internal-Wait test.
 No unchanged green matrix, complete CI, Game operation or DLL deployment ran.
+
+The three persistent test additions were normally published as
+`4277932d7c61e1d3e29460d1fa946ea598415a74`, independently read back at
+16:22:52Z. The isolated tree was clean. Its measured small-output root at
+16:24:55Z was 30,032,207 bytes in 364 files, below the 64 MiB budget; the existing
+2026-11-06 review deadline was retained without automatic renewal.
+
+## M3 persistent total-piety producer
+
+The already published piety binder now has a repo-only regression covering the
+public binder, relocated original numeric457B and aggregate204B selected paths,
+complete campaign Root, actual per-seat piety leaf and full serializer. Its three
+existing scenes use owners0/MIN/MIN+1 and check zero, negative and positive net
+totals. All 282 checks passed through the formal four-TU CMake target and CTest.
+Lower gross/cost/final terms, native memory and frames remain explicit software
+inputs. No current Game rate, monthly credit or live image call is inferred.
+
+The original campaign test's owned-memory support was mechanically extracted
+into one shared test header, with its old .3 includes retained in the existing
+wrapper. The original suffix is byte-identical and the extracted prefix is
+mechanically equivalent. The changed old wrapper was strictly compiled as a
+separate compatibility TU; its old behavior matrix was not rerun. All three
+production TUs and the original test base matched the publication tree before
+adoption. Validation-only production copies and the temporary top-level CMake
+project were excluded from publication.
+
+An initial Java helper classloader error and missing research include in the
+isolated compatibility harness remain recorded. The first build compiled and
+linked the four-TU new target but failed the compatibility TU; the corrected
+harness caused Ninja to rebuild all five TUs successfully in BUILD02, followed
+by CTest1/1 with 282 checks. No external object, archive, Runtime or Bridge
+target is required. Evidence is M3
+`persistent-total90/{BASE-AND-PUBLISH-FILES01.json,PERSISTENT-TOTAL-ACTUAL90.json,
+BUILD01.actual.json,BUILD02.actual.json,CTEST02.actual.json}`.
+
+The five explicit test/support/module leaves plus one root include and exact
+existing CI target/regex additions are adopted. Native66 configuration generated
+the actual CTest registration with timeout15, exit0 in 25.039 seconds at
+16:40:38Z. This root configuration did not rerun the passing three-scene test or
+the old thirteen-scene matrix, and the complete hosted CI step remains unrun.
