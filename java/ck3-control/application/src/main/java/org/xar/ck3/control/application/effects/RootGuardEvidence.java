@@ -133,18 +133,11 @@ public final class RootGuardEvidence {
         if(SCHEMA.equals(schema)) point(row);
         StrictJson.require(guard.operation().value().equals(StrictJson.text(row.get("operation"))) && guard.authorityId().equals(StrictJson.text(row.get("authority_id")))
                 && guard.nativeEvidence().equals(ExactRef.fromJson(row.get("native_frame"))) && guard.capabilityEvidence().equals(ExactRef.fromJson(row.get("hello"))),"original guard basis binding changed");
-        // These named complete originals have the full Driver/semantic material domain.
-        // Root/child bases and local qualification metadata keep the ordinary token lane below.
-        for(String field:List.of("driver_facts","semantic","original_driver")) {
-            ExactRef original=ExactRef.fromJson(row.get(field)); RootGuardChecks.exact(original,archive.loadFullMaterial(original).bytes());
-        }
-        for(String field:List.of("driver_stamp","capabilities")) {
-            ExactRef original=ExactRef.fromJson(row.get(field)); RootGuardChecks.exact(original,archive.loadMaterial(original).bytes());
-        }
+        // Decode the named reference roles; actual payload consumption belongs to their readers.
+        for(String field:List.of("driver_facts","semantic","original_driver","driver_stamp","capabilities","heartbeat"))
+            ExactRef.fromJson(row.get(field));
         var qualification=row.get("source_qualification");
-        if(qualification!=null&&!qualification.isNull()) {
-            ExactRef original=ExactRef.fromJson(qualification);RootGuardChecks.exact(original,archive.loadMaterial(original).bytes());
-        }
+        if(qualification!=null&&!qualification.isNull())ExactRef.fromJson(qualification);
         if(guard.supportingEvidence().size()==2) {
             ExactRef childRef=guard.supportingEvidence().getLast();RawJson childRaw=archive.loadMaterial(childRef);
             RootGuardChecks.exact(childRef,childRaw.bytes());
@@ -162,9 +155,6 @@ public final class RootGuardEvidence {
                 StrictJson.require(SCHEMA.equals(schema)&&parent.matchesGuard(guard,ExactRef.fromJson(row.get("driver_facts")),childRef)
                         &&parent.writerSequence()==originalPoint.sequence()&&parent.writerDigest().equals(originalPoint.digest()),
                         "public pause parent DATA differs from its exact Root basis/guard/history point");
-                // Only this finite codec is admitted here. Its constructor and matchesGuard grant no
-                // authority: the installed PublicPauseAuthority must separately reverify archived
-                // parent/child source and canonical history through the mandatory Kernel callback.
                 childBeforeNative=parent.beforeNative();childBeforeDriver=parent.beforeDriver();
             }else throw new IllegalArgumentException("unregistered exact derived-child locator schema");
             StrictJson.require(childBeforeNative.equals(ExactRef.fromJson(row.get("native_frame")))
