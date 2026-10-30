@@ -503,3 +503,60 @@ Only configuration was repeated after moving the signed target's unchanged
 CMake block into an included module; neither passing regression matrix nor the
 complete CI step was rerun. Matching Java consumers have separately passed
 their current combined seven-test result and await Native source publication.
+
+The two Native cohorts were normally published as
+`13654e7cedd243c886d21cc2b61bc852ebf0c837`; independent remote readback at
+16:16:31Z returned the exact SHA and the delivery tree was clean. Matching Java
+consumers followed in `873d0ef4bd1ce1d337ea3fb2a256889cdbae0414`.
+
+## M6 public routes and M0 internal Wait regression
+
+Two additional M6 repo-only persistent targets are adopted without production
+changes. The public action Handler/registered slot58/real queue/pump/Core/state/
+semantic command/receipt/serializer route passes 51 checks, including actor-2 /
+target0, later-epoch SchemeID0 receipt, duplicate/stale rejection, and same-slot
+wrong generation before native command submission. Its owned image-binding,
+native callbacks and Frame/TLS seams remain explicit; live actual4 factory and
+Game execution are not exercised. Formal single-target CMake/Ninja and CTest
+passed, with four response bodies byte-identical to the first route run.
+The fourteen production TUs match the publication source after BOM/CRLF
+normalization; six initial comparisons differed only by UTF-8 BOM removal.
+No redundant source variant or 51-check rerun was needed. Source notes and real
+Ninja dependency pins are in M6 `target-identity/action-public-route-next/`
+`persistent-ci/{INDEX.json,PUBLICATION-SOURCE-NOTE.md,NECESSARY-HEADERS-PIN.json}`.
+
+The public material Handler/real queue/pump/entry/read/finish/reclaim/JSON target
+passes 94 checks across three signed/zero pairs, frame drift, revision mismatch,
+missing named callback and actual4 Event refusal. Its ten repo TUs built and
+linked in 56.341 seconds, CTest 1/1 passed; neither an external archive nor a
+copied production renderer is required. All nine production TUs and the physical
+mailbox header match the published source after text normalization. The factory
+seam calls the actual pure binding factory and replaces only owned memory/I/O.
+The test's temporary opinion row follows the independently proved layout;
+periodic expiry and actual script-effect application remain separate. Initial
+Cygwin configuration and missing research-include build failures are retained.
+See M6 `effect-readback/material-route-ci-next/{README.md,FINAL-RESULT01.json,
+INPUT-SOURCES01.json}`; the stable manifest is FINAL-RESULT01, not DELIVERY.json.
+
+Root separately authorized M0's internal 30-second executing-Wait regression.
+Its new independent EXE observes only its own timer import while forwarding
+unaltered Kernel32 ticks. The same real WorkerAdapter Wait initial callsite
+reenters after 30000 ms while the original context remains executing, then the
+original read and a fresh sequence2 both complete and reclaim. The packaged
+new mode passed 24 checks in 32.383 seconds after only one new fixture-TU
+compile and a narrow link. Eight published-profile production objects stayed
+byte-identical; two bodies match the first 32-second execution. No external
+Wait/Cancel or direct timeout-enum observation is claimed. Local execution still
+uses the earlier bounded runtime/protocol archive closure; the permanent target
+references repo sources and symbolic runtime/protocol targets instead. Its
+formal CMake binary/full feature-runtime/CI step was not built or run here.
+The old eight-scene and 45-check modes were not repeated. See M0
+`bridge-producer/mailbox-followup/restart-lifecycle/executing-timeout/`
+`persistent-mode/{RESULT.md,MODE-ACTUAL.json,CANDIDATE-MANIFEST.tsv}`.
+
+Only these seven new test/support/module files, the existing claims CMake
+append, two root includes and exact additions to the current CI target/regex
+are selected. Existing unrelated Z changes are excluded. Native66 configuration
+and generation passed in 15.819 seconds at 16:21:06Z. Generated CTest timeouts
+are 30 seconds for the two M6 tests and 60 seconds for M0's internal-Wait test.
+No unchanged green matrix, complete CI, Game operation or DLL deployment ran.
