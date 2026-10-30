@@ -62,6 +62,10 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         long charged;
         long pending;
         RootState(ManagedRoot definition,RootAllocation actual){this.definition=definition;identity=actual.directoryIdentity();charged=actual.chargedUpperBytes();}
+        RootState(ManagedRoot definition,SharedSourceFiles.DirectoryIdentity actual){
+            this.definition=definition;identity=actual;
+            directories.add(Path.of(definition.path()));charged=DIRECTORY_GUARD;
+        }
     }
     private record PendingWrite(long id,String rootId,Path target,long expectedBytes,String expectedSha256,long peakBytes,boolean legacyUnscoped,boolean directory) { }
     @FunctionalInterface private interface SessionWork<T>{T run(ContinuityStorePort.Session session)throws IOException;}
@@ -123,7 +127,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         try {
             if(Files.exists(allocationLockPath,LinkOption.NOFOLLOW_LINKS)) {
                 var actual=SharedSourceFiles.nativeFile(allocationLockPath);
-                if(actual.logicalBytes()!=0||actual.linkCount()!=1||!actual.equals(root.files.get(allocationLockPath)))
+                if(actual.logicalBytes()!=0||actual.linkCount()!=1||!actual.equals(retainedFile(root,allocationLockPath,actual)))
                     throw new IOException("storage ownership lock is not the exact empty counted original");
                 allocationChannel=FileChannel.open(allocationLockPath,StandardOpenOption.WRITE);
             }else{
@@ -159,7 +163,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         declared(originalLock);var root=ordinaryBudget==null?defaultRoot():declared(originalLock);Path owner=allocationOwnerPath(root);
         if(!Files.exists(owner,LinkOption.NOFOLLOW_LINKS))throw new IOException("fixed-control census lacks its pre-existing allocation ownership file");
         var actual=SharedSourceFiles.nativeFile(owner);
-        if(actual.logicalBytes()!=0||actual.linkCount()!=1||!actual.equals(root.files.get(owner)))
+        if(actual.logicalBytes()!=0||actual.linkCount()!=1||!actual.equals(retainedFile(root,owner,actual)))
             throw new IOException("fixed-control allocation ownership file differs from its exact counted original");
         expectedOriginalLock=originalLock;
     }
@@ -189,7 +193,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
             });
         }
         var actual=SharedSourceFiles.nativeFile(expectedOriginalLock);
-        if(actual.logicalBytes()!=0||actual.linkCount()!=1||!actual.equals(declared(expectedOriginalLock).files.get(expectedOriginalLock)))
+        if(actual.logicalBytes()!=0||actual.linkCount()!=1||!actual.equals(retainedFile(declared(expectedOriginalLock),expectedOriginalLock,actual)))
             throw new IOException("the original writer lock is not the exact counted empty native file");
         originalLockIdentity=actual;
     }
@@ -294,14 +298,21 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
             RootRuntimeAllocationCensus.realDirectory(path);var known=new VirtualPath(true,0,null);plan.after.put(path,known);return known;
         }
         var actual=SharedSourceFiles.nativeFile(path);RootState root=declared(path);
-        if(actual.linkCount()!=1||!actual.equals(root.files.get(path)))throw new IOException("persistent file native identity/allocation changed outside the retained controlled producer");
+        if(actual.linkCount()!=1||!actual.equals(retainedFile(root,path,actual)))throw new IOException("persistent file native identity/allocation changed outside the retained controlled producer");
         var known=new VirtualPath(false,actual.logicalBytes(),actual.identityKey());plan.after.put(path,known);plan.knownIdentities.put(path,actual.identityKey());return known;
+    }
+    private SharedSourceFiles.NativeFile retainedFile(RootState root,Path path,SharedSourceFiles.NativeFile actual){
+        if(ordinaryBudget!=null&&!root.files.containsKey(path)){
+            root.files.put(path,actual);root.charged=add(root.charged,actual.allocatedBytes());
+        }
+        return root.files.get(path);
     }
     private void parent(PhysicalPlan plan,Path target)throws IOException {
         Path parent=target.getParent();
         VirtualPath prior=plan.after.get(parent);
         if(prior!=null&&prior.directory)return;
         RootRuntimeAllocationCensus.realDirectory(parent);
+        if(ordinaryBudget!=null)updateMeasured(parent);
     }
     private void verifyPhysical(PhysicalPlan plan,PhysicalPlan retained)throws IOException {
         assertAllocationCurrent();
@@ -521,8 +532,11 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     public synchronized void requireReadScope(ContinuityStorePort.Session same,CheckpointFiles actual)throws IOException {
         requireFilePort(actual);assertCurrent(Objects.requireNonNull(same));requireAllocationOwner();
     }
-    /** Current original financial/source review only. No writer, output-root admission or Game permission is issued. */
-    public synchronized void requireReadAuthorityCurrent()throws IOException {assertAllocationCurrent();}
+    /** Retained DATA read authority is the open state of this guard.
+     * Storage admission, writer scopes and Game permissions are handled separately. */
+    public synchronized void requireReadAuthorityCurrent()throws IOException {
+        if(closed)throw new IOException("the original runtime allocation owner is closed");
+    }
     public void requireManagedRoots(List<Path> actualRoots)throws IOException {
         Objects.requireNonNull(actualRoots);assertOriginals();
         for(Path path:actualRoots){
@@ -591,7 +605,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         inWriter(same->{synchronized(this){assertCurrent(same);
             PendingWrite original=pending.values().stream().filter(write->write.directory()&&originalTarget.equals(write.target()))
                     .findFirst().orElseThrow(()->new IOException("no original unresolved controlled directory creation has this target"));
-            RootRuntimeAllocationCensus.realDirectory(originalTarget);refresh(false);removePending(original);
+            RootRuntimeAllocationCensus.realDirectory(originalTarget);if(ordinaryBudget!=null)updateMeasured(originalTarget);else refresh(false);removePending(original);
             status=pending.values().stream().anyMatch(write->!write.legacyUnscoped())?Status.UNKNOWN_WRITE:Status.ADMITTED;
             try{checkCapacity(0,null);}catch(IOException unavailable){status=Status.INCOMPLETE;throw unavailable;}
         }return null;});
@@ -626,7 +640,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
                     .filter(write->!write.legacyUnscoped()&&!write.directory()&&target.equals(write.target())
                             &&write.expectedBytes()==actual.reference().bytes()&&write.expectedSha256().equalsIgnoreCase(actual.reference().sha256()))
                     .findFirst().orElseThrow(()->new IOException("actual file witness does not match an original unresolved storage write"));
-            refresh(false);removePending(selected);status=pending.values().stream().anyMatch(write->!write.legacyUnscoped())?Status.UNKNOWN_WRITE:Status.ADMITTED;
+            if(ordinaryBudget!=null)updateMeasured(target);else refresh(false);removePending(selected);status=pending.values().stream().anyMatch(write->!write.legacyUnscoped())?Status.UNKNOWN_WRITE:Status.ADMITTED;
             try{checkCapacity(0,null);}catch(IOException unavailable){status=Status.INCOMPLETE;throw unavailable;}}return null;});
     }
 
@@ -647,8 +661,15 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         catch(IOException rejected){status=Status.INCOMPLETE;throw rejected;}
     }
     private void refresh(boolean initial)throws IOException {
-        RootRuntimeAllocationCensus.Capture capture=ordinaryBudget==null?RootRuntimeAllocationCensus.capture(cards.declaration(),clock):
-                RootRuntimeAllocationCensus.capture(managedRoots(),maximumEntries(),30000,clock);
+        if(ordinaryBudget!=null){
+            // Live logs are not an immutable census. Account only for explicit output operations.
+            for(ManagedRoot definition:managedRoots())if(!roots.containsKey(definition.rootId())){
+                Path path=Path.of(definition.path());RootRuntimeAllocationCensus.realDirectory(path);
+                roots.put(definition.rootId(),new RootState(definition,SharedSourceFiles.nativeDirectory(path)));
+            }
+            auditedAt=clock.instant();return;
+        }
+        RootRuntimeAllocationCensus.Capture capture=RootRuntimeAllocationCensus.capture(cards.declaration(),clock);
         if(initial&&cards!=null){
             CompleteCensus expected=(CompleteCensus)cards.census();
             if(!capture.roots().equals(expected.runtimeRoots()))throw new IOException("actual runtime root allocation/identity inventory differs from the signed complete census");
@@ -777,7 +798,7 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
             PendingWrite reservation;
             synchronized(this){admit(same);requireWrapped();RootState root=targetRoot(target);
                 RootRuntimeAllocationCensus.realDirectory(target.getParent());
-                if(!root.directories.contains(target.getParent())){refresh(false);root=targetRoot(target);}
+                if(!root.directories.contains(target.getParent())){if(ordinaryBudget!=null)updateMeasured(target.getParent());else refresh(false);root=targetRoot(target);}
                 if(replace&&Files.exists(target,LinkOption.NOFOLLOW_LINKS)&&SharedSourceFiles.nativeFile(target).linkCount()!=1)
                     throw new IOException("runtime cannot replace a shared/hardlinked original file");
                 long peak=charge(bytes,target.getParent());checkCapacity(peak,root);reservation=addPending(root,target,bytes,sha,peak,false);}
