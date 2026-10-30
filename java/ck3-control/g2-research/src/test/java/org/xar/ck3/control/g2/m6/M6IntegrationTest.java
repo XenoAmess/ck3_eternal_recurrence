@@ -21,6 +21,8 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.projection.ProjectionJson;
 import org.xar.ck3.control.g2.common.G2Request;
+import org.xar.ck3.control.g2.common.G2Exception;
+import org.xar.ck3.control.g2.common.G2HttpError;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.common.G2Wire;
 import org.xar.ck3.control.g2.common.Milestone;
@@ -59,20 +61,25 @@ final class M6IntegrationTest {
         var assessment = new M6Research().evaluateCampaign(evidence);
         assertFalse(assessment.evidencePacketReady()); assertFalse(assessment.schemeComplete());
         assertFalse(assessment.wholeM6Complete()); assertFalse(assessment.grantsSubmissionAuthority());
-        var response = new M6Research().evaluate(new G2Request("m6-original", Milestone.M6,
+        // The immutable ledger includes its original trailing newline. It is evidence bytes,
+        // while the G2 body is exactly one JSON token; preserve the ledger through its packet.
+        var malformed = assertThrows(G2Exception.class, () -> new G2Request("m6-original", Milestone.M6,
                 source("closed-original.json", raw), ProjectionJson.object(raw, M6SourceProducer.MAX_BYTES)));
-        JsonNode decoded = StrictJson.parse(response.result().bytes());
-        assertEquals("in_progress", decoded.get("milestone_status").textValue());
-        assertFalse(decoded.get("whole_m6_complete").booleanValue());
-        assertFalse(decoded.get("evidence_packet_ready").booleanValue());
+        assertEquals(G2HttpError.Code.MALFORMED_REQUEST, malformed.code());
+        assertEquals("G2 body must start and end at its JSON token; surrounding whitespace rejected", malformed.getMessage());
         byte[] exactPacket = packet(raw, resource("ordinary-start-auto48-original.json"));
         G2Request packetRequest = new G2Request("m6-original-wire", Milestone.M6,
                 source("closed-original.packet.json", exactPacket), ProjectionJson.object(exactPacket, M6SourceProducer.MAX_BYTES));
         var wireRequest = G2Wire.decodeRequest(G2Wire.encodeRequest(packetRequest));
         assertArrayEquals(exactPacket, wireRequest.payload().bytes());
+        assertArrayEquals(raw, M6SourceProducer.fromEvidencePacket(wireRequest.payload().bytes(), wireRequest.source()).originalLedger().bytes());
         var packetResponse = new M6Research().evaluate(wireRequest);
         var wireResponse = G2Wire.decodeResponse(G2Wire.encodeResponse(packetResponse));
         assertArrayEquals(packetResponse.result().bytes(), wireResponse.result().bytes());
+        JsonNode decoded = StrictJson.parse(wireResponse.result().bytes());
+        assertEquals("in_progress", decoded.get("milestone_status").textValue());
+        assertFalse(decoded.get("whole_m6_complete").booleanValue());
+        assertFalse(decoded.get("evidence_packet_ready").booleanValue());
         assertArrayEquals(raw, resource("closed-ledger-original.json"));
     }
 

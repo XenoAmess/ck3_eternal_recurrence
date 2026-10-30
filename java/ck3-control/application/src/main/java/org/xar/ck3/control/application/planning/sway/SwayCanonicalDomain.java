@@ -398,7 +398,7 @@ public final class SwayCanonicalDomain {
         // Native archive packets carry a LE uint32 frame. The one FrameLoader already strictly decoded and reassembled them.
         JsonNode state = org.xar.ck3.control.planning.opportunity.OpportunityJson.toNode(original.semantic());
         require(SwayNativeWire.bool(state, "paused") && SwayNativeWire.bool(state, "map_ready") && SwayNativeWire.signed(state, "date_raw") == binding.date(), "Start snapshot lost paused date/map binding");
-        JsonNode actor = state.get("played_character"); require(actor != null && actor.isObject() && SwayNativeWire.bool(actor, "alive") && SwayNativeWire.integer(actor, "character_id", 1, 0xffff_ffffL) == binding.actor(), "Start snapshot actor differs");
+        JsonNode actor = state.get("played_character"); require(actor != null && actor.isObject() && SwayNativeWire.bool(actor, "alive") && org.xar.ck3.control.contracts.NativeCharacterId.fromJson(actor.get("character_id")).value() == binding.actor(), "Start snapshot actor differs");
         JsonNode event = state.get("active_event"), interaction = state.get("pending_character_interaction");
         if (event == null || interaction == null) return MandatoryContext.UNAVAILABLE;
         return event.isNull() && interaction.isNull() ? MandatoryContext.CLEAR : MandatoryContext.MANDATORY;

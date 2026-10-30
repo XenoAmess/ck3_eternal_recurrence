@@ -1,0 +1,300 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "native_inputs": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "original_utf8_and_LE_frame_bytes_preserved": true,
+    "snapshots": [
+      {
+        "actor": -2,
+        "hello": {
+          "body": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-minus2.hello.json",
+          "bytes": 3940,
+          "sha256": "3743ecba969243ca1c9b4c741c26e8b963d8921e5c96dbcc6a55cc154149c580",
+          "frame": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-minus2.hello.frame.bin",
+          "frame_bytes": 3944,
+          "frame_sha256": "d0b173dddb028f41fdd15525504bc9180bcbef278cab6975a73f7b3607e007f2",
+          "pid": 285460,
+          "connection_generation": 1
+        },
+        "body": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-minus2.state-snapshot.json",
+        "bytes": 993,
+        "sha256": "2804d93828d3f25f7832842996607558dc2e99fa15ae47ba9af6c90cfdb94c94",
+        "frame": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-minus2.state-snapshot.frame.bin",
+        "frame_bytes": 997,
+        "frame_sha256": "0da34b11c10ae44b71113ca6cde3341d4fac99bac897980a50c8b0cb8c2a8c2b"
+      },
+      {
+        "actor": 0,
+        "hello": {
+          "body": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-zero.hello.json",
+          "bytes": 3940,
+          "sha256": "39571eee9b44316478d097f0d097407ee698204777db712bb2dadfdda02e2c01",
+          "frame": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-zero.hello.frame.bin",
+          "frame_bytes": 3944,
+          "frame_sha256": "bec2457d0bc57c71ce392b2cbb217eb30790a6d0f919027dc814dd3961dcc542",
+          "pid": 285460,
+          "connection_generation": 2
+        },
+        "body": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-zero.state-snapshot.json",
+        "bytes": 991,
+        "sha256": "f7e58d0ae4c27c4d095fe8dbac07d9da42445b9f638cefd4095c0ca4a711f194",
+        "frame": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-zero.state-snapshot.frame.bin",
+        "frame_bytes": 995,
+        "frame_sha256": "e50d8c8a31b2eff5ed655addde4e01c4c6b4006fa01d91ca16024698ce53d60a"
+      }
+    ],
+    "same_owned_peer_source_relationship": "Original Native producer INDEX, same run PID285460 with connection generations1/2. Both snapshots were independently produced again in that run, not borrowed from the earlier same-byte packets.",
+    "Game_qualification": false,
+    "native_producer_index": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\INDEX.json",
+      "bytes": 11998,
+      "sha256": "50449389f6c167ba5e42bdaa3012c05a7c7333776cf01d9ce54af26101a82d6d"
+    },
+    "source_limits": "Actual original HelloFrame and snapshot reader/serializer/WriteFrame; descriptor enabled/memory bindings remain owned-fixture seams. No physical CK3 or live Game factory qualification."
+  },
+  "original_native_index": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "sealed_at": "2026-10-30T17:19:33.842753100Z",
+    "scope": "one new owned software process; per-peer same adapter original HELLO, actual WriteFrame, true complete actual4 snapshot read and original Snapshot serializer/WriteFrame",
+    "game": "NOT_RUN",
+    "actual4_image_factory": "NOT_RUN",
+    "whole_bridge_or_real_pipe_worker": "NOT_RUN",
+    "source_bound_generation_clause": "owned PeerState has original zero initializer and exact maximum guard/increment clause; two explicit owned peers; no fake PID, old HELLO, or field edits",
+    "stages": [
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "COMPILE",
+        "started_at_utc": "2026-10-30T17:18:04.391036300Z",
+        "completed_at_utc": "2026-10-30T17:18:17.742961700Z",
+        "actual": {
+          "identity": {
+            "pid": 142148,
+            "creationFiletimeDecimal": "134378542845622476",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 13.1990619,
+          "accounting": {
+            "peakJobMemoryBytes": 567447552,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "LINK",
+        "started_at_utc": "2026-10-30T17:18:17.838928700Z",
+        "completed_at_utc": "2026-10-30T17:18:20.901307100Z",
+        "actual": {
+          "identity": {
+            "pid": 258192,
+            "creationFiletimeDecimal": "134378542978425763",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 3.061457,
+          "accounting": {
+            "peakJobMemoryBytes": 89772032,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "RUN",
+        "started_at_utc": "2026-10-30T17:18:20.906492100Z",
+        "completed_at_utc": "2026-10-30T17:18:21.330703400Z",
+        "actual": {
+          "identity": {
+            "pid": 285460,
+            "creationFiletimeDecimal": "134378543009298800",
+            "executable": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\hello-snapshot-producer.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 0.4236325,
+          "accounting": {
+            "peakJobMemoryBytes": 6942720,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      }
+    ],
+    "producer_identity": {
+      "pid": 285460,
+      "creationFiletimeDecimal": "134378543009298800",
+      "executable": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\hello-snapshot-producer.exe"
+    },
+    "peers": [
+      {
+        "actor": -2,
+        "same_process_pid": 285460,
+        "connection_generation": 1,
+        "producer_order": "same FrameAdapter instance: original HelloFrameActual->WriteFrame before actual ReadSnapshot->StateSnapshotFrame->WriteFrame",
+        "hello": {
+          "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-minus2.hello.json",
+          "bytes": 3940,
+          "sha256": "3743ecba969243ca1c9b4c741c26e8b963d8921e5c96dbcc6a55cc154149c580"
+        },
+        "hello_frame": {
+          "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-minus2.hello.frame.bin",
+          "bytes": 3944,
+          "sha256": "d0b173dddb028f41fdd15525504bc9180bcbef278cab6975a73f7b3607e007f2"
+        },
+        "snapshot": {
+          "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-minus2.state-snapshot.json",
+          "bytes": 993,
+          "sha256": "2804d93828d3f25f7832842996607558dc2e99fa15ae47ba9af6c90cfdb94c94"
+        },
+        "snapshot_frame": {
+          "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-minus2.state-snapshot.frame.bin",
+          "bytes": 997,
+          "sha256": "0da34b11c10ae44b71113ca6cde3341d4fac99bac897980a50c8b0cb8c2a8c2b"
+        },
+        "snapshot_revision": 7,
+        "snapshot_matches_previous_resource_producer_payload": true
+      },
+      {
+        "actor": 0,
+        "same_process_pid": 285460,
+        "connection_generation": 2,
+        "producer_order": "same FrameAdapter instance: original HelloFrameActual->WriteFrame before actual ReadSnapshot->StateSnapshotFrame->WriteFrame",
+        "hello": {
+          "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-zero.hello.json",
+          "bytes": 3940,
+          "sha256": "39571eee9b44316478d097f0d097407ee698204777db712bb2dadfdda02e2c01"
+        },
+        "hello_frame": {
+          "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-zero.hello.frame.bin",
+          "bytes": 3944,
+          "sha256": "bec2457d0bc57c71ce392b2cbb217eb30790a6d0f919027dc814dd3961dcc542"
+        },
+        "snapshot": {
+          "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-zero.state-snapshot.json",
+          "bytes": 991,
+          "sha256": "f7e58d0ae4c27c4d095fe8dbac07d9da42445b9f638cefd4095c0ca4a711f194"
+        },
+        "snapshot_frame": {
+          "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\wire\\canonical-zero.state-snapshot.frame.bin",
+          "bytes": 995,
+          "sha256": "e50d8c8a31b2eff5ed655addde4e01c4c6b4006fa01d91ca16024698ce53d60a"
+        },
+        "snapshot_revision": 7,
+        "snapshot_matches_previous_resource_producer_payload": true
+      }
+    ],
+    "files": [
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\PrepareHelloSnapshot.java",
+        "bytes": 9802,
+        "sha256": "b55cbc9c3d246eb4e53abc887c6c18e7b6b7baa220c42fea415fb3b453b22665"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\SealHelloSnapshot.java",
+        "bytes": 8713,
+        "sha256": "de2d148d01f562eb5f317a8619579c0d21c56552cafc3820119fa7db2520955a"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\CLOSURE-PLAN.json",
+        "bytes": 6721,
+        "sha256": "48e578a497289faa49e457ae15b2511adcf3f886b21095a7bab09f61f07e3917"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\NATIVE-BUILD-PLAN01.json",
+        "bytes": 2710,
+        "sha256": "b12e8545a86c33561b577437cb0772579f576b58b748b676bb82c352fa5799f5"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\hello_snapshot_producer.cpp",
+        "bytes": 9360,
+        "sha256": "f53285f61924684c323675d12b92e31c56e0fa3dda62c3c8f2889fd817b03c8b"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\actual_read_adapter.inc",
+        "bytes": 3697,
+        "sha256": "965d440f16dab6422104c9812d1b723fa614ad66eba73264fa43195aa9724242"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\COMPILE.rsp",
+        "bytes": 792,
+        "sha256": "ce4c6e0b7086dd2b02345314a2ba5a05b8d38840d6f8fd757886255a6296401d"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\LINK.rsp",
+        "bytes": 2544,
+        "sha256": "35fa7fea5c426e137210ab9757669a20f164f4a7113b1fe73ca3bd5a832e5426"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\hello-snapshot-producer.exe",
+        "bytes": 221696,
+        "sha256": "976a4d8e04359bddb26d953ff526eaf42eb78eb63f83279f14c6861c1d2671c4"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\COMPILE\\stdout.txt",
+        "bytes": 29,
+        "sha256": "7843f815593d4969502b73e1a95a1355930da7e241af6e87e50a68c7f0e483d0"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\COMPILE\\stderr.txt",
+        "bytes": 70,
+        "sha256": "56e2ca9857c137168045ad9c0c9f775318cf5b8290154aa126e807ea62bd70f8"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\LINK\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\LINK\\stderr.txt",
+        "bytes": 70,
+        "sha256": "56e2ca9857c137168045ad9c0c9f775318cf5b8290154aa126e807ea62bd70f8"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\RUN\\stdout.txt",
+        "bytes": 746,
+        "sha256": "3eb0ca03a14101ec985e963f398c742c35e50833e4e0aef5415e6eeb7ee6dd0f"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\hello-snapshot-next\\build\\RUN\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "hello_source_index": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\action-abi\\hello-source-next\\SOURCE-INDEX.json",
+      "bytes": 48861,
+      "sha256": "943424d444de68a83f85e24d8e8ad5a98acd4ad4c485c68de0c740b2f018af06"
+    },
+    "descriptor_source_index": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\action-abi\\hello-source-next\\DESCRIPTOR-SOURCE-INDEX.json",
+      "bytes": 53024,
+      "sha256": "cf107e2e7b50bd9b9e60437ffd8ccb9d54ef01c2e1c500794260428d72c715f8"
+    },
+    "complete_snapshot_source_index": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\actual-snapshot-next\\INDEX.json",
+      "bytes": 25830,
+      "sha256": "91bd2880d005c361c71abe22c21cbbfe63f8059da1724946ac781913e00164dc"
+    },
+    "resource_group_index": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\action-public-route-next\\resource-fullid-red-next\\INDEX.json",
+      "bytes": 14627,
+      "sha256": "f079aaab417a07e0536c8747046fd8b39d46e00b839db3e6284a85ed9f827c16"
+    },
+    "shared_writes": false,
+    "model_provider_game_calls": 0,
+    "old_packets": "unchanged; the two new snapshots were regenerated by a fresh same-process HELLO producer run",
+    "java_consumer": "raw bytes handed to /root/m6_native90/m6_candidate_producer90; Java received/Driver outcome is separate, never fabricated here",
+    "package_bytes_observed": 1568169,
+    "budget_bytes": 67108864,
+    "review_after": "2026-11-06"
+  },
+  "Java_scope": "Exact original packets enter production NativeGameTransport, NativeDriverObservationProducer and EvidenceReader/Assembler. Software endpoint/config/lifecycle DATA; no physical pipe/Game/Fresh/writer."
+}
