@@ -55,7 +55,40 @@ public final class M6ServiceIntegration {
                     .findFirst().orElseThrow(() -> new IllegalArgumentException("M6 source has no admitted original episode"));
             results.add(M6TerminalSourceComposition.compose(episode, source.inputs()));
         }
-        return new Result(evidence, results, research.evaluateCampaign(evidence));
+        return new Result(evidence, results, research.evaluateCampaign(assessmentEvidence(evidence, results)));
+    }
+
+    /** Only a proved dynamic cause may enrich an already independent retained terminal for assessment.
+     * The original ledger and its consumption/date fields remain untouched. */
+    private static G2M6Contracts.CampaignEvidence assessmentEvidence(
+            G2M6Contracts.CampaignEvidence evidence, List<M6TerminalSourceComposition.Result> compositions) {
+        List<G2M6Contracts.Episode> episodes = new ArrayList<>();
+        for (G2M6Contracts.Episode episode : evidence.episodes()) {
+            var result = compositions.stream().filter(value -> value.identity().equals(episode.identity()))
+                    .findFirst();
+            var terminal = episode.terminal();
+            if (result.isEmpty() || result.orElseThrow().cause().isEmpty() || terminal.isEmpty()
+                    || !terminal.orElseThrow().independentNatural()
+                    || !terminal.orElseThrow().instanceTerminalOutcomeObserved()) {
+                episodes.add(episode); continue;
+            }
+            var original = terminal.orElseThrow();
+            JsonNode cause = M6TerminalSourceComposition.parse(result.orElseThrow().cause().orElseThrow().observation());
+            int endDate = M6TerminalSourceComposition.signed(
+                    cause.at("/termination_record/native_invocation"), "post_date_raw");
+            // Query/consumption revisions do not date the executed end. A later named sample
+            // cannot be retroactively credited to an earlier completed invocation.
+            if (endDate > original.observed().dateRaw()
+                    || episode.firstNamedGain().filter(value -> value.observed().dateRaw() > endDate).isPresent()) {
+                episodes.add(episode); continue;
+            }
+            var attributed = new G2M6Contracts.TerminalEvidence(original.observed(),
+                    original.independentNatural(), original.instanceTerminalOutcomeObserved(),
+                    G2M6Contracts.TerminalCause.AUTHORED_SWAY_COMPLETE_100, true, original.consumption());
+            episodes.add(new G2M6Contracts.Episode(episode.identity(), episode.start(), episode.firstNamedGain(),
+                    Optional.of(attributed), episode.originalResolved()));
+        }
+        return new G2M6Contracts.CampaignEvidence(evidence.source(), episodes, evidence.originalLedger());
     }
 
     public static G2Response evaluate(G2Request request, M6Research research) {

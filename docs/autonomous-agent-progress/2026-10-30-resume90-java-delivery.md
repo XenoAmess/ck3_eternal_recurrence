@@ -63,3 +63,7 @@ M1 private 组已普通 push/独立读回 `eb9161511e60edce17882367bdfb7bd36eeb8
 M6 Java signed terminal 依序采用四份实际候选 `FINAL → ORDINARY → OPINION-ORDINARY → COMMON-END`，每步 LF check0、apply0。六完整生产类严格 javac0/2.848 秒；completion、termination 和它们实际普通输入验证接受 canonical signed Character/0，内部 owner/raw_u32 按同一完整位模式比较。EXECUTION、invalidation、Start/Stop 等未证域保持原限制，CommonEnd 只提供 neutral terminal，不派生 cause。保留既有 opinion 修复。
 
 复用 owner 四阶段实际原包回归：FINAL 新4P/旧兼容7P，ordinary terminal4P，ordinary opinion2P，common3P；不把这些分批写成单次总数。为了验证最后组合在正式 application 测试位置的跨包 helper/classloader 与6份资源，D checkout 仅复验 common 两完整类，严格 javac0/2.040 秒、3P0F/3.312 秒；其余绿组未重跑。Native 来源是15份公开 terminal serializer packet、3份完整 mailbox opinion response、5份 copied CommonEnd public packet；均明确 owned-memory/seam，未执行 installer/CALL、当前 DLL 或 Game。资源元数据和真实字段保留，缺失 core frame/caller/cause 仍缺失，不用它们补资格。
+
+M6 terminal 组已普通 push/独立远端读回 `f315c040481fdceab882dc6144cd46377c1d2f1a`。
+
+M6 assessment caller 的独立单叶候选已采用：composer 已验证的 cause 只为 evidence 中原已存在的 independentNatural/terminalObserved 临时投影归因，end 日期不能晚于原terminal或早于已观测first gain；不新造terminal、增益或消费。Result.evidence、originalLedger、原观察和材料日期保持不变。当前完整 M6ServiceIntegration 严格 javac0/4.577秒；在已集成 terminal/common 六叶上编译新完整 service 回归并实际6P0F/3.979秒，包含 encode→G2Wire→research dispatch→assessment 两正路径与缺原terminal/消费/素材/日期的负控。复用原owner Composition10P、Integration7P1既有F的事实；唯一旧F是历史raw closed-ledger token外空白被G2Wire先拒，baseline同失败，未trim原件或放宽G2Wire。未把该软件caller修复说成当前Native cause或Game因果已验。
