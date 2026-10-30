@@ -28,7 +28,7 @@ final class FamilyRootBindingV2Test {
     private static final Instant NOW=Instant.parse("2026-10-24T00:00:00Z");
     private static final BigInteger NATIVE=BigInteger.valueOf(17),DATE=BigInteger.valueOf(53182008);
     private static final ExactRef REF=new ExactRef("synthetic/root-original",1,"a".repeat(64));
-    private static final G2Source SOURCE=new G2Source("synthetic-family-root",NOW.toString(),Build.CROZIER4.version(),REF);
+    private static final G2Source SOURCE=new G2Source("synthetic-family-root",NOW.toString(),Build.CROZIER4.sha256(),REF);
     @Test void publicVersionedProducerBindsItsOriginalFrameAndRejectsAliasesInternalCaptureAndBareNativeEquivalence() throws Exception {
         var definitions=new FinanceReadContracts(query->new FinanceReadContracts.Registration(REF,
                 new FinanceReadContracts.Permission(Optional.empty(),query.operation().value(),ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE,ReadContract.WireProfile.EXECUTE_STEP)));

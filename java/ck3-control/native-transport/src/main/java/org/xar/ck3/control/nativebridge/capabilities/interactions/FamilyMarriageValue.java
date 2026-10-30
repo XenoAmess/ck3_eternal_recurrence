@@ -43,7 +43,7 @@ public final class FamilyMarriageValue {
             candidates=List.copyOf(candidates);need(candidates.size()==mode.rows(),"exact marriage query row count required");
             unique(candidates.stream().map(Candidate::characterId).toList(),mode.rows());
             need(mode==Mode.CHILD || childLineage.isEmpty(),"first-heir projection has no child lineage override");
-            need(context.build()==Build.CROZIER4 && context.source().exactBuild().equals(context.build().version()),
+            need(context.build()==Build.CROZIER4 && context.source().exactBuild().equalsIgnoreCase(context.build().sha256()),
                     "full value wire requires current exact4 source epoch");
         }
     }

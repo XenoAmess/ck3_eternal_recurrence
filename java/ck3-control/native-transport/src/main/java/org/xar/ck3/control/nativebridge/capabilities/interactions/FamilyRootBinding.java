@@ -125,7 +125,8 @@ public final class FamilyRootBinding {
         Basis actual=Objects.requireNonNull(originals.bind(ref,context));
         need(actual.originalRootReceipt().equals(ref)&&actual.binding().context().equals(context),
                 "family root issuer changed the exact original receipt or target query context");
-        need(binding.equals(encode(actual)),"family root binding differs from retained original query");
+        need(InteractionArguments.app(object(binding)).equals(InteractionArguments.app(encode(actual))),
+                "family root binding differs from retained original query");
         return actual;
     }
     public static ObjectNode encode(Basis basis) {

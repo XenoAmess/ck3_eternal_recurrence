@@ -1,0 +1,10 @@
+{
+  "schema": "xar.family-root96-software-fixture/v1",
+  "original_inputs": 14,
+  "original_bytes": 259798,
+  "template_bytes": 225093,
+  "compressed_bytes": 32493,
+  "metadata_replacements": 65,
+  "floats": "exact original decimal tokens retained as symbolic decimal nodes",
+  "software_only": true
+}

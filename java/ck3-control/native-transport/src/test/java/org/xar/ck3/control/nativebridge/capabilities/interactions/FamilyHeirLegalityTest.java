@@ -31,7 +31,7 @@ final class FamilyHeirLegalityTest {
     private static final String PRODUCER="ck3_autonomous_player/src/xar_autoplayer/bridge/marriage_matchmaking_private_transport.py";
     private static Context context() {
         Instant now=Instant.parse("2026-10-24T00:00:00Z");
-        G2Source source=new G2Source("synthetic-historical-replay",now.toString(),Build.CROZIER3.version(),new ExactRef("synthetic/source",1,"a".repeat(64)));
+        G2Source source=new G2Source("synthetic-historical-replay",now.toString(),Build.CROZIER3.sha256(),new ExactRef("synthetic/source",1,"a".repeat(64)));
         var frame=new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(BigInteger.valueOf(31853),BigInteger.valueOf(12),
                 BigInteger.valueOf(53327640)),"native:12",BigInteger.valueOf(56),"synthetic-text");
         var game=new GameGeneration(991,new PythonOnlyUInt64(new BigInteger("133700000000000001")));
@@ -72,8 +72,15 @@ final class FamilyHeirLegalityTest {
                 """;
         ProcessBuilder builder=new ProcessBuilder(required("xar.python"),"-B","-c",script,required("xar.repository.root"));
         builder.environment().put("PYTHONDONTWRITEBYTECODE","1"); builder.redirectErrorStream(true); Process process=builder.start();
-        if(!process.waitFor(30,TimeUnit.SECONDS)) { process.destroyForcibly(); throw new AssertionError("original family producer timeout"); }
-        byte[] output=process.getInputStream().readNBytes(131_073);
+        var captured=java.util.concurrent.CompletableFuture.supplyAsync(()->{
+            try{return process.getInputStream().readNBytes(131_073);}
+            catch(java.io.IOException failure){throw new java.io.UncheckedIOException(failure);}
+        });
+        byte[] output;
+        try {
+            if(!process.waitFor(30,TimeUnit.SECONDS))throw new AssertionError("original family producer timeout");
+            output=captured.get(5,TimeUnit.SECONDS);
+        }finally{if(process.isAlive())process.destroyForcibly();}
         assertEquals(0,process.exitValue(),new String(output,StandardCharsets.UTF_8)); assertTrue(output.length<=131_072);
         JsonNode expected=NativeWire.parse(output);
         var value=FamilyHeirLegality.decode(raw(actual()),binding());

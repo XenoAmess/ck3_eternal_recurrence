@@ -142,4 +142,10 @@ Root 独立完成的 M4 offline study 修正已按最小 patch 审阅采用：�
 
 ROOT 路由与 Family 诊断后继采用两最小生产 diff、两个原样回归类：MilitaryNativeReadDispatcher 仅给精确 ROOT 步骤接已有 installed finance owner，保留空公共参数/同 Game-session-source，返回原回执纯解码结果并拒绝值/回执错配；RootFamilyBridge 把观察失败的原异常类别、消息与 cause 交现有 MissingDocuments 诊断，不再误报缺进程身份。两个当前完整生产类 strict javac0/2.750秒。来源 route-root08、hotspot/route-root-consumer 与 wiring/family-diagnostic；复用相同最终来源 route3P、diagnostic2P，未重跑绿色测试。route 原真实3P曾由违规 PowerShell 维护 runner 执行，记录照实保留；新 Python runner仅静态审核，未将旧结果改称 Python 验收，也未在此运行旧 runner。新测试接默认 local-service CI，软件 READ DTO、Session proxy和原 Root fixture 不授 RootRuntimeContext/lease/Native/canonical 权威。Family 诊断为开发后继，不据此追认 S/MB 已采用。
 
+2026-10-30T16:39Z，machine_id: `xenoamess-full-tower-eb9d2c1186`。前两组已普通 push 且独立远端读回 1149c6d219cb9d0d470ec8b039f9b9e28ecd03d3，映射71dba640(cache/retreat)、1149c6d(ROOT/诊断)，D树clean。正常 fetch/rebase 纳入独立外部3a422e35，无覆盖或强推。
+
+Family 实际96/97后继采用六个生产窄diff：五消费者将 exactBuild 对比实际 EXE SHA（大小写等值），继续保 Build3/4解码与当前4运行范围等原检查；FamilyRootBinding 的 retained JSON 比较转已有 typed JSON value，拒绝改值/类型/数组顺序/多字段。六个当前完整生产类 strict javac0/3.084秒。原六测试夹具从版本串迁实际SHA；Heir测试异步有界读取stdout以解除先waitFor再读输出的管道互等，保30秒子进程期限与原断言，不改生产 deadline。provider 初次旧8项6P2F及仅原失败2方法修正后2P保留，不写单次8P。
+
+新增 familyroot96 持久包六叶原样导入：三Java与32493B gzip/manifest/README，14原件的路径归一到TempDir，decimal token不改；旧ROOT投影2P与新typed arguments2P是两次真实绿，未组合重跑。当前源码与来源 provider/{family-heir96,family-root-json96,family-oracle-drain96} 最小patch全部 apply-check/apply0；便携输入及逐叶依赖见 regression/family-root96-durable/FILES.json。真实96/97 source guard→FrameLoader→Context→Finance ROOT→Family projector/binding 原链由 wiring 验证，portable不造 RootContext/lease/lineage、无Native leafquery或动作信用。默认CI已可发现测试，完整Maven/CI尚未执行。
+
 交付源、测试、86原尾部CSV、原字节来源JSON与专用研究doc五叶，旧actor月门/interval/抽签逻辑保持。此研究类仍无runtime调用者，Root不要求S/MB/当前worker采用，未重跑已绿6项。原M4 scope核对和后继实际研究修正分开保留。

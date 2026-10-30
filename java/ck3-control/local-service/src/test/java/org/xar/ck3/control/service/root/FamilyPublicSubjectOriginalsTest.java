@@ -75,7 +75,7 @@ final class FamilyPublicSubjectOriginalsTest {
     }
     private record Fixture(Context context,FamilyChildMarriageQueries queries,PlanningReadResult.Known<Obj> known,ActionPorts.OutcomeArchive archive){}
     private static Fixture fixture() throws java.io.IOException {
-        var source=new G2Source("controlled-child-public",NOW.toString(),Build.CROZIER4.version(),REF);
+        var source=new G2Source("controlled-child-public",NOW.toString(),Build.CROZIER4.sha256(),REF);
         var frame=new JointBudgetSelector.Frame(BigInteger.valueOf(29829),BigInteger.valueOf(3),BigInteger.valueOf(53215920));
         var proposal=new JointBudgetSelector.ProposalFrame(frame,"native:3",BigInteger.valueOf(4),"controlled-child-episode");
         var identity=new ObservationIdentity(source.machineId(),new GameGeneration(991,new PythonOnlyUInt64(new BigInteger("133700000000000001"))),proposal,1);

@@ -19,7 +19,7 @@ public final class FamilyChildMarriageSubject {
     public static final String STEP="query-player-child-marriage-subject-v1-private",SCHEMA="xar.ck3.player-child-marriage-subject.v1";
     private FamilyChildMarriageSubject() { }
     public record Binding(Context context,int subject,boolean diagnoseFamilyArrays){
-        public Binding{Objects.requireNonNull(context);need(subject>0,"positive native child subject required");range(context.revision(),BigInteger.ONE,U64);need(context.actor().signum()>0&&context.actor().compareTo(BigInteger.valueOf(Integer.MAX_VALUE))<=0&&context.controls().paused()&&context.controls().mapReady()&&context.controls().alive(),"child subject needs paused living-player map");need(context.source().exactBuild().equals(context.build().version()),"child subject exact source version differs");}
+        public Binding{Objects.requireNonNull(context);need(subject>0,"positive native child subject required");range(context.revision(),BigInteger.ONE,U64);need(context.actor().signum()>0&&context.actor().compareTo(BigInteger.valueOf(Integer.MAX_VALUE))<=0&&context.controls().paused()&&context.controls().mapReady()&&context.controls().alive(),"child subject needs paused living-player map");need(context.source().exactBuild().equalsIgnoreCase(context.build().sha256()),"child subject exact source SHA differs");}
     }
     public enum Extra {INTERMEDIARY,NATIVE_RANK,HEIR_AGE,CANDIDATE_AGE,PLAYED_DYNASTY,HEIR_DYNASTY,CANDIDATE_DYNASTY,REALM_BACKED}
     public record Candidate(HeirMarriageCandidate value,Set<Extra> supplied){public Candidate{Objects.requireNonNull(value);supplied=Set.copyOf(supplied);}}

@@ -64,7 +64,7 @@ public final class FamilyMarriageAllianceQueries {
         Obj resolvedBody=application(object(field(body,"resolved")));Resolved resolved=FamilyMarriageResults.decodeResolved(route,resolvedBody);
         FamilyDomainReadBinding originalDomain=FamilyDomainReadBinding.fromJson(application(object(field(body,"original_domain"))));
         need(originalDomain.slot()==slot(route),"alliance original resolved domain slot differs from its exact route");
-        need(context.build()==Build.CROZIER4&&request.source().exactBuild().equals(context.build().version()),"live/replayed native alliance contract requires its original exact current .4 source");
+        need(context.build()==Build.CROZIER4&&request.source().exactBuild().equalsIgnoreCase(context.build().sha256()),"live/replayed native alliance contract requires its original exact current .4 source");
         need(context.controls().paused()&&context.controls().mapReady()&&context.controls().alive(),"alliance requires original paused living map controls");
         return new Arguments(context,resolved,FamilyMarriageAlliance.binding(context,resolved),originalDomain,request.arguments());
     }

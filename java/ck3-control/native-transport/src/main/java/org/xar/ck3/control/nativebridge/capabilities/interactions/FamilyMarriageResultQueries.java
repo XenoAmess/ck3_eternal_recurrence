@@ -122,7 +122,7 @@ public final class FamilyMarriageResultQueries {
     private static Context guard(Route route,PlanningReadReceipt receipt) {
         Objects.requireNonNull(receipt);PlanningReadRequest request=receipt.request();Context c=InteractionArguments.context(request);
         need(receipt.contractId().equals(contractId(route))&&request.operation().value().equals(route.step())&&receipt.original().nativeOk(),"original source-qualified result contract differs");
-        need(c.source().exactBuild().equals(c.build().version()),"result context source version differs");
+        need(c.source().exactBuild().equalsIgnoreCase(c.build().sha256()),"result context source SHA differs");
         for(var guard:List.of(receipt.before(),receipt.after()))need(guard.guardMode()==ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP&&guard.paused()&&guard.mapReady()&&guard.playerAlive()
                 &&guard.binding().observed().equals(c.before())&&guard.binding().source().equals(c.source())&&guard.binding().sessionId().equals(c.sessionId())
                 &&guard.binding().operation().equals(request.operation())&&guard.binding().connectionGeneration().equals(c.connectionGeneration()),

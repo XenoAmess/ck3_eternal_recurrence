@@ -47,7 +47,7 @@ final class FamilyMarriageValueTest {
         assertFalse(metadata.get("live").booleanValue());for(String scene:SCENES)assertTrue(Files.isRegularFile(directory.resolve(scene+".json")));assertEquals(executable,verifiedFixtureExecutable());pins();
     }
     private static Context context() {
-        Instant now=Instant.parse("2026-10-24T00:00:00Z");var source=new G2Source("synthetic-value-reader",now.toString(),Build.CROZIER4.version(),new ExactRef("synthetic/source",1,"a".repeat(64)));
+        Instant now=Instant.parse("2026-10-24T00:00:00Z");var source=new G2Source("synthetic-value-reader",now.toString(),Build.CROZIER4.sha256(),new ExactRef("synthetic/source",1,"a".repeat(64)));
         var frame=new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(BigInteger.valueOf(ACTOR),BigInteger.valueOf(11),BigInteger.valueOf(53327640)),"native:11",BigInteger.valueOf(56),"synthetic-value-episode");
         return new Context(new ObservationIdentity(source.machineId(),new GameGeneration(991,new PythonOnlyUInt64(new BigInteger("133700000000000001"))),frame,1),
                 source,"synthetic-value-session",BigInteger.TWO,Build.CROZIER4,now.plusSeconds(30),new ControlFrame(true,true,true,1,19L,ACTOR,"synthetic-value-episode",false,null,null,List.of()));

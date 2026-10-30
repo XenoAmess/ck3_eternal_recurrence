@@ -26,7 +26,7 @@ public final class FamilyHeirLegality {
             need(observedFirstHeir.isEmpty() || (observedFirstHeir.getAsLong()>0 && observedFirstHeir.getAsLong()<=Integer.MAX_VALUE),
                     "public campaign-root title heir outside native int32 domain");
             need((context.build()==Build.CROZIER3 || context.build()==Build.CROZIER4) &&
-                    context.source().exactBuild().equals(context.build().version()),
+                    context.source().exactBuild().equalsIgnoreCase(context.build().sha256()),
                     "family legal decoder requires its exact3/4 source; runtime admission separately requires current4");
         }
     }
