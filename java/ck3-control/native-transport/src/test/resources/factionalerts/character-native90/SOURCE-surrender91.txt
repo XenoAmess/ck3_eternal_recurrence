@@ -1,0 +1,6 @@
+machine_id: xenoamess-full-tower-eb9d2c1186
+Originals: D:/ck3-state/resume91-m1-native/surrender-ci/native/run/{leader-zero,leader-min,war-zero}.
+Native authority: ../DELIVERY91.json; prepared SURRENDER136 continuation, two fixture TUs plus cached link, three new selectors actually exit0.
+Each candidate-surrender-* alias retains exact original public-alerts-whole.json, WriteFrame .packet.bin and SUMMARY15.json bytes; no reconstruction.
+Actual Core/reader/projector/original Whole TU software combination on owned Character fields and authored ancillary engine callbacks. County/title/kingdom collections empty. No Game action, allocator, Handler or settled effect authority.
+Java method is model-authored unchanged and actually tested only as the new three parameter invocations, with Context peer production-class overrides. Context peer test-classes excluded; original27 not replayed.

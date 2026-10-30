@@ -151,4 +151,85 @@ final class FactionAlertNativeCharacterContractTest {
         assertThrows(IllegalArgumentException.class,()->decodeOriginal(selected,"other-request",full,token));
         assertArrayEquals(original,receipt.original().originalPacket());
     }
+    @ParameterizedTest
+    @ValueSource(strings={"leader-zero","leader-min","leader-zero-war-zero"})
+    void surrenderImpactPreservesNestedRefusalAndCharacterBoundaries(String name) throws Exception {
+        actualNativeCharacterPacketUsesInstalledContractArchiveAndPublicProjection("surrender-" + name);
+        byte[] original = resource("candidate-surrender-" + name);
+        var wire = assertInstanceOf(NativeWire.CommandResult.class, NativeWire.decode(original));
+        RawJson token = new RawJson(wire.result().token().orElseThrow().value());
+        JsonNode nativeFrame = StrictJson.parse(token.bytes()).get("player_faction_alerts");
+        var selected = new Selection(new Query(BigInteger.ONE), context(before(BigInteger.valueOf(50331649))));
+        var observed = decodeToken(selected, token);
+        var available = assertInstanceOf(FactionAlertModel.Available.class, observed.frame());
+        var row = available.targetingFactions().getFirst();
+        var impact = row.surrenderImpact().orElseThrow();
+        var nativeRow = nativeFrame.get("targeting_factions").get(0);
+        var nativeImpact = nativeRow.get("surrender_impact");
+
+        if (name.equals("leader-min")) {
+            assertEquals(Integer.MIN_VALUE, row.leaderCharacterId().orElseThrow());
+            assertEquals(List.of(Integer.MIN_VALUE), row.characterMemberIds());
+        } else {
+            assertEquals(0, row.leaderCharacterId().orElseThrow());
+            assertEquals(List.of(0), row.characterMemberIds());
+        }
+
+        if (name.equals("leader-zero-war-zero")) {
+            assertEquals(FactionAlertModel.Status.UNAVAILABLE, impact.status());
+            assertEquals("surrender_branch_predicates_unavailable", impact.unavailableReason().orElseThrow().value());
+            assertFalse(impact.ordinaryBranchTitleSetsReady());
+            assertFalse(impact.countyLossComplete());
+            assertFalse(impact.kingdomOutcomeComplete());
+            assertTrue(impact.leaderAtWarWithTarget().isEmpty());
+            assertEquals(FactionAlertModel.Status.UNAVAILABLE.wire(), nativeImpact.get("status").textValue());
+            assertEquals("surrender_branch_predicates_unavailable", nativeImpact.get("unavailable_reason").textValue());
+            assertFalse(nativeImpact.get("ordinary_branch_title_sets_ready").booleanValue());
+            assertFalse(nativeImpact.get("county_loss_complete").booleanValue());
+            assertFalse(nativeImpact.get("kingdom_outcome_complete").booleanValue());
+            assertTrue(nativeImpact.get("leader_at_war_with_target").isNull());
+        } else {
+            assertEquals(FactionAlertModel.Status.AVAILABLE, impact.status());
+            assertTrue(impact.unavailableReason().isEmpty());
+            assertTrue(impact.ordinaryBranchTitleSetsReady());
+            assertTrue(impact.countyLossComplete());
+            assertFalse(impact.kingdomOutcomeComplete());
+            assertEquals(Boolean.FALSE, impact.leaderAtWarWithTarget().orElseThrow());
+            assertEquals(FactionAlertModel.Status.AVAILABLE.wire(), nativeImpact.get("status").textValue());
+            assertTrue(nativeImpact.get("unavailable_reason").isNull());
+            assertTrue(nativeImpact.get("ordinary_branch_title_sets_ready").booleanValue());
+            assertTrue(nativeImpact.get("county_loss_complete").booleanValue());
+            assertFalse(nativeImpact.get("kingdom_outcome_complete").booleanValue());
+            assertFalse(nativeImpact.get("leader_at_war_with_target").booleanValue());
+        }
+
+        assertTrue(impact.playerSubrealmCountyTitleIds().isEmpty());
+        assertTrue(impact.memberCounties().isEmpty());
+        assertTrue(impact.seizedCounties().isEmpty());
+        assertTrue(impact.seizedDuchies().isEmpty());
+        assertTrue(impact.playerDirectTitleLossIds().isEmpty());
+        assertTrue(impact.playerRemainingDirectCountyTitleIds().isEmpty());
+        assertTrue(impact.kingdoms().isEmpty());
+
+        RawJson publicValue = encodePublic(selected, observed);
+        var restored = decodePublic(selected, publicValue);
+        assertEquals(observed.frame(), restored.frame());
+        assertEquals(observed.normalizedAlert(), restored.normalizedAlert());
+
+        JsonNode publicFrame = StrictJson.parse(publicValue.bytes()).get("player_faction_alerts");
+        var publicImpact = publicFrame.get("targeting_factions").get(0).get("surrender_impact");
+        assertEquals(nativeImpact.get("status"), publicImpact.get("status"));
+        assertEquals(nativeImpact.get("unavailable_reason"), publicImpact.get("unavailable_reason"));
+        assertEquals(nativeImpact.get("ordinary_branch_title_sets_ready"), publicImpact.get("ordinary_branch_title_sets_ready"));
+        assertEquals(nativeImpact.get("county_loss_complete"), publicImpact.get("county_loss_complete"));
+        assertEquals(nativeImpact.get("kingdom_outcome_complete"), publicImpact.get("kingdom_outcome_complete"));
+        assertEquals(nativeImpact.get("leader_at_war_with_target"), publicImpact.get("leader_at_war_with_target"));
+        assertEquals(nativeImpact.get("player_subrealm_county_title_ids"), publicImpact.get("player_subrealm_county_title_ids"));
+        assertEquals(nativeImpact.get("member_counties"), publicImpact.get("member_counties"));
+        assertEquals(nativeImpact.get("seized_counties"), publicImpact.get("seized_counties"));
+        assertEquals(nativeImpact.get("seized_duchies"), publicImpact.get("seized_duchies"));
+        assertEquals(nativeImpact.get("player_direct_title_loss_ids"), publicImpact.get("player_direct_title_loss_ids"));
+        assertEquals(nativeImpact.get("player_remaining_direct_county_title_ids"), publicImpact.get("player_remaining_direct_county_title_ids"));
+        assertEquals(nativeImpact.get("kingdoms"), publicImpact.get("kingdoms"));
+    }
 }
