@@ -17,6 +17,7 @@ from collections.abc import Mapping
 from types import SimpleNamespace
 from unittest.mock import patch
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, JsonValue, json_object
+from ck3_mod_acceptance import pin
 from ck3_mod_acceptance_unrun import _release_stages
 import ck3_mod_acceptance_unrun as subject
 
@@ -1027,6 +1028,55 @@ class AbortedAllocationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'quarantined'):subject.validate_aborted_allocation_v1(self.live,self.freeze,path,self.keeper,self.done,self.packet,next_state=self.state)
         Path(self.stdout['path']).write_text('{}',encoding='utf-8')
         with self.assertRaises(ValueError):subject.validate_aborted_allocation_v1(self.live,self.freeze,path,self.keeper,self.done,self.packet,next_state=self.root/'new-state')
+
+
+class RootCooperativeStopTests(unittest.TestCase):
+    def test_original_stop_machine_chronology_and_pin(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            keeper=Path(directory)
+            stop=keeper/'STOP'
+            value={'machine_id':'desktop-test','reason':'Allocator wrapper stopped before public run',
+                'observed_at_utc':'2026-10-30T09:48:00+00:00'}
+            stop.write_text(json.dumps(value),encoding='utf-8')
+            bundle: JsonObject={'keeper_STOP':pin(stop)}
+            ready=datetime.fromisoformat('2026-10-30T09:47:00+00:00')
+            closed=datetime.fromisoformat('2026-10-30T09:50:00+00:00')
+            self.assertEqual(subject._root_cooperative_stop(bundle,keeper,'desktop-test',ready,closed)
+                ['root_cooperative_stop'],bundle['keeper_STOP'])
+            with self.assertRaisesRegex(ValueError,'chronology'):
+                subject._root_cooperative_stop(bundle,keeper,'desktop-test',closed,ready)
+            value['machine_id']='another-machine'
+            stop.write_text(json.dumps(value),encoding='utf-8')
+            with self.assertRaises(ValueError):
+                subject._root_cooperative_stop(bundle,keeper,'desktop-test',ready,closed)
+
+    def test_original_java_allocator_wait_preserves_real_terminal_types(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            argv: list[JsonValue]=['python','-B','ck3_mod_acceptance.py','allocate','--prepared-case','prepared.json']
+            request=root/'request.json'
+            request.write_text(json.dumps({'argv':argv,'timeout_seconds':300}),encoding='utf-8')
+            stdout=root/'stdout.log';stdout.write_text('allocated',encoding='utf-8')
+            stderr=root/'stderr.log';stderr.write_text('',encoding='utf-8')
+            wait=root/'wait.json'
+            row: JsonObject={'schema':'xar.resume-original-command-wait.v1','machine_id':'desktop-test',
+                'actual_original_popen_wait':True,'timed_out':False,'exit_code':0,'pid':1234,
+                'argv':argv,'started_at_utc':'2026-10-30T09:46:00+00:00',
+                'finished_at_utc':'2026-10-30T09:51:00+00:00',
+                'request':pin(request),'stdout':pin(stdout),'stderr':pin(stderr)}
+            def bundle() -> JsonObject:
+                wait.write_text(json.dumps(row),encoding='utf-8')
+                return {'allocator_result':pin(wait)}
+            stamps=[datetime.fromisoformat(value) for value in
+                ('2026-10-30T09:47:00+00:00','2026-10-30T09:50:00+00:00')]
+            self.assertEqual(subject._allocator_argv(bundle(),'desktop-test',stamps),argv)
+            row['exit_code']=True
+            with self.assertRaisesRegex(ValueError,'ProcessBuilder allocator wait0'):
+                subject._allocator_argv(bundle(),'desktop-test',stamps)
+            row['exit_code']=0
+            request.write_text(json.dumps({'argv':argv+['--changed'],'timeout_seconds':300}),encoding='utf-8')
+            with self.assertRaises(ValueError):
+                subject._allocator_argv(bundle(),'desktop-test',stamps)
 
 
 if __name__=='__main__':unittest.main()

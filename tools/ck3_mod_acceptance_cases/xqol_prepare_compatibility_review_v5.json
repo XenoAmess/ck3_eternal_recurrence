@@ -1,0 +1,27 @@
+{
+  "schema": "ck3-xqol-reviewed-prepare-compatibility-v5",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-30T10:23:08Z",
+  "before": {
+    "commit": "5cbbb8c4298c73e41124d5ad618f51cecc085e48",
+    "bytes": 31816,
+    "sha256": "e53b0fca36fc9714cd730187583c9efa14e4c78439ccb48374991c2f0bb265b3"
+  },
+  "after": {
+    "commit": "4c1eae27b0203bf609f674aade3f2014fd28ebec",
+    "bytes": 31998,
+    "sha256": "9cbf437e89bb4e727565f60f69b855a2d42d8576c23cfc3a1ef7748faacd9e1a"
+  },
+  "source_changes": [
+    "4c1eae27b0203bf609f674aade3f2014fd28ebec"
+  ],
+  "review": "The exact later shared prepare change makes only the Dynastic Esotericism empire fixture use startup policy v3; all seven XQOL cases retain their v2 policy and unchanged mount order. Inverting this one exact fragment restores the v4-reviewed source byte for byte. This updates active source-support pins, not historical reviews or gameplay acceptance.",
+  "inverse_fragments": [
+    {
+      "review": "Only the declared dynastic-esotericism-empire-byzantium-1066 profile selects policy v3; other profile IDs continue v2.",
+      "old": "        policy.update(schema='ck3-frontend-fixture-start-policy-v2',schema_version=2,**scenario)\n",
+      "reviewed_current": "        empire=scenario.get('profile_id')=='dynastic-esotericism-empire-byzantium-1066'\n        policy.update(schema='ck3-frontend-fixture-start-policy-v3' if empire else 'ck3-frontend-fixture-start-policy-v2',\n                      schema_version=3 if empire else 2,**scenario)\n"
+    }
+  ],
+  "historical_review": "xqol_prepare_compatibility_review_v4.json remains unchanged."
+}

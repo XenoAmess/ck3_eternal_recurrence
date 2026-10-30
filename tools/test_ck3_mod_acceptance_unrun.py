@@ -119,7 +119,8 @@ def release_stage_checks():
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--bundle',type=Path,required=True)
-    p.add_argument('--task-bus-root',type=Path,required=True);p.add_argument('--receipt',type=Path);a=p.parse_args()
+    p.add_argument('--task-bus-root',type=Path,required=True);p.add_argument('--receipt',type=Path)
+    p.add_argument('--next-state',type=Path);a=p.parse_args()
     bundle=subject._read(a.bundle);live=Path(bundle['ready']['path']).parent
     freeze=subject._read(bundle['frozen']['path']);keeper=Path(bundle['keeper']['path']).parent
     release=read_failed_runtime_release(Path(bundle['admin_done']['path']))
@@ -127,7 +128,8 @@ def main():
     bus=current_screen_absent(Path(freeze['lease_anchor']),a.task_bus_root,
         freeze['files'][str(bus_script.resolve())]['sha256'],None)
     def invoke(path=a.bundle,packet=None):
-        return subject.validate_allocated_unrun(live,freeze,path,keeper,release,bus if packet is None else packet)
+        return subject.validate_allocated_unrun(live,freeze,path,keeper,release,bus if packet is None else packet,
+            next_state=a.next_state)
     verdict=invoke()
     keeper_ready=subject._read(bundle['keeper_ready']['path']);keeper_report=subject._read(bundle['keeper']['path'])
     allocator_checks=allocator_original_checks(bundle,bundle['machine_id'],
@@ -135,7 +137,10 @@ def main():
     expected_mode=('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if
         bundle.get('closure_kind')==subject.PRELAUNCH_KIND else
         'previous-shared-allocated-unrun-launcher-pin-refused' if
-        bundle.get('closure_kind')=='launcher-pin-admission-refused-before-launch-intent' else 'previous-shared-allocated-unrun-idle')
+        bundle.get('closure_kind')=='launcher-pin-admission-refused-before-launch-intent' else
+        'previous-shared-allocated-unrun-root-cooperative-stop' if
+        bundle.get('closure_kind')==subject.ROOT_COOPERATIVE_STOP_KIND else
+        'previous-shared-allocated-unrun-idle')
     need(verdict['mode']==expected_mode,'Allocated-only closure mode differs')
     need(verdict['failure_cleanup']['typed_normal_exit_proven'] is False,'Unexpected normal exit credit')
     need(verdict['failure_cleanup']['original_host_exit_code'] is None,'Unexpected host exit code')
@@ -157,6 +162,26 @@ def main():
         if Path(path).resolve()==Path(bundle['keeper']['path']).resolve():value={**value,'thread_exited':False}
         return value
     with patch.object(subject,'_read',side_effect=alive):refuses('keeper STOP/wait0',invoke)
+    if bundle.get('closure_kind')==subject.ROOT_COOPERATIVE_STOP_KIND:
+        need(a.next_state is not None and a.next_state.resolve()!=Path(freeze['state_dir']).resolve(),
+             'Separate successor state missing')
+        refuses('Cooperative early STOP requires a separate next state',
+            lambda:subject.validate_allocated_unrun(live,freeze,a.bundle,keeper,release,bus,
+                next_state=Path(freeze['state_dir'])))
+        stop_path=Path(bundle['keeper_STOP']['path']).resolve()
+        def bad_stop(path):
+            value=original(path)
+            if Path(path).resolve()==stop_path:value={**value,'machine_id':'another-machine'}
+            return value
+        with patch.object(subject,'_read',side_effect=bad_stop):
+            refuses('Cooperative STOP shape/machine differs',invoke)
+        allocator_path=Path(bundle['allocator_result']['path']).resolve()
+        def bad_wait(path):
+            value=original(path)
+            if Path(path).resolve()==allocator_path:value={**value,'exit_code':True}
+            return value
+        with patch.object(subject,'_read',side_effect=bad_wait):
+            refuses('Actual original Java ProcessBuilder allocator wait0 differs',invoke)
     release_checks=release_stage_checks()
     result={'test':'actual_canonical_list_allocated_unrun_and_unsafe_state_resources_sequence_rejected',
         'passed':1,'machine_id':bundle['machine_id'],'run_id':bundle['run_id'],

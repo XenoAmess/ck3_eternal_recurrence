@@ -36,7 +36,8 @@ class InverseFragment(TypedDict):
 
 ReviewSchema = Literal['ck3-xqol-reviewed-prepare-compatibility-v2',
                        'ck3-xqol-reviewed-prepare-compatibility-v3',
-                       'ck3-xqol-reviewed-prepare-compatibility-v4']
+                        'ck3-xqol-reviewed-prepare-compatibility-v4',
+                        'ck3-xqol-reviewed-prepare-compatibility-v5']
 
 
 @dataclass(frozen=True)
@@ -115,7 +116,9 @@ HISTORICAL_EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_r
                                          'ck3-xqol-reviewed-prepare-compatibility-v3')
 EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v4.json',
                               'ck3-xqol-reviewed-prepare-compatibility-v4')
-CURRENT_PREPARE = EXTENSION_REVIEW.after
+CURRENT_EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v5.json',
+                                        'ck3-xqol-reviewed-prepare-compatibility-v5')
+CURRENT_PREPARE = CURRENT_EXTENSION_REVIEW.after
 ORIGINAL_CONTRACTS = {'administrative_appointments': {'bytes': 2823, 'sha256': '803a6649952c323c3f07958b9635977c046deb544be16b723e5a1b45d0d4bccf'}, 'meritocratic_appointments': {'bytes': 6348, 'sha256': '3f7cda3eb863403e37abaa8165fb7aae23cafa585efaa757be785cfb1128ae7f'}, 'prison_payment': {'bytes': 4553, 'sha256': '4cd85a367af0b0fd7ebe4f4a404097c71b073de9a537402504a41b390f7f14ad'}, 'selfpaid_ransom': {'bytes': 3883, 'sha256': '956f01db9012c6704cc505e3a3ae68e31c08e23c4a78040220dfa41bc57c7862'}, 'pam_positive': {'bytes': 5128, 'sha256': '9f92e3f05df036be9b1624f20092988855ff3764b196c140a86693978ed81cbc'}, 'pam_negative': {'bytes': 4995, 'sha256': 'aea73ce9857339e729c6e16de5d43a13bb4cad75b64fffde8c84db626f4eea6b'}, 'liege_shared_ransom': {'bytes': 6620, 'sha256': 'cc69b83f6abd0e69821f0c91dc8a1e68388ec5b5338163c7dd24386d105ea169'}}
 SUPPORT_KEY = '../ck3_mod_acceptance_prepare.py'
 
@@ -138,6 +141,11 @@ class ReviewedPrepareCompatibility(unittest.TestCase):
     def test_reviewed_optional_branches_restore_original_prefix_and_added_definition(self) -> None:
         raw = (options.support_repo / 'tools/ck3_mod_acceptance_prepare.py').read_bytes()
         self.assertEqual(_source_content(raw), CURRENT_PREPARE)
+        self.assertEqual(CURRENT_EXTENSION_REVIEW.before, EXTENSION_REVIEW.after)
+        self.assertEqual(len(CURRENT_EXTENSION_REVIEW.inverse_fragments), 1)
+        with self.assertRaisesRegex(ValueError, 'Entire current reviewed source pin differs'):
+            _restore_reviewed_source(raw + b'\n', CURRENT_EXTENSION_REVIEW)
+        raw = _restore_reviewed_source(raw, CURRENT_EXTENSION_REVIEW)
         self.assertEqual(EXTENSION_REVIEW.schema, 'ck3-xqol-reviewed-prepare-compatibility-v4')
         self.assertEqual(EXTENSION_REVIEW.before, HISTORICAL_EXTENSION_REVIEW.after)
         self.assertEqual(len(EXTENSION_REVIEW.inverse_fragments), 4)
