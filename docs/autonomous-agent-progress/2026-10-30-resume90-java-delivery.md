@@ -158,4 +158,8 @@ Family六源组6c2da0f960与M6 action组15e9a06332已正常push，独立远端�
 
 Root 的 identity-once 候选按当前Git最小单hunk采用：普通 IdentityBearingFileAttributes.read 各一次NIO与WindowsStamp，调用方实际内容I/O前后的观察/长度/SHA仍由原内容读取者负责；不把单次元数据观察说成原子稳定快照。专用父路径API和其他Win32身份/长路径/句柄行为不变。本岗当前完整类strict javac0/1.992秒；复用Root两个完整physical类13P/0skip（真实文件、junction、406字符路径、同内容mtime替换），不重复绿色测试、不追加全Maven。候选测试副本未发表，仅生产一叶和原维护报告，加本交付记录三叶；来源D:/ck3-state/resume90-root/identity-once/DELIVERY.json。没有缓存新门/模型/Native/Game动作，整批提速未测，S/MB采用归runtime90。
 
+IO98上层journal小包最小采用单生产叶+新五方法持久回归：只在同一个已持writer的LockedJournal内保存一次完整immutable Snapshot，命中仍实际session.head，sequence与digest均相同才复用；任何head写入重建，失败不填缓存，新scope不继承，append/find/unresolved/静态历史路径不改。原before完整SHA64afb0d5…和既有coordinator测试3988a69a…均与当前Git字节相同，未带陈旧S/Z片段。当前完整生产类 strict javac0/2.841秒。复用 regression/io98-journal 的实际writer+NativeOutcomeArchive委托计数：freeze/assert从2次record decode降1，五次snapshot相关调用从5降1；软件计数不是CK3耗时。初2count用例旧0P2F，候选五新+旧UNKNOWN首5P1F；仅错误fixture journal的append方法修正后1P，其它5绿未重跑，六独特方法分两次覆盖，不称单6P。
+
+该scope依赖原archive不可变/唯一writer合同；同head内重复snapshot不重新读取已解码artifact，不能把它说成新filesystem custody。closed session/lease、真实append失效、decode失败不缓存及UNKNOWN不重放已在原回归覆盖；未造同sequence异digest Head或Game结果。候选精确patch和fixture依赖见D:/ck3-state/resume90-runtime/regression/io98-journal/{FILES.json,HANDOFF.md}。新测试归local-service默认CI，无新增resource/POM，本次未重跑已绿/完整Maven，不作为业务worker前置。
+
 交付源、测试、86原尾部CSV、原字节来源JSON与专用研究doc五叶，旧actor月门/interval/抽签逻辑保持。此研究类仍无runtime调用者，Root不要求S/MB/当前worker采用，未重跑已绿6项。原M4 scope核对和后继实际研究修正分开保留。

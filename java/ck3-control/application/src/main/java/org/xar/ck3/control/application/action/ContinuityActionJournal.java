@@ -40,6 +40,7 @@ public final class ContinuityActionJournal implements ActionJournal {
         return this.archive.inSession(session, bound -> {
             final ActionPorts.OutcomeArchive archive = bound;
             LockedJournal view = new LockedJournal() {
+            private Snapshot retainedSnapshot;
             @Override public ContinuityStorePort.Session writerSession() { try { session.head(); return session; } catch (IOException failure) { throw new UncheckedIOException(failure); } }
             @Override public Optional<ActionReceipt> find(String actionId) {
                 try { return lookup(session.head().state(), actionId, archive); } catch (IOException failure) { throw new UncheckedIOException(failure); }
@@ -108,11 +109,15 @@ public final class ContinuityActionJournal implements ActionJournal {
             }
             @Override public Snapshot snapshot() {
                 try {
-                    var head = session.head(); ObjectNode state = head.state().toJson(); LegacyHistoryBasis basis;
+                    var head = session.head();
+                    if (retainedSnapshot != null && retainedSnapshot.ledgerSequence() == head.state().sequence()
+                            && retainedSnapshot.headSha256().equals(head.digest())) return retainedSnapshot;
+                    ObjectNode state = head.state().toJson(); LegacyHistoryBasis basis;
                     if (!state.has("java_driver_history_baseline")) basis = new MissingHistoryBasis();
                     else if (state.get("java_driver_history_baseline").isNull()) basis = new NullHistoryBasis();
                     else basis = new BoundHistoryBasis(org.xar.ck3.control.contracts.ExactRef.fromJson(state.get("java_driver_history_baseline")));
-                    return new Snapshot(head.state().sequence(), head.digest(), receipts(head.state(), archive), basis);
+                    Snapshot complete = new Snapshot(head.state().sequence(), head.digest(), receipts(head.state(), archive), basis);
+                    retainedSnapshot = complete; return complete;
                 } catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
         };
