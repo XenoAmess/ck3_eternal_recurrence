@@ -177,6 +177,10 @@ public final class RootOrdinaryWorkerLoop {
                 previousReport = Optional.of(report);
                 continue;
             } else if (cleanWallBoundary) {
+                if (noProgressAfterWall(report, currentSession.controller().lastBatchBoundary(), configuration.wallTime())) {
+                    stopReason = StopReason.NO_PROGRESS;
+                    break;
+                }
                 previousReport = Optional.of(report);
                 continue;
             } else if (report.terminal() == BatchReport.Terminal.EPISODE_HANDOFF) {
@@ -236,6 +240,29 @@ public final class RootOrdinaryWorkerLoop {
 
     static boolean isCleanWallBoundary(BatchReport.Terminal terminal, boolean quarantined) {
         return terminal == BatchReport.Terminal.WALL_TIMEOUT && !quarantined;
+    }
+
+    static boolean noProgressAfterWall(BatchReport report, Optional<SessionController.BatchBoundary> boundary, Duration wallTime) {
+        if (report.terminal() != BatchReport.Terminal.WALL_TIMEOUT || report.fullWallNanos() < wallTime.toNanos()
+                || !report.turns().isEmpty() || !report.reconciliations().isEmpty() || !report.lifecycleTurns().isEmpty()
+                || !report.readPublicationReconciliations().isEmpty() || report.committedSavedDays() > 0
+                || report.phases().stream().anyMatch(span -> span.phase() == BatchReport.Phase.ACTION
+                        || span.phase() == BatchReport.Phase.ACTION_RECONCILIATION
+                        || span.phase() == BatchReport.Phase.CHECKPOINT)) return false;
+        if (boundary.isEmpty()) return false;
+        var actual = boundary.orElseThrow();
+        if (!actual.batchId().equals(report.batchId()) || !actual.session().equals(report.session())
+                || actual.pendingAction() || actual.observedDateChanged()) return false;
+        // Missing end observations are not manufactured. The complete zero-dispatch wall bound
+        // can end this business worker; the existing restart capture still validates actual pending state.
+        if (actual.firstObservation().isEmpty() || actual.lastObservation().isEmpty()) return true;
+        var first = actual.firstObservation().orElseThrow();
+        var last = actual.lastObservation().orElseThrow();
+        return first.machineId().equals(report.session().machineId()) && first.game().equals(report.session().game())
+                && first.machineId().equals(last.machineId()) && first.game().equals(last.game())
+                && first.frame().episodeRunId().equals(last.frame().episodeRunId())
+                && first.frame().identity().player().equals(last.frame().identity().player())
+                && first.frame().identity().dateRaw().equals(last.frame().identity().dateRaw());
     }
 
     static boolean progressed(BatchReport current, Optional<BatchReport> previous) {

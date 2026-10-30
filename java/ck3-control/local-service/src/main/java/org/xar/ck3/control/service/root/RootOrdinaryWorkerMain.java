@@ -114,6 +114,19 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             completed.put("ticket_path", ticketPath.toString());
             completed.put("next_sequence", Long.toString(result.nextBatchSequence()));
             completed.put("loop_terminal", result.stopReason().name());
+            if (result.stopReason() == RootOrdinaryWorkerLoop.StopReason.NO_PROGRESS) {
+                completed.put("no_progress_reason", result.lastReport().filter(report -> report.terminal() == BatchReport.Terminal.WALL_TIMEOUT)
+                        .map(report -> "wall_timeout_without_dispatch").orElse("turn_bound_without_progress"));
+                var stoppedReport = result.lastReport();
+                running.core().sessionAccess().current().controllerForPublication().lastBatchBoundary()
+                        .filter(boundary -> stoppedReport.filter(report -> report.batchId().equals(boundary.batchId())).isPresent())
+                        .ifPresent(boundary -> {
+                            completed.put("actual_observation_count", boundary.observationCount());
+                            completed.put("date_progress_observation", boundary.observationCount() < 2 ? "unknown" : "no_change_observed");
+                            boundary.firstObservation().ifPresent(observed -> completed.put("first_observed_date_raw", observed.frame().identity().dateRaw().toString()));
+                            boundary.lastObservation().ifPresent(observed -> completed.put("last_observed_date_raw", observed.frame().identity().dateRaw().toString()));
+                        });
+            }
             result.failureDetail().ifPresent(detail -> completed.put("loop_detail", detail));
             result.lastReport().ifPresent(actual -> {
                 completed.put("last_batch_terminal", actual.terminal().name());

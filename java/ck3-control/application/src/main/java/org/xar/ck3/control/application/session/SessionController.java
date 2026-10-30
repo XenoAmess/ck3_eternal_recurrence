@@ -182,6 +182,22 @@ public final class SessionController {
         if(transportAdoption.filter(transport->sameCommand(transport.parent(),receipt.command())).isPresent())transportAdoption=Optional.empty();
     }
     private volatile Optional<BatchReport> lastReport = Optional.empty();
+    /** Actual ordinary observations retained for one completed batch; no new observation or action is requested. */
+    public record BatchBoundary(String batchId, SessionIdentity session,
+            Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> firstObservation,
+            Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> lastObservation,
+            int observationCount, boolean observedDateChanged, boolean pendingAction) {
+        public BatchBoundary {
+            Objects.requireNonNull(batchId); Objects.requireNonNull(session);
+            Objects.requireNonNull(firstObservation); Objects.requireNonNull(lastObservation);
+            StrictJson.require(observationCount >= 0, "nonnegative actual observation count required");
+        }
+    }
+    private volatile Optional<BatchBoundary> lastBatchBoundary = Optional.empty();
+    private Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> latestProgressObservation = Optional.empty();
+    public Optional<BatchBoundary> lastBatchBoundary() {
+        return running.get() ? Optional.empty() : lastBatchBoundary;
+    }
     private volatile org.xar.ck3.control.application.presentation.DecisionDisplay decisionDisplay;
     /** Audience-only port; the original Controller and coordinator retain all execution authority. */
     public synchronized void bindDecisionDisplay(org.xar.ck3.control.application.presentation.DecisionDisplay actual) {
@@ -588,6 +604,7 @@ public final class SessionController {
             return prior.orElseThrow();
         }
         StrictJson.require(running.compareAndSet(false, true), "one Game has one ordinary batch at a time");
+        lastBatchBoundary = Optional.empty();
         SessionClock.Tick began = clock.now();
         long allowedNanos = callerDeadline.map(until -> Math.min(limits.wallTime().toNanos(),
                 Math.max(0, Duration.between(began.utc(), until).toNanos()))).orElse(limits.wallTime().toNanos());
@@ -791,6 +808,11 @@ public final class SessionController {
                 BatchReport report = new BatchReport(identity, limits.batchId(), run.terminal, run.detail, began, clock.now(),
                     run.spans, run.turns, run.reconciliations,run.lifecycleTurns,run.readReconciliations, run.revisionReplans, run.lastPlan,run.lastTerminal, run.lastLifecycle, savedPair, ledgerHead, totalCommittedDays - run.initialCommittedDays,
                     eligibleSinceSave, dirty, List.copyOf(pendingAnalyses.keySet()), completedAnalyses, failedAnalyses);
+                lastBatchBoundary = Optional.of(new BatchBoundary(limits.batchId(), identity,
+                        run.firstObservation, run.lastObservation, run.observationCount, run.observedDateChanged,
+                        retired || quarantined || localUnresolved || pendingReadParent.isPresent()
+                                || publicCheckpointUnknown.isPresent() || run.cyclePending || run.pendingUi.isPresent()
+                                || run.checkpointAdoptionDeferred || run.journalUnknown || run.observedPendingAction));
                 lastLimits = Optional.of(limits); lastReport = Optional.of(report); completedAnalyses.clear(); failedAnalyses.clear();
             } finally { running.set(false); }
         }
@@ -811,6 +833,28 @@ public final class SessionController {
         Optional<GameLifecycle.Observation> lastLifecycle = Optional.empty(); Optional<Ready> latest = Optional.empty();
         Terminal terminal = Terminal.TURN_BOUND; String detail = "bounded ordinary batch ended"; boolean journalUnknown; boolean journalStarted; boolean cyclePending; boolean checkpointAdoptionDeferred;
         Optional<CompletedCycleProof> savingProof = Optional.empty();
+        Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> firstObservation = Optional.empty();
+        Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> lastObservation = Optional.empty();
+        int observationCount;
+        boolean observedDateChanged;
+        boolean observedPendingAction;
+        final Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> previousObservation = latestProgressObservation;
+        void observed(PlanningRequest actualRequest) {
+            var actual = actualRequest.before();
+            observedPendingAction |= actualRequest.observations().actionFacts().stream().anyMatch(fact -> fact.unresolved());
+            var comparison = firstObservation.isPresent() ? firstObservation : previousObservation;
+            if (comparison.isPresent()) {
+                var first = comparison.orElseThrow();
+                observedDateChanged |= !first.machineId().equals(actual.machineId()) || !first.game().equals(actual.game())
+                    || !first.frame().episodeRunId().equals(actual.frame().episodeRunId())
+                    || !first.frame().identity().player().equals(actual.frame().identity().player())
+                    || !first.frame().identity().dateRaw().equals(actual.frame().identity().dateRaw());
+            }
+            if (firstObservation.isEmpty()) firstObservation = Optional.of(actual);
+            lastObservation = Optional.of(actual);
+            latestProgressObservation = lastObservation;
+            observationCount = Math.addExact(observationCount, 1);
+        }
         Run(BatchLimits limits, SessionClock.Tick began, long untilNanos, long initialCommittedDays,
                 Optional<TerminalConstraint> terminalConstraint,boolean pendingOnly) {
             this.limits = limits; this.began = began; this.untilNanos = untilNanos; this.initialCommittedDays = initialCommittedDays;
@@ -1002,6 +1046,8 @@ public final class SessionController {
                 Observation result = measured(Phase.OBSERVATION, () -> observations.observe(identity, until, planningUntil));
                 if (result instanceof Ready ready) {
                     identity.require(ready.request()); StrictJson.require(!ready.request().deadline().isAfter(planningUntil), "observation extended batch planning deadline");
+                    // A late actual Ready still describes an observed date; it grants no extended execution deadline.
+                    observed(ready.request());
                     ready.offlineAnalysis().ifPresent(batch -> {
                         StrictJson.require(captured.size() < 32 || captured.containsKey(batch.batchId()), "bounded captured analysis work per batch");
                         BatchRequest previous = captured.get(batch.batchId());
