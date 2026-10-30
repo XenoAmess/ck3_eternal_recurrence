@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-截至21:13Z：正式普通FF已到 `d1b5de18f9`。Storage ordinary全写入链已完成必要D验证并最小采用S/Z，MB111实际7源增编0/8.898秒，worker111在21:11:53.133Z同Game进入next26，安装10.518秒。尚无本岗实际Game动作/新增日信用；不把安装耗时当作Storage量化提速。后继Focus helper仍在D隔离审阅，不等于完整entry/dispatch/Opening闭包。
+截至本岗 UTC 2026-10-30T23:24:40.069Z：正式普通FF已到 `fd3073fffd`，含 planning ROOT 九生产叶及两必要测试 `1dd796c833`；runtime明确确认该组最小 S/Z 采用，未据正式发表外推MB加载。此前 fresh115 `132db9161d`、M5开关/READ期限/held-planning三组、Finance后继均已正常发表。最新收到现场为worker115真实END4/next33；本岗尚未收到116的MB/LOOP回执。最后已确认普通动作/新增日仍0，不将软件闭包、HTTP源码任务或安装耗时当Game推进。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -84,3 +84,24 @@ Event首2叶 `6bc6763ad0` 使用显式完整材料64MiB双向转换；Material�
 `java-focus-material-next91` 与 `java-focus-receipt-next91` 分别54.942/42.227秒完整，95820+1698与47517+1220tokens；第二包ready时第一包已结束，二者不冒称同时在途。两源首次strict实际1/2.174秒：Material两个实际wrapper API取错、Receipt漏import，共3错误，未行为运行。20:46Z两纠错请求实际同秒BEGIN、17.739/13.924秒终态，真实并发2，cached未知；Material纠正wrapper/effect basis方向可用，三findFirst由当前私有安装唯一性闭合，无无用新增门或调用。
 
 Receipt纠错02只补import、把语义反馈复述为unresolved，拒采用。最后窄complete方法03（约90K当前必要源）11.150秒、19320+1520tokens，补了borrowedSession/Blocked停callback，却仍optional引用+只比四字段，未完整绑定实际command/receipt；owner接管其缺口，不继续同题宽重发。`focus-candidates91/REVIEW02-03.json`保留判断及最初API误归因撤回。owner02两个helper随后在明确短槽两源strict all/Werror真实0/2.240秒：Material02原样，Receipt由owner补完整codec绑定/必需refs/borrowedSession/Blocked停止及后继request界线。仅D源编译，不是行为或正式采用；full `completeSameOwnerFocusOpeningFromActualPeer`、真实前置Core安装图和软件行为仍未闭，不能以helper候选代替。
+
+
+## ROOT planning 归档闭包的实际采用与115后继
+
+P0真实READ路径反复落CAS force后，本岗将成功ordinary military ROOT单独走typed `planningReads()`；只在private `preservePlanningRead` facade内传播到真实request/dispatch/token/receipt的CAS发布。guard、capability、ReadinessArchive、默认ACTION、failed/UNKNOWN READ、adopt、SAVE与WAL保持强路径。Store规划来源marker实盘保留，重开可识别；default strong对这类既有payload+commit真正force并保原不可变bytes/FileID，历史v1 shortcut保留。它仍可能在后继强访问重复force，不声称group fsync或量化性能改进。
+
+初稿错误地把 `ContinuityWriter.commitPrepared` 的直接evidence当作完整依赖闭包；源码审阅与独立封包岗发现成功ROOT只flatten guard support，失败READ的capture不能当成功闭包。该Writer改动在采用前撤回，精确删除其六个D输出残类后，以当前未改正式Writer源码重编并放测试CP首位。真正barrier改在 `DriverReadHistoryPublisher.flushActualReads`：对queued实际Known receipt先default strong递归preserve，再canonical preview/commit，不新增registry平台。
+
+最终9变化生产源+3当前未改API/Writer显式strict0/3.4148秒，Store两test源strict0/1.6105秒；Store新3+受影响旧5同JVM8P/0skip/6.0026秒。首test环境缺jna.tmpdir的8F原件保留、0Store行为触达，补既有D临时根后同8P，不把环境红当模型逻辑红。此前argfile反斜杠、旧revision66 API与旧try lint红均保留。
+
+必要ROOT canonical闭包由owner接管现成 `DriverRootReadCanonicalWriterTest` 新一个方法，复用真实Finance ROOT contract/软件Native/collector/中央Known observer/publisher。单test strict0/2.6763秒，另一个JVM仅新1P/0skip，JUnit14.903秒：实际7个planning-origin对象=14个payload+commit，逐一真实DOS readonly时flush必须在 `forceFile` 拒绝且head不动；finally恢复后同receipt只canonical0→1；14文件bytes/nativeFileID保持，promotion期间Native/scenario/action计数均不增。Store8P与此1P不能合称同JVM9P。包 `D:/ck3-state/resume91-java-delivery/read-scope112/owner/{PRODUCTION.patch,TEST.patch,DELIVERY.json}` 正常FF `1dd796c833`，runtime随后明确S/Z apply0；没有本岗Game操作。
+
+模型边界按真实输出分记：两676281字符大包均length8000，实际只有未改context/import/partial，0目标实现采用；窄Store方法27.077秒/16626in3778out，保部分metadata codec/force helper，真正buffered write/move/promotion由owner完成（模型仍force/WRITE_THROUGH且企图替换commit）。Store测试11.749秒/23030in1473out，三IO核心partial保留，owner改真实DOS API、byte[]比较、reopened负控与不可读/不可写区分，额外owns API撤回。输入源码规模不计作实际改写规模。
+
+Archive三真实任务于22:54:20Z重叠POST：producer85.418秒/83381in5000out/length，实际重复helper且readonly误当durable、没发出test，整拒；reopen57.788秒/82699in1210out与retry68.730秒/82703in2379out虽stop，但实际2test strict1/1.5426秒四API错。producer-method02再9.247秒/85004in1043out仍造WindowsNativeFileAttributeView并让Session逃逸，0采用。另两诊断纠错于23:15:22Z并发：reopen11.022秒/84348in1210out全文与首答normalized相同、encode编错仍在；retry12.121秒/85565in1374out只修两个API仍漏Session/finally/计数/immutable断言，0采用。没有为已知相同答重复编测，也不从内容相同推断服务缓存原因。完整审阅 `read-scope112/ARCHIVE-MODEL-REVIEWS115.json`；两额外方法不挡真实ROOT必要闭包与下一业务批。
+
+后继正式小包均复用owner必要绿未重测：M5开关 `d1208b0857` 5叶/15checks，M6普通READ独立期限 `97914337c8` 5prod+1test/3新JUnit（旧ctor与mutation/SAVE不夹），held-planning `fd6a68677e` 4prod/8case（actual1.665MB软件生产者，非完整实际request）；fresh-cache `132db9161d` 2叶/8case，世界permit真正consume后invalidate，仅独立匹配freshREAD成功clear，UNKNOWN不重放，显式WAIT不变。freshpatch实盘4778B，早4703仅LF字符串计数，hunks没有后改。
+
+Army115 `eba1a76fed` 2叶去同session重复原件reload，owner唯一1P/10.607秒覆盖3状态各100次current零额外archive loads，预备/finish实际往返保持，早CP/旧helper ABI红保留；planning ENTER/RETURN日志 `63195296c5` 单叶strict0/1.744秒，仅限小stdout、不新fixture gate；M1 latecause `fd3073fffd` 两叶baseline1P1F→candidate2P，保原terminal proof/kind/source，following同时晚于旧proof和新cause，不追认为M6完成。正式源码与实机装载/业务结果独立。
+
+命令保持cmd.exe/login:false，新封包只Node与既有原生Python HTTP caller，不新生产Python平台。body04及早scope01/02/narrow03封包岗曾实际用PowerShell，审计原件已保留并如实报Root，未重跑模型或绿测试掩盖；此为操作违规，不混模型推理能力。Root随后资源规则已更新为轻javac<=8源最多2路与重Native1路分开，真实Maven/安装期继续HOLD；本岗ROOT唯一新方法在真实lane释放后执行。
