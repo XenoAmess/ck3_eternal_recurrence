@@ -10,6 +10,7 @@ import java.math.BigInteger;
 public record NativeCharacterId(int value) {
     private static final BigInteger MINIMUM=BigInteger.valueOf(Integer.MIN_VALUE);
     private static final BigInteger MAXIMUM=BigInteger.valueOf(Integer.MAX_VALUE);
+    private static final BigInteger RAW_SENTINEL=new BigInteger("4294967295");
 
     public NativeCharacterId {
         StrictJson.require(value!=-1,"native character identity -1 is the absent-character sentinel");
@@ -30,6 +31,17 @@ public record NativeCharacterId(int value) {
     public static NativeCharacterId fromJson(JsonNode value) {
         return of(StrictJson.integer(value,MINIMUM,MAXIMUM));
     }
+
+    /** Explicit raw uint32 boundary used by private Native character fields.
+     * Signed aliases and the all-ones absence sentinel are rejected before preserving the bits. */
+    public static NativeCharacterId fromRawUInt32(BigInteger value) {
+        StrictJson.require(value!=null&&value.signum()>=0&&value.compareTo(RAW_SENTINEL)<0,
+                "raw native character identity requires uint32 except the all-ones sentinel");
+        return new NativeCharacterId(value.intValue());
+    }
+
+    /** Convert this validated public signed identity to the private raw uint32 representation. */
+    public BigInteger asRawUInt32() { return BigInteger.valueOf(Integer.toUnsignedLong(value)); }
 
     public IntNode toJson() { return IntNode.valueOf(value); }
     public BigInteger asBigInteger() { return BigInteger.valueOf(value); }

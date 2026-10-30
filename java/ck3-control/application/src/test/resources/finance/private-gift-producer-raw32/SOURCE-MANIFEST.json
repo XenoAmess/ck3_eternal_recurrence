@@ -1,0 +1,62 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-30T15:07:30.900541+00:00",
+  "origin": "actual bridge::WriteFrame Windows anonymous pipe, original bytes copied unchanged; software engine/callbacks, no Game",
+  "source_validation_receipt": "D:/ck3-state/resume90-m1-native/action-identity/CI-WRAPPERS-RUN02-ACTUAL.json",
+  "rows": [
+    {
+      "world": "positive",
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\ci-run\\positive\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "finance\\private-gift-producer-raw32\\independent-receipts\\positive\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2724,
+      "sha256": "980cf22147413257d18e66f0115105543d4090460f3ad97538e469615fdedcba",
+      "outer_query_request_id": "faction-gift-independent-receipt-00000000000000000001",
+      "inner_original_action_id": "faction-gift-00000000000000000000000000000001"
+    },
+    {
+      "world": "actor-zero",
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\ci-run\\actor_zero\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "finance\\private-gift-producer-raw32\\independent-receipts\\actor-zero\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2703,
+      "sha256": "96f0d491192b18ad9f5d3b47e6350369ba08320d2bdef9294e2147bf7080bb63",
+      "outer_query_request_id": "faction-gift-independent-receipt-00000000000000000001",
+      "inner_original_action_id": "faction-gift-00000000000000000000000000000001"
+    },
+    {
+      "world": "recipient-zero",
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\ci-run\\recipient_zero\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "finance\\private-gift-producer-raw32\\independent-receipts\\recipient-zero\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2689,
+      "sha256": "d40544cfd9e7c3f6656f2d14f2ef0a29745cb9e6f032abc1b2ddbdce8d7d5e4f",
+      "outer_query_request_id": "faction-gift-independent-receipt-00000000000000000001",
+      "inner_original_action_id": "faction-gift-00000000000000000000000000000001"
+    },
+    {
+      "world": "actor-min",
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\ci-run\\actor_min\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "finance\\private-gift-producer-raw32\\independent-receipts\\actor-min\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2730,
+      "sha256": "0774a6ef86cb577970f23e560d944c2a1e5331ce7dca974eb39328568fdaae69",
+      "outer_query_request_id": "faction-gift-independent-receipt-00000000000000000001",
+      "inner_original_action_id": "faction-gift-00000000000000000000000000000001"
+    },
+    {
+      "world": "recipient-min",
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\ci-run\\recipient_min\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "finance\\private-gift-producer-raw32\\independent-receipts\\recipient-min\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2734,
+      "sha256": "97c065b775df25a7e814e2f0758584888aa85409b76e1f7f16e6bc4033bb3d20",
+      "outer_query_request_id": "faction-gift-independent-receipt-00000000000000000001",
+      "inner_original_action_id": "faction-gift-00000000000000000000000000000001"
+    },
+    {
+      "world": "both-high",
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\ci-run\\both_high\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "finance\\private-gift-producer-raw32\\independent-receipts\\both-high\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2740,
+      "sha256": "1dbd29540040d91cb4d340da6a2f1fe2d8b3e0064b731f8fbccca7d2ade730c2",
+      "outer_query_request_id": "faction-gift-independent-receipt-00000000000000000001",
+      "inner_original_action_id": "faction-gift-00000000000000000000000000000001"
+    }
+  ]
+}

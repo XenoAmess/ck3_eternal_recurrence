@@ -1,6 +1,7 @@
 package org.xar.ck3.control.wave2.finance.factioncandidate;
 
 import org.xar.ck3.control.finance.factiongift.FactionGiftChoice;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -40,12 +41,12 @@ public final class FactionCandidatePolicy {
 
     public enum PreviewStatus { PREVIEW_READY, NO_LEGAL_CANDIDATE, NO_ELIGIBLE_DIRECT_VASSAL, OTHER }
 
-    /** Original Python-only integer projection: no narrowing or JavaScript Number conversion. */
+    /** Exact native CharacterID projection: preserve signed32 values without narrowing or unsigned aliases. */
     public record Frame(BigInteger nativeRevision, BigInteger dateRaw, BigInteger actorId) {
         public Frame {
             positive(nativeRevision, "nativeRevision");
             Objects.requireNonNull(dateRaw, "dateRaw");
-            positive(actorId, "actorId");
+            NativeCharacterId.of(actorId);
         }
     }
 
@@ -64,7 +65,7 @@ public final class FactionCandidatePolicy {
                 if (ids.size() > MAX_IDS) {
                     throw new IllegalArgumentException("identity vector must be bounded");
                 }
-                ids.forEach(value -> positive(value, "identity vector item"));
+                ids.forEach(NativeCharacterId::of);
             }
         }
     }
@@ -109,6 +110,7 @@ public final class FactionCandidatePolicy {
             Objects.requireNonNull(original, "original");
             Objects.requireNonNull(frame, "frame");
             Objects.requireNonNull(recipientId, "recipientId");
+            recipientId.ifPresent(NativeCharacterId::of);
             Objects.requireNonNull(sourceFactionId, "sourceFactionId");
         }
     }
@@ -120,6 +122,7 @@ public final class FactionCandidatePolicy {
             Objects.requireNonNull(status, "status");
             Objects.requireNonNull(nativeSourceId, "nativeSourceId");
             Objects.requireNonNull(nativeRecipientId, "nativeRecipientId");
+            nativeRecipientId.ifPresent(NativeCharacterId::of);
             Objects.requireNonNull(observation, "observation");
         }
     }

@@ -112,14 +112,11 @@ public final class GiftPendingModel {
     public static void nonempty(String value) { StrictJson.text(value); }
     /** Private gift JSON uses raw uint32 FullIDs, with all-ones reserved for absence. */
     public static BigInteger rawCharacterId(BigInteger value) {
-        StrictJson.require(value != null && value.signum() >= 0
-                && value.compareTo(new BigInteger("4294967294")) <= 0,
-                "private Gift character identity requires raw uint32 except the all-ones sentinel");
-        return value;
+        return NativeCharacterId.fromRawUInt32(value).asRawUInt32();
     }
     /** Explicit one-way boundary from the public signed int32 frame; no dual-domain input alias. */
     public static BigInteger rawCharacterIdFromPublic(BigInteger signedValue) {
-        return BigInteger.valueOf(Integer.toUnsignedLong(NativeCharacterId.of(signedValue).value()));
+        return NativeCharacterId.of(signedValue).asRawUInt32();
     }
     public static BigInteger rawSourceFactionId(BigInteger value) {
         StrictJson.require(value != null && value.signum() > 0

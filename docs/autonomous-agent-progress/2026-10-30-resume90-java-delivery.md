@@ -79,3 +79,13 @@ M0 持久 Java 回归已普通 push/独立读回 `814134b324c2fe04fdb9d619c80c00
 完整 SDK snapshot 三个消费者改用既有 FullJsonTree 64MiB 上限：DefenderExitObservationCodec、RawCashCodec.normalize 的 snapshot 入参及 PrisonerActionBinding12004.gold。小型 receipt 的 StrictJson 上限、JSON 类型/金额/帧校验保持原合同。仅重放三处 parser 最小差异，未带入 Prisoner 候选另一个旧 signed-self 比较 hunk；完整三生产类当前严格 javac0/2.517 秒。runtime90 明确三处已 S/Z 采用，Defender已 MB 编译，cash/gold等待运行岗下一组合构建，本岗不写其输出。
 
 随同导入三个便携完整 snapshot 测试类、六方法，无新资源或本机原 snapshot 依赖。复用原岗 Defender red32P2F→green34P 和 cash/gold red12P4F→green16P 的完整实际组；后者包括四个便携新方法、两个 D-only 原件方法及十个既有方法，不把16都称为新增。未重复绿色回归。原92550字节实机 snapshot 仅作为故障证据留 D，不纳入 CI；软件 contextual source 不授现金或 Game 资格。
+
+Snapshot 组已普通 push/独立远端读回 `220c14f071afaa7e65a18ff00c89ba4d28674dce`。
+
+Gift ordinary 组改按真实 Git 基线的完整九生产叶采用：补齐 FactionGiftChoice、FactionCandidatePolicy 的 public signed/0 角色构造器和读入器，NativeCharacterId 新增显式 raw uint32↔public signed 转换，private 0..FFFFFFFE 不接 signed 别名，public 仍拒 -1。普通 selection、pending、war-cash、submit 与独立 receipt 比较同步转换，source faction、预算、日期/帧、opaque/action/writer/UNKNOWN 门不变。Root 主 normalizer 已在 Git 发表，未再导入。
+
+审阅完整包又发现 NativeFinanceEffects 夹入了运行岗尚未发表的 Mercenary v2/legacy representation 差异；仅保留三个 unified hunks、四项逻辑 Gift 编辑，未提交 Hire 代码。当前九完整生产类 `-Xlint:all -Werror` javac0/31.301秒。owner 的最终 `DELIVERY-GIFT-ONLY.json` 重新由 Git 原件构造并严格编译14源0，针对最终 Gift-only submit/receipt 十二实际原包路径12P0F；旧带 Hire 的24P仅保留历史，不授 Hire 行为或采用。
+
+另一个 Admission 单叶包的 baseline 也来自旧 Z，`git show d961` 与 `git log` 证明 actor/recipient 的 NativeCharacterId 修复早在 aa4c60e86e 已发表；其人为旧基线8P6F不能报告为当前 production 缺陷，生产 patch 未采用。只导入新完整 Collector 八项与逐字原 alert corpus。为消除旧缓存干扰，本岗新编当前已发表 Admission 与三个 Alert 完整生产类，严格 javac0/2.776秒；正式 checkout 新 Collector 整类严格 javac0/5.433秒、8P0F0skip/9.272秒。实际 `current→ROOT/budget/market/priority→gift→Admission→cash/checkpoint→effects.prepare` 路径使用本次 Gift-only 九叶；public ROOT/alert/市场及guard/ledger包装为明确测试 DATA，private 原包保留原字节。没有授予真实动作或新游戏日。
+
+本组交付九生产、四测试、十五资源；新增 RootSigned 旧缺原件和六独立 receipt packet 随类进入默认 Surefire 位置，旧79包不重交。完整 Maven 整合仍待当前开发图稳定后增编，未将源码/JUnit通过写成 Game 已通过。

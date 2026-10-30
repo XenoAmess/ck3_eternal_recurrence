@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xar.ck3.control.finance.factiongift.FactionGiftChoice;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.finance.factiongift.FactionGiftPolicy;
 
 import java.io.IOException;
@@ -160,12 +161,12 @@ public final class FactionCandidateCodec {
         JsonNode observation = nativeResult.get("observation");
         Optional<Observation> projected = observation == null || !observation.isObject() ? Optional.empty()
                 : Optional.of(new Observation(document(observation),
-                frame(observation, "snapshot_revision", "observed_date_raw", "player_character_id"),
-                integer(observation.get("recipient_character_id"), true),
+                privateFrame(observation),
+                privateCharacter(observation.get("recipient_character_id")),
                 integer(observation.get("queried_source_faction_id"), true)));
         return new PrivatePreview(envelope, status, true, ready,
                 integer(nativeResult.get("source_faction_id"), true),
-                integer(nativeResult.get("recipient_character_id"), true), projected);
+                privateCharacter(nativeResult.get("recipient_character_id")), projected);
     }
 
     private static Optional<Frame> snapshotFrame(JsonNode snapshot) {
@@ -174,7 +175,7 @@ public final class FactionCandidateCodec {
         if (actor == null || !actor.isObject()) return Optional.empty();
         Optional<BigInteger> revision = integer(snapshot.get("native_revision"), true);
         Optional<BigInteger> date = integer(snapshot.get("date_raw"), false);
-        Optional<BigInteger> player = integer(actor.get("character_id"), true);
+        Optional<BigInteger> player = character(actor.get("character_id"));
         if (revision.isEmpty() || date.isEmpty() || player.isEmpty()) return Optional.empty();
         return Optional.of(new Frame(revision.get(), date.get(), player.get()));
     }
@@ -182,9 +183,24 @@ public final class FactionCandidateCodec {
     private static Optional<Frame> frame(JsonNode value, String revisionField, String dateField, String playerField) {
         Optional<BigInteger> revision = integer(value.get(revisionField), true);
         Optional<BigInteger> date = integer(value.get(dateField), false);
-        Optional<BigInteger> player = integer(value.get(playerField), true);
+        Optional<BigInteger> player = character(value.get(playerField));
         if (revision.isEmpty() || date.isEmpty() || player.isEmpty()) return Optional.empty();
         return Optional.of(new Frame(revision.get(), date.get(), player.get()));
+    }
+
+    /** Retain original private JSON while joining its raw role IDs to public signed ROOT/SEM IDs. */
+    private static Optional<Frame> privateFrame(JsonNode value) {
+        Optional<BigInteger> revision = integer(value.get("snapshot_revision"), true);
+        Optional<BigInteger> date = integer(value.get("observed_date_raw"), false);
+        Optional<BigInteger> player = privateCharacter(value.get("player_character_id"));
+        if (revision.isEmpty() || date.isEmpty() || player.isEmpty()) return Optional.empty();
+        return Optional.of(new Frame(revision.get(), date.get(), player.get()));
+    }
+
+    private static Optional<BigInteger> privateCharacter(JsonNode value) {
+        if (value == null || !value.isIntegralNumber()) return Optional.empty();
+        try { return Optional.of(NativeCharacterId.fromRawUInt32(value.bigIntegerValue()).asBigInteger()); }
+        catch (IllegalArgumentException invalid) { return Optional.empty(); }
     }
 
     private static IdVector idVector(JsonNode value) {
@@ -192,11 +208,16 @@ public final class FactionCandidateCodec {
         if (value.size() > MAX_IDS) throw invalid("direct vassal vector limit");
         List<BigInteger> ids = new ArrayList<>();
         for (JsonNode node : value) {
-            Optional<BigInteger> id = integer(node, true);
+            Optional<BigInteger> id = character(node);
             if (id.isEmpty()) return new IdVector(Optional.empty());
             ids.add(id.get());
         }
         return new IdVector(Optional.of(ids));
+    }
+
+    private static Optional<BigInteger> character(JsonNode value) {
+        try { return Optional.of(NativeCharacterId.fromJson(value).asBigInteger()); }
+        catch (IllegalArgumentException invalid) { return Optional.empty(); }
     }
 
     private static Optional<BigInteger> integer(JsonNode value, boolean positive) {

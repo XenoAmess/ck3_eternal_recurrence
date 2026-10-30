@@ -72,9 +72,9 @@ public final class NativeFinanceEffects implements NativeEffectRegistry.Observer
         require(minimum.signum()>=0&&baseline.playerGoldRaw().subtract(baseline.goldCostRaw()).compareTo(minimum)>=0,
                 "original gift reserve is not retained");
         Obj args=obj("expected_date_raw",new IntegerValue(frame.dateRaw()),
-                "expected_player_character_id",new IntegerValue(choice.playerCharacterId()),
+                "expected_player_character_id",new IntegerValue(GiftPendingModel.rawCharacterIdFromPublic(choice.playerCharacterId())),
                 "expected_native_revision",new IntegerValue(choice.nativeSnapshotRevision()),
-                "source_faction_id",new IntegerValue(choice.sourceFactionId()),"recipient_character_id",new IntegerValue(choice.recipientCharacterId()),
+                "source_faction_id",new IntegerValue(choice.sourceFactionId()),"recipient_character_id",new IntegerValue(GiftPendingModel.rawCharacterIdFromPublic(choice.recipientCharacterId())),
                 "membership_role",new Text(choice.membershipRole().wire()),"definition_stable_hash",new IntegerValue(choice.definitionStableHash()),
                 "gold_cost_raw",new IntegerValue(choice.goldCostRaw()),"opinion_delta",new IntegerValue(choice.opinionDelta()),
                 "minimum_gold_reserve_raw",new IntegerValue(minimum));
@@ -146,7 +146,7 @@ public final class NativeFinanceEffects implements NativeEffectRegistry.Observer
         var receipt=GiftPendingCodec.decodeReceipt(encode(object(result.get("receipt"),"actual independent gift receipt")));
         var choice=giftChoice(command.arguments());
         GiftPendingReducer.verifyReceipt(giftBaseline(command.arguments()),attempt.requestId(),receipt);
-        require(receipt.playerCharacterId().equals(after.identity().frame().identity().player())
+        require(receipt.playerCharacterId().equals(GiftPendingModel.rawCharacterIdFromPublic(after.identity().frame().identity().player()))
                 &&receipt.postObservedDateRaw().equals(after.identity().frame().identity().dateRaw())
                 &&receipt.postNativeSnapshotRevision().compareTo(after.identity().frame().identity().nativeRevision())<=0,
                 "gift material receipt belongs to another current actor/date/native frame");
@@ -236,8 +236,8 @@ public final class NativeFinanceEffects implements NativeEffectRegistry.Observer
                 integer(observation.get("source_faction_discontent_raw"),"pre discontent"),
                 array(observation.get("source_faction_member_character_ids"),"actual members").stream().map(v->integer(v,"member")).toList(),
                 integer(preview.get("gold_cost_raw"),"quoted gift gold"),integer(preview.get("opinion_delta"),"quoted opinion delta"));
-        require(baseline.sourceFactionId().equals(selected.sourceFactionId())&&baseline.recipientCharacterId().equals(selected.recipientCharacterId())
-                &&baseline.playerCharacterId().equals(selected.playerCharacterId())&&baseline.nativeSnapshotRevision().equals(selected.nativeSnapshotRevision())
+        require(baseline.sourceFactionId().equals(selected.sourceFactionId())&&baseline.recipientCharacterId().equals(GiftPendingModel.rawCharacterIdFromPublic(selected.recipientCharacterId()))
+                &&baseline.playerCharacterId().equals(GiftPendingModel.rawCharacterIdFromPublic(selected.playerCharacterId()))&&baseline.nativeSnapshotRevision().equals(selected.nativeSnapshotRevision())
                 &&baseline.dateRaw().equals(selected.dateRaw())&&baseline.goldCostRaw().equals(selected.goldCostRaw())
                 &&baseline.opinionDelta().equals(selected.opinionDelta()),"selected gift differs from actual original baseline");
         return baseline;

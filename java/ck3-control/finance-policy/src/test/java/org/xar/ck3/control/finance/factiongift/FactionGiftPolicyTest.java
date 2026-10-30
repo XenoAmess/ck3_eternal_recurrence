@@ -36,10 +36,32 @@ final class FactionGiftPolicyTest {
         for (JsonNode vector : golden.path("cases")) {
             String name = vector.path("name").textValue();
             tests.add(DynamicTest.dynamicTest(name, () -> {
-                byte[] input = JSON.writeValueAsBytes(vector.path("input"));
+                ObjectNode modernInput = (ObjectNode) vector.path("input").deepCopy();
+                JsonNode expected = vector.path("expected");
+                if (name.equals("python-exact-unbounded-integer-domain")) {
+                    // Retain the old Python artifact: its unbounded CharacterID is no native signed32 identity.
+                    FactionGiftChoice.Declined rejected = assertInstanceOf(FactionGiftChoice.Declined.class,
+                            FactionGiftPolicy.choose(JSON.writeValueAsBytes(modernInput)));
+                    assertEquals(FactionGiftChoice.Reason.NATIVE_IDENTITY_OR_METRIC_UNAVAILABLE, rejected.reason());
+                    JsonNode originalExpected = expected;
+                    assertThrows(IllegalArgumentException.class, () -> FactionGiftPolicy.decodeChoice(JSON.writeValueAsBytes(originalExpected)));
+                    JsonNode oldRecipient = expected.get("recipient_character_id");
+                    assertTrue(oldRecipient.bigIntegerValue().compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0);
+                    for (JsonNode value : modernInput.path("observations")) {
+                        ObjectNode observation = (ObjectNode) value;
+                        if (oldRecipient.equals(observation.get("recipient_character_id"))) observation.put("recipient_character_id", 4294967294L);
+                        if (oldRecipient.equals(observation.get("source_faction_leader_character_id"))) observation.put("source_faction_leader_character_id", 4294967294L);
+                        ArrayNode members = (ArrayNode) observation.get("source_faction_member_character_ids");
+                        for (int index = 0; index < members.size(); index++) if (oldRecipient.equals(members.get(index))) members.set(index, JSON.getNodeFactory().numberNode(4294967294L));
+                    }
+                    // Private Native roles use raw32 while the persisted public choice retains signed -2.
+                    // All original large faction/revision/hash values must survive.
+                    expected = ((ObjectNode) expected.deepCopy()).put("recipient_character_id", -2);
+                }
+                byte[] input = JSON.writeValueAsBytes(modernInput);
                 FactionGiftChoice actual = FactionGiftPolicy.choose(input);
                 byte[] encoded = FactionGiftPolicy.encode(actual);
-                assertEquals(vector.path("expected"), JSON.readTree(encoded), name);
+                assertEquals(expected, JSON.readTree(encoded), name);
                 FactionGiftChoice restored = FactionGiftPolicy.decodeChoice(encoded);
                 assertEquals(actual, restored, name + " persisted model");
                 assertTrue(Arrays.equals(encoded, FactionGiftPolicy.encode(restored)), name + " stable encoding");

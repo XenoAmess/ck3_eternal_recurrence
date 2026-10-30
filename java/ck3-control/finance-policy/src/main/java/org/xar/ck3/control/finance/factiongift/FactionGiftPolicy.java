@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -95,11 +96,11 @@ public final class FactionGiftPolicy {
             BigInteger revision = integer(observation.get("snapshot_revision"), true);
             BigInteger nativeRevision = integer(observation.get("native_snapshot_revision"), true);
             BigInteger date = integer(observation.get("observed_date_raw"), false);
-            BigInteger player = integer(observation.get("player_character_id"), true);
+            BigInteger player = privateCharacter(observation.get("player_character_id"));
             BigInteger gold = integer(observation.get("player_gold_raw"), false);
             BigInteger sourceId = integer(observation.get("queried_source_faction_id"), true);
-            BigInteger recipient = integer(observation.get("recipient_character_id"), true);
-            BigInteger target = integer(observation.get("source_faction_target_character_id"), true);
+            BigInteger recipient = privateCharacter(observation.get("recipient_character_id"));
+            BigInteger target = privateCharacter(observation.get("source_faction_target_character_id"));
             if (revision == null || nativeRevision == null || date == null || player == null
                     || gold == null || sourceId == null || recipient == null || target == null
                     || !SCALE.equals(integer(observation.get("player_gold_scale"), false))
@@ -114,14 +115,14 @@ public final class FactionGiftPolicy {
 
             JsonNode members = observation.get("source_faction_member_character_ids");
             JsonNode leaderNode = observation.get("source_faction_leader_character_id");
-            BigInteger leader = integer(leaderNode, true);
+            BigInteger leader = privateCharacter(leaderNode);
             if (members == null || !members.isArray()
                     || (leaderNode != null && !leaderNode.isNull() && leader == null)) {
                 return declined(Reason.FACTION_MEMBERSHIP_UNAVAILABLE);
             }
             Set<BigInteger> memberIds = new HashSet<>();
             for (JsonNode memberNode : members) {
-                BigInteger member = integer(memberNode, true);
+                BigInteger member = privateCharacter(memberNode);
                 if (member == null || !memberIds.add(member)) {
                     return declined(Reason.FACTION_MEMBERSHIP_UNAVAILABLE);
                 }
@@ -228,9 +229,9 @@ public final class FactionGiftPolicy {
         BigInteger date = integer(value.get("date_raw"), false);
         if (date == null) throw invalid("invalid date_raw");
         return new FactionGiftChoice.Selected(requiredPositive(value, "source_faction_id"),
-                requiredPositive(value, "recipient_character_id"), role,
+                requiredCharacter(value, "recipient_character_id"), role,
                 requiredPositive(value, "snapshot_revision"), requiredPositive(value, "native_snapshot_revision"),
-                date, requiredPositive(value, "player_character_id"),
+                date, requiredCharacter(value, "player_character_id"),
                 requiredPositive(value, "definition_stable_hash"), requiredPositive(value, "gold_cost_raw"),
                 requiredPositive(value, "opinion_delta"));
     }
@@ -267,6 +268,23 @@ public final class FactionGiftPolicy {
             if (result == null) throw invalid("empty JSON");
             return result;
         } catch (IOException failure) { throw new IllegalArgumentException("invalid faction gift JSON", failure); }
+    }
+
+    private static BigInteger character(JsonNode value) {
+        try { return NativeCharacterId.fromJson(value).asBigInteger(); }
+        catch (IllegalArgumentException invalid) { return null; }
+    }
+
+    private static BigInteger privateCharacter(JsonNode value) {
+        if (value == null || !value.isIntegralNumber()) return null;
+        try { return NativeCharacterId.fromRawUInt32(value.bigIntegerValue()).asBigInteger(); }
+        catch (IllegalArgumentException invalid) { return null; }
+    }
+
+    private static BigInteger requiredCharacter(JsonNode value, String field) {
+        BigInteger result = character(value.get(field));
+        if (result == null) throw invalid("invalid " + field);
+        return result;
     }
 
     private static BigInteger integer(JsonNode value, boolean positive) {

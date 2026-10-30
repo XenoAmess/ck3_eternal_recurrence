@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.wave2.finance.giftwarcash.GiftWarCashModel.BudgetFrame;
 import org.xar.ck3.control.wave2.finance.giftwarcash.GiftWarCashModel.Candidate;
 import org.xar.ck3.control.wave2.finance.giftwarcash.GiftWarCashModel.CashContext;
@@ -187,7 +188,7 @@ public final class GiftWarCashCodec {
                     read(source, "date_raw", GiftWarCashCodec::integer), read(source, "gold_cost_raw", GiftWarCashCodec::integer));
         }), read(node, "observation", source -> {
             object(source);
-            return new GiftObservation(read(source, "player_character_id", GiftWarCashCodec::integer),
+            return new GiftObservation(read(source, "player_character_id", GiftWarCashCodec::privateCharacter),
                     read(source, "native_snapshot_revision", GiftWarCashCodec::integer),
                     read(source, "observed_date_raw", GiftWarCashCodec::integer),
                     read(source, "player_gold_raw", GiftWarCashCodec::integer),
@@ -260,6 +261,9 @@ public final class GiftWarCashCodec {
     private static BigInteger integer(JsonNode node) {
         StrictJson.require(node != null && node.isIntegralNumber(), "exact JSON integer token required; no bool/float/string");
         return node.bigIntegerValue();
+    }
+    private static BigInteger privateCharacter(JsonNode node) {
+        return NativeCharacterId.fromRawUInt32(integer(node)).asBigInteger();
     }
     private static Boolean bool(JsonNode node) {
         StrictJson.require(node != null && node.isBoolean(), "actual JSON boolean token required"); return node.booleanValue();

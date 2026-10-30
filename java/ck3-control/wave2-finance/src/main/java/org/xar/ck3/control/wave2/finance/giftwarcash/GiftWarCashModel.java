@@ -3,6 +3,7 @@ package org.xar.ck3.control.wave2.finance.giftwarcash;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** Immutable consumed projections; native observations and spending authority remain external. */
 public final class GiftWarCashModel {
@@ -26,7 +27,8 @@ public final class GiftWarCashModel {
             Objects.requireNonNull(playedCharacterId); Objects.requireNonNull(nativeRevision);
             Objects.requireNonNull(dateRaw); Objects.requireNonNull(snapshotId);
             Objects.requireNonNull(revision); Objects.requireNonNull(episodeRunId);
-            if (playedCharacterId.signum() <= 0 || nativeRevision.signum() <= 0 || dateRaw.signum() < 0
+            NativeCharacterId.of(playedCharacterId);
+            if (nativeRevision.signum() <= 0 || dateRaw.signum() < 0
                     || revision.signum() <= 0 || snapshotId.isEmpty() || episodeRunId.isEmpty()) {
                 throw new IllegalArgumentException("M5 observed frame identity is incomplete");
             }
