@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.governance.heirpreference.HeirPreferenceCodec;
 import org.xar.ck3.control.wave2.governance.heirlineage.HeirLineagePolicy.AvailablePreview;
 import org.xar.ck3.control.wave2.governance.heirlineage.HeirLineagePolicy.CharacterId;
@@ -38,9 +40,8 @@ public final class HeirLineageConsumerPort {
     public static byte[] consume(byte[] input) { return evaluate(input).result(); }
 
     public static Evaluation evaluate(byte[] input) {
-        ObjectNode request = StrictJson.object(StrictJson.parse(input),
+        ObjectNode request = StrictJson.object(parseInput(input),
                 Set.of("snapshot", "legality", "projection", "choices", "previews"));
-        StrictJson.canonical(request);
         ObjectNode snapshot = object(request.get("snapshot"));
         ObjectNode legality = object(request.get("legality"));
         ObjectNode projection = object(request.get("projection"));
@@ -162,5 +163,13 @@ public final class HeirLineageConsumerPort {
         StrictJson.require(value != null && value.isTextual(), "native reason string required");
         if (!value.textValue().isEmpty()) { StrictJson.text(value.textValue()); }
         return value.textValue();
+    }
+
+    private static JsonNode parseInput(byte[] input) {
+        try { return FullJsonTree.parse(input, FullJsonTree.MAXIMUM_BYTES); }
+        catch (ContractViolationException failure) { throw failure; }
+        catch (IllegalArgumentException failure) {
+            throw new ContractViolationException("invalid heir lineage JSON", failure);
+        }
     }
 }

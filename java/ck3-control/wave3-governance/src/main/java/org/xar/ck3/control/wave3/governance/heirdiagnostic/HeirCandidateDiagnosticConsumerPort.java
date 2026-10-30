@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.wave3.governance.heirdiagnostic.HeirCandidateDiagnostic.Header;
 import org.xar.ck3.control.wave3.governance.heirdiagnostic.HeirCandidateDiagnostic.Observation;
 import org.xar.ck3.control.wave3.governance.heirranking.HeirCandidateRanking.LegalRow;
@@ -80,9 +82,8 @@ public final class HeirCandidateDiagnosticConsumerPort {
     public static Evaluation evaluate(byte[] input) { return evaluate(decode(input)); }
 
     public static Request decode(byte[] input) {
-        ObjectNode request = StrictJson.object(StrictJson.parse(input), Set.of("legality", "projection", "snapshot",
+        ObjectNode request = StrictJson.object(parseInput(input), Set.of("legality", "projection", "snapshot",
                 "choice", "ranking", "rejected_candidate_ids"));
-        HeirCandidateRankingConsumerPort.encodeOpaqueJson(request);
         ObjectNode legality = object(request.get("legality"));
         ObjectNode projection = object(request.get("projection"));
         ObjectNode snapshot = object(request.get("snapshot"));
@@ -129,7 +130,7 @@ public final class HeirCandidateDiagnosticConsumerPort {
     }
 
     public static Evaluation evaluate(Request decoded) {
-        ObjectNode request = object(StrictJson.parse(decoded.sourceJson()));
+        ObjectNode request = object(parseInput(decoded.sourceJson()));
         ObjectNode legality = object(request.get("legality"));
         ObjectNode projection = object(request.get("projection"));
         ObjectNode snapshot = object(request.get("snapshot"));
@@ -235,5 +236,13 @@ public final class HeirCandidateDiagnosticConsumerPort {
     }
     private static ArrayNode array(JsonNode value) {
         StrictJson.require(value instanceof ArrayNode, "diagnostic array required"); return (ArrayNode) value;
+    }
+
+    private static JsonNode parseInput(byte[] input) {
+        try { return FullJsonTree.parse(input, FullJsonTree.MAXIMUM_BYTES); }
+        catch (ContractViolationException failure) { throw failure; }
+        catch (IllegalArgumentException failure) {
+            throw new ContractViolationException("invalid heir diagnostic JSON", failure);
+        }
     }
 }
