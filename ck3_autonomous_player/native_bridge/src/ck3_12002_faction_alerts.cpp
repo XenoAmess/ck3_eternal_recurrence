@@ -308,7 +308,7 @@ ReadFactionEntityResult12002 ReadEntitySample(
   output = {};
   void *faction = nullptr;
   if (!Resolve(access, environment.faction_storage_slot,
-               environment.faction_fallback_slot, faction_id, 0x10, faction))
+               environment.faction_fallback_slot, faction_id, 0x10, faction, true))
     return ReadFactionEntityResult12002::unavailable;
   if (!faction) return ReadFactionEntityResult12002::known_absent;
   std::uintptr_t vtable = 0;
@@ -394,7 +394,7 @@ bool ReadTargetingIds(const PlayerFactionAlertsAccessV1 &access, void *character
       (count && !data)) return false;
   for (std::int32_t index = 0; index < count; ++index) {
     std::int32_t id = -1;
-    if (!Read(access, data, static_cast<std::size_t>(index) * 4, id) || id <= 0)
+    if (!Read(access, data, static_cast<std::size_t>(index) * 4, id) || id == -1)
       return false;
     output.push_back(id);
   }
@@ -759,7 +759,7 @@ bool ReadCountyExposures(
     std::vector<std::int32_t> ids;
     for (std::int32_t member = 0; member < count; ++member) {
       std::int32_t id = -1;
-      if (!Read(access, joined, static_cast<std::size_t>(member) * 4, id) || id <= 0)
+      if (!Read(access, joined, static_cast<std::size_t>(member) * 4, id) || id == -1)
         return false;
       ids.push_back(id);
     }
@@ -983,7 +983,7 @@ ReadFactionEntityResult12002 ReadFactionEntityV1(
     game::PlayerTargetingFactionV1 &output) noexcept {
   output = {};
   try {
-    if (!Admitted(environment, access) || faction_id <= 0)
+    if (!Admitted(environment, access) || faction_id == -1)
       return ReadFactionEntityResult12002::unavailable;
     game::PlayerTargetingFactionV1 first{}, second{};
     const auto result = ReadEntitySample(environment, access, faction_id, first);

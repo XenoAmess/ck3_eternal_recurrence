@@ -15,6 +15,8 @@ using Failure = game::PlayerFactionAlertsFailureReasonV1;
 using Result = game::ReadPlayerFactionAlertsResultV1;
 
 bool PositiveIdentity(std::int32_t value) noexcept { return value > 0; }
+// Native public faction FullID preserves all signed int32 values except -1.
+bool FactionIdentity(std::int32_t value) noexcept { return value != -1; }
 
 bool StableKey(std::string_view value) noexcept {
   if (value.empty()) {
@@ -65,7 +67,7 @@ Failure ValidateSample(const PlayerFactionAlertsSourceSampleV1 &sample,
   std::unordered_set<std::int32_t> faction_ids;
   for (const auto &source : sample.targeting_factions) {
     const auto &row = source.row;
-    if (!PositiveIdentity(row.faction_id) ||
+    if (!FactionIdentity(row.faction_id) ||
         !PositiveIdentity(row.target_character_id) ||
         row.target_character_id != expected_player ||
         !source.faction_identity_round_trip ||
@@ -104,7 +106,7 @@ Failure ValidateSample(const PlayerFactionAlertsSourceSampleV1 &sample,
   for (const auto &source : sample.county_exposures) {
     const auto &row = source.row;
     if (!PositiveIdentity(row.county_title_id) ||
-        !PositiveIdentity(row.faction_id) ||
+        !FactionIdentity(row.faction_id) ||
         !PositiveIdentity(row.target_character_id) ||
         !source.county_identity_round_trip ||
         !source.faction_identity_round_trip ||

@@ -108,7 +108,7 @@ bool VisitFactionGiftCandidates(const game::CampaignRootContextV1 &root,
   for (int pass = 0; pass < passes; ++pass) {
     for (const auto &row : alerts.targeting_factions) {
       if (passes == 2 && row.dangerous_by_stock_rule != (pass == 0)) continue;
-      if (row.faction_id <= 0 || row.target_character_id != *root.player_character_id || row.faction_at_war) continue;
+      if (row.faction_id == -1 || row.target_character_id != *root.player_character_id || row.faction_at_war) continue;
       const auto offer = [&](std::int32_t id) {
         if (!eligible(id)) return false;
         visited = true;
@@ -292,8 +292,7 @@ bool ReadIds(std::string_view payload, std::uint32_t &source, std::uint32_t &rec
   std::uint64_t source_raw = 0, recipient_raw = 0;
   if (!bridge::JsonUnsignedField(payload, "source_faction_id", source_raw) ||
       !bridge::JsonUnsignedField(payload, "recipient_character_id", recipient_raw) ||
-      source_raw == 0 ||
-      source_raw > (std::numeric_limits<std::uint32_t>::max)() ||
+      source_raw >= (std::numeric_limits<std::uint32_t>::max)() ||
       recipient_raw >= (std::numeric_limits<std::uint32_t>::max)()) return false;
   source = static_cast<std::uint32_t>(source_raw);
   recipient = static_cast<std::uint32_t>(recipient_raw);
@@ -350,10 +349,9 @@ bool SelectFactionGiftPrivateCandidate12004(const game::CampaignRootContextV1 &r
     const game::PlayerFactionAlertsV1 &alerts, std::uint32_t &source,
     std::uint32_t &recipient) noexcept {
   source = recipient = 0;
-  VisitFactionGiftCandidates(root, alerts, [&](std::uint32_t faction, std::uint32_t person) {
+  return VisitFactionGiftCandidates(root, alerts, [&](std::uint32_t faction, std::uint32_t person) {
     source = faction; recipient = person; return true;
   });
-  return source != 0;
 }
 
 bool ExecuteFactionGiftPrivateMailbox12004(void *opaque,

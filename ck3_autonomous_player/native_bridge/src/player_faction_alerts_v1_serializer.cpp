@@ -62,6 +62,17 @@ bool ValidFixedPoint(const game::PlayerFactionFixedPointV1 &value,
   return value.scale == kFixedPointScale && (!nonnegative || value.raw >= 0);
 }
 
+// Native public faction FullID has its own domain; only -1 is absent.
+bool FactionIdentity(std::int32_t value) noexcept { return value != -1; }
+
+bool StrictlyIncreasingFactions(const std::vector<std::int32_t> &values) {
+  std::unordered_set<std::int32_t> seen;
+  for (const auto value : values) {
+    if (!FactionIdentity(value) || !seen.insert(value).second) return false;
+  }
+  return std::is_sorted(values.begin(), values.end());
+}
+
 bool PositiveUnique(const std::vector<std::int32_t> &values) {
   std::unordered_set<std::int32_t> seen;
   for (const auto value : values) {
@@ -103,7 +114,7 @@ bool ValidCountyObservations(const game::PlayerTargetingFactionV1 &row) {
 
 bool ValidTargetingRow(const game::PlayerTargetingFactionV1 &row,
                        std::int32_t player_character_id) {
-  if (row.faction_id <= 0 || row.target_character_id != player_character_id ||
+  if (!FactionIdentity(row.faction_id) || row.target_character_id != player_character_id ||
       !StableKey(row.faction_type_key) ||
       (row.leader_character_id.has_value() &&
        row.leader_character_id.value() <= 0) ||
@@ -149,7 +160,7 @@ bool ValidTargetingRow(const game::PlayerTargetingFactionV1 &row,
 
 bool ValidCountyExposure(const game::PlayerFactionCountyExposureV1 &row,
                          std::int32_t player_character_id) {
-  return row.county_title_id > 0 && row.faction_id > 0 &&
+  return row.county_title_id > 0 && FactionIdentity(row.faction_id) &&
          row.target_character_id > 0 &&
          row.target_character_id != player_character_id &&
          row.faction_type_key == "populist_faction" &&
@@ -249,14 +260,15 @@ bool ValidAvailable(const game::PlayerFactionAlertsV1 &value) {
   if (value.readiness.alert_ready != expected_alert_ready) return false;
 
   std::unordered_set<std::int32_t> faction_ids;
-  std::int32_t previous_faction_id = 0;
+  std::optional<std::int32_t> previous_faction_id;
   std::vector<std::int32_t> expected_dangerous;
   std::vector<std::int32_t> expected_watch;
   std::vector<std::int32_t> expected_war_handoff;
   for (const auto &row : value.targeting_factions) {
     if (!ValidTargetingRow(row, value.player_character_id.value()) ||
         !faction_ids.insert(row.faction_id).second ||
-        row.faction_id <= previous_faction_id) return false;
+        (previous_faction_id.has_value() &&
+          row.faction_id <= previous_faction_id.value())) return false;
     previous_faction_id = row.faction_id;
     if (row.faction_at_war) expected_war_handoff.push_back(row.faction_id);
     else if (row.dangerous_by_stock_rule)
@@ -286,9 +298,9 @@ bool ValidAvailable(const game::PlayerFactionAlertsV1 &value) {
         planner.watch_faction_ids != expected_watch ||
         planner.war_handoff_faction_ids != expected_war_handoff ||
         planner.exposed_county_title_ids != expected_exposed_counties ||
-        !StrictlyIncreasing(planner.dangerous_faction_ids) ||
-        !StrictlyIncreasing(planner.watch_faction_ids) ||
-        !StrictlyIncreasing(planner.war_handoff_faction_ids) ||
+        !StrictlyIncreasingFactions(planner.dangerous_faction_ids) ||
+        !StrictlyIncreasingFactions(planner.watch_faction_ids) ||
+        !StrictlyIncreasingFactions(planner.war_handoff_faction_ids) ||
         !StrictlyIncreasing(planner.exposed_county_title_ids)) {
       return false;
     }

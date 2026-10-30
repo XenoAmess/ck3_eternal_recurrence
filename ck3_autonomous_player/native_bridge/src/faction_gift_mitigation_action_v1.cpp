@@ -198,7 +198,7 @@ AckStatus ExecuteFactionGiftMitigationActionV1(
         !ValidToken(request.idempotency_key) ||
         request.expected_revision == 0 ||
         request.expected_native_revision == 0 ||
-        request.player_character_id == UINT32_MAX || request.source_faction_id == 0 ||
+        request.player_character_id == UINT32_MAX || request.source_faction_id == UINT32_MAX ||
         request.recipient_character_id == UINT32_MAX ||
         request.recipient_character_id == request.player_character_id ||
         !ValidRole(request.membership_role) ||

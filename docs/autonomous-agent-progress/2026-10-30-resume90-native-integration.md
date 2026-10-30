@@ -678,3 +678,63 @@ The reused Native66 CMake cache configured/generated successfully in 14.573
 seconds at 2026-10-30T17:23:14Z. Its generated selector/timeout are present;
 the formal CMake test binary and complete hosted CI step were not rebuilt/run
 here, since the changed packaged entry already has the necessary actual result.
+
+
+The sentinel source/test group was normally published and independently read
+back as `e046d2cdfa4903f43a31bb2a0c343bdf12d589ec`. A concurrent external docs
+push rejected the first ordinary push; fetching/rebasing that new head and
+retrying normally succeeded. No force or index cleanup was used.
+
+## M1 native Faction full-ID path
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`. Actual unchanged creator584B and
+page-helper281B instructions executed at their original relative RVAs in an
+owned sparse software image. Their existing-page fast path generated Faction0,
+MIN, generation81 and FF000000 from authored old-generation/storage inputs.
+The initial page sentinel FFFFFFFF increments its high generation byte modulo
+256 and can produce fullID0. This is typed CFaction producer evidence rather
+than inference from Character; it does not claim 256 natural Game allocations.
+
+The returned real object/storage are consumed by the actual Core and alerts
+reader, projection and serializer. Public Faction IDs now have an independent
+signed-int32 domain except -1, signed sorting and explicit optional first-item
+state. Private source IDs retain one raw uint32 encoding except FFFFFFFF. Title,
+war, Character and opaque domains are unchanged in this publication. The first
+combined candidate still failed because the selector returned source!=0 after
+successfully visiting Faction0; it now returns the visitor's actual boolean.
+
+The development-source matrix passed ten worlds, including five complete paths,
+four stale-generation controls and the sentinel. Each normal world rejects nine
+malformed private source tokens and queues/clones once. That graph contained
+unpublished Character-domain changes in three public leaves. Publication review
+excluded those changes and rebased only the twelve public Faction hunks onto
+the current published source, with the qualified private four hunks unchanged.
+The new three public TUs strictly compiled in 6.448 seconds; one necessary new
+positive-Character/Faction0 whole path passed on this publication variant.
+The old ten-world result is retained as development-graph evidence and is not
+reported as a published-only ten-world matrix.
+
+The persistent target calls the original whole serializer in its original
+mailbox TU. Four failed narrow link attempts were progressively expanded by
+mistake; the actual missing requirement was one unused legacy parser symbol.
+A typed unconditional-abort seam avoids unrelated legacy providers and its
+enabled final assertion remains zero. The original mailbox/seam compiled as two
+TUs; after substituting the published three objects, a narrow link passed in
+3.277 seconds and only the new Faction0 entry passed in 0.246 seconds. It covers
+Core/alerts/public whole serialization, selection/private Handler/WriteFrame,
+preview, pending submit, duplicate rejection, independent verified receipt and
+cold/public revision3 agreement. Public whole Handle and dispatch were not
+executed; query sequences, campaign eligibility, engine callbacks, queue and
+later gold/opinion state remain explicit software inputs.
+
+Evidence is M1 `faction-fullid-producer09/published-variant12/`
+`{PUBLISHED-VARIANT12-DELIVERY.json,SOURCE-FREEZE12.json,RESULT12.md}` and
+`faction-private-fullid127/CI-PUBLISHED-DELIVERY130.json`. The six original binary
+fragments total865 bytes. Their portable test assets and owned fixture support
+are adopted alongside the five production leaves, existing CI registration and
+the ordinary repository target. Native66 cached configuration/generation passed
+in 15.957 seconds at 17:34:59Z, generating ten selected CTest entries. The full
+24-source target/runtime closure and complete hosted CI step were not built/run
+here. The independent county branch and unpublished public Character migration
+remain explicitly owned follow-ups. No DLL, Game, model call or new day occurs
+as part of this source integration.
