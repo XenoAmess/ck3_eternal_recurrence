@@ -11,6 +11,7 @@ import java.util.Set;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.projection.ProjectionJson;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.Identity;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.NativeSubject;
@@ -55,11 +56,15 @@ public final class SwayObservationReads {
         }
     }
     public record Actors(long actorCharacterId,long targetCharacterId) {
-        public Actors {SwayNativeWire.currentCharacter(actorCharacterId);SwayNativeWire.currentCharacter(targetCharacterId);require(actorCharacterId!=targetCharacterId,"Sway native actor differs from target");}
+        public Actors {
+            NativeCharacterId.of(actorCharacterId);
+            NativeCharacterId.of(targetCharacterId);
+            require(actorCharacterId != targetCharacterId, "Sway native actor differs from target");
+        }
     }
     public sealed interface DirectSubject permits CompletionSubject,OpinionSubject {Actors actors();Optional<NativeSubject> instance();}
     public record CompletionSubject(NativeSubject value) implements DirectSubject {
-        public CompletionSubject {Objects.requireNonNull(value);new Actors(value.actorCharacterId(),value.targetCharacterId());}
+        public CompletionSubject {Objects.requireNonNull(value);SwayNativeWire.currentCharacter(value.actorCharacterId());SwayNativeWire.currentCharacter(value.targetCharacterId());new Actors(value.actorCharacterId(),value.targetCharacterId());}
         @Override public Actors actors(){return new Actors(value.actorCharacterId(),value.targetCharacterId());}
         @Override public Optional<NativeSubject> instance(){return Optional.of(value);}
     }
@@ -83,15 +88,20 @@ public final class SwayObservationReads {
 
     public static ReadContract<Plane> contract(ExactRef definitionSource, Query query) {
         Kind kind=query.kind(); Identity identity=query.identity();
-        Objects.requireNonNull(kind); Objects.requireNonNull(identity); SwayNativeWire.currentCharacter(identity.actorCharacterId()); SwayNativeWire.currentCharacter(identity.targetCharacterId());
+        Objects.requireNonNull(kind); Objects.requireNonNull(identity);
+        if (kind != Kind.OPINION) {
+            SwayNativeWire.currentCharacter(identity.actorCharacterId());
+            SwayNativeWire.currentCharacter(identity.targetCharacterId());
+        }
         OperationKey key = new OperationKey(kind.step);
         return new ReadContract<>("sway-" + kind.name().toLowerCase(java.util.Locale.ROOT) + (journal(kind)?"-actual4/v2:":"-actual4:") + identity.actionId()+query.afterSequence().map(value->":"+value).orElse(""), key, Optional.empty(), kind.permission,
                 ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE, ReadContract.WireProfile.G2_PRIVATE_QUERY, definitionSource,
                 (request, requestId) -> {
                     Set<String> fields = journal(kind)?Set.of("target_character_id","scheme_instance_id","after_sequence") : kind == Kind.OPINION ? Set.of("target_character_id") : Set.of("target_character_id", "scheme_instance_id");
                     JsonNode input = SwayNativeBindings.args(request.arguments(), fields);
-                    require(SwayNativeWire.integer(input, "target_character_id", 1, Integer.MAX_VALUE) == identity.targetCharacterId()
-                            && request.before().frame().identity().player().longValueExact() == identity.actorCharacterId(), "Sway observation actor/target differs");
+                    long target = kind == Kind.OPINION ? NativeCharacterId.fromJson(input.get("target_character_id")).value()
+                            : SwayNativeWire.integer(input, "target_character_id", 1, Integer.MAX_VALUE);
+                    require(target == identity.targetCharacterId() && request.before().frame().identity().player().longValueExact() == identity.actorCharacterId(), "Sway observation actor/target differs");
                     ObjectNode extra = StrictJson.object(); extra.put("actor_character_id", identity.actorCharacterId()); extra.put("target_character_id", identity.targetCharacterId());
                     if (kind != Kind.OPINION) {
                         require(SwayNativeWire.integer(input, "scheme_instance_id", 0, 0xffff_fffeL) == identity.schemeInstanceId(), "Sway observation original full ID differs");
@@ -205,7 +215,8 @@ public final class SwayObservationReads {
     }
     private static void requireDirectArguments(PlanningReadRequest request,DirectQuery query) {
         var actors=query.subject().actors();var fields=query.kind()==Kind.OPINION?Set.of("target_character_id"):Set.of("target_character_id","scheme_instance_id");var row=SwayNativeBindings.args(request.arguments(),fields);
-        require(request.before().frame().identity().player().longValueExact()==actors.actorCharacterId()&&SwayNativeWire.integer(row,"target_character_id",1,Integer.MAX_VALUE)==actors.targetCharacterId(),"direct native read changed actual actor/target");
+        long target=query.kind()==Kind.OPINION?NativeCharacterId.fromJson(row.get("target_character_id")).value():SwayNativeWire.integer(row,"target_character_id",1,Integer.MAX_VALUE);
+        require(request.before().frame().identity().player().longValueExact()==actors.actorCharacterId()&&target==actors.targetCharacterId(),"direct native read changed actual actor/target");
         query.subject().instance().ifPresent(value->require(SwayNativeWire.integer(row,"scheme_instance_id",0,0xffff_fffeL)==value.schemeInstanceId(),"direct completion changed full native instance"));
     }
     public static ReadContract<DirectPlane> directContract(ExactRef source,DirectQuery query) {
@@ -221,7 +232,7 @@ public final class SwayObservationReads {
         return OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(row)),"typed direct Sway native query arguments");
     }
     private static void pair(ObjectNode row,Actors identity) {
-        require(SwayNativeWire.integer(row,"actor_character_id",1,Integer.MAX_VALUE)==identity.actorCharacterId()&&SwayNativeWire.integer(row,"target_character_id",1,Integer.MAX_VALUE)==identity.targetCharacterId(),"native opinion actor/target differs");
+        require(NativeCharacterId.fromJson(row.get("actor_character_id")).value()==identity.actorCharacterId()&&NativeCharacterId.fromJson(row.get("target_character_id")).value()==identity.targetCharacterId(),"native opinion actor/target differs");
     }
     private static boolean journal(Kind kind) {return kind==Kind.EXECUTION||kind==Kind.TERMINATION;}
     /** Internal/public JSON cursor representation is always a canonical decimal string; native packet numbers stay exact BigInteger. */
@@ -251,7 +262,9 @@ public final class SwayObservationReads {
         }
     }
     private static void opinion(ObjectNode row, SwayNativeWire.Binding binding, Actors identity) {
-        StrictJson.object(row, OPINION); SwayNativeWire.equals(row, "schema", "xar.ck3.sway-outcome-opinion-v1"); SwayNativeWire.equals(row, "build", SwayNativeWire.BUILD); SwayNativeWire.frame(row, binding, identity.targetCharacterId());pair(row,identity);
+        StrictJson.object(row, OPINION); SwayNativeWire.equals(row, "schema", "xar.ck3.sway-outcome-opinion-v1"); SwayNativeWire.equals(row, "build", SwayNativeWire.BUILD);
+        require(SwayNativeWire.wide(row, "snapshot_revision", 1).equals(binding.revision()) && SwayNativeWire.signed(row, "date_raw") == binding.date(), "Sway native payload crossed complete actor/date/revision frame");
+        pair(row,identity);
         boolean available = SwayNativeWire.bool(row, "available"); SwayNativeWire.string(row, "unavailable_reason");
         require(!SwayNativeWire.bool(row, "instance_terminal_outcome_observed") && !SwayNativeWire.bool(row, "cancel_outcome_observed"), "named material does not assign terminal/cancel");
         if (available) SwayNativeWire.integer(row, "target_opinion_of_actor", Integer.MIN_VALUE, Integer.MAX_VALUE); else require(row.get("target_opinion_of_actor").isNull(), "unavailable total opinion remains null");
@@ -278,7 +291,7 @@ public final class SwayObservationReads {
     private static final Set<String> NOTIFICATION_RECORD=Set.of("sequence","source_branch","authored_command","authored_title","authored_reason_key","date_raw","actor_character_id","target_character_id","scheme_instance_id","scheme_instance_generation","root_scope_kind","scheme_scope_kind","selected_notification_branch_observed","exact_scope_join_ready","message_enqueue_observed","render_observed","material_effect_observed","native_end_cause_observed","native_terminal_state_observed");
     /** Actionless full native identity. These selected notification records never become an M6 causal proof. */
     public record InvalidationQuery(NativeSubject subject,BigInteger afterSequence) {
-        public InvalidationQuery {Objects.requireNonNull(subject);new Actors(subject.actorCharacterId(),subject.targetCharacterId());SwayNativeWire.instance(subject.schemeInstanceId(),subject.schemeInstanceGeneration());SwayNativeWire.u64(afterSequence,0);}
+        public InvalidationQuery {Objects.requireNonNull(subject);SwayNativeWire.currentCharacter(subject.actorCharacterId());SwayNativeWire.currentCharacter(subject.targetCharacterId());new Actors(subject.actorCharacterId(),subject.targetCharacterId());SwayNativeWire.instance(subject.schemeInstanceId(),subject.schemeInstanceGeneration());SwayNativeWire.u64(afterSequence,0);}
     }
     public record InvalidationPlane(InvalidationQuery query,PlanningReadReceipt original,ProjectionJson normalized) {
         public InvalidationPlane {Objects.requireNonNull(query);Objects.requireNonNull(original);Objects.requireNonNull(normalized);}

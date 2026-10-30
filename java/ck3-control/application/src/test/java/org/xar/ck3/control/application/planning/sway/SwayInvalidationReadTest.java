@@ -31,8 +31,9 @@ final class SwayInvalidationReadTest {
         var reads=new SwayRootReads(new SwayRootReads.Sources(SOURCE,SOURCE,SOURCE),true);
         var catalog=new RootReadContractCatalog(List.of(),reads.families());reads.attach(catalog);
         for(String role:List.of("dead","range","opaque")) {
-            var packet=vector(role);var contract=reads.invalidation(QUERY);assertSame(contract,reads.invalidation(QUERY));assertTrue(catalog.containsIdentity(contract));
-            var request=request(contract,"1.20.0.2",QUERY);var nativeRequest=contract.prepare(request,packet.get("request_id").textValue());
+            var packet=vector(role);var query=new SwayObservationReads.InvalidationQuery(QUERY.subject(),packet.at("/result/sway_completion_invalidation_reason/after_sequence").bigIntegerValue());
+            var contract=reads.invalidation(query);assertSame(contract,reads.invalidation(query));assertTrue(catalog.containsIdentity(contract));
+            var request=request(contract,"1.20.0.2",query);var nativeRequest=contract.prepare(request,packet.get("request_id").textValue());
             assertEquals(ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE,contract.permissionMode());assertEquals(ReadContract.WireProfile.G2_PRIVATE_QUERY,contract.wireProfile());
             var sent=StrictJson.parse(nativeRequest.additionalFields().bytes());assertEquals(ACTOR,sent.get("actor_character_id").longValue());assertEquals(ID,sent.get("scheme_instance_id").longValue());assertFalse(sent.has("action_id"));
             var receipt=receipt(contract,request,packet);var actual=contract.decode(receipt);assertArrayEquals(actual.normalized().bytes(),contract.replay(receipt).normalized().bytes());
@@ -40,7 +41,8 @@ final class SwayInvalidationReadTest {
             var normalized=StrictJson.parse(actual.normalized().bytes());var expected=oracle(role,packet);
             var selected=StrictJson.object();expected.fieldNames().forEachRemaining(name->selected.set(name,normalized.get(name)));assertEquals(expected,selected);
             var publicValue=StrictJson.parse(SwayPublicCodec.publicNormalized(actual).bytes());
-            assertEquals("1",publicValue.at("/records/0/sequence").textValue());assertEquals("7",publicValue.get("snapshot_revision").textValue());
+            String sequence=switch(role){case "dead"->"1";case "range"->"2";case "opaque"->"3";default->throw new AssertionError(role);};
+            assertEquals(sequence,publicValue.at("/records/0/sequence").textValue());assertEquals("7",publicValue.get("snapshot_revision").textValue());
             assertEquals("8",publicValue.get("queried_revision").textValue());assertFalse(publicValue.has("action_id"));assertFalse(publicValue.has("sway_terminal_sources_12004"));
             for(String field:List.of("message_enqueue_observed","render_observed","material_effect_observed","native_end_cause_observed","native_terminal_state_observed"))assertFalse(publicValue.get(field).booleanValue());
         }
@@ -110,7 +112,7 @@ final class SwayInvalidationReadTest {
             sys.path.insert(0,str(root/'ck3_autonomous_player/src'))
             from xar_autoplayer.bridge.active_scheme_sway_completion_invalidation_reason_private_transport import normalize_active_scheme_sway_completion_invalidation_reason_v1
             v=json.loads(sys.argv[2]);snapshot={'played_character':{'character_id':50331649}}
-            print(json.dumps(normalize_active_scheme_sway_completion_invalidation_reason_v1(v,snapshot=snapshot,target_character_id=67108866,scheme_instance_id=33554443,after_sequence=0),separators=(',',':'),sort_keys=True))
+            print(json.dumps(normalize_active_scheme_sway_completion_invalidation_reason_v1(v,snapshot=snapshot,target_character_id=67108866,scheme_instance_id=33554443,after_sequence=v['after_sequence']),separators=(',',':'),sort_keys=True))
             """;
         Path repo=Path.of(required("xar.repository.root")),python=Path.of(required("xar.python")),output=temp.resolve(role+"-original.log"),error=temp.resolve(role+"-original.err");
         var spec=new WindowsJobProcess.CommandSpec(python,List.of("-B","-c",script,repo.toString(),packet.at("/result/sway_completion_invalidation_reason").toString()),repo,

@@ -10,6 +10,7 @@ import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.contracts.CrossJsDecimalUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** One strict original public Sway argument/result codec; native numeric packets are never rewritten. */
 public final class SwayPublicCodec {
@@ -22,13 +23,14 @@ public final class SwayPublicCodec {
         }
     }
     public record DirectRequest(SwayObservationReads.Kind kind,BigInteger expectedRevision,long targetCharacterId,java.util.OptionalLong schemeInstanceId) {
-        public DirectRequest {Objects.requireNonNull(kind);Objects.requireNonNull(schemeInstanceId);SwayNativeWire.u64(expectedRevision,1);SwayNativeWire.currentCharacter(targetCharacterId);
+        public DirectRequest {Objects.requireNonNull(kind);Objects.requireNonNull(schemeInstanceId);SwayNativeWire.u64(expectedRevision,1);if(kind==SwayObservationReads.Kind.OPINION)NativeCharacterId.of(targetCharacterId);else SwayNativeWire.currentCharacter(targetCharacterId);
             require(kind==SwayObservationReads.Kind.COMPLETION&&schemeInstanceId.isPresent()||kind==SwayObservationReads.Kind.OPINION&&schemeInstanceId.isEmpty(),"completion and opinion have distinct original public fields");schemeInstanceId.ifPresent(value->SwayNativeWire.instance(value,(int)(value>>24)));}
     }
     public static DirectRequest decodeDirect(SwayObservationReads.Kind kind,RawJson arguments) {
         require(kind==SwayObservationReads.Kind.COMPLETION||kind==SwayObservationReads.Kind.OPINION,"only original completion/opinion direct read");
         var row=StrictJson.object(StrictJson.parse(arguments.bytes(),65536),kind==SwayObservationReads.Kind.COMPLETION?Set.of("expected_revision","target_character_id","scheme_instance_id"):Set.of("expected_revision","target_character_id"));
-        return new DirectRequest(kind,publicUInt64(row.get("expected_revision"),1),StrictJson.integer(row.get("target_character_id"),1,Integer.MAX_VALUE),kind==SwayObservationReads.Kind.COMPLETION?java.util.OptionalLong.of(StrictJson.integer(row.get("scheme_instance_id"),0,0xffff_fffeL)):java.util.OptionalLong.empty());
+        long target = kind == SwayObservationReads.Kind.OPINION ? NativeCharacterId.fromJson(row.get("target_character_id")).value() : StrictJson.integer(row.get("target_character_id"),1,Integer.MAX_VALUE);
+        return new DirectRequest(kind,publicUInt64(row.get("expected_revision"),1),target,kind==SwayObservationReads.Kind.COMPLETION?java.util.OptionalLong.of(StrictJson.integer(row.get("scheme_instance_id"),0,0xffff_fffeL)):java.util.OptionalLong.empty());
     }
     public static RawJson encodeDirectRequest(DirectRequest request) {
         var row=StrictJson.object();row.put("expected_revision",request.expectedRevision().toString());row.put("target_character_id",request.targetCharacterId());request.schemeInstanceId().ifPresent(value->row.put("scheme_instance_id",value));return raw(row);
