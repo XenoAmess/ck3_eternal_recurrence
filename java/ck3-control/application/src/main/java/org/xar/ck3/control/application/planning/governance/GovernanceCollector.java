@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
+import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.action.RequestIds;
+import org.xar.ck3.control.application.driver.DriverActionHistoryCodec;
 import org.xar.ck3.control.application.action.PlanningReadPort;
 import org.xar.ck3.control.application.action.PlanningReadReceipt;
 import org.xar.ck3.control.application.action.PlanningReadRequest;
@@ -321,6 +325,32 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
             Value command = row.get("command"), result = row.get("result");
             if (new Text("auto-turn").equals(command) && result instanceof Obj root && root.get("auto_turn") instanceof Obj turn) {
                 command = turn.get("selected_step"); if (turn.get("result") instanceof Obj nested) result = nested;
+            }
+            // Canonical Java source bridge: if a SUBMIT row has a valid DriverActionHistorySource, project it as RECEIPT
+            if ((new Text("private-select-player-lifestyle-stock-focus-v1").equals(command) || new Text("private-select-player-lifestyle-perk-v1").equals(command))
+                    && row.get("ok") instanceof Bool ok && ok.value() && result instanceof Obj res
+                    && (new Text("private-select-player-lifestyle-stock-focus-v1").equals(command) && new Text("focus").equals(res.get("kind"))
+                        || new Text("private-select-player-lifestyle-perk-v1").equals(command) && new Text("perk").equals(res.get("kind")))) {
+                Value sourceVal = row.get("java_action_history_source");
+                if (sourceVal instanceof Obj sourceObj) {
+                    try {
+                        var raw = RawJson.fullMaterial(DriverJson.encode(sourceObj));
+                        var source = DriverActionHistoryCodec.decode(raw);
+                        if (source.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                                && source.material() instanceof DriverActionHistoryCodec.Legacy legacy
+                                && legacy.recording() == DriverActionHistoryCodec.Recording.RETURNED
+                                && legacy.result().isPresent() && legacy.error().isEmpty()) {
+                            String expectedId = RequestIds.forActionBody(source.bodySha256());
+                            if (res.get("action_request_id") instanceof Text id && id.value().equals(expectedId)
+                                    && res.get("status") instanceof Text status && status.value().equals("applied")
+                                    && res.get("step") instanceof Text step && step.value().equals("private-query-player-lifestyle-receipt-v1")
+                                    && res.get("postcondition_verified") instanceof Bool pc && pc.value()
+                                    && res.get("episode_run_id") instanceof Text ep && ep.value().equals(request.before().frame().episodeRunId())) {
+                                command = new Text("private-query-player-lifestyle-receipt-v1");
+                            }
+                        }
+                    } catch (IllegalArgumentException ignored) { /* conservative decline */ }
+                }
             }
             boolean relevant = List.of(new Text("private-select-player-lifestyle-perk-v1"), new Text("private-select-player-lifestyle-stock-focus-v1"),
                     new Text("private-query-player-lifestyle-receipt-v1")).contains(command);

@@ -188,6 +188,21 @@ public final class LifestyleHistory {
         return FOCUS_SUBMIT.equals(command) && "focus".equals(data.kind()) || PERK_SUBMIT.equals(command) && "perk".equals(data.kind());
     }
     private static boolean positive(BigInteger value) { return value != null && value.signum() > 0; }
-    private static boolean validId(String value, Kind kind) { return value != null && value.startsWith("life-" + kind.wire() + "-") && value.length() > kind.wire().length() + 6; }
+    private static boolean validId(String value, Kind kind) {
+        if (value == null) return false;
+        if (value.startsWith("life-" + kind.wire() + "-")) return value.length() > kind.wire().length() + 6;
+        // Accept Java RequestIds producer syntax: step-<positive-decimal>-<12-hex>
+        if (value.startsWith("step-")) {
+            String rest = value.substring(5);
+            int dash = rest.indexOf('-');
+            if (dash <= 0 || dash == rest.length() - 1) return false;
+            String num = rest.substring(0, dash);
+            String hex = rest.substring(dash + 1);
+            if (num.length() > 16 || !num.matches("[1-9][0-9]*")) return false;
+            if (hex.length() != 12 || !hex.matches("[0-9a-f]{12}")) return false;
+            return true;
+        }
+        return false;
+    }
     private static boolean nonempty(String value) { return value != null && !value.isEmpty(); }
 }
