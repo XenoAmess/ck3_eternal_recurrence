@@ -131,6 +131,7 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         try {
             ObjectNode row = StrictJson.object()
                 .put("schema", "xar.java-ordinary-planning-operation/v1")
+                .put("observed_at_utc", java.time.Instant.now().toString())
                 .put("phase", phase)
                 .put("result_class", planned.getClass().getSimpleName());
 
