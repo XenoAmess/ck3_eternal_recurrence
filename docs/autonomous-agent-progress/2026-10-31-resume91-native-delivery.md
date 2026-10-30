@@ -67,3 +67,15 @@ EXTRA09实际CL exit0/6.703041秒；LINK03以24obj/0archive实际exit0/4.431737�
 正式采用冻结无Locator/13表前像的header、callback与Bridge五hunk，同原index11/physical slot20指向同一callback，view存活至原Wait/Reclaim；注册原CI目标清单和CTest正则。当前共享Z另有14表与Locator工作稿，本次没有用旧baseline覆盖它。新portable target未作完整CMake configure/build/CTest，完整Bridge TU、DLL链接和hosted CI未执行；本次不重15个已绿TU或22检查，不部署DLL、不重启Game、不新增能力广告。
 
 M0 Title另一个独立源码比较也已结束：只动态提取当前production Read/Component/ResolveObjectiveTitle三原函数共1030B，新1TU/link/首次run分别exit0/8.4231705、2.287808、0.1226066秒；生产API返回Title*与原生返回VariableContext*的预期差异确实成立。旧whole-province/Army对象保留、12TU候选未编，新增native语义case0，不外推完整province生产链接。证据 D:/ck3-state/resume91-m0-native/getter-compare/exact-source/RESULT05.json。
+
+## 首次已发表 queued target 构建验收（23:06Z）
+
+上述精确10叶已普通FF发表为 **`18f906052a7e12e25c7cb822e9c1a25f69058a17`**。本岗后续仅正常快进到Java正式提交 `132db9161d58ea9d8d940fe7db71da91c57d8bbe`，二者之间Native路径无变更。此前手工24对象链接和22检查并未验证持久CMake入口，Root因此另行要求首次构建已发表target。
+
+M0未新增Java物化平台、未POST该工具任务；仅以固定18f906的普通Git逐叶取得26个seed及实际include闭包，共388文件、2,321,787B。独占根 `D:/ck3-state/resume91-m0-native/bridge-queue/portable-formal-build/` 保留source/build缓存。四行最小CMake入口含CTest，直接include已发表queued模块；模块和helper原字节保持。它验证独立target，未配置整个Native根项目。
+
+Native Windows CMake/Ninja Release、`BUILD_TESTING=ON`、`--parallel 1` 首次配置exit0/4.532秒（23:04:17.311–21.844Z）；首次实际24个TU编译加link共25步exit0/79.590秒（23:04:39.642–23:05:59.232Z）。没有借用旧手工24obj或EXE。原模块的`/UNDEBUG`覆盖Release默认`/DNDEBUG`产生D9025提示，构建真实成功，未为此更改旗标。生成Core754B与此前实际执行原件相同。
+
+随后只在同build执行精确CTest注册名 `xar_ck3_12004_event_window_gui_queued_v2`：23:06:43.180–43.501Z，exit0/0.319秒，1/1通过，测试0.16秒。该次证明首次CMake构建及CTest接线可用；它仍是原22检查、image0/typed-unavailable案例，新增语义覆盖0。完整Native根、Bridge/DLL、GUI available、Game和hosted CI均无新增通过信用。配置/构建/CTest原始命令、stdout和终态保留于同根 `{CONFIGURE01,BUILD01,CTEST01}.{json,stdout,stderr}`，最终入口为 `HANDOFF.md` 与 `RESULT.json`。
+
+当前资源安排依Root最新实际规则：具名只读source查询最多2路、最多8显式源的小javac最多2路，与Native重编1槽分开；有限自持小JVM执行也不占Native重编槽。115于22:55:03.4073879Z真实LOOP_START后已解除安装等待，不能沿旧HOLD阻挡后继。实际Maven/安装新BEGIN时停新编译，在途自然END；HTTP和源码准备不算编译占用。本岗仍未部署DLL或操作Game，实际游玩结论只由运行岗回执给出。
