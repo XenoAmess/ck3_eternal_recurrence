@@ -1,5 +1,7 @@
 # 0.1.0 首次发布准备
 
+2026-10-30T11:16Z，`machine_id: desktop-3fevhd2-1c74096080`：用户最新明确要求“现在立刻发布，发布以后继续剩余测试”，已据此公开更新同一条目3826991345至0.2.0。正式56文件来自Source98，当前后继工具提交不改变产品载荷；上传前后逐文件verify均0，原生Submit EResult1，公开标题/完整描述/全部标签/可见性/完整Change Notes均精确回读。Steam已由11:15:31Z后台原生探针确认恢复离线。完整Core与13用例、实际缓存加载及五张新实拍仍未完成，继续测试；这条明确指令覆盖旧稿的完整业务先行发布顺序，不降低剩余测试断言。见[0.2.0实际发布记录](acceptance/publication-0.2.0-2026-10-30.json)和[永久更新记录](../../docs/release-changelogs/dynastic-esotericism/0.2.0.md)。以下保留历史计划与0.1.0事实。
+
 2026-10-25T13:30:38.536581Z补记，machine_id: desktop-3fevhd2-1c74096080：用户明确改为“先发布，然后继续本地验证；有问题修复验证后更新”。该最新指令取代下文历史草案的完整业务先行顺序。现已公开首发0.1.0测试版，Workshop ID 3826991345；实际Create/Submit EResult1，公共API全文/可见性/标签一致，Steam后台确认恢复离线。完整业务、缓存验收仍未通过，公开Change Notes页HTTP429待补查。首发实际正式包来源6241c6134ddb5a166f5c7228f3bf84b178487e74，25文件，manifest未预填tag；历史构建来源不改写。后续同条目更新仍须修复后验证。见[首发实际记录](acceptance/first-publication-2026-10-25.json)。
 
 状态：DRAFT／NOT_PUBLISHED。产品 Workshop ID 未分配，不预填其他产品 ID；用户本次已明确授权测试验收后发布。

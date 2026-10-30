@@ -1,5 +1,7 @@
 # 制作与发布状态
 
+2026-10-30T11:16Z，`machine_id: desktop-3fevhd2-1c74096080`：**0.2.0已按用户最新指令公开更新同一Workshop条目3826991345；测试继续，完整验收未完成。** 正式56文件逐文件verify、原生Submit EResult1、公开标题/完整描述/兼容标签/可见性及完整Change Notes精确回读通过，Steam已后台确认恢复离线。最近R40的P1—P4接受，P5部分拒签、P6未到达；R41仅分配后主动停止，没有启动游戏，其后继共享闭场修复与完整92命令CI已通过。下一阶段继续Core/13用例、实际缓存加载与五张实拍；现行Source98容量权威不能直接授权后继源码的新冻结图。出处见[0.2.0发布记录](acceptance/publication-0.2.0-2026-10-30.json)。以下为历史阶段事实，不代表当前发布状态。
+
 2026-10-27T00:50Z, `machine_id: desktop-3fevhd2-1c74096080`: **R0021 accepted 1/6; Core remains incomplete; 0.2.0 has not been uploaded.** The original H2 engine conjunction failed because the fixture equated factory creation day389351 with the actual first request day389352. Independent H1/H2 Saves preserve the same requesters/date and prove binding completion on389353. Both requested actors are actual House heads and Dynasts; the whole failed conjunction is not reclassified as passed. [Evidence and callback repair](2026-10-27-head-cell-callback-date.md), [machine-readable facts](acceptance/r0021-first-request-callback-2026-10-27.json).
 
 The fixture now independently witnesses the actual engine adoption callback date, once, without product writes or a synthetic date. H0+2 and all head/founder/member/source guards remain. New Maven/producer checks and a fresh cold Game are pending. R0021 closed with actual Game/host/keeper exit0 and exact SCREEN CAS release9207; three real 1280x720 promotional PNGs are retained for the requested Workshop gallery, not yet uploaded.
