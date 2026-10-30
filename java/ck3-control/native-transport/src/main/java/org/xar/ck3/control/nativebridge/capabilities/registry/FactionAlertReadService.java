@@ -31,6 +31,7 @@ import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.action.ReadContract;
 import org.xar.ck3.control.application.action.RootReadContractCatalog;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.g2.common.G2Source;
@@ -66,7 +67,7 @@ public final class FactionAlertReadService {
             StrictJson.require(before.machineId().equals(source.machineId()) && before.equals(wars.before()), "faction source/wars observation drift");
             StrictJson.require(source.exactBuild().equals("1.20.0.4"), "current exact faction source required");
             before.frame().identity().dateRaw().intValueExact();
-            StrictJson.require(before.frame().identity().player().intValueExact() > 0, "existing faction actor domain requires positive int32");
+            NativeCharacterId.of(before.frame().identity().player());
             uint64(before.frame().identity().nativeRevision(), true);
         }
         public BigInteger nativeRevision() { return before.frame().identity().nativeRevision(); }
@@ -365,7 +366,7 @@ public final class FactionAlertReadService {
         StrictJson.require(decimal(n.get("queried_revision"), false).equals(c.before().frame().revision()), "public faction revision drift");
         StrictJson.require(decimal(n.get("queried_native_revision"), true).equals(c.nativeRevision()), "public faction native revision drift");
         equal(n.get("schema_version"), BigInteger.ONE); equal(n.get("scope"), "exact-player-faction-alerts");
-        StrictJson.require(source(c).equals(n.get("source")) && binding(selected).equals(n.get("binding")), "public faction source/binding drift");
+        StrictJson.require(java.util.Arrays.equals(StrictJson.canonical(source(c)), StrictJson.canonical(n.get("source"))) && java.util.Arrays.equals(StrictJson.canonical(binding(selected)), StrictJson.canonical(n.get("binding"))), "public faction source/binding drift");
         ObjectNode build = object(n.get("build"), Set.of("version", "exe_sha256"));
         StrictJson.require(FactionAlertModel.Build.exact(text(build.get("version")), text(build.get("exe_sha256"))) == FactionAlertModel.Build.CK3_12004, "public faction build drift");
         String sha = text(n.get("original_result_sha256"));

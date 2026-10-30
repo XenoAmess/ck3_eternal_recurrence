@@ -40,7 +40,7 @@ public final class FactionReadReplay {
             StrictJson.require(source.exactBuild().equals("1.20.0.4"),"current exact faction source required");
             StrictJson.require(parse(activeWars.bytes()).isArray(),"original same-frame active_wars array required");
             before.frame().identity().dateRaw().intValueExact();
-            StrictJson.require(before.frame().identity().player().intValueExact()>0,"existing faction actor domain requires positive int32");
+            org.xar.ck3.control.contracts.NativeCharacterId.of(before.frame().identity().player());
             uint64(before.frame().identity().nativeRevision(),true);
         }
         public BigInteger nativeRevision(){return before.frame().identity().nativeRevision();}
