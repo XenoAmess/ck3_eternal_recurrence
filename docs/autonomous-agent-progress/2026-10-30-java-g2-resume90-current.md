@@ -114,6 +114,10 @@ Root `16:48:57Z` 只读canonical73/running/WORKER_RESTART_CAPTURE，next11、com
 
 Root按具体I/O故障与用户削减重复校验要求完成第三个隔离候选：`IdentityBearingFileAttributes.read` 内部Windows/NIO两遍各改为一遍，专用父路径API保留；没有添加缓存或资格。实际严格编译exit0/1.440秒，两个现有完整物理metadata类13/13P、0跳过/1.454秒，含406字符长路径与真实文件替换/junction。单生产叶及报告交 `D:/ck3-state/resume90-root/identity-once/DELIVERY.json`，runtime唯一采用、JavaDelivery正常发表；软件验证尚不代表整批速度改善。reader另已完成typed Pin+detached bytes同次复用两叶11P，regression仍负责同head快照复用，wire自生revision仍P0。
 
+`17:01:02Z` 运行岗采用IO/真实Family cause五叶。MB于 `17:02:27.163Z` 实际exit0、20.580秒：默认mvn、`-T2 -pl local-service -am`、复用原输出、source-staleness模式；reactor列34模块，实际仅contracts/application/adapters-storage/local-service四模块重编5源，没有clean或将依赖列出当成全部重编。Root单次身份13P、upper六项分组、lower v2全12P及upper/lower组合2P各自保留验证范围，不把一个组通过外推完整CI。ROOT缓存失效的精确触发边仍在研究，wire又已排除旧60秒资格与ROOT成功自动额外发snapshot两个猜测，没有凭业务内容相等放宽真实帧合同。
+
+worker99真实START为 `17:06:34.445Z`、PID240760、resume/Java ordinary policies；`17:07:17.630Z` 同Game进入next11。运行岗仅在98实际exit后移除本owner的业务stop文件，消费canonical73真实dirty capture，不重开1066/不重放FOCUS。当前新的批次日期和耗时仍待读回；此时新增游戏日继续记录为0。
+
 ## 新增正式开发源交付
 
 以下为各 owner 的正常 push 与独立远端读回时点，不能追认为当前 Game 的 DLL/Java 输出采用，也不保证后来仍是远端 HEAD。
@@ -155,6 +159,8 @@ Root按具体I/O故障与用户削减重复校验要求完成第三个隔离候�
 | `6c2da0f960`、`15e9a06332c860fab9817a05359fab9c1b0281fa` | Family六生产叶与便携回归19叶、M6动作九生产叶及回归19叶分别正常push/远端读回；当前源严格编译各exit0/3.084秒与4.475秒，复用实际原包用例；独立revision66增量Maven在途，不接当前S/MB/Game |
 | `b6b0ee6b84145b2aaa4cd4423d41acbdfba4e21a` | M3公共binder→原661B→fullRoot/serializer的repo-only三场282检查持久回归，8叶测试/支持/CI；新配置exit0/25.039秒，未重旧矩阵或部署DLL |
 | `84d7a3957d1f6f74d22f385d4b54735ab6871288` | 独立revision66增量Maven真实exit0/321.276秒，34 reactor条目成功、实际11模块重编及stress=-1 test-only边界记录；不是完整测试/打包/CI，无S/MB/Game访问 |
+| `bb20405c`、`caa77c95`、`dbee83bb`、`b3b47912b00390ed4ee675852fac30a00d6f319a` | 正常rebase后发表单次身份3叶、同head快照3叶、archive-v2两生产/持久测试/文档4叶、M2 raw enabled措辞三service/说明4叶；复用各实际完整或分组验证，不改变loadedNative63事件行为 |
+| `253d53722c96db14021a194eba8ef6c31db34afa` | Root当前记录截至73真实capture的32188字节单叶快照；未带历史dirty AGENTS或其他源码，后继追加有独立时间范围 |
 
 Java private raw32与M6终态后继消费者仍按实际生产原包推进，已发现普通 planner/参数 producer 还有需接齐的域，不把 packet decoder 通过写成完整实机链。M0另已完成20份原包经实际 Java transport/安装 reader/Root注册/public codec的21项持久回归候选，没有为测试制造生产修改。
 
@@ -171,3 +177,41 @@ M1 ordinary producer交付又发现Z含未发表signed前置，旧七叶patch不
 当前权威 [G2 合同](g2-requirements-v1.json) 声明历史可见里程碑为 **6/8**，M0–M5 complete、M6/M7 in_progress。本轮 Java 迁移和 Native 增强另行验收，不以软件检查、提交或重新编译改变其原完成定义；当前局新增日仍需运行期读回。
 
 Root已仅纠正合同M7的旧“当前禁止本地续行”文本为历史限制被本次明确续行覆盖，保留五次daily SAVE、自然生命周期及更广ruler/seed/government缺口；JSON实际解码通过，状态与6/8分母未变。新指令不追认任何M7实机验收。
+
+
+## 17:48Z 后续现场：99–101 与资料链修复
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。Root直接读取 WORKER99/100/101-END.json，并结合运行唯一owner原始账本定位。Game仍由runtime90独占；本段不进行游戏动作或重启。
+
+IO99在17:02:27.163Z真实MB exit0/20.580秒，34 reactor条目中实际4模块5源码重编：同head journal快照、同次archive材料、单次文件身份观察与保留异常原因已进入生产。worker99于17:06:34.445Z启动，PID240760，17:07:17.629进入next11，批11–13均WALL_TIMEOUT/attempt0。真实线程栈先后推进到publishReserved/writeExistingEmpty和EpisodeIncidentJournal.scan/writeSame/force，不把它写成同一Native死锁。业务层单独停止后17:22:24.235Z exit0/949.790秒；实际capture17:22:23.768，canonical95/running、next14、dirty且只有旧FOCUS未保存，新增日0。协议CLEAN字样不授SAVE信用。
+
+99又暴露原生63的guardian export ACK没有sidecar_hash_schema/bytes/sha。实际原ACK确实没有这些字段，不能补写成Native证明；实际5269B导出单独存在。本轮通过PlanningReadReceipt v4的typed RetainedMaterial保留真正收到的同次资料：live读取并写CAS一次；cold replay从实际CAS引用读回，不探当前export文件，不修改旧v1–v3形状。12生产叶在17:28:49Z采用，MB100于17:29:50.316Z exit0/10.150秒，实际4模块12源码重编。archive冷载入/删当前export/缺payload和错型/旧v2额外字段、Family材料传播均分组验证，保留原始失败及fixture修正，不声称一次完整CI。
+
+worker100于17:31:27.169Z启动，PID174892；17:31:39.566进入next14。批14于43.929秒PLANNER_STOPPED，终止原因 `family source/contract rejected: bounded nonempty UTF-8 JSON required`；当前关系读取已成功发布，FIRST_HEIR_LEGALITY实际ACK398672B、wire398676B，实际legal_rows833条/397922B。HeirCandidateIntakeConsumerPort仍用默认64KiB decoder并将整输入重复按小输出预算编码。单生产叶改用既有FullJsonTree和typed row读取，选定5ID输出2649B；旧实际输入红、候选strict0/2P。worker100真实END17:32:23.831Z exit4/56.661秒，attempt/applied0、canonical98/repair、used0..14/next15、日期仍53144328。
+
+Intake及已绿空incident/lazy进度两叶在17:40:55Z采用，MB101于17:42:05.389Z exit0/9.830秒。worker101于17:42:51.698Z启动，PID73252，17:43:03.920Z exit1/12.221秒，未进loop、无Native动作、canonical98不变。恢复历史的新确定故障为ContinuityBatchJournal1022将真实WORKER_RESTART_CAPTURE73/95误当普通batch terminal并要求匹配openBatch；运行岗正在修其只读历史解释，保留真实dirty/序号/未保存FOCUS，不修写旧账本、不伪造批终态。
+
+Root另完成D-only source-contract-stop包（5生产+2测试+1报告），明确SOURCE_CONTRACT_REJECTED经Family→M5→PlanningWire保留，Controller在两个已发布分支识别此类型；普通暂缺资料仍Wait/重新观察，原生Unavailable实际reason不再丢弃。最终五生产叶strict0；六新增方法分组通过。早期完整77方法75P/2F，两原失败在未修改源码/测试上复现，详见候选报告，未称完整绿。DELIVERY.json位于D:/ck3-state/resume90-root/source-contract-stop；交唯一Java writer发表，本包不阻101恢复修复。
+
+## 17:48Z 源码交付与并发补注
+
+后续正常push/独立读回：Native M6 signed resource边界与21持久场景 `b9e4c8d17799f13d5513442aa3e61bb91ad25e13`；Sentinel槽重入/取消与具名持久CI `e046d2cdfa4903f43a31bb2a0c343bdf12d589ec`；Native M1 Faction-only生产闭包 `3b860907db5d74890a9d86a0a4332910f8e03ae3`；Java M6同peer HELLO/fullSnapshot→Driver/context signed角色域 `4ef5732c2e45a9deae7f41599248adc88a84a779`；M3 Refuge owner0单叶与回归 `d72ff72d132c2a9eb19474e88d5b383bda5952c4`；Java M1 Faction12生产/9测试/58资源/说明共80叶 `679ea8ecf86088547d019774b8ee5c1c481377a7`。全都不等于loaded Native63更新或当前局新动作；Java Faction189是多run unique union，不是一次189P。
+
+Root在本次继续后再次实际列出60个running，旧M3错误岗不计；同树新增piety_java131承接独立Java消费者任务，未重复错误任务。用户本地模型暂停持续有效，HTTP请求/探测/重试0。八M各6、runtime8、三个独立交付/资源岗与Root为60。已完成小包后通过send_message继续具名真实后继，等待不计活跃。研究复用有限原件、机械盘重provider上限4，当前无重provider；不得以研究包增加量追认G2六/八的实机缺口或本局新增日。
+
+
+## 18:04Z 实际102接续与最终规划回归
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。Root直接读取WORKER102-STARTED/END.json及worker102.stdout.log，以下不是预期结果。
+
+运行岗真实canonical98 reader红→绿后于17:52:58Z采用7叶（Journal已捕获重启历史分支、Intake公共异常兼容及Root五叶typed Stop），MB102在17:54:09.740Z exit0/17.023秒，实际3模块7源码重编。worker102/PID258824于17:56:38.612718Z启动，决策源Java ordinary policies；启动耗时中两次真实jcmd均在普通BuiltinClassLoader的FileInputStream读取，先Builder.domains434，后finishSettledSameGame→Catalog→Army binding，证明已越过历史reader，不能写成Native或资格死锁。
+
+worker102在18:00:23.3184441Z实际进入普通循环next15；批15开始18:00:23.6996793Z、结束18:01:42.990064Z，完整墙钟79.2899876秒，PLANNER_STOPPED，原原因得到保留：`SOURCE_CONTRACT_REJECTED: family source/contract rejected: bounded nonempty UTF-8 JSON required`。attempt/applied0、savedDays0、savedPair null；最后计划native56/public61/date53144328/played31254。END18:01:43.426485Z exit4/304.8137863秒、next16。起动时间与批墙钟分开，不把新增read当游戏动作或日期推进。
+
+hotspot已在前一实证资料定位Ranking三个预算矛盾：decode默认64KiB、整输入小预算再编码、evaluate再次默认64KiB；100真实833条legal数组本身397879B，Policy wrapper完整保留该数组，故必越该上限。102的本次实际projection/消费点由runtime继续取证并修共享生产路径；不以缺真实projection ACK时手写richRows授Native资格，也不重复Intake绿色测试。
+
+独立JavaDelivery revision66编译03真实17:54:46.4728652Z–18:01:09.6888705Z，inner exit0/383.216秒（外层383.225），34reactor条目成功、31 Java模块实际重编，build-tools/replenishment复用、parent为pom。GUI65叶/27生产跨6模块精确装配，测试源与资源另列；尚未test-compile/package/跑测试，不能外推完整CI或当前S/MB已采用。原生集成与研究岗已因运行P0暂缓新重编/批量复制，在途自然结束；resources核查真实I/O后再恢复受控小编译，不能把已结束读窗作为永久等待条件。
+
+Root source-contract-stop已正常发表并读回 `7b93fe8bfca80025931c4ef41f6bbdd94f8c9754`，当前五生产叶all-lint/Werror0/4.962秒、两测试源编0/3.544秒。其继承两失败现查清均为旧fixture接口差异：extended deadline用例未传真正planning deadline；CURRENT_RELATION材料误交不支持此操作的通用reduce，实际应与FamilyMaterialStore相同走matureWarm并Refresh原配偶婚姻。仅两个测试源修正后strict0/4.466秒、定向2P/4.321秒；最终五叶overlay和两完整类80P/0F/0skip，17:54:08.555Z–27.568Z/19.013秒。该测试结束早于独立编译实际START18.904秒，无重叠且不重复绿测；80包含定向2方法，不重复累计。生产合同未放宽，原77/继承2F诊断全部保留。后继3叶测试交付在D:/ck3-state/resume90-root/fixture-followon/DELIVERY.json。
+
+Native Stop生产和持久CI另已正常发表 `3ffd71fec93b12b5267187f1f30da77dd3d8e4bb`（单生产角色域修正与259软件检查），没有DLL部署、Start/Cancel execute或当前局信用。Root本次再次整树实际读回60个running，旧错误岗不计，本地模型请求仍0。
