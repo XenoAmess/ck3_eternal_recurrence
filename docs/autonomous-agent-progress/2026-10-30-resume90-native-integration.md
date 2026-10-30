@@ -322,3 +322,23 @@ the single-row layout. This does not establish a production rejection or justify
 a shared reader guard change. Real group-child production/Temporary construction
 is still missing; the earlier owned-memory material tests grant no live layout
 credit. Common root encoding is a separate contract change.
+
+The previously deferred CommonEnd root actor/target projection now has its own
+actual producer result: 121 new assertions, five public response packets, real
+session/Configure/before/after/frame-reader/Append/QueryCommon/queue/pump and
+serializer, with one owned original callback per pair. Raw DL and raw retained
+owner/target words stay unchanged; native attachment/original and image bindings
+remain software seams. The exact root-only Recorder source compiled strictly
+in 7.374 seconds. Java's real decoder initially failed two of three new methods,
+then passed all three after the corresponding minimal consumer changes; those
+consumers were published in `f315c040481fdceab882dc6144cd46377c1d2f1a` before
+this Native one-hunk adoption. No unchanged 121/309 matrix was repeated.
+
+Only `SerializeCommonNativeEnd12004` root request actor/target now use the
+canonical signed projection. The cause-relation pair remains raw and
+unqualified. A separate new cause-next software route produced three native
+invocation records but `cause_relation:null`; its self-image callback/caller
+addresses are retained provenance rather than reviewed game causes. That new
+94-check case needs no Native source change and does not authorize the deferred
+cause-role draft. See M6 `action-abi/common-next/{COMMON-ROOT-ONLY.patch,
+FINAL-ACTUAL.json,PACKETS.json}` and `cause-next/{RESULT.md,FINAL-ACTUAL.json}`.

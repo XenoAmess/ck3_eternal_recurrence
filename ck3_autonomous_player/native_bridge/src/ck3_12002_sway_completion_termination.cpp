@@ -155,7 +155,7 @@ void SerializeCommonNativeEnd12004(std::ostream &out,
   CommonQuoted(out, r.unavailable_reason);
   out << ",\"read_only\":true,\"observer_attached\":" << (r.observer_attached ? "true" : "false")
       << ",\"observer_session_identity\":" << r.observer_session_identity << ",\"owner_thread_id\":" << r.owner_thread_id
-      << ",\"actor_character_id\":" << request.actor_character_id << ",\"target_character_id\":" << request.target_character_id
+      << ",\"actor_character_id\":" << std::bit_cast<std::int32_t>(request.actor_character_id) << ",\"target_character_id\":" << std::bit_cast<std::int32_t>(request.target_character_id)
       << ",\"scheme_instance_id\":" << request.scheme_id << ",\"scheme_instance_generation\":" << (request.scheme_id >> 24)
       << ",\"after_sequence\":0,\"earliest_sequence\":" << r.earliest_sequence << ",\"latest_sequence\":" << r.latest_sequence
       << ",\"retention_gap\":" << (r.retention_gap ? "true" : "false") << ",\"session_records_only\":true,\"records\":[";
