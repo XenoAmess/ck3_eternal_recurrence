@@ -185,8 +185,20 @@ AckStatus ExecuteActiveSchemeSemanticActionV1Private(
     const ActiveSchemeSemanticActionV1PrivateRequest &request,
     ActiveSchemeSemanticActionV1PrivateAck &ack) noexcept {
   try {
+    const bool exact_crozier_sway = request.interaction_key == "sway_interaction" &&
+        (environment.admitted_executable_sha256 ==
+             "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D" ||
+         environment.admitted_executable_sha256 ==
+             "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518");
+    const auto signed_character = [](std::int64_t value) noexcept {
+      return value >= INT32_MIN && value <= INT32_MAX && value != -1;
+    };
+    const bool valid_pair = exact_crozier_sway
+        ? signed_character(request.actor_character_id) && signed_character(request.target_id) &&
+          request.actor_character_id != request.target_id
+        : request.actor_character_id > 0 && request.target_id > 0;
     if (!ValidRequestId(request.request_id) ||
-        request.actor_character_id <= 0 || request.target_id <= 0 ||
+        !valid_pair ||
         request.target_kind != TargetKind::character ||
         request.expected_capture_epoch == 0 ||
         request.expected_container_generation == 0 ||
@@ -200,11 +212,6 @@ AckStatus ExecuteActiveSchemeSemanticActionV1Private(
       return Reject(request, Failure::interaction_not_allowed,
                     "interaction_not_allowlisted", {}, ack);
     }
-    const bool exact_crozier_sway = request.interaction_key == "sway_interaction" &&
-        (environment.admitted_executable_sha256 ==
-             "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D" ||
-         environment.admitted_executable_sha256 ==
-             "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518");
     if (!environment.exact_build_admitted ||
         (environment.admitted_executable_sha256 !=
              kActiveSchemeSemanticActionV1PrivateExecutableSha256 && !exact_crozier_sway)) {

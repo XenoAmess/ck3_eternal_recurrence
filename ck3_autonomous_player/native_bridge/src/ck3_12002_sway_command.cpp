@@ -15,9 +15,9 @@ struct alignas(8) ContextStorage { std::array<std::byte, 0x338> bytes{}; };
 struct alignas(8) SendStorage { std::array<std::byte, 0x368> bytes{}; };
 
 bool FullId(std::int64_t value, std::int32_t &out) noexcept {
-  if (value <= 0 || static_cast<std::uint64_t>(value) >=
-      (std::numeric_limits<std::uint32_t>::max)()) return false;
-  out = std::bit_cast<std::int32_t>(static_cast<std::uint32_t>(value));
+  if (value < (std::numeric_limits<std::int32_t>::min)() ||
+      value > (std::numeric_limits<std::int32_t>::max)() || value == -1) return false;
+  out = static_cast<std::int32_t>(value);
   return true;
 }
 bool Ready(const SwayCommandBindingsV1 &b) noexcept {

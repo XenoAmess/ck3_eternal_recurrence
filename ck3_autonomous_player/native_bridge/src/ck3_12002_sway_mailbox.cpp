@@ -10,7 +10,8 @@ bool Frame(ActiveSwayMailboxContext12002 &q) noexcept {
   game::Snapshot frame{};
   return CaptureQuerySnapshot(&q.envelope, frame) && frame.map_ready &&
       frame.has_played_character && frame.played_character_alive &&
-      frame.played_character_id > 0 && frame.played_character_id != static_cast<std::int64_t>(q.target);
+      frame.played_character_id >= INT32_MIN && frame.played_character_id <= INT32_MAX &&
+      frame.played_character_id != -1 && frame.played_character_id != q.target;
 }
 bool Capture(void *opaque, ActiveSchemeStateV1PrivateObservation &out) noexcept {
   auto &q = *static_cast<ActiveSwayMailboxContext12002 *>(opaque);
@@ -33,7 +34,7 @@ bool Submit(void *opaque, const ActiveSchemeSemanticActionV1PrivateCommand &comm
       q.target, opinion) && opinion == q.expected_opinion &&
       SubmitSwayCommandV1(q.commands, command) == SwayCommandSubmitResultV1::submitted;
 }
-bool Matching(const ActiveSchemeStateV1PrivateObservation &active, std::uint32_t target) noexcept {
+bool Matching(const ActiveSchemeStateV1PrivateObservation &active, std::int32_t target) noexcept {
   for (std::size_t i = 0; i < active.row_count; ++i) {
     const auto &row = active.rows[i];
     if (std::strcmp(row.scheme_type_key.data(), "sway") == 0 &&

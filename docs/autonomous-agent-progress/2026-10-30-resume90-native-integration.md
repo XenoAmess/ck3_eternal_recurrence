@@ -16,7 +16,7 @@ does not acquire deployed or live status through publication.
 | Lane | Candidate/research owner | Native scope | Current integration decision |
 | --- | --- | --- | --- |
 | M0 | `/root/m0_native90` | FullID/truce/claims | Existing published fixes retained; new evidence awaited |
-| M1 | `/root/m1_native90` | Faction/member/gift | Adopt only the previously verified signed/zero selector hunk |
+| M1 | `/root/m1_native90` | Faction/member/gift | Selector, actual Root producer and private preview corrected; action admission remains separate |
 | M2 | `/root/m2_native90` | Event instance registration/lifetime/options | Full32 counter writer newly found; positive instance contract retained |
 | M3 | `/root/m3_native90` | Council/piety owner and lifecycle | Existing published fix retained; engine/writer evidence pending |
 | M4 | `/root/m4_native90` | Construction cancel/scope/accounting | Actual signed/zero producer packets delivered to Java; no Native defect or net-refund claim |
@@ -147,4 +147,41 @@ Sources/results:
 The new integration configure/build/CTest command receipts are under
 `D:/ck3-state/resume90-native-integration/m1-*.actual.txt`. These are source and
 owned-memory software results; Game, DLL deployment, submission qualification
-and natural inheritance remain untested by this package.
+and natural inheritance remain untested by this package. Its six-leaf commit was
+rebased normally onto Java's `e3d14f623475` and pushed as
+`21ea9de5951940966e962ade5510fc5b02d6318d`; the final independent remote readback
+at 14:27:40.009Z returned that exact SHA. An earlier readback while the push was
+still in flight retained the old head and is not treated as success evidence.
+
+## M6 signed action contract
+
+At 14:30:14.675Z the eight-leaf action candidate was applied by exact hunks to
+Z and the isolated publication tree. All eight publication-base sources matched
+the candidate's recorded originals, and all eight adopted sources matched its
+final candidates after Git text normalization. The earlier opinion-only parser
+sync and Event domain are unaffected.
+
+The target type/API, route parser, frame checks, state target projection,
+shared semantic action's exact Crozier Sway branch, private command and receipt
+serializer now carry canonical signed int32 characters (only -1 absent).
+SchemeID remains raw unsigned full32, with zero valid and FFFFFFFF absent.
+Other interactions/builds retain their existing positive-character branch;
+native legality, full-generation identity, epochs and once-submit behavior
+still apply.
+
+The unchanged adopted code reuses its actual nine-TU strict compilation and
+157-check owned-memory execution plus six existing command suites. The chain
+uses actual Core/state/terms/shared action/private command/owning clone and
+queue callback/fresh state/receipt/serializer, with native I/O callbacks
+explicitly authored. Handler and query mailbox were compiled completely but
+not executed in that action case; its private Target helper was mechanically
+extracted. This is distinct from the separately completed 94-check public
+opinion-material handler case. Neither establishes the public action
+handler/owning pump route, a live ABI, actual target legality or a scheme
+terminal/useful result. No unchanged test was rerun for source publication.
+
+The actual failures and corrected fixture are retained in
+`D:/ck3-state/resume90-m6-native/action-abi/{RESULT.md,FINAL-ACTUAL.json,SOURCE.patch}`.
+The first 12 failures came from an impossible two-generations-in-one-slot
+fixture; only that fixture was corrected/recompiled, with no production change.
+The new D action case is not claimed as a persistent CI target.

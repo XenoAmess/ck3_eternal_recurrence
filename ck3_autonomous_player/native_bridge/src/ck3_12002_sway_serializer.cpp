@@ -77,7 +77,7 @@ std::string SerializeActiveSwayFormal12002(const ActiveSwayMailboxContext12002 &
   }
   const auto &r = q.receipt;
   if (r.status != ActiveSchemeSemanticActionV1PrivateReceiptStatus::applied || !r.postcondition_verified ||
-      r.request_id != q.action_id || !r.scheme_instance_id) return {};
+      r.request_id != q.action_id || r.scheme_instance_id >= UINT32_MAX) return {};
   return "{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"applied\",\"action_id\":" +
       Quoted(r.request_id) + ",\"post_capture_epoch\":" + std::to_string(r.post_capture_epoch) +
       ",\"post_container_generation\":" + std::to_string(r.post_container_generation) +

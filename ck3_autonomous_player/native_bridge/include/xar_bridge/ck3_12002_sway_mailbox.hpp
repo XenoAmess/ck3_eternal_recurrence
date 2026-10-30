@@ -15,7 +15,7 @@ struct ActiveSwayMailboxContext12002 {
   QueryMailboxEnvelope envelope{};
   SwayStateBindings12002 source{};
   SwayCommandBindingsV1 commands{};
-  std::uint32_t target = 0;
+  std::int32_t target = -1;
   bool formal = false;
   bool receipt_mode = false;
   std::string action_id{};

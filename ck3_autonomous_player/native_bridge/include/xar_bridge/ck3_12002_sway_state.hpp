@@ -37,6 +37,6 @@ bool ReadActiveSwayState12002(const SwayStateBindings12002 &bindings,
     std::uint64_t capture_epoch,
     bridge::ActiveSchemeStateV1PrivateObservation &output) noexcept;
 bool ReadSwayTargetOpinion12002(const SwayStateBindings12002 &bindings,
-    std::int64_t actor, std::uint32_t target, std::int32_t &output) noexcept;
+    std::int64_t actor, std::int64_t target, std::int32_t &output) noexcept;
 
 } // namespace xar::ck3_12002

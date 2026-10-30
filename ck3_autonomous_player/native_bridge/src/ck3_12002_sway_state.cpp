@@ -88,7 +88,7 @@ bool ReadOnce(const SwayStateBindings12002 &b, std::uint64_t epoch,
         !Read(scheme + 0x2A8, frozen) || frozen > 1) return false;
     std::memcpy(row.category_key.data(), "personal", 9);
     row.target_kind = ActiveSchemeStateV1PrivateTargetKind::character;
-    row.target_id = target;
+    row.target_id = std::bit_cast<std::int32_t>(target);
     row.is_basic = true;
     row.is_secret = false; // Frozen stock Sway definition is non-secret.
     row.is_exposed = exposed != 0;
@@ -146,10 +146,11 @@ bool ReadActiveSwayState12002(const SwayStateBindings12002 &b,
   output = second; return true;
 }
 bool ReadSwayTargetOpinion12002(const SwayStateBindings12002 &b,
-    std::int64_t actor, std::uint32_t target, std::int32_t &output) noexcept {
+    std::int64_t actor, std::int64_t target, std::int32_t &output) noexcept {
   output = 0;
-  if (!b.enabled || !b.core.enabled || actor < INT32_MIN || actor > INT32_MAX || actor == -1 || !target) return false;
-  if (!b.opinion) return ReadCharacterOpinion12002(b.module_base, b.core, target,
+  if (!b.enabled || !b.core.enabled || actor < INT32_MIN || actor > INT32_MAX || actor == -1 ||
+      target < INT32_MIN || target > INT32_MAX || target == -1 || actor == target) return false;
+  if (!b.opinion) return ReadCharacterOpinion12002(b.module_base, b.core, static_cast<std::uint32_t>(target),
       static_cast<std::uint32_t>(actor), output);
   auto *owner = ResolveCoreCharacter(b.core, static_cast<std::int32_t>(target));
   auto *toward = ResolveCoreCharacter(b.core, static_cast<std::int32_t>(actor));

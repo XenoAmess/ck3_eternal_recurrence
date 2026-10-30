@@ -15,12 +15,14 @@ bool Simple(std::string_view s) noexcept {
       (c >= '0' && c <= '9') || c == '-' || c == '_' || c == '.')) return false;
   return true;
 }
-bool Target(std::string_view step, std::string_view prefix, std::uint32_t &out) noexcept {
+bool Target(std::string_view step, std::string_view prefix, std::int32_t &out) noexcept {
   if (!step.starts_with(prefix)) return false;
   const auto s = step.substr(prefix.size());
-  if (s.empty() || s.front() == '0') return false;
+  if (s.empty() || s == "-0" ||
+      (s.size() > 1 && s.front() == '0') ||
+      (s.size() > 2 && s[0] == '-' && s[1] == '0')) return false;
   const auto [end, error] = std::from_chars(s.data(), s.data() + s.size(), out);
-  return error == std::errc{} && end == s.data() + s.size() && out != 0;
+  return error == std::errc{} && end == s.data() + s.size() && out != -1;
 }
 } // namespace
 bool HandleActiveSwayPrivate12002(const game::GameAdapter &adapter,
@@ -46,7 +48,8 @@ bool HandleActiveSwayPrivate12002(const game::GameAdapter &adapter,
     if ((!actual4 && game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256) || !adapter.enabled() ||
         !JsonUnsignedField(payload, "expected_revision", expected_revision) || expected_revision != revision ||
         !revision || !published.paused || !published.map_ready || !published.has_played_character ||
-        !published.played_character_alive || published.played_character_id <= 0 ||
+        !published.played_character_alive || published.played_character_id < INT32_MIN ||
+        published.played_character_id > INT32_MAX || published.played_character_id == -1 ||
         published.played_character_id == static_cast<std::int64_t>(q.target)) { failure = "sway frame or request invalid"; return false; }
     if (q.formal) {
       if (!JsonStringField(payload, "action_id", q.action_id, 64) || !Simple(q.action_id)) {
