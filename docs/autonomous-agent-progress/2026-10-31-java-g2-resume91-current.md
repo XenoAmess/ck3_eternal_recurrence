@@ -12,9 +12,19 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。本地日期2026-10-31；现场�
 
 worker104/PID131356于18:52:54Z同Game启动，采用既有qwen普通selector配置；18:54:05Z一次jcmd显示仍在prepare/ConstructionDomainLifecycle类加载（FileInputStream.open0，CPU2.48秒/elapsed70.9秒）、stdout尚空。不从此归因磁盘，也不据此杀/重启；运行期HTTP、进入loop、实际动作/日仍待各自回执。
 
+104随后实际越过readSettledSameGame恢复到catalog安装，在18:57:40.464Z自然END1/286.180秒、未进loop。实际栈为RootRuntimeCatalogFactory.install379尾端调用RootRuntimeContext.requireCurrent358，把纯本地组件装配耗时计入旧operation deadline；canonical仍102/next16，Game保留。新的真实P0另交模型，首候选16.634秒完整返回，抽出requireActiveGame保原game.verify/retired，requireCurrent仍保原操作deadline；owner补候选漏掉的factory277入口同作用域修正，明确不计模型原样完成。
+
+deadline两叶严格javac0/6.911秒，既有PhaseDeadlineTest4P/0F/0skip后S/Z最小采用。MB105于19:03:56.181Z–19:04:19.542Z增编0/23.361秒，-T2 -pl local-service -am、无clean复用MB，实际重编native-transport1源（Family）与local-service2源（deadline），其余reactor使用缓存。worker105/PID323888于19:05:18.446Z同Game启动，采用qwen普通accept/wait selector配置；当时仍安装期、未emit loop/运行HTTP/动作/新日。当前原始动作与账本不重放不清零。
+
 下一真实故障为FamilyObligationsQueries对SourceReference.exactBuild的EXE SHA与version@SHA误比。当前S和actual102输入已在D隔离严格javac0/JUnit0P1F复现，任务先交模型；模型首轮未处理实际大写SHA、编0/测1F后由owner最小纠正，实际1P。纠错二轮未POST，按接管取消，不授模型完整实现信用；待104自然业务终态后采用增编，避免活worker混用更新classes。运行详情见 [runtime91记录](2026-10-31-runtime91-current.md)。
 
 截至上述观察，本轮新增游戏日0、普通业务动作0、SAVE/RESTORE0；这不是任务完成。
+
+105后续实际结果：19:05:50.0109348Z ORDINARY_WORKER_LOOP_START/next16，启动31.564秒，确已越过纯装配deadline故障。batch16从19:05:50.215Z到19:06:55.127Z运行64.912秒，以PLANNER_STOPPED/SOURCE_CONTRACT_REJECTED结束，worker整体exit4/97.339秒；attempt/applied0，最后计划native61/public64、日期53144328。19:10:15Z实际canonical106/repair_required/BATCH_INTERRUPTED16、next17、pending=null、dirtyFocus1；新增唯一canonical READ publication为ROOT/v2，不授obligations preview、qwen运行HTTP或新游戏日。
+
+下一真实预算定位已排除Ranking小输出：choices2944B、reject281B、HeirPreference输入18038B/输出6004B均实际通过。HeirLineage与HeirCandidateDiagnostic的后续路径消费大于812041B完整legality，仍有默认StrictJson parse/canonical/encodeOpaque小预算；当前用105真实材料复现完整prepare并映射该同一大输入的实际消费者，才修必要合同传播。M5只读辅助外层直接Family输入输出，不重复Family内部。106/MB后继以运行岗实际回执为准，不预授已修。
+
+19:13Z证据补充：运行岗按105启动时间有界读取188个新CAS小原件，实际找到obligations Native preview的packet1300B/result1199B/registered receipt5869B/permission admission2309B（D:/ck3-state/resume91-runtime/OBLIGATIONS105-ORIGINALS.json）。因此105已实际越过SHA并完成该只读preview；因未到其canonical publication，单看canonical event105只有ROOT不能否定该Native READ。后继lineage816446B、diagnostic812421B已真实StrictJson/read85 RED，完整prepare测试改用真packet替代unavailable软件stub。模型P0已独立POST当前13源138201chars与真实栈，待最小decode+大材料重编码修复/验收；不授新普通动作、qwen运行决策或新增日。
 
 ## 并行制作与交付
 
@@ -33,6 +43,8 @@ worker104/PID131356于18:52:54Z同Game启动，采用既有qwen普通selector配
 
 Native交付复用delivery90正式GUI产物，原休假尚未START的dispatch CTest本轮首次真实1/1P、0.35秒；未重复已通过7TU构建。GUI19以b87c3ad78316982d7b7329d42826d751526aeea2正常FF发表；Java三个旧本地提交随后fetch/rebase/FF发表，依次为GUI e1d37b1857、fixtures543bc7e1d5、statusc627799172。未部署新DLL。Java继续Focus/Entry/Opening实际装配、M6 Stop公共六叶正式集成，旧JSON模型候选实际javac诊断反馈纠错。各组软件验证不改变G2可见6/8，不授Game验收。
 
+后续精确正式发表：SEM两行26524e4b5e、M6 Stop六叶a92f5829b0、Root docs01 7d30b58e67、M1 Context32叶cebf0e9e0a（2生产+1测试+29小原资源，28P及38拒绝检查）、Family一行8611e0f227、Native Character/County/Surrender九叶e2818cf865、Java Surrender尾方法与九原材料f46dd8f3cc（新3P）、factorydeadline两叶4032ef7a61。各包复用其实际必要验证，不重跑旧绿或全图；正式源码发表与当前MB采用范围分别记录。
+
 ## 本地模型实际并发与能力探索
 
 唯一源码HTTP协调为 `/root/models91`。配置与经验入口沿用现有文件，维护复用call90调用器为D:/ck3-state/model-dispatch91/call91.py，不新增调度平台；旧STOP保留历史，新授权另记。稳定源码按合同/生产者/消费者/目标顺序进前缀，真实任务与纠错在最后，三消息实际REQUEST及原SSE均保留。输出有限，记录headers、首有效content TTFT、total和服务可见cached tokens；配置瞬时退避仅适用于模型HTTP，不重放游戏动作。
@@ -41,6 +53,8 @@ Native交付复用delivery90正式GUI产物，原休假尚未START的dispatch CT
 
 18:54:37.667Z实测：42真实任务/42尝试、18终态（12完整stop JSON、6length截断），24客户端在途/峰值24；服务同刻running24/waiting0/KV57.6%。滚动扩发按实际终态、错误与资源调整，不将客户端连接峰值当永久服务能力。M3 converter120首轮原样模型候选已离线编0/1.813秒、run0/1.111秒；20场景含100业务语义检查，另263基础设施检查，总363，不授收入或Game验收。
 
+19:00:42.566Z的STATUS快照记68任务、92次尝试、59完整传输/9最终失败、客户端峰值25；19:06:52Z快照为97任务/121尝试、82完整JSON/15length、峰值25，24次ConnectionReset保留partial后第二尝试完整。两个有限快照各自当时在途0，后续真实新任务/纠错继续POST，不将它们外推为当前服务空闲。M0 trait原87B新组合、M3 succession142、M7 special三方法均取得各自D离线采用/执行结果，详见专页；不授当前Game或完整M里程碑。若干owner曾把外层JSON显示转义误当源码、把实际存在API误判缺失，均保留勘误并从模型推理失败分类撤回。截断、请求末尾schema冲突、静态审阅、真实编译/行为失败分别记录。
+
 能力探索继续覆盖单方法、实际诊断修复、跨文件合同和组件装配；ABI多文件重建由owner负责，模型可接可验证窄叶。旧scale候选实际javac失败，隔离语法修正后1789组/17890槽有12718不符，已作为真实失败反馈；不会从一次成败推断能力上限。更多请求、审阅、采用与返工见 [模型记录](2026-10-31-resume91-models.md)。
 
 ## 资源、命令与历史边界
@@ -48,6 +62,8 @@ Native交付复用delivery90正式GUI产物，原休假尚未START的dispatch CT
 获准输出根仍为D；18:50:36Z资源实读D余577.3GiB、RAM可用21.54GiB、commit余74.73GiB。复用现有S/MB、revision66、Native输出和缓存，已知错误先改动模块/必要依赖增编，再最后必要完整验收，不重新复制全图。重provider总上限4，使用既有小原件，不全PE导入或无依据邻扫。
 
 18:54:37Z轻量资源观察更新为D余577.23GiB、RAM20.18GiB、commit余65.27GiB。小独占单TU/MP1或有限Java在已授权工作包可直接推进，不逐轮Root审批；共享正式输出仍由相应writer互斥。
+
+Root在18:56:39.526Z–18:56:47.707Z只做一次有界Win32资源样本：实际D disk pair8.181秒、队列7→3、769读操作/24742400B、82写操作/1028096B、idle43.625ms；18:56:47可用RAM20964130816B、commit余74353311744B。原件D:/ck3-state/resume91-root/P0-RESOURCE-OBSERVATION01.json。进程API I/O字节不当作物理盘归因，样本不证明类加载根因。实际随机I/O压力后研究先暂缓新编译；104自然终态后撤销旧等待条件，短暂恢复全局1个小研究编译；MB105与105安装期再次暂停新研究本地编译/大复制，在途自然终态。模型HTTP、源码审阅、既有小原件研究与已验证源码发表持续，不因人数或旧读窗停工。
 
 操作与子进程均使用cmd.exe、login:false，禁用PowerShell/WSH。本轮最初Root只读用了PowerShell，读取总交接后已改cmd；M4一隔离旧模型验证也报告其子进程违例，已停止该方式，原诊断保留、不为掩盖重跑。不因此改变真实软件或游戏结果。
 
