@@ -1,6 +1,8 @@
 ﻿#if defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1) || defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1) || defined(XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1)
 #include "current_player_observers12004.hpp"
 #endif
+#include <charconv>
+#include <cstdint>
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
@@ -49,6 +51,19 @@
 
 namespace xar::ck3_12002 {
 namespace {
+#ifdef XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1
+bool IsCanonicalSwayTarget12004(std::string_view step, std::string_view prefix) noexcept {
+  if (!step.starts_with(prefix)) return false;
+  const auto s = step.substr(prefix.size());
+  if (s.empty() || s == "-0" ||
+      (s.size() > 1 && s.front() == '0') ||
+      (s.size() > 2 && s[0] == '-' && s[1] == '0')) return false;
+  std::int32_t out{};
+  const auto [end, error] = std::from_chars(s.data(), s.data() + s.size(), out);
+  return error == std::errc{} && end == s.data() + s.size() && out != -1;
+}
+#endif
+
 [[maybe_unused]] void AppendString(std::string &out, std::string_view value) {
   constexpr char hex[] = "0123456789abcdef";
   out += '"';
@@ -524,13 +539,12 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   if (step == kSwayCompletionStepV1) return true;
   if (step == kSwayCompletionTerminationStepV1) return true;
-  std::uint32_t sway_target = 0;
-  if (ck3_11906::ParseActiveSchemeSwayPrivateQueryStepV1(step, sway_target))
+  if (IsCanonicalSwayTarget12004(step, ck3_11906::kActiveSchemeSwayPrivateQueryPrefixV1))
     return true;
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
   if (step == ck3_12004::kSwayStopStep12004) return true;
-  ck3_11906::ActiveSchemeSwayFormalModeV1 sway_mode{};
-  if (ck3_11906::ParseActiveSchemeSwayFormalStepV1(step, sway_mode, sway_target))
+  if (IsCanonicalSwayTarget12004(step, ck3_11906::kActiveSchemeSwayFormalSubmitPrefixV1) ||
+      IsCanonicalSwayTarget12004(step, ck3_11906::kActiveSchemeSwayFormalReceiptPrefixV1))
     return true;
 #endif
 #endif
