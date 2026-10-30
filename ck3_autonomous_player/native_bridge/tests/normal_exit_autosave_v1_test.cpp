@@ -16,6 +16,61 @@ NormalExitAutosaveV1 Ready(bool save) {
   return value;
 }
 }
+bool ClaimedByBridge(const NormalExitMapObservationV1 &observation) {
+  return NormalExitMapClaimLatchedV1(observation);
+}
+void AutosaveClaimPropagation() {
+  bool all=true;
+  const auto verify=[&](bool value,const char *name) {
+    ++checks;if(!value){all=false;std::cerr<<"claim_boundary_failure: "<<name<<'\n';}
+  };
+  for(int failure=0;failure<3;++failure) {
+    auto state=Ready(true),expected=state;std::atomic<bool> claim{false};
+    int calls=0,reads=0;NormalExitAutosaveV1 out{};
+    const auto read=[&](auto &value){value=state;++reads;return failure!=1 || reads==1;};
+    const auto toggle=[&]{++calls;if(failure==2)state.should_save=false;return failure!=0;};
+    const bool disabled=DisableNormalExitAutosaveV1(claim,expected,read,toggle,out);
+    verify(claim.load() && out.disable_claimed && out.dispatch_invoked && calls==1,"actual toggle producer claims before dispatch");
+    verify(disabled==(failure==2),"producer distinguishes successful readback");
+    NormalExitMapObservationV1 observation{};
+    observation.action=NormalExitMapActionV1::disable_exit_autosave;observation.exit_autosave=out;
+    observation.status=disabled?NormalExitMapStatusV1::autosave_disabled:NormalExitMapStatusV1::dispatch_unknown_claimed;
+    const bool classified=ClaimedByBridge(observation);
+    std::cout<<"autosave_case="<<failure<<" producer_claimed="<<out.disable_claimed<<" bridge_claimed="<<classified<<'\n';
+    verify(classified,"lost mailbox/final-frame completion retains autosave UNKNOWN");
+    const auto wire=SerializeNormalExitMapObservationV1(observation);
+    verify(wire.find("\"autosave_verified\":false")!=std::string::npos &&
+        wire.find("\"orderly_exit_verified\":false")!=std::string::npos,"no save or exit proof from claim");
+    verify(!DisableNormalExitAutosaveV1(claim,expected,read,toggle,out) && calls==1,"unknown/no changed stale expected cannot replay");
+  }
+  {
+    auto state=Ready(false);std::atomic<bool> claim{false};NormalExitMapObservationV1 observation{};
+    observation.action=NormalExitMapActionV1::disable_exit_autosave;int calls=0;
+    verify(DisableNormalExitAutosaveV1(claim,state,[&](auto &out){out=state;return true;},
+        [&]{++calls;return true;},observation.exit_autosave),"already false freshly observed");
+    verify(calls==0 && !ClaimedByBridge(observation),"no invocation does not invent a mutation claim");
+  }
+  {
+    auto state=Ready(true);std::atomic<bool> claim{true};NormalExitMapObservationV1 observation{};
+    observation.action=NormalExitMapActionV1::disable_exit_autosave;int calls=0;
+    verify(!DisableNormalExitAutosaveV1(claim,state,[&](auto &out){out=state;return true;},
+        [&]{++calls;return true;},observation.exit_autosave),"retained consumed claim refuses dispatch");
+    verify(calls==0 && ClaimedByBridge(observation),"retained unknown is still reported without replay");
+    observation.action=NormalExitMapActionV1::query_context;
+    verify(!ClaimedByBridge(observation),"read-only query is not a newly claimed mutation");
+  }
+  for(std::size_t stage=0;stage<3;++stage) {
+    NormalExitMapObservationV1 observation{};observation.dispatches[stage].claim_latched=true;
+    verify(ClaimedByBridge(observation),"existing stage claim remains represented");
+  }
+  {
+    NormalExitMapObservationV1 observation{};observation.action=NormalExitMapActionV1::disable_exit_autosave;
+    observation.exit_autosave.dispatch_invoked=true;
+    verify(!ClaimedByBridge(observation),"dispatch flag without claim is not custody");
+  }
+  Check(all,"actual Native autosave producer to bridge claim boundary");
+}
+
 int main(int argc,char **argv) {
   try {
     for(bool initial:{false,true}) {
@@ -65,6 +120,7 @@ int main(int argc,char **argv) {
     Check(wire.find("\"status\":\"autosave_disabled\"")!=std::string::npos,"serializer status");
     Check(wire.find("\"should_save\":false")!=std::string::npos,"serializer false");
     Check(wire.find("\"autosave_verified\":false")!=std::string::npos,"no save integrity credit");
+    AutosaveClaimPropagation();
     if(argc==2) {
       std::filesystem::path output{argv[1]};std::filesystem::create_directories(output);
       std::ofstream(output/"disable-request.json",std::ios::binary)<<request;

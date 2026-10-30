@@ -4905,9 +4905,12 @@ if(BUILD_TESTING)
   add_executable(xar_ck3_raiktor_actual_truce_expiry_v1_test
     src/raiktor_actual_truce_expiry_v1.cpp
     src/raiktor_actual_truce_expiry_v1_test.cpp
+    src/ck3_12004_actual_truce_expiry.cpp
+    src/ck3_12004_abi_profile.cpp
   )
+  target_compile_features(xar_ck3_raiktor_actual_truce_expiry_v1_test PRIVATE cxx_std_20)
   target_include_directories(
-    xar_ck3_raiktor_actual_truce_expiry_v1_test PRIVATE include)
+    xar_ck3_raiktor_actual_truce_expiry_v1_test PRIVATE include src research)
   target_compile_definitions(
     xar_ck3_raiktor_actual_truce_expiry_v1_test PRIVATE
     NOMINMAX
@@ -10118,3 +10121,5 @@ if(BUILD_TESTING)
   include(cmake/pilgrimage_full10_baseline_host_fixture.cmake)
 endif()
 include(cmake/finite_production_object_link_support.cmake)
+
+include(cmake/sway_state_signed_fullid12004.cmake)

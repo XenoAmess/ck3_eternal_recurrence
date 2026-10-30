@@ -204,6 +204,17 @@ bool NormalExitMapContinuePreparationAdmittedV1(
       !targets[2].root_visible;
 }
 
+bool NormalExitMapClaimLatchedV1(const NormalExitMapObservationV1 &observation) noexcept {
+  // Check autosave claim: disable_claimed is set by DisableNormalExitAutosaveV1
+  // when CAS succeeds, even if toggle fails or post-read is missing.
+  if (observation.action == NormalExitMapActionV1::disable_exit_autosave &&
+      observation.exit_autosave.disable_claimed) return true;
+  // Check stage dispatch claims: claim_latched is set by DispatchStage when CAS succeeds.
+  for (const auto &dispatch : observation.dispatches)
+    if (dispatch.claim_latched) return true;
+  return false;
+}
+
 std::string SerializeNormalExitMapObservationV1(const NormalExitMapObservationV1 &v) {
   std::string json = "{\"schema\":\"ck3-normal-exit-map-v1\",\"step\":\"normal-exit-map-v1\"";
   const auto number = [&](std::string_view key, auto value) { json += ",\""; json += key; json += "\":"; json += std::to_string(value); };

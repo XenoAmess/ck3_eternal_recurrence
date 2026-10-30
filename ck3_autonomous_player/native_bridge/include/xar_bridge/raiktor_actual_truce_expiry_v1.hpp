@@ -3,6 +3,7 @@
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -79,5 +80,8 @@ game::ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiryV1(
 
 std::string SerializeRaiktorActualTruceExpiryV1(
     const game::RaiktorActualTruceExpirySnapshotV1 &snapshot);
+
+std::optional<std::int32_t> ParseRaiktorActualTruceExpiryStepV1(
+    std::string_view step) noexcept;
 
 } // namespace xar::ck3_11906

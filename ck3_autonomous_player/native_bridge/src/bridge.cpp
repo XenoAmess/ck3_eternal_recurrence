@@ -11286,10 +11286,7 @@ std::optional<std::int32_t> DefenderDeJureExitTermsQueryStepV1(
 
 std::optional<std::int32_t> RaiktorActualTruceExpiryQueryStep(
     std::string_view step) noexcept {
-  const auto prefix =
-      xar::ck3_11906::kRaiktorActualTruceExpiryV1StepPrefix;
-  if (!step.starts_with(prefix)) return std::nullopt;
-  return PositiveNativeId(step.substr(prefix.size()));
+  return xar::ck3_11906::ParseRaiktorActualTruceExpiryStepV1(step);
 }
 
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
@@ -19073,8 +19070,7 @@ void RunConnectedSession(
                   waited = xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket, 2'000);
                 // If synchronous teardown changes the enclosing execution stamp,
                 // preserve the claimed unknown instead of clearing it into a retry.
-                bool claimed = false;
-                for (const auto &stage : exit.observation.dispatches) claimed = claimed || stage.claim_latched;
+                const bool claimed = xar::ck3_12003::NormalExitMapClaimLatchedV1(exit.observation);
                 const bool completed = waited == xar::ck3_11906::MainThreadQueryWaitResultV1::completed;
                 if (completed || claimed) {
                   if (!completed) {

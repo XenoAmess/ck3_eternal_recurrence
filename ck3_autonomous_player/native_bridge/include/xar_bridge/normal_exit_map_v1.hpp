@@ -119,6 +119,12 @@ bool NormalExitMapContinuePreparationAdmittedV1(
     const std::array<NormalExitMapTargetV1, 3> &targets,
     bool confirmation_visible) noexcept;
 
+// Typed production helper: detects if any native dispatch or autosave toggle
+// has been claimed (latched) for this operation, regardless of completion status.
+// Read-only query observations may carry an earlier autosave lifetime claim.
+// This is used by the bridge to decide whether to preserve UNKNOWN claims.
+bool NormalExitMapClaimLatchedV1(const NormalExitMapObservationV1 &observation) noexcept;
+
 struct NormalExitMapContextV1 {
   const game::GameAdapter *game = nullptr;
   NormalExitMapRequestV1 request{};

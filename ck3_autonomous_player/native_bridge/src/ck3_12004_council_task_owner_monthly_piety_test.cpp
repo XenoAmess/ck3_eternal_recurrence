@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <limits>
 #include <string_view>
 
 namespace {
@@ -116,5 +117,64 @@ int main() {
     Require(!out.raw && out.unavailable_reason == Failure::native_bindings_unavailable,
             "missing native bindings remain optional unavailable");
   }
-  std::cout << "GREEN task-owner monthly-piety direct leaf: 7 cases; no game/SDK calls\n";
+  unsigned role_cases = 0, role_failures = 0;
+  const auto check = [&](const char *name, bool passed) {
+    ++role_cases;
+    if (!passed) ++role_failures;
+    std::cout << name << " passed=" << passed << '\n';
+  };
+  const std::array<std::array<std::int32_t, 2>, 7> pairs{{
+      {{32440, 29829}}, {{0, 29829}}, {{32440, 0}},
+      {{-2, (std::numeric_limits<std::int32_t>::min)()}},
+      {{(std::numeric_limits<std::int32_t>::min)(), (std::numeric_limits<std::int32_t>::max)()}},
+      {{(std::numeric_limits<std::int32_t>::max)(), -2}}, {{0, 0}}}};
+  for (const auto &pair : pairs) {
+    for (const auto raw : {std::int64_t{45000}, std::int64_t{0}, std::int64_t{-5000}}) {
+      Fixture fixture; fixture.raw = raw;
+      std::memcpy(fixture.scopes.data(), &pair[0], sizeof(pair[0]));
+      std::memcpy(fixture.scopes.data() + 4, &pair[1], sizeof(pair[1]));
+      const auto out = fixture.Execute();
+      std::cout << "roles incumbent=" << pair[0] << " owner=" << pair[1] << " raw=" << raw << '\n';
+      check("role_signed32_and_owned_lifetime", out.raw == raw &&
+          out.unavailable_reason == Failure::none &&
+          out.incumbent_character_id == pair[0] && out.owner_character_id == pair[1] &&
+          fixture.build_calls == 1 && fixture.value_calls == 1 &&
+          fixture.destroy_calls == 1 && fixture.owned == nullptr);
+    }
+  }
+  const std::array<std::array<std::int32_t, 2>, 3> absent{{
+      {{-1, 29829}}, {{32440, -1}}, {{-1, -1}}}};
+  for (const auto &pair : absent) {
+    Fixture fixture;
+    std::memcpy(fixture.scopes.data(), &pair[0], sizeof(pair[0]));
+    std::memcpy(fixture.scopes.data() + 4, &pair[1], sizeof(pair[1]));
+    const auto out = fixture.Execute();
+    check("minus1_rejected_without_native_callbacks", !out.raw &&
+        out.unavailable_reason == Failure::context_unavailable &&
+        out.incumbent_character_id == pair[0] && out.owner_character_id == pair[1] &&
+        fixture.build_calls == 0 && fixture.value_calls == 0 && fixture.destroy_calls == 0);
+  }
+  {
+    Fixture fixture; const std::int32_t zero = 0;
+    std::memcpy(fixture.scopes.data(), &zero, sizeof(zero));
+    const auto out = ReadCouncilTaskOwnerMonthlyPiety12004({}, fixture.type.data(),
+        fixture.scopes.data(), Fixture::Memory, &fixture);
+    check("valid_zero_reaches_missing_bindings", !out.raw &&
+        out.unavailable_reason == Failure::native_bindings_unavailable &&
+        fixture.build_calls == 0 && fixture.value_calls == 0 && fixture.destroy_calls == 0);
+  }
+  for (const bool null_scopes : {false, true}) {
+    Fixture fixture;
+    const auto out = ReadCouncilTaskOwnerMonthlyPiety12004(
+        {Fixture::Build, Fixture::Value, Fixture::Destroy, Fixture::Keyword},
+        null_scopes ? fixture.type.data() : nullptr,
+        null_scopes ? nullptr : fixture.scopes.data(), Fixture::Memory, &fixture);
+    check("missing_context_rejected_without_native_callbacks", !out.raw &&
+        out.unavailable_reason == Failure::context_unavailable &&
+        fixture.build_calls == 0 && fixture.value_calls == 0 && fixture.destroy_calls == 0);
+  }
+  std::cout << "PIETY65_ROLE_CASES=" << role_cases << " FAILURES=" << role_failures << '\n';
+  if (role_failures != 0) return 1;
+
+  std::cout << "GREEN task-owner monthly-piety: original7 plus role27 software cases; no game/SDK calls\n";
 }

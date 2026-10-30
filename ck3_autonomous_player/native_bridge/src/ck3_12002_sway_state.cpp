@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12002_sway_state.hpp"
 #include "xar_bridge/ck3_12002_gift_opinion.hpp"
 
+#include <bit>
 #include <cstring>
 #include <limits>
 #include <windows.h>
@@ -33,7 +34,7 @@ bool ReadOnce(const SwayStateBindings12002 &b, std::uint64_t epoch,
               ActiveSchemeStateV1PrivateObservation &out) noexcept {
   CoreSnapshotPrefix frame{};
   if (!ReadCoreSnapshot(b.core, frame) || !frame.clock.paused ||
-      !frame.map_ready || !frame.played_character_alive || frame.played_character_id <= 0)
+      !frame.map_ready || !frame.played_character_alive || frame.played_character_id == -1)
     return false;
   std::uintptr_t state{}, data{}, storage{}, vt{}, blocks{}, slots{};
   std::int32_t capacity{}, count{};
@@ -68,7 +69,7 @@ bool ReadOnce(const SwayStateBindings12002 &b, std::uint64_t epoch,
     auto &row = out.rows[out.row_count++];
     row.scheme_instance_id = id;
     row.scheme_instance_generation = id >> 24;
-    row.owner_character_id = owner;
+    row.owner_character_id = std::bit_cast<std::int32_t>(owner);
     generation = Hash(generation, id);
     std::uintptr_t type{};
     if (!Read(scheme + 0x20, type) || !type || !Read(type, vt) ||
@@ -147,7 +148,7 @@ bool ReadActiveSwayState12002(const SwayStateBindings12002 &b,
 bool ReadSwayTargetOpinion12002(const SwayStateBindings12002 &b,
     std::int64_t actor, std::uint32_t target, std::int32_t &output) noexcept {
   output = 0;
-  if (!b.enabled || !b.core.enabled || actor <= 0 || actor > INT32_MAX || !target) return false;
+  if (!b.enabled || !b.core.enabled || actor < INT32_MIN || actor > INT32_MAX || actor == -1 || !target) return false;
   if (!b.opinion) return ReadCharacterOpinion12002(b.module_base, b.core, target,
       static_cast<std::uint32_t>(actor), output);
   auto *owner = ResolveCoreCharacter(b.core, static_cast<std::int32_t>(target));

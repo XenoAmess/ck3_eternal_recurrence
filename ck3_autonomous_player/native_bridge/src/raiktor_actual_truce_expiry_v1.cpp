@@ -89,7 +89,7 @@ game::ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiryV1(
   output.toward_character_id = toward_character_id;
   if (!access.exact_build_admitted || access.read_snapshot == nullptr ||
       access.resolve_character == nullptr || access.has_truce == nullptr ||
-      access.get_truce_end_date == nullptr || toward_character_id <= 0) {
+      access.get_truce_end_date == nullptr || toward_character_id == -1) {
     output.unavailable_reason = "exact_build_or_native_binding_unavailable";
     return game::ReadRaiktorActualTruceExpiryResultV1::unavailable;
   }
@@ -106,7 +106,7 @@ game::ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiryV1(
     return game::ReadRaiktorActualTruceExpiryResultV1::requires_paused;
   }
   if (!before.has_played_character || !before.played_character_alive ||
-      before.played_character_id <= 0) {
+      before.played_character_id == -1) {
     output.unavailable_reason = "living_played_character_required";
     return game::ReadRaiktorActualTruceExpiryResultV1::no_played_character;
   }
@@ -164,6 +164,46 @@ game::ReadRaiktorActualTruceExpiryResultV1 ReadRaiktorActualTruceExpiryV1(
   output.expiry_date_raw = expiry_before;
   output.readiness = true;
   return game::ReadRaiktorActualTruceExpiryResultV1::available;
+}
+
+std::optional<std::int32_t> ParseRaiktorActualTruceExpiryStepV1(
+    std::string_view step) noexcept {
+  const auto prefix = kRaiktorActualTruceExpiryV1StepPrefix;
+  if (!step.starts_with(prefix)) return std::nullopt;
+  step.remove_prefix(prefix.size());
+  if (step.empty()) return std::nullopt;
+
+  std::size_t pos = 0;
+  bool negative = false;
+  if (step[0] == '-') {
+    negative = true;
+    pos = 1;
+    if (pos >= step.size()) return std::nullopt;
+  }
+
+  // Reject leading zeros unless the number is exactly "0"
+  if (step[pos] == '0' && pos + 1 < step.size()) return std::nullopt;
+
+  std::int64_t value = 0;
+  for (; pos < step.size(); ++pos) {
+    const char c = step[pos];
+    if (c < '0' || c > '9') return std::nullopt;
+    value = value * 10 + (c - '0');
+    // Check overflow against int32 limits
+    if (value > 2147483648LL) return std::nullopt;
+  }
+
+  if (negative && value == 0) return std::nullopt;
+  if (negative) {
+    if (value > 2147483648LL) return std::nullopt;
+    value = -value;
+  } else {
+    if (value > 2147483647LL) return std::nullopt;
+  }
+
+  const std::int32_t result = static_cast<std::int32_t>(value);
+  if (result == -1) return std::nullopt;
+  return result;
 }
 
 std::string SerializeRaiktorActualTruceExpiryV1(

@@ -98,7 +98,7 @@ CouncilTaskOwnerMonthlyPietyObservation12004 ReadCouncilTaskOwnerMonthlyPiety120
   }
   std::memcpy(&out.incumbent_character_id, original_scopes.data(), sizeof(std::int32_t));
   std::memcpy(&out.owner_character_id, original_scopes.data() + 4, sizeof(std::int32_t));
-  if (out.incumbent_character_id <= 0 || out.owner_character_id <= 0) {
+  if (out.incumbent_character_id == -1 || out.owner_character_id == -1) {
     out.unavailable_reason = Failure::context_unavailable;
     return out;
   }
