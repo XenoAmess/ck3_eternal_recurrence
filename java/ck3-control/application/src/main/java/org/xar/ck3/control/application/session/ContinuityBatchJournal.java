@@ -850,8 +850,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private static org.xar.ck3.control.application.action.NativeObservationPort.TransportSession settledSemanticTransport(
             SemanticEvidence semantic,SessionIdentity owner,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
-        var body=ContinuityJson.parseObject(originals.loadFullMaterial(semantic.semantic()).bytes(),ContinuityJson.LEDGER_MAX_BYTES);
-        var manifestRef=ExactRef.fromJson(body.get("java_driver_facts_evidence"));
+        var body=DriverJson.object(originals.loadFullMaterial(semantic.semantic()).bytes(),DriverJson.MAX_NATIVE_BYTES);
+        var manifestRef=DriverObservationEvidenceReader.reference(body.get("java_driver_facts_evidence"));
         var manifest=originals.loadFullMaterial(manifestRef);
         var transport=org.xar.ck3.control.application.driver.DriverObservationEvidenceReader.nativeFrame(
                 manifestRef,manifest,originals.loadNativeFrame(semantic.originalNativePacket())).session();
