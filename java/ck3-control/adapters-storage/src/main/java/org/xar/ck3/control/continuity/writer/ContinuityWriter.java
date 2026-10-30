@@ -294,7 +294,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             requireWriter(layout.lock());Objects.requireNonNull(original);Objects.requireNonNull(receipt);
             var request=original.request();var registered=registration(request.slot());
             StrictJson.require(request.contractSchema().equals(registered.contractSchema()),"historical domain import registered schema differs");
-            List<ExactRef> expectedSources=new ArrayList<>(sources);expectedSources.addAll(registered.producerSources());
+            List<ExactRef> expectedSources=List.copyOf(sources);
             StrictJson.require(original.sources().stream().map(Pin::reference).toList().equals(expectedSources)
                     &&original.evidence().stream().map(Pin::reference).toList().equals(request.evidence())
                     &&original.originalBody().reference().equals(request.originalBody()),"historical domain import changed its actual source/evidence/body closure");
@@ -776,9 +776,9 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         @Override public DomainBodies.PreparedImport previewImport(DomainBodies.ImportRequest request) throws IOException {
             checkOpen(); DomainBodies.Registration registration = registration(request.slot());
             StrictJson.require(registration.contractSchema().equals(request.contractSchema()), "exact registered domain body contract");
-            Head head = store.head(); var original = LedgerFiles.exact(request.originalBody(), registration.maximumBodyBytes());
+            Head head = this.head(); var original = LedgerFiles.exact(request.originalBody(), registration.maximumBodyBytes());
             domainCanonical(original.bytes(), registration.maximumBodyBytes());
-            List<Pin> configured = new ArrayList<>(captureDomain(sources)); configured.addAll(captureDomain(registration.producerSources()));
+            List<Pin> configured = new ArrayList<>(captureDomain(sources));
             List<Pin> evidence = captureDomain(request.evidence());
             java.util.Optional<DomainBodies.BodyRef> previous = DomainBodies.reference(head.state(), request.slot());
             verifyPreviousBody(previous, registration);
@@ -790,8 +790,8 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         @Override public Receipt commitImport(DomainBodies.PreparedImport prepared) throws IOException {
             checkOpen(); DomainBodies.ImportRequest request = prepared.request(); DomainBodies.Registration registration = registration(request.slot());
             StrictJson.require(registration.contractSchema().equals(request.contractSchema()), "registered domain schema");
-            List<ExactRef> expectedSources = new ArrayList<>(sources); expectedSources.addAll(registration.producerSources());
-            StrictJson.require(prepared.sources().stream().map(Pin::reference).toList().equals(expectedSources)
+            List<ExactRef> expectedConfigured = new ArrayList<>(sources);
+            StrictJson.require(prepared.sources().stream().map(Pin::reference).toList().equals(expectedConfigured)
                     && prepared.evidence().stream().map(Pin::reference).toList().equals(request.evidence())
                     && prepared.originalBody().reference().equals(request.originalBody()), "exact prepared original domain source closure");
             for (Pin pin : prepared.sources()) LedgerFiles.verify(pin); for (Pin pin : prepared.evidence()) LedgerFiles.verify(pin);
@@ -799,7 +799,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             var original = LedgerFiles.exact(request.originalBody(), registration.maximumBodyBytes());
             StrictJson.require(original.pin().equals(prepared.originalBody()), "actual original body identity CAS");
             byte[] canonical = domainCanonical(original.bytes(), registration.maximumBodyBytes());
-            Head beforePublish = store.head();
+            Head beforePublish = this.head();
             if (!ContinuityJson.same(beforePublish.state().toJson(), prepared.predecessor().state().toJson())) {
                 // A known outcome can be recovered using existing immutable artifacts; this branch never publishes new bytes.
                 Pin knownBody = artifacts().referenceOf(original.bytes(), registration.maximumBodyBytes());
@@ -818,7 +818,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             Pin durableInput = artifacts().publish(request.producerInput(), ContinuityJson.DOCUMENT_MAX_BYTES);
             DomainBodies.BodyRef body = new DomainBodies.BodyRef(request.slot(), registration.contractSchema(), durableBody.reference(), durableBody.identity(), registration.producerSources());
             Request eventRequest = domainEvent(prepared, registration, durableBody, durableInput);
-            Head actual = store.head();
+            Head actual = this.head();
             if (store.duplicate(eventRequest, actual).isPresent())
                 return recoverDuplicate(eventRequest, actual);
             requireSameHead(prepared.predecessor(), actual);
@@ -830,7 +830,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     var currentOriginal = LedgerFiles.exact(request.originalBody(), registration.maximumBodyBytes());
                     StrictJson.require(currentOriginal.pin().equals(prepared.originalBody()), "original domain body changed after qualification");
                     java.util.Optional<DomainBodies.BodyRef> previous = DomainBodies.reference(predecessor, request.slot()); verifyPreviousBody(previous, registration);
-                    Head actualHead = store.head(); StrictJson.require(ContinuityJson.same(actualHead.state().toJson(), predecessor.toJson()), "same-lock domain source head");
+                    Head actualHead = Session.this.head(); StrictJson.require(ContinuityJson.same(actualHead.state().toJson(), predecessor.toJson()), "same-lock domain source head");
                     String actualProof = registration.verifier().verify(actualHead, previous, request, currentOriginal.bytes()); requireDigest(actualProof);
                     StrictJson.require(actualProof.equals(prepared.preconditionDigest()), "actual original producer/reducer result changed inside writer lock");
                     StrictJson.require(java.util.Arrays.equals(canonical, domainCanonical(artifacts().read(durableBody, registration.maximumBodyBytes()), registration.maximumBodyBytes())), "durable original body readback");

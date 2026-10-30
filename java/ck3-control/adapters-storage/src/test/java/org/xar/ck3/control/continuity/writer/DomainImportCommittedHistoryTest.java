@@ -22,7 +22,9 @@ final class DomainImportCommittedHistoryTest {
         Path body=directory.resolve("original-life.json");Files.writeString(body,"{ \"schema\" : \"fixture.life/v1\", \"pending\" : null }\n");
         Path evidence=directory.resolve("actual-source-packet");Files.write(evidence,new byte[]{1,4,9});
         List<ExactRef> sources=List.of(LedgerFiles.read(files.source,65_536).pin().reference());AtomicInteger calls=new AtomicInteger();
-        var registration=new DomainBodies.Registration(DomainBodies.Slot.LIFE,"fixture.life/v1",65_536,sources,(before,previous,request,raw)->{
+        Path producer=directory.resolve("producer.class");Files.writeString(producer,"original business implementation");
+        var producerSources=List.of(LedgerFiles.read(producer,65_536).pin().reference());
+        var registration=new DomainBodies.Registration(DomainBodies.Slot.LIFE,"fixture.life/v1",65_536,producerSources,(before,previous,request,raw)->{
             calls.incrementAndGet();var parsed=ContinuityJson.parseObject(raw,65_536);
             StrictJson.require(StrictJson.text(parsed.get("schema")).equals(request.contractSchema())&&parsed.has("pending")&&parsed.get("pending").isNull(),"real fixture domain producer shape");
             StrictJson.require(request.evidence().equals(List.of(LedgerFiles.read(evidence,65_536).pin().reference())),"original source packet differs");
@@ -37,6 +39,23 @@ final class DomainImportCommittedHistoryTest {
                 ContinuityJson.canonical(StrictJson.object().put("actual_input",1)),List.of(LedgerFiles.read(evidence,65_536).pin().reference()),"first-life");
         return new Fixture(files,writer,request,calls);
     }
+    @Test void businessProducerRebuildDoesNotAuditHistoricalClassButActualEvidenceStillMatters()throws Exception {
+        var f=fixture();Path producer=directory.resolve("producer.class");
+        var historical=LedgerFiles.read(producer,65_536).pin().reference();
+        Files.writeString(producer,"updated business implementation");
+        f.writer().locked(same->{
+            Head original=same.head();var prepared=same.previewImport(f.request());
+            assertSame(original,prepared.predecessor(),"domain preview reuses the actual prewrite head");
+            assertEquals(1,prepared.sources().size(),"only the writer source lane is physically pinned");
+            var receipt=same.commitImport(prepared);same.requireCommitted(prepared,receipt);
+            assertEquals(List.of(historical),DomainBodies.reference(receipt.head(),DomainBodies.Slot.LIFE).orElseThrow().producerSources());
+            return null;
+        });
+        assertFalse(Files.exists(f.files().layout.event(2)));
+        Files.write(Path.of(f.request().evidence().getFirst().path()),new byte[]{8,8,8});
+        assertThrows(IOException.class,()->f.writer().previewImport(f.request()),"changed actual input remains rejected");
+    }
+
     @Test void actualImportReceiptAndHistoricalHeadRetainFullPinsWithoutCallingProducerAgainOrWriting()throws Exception {
         var f=fixture();var prepared=f.writer().previewImport(f.request());var receipt=f.writer().commitImport(prepared);
         byte[] snapshot=Files.readAllBytes(f.files().layout.snapshot());int calls=f.calls().get();

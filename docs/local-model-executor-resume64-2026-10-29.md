@@ -404,3 +404,33 @@ machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。Root 
 78 使用 Root 唯一准备请求，首次本地校验因缺 max_tokens 在 POST 前 exit1，依 Root 指令仅补6000；这是请求字段错误，非服务或模型推理失败。实际唯一 POST GAME78-CURRENT-GUARD-FRAME01：04:39:52.203810400→04:41:01.108217800Z，HTTP200/stop/CLI0，headers2234ms、TTFT2237ms、total68903ms，13018输入/5306输出，cache未报，0 retry。原始 CONTENT/RESULT/SSE/REQUEST 位于 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-current-guard-frame78，终态立即交 Root。
 
 完整 JSON 四个 edits 的 old 在冻结源码均 exact1。current fallback 改用已接受 transport.currentSnapshot 的方向可审，但新增 CURRENT 未纳入原 ORDINARY 的 Complete projection 守卫，captureCurrent 直接 capturePhysical 也绕过既有失败 gate.reset；两缺口已交 owner。仅静审，未做 raw javac/TEST、未授源码或行为采用；长分析中的推测不是实机因果证据。OWNER-REVIEWS64-59.json 保留77后继实际采用与78独立原稿/本地字段错误。当前 coding0，无自动后题。
+
+
+### CURRENT-GUARD78 实际采用补记与 DOMAIN-HEAD79 首轮
+
+machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。Root 回报78四个 hunk 主体使用，owner 修 CURRENT 仍需 Complete、captureCurrent 失败 gate.reset。生产 strict javac0/2.433s；TEST 首次缺 ReplayTestFactory 编译失败后补现有真实 support，旧5P2F→新7P0F/2.682s，覆盖跨 acquisitionAge 不刷新、已有新接受帧仍返回真实不匹配。04:58:00.821Z S/Z adopted，DEV67 冷业务宿主随后启动，同 Game171676 不重启。不能把 raw 记为独立编测通过或实机完成。
+
+79 直接使用 Root 准备的唯一当前请求，未先提取源码/打包/写文档。GAME79-DOMAIN-HEAD01：05:07:03.983580800→05:07:10.996703700Z，HTTP200/stop/CLI0，headers1370ms、TTFT1374ms、total7013ms，6521输入/948输出，cache未报，attempt1/0retry。原始 CONTENT/RESULT/SSE/REQUEST 在 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-domain-head79，终态立即交 Root。
+
+完整 JSON 提出四处 domain import 路径 store.head→this.head 窄替换，冻结 source old exact 数为 1/1/1/1。第四处是匿名 TransitionAuthority.revalidate，raw 的 this.head receiver 错，应由 owner 按外层 Session 明确限定；原稿未 javac/TEST，未授采用。关于 Session.head 已验证所有 pins/absences 的叙述过强，不据此扩大实际证据边界。OWNER-REVIEWS64-60.json 分开保留78实际采用、79静审候选和原始HTTP耗时；当前 coding0，无自动后题。
+
+
+### DOMAIN-SOURCE-AUDIT80 实际首候选
+
+machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。实际52返回 ACTION_UNKNOWN 但 attempted0/无 action fields，Root 定位 pending domain import 仍将历史 RootAssembly.class metadata 作磁盘 pin；这不是已确认动作 UNKNOWN 的重放许可。仅本次 producerSources 元数据边界任务使用 Root 准备请求立即 POST，未先抽取或打包。GAME80-DOMAIN-SOURCE-AUDIT01：05:09:05.584386100→05:09:11.561750300Z，HTTP200/stop/CLI0，headers1044ms、TTFT1048ms、total5977ms，6297输入/802输出，cache未报，attempt1/0retry。原始 CONTENT/RESULT/SSE/REQUEST 在 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-domain-source-audit80，终态立即交 Root。
+
+完整 JSON 两个 hunk 的 old 冻结源匹配 1/1。previewImport 不再 capture registration.producerSources；commitImport prepared sources closure 同步只含 writer configured sources，原 prepared sources/evidence 的实际 verify loop 保留。metadata/body/event 格式未改，未新增缓存/期限/动作行为。分析中称 loop 删除不准确，实际 edits 保留对剩余 configured pins 的 loop。仅静审，未 raw javac/TEST/源码采用；Root 将和79的匿名外层 receiver 修正一起实际验证，结果尚未提供。记录 OWNER-REVIEWS64-61.json，coding0，无自动后题。
+
+
+### DOMAIN80 因果更正及 ACTION-SOURCE-METADATA82 未POST
+
+machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。Root 以实际序列更正：52的 domain PENDING 已在229 committed，其 producerSources 并非 RootAssembly；致命旧 class ref 在 ContinuityActionJournal.append79 将 command.source().sourceRef 加入物理 evidence，后继 INTENT preview 才读取。80 cleanup 真实有效，但未独立证明是52致命点，不能把80候选或采用追认为消除了该次终态。81是另一必要 phase2 domain retained recovery 任务，由独占 owner 准备，中央未擅派发。
+
+82直接用Root现成请求（max_tokens1200）启动唯一caller，没有先提取/打包。GAME82-ACTION-SOURCE-METADATA01 在05:18:19.263487800Z fresh valid metrics running8/waiting0/KV0.17045454545454541 下 CLI75；实际 model POST0，无CONTENT/TTFT/模型采用，也非模型能力测试。ADMISSION-HOLD.json、ATTEMPT1-METRICS-BEFORE-STATUS.json、REQUEST.json 位于 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-action-source-metadata82。即告Root必要owner可接管，不轮询/自动重试/补位；此历史采样不外推当前服务占用。记录 OWNER-REVIEWS64-62.json，coding0，无source/TEST/build/Game操作。
+
+
+### RECOVERY81 phase2 domain 恢复真实首候选
+
+machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。独占 owner observation_deadline_test65 真唤完整当前 REQUEST01 后，仅一次 known-only fresh admission，未依据较早82 busy样本推定当前状态，也未重试82。GAME81-RECOVERY-PHASE2-DOMAIN01：05:20:19.918217900→05:20:36.849484600Z，HTTP200/stop/CLI0，headers3657ms、TTFT3660ms、total16931ms，23276输入/1351输出，cache未报，attempt1/0retry。原件 CONTENT/RESULT/SSE/REQUEST 位于 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-recovery-phase2-domain81，终态立即交 owner+Root。
+
+完整JSON只含1个Journal hunk，冻结源码 old exact数为 1，插入phase2 DomainBodies.IMPORT_KIND 分支而不发布/重放；既有共同ancestry/业务字段与UNKNOWN边界须owner实际核验。Opening接续仅分析，混合action.empty/AWAIT_RECEIPT/new actionId/Unchanged，不能作为已实现、合法重发或丢弃旧prepared的许可。未做raw javac/TEST，未授源码或行为采用；OWNER-REVIEWS64-63.json保独立候选与原件耗时，当前coding0，不自动R2或后题。
