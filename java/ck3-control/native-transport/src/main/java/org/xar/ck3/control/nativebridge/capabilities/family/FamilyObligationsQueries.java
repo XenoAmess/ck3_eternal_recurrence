@@ -66,7 +66,7 @@ public final class FamilyObligationsQueries {
         return OpportunityJson.object(OpportunityJson.parse(FamilyObligationsCodec.encodeRequest(request).bytes()), "family read arguments");
     }
     private static void requireCurrentSource(PlanningReadRequest request) {
-        StrictJson.require(request.source().exactBuild().equals(Build.CURRENT4.exactBuild()), "actual exact current .4 source required for family obligations");
+        StrictJson.require(request.source().exactBuild().equalsIgnoreCase(Build.CURRENT4.sha256()), "actual exact current .4 source required for family obligations");
     }
     private static Obj decodeProjection(PlanningReadReceipt receipt) { return project(decode(receipt)); }
     /** Original packet and retained token remain one closed message in both live decoding and pure replay. */
