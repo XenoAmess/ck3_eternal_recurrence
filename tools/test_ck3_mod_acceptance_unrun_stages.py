@@ -252,7 +252,7 @@ class RootAllocatorTripletTests(unittest.TestCase):
     def setUp(self) -> None:
         temporary = tempfile.TemporaryDirectory(prefix='unrun-root-recorder-')
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name).resolve()
         self.repo = self.root / 'repo'
         (self.repo / 'tools').mkdir(parents=True)
         self.output = self.root / 'work-package/root-execution-test'
