@@ -1243,5 +1243,76 @@ final class NativeOriginalProducerTest {
             assertEquals(id, second.requestId());
         }
     }
+@Test void readBudgetClockFailureIsZeroAndOriginalPermitCanProceed() throws Exception {
+    java.util.concurrent.atomic.AtomicBoolean failure = new java.util.concurrent.atomic.AtomicBoolean(false);
+    java.time.Instant current = Instant.now();
+    Clock clock = new Clock() {
+        @Override public ZoneId getZone() { return ZoneOffset.UTC; }
+        @Override public Clock withZone(ZoneId zone) { return this; }
+        @Override public Instant instant() {
+            if (failure.get()) throw new IllegalStateException("controlled budget clock failure");
+            return current;
+        }
+    };
+    Replay port = timeoutPort();
+    port.onWrite = packet -> port.packets.addLast(timeoutAck(packet));
+    try (NativeGameTransport transport = new NativeGameTransport(port, config(), 16, 16, List.of(), clock, Duration.ofSeconds(60))) {
+        transport.observe(Instant.now().plusSeconds(30));
+        port.clearCaptured();
+        ExactRef source = riteSource();
+        GuardEvidence guard = riteGuard(transport, source, RiteCreation.PREVIEW.operationKey());
+        String id = "budget-clock-fixture";
+        NativeRequest prepared = riteRequest(RiteCreation.PREVIEW, guard, id);
+        var contract = ritePreview(source, prepared);
+        var read = new PlanningReadRequest(guard.observed(), guard.source(), guard.sessionId(), contract.operation(), new OpportunityJson.Obj(Map.of()), guard.validUntil());
+        var permit = NativeSelectorReadFixture.issue(contract, read, prepared, new PlanningReadGuard(guard, true, true, true, "b".repeat(64)), id);
+        Instant caller = Instant.now().plusSeconds(600);
+        failure.set(true);
+        var rejected = assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class, transport.read(permit, prepared, caller));
+        assertEquals(id, rejected.requestId());
+        assertEquals(NativeActionPort.ZeroDispatchStage.BEFORE_WRITE, rejected.proof().stage());
+        assertEquals(0, rejected.proof().requestBytesWritten());
+        assertFalse(permit.consumed());
+        assertEquals(0, port.writes);
+        assertTrue(port.capturedWriteDeadlines().isEmpty());
+        assertTrue(port.capturedReadDeadlines().isEmpty());
+        assertTrue(transport.originalOutboundPacket(id).isEmpty());
+        assertTrue(transport.originalRequestChronology(id).isEmpty());
+        failure.set(false);
+        var ack = assertInstanceOf(NativeActionPort.AckReceived.class, transport.read(permit, prepared, caller));
+        assertEquals(id, ack.requestId());
+        assertTrue(ack.nativeOk());
+        assertTrue(permit.consumed());
+        assertEquals(1, port.writes);
+        assertTrue(transport.originalOutboundPacket(id).isPresent());
+    }
 }
 
+@Test void readBudgetInstantOverflowIsZeroWithoutConsumingPermit() throws Exception {
+    Replay port = timeoutPort();
+    port.onWrite = packet -> port.packets.addLast(timeoutAck(packet));
+    MutableClock clock = new MutableClock(Instant.now());
+    try (NativeGameTransport transport = new NativeGameTransport(port, config(), 16, 16, List.of(), clock, Duration.ofSeconds(Long.MAX_VALUE))) {
+        transport.observe(Instant.now().plusSeconds(30));
+        port.clearCaptured();
+        ExactRef source = riteSource();
+        GuardEvidence guard = riteGuard(transport, source, RiteCreation.PREVIEW.operationKey());
+        String id = "overflow-read-" + (++sequence);
+        NativeRequest prepared = riteRequest(RiteCreation.PREVIEW, guard, id);
+        var contract = ritePreview(source, prepared);
+        var read = new PlanningReadRequest(guard.observed(), guard.source(), guard.sessionId(), contract.operation(), new OpportunityJson.Obj(Map.of()), guard.validUntil());
+        var permit = NativeSelectorReadFixture.issue(contract, read, prepared, new PlanningReadGuard(guard, true, true, true, "b".repeat(64)), id);
+        Instant caller = Instant.now().plusSeconds(600);
+        var outcome = assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class, transport.read(permit, prepared, caller));
+        assertEquals(id, outcome.requestId());
+        assertEquals(NativeActionPort.ZeroDispatchStage.BEFORE_WRITE, outcome.proof().stage());
+        assertEquals(0, outcome.proof().requestBytesWritten());
+        assertFalse(permit.consumed());
+        assertEquals(0, port.writes);
+        assertTrue(port.capturedWriteDeadlines().isEmpty());
+        assertTrue(port.capturedReadDeadlines().isEmpty());
+        assertTrue(transport.originalOutboundPacket(id).isEmpty());
+        assertTrue(transport.originalRequestChronology(id).isEmpty());
+    }
+}
+}
