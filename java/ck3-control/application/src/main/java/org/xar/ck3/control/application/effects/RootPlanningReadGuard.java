@@ -93,21 +93,21 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
                 if (isLocalRootPreflight(contract,request)) {
                     RootGuardChecks.livingPaused(lease);
                     contract.requiredCapability().ifPresent(capability -> StrictJson.require(lease.bridgeCapabilities().contains(capability), "actual bridge did not advertise the required query capability"));
-                    var basis=RootGuardChecks.binding(lease,request.origin(),request.source(),request.sessionId(),request.operation(),request.deadline(),sameWriterArchive,clock,actualLockedHead,authorityId,session,originals);
+                    var basis=RootGuardChecks.readBinding(lease,request.origin(),request.source(),request.sessionId(),request.operation(),request.deadline(),sameWriterArchive,clock,actualLockedHead,authorityId,session,originals);
                     requireLocalRootPreflight(session,actualLockedHead,request,contract,lease.frame(),basis);
                     return new PlanningReadGuard(basis,true,true,true,lease.frame().fullBindingSha256());
                 }
                 if (isHeirPreflight(contract)) {
                     // Actual originals qualify this frame predicate; the coordinator separately proves the READ phase.
                     // Upstream readiness errors stay errors.
-                    var basis = RootGuardChecks.binding(lease, request.origin(), request.source(), request.sessionId(), request.operation(), request.deadline(), sameWriterArchive, clock, actualLockedHead, authorityId, session, originals);
+                    var basis = RootGuardChecks.readBinding(lease, request.origin(), request.source(), request.sessionId(), request.operation(), request.deadline(), sameWriterArchive, clock, actualLockedHead, authorityId, session, originals);
                     requireHeirPreflight(session, actualLockedHead, request, contract, lease.frame(), basis);
                     RootGuardChecks.livingPaused(lease);
                     return new PlanningReadGuard(basis, true, true, true, lease.frame().fullBindingSha256());
                 }
                 RootGuardChecks.livingPaused(lease);
                 contract.requiredCapability().ifPresent(capability -> StrictJson.require(lease.bridgeCapabilities().contains(capability), "actual bridge did not advertise the required query capability"));
-                var binding = RootGuardChecks.binding(lease, request.origin(), request.source(), request.sessionId(), request.operation(), request.deadline(), sameWriterArchive, clock, actualLockedHead, authorityId, session, originals);
+                var binding = RootGuardChecks.readBinding(lease, request.origin(), request.source(), request.sessionId(), request.operation(), request.deadline(), sameWriterArchive, clock, actualLockedHead, authorityId, session, originals);
                 return new PlanningReadGuard(binding, true, true, true, lease.frame().fullBindingSha256());
             });
         } catch (IOException failure) { throw new UncheckedIOException("actual Root planning-read authority unavailable: "
@@ -127,7 +127,7 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
                 RootGuardChecks.livingPaused(lease);
                 contract.requiredCapability().ifPresent(capability->StrictJson.require(lease.bridgeCapabilities().contains(capability),
                         "actual held physical bridge did not advertise the query capability"));
-                var binding=RootGuardChecks.binding(lease,request.origin(),request.source(),request.sessionId(),request.operation(),
+                var binding=RootGuardChecks.readBinding(lease,request.origin(),request.source(),request.sessionId(),request.operation(),
                         request.deadline(),sameArchive,clock,actualLockedHead,authorityId,session,originals);
                 return new PlanningReadGuard(binding,true,true,true,lease.frame().fullBindingSha256());
             });
