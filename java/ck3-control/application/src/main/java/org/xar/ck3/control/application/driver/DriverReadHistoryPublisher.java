@@ -45,19 +45,34 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
     public static final class CanonicalRead<T> {
         private final DriverReadHistoryPublisher owner;private final ReadContract<T> currentContract,originalContract;
         private final PlanningReadRequest currentRequest;private final PlanningReadResult.Known<T> original;
+        private final ContinuityStorePort.Session issuedSession;private final Known issuedKnown;private final WriterContracts.Head issuedHead;
         private CanonicalRead(DriverReadHistoryPublisher owner,ReadContract<T> currentContract,PlanningReadRequest currentRequest,
-                ReadContract<T> originalContract,PlanningReadResult.Known<T> original) {
+                ReadContract<T> originalContract,PlanningReadResult.Known<T> original,ContinuityStorePort.Session issuedSession,Known issuedKnown,WriterContracts.Head issuedHead) {
             this.owner=owner;this.currentContract=currentContract;this.currentRequest=currentRequest;this.originalContract=originalContract;this.original=original;
+            this.issuedSession=issuedSession;this.issuedKnown=issuedKnown;this.issuedHead=issuedHead;
         }
         public PlanningReadResult.Known<T> original(){return original;}
         public ReadContract<T> originalContract(){return originalContract;}
         public PlanningReadRequest currentRequest(){return currentRequest;}
         public PlanningReadResult.Known<T> requireCurrent(ContinuityStorePort.Session same,ReadContract<T> identicalCurrent,PlanningReadRequest actualCurrent) throws IOException {
             StrictJson.require(identicalCurrent==currentContract&&actualCurrent.equals(currentRequest),"canonical witness crossed its current installed query");
-            var current=owner.canonicalReadWitness(same,identicalCurrent,actualCurrent).orElseThrow(()->new IOException("original canonical read no longer qualifies in the actual current frame"));
-            StrictJson.require(current.originalContract==originalContract&&current.original.originalReceipt().equals(original.originalReceipt())
-                    &&current.original.receipt().equals(original.receipt()),"canonical witness selected a different original source");
-            return current.original;
+            StrictJson.require(java.time.Instant.now().isBefore(actualCurrent.deadline()),"canonical lookup current query deadline expired");
+            return owner.authority.withFrozenFacts(same, frozen -> {
+                StrictJson.require(frozen.state() instanceof Known,"canonical read requires the actual complete Driver owner");
+                Known known=(Known)frozen.state();
+                StrictJson.require(DriverStateAssembler.projectObservation(known,frozen.actions(),frozen.activeActionId()) instanceof DriverStateSnapshot.Complete,
+                        "unresolved canonical actions cannot qualify an ordinary cached read");
+                if (same == issuedSession && frozen.state() == issuedKnown && same.head() == issuedHead) {
+                    var originals = owner.archive.withSession(same);
+                    var read = originals.loadRead(original.originalReceipt());
+                    StrictJson.require(read.equals(original.receipt()), "canonical original read DATA differs");
+                    return original;
+                }
+                var current = owner.canonicalReadWitness(same, identicalCurrent, actualCurrent).orElseThrow(() -> new IOException("original canonical read no longer qualifies in the actual current frame"));
+                StrictJson.require(current.originalContract == originalContract && current.original.originalReceipt().equals(original.originalReceipt())
+                        && current.original.receipt().equals(original.receipt()), "canonical witness selected a different original source");
+                return current.original;
+            });
         }
     }
     /** Private producer proof of a complete canonical READ-only Driver extension. It grants no Crown or action eligibility itself. */
@@ -489,7 +504,7 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
                                 "typed canonical lineage left the exact current complete Driver/native projection");
                     } catch(IllegalArgumentException stale) {continue;}
                 }
-                return Optional.of(new CanonicalRead<>(this,identicalInstalled,current,original,replayed));
+                return Optional.of(new CanonicalRead<>(this,identicalInstalled,current,original,replayed,same,known,same.head()));
             }
             return Optional.empty();
         });

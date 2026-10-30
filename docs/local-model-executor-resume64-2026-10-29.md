@@ -380,4 +380,10 @@ HEAD75只给必要方法/字段合同和实际栈关键段，11,317B、稳定7,1
 
 Root最终实际采用该两for删除，内容原样，仅在requireHistoricalState方法作用域exact1应用；原hunk全Writer有2处匹配，未删除queryCommitted等相似循环。提供的窄前缀exact1不代表全文件唯一，作用域适配归owner。生产javac0/1.759s（既有try警告类别显式排除）、TEST0/1.571s，必要整类3P/0skip/4.954s：目标历史pin实际替换、错误digest/未来sequence均拒，真实commit前态/物理证据/失败cache清理保留。两叶S/Z STOP03:03:06.600Z，DEV66/reload01实际HTTP200/3.837s，来源为Root验收消息；尚非Game动作，49待实际。56追加原样删除采用+owner作用域处理/软件验收，不改原HTTP/TTFT或追加模型/测试，当前coding0并结束，无自动后题。
 
+### WITNESS76即时私有见证重复消费
+
+Root实际49模型HTTP输入277,920B开始时只余约9.7s，03:07:57.854有效WAIT，03:08:13.769最终context deadline/0动作。已定位CanonicalRead.requireCurrent即时再次调用完整canonicalReadWitness，重复Native/2MB Driver/READ lineage。任务仅私有issuer实际Session/Known/Head同对象shortcut，变化回完整证明，保原目标receipt约6KB实际archive读取/等值和既有tamper反控，不跨Driver/Writer或伪Game缓存。中央自制提取包三次超过约定大小边界，均未POST；Root接管提供12,111B精确现成请求后，中央立即停止自制pack，未把准备耗时归服务等待/模型失败。
+
+实际唯一调用使用`D:/ck3-state/canonical-witness76/ROOT-PREPARED-REQUEST.json`，03:18:57.952–03:19:03.741Z HTTP200/stop、CLI0，2,224输入/962输出，headers0.521s/TTFT0.524s/总5.789s，cache未报、无retry、metrics known。`model-coordinator64/game-canonical-witness76`实际出站REQUEST/CONTENT/RESULT/SSE即交Root；Root包随后若再更新，冻结body保持原样，不补调用。原稿仅CanonicalRead整class before/after，保了fast单目标loadRead与receipt等值，但漏唯一构造call同步、裸Known等imports待核、未显式保noUNKNOWN/active/Complete，fallback又在冻结回调内调用完整冻结证明，存在nestedfreeze风险。中央即时提醒，不编坏稿、不授采用、未写源码/TEST或自动R2；57保真实调用及准备错误边界，实际采用由Root另验。
+
 HEAD70实际采用候选后继：云端owner遭服务容量错误后，Root接管唯一D Writer叶，采用模型前两hunk主体；补充仅COMMITTED成功保readback，其它disposition仍清，direct duplicate入口先清缓存，保原recovery/失败行为。未采用模型NO_CHANGE缓存actual或扩大duplicate缓存优化。最终生产c312ccb1…，单源Java21/all,-path编译0/1.772s，保旧try资源warning，未宣称Werror；新TEST68efdda7…严格Werror编译0/1.458s。实际原存储write callback返回边界取当前Head，旧源1F/3.076s精确检出commit finally清缓存；最终1P/0skip/3.974s，三次真实物理commit、下一Head替换/原历史proof、实际storage return Error后丢缓存/查询已有durable结果不重提、等byte新FileID事件替换被拒均通过。首runner selector含slash导致双方exit2/0tests，只算参数错误，修后才上述R/G；全四hunk原稿未直接编测，不制造raw模型失败。`D:/ck3-state/writer-session-head70/READY01.json`已01:40:04Z直交运行岗，不等文档/来源签发/whole测试；真实Game性能与动作/日期效果仍待采用和业务重载实测。本段machine_id沿本文件本机标注，不授另一机器信用。
