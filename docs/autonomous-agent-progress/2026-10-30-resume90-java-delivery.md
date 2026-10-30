@@ -140,4 +140,6 @@ Root 独立完成的 M4 offline study 修正已按最小 patch 审阅采用：�
 
 本岗当前两完整生产类编译分别0/3.686秒、0/3.287秒；后者仅排除既存 CommandUnavailable.operation 的 serial lint，未改无关字段。ActionWriterIntegrationFixture 当前完整 SHA 7670d6af… 精确等于已验证夹具。两个测试原样接入 local-service 默认 Surefire，复用 wiring 的 cache2P 和 retreat 三新方法所在4P组，未为包装重复绿色测试；不把它们说成一次6P或完整 RootRuntimeContext/直接 runtime.read 验收。来源为 wiring/request-cache 与 regression/{request-cache-durable,retreat-held-durable}。运行岗已采用的真实 worker 后态由 runtime90 独立报告，本次无 Game/Native/模型请求。
 
+ROOT 路由与 Family 诊断后继采用两最小生产 diff、两个原样回归类：MilitaryNativeReadDispatcher 仅给精确 ROOT 步骤接已有 installed finance owner，保留空公共参数/同 Game-session-source，返回原回执纯解码结果并拒绝值/回执错配；RootFamilyBridge 把观察失败的原异常类别、消息与 cause 交现有 MissingDocuments 诊断，不再误报缺进程身份。两个当前完整生产类 strict javac0/2.750秒。来源 route-root08、hotspot/route-root-consumer 与 wiring/family-diagnostic；复用相同最终来源 route3P、diagnostic2P，未重跑绿色测试。route 原真实3P曾由违规 PowerShell 维护 runner 执行，记录照实保留；新 Python runner仅静态审核，未将旧结果改称 Python 验收，也未在此运行旧 runner。新测试接默认 local-service CI，软件 READ DTO、Session proxy和原 Root fixture 不授 RootRuntimeContext/lease/Native/canonical 权威。Family 诊断为开发后继，不据此追认 S/MB 已采用。
+
 交付源、测试、86原尾部CSV、原字节来源JSON与专用研究doc五叶，旧actor月门/interval/抽签逻辑保持。此研究类仍无runtime调用者，Root不要求S/MB/当前worker采用，未重跑已绿6项。原M4 scope核对和后继实际研究修正分开保留。

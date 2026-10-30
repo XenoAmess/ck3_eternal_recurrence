@@ -33,7 +33,11 @@ public final class RootFamilyBridge implements FamilyDomainSource.CurrentBridge 
         try {
             context.requireCurrent(request.deadline());var same=context.borrowedSession();
             return Optional.of(context.collector().currentPlanning(same,request,request.deadline(),(original,lease)->current(same,lease).observation()));
-        } catch(IOException|IllegalArgumentException unavailable) {return Optional.empty();}
+        } catch(IOException|IllegalArgumentException unavailable) {throw observationUnavailable(unavailable);}
+    }
+    static IllegalArgumentException observationUnavailable(Exception original) {
+        return new IllegalArgumentException("actual family Bridge observation unavailable: "
+                +original.getClass().getSimpleName()+": "+original.getMessage(),original);
     }
     /** Native preparation already owns this lease; publishing the identity manifest performs no new query. */
     public Evidence current(Session same,LeaseSnapshot lease)throws IOException {

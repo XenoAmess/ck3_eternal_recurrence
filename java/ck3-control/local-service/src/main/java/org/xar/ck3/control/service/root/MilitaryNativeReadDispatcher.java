@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.planning.*;
+import org.xar.ck3.control.application.planning.finance.FinanceReadContracts;
 import org.xar.ck3.control.application.planning.military.*;
 import org.xar.ck3.control.nativebridge.capabilities.army.*;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PublicMethod;
@@ -33,6 +34,15 @@ public final class MilitaryNativeReadDispatcher implements WarCorePlanner.ReadCa
             if(!request.source().equals(runtime.source())||!request.before().game().equals(runtime.game().generation())||!request.sessionId().equals(runtime.game().sessionId()))return unavailable("military read belongs to a predecessor runtime");
             return runtime.withSession(session->{
                 String step=selected.operation().value();var context=new Context(request.before(),request.source(),request.sessionId(),request.deadline());
+                if(step.equals(FinanceReadContracts.Query.ROOT.operation().value())) {
+                    org.xar.ck3.control.contracts.StrictJson.require(selected.arguments().members().isEmpty(),
+                            "ordinary campaign-root selection requires its original empty public arguments");
+                    var finance=runtime.finance();
+                    org.xar.ck3.control.contracts.StrictJson.require(finance.game().equals(runtime.game().generation())
+                            &&finance.sessionId().equals(request.sessionId())&&finance.source().equals(request.source()),
+                            "ordinary campaign-root read crossed its identical installed finance owner");
+                    return root(finance.definitions(),finance.readPort(),session,request);
+                }
                 var termination=termination(step,revision(request));
                 if(termination.isPresent()) {
                     // Copy DATA from the actual held lease, then leave that frozen callback before Native query dispatch.
@@ -77,6 +87,20 @@ public final class MilitaryNativeReadDispatcher implements WarCorePlanner.ReadCa
                 return unavailable("no installed typed ordinary military read matches this exact operation: "+step);
             });
         } catch(IOException|java.io.UncheckedIOException|IllegalArgumentException|IllegalStateException failure){return unavailable("actual military read unavailable: "+failure.getMessage());}
+    }
+    /** Reuses the installed finance ROOT owner and its original pure decoder; no second native contract. */
+    static PlanningReadResult<Obj> root(FinanceReadContracts definitions,PlanningReadPort port,
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,PlanningRequest request) {
+        var query=FinanceReadContracts.Query.ROOT;
+        var actual=definitions.read(same,query,port,request);
+        if(actual instanceof PlanningReadResult.Unavailable<FinanceReadContracts.Packet> missing)
+            return new PlanningReadResult.Unavailable<>(missing.reason(),missing.original(),missing.decodeFailure(),missing.observedFailure());
+        var known=(PlanningReadResult.Known<FinanceReadContracts.Packet>)actual;
+        var replay=definitions.decodeOriginal(query,known.receipt(),request.observations().snapshot());
+        org.xar.ck3.control.contracts.StrictJson.require(known.value().receipt().equals(known.receipt())
+                &&replay.result().equals(known.value().result())&&replay.originalResult().equals(known.value().originalResult()),
+                "ordinary campaign-root result differs from its actual original typed owner");
+        return new PlanningReadResult.Known<>(replay.result(),known.receipt(),known.originalReceipt());
     }
     /** Actual shared typed producer, original Root read port and exact cold decoder; no new registry or terms model. */
     static PlanningReadResult<Obj> termination(ArmyWarReads sameWarReads,PlanningReadPort actualReads,
