@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.ContractViolationException;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.finance.feastbudget.FeastBudgetPolicy.Actor;
 import org.xar.ck3.control.finance.feastbudget.FeastBudgetPolicy.CampaignRoot;
 import org.xar.ck3.control.finance.feastbudget.FeastBudgetPolicy.Field;
@@ -31,7 +33,7 @@ public final class FeastBudgetCodec {
     private FeastBudgetCodec() { }
 
     public static Request decode(byte[] raw) {
-        ObjectNode request = StrictJson.object(StrictJson.parse(raw),
+        ObjectNode request = StrictJson.object(parse(raw),
                 Set.of("schema", "snapshot", "inputs", "ledgers", "campaign_root"));
         StrictJson.require(SCHEMA.equals(string(request.get("schema"))), "unsupported feast budget schema");
         JsonNode snapshot = object(request.get("snapshot")); JsonNode inputs = object(request.get("inputs"));
@@ -127,6 +129,16 @@ public final class FeastBudgetCodec {
             });
         });
         return StrictJson.canonical(output);
+    }
+
+    private static JsonNode parse(byte[] raw) {
+        try {
+            return FullJsonTree.parse(raw, FullJsonTree.MAXIMUM_BYTES);
+        } catch (ContractViolationException failure) {
+            throw failure;
+        } catch (IllegalArgumentException failure) {
+            throw new ContractViolationException("invalid complete JSON material", failure);
+        }
     }
 
     private static CampaignRoot campaignRoot(JsonNode source) {
