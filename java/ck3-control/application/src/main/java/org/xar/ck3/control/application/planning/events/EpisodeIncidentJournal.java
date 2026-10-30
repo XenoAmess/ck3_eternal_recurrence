@@ -68,6 +68,7 @@ public final class EpisodeIncidentJournal {
     private final Binding episode;
     public enum Kind { EVENT, INTERACTION, MANDATORY }
     @FunctionalInterface public interface IoGuard { void require(long pendingBytes) throws IOException; }
+    @FunctionalInterface public interface ProgressOriginal { ExactRef preserve() throws IOException; }
     public record Configuration(Path incidentRoot, Path scanRoot, Clock clock, IoGuard io,
             Optional<TrustedEventSourceContext> trustedInteractions) {
         public Configuration {
@@ -420,12 +421,15 @@ public final class EpisodeIncidentJournal {
     public Scan scan(Binding actual) throws IOException { return scan(actual, Optional.empty()); }
     /** Current full-frame original from the identical Root archive; retained-only scans cannot invent progress. */
     public Scan scan(Binding actual, Optional<ExactRef> currentBasis) throws IOException {
-        Objects.requireNonNull(currentBasis); episode.requireEpisode(actual); verifyEpisode();
-        if (currentBasis.isPresent()) {
-            ObjectNode basis = object(read(currentBasis.orElseThrow()));
-            require("xar.java.incident-observation-original/v1".equals(text(basis, "schema")) && decodeBinding(basis).equals(actual),
-                    "Actual scan progress must retain its own original full-frame source/session");
-        }
+        return scan(actual, Objects.requireNonNull(currentBasis), Optional.empty());
+    }
+    /** Preserve current recovery progress synchronously only when the actual inventory contains an incident/window. */
+    public Scan scanWithProgress(Binding actual, ProgressOriginal progress) throws IOException {
+        return scan(actual, Optional.empty(), Optional.of(Objects.requireNonNull(progress)));
+    }
+    private Scan scan(Binding actual, Optional<ExactRef> currentBasis, Optional<ProgressOriginal> deferred) throws IOException {
+        episode.requireEpisode(actual); verifyEpisode();
+        if (currentBasis.isPresent()) requireProgress(actual, currentBasis.orElseThrow());
         return locked(() -> {
             List<Path> files;
             try (var listing = Files.list(configured.incidentRoot())) { files = listing.sorted().toList(); }
@@ -499,11 +503,15 @@ public final class EpisodeIncidentJournal {
                 if (name.endsWith(".before.json") || name.endsWith(".after.json") || name.endsWith(".after-index.json") || name.endsWith(".review-index.json") || name.endsWith(".unsettled.json"))
                     require(indexed.stream().anyMatch(id -> name.startsWith(id + ".")), "Orphan/torn incident requires reconciliation before scan");
             }
-            if (currentBasis.isPresent() && !originals.contains(currentBasis.orElseThrow())) originals.add(currentBasis.orElseThrow());
-            ObjectNode scan = binding(actual); scan.put("schema", currentBasis.isPresent() ? "xar.episode-incident-scan/v3" : SCAN_SCHEMA).put("incidents", incidents.size())
+            // Later full-frame progress serves captured incident recovery; an empty inventory has no recovery to review.
+            Optional<ExactRef> progress = indexedIds.isEmpty() ? Optional.empty() : deferred.isPresent()
+                    ? Optional.of(Objects.requireNonNull(deferred.orElseThrow().preserve())) : currentBasis;
+            if (deferred.isPresent() && progress.isPresent()) requireProgress(actual, progress.orElseThrow());
+            if (progress.isPresent() && !originals.contains(progress.orElseThrow())) originals.add(progress.orElseThrow());
+            ObjectNode scan = binding(actual); scan.put("schema", progress.isPresent() ? "xar.episode-incident-scan/v3" : SCAN_SCHEMA).put("incidents", incidents.size())
                     .put("captured_incidents", indexedIds.size()).put("incomplete_after", incomplete).put("diagnostic_only", diagnosticOnly);
             scan.set("episode_ref", episodeRef.toJson());
-            currentBasis.ifPresent(ref -> scan.set("scan_observation_basis", ref.toJson()));
+            progress.ifPresent(ref -> scan.set("scan_observation_basis", ref.toJson()));
             var refs = scan.putArray("original_refs"); originals.forEach(ref -> refs.add(ref.toJson()));
             byte[] scanRaw = encode(scan); String scanId = digest(scanRaw);
             ExactRef scanRef = writeSame(configured.scanRoot().resolve(scanId + ".scan.json"), scanRaw);
@@ -577,7 +585,7 @@ public final class EpisodeIncidentJournal {
         ObjectNode internal=observed.observation().toJson();((ObjectNode)internal.get("frame")).put("played_character_id",observed.observation().frame().playedCharacterId().decimal());
         Binding scanned=new Binding(ProposalLifecycleCodec.decodeObservation(internal),source(observed.source().toJson()),observed.sessionId());episode.requireEpisode(scanned);
         ObjectNode retainedScan = object(read(observed.indexRef()));
-        require(SCAN_SCHEMA.equals(text(retainedScan, "schema")) && retainedScan.path("original_refs").isArray(), "Original observed scan required at source-review completion");
+        require(Set.of(SCAN_SCHEMA, "xar.episode-incident-scan/v3").contains(text(retainedScan, "schema")) && retainedScan.path("original_refs").isArray(), "Original observed scan required at source-review completion");
         List<ExactRef> originalRefs = new ArrayList<>();
         for (JsonNode value : retainedScan.get("original_refs")) {
             ExactRef ref = ExactRef.fromJson(value); verifyExternal(ref); originalRefs.add(ref);
@@ -645,6 +653,11 @@ public final class EpisodeIncidentJournal {
         }
         EventIncidentReceipt.verify(new RawJson(StrictJson.canonical(input,MAX_BODY)),text(beforeIndex,"arguments_sha256"),
             ExactRef.fromJson(afterIndex.get("before_ref")),ExactRef.fromJson(afterIndex.get("after_ref")),new RawJson(actualBeforeBody),new RawJson(actualAfterBody));
+    }
+    private static void requireProgress(Binding actual, ExactRef original) throws IOException {
+        ObjectNode basis = object(read(original));
+        require("xar.java.incident-observation-original/v1".equals(text(basis, "schema")) && decodeBinding(basis).equals(actual),
+                "Actual scan progress must retain its own original full-frame source/session");
     }
     private void verifyEpisode() throws IOException { read(episodeRef); }
     private ExactRef writeSame(Path target, byte[] raw) throws IOException {

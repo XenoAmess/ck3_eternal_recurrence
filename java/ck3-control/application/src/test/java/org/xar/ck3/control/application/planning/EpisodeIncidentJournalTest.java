@@ -297,4 +297,133 @@ final class EpisodeIncidentJournalTest {
         OpportunityJson.Obj arguments = OpportunityJson.object(OpportunityJson.parse(UnhandledEventCodec.encode(plan)), "actual fallback producer output");
         return PlanningFixtures.command(request, new OperationKey("select-event-option-1"), arguments);
     }
+
+    @Test void identicalEmptyScanWritesNoBytesAndLaterObservationStillPublishesItsOwnIndex() throws Exception {
+        Fixture f=fixture();Binding original=bind(f.request());var first=f.journal().scan(original);
+        Path sameRecording=temporary.resolve("same-scan.jfr");
+        try(jdk.jfr.Recording recording=new jdk.jfr.Recording()) {
+            recording.enable("jdk.FileWrite").withThreshold(java.time.Duration.ZERO);recording.start();
+            assertEquals(first.indexRef(),f.journal().scan(original).indexRef());recording.stop();recording.dump(sameRecording);
+        }
+        long same=scanWrites(sameRecording,f.configured().scanRoot());
+        var before=original.before();var later=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity(before.machineId(),before.game(),before.frame(),before.observationVersion()+1);
+        Binding next=new Binding(later,original.source(),original.sessionId());Path nextRecording=temporary.resolve("later-scan.jfr");EpisodeIncidentJournal.Scan advanced;
+        try(jdk.jfr.Recording recording=new jdk.jfr.Recording()) {
+            recording.enable("jdk.FileWrite").withThreshold(java.time.Duration.ZERO);recording.start();
+            advanced=f.journal().scan(next);recording.stop();recording.dump(nextRecording);
+        }
+        long changed=scanWrites(nextRecording,f.configured().scanRoot());
+        System.out.println("INCIDENT_SCAN_BYTES same="+same+" later="+changed+" index="+advanced.indexRef().bytes());
+        assertEquals(0,same);assertNotEquals(first.indexRef(),advanced.indexRef());assertEquals(advanced.indexRef().bytes(),changed);
+        assertEquals(0,advanced.incidents());assertEquals(0,advanced.capturedIncidents());
+        assertEquals(later,org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(StrictJson.parse(Files.readAllBytes(Path.of(advanced.indexRef().path()))).get("origin")));
+        assertEquals(advanced.indexRef(),f.journal().scan(next).indexRef());
+    }
+    private static long scanWrites(Path recording,Path root)throws IOException {
+        long bytes=0;try(jdk.jfr.consumer.RecordingFile events=new jdk.jfr.consumer.RecordingFile(recording)) {
+            while(events.hasMoreEvents()) {var event=events.readEvent();if(event.getEventType().getName().equals("jdk.FileWrite")&&event.getLong("bytesWritten")>0&&Path.of(event.getString("path")).toAbsolutePath().normalize().startsWith(root))bytes+=event.getLong("bytesWritten");}
+        }return bytes;
+    }
+
+    @Test void newCapturedEventKeepsCurrentProgressAndPublishesTheRealBatch() throws Exception {
+        Fixture f=fixture();Binding actual=bind(f.request());ExactRef progress=softwareProgress(f,"progress-a"),changed=softwareProgress(f,"progress-b");
+        var empty=f.journal().scan(actual,Optional.of(progress));var same=f.journal().scan(actual,Optional.of(changed));assertEquals(empty.indexRef(),same.indexRef());
+        var ticket=f.journal().before(command(f.request())).orElseThrow();var captured=f.journal().scan(actual,Optional.of(changed));
+        assertNotEquals(empty.indexRef(),captured.indexRef());assertEquals(1,captured.capturedIncidents());assertEquals(1,captured.incidents());
+        JsonNode body=StrictJson.parse(Files.readAllBytes(Path.of(captured.indexRef().path())));assertEquals("xar.episode-incident-scan/v3",body.path("schema").textValue());assertEquals(changed,ExactRef.fromJson(body.get("scan_observation_basis")));assertTrue(captured.originals().contains(changed));
+        var batch=captured.batch().orElseThrow();assertTrue(batch.capturedRefs().contains(ticket.before()));
+        var loaded=loadOriginalScan(f,batch);assertTrue(loaded.externalOriginals().stream().anyMatch(original->original.source().equals(changed)));
+        assertEquals(captured.indexRef(),f.journal().scan(actual,Optional.of(changed)).indexRef());
+        assertNotEquals(captured.indexRef(),f.journal().scan(actual,Optional.of(progress)).indexRef(),"captured incidents still retain each actual progress source");
+    }
+    private ExactRef softwareProgress(Fixture f,String name)throws IOException {
+        ObjectNode body=StrictJson.object().put("schema","xar.java.incident-observation-original/v1").put("session_id",f.request().sessionId());
+        body.set("origin",org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.observation(f.request().before()));body.set("source",org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(f.request().source()));
+        ExactRef material=syntheticOriginal(name+"-driver.json");body.set("native_frame",f.request().source().sourceRef().toJson());body.set("driver_facts",material.toJson());
+        Path path=temporary.resolve(name+".json");Files.write(path,StrictJson.canonical(body));return EpisodeIncidentJournal.measure(path);
+    }
+
+    @Test void deferredProgressIsNeverPreservedForEmptyInventoryAndIsRequiredForCapturedEvents() throws Exception {
+        Fixture f=fixture();Binding actual=bind(f.request());ExactRef progress=softwareProgress(f,"deferred");var calls=new java.util.concurrent.atomic.AtomicInteger();
+        var empty=f.journal().scanWithProgress(actual,()->{calls.incrementAndGet();throw new IOException("unused progress cannot be requested");});
+        assertEquals(0,calls.get());assertEquals(0,empty.capturedIncidents());assertTrue(empty.batch().isEmpty());
+        f.journal().before(command(f.request())).orElseThrow();
+        var captured=f.journal().scanWithProgress(actual,()->{calls.incrementAndGet();return progress;});assertEquals(1,calls.get());
+        assertEquals(1,captured.capturedIncidents());assertTrue(captured.batch().isPresent());
+        JsonNode body=StrictJson.parse(Files.readAllBytes(Path.of(captured.indexRef().path())));assertEquals("xar.episode-incident-scan/v3",body.path("schema").textValue());assertEquals(progress,ExactRef.fromJson(body.get("scan_observation_basis")));
+        long files;try(var entries=Files.list(f.configured().scanRoot())){files=entries.count();}
+        assertThrows(IOException.class,()->f.journal().scanWithProgress(actual,()->{throw new IOException("actual required progress preservation failed");}));
+        try(var entries=Files.list(f.configured().scanRoot())){assertEquals(files,entries.count(),"failed progress cannot publish another scan or batch");}
+        var loaded=loadOriginalScan(f,captured.batch().orElseThrow());assertTrue(loaded.externalOriginals().stream().anyMatch(value->value.source().equals(progress)));
+    }
+
+
+    @Test void coldV3SourceReviewAcknowledgementConsumesTheActualAnalyzerReportAndKeepsIncompleteAfter() throws Exception {
+        SourceReviewFixture source=sourceReviewFixture();Fixture f=source.episode();Binding actual=bind(f.request());
+        var ticket=f.journal().before(source.command()).orElseThrow();ExactRef progress=softwareProgress(f,"review-progress");
+        var scan=f.journal().scanWithProgress(actual,()->progress);var batch=scan.batch().orElseThrow();
+        assertEquals("xar.episode-incident-scan/v3",StrictJson.parse(Files.readAllBytes(Path.of(scan.indexRef().path()))).path("schema").textValue());
+        var loaded=loadOriginalScan(f,batch);assertTrue(loaded.externalOriginals().stream().anyMatch(value->value.source().equals(progress)));
+        var request=new org.xar.ck3.control.wave2.events.unhandledevent.OfflineEventBatchAnalyzer.Request(batch.batchId(),batch.manifestRef(),batch.capturedRefs());
+        var produced=org.xar.ck3.control.wave2.events.unhandledevent.OfflineEventBatchAnalyzer.run(source.analysis(),request);
+        JsonNode report=StrictJson.parse(Files.readAllBytes(Path.of(produced.report().path())));assertEquals(1,report.path("entries").size());assertEquals(0,report.path("unresolved").size());
+        Path reviewed=f.configured().incidentRoot().resolve(ticket.incidentId()+".review-index.json");
+        ObjectNode wrong=report.deepCopy();wrong.put("session_id","another-source-review-session");Path wrongPath=temporary.resolve("wrong-source-review-owner.json");Files.write(wrongPath,StrictJson.canonical(wrong));
+        var cold=EpisodeIncidentJournal.openOriginal(f.configured(),f.journal().episodeReference());
+        assertThrows(IOException.class,()->cold.acknowledge(batch,EpisodeIncidentJournal.measure(wrongPath)));assertFalse(Files.exists(reviewed));
+        cold.acknowledge(batch,produced.report());ExactRef originalReview=EpisodeIncidentJournal.measure(reviewed);
+        JsonNode accepted=StrictJson.parse(Files.readAllBytes(reviewed));assertEquals(produced.report(),ExactRef.fromJson(accepted.get("report_ref")));assertEquals(ticket.before(),ExactRef.fromJson(accepted.get("before_ref")));
+        var reopened=EpisodeIncidentJournal.openOriginal(f.configured(),f.journal().episodeReference());var after=reopened.scanWithProgress(actual,()->progress);
+        assertEquals(0,after.incidents());assertEquals(1,after.capturedIncidents());assertEquals(1,after.incompleteAfter());assertEquals(0,after.diagnosticOnly());assertTrue(after.batch().isEmpty());
+        assertFalse(Files.exists(f.configured().incidentRoot().resolve(ticket.incidentId()+".after.json")),"source analysis must not manufacture independent gameplay after");
+        reopened.acknowledge(batch,produced.report());assertEquals(originalReview,EpisodeIncidentJournal.measure(reviewed));
+        OfflineScanSource.recheck(f.configured().incidentRoot(),Optional.of(f.configured().scanRoot()),batch.manifestRef(),loaded);
+        Files.writeString(Path.of(produced.report().path()),"{}");assertThrows(IOException.class,()->reopened.acknowledge(batch,produced.report()));assertEquals(originalReview,EpisodeIncidentJournal.measure(reviewed));
+        System.out.println("V3_ACK_REAL_ANALYZER entries=1 unresolved=0 cold_review=1 remaining=0 incomplete_after=1");
+    }
+    private record SourceReviewFixture(Fixture episode,ActionCommand command,org.xar.ck3.control.wave2.events.unhandledevent.OfflineEventBatchAnalyzer.Configuration analysis) { }
+    private SourceReviewFixture sourceReviewFixture() throws Exception {
+        ObjectNode blobs=StrictJson.object();com.fasterxml.jackson.databind.node.ArrayNode cases=com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.arrayNode();
+        for(String cohort:List.of("generic","council","council-source-drift","liberty","liberty-source-drift","sway","sway-source-drift","factions")) {
+            String name="/unhandledevent/source-review-"+cohort+"-golden-v1.json.gz";
+            try(var packed=EpisodeIncidentJournalTest.class.getResourceAsStream(name)) {
+                if(packed==null)throw new IOException("original stock source-review resource required: "+name);
+                try(var input=new java.util.zip.GZIPInputStream(packed)) {
+                    JsonNode corpus=StrictJson.parse(input.readNBytes(1_048_577),1_048_576);assertEquals("xar.ck3.source-review-golden/v1",corpus.path("schema").textValue());
+                    for(var entry:corpus.path("blobs").properties()){JsonNode old=blobs.get(entry.getKey());if(old!=null)assertEquals(old,entry.getValue());blobs.set(entry.getKey(),entry.getValue());}
+                    for(JsonNode row:corpus.path("cases"))cases.add(row);
+                }
+            }
+        }
+        JsonNode row=null;for(JsonNode value:cases)if(value.path("name").asText().equals("faction_demand.0101-exact-stock")){row=value;break;}assertNotNull(row);
+        Path game=Files.createDirectory(temporary.resolve("stock-game"));Class<?> rebind=Class.forName("org.xar.ck3.control.wave2.events.unhandledevent.ReviewedLetterSourceRebind");var sources=rebind.getDeclaredMethod("installedSourceHashes");sources.setAccessible(true);
+        Object sourceObject=sources.invoke(null);assertInstanceOf(java.util.Map.class,sourceObject);
+        for(var entry:((java.util.Map<?,?>)sourceObject).entrySet()) {
+            String relative=assertInstanceOf(String.class,entry.getKey()),sha=assertInstanceOf(String.class,entry.getValue());Path path=game.resolve(relative);Files.createDirectories(path.getParent());
+            byte[] encoded=java.util.Base64.getDecoder().decode(blobs.path(sha).textValue());
+            try(var input=new java.util.zip.GZIPInputStream(new java.io.ByteArrayInputStream(encoded))){byte[] raw=input.readNBytes(2_097_153);assertTrue(raw.length<=2_097_152);assertEquals(sha,java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(raw)));Files.write(path,raw);}
+        }
+        ObjectNode plan=(ObjectNode)row.get("plan"),capture=(ObjectNode)plan.get("unhandled_event_fallback");
+        ObjectNode input=StrictJson.object().put("schema",UnhandledEventCodec.PLAN_SCHEMA);input.set("snapshot",row.get("snapshot"));input.set("event_context",capture.get("window_context"));input.set("event_summary",plan.get("active_event"));input.set("registry_decision",capture.get("original_registry_decision"));input.set("action_steps",row.get("action_steps"));
+        var proposed=UnhandledEventFallback.plan(UnhandledEventCodec.decodePlan(StrictJson.canonical(input))).orElseThrow();OpportunityJson.Obj arguments=OpportunityJson.object(OpportunityJson.parse(UnhandledEventCodec.encode(Optional.of(proposed))),"actual software fallback producer");
+        JsonNode binding=StrictJson.parse(DriverJson.encode(arguments)).path("unhandled_event_fallback").path("binding");
+        var nativeFrame=new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame(new BigInteger(binding.path("actor_character_id").asText()),new BigInteger(binding.path("native_revision").asText()),new BigInteger(binding.path("date_raw").asText()));
+        var frame=new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame(nativeFrame,binding.path("snapshot_id").textValue(),new BigInteger(binding.path("revision").asText()),binding.path("episode_run_id").textValue());
+        var gameIdentity=new org.xar.ck3.control.contracts.GameGeneration(binding.path("bridge_pid").intValue(),new org.xar.ck3.control.contracts.PythonOnlyUInt64(new BigInteger("134000000000000001")));
+        var before=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity("portable-source-fixture",gameIdentity,frame,1);Path original=temporary.resolve("software-frame-source.json");Files.writeString(original,"{\"scope\":\"software-source-review-owner\"}");
+        var originalSource=new G2Source(before.machineId(),PlanningFixtures.NOW.toString(),"SOFTWARE-SOURCE-REVIEW",EpisodeIncidentJournal.measure(original));
+        Set<OperationKey> steps=new java.util.HashSet<>();for(JsonNode step:row.path("action_steps"))steps.add(new OperationKey(step.textValue()));
+        ObjectNode ordinarySnapshot=((ObjectNode)row.get("snapshot")).deepCopy();ordinarySnapshot.putArray("active_wars");ordinarySnapshot.putArray("player_armies");
+        var observations=new PlanningObservation(OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(ordinarySnapshot)),"software stock snapshot with explicit empty ordinary collections"),List.of(),steps,Set.of(),Optional.empty(),List.of(),Optional.empty(),Optional.empty(),false);
+        var request=new PlanningRequest(before,originalSource,"software-source-review-session",PlanningFixtures.NOW.plusSeconds(60),observations);
+        Path incidents=Files.createDirectory(temporary.resolve("review-incidents")),scans=Files.createDirectory(temporary.resolve("review-scans"));
+        var configured=new EpisodeIncidentJournal.Configuration(incidents,scans,Clock.fixed(PlanningFixtures.NOW,ZoneOffset.UTC),pending->{if(pending<0||pending>(1<<20))throw new IOException("finite software journal cap");},Optional.empty());
+        Fixture episode=new Fixture(request,EpisodeIncidentJournal.initialize(configured,bind(request)),configured);
+        JsonNode producedPlan=StrictJson.parse(DriverJson.encode(arguments));ActionCommand command=PlanningFixtures.command(request,new OperationKey(producedPlan.path("selected_step").textValue()),arguments);
+        Path state=Files.createDirectory(temporary.resolve("source-state")),knowledge=Files.createDirectory(temporary.resolve("source-knowledge")),manifest=knowledge.resolve("fixed-grants.json");
+        org.xar.ck3.control.wave2.events.sourcecatalog.EvidenceGrantManifestPublisher.publish(manifest,List.of());
+        org.xar.ck3.control.contracts.projection.ProjectionEvidenceGrants grants=()->{try{return org.xar.ck3.control.contracts.projection.ProjectionEvidenceCodec.decode(Files.readAllBytes(manifest));}catch(IOException failure){throw new java.io.UncheckedIOException(failure);}};
+        var context=new org.xar.ck3.control.contracts.projection.EventSourceReadContext(before.machineId(),state,game,grants);
+        var analysis=new org.xar.ck3.control.wave2.events.unhandledevent.OfflineEventBatchAnalyzer.Configuration(context,incidents,knowledge,manifest,Optional.of(scans));return new SourceReviewFixture(episode,command,analysis);
+    }
 }

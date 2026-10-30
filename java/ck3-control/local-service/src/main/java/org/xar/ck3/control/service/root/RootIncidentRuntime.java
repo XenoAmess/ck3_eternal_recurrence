@@ -320,10 +320,10 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         // Every configured episode is scanned. Old-source batches retain their old full binding;
         // no old Game is queried or admitted, and no pending source incident is silently dropped.
         // The ordinary scan carries the real later full-frame original for UI-recovery date-progress analysis.
-        ExactRef progress = context.archive().withSession(actual.session()).preserveMaterial(originalObservationBasis(actual.frame()));
         for (EpisodeIncidentJournal.Scan scan : scanOriginals(journals, journal -> journal.episodeReference().equals(own.episodeReference())
                 ? new Binding(complete.before(), complete.source(), complete.sessionId()) : journal.origin(),
-                journal -> journal.episodeReference().equals(own.episodeReference()) ? Optional.of(progress) : Optional.empty())) {
+                journal -> journal.episodeReference().equals(own.episodeReference())
+                        ? Optional.of(() -> context.archive().withSession(actual.session()).preserveMaterial(originalObservationBasis(actual.frame()))) : Optional.empty())) {
             evidence.addAll(scan.evidence()); scan.batch().ifPresent(candidates::add);
         }
         Optional<BatchRequest> batch;
@@ -357,15 +357,18 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
     }
     private static List<EpisodeIncidentJournal.Scan> scanOriginals(List<EpisodeIncidentJournal> supplied,
             java.util.function.Function<EpisodeIncidentJournal, Binding> binding,
-            java.util.function.Function<EpisodeIncidentJournal, Optional<ExactRef>> progress) throws IOException {
+            java.util.function.Function<EpisodeIncidentJournal, Optional<EpisodeIncidentJournal.ProgressOriginal>> progress) throws IOException {
         List<EpisodeIncidentJournal> journals = List.copyOf(Objects.requireNonNull(supplied)); Objects.requireNonNull(binding); Objects.requireNonNull(progress);
         StrictJson.require(journals.size() <= MAX_EPISODES, "bounded retained original episode scan required");
         Set<String> paths = new java.util.HashSet<>();
         for (EpisodeIncidentJournal journal : journals) StrictJson.require(paths.add(journal.episodeReference().path()),
                 "retained original episode scan contains a duplicate scope");
         List<EpisodeIncidentJournal.Scan> result = new ArrayList<>();
-        for (EpisodeIncidentJournal journal : journals.stream().sorted(Comparator.comparing(j -> j.episodeReference().path())).toList())
-            result.add(journal.scan(Objects.requireNonNull(binding.apply(journal)), Objects.requireNonNull(progress.apply(journal))));
+        for (EpisodeIncidentJournal journal : journals.stream().sorted(Comparator.comparing(j -> j.episodeReference().path())).toList()) {
+            Binding actual = Objects.requireNonNull(binding.apply(journal));
+            Optional<EpisodeIncidentJournal.ProgressOriginal> original = Objects.requireNonNull(progress.apply(journal));
+            result.add(original.isPresent() ? journal.scanWithProgress(actual, original.orElseThrow()) : journal.scan(actual));
+        }
         return List.copyOf(result);
     }
 

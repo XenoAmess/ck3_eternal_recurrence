@@ -36,6 +36,7 @@
   <build>
     <testResources>
       <testResource><directory>src/test/resources</directory></testResource>
+      <testResource><directory>../wave2-events/src/test/resources</directory><includes><include>unhandledevent/source-review-generic-golden-v1.json.gz</include><include>unhandledevent/source-review-council-golden-v1.json.gz</include><include>unhandledevent/source-review-council-source-drift-golden-v1.json.gz</include><include>unhandledevent/source-review-liberty-golden-v1.json.gz</include><include>unhandledevent/source-review-liberty-source-drift-golden-v1.json.gz</include><include>unhandledevent/source-review-sway-golden-v1.json.gz</include><include>unhandledevent/source-review-sway-source-drift-golden-v1.json.gz</include><include>unhandledevent/source-review-factions-golden-v1.json.gz</include></includes></testResource>
       <testResource><directory>../governance-policy/src/test/resources</directory><includes><include>marriage/python-golden-v1.json</include></includes></testResource>
       <testResource><directory>../g2-research/src/test/resources</directory><includes><include>schemesway/**</include><include>g2/m0/original-producer01.json.gz</include></includes></testResource>
       <testResource><directory>../wave2-military/src/test/resources</directory><includes><include>holyreinf/**</include><include>commander/**</include></includes></testResource>
