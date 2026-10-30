@@ -10140,3 +10140,5 @@ include(cmake/finite_production_object_link_support.cmake)
 include(cmake/sway_state_signed_fullid12004.cmake)
 
 include(cmake/faction_fullid_12004.cmake)
+
+include(cmake/sway_stop_public_route12004.cmake)

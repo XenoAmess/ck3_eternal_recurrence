@@ -738,3 +738,45 @@ in 15.957 seconds at 17:34:59Z, generating ten selected CTest entries. The full
 here. The independent county branch and unpublished public Character migration
 remain explicitly owned follow-ups. No DLL, Game, model call or new day occurs
 as part of this source integration.
+
+
+The Faction-only group was normally published and independently read back as
+`3b860907db5d74890a9d86a0a4332910f8e03ae3`. Matching Java Faction consumers
+followed separately in `679ea8ecf86088547d019774b8ee5c1c481377a7`.
+
+## M6 public Sway Stop role decoding
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`. The actual4 public Stop Handler
+refused signed/zero pairs (-2,0) and (0,-2) before issuing a ticket or calling
+the native queue. The real Stop/Command/Terminal pure factory controls already
+passed; the two baseline contract failures among 23 checks were role parsing.
+The single production change applies the existing terminal canonical int32
+integer grammar to these two Stop roles, preserving zero and rejecting -1.
+Scheme IDs/generation, action tokens, command payload, kind14, status and
+serialization remain unchanged. Legacy and Event domains are unchanged.
+
+The candidate passed 259 checks through the actual public Handler, slot58,
+real queue/pump and SubmitCommandCopy ownership path. Each direction submitted
+one full SchemeID0/generation0 command. Wrong types/noncanonical/out-of-domain
+roles, stale revision and mismatched full identity were rejected without an
+extra native queue submission. The pending ACK proves only accepted ownership.
+An independent later query first remained active; an explicitly controlled
+owned row change then serialized terminated_unattributed with unknown cause.
+Native clone/execute machine code, actual Game action, same-process Start,
+Start-archive and FinishPreparation qualification were not executed or granted.
+
+The repo-only CMake target compiled thirteen TUs and CTest passed 1/1 with
+259 checks. Its fourteen raw files are byte-identical to the first candidate
+execution. Factory-definition aliases and the necessary identity/Command slices
+are mechanically derived from the current repository production files during
+configuration, without permanent renderer copies, D archives or a new runner.
+The initial whole-adapter link failure and missing original include preamble
+remain recorded. See M6 `target-identity/stop-public-next/`
+`{INDEX.json,RESULT.md,persistent-ci/DELIVERY.json}`.
+
+Only the four delivered leaves, one root include, exact existing CI target/regex
+and this record are selected. The old production source matched both published
+and shared preimages. Native66 cached configuration/generation passed in 19.901
+seconds at 17:48:16Z and generated the exact CTest registration with timeout30.
+Neither the passing 259-check matrix nor the complete hosted CI step was rerun
+for publication. No DLL deployment, Game action or local-model call occurred.
