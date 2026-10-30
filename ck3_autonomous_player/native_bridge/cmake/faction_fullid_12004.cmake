@@ -3,6 +3,9 @@ if(BUILD_TESTING AND WIN32 AND
    XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1 AND
    XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
   set(target xar_ck3_12004_faction_fullid_whole_test)
+  include("${CMAKE_CURRENT_LIST_DIR}/faction_fullid_gui_owner12004.cmake")
+  set(_xar_fullid_gui_owner_source "${CMAKE_CURRENT_BINARY_DIR}/generated/faction_fullid/gui_owner_read_v1.cpp")
+  xar_faction_fullid_gui_owner12004("${CMAKE_CURRENT_SOURCE_DIR}/src/ingame_ui_navigation_v1.cpp" "${_xar_fullid_gui_owner_source}")
   # Keep the production whole serializer in its original mailbox TU.
   # The public legacy Handle path is outside this fixture and aborts if entered.
   # These providers are the exact existing 16-object narrow fixture closure.
@@ -32,7 +35,8 @@ if(BUILD_TESTING AND WIN32 AND
     src/ck3_12004_holy_site_relic_actions.cpp
     src/ck3_12004_holy_site_ui.cpp
     src/ck3_12004_holy_site_adoption_entry.cpp
-    src/holy_site_relic_action_preview_adapter12004.cpp)
+    src/holy_site_relic_action_preview_adapter12004.cpp
+    "${_xar_fullid_gui_owner_source}")
   target_link_libraries(${target} PRIVATE
     xar_ck3_12002_runtime xar_bridge_protocol bcrypt user32)
   target_include_directories(${target} PRIVATE include src research)
@@ -41,6 +45,7 @@ if(BUILD_TESTING AND WIN32 AND
     $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
     XAR_CK3_FACTION_FULLID_ENTRY=FactionFullIdTargetingMain09
+    ReadIngameUiGuiOwnerBindingV1=FactionFullIdFixtureReadGuiOwnerBindingV1
     TrySubmitMainThreadQueryV1=FactionIdentityFixtureSubmit12004
     WaitForMainThreadQueryV1=FactionIdentityFixtureWait12004
     ReclaimMainThreadQueryV1=FactionIdentityFixtureReclaim12004)
@@ -137,4 +142,5 @@ if(BUILD_TESTING AND WIN32 AND
         "${CMAKE_CURRENT_SOURCE_DIR}/tests/faction_fullid/native-allocator-assets"
         "${CMAKE_CURRENT_SOURCE_DIR}/tests/faction_fullid/native-liege-assets/new-028BFC50-028BFCC6.bin")
   endforeach()
+  unset(_xar_fullid_gui_owner_source)
 endif()

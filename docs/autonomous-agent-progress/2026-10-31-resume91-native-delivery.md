@@ -79,3 +79,17 @@ Native Windows CMake/Ninja Release、`BUILD_TESTING=ON`、`--parallel 1` 首次�
 随后只在同build执行精确CTest注册名 `xar_ck3_12004_event_window_gui_queued_v2`：23:06:43.180–43.501Z，exit0/0.319秒，1/1通过，测试0.16秒。该次证明首次CMake构建及CTest接线可用；它仍是原22检查、image0/typed-unavailable案例，新增语义覆盖0。完整Native根、Bridge/DLL、GUI available、Game和hosted CI均无新增通过信用。配置/构建/CTest原始命令、stdout和终态保留于同根 `{CONFIGURE01,BUILD01,CTEST01}.{json,stdout,stderr}`，最终入口为 `HANDOFF.md` 与 `RESULT.json`。
 
 当前资源安排依Root最新实际规则：具名只读source查询最多2路、最多8显式源的小javac最多2路，与Native重编1槽分开；有限自持小JVM执行也不占Native重编槽。115于22:55:03.4073879Z真实LOOP_START后已解除安装等待，不能沿旧HOLD阻挡后继。实际Maven/安装新BEGIN时停新编译，在途自然END；HTTP和源码准备不算编译占用。本岗仍未部署DLL或操作Game，实际游玩结论只由运行岗回执给出。
+
+## fullid hosted CI 链接缺口的两叶修复（23:41Z）
+
+对18f906的GitHub Actions run `41134827977` 于22:51:59Z实际失败：keyed-query步骤构建 `xar_ck3_12004_faction_fullid_whole_test.exe` 时，当前 `holy_site_relic_navigation12004.cpp` 引用的 `ReadIngameUiGuiOwnerBindingV1` 未定义（LNK2019/1120）。该步未进入CTest，后续Java全reactor也未执行；它与已独立通过的queued target分开。完整失败日志为 `D:/ck3-state/resume91-native-integration/CI41134827977-keyed-query-failed.log`。
+
+当前正式CMake只在Bridge源集合登记完整 `ingame_ui_navigation_v1.cpp`，fullid所链接的runtime集合没有它。修复只新增一个测试生成器，从当前原文件按两对完整唯一签名提取240B `Actual4UiBoundV1` 与687B `ReadIngameUiGuiOwnerBindingV1`，加wrapper共1109B；Native CMake -P与逐字比较通过，保留LF和原源依赖。fullid target增加该generated TU，并在现有三query别名同一PRIVATE作用域为Read函数指定fixture私有符号；生产Bridge、runtime、实际executor与原函数body不改，没有新增实现桩。
+
+本地先遇formal sparse缺头C1083（0.815秒），补当前精确144头闭包后，原名字版本的generated TU与当前caller分别严格编译0/3.951、4.064秒。首次缓存链接随后LNK2005/1169、0.450秒：旧native63缓存runtime已含完整ingame对象，与本次新Read重复；该205,472,424B旧库和正式当前runtime装配不同，不能盲借旧link信用。最终target私有别名避开此差异，原两绿对象与失败均保留，没有复制、修改旧库或使用FORCE。
+
+别名改变实际符号profile后，仅必要两TU重新严格编译：COMPILE-ALIAS01 exit0/3.955秒，COMPILE-ALIAS02当前caller exit0/4.012秒；原精确缓存闭包LINK02于23:41:31.700Z实际exit0/0.635秒，产物1,292,288B。未运行旧fullid矩阵或queued案例。此为当前原body与当前caller的必要局部链接通过，完整正式CMake target与修复后的hosted CI尚无通过结论。
+
+三次模型输出分别提出整137KB executor TU、错误首右括号/硬长度截取、截断的递归wrapper，均未采用为实现；owner复用已验CMake切片方式并接管target私有别名单行，按实际来源记录。最终集成输入为 `D:/ck3-state/resume91-m0-native/fullid-owner-ci/candidate-alias/cmake/` 两叶及 `FULLID-CMAKE-ALIAS.diff`，原件、精确命令、缓存差异与结果见同根 `HANDOFF.md`、`RESULT.json`、`ALIAS-PLAN.json`。本岗独立复核后只采用两CMake叶与本页，不部署DLL或操作Game。
+
+117于23:39:17.0609316Z真实LOOP_START、安装9.095秒后已解除安装等待；下一实际Maven/安装BEGIN再暂停新编测，不沿旧117标签空等。
