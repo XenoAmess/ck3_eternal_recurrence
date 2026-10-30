@@ -392,7 +392,7 @@ public final class EventRuntimeInstaller {
         var operation=new OperationKey(selected.value());var number=EventActionPreparation.option(operation);
         StrictJson.require(data.actionSteps().contains(operation)&&data.bridgeCapabilities().contains(EventActionPreparation.EVENT_CAPABILITY),"fixture event has no actual installed selected native family/capability");
         var option=available.options().stream().filter(value->value.nativeOptionIndex()==number.value()-1).findFirst().orElseThrow(()->new IllegalArgumentException("fixture strategy selected an absent actual native option"));
-        StrictJson.require(option.enabled(),"fixture strategy selected a disabled actual native option");
+        StrictJson.require(option.enabled(),"fixture strategy selected an option whose sampled enabled flag is false");
         var refs=new LinkedHashSet<>(data.sourceOriginals());refs.add(read.originalReceipt());refs.add(origin.policySource());origin.handlerSource().ifPresent(refs::add);refs.addAll(origin.handlerOriginals());
         var encodedRefs=new ArrayList<OpportunityJson.Value>();refs.forEach(ref->encodedRefs.add(OpportunityJson.parse(StrictJson.canonical(ref.toJson()))));
         var metadata=new OpportunityJson.Obj(Map.of("schema",new OpportunityJson.Text("xar.fixture-startup-event-source/v1"),"original_parent_action_id",new OpportunityJson.Text(origin.parentActionId()),

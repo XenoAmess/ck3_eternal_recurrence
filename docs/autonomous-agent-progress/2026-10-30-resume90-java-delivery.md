@@ -166,4 +166,6 @@ IO98下层最终采用 reader-io98 的实测v2两源+既有测试两方法新增
 
 本岗最终Store完整类编译0/2.619秒，仅排既存constructor held的try lint，Archive当前完整类严格0/3.507秒，v2不再改它；现有测试类含新增两方法在当前组合上仅编译0/3.046秒（fixture模式排try/classfile，未重跑）。v1原11P只保历史；复用v2-green02实际全12P/0skip（物理发布/替换/篡改/expected-ref/JSON、预算/root、UNKNOWN、closed/foreign/thread、detachedbytes及READ Pin tracker）。这些12项确为v2新跑，不把旧11扩成12。source路径计数payload2→1、metadata2→1、完整identity观察11→5是静态次数，非worker系统调用/提速或新增游戏日。完整证据V2-HANDOFF.md/V2-CANDIDATE.json，生产采用仍运行owner负责；无模型/Native/Game动作。
 
+M2 actual collector→当前真实Java consumer 新三paired回放发现raw enabled=true两例stock GUI gate=false，第三control一致；原三row都可构造EventPresentation。Root据此授权先纠正旧v1措辞：三个service叶仅注释/异常文字，把sampled option flag与GUI owner gate分清，不再称raw flag为actual legal；保现有条件/字段/首显示策略/loadedNative63行为，未加启动或缺省准入门。两旧词串在相关测试无硬编码匹配，修改无行为差异，不为文案新增或重复业务测试。原件/CodeSource与实际3paired结果在D:/ck3-state/resume90-m2-native/options/current-gui-counterexample90，完整typed GUI v2仍由M2现岗D-only制作，部署时机归runtime，不冒新getter已实机装载。
+
 交付源、测试、86原尾部CSV、原字节来源JSON与专用研究doc五叶，旧actor月门/interval/抽签逻辑保持。此研究类仍无runtime调用者，Root不要求S/MB/当前worker采用，未重跑已绿6项。原M4 scope核对和后继实际研究修正分开保留。

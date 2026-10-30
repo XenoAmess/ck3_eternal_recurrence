@@ -25,10 +25,11 @@ public final class EventActionPreparation {
     public sealed interface PendingPresentation permits EventPresentation,InteractionPresentation {
         int instanceId();
     }
+    /** The v1 enabled field samples the option flag; stock GUI validity also depends on its native owner gate. */
     public record EventPresentation(EventWindowModels.Available context,EventWindowModels.Option selected) implements PendingPresentation {
         public EventPresentation {
             Objects.requireNonNull(context);Objects.requireNonNull(selected);
-            StrictJson.require(context.options().contains(selected)&&selected.enabled(),"pending event uses its actual legal displayed native option");
+            StrictJson.require(context.options().contains(selected)&&selected.enabled(),"pending event requires its original displayed option with the sampled enabled flag");
         }
         @Override public int instanceId(){return context.binding().eventInstanceId();}
     }
@@ -61,13 +62,13 @@ public final class EventActionPreparation {
         private static final long serialVersionUID=1L;
         private final OpportunityJson.Obj diagnosis;private final ExactRef originalRead;
         public PendingSelectionRejected(OpportunityJson.Obj diagnosis,ExactRef originalRead){
-            super("private pending UI has no source-qualified legal choice; original read="+Objects.requireNonNull(originalRead).sha256());
+            super("private pending UI has no supported retained choice; original read="+Objects.requireNonNull(originalRead).sha256());
             this.diagnosis=Objects.requireNonNull(diagnosis);this.originalRead=originalRead;
         }
         public OpportunityJson.Obj diagnosis(){return diagnosis;}
         public ExactRef originalRead(){return originalRead;}
     }
-    /** Pure legality/identity recheck only. The Root Source separately proves the once-intent and publication CAS lineage. */
+    /** Pure original presentation/identity recheck. The Root Source separately proves the once-intent and publication CAS lineage. */
     public static void requirePendingUiEventCurrent(PendingPrepared original,PendingPrepared actualFresh){
         var old=original.command();var fresh=actualFresh.command();
         StrictJson.require(old.actionId().equals(fresh.actionId())&&old.origin().equals(fresh.origin())&&old.source().equals(fresh.source())
