@@ -1,0 +1,209 @@
+[
+  {
+    "step": "01.query0",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.01.query0.request.json",
+        "original_utf8": "{\"expected_revision\":7}",
+        "bytes": 23,
+        "sha256": "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.01.query0.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-1-query0\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private-0\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":3,\"container_generation\":18300436759549338012,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":37,\"active_scheme_count\":0,\"matching_sway_active\":false,\"native_complete_can_send\":true,\"native_legal_now\":true,\"native_failure_classification\":\"\",\"active_sway_instances\":[]},\"backend_id\":\"native-headless\"}}",
+        "bytes": 708,
+        "sha256": "5734272a5191efbbfdc5d41376c2cdcef7aecf1b92e31f7412fa6713253cf471"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.01.query0.request-id.txt",
+        "original_utf8": "flow-minus2-zero-1-query0",
+        "bytes": 25,
+        "sha256": "467e6e90706abc6b952e2cade8c84b7f8c5b8398664ceab1508cdec02b6550e3"
+      }
+    }
+  },
+  {
+    "step": "02.start",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.02.start.request.json",
+        "original_utf8": "{\"expected_revision\":7,\"action_id\":\"sway-flow-minus2-zero\",\"expected_capture_epoch\":3,\"expected_container_generation\":18300436759549338012,\"expected_target_opinion_of_actor\":\"37\"}",
+        "bytes": 179,
+        "sha256": "8cf226b847613e2ade55a7bc6088a067c251cff2204323c9217db099c5502793"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.02.start.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-2-start\",\"ok\":true,\"result\":{\"step\":\"submit-active-scheme-sway-v1-private-0\",\"accepted\":true,\"status\":\"submitted_verification_pending\",\"private_build\":true,\"advertised\":false,\"active_scheme_sway_formal\":{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"submitted_verification_pending\",\"action_id\":\"sway-flow-minus2-zero\",\"actor_character_id\":-2,\"target_character_id\":0,\"pre_capture_epoch\":4,\"pre_container_generation\":18300436759549338012,\"pre_date_raw\":53220000,\"submit_call_count\":1,\"receipt_pending\":true},\"backend_id\":\"native-headless\"}}",
+        "bytes": 626,
+        "sha256": "ccbb0cbd9c129f82c517bb194a24623de55b48dd4ed57cce4fd9aeb65db81e0e"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.02.start.request-id.txt",
+        "original_utf8": "flow-minus2-zero-2-start",
+        "bytes": 24,
+        "sha256": "86cb02edf3aa4fff18a41d31247f4333fce023d6ee0bafeb4bec346b2c3ddea5"
+      }
+    }
+  },
+  {
+    "step": "03.receipt",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.03.receipt.request.json",
+        "original_utf8": "{\"expected_revision\":7,\"action_id\":\"sway-flow-minus2-zero\"}",
+        "bytes": 59,
+        "sha256": "37dba7b389164894508805f041bb740d91155d3e0a3b6c2a78d12c8f08c01659"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.03.receipt.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-3-receipt\",\"ok\":true,\"result\":{\"step\":\"receipt-active-scheme-sway-v1-private-0\",\"accepted\":true,\"status\":\"applied\",\"private_build\":true,\"advertised\":false,\"active_scheme_sway_formal\":{\"schema\":\"active-scheme-sway-formal-private-v1\",\"stage\":\"applied\",\"action_id\":\"sway-flow-minus2-zero\",\"post_capture_epoch\":5,\"post_container_generation\":15189419816273770301,\"post_date_raw\":53220000,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"postcondition_verified\":true},\"backend_id\":\"native-headless\"}}",
+        "bytes": 577,
+        "sha256": "82b9649a94199d323fb97dc47921f675a9f45364ac91fe0d6069d9260bbaf314"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.03.receipt.request-id.txt",
+        "original_utf8": "flow-minus2-zero-3-receipt",
+        "bytes": 26,
+        "sha256": "5fcb55626ea749917a233eaed722f4943f4f8f5b08a98b4a006d24f855df758f"
+      }
+    }
+  },
+  {
+    "step": "04.post-start",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.04.post-start.request.json",
+        "original_utf8": "{\"expected_revision\":7}",
+        "bytes": 23,
+        "sha256": "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.04.post-start.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-4-post-start\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private-0\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":6,\"container_generation\":15189419816273770301,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":73,\"active_scheme_count\":1,\"matching_sway_active\":true,\"native_complete_can_send\":true,\"native_legal_now\":false,\"native_failure_classification\":\"\",\"active_sway_instances\":[{\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"target_character_id\":0,\"progress\":1,\"progress_goal\":10,\"is_exposed\":false,\"is_frozen\":false}]},\"backend_id\":\"native-headless\"}}",
+        "bytes": 860,
+        "sha256": "eafa18428a5f8719dbfc9a16d54589af985bb40d243b2640d4577a60816535d7"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.04.post-start.request-id.txt",
+        "original_utf8": "flow-minus2-zero-4-post-start",
+        "bytes": 29,
+        "sha256": "96af73c58ae6a530afb4e151ac3882658f4729866ab905e801e64df553256c7f"
+      }
+    }
+  },
+  {
+    "step": "05.finish-target",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.05.finish-target.request.json",
+        "original_utf8": "{\"expected_revision\":7}",
+        "bytes": 23,
+        "sha256": "347d2829e3094d583e8ec3ded3c7114bf0ada600ee3beac6ba3cb99a01b65fe1"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.05.finish-target.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-5-finish-target\",\"ok\":true,\"result\":{\"step\":\"query-active-scheme-sway-target-v1-private-0\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"active_scheme_sway\":{\"schema\":\"active-scheme-sway-private-read-v1\",\"snapshot_revision\":7,\"capture_epoch\":7,\"container_generation\":15189419816273770301,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":73,\"active_scheme_count\":1,\"matching_sway_active\":true,\"native_complete_can_send\":true,\"native_legal_now\":false,\"native_failure_classification\":\"\",\"active_sway_instances\":[{\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"target_character_id\":0,\"progress\":1,\"progress_goal\":10,\"is_exposed\":false,\"is_frozen\":false}]},\"backend_id\":\"native-headless\"}}",
+        "bytes": 863,
+        "sha256": "c15f222d0e52f2613bb9a0e2f59bf683d1559a0dc2e1f07bf586ba5059fd6977"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.05.finish-target.request-id.txt",
+        "original_utf8": "flow-minus2-zero-5-finish-target",
+        "bytes": 32,
+        "sha256": "be78375308538469e6cc5da6b5caa69b61eb402bbc6c4d15cca1cc7472e3f0e3"
+      }
+    }
+  },
+  {
+    "step": "06.finish-completion",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.06.finish-completion.request.json",
+        "original_utf8": "{\"expected_revision\":7,\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0}",
+        "bytes": 94,
+        "sha256": "b0fedb180637f20a0893b891bb5a501e79a104154fc242cbceacde472a8b63de"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.06.finish-completion.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-6-finish-completion\",\"ok\":true,\"result\":{\"step\":\"query-sway-completion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_completion\":{\"schema\":\"xar.ck3.sway_completion.v1\",\"schema_version\":1,\"build_version\":\"1.20.0.4\",\"executable_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"adapter_id\":\"ck3-1.20.0.4-msvc-x64\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"native_source_kind\":\"native_scheme_storage\",\"current_instance_retention\":\"until_native_manager_purge\",\"instance_source_observed\":true,\"instance_present\":true,\"storage_slot_reused\":false,\"exact_instance_join_ready\":true,\"native_owner_raw\":4294967294,\"owner_matches_actor\":true,\"owner_cleared\":false,\"native_status_observed\":true,\"native_status_raw\":0,\"native_status_key\":\"continue\",\"native_terminal_state_observed\":false,\"native_success_chance_observed\":false,\"native_success_chance_raw\":null,\"native_success_chance_scale\":100000,\"native_success_chance_unit\":\"percent\",\"native_can_continue_observed\":false,\"native_can_continue\":null,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"},\"backend_id\":\"native-headless\"}}",
+        "bytes": 1448,
+        "sha256": "b2e2495cee8aa009f6668f3845f50b1627ad21713d4c0d726a38fdabbb160bf9"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.06.finish-completion.request-id.txt",
+        "original_utf8": "flow-minus2-zero-6-finish-completion",
+        "bytes": 36,
+        "sha256": "fd74a6c045aec889ecfd8aef862e7f7a8a15634838fb2db2972a86436a0109cd"
+      }
+    }
+  },
+  {
+    "step": "07.finish-opinion",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.07.finish-opinion.request.json",
+        "original_utf8": "{\"expected_revision\":7,\"actor_character_id\":-2,\"target_character_id\":0}",
+        "bytes": 71,
+        "sha256": "5e8e9e73fdec817cd966142d53210a724d203cb8f0dece0ca91cba490b2dfc4e"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.07.finish-opinion.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-7-finish-opinion\",\"ok\":true,\"result\":{\"step\":\"query-sway-outcome-opinion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_outcome_opinion\":{\"schema\":\"xar.ck3.sway-outcome-opinion-v1\",\"build\":\"1.20.0.4\",\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"target_opinion_of_actor\":73,\"scheme_sway_opinion\":{\"observed\":true,\"present\":true,\"value\":12},\"sway_blocker_opinion\":{\"observed\":true,\"present\":false,\"value\":null},\"instance_terminal_outcome_observed\":false,\"cancel_outcome_observed\":false},\"backend_id\":\"native-headless\"}}",
+        "bytes": 746,
+        "sha256": "407d93facd7a1e95a326dab7def7c6f621ce2d39312186667e9fd27de1cce4bd"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.07.finish-opinion.request-id.txt",
+        "original_utf8": "flow-minus2-zero-7-finish-opinion",
+        "bytes": 33,
+        "sha256": "e4c62ecf4dd4a078d4690f867c4b63ad2c1e12d1572341dce76e9c11990ac8a3"
+      }
+    }
+  },
+  {
+    "step": "08.stop",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.08.stop.request.json",
+        "original_utf8": "{\"expected_revision\":7,\"action_id\":\"stop-sway-flow-minus2-zero\",\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0,\"scheme_instance_generation\":0}",
+        "bytes": 166,
+        "sha256": "b53322f3597ff2a7c6c08bccd5ec8ad3a8d0061051104853aed3b513d460509f"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.08.stop.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-8-stop\",\"ok\":true,\"error\":\"\",\"result\":{\"step\":\"stop-active-scheme-sway-v1-private\",\"accepted\":true,\"private_build\":true,\"advertised\":false,\"read_only\":false,\"backend_id\":\"native-headless\",\"status\":\"submitted_verification_pending\",\"sway_stop\":{\"schema\":\"xar.ck3.selected-sway-stop.v1\",\"action_id\":\"stop-sway-flow-minus2-zero\",\"status\":\"submitted_verification_pending\",\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"snapshot_revision\":7,\"date_raw\":53220000,\"exact_ck3_build\":\"1.20.0.4\",\"exe_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"submit_call_count\":1,\"postcondition_verified\":false,\"terminal_observed\":false,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"}}}",
+        "bytes": 837,
+        "sha256": "9cd387ef6938eaa2a34783634756ad515c6b1fbdb91276979949475e72cedf93"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.08.stop.request-id.txt",
+        "original_utf8": "flow-minus2-zero-8-stop",
+        "bytes": 23,
+        "sha256": "8b9fd24dcbfbef7a20d3521d47891f283094b127bf79314d938ea9e4a77ab927"
+      }
+    }
+  },
+  {
+    "step": "09.post-stop",
+    "files": {
+      "request.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.09.post-stop.request.json",
+        "original_utf8": "{\"expected_revision\":7,\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0}",
+        "bytes": 94,
+        "sha256": "b0fedb180637f20a0893b891bb5a501e79a104154fc242cbceacde472a8b63de"
+      },
+      "response.json": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.09.post-stop.response.json",
+        "original_utf8": "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"flow-minus2-zero-9-post-stop\",\"ok\":true,\"result\":{\"step\":\"query-sway-completion-v1-private\",\"accepted\":true,\"status\":\"available\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"sway_completion\":{\"schema\":\"xar.ck3.sway_completion.v1\",\"schema_version\":1,\"build_version\":\"1.20.0.4\",\"executable_sha256\":\"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\"adapter_id\":\"ck3-1.20.0.4-msvc-x64\",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"available\":true,\"unavailable_reason\":\"\",\"snapshot_revision\":7,\"date_raw\":53220000,\"actor_character_id\":-2,\"target_character_id\":0,\"scheme_instance_id\":0,\"scheme_instance_generation\":0,\"native_source_kind\":\"native_scheme_storage\",\"current_instance_retention\":\"until_native_manager_purge\",\"instance_source_observed\":true,\"instance_present\":true,\"storage_slot_reused\":false,\"exact_instance_join_ready\":true,\"native_owner_raw\":4294967294,\"owner_matches_actor\":true,\"owner_cleared\":false,\"native_status_observed\":true,\"native_status_raw\":0,\"native_status_key\":\"continue\",\"native_terminal_state_observed\":false,\"native_success_chance_observed\":false,\"native_success_chance_raw\":null,\"native_success_chance_scale\":100000,\"native_success_chance_unit\":\"percent\",\"native_can_continue_observed\":false,\"native_can_continue\":null,\"terminal_cause_observed\":false,\"terminal_cause\":\"unknown\"},\"backend_id\":\"native-headless\"}}",
+        "bytes": 1440,
+        "sha256": "5b7ab738bba503eab8294a3b1dc5bac8d49554f63b2512fb06a3e75f43aba2ba"
+      },
+      "request-id.txt": {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\start-stop-flow-next\\wire\\minus2-zero.09.post-stop.request-id.txt",
+        "original_utf8": "flow-minus2-zero-9-post-stop",
+        "bytes": 28,
+        "sha256": "3d0c3c97ab740ddf17df095fef23defca2aa1d1f2c59b12f11015af9dc82f1ff"
+      }
+    }
+  }
+]
