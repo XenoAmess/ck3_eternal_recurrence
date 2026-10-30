@@ -185,3 +185,35 @@ The actual failures and corrected fixture are retained in
 The first 12 failures came from an impossible two-generations-in-one-slot
 fixture; only that fixture was corrected/recompiled, with no production change.
 The new D action case is not claimed as a persistent CI target.
+
+## M3 total-player monthly-piety binder
+
+The shared source now binds the existing typed monthly-piety callback to the
+exact .4 `GetPietyBalance` numeric dispatcher at RVA `2696F20`. This is the
+final player monthly net rate, separate from the council task-owner ID97
+modifier. The chain was located from the actual registration/literal/GUI caller
+through numeric 457 B, aggregate 204 B and held gross/cost/final/profile inputs,
+without using a guessed old-build address delta.
+
+Z after the one-hunk edit exactly matches the M3 candidate that passed its
+complete public-binder → mapped original numeric/aggregate → full Root → task
+piety leaf → serializer software chain, 3 signed/zero scenes/282 checks. Z also
+contains older, unpublished signed-Root changes outside this task. Those
+unrelated dirty hunks are preserved and excluded from the new publication.
+
+The publication's source contains only the new binder hunk on the actual
+upstream source. It was independently strictly compiled and exercised in one
+new positive-player full-producer scene/93 checks. Its normalized SHA-256 is
+`65fc7f2477a346db960a430f8c5ee78ffd29f8b6f44d2dc51acc86f77ce6581c`.
+The public binder calls the relocated original 661 B; lower resource terms and
+native callbacks remain synthetic. The resulting synthetic total is 43750 at
+scale100000. No signed-Root upstream support, complete lower-term execution,
+current engine image call, actual monthly credit or Game outcome is inferred.
+No unchanged test was repeated; the distinct publication baseline required its
+own single-scene combination.
+
+Evidence: `D:/ck3-state/resume90-m3-native/getter-producer/{SOURCE-INDEX90.json,RESULT90.json}`,
+`full-root/{PUBLISHED-BINDER-ACTUAL90.json,RUN04.log,RUN05.log,packets05/}` under
+the same M3 root. The new owned-image fixtures remain D cases rather than a
+new persistent CI target. The existing shared reader/serializer contract is
+unchanged, and no DLL or Game deployment occurred.

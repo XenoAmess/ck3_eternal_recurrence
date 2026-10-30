@@ -1136,9 +1136,10 @@ void PopulateEnvironment(
   environment.top_liege = reinterpret_cast<decltype(environment.top_liege)>(base + 0x28BFD80);
   environment.province_holder_character_id = reinterpret_cast<decltype(environment.province_holder_character_id)>(base + 0x247D010);
 
-  // The total-player .2 helper still embeds unheld actual4 native addresses.
-  // Current task-owner piety uses the independently closed actual4 modifier.
-  environment.monthly_piety = nullptr;
+  // Exact4 GetPietyBalance registration -> Character/tag0 numeric dispatcher.
+  // This is the final player monthly net rate, separate from task-owner ID97.
+  environment.monthly_piety =
+      reinterpret_cast<decltype(environment.monthly_piety)>(base + 0x2696F20);
   environment.task_owner_monthly_piety =
       &ReadCampaignRootTaskOwnerMonthlyPiety12004;
 }
