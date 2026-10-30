@@ -13,9 +13,16 @@ import static org.xar.ck3.control.application.planning.prisoners.PrisonerPlannin
 
 /** Reads the sole writer's already imported originals. This adapter never imports, initializes, previews or commits a body. */
 public final class PrisonerDomainBodyReader12004 implements LedgerReadPort {
-    private final DomainBodies.Store store;
+    @FunctionalInterface public interface DomainReadPort {
+        DomainBodies.Read read(DomainBodies.Slot slot) throws IOException;
+    }
+    private final DomainReadPort store;
     private final String machineId;
     public PrisonerDomainBodyReader12004(DomainBodies.Store store, String machineId) {
+        this(Objects.requireNonNull(store)::read, machineId);
+    }
+    /** Installed planning reads may borrow the active Session without adding import methods. */
+    public PrisonerDomainBodyReader12004(DomainReadPort store, String machineId) {
         this.store = Objects.requireNonNull(store); this.machineId = StrictJson.text(machineId);
     }
     @Override public LedgerView read(PlanningRequest request) {

@@ -74,7 +74,7 @@ public final class PrisonersRuntimeInstaller {
         queries=new PrisonerPlanningPorts.Queries(nativeQueries.contracts(),id->context.readCatalog().issue(warFamily,new WarId(id)));
         preparation=new PrisonerActionBinding12004(context.archive(),queries);
         configuration.definitions().attachCurrent(context,preparation,nativeQueries.contract(0));
-        var ledgers=new PrisonerDomainBodyReader12004(context.writer(),context.game().machineId());
+        var ledgers=new PrisonerDomainBodyReader12004(slot -> context.borrowedSession().readDomain(slot),context.game().machineId());
         ordinary=new PrisonerPlanningPorts.Bindings(context.reads(),queries,Optional.of(catalog()),ledgers,preparation,
                 (request,value)->new PrisonerPlanningPorts.RecordUnavailable("actual native succession producer/record port must be supplied by the sole M3 owner"));
         var originals=new PrisonerLegacyBinding12004(context.writer(),context.archive(),context.core().actions(),preparation);
