@@ -27,12 +27,17 @@ public final class OrdinaryPlanner {
     private final Clock clock;
     private final RealmLifecycle realmLifecycle;
     private volatile OrdinaryDecisionSelector selector;
+    private volatile boolean m5JointPeacetimeEnabled = true;
 
     /** One per-Game provider is shared by both actual planner factories. */
     public synchronized void bindSelector(OrdinaryDecisionSelector actual) {
         Objects.requireNonNull(actual);
         StrictJson.require(selector == null, "ordinary decision selector already bound");
         selector = actual;
+    }
+
+    public synchronized void setM5JointPeacetimeEnabled(boolean actual) {
+        m5JointPeacetimeEnabled = actual;
     }
 
     public OrdinaryPlanner(List<OrdinaryPolicy> implementations, Clock clock, RealmLifecycle realmLifecycle) {
@@ -237,6 +242,10 @@ public final class OrdinaryPlanner {
         private void run(PlanningStage stage) {
             if (result != null) return;
             if (!clock.instant().isBefore(request.deadline())) { result = stop(StopReason.DEADLINE, "ordinary planning deadline expired"); return; }
+            if (stage == PlanningStage.M5_JOINT_PEACETIME && !m5JointPeacetimeEnabled) {
+                visits.add(new StageVisit(stage, Outcome.NOT_APPLICABLE, "m5_joint_peacetime_enabled=false", Optional.empty(), Optional.empty()));
+                return;
+            }
             OrdinaryPolicy policy = policies.get(stage);
             if (completedOptional.filter(stage::equals).isPresent()) {
                 visits.add(visit(policy, Outcome.NOT_APPLICABLE,

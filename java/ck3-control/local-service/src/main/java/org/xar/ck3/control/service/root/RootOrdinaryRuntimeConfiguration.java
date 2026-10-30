@@ -45,7 +45,8 @@ public final class RootOrdinaryRuntimeConfiguration {
         "stop_path", "retained_frames", "retained_origins", "operation_timeout_ms",
         "freshness_ms", "heartbeat_maximum_age_ms", "batch_id_prefix", "maximum_turns",
         "batch_wall_ms", "readiness_timeout_ms", "poll_interval_ms", "checkpoint_every_advances",
-        "maximum_frames_per_operation", "maximum_submissions", "maximum_storage_bytes", "decision_provider"
+        "maximum_frames_per_operation", "maximum_submissions", "maximum_storage_bytes", "decision_provider",
+        "m5_joint_peacetime_enabled"
     );
 
     private final Path configurationFile;
@@ -71,6 +72,7 @@ public final class RootOrdinaryRuntimeConfiguration {
     private final long maximumStorageBytes;
     private final RootOrdinaryWorkerLoop.Configuration loopConfig;
     private final java.util.Optional<DecisionProvider> decisionProvider;
+    private final boolean m5JointPeacetimeEnabled;
 
     public static RootOrdinaryRuntimeConfiguration read(Path configPath) throws IOException {
         try {
@@ -138,6 +140,11 @@ public final class RootOrdinaryRuntimeConfiguration {
         long readinessTimeoutMs = root.has("readiness_timeout_ms") ? StrictJson.integer(root.get("readiness_timeout_ms"), 1, StrictJson.MAX_SAFE_INTEGER) : 30000L;
         long pollIntervalMs = root.has("poll_interval_ms") ? StrictJson.integer(root.get("poll_interval_ms"), 1, StrictJson.MAX_SAFE_INTEGER) : 250L;
         int checkpointEveryAdvances = root.has("checkpoint_every_advances") ? (int) StrictJson.integer(root.get("checkpoint_every_advances"), 1, Integer.MAX_VALUE) : 1;
+        boolean m5JointPeacetimeEnabled = true;
+        if (root.has("m5_joint_peacetime_enabled")) {
+            StrictJson.require(root.get("m5_joint_peacetime_enabled").isBoolean(), "actual JSON boolean required");
+            m5JointPeacetimeEnabled = root.get("m5_joint_peacetime_enabled").booleanValue();
+        }
 
         RootOrdinaryWorkerLoop.Configuration loopConfig = new RootOrdinaryWorkerLoop.Configuration(
             batchIdPrefix,
@@ -184,7 +191,7 @@ public final class RootOrdinaryRuntimeConfiguration {
             maximumFramesPerOperation,
             maximumSubmissions,
             maximumStorageBytes,
-            loopConfig, decisionProvider
+            loopConfig, decisionProvider, m5JointPeacetimeEnabled
         );
     }
 
@@ -265,7 +272,8 @@ public final class RootOrdinaryRuntimeConfiguration {
         int maximumSubmissions,
         long maximumStorageBytes,
         RootOrdinaryWorkerLoop.Configuration loopConfig,
-        java.util.Optional<DecisionProvider> decisionProvider
+        java.util.Optional<DecisionProvider> decisionProvider,
+        boolean m5JointPeacetimeEnabled
     ) {
         this.configurationFile = configurationFile;
         this.machineId = machineId;
@@ -290,6 +298,7 @@ public final class RootOrdinaryRuntimeConfiguration {
         this.maximumStorageBytes = maximumStorageBytes;
         this.loopConfig = loopConfig;
         this.decisionProvider = java.util.Objects.requireNonNull(decisionProvider);
+        this.m5JointPeacetimeEnabled = m5JointPeacetimeEnabled;
     }
 
     public Path configurationFile() { return configurationFile; }
@@ -315,4 +324,5 @@ public final class RootOrdinaryRuntimeConfiguration {
     public long maximumStorageBytes() { return maximumStorageBytes; }
     public RootOrdinaryWorkerLoop.Configuration loop() { return loopConfig; }
     public java.util.Optional<DecisionProvider> decisionProvider() { return decisionProvider; }
+    public boolean m5JointPeacetimeEnabled() { return m5JointPeacetimeEnabled; }
 }

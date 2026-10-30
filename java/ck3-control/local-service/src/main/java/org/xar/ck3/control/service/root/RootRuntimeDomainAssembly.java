@@ -365,6 +365,7 @@ public final class RootRuntimeDomainAssembly {
             StrictJson.require(pipeline==null,"the actual full ordinary pipeline binds once after catalog completion");
             pipeline=Objects.requireNonNull(actual);planner=actual.create(context.clock());
             context.core().decisionSelector().ifPresent(planner::bindSelector);
+            planner.setM5JointPeacetimeEnabled(context.core().m5JointPeacetimeEnabled());
         }
         @Override public synchronized OrdinaryPlanner get(){
             StrictJson.require(planner!=null,"INCOMPLETE_ROOT_RUNTIME: Sway continuation requires the actual complete current ordinary planner");return planner;

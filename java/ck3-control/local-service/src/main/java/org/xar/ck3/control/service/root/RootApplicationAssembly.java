@@ -112,6 +112,7 @@ public final class RootApplicationAssembly {
         private final ReconciliationLink initialReconciliation = new ReconciliationLink();
         private final ThreadLocal<ContinuityStorePort.Session> planningSession = new ThreadLocal<>();
         private org.xar.ck3.control.application.planning.OrdinaryDecisionSelector decisionSelector;
+        private boolean m5JointPeacetimeEnabled = true;
         private final Set<DriverBootstrap.Adopted> adopted = Collections.newSetFromMap(new IdentityHashMap<>());
         private boolean staged;
         private boolean finished;
@@ -186,6 +187,12 @@ public final class RootApplicationAssembly {
         public synchronized void bindDecisionSelector(org.xar.ck3.control.application.planning.OrdinaryDecisionSelector actual) {
             StrictJson.require(decisionSelector == null, "per-Game ordinary selector already bound");
             decisionSelector = Objects.requireNonNull(actual);
+        }
+        public synchronized void bindM5JointPeacetimeEnabled(boolean actual) {
+            m5JointPeacetimeEnabled = actual;
+        }
+        public synchronized boolean m5JointPeacetimeEnabled() {
+            return m5JointPeacetimeEnabled;
         }
         public synchronized Optional<org.xar.ck3.control.application.planning.OrdinaryDecisionSelector> decisionSelector() {
             return Optional.ofNullable(decisionSelector);
@@ -2294,6 +2301,7 @@ public final class RootApplicationAssembly {
                 RootControllerActions controllerActions = new RootControllerActions(core, identity, coordinator);
                 var ordinaryPlanner = pipeline.create(core.clock);
                 core.decisionSelector().ifPresent(ordinaryPlanner::bindSelector);
+                ordinaryPlanner.setM5JointPeacetimeEnabled(core.m5JointPeacetimeEnabled());
                 SessionController controller = new SessionController(identity, (owned, until) -> game.inspect(owned.game(), until), observations,
                         ordinaryPlanner, controllerActions, checkpoints, requests, batches, offline, sessionClock, baseline, admittedSavedDays, readCompletion, episodes);
                 controller.bindDecisionDisplay(core.audienceDisplay());

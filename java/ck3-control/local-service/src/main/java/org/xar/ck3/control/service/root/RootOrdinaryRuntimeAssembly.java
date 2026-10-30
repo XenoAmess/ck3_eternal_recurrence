@@ -167,6 +167,7 @@ public final class RootOrdinaryRuntimeAssembly {
             if(actual.mode()!=ManagedGameSession.Mode.ATTACHED)throw new IOException("ordinary worker requires the actual supervisor attachment");
             entered=true;game=actual;lifecycle.adoptAttached(actual);
             core=RootApplicationAssembly.open(app,clock,catalogs.domainRegistrations(),Optional.empty(),storage);
+            core.bindM5JointPeacetimeEnabled(config.m5JointPeacetimeEnabled());
             ports.bindCore(core);catalogs.bindCore(core);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
         }
