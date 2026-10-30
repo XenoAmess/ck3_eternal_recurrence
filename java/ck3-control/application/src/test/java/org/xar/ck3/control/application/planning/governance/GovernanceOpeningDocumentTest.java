@@ -82,4 +82,19 @@ final class GovernanceOpeningDocumentTest {
         assertThrows(IllegalArgumentException.class,()->new GovernanceOpeningDocument.Document(original.observed(),SOURCE,original.sessionId(),OpeningStage.COMPLETE,
                 Optional.empty(),Optional.empty(),List.of(REF),Optional.empty(),Optional.of(foreignEpisode)));
     }
+
+    @Test void consumedSameGameFocusDocumentRetainsOriginalActionAndCommandWithoutManufacturingSave() {
+        var original=initial();
+        var complete=new GovernanceOpeningDocument.Document(original.observed(),SOURCE,original.sessionId(),OpeningStage.COMPLETE,
+                Optional.of(REF),Optional.empty(),List.of(REF),Optional.of(REF),Optional.empty());
+        var decoded=GovernanceOpeningDocument.decode(GovernanceOpeningDocument.encode(complete));
+        assertEquals(complete,decoded);
+        assertTrue(decoded.checkpoint().isEmpty());
+        assertEquals(Optional.of(REF),decoded.actionReceipt());
+        assertEquals(Optional.of(REF),decoded.preparedCommand());
+        assertThrows(IllegalArgumentException.class,()->new GovernanceOpeningDocument.Document(original.observed(),SOURCE,
+                original.sessionId(),OpeningStage.COMPLETE,Optional.empty(),Optional.empty(),List.of(REF),
+                Optional.of(REF),Optional.empty()));
+    }
+
 }

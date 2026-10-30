@@ -23,6 +23,14 @@ public final class GovernanceReceipts {
                 "current governance receipt consumption crossed its actual source/session");
         return consumeAtFrame(receipt,current.before(),checkpoint,opening);
     }
+    /** A current physical Game consumes its applied focus on the following formal frame without requiring a SAVE. */
+    public static Consumption consumeOpeningSameGame(ActionReceipt receipt, PlanningRequest current,
+            Optional<CheckpointFact> checkpoint) {
+        Objects.requireNonNull(receipt); Objects.requireNonNull(current); Objects.requireNonNull(checkpoint);
+        StrictJson.require(receipt.command().operation().equals(GovernancePolicies.FOCUS),
+                "same-Game opening consumption requires its original focus action");
+        return consume(receipt, current, checkpoint, checkpoint.isPresent());
+    }
     /** Archived SAVE semantics can supply the actual original formal frame after the physical Game was restored. */
     public static Consumption consumeAtFrame(ActionReceipt receipt, org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity now,
             Optional<CheckpointFact> checkpoint, boolean opening) {

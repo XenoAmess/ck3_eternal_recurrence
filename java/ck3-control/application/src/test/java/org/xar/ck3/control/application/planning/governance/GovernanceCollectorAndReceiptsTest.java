@@ -518,4 +518,59 @@ final class GovernanceCollectorAndReceiptsTest {
         }
         assertEquals(1,writes.get());
     }
+
+    @Test void sameGameOpeningConsumesIndependentAppliedFocusOnFollowingFrameWithoutSaveOrReplay() {
+        var journal = new Journal(); var writes = new AtomicInteger();
+        var coordinator = coordinator(journal, writes, true);
+        var receipt = coordinator.execute(openingCommand());
+        assertEquals(GovernanceReceipts.Status.WAIT_FOLLOWING_TURN,
+                GovernanceReceipts.consumeOpeningSameGame(receipt, request(10,true,List.of()), Optional.empty()).status());
+        var following = request(11,true,List.of());
+        assertEquals(GovernanceReceipts.Status.CONSUMED,
+                GovernanceReceipts.consumeOpeningSameGame(receipt, following, Optional.empty()).status());
+        assertEquals(receipt, coordinator.execute(receipt.command()));
+        assertEquals(1,writes.get());
+    }
+    @Test void sameGameOpeningRetainsUnknownAndRejectsAnotherOperationOrGame() {
+        var journal = new Journal(); var writes = new AtomicInteger();
+        var receipt = coordinator(journal,writes,false).execute(openingCommand());
+        assertEquals(GovernanceReceipts.Status.UNRESOLVED,
+                GovernanceReceipts.consumeOpeningSameGame(receipt,request(11,true,List.of()),Optional.empty()).status());
+        assertEquals(1,writes.get());
+        var crown=coordinator(new Journal(),new AtomicInteger(),true).execute(crownCommand());
+        assertThrows(IllegalArgumentException.class,()->GovernanceReceipts.consumeOpeningSameGame(
+                crown,request(11,true,List.of()),Optional.empty()));
+        var current=request(11,true,List.of());
+        var otherGame=new ObservationIdentity(current.before().machineId(),
+                new GameGeneration(current.before().game().pid(),new PythonOnlyUInt64(new BigInteger("133700000000000002"))),
+                current.before().frame(),current.before().observationVersion());
+        var foreign=new PlanningRequest(otherGame,current.source(),current.sessionId(),current.deadline(),current.observations());
+        var applied=coordinator(new Journal(),new AtomicInteger(),true).execute(openingCommand());
+        assertThrows(IllegalArgumentException.class,()->GovernanceReceipts.consumeOpeningSameGame(applied,foreign,Optional.empty()));
+    }
+    @Test void sameGameOpeningStillValidatesAnyRetainedCheckpoint() {
+        var receipt=coordinator(new Journal(),new AtomicInteger(),true).execute(openingCommand());
+        var following=request(11,true,List.of());
+        var checkpoint=new CheckpointFact(receipt.command().actionId(),identity(10),REF);
+        assertEquals(GovernanceReceipts.Status.CONSUMED,
+                GovernanceReceipts.consumeOpeningSameGame(receipt,following,Optional.of(checkpoint)).status());
+        var wrong=new CheckpointFact("different-action",identity(10),REF);
+        assertThrows(IllegalArgumentException.class,()->GovernanceReceipts.consumeOpeningSameGame(receipt,following,Optional.of(wrong)));
+        assertEquals(GovernanceReceipts.Status.WAIT_CHECKPOINT,
+                GovernanceReceipts.consume(receipt,following,Optional.empty(),true).status());
+    }
+    @Test void openingPolicyEmitsReadOnlyConsumptionForSameGameAppliedFocusWithoutCheckpoint() {
+        var receipt=coordinator(new Journal(),new AtomicInteger(),true).execute(openingCommand());
+        var current=request(11,true,List.of());
+        var supplier=new Supplier(current);
+        supplier.state=new Durable(current.before(),current.sessionId(),Optional.empty(),
+                Optional.of(new OpeningGate(current.before().frame().episodeRunId(),
+                        current.before().frame().identity().dateRaw(),OpeningStage.AWAIT_CONSUMPTION,
+                        Optional.of(receipt),Optional.empty())),Optional.of(clear()),Optional.of(clear()));
+        var decision=new GovernancePolicies.Opening(supplier,REF).evaluate(current,advance(current));
+        var replaced=assertInstanceOf(OrdinaryPolicy.Replace.class,decision);
+        assertTrue(replaced.draft().command().isEmpty());
+        assertEquals(0,supplier.lifeReads);
+    }
+
 }

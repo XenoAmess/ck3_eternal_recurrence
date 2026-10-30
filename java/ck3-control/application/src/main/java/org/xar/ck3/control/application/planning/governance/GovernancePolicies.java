@@ -130,10 +130,16 @@ public final class GovernancePolicies {
             if (LifestyleHistory.select(GovernanceCollector.lifecycleHistory(request)).status() != LifestyleHistory.Status.CLEAR && gate.action().isEmpty())
                 return new Wait("an original opening LIFE action remains unresolved before any current-focus query");
             if (gate.action().isPresent()) {
-                var consumed = GovernanceReceipts.consume(gate.action().orElseThrow(), request, gate.checkpoint(), true);
+                var original = gate.action().orElseThrow();
+                var consumed = original.command().before().game().equals(request.before().game())
+                        ? GovernanceReceipts.consumeOpeningSameGame(original, request, gate.checkpoint())
+                        : GovernanceReceipts.consume(original, request, gate.checkpoint(), true);
                 if (consumed.status() != GovernanceReceipts.Status.CONSUMED) return new Wait(consumed.reason());
-                Obj intent = new Obj(Map.of()).with("opening_required_gate_intent", new Text("complete_after_receipt_consumption_and_checkpoint"))
-                        .with("action_id", new Text(consumed.original().command().actionId())).with("checkpoint_receipt_path", new Text(gate.checkpoint().orElseThrow().actualReceipt().path()));
+                Obj intent = new Obj(Map.of()).with("opening_required_gate_intent", new Text(gate.checkpoint().isPresent()
+                        ? "complete_after_receipt_consumption_and_checkpoint" : "complete_after_receipt_consumption"))
+                        .with("action_id", new Text(consumed.original().command().actionId()));
+                if (gate.checkpoint().isPresent()) intent = intent.with("checkpoint_receipt_path",
+                        new Text(gate.checkpoint().orElseThrow().actualReceipt().path()));
                 return new Replace(new Draft("java-opening-focus-v1", "initial_lifestyle_focus_consumption", consumed.reason(), Kind.OPENING_FOCUS,
                         Optional.empty(), Purpose.READ_ONLY, Optional.of(Domain.lifestyle), intent), consumed.reason());
             }

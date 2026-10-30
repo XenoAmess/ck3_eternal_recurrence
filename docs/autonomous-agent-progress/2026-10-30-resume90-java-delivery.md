@@ -125,3 +125,7 @@ M6 两个后继严格按最终包采用：`NS80-SIGNED-COMPLETE` 十一叶自带
 NS80 仅实际 .4 reason request/body/row 支持 canonical signed/0 Character，.2/.3 的 prepare/decode 保持正域。九个实际 Native 公共响应覆盖 (-2,0)、(0,MAX)、(MIN,MAX) 三对×dead/war/range，五个 notification outcome 全false；没有编造负target正例，reason不是cause。实际旧320-tool schema为无min/max的integer，未改service metadata。原 Native index 后加发表布局元数据的hash变化及包装首错已保留，九个原响应path/bytes/SHA未变，不把新index说成先前原始index。
 
 Common 两site逐row校验 exact call/return/callee，raw DL2/1 只保留原字节，original_returned 不授RAX含义。Native serializer 是按本次filtered records是否含第二site决定v2，empty/primary-only输出v1；Java保持该动态合同。新增真实 failed-install filteredempty、successfulsecond、sessionrotation unavailableempty、recoveredprimaryonly与filteredempty五包实际覆盖这些分支。Native 的 restore_unproven partial-install 漏口已由实际fault seam复现并以per-site callbacks_admitted修复；本岗不靠旧3包或静态推断代替这个新覆盖。两组仍为 caller-owned软件内存/接口/队列回放，无当前DLL、installer/Game、cause、成功Start或物质收益信用。发表顺序等待Native最终两组先正常提交，再普通rebase交付Java。
+
+早前 noSAVE opening producer 的其余三生产与两测试叶已独立采用：同一physical Game只在原APPLIED focus后续正式帧消费，不强制SAVE；原 UNKNOWN、不同行为/机器/局、已保留 checkpoint 的校验和替换进程分支仍保持。Document 已在恢复组最小采用，此次精确排除，未重交整叶。GovernancePolicies/Receipts/OpeningTransitions 三完整类严格 javac0/3.602秒，当前 Policy/Transitions 与原最终候选语义完全相同；复用原 `opening-samegame66/VERIFICATION.json` 两完整类29P，不重绿或请求模型。原历史模型只贡献已复核的一个accessor修正，不代表当前服务已恢复使用。本轮HTTP/探测/重试仍0。
+
+producer 原12:51采用回执、实际seq31/32链与scope边界由 `runtime64-opening-samegame86/SOURCE-STOP.json` 和 `resume90-runtime/opening-provenance95/FINDING.json` 说明；本次仅正式开发源交付，不重新执行Focus/开局或授新Game进展。前文“余三producer未交”的边界在本组普通发表后解除，原历史事实保留。

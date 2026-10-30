@@ -40,7 +40,9 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         context.writer().requireSession(same);var document=GovernanceOpeningDocument.decode(body(same).canonicalBody());
         if(document.stage()!=OpeningStage.AWAIT_CONSUMPTION||document.checkpoint().isPresent()||document.actionReceipt().isEmpty())return Optional.empty();
         var receipt=receipt(same,document.actionReceipt().orElseThrow());validate(same,receipt);
-        return receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED?Optional.of(new CheckpointRequired(receipt)):Optional.empty();
+        if(receipt.outcome()!=ActionReceipt.Outcome.APPLIED_CONFIRMED)return Optional.empty();
+        if(receipt.command().before().game().equals(context.game().generation()))return Optional.empty();
+        return Optional.of(new CheckpointRequired(receipt));
     }
     @Override public ExecutionDisposition afterExecution(ActionReceipt actual){
         if(!actual.command().operation().equals(GovernancePolicies.FOCUS)||!actual.settled())return new Unchanged("opening retains actual unresolved/other-domain receipt");
@@ -60,6 +62,11 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
                 if(!retained.orElseThrow().settled())return new Unchanged("opening exact original pending/UNKNOWN preserved");var actual=retained.orElseThrow();var original=receiptRef(same,actual);
                 if(document.actionReceipt().isEmpty()||!document.actionReceipt().orElseThrow().equals(original)){var payload=StrictJson.object();payload.set("receipt",original.toJson());return planning(same,Kind.RECEIPT,before,payload);}
                 if(actual.outcome()!=ActionReceipt.Outcome.APPLIED_CONFIRMED)return new Unchanged("opening confirmed rejection retained without completion credit");
+                if(document.checkpoint().isEmpty()&&request.before().game().equals(actual.command().before().game())) {
+                    var consumed=GovernanceReceipts.consumeOpeningSameGame(actual,request,document.checkpoint());
+                    if(consumed.status()!=GovernanceReceipts.Status.CONSUMED)return new Unchanged(consumed.reason());
+                    return planning(same,Kind.CONSUME,before,current(same,request));
+                }
                 if(document.checkpoint().isEmpty()){
                     CheckpointPair pair;
                     if(!request.before().game().equals(actual.command().before().game()))try {
@@ -166,7 +173,9 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
             }else StrictJson.require(checkpoint.restorationBasis().isEmpty(),"same-Game checkpoint cannot substitute a replacement proof");
             boolean consumed=restored&&GovernanceReceipts.consumeAtFrame(focus,pair.frame(),Optional.of(fact),true).status()==GovernanceReceipts.Status.CONSUMED;
             return encode(old,old.observed(),consumed?OpeningStage.COMPLETE:OpeningStage.AWAIT_CONSUMPTION,old.actionReceipt(),Optional.of(fact),refs,old.preparedCommand(),old.existingObserved());}
-        StrictJson.object(payload,Set.of("request","semantic"));StrictJson.require(input.kind()==Kind.CONSUME&&old.checkpoint().isPresent()&&GovernanceReceipts.consume(focus,current,old.checkpoint(),true).status()==GovernanceReceipts.Status.CONSUMED,"opening has not reached actual following-turn action/checkpoint consumption");
+        StrictJson.object(payload,Set.of("request","semantic"));StrictJson.require(input.kind()==Kind.CONSUME
+                &&GovernanceReceipts.consumeOpeningSameGame(focus,current,old.checkpoint()).status()==GovernanceReceipts.Status.CONSUMED,
+                "opening has not reached actual following-turn original focus consumption");
         return encode(old,old.observed(),OpeningStage.COMPLETE,old.actionReceipt(),old.checkpoint(),refs,old.preparedCommand(),old.existingObserved());}
     static void requireExisting(GovernanceOpeningDocument.Document document,Optional<ActionReceipt> canonical) {
         StrictJson.require(document.actionReceipt().isEmpty()&&document.checkpoint().isEmpty()
