@@ -1,13 +1,13 @@
 package org.xar.ck3.control.service.root;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.*;
@@ -25,6 +25,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 public final class RootFamilyBridge implements FamilyDomainSource.CurrentBridge {
     public static final String SCHEMA="xar.java.family-bridge-original/v1";
     private static final int MAX=DriverJson.MAX_NATIVE_BYTES;
+    private static final int MANIFEST_MAX=StrictJson.INPUT_MAX_BYTES;
     private final RootRuntimeContext context;
     public RootFamilyBridge(RootRuntimeContext context) {this.context=java.util.Objects.requireNonNull(context);}
     public record Evidence(FamilyDomainSource.BridgeObservation observation,Complete frame,ExactRef semantic) { }
@@ -42,12 +43,10 @@ public final class RootFamilyBridge implements FamilyDomainSource.CurrentBridge 
         var diagnostics=OpportunityJson.object(frame.semantic().get("diagnostics"),"actual native diagnostics");
         StrictJson.require(OpportunityJson.integer(diagnostics.get("bridge_pid"),"bridge_pid").equals(BigInteger.valueOf(frame.identity().game().pid()))
                 && OpportunityJson.integer(diagnostics.get("connection_generation"),"connection_generation").equals(frame.connectionGeneration()),"actual native bridge identity/connection differs from the held source");
-        var body=StrictJson.object().put("schema",SCHEMA).put("machine_id",frame.identity().machineId()).put("session_id",frame.sessionId());
-        body.set("game",frame.identity().game().toJson());body.put("bridge_pid",frame.identity().game().pid()).put("bridge_creation_date",creationToken(frame.identity().game()));
         var basis=NativeEffectEvidence.basis(frame);
         StrictJson.require(basis.nativeFrame().equals(lease.semantic().originalNativePacket()),"actual complete frame and held native packet differ");
-        body.set("native_frame",basis.nativeFrame().toJson());body.set("driver_facts",basis.driverFacts().toJson());body.set("semantic",lease.semantic().semantic().toJson());
-        byte[] encoded=StrictJson.canonical(body,MAX);var reference=context.archive().preserveArtifact(same,encoded,MAX);
+        byte[] encoded=encodeManifest(frame,lease.semantic().semantic());
+        var reference=context.archive().preserveArtifact(same,encoded,MANIFEST_MAX);
         context.writer().requireSession(same);return replay(same,reference);
     }
     public FamilyNativePreparation.VerifiedBasis verified(Session same,LeaseSnapshot lease,ActionCommand command)throws IOException {
@@ -60,12 +59,11 @@ public final class RootFamilyBridge implements FamilyDomainSource.CurrentBridge 
         var actual=current(same,lease);return new FamilyNativePreparation.VerifiedBasis(actual.frame().semantic(),actual.observation().identity(),actual.semantic(),actual.observation().evidence());
     }
     public Evidence replay(Session same,ExactRef original)throws IOException {
-        context.writer().requireSession(same);byte[] bytes=context.archive().readArtifact(same,original,MAX);
-        var body=StrictJson.object(StrictJson.parse(bytes,MAX),Set.of("schema","machine_id","session_id","game","bridge_pid","bridge_creation_date","native_frame","driver_facts","semantic"));
-        StrictJson.require(SCHEMA.equals(StrictJson.text(body.get("schema"))),"original family Bridge schema differs");
+        context.writer().requireSession(same);byte[] bytes=context.archive().readArtifact(same,original,MANIFEST_MAX);
+        var body=decodeManifest(bytes);
         var basis=new NativeEffectEvidence.FrameBasis(ExactRef.fromJson(body.get("native_frame")),ExactRef.fromJson(body.get("driver_facts")));
         var frame=context.frameLoader().load(basis,context.archive().withSession(same));ExactRef semantic=ExactRef.fromJson(body.get("semantic"));
-        StrictJson.require(Arrays.equals(DriverJson.encode(frame.semantic()),context.archive().readArtifact(same,semantic,MAX))
+        StrictJson.require(matchesSemantic(frame,context.archive().readArtifact(same,semantic,MAX))
                 && matchesPersistedGame(body.get("game"), frame.identity().game()) && StrictJson.text(body.get("machine_id")).equals(frame.identity().machineId())
                 && StrictJson.text(body.get("session_id")).equals(frame.sessionId()),"original Bridge native/Driver/semantic source drift");
         long pid=StrictJson.integer(body.get("bridge_pid"),1,0xffff_ffffL);String birth=StrictJson.text(body.get("bridge_creation_date"));
@@ -84,6 +82,26 @@ public final class RootFamilyBridge implements FamilyDomainSource.CurrentBridge 
                     && guard.binding().connectionGeneration().equals(frame.connectionGeneration()) && guard.originalBindingSha256().equals(frame.fullBindingSha256()),"family read and Bridge are not the same original complete frame");
             context.writer().requireSession(same);return true;
         } catch(IOException|RuntimeException unavailable) {return false;}
+    }
+
+    /** Pure original encoding only; the caller retains the actual held-source checks. */
+    static byte[] encodeManifest(Complete frame,ExactRef semantic) {
+        java.util.Objects.requireNonNull(frame);java.util.Objects.requireNonNull(semantic);
+        var body=StrictJson.object().put("schema",SCHEMA).put("machine_id",frame.identity().machineId()).put("session_id",frame.sessionId());
+        body.set("game",frame.identity().game().toJson());
+        body.put("bridge_pid",frame.identity().game().pid()).put("bridge_creation_date",creationToken(frame.identity().game()));
+        var basis=NativeEffectEvidence.basis(frame);
+        body.set("native_frame",basis.nativeFrame().toJson());body.set("driver_facts",basis.driverFacts().toJson());body.set("semantic",semantic.toJson());
+        return StrictJson.canonical(body,MANIFEST_MAX);
+    }
+    static ObjectNode decodeManifest(byte[] original) {
+        var body=StrictJson.object(StrictJson.parse(original,MANIFEST_MAX),Set.of("schema","machine_id","session_id","game",
+                "bridge_pid","bridge_creation_date","native_frame","driver_facts","semantic"));
+        StrictJson.require(SCHEMA.equals(StrictJson.text(body.get("schema"))),"original family Bridge schema differs");
+        return body;
+    }
+    static boolean matchesSemantic(Complete frame,byte[] original) {
+        return frame.semantic().equals(DriverJson.object(original,MAX));
     }
     static boolean matchesPersistedGame(JsonNode persisted, GameGeneration expected) {
         try {

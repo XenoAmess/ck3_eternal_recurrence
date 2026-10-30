@@ -1,0 +1,10 @@
+{
+  "schema": "xar.family-bridge-software-fixture/v1",
+  "template_bytes": 156233,
+  "compressed_bytes": 24047,
+  "original_inputs": 4,
+  "original_bytes": 186458,
+  "metadata_replacements": 63,
+  "software_data_only": true,
+  "physical_native_requests": 0
+}

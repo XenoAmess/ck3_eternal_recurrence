@@ -111,3 +111,9 @@ Root 指定的 M7 open_blocker 仅一个字符串按当前 Git 文档最小纠�
 边界：本组读取和恢复已真实存在的 noSAVE opening。Git 的 GovernancePolicies/Receipts/OpeningTransitions 仍缺早前 consumeOpeningSameGame producer 三叶，不能据此说 Git 已能重新生产同一状态；该原四生产两测试29P包将独立审阅后继，绝不重造当前开局。本组也不包含尚待交付的 Retreat/Family/M6 后继，当前 Game 采用和实际日期以运行岗为准。
 
 M4 静态核对：已发表 DecisionCadenceStudy12004.resourcePrecheck 仍将 ten 输入直接 loop0..7，与新原生映射 [0,1,2,4,5,6,8,9] 及 mode3预算来源不符。当前 origin/master 仅本类和专用 Test 引用，未接普通 planner/runtime；不称游玩故障。Root 已独立接手研究代码/oracle修正，本岗不并发修改该方法。
+
+恢复核心组已普通 push/独立远端读回 `9a5a7966e3b3ffa3a29b62b7fceb43268abad662`。
+
+Family 单叶按与当前 Git 等价的原 before-S 精确 patch 采用，check0/apply0，当前完整 RootFamilyBridge 严格 javac0/2.103秒。小 manifest 使用65KiB receipt API预算，完整 SEM 仍以64MiB DriverJson 解析；实际 typed semantic 比较保留值/类型/数组顺序，允许对象键序差异。原 Complete、诊断 PID/连接、held native packet、source frame、guard 与 writer 检查保持，不新增 Root/lease 资格。
+
+随同导入五个便携测试/资源叶，复用原岗完整 FrameLoader→Complete→实际 codec 1P及便携整类3P，不重复绿色测试。便携输入为四份94小原件派生模板，@TempDir重建引用，无原机器路径依赖；没有 fake Root、lease、Native请求或preserve调用，不将 pure codec 验收写成完整当前 Root/游玩通过。实际 S/MB 采用由运行岗已另记录，本岗只正式发表开发源。
