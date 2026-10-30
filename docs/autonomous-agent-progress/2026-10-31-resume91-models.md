@@ -85,3 +85,16 @@ canonical108原样两edit实际必要1P并正式FF `9f9728ecc7`，Storage两轮�
 Root 明确授权在仍未解的M5端到端诊断上做一次单请求模式探索：`m5-end-to-end110-correct` 与 `m5-end-to-end110-thinking` 的实际三条messages逐条完全相等（稳定源475409字符、末诊断54267字符），只有 `enable_thinking=false/true` 与 `max_tokens=10000/16000` 不同；全局默认false未改。两者均真实HTTP200/stop/SSE完整、调用器实际OS0：前者113262prompt/2271out、34.852秒，后者113298prompt/2698out、39.214秒，均未触输出上限，cached未知。
 
 逐条读取最终原SSE：889/1115个JSON记录，delta键只有role/content，未见reasoning/reasoning_content/reasoning_tokens键或content中的think标记；usage仅prompt/completion/total。只能记录“未见可见reasoning”，不能凭请求flag认定真实内部模式已启用，也不能据字段缺席认定不存在内部推理。prompt差36的原因未知；输出预算不同、时序及并发未控制，不作速度、缓存或能力因果结论，语义采用另由owner按当前源审阅。本试验没有重发已解答案或授Game信用。可复核纯事实对照为 `D:/ck3-state/model-dispatch91/THINKING110-ACTUAL-COMPARISON.json` 与 `REVIEWS91.json` 的mode_comparison，原REQUEST/SSE保留。
+
+
+### resume91 111–112 的最终采用与新 IP 库存核实
+
+UTC `2026-10-30T21:50:32.134616+00:00` 新IP实际 **126任务/135次POST尝试**，当刻客户端在途1，峰值仍8@20:36:59.164561Z；目标24–32未达到，旧1.7峰25不计入新服务。数字来自EVENTS实际base_url，含登记的M1首任务外部输出路径，不用已封包清单代替HTTP。客户端区间含网络/服务等待，不是服务端推理数。runtime预留1为调度意图，不是服务端硬保留。完整库存与快照在 `D:/ck3-state/model-dispatch91/OPERATIONS-INVENTORY111.json`。
+
+八M逐项核实：M0/M2/M5/M6/M7无完整当前输入且尚未实现的未派READY；M1经理已阶段结束，新库存未知，不为补八队唤醒空岗。M3实际新slot/entry16B已取得并直接POST `m3-ef0-entry144`，后继完整producer原件待真实获取；M4新809B整方法首length、一次诊断纠错完整但语义拒绝，停止同组第三轮。已写候选等待验收与缺真实自然producer/body不是可重派实现，不以旧绿或确定性搜索补并发。后续真实输入仍由owner复用现call91直接并行，不等中央ACK。
+
+`java-read-durability111-scope02` 完整25源487832字符、101335prompt/751out，17.803秒stop却仅分类、没有实现，源码采用0。后续真实拆分 `java-read-binding111-narrow03`（9完整源125506字符，26365in/1345out，11.080秒）产生两方法与四caller，owner生产语义改0，strict2源0/2.050秒；`java-read-evidence111-body04`（11完整源及7片段130241字符，28509in/730out，7.809秒）方法部分采用，owner补廉价ExactRef角色/optional qualification解码，strict1源0/3.671秒。两者均已S/Z并由MB112装载；专门READ计数行为验证仍待完成，不授性能提升或游戏动作。证据在 `D:/ck3-state/resume91-java-delivery/read-durability111/{read-binding-narrow03,read-evidence-body04}/candidate/DELIVERY.json`。
+
+`runtime-no-progress111` 两轮均完整stop/实际OS0：101670in/2761out及102565in/4874out，但Optional嵌套、typed Controller观测、wall/pending/日期及测试API等整候选错误，最终模型生产采用0。owner接管3生产叶+1测试，严格编译0，17P0F0skip/1.881秒；后到的去>=2观察范围另记。运行岗S/Z采用及MB112六源增编0/9.409秒、21:47:50Z同Game LOOP_START/next29是独立运行事实，不追认为模型多叶闭合或运行期决策。原件为 `D:/ck3-state/resume91-runtime/no-progress111/{REVIEW111.md,RESULT111.json}`。
+
+body04封包实际执行PowerShell prepare/readback违反本轮cmd-only，owner已承认，作为操作审计单列；保留原件，不重跑模型/已绿，不将其当模型推理失败。逐项采用以owner最终回执覆盖raw RESULT默认 `adopted:false/NOT_YET_REVIEWED`；whole/fragment、配置/分析、隔离fixture/生产粒度不同，不拼成虚假的统一采用率。

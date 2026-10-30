@@ -4,7 +4,21 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。本地日期2026-10-31；现场�
 
 用户明确要求读取 [resume90总交接](../handover/2026-10-31-java-g2-resume90-vacation-handoff.md) 与 [source-index](../handover/2026-10-31-java-g2-resume90-vacation-handoff-source-index.json)，继续自动游玩智能体开发、八M制作、原生机制与逻辑研究，第一优先为实际正常游玩；本地模型已可用，要求高并发使用并继续探索能力边界。
 
-截至20:39Z：同一原版Game71464保留，109/PID333424已20:36:18.706Z END4/563.449秒；批22 WALL_TIMEOUT301.057秒/attempt0，批23 INTERNAL_FAILURE，精确栈RegisteredEventCore.retained365→RetainedJson默认小预算。最后canonical149/repair/BATCH_INTERRUPTED23、next24、pending=null/date53144328/dirtyFocus保持；当前用23真材料修完整retained消费角色预算，另独占D修同Session账本重复身份stat，不据假想外写恢复普通全proof。新增日/普通动作/运行qwen HTTP/SAVE仍0，不将软件修复授为Game成功。
+截至21:56Z：同一原版Game71464保留，112/PID84064已21:52:53.633Z真实exit4/315.579秒，未开批30。批29在21:47:50.573–21:52:51.533Z运行300.960秒WALL_TIMEOUT/attempt/applied0；无需人工stop flag，实际走通CLEAN_WORKER_RESTART_CAPTURED/NO_PROGRESS/wall_timeout_without_dispatch，六次真实观测首末日期53144328/no_change_observed，game_stop_requested=false。最后canonical193/running/WORKER_RESTART_CAPTURE30、pending=null、dirty/无SAVE保持。运行期模型HTTP/普通动作/新增日仍0，不把恢复捕获或失败退出说成任务完成。
+
+112最新唯一线程样本21:50:35Z、elapsed177.44秒/CPU2.766秒，实际仍在Military root→PlanningReadCoordinator354→NativeOutcomeArchive.preserveRead/readBytes→CAS commit fill的FileChannel.force。前两个窄改已去重复audit，不授其解决纯READ强制落盘；新归档聚合/typed planning强引用边界两个真实候选由Java owner模型先行、独占D推进。112最终计划已越过此前M5 terminal deadline，到FACTION_GIFT/CONSTRUCTION的新支出观察错误`bounded nonempty UTF-8 JSON required`，另交独占D按实际112材料定位预算或空值，不盲抬全局。113尚未启动；拟在小故障修复可用后用现有配置给一次600秒规划窗口，真实Native操作与UNKNOWN边界不变，不能追认旧300秒失败成功。
+
+MB112于21:47:22.776–32.185Z增编exit0/9.409秒，复用MB/no clean/default mvn -T2，实际重编application4源/local-service2源，其余缓存。六源为普通readBinding两叶、RootGuardEvidence.body一叶与业务无提交超时退出三叶；准确正式发表4eae14f1e2、d218d87cec、8aa0e92e05，生产采用在先、未等待发表。
+
+111/PID41688此前21:26:58.205Z正常END0/915.590秒；批26/27/28均WALL_TIMEOUT约301秒、attempt0。重启前canonical187/running/WORKER_RESTART_CAPTURE29、next29、pending=null/date53144328/dirtyFocus保持；21:28:05Z一次Win32确认同Game71464/原出生FILETIME及supervisor305760均STILL_ACTIVE，未重启游戏。
+
+本轮两个模型窄候选实际采用：readBinding03完整stop11.080秒/26365in1345out，两method+四caller原样、owner生产语义改动0，两源严格编译0/2.050秒；保已有真实lease的Game/session/actor/episode/frame/SEM与deadline，省逐query重读packet/SEM/Driver/stamp/HELLO/heartbeat/qualification及重复hash，原Action默认binding保持。独立body04完整stop7.809秒/28509in730out，模型移除每次角色提取的所有payload重读/SHA；owner补六个角色及optional qualification的廉价typed ExactRef解析，因此为partial采用、非0owner。实际loadFrame仍消费真数据、三derived分支不改，单叶strict0/3.671秒。两项没有新buffer registry/schema或全局删除force。
+
+自动止空批两轮模型实际完整候选均未通过真实合同：虚构Optional/API、误用lastPlan为批首末、采集错放ready而实际走available、遗漏wall/pending或写failureDetail阻断捕获；生产三叶由owner接管，不授模型完成。最终strict0/3.551秒，必要测试strict0/2.287秒，7新+原Main6+ObservationDeadline4同JVM17P/0F/0skip；单Ready慢planning实际Controller→Loop包含在新正例，日期真实推进/UNKNOWN/pending/已有动作/短wall/normal边界不误止。真实完整WALL_TIMEOUT且无提交可走既有同局捕获退出，reason精确为wall_timeout_without_dispatch；仅0/1观测时末日期未知，不虚报已验证零日推进，不新增Native查询。
+
+110/111实际越过Event完整retained角色预算后仍在普通规划耗尽300秒：MB110局部3源增编0/7.743秒，110批24/25均超时，21:00:08.482Z正常END0保next26。MB111实际7源增编0/8.898秒，采用Material、五个完整SEM后继消费者与Storage普通写链去重复身份读取，21:11:53.133Z同Game进入next26。111批26唯一线程观察在Family READ→PlanningReadCoordinator.preserveRead→NativeOutcomeArchive.readBytes→ImmutableArtifactStore.writeExistingEmpty→FileChannel.force；阶段总耗时规划233.353/观察50.852/outcome12.430秒，不能把一个采样点当作全部规划耗时的量化原因。三批超时后按已有stop.request正常捕获同局，未重启游戏。
+
+Root已明确普通查询不继承旧Quote/Census/Capacity/Binding/Definitions重复来源签发前置。Java writer实际读源排除了“同CAS先空force再填force”猜测：实际每次填充只有一个payload force；不同锁文件的force不可混算。当前先分类RootGuardChecks.binding的重复capability材料发布与physical-read证据，模型先做最小typed上下文及producer/codec/replay闭合候选；不以全局删除force或新buffer registry替代修复。ACTION/WAL/UNKNOWN/SAVE必要强持久化保持。另一个模型先行候选只让真实整批无动作、无日期推进且无pending的WALL_TIMEOUT走既有业务退出/同局捕获路径，不能假报完成或把lastPlan日期冒充批首末观察。
 
 109曾于20:27:05.237Z真实同Game LOOP_START/next22，配置qwen新1.11；安装9.980秒，未从安装耗时外推Storage性能。canonical本地deadline/prisoner借用session/M5原因传播/Storage普通热路径共7源已S/Z采用；MB109增编0/10.784秒，application4源/local-service3源，其余缓存。20:29:16唯一窄栈在ConstructionPolicy→CanonicalFinanceStateSource→Session.readDomain→LedgerFiles.verify/exact/identity，未进入HTTP；这是下一真实重复属性读取位置，不将单栈当量化根因。provider已将13完整当前source/test218436B+实际栈交模型max10000，首轮200stop66.547秒/55611in3259out，因只删checkedDomainRead且漏内部缓存写后失效拒绝未编；后继保实际head/JSON/IO/锁与许可commit/recovery失效，去无必要反复身份audit，不扩旧审计链。
 
@@ -104,5 +118,7 @@ Native交付复用delivery90正式GUI产物，原休假尚未START的dispatch CT
 Root在18:56:39.526Z–18:56:47.707Z只做一次有界Win32资源样本：实际D disk pair8.181秒、队列7→3、769读操作/24742400B、82写操作/1028096B、idle43.625ms；18:56:47可用RAM20964130816B、commit余74353311744B。原件D:/ck3-state/resume91-root/P0-RESOURCE-OBSERVATION01.json。进程API I/O字节不当作物理盘归因，样本不证明类加载根因。实际随机I/O压力后研究先暂缓新编译；104自然终态后撤销旧等待条件，短暂恢复全局1个小研究编译；MB105与105安装期再次暂停新研究本地编译/大复制，在途自然终态。模型HTTP、源码审阅、既有小原件研究与已验证源码发表持续，不因人数或旧读窗停工。
 
 操作与子进程均使用cmd.exe、login:false，禁用PowerShell/WSH。本轮最初Root只读用了PowerShell，读取总交接后已改cmd；M4一隔离旧模型验证也报告其子进程违例，已停止该方式，原诊断保留、不为掩盖重跑。不因此改变真实软件或游戏结果。
+
+21:38:46.495Z封包岗另一次实际违规：body04 prepare.ps1通过未指定shell的exec_command使用默认PowerShell，exit0/0.6秒，后继READBACK也用PS inline；虽仅.NET文件/JSON而无HTTP或编译，仍违反本轮命令约束。已核实纠正为cmd+Node/原生Python，保留原命令及产物，不删原件或重跑模型/已绿来掩盖。Root docs06另有快照长度错误：fragment按LF计5831B、Windows write_text落盘13个CRLF为5844B，writer在任何写入前中止；下一包改write_bytes与实际磁盘字节，不影响生产源码或Game。
 
 Z主树含历史大量dirty，禁止全树reset/stash/stage；Java D:/r64d和Native delivery90分别处理精确叶。长期Git规则允许工作包必要验证后立即commit与普通fast-forward push，不需额外审批；只fetch/rebase，不merge/force。源码发表不授权部署DLL或重启当前Game。旧存储保护期限仍按原交接复核，不因续行自动延长或全盘清理。
