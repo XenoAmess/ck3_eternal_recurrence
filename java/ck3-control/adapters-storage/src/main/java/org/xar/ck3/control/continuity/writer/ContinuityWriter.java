@@ -648,8 +648,16 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         private Receipt commitInternal(Prepared prepared, TransitionAuthority selectedAuthority) throws IOException {
             checkOpen();retainedHead=null;
-            try { return commitPrepared(prepared,selectedAuthority); }
-            finally { retainedHead=null; }
+            try {
+                Receipt receipt = commitPrepared(prepared,selectedAuthority);
+                if (receipt.disposition() != Disposition.COMMITTED) retainedHead = null;
+                // Retain the Head validated by commitPrepared's readback to avoid re-parsing history in requireCommitted.
+                // If commitPrepared throws, retainedHead remains null (cleared at start), preventing stale cache use.
+                return receipt;
+            } catch (IOException | RuntimeException | Error error) {
+                retainedHead = null;
+                throw error;
+            }
         }
         private Receipt commitPrepared(Prepared prepared, TransitionAuthority selectedAuthority) throws IOException {
             Objects.requireNonNull(prepared);
@@ -710,11 +718,13 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     Head readback=store.head();
                     StrictJson.require(ContinuityJson.same(readback.state().toJson(),committed.toJson())
                             &&!readback.snapshotNeedsRecovery()&&readback.indexRepairs().isEmpty(),"committed ledger readback");
+                    retainedHead = readback;
                     return new Receipt(Disposition.COMMITTED,committed,request.identity(),recovered+3,recovered>0);
                 });
             }catch(IOException|RuntimeException error){throw new CommitUncertainException(request.identity(),sequence,error);}
         }
         private Receipt recoverDuplicate(Request request, Head actual) throws IOException {
+            retainedHead=null; // Recovery may mutate persistence; only a normal commit retains its validated readback.
             try {
                 int recovered = store.recover(actual, storageGuard);
                 Head readback = store.head();
