@@ -327,11 +327,14 @@ void SetUnavailable(game::CampaignRootContextV1 &output,
   output.unavailable_reason.assign(reason);
 }
 
+enum class ComponentIdentityDomain { positive, native_character };
+
 void *ResolveComponent(const CampaignRootAccessV1 &access,
                        void *const *storage_slot,
                        void *const *fallback_slot, std::int32_t full_id,
-                       std::size_t identity_offset) noexcept {
-  if (full_id <= 0) {
+                       std::size_t identity_offset,
+                       ComponentIdentityDomain domain = ComponentIdentityDomain::positive) noexcept {
+  if (full_id == -1 || (domain == ComponentIdentityDomain::positive && full_id <= 0)) {
     return nullptr;
   }
   void *storage = nullptr;
@@ -496,7 +499,7 @@ bool ReadPlayerIdentity(const CampaignRootNativeEnvironmentV1 &environment,
     }
     if (!ReadValue(access, entry, kPlayerEntryCharacterIdOffset,
                    output.player_character_id) ||
-        output.player_character_id <= 0) {
+        output.player_character_id == -1) {
       return false;
     }
     ++matches;
@@ -507,7 +510,7 @@ bool ReadPlayerIdentity(const CampaignRootNativeEnvironmentV1 &environment,
   output.player_character = ResolveComponent(
       access, environment.character_storage_slot,
       environment.character_fallback_slot, output.player_character_id,
-      kCharacterIdentityOffset);
+      kCharacterIdentityOffset, ComponentIdentityDomain::native_character);
   if (output.player_character == nullptr) {
     return false;
   }
@@ -625,7 +628,7 @@ bool ReadLieges(const CampaignRootNativeEnvironmentV1 &environment,
                    kCharacterIdentityOffset, immediate_id) ||
         ResolveComponent(access, environment.character_storage_slot,
                          environment.character_fallback_slot, immediate_id,
-                         kCharacterIdentityOffset) !=
+                         kCharacterIdentityOffset, ComponentIdentityDomain::native_character) !=
             output.immediate_liege_pointer) {
       return false;
     }
@@ -638,7 +641,7 @@ bool ReadLieges(const CampaignRootNativeEnvironmentV1 &environment,
       ResolveComponent(access, environment.character_storage_slot,
                        environment.character_fallback_slot,
                        output.top_liege_character_id,
-                       kCharacterIdentityOffset) != output.top_liege_pointer) {
+                       kCharacterIdentityOffset, ComponentIdentityDomain::native_character) != output.top_liege_pointer) {
     return false;
   }
   output.independent = !output.immediate_liege_character_id.has_value();
@@ -890,7 +893,7 @@ bool ReadCampaignRootTargetingFactionCountV1(
     if (!environment.exact_build_admitted ||
         (environment.module_base == 0 &&
          !environment.offline_fixture_function_overrides) ||
-        expected_player_character_id <= 0 || access.is_main_thread == nullptr ||
+        expected_player_character_id == -1 || access.is_main_thread == nullptr ||
         !access.is_main_thread(access.context)) {
       return false;
     }
@@ -908,7 +911,7 @@ bool ReadCampaignRootTargetingFactionCountV1(
         ResolveComponent(access, environment.character_storage_slot,
                          environment.character_fallback_slot,
                          expected_player_character_id,
-                         kCharacterIdentityOffset) != observed.player_character) {
+                         kCharacterIdentityOffset, ComponentIdentityDomain::native_character) != observed.player_character) {
       return false;
     }
     output = count;
@@ -958,7 +961,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
       return game::ReadCampaignRootContextResultV1::unavailable;
     }
     if (!before.map_ready || !before.has_played_character ||
-        before.played_character_id <= 0) {
+        before.played_character_id == -1) {
       SetUnavailable(output, "map_not_ready");
       return game::ReadCampaignRootContextResultV1::unavailable;
     }
@@ -1351,10 +1354,13 @@ bool ReadKey(const CampaignRootAccessV1 &access, const void *object,
          });
 }
 
+enum class ComponentIdentityDomain { positive, native_character };
+
 void *Resolve(const CampaignRootAccessV1 &access, void **storage_slot,
               void **fallback_slot, std::int32_t id,
-              std::size_t identity_offset) noexcept {
-  if (id <= 0) return nullptr;
+              std::size_t identity_offset,
+              ComponentIdentityDomain domain = ComponentIdentityDomain::positive) noexcept {
+  if (id == -1 || (domain == ComponentIdentityDomain::positive && id <= 0)) return nullptr;
   void *storage = nullptr, *fallback = nullptr, *slots = nullptr, *object = nullptr;
   std::int32_t capacity = 0, observed = -1;
   if (!Read(access, storage_slot, 0, storage) ||
@@ -1431,17 +1437,16 @@ bool Position(const CampaignRootNativeEnvironmentV1 &environment,
   if (!Read(access, task, kTaskType, type) || type == nullptr ||
       !Read(access, type, kTaskPositionType, position_type) || position_type == nullptr ||
       !Read(access, task, kTaskScopes, incumbent) ||
-      !Read(access, task, kTaskScopes + 4, owner) || incumbent < -1 ||
+      !Read(access, task, kTaskScopes + 4, owner) ||
       owner != character_id ||
       Resolve(access, environment.character_storage_slot,
-              environment.character_fallback_slot, owner, 0x18) != character)
+              environment.character_fallback_slot, owner, 0x18, ComponentIdentityDomain::native_character) != character)
     return false;
   output.position_key.assign(requested_key);
   if (incumbent == -1) return true;
-  if (incumbent <= 0) return false;
   if (!ReadKey(access, type, output.task_key.emplace()) ||
       Resolve(access, environment.character_storage_slot,
-              environment.character_fallback_slot, incumbent, 0x18) == nullptr ||
+              environment.character_fallback_slot, incumbent, 0x18, ComponentIdentityDomain::native_character) == nullptr ||
       !Read(access, type, kTaskKind, kind) || kind < 0 || kind > 2 ||
       !Read(access, type, kTaskProgressKind, progress_kind) || progress_kind < 0 ||
       progress_kind > 2 || !Read(access, task, kTaskFrozen, frozen) || frozen > 1)
@@ -1459,7 +1464,7 @@ bool Position(const CampaignRootNativeEnvironmentV1 &environment,
       output.target = game::CampaignRootCouncilTargetV1{target, std::nullopt};
     } else {
       if (tag != 4 || Resolve(access, environment.character_storage_slot,
-          environment.character_fallback_slot, target, 0x18) == nullptr) return false;
+          environment.character_fallback_slot, target, 0x18, ComponentIdentityDomain::native_character) == nullptr) return false;
       output.target = game::CampaignRootCouncilTargetV1{std::nullopt, target};
     }
   }
@@ -1536,7 +1541,7 @@ bool ReadCouncilProjection(
   }
   if (!council_projection::EnvironmentExact(environment) || character == nullptr ||
       council_projection::Resolve(access, environment.character_storage_slot,
-          environment.character_fallback_slot, character_id, 0x18) != character)
+          environment.character_fallback_slot, character_id, 0x18, council_projection::ComponentIdentityDomain::native_character) != character)
     return false;
   void *extension = nullptr, *ids = nullptr;
   std::int32_t count = 0;
@@ -1582,7 +1587,7 @@ bool ReadCouncilProjection(
     });
   } catch (...) { return false; }
   if (council_projection::Resolve(access, environment.character_storage_slot,
-          environment.character_fallback_slot, character_id, 0x18) != character) return false;
+          environment.character_fallback_slot, character_id, 0x18, council_projection::ComponentIdentityDomain::native_character) != character) return false;
   output.status = game::CampaignRootCouncilStatusV1::available;
   output.unavailable_reason.clear();
   failure = {};
@@ -1729,17 +1734,21 @@ bool ReadSlot(const CampaignRootAccessV1 &access, const Value *slot,
   return ReadBytes(access, slot, &output, sizeof(output));
 }
 
+enum class ComponentIdentityDomain { positive, native_character };
+
 void *ResolveComponent(const CampaignRootAccessV1 &access,
                        void *const *storage_slot,
                        void *const *fallback_slot, std::int32_t full_id,
                        std::size_t identity_offset,
-                       std::string_view *resolver_failure = nullptr) noexcept {
+                       std::string_view *resolver_failure = nullptr,
+                       ComponentIdentityDomain domain = ComponentIdentityDomain::positive) noexcept {
   if (resolver_failure != nullptr) *resolver_failure = {};
   const auto unavailable = [resolver_failure](std::string_view guard) noexcept -> void * {
     if (resolver_failure != nullptr) *resolver_failure = guard;
     return nullptr;
   };
-  if (full_id <= 0) return unavailable("nonpositive_full_id");
+  if (full_id == -1 || (domain == ComponentIdentityDomain::positive && full_id <= 0))
+    return unavailable(domain == ComponentIdentityDomain::native_character ? "absent_character_id" : "nonpositive_full_id");
   void *storage = nullptr;
   void *fallback = nullptr;
   if (!ReadSlot(access, storage_slot, storage)) return unavailable("storage_slot_read");
@@ -1850,10 +1859,11 @@ bool ReadPrimaryTitleSuccession(
     if (!ReadValue(access, data,
                    static_cast<std::size_t>(index) * sizeof(character_id),
                    character_id) ||
-        character_id <= 0 || character_id == output.player_character_id ||
+        character_id == -1 || character_id == output.player_character_id ||
         ResolveComponent(access, environment.character_storage_slot,
                          environment.character_fallback_slot, character_id,
-                         kCharacterIdentityOffset) == nullptr ||
+                         kCharacterIdentityOffset, nullptr,
+                         ComponentIdentityDomain::native_character) == nullptr ||
         std::find(output.primary_title_succession_character_ids.begin(),
                   output.primary_title_succession_character_ids.end(),
                   character_id) !=
@@ -1971,11 +1981,11 @@ bool ReadHeldTitlePartition(
       std::int32_t character_id = -1;
       if (!ReadValue(access, successor_data, 0, character_id)) return fail("first_heir_read");
       detail.first_heir_id = character_id;
-      if (character_id <= 0) return fail("first_heir_nonpositive");
+      if (character_id == -1) return fail("first_heir_absent");
       if (character_id == output.player_character_id) return fail("first_heir_is_player");
       if (ResolveComponent(access, environment.character_storage_slot,
               environment.character_fallback_slot, character_id, kCharacterIdentityOffset,
-              &detail.resolver_guard) == nullptr) return fail("first_heir_component_unavailable");
+              &detail.resolver_guard, ComponentIdentityDomain::native_character) == nullptr) return fail("first_heir_component_unavailable");
       first_heir_character_id = character_id;
     }
     std::optional<std::int32_t> capital_province_id;
@@ -2115,7 +2125,7 @@ bool ReadDirectLandedVassals(
     // still carry an object from another generation; stock character scans in
     // this exact build reject that row and continue. It is not a readable
     // member of the current Character store generation.
-    if (character_id <= 0 ||
+    if (character_id == -1 ||
         (static_cast<std::uint32_t>(character_id) & 0x00FFFFFFU) !=
             static_cast<std::uint32_t>(index)) {
       continue;
@@ -2183,7 +2193,7 @@ bool CharacterBelongsToPlayerSubrealm(
     if (!ReadValue(access, current, kCharacterIdentityOffset, current_id) ||
         ResolveComponent(access, environment.character_storage_slot,
                          environment.character_fallback_slot, current_id,
-                         kCharacterIdentityOffset) != current) {
+                         kCharacterIdentityOffset, nullptr, ComponentIdentityDomain::native_character) != current) {
       return false;
     }
     void *liege = nullptr;
@@ -2262,12 +2272,11 @@ bool ReadAdjacentExternalProvinceHolders(
     auto &observed = provinces[static_cast<std::size_t>(index)];
     observed.province = province;
     if (holder_character_id == -1) continue;
-    if (holder_character_id <= 0) return fail("adjacent_holder_id_invalid");
     void *holder = ResolveComponent(
         access, environment.character_storage_slot,
         environment.character_fallback_slot, holder_character_id,
         kCharacterIdentityOffset,
-        failure_diagnostic == nullptr ? nullptr : &failure_diagnostic->resolver_guard);
+        failure_diagnostic == nullptr ? nullptr : &failure_diagnostic->resolver_guard, ComponentIdentityDomain::native_character);
     if (holder == nullptr) return fail("adjacent_holder_component_unavailable");
     void *death = nullptr;
     if (!ReadValue(access, holder, kCharacterDeathMarkerOffset, death))
@@ -2286,7 +2295,7 @@ bool ReadAdjacentExternalProvinceHolders(
 
   output.adjacent_external_province_holder_character_ids.clear();
   for (const auto &origin : provinces) {
-    if (origin.province == nullptr || origin.holder_character_id <= 0 ||
+    if (origin.province == nullptr || origin.holder_character_id == -1 ||
         !origin.belongs_to_player_subrealm) continue;
     if (failure_diagnostic != nullptr) {
       failure_diagnostic->index = static_cast<std::int32_t>(&origin - provinces.data());
@@ -2321,7 +2330,7 @@ bool ReadAdjacentExternalProvinceHolders(
         return fail("adjacent_row_target_bounds");
       const auto &target = provinces[static_cast<std::size_t>(target_province_id)];
       if (target.province == nullptr) return fail("adjacent_target_province_missing");
-      if (target.holder_character_id <= 0 || target.belongs_to_player_subrealm) continue;
+      if (target.holder_character_id == -1 || target.belongs_to_player_subrealm) continue;
       try {
         output.adjacent_external_province_holder_character_ids.push_back(target.holder_character_id);
       } catch (...) {
@@ -2354,7 +2363,7 @@ bool ReadRelatedCharacterContext(
   void *character = ResolveComponent(
       access, environment.character_storage_slot,
       environment.character_fallback_slot, character_id,
-      kCharacterIdentityOffset);
+      kCharacterIdentityOffset, nullptr, ComponentIdentityDomain::native_character);
   void *death = nullptr;
   if (character == nullptr ||
       !ReadValue(access, character, kCharacterDeathMarkerOffset, death) ||
@@ -2436,7 +2445,7 @@ bool ReadRelatedCharacterContext(
                    immediate_liege_id) ||
         ResolveComponent(access, environment.character_storage_slot,
                          environment.character_fallback_slot,
-                         immediate_liege_id, kCharacterIdentityOffset) !=
+                         immediate_liege_id, kCharacterIdentityOffset, nullptr, ComponentIdentityDomain::native_character) !=
             immediate_liege) {
       return false;
     }
@@ -2448,7 +2457,7 @@ bool ReadRelatedCharacterContext(
       ResolveComponent(access, environment.character_storage_slot,
                        environment.character_fallback_slot,
                        output.top_liege_character_id,
-                       kCharacterIdentityOffset) != top_liege) {
+                       kCharacterIdentityOffset, nullptr, ComponentIdentityDomain::native_character) != top_liege) {
     return false;
   }
   output.independent = !output.immediate_liege_character_id.has_value();
@@ -2578,10 +2587,10 @@ bool ReadRealmProjection(
       return false;
     }
     if (input.game_data == nullptr || input.player_character == nullptr ||
-        input.player_character_id <= 0 ||
+        input.player_character_id == -1 ||
         ResolveComponent(access, environment.character_storage_slot,
                          environment.character_fallback_slot,
-                         input.player_character_id, kCharacterIdentityOffset) !=
+                         input.player_character_id, kCharacterIdentityOffset, nullptr, realm_detail::ComponentIdentityDomain::native_character) !=
             input.player_character) {
       failure = "player_character_generation_mismatch";
       return false;
@@ -2817,14 +2826,14 @@ bool ValidCharacterIds(const std::vector<std::int32_t> &values,
          std::adjacent_find(values.begin(), values.end()) == values.end() &&
          std::all_of(values.begin(), values.end(),
                      [player_character_id](std::int32_t value) {
-                       return value > 0 && value != player_character_id;
+                       return value != -1 && value != player_character_id;
                      });
 }
 
 bool ValidSuccessionIds(const std::vector<std::int32_t> &values,
                         std::int32_t player_character_id) noexcept {
   for (std::size_t index = 0; index < values.size(); ++index) {
-    if (values[index] <= 0 || values[index] == player_character_id ||
+    if (values[index] == -1 || values[index] == player_character_id ||
         std::find(values.begin(), values.begin() + index, values[index]) !=
             values.begin() + index) {
       return false;
@@ -2855,7 +2864,7 @@ bool ValidHeldTitlePartition(
         (value.capital_province_id.has_value() &&
          *value.capital_province_id <= 0) ||
         (value.first_heir_character_id.has_value() &&
-         (*value.first_heir_character_id <= 0 ||
+         (*value.first_heir_character_id == -1 ||
           *value.first_heir_character_id == player_character_id)) ||
         (value.primary &&
          (!primary_title.has_value() || value.title != *primary_title ||
@@ -2939,7 +2948,7 @@ bool ValidCouncil(const game::CampaignRootCouncilV1 &council,
       }
       continue;
     }
-    if (*position.incumbent_character_id <= 0 ||
+    if (*position.incumbent_character_id == -1 ||
         !position.task_key.has_value() ||
         !ValidToken(*position.task_key) ||
         !position.task_type.has_value() ||
@@ -2962,7 +2971,7 @@ bool ValidCouncil(const game::CampaignRootCouncilV1 &council,
                (*position.task_type ==
                     game::CampaignRootCouncilTaskTypeV1::court &&
                 (!position.target->character_id.has_value() ||
-                 *position.target->character_id <= 0 ||
+                 *position.target->character_id == -1 ||
                  position.target->province_id.has_value()))) {
       return false;
     }
@@ -2993,17 +3002,17 @@ bool ValidRelatedCharacters(
   }
   std::int32_t previous_id = -1;
   for (const auto &value : values) {
-    if (value.character_id <= 0 || value.character_id == previous_id ||
+    if (value.character_id == -1 || value.character_id == previous_id ||
         value.primary_title.title_id <= 0 ||
         TierKey(value.primary_title.tier_raw) !=
             value.primary_title.tier_key ||
         (value.capital_province_id.has_value() &&
          *value.capital_province_id <= 0) ||
-        value.top_liege_character_id <= 0 ||
+        value.top_liege_character_id == -1 ||
         value.independent !=
             !value.immediate_liege_character_id.has_value() ||
         (value.immediate_liege_character_id.has_value() &&
-         (*value.immediate_liege_character_id <= 0 ||
+         (*value.immediate_liege_character_id == -1 ||
           *value.immediate_liege_character_id == value.character_id)) ||
         (value.independent &&
          value.top_liege_character_id != value.character_id) ||
@@ -3033,7 +3042,7 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
   if (context.snapshot_revision == 0 ||
       !context.local_player_id.has_value() || *context.local_player_id < 0 ||
       !context.player_character_id.has_value() ||
-      *context.player_character_id <= 0 ||
+      *context.player_character_id == -1 ||
       !context.player_character_alive.has_value() ||
       !context.player_monthly_gold_income.has_value() ||
       context.player_monthly_gold_income->scale != 100'000 ||
@@ -3074,7 +3083,7 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
       *context.player_targeting_faction_count < 0 ||
       !context.council.has_value() ||
       !context.top_liege_character_id.has_value() ||
-      *context.top_liege_character_id <= 0 ||
+      *context.top_liege_character_id == -1 ||
       !context.independent.has_value() ||
       context.native_selected_game_rule_token_count < 0 ||
       static_cast<std::size_t>(
@@ -3137,7 +3146,7 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
     return false;
   }
   if (context.immediate_liege_character_id.has_value() &&
-      (*context.immediate_liege_character_id <= 0 ||
+      (*context.immediate_liege_character_id == -1 ||
        *context.immediate_liege_character_id ==
            *context.player_character_id)) {
     return false;

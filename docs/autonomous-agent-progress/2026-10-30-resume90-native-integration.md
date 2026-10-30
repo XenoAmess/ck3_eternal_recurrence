@@ -197,9 +197,10 @@ without using a guessed old-build address delta.
 
 Z after the one-hunk edit exactly matches the M3 candidate that passed its
 complete public-binder → mapped original numeric/aggregate → full Root → task
-piety leaf → serializer software chain, 3 signed/zero scenes/282 checks. Z also
-contains older, unpublished signed-Root changes outside this task. Those
-unrelated dirty hunks are preserved and excluded from the new publication.
+piety leaf → serializer software chain, 3 signed/zero scenes/282 checks. At
+the `29b083c9c899` publication, Z also contained older unpublished signed-Root
+changes whose ownership had not been established. Those hunks were preserved
+and excluded from that binder-only publication.
 
 The publication's source contains only the new binder hunk on the actual
 upstream source. It was independently strictly compiled and exercised in one
@@ -217,6 +218,20 @@ Evidence: `D:/ck3-state/resume90-m3-native/getter-producer/{SOURCE-INDEX90.json,
 the same M3 root. The new owned-image fixtures remain D cases rather than a
 new persistent CI target. The existing shared reader/serializer contract is
 unchanged, and no DLL or Game deployment occurred.
+
+M3 subsequently took ownership of that precise Character-domain migration and
+delivered a separate 33-hunk patch (+55/-46). It changes the three resolvers and
+Root player/liege/heir/holder/related/council/serializer character checks to the
+full signed int32 domain with only -1 absent. Title, Province and Task rules
+retain positive IDs. Full-generation checks, frames, same module/owner and
+double observations remain. The upstream+29b signed baseline was actually linked
+and failed on owner0; the candidate is exactly the already compiled source
+whose full-binder/original-numeric Root scenarios passed (RUN04 3 scenes/282
+checks, plus distinct RUN03/RUN07 recorded combinations). No unchanged green
+was rerun for adopting that exact source. The isolated publication source now
+matches Z/candidate normalized SHA-256
+`08398ac1142f5a9da07834806eaf2cc09cbd442d907c7b963b507397f9cc4470`.
+See M3 `full-root/{SIGNED-CHARACTER-DOMAIN90.patch,SIGNED-CHARACTER-DOMAIN90.json}`.
 
 ## M1 private raw-character action path
 
