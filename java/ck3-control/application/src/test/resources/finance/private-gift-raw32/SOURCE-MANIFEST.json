@@ -1,0 +1,449 @@
+{
+  "schema": "xar.m1-private-gift-native-software-wire-originals/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "worlds": 6,
+  "command_result_packets": 24,
+  "native_producer": "actual HandleFactionGiftPrivate12004 + actual bridge::WriteFrame Windows anonymous pipe",
+  "software_boundaries": [
+    "owned memory",
+    "native getter callback values",
+    "main-thread mailbox transport"
+  ],
+  "Game_operations": 0,
+  "native_engine_function_address_execution": false,
+  "copied_without_reencoding": true,
+  "files": [
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-member-v1.json",
+      "resource": "packets/positive/private-query-faction-gift-member-v1.json",
+      "bytes": 2356,
+      "sha256": "a9167557e176e26ad6d80397deb1d9d2ffa10a9fc2c723d90d150b5d58513c4a"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/positive/private-query-faction-gift-member-v1.json.packet.bin",
+      "bytes": 2358,
+      "sha256": "0ad898f5fbf243146948f14b2ef3c7e2f7e7376372f57f4877e154846b171aec"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-member-v1.request.json",
+      "resource": "packets/positive/private-query-faction-gift-member-v1.request.json",
+      "bytes": 94,
+      "sha256": "e6c9307730f2d81c53fd773a10c21550333a7b0e27cca22bdf4fd7b12f6a0e31"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-submit-faction-gift-member-v1.json",
+      "resource": "packets/positive/private-submit-faction-gift-member-v1.json",
+      "bytes": 3062,
+      "sha256": "057ffd60b69c2d557e897956835539ff9614fac6c33a7717d78815fa83fe6c27"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-submit-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/positive/private-submit-faction-gift-member-v1.json.packet.bin",
+      "bytes": 3064,
+      "sha256": "868229396d604c507641d0b631f69f1ed384125e1017a16ea838b4492f5c347e"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-submit-faction-gift-member-v1.request.json",
+      "resource": "packets/positive/private-submit-faction-gift-member-v1.request.json",
+      "bytes": 327,
+      "sha256": "a81900338b3496e9e481ea48b3b3166e54c0352974b6273a73787d4fbc41f50d"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-receipt-v1.json",
+      "resource": "packets/positive/private-query-faction-gift-receipt-v1.json",
+      "bytes": 2714,
+      "sha256": "a18366ec45f56be4bc33c3988beed4b1b8fb2c5ef11107272bad3383840fd3ae"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "packets/positive/private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2716,
+      "sha256": "34ece1ff27a3bb26c2d763b1e470f91476da6251da32773abe9d6ed5f86e8455"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-receipt-v1.request.json",
+      "resource": "packets/positive/private-query-faction-gift-receipt-v1.request.json",
+      "bytes": 94,
+      "sha256": "42171d3c320206be1e78a6e0a50919c9f7755dd3829398516a69301f15d42b57"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-cold-recovery-v1.json",
+      "resource": "packets/positive/private-query-faction-gift-cold-recovery-v1.json",
+      "bytes": 2097,
+      "sha256": "b7586916367b0a841541be7cf2bc7a94688c73757986e3836d0027b5c8517b3d"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "resource": "packets/positive/private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "bytes": 2099,
+      "sha256": "922d60cfd053bbed1bbc5a61d4ab5cac6dbd19e4faeea41e41341571553fded9"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\positive\\private-query-faction-gift-cold-recovery-v1.request.json",
+      "resource": "packets/positive/private-query-faction-gift-cold-recovery-v1.request.json",
+      "bytes": 157,
+      "sha256": "30ce6b47ae272b9bbeafd2e77358cf7e9449f28de01352ec60bcc4ff798ad55f"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-member-v1.json",
+      "resource": "packets/actor-zero/private-query-faction-gift-member-v1.json",
+      "bytes": 2328,
+      "sha256": "899bfd94d740ed721874aa9500b41815526c69333f182db0a1bfd880ed0b807d"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/actor-zero/private-query-faction-gift-member-v1.json.packet.bin",
+      "bytes": 2330,
+      "sha256": "08b176b47ffa82e20b3b6f4f745a33624e4bce83db77e2ca0a26cabf7da40b8a"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-member-v1.request.json",
+      "resource": "packets/actor-zero/private-query-faction-gift-member-v1.request.json",
+      "bytes": 87,
+      "sha256": "3dd42e224d8c3c7808807243603c81bb1219c58081c9bbd7aa76412b9054ec90"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-submit-faction-gift-member-v1.json",
+      "resource": "packets/actor-zero/private-submit-faction-gift-member-v1.json",
+      "bytes": 3041,
+      "sha256": "aacbc6c617df52cff684f93b21e8a6af43c47e4fd7866b5476d5edf6eb854ccd"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-submit-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/actor-zero/private-submit-faction-gift-member-v1.json.packet.bin",
+      "bytes": 3043,
+      "sha256": "5516446d814fb849a2bb8a78b536b3408167086643d01923156cdc6bed4d570f"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-submit-faction-gift-member-v1.request.json",
+      "resource": "packets/actor-zero/private-submit-faction-gift-member-v1.request.json",
+      "bytes": 320,
+      "sha256": "ef6cecf7d5f0773ef1610b2adf62b34647e089e5cd11660d453b2c4f7ff5a14a"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-receipt-v1.json",
+      "resource": "packets/actor-zero/private-query-faction-gift-receipt-v1.json",
+      "bytes": 2693,
+      "sha256": "f42703caf955d4fd5e33be3d35c054494f3b7f4fb97e262cd5223e55bb152d9e"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "packets/actor-zero/private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2695,
+      "sha256": "aa1fd5b629ec2c02ace959a87ac3c9a42c423c21bdbe96441e8b93874d87b2d7"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-receipt-v1.request.json",
+      "resource": "packets/actor-zero/private-query-faction-gift-receipt-v1.request.json",
+      "bytes": 87,
+      "sha256": "a1d3e8f53e01803204fdb85d1a131e566be96a2f6044bb929d2f5c2c518a4dff"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-cold-recovery-v1.json",
+      "resource": "packets/actor-zero/private-query-faction-gift-cold-recovery-v1.json",
+      "bytes": 2083,
+      "sha256": "9e3def60b37c4bf678f02166db4d8f50ab04565da1eb9bac558d70edccbcf27f"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "resource": "packets/actor-zero/private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "bytes": 2085,
+      "sha256": "1dc60685dd4d02f746d169e381ae4c1d640fa03659607b1a51364631e549e606"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-zero\\private-query-faction-gift-cold-recovery-v1.request.json",
+      "resource": "packets/actor-zero/private-query-faction-gift-cold-recovery-v1.request.json",
+      "bytes": 150,
+      "sha256": "ccc8b48e34b35c18bc2a5efa34040a15adc2e99c41f76821ba5bc72fcb0bb658"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-member-v1.json",
+      "resource": "packets/recipient-zero/private-query-faction-gift-member-v1.json",
+      "bytes": 2314,
+      "sha256": "0f838fb17de0fd32c0b99fb8e9923baa5e5562b749c877c8dfcc0e91e7123b27"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/recipient-zero/private-query-faction-gift-member-v1.json.packet.bin",
+      "bytes": 2316,
+      "sha256": "2831d990cb4ac6c4c8b9e7e7739692d5d819264e87e17012bbcdc46e3fc15ef1"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-member-v1.request.json",
+      "resource": "packets/recipient-zero/private-query-faction-gift-member-v1.request.json",
+      "bytes": 94,
+      "sha256": "e6c9307730f2d81c53fd773a10c21550333a7b0e27cca22bdf4fd7b12f6a0e31"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-submit-faction-gift-member-v1.json",
+      "resource": "packets/recipient-zero/private-submit-faction-gift-member-v1.json",
+      "bytes": 3027,
+      "sha256": "b4cc1738c81028738076dbd8e45a3bb30d98f348bdef7c773445daa083e3f64c"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-submit-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/recipient-zero/private-submit-faction-gift-member-v1.json.packet.bin",
+      "bytes": 3029,
+      "sha256": "71e51e131119c9e74b93da531e80518de471dda9e35d5d0744d913cf0ec7fc4f"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-submit-faction-gift-member-v1.request.json",
+      "resource": "packets/recipient-zero/private-submit-faction-gift-member-v1.request.json",
+      "bytes": 320,
+      "sha256": "71f4de51d34b2bc657642a86068f0b201bf26d614ec6c429340de25c75845802"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-receipt-v1.json",
+      "resource": "packets/recipient-zero/private-query-faction-gift-receipt-v1.json",
+      "bytes": 2679,
+      "sha256": "2738877f20636b2eddfec405da7f0e098fc0224294e745012b613f03063695e8"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "packets/recipient-zero/private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2681,
+      "sha256": "5bd67b522c1de0a024f5c217defeef153ea259d3f31f9dbf064ac33896d1d8ed"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-receipt-v1.request.json",
+      "resource": "packets/recipient-zero/private-query-faction-gift-receipt-v1.request.json",
+      "bytes": 94,
+      "sha256": "42171d3c320206be1e78a6e0a50919c9f7755dd3829398516a69301f15d42b57"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-cold-recovery-v1.json",
+      "resource": "packets/recipient-zero/private-query-faction-gift-cold-recovery-v1.json",
+      "bytes": 2069,
+      "sha256": "ca0466c0ac16aa8b8d3b8111e459b5900b09bd7e9e37d3932457aa464ef1f6cb"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "resource": "packets/recipient-zero/private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "bytes": 2071,
+      "sha256": "dc11d69c15b4f9a91ee747e7afdc6b8d38d238761ad7e367d55468c828577a87"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-zero\\private-query-faction-gift-cold-recovery-v1.request.json",
+      "resource": "packets/recipient-zero/private-query-faction-gift-cold-recovery-v1.request.json",
+      "bytes": 150,
+      "sha256": "55abdbf4c3f7b9d137ccd718e0efd6930f2643989ab8a7d2f7bf6226e77b36dc"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-member-v1.json",
+      "resource": "packets/actor-min/private-query-faction-gift-member-v1.json",
+      "bytes": 2366,
+      "sha256": "6337a696c262d4245a69714230c297131c524eac820e0b8685441e50bf09f32a"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/actor-min/private-query-faction-gift-member-v1.json.packet.bin",
+      "bytes": 2368,
+      "sha256": "b22fe6f9891a253f304e6ceea5c584924f731d1aeca5f98715b6f7e10b8e8b3d"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-member-v1.request.json",
+      "resource": "packets/actor-min/private-query-faction-gift-member-v1.request.json",
+      "bytes": 96,
+      "sha256": "4e621b5dcd1facf76167b433235f23bbf50f0ed62b82e8b9016b2372175af3b6"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-submit-faction-gift-member-v1.json",
+      "resource": "packets/actor-min/private-submit-faction-gift-member-v1.json",
+      "bytes": 3068,
+      "sha256": "0c979c92e2556f7c42f40918315320a2de15bd0790d298cc862508573278c243"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-submit-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/actor-min/private-submit-faction-gift-member-v1.json.packet.bin",
+      "bytes": 3070,
+      "sha256": "0bf15620264f7d3ba40d7d31f54a73dd61fc0ed2846133a087d0c2817042559a"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-submit-faction-gift-member-v1.request.json",
+      "resource": "packets/actor-min/private-submit-faction-gift-member-v1.request.json",
+      "bytes": 329,
+      "sha256": "1420fafc5aaf93b7c9769ea06dba90a6af370bd676b513d2978a49161cb84609"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-receipt-v1.json",
+      "resource": "packets/actor-min/private-query-faction-gift-receipt-v1.json",
+      "bytes": 2720,
+      "sha256": "fa60b16462b60333f86533fd3cbf741d06f7c4cedd154a53a2fef42e5c4e74bc"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "packets/actor-min/private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2722,
+      "sha256": "1d7c07878b45c8fa35826ed3740acad0a796075fae2ba702bc623de728fcaa41"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-receipt-v1.request.json",
+      "resource": "packets/actor-min/private-query-faction-gift-receipt-v1.request.json",
+      "bytes": 96,
+      "sha256": "2af6485e4f9b9e2f8462525619276659a21ae68f7ff5656a60bb0bf02bbf4c12"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-cold-recovery-v1.json",
+      "resource": "packets/actor-min/private-query-faction-gift-cold-recovery-v1.json",
+      "bytes": 2101,
+      "sha256": "0836fddca4c67112f7c24982b7b1f2a4d13e8e8ddb36530842afb37bd3a5f811"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "resource": "packets/actor-min/private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "bytes": 2103,
+      "sha256": "13a7bb5467f6716efe741c7a021a0a7d95af2f1d9de63bdd85565101033dc6ff"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\actor-min\\private-query-faction-gift-cold-recovery-v1.request.json",
+      "resource": "packets/actor-min/private-query-faction-gift-cold-recovery-v1.request.json",
+      "bytes": 159,
+      "sha256": "56144dcc7cc6a75cbe6e2805ed52d8f66af1d715c286d86e7d3eea2ab4d222b3"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-member-v1.json",
+      "resource": "packets/recipient-min/private-query-faction-gift-member-v1.json",
+      "bytes": 2370,
+      "sha256": "43e01868407d5d4af848cf7354e030020a05016fd895c9f50a4da1d91a9db922"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/recipient-min/private-query-faction-gift-member-v1.json.packet.bin",
+      "bytes": 2372,
+      "sha256": "470cc45a37bb1b4aad753361bff568671161f8be63a04ebe659ded91bb755187"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-member-v1.request.json",
+      "resource": "packets/recipient-min/private-query-faction-gift-member-v1.request.json",
+      "bytes": 94,
+      "sha256": "e6c9307730f2d81c53fd773a10c21550333a7b0e27cca22bdf4fd7b12f6a0e31"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-submit-faction-gift-member-v1.json",
+      "resource": "packets/recipient-min/private-submit-faction-gift-member-v1.json",
+      "bytes": 3072,
+      "sha256": "a48e4279964be18d83d5f2b7a635bc36f0564c70a1f9a1d22fe71b04f0c4ba69"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-submit-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/recipient-min/private-submit-faction-gift-member-v1.json.packet.bin",
+      "bytes": 3074,
+      "sha256": "97e56f471b436e48c9c1f6e4a3e5a20af2cfd378de00060ca67c9096f42dc0b1"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-submit-faction-gift-member-v1.request.json",
+      "resource": "packets/recipient-min/private-submit-faction-gift-member-v1.request.json",
+      "bytes": 329,
+      "sha256": "12e416ef623d6a83156f59f9bbce7b1f7d0a63456a988ed8513c40cb58a0aa95"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-receipt-v1.json",
+      "resource": "packets/recipient-min/private-query-faction-gift-receipt-v1.json",
+      "bytes": 2724,
+      "sha256": "97ecc15a97a66141a75317a2869f7470f3c1aae07c3c519d747594fae4054990"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "packets/recipient-min/private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2726,
+      "sha256": "0a4cbe41dc53994f3c6db1b5ceeee20995e50c602616422fed501ba4ea8584df"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-receipt-v1.request.json",
+      "resource": "packets/recipient-min/private-query-faction-gift-receipt-v1.request.json",
+      "bytes": 94,
+      "sha256": "42171d3c320206be1e78a6e0a50919c9f7755dd3829398516a69301f15d42b57"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-cold-recovery-v1.json",
+      "resource": "packets/recipient-min/private-query-faction-gift-cold-recovery-v1.json",
+      "bytes": 2105,
+      "sha256": "7241e22d4e8d37a99cf8038f45c1c5a3729d4e8c1f54e215c927a82687c20b8b"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "resource": "packets/recipient-min/private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "bytes": 2107,
+      "sha256": "eb4c5e26b62941a0cc66e26561f2b9db64f333d121a884446fa6d1093b785a54"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\recipient-min\\private-query-faction-gift-cold-recovery-v1.request.json",
+      "resource": "packets/recipient-min/private-query-faction-gift-cold-recovery-v1.request.json",
+      "bytes": 159,
+      "sha256": "1a566fb824966c4bfd82fdb944cbbf8b414f4a0fda774781dd71ae40e3f486ce"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-member-v1.json",
+      "resource": "packets/both-high/private-query-faction-gift-member-v1.json",
+      "bytes": 2376,
+      "sha256": "c9105aa9077d82f0acf9d44883d3d16e831dbf296bf57c6e454db45766de7f17"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/both-high/private-query-faction-gift-member-v1.json.packet.bin",
+      "bytes": 2378,
+      "sha256": "f042bca9e45275c4ac906a75a6e7649fae6a5b65e76c83a14fd63793956c9fd5"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-member-v1.request.json",
+      "resource": "packets/both-high/private-query-faction-gift-member-v1.request.json",
+      "bytes": 96,
+      "sha256": "27f0bed65247e8a98610954444dc65014c12c04d5b882fdc61a39a89d5029396"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-submit-faction-gift-member-v1.json",
+      "resource": "packets/both-high/private-submit-faction-gift-member-v1.json",
+      "bytes": 3078,
+      "sha256": "73e76f08f7e9580fab9a003c499ae2c9dcabe758299318b6d01573971eafd8ce"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-submit-faction-gift-member-v1.json.packet.bin",
+      "resource": "packets/both-high/private-submit-faction-gift-member-v1.json.packet.bin",
+      "bytes": 3080,
+      "sha256": "ac23065b3565b9c78c7b0b866c40be005dc03637de9ae20dab14d31a3c727d65"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-submit-faction-gift-member-v1.request.json",
+      "resource": "packets/both-high/private-submit-faction-gift-member-v1.request.json",
+      "bytes": 331,
+      "sha256": "96512374de7cfffb3e496bd2d481c13b8adc6f576d89c8b26f5eb56303a9186b"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-receipt-v1.json",
+      "resource": "packets/both-high/private-query-faction-gift-receipt-v1.json",
+      "bytes": 2730,
+      "sha256": "50ed281b6e095ea9e6f11cd01b8ec084392ceb91e6f9ca12efc27feee71d1bad"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-receipt-v1.json.packet.bin",
+      "resource": "packets/both-high/private-query-faction-gift-receipt-v1.json.packet.bin",
+      "bytes": 2732,
+      "sha256": "3cf609c443d41cf1b2ce250f1e5a47c13499aaddab4e508a5f7ddd6855f78d46"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-receipt-v1.request.json",
+      "resource": "packets/both-high/private-query-faction-gift-receipt-v1.request.json",
+      "bytes": 96,
+      "sha256": "452c99fe2bd21f6f13424789bc7d578de0506f222f5b7fbcc1dcc0675e3d7dbc"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-cold-recovery-v1.json",
+      "resource": "packets/both-high/private-query-faction-gift-cold-recovery-v1.json",
+      "bytes": 2109,
+      "sha256": "13c71243f9322496e955b972d63c5ac2e37f2125e29472a79fb089c78bc2dde2"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "resource": "packets/both-high/private-query-faction-gift-cold-recovery-v1.json.packet.bin",
+      "bytes": 2111,
+      "sha256": "6a781fcb8f848d1701fc4c5c6a09c147a852dd8df6317f9a1f8b133018566c72"
+    },
+    {
+      "source": "D:\\ck3-state\\resume90-m1-native\\action-identity\\router-candidate\\both-high\\private-query-faction-gift-cold-recovery-v1.request.json",
+      "resource": "packets/both-high/private-query-faction-gift-cold-recovery-v1.request.json",
+      "bytes": 161,
+      "sha256": "ce6e6894cf7e0465e3f339c995822f6a2fd1a833210d86070b65632a8a3f0b90"
+    }
+  ]
+}

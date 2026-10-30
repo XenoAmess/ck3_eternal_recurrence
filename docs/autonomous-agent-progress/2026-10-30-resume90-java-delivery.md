@@ -53,3 +53,7 @@ Ledger 已 rebase Native `9569b9e83732` 后普通 push/独立读回 `baa50361a55
 Piety 缺失输入已闭合：provider90 找到 2026-10-29 实际 SDK 320 tools capture `D:/ck3-state/ck3-java-g2-resume64-public-tools01/tools.original.json`（223552 B，SHA256 `a303a23a4740d9e7b61b227e0411bc51e0561ec76bd3ffd933a3071efd154dfb`），本岗仅重跑最后缺输入方法，strict javac0/2.774 秒、JUnit1P0F/4.842 秒。现在 Piety 四相关整类16项累计全P、0skip；这是分批结果，不是单次16P。旧 NOT_RUN 日志仍保留，没有重建 SDK 或查询服务。
 
 M4 refund 采用 provider90 单生产叶和三测试叶精确 patch，check0/apply0，当前完整 ConstructionRefundSource 严格 javac0/2.177 秒。actor/receiver、expected/persisted frame 用既有 NativeCharacterId signed int32，builder 保留独立 uint32（包括 FFFFFFFF），资金信用仍0。复用实际 owner 最终新6+route整类3通过，以及只重跑 archive 完整类2P 的两个独立终态，不重复绿色147秒文件链。测试的 SHA 规范、合法60秒 freshness/120秒 caller 与真实软件 heartbeat publication 修正一并交付；不改生产时间/资格。既有 ConstructionRefundSourceTest 的旧 phaseB manifest 未找到，完整类未执行；不外推为全测试通过。
+
+M4 已普通 push/独立读回 `56bff55e7ee94af6722918cff1cbab621197dbf6`。
+
+M1 private raw32 组审阅并采用8生产叶、2测试叶和79份原包资源。原 patch 换行不适用于 LF Git tree，规范为 LF 后 check0/apply0；资源另按 DELIVERY.json 的 tests 根逐字复制，TESTS.patch 本身只含两个 Java 测试。当前8完整生产类 `-Xlint:all -Werror` javac0/7.809 秒；为了验证实际导入的 binary packet/classloader 包，严格编译新完整类并在 D checkout 运行15P0F/5.836秒，六世界24份 Native WriteFrame 原包字节、payload/token 经 pending/cold/resolved 消费链保存。复用 owner 六原整类33项分批全P，未重复这些绿色回归。public signed int32 与 private raw uint32 显式转换，拒绝 FFFFFFFF/-1/范围及错类型别名，member 按实际 raw 顺序；sourceFaction 独立非零uint32。opaque、动作准入、预算、唯一 writer、generation 与 UNKNOWN 不重放门不变。普通 proposal/war-cash producer 后继真实缺口另由 M1 D-only 组推进，不能把本包48项结果冒充全部普通规划已闭合。

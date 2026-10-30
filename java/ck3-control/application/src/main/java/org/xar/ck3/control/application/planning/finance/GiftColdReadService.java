@@ -16,6 +16,7 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.wave2.finance.giftpending.GiftColdRecovery;
 import org.xar.ck3.control.wave2.finance.giftpending.GiftColdRecoveryCodec;
 import org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel.PendingAction;
+import org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel;
 
 /** The existing independent faction/recipient/wallet read, never a submit or a targeting-vector fallback. */
 public final class GiftColdReadService {
@@ -43,7 +44,7 @@ public final class GiftColdReadService {
                 (request,id)->{
                     ids(request.arguments());
                     Obj fields=request.arguments().with("expected_date_raw",new IntegerValue(request.before().frame().identity().dateRaw()))
-                            .with("expected_player_character_id",new IntegerValue(request.before().frame().identity().player()));
+                            .with("expected_player_character_id",new IntegerValue(GiftPendingModel.rawCharacterIdFromPublic(request.before().frame().identity().player())));
                     return new NativeRequest(OPERATION.value(),permission.capability(),new RawJson(encode(fields)));
                 },GiftColdReadService::decode,GiftColdReadService::decode,GiftColdReadService::requireReuse);
     }
@@ -72,7 +73,7 @@ public final class GiftColdReadService {
     public ReadContract<Observation> contract() { return contract; }
     public PlanningReadRequest request(PlanningRequest current,PendingAction pending) {
         require(current.before().frame().episodeRunId().equals(pending.episodeRunId())
-                &&current.before().frame().identity().player().equals(pending.baseline().playerCharacterId()),
+                &&GiftPendingModel.rawCharacterIdFromPublic(current.before().frame().identity().player()).equals(pending.baseline().playerCharacterId()),
                 "cold read cannot move an old Gift to another episode or actor");
         return new PlanningReadRequest(current.before(),current.source(),current.sessionId(),OPERATION,
                 obj("source_faction_id",new IntegerValue(pending.baseline().sourceFactionId()),
@@ -142,7 +143,7 @@ public final class GiftColdReadService {
                 &&new IntegerValue(identity.nativeRevision()).equals(post.get("snapshot_revision"))
                 &&new IntegerValue(identity.dateRaw()).equals(post.get("date_raw"))
                 &&new IntegerValue(identity.dateRaw()).equals(post.get("observed_date_raw"))
-                &&new IntegerValue(identity.player()).equals(post.get("player_character_id"))
+                &&new IntegerValue(GiftPendingModel.rawCharacterIdFromPublic(identity.player())).equals(post.get("player_character_id"))
                 &&new IntegerValue(identity.nativeRevision()).equals(post.get("native_snapshot_revision"))
                 &&new IntegerValue(BigInteger.valueOf(100000)).equals(post.get("player_gold_scale")),
                 "cold Gift post observation is outside the actual held paused frame");
@@ -164,16 +165,19 @@ public final class GiftColdReadService {
         for(String field:List.of("snapshot_revision","native_snapshot_revision"))boundedInteger(post.get(field),BigInteger.ONE,UINT64,field);
         for(String field:List.of("observed_date_raw","date_raw","recipient_opinion_of_player"))
             boundedInteger(post.get(field),BigInteger.valueOf(Integer.MIN_VALUE),BigInteger.valueOf(Integer.MAX_VALUE),field);
-        for(String field:List.of("player_character_id","player_gold_scale","queried_source_faction_id","source_faction_target_character_id",
-                "source_faction_metric_scale","recipient_character_id"))boundedInteger(post.get(field),BigInteger.ZERO,UINT32,field);
+        for(String field:List.of("player_gold_scale","source_faction_metric_scale"))boundedInteger(post.get(field),BigInteger.ZERO,UINT32,field);
+        GiftPendingModel.rawSourceFactionId(integer(post.get("queried_source_faction_id"),"queried_source_faction_id"));
+        for(String field:List.of("player_character_id","source_faction_target_character_id","recipient_character_id"))
+            GiftPendingModel.rawCharacterId(integer(post.get(field),field));
         for(String field:List.of("player_gold_raw","source_faction_power_raw","source_faction_discontent_raw"))
             boundedInteger(post.get(field),BigInteger.valueOf(Long.MIN_VALUE),BigInteger.valueOf(Long.MAX_VALUE),field);
         if(post.get("gift_opinion_modifier_value")!=Nil.INSTANCE)
             boundedInteger(post.get("gift_opinion_modifier_value"),BigInteger.valueOf(Integer.MIN_VALUE),BigInteger.valueOf(Integer.MAX_VALUE),"gift_opinion_modifier_value");
         if(post.get("source_faction_leader_character_id")!=Nil.INSTANCE)
-            boundedInteger(post.get("source_faction_leader_character_id"),BigInteger.ZERO,UINT32,"source_faction_leader_character_id");
+            GiftPendingModel.rawCharacterId(integer(post.get("source_faction_leader_character_id"),"source_faction_leader_character_id"));
         require(post.get("source_faction_member_character_ids") instanceof Arr,"actual native Gift member array required");
-        for(Value id:((Arr)post.get("source_faction_member_character_ids")).items())boundedInteger(id,BigInteger.ZERO,UINT32,"source_faction_member_character_ids[]");
+        GiftPendingModel.rawMemberCharacterIds(((Arr)post.get("source_faction_member_character_ids")).items().stream()
+                .map(id->integer(id,"source_faction_member_character_ids[]")).toList());
         Obj preview=object(post.get("gift_preview"),"actual native Gift preview");
         require(preview.members().keySet().equals(Set.of("available","definition_key","definition_stable_hash","interaction_legal","auto_accept",
                 "gold_cost_raw","gold_scale","opinion_delta")),"cold Gift preview fields differ from the actual native producer");
@@ -189,9 +193,7 @@ public final class GiftColdReadService {
     }
     private static void ids(Obj arguments) {
         require(arguments.members().keySet().equals(ARGUMENTS),"exact original faction/recipient read arguments required");
-        for(String field:ARGUMENTS) {
-            BigInteger id=integer(arguments.get(field),field);
-            require(id.signum()>0&&id.compareTo(new BigInteger("4294967295"))<=0,"actual unsigned 32-bit original Gift identity required");
-        }
+        GiftPendingModel.rawSourceFactionId(integer(arguments.get("source_faction_id"),"source_faction_id"));
+        GiftPendingModel.rawCharacterId(integer(arguments.get("recipient_character_id"),"recipient_character_id"));
     }
 }

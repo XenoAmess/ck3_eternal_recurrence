@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel;
 import static org.xar.ck3.control.wave2.finance.giftoutcome.GiftOutcomeModel.*;
 
 /** Existing-session read only orchestration; no gift submission, pending resolver or ledger writer. */
@@ -34,7 +35,7 @@ public final class GiftOutcomeQuery {
             return unavailable(request, before, original, Reason.CURRENT_DATE_PRECEDES_ORIGINAL_MATERIAL);
         }
         PairRequest pairRequest = new PairRequest(before.nativeRevision().orElseThrow(), before.dateRaw().orElseThrow(),
-                before.actorId().orElseThrow(), gift.sourceFactionId(), gift.recipientId());
+                GiftPendingModel.rawCharacterIdFromPublic(before.actorId().orElseThrow()), gift.sourceFactionId(), gift.recipientId());
         PairRead read = Objects.requireNonNull(driver.readIndependentPair(pairRequest));
         if (read instanceof PairUnavailable error) {
             return new Unavailable(request, before, original, Reason.INDEPENDENT_PAIR_UNAVAILABLE, Optional.of(error.error()));
@@ -75,14 +76,14 @@ public final class GiftOutcomeQuery {
             }
             if (pending != null && receipt != null) break;
         }
+        Optional<BigInteger> rawActor = frame.actorId().map(GiftPendingModel::rawCharacterIdFromPublic);
         if (pending == null || receipt == null || !pending.episodeRunId().equals(frame.episodeRunId())
-                || !pending.actorId().equals(frame.actorId()) || !receipt.actorId().equals(frame.actorId())
+                || !pending.actorId().equals(rawActor) || !receipt.actorId().equals(rawActor)
                 || !receipt.sourceFactionId().equals(pending.sourceFactionId())
                 || !receipt.recipientId().equals(pending.recipientId())
-                || receipt.sourceFactionId().filter(value -> value.signum() > 0).isEmpty()
-                || receipt.recipientId().filter(value -> value.signum() > 0).isEmpty()
+                || receipt.sourceFactionId().isEmpty() || receipt.recipientId().isEmpty()
                 || receipt.materialDateRaw().isEmpty()) return Optional.empty();
-        return Optional.of(new OriginalGift(requestId, frame.episodeRunId(), frame.actorId().orElseThrow(),
+        return Optional.of(new OriginalGift(requestId, frame.episodeRunId(), rawActor.orElseThrow(),
                 receipt.sourceFactionId().orElseThrow(), receipt.recipientId().orElseThrow(), pending.actionDateRaw(),
                 receipt.materialDateRaw().orElseThrow(), pending.goldCostRaw(), pending.opinionDelta(), pending.preRecipientOpinion(),
                 pending.preFactionPower(), pending.preFactionDiscontent(), receipt.original()));

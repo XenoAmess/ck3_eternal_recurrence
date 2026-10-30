@@ -35,8 +35,11 @@ public final class GiftColdRecovery {
             Read<BigInteger> sourceFactionDiscontentRaw, Read<List<BigInteger>> sourceFactionMemberCharacterIds,
             ObjectEvidence evidence) {
         public PostObservation {
+            if (playerCharacterId.known()) GiftPendingModel.rawCharacterId(playerCharacterId.value());
+            if (recipientCharacterId.known()) GiftPendingModel.rawCharacterId(recipientCharacterId.value());
+            if (queriedSourceFactionId.known()) GiftPendingModel.rawSourceFactionId(queriedSourceFactionId.value());
             if (sourceFactionMemberCharacterIds.known()) {
-                sourceFactionMemberCharacterIds = Read.of(List.copyOf(sourceFactionMemberCharacterIds.value()));
+                sourceFactionMemberCharacterIds = Read.of(GiftPendingModel.rawMemberCharacterIds(sourceFactionMemberCharacterIds.value()));
             }
             Objects.requireNonNull(evidence);
         }

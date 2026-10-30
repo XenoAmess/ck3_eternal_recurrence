@@ -91,6 +91,7 @@ public final class GiftPendingCodec {
         }
         StrictJson.require("submitted_verification_pending".equals(text(node, "status")), "pending submission ACK status required");
         requireBoolean(node, "verification_pending", true);
+        if (node.has("player_character_id")) GiftPendingModel.rawCharacterId(integer(node, "player_character_id"));
         return new Ack(text(node, "request_id"), integer(node, "source_faction_id"), integer(node, "recipient_character_id"), evidence(node));
     }
     public static AppliedReceipt decodeReceipt(byte[] raw) {

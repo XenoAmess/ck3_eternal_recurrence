@@ -141,7 +141,8 @@ public final class GiftResolvedEvidence {
             var nativeFrame=originals.frame().identity().frame().identity();
             require(new IntegerValue(nativeFrame.nativeRevision()).equals(expected.get("expected_revision"))
                     &&new IntegerValue(nativeFrame.dateRaw()).equals(expected.get("expected_date_raw"))
-                    &&new IntegerValue(nativeFrame.player()).equals(expected.get("expected_player_character_id"))
+                    &&new IntegerValue(org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel.rawCharacterIdFromPublic(nativeFrame.player()))
+                        .equals(expected.get("expected_player_character_id"))
                     &&originals.pair().request().arguments().get("source_faction_id").equals(expected.get("source_faction_id"))
                     &&originals.pair().request().arguments().get("recipient_character_id").equals(expected.get("recipient_character_id")),
                     "actual independent pair differs from the original history-selected Gift");

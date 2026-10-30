@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel;
 
 /** Immutable decision projection of the existing resolved-gift observer. */
 public final class GiftOutcomeModel {
@@ -61,6 +63,7 @@ public final class GiftOutcomeModel {
             Objects.requireNonNull(snapshotId); Objects.requireNonNull(revision); Objects.requireNonNull(nativeRevision);
             Objects.requireNonNull(dateRaw); Objects.requireNonNull(episodeRunId); Objects.requireNonNull(paused);
             Objects.requireNonNull(mapReady); Objects.requireNonNull(actorId); Objects.requireNonNull(actorAlive);
+            actorId.ifPresent(NativeCharacterId::of);
             Objects.requireNonNull(activeEvent); Objects.requireNonNull(pendingInteraction);
         }
         public boolean ready() {
@@ -89,6 +92,9 @@ public final class GiftOutcomeModel {
             Objects.requireNonNull(sourceFactionId); Objects.requireNonNull(recipientId); Objects.requireNonNull(actionDateRaw);
             Objects.requireNonNull(goldCostRaw); Objects.requireNonNull(opinionDelta); Objects.requireNonNull(preRecipientOpinion);
             Objects.requireNonNull(preFactionPower); Objects.requireNonNull(preFactionDiscontent);
+            actorId.ifPresent(GiftPendingModel::rawCharacterId);
+            recipientId.ifPresent(GiftPendingModel::rawCharacterId);
+            sourceFactionId.ifPresent(GiftPendingModel::rawSourceFactionId);
         }
     }
     public record ReceiptHistory(Optional<String> requestId, Optional<BigInteger> schemaVersion,
@@ -101,6 +107,9 @@ public final class GiftOutcomeModel {
             Objects.requireNonNull(postconditionVerified); Objects.requireNonNull(mitigationApplied); Objects.requireNonNull(actorId);
             Objects.requireNonNull(sourceFactionId); Objects.requireNonNull(recipientId); Objects.requireNonNull(materialDateRaw);
             Objects.requireNonNull(original);
+            actorId.ifPresent(GiftPendingModel::rawCharacterId);
+            recipientId.ifPresent(GiftPendingModel::rawCharacterId);
+            sourceFactionId.ifPresent(GiftPendingModel::rawSourceFactionId);
         }
         boolean eligible(String request) {
             return requestId.filter(request::equals).isPresent()
@@ -123,8 +132,9 @@ public final class GiftOutcomeModel {
                                Optional<BigInteger> preRecipientOpinion, Optional<BigInteger> preFactionPower,
                                Optional<BigInteger> preFactionDiscontent, WireValue receipt) {
         public OriginalGift {
-            nonempty(requestId, "requestId"); Objects.requireNonNull(episodeRunId); positive(actorId); positive(sourceFactionId);
-            positive(recipientId); Objects.requireNonNull(actionDateRaw); Objects.requireNonNull(materialDateRaw);
+            nonempty(requestId, "requestId"); Objects.requireNonNull(episodeRunId);
+            GiftPendingModel.rawCharacterId(actorId); GiftPendingModel.rawSourceFactionId(sourceFactionId);
+            GiftPendingModel.rawCharacterId(recipientId); Objects.requireNonNull(actionDateRaw); Objects.requireNonNull(materialDateRaw);
             Objects.requireNonNull(goldCostRaw); Objects.requireNonNull(opinionDelta); Objects.requireNonNull(preRecipientOpinion);
             Objects.requireNonNull(preFactionPower); Objects.requireNonNull(preFactionDiscontent); Objects.requireNonNull(receipt);
         }
@@ -133,7 +143,8 @@ public final class GiftOutcomeModel {
                               BigInteger expectedPlayerId, BigInteger sourceFactionId, BigInteger recipientId) {
         public PairRequest {
             Objects.requireNonNull(expectedRevision); Objects.requireNonNull(expectedDateRaw);
-            positive(expectedPlayerId); positive(sourceFactionId); positive(recipientId);
+            GiftPendingModel.rawCharacterId(expectedPlayerId); GiftPendingModel.rawSourceFactionId(sourceFactionId);
+            GiftPendingModel.rawCharacterId(recipientId);
         }
     }
     public record PairObservation(Truth available, Truth paused, Optional<BigInteger> snapshotRevision,
@@ -149,10 +160,14 @@ public final class GiftOutcomeModel {
             Objects.requireNonNull(nativeSnapshotRevision); Objects.requireNonNull(observedDateRaw); Objects.requireNonNull(playerId);
             Objects.requireNonNull(factionRequeryComplete); Objects.requireNonNull(queriedFactionId); Objects.requireNonNull(factionPresent);
             Objects.requireNonNull(metricsAvailable); Objects.requireNonNull(leaderId);
-            memberIds = Objects.requireNonNull(memberIds).map(List::copyOf);
+            memberIds = Objects.requireNonNull(memberIds).map(GiftPendingModel::rawMemberCharacterIds);
             Objects.requireNonNull(recipientIdentityResolved); Objects.requireNonNull(recipientId);
             Objects.requireNonNull(recipientOpinionQueryComplete); Objects.requireNonNull(recipientOpinion);
             Objects.requireNonNull(giftOpinionPresent); Objects.requireNonNull(original);
+            playerId.ifPresent(GiftPendingModel::rawCharacterId);
+            recipientId.ifPresent(GiftPendingModel::rawCharacterId);
+            leaderId.ifPresent(GiftPendingModel::rawCharacterId);
+            queriedFactionId.ifPresent(GiftPendingModel::rawSourceFactionId);
         }
     }
     public sealed interface PairRead permits PairPacket, PairUnavailable { }
@@ -174,6 +189,7 @@ public final class GiftOutcomeModel {
             Objects.requireNonNull(status); Objects.requireNonNull(snapshotRevision); Objects.requireNonNull(dateRaw);
             Objects.requireNonNull(playerId); Objects.requireNonNull(sameFrameReady); Objects.requireNonNull(targetingRowsReady);
             Objects.requireNonNull(stockDangerousReady); targetingRows = Objects.requireNonNull(targetingRows).map(List::copyOf);
+            playerId.ifPresent(NativeCharacterId::of);
         }
         boolean sameFrame(Snapshot frame) {
             return snapshotRevision.equals(frame.nativeRevision()) && dateRaw.equals(frame.dateRaw())
@@ -202,7 +218,7 @@ public final class GiftOutcomeModel {
             Objects.requireNonNull(request); Objects.requireNonNull(frame); Objects.requireNonNull(gift);
             Objects.requireNonNull(factionOutcome); Objects.requireNonNull(currentObservation); Objects.requireNonNull(currentAlert);
             if (!frame.ready() || !request.requestId().equals(gift.requestId())
-                    || !frame.actorId().filter(gift.actorId()::equals).isPresent()
+                    || !frame.actorId().map(GiftPendingModel::rawCharacterIdFromPublic).filter(gift.actorId()::equals).isPresent()
                     || !frame.episodeRunId().equals(gift.episodeRunId())
                     || followupDateAdvanced != (frame.dateRaw().orElseThrow().compareTo(gift.materialDateRaw()) > 0)) {
                 throw new IllegalArgumentException("observed gift frame mismatch");
@@ -215,8 +231,5 @@ public final class GiftOutcomeModel {
     }
     private static void nonempty(String value, String field) {
         if (Objects.requireNonNull(value, field).isEmpty() || value.codePointCount(0, value.length()) > 32768) throw new IllegalArgumentException(field);
-    }
-    private static void positive(BigInteger value) {
-        if (Objects.requireNonNull(value).signum() <= 0) throw new IllegalArgumentException("positive identity required");
     }
 }

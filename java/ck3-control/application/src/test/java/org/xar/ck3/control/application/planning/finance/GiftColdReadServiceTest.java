@@ -24,7 +24,9 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle;
 import org.xar.ck3.control.wave2.finance.giftpending.*;
 
 /** Original Python pending producer/classifier -> actual strict native packet consumer -> full persistent reducer roundtrip.
- * The native outer packet is assembled from the pinned .4 C++ serialization contract, not a live capture.
+ * The native outer packet is assembled from the declared .4 serialization fields, not a live capture.
+ * Actual C++ wire originals are separately consumed by GiftPrivateRaw32NativeConsumerTest; unrelated router
+ * source edits do not change these authored Python-differential fixtures.
  * Root private restoration admission and canonical READ publication still require their real integration tests.
  */
 final class GiftColdReadServiceTest {
@@ -55,17 +57,24 @@ final class GiftColdReadServiceTest {
         Path root=Path.of(configured).toAbsolutePath().normalize();
         for(var pin:List.of(
                 new String[]{"ck3_autonomous_player/tests/unit/test_faction_gift_cold_recovery_contract_v1.py","94bf100fa16659a4c3bb50b1f9dd9f6714a6e6a07a23a061bd9eefb0f036b938"},
-                new String[]{"ck3_autonomous_player/src/xar_autoplayer/faction_gift_cold_recovery_contract_v1.py","72b408eaa65728470ee75a252af704c0586affb1e81e8094d6adcb8487a44429"},
-                new String[]{"ck3_autonomous_player/native_bridge/include/xar_bridge/faction_gift_mitigation_action_v1.hpp","178eb31ef73196718c680c2689cab5dd9af8af9e614720278f900f82c2f4d9db"},
-                new String[]{"ck3_autonomous_player/native_bridge/src/ck3_12004_faction_gift_router.cpp","6f442c40ebe17cdeb6436d8b280872fcdbd72eee56be288560c4d9e23056a7fe"}))
+                new String[]{"ck3_autonomous_player/src/xar_autoplayer/faction_gift_cold_recovery_contract_v1.py","72b408eaa65728470ee75a252af704c0586affb1e81e8094d6adcb8487a44429"}))
             assertEquals(pin[1],java.util.HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(root.resolve(pin[0])))));
-        var builder=new ProcessBuilder(System.getProperty("xar.python","python"),"-c",SCRIPT,root.toString());
-        builder.environment().put("PYTHONDONTWRITEBYTECODE","1");builder.redirectErrorStream(true);
-        Process process=builder.start();
-        if(!process.waitFor(45,TimeUnit.SECONDS)) { process.destroyForcibly();throw new AssertionError("actual original producer did not finish"); }
-        byte[] raw=process.getInputStream().readNBytes(1048577);
-        assertEquals(0,process.exitValue(),new String(raw,StandardCharsets.UTF_8));assertTrue(raw.length<=1048576);
-        return StrictJson.parse(raw,1048576);
+        Path capture=Files.createTempFile("gift-cold-original-",".json");
+        try {
+            var builder=new ProcessBuilder(System.getProperty("xar.python","python"),"-c",SCRIPT,root.toString());
+            builder.environment().put("PYTHONDONTWRITEBYTECODE","1");
+            // Drain while the child runs: the complete producer output exceeds a Windows pipe buffer.
+            builder.redirectErrorStream(true).redirectOutput(capture.toFile());
+            Process process=builder.start();
+            if(!process.waitFor(45,TimeUnit.SECONDS)) {
+                process.destroyForcibly().waitFor(5,TimeUnit.SECONDS);
+                throw new AssertionError("actual original producer did not finish");
+            }
+            assertTrue(Files.size(capture)<=1048576,"bounded original producer output required");
+            byte[] raw=Files.readAllBytes(capture);
+            assertEquals(0,process.exitValue(),new String(raw,StandardCharsets.UTF_8));
+            return StrictJson.parse(raw,1048576);
+        } finally {Files.deleteIfExists(capture);}
     }
     private static PlanningReadReceipt receipt(ObjectNode recovery) { return receipt(recovery,post->{ }); }
     private static PlanningReadReceipt receipt(ObjectNode recovery,java.util.function.Consumer<ObjectNode> nativeMutation) {

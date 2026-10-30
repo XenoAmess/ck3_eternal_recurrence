@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** Immutable v1 material. No native submission, file access, or writer authority. */
 public final class GiftPendingModel {
@@ -45,12 +46,11 @@ public final class GiftPendingModel {
             BigInteger sourceFactionPowerRaw, BigInteger sourceFactionDiscontentRaw,
             List<BigInteger> sourceFactionMemberCharacterIds, BigInteger goldCostRaw, BigInteger opinionDelta) {
         public Baseline {
-            positive(sourceFactionId); positive(recipientCharacterId); positive(snapshotRevision);
-            positive(nativeSnapshotRevision); nonnegative(dateRaw); positive(playerCharacterId);
+            rawSourceFactionId(sourceFactionId); rawCharacterId(recipientCharacterId); positive(snapshotRevision);
+            positive(nativeSnapshotRevision); nonnegative(dateRaw); rawCharacterId(playerCharacterId);
             nonnegative(playerGoldRaw); Objects.requireNonNull(recipientOpinionOfPlayer);
             Objects.requireNonNull(sourceFactionPowerRaw); Objects.requireNonNull(sourceFactionDiscontentRaw);
-            sourceFactionMemberCharacterIds = List.copyOf(sourceFactionMemberCharacterIds);
-            sourceFactionMemberCharacterIds.forEach(GiftPendingModel::positive);
+            sourceFactionMemberCharacterIds = rawMemberCharacterIds(sourceFactionMemberCharacterIds);
             StrictJson.require(sourceFactionMemberCharacterIds.contains(recipientCharacterId), "recipient must be original member");
             positive(goldCostRaw); positive(opinionDelta);
         }
@@ -95,7 +95,7 @@ public final class GiftPendingModel {
     }
     public record Ack(String requestId, BigInteger sourceFactionId, BigInteger recipientCharacterId,
             ObjectEvidence evidence) {
-        public Ack { nonempty(requestId); positive(sourceFactionId); positive(recipientCharacterId); Objects.requireNonNull(evidence); }
+        public Ack { nonempty(requestId); rawSourceFactionId(sourceFactionId); rawCharacterId(recipientCharacterId); Objects.requireNonNull(evidence); }
     }
     /** Same-process material projection; extension fields remain in the original receipt evidence. */
     public record AppliedReceipt(String requestId, ReceiptStatus status, BigInteger sourceFactionId,
@@ -103,13 +103,41 @@ public final class GiftPendingModel {
             BigInteger postNativeSnapshotRevision, BigInteger postObservedDateRaw,
             BigInteger postPlayerGoldRaw, BigInteger postGiftOpinionModifierValue, ObjectEvidence evidence) {
         public AppliedReceipt {
-            nonempty(requestId); Objects.requireNonNull(status); positive(sourceFactionId);
-            positive(recipientCharacterId); positive(playerCharacterId); positive(postSnapshotRevision);
+            nonempty(requestId); Objects.requireNonNull(status); rawSourceFactionId(sourceFactionId);
+            rawCharacterId(recipientCharacterId); rawCharacterId(playerCharacterId); positive(postSnapshotRevision);
             positive(postNativeSnapshotRevision); nonnegative(postObservedDateRaw); nonnegative(postPlayerGoldRaw);
             Objects.requireNonNull(postGiftOpinionModifierValue); Objects.requireNonNull(evidence);
         }
     }
     public static void nonempty(String value) { StrictJson.text(value); }
+    /** Private gift JSON uses raw uint32 FullIDs, with all-ones reserved for absence. */
+    public static BigInteger rawCharacterId(BigInteger value) {
+        StrictJson.require(value != null && value.signum() >= 0
+                && value.compareTo(new BigInteger("4294967294")) <= 0,
+                "private Gift character identity requires raw uint32 except the all-ones sentinel");
+        return value;
+    }
+    /** Explicit one-way boundary from the public signed int32 frame; no dual-domain input alias. */
+    public static BigInteger rawCharacterIdFromPublic(BigInteger signedValue) {
+        return BigInteger.valueOf(Integer.toUnsignedLong(NativeCharacterId.of(signedValue).value()));
+    }
+    public static BigInteger rawSourceFactionId(BigInteger value) {
+        StrictJson.require(value != null && value.signum() > 0
+                && value.compareTo(new BigInteger("4294967295")) <= 0,
+                "private Gift source faction requires its nonzero uint32 identity");
+        return value;
+    }
+    public static List<BigInteger> rawMemberCharacterIds(List<BigInteger> values) {
+        List<BigInteger> retained = List.copyOf(values);
+        BigInteger previous = null;
+        for (BigInteger value : retained) {
+            rawCharacterId(value);
+            StrictJson.require(previous == null || previous.compareTo(value) < 0,
+                    "private Gift member identities must be strictly increasing in raw uint32 order");
+            previous = value;
+        }
+        return retained;
+    }
     public static void positive(BigInteger value) {
         StrictJson.require(value != null && value.signum() > 0, "positive integer required");
     }

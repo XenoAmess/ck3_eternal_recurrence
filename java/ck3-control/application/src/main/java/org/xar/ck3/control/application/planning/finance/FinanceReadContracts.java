@@ -112,7 +112,9 @@ public final class FinanceReadContracts {
                                 || query == Query.FEAST_INPUTS || query == Query.FEAST_HOSTED) {
                             fields.put("expected_date_raw", new IntegerValue(request.before().frame().identity().dateRaw()));
                             fields.put((query == Query.FACTION_GIFT || query == Query.FACTION_GIFT_RECEIPT) ? "expected_player_character_id" : "expected_actor_character_id",
-                                    new IntegerValue(request.before().frame().identity().player()));
+                                    new IntegerValue((query == Query.FACTION_GIFT || query == Query.FACTION_GIFT_RECEIPT)
+                                            ? org.xar.ck3.control.wave2.finance.giftpending.GiftPendingModel.rawCharacterIdFromPublic(request.before().frame().identity().player())
+                                            : request.before().frame().identity().player()));
                         }
                         if (query == Query.FEAST_INPUTS) {
                             fields.put("expected_activity_key", new Text("activity_feast"));
