@@ -226,6 +226,7 @@
 #include "xar_bridge/ck3_12004_event_window_context.hpp"
 #include "xar_bridge/ck3_12004_event_window_context_v2.hpp"
 #include "xar_bridge/ck3_12002_event_window_context_v2_query.hpp"
+#include "xar_bridge/ck3_12002_event_window_context_v2_mailbox.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12004_campaign.hpp"
@@ -11792,19 +11793,6 @@ bool ExecuteTypedQuery12002(
             access, query.pending_request, query.pending);
       }
       query.typed_result = true;
-    } else if constexpr (Kind == QueryKind12002::event_window) {
-      const auto bindings = actual4
-          ? xar::ck3_12004::BindEventWindowImage12004(query.image_base, sha)
-          : xar::ck3_12002::BindEventWindowImage(query.image_base, sha);
-      xar::ck3_12002::EventWindowGuiBindingsV2 gui_bindings{bindings};
-      if (actual4 && query.event_gui_version ==
-                        xar::ck3_12002::EventWindowGuiRequestVersionV2::gui_v2)
-        gui_bindings = xar::ck3_12004::BindEventWindowImage12004V2(
-            query.image_base, sha);
-      (void)xar::ck3_12002::ReadVersionedEventWindowInQueryV2(
-          query.event_gui_version, gui_bindings, *envelope,
-          query.event_instance_id, query.event, query.event_gui);
-      query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::title_map) {
       const bool previously_dispatched = query.title_command.dispatched;
       if (actual4) {
@@ -11887,7 +11875,7 @@ const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 13>
       &ExecuteTypedQuery12002<QueryKind12002::campaign>,
       &ExecuteTypedQuery12002<QueryKind12002::loaded_features>,
       &ExecuteTypedQuery12002<QueryKind12002::pending_interaction>,
-      &ExecuteTypedQuery12002<QueryKind12002::event_window>,
+      &xar::ck3_12002::ExecuteEventWindowContextMailboxV2,
       &ExecuteTypedQuery12002<QueryKind12002::title_map>,
     };
 
@@ -12564,7 +12552,7 @@ public:
     environment.permitted_executor_novemdenary =
         &ExecuteTypedQuery12002<QueryKind12002::pending_interaction>;
     environment.permitted_executor_vigintary =
-        &ExecuteTypedQuery12002<QueryKind12002::event_window>;
+        &xar::ck3_12002::ExecuteEventWindowContextMailboxV2;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     nonwar.steward_develop_county = &xar::ck3_11906::
@@ -13867,6 +13855,17 @@ std::string RunTypedQuery12002(
   query.loaded_request.expected_snapshot_revision = state.state_revision;
   query.pending_request.expected_snapshot_revision = state.state_revision;
   query.pending_request.played_character_id = snapshot.played_character_id;
+  std::optional<xar::ck3_12002::EventWindowMailboxContextV2>
+      event_mailbox_context;
+  if (query.kind == QueryKind12002::event_window) {
+    event_mailbox_context.emplace(xar::ck3_12002::EventWindowMailboxContextV2{
+        query.envelope,
+        xar::ck3_12002::EventWindowMailboxKindV2::event_window,
+        query.image_base, query.event_gui_version, query.event_instance_id,
+        query.typed_result, query.executor_enter, query.executor_typed_result,
+        query.executor_finish, query.event, query.event_gui});
+    query.envelope.typed_context = &*event_mailbox_context;
+  }
   const auto executor = kTypedExecutors12002[static_cast<std::size_t>(query.kind)];
   const auto started = GetTickCount64();
   std::uint32_t callback_count = 0;

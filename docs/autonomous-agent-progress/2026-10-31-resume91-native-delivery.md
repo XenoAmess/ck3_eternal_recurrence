@@ -55,3 +55,15 @@ M6 actual4 Sway signed target router候选1TU与新formal test1TU分别CL exit0/
 M1 CI137将既验原118B liege getter与实际County16消费者保留到现有fullid目标：只新增一个entry TU、三个同目标selector，持有local World/getter头与118B原件。模型新entry/CMake/dispatcher原样，owner只做旧夹具local include包装；新两TU /MP1+原cached link exit0/16.874736秒，三个新holder-zero/top-min/roundtrip-refusal各exit0，新argc90/unknown91符合合同，不重getter8或旧矩阵。正式D精确6叶采用（619+/2-）；共享Z旧未采用CI前像和缺席dispatcher没有被整树覆盖。原件 `D:/ck3-state/resume91-m1-native/liege-ci137/DELIVERY137.json`；未称完整shared CMake target或CTest已运行。
 
 M6 exact-parser生成TU严格编译exit0/6.379秒，复用4common和已绿router/test后，两小link均0，旧baseline真正运行exit1、237检查/30失败；formal修复真正运行exit0、237检查/0失败。后继query/default各只新router+test两TU（14.692/14.299秒），link和run均0，各237检查/0失败。生成器保完整唯一双签名、依赖更新和原函数正文，不用镜像parser；模型extract05拒绝，extract06由owner仅修CMake FIND API/转义，原helper03/core04模型方法保留。最终三source叶按 `D:/ck3-state/resume91-m6-native/router/DELIVERY.patch` 采用，并在原CI目标清单与CTest正则各加三variant。只改actual4三条Sway target分类为canonical signed int32 except -1；旧.2/.3、legacy parser、Event/invalidation范围控制保持，三feature配置分别验收。完整CMake configure/CTest和hosted CI尚未执行，未编完整Bridge或部署DLL，无Game新动作/日信用。
+
+## queued GUI 真实队列与持久入口（21:52Z）
+
+M0旧 LINK01 的7个未解析符号由真实生产者补齐后，LINK02另暴露 BindCoreImage 和 Phase2 两接口；两次链接失败均保留，没有记成行为RED。仅新增必要生产TU及一个专用queued support，再从当前Core源动态提取原659B binder（含wrapper754B，逐字相同），最终原6个新TU+后继9个新TU全部strict CL exit0。24个实际链接对象中15个为本轮新编译、9个为必要旧缓存，不能写成24TU重编。
+
+EXTRA09实际CL exit0/6.703041秒；LINK03以24obj/0archive实际exit0/4.431737秒；唯一首次RUN01于21:25:38.4340603Z真实exit0/0.281971秒，22检查通过。它执行真实submit、queued回调身份、owner pump、Wait和Reclaim，production callback完成Enter/read/Finish，image0结果是typed unavailable。没有available GUI、完整Bridge执行或Game调用信用。原件根为 D:/ck3-state/resume91-m0-native/bridge-queue/queue-actual/，保留LINK01/02/03及RUN01全部原件。
+
+持久目标新增24-source CMake、动态Core原函数生成器、单个既验case及独立两guard support；原GUI dispatch的五guard support保持不动。两轮模型portable target/helper分别暴露漏Phase2、错误shared support、伪造root context、CMake FIND offset API等实际缺陷；纠正05保留模型24-source/MD/LF/dependency接线，owner仅修真实root锚与SUBSTRING-tail+FIND。最终Native CMake -P exit0/0.082秒，生成754B与已执行源逐字一致。独立源码复核为 D:/ck3-state/resume91-native-integration/QUEUED-PORTABLE-REVIEW91.json；驱动脚本只留D，不作为生产新叶。
+
+正式采用冻结无Locator/13表前像的header、callback与Bridge五hunk，同原index11/physical slot20指向同一callback，view存活至原Wait/Reclaim；注册原CI目标清单和CTest正则。当前共享Z另有14表与Locator工作稿，本次没有用旧baseline覆盖它。新portable target未作完整CMake configure/build/CTest，完整Bridge TU、DLL链接和hosted CI未执行；本次不重15个已绿TU或22检查，不部署DLL、不重启Game、不新增能力广告。
+
+M0 Title另一个独立源码比较也已结束：只动态提取当前production Read/Component/ResolveObjectiveTitle三原函数共1030B，新1TU/link/首次run分别exit0/8.4231705、2.287808、0.1226066秒；生产API返回Title*与原生返回VariableContext*的预期差异确实成立。旧whole-province/Army对象保留、12TU候选未编，新增native语义case0，不外推完整province生产链接。证据 D:/ck3-state/resume91-m0-native/getter-compare/exact-source/RESULT05.json。
