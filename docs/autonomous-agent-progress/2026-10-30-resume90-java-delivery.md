@@ -93,3 +93,9 @@ Gift ordinary 组改按真实 Git 基线的完整九生产叶采用：补齐 Fac
 Gift ordinary 组已普通 push/独立远端读回 `5b760718b0487a3bdfa763b30803256972f1dc85`。首次 commit 遇瞬时 index.lock 后未删除锁，下一次观察锁已自然消失，再正常提交；失败后的 rebase 拒绝与无变化 push 不作成功证据。
 
 Root 指定的 M7 open_blocker 仅一个字符串按当前 Git 文档最小纠正：2026-10-30 明确续行已覆盖历史 owner-play 暂停，原五 daily SAVE、自然寿命/更广矩阵缺口与6/8状态保留。未从大 dirty Z 整份覆盖。M2 新原字节 remove/current 研究另促使 NativeEventPostconditionPort 两条注释收窄为独立 current-window advancement：另一个 Event 被移除可能导致 current 更换而旧对象仍存活，因此该字段不证明对象已删除或物质效果。仅注释，行为/字段/UNKNOWN 不重放保持，不为文字变更重跑绿测。
+
+上述注释/文档组普通 push/独立读回 `4bb46d0b4c6a329ad6af3ea59b04702a58c169d3`。
+
+当前开发源整合 Maven 读窗实际为 2026-10-30T15:38:47.414Z—15:42:41Z，`local-service -am -T2 compile`、Xmx2GiB，复用 revision66/build 与 m2，exit0/233.914秒。34个 reactor 条目成功，31个模块因 contracts/API 变更实际重新编译，另外两个编译模块及聚合 pom 复用/无编译；不是把 reactor 条目全算重编。来源为冻结 4bb46d 开发源，未做 package、完整 CI 或 Game 验收。START/ACTUAL/完整日志在 `D:/ck3-state/resume90-java-delivery/INTEGRATION90-COMPILE-*`。Source/index 在实际窗口内未切换，END 已直发依赖该缓存的岗；新 Life fixture 两次读取中间输出的编译红不作为业务失败，后继只重编失败 fixture。
+
+窗口结束后独立采用 CanonicalGiftColdProvider 一个比较差异：保存 frame 的 public signed player 显式转换为 private raw32，再比较原 pending baseline。当前完整类严格 javac0/3.367秒；复用 owner 六份真实 WriteFrame 原包经 Pending codec/reducer 与持久 ObservationIdentity codec 的表示诊断，高位两例旧比较不同、新转换六例相同。没有完整 SavedMaterial/RestoreBinding fixture，完整 `produce` 和实际 cold restore 未执行，不授 Ready、恢复或动作资格。本单叶不计入前述已经结束的 Maven 编译；同 Game 游玩不依赖 SAVE，不因此等待。

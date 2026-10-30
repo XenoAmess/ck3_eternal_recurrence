@@ -97,7 +97,7 @@ public final class CanonicalGiftColdProvider {
                 &&restored.session().sessionId().equals(current.sessionId())&&restored.source().equals(current.source())
                 &&pair.frame().machineId().equals(current.before().machineId())
                 &&pair.frame().frame().episodeRunId().equals(pending.episodeRunId())
-                &&pair.frame().frame().identity().player().equals(pending.baseline().playerCharacterId())
+                &&GiftPendingModel.rawCharacterIdFromPublic(pair.frame().frame().identity().player()).equals(pending.baseline().playerCharacterId())
                 &&!sameProcess(pending,context.game().generation())
                 &&!pair.frame().game().equals(context.game().generation()),
                 "old saved material does not belong to the original pending Gift and this actual restored Game");
