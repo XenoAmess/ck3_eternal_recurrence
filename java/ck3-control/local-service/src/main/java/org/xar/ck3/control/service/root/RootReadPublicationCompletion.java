@@ -1,5 +1,6 @@
 package org.xar.ck3.control.service.root;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import org.xar.ck3.control.application.driver.DriverReadHistoryPublisher;
 import org.xar.ck3.control.application.planning.OrdinaryPlanCompletion;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.PlanningResult;
+import org.xar.ck3.control.application.planning.PlanTrace;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.contracts.StrictJson;
 
@@ -111,14 +113,87 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     }
     @Override public PlanningDisposition afterPlanning(PlanningRequest original,PlanningResult planned) {
         Objects.requireNonNull(original);Objects.requireNonNull(planned);
+        logPlanningOperation("ENTER", original, planned);
         try {
             ContinuityStorePort.Session borrowed=core.writer().borrowedSession();
             StrictJson.require(round.get()!=null&&round.get().session==borrowed,"planning completion must retain its original live writer callback");
             Optional<Published> changed=round.get().readPublication;
             if(changed.isEmpty())changed=flushInSession(borrowed);
-            if(changed.isPresent())return changed.orElseThrow(); // Domain publication waits for the new complete observation.
-            return Objects.requireNonNull(downstream.afterPlanning(original,planned),"actual domain planning disposition required");
+            PlanningDisposition disposition;
+            if(changed.isPresent())disposition=changed.orElseThrow(); // Domain publication waits for the new complete observation.
+            else disposition=Objects.requireNonNull(downstream.afterPlanning(original,planned),"actual domain planning disposition required");
+            logPlanningOperation("RETURN", original, planned, disposition);
+            return disposition;
         }catch(IOException failure){throw new UncheckedIOException("actual read publication failed; original query is retained without replay",failure);}
+    }
+
+    private void logPlanningOperation(String phase, PlanningRequest original, PlanningResult planned, PlanningDisposition... disposition) {
+        try {
+            ObjectNode row = StrictJson.object()
+                .put("schema", "xar.java-ordinary-planning-operation/v1")
+                .put("phase", phase)
+                .put("result_class", planned.getClass().getSimpleName());
+
+            // Result specific details
+            if (planned instanceof PlanningResult.Stopped stopped) {
+                row.put("reason", stopped.reason().name());
+                row.put("detail", truncate(stopped.detail(), 1024));
+            } else if (planned instanceof PlanningResult.ReadOnlyWait wait) {
+                row.put("reason", truncate(wait.reason(), 1024));
+            } else if (planned instanceof PlanningResult.RefreshRequired refresh) {
+                row.put("reason", truncate(refresh.reason(), 1024));
+            } else if (planned instanceof PlanningResult.ActionSelected selected) {
+                selected.trace().finalPlan().ifPresent(plan -> row.put("reason", truncate(plan.reason(), 1024)));
+            } else if (planned instanceof PlanningResult.ExistingActionReconciliation recon) {
+                row.put("action_id", recon.actionId());
+            } else if (planned instanceof PlanningResult.IncompleteMigration migration) {
+                migration.missingStages().forEach(stage -> row.withArray("missing_stages").add(stage.name()));
+            }
+
+            // Last visited stage/outcome
+            var visits = planned.trace().visits();
+            row.putNull("last_stage");
+            row.putNull("last_outcome");
+            if (!visits.isEmpty()) {
+                PlanTrace.StageVisit last = visits.get(visits.size() - 1);
+                row.put("last_stage", last.stage().name());
+                row.put("last_outcome", last.outcome().name());
+            }
+
+            // Before frame identity
+            var before = planned.trace().before().frame();
+            row.put("before_revision", before.revision().toString());
+            row.put("before_native_revision", before.identity().nativeRevision().toString());
+            row.put("before_actor_character_id", before.identity().player().toString());
+            row.put("before_date_raw", before.identity().dateRaw().toString());
+            row.put("before_snapshot_id", truncate(before.snapshotId(), 1024));
+            row.put("before_episode", truncate(before.episodeRunId(), 1024));
+
+            // Round state
+            PlanningRound current = round.get();
+            if (current != null) {
+                row.put("round_read_present", current.readPublication.isPresent());
+                row.put("round_flush_failed", current.flushFailed);
+            }
+
+            // Disposition (if RETURN phase)
+            if (disposition.length > 0 && disposition[0] != null) {
+                row.put("disposition_class", disposition[0].getClass().getSimpleName());
+            }
+
+            byte[] canonical = StrictJson.canonical(row, 8192);
+            System.out.write(canonical);
+            System.out.write(10);
+            System.out.flush();
+        } catch (Exception ignored) {
+            // Best effort logging; never alter business flow
+        }
+    }
+
+    private static String truncate(String value, int max) {
+        if (value == null) return null;
+        if (value.length() <= max) return value;
+        return value.substring(0, max);
     }
     @Override public ExecutionDisposition afterExecution(ActionReceipt actual) {
         Objects.requireNonNull(actual);
