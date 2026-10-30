@@ -169,7 +169,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         ArrayNode capabilities = data.putArray("capabilities");
         request.observations().bridgeCapabilities().stream().sorted().forEach(capabilities::add);
         ArrayNode routable = data.putArray("routable_operations");
-        request.observations().actionSteps().stream().map(Object::toString).sorted().forEach(routable::add);
+        request.observations().actionSteps().stream().map(step -> step.value()).sorted().forEach(routable::add);
         ArrayNode facts = data.putArray("action_facts");
         request.observations().actionFacts().forEach(fact -> {
             ObjectNode actual = facts.addObject(); actual.put("action_id", fact.actionId());

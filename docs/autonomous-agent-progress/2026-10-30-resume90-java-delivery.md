@@ -31,3 +31,7 @@ Exitclaim 普通 push 并远端独立读回 `e11fe356c457842552869ad9d40d8a5b3e0
 Piety 的 NativePietyRootConsumer、NativePietyRootOriginals、NativePietyDirectoryCursor 三完整类合计9P；真实软件原文经 root normalizer→typed registry→directory/public，包含 signed/0、-1 哨兵和错类型。旧 RootRegistryReadPublicProducts 完整类6P1F：修正既有 oracle fixture 将 council unavailable 错误连带 root.ready=false 的一行；原 Python/Java 合同仍是 root.ready 等于 selected_game_rule_tokens_ready，council_ready 独立。最后一项因缺保留的实际 SDK MCP tools capture 三属性而明确 `NOT_RUN_REQUIRED_ACTUAL_ORIGINAL_MCP_TOOLS`，没有合成或跳过。原18项汇总不外推；本轮实际合计15P、1必需输入缺失。额外 full-getter 新9份 M3 body 尚未重复消费，不授完整 getter/死亡 writer/Game 通过。
 
 测试编排补齐了既有 producer Python 属性及 local-service 工作目录；旧 RPC helpers 的 `try` 警告与外部依赖缺失 OSGi 注解元数据只在预编现存 helper 的窄范围处理，修改生产/测试叶仍用 `-Xlint:all -Werror`。缺依赖/参数与真实归一化失败原日志均保留，未下载依赖、重建 SDK 或扫描全树。
+
+Piety 普通 push 及独立远端读回为 `add37381e4d6f700df3bd1ab9bab1f72036fc1c2`。
+
+Routable operations 两叶旧候选按精确 LF patch 应用，RootOnlineDecisionSelector 完整生产类严格 javac0/2.790 秒。请求中的操作名使用 `OperationKey.value()`，与 proposal.operation 的 wire 名一致。复用休假前 owner 已保存的整类7P、原目标1F→7P结果，未为重复绿色回归请求任何服务；新测试断言随生产同交付。本轮模型 HTTP/探测/重试为0，既有候选采用与运行期决策分开。

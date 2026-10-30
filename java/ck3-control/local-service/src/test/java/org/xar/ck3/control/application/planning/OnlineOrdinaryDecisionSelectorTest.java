@@ -305,8 +305,13 @@ class OnlineOrdinaryDecisionSelectorTest {
                 assertEquals("xar.model-root-history-dictionary/v1", data.get("history_projection_schema").textValue());
                 var expected = StrictJson.object();
                 var caps = expected.putArray("capabilities"); fixture.request().observations().bridgeCapabilities().stream().sorted().forEach(caps::add);
-                var routes = expected.putArray("routable_operations"); fixture.request().observations().actionSteps().stream().map(Object::toString).sorted().forEach(routes::add);
+                var routes = expected.putArray("routable_operations"); fixture.request().observations().actionSteps().stream().map(step -> step.value()).sorted().forEach(routes::add);
                 assertEquals(expected.get("capabilities"), data.get("capabilities")); assertEquals(expected.get("routable_operations"), data.get("routable_operations"));
+                assertEquals(1, data.get("routable_operations").size());
+                assertEquals(M7CampaignPolicies.FACTION_QUERY, data.get("routable_operations").get(0).textValue(),
+                        "the model receives the exact native operation name instead of the record wrapper");
+                assertEquals(data.get("proposal").get("operation"), data.get("routable_operations").get(0),
+                        "the selected legal operation appears under the same exact wire name");
                 assertTrue(fixture.request().observations().actionFacts().isEmpty() && data.get("action_facts").isEmpty());
                 assertEquals(org.xar.ck3.control.contracts.FullJsonTree.parse(ActionCodec.encodeCommand(fixture.command()), ActionCodec.MAX_COMMAND_BYTES), data.get("proposal"));
                 assertEquals(fixture.command().actionId(), data.get("proposal_id").textValue());
