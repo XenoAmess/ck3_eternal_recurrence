@@ -30,7 +30,7 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
-/** The single native collector contract used by CORE, event policies and the public query facade. */
+/** The native collector contract; exact v1 and v2 packet schemas retain their distinct GUI-observation states. */
 public final class EventWindowRead {
     public static final String STEP="query-current-event-window-context-v1";
     public static final String CAPABILITY="game.command.query-current-event-window-context-v1";
@@ -39,13 +39,23 @@ public final class EventWindowRead {
     /** Root verifies current build/capability, actual collector authority and lifecycle under its writer lock. */
     @FunctionalInterface public interface Admission { void verify(PlanningReadRequest request); }
     public static ReadContract<EventPolicies.ReadPublication> contract(ExactRef source, Admission admission) {
+        return contract(source,admission,false);
+    }
+    /** Explicit opt-in for a producer implementing the v2 request; never inferred for old Native. */
+    public static ReadContract<EventPolicies.ReadPublication> contractWithGuiObservation(ExactRef source, Admission admission) {
+        return contract(source,admission,true);
+    }
+    private static ReadContract<EventPolicies.ReadPublication> contract(ExactRef source,Admission admission,boolean guiObservation) {
         Objects.requireNonNull(source); Objects.requireNonNull(admission);
-        return new ReadContract<>("native/event-window-v1",new OperationKey(STEP),Optional.of(CAPABILITY),CAPABILITY,
+        return new ReadContract<>(contractId(guiObservation),new OperationKey(STEP),Optional.of(CAPABILITY),CAPABILITY,
             ReadContract.PermissionMode.ADVERTISED_CAPABILITY,ReadContract.WireProfile.EXECUTE_STEP,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,source,
             (request,requestId)->{ verifySource(source); admission.verify(request); int event=activeEvent(request);
-                return new NativeRequest(STEP,Optional.of(CAPABILITY),raw(JsonNodeFactory.instance.objectNode().put("event_instance_id",event))); },
-            EventWindowRead::decode,EventWindowRead::decode);
+                ObjectNode fields=JsonNodeFactory.instance.objectNode().put("event_instance_id",event);
+                if(guiObservation) fields.put("gui_observation_version",2);
+                return new NativeRequest(STEP,Optional.of(CAPABILITY),raw(fields)); },
+            receipt->decode(receipt,guiObservation),receipt->decode(receipt,guiObservation));
     }
+    private static String contractId(boolean guiObservation) { return guiObservation?"native/event-window-v2":"native/event-window-v1"; }
     /** Source snapshot is the complete semantic snapshot; no separately supplied event ID can override it. */
     public static int activeEvent(PlanningReadRequest request) {
         need(request.operation().value().equals(STEP),"event collector operation differs");
@@ -57,18 +67,20 @@ public final class EventWindowRead {
         need(BigInteger.valueOf(i32(snapshot,"date_raw")).equals(before.identity().dateRaw()),"event collector date differs");
         return integer(field(snapshot,"active_event"),"instance_id",1,Integer.MAX_VALUE);
     }
-    private static EventPolicies.ReadPublication decode(PlanningReadReceipt receipt) {
-        need(receipt.contractId().equals("native/event-window-v1"),"event original belongs to another installed read contract");
+    private static EventPolicies.ReadPublication decode(PlanningReadReceipt receipt,boolean guiObservation) {
+        need(receipt.contractId().equals(contractId(guiObservation)),"event original belongs to another installed read contract");
         for(var guard:List.of(receipt.before(),receipt.after()))
             need(guard.guardMode()==ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP && guard.paused() && guard.mapReady() && guard.playerAlive(),"event original is outside the paused living-map read scope");
         var before=receipt.request().before().frame();int event=activeEvent(receipt.request());
         Binding binding=new Binding(connectedBuild(receipt),before.identity().nativeRevision(),before.identity().dateRaw().intValueExact(),event);
-        ObjectNode result=originalResult(receipt.original(),receipt.requestId(),binding);
+        ObjectNode result=originalResult(receipt.original(),receipt.requestId(),binding,guiObservation);
         exact(result,"step accepted status query_sequence snapshot_revision current_event_window_context backend_id");
         eq(result,"step",STEP); yes(result,"accepted"); eq(result,"backend_id","native-headless");
         need(number(result,"snapshot_revision",BigInteger.ONE,BigInteger.ONE.shiftLeft(64).subtract(BigInteger.ONE)).equals(before.identity().nativeRevision()),"event envelope native revision differs");
         number(result,"query_sequence",BigInteger.ONE,BigInteger.ONE.shiftLeft(64).subtract(BigInteger.ONE));
-        Context context=EventWindowCodec.decode(raw(field(result,"current_event_window_context")),binding);
+        JsonNode contextPacket=field(result,"current_event_window_context");
+        integer(contextPacket,"schema_version",guiObservation?2:1,guiObservation?2:1);
+        Context context=EventWindowCodec.decode(raw(contextPacket),binding);
         eq(result,"status",context instanceof Available?"available":"unavailable");
         ObjectNode normalized=parse(EventWindowCodec.encode(context)); ObjectNode published=result.deepCopy();
         for (String key:MIRRORS) published.set(key,normalized.get(key).deepCopy());
@@ -103,6 +115,9 @@ public final class EventWindowRead {
     }
     /** Match the actual outbound query, complete return packet, payload, and exact result token before interpreting presentation. */
     static ObjectNode originalResult(NativeActionPort.AckReceived ack,String requestId,Binding binding) {
+        return originalResult(ack,requestId,binding,false);
+    }
+    static ObjectNode originalResult(NativeActionPort.AckReceived ack,String requestId,Binding binding,boolean guiObservation) {
         try {
             need(ack.nativeOk() && ack.requestId().equals(requestId),"event original ACK identity/status differs");
             var frame=NativeWire.decode(ack.originalPacket());
@@ -117,7 +132,15 @@ public final class EventWindowRead {
             var sent=NativeWire.decodeExecuteRequest(outbound.originalPacket());
             need(sent.requestId().equals(requestId) && sent.step().equals(STEP)
                     && sent.expectedRevision().filter(binding.nativeRevision()::equals).isPresent(),"event actual outbound query/expected revision differs");
-            ObjectNode fields=parse(new RawJson(sent.normalizedAdditionalFields().value()));exact(fields,"event_instance_id");
+            ObjectNode fields=parse(new RawJson(sent.normalizedAdditionalFields().value()));
+            exact(fields,guiObservation?"event_instance_id gui_observation_version":"event_instance_id");
+            if(guiObservation) {
+                // Validate the original token before normalized JSON can erase integral-looking decimal syntax.
+                byte[] original=sent.originalPacket().value();
+                ObjectNode originalFields=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(original,4,original.length)));
+                integer(originalFields,"gui_observation_version",2,2);
+                integer(fields,"gui_observation_version",2,2);
+            }
             need(integer(fields,"event_instance_id",1,Integer.MAX_VALUE)==binding.eventInstanceId(),"event actual outbound instance differs");
             return parse(ack.originalResultToken().orElseThrow());
         } catch(IOException failure) {throw new IllegalArgumentException("event original wire is unavailable",failure);}

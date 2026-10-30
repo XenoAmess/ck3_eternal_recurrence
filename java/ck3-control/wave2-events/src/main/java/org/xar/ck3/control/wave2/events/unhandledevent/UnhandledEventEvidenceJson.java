@@ -41,7 +41,8 @@ public final class UnhandledEventEvidenceJson {
                 "unhandled event capture missing original selection/frame");
         domainRequire(selected instanceof NullValue || selected instanceof StringValue, "selected step string or null required");
         domainRequire(selected instanceof NullValue || selected.equals(v(selection, "selected_step")), "planned selection differs");
-        domainRequire(selected instanceof NullValue || yes(selection, "enabled"), "disabled selection cannot be submitted");
+        domainRequire(selected instanceof NullValue || EventOptionAvailability.selectionAllowed(o(capture, "window_context"), selection), "unavailable selection cannot be submitted");
+        domainRequire(EventOptionAvailability.matchesBoundRow(o(capture, "window_context"), selection), "selection differs from bound GUI observation");
         domainRequire(v(planned, "snapshot_id").equals(v(binding, "snapshot_id"))
                 && v(planned, "revision").equals(v(binding, "revision")), "unhandled planned frame differs");
         domainRequire(number(planned, "revision") != null && number(binding, "revision") != null, "actual planned revision integer required");

@@ -1,5 +1,7 @@
 package org.xar.ck3.control.wave2.events.registered;
 
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,7 +19,7 @@ final class RegisteredComparisons {
     record Comparison(BigInteger nativeIndex, ObjectValue option, ObjectValue effect, ObjectValue utility, ObjectValue context) { }
     private static Map<BigInteger,ObjectValue> legal(ObjectValue context) {
         Map<BigInteger,ObjectValue> rows=new LinkedHashMap<>();
-        for(Value row:seq(context.get("options"))) if(object(row)&&yes(get(row,"shown"))&&yes(get(row,"enabled"))&&integer(get(row,"native_option_index"))!=null) rows.put(integer(get(row,"native_option_index")),obj(row));
+        for(Value row:seq(context.get("options"))) if(object(row)&&yes(get(row,"shown"))&&EventOptionAvailability.selectionAllowed(context,obj(row))&&integer(get(row,"native_option_index"))!=null) rows.put(integer(get(row,"native_option_index")),obj(row));
         return rows;
     }
     private static boolean relief(ObjectValue option) {

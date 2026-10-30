@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
 import java.util.Set;
 import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.OperationKey;
@@ -136,8 +137,10 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
                     "unavailable_reason", exact.getOrNull("unavailable_reason")))));
             List<Value> optionRows = array(exact.get("options"));
             long enabled = optionRows.stream().filter(row -> yes(get(row,"shown")) && yes(get(row,"enabled"))).count();
+            long selectable = optionRows.stream().filter(row -> yes(get(row,"shown")) && EventOptionAvailability.selectionAllowed(exact, RetainedJson.object(row))).count();
             fullSummary = fullSummary.with("materialized_options", exact.get("options"))
                 .with("materialized_option_count", number(optionRows.size())).with("enabled_materialized_option_count", number(enabled))
+                .with("selectable_materialized_option_count", number(selectable))
                 .with("semantic_decision_ready", bool(yes(get(exact.get("readiness"),"semantic_decision_ready"))));
             base = base.with("active_event", fullSummary);
             Optional<BookmarkRaiktorPolicy.Recommendation> dedicated = dedicatedRecommendation(current, exact);
@@ -322,7 +325,7 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
     private static ObjectValue selected(ObjectValue plan,ObjectValue context,BigInteger nativeIndex,String phase,String reason) {
         List<ObjectValue> selected = array(context.get("options")).stream().filter(ObjectValue.class::isInstance).map(ObjectValue.class::cast)
             .filter(row -> nativeIndex.equals(integer(row.get("native_option_index")))).toList();
-        StrictJson.require(selected.size()==1 && yes(selected.getFirst().get("shown")) && yes(selected.getFirst().get("enabled")), "selected exact event option not uniquely legal");
+        StrictJson.require(selected.size()==1 && yes(selected.getFirst().get("shown")) && EventOptionAvailability.selectionAllowed(context, selected.getFirst()), "selected exact event option not uniquely legal");
         BigInteger number = nativeIndex.add(BigInteger.ONE), rendered = integer(selected.getFirst().get("rendered_index"));
         StrictJson.require(nativeIndex.signum()>=0 && rendered!=null && rendered.signum()>=0, "exact native/rendered option mapping required");
         ObjectValue summary = (ObjectValue)plan.get("active_event");
@@ -378,4 +381,3 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
     private static BooleanValue bool(boolean value) { return new BooleanValue(value); }
     private static OrdinaryPolicy.Stop incomplete(String reason) { return new OrdinaryPolicy.Stop(PlanningResult.StopReason.INCOMPLETE_PRODUCTION_CHAIN,reason); }
 }
-

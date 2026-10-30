@@ -32,12 +32,25 @@ public final class NativeActiveEvent {
      * Integer identity remains unbounded here; the actual native caller owns its narrower option bound.
      */
     public static Optional<BigInteger> chooseOptionNumber(JsonNode original) {
+        return chooseOptionNumber(original, true);
+    }
+
+    /** Scores only candidates already selected by the caller's actual availability contract.
+     * Raw enabled values are retained and do not filter this candidate set. The caller still
+     * owns display, native identity and submission checks; this method grants no native authority.
+     */
+    public static Optional<BigInteger> chooseEligibleOptionNumber(JsonNode eligibleCandidates) {
+        return chooseOptionNumber(eligibleCandidates, false);
+    }
+
+    private static Optional<BigInteger> chooseOptionNumber(JsonNode original, boolean requireRawEnabled) {
         Objects.requireNonNull(original, "use MissingNode for a missing JSON field");
         if (!original.isObject() || !original.path("options").isArray()) return Optional.empty();
         BigInteger best = null;
         double bestScore = 0.0;
         for (JsonNode option : original.get("options")) {
-            if (!option.isObject() || !option.path("enabled").isBoolean() || !option.get("enabled").booleanValue()) continue;
+            if (!option.isObject() || requireRawEnabled
+                    && (!option.path("enabled").isBoolean() || !option.get("enabled").booleanValue())) continue;
             JsonNode number = option.get("option_number");
             if (number == null || !number.isIntegralNumber() || number.bigIntegerValue().signum() <= 0) continue;
             JsonNode rawScore = option.get("strategy_score");

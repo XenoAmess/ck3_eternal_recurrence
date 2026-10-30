@@ -1,5 +1,7 @@
 package org.xar.ck3.control.wave2.events.registered;
 
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -82,10 +84,10 @@ final class RegisteredProjection {
         for (int index=0; index<rows.size(); index++) {
             ObjectValue row = obj(rows.get(index)); BigInteger nativeIndex = integer(row.get("native_option_index"));
             boolean enabled = !disabled.contains(v(nativeIndex));
-            checks.put("option:"+index+":projection",is(row.get("rendered_index"),index) && yes(row.get("shown")) && (enabled ? yes(row.get("enabled")) : no(row.get("enabled"))) && no(row.get("fallback")) && no(row.get("cancel")));
+            checks.put("option:"+index+":projection",is(row.get("rendered_index"),index) && yes(row.get("shown")) && (EventOptionAvailability.selectionAllowed(context,row) == enabled) && no(row.get("fallback")) && no(row.get("cancel")));
             if (nativeIndex != null && nativeIndex.equals(selectedNative)) selected = selected == null ? row : null;
         }
-        checks.put("selected_native_option_unique",selected != null); checks.put("selected_native_option_enabled",selected != null && yes(selected.get("enabled")));
+        checks.put("selected_native_option_unique",selected != null); checks.put("selected_native_option_enabled",selected != null && EventOptionAvailability.selectionAllowed(context,selected));
         return new Options(checks,selected);
     }
     static Resolution optionVariants(ObjectValue context, ObjectValue contract, BigInteger count, String key, boolean notice) {

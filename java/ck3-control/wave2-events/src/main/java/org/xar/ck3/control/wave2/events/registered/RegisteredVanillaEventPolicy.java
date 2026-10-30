@@ -1,5 +1,7 @@
 package org.xar.ck3.control.wave2.events.registered;
 
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -108,7 +110,7 @@ public final class RegisteredVanillaEventPolicy {
         Map<String,Boolean> unsupported=new LinkedHashMap<>();
         for(String field:UNSUPPORTED.stream().sorted().toList()) if(!allowed.contains(field)&&active(contract.get(field))) unsupported.put("direct_projection_support:"+field,false);
         if(!unsupported.isEmpty()) return response(Status.BLOCKED,eventKey,build,"registered_contract_requires_extended_consumer",unsupported,null,null,null,null,null);
-        checks.put("context_schema",is(context.get("schema"),"current-event-window-context-v1"));checks.put("context_schema_version",is(context.get("schema_version"),1));checks.put("context_available",is(context.get("status"),"available"));
+        checks.put("context_schema",is(context.get("schema"),"current-event-window-context-v1")||is(context.get("schema"),"current-event-window-context-v2"));checks.put("context_schema_version",is(context.get("schema_version"),1)||is(context.get("schema_version"),2));checks.put("context_available",is(context.get("status"),"available"));
         checks.put("unique_window",is(context.get("window_match_count"),1));checks.put("event_definition_key",eq(eventKey,knowledge.get("event_definition_key")));
         ObjectValue scopeContext=context,scopeContract=contract;
         if(Set.of("prison_notification.0001","prison_notification.2001").contains(key)) {
@@ -133,7 +135,14 @@ public final class RegisteredVanillaEventPolicy {
             checks.put("r0065_single_paused_event_frame",positive(context.get("current_event_instance_id"))&&positive(context.get("snapshot_revision"))&&integer(context.get("date_raw"))!=null);
             checks.put("r0065_exact_grief_variant_only",Integer.valueOf(3).equals(variantIndex)&&is(contract.get("selected_native_option_index"),7)&&eq(arr(seq(contract.get("native_option_indices"))),json("[0,4,7]")));
         }
-        if(!all(checks)||selected==null) return response(Status.BLOCKED,eventKey,build,"registered_contract_projection_drift",checks,null,null,null,null,null);
+        if(!all(checks)||selected==null) {
+            Recommendation blocked=response(Status.BLOCKED,eventKey,build,"registered_contract_projection_drift",checks,null,null,null,null,null);
+            if(selected!=null) {
+                Value gui=EventOptionAvailability.wire(EventOptionAvailability.observation(context,selected));
+                if(!(gui instanceof NullValue)) blocked=extra(blocked,"gui_observation_version",v(2),"selected_gui_availability",gui);
+            }
+            return blocked;
+        }
         BigInteger nativeIndex=integer(contract.get("selected_native_option_index")),optionNumber=integer(contract.get("selected_option_number")),rendered=integer(selected.get("rendered_index"));
         RegisteredComparisons.Comparison feast=Set.of("1.20.0.3","1.20.0.4").contains(build)&&key.equals("feast_default.6003")?RegisteredComparisons.feast(context,knowledge,input.opinionObservations()):null;
         RegisteredComparisons.Comparison poet=build.equals("1.20.0.4")&&key.equals("trait_specific.9001")?RegisteredComparisons.poet(context,knowledge,input.playedCharacter()):null;
@@ -147,6 +156,8 @@ public final class RegisteredVanillaEventPolicy {
         Recommendation result=response(Status.RECOMMENDED,eventKey,build,null,checks,new Selection(optionNumber,nativeIndex,rendered),variantIndex,effect,utility,null);
         if(feast!=null) result=extra(result,"feast_brawl_decision_context",feast.context());
         if(poet!=null) result=extra(result,"poet_long_term_decision_context",poet.context());
+        Value selectedGui=EventOptionAvailability.wire(EventOptionAvailability.observation(context,selected));
+        if(!(selectedGui instanceof NullValue)) result=extra(result,"gui_observation_version",v(2),"selected_gui_availability",selectedGui);
         if(bookmark) result=extra(result,"scope_projection_source",v("source-reviewed-selected-option-dependencies"),"selected_scope_dependencies",json("{\"root\":\"root.capital_province\",\"saved_scope_names\":[],\"raw_inherited_scope_rows_preserved\":true,\"inherited_scope_identity_qualified\":false}"));
         return result;
     }
@@ -180,7 +191,7 @@ public final class RegisteredVanillaEventPolicy {
         checks.put("event_definition",is(context.get("status"),"available")&&is(context.get("event_definition_key"),"faction_demand.1001"));
         checks.put("player_root_target",positive(player)&&integer(player).equals(root)&&integer(player).equals(target));checks.put("leader_roles",leader!=null&&leader.signum()>0&&leader.equals(named)&&!leader.equals(root));
         checks.put("saved_role_names",scopes.size()==7&&scopes.keySet().equals(types.fields().keySet()));checks.put("saved_role_types",types.fields().entrySet().stream().allMatch(row->object(scopes.get(row.getKey()))&&eq(get(scopes.get(row.getKey()),"type_key"),row.getValue())));
-        checks.put("authored_option_count",is(optionCount,4));checks.put("visible_native_options",options.size()==2&&options.stream().map(row->get(row,"native_option_index")).collect(java.util.stream.Collectors.toSet()).equals(Set.of(v(2),v(3)))&&options.stream().allMatch(row->yes(get(row,"shown"))&&yes(get(row,"enabled"))));
+        checks.put("authored_option_count",is(optionCount,4));checks.put("visible_native_options",options.size()==2&&options.stream().map(row->get(row,"native_option_index")).collect(java.util.stream.Collectors.toSet()).equals(Set.of(v(2),v(3)))&&options.stream().allMatch(row->yes(get(row,"shown"))&&EventOptionAvailability.selectionAllowed(context,obj(row))));
         List<Value> mapping=new ArrayList<>();for(Value row:options) {BigInteger index=integer(get(row,"native_option_index"));if(BigInteger.TWO.equals(index)||BigInteger.valueOf(3).equals(index)) mapping.add(b().set("native_option_index",index).set("api_option_number",index.add(BigInteger.ONE)).set("rendered_index",get(row,"rendered_index")).set("resolved_name",get(row,"resolved_name")).build());}
         return b().set("status",all(checks)?"recognized":"blocked").set("checks",checks(checks)).set("failed_checks",failed(checks)).set("native_option_mapping",arr(mapping)).set("selected_option_number",RetainedJson.NULL).set("selected_native_option_index",RetainedJson.NULL).set("automatic_selection",false).build();
     }

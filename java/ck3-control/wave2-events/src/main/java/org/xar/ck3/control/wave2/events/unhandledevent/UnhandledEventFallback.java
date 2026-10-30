@@ -1,6 +1,7 @@
 package org.xar.ck3.control.wave2.events.unhandledevent;
 
 import java.math.BigInteger;
+import org.xar.ck3.control.contracts.events.GuiAvailabilityObservation;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -31,12 +32,22 @@ public final class UnhandledEventFallback {
         public Snapshot { Objects.requireNonNull(binding, "binding"); Objects.requireNonNull(originalSnapshot, "originalSnapshot"); }
     }
     public record Option(BigInteger renderedIndex, BigInteger nativeOptionIndex, Boolean shown,
-                          Boolean enabled, String resolvedName) { }
+                          Boolean enabled, String resolvedName, GuiAvailabilityObservation guiAvailability) {
+        public Option { Objects.requireNonNull(guiAvailability); }
+        public Option(BigInteger renderedIndex, BigInteger nativeOptionIndex, Boolean shown, Boolean enabled, String resolvedName) {
+            this(renderedIndex, nativeOptionIndex, shown, enabled, resolvedName, new GuiAvailabilityObservation.LegacyNotReported());
+        }
+        public boolean selectionAllowed() { return guiAvailability.permitsSelectionWithRawFallback(Boolean.TRUE.equals(enabled)); }
+    }
     public record Context(BigInteger currentEventInstanceId, BigInteger snapshotRevision, BigInteger dateRaw,
                            String eventDefinitionKey, List<Option> options, ObjectValue retainedWindowContext) {
         public Context {
             if (options != null) options = List.copyOf(options);
             Objects.requireNonNull(retainedWindowContext, "retainedWindowContext");
+            boolean v2 = "current-event-window-context-v2".equals(RetainedJson.string(retainedWindowContext.get("schema")))
+                    || BigInteger.TWO.equals(RetainedJson.integer(retainedWindowContext.get("schema_version")));
+            if (v2 && options != null && options.stream().anyMatch(option -> option.guiAvailability() instanceof GuiAvailabilityObservation.LegacyNotReported))
+                throw new IllegalArgumentException("v2 typed options must retain GUI observations");
         }
     }
     public record Request(Snapshot snapshot, Context context, ObjectValue eventSummary,
@@ -48,12 +59,18 @@ public final class UnhandledEventFallback {
     }
     public record Selection(BigInteger renderedIndex, BigInteger nativeOptionIndex, BigInteger optionNumber,
                              String resolvedName, Boolean enabled, String selectedStep,
-                             List<BigInteger> excludedDisabledRenderedIndices) {
+                             List<BigInteger> excludedDisabledRenderedIndices, GuiAvailabilityObservation guiAvailability) {
         public Selection {
+            Objects.requireNonNull(guiAvailability);
             Objects.requireNonNull(renderedIndex); Objects.requireNonNull(nativeOptionIndex); Objects.requireNonNull(optionNumber);
             if (renderedIndex.signum() < 0 || nativeOptionIndex.signum() < 0 || !optionNumber.equals(nativeOptionIndex.add(BigInteger.ONE))
                     || !("select-event-option-" + optionNumber).equals(selectedStep)) throw new IllegalArgumentException("selected native/rendered mapping");
             excludedDisabledRenderedIndices = List.copyOf(excludedDisabledRenderedIndices);
+        }
+        public Selection(BigInteger renderedIndex, BigInteger nativeOptionIndex, BigInteger optionNumber,
+                String resolvedName, Boolean enabled, String selectedStep, List<BigInteger> excludedDisabledRenderedIndices) {
+            this(renderedIndex, nativeOptionIndex, optionNumber, resolvedName, enabled, selectedStep,
+                    excludedDisabledRenderedIndices, new GuiAvailabilityObservation.LegacyNotReported());
         }
     }
     public record Plan(Phase phase, String selectedStep, String reason, String eventDefinitionKey,
@@ -107,7 +124,7 @@ public final class UnhandledEventFallback {
         List<Option> shown = context.options().stream().filter(option -> Boolean.TRUE.equals(option.shown())).toList();
         if (shown.isEmpty() || shown.stream().anyMatch(option -> option.renderedIndex() == null || option.renderedIndex().signum() < 0)) return Optional.empty();
         if (new HashSet<>(shown.stream().map(Option::renderedIndex).toList()).size() != shown.size()) return Optional.empty();
-        List<Option> enabled = shown.stream().filter(option -> Boolean.TRUE.equals(option.enabled())).toList();
+        List<Option> enabled = shown.stream().filter(Option::selectionAllowed).toList();
         Option first = (policy == DisplayPolicy.FIRST_DISPLAYED || enabled.isEmpty() ? shown : enabled).stream().min(Comparator.comparing(Option::renderedIndex)).orElseThrow();
         ActiveEvent active = snapshot.activeEvent();
         if (active == null || !positive(active.instanceId()) || active.optionCount() == null || first.nativeOptionIndex() == null
@@ -117,7 +134,7 @@ public final class UnhandledEventFallback {
                 || !Objects.equals(context.dateRaw(), snapshot.binding().dateRaw())) return Optional.empty();
         BigInteger number = first.nativeOptionIndex().add(BigInteger.ONE);
         String step = "select-event-option-" + number;
-        boolean selectedEnabled = Boolean.TRUE.equals(first.enabled());
+        boolean selectedEnabled = first.selectionAllowed();
         boolean advertised = request.actionSteps().contains(step);
         Phase phase = selectedEnabled && advertised ? Phase.FIRST_RENDERED_OPTION : !selectedEnabled ? Phase.FIRST_RENDERED_DISABLED : Phase.FIRST_RENDERED_UNSUPPORTED;
         String reason = selectedEnabled && advertised
@@ -127,9 +144,9 @@ public final class UnhandledEventFallback {
             : !selectedEnabled ? policy == DisplayPolicy.FIRST_DISPLAYED ? "The first displayed native option is disabled." : "No shown native event option is enabled."
             : "The first rendered option has no advertised native selection step.";
         List<BigInteger> excluded = new ArrayList<>();
-        shown.forEach(option -> { if (!Boolean.TRUE.equals(option.enabled())) excluded.add(option.renderedIndex()); });
+        shown.forEach(option -> { if (!option.selectionAllowed()) excluded.add(option.renderedIndex()); });
         Selection selection = new Selection(first.renderedIndex(), first.nativeOptionIndex(), number,
-            first.resolvedName(), first.enabled(), step, excluded);
+            first.resolvedName(), first.enabled(), step, excluded, first.guiAvailability());
         return Optional.of(new Plan(phase, selectedEnabled && advertised ? step : null, reason, context.eventDefinitionKey(),
             active.instanceId(), active.optionCount(), snapshot.binding(), selection, context.retainedWindowContext(),
             request.registryDecision(), request.eventSummary(), policy));

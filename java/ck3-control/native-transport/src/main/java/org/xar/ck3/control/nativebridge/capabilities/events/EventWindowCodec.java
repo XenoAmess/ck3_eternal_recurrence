@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.nativebridge.NativeWire;
+import org.xar.ck3.control.contracts.events.GuiAvailabilityObservation;
 
 /** Full original event_window_context_contract boundary. Trees never escape into the typed model. */
 public final class EventWindowCodec {
@@ -25,7 +26,8 @@ public final class EventWindowCodec {
     public static Context decode(RawJson original, Binding expected) {
         ObjectNode f=parse(original);
         exact(f,"schema schema_version status snapshot_revision date_raw current_event_instance_id window_match_count unavailable_reason event_definition_key calculated_event_id runtime_stats_ordinal root_scope saved_scopes options readiness provenance");
-        eq(f,"schema","current-event-window-context-v1"); integer(f,"schema_version",1,1);
+        int schemaVersion=integer(f,"schema_version",1,2);
+        eq(f,"schema",schemaVersion==1?"current-event-window-context-v1":"current-event-window-context-v2");
         BigInteger revision=number(f,"snapshot_revision",BigInteger.ONE,U64);
         int date=i32(f,"date_raw"), event=integer(f,"current_event_instance_id",1,Integer.MAX_VALUE);
         need(revision.equals(expected.nativeRevision()) && date==expected.dateRaw() && event==expected.eventInstanceId(),"event-window exact frame changed");
@@ -55,7 +57,7 @@ public final class EventWindowCodec {
         }
         List<Option> options=new ArrayList<>(); Set<Integer> nativeIndices=new HashSet<>();
         for (JsonNode raw:array(f,"options",64)) {
-            exact(raw,"rendered_index native_option_index shown enabled fallback cancel resolved_name unavailable_reason effect_indicators effect_preview resource_deltas relationship_deltas");
+            exact(raw,"rendered_index native_option_index shown enabled fallback cancel resolved_name unavailable_reason effect_indicators effect_preview resource_deltas relationship_deltas"+(schemaVersion==2?" gui_availability":""));
             int rendered=integer(raw,"rendered_index",0,Integer.MAX_VALUE), nativeIndex=integer(raw,"native_option_index",0,Integer.MAX_VALUE);
             need(rendered==options.size() && nativeIndices.add(nativeIndex),"event display order/native index uniqueness changed"); yes(raw,"shown");
             JsonNode indicators=field(raw,"effect_indicators"); exact(indicators,"status coverage complete_effect_set rows");
@@ -63,13 +65,26 @@ public final class EventWindowCodec {
             List<Indicator> copied=new ArrayList<>(); for (JsonNode row:array(indicators,"rows",128)) copied.add(indicator(row,build));
             JsonNode preview=field(raw,"effect_preview"); exact(preview,"status reason"); eq(preview,"status","unavailable"); eq(preview,"reason","indicator_subset_has_no_completeness_signal");
             for (String key:List.of("resource_deltas","relationship_deltas")) { JsonNode unavailable=field(raw,key); exact(unavailable,"status"); eq(unavailable,"status","unavailable"); }
-            options.add(new Option(rendered,nativeIndex,bool(raw,"enabled"),bool(raw,"fallback"),bool(raw,"cancel"),text(raw,"resolved_name"),text(raw,"unavailable_reason"),copied));
+            options.add(new Option(rendered,nativeIndex,bool(raw,"enabled"),bool(raw,"fallback"),bool(raw,"cancel"),text(raw,"resolved_name"),text(raw,"unavailable_reason"),copied,guiAvailability(raw,schemaVersion)));
         }
         return new Available(expected,definition,root,saved,options,readiness,original);
     }
 
     /** Retain the validated JSON type domain and original decimal strings byte-for-byte. */
     public static RawJson encode(Context context) { return java.util.Objects.requireNonNull(context).original(); }
+
+    private static GuiAvailabilityObservation guiAvailability(JsonNode row,int schemaVersion) {
+        if (schemaVersion==1) return new GuiAvailabilityObservation.LegacyNotReported();
+        JsonNode observation=field(row,"gui_availability");
+        String status=text(observation,"status");
+        if (status.equals("observed")) {
+            exact(observation,"status is_valid");
+            return new GuiAvailabilityObservation.Observed(bool(observation,"is_valid"));
+        }
+        need(status.equals("unobserved"),"GUI observation status differs");
+        exact(observation,"status reason");
+        return new GuiAvailabilityObservation.Unobserved(GuiAvailabilityObservation.Reason.fromWire(text(observation,"reason")));
+    }
 
     private static Definition definition(JsonNode f) { return new Definition(stable(f,"event_definition_key"),i32(f,"calculated_event_id"),i32(f,"runtime_stats_ordinal")); }
     private static Readiness readiness(JsonNode r) {

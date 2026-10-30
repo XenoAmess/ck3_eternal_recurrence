@@ -14,6 +14,7 @@ import org.xar.ck3.control.wave2.events.eventoutcome.RegisteredEventMaterial;
 import org.xar.ck3.control.wave2.events.registered.RegisteredEventKnowledge;
 import org.xar.ck3.control.wave2.events.registered.RegisteredVanillaEventPolicy;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson;
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.*;
 import org.xar.ck3.control.wave2.events.unhandledevent.SourceReviewedEventConsumer;
 import org.xar.ck3.control.wave2.events.unhandledevent.TrustedEventSourceContext;
@@ -76,7 +77,7 @@ public final class PublicEventSelection {
         ObjectValue selected = rows.stream().filter(row -> nativeIndex.equals(integer(row.get("native_option_index")))).findFirst()
             .orElseThrow(() -> new IllegalArgumentException("requested authored native option is absent from the actual window"));
         BigInteger rendered = integer(selected.get("rendered_index"));
-        StrictJson.require(rendered.signum() >= 0 && bool(selected.get("shown")) && bool(selected.get("enabled")), "requested actual option is hidden or disabled");
+        StrictJson.require(rendered.signum() >= 0 && bool(selected.get("shown")) && EventOptionAvailability.selectionAllowed(context, selected), "requested actual option is hidden or unavailable for selection");
         OperationKey operation = new OperationKey("select-event-option-" + optionNumber);
         boolean advertised = actual.actionSteps().contains(operation);
         var recommendation = new RegisteredVanillaEventPolicy(knowledge).recommend(new RegisteredVanillaEventPolicy.Input(context,
@@ -112,7 +113,7 @@ public final class PublicEventSelection {
         BigInteger nativeIndex = BigInteger.valueOf(optionNumber - 1L);
         String operation = "select-event-option-" + optionNumber;
         var selection = new UnhandledEventFallback.Selection(integer(selected.get("rendered_index")), nativeIndex, BigInteger.valueOf(optionNumber),
-            nullableText(selected.get("resolved_name")), true, operation, List.of());
+            nullableText(selected.get("resolved_name")), bool(selected.get("enabled")), operation, List.of(), EventOptionAvailability.observation(context, selected));
         var fallback = new UnhandledEventFallback.Plan(advertised ? UnhandledEventFallback.Phase.FIRST_RENDERED_OPTION : UnhandledEventFallback.Phase.FIRST_RENDERED_UNSUPPORTED,
             advertised ? operation : null, advertised ? "retain and submit the caller's exact legal native option" : "the actual backend has no requested native event step",
             text(context.get("event_definition_key")), integer(event.get("instance_id")), integer(event.get("option_count")), frame, selection, context, registry, event,

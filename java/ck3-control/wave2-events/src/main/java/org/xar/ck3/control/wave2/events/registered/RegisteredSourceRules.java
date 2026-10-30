@@ -1,5 +1,7 @@
 package org.xar.ck3.control.wave2.events.registered;
 
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
+
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -35,7 +37,7 @@ final class RegisteredSourceRules {
         Map<String,Boolean> checks=new LinkedHashMap<>(); Map<String,Value> scopes=scopes(context);
         List<String> characters=obj(contract.get("scope_types")).fields().entrySet().stream().filter(row->is(row.getValue(),"character")).map(Map.Entry::getKey).toList();
         checks.put("effectless_notice_same_event_frame",positive(context.get("current_event_instance_id"))&&positive(context.get("snapshot_revision"))&&integer(context.get("date_raw"))!=null);
-        checks.put("effectless_notice_sole_legal_option",array(context.get("options"))&&seq(context.get("options")).size()==1&&selected!=null&&yes(selected.get("shown"))&&yes(selected.get("enabled"))&&eq(selected.get("native_option_index"),contract.get("selected_native_option_index")));
+        checks.put("effectless_notice_sole_legal_option",array(context.get("options"))&&seq(context.get("options")).size()==1&&selected!=null&&yes(selected.get("shown"))&&EventOptionAvailability.selectionAllowed(context,selected)&&eq(selected.get("native_option_index"),contract.get("selected_native_option_index")));
         checks.put("effectless_notice_character_scopes_typed",!characters.isEmpty()&&characters.stream().allMatch(name->character(scopes.get(name))!=null));
         return checks;
     }

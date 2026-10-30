@@ -18,8 +18,10 @@ final class UnavailableEventContextProjection {
     static boolean valid(JsonNode node, BigInteger eventId, BigInteger dateRaw, BigInteger nativeRevision) {
         try {
             ObjectNode row = ChoicePlanningJson.exactObject(node, FIELDS);
-            ChoicePlanningJson.require("current-event-window-context-v1".equals(ChoicePlanningJson.text(row.get("schema"))), "event schema");
-            ChoicePlanningJson.require(BigInteger.ONE.equals(ChoicePlanningJson.integer(row.get("schema_version"))), "event schema version");
+            BigInteger version = ChoicePlanningJson.integer(row.get("schema_version"));
+            ChoicePlanningJson.require(BigInteger.ONE.equals(version) || BigInteger.TWO.equals(version), "event schema version");
+            ChoicePlanningJson.require((BigInteger.ONE.equals(version) ? "current-event-window-context-v1" : "current-event-window-context-v2")
+                    .equals(ChoicePlanningJson.text(row.get("schema"))), "event schema");
             ChoicePlanningJson.require("unavailable".equals(ChoicePlanningJson.text(row.get("status"))), "unavailable branch required");
             ChoicePlanningJson.require(ChoicePlanningJson.unsigned(row.get("snapshot_revision"), true).equals(nativeRevision), "native frame");
             ChoicePlanningJson.require(ChoicePlanningJson.signed32(row.get("date_raw")).equals(dateRaw), "event date");

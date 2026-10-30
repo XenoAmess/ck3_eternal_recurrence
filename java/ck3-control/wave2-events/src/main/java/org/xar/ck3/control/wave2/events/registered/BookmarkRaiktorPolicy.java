@@ -1,5 +1,7 @@
 package org.xar.ck3.control.wave2.events.registered;
 
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
+
 import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -63,7 +65,7 @@ public final class BookmarkRaiktorPolicy {
         if (!options.keySet().equals(Set.of(BigInteger.ZERO, BigInteger.ONE, BigInteger.TWO)))
             return result(blocked("raiktor_event_options_unavailable_or_drifted"));
         ObjectValue decline = options.get(BigInteger.TWO);
-        if (!yes(decline.get("shown")) || !yes(decline.get("enabled")))
+        if (!yes(decline.get("shown")) || !EventOptionAvailability.selectionAllowed(event,decline))
             return result(blocked("raiktor_no_war_option_not_legal"));
         Value gold = snapshot.get("played_character_gold");
         BigInteger goldRaw = integer(get(gold, "raw"));
@@ -80,7 +82,7 @@ public final class BookmarkRaiktorPolicy {
             }
         }
         ObjectValue claim = options.get(BigInteger.ZERO);
-        boolean opportunity = yes(claim.get("shown")) && yes(claim.get("enabled")) && goldKnown
+        boolean opportunity = yes(claim.get("shown")) && EventOptionAvailability.selectionAllowed(event,claim) && goldKnown
             && goldRaw.compareTo(BigInteger.valueOf(10_000_000)) >= 0 && !conflict
             && input.crossRunFocus().filter(Set.of("marriage", "succession")::contains).isEmpty();
         if (opportunity && assessment == null) {
@@ -122,4 +124,3 @@ public final class BookmarkRaiktorPolicy {
         return Optional.of(new Recommendation(status, Optional.ofNullable(integer(wire.get("selected_native_option_index"))), wire));
     }
 }
-

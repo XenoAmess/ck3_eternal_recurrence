@@ -155,7 +155,7 @@ public final class SourceReviewedEventConsumer {
             String phase = text(plan, "phase"); require(phase != null, "event phase required");
             result = put(result, f("event_decision", decision), f("phase", s(phase.replace("active_event_unhandled_", "active_event_source_reviewed_"))));
             if (v(plan, "selected_step") instanceof NullValue) {
-                result = result.with("reason", s(!yes(o(capture, "selection"), "enabled")
+                result = result.with("reason", s(!EventOptionAvailability.selectionAllowed(o(capture,"window_context"),o(capture,"selection"))
                     ? eq(o(capture, "selection"), "selection_order", s(UnhandledEventFallback.DisplayPolicy.FIRST_DISPLAYED.wire()))
                         ? "Source-reviewed event: the first displayed native option is disabled."
                         : "Source-reviewed event: no shown native option is enabled."
@@ -245,7 +245,7 @@ public final class SourceReviewedEventConsumer {
     }
     static NativeBinding nativeBinding(ObjectValue capture) {
         ObjectValue context = o(capture, "window_context");
-        require(eq(context, "schema", s("current-event-window-context-v1")), "not a native vanilla event-card context");
+        require(EventOptionAvailability.supportedContext(context), "not a native vanilla event-card context");
         String key = text(context, "event_definition_key"), build = build(context); BigInteger calculated = number(context, "calculated_event_id");
         String backend = text(o(context, "provenance"), "backend_id");
         require(key != null && key.matches("[A-Za-z0-9_]+\\.[0-9]+") && eq(capture, "event_definition_key", s(key)) && positive(calculated)
@@ -295,11 +295,11 @@ public final class SourceReviewedEventConsumer {
         }
         ObjectValue selection = o(capture, "selection");
         boolean firstDisplayed = eq(selection, "selection_order", s(UnhandledEventFallback.DisplayPolicy.FIRST_DISPLAYED.wire()));
-        List<ObjectValue> enabled = shown.stream().filter(row -> yes(row, "enabled")).toList();
+        List<ObjectValue> enabled = shown.stream().filter(row -> EventOptionAvailability.selectionAllowed(context,row)).toList();
         ObjectValue first = (firstDisplayed || enabled.isEmpty() ? shown : enabled).stream().min(Comparator.comparing(row -> number(row, "rendered_index"))).orElseThrow();
         BigInteger nativeIndex = number(first, "native_option_index");
         require(selection != null && v(selection, "native_option_index").equals(v(first, "native_option_index")) && v(selection, "rendered_index").equals(v(first, "rendered_index"))
-            && eq(selection, "option_number", RetainedJson.value(nativeIndex.add(BigInteger.ONE))) && v(selection, "enabled").equals(v(first, "enabled")), "recorded display policy differs from the bound native option");
+            && eq(selection, "option_number", RetainedJson.value(nativeIndex.add(BigInteger.ONE))) && v(selection, "enabled").equals(v(first, "enabled")) && EventOptionAvailability.observation(context,selection).equals(EventOptionAvailability.observation(context,first)), "recorded display policy differs from the bound native option");
         return obj(f("source_event_type", s(eventType)), f("raw_type_index", i(4)), f("type_key", s("character")), f("subtype", i(0)),
             f("typed_identity_kind", s("character")), f("actor_character_id", RetainedJson.value(actor)));
     }
@@ -348,4 +348,3 @@ public final class SourceReviewedEventConsumer {
     }
     private static String stem(Path path) { String name = path.getFileName().toString(); return name.substring(0, name.length() - 5); }
 }
-

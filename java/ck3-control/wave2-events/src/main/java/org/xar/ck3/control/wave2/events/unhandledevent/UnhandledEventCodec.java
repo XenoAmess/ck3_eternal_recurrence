@@ -90,6 +90,8 @@ public final class UnhandledEventCodec {
             field("resolved_name", RetainedJson.value(selected.resolvedName())), field("enabled", RetainedJson.value(selected.enabled())),
             field("selected_step", RetainedJson.value(selected.selectedStep())),
             field("selection_order", text(plan.displayPolicy().wire())), field("excluded_disabled_rendered_indices", new ArrayValue(excluded)));
+        Value gui = EventOptionAvailability.wire(selected.guiAvailability());
+        if (!(gui instanceof NullValue)) selection = selection.with("gui_availability", gui);
         ObjectValue capture = object(field("schema", text(UnhandledEventFallback.SCHEMA)),
             field("policy", text(plan.displayPolicy() == UnhandledEventFallback.DisplayPolicy.EXPLICIT_REQUESTED
                 ? "public-explicit-option-capture-before-submit" : "user-authorized-capture-then-first-rendered-option")), field("event_definition_key", eventKey),
@@ -132,7 +134,9 @@ public final class UnhandledEventCodec {
             StrictJson.require(rawOptions instanceof ArrayValue, "native options array or null"); options = new ArrayList<>();
             for (Value row : ((ArrayValue) rawOptions).values()) {
                 ObjectValue option = row instanceof ObjectValue object ? object : null;
-                options.add(new Option(integer(option, "rendered_index"), integer(option, "native_option_index"), bool(option, "shown"), bool(option, "enabled"), text(option, "resolved_name")));
+                if ("current-event-window-context-v2".equals(text(source,"schema")) || BigInteger.TWO.equals(integer(source,"schema_version")))
+                    StrictJson.require(option != null, "v2 native option object required");
+                options.add(new Option(integer(option, "rendered_index"), integer(option, "native_option_index"), bool(option, "shown"), bool(option, "enabled"), text(option, "resolved_name"), option == null ? new org.xar.ck3.control.contracts.events.GuiAvailabilityObservation.LegacyNotReported() : EventOptionAvailability.observation(source, option)));
             }
         }
         return new Context(integer(source, "current_event_instance_id"), integer(source, "snapshot_revision"), integer(source, "date_raw"),

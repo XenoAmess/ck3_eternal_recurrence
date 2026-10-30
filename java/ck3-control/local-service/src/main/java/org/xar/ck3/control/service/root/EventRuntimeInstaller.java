@@ -373,12 +373,16 @@ public final class EventRuntimeInstaller {
             String childActionId,Instant deadline,RegisteredEventKnowledge knowledge,TrustedEventSourceContext trusted){
         Objects.requireNonNull(data);Objects.requireNonNull(origin);Objects.requireNonNull(requestedOption);Objects.requireNonNull(deadline);
         var frame=data.frame();var read=data.original();var receipt=read.receipt();
-        StrictJson.require(receipt.contractId().equals("native/event-window-v1")&&receipt.request().operation().value().equals(EventWindowRead.STEP)
+        StrictJson.require(Set.of("native/event-window-v1","native/event-window-v2").contains(receipt.contractId())&&receipt.request().operation().value().equals(EventWindowRead.STEP)
                 &&receipt.request().before().equals(frame.identity())&&receipt.request().source().equals(frame.source())&&receipt.request().sessionId().equals(frame.sessionId())
                 &&receipt.request().deadline().equals(deadline)&&receipt.request().arguments().equals(frame.semantic())&&receipt.original().nativeOk(),"fixture decision lost its actual original same-frame event read");
         var active=OpportunityJson.object(frame.semantic().get("active_event"),"actual fixture active event");
         int instance=OpportunityJson.integer(active.get("instance_id"),"actual fixture event instance").intValueExact();
         var rawWindow=OpportunityJson.object(read.value().result().get("current_event_window_context"),"actual fixture native event window");
+        boolean guiObservation=receipt.contractId().equals("native/event-window-v2");
+        StrictJson.require(new OpportunityJson.Text(guiObservation?"current-event-window-context-v2":"current-event-window-context-v1").equals(rawWindow.get("schema"))
+                &&new OpportunityJson.IntegerValue(java.math.BigInteger.valueOf(guiObservation?2:1)).equals(rawWindow.get("schema_version")),
+                "fixture event read contract differs from its original window version");
         var decoded=EventWindowCodec.decode(new RawJson(DriverJson.encode(rawWindow)),new EventWindowModels.Binding(data.build(),frame.identity().frame().identity().nativeRevision(),frame.identity().frame().identity().dateRaw().intValueExact(),instance));
         if(!(decoded instanceof EventWindowModels.Available available))throw new PublicSelectionRejected(new OpportunityJson.Obj(Map.of("phase",new OpportunityJson.Text("fixture_event_window_unavailable"),"selected_step",OpportunityJson.Nil.INSTANCE,"event_window_context",rawWindow)));
         var captured=new EventReadBinding.Captured(read.value(),receipt.request().operation(),receipt.requestId(),receipt.contractId(),read.originalReceipt(),Optional.empty());
@@ -392,7 +396,7 @@ public final class EventRuntimeInstaller {
         var operation=new OperationKey(selected.value());var number=EventActionPreparation.option(operation);
         StrictJson.require(data.actionSteps().contains(operation)&&data.bridgeCapabilities().contains(EventActionPreparation.EVENT_CAPABILITY),"fixture event has no actual installed selected native family/capability");
         var option=available.options().stream().filter(value->value.nativeOptionIndex()==number.value()-1).findFirst().orElseThrow(()->new IllegalArgumentException("fixture strategy selected an absent actual native option"));
-        StrictJson.require(option.enabled(),"fixture strategy selected an option whose sampled enabled flag is false");
+        StrictJson.require(option.selectionAllowed(),"fixture strategy selected an option that does not permit selection");
         var refs=new LinkedHashSet<>(data.sourceOriginals());refs.add(read.originalReceipt());refs.add(origin.policySource());origin.handlerSource().ifPresent(refs::add);refs.addAll(origin.handlerOriginals());
         var encodedRefs=new ArrayList<OpportunityJson.Value>();refs.forEach(ref->encodedRefs.add(OpportunityJson.parse(StrictJson.canonical(ref.toJson()))));
         var metadata=new OpportunityJson.Obj(Map.of("schema",new OpportunityJson.Text("xar.fixture-startup-event-source/v1"),"original_parent_action_id",new OpportunityJson.Text(origin.parentActionId()),

@@ -61,7 +61,7 @@ final class ExistingFactionEventPolicies {
                 && positive(leader) && leader.equals(namedLeader) && !leader.equals(root) && scopes.keySet().equals(POPULIST_ROLES.keySet())
                 && POPULIST_ROLES.entrySet().stream().allMatch(role -> eq(scopes.get(role.getKey()), "type_key", s(role.getValue())))
                 && BigInteger.valueOf(4).equals(count) && options.size() == 2 && byNative(options).keySet().equals(Set.of(BigInteger.TWO, BigInteger.valueOf(3)))
-                && options.stream().allMatch(row -> yes(row, "shown") && yes(row, "enabled"));
+                && options.stream().allMatch(row -> yes(row, "shown") && EventOptionAvailability.selectionAllowed(context,row));
         } catch (IllegalArgumentException error) { return false; }
     }
     private static ObjectValue reviewedIndependenceBinding(ObjectValue capture) {
@@ -101,7 +101,7 @@ final class ExistingFactionEventPolicies {
             ObjectValue decision = o(plan, "event_decision"), summary = o(plan, "active_event"), diagnostics = o(snapshot, "diagnostics"), actor = o(snapshot, "played_character"), active = o(snapshot, "active_event"), prior = o(capture, "source_knowledge");
             if (eq(prior, "status", s("offline-source-reviewed")) && (!yes(capture, "registry_known") || !eq(decision, "status", s("source_reviewed_known")))) return plan;
             if (current == null || context == null || frame == null || selection == null || decision == null || summary == null || diagnostics == null || actor == null || active == null
-                    || !eq(context, "status", s("available")) || !eq(context, "window_match_count", i(1)) || !eq(context, "schema_version", i(1))
+                    || !eq(context, "status", s("available")) || !eq(context, "window_match_count", i(1)) || !EventOptionAvailability.supportedContext(context)
                     || !yes(snapshot, "paused") || !yes(snapshot, "map_ready") || !yes(actor, "alive") || !positive(number(actor, "character_id"))
                     || !v(frame, "actor_character_id").equals(v(actor, "character_id")) || !yes(frame, "paused") || !yes(frame, "map_ready")
                     || !positive(number(frame, "native_revision")) || !eq(frame, "snapshot_id", s("native:" + number(frame, "native_revision")))
@@ -127,10 +127,10 @@ final class ExistingFactionEventPolicies {
             }
             for (int index = 0; index < shown.size(); index++) if (!rendered.contains(BigInteger.valueOf(index))) return plan;
             ObjectValue refuse = byNative(shown).get(BigInteger.TWO);
-            ObjectValue first = shown.stream().filter(row -> yes(row, "enabled")).min(Comparator.comparing(row -> number(row, "rendered_index"))).orElse(null);
+            ObjectValue first = shown.stream().filter(row -> EventOptionAvailability.selectionAllowed(context,row)).min(Comparator.comparing(row -> number(row, "rendered_index"))).orElse(null);
             String step = "select-event-option-3";
-            if (refuse == null || !yes(refuse, "enabled") || text(refuse, "resolved_name") == null || text(refuse, "resolved_name").isEmpty() || first == null
-                    || !eq(first, "native_option_index", i(0)) || !sameFields(selection, first, List.of("native_option_index", "rendered_index")) || !yes(selection, "enabled")
+            if (refuse == null || !EventOptionAvailability.selectionAllowed(context,refuse) || text(refuse, "resolved_name") == null || text(refuse, "resolved_name").isEmpty() || first == null
+                    || !eq(first, "native_option_index", i(0)) || !sameFields(selection, first, List.of("native_option_index", "rendered_index")) || !EventOptionAvailability.selectionAllowed(context,selection)
                     || !eq(selection, "option_number", i(1)) || !v(selection, "selected_step").equals(v(plan, "selected_step"))
                     || !eq(plan, "selected_step", s("select-event-option-1")) || !steps.contains(step)) return plan;
             Value renderedIndex = v(refuse, "rendered_index");
@@ -148,7 +148,8 @@ final class ExistingFactionEventPolicies {
                 f("source_review_fingerprint", s(fingerprint(REVIEW))), f("prior_source_knowledge", prior == null ? NULL : prior),
                 f("review_kind", s("static_source_without_invented_incident")), f("loaded_definition_bytes_verified", b(false)), f("live_qualification", b(false)), f("material_effects_verified", b(false)), f("registry_contract_accepted", b(false)));
             selection = put(selection, f("rendered_index", renderedIndex), f("native_option_index", i(2)), f("option_number", i(3)), f("resolved_name", v(refuse, "resolved_name")),
-                f("enabled", b(true)), f("selected_step", s(step)), f("selection_order", s("source_analyzed_independence_refuse_preserve_realm")));
+                f("enabled", v(refuse, "enabled")), f("selected_step", s(step)), f("selection_order", s("source_analyzed_independence_refuse_preserve_realm")));
+            if (refuse.contains("gui_availability")) selection = selection.with("gui_availability", refuse.get("gui_availability"));
             capture = put(capture, f("policy", s("source-analyzed-independence-refuse-preserve-realm")), f("registry_known", b(true)), f("offline_followup_required", b(false)), f("source_knowledge", audit), f("selection", selection));
             return put(plan, f("phase", s("active_event_source_reviewed_independence_refusal")), f("selected_step", s(step)),
                 f("reason", s("Known .4 independence ultimatum: accepting releases faction members without claims on loss. Choose the currently enabled refusal; it triggers the faction-war chain. War outcome and land retention remain unverified.")),
@@ -175,7 +176,7 @@ final class ExistingFactionEventPolicies {
                     || !eq(o(context, "provenance"), "backend_id", s(SourceReviewedEventConsumer.BACKEND)) || !eq(context, "status", s("available")) || !eq(context, "window_match_count", i(1))
                     || !eq(capture, "snapshot_option_count", i(4)) || !sourceKnownPopulist(capture, audit) || text(audit, "entry_sha256") == null || text(audit, "entry_sha256").length() != 64
                     || !yes(capture, "registry_known") || !eq(decision, "status", s("source_reviewed_known")) || !eq(decision, "material_effects_verified", b(false))
-                    || !eq(plan, "selected_step", s("select-event-option-3")) || !eq(selection, "native_option_index", i(2)) || !eq(selection, "rendered_index", i(0)) || !yes(selection, "enabled")
+                    || !eq(plan, "selected_step", s("select-event-option-3")) || !eq(selection, "native_option_index", i(2)) || !eq(selection, "rendered_index", i(0)) || !EventOptionAvailability.selectionAllowed(context,selection)
                     || !v(selection, "selected_step").equals(v(plan, "selected_step")) || !steps.contains("select-event-option-4")) return plan;
             if (!yes(snapshot, "paused") || !yes(snapshot, "map_ready") || !sameFields(snapshot, binding, List.of("snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id"))
                     || !eq(binding, "snapshot_id", s("native:" + number(binding, "native_revision"))) || !v(context, "snapshot_revision").equals(v(snapshot, "native_revision")) || !v(context, "date_raw").equals(v(snapshot, "date_raw"))) return plan;
@@ -201,7 +202,10 @@ final class ExistingFactionEventPolicies {
             decision = put(decision, f("selected_option_number", i(4)), f("selected_native_option_index", i(3)), f("selected_rendered_index", i(1)), f("semantic_optimal", b(false)),
                 f("classification", s("offline-source-reviewed-populist-refusal-policy")), f("source_reviewed_policy", s("populist_refuse_preserve_realm_accept_war_risk")), f("material_effects_verified", b(false)), f("registry_contract_accepted", b(false)));
             selection = put(selection, f("rendered_index", i(1)), f("native_option_index", i(3)), f("option_number", i(4)), f("resolved_name", v(byNative.get(BigInteger.valueOf(3)), "resolved_name")),
-                f("enabled", b(true)), f("selected_step", s("select-event-option-4")), f("selection_order", s("exact_source_reviewed_populist_refuse_preserve_realm")));
+                f("enabled", v(byNative.get(BigInteger.valueOf(3)), "enabled")), f("selected_step", s("select-event-option-4")), f("selection_order", s("exact_source_reviewed_populist_refuse_preserve_realm")));
+            ObjectValue actualChoice = byNative.get(BigInteger.valueOf(3));
+            if (!EventOptionAvailability.selectionAllowed(context,actualChoice)) return plan;
+            if (actualChoice.contains("gui_availability")) selection = selection.with("gui_availability", actualChoice.get("gui_availability"));
             capture = put(capture, f("policy", s("exact-source-reviewed-populist-refuse-preserve-realm")), f("offline_followup_required", b(false)), f("selection", selection));
             return put(plan, f("phase", s("active_event_source_reviewed_populist_refusal")), f("selected_step", s("select-event-option-4")),
                 f("reason", s("Exact .4 source: native 2 grants populist independence; enabled native 3 refuses and starts a faction war. Preserve land; victory is unverified.")),
@@ -209,4 +213,3 @@ final class ExistingFactionEventPolicies {
         } catch (IllegalArgumentException error) { return plan; }
     }
 }
-

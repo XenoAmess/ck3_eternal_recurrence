@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.xar.ck3.control.contracts.events.GuiAvailabilityObservation;
 
 /** Pure option-mapping leaf, shared by registered choice and variant matching. */
 public final class VanillaOptionProjection {
@@ -55,17 +56,25 @@ public final class VanillaOptionProjection {
     }
 
     public record RenderedOption(int renderedIndex, int nativeOptionIndex, boolean shown, boolean enabled,
-                                 boolean fallback, boolean cancel) {
+                                 boolean fallback, boolean cancel, GuiAvailabilityObservation guiAvailability) {
         public RenderedOption {
+            Objects.requireNonNull(guiAvailability);
             bounded(renderedIndex, 0, 31, "rendered_index");
             bounded(nativeOptionIndex, 0, 1023, "native_option_index");
         }
+        public RenderedOption(int renderedIndex, int nativeOptionIndex, boolean shown, boolean enabled, boolean fallback, boolean cancel) {
+            this(renderedIndex, nativeOptionIndex, shown, enabled, fallback, cancel, new GuiAvailabilityObservation.LegacyNotReported());
+        }
+        public boolean selectionAllowed() { return guiAvailability.permitsSelectionWithRawFallback(enabled); }
     }
 
     /** contract is explicitly null when the registry supplies no occurrence contract. */
     public record Request(RegistryBinding binding, OptionContract contract, List<RenderedOption> options,
-                          int snapshotOptionCount) {
+                          int snapshotOptionCount, int schemaVersion) {
         public Request {
+            if (schemaVersion != 1 && schemaVersion != 2) throw new IllegalArgumentException("unsupported option projection version");
+            if (options.stream().anyMatch(row -> (row.guiAvailability() instanceof GuiAvailabilityObservation.LegacyNotReported) != (schemaVersion == 1)))
+                throw new IllegalArgumentException("option observation/version differs");
             Objects.requireNonNull(binding, "binding");
             options = List.copyOf(options);
             if (options.size() > 32) throw new IllegalArgumentException("too many rendered options");
@@ -77,16 +86,25 @@ public final class VanillaOptionProjection {
                 throw new IllegalArgumentException("unavailable registry must retain null contract");
             }
         }
+        public Request(RegistryBinding binding, OptionContract contract, List<RenderedOption> options, int snapshotOptionCount) {
+            this(binding, contract, options, snapshotOptionCount,
+                    options.stream().anyMatch(row -> !(row.guiAvailability() instanceof GuiAvailabilityObservation.LegacyNotReported)) ? 2 : 1);
+        }
     }
 
     /** The selected row can be present on a blocked projection; status remains authoritative. */
     public record Result(Status status, RegistryBinding binding, Map<String, Boolean> checks,
-                         RenderedOption selectedOption, List<String> failedChecks) {
+                         RenderedOption selectedOption, List<String> failedChecks, int schemaVersion) {
         public Result {
+            if (schemaVersion != 1 && schemaVersion != 2) throw new IllegalArgumentException("unsupported projection result version");
             Objects.requireNonNull(status, "status");
             Objects.requireNonNull(binding, "binding");
             checks = Collections.unmodifiableMap(new LinkedHashMap<>(checks));
             failedChecks = List.copyOf(failedChecks);
+        }
+        public Result(Status status, RegistryBinding binding, Map<String, Boolean> checks, RenderedOption selectedOption, List<String> failedChecks) {
+            this(status, binding, checks, selectedOption, failedChecks,
+                    selectedOption != null && !(selectedOption.guiAvailability() instanceof GuiAvailabilityObservation.LegacyNotReported) ? 2 : 1);
         }
         public boolean actionAuthorized() { return false; }
         public boolean semanticDecisionReady() { return false; }
@@ -102,7 +120,7 @@ public final class VanillaOptionProjection {
         Objects.requireNonNull(request, "request");
         RegistryBinding binding = request.binding();
         if (binding.registryState() != RegistryState.AVAILABLE) {
-            return new Result(Status.NOT_REGISTERED, binding, Map.of(), null, List.of());
+            return new Result(Status.NOT_REGISTERED, binding, Map.of(), null, List.of(), request.schemaVersion());
         }
         LinkedHashMap<String, Boolean> checks = new LinkedHashMap<>();
         checks.put("registry_exact_build", binding.ck3ExeSha256().equals(EXACT_BUILDS.get(binding.ck3Build())));
@@ -124,19 +142,19 @@ public final class VanillaOptionProjection {
         for (int index = 0; index < request.options().size(); index++) {
             RenderedOption option = request.options().get(index);
             checks.put("option:" + index + ":projection", option.renderedIndex() == index && option.shown()
-                && option.enabled() == !disabled.contains(option.nativeOptionIndex()) && !option.fallback() && !option.cancel());
+                && option.selectionAllowed() == !disabled.contains(option.nativeOptionIndex()) && !option.fallback() && !option.cancel());
             if (option.nativeOptionIndex() == contract.selectedNativeOptionIndex()) {
                 // Keep the old leaf's actual toggle behavior; duplicate native rows still fail exactness.
                 selected = selected == null ? option : null;
             }
         }
         checks.put("selected_native_option_unique", selected != null);
-        checks.put("selected_native_option_enabled", selected != null && selected.enabled());
+        checks.put("selected_native_option_enabled", selected != null && selected.selectionAllowed());
         ArrayList<String> failed = new ArrayList<>();
         checks.forEach((name, passed) -> { if (!passed) failed.add(name); });
         Collections.sort(failed);
         return new Result(failed.isEmpty() ? Status.PROJECTION_READY : Status.BLOCKED,
-            binding, checks, selected, failed);
+            binding, checks, selected, failed, request.schemaVersion());
     }
 
     private static List<Integer> indices(List<Integer> values, int maximum) {

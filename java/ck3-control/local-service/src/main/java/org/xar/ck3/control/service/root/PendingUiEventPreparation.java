@@ -50,8 +50,8 @@ public final class PendingUiEventPreparation {
         var operation=new OperationKey(selected.value());var number=EventActionPreparation.option(operation);
         StrictJson.require(actionSteps.contains(operation)&&current.bridgeCapabilities().contains(EventActionPreparation.EVENT_CAPABILITY),"private selected event has no actual installed native family/capability");
         var option=available.options().stream().filter(row->row.nativeOptionIndex()==number.value()-1).findFirst().orElseThrow(()->new IllegalArgumentException("private event plan has no original displayed native option"));
-        // The v1 field samples the option flag; stock GUI validity also depends on its native owner gate.
-        if(!option.enabled())throw new EventActionPreparation.PendingSelectionRejected(plan.with("selected_step",OpportunityJson.Nil.INSTANCE),actual.originalReceipt());
+        // Keep the sampled flag and independent GUI observation in the original presentation.
+        if(!option.selectionAllowed())throw new EventActionPreparation.PendingSelectionRejected(plan.with("selected_step",OpportunityJson.Nil.INSTANCE),actual.originalReceipt());
         var presentation=new EventActionPreparation.EventPresentation(available,option);
         return command(current,actual.receipt(),actual.originalReceipt(),presentation,operation,plan,actionId,deadline);
     }

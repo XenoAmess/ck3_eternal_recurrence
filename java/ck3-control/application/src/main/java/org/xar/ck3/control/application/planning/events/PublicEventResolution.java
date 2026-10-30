@@ -14,12 +14,14 @@ import org.xar.ck3.control.application.planning.OrdinaryHistory;
 import org.xar.ck3.control.application.planning.OrdinaryPolicy;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.events.GuiAvailabilityObservation;
 import org.xar.ck3.control.contracts.semantic.NativeActiveEvent;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.wave2.events.registered.BookmarkRaiktorPolicy;
 import org.xar.ck3.control.wave2.events.registered.RegisteredEventKnowledge;
 import org.xar.ck3.control.wave2.events.registered.RegisteredVanillaEventPolicy;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson;
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
 import org.xar.ck3.control.wave2.events.unhandledevent.SourceReviewedEventConsumer;
 import org.xar.ck3.control.wave2.events.unhandledevent.TrustedEventSourceContext;
 
@@ -31,6 +33,8 @@ public final class PublicEventResolution {
         "source-reviewed-native-event-v1", "backend-neutral-event-v1", "user-first-displayed-event-v1");
     private static final Set<String> ROW_FIELDS = Set.of("event_index", "event_instance_id", "title", "visible_options",
         "selected_option_number", "selected_option_index", "selected_visible_text", "strategy", "source");
+    private static final Set<String> GUI_ROW_FIELDS = java.util.stream.Stream.concat(ROW_FIELDS.stream(),
+        java.util.stream.Stream.of("gui_observation_version", "selected_gui_availability")).collect(java.util.stream.Collectors.toUnmodifiableSet());
     private PublicEventResolution() { }
 
     public static OpportunityJson.Obj plan(PlanningRequest actual,Optional<Integer> expectedInstance,
@@ -97,12 +101,12 @@ public final class PublicEventResolution {
             var option = obj(raw, "normalized option"); BigInteger number = positive(option.get("option_number"));
             boolean legal = ((RetainedJson.ArrayValue)context.get("options")).values().stream().filter(RetainedJson.ObjectValue.class::isInstance)
                 .map(RetainedJson.ObjectValue.class::cast).anyMatch(row -> new RetainedJson.IntegerValue(number.subtract(BigInteger.ONE)).equals(row.get("native_option_index"))
-                    && new RetainedJson.BooleanValue(true).equals(row.get("shown")) && new RetainedJson.BooleanValue(true).equals(row.get("enabled")));
+                    && new RetainedJson.BooleanValue(true).equals(row.get("shown")) && EventOptionAvailability.selectionAllowed(context, row));
             if (legal) eligible.add(option);
         }
-        var chosen = NativeActiveEvent.chooseOptionNumber(DriverJson.toNode(normalized.with("options", new OpportunityJson.Arr(eligible))));
+        var chosen = NativeActiveEvent.chooseEligibleOptionNumber(DriverJson.toNode(normalized.with("options", new OpportunityJson.Arr(eligible))));
         if (chosen.isEmpty()) return attach(first.with("selected_step", OpportunityJson.Nil.INSTANCE)
-            .with("reason", new OpportunityJson.Text("no original normalized option is both enabled and legally displayed")), normalized, "backend-neutral-event-v1");
+            .with("reason", new OpportunityJson.Text("no original normalized option is both selectable and legally displayed")), normalized, "backend-neutral-event-v1");
         return attach(PublicEventSelection.derivedPlan(actual, chosen.orElseThrow().intValueExact(), expectedInstance, knowledge, trusted),
             normalized, "backend-neutral-event-v1");
     }
@@ -162,10 +166,42 @@ public final class PublicEventResolution {
             "title", event.get("title"), "visible_options", event.get("options"), "selected_option_number", metadata.get("option_number"),
             "selected_option_index", integer(number - 1L), "selected_visible_text", selected.get("label"),
             "strategy", metadata.get("selection_strategy"), "source", event.get("source")));
+        var captured = preparedPlan.get("unhandled_event_fallback") instanceof OpportunityJson.Obj value ? value : null;
+        var originalContext = preparedPlan.members().containsKey("event_window_context")
+            ? preparedPlan.get("event_window_context") : captured == null ? null : captured.get("window_context");
+        var context = retained(obj(originalContext, "original event context"));
+        var nativeRow = ((RetainedJson.ArrayValue) context.get("options")).values().stream()
+            .map(RetainedJson::object).filter(value -> new RetainedJson.IntegerValue(BigInteger.valueOf(number - 1L)).equals(value.get("native_option_index")))
+            .toList();
+        require(nativeRow.size() == 1, "ordinary result requires one original selected event observation");
+        if (preparedPlan.members().containsKey("selected_native_event_option"))
+            require(nativeRow.getFirst().equals(retained(obj(preparedPlan.get("selected_native_event_option"), "original selected native option"))),
+                "ordinary result changed its original selected event observation");
+        else {
+            var selection = retained(obj(captured == null ? null : captured.get("selection"), "original captured selection"));
+            for (String field : List.of("rendered_index", "native_option_index", "enabled", "resolved_name"))
+                require(Objects.equals(selection.get(field), nativeRow.getFirst().get(field)), "ordinary result changed its captured selection");
+            require(new RetainedJson.IntegerValue(BigInteger.valueOf(number)).equals(selection.get("option_number"))
+                && Objects.equals(selection.get("gui_availability"), nativeRow.getFirst().get("gui_availability")),
+                "ordinary result changed its captured option or GUI observation");
+        }
+        var observation = EventOptionAvailability.observation(context, nativeRow.getFirst());
+        var observationWire = EventOptionAvailability.wire(observation);
+        if (!(observation instanceof GuiAvailabilityObservation.LegacyNotReported)) {
+            require(observationWire.equals(nativeRow.getFirst().get("gui_availability")), "ordinary result changed its original GUI observation shape");
+            row = row.with("gui_observation_version", integer(2))
+                .with("selected_gui_availability", opportunity(RetainedJson.object(nativeRow.getFirst().get("gui_availability"))));
+        }
         return validateOrdinaryEvent(row, instance, number);
     }
     public static OpportunityJson.Obj validateOrdinaryEvent(OpportunityJson.Obj row, int actualInstance, int actualOption) {
-        require(actualInstance > 0 && actualOption > 0 && actualOption <= 4096 && row.members().keySet().equals(ROW_FIELDS), "exact ordinary event identity/fields required");
+        boolean guiReported = row.members().containsKey("gui_observation_version") || row.members().containsKey("selected_gui_availability");
+        require(actualInstance > 0 && actualOption > 0 && actualOption <= 4096 && row.members().keySet().equals(guiReported ? GUI_ROW_FIELDS : ROW_FIELDS), "exact ordinary event identity/fields required");
+        GuiAvailabilityObservation observation = new GuiAvailabilityObservation.LegacyNotReported();
+        if (guiReported) {
+            require(integer(2).equals(row.get("gui_observation_version")), "exact persisted GUI observation version required");
+            observation = EventOptionAvailability.observation(retained(obj(row.get("selected_gui_availability"), "original selected GUI observation")));
+        }
         require(integer(1).equals(row.get("event_index")) && integer(actualInstance).equals(row.get("event_instance_id"))
             && integer(actualOption).equals(row.get("selected_option_number")) && integer(actualOption - 1L).equals(row.get("selected_option_index"))
             && STRATEGIES.contains(text(row.get("strategy"))), "ordinary event does not describe its actual prepared choice");
@@ -178,8 +214,9 @@ public final class PublicEventResolution {
         require(DriverJson.toNode(options).equals(normalized.get("options")), "ordinary option fields differ from original normalized contract");
         var selected = options.items().stream().map(value -> obj(value, "original normalized option"))
             .filter(value -> integer(actualOption).equals(value.get("option_number"))).findFirst().orElseThrow();
-        require(new OpportunityJson.Bool(true).equals(selected.get("enabled")) && Objects.equals(selected.get("label"), row.get("selected_visible_text")),
-            "ordinary selected label or enabled flag changed");
+        require(selected.get("enabled") instanceof OpportunityJson.Bool, "original enabled flag boolean required");
+        require(observation.permitsSelectionWithRawFallback(((OpportunityJson.Bool) selected.get("enabled")).value())
+                && Objects.equals(selected.get("label"), row.get("selected_visible_text")), "ordinary selected label or availability changed");
         return row;
     }
     private static OpportunityJson.Obj obj(OpportunityJson.Value value, String field) { return OpportunityJson.object(value, field); }

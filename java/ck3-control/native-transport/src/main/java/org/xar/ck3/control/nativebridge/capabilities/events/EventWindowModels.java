@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.contracts.events.GuiAvailabilityObservation;
 
 /** Exact copied event presentation. Icon indicators never claim a complete effect preview. */
 public final class EventWindowModels {
@@ -74,8 +75,16 @@ public final class EventWindowModels {
         public NumericValue { Objects.requireNonNull(rawFixedPoint); Objects.requireNonNull(decimalValue); Objects.requireNonNull(integerValue); }
     }
     public record Option(int renderedIndex, int nativeOptionIndex, boolean enabled, boolean fallback, boolean cancel,
-            String resolvedName, String unavailableReason, List<Indicator> indicators) {
-        public Option { Objects.requireNonNull(resolvedName); Objects.requireNonNull(unavailableReason); indicators=List.copyOf(indicators); }
+            String resolvedName, String unavailableReason, List<Indicator> indicators, GuiAvailabilityObservation guiAvailability) {
+        public Option { Objects.requireNonNull(resolvedName); Objects.requireNonNull(unavailableReason); indicators=List.copyOf(indicators); Objects.requireNonNull(guiAvailability); }
+        /** Legacy v1 callers supplied only raw flags; this constructor cannot assert stock GUI validity. */
+        public Option(int renderedIndex,int nativeOptionIndex,boolean enabled,boolean fallback,boolean cancel,
+                String resolvedName,String unavailableReason,List<Indicator> indicators) {
+            this(renderedIndex,nativeOptionIndex,enabled,fallback,cancel,resolvedName,unavailableReason,indicators,
+                    new GuiAvailabilityObservation.LegacyNotReported());
+        }
+        /** GUI result when observed; otherwise the prior raw-byte policy, with its basis retained. */
+        public boolean selectionAllowed() { return guiAvailability.permitsSelectionWithRawFallback(enabled); }
         public BigInteger publicOptionNumber() { return BigInteger.valueOf(nativeOptionIndex).add(BigInteger.ONE); }
     }
     public enum Operation { ADD, REMOVE }

@@ -45,6 +45,7 @@ import org.xar.ck3.control.wave2.events.eventtraits.EventTraitMembership;
 import org.xar.ck3.control.wave2.events.eventtraits.EventTraitMembershipCodec;
 import org.xar.ck3.control.wave2.events.eventtraits.PoetTraitOutcome;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson;
+import org.xar.ck3.control.wave2.events.unhandledevent.EventOptionAvailability;
 import org.xar.ck3.control.wave2.events.unhandledevent.SourceReviewedEventConsumer;
 import org.xar.ck3.control.wave2.events.unhandledevent.SourceReviewedInteractionContinuation;
 import org.xar.ck3.control.wave2.events.unhandledevent.TrustedEventSourceContext;
@@ -249,8 +250,10 @@ public final class EventPolicies {
         ObjectNode frame = frame(snapshot); var options = new ArrayList<UnhandledEventFallback.Option>();
         JsonNode rawOptions = context.orElseThrow().get("options");
         if (rawOptions == null || !rawOptions.isArray()) return Optional.empty();
+        RetainedJson.ObjectValue retainedContext = retained(currentContext);
         for (JsonNode row : rawOptions) options.add(new UnhandledEventFallback.Option(integer(row.get("rendered_index")), integer(row.get("native_option_index")),
-            bool(row.get("shown")), bool(row.get("enabled")), row.path("resolved_name").asText(null)));
+            bool(row.get("shown")), bool(row.get("enabled")), row.path("resolved_name").asText(null),
+            EventOptionAvailability.observation(retainedContext, RetainedJson.object(RetainedJson.parse(bytes(row))))));
         var binding = new UnhandledEventFallback.FrameBinding(text(frame.get("snapshot_id")), integer(frame.get("revision")), integer(frame.get("native_revision")),
             integer(frame.get("date_raw")), text(frame.get("episode_run_id")), integer(frame.get("connection_generation")), integer(frame.get("bridge_pid")),
             bool(frame.get("paused")), bool(frame.get("map_ready")), integer(frame.get("actor_character_id")));
@@ -377,7 +380,7 @@ public final class EventPolicies {
         }
         return readNeeded(step);
     }
-    /** One native argument ABI. The retained producer choice must match a unique actual shown/enabled row. */
+    /** One native argument ABI. The retained choice must match a uniquely displayed, selectable row. */
     private static ObjectNode nativeEventArguments(ObjectNode plan, ObjectNode context) {
         if (plan.get("selected_step") == null || plan.get("selected_step").isNull()) return plan;
         JsonNode decision = plan.get("event_decision");
@@ -392,7 +395,8 @@ public final class EventPolicies {
         for (JsonNode row : options) if (nativeIndex.equals(integer(row.get("native_option_index")))) matching.add(row);
         StrictJson.require(matching.size() == 1, "selected native event index is not unique in the current display");
         JsonNode selected = matching.getFirst();
-        StrictJson.require(bool(selected.get("shown")) && bool(selected.get("enabled")), "selected exact native event option is not shown/enabled");
+        StrictJson.require(bool(selected.get("shown")) && EventOptionAvailability.selectionAllowed(retained(context),
+            RetainedJson.object(RetainedJson.parse(bytes(selected)))), "selected exact native event option is not displayed/selectable");
         BigInteger rendered = integer(selected.get("rendered_index"));
         StrictJson.require(rendered.signum() >= 0, "actual nonnegative rendered option index required");
         if (decision.has("selected_rendered_index")) StrictJson.require(rendered.equals(integer(decision.get("selected_rendered_index"))), "event producer rendered mapping differs");

@@ -1,0 +1,20 @@
+{
+"schema":"ck3.m2-retained-native-gui-fixtures107/v1",
+"machine_id":"xenoamess-full-tower-eb9d2c1186",
+"observed_at_utc":"2026-10-30T17:12:51.220424900Z",
+"source_stage":"Native freeze03 fullreader/serializer software fixtures; not Game",
+"records":[
+{"file":"timer-equal-raw-enabled.v1.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/timer-equal-raw-enabled.v1.json","bytes":1824,"sha256":"1e0ead4a126375f6e853a5a86b43a67ada8c26e34cf6955a2dc6228693d34e9b"},
+{"file":"timer-equal-raw-enabled.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/timer-equal-raw-enabled.v2.json","bytes":1882,"sha256":"aecedbaae3c7765e2a392cbe2c7945ce9d6b384ca97c4c76b65b1d62c32c726b"},
+{"file":"callback-false-raw-enabled.v1.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/callback-false-raw-enabled.v1.json","bytes":1824,"sha256":"1e0ead4a126375f6e853a5a86b43a67ada8c26e34cf6955a2dc6228693d34e9b"},
+{"file":"callback-false-raw-enabled.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/callback-false-raw-enabled.v2.json","bytes":1882,"sha256":"aecedbaae3c7765e2a392cbe2c7945ce9d6b384ca97c4c76b65b1d62c32c726b"},
+{"file":"gate-passes-control.v1.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/gate-passes-control.v1.json","bytes":1824,"sha256":"1e0ead4a126375f6e853a5a86b43a67ada8c26e34cf6955a2dc6228693d34e9b"},
+{"file":"gate-passes-control.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/gate-passes-control.v2.json","bytes":1881,"sha256":"f7a32657fedf910915b3ce94138cd75b8aab99ac54228909fbe54f1689d2164b"},
+{"file":"raw-disabled-fallback-valid.v1.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/raw-disabled-fallback-valid.v1.json","bytes":1833,"sha256":"6a6823ade2d2f85d3c00bcdb89f730cec441ce47406588ed8eafdfb7173cbead"},
+{"file":"raw-disabled-fallback-valid.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/raw-disabled-fallback-valid.v2.json","bytes":1890,"sha256":"cedf65a62fc28ece6ee7a8bf013c05a2a964a11442a9683951cf8d0c4c4e4dde"},
+{"file":"native-binding-unavailable.v1.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/native-binding-unavailable.v1.json","bytes":1824,"sha256":"1e0ead4a126375f6e853a5a86b43a67ada8c26e34cf6955a2dc6228693d34e9b"},
+{"file":"native-binding-unavailable.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/native-binding-unavailable.v2.json","bytes":1905,"sha256":"8d885a494eff001d3968cecbd9c5500e05654e3e2eef3f709f854dd137487daf"},
+{"file":"native-read-unavailable.v1.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/native-read-unavailable.v1.json","bytes":1824,"sha256":"1e0ead4a126375f6e853a5a86b43a67ada8c26e34cf6955a2dc6228693d34e9b"},
+{"file":"native-read-unavailable.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/native-read-unavailable.v2.json","bytes":1902,"sha256":"0b24d043e636d0004c41c1dcee048f53f3125054349c9567e0cc9487e5be89cb"},
+{"file":"ambiguous-no-native-gate.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/freeze03/out/ambiguous-no-native-gate.v2.json","bytes":758,"sha256":"01b00a626d9187a9a41bcdd21d0dfc5d607ebe77fe299bc776b83be19cae7864"}
+],"files":13,"logical_bytes":23053,"prior_payloads_compared_unchanged":12,"new_pe_reads":0,"game_calls":0,"model_http":0,"review_by":"2026-11-06"}

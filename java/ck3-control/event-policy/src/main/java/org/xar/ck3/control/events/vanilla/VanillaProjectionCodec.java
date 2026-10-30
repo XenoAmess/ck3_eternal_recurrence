@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.xar.ck3.control.contracts.events.GuiAvailabilityObservation;
 import org.xar.ck3.control.events.vanilla.VanillaOptionProjection.OptionContract;
 import org.xar.ck3.control.events.vanilla.VanillaOptionProjection.RegistryBinding;
 import org.xar.ck3.control.events.vanilla.VanillaOptionProjection.RegistryState;
@@ -36,20 +37,21 @@ public final class VanillaProjectionCodec {
     public static Request decode(byte[] bytes) {
         JsonNode node = read(bytes);
         fields(node, Set.of("schema", "schema_version", "binding", "contract", "options", "snapshot_option_count"));
-        if (!REQUEST_SCHEMA.equals(text(node, "schema")) || integer(node, "schema_version") != 1) {
+        int version = integer(node, "schema_version");
+        if (!REQUEST_SCHEMA.equals(text(node, "schema")) || (version != 1 && version != 2)) {
             throw invalid("unsupported request schema");
         }
         RegistryBinding binding = binding(required(node, "binding"));
         JsonNode rawContract = required(node, "contract");
         OptionContract contract = rawContract.isNull() ? null : contract(rawContract);
         List<RenderedOption> options = new ArrayList<>();
-        for (JsonNode row : array(required(node, "options"))) options.add(option(row));
-        return new Request(binding, contract, options, integer(node, "snapshot_option_count"));
+        for (JsonNode row : array(required(node, "options"))) options.add(option(row, version));
+        return new Request(binding, contract, options, integer(node, "snapshot_option_count"), version);
     }
 
     public static byte[] encode(Request request) {
         ObjectNode node = MAPPER.createObjectNode();
-        node.put("schema", REQUEST_SCHEMA).put("schema_version", 1);
+        node.put("schema", REQUEST_SCHEMA).put("schema_version", request.schemaVersion());
         node.set("binding", bindingNode(request.binding()));
         if (request.contract() == null) node.putNull("contract");
         else node.set("contract", contractNode(request.contract()));
@@ -61,7 +63,7 @@ public final class VanillaProjectionCodec {
 
     public static byte[] encode(Result result) {
         ObjectNode node = MAPPER.createObjectNode();
-        node.put("schema", RESULT_SCHEMA).put("schema_version", 1);
+        node.put("schema", RESULT_SCHEMA).put("schema_version", result.schemaVersion());
         node.put("status", switch (result.status()) {
             case PROJECTION_READY -> "projection_ready";
             case BLOCKED -> "blocked";
@@ -102,10 +104,12 @@ public final class VanillaProjectionCodec {
             integers(required(node, "disabled_native_option_indices")), integers(required(node, "snapshot_option_counts")));
     }
 
-    private static RenderedOption option(JsonNode node) {
-        fields(node, OPTION_FIELDS);
+    private static RenderedOption option(JsonNode node, int version) {
+        Set<String> fields = new HashSet<>(OPTION_FIELDS);
+        if (version == 2) fields.add("gui_availability");
+        fields(node, fields);
         return new RenderedOption(integer(node, "rendered_index"), integer(node, "native_option_index"), bool(node, "shown"),
-            bool(node, "enabled"), bool(node, "fallback"), bool(node, "cancel"));
+            bool(node, "enabled"), bool(node, "fallback"), bool(node, "cancel"), version == 1 ? new GuiAvailabilityObservation.LegacyNotReported() : observation(required(node,"gui_availability")));
     }
 
     private static ObjectNode bindingNode(RegistryBinding binding) {
@@ -136,8 +140,24 @@ public final class VanillaProjectionCodec {
     }
 
     private static ObjectNode optionNode(RenderedOption row) {
-        return MAPPER.createObjectNode().put("rendered_index", row.renderedIndex()).put("native_option_index", row.nativeOptionIndex())
+        ObjectNode node = MAPPER.createObjectNode().put("rendered_index", row.renderedIndex()).put("native_option_index", row.nativeOptionIndex())
             .put("shown", row.shown()).put("enabled", row.enabled()).put("fallback", row.fallback()).put("cancel", row.cancel());
+        if (row.guiAvailability() instanceof GuiAvailabilityObservation.Observed observed)
+            node.putObject("gui_availability").put("status","observed").put("is_valid",observed.isValid());
+        else if (row.guiAvailability() instanceof GuiAvailabilityObservation.Unobserved unobserved)
+            node.putObject("gui_availability").put("status","unobserved").put("reason",unobserved.reason().wire());
+        return node;
+    }
+
+    private static GuiAvailabilityObservation observation(JsonNode node) {
+        String status = text(node,"status");
+        if (status.equals("observed")) {
+            fields(node,Set.of("status","is_valid"));
+            return new GuiAvailabilityObservation.Observed(bool(node,"is_valid"));
+        }
+        fields(node,Set.of("status","reason"));
+        if (!status.equals("unobserved")) throw invalid("unknown GUI observation status");
+        return new GuiAvailabilityObservation.Unobserved(GuiAvailabilityObservation.Reason.fromWire(text(node,"reason")));
     }
 
     private static JsonNode read(byte[] bytes) {

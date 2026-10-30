@@ -29,7 +29,7 @@ public final class EventActionPreparation {
     public record EventPresentation(EventWindowModels.Available context,EventWindowModels.Option selected) implements PendingPresentation {
         public EventPresentation {
             Objects.requireNonNull(context);Objects.requireNonNull(selected);
-            StrictJson.require(context.options().contains(selected)&&selected.enabled(),"pending event requires its original displayed option with the sampled enabled flag");
+            StrictJson.require(context.options().contains(selected)&&selected.selectionAllowed(),"pending event requires its original displayed option to permit selection");
         }
         @Override public int instanceId(){return context.binding().eventInstanceId();}
     }

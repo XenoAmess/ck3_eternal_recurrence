@@ -1,0 +1,12 @@
+{
+"schema":"ck3.m2-published-base-native-named-fixtures109/v1",
+"machine_id":"xenoamess-full-tower-eb9d2c1186",
+"observed_at_utc":"2026-10-30T17:43:05.276663900Z",
+"source_variant":"published-v2-variant04; GUI-only overlay on Native Integr published delivery90, no Locator, retains named CharacterScope semantics",
+"prior_fixture_payloads_byte_equal":13,
+"scope":"Owned Native fullreader/serializer software fixture, Build.CROZIER2 per original payload; not Game/full Bridge",
+"records":[
+{"file":"named-character-identity-unavailable.v1.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/published-v2-variant04/persistent-build04/out/named-character-identity-unavailable.v1.json","bytes":2314,"sha256":"4c61bdcb283b9d85b180ee552c00f88551f91b2514e557370617401d7f18bdc8"},
+{"file":"named-character-identity-unavailable.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/published-v2-variant04/persistent-build04/out/named-character-identity-unavailable.v2.json","bytes":2371,"sha256":"625dc0a7d2165c664fae15df7776fc7b8e87746b44ba4b4aee42601c0c176553"},
+{"file":"named-character-token-drift.v2.json","source":"D:/ck3-state/resume90-m2-native/options/gui-observation-v2-90/published-v2-variant04/persistent-build04/out/named-character-token-drift.v2.json","bytes":755,"sha256":"f6c4fab6690872f579c7bc4fa003a60614f5d050c8b4baf841b5fbf785725b2f"}
+],"new_pe_reads":0,"Game":0,"model_http":0,"review_by":"2026-11-06"}

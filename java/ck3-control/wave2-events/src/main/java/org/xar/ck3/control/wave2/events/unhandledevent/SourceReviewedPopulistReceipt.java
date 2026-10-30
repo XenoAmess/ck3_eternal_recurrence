@@ -44,7 +44,7 @@ public final class SourceReviewedPopulistReceipt {
                 && eq(knowledge, "status", s("offline-source-reviewed"))
                 && ExistingFactionEventPolicies.sourceKnownPopulist(capture, knowledge) && yes(capture, "registry_known")
                 && eq(selection, "selected_step", s(STEP)) && eq(selection, "native_option_index", i(3))
-                && eq(selection, "option_number", i(4)) && eq(selection, "rendered_index", i(1)) && yes(selection, "enabled")
+                && eq(selection, "option_number", i(4)) && eq(selection, "rendered_index", i(1)) && EventOptionAvailability.selectionAllowed(o(capture,"window_context"),selection)
                 && eq(summary, "selected_native_option_index", i(3)) && eq(summary, "selected_option_number", i(4))
                 && eq(summary, "selected_rendered_index", i(1)) && eq(decision, "selected_native_option_index", i(3))
                 && eq(decision, "selected_option_number", i(4)) && eq(decision, "selected_rendered_index", i(1))
