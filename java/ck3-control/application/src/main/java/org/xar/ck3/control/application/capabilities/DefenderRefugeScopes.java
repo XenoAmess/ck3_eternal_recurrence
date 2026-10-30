@@ -4,6 +4,7 @@ import static org.xar.ck3.control.application.capabilities.CapabilityJson.*;
 import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 
 import java.math.BigInteger;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -20,17 +21,17 @@ public final class DefenderRefugeScopes {
         Obj readiness = obj(root.get("readiness")).orElse(null);
         Value actor = root.get("player_character_id"), topLiege = root.get("top_liege_character_id");
         if (!yes(readiness,"direct_landed_vassals_ready") || !yes(readiness,"related_character_contexts_ready")
-                || !int32Id(actor) || !int32Id(topLiege) || !(root.get("direct_landed_vassal_character_ids") instanceof Arr ids)
+                || !characterId(actor) || !characterId(topLiege) || !(root.get("direct_landed_vassal_character_ids") instanceof Arr ids)
                 || !(root.get("related_character_contexts") instanceof Arr rows)) return Optional.empty();
         List<Integer> direct = new ArrayList<>();
-        for (Value value : ids.items()) { if (!int32Id(value)) return Optional.empty(); direct.add(integer(value,"vassal").intValueExact()); }
+        for (Value value : ids.items()) { if (!characterId(value)) return Optional.empty(); direct.add(integer(value,"vassal").intValueExact()); }
         if (new HashSet<>(direct).size() != direct.size()) return Optional.empty();
         Map<Integer,Optional<Integer>> found = new LinkedHashMap<>();
         for (Value value : rows.items()) {
             if (!(value instanceof Obj row)) return Optional.empty();
             if (!named(row,"relationship_role","direct_landed_vassal")) continue;
-            if (!int32Id(row.get("character_id"))) return Optional.empty();
-            int character = idAt(row,"character_id");
+            if (!characterId(row.get("character_id"))) return Optional.empty();
+            int character = integer(row.get("character_id"),"character_id").intValueExact();
             if (!direct.contains(character) || found.containsKey(character)
                     || !eq(row,"immediate_liege_character_id",actor) || !eq(row,"top_liege_character_id",topLiege)) return Optional.empty();
             Obj title = obj(row.get("primary_title")).orElse(null);
@@ -100,6 +101,11 @@ public final class DefenderRefugeScopes {
         if (!eq(binding,"actor_character_id",actor(snapshot)) || !equalField(binding,"bridge_pid",diagnostics,"bridge_pid")
                 || !equalField(binding,"connection_generation",diagnostics,"connection_generation")) return Optional.empty();
         return obj(cachedQuery.get("campaign_root_context")).flatMap(root -> directVassalRefugeLifecycleScope(snapshot,root));
+    }
+    private static boolean characterId(Value value) {
+        if (!(value instanceof IntegerValue integer)) return false;
+        try { NativeCharacterId.of(integer.value()); return true; }
+        catch (IllegalArgumentException invalid) { return false; }
     }
     private static Value actor(Obj snapshot) {
         Value actor = snapshot.get("actor_character_id");
