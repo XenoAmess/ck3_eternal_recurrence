@@ -263,3 +263,31 @@ withdrew that incorrect regression claim and redundant runtime guards. The
 original qualified production candidate was preserved, and the type-review
 failure is not counted as a production RED. See
 `D:/ck3-state/resume90-m1-native/action-identity/{DELIVERY.json,ACTION-PRIVATE-RAW32-CANDIDATE.patch,FRAME-TYPE-REVIEW-CORRECTION01.json}`.
+
+## M6 completion/termination tuple
+
+The next three-leaf candidate was adopted in its explicitly tested form at
+14:52:08.080Z. Completion and termination entry points parse canonical signed32
+actor/target, preserve raw uint32 inside the Recorder, and publish signed
+root/record identities. Scheme IDs/generation, native-owner raw words, epochs,
+record cursors and unknown-cause/material rules are unchanged.
+
+The actual public completion/termination handlers → real queue/pump/envelope →
+actual retained reader or Recorder → serializers produced 15 response packets
+for five distinct signed/zero pairs, with 309 assertions across two incremental
+runs. Handler binding acquisition uses an explicit owned-image seam; native
+end/original/observer calls do not execute. Renderer identity text was
+mechanically extracted, so a full adapter/Bridge execution is not claimed.
+Earlier timeout, 0-byte interrupted object and unresolved dependencies remain
+recorded rather than being converted to passing stages.
+
+Two optional JSON projections (common-native-end root pair and cause-relation
+pair) were deliberately excluded because neither branch executed in those
+packets. Their raw output and Java contract retain the earlier behavior. The
+exact selected Recorder combination alone was recompiled strictly, 1 TU,
+exit0/7.608 seconds; no unchanged 309-check run was repeated. All three adopted
+sources match the `tested-only/candidate` bytes after text normalization. See
+`D:/ck3-state/resume90-m6-native/action-abi/terminal-next/{RESULT.md,FINAL-ACTUAL.json,PACKETS05.json}`
+and `tested-only/{TESTED-ONLY.patch,TESTED-ONLY-ACTUAL.json}`. This supplies
+software tuple continuity, not a native terminal cause, useful gain, live ABI,
+DLL deployment or Game result.
