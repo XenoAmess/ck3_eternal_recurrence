@@ -1,5 +1,7 @@
 package org.xar.ck3.control.service.root;
 
+import org.xar.ck3.control.contracts.NativeCharacterId;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -96,7 +98,7 @@ public final class RootRegistryReadPublicProducts {
             };
         }
         Integer after = !fields.has("after_character_id") || fields.get("after_character_id").isNull() ? null
-                : number(fields.get("after_character_id"), BigInteger.ONE, BigInteger.valueOf(Integer.MAX_VALUE), "after_character_id").intValueExact();
+                : NativeCharacterId.fromJson(fields.get("after_character_id")).value();
         int limit = fields.has("limit") ? number(fields.get("limit"), BigInteger.ONE, BigInteger.valueOf(100), "limit").intValueExact() : 50;
         return new SearchRequest(expected, new EntityDirectory.Request(relation, after, limit));
     }

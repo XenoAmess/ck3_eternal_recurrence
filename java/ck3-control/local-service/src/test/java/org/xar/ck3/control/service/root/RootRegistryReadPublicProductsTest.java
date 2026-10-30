@@ -64,7 +64,7 @@ final class RootRegistryReadPublicProductsTest {
                 "{\"expected_revision\":4,\"limit\":null}", "{\"expected_revision\":4,\"limit\":101}",
                 "{\"expected_revision\":4,\"limit\":true}", "{\"expected_revision\":4,\"relation_filter\":null}",
                 "{\"expected_revision\":4,\"relation_filter\":\"unknown\"}", "{\"expected_revision\":4,\"after_character_id\":false}",
-                "{\"expected_revision\":4,\"after_character_id\":0}", "{\"expected_revision\":4,\"unexpected\":null}"))
+                "{\"expected_revision\":4,\"after_character_id\":-1}", "{\"expected_revision\":4,\"unexpected\":null}"))
             assertThrows(IllegalArgumentException.class, () -> search.invoke(arguments(invalid)), invalid);
         assertThrows(IllegalArgumentException.class, () -> search.invoke(new PublicBindings.Missing()));
         assertThrows(IllegalArgumentException.class, () -> search.invoke(new PublicBindings.Null()));
@@ -229,7 +229,7 @@ final class RootRegistryReadPublicProductsTest {
             add('unavailable',namespace['_frame']('unavailable'),copy.deepcopy(snapshot))
             root=copy.deepcopy(raw);root['provenance']=dict(p._PROVENANCE_BY_BUILD['1.20.0.4'])
             root['council']=dict(status='unavailable',coverage_key='standard_landed_non_nomadic_core_v1',owner_character_id=12345,positions=[],auxiliary_vacancies_complete=False,unavailable_reason='actual4_council_position_key_source_unavailable')
-            root['readiness']['council_ready']=False;root['readiness']['ready']=False
+            root['readiness']['council_ready']=False
             root['held_title_partition'].append(dict(title=dict(title_id=900000,tier_raw=2,tier_key='county'),first_heir_character_id=23456,capital_province_id=None,primary=False,capital_province_kind='landless_noble_family_no_province',title_key='c_registry_family'))
             add('actual4-family',root,copy.deepcopy(snapshot))
             print(json.dumps({'cases':cases},ensure_ascii=False,separators=(',',':')))

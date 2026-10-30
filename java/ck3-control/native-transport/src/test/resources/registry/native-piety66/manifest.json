@@ -1,0 +1,263 @@
+{
+  "schema": "xar.native-piety-root-software-fixtures/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "generated_at_utc": "2026-10-30T13:21:32.428766+00:00",
+  "require_signed_owner": true,
+  "scope": "Actual allocated native-layout slot/fullgeneration Root reader to actual piety leaf to full serializer; native bindings/nonCouncil DTO/outer are synthetic; no full image wrapper/full getter/Game credit",
+  "sources": [
+    {
+      "path": "owner-min.json",
+      "bytes": 5062,
+      "sha256": "07195abed8cd42ef1005194ae907a5f357e743905813d4ef732f06a42b1a0590",
+      "owner": -2147483648,
+      "date_raw": 53222304,
+      "snapshot_revision": 9
+    },
+    {
+      "path": "owner-signed.json",
+      "bytes": 5058,
+      "sha256": "ce37c8dd7d998831fac279a2577d46b8121b8593d62c5c64f6f12c268b16d61c",
+      "owner": -1845493758,
+      "date_raw": 53222304,
+      "snapshot_revision": 9
+    },
+    {
+      "path": "owner-zero.json",
+      "bytes": 5034,
+      "sha256": "271aa73cc774f3a413c950a98fc479a0a353a98b9762413fcbd544d43271627f",
+      "owner": 0,
+      "date_raw": 53222304,
+      "snapshot_revision": 9
+    },
+    {
+      "path": "positive-four-components.json",
+      "bytes": 5044,
+      "sha256": "1bd899ea5281670783f1a7ed4a2ebc34ab1b350c9955d89e1a0715328a8116b2",
+      "owner": 29829,
+      "date_raw": 53222304,
+      "snapshot_revision": 9
+    },
+    {
+      "path": "freeze-after.json",
+      "bytes": 5043,
+      "sha256": "b97264328c1c773b30a54daef331c16a4ee2fe69b86e7ced38cec0ec31ff5e9a",
+      "owner": 29829,
+      "date_raw": 53222304,
+      "snapshot_revision": 9
+    },
+    {
+      "path": "optional-unavailable.json",
+      "bytes": 5056,
+      "sha256": "1fe47a19347014df276bf9a3856f0e0f5d7f6dc2cea83db75d99e9649c70fdf2",
+      "owner": 29829,
+      "date_raw": 53222304,
+      "snapshot_revision": 9
+    },
+    {
+      "path": "missing-value-binding.json",
+      "bytes": 5096,
+      "sha256": "32ee8babe054e715122a979a3cd22f0dc186cd46073223b077d897fafb7289c2",
+      "owner": 29829,
+      "date_raw": 53222304,
+      "snapshot_revision": 9
+    }
+  ],
+  "cases": [
+    {
+      "path": "positive-four-components.json",
+      "owner": 29829,
+      "incumbent": null,
+      "position": "councillor_chancellor",
+      "metric_status": "unavailable",
+      "raw": null,
+      "frozen": null
+    },
+    {
+      "path": "positive-four-components.json",
+      "owner": 29829,
+      "incumbent": 56513,
+      "position": "councillor_court_chaplain",
+      "metric_status": "available",
+      "raw": 45000,
+      "frozen": false
+    },
+    {
+      "path": "positive-four-components.json",
+      "owner": 29829,
+      "incumbent": 1003,
+      "position": "councillor_marshal",
+      "metric_status": "available",
+      "raw": 0,
+      "frozen": false
+    },
+    {
+      "path": "positive-four-components.json",
+      "owner": 29829,
+      "incumbent": 1004,
+      "position": "councillor_spymaster",
+      "metric_status": "available",
+      "raw": -5000,
+      "frozen": true
+    },
+    {
+      "path": "positive-four-components.json",
+      "owner": 29829,
+      "incumbent": 1002,
+      "position": "councillor_steward",
+      "metric_status": "available",
+      "raw": 25000,
+      "frozen": false
+    },
+    {
+      "path": "owner-min.json",
+      "owner": -2147483648,
+      "root_player_id": -2147483648,
+      "top_liege": -2147483648,
+      "incumbent": 56513,
+      "position": "councillor_court_chaplain",
+      "metric_status": "available",
+      "raw": 45000,
+      "frozen": false,
+      "bytes": 5062,
+      "sha256": "07195abed8cd42ef1005194ae907a5f357e743905813d4ef732f06a42b1a0590"
+    },
+    {
+      "path": "owner-signed.json",
+      "owner": -1845493758,
+      "root_player_id": -1845493758,
+      "top_liege": -1845493758,
+      "incumbent": 0,
+      "position": "councillor_court_chaplain",
+      "metric_status": "available",
+      "raw": -5000,
+      "frozen": false,
+      "bytes": 5058,
+      "sha256": "ce37c8dd7d998831fac279a2577d46b8121b8593d62c5c64f6f12c268b16d61c"
+    },
+    {
+      "path": "owner-zero.json",
+      "owner": 0,
+      "root_player_id": 0,
+      "top_liege": 0,
+      "incumbent": -1845493758,
+      "position": "councillor_court_chaplain",
+      "metric_status": "available",
+      "raw": 0,
+      "frozen": false,
+      "bytes": 5034,
+      "sha256": "271aa73cc774f3a413c950a98fc479a0a353a98b9762413fcbd544d43271627f"
+    },
+    {
+      "path": "freeze-after.json",
+      "owner": 29829,
+      "incumbent": 56513,
+      "position": "councillor_court_chaplain",
+      "metric_status": "available",
+      "raw": 45000,
+      "frozen": true,
+      "bytes": 5043,
+      "sha256": "b97264328c1c773b30a54daef331c16a4ee2fe69b86e7ced38cec0ec31ff5e9a",
+      "producer_case": "freeze-after",
+      "producer_original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\freeze-after.json"
+    },
+    {
+      "path": "positive-four-components.json",
+      "owner": 29829,
+      "incumbent": 56513,
+      "position": "councillor_court_chaplain",
+      "metric_status": "available",
+      "raw": 45000,
+      "frozen": false,
+      "bytes": 5044,
+      "sha256": "1bd899ea5281670783f1a7ed4a2ebc34ab1b350c9955d89e1a0715328a8116b2",
+      "producer_case": "freeze-before",
+      "producer_original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\freeze-before.json"
+    },
+    {
+      "path": "optional-unavailable.json",
+      "owner": 29829,
+      "incumbent": 56513,
+      "position": "councillor_court_chaplain",
+      "metric_status": "unavailable",
+      "raw": null,
+      "frozen": false,
+      "bytes": 5056,
+      "sha256": "1fe47a19347014df276bf9a3856f0e0f5d7f6dc2cea83db75d99e9649c70fdf2",
+      "producer_case": "keyword-mismatch",
+      "producer_original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\keyword-mismatch.json"
+    },
+    {
+      "path": "missing-value-binding.json",
+      "owner": 29829,
+      "incumbent": 56513,
+      "position": "councillor_court_chaplain",
+      "metric_status": "unavailable",
+      "raw": null,
+      "frozen": false,
+      "bytes": 5096,
+      "sha256": "32ee8babe054e715122a979a3cd22f0dc186cd46073223b077d897fafb7289c2",
+      "producer_case": "missing-value-binding",
+      "producer_original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\missing-value-binding.json"
+    },
+    {
+      "path": "optional-unavailable.json",
+      "owner": 29829,
+      "incumbent": 56513,
+      "position": "councillor_court_chaplain",
+      "metric_status": "unavailable",
+      "raw": null,
+      "frozen": false,
+      "bytes": 5056,
+      "sha256": "1fe47a19347014df276bf9a3856f0e0f5d7f6dc2cea83db75d99e9649c70fdf2",
+      "producer_case": "numeric-wrong-pointer",
+      "producer_original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\numeric-wrong-pointer.json"
+    }
+  ],
+  "optional_source_observations": [
+    {
+      "producer_case": "freeze-after",
+      "original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\freeze-after.json",
+      "resource_path": "freeze-after.json",
+      "bytes": 5043,
+      "sha256": "b97264328c1c773b30a54daef331c16a4ee2fe69b86e7ced38cec0ec31ff5e9a",
+      "scope": "real Root+piety+full serializer,2model callback hunks+owner runner/observation; synthetic native bindings/nonCouncilDTO/outer; no imagewrapper/fullgetter/Game/effective income"
+    },
+    {
+      "producer_case": "freeze-before",
+      "original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\freeze-before.json",
+      "resource_path": "positive-four-components.json",
+      "bytes": 5044,
+      "sha256": "1bd899ea5281670783f1a7ed4a2ebc34ab1b350c9955d89e1a0715328a8116b2",
+      "scope": "real Root+piety+full serializer,2model callback hunks+owner runner/observation; synthetic native bindings/nonCouncilDTO/outer; no imagewrapper/fullgetter/Game/effective income"
+    },
+    {
+      "producer_case": "keyword-mismatch",
+      "original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\keyword-mismatch.json",
+      "resource_path": "optional-unavailable.json",
+      "bytes": 5056,
+      "sha256": "1fe47a19347014df276bf9a3856f0e0f5d7f6dc2cea83db75d99e9649c70fdf2",
+      "scope": "real Root+piety+full serializer,2model callback hunks+owner runner/observation; synthetic native bindings/nonCouncilDTO/outer; no imagewrapper/fullgetter/Game/effective income"
+    },
+    {
+      "producer_case": "missing-value-binding",
+      "original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\missing-value-binding.json",
+      "resource_path": "missing-value-binding.json",
+      "bytes": 5096,
+      "sha256": "32ee8babe054e715122a979a3cd22f0dc186cd46073223b077d897fafb7289c2",
+      "scope": "real Root+piety+full serializer,2model callback hunks+owner runner/observation; synthetic native bindings/nonCouncilDTO/outer; no imagewrapper/fullgetter/Game/effective income"
+    },
+    {
+      "producer_case": "numeric-wrong-pointer",
+      "original_path": "D:\\ck3-state\\m3-root-piety65\\actual-optional01\\numeric-wrong-pointer.json",
+      "resource_path": "optional-unavailable.json",
+      "bytes": 5056,
+      "sha256": "1fe47a19347014df276bf9a3856f0e0f5d7f6dc2cea83db75d99e9649c70fdf2",
+      "scope": "real Root+piety+full serializer,2model callback hunks+owner runner/observation; synthetic native bindings/nonCouncilDTO/outer; no imagewrapper/fullgetter/Game/effective income"
+    }
+  ],
+  "freeze_pair": {
+    "before": "positive-four-components.json",
+    "after": "freeze-after.json",
+    "position": "councillor_court_chaplain"
+  }
+}

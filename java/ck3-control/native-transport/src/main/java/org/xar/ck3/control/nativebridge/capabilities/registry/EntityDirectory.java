@@ -1,5 +1,7 @@
 package org.xar.ck3.control.nativebridge.capabilities.registry;
 
+import org.xar.ck3.control.contracts.NativeCharacterId;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,7 +11,7 @@ import static org.xar.ck3.control.nativebridge.capabilities.registry.CampaignPro
 public final class EntityDirectory {
     public static final String SCHEMA = "xar.ck3.entity-directory/v1";
     public record Request(Relation relationFilter, Integer afterCharacterId, int limit) {
-        public Request { java.util.Objects.requireNonNull(relationFilter); nullablePositive(afterCharacterId); RegistryJson.require(limit >= 1 && limit <= 100, "directory limit 1..100 required"); }
+        public Request { java.util.Objects.requireNonNull(relationFilter); if (afterCharacterId != null) NativeCharacterId.of(afterCharacterId); RegistryJson.require(limit >= 1 && limit <= 100, "directory limit 1..100 required"); }
     }
     public record Entity(String entityKind, int characterId, List<Relation> relationshipRoles,
             Component<Title> primaryTitle, Component<Integer> capitalProvinceId,

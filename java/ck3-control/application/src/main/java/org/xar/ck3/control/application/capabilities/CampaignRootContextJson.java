@@ -3,6 +3,7 @@ package org.xar.ck3.control.application.capabilities;
 import static org.xar.ck3.control.contracts.StrictJson.require;
 import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 import java.math.BigInteger;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -96,10 +97,10 @@ public final class CampaignRootContextJson {
    return new Obj(out);
   }
   require(input.get("unavailable_reason")==Nil.INSTANCE,"available root has unavailable reason");
-  range(input.get("local_player_id"),0,Integer.MAX_VALUE,"local_player_id");BigInteger player=positive(input.get("player_character_id"),"player_character_id");
+  range(input.get("local_player_id"),0,Integer.MAX_VALUE,"local_player_id");BigInteger player=character(input.get("player_character_id"),"player_character_id");
   bool(input.get("player_character_alive"),"player_character_alive");Obj primary=input.get("primary_title")==Nil.INSTANCE?null:title(input.get("primary_title"),1,"primary_title");
-  optionalPositive(input.get("capital_province_id"),"capital_province_id");BigInteger immediate=optionalPositive(input.get("immediate_liege_character_id"),"immediate_liege_character_id");
-  BigInteger top=positive(input.get("top_liege_character_id"),"top_liege_character_id");boolean independent=bool(input.get("independent"),"independent");
+  optionalPositive(input.get("capital_province_id"),"capital_province_id");BigInteger immediate=optionalCharacter(input.get("immediate_liege_character_id"),"immediate_liege_character_id");
+  BigInteger top=character(input.get("top_liege_character_id"),"top_liege_character_id");boolean independent=bool(input.get("independent"),"independent");
   lieges(player,immediate,top,independent,"root");Obj government=government(input.get("government"));
   if(baseline)return new Obj(out);
   fixed(input.get("player_monthly_gold_income"),"player_monthly_gold_income");fixed(input.get("player_health"),"player_health");
@@ -136,7 +137,7 @@ public final class CampaignRootContextJson {
    require(family||keys.equals(HELD_TITLE_PARTITION_FIELDS)||keys.equals(LEGACY_HELD_TITLE_PARTITION_FIELDS),"unsupported held title row variant");
    Obj t=title(row.get("title"),2,"held_title_partition.title");BigInteger id=positive(t.get("title_id"),"held.title_id");int tier=integer(t.get("tier_raw"),"tier_raw").intValueExact();
    require(id.compareTo(previous)>0,"held title partition must be sorted and unique");previous=id;
-   BigInteger heir=optionalPositive(row.get("first_heir_character_id"),"first_heir_character_id");
+   BigInteger heir=optionalCharacter(row.get("first_heir_character_id"),"first_heir_character_id");
    // The legacy row really omits capital; only normalization adds explicit null.
    Value capital=row.members().containsKey("capital_province_id")?row.get("capital_province_id"):Nil.INSTANCE;BigInteger province=optionalPositive(capital,"capital_province_id");
    if(family)require(allowFamily&&tier==2&&province==null&&text(row.get("capital_province_kind"),"capital_province_kind").equals("landless_noble_family_no_province")
@@ -152,9 +153,9 @@ public final class CampaignRootContextJson {
  private static void related(Value original,BigInteger player,BigInteger playerTop,List<BigInteger> direct,List<BigInteger> adjacent) {
   SortedSet<BigInteger> expected=new TreeSet<>(direct);expected.addAll(adjacent);List<BigInteger> observed=new ArrayList<>();
   for(Value item:array(original,"related_character_contexts")) {
-   Obj row=exact(item,RELATED_CHARACTER_FIELDS,"related_character_context");BigInteger id=positive(row.get("character_id"),"related.character_id");observed.add(id);
+   Obj row=exact(item,RELATED_CHARACTER_FIELDS,"related_character_context");BigInteger id=character(row.get("character_id"),"related.character_id");observed.add(id);
    String role=text(row.get("relationship_role"),"relationship_role");title(row.get("primary_title"),1,"related.primary_title");optionalPositive(row.get("capital_province_id"),"capital_province_id");
-   BigInteger immediate=optionalPositive(row.get("immediate_liege_character_id"),"immediate_liege_character_id"),top=positive(row.get("top_liege_character_id"),"top_liege_character_id");
+   BigInteger immediate=optionalCharacter(row.get("immediate_liege_character_id"),"immediate_liege_character_id"),top=character(row.get("top_liege_character_id"),"top_liege_character_id");
    lieges(id,immediate,top,bool(row.get("independent"),"independent"),"related");
    if(role.equals("direct_landed_vassal"))require(direct.contains(id)&&player.equals(immediate)&&playerTop.equals(top),"related direct-vassal proof inconsistent");
    else require(role.equals("adjacent_external_province_holder")&&adjacent.contains(id)&&!player.equals(immediate),"related adjacent-holder proof inconsistent");
@@ -166,7 +167,7 @@ public final class CampaignRootContextJson {
  }
  private static Obj council(Value original,BigInteger player,boolean admitted,String build) {
   Obj value=exact(original,COUNCIL_FIELDS,"council");require(text(value.get("coverage_key"),"coverage_key").equals("standard_landed_non_nomadic_core_v1")
-     &&positive(value.get("owner_character_id"),"owner_character_id").equals(player)&&!bool(value.get("auxiliary_vacancies_complete"),"auxiliary_vacancies_complete"),"council coverage/owner invalid");
+     &&character(value.get("owner_character_id"),"owner_character_id").equals(player)&&!bool(value.get("auxiliary_vacancies_complete"),"auxiliary_vacancies_complete"),"council coverage/owner invalid");
   String status=text(value.get("status"),"council.status");require(Set.of("available","unavailable").contains(status),"council status invalid");
   boolean available=status.equals("available");Value reason=value.get("unavailable_reason");
   boolean actual4Unavailable=!available&&build.equals("1.20.0.4")&&reason.equals(new Text("actual4_council_position_key_source_unavailable"));
@@ -176,12 +177,12 @@ public final class CampaignRootContextJson {
   for(Value item:positions) {
    Obj row=object(item,"council.position");Set<String> fields=new HashSet<>(COUNCIL_POSITION_FIELDS);if(row.members().containsKey("task_owner_monthly_piety_v1"))fields.add("task_owner_monthly_piety_v1");exact(row,fields,"council.position");
    if(row.members().containsKey("task_owner_monthly_piety_v1"))optionalObservation(row.get("task_owner_monthly_piety_v1"),"task_owner_monthly_piety_v1");
-   keys.add(stable(row.get("position_key"),"position_key"));BigInteger incumbent=optionalPositive(row.get("incumbent_character_id"),"incumbent_character_id");
+   keys.add(stable(row.get("position_key"),"position_key"));BigInteger incumbent=optionalCharacter(row.get("incumbent_character_id"),"incumbent_character_id");
    if(incumbent==null){for(String key:List.of("task_key","task_type","target","frozen","progress"))require(row.get(key)==Nil.INSTANCE,"vacant council position invented active task");continue;}
    stable(row.get("task_key"),"task_key");String type=text(row.get("task_type"),"task_type");bool(row.get("frozen"),"frozen");progress(row.get("progress"));
    if(type.equals("general"))require(row.get("target")==Nil.INSTANCE,"general council task invented target");
    else {boolean county=type.equals("county");require(county||type.equals("court"),"invalid council task_type");String id=county?"province_id":"character_id";
-    Obj target=exact(row.get("target"),Set.of("kind",id),"target");require(text(target.get("kind"),"kind").equals(county?"province":"character"),"council task target kind invalid");positive(target.get(id),id);}
+    Obj target=exact(row.get("target"),Set.of("kind",id),"target");require(text(target.get("kind"),"kind").equals(county?"province":"character"),"council task target kind invalid");if(county)positive(target.get(id),id);else character(target.get(id),id);}
   }
   List<String> sorted=new ArrayList<>(keys);sorted.sort(CampaignRootContextJson::compareUtf8);
   require(keys.equals(sorted)&&new HashSet<>(keys).size()==keys.size()&&keys.containsAll(CORE_COUNCIL_POSITION_KEYS),"council positions must be sorted, unique and cover core slots");return value;
@@ -205,7 +206,7 @@ public final class CampaignRootContextJson {
   require(integer(value.get("scale"),name+".scale").equals(BigInteger.valueOf(100000)),"fixed-point scale must be integer 100000");return raw;
  }
  private static List<BigInteger> identities(Value original,boolean sorted,String name) {
-  List<BigInteger> values=new ArrayList<>();for(Value item:array(original,name))values.add(positive(item,name));
+  List<BigInteger> values=new ArrayList<>();for(Value item:array(original,name))values.add(character(item,name));
   require(new HashSet<>(values).size()==values.size(),"duplicate identity: "+name);if(sorted){List<BigInteger> ordered=new ArrayList<>(values);Collections.sort(ordered);require(values.equals(ordered),"identity vector not sorted: "+name);}return values;
  }
  private static List<String> lexical(Value original,String name) {
@@ -217,6 +218,8 @@ public final class CampaignRootContextJson {
   for(int i=0;i<value.length();i++){char c=value.charAt(i);if(Character.isHighSurrogate(c)){require(i+1<value.length()&&Character.isLowSurrogate(value.charAt(++i)),"invalid UTF-8 native key");}else require(!Character.isLowSurrogate(c),"invalid UTF-8 native key");}return value;
  }
  private static int compareUtf8(String a,String b){return Arrays.compareUnsigned(a.getBytes(StandardCharsets.UTF_8),b.getBytes(StandardCharsets.UTF_8));}
+ private static BigInteger character(Value value,String name){return NativeCharacterId.of(integer(value,name)).asBigInteger();}
+ private static BigInteger optionalCharacter(Value value,String name){return value==Nil.INSTANCE?null:character(value,name);}
  private static BigInteger positive(Value value,String name){return range(value,1,Integer.MAX_VALUE,name);}
  private static BigInteger optionalPositive(Value value,String name){return value==Nil.INSTANCE?null:positive(value,name);}
  private static BigInteger range(Value value,long min,long max,String name){return range(integer(value,name),BigInteger.valueOf(min),BigInteger.valueOf(max),name);}

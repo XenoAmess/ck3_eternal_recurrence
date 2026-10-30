@@ -25,3 +25,9 @@ Exitclaim 原 CRLF patch 初次 apply/check 失败；本岗误把随后的原源
 Exitclaim 接受丢失完整 frame/signature 的 UNKNOWN 原包为诊断，仍保留 mutation signature 校验，正 epoch/完整 proof/非空签名才可结算 phase。三份真实 Native 软件 UNKNOWN 原包经 NativeWire→协议→phase projector→public roundtrip 新四项通过；既有 Protocol 六项、phase 纯 projector 两项通过。PublicCodec 既有一项以 ObjectNode 数值节点实现类比较完整 uint64 JSON 而失败，测试改为统一严格 JSON 解析域后整类4P。累计16P。
 
 额外完整 phase 类中的 file-backed 三阶段软件链仍有1F，不能写全绿：原 fixture 的20秒调用期限在49.648秒 publication 时过期。曾在本岗 D 测试叶试用合法60秒 freshness、独立120秒 caller 与真实 Clock，后继在143.921秒失败于软件 transport 的 stale snapshot refresh（`RejectedBeforeDispatch: nonempty JSON string required`），未到完整 phase 结算；120秒 freshness 超原合同的失败也保留。未为通过放宽生产 guard，未重放 UNKNOWN；这段未成功的 test-only 探索已逐行恢复，未交付。三生产/测试失败日志均保留于 `EXITCLAIM90-*`，后继若修 fixture 可据此续行；候选 owner 原18项结果与本轮完整类结果分别记录。
+
+Exitclaim 普通 push 并远端独立读回 `e11fe356c457842552869ad9d40d8a5b3e05b5f7`，基于 Native `29b083c9c899`。Piety 原16叶 patch 已 LF check0/apply0；四完整生产类严格 javac0/4.629 秒。实际新原包测试揭示当前 master 还缺其前层 `CampaignRootContextJson` signed 角色域，而 Z 已有该已采用实现；审阅 Z→D diff 后只转入这个 Character 域最小差异，第五生产类严格 javac0/2.105 秒。Province/Title、local_player_id、数值预算仍用原域，不把它们改成角色 ID。
+
+Piety 的 NativePietyRootConsumer、NativePietyRootOriginals、NativePietyDirectoryCursor 三完整类合计9P；真实软件原文经 root normalizer→typed registry→directory/public，包含 signed/0、-1 哨兵和错类型。旧 RootRegistryReadPublicProducts 完整类6P1F：修正既有 oracle fixture 将 council unavailable 错误连带 root.ready=false 的一行；原 Python/Java 合同仍是 root.ready 等于 selected_game_rule_tokens_ready，council_ready 独立。最后一项因缺保留的实际 SDK MCP tools capture 三属性而明确 `NOT_RUN_REQUIRED_ACTUAL_ORIGINAL_MCP_TOOLS`，没有合成或跳过。原18项汇总不外推；本轮实际合计15P、1必需输入缺失。额外 full-getter 新9份 M3 body 尚未重复消费，不授完整 getter/死亡 writer/Game 通过。
+
+测试编排补齐了既有 producer Python 属性及 local-service 工作目录；旧 RPC helpers 的 `try` 警告与外部依赖缺失 OSGi 注解元数据只在预编现存 helper 的窄范围处理，修改生产/测试叶仍用 `-Xlint:all -Werror`。缺依赖/参数与真实归一化失败原日志均保留，未下载依赖、重建 SDK 或扫描全树。

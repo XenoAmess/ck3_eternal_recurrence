@@ -1,5 +1,7 @@
 package org.xar.ck3.control.nativebridge.capabilities.registry;
 
+import org.xar.ck3.control.contracts.NativeCharacterId;
+
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
@@ -64,7 +66,7 @@ public final class CampaignProjection {
     public record ProvinceTarget(int provinceId) implements Target { public ProvinceTarget { positive(provinceId); }
         @com.fasterxml.jackson.annotation.JsonProperty("kind") public String kind() { return "province"; }
     }
-    public record CharacterTarget(int characterId) implements Target { public CharacterTarget { positive(characterId); }
+    public record CharacterTarget(int characterId) implements Target { public CharacterTarget { NativeCharacterId.of(characterId); }
         @com.fasterxml.jackson.annotation.JsonProperty("kind") public String kind() { return "character"; }
     }
     public enum ProgressKind { INFINITE, PERCENTAGE, VALUE;
@@ -84,7 +86,7 @@ public final class CampaignProjection {
             RegistryJson.require(positionKey != null && !positionKey.isEmpty(), "position key required");
             if (incumbentCharacterId == null) RegistryJson.require(taskKey == null && taskType == null && target == null && frozen == null && progress == null, "vacancy invented active task");
             else {
-                positive(incumbentCharacterId); RegistryJson.require(taskKey != null && !taskKey.isEmpty() && taskType != null && frozen != null && progress != null, "active council task missing");
+                NativeCharacterId.of(incumbentCharacterId); RegistryJson.require(taskKey != null && !taskKey.isEmpty() && taskType != null && frozen != null && progress != null, "active council task missing");
                 RegistryJson.require(switch (taskType) { case GENERAL -> target == null; case COUNTY -> target instanceof ProvinceTarget; case COURT -> target instanceof CharacterTarget; }, "council target kind mismatch");
             }
         }
@@ -92,7 +94,7 @@ public final class CampaignProjection {
     public record Council(Status status, String coverageKey, int ownerCharacterId, List<CouncilPosition> positions,
             boolean auxiliaryVacanciesComplete, String unavailableReason) {
         public Council {
-            positive(ownerCharacterId); positions = List.copyOf(positions);
+            character(ownerCharacterId); positions = List.copyOf(positions);
             RegistryJson.require("standard_landed_non_nomadic_core_v1".equals(coverageKey) && !auxiliaryVacanciesComplete, "council coverage mismatch");
             RegistryJson.require(status == Status.AVAILABLE ? unavailableReason == null
                     : status == Status.UNAVAILABLE && positions.isEmpty() && unavailableReason != null && !unavailableReason.isEmpty(), "council availability mismatch");
@@ -101,7 +103,7 @@ public final class CampaignProjection {
     }
     public record Related(int characterId, Relation relationshipRole, Title primaryTitle, Integer capitalProvinceId,
             Integer immediateLiegeCharacterId, int topLiegeCharacterId) {
-        public Related { positive(characterId); positive(topLiegeCharacterId); nullablePositive(capitalProvinceId); nullablePositive(immediateLiegeCharacterId);
+        public Related { character(characterId); character(topLiegeCharacterId); nullablePositive(capitalProvinceId); nullableCharacter(immediateLiegeCharacterId);
             Objects.requireNonNull(primaryTitle); RegistryJson.require(relationshipRole == Relation.DIRECT_LANDED_VASSAL
                     || relationshipRole == Relation.ADJACENT_EXTERNAL_PROVINCE_HOLDER, "invalid related role"); }
     }
@@ -109,7 +111,7 @@ public final class CampaignProjection {
             boolean primary, @com.fasterxml.jackson.annotation.JsonIgnore boolean landlessNobleFamilyNoProvince,
             @com.fasterxml.jackson.annotation.JsonIgnore String titleKey) {
         public PartitionRow {
-            Objects.requireNonNull(title); nullablePositive(firstHeirCharacterId); nullablePositive(capitalProvinceId);
+            Objects.requireNonNull(title); nullableCharacter(firstHeirCharacterId); nullablePositive(capitalProvinceId);
             RegistryJson.require(!landlessNobleFamilyNoProvince || title.tierRaw() == 2 && capitalProvinceId == null
                     && titleKey != null && titleKey.matches("c_[A-Za-z0-9][A-Za-z0-9_]{0,1021}"), "invalid landless family geography exemption");
         }
@@ -131,8 +133,8 @@ public final class CampaignProjection {
             int playerDomainSize, int playerDomainLimit, int playerTargetingFactionCount, Council council,
             List<Integer> primaryTitleSuccessionCharacterIds, List<PartitionRow> heldTitlePartition) implements Root {
         public AvailableRoot {
-            Objects.requireNonNull(binding); Objects.requireNonNull(source); positive(playerCharacterId); positive(topLiegeCharacterId);
-            nullablePositive(capitalProvinceId); nullablePositive(immediateLiegeCharacterId);
+            Objects.requireNonNull(binding); Objects.requireNonNull(source); character(playerCharacterId); character(topLiegeCharacterId);
+            nullablePositive(capitalProvinceId); nullableCharacter(immediateLiegeCharacterId);
             directLandedVassalCharacterIds = ids(directLandedVassalCharacterIds, true);
             adjacentExternalProvinceHolderCharacterIds = ids(adjacentExternalProvinceHolderCharacterIds, true);
             relatedCharacterContexts = List.copyOf(relatedCharacterContexts); primaryTitleSuccessionCharacterIds = ids(primaryTitleSuccessionCharacterIds, false);
@@ -159,7 +161,7 @@ public final class CampaignProjection {
         }
     }
     public record War(int warId, Side playerSide, Integer primaryOpponentCharacterId, BigInteger playerRelativeWarScore) {
-        public War { positive(warId); Objects.requireNonNull(playerSide); nullablePositive(primaryOpponentCharacterId); Objects.requireNonNull(playerRelativeWarScore); }
+        public War { positive(warId); Objects.requireNonNull(playerSide); nullableCharacter(primaryOpponentCharacterId); Objects.requireNonNull(playerRelativeWarScore); }
     }
     public enum Side { ATTACKER, DEFENDER;
         @com.fasterxml.jackson.annotation.JsonValue public String wire() { return name().toLowerCase(java.util.Locale.ROOT); }
@@ -169,7 +171,7 @@ public final class CampaignProjection {
             Component<Integer> stressPoints, Component<Fixed> gold, Presence<E> activeEvent,
             Presence<I> pendingCharacterInteraction, Presence<List<War>> activeWars, String backendId) {
         public Snapshot {
-            Objects.requireNonNull(binding); positive(playerCharacterId); Objects.requireNonNull(stressPoints); Objects.requireNonNull(gold);
+            Objects.requireNonNull(binding); NativeCharacterId.of(playerCharacterId); Objects.requireNonNull(stressPoints); Objects.requireNonNull(gold);
             if (stressPoints.status() == Status.AVAILABLE) RegistryJson.require(stressPoints.value() >= 0, "nonnegative stress required");
             Objects.requireNonNull(activeEvent); Objects.requireNonNull(pendingCharacterInteraction); Objects.requireNonNull(activeWars);
             RegistryJson.require(backendId != null && !backendId.isEmpty(), "actual snapshot backend required");
@@ -179,12 +181,14 @@ public final class CampaignProjection {
             }
         }
     }
+    static void character(int value) { NativeCharacterId.of(value); }
+    static void nullableCharacter(Integer value) { if (value != null) character(value); }
     static void positive(int value) { RegistryJson.require(value > 0, "positive int32 required"); }
     static void nullablePositive(Integer value) { if (value != null) positive(value); }
     static void nonnegative(BigInteger value) { RegistryJson.require(value != null && value.signum() >= 0, "nonnegative exact integer required"); }
     static void positive64(BigInteger value) { RegistryJson.require(value != null && value.signum() > 0 && value.compareTo(RegistryJson.U64) <= 0, "positive uint64 required"); }
     static List<Integer> ids(List<Integer> input, boolean sorted) {
-        List<Integer> result = List.copyOf(input); result.forEach(CampaignProjection::positive);
+        List<Integer> result = List.copyOf(input); result.forEach(CampaignProjection::character);
         RegistryJson.require(result.stream().distinct().count() == result.size() && (!sorted || result.equals(result.stream().sorted().toList())), "identity vector ordering/uniqueness mismatch"); return result;
     }
 }
