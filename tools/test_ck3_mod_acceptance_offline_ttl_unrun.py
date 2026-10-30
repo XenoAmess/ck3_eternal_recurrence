@@ -594,6 +594,8 @@ import argparse, hashlib, json, os, re, subprocess
 from ck3_mod_acceptance import same_directory_control_peer
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field, strings_field
 from ck3_mod_acceptance_unrun import SCHEMA, OFFLINE_TTL_KIND, UnrunBundleReport, _integer, _timestamp, _release_stages, _read, _write
+from ck3_mod_acceptance_unrun import TTLRecoveryEvolutionFields, TTLRecoveryEvolution, TTLRegistrySupportEvolution, RegistrySupportChange
+from ck3_mod_acceptance_unrun import _registry_support_paths, _registry_selected_case, _registry_support_change, _recovery_git_snapshot
 ''')
         unit.body.extend(nodes)
         temporary = self.root / 'exact_unrun_scope.py'
