@@ -30,5 +30,11 @@ endif()
 add_test(NAME xar_ck3_12004_player_claims_semantic_mailbox_v1
   COMMAND ${_xar_claims_semantic_target}
     "${CMAKE_CURRENT_BINARY_DIR}/player-claims-semantic-mailbox-v1-wire")
+add_test(NAME xar_ck3_12004_player_claims_semantic_mailbox_lifecycle_v1
+  COMMAND ${_xar_claims_semantic_target}
+    "${CMAKE_CURRENT_BINARY_DIR}/player-claims-semantic-mailbox-lifecycle-v1-wire"
+    --lifecycle-only)
+set_tests_properties(xar_ck3_12004_player_claims_semantic_mailbox_lifecycle_v1
+  PROPERTIES TIMEOUT 15)
 unset(_xar_claims_semantic_defs)
 unset(_xar_claims_semantic_target)

@@ -377,3 +377,56 @@ the complete CI step were not built/run through CMake here. See M0
 and `published-variant/{PUBLISHED-ACTUAL.json,RESULT.md}`. This is a persistent
 software producer regression, not full Bridge dispatcher, live getter, Game,
 DLL deployment or runtime enablement evidence.
+
+The M0 persistent group was normally published as
+`d961cf441f4da276435a2ee2af328be283a9657d`; independent remote readback at
+15:17:06.543Z returned that exact SHA. The source-only publication did not
+change business behavior or the active Game.
+
+M6 subsequently closed the CTemporaryOpinion row-layout question from actual
+producer code: business entry 2A62DE0 (1506 bytes) takes owner/toward/definition,
+constructs the 473DDE0 temporary row with its definition at +8, copies it through
+2596D30 (209 bytes), and inserts it through 25A2D60 (372 bytes) before bucket
+updates. This is compatible with the reader's temporary-row layout and warrants
+no guard change. Expiry semantics remain separate. See M6
+`effect-readback/row-producer-next/ROW-PRODUCER-RESULT02.md`.
+
+M3's new actual resource finalizer at 2303490 (196 bytes) uses descriptor
+BA/B8.bit0 to choose fractional retention; otherwise it truncates raw/100000,
+projects through low32/sign extension and rescales. Earlier owned Root examples
+explicitly used a synthetic lower finalizer/terms seam, so values such as 43750
+are not actual engine credit. The published getter binding is unchanged while
+M3 continues actual ID97 flags/dynamic-table/static-record research.
+
+M2 separately established that the Event snapshot's enabled value copies the
+materialized row+1B4 byte. An available-count function uses the distinct compound
+predicate (row+1B4 or row+1B5) and an owner timing/callback gate. Its binding to
+the actual GUI enabled registration is not yet established. The current byte
+must not be described as complete GUI click qualification; no observed
+production counterexample currently warrants a code change. See M2
+`options/{PRE-UI-RESULT90.md,CALLBACK-GATES90.json}`.
+
+M0's next regression adds a separate `--lifecycle-only` entry and CTest using
+the existing target. The two new lifecycle scenes issue four real public
+WorkerAdapter claims reads: external Wait10ms cancels the first queued request,
+an explicit Cancel cancels the third, and fresh different-title requests two
+and four succeed on the same owner/adapter/mailbox. The actual WorkerAdapter
+performs its own reclamation; stale-ticket Cancel/Reclaim report mismatch and
+leave the new context intact. All 45 checks pass. Its private internal 30-second
+Wait expiry was not exercised; no Java process restart, Game continuation or
+replay of a cancelled ticket is inferred.
+
+Only the changed packaged fixture TU was compiled (10.174 seconds), linked to
+the existing eight published-profile production objects (2.668 seconds), and
+the new mode executed once (0.367 seconds). Four result bodies match the first
+lifecycle execution exactly; the old eight-scene entry remains byte-identical
+and was not rerun. An initial generator failure and a later 60-second Java
+record-packaging timeout remain recorded. Explicit small javac/java packaging
+completed from the existing results without another Native run. Evidence is
+M0 `bridge-producer/mailbox-followup/restart-lifecycle/{RESULT.json,
+MODE-ACTUAL.json,MODE-CANDIDATE-MANIFEST.json}`.
+
+Native66 configuration/generated registration passed in 18.838 seconds at
+15:32:00.252Z. The existing CI regex now includes the new lifecycle registration;
+its timeout is 15 seconds. Formal CMake target execution/full CI was not run in
+this integration. This regression adds no business implementation or Game gate.

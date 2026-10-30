@@ -466,11 +466,215 @@ void RunScene(const Scene &scene, const std::filesystem::path &directory) {
 }
 } // namespace
 
+namespace {
+struct Lifecycle {
+  Fixture fixture;
+  MailboxAdapter native{fixture};
+  MemoryFixture memory;
+  api::MainThreadQueryMailboxV1 mailbox;
+  build::WorkerAdapter proxy{native, mailbox, build::ConsoleFixtureBindings{}};
+  const DWORD owner = GetCurrentThreadId();
+
+  Lifecycle() {
+    g_memory = &memory;
+    memory.iat = reinterpret_cast<void *>(&FakePeek);
+    memory.jomini_slot = reinterpret_cast<std::uintptr_t>(memory.jomini.data());
+    memory.state_slot = reinterpret_cast<std::uintptr_t>(memory.state.data());
+    Store(memory.tls, 0x20, std::uint8_t{1});
+    Store(memory.jomini, 0x20, std::uint8_t{1});
+    Store(memory.state, 0x08, kDate);
+    std::array<api::MainThreadQueryExecutorV1, 14> executors{};
+    executors[13] = &build::ExecuteSemanticAdapter12002;
+    auto environment = current::BindThreadRuntimeImage(
+        0x140000000ULL, current::kExecutableSha256, executors);
+    environment.offline_fixture = true;
+    environment.peek_message_iat_slot_override = &memory.iat;
+    environment.resolved_peek_message_override = &FakePeek;
+    environment.global_rng_wrapper_slot_override = reinterpret_cast<std::uintptr_t>(&memory.null_rng_slot);
+    environment.jomini_state_slot_override = reinterpret_cast<std::uintptr_t>(&memory.jomini_slot);
+    environment.game_state_slot_override = reinterpret_cast<std::uintptr_t>(&memory.state_slot);
+    environment.tls_initialized_flag_override = reinterpret_cast<std::uintptr_t>(&memory.tls_initialized);
+    environment.tls_context_getter_override = &FakeTls;
+    environment.memory_protection_context = &memory;
+    environment.memory_query_override = &FakeQuery;
+    environment.memory_protect_override = &FakeProtect;
+    environment.system_page_size_override = 4096;
+    environment.snapshot_observer_callback = &build::ObserveAdapterSnapshot12002;
+    environment.snapshot_observer_context = &proxy;
+    Check(api::InstallMainThreadQueryMailboxV1(mailbox, environment), "lifecycle mailbox install");
+    Pump(mailbox);
+    Pump(mailbox);
+    Check(api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).ready, "lifecycle initial ready");
+  }
+  void Close() {
+    Check(api::UninstallMainThreadQueryMailboxV1(mailbox, 100) ==
+        api::MainThreadQueryUninstallResultV1::uninstalled, "lifecycle uninstall");
+    g_memory = nullptr;
+  }
+};
+
+struct PendingRead {
+  Lifecycle &life;
+  std::vector<std::int32_t> ids;
+  std::atomic<bool> done{false};
+  Result result = Result::available;
+  game::PlayerClaimsV1 output;
+  std::thread worker;
+  api::MainThreadQueryTicketV1 ticket{};
+  std::uintptr_t queued_envelope = 0;
+  std::uintptr_t queued_typed_context = 0;
+
+  PendingRead(Lifecycle &value, std::int32_t title) : life(value), ids{title} {
+    // The real public wrapper must clear stale caller output even when Run fails.
+    output.available = true;
+    output.actor_character_id = 99;
+    output.date_raw = -99;
+    output.title_ids = {99};
+    worker = std::thread([this] {
+      result = life.proxy.read_player_claims_v1(ids, output);
+      done.store(true, std::memory_order_release);
+    });
+    const auto deadline = GetTickCount64() + 2'000;
+    while (!done.load(std::memory_order_acquire) &&
+        life.mailbox.state.load(std::memory_order_acquire) != api::MainThreadQueryMailboxStateV1::queued &&
+        GetTickCount64() < deadline) Sleep(1);
+    if (life.mailbox.state.load(std::memory_order_acquire) != api::MainThreadQueryMailboxStateV1::queued) {
+      std::cerr << "FAIL request was not queued within 2 seconds\n";
+      std::_Exit(2);
+    }
+    ticket.sequence = life.mailbox.published_sequence.load(std::memory_order_acquire);
+    const auto *envelope = static_cast<const build::QueryMailboxEnvelope *>(life.mailbox.executor_context);
+    queued_envelope = reinterpret_cast<std::uintptr_t>(envelope);
+    queued_typed_context = envelope == nullptr ? 0 : reinterpret_cast<std::uintptr_t>(envelope->typed_context);
+    Check(life.mailbox.executor.load() == &build::ExecuteSemanticAdapter12002 &&
+        envelope != nullptr && envelope->typed_context != nullptr && envelope->ticket.sequence == ticket.sequence &&
+        envelope->snapshot_comparison == build::QuerySnapshotComparison12002::full_snapshot &&
+        envelope->expected_snapshot_revision != 0 && !envelope->entered,
+        "public claims did not publish an unentered semantic envelope");
+  }
+  ~PendingRead() {
+    if (worker.joinable()) {
+      (void)api::CancelMainThreadQueryV1(life.mailbox, ticket);
+      Join();
+    }
+  }
+  void Join() {
+    const auto deadline = GetTickCount64() + 2'000;
+    while (!done.load(std::memory_order_acquire) && GetTickCount64() < deadline) Sleep(1);
+    if (!done.load(std::memory_order_acquire)) {
+      std::cerr << "FAIL WorkerAdapter did not return within bounded lifecycle deadline\n";
+      std::_Exit(2);
+    }
+    worker.join();
+  }
+};
+
+void SaveBody(const PendingRead &request, const api::MainThreadQueryMailboxDiagnosticsV1 &diag,
+    const std::filesystem::path &directory, const std::string &name) {
+  const auto step = std::string("query-player-claims-v1-") + std::to_string(request.ids[0]);
+  std::ofstream saved(directory / (name + ".inner-result.json"), std::ios::binary);
+  saved << game::SerializePlayerClaimsV1(request.output, request.result, diag.completed_sequence, kRevision, step) << '\n';
+  Check(saved.good(), "lifecycle BODY output");
+}
+
+void CheckIdle(const Lifecycle &life, std::uint64_t sequence, std::uint64_t expected_executed) {
+  const auto diag = api::ReadMainThreadQueryMailboxDiagnosticsV1(life.mailbox);
+  Check(diag.state == api::MainThreadQueryMailboxStateV1::idle &&
+      life.mailbox.executor.load() == nullptr && life.mailbox.executor_context == nullptr,
+      "real WorkerAdapter wait/reclaim did not clear cancelled context and return idle");
+  Check(diag.published_sequence == sequence && diag.completed_sequence == sequence &&
+      diag.executed_requests == expected_executed && diag.executor_started_requests == expected_executed,
+      "lifecycle sequence/execution counts");
+  Check(diag.failure_flags == 0 && !diag.stop_requested && diag.ready && diag.owner_thread_id == life.owner &&
+      life.native.wrong_owner == 0 && !life.fixture.bad_destructor_call, "lifecycle owner/readiness changed");
+}
+
+void RunLifecycle(Lifecycle &life, bool timeout, const std::filesystem::path &directory) {
+  const std::string mode = timeout ? "short_timeout" : "explicit_cancel";
+  const auto before = api::ReadMainThreadQueryMailboxDiagnosticsV1(life.mailbox);
+  const auto original_proxy = &life.proxy;
+  const auto old_calls = life.native.claim_calls;
+  const auto old_getters = life.fixture.getter_calls;
+  const auto cancelled_title = timeout ? kStrongExplicit : kStrongImplicit;
+  PendingRead cancelled(life, cancelled_title);
+  Check(cancelled.ticket.sequence == before.published_sequence + 1, "cancelled query did not receive fresh sequence");
+  int observed_control;
+  const auto started = GetTickCount64();
+  if (timeout) {
+    const auto waited = api::WaitForMainThreadQueryV1(life.mailbox, cancelled.ticket, 10);
+    observed_control = static_cast<int>(waited);
+    Check(waited == api::MainThreadQueryWaitResultV1::timeout_cancelled_before_execution,
+        "public short timeout did not cancel the real queued claims ticket");
+  } else {
+    const auto control = api::CancelMainThreadQueryV1(life.mailbox, cancelled.ticket);
+    observed_control = static_cast<int>(control);
+    Check(control == api::MainThreadQueryCancelResultV1::cancelled, "explicit cancel did not own queued claims ticket");
+  }
+  const auto control_milliseconds = GetTickCount64() - started;
+  cancelled.Join();
+  Check(control_milliseconds < 1'000, "controlled cancellation exceeded short bound");
+  Check(cancelled.result == Result::unavailable && !cancelled.output.available &&
+      cancelled.output.actor_character_id == -1 && cancelled.output.date_raw == 0 &&
+      cancelled.output.title_ids.empty() && cancelled.output.claims.empty() && cancelled.output.unavailable_reason == "not_read",
+      "cancelled public wrapper leaked stale or partially read output");
+  Check(life.native.claim_calls == old_calls && life.fixture.getter_calls == old_getters,
+      "before-pump cancellation reached native claims getter");
+  CheckIdle(life, cancelled.ticket.sequence, before.executed_requests);
+  const auto cancelled_diag = api::ReadMainThreadQueryMailboxDiagnosticsV1(life.mailbox);
+  SaveBody(cancelled, cancelled_diag, directory, mode + "-cancelled");
+
+  // A different title creates a new read. No old ticket is resubmitted or pumped.
+  const auto fresh_title = timeout ? kWeakExplicit : kWeakImplicit;
+  PendingRead fresh(life, fresh_title);
+  Check(fresh.ticket.sequence == cancelled.ticket.sequence + 1 && fresh.ids != cancelled.ids,
+      "followup query is not a fresh read");
+  const auto stale_cancel = api::CancelMainThreadQueryV1(life.mailbox, cancelled.ticket);
+  const auto stale_reclaim = api::ReclaimMainThreadQueryV1(life.mailbox, cancelled.ticket);
+  Check(stale_cancel == api::MainThreadQueryCancelResultV1::ticket_mismatch &&
+      stale_reclaim == api::MainThreadQueryReclaimResultV1::ticket_mismatch &&
+      life.mailbox.state.load() == api::MainThreadQueryMailboxStateV1::queued &&
+      life.mailbox.executor_context == reinterpret_cast<void *>(fresh.queued_envelope),
+      "old ticket altered the fresh query context");
+  Pump(life.mailbox);
+  fresh.Join();
+  Check(fresh.result == Result::available && fresh.output.available && fresh.output.actor_character_id == kActor &&
+      fresh.output.date_raw == kDate && fresh.output.title_ids == fresh.ids && fresh.output.claims.size() == 1,
+      "same-adapter fresh read did not succeed after cancellation");
+  Check(life.native.claim_calls == old_calls + 1 && life.fixture.getter_calls == old_getters + 2 &&
+      life.fixture.destructor_calls == life.fixture.getter_calls,
+      "fresh query did not reach real claims reader exactly once/two getter reads");
+  Check(&life.proxy == original_proxy && GetCurrentThreadId() == life.owner, "adapter or owner was replaced");
+  CheckIdle(life, fresh.ticket.sequence, before.executed_requests + 1);
+  const auto final_diag = api::ReadMainThreadQueryMailboxDiagnosticsV1(life.mailbox);
+  SaveBody(fresh, final_diag, directory, mode + "-fresh");
+  ++scenarios;
+  std::cout << "{\"case\":\"" << mode << "\",\"pass\":true,\"cancelled_sequence\":" << cancelled.ticket.sequence
+      << ",\"fresh_sequence\":" << fresh.ticket.sequence << ",\"observed_control_code\":" << observed_control
+      << ",\"control_milliseconds\":" << control_milliseconds << ",\"cancelled_claim_calls\":0,\"fresh_claim_calls\":1"
+      << ",\"cancelled_envelope\":\"" << cancelled.queued_envelope << "\",\"cancelled_typed_context\":\""
+      << cancelled.queued_typed_context << "\",\"fresh_envelope\":\"" << fresh.queued_envelope
+      << "\",\"cancelled_state_after_worker_join\":1,\"final_state\":1,\"final_context_null\":true"
+      << ",\"stale_cancel_code\":" << static_cast<int>(stale_cancel) << ",\"stale_reclaim_code\":" << static_cast<int>(stale_reclaim)
+      << ",\"same_owner\":true,\"same_adapter\":true,\"fresh_title_differs\":true,\"executed_requests\":"
+      << final_diag.executed_requests << ",\"failure_flags\":" << final_diag.failure_flags << "}\n";
+}
+} // namespace
+
 int main(int argc, char **argv) {
   try {
-    Check(argc == 2, "new output directory required");
+    Check(argc == 2 || (argc == 3 && std::string_view(argv[2]) == "--lifecycle-only"), "new output directory required");
     std::filesystem::path directory = std::filesystem::path(argv[1]) / ("run-" + std::to_string(GetCurrentProcessId()) + "-" + std::to_string(GetTickCount64()));
     Check(!std::filesystem::exists(directory) && std::filesystem::create_directories(directory), "preserve old outputs");
+    if (argc == 3) {
+      Lifecycle life;
+      RunLifecycle(life, true, directory);
+      RunLifecycle(life, false, directory);
+      life.Close();
+      std::cout << "PASS checks=" << checks << " lifecycle_scenarios=" << scenarios
+                << " requests=4; actual WorkerAdapter claims cancellation/reclaim and same-adapter fresh read;"
+                   " WorkerAdapter internal30s budget unchanged, external short timeout10ms; no old8 scenes/Game/full Bridge credit\n";
+      return 0;
+    }
     const auto negative = std::bit_cast<std::int32_t>(static_cast<std::uint32_t>(kActor) | 0x80000000U);
     RunScene({"positive", kActor, true, 2}, directory);
     RunScene({"signed80", negative, true, 2}, directory);
