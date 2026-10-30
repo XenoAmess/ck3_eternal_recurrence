@@ -428,7 +428,7 @@ public final class RootReconciliationAuthority {
                         "archived FOCUS getter changed its original action, pure operation or empty arguments");
             }else {
                 List<AllowedRead> allowed=installed(same,original,identity,before,actual,guard.validUntil());
-                List<AllowedRead> matches=allowed.stream().filter(read->descriptor(read).equals(row.get("read"))
+                List<AllowedRead> matches=allowed.stream().filter(read->org.xar.ck3.control.continuity.ContinuityJson.same(descriptor(read),row.get("read"))
                         &&read.contract().operation().equals(guard.operation())).toList();
                 require(matches.size()==1,"archived read was not issued by the exact installed original-intent pure query factory");
                 AllowedRead selected=matches.getFirst();

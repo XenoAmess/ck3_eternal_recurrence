@@ -39,3 +39,7 @@ Routable operations 两叶旧候选按精确 LF patch 应用，RootOnlineDecisio
 Routable operations 已普通 push/独立远端读回 `f15bf6fcc90d1f52e3ec2c3a5eba6a9ffbe0f541`。
 
 Root 的 saved replacement deadline 候选按两个最小 hunk 应用：子启动计划和新的 SteamOfflineProbe.Plan 都使用本次 replacement requestedDeadline，不继承已过期 startup deadline。完整 NativeLaunchPlan 在本岗当前开发依赖上严格 javac0/2.067 秒；新持久测试随组交付，复用 Root 已完成的两完整类 baseline3P4F→候选7P0F，没有重跑已绿回归。已过期、较短请求仍保留，不授额外时长。没有实际 SAVE/RESTORE、Game replacement 或 Steam 探测；普通同 Game 重启不因此新增门。
+
+保存替换 deadline 已普通 push/独立远端读回 `d2309ba8dce78071b6a2e4dcd3ea24ef9ec07c25`。
+
+非 FOCUS read descriptor 比较改为既有 ContinuityJson.same，避免合法 JSON 整数在 Jackson 不同整数节点实现之间误判。仅一个生产 hunk；完整 RootReconciliationAuthority 首次 `-Xlint:all -Werror` 因其未改动 RawUnavailable 的两项既有 serial 警告失败，保留原件；与候选原审阅范围一致，仅排除 serial 类别后 `-Xlint:all,-serial -Werror` javac0/2.475 秒。没有改异常类或放宽 JSON 字段、类型和内容比较，复用 owner 已保存的窄15项结果，不称完整类所有行为已覆盖，不重复绿测。
