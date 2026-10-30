@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.time.Duration;
 import java.time.Clock;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -1043,24 +1044,204 @@ final class NativeOriginalProducerTest {
         private PacketReaction onWrite = packet -> { };
         private IOException writeFailure;
         private IOException readFailure;
+        private final List<Instant> writeDeadlines = new ArrayList<>();
+        private final List<Instant> readDeadlines = new ArrayList<>();
+        private Runnable onRead = () -> { };
+        private Clock typedExpiryClock;
         Replay(byte[]... packets) { this.packets = new ArrayDeque<>(Arrays.asList(packets)); }
         @Override public void verify() { verifications++; }
         @Override public void awaitConnection(Instant deadline) { }
         @Override public byte[] readPacket(Instant deadline) throws IOException {
+            readDeadlines.add(java.util.Objects.requireNonNull(deadline));
+            onRead.run();
+            if (typedExpiryClock != null) {
+                Instant observed = java.util.Objects.requireNonNull(typedExpiryClock.instant());
+                if (!observed.isBefore(deadline))
+                    throw new NativePacketPort.DeadlineExpired(new NativeActionPort.DeadlineObservation(deadline, observed, false));
+            }
             if (readFailure != null) {
                 IOException actual = readFailure; readFailure = null; throw actual;
             }
             if (packets.isEmpty()) throw new IOException("fixture packets exhausted"); return packets.removeFirst().clone();
         }
         @Override public void writePacket(byte[] packet, Instant deadline) throws IOException {
+            writeDeadlines.add(java.util.Objects.requireNonNull(deadline));
             writes++;
             lastWrite = packet.clone();
             try { onWrite.accept(packet.clone()); }
             catch (Exception failure) { throw new IOException("original fixture reaction failed", failure); }
             if (writeFailure != null) throw writeFailure;
         }
+        private void clearCaptured() { writeDeadlines.clear(); readDeadlines.clear(); }
+        private List<Instant> capturedWriteDeadlines() { return List.copyOf(writeDeadlines); }
+        private List<Instant> capturedReadDeadlines() { return List.copyOf(readDeadlines); }
         @Override public void close() { }
     }
     @FunctionalInterface private interface PacketReaction { void accept(byte[] packet) throws Exception; }
+
+    /** Controlled operation clock; reading time never advances it or consumes a script. */
+    private static final class MutableClock extends Clock {
+        private Instant current;
+        MutableClock(Instant initial) { current = java.util.Objects.requireNonNull(initial); }
+        @Override public ZoneId getZone() { return ZoneOffset.UTC; }
+        @Override public Clock withZone(ZoneId zone) {
+            if (!ZoneOffset.UTC.equals(zone)) throw new IllegalArgumentException("controlled UTC only");
+            return this;
+        }
+        @Override public Instant instant() { return current; }
+        private void advance(Duration amount) {
+            java.util.Objects.requireNonNull(amount);
+            if (amount.isNegative()) throw new IllegalArgumentException("controlled clock cannot regress");
+            current = current.plus(amount);
+        }
+    }
+    /** New timeout cases use the real Java encoder without the old external producer fixture. */
+    private static byte[] timeoutPacket(String json) throws IOException {
+        return NativeWire.packet(json.getBytes(StandardCharsets.UTF_8));
+    }
+    private static Replay timeoutPort() throws IOException {
+        return new Replay(timeoutPacket(riteHello(true)), timeoutPacket(snapshot("7")));
+    }
+    private static byte[] timeoutAck(byte[] actualRequest) throws IOException {
+        var request = NativeWire.decodeExecuteRequest(actualRequest);
+        var row = org.xar.ck3.control.contracts.StrictJson.object();
+        row.put("type", "command_result").put("protocol_version", 1)
+                .put("request_id", request.requestId()).put("ok", true);
+        row.set("result", org.xar.ck3.control.contracts.StrictJson.object());
+        return NativeWire.packet(org.xar.ck3.control.contracts.StrictJson.canonical(row));
+    }
+    private NativeActionPort.DispatchOutcome timeoutRead(NativeGameTransport transport, ExactRef source,
+            String requestId, Instant callerDeadline) throws IOException, InterruptedException {
+        GuardEvidence guard = riteGuard(transport, source, RiteCreation.PREVIEW.operationKey());
+        NativeRequest actual = riteRequest(RiteCreation.PREVIEW, guard, requestId);
+        var contract = ritePreview(source, actual);
+        var read = new PlanningReadRequest(guard.observed(), guard.source(), guard.sessionId(), contract.operation(),
+                new OpportunityJson.Obj(Map.of()), guard.validUntil());
+        NativeRequest prepared = contract.prepare(read, requestId);
+        var permit = NativeSelectorReadFixture.issue(contract, read, prepared,
+                new PlanningReadGuard(guard, true, true, true, "b".repeat(64)), requestId);
+        return transport.read(permit, prepared, callerDeadline);
+    }
+
+    @Test void ordinaryReadUsesOneBoundedDeadlineAndRenewsOnlyForNewRequest() throws Exception {
+        Replay port = timeoutPort();
+        MutableClock clock = new MutableClock(Instant.now());
+        NativeGameTransport transport = new NativeGameTransport(port, config(), 16, 16, List.of(), clock, Duration.ofSeconds(60));
+        try (transport) {
+            transport.observe(Instant.now().plusSeconds(30));
+            port.clearCaptured();
+            Instant start = clock.instant();
+            port.onWrite = packet -> {
+                clock.advance(Duration.ofSeconds(10));
+                port.packets.addLast(timeoutPacket("{\"type\":\"pong\",\"protocol_version\":1,\"request_id\":\"unrelated-pong\",\"pid\":42}"));
+                port.packets.addLast(timeoutAck(packet));
+            };
+            port.onRead = () -> clock.advance(Duration.ofSeconds(5));
+            var first = assertInstanceOf(NativeActionPort.AckReceived.class, timeoutRead(transport, riteSource(), "read-1", start.plusSeconds(600)));
+            assertTrue(first.nativeOk());
+            assertEquals(1, port.writes);
+            var firstWrites = port.capturedWriteDeadlines();
+            var firstReads = port.capturedReadDeadlines();
+            assertEquals(1, firstWrites.size());
+            assertEquals(2, firstReads.size());
+            assertEquals(start.plusSeconds(60), firstWrites.get(0));
+            assertEquals(start.plusSeconds(60), firstReads.get(0));
+            assertEquals(start.plusSeconds(60), firstReads.get(1));
+            clock.advance(Duration.ofSeconds(7));
+            port.clearCaptured();
+            Instant secondStart = clock.instant();
+            var second = assertInstanceOf(NativeActionPort.AckReceived.class, timeoutRead(transport, riteSource(), "read-2", secondStart.plusSeconds(600)));
+            assertTrue(second.nativeOk());
+            assertEquals(2, port.writes);
+            var secondWrites = port.capturedWriteDeadlines();
+            var secondReads = port.capturedReadDeadlines();
+            assertEquals(1, secondWrites.size());
+            assertEquals(2, secondReads.size());
+            assertEquals(secondStart.plusSeconds(60), secondWrites.get(0));
+            assertEquals(secondStart.plusSeconds(60), secondReads.get(0));
+            assertEquals(secondStart.plusSeconds(60), secondReads.get(1));
+            org.junit.jupiter.api.Assertions.assertNotEquals(firstWrites.get(0), secondWrites.get(0));
+        }
+    }
+
+    @Test void shortCallerAndCompatibilityMutationKeepTheirOwnDeadline() throws Exception {
+        Replay port = timeoutPort();
+        port.onWrite = packet -> port.packets.addLast(timeoutAck(packet));
+        MutableClock clock = new MutableClock(Instant.now());
+        NativeGameTransport transport = new NativeGameTransport(port, config(), 16, 16, List.of(), clock, Duration.ofSeconds(60));
+        try (transport) {
+            transport.observe(Instant.now().plusSeconds(30));
+            port.clearCaptured();
+            var source = riteSource();
+            var shortCaller = clock.instant().plusSeconds(20);
+            var readOutcome = timeoutRead(transport, source, "short-read", shortCaller);
+            assertInstanceOf(NativeActionPort.AckReceived.class, readOutcome);
+            assertEquals(List.of(shortCaller), port.capturedWriteDeadlines());
+            assertEquals(List.of(shortCaller), port.capturedReadDeadlines());
+            port.clearCaptured();
+            var operation = RiteCreation.OPEN_CREATE_DRAFT;
+            var guard = riteGuard(transport, source, operation.operationKey());
+            var request = riteRequest(operation, guard, "long-mutation");
+            var permit = NativeTransportSubmissionFixture.issue(riteCommand(guard), guard, request, "long-mutation");
+            var longCaller = clock.instant().plusSeconds(600);
+            var submitOutcome = assertInstanceOf(NativeActionPort.AckReceived.class, transport.submit(permit, request, longCaller));
+            assertTrue(permit.consumed());
+            assertEquals(List.of(longCaller), port.capturedWriteDeadlines());
+            assertEquals(List.of(longCaller), port.capturedReadDeadlines());
+        }
+        Replay compatPort = timeoutPort();
+        compatPort.onWrite = packet -> compatPort.packets.addLast(timeoutAck(packet));
+        NativeGameTransport compatTransport = new NativeGameTransport(compatPort, config(), 16, 16, List.of(), new ChronologyClock());
+        try (compatTransport) {
+            compatTransport.observe(Instant.now().plusSeconds(30));
+            compatPort.clearCaptured();
+            var compatSource = riteSource();
+            var compatCaller = Instant.now().plusSeconds(600);
+            var compatOutcome = timeoutRead(compatTransport, compatSource, "compat-read", compatCaller);
+            assertInstanceOf(NativeActionPort.AckReceived.class, compatOutcome);
+            assertEquals(List.of(compatCaller), compatPort.capturedWriteDeadlines());
+            assertEquals(List.of(compatCaller), compatPort.capturedReadDeadlines());
+        }
+    }
+
+    @Test void expiredReadRetainsUnknownAndNeverWritesOriginalAgain() throws Exception {
+        Replay port = timeoutPort();
+        MutableClock clock = new MutableClock(Instant.now());
+        try (NativeGameTransport transport = new NativeGameTransport(port, config(), 16, 16, List.of(), clock, Duration.ofSeconds(60))) {
+            transport.observe(Instant.now().plusSeconds(30));
+            port.clearCaptured();
+            Instant start = clock.instant();
+            ExactRef source = riteSource();
+            GuardEvidence guard = riteGuard(transport, source, RiteCreation.PREVIEW.operationKey());
+            String id = "expired-read-" + (++sequence);
+            NativeRequest actual = riteRequest(RiteCreation.PREVIEW, guard, id);
+            var contract = ritePreview(source, actual);
+            var read = new PlanningReadRequest(guard.observed(), guard.source(), guard.sessionId(), contract.operation(), new OpportunityJson.Obj(Map.of()), guard.validUntil());
+            NativeRequest prepared = contract.prepare(read, id);
+            var permit = NativeSelectorReadFixture.issue(contract, read, prepared, new PlanningReadGuard(guard, true, true, true, "b".repeat(64)), id);
+            port.typedExpiryClock = clock;
+            port.onWrite = packet -> { clock.advance(Duration.ofSeconds(61)); };
+            var outcome = assertInstanceOf(NativeActionPort.Unknown.class, transport.read(permit, prepared, start.plusSeconds(600)));
+            assertEquals(1, port.writes);
+            assertEquals(List.of(start.plusSeconds(60)), port.capturedWriteDeadlines());
+            assertEquals(List.of(start.plusSeconds(60)), port.capturedReadDeadlines());
+            assertArrayEquals(port.lastWrite, outcome.originalRequestPacket());
+            assertTrue(permit.consumed());
+            assertEquals(id, outcome.requestId());
+            var cause = outcome.failureCause().orElseThrow();
+            assertEquals(NativeActionPort.FailureKind.DEADLINE_EXPIRED, cause.kind());
+            assertEquals(NativeActionPort.FailureStage.RESPONSE_WAIT, cause.stage());
+            var observation = cause.deadline().orElseThrow();
+            assertEquals(start.plusSeconds(60), observation.suppliedDeadline());
+            assertEquals(clock.instant(), observation.observedAt());
+            assertFalse(observation.monotonicExpired());
+            var second = assertInstanceOf(NativeActionPort.Unknown.class, transport.read(permit, prepared, start.plusSeconds(600)));
+            assertEquals(1, port.writes);
+            assertEquals(List.of(start.plusSeconds(60)), port.capturedWriteDeadlines());
+            assertEquals(List.of(start.plusSeconds(60)), port.capturedReadDeadlines());
+            assertArrayEquals(port.lastWrite, second.originalRequestPacket());
+            assertEquals(id, second.requestId());
+        }
+    }
 }
 

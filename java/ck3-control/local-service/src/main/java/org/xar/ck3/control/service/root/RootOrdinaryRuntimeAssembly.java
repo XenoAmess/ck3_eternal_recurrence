@@ -97,7 +97,7 @@ public final class RootOrdinaryRuntimeAssembly {
             var products=RootOrdinaryPlainProducts.prepare(config,app,runtimePorts,config.initialPolicy(),plan);
             var catalogs=products.runtime().catalogs();
             var permissions=catalogs.privatePermissions(ports::qualifyPrivate);
-            var lifecycle=new JavaGameLifecycle(permissions);
+            var lifecycle=new JavaGameLifecycle(permissions,config.operationTimeout());
             return new Prepared(config,clock,plan,metadata,app,ports,storage,files,products,catalogs,permissions,lifecycle);
         }catch(IOException|RuntimeException|Error failure) {
             try {storage.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}

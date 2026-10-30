@@ -19,6 +19,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.build.WindowsJobProcess;
@@ -71,12 +72,25 @@ public final class JavaGameLifecycle {
     private record TrackingState(NativeLaunchPlan plan,String nonce,String registryKey,Path trackingPath) { }
 
     /** The composition root supplies the entire immutable permission set before any physical Game exists. */
+    private final Optional<Duration> operationTimeout;
     public JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions) {
+        this(actualPrivateActions,Optional.empty());
+    }
+    public JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions,Duration readOperationTimeout) {
+        this(actualPrivateActions,validateTimeout(readOperationTimeout));
+    }
+    private JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions,Optional<Duration> timeout) {
         privateActions=List.copyOf(actualPrivateActions);
         java.util.Set<String> operations=new java.util.HashSet<>();
         for(NativePrivateActionPermission permission:privateActions)
             if(!operations.add(permission.operation().value()))
                 throw new IllegalArgumentException("one actual private permission per operation required");
+        operationTimeout=timeout;
+    }
+    private static Optional<Duration> validateTimeout(Duration readOperationTimeout) {
+        Objects.requireNonNull(readOperationTimeout);
+        if(readOperationTimeout.isNegative()||readOperationTimeout.isZero())throw new IllegalArgumentException("readOperationTimeout must be positive");
+        return Optional.of(readOperationTimeout);
     }
 
     /** Preserve object identity across initial and replacement transports; no late permission mutation is allowed. */
@@ -234,7 +248,7 @@ public final class JavaGameLifecycle {
             WindowsPreloadCustody.Lease held=lease.get();
             if(held==null||endpoint.get()==null||endpointConfig.get()==null||endpointGuard.get()==null)
                 throw new IOException("Original Game did not retain pre-resume resources and endpoint inputs");
-            transport=new NativeGameTransport(endpoint.get(),65536,1000000,privateActions);
+            transport=operationTimeout.isPresent()?new NativeGameTransport(endpoint.get(),65536,1000000,privateActions,operationTimeout.get()):new NativeGameTransport(endpoint.get(),65536,1000000,privateActions);
             Instant helloDeadline=min(plan.deadline(),Instant.now().plus(plan.startupTimeout()));
             transport.awaitHello(helloDeadline);held.observeLoaded();
             Path hello=plan.evidenceRoot().resolve("native-hello.packet");Files.write(hello,transport.lastOriginalPacket(),StandardOpenOption.CREATE_NEW);

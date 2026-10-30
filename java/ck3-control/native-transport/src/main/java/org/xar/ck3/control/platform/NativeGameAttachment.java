@@ -1,7 +1,9 @@
 package org.xar.ck3.control.platform;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -27,6 +29,14 @@ public final class NativeGameAttachment {
     }
 
     public static ManagedGameSession attach(Request request,Instant deadline) throws IOException,InterruptedException {
+        return attachConfigured(request,deadline,Optional.empty());
+    }
+    public static ManagedGameSession attach(Request request,Instant deadline,Duration readOperationTimeout) throws IOException,InterruptedException {
+        Objects.requireNonNull(readOperationTimeout);
+        if(readOperationTimeout.isNegative()||readOperationTimeout.isZero())throw new IllegalArgumentException("readOperationTimeout must be positive");
+        return attachConfigured(request,deadline,Optional.of(readOperationTimeout));
+    }
+    private static ManagedGameSession attachConfigured(Request request,Instant deadline,Optional<Duration> readOperationTimeout) throws IOException,InterruptedException {
         Win32Host.deadline(deadline);
         String machineId=WindowsJobProcess.currentMachineId();
         WindowsJobProcess.ReadOnlyProcessHandle handle=null;
@@ -56,7 +66,7 @@ public final class NativeGameAttachment {
                 }catch(RuntimeException failure){throw new IOException("Attached Game generation exited or changed",failure);}
             };
             endpoint=NativePipeEndpoint.create(config,guard);
-            transport=new NativeGameTransport(endpoint,request.maximumFramesPerOperation(),request.maximumSubmissions(),request.privatePermissions());
+            transport=readOperationTimeout.isPresent()?new NativeGameTransport(endpoint,request.maximumFramesPerOperation(),request.maximumSubmissions(),request.privatePermissions(),readOperationTimeout.get()):new NativeGameTransport(endpoint,request.maximumFramesPerOperation(),request.maximumSubmissions(),request.privatePermissions());
             
             Path root=request.plan().evidenceRoot();
             Files.createDirectories(root);

@@ -6,6 +6,7 @@ import java.io.UncheckedIOException;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.time.Clock;
+import java.time.Duration;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private final NativePacketPort endpoint;
     private final NativePipeEndpoint.Config config;
     private final Clock chronologyClock;
+    private final Optional<Duration> configuredReadTimeout;
     private final UUID custodyEpoch = UUID.randomUUID();
     private BigInteger chronologyOrder = BigInteger.ZERO;
     private Instant lastChronologyAt;
@@ -376,6 +378,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             List<NativePrivateActionPermission> privateActions) {
         this(endpoint, endpoint.config(), maximumFramesPerOperation, maximumSubmissions, privateActions);
     }
+    public NativeGameTransport(NativePipeEndpoint endpoint, int maximumFramesPerOperation, int maximumSubmissions,
+            List<NativePrivateActionPermission> privateActions, Duration readTimeout) {
+        this(endpoint, endpoint.config(), maximumFramesPerOperation, maximumSubmissions, privateActions, Clock.systemUTC(), readTimeout);
+    }
     /** Same transport state machine with an original-producer replay packet source in offline tests. */
     NativeGameTransport(NativePacketPort endpoint, NativePipeEndpoint.Config config,
             int maximumFramesPerOperation, int maximumSubmissions) {
@@ -388,8 +394,21 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Offline replay may supply a deterministic clock; real public endpoints always use system UTC. */
     NativeGameTransport(NativePacketPort endpoint, NativePipeEndpoint.Config config,
             int maximumFramesPerOperation, int maximumSubmissions, List<NativePrivateActionPermission> privateActions, Clock chronologyClock) {
+        this(endpoint, config, maximumFramesPerOperation, maximumSubmissions, privateActions, chronologyClock, Optional.empty());
+    }
+    NativeGameTransport(NativePacketPort endpoint, NativePipeEndpoint.Config config,
+            int maximumFramesPerOperation, int maximumSubmissions, List<NativePrivateActionPermission> privateActions, Clock chronologyClock, Duration readTimeout) {
+        this(endpoint, config, maximumFramesPerOperation, maximumSubmissions, privateActions, chronologyClock, Optional.of(requirePositive(readTimeout)));
+    }
+    private static Duration requirePositive(Duration duration) {
+        if (duration == null || duration.isNegative() || duration.isZero()) throw new IllegalArgumentException("explicit positive read timeout required");
+        return duration;
+    }
+    private NativeGameTransport(NativePacketPort endpoint, NativePipeEndpoint.Config config,
+            int maximumFramesPerOperation, int maximumSubmissions, List<NativePrivateActionPermission> privateActions, Clock chronologyClock, Optional<Duration> configuredReadTimeout) {
         this.endpoint = Objects.requireNonNull(endpoint); this.config = Objects.requireNonNull(config);
         this.chronologyClock = Objects.requireNonNull(chronologyClock);
+        this.configuredReadTimeout = Objects.requireNonNull(configuredReadTimeout);
         this.privateActions = List.copyOf(privateActions); Set<String> operations = new HashSet<>();
         for (NativePrivateActionPermission permission : this.privateActions)
             if (!operations.add(permission.operation().value())) throw new IllegalArgumentException("duplicate private mutation registration");
@@ -967,7 +986,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 case COUNCIL_MAILBOX_STATUS -> NativeWire.executeCouncilMailboxStatus(id, request.step(), request.additionalFields().bytes());
             };
             if(activeMailbox!=null)activeMailbox.actualReads.put(id,permit);
-            return retainReadOutcome(dispatch(id, packet, deadline, permit::consumeOnce));
+            return retainReadOutcome(dispatch(id, packet, readDeadline(deadline), permit::consumeOnce));
         } catch (IOException | RuntimeException failure) { return retainReadOutcome(zero(id, reason(failure))); }
     }
     /** Only a live original-writer continuation permit can poll or inspect this held Council mutation. */
@@ -1108,6 +1127,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     private static boolean falseBoolean(ObjectNode object, String name) {
         var value = object.get(name); return value != null && value.isBoolean() && !value.booleanValue();
+    }
+    private Instant readDeadline(Instant callerDeadline) {
+        if (configuredReadTimeout.isEmpty()) return callerDeadline;
+        Instant configured = chronologyClock.instant().plus(configuredReadTimeout.get());
+        return callerDeadline.isBefore(configured) ? callerDeadline : configured;
     }
     private DispatchOutcome retainReadOutcome(DispatchOutcome outcome) {
         latestReadEvidence = null;

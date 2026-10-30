@@ -51,7 +51,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             prepared = RootOrdinaryRuntimeAssembly.prepare(config, clock);
             attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(plan, descriptor.generation(),
                     prepared.privatePermissions(), config.maximumFramesPerOperation(), config.maximumSubmissions()),
-                    clock.instant().plus(config.operationTimeout()));
+                    clock.instant().plus(config.operationTimeout()), config.operationTimeout());
             var ack = RootNativeFreshStartup.observeBootstrapCore(attached, clock, clock.instant().plus(config.operationTimeout()));
             var frame = RootNativeFreshStartup.decodeCore(ack.originalResultToken().orElseThrow());
             var mapReady = RootNativeFreshStartup.isMapReady(frame);
