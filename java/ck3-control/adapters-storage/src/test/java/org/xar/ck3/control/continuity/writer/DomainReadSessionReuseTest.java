@@ -5,7 +5,6 @@ import static org.xar.ck3.control.continuity.writer.WriterContracts.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.Clock;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,8 @@ import org.xar.ck3.control.contracts.ExactRef;
 final class DomainReadSessionReuseTest {
     @TempDir Path root;
     private record Fixture(WriterFixture files,ContinuityWriter writer,AtomicInteger calls) { }
-    private Fixture fixture(String name)throws IOException {
+    private Fixture fixture(String name)throws IOException { return fixture(name,WriterFaultProbe.NONE); }
+    private Fixture fixture(String name,WriterFaultProbe faults)throws IOException {
         var files=new WriterFixture(root.resolve(name));
         Path archive=files.layout.snapshot().resolveSibling("domain-artifacts");Files.createDirectory(archive);
         var artifacts=new ImmutableArtifactStore(new ImmutableArtifactStore.Config(archive,files.layout.lock(),4_194_304),StorageWriteGuardTestSupport.forOriginalLock(files.layout.lock()));
@@ -33,7 +33,7 @@ final class DomainReadSessionReuseTest {
             public String revalidate(ContinuityState state,Request request){throw new AssertionError("domain read cannot call ordinary authority");}
             public ContinuityState reduce(ContinuityState state,Request request){throw new AssertionError("domain read cannot replay ordinary authority");}
         };
-        var writer=new ContinuityWriter(files.layout,sources,unused,Clock.systemUTC(),new ContinuityWriter.Extensions(registrations,Optional.of(artifacts),Optional.empty()),StorageWriteGuardTestSupport.forLayout(files.layout));
+        var writer=new ContinuityWriter(files.layout,sources,unused,Clock.systemUTC(),new ContinuityWriter.Extensions(registrations,Optional.of(artifacts),Optional.empty()),StorageWriteGuardTestSupport.forLayout(files.layout),faults);
         return new Fixture(files,writer,calls);
     }
     private DomainBodies.ImportRequest request(Fixture f,int ordinal)throws IOException {
@@ -66,20 +66,71 @@ final class DomainReadSessionReuseTest {
         });
         assertFalse(Files.exists(f.files().layout.event(3)));
     }
-    @Test void retainedHeadRejectsChangedEventIdentityAndMissingIndexStaysReadOnly()throws Exception {
-        var f=fixture("changed-head");var request=request(f,1);f.writer().commitImport(f.writer().previewImport(request));
+    @Test void repeatedDomainReadsDoNotReopenTheCapturedLedgerSnapshot()throws Exception {
+        var f=fixture("no-reopen");var request=request(f,1);
+        f.writer().commitImport(f.writer().previewImport(request));
         f.writer().locked(same->{
-            assertInstanceOf(DomainBodies.Available.class,same.readDomain(DomainBodies.Slot.OPENING_GATE));
-            Path replacement=root.resolve("same-event-bytes.json");Files.copy(f.files().layout.event(1),replacement);
-            Files.move(replacement,f.files().layout.event(1),StandardCopyOption.REPLACE_EXISTING);
-            unavailable(same.readDomain(DomainBodies.Slot.OPENING_GATE),DomainBodies.Reason.BODY_IDENTITY_CHANGED);
+            var first=assertInstanceOf(DomainBodies.Available.class,same.readDomain(DomainBodies.Slot.OPENING_GATE));
+            Path snapshot=f.files().layout.snapshot();Path moved=snapshot.resolveSibling("held-snapshot.json");
+            Files.move(snapshot,moved);
+            try {
+                var repeated=assertInstanceOf(DomainBodies.Available.class,same.readDomain(DomainBodies.Slot.OPENING_GATE));
+                assertEquals(first.head(),repeated.head());assertArrayEquals(first.canonicalBody(),repeated.canonicalBody());
+                unavailable(same.readDomain(DomainBodies.Slot.FEAST),DomainBodies.Reason.UNIMPORTED);
+                unavailable(same.readDomain(DomainBodies.Slot.LIFE),DomainBodies.Reason.SLOT_UNREGISTERED);
+            } finally { Files.move(moved,snapshot); }
             return null;
         });
-        f.writer().locked(same->{assertInstanceOf(DomainBodies.Available.class,same.readDomain(DomainBodies.Slot.OPENING_GATE));return null;});
-        var event=ContinuityJson.parseObject(Files.readAllBytes(f.files().layout.event(1)),ContinuityJson.LEDGER_MAX_BYTES);
-        var envelope=new Request(DomainBodies.IMPORT_KIND,ContinuityJson.canonical(event.get("details")),List.of());
-        Path index=f.files().layout.sourceIndex(envelope.sourceKey());Files.delete(index);byte[] snapshot=Files.readAllBytes(f.files().layout.snapshot());
-        f.writer().locked(same->{unavailable(same.readDomain(DomainBodies.Slot.OPENING_GATE),DomainBodies.Reason.SOURCE_UNAVAILABLE);return null;});
-        assertFalse(Files.exists(index));assertArrayEquals(snapshot,Files.readAllBytes(f.files().layout.snapshot()));assertFalse(Files.exists(f.files().layout.event(2)));
     }
+    @Test void aNewSessionReadsTheNextActualCommitAndCannotReuseTheOldView()throws Exception {
+        var f=fixture("next-session");var first=request(f,1);var second=request(f,2);
+        f.writer().commitImport(f.writer().previewImport(first));
+        var before=assertInstanceOf(DomainBodies.Available.class,f.writer().read(DomainBodies.Slot.OPENING_GATE));
+        f.writer().commitImport(f.writer().previewImport(second));
+        var after=assertInstanceOf(DomainBodies.Available.class,f.writer().read(DomainBodies.Slot.OPENING_GATE));
+        assertNotEquals(before.head(),after.head());assertNotEquals(before.reference(),after.reference());
+        assertArrayEquals(second.producerInput(),after.canonicalBody());
+        Path snapshot=f.files().layout.snapshot();Path moved=snapshot.resolveSibling("missing-snapshot.json");
+        Files.move(snapshot,moved);
+        try { assertThrows(IOException.class,()->f.writer().read(DomainBodies.Slot.OPENING_GATE)); }
+        finally { Files.move(moved,snapshot); }
+        assertInstanceOf(DomainBodies.Available.class,f.writer().read(DomainBodies.Slot.OPENING_GATE));
+    }
+    @Test void failedImportAndDuplicateRecoveryInvalidateTheSameSessionDomainView()throws Exception {
+        var failures=new AtomicInteger();
+        var f=fixture("failed-import",(boundary,sequence)->{
+            if(boundary==WriterFaultProbe.Boundary.EVENT_PUBLISHED&&failures.getAndIncrement()==0)
+                throw new IOException("actual event durable before snapshot/index");
+        });
+        var request=request(f,1);
+        f.writer().locked(same->{
+            unavailable(same.readDomain(DomainBodies.Slot.OPENING_GATE),DomainBodies.Reason.UNIMPORTED);
+            var prepared=same.previewImport(request);
+            assertThrows(CommitUncertainException.class,()->same.commitImport(prepared));
+            unavailable(same.readDomain(DomainBodies.Slot.OPENING_GATE),DomainBodies.Reason.SOURCE_UNAVAILABLE);
+            f.files().storage.reconcileStorageOnly();
+            var recovered=same.commitImport(prepared);
+            assertEquals(Disposition.ALREADY_COMMITTED,recovered.disposition());
+            var actual=assertInstanceOf(DomainBodies.Available.class,same.readDomain(DomainBodies.Slot.OPENING_GATE));
+            assertArrayEquals(request.producerInput(),actual.canonicalBody());
+            assertEquals(1,same.head().state().sequence());assertFalse(Files.exists(f.files().layout.event(2)));
+            assertTrue(ContinuityJson.same(WriterFixture.state().get("pending_cycle"),same.head().state().toJson().get("pending_cycle")));
+            return null;
+        });
+    }
+    @Test void escapedDomainViewIsRejectedEvenWhileANewSessionHoldsTheSameLock()throws Exception {
+        var f=fixture("escaped-domain");
+        var escaped=new java.util.concurrent.atomic.AtomicReference<ContinuityStorePort.Session>();
+        f.writer().locked(same->{
+            unavailable(same.readDomain(DomainBodies.Slot.OPENING_GATE),DomainBodies.Reason.UNIMPORTED);
+            escaped.set(same);return null;
+        });
+        f.writer().locked(current->{
+            unavailable(current.readDomain(DomainBodies.Slot.OPENING_GATE),DomainBodies.Reason.UNIMPORTED);
+            assertThrows(org.xar.ck3.control.contracts.ContractViolationException.class,
+                    ()->escaped.get().readDomain(DomainBodies.Slot.OPENING_GATE));
+            return null;
+        });
+    }
+
 }

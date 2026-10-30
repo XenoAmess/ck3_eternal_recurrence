@@ -200,6 +200,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private final Thread owner = Thread.currentThread();
         private boolean open = true;
         private Head retainedHead;
+        private Head retainedDomainHead;
         private Session() { }
         private ContinuityWriter writer() { return ContinuityWriter.this; }
         private void checkOpen() {
@@ -701,6 +702,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         private Receipt commitInternal(Prepared prepared, TransitionAuthority selectedAuthority) throws IOException {
             checkOpen();
+            retainedDomainHead = null;
             try {
                 Receipt receipt = commitPrepared(prepared,selectedAuthority);
                 if (receipt.disposition() != Disposition.COMMITTED) retainedHead = null;
@@ -710,6 +712,10 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             } catch (IOException | RuntimeException | Error error) {
                 retainedHead = null;
                 throw error;
+            } finally {
+                // Authority callbacks can read domains while a commit is being validated.
+                // Their pre-write view must not survive any commit outcome.
+                retainedDomainHead = null;
             }
         }
         private Receipt commitPrepared(Prepared prepared, TransitionAuthority selectedAuthority) throws IOException {
@@ -761,6 +767,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 // Quote the entire physical commit/recovery before the first pending file is created.
                 return storageGuard.write(LedgerFiles.plan(layout.lock(),writes),()->{
                     retainedHead=null;
+                    retainedDomainHead=null;
                     int recovered=store.recover(recovery,storageGuard);
                     if(unchanged)return new Receipt(Disposition.NO_CHANGE,actual.state(),request.identity(),recovered,recovered>0);
                     LedgerFiles.atomic(storageGuard,layout.lock(),eventWrite);
@@ -779,6 +786,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         private Receipt recoverDuplicate(Request request, Head actual) throws IOException {
             retainedHead=null; // Recovery may mutate persistence; only a normal commit retains its validated readback.
+            retainedDomainHead=null;
             try {
                 int recovered = store.recover(actual, storageGuard);
                 Head readback = store.head();
@@ -787,6 +795,8 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 return new Receipt(Disposition.ALREADY_COMMITTED, readback.state(), request.identity(), recovered, recovered > 0);
             } catch (IOException | RuntimeException error) {
                 throw new CommitUncertainException(request.identity(), actual.state().sequence(), error);
+            } finally {
+                retainedDomainHead=null;
             }
         }
         private DomainBodies.Registration registration(DomainBodies.Slot slot) throws IOException {
@@ -797,34 +807,39 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             return extensions.artifacts().orElseThrow(() -> new IOException("the canonical immutable artifact store is unavailable"));
         }
         @Override public DomainBodies.Read readDomain(DomainBodies.Slot slot) throws IOException {
-            requireWriter(layout.lock()); Head head = head(); ExactRef headRef = persistedHead();
+            requireWriter(layout.lock());
+            Head head = retainedDomainHead;
+            if (head == null) {
+                // This view belongs only to the current held writer session. Each new session
+                // reads the current canonical head; actual writes invalidate this local view.
+                head = head();
+                retainedDomainHead = head;
+            }
+            ExactRef headRef = head.documents().stream()
+                    .filter(pin -> layout.snapshot().equals(java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize()))
+                    .findFirst().orElseThrow(() -> new IOException("captured ledger snapshot is absent")).reference();
             if (extensions.domains().stream().noneMatch(registration -> registration.slot() == slot))
-                return checkedDomainRead(head,new DomainBodies.Unavailable(DomainBodies.Reason.SLOT_UNREGISTERED, java.util.Optional.of(headRef), "no authoritative domain producer registration"));
+                return new DomainBodies.Unavailable(DomainBodies.Reason.SLOT_UNREGISTERED, java.util.Optional.of(headRef), "no authoritative domain producer registration");
             java.util.Optional<DomainBodies.BodyRef> reference;
             try { reference = DomainBodies.reference(head.state(), slot); }
             catch (org.xar.ck3.control.contracts.ContractViolationException error) {
-                return checkedDomainRead(head,new DomainBodies.Unavailable(DomainBodies.Reason.INVALID_BODY, java.util.Optional.of(headRef), error.getMessage()));
+                return new DomainBodies.Unavailable(DomainBodies.Reason.INVALID_BODY, java.util.Optional.of(headRef), error.getMessage());
             }
-            if (reference.isEmpty()) return checkedDomainRead(head,new DomainBodies.Unavailable(DomainBodies.Reason.UNIMPORTED, java.util.Optional.of(headRef), "original domain body has not been imported; missing is not clear"));
+            if (reference.isEmpty()) return new DomainBodies.Unavailable(DomainBodies.Reason.UNIMPORTED, java.util.Optional.of(headRef), "original domain body has not been imported; missing is not clear");
             if (head.snapshotNeedsRecovery() || !head.indexRepairs().isEmpty())
-                return checkedDomainRead(head,new DomainBodies.Unavailable(DomainBodies.Reason.SOURCE_UNAVAILABLE, java.util.Optional.of(headRef), "canonical snapshot/index recovery is pending"));
+                return new DomainBodies.Unavailable(DomainBodies.Reason.SOURCE_UNAVAILABLE, java.util.Optional.of(headRef), "canonical snapshot/index recovery is pending");
             try {
                 DomainBodies.Registration registration = registration(slot); DomainBodies.BodyRef body = reference.orElseThrow();
                 StrictJson.require(registration.contractSchema().equals(body.contractSchema()), "explicit original domain contract version");
+                // Always read the actual body from the artifact store to detect body changes.
                 byte[] raw = artifacts().read(new Pin(body.payload(), body.identity()), registration.maximumBodyBytes());
                 byte[] canonical = domainCanonical(raw, registration.maximumBodyBytes());
-                return checkedDomainRead(head,new DomainBodies.Available(body, canonical, headRef, head.documents()));
+                return new DomainBodies.Available(body, canonical, headRef, head.documents());
             } catch (IOException error) {
                 return new DomainBodies.Unavailable(DomainBodies.Reason.BODY_IDENTITY_CHANGED, java.util.Optional.of(headRef), error.getMessage());
             } catch (org.xar.ck3.control.contracts.ContractViolationException error) {
                 return new DomainBodies.Unavailable(DomainBodies.Reason.INVALID_BODY, java.util.Optional.of(headRef), error.getMessage());
             }
-        }
-        /** Same held session; exact documents and all absences prove the retained projection is current. */
-        private DomainBodies.Read checkedDomainRead(Head captured,DomainBodies.Read result)throws IOException {
-            for(Pin pin:captured.documents())LedgerFiles.verify(pin);
-            for(Path path:captured.absent())LedgerFiles.requireAbsent(path);
-            return result;
         }
         @Override public DomainBodies.PreparedImport previewImport(DomainBodies.ImportRequest request) throws IOException {
             checkOpen(); DomainBodies.Registration registration = registration(request.slot());
@@ -841,6 +856,15 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             return new DomainBodies.PreparedImport(head, request, original.pin(), configured, evidence, checked);
         }
         @Override public Receipt commitImport(DomainBodies.PreparedImport prepared) throws IOException {
+            checkOpen();
+            retainedDomainHead=null;
+            try {
+                return commitDomainImport(prepared);
+            } finally {
+                retainedDomainHead=null;
+            }
+        }
+        private Receipt commitDomainImport(DomainBodies.PreparedImport prepared) throws IOException {
             checkOpen(); DomainBodies.ImportRequest request = prepared.request(); DomainBodies.Registration registration = registration(request.slot());
             StrictJson.require(registration.contractSchema().equals(request.contractSchema()), "registered domain schema");
             List<ExactRef> expectedConfigured = new ArrayList<>(sources);
