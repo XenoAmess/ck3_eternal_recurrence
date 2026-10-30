@@ -253,16 +253,56 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         private java.util.List<HistoricalTransition> readHistoricalTransitions(
                 java.util.List<Pin> actualEvents, Head actual) throws IOException {
-            java.util.List<HistoricalTransition> results = new java.util.ArrayList<>();
-            for (Pin actualEvent : actualEvents) {
-                Pin captured = actual.documents().stream().filter(actualEvent::equals).findFirst()
-                        .orElseThrow(() -> new IOException("event pin is not in this actual captured canonical history"));
-                ObjectNode document = ContinuityJson.parseObject(readPinned(captured, ContinuityJson.LEDGER_MAX_BYTES), ContinuityJson.LEDGER_MAX_BYTES);
-                long sequence = StrictJson.integer(document.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER);
-                StrictJson.require(java.nio.file.Path.of(captured.reference().path()).toAbsolutePath().normalize().equals(layout.event(sequence)),
-                        "historical event must retain its actual canonical sequence path");
-                ObjectNode event = capturedEventAt(actual, sequence);
-                ContinuityState before = capturedStateAt(actual, Math.subtractExact(sequence, 1)), after = capturedStateAt(actual, sequence);
+            final class CachedHistory {
+                private final java.util.Map<Pin,ObjectNode> documents=new java.util.HashMap<>();
+                private final java.util.Map<Long,ContinuityState> states=new java.util.HashMap<>();
+                private ContinuityState anchored;
+                ObjectNode document(Pin captured)throws IOException {
+                    ObjectNode retained=documents.get(captured);
+                    if(retained!=null)return retained;
+                    ObjectNode document=ContinuityJson.parseObject(readPinned(captured,ContinuityJson.LEDGER_MAX_BYTES),ContinuityJson.LEDGER_MAX_BYTES);
+                    StrictJson.object(document,java.util.Set.of("sequence","at_utc","kind","details","identity","previous_sha256","after"));
+                    long sequence=StrictJson.integer(document.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER);
+                    StrictJson.require(java.nio.file.Path.of(captured.reference().path()).toAbsolutePath().normalize().equals(layout.event(sequence)),
+                            "historical event must retain its actual canonical sequence path");
+                    documents.put(captured,document);return document;
+                }
+                ObjectNode event(long sequence)throws IOException {
+                    java.nio.file.Path path=layout.event(sequence);
+                    Pin captured=actual.documents().stream().filter(pin->java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(path))
+                            .findFirst().orElseThrow(()->new IOException("requested state is absent from the actual finite canonical history"));
+                    return document(captured);
+                }
+                ContinuityState anchor()throws IOException {
+                    if(anchored!=null)return anchored;
+                    Pin pin=actual.documents().stream().filter(value->value.reference().equals(layout.anchor())).findFirst()
+                            .orElseThrow(()->new IOException("canonical anchor is absent from captured history"));
+                    anchored=ContinuityState.fromJson(ContinuityJson.parseObject(readPinned(pin,ContinuityJson.LEDGER_MAX_BYTES),ContinuityJson.LEDGER_MAX_BYTES),layout.machineId());
+                    return anchored;
+                }
+                ContinuityState state(long sequence)throws IOException {
+                    ContinuityState retained=states.get(sequence);
+                    if(retained!=null)return retained;
+                    ContinuityState initial=anchor();
+                    if(sequence==initial.sequence()){states.put(sequence,initial);return initial;}
+                    StrictJson.require(sequence>initial.sequence()&&sequence<=actual.state().sequence(),
+                            "requested historical state is outside the actual finite canonical chain");
+                    ObjectNode event=event(sequence);
+                    ContinuityState value=ContinuityState.fromJson(event.get("after"),layout.machineId());
+                    StrictJson.require(value.sequence()==sequence
+                            &&StrictJson.text(value.toJson().get("last_event_identity")).equals(StrictJson.text(event.get("identity"))),
+                            "captured canonical event after state binding differs");
+                    states.put(sequence,value);return value;
+                }
+            }
+            CachedHistory history=new CachedHistory();
+            java.util.List<HistoricalTransition> results=new java.util.ArrayList<>();
+            for(Pin actualEvent:actualEvents) {
+                Pin captured=actual.documents().stream().filter(actualEvent::equals).findFirst()
+                        .orElseThrow(()->new IOException("event pin is not in this actual captured canonical history"));
+                ObjectNode event=history.document(captured);
+                long sequence=StrictJson.integer(event.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER);
+                ContinuityState before=history.state(Math.subtractExact(sequence,1)),after=history.state(sequence);
                 StrictJson.require(StrictJson.text(event.get("previous_sha256")).equals(ContinuityJson.digest(before.toJson()))
                         && ContinuityJson.same(event.get("after"), after.toJson()), "historical canonical edge predecessor/after differs");
                 ObjectNode identity = StrictJson.object(); identity.set("kind", event.get("kind")); identity.set("details", event.get("details"));
@@ -292,7 +332,6 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             StrictJson.require(maximumBytes > 0 && maximumBytes <= MAX_PIN_BYTES, "explicit finite original packet bound");
             var actual = LedgerFiles.exact(pin.reference(), maximumBytes);
             if (!actual.pin().equals(pin)) throw new IOException("read must retain the exact captured native file identity");
-            LedgerFiles.verify(pin);
             return actual.bytes(); // Document.bytes() already returns its detached clone.
         }
         @Override public void requireCommitted(Prepared original, Receipt receipt) throws IOException {

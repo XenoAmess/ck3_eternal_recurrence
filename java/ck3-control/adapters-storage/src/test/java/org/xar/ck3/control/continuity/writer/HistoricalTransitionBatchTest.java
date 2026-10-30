@@ -74,4 +74,23 @@ final class HistoricalTransitionBatchTest {
         });
         assertFalse(Files.exists(fixture.layout.event(2)));
     }
+
+    @Test void repeatedRequestedEdgesKeepCallerOrderAndDetachedDetails() throws Exception {
+        var fixture=new WriterFixture(root.resolve("repeated-batch"));
+        fixture.writer.commit(fixture.writer.preview(WriterFixture.settled("one",1024,2)));
+        fixture.writer.commit(fixture.writer.preview(WriterFixture.settled("two",1048,3)));
+        Pin first=eventPin(fixture,1),second=eventPin(fixture,2);
+        fixture.writer.locked(same->{
+            var edges=same.readHistoricalTransitions(List.of(second,first,second));
+            assertEquals(List.of(2L,1L,2L),edges.stream().map(HistoricalTransition::sequence).toList());
+            assertArrayEquals(edges.get(0).details(),edges.get(2).details());
+            assertArrayEquals(edges.get(0).before().canonicalBytes(),edges.get(2).before().canonicalBytes());
+            assertArrayEquals(edges.get(1).after().canonicalBytes(),edges.get(0).before().canonicalBytes());
+            byte[] exposed=edges.get(0).details();exposed[0]='!';
+            assertArrayEquals(edges.get(0).details(),edges.get(2).details());
+            assertEquals(1,same.readHistoricalTransitions(List.of(first)).getFirst().sequence());
+            return null;
+        });
+        assertFalse(Files.exists(fixture.layout.event(3)));
+    }
 }

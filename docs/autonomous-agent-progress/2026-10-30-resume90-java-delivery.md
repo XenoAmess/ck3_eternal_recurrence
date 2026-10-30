@@ -43,3 +43,7 @@ Root 的 saved replacement deadline 候选按两个最小 hunk 应用：子启�
 保存替换 deadline 已普通 push/独立远端读回 `d2309ba8dce78071b6a2e4dcd3ea24ef9ec07c25`。
 
 非 FOCUS read descriptor 比较改为既有 ContinuityJson.same，避免合法 JSON 整数在 Jackson 不同整数节点实现之间误判。仅一个生产 hunk；完整 RootReconciliationAuthority 首次 `-Xlint:all -Werror` 因其未改动 RawUnavailable 的两项既有 serial 警告失败，保留原件；与候选原审阅范围一致，仅排除 serial 类别后 `-Xlint:all,-serial -Werror` javac0/2.475 秒。没有改异常类或放宽 JSON 字段、类型和内容比较，复用 owner 已保存的窄15项结果，不称完整类所有行为已覆盖，不重复绿测。
+
+Descriptor 已普通 push/独立读回 `f3145db9d6d86e28a94f557a7570fe4c61942d7c`。
+
+Ledger Candidate02 已适配当前开发源：只把调用内 event/state/anchor 缓存放入 private readHistoricalTransitions，保留已发表的 public IOException→一次 refreshHead 冷读重试 wrapper；readPinned 已取得 exact 原字节/身份后移除紧邻重复 verify，最终整份 captured documents 验证仍在。没有整叶覆盖旧版本。完整 ContinuityWriter 首次因未改动既有 unused try resource 警告而 -Werror1；按候选原范围 `-Xlint:all,-try -Werror` 后 javac0/2.517 秒。两完整测试类严格 javac0/2.590秒；新重复/逆序请求和 details 防别名用例随同加入，10P0F0skip/10.648秒。历史 owner 的8P2F不追认为此版失败；本轮保留冷读 wrapper 后当前完整10项实际全通过。252边旧同 JVM 对比只作为原候选测量，没有重跑或宣布本轮 Game 吞吐改善。
