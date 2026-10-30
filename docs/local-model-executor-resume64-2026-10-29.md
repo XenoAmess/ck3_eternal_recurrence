@@ -441,3 +441,21 @@ machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。独�
 machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。owner 按Root完整闭Opening消费者要求给独立小包 OPENING-REQUEST02.json/max1800，中央直接一次fresh admission调用，未重放旧大包。GAME81-RECOVERY-OPENING02：05:24:30.794842100→05:24:37.352731400Z，HTTP200/stop/CLI0，headers799ms、TTFT802ms、total6557ms，4528输入/959输出，cache未报，attempt1/0retry。原始 CONTENT/RESULT/SSE/REQUEST 在 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-recovery-opening81-r2，返回即交 owner+Root。
 
 完整JSON两叶两hunk，冻结old匹配 1/1。静审首hunk仍先调用actualAction，canonical absent原throw发生在新增action.empty分支之前，实际门仍未修；第二hunk对canonical absent以旧command再发PENDING，没有实际新plan/frame消费。notes声称满足Gate/变AWAIT_SUBMIT不是行为证据，不授旧command重放或闭环。中央未编坏稿、未改source/TEST、未授采用，不自动R3。OWNER-REVIEWS64-64.json保存实际返工/静审缺口，coding0。
+
+
+### RECOVERY81/metadata82 实际采用与 OUTBOUND83 首候选
+
+machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。81 owner 回报R1 soleJournal phase2 IMPORT保留hunk原样D采用，真实READ→domainpublish→interrupt旧1E(Journal279)/23.103s→新1P/23.124s。R1 Opening只接受定位、拒非法AWAIT_RECEIPT+empty建议；R2全部hunks静拒，未编译执行unsafe稿。owner独立Opening两叶typedarchive/canonical/effectiveStage与同锁freshPrepared策略保旧refs、preparedOnly EXISTING，旧seam-only2E→candidate3P0skip/23.195s，实际UNRESOLVED不替换/重放。该回报当时D-only；随后Root明确81/82已S/Z，82是中央POST0之后owner一行实现，真实old1F→new1P，不授模型82代码来源。
+
+53已出现1Native submit/1positiveACK/submitted_verification_pending，但canonical仍UNKNOWN，不能授postcondition/applied业务或游戏日。Root将当前NativeGovernanceEffects exactoutbound比较小包交中央立即POST。GAME83-NATIVE-GOVERNANCE-OUTBOUND01：05:54:10.552527→05:54:16.144380100Z，HTTP200/stop/CLI0，headers1746ms、TTFT1750ms、total5590ms，10966输入/618输出，cache未报，attempt1/0retry。CONTENT/RESULT/SSE/REQUEST在 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-native-governance-outbound83，返回立即交Root，无先提取/打包。
+
+完整JSON单hunk冻结old exact 1，方向是统一Jackson整数节点JSON域，custody/step/原wire保。但实际contracts/StrictJson.java189 canonical(JsonNode)返回byte[]，raw `.equals`比较数组identity，正常相同内容也不成立；已即时交owner按内容比较纠正，未故意编坏稿或授通过。canonical本身整数精确保留且拒非整数值，不是notes所称字符串返回。回归只有prose无TEST hunk；OWNER-REVIEWS64-65.json保API原文与81/82来源分列。当前coding0，无动作重试/自动R2/后题。
+
+
+### UNKNOWN 同Game重建84与 LIFE reconciliation74 两个独立首候选
+
+machine_id: xenoamess-full-tower-eb9d2c1186；remote_machine_id: unknown。两个owner明确授权真实尚未实现包，中央按到件顺序串行，未并开codingcaller或复活旧队列。84-A01先自然END后才调用独立74，均直接使用owner完整当前请求，没有source/TEST/build/Game操作。
+
+GAME84-UNKNOWN-SAMEGAME-RECOVERY-A01：06:07:41.947669800→06:07:59.818528900Z，HTTP200/stop/CLI0，headers5670ms、TTFT5674ms、total17871ms，42117输入/2099输出，cache未报，attempt1/0retry。CONTENT/RESULT/SSE/REQUEST在 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-unknown-samegame-recovery84-a1，立即交Integration+Root。完整JSON两插入候选；Integration实际原样D首次strict exit1/2.260s，snapshot.actions是List却调.filter；另withFrozen返回Lease后访问snapshot逃scope不可用。owner必要窄修计划同scope副本+assertCurrent、NativeIO前unresolved/owner/source/history检查及List.stream，不为确定性纠正再HTTP。尚未授最终采用或sameGame恢复。SOURCE前缀带行号，不能把对带行号prompt的literal old匹配0追认为实际文件锚失败。记录66保实际compiler与语义问题，coordinator未编译。
+
+GAME74-LIFE-UNKNOWN-RECONCILIATION01：06:09:25.997308300→06:10:30.143268100Z，HTTP200/stop/CLI0，headers10076ms、TTFT10080ms、total64146ms，77739输入/9630输出，cache未报，attempt1/0retry。原件在 D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/model-coordinator64/game-life-unknown-reconciliation74-r1，立即交deadline+Root，Integration获接口参考。完整JSON七个生产edits跨Effects/Installer/ReconciliationAuthority，冻结old匹配 1/1/1/1/1/1/1；new_files为空，仅9个test_selectors无真实TEST hunk，不记模型实现pure回归。真实receipt/同实例allowlist/UNKNOWN语义由owner独审，未编测/授采用。记录67，当前codingcaller与HTTP均0，无自动R2/后题，不授UNKNOWN重放或游戏动作/日信用。

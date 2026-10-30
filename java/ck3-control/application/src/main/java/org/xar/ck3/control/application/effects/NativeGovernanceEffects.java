@@ -269,11 +269,14 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         var wire = packet(ack.outbound().orElseThrow().originalPacket());
         var expected = EffectJson.object(EffectJson.parse(attempt.preparedRequest().additionalFields())).deepCopy();
         expected.put("type", "execute_step").put("protocol_version", 1).put("request_id", attempt.requestId()).put("step", attempt.preparedRequest().step()).put("expected_revision", attempt.guard().observed().frame().identity().nativeRevision());
-        StrictJson.require(wire.equals(expected) && attempt.preparedRequest().step().equals(command.operation().value()), "native rejection outbound differs from the canonical prepared primitive");
+        StrictJson.require(sameNativeWire(wire, expected) && attempt.preparedRequest().step().equals(command.operation().value()), "native rejection outbound differs from the canonical prepared primitive");
         var custody = ack.custody().orElseThrow(() -> new IllegalArgumentException("actual native rejection write/receive custody is unavailable"));
         custody.verify(ack, attempt.guard());
         StrictJson.require(!custody.writeEntered().observedAt().isBefore(attempt.submittedAt()), "native rejection dispatch predates the original canonical submission");
         return EffectJson.object(actual.get("result"));
+    }
+    static boolean sameNativeWire(ObjectNode actual, ObjectNode expected) {
+        return java.util.Arrays.equals(StrictJson.canonical(actual), StrictJson.canonical(expected));
     }
     private static String originalId(Kind kind, ActionState.Attempt attempt) {
         ObjectNode prepared = EffectJson.object(EffectJson.parse(attempt.preparedRequest().additionalFields()));
