@@ -52,3 +52,27 @@ actual105大输入预算修复体现的边界是“完整当前source+准确数�
 Root 明确授权在仍未解的M5端到端诊断上做一次单请求模式探索：`m5-end-to-end110-correct` 与 `m5-end-to-end110-thinking` 的实际三条messages逐条完全相等（稳定源475409字符、末诊断54267字符），只有 `enable_thinking=false/true` 与 `max_tokens=10000/16000` 不同；全局默认false未改。两者均真实HTTP200/stop/SSE完整、调用器实际OS0：前者113262prompt/2271out、34.852秒，后者113298prompt/2698out、39.214秒，均未触输出上限，cached未知。
 
 逐条读取最终原SSE：889/1115个JSON记录，delta键只有role/content，未见reasoning/reasoning_content/reasoning_tokens键或content中的think标记；usage仅prompt/completion/total。只能记录“未见可见reasoning”，不能凭请求flag认定真实内部模式已启用，也不能据字段缺席认定不存在内部推理。prompt差36的原因未知；输出预算不同、时序及并发未控制，不作速度、缓存或能力因果结论，语义采用另由owner按当前源审阅。本试验没有重发已解答案或授Game信用。可复核纯事实对照为 `D:/ck3-state/model-dispatch91/THINKING110-ACTUAL-COMPARISON.json` 与 `REVIEWS91.json` 的mode_comparison，原REQUEST/SSE保留。
+
+
+### resume91 111–112 的最终采用与新 IP 库存核实
+
+`java-read-durability111-scope02` 完整25源487832字符、101335prompt/751out，17.803秒stop却仅分类、没有实现，源码采用0。后续真实拆分 `java-read-binding111-narrow03`（9完整源125506字符，26365in/1345out，11.080秒）产生两方法与四caller，owner生产语义改0，strict2源0/2.050秒；`java-read-evidence111-body04`（11完整源及7片段130241字符，28509in/730out，7.809秒）方法部分采用，owner补廉价ExactRef角色/optional qualification解码，strict1源0/3.671秒。两者均已S/Z并由MB112装载；专门READ计数行为验证仍待完成，不授性能提升或游戏动作。证据在 `D:/ck3-state/resume91-java-delivery/read-durability111/{read-binding-narrow03,read-evidence-body04}/candidate/DELIVERY.json`。
+
+`runtime-no-progress111` 两轮均完整stop/实际OS0：101670in/2761out及102565in/4874out，但Optional嵌套、typed Controller观测、wall/pending/日期及测试API等整候选错误，最终模型生产采用0。owner接管3生产叶+1测试，严格编译0，17P0F0skip/1.881秒；后到的去>=2观察范围另记。运行岗S/Z采用及MB112六源增编0/9.409秒、21:47:50Z同Game LOOP_START/next29是独立运行事实，不追认为模型多叶闭合或运行期决策。原件为 `D:/ck3-state/resume91-runtime/no-progress111/{REVIEW111.md,RESULT111.json}`。
+
+body04封包实际执行PowerShell prepare/readback违反本轮cmd-only，owner已承认，作为操作审计单列；保留原件，不重跑模型/已绿，不将其当模型推理失败。逐项采用以owner最终回执覆盖raw RESULT默认 `adopted:false/NOT_YET_REVIEWED`；whole/fragment、配置/分析、隔离fixture/生产粒度不同，不拼成虚假的统一采用率。
+
+本组实际改写为两READ方法+四调用及一body方法，9/11/25源只是提供上下文；有源API/明确定义范围的窄实现可以产生实际采用，完整15源跨Controller/Loop日期与进展合同两轮仍需owner接管。该对照限定于本次真实任务、提示和验收，不给通用最大文件数/token/难度上限。[运营与可行性](local-model-executor-feasibility-2026-10-28.md)、[resume91模型页](autonomous-agent-progress/2026-10-31-resume91-models.md)保存请求、审阅与资源事实。
+
+
+### resume91 再次扩大真实派发与 typed 合同后的采用边界
+
+本轮再次恢复运营的冻结窗口为UTC22:48:46→23:10:57：新IP188→246个真实逻辑任务、201→264次HTTP尝试，新增58任务/63尝试。末刻2个客户端在途，新IP实测峰仍8；目标超过8尚未达到，旧1.7峰25不混入。数字来自标准目录和三个显式external指针的POST_BEGIN/ATTEMPT_END，prepared或owner宣布将发不计BEGIN。有限metrics实际22:52:16 running0/waiting0/KV0、22:58:34 running4/waiting0/KV0.09469697；不能从客户端区间推服务端推理数，也没有证据将峰8视为服务容量上限。后到请求独立滚动，不覆盖此冻结事实。
+
+完整API前缀复用后，Archive三个真实场景、M1 late-cause生产/行为、M2 owner已闭135B typed合同后的C++fixture/Javaoracle、M3 LookupCaseApi的case方法、M6日志生产/测试与时钟负例等均owner直接并行POST；不经过models中央封审/ACK。多轮完整ASM/Host恢复错误的原任务停止，owner掌握语义后再派真正未写的typed方法；不让模型复述已经写完的答案，也不把未知原件包装成READY。M0拟Java物化器在POST前取消，普通Git准备不造模型任务。完整逐请求/库存/实际重试证据为 `D:/ck3-state/model-dispatch91/OPERATIONS-EXPAND115.json`、各任务EVENTS/REQUEST/SSE/RESULT和REVIEWS91。
+
+新增实际采用对照：M6 timeout113的十次真实POST后，owner提供harness、模型有限constructor/三测试方法经真实compiler诊断纠正，五生产源+host严格0/2.776秒，3个新JUnit方法3P0skip/1.501秒；六叶正式97914337c8/S-Z采用分记。unknown-method04请求未带完整直接NativeActionPort record，05补全后修正，不能把该上下文缺口算成“完整API已给仍发明”；完整测试候选失败与owner固定harness成本也保留。证据 `D:/ck3-state/resume91-m6-native/operation-timeout113/{MODEL-REVIEWS.json,MODEL-BOUNDARY-OBSERVATION.md}`。
+
+M0 portable04/05只部分模型配置/生成器加owner修正被采用；其后正式target首次configure0/4.532秒、24TU+link0/79.590秒、registeredCTest1P/0.319秒是新的构建交付验证，没有新增模型调用，也不是raw整候选原样成功。M7 publisher两个完整Host候选拒绝后owner接管Win32/FFM，Scenario/Code局部与owner修正组合，最终3Java严格0、受控RAM8case/146检查通过；不授CK3callee、生产、Game动作或新增日。输入完整源文件数/字符/token、实际改写方法、owner修正/缺上下文、编译与行为结果分别记，不据这些对照给通用能力上限或统一成功率。
+
+[可行性](local-model-executor-feasibility-2026-10-28.md)与[resume91运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)互链；未审项保持unknown，raw adopted:false不是owner拒绝。
