@@ -1,0 +1,1 @@
+{"type":"command_result","protocol_version":1,"request_id":"fixture-nonwar","ok":false,"error":"nonwar private snapshot revision is stale or malformed: cause=full_snapshot_changed expected_revision=3 native_revision=3 changed_snapshot_fields=[\"date_raw\"]"}
