@@ -64,6 +64,7 @@ public final class SessionController {
     private final EpisodeContinuation episodes;
     private final AtomicBoolean running = new AtomicBoolean();
     private final AtomicBoolean stopRequested = new AtomicBoolean();
+    private volatile java.util.function.BooleanSupplier externalStopSignal = () -> false;
     private final Set<String> usedBatches = new HashSet<>();
     private final Set<String> unsavedGameplayActions = new HashSet<>();
     private final LinkedHashMap<String, AnalysisTicket> pendingAnalyses = new LinkedHashMap<>();
@@ -555,6 +556,14 @@ public final class SessionController {
             throw failure;
         }finally{if(!borrowedExecution)running.set(false);}
     }
+    public synchronized void bindExternalStopSignal(java.util.function.BooleanSupplier actual) {
+        Objects.requireNonNull(actual);
+        StrictJson.require(!running.get(), "external stop signal cannot be bound during an active Controller turn");
+        externalStopSignal = actual;
+    }
+    private boolean stopRequested() {
+        return stopRequested.get() || externalStopSignal.getAsBoolean();
+    }
     public void requestStop() { stopRequested.set(true); }
     /** An explicit owner resume is distinct from re-entering a timed-out/UNKNOWN session. */
     public void resume() {
@@ -624,7 +633,7 @@ public final class SessionController {
             run.pendingUi=Optional.empty();
             while (run.completedCount() < limits.maximumTurns()) {
                 run.requireTime();
-                if (stopRequested.get()) { run.terminal = Terminal.OPERATOR_STOP; break; }
+                if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
                 if(pendingReadParent.isPresent()){
                     if(terminalConstraint.isPresent())throw new End(Terminal.ACTION_REJECTED,"requested terminal operation cannot replace its retained unresolved read-publication parent");
                     run.reconcileReadParent(pendingReadParent.orElseThrow());continue;
@@ -683,7 +692,7 @@ public final class SessionController {
                 if (planned instanceof PlanningResult.RefreshRequired) { continue; }
                 if (planned instanceof PlanningResult.ExistingActionReconciliation existing) {
                     run.requireTime(); run.live();
-                    if (stopRequested.get()) { run.terminal = Terminal.OPERATOR_STOP; break; }
+                    if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
                     ActionReceipt original;
                     try { original = run.measured(Phase.ACTION_RECONCILIATION, () -> actions.reconcile(existing.actionId())); }
                     catch (RuntimeException failure) { quarantineUnresolved(); throw new End(Terminal.ACTION_UNKNOWN, failure.toString()); }
@@ -711,7 +720,7 @@ public final class SessionController {
                 // The independent terminal branch retains its real LifecycleIdentity instead.
                 run.proof(ready);
                 run.requireTime(); run.live();
-                if (stopRequested.get()) { run.terminal = Terminal.OPERATOR_STOP; break; }
+                if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
                 ActionReceipt receipt;
                 CheckpointInvocation checkpointCall=checkpoint(selected.command())?new CheckpointInvocation(selected.command()):null;
                 StrictJson.require(checkpointInvocation.get()==null,"no nested original checkpoint invocation");
@@ -935,7 +944,7 @@ public final class SessionController {
                     "requested terminal operation cannot replace the retained original successor UI parent");
             StrictJson.require(!token.deadline().isAfter(deadline()),"pending UI continuation extended caller deadline");
             quarantined=true; // The actual pending source stays isolated even if process inspection or operator stop interrupts this call.
-            requireTime();live();if(stopRequested.get())throw new End(Terminal.OPERATOR_STOP,"operator stop before successor UI continuation");
+            requireTime();live();if(stopRequested())throw new End(Terminal.OPERATOR_STOP,"operator stop before successor UI continuation");
             CompositeContinuationReport actual;
             try {actual=measured(Phase.ACTION,()->actions.continueOriginalComposite(token));}
             catch(IOException|RuntimeException failure){throw new End(Terminal.ACTION_UNKNOWN,
@@ -994,7 +1003,7 @@ public final class SessionController {
                 if(requested.expectedRevision().isPresent()&&!requested.expectedRevision().orElseThrow().equals(terminal.identity().frame().revision()))
                     throw new End(Terminal.ACTION_REJECTED,"requested public lifecycle revision differs from the same selected original command frame");
             }
-            requireTime();live();if(stopRequested.get())throw new End(Terminal.OPERATOR_STOP,"operator stop before terminal submission");
+            requireTime();live();if(stopRequested())throw new End(Terminal.OPERATOR_STOP,"operator stop before terminal submission");
             boolean reconcile=ready.decision() instanceof TerminalReconciliation;ActionReceipt actual;
             try {
                 if(reconcile){String action=((TerminalReconciliation)ready.decision()).actionId();
@@ -1034,7 +1043,7 @@ public final class SessionController {
             long readyUntil = Math.min(untilNanos, clock.now().elapsedNanos() + limits.readinessTimeout().toNanos());
             String waitingReason = "readiness deadline expired before observation";
             while (true) {
-                if (!stoppingForSave && stopRequested.get()) throw new End(dirty ? Terminal.CHECKPOINT_DEFERRED : Terminal.OPERATOR_STOP,
+                if (!stoppingForSave && stopRequested()) throw new End(dirty ? Terminal.CHECKPOINT_DEFERRED : Terminal.OPERATOR_STOP,
                         "operator stop observed during readiness; no new gameplay submitted");
                 requireTime(); live();
                 if (clock.now().elapsedNanos() >= readyUntil) {

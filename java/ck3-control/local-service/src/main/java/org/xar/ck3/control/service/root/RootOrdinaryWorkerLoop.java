@@ -99,6 +99,7 @@ public final class RootOrdinaryWorkerLoop {
             BatchCurrent currentSession;
             try {
                 currentSession = access.current();
+                currentSession.controller().bindExternalStopSignal(control::stopRequested);
                 report = currentSession.execution().batch(limits);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();

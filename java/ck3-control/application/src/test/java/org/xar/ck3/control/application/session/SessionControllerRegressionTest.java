@@ -158,6 +158,7 @@ final class SessionControllerRegressionTest {
         assertEquals(BatchReport.Terminal.READINESS_TIMEOUT, report.terminal()); assertTrue(fixture.observed.get() > 0);
         assertEquals(0, fixture.submitted.get()); assertEquals(0, report.committedSavedDays());
         assertTrue(report.phases().stream().anyMatch(span -> span.phase() == BatchReport.Phase.IDLE_WAIT));
+        assertEquals(PlanningStage.ORDINARY_CORE, report.lastPlan().orElseThrow().visits().getLast().stage());
     }
     @Test void readinessPollDoesNotInvokeObserverAfterTheOperationDeadline() {
         Fixture fixture = new Fixture(false);
@@ -816,6 +817,27 @@ final class SessionControllerRegressionTest {
         assertEquals(BatchReport.Terminal.WRITER_UNKNOWN,report.terminal());assertTrue(controller.isQuarantined());
         assertEquals(1,fixture.journal.size());assertEquals(0,fixture.submitted.get());
     }
+    @Test void externalStopSignalStopsReadOnlyWaitWithoutManualRequestStop() {
+        Fixture fixture = new Fixture(true);
+        fixture.readOnlyWait = true;
+        var external = new java.util.concurrent.atomic.AtomicBoolean(false);
+        SessionController controller = fixture.controller();
+        controller.bindExternalStopSignal(() -> external.get());
+        fixture.observer = (expected, until) -> {
+            fixture.observed.incrementAndGet();
+            external.set(true);
+            PlanningRequest actual = request(until);
+            return new Ready(actual, CheckpointEligibility.SAFE, Optional.empty(), Optional.of(semantic(actual)));
+        };
+        BatchReport report = controller.runBatch(limits("external-stop"));
+        assertEquals(BatchReport.Terminal.OPERATOR_STOP, report.terminal());
+        assertEquals(1, fixture.observed.get());
+        assertEquals(0, fixture.submitted.get());
+        assertEquals(0, report.committedSavedDays());
+        assertFalse(controller.isQuarantined());
+        assertTrue(report.phases().stream().anyMatch(span -> span.phase() == BatchReport.Phase.IDLE_WAIT));
+    }
+
     @Test void actualDomainCheckpointRequirementDoesNotCreateAnImplicitSaveInPublicAutoTurn() {
         Fixture fixture=new Fixture(true);fixture.requireCheckpoint=true;
         BatchReport report=fixture.controller().autoTurn(BASE.plusSeconds(5)).execution();
@@ -987,7 +1009,7 @@ final class SessionControllerRegressionTest {
     private static final class Fixture {
         final TestClock time = new TestClock(); final AtomicInteger observed = new AtomicInteger(); final AtomicInteger submitted = new AtomicInteger(); final AtomicInteger reconciled = new AtomicInteger();
         final List<JournalInput> journal = new ArrayList<>(); final boolean completePlanner; boolean withBaseline = true; boolean reconcileExisting; boolean cycleAvailable = true;
-        int planningPublications,episodeCalls,scopeEntries,scopeDepth;ActionCommand terminalOriginal,readParentOriginal;boolean blockPlanning,publishFirstPlan,publishFirstScope,failScopePublication,requireCheckpoint,readRefreshBeforeDispatch,readRefreshIssued,refreshHasParent;final List<ActionReceipt> completedReceipts=new ArrayList<>();
+        int planningPublications,episodeCalls,scopeEntries,scopeDepth;ActionCommand terminalOriginal,readParentOriginal;boolean blockPlanning,publishFirstPlan,publishFirstScope,failScopePublication,requireCheckpoint,readRefreshBeforeDispatch,readRefreshIssued,refreshHasParent,readOnlyWait;final List<ActionReceipt> completedReceipts=new ArrayList<>();
         int continuationCalls;
         PlanningResult.StopReason plannerStopReason;
         boolean completePhysicalReadPublication;IOException afterPhysicalPublicationFailure;
@@ -1081,6 +1103,7 @@ final class SessionControllerRegressionTest {
                     if (stage != PlanningStage.ORDINARY_CORE) return new Keep("test preserves preceding plan");
                     time.waitFor(planningDelay);
                     if(plannerStopReason!=null)return new Stop(plannerStopReason,"actual malformed relation material");
+                    if (readOnlyWait) return new Wait("external stop signal expected during read-only wait");
                     if (reconcileExisting) return new ReconcileExisting("original-action", new OpportunityJson.Obj(Map.of()), "read original pending action only");
                     return new Replace(new Draft("fixture", "fixture", "fixture", Kind.ORDINARY, Optional.of(command(input)), Purpose.WORLD_ACTION, Optional.empty(), new OpportunityJson.Obj(Map.of())), "fixture actual action selection");
                 }
