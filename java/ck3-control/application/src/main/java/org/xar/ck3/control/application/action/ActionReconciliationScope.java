@@ -84,9 +84,9 @@ public final class ActionReconciliationScope {
                 && frame.sessionId().equals(identity.sessionId()) && frame.connectionGeneration().equals(identity.connectionGeneration())
                 && frame.originalEvidence().equals(identity.nativeEvidence()) && frame.observedAt().equals(identity.observedAt()),
                 "actual reconciliation Complete and identity do not share original source/Native/Driver data");
-        StrictJson.require(identity.source().equals(command.source()) && identity.sessionId().equals(command.sessionId())
-                && identity.connectionGeneration().equals(actualAttempt.guard().connectionGeneration()),
-                "reconciliation crossed the original source/session/connection");
+        StrictJson.require(identity.source().equals(command.source()) && identity.sessionId().equals(command.sessionId()),
+                "reconciliation crossed the original source/session");
+        identity.requireOriginalConnection(actualAttempt.guard());
         StrictJson.require(guard.origin() instanceof CommandOrigin.Reconciliation
                 && guard.origin().requireReconciliation().equals(identity) && guard.operation().equals(command.operation())
                 && guard.source().equals(command.source()) && guard.sessionId().equals(command.sessionId())

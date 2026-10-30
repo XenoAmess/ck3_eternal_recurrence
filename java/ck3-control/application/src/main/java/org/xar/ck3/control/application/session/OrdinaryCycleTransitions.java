@@ -289,6 +289,16 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 StrictJson.require(record.completedCycles() == expected, "completed cycle count must come from actual receipt classification");
                 next.set(STATE_FIELD, new CycleState(owner, before.basisCycles(), expected,
                         Optional.of(ExactRef.fromJson(details.get("cycle_record_ref"))), Optional.empty(), before.retainedLegacyPendingDigest(),before.originFrame(),before.episodeOrigin()).toJson());
+                if(predecessor.status()==ContinuityState.Status.REPAIR_REQUIRED) {
+                    // Actual SETTLE has revalidated the canonical receipt, archived record and fresh SEM under this writer lock.
+                    ObjectNode recovery=StrictJson.object();recovery.put("evidence_id",text(details,"evidence_id"));
+                    recovery.put("source","java-reconciled-original-cycle/v1");recovery.put("machine_id",owner.machineId());
+                    recovery.set("session",sessionToJson(owner));
+                    recovery.set("batch_id",predecessor.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).get("batch_id"));
+                    recovery.put("completed_cycles",predecessor.settledCycles());recovery.set("cycle_record_ref",details.get("cycle_record_ref"));
+                    recovery.set("frame",originalFrame(semanticFromJson(details.get("semantic")).frame()));
+                    next=OriginalWindowReducer.reduce(next,"reconciled_original_cycle",recovery,policy);
+                }
             }
         } else {
             StrictJson.require(request.kind().equals(BATCH_KIND), "unregistered batch event"); strictBatch(details);
@@ -379,6 +389,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var head = session.head(); ExactRef receiptRef = archive.receiptReferenceOf(receipt); canonicalReceipt(head.state(), receiptRef, owner);
         CycleState state = state(head.state(), owner); requireFrontier(head.state(), state);
         if (find(state, receiptRef).isPresent()) return; // A read-only reconciliation never counts an old cycle twice.
+        if (state.pending().filter(receiptRef::equals).isPresent()) return; // Recovery resumes the original RETAIN without another writer event.
         var request = cycleRequest(owner, "RETAIN", receiptRef, Optional.empty(), Optional.empty(), Optional.empty());
         session.commit(session.preview(request));
     }
@@ -1186,7 +1197,6 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(owner.machineId().equals(verified.frame().machineId()) && owner.game().equals(verified.frame().game()), "SEM changed owned Game or machine"); return verified;
     }
     private ActionReceipt canonicalReceipt(ContinuityState head, ExactRef ref, SessionIdentity owner) {
-        requireActive(head);
         ActionReceipt receipt = archive.loadReceipt(ref);
         StrictJson.require(receipt.command().origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay,"ordinary cycle accepts an actual gameplay origin only");
         StrictJson.require(archive.receiptReferenceOf(receipt).equals(ref)
@@ -1194,7 +1204,43 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(receipt.command().sessionId().equals(owner.sessionId()) && receipt.command().before().machineId().equals(owner.machineId())
                 && receipt.command().before().game().equals(owner.game()) && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED,
                 "only the owned independently confirmed AUTO receipt can complete a cycle");
+        if (head.status() == ContinuityState.Status.REPAIR_REQUIRED) requireReconciledOriginalRepair(head,receipt,owner);
+        else requireActive(head);
         classify(receipt); return receipt;
+    }
+    /** Only the current original UNKNOWN, now canonically confirmed, may enter RETAIN/SETTLE while repair is retained. */
+    private void requireReconciledOriginalRepair(ContinuityState head,ActionReceipt receipt,SessionIdentity owner) {
+        ObjectNode whole=head.toJson();
+        ObjectNode boundary=StrictJson.object(whole.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD),
+                Set.of("evidence_id","session","batch_id","boundary"));
+        ObjectNode interruption=StrictJson.object(whole.get("interruption"),
+                Set.of("reason","source","evidence_id","last_settled_frame","completed_cycles"));
+        StrictJson.require(head.status()==ContinuityState.Status.REPAIR_REQUIRED
+                &&text(boundary,"boundary").equals(JournalKind.BATCH_INTERRUPTED.name())
+                &&sessionFromJson(boundary.get("session")).equals(owner)
+                &&text(interruption,"source").equals("java-ordinary-batch-interruption/v2")
+                &&text(interruption,"evidence_id").equals(text(boundary,"evidence_id"))
+                &&number(whole,"interrupted_window_id")==head.origin().windowId()
+                &&number(interruption,"completed_cycles")==head.settledCycles()
+                &&!hasUnresolvedOtherAction(head,receipt),
+                "only this ordinary interrupted batch with resolved originals may recover a cycle");
+        Optional<ExactRef> cursor=ContinuityActionJournal.recordHead(head);
+        Set<ExactRef> seen=new HashSet<>();long maximum=head.sequence();boolean originalUnknown=false;
+        while(cursor.isPresent()) {
+            ExactRef ref=cursor.orElseThrow();
+            StrictJson.require(seen.add(ref)&&seen.size()<=MAX_RECORDS,"reconciled original history is cyclic or exceeds its bound");
+            var record=archive.loadRecord(ref);var prior=record.receipt();
+            StrictJson.require(prior.sequence()<=maximum,"reconciled original action history moved backwards");
+            maximum=prior.sequence()-1;
+            if(prior.command().actionId().equals(receipt.command().actionId())) {
+                StrictJson.require(prior.command().equals(receipt.command())&&prior.bodySha256().equals(receipt.bodySha256()),
+                        "reconciliation changed the original action body");
+                if(prior.sequence()<receipt.sequence()&&(prior.state() instanceof ActionState.Unknown
+                        ||prior.state() instanceof ActionState.CompositeUnknown)) {originalUnknown=true;break;}
+            }
+            cursor=record.previous();
+        }
+        StrictJson.require(originalUnknown,"repair recovery requires this same canonical original UNKNOWN before its confirmed reconciliation");
     }
     private boolean hasUnresolvedOtherAction(ContinuityState head, ActionReceipt receipt) {
         return ContinuityActionJournal.receipts(head, archive).stream().anyMatch(item -> !item.settled()

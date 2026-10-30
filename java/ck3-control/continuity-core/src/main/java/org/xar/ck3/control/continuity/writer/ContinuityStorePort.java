@@ -52,7 +52,7 @@ public interface ContinuityStorePort {
         default java.util.List<HistoricalTransition> readHistoricalTransitions(java.util.List<Pin> actualEvents) throws IOException {
             actualEvents=java.util.List.copyOf(java.util.Objects.requireNonNull(actualEvents));
             org.xar.ck3.control.contracts.StrictJson.require(!actualEvents.isEmpty()
-                    &&actualEvents.size()<=org.xar.ck3.control.continuity.ContinuityHistory.MAX_CONTINUITY_EVENTS,
+                    &&actualEvents.size()<=org.xar.ck3.control.continuity.ContinuityHistory.maximumEvents(),
                     "finite actual canonical event batch required");
             java.util.List<HistoricalTransition> results = new java.util.ArrayList<>();
             for (Pin pin : actualEvents) {

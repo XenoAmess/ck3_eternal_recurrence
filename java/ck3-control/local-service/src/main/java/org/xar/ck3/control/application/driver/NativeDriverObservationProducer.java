@@ -283,6 +283,32 @@ public final class NativeDriverObservationProducer implements DriverObservationF
         cleanNativeCampaign=old.observationVersion()==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION;
     }
 
+    /**
+     * Binds read-only recovery baseline from captured restart manifest and retained Driver stamp.
+     * This initializes public revision offset and observation version without creating admissions.
+     */
+    synchronized void bindReadOnlyRecovery(org.xar.ck3.control.application.session.CleanBatchRestart captured,
+            DriverSnapshotFacts.Stamp stamp, ContinuityStorePort.Session same) throws IOException {
+        Objects.requireNonNull(captured); Objects.requireNonNull(stamp); Objects.requireNonNull(same);
+        StrictJson.require(acceptedSession == null && lastProjectedReceipt == null && publicRevision.signum() == 0 && transportRevisionOffset.signum() == 0,
+                "read-only recovery baseline binds once before the producer observes");
+        
+        // Initialize baseline from actual captured manifest
+        new PublicRevision(captured.publicRevision());
+        publicRevision = captured.publicRevision();
+        transportRevisionOffset = publicRevision;
+        
+        // Preserve NATIVE_CAMPAIGN observationVersion from captured manifest
+        cleanNativeCampaign = captured.observationVersion() == DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION;
+        
+        // Verify retained stamp matches repository state
+        repository.locked(state -> {
+            StrictJson.require(state instanceof DriverSnapshotFacts.Known known && known.stamp().equals(stamp),
+                    "read-only recovery producer crossed its actual retained Driver stamp");
+            return true;
+        });
+    }
+
     synchronized void bindCleanRestart(org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission actual,
             org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same)throws IOException {
         Objects.requireNonNull(actual);actual.requireCurrent(same);

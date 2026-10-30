@@ -12,18 +12,34 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedValue;
 
 /** Both frames come from the one real held Native endpoint and the sole Driver semantic assembler. */
 public final class NativeEffectSnapshots {
-    public record Pair(Complete before, Complete after) {
+    public record Pair(Complete before, Complete after, java.util.Optional<ReconciliationIdentity> reconciliation) {
+        /** Ordinary effects retain the original same-connection contract. */
+        public Pair(Complete before, Complete after) { this(before,after,java.util.Optional.empty()); }
         public Pair {
-            Objects.requireNonNull(before); Objects.requireNonNull(after);
+            Objects.requireNonNull(before); Objects.requireNonNull(after); Objects.requireNonNull(reconciliation);
             StrictJson.require(before.identity().machineId().equals(after.identity().machineId())
                     && before.identity().game().equals(after.identity().game())
-                    && before.sessionId().equals(after.sessionId()) && before.connectionGeneration().equals(after.connectionGeneration())
+                    && before.sessionId().equals(after.sessionId())
                     && before.source().equals(after.source())
                     && before.identity().frame().episodeRunId().equals(after.identity().frame().episodeRunId())
                     && before.identity().frame().identity().player().equals(after.identity().frame().identity().player()), "postcondition crossed native Game/actor/episode/source/session");
+            boolean reconnected = !before.connectionGeneration().equals(after.connectionGeneration());
+            if (reconnected) {
+                ReconciliationIdentity identity=reconciliation.orElseThrow(
+                        ()->new IllegalArgumentException("cross-connection effect requires its original pending reconciliation DATA"));
+                ReconciliationIdentity.requireSamePhysicalSubject(before.identity(),after.identity());
+                StrictJson.require(after.connectionGeneration().compareTo(before.connectionGeneration())>0
+                        &&identity.pending().originalBefore().equals(before.identity())
+                        &&identity.factual().equals(after.identity())&&identity.source().equals(after.source())
+                        &&identity.sessionId().equals(after.sessionId())&&identity.connectionGeneration().equals(after.connectionGeneration())
+                        &&identity.nativeEvidence().equals(after.originalEvidence())
+                        &&!before.originalEvidence().equals(after.originalEvidence())
+                        &&!after.observedAt().isBefore(before.observedAt()),
+                        "reconnected effect changed the original pending or current physical frame");
+            }
             StrictJson.require(!before.identity().frame().snapshotId().equals(after.identity().frame().snapshotId())
                     && after.identity().frame().identity().nativeRevision().compareTo(before.identity().frame().identity().nativeRevision()) > 0
-                    && after.identity().frame().revision().compareTo(before.identity().frame().revision()) > 0
+                    && (reconnected || after.identity().frame().revision().compareTo(before.identity().frame().revision()) > 0)
                     && after.identity().frame().identity().dateRaw().compareTo(before.identity().frame().identity().dateRaw()) >= 0,
                     "ordinary mutable effect requires a distinct later Native and public frame");
         }
@@ -161,7 +177,12 @@ public final class NativeEffectSnapshots {
     }
     public Pair read(ActionCommand command, ActionState.Attempt attempt) {
         var actual = originals(command, attempt, false, pendingReply(command.operation()));
-        return new Pair(actual.before(), actual.after());
+        java.util.Optional<ReconciliationIdentity> reconciliation=java.util.Optional.empty();
+        if(ActionReconciliationScope.activeFor(command)){
+            try { reconciliation=java.util.Optional.of(ActionReconciliationScope.requireIdentity(command,attempt)); }
+            catch(java.io.IOException unavailable){throw new java.io.UncheckedIOException(unavailable);}
+        }
+        return new Pair(actual.before(), actual.after(), reconciliation);
     }
     /**
      * A send is observed through independent storage queries, so the actual SEM may
@@ -338,8 +359,9 @@ public final class NativeEffectSnapshots {
             var original = read.request().origin().requireReconciliation(); var pending = original.pending();
             StrictJson.require(pending.actionId().equals(command.actionId()) && pending.bodySha256().equals(ActionCodec.bodySha256(command))
                     && pending.requestId().equals(attempt.requestId()) && pending.originalBefore().equals(command.before())
-                    && original.connectionGeneration().equals(attempt.guard().connectionGeneration())
+                    && original.connectionGeneration().equals(after.connectionGeneration())
                     && original.nativeEvidence().equals(after.originalEvidence()), "reconciliation material query belongs to another original primitive");
+            original.requireOriginalConnection(attempt.guard());
             var chronology = read.original().custody().orElseThrow(
                     () -> new IllegalArgumentException("reconciliation material query has no actual wire sampling custody"));
             chronology.verify(read);

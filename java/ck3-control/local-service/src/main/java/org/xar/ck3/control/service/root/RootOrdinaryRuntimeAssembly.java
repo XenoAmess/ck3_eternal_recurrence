@@ -187,6 +187,14 @@ public Running openSameGameBootstrap(ManagedGameSession actual, Optional<Continu
                 opened.core().adoptCleanRestart(actual,pointer.orElseThrow(),config.retainedFrames(),cyclePolicy,phaseDeadline));
         return new Opened(this, driver.source()).finish(driver, Optional.of(opened.core().cleanRestartAdmission(driver)), deadline);
     }
+    // Check for unresolved same-game data before initial/fresh recovery
+    var unresolved = opened.core().readUnresolvedSameGame(actual,cyclePolicy);
+    if (unresolved.isPresent()) {
+        var unresolvedData=unresolved.orElseThrow();
+        var driver = runOperationPhase(clock,config.operationTimeout(),phaseDeadline->
+                opened.core().adoptUnresolvedSameGame(actual, unresolvedData, config.retainedFrames(), cyclePolicy, phaseDeadline));
+        return new Opened(this, driver.source()).finishUnresolvedSameGame(driver, unresolvedData, deadline);
+    }
     if (opened.core().hasCanonicalGameplayEntry()) {
         var driver = opened.core().adoptInitialRecovery(actual,config.retainedFrames(),cyclePolicy, () -> clock.instant().plus(config.operationTimeout()));
         return new Opened(this,driver.source()).finish(driver, Optional.empty(), deadline);
@@ -308,6 +316,38 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             long next=restart.isPresent()?restart.orElseThrow().controller().nextBatchSequence():
                     noDispatch.map(ContinuityBatchJournal.InitialNoDispatchRecovery::nextBatchSequence).orElse(0L);
             return new Running(owner,session,prefix,next);
+        }
+
+        private Running finishUnresolvedSameGame(DriverBootstrap.Adopted driver, ContinuityBatchJournal.UnresolvedSameGameData data, Instant deadline) throws IOException, InterruptedException {
+            consumed=true;
+            if (owner.config.decisionProvider().isPresent()) {
+                var selector = new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(), owner.clock, raw -> {
+                    var writer = owner.core.writer();
+                    var active = writer.activeSession();
+                    if (active.isPresent()) return owner.core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                    return writer.locked(same -> owner.core.archive().withSession(same).preserveMaterial(raw));
+                });
+                owner.core.bindDecisionSelector(selector);
+            }
+            installed=runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->
+                    owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
+            var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
+            var services=owner.services(source);
+            RootApplicationSession session = owner.core.finishUnresolvedSameGame(installed, driver, configuration, services);
+            runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{
+                session.install(new OrdinarySessionHost(),phaseDeadline);
+                return null;
+            });
+            // Restore quarantine and reconcile unresolved action
+            session.restoreUnresolvedSameGame(data);
+            // The original mutation is read-only here; closing its retained cycle can
+            // require a fresh full semantic read and multiple durable ledger commits.
+            var receipt = runOperationPhase(owner.clock,java.time.Duration.ofMinutes(10),phaseDeadline->
+                    session.reconcileUnresolvedOriginal(data,phaseDeadline));
+            if (receipt == null || !receipt.settled() || session.controllerForPublication().isQuarantined()) {
+                throw new IOException("unresolved same-game action remains isolated; cannot proceed to ordinary loop");
+            }
+            return new Running(owner, session, data.capturedController().batchPrefix(), data.nextBatchSequence());
         }
         public void closeResourcesOnly()throws IOException {owner.close();}
         @Override public void close()throws IOException {owner.close();}

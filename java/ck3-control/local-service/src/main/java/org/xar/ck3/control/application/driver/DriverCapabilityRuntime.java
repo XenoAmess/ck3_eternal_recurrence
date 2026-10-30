@@ -239,6 +239,15 @@ public final class DriverCapabilityRuntime implements PlanningReadCoordinator.Kn
     public void initializePlanning(ContinuityStorePort.Session same,Complete actual) throws IOException {
         requireUsable();publishPersistent(same,actual);synchronized(this){planningInitialized=true;}
     }
+    /** Rebuild only this per-graph reader over the retained Known; no capture/publication or canonical mutation. */
+    public void restoreRetainedPlanning(ContinuityStorePort.Session same) throws IOException {
+        requireUsable();planningPorts();
+        authority.withFrozenFacts(same,frozen -> {
+            StrictJson.require(frozen.state() instanceof Known,"retained planning requires the actual captured Driver");
+            synchronized(this){planningInitialized=true;}
+            return null;
+        });
+    }
     /** Also used after the genuine terminal cross-run publisher; never fabricates a strategy file. */
     public void refreshCanonicalStrategy(ContinuityStorePort.Session same,Complete actual) throws IOException {
         requireUsable();StrictJson.require(planningInitialized,"persistent planning has not completed its actual initial capture");publishPersistent(same,actual);

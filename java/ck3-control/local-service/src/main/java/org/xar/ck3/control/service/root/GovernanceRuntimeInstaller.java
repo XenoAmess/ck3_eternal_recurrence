@@ -169,7 +169,8 @@ public final class GovernanceRuntimeInstaller {
             for (OperationKey operation : prepared.config.admittedActions()) {
                 if (operation.value().equals(CouncilActionCodec.PRIVATE_ASSIGN)) archived.add(NativeCouncilAssignmentEffects.archivedVerifier(prepared.sources.councilEffectVerifier(),
                         prepared.continuation, prepared.policy, context.frameLoader(), this::session));
-                else archived.add(NativeGovernanceEffects.archivedVerifier(operation, prepared.sources.effectVerifier(), context.frameLoader(), prepared.receipts, lifecycle));
+                else archived.add(NativeGovernanceEffects.archivedVerifier(operation, prepared.sources.effectVerifier(), context.frameLoader(), prepared.receipts, lifecycle,
+                        Optional.of(prepared.planning.focusStateReconciliation())));
             }
             var domains = actions.stream().map(binding -> new RootDomainInstallation.FixedDomain(binding,
                     binding.effect().operation().value().equals(GovernanceActionPreparation.FOCUS) || binding.effect().operation().value().equals(GovernanceActionPreparation.PERK) ? Domain.lifestyle : Domain.council)).toList();
@@ -233,6 +234,26 @@ public final class GovernanceRuntimeInstaller {
             return ((RootCouncilContinuationSeeds)prepared.seed).preserveCanonical(same);
         }
         public CouncilContinuationCoordinator continuations() { return prepared.continuation; }
+        public RootReconciliationAuthority.QueryPolicy reconciliationReads(){return (original,identity,current,deadline)->{
+            if(!NativeGovernanceEffects.kind(original.command().operation()).filter(NativeGovernanceEffects.Kind.FOCUS::equals).isPresent())
+                return List.of();
+            var same=session();var contract=prepared.planning.focusStateReconciliation();
+            StrictJson.require(context.readCatalog().containsIdentity(contract)&&current.identity().equals(identity.factual())
+                    &&current.source().equals(identity.source())&&current.sessionId().equals(identity.sessionId()),
+                    "FOCUS getter must retain its identical installed current factual source");
+            var attempt=ActionTransitions.attempt(original.state()).orElseThrow();
+            var request=NativeGovernanceEffects.focusStateReconciliationRequest(original.command(),attempt,identity,contract,deadline);
+            NativeGovernanceEffects.requireCanonicalFocusStateReconciliation(original,attempt,identity,contract,request);
+            context.archive().inSession(same,bound->{
+                var retained=lifecycle.originals(original.command(),attempt,bound);
+                lifecycle.verify(original.command(),attempt,retained,bound);
+                var ack=(NativeActionPort.AckReceived)ActionTransitions.dispatch(original.state()).orElseThrow();
+                for(var read:retained)NativeRequestChronology.requireBeforeSubmission(read,attempt,ack);
+                return null;
+            });
+            return List.of(new RootReconciliationAuthority.AllowedRead(contract,request.arguments(),
+                    RootReconciliationAuthority.QueryKind.LIFESTYLE_FOCUS_STATE));
+        };}
         private ContinuityStorePort.Session session() {
             try { var same = context.borrowedSession(); context.writer().requireSession(same); return same; }
             catch (IOException failure) { throw new UncheckedIOException("actual original governance writer Session unavailable", failure); }
@@ -249,12 +270,14 @@ public final class GovernanceRuntimeInstaller {
                         prepared.clock, prepared.config.maximumContinuations());
                 observer = new NativeGovernanceEffects(snapshots, context.reads(), prepared.receipts, new NativeGovernanceEffects.SessionPort() {
                     @Override public ContinuityStorePort.Session current(ActionCommand command) {
+                        if(ActionReconciliationScope.activeFor(command))return session();
                         var same = GovernanceActionScope.current(command).session(command); StrictJson.require(same == session(), "governance effect borrowed another writer Session"); return same;
                     }
                     @Override public List<PlanningReadReceipt> preflight(ActionCommand command) { return GovernanceActionScope.current(command).preflight(command); }
-                }, privateCouncil, lifecycle);
+                }, privateCouncil, lifecycle, Optional.of(prepared.planning.focusStateReconciliation()));
             }
             return observer;
         }
     }
 }
+

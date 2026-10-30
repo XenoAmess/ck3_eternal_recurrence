@@ -52,7 +52,7 @@ public record ReconciliationIdentity(ObservationIdentity factual,G2Source source
         Objects.requireNonNull(factual);Objects.requireNonNull(source);StrictJson.text(sessionId);
         FrontendFrame.positive(connectionGeneration);Objects.requireNonNull(pending);Objects.requireNonNull(evidence);Objects.requireNonNull(observedAt);
         StrictJson.require(factual.machineId().equals(source.machineId()),"factual frame and actual source machine differ");
-        requireSameSubject(pending.originalBefore(),factual);
+        requireSamePhysicalSubject(pending.originalBefore(),factual);
         Objects.requireNonNull(driverRelation);historyPoint=Objects.requireNonNull(historyPoint);
         boolean equal=sameBytes(pending.originalBeforeDriver(),evidence.currentOriginalDriver());
         StrictJson.require(driverRelation==DriverRelation.EXACT?equal&&historyPoint.isEmpty():!equal&&historyPoint.isPresent(),
@@ -83,12 +83,14 @@ public record ReconciliationIdentity(ObservationIdentity factual,G2Source source
         StrictJson.require(guard.origin() instanceof CommandOrigin.Gameplay&&guard.observed().equals(before)
                 &&guard.source().equals(command.source())&&guard.sessionId().equals(command.sessionId())
                 &&guard.operation().equals(command.operation()),"original Attempt guard differs from its immutable gameplay command");
-        StrictJson.require(command.source().equals(source)&&command.sessionId().equals(sessionId)
-                &&guard.connectionGeneration().equals(connectionGeneration),"actual source/session/connection crossed the original primitive");
+        StrictJson.require(command.source().equals(source)&&command.sessionId().equals(sessionId),
+                "actual source/session crossed the original primitive");
         // Retain the actual cached frame publication time; native query freshness belongs to the private lease/wire chronology.
         Objects.requireNonNull(observedAt,"actual retained observation publication time required");
-        return new ReconciliationIdentity(factual,source,sessionId,connectionGeneration,
+        var identity=new ReconciliationIdentity(factual,source,sessionId,connectionGeneration,
                 new Pending(command.actionId(),original.bodySha256(),attempt.requestId(),before,originalReceipt,originalBeforeDriver),evidence,observedAt,relation,point);
+        identity.requireOriginalConnection(guard);
+        return identity;
     }
     static ActionState.Attempt primitiveAttempt(ActionReceipt original) {
         Objects.requireNonNull(original);
@@ -110,11 +112,34 @@ public record ReconciliationIdentity(ObservationIdentity factual,G2Source source
                 &&before.frame().episodeRunId().equals(after.frame().episodeRunId())
                 &&before.frame().identity().player().equals(after.frame().identity().player()),
                 "factual query crossed the original actual machine/Game/player/episode");
+        requireSamePhysicalSubject(before,after);
+        StrictJson.require(after.frame().revision().compareTo(before.frame().revision())>=0,
+                "same-connection factual public revision regressed");
+    }
+    /** A new HELLO can restore an earlier public Driver revision; native time and Game remain monotone. */
+    public static void requireSamePhysicalSubject(ObservationIdentity before,ObservationIdentity after) {
+        StrictJson.require(before.machineId().equals(after.machineId())&&before.game().equals(after.game())
+                &&before.frame().episodeRunId().equals(after.frame().episodeRunId())
+                &&before.frame().identity().player().equals(after.frame().identity().player()),
+                "factual query crossed the original actual machine/Game/player/episode");
         StrictJson.require(before.observationVersion()==after.observationVersion()
-                &&after.frame().revision().compareTo(before.frame().revision())>=0
                 &&after.frame().identity().nativeRevision().compareTo(before.frame().identity().nativeRevision())>=0
                 &&after.frame().identity().dateRaw().compareTo(before.frame().identity().dateRaw())>=0,
-                "factual query regressed its original contract/public/native/date identity");
+                "factual query regressed its original contract/native/date identity");
+    }
+    /** DATA relation only. Actual current HELLO, frame and wire custody are checked by the installed provider/scope.
+     * A reconnect retains the original gameplay guard and requires a distinct current HELLO, never relabelled old evidence. */
+    public void requireOriginalConnection(GuardEvidence original) {
+        Objects.requireNonNull(original);
+        StrictJson.require(original.origin() instanceof CommandOrigin.Gameplay
+                &&original.observed().equals(pending.originalBefore())
+                &&original.source().equals(source)&&original.sessionId().equals(sessionId),
+                "reconciliation crossed the original gameplay frame/source/session");
+        int order=connectionGeneration.compareTo(original.connectionGeneration());
+        StrictJson.require(order>=0&&(order==0||!sameBytes(capabilityEvidence(),original.capabilityEvidence())),
+                "reconciliation connection regressed or reused the original HELLO after reconnect");
+        if (order==0) StrictJson.require(factual.frame().revision().compareTo(pending.originalBefore().frame().revision())>=0,
+                "same-connection factual public revision regressed");
     }
     public boolean sameGuardFrame(ReconciliationIdentity other) {
         return other!=null&&factual.equals(other.factual)&&source.equals(other.source)&&sessionId.equals(other.sessionId)

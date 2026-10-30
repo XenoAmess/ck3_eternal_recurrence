@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.CrossJsDecimalUInt64;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -57,7 +58,7 @@ public final class ProposalLifecycle {
         public ExternalFact {
             identifier(actionId); digest(bodySha256); Objects.requireNonNull(origin); Objects.requireNonNull(state); Objects.requireNonNull(scope); Objects.requireNonNull(domain);
             Objects.requireNonNull(affectedClaims); Objects.requireNonNull(originalEvidenceRef); require(originalEvidenceRef.bytes() > 0, "original fact evidence required");
-            affectedClaims.armyIds().forEach(ProposalLifecycle::safeResourceId); affectedClaims.allyCharacterIds().forEach(ProposalLifecycle::safeResourceId); affectedClaims.characterIds().forEach(ProposalLifecycle::safeResourceId);
+            affectedClaims.armyIds().forEach(ProposalLifecycle::safeResourceId); affectedClaims.allyCharacterIds().forEach(NativeCharacterId::of); affectedClaims.characterIds().forEach(NativeCharacterId::of);
             if (scope == UnknownScope.CLAIMS) require(!empty(affectedClaims), "claims isolation requires explicit affected resources");
         }
         /** A confirmed outgoing send is terminal for its exact action; relationship effects remain separate facts. */
@@ -147,8 +148,8 @@ public final class ProposalLifecycle {
         if (!expected.before().machineId().equals(after.machineId()) || !expected.before().game().equals(after.game())
                 || !expected.before().frame().episodeRunId().equals(after.frame().episodeRunId())
                 || !expected.before().frame().identity().player().equals(after.frame().identity().player())) return ObservationComparison.GAME_OR_EPISODE_DRIFT;
+        // Public Driver revisions restart with a new HELLO; Native revision and date remain Game-scoped.
         if (after.frame().identity().nativeRevision().compareTo(expected.before().frame().identity().nativeRevision()) < 0
-                || after.frame().revision().compareTo(expected.before().frame().revision()) < 0
                 || after.frame().identity().dateRaw().compareTo(expected.before().frame().identity().dateRaw()) < 0) return ObservationComparison.STALE_VERSION;
         Set<FieldKey> fields = new HashSet<>(); for (ExpectedValue value : actual) require(fields.add(value.field()), "duplicate actual observation field refused");
         return expected.values().stream().allMatch(actual::contains) ? ObservationComparison.EXPECTED_FIELDS_MATCH : ObservationComparison.EXPECTED_FIELDS_DIFFER;

@@ -36,6 +36,8 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
     private final Extensions extensions;
     private final WriterFaultProbe faults;
     private final StorageWriteGuard storageGuard;
+    /** One captured history cache is reused across same-process writer sessions. */
+    private final ContinuityStore store;
     /** Exact physical outputs only; this is neither Game admission nor an observed initial window. */
     public record Initialized(Layout layout,Pin anchor,Pin snapshot,Pin lock,Head initialHead) {
         public Initialized {Objects.requireNonNull(layout);Objects.requireNonNull(anchor);Objects.requireNonNull(snapshot);
@@ -121,6 +123,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         this.authority=Objects.requireNonNull(authority);this.clock=Objects.requireNonNull(clock);
         this.extensions=Objects.requireNonNull(extensions);this.storageGuard=Objects.requireNonNull(storageGuard);
         this.faults=Objects.requireNonNull(faults);
+        this.store=new ContinuityStore(layout);
         storageGuard.requireInitialization(layout.lock(),List.of(layout.snapshot().getParent(),layout.events()));
         if(extensions.artifacts().isPresent()){
             ImmutableArtifactStore actual=extensions.artifacts().orElseThrow();
@@ -193,7 +196,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
     }
     public final class Session implements ContinuityStorePort.Session {
-        private final ContinuityStore store = new ContinuityStore(layout);
+        private final ContinuityStore store = ContinuityWriter.this.store;
         private final Thread owner = Thread.currentThread();
         private boolean open = true;
         private Head retainedHead;
@@ -236,9 +239,20 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             requireWriter(layout.lock());
             actualEvents=java.util.List.copyOf(Objects.requireNonNull(actualEvents));
             StrictJson.require(!actualEvents.isEmpty()
-                    &&actualEvents.size()<=org.xar.ck3.control.continuity.ContinuityHistory.MAX_CONTINUITY_EVENTS,
+                    &&actualEvents.size()<=org.xar.ck3.control.continuity.ContinuityHistory.maximumEvents(),
                     "finite actual canonical event batch required");
             Head actual = store.head();
+            try {
+                return readHistoricalTransitions(actualEvents, actual);
+            } catch (IOException changed) {
+                // Historical reads have no mutation to replay. Only an actual stale/missing
+                // captured original triggers one cold recapture; successful reads stay warm.
+                retainedHead = null;
+                return readHistoricalTransitions(actualEvents, store.refreshHead());
+            }
+        }
+        private java.util.List<HistoricalTransition> readHistoricalTransitions(
+                java.util.List<Pin> actualEvents, Head actual) throws IOException {
             java.util.List<HistoricalTransition> results = new java.util.ArrayList<>();
             for (Pin actualEvent : actualEvents) {
                 Pin captured = actual.documents().stream().filter(actualEvent::equals).findFirst()
@@ -864,54 +878,16 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
     private static byte[] domainCanonical(byte[] raw, int maximum) {
         return ContinuityJson.canonical(ContinuityJson.parseObject(raw, maximum), maximum);
     }
-    /** Actual source files and full domain originals use the existing full-pin bound; transport evidence keeps its separate limit. */
+    /** All named originals share the finite full-material bound; the reference still binds exact bytes and SHA. */
     private static List<Pin> captureDomain(List<ExactRef> references) throws IOException {
         List<Pin> pins = new ArrayList<>();
         for (ExactRef reference : references) pins.add(LedgerFiles.exact(reference, MAX_PIN_BYTES).pin());
         return List.copyOf(pins);
     }
     private static List<Pin> capture(Request request) throws IOException {
-        // Complete Driver and typed SemanticEvidence originals retain their material bound.
-        // Every other evidence reference keeps the transport bound.
-        ObjectNode details = request.detailsObject();
-        List<ExactRef> fullMaterials = new ArrayList<>();
-        if (DRIVER_READ_HISTORY_KIND.equals(request.kind())) {
-            fullMaterials.add(ExactRef.fromJson(details.get("before_driver")));
-            fullMaterials.add(ExactRef.fromJson(details.get("after_driver")));
-        }
-        com.fasterxml.jackson.databind.JsonNode semantic = null;
-        if (ORDINARY_CYCLE_KIND.equals(request.kind()) || ORDINARY_NEXT_BASELINE_KIND.equals(request.kind())) {
-            semantic = details.get("semantic");
-        } else if (ORDINARY_BATCH_KIND.equals(request.kind())) {
-            var proof = details.get("completed_cycle_proof");
-            if (proof != null && !proof.isNull()) semantic = proof.get("semantic");
-        }
-        if (semantic != null && !semantic.isNull()) {
-            // The persisted SemanticEvidence contract names four complete archived DATA originals.
-            ObjectNode originals = StrictJson.object(semantic, java.util.Set.of("frame", "semantic",
-                    "original_native_packet", "driver_stamp", "original_driver", "observed_at"));
-            for (String field : List.of("semantic", "original_native_packet", "driver_stamp", "original_driver"))
-                fullMaterials.add(ExactRef.fromJson(originals.get(field)));
-        }
-        if (ORDINARY_BATCH_KIND.equals(request.kind())
-                && "WORKER_RESTART_CAPTURE".equals(StrictJson.text(details.get("boundary")))) {
-            // The existing closed restart manifest identifies complete Controller and Driver DATA.
-            ExactRef manifestRef = ExactRef.fromJson(details.get("restart_manifest"));
-            ObjectNode manifest = ContinuityJson.parseObject(
-                    LedgerFiles.exact(manifestRef, ContinuityJson.DOCUMENT_MAX_BYTES).bytes(),
-                    ContinuityJson.DOCUMENT_MAX_BYTES);
-            var fields = java.util.Set.of("schema", "controller", "driver_facts", "full_driver",
-                    "previous_transport", "public_revision", "native_revision", "observation_version", "date_raw", "source");
-            StrictJson.object(manifest, fields, fields);
-            StrictJson.require("xar.java-clean-batch-restart/v1".equals(StrictJson.text(manifest.get("schema"))),
-                    "restart manifest schema differs");
-            for (String field : List.of("controller", "driver_facts", "full_driver"))
-                fullMaterials.add(ExactRef.fromJson(manifest.get(field)));
-        }
         List<Pin> result = new ArrayList<>();
         for (ExactRef reference : request.evidence()) {
-            int maximum = fullMaterials.contains(reference) ? MAX_PIN_BYTES : ContinuityJson.TRANSPORT_MAX_BYTES;
-            result.add(LedgerFiles.exact(reference, maximum).pin());
+            result.add(LedgerFiles.exact(reference, MAX_PIN_BYTES).pin());
         }
         return List.copyOf(result);
     }

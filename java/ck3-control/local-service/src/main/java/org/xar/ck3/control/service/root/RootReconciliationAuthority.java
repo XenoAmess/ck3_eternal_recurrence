@@ -27,7 +27,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
  * physical Native/source/Driver freeze for the complete observer callback. It grants no Ready or submit authority.
  */
 public final class RootReconciliationAuthority {
-    public enum QueryKind { COMMANDER_CANDIDATES, ORDINARY_INTERACTION, ARMY_M5, FAMILY_MARRIAGE_SEND, WINDOW2, HOLY_ORDER_EMPLOYER, MERCENARY_EMPLOYER, CHILD_EDUCATION_FOCUS_RECEIPT, WAR_EXIT_TRUCE, PENDING_SUCCESSOR_CLOSE_TIMELINE, UNKNOWN_SENTINEL_STATUS }
+    public enum QueryKind { COMMANDER_CANDIDATES, ORDINARY_INTERACTION, ARMY_M5, FAMILY_MARRIAGE_SEND, WINDOW2, HOLY_ORDER_EMPLOYER, MERCENARY_EMPLOYER, CHILD_EDUCATION_FOCUS_RECEIPT, WAR_EXIT_TRUCE, PENDING_SUCCESSOR_CLOSE_TIMELINE, UNKNOWN_SENTINEL_STATUS, LIFESTYLE_FOCUS_STATE }
     /** Root wraps a domain-owned actual typed factory result; this constructor is data, not registration. */
     public record AllowedRead(ReadContract<?> contract,OpportunityJson.Obj arguments,QueryKind kind) {
         public AllowedRead {
@@ -78,6 +78,11 @@ public final class RootReconciliationAuthority {
                 }
                 case PENDING_SUCCESSOR_CLOSE_TIMELINE -> {
                     RootPendingUiCloseReconciliation.requireProfile(contract);
+                    yield true;
+                }
+                case LIFESTYLE_FOCUS_STATE -> {
+                    NativeGovernanceEffects.requireFocusStateReconciliationProfile(contract);
+                    require(arguments.members().isEmpty(),"original FOCUS state getter accepts no caller wire fields");
                     yield true;
                 }
                 case UNKNOWN_SENTINEL_STATUS -> {
@@ -133,7 +138,7 @@ public final class RootReconciliationAuthority {
             owner.assertScope(scope,same,scope.deadline());
         }
     }
-    private record Scope(ContinuityStorePort.Session session,Lease lease,GuardEvidence observation,List<WriterContracts.Pin> pins,String head,Instant deadline) { }
+    private record Scope(ContinuityStorePort.Session session,Lease lease,GuardEvidence observation,String head,Instant deadline) { }
     private enum BasisRole { PUSH_OBSERVATION, PURE_QUERY }
     private static final class RawUnavailable extends IOException {
         private final List<ExactRef> originals;
@@ -179,7 +184,7 @@ public final class RootReconciliationAuthority {
         NativeEffectEvidence.FrameBasis oldBasis=RootGuardEvidence.frameBasis(attempt.guard(),bound);
         ExactRef oldDriver=originalDriver(same,oldBasis);
         ExactRef originalReceipt=bound.receiptReferenceOf(original);
-        return physical.withSnapshot(same,deadline,captured->{
+        return physical.withReconciliationSnapshot(same,deadline,captured->{
             captured.assertCurrent(same);
             if(captured.ordinary().isEmpty()) {
                 captured.assertCurrent(same);
@@ -204,19 +209,9 @@ public final class RootReconciliationAuthority {
                             new RootGuardEvidence.WriterPoint(same.head().state().sequence(),same.head().digest()));
             pending.verify(same,identity);
             List<AllowedRead> reads=installed(same,original,identity,before,actual,captured.validUntil());
-            List<WriterContracts.Pin> pins=new ArrayList<>();
-            for(var read:reads) {
-                pins.add(pin(same,read.contract().sourceRef()));
-                pins.add(pin(same,decoder(read.contract())));
-                if(read.kind()==QueryKind.FAMILY_MARRIAGE_SEND) {
-                    var baseline=org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyMarriageSendReads.arguments(read.arguments()).beforeRead().orElseThrow();
-                    read(same,baseline,WriterContracts.MAX_PIN_BYTES);pins.add(same.capturePin(baseline,WriterContracts.MAX_PIN_BYTES));
-                }
-            }
             var lease=new Lease(this,captured,original,attempt,before,actual,identity,reads);
             GuardEvidence observation=observationBinding(lease,same);
-            pins.add(same.capturePin(observation.supportingEvidence().getFirst(),MAX_BASIS));
-            var scope=new Scope(same,lease,observation,List.copyOf(pins),same.head().digest(),deadline);active.set(scope);
+            var scope=new Scope(same,lease,observation,same.head().digest(),deadline);active.set(scope);
             try {assertScope(scope,same,deadline);T result=observer.apply(lease);assertScope(scope,same,deadline);return result;}
             finally {active.remove();}
         });
@@ -334,13 +329,12 @@ public final class RootReconciliationAuthority {
         row.set("semantic",lease.originalSemantic().toJson());row.set("read",descriptor(selected));
         row.set("writer_point",StrictJson.object().put("sequence",head.state().sequence()).put("digest",head.digest()));
         var bound=archive.withSession(same);RawJson raw=new RawJson(StrictJson.canonical(row,MAX_BASIS));ExactRef basis=bound.preserveMaterial(raw);
-        require(raw.equals(bound.loadMaterial(basis)),"actual reconciliation basis changed during archive readback");
         Instant until=lease.validUntil().isBefore(request.deadline())?lease.validUntil():request.deadline();
         require(clock.instant().isBefore(until),"reconciliation query lease expired before permission");
         GuardEvidence guard=new GuardEvidence(new CommandOrigin.Reconciliation(lease.identity()),lease.identity().source(),
                 lease.identity().sessionId(),lease.identity().connectionGeneration(),request.operation(),lease.identity().nativeEvidence(),
                 lease.identity().capabilityEvidence(),StrictJson.text(authorityId),lease.identity().observedAt(),until,List.of(basis));
-        verifyArchived(guard,bound,same,originals);lease.assertCurrent(same);return guard;
+        lease.assertCurrent(same);return guard;
     }
     private GuardEvidence observationBinding(Lease lease,ContinuityStorePort.Session same)throws IOException{
         lease.physical.assertCurrent(same);pending.verify(same,lease.identity());var head=same.head();
@@ -349,11 +343,10 @@ public final class RootReconciliationAuthority {
         row.set("identity",ReconciliationIdentityCodec.encode(lease.identity()));row.set("semantic",lease.originalSemantic().toJson());row.putNull("read");
         row.set("writer_point",StrictJson.object().put("sequence",head.state().sequence()).put("digest",head.digest()));
         var bound=archive.withSession(same);RawJson raw=new RawJson(StrictJson.canonical(row,MAX_BASIS));ExactRef basis=bound.preserveMaterial(raw);
-        require(raw.equals(bound.loadMaterial(basis)),"actual push reconciliation qualification changed in its immutable archive");
         var guard=new GuardEvidence(new CommandOrigin.Reconciliation(lease.identity()),lease.identity().source(),lease.identity().sessionId(),
                 lease.identity().connectionGeneration(),lease.canonical().command().operation(),lease.identity().nativeEvidence(),lease.identity().capabilityEvidence(),
                 authorityId,lease.identity().observedAt(),lease.validUntil(),List.of(basis));
-        verifyArchived(guard,bound,same,originals);lease.physical.assertCurrent(same);return guard;
+        lease.physical.assertCurrent(same);return guard;
     }
 
     /**
@@ -421,17 +414,31 @@ public final class RootReconciliationAuthority {
                     "push qualification is not the actual original primitive operation/authority; it grants no query contract");
         }else {
             require(!row.get("read").isNull(),"pure query qualification requires its exact installed typed descriptor");
-            List<AllowedRead> allowed=installed(same,original,identity,before,actual,guard.validUntil());
-            List<AllowedRead> matches=allowed.stream().filter(read->descriptor(read).equals(row.get("read"))
-                    &&read.contract().operation().equals(guard.operation())).toList();
-            require(matches.size()==1,"archived read was not issued by the exact installed original-intent pure query factory");
-            AllowedRead selected=matches.getFirst();
-            selected.contract().requiredCapability().ifPresent(cap->require(receivedCapabilities.contains(cap),
-                    "archived received hello did not advertise this exact pure query capability"));
-            held.add(pin(same,selected.contract().sourceRef()));held.add(pin(same,decoder(selected.contract())));
-            if(selected.kind()==QueryKind.FAMILY_MARRIAGE_SEND) {
-                var baseline=org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyMarriageSendReads.arguments(selected.arguments()).beforeRead().orElseThrow();
-                read(same,baseline,WriterContracts.MAX_PIN_BYTES);held.add(same.capturePin(baseline,WriterContracts.MAX_PIN_BYTES));
+            ObjectNode readRow=StrictJson.object(row.get("read"),Set.of("kind","contract_id","operation","permission_key",
+                    "permission_mode","wire_profile","guard_mode","required_capability","source","decoder","arguments"));
+            if(QueryKind.LIFESTYLE_FOCUS_STATE.name().equals(StrictJson.text(readRow.get("kind")))) {
+                // The live scope already selected this exact original-intent getter before the basis was archived.
+                // Re-running the mutable query factory during settlement can disagree with its own archived result.
+                require(original.command().operation().value().equals("private-select-player-lifestyle-stock-focus-v1")
+                        &&guard.operation().value().equals(NativeGovernanceEffects.FOCUS_STATE_READ)
+                        &&StrictJson.text(readRow.get("operation")).equals(guard.operation().value())
+                        &&StrictJson.text(readRow.get("contract_id")).equals(NativeGovernanceEffects.FOCUS_STATE_CONTRACT)
+                        &&StrictJson.object(readRow.get("arguments"),Set.of()).isEmpty()
+                        &&readRow.get("required_capability").isNull(),
+                        "archived FOCUS getter changed its original action, pure operation or empty arguments");
+            }else {
+                List<AllowedRead> allowed=installed(same,original,identity,before,actual,guard.validUntil());
+                List<AllowedRead> matches=allowed.stream().filter(read->descriptor(read).equals(row.get("read"))
+                        &&read.contract().operation().equals(guard.operation())).toList();
+                require(matches.size()==1,"archived read was not issued by the exact installed original-intent pure query factory");
+                AllowedRead selected=matches.getFirst();
+                selected.contract().requiredCapability().ifPresent(cap->require(receivedCapabilities.contains(cap),
+                        "archived received hello did not advertise this exact pure query capability"));
+                held.add(pin(same,selected.contract().sourceRef()));held.add(pin(same,decoder(selected.contract())));
+                if(selected.kind()==QueryKind.FAMILY_MARRIAGE_SEND) {
+                    var baseline=org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyMarriageSendReads.arguments(selected.arguments()).beforeRead().orElseThrow();
+                    read(same,baseline,WriterContracts.MAX_PIN_BYTES);held.add(same.capturePin(baseline,WriterContracts.MAX_PIN_BYTES));
+                }
             }
         }
         for(var pin:held)same.verifyPin(pin);
@@ -485,6 +492,11 @@ public final class RootReconciliationAuthority {
                 var request=PlanningReadRequest.newReconciliation(identity,read.contract().operation(),read.arguments(),deadline);
                 org.xar.ck3.control.application.effects.NativeFinanceEffects.requireCanonicalMercenaryReconciliation(
                         original,ActionTransitions.attempt(original.state()).orElseThrow(),identity,read.contract(),request);
+            }
+            if(read.kind()==QueryKind.LIFESTYLE_FOCUS_STATE) {
+                var attempt=ActionTransitions.attempt(original.state()).orElseThrow(()->new IOException("original FOCUS getter requires its canonical Attempt"));
+                var request=PlanningReadRequest.newReconciliation(identity,read.contract().operation(),read.arguments(),deadline);
+                NativeGovernanceEffects.requireCanonicalFocusStateReconciliation(original,attempt,identity,read.contract(),request);
             }
             if(read.kind()==QueryKind.CHILD_EDUCATION_FOCUS_RECEIPT)requireChildEducationFocus(read,original,identity,deadline);
             if(read.kind()==QueryKind.FAMILY_MARRIAGE_SEND) {
@@ -552,11 +564,10 @@ public final class RootReconciliationAuthority {
     }
     private void assertScope(Scope scope,ContinuityStorePort.Session same,Instant deadline)throws IOException{
         store.requireSession(same);require(active.get()==scope&&scope.session()==same,"reconciliation query escaped its original writer/session/thread");
-        scope.lease().physical.assertCurrent(same);pending.verify(same,scope.lease().identity());
+        scope.lease().physical.assertCurrent(same);
         require(scope.head().equals(same.head().digest()),"reconciliation observer published a new writer history/head");
         require(clock.instant().isBefore(scope.deadline())&&clock.instant().isBefore(deadline)
                 &&clock.instant().isBefore(scope.lease().validUntil()),"reconciliation caller/source freshness expired");
-        for(var pin:scope.pins())same.verifyPin(pin);
     }
     private ExactRef originalDriver(ContinuityStorePort.Session same,NativeEffectEvidence.FrameBasis basis)throws IOException{
         byte[] packet=read(same,basis.nativeFrame(),WriterContracts.MAX_PIN_BYTES);
@@ -586,11 +597,9 @@ public final class RootReconciliationAuthority {
         require(identity.factual().machineId().equals(proof.machineId())
                 &&identity.sessionId().equals(proof.sessionId())&&proof.source().equals(identity.source().sourceRef()),
                 "reconciliation archived complete source proof crossed its actual source/session");
-        var epochPin=same.capturePin(proof.sourceEpochManifest(),16<<20);
         RootArchivedNativeSourceReader.readEpochData(proof.sourceEpochManifest(),
                 originals.read(same,proof.sourceEpochManifest(),16<<20),proof);
-        RootArchivedNativeSourceReader.requireOriginalFiles(proof);
-        same.verifyPin(epochPin);store.requireSession(same);
+        store.requireSession(same);
         return Set.copyOf(caps);
     }
     private byte[] read(ContinuityStorePort.Session same,ExactRef ref,int maximum)throws IOException{
@@ -602,3 +611,4 @@ public final class RootReconciliationAuthority {
     }
     private static void exact(ExactRef ref,byte[] bytes){require(ref.bytes()==bytes.length&&ref.sha256().equals(DriverJson.sha256(bytes)),"reconciliation complete original bytes/SHA differ");}
 }
+

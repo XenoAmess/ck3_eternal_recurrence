@@ -1,5 +1,15 @@
 # 本地 OpenAI 兼容模型服务作为执行者与初级工程师的可行性预研
 
+## 2026-10-30 八M与恢复候选实际采用补记
+
+machine_id: xenoamess-full-tower-eb9d2c1186。本轮集中调度18次真实调用的原件为 D:/ck3-state/model-dispatch65/SUMMARY.json 与 REVIEWS.json；后继HTTP统一交回 /root/model_coordinator64。继续使用8080/qwen38-coder、固定源码前缀、SSE首内容TTFT及总耗时分别记录，未据排队或耗时推断缓存命中。
+
+实际采用有不同程度：M3两角色guard候选经隔离34项通过；M6采用两处guard，owner补signed owner投影后85项通过；M0采用角色guard、完整step parser及桥委托，owner补negativezero和可合回测试seam后默认52项通过；M7采用首轮生产片段，owner补action域与真实producer回归，248断言及完整Bridge单TU编译通过。M2经两处窄纠正完成真实四值parser/reader/submit隔离。上述初始结果均为D候选，开发源整合与部署分开记录。
+
+失败未抹去：M7第二轮输出截断被拒；M5首请求漏max_tokens导致无界流，受控停止后改有限输出，后继CPP/ASM真实编译失败均保留，owner最终修ABI/layout使49B真实片段82项通过，不能记模型原样成功。M4夹具可编译但运行越界，owner窄修后四world通过，没有由此捏造生产缺陷。Java恢复模型测试捏造API被拒，owner实际回归另发现非FOCUS Unknown误选。Ledger模型指出重复读取但仅实例内缓存不足，跨session实现由owner补齐。
+
+HTTP200、可解析JSON、编译、隔离行为、开发源采用逐级区分。这些源码候选调用不等于运行期游玩决策；真实qwen SELECT_PROPOSAL/ACCEPT由Game批次原件另行记账。
+
 预研日期：2026-10-27；归档日期：2026-10-28。
 
 用户问题：如果本地提供 OpenAI 协议的模型 HTTP 服务，能否由当前主智能体调用，承担执行者和初级工程师工作，以加速项目推进并节省 token。

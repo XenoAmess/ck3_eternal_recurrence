@@ -128,6 +128,10 @@ public final class RootApplicationAssembly {
         private ContinuityBatchJournal cleanRestartBatches;
         private org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission cleanRestartAdmission;
         private OriginalWindowReducer.Policy cleanRestartPolicy;
+        private OrdinaryCycleTransitions unresolvedSameGameCycles;
+        private ContinuityBatchJournal unresolvedSameGameBatches;
+        private ContinuityBatchJournal.UnresolvedSameGameData unresolvedSameGameData;
+        private OriginalWindowReducer.Policy unresolvedSameGamePolicy;
         private ContinuityBatchJournal.InitialNoDispatchRecovery initialNoDispatchProof;
         private OrdinaryCycleTransitions initialNoDispatchCycles;
         private ContinuityBatchJournal initialNoDispatchBatches;
@@ -645,6 +649,50 @@ public final class RootApplicationAssembly {
             });
         }
 
+        public synchronized Optional<ContinuityBatchJournal.UnresolvedSameGameData> readUnresolvedSameGame(
+                ManagedGameSession game, OriginalWindowReducer.Policy cyclePolicy) throws IOException {
+            StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty(), "unresolved reconstruction reads the unused actual Core");
+            Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
+            return writer.locked(same -> {
+                boolean pending=actions.withFrozen(same,lease->{
+                    boolean found=lease.snapshot().actions().stream().anyMatch(action->!action.settled()
+                            || action.command().operation().value().equals("private-select-player-lifestyle-stock-focus-v1")
+                            && action.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED);
+                    lease.assertCurrent();return found;
+                });
+                if(!pending||same.head().state().status()!=org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED)
+                    return Optional.empty();
+                var cycles=new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,cyclePolicy,writer::requireSession);
+                cycles.bindTerminalFrameLoader(frames);
+                var batches=new ContinuityBatchJournal(writer,cycles);
+                var data=batches.readUnresolvedSameGame(same,new SessionIdentity(game.machineId(),game.generation(),game.sessionId()));
+                unresolvedSameGameCycles=cycles;unresolvedSameGameBatches=batches;
+                unresolvedSameGameData=data;unresolvedSameGamePolicy=cyclePolicy;
+                return Optional.of(data);
+            });
+        }
+
+        public synchronized DriverBootstrap.Adopted adoptUnresolvedSameGame(ManagedGameSession game,
+                ContinuityBatchJournal.UnresolvedSameGameData data,int retainedFrames,
+                OriginalWindowReducer.Policy cyclePolicy,Instant deadline)throws IOException,InterruptedException {
+            StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty(),"unresolved same-Game Driver binds once to the unused Core");
+            StrictJson.require(data==unresolvedSameGameData&&unresolvedSameGameCycles!=null&&unresolvedSameGameBatches!=null
+                    &&unresolvedSameGamePolicy.equals(cyclePolicy),"unresolved adoption retains the actual DATA reader and cycle policy");
+            var owner=data.capturedController().owner();
+            StrictJson.require(owner.machineId().equals(game.machineId())&&owner.game().equals(game.generation())
+                    &&owner.sessionId().equals(game.sessionId()),"unresolved Controller belongs to another actual Game");
+            return writer.locked(same->{
+                final DriverBootstrap.Adopted result;
+                try{result=DriverBootstrap.adoptUnresolvedSameGame(data.capturedManifest(),data.retainedFacts(),
+                        data.retainedFullDriver(),same,actions,game.nativeTransport(),archive,retainedFrames,deadline);}
+                catch(InterruptedException interrupted){
+                    Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("same-Game unresolved Driver adoption interrupted");
+                    failure.initCause(interrupted);throw failure;
+                }
+                adopted.add(result);return result;
+            });
+        }
+
         public synchronized DriverBootstrap.Adopted adoptInitial(InitialDriverBootstrap.Staged original,
                 WriterContracts.Prepared prepared, WriterContracts.Receipt receipt) throws IOException {
             StrictJson.require(menu != null && !staged && !finished, "initial Driver promotion requires this Core's actual startup graph");
@@ -972,6 +1020,12 @@ public final class RootApplicationAssembly {
             return finishObserved(installed, driver, configuration, services, Optional.of(cleanRestartAdmission));
         }
 
+        public RootApplicationSession finishUnresolvedSameGame(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services)throws IOException,InterruptedException{
+            StrictJson.require(unresolvedSameGameData != null, "unresolved same-game data required");
+            StrictJson.require(unresolvedSameGamePolicy.equals(configuration.cyclePolicy()), "unresolved same-game policy mismatch");
+            return finishObserved(installed, driver, configuration, services, Optional.empty());
+        }
+
         private RootApplicationSession finishObserved(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services,Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission> admissionOpt)throws IOException,InterruptedException{
             var context=installed.context();
             var game=context.game();
@@ -995,7 +1049,9 @@ public final class RootApplicationAssembly {
             var authorityId=configuration.authorityId();
 
             installed.bindPhysicalDriver(driver);
-            var staged=stage(driver,game,sources,policy,freshness,files,checkpoints.driverCheckpoint(),checkpoints.checkpointEvidence(),checkpoints.attachmentEvidence(),remaining.lifecycle().seedAdoption(),checkpoints.lineageId(),checkpoints.save());
+            var staged=unresolvedSameGameData==null
+                    ?stage(driver,game,sources,policy,freshness,files,checkpoints.driverCheckpoint(),checkpoints.checkpointEvidence(),checkpoints.attachmentEvidence(),remaining.lifecycle().seedAdoption(),checkpoints.lineageId(),checkpoints.save())
+                    :stageReadonly(driver,game,sources,policy,freshness,files,checkpoints.driverCheckpoint(),checkpoints.checkpointEvidence(),checkpoints.attachmentEvidence(),remaining.lifecycle().seedAdoption(),checkpoints.lineageId(),checkpoints.save());
             installed.bindSave(staged);
 
             var readiness=new RootRuntimeReadiness(this,policy,freshness,clock);
@@ -1025,6 +1081,9 @@ public final class RootApplicationAssembly {
                         failure.initCause(interrupted);throw failure;
                     }
                     runtime.capabilities().initializePlanning(same,driver.first());
+                } else if (unresolvedSameGameData != null) {
+                    // Restore the existing per-graph reader without capture/publication or canonical head changes.
+                    runtime.capabilities().restoreRetainedPlanning(same);
                 } else {
                     if (initialRecoveryAdmission != null) {
                         initialRecoveryAdmission.requireCurrent(same);
@@ -1058,12 +1117,28 @@ public final class RootApplicationAssembly {
         public synchronized Staged stage(DriverBootstrap.Adopted driver, ManagedGameSession game,
                 RootNativeSourceAuthority sources, NativeReadiness.Policy policy, Duration freshness,
                 CheckpointFiles files, Path driverCheckpointPath, Path checkpointEvidence,
-                Path attachmentEvidence, CheckpointService.SeedAdoptionPort seeds, String lineageId, Path savePath)
-                throws IOException {
-            StrictJson.require(!staged && !finished && adopted.contains(driver), "stage requires this Core's original adopted Driver once");
-            StrictJson.require(driver.status() == DriverBootstrap.AdoptionStatus.FRESH_OBSERVED
-                    ||driver.status() == DriverBootstrap.AdoptionStatus.QUALIFICATION_REQUIRED,
+                Path attachmentEvidence, CheckpointService.SeedAdoptionPort seeds, String lineageId, Path savePath) throws IOException {
+            StrictJson.require(!staged&&!finished&&adopted.contains(driver),"stage requires this Core's original adopted Driver once");
+            StrictJson.require(driver.status()==DriverBootstrap.AdoptionStatus.FRESH_OBSERVED
+                    ||driver.status()==DriverBootstrap.AdoptionStatus.QUALIFICATION_REQUIRED,
                     "unresolved or incomplete action history cannot stage gameplay authority");
+            return stagePhysical(driver,game,sources,policy,freshness,files,driverCheckpointPath,checkpointEvidence,attachmentEvidence,seeds,lineageId,savePath);
+        }
+
+        private synchronized Staged stageReadonly(DriverBootstrap.Adopted driver, ManagedGameSession game,
+                RootNativeSourceAuthority sources, NativeReadiness.Policy policy, Duration freshness,
+                CheckpointFiles files, Path driverCheckpointPath, Path checkpointEvidence,
+                Path attachmentEvidence, CheckpointService.SeedAdoptionPort seeds, String lineageId, Path savePath) throws IOException {
+            StrictJson.require(!staged&&!finished&&adopted.contains(driver)&&unresolvedSameGameData!=null
+                    &&driver.status()==DriverBootstrap.AdoptionStatus.READ_ONLY_UNRESOLVED,
+                    "readonly reconstruction requires this Core's actual unresolved Driver");
+            return stagePhysical(driver,game,sources,policy,freshness,files,driverCheckpointPath,checkpointEvidence,attachmentEvidence,seeds,lineageId,savePath);
+        }
+
+        private Staged stagePhysical(DriverBootstrap.Adopted driver, ManagedGameSession game,
+                RootNativeSourceAuthority sources, NativeReadiness.Policy policy, Duration freshness,
+                CheckpointFiles files, Path driverCheckpointPath, Path checkpointEvidence,
+                Path attachmentEvidence, CheckpointService.SeedAdoptionPort seeds, String lineageId, Path savePath) throws IOException {
             game.verify(); NativeGameTransport transport = game.nativeTransport();
             SessionIdentity identity = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
             StrictJson.require(driver.session().game().equals(identity.game()) && driver.session().sessionId().equals(identity.sessionId())
@@ -2076,6 +2151,10 @@ public final class RootApplicationAssembly {
                     StrictJson.require(core.cleanRestartPolicy.equals(cyclePolicy),"clean restart retains its actual cycle policy");
                     cycles=core.cleanRestartCycles;
                 }
+                else if(core.unresolvedSameGameCycles!=null){
+                    StrictJson.require(core.unresolvedSameGamePolicy.equals(cyclePolicy),"unresolved reconstruction retains its actual cycle policy");
+                    cycles=core.unresolvedSameGameCycles;
+                }
                 else if(core.initialNoDispatchCycles!=null){
                     StrictJson.require(core.initialNoDispatchPolicy.equals(cyclePolicy),"initial no-dispatch recovery retains its actual cycle policy");
                     cycles=core.initialNoDispatchCycles;
@@ -2124,7 +2203,8 @@ public final class RootApplicationAssembly {
                 knownReads.bind(capabilities); if (!restoring) inputs.bind(capabilities, planningInputs);
                 if(!restoring&&!next)cycles.bindOperatorAuthority(core.operatorAuthority());
                 ContinuityBatchJournal batches = next?nextEpisode.batches:(core.cleanRestartBatches != null ? core.cleanRestartBatches :
-                        (core.initialNoDispatchBatches != null ? core.initialNoDispatchBatches : new ContinuityBatchJournal(core.writer, cycles)));
+                        (core.unresolvedSameGameBatches != null ? core.unresolvedSameGameBatches :
+                        (core.initialNoDispatchBatches != null ? core.initialNoDispatchBatches : new ContinuityBatchJournal(core.writer, cycles))));
                 SessionPorts.ObservationPort observations = new RootSessionObservationPort(core,collector,lifecycle,terminalDecisions,driver.authority(),game.nativeTransport(),
                         Objects.requireNonNull(actualLifecycleRuntime));
                 RootControllerActions controllerActions = new RootControllerActions(core, identity, coordinator);

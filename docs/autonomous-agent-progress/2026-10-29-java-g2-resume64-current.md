@@ -1,5 +1,29 @@
 # Java / G2 resume64 续行记录
 
+## 2026-10-30 原 Game 退出与后继边界
+
+machine_id: xenoamess-full-tower-eb9d2c1186。真实父链为 Codex100316→cmd178864→Node94456→supervisor147108→Game171676，原进程对象均可按出生时间核对；它们在12:27:21.750999Z至12:27:23.789956Z退出code1。supervisor先于Game1.643秒，原Game Job的实际limit_flags=0x2200含KILL_ON_JOB_CLOSE；没有STOP请求、正常terminal、宿主错误输出或CK3 crash文件。证据支持外层进程树结束后的Job连带清理，不足以指认终止操作者或归因CK3自身崩溃。原件：D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/game-exit-cause66/PROCESS-AND-LOG-OBSERVED01.json。
+
+DEV70 host221892于12:42:09.6389141Z实际启动，12:42:11.2197Z附着失败；QueryImage error31来自已退出的原Game，不是新的Java附着缺陷。当前V实际profile、checkpoints及252条事件均无同episode保存，Driver last_checkpoint/managed_restore_transaction均null。sequence57重启票只支持存活Game业务接续，不能恢复已退出Game。证据：D:/ck3-state/samegame-restore-material66/RESTORE-MATERIAL-INVENTORY.json。旧V/repair252及APPLIED原动作保留，没有重发或伪clean。
+
+恢复误判85已采用；完整真实247/250/252入口离线回归5/5，旧逻辑负对照3P2F；SETTLE用明确fixture SEM，不授实机日期信用。同Game不强制SAVE的Opening修复86四生产/两测试已S/Z采用，29/29通过但原Game已退出，现场NOT_RUN。宿主持久修复的最终候选以BREAKAWAY脱外层Job、只继承三个持久stdio；真实Windows四项回归通过，完整launcher返回而宿主存活、显式stop后exit0。原件D:/ck3-state/supervisor-detach66/RESULT.json，交运行岗接入，不对dead Game反复启动业务。
+
+新的原版1066.9.15罗贝尔实际游玩计划已准备于D:/ck3-state/runtime64-new-vanilla87/PLAN-REVIEW.json，候选state根D:/ck3-state/ck3-java-g2-resume85-vanilla02尚未创建。它是新campaign，不是旧局恢复；复用稳定native63、无mod、不部署八M开发DLL。鉴于当前明确“不重造1066/不静默从1066重开”，尚未执行，待必要修复就绪后由Root请求一次具体新局授权。
+
+## 2026-10-30 同 Game 接续最新摘要（DEV69/reload12 后）
+
+machine_id: xenoamess-full-tower-eb9d2c1186。同一原版 CK3 PID171676、出生 FILETIME134376899432680684 保留；实际运行重新由 /root/runtime64 独占，背景研究不向 Game 提交动作。
+
+原 BATCH53 的 FOCUS 未重放。canonical248 已经独立 getter 结清 APPLIED；249 追加真实 Driver ACTION 历史，250 导入 OPENING_GATE 的 AWAIT_CONSUMPTION，251 导入 OPTIONAL_CADENCE，252 为原回执 RETAIN。待结算回执 SHA ce6af4a1f95cba174aa576985903458cbdd24e4c89f8ae1e8ea1a5e8eb1d9a3d、10404字节。状态仍 repair_required，date raw53144328，新增游戏日仍0；动作生效不等于循环和日期完成。
+
+已采用的同局修复包括 APPLIED 后的 Driver/原动作恢复、合法 RETAIN 后缀与相同 pending 幂等、恢复闭合独立十分钟预算、同 writer 跨 session Head 缓存与下一事件增量读回、删去已精确读验原件的重复 pin 复验、事件上限256→8192及非内联 accessor、未结清分支的 FOCUS 操作约束。8192仍有限，尚无轮转。隔离 Head7/7、255至258真实磁盘边界/提交、原动作选择4/4和248–250只读链回归均不授实机日期信用。
+
+正确 MB 增量编译于2026-10-30T12:10:41Z完成：默认 mvn，复用D盘依赖及MB，-pl local-service -am -T2 compile，exit0/78.77秒。Reactor列34项、实际16个模块发生javac；精确命令、实际源数和输出见 D:/ck3-state/unknown-samegame-recovery84/MAVEN-COHORT21-SUMMARY.json。此前一次编译写入默认开发输出，不能计为已更新运行MB，已由显式输出根这一轮纠正。
+
+DEV69 host287216/reload12于12:11:52.035836500Z实际启动，12:12:49.805148800Z失败，12:12:49.813724800Z完成，未请求停止Game。错误 historical RETAIN did not preserve its exact pending receipt。真实252原件的Java反例证明字段内容相同，只因 parsed BigIntegerNode 与构造 LongNode 的 JsonNode.equals 判异。最小修复解为 ExactRef 后值比较，D窄回归4/4；已交运行岗采用。原件：V/artifacts/persistent-java02/dev-resume69/reload12/ACTUAL-END-READBACK.json（V为D:/ck3-state/ck3-java-g2-resume63-vanilla01）。后继reload13的HTTP连接被拒，未启动新业务；旧host已退出，运行岗正在同Game启动DEV70，不重造1066。
+
+DEV69运行期确已接入本地qwen38-coder，原BATCH53有真实 SELECT_PROPOSAL→ACCEPT，输入也包含life-advance。当前无新增日的直接障碍是恢复/循环闭合。开局焦点既存策略还要求SAVE后消费，独立岗已制作同Game无需SAVE消费的最小候选供运行岗后继处理，不将SAVE加作普通业务重启门槛。M0–M7继续隔离Native研究，开发源码采用不等于DLL部署或Game验收。
+
 machine_id: `xenoamess-full-tower-eb9d2c1186`。本轮开始于2026-10-29 14:39Z附近；时间采用UTC。用户最初要求60并发智能体和本地模型高采用，续行期间最新明确取消强维60；当前按实际任务安排，最优先同Game实际决策与自动游玩。本地模型继续优先承担真实实现候选，退化输出据实拒收并由owner接管。
 
 下文 `O` 为本机原件根 `D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration`；S、Z、MB与m2沿[运行交接](../handover/2026-10-29-java-g2-resume63-runtime-handoff.md)的精确映射。

@@ -1,0 +1,112 @@
+{
+  "schema": "ck3.local-model-executor-config/v1",
+  "base_url": "http://192.168.1.7:8080/v1",
+  "model": "qwen38-coder",
+  "authentication": {
+    "required": false,
+    "client_required_placeholder": "local"
+  },
+  "api": "chat_completions",
+  "defaults": {
+    "temperature": 0,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "response_format": {
+      "type": "json_object"
+    }
+  },
+  "address_migration": {
+    "previous_base_url": "http://192.168.1.7:8000/v1",
+    "same_service_and_capabilities": true,
+    "basis": "User confirmed address migration on 2026-10-28; keep one combined experiment history.",
+    "fallback_to_previous_address": false
+  },
+  "current_interface_limits": {
+    "automatic_tool_choice": "server_tool_parser_not_configured",
+    "forced_function_choice": "server_tool_parser_not_configured"
+  },
+  "experiment_notes": "docs/local-model-executor-feasibility-2026-10-28.md",
+  "dispatch_policy": {
+    "updated_on": "2026-10-30",
+    "basis": "User requests more frequent real calls and continued capability exploration, while autonomously withholding tasks already shown to exceed the model's capability.",
+    "prefer": [
+      "Independent real implementation methods and small contract changes with exact declarations and consumers",
+      "Actual compiler or behaviour diagnostics, with a narrower corrective request when useful",
+      "Prepare the next real bounded request while reviewing or testing the previous candidate"
+    ],
+    "calibration": [
+      "Track input scope, hints, rounds, actual compilation and behaviour, owner correction cost, elapsed time and final adoption",
+      "Do not infer reasoning limits from HTTP errors, missing tool parser, truncation or a single success or failure",
+      "After repeated API invention or semantic failures, assign the full implementation to the owner and reserve a smaller independently verifiable method for the model",
+      "Explore greater difficulty offline when current evidence supports it; do not make exploration a live-game prerequisite"
+    ],
+    "currently_owner_led": [
+      "Complete ASM ABI and memory layout reconstruction across multiple source files",
+      "Full continuity recovery graphs and archive helpers requiring unsupplied or repeatedly invented APIs"
+    ],
+    "avoid": [
+      "Reposting an already completed implementation for retrospective credit",
+      "Unneeded calls, fixed per-agent quotas, or indefinitely waiting on a model before live recovery"
+    ]
+  },
+  "latest_connection_observation": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-28T14:21:49.623Z",
+    "http_status": 200,
+    "response_id": "chatcmpl-9baab6b77c75b1fb"
+  },
+  "prompting": {
+    "layout_version": "stable-prefix-v1",
+    "system_template": "You are a Java engineering collaborator. Use only the supplied current source and contracts. Return a precise candidate or analysis for the final task. Do not invent APIs, missing facts, successful tests, or game outcomes. Distinguish observations from assumptions. Follow the requested output format.",
+    "message_order": [
+      "system: exact fixed system_template",
+      "user: current stable source and contracts in deterministic order",
+      "user: changing task, diagnostics, requested output, and review feedback"
+    ],
+    "source_order": [
+      "shared contracts and stable API declarations",
+      "related current producers and consumers",
+      "target implementation"
+    ],
+    "metadata_location": "timestamps, request ids, attempt numbers, and local paths for receipts stay outside the model prefix unless needed by the task",
+    "cache_semantics": "Reuse actual unchanged source text; update changed sources normally. Prefix caching primarily targets time to first token, not decode throughput.",
+    "verification_metrics": [
+      "first_nonempty_content_delta_ms",
+      "http_headers_ms",
+      "total_ms",
+      "prompt_tokens",
+      "completion_tokens",
+      "cached_prompt_tokens_if_reported"
+    ]
+  },
+  "transient_retries": {
+    "maximum_attempts": 6,
+    "backoff_seconds": [
+      10,
+      20,
+      40,
+      60,
+      60
+    ],
+    "jitter_ratio": 0.2,
+    "retry_http_statuses": [
+      429,
+      502,
+      503,
+      504
+    ],
+    "retry_transport_errors": [
+      "connection_refused",
+      "connection_reset",
+      "connect_timeout",
+      "read_timeout",
+      "incomplete_response"
+    ],
+    "scope": "model HTTP requests only; never replay game/native actions",
+    "on_partial_stream": "retain failed attempt and discard partial candidate; retry complete unchanged request",
+    "nonretryable": "do not retry permanent request/schema/authentication errors without correcting the request",
+    "during_backoff": "continue independent work; do not block the live CK3 path or fall back to port 8000",
+    "preserve_request_prefix": true
+  }
+}

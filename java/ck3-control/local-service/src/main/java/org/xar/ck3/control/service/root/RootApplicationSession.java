@@ -836,6 +836,33 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
             controller.restoreCleanRestart(same,actual);
         } finally {calls.unlock();}
     }
+
+    public void restoreUnresolvedSameGame(ContinuityBatchJournal.UnresolvedSameGameData data) throws IOException, InterruptedException {
+        calls.lockInterruptibly();
+        try {
+            requireOwner();
+            requireNoPendingCheckpointAdoption();
+            StrictJson.require(installedHost != null && installedHost.current().orElseThrow() == controller, "unresolved same-game restoration requires installed Host");
+            owner.withBorrowed(() -> {
+                var same = owner.activeBorrowedSession();
+                writer.requireSession(same);
+                controller.restoreUnresolvedSameGame(same, data);
+                return null;
+            });
+        } finally { calls.unlock(); }
+    }
+
+    public ActionReceipt reconcileUnresolvedOriginal(ContinuityBatchJournal.UnresolvedSameGameData data, Instant deadline) throws IOException, InterruptedException {
+        calls.lockInterruptibly();
+        try {
+            requireOwner();
+            requireNoPendingCheckpointAdoption();
+            requireDeadline(deadline);
+            // Reconciliation and cycle completion each borrow the sole writer in sequence.
+            // An outer borrowed session would make retainCycle open a nested writer session.
+            return controller.reconcileUnresolvedOriginal(data, deadline);
+        } finally { calls.unlock(); }
+    }
     /** Core holds the original writer while the actual journal repair is consumed before Host installation. */
     public void restoreInitialNoDispatchRecovery(ContinuityStorePort.Session same,
             ContinuityBatchJournal.InitialNoDispatchRecovery actual)throws IOException,InterruptedException {

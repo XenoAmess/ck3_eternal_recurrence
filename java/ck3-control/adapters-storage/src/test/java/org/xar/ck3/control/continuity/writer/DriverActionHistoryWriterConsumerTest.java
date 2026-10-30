@@ -46,7 +46,7 @@ final class DriverActionHistoryWriterConsumerTest {
         assertTrue(Platform.isWindows());WriterFixture f=new WriterFixture(temporary.resolve("cold"));var writer=writer(f,false);var request=request(f);
         var receipt=writer.locked(same->same.commit(same.preview(request)));
         assertTrue(ContinuityJson.same(request.detailsObject(),receipt.head().toJson().get(DRIVER_ACTION_HISTORY_FIELD)));
-        assertEquals(WriterFixture.state().get("pending_cycle"),receipt.head().toJson().get("pending_cycle"));
+        assertTrue(ContinuityJson.same(WriterFixture.state().get("pending_cycle"),receipt.head().toJson().get("pending_cycle")));
         assertEquals(1,receipt.head().settledCycles());assertEquals(11559,receipt.head().toJson().get("NEXT").longValue());
         assertFalse(receipt.head().toJson().has(ACTION_LIFECYCLE_FIELD),"history publication cannot mint an action record");
         assertArrayEquals(receipt.head().canonicalBytes(),writer.locked(ContinuityStorePort.Session::head).state().canonicalBytes());

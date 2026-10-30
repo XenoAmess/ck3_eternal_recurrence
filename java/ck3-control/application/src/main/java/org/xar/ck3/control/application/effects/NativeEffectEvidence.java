@@ -47,6 +47,9 @@ public final class NativeEffectEvidence {
             catch (java.io.IOException unavailable) { throw new java.io.UncheckedIOException("actual pending push qualification is unavailable", unavailable); }
             requireReconciliation(command, attempt, frames.after(), reconciliation.orElseThrow());
         }
+        StrictJson.require(frames.reconciliation().isEmpty() || reconciliation.filter(guard ->
+                guard.origin().requireReconciliation().sameGuardFrame(frames.reconciliation().orElseThrow())).isPresent(),
+                "reconnected effect Pair escaped its actual canonical pending scope");
         StrictJson.require(reads != null && reads.size() <= 16, "finite actual independent-read evidence required");
         FrameBasis before = basis(frames.before()), after = basis(frames.after());
         for (FrameBasis frame : List.of(before, after)) {
@@ -91,9 +94,10 @@ public final class NativeEffectEvidence {
                 && before.sessionId().equals(receipt.command().sessionId()) && before.originalEvidence().equals(settled.attempt().guard().nativeEvidence()), "rebuilt original before frame differs");
         StrictJson.require(after.identity().equals(effect.after()) && after.source().equals(effect.source()) && after.sessionId().equals(effect.sessionId())
                 && after.observedAt().equals(effect.observedAt()) && after.originalEvidence().equals(effect.originalEvidence()), "rebuilt original after frame differs");
-        var pair = new NativeEffectSnapshots.Pair(before, after);
         java.util.Optional<GuardEvidence> reconciliation = reconciliationGuard(effect, archive);
-        reconciliation.ifPresent(guard -> requireReconciliation(receipt.command(), settled.attempt(), after, guard));
+        reconciliation.ifPresent(guard -> { requireReconciliation(receipt.command(), settled.attempt(), after, guard);
+            guard.origin().requireReconciliation().requireOriginalConnection(settled.attempt().guard()); });
+        var pair = new NativeEffectSnapshots.Pair(before, after, reconciliation.map(guard -> guard.origin().requireReconciliation()));
         return new Original(pair, archived.reads(), archived.compatible(), archived.retained(), reconciliation);
     }
     /** Exact archived DATA only. This retains the same basis, read and material closure checks as load;

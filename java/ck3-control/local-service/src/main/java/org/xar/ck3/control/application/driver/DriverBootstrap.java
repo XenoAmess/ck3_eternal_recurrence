@@ -847,6 +847,119 @@ public final class DriverBootstrap {
         catch(InterruptedBootstrap interrupted) { throw interrupted.interruption; }
     }
 
+    /**
+     * Reconstructs an UNKNOWN same-Game state from captured restart DATA and retained Driver facts.
+     * This is observation-only: it does not grant gameplay status, submit actions, or create admissions.
+     */
+    public static Adopted adoptUnresolvedSameGame(org.xar.ck3.control.application.session.CleanBatchRestart captured,
+            DriverSnapshotFacts.Known retained, ExactRef retainedFullDriver, ContinuityStorePort.Session same,
+            ActionSnapshotReader actions, NativeGameTransport transport, ActionPorts.OutcomeArchive archive,
+            int retainedFrames, Instant deadline) throws IOException, InterruptedException {
+        Objects.requireNonNull(captured); Objects.requireNonNull(retained); Objects.requireNonNull(retainedFullDriver);
+        Objects.requireNonNull(same); Objects.requireNonNull(actions); Objects.requireNonNull(transport);
+        Objects.requireNonNull(archive); Objects.requireNonNull(deadline);
+        StrictJson.require(Instant.now().isBefore(deadline), "unresolved same-Game reconstruction deadline expired");
+        
+        // Authenticate retained Driver bytes via archive
+        byte[] driverBytes = archive.withSession(same).loadFullMaterial(retainedFullDriver).bytes();
+        StrictJson.require(Arrays.equals(driverBytes, retained.driver().encode()), "retained Driver bytes mismatch");
+        StrictJson.require(retainedFullDriver.sha256().equals(DriverJson.sha256(driverBytes)), "retained Driver SHA mismatch");
+
+        List<ActionReceipt> recoveringActions = actions.withFrozen(same, lease -> {
+            lease.assertCurrent();
+            StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
+                    && basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
+                    "unresolved recovery changed the canonical original history basis");
+            var pending = lease.snapshot().actions().stream().filter(action -> !action.settled()).toList();
+            var recovering = pending.isEmpty() ? lease.snapshot().actions().stream()
+                    .filter(action -> action.command().operation().value().equals("private-select-player-lifestyle-stock-focus-v1")
+                            && action.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                            && retained.actionRows().stream().anyMatch(row -> row.actionId().equals(action.command().actionId())
+                                    && row.durableSequence() == action.sequence()))
+                    .toList() : pending;
+            StrictJson.require(recovering.size()==1,
+                    "same-Game recovery requires one canonical original action, pending or applied before cycle closure");
+            for (var action : recovering) {
+                StrictJson.require(action.command().origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
+                        && org.xar.ck3.control.application.action.ActionTransitions.attempt(action.state()).isPresent()
+                        && org.xar.ck3.control.application.action.ActionTransitions.composite(action.state()).isEmpty()
+                        && action.command().origin().machineId().equals(captured.previousTransport().machineId())
+                        && action.command().origin().game().equals(retained.stamp().game())
+                        && action.command().sessionId().equals(captured.previousTransport().sessionId())
+                        && action.command().source().equals(captured.source()),
+                        "unresolved recovery crossed its actual original primitive owner/source");
+            }
+            lease.assertCurrent();
+            return List.copyOf(recovering);
+        });
+
+        // Await real new HELLO with same machine/Game PID-birth/session and greater generation
+        var current = transport.awaitHello(deadline);
+        StrictJson.require(current.machineId().equals(captured.previousTransport().machineId())
+                && current.game().equals(captured.previousTransport().game())
+                && current.sessionId().equals(captured.previousTransport().sessionId())
+                && current.connectionGeneration().compareTo(captured.previousTransport().connectionGeneration()) > 0,
+                "unresolved same-Game requires same Game identity and new HELLO generation");
+        StrictJson.require(retained.stamp().game().equals(current.game())
+                &&retained.driver().session().bridgePid()==current.game().pid()
+                &&retained.driver().session().pipeName().equals(transport.pipeName()),
+                "unresolved retained Driver belongs to another physical Game or pipe");
+
+        // Rebuild repository, producer, assembler, held observation
+        var repository = new DriverFactsRepository(retained);
+        var producer = new NativeDriverObservationProducer(repository, transport, captured.source(),
+                wire -> archive.preserveMaterial(RawJson.fullMaterial(wire)));
+        
+        // Bind read-only recovery baseline using captured manifest and retained stamp
+        producer.bindReadOnlyRecovery(captured, retained.stamp(), same);
+        
+        var authority = new DriverStateAssembler(actions, repository, producer);
+        var held = new HeldDriverObservationPort(transport, authority, archive::preserveNativeFrame, new DriverObservationAssembler(), retainedFrames);
+
+        // Obtain independent full state on existing transport using fresh operation deadline and only read paths
+        transport.startHandshake(deadline);
+        var result = transport.readFreshFullState(deadline);
+        if (!(result instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received)) {
+            throw new IOException("unresolved same-Game independent native full-state read unavailable");
+        }
+        var raw = received.originalFrame();
+        StrictJson.require(raw.session().equals(current), "unresolved same-Game received another current connection");
+
+        // Reuse adoptInitialRecovery's real raw observation assembly
+        var first = authority.withFrozenRawObservation(raw, same, frozen -> {
+            ExactRef nativeOriginal = archive.withSession(same).preserveNativeFrame(raw);
+            var assembler = new DriverObservationAssembler();
+            var fullSnapshot = assembler.projectFull(raw, frozen.facts(), nativeOriginal);
+            var assembled = assembler.assemble(raw, frozen.facts(), nativeOriginal);
+            StrictJson.require(assembled instanceof DriverObservationAssembler.Complete, "unresolved same-Game actual resolved original observation is incomplete");
+            var complete = (DriverObservationAssembler.Complete) assembled;
+            held.retainVerified(fullSnapshot, complete);
+            return complete;
+        });
+
+        // Verify first frame identity matches retained Driver session
+        StrictJson.require(first.identity().game().equals(retained.stamp().game())
+                && first.identity().frame().episodeRunId().equals(retained.stamp().episodeRunId())
+                && first.identity().frame().identity().player().equals(retained.driver().session().actorId())
+                && first.source().equals(captured.source())
+                && first.sessionId().equals(current.sessionId()),
+                "unresolved same-Game actual first frame crossed adopted seed authority");
+
+        // Preserve Native public revision offset and NATIVE_CAMPAIGN observationVersion
+        // (handled by bindReadOnlyRecovery)
+
+        // Keep read-only recovery until the interrupted original batch has closed.
+        List<String> reasons = recoveringActions.stream().map(a -> "unfinished_cycle_action:" + a.command().actionId()).toList();
+        
+        var seed = new Seed(retainedFullDriver, retained.originalHistoryBasis(), retained.stamp().driverVersion(),
+                retained.stamp().episodeEpoch(), current, retained.auxiliary(), retained.loop());
+        
+        var adopted = new Adopted(seed, captured.source(), retainedFullDriver, repository, authority, producer, held, first,
+                AdoptionStatus.READ_ONLY_UNRESOLVED, reasons);
+        
+        return adopted;
+    }
+
     /** Resumes only the canonical first entry on this living Game; it neither starts nor initializes a campaign. */
     public static Adopted adoptInitialRecovery(FreshGameplayEntryAuthority.RecoveryAdmission actual,
             ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,G2Source source,

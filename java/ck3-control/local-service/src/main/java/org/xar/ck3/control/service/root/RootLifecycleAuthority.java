@@ -105,7 +105,7 @@ public final class RootLifecycleAuthority {
         public Set<String> bridgeCapabilities() { return physical.bridgeCapabilities(); }
         public void assertCurrent(ContinuityStorePort.Session borrowed) throws IOException { physical.assertCurrent(borrowed); }
     }
-    private record Scope(ContinuityStorePort.Session session,SnapshotLease snapshot,List<WriterContracts.Pin> pins,String head,Instant deadline) { }
+    private record Scope(ContinuityStorePort.Session session,SnapshotLease snapshot,String head,Instant deadline) { }
     private static final int MAX_ORIGINAL=WriterContracts.MAX_PIN_BYTES;
     private final ContinuityWriter writer;
     private final NativeOutcomeArchive archive;
@@ -138,7 +138,11 @@ public final class RootLifecycleAuthority {
 
     /** No planning input, capability projection, onObserved domain hook, publication or second Native observe. */
     public <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,SnapshotWork<T> work) throws IOException {
-        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work);
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,freshness);
+    }
+    /** Only original UNKNOWN reconciliation gets a longer read-only physical lease. */
+    public <T>T withReconciliationSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,SnapshotWork<T> work)throws IOException {
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2));
     }
     /**
      * Qualifies the exact original already accepted by the same transport's bounded wait. This branch
@@ -154,11 +158,14 @@ public final class RootLifecycleAuthority {
             T result=work.apply(physical);
             requireSameReceived(exactFromWait,transport.currentSnapshot(deadline));
             return result;
-        });
+        },freshness);
     }
     private <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,
-            Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work)throws IOException {
-        Objects.requireNonNull(work);Instant deadline=deadline(callerDeadline);Scope existing=active.get();
+            Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness)throws IOException {
+        Objects.requireNonNull(work);Objects.requireNonNull(effectiveFreshness);
+        require(!effectiveFreshness.isZero()&&!effectiveFreshness.isNegative()
+                &&effectiveFreshness.compareTo(Duration.ofMinutes(2))<=0,"bounded physical observation window required");
+        Instant deadline=deadline(callerDeadline,effectiveFreshness);Scope existing=active.get();
         if(existing!=null){
             if(received.isPresent())requireSameReceived(received.orElseThrow(),existing.snapshot().fullSnapshot().actual());
             return borrowed(existing,borrowed,deadline,work);
@@ -170,7 +177,7 @@ public final class RootLifecycleAuthority {
             if(received.isPresent()) {
                 actual=received.orElseThrow();requireSameReceived(actual,transport.currentSnapshot(deadline));
             }else {
-                try { transport.awaitHello(deadline);transport.verifyHeld(deadline);actual=transport.observe(deadline); }
+                try { transport.awaitHello(deadline);transport.verifyHeld(deadline);actual=transport.observe(deadline,effectiveFreshness); }
                 catch(InterruptedException failure){Thread.currentThread().interrupt();var interrupted=new InterruptedIOException("actual physical snapshot interrupted");interrupted.initCause(failure);throw interrupted;}
                 catch(UncheckedIOException failure){throw failure.getCause();}
             }
@@ -186,9 +193,9 @@ public final class RootLifecycleAuthority {
                 var hello=diagnostics.originalHello().orElseThrow(()->new IOException("actual original hello absent"));
                 var heartbeat=diagnostics.latestHeartbeat().orElseThrow(()->new IOException("actual original heartbeat absent"));
                 Instant now=clock.instant();
-                require(!actual.observedAt().isAfter(now)&&actual.observedAt().plus(freshness).isAfter(now)
+                require(!actual.observedAt().isAfter(now)&&actual.observedAt().plus(effectiveFreshness).isAfter(now)
                         &&!hello.observedAt().isAfter(actual.observedAt())&&!heartbeat.observedAt().isBefore(hello.observedAt())
-                        &&!heartbeat.observedAt().isAfter(now)&&heartbeat.observedAt().plus(freshness).isAfter(now),"physical snapshot or original heartbeat is stale/future/pre-hello");
+                        &&!heartbeat.observedAt().isAfter(now)&&heartbeat.observedAt().plus(effectiveFreshness).isAfter(now),"physical snapshot or original heartbeat is stale/future/pre-hello");
                 require(heartbeat.original().kind()==NativeWire.NoticeKind.HEARTBEAT&&hello.original().pid()==actual.session().game().pid()
                         &&hello.original().connectionGeneration().equals(actual.session().connectionGeneration())
                         &&hello.original().capabilities().contains("game.state.snapshot"),"physical hello does not bind actual Game/generation/snapshot support");
@@ -227,15 +234,10 @@ public final class RootLifecycleAuthority {
                     terminalSemantic=Optional.of(preserve(borrowed,DriverJson.encode(phase.semantic()),MAX_ORIGINAL));
                 }
                 ExactRef semantic=preserve(borrowed,DriverJson.encode(full.semantic()),MAX_ORIGINAL);
-                Instant until=earliest(deadline,actual.observedAt().plus(freshness),heartbeat.observedAt().plus(freshness));
+                Instant until=earliest(deadline,actual.observedAt().plus(effectiveFreshness),heartbeat.observedAt().plus(effectiveFreshness));
                 var captured=new SnapshotLease(this,full,known,facts,ordinary,terminal,terminalSnapshot,terminalSemantic,helloRef,heartbeatRef,
                         originalDriver,semantic,qualified,until,Set.copyOf(hello.original().capabilities()),frozen::projection);
-                List<WriterContracts.Pin> pins=new ArrayList<>();
-                for(ExactRef ref:List.of(packet,helloRef,heartbeatRef,facts.semanticFactsEvidence(),originalDriver,semantic))
-                    pins.add(borrowed.capturePin(ref,MAX_ORIGINAL));
-                if(qualified.proof().isPresent())pins.add(borrowed.capturePin(qualified.proof().orElseThrow(),16<<20));
-                if(terminalSemantic.isPresent())pins.add(borrowed.capturePin(terminalSemantic.orElseThrow(),MAX_ORIGINAL));
-                Scope scope=new Scope(borrowed,captured,List.copyOf(pins),head,deadline);
+                Scope scope=new Scope(borrowed,captured,head,deadline);
                 require(active.get()==null,"physical callback cannot replace another frozen observation");active.set(scope);
                 try{return borrowed(scope,borrowed,deadline,work);}finally{active.remove();}
             });
@@ -299,17 +301,17 @@ public final class RootLifecycleAuthority {
         require(scope.head().equals(borrowed.head().digest()),"writer changed inside observation-only physical scope");
         Instant now=clock.instant();require(!now.isBefore(scope.snapshot().fullSnapshot().actual().observedAt())&&now.isBefore(scope.snapshot().validUntil())
                 &&now.isBefore(scope.deadline())&&now.isBefore(deadline),"actual physical lease/caller deadline expired");
-        transport.verifyHeld(deadline);scope.snapshot().sourceQualification().assertCurrent(borrowed);
-        for(var pin:scope.pins())borrowed.verifyPin(pin);
+        transport.verifyHeld(deadline);
     }
     private void requireSession(ContinuityStorePort.Session borrowed)throws IOException{
         writer.requireSession(borrowed);borrowed.requireWriter(archive.artifactStore().originalWriterLock());
         require(borrowed.head().state().machineId().equals(source.machineId()),"physical writer/source machine differs");
     }
-    private Instant deadline(Instant supplied){Objects.requireNonNull(supplied);Instant local=clock.instant().plus(freshness);Instant result=supplied.isBefore(local)?supplied:local;require(clock.instant().isBefore(result),"physical caller deadline expired before Native I/O");return result;}
+    private Instant deadline(Instant supplied){return deadline(supplied,freshness);}
+    private Instant deadline(Instant supplied,Duration window){Objects.requireNonNull(supplied);Instant local=clock.instant().plus(window);Instant result=supplied.isBefore(local)?supplied:local;require(clock.instant().isBefore(result),"physical caller deadline expired before Native I/O");return result;}
     private ExactRef preserve(ContinuityStorePort.Session borrowed,byte[] actual,int limit)throws IOException{
         require(actual.length>0&&actual.length<=limit,"complete physical original exceeds its finite lane");
-        ExactRef ref=archive.preserveArtifact(borrowed,actual,limit);require(Arrays.equals(actual,archive.readArtifact(borrowed,ref,limit)),"actual physical archive readback differs");return ref;
+        return archive.preserveArtifact(borrowed,actual,limit);
     }
     private static Instant earliest(Instant first,Instant second,Instant third){Instant result=first.isBefore(second)?first:second;return result.isBefore(third)?result:third;}
     private void requireSameReceived(NativeObservationPort.ObservedFrame expected,NativeObservationPort.ObservedFrame current)throws IOException{

@@ -9,7 +9,9 @@ import org.xar.ck3.control.contracts.StrictJson;
  * File identities, source indexes and writer-lock recheck stay with the original reader/writer.
  */
 public final class ContinuityHistory {
-    public static final int MAX_CONTINUITY_EVENTS = 256;
+    public static final int MAX_CONTINUITY_EVENTS = 8_192;
+    /** Accessor prevents consumers from retaining an inlined old finite-chain limit. */
+    public static int maximumEvents() { return MAX_CONTINUITY_EVENTS; }
     private ContinuityHistory() { }
     public record Preview(ContinuityState head, List<ContinuityEvent> events, boolean snapshotNeedsRecovery) {
         public Preview { java.util.Objects.requireNonNull(head); events = List.copyOf(events); }
@@ -19,8 +21,8 @@ public final class ContinuityHistory {
     public static Preview preview(ContinuityState anchor, ContinuityState snapshot, List<byte[]> eventDocuments) {
         java.util.Objects.requireNonNull(anchor); java.util.Objects.requireNonNull(snapshot);
         eventDocuments = List.copyOf(eventDocuments);
-        // Existing range(256) requires the absent next-event observation before exhausting the loop.
-        StrictJson.require(eventDocuments.size() < MAX_CONTINUITY_EVENTS, "continuity event chain exceeds finite bound");
+        // The finite scan requires the absent next-event observation before exhausting the loop.
+        StrictJson.require(eventDocuments.size() < maximumEvents(), "continuity event chain exceeds finite bound");
         StrictJson.require(snapshot.machineId().equals(anchor.machineId())
                 && snapshot.sequence() >= anchor.sequence(), "canonical snapshot cannot precede anchor");
         boolean matched = snapshot.sequence() == anchor.sequence();

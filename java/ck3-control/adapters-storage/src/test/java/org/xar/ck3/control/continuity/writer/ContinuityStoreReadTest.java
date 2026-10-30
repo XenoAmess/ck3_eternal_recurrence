@@ -36,6 +36,14 @@ class ContinuityStoreReadTest {
             assertEquals(1048,actual.state().settledDateRaw());
             assertEquals(3,actual.state().settledCycles());
             assertEquals(6,actual.documents().size());
+            assertEquals(List.of(Path.of(fixture.layout.anchor().path()),fixture.layout.snapshot(),
+                    fixture.layout.event(1),fixture.layout.sourceIndex(WriterFixture.settled("first",1024,2).sourceKey()),
+                    fixture.layout.event(2),fixture.layout.sourceIndex(WriterFixture.settled("second",1048,3).sourceKey())),
+                    actual.documents().stream().map(pin->Path.of(pin.reference().path())).toList());
+            assertEquals(List.of(fixture.layout.event(3)),actual.absent());
+            assertArrayEquals(ContinuityJson.canonical(WriterFixture.state().get("pending_cycle")),
+                    ContinuityJson.canonical(actual.state().toJson().get("pending_cycle")));
+            assertArrayEquals(ContinuityJson.canonical(WriterFixture.state().get("NEXT")),ContinuityJson.canonical(actual.state().toJson().get("NEXT")));
             assertFalse(actual.snapshotNeedsRecovery());
             assertTrue(actual.indexRepairs().isEmpty());
             assertTrue(actual.absent().contains(fixture.layout.event(3)));
@@ -43,6 +51,22 @@ class ContinuityStoreReadTest {
                 assertEquals(original,session.capturePin(original.reference(),ContinuityJson.LEDGER_MAX_BYTES));
             return null;
         });
+    }
+    @Test void retainedHeadProjectsNextCommittedEventAcrossWriterSessions() throws Exception {
+        WriterFixture fixture = new WriterFixture(root.resolve("retained-next"));
+        ContinuityStore store = new ContinuityStore(fixture.layout);
+        Head initial = fixture.writer.locked(session -> store.head());
+        assertEquals(0, initial.state().sequence());
+        fixture.writer.commit(fixture.writer.preview(WriterFixture.settled("first", 1024, 2)));
+        Head retained = fixture.writer.locked(session -> store.head());
+        Head cold = fixture.writer.locked(session -> new ContinuityStore(fixture.layout).head());
+        assertArrayEquals(cold.state().canonicalBytes(), retained.state().canonicalBytes());
+        assertEquals(cold.documents(), retained.documents());
+        assertEquals(cold.absent(), retained.absent());
+        assertEquals(cold.indexRepairs(), retained.indexRepairs());
+        assertEquals(cold.snapshotNeedsRecovery(), retained.snapshotNeedsRecovery());
+        assertEquals(1, retained.state().sequence());
+        assertEquals(List.of(fixture.layout.event(2)), retained.absent());
     }
     @Test void coldHeadRejectsAnchorContentChangedBeforeRead() throws Exception {
         WriterFixture fixture=new WriterFixture(root.resolve("anchor-corrupt"));
@@ -83,6 +107,8 @@ class ContinuityStoreReadTest {
     }
     @Test void coldHeadKeepsMissingIndexAndStaleSnapshotRecovery() throws Exception {
         WriterFixture fixture=new WriterFixture(root.resolve("recover"));
+        ContinuityStore retainedStore = new ContinuityStore(fixture.layout);
+        fixture.writer.locked(session -> retainedStore.head());
         Request request=WriterFixture.settled("first",1024,2);
         Prepared prepared=fixture.writer.preview(request);
         var authority=new TransitionAuthority(){
@@ -97,7 +123,7 @@ class ContinuityStoreReadTest {
         assertTrue(Files.exists(fixture.layout.event(1)));
         assertFalse(Files.exists(fixture.layout.sourceIndex(request.sourceKey())));
         fixture.writer.locked(session->{
-            Head interrupted=new ContinuityStore(fixture.layout).head();
+            Head interrupted=retainedStore.head();
             assertEquals(1,interrupted.state().sequence());
             assertTrue(interrupted.snapshotNeedsRecovery());
             assertEquals(1,interrupted.indexRepairs().size());

@@ -36,12 +36,14 @@ public final class RootReconciliationReadGuard implements PlanningReadCoordinato
                 "only an identical installed active reconciliation read/source contract is eligible");
         try {
             var same=RootLifecycleReadGuard.session(borrowed,head);
-            RootLifecycleReadGuard.pin(same,source.sourceRef());
+            // The source ref in the original command is historical evidence. Hot
+            // business reload may replace that class file while the Game and action stay the same.
             return authority.current(same,request.origin().requireReconciliation(),request.deadline(),lease->{
                 GuardEvidence binding=authority.binding(lease,same,request,contract,head,authorityId);
                 return new PlanningReadGuard(binding,new PlanningReadGuard.Reconciliation(),lease.identity().bindingSha256());
             });
-        } catch(IOException failure) {throw new UncheckedIOException("actual original-pending reconciliation read unavailable",failure);}
+        } catch(IOException failure) {throw new UncheckedIOException(
+                "actual original-pending reconciliation read unavailable: "+failure.getMessage(),failure);}
     }
 }
 

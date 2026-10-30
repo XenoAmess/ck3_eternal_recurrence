@@ -32,6 +32,9 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         public Contracts { Objects.requireNonNull(lifestyle); Objects.requireNonNull(council); Objects.requireNonNull(crown); }
         public List<ReadContract<?>> all() { return List.of(lifestyle, council, crown); }
     }
+    public static final String FOCUS_STATE_READ = "private-query-player-lifestyle-current-state-v1";
+    public static final String FOCUS_STATE_CONTRACT = "governance.focus-state-reconciliation/v1";
+    private static final String FOCUS_STATE_MATERIAL = "xar.java.focus-current-state-reconciliation/v1";
     private static final String LIFE_READ = "private-query-player-lifestyle-receipt-v1";
     private static final String COUNCIL_READ = "query-assign-councillor-receipt-v1";
     private static final String CROWN_READ = "verify-realm-law-crown-v1-private";
@@ -39,11 +42,19 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
     private final SessionPort sessions;
     private final NativeEffectRegistry.Observer privateCouncil;
     private final PreparationEvidencePort preparationEvidence;
+    private final Optional<ReadContract<OpportunityJson.Obj>> focusStateReconciliation;
     public NativeGovernanceEffects(NativeEffectSnapshots snapshots, PlanningReadPort reads, Contracts contracts,
             SessionPort sessions, NativeEffectRegistry.Observer privateCouncil, PreparationEvidencePort preparationEvidence) {
+        this(snapshots,reads,contracts,sessions,privateCouncil,preparationEvidence,Optional.empty());
+    }
+    public NativeGovernanceEffects(NativeEffectSnapshots snapshots, PlanningReadPort reads, Contracts contracts,
+            SessionPort sessions, NativeEffectRegistry.Observer privateCouncil, PreparationEvidencePort preparationEvidence,
+            Optional<ReadContract<OpportunityJson.Obj>> focusStateReconciliation) {
         this.snapshots = Objects.requireNonNull(snapshots); this.reads = Objects.requireNonNull(reads); this.contracts = Objects.requireNonNull(contracts);
         this.sessions = Objects.requireNonNull(sessions); this.privateCouncil = Objects.requireNonNull(privateCouncil);
         this.preparationEvidence = Objects.requireNonNull(preparationEvidence);
+        this.focusStateReconciliation=Objects.requireNonNull(focusStateReconciliation);
+        focusStateReconciliation.ifPresent(NativeGovernanceEffects::requireFocusStateReconciliationProfile);
     }
     /** Stable Native correlation key; logical Root episodes and archived wire originals are unchanged. */
     public static String lifestyleWireEpisode(org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity actual) {
@@ -101,7 +112,7 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
                     if (dispatch instanceof NativeActionPort.AckReceived submit) for (var original : retained) NativeRequestChronology.requireBeforeSubmission(original, attempt, submit);
                     return retained;
                 });
-                var live = sessions.preflight(command);
+                var live = ActionReconciliationScope.activeFor(command) ? List.<PlanningReadReceipt>of() : sessions.preflight(command);
                 StrictJson.require(live.isEmpty() || live.equals(originalPreflight), "LIFE live preflight differs from canonical prepared originals");
             } catch (IllegalArgumentException | IllegalStateException unavailable) {
                 return NativeEffectRegistry.Projected.pending("original LIFE preflight custody is unavailable; do not consume or repeat an independent native receipt: " + unavailable.getMessage(), attempt.preparedRequest().preparationEvidence());
@@ -109,6 +120,25 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         }
         requirePreparedTarget(selected, command, attempt);
         var pair = snapshots.read(command, attempt); Complete after = pair.after();
+        if(selected==Kind.FOCUS&&ActionReconciliationScope.activeFor(command)) {
+            if(focusStateReconciliation.isEmpty())return NativeEffectRegistry.Projected.pending(
+                    "actual original FOCUS current-state reconciliation contract is not installed",List.of(after.originalEvidence()));
+            var contract=focusStateReconciliation.orElseThrow();
+            ReconciliationIdentity identity;
+            try { identity=ActionReconciliationScope.requireIdentity(command,attempt); }
+            catch(java.io.IOException failure){throw new java.io.UncheckedIOException("actual FOCUS reconciliation scope unavailable",failure);}
+            lifestyleAck(command,attempt,dispatch);
+            var request=focusStateReconciliationRequest(command,attempt,identity,contract,ActionObservationWindow.deadline(command));
+            var read=reads.read(sessions.current(command),contract,request);
+            if(!(read instanceof PlanningReadResult.Known<OpportunityJson.Obj> known))
+                return NativeEffectRegistry.Projected.pending("actual FOCUS current-state getter unavailable; original UNKNOWN retained: "
+                        + ((PlanningReadResult.Unavailable<?>) read).reason(),List.of(after.originalEvidence()));
+            var projected=projectFocusState(command,attempt,dispatch,pair,known.receipt(),known.value());
+            if(!(projected.result() instanceof ActionPorts.EffectObserved))return projected;
+            var originalReads=new ArrayList<PlanningReadReceipt>(originalPreflight);originalReads.add(known.receipt());
+            return NativeEffectSnapshots.withEvidence(projected,List.of(snapshots.evidence(command,attempt,pair,originalReads,
+                    projected.compatibleResult().orElseThrow())));
+        }
         ReadContract<RawJson> contract = switch (selected) { case FOCUS, PERK -> contracts.lifestyle(); case COUNCIL -> contracts.council(); case CROWN -> contracts.crown(); case PRIVATE_COUNCIL -> throw new IllegalStateException("private Council uses its actual continuation evidence"); };
         ObjectNode fields = StrictJson.object(); String originalId = originalId(selected, attempt);
         if (selected == Kind.CROWN) fields.put("submitted_request_id", originalId);
@@ -131,6 +161,89 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         if (selected == Kind.FOCUS || selected == Kind.PERK) originalReads.addAll(originalPreflight);
         originalReads.add(known.receipt());
         return NativeEffectSnapshots.withEvidence(projected, List.of(snapshots.evidence(command, attempt, pair, originalReads, projected.compatibleResult().orElseThrow())));
+    }
+    public static void requireFocusStateReconciliationProfile(ReadContract<?> contract) {
+        Objects.requireNonNull(contract);
+        StrictJson.require(contract.contractId().equals(FOCUS_STATE_CONTRACT)&&contract.operation().value().equals(FOCUS_STATE_READ)
+                &&contract.guardMode()==ReadContract.GuardMode.RECONCILIATION_OBSERVATION
+                &&contract.permissionMode()==ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE
+                &&contract.permissionKey().equals(FOCUS_STATE_READ)&&contract.requiredCapability().isEmpty()
+                &&contract.wireProfile()==ReadContract.WireProfile.EXECUTE_STEP&&contract.hasPureReplay(),
+                "only the installed original FOCUS current-state getter profile is eligible");
+    }
+    /** Pure original-intent request DATA; the private Root pending/current lease still supplies query authority. */
+    public static PlanningReadRequest focusStateReconciliationRequest(ActionCommand command,ActionState.Attempt attempt,
+            ReconciliationIdentity identity,ReadContract<?> contract,java.time.Instant deadline) {
+        requireFocusStateReconciliationProfile(contract);Objects.requireNonNull(identity);
+        StrictJson.require(kind(command.operation()).filter(Kind.FOCUS::equals).isPresent(),"current-state reconciliation is FOCUS only");
+        requirePreparedTarget(Kind.FOCUS,command,attempt);
+        var pending=identity.pending();var factual=identity.factual();
+        StrictJson.require(pending.actionId().equals(command.actionId())&&pending.bodySha256().equals(ActionCodec.bodySha256(command))
+                &&pending.requestId().equals(attempt.requestId())&&pending.originalBefore().equals(command.before())
+                &&identity.source().equals(command.source())&&identity.sessionId().equals(command.sessionId())
+                &&factual.machineId().equals(command.before().machineId())&&factual.game().equals(command.before().game())
+                &&factual.frame().episodeRunId().equals(command.before().frame().episodeRunId())
+                &&factual.frame().identity().player().equals(command.before().frame().identity().player()),
+                "FOCUS getter changed its original pending request/body or actual same-actor Game");
+        return PlanningReadRequest.newReconciliation(identity,contract.operation(),new OpportunityJson.Obj(java.util.Map.of()),deadline);
+    }
+    public static void requireCanonicalFocusStateReconciliation(ActionReceipt original,ActionState.Attempt attempt,
+            ReconciliationIdentity identity,ReadContract<?> contract,PlanningReadRequest request) {
+        StrictJson.require(original.state() instanceof ActionState.Unknown
+                &&ActionTransitions.attempt(original.state()).filter(attempt::equals).isPresent(),
+                "FOCUS getter requires the actual original UNKNOWN Attempt");
+        var dispatch=ActionTransitions.dispatch(original.state()).orElseThrow(()->new IllegalArgumentException("original FOCUS ACK is absent"));
+        StrictJson.require(dispatch instanceof NativeActionPort.AckReceived,"original FOCUS successful ACK is absent");
+        actualOriginal(original.command(),attempt,(NativeActionPort.AckReceived)dispatch);
+        lifestyleAck(original.command(),attempt,dispatch);
+        StrictJson.require(request.equals(focusStateReconciliationRequest(original.command(),attempt,identity,contract,request.deadline())),
+                "FOCUS getter request changed its exact original pending/current factual binding");
+    }
+    /** Pure complete decoded getter projection. It does not grant Native or Root observation authority. */
+    static Optional<List<ExpectedValue>> focusStateValues(String target,OpportunityJson.Obj normalized) {
+        ObjectNode state=EffectJson.object(normalized);
+        equal(state.get("step"),FOCUS_STATE_READ);equal(state.get("status"),"available");
+        ObjectNode snapshot=EffectJson.object(state.get("snapshot")),focus=EffectJson.object(snapshot.get("current_focus"));
+        equal(snapshot.get("status"),"available");
+        String presence=StrictJson.text(focus.get("presence"));
+        StrictJson.require(Set.of("present","absent").contains(presence),"complete current FOCUS presence required");
+        if(!presence.equals("present"))return Optional.empty();
+        String current=StrictJson.text(focus.get("key"));StrictJson.text(focus.get("lifestyle_key"));
+        ObjectNode ready=EffectJson.object(snapshot.get("readiness")),progress=EffectJson.object(snapshot.get("current_lifestyle_progress"));
+        if(!EffectJson.bool(ready.get("current_focus_ready"))||!EffectJson.bool(ready.get("lifestyle_progress_ready"))
+                ||!EffectJson.bool(ready.get("same_frame_ready"))||!StrictJson.text(progress.get("presence")).equals("present"))return Optional.empty();
+        StrictJson.require(StrictJson.text(progress.get("lifestyle_key")).equals(StrictJson.text(focus.get("lifestyle_key"))),
+                "FOCUS current lifestyle progress belongs to another observed focus");
+        if(!current.equals(target))return Optional.empty();
+        return Optional.of(List.of(new ExpectedText(new FieldKey("lifestyle.target_key"),target),
+                new ExpectedBoolean(new FieldKey("lifestyle.has_current_focus"),true),
+                new ExpectedText(new FieldKey("lifestyle.current_focus_key"),current),
+                new ExpectedBoolean(new FieldKey("native.gameplay_verified"),true)));
+    }
+    private static NativeEffectRegistry.Projected projectFocusState(ActionCommand command,ActionState.Attempt attempt,
+            NativeActionPort.DispatchOutcome dispatch,NativeEffectSnapshots.Pair pair,PlanningReadReceipt read,OpportunityJson.Obj material) {
+        StrictJson.require(kind(command.operation()).filter(Kind.FOCUS::equals).isPresent()
+                &&read.request().origin() instanceof CommandOrigin.Reconciliation&&read.contractId().equals(FOCUS_STATE_CONTRACT),
+                "fresh getter material belongs only to original FOCUS reconciliation");
+        requirePreparedTarget(Kind.FOCUS,command,attempt);lifestyleAck(command,attempt,dispatch);
+        actualOriginal(command,attempt,(NativeActionPort.AckReceived)dispatch);
+        Complete after=pair.after();
+        NativeEffectSnapshots.requireAfterRead(command,attempt,after,read,new OperationKey(FOCUS_STATE_READ));
+        ObjectNode state=EffectJson.object(material),snapshot=EffectJson.object(state.get("snapshot"));
+        var frame=after.identity().frame();var id=frame.identity();
+        equal(state.get("episode_run_id"),frame.episodeRunId());equal(snapshot.get("snapshot_id"),frame.snapshotId());
+        equal(snapshot.get("public_revision"),frame.revision());equal(snapshot.get("native_revision"),id.nativeRevision());
+        equal(snapshot.get("date_raw"),id.dateRaw());equal(snapshot.get("player_character_id"),id.player());
+        String target=StrictJson.text(EffectJson.object(command.arguments()).get("target_key"));
+        var actual=focusStateValues(target,material);
+        if(actual.isEmpty())return NativeEffectRegistry.Projected.pending(
+                "actual current FOCUS getter does not prove the original selected target; UNKNOWN retained",List.of(after.originalEvidence()));
+        ObjectNode compatible=StrictJson.object().put("schema",FOCUS_STATE_MATERIAL)
+                .put("evidence_kind","CURRENT_STATE_GETTER_RECONCILIATION").put("kind","focus")
+                .put("original_request_id",attempt.requestId()).put("state_query_request_id",read.requestId()).put("target_key",target)
+                .put("episode_run_id",command.before().frame().episodeRunId()).put("post_date_raw",id.dateRaw());
+        compatible.set("state",state.deepCopy());
+        return NativeEffectSnapshots.observed(command,attempt,after,SCHEMA,actual.orElseThrow(),read.requestId(),EffectJson.raw(compatible),List.of());
     }
     private static NativeEffectRegistry.Projected project(ActionCommand command, ActionState.Attempt attempt,
             NativeActionPort.DispatchOutcome dispatch, NativeEffectSnapshots.Pair pair, PlanningReadReceipt read, RawJson material) {
@@ -158,6 +271,13 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
     }
     public static NativeRecordedEvidenceVerifier.Binding archivedVerifier(OperationKey operation, ExactRef source,
             NativeEffectEvidence.FrameLoader frames, Contracts actualContracts, PreparationEvidencePort preparationEvidence) {
+        return archivedVerifier(operation,source,frames,actualContracts,preparationEvidence,Optional.empty());
+    }
+    public static NativeRecordedEvidenceVerifier.Binding archivedVerifier(OperationKey operation, ExactRef source,
+            NativeEffectEvidence.FrameLoader frames, Contracts actualContracts, PreparationEvidencePort preparationEvidence,
+            Optional<ReadContract<OpportunityJson.Obj>> focusStateReconciliation) {
+        Objects.requireNonNull(focusStateReconciliation);
+        focusStateReconciliation.ifPresent(NativeGovernanceEffects::requireFocusStateReconciliationProfile);
         Kind selected = kind(operation).orElseThrow(() -> new IllegalArgumentException("exact governance operation required"));
         StrictJson.require(selected != Kind.PRIVATE_COUNCIL, "private Council requires its actual continuation archived verifier");
         Objects.requireNonNull(frames); Objects.requireNonNull(actualContracts);
@@ -181,7 +301,14 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
                 for (var originalRead : preflight) NativeRequestChronology.requireBeforeSubmission(originalRead, settled.attempt(), (NativeActionPort.AckReceived) settled.dispatch());
             }
             else StrictJson.require(preflight.isEmpty(), "non-LIFE governance basis carried unrelated preflight reads");
-            var replayed = project(receipt.command(), settled.attempt(), settled.dispatch(), original.frames(), read, contract.decode(read));
+            NativeEffectRegistry.Projected replayed;
+            if(selected==Kind.FOCUS&&read.request().origin() instanceof CommandOrigin.Reconciliation
+                    &&read.contractId().equals(FOCUS_STATE_CONTRACT)) {
+                var getter=focusStateReconciliation.orElseThrow(()->new IllegalArgumentException("actual original FOCUS getter decoder is not installed"));
+                var identity=read.request().origin().requireReconciliation();
+                focusStateReconciliationRequest(receipt.command(),settled.attempt(),identity,getter,read.request().deadline());
+                replayed=projectFocusState(receipt.command(),settled.attempt(),settled.dispatch(),original.frames(),read,getter.replay(read));
+            } else replayed=project(receipt.command(), settled.attempt(), settled.dispatch(), original.frames(), read, contract.decode(read));
             replayed = NativeEffectSnapshots.withEvidence(replayed, ((ActionState.Applied) settled.settlement()).observation().supportingEvidence());
             NativeEffectEvidence.requireSame(settled.settlement(), replayed, original.compatibleResult());
         });
@@ -428,3 +555,4 @@ public final class NativeGovernanceEffects implements NativeEffectRegistry.Obser
         StrictJson.require(primaryCount == 1, "exact one current primary title required");
     }
 }
+

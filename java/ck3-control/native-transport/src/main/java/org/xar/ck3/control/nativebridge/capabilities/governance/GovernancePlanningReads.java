@@ -29,39 +29,55 @@ public final class GovernancePlanningReads {
     public static final String MARTIAL = "private-query-player-lifestyle-martial-authority-v1";
     public static final String CROWN = "query-realm-law-crown-action-v1-private";
     public record Sources(ExactRef lifestyle, ExactRef crown) { }
-    private final ReadContract<OpportunityJson.Obj> formal, state, wealth, martial, crown;
+    private final ReadContract<OpportunityJson.Obj> formal, state, wealth, martial, crown, focusStateReconciliation;
     public GovernancePlanningReads(Sources sources, String version, String sha256) {
         CouncilCodec.requireBuild(version, sha256);
         formal = contract(FORMAL, sources.lifestyle(), version, sha256); state = contract(STATE, sources.lifestyle(), version, sha256);
         wealth = contract(WEALTH, sources.lifestyle(), version, sha256); martial = contract(MARTIAL, sources.lifestyle(), version, sha256);
         crown = contract(CROWN, sources.crown(), version, sha256);
+        focusStateReconciliation = contract(STATE,sources.lifestyle(),version,sha256,ReadContract.GuardMode.RECONCILIATION_OBSERVATION);
     }
     public ReadContract<OpportunityJson.Obj> formal() { return formal; }
     public ReadContract<OpportunityJson.Obj> state() { return state; }
+    public ReadContract<OpportunityJson.Obj> focusStateReconciliation() { return focusStateReconciliation; }
     public ReadContract<OpportunityJson.Obj> focus(String target) {
         return switch (target) { case "stewardship_wealth_focus" -> wealth; case "martial_authority_focus" -> martial;
             default -> throw new IllegalArgumentException("focus outside original native coverage"); };
     }
     public ReadContract<OpportunityJson.Obj> crown() { return crown; }
-    public List<ReadContract<?>> all() { return List.of(formal, state, wealth, martial, crown); }
+    public List<ReadContract<?>> all() { return List.of(formal, state, wealth, martial, crown, focusStateReconciliation); }
     private static ReadContract<OpportunityJson.Obj> contract(String step, ExactRef source, String version, String sha256) {
+        return contract(step,source,version,sha256,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP);
+    }
+    private static ReadContract<OpportunityJson.Obj> contract(String step, ExactRef source, String version, String sha256,ReadContract.GuardMode guardMode) {
+        StrictJson.require(guardMode==ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP||guardMode==ReadContract.GuardMode.RECONCILIATION_OBSERVATION&&step.equals(STATE),
+                "only original FOCUS current-state may use reconciliation governance profile");
         Function<PlanningReadReceipt, OpportunityJson.Obj> decoder = receipt -> {
             ObjectNode result = original(receipt);
             ObjectNode normalized = step.equals(CROWN) ? crown(result, receipt.request(), version, sha256)
                     : step.equals(FORMAL) || step.equals(STATE) ? life(result, receipt.request(), step) : focus(result, receipt.request(), step);
             return (OpportunityJson.Obj) OpportunityJson.parse(StrictJson.canonical(normalized));
         };
-        return new ReadContract<>("governance.planning." + step, new OperationKey(step), Optional.empty(), step,
-                ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE, ReadContract.WireProfile.EXECUTE_STEP, ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP, source,
+        String contractId=guardMode==ReadContract.GuardMode.RECONCILIATION_OBSERVATION
+                ?NativeGovernanceEffects.FOCUS_STATE_CONTRACT:"governance.planning."+step;
+        return new ReadContract<>(contractId, new OperationKey(step), Optional.empty(), step,
+                ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE, ReadContract.WireProfile.EXECUTE_STEP, guardMode, source,
                 (request, requestId) -> {
                     StrictJson.require(request.arguments().members().isEmpty(), "native governance read takes no caller wire arguments");
-                    var frame = request.before().frame(); var id = frame.identity();
+                    var frame = readFrame(request).frame(); var id = frame.identity();
                     ObjectNode fields = StrictJson.object().put("expected_date_raw", id.dateRaw()).put("expected_player_character_id", id.player());
-                    if (!step.equals(CROWN)) fields.put("expected_snapshot_id", "native:" + id.nativeRevision()).put("episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(request.before()));
+                    if (!step.equals(CROWN)) fields.put("expected_snapshot_id", "native:" + id.nativeRevision()).put("episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(readFrame(request)));
                     return new NativeRequest(step, Optional.empty(), new RawJson(StrictJson.canonical(fields)));
                 },
                 decoder,
                 decoder);
+    }
+    private static org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity readFrame(PlanningReadRequest request) {
+        if(request.origin() instanceof CommandOrigin.Reconciliation) {
+            StrictJson.require(request.operation().value().equals(STATE),"only original FOCUS STATE may borrow reconciliation factual frame");
+            return request.reconciliationBefore();
+        }
+        return request.before();
     }
     private static ObjectNode original(PlanningReadReceipt receipt) {
         var full = StrictJson.object(StrictJson.parse(receipt.original().originalFrame().bytes()), Set.of("type", "protocol_version", "request_id", "ok", "result"));
@@ -78,7 +94,7 @@ public final class GovernancePlanningReads {
         CouncilCodec.requireBuild(version, sha256); StrictJson.trueValue(result.get("accepted")); StrictJson.trueValue(result.get("private_build")); StrictJson.trueValue(result.get("read_only"));
         StrictJson.require(!CouncilCodec.bool(result.get("advertised")) && result.get("ack").isNull() && result.get("receipt").isNull(), "Crown read carried mutation/receipt material");
         equal(result, "status", "available"); ObjectNode observed = StrictJson.object(result.get("observation"), Set.of("available", "paused", "snapshot_revision", "native_snapshot_revision", "proof_epoch", "date_raw", "player_character_id", "group_key", "active_law_key", "candidates", "resources", "title_successors"));
-        var frame = request.before().frame(); var id = frame.identity();
+        var frame = readFrame(request).frame(); var id = frame.identity();
         StrictJson.trueValue(observed.get("available")); StrictJson.trueValue(observed.get("paused")); equal(observed, "group_key", "crown_authority");
         number(observed, "snapshot_revision", id.nativeRevision()); number(observed, "date_raw", id.dateRaw()); number(observed, "player_character_id", id.player());
         CouncilCodec.u64(observed.get("native_snapshot_revision"), true); CouncilCodec.u64(observed.get("proof_epoch"), true);
@@ -103,14 +119,14 @@ public final class GovernancePlanningReads {
     }
     public static ObjectNode life(ObjectNode result, PlanningReadRequest request, String step) {
         equal(result, "step", step); StrictJson.trueValue(result.get("private_build")); StrictJson.require(!CouncilCodec.bool(result.get("advertised")), "LIFE private envelope changed");
-        equal(result, "status", "available"); var frame = request.before().frame(); var id = frame.identity(); equal(result, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(request.before()));
+        equal(result, "status", "available"); var frame = readFrame(request).frame(); var id = frame.identity(); equal(result, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(readFrame(request)));
         ObjectNode snapshot = CouncilCodec.object(result.get("snapshot")); equal(snapshot, "status", "available"); nativeBinding(snapshot, request, true); validateLifeSnapshot(snapshot);
         ObjectNode projected = snapshot.deepCopy().put("snapshot_id", frame.snapshotId()).put("public_revision", frame.revision()).put("episode_run_id", frame.episodeRunId());
         ObjectNode normalized = StrictJson.object().put("status", "available").put("step", step).put("episode_run_id", frame.episodeRunId());
         if (step.equals(FORMAL)) {
             normalized.set("formal_precondition_status", result.get("formal_precondition_status")); StrictJson.text(result.get("formal_precondition_status"));
             if (result.hasNonNull("all_lifestyle_progress_v3")) {
-                var progress = CouncilCodec.object(result.get("all_lifestyle_progress_v3")); nativeBinding(progress, request, false); equal(progress, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(request.before()));
+                var progress = CouncilCodec.object(result.get("all_lifestyle_progress_v3")); nativeBinding(progress, request, false); equal(progress, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(readFrame(request)));
                 projected.set("all_lifestyle_progress_v3", progress.deepCopy().put("snapshot_id", frame.snapshotId()).put("episode_run_id", frame.episodeRunId()));
                 ObjectNode wrapper = StrictJson.object().put("schema", LifestylePerksCodec.INPUT_SCHEMA); wrapper.set("snapshot", projected); wrapper.set("owned", projected.get("owned_perk_keys"));
                 ObjectNode binding = wrapper.putObject("binding");
@@ -125,7 +141,7 @@ public final class GovernancePlanningReads {
     }
     /** Actual response -> unique shared source decoders -> typed fact JSON; raw input tokens remain separate. */
     public static void appendSourceFacts(ObjectNode normalized,ObjectNode original,PlanningReadRequest request) {
-        var id=request.before().frame().identity();
+        var id=readFrame(request).frame().identity();
         var binding=LifestyleSourceFacts.Binding.exact("native:"+id.nativeRevision(),id.nativeRevision(),id.dateRaw().intValueExact(),id.player(),Optional.empty());
         for(String key:List.of(LifestylePredicateSourceCodec.WIRE_KEY,LifestyleTriggerFrontierCodec.WIRE_KEY))if(original.has(key))normalized.set(key,original.get(key).deepCopy());
         StrictJson.require(!original.has(LifestylePredicateSourceCodec.FACTS_KEY)&&!original.has(LifestyleTriggerFrontierCodec.FACTS_KEY),"native input cannot supply an already decoded facts sibling");
@@ -137,7 +153,7 @@ public final class GovernancePlanningReads {
     public static ObjectNode focus(ObjectNode result, PlanningReadRequest request, String step) {
         equal(result, "step", step); StrictJson.trueValue(result.get("private_build")); StrictJson.trueValue(result.get("read_only")); StrictJson.trueValue(result.get("policy_scoped"));
         StrictJson.require(!CouncilCodec.bool(result.get("advertised")), "focus advertised private source");
-        var frame = request.before().frame(); equal(result, "snapshot_id", "native:" + frame.identity().nativeRevision()); equal(result, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(request.before()));
+        var frame = readFrame(request).frame(); equal(result, "snapshot_id", "native:" + frame.identity().nativeRevision()); equal(result, "episode_run_id", NativeGovernanceEffects.lifestyleWireEpisode(readFrame(request)));
         String target = step.equals(WEALTH) ? "stewardship_wealth_focus" : "martial_authority_focus", lifestyle = step.equals(WEALTH) ? "stewardship_lifestyle" : "martial_lifestyle";
         equal(result, "target_key", target); equal(result, "target_lifestyle_key", lifestyle);
         String status = CouncilCodec.text(result, "status"); StrictJson.require(Set.of("observed_native_legal", "observed_native_illegal").contains(status)
@@ -167,10 +183,10 @@ public final class GovernancePlanningReads {
         ObjectNode result = state.deepCopy().put("status", "stock_focus_available").put("step", CouncilCodec.text(focus, "step")).put("formal_precondition_status", "stock_focus_ready");
         result.set("snapshot", snapshot); result.set("focus_query", focus); return result;
     }
-    private static ObjectNode source(PlanningReadRequest request) { var frame = request.before().frame(); var id = frame.identity(); return StrictJson.object().put("snapshot_id", frame.snapshotId())
+    private static ObjectNode source(PlanningReadRequest request) { var frame = readFrame(request).frame(); var id = frame.identity(); return StrictJson.object().put("snapshot_id", frame.snapshotId())
             .put("revision", frame.revision()).put("native_revision", id.nativeRevision()).put("date_raw", id.dateRaw()).put("player_character_id", id.player()); }
     private static void nativeBinding(ObjectNode value, PlanningReadRequest request, boolean snapshot) {
-        var id = request.before().frame().identity(); equal(value, "snapshot_id", "native:" + id.nativeRevision()); number(value, "native_revision", id.nativeRevision());
+        var id = readFrame(request).frame().identity(); equal(value, "snapshot_id", "native:" + id.nativeRevision()); number(value, "native_revision", id.nativeRevision());
         number(value, "date_raw", id.dateRaw()); number(value, "player_character_id", id.player());
         if (snapshot) { number(value, "public_revision", id.nativeRevision()); number(value, "proof_epoch", id.nativeRevision()); }
     }
@@ -210,3 +226,4 @@ public final class GovernancePlanningReads {
     private static void number(ObjectNode value, String key, BigInteger expected) { StrictJson.require(value.has(key) && value.get(key).isIntegralNumber() && value.get(key).bigIntegerValue().equals(expected), "native governance integer/frame drift: " + key); }
     private static void signed(BigInteger value) { StrictJson.require(value.compareTo(BigInteger.valueOf(Long.MIN_VALUE)) >= 0 && value.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) <= 0, "native amount exceeds signed int64"); }
 }
+

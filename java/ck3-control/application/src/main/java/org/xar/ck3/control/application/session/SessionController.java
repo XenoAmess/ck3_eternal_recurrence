@@ -298,6 +298,77 @@ public final class SessionController {
     }
 
 
+    public void restoreUnresolvedSameGame(ContinuityStorePort.Session same, ContinuityBatchJournal.UnresolvedSameGameData data) throws IOException {
+        Objects.requireNonNull(same); Objects.requireNonNull(data);
+        StrictJson.require(running.compareAndSet(false, true), "unresolved same-game recovery requires an idle Controller");
+        try {
+            StrictJson.require(!retired && usedBatches.isEmpty() && lastReport.isEmpty(), "unresolved recovery cannot overwrite an executed Controller");
+            StrictJson.require(journal instanceof ContinuityBatchJournal, "unresolved recovery requires the actual ContinuityBatchJournal");
+            StrictJson.require(identity.equals(data.capturedController().owner()), "unresolved recovery crossed the actual owner");
+            StrictJson.require(data.canonicalSequence() == same.head().state().sequence() && data.canonicalHeadDigest().equals(same.head().digest()), "unresolved recovery crossed the actual current journal state");
+            StrictJson.require(!data.unresolvedActions().isEmpty(), "unresolved recovery requires at least one original unresolved action");
+            for (var action : data.unresolvedActions()) {
+                StrictJson.require(action.command().sessionId().equals(identity.sessionId()) && action.command().origin().game().equals(identity.game()) && action.command().origin().machineId().equals(identity.machineId()), "unresolved action crossed the actual owner");
+            }
+            restoreCapturedController(same, data.capturedController());
+            usedBatches.addAll(data.usedBatches());
+            ledgerHead = Optional.of(same.persistedHead());
+            quarantined = true;
+            localUnresolved = true;
+        } finally { running.set(false); }
+    }
+
+    public ActionReceipt reconcileUnresolvedOriginal(ContinuityBatchJournal.UnresolvedSameGameData data, Instant deadline) throws IOException, InterruptedException {
+        Objects.requireNonNull(data); Objects.requireNonNull(deadline);
+        StrictJson.require(running.compareAndSet(false, true), "unresolved original reconciliation requires an idle Controller");
+        try {
+            StrictJson.require(data.unresolvedActions().size() == 1, "unresolved original reconciliation requires exactly one original action");
+            var originalReceipt = data.unresolvedActions().get(0);
+            var originalCommand = originalReceipt.command();
+            StrictJson.require(originalCommand.sessionId().equals(identity.sessionId()) && originalCommand.origin().game().equals(identity.game()) && originalCommand.origin().machineId().equals(identity.machineId()), "unresolved original action crossed the actual owner");
+            
+            StrictJson.require(!retired && quarantined && localUnresolved, "original reconciliation requires restored unresolved Controller state");
+            var batchId = data.capturedController().batchPrefix() + "-" + (data.nextBatchSequence() - 1);
+            StrictJson.require(usedBatches.contains(batchId) && data.usedBatches().contains(batchId), "original interrupted batch was not restored");
+            var began = clock.now();
+            Duration remaining = Duration.between(began.utc(), deadline);
+            // BatchLimits accepts whole milliseconds. Round down so this local recovery
+            // budget never extends the operation deadline or the original action deadline.
+            long remainingMillis = remaining.toMillis();
+            StrictJson.require(remainingMillis >= 1, "new reconciliation operation deadline expired");
+            Duration budget = Duration.ofMillis(Math.min(remainingMillis, 3_600_000L));
+            Duration poll = budget.compareTo(Duration.ofMillis(50)) < 0 ? budget : Duration.ofMillis(50);
+            var limits = new BatchLimits(batchId, 1, budget, budget, poll, 1);
+            var run = new Run(limits, began, Math.addExact(began.elapsedNanos(), budget.toNanos()), totalCommittedDays, Optional.empty(), false);
+            
+            ActionReceipt actual;
+            try {
+                actual = run.measured(Phase.ACTION_RECONCILIATION, () -> actions.reconcile(originalCommand.actionId()));
+            } catch (RuntimeException failure) {
+                quarantineUnresolved();
+                throw new IOException("unresolved original reconciliation failed", failure);
+            }
+            
+            StrictJson.require(sameCommand(actual.command(), originalCommand) && actual.bodySha256().equals(originalReceipt.bodySha256()), "unresolved original reconciliation changed the complete original command");
+            
+            var disposition = run.afterExecution(actual);
+            
+            if (!actual.settled()) {
+                quarantineUnresolved();
+                return actual;
+            }
+            
+            if (actual.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED) {
+                run.completeCycle(actual);
+                run.requireCompletion(disposition);
+                quarantined = false;
+                localUnresolved = false;
+            }
+            
+            return actual;
+        } finally { running.set(false); }
+    }
+
     private void restoreCapturedController(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
             ControllerRestartState state)throws IOException {
         usedBatches.addAll(state.usedBatches());unsavedGameplayActions.addAll(state.unsavedGameplayActions());savedPair=state.savedPair();

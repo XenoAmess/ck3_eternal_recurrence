@@ -57,6 +57,36 @@ public final class OriginalWindowReducer {
                         &&number(frame,"date_raw",0)>=number(state,"last_settled_date_raw",0),
                         "ordinary interruption cannot grant or rewind saved progress");
             }
+            case "reconciled_original_cycle" -> {
+                StrictJson.object(details,Set.of("evidence_id","source","machine_id","session","batch_id",
+                        "completed_cycles","cycle_record_ref","frame"));
+                ObjectNode actual=frame(object(details.get("frame"))),retained=frame(object(state.get("latest_binding")));
+                ObjectNode interruption=object(state.get("interruption"));
+                ObjectNode boundary=object(state.get(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD));
+                ObjectNode cycle=object(state.get(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_CYCLE_FIELD));
+                StrictJson.require("repair_required".equals(StrictJson.text(state.get("status")))
+                        &&"java-reconciled-original-cycle/v1".equals(StrictJson.text(source))
+                        &&"java-ordinary-batch-interruption/v2".equals(StrictJson.text(interruption.get("source")))
+                        &&"BATCH_INTERRUPTED".equals(StrictJson.text(boundary.get("boundary")))
+                        &&ContinuityJson.same(boundary.get("session"),details.get("session"))
+                        &&ContinuityJson.same(cycle.get("session"),details.get("session"))
+                        &&StrictJson.text(boundary.get("batch_id")).equals(StrictJson.text(details.get("batch_id")))
+                        &&StrictJson.text(boundary.get("evidence_id")).equals(StrictJson.text(interruption.get("evidence_id")))
+                        &&number(state,"interrupted_window_id",1)==number(state,"window_id",1)
+                        &&number(details,"completed_cycles",0)==number(state,"last_settled_cycles",0)
+                        &&number(interruption,"completed_cycles",0)==number(state,"last_settled_cycles",0)
+                        &&cycle.has("pending_receipt")&&cycle.get("pending_receipt").isNull()
+                        &&cycle.hasNonNull("head")&&ContinuityJson.same(cycle.get("head"),details.get("cycle_record_ref"))
+                        &&number(cycle,"completed_cycles",0)>=number(state,"last_settled_cycles",0)
+                        &&number(actual,"date_raw",0)>=number(retained,"date_raw",0)
+                        &&number(actual,"date_raw",0)>=number(state,"last_settled_date_raw",0)
+                        &&number(actual,"actor_character_id",1)==number(retained,"actor_character_id",1)
+                        &&StrictJson.text(actual.get("episode_run_id")).equals(StrictJson.text(retained.get("episode_run_id")))
+                        &&StrictJson.integer(actual.get("native_revision"),java.math.BigInteger.ZERO,StrictJson.UINT64_MAX)
+                            .compareTo(StrictJson.integer(retained.get("native_revision"),java.math.BigInteger.ZERO,StrictJson.UINT64_MAX))>=0,
+                        "reconciled original requires its actual interrupted batch and completed same-subject cycle without saved credit");
+                state.put("status","running");binding(state,actual);
+            }
             case "captured_no_dispatch_recovery" -> {
                 ObjectNode retainedFrame=frame(object(state.get("latest_binding"))),actual=frame(object(details.get("frame")));
                 StrictJson.require("repair_required".equals(StrictJson.text(state.get("status")))
