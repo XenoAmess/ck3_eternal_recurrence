@@ -25,7 +25,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 public final class SwaySelectedFinish {
     public record Request(BigInteger expectedRevision,long targetCharacterId,long schemeInstanceId,int schemeInstanceGeneration) {
         public Request {
-            SwayNativeWire.u64(expectedRevision,1); SwayNativeWire.currentCharacter(targetCharacterId);
+            SwayNativeWire.u64(expectedRevision,1); SwayNativeWire.actionCharacter(targetCharacterId);
             SwayNativeWire.instance(schemeInstanceId,schemeInstanceGeneration);
         }
     }

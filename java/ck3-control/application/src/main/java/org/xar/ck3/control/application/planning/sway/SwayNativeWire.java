@@ -86,7 +86,7 @@ public final class SwayNativeWire {
         @Override public int hashCode() { return Objects.hash(binding, actionId, postCaptureEpoch, postContainerGeneration, postDateRaw, fullId, generation, java.util.Arrays.hashCode(body.bytes())); }
     }
     public record StopAck(String actionId, long actor, long target, long fullId, int generation, ProjectionJson body) {
-        public StopAck { action(actionId, true); currentCharacter(actor); currentCharacter(target); instance(fullId, generation); Objects.requireNonNull(body); }
+        public StopAck { action(actionId, true); actionCharacter(actor); actionCharacter(target); instance(fullId, generation); Objects.requireNonNull(body); }
         public boolean terminalObserved() { return false; }
         @Override public boolean equals(Object other) { return other instanceof StopAck row && actionId.equals(row.actionId) && actor == row.actor && target == row.target && fullId == row.fullId && generation == row.generation && java.util.Arrays.equals(body.bytes(), row.body.bytes()); }
         @Override public int hashCode() { return Objects.hash(actionId, actor, target, fullId, generation, java.util.Arrays.hashCode(body.bytes())); }
@@ -127,7 +127,7 @@ public final class SwayNativeWire {
                 integer(row, "scheme_instance_id", 0, 0xffff_fffeL), Math.toIntExact(integer(row, "scheme_instance_generation", 0, 255)), json(row));
     }
     public static StopAck stopAck(byte[] rawFrame, String requestId, Binding binding, String actionId, long target, long fullId, int generation) {
-        currentCharacter(binding.actor()); currentCharacter(target); instance(fullId, generation);
+        actionCharacter(binding.actor()); actionCharacter(target); instance(fullId, generation);
         ObjectNode row = envelope(rawFrame, requestId, STOP, "submitted_verification_pending", "sway_stop", false, true);
         StrictJson.object(row, Set.of("schema", "action_id", "status", "actor_character_id", "target_character_id", "scheme_instance_id", "scheme_instance_generation", "snapshot_revision", "date_raw", "exact_ck3_build", "exe_sha256", "submit_call_count", "postcondition_verified", "terminal_observed", "terminal_cause_observed", "terminal_cause"));
         equals(row, "schema", "xar.ck3.selected-sway-stop.v1"); equals(row, "action_id", actionId); equals(row, "status", "submitted_verification_pending");

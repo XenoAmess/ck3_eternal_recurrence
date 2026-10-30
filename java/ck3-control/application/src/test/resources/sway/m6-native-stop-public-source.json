@@ -1,0 +1,675 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "native_inputs": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "entries": [
+      {
+        "case": "minus2-zero",
+        "role": "stop.request",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.stop.request.json",
+        "bytes": 159,
+        "sha256": "27b4d326ac27c6b6bed535a16e39d3ab24997cbfb97c6d3304a164fb660f060f"
+      },
+      {
+        "case": "minus2-zero",
+        "role": "current.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.current.response.json",
+        "bytes": 1429,
+        "sha256": "f61e597feddc3d3802f338b1b346bee3b088bdc917800cb217c6c36d088d8ec7"
+      },
+      {
+        "case": "minus2-zero",
+        "role": "stop.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.stop.response.json",
+        "bytes": 824,
+        "sha256": "c544717ee5b72e8cf4851520da89ee3fef66d886b799ee2b062d06346d1b7c79"
+      },
+      {
+        "case": "minus2-zero",
+        "role": "pending.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.pending.response.json",
+        "bytes": 1429,
+        "sha256": "f61e597feddc3d3802f338b1b346bee3b088bdc917800cb217c6c36d088d8ec7"
+      },
+      {
+        "case": "minus2-zero",
+        "role": "terminal.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.terminal.response.json",
+        "bytes": 1443,
+        "sha256": "5359719b6635ca00de6c84fa1814f4f67513f1f2e71d38601936971e334de33f"
+      },
+      {
+        "case": "minus2-zero",
+        "role": "wrong-generation.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.wrong-generation.response.json",
+        "bytes": 823,
+        "sha256": "c501b4f9e2ff5978c6a0d246a3f87f7aba7794009418ec15b90fbf42f59ea28f"
+      },
+      {
+        "case": "minus2-zero",
+        "role": "ended-stop.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.ended-stop.response.json",
+        "bytes": 816,
+        "sha256": "27dd37f6d4ec0c1a9acfee61cf8400993b5f262e4d8f1527b7b2b7e15f46eb44"
+      },
+      {
+        "case": "zero-minus2",
+        "role": "stop.request",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.stop.request.json",
+        "bytes": 159,
+        "sha256": "ed89ff5cee759bad00fbf8a69fb0cc10f4d922ec94c48958f1375987f0ca8abf"
+      },
+      {
+        "case": "zero-minus2",
+        "role": "current.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.current.response.json",
+        "bytes": 1420,
+        "sha256": "3db735063893f9f09dcaad65917dc297e3282aaab5fb2ec02e6396a0c3e8efe2"
+      },
+      {
+        "case": "zero-minus2",
+        "role": "stop.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.stop.response.json",
+        "bytes": 824,
+        "sha256": "fd8c6bfdf3d45b5e6bcdda467350c447f0ec449d6f7ba7b19ada4fb29514d356"
+      },
+      {
+        "case": "zero-minus2",
+        "role": "pending.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.pending.response.json",
+        "bytes": 1420,
+        "sha256": "3db735063893f9f09dcaad65917dc297e3282aaab5fb2ec02e6396a0c3e8efe2"
+      },
+      {
+        "case": "zero-minus2",
+        "role": "terminal.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.terminal.response.json",
+        "bytes": 1443,
+        "sha256": "a548d292f9a34d7c25936dcf5285fbd78b23e152a412de1adee68eaebbf1739f"
+      },
+      {
+        "case": "zero-minus2",
+        "role": "wrong-generation.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.wrong-generation.response.json",
+        "bytes": 823,
+        "sha256": "79ba481ef6955e500ed8e27dfda004124b305780fa1191328d501ed6aa47fb99"
+      },
+      {
+        "case": "zero-minus2",
+        "role": "ended-stop.response",
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.ended-stop.response.json",
+        "bytes": 816,
+        "sha256": "ca221103dc9bb725041ba7b834b083fce34fbd9e184129f75d4d20ad68436ba8"
+      }
+    ],
+    "bytes_preserved": true,
+    "source_limits": "owned ACTIVE seed, not original Native Start; queue transfers/releases command, no actualCancelExecute; independent terminal read follows controlled raw row mutation; no original Start or Finish eligibility qualification",
+    "native_index": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\INDEX.json",
+      "bytes": 24579,
+      "sha256": "396cc08cc2e3aeeab517917e34a90af2531fdaa304d622f4aa7c4fa255032203"
+    }
+  },
+  "native_index_original": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "sealed_at": "2026-10-30T17:44:12.386144500Z",
+    "result": "SOFTWARE_VALIDATED_CANDIDATE",
+    "scope": "actual4-only canonical Stop request domain, real published public handler/slot58 queue/pump/command-copy pending ACK and independent native storage query",
+    "published_source_epoch_observed_by_native_writer": "b9e4c8d17799f13d5513442aa3e61bb91ad25e13",
+    "production_candidate": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "only_production_leaf": "ck3_autonomous_player/native_bridge/src/ck3_12004_sway_stop.cpp",
+      "candidate": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\candidate\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_sway_stop.cpp",
+      "baseline_normalized_sha256": "54b351309c79d391404825f554eae3bda5dec8e313b5a4ccdbd85a5fda96dd42",
+      "candidate_sha256": "d50e356c2533ae979346d6b4c2826fd20b0913c41c62bcde9596bc96e91cc9c2",
+      "change": "actual4 Stop roles adopt exact existing terminal canonical signed full32 grammar, reject -1 sentinel; scheme/generation/action/status/ownership unchanged; no Event or legacy change"
+    },
+    "final_delivery": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "created_at": "2026-10-30T17:40:33.237557800Z",
+      "only_delivery_files": [
+        {
+          "repo_relative": "ck3_autonomous_player/native_bridge/src/ck3_12004_sway_stop.cpp",
+          "candidate": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\persistent-ci\\candidate\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_sway_stop.cpp",
+          "sha256": "d50e356c2533ae979346d6b4c2826fd20b0913c41c62bcde9596bc96e91cc9c2",
+          "base_normalized_sha256": "54b351309c79d391404825f554eae3bda5dec8e313b5a4ccdbd85a5fda96dd42"
+        },
+        {
+          "repo_relative": "ck3_autonomous_player/native_bridge/tests/sway_stop_public_route12004_test.cpp",
+          "candidate": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\persistent-ci\\candidate\\ck3_autonomous_player\\native_bridge\\tests\\sway_stop_public_route12004_test.cpp",
+          "sha256": "e76904117850beffda75ff7d90fb0923b55d70698f83c1045990a4663f366494"
+        },
+        {
+          "repo_relative": "ck3_autonomous_player/native_bridge/tests/fixtures/sway_stop_public_route12004_world.hpp",
+          "candidate": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\persistent-ci\\candidate\\ck3_autonomous_player\\native_bridge\\tests\\fixtures\\sway_stop_public_route12004_world.hpp",
+          "sha256": "5eda5667f681956c24f88dd83df03c46310849d9a89c23f4b0aad7c431463496"
+        },
+        {
+          "repo_relative": "ck3_autonomous_player/native_bridge/cmake/sway_stop_public_route12004.cmake",
+          "candidate": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\persistent-ci\\candidate\\ck3_autonomous_player\\native_bridge\\cmake\\sway_stop_public_route12004.cmake",
+          "sha256": "e0ed84c3f001fd753b7e922507aff2026d1f68d1b50ed9e3cf10f970107db92d"
+        }
+      ],
+      "shared_hunk": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\persistent-ci\\SHARED-INTEGRATION.md",
+      "temporary_materialization": "DO_NOT_INTEGRATE"
+    },
+    "persistent_ci_index": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\persistent-ci\\INDEX.json",
+      "bytes": 12529,
+      "sha256": "62ae2b0a5d9b78369dc163a91c9a8220a1ca6cc953daaba03decb9130af550c8"
+    },
+    "baseline_actual": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "stage": "RUN-BASELINE03",
+      "started_at_utc": "2026-10-30T17:34:29.497834900Z",
+      "completed_at_utc": "2026-10-30T17:34:29.946774300Z",
+      "actual": {
+        "identity": {
+          "pid": 171696,
+          "creationFiletimeDecimal": "134378552695235323",
+          "executable": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\stop-public.exe"
+        },
+        "exitCode": 1,
+        "elapsedSeconds": 0.4474091,
+        "accounting": {
+          "peakJobMemoryBytes": 6926336,
+          "activeProcesses": 0,
+          "memoryLimitBytes": 1073741824,
+          "limitFlags": 8704
+        },
+        "stopReason": null
+      }
+    },
+    "baseline_semantic_checks": 23,
+    "baseline_contract_failures": 2,
+    "baseline_interpretation": "original unmodified production Stop Parse rejects signed/zero tuples before mailbox ticket; actual profile factory checks pass; failures never serialized as fake command responses",
+    "candidate_actual": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "stage": "RUN-CANDIDATE",
+      "started_at_utc": "2026-10-30T17:37:18.123629100Z",
+      "completed_at_utc": "2026-10-30T17:37:18.605805600Z",
+      "actual": {
+        "identity": {
+          "pid": 325880,
+          "creationFiletimeDecimal": "134378554381538663",
+          "executable": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\candidate-run\\build\\stop-public-candidate.exe"
+        },
+        "exitCode": 0,
+        "elapsedSeconds": 0.4809487,
+        "accounting": {
+          "peakJobMemoryBytes": 6946816,
+          "activeProcesses": 0,
+          "memoryLimitBytes": 1073741824,
+          "limitFlags": 8704
+        },
+        "stopReason": null
+      }
+    },
+    "candidate_semantic_checks": 259,
+    "candidate_failed": 0,
+    "initial_actual_stages": [
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "COMPILE0",
+        "started_at_utc": "2026-10-30T17:30:06.526014600Z",
+        "completed_at_utc": "2026-10-30T17:30:26.128129Z",
+        "actual": {
+          "identity": {
+            "pid": 69436,
+            "creationFiletimeDecimal": "134378550066845396",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 19.4670065,
+          "accounting": {
+            "peakJobMemoryBytes": 592080896,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "COMPILE1",
+        "started_at_utc": "2026-10-30T17:30:26.263377500Z",
+        "completed_at_utc": "2026-10-30T17:30:46.419728100Z",
+        "actual": {
+          "identity": {
+            "pid": 313588,
+            "creationFiletimeDecimal": "134378550262676420",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 20.1560392,
+          "accounting": {
+            "peakJobMemoryBytes": 588787712,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "COMPILE2",
+        "started_at_utc": "2026-10-30T17:30:46.496381500Z",
+        "completed_at_utc": "2026-10-30T17:31:06.184926500Z",
+        "actual": {
+          "identity": {
+            "pid": 276168,
+            "creationFiletimeDecimal": "134378550465008596",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 19.6874931,
+          "accounting": {
+            "peakJobMemoryBytes": 649375744,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "COMPILE3",
+        "started_at_utc": "2026-10-30T17:31:06.221406700Z",
+        "completed_at_utc": "2026-10-30T17:31:16.551254700Z",
+        "actual": {
+          "identity": {
+            "pid": 243272,
+            "creationFiletimeDecimal": "134378550662244933",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 10.3288888,
+          "accounting": {
+            "peakJobMemoryBytes": 561127424,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "COMPILE4",
+        "started_at_utc": "2026-10-30T17:31:16.600967100Z",
+        "completed_at_utc": "2026-10-30T17:31:30.956546900Z",
+        "actual": {
+          "identity": {
+            "pid": 167608,
+            "creationFiletimeDecimal": "134378550766052929",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 14.3541046,
+          "accounting": {
+            "peakJobMemoryBytes": 562413568,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "NARROW03",
+        "started_at_utc": "2026-10-30T17:34:14.220246400Z",
+        "completed_at_utc": "2026-10-30T17:34:25.990932400Z",
+        "actual": {
+          "identity": {
+            "pid": 332052,
+            "creationFiletimeDecimal": "134378552543708934",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 11.6315867,
+          "accounting": {
+            "peakJobMemoryBytes": 575664128,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "LINK03",
+        "started_at_utc": "2026-10-30T17:34:26.144690600Z",
+        "completed_at_utc": "2026-10-30T17:34:29.450938300Z",
+        "actual": {
+          "identity": {
+            "pid": 49300,
+            "creationFiletimeDecimal": "134378552661498366",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 3.3053024,
+          "accounting": {
+            "peakJobMemoryBytes": 87920640,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "CANDIDATE-COMPILE",
+        "started_at_utc": "2026-10-30T17:36:57.380584600Z",
+        "completed_at_utc": "2026-10-30T17:37:13.833486500Z",
+        "actual": {
+          "identity": {
+            "pid": 192576,
+            "creationFiletimeDecimal": "134378554176660523",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 16.1800089,
+          "accounting": {
+            "peakJobMemoryBytes": 574349312,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      },
+      {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "stage": "CANDIDATE-LINK",
+        "started_at_utc": "2026-10-30T17:37:13.980465200Z",
+        "completed_at_utc": "2026-10-30T17:37:18.070010800Z",
+        "actual": {
+          "identity": {
+            "pid": 281700,
+            "creationFiletimeDecimal": "134378554339888285",
+            "executable": "C:\\Windows\\System32\\cmd.exe"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 4.0720052,
+          "accounting": {
+            "peakJobMemoryBytes": 88809472,
+            "activeProcesses": 0,
+            "memoryLimitBytes": 1073741824,
+            "limitFlags": 8704
+          },
+          "stopReason": null
+        }
+      }
+    ],
+    "pure_factory_actual": "original actual4 Stop profile (0x476ED40/0x476EB80) plus actual Command/Terminal factories execute as software address binders; correct identity enabled; historical identity/null base/missing table rejected",
+    "native_execute": "NOT_RUN",
+    "native_clone_delete_queue_machine_code": "NOT_RUN; original source ABI held separately; software I/O callbacks only",
+    "world_source": "owned ACTIVE SchemeID0/status0 seed reused from existing common World constructor; not an actual Start in this process and never joined to old Start archive",
+    "queue_callback": "clones/moves/accepts/releases command ownership only; no scheme row mutation",
+    "independent_pending_query": "original public terminal handler still sees status0 after ACK",
+    "independent_terminal_query": "explicit later controlled native-memory fixture row status1/ownerFFFFFFFF, original terminal reader+serializer produce terminated_unattributed with cause unknown; not an actual cancellation execution or cause proof",
+    "pending_ack_is_not_receipt": true,
+    "old_Start_Stop_Finish_preparation_qualification": "NOT_GRANTED: seed does not create original Start/read/archive joins",
+    "event_and_legacy_domains": "UNCHANGED",
+    "game": "NOT_RUN",
+    "DLL_deployment": false,
+    "model_provider_game_calls": 0,
+    "old_resource21_Hello_action51_green_retests": 0,
+    "packets": [
+      {
+        "actor": -2,
+        "target": 0,
+        "raw_files": [
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.stop.request.json",
+            "bytes": 159,
+            "sha256": "27b4d326ac27c6b6bed535a16e39d3ab24997cbfb97c6d3304a164fb660f060f"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.current.response.json",
+            "bytes": 1429,
+            "sha256": "f61e597feddc3d3802f338b1b346bee3b088bdc917800cb217c6c36d088d8ec7"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.stop.response.json",
+            "bytes": 824,
+            "sha256": "c544717ee5b72e8cf4851520da89ee3fef66d886b799ee2b062d06346d1b7c79"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.pending.response.json",
+            "bytes": 1429,
+            "sha256": "f61e597feddc3d3802f338b1b346bee3b088bdc917800cb217c6c36d088d8ec7"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.wrong-generation.response.json",
+            "bytes": 823,
+            "sha256": "c501b4f9e2ff5978c6a0d246a3f87f7aba7794009418ec15b90fbf42f59ea28f"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.terminal.response.json",
+            "bytes": 1443,
+            "sha256": "5359719b6635ca00de6c84fa1814f4f67513f1f2e71d38601936971e334de33f"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\minus2-zero.ended-stop.response.json",
+            "bytes": 816,
+            "sha256": "27dd37f6d4ec0c1a9acfee61cf8400993b5f262e4d8f1527b7b2b7e15f46eb44"
+          }
+        ]
+      },
+      {
+        "actor": 0,
+        "target": -2,
+        "raw_files": [
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.stop.request.json",
+            "bytes": 159,
+            "sha256": "ed89ff5cee759bad00fbf8a69fb0cc10f4d922ec94c48958f1375987f0ca8abf"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.current.response.json",
+            "bytes": 1420,
+            "sha256": "3db735063893f9f09dcaad65917dc297e3282aaab5fb2ec02e6396a0c3e8efe2"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.stop.response.json",
+            "bytes": 824,
+            "sha256": "fd8c6bfdf3d45b5e6bcdda467350c447f0ec449d6f7ba7b19ada4fb29514d356"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.pending.response.json",
+            "bytes": 1420,
+            "sha256": "3db735063893f9f09dcaad65917dc297e3282aaab5fb2ec02e6396a0c3e8efe2"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.wrong-generation.response.json",
+            "bytes": 823,
+            "sha256": "79ba481ef6955e500ed8e27dfda004124b305780fa1191328d501ed6aa47fb99"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.terminal.response.json",
+            "bytes": 1443,
+            "sha256": "a548d292f9a34d7c25936dcf5285fbd78b23e152a412de1adee68eaebbf1739f"
+          },
+          {
+            "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-candidate\\zero-minus2.ended-stop.response.json",
+            "bytes": 816,
+            "sha256": "ca221103dc9bb725041ba7b834b083fce34fbd9e184129f75d4d20ad68436ba8"
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\SOURCE-BINDINGS.json",
+        "bytes": 173055,
+        "sha256": "bb96187fbd10ee4430afd406b8babe5af4b3b6226ac9317342f7157d7311750a"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\CLOSURE-PLAN.json",
+        "bytes": 1063,
+        "sha256": "df06bba18cddfd52a8ff51bdddc253720d57c186ee289e481d53b3b61f6614d2"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\CLOSURE-NARROW02.json",
+        "bytes": 1935,
+        "sha256": "5ece4a5628ef50aed9ada3913d35a3b8f951b5f998bf3c78b9c36f9017eeb765"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\NARROW-FAILED02.md",
+        "bytes": 411,
+        "sha256": "8404feaf06b97b36b5690b5754f7954abe2409801f63796db5e8e0c34e9120aa"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\LINK-FAILED01.json",
+        "bytes": 626,
+        "sha256": "fa16e1093244a84ffc7ceca04bcf9f727b1f1fa735fe4886ee3fb82d4cbee571"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\CANDIDATE-DELIVERY.json",
+        "bytes": 711,
+        "sha256": "4f407c6ac67f813495bd5189583ef280f98d7c5bccfc7ba8f85cc29846a1f7f3"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\PrepareStop.java",
+        "bytes": 9843,
+        "sha256": "f8070e0338e7d01524a9cf9285d944073d3140734de75d5042cd7b2f007a830f"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\NarrowStopClosure.java",
+        "bytes": 4493,
+        "sha256": "667339a2435046feb1aa3b2cd6800bb465a565b403f1b9603257a1af6cdcbe09"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\RetryStop03.java",
+        "bytes": 1961,
+        "sha256": "88f9450825c5a96d9bc75b23cd4f0b2732b0b01c4e76b02a95d92a6db0649934"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\PrepareCandidateStop.java",
+        "bytes": 6031,
+        "sha256": "6fb89b56a4fcb47d30c053f4f841c9c4cfdd03d21e019b67464b008585aeae32"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\stop_public_test.cpp",
+        "bytes": 12784,
+        "sha256": "5f372556f79f9e3405f5038aa4d69b195f213f691d016b6327b92f2598243e0f"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\stop_world.inc",
+        "bytes": 6594,
+        "sha256": "58c6dc45f66fd71fb0ce88744069866ffc5d2fdcf658b26936cab13768fa0cee"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\frame_adapter.inc",
+        "bytes": 3679,
+        "sha256": "4a9c9673cf5552e74a7e08b94ab9867c23d3b9a244a5c3a7e72351a27157a196"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\required_identity_factory_slices.cpp",
+        "bytes": 14431,
+        "sha256": "aea6232abad6aa2a31e49d12ff6eb7d1a433ed65217364287068b45ba797d04c"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\required_identity_factory_slices-FAILED02.cpp",
+        "bytes": 12571,
+        "sha256": "f24d8055b82df5ef4ed98fda44920458fae1e155036f9d5aaf8ec92f22ce0718"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\sway_stop_fixture_variant.cpp",
+        "bytes": 9375,
+        "sha256": "e2c6ebcda21cf83566cc6ed5a5c112b6c1caa624ce5db65e0aa86177480b4e43"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\sway_terminal_fixture_variant.cpp",
+        "bytes": 13591,
+        "sha256": "71bda8d229e212a58b832aba8bbbca66f7ce36533fd514e3e2a7d02cb636d852"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\stop-public.exe",
+        "bytes": 199168,
+        "sha256": "7ec6270a9ad9484675690ccfcc9cf00d1feaccf814fcea5150283c4dd2edf1c7"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\candidate-run\\build\\stop-public-candidate.exe",
+        "bytes": 201728,
+        "sha256": "091aaf3b7e166b2446e315a8b8dcb090596a1cd1bc955a5b9d4322ebe82b08c1"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\RUN-BASELINE03\\stdout.txt",
+        "bytes": 197,
+        "sha256": "0a5f82d097b40e3fad4bce807d38ae3822d122c60ff99284651a07e481e94c1e"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\RUN-BASELINE03\\stderr.txt",
+        "bytes": 150,
+        "sha256": "e89e035b5845ae98bbd619b28fbe499fe6dca197f71cb1c9ffd883c3fbd67948"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\RUN-CANDIDATE\\stdout.txt",
+        "bytes": 199,
+        "sha256": "d166bb2ca2bb6003ac82388ce6716058b3848726298f0a233ef5ad29d0e4ff13"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\RUN-CANDIDATE\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\LINK\\ACTUAL.json",
+        "bytes": 626,
+        "sha256": "fa16e1093244a84ffc7ceca04bcf9f727b1f1fa735fe4886ee3fb82d4cbee571"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\LINK\\stdout.txt",
+        "bytes": 18480,
+        "sha256": "f9c84b1aa903527396d40e7317e398b99c83027cbd1e72aee7546b19e445c5e6"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\NARROW02\\ACTUAL.json",
+        "bytes": 629,
+        "sha256": "87a7b1e2db84cba16255bc2d8742394bb5082ab939d5eb2036842544b723eac6"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\build\\NARROW02\\stdout.txt",
+        "bytes": 10764,
+        "sha256": "bdfe189e20beec6cd22b4622b4aa92eae89bb5acbc4d06b953cfb954e148ef71"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-baseline\\minus2-zero.baseline-observation.json",
+        "bytes": 195,
+        "sha256": "b915ff58b40145a12df2f74c0356667befc76ea3f9671b95bee6c35ae2a529ed"
+      },
+      {
+        "path": "D:\\ck3-state\\resume90-m6-native\\target-identity\\stop-public-next\\wire-baseline\\zero-minus2.baseline-observation.json",
+        "bytes": 195,
+        "sha256": "b915ff58b40145a12df2f74c0356667befc76ea3f9671b95bee6c35ae2a529ed"
+      }
+    ],
+    "held_native_source_ABI_separate": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\action-abi\\stop-abi-next\\FINAL-ACTUAL.json",
+      "bytes": 6519,
+      "sha256": "29125bcd22cfc8ab642cb0773868de9a5dce9a0c1528d0024fffa8baa2cfb853"
+    },
+    "held_native_precleanup_update": {
+      "path": "D:\\ck3-state\\resume90-m6-native\\action-abi\\stop-abi-next\\PRECLEANUP-UPDATE.json",
+      "bytes": 2061,
+      "sha256": "c6d54fc2b4ba293215da4eea36944db36a8fdd128c367f90e04af6b8a42cb605"
+    },
+    "baseline_fixture_provenance_limit": "initial fixture compiled before candidate-only token rejection branches were added after the baseline early-return; original baseline production body, variant source, object/executable and actual logs retained. Initial whole fixture hash was not separately recorded, so final fixture hash is not retrocredited to initial compilation.",
+    "CI_scope": "same 259 checks run again solely to validate persistent current-source target/CTest wiring; not 259 additional unique behaviors",
+    "native_writer": "/root/native_integrate90",
+    "java_consumer": "/root/m6_native90/m6_candidate_producer90 receives original raw pending/terminal packets separately; no Java positive fabricated here",
+    "package_bytes_observed": 13906510,
+    "budget_bytes": 67108864,
+    "review_after": "2026-11-06"
+  },
+  "Java_metadata_seams": "G2Source/ObservationIdentity/PlanningReadGuard DATA for isolated codecs, not actual Root/held transport/permission; no original Start fabricated",
+  "SDK_capture": "SDK-DESCRIPTOR.original.json; only actual retained schema diagnosis, no successful tool request inferred"
+}

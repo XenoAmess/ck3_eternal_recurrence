@@ -55,7 +55,7 @@ public final class SwayPublicCodec {
     private SwayPublicCodec() { }
     public static SwaySelectedFinish.Request decodeFinish(RawJson arguments) {
         var row=StrictJson.object(StrictJson.parse(arguments.bytes(),65536),Set.of("expected_revision","target_character_id","scheme_instance_id","scheme_instance_generation"));
-        return new SwaySelectedFinish.Request(publicUInt64(row.get("expected_revision"),1),StrictJson.integer(row.get("target_character_id"),1,Integer.MAX_VALUE),
+        return new SwaySelectedFinish.Request(publicUInt64(row.get("expected_revision"),1),NativeCharacterId.fromJson(row.get("target_character_id")).value(),
                 StrictJson.integer(row.get("scheme_instance_id"),0,0xffff_fffeL),Math.toIntExact(StrictJson.integer(row.get("scheme_instance_generation"),0,255)));
     }
     public static JournalRequest decodeJournal(SwayObservationReads.Kind kind,RawJson arguments) {
