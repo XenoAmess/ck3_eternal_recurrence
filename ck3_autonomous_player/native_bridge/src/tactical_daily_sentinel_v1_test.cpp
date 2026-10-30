@@ -755,9 +755,96 @@ bool TestInstallAnchor() {
   return patch_ok;
 }
 
+// Deterministic software reentry; this does not execute the Game scheduler.
+enum class SlotReentryOperation { cancel, rearm };
+SlotReentryOperation slot_reentry_operation = SlotReentryOperation::cancel;
+xar::ck3_11906::TacticalDailySentinelCancelStatusV1 slot_cancel_result{};
+xar::ck3_11906::TacticalDailySentinelArmStatusV1 slot_arm_result{};
+xar::ck3_11906::TacticalDailySentinelStatusV1 slot_before_control{};
+xar::ck3_11906::TacticalDailySentinelStatusV1 slot_after_control{};
+
+xar::ck3_11906::TacticalDailySentinelArmRequestV1 SlotReentryDateOnly(
+    std::int32_t start, std::int32_t target) {
+  auto request = Request(3, target);
+  request.starting_date_raw = start;
+  request.mode =
+      xar::ck3_11906::TacticalDailySentinelModeV1::terminal_or_sentinel;
+  request.army_count = 0;
+  return request;
+}
+
+void __fastcall ControlSlotInsidePause(void *jomini, bool paused,
+                                       std::int32_t player) {
+  using namespace xar::ck3_11906;
+  SetPaused(jomini, paused, player);
+  slot_before_control = ReadTacticalDailySentinelStatusV1();
+  if (slot_reentry_operation == SlotReentryOperation::cancel) {
+    slot_cancel_result =
+        CancelTacticalDailySentinelV1(slot_before_control.generation);
+  } else {
+    slot_arm_result =
+        ArmTacticalDailySentinelV1(SlotReentryDateOnly(1'024, 1'048));
+  }
+  slot_after_control = ReadTacticalDailySentinelStatusV1();
+}
+
+bool TestPauseCallbackPreservesControlledSlot(SlotReentryOperation chosen) {
+  using namespace xar::ck3_11906;
+  WorldFixture world;
+  pause_calls = 0;
+  original_calls = 0;
+  slot_reentry_operation = chosen;
+  if (!InitializeTacticalDailySentinelFixtureV1(
+          world.bindings, &ControlSlotInsidePause,
+          &OriginalDailyFinalStage) ||
+      ArmTacticalDailySentinelV1(SlotReentryDateOnly(1'000, 1'024)) !=
+          TacticalDailySentinelArmStatusV1::armed) return false;
+  Store(world.jomini, 0x20, std::uint8_t{0});
+  XarTacticalDailySentinelHookV1();
+  const auto end = ReadTacticalDailySentinelStatusV1();
+  const bool canceled_slot = chosen == SlotReentryOperation::cancel &&
+      slot_cancel_result == TacticalDailySentinelCancelStatusV1::canceled &&
+      slot_before_control.state == TacticalDailySentinelStateV1::armed &&
+      slot_after_control.state == TacticalDailySentinelStateV1::idle &&
+      slot_after_control.generation == 1 && end.generation == 1 &&
+      end.state == TacticalDailySentinelStateV1::idle &&
+      end.completed_daily_ticks == 1 && end.trigger_date_raw == 0;
+  const bool replaced_slot = chosen == SlotReentryOperation::rearm &&
+      slot_arm_result == TacticalDailySentinelArmStatusV1::armed &&
+      slot_before_control.generation == 1 &&
+      slot_after_control.generation == 2 &&
+      slot_after_control.state == TacticalDailySentinelStateV1::armed &&
+      end.generation == 2 && end.starting_date_raw == 1'024 &&
+      end.target_date_raw == 1'048 && end.completed_daily_ticks == 0 &&
+      end.trigger_date_raw == 0 &&
+      end.state == TacticalDailySentinelStateV1::armed;
+  const bool preserved = (canceled_slot || replaced_slot) &&
+      end == slot_after_control && original_calls == 1 && pause_calls == 1;
+  std::cout << "slot_reentry="
+            << (chosen == SlotReentryOperation::cancel ? "cancel" : "rearm")
+            << " software_reentry_only=true game_scheduler_exercised=false"
+            << " slot_preserved=" << (preserved ? "true" : "false") << '\n';
+  return preserved;
+}
+
+bool TestPauseCallbackSlotReentry() {
+  const bool cancel =
+      TestPauseCallbackPreservesControlledSlot(SlotReentryOperation::cancel);
+  const bool rearm =
+      TestPauseCallbackPreservesControlledSlot(SlotReentryOperation::rearm);
+  return cancel && rearm;
+}
+
 } // namespace
 
-int main() {
+int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "slot-reentry") {
+    return TestPauseCallbackSlotReentry() ? 0 : 1;
+  }
+  if (argc != 1) {
+    std::cerr << "unknown tactical daily sentinel fixture selection\n";
+    return 1;
+  }
   if (!TestParser()) {
     std::cerr << "tactical daily sentinel parser fixture failed\n";
     return 1;

@@ -4969,6 +4969,13 @@ if(BUILD_TESTING)
     NAME xar_ck3_native_bridge_tactical_daily_sentinel_v1
     COMMAND xar_ck3_tactical_daily_sentinel_v1_test
   )
+  add_test(
+    NAME xar_ck3_native_bridge_tactical_daily_sentinel_v1_slot_reentry
+    COMMAND xar_ck3_tactical_daily_sentinel_v1_test slot-reentry
+  )
+  set_tests_properties(
+    xar_ck3_native_bridge_tactical_daily_sentinel_v1_slot_reentry
+    PROPERTIES TIMEOUT 10)
 
   add_executable(xar_ck3_battle_control_snapshot_v1_mailbox_test
     src/battle_control_snapshot_v1_mailbox.cpp

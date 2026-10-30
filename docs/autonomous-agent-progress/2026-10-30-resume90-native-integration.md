@@ -637,3 +637,44 @@ transport, fact producer and Assembler.Complete. The remaining Java context
 positive-ID consumer is a separately owned follow-up. Neither this separate
 software chain nor the resource fix proves current Game execution or a loaded
 DLL change. No Game, deployment or local-model operation ran.
+
+
+The resource-domain group was normally published as
+`b9e4c8d17799f13d5513442aa3e61bb91ad25e13`, independently read back with a clean
+delivery tree. The subsequent owned-output observation measured 49,190,462 bytes
+in 417 files, below the existing 64 MiB budget and with its unchanged November6
+review deadline.
+
+## Sentinel callback slot arbitration
+
+Runtime's deterministic pause callback reproduced two concrete failures: Cancel
+or Arm performed inside SetPaused was subsequently overwritten by the old tick's
+terminal publication. The baseline failed both selected scenes. The fix takes
+bindings/payload/runtime-epoch/generation snapshots under one short slot lock,
+evaluates native memory and invokes callbacks outside it, then checks the same
+armed slot under the lock before each status commit. Initialization, Arm, Cancel
+and status reads share that mutation lock. No lock spans the pause callback, so
+its Status/Cancel/Arm reentry remains valid. This does not claim ownership across
+the original-call-to-Process window or exercise a live Game scheduler.
+
+The two corrected software scenes pass. The permanent existing fixture now has
+a separate `slot-reentry` selector running exactly those two scenes and checking
+that the complete post-callback status survives the old Process continuation.
+After its initial syntax-only validation, only the changed packaged test TU was
+strictly compiled and linked with the unchanged qualified production object;
+the new mode then passed once in 0.197 seconds at 17:22:05Z. The original
+standalone green executable and the old full fixture suite were not rerun.
+Evidence is Runtime `advance/native-slot-arbitration/`
+`{RESULT.json,REPO-DELIVERY.json,repo-mode-run.json,repo-mode-results.txt}`.
+
+Only the precise production/test/CMake hunks are applied to the publication
+tree and shared source. The existing Windows Native CI receives the existing
+target and exact new CTest selector, preserving unrelated unpublished Z changes.
+The new CTest timeout is ten seconds. This is source/test integration only;
+the loaded Native63 DLL, Game and runtime worker were not changed.
+
+
+The reused Native66 CMake cache configured/generated successfully in 14.573
+seconds at 2026-10-30T17:23:14Z. Its generated selector/timeout are present;
+the formal CMake test binary and complete hosted CI step were not rebuilt/run
+here, since the changed packaged entry already has the necessary actual result.
