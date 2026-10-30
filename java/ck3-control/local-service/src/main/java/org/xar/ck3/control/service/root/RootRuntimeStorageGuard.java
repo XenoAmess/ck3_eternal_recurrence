@@ -371,12 +371,15 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
     }
     private void requireAllocationOwner()throws IOException {
         assertAllocationCurrent();
-        if(allocationLock==null||!allocationLock.isValid()||allocationChannel==null||!allocationChannel.isOpen()
-                ||allocationLockIdentity==null||!allocationLockIdentity.identityKey().equals(SharedSourceFiles.nativeFile(allocationLockPath).identityKey()))
+        if(allocationLock==null||!allocationLock.isValid()||allocationChannel==null||!allocationChannel.isOpen())
             throw new IOException("actual exclusive runtime allocation owner is absent or changed");
-        if(originalLockIdentity!=null){var actual=SharedSourceFiles.nativeFile(expectedOriginalLock);
-            if(!actual.identityKey().equals(originalLockIdentity.identityKey())||actual.logicalBytes()!=0||actual.linkCount()!=1)
-                throw new IOException("the counted original writer lock identity/shape changed");}
+        if(cards!=null){
+            if(allocationLockIdentity==null||!allocationLockIdentity.identityKey().equals(SharedSourceFiles.nativeFile(allocationLockPath).identityKey()))
+                throw new IOException("actual exclusive runtime allocation owner is absent or changed");
+            if(originalLockIdentity!=null){var actual=SharedSourceFiles.nativeFile(expectedOriginalLock);
+                if(!actual.identityKey().equals(originalLockIdentity.identityKey())||actual.logicalBytes()!=0||actual.linkCount()!=1)
+                    throw new IOException("the counted original writer lock identity/shape changed");}
+        }
     }
     private void admitAllocation()throws IOException {
         if(status==Status.UNKNOWN_WRITE||!unresolvedPhysical.isEmpty())throw new IOException("original persistent write outcome is unresolved; no replay or guessed storage release");
@@ -676,9 +679,9 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
                 new Period(cards.lease().observedAtUtc(),cards.lease().reviewAtUtc())))
             if(clock.instant().isBefore(instant(period.observed()))||!clock.instant().isBefore(instant(period.review())))
                 throw new IOException("runtime storage authority for "+machine+"/"+window+" is future-dated or expired");
-        }
         for(RootState root:roots.values())if(!SharedSourceFiles.nativeDirectory(Path.of(root.definition.path())).equals(root.identity))
             throw new IOException("actual runtime allocation root identity drifted");
+        }
     }
     private record Period(String observed,String review) { }
     private void assertOriginals()throws IOException {if(cards!=null)for(var original:cards.originals())SharedSourceFiles.assertUnchanged(original);}

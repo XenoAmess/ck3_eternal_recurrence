@@ -93,6 +93,32 @@ class RootRuntimeOrdinaryStorageGuardTest {
         assertThrows(IOException.class,()->f.init(second));
         assertEquals(RootRuntimeStorageGuard.Status.ADMITTED,first.accounting().status());
     }
+    @Test void ordinaryClosedGuardRejectsBeforePhysicalCallback() throws Exception {
+        Fixture f=new Fixture();var guard=f.guard(1L<<20);f.init(guard);guard.close();
+        assertNoPhysicalCallback(f,guard,"closed.bin");
+    }
+    @Test void ordinaryReleasedAllocationLockRejectsBeforePhysicalCallback() throws Exception {
+        Fixture f=new Fixture();var guard=f.guard(1L<<20);f.init(guard);
+        var field=RootRuntimeStorageGuard.class.getDeclaredField("allocationLock");field.setAccessible(true);
+        ((java.nio.channels.FileLock)field.get(guard)).release();
+        assertNoPhysicalCallback(f,guard,"released.bin");
+    }
+    @Test void ordinaryClosedAllocationChannelRejectsBeforePhysicalCallback() throws Exception {
+        Fixture f=new Fixture();var guard=f.guard(1L<<20);f.init(guard);
+        var field=RootRuntimeStorageGuard.class.getDeclaredField("allocationChannel");field.setAccessible(true);
+        ((java.nio.channels.FileChannel)field.get(guard)).close();
+        try {assertNoPhysicalCallback(f,guard,"channel.bin");}
+        finally {
+            guards.remove(guard);
+            try {guard.close();}catch(java.nio.channels.ClosedChannelException expectedFromClosedTestChannel) { }
+        }
+    }
+    private static void assertNoPhysicalCallback(Fixture f,RootRuntimeStorageGuard guard,String name) throws IOException {
+        Path target=f.state.resolve(name);var called=new AtomicBoolean();
+        var plan=new StorageWriteGuard.WritePlan(f.app.ledger().lock(),List.of(new StorageWriteGuard.FileCreate(target,1)));
+        assertThrows(IOException.class,()->guard.write(plan,()->{called.set(true);return Files.write(target,new byte[]{1},StandardOpenOption.CREATE_NEW);}));
+        assertFalse(called.get());assertFalse(Files.exists(target));
+    }
 @Test void ordinaryGenesisNoWriter() throws Exception {
     Path state = directory.resolve("state"); Files.createDirectories(state);
     Path cont = directory.resolve("continuity"); Files.createDirectories(cont);
