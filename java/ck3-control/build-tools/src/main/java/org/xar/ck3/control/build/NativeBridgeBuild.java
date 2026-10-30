@@ -684,6 +684,7 @@ public final class NativeBridgeBuild {
         for (String key : List.of("CL", "_CL_", "LINK", "_LINK_", "PYTHONPATH", "PYTHONHOME", "JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS")) values.remove(key);
         for (String key : List.of("TEMP", "TMP", "TMPDIR")) values.put(key, temporary.toString());
         values.put("VSLANG", "1033"); values.put("PYTHONDONTWRITEBYTECODE", "1"); values.put("PYTHONNOUSERSITE", "1");
+        values.put("VSCMD_SKIP_SENDTELEMETRY", "1");
     }
     private static List<ControlBuild.FileRef> readDependencies(ControlBuild.FileRef raw, Request request) throws IOException {
         var binding = request.compileSourceBindingRef() == null ? null : sourceBinding(request);
