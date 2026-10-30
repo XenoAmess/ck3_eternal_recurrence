@@ -120,3 +120,10 @@ UTC20:37:22.912观察：新IP客户端实际峰8（20:36:59.164561），当刻�
 新IP已确认的P0采用：canonical108两local guard删除原样采用，strict基线0P1F到必要1P/20.530秒，保真实Native过期拒绝/新鲜对照，S/Z后正式FF `9f9728ecc7`。Storage两轮各一个生产hunk原语义采用、owner生产语义改0，三源strict0/3.663884秒；首8case为7P1F，owner修测试AfterEach清理后只重跑失败1P，非同JVM8P；正式FF `2377f74ccf`。没有量化提速或新增Game日信用。原件见 `D:/ck3-state/model-dispatch91/`、各owner DELIVERY，汇总与操作入口见 [resume91模型页](autonomous-agent-progress/2026-10-31-resume91-models.md)。
 
 后继 Army cohort04 已真实完整200/stop：52份源387857字符、116097prompt/4330out/120427total，82.321秒/TTFT14.863秒、cached未知。owner审12个实际undefined符号到producer路径及14obj模板可用，已物化D配置；编译/链接尚0，不授闭包PASS或生产采用，拒其未验证self-contained保证。源数不是改写文件数，120427接受也不是最大context声明。
+
+
+### resume91 真实未解诊断的 thinking 请求观察
+
+Root 明确授权在仍未解的M5端到端诊断上做一次单请求模式探索：`m5-end-to-end110-correct` 与 `m5-end-to-end110-thinking` 的实际三条messages逐条完全相等（稳定源475409字符、末诊断54267字符），只有 `enable_thinking=false/true` 与 `max_tokens=10000/16000` 不同；全局默认false未改。两者均真实HTTP200/stop/SSE完整、调用器实际OS0：前者113262prompt/2271out、34.852秒，后者113298prompt/2698out、39.214秒，均未触输出上限，cached未知。
+
+逐条读取最终原SSE：889/1115个JSON记录，delta键只有role/content，未见reasoning/reasoning_content/reasoning_tokens键或content中的think标记；usage仅prompt/completion/total。只能记录“未见可见reasoning”，不能凭请求flag认定真实内部模式已启用，也不能据字段缺席认定不存在内部推理。prompt差36的原因未知；输出预算不同、时序及并发未控制，不作速度、缓存或能力因果结论，语义采用另由owner按当前源审阅。本试验没有重发已解答案或授Game信用。可复核纯事实对照为 `D:/ck3-state/model-dispatch91/THINKING110-ACTUAL-COMPARISON.json` 与 `REVIEWS91.json` 的mode_comparison，原REQUEST/SSE保留。

@@ -2,6 +2,8 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
+截至21:13Z：正式普通FF已到 `d1b5de18f9`。Storage ordinary全写入链已完成必要D验证并最小采用S/Z，MB111实际7源增编0/8.898秒，worker111在21:11:53.133Z同Game进入next26，安装10.518秒。尚无本岗实际Game动作/新增日信用；不把安装耗时当作Storage量化提速。后继Focus helper仍在D隔离审阅，不等于完整entry/dispatch/Opening闭包。
+
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
 ## 当前有限验证与本地模型任务
@@ -64,3 +66,21 @@ canonical纯归档lookup两个旧wall-clock guard删除及原首方法回归扩�
 Root新要求提高本地模型实际并发后，已复用packet_review91独占D封两个真实未完Focus后继：完整当前installed verifier/material ownership adapter，及settled receipt后publication→opening COMPLETE的闭合helper。旧API发明误归因撤回、缺方法/完整effect与producer closure缺口保留于 `D:/ck3-state/resume91-java-delivery/FOCUS-REVIEW91.json`。首包17完整API+7精确excerpt约466004字符、末任务11464字符，20:34:22Z已由本岗复用call91.py直接向新IP实际POST（id java-focus-material-next91/max6000）；第二包继续独立封装，不等齐。此处规模为输入上下文，不是17文件改写，结果未回不授实现、编测或Focus COMPLETE。HTTP与候选可以并行，所有本地编测仍按唯一槽/P0优先。
 
 后继反向同步仍只接精确最小diff，不整叶覆盖S或Z；不能因本页各包发表便称正式D已与全部运行修复等同。
+
+## 109–111实际链与完整ordinary修复
+
+Ledger109准确2叶正常FF `b0292dc1db`：同Session只复用domain head/snapshotRef，实际body仍读；commit/recovery/import入口和finally失效，未改generalhead/跨Session。复用owner生产strict0及原测试6P1F后只失败1P，不能合称一次最终7P。
+
+Event首2叶 `6bc6763ad0` 使用显式完整材料64MiB双向转换；Material第三叶独立 `7ca6b8ccd6` 只放宽plan/poet的完整snapshot，decision metadata默认预算保持。Owner实际canonical1033531B无event：旧reverse128KiB红→candidate双向绿；另明确softwaregrowth1099099B、默认1MiB仍拒及12负例。Material实际无event加software unavailabledecision返回empty，非event选择或exactfailedrequest。首2叶进入MB110；第三叶随后合MB111。Root docs04准确快照 `6a3d4f929c`、三模型经验精确append `3a583e6e87`，AGENTS只替换当前resume91章节，历史尾原字节保留。
+
+110真实栈又到普通preflight.parent→realDirectory→toRealPath；不是测得该栈独占250秒。本岗给本地模型14完整当前源236179字符/max10000，`java-storage-ordinary110-systematic` 实际51565in/10000out、103.935秒、length/OS1。可见diff重抄未改原方法、仅未用缓存字段，0生产采用、不拼接或同大包重发。Owner接管实际write/nested/preflight/parent/virtual/verifyPhysical/updateMeasured/checkPhysicalTarget及wrapped-file路径：ordinary只比较内存declared范围，读取实际changed-target类型/字节/分配结果，不走重复祖先或native身份资格；同physicalplan真实child结果供outer与settle复用。closed、真实锁/channel、唯一writer、finite reservation、swallowed failure及UNKNOWN保持，legacy cards原分支保留。
+
+三显式源strict all/Werror0/2.949秒；新生产下原8个必要用例同JVM8P/0skip/3.621秒。真实未写的4个IO测试方法另交模型，19713in/1243out、9.669秒完整stop；owner只改虚构StandardOpenOption.COPY和byte[]比较为真实Files.move/assertArrayEquals。仅重编单test strict0/1.869秒，新4同JVM4P/0skip/3.403秒，旧8绿不重，不冒称一次最终12P。四项为nested空create/fill/rename、空callback不能假成功、吞掉子写异常不能成功、真实超声明byte保持UNKNOWN。准确证据 `D:/ck3-state/resume91-java-delivery/storage-ordinary110/owner/DELIVERY.json`。
+
+正式D原缺运行105–110已用的ordinary lazy/readAuthority基线43行，runtime明确确认sealed当前源，未找到旧命名manifest便不捏来源：精确32+/11-先独立FF `b31e9faf32`，随后本轮production+4测试 `d1b5de18f9`。两源与实际候选忽略行尾diff0，未整叶覆盖S/Z或重绿。Runtime原23KB patch最小S/Z apply0，合Material及M1五叶为MB111七源；实际运行后续结果由runtime记。
+
+## Focus大包与窄方法的真实反馈
+
+`java-focus-material-next91` 与 `java-focus-receipt-next91` 分别54.942/42.227秒完整，95820+1698与47517+1220tokens；第二包ready时第一包已结束，二者不冒称同时在途。两源首次strict实际1/2.174秒：Material两个实际wrapper API取错、Receipt漏import，共3错误，未行为运行。20:46Z两纠错请求实际同秒BEGIN、17.739/13.924秒终态，真实并发2，cached未知；Material纠正wrapper/effect basis方向可用，三findFirst由当前私有安装唯一性闭合，无无用新增门或调用。
+
+Receipt纠错02只补import、把语义反馈复述为unresolved，拒采用。最后窄complete方法03（约90K当前必要源）11.150秒、19320+1520tokens，补了borrowedSession/Blocked停callback，却仍optional引用+只比四字段，未完整绑定实际command/receipt；owner接管其缺口，不继续同题宽重发。`focus-candidates91/REVIEW02-03.json`保留判断及最初API误归因撤回。owner02两个helper随后在明确短槽两源strict all/Werror真实0/2.240秒：Material02原样，Receipt由owner补完整codec绑定/必需refs/borrowedSession/Blocked停止及后继request界线。仅D源编译，不是行为或正式采用；full `completeSameOwnerFocusOpeningFromActualPeer`、真实前置Core安装图和软件行为仍未闭，不能以helper候选代替。
