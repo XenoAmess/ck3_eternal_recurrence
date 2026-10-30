@@ -56,7 +56,6 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
         public PlanningReadRequest currentRequest(){return currentRequest;}
         public PlanningReadResult.Known<T> requireCurrent(ContinuityStorePort.Session same,ReadContract<T> identicalCurrent,PlanningReadRequest actualCurrent) throws IOException {
             StrictJson.require(identicalCurrent==currentContract&&actualCurrent.equals(currentRequest),"canonical witness crossed its current installed query");
-            StrictJson.require(java.time.Instant.now().isBefore(actualCurrent.deadline()),"canonical lookup current query deadline expired");
             return owner.authority.withFrozenFacts(same, frozen -> {
                 StrictJson.require(frozen.state() instanceof Known,"canonical read requires the actual complete Driver owner");
                 Known known=(Known)frozen.state();
@@ -445,7 +444,6 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
         var installed=catalog.installed().stream().filter(binding -> binding.contract()==identicalInstalled).toList();
         StrictJson.require(installed.size()==1,"one actual original decoder source required for a cached read");
         ActionPorts.OutcomeArchive originals=archive.withSession(same);
-        StrictJson.require(java.time.Instant.now().isBefore(current.deadline()),"canonical lookup current query deadline expired");
 
         return authority.withFrozenFacts(same,frozen -> {
             StrictJson.require(frozen.state() instanceof Known,"canonical read requires the actual complete Driver owner");Known known=(Known)frozen.state();

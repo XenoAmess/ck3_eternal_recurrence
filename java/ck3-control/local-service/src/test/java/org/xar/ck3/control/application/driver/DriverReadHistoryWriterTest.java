@@ -91,13 +91,16 @@ final class DriverReadHistoryWriterTest {
                     assertEquals(2,lease.driver().driver().commandHistory().size());assertEquals(originalVersion+1,lease.driver().stamp().driverVersion());
                     var proof=publisher.requireReadOnlyExtension(same,originalGuard.get(),queryFrame.get(),lease.driver()).requireCurrent(same);
                     assertEquals(1,proof.eventSources().size());
-                    var current=new PlanningReadRequest(lease.frame().identity(),lease.frame().source(),lease.frame().sessionId(),contract.operation(),new Obj(Map.of()),Instant.now().plusSeconds(20));
+                    var current=new PlanningReadRequest(lease.frame().identity(),lease.frame().source(),lease.frame().sessionId(),contract.operation(),new Obj(Map.of()),Instant.EPOCH);
                     int writes=fixture.scenarioReadWrites();var witness=publisher.canonicalReadWitness(same,contract,current).orElseThrow();
                     var replayed=witness.requireCurrent(same,contract,current);assertEquals(originals.getLast().originalReceipt(),replayed.originalReceipt());
                     assertEquals(originals.getLast().receipt(),replayed.receipt());assertEquals(writes,fixture.scenarioReadWrites());
                     var wrongArguments=new PlanningReadRequest(current.origin(),current.source(),current.sessionId(),current.operation(),new Obj(Map.of("different_public_argument",new Bool(true))),current.deadline());
                     assertTrue(publisher.canonicalReadWitness(same,contract,wrongArguments).isEmpty());assertEquals(writes,fixture.scenarioReadWrites());
-                    var result=fixture.reads.read(same,contract,current);
+                    var expired=fixture.reads.read(same,contract,current);
+                    assertInstanceOf(PlanningReadResult.Unavailable.class,expired);assertEquals(writes,fixture.scenarioReadWrites());
+                    var freshNative=new PlanningReadRequest(current.origin(),current.source(),current.sessionId(),current.operation(),current.arguments(),Instant.now().plusSeconds(20));
+                    var result=fixture.reads.read(same,contract,freshNative);
                     if(!(result instanceof PlanningReadResult.Known<MilitaryReadObservation> known))throw new AssertionError(result);
                     publisher.enqueue(same,contract,known);return null;
                 });
