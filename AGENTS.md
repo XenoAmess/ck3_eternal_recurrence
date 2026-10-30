@@ -1,5 +1,14 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
+
+- 用户已明确要求阅读 resume90 总交接与 source-index 后继续任务，同时开展自动游玩智能体开发、G2 M0–M7 制作及原生机制/逻辑研究；第一优先是实际正常游玩。本条结束下方休假停止状态，不依据旧人数编制自动恢复60岗。
+- 用户明确本地模型现在可用，并要求尽全力高并发使用、继续摸清能力边界。唯一源码HTTP协调为 `/root/models91`，复用既有调用器与 `docs/local-model-executor-config.json`：8080/qwen38-coder、实际当前源码三消息前缀、有限输出、SSE首有效内容与总耗时分记、瞬时错误按配置重试。真实未完成需求滚动并行，审阅/实际编测/采用/拒绝分开；运行决策HTTP由运行owner装配，源码候选不冒充游玩决策。
+- machine_id: `xenoamess-full-tower-eb9d2c1186`。唯一运行owner为 `/root/runtime91`，独占S/MB、worker、Game/supervisor和账本。2026-10-30T18:47:19Z Win32实读同原版无mod Game71464/出生FILETIME134378397668266369与supervisor305760仍活；canonical102/repair_required、next16、pending=null，保留dirty与已结算FOCUS。先修worker103完整SEM消费预算，再只重启业务智能体同Game接续，不重做1066、不重放FOCUS/UNKNOWN、不新增SAVE前置。
+- 八M owner为 `/root/m0_native91` 至 `/root/m7_native91`；非运行Java正式写者 `/root/java_delivery91`，Native正式写者 `/root/native_integrate91`。各M在独占D候选推进，按具体叶交付；不全树覆盖/reset/stash/stage，不因新Native源码交付部署DLL或重启Game。命令及子进程使用cmd.exe、login:false，禁用PowerShell/WSH。
+- 当前入口：[resume91总记录](docs/autonomous-agent-progress/2026-10-31-java-g2-resume91-current.md)、[运行记录](docs/autonomous-agent-progress/2026-10-31-runtime91-current.md)、[模型记录](docs/autonomous-agent-progress/2026-10-31-resume91-models.md)。新增实际游戏日、普通动作、SAVE与G2可见里程碑按真实运行结果更新；不从编译或HTTP推断。
+
+
 ## 2026-10-30 续行优先级（覆盖历史并发安排）
 
 - 用户最新明确：“不用强行维持60智能体并发了。按照项目进展实际需要来。”取消固定人数、自动补位和为人数保留等待岗；按真实任务安排，完成岗结束，真实新故障再唤回。

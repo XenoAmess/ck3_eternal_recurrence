@@ -1,5 +1,8 @@
 # CK3 自动游玩智能体进度中心
 
+2026-10-31 resume91明确续行（machine_id: `xenoamess-full-tower-eb9d2c1186`）：[当前执行记录](2026-10-31-java-g2-resume91-current.md)、[运行现场](2026-10-31-runtime91-current.md)、[本地模型真实调用与采用](2026-10-31-resume91-models.md)。同原版无mod Game接续为第一优先，八M制作和原生机制研究并行；源码/软件检查/模型HTTP/真实游戏进度分开记录。下方旧休假或暂停段保留历史，不覆盖本次明确续行。
+
+
 2026-10-26 resume63（machine_id: xenoamess-full-tower-eb9d2c1186）：[当前接手记录](2026-10-26-java-g2-resume63-current.md)、[Python 能力与 G2 八 M 对照](2026-10-26-resume63-migration-and-g2-matrix.md)及 [REA 框架方法](../rea-ck3-research/resume63-framework-workflow.md)。Java 完整业务仍为 0/8；源码、编测与实机边界分别见当前记录。
 
 2026-10-24 温和收尾（machine_id: `xenoamess-full-tower-eb9d2c1186`）：[最新 Java/G2 度假交接](../handover/2026-10-24-java-g2-stabilization-vacation-handoff.md)及[35项候选精确索引](../handover/2026-10-24-java-g2-vacation-source-index.json)。Source07复制/独审PASS，C14整包466项有1error、当前仍C13；完整迁移与Java新增保存均未完成。已停止新增任务，恢复先修共享合同和真实接线，不按工作稿数量报告迁移完成。
