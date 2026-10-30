@@ -44,3 +44,40 @@ index were preserved; submission used a separate temporary Git index.
 Qualified code SHA-256:
 - tools/ck3_mod_acceptance_cases/generic_product_adapter.py: 670c521a4ab1f81d73cf7351f1b87632431c7539e4a870741a9344b6251e205a
 - tools/test_prebuilt_fixture_prepare.py: 58ff669cd51bed5c0d08a15437ff31ab5b4f1ac8d5e35695ec50d486d67749a2
+
+Continuation observation: 2026-10-30T17:20:09.872132+00:00; machine_id unchanged.
+
+The repair was published by ordinary fast-forward push as
+3a422e35d694b1686f64c06eff1c7cac5ff74028. Subsequent official CI exposed existing
+fixture defects: the strict recovery AST omitted new registry dependencies, and
+Windows short TEMP names differed from the canonical paths in produced Pins.
+91dcdb4037432f16c7e17a6cc9d619e37ef1d083 and
+5253dc46f4b1c67d72bbc01539620535fea71919 repair the tests. The latter resolves the
+recorder fixture root before producing any inputs. A real system short TEMP alias
+reproduced the old rejection; the existing three-guard producer/consumer roundtrip
+then returned 0. The production identity and invocation/wait guards remain intact.
+The earlier official RED runs and original waits are retained.
+
+Official qualification for exact code commit
+5253dc46f4b1c67d72bbc01539620535fea71919:
+
+- [Dynastic Esotericism Static](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/41096284777): success.
+- [Religious Ritual Fusion Static](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/41096278292): success, including all 64 shared fixture/compatibility tests and strict types.
+- [Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/41096125475): success.
+- [Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/41096125757): in_progress at this record's observation; no pass credit. This unrelated long suite continues automatically and was not cancelled or used to delay the required repair delivery.
+
+CI terminal receipts and the short-TEMP regression waits are under
+C:/ck3-dynastic-esotericism-20261024/resume-product-a20/core-a30-administration/mainline-ci-closure-a03.
+An explicit small-output limit was exceeded when a filtered Git fetch unexpectedly
+created a derived pack: the observed total was 5287404 bytes against 1048576.
+The exact new pack/index were removed after preserving their Pins and the needed
+small objects; recovery measured 765195 bytes before its receipt. The original
+peak is not qualified. DERIVED-FETCH-OVERRUN-RECOVERY-a01.actual.json preserves the
+failure and recovery. No D Git objects, worktree, HEAD or original index were
+written during this continuation; later commits use C-owned indexless objects.
+
+The separately authorized local Azur/RICE/POD cleanup removed 6098409520 bytes,
+19263 files and 1130 directories, with individual original exits 0. Its exact
+scope and receipts are in the [cleanup record](2026-10-30-workshop-unused-local-cache-cleanup-desktop-3fevhd2-1c74096080.md).
+This cleanup and static qualification do not turn the original R43 ERROR into a
+repaired-runtime live PASS. Further live acceptance remains outstanding.
