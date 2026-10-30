@@ -1,6 +1,6 @@
 {
   "schema": "ck3.local-model-executor-config/v1",
-  "base_url": "http://192.168.1.7:8080/v1",
+  "base_url": "http://192.168.1.11:8080/v1",
   "model": "qwen38-coder",
   "authentication": {
     "required": false,
@@ -17,9 +17,9 @@
     }
   },
   "address_migration": {
-    "previous_base_url": "http://192.168.1.7:8000/v1",
+    "previous_base_url": "http://192.168.1.7:8080/v1",
     "same_service_and_capabilities": true,
-    "basis": "User confirmed address migration on 2026-10-28; keep one combined experiment history.",
+    "basis": "User explicitly updated the local model IP to 192.168.1.11 on 2026-10-31 (local date) and requested it be recorded in local model operations. Port, model and credentials are unchanged; retain the combined experiment history.",
     "fallback_to_previous_address": false
   },
   "current_interface_limits": {
