@@ -39,7 +39,7 @@ final class ImmutableArtifactStoreTest {
         assertFalse(f.store.writerLockHeldByCurrentThread());
     }
     @Test void allFourDurabilityBoundariesRecoverWithoutOverwritingOriginals() throws IOException {
-        for (ImmutableArtifactStore.Boundary failed : ImmutableArtifactStore.Boundary.values()) {
+        for (ImmutableArtifactStore.Boundary failed : java.util.List.of(ImmutableArtifactStore.Boundary.RAW_DURABLE,ImmutableArtifactStore.Boundary.RAW_PUBLISHED,ImmutableArtifactStore.Boundary.COMMIT_DURABLE,ImmutableArtifactStore.Boundary.COMMIT_PUBLISHED)) {
             AtomicBoolean failOnce = new AtomicBoolean(true);
             Fixture f = fixture(failed.name(), 2 * 1024 * 1024, reached -> {
                 if (reached == failed && failOnce.getAndSet(false)) throw new IOException("injected crash at " + reached);
@@ -206,5 +206,106 @@ final class ImmutableArtifactStoreTest {
         try(var held=WindowsLedgerLock.acquire(f.lock)){assertThrows(IOException.class,()->f.store.publish(new byte[]{1},10));}
         assertEquals(calls,f.guard.validations());
         assertTrue(f.store.retainedNativeBytes()>8192);
+    }
+    @Test void planningPublicationReadsWithoutDurableBoundariesAndReopens() throws IOException {
+        Fixture f = fixture("planning-read", 2 * 1024 * 1024, reached -> {
+            if (reached == ImmutableArtifactStore.Boundary.RAW_DURABLE || reached == ImmutableArtifactStore.Boundary.COMMIT_DURABLE)
+                throw new IOException("planning publication must not report durable boundaries");
+        });
+        byte[] original = "planning bytes".getBytes(StandardCharsets.UTF_8);
+        WriterContracts.Pin pin;
+        try (var held = WindowsLedgerLock.acquire(f.lock)) {
+            pin = f.store.publishPlanningRead(original, 100);
+            assertArrayEquals(original, f.store.read(pin, 100));
+            assertEquals(pin, f.store.referenceOf(original, 100));
+        }
+        ImmutableArtifactStore reopened = new ImmutableArtifactStore(
+                new ImmutableArtifactStore.Config(f.root, f.lock, 2 * 1024 * 1024), f.guard);
+        try (var held = WindowsLedgerLock.acquire(f.lock)) {
+            assertArrayEquals(original, reopened.read(pin, 100));
+            assertEquals(pin, reopened.referenceOf(original, 100));
+        }
+    }
+
+    @Test void planningOriginRequiresDurablePromotionAndStrongPublishRespectsReadonly() throws IOException {
+        Fixture f = fixture("planning-promote", 2 * 1024 * 1024, reached -> { });
+        byte[] original = "planning promote".getBytes(StandardCharsets.UTF_8);
+        WriterContracts.Pin pin;
+        try (var held = WindowsLedgerLock.acquire(f.lock)) {
+            pin = f.store.publishPlanningRead(original, 100);
+        }
+        ImmutableArtifactStore reopened = new ImmutableArtifactStore(
+                new ImmutableArtifactStore.Config(f.root, f.lock, 2 * 1024 * 1024), f.guard);
+        Path payload = Path.of(pin.reference().path());
+        Path commit = f.root.resolve(pin.reference().sha256() + ".commit.json");
+        var payloadBefore = LedgerFiles.identity(payload);
+        var commitBefore = LedgerFiles.identity(commit);
+        byte[] commitBytesBefore = Files.readAllBytes(commit);
+
+        // Case 1: requireDurable with readonly payload
+        Files.setAttribute(payload, "dos:readonly", Boolean.TRUE);
+        try (var held = WindowsLedgerLock.acquire(f.lock)) {
+            assertArrayEquals(original, reopened.read(pin, 100));
+            assertThrows(IOException.class, () -> reopened.requireDurable(pin.reference(), 100));
+        } finally {
+            Files.setAttribute(payload, "dos:readonly", Boolean.FALSE);
+        }
+        assertEquals(payloadBefore, LedgerFiles.identity(payload));
+        assertEquals(commitBefore, LedgerFiles.identity(commit));
+        assertArrayEquals(commitBytesBefore, Files.readAllBytes(commit));
+
+        // Case 2: strong publish with readonly commit
+        Files.setAttribute(commit, "dos:readonly", Boolean.TRUE);
+        try (var held = WindowsLedgerLock.acquire(f.lock)) {
+            assertArrayEquals(original, reopened.read(pin, 100));
+            assertThrows(IOException.class, () -> reopened.publish(original, 100));
+        } finally {
+            Files.setAttribute(commit, "dos:readonly", Boolean.FALSE);
+        }
+        assertEquals(payloadBefore, LedgerFiles.identity(payload));
+        assertEquals(commitBefore, LedgerFiles.identity(commit));
+        assertArrayEquals(commitBytesBefore, Files.readAllBytes(commit));
+
+        // Restore and verify promotion succeeds
+        try (var held = WindowsLedgerLock.acquire(f.lock)) {
+            var promoted = reopened.publish(original, 100);
+            assertEquals(pin.reference(), promoted.reference());
+            assertArrayEquals(original, reopened.read(promoted, 100));
+            assertEquals(commitBefore, LedgerFiles.identity(commit));
+            assertArrayEquals(commitBytesBefore, Files.readAllBytes(commit));
+        }
+    }
+
+    @Test void historicalDurableKeyRetainsReadOnlyLookupAndStrongShortcut() throws IOException {
+        Fixture f = fixture("historical-shortcut", 2 * 1024 * 1024, reached -> { });
+        byte[] original = "historical durable".getBytes(StandardCharsets.UTF_8);
+        WriterContracts.Pin pin;
+        try (var held = WindowsLedgerLock.acquire(f.lock)) {
+            pin = f.store.publish(original, 100);
+        }
+        Path payload = Path.of(pin.reference().path());
+        Path commit = f.root.resolve(pin.reference().sha256() + ".commit.json");
+        var payloadBefore = LedgerFiles.identity(payload);
+        var commitBefore = LedgerFiles.identity(commit);
+        byte[] commitBytesBefore = Files.readAllBytes(commit);
+
+        Files.setAttribute(payload, "dos:readonly", Boolean.TRUE);
+        Files.setAttribute(commit, "dos:readonly", Boolean.TRUE);
+        try {
+            ImmutableArtifactStore reopened = new ImmutableArtifactStore(
+                    new ImmutableArtifactStore.Config(f.root, f.lock, 2 * 1024 * 1024), f.guard);
+            try (var held = WindowsLedgerLock.acquire(f.lock)) {
+                var same = reopened.publish(original, 100);
+                assertEquals(pin, same);
+                reopened.requireDurable(pin.reference(), 100);
+                assertArrayEquals(original, reopened.read(same, 100));
+            }
+            assertEquals(payloadBefore, LedgerFiles.identity(payload));
+            assertEquals(commitBefore, LedgerFiles.identity(commit));
+            assertArrayEquals(commitBytesBefore, Files.readAllBytes(commit));
+        } finally {
+            Files.setAttribute(payload, "dos:readonly", Boolean.FALSE);
+            Files.setAttribute(commit, "dos:readonly", Boolean.FALSE);
+        }
     }
 }

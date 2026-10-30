@@ -37,6 +37,7 @@ public final class ImmutableArtifactStore {
     private static final int COMMIT_LIMIT = 65_536;
     private static final int MAX_FILES = 100_000;
     private static final String SCHEMA = "xar.immutable-artifact-commit/v1";
+    private static final String PLANNING_SCHEMA = "xar.immutable-artifact-commit/v1-planning";
     public record Config(Path root, Path originalWriterLock, long maximumStoredBytes) {
         public Config {
             root = Objects.requireNonNull(root).toAbsolutePath().normalize();
@@ -47,7 +48,7 @@ public final class ImmutableArtifactStore {
                     "artifact root must be an owned child of the original writer directory");
         }
     }
-    enum Boundary { RAW_DURABLE, RAW_PUBLISHED, COMMIT_DURABLE, COMMIT_PUBLISHED }
+    enum Boundary { RAW_DURABLE, RAW_PUBLISHED, COMMIT_DURABLE, COMMIT_PUBLISHED, PLANNING_RAW_PUBLISHED, PLANNING_COMMIT_PUBLISHED }
     @FunctionalInterface interface FaultProbe { void reached(Boundary boundary) throws IOException; }
     private interface FileApi extends StdCallLibrary {
         boolean GetFileInformationByHandleEx(HANDLE handle, int infoClass, Pointer buffer, int bytes);
@@ -57,7 +58,9 @@ public final class ImmutableArtifactStore {
         static Stamp of(FileIdentity value) { return new Stamp(value.volumeSerialDecimal(), value.fileIdDecimal(), value.creationFiletimeDecimal()); }
         static Stamp of(WindowsFileIdentity value) { return new Stamp(value.volumeSerialDecimal(), value.fileIdDecimal(), value.creationFiletimeDecimal()); }
     }
-    private record Commit(Pin payload, Stamp self) { }
+    private record Commit(Pin payload, Stamp self, boolean planningOrigin) { }
+    private enum Publication { DURABLE, PLANNING_OBSERVATION }
+    private record Published(LedgerFiles.Document data,LedgerFiles.Document metadata,boolean planningOrigin) { }
     private final Config config;
     private final Stamp rootIdentity;
     private final FileIdentity lockIdentity;
@@ -143,12 +146,23 @@ public final class ImmutableArtifactStore {
         requireWrite(); LedgerFiles.Document source = LedgerFiles.exact(Objects.requireNonNull(original), limit(maximumBytes));
         Pin published = publish(source.bytes(), maximumBytes); LedgerFiles.verify(source.pin()); return published;
     }
-    public Pin publish(byte[] original, int maximumBytes) throws IOException {
+    public Pin publish(byte[] original,int maximumBytes)throws IOException {
+        return publish(original,maximumBytes,Publication.DURABLE);
+    }
+    public Pin publishPlanningRead(byte[] original,int maximumBytes)throws IOException {
+        return publish(original,maximumBytes,Publication.PLANNING_OBSERVATION);
+    }
+    private Pin publish(byte[] original, int maximumBytes,Publication publication) throws IOException {
         requireWrite(); Objects.requireNonNull(original); int maximum = limit(maximumBytes);
         if (original.length > maximum) throw new IOException("actual artifact exceeds its declared bound");
         byte[] bytes = original.clone(); String digest = LedgerFiles.sha(bytes);
         Path payload = payload(digest), commit = commit(digest);
-        if (exists(commit)) return matching(bytes, readCommitted(new ExactRef(payload.toString(), bytes.length, digest), maximum));
+        if (exists(commit)) {
+            Published existing=readPublication(new ExactRef(payload.toString(),bytes.length,digest),maximum);
+            Pin result=matching(bytes,existing.data());
+            if(publication==Publication.DURABLE&&existing.planningOrigin())forcePublication(existing);
+            return result;
+        }
         Path pending = config.root().resolve(digest + ".data.pending");
         Path pendingCommit = config.root().resolve(digest + ".commit.pending");
         long metadataUpper = Math.min(COMMIT_LIMIT, Math.addExact(4096L,
@@ -169,39 +183,46 @@ public final class ImmutableArtifactStore {
         // Commit bytes contain their own native FileID. Quote their finite upper before the empty CREATE_NEW,
         // then consume each phase under this one parent reservation; a failed phase stays storage UNKNOWN.
         return storage.write(new StorageWriteGuard.WritePlan(config.originalWriterLock(), mutations),
-                () -> publishReserved(bytes, maximum, digest, metadataUpper));
+                () -> publishReserved(bytes, maximum, digest, metadataUpper,publication));
     }
-    private Pin publishReserved(byte[] bytes, int maximum, String digest, long metadataUpper) throws IOException {
+    private Pin publishReserved(byte[] bytes,int maximum,String digest,long metadataUpper,Publication publication)throws IOException {
         requireWrite();
-        Path payload = payload(digest), commit = commit(digest);
-        Path pending = config.root().resolve(digest + ".data.pending");
-        Path pendingCommit = config.root().resolve(digest + ".commit.pending");
-        if (!exists(payload)) {
-            if (!exists(pending)) writeNew(pending, bytes);
-            LedgerFiles.Document staged = LedgerFiles.exact(new ExactRef(pending.toString(), bytes.length, digest), maximum);
-            faults.reached(Boundary.RAW_DURABLE);
-            LedgerFiles.moveCreateNew(storage, config.originalWriterLock(), pending, payload);
-            if (!Stamp.of(staged.pin().identity()).equals(Stamp.of(LedgerFiles.identity(payload))))
-                throw new IOException("raw artifact identity changed during publication");
-        }
-        Pin pin = LedgerFiles.exact(new ExactRef(payload.toString(), bytes.length, digest), maximum).pin();
-        faults.reached(Boundary.RAW_PUBLISHED);
-        if (!exists(pendingCommit)) {
-            Stamp self = storage.write(single(new StorageWriteGuard.FileCreate(pendingCommit, 0)), () -> {
-                Files.createFile(pendingCommit); return Stamp.of(LedgerFiles.identity(pendingCommit));
+        Path payload=payload(digest),commit=commit(digest);
+        Path pending=config.root().resolve(digest+".data.pending"),pendingCommit=config.root().resolve(digest+".commit.pending");
+        boolean wroteRaw=false;
+        if(!exists(payload)) {
+            if(!exists(pending)){writeNew(pending,bytes,publication);wroteRaw=true;}
+            LedgerFiles.Document staged=LedgerFiles.exact(new ExactRef(pending.toString(),bytes.length,digest),maximum);
+            if(publication==Publication.DURABLE){if(!wroteRaw)forceFile(pending);faults.reached(Boundary.RAW_DURABLE);}
+            movePublished(pending,payload,publication);
+            if(!Stamp.of(staged.pin().identity()).equals(Stamp.of(LedgerFiles.identity(payload))))throw new IOException("raw artifact identity changed during publication");
+        }else if(publication==Publication.DURABLE)forceFile(payload);
+        Pin pin=LedgerFiles.exact(new ExactRef(payload.toString(),bytes.length,digest),maximum).pin();
+        faults.reached(publication==Publication.DURABLE?Boundary.RAW_PUBLISHED:Boundary.PLANNING_RAW_PUBLISHED);
+        boolean wroteCommit=false;
+        if(!exists(pendingCommit)) {
+            Stamp self=storage.write(single(new StorageWriteGuard.FileCreate(pendingCommit,0)),()->{
+                Files.createFile(pendingCommit);return Stamp.of(LedgerFiles.identity(pendingCommit));
             });
-            byte[] document = encode(new Commit(pin, self)); reserve(allocatedUpper(document.length));
-            if (document.length > metadataUpper) throw new IOException("actual commit exceeds its original finite quote");
-            storage.write(single(new StorageWriteGuard.FileFillExistingEmpty(pendingCommit, metadataUpper)), () -> {
-                writeExistingEmpty(pendingCommit, document, self); return null;
-            });
+            byte[] document=encode(new Commit(pin,self,publication==Publication.PLANNING_OBSERVATION));reserve(allocatedUpper(document.length));
+            if(document.length>metadataUpper)throw new IOException("actual commit exceeds its original finite quote");
+            storage.write(single(new StorageWriteGuard.FileFillExistingEmpty(pendingCommit,metadataUpper)),()->{writeExistingEmpty(pendingCommit,document,self,publication);return null;});
+            wroteCommit=true;
         }
-        Commit prepared = decode(LedgerFiles.read(pendingCommit, COMMIT_LIMIT));
-        requirePin(prepared.payload(), pin); verifyRaw(prepared.payload(), maximum);
-        faults.reached(Boundary.COMMIT_DURABLE);
-        LedgerFiles.moveCreateNew(storage, config.originalWriterLock(), pendingCommit, commit);
-        faults.reached(Boundary.COMMIT_PUBLISHED);
-        Pin result = matching(bytes, readCommitted(pin.reference(), maximum)); reserve(0); return result;
+        Commit prepared=decode(LedgerFiles.read(pendingCommit,COMMIT_LIMIT));
+        requirePin(prepared.payload(),pin);verifyRaw(prepared.payload(),maximum);
+        Publication commitPublication=publication;
+        if(publication==Publication.DURABLE) {
+            if(!wroteCommit)forceFile(pendingCommit);
+            faults.reached(Boundary.COMMIT_DURABLE);
+        }else if(!prepared.planningOrigin()) {
+            // An interrupted historical strong publication keeps its strong marker and receives a real barrier.
+            forceFile(payload);forceFile(pendingCommit);commitPublication=Publication.DURABLE;
+            faults.reached(Boundary.COMMIT_DURABLE);
+        }
+        movePublished(pendingCommit,commit,commitPublication);
+        faults.reached(commitPublication==Publication.DURABLE?Boundary.COMMIT_PUBLISHED:Boundary.PLANNING_COMMIT_PUBLISHED);
+        Pin result=matching(bytes,readCommitted(pin.reference(),maximum));reserve(0);return result;
     }
     /** No creation, repair, overwrite, acquisition or implicit preserve is allowed here. */
     public Pin referenceOf(byte[] original, int maximumBytes) throws IOException {
@@ -235,12 +256,12 @@ public final class ImmutableArtifactStore {
         if (expected.bytes() > maximum || !Path.of(expected.path()).toAbsolutePath().normalize().equals(payload(expected.sha256())))
             throw new IOException("artifact reference is outside its exact content-addressed root or declared bound");
     }
-    private LedgerFiles.Document readCommitted(ExactRef expected, int maximum) throws IOException {
-        requireReference(expected, maximum);
-        Path index = commit(expected.sha256()); LedgerFiles.Document metadata = LedgerFiles.read(index, COMMIT_LIMIT);
-        Commit bound = decode(metadata); if (!bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
-        LedgerFiles.Document data = verifyRaw(bound.payload(), maximum);
-        return data;
+    private LedgerFiles.Document readCommitted(ExactRef expected,int maximum)throws IOException {return readPublication(expected,maximum).data();}
+    private Published readPublication(ExactRef expected,int maximum)throws IOException {
+        requireReference(expected,maximum);
+        LedgerFiles.Document metadata=LedgerFiles.read(commit(expected.sha256()),COMMIT_LIMIT);
+        Commit bound=decode(metadata);if(!bound.payload().reference().equals(expected))throw new IOException("artifact commit/ref drift");
+        return new Published(verifyRaw(bound.payload(),maximum),metadata,bound.planningOrigin());
     }
     private LedgerFiles.Document verifyRaw(Pin pin, int maximum) throws IOException {
         LedgerFiles.Document value = LedgerFiles.exact(pin.reference(), maximum); requirePin(value.pin(), pin); return value;
@@ -304,32 +325,36 @@ public final class ImmutableArtifactStore {
         String value = path.toAbsolutePath().normalize().toString();
         return value.startsWith("\\\\") ? "\\\\?\\UNC\\" + value.substring(2) : "\\\\?\\" + value;
     }
-    private void writeNew(Path path, byte[] bytes) throws IOException {
+    private void writeNew(Path path, byte[] bytes,Publication publication) throws IOException {
         storage.write(single(new StorageWriteGuard.FileCreate(path, bytes.length)), () -> {
             Files.createFile(path); Stamp stamp = Stamp.of(LedgerFiles.identity(path));
-            writeExistingEmpty(path, bytes, stamp); return null;
+            writeExistingEmpty(path, bytes, stamp,publication); return null;
         });
     }
-    private static void writeExistingEmpty(Path path, byte[] bytes, Stamp stamp) throws IOException {
+    private static void writeExistingEmpty(Path path, byte[] bytes, Stamp stamp,Publication publication) throws IOException {
         if (LedgerFiles.identity(path).bytes() != 0) throw new IOException("partial artifact may not be overwritten");
         try (FileChannel channel = FileChannel.open(path, StandardOpenOption.WRITE)) {
             if (!stamp.equals(Stamp.of(LedgerFiles.identity(path)))) throw new IOException("staging native identity changed");
-            ByteBuffer buffer = ByteBuffer.wrap(bytes); while (buffer.hasRemaining()) channel.write(buffer); channel.force(true);
+            ByteBuffer buffer = ByteBuffer.wrap(bytes); while (buffer.hasRemaining()) channel.write(buffer); if(publication==Publication.DURABLE)channel.force(true);
         }
         if (!stamp.equals(Stamp.of(LedgerFiles.identity(path)))) throw new IOException("durable staging native identity changed");
         // publishReserved reads this staging file once against the expected payload or commit before its durable boundary.
     }
     private static byte[] encode(Commit commit) {
-        ObjectNode row = StrictJson.object(); row.put("schema", SCHEMA); row.set("payload", commit.payload().reference().toJson());
-        row.set("payload_identity", identity(commit.payload().identity())); row.set("commit_identity", stamp(commit.self()));
+        ObjectNode row = StrictJson.object(); row.put("schema", commit.planningOrigin() ? PLANNING_SCHEMA : SCHEMA);
+        row.set("payload", commit.payload().reference().toJson());
+        row.set("payload_identity", identity(commit.payload().identity()));
+        row.set("commit_identity", stamp(commit.self()));
         return StrictJson.canonical(row);
     }
     private static Commit decode(LedgerFiles.Document document) throws IOException {
         ObjectNode row = StrictJson.object(StrictJson.parse(document.bytes()), Set.of("schema", "payload", "payload_identity", "commit_identity"));
-        StrictJson.require(StrictJson.text(row.get("schema")).equals(SCHEMA), "exact immutable commit schema required");
+        String schema = StrictJson.text(row.get("schema"));
+        StrictJson.require(schema.equals(SCHEMA) || schema.equals(PLANNING_SCHEMA), "exact immutable commit schema required");
+        boolean planningOrigin = schema.equals(PLANNING_SCHEMA);
         Stamp self = stamp(row.get("commit_identity"));
         if (!self.equals(Stamp.of(document.pin().identity()))) throw new IOException("commit replaced under same name/FileID");
-        return new Commit(new Pin(ExactRef.fromJson(row.get("payload")), identity(row.get("payload_identity"))), self);
+        return new Commit(new Pin(ExactRef.fromJson(row.get("payload")), identity(row.get("payload_identity"))), self, planningOrigin);
     }
     private static ObjectNode identity(FileIdentity value) {
         ObjectNode row = stamp(Stamp.of(value)); row.put("modified", value.modifiedInstant()); row.put("bytes", value.bytes()); return row;
@@ -350,4 +375,22 @@ public final class ImmutableArtifactStore {
         return result;
     }
     private static String text(ObjectNode row, String name) { return StrictJson.text(row.get(name)); }
+    private void forceFile(Path path) throws IOException {
+        try (FileChannel channel = FileChannel.open(path, StandardOpenOption.WRITE)) {
+            channel.force(true);
+        }
+    }
+    public void requireDurable(ExactRef reference,int maximumBytes)throws IOException {
+        requireWrite();Published actual=readPublication(Objects.requireNonNull(reference),limit(maximumBytes));
+        if(actual.planningOrigin())forcePublication(actual);
+    }
+    private void forcePublication(Published actual)throws IOException {
+        forceFile(Path.of(actual.data().pin().reference().path()));
+        forceFile(Path.of(actual.metadata().pin().reference().path()));
+        LedgerFiles.verify(actual.data().pin());LedgerFiles.verify(actual.metadata().pin());
+    }
+    private void movePublished(Path staging,Path target,Publication publication)throws IOException {
+        if(publication==Publication.DURABLE)LedgerFiles.moveCreateNew(storage,config.originalWriterLock(),staging,target);
+        else LedgerFiles.moveCreateNewNoForce(storage,config.originalWriterLock(),staging,target);
+    }
 }

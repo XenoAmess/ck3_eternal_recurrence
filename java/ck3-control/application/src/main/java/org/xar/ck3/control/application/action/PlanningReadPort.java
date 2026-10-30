@@ -6,6 +6,9 @@ import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj;
 
 public interface PlanningReadPort {
+    enum ReadArchiveMode { DURABLE, PLANNING_OBSERVATION }
+    /** Explicit ordinary observation facade. Other implementations retain their existing strong behavior. */
+    default PlanningReadPort planningReads() { return this; }
     /** Observation of one actual failed READ, inside its original writer callback; never a new read permission. */
     @FunctionalInterface interface FailureEvidenceObserver {
         void failed(Session same, ReadContract<?> identical, PlanningReadRequest actual,

@@ -153,6 +153,7 @@ public final class PlanningReadCoordinator implements PlanningReadPort {
     private final Clock clock;
     private final ActionPorts.OutcomeArchive archive;
     private final Optional<KnownReadObserver> knownReads;
+    private final ReadArchiveMode archiveMode;
     public PlanningReadCoordinator(List<ReadContract<?>> registered, ActionJournal journal, ReadGuardPort guard, NativePlanningReadPort nativePort, ActionPorts.OutcomeArchive archive, Clock clock) {
         this(RootReadContractCatalog.staticOnly(registered), journal, guard, nativePort, archive, clock);
     }
@@ -163,12 +164,21 @@ public final class PlanningReadCoordinator implements PlanningReadPort {
         this(catalog,journal,guard,nativePort,archive,clock,Optional.of(Objects.requireNonNull(actualCacheProducer)));
     }
     private PlanningReadCoordinator(RootReadContractCatalog catalog, ActionJournal journal, ReadGuardPort guard, NativePlanningReadPort nativePort, ActionPorts.OutcomeArchive archive, Clock clock,Optional<KnownReadObserver> knownReads) {
+        this(catalog,journal,guard,nativePort,archive,clock,knownReads,ReadArchiveMode.DURABLE);
+    }
+    private PlanningReadCoordinator(RootReadContractCatalog catalog, ActionJournal journal, ReadGuardPort guard, NativePlanningReadPort nativePort, ActionPorts.OutcomeArchive archive, Clock clock,Optional<KnownReadObserver> knownReads,ReadArchiveMode archiveMode) {
         this.catalog = Objects.requireNonNull(catalog); this.journal = Objects.requireNonNull(journal); this.guard = Objects.requireNonNull(guard);
         this.nativePort = Objects.requireNonNull(nativePort); this.clock = Objects.requireNonNull(clock);
         this.archive = Objects.requireNonNull(archive);
-        this.knownReads=knownReads;
+        this.knownReads=knownReads;this.archiveMode=Objects.requireNonNull(archiveMode);
     }
     public RootReadContractCatalog catalog() { return catalog; }
+    @Override public PlanningReadPort planningReads() {
+        return archiveMode==ReadArchiveMode.PLANNING_OBSERVATION?this:new PlanningReadCoordinator(catalog,journal,guard,nativePort,archive,clock,knownReads,ReadArchiveMode.PLANNING_OBSERVATION);
+    }
+    private ExactRef preserveKnownRead(PlanningReadReceipt receipt) {
+        return archiveMode==ReadArchiveMode.PLANNING_OBSERVATION?archive.preservePlanningRead(receipt):archive.preserveRead(receipt);
+    }
     @Override public <T> PlanningReadResult<T> readWithFailureEvidence(ReadContract<T> contract,
             PlanningReadRequest request, PlanningReadPort.FailureEvidenceObserver observer) {
         return read(contract, request, new FailureEvidenceLifecycle(observer));
@@ -351,7 +361,7 @@ public final class PlanningReadCoordinator implements PlanningReadPort {
                             message.length() <= 2048 ? message : message.substring(0, 2048), Optional.of(original),
                             observer, attempted, Optional.of(typed), observedAfter), ticket);
                 }
-                PlanningReadResult.Known<T> known=new PlanningReadResult.Known<>(decoded, receipt, archive.preserveRead(receipt));
+                PlanningReadResult.Known<T> known=new PlanningReadResult.Known<>(decoded, receipt, preserveKnownRead(receipt));
                 attempted = null; // A produced Known whose publication callback fails is not a failed native-query origin.
                 knownReads.ifPresent(cache -> cache.afterKnown(locked.writerSession(),contract,known));
                 if (observer.isPresent()) observer.orElseThrow().known(locked.writerSession(), contract, known);

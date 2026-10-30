@@ -203,24 +203,28 @@ public final class FinanceRuntimeInstaller {
     /** Only public ROOT opts into the publisher's actual committed originals. Other operations retain their existing read path. */
     private static final class CanonicalRootReads implements PlanningReadPort {
         private final RootRuntimeContext context;
-        private CanonicalRootReads(RootRuntimeContext context){this.context=Objects.requireNonNull(context);}
+        private final ReadArchiveMode archiveMode;
+        private CanonicalRootReads(RootRuntimeContext context){this(context,ReadArchiveMode.DURABLE);}
+        private CanonicalRootReads(RootRuntimeContext context,ReadArchiveMode archiveMode){this.context=Objects.requireNonNull(context);this.archiveMode=Objects.requireNonNull(archiveMode);}
+        @Override public PlanningReadPort planningReads(){return archiveMode==ReadArchiveMode.PLANNING_OBSERVATION?this:new CanonicalRootReads(context,ReadArchiveMode.PLANNING_OBSERVATION);}
+        private PlanningReadPort live(){var actual=context.reads();return archiveMode==ReadArchiveMode.PLANNING_OBSERVATION?actual.planningReads():actual;}
         private static boolean publicRoot(ReadContract<?> contract,PlanningReadRequest request) {
             return contract.contractId().equals(FinanceReadContracts.ROOT_CONTRACT_ID)
                     &&contract.operation().equals(FinanceReadContracts.Query.ROOT.operation())
                     &&FinanceReadContracts.rootCapture(request.arguments())==FinanceReadContracts.RootCapture.PUBLIC_QUERY;
         }
         @Override public <T> PlanningReadResult<T> read(ReadContract<T> contract,PlanningReadRequest request) {
-            if(!publicRoot(contract,request))return context.reads().read(contract,request);
+            if(!publicRoot(contract,request))return live().read(contract,request);
             try{return context.withSession(same->read(same,contract,request));}
             catch(IOException unavailable){return new PlanningReadResult.Unavailable<>("actual canonical ROOT originals unavailable: "+unavailable.getMessage(),Optional.empty());}
         }
         @Override public <T> PlanningReadResult<T> read(Session same,ReadContract<T> contract,PlanningReadRequest request) {
-            if(!publicRoot(contract,request))return context.reads().read(same,contract,request);
+            if(!publicRoot(contract,request))return live().read(same,contract,request);
             try {
                 context.writer().requireSession(same);
                 var canonical=context.readHistoryPublisher().canonicalReadWitness(same,contract,request);
                 if(canonical.isPresent())return canonical.orElseThrow().requireCurrent(same,contract,request);
-                return context.reads().read(same,contract,request);
+                return live().read(same,contract,request);
             }catch(IOException unavailable){return new PlanningReadResult.Unavailable<>("actual canonical ROOT originals unavailable: "+unavailable.getMessage(),Optional.empty());}
         }
     }

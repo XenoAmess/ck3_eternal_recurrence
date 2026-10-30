@@ -927,6 +927,14 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
         StrictJson.require(queue.deferred.isEmpty(),"rich components must finalize or abandon in their original service scope before publication");
         ActionPorts.OutcomeArchive originals=archive.withSession(same);
         try {
+            if(queue.prepared==null) {
+                // Actual successful ordinary rows retain a typed receipt, not a flat transitive CAS-pin list.
+                // Default strong publication recursively promotes its request/outcome/token dependencies before canonical WAL publication.
+                for(Item item:queue.items) {
+                    ExactRef durable=originals.preserveRead(item.known().receipt());
+                    StrictJson.require(durable.equals(item.known().originalReceipt()),"strong read-history publication changed its actual original locator");
+                }
+            }
             if(queue.publication==null)queue.publication=prepare(same,queue,originals);
             if(queue.prepared==null)queue.prepared=same.preview(queue.publication.request);
             if(queue.receipt==null) {

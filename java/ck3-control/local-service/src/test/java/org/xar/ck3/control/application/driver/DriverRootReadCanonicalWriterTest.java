@@ -339,4 +339,91 @@ final class DriverRootReadCanonicalWriterTest {
             fixture.driverAuthority().publishCapabilityInputs(same,lease.driver().stamp(),produced.expectedAuxiliarySha256(),produced);return null;
         });
     }
+
+    @Test void planningRootPromotesEveryNestedOriginalBeforeCanonicalPublicationWithoutAnotherObservation() throws Exception {
+        var definitions=new AtomicReference<FinanceReadContracts>();var source=new AtomicReference<ExactRef>();
+        try(var fixture=new ActionWriterIntegrationFixture(directory.resolve("planning-root-closure"),false,scenario(definitions,source))) {
+            var publisher=publisher(fixture,source.get());var initial=fixture.ready();
+            var actual=new AtomicReference<PlanningReadResult.Known<FinanceReadContracts.Packet>>();
+            var originals=new java.util.LinkedHashMap<Path,byte[]>();
+            var identities=new java.util.LinkedHashMap<Path,Object>();
+            fixture.writer.locked(same->{
+                initialize(fixture,same,initial.request().before());
+                fixture.collector.current(same,initial.request().before(),Instant.now().plusSeconds(30),lease->{
+                    actual.set(known(definitions.get().read(same,FinanceReadContracts.Query.ROOT,
+                            fixture.reads.planningReads(),planning(lease.frame()))));
+                    assertTrue(publisher.hasPending(same));
+                    Path archiveRoot=fixture.archive.artifactStore().identity().root();
+                    int strong=0;
+                    try(var commits=java.nio.file.Files.newDirectoryStream(archiveRoot,"*.commit.json")) {
+                        for(Path commit:commits) {
+                            byte[] bytes=java.nio.file.Files.readAllBytes(commit);
+                            var body=StrictJson.parse(bytes);
+                            if(!"xar.immutable-artifact-commit/v1-planning".equals(body.path("schema").textValue())) {
+                                assertEquals("xar.immutable-artifact-commit/v1",body.path("schema").textValue());strong++;continue;
+                            }
+                            ExactRef payload=ExactRef.fromJson(body.get("payload"));
+                            Path path=Path.of(payload.path());
+                            assertEquals(archiveRoot,path.getParent());
+                            originals.put(path,java.nio.file.Files.readAllBytes(path));originals.put(commit,bytes);
+                        }
+                    }
+                    assertTrue(strong>0,"actual guard/capability originals outside the planning archive facade stay strong");
+                    Path top=Path.of(actual.get().originalReceipt().path());
+                    assertTrue(originals.containsKey(top),"the actual planning receipt was published in the explicit planning mode");
+                    Path nested=Path.of(ExactRef.fromJson(StrictJson.parse(originals.get(top)).get("original_ref")).path());
+                    assertNotEquals(top,nested);assertTrue(originals.containsKey(nested),"the actual dispatch metadata is in the newly weak set");
+                    assertTrue(originals.size()>=4);
+                    for(Path path:originals.keySet())identities.put(path,
+                            org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes.read(path).fileKey());
+                    return null;
+                });
+                int reads=fixture.nativeReadWrites(),scenarioReads=fixture.scenarioReadWrites(),actions=fixture.nativeActionWrites();
+                String head=same.head().digest();long sequence=same.head().state().sequence();
+                // Each real newly weak payload AND commit must be writable for the canonical barrier.
+                // A retained planning-origin marker remains meaningful after any earlier successful prefix.
+                for(var entry:originals.entrySet()) {
+                    Path selected=entry.getKey();
+                    try {
+                        java.nio.file.Files.setAttribute(selected,"dos:readonly",Boolean.TRUE);
+                        assertEquals(Boolean.TRUE,java.nio.file.Files.getAttribute(selected,"dos:readonly"));
+                        assertArrayEquals(entry.getValue(),java.nio.file.Files.readAllBytes(selected));
+                        var rejected=assertThrows(Exception.class,()->publisher.flushActualReads(same),selected.toString());
+                        Throwable cause=rejected;
+                        while(!(cause instanceof IOException)&&cause.getCause()!=null)cause=cause.getCause();
+                        assertInstanceOf(IOException.class,cause);
+                        assertTrue(java.util.Arrays.stream(cause.getStackTrace()).anyMatch(frame->
+                                frame.getClassName().endsWith("ImmutableArtifactStore")&&frame.getMethodName().equals("forceFile")),
+                                ()->"expected actual recursive durable promotion, got "+rejected);
+                        assertEquals(head,same.head().digest());assertEquals(sequence,same.head().state().sequence());
+                        assertTrue(publisher.hasPending(same));
+                    } finally {
+                        java.nio.file.Files.setAttribute(selected,"dos:readonly",Boolean.FALSE);
+                    }
+                }
+                var committed=publisher.flushActualReads(same).orElseThrow();
+                assertEquals(sequence,committed.predecessor().state().sequence());
+                assertEquals(sequence+1,committed.actual().head().sequence());assertFalse(publisher.hasPending(same));
+                assertEquals(reads,fixture.nativeReadWrites());assertEquals(scenarioReads,fixture.scenarioReadWrites());
+                assertEquals(actions,fixture.nativeActionWrites());assertEquals(0,actions);
+                for(var entry:originals.entrySet()) {
+                    assertArrayEquals(entry.getValue(),java.nio.file.Files.readAllBytes(entry.getKey()));
+                    assertEquals(identities.get(entry.getKey()),
+                            org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes.read(entry.getKey()).fileKey());
+                }
+                assertEquals(actual.get().receipt(),fixture.archive.withSession(same).loadRead(actual.get().originalReceipt()));
+                fixture.driverAuthority().withFrozenFacts(same,frozen->{
+                    var current=assertInstanceOf(DriverSnapshotFacts.Known.class,frozen.state());
+                    assertEquals(1,current.driver().commandHistory().size());
+                    var row=DriverReadHistoryRowProducer.decode(current.driver().commandHistory().getFirst().originalRow().json());
+                    assertEquals(DriverReadHistoryRowProducer.Kind.CAMPAIGN_ROOT_CONTEXT,row.provenance().kind());
+                    assertEquals(actual.get().originalReceipt(),row.provenance().originalReceipt());return null;
+                });
+                System.out.println("PLANNING_ROOT_NESTED_PROMOTION files="+originals.size()+" native_reads="+reads
+                        +" scenario_reads="+scenarioReads+" canonical_sequence="+same.head().state().sequence());
+                return null;
+            });
+        }
+    }
+
 }

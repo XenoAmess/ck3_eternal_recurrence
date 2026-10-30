@@ -101,6 +101,8 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     private final ContinuityWriter sameWriter;
     private final NativeOutcomeArchive owner;
     private final ContinuityStorePort.Session borrowed;
+    private enum Publication { DURABLE, PLANNING_OBSERVATION }
+    private final Publication publication;
     private final ThreadLocal<ContinuityStorePort.Session> current;
     private static final int MAX_READ_ORIGINALS = 256;
     private static final class ReadOriginalCapture {
@@ -135,7 +137,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
 
     public NativeOutcomeArchive(ImmutableArtifactStore artifacts, ContinuityWriter sameWriter) throws IOException {
         this.artifacts = Objects.requireNonNull(artifacts); this.sameWriter = Objects.requireNonNull(sameWriter);
-        owner = this; borrowed = null; current = new ThreadLocal<>(); historyBindings = new HistoryBindings();
+        owner = this; borrowed = null; publication=Publication.DURABLE; current = new ThreadLocal<>(); historyBindings = new HistoryBindings();
         readOriginalCapture = new ThreadLocal<>();
         physicalStatusOriginals = new LinkedHashMap<>();
         if (!artifacts.originalWriterLock().equals(sameWriter.originalLockPath())
@@ -144,8 +146,12 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         artifacts.identity();
     }
     private NativeOutcomeArchive(NativeOutcomeArchive original, ContinuityStorePort.Session borrowed) {
+        this(original,borrowed,original.publication);
+    }
+    private NativeOutcomeArchive(NativeOutcomeArchive original, ContinuityStorePort.Session borrowed,Publication publication) {
         artifacts = original.artifacts; sameWriter = original.sameWriter; owner = original.owner;
         current = owner.current; historyBindings = owner.historyBindings; this.borrowed = Objects.requireNonNull(borrowed);
+        this.publication=Objects.requireNonNull(publication);
         readOriginalCapture = owner.readOriginalCapture;
         physicalStatusOriginals = owner.physicalStatusOriginals;
     }
@@ -250,7 +256,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     /** Shared actual-byte producer for readiness/Driver data; role contracts stay with their domain producer. */
     public ExactRef preserveArtifact(ContinuityStorePort.Session session, byte[] original, int maximumBytes) throws IOException {
         requireSession(session); Objects.requireNonNull(original);
-        return artifacts.publish(original, maximumBytes).reference();
+        return (publication==Publication.PLANNING_OBSERVATION?artifacts.publishPlanningRead(original,maximumBytes):artifacts.publish(original,maximumBytes)).reference();
     }
     public byte[] readArtifact(ContinuityStorePort.Session session, ExactRef original, int maximumBytes) throws IOException {
         requireSession(session); Objects.requireNonNull(original);
@@ -670,6 +676,14 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }));
     }
 
+    @Override public ExactRef preservePlanningRead(PlanningReadReceipt original) {
+        return unchecked(() -> writing(() -> {
+            Objects.requireNonNull(original);
+            // A private finite facade propagates publication through this receipt, request and actual returned outcome only.
+            // It cannot escape as an ACTION archive or a later session default.
+            return new NativeOutcomeArchive(owner,activeSession(),Publication.PLANNING_OBSERVATION).preserveRead(original);
+        }));
+    }
     @Override public ExactRef preserveRead(PlanningReadReceipt original) {
         return unchecked(() -> writing(() -> {
             Objects.requireNonNull(original);

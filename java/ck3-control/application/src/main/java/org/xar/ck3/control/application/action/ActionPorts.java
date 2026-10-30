@@ -186,6 +186,8 @@ public final class ActionPorts {
         ExactRef referenceOf(NativeActionPort.DispatchOutcome original);
         ExactRef requestReferenceOf(NativeRequest original);
         ExactRef preserveRead(PlanningReadReceipt original);
+        /** Successful ordinary planning observations only. Unmodified implementations retain strong publication. */
+        default ExactRef preservePlanningRead(PlanningReadReceipt original) { return preserveRead(original); }
         PlanningReadReceipt loadRead(ExactRef original);
         ExactRef readReferenceOf(PlanningReadReceipt original);
         ExactRef preserveRecord(ActionRecord original);

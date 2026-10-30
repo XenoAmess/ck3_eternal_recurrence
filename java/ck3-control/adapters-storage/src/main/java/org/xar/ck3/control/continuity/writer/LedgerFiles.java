@@ -157,4 +157,14 @@ final class LedgerFiles {
         try { return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(raw)); }
         catch (NoSuchAlgorithmException impossible) { throw new IllegalStateException(impossible); }
     }
+    static void moveCreateNewNoForce(StorageWriteGuard storage,Path originalLock,Path staging,Path target)throws IOException {
+        java.util.Objects.requireNonNull(storage);WindowsLedgerLock.requireHeld(originalLock);
+        if(!Platform.isWindows())throw new IOException("Windows same-volume rename required");
+        var mutation=new StorageWriteGuard.FileRename(staging.toAbsolutePath().normalize(),target.toAbsolutePath().normalize(),false);
+        storage.write(new StorageWriteGuard.WritePlan(originalLock,java.util.List.of(mutation)),()->{
+            if(!Api.VALUE.MoveFileExW(new WString(winPath(staging)),new WString(winPath(target)),0))
+                throw new IOException("immutable archive rename Win32="+Native.getLastError());
+            return null;
+        });
+    }
 }

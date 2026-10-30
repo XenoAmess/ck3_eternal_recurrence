@@ -41,7 +41,7 @@ public final class MilitaryNativeReadDispatcher implements WarCorePlanner.ReadCa
                     org.xar.ck3.control.contracts.StrictJson.require(finance.game().equals(runtime.game().generation())
                             &&finance.sessionId().equals(request.sessionId())&&finance.source().equals(request.source()),
                             "ordinary campaign-root read crossed its identical installed finance owner");
-                    return root(finance.definitions(),finance.readPort(),session,request);
+                    return root(finance.definitions(),finance.readPort().planningReads(),session,request);
                 }
                 var termination=termination(step,revision(request));
                 if(termination.isPresent()) {
