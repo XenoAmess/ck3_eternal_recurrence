@@ -4,6 +4,12 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。本地日期2026-10-31；现场�
 
 用户明确要求读取 [resume90总交接](../handover/2026-10-31-java-g2-resume90-vacation-handoff.md) 与 [source-index](../handover/2026-10-31-java-g2-resume90-vacation-handoff-source-index.json)，继续自动游玩智能体开发、八M制作、原生机制与逻辑研究，第一优先为实际正常游玩；本地模型已可用，要求高并发使用并继续探索能力边界。
 
+截至20:39Z：同一原版Game71464保留，109/PID333424已20:36:18.706Z END4/563.449秒；批22 WALL_TIMEOUT301.057秒/attempt0，批23 INTERNAL_FAILURE，精确栈RegisteredEventCore.retained365→RetainedJson默认小预算。最后canonical149/repair/BATCH_INTERRUPTED23、next24、pending=null/date53144328/dirtyFocus保持；当前用23真材料修完整retained消费角色预算，另独占D修同Session账本重复身份stat，不据假想外写恢复普通全proof。新增日/普通动作/运行qwen HTTP/SAVE仍0，不将软件修复授为Game成功。
+
+109曾于20:27:05.237Z真实同Game LOOP_START/next22，配置qwen新1.11；安装9.980秒，未从安装耗时外推Storage性能。canonical本地deadline/prisoner借用session/M5原因传播/Storage普通热路径共7源已S/Z采用；MB109增编0/10.784秒，application4源/local-service3源，其余缓存。20:29:16唯一窄栈在ConstructionPolicy→CanonicalFinanceStateSource→Session.readDomain→LedgerFiles.verify/exact/identity，未进入HTTP；这是下一真实重复属性读取位置，不将单栈当量化根因。provider已将13完整当前source/test218436B+实际栈交模型max10000，首轮200stop66.547秒/55611in3259out，因只删checkedDomainRead且漏内部缓存写后失效拒绝未编；后继保实际head/JSON/IO/锁与许可commit/recovery失效，去无必要反复身份audit，不扩旧审计链。
+
+此前108/PID52396在20:14:34.692Z温和END0/921.756秒，正常OPERATOR_STOP捕获next22；canonical136/running/WORKER_RESTART_CAPTURE22、pending=null、dirtyFocus保持、date53144328。批19–21均WALL_TIMEOUT约300秒；Family已全部越过，21已越过20军事Refresh，实际M5为REPLACED/m5_joint_query_only_red且原异常被吞，后续FACTION_GIFT本地deadline过期。20的有限观察不证明无限刷新，相关旧推断已撤回。
+
 ## 同一局与首要故障
 
 运行owner为 `/root/runtime91`，独占S/MB、worker、Game、supervisor和账本。18:47:19Z实际Win32读回同原版无mod Game71464/出生FILETIME134378397668266369与独立supervisor305760仍存活，18:49Z只读canonical仍102/repair_required/next16、pending=null、dirty，原FOCUS completed_cycles1、eligible0。保留同局、不重放已结算动作、不新开1066、不把SAVE作为业务重启前置。
@@ -42,7 +48,15 @@ Family两叶966015a93b、M5五叶17f70beeb4均已精确FF发表并按序S/Z采�
 
 worker107于19:53:43.4109686Z真实进入同Game next18，启动20.194秒；批18运行47.332秒，在19:54:31.379Z worker END4/68.161秒，SOURCE_CONTRACT_REJECTED family `finite immutable artifact bound required`，attempt0/native65/public70/date53144328/next19、stderr空。Factory命令构造已实际越过，但尚未HTTP/提交。确定RootFamilyPlanningOriginals.capture/read把PlanningWire.MAX_BYTES=268435456传给CAS最大67108868，limit先拒任何小材料；当前仅修该叶两处共同有限role预算并用真实材料往返，不放大全局CAS、不等模型、不重启Game。
 
-源码模型command106于19:48:18.135Z真实POST；前两次均HTTP503，分别81.057秒/81.021秒，无有效content，按配置退避后第三次重试中。它没有模型候选，owner独立修复不授模型采用信用。运行期qwen尚未调用，不能把源码服务503当作已发生的运行决策失败；如果后继真实provider终态被服务不可用阻塞，可明确记录后切既有Java普通策略，仅重启业务同Game接续，不伪造模型决策。
+源码模型command106于19:48:18.135Z真实POST，最终六次尝试全部传输失败：五次约81秒HTTP503，末次3.281秒connection reset，无有效content/TTFT/usage。它没有模型候选，owner独立修复不授模型采用信用。19:59:30.342Z累计116任务/146尝试均终态：99完整JSON、16length、1传输失败；当时源码模型实际在途/重试/新待POST均0，不重发旧绿凑并发。运行期qwen尚未调用，不能把源码服务503当作已发生的运行决策失败；如果后继真实provider终态被服务不可用阻塞，可明确记录后切既有Java普通策略，仅重启业务同Game接续，不伪造模型决策。
+
+108采用Family归档单叶fc76365b92：MB108于19:58:48.340Z–19:58:58.658Z增编0/10.318秒，无clean；worker19:59:12.936Z启动，19:59:29.254Z LOOP_START next19。20:00:46唯一窄线程观察在afterPlanning→实际READ发布/CAS写→RootRuntimeStorageGuard，不能从单栈量化性能根因。静态确认普通分支每层归档写反复对全部root取nativeDirectory及lock nativeFile；已交Java writer在独占D将当前源与现有测试先给模型，拟仅普通路径删重复身份审计、保真实锁活性/唯一writer/UNKNOWN/字节容量与写结果，不触当前S/MB，不阻108。M5刷新与这条I/O热路径分别定位，未预授修复结果。
+
+20:15Z用户明确把本地模型IP改为192.168.1.11，并再次要求记入本地模型运营。唯一配置base_url已改为http://192.168.1.11:8080/v1，模型qwen38-coder/端口8080/auth不变，address_migration记录旧1.7:8080且不自动回退。AGENTS当前段与长期运营地址同步，源码协调与运行owner均收到；业务qwen配置仅改endpoint，108已END、不影响Game。旧1.7的503/reset留原历史，不代表新IP可用性；新IP首次真实调用结果另记。
+
+后继最小修复验证：canonical当前完整reader基线因过期request先0P1F，模型两guard修复后strict0/3.928秒、现成测试新方法1P/20.530秒；两纯canonical入口接受过期request且无Native增，wrongargs仍miss，过期真实Native仍Unavailable且计数不增，新鲜Native正控Known。Storage首模型漏普通lock重复stat后窄纠正，生产两hunk原样采用，3源strict0/3.664秒、8必要case7P1F唯一是新test cleanup对closedChannel release，修cleanup单test strict0/1.639秒、只失败method1P/2.185秒，旧7绿不重，生产不再改。Prisoner两hunk复用原实际writerprobe/5selected验证不重跑；M5三叶仅保原IOException/Unavailable原因，模型原样strict0/6.585秒，不称业务修复。
+
+Root一次性只读108最终stdout现有phase_totals：批19/20/21规划242.956/249.400/250.274秒，观察37.979/33.044/33.960秒，outcome15.599/15.613/13.838秒；zero_dispatch_revision_replan_count均0。它量化阶段总耗时，不能将全部规划时间归给单一Storage栈；109实际性能按自身结果对比，不新建观察平台。
 
 ## 并行制作与交付
 
@@ -74,6 +88,10 @@ Native交付复用delivery90正式GUI产物，原休假尚未START的dispatch CT
 19:00:42.566Z的STATUS快照记68任务、92次尝试、59完整传输/9最终失败、客户端峰值25；19:06:52Z快照为97任务/121尝试、82完整JSON/15length、峰值25，24次ConnectionReset保留partial后第二尝试完整。两个有限快照各自当时在途0，后续真实新任务/纠错继续POST，不将它们外推为当前服务空闲。M0 trait原87B新组合、M3 succession142、M7 special三方法均取得各自D离线采用/执行结果，详见专页；不授当前Game或完整M里程碑。若干owner曾把外层JSON显示转义误当源码、把实际存在API误判缺失，均保留勘误并从模型推理失败分类撤回。截断、请求末尾schema冲突、静态审阅、真实编译/行为失败分别记录。
 
 19:22:11Z有限快照为110任务/134尝试、95完整JSON/15length、峰值25，之后Family/M5同材料真实P0仍逐项短请求。M5入口与后续传播分别4.043秒/7.288秒完整回包并实际采用；P0由现有结果岗优先直接向owner交付。19:13:11已结束的Family首次回复曾迟报数分钟，已作为协调交付成本保留并修正，不算HTTP耗时或模型推理失败。两全局经验文件本次精确新增段由3101536eba正式发表，旧未发表Z历史未整文件覆盖。
+
+用户随后连续要求加大力度。20:25:54Z新IP已有7真实任务/7次首轮200，实际峰2，不将旧IP历史峰25记为新IP成绩；当时累计123任务/153尝试全终态。已拆集中封包串行瓶颈：owner在唯一taskdir复用call91直接派发，统一config注入system、运营岗归总，不等ACK/索引才POST。20:27:59.102/.104/.110Z extract06/M1wiring7000token/M1entry三个实际同秒BEGIN，后继M0queue6500/M7binder6144及各M未闭组件立即滚动。真实多文件实现按必要输出6k–12k预算，目标24–32在途依服务实况调整，不把目标当已达，不复投已绿hash/oracle凑数。运营更新config/AGENTS已由ea59a947e4正常FF发表，新IP首Storage真实200/stop9.444秒、TTFT3.614秒/25828in955out、cached未知，候选后续验收分别记。
+
+20:37:22.912Z实际模型快照：新1.11已有39逻辑任务/41尝试，新IP真实客户端峰8（20:36:59），快照当刻在途4；全历史155逻辑任务/187尝试。一次有限服务metrics running4/waiting0/KV约14.9%，RAM可用33.99GiB、commit余99.97GiB、D576.89GiB。24–32目标尚未达到；运行留1仅调度意图，不宣称服务硬保留。新大输入含Army52源387857chars/6000、Focus95820prompt/6000、ledger13源218KB/10000及返工12000、M3ctor8500。M0首29源闭包105690in/6500out length81.093秒，完整闭包未采用，按真实独立缺口拆两组；M1两CI装配候选原样strict2TU+缓存link0/16.875秒、新3selector与argc90/unknown91控制通过；M6 router基线真237检查30F、candidate237/0，query变体237/0，default待验，均不授Game信用。
 
 能力探索继续覆盖单方法、实际诊断修复、跨文件合同和组件装配；ABI多文件重建由owner负责，模型可接可验证窄叶。旧scale候选实际javac失败，隔离语法修正后1789组/17890槽有12718不符，已作为真实失败反馈；不会从一次成败推断能力上限。更多请求、审阅、采用与返工见 [模型记录](2026-10-31-resume91-models.md)。
 

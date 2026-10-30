@@ -66,3 +66,12 @@ runtime-install104完整模型候选16.634s返回：factor activeGame与catalog�
 此后新IP真实候选按到达独立派发：M5三叶只保留Unavailable/IOException原因，Storage第二方法纠错与M6自然START单方法曾并发，canonical108只删两个纯本地查询的旧deadline guard；各终态已立即直交原owner。运行期HTTP仍归runtime，本岗不调用Game。新地址首成功不是长期服务稳定性或模型能力上限结论，正式经验反链：[可行性](../local-model-executor-feasibility-2026-10-28.md)、[能力边界](../local-model-capability-boundary-2026-10-28.md)。
 
 Storage后继最终回执：第二轮8.943秒/481out，root/lock两hunk分别原语义采入，owner生产语义改0；三源strict0/3.664秒。首跑7P1F、owner修测试清理后仅失败1P/2.185秒，非同JVM8P。Runtime S/Z及正式FF `2377f74ccf` 分记；未授量化提速，MB109 loop/新增日另记。
+
+
+### 直接派发运营与规模递进（20:37Z冻结观察）
+
+用户再次要求加大力度后，Root已授权八M/Java/runtime源码owner独占taskid直接调用现有 `D:/ck3-state/model-dispatch91/call91.py`，models91继续统一配置/归总，results91即时交付；不再等中央逐包封审或ACK。不新增平台，不重复绿任务。调用器统一读取1.11/固定system/model/defaults；已有EVENTS目录拒重复，支持三消息body或现成source_files/task_path有限spec。运行决策仍runtime独占。
+
+UTC20:37:22.912新IP实际客户端峰8@20:36:59.164561、在途4，有限metrics running4/waiting0/KV原值0.1489899；20:37:31稍后快照39任务/41BEGIN39END、在途2。旧IP峰25不计新IP；24–32目标未达到，运行预留一位只是调度意图。29源闭包105690in6500out虽200但length，81.093秒；Focus95820in1698out完整54.942秒；ledger13源55611in3259out完整66.547秒但源审拒；NamedValue完整候选6249out/92.104秒仍源审拒未编。保真实大任务探索，不把输入规模写成改写规模或把完整输出当采用。
+
+canonical108原样两edit实际必要1P并正式FF `9f9728ecc7`，Storage两轮各一生产hunk原语义、owner生产改0，三源strict0、首7P1F后owner清理修正仅失败项1P，FF `2377f74ccf`，无加速/新增日推断。ledger纠错POST后Root取消fullproof重复审计，晚到scope另记。新IP首运营三append/config观察已正式FF `b1acb0d826`，旧观察保history；本节及两全局经验只EOF新增，不覆盖正式旧字节。

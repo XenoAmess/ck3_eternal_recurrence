@@ -72,3 +72,30 @@ MB106于 `19:34:51.325344Z`–`19:35:07.992652Z` 真实exit0/16.667秒，实际�
 单叶已S/Z最小采用，并正常FF发表a5938377b1。MB107于 `19:53:14.860480Z`–`19:53:20.422352Z` 真实exit0/5.562秒，默认mvn -T2 -pl local-service -am，复用MB/no clean，实际仅application的1源重编。worker107/PID250236于 `19:53:23.217308Z` 同原Game启动、qwen ordinary selector已配置、next18；尚待LOOP_START与实际业务读回。研究编译新start在MB/安装阶段HOLD，已在途短任务自然终结，不重启Game。
 
 107于 `19:53:43.4109686Z` 真实LOOP_START/next18，安装20.194秒。批18从 `19:53:43.4702988Z` 至 `19:54:30.8027945Z` /47.332秒后SOURCE_CONTRACT_REJECTED：family `finite immutable artifact bound required`。worker `19:54:31.378721Z` exit4/68.161秒，next19，native65/public70/date53144328，attempt/applied/newdays仍0，stderr空。精确定位RootFamilyPlanningOriginals.capture把PlanningWire.MAX_BYTES（256MiB）声明传给CAS，后者只接受WriterContracts.MAX_PIN_BYTES（64MiB+4）；original读回同声明也需传播。不抬全局CAS或重启Game，继续同局修这个实际调用合同。
+
+## 107原件预算修复与108
+
+RootFamilyPlanningOriginals单叶将capture/read的角色参数同步为private共同Math.min(PlanningWire.MAX_BYTES,WriterContracts.MAX_PIN_BYTES)=67108868；两个全局预算不改。strict0/1.936秒、Java0/1.299秒：调用实际ImmutableArtifactStore.limit，旧256MiB声明拒绝、新共同角色接受，0/-1/CAS+1三负例保留。源派生已有106 snapshot/history的PlanningWire1110855B往返通过；actual107完整PlanningRequest仍缺席/null，没有创建CAS实例、Game动作、HTTP或账本写入。准确diff/RESULT107在 `D:/ck3-state/resume91-runtime/archive107`。
+
+单叶已S/Z最小采用。MB108于 `19:58:48.339676Z`–`19:58:58.657578Z` 实际exit0/10.318秒，复用MB/no clean/default mvn -T2增编；随后worker108同Game、qwen配置、next19启动，尚待读回loop/业务终态。研究新start在安装阶段HOLD，0在途；provider只读紧邻archive后selector/command预算边，不新增大fixture、不延后108。
+
+108/PID52396于 `19:59:12.936266Z` 启动，`19:59:29.2538522Z` 真实LOOP_START/next19，安装16.318秒。archive单叶正常FF发表fc76365b92。其后连续批19–21均WALL_TIMEOUT约300秒，attempt/applied/newdays仍0，没有运行期模型请求/决策信用。一次窄thread01捕获afterPlanning→DriverReadHistoryPublisher.flushActualReads→CAS→StorageGuard每写反复目录/lock身份读取；这是实际热点调用发现，未声称量化根因。Root交唯一Java writer做ordinary热路径最小D候选，不热改活worker。
+
+完整last_plan显示20的M5是REFRESH_REQUIRED；21已越过该刷新，M5 REPLACED/phase=m5_joint_query_only_red/reason=actual M5 proposal sources unavailable，最后FACTION_GIFT才canonical lookup current query deadline expired。未据旧20症状断言军事刷新永循环。M5原owner只读实际lastplans/Driver继续找被包装的IOException，保留原始RED。
+
+`20:14:00Z` 写现成worker-stop.request，只在正常批次边界温和结束业务。批21 `20:09:31.0566836Z`–`20:14:31.9676935Z` /300.911秒WALL_TIMEOUT后，`20:14:34.0728001Z` 真实CLEAN_WORKER_RESTART_CAPTURED/OPERATOR_STOP/next22；worker `20:14:34.692243Z` exit0/921.756秒。这个协议CLEAN不授SAVE或清除dirty。canonical136/running/WORKER_RESTART_CAPTURE22、pending null、原Focus action head不变；restart实际native78/public84/date53144328。manifest73459a5c…c0.bin1600B、fullDriver886ccd76…966c.bin836216B、facts655390e4…59e4.bin865047B均在现CAS。stop请求待后继启动前消费；Game/supervisor未停止。
+
+用户后继将模型服务迁至192.168.1.11。已仅更新现成business-configuration-qwen91.json的endpoint为http://192.168.1.11:8080/v1/model qwen38-coder，后继仅业务进程采用；108旧进程已END。旧1.7的command106模型请求最终5次503+末次reset，无候选/SSE/usage，是服务传输失败，不外推新地址或模型语义能力。
+
+## 108真实问题传播与109接续
+
+- prisoner旧真实nested writer故障两hunk已当前S/Z最小采用：typed只读DomainReadPort保legacy Store构造委托，Installer仅借当前同thread Session.readDomain。保历史writerprobe/installer/5selected实际绿，不重复跑。正式b647cea784。
+- M5三叶仅保真实Unavailable.reason→construction missing.reason→Runtime IOException.message/cause。新1.11模型5.439秒完整stop，strict0/6.585秒后S/Z采用，正式c0a6fdb90d。这是原因保全，不授业务修复。
+- DriverReadHistoryPublisher59/448两deadline guards经直接链确认只是本地history replay/archive读取；Finance canonical miss之后才走真实Native。新1.11模型8.449秒原样两删行，baseline真实0P1F首先命中448过期拒；candidate strict0/3.928秒、必要单方法JUnit1P0F0skip/20.530秒。EPOCH请求两canonical入口成功且Native计数不增，wrongargs仍miss；expired真实Native读仍Unavailable且计数不增，fresh正控Known。两删行已S/Z采用。
+- StorageGuard模型两方法hunk只将每write重复root目录和两lock文件身份读取保留在legacy cards分支，ordinary仍保closed/真实FileLock+channel/唯一writer/UNKNOWN/容量/写入结果。3src strict0/3.664秒；首8case7P1F，唯一F是owner新closed-channel test的cleanup异常。只修该test cleanup，单test strict0/1.639秒、只失败方法1P/2.185秒，7绿不重；不声称同JVM最终8P。生产模型两hunk无owner语义新增，已S/Z最小采用。
+
+108 stop请求在其真实exit0后 `20:24:59Z` 消费，仅移除本岗该批次停止请求，dirty restart22仍保留。MB109于 `20:26:20.281277Z`–`20:26:31.065511Z` 真实exit0/10.784秒，默认mvn -T2 -pl local-service -am、复用MB/no clean，合入上述7源码。worker109同Game、next22、新1.11 qwen配置已启动，尚待读回loop/真实动作；研究安装阶段HOLD，不等发表/原生研究/全图编译。
+
+109/PID333424于 `20:26:55.256222Z` 启动，`20:27:05.2366039Z` 真实LOOP_START/next22，安装9.980秒；这不能外推规划性能或动作已通过。MB实际application4源/local-service3源重编，其余缓存。一次必要thread01在elapsed141秒捕获PLANNING→ConstructionPolicy→CanonicalFinanceStateSource→Session.readDomain/checkedDomainRead→LedgerFiles.verify/exact/identity的Win32文件属性读取。Root据用户去重复运行审计要求交provider91独占D完整2–4叶模型候选，保锁/closed/唯一writer/JSON/IO/UNKNOWN，不热改109，不据单栈量化全耗时。
+
+批22 `20:27:05.3004507Z`–`20:32:06.3576243Z` 真实301.057秒WALL_TIMEOUT，attempt/applied/newdays0，lastplan native84/public91/date53144328最后M5 REFRESH_REQUIRED；仍未有运行qwen HTTP/决策信用。批23已自动开始，`20:32:42Z` 已写现成worker-stop.request，在当前批正常边界温和停止业务、防止继续同类空批；Game/supervisor保留，尚未END，不将请求视为完成收尾。
