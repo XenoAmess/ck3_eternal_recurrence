@@ -40,6 +40,9 @@ int main(int argc,char **argv) {
   const auto reject=[&](std::string_view name,std::string_view step,const std::string &payload,const char *expected_failure) {
     FactionGiftPrivateState12004 fresh;std::string wire,failure;
     const bool handled=HandleFactionGiftPrivate12004(adapter,mailbox,adapter.snapshot,1,step,payload,"identity-control",fresh,wire,failure,&bindings);
+    if (handled || failure != expected_failure)
+      std::cerr << "control=" << name << " handled=" << handled << " actual_failure=" << failure
+                << " expected_failure=" << expected_failure << '\n';
     Require(!handled&&failure==expected_failure,"malformed private token must reject at its real boundary");
     Require(queues==0&&clones==0,"invalid private request must not queue");
     std::ofstream(out/(std::string(name)+".request.json"))<<payload<<'\n';
@@ -51,7 +54,7 @@ int main(int argc,char **argv) {
   }
   reject("actor-missing",ck3_11906::kFactionGiftPrivateQueryStepV1,"{\"expected_revision\":1,\"expected_date_raw\":53175816}","private_faction_frame_invalid");
   reject("recipient-missing",ck3_11906::kFactionGiftPrivateColdRecoveryStepV1,FramePayload(1)+",\"source_faction_id\":"+std::to_string(source_id)+"}","private_faction_cold_frame_or_identity_invalid");
-  reject("source-zero",ck3_11906::kFactionGiftPrivateColdRecoveryStepV1,FramePayload(1)+",\"source_faction_id\":0,\"recipient_character_id\":"+std::to_string(recipient_id)+"}","private_faction_cold_frame_or_identity_invalid");
+  reject("source-sentinel",ck3_11906::kFactionGiftPrivateColdRecoveryStepV1,FramePayload(1)+",\"source_faction_id\":4294967295,\"recipient_character_id\":"+std::to_string(recipient_id)+"}","private_faction_cold_frame_or_identity_invalid");
   reject("actor-generation",ck3_11906::kFactionGiftPrivateQueryStepV1,frame(std::to_string(actor_id^0x01000000U))+"}","private_faction_frame_invalid");
   auto stale=FramePayload(1)+"}";stale.replace(stale.find("53175816"),8,"53175817");
   reject("date-drift",ck3_11906::kFactionGiftPrivateQueryStepV1,stale,"private_faction_frame_invalid");

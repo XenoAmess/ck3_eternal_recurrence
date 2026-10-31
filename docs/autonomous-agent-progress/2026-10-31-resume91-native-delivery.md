@@ -165,3 +165,13 @@ Fresh 既有三份隔离 unit 现已接正式 CMake 与 static-ci：新增两个
 实际增量验收：新 fixture TU strict0/6.721s；原有 11 个对象的有限链接仍有 7 条未解析边，逐条依据本 fixture 的唯一 player_claims/full_snapshot/Observe 路径证明不执行后，仅 D 内加 exact-signature abort-on-use 测试 seam，未提交这些 seam。新 seam TU strict0/5.442s，12 对象无 archive 链接0/.195s；唯一受限 RUN 于 03:41:41.8902912–03:42:14.3699557Z exit0/32.3734733s、27 checks 全通过，实际 30,000ms 再次 Wait/32,000ms 才释放，同 worker、执行中 context 保留、fresh sequence2 和 idle-null 均过，stderr 空。Job limit512MiB/65s、peak7,446,528B、active0/stopnull；公开 accounting 无累计子进程数且成功未生成 JOB-DIAGNOSTIC，不能追认 totalProcesses1 或实测零子进程。
 
 这是同一生产方法的有限软件组件验收，非 hosted binary 等价、完整 Native Runtime/Bridge 或 Game 验收；原 CI41146299012 的 70 项中 4 失败事实不改。原 30/2 秒 Wait、38 秒 controller、40 秒 barrier 与严格结果未放宽，不重复已绿场景、不部署 DLL/不操作 Game。回执：D:/ck3-state/resume91-m0-native/ci41146299012/claims-unit-job/RUN01/{ACTUAL.json,stdout.txt,stderr.txt}；源码/proof/两次失败链接和模型原件保留于同包。
+
+## 2026-10-31T03:58Z Gift raw identity controls 合同修正
+
+采用 M0 独占的单 fixture hunk：真实 producer 的 invalid raw faction sentinel 是 UINT32_MAX，零可以是合法 full-ID，原 source-zero 负例与该合同冲突。仅将该输入换为 source-sentinel/4294967295，保留全部十九项负例及 validator、idempotency claim、payer、stale full-ID 等严格断言，另打印失败 control/实际与期望 reason；生产 router/reader 未修改。正式源与原已编 candidate 仅 EOL/尾空白归一不同。模型02识别合同问题但建议删 case 被拒；owner 替换无效 token，后续模型/owner 的隔离链接装配分记。
+
+实际增量验证保留原 fixture/router 两对象，复用 Claims ABI4/ABI3/Query 和 M6 protocol 对象；protocol.cpp 与两个声明头逐字相同、11 项宏差异无相关命中，不声称预处理/对象或 hosted binary 相同。只编六个新 TU；Gift 首次 C1083 为 owner 提取单元残留的未使用 commands.hpp include，删除死 include 后仅失败 TU 重编通过。首次有限 LINK1120/1.671s 留下三个未执行 faction overall 外延，依实际 AlertSource→ReadFactionEntity 路径及声明补三个误入即 abort 的 D-only 定义后，LINK12 12 对象/零 archive 实际0/2.041s；共十一条 abort 边界均只用于该有限组件，未提交。无整 Runtime/Bridge 或旧大库重建。
+
+三个原失败输入 actor_zero / recipient_zero / both_high 于 03:57:26.828–03:57:50.265Z 分别实际 exit0/.415902s、0/.2792491s、0/.3012612s，每项 51 checks/19 malformed/queues0，合153 checks/57严格负例；stderr 均空，Job每项512MiB/15s、最大peak6,758,400B、active0/stopnull。仅这三个新必要场景，未重跑既有 fullid43/旧 whole 场景。成功 accounting 无累计子进程字段，不追认零子进程实测。回执：D:/ck3-state/resume91-m0-native/ci41146299012/gift-controls/unit-job/RUN0{1,2,3}/{ACTUAL.json,stdout.txt,stderr.txt}；原编译/链接失败与模型结果保留于 unit-link。
+
+Claims 与 Gift 四个原失败场景现分别通过有限软件组件验收；原 CI41146299012 的4F不改，完整 hosted CI 尚未重新验证。本轮没有 Native capability、Game、DLL部署、真实动作或新增日信用。
