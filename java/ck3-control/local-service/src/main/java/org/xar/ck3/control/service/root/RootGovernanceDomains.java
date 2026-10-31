@@ -178,7 +178,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
                         if(changed.isPresent())return new Published(head,changed.orElseThrow());
                     } else if(domain==Domain.CROWN&&receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) {
                         var contract=nativeGovernance().crownFinalTermsRead().contract();var material=context().reads().read(same,contract,new PlanningReadRequest(original.before(),original.source(),original.sessionId(),contract.operation(),new OpportunityJson.Obj(java.util.Map.of()),original.deadline()));
-                        if(material instanceof PlanningReadResult.Unavailable<?> unavailable)return new Blocked("Crown complete final-terms post-state unavailable: "+unavailable.reason(),List.of(body.reference().payload()));
+                        if(material instanceof PlanningReadResult.Unavailable<?> unavailable)return new Blocked("Crown complete final-terms post-state unavailable: "+diagnosticReason(unavailable),List.of(body.reference().payload()));
                         var known=(PlanningReadResult.Known<?>)material;var head=same.head();var archive=core().archive().withSession(same);
                         var changed=publish(same,new Input(domain,Kind.CROWN_MATERIAL,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.of(archive.receiptReferenceOf(receipt)),Optional.of(known.originalReceipt()),Optional.empty(),List.of()));
                         if(changed.isPresent())return new Published(head,changed.orElseThrow());
@@ -413,6 +413,50 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
     private Optional<ActionReceipt> findByRequest(ContinuityStorePort.Session same,String id)throws IOException {return core().archive().inSession(same,archive->{var values=ContinuityActionJournal.receipts(uncheckedHead(same).state(),archive).stream().filter(receipt->OWNED.contains(receipt.command().operation())&&originalId(receipt.command()).equals(id)).toList();StrictJson.require(values.size()<=1,"duplicate original action request identity");return values.stream().findFirst();});}
     private static WriterContracts.Head uncheckedHead(ContinuityStorePort.Session same) {try{return same.head();}catch(IOException failure){throw new UncheckedIOException(failure);}}
     private static ObjectNode nativeResult(NativeActionPort.AckReceived ack) {var packet=StrictJson.object(StrictJson.parse(ack.originalFrame().bytes()),Set.of("type","protocol_version","request_id","ok","result"));StrictJson.require(ack.nativeOk()&&"command_result".equals(StrictJson.text(packet.get("type")))&&ack.requestId().equals(StrictJson.text(packet.get("request_id")))&&ack.originalResultToken().isPresent()&&StrictJson.parse(ack.originalResultToken().orElseThrow().bytes()).equals(packet.get("result")),"actual native ACK/token/frame differs");return object(packet.get("result"));}
+    private static String diagnosticReason(PlanningReadResult.Unavailable<?> unavailable) {
+        var reason = unavailable.reason();
+        var original = unavailable.original();
+        if (original.isEmpty() || !(original.get() instanceof NativeActionPort.AckReceived ack)) return reason;
+        var sb = new StringBuilder();
+        sb.append("nativeOk=").append(ack.nativeOk()).append(",requestId=").append(ack.requestId().length() <= 128 ? ack.requestId() : ack.requestId().substring(0, 128));
+        var packet = ack.originalPacket();
+        if (packet.length > 65540) {
+            sb.append(",uninspected_large_frame=").append(packet.length);
+        } else {
+            try {
+                var frame = org.xar.ck3.control.nativebridge.NativeWire.decode(packet);
+                if (frame instanceof org.xar.ck3.control.nativebridge.NativeWire.CommandResult commandResult) {
+                    var errorField = commandResult.error();
+                    if (errorField.presence() == org.xar.ck3.control.nativebridge.NativeWire.Presence.ABSENT) {
+                        sb.append(",error=absent");
+                    } else if (errorField.presence() == org.xar.ck3.control.nativebridge.NativeWire.Presence.NULL) {
+                        sb.append(",error=null");
+                    } else {
+                        var token = errorField.token().orElse(null);
+                        if (token != null) {
+                            var bytes = token.value();
+                            var node = org.xar.ck3.control.nativebridge.NativeWire.parse(bytes);
+                            if (node.isTextual()) {
+                                var text = node.textValue();
+                                sb.append(",error=").append(text.length() <= 512 ? text : text.substring(0, 512));
+                            } else {
+                                sb.append(",error=").append(node.getNodeType()).append(":").append(bytes.length);
+                            }
+                        } else {
+                            sb.append(",error=unknown");
+                        }
+                    }
+                    var wireIdMatch = commandResult.requestId().equals(ack.requestId()) ? "match" : "mismatch";
+                    sb.append(",wireIdMatch=").append(wireIdMatch);
+                } else {
+                    sb.append(",frameType=").append(frame.getClass().getSimpleName());
+                }
+            } catch (java.io.IOException | RuntimeException diagnosticUnavailable) {
+                sb.append(",decode_error");
+            }
+        }
+        return sb.toString() + ":reason=" + reason;
+    }
     private static String originalId(ActionCommand command) {var args=object(StrictJson.parse(OpportunityJson.encode(command.arguments())));if(org.xar.ck3.control.governance.crownauthority.CrownCallerSelection.isCaller(args))return StrictJson.text(args.get("caller_request_id"));return org.xar.ck3.control.governance.council.CouncilCallerSubmission.requestedId(args).orElseGet(()->RequestIds.forActionBody(ActionCodec.bodySha256(command)));}
     private static boolean coldContext(Pending pending,long pid,String episode) {var source=GovernanceDomainDocument.context(object(pending.original()).get("source_context"));return !integer(source.get("bridge_pid")).equals(BigInteger.valueOf(pid))||!StrictJson.text(source.get("episode_run_id")).equals(episode);}
     private static boolean hasConsumedAt(RawJson result,BigInteger revision,BigInteger date) {var row=object(result);return row.has("next_turn_native_revision")&&row.has("next_turn_date_raw")&&revision.equals(integer(row.get("next_turn_native_revision")))&&date.equals(integer(row.get("next_turn_date_raw")))
