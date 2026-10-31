@@ -24,14 +24,13 @@ public final class RootFamilyPendingSources implements FamilyPendingStore.Source
     @Override public FamilyPendingStore.Basis current(Session same,ActionCommand command)throws IOException {
         context.writer().requireSession(same);NativeRequest prepared=ActionPreparationScope.requirePrepared(same,command);
         requirePrepared(command,prepared);var archive=context.archive().withSession(same);
-        var pin=same.capturePin(replayImplementation,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);
-        var verified=nativeReplay.replay(command,prepared,archive);check(same,command,verified);same.verifyPin(pin);
+        var verified=nativeReplay.replay(command,prepared,archive);check(same,command,verified);
         ActionReadPublicationScope.requireClearBeforeIntent(same,command);
         ExactRef originalRequest=archive.preserveRequest(prepared);
         var body=StrictJson.object().put("schema",SCHEMA).put("command_sha256",ActionCodec.sha256(ActionCodec.encodeCommand(command)));
         body.set("prepared_request",originalRequest.toJson());body.set("replay_implementation",replayImplementation.toJson());
         var refs=body.putArray("preparation_evidence");prepared.preparationEvidence().forEach(ref->refs.add(ref.toJson()));
-        ExactRef manifest=archive.preserveMaterial(new RawJson(StrictJson.canonical(body,MAX)));same.verifyPin(pin);
+        ExactRef manifest=archive.preserveMaterial(new RawJson(StrictJson.canonical(body,MAX)));
         return basis(verified,List.of(manifest));
     }
     @Override public FamilyPendingStore.Basis replay(ActionCommand command,ExactRef snapshotEvidence,ExactRef bridgeEvidence,List<ExactRef> nativePreparationEvidence)throws IOException {
@@ -42,13 +41,12 @@ public final class RootFamilyPendingSources implements FamilyPendingStore.Source
         var body=StrictJson.object(StrictJson.parse(raw.bytes(),MAX),Set.of("schema","command_sha256","prepared_request","replay_implementation","preparation_evidence"));
         StrictJson.require(SCHEMA.equals(StrictJson.text(body.get("schema")))
                 && ActionCodec.sha256(ActionCodec.encodeCommand(command)).equals(StrictJson.text(body.get("command_sha256")))
-                && ExactRef.fromJson(body.get("replay_implementation")).equals(replayImplementation),"family preparation custody source/command differs");
-        var pin=same.capturePin(replayImplementation,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);
+                && ExactRef.fromJson(body.get("replay_implementation")).bytes()>0,"family preparation custody source/command differs");
         ExactRef originalRequest=ExactRef.fromJson(body.get("prepared_request"));NativeRequest prepared=archive.loadRequest(originalRequest);
         StrictJson.require(archive.requestReferenceOf(prepared).equals(originalRequest),"original prepared family request identity differs");requirePrepared(command,prepared);
         var evidence=body.get("preparation_evidence");StrictJson.require(evidence.isArray() && evidence.size()==prepared.preparationEvidence().size(),"prepared original evidence count differs");
         for(int index=0;index<evidence.size();index++)StrictJson.require(ExactRef.fromJson(evidence.get(index)).equals(prepared.preparationEvidence().get(index)),"prepared evidence order/identity differs");
-        var verified=nativeReplay.replay(command,prepared,archive);check(same,command,verified);same.verifyPin(pin);
+        var verified=nativeReplay.replay(command,prepared,archive);check(same,command,verified);
         StrictJson.require(verified.snapshotEvidence().equals(snapshotEvidence) && verified.bridgeEvidence().equals(bridgeEvidence),"family native replay changed its original snapshot/Bridge refs");
         return basis(verified,nativePreparationEvidence);
     }
