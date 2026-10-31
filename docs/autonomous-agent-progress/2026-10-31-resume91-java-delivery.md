@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已准确交付154取消15生产叶及便携cursor测试/原件、155–157物理Status来源/路由/归档修复；M0 Frontend两Java、M7 copy16/storage八新叶和M1 live ARM六叶已正常FF到408835fb15。最新实际157于09:52:07.511447Z preloop END1/54.895340秒、无LOOP；归档旧code cap已越，后续fresh projection嵌套writer阻塞由运行岗独占158修。canonical388父仍Unknown，原ARM387已SETTLED/CONTROL_APPLIED且未重发，next60/date53144328不增、未CANCEL；旧373/374不重放。M1 live ARM仅正式/软件验收，尚未S/MB加载。本岗不写S/MB/Game/账本。
+最新正式源码已准确交付154取消15生产叶及便携cursor测试/原件、155–157物理Status来源/路由/归档修复；M0 Frontend两Java、M7 copy16/storage八新叶和M1 live ARM六叶已正常FF到408835fb15。最新实际157于09:52:07.511447Z preloop END1/54.895340秒、无LOOP；归档旧code cap已越，后续fresh projection嵌套writer阻塞由运行岗独占158修。canonical388父仍Unknown，原ARM387已SETTLED/CONTROL_APPLIED且未重发，next60/date53144328不增、未CANCEL；旧373/374不重放。后到M1 live ARM五叶已由Main S/Z采，连同158两Factory新增hunk共六unique生产源进入MB158；正式158已发表77b843c78b，实际运行终态尚待。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -516,3 +516,10 @@ M0 Frontend两Java正常FFe5bbf9fa9f，Zrepo根2Checking/2Applied/0Skipped且nor
 M1 live ARM五生产+便携test正常FF408835fb15。compatible default callback为model03原样，其余production四处真实API/顺序修及全部四test由owner完成，三test draft拒绝保留。Primitives先独立STATUS后普通current，Clock以held basis作native-sentinel恢复前控制依据；inactive Pending转发、active current/capture及POLLED/postmutation/reconciliation/CANCEL不改。baseline6src strict0/2.208秒→4精确RED，candidate5prodstrict0/2.138秒→同4方法4P0skip/2.936秒，两独立JVM。测试到单次resume提交边界即停，未mutation inside read lease；Factory只source/strict，activePending/actualRoot未验。Main尚未S/MB加载，不授当前157/158修复、真实resume或游戏日。
 
 本波本岗source候选normalized逐叶比对、exact stage/diffcheck和正常fetch/rebase/FFpush均真实0，master408835fb15 clean时完成；全部必要编测复用owner首验，没有为采用重复旧绿/开启模型总结调用。各包PHYSICAL156/ARCHIVE157/FRONTEND156/M7-COPY154/M7-STORAGE155/LIVE-ARM153及154三组ADOPTION.json在本机D:/ck3-state/resume91-java-delivery，区分raw模型、owner修正、正式source、软件边界和实际Game结果。后继成熟source须followup_task唤醒本岗；单纯send给completed岗不代表真实开始。
+
+
+## 158借同writer组装与M1实际采用后到
+
+158两Factory最小23+/2-正常FF77b843c78b：LifeFactory初始issuer及Coordinator terminal callback借已有same Session，通过withFrozenRawObservation/raw Native archive/shared assembler Complete组装fresh received frame；Infrastructure reserved-child post-ACK observer同样闭合。真实ACK/STATUS与fresh verifyAfter、custody/source/session/episode及原deadline保，不加Native读取或伪frame。只按DELIVERY2382B与HUNK1890B叠加，后者精确diff比对且408835新withClockControlBasis保留，绝不整copy较旧S helper candidate。owner单源strict0/2.094086秒与0/2.214113秒分组复用，无行为/fullRoot/CANCEL/父settlement/日期授信。
+
+两个模型请求真实先POST；第一答unchecked/move-only被拒，第二答与owner并行已实现的核心方向相近但漏deadline，两项均0源码采用，不追认owner工作。Main随后实际S/Z采用M1五叶和158两hunk（Base重合，共六unique）并开始MB158；因此上节M1尚未加载是此前408835发表时事实，当前按此后到采用更新。运行终态待Main真实读回；canonical388/原ARM387结算与未知父、未CANCEL/日0边界未因source发表改变。
