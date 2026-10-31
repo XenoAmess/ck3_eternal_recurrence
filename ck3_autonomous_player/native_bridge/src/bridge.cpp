@@ -31,6 +31,7 @@
 #include "xar_bridge/ck3_12004_features.hpp"
 #include "xar_bridge/family_marriage_send_outgoing_v2.hpp"
 #include "xar_bridge/family_ruler_outgoing_owner_12004.hpp"
+#include "xar_bridge/family_heir_outgoing_owner_12004.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1) || defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
 #include "xar_bridge/prewar_force_coalition_request12004.hpp"
 #endif
@@ -10302,6 +10303,13 @@ std::string CurrentFirstHeirRelationshipResultFrameV1(
                  : result;
 }
 
+bool ReadFamilyHeirRelationshipAdapter12004(
+    void *, const xar::ck3_12002::FamilyBindings &bindings, std::int32_t heir,
+    xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 &output) noexcept {
+  output = xar::ck3_12002::ReadCurrentFirstHeirRelationshipV1(bindings, heir);
+  return true;
+}
+
 bool ReadFamilyOutgoingOwnerMemory12004(
     void *context, std::uintptr_t address, void *output,
     std::size_t size) noexcept {
@@ -10311,6 +10319,7 @@ bool ReadFamilyOutgoingOwnerMemory12004(
 
 struct CurrentFirstHeirBetrothalMailboxQueryV1 {
   std::optional<xar::bridge::FamilyRulerOutgoingOwnerJob12004> family_ruler_owner_job12004{};
+  std::optional<xar::bridge::FamilyHeirOutgoingOwnerJob12004> family_heir_owner_job12004{};
   xar::ck3_11906::MainThreadQueryTicketV1 ticket{};
   xar::ck3_11906::Bindings bindings{};
   xar::ck3_12002::FamilyBindings family12002{};
@@ -10375,6 +10384,12 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
     const bool child_ok = xar::bridge::ExecuteFamilyRulerOutgoingOwnerJob12004(&job, stamp);
     query.frame_observed = job.result.frame_observed;
     return child_ok;
+  }
+  if (query.family_heir_owner_job12004) {
+    auto &job = *query.family_heir_owner_job12004;
+    const bool ok = xar::bridge::ExecuteFamilyHeirOutgoingOwnerJob12004(&job, stamp);
+    query.frame_observed = job.result.frame_observed;
+    return ok;
   }
   if (query.adapter12002) {
     xar::game::Snapshot before{};
@@ -22568,6 +22583,85 @@ void RunConnectedSession(
                           actual_frame.player_alive = expected.played_character_alive;
 
                           const auto serialized = xar::bridge::SerializeFamilyRulerOutgoingOwnerResult12004(
+                              request_id, request, actual_frame,
+                              state.family_marriage_outgoing_query_sequence + 1,
+                              job.result);
+                          if (!serialized.empty()) {
+                            ++state.family_marriage_outgoing_query_sequence;
+                            connected = write_frame(pipe, serialized);
+                          } else {
+                            connected = write_frame(
+                                pipe, CommandResultFrame(request_id, step, false,
+                                    "family marriage outgoing serialization failed"));
+                          }
+                        } else {
+                          connected = write_frame(
+                              pipe, CommandResultFrame(request_id, step, false,
+                                  "family marriage outgoing owner frame not observed"));
+                        }
+                      } else {
+                        connected = write_frame(
+                            pipe, CommandResultFrame(request_id, step, false,
+                                "family marriage outgoing mailbox execution failed"));
+                      }
+                    }
+                  }
+                } else if (request.route == xar::bridge::FamilyMarriageOutgoingRouteV2::fulfill_betrothal) {
+                  if (expected_revision != state_revision) {
+                    connected = write_frame(
+                        pipe, CommandResultFrame(request_id, step, false,
+                            "family marriage outgoing frame mismatch"));
+                  } else {
+                    xar::game::Snapshot expected{};
+                    if (!xar::game::ReadSnapshot(game, expected)) {
+                      connected = write_frame(
+                          pipe, CommandResultFrame(request_id, step, false,
+                              "family marriage outgoing snapshot unavailable"));
+                    } else {
+                      CurrentFirstHeirBetrothalMailboxQueryV1 query{};
+                      BindFamilyMailbox12002(query, game, expected);
+                      query.family_heir_owner_job12004 = xar::bridge::FamilyHeirOutgoingOwnerJob12004{};
+                      auto &job = *query.family_heir_owner_job12004;
+                      job.expected_snapshot = expected;
+                      job.native_revision = state_revision;
+                      job.connection_generation = connection_generation;
+                      job.request = request;
+                      job.family_bindings = query.family12002;
+                      job.outbound_bindings = query.outbound_bindings12002;
+                      job.snapshot_context = query.adapter12002.get();
+                      job.read_snapshot = &ReadGuardianFactoryDiscoveryAdapterSnapshotV1;
+                      job.relationship_context = &query.bindings;
+                      job.read_relationship = &ReadFamilyHeirRelationshipAdapter12004;
+                      job.context_access.memory = {nullptr, &ReadFamilyOutgoingOwnerMemory12004};
+                      job.context_access.read_boolean_option = query.family12002.read_boolean_option;
+                      job.context_access.matrilineal_option_id_slot =
+                          reinterpret_cast<std::uintptr_t>(query.family12002.matrilineal_option);
+                      job.context_access.grand_wedding_option_id_slot =
+                          reinterpret_cast<std::uintptr_t>(query.family12002.grand_wedding_option);
+
+                      if (state.observed_primary_heir_character_id.has_value() &&
+                          *state.observed_primary_heir_character_id > 0 &&
+                          state.observed_primary_heir_revision == state_revision &&
+                          state.observed_primary_heir_connection_generation == connection_generation) {
+                        xar::bridge::FamilyPrimaryHeirObservation12004 obs{};
+                        obs.character_id = static_cast<std::uint32_t>(*state.observed_primary_heir_character_id);
+                        obs.native_revision = state.observed_primary_heir_revision;
+                        obs.connection_generation = state.observed_primary_heir_connection_generation;
+                        job.primary_heir = obs;
+                      }
+
+                      if (RunFamilyMailbox12002(query)) {
+                        if (job.result.frame_observed) {
+                          xar::bridge::FamilyMarriageOutgoingFrameV2 actual_frame{};
+                          actual_frame.revision = state_revision;
+                          actual_frame.date_raw = expected.date_raw;
+                          actual_frame.played_character_id =
+                              static_cast<std::uint32_t>(expected.played_character_id);
+                          actual_frame.paused = expected.paused;
+                          actual_frame.map_ready = expected.map_ready;
+                          actual_frame.player_alive = expected.played_character_alive;
+
+                          const auto serialized = xar::bridge::SerializeFamilyHeirOutgoingOwnerResult12004(
                               request_id, request, actual_frame,
                               state.family_marriage_outgoing_query_sequence + 1,
                               job.result);
