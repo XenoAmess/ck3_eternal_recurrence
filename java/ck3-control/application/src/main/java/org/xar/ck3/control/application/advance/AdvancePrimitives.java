@@ -147,7 +147,18 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
             return new ActionPorts.Pending("native rejection lacks its exact original error", List.of(clockStatus.preserve(ack)));
         }
         Instant window = ActionObservationWindow.deadline(command);
-        AdvanceObservationPort.Frame current = observations.current(command, window);
+        boolean reconciling = ActionReconciliationScope.activeFor(command);
+        AdvanceObservationPort.Frame current;
+        if (reconciling) {
+            try {
+                var frame = ActionReconciliationScope.requireFrame(command, attempt);
+                current = new AdvanceObservationPort.Frame(frame.identity(), frame.source(), frame.sessionId(), frame.semantic(),
+                        new ObservationProvenance.Push(frame.identity().frame().snapshotId(), frame.identity().frame().identity().nativeRevision(), frame.originalEvidence()),
+                        frame.observedAt(), frame.originalEvidence());
+            } catch (IOException failure) { throw new UncheckedIOException("reconciliation frame unavailable", failure); }
+        } else {
+            current = observations.current(command, window);
+        }
         if (command.expected().observerSchema().equals(CLOCK_OBSERVER)) {
             ClockStatusRead.Observation read = clockStatus.observe(command, current, window);
             Status actual = read.status(); String step = command.operation().value();
@@ -168,7 +179,7 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
             return new ActionPorts.ControlObserved(new ActionState.ControlApplied(read.receipt(), CLOCK_OBSERVER, values));
         }
         String step = command.operation().value();
-        current = waits.until(command, current, frame -> timelineSatisfied(command, frame), window);
+        if (!reconciling) current = waits.until(command, current, frame -> timelineSatisfied(command, frame), window);
         if (!timelineSatisfied(command, current)) return new ActionPorts.Pending("native timeline ACK lacks independently observed state", List.of(current.originalEvidence()));
         List<ExpectedValue> values = step.startsWith("set-speed-") ? List.of(new ExpectedInteger(new FieldKey("speed"), integer(current.semantic().get("speed"), "speed")))
                 : step.equals("pause-map") ? PauseConfirmation.actualValues()
