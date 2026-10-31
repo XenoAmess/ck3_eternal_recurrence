@@ -97,9 +97,10 @@ final class DriverOperatorRebindProducer {
         EpisodeWindow.requireReduction(prepared.predecessor().state(),receipt.head(),prepared.request(),true);
         same.requireHistoricalState(receipt.head().sequence(),ContinuityJson.digest(receipt.head().toJson()));
         if(exactHead)StrictJson.require(same.head().digest().equals(ContinuityJson.digest(receipt.head().toJson())),"operator publication must consume its immediate actual Window head");
-        for(var pin:prepared.sources())same.verifyPin(pin);for(var pin:prepared.evidence())same.verifyPin(pin);
+        var installedCodeRefs=java.util.Set.copyOf(sources);
+        for(var pin:prepared.sources())if(!installedCodeRefs.contains(pin.reference()))same.verifyPin(pin);
+        for(var pin:prepared.evidence())same.verifyPin(pin);
         for(ExactRef ref:change.originals().references()){var pin=same.capturePin(ref,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
-        for(ExactRef ref:sources){var pin=same.capturePin(ref,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
         StrictJson.require(prepared.request().evidence().contains(actual.originalFreshReadProof()),"operator canonical request omitted its actual fresh receive proof");
         var freshPin=same.capturePin(actual.originalFreshReadProof(),WriterContracts.MAX_PIN_BYTES);same.verifyPin(freshPin);
         StrictJson.require(prepared.sources().stream().map(WriterContracts.Pin::reference).toList().containsAll(sources),"operator canonical transition omitted installed producer sources");
