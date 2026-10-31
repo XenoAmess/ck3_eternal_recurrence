@@ -85,20 +85,33 @@ public final class CheckpointSourceCompositionTest {
         Fixture(Path root,boolean loseAck,Clock serviceClock,Optional<SnapshotSupplierDecorator> snapshots,
                 Optional<AfterPostcondition> afterPostcondition,
                 List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget)throws Exception {
+            this(root,loseAck,serviceClock,snapshots,afterPostcondition,additionalActions,commandBudget,root.resolve("profile"));
+        }
+        Fixture(Path root,boolean loseAck,Clock serviceClock,Optional<SnapshotSupplierDecorator> snapshots,
+                Optional<AfterPostcondition> afterPostcondition,
+                List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget,Path physicalSaveRoot)throws Exception {
+            this(root,loseAck,serviceClock,snapshots,afterPostcondition,additionalActions,commandBudget,physicalSaveRoot,Optional.empty());
+        }
+        Fixture(Path root,boolean loseAck,Clock serviceClock,Optional<SnapshotSupplierDecorator> snapshots,
+                Optional<AfterPostcondition> afterPostcondition,
+                List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget,Path physicalSaveRoot,
+                Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite)throws Exception {
             Objects.requireNonNull(commandBudget);
             StrictJson.require(!commandBudget.isNegative()&&!commandBudget.isZero()
                     &&commandBudget.compareTo(java.time.Duration.ofMinutes(2))<=0,"bounded software SAVE command budget required");
             Objects.requireNonNull(snapshots);Objects.requireNonNull(afterPostcondition);additionalActions=List.copyOf(additionalActions);
+            Objects.requireNonNull(physicalSaveWrite);
             AtomicReference<CheckpointService> serviceRef=new AtomicReference<>();
             AtomicReference<ActionWriterIntegrationFixture> actualRef=new AtomicReference<>();
-            AtomicReference<byte[]> afterPacket=new AtomicReference<>();Path save=root.resolve("profile").resolve("save games").resolve("xar_checkpoint.ck3");
+            AtomicReference<byte[]> afterPacket=new AtomicReference<>();Path save=physicalSaveRoot.resolve("save games").resolve("xar_checkpoint.ck3");
             var scenario=new ActionWriterIntegrationFixture.SoftwareActionScenario(new OperationKey("save-checkpoint"),"game.save-checkpoint",
                     (command,attempt,dispatch)->{
                         ActionPorts.PostconditionResult actualResult=serviceRef.get().observe(command,attempt,dispatch);
                         afterPostcondition.ifPresent(after->after.after(command,attempt,dispatch,actualResult));
                         return actualResult;
                     },()->{
-                        Files.writeString(save,"actual controlled SAVE bytes from the original native write");
+                        if(physicalSaveWrite.isPresent())physicalSaveWrite.orElseThrow().run();
+                        else Files.writeString(save,"actual controlled SAVE bytes from the original native write");
                         actualRef.get().enqueueSoftwareNativePacket(afterPacket.get());
                     },Optional.empty(),Optional.empty(),true);
             if(additionalActions.isEmpty())actual=new ActionWriterIntegrationFixture(root,loseAck,scenario);
