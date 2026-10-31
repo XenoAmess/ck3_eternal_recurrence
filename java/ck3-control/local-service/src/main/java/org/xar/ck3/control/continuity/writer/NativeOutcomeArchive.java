@@ -1132,7 +1132,12 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         RawJson currentDriver = loadFullMaterial(evidence.currentOriginalDriver());
         if(evidence.completeSourceQualification().isPresent())new RawJson(readBytes(evidence.completeSourceQualification().orElseThrow(), 16 << 20));
         new RawJson(readBytes(original.pending().originalReceipt(), ActionReceiptCodec.MAXIMUM_RECEIPT_BYTES));
-        RawJson beforeDriver = loadFullMaterial(original.pending().originalBeforeDriver());
+        RawJson beforeDriver;
+        if (evidence.currentOriginalDriver().equals(original.pending().originalBeforeDriver())) {
+            beforeDriver = currentDriver;
+        } else {
+            beforeDriver = loadFullMaterial(original.pending().originalBeforeDriver());
+        }
         if (beforeDriver.equals(currentDriver)) {
             if (original.driverRelation() != ReconciliationIdentity.DriverRelation.EXACT || original.historyPoint().isPresent())
                 throw new IOException("unchanged reconciliation Driver must retain its original exact relation");
