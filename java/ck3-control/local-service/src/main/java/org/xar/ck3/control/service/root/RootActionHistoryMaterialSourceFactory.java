@@ -382,6 +382,24 @@ public final class RootActionHistoryMaterialSourceFactory {
                         ?pilgrimageRejected(rejected,originals):independent(actual,originals);
                 return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,evidence,producers);
             }
+            if(op.equals(new OperationKey("save-checkpoint"))
+                    &&actual.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED
+                    &&actual.state() instanceof ActionState.Settled settled
+                    &&settled.settlement() instanceof ActionState.Applied applied) {
+                require(action.isPresent() && composite.isEmpty(), "SAVE history requires its one actual installed primitive action");
+                var observation = applied.observation();
+                require(observation.observerSchema().equals(org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory.OBSERVER_SCHEMA),
+                        "SAVE material requires its exact checkpoint observer schema");
+                var evidence = new LinkedHashSet<Evidence>();
+                // The archived verifier has already validated the physical pair and saved Driver.
+                // Retain their original material references and the independent native frame evidence.
+                var supporting = observation.supportingEvidence();
+                require(supporting.size() == 2, "SAVE requires its typed pair and complete saved Driver archived originals");
+                evidence.add(new Evidence(EvidenceKind.MATERIAL, supporting.get(0)));
+                evidence.add(new Evidence(EvidenceKind.MATERIAL, supporting.get(1)));
+                evidence.add(new Evidence(EvidenceKind.NATIVE_FRAME, observation.originalEvidence()));
+                return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER, evidence, producers);
+            }
             if(op.value().equals(org.xar.ck3.control.wave2.governance.succession.NativeTimelineBlocker12004.CLOSE_STEP)) {
                 var lifecycle=catalog.remainingDomains().lifecycle();lifecycle.requireContext(context);var timeline=lifecycle.natural().timeline();
                 require(action.isPresent()&&action.orElseThrow()==timeline.actionBinding().effect()&&replay==timeline.replayBinding()
