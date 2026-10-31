@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进child observer144两prod/一portable Test；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进144四组22prod（Core10→Life4→consumer5→Boot3），保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -362,3 +362,19 @@ formal与sealed runtime前像有一处早先未同步差异：RootFacts仍保“
 新ChildObserverScope144Test复用原ActionWriterIntegrationFixture，以真实softwareCoordinator/writer/reservation/ACK callback验证错writer/body/staleHead、parententry、ActionScope不偷换、清理、UNKNOWN子停止parent与重复execute保持一Native软件write。不是完整private RootFactory/实际143恢复；原child368和parent369仍UNKNOWN，此补丁不清除或重发。复用2prodstrict0/2.008秒、teststrict0/1.723秒；先missingJNA环境红、后旧cache helper guard返回ABI红保，only D-helper改用assertCurrent并编0/2.468秒后唯一新JUnit1P0F0skip/18.239秒，未重production/test绿。
 
 portable Test只TempDir/no固定D资源；未复制D-only helper。正式fixture源qualification.guard().orElseThrow().assertCurrent与当前SourceQualification Optional源码API匹配，旧compiled cache ABI错误不隐改生产或正式helper。模型方向有用但raw调用reservedParent会回归parent0child，owner最小正确接管、rawhunks0；UNKNOWN原消费/后态验证未放松。runtime已逐hunk源审S/Z采好、尚待自然MB144，不单独worker，不授fullRoot/实机恢复/日。证据 `D:/ck3-state/resume91-java-delivery/CHILD-OBSERVER144-ADOPTION.json`。
+
+## Life control prefix144：22叶类型、消费者与只读恢复
+
+四个final patch按依赖顺序精确采用：Core10 `64ab3dc425`、Life4 `3cf5da7f3e`、consumer5 `c087eff1e5`、Boot3 `b92a4803a1`。22叶中21叶与sealed candidate仅EOL/尾空白归一后相同；RootActionHistoryMaterialSourceFactory只额外保留formal原有四行recording metadata exact检查，新增方法与候选相同，未wholecopy或删除正式旧内容。没有复制D固定原件、probe或受控positive到便携CI，0writer生产语义改。
+
+Core显式新增LifeControlPrefixInterrupted observation/settlement及registered source opt-in，以严格v13 receipt保全parent actionId/bodySHA/execution/ending。新父终态是TERMINAL_WITHOUT_EFFECT，无Applied/visibleGameplay/eligibleAdvance或新日；primitive路径拒此composite proof。finish只在exact canonical CompositeUnknown、完整原command/body/execution、已独立settled的canonical children、真实registered source与Effects全部成立后append；UNKNOWN/仅ACK不会满足，原失败保留。Native archive保真实Native provenance/Driver/SEM及parent结构，不在同parent冷decode重进historical造成递归；实际children由Coordinator/writer/domain replay验证。
+
+Life proof保原完整plan/expected/source/session/Game/actor、精确1–2个children及body/args/binding，顺序仅可选pause后一个requested set-speed；resume/arm/cancel、重复、错速度、Unknown/rejected皆拒。独立poststate与same-date paused ending必须真匹配，原body/deadline不变。实际Life replay的readChild调用AdvancePrimitiveEvidence.load恢复真实archived after-basis/fullNative/Driver，不能借受控FrameReader软件positive越过原件资格。
+
+五consumer传真实canonical children给parent-aware Effects及source-owned replay。Publisher/Assembler对合法新父终态Unchanged/跳不存在父historyrow，不造Advance report或calendar credit；RecordedVerifier仍验真child原件和原binding callback。Root source要求同writer/Game/session和实际installed Life handler/replay对象；Inputs旧两参入口无children不能资格化新终态。Boot只读admission保唯一canonical unresolved Life parent与精确pause/speed子集合，其他UNKNOWN/真实worldwrite/缺child继续block；只读安装不能submit或clear UNKNOWN，真实typed终态经原all-settled恢复且saved-day不变。
+
+复用owner实际有限验证，未重绿：Core10 strict0/2.8886838秒，最终archive递归修正只重编单叶0/2.4824694秒；actual143 DATA四JUnit4P0F/1.7430198秒，证明UNKNOWN child拒绝、source callback0/append0及codec/primitive负例。独立新software positive只有1P：公开child构造→受控软件独立Applied speed→Life.observe→域/source validators→一次内存append→v13冷decode；FrameReader受控、supportingEvidence空，不授physical archive/Root或实际终态。Life4严格0/2.1183056秒；五consumer严格0/3.175秒+仅五负DATA checks0/1.333秒，无qualified positive/fullRoot信用；Boot3最终严格0/2.9106991秒+actual369/368只读admission六assert绿，原UNKNOWN保持。
+
+本地模型/owner分开：Core真实并发POST两组，stop组九reviewed edits/五文件采用，owner补parent-aware overload与primitive guards；codec/archive length5000整拒不拼接，由owner完成。Life首整拒、domain02 partial+owner实际完成，Boot length0采用；consumer A两raw edits，B假API/顺序由owner修。上述输入体量、传输终态、源码采用和行为范围不混算，本岗未对已完成答案新POST。
+
+运行现场以runtime144最后读回为准：MB144已合这22prod及先前observer2prod共24；06:52:34.157→06:53:34.119Z实际preloop END1/59.962秒，无LOOP。RootAssembly.finishUnresolvedSameGame379仍拒canonical372：original durable life child is still unresolved；新child371与旧368仅sequence/reason差、未再发set-speed。无实际新typed终态/日/SAVE/noReplay信用。HOLD已解除；145独立AdvancePrimitives observer问题另线修复，不阻本22叶发表。审阅/候选SHA与四提交路径见 `D:/ck3-state/resume91-java-delivery/PREFIX144-ADOPTION.json`。本岗全cmd/login:false，0新编测/模型/Game/S/MB操作。
