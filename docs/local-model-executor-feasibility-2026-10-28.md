@@ -151,3 +151,16 @@ body04封包实际执行PowerShell prepare/readback违反本轮cmd-only，owner�
 M0 portable04/05只部分模型配置/生成器加owner修正被采用；其后正式target首次configure0/4.532秒、24TU+link0/79.590秒、registeredCTest1P/0.319秒是新的构建交付验证，没有新增模型调用，也不是raw整候选原样成功。M7 publisher两个完整Host候选拒绝后owner接管Win32/FFM，Scenario/Code局部与owner修正组合，最终3Java严格0、受控RAM8case/146检查通过；不授CK3callee、生产、Game动作或新增日。输入完整源文件数/字符/token、实际改写方法、owner修正/缺上下文、编译与行为结果分别记，不据这些对照给通用能力上限或统一成功率。
 
 [resume91运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)保存时点和调度事实；[能力边界](local-model-capability-boundary-2026-10-28.md)保存采用粒度。
+
+
+
+
+### resume91 117–118 真实运行决策与请求参数审计增量
+
+有限事件截止为UTC 2026-10-31T00:18:08.629162+00:00，窗口从2026-10-30 18:40开始，首个实际BEGIN为18:49:40.894697。源码候选共450个逻辑任务、499次尝试，截止时450项终态、在途0；其中新地址192.168.1.11为334项/353次，客户端区间峰仍8（20:36:59.164561），没有达到24–32。旧地址历史峰25另列；客户端区间不等于服务端同时推理数，也不能视为容量上限。此截止后的新BEGIN独立记录，不回填成截止时在途。
+
+117是本阶段首次真实普通运行期qwen：2026-10-30 23:40:24.2569706Z BEGIN，实际请求1,180,737B；HTTP200，headers43.635秒/有效内容TTFT43.636秒/total44.365秒，23:41:08进入婚姻ActionSelected。随后Cadence mutable head身份审计与callback完整JSON小预算阻断，Native提交0、新增日0。118于23:57:55.1841796Z再次真实请求1,187,609B，200/headers43.888秒/TTFT43.890秒/total44.633秒，仍选婚姻；callback预算已越过，但历史.class SHA审计再次阻断，真实23:58:42 END4/next36，提交/新增日仍0。这里只独立核实117/118两次业务HTTP，不把源码call91调用充作运行期决策，不覆盖后继worker现场，也不抹去此前开局FOCUS的历史决策。
+
+参数勘误：m6-http-progress116-iofailure-method04的minimal input spec虽声明frequency_penalty=0.3，但actual REQUEST.json没有该键；call91 minimal-spec白名单未转发。故该单不是已执行的0.3惩罚参数实验，服务默认值/效果未知。实际REQUEST SHA256为e383593c14deb0c59f16f9a51ca47b85c7e752917eefd4c51687b98ed502857d。只修正运营描述，没有为验证再POST、修改caller或全局配置。
+
+实际采用仍依据owner源审、真实编译与行为回执；Root Stop4首编红、测试首行为红及后续局部纠正分别保留。完整事件与采用反链见[resume91运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)及`D:/ck3-state/model-dispatch91/OPERATIONS-INCREMENT118.json`。未为本次记录追加验证HTTP或扫描CAS。

@@ -111,3 +111,22 @@ body04封包实际执行PowerShell prepare/readback违反本轮cmd-only，owner�
 M0 portable04/05只部分模型配置/生成器加owner修正被采用；其后正式target首次configure0/4.532秒、24TU+link0/79.590秒、registeredCTest1P/0.319秒是新的构建交付验证，没有新增模型调用，也不是raw整候选原样成功。M7 publisher两个完整Host候选拒绝后owner接管Win32/FFM，Scenario/Code局部与owner修正组合，最终3Java严格0、受控RAM8case/146检查通过；不授CK3callee、生产、Game动作或新增日。输入完整源文件数/字符/token、实际改写方法、owner修正/缺上下文、编译与行为结果分别记，不据这些对照给通用能力上限或统一成功率。
 
 详见[可行性](../local-model-executor-feasibility-2026-10-28.md)与[能力边界](../local-model-capability-boundary-2026-10-28.md)。
+
+
+
+
+### resume91 117–118 真实运行决策与请求参数审计增量
+
+有限事件截止为UTC 2026-10-31T00:18:08.629162+00:00，窗口从2026-10-30 18:40开始，首个实际BEGIN为18:49:40.894697。源码候选共450个逻辑任务、499次尝试，截止时450项终态、在途0；其中新地址192.168.1.11为334项/353次，客户端区间峰仍8（20:36:59.164561），没有达到24–32。旧地址历史峰25另列；客户端区间不等于服务端同时推理数，也不能视为容量上限。此截止后的新BEGIN独立记录，不回填成截止时在途。
+
+旧REVIEWS91.json冻结cohort保持字节与SHA不变，新增来源/审阅放REVIEWS91-INCREMENT118.json；原RESULT默认NOT_YET_REVIEWED/adopted=false不能覆盖后到owner回执，未审仍unknown。各状态同时包含整稿、部分、配置、D隔离、生产采用，不能相加成统一成功率。五项Java小批的真实区间仅峰2：A/B在00:05:01–14重叠，bindings在00:05:25–40，lifecycle/finish在00:05:41–54重叠，并非五项同时。
+
+Root Stop4四项真实审阅已纳入：生产首稿为部分采用，真实strict首红BooleanSupplier.get()后，compiler02原样纠正为getAsBoolean、2生产源strict0/2.155秒；测试首轮真实0P1F保留。fixture02保留部分结构，owner补外部flag真实翻转及Wait分支断言后，1新方法+1既有手停恢复方法同JVM2P0F0skip/1.356秒。两生产叶正式5d5629653c/S-Z采用，不把四个HTTP完整回包算四次整稿原样成功，也不授实际在批停止/重启或游戏动作信用。原始raw终态与最终owner采用回执分别保留。
+
+117是本阶段首次真实普通运行期qwen：2026-10-30 23:40:24.2569706Z BEGIN，实际请求1,180,737B；HTTP200，headers43.635秒/有效内容TTFT43.636秒/total44.365秒，23:41:08进入婚姻ActionSelected。随后Cadence mutable head身份审计与callback完整JSON小预算阻断，Native提交0、新增日0。118于23:57:55.1841796Z再次真实请求1,187,609B，200/headers43.888秒/TTFT43.890秒/total44.633秒，仍选婚姻；callback预算已越过，但历史.class SHA审计再次阻断，真实23:58:42 END4/next36，提交/新增日仍0。这里只独立核实117/118两次业务HTTP，不把源码call91调用充作运行期决策，不覆盖后继worker现场，也不抹去此前开局FOCUS的历史决策。
+
+参数勘误：m6-http-progress116-iofailure-method04的minimal input spec虽声明frequency_penalty=0.3，但actual REQUEST.json没有该键；call91 minimal-spec白名单未转发。故该单不是已执行的0.3惩罚参数实验，服务默认值/效果未知。实际REQUEST SHA256为e383593c14deb0c59f16f9a51ca47b85c7e752917eefd4c51687b98ed502857d。只修正运营描述，没有为验证再POST、修改caller或全局配置。
+
+证据：`D:/ck3-state/model-dispatch91/OPERATIONS-INCREMENT118.json`、`REVIEWS91-INCREMENT118.json`、`RUNTIME-ORDINARY-QWEN117-118.json`、`FREQUENCY-PENALTY116-AUDIT.json`；Root四单REVIEW及`D:/ck3-state/resume91-root/stop117/ADOPTION-REVIEW.json`。采集仅标准任务目录、三个显式external事件入口和已知worker stdout，未扫描CAS、未新增模型HTTP。
+
+互链：[可行性](../local-model-executor-feasibility-2026-10-28.md)、[能力边界](../local-model-capability-boundary-2026-10-28.md)。

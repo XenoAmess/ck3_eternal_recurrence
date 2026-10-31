@@ -76,3 +76,14 @@ body04封包实际执行PowerShell prepare/readback违反本轮cmd-only，owner�
 M0 portable04/05只部分模型配置/生成器加owner修正被采用；其后正式target首次configure0/4.532秒、24TU+link0/79.590秒、registeredCTest1P/0.319秒是新的构建交付验证，没有新增模型调用，也不是raw整候选原样成功。M7 publisher两个完整Host候选拒绝后owner接管Win32/FFM，Scenario/Code局部与owner修正组合，最终3Java严格0、受控RAM8case/146检查通过；不授CK3callee、生产、Game动作或新增日。输入完整源文件数/字符/token、实际改写方法、owner修正/缺上下文、编译与行为结果分别记，不据这些对照给通用能力上限或统一成功率。
 
 [可行性](local-model-executor-feasibility-2026-10-28.md)与[resume91运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)互链；未审项保持unknown，raw adopted:false不是owner拒绝。
+
+
+
+
+### resume91 117–118 真实运行决策与请求参数审计增量
+
+Root Stop4四项真实审阅已纳入：生产首稿为部分采用，真实strict首红BooleanSupplier.get()后，compiler02原样纠正为getAsBoolean、2生产源strict0/2.155秒；测试首轮真实0P1F保留。fixture02保留部分结构，owner补外部flag真实翻转及Wait分支断言后，1新方法+1既有手停恢复方法同JVM2P0F0skip/1.356秒。两生产叶正式5d5629653c/S-Z采用，不把四个HTTP完整回包算四次整稿原样成功，也不授实际在批停止/重启或游戏动作信用。原始raw终态与最终owner采用回执分别保留。
+
+参数勘误：m6-http-progress116-iofailure-method04的minimal input spec虽声明frequency_penalty=0.3，但actual REQUEST.json没有该键；call91 minimal-spec白名单未转发。故该单不是已执行的0.3惩罚参数实验，服务默认值/效果未知。实际REQUEST SHA256为e383593c14deb0c59f16f9a51ca47b85c7e752917eefd4c51687b98ed502857d。只修正运营描述，没有为验证再POST、修改caller或全局配置。
+
+117/118普通运行期HTTP已真实进入ActionSelected，两次都在Native提交前被业务合同阻断，不能据选择结果授APPLIED或新增日。新的审阅只追加到REVIEWS91-INCREMENT118.json，unknown保持unknown；不从请求thinking参数、未转发参数或不同任务的耗时推出内部模式或新的通用能力结论。具体源采用、owner纠正、编测和运行信用继续分开，反链见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)与[可行性](local-model-executor-feasibility-2026-10-28.md)。
