@@ -232,12 +232,20 @@ public final class ExactDayClockFailureEvidence implements AutoFailureDiagnostic
         exact(nativeRef,archive.loadNativeFrame(nativeRef));exact(facts,archive.loadFullMaterial(facts).bytes());
         RawJson originalSemantic=archive.loadFullMaterial(semantic);exact(semantic,originalSemantic.bytes());
         var actual=frames.load(new NativeEffectEvidence.FrameBasis(nativeRef,facts),archive);
-        var push=new ObservationProvenance.Push(actual.identity().frame().snapshotId(),actual.identity().frame().identity().nativeRevision(),actual.originalEvidence());
-        require(push.equals(ObservationProvenanceCodec.decode(row.get("provenance"))) && actual.semantic().equals(org.xar.ck3.control.application.driver.DriverJson.object(originalSemantic.bytes(),org.xar.ck3.control.application.driver.DriverJson.MAX_NATIVE_BYTES))
+        var provenance=ObservationProvenanceCodec.decode(row.get("provenance"));
+        if (provenance instanceof ObservationProvenance.FreshSnapshotQuery query) {
+            frames.verifyFreshSnapshotQuery(query, actual, archive);
+        } else if (provenance instanceof ObservationProvenance.Push push) {
+            var actualPush = new ObservationProvenance.Push(actual.identity().frame().snapshotId(), actual.identity().frame().identity().nativeRevision(), actual.originalEvidence());
+            require(push.equals(actualPush), "exact-day original Native/Driver/Push/connection changed");
+        } else {
+            throw new IllegalArgumentException("exact-day original provenance must be Push or FreshSnapshotQuery");
+        }
+        require(actual.semantic().equals(org.xar.ck3.control.application.driver.DriverJson.object(originalSemantic.bytes(),org.xar.ck3.control.application.driver.DriverJson.MAX_NATIVE_BYTES))
                 && actual.originalEvidence().equals(nativeRef)
                 && actual.source().equals(parent.source())&&actual.sessionId().equals(parent.sessionId())&&actual.identity().game().equals(parent.before().game()),
-                "exact-day original Native/Driver/Push/connection changed");
-        return new AdvanceObservationPort.Frame(actual.identity(),actual.source(),actual.sessionId(),actual.semantic(),push,actual.observedAt(),actual.originalEvidence());
+                "exact-day original Native/Driver/connection changed");
+        return new AdvanceObservationPort.Frame(actual.identity(),actual.source(),actual.sessionId(),actual.semantic(),provenance,actual.observedAt(),actual.originalEvidence());
     }
     private static List<ActionReceipt> loadChildren(JsonNode values,ActionCommand parent,CompositeExecution execution,ActionPorts.OutcomeArchive archive){
         require(values.isArray()&&values.size()<=256&&values.size()==execution.children().size(),"exact-day failure must retain every canonical child");
