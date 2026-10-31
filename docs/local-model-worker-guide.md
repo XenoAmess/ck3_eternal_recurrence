@@ -120,3 +120,13 @@ JSON业务相等与原件字节保管分开。实际历史回放中Map.of迭代�
 有限传输观察：固定 UTC `[06:30,12:30)`、当前新地址、标准一级任务根中，共35次10054/reset失败；34次落在分钟除以10余8的第10–11秒，另一次09:08:09.955545Z。请求已运行时长为0.117682–132.356721秒（中位10.834317），不能当作统一的单请求超时。它只显示墙钟相关性，服务、代理、网络根因仍未知。保留每次失败并按原六次瞬时退避重发完整HTTP，不拼半截流、不因这项相关性改业务时限或重放游戏动作。筛选口径及两份实际EVENTS路径见[有限原始观察](autonomous-agent-progress/2026-10-31-resume91-models.md#resume91-墙钟对齐的连接重置有限观察2026-10-31-1234z)；其它机器不必取得本机D盘文件才能使用服务。
 
 较大真实任务也继续交给模型。M5完整4798B正常路径在各组件首验后，模型提出了整段主链与具体消费者，owner仅修少量observer/Memory参数；三新生产源严格编译、首次8个完整软件组合用例通过。这里复用已有分区和已核typed API，证明的是这些组合方法，并非模型独立重写全部4798B原码或真实Native/Game验收；用例的tag2/普通fallback没有走到M0/M1两下层的四个调用边，后继另做真实双组件接线。填写实际改动规模、提示程度和未覆盖路径，不能用上下文总量、整段名称或绿例数推整体能力。对下一真实原件/API与必要独立casehost，使用已有空闲helper并行准备，各owner直接POST，让主实现审阅与后继请求重叠；不以配额或重复旧绿凑并发。
+
+## 2026-10-31：运行中的 Family 与真实调用入口
+
+跨文件任务须提供静态 actions/archived 列表、运行时安装的 Family，以及当前 catalog 的实际选择入口。真实 ARM 已有 Native 成功 ACK 和独立 Status，历史材料仍报 ORIGINAL_COMPATIBLE_RESULT_ABSENT；根因是材料消费者只查固定安装列表，漏掉已安装的 ARM/CANCEL Family。修复复用 actualFamily、原安装对象与实际 effect/replay/metadata，保留独立 READ；不能按 operation 字符串前缀泛准入，也不能把“兼容结果缺失”直接归成 Native 未执行。单源 strict 和12项真实 DATA/软件检查通过后，worker172同Game恢复到普通循环；这不代表后续日期已推进。
+
+实际命令按 write、ACK、独立读回、reconciliation、父终态分别记录。gen2 CANCEL 曾真实写入并收到 native_ok，普通 Driver 就绪条件却挡住其独立 Status，途中产生 UNKNOWN；后继既有只读恢复最终将该 CANCEL 及父动作结算为控制已应用，父语义为 initialization_cancelled、三项游戏进展信用均 false。不能把途中 UNKNOWN 当最后状态，也不能因为读回失败重发已写命令；修正读取角色时还须保留真实 factual 合同，不能把无 factual 的 physical 结果伪装成完整结果。现场最终事实见[运行记录](autonomous-agent-progress/2026-10-31-java-g2-resume91-current.md)。
+
+必要回归的输入可达性先按原件核实。M1新消费者任务曾要求零长度 inline 输入到达 hash，但真实父函数会先走 fallback；这是 owner 的任务输入错误。后继改用可达的一字节 tail 与四字节 block 两条新场景，生产接线与首次软件消费通过。提供了当前目标实现的用例请求应记为实现可见的回归候选；字面预期仍须独立核原件，不能运行目标倒产 expected 或称成盲推 oracle。
+
+性能候选先限定真实调用范围。单份线程样本的 elapsed/CPU 不足以归因整个 worker 耗时；模型曾给出错误次数、错误 pin 复用语义，owner也曾把真实存在的 API 误判成虚构，均按原声明更正并分别记责。正式库已有 CachedHistory/refreshHead 向 S 传播的两文件候选通过严格编译和一次既有冷重读回归，保留 S 的原件验证；它是既有机制传播，没有实测加速比，不重复提交已有正式代码。另一实际 preceding 路径的新候选只在同次 preceding 查询中复用已完整验证的 receipts 列表，仍须自身行为回归，不能把按不同 ID 缓存却继续反复全量读取当作已消除重复工作。
