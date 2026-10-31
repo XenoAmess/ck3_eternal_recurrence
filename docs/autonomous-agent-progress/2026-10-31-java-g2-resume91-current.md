@@ -1,5 +1,17 @@
 # Java / G2 resume91 当前执行记录
 
+## 2026-10-31 23:18 UTC：累计24日已观察、父动作已结算，已确认保存仍16日
+
+同一原版无模组 Game71464（出生 FILETIME134378397668266369）继续保留。原 resume 子项550于23:09:25.618825Z真实 SETTLED/APPLIED；其原生 Push 后态为 native394/public326、date_raw53144904（1066-10-09），从本局原53144328累计实际观察到24个游戏日。551于23:09:50.898934200Z记录父 COMPOSITE_UNKNOWN，是该时点的历史状态，不改写成当时已结算。
+
+后继 Main204 仅增编成熟 AckReceived 兼容生产叶，MB23:13:29.850393–23:13:34.708829Z exit0/4.858439秒；worker177060于23:13:40.074887Z启动。552于23:17:22.760799Z真实 COMPOSITE_SETTLED/APPLIED，独立 fresh_snapshot_query / same_game_watch 后态为 native398、同一日期53144904；553于23:18:00.986796100Z发布该原552的 ACTION 历史。550的Push与552的只读观察分别保留，没有把READ改标Push。旧watch父549早于新child550；父551大于550时原序号条件自然合法，未改历史角色，也没有重放gen6 ARM/resume。
+
+这次父结算尚未形成新的周期或SAVE：552、553的 completed_cycles仍为5、pending=null，last_settled_date_raw仍53144712；已确认保存仍是下段528所证的16日。24日观察、父动作结算与24日已保存是三项不同事实，本段不授后者。553中before_driver与after_driver元数据同SHA，版本162→163；这里只核事件与小回执，没有读取5,345,432B的Driver大体，也不据该元数据变化推断新游戏动作。
+
+独立有界证据包括550 event98770B/SHA256 `5e98d42fdbad86779b27bb3fad32b847eb82b8668ef424b9feece2ea6bc74277`、551 event98774B/`0a5d1fcf8ebdaeda9cb5d6b0479645583d296a38fe758b29337407fedf2dc065`、552 event98771B/`a44be39a7ddf18702e1615031ae489c4441f494b953af05cfb484e73e42698c8`、553 event99695B/`c21ca92007c38065f8afb6455d1823cd69df9bc45b779e8e9d17943f7e41e346`，原路径均为 continuity/ROOT-CONTINUITY-WINDOW-EVENTS/ 对应八位序号json。550的6877B action回执SHA `0f83b3ff07ac7cc978fac8f8ee0aecf32f40cff7a96f215a329590d02dd0edeb`，552的9088B回执SHA `6288420cb5a7f50c60c32f3b57fd932db54341a54fdbb579abe1345184d22214`；具名事件、540B链记录及小回执核验保存在 D:/ck3-state/resume91-native-integration/milestone550-tail204-publication/FOUR-EVENTS-RECEIPTS-READBACK.json。没有新增Game探测、读取save/Driver/SEM大体或运行测试。
+
+worker204于23:18:40.207169Z真实 preloopEND1/300.132287秒，未LOOP，运行岗23:18:51.718759Z薄读后立即释放研究HOLD。本段冻结到该终态；后继仅由运行owner按新确定故障推进同局，正式发表、模型请求和背景验证均不作为实机接续前置。下方16日保存及更早阶段保留原始截止事实，G2整体仍按最后已确认6/8计。
+
 ## 2026-10-31 22:00 UTC：累计16个游戏日与第二次自然保存已确认
 
 同一原版无模组 Game71464（出生 FILETIME134378397668266369）继续保留。worker198/PID329912（出生 FILETIME134379569814969446）于21:53:28.800178Z真实进入普通循环 next68；第二次自然 SAVE527 于21:56:48.6915372Z实际 APPLIED，随后528于21:59:54.820383900Z记录 SAVE_CONFIRMED。这两个时刻分别表示保存动作结算和保存周期确认，不合并记成同一事件。

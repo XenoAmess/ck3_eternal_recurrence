@@ -355,3 +355,14 @@ Controller199首答length3400整弃，唯一窄纠正stop437tokens的三组uniqu
 后到独立输入勘误：370 Host R2任务曾总括所有copy都有moduleBase第五参，与完整REP/BACKWARD四参stub矛盾，归owner输入；无Script、不调用目标和自造expected等独立整拒理由仍保。原两EOF不改，另见本机M2 `queue-copy364/witness-owner370/OWNER-PROMPT-ARITY-ERRATUM370.json`，SHA256 `0afe523ddb68a561ee598eac43812570bb2329c998b03be690c4b9bfba5c0c07`。
 
 后到独立软件回执：380于22:33:10.421185Z首六场47事件结束0，必要strict0/.858255秒、首RUN0/.157671秒；只修owner Host两处多余实参，Data及三Book原SHA不变，采用仍Basic部分／其余owner，无Native/Game信用。另见同目录 `LATER-ACTUAL370.json`，SHA256 `fbb53041c2b0906b36e1952b20b4b1de9bb4d15958709484079de17838d4aecd`；不把此结果回填上述冻结窗口。
+
+
+2026-10-31 23:12:51Z 有限运营窗口：23:02:51.591560–23:12:51.591560 内，当前已登记源码15次真实 POST、15次 END（13 stop、2 length），客户端峰3发生于23:04:24.760608，由 M3 grow203 两流与 M7 E23EA0 producer 重叠形成；当刻可核源码在途0。事件扫描23:12:44.943333–51.536495，唯一服务 GET23:12:51.536505–51.588569，服务全局 running0/waiting0/KV0，两阶段并非原子观察。两个旧中断 caller 的实际 END 未知仍单列，未伪终态；持续12–16及更高目标未达，不把源码准备、迟消费、等待编译或旧历史峰计为当前在途。证据 WINDOW128-231251.json、REGISTER-LATE203-391.json；旧窗口不改。
+
+202 的独立局部审阅请求 runtime-saved-driver-invariants202 完整 stop43.218718秒（有效 TTFT29.050193秒，191660+1370，cached null），只保留部分 prefix/slots/stamp/ACK 主题；虚构 after_driver 字段、错误方法归属和便利 API 缺席即缺 producer 的结论拒绝。模型未发现526与527发布时点差异；本岗初独立审也漏查并曾错误宣称 Known 覆盖闭合，Runtime 发现后已单独 OWNER-INITIAL-REVIEW-ERRATUM202 撤回。最终20f1e806 helper 使用真实 ColdAfterAcknowledgement 原回执526并完整核同 command/body/Attempt/positive ACK；本岗只读审、0 Journal 写入。最终源 strict 与运行越过 READ529由各 owner另记，不授额外游戏日或私有资格。
+
+M3 reserve202 五个逻辑任务、六次实际 POST（五 stop、一 reset）已逐原件分账；reset整流丢弃，源码审拒的变量作用域/捕获类型错误经唯一窄纠正，owner执行码0改。新 API/core/consumer 首 strict0/0.874104秒，五个已有 wrapper 只新增上下文转发方法首 strict0/0.713566秒；无 RUN/新 fixture/包信用。后继 grow203 三个真实 R1任务全部 stop/无重试/cached null：producer两条 unique edits、独立完整3813B consumer、六份新转发 method均原字节选用，0owner执行改。前两稿 POST23:04:18.900308/.900324，END23:04:29.088431/35.029238；forwarders早23:04:14.045085结束，故三角色不能计峰3。首次3changed strict0/0.730657秒，后继6changed strict0/0.726180秒，0旧祖重编/旧case/RUN/Native/Game；实际 per-call frame与C3A43B unsupported-stop仅源码及编译范围。
+
+M7 E23EA0 两个实际site薄 consumer：m7-e23ea0-consumer202-r1真实23:06:32.980998–43.260698 stop10.277977秒/TTFT3.375523秒/21144+971/cached null。完整12物理前缀56686B后，3856B完整类原样 source采用；实际185 normal-return字段、父已拥有returnslot、child preSP−8、原Call/Tail身份与GS64透传均按现API源审，0owner代码改。此项仅新增两site接线，不是独立147B producer算法信用；首编/新行为由M7原owner另领，本记录不授自然Game资格。
+
+M2 growth-copy391 两个必要见证域共三次 POST/三 stop/无重试：独立 Book R1 43步原码采用，复用旧40强输入配方，仅真实COPY16端口展开为两次R128后两次W128；非全新盲 oracle。Host R1框架加唯一R2八条原字面 edits（真实Bits128 import、六处显式intValue、全部non-ALLOC returned0守卫）组装，0owner执行码改；原框架import/未核unused-returned缺陷不冒编译红。原17源清单遗漏 Copy4226860Api 是输入owner索引切片遗漏：Host首POST已额外带齐真实第18祖API；Book先按17发出，但直接纯DATA API已完整，不为补无关接口重投正确Book。两段请求实际不重叠，不按两个角色计峰2；0target产expected/新producer候选读取/本岗编RUN/Native/Game。源码与后到首次验证分别保留，旧manifest不原位补字段。
