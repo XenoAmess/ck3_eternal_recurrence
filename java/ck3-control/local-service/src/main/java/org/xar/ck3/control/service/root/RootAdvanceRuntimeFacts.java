@@ -27,6 +27,8 @@ import org.xar.ck3.control.application.planning.governance.CrownRetryPublication
 import org.xar.ck3.control.application.readiness.ReadinessAuthority.LeaseSnapshot;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 
@@ -66,9 +68,41 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
         if (!expected.identity().equals(actual.identity()) || !expected.source().equals(actual.source()) || !expected.sessionId().equals(actual.sessionId())) return false;
         if (!(expected.provenance() instanceof ObservationProvenance.Push)) return false;
         var pid = expected.identity().game().pid();
-        var expectedStable = DriverTransportNoticeStability.heldSemantic(expected.semantic(), nativeOwnedNoticeKeys, pid);
-        var actualStable = DriverTransportNoticeStability.heldSemantic(actual.semantic(), nativeOwnedNoticeKeys, pid);
+        var augmentation = clockAugmentationFields(actual);
+        var expectedStable = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, pid);
+        var actualStable = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, pid);
         return expectedStable.equals(actualStable);
+    }
+
+    private static final Set<String> CLOCK_DERIVED_FIELDS = Set.of(
+            "format_version", "snapshot_id", "native_revision", "revision", "episode_run_id", "episode_character_id",
+            "native_command_history", "succession_lifecycle", "campaign_goal", "native_rollback_war_failure",
+            "native_rollback_war_failures", "episode_projection", "backend_id", "source", "diagnostics",
+            "active_wars", "player_armies");
+
+    private static Set<String> clockAugmentationFields(DriverObservationAssembler.Complete actual) {
+        if (actual.originalProjection().isEmpty()) return Set.of();
+        var full = actual.originalProjection().orElseThrow();
+        return clockAugmentationFields(DriverObservationAssembler.originalNativeState(full.actual()),
+                full.facts().originalSemanticFields());
+    }
+
+    static Set<String> clockAugmentationFields(OpportunityJson.Obj rawNative, OpportunityJson.Obj producerFields) {
+        // The actual producer copied Driver auxiliary into these extras. A same-name raw Native field
+        // remains Native-owned; normalized Native and joined Driver business fields remain exact too.
+        var augmentation = new java.util.HashSet<>(producerFields.members().keySet());
+        augmentation.removeAll(rawNative.members().keySet());
+        augmentation.removeAll(NativeSemanticNormalizer.ownedFields());
+        augmentation.removeAll(CLOCK_DERIVED_FIELDS);
+        return Set.copyOf(augmentation);
+    }
+
+    static OpportunityJson.Obj clockSemantic(OpportunityJson.Obj semantic, Set<String> augmentation,
+            Set<String> nativeOwnedNoticeKeys, long actualPid) {
+        var stable = DriverTransportNoticeStability.heldSemantic(semantic, nativeOwnedNoticeKeys, actualPid);
+        var fields = new java.util.LinkedHashMap<>(stable.members());
+        augmentation.forEach(fields::remove);
+        return new OpportunityJson.Obj(fields);
     }
 
     private static void requireClockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual,
@@ -85,8 +119,9 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
             if (!expected.source().equals(actual.source())) roles.add("source");
             if (!expected.sessionId().equals(actual.sessionId())) roles.add("session");
             if (!(expected.provenance() instanceof ObservationProvenance.Push)) roles.add("provenance_kind");
-            var left = DriverTransportNoticeStability.heldSemantic(expected.semantic(), nativeOwnedNoticeKeys, expected.identity().game().pid());
-            var right = DriverTransportNoticeStability.heldSemantic(actual.semantic(), nativeOwnedNoticeKeys, actual.identity().game().pid());
+            var augmentation = clockAugmentationFields(actual);
+            var left = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, expected.identity().game().pid());
+            var right = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, actual.identity().game().pid());
             var keys = new java.util.TreeSet<String>(left.members().keySet()); keys.addAll(right.members().keySet());
             var different = keys.stream().filter(key -> !Objects.equals(left.get(key), right.get(key)))
                     .limit(8).map(key -> key.substring(0, Math.min(80, key.length()))).toList();
