@@ -46,8 +46,16 @@ public final class AdvancePrimitiveEvidence {
         exact(basis.nativeFrame(), archive.loadNativeFrame(basis.nativeFrame())); exact(basis.driverFacts(), archive.loadFullMaterial(basis.driverFacts()).bytes());
         Complete actual = frames.load(basis, archive);
         var provenance = ObservationProvenanceCodec.decode(row.get("provenance"));
-        var actualPush = new ObservationProvenance.Push(actual.identity().frame().snapshotId(), actual.identity().frame().identity().nativeRevision(), actual.originalEvidence());
-        require(provenance.equals(actualPush) && provenance.equals(effect.provenance()), "timeline poststate must bind the actual pushed snapshot, revision and original packet");
+        if (provenance instanceof ObservationProvenance.FreshSnapshotQuery query) {
+            frames.verifyFreshSnapshotQuery(query, actual, archive);
+            require(query.basis() instanceof ObservationProvenance.LiveAfterSetter setter
+                    && setter.setterAcknowledgement().equals(archive.referenceOf(child.ack().orElseThrow())),
+                    "fresh snapshot query live basis must bind the actual child ACK reference");
+        } else {
+            var actualPush = new ObservationProvenance.Push(actual.identity().frame().snapshotId(), actual.identity().frame().identity().nativeRevision(), actual.originalEvidence());
+            require(provenance.equals(actualPush), "timeline poststate must bind the actual pushed snapshot, revision and original packet");
+        }
+        require(provenance.equals(effect.provenance()), "timeline provenance differs from the actual effect observation");
         require(actual.identity().equals(effect.after()) && actual.source().equals(effect.source()) && actual.sessionId().equals(effect.sessionId())
                 && actual.observedAt().equals(effect.observedAt()) && actual.originalEvidence().equals(effect.originalEvidence()), "timeline full native/Driver after-frame differs");
         return actual;

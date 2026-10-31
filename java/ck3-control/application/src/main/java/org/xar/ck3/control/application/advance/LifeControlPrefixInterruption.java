@@ -82,7 +82,9 @@ public record LifeControlPrefixInterruption(String actionId, String bodySha256, 
                 && after.frame().episodeRunId().equals(before.frame().episodeRunId())
                 && after.frame().identity().player().equals(before.frame().identity().player()),
                 "interrupted initialization crossed original source/Game/session/episode/actor");
-        require(actualEnding.provenance() instanceof ObservationProvenance.Push
+        require((actualEnding.provenance() instanceof ObservationProvenance.Push
+                || (actualEnding.provenance() instanceof ObservationProvenance.FreshSnapshotQuery query
+                    && query.basis() instanceof ObservationProvenance.LiveAfterSetter))
                 && AdvancePolicy.truth(actualEnding.semantic(), "paused")
                 && after.frame().identity().dateRaw().equals(AdvancePlan.decode(parent).startingDateRaw()),
                 "interruption requires actual independent paused same-date Native post-state");

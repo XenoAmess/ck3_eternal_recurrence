@@ -20,6 +20,9 @@ import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.advance.*;
 import org.xar.ck3.control.application.driver.HeldDriverObservationPort;
 import org.xar.ck3.control.application.effects.NativeEffectRegistry;
+import org.xar.ck3.control.application.effects.NativeEffectEvidence;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler;
+import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.application.effects.RootPlanningReadGuard;
@@ -172,7 +175,7 @@ public final class RootAdvanceInfrastructureFactory {
             RootUnknownSentinelReadProfile.requireInstalled(physicalStatus,statuses);
             timeline=new AdvanceClock(observations,statuses,readiness,context.clock(),timings.maximumFrames(),timings.commandTimeout(),timings.advanceTimeout());
             primitives=new AdvancePrimitives(observations,statuses,context.clock(),timings.maximumFrames(),pendingDate,timings.advanceTimeout());
-            replay=new AdvancePrimitiveArchivedReplay(context.frameLoader());
+            replay=new AdvancePrimitiveArchivedReplay(freshFrameLoader(context.frameLoader()));
             List<RootExecutableBindings.ActionBinding> fixed=new ArrayList<>();
             List<NativeRecordedEvidenceVerifier.Binding> archived=new ArrayList<>();
             for(String step:List.of("pause-map","resume-map","set-speed-1","set-speed-2","set-speed-3","set-speed-4","set-speed-5")) {
@@ -234,6 +237,100 @@ public final class RootAdvanceInfrastructureFactory {
         var row=StrictJson.object().put("operation",operation.value());return new RawJson(StrictJson.canonical(row));
     }
     /** The same final held producer is resolved at invocation, after actual adoption. Absence never becomes an empty frame. */
+    /** Replays actual fresh READ originals; the delegate remains the sole full Driver decoder. */
+    static NativeEffectEvidence.FrameLoader freshFrameLoader(NativeEffectEvidence.FrameLoader actual) {
+        Objects.requireNonNull(actual);
+        return new NativeEffectEvidence.FrameLoader() {
+            @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis,
+                    ActionPorts.OutcomeArchive archive) { return actual.load(basis, archive); }
+            @Override public void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
+                    DriverObservationAssembler.Complete complete, ActionPorts.OutcomeArchive archive) {
+                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(proof, complete, archive);
+            }
+        };
+    }
+
+    /** Original DATA validation only: this cannot issue a source session, Received, or writer permission. */
+    static void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
+            DriverObservationAssembler.Complete complete, ActionPorts.OutcomeArchive archive) {
+        Objects.requireNonNull(proof);Objects.requireNonNull(complete);Objects.requireNonNull(archive);
+        try {
+            var read=successfulAck(archive.load(proof.readAcknowledgement()));
+            require(read.requestId().equals(proof.requestId()), "fresh query request differs from its original READ ACK");
+            var custody=read.custody().orElseThrow();
+            byte[] packet=archive.loadNativeFrame(complete.originalEvidence());
+            require(packet.length==complete.originalEvidence().bytes()
+                    && ActionCodec.sha256(packet).equals(complete.originalEvidence().sha256()), "fresh native original bytes differ");
+            var decoded=NativeWire.decode(packet);
+            require(decoded instanceof NativeWire.Snapshot, "fresh native original is not a full snapshot");
+            var snapshot=(NativeWire.Snapshot)decoded;
+            var actual=new NativeObservationPort.ObservedFrame(custody.session(),snapshot.snapshotId(),snapshot.revision(),
+                    new RawJson(snapshot.state().value()),packet,complete.observedAt());
+            var identity=complete.identity();
+            require(custody.session().machineId().equals(identity.machineId()) && custody.session().game().equals(identity.game())
+                    && custody.session().sessionId().equals(complete.sessionId())
+                    && custody.session().connectionGeneration().equals(complete.connectionGeneration())
+                    && complete.source().machineId().equals(identity.machineId())
+                    && snapshot.snapshotId().equals(identity.frame().snapshotId())
+                    && snapshot.revision().equals(identity.frame().identity().nativeRevision()),
+                    "fresh READ crossed actual Native/Driver identity/source/connection");
+            NativeFreshSnapshotPort.verifyOriginal(read,actual,proof.snapshotReceived());
+            if(proof.basis() instanceof ObservationProvenance.LiveAfterSetter live) {
+                NativeFreshSnapshotPort.verifyAfterOriginal(successfulAck(archive.load(live.setterAcknowledgement())),
+                        read,actual,proof.snapshotReceived());
+            } else {
+                var watch=(ObservationProvenance.SameGameWatch)proof.basis();
+                var parent=archive.loadReceipt(watch.originalParentReceipt());
+                var resume=archive.loadReceipt(watch.originalResumeReceipt());
+                requireWatchRole(parent,resume);
+                requireFrameBinding(parent.command(),complete);
+                var setter=resume.ack().orElseThrow();var prior=setter.custody().orElseThrow();prior.verify(setter);
+                require(prior.session().machineId().equals(custody.session().machineId())
+                        && prior.session().game().equals(custody.session().game())
+                        && prior.session().sessionId().equals(custody.session().sessionId())
+                        && !read.requestId().equals(setter.requestId())
+                        && !custody.writeEntered().observedAt().isBefore(prior.responseReceived().observedAt()),
+                        "same-Game watch READ predates or crosses its original resumed Game/session");
+            }
+        } catch(IOException failure) {throw new UncheckedIOException("actual fresh READ originals differ",failure);}
+    }
+
+    private static NativeActionPort.AckReceived successfulAck(NativeActionPort.DispatchOutcome value) {
+        require(value instanceof NativeActionPort.AckReceived ack && ack.nativeOk(), "successful original native ACK required");
+        return (NativeActionPort.AckReceived)value;
+    }
+    private static void requireFrameBinding(ActionCommand parent,DriverObservationAssembler.Complete complete) {
+        require(parent.source().equals(complete.source()) && parent.sessionId().equals(complete.sessionId())
+                && parent.before().machineId().equals(complete.identity().machineId())
+                && parent.before().game().equals(complete.identity().game())
+                && parent.before().frame().episodeRunId().equals(complete.identity().frame().episodeRunId())
+                && parent.before().frame().identity().player().equals(complete.identity().frame().identity().player()),
+                "fresh observation crossed original parent source/session/Game/episode/actor");
+    }
+    private static void requireWatchRole(ActionReceipt parent,ActionReceipt resume) {
+        require(parent.state() instanceof ActionState.CompositeUnknown && LifeAdvanceComposite.accepts(parent.command().operation().value()),
+                "same-Game watch requires its original UNKNOWN Life parent");
+        var execution=((ActionState.CompositeUnknown)parent.state()).execution();
+        require(execution.handlerId().equals(LifeAdvanceComposite.HANDLER) && !execution.children().isEmpty()
+                && parent.command().origin().acceptsGuard(execution.guard().origin())
+                && execution.guard().source().equals(parent.command().source())
+                && execution.guard().sessionId().equals(parent.command().sessionId())
+                && execution.guard().observed().equals(parent.command().before())
+                && execution.guard().operation().equals(parent.command().operation()), "watch lost its original Life execution/guard");
+        var bound=execution.children().getLast();var child=resume.command();
+        require(bound.actionId().equals(child.actionId()) && bound.bodySha256().equals(resume.bodySha256())
+                && child.actionId().equals(ActionIds.child(parent.command().actionId(),execution.children().size(),child.operation()))
+                && child.operation().value().equals("resume-map") && resume.state() instanceof ActionState.Settled settled
+                && settled.settlement() instanceof ActionState.Applied && resume.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent()
+                && resume.sequence()<parent.sequence() && child.source().equals(parent.command().source())
+                && child.sessionId().equals(parent.command().sessionId())
+                && child.before().machineId().equals(parent.command().before().machineId())
+                && child.before().game().equals(parent.command().before().game())
+                && child.before().frame().episodeRunId().equals(parent.command().before().frame().episodeRunId())
+                && child.before().frame().identity().player().equals(parent.command().before().frame().identity().player()),
+                "watch resume is not the exact settled successful final child of its original parent");
+    }
+
     private static final class ActualObservations implements AdvanceObservationPort {
         private final RootRuntimeContext context;
         private final Timings timings;
@@ -290,11 +387,21 @@ public final class RootAdvanceInfrastructureFactory {
                             return sameHeld.retainedEntryReplay(parent, guard, deadline, replayed);
                         }
                     }
-                    return sameHeld.current(parent,deadline);
+                    return freshParentObservation(same, parent, deadline);
                 });
             }catch(IOException failure){throw new UncheckedIOException("actual held clock observation unavailable",failure);}
         }
-        @Override public Frame next(ActionCommand parent,ObservationIdentity after,Instant deadline){return actual(parent,deadline).next(parent,after,deadline);}
+        @Override public Frame next(ActionCommand parent,ObservationIdentity after,Instant deadline){
+            actual(parent,deadline);
+            try {return context.withSession(same->{
+                context.adopted().authority().requireOutsideObservationScope(same);
+                for(int count=0;count<timings.maximumFrames() && context.clock().instant().isBefore(deadline);count++) {
+                    Frame frame=freshParentObservation(same,parent,deadline);
+                    if(frame.identity().frame().identity().nativeRevision().compareTo(after.frame().identity().nativeRevision())>0)return frame;
+                }
+                throw new IOException("actual fresh next frame did not advance its native revision within the original finite budget");
+            });}catch(IOException failure){throw new UncheckedIOException("actual fresh next observation unavailable",failure);}
+        }
         /** The actual held packet is only a read/control basis; STATUS still supplies its independent original. */
         @Override public <T> T withClockControlBasis(ActionCommand parent, Instant deadline,
                 java.util.function.Function<Frame,T> work) {
@@ -332,43 +439,73 @@ public final class RootAdvanceInfrastructureFactory {
 
         private Frame freshReservedChildObservation(ContinuityStorePort.Session same, ActionCommand child,
                 Instant deadline, HeldDriverObservationPort sameHeld) throws IOException {
-            var receipt = context.core().journal().locked(same, locked -> locked.find(child.actionId()).orElseThrow());
-            require(receipt.command().equals(child) && receipt.bodySha256().equals(ActionCodec.bodySha256(child)),
-                    "reserved child receipt crossed its actual command/body");
-            var ack = receipt.ack().filter(NativeActionPort.AckReceived::nativeOk)
-                    .orElseThrow(() -> new IOException("actual reserved child has no successful original ACK"));
+            var receipt=context.core().journal().locked(same,locked->locked.find(child.actionId()).orElseThrow());
+            require(receipt.command().equals(child),"reserved child receipt differs from its actual command");
+            var ack=receipt.ack().filter(NativeActionPort.AckReceived::nativeOk).orElseThrow();
+            var archive=context.archive().withSession(same);
+            var proofBasis=new ObservationProvenance.LiveAfterSetter(archive.preserve(ack));
+            return freshObservation(same,child,deadline,proofBasis);
+        }
+
+        private Frame freshParentObservation(ContinuityStorePort.Session same,ActionCommand parent,Instant deadline)throws IOException {
+            var canonical=context.core().journal().locked(same,locked->locked.find(parent.actionId()).orElseThrow());
+            require(canonical.command().equals(parent),"fresh parent differs from its current canonical command");
+            var execution=canonical.state() instanceof ActionState.CompositeUnknown unknown?unknown.execution():
+                    canonical.state() instanceof ActionState.CompositeRunning running?running.execution():null;
+            require(execution!=null && !execution.children().isEmpty(),"post-action observation requires actual canonical child history");
+            var children=context.core().journal().locked(same,locked->execution.children().stream().map(bound->{
+                var child=locked.find(bound.actionId()).orElseThrow();
+                require(bound.bodySha256().equals(child.bodySha256()) && child.settled(),"fresh observation has an unresolved or changed canonical child");
+                return child;
+            }).toList());
+            AdvanceClockArchivedReplay.verifyChildBindings(parent,children);
+            var last=children.getLast();var ack=last.ack().filter(NativeActionPort.AckReceived::nativeOk).orElseThrow();
+            var archive=context.archive().withSession(same);
+            ObservationProvenance.FreshSnapshotBasis basis;
+            if(canonical.state() instanceof ActionState.CompositeUnknown
+                    && !ack.custody().orElseThrow().session().equals(context.adopted().session())) {
+                requireWatchRole(canonical,last);
+                require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(
+                        ContinuityActionJournal.receipts(same.head().state(),archive)).filter(canonical::equals).isPresent(),
+                        "same-Game watch is not the admitted complete canonical Life prefix");
+                basis=new ObservationProvenance.SameGameWatch(archive.receiptReferenceOf(canonical),archive.receiptReferenceOf(last));
+            } else basis=new ObservationProvenance.LiveAfterSetter(archive.preserve(ack));
+            return freshObservation(same,parent,deadline,basis);
+        }
+
+        private Frame freshObservation(ContinuityStorePort.Session same,ActionCommand parent,Instant deadline,
+                ObservationProvenance.FreshSnapshotBasis basis)throws IOException {
+            var archive=context.archive().withSession(same);
             NativeFreshSnapshotPort.Result fresh;
-            try { fresh = context.transport().readFreshFullState(deadline); }
-            catch (InterruptedException interrupted) {
-                Thread.currentThread().interrupt();
-                var failure = new InterruptedIOException("actual reserved child fresh read interrupted; no replay");
+            try {
+                fresh=context.transport().readFreshFullState(deadline);
+                if(fresh instanceof NativeFreshSnapshotPort.Unavailable missing && missing.dispatch() instanceof NativeActionPort.Unknown)
+                    fresh=context.transport().collectFreshFullState(missing.dispatch().requestId(),deadline);
+            } catch(InterruptedException interrupted) {
+                Thread.currentThread().interrupt();var failure=new InterruptedIOException("actual fresh read interrupted; original action is not replayed");
                 failure.initCause(interrupted);throw failure;
             }
-            if (fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
-                String reason = unavailable.reason();
-                throw new IOException("actual reserved child fresh read unavailable: " + reason.substring(0, Math.min(512, reason.length())));
+            if(fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
+                String reason=unavailable.reason();throw new IOException("actual fresh read unavailable: "+reason.substring(0,Math.min(512,reason.length())));
             }
-            var received = (NativeFreshSnapshotPort.Received)fresh;
-            NativeFreshSnapshotPort.verifyAfter(ack, received);
-            require(context.clock().instant().isBefore(deadline)
-                    && !received.originalFrame().observedAt().isAfter(deadline), "actual received-frame projection deadline expired");
-            var complete = context.adopted().authority().withFrozenRawObservation(received.originalFrame(), same, frozen -> {
-                var nativeOriginal = context.archive().withSession(same).preserveNativeFrame(received.originalFrame());
-                var projected = context.core().observationAssembler().assemble(received.originalFrame(), frozen.facts(), nativeOriginal);
-                if (projected instanceof org.xar.ck3.control.application.driver.DriverObservationAssembler.Incomplete missing)
-                    throw new IllegalStateException("incomplete actual semantic observation: " + String.join(",", missing.reasons()));
-                return (org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete) projected;
+            var received=(NativeFreshSnapshotPort.Received)fresh;
+            require(context.clock().instant().isBefore(deadline) && !received.originalFrame().observedAt().isAfter(deadline),
+                    "actual received-frame projection deadline expired");
+            var proof=new ObservationProvenance.FreshSnapshotQuery(received.acknowledgement().requestId(),
+                    archive.preserve(received.acknowledgement()),received.snapshotReceived(),basis);
+            var complete=context.adopted().authority().withFrozenRawObservation(received.originalFrame(),same,frozen->{
+                var original=archive.preserveNativeFrame(received.originalFrame());
+                var projected=context.core().observationAssembler().assemble(received.originalFrame(),frozen.facts(),original);
+                if(projected instanceof DriverObservationAssembler.Incomplete missing)
+                    throw new IllegalStateException("incomplete actual semantic observation: "+String.join(",",missing.reasons()));
+                return (DriverObservationAssembler.Complete)projected;
             });
-            require(context.clock().instant().isBefore(deadline), "actual waited snapshot projection exceeded its original capture deadline");
-            require(child.before().machineId().equals(complete.identity().machineId())
-                    && child.before().game().equals(complete.identity().game())
-                    && child.before().frame().episodeRunId().equals(complete.identity().frame().episodeRunId())
-                    && child.sessionId().equals(complete.sessionId()) && child.source().equals(complete.source()),
-                    "observation crossed held parent Game/source/session/episode");
-            return new Frame(complete.identity(), complete.source(), complete.sessionId(), complete.semantic(),
-                    new ObservationProvenance.Push(complete.identity().frame().snapshotId(),
-                            complete.identity().frame().identity().nativeRevision(), complete.originalEvidence()),
-                    complete.observedAt(), complete.originalEvidence());
+            requireFrameBinding(parent,complete);
+            verifyFreshSnapshotQuery(proof,complete,archive);
+            require(context.clock().instant().isBefore(deadline),"actual fresh projection exceeded its original deadline");
+            return new Frame(complete.identity(),complete.source(),complete.sessionId(),complete.semantic(),proof,
+                    complete.observedAt(),complete.originalEvidence());
         }
+
     }
 }

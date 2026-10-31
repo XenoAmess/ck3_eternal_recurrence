@@ -69,7 +69,7 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
 
     static boolean clockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual, OpportunityJson.Obj rawNative, Set<String> augmentation, Set<String> nativeOwnedNoticeKeys) {
         if (!expected.identity().equals(actual.identity()) || !expected.source().equals(actual.source()) || !expected.sessionId().equals(actual.sessionId())) return false;
-        if (!(expected.provenance() instanceof ObservationProvenance.Push)) return false;
+        if (!(expected.provenance() instanceof ObservationProvenance.Push || expected.provenance() instanceof ObservationProvenance.FreshSnapshotQuery)) return false;
         var pid = expected.identity().game().pid();
         var expectedStable = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, pid, rawNative);
         var actualStable = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, pid, rawNative);
@@ -134,7 +134,7 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
             if (!expected.identity().equals(actual.identity())) roles.add("identity");
             if (!expected.source().equals(actual.source())) roles.add("source");
             if (!expected.sessionId().equals(actual.sessionId())) roles.add("session");
-            if (!(expected.provenance() instanceof ObservationProvenance.Push)) roles.add("provenance_kind");
+            if (!(expected.provenance() instanceof ObservationProvenance.Push || expected.provenance() instanceof ObservationProvenance.FreshSnapshotQuery)) roles.add("provenance_kind");
             var left = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, expected.identity().game().pid(), rawNative);
             var right = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, actual.identity().game().pid(), rawNative);
             var keys = new java.util.TreeSet<String>(left.members().keySet()); keys.addAll(right.members().keySet());

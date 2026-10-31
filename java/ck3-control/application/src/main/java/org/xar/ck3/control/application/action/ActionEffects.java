@@ -202,19 +202,52 @@ public final class ActionEffects {
     public static java.util.List<org.xar.ck3.control.contracts.ExactRef> supportingEvidence(ActionState.Settlement settlement) {
         if(settlement instanceof ActionState.FixtureStarted started)return started.observation().references();
         if(settlement instanceof ActionState.FixtureBusinessCompleted completed)return completed.observation().references();
-        if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) return java.util.List.of(interrupted.observation().ending().nativeFrame(), interrupted.observation().ending().driverFacts(), interrupted.observation().ending().semantic());
+        if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) {
+            var ending = interrupted.observation().ending();
+            var refs = new java.util.ArrayList<org.xar.ck3.control.contracts.ExactRef>(java.util.List.of(ending.nativeFrame(), ending.driverFacts(), ending.semantic()));
+            if (ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
+                refs.add(fresh.readAcknowledgement());
+                if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
+                else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
+            }
+            return java.util.List.copyOf(refs);
+        }
         if (settlement instanceof ActionState.CompositeRejected rejected) return rejected.evidence();
         if (settlement instanceof ActionState.DirectFixedWindowCompleted completed) return completed.completion().references();
         if (settlement instanceof ActionState.PauseConfirmed pause) {
             var refs = new java.util.ArrayList<org.xar.ck3.control.contracts.ExactRef>();
-            refs.add(pause.observation().originalEvidence()); refs.addAll(pause.observation().supportingEvidence()); return java.util.List.copyOf(refs);
+            refs.add(pause.observation().originalEvidence()); refs.addAll(pause.observation().supportingEvidence());
+            if (pause.observation().provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
+                refs.add(fresh.readAcknowledgement());
+                if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
+                else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
+            }
+            return java.util.List.copyOf(refs);
         }
         if (settlement instanceof ActionState.ControlSequenceCompleted sequence) return sequence.observation().references();
         if (settlement instanceof ActionState.OperatorRebound rebound) return rebound.observation().references();
         if (settlement instanceof ActionState.NativeSourceCompleted source) return source.observation().references();
         if (settlement instanceof ActionState.NormalExitPhaseConfirmed phase) return phase.observation().references();
-        if (settlement instanceof ActionState.Applied applied) return applied.observation().supportingEvidence();
-        if (settlement instanceof ActionState.CompositeControlApplied control) return control.observation().semantic().supportingEvidence();
+        if (settlement instanceof ActionState.Applied applied) {
+            var refs = new java.util.ArrayList<org.xar.ck3.control.contracts.ExactRef>();
+            refs.addAll(applied.observation().supportingEvidence());
+            if (applied.observation().provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
+                refs.add(fresh.readAcknowledgement());
+                if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
+                else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
+            }
+            return java.util.List.copyOf(refs);
+        }
+        if (settlement instanceof ActionState.CompositeControlApplied control) {
+            var refs = new java.util.ArrayList<org.xar.ck3.control.contracts.ExactRef>();
+            refs.addAll(control.observation().semantic().supportingEvidence());
+            if (control.observation().semantic().provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
+                refs.add(fresh.readAcknowledgement());
+                if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
+                else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
+            }
+            return java.util.List.copyOf(refs);
+        }
         if (settlement instanceof ActionState.GameplayEntered entered) return entered.observation().references();
         if (settlement instanceof ActionState.LifecycleApplied lifecycle) return lifecycle.proof().originalEvidence();
         if (settlement instanceof ActionState.SwaySchedulerCompleted scheduler) return scheduler.proof().originalEvidence();

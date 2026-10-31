@@ -22,6 +22,7 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 public final class LifeAdvanceEvidence {
     public static final String SCHEMA = "xar.ck3.java-life-advance-evidence/v2";
     public static final String LEGACY_QUERY_SCHEMA = "xar.ck3.java-life-advance-evidence/v1";
+    public static final String FRESH_QUERY_SCHEMA = "xar.ck3.java-life-advance-evidence/v3";
     private static final Set<String> BASIS_FIELDS = Set.of("schema", "action_body_sha256", "starting", "ending", "progress_status", "clock_read", "children", "compatible_result");
     private LifeAdvanceEvidence() { }
     public record FrameRecord(ObservationIdentity identity, ObservationProvenance provenance, Instant observedAt,
@@ -76,7 +77,9 @@ public final class LifeAdvanceEvidence {
             require(child.settled(), "unresolved child cannot become completed advance evidence");
             receipts.add(ref(archive.preserveReceipt(child)));
         }
-        Obj body = new Obj(Map.of("schema", new Text(SCHEMA), "action_body_sha256", new Text(ActionCodec.bodySha256(parent)),
+        String schema = starting.provenance() instanceof ObservationProvenance.FreshSnapshotQuery
+                || ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery ? FRESH_QUERY_SCHEMA : SCHEMA;
+        Obj body = new Obj(Map.of("schema", new Text(schema), "action_body_sha256", new Text(ActionCodec.bodySha256(parent)),
                 "starting", frame(preserveFrame(starting, archive)), "ending", frame(preserveFrame(ending, archive)),
                 "progress_status", new Text(progress.name()),
                 "clock_read", clockRead.<Value>map(value -> ref(archive.preserveRead(value))).orElse(Nil.INSTANCE),
@@ -106,11 +109,14 @@ public final class LifeAdvanceEvidence {
         require(body.members().keySet().equals(BASIS_FIELDS),
                 "completed life basis fields differ");
         boolean legacy = new Text(LEGACY_QUERY_SCHEMA).equals(body.get("schema"));
-        require((legacy || new Text(SCHEMA).equals(body.get("schema")))
+        boolean freshSchema = new Text(FRESH_QUERY_SCHEMA).equals(body.get("schema"));
+        require((legacy || freshSchema || new Text(SCHEMA).equals(body.get("schema")))
                 && new Text(actualCanonical.bodySha256()).equals(body.get("action_body_sha256")),
                 "completed life basis crossed its original action body");
-        AdvanceObservationPort.Frame ending = restore(actualCanonical.command(),
-                decodeFrame(object(body.get("ending"), "ending"), legacy), archive, sameRootFrames);
+        FrameRecord startingRecord = decodeFrame(object(body.get("starting"), "starting"), legacy);
+        FrameRecord endingRecord = decodeFrame(object(body.get("ending"), "ending"), legacy);
+        requireFreshSchema(freshSchema, startingRecord, endingRecord);
+        AdvanceObservationPort.Frame ending = restore(actualCanonical.command(), endingRecord, archive, sameRootFrames);
         require(ending.identity().equals(effect.after()) && ending.source().equals(effect.source())
                 && ending.sessionId().equals(effect.sessionId()) && ending.provenance().equals(effect.provenance())
                 && ending.observedAt().equals(effect.observedAt()) && ending.originalEvidence().equals(effect.originalEvidence()),
@@ -137,11 +143,13 @@ public final class LifeAdvanceEvidence {
         Obj body = DriverJson.object(archive.loadMaterial(basisRef).bytes(), RawJson.MAXIMUM_BYTES);
         require(body.members().keySet().equals(BASIS_FIELDS), "life basis fields differ");
         boolean legacyQuery = new Text(LEGACY_QUERY_SCHEMA).equals(body.get("schema"));
-        require((new Text(SCHEMA).equals(body.get("schema")) || legacyQuery)
+        boolean freshSchema = new Text(FRESH_QUERY_SCHEMA).equals(body.get("schema"));
+        require((new Text(SCHEMA).equals(body.get("schema")) || legacyQuery || freshSchema)
                 && new Text(receipt.bodySha256()).equals(body.get("action_body_sha256")), "life evidence crossed the exact durable body");
         ActionCommand parent = receipt.command();
         FrameRecord startingRecord = decodeFrame(object(body.get("starting"), "starting"), legacyQuery);
         FrameRecord endingRecord = decodeFrame(object(body.get("ending"), "ending"), legacyQuery);
+        requireFreshSchema(freshSchema, startingRecord, endingRecord);
         AdvanceObservationPort.Frame starting = restore(parent, startingRecord, archive, frames);
         AdvanceObservationPort.Frame ending = restore(parent, endingRecord, archive, frames);
         require(starting.identity().equals(parent.before()), "archived starting frame differs from the original action");
@@ -211,6 +219,11 @@ public final class LifeAdvanceEvidence {
                 && rebuilt.originalEvidence().equals(value.nativeFrame()) && rebuilt.semantic().equals(actualSemantic)
                 && exactRef(actualSemantic.get("java_driver_facts_evidence")).equals(value.driverFacts()), "complete archived native/Driver facts reconstruction differs");
         return rebuilt;
+    }
+    private static void requireFreshSchema(boolean freshSchema, FrameRecord starting, FrameRecord ending) {
+        boolean hasFresh = starting.provenance() instanceof ObservationProvenance.FreshSnapshotQuery
+                || ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery;
+        require(freshSchema == hasFresh, "fresh query provenance requires its distinct life basis schema");
     }
     private static Obj frame(FrameRecord value) {
         return new Obj(Map.of("identity", OpportunityJsonValue.observation(value.identity()), "observation_provenance", provenance(value.provenance()),

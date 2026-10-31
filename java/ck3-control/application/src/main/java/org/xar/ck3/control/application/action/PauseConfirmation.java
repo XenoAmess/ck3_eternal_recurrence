@@ -32,7 +32,14 @@ public final class PauseConfirmation {
         var ack = (NativeActionPort.AckReceived) dispatch;
         var custody = ack.custody().orElseThrow(() -> new IllegalArgumentException("pause original receive custody is unavailable"));
         custody.verify(ack, attempt.guard());
-        StrictJson.require(observation.provenance() instanceof ObservationProvenance.Push
+        boolean freshQuery = observation.provenance() instanceof ObservationProvenance.FreshSnapshotQuery;
+        if (observation.provenance() instanceof ObservationProvenance.FreshSnapshotQuery query) {
+            StrictJson.require(query.basis() instanceof ObservationProvenance.LiveAfterSetter
+                    && query.snapshotReceived().order().compareTo(custody.responseReceived().order()) > 0
+                    && !query.snapshotReceived().observedAt().isBefore(custody.responseReceived().observedAt()),
+                    "pause fresh query requires its live setter basis and actual later receive event");
+        }
+        StrictJson.require((observation.provenance() instanceof ObservationProvenance.Push || freshQuery)
                 && observation.provenance().independentOf(attempt.requestId())
                 && observation.sessionId().equals(command.sessionId()) && observation.source().equals(command.source())
                 && !observation.originalEvidence().equals(attempt.guard().nativeEvidence())
@@ -40,8 +47,10 @@ public final class PauseConfirmation {
                 && !observation.observedAt().isBefore(custody.writeEntered().observedAt()),
                 "pause needs an independently received source-bound native Push after the original write");
         observation.provenance().validate(observation.after(), observation.originalEvidence());
-        StrictJson.require(!observation.after().frame().snapshotId().equals(command.before().frame().snapshotId())
-                && observation.after().frame().identity().nativeRevision().compareTo(command.before().frame().identity().nativeRevision()) > 0,
+        StrictJson.require(freshQuery
+                ? observation.after().frame().identity().nativeRevision().compareTo(command.before().frame().identity().nativeRevision()) >= 0
+                : !observation.after().frame().snapshotId().equals(command.before().frame().snapshotId())
+                    && observation.after().frame().identity().nativeRevision().compareTo(command.before().frame().identity().nativeRevision()) > 0,
                 "pause needs an independently later actual native frame");
         StrictJson.require(observation.actual().size() == actualValues().size()
                 && new HashSet<>(observation.actual()).equals(new HashSet<>(actualValues()))

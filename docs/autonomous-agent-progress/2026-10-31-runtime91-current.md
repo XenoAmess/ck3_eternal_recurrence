@@ -9,6 +9,15 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+
+15:58Z后继实际：**MB17915:57:27.071596→15:57:37.601724Z exit0/10.5301341秒**，reuse/no clean/-T2，application12/local-service4共16源真实增编，其余缓存。**worker179/PID232464真实START15:58:08.183546Z**，同Game71464/原birth/qwen1.11/basic175配置/未来batch1200000ms与Native60000ms保持；只按canonical482接原481 watch，不新造Intent、不重ARM473/resume479、不扩大旧15:27:09硬界。此时尚未授LOOP、实际fresh后态、恢复成功或日期/SAVE信用。安装HOLD到真实LOOP/preloopEND即释，HTTP/具名tiny源持续；新Root callback必要fixture并行准备且不门启动。
+
+179源闭合按实际域并发：A5 codec/default verifier、C5 primitive/Life冷证据、B2 Factory+RootLife共享真实loader、Prefix1、Facts1，以及Journal1和M6Archive176单方法。新 `FreshSnapshotQuery` 独立于原Push/plainQuery，带实际READ ACK ref和snapshotReceived；`LiveAfterSetter` 保同held连接/epoch/原setter→READ真实顺序，`SameGameWatch` 保immutable原Unknown父/实际APPLIED resume refs及当前同Game/source独立READ，跨连接不伪旧epoch。采样需当前canonical原父；历史callback核immutable依据，不要求后来的mutablelatest仍Unknown。`current`/`next`与reservedchild共真实snapshot+ACK收到后的投影，next仍严格newer nativeRevision；UNKNOWN只收集原READ、不重请求或游戏动作。默认callback拒绝，oldPush/Query构造与字节保持，Fresh专用receiptv15/Life-basisv3及原件闭包明示，RuntimeFacts只放行新typed DATA且保旧当前lease/semantic校验。
+
+各域必要首strict均真实通过：A5/1.981秒、C5/1.637秒、B2首错Action/Batch类名修后2.271秒、Prefix1/1.375秒、Facts1/1.884秒。Journal只读准入仅confirmedARM后的唯一final SETTLED/APPLIED/nativeOK resume授watch，1strict2.120秒，真实481/473/479 DATA frozenMB177首断言红→candidate10P0F/1.056秒，missing/unknown/duplicate/body/order/trailingCancel拒，正式fed5e6。Archive176软件限定4positive读取→2读取/新3P不泛化为实机提速。必要真实wire新2P、typed codec新1P已过，未把它们伪成Root callback/冷恢复全通过。
+
+模型采用分层：首179大包50.326秒stop完整但因破旧API、伪Push、缺custody被拒；A/B在15:38:10遇10054半截流均丢弃、whole request按统一退避重试而未拼流；B后继length截断仍整拒、owner按完整实际API实现。C首包39.026秒stop因假API/缺archive/漏cold锚拒，窄两叶R2和owner三叶并行闭合。Journal真实17.163秒stop主分支采用，owner仅删重复local/冗余条件；Facts真实5.431秒stop原样采用。源码候选/严格编译/S/Z/正式发表/MB/实机分开，不从累计POST或软件绿授游戏日。
+
 15:28Z实际终态：177 **15:27:44.257352Z END4/1414.0269024秒**，普通批64于15:27:43.620157Z ACTION_UNKNOWN/attempted1/applied0/next65。新resume确已真实执行：477Submitting→**479SETTLED/APPLIED**，receipt65ac2000…6875B、timeline.resume_observed=true，dispatch732ebadb…1959B，write15:18:32.4216291→RX15:18:32.5217598Z/native_ok=true/conn90。480于15:19:56.0860779只发布该action history，before_driver==after_driver1702f07…4966525B，不能当fresh后态READ。
 
 父 **481 COMPOSITE_UNKNOWN**（receipt8f706c0d…6262B）完整向量精确ARM473/bodyd8a5c9b3…与resume479/body023a6ef9…，reason为 `life advance postcondition unavailable; no replay: UncheckedIOException: Native observation unavailable; no Python fallback: TransferFailure: Native transport deadline expired`。15:28:05.711960Z只读canonical482/repair/BATCH_INTERRUPTED64、pendingnull/completed3/date53144328；这是两个真实settled子项后的未知父，不再属于“未resume初始化取消”。不重ARM/resume、不刷新旧15:27:09.7645988硬界、不清账本，后继只按原watch恢复481。新增游戏日仍未认证/SAVE0，不从APPLIED resume推日期。

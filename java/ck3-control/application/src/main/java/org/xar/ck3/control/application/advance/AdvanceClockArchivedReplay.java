@@ -41,6 +41,7 @@ public final class AdvanceClockArchivedReplay {
         AdvanceWait.binding(parent, starting, ending);
         require(AdvancePolicy.truth(ending.semantic(), "paused") && AdvancePolicy.truth(ending.semantic(), "map_ready"), "clock original endpoint is not paused and ready");
         for (ActionReceipt child : children) primitives.verify(child, archive);
+        verifyEndingQuery(parent, ending, children, archive);
         if (plan.dailyWatch().isPresent()) verifyWatch(parent, plan, starting, ending, children, archive);
         verifySequence(plan, starting, ending, progress, terminal, children);
         terminal.ifPresent(read -> {
@@ -61,11 +62,39 @@ public final class AdvanceClockArchivedReplay {
                 && ending.identity().frame().identity().dateRaw().equals(starting.identity().frame().identity().dateRaw()),
                 "cancelled initialization ending is not an independently observed same-date paused map");
         for (var child : children) primitives.verify(child, archive);
+        verifyEndingQuery(parent, ending, children, archive);
         var read = control.terminalStatus();
         org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(read, archive);
         var query = read.original().custody().orElseThrow(); query.verify(read);
         require(ending.provenance().independentOf(read.requestId()) && !ending.observedAt().isBefore(query.responseReceived().observedAt()),
                 "cancelled initialization ending predates its separate physical Status query");
+    }
+    private static void verifyEndingQuery(ActionCommand parent, AdvanceObservationPort.Frame ending,
+            List<ActionReceipt> children, ActionPorts.OutcomeArchive archive) {
+        if (!(ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery query)) return;
+        if (query.basis() instanceof ObservationProvenance.LiveAfterSetter live) {
+            ActionReceipt last = null;
+            for (ActionReceipt child : children) {
+                if (child.settled() && child.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent()) last = child;
+            }
+            require(last != null && live.setterAcknowledgement().equals(archive.referenceOf(last.ack().orElseThrow())),
+                    "fresh clock endpoint must follow the last actual successful native child");
+        } else if (query.basis() instanceof ObservationProvenance.SameGameWatch watch) {
+            ActionReceipt originalParent = archive.loadReceipt(watch.originalParentReceipt());
+            ActionReceipt originalResume = archive.loadReceipt(watch.originalResumeReceipt());
+            require(originalParent.command().equals(parent) && originalParent.state() instanceof ActionState.CompositeUnknown
+                    && archive.receiptReferenceOf(originalParent).equals(watch.originalParentReceipt())
+                    && archive.receiptReferenceOf(originalResume).equals(watch.originalResumeReceipt()),
+                    "cold clock endpoint crossed its exact original unknown parent/resume receipts");
+            require(originalResume.command().operation().value().equals("resume-map")
+                    && originalResume.state() instanceof ActionState.Settled resumeState
+                    && resumeState.settlement() instanceof ActionState.Applied
+                    && children.stream().filter(child -> child.equals(originalResume)).count() == 1
+                    && ((ActionState.CompositeUnknown) originalParent.state()).execution().children().stream()
+                        .filter(child -> child.actionId().equals(originalResume.command().actionId())
+                            && child.bodySha256().equals(originalResume.bodySha256())).count() == 1,
+                    "cold clock endpoint lacks the exact canonical settled resume child");
+        } else throw new IllegalArgumentException("unsupported fresh clock source basis");
     }
     private void verifyWatch(ActionCommand parent, AdvancePlan plan, AdvanceObservationPort.Frame starting, AdvanceObservationPort.Frame ending,
             List<ActionReceipt> children, ActionPorts.OutcomeArchive archive) {
@@ -85,9 +114,9 @@ public final class AdvanceClockArchivedReplay {
                 var settled = (ActionState.Settled) child.state();
                 if (settled.settlement() instanceof ActionState.Applied || settled.settlement() instanceof ActionState.PauseConfirmed) {
                     var after = AdvancePrimitiveEvidence.load(child, archive, frames);
-                    var afterPush = new ObservationProvenance.Push(after.identity().frame().snapshotId(), after.identity().frame().identity().nativeRevision(), after.originalEvidence());
+                    var afterProvenance = ActionEffects.observation(child).orElseThrow().provenance();
                     AdvanceClock.requirePauseFrame(parent, plan.dailyWatch(), new AdvanceObservationPort.Frame(after.identity(),
-                            after.source(), after.sessionId(), after.semantic(), afterPush, after.observedAt(), after.originalEvidence()));
+                            after.source(), after.sessionId(), after.semantic(), afterProvenance, after.observedAt(), after.originalEvidence()));
                 }
                 continue;
             }

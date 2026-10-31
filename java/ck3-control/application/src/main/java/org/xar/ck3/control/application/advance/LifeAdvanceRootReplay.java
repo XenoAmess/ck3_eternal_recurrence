@@ -40,18 +40,40 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
     }
 
     @Override public Optional<AdvanceObservationPort.Frame> readChild(ActionReceipt child, ActionPorts.OutcomeArchive archive) {
-        return Optional.of(push(AdvancePrimitiveEvidence.load(child, archive, frames)));
+        var complete = AdvancePrimitiveEvidence.load(child, archive, frames);
+        var effect = ActionEffects.observation(child).orElseThrow(() -> new IllegalArgumentException("child has no semantic observation"));
+        return Optional.of(new AdvanceObservationPort.Frame(complete.identity(), complete.source(), complete.sessionId(), complete.semantic(),
+                effect.provenance(), complete.observedAt(), complete.originalEvidence()));
     }
 
     @Override public AdvanceObservationPort.Frame rebuild(ActionCommand parent, LifeAdvanceEvidence.FrameRecord retained,
             ActionPorts.OutcomeArchive archive) {
         Complete complete = Objects.requireNonNull(frames.load(
                 new NativeEffectEvidence.FrameBasis(retained.nativeFrame(), retained.driverFacts()), archive));
-        AdvanceObservationPort.Frame rebuilt = push(complete);
+        AdvanceObservationPort.Frame rebuilt;
+        if (retained.provenance() instanceof ObservationProvenance.FreshSnapshotQuery query) {
+            frames.verifyFreshSnapshotQuery(query, complete, archive);
+            if (query.basis() instanceof ObservationProvenance.SameGameWatch watch) {
+                var originalParent = archive.loadReceipt(watch.originalParentReceipt());
+                var originalResume = archive.loadReceipt(watch.originalResumeReceipt());
+                require(originalParent.command().equals(parent) && originalParent.state() instanceof ActionState.CompositeUnknown
+                        && originalResume.command().operation().value().equals("resume-map")
+                        && originalResume.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Applied
+                        && archive.receiptReferenceOf(originalParent).equals(watch.originalParentReceipt())
+                        && archive.receiptReferenceOf(originalResume).equals(watch.originalResumeReceipt())
+                        && originalParent.bodySha256().equals(ActionCodec.bodySha256(parent))
+                        && ((ActionState.CompositeUnknown) originalParent.state()).execution().children().stream().filter(child ->
+                            child.actionId().equals(originalResume.command().actionId()) && child.bodySha256().equals(originalResume.bodySha256())).count() == 1,
+                        "same-game watch basis does not bind the exact original parent/resume receipts");
+                AdvanceClockArchivedReplay.verifyChildBindings(parent, java.util.List.of(originalResume));
+            }
+            rebuilt = new AdvanceObservationPort.Frame(complete.identity(), complete.source(), complete.sessionId(), complete.semantic(),
+                    query, complete.observedAt(), complete.originalEvidence());
+        } else {
+            rebuilt = push(complete);
+        }
         require(rebuilt.source().equals(parent.source()) && rebuilt.sessionId().equals(parent.sessionId())
                 && rebuilt.identity().game().equals(parent.before().game()), "archived life native/Driver frame crossed Game/source/session");
-        // The actual transport producer publishes snapshots. A retained historical Query cannot
-        // be upgraded to a Push or accepted merely because its scalar ID resembles a snapshot ID.
         require(rebuilt.provenance().equals(retained.provenance()), "archived life observation provenance differs from its actual producer");
         return rebuilt;
     }

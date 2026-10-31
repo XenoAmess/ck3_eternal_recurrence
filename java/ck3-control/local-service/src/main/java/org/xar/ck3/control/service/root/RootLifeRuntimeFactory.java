@@ -104,7 +104,7 @@ public final class RootLifeRuntimeFactory {
             pendingUiScope=new PendingUiLifeAdvance.Scope(context::borrowedSession);
             scopedReadiness=pendingUiScope.readiness(readiness);
             infrastructure=clockInfrastructure.install(context,scopedReadiness,pendingUiScope);
-            replay=new LifeAdvanceRootReplay(context.frameLoader());
+            replay=new LifeAdvanceRootReplay(RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()));
             composite=new LifeAdvanceComposite(infrastructure.observations(),scopedReadiness,infrastructure.timeline(),
                     infrastructure.statuses(),context.core().actions(),context.archive(),context.clock(),replay,this::readCancellationStatus);
             commands=new LifeAdvanceCommands(composite,pendingUiScope);

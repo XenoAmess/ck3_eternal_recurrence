@@ -23,6 +23,9 @@ public final class NativeEffectEvidence {
     @FunctionalInterface public interface FrameLoader {
         /** Root binds the actual Driver evidence decoder and assembler; no constructor-only or semantic-export fallback is legal. */
         Complete load(FrameBasis original, ActionPorts.OutcomeArchive archive);
+        default void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof, Complete actual, ActionPorts.OutcomeArchive originals) {
+            throw new IllegalStateException("actual fresh snapshot query verifier is not installed");
+        }
     }
     public record Original(NativeEffectSnapshots.Pair frames, List<PlanningReadReceipt> independentReads, RawJson compatibleResult,
             List<ExactRef> supportingMaterials, java.util.Optional<GuardEvidence> reconciliationGuard) {
