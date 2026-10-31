@@ -107,3 +107,12 @@ M4的真实范围分别是：329 producer R2零Java修改，core两轮被拒后o
 运营固定在`ROLLING122-010739.json`的01:07:39窗口：源码507任务/557尝试、新IP391/411、当刻客户端在途4/历史峰8；同期metrics running4/waiting0/KV0.0845959596，不能永久化或外推服务容量。两producer的实际EVENTS为776inputs END01:04:51.813943、809inputs BEGIN01:05:07.144992，前者已经结束，撤回这两次请求重叠的说法。
 
 后到`D:/ck3-state/resume91-root/usage120/LIVE-ADOPTION122.json`确认正式`6d7f6a74f6`装载MB121；121/122新增两次完整ordinary HTTP，与117–120七次合为九次已知业务请求。两次reported usage为344340/137/344477和345900/139/346039，cached均未报告null，不作缓存结论。正式采用和实际装载现在有独立回执，usage仍不授Native提交/APPLIED/游戏日信用。详见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)及[可行性](local-model-executor-feasibility-2026-10-28.md)；未以输入规模或有限行为结果新增能力结论。
+
+
+### resume91 rolling126 源审失败与采用范围
+
+冷回放`runtime-fresh-notice123`及`-correction`均HTTP200/stop，reported input分别53,066与52,823 tokens；8源上下文中的有限方法候选仍虚构`Complete.actual()`和`archive.load(...).bytes`，并有self-comparison语义问题，源审整稿拒绝、0编测/0采用。不能记成HTTP失败或真实javac失败，也不能从这两轮推出普遍能力上限。首包有121事实摘要，但未嵌单独完整review；121/122实际运行故障原因也不据此合并。证据为两任务RESULT与`D:/ck3-state/model-dispatch91/REVIEWS91-INCREMENT123.json`，原始响应保留。
+
+成功粒度同样保留：Root alias compiler纠正原样strict0、owner生产语义修改0；测试部分采用，两个独立方法分次绿，第三fixture稿代码拒绝后owner只重跑失败负例1P。833行实际122离线样本完整还原及字节缩减；该离线样本/本包当时尚未获自然加载回执，不授token、cache或速度结论。M7两C++ core函数原样、owner算法修改0；正式14case/781checks限定同commit四类原件的minimal CMake wrapper 2TU/CTest。Java6生产源、2JUnit的7P覆盖14scenarios；CI/adapter其他部分含owner修补，15POST包内峰4不等于全服务峰或通用容量。
+
+M4新composed809 producer原样strict0后仅首次64例生成，families33+31/56,677 backing rows；oracle R2另有owner E9 guard +1/−1，不是raw整稿通过。首Native编译/64例在01:43前结束，组合Java差分01:44:35后到，分别记时，不回填冻结窗或授正式/Game信用。详细反链见[可行性](local-model-executor-feasibility-2026-10-28.md)与[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)。后继`REVIEWS91-INCREMENT126.json`的分布只待真实回执补充，不预填未知数字；不据请求参数猜内部thinking模式。

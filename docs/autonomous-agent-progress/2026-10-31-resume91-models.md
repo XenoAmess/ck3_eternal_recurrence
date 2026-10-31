@@ -166,3 +166,21 @@ usage120后到正式采用回执为`D:/ck3-state/resume91-root/usage120/LIVE-ADO
 | 122 | 345,900 | 139 | 346,039 | null，未报告 |
 
 这些是实际运行的reported usage；缺cached字段不作0或命中判断。正式源码采用、MB装载、运行期HTTP已分别有回执，usage本身授予的Native提交信用仍0，不外推APPLIED、SAVE或新增游戏日。本文档编写仅读取上述已有原件，未额外新增模型POST或编测。
+
+
+### resume91 rolling126 冻结运营与后到采用
+
+UTC 2026-10-31T01:43:10.791756快照（`D:/ck3-state/model-dispatch91/STATUS-ROLL126-014310.json`、`ROLLING126-014310.json`）：新IP累计432任务/454尝试、当刻在途0；00:58:45之后64任务/66尝试全部终态，该阶段客户端区间峰6（01:12:02.295081），新IP历史峰仍8（20:36:59.164561）。旧IP峰25另列，客户端区间不等于服务端推理并发；运营监视不计模型任务，后继POST不扩此窗口。
+
+`REVIEWS91-LATE-ALIAS-M7-123.json`补记Root alias五单：compiler纠正原样strict0、owner生产语义修改0；两项独立新测试均绿，分次调用，非同JVM2P。第三次fixture候选代码拒绝后，owner仅重跑此前失败负例1P，不能算三份测试整稿采用。实际122归档样本离线从1,224,362降至800,340B，833行完整typed还原；该离线样本/本包当时尚未获自然加载回执，无token、cache或速度实测结论。旧冻结review与raw transport记录保留。
+
+M7正式Java `d17b7d9580`、Native `c703f434d2`分记：两C++ core函数原样、owner算法修改0；同commit header/core/test/module的minimal CMake wrapper完成2TU/link/CTest，14case/781checks。Java6生产源、2JUnit、7P覆盖14scenarios；其他CI/adapter测试多处为部分采用加owner修补。15次POST的包内峰4并非全服务峰，不授fullRoot/runtime/Bridge archive或hosted CI通过。精确回执为`production-idler91/FINAL-BINDINGS03.json`。
+
+冷回放整稿源拒与M4有限producer/源审范围见[可行性](../local-model-executor-feasibility-2026-10-28.md)、[能力边界](../local-model-capability-boundary-2026-10-28.md)。本次文档交付0POST、0编测，不否认此前真实运营观察；未改配置，后继review分布待实际回执补记。
+
+
+### resume91 review126 后到审阅补记
+
+此前“分布待收”现获补记：`REVIEWS91-INCREMENT126.json`固定01:43:10截止，21任务/21尝试均stop、21项owner审阅齐；原OS18项0/Root3项未知，未知非拒绝。
+
+异质分组：raw纠正2/scope3、owner test4/source1/Native fixture1、reject6、model helper纠正1、analysis/code拒1、cast cleanup1、direction部分1，合21，不算统一采用率。增量客户端峰3@01:32:59，阶段6/新IP历史8另列；旧5份SHA及Root旧unknown/M7后到补记不回写，后继HTTP不扩窗。本包0POST/编测。

@@ -189,3 +189,12 @@ M0 portable04/05只部分模型配置/生成器加owner修正被采用；其后�
 M4有限实际对照保留owner成本：329 producer R2零修改，core由owner接管+41/−73、consumer局部修补+31/−40后，首384例Native差分0失败/44,051完整40B slots；原776/copy1653 body不在此验收内。后到776 producer R2经owner score-prefix修补+21/−47，strict0后首次生成512例/44,600 slots；809 producer R2原样strict0后首次生成384例/65,312 slots。后两项尚无Native差分信用，截断、源拒及owner core/wrapper接管成本不能并为模型完成full809。实际EVENTS还纠正了重叠说法：776inputs END01:04:51.813943早于809inputs BEGIN01:05:07.144992，两个首轮producer请求未重叠。
 
 后到`D:/ck3-state/resume91-root/usage120/LIVE-ADOPTION122.json`确认正式`6d7f6a74f6`已装载MB121。worker121/122各一次完整ordinary HTTP，与117–120的7次合为9次已知业务请求；reported usage依次为344340/137/344477与345900/139/346039，cached均null未报告。源码候选、正式采用、运行期HTTP分记；这些usage不授Native提交或游戏推进信用。精确原件与M4范围见[resume91运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)，未由这些新样本提出能力上限。
+
+
+### resume91 rolling126 实际修补与有限验证
+
+Root alias五单的初始生产strict红、测试语法红、后续1P1F及owner修补成本均保留。compiler纠正原样strict0/1.884秒、owner生产语义改动0；两个独立新方法分次实际绿，fixture第三稿代码拒绝后owner仅补确定目录/单次求值并重跑失败负例1P，非同JVM2P。原任务固定“all833”是owner提示错误，纠正为一般性的全部原条目，不算模型推理失败。实际122离线样本1,224,362→800,340B、833行typed全还原，该离线样本/本包当时尚未获自然加载回执，也无token/cache/时延改善结论。原件`D:/ck3-state/model-dispatch91/REVIEWS91-LATE-ALIAS-M7-123.json`。
+
+M4 composed809 producer R1零owner Java修改，strict单源0/0.5047971秒，首次64例生成0/0.1426794秒，families33+31、56,677完整backing rows；此producer回执不授Native/Game信用。oracle R2保留框架，E9 guard仍由owner +1/−1行修补，非整稿原样采用。源审READY/0CL已是历史：首1TU0/3.7244436秒与首64 Native0/0.7271757秒在01:43快照前结束；组合Java差分01:44:35才后到，不算截止当刻已组合通过。原件为`D:/ck3-state/resume91-m4-native/sort809-composed91/`下`INPUTS-ACTUAL01.json`、`NATIVE-MODEL-REVIEW02.json`及两个Native实际回执。
+
+同一01:43:10冻结窗口的新IP432任务/454尝试、当刻0在途，阶段峰6与历史峰8分记；监视不是模型调用，数量也不构成采用率。冷回放候选虽两次200/stop，仍被源审整拒，不能把传输完成当实现可用；具体边界见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)和[能力边界](local-model-capability-boundary-2026-10-28.md)。本次文档交付未POST或编测。
