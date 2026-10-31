@@ -353,6 +353,8 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             return append(locked, command, digest, unknown(attempt, Optional.of(dispatch), "composite rejected children cannot settle a primitive; original dispatch retained, no replay"));
         if(result instanceof ActionPorts.FixtureBusinessObserved)
             return append(locked,command,digest,unknown(attempt,Optional.of(dispatch),"fixture business proof belongs only to its original composite; no replay"));
+        if(result instanceof ActionPorts.CompositeNoGameplayWriteObserved)
+            return append(locked,command,digest,unknown(attempt,Optional.of(dispatch),"no-gameplay-write proof belongs only to its original composite; no replay"));
         ActionState.Settlement settlement = switch (result) {
             case ActionPorts.FixtureStartObserved started -> new ActionState.FixtureStarted(started.observation());
             case ActionPorts.FixtureBusinessObserved ignored -> throw new IllegalArgumentException("fixture business proof cannot settle a primitive");
@@ -374,6 +376,7 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             case ActionPorts.CompositeControlObserved ignored -> throw new IllegalArgumentException("composite control cannot settle a primitive");
             case ActionPorts.SwaySchedulerObserved ignored -> throw new IllegalArgumentException("Sway scheduler proof cannot settle a primitive");
             case ActionPorts.LifecycleObserved ignored -> throw new IllegalArgumentException("lifecycle proof cannot settle a primitive");
+            case ActionPorts.CompositeNoGameplayWriteObserved ignored -> throw new IllegalArgumentException("no-gameplay-write proof cannot settle a primitive");
             case ActionPorts.Pending ignored -> throw new IllegalStateException("pending was already handled");
         };
         try { ActionEffects.validate(command, attempt, dispatch, settlement); }

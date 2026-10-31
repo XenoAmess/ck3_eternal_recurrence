@@ -31,4 +31,9 @@ public interface CompositeActionPort {
             throw new IllegalStateException("actual borrowed lifecycle writer is unavailable");
         }
     }
+
+    /** Opt-in interface for sources that guarantee no gameplay writes before children are reserved. */
+    interface ZeroGameplayBeforeChildren extends CompositeActionPort {
+        void requireNoGameplayWrite(ActionCommand parent, CompositeExecution retained);
+    }
 }

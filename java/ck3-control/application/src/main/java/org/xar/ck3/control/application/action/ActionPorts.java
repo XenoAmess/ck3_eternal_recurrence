@@ -77,6 +77,9 @@ public final class ActionPorts {
     public record NativeSourceObserved(org.xar.ck3.control.application.effects.coa.NativeSourceObservation observation) implements PostconditionResult {
         public NativeSourceObserved { Objects.requireNonNull(observation); }
     }
+    public record CompositeNoGameplayWriteObserved(CompositeNoGameplayWriteObservation observation) implements PostconditionResult {
+        public CompositeNoGameplayWriteObserved { Objects.requireNonNull(observation); }
+    }
     public record NormalExitPhaseObserved(org.xar.ck3.control.application.effects.normalexit.NormalExitPhaseObservation observation) implements PostconditionResult {
         public NormalExitPhaseObserved { Objects.requireNonNull(observation); }
     }
@@ -89,7 +92,7 @@ public final class ActionPorts {
     public record ControlSequenceObserved(org.xar.ck3.control.application.effects.control.ControlSequenceObservation observation) implements PostconditionResult {
         public ControlSequenceObserved { Objects.requireNonNull(observation); }
     }
-    public sealed interface PostconditionResult permits FixtureStartObserved, FixtureBusinessObserved, DirectFixedWindowObserved, PauseObserved, ControlSequenceObserved, EffectObserved, RejectionObserved, ControlObserved, CompositeControlObserved, FrontendObserved, GameplayEntryObserved, LifecycleObserved, TerminalObserved, CompositeRejectionObserved, LifecycleControlObserved, SwaySchedulerObserved, FamilySendObserved, NativeSourceObserved, NormalExitPhaseObserved, OperatorRebindObserved, Pending { }
+    public sealed interface PostconditionResult permits FixtureStartObserved, FixtureBusinessObserved, DirectFixedWindowObserved, PauseObserved, ControlSequenceObserved, EffectObserved, RejectionObserved, ControlObserved, CompositeControlObserved, FrontendObserved, GameplayEntryObserved, LifecycleObserved, TerminalObserved, CompositeRejectionObserved, LifecycleControlObserved, SwaySchedulerObserved, FamilySendObserved, NativeSourceObserved, NormalExitPhaseObserved, OperatorRebindObserved, CompositeNoGameplayWriteObserved, Pending { }
     public record FixtureStartObserved(FixtureStartObservation observation) implements PostconditionResult {public FixtureStartObserved {Objects.requireNonNull(observation);}}
     public record FixtureBusinessObserved(FixtureBusinessObservation observation) implements PostconditionResult {public FixtureBusinessObserved {Objects.requireNonNull(observation);}}
     /** An observed outgoing request has no relationship, payment, alliance, game-day or SAVE credit. */

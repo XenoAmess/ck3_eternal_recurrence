@@ -31,12 +31,13 @@ public final class ActionReceiptCodec {
     public static final String DIRECT_WINDOW_SCHEMA = "xar.java-action-receipt/v9";
     public static final String COMPOSITE_FAILURE_EVIDENCE_SCHEMA = "xar.java-action-receipt/v10";
     public static final String FIXTURE_SCHEMA = "xar.java-action-receipt/v11";
+    public static final String COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA = "xar.java-action-receipt/v12";
     public static final int MAXIMUM_RECEIPT_BYTES = 2 * 1024 * 1024;
     private ActionReceiptCodec() { }
     public static byte[] encodeReceipt(ActionReceipt receipt, ActionPorts.OutcomeArchive archive) {
         boolean evolved = !(receipt.command().origin() instanceof CommandOrigin.Gameplay) || evolved(receipt.state());
         boolean typed = containsPush(receipt.state()); boolean family = containsFamilySend(receipt.state());
-        ObjectNode row = StrictJson.object(); row.put("schema", fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : family ? FAMILY_SEND_SCHEMA : typed ? PROVENANCE_SCHEMA : evolved ? EVOLVED_SCHEMA : SCHEMA); row.put("version", receipt.version()); row.put("sequence", receipt.sequence());
+        ObjectNode row = StrictJson.object(); row.put("schema", compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : family ? FAMILY_SEND_SCHEMA : typed ? PROVENANCE_SCHEMA : evolved ? EVOLVED_SCHEMA : SCHEMA); row.put("version", receipt.version()); row.put("sequence", receipt.sequence());
         row.put("body_sha256", receipt.bodySha256()); row.set("state", state(receipt.state(), archive, evolved || typed || family, typed, family));
         // The sole command codec owns numeric tokens in arguments. A JsonNode round trip here
         // would erase decimal category/negative zero and change the durable command body SHA.
@@ -48,12 +49,12 @@ public final class ActionReceiptCodec {
     }
     public static ActionReceipt decodeReceipt(byte[] bytes, ActionPorts.OutcomeArchive archive) {
         ObjectNode row = StrictJson.object(ProposalLifecycleCodec.decodePayload(bytes, MAXIMUM_RECEIPT_BYTES), Set.of("schema", "version", "sequence", "command", "body_sha256", "state"));
-        String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema), "exact action receipt schema required");
+        String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema) || COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA.equals(schema), "exact action receipt schema required");
         OpportunityJson.Obj originalCommand = OpportunityJson.object(DriverJson.object(bytes, MAXIMUM_RECEIPT_BYTES).get("command"), "original receipt command");
         ActionCommand command = ActionCodec.decodeCommand(PublicDataJson.encodeTyped(originalCommand).bytes());
         ActionReceipt receipt = new ActionReceipt(Math.toIntExact(StrictJson.integer(row.get("version"), 1, 1)), StrictJson.integer(row.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER),
                 command, text(row, "body_sha256"), state(row.get("state"), archive, !SCHEMA.equals(schema), PROVENANCE_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema), FAMILY_SEND_SCHEMA.equals(schema)));
-        String expectedSchema = fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : containsFamilySend(receipt.state()) ? FAMILY_SEND_SCHEMA : containsPush(receipt.state()) ? PROVENANCE_SCHEMA
+        String expectedSchema = compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : containsFamilySend(receipt.state()) ? FAMILY_SEND_SCHEMA : containsPush(receipt.state()) ? PROVENANCE_SCHEMA
                 : !(command.origin() instanceof CommandOrigin.Gameplay) || evolved(receipt.state()) ? EVOLVED_SCHEMA : SCHEMA;
         StrictJson.require(expectedSchema.equals(schema), "receipt schema must describe its exact origin/evidence/provenance version");
         return receipt;
@@ -75,6 +76,15 @@ public final class ActionReceiptCodec {
     private static boolean compositeFailureEvidence(ActionReceipt receipt) {
         return receipt.state() instanceof ActionState.CompositeSettled settled
                 && settled.settlement() instanceof ActionState.CompositeRejected rejected && !rejected.evidence().isEmpty();
+    }
+    private static boolean compositeNoGameplayWrite(ActionReceipt receipt) {
+        var value = receipt.state() instanceof ActionState.Settled primitive ? primitive.settlement()
+                : receipt.state() instanceof ActionState.CompositeSettled composite ? composite.settlement() : null;
+        if (!(value instanceof ActionState.CompositeNoGameplayWrite terminal)) return false;
+        StrictJson.require(receipt.state() instanceof ActionState.CompositeSettled,
+                "no-gameplay-write terminal requires its original composite envelope");
+        terminal.observation().validate(receipt.command(), ((ActionState.CompositeSettled) receipt.state()).execution());
+        return true;
     }
     private static void requireCompositeFailureMaterial(ExactRef ref,ActionPorts.OutcomeArchive archive) {
         StrictJson.require(ref.bytes()>0,"actual composite failure material required");var bytes=archive.loadMaterial(ref).bytes();
@@ -279,6 +289,14 @@ public final class ActionReceiptCodec {
             var children = row.putArray("children"); rejected.children().forEach(child -> { var item = children.addObject(); item.put("action_id", child.actionId()); item.put("body_sha256", child.bodySha256()); });
             if(!rejected.evidence().isEmpty()){var evidence=row.putArray("evidence");for(var ref:rejected.evidence()){requireCompositeFailureMaterial(ref,archive);evidence.add(ref.toJson());}}return row;
         }
+        if (settlement instanceof ActionState.CompositeNoGameplayWrite write) {
+            StrictJson.require(evolved, "composite no-gameplay write requires receipt v12");
+            row.put("kind", "COMPOSITE_NO_GAMEPLAY_WRITE");
+            row.put("action_id", write.observation().actionId());
+            row.put("body_sha256", write.observation().bodySha256());
+            row.set("execution", execution(write.observation().execution()));
+            return row;
+        }
         if (settlement instanceof ActionState.LifecycleApplied lifecycle) {
             StrictJson.require(evolved, "canonical lifecycle settlement requires receipt v2"); row.put("kind", "LIFECYCLE_APPLIED");
             row.set("proof_ref", archive.materialReferenceOf(new RawJson(lifecycle.proof().encode())).toJson()); return row;
@@ -378,6 +396,13 @@ public final class ActionReceiptCodec {
             row.get("children").forEach(raw -> { var child = StrictJson.object(raw, Set.of("action_id", "body_sha256")); children.add(new CompositeExecution.Child(text(child, "action_id"), text(child, "body_sha256"))); });
             var evidence=new ArrayList<ExactRef>();if(row.has("evidence")){StrictJson.require(row.get("evidence").isArray()&&row.get("evidence").size()>0&&row.get("evidence").size()<=64,"nonempty bounded composite failure evidence required");for(var item:row.get("evidence")){var ref=ExactRef.fromJson(item);requireCompositeFailureMaterial(ref,archive);evidence.add(ref);}}
             return new ActionState.CompositeRejected(text(row, "reason"), children,evidence);
+        }
+        if (text(row, "kind").equals("COMPOSITE_NO_GAMEPLAY_WRITE")) {
+            StrictJson.require(evolved, "composite no-gameplay write requires receipt v12");
+            StrictJson.object(row, Set.of("kind", "action_id", "body_sha256", "execution"));
+            var exec = execution(row.get("execution"));
+            var obs = new CompositeNoGameplayWriteObservation(text(row, "action_id"), text(row, "body_sha256"), exec);
+            return new ActionState.CompositeNoGameplayWrite(obs);
         }
         if (text(row, "kind").equals("LIFECYCLE_APPLIED")) {
             StrictJson.require(evolved, "canonical lifecycle settlement requires receipt v2"); StrictJson.object(row, Set.of("kind", "proof_ref"));

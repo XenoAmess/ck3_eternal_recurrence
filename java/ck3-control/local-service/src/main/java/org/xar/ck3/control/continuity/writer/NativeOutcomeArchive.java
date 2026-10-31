@@ -916,9 +916,16 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             }
             if (settled.settlement() instanceof ActionState.CompositeRejected)
                 throw new IOException("canonical composite rejection requires its original composite execution");
+            if (settled.settlement() instanceof ActionState.CompositeNoGameplayWrite)
+                throw new IOException("no-gameplay-write terminal requires its original composite execution");
             verifySettlementParent(settled.settlement(), original.command()); verifySettlementOriginals(settled.settlement());
         }
         if (original.state() instanceof ActionState.CompositeSettled settled) {
+            if (settled.settlement() instanceof ActionState.CompositeNoGameplayWrite terminal) {
+                terminal.observation().validate(original.command(), settled.execution());
+                ActionEffects.validateComposite(original.command(), settled.execution(), terminal);
+                ActionEffects.validateCompositeChildren(settled.execution(), terminal, List.of());
+            }
             if (settled.settlement() instanceof ActionState.FixtureStarted)
                 throw new IOException("fixture first-map completion requires its exact original primitive Start and ACK");
             if (settled.settlement() instanceof ActionState.FixtureBusinessCompleted completed)
@@ -1224,6 +1231,12 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     }
     private void verifySettlementOriginals(ActionState.Settlement original) throws IOException {
         switch (original) {
+            case ActionState.CompositeNoGameplayWrite terminal -> {
+                // Its exact original composite guard was already verified by verifyReceiptOriginals.
+                // This terminal contains no fabricated after-state or additional Native originals.
+                if (!terminal.observation().execution().children().isEmpty())
+                    throw new IOException("no-gameplay-write terminal cannot contain any reserved child");
+            }
             case ActionState.FixtureStarted started -> verifyFixtureStartOriginals(started.observation());
             case ActionState.FixtureBusinessCompleted completed -> verifyFixtureBusinessOriginals(completed.observation());
             case ActionState.DirectFixedWindowCompleted completed -> {

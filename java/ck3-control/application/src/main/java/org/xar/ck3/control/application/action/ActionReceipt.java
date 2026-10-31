@@ -23,6 +23,7 @@ public record ActionReceipt(int version, long sequence, ActionCommand command, S
         if (settlement instanceof ActionState.FamilySendConfirmed) return Outcome.SEND_CONFIRMED;
         if (settlement instanceof ActionState.Rejected || settlement instanceof ActionState.CompositeRejected) return Outcome.REJECTED_CONFIRMED;
         if (settlement instanceof ActionState.NonAppliedTerminal) return Outcome.TERMINAL_WITHOUT_EFFECT;
+        if (settlement instanceof ActionState.CompositeNoGameplayWrite) return Outcome.TERMINAL_WITHOUT_EFFECT;
         return Outcome.APPLIED_CONFIRMED;
     }
     public boolean settled() { return outcome() != Outcome.UNRESOLVED; }

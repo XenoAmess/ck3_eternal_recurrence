@@ -114,6 +114,29 @@ final class CompositeCoordinatorSupport {
     }
     static ActionReceipt finish(ActionJournal.LockedJournal locked, ActionCommand parent, String digest, CompositeExecution retained,
             ActionPorts.PostconditionResult result,CompositeActionPort actualSource) {
+        if (result instanceof ActionPorts.CompositeNoGameplayWriteObserved noGameplay) {
+            ActionReceipt current = locked.find(parent.actionId()).orElseThrow();
+            if (!(current.state() instanceof ActionState.CompositeUnknown unknown)) {
+                if (current.state() instanceof ActionState.CompositeRunning running)
+                    return ActionCoordinator.append(locked, current.command(), current.bodySha256(), new ActionState.CompositeUnknown(
+                            running.execution(), "no-gameplay-write terminal requires canonical read-only reconciliation", List.of()));
+                return current;
+            }
+            if (!current.command().equals(parent) || !current.bodySha256().equals(digest)
+                    || !unknown.execution().equals(retained) || !retained.children().isEmpty()) return current;
+            if (!(actualSource instanceof CompositeActionPort.ZeroGameplayBeforeChildren zeroSource)
+                    || !zeroSource.handlerId().equals(retained.handlerId()) || !zeroSource.supports(parent.operation())) return current;
+            try {
+                noGameplay.observation().validate(parent, retained);
+                zeroSource.requireNoGameplayWrite(parent, retained);
+                var settlement = new ActionState.CompositeNoGameplayWrite(noGameplay.observation());
+                ActionEffects.validateComposite(parent, retained, settlement);
+                ActionEffects.validateCompositeChildren(retained, settlement, List.of());
+            } catch (RuntimeException failure) {
+                return current;
+            }
+            return ActionCoordinator.append(locked, parent, digest, new ActionState.CompositeSettled(retained, new ActionState.CompositeNoGameplayWrite(noGameplay.observation())));
+        }
         if (!(result instanceof ActionPorts.FixtureBusinessObserved) && !(result instanceof ActionPorts.ControlSequenceObserved) && !(result instanceof ActionPorts.EffectObserved) && !(result instanceof ActionPorts.CompositeControlObserved) && !(result instanceof ActionPorts.LifecycleObserved) && !(result instanceof ActionPorts.CompositeRejectionObserved) && !(result instanceof ActionPorts.SwaySchedulerObserved)) {
             String reason = result instanceof ActionPorts.Pending pending ? pending.reason() : "composite has no independently verified semantic terminal observation";
             return ActionCoordinator.append(locked, parent, digest, new ActionState.CompositeUnknown(retained, reason, result instanceof ActionPorts.Pending pending ? pending.evidence() : List.of()));

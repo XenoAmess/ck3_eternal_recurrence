@@ -17,7 +17,7 @@ import org.xar.ck3.control.reconciliation.LateOutcome.State;
 import org.xar.ck3.control.reconciliation.LateOutcome.Status;
 
 /** The production Java owner of life-advance and life-advance-one-day. Native receives only durable children. */
-public final class LifeAdvanceComposite implements CompositeActionPort {
+public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGameplayBeforeChildren {
     public static final String HANDLER = "java.native-driver.life-advance.v1";
     private final AdvanceObservationPort observations;
     private final AdvanceReadiness.Port readiness;
@@ -139,6 +139,15 @@ public final class LifeAdvanceComposite implements CompositeActionPort {
                 && retained.guard().source().equals(parent.source()) && retained.guard().sessionId().equals(parent.sessionId())
                 && retained.guard().operation().equals(parent.operation()) && retained.guard().observed().equals(parent.before()),
                 "retained life guard differs from the original command authority");
+
+        // No-child branch: validate exact binding and require no gameplay write before any IO
+        if (retained.children().isEmpty()) {
+            requireNoGameplayWrite(parent, retained);
+            var observation = new CompositeNoGameplayWriteObservation(parent.actionId(), ActionCodec.bodySha256(parent), retained);
+            observation.validate(parent, retained);
+            return new ActionPorts.CompositeNoGameplayWriteObserved(observation);
+        }
+
         Optional<ActionPorts.Pending> originalFailure = ExactDayClockFailureEvidence.retainedPending(parent, retained, actions, archive);
         if (originalFailure.isPresent()) return originalFailure.orElseThrow();
         List<ActionReceipt> children = new ArrayList<>();
@@ -200,6 +209,22 @@ public final class LifeAdvanceComposite implements CompositeActionPort {
         ExactRef basis = LifeAdvanceEvidence.preserve(parent, starting, current, progress, terminal, children, Optional.empty(), archive);
         return completed(parent, plan, current, progress, null, terminal, children, List.of(basis));
     }
+    @Override public void requireNoGameplayWrite(ActionCommand parent, CompositeExecution retained) {
+        require(parent.origin() instanceof CommandOrigin.Gameplay, "zero-child Life reconciliation requires its original gameplay parent");
+        require(supports(parent.operation()), "unregistered life composite");
+        require(retained.handlerId().equals(handlerId()), "retained composite handler differs");
+        require(parent.origin().acceptsGuard(retained.guard().origin())
+                && retained.guard().source().equals(parent.source()) && retained.guard().sessionId().equals(parent.sessionId())
+                && retained.guard().operation().equals(parent.operation()) && retained.guard().observed().equals(parent.before()),
+                "retained life guard differs from the original command authority");
+        require(retained.children().isEmpty(), "no-gameplay-write requires empty child vector");
+
+        // Validate exact Life plan/operation/expected postcondition without observation IO
+        AdvancePlan plan = AdvancePlan.decode(parent);
+        require(parent.expected().observerSchema().equals(AdvancePlan.OBSERVER) && parent.expected().values().equals(plan.expected()), "life expected postcondition was not rebuilt from the exact selected plan");
+        require(!parent.operation().value().equals("life-advance-one-day") || plan.exactOneDay(), "one-day operation lost its exact-day contract");
+    }
+
     private static ActionPorts.PostconditionResult completed(ActionCommand parent, AdvancePlan plan, AdvanceObservationPort.Frame ending,
             AdvanceClock.ProgressStatus status, ExactRef compatibleResult, Optional<ClockStatusRead.Observation> terminal,
             List<ActionReceipt> children, List<ExactRef> evidence) {

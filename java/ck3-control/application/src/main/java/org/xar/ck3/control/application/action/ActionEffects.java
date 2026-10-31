@@ -15,6 +15,7 @@ public final class ActionEffects {
     public static void validate(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome actualDispatch, ActionState.Settlement settlement) {
         java.util.Objects.requireNonNull(actualDispatch);
         StrictJson.require(actualDispatch.requestId().equals(attempt.requestId()), "settlement changed the exact original dispatch");
+        StrictJson.require(!(settlement instanceof ActionState.CompositeNoGameplayWrite), "no-gameplay-write settlement belongs only to its registered composite");
         if(settlement instanceof ActionState.FixtureStarted started){started.observation().validate(command,attempt,actualDispatch);return;}
         StrictJson.require(!(settlement instanceof ActionState.FixtureBusinessCompleted),"fixture business completion belongs only to its original registered composite");
         if (settlement instanceof ActionState.OperatorRebound rebound) {
@@ -125,6 +126,11 @@ public final class ActionEffects {
             StrictJson.require(execution.guard().origin() instanceof CommandOrigin.Frontend
                     &&execution.guard().origin().requireFrontend().sameSession(command.origin().requireFrontend()),"fixture parent lost its original frontend guard");return;
         }
+        if (settlement instanceof ActionState.CompositeNoGameplayWrite noGameplay) {
+            noGameplay.observation().validate(command, execution);
+            StrictJson.require(execution.children().isEmpty(), "no-gameplay-write requires empty canonical child vector");
+            return;
+        }
         StrictJson.require(!FixturePlan.isParent(command)&&!(settlement instanceof ActionState.FixtureStarted),"fixture parent or primitive cannot reinterpret another terminal contract");
         StrictJson.require(!(settlement instanceof ActionState.DirectFixedWindowCompleted || settlement instanceof ActionState.PauseConfirmed), "direct execution and pause confirmations are exact native primitives");
         if (settlement instanceof ActionState.ControlSequenceCompleted sequence) {
@@ -231,6 +237,12 @@ public final class ActionEffects {
     /** Repeated from the actual original writer head. A caller's list cannot grant child settlement. */
     public static void validateCompositeChildren(CompositeExecution execution, ActionState.Settlement settlement, java.util.List<ActionReceipt> children) {
         StrictJson.require(children.size() == execution.children().size(), "complete canonical child history required");
+        if (settlement instanceof ActionState.CompositeNoGameplayWrite noGameplay) {
+            StrictJson.require(children.isEmpty() && execution.children().isEmpty()
+                    && noGameplay.observation().execution().equals(execution),
+                    "no-gameplay-write terminal must retain its exact empty canonical child history");
+            return;
+        }
         for (int index = 0; index < children.size(); index++) {
             ActionReceipt child = children.get(index); CompositeExecution.Child expected = execution.children().get(index);
             StrictJson.require(child.command().actionId().equals(expected.actionId()) && child.bodySha256().equals(expected.bodySha256())
