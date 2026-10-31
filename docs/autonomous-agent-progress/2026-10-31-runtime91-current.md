@@ -10,6 +10,22 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+18:49Z实际185/186：**MB18518:14:57.841037→18:15:03.973830Z exit0/6.132793秒，仅local-service Dispatcher1源；worker185/PID289928 18:15:04.123366→18:21:05.702811Z preloop END1/361.579445秒，无LOOP**。185唯一consumer补真实ReconciliationWork第四参数lease.provenance，保实际READ而非伪Push；模型部分采用，首javac启动器误把-J置argfile红未进入Java，必要改launcher后1src strict0/1.693324秒。真实冷收集首次493 Unknown仅first-stable，继而494 SETTLED/APPLIED，原SAVE从未再次execute：7755B receipt `afc50d18b26d2a19b313c7e11726dcd76321afd26a88e69e892b29d0c03e0756.bin`独立验证physical pair/Driver/原ACK，date53144520、actor31254、checkpoint_pair_verified=true。原ACK491/Attempt/body与mtime>ACK规则保持，两次实际稳定FileWitness成立；APPLIED与最终SAVE_CONFIRMED分别记。
+
+185真实退出位于confirmOriginalSave→retainedCycleProof→requireActive，repair状态挡住保存后只读周期证明；18:21:09读终态即release（约3.52秒延迟）。最后有效jcmd18:19:20在Service.requireSavedFrame→Scope.activeFor/canonical receipt，只是该时刻栈，不据其归全程耗时。186仅为当前exact APPLIED SAVE授原周期proof读取与冷Confirmed读回，不放普通requireActive，不重SAVE/ARM473/resume479，不改旧deadline。
+
+**MB18618:44:35.331856→18:44:43.263081Z exit0/7.931227秒，continuity-core1/application3/adapters-storage1/local-service4共9unique prod；worker186/PID217224 18:44:59.626329→18:47:17.806666Z preloop END1/138.180339秒，无LOOP**。reuse/no clean/-T2，同Game71464/原birth/supervisor/qwen1.11/basic175不变。18:47:49首次读终态立即解除Native HOLD（31.29秒观察延迟），没有有效新jcmd，不以138秒相比185的361秒单独授性能归因。18:48:09 head仍494/repair、原SAVE APPLIED/physicalpairverified、cycle4/pendingnull、date53144520；last_settled_date_raw仍53144328，**SAVE_CONFIRMED/committed saved days未产生，首8日/487SETTLE保留**。
+
+186真实新因是actions.reconcile原APPLIED494后，RootReadPublicationActions.reconcileInSession57无条件histories.completed→DriverActionHistoryPublisher.completed108/publish189→RootActionHistoryMaterialSourceFactory.captureActual416，抛 `ORIGINAL_COMPATIBLE_RESULT_ABSENT: save-checkpoint`；已经越过finalization DATA route/Bootstrap，未到冷Service最终Confirmed消费。不把它误记selector再失败或Native SAVE失败。187只对具名SAVE真实history material资格修复，不能伪造compatible result或宽跳所有history。
+
+186源码分域实际采用：Root retainedProof保普通cycleProof/requireActive；Journal exact currentRecordHead canonical settledAPPLIED SAVE完整factory/owner/ACK/pair、allsettled与原Interrupted metadata授DATA role；Service新增source安装OriginalCollectionScope在真实writer.locked内重开实际canonical pair/原ACK/custody/effect、physicalDriver和Seed，不补假context/before；Core三个source bind与Driver pre-route用相同selector，实际head先在writer.locked捕获再进不抛checkedIO的withFrozen。Service origin校验按真实CommandOrigin.acceptsGuard修正。Journal strict2.096秒；Service首1.723秒后origin单行必要1.545秒；Root两consumer首次checkedIOException红后必要retry2.708秒，原红保。source正式dfc21c2，proof5f144/Dispatcher d6fbb分别已发表。
+
+186独立后到selector首软件验证：完整22个最终canonical actions、355exact小DATA（最大15573B）实际选中原494 APPLIED，wrongowner/duplicate/incomplete/pending四反例拒，首1src strict0/1.400348秒、首JVM5checks0/1.447946秒。无fullDriver/SEM/SAVE/Native/Game/SourceSession，不代替上方186实际未闭最终保存。证据save-finalization186/selector-probe/DELIVERY186.json。
+
+186同自然安装采用成熟PhysicalStatus183后台3prod：新Session.requireHistoricalCanonicalState只复用本真实locked session验证actual.documents的once证明、精确ancestor/digest、同head及失败reset；默认旧adapter拒绝、旧Head资格保，仅免未消费source/domain物化。新3小真实store@Test各P（两fixture初缺jna.tmpdir属setup红，runner修后只failed2首次有效通过，不重default绿），3prod首strict2.118秒。不从源码优化或这次wall授实机提升。
+
+用户仅最终视频展示要求同包采用M0 Display两prod：无AWT/Swing/桌面窗，当前ledger目录下decision-display/current.txt及current.binding.json保真实typed feed/owner/SHA；Core只有Clock+实际stateDir构造器一行，输出失败不影响业务。DISPLAY04因Windows patch CRLF包装check红，DISPLAY05纯LF修包装后S/Z/formal三check0，Java token未变；两prod首strict0/2.098503秒，正式032f7。这里只授已编入MB186的文本发布实现，不冒OBS实际draw或视频已录制；Root独占OBS流程，未为显示新起Game/worker。
+
 18:09Z实际183/184后继：**183 MB17:46:43.111179→48.389042Z exit0/5.277865秒，仅application Journal1源；worker183/PID214440 17:46:54.293013→17:48:52.604046Z preloop END1/118.311041秒，无LOOP**。Root新增historicalCompletedLifeCycle独立分支保旧cancel：实际canonical parent/children/完整body与owner/source、同中断batch边界，486 RETAIN保count/head/新增pending，487 SETTLE exact record/head/count+1与ELIGIBLE；原通用cycle/SEM验证不跳。首prod strict0/2.209749秒。实际已越Journal完整历史，下一DriverBootstrap1035只授Life read-only role而拒491 SAVE；17:49:06读终态并立即release，观察延迟14.24秒。唯一jcmd尝试已晚于进程退出，Attach拒绝，没有有效新栈。
 
 183独立后到原件验证另计：真实9081B parent484解码为APPLIED/visible/eligible，真实485.after→486.after RETAIN及486.after→487.after SETTLE均通过，外batch/session、缺child、换CONTROL_ONLY/Unknown、count重复等六反例拒，共单JVM9checks0；新两源strict0/1.849秒、首DATA run0/1.070秒。只23小DATA+5个有限event，无fullDriver/SEM/SourceSession/Native/Game，不冒Main授信或重记8日。
