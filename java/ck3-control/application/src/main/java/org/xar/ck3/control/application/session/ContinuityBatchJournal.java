@@ -137,6 +137,98 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 "zero-dispatch suffix changed captured business state: "+field);
     }
     private record RetainedReadDriver(org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known facts,ExactRef fullDriver) { }
+    /** Reopens only the full Driver actually published by an immediately preceding confirmed SAVE. */
+    private RetainedReadDriver retainConfirmedSaveDriver(SessionIdentity owner, WriterContracts.HistoricalTransition savedEdge,
+            WriterContracts.HistoricalTransition readEdge, RetainedReadDriver previous, CheckpointPair pair, ActionReceipt save,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) throws IOException {
+        var known=previous.facts();var old=known.driver();
+        var details=ContinuityJson.parseObject(readEdge.details(),ContinuityJson.LEDGER_MAX_BYTES);
+        StrictJson.require(savedEdge.sequence()+1==readEdge.sequence()
+                &&ContinuityJson.same(savedEdge.after().toJson(),readEdge.before().toJson())
+                &&known.stamp().game().equals(owner.game())&&pair.frame().game().equals(owner.game())
+                &&StrictJson.integer(details.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(known.stamp().driverVersion(),1)
+                &&StrictJson.integer(details.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER)==known.stamp().episodeEpoch(),
+                "saved Driver READ requires its exact adjacent confirmed SAVE/version/epoch/Game");
+        var driverRef=save.applied().orElseThrow().observation().supportingEvidence().get(1);
+        StrictJson.require(ExactRef.fromJson(details.get("before_driver")).equals(driverRef)
+                &&driverRef.bytes()==pair.driver().reference().bytes()&&driverRef.sha256().equals(pair.driver().reference().sha256())
+                &&save.command().actionId().equals(pair.saveActionId()),"saved Driver READ changed its exact immutable pair source");
+        byte[] raw=originals.loadFullMaterial(driverRef).bytes();
+        StrictJson.require(raw.length==driverRef.bytes()&&ActionCodec.sha256(raw).equals(driverRef.sha256()),
+                "saved Driver original bytes differ from their exact reference");
+        var driver=org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.decodeComplete(raw);
+        StrictJson.require(java.util.Arrays.equals(raw,driver.encode())&&driver.session().equals(old.session())
+                &&driver.commandHistory().size()==old.commandHistory().size()+1
+                &&driver.commandHistory().subList(0,old.commandHistory().size()).equals(old.commandHistory()),
+                "saved Driver changed its complete original history prefix or Session");
+        StrictJson.require(DriverJson.same(old.managedRestoreTransaction(),driver.managedRestoreTransaction())
+                &&DriverJson.same(old.successionExpectation(),driver.successionExpectation())
+                &&DriverJson.same(old.successionLifecycle(),driver.successionLifecycle())
+                &&DriverJson.same(old.campaignGoal(),driver.campaignGoal())
+                &&driver.rollbackWarFailure() instanceof org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.NullValue
+                &&driver.rollbackWarFailures() instanceof org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Value,
+                "saved Driver changed business slots outside its actual checkpoint publication");
+        var failures=(org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Value)driver.rollbackWarFailures();
+        var failureRows=org.xar.ck3.control.contracts.FullJsonTree.parse(failures.json(),org.xar.ck3.control.application.checkpoint.DriverCheckpointStore.MAX_DRIVER_BYTES);
+        StrictJson.require(failureRows.isArray()&&failureRows.isEmpty(),"saved Driver must retain its original empty rollback reset");
+        var last=driver.commandHistory().getLast();byte[] rowBytes=last.originalRow().json();
+        var row=ContinuityJson.parseObject(rowBytes,ContinuityJson.DOMAIN_MAX_BYTES);
+        var checkpoint=row.path("result").get("checkpoint");
+        StrictJson.require(last.index()==pair.historyIndex()&&last.index()==driver.commandHistory().size()
+                &&"save-checkpoint".equals(StrictJson.text(row.get("command")))&&row.path("ok").isBoolean()&&row.path("ok").booleanValue()
+                &&driver.lastCheckpoint() instanceof org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Value,
+                "saved Driver requires its one actual SAVE history anchor");
+        var checkpointSlot=(org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Value)driver.lastCheckpoint();
+        StrictJson.require(checkpoint!=null&&checkpoint.isObject()
+                &&ContinuityJson.same(checkpoint,org.xar.ck3.control.contracts.FullJsonTree.parse(checkpointSlot.json(),org.xar.ck3.control.application.checkpoint.DriverCheckpointStore.MAX_DRIVER_BYTES))
+                &&"saved".equals(StrictJson.text(checkpoint.get("status")))&&"xar_checkpoint.ck3".equals(StrictJson.text(checkpoint.get("name")))
+                &&"native-autosave-command-v1".equals(StrictJson.text(checkpoint.get("strategy")))
+                &&pair.saveActionId().equals(StrictJson.text(checkpoint.get("java_action_id")))
+                &&pair.lineageId().equals(StrictJson.text(checkpoint.get("save_lineage_id")))
+                &&pair.save().reference().path().equals(StrictJson.text(checkpoint.get("path")))
+                &&pair.save().reference().sha256().equals(StrictJson.text(checkpoint.get("sha256")))
+                &&pair.save().reference().bytes()==StrictJson.integer(checkpoint.get("size"),1,StrictJson.MAX_SAFE_INTEGER)
+                &&pair.historyIndex()==StrictJson.integer(checkpoint.get("history_index"),1,StrictJson.MAX_SAFE_INTEGER)
+                &&pair.frame().frame().identity().dateRaw().longValueExact()==StrictJson.integer(checkpoint.get("date_raw"),0,StrictJson.MAX_SAFE_INTEGER)
+                &&pair.frame().frame().identity().player().equals(org.xar.ck3.control.contracts.NativeCharacterId.fromJson(checkpoint.get("episode_character_id")).asBigInteger())
+                &&pair.frame().frame().episodeRunId().equals(StrictJson.text(checkpoint.get("episode_run_id")))
+                &&pair.frame().game().equals(org.xar.ck3.control.contracts.GameGeneration.fromJson(checkpoint.get("java_game_generation"))),
+                "saved Driver anchor differs from its actual confirmed physical pair");
+        if(driver.successionLifecycle() instanceof org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Missing)
+            StrictJson.require(!checkpoint.has("succession_lifecycle"),"saved Driver invented a lifecycle anchor");
+        else if(driver.successionLifecycle() instanceof org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.NullValue)
+            StrictJson.require(checkpoint.has("succession_lifecycle")&&checkpoint.get("succession_lifecycle").isNull(),"saved Driver lost its null lifecycle anchor");
+        else StrictJson.require(ContinuityJson.same(checkpoint.get("succession_lifecycle"),org.xar.ck3.control.contracts.FullJsonTree.parse(
+                ((org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Value)driver.successionLifecycle()).json(),org.xar.ck3.control.application.checkpoint.DriverCheckpointStore.MAX_DRIVER_BYTES)),
+                "saved Driver changed its original lifecycle anchor");
+        var rowMaterial=new org.xar.ck3.control.application.action.RawJson(rowBytes);var rowRef=originals.materialReferenceOf(rowMaterial);
+        StrictJson.require(java.util.Arrays.equals(originals.loadMaterial(rowRef).bytes(),rowBytes),"saved Driver history row differs from its already archived original");
+        var provenance=save.applied().orElseThrow().observation().provenance();
+        StrictJson.require(provenance instanceof org.xar.ck3.control.application.action.ObservationProvenance.FreshSnapshotQuery fresh
+                &&fresh.basis() instanceof org.xar.ck3.control.application.action.ObservationProvenance.ColdAfterAcknowledgement,
+                "saved Driver READ requires its actual cold checkpoint publisher receipt basis");
+        var cold=(org.xar.ck3.control.application.action.ObservationProvenance.ColdAfterAcknowledgement)
+                ((org.xar.ck3.control.application.action.ObservationProvenance.FreshSnapshotQuery)provenance).basis();
+        var publishedFrom=originals.loadReceipt(cold.originalReceipt());
+        StrictJson.require(publishedFrom.command().equals(save.command())&&publishedFrom.bodySha256().equals(save.bodySha256())
+                &&!publishedFrom.settled()&&publishedFrom.sequence()<save.sequence()
+                &&originals.receiptReferenceOf(publishedFrom).equals(cold.originalReceipt())
+                &&org.xar.ck3.control.application.action.ActionTransitions.attempt(publishedFrom.state())
+                        .equals(org.xar.ck3.control.application.action.ActionTransitions.attempt(save.state()))
+                &&publishedFrom.ack().isPresent()&&publishedFrom.ack().orElseThrow().nativeOk()
+                &&publishedFrom.ack().equals(save.ack()),"saved Driver row lost its exact original publisher receipt/Attempt/ACK");
+        var coverage=new java.util.ArrayList<>(known.actionRows());coverage.removeIf(value->value.actionId().equals(pair.saveActionId()));
+        coverage.add(new DriverSnapshotFacts.ActionRow(pair.saveActionId(),save.bodySha256(),publishedFrom.sequence(),pair.historyIndex(),rowRef));
+        var auxiliary=new java.util.LinkedHashMap<>(known.auxiliary().members());
+        if(auxiliary.containsKey("rollback_war_failures_migration_required")) {
+            org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(auxiliary.get("rollback_war_failures_migration_required"),"rollback_war_failures_migration_required");
+            auxiliary.put("rollback_war_failures_migration_required",new org.xar.ck3.control.planning.opportunity.OpportunityJson.Bool(false));
+        }
+        var stamp=new DriverSnapshotFacts.Stamp(Math.addExact(known.stamp().driverVersion(),1),known.stamp().episodeEpoch(),
+                known.stamp().game(),known.stamp().episodeRunId(),driverRef.sha256());
+        return new RetainedReadDriver(new DriverSnapshotFacts.Known(driver,stamp,known.originalHistoryBasis(),coverage,
+                new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty()),driverRef);
+    }
     /** Replays committed typed READ DATA only; no query, live decoder or Native action is invoked. */
     private RetainedReadDriver retainCapturedRead(ContinuityStorePort.Session same,SessionIdentity owner,
             WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
@@ -1746,6 +1838,19 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 if(edge.kind().equals(org.xar.ck3.control.continuity.ObservedGameplayEntry.KIND)) {
                     StrictJson.require(edge.sequence()==1,"settled initial recovery has another gameplay entry");
                 } else if(edge.kind().equals(WriterContracts.DRIVER_READ_HISTORY_KIND)) {
+                    if(savedPair.isPresent()&&i>0&&savedThroughSequence==edges.get(i-1).sequence()
+                            &&StrictJson.integer(details.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(retained.facts().stamp().driverVersion(),1)) {
+                        var savedEdge=edges.get(i-1);
+                        var savedDetails=ContinuityJson.parseObject(savedEdge.details(),ContinuityJson.LEDGER_MAX_BYTES);
+                        StrictJson.require(savedEdge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
+                                &&JournalKind.SAVE_CONFIRMED.name().equals(StrictJson.text(savedDetails.get("boundary"))),
+                                "saved Driver READ requires its actual immediately preceding SAVE confirmation");
+                        var pair=savedPair.orElseThrow();
+                        var saves=actions.stream().filter(value->value.command().actionId().equals(pair.saveActionId())).toList();
+                        StrictJson.require(saves.size()==1&&confirmedSaves.contains(originals.receiptReferenceOf(saves.getFirst())),
+                                "saved Driver READ requires its one fully verified canonical SAVE receipt");
+                        retained=retainConfirmedSaveDriver(owner,savedEdge,edge,retained,pair,saves.getFirst(),originals);
+                    }
                     retained=retainCapturedRead(same,owner,edge,retained,originals,java.util.List.of(),false);
                     for(var row:details.get("read_rows")) {
                         var read=originals.loadRead(ExactRef.fromJson(row.get("read")));
