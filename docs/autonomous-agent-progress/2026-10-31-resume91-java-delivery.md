@@ -114,3 +114,22 @@ UTC 2026-10-30T23:37:17.854Z 记录运行owner后到回执：九叶归档组最�
 后继HTTP进度两叶正式 `786de6ebc7`、Completion UTC单行 `617fdf7491`；runtime只确认HTTPlogger随后S/Z采用，不倒算为MB116实际HTTP。HTTP三方法先2P1F、fixture退避1ms修正后仅失败1P，各原件保留；生产model02+compilerfix03 owner语义0。M6期限clock/overflow两新模型方法原样正式 `31b7749342`，严格2源0/2.3261秒，仅新2P/0skip/1.9845秒，旧34未跑；原S patchformal EOF不同导致check红，经全文去EOL/EOF相同核实后仅插入两方法，不wholecopy。
 
 Rootdocs08 `765718da5d` 仅11实际变化页（3实相同跳过），AGENTS仅当前段并保108566历史bytes；模型final111/expand115 `4a30038a4f` 仅精确EOF新增，三目标旧prefix20868/10940/17438 bytes完整，已存在运营段核同不重复。当前正式远端31b7749342后本岗无代码编测或模型HTTP在途；后继117业务修复由runtime推进，不等待本岗额外未采用测试。
+
+
+### 118–119 的正式同步、READ 计数真回归与 Stop 调用者候选
+
+记录时间 2026-10-31T00:20:10.994Z。正式源已正常 FF：`3b02614fa1` LIFE117 两叶（40P，实际旧 Focus 材料只投既有 RECEIPT，不重放）、`5d5629653c` Root 外停两生产叶和一测试（新 ReadOnlyWait 外停+旧 manual resume 同 JVM 2P）。这些是纯 Java 层修复；真实自动游玩动作、游戏日和 SAVE 信用仍需运行 owner 的实际回执。
+
+`9dd63edfb2` 接收 cadence118 两生产叶+两既有测试，去历史 mutable head 原件和 replay 逐 ref 复验，真实当前 body/session/head 保持。必要原验收是首26P1F揭露 fixture 人工顺序，按真实 producer 顺序纠正后只失败项1P；27 unique 各绿，未拼作同 JVM 最终27P。`955c31c84e` 接收 callback117 两叶：完整 batch report 显式 Full64MiB 一次编码复用 file/stdout，REST 仅实际 report 角色使用完整预算，普通无 report/error/stop 小预算不变。1.545839MB 报告是实际 SEM 派生软件对象，不是已丢失的原117 Batch 对象。
+
+`754c39ce96` cadence119 三生产叶保留 source 元数据，去 publication/due/ROOT result 中把旧 code/class 当原件的路径；四组件测试原 strict/4P 由运行 owner 取得。正式测试唯一 fixture 适配为 `Path.of("unit-cadence.lock").toAbsolutePath().normalize()`，没有真实锁文件 IO，不为这个低影响值更换重复4绿。`40a905f828` RootGuardChecks.source 仅保 typed metadata，旧文件路径/字节/SHA/pin 审计删除，复用该精确 source 的10P。后继 `eaeb31afb6` 独立删除可选历史 BUILD proof payload 重读，只有源码审阅；不借前10P授信。普通 assembly 当前该 optional 为空，未称旧块是118实际执行根因。
+
+READ 新计数回归已正式 `0f39832d5f`：单测试源 strict0/2.2002234秒；只3个新方法同 JVM 3P/0F/0skip，进程19.3565804秒、JUnit17.993秒。真实 withReady/collector/writer/archive fixture 分别验证 readBinding 额外旧 SEM/native/stamp/driver payload load 为0且 metadata publish/readback 仍有；role getters 只读 basis metadata；loadFrame 仍消费 full/native。真实 inSession 回调只执行一次、返回原 ExactRef 且共享 counter，不能靠新 wrapper 逃逸计数。旧绿不重跑。证据 `D:/ck3-state/resume91-java-delivery/read-counters118-owner/{DELIVERY.json,REVIEW-PRECOMPILE.json,compile01.json,junit01.json,junit01.log,reports01}`。最后只清新测试空行尾空白，没有生产改动。
+
+模型采用分责：旧 A 首稿 strict6错；A correct02 实际 strict4错2warning；B 首稿 strict3错1warning。新 `java-read-binding-counter118-method03` 与 `java-read-evidence-counter118-correct02` 真重叠 POST 都 stop/OS0，但最终是 partial+owner：A 局部 unchecked 泛型抑制；B 原 inSession 仍绕过 counted view，owner 改为对共享计数 view 执行原 Function 并返回其真实 T，再补 callback 次数/计数断言。不能把两轮 HTTP stop 写成原样采用。
+
+当前三个 Stop caller 正数门实读未修后，20份当前完整源363661字符分别交 `java-m6-stop-{bindings,lifecycle,finish}118`。公共 NativeCharacterId 是 signed int32，只有-1缺席；raw UInt32 使用显式转换，不能将-2误改成4294967294公共值。3候选 source strict0/3.5234095秒；bindings/finish 语义原样、各补1 import，lifecycle 模型多加 Start 资格门1行已被 owner 拒绝删除。仍只有独占 D 候选，未声称 pendingProducer/retained Finish 的完整资格已达。
+
+Stop 新必要测试只用已存在两方向 Native Stop 请求字段→明确 software ActionCommand→实际 stopPreparation 解析/拒绝边界。首模型实际 strict4错8warning，原件保留；其错误复用了 Stop ID 当原 Start ID，并跨负例污染 baseArgs，已连真实诊断限唯一 method 交 `java-m6-stop-preparation-boundary118-correct02`，尚待实际审验。现原包没有 canonical 原 Start/真实 resolved episode/同源三 guarded read 资格闭包，后续不得由解析绿外推完整 Finish、Cancel、Root 或 Game。
+
+Root docs09 `3f290568e0` 是00:06:02冻结13页包的12个实际变更叶；模型运营页只有等价空白差异保正式字节、mode4相同不重写。AGENTS 仅当前 resume91 段，后继108566历史字节完整保留。单次 rebase 遇 restore 后 M3 doc stat-M/diff0 拒绝，随后远端祖先未变的普通 FF push0；不 stash/reset/force。后继真实 MB119 LOOP 已由 Root/运行 owner 报告，未把安装或候选编译当新动作/游戏日。
