@@ -1,5 +1,30 @@
 # Java / G2 resume91 当前执行记录
 
+## 2026-10-31 00:01Z UTC：118 已恢复旧账本，第二次真实模型选择后仍被旧部署身份审计阻塞
+
+MB118 于 23:56:08.058310–23:56:14.484974Z 实际 exit0/6.427 秒，application3/local-service3 共6源重编；两处 P0 与 Root Stop 已装入。worker118/PID284924 于23:56:22.982346Z START、23:56:47.759139Z 同无mod Game71464 LOOP/next35，越过旧 restart capture 与真实 interrupted34 后缀；没有手写捕获或清账本。安装 HOLD 随真实 LOOP 解除。
+
+23:57:55.1841796Z 普通运行期 qwen 第二次实际 BEGIN，1,187,609B 输入，HTTP200 完整，headers43.888秒、TTFT43.890秒、总44.633秒、wire14760B。23:58:40.2168557Z 再次 ActionSelected，选择精确未婚第一继承人婚姻提案；afterPlanning 在23:58:41.151735Z Blocked，原因变成历史 RootOrdinaryRuntimeAssembly.class 预期19394B/SHA与当前19472B/SHA不同。mutable continuity.json 问题已实际越过，但不是已能提交。完整大 batch JSON 此次真实成功输出，没有117的 CALLBACK_FAILURE。
+
+118 于23:58:42.058503Z END4/139.076秒，next36；canonical222、pendingnull，普通尝试/动作/新增游戏日/SAVE仍0。provider已00:00:42.976541Z 将8完整当前源与真实诊断交新地址模型，200stop9.370秒/TTFT6.058秒。实际来源链为 retained Driver 的历史 G2Source 被 Cadence Publication.evidence 当作文件资格；119沿链移除用户已经取消的源码/部署审计，不刷新旧 SHA、不造新证明。真实 domain body、typed 解码、同一借用 session 与 UNKNOWN 不重放继续保留。
+
+另一个具体消费者任务已由运行岗真正 followup obligations119：只读核实已选婚姻 action 的相邻 guard 是否也重验历史源码/部署身份，独占 D 候选，不写 Cadence 叶、不作119启动前置。此前117任务曾只send到completed岗而空档约10分钟，此事实保留，不能把“已分派”计为实际运行。
+
+Root Stop 四次真实模型调用的逐单审阅已补在各任务 REVIEW.json，采用追加记录为 `D:/ck3-state/resume91-root/stop117/ADOPTION-REVIEW.json`；原始 transport SUMMARY 和交付时“尚未共享采用”的历史记录没有被重写。正式提交5d5629653c，实际worker内停止行为仍未授实机信用。
+
+M7新增31AD状态段已有5源严格编译0/.7904873秒、8纯Java新场景/161检查运行0/.0552367秒；nativeExecuted=false。核心模型两次JE仍反，owner纠正两operator；独立case截断/退化保留，不能宣称原样整包采用。M4仍在制作General472真实4CALL边界的Native单TU、512输入与独立差分消费者，反复截断的消费者已由owner接管，不第三次投同全组。
+
+
+23:47Z后继：117已经取得真实普通运行qwen决策，且在提交前遇到两处新业务故障。MB117于23:38:55.393–23:39:01.791Z增编exit0/6.398秒，wave3-governance1/application1/local-service1实际3源；117/PID57620于23:39:17.061Z同Game71464/原出生LOOP_START/next34，安装9.095秒。LIFE修复保实际106条历史、508B已结算结果与真实NativeID，识别Java APPLIED_CONFIRMED/Legacy RETURNED派生RECEIPT；40P0F0skip（6实际行+34原unsafe/parity），原SUBMIT未证仍hold、UNKNOWN不重放、不重选旧FOCUS。
+
+23:40:24.2569706Z首次普通游玩HTTP BEGIN实际发送至192.168.1.11:8080/v1/chat/completions，qwen38-coder、payload1180737B；HTTP200完整stop/TTFT43.636秒、总44.365秒，随后23:41:08.957Z实际ActionSelected，选择一项native-final未婚第一继承人婚约提案。beforeSelection的单次真实READ发布/Refresh已越过；不能把之前的条件inner-loop假说当作此轮实际无限循环。此处才授实际普通运行模型决策信用，源码候选请求另记。
+
+该动作未进入Native提交：afterPlanning23:41:09.691Z返回Blocked，cadence plan publication仍对可变continuity.json做历史bytes/SHA/path复验（expected93503B，actual97839B，由本程序正常更新）。紧接worker callback完整batch JSON触发共享小回执预算错误，117于23:41:10.802Z真实exit4/122.836秒，终态CALLBACK_FAILURE/INCOMPLETE_MIGRATION/next35。23:45:51Z实际canonical218/repair_required/BATCH_INTERRUPTED34、pendingnull、action_head仍原FOCUS，新增普通动作/游戏日/SAVE仍0。同Game保留；运行owner分别修Cadence可变head的重复来源审计与完整batch结果的有限角色预算/恢复消费者，不能伪capture、重FOCUS或改账本来放行。
+
+115最终批32为WALL_TIMEOUT600.918秒/144Ready，OBS210.048、PLANNING250.165、OUTCOME100.102秒，23:05:06.364Z exit4/612.408秒/next33。116采用Army去重复读与planning-READ弱归档/强canonical闭包及真实ENTER/RETURN日志；批33WALL_TIMEOUT600.521秒，23:26:46.960Z exit0/612.640秒，原operator stop只在外层批次边界消费，捕获next34。实时日志明确多轮LIFESTYLE ReadOnlyWait/Unchanged/round_read_present=false，实际根是历史消费者见FOCUS_SUBMIT即pending、不看同一行已有APPLIED材料。此前“反复停前两阶段”的推断已撤回：最后两visit可仅由批末DEADLINE产生。
+
+Root独立Stop117修复已S/Z采用并正式5d5629653c：2生产叶+1测试，外部stop predicate在每个实际current Controller批前绑定，六个现有协作检查同时看manual/external，不改Game生命周期或持久化memento。实际生产strict0/2.155秒，测试strict0/2.142秒，1新真实ReadOnlyWait外停+原manual stop/resume1同JVM2P0skip/1.356秒；旧模型BooleanSupplier.get编错、Fixture(false)1F与纠错漏flip均保留。生产模型初稿+实际javac纠错采用，owner修一source anchor；测试partial并owner补真实flip/trace断言。尚未MB部署、实际批内停止/冷接续/继承不授信用；不为其重启当前Game。
+
 22:56Z后继：MB115于22:54:37.136–45.651Z增编exit0/8.515秒，复用MB/no clean/default mvn -T2，实际application2/native-transport4/local-service3共9源重编，不含Store大组。worker115/PID70236已22:54:53.956Z启动、22:55:03.407Z同Game71464/原出生真实LOOP_START/next32，安装9.451秒；复用114独立M5=false/600秒配置与新1.11 qwen。首要observe修复单生产叶已采用，严格编译0/2.093秒、test/fixture编译0/2.256秒、8新必要case 8P0F0skip/1.976秒，包括fresh立即返回、pending消费、显式WAIT、真实submit失效后独立freshREAD、worldUNKNOWN/freshUNKNOWN不重放。模型postaction首答错误地走强observe仍白等，owner纠正入口；测试候选虚构API未采用，owner复用真实fixture。因此不能授整包模型原样采用。源码/LOOP信用已取得，普通HTTP决策/动作/新日尚待真实回执，不因编译或配置授游玩完成。
 
 22:54:20.105/.135/.135Z Java三个新归档闭包场景已真实并发POST，M3三个实现22:50:53.493/.497/.514Z并发，M5新143B具名callee也已HTTP200。短资源安排现为具名source查询最多2并行、<=8源小javac最多2并行，与重Native单编槽分开；115实际安装期间停止新编译，真实LOOP后释放。HTTP与只读小源不等待编译时隙，不恢复多人ACK审批。
