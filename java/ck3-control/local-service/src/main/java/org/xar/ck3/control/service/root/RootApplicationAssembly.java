@@ -164,7 +164,7 @@ public final class RootApplicationAssembly {
         private Core(RootApplicationConfiguration configuration, Clock clock, List<DomainBodies.Registration> domains,
                 Optional<RollbackPair.Authority> rollback,StorageWriteGuard storage) throws IOException {
             this.configuration = configuration; this.clock = Objects.requireNonNull(clock);
-            decisionDisplay = new RootDecisionDisplay(clock);
+            decisionDisplay = new RootDecisionDisplay(clock, configuration.ledger().snapshot().getParent());
             originalDomainRegistrations = List.copyOf(domains);
             artifacts = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(configuration.artifactRoot(),
                     configuration.ledger().lock(), configuration.maximumArtifactBytes()),storage);
