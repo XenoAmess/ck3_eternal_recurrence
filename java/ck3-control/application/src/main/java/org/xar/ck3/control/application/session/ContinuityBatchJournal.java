@@ -812,11 +812,21 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     StrictJson.require(!arm && !cancel && !resume && plan.clockMode() != org.xar.ck3.control.application.advance.AdvancePlan.ClockMode.POLLED, "only the original finite Life control prefix can reconcile");
                     arm = true;
                 } else if (operation.equals("resume-map")) {
+                    var attempt = org.xar.ck3.control.application.action.ActionTransitions.attempt(child.state()).orElse(null);
+                    boolean unknownResume = child.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown
+                            && attempt != null && child.ack().isPresent() && child.ack().orElseThrow().nativeOk()
+                            && attempt.requestId().equals(child.ack().orElseThrow().requestId())
+                            && child.command().origin().acceptsGuard(attempt.guard().origin())
+                            && attempt.guard().source().equals(child.command().source())
+                            && attempt.guard().sessionId().equals(child.command().sessionId())
+                            && attempt.guard().operation().equals(child.command().operation())
+                            && attempt.guard().observed().equals(child.command().before());
                     StrictJson.require(arm && !cancel && !resume
                             && (bareResume && children.size() == execution.children().size() - 1
                                 || appliedResume && children.size() == execution.children().size() - 1
-                                || org.xar.ck3.control.application.advance.LifeAdvanceComposite.isNeverResumedResume(child)),
-                            "read-only Life resume must be its final bare Intent, exact proven unsubmitted terminal, or exact applied final child");
+                                || org.xar.ck3.control.application.advance.LifeAdvanceComposite.isNeverResumedResume(child)
+                                || unknownResume && children.size() == execution.children().size() - 1),
+                            "read-only Life resume must be its final bare Intent, exact proven unsubmitted terminal, exact applied final child, or exact ACKed Unknown final child");
                     var prefixExecution = new org.xar.ck3.control.application.action.CompositeExecution(
                             execution.handlerId(), execution.startedAt(), execution.guard(),
                             execution.children().subList(0, children.size()));

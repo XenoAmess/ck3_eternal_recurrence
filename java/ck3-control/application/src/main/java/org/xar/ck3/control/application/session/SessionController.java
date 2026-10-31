@@ -708,7 +708,9 @@ public final class SessionController {
                 if(round instanceof PendingUiRound pending){run.pendingUiTurn(pending.pending());continue;}
                 if(round instanceof SaveRound save) {
                     if (!checkpointsEnabled) throw new End(Terminal.INCOMPLETE_MIGRATION, "auto_turn requires its actual initial paired baseline; it does not create a SAVE");
-                    run.save(save.ready());continue;
+                    run.save(save.ready());
+                    if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
+                    break;
                 }
                 PlannedRound decided=(PlannedRound)round;Ready ready=decided.ready();PlanningResult planned=decided.planned();
                 var publication=decided.disposition();
@@ -724,7 +726,9 @@ public final class SessionController {
                             &&focus.command().before().frame().identity().player().equals(ready.request().before().frame().identity().player()),"checkpoint request crossed actual original action owner or episode subject");
                     if(!checkpointsEnabled||ready.checkpointEligibility()!=CheckpointEligibility.SAFE)
                         throw new End(Terminal.CHECKPOINT_DEFERRED,"actual domain requires a paired SAVE before planning can continue");
-                    run.save(ready);continue;
+                    run.save(ready);
+                    if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
+                    break;
                 }
                 if(publication instanceof OrdinaryPlanCompletion.AwaitingOutcome waiting)
                     StrictJson.require(planned instanceof PlanningResult.ActionSelected selected&&waiting.command().equals(selected.command()),
@@ -828,6 +832,10 @@ public final class SessionController {
                 run.completeCycle(receipt);
                 run.requireCompletion(completed);
                 run.requireTime();
+                if (checkpoint(receipt.command())) {
+                    if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
+                    break;
+                }
             }
             if (checkpointsEnabled && dirty) {
                 Ready fresh = run.ready(true);
