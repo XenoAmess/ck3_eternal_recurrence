@@ -35,15 +35,15 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
         this.clock = Objects.requireNonNull(clock); this.authorityId = StrictJson.text(authorityId); this.catalog = Objects.requireNonNull(catalog);
         this.originals = Objects.requireNonNull(originals);
     }
-    /** The actual Council native read and after guards retain one physical source; publication remains outside. */
+    /** The selected private native read and after guards retain one physical source; publication remains outside. */
     @Override public <T> T withOriginalReadSource(WriterContracts.Head actualLockedHead, PlanningReadRequest request,
             ReadContract<?> contract, Supplier<T> work) {
         Objects.requireNonNull(work);
-        if (!isCouncilRead(contract)) return work.get();
-        StrictJson.require(catalog.containsIdentity(contract), "Council read source requires the identical installed contract");
+        if (!isOriginalScopedRead(contract)) return work.get();
+        StrictJson.require(catalog.containsIdentity(contract), "original read source requires the identical installed contract");
         StrictJson.require(request.source().equals(expectedSource) && request.operation().equals(contract.operation())
-                && request.origin() instanceof CommandOrigin.Gameplay, "Council read source changed its exact source, operation or origin");
-        StrictJson.require(originalReadSource.get()==null,"Council read cannot replace an active physical source callback");
+                && request.origin() instanceof CommandOrigin.Gameplay, "original read source changed its exact source, operation or origin");
+        StrictJson.require(originalReadSource.get()==null,"original read cannot replace an active physical source callback");
         try {
             var session=RootGuardChecks.session(borrowedSession,actualLockedHead);
             return authority.withOriginalReadSource(session,request,lease -> {
@@ -52,7 +52,19 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
                 try { return work.get(); }
                 finally { originalReadSource.remove(); }
             });
-        } catch(IOException failure) { throw new UncheckedIOException("actual Council read physical source unavailable",failure); }
+        } catch(IOException failure) { throw new UncheckedIOException("actual private read physical source unavailable",failure); }
+    }
+    private static boolean isOriginalScopedRead(ReadContract<?> contract) {
+        if(isCouncilRead(contract))return true;
+        if(!contract.contractId().equals("family:marriage-send-outgoing:action_preparation/v2")
+                ||!contract.operation().value().equals("query-family-marriage-send-outgoing-v1-private"))return false;
+        StrictJson.require(contract.permissionKey().equals("allow_private_family_marriage_send_outgoing_query")
+                &&contract.permissionMode()==ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE
+                &&contract.guardMode()==ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP
+                &&contract.wireProfile()==ReadContract.WireProfile.EXECUTE_STEP
+                &&contract.requiredCapability().isEmpty()&&contract.hasPureReplay(),
+                "marriage original-read scope differs from its exact installed typed profile");
+        return true;
     }
     private static boolean isCouncilRead(ReadContract<?> contract) {
         String expectedId;
@@ -80,7 +92,7 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
         return true;
     }
     @Override public PlanningReadGuard verify(WriterContracts.Head actualLockedHead, PlanningReadRequest request, ReadContract<?> contract) {
-        if(originalReadSource.get()==request && isCouncilRead(contract))
+        if(originalReadSource.get()==request && isOriginalScopedRead(contract))
             return verifyOriginalCurrent(actualLockedHead,request,contract);
         StrictJson.require(catalog.containsIdentity(contract), "read contract is not the actual Root-installed or bounded factory-issued object");
         StrictJson.require(request.source().equals(expectedSource) && request.operation().equals(contract.operation()), "query source or exact operation changed");
