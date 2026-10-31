@@ -24,6 +24,9 @@ public final class MapInsert191Api {
         }
         void insertSlotC3cf10(Memory memory, long siteRva, long bucket, int probe, int hash, long descriptor);
         void rehashC3a400(Memory memory, long siteRva, long map);
+        default void rehashC3a400(Memory memory, long siteRva, long map, long sourceEntryRsp) {
+            rehashC3a400(memory, siteRva, map);
+        }
         void insertC3a5f0(Memory memory, long siteRva, long map, long result, int hash, long descriptor);
         void destroy856050(Memory memory, long siteRva, long descriptor);
         int capacity86e160(Memory memory, long siteRva, int ecx, int edx);

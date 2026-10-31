@@ -38,6 +38,11 @@ public final class MapReserveBinding202 {
             }
 
             @Override
+            public void rehashC3a400(MapInsert191Api.Memory memory, long siteRva, long map, long sourceEntryRsp) {
+                fallback.rehashC3a400(memory, siteRva, map, sourceEntryRsp);
+            }
+
+            @Override
             public void insertC3a5f0(MapInsert191Api.Memory memory, long siteRva, long map, long result, int hash, long descriptor) {
                 fallback.insertC3a5f0(memory, siteRva, map, result, hash, descriptor);
             }

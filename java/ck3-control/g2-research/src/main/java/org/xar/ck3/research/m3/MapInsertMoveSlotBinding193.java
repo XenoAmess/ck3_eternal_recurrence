@@ -32,6 +32,10 @@ public final class MapInsertMoveSlotBinding193 implements MapInsert191Api.Ports 
         delegate.rehashC3a400(memory, siteRva, map);
     }
 
+    @Override public void rehashC3a400(MapInsert191Api.Memory memory, long siteRva, long map, long sourceEntryRsp) {
+        delegate.rehashC3a400(memory, siteRva, map, sourceEntryRsp);
+    }
+
     @Override public void insertC3a5f0(MapInsert191Api.Memory memory, long siteRva, long map, long result, int hash, long descriptor) {
         delegate.insertC3a5f0(memory, siteRva, map, result, hash, descriptor);
     }

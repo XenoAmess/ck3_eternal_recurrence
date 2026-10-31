@@ -181,7 +181,7 @@ public final class MapInsertC3B960 {
 
             // Need to rehash: swap back, call rehash, then insertC3A5F0
             swap(memory, originalBucket, scratchHash, scratchProbe, scratchLow, scratchHigh);
-            ports.rehashC3a400(memory, 0xC3BBADL, map);
+            ports.rehashC3a400(memory, 0xC3BBADL, map, bodyRsp - 8L);
             int reinsertHash = memory.readInt32(scratchHash);
             long result = rbp - 0x40L;
             ports.insertC3a5f0(memory, 0xC3BBC1L, map, result, reinsertHash, scratchLow);
