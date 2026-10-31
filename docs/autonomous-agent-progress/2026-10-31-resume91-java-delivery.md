@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进150原pending Status chronology、私有Life continuation token、精确ARM前缀readonly admission与6叶Status接线；151回执编码单叶也已按准确delta接入。150于08:27:13.680859Z preloop END1/59.684秒，实际STATUS/Effects已到appendSettled，但旧codec误读Gameplay身份，canonical仍386、ARM384及父385Unknown/next60，日0；151只读恢复安装中，尚不授终态。新增便携资源加载路径首验同JVM3P，非Root/真实STATUS/动作信用。旧373/374不重放；本岗唯一formal Java writer，不写S/MB/Game/账本。
+最新正式源码已发表152单RootDerivedChildAuthority取消历史代码pin/部署等式（d66a804e9c），保实际DATA/sourceQualification与处理器、canonical/frame合同。151于08:38:44.468527Z preloop END1/59.707秒，已越过Codec后被该历史audit阻断；canonical386、ARM384及父385仍Unknown/next60，日0。152当前MB/install中，未授终态。旧Z Core144+Chronology150漏同步已Main真实repo根补齐11unique，正式D早已有源码；不因旧exit0/Skipped回执冒采用。旧373/374不重放，本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -473,3 +473,11 @@ M1 Source17新单test本地 `113fb8e6c9` 单独修fixture，不是production/Sou
 - Codec151单leaf本地`4bcb62fcb8`：ControlApplied encode/decode同用after-binding原角色Gameplay.before或Reconciliation.factual，其它origin拒，schema/read_refs/guards/source及普通wire保持。模型两个callsite hunk partial；owner补import及真实after-binding helper。复用单prodstrict0/1.8726秒，旧MB observed异常精确RED；候选先5checks已绿，第6因Jackson整数node.equals测试误红，仅改typed断言后最后1check0/.985秒，生产不变，不拼为同JVM6P。固定Dprobe不入CI，不从合成回执授actual384 settled。
 
 本岗只对新便携loader做上述必要首验；这些生产组不重旧绿、不触S/MB/Game。前述本地SHA若正常rebase改变，以实际publication receipt记录的published_commit为准；本波精确normalFF随后与本页一起发表。证据分别位于本岗`{CHRONOLOGY150,CONTINUATION150,ADMISSION150,STATUS150,CODEC151}-ADOPTION.json`与`portable150/{ACTUAL,ADOPTION}.json`，模型/owner成本、版本和首红均保留。
+
+## 152单叶源码发表与Z旧Skipped同步纠正
+
+152准确`D:/ck3-state/resume91-root/source-audit152/CURRENT-S152.patch`单RootDerivedChildAuthority已normalFF为`d66a804e9c52c1bb317c612d855792519b115a72`。仅6行删除：live/archive代码source物理pin loops及historical implementation/decoder/verifier与当前部署ref等式；sourceQualification实际DATA pin、原writerHead/canonicalReceipt/body/ordinal/preceding/frame及真实step/producer实例/handler/source/Game/session/UNKNOWN不重放检查保留。模型partial1hunk，owner补遗漏live loop，writer实现语义0改；复用Root单source严格0/2.6014565秒，无新离线历史positive/编测/Native/Game。正式候选全normalized同，repo根check明确Checking无Skipped，receipt为`SOURCE-AUDIT152-ADOPTION.json`。Main已源审S/Z准确采并自然MB152，源码发表不等待更大取消链。
+
+151真实preloop于08:38:44.468527Z END1/59.707秒、未LOOP，原Codec错误已越过但DerivedChildAuthority.verifyArchived146历史来源等式在Writer.preview阻断真正commit，canonical386/原ARM384及父385Unknown保持。152当刻仅安装，既有DATA回归或源码发表不授新terminal/日期；旧speed373及父374不重放。
+
+Z旧基线差分另线独立纠正：正式D早已包含Core14410leaf和CoreChronology1502leaf（ActionEffects重叠，合11unique）；本岗151发表比对实际指出Z缺Codec v13Core144多hunks。Main/provider进一步核实旧Git在Java子目录应用gitdiff格式补丁出现exit0但`Skipped`，其中Core150实际2Skipped并不代表采用。provider仅在D当前Z副本按两个原授权delta构造`core144-sync151/CURRENT-Z.patch`43489B，保Codec151后继；Main最终从Z仓库根`--directory=java/ck3-control`真实11Checking/11Applied/0Skipped exit0补齐。provider08:50:49.888121Z只读限定11paths确认源码文本除BOM/EOL11/11同capturedS，raw仅2同，不能称11份原字节相同。记录`{DELIVERY,FINAL-UNION-RESULT,POST-APPLY-CONFIRMATION}.json`与REVIEW.md保留旧错误与修正；S/MB未为同步修改，不wholeleaf回盖，不为同步新FF/重绿/新增151模型功劳或业务信用。
