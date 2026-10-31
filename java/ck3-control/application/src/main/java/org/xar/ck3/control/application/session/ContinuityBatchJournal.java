@@ -642,6 +642,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 String operation = child.command().operation().value();
                 boolean bareResume = operation.equals("resume-map")
                         && child.state() instanceof org.xar.ck3.control.application.action.ActionState.IntentDurable;
+                boolean appliedResume = operation.equals("resume-map")
+                        && child.state() instanceof org.xar.ck3.control.application.action.ActionState.Settled settled
+                        && settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.Applied
+                        && child.outcome() == org.xar.ck3.control.application.action.ActionReceipt.Outcome.APPLIED_CONFIRMED
+                        && child.ack().isPresent() && child.ack().orElseThrow().nativeOk();
                 StrictJson.require(child.bodySha256().equals(binding.bodySha256()) && child.command().arguments().members().isEmpty()
                         && org.xar.ck3.control.application.action.ActionTransitions.composite(child.state()).isEmpty()
                         && (child.settled() || child.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown || bareResume)
@@ -660,8 +665,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 } else if (operation.equals("resume-map")) {
                     StrictJson.require(arm && !cancel && !resume
                             && (bareResume && children.size() == execution.children().size() - 1
+                                || appliedResume && children.size() == execution.children().size() - 1
                                 || org.xar.ck3.control.application.advance.LifeAdvanceComposite.isNeverResumedResume(child)),
-                            "read-only Life resume must be its final bare Intent or exact proven unsubmitted terminal");
+                            "read-only Life resume must be its final bare Intent, exact proven unsubmitted terminal, or exact applied final child");
                     var prefixExecution = new org.xar.ck3.control.application.action.CompositeExecution(
                             execution.handlerId(), execution.startedAt(), execution.guard(),
                             execution.children().subList(0, children.size()));
