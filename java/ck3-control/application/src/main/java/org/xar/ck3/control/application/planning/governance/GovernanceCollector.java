@@ -268,14 +268,9 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
         if (read instanceof PlanningReadResult.Unavailable<T> unavailable) return new Unavailable<>(unavailable.reason());
         PlanningReadResult.Known<T> known = (PlanningReadResult.Known<T>) read;
         bindReceipt(request, contract, known.receipt());
-        try {
-            ExactRef retained = borrowed.isPresent()
-                    ? borrowed.orElseThrow().use(request, session -> archive.inSession(session, bound -> bound.preserve(known.receipt().original())))
-                    : archive.preserve(known.receipt().original());
-            return new Known<>(known.value(), List.of(retained));
-        } catch (java.io.IOException unavailable) {
-            return new Unavailable<>("same-writer governance archive unavailable: " + unavailable.getMessage());
-        }
+        // The coordinator has already retained this complete READ, including its archive
+        // version and optional retained material. A dispatch ACK ref is a different role.
+        return new Known<>(known.value(), List.of(known.originalReceipt()));
     }
     private static void bindReceipt(PlanningRequest request, ReadContract<?> contract, PlanningReadReceipt receipt) {
         StrictJson.require(receipt.original().nativeOk() && receipt.original().originalResultToken().isPresent(),

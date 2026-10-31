@@ -104,7 +104,7 @@ final class GovernanceCollectorAndReceiptsTest {
         var selected = assertInstanceOf(OrdinaryPolicy.Replace.class, new GovernancePolicies.Council(collector, REF).evaluate(request, advance(request)));
         var command = selected.draft().command().orElseThrow();
         assertEquals(GovernancePolicies.COUNCIL, command.operation()); assertEquals(n(30), command.arguments().get("candidate_character_id"));
-        assertEquals(original, command.arguments().get("original_query")); assertEquals(1, port.calls); assertEquals(1, archive.captures);
+        assertEquals(original, command.arguments().get("original_query")); assertEquals(1, port.calls); assertEquals(0, archive.captures);
         assertEquals(command, ActionCodec.decodeCommand(ActionCodec.encodeCommand(command)));
     }
     @Test void missingExactQueryDefinitionDoesNotCallTheNativePortOrPretendAnEmptyCouncil() {
@@ -128,7 +128,7 @@ final class GovernanceCollectorAndReceiptsTest {
                 Optional.empty(), Optional.empty(), Optional.empty());
         var collector = new GovernanceCollector(port, archive, current -> new Known<>(durable(current), List.of(REF)), definitions, scope);
         var known = assertInstanceOf(Known.class, collector.council(request, CouncilSelection.Position.STEWARD));
-        assertNotNull(known.value()); assertEquals(1, port.borrowedCalls); assertEquals(1, port.calls); assertEquals(1, archive.captures);
+        assertNotNull(known.value()); assertEquals(1, port.borrowedCalls); assertEquals(1, port.calls); assertEquals(0, archive.captures);
     }
     @Test void unavailableNativeCouncilSurvivesNormalizerCollectorAndPolicyWithoutNoActionCredit() throws Exception {
         // Pinned original producer fixture and its explicit unavailable branch; I/O remains the existing unit double.
