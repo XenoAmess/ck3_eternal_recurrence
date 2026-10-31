@@ -148,7 +148,9 @@ final class FullParityCurrentBindingsTest {
         Files.delete(input); assertEquals(recorded, FullParityCurrentBindings.fromRecordedArguments(arguments));
         assertThrows(IllegalArgumentException.class, () -> FullParityCurrentBindings.requireLiveVersion(previous));
         assertThrows(IllegalArgumentException.class, () -> FullParityCurrentBindings.requireExecutedInputs(current, recorded));
-        assertEquals(25, previousRoles.size()); assertEquals(42, current.additionalFixtures().size());
+        assertEquals(25, previousRoles.size());
+        assertEquals(EXPECTED_V2_ROLES, previousRoles.stream().map(f -> f.role().name()).toList());
+        assertCurrentRoleIdentity(current.additionalFixtures());
     }
     @Test void actualCompiledSourceRebindingFeedsTheWholeCommandAndRefusesArbitraryOrDriftingSource() throws Exception {
         var inputs = inputs(); Path compiled = Files.createDirectory(temporary.resolve("compiled-source"));
@@ -204,10 +206,12 @@ final class FullParityCurrentBindingsTest {
         assertTrue(oldArguments.stream().noneMatch(value -> value.startsWith("-Dxar.fullParity.current.schema=")), "archive argv stays exact");
         assertThrows(IllegalArgumentException.class, () -> FullParityCurrentBindings.requireLiveVersion(old));
         assertThrows(IllegalArgumentException.class, () -> FullParityCurrentBindings.requireExecutedInputs(current, oldBindings));
-        assertEquals(32, oldRoles.size()); assertEquals(42, current.additionalFixtures().size());
+        assertEquals(32, oldRoles.size());
+        assertEquals(EXPECTED_V4_ROLES, oldRoles.stream().map(f -> f.role().name()).toList());
+        assertCurrentRoleIdentity(current.additionalFixtures());
         var selected = bindings(current, oldBindings.inputsRef()); var complete = wholeMavenArguments(current, selected);
         assertEquals(selected, FullParityCurrentBindings.fromRecordedArguments(complete));
-        assertTrue(complete.contains("-Dxar.fullParity.current.schema=xar.full-parity-current-oracle-inputs/v10"));
+        assertTrue(complete.contains("-Dxar.fullParity.current.schema=xar.full-parity-current-oracle-inputs/v11"));
         var prefixes = List.of("xar.public.mcp.tools", "xar.original.driver.cold.fixture", "xar.original.driver.adoption.fixture");
         for (String prefix : prefixes) {
             String path = prefix.equals("xar.public.mcp.tools") ? prefix + ".path" : prefix;
@@ -248,7 +252,9 @@ final class FullParityCurrentBindingsTest {
         }
         var wrongMarker=complete.stream().map(value->value.startsWith("-Dxar.fullParity.current.schema=")?"-Dxar.fullParity.current.schema=xar.full-parity-current-oracle-inputs/v5":value).toList();
         assertThrows(IllegalArgumentException.class,()->FullParityCurrentBindings.fromRecordedArguments(wrongMarker));
-        assertEquals(36,previousRoles.size());assertEquals(42,current.additionalFixtures().size());
+        assertEquals(36, previousRoles.size());
+        assertEquals(EXPECTED_V5_ROLES, previousRoles.stream().map(f -> f.role().name()).toList());
+        assertCurrentRoleIdentity(current.additionalFixtures());
     }
     @Test void originalV6ArchiveKeepsItsMarkerAndRuntimeConfigurationIsOneExactRequiredFileRef() throws Exception {
         var current=inputs();var previousRoles=current.additionalFixtures().stream().filter(value->value.role().generation()<=6).toList();
@@ -274,7 +280,9 @@ final class FullParityCurrentBindingsTest {
         var wrongMarker=complete.stream().map(value->value.startsWith("-Dxar.fullParity.current.schema=")?"-Dxar.fullParity.current.schema=xar.full-parity-current-oracle-inputs/v6":value).toList();
         assertThrows(IllegalArgumentException.class,()->FullParityCurrentBindings.fromRecordedArguments(wrongMarker));
         assertThrows(IllegalArgumentException.class,()->FullParityCurrentBindings.requireExecutedInputs(current,archived));
-        assertEquals(37,previousRoles.size());assertEquals(42,current.additionalFixtures().size());
+        assertEquals(37,previousRoles.size());
+        assertEquals(EXPECTED_V6_ROLES, previousRoles.stream().map(f -> f.role().name()).toList());
+        assertCurrentRoleIdentity(current.additionalFixtures());
     }
     @Test void v7ArchiveAndPublicationRequestKeepSeparateExactTriplesThroughWholeArguments() throws Exception {
         var current=inputs();var oldRoles=current.additionalFixtures().stream().filter(value->value.role().generation()<=7).toList();
@@ -534,6 +542,34 @@ final class FullParityCurrentBindingsTest {
     private FullParityCurrentBindings.Bindings bindings(FullParityCurrentBindings.Inputs inputs, ControlBuild.FileRef input) throws IOException {
         return new FullParityCurrentBindings.Bindings(input, inputs.machineId(), inputs.originalR2(), inputs.selectedJavaRoot(), inputs.selectedJavaRoot(), inputs.managersSource(), inputs.detachmentSource(), inputs.additionalFixtures(), inputs.first7Root(), softwareArguments(inputs));
     }
+    private static final List<String> EXPECTED_CURRENT_ROLES = List.of(
+        "STRENGTHS_MOVEMENT_ORACLE", "STRENGTHS_MONTHLY_ORACLE", "STRENGTHS_SUPPLY_ORACLE", "FORECAST_READ_ORACLE", "STRENGTHS_PHASES_ORACLE",
+        "STRENGTHS_MANAGERS_ORACLE", "STRENGTHS_MANAGERS_NATIVE_FIXTURES", "COMMANDER_TARGET_ORACLE", "GUARDIAN_OUTGOING_EXECUTABLE",
+        "FAMILY_SCORER_AGE_EXECUTABLE", "FAMILY_RESULT_ORACLE", "PERSON_INSTALLED_TRANSFER_EXECUTABLE", "OWNER_RECALL_12004_WIRE",
+        "ARMY_WAR_WINDOW_SOURCE_MAP", "HOLY_ORDER_NATIVE_CORPUS", "HOLY_LOAN_SOURCE_PRODUCER_GOLDEN", "LOSS_ALLOCATION_GOLDEN",
+        "RECOVERY_TRANSPORT_ORACLE", "RECOVERY_PREPARATION_ORACLE", "SCORE_COMPATIBILITY_CANDIDATE", "SCORE_REFERENCE_CLIENT",
+        "REINFORCEMENT_ARRIVAL_FIRST_CORPUS", "EVENT_OPTION_ORACLE", "FAMILY_OUTGOING_V4_EXECUTABLE", "FAMILY_PREPARED_V2_EXECUTABLE",
+        "LOCAL_TARGET_SCORE_12004_WIRE", "PAIR_TARGET_SCORE_FACTOR_12004_WIRE", "PAIR_TARGET_SCORE_TERMINAL_12004_WIRE",
+        "WAR_ENTRY_FULL_POWER_12004_WIRE", "PORTABLE_METHODS_COMPILED_JAVA_SOURCE", "SOURCE_GRAPH_ACTUAL_INPUT", "SOURCE_GRAPH_ACTUAL_PLAN",
+        "PUBLIC_MCP_TOOLS", "ORIGINAL_DRIVER_COLD_FIXTURE", "ORIGINAL_DRIVER_ADOPTION_FIXTURE", "PAIR_APPEND_OBSERVATION_12004_WIRE",
+        "ORIGINAL_MCP_CAPTURE_RECEIPT", "ORIGINAL_ROOT_RUNTIME_DEFINITIONS", "ORIGINAL_ROOT_RUNTIME_DEFINITIONS_PUBLICATION_REQUEST",
+        "SOFTWARE_FIXTURE_INPUTS", "ORIGINAL_ROOT_RUNTIME_DEFINITIONS_SOURCE_DECLARATION", "ORIGINAL_ROOT_PUBLIC_MCP_PROVISIONAL_DEFINITIONS",
+        "CONSTRUCTION_REFUND_NATIVE_PACKETS", "CONSTRUCTION_REFUND_SIGNED_GOLDEN"
+    );
+
+    private static final List<String> EXPECTED_V2_ROLES = EXPECTED_CURRENT_ROLES.subList(0, 25);
+
+    private static final List<String> EXPECTED_V4_ROLES = EXPECTED_CURRENT_ROLES.subList(0, 32);
+
+    private static final List<String> EXPECTED_V5_ROLES = EXPECTED_CURRENT_ROLES.subList(0, 36);
+
+    private static final List<String> EXPECTED_V6_ROLES = EXPECTED_CURRENT_ROLES.subList(0, 37);
+
+    private void assertCurrentRoleIdentity(List<FullParityCurrentBindings.Fixture> fixtures) {
+        assertEquals(EXPECTED_CURRENT_ROLES.size(), fixtures.size());
+        assertEquals(EXPECTED_CURRENT_ROLES, fixtures.stream().map(f -> f.role().name()).toList());
+    }
+
     private FullParityCurrentBindings.Inputs inputs() throws Exception {
         ProjectStoragePolicy.requireBulkOutput(temporary);
         Path repo = Files.createTempDirectory(temporary, "repo-"); Path python = repo.resolve("python.exe"); Files.writeString(python, "contract fixture never executed");
