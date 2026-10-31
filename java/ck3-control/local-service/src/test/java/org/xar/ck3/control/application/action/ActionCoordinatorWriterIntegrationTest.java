@@ -206,4 +206,83 @@ final class ActionCoordinatorWriterIntegrationTest {
             assertEquals(retainedSequence, fixture.sequence()); assertEquals(0, fixture.nativeActionWrites());
         }
     }
+    @Test void postIntentGuardFailureRecordsActualZeroWriteAndReturnsRetainedRejection() throws Exception {
+        try (var fixture = new ActionWriterIntegrationFixture(temporary.resolve("cause175-guard"), false)) {
+            var command = fixture.command("cause175-guard");
+            var original = new IllegalStateException("cause175 original second guard failure");
+            var calls = new java.util.concurrent.atomic.AtomicInteger();
+            fixture.bindGuardObserver((head, actual) -> {
+                if (actual.actionId().equals(command.actionId())) {
+                    calls.incrementAndGet();
+                    var retained = ContinuityActionJournal.lookup(head.state(), command.actionId(), fixture.archive);
+                    if (retained.isPresent()) {
+                        assertInstanceOf(ActionState.IntentDurable.class, retained.orElseThrow().state());
+                        throw original;
+                    }
+                }
+            });
+            assertSame(original, assertThrows(IllegalStateException.class, () -> fixture.coordinator.execute(command)));
+            var receipt = fixture.snapshot().actions().getFirst();
+            var rejected = assertInstanceOf(ActionState.RejectedBeforeDispatch.class, receipt.state());
+            assertEquals(command, receipt.command()); assertEquals(ActionCodec.bodySha256(command), receipt.bodySha256());
+            assertEquals(RequestIds.forCommand(command), rejected.attempt().requestId());
+            assertEquals(rejected.attempt().requestId(), rejected.dispatch().requestId());
+            assertEquals(fixture.originalPreparedAtHook.get(), rejected.attempt().preparedRequest());
+            assertEquals(fixture.cause175LastSuccessfulGuard.get(), rejected.attempt().guard());
+            assertEquals(NativeActionPort.ZeroDispatchStage.BEFORE_WRITE, rejected.dispatch().proof().stage());
+            assertEquals(0, rejected.dispatch().proof().requestBytesWritten());
+            assertTrue(rejected.dispatch().proof().reason().contains(original.getMessage()));
+            assertEquals(receipt, fixture.archive.loadReceipt(fixture.archive.receiptReferenceOf(receipt)));
+            assertEquals(2, fixture.sequence()); assertEquals(2, calls.get());
+            assertEquals(0, fixture.nativeActionWrites()); assertEquals(1, fixture.attemptCompletions.get());
+            byte[] retained = fixture.ledgerBytes();
+            assertEquals(receipt, fixture.coordinator.execute(command));
+            assertEquals(2, calls.get()); assertEquals(0, fixture.nativeActionWrites());
+            assertArrayEquals(retained, fixture.ledgerBytes());
+        }
+    }
+    @Test void recordingFailureRetainsOriginalIntentWithoutReplay() throws Exception { assertRecordingFailure(false); }
+    @Test void recordingSameFailureDoesNotSelfSuppress() throws Exception { assertRecordingFailure(true); }
+    private void assertRecordingFailure(boolean sameFailure) throws Exception {
+        try (var fixture = new ActionWriterIntegrationFixture(temporary.resolve("cause175-record-" + sameFailure), false)) {
+            var command = fixture.command("cause175-record-" + sameFailure);
+            var original = new IllegalStateException("cause175 original guard failure");
+            RuntimeException secondary = sameFailure ? original : new IllegalArgumentException("cause175 reject append unavailable");
+            fixture.cause175RecordingFailure.set(secondary);
+            var calls = new java.util.concurrent.atomic.AtomicInteger();
+            fixture.bindGuardObserver((head, actual) -> {
+                if (actual.actionId().equals(command.actionId())) {
+                    calls.incrementAndGet();
+                    var retained = ContinuityActionJournal.lookup(head.state(), command.actionId(), fixture.archive);
+                    if (retained.isPresent()) { assertInstanceOf(ActionState.IntentDurable.class, retained.orElseThrow().state()); throw original; }
+                }
+            });
+            assertSame(original, assertThrows(IllegalStateException.class, () -> fixture.coordinator.execute(command)));
+            if (sameFailure) assertArrayEquals(new Throwable[0], original.getSuppressed());
+            else assertArrayEquals(new Throwable[] {secondary}, original.getSuppressed());
+            var intent = fixture.snapshot().actions().getFirst(); assertInstanceOf(ActionState.IntentDurable.class, intent.state());
+            assertEquals(1, fixture.sequence()); assertEquals(2, calls.get()); assertEquals(0, fixture.attemptCompletions.get());
+            assertEquals(0, fixture.nativeActionWrites());
+            byte[] retained = fixture.ledgerBytes(); assertEquals(intent, fixture.coordinator.execute(command));
+            assertEquals(2, calls.get()); assertEquals(0, fixture.nativeActionWrites()); assertArrayEquals(retained, fixture.ledgerBytes());
+        }
+    }
+    @Test void typedRevisionMismatchKeepsItsOriginalSignalAndReceipt() throws Exception {
+        try (var fixture = new ActionWriterIntegrationFixture(temporary.resolve("cause175-typed"), false)) {
+            var command = fixture.command("cause175-typed");
+            fixture.bindGuardObserver((head, actual) -> {
+                if (actual.actionId().equals(command.actionId()) && ContinuityActionJournal.lookup(head.state(), command.actionId(), fixture.archive).isPresent())
+                    throw new PreSubmissionRevisionMismatchException(fixture.cause175LastSuccessfulGuard.get(), java.util.Optional.empty());
+            });
+            var signal = assertThrows(PreSubmissionRevisionMismatchException.class, () -> fixture.coordinator.execute(command));
+            assertEquals(fixture.cause175LastSuccessfulGuard.get(), signal.current());
+            var receipt = signal.zeroDispatchReceipt().orElseThrow();
+            var rejected = assertInstanceOf(ActionState.RejectedBeforeDispatch.class, receipt.state());
+            assertEquals("pre-submission-revision-mismatch", rejected.dispatch().proof().reason());
+            assertEquals(0, rejected.dispatch().proof().requestBytesWritten());
+            assertEquals(receipt, fixture.snapshot().actions().getFirst()); assertEquals(0, fixture.nativeActionWrites());
+            assertEquals(receipt, fixture.coordinator.execute(command)); assertEquals(0, fixture.nativeActionWrites());
+        }
+    }
+
 }

@@ -105,7 +105,13 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
             // No pause/cancel/resume is sent after any unknown child, even if current UI appears unchanged.
             return failed(parent,plan,starting,unknown);
         } catch (RuntimeException failure) {
-            var completed = children.completed();
+            List<ActionReceipt> completed;
+            try {
+                completed = children.completed();
+            } catch (RuntimeException completedUnavailable) {
+                if (completedUnavailable != failure) failure.addSuppressed(completedUnavailable);
+                return failed(parent, plan, starting, failure);
+            }
             if (completed.size() == 1 && completed.getFirst().state() instanceof ActionState.RejectedBeforeDispatch
                     && completed.getFirst().command().operation().value().equals(plan.armStep()))
                 return new ActionPorts.CompositeRejectionObserved("original ARM rejected before dispatch; no replay",

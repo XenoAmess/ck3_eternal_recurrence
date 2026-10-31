@@ -694,4 +694,43 @@ final class LifeAdvanceLifecycleTest {
         @Override public ExactRef preserveNativeFrame(NativeObservationPort.ObservedFrame value) { throw new IllegalStateException("offline fixture native frame storage is explicit"); }
         @Override public byte[] loadNativeFrame(ExactRef ref) { return loadMaterial(ref).bytes(); }
     }
+    @Test void originalSubmitFailureSurvivesUnavailableCompletedChildren() {
+        assertOriginalSubmitFailure(false);
+    }
+    @Test void sameFailureFromCompletedDoesNotSelfSuppressOrStartCleanup() {
+        assertOriginalSubmitFailure(true);
+    }
+    private static void assertOriginalSubmitFailure(boolean sameFailure) {
+        Fixture fixture = new Fixture(false, false, false);
+        RuntimeException original = new IllegalStateException("cause175 original child submit failure");
+        RuntimeException secondary = sameFailure ? original : new IllegalArgumentException("cause175 completed unavailable");
+        int[] submissions = {0}, completionsAfterFailure = {0}, atFailure = {-1, -1};
+        CompositeActionPort.Children guarded = new CompositeActionPort.Children() {
+            @Override public String nextActionId() { return fixture.nextActionId(); }
+            @Override public List<ActionReceipt> completed() {
+                if (submissions[0] != 0) { completionsAfterFailure[0]++; throw secondary; }
+                return fixture.completed();
+            }
+            @Override public ActionReceipt submit(ActionCommand command) {
+                assertEquals(fixture.plan.armStep(), command.operation().value());
+                submissions[0]++; atFailure[0] = fixture.reads; atFailure[1] = fixture.requests;
+                throw original;
+            }
+        };
+        ActionPorts.Pending pending = assertInstanceOf(ActionPorts.Pending.class,
+                assertDoesNotThrow(() -> fixture.life.run(fixture.parent, guarded)));
+        assertTrue(pending.reason().contains("IllegalStateException: cause175 original child submit failure"));
+        assertFalse(pending.reason().contains("completed unavailable"));
+        var actualStarting = fixture.produced.values().stream()
+                .min(java.util.Comparator.comparing(AdvanceObservationPort.Frame::observedAt)).orElseThrow();
+        assertEquals(List.of(actualStarting.originalEvidence()), pending.evidence());
+        assertEquals(1, submissions[0]); assertEquals(1, completionsAfterFailure[0]);
+        assertEquals(atFailure[0], fixture.reads, "unavailable canonical children cannot trigger cleanup reads");
+        assertEquals(atFailure[1], fixture.requests, "unavailable canonical children cannot trigger STATUS/cleanup requests");
+        assertTrue(fixture.steps.isEmpty()); assertTrue(fixture.children.isEmpty());
+        assertFalse(fixture.canceled); assertFalse(fixture.resumed); assertEquals(0, fixture.entryReads);
+        if (sameFailure) assertArrayEquals(new Throwable[0], original.getSuppressed());
+        else assertArrayEquals(new Throwable[] {secondary}, original.getSuppressed());
+    }
+
 }

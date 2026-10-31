@@ -589,7 +589,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             Instant before=Instant.now();
             long sequence=head.state().sequence();String digest=head.digest();
             Optional<String> thrownClass=Optional.empty(),thrownMessage=Optional.empty();
-            try { return guards.verify(head, command); }
+            try { var verified = guards.verify(head, command); cause175LastSuccessfulGuard.set(verified); return verified; }
             catch(RuntimeException|Error failure) {
                 thrownClass=Optional.of(failure.getClass().getName());thrownMessage=Optional.ofNullable(failure.getMessage());
                 throw failure;
@@ -688,7 +688,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             }
             originalHookSession.set(borrowed); pendingPreparations.incrementAndGet();
         });
-        coordinator = new ActionCoordinator(AUTHORITY, journal, trackedGuards, bindings, transport, bindings.effects(), Clock.systemUTC(), bindings.composites(),
+        coordinator = new ActionCoordinator(AUTHORITY, cause175CoordinatorJournal(), trackedGuards, bindings, transport, bindings.effects(), Clock.systemUTC(), bindings.composites(),
                 (borrowed, command) -> {
                     pendingHook.get().prepare(borrowed,command);
                     ActionPorts.IntentPreparationPort additional=additionalBeforeIntent.get();
@@ -1227,7 +1227,31 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         @Override public void close() { guardedRead.remove(); }
     }
     @Override public void close() throws IOException { transport.close(); }
+    public final AtomicReference<RuntimeException> cause175RecordingFailure = new AtomicReference<>();
+    public final AtomicReference<GuardEvidence> cause175LastSuccessfulGuard = new AtomicReference<>();
+    private ActionJournal cause175CoordinatorJournal() {
+        return new ActionJournal() {
+            @Override public <T> T locked(java.util.function.Function<LockedJournal,T> work) {
+                return journal.locked(actual -> work.apply(cause175Locked(actual)));
+            }
+            @Override public <T> T locked(ContinuityStorePort.Session borrowed, java.util.function.Function<LockedJournal,T> work) {
+                return journal.locked(borrowed, actual -> work.apply(cause175Locked(actual)));
+            }
+        };
+    }
+    private ActionJournal.LockedJournal cause175Locked(ActionJournal.LockedJournal actual) {
+        return new ActionJournal.LockedJournal() {
+            @Override public ContinuityStorePort.Session writerSession() { return actual.writerSession(); }
+            @Override public WriterContracts.Head head() { return actual.head(); }
+            @Override public Optional<ActionReceipt> find(String id) { return actual.find(id); }
+            @Override public List<ActionReceipt> unresolved() { return actual.unresolved(); }
+            @Override public ActionJournal.Snapshot snapshot() { return actual.snapshot(); }
+            @Override public ActionReceipt append(ActionCommand command, String digest, ActionState next) {
+                RuntimeException failure = cause175RecordingFailure.get();
+                if (next instanceof ActionState.RejectedBeforeDispatch && failure != null) throw failure;
+                return actual.append(command, digest, next);
+            }
+        };
+    }
+
 }
-
-
-

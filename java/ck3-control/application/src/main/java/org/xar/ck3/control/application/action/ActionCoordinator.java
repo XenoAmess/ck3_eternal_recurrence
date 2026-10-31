@@ -180,6 +180,18 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
                 ActionReceipt rejected = append(locked, command, digest, new ActionState.RejectedBeforeDispatch(planned, new NativeActionPort.RejectedBeforeDispatch(requestId, proof)));
                 throw new PreSubmissionRevisionMismatchException(mismatch.current(), Optional.of(rejected));
             }
+            catch (RuntimeException failure) {
+                try {
+                    ActionState.Attempt neverSent = new ActionState.Attempt(requestId, clock.instant(), initial, request);
+                    var zero = new NativeActionPort.ZeroDispatchProof(NativeActionPort.ZeroDispatchStage.BEFORE_WRITE, 0,
+                            diagnostic("guard/barrier failure before dispatch", failure), Optional.empty());
+                    append(locked, command, digest, new ActionState.RejectedBeforeDispatch(neverSent,
+                            new NativeActionPort.RejectedBeforeDispatch(requestId, zero)));
+                } catch (RuntimeException recordingFailure) {
+                    if (recordingFailure != failure) failure.addSuppressed(recordingFailure);
+                }
+                throw failure;
+            }
             Instant submittedAt = clock.instant();
             ActionState.Attempt attempt = new ActionState.Attempt(requestId, submittedAt, atSubmission, request);
             ActionReceipt submitting = append(locked, command, digest, new ActionState.Submitting(attempt));
