@@ -694,7 +694,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         sessionAuthority.require(session);String current=session.head().digest();
         ContinuityState original=session.requireHistoricalState(capturedOriginalHead.sequence(),ContinuityJson.digest(capturedOriginalHead.toJson()));
         StrictJson.require(original.toJson().equals(capturedOriginalHead.toJson()),"retained cycle source differs from the actual canonical historical state");
-        requireOwner(original,owner);requireActive(original);CycleState source=state(original,owner);
+        requireOwner(original,owner);requireRetainedProofRole(session,original,owner);CycleState source=state(original,owner);
         requireLegacyPendingClear(original,source);requireProof(source,proof);requireFrontier(original,source);validateChain(source);
         requireCurrentFrame(original,source,proof.frame());VerifiedSemantic verified=verify(session,owner,proof.semantic());
         StrictJson.require(current.equals(session.head().digest()),"canonical writer changed during immutable historical cycle verification");
