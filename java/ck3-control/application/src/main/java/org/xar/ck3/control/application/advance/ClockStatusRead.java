@@ -24,8 +24,10 @@ public final class ClockStatusRead {
     public static final String STATUS_CAP = "game.command.research-query-tactical-daily-sentinel-v1";
     public static final String CANCEL_CAP = "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N";
     public static final String CONTRACT_ID = "java.tactical-daily-sentinel.status.v1";
+    public static final String RECONCILIATION_CONTRACT_ID = "java.tactical-daily-sentinel.status.reconciliation.v1";
     private final PlanningReadPort reads;
     private final ReadContract<Status> contract;
+    private final Optional<ReadContract<Status>> reconciliation;
     private final ActionPorts.OutcomeArchive archive;
     // Factory ownership preserves the exact installed object; Root still grants all actual source/session/custody authority.
     private static final Set<ReadContract<Status>> REGISTERED = java.util.Collections.newSetFromMap(new java.util.WeakHashMap<>());
@@ -45,9 +47,25 @@ public final class ClockStatusRead {
         this(reads, registeredContract(actualNativeDefinition), archive);
     }
     public ClockStatusRead(PlanningReadPort reads, ReadContract<Status> exactInstalled, ActionPorts.OutcomeArchive archive) {
+        this(reads, exactInstalled, Optional.empty(), archive);
+    }
+    public ClockStatusRead(PlanningReadPort reads, ReadContract<Status> exactInstalled,
+            ReadContract<Status> exactReconciliation, ActionPorts.OutcomeArchive archive) {
+        this(reads, exactInstalled, Optional.of(Objects.requireNonNull(exactReconciliation)), archive);
+    }
+    private ClockStatusRead(PlanningReadPort reads, ReadContract<Status> exactInstalled,
+            Optional<ReadContract<Status>> exactReconciliation, ActionPorts.OutcomeArchive archive) {
         this.reads = Objects.requireNonNull(reads); this.archive = Objects.requireNonNull(archive);
-        this.contract = Objects.requireNonNull(exactInstalled);
+        this.contract = Objects.requireNonNull(exactInstalled); this.reconciliation = exactReconciliation;
         requireRegisteredContract(exactInstalled);
+        exactReconciliation.ifPresent(actual -> require(actual.contractId().equals(RECONCILIATION_CONTRACT_ID)
+                && actual.operation().equals(new OperationKey(STEP)) && actual.requiredCapability().equals(Optional.of(STATUS_CAP))
+                && actual.permissionKey().equals(exactInstalled.permissionKey())
+                && actual.permissionMode() == ReadContract.PermissionMode.ADVERTISED_CAPABILITY
+                && actual.wireProfile() == ReadContract.WireProfile.EXECUTE_STEP
+                && actual.guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION
+                && actual.sourceRef().equals(exactInstalled.sourceRef()) && actual.hasPureReplay(),
+                "actual reconciliation Status contract differs from its installed clock"));
     }
     /** Source-factory identity and metadata only; this neither installs a Root contract nor grants observation permission. */
     public static void requireRegisteredContract(ReadContract<Status> exactInstalled) {
@@ -78,6 +96,29 @@ public final class ClockStatusRead {
                     && status.equals(decode(receipt.original())),
                     "independent original paused clock Status contract/value/evidence required");
         }
+    }
+    /** The current original-pending callback supplies authority; this method creates no gameplay observation or submitter. */
+    public PlanningReadResult.Known<Status> observeReconciliation(ActionCommand original,
+            AdvanceObservationPort.Frame current, Instant deadline) {
+        require(ActionReconciliationScope.activeFor(original), "actual original-pending Status scope is unavailable");
+        var installed = reconciliation.orElseThrow(() -> new IllegalStateException("actual reconciliation Status profile is not installed"));
+        try {
+            var identity = ActionReconciliationScope.requireIdentity(original);
+            var frame = ActionReconciliationScope.requireFrame(original);
+            require(current.identity().equals(identity.factual()) && current.source().equals(identity.source())
+                    && current.sessionId().equals(identity.sessionId()) && current.semantic().equals(frame.semantic())
+                    && current.originalEvidence().equals(frame.originalEvidence()) && current.observedAt().equals(frame.observedAt()),
+                    "reconciliation Status changed its actual held Native/Driver frame");
+            var request = PlanningReadRequest.newReconciliation(identity, installed.operation(), new OpportunityJson.Obj(Map.of()), deadline);
+            PlanningReadResult<Status> result = reads.read(installed, request);
+            if (result instanceof PlanningReadResult.Known<Status> known) {
+                require(known.receipt().request().equals(request) && known.receipt().contractId().equals(installed.contractId())
+                        && known.value().equals(decode(known.receipt().original())), "reconciliation Status returned another original request/value");
+                return known;
+            }
+            throw new IllegalStateException("native clock reconciliation status unavailable: "
+                    + ((PlanningReadResult.Unavailable<Status>) result).reason());
+        } catch (java.io.IOException failure) { throw new java.io.UncheckedIOException("actual reconciliation Status scope unavailable", failure); }
     }
     public Observation observe(ActionCommand parent, AdvanceObservationPort.Frame current, Instant deadline) {
         require(current.source().equals(parent.source()) && current.sessionId().equals(parent.sessionId())

@@ -304,6 +304,19 @@ public final class RootRuntimeDomainAssembly {
                         original,ActionTransitions.attempt(original.state()).orElseThrow(),identity,contract,request);
                 actual.add(new RootReconciliationAuthority.AllowedRead(contract,request.arguments(),RootReconciliationAuthority.QueryKind.MERCENARY_EMPLOYER));
             }
+            var command = original.command(); var operation = command.operation();
+            if (org.xar.ck3.control.application.advance.AdvancePrimitives.supports(operation)
+                    && (operation.value().startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.ARM_PREFIX)
+                    || operation.value().startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX))
+                    && command.arguments().members().isEmpty()
+                    && org.xar.ck3.control.application.advance.AdvancePrimitives.expected(command.before(), command.source(),
+                            operation, command.arguments()).equals(command.expected())) {
+                var clock = life.infrastructure();
+                RootUnknownSentinelReadProfile.requireInstalled(clock.unknownStatuses(), clock.statuses());
+                actual.add(new RootReconciliationAuthority.AllowedRead(clock.unknownStatuses(),
+                        new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of()),
+                        RootReconciliationAuthority.QueryKind.UNKNOWN_SENTINEL_STATUS));
+            }
             actual.addAll(family.reconciliationReads().allowed(original,identity,current,deadline));
             actual.addAll(guardian.reconciliationReads().allowed(original,identity,current,deadline));
             actual.addAll(lifecycle.natural().pendingRuntime().reconciliationReads().allowed(original,identity,current,deadline));

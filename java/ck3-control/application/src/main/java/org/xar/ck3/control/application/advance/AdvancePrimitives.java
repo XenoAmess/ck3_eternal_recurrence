@@ -160,8 +160,15 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
             current = observations.current(command, window);
         }
         if (command.expected().observerSchema().equals(CLOCK_OBSERVER)) {
-            ClockStatusRead.Observation read = clockStatus.observe(command, current, window);
-            Status actual = read.status(); String step = command.operation().value();
+            Status actual; PlanningReadReceipt actualRead;
+            if (reconciling) {
+                var read = clockStatus.observeReconciliation(command, current, window);
+                actual = read.value(); actualRead = read.receipt();
+            } else {
+                var read = clockStatus.observe(command, current, window);
+                actual = read.status(); actualRead = read.receipt();
+            }
+            String step = command.operation().value();
             List<ExpectedValue> values;
             if (ARM.matcher(step).matches()) {
                 ArmSpec arm = armSpec(step); Status original = acknowledgedSentinel(ack, step);
@@ -176,7 +183,7 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
                         && SentinelObservation.nativeGeneration(actual).equals(generation), "independent status did not confirm cancellation of the same generation");
                 values = statusValues(actual);
             }
-            return new ActionPorts.ControlObserved(new ActionState.ControlApplied(read.receipt(), CLOCK_OBSERVER, values));
+            return new ActionPorts.ControlObserved(new ActionState.ControlApplied(actualRead, CLOCK_OBSERVER, values));
         }
         String step = command.operation().value();
         if (!reconciling) current = waits.until(command, current, frame -> timelineSatisfied(command, frame), window);

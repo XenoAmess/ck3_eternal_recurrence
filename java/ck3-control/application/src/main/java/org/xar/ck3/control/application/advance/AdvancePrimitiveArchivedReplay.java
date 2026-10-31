@@ -140,14 +140,55 @@ public final class AdvancePrimitiveArchivedReplay {
     }
     public static void verifyRead(ActionCommand parent, PlanningReadReceipt read, ActionPorts.OutcomeArchive archive) {
         NativeRecordedEvidenceVerifier.requireRead(read, archive);
-        require(read.contractId().equals(ClockStatusRead.CONTRACT_ID) && read.request().operation().value().equals(ClockStatusRead.STEP)
+        boolean reconciling = read.request().origin() instanceof CommandOrigin.Reconciliation;
+        var after = reconciling ? read.request().origin().requireReconciliation().factual() : read.after().binding().observed();
+        require(read.contractId().equals(reconciling ? ClockStatusRead.RECONCILIATION_CONTRACT_ID : ClockStatusRead.CONTRACT_ID)
+                && read.request().operation().value().equals(ClockStatusRead.STEP)
                 && read.request().source().equals(parent.source()) && read.request().sessionId().equals(parent.sessionId())
-                && read.after().binding().observed().game().equals(parent.before().game())
-                && read.after().binding().observed().frame().episodeRunId().equals(parent.before().frame().episodeRunId()), "independent Status read crossed original source/session/Game/episode");
+                && after.game().equals(parent.before().game()) && after.machineId().equals(parent.before().machineId())
+                && after.frame().episodeRunId().equals(parent.before().frame().episodeRunId())
+                && after.frame().identity().player().equals(parent.before().frame().identity().player()),
+                "independent Status read crossed original source/session/Game/episode");
+        if (reconciling) {
+            var identity = read.request().origin().requireReconciliation();
+            require(identity.pending().actionId().equals(parent.actionId())
+                    && identity.pending().bodySha256().equals(ActionCodec.bodySha256(parent))
+                    && identity.pending().originalBefore().equals(parent.before())
+                    && read.before().guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION
+                    && read.after().guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION
+                    && read.before().binding().origin() instanceof CommandOrigin.Reconciliation
+                    && read.after().binding().origin() instanceof CommandOrigin.Reconciliation
+                    && read.before().binding().origin().requireReconciliation().equals(identity)
+                    && read.after().binding().origin().requireReconciliation().equals(identity),
+                    "reconciliation Status lost its complete original pending and held query identity");
+        }
     }
     public void verifyIndependentRead(ActionCommand parent, PlanningReadReceipt read, ActionPorts.OutcomeArchive archive) {
         verifyRead(parent, read, archive);
-        RootGuardEvidence.loadFrame(read.before().binding(), archive, frames);
-        RootGuardEvidence.loadFrame(read.after().binding(), archive, frames);
+        if (read.request().origin() instanceof CommandOrigin.Reconciliation) loadStatusFrame(read, archive);
+        else {
+            RootGuardEvidence.loadFrame(read.before().binding(), archive, frames);
+            RootGuardEvidence.loadFrame(read.after().binding(), archive, frames);
+        }
+    }
+    /** Existing full Native/Driver frame of a genuinely retained Status read, without a new observation. */
+    public org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete loadStatusFrame(
+            PlanningReadReceipt read, ActionPorts.OutcomeArchive archive) {
+        NativeRecordedEvidenceVerifier.requireRead(read, archive);
+        if (!(read.request().origin() instanceof CommandOrigin.Reconciliation))
+            return RootGuardEvidence.loadFrame(read.after().binding(), archive, frames);
+        var identity = read.request().origin().requireReconciliation();
+        require(read.contractId().equals(ClockStatusRead.RECONCILIATION_CONTRACT_ID)
+                && read.before().binding().origin() instanceof CommandOrigin.Reconciliation
+                && read.after().binding().origin() instanceof CommandOrigin.Reconciliation
+                && read.before().binding().origin().requireReconciliation().equals(identity)
+                && read.after().binding().origin().requireReconciliation().equals(identity),
+                "actual reconciliation Status frame lost its typed query identity");
+        var actual = frames.load(new NativeEffectEvidence.FrameBasis(identity.nativeEvidence(), identity.evidence().observationManifest()), archive);
+        require(actual.identity().equals(identity.factual()) && actual.source().equals(identity.source())
+                && actual.sessionId().equals(identity.sessionId()) && actual.connectionGeneration().equals(identity.connectionGeneration())
+                && actual.originalEvidence().equals(identity.nativeEvidence()) && actual.observedAt().equals(identity.observedAt()),
+                "actual reconciliation Status Native/Driver frame differs from its retained identity");
+        return actual;
     }
 }

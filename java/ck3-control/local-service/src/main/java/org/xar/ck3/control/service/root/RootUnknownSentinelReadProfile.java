@@ -122,9 +122,9 @@ public final class RootUnknownSentinelReadProfile {
                 &&before.identity().equals(command.before())&&actual.identity().equals(identity.factual())
                 &&command.source().equals(actual.source())&&command.sessionId().equals(actual.sessionId())
                 &&request.source().equals(actual.source())&&request.sessionId().equals(actual.sessionId())
-                &&actual.connectionGeneration().equals(identity.connectionGeneration())
-                &&actual.connectionGeneration().equals(attempt.guard().connectionGeneration()),
+                &&actual.connectionGeneration().equals(identity.connectionGeneration()),
                 "Status read changed its actual canonical pending/Attempt/source/Game/session/connection");
+        identity.requireOriginalConnection(attempt.guard());
         require(originals instanceof NativeOutcomeArchive,"Status reconciliation requires actual same-writer archive custody");
         var bound=(NativeOutcomeArchive)originals;var same=bound.writer().borrowedSession();
         var retained=bound.loadReceipt(pending.originalReceipt());

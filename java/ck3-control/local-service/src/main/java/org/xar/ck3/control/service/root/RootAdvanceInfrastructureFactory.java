@@ -163,7 +163,7 @@ public final class RootAdvanceInfrastructureFactory {
                 ReadContract<Status> exactTerminalStatus,ReadContract<Status> exactPhysicalStatus) {
             context=actualContext;this.sources=sources;this.timings=timings;readiness=sameReadiness;pendingDate=samePendingDate;
             observations=pendingDate.observations(new ActualObservations(context,timings));
-            statuses=new ClockStatusRead(context.reads(),exactInstalledStatus,context.archive());
+            statuses=new ClockStatusRead(context.reads(),exactInstalledStatus,exactUnknownStatus,context.archive());
             unknownStatus=Objects.requireNonNull(exactUnknownStatus);terminalStatus=Objects.requireNonNull(exactTerminalStatus);physicalStatus=Objects.requireNonNull(exactPhysicalStatus);
             RootUnknownSentinelReadProfile.requireInstalled(unknownStatus,statuses);
             RootUnknownSentinelReadProfile.requireInstalled(terminalStatus,statuses);
