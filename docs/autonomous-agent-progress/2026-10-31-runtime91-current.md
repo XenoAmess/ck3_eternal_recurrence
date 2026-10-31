@@ -10,6 +10,18 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+18:09Z实际183/184后继：**183 MB17:46:43.111179→48.389042Z exit0/5.277865秒，仅application Journal1源；worker183/PID214440 17:46:54.293013→17:48:52.604046Z preloop END1/118.311041秒，无LOOP**。Root新增historicalCompletedLifeCycle独立分支保旧cancel：实际canonical parent/children/完整body与owner/source、同中断batch边界，486 RETAIN保count/head/新增pending，487 SETTLE exact record/head/count+1与ELIGIBLE；原通用cycle/SEM验证不跳。首prod strict0/2.209749秒。实际已越Journal完整历史，下一DriverBootstrap1035只授Life read-only role而拒491 SAVE；17:49:06读终态并立即release，观察延迟14.24秒。唯一jcmd尝试已晚于进程退出，Attach拒绝，没有有效新栈。
+
+183独立后到原件验证另计：真实9081B parent484解码为APPLIED/visible/eligible，真实485.after→486.after RETAIN及486.after→487.after SETTLE均通过，外batch/session、缺child、换CONTROL_ONLY/Unknown、count重复等六反例拒，共单JVM9checks0；新两源strict0/1.849秒、首DATA run0/1.070秒。只23小DATA+5个有限event，无fullDriver/SEM/SourceSession/Native/Game，不冒Main授信或重记8日。
+
+**184 MB18:03:46.018747→51.678423Z exit0/5.659681秒，唯一local-service Bootstrap源；worker184/PID257512 18:04:07.740449→18:07:08.615420Z preloop END1/180.874986秒，无LOOP**。184模型原码单hunk1397B在1035完整canonical集合/原history等式内加Journal exactpositiveACK SAVE OR，read-only状态及其余门不变；首strict0/2.250391秒。1076公开revision floor保留：该路径producer.bindSettledSameGame已显式设max历史/retained observation offset，不能拿其他HELLO路径的一般reset规则擅删本floor。183/184成熟源正式19bab70。
+
+184最后唯一有效jcmd18:07:02（elapsed174.45秒/CPU33.484秒）已越Bootstrap/安装/Controller恢复，实际进入原491 Coordinator.observeRetained→RootReconciliationAuthority.withObserved→Lifecycle frozenRaw→observationBinding/canonical历史原件。真实退出原因是**RootRuntimeDispatcherFactory128仍调用旧3arg ReconciliationWork.apply，181已改4arg的ABI漏接导致NoSuchMethodError**，不是该栈本身证明耗时或Native SAVE失败。18:08:46读终态即release，显示证据/消息期间漏薄采造成98.24秒延迟如实计；18:09:32 head仍492/repair、cycle4/pendingnull、SAVE491 ACK_RECEIVED，实际8日保持、saved pair尚未确认。185仅该真实consumer模型先行补实际lease.provenance，不恢复旧3arg/伪Push，不重SAVE/473/479，不改原硬deadline。
+
+用户额外显示问题已在当前同一Game修复：18:01:38 DPI-aware Win32实读唯一monitor2560×1440/DPI96、工作区2560×1392；Game client2576×1479@(−8,−31)确超屏。18:04:07只用SetWindowPos保原style/进程，把frame/client适配2560×1392@(0,0)；18:04:37再读稳定不hung，实际截图地图、底部23September1066日期/HUD和右下控件均在工作区。Root已独立view_image确认。无Game/DLL重启、无设置菜单/业务动作/新增日；profile未改，不冒持久化已保存。证据D:/ck3-state/resume91-runtime/display183/{READ01.json,FIT01.json,READ-AFTER01.json,DESKTOP-AFTER01.png}，截图留机器私有不随Git发表。未来配置仅待安全自然窗口按真实游戏Apply机制处理，不门cold恢复。
+
+后台PhysicalStatus历史DATA性能候选单独隔离D：新Session.requireHistoricalCanonicalState保旧Head的locked session全canonical documents once证明/精确祖先digest/同head与失败reset，仅免未消费domain/source物化；旧178直接State替Head的漏证坏稿不复用。当前3prod仅sourceReady、未采用/编测，Models独占必要小storefixture，不门185或授实机提速。
+
 17:33Z实际182终态：**worker182/PID37036于17:27:41.320713Z preloop END1/146.495216秒，无LOOP**。17:30:34首次消费终态，观察延迟约173秒；读到即解除Native安装HOLD，不等错误文档/新fixture。实际stderr为`ContinuityBatchJournal.readSameGameHistory1406: settled cycle crossed its real active batch or original retained control`，已越181旧FOCUS/initial-schema parser；最后单栈的immutable publication读取不能替代真实异常。17:33:21独立head仍canonical492/repair_required、cycle4/pendingnull、原SAVE491 ACK_RECEIVED，saved pair仍未认证。8日与487 SETTLE保持，不重491SAVE/473ARM/479resume，不改变原硬deadline。
 
 具名event历史薄摘要`ordinary182-build/HISTORY183-BOUNDARIES.json`实际读1–492后确认：482中断batch64，486 RETAIN与487 ELIGIBLE_ADVANCE SETTLE均在openBatch=null时引用同一真实1b0af221…9081B原receipt，随后488开启65、492中断65；此前398/399、437/438、463/464为中断后CONTROL_ONLY。当前1404仅historicalCancelledLifeCycle识别中断后的原control，所以183由Root独占该Journal实际最小源gate，完整当前API/原event模型先行，不泛开任意闭batch。后台PhysicalStatus147→requireHistoricalHead419重复DATA读取只交隔离研究，不门183，不拿一张栈证明全部146秒瓶颈。
