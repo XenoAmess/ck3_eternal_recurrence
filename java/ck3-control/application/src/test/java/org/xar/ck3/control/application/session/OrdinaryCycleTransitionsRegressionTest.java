@@ -502,10 +502,17 @@ final class OrdinaryCycleTransitionsRegressionTest {
                 new JointBudgetSelector.Frame(BigInteger.valueOf(29829),BigInteger.valueOf(95),BigInteger.valueOf(24000)),"other-episode",BigInteger.valueOf(95),"episode-2"),1);
         for(var invalid:List.of(changedActor,changedEpisode))assertThrows(IllegalArgumentException.class,()->fixture.journal.cycleProof(OWNER,semantic(invalid,TIME)));
     }
-    @Test void aRetainedRealCycleStillRequiresItsExactNativeIdentity()throws IOException {
+    @Test void aRetainedCycleProofAllowsSameDateNativeUpdateWhileActionIdentityRemainsStrict()throws IOException {
         Fixture fixture=new Fixture(false);fixture.journal.retainCycle(OWNER,fixture.receipt);
-        fixture.journal.settleCycle(OWNER,fixture.receipt,semantic(frame(2,24024,"settled"),TIME.plusSeconds(3)));
-        assertThrows(IllegalArgumentException.class,()->fixture.journal.cycleProof(OWNER,semantic(frame(95,24024,"unrelated-read"),TIME.plusSeconds(4))));
+        var retained=semantic(frame(2,24024,"settled"),TIME.plusSeconds(3));
+        var original=fixture.journal.settleCycle(OWNER,fixture.receipt,retained);
+        byte[] before=fixture.store.current.canonicalBytes();int commits=fixture.store.commits;
+        var fresh=semantic(frame(95,24024,"proof-read"),TIME.plusSeconds(4));
+        var proof=fixture.journal.cycleProof(OWNER,fresh).orElseThrow();
+        assertEquals(original.completedCycles(),proof.completedCycles());
+        assertEquals(original.cycleStateDigest(),proof.cycleStateDigest());
+        assertThrows(IllegalArgumentException.class,()->OrdinaryCycleTransitions.requireSameIdentity(retained.frame(),fresh.frame()));
+        assertEquals(commits,fixture.store.commits);assertArrayEquals(before,fixture.store.current.canonicalBytes());
     }
     private static final class Fixture {
         final Archive archive = new Archive(); final Store store = new Store(); final OrdinaryCycleTransitions authority; final ContinuityBatchJournal journal;
