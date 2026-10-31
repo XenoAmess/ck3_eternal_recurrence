@@ -88,7 +88,7 @@ public final class FamilyMarriagePreparationReview {
     }
     /** The original complete top-two comparator; native preparation reads precisely these values in this order. */
     public static List<BigInteger> defaultComparisonCandidates(Obj snapshot,Obj campaignRoot,Obj subject,State domains) {
-        requireDomains(snapshot,domains);requireOpen(domains,FamilyMarriageIntent.Route.CHILD_DEFAULT);return MarriagePolicy.shortlist(MarriageCodec.decode(bytes(defaultInput(snapshot,campaignRoot,subject,domains).input())));
+        requireDomains(snapshot,domains);requireOpen(domains,FamilyMarriageIntent.Route.CHILD_DEFAULT);return MarriagePolicy.shortlist(MarriageCodec.decodeFullMaterial(bytes(defaultInput(snapshot,campaignRoot,subject,domains).input())));
     }
     private record HeirRank(Obj intake,Arr choices,Arr exclusions) { }
     /** Fresh legal intake determines precisely which five rich rows must be queried before ranking. */
@@ -202,7 +202,7 @@ public final class FamilyMarriagePreparationReview {
     }
     private static Obj childDefault(Obj snapshot,State domains,ChildDefault actual) {
         var input=defaultInput(snapshot,actual.campaignRoot(),actual.subject(),domains);
-        List<BigInteger> expected=MarriagePolicy.shortlist(MarriageCodec.decode(bytes(input.input())));
+        List<BigInteger> expected=MarriagePolicy.shortlist(MarriageCodec.decodeFullMaterial(bytes(input.input())));
         List<BigInteger> observed=actual.completeValues().stream().map(value->positive(value.get("candidate_character_id"))).toList();
         if(!expected.equals(observed))throw new IllegalArgumentException("fresh child preparation omitted or reordered a complete comparison value");
         for(Obj value:actual.completeValues()) {
@@ -210,7 +210,7 @@ public final class FamilyMarriagePreparationReview {
             if(!eq(value.get("legality_query_sequence"),actual.subject().get("query_sequence")) || !no(value.get("request_matrilineal_option")))
                 throw new IllegalArgumentException("fresh child comparison crossed its subject query or default option");
         }
-        Arr values=rows(actual.completeValues());Obj choice=decode(MarriageCodec.encodeDecision(MarriagePolicy.choose(MarriageCodec.decode(bytes(input.input().with("values",values))))));
+        Arr values=rows(actual.completeValues());Obj choice=decode(MarriageCodec.encodeDecision(MarriagePolicy.choose(MarriageCodec.decodeFullMaterial(bytes(input.input().with("values",values))))));
         if(!"selected".equals(string(choice.get("status"))))throw new IllegalArgumentException("fresh complete child comparator did not select a proposal");
         Obj selected=one(actual.completeValues().stream().<Value>map(value->value).toList(),choice.get("selected_candidate_character_id"));
         if(!FamilyChildPolicy.defaultAligned(object(selected.get("row"))))throw new IllegalArgumentException("fresh child default branch changed its native options");

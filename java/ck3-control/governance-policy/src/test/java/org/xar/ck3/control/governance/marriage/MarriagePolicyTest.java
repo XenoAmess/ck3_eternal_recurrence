@@ -186,4 +186,74 @@ class MarriagePolicyTest {
         ((ObjectNode) base.get("legality")).put("unread_native_extension", "x".repeat(MarriageCodec.MAX_BYTES));
         assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decode(base.toString().getBytes(StandardCharsets.UTF_8)));
     }
+    @Test
+    void fullMaterialRoleKeepsSmallDefaultAndStrictRequestSemantics() throws IOException {
+        JsonNode golden = golden();
+        ObjectNode base = (ObjectNode) golden.get("base_request").deepCopy();
+
+        // 1. Valid base Request is identical through default and new full decode
+        Request original = MarriageCodec.decode(StrictJson.canonical(base));
+        Request fullDecoded = MarriageCodec.decodeFullMaterial(StrictJson.canonical(base));
+        assertEquals(original, fullDecoded, "full decode must match default decode for valid small request");
+        assertEquals(MarriagePolicy.choose(original), MarriagePolicy.choose(fullDecoded), "policy result must match");
+
+        // 2. Explicitly enlarged unused native extension under legality makes encoded request larger than MAX_BYTES but under FULL_MATERIAL_MAX_BYTES
+        // This is a software variant, not a live native packet.
+        ObjectNode enlarged = (ObjectNode) golden.get("base_request").deepCopy();
+        // Use a string length that guarantees the total JSON size exceeds MAX_BYTES (262,144)
+        // Base is ~7KB, so 300,000 chars is sufficient to exceed 262KB but stay under 16MB.
+        String largeExtension = "x".repeat(300_000);
+        ((ObjectNode) enlarged.get("legality")).put("unused_large_extension", largeExtension);
+        byte[] enlargedBytes = enlarged.toString().getBytes(StandardCharsets.UTF_8);
+
+        // Verify size constraints
+        assertTrue(enlargedBytes.length > MarriageCodec.MAX_BYTES, "enlarged request must exceed default MAX_BYTES");
+        assertTrue(enlargedBytes.length <= MarriageCodec.FULL_MATERIAL_MAX_BYTES, "enlarged request must be within FULL_MATERIAL_MAX_BYTES");
+
+        // 3. Default rejects and full-role decode yields same complete typed request/policy result without dropping known candidates
+        assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decode(enlargedBytes), "default decode must reject oversized input");
+
+        Request fullRole = MarriageCodec.decodeFullMaterial(enlargedBytes);
+        assertEquals(original, fullRole, "full role decode must yield same typed request as original (extensions ignored)");
+        assertEquals(MarriagePolicy.choose(original), MarriagePolicy.choose(fullRole), "policy result must match");
+
+        // Verify candidates are not dropped
+        assertEquals(original.legality().candidates().value().size(), fullRole.legality().candidates().value().size(), "candidate count must match");
+
+        // 4. Existing encode/request/decision output small limits unchanged
+        byte[] encoded = MarriageCodec.encode(fullRole);
+        assertTrue(encoded.length <= MarriageCodec.MAX_BYTES, "encoded output must remain within MAX_BYTES");
+        assertEquals(original, MarriageCodec.decode(encoded), "round trip must preserve equality");
+
+        // 5. Full role must still reject duplicate fields, trailing JSON and malformed UTF-8
+        String baseStr = golden.get("base_request").toString();
+        // Copy existing duplicate construction logic exactly
+        byte[] duplicate = ("{\"shortlist_limit\":2," + baseStr.substring(1)).getBytes(StandardCharsets.UTF_8);
+        assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decodeFullMaterial(duplicate), "full role must reject duplicate fields");
+
+        assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decodeFullMaterial((baseStr + " {}").getBytes(StandardCharsets.UTF_8)), "full role must reject trailing tokens");
+
+        assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decodeFullMaterial(new byte[] {(byte) 0xc3, 0x28}), "full role must reject malformed UTF-8");
+
+        // 6. Known integer/bool fields must reject actual floating/boolean/string token substitutions
+        for (String token : List.of("true", "false", "29829.0", "\"29829\"", "[]", "{}")) {
+            ObjectNode changed = (ObjectNode) golden.get("base_request").deepCopy();
+            byte[] raw = rawToken(changed, (ObjectNode) changed.get("legality"), "played_character_id", token);
+            assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decodeFullMaterial(raw), "full role must reject invalid integer token: " + token);
+        }
+        for (String token : List.of("0", "1", "\"true\"", "[]", "{}")) {
+            ObjectNode changed = (ObjectNode) golden.get("base_request").deepCopy();
+            byte[] raw = rawToken(changed, changed, "split_successor_verified", token);
+            assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decodeFullMaterial(raw), "full role must reject invalid boolean token: " + token);
+        }
+
+        // 7. Null/empty inputs and a byte array one byte over the declared full input limit are rejected before parse
+        assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decodeFullMaterial(null), "null input must be rejected");
+        assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decodeFullMaterial(new byte[0]), "empty input must be rejected");
+
+        // Allocate exactly FULL_MATERIAL_MAX_BYTES + 1 to test boundary rejection
+        byte[] oversized = new byte[MarriageCodec.FULL_MATERIAL_MAX_BYTES + 1];
+        assertThrows(IllegalArgumentException.class, () -> MarriageCodec.decodeFullMaterial(oversized), "input over FULL_MATERIAL_MAX_BYTES must be rejected");
+    }
+
 }

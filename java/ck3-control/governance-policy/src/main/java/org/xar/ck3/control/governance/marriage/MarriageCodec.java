@@ -32,6 +32,7 @@ public final class MarriageCodec {
     public static final String SCHEMA = "xar.ck3.marriage-policy-request.v1";
     /** The 189-candidate producer is larger than the independent map receipt contract. */
     public static final int MAX_BYTES = 262_144;
+    public static final int FULL_MATERIAL_MAX_BYTES = 16 * 1024 * 1024;
     private static final ObjectMapper MAPPER = new ObjectMapper(JsonFactory.builder()
             .enable(StreamReadFeature.STRICT_DUPLICATE_DETECTION).build())
             .enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS)
@@ -42,7 +43,15 @@ public final class MarriageCodec {
     private MarriageCodec() { }
 
     public static Request decode(byte[] raw) {
-        ObjectNode root = StrictJson.object(parse(raw), REQUEST_FIELDS);
+        return decodeInternal(raw, MAX_BYTES);
+    }
+
+    public static MarriageModel.Request decodeFullMaterial(byte[] raw) {
+        return decodeInternal(raw, FULL_MATERIAL_MAX_BYTES);
+    }
+
+    private static Request decodeInternal(byte[] raw, int maxBytes) {
+        ObjectNode root = StrictJson.object(parse(raw, maxBytes), REQUEST_FIELDS);
         StrictJson.require(SCHEMA.equals(StrictJson.text(root.get("schema"))), "marriage policy request schema");
         JsonNode verified = root.get("split_successor_verified");
         StrictJson.require(verified.isBoolean(), "split proof must be boolean");
@@ -67,8 +76,8 @@ public final class MarriageCodec {
 
     public static byte[] encodeDecision(Decision decision) { return canonical(decisionNode(decision)); }
 
-    private static JsonNode parse(byte[] raw) {
-        StrictJson.require(raw != null && raw.length > 0 && raw.length <= MAX_BYTES, "bounded marriage UTF-8 input required");
+    private static JsonNode parse(byte[] raw, int maxBytes) {
+        StrictJson.require(raw != null && raw.length > 0 && raw.length <= maxBytes, "bounded marriage UTF-8 input required");
         try {
             String text = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
                     .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(raw)).toString();

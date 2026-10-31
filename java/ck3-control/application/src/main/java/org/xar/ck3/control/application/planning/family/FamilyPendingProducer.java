@@ -246,10 +246,10 @@ public final class FamilyPendingProducer {
         Set<BigInteger> excluded = new HashSet<>(numbers(rejected)); excluded.addAll(numbers(attempted));
         Obj input = obj("schema", t(MarriageCodec.SCHEMA), "legality", legality, "values", rows(List.of()), "split_successor_verified", new Bool(true),
                 "excluded_candidate_ids", new Arr(excluded.stream().sorted().<Value>map(IntegerValue::new).toList()), "shortlist_limit", n(2));
-        List<BigInteger> shortlist = MarriagePolicy.shortlist(MarriageCodec.decode(bytes(input)));
+        List<BigInteger> shortlist = MarriagePolicy.shortlist(MarriageCodec.decodeFullMaterial(bytes(input)));
         Arr fullValues = new Arr(array(plan.get("child_default_full_values")));
         List<BigInteger> observedIds = array(fullValues).stream().map(FamilyJson::object).map(item -> positive(item.get("candidate_character_id"))).toList();
-        Obj choice = decode(MarriageCodec.encodeDecision(MarriagePolicy.choose(MarriageCodec.decode(bytes(input.with("values", fullValues))))));
+        Obj choice = decode(MarriageCodec.encodeDecision(MarriagePolicy.choose(MarriageCodec.decodeFullMaterial(bytes(input.with("values", fullValues))))));
         if (!observedIds.equals(shortlist) || !eq(observation.get("shortlist_candidate_ids"), new Arr(shortlist.stream().<Value>map(IntegerValue::new).toList()))
                 || !choice.equals(observation.get("policy_decision")) || !"selected".equals(string(choice.get("status")))
                 || !eq(choice.get("selected_candidate_character_id"), candidate) || !unique(array(fullValues), "candidate_character_id", candidate).equals(value))
