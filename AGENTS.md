@@ -1,5 +1,11 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 本地模型跨机器共享入口（2026-10-31）
+
+- 所有机器上的worker先读[跨机器使用与新经验](docs/local-model-worker-guide.md)及[唯一配置](docs/local-model-executor-config.json)。当前统一为`http://192.168.1.11:8080/v1`、`qwen38-coder`、无需密钥（客户端必填时用`local`），不自动回退旧IP/8000。用户已要求把新心得、经验和规则提交推送GitHub，供其它机器复用。
+- 机器本地caller、数据根、machine_id、证据路径和Game所有权按执行机器实际配置；本机D盘call91.py与当前/root/models91不是其它机器必须存在的入口/智能体。源码owner可直接使用现有兼容HTTP工具并行派发完整真实任务，准备/审阅/编测与其他HTTP重叠，12–16实际在途是初始运营目标，按真实积压/服务队列/错误继续调整，不把目标当已达。
+- 固定三消息当前源码前缀、有限输出、SSE有效内容TTFT、六次瞬时错误退避、半截流丢弃而不拼接、实际REQUEST参数审计与采用分级见指南。HTTP候选、软件验证、正式采用、运行期决策和游戏动作分别记录；不得因模型重试重放游戏动作。
+
 ## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
 
 - 02:07Z后继实际：127 MB8src exit0/7.421秒、同Game LOOP/next44，basic first_heir_marriage_enabled=false实际load，但Family分支前后具体caller尚在核定，真实bounded marriage UTF-8 input required终态exit4/next45/Native186/public211/date53144328，新增普通动作/日/SAVE仍0。不要把开关配置当DATE已成功，不等待127旧HOLD；runtime128与M1源先模型修实际有限材料消费。M2 generic Family首源码仅typed unavailable/NotPrepared，缺真实storage/provider不能冒充支持。Root承认模型串行派发空档，历史峰8不等于达标；真实待办由owner直接并行POST，模型地址192.168.1.11，候选/采用/运行期决策分开。
