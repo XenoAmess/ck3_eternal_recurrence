@@ -98,6 +98,13 @@ public final class CheckpointCommitVerifier {
         WriterContracts.requireDigest(expectedDigest); WriterContracts.requireDigest(expectedCycleAuthority);
         ObjectNode binding = buildVerifiedBinding(borrowed, sourceSession, pair, proof, originalHeadDigest, false);
         String actualSemantic = StrictJson.text(binding.get("semantic_verifier_sha256"));
+        ObjectNode currentAuthority = StrictJson.object();
+        currentAuthority.put("cycle_state_digest", proof.cycleStateDigest());
+        currentAuthority.put("semantic_digest", actualSemantic);
+        currentAuthority.set("session", org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionToJson(sourceSession));
+        String currentCycleDigest = ContinuityJson.digest(currentAuthority);
+        String currentCheckpointDigest = ContinuityJson.digest(binding);
+        if (currentCycleDigest.equals(expectedCycleAuthority) && currentCheckpointDigest.equals(expectedDigest)) return currentCheckpointDigest;
         List<String> candidates = org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier.materialDigestCandidates(proof.semantic());
         if (!candidates.contains(actualSemantic)) throw new IOException("actual semantic verifier digest is not a Root Native material candidate");
         for (String candidate : candidates) {
@@ -119,6 +126,13 @@ public final class CheckpointCommitVerifier {
         WriterContracts.requireDigest(expectedDigest); WriterContracts.requireDigest(expectedCycleAuthority);
         ObjectNode binding = buildVerifiedBinding(borrowed, source, pair, proof, originalHeadDigest, true);
         String actualSemantic = StrictJson.text(binding.get("semantic_verifier_sha256"));
+        ObjectNode currentAuthority = StrictJson.object();
+        currentAuthority.put("cycle_state_digest", proof.cycleStateDigest());
+        currentAuthority.put("semantic_digest", actualSemantic);
+        currentAuthority.set("session", org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionToJson(source));
+        String currentCycleDigest = ContinuityJson.digest(currentAuthority);
+        String currentCheckpointDigest = ContinuityJson.digest(binding);
+        if (currentCycleDigest.equals(expectedCycleAuthority) && currentCheckpointDigest.equals(expectedDigest)) return currentCheckpointDigest;
         List<String> candidates = org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier.materialDigestCandidates(proof.semantic());
         if (!candidates.contains(actualSemantic)) throw new IOException("actual retained semantic verifier digest is not a Root Native material candidate");
         for (String candidate : candidates) {

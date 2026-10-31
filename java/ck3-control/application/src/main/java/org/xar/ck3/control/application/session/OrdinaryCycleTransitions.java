@@ -560,10 +560,19 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             if (boundary == JournalKind.SAVE_CONFIRMED) {
                 var completed = proofFromJson(details.get("completed_cycle_proof")); requireProof(state(predecessor, owner), completed);
                 var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair"))); requireSavedContinuation(completed.frame(), pair.frame());
-                ObjectNode original = StrictJson.object(); original.put("evidence_id", text(details, "evidence_id")); original.set("source", details.get("source"));
-                original.put("machine_id", owner.machineId()); original.put("date_raw", pair.frame().frame().identity().dateRaw().longValueExact());
-                original.put("completed_cycles", completed.completedCycles()); original.set("frame", originalFrame(pair.frame()));
-                next = OriginalWindowReducer.reduce(predecessor.toJson(), "settled_batch", original, policy);
+                if (predecessor.status() == ContinuityState.Status.REPAIR_REQUIRED) {
+                    ObjectNode original = StrictJson.object(); original.put("evidence_id", text(details, "evidence_id")); original.put("source", "java-reconciled-original-save/v1");
+                    original.put("machine_id", owner.machineId()); original.put("date_raw", pair.frame().frame().identity().dateRaw().longValueExact());
+                    original.put("completed_cycles", completed.completedCycles()); original.set("frame", originalFrame(pair.frame()));
+                    original.set("session", sessionToJson(owner)); original.put("batch_id", text(ContinuityJson.object(predecessor.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)), "batch_id"));
+                    original.set("cycle_record_ref", state(predecessor, owner).head().orElseThrow().toJson());
+                    next = OriginalWindowReducer.reduce(predecessor.toJson(), "reconciled_original_save", original, policy);
+                } else {
+                    ObjectNode original = StrictJson.object(); original.put("evidence_id", text(details, "evidence_id")); original.set("source", details.get("source"));
+                    original.put("machine_id", owner.machineId()); original.put("date_raw", pair.frame().frame().identity().dateRaw().longValueExact());
+                    original.put("completed_cycles", completed.completedCycles()); original.set("frame", originalFrame(pair.frame()));
+                    next = OriginalWindowReducer.reduce(predecessor.toJson(), "settled_batch", original, policy);
+                }
                 // Preserve the exact saved cycle branch for a later source-bound restore authority.
                 ObjectNode saved = StrictJson.object(); saved.set("pair", StrictJson.parse(CheckpointPairCodec.encode(pair)));
                 saved.set("state", state(predecessor, owner).toJson()); next.set(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD, saved);
