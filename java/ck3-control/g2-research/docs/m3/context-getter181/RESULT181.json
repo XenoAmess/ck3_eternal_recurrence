@@ -1,0 +1,105 @@
+{
+  "schema": "m3.context-getter181-first-software-summary/v1",
+  "package_number": 45,
+  "status": "FIRST_EIGHT_EXPLICIT_SOURCE_CLOSURE_AND_THREE_SCENES_PASS",
+  "actual_original": "context-getter181/verification-first181/ACTUAL181.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\context-getter181",
+  "actual_evidence_copied_to_Git": false,
+  "real_caller": "3790510@37906D9; returned context consumed as RCX at379074B",
+  "complete_RF": [
+    "A92EB0",
+    "A92F07(exclusive)"
+  ],
+  "code_bytes": 87,
+  "UW_bytes": 8,
+  "new_PE_bytes": 95,
+  "header_provider_query_Game": 0,
+  "first_explicit_sources": 8,
+  "new_source_files": 5,
+  "existing_interface_sources": 3,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/context181/ContextGetter181Api.java": "aca3b7063f5ef18d7e29a0f20876be2f425e7139b18af6f5e8953c40f57609a6",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/context181/ContextGetterWitness181Api.java": "cb951bcb23543321dcb5ad42e480250b8ee6cbc586544b5f9d27c76061f17a99",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/context181/ContextGetterA92EB0.java": "be3c013d9e77c9b9b61b1aa095e23289401dfe9b35c3598e0b90ad473155abcd",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/context181/ContextGetterWitnessHost181.java": "c708890d96f35d1a128187141f128e543bc95a686427014ae7a4a3ce02553f3c",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/context181/ContextGetterWitnessBook181.java": "4d98bcfe577e901956dea169acddea121b547e89510e4da7ead6de6207595065"
+  },
+  "stages": [
+    {
+      "stage": "JAVAC",
+      "start": "2026-10-31T18:56:36.767738+00:00",
+      "end": "2026-10-31T18:56:37.718648+00:00",
+      "exit": 0,
+      "seconds": 0.9509055004455149
+    },
+    {
+      "stage": "RUN",
+      "start": "2026-10-31T18:56:37.720722+00:00",
+      "end": "2026-10-31T18:56:38.304161+00:00",
+      "exit": 0,
+      "seconds": 0.5834472002461553
+    }
+  ],
+  "strict_actual": "Java21/-Xlint:all,-try/-Werror/-proc:none/-implicit:none/192MiB/CPU1/emptyCP/sourcepath",
+  "source_hash_match": true,
+  "new_scenes": 3,
+  "global_ordered_steps": 17,
+  "steps_per_scene": [
+    1,
+    8,
+    8
+  ],
+  "callbacks_per_scene": [
+    0,
+    1,
+    1
+  ],
+  "scene_semantics": [
+    "nonzero64bit global with low32zero returns without writes/call",
+    "null global then exact16B descriptor writes/copy, opaque publish and fresh global",
+    "null global remainsnull despite nonzero ignored callback return; caller three tail bytes retained"
+  ],
+  "expected_authority": "owner literal Book from originalASM after target-source review; not blind independent and not target-execution generated",
+  "model_logical_requests": 5,
+  "actual_model_POSTs": 5,
+  "model_stop": 4,
+  "model_length_whole_discarded": 1,
+  "local_phase_peak": 3,
+  "core_model_adoption": "first decoded Java candidate byte-for-byte; zero owner source edits; first software closure passed",
+  "model_host_book_source_adoption": 0,
+  "host_book_origin": "owner entire after two semantic attempts per role",
+  "prePOST_owner_error": "extra brace caused prepareSyntaxError then three callers FileNotFound before REQUEST/POST; actualHTTP0 for those failures, correctedbefore actual firstcohort",
+  "source_ready_historical_core_not_yet_compiled_field": "historical at initial seal; superseded by actual first compile/run above, not a new rerun",
+  "scope": "normal business memory plus one typed opaque initialize call; conceptual16B Memory observations retain caller tail bytes",
+  "not_proved": [
+    "full rawCPU/prologue/register/flags/ABI/EH",
+    "concurrency/atomicity/alignment behavior",
+    "natural initialize3F8B640 semantics",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
