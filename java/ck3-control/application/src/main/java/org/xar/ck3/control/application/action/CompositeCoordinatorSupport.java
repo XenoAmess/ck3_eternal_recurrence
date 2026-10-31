@@ -20,7 +20,8 @@ final class CompositeCoordinatorSupport {
         StrictJson.require(fixture || parent.origin() instanceof CommandOrigin.Gameplay || parent.origin() instanceof CommandOrigin.LifecycleTerminal
                 && parent.lifecycleExpected().operation() != LifecycleExpectedPostcondition.Operation.CLOSE_DEATH_MODAL,
                 "only gameplay or an exact canonical terminal lifecycle composite may own children");
-        handler.validate(parent); intentBarrier.check(locked.writerSession(), parent);
+        ActionCommandScope.withinValidation(locked, parent, guard, () -> handler.validate(parent));
+        intentBarrier.check(locked.writerSession(), parent);
         intentPreparation.prepare(locked.writerSession(), parent); intentBarrier.check(locked.writerSession(), parent);
         ActionCoordinator.append(locked, parent, digest, new ActionState.IntentDurable());
         CompositeExecution execution = new CompositeExecution(handler.handlerId(), clock.instant(), guard, List.of());

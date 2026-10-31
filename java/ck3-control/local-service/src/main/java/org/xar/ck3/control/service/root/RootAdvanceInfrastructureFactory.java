@@ -263,6 +263,8 @@ public final class RootAdvanceInfrastructureFactory {
                     // A running parent can reuse its exact guarded entry before any child; later observations stay fresh.
                     // An incompatible ordinary scope throws above and cannot trigger fallback sampling.
                     context.adopted().authority().requireOutsideObservationScope(same);
+                    var validation = ActionCommandScope.validationGuard(parent, same);
+                    if (validation.isPresent()) return sameHeld.retainedEntry(parent, validation.orElseThrow(), deadline);
                     var entry = ActionChildPlanningScope.entryGuard(same, same.head(), parent);
                     if (entry.isPresent()) return sameHeld.retainedEntry(parent, entry.orElseThrow(), deadline);
                     return sameHeld.current(parent,deadline);
