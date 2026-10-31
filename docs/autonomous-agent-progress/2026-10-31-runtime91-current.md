@@ -10,6 +10,14 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+19:15Z实际188：**MB18819:07:49.565905→19:08:07.158976Z exit0/17.593065秒，仅local-service Guard1源；worker188/PID206256 19:08:16.729754→19:11:40.274388Z preloop END1/203.544634秒，无LOOP**。19:11:52.440811薄采终态，观察延迟12.17秒，先release Native安装HOLD再取stderr；同Game71464/原birth/supervisor、qwen1.11/basic175与既有预算保持，0重SAVE/ARM/resume、0新日。head495/repair、cycle4/pendingnull、原494SAVE APPLIED/physicalpairverified/date53144520保持，最终SAVE_CONFIRMED尚未产生。
+
+188只在普通CheckpointFiles fallback同一actual writer Session内，先admit/requireWrapped/targetRoot，再在file reservation monitor外复用现createManagedDirectories创建缺父，然后走原file计费/预算/原子createNew；每目录受managedroot/64missing/有限inventory/DIRECTORY_GUARD/pending/UNKNOWN合同约束，activePhysical显式WritePlan整分支与NativeFiles未改。748B最小patch经Root strict0/8.315855秒后S/Z普通check/apply0，正式3a17dce。当前source也覆盖signed fallback，后继为更窄ordinary scope准备ordinaryBudget!=null候选02（当前ordinary行为等价），此新收窄未热改188、不冒原用户硬规则或此前测试要求。
+
+188确已越首父目录并成功创建checkpoint metadata，接着SAVE_CONFIRMED preview的SavedAttachmentSourceStore.capture140→loadOriginal161→readMaterial192→OrdinaryCycleTransitions.verifyHistoricalCompletedCycleProof697仍调用普通requireActive1930，抛actual continuity manual repair remains unresolved。186只读proof修覆盖retained及verifyCompleted，漏该historical consumer；189由Root独占此实际最小叶，保普通Active资格。新metadata现位于state/checkpoints/attachments/checkpoints/1d76d6618926156a4b292300c1e9dd093dc51233a82d0c81d343b1999b9d0572.json；它在preview失败前已落盘、进程内capture witness未持久，下一cold不能仅凭现hash/observe假作原capture。Models独占新source-qualified requalification设计/候选，保普通loadOriginal/reload、真实pair/ACK/SEMcycle/private issuer；无删除/改名metadata、无重SAVE。
+
+188唯一有效jcmd19:10:43Z（elapsed146.35秒/CPU12.953秒）在DriverBootstrap1031 actual actionSnapshot→receipt/effect originals→NativeEffectEvidence.reconciliationGuard153→archive metadata读取，尚未此次目录后态，不以单栈归全程瓶颈或宣称Native等待。资源另如实记：M5新prod strict19:07:53–54/0.598秒旧serial告警红，在188实际MB窗内、Native收到HOLD工具边界前已起并自然END，0RUN/0后继retry，不追认为无重叠，也不拿此解释17秒MB。HTTP/tiny持续；cause188必要小新fixture源HTTP与Main重叠，0编跑/不门188。
+
 19:03Z实际187：**MB18718:57:38.140384→18:57:44.492292Z exit0/6.351914秒，仅local-service material factory1源；worker187/PID293640 18:57:48.867151→19:01:31.619644Z preloop END1/222.752500秒，无LOOP**。事前已发fresh安装HOLD，真实END读到后先release Native再取stderr；源HTTP/具名tiny持续，不套旧186窗。仍同Game71464/原birth/supervisor/qwen1.11/basic175、ordinary1200000ms/Native60000ms；0新SAVE/控制重放、0新增游戏日。
 
 187最小2459B factory分支实际采用：现installed archived verifier完整验证真正SAVE Applied后，仅将pair与archived Driver作MATERIAL、独立postframe作NATIVE_FRAME，返回既有CanonicalOnly；不伪legacy compatible result、不generic-pin 68MiB SAVE或rawACK，不替current Driver。模型分支部分采用，owner收窄typed APPLIED-only guard保非Applied fallback；首strict仅旧Missing.OperationKey serial告警红，按既有-Xlint:all,-try,-serial -Werror口径必要strict0/2.262010秒，业务Java无再改。最初patch check误选p3/缺directory仅路径红，按实际a/local-service用S-p1/Z--directory java/ck3-control后普通check/apply全0，未改语义。源正式b8ce111。
