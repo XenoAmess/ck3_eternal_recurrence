@@ -965,6 +965,27 @@ public final class DriverBootstrap {
         return adopted;
     }
 
+    /** Same retained cancellation DATA role as the Journal producer; this grants no Ready or Native submission. */
+    private static Optional<ActionReceipt> pendingCancelledLifeCycle(List<ActionReceipt> actions,
+            com.fasterxml.jackson.databind.JsonNode pending,ActionPorts.OutcomeArchive originals) {
+        if(pending==null||pending.isNull()||actions.isEmpty()||actions.stream().anyMatch(action->!action.settled()))return Optional.empty();
+        var actual=originals.loadReceipt(ExactRef.fromJson(pending));
+        if(!actions.contains(actual)||actual.outcome()!=ActionReceipt.Outcome.APPLIED_CONFIRMED
+                ||actual.visibleGameplay()||actual.eligibleAdvance()
+                ||!(actual.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled settled)
+                ||!(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.CompositeControlApplied control)
+                ||!org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(actual.command().operation().value())
+                ||!settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                ||!control.observation().semantic().actual().contains(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText(
+                        new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("progress_status"),"initialization_cancelled")))return Optional.empty();
+        var children=settled.execution().children().stream().map(bound->actions.stream()
+                .filter(child->child.command().actionId().equals(bound.actionId())&&child.bodySha256().equals(bound.bodySha256()))
+                .findFirst().orElseThrow()).toList();
+        org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireCancelledInitialization(
+                actual.command(),settled.execution(),control.observation(),children);
+        return Optional.of(actual);
+    }
+
     /** Reattaches a settled dirty Driver using its new HELLO and independent physical read. */
     public static Adopted adoptSettledSameGame(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
@@ -974,7 +995,7 @@ public final class DriverBootstrap {
         return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,false);
     }
 
-    /** Installs the original pending Life only for read-only reconciliation, using its reconstructed latest Driver frame. */
+    /** Reattaches retained Life action or pending-cycle recovery with its latest Driver, without granting Ready. */
     public static Adopted adoptUnresolvedSameGame(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
             ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
@@ -1004,15 +1025,18 @@ public final class DriverBootstrap {
                 &&retained.driver().session().bridgePid()==current.game().pid()
                 &&retained.driver().session().pipeName().equals(transport.pipeName()),
                 "settled retained Driver belongs to another physical Game or pipe");
+        var pendingLifeCycle=isolatedLife?same.head().state().toJson()
+                .path(WriterContracts.ORDINARY_CYCLE_FIELD).get("pending_receipt"):null;
         actions.withFrozen(same,lease->{
             StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
                     &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
                     "same-Game continuation cannot replace its actual original history");
             if (isolatedLife) {
-                StrictJson.require(org.xar.ck3.control.application.session.ContinuityBatchJournal
-                        .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
-                        && new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions())),
-                        "isolated Life adoption retains the complete canonical pending action set");
+                StrictJson.require(new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))
+                        && (org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
+                            || pendingCancelledLifeCycle(lease.snapshot().actions(),pendingLifeCycle,archive.withSession(same)).isPresent()),
+                        "read-only Life adoption retains the complete canonical action set and exact pending recovery role");
             } else {
                 StrictJson.require(lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),
                         "settled continuation cannot replay an unresolved original action");
@@ -1056,7 +1080,7 @@ public final class DriverBootstrap {
                 retained.stamp().episodeEpoch(),current,retained.auxiliary(),retained.loop());
         var adopted=new Adopted(seed,data.source(),data.retainedFullDriver(),repository,authority,producer,held,first,
                 isolatedLife ? AdoptionStatus.READ_ONLY_UNRESOLVED : AdoptionStatus.QUALIFICATION_REQUIRED,
-                isolatedLife ? List.of("unfinished_original_life_requires_read_only_reconciliation") : List.of());
+                isolatedLife ? List.of("retained_life_requires_read_only_action_or_cycle_recovery") : List.of());
         if (!isolatedLife) {
             adopted.settledSameGame=data;
             producer.recordAdoptionObserved(current,data.source());
