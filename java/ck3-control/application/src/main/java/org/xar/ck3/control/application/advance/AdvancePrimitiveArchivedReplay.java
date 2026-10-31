@@ -49,13 +49,13 @@ public final class AdvancePrimitiveArchivedReplay {
         require(command.equals(AdvancePrimitives.child(command, beforeFrame, command.actionId(), command.operation().value(), command.deadline())),
                 "original primitive expected fields differ from the shared actual command producer");
         if (zero) {
-            require(command.operation().value().equals("pause-map"), "only an actual pause zero-write result is replayed here");
+            require(command.operation().value().equals("pause-map") || command.operation().value().startsWith(ClockStatusRead.ARM_PREFIX), "only an actual pause or ARM zero-write result is replayed here");
             requireOriginalReceipt(lockedHead, child, attempt, dispatch, archive);
             var original = (NativeActionPort.RejectedBeforeDispatch) dispatch;
             require(original.requestId().equals(attempt.requestId())
                     && original.proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
                     && original.proof().requestBytesWritten() == 0 && child.ack().isEmpty(),
-                    "pause zero-write proof differs from the original unsubmitted attempt");
+                    "zero-write proof differs from the original unsubmitted attempt");
             return;
         }
         var settled = (ActionState.Settled) child.state();

@@ -105,6 +105,11 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
             // No pause/cancel/resume is sent after any unknown child, even if current UI appears unchanged.
             return failed(parent,plan,starting,unknown);
         } catch (RuntimeException failure) {
+            var completed = children.completed();
+            if (completed.size() == 1 && completed.getFirst().state() instanceof ActionState.RejectedBeforeDispatch
+                    && completed.getFirst().command().operation().value().equals(plan.armStep()))
+                return new ActionPorts.CompositeRejectionObserved("original ARM rejected before dispatch; no replay",
+                        completed.stream().map(child -> new CompositeExecution.Child(child.command().actionId(), child.bodySha256())).toList());
             // Original diagnostics remain in each exact child. Cleanup stays within this same authority,
             // is bounded by the parent deadline, and is forbidden if any child is unresolved.
             cleanup(parent, children);
@@ -127,6 +132,9 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
             if (!clock.instant().isBefore(parent.deadline())) return ExactDayClockFailure.CleanupTrace.empty();
             List<ActionReceipt> completed = children.completed();
             if (completed.stream().anyMatch(receipt -> !receipt.settled())) return ExactDayClockFailure.CleanupTrace.empty();
+            if (completed.stream().allMatch(receipt -> receipt.state() instanceof ActionState.RejectedBeforeDispatch rejected
+                    && rejected.dispatch().proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                    && rejected.dispatch().proof().requestBytesWritten() == 0)) return ExactDayClockFailure.CleanupTrace.empty();
             var current = observations.current(parent, parent.deadline()); before = Optional.of(current);
             var plan = AdvancePlan.decode(parent);
             if (plan.dailyWatch().isPresent() && !plan.dailyWatch().orElseThrow().sameConnection(current))
@@ -176,6 +184,10 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                 && children.stream().noneMatch(child -> child.command().operation().value().equals("resume-map"))) {
             if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))
                 return cancelledInitialization(parent, retained, children, ActionObservationWindow.deadline(parent));
+            if (children.size() == 1 && children.getFirst().state() instanceof ActionState.RejectedBeforeDispatch) {
+                requireRejectedInitialization(parent, retained, children);
+                return new ActionPorts.CompositeRejectionObserved("original ARM rejected before dispatch; no replay", retained.children());
+            }
             return new ActionPorts.Pending("original ARM is independently confirmed; source-issued generation cancellation is required before ordinary play",
                     List.of(retained.guard().nativeEvidence()));
         }
@@ -393,6 +405,39 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
     public static void requireCancelledInitialization(ActionCommand parent, CompositeExecution execution,
             CompositeControlObservation control, List<ActionReceipt> canonicalChildren) {
         LifeSentinelCancellationProof.terminal(parent, execution, control, canonicalChildren);
+    }
+
+    /** Exact source-owned rejection: the only durable child was the requested ARM and no request byte was written. */
+    public static void requireRejectedInitialization(ActionCommand parent, CompositeExecution execution, List<ActionReceipt> canonicalChildren) {
+        require(parent.origin() instanceof CommandOrigin.Gameplay && accepts(parent.operation().value())
+                && execution.handlerId().equals(HANDLER), "rejected initialization requires its original Life handler");
+        var plan = AdvancePlan.decode(parent);
+        require(parent.expected().observerSchema().equals(AdvancePlan.OBSERVER) && parent.expected().values().equals(plan.expected())
+                && (!parent.operation().value().equals("life-advance-one-day") || plan.exactOneDay()),
+                "rejected initialization lost its original Life plan");
+        var guard = execution.guard();
+        require(parent.origin().acceptsGuard(guard.origin()) && guard.source().equals(parent.source())
+                && guard.sessionId().equals(parent.sessionId()) && guard.operation().equals(parent.operation())
+                && guard.observed().equals(parent.before()), "rejected initialization parent guard changed");
+        require(execution.children().size() == 1 && canonicalChildren.size() == 1,
+                "rejected initialization requires its sole original ARM child");
+        AdvanceClockArchivedReplay.verifyChildBindings(parent, canonicalChildren);
+        var child = canonicalChildren.getFirst(); var command = child.command(); var bound = execution.children().getFirst();
+        require(bound.actionId().equals(command.actionId()) && bound.bodySha256().equals(child.bodySha256())
+                && plan.clockMode() != AdvancePlan.ClockMode.POLLED && command.operation().value().equals(plan.armStep())
+                && command.before().equals(parent.before()) && command.arguments().members().isEmpty()
+                && AdvancePrimitives.expected(command.before(), command.source(), command.operation(), command.arguments()).equals(command.expected())
+                && child.state() instanceof ActionState.RejectedBeforeDispatch,
+                "rejected initialization child differs from its exact unsubmitted ARM");
+        var rejected = (ActionState.RejectedBeforeDispatch) child.state(); var attempt = rejected.attempt();
+        require(command.origin().acceptsGuard(attempt.guard().origin()) && attempt.guard().observed().equals(command.before())
+                && attempt.guard().source().equals(command.source()) && attempt.guard().sessionId().equals(command.sessionId())
+                && attempt.guard().operation().equals(command.operation())
+                && attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command))
+                && rejected.dispatch().requestId().equals(attempt.requestId())
+                && rejected.dispatch().proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                && rejected.dispatch().proof().requestBytesWritten() == 0 && child.ack().isEmpty(),
+                "rejected initialization requires its actual original zero-dispatch proof");
     }
 
     @Override public void requireControlPrefixInterruption(ActionCommand parent, CompositeExecution retained,

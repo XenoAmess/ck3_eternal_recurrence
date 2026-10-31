@@ -325,6 +325,14 @@ public final class ActionEffects {
             validateComposite(parent, execution, settlement);
             return;
         }
+        if (settlement instanceof ActionState.CompositeRejected rejected && rejected.evidence().isEmpty()
+                && execution.handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(parent.operation().value())
+                && !children.isEmpty() && children.stream().allMatch(child -> child.state() instanceof ActionState.RejectedBeforeDispatch)) {
+            StrictJson.require(rejected.children().equals(execution.children()), "rejected Life retains its complete original children");
+            org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireRejectedInitialization(parent, execution, children);
+            return;
+        }
         validateCompositeChildren(execution, settlement, children);
     }
     /** Legacy callers retain their exact previous rules; the new contract requires its actual parent. */

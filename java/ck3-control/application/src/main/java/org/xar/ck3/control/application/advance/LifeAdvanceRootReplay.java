@@ -96,6 +96,19 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
             ActionEffects.validateCompositeChildren(settled.execution(), terminal, java.util.List.of());
             return;
         }
+        if (proposed.state() instanceof ActionState.CompositeSettled settled
+                && settled.settlement() instanceof ActionState.CompositeRejected rejected) {
+            var children = settled.execution().children().stream().map(bound -> {
+                var child = ContinuityActionJournal.lookup(actualLockedHead.state(), bound.actionId(), sameWriterArchive).orElseThrow();
+                require(child.bodySha256().equals(bound.bodySha256()), "rejected Life child differs from its canonical original");
+                new AdvancePrimitiveArchivedReplay(frames).verify(actualLockedHead, child, sameWriterArchive);
+                return child;
+            }).toList();
+            LifeAdvanceComposite.requireRejectedInitialization(proposed.command(), settled.execution(), children);
+            ActionEffects.validateComposite(proposed.command(), settled.execution(), rejected);
+            ActionEffects.validateCompositeChildren(proposed.command(), settled.execution(), rejected, children);
+            return;
+        }
         LifeAdvanceEvidence.verifyRecorded(proposed, sameWriterArchive, this, timeline);
     }
 
