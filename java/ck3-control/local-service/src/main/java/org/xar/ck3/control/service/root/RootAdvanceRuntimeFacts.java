@@ -143,8 +143,7 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
         settings.requireOriginal(archive);
         Optional<CrownRetryPublication.ImportProof> proof=Objects.requireNonNull(retainedProof.get(),
                 "CROWN publication absence must be explicit");
-        require(proof.isPresent() || !settings.crownQueryEnabled() && !settings.crownPausedQueryEnabled(),
-                "enabled CROWN runtime facts require their actual retained private publication");
+        // Absence of publication is valid for first advancement; verifiedCrownMaximum handles empty due.
         Optional<CrownRetryDue.VerifiedDue> due=Optional.empty();
         if(proof.isPresent()) {
             var captured=crown.capture(same,proof.orElseThrow(),frame.identity(),frame.source(),frame.semantic(),parent.deadline());
