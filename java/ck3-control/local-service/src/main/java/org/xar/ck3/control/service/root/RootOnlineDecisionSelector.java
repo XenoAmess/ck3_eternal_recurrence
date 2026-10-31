@@ -63,7 +63,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             + "decoder_source, definition_source, original_receipt, supporting_evidence, source. "
             + "These are implementation/archive references, not game facts; all original ROOT fields remain in root_facts. "
             + "rows without root_ref are already complete. Evaluate every row using its own exact frame and stamps. "
-            + "Shared facts mean equal JSON values only, never a new observation or authority.";
+            + "Shared facts mean equal JSON values only, never a new observation or authority. "
+            + "When proposal_projection_schema is xar.model-family-legality-alias/v1, reconstruct proposal.arguments.planning_proof.family_marriage_legality.native_legal_candidates as the complete exact same JSON array as proposal.arguments.planning_proof.family_marriage_legality.candidates; all original array entries/unknown fields/precision/order are represented. proposal_id and body_sha256 still identify the original unprojected command; no hash recalculation of projected bytes.";
 
     private final RootOrdinaryRuntimeConfiguration.DecisionProvider config;
     private final Clock clock;
@@ -153,7 +154,9 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     private byte[] requestPayload(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
         ObjectNode data = object();
         data.put("proposal_id", proposal.command().actionId()); data.put("body_sha256", sha);
-        data.set("proposal", FullJsonTree.parse(ActionCodec.encodeCommand(proposal.command()), ActionCodec.MAX_COMMAND_BYTES));
+        JsonNode modelCommand = FullJsonTree.parse(ActionCodec.encodeCommand(proposal.command()), ActionCodec.MAX_COMMAND_BYTES);
+        if (applyFamilyLegalityAlias(modelCommand)) data.put("proposal_projection_schema", "xar.model-family-legality-alias/v1");
+        data.set("proposal", modelCommand);
         data.put("planning_deadline", request.deadline().toString());
         var snapshotNode = OpportunityJson.toNode(request.observations().snapshot());
         data.set("snapshot", snapshotNode);
@@ -185,8 +188,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         // Stable observations precede the varying proposal; preserve every field and JSON value.
         ObjectNode orderedData = object();
         for (String field : List.of("history", "root_facts", "history_projection_schema", "capabilities", "routable_operations",
-                "action_facts", "snapshot", "proposal", "proposal_id", "body_sha256", "planning_deadline")) {
-            orderedData.set(field, data.get(field));
+                "action_facts", "snapshot", "proposal", "proposal_id", "body_sha256", "planning_deadline", "proposal_projection_schema")) {
+            if (data.has(field)) orderedData.set(field, data.get(field));
         }
         orderedData.setAll(data);
         ObjectNode payload = object(); payload.put("model", config.model()); payload.put("temperature", 0);
@@ -361,6 +364,23 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         return materials.preserve(RawJson.fullMaterial(FullJsonTree.encode(material, MAX_MATERIAL_BYTES)));
     }
     private static ObjectNode object() { return JsonNodeFactory.instance.objectNode(); }
+
+    private static boolean applyFamilyLegalityAlias(JsonNode command) {
+        if (!command.isObject()) return false;
+        JsonNode arguments = command.get("arguments");
+        if (arguments == null || !arguments.isObject()) return false;
+        JsonNode planningProof = arguments.get("planning_proof");
+        if (planningProof == null || !planningProof.isObject()) return false;
+        JsonNode familyMarriageLegality = planningProof.get("family_marriage_legality");
+        if (familyMarriageLegality == null || !familyMarriageLegality.isObject()) return false;
+        JsonNode candidates = familyMarriageLegality.get("candidates");
+        JsonNode nativeLegalCandidates = familyMarriageLegality.get("native_legal_candidates");
+        if (candidates == null || !candidates.isArray() || candidates.isEmpty()) return false;
+        if (nativeLegalCandidates == null || !nativeLegalCandidates.isArray() || nativeLegalCandidates.isEmpty()) return false;
+        if (!candidates.equals(nativeLegalCandidates)) return false;
+        ((ObjectNode) familyMarriageLegality).remove("native_legal_candidates");
+        return true;
+    }
 
     private static void appendUsage(ObjectNode target, Usage usage) {
         putNullableLong(target, "prompt_tokens", usage.promptTokens());

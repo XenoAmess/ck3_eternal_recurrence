@@ -366,11 +366,15 @@ class OnlineOrdinaryDecisionSelectorTest {
     }
 
     private static Fixture fixture(boolean waitBeforeSelection) {
+        return fixture(waitBeforeSelection, new OpportunityJson.Obj(Map.of()));
+    }
+
+    private static Fixture fixture(boolean waitBeforeSelection, OpportunityJson.Obj arguments) {
         var operation = new OperationKey(M7CampaignPolicies.FACTION_QUERY);
         var base = PlanningFixtures.request(PlanningFixtures.snapshot(), List.of(), Set.of(operation));
         var request = new PlanningRequest(base.before(), base.source(), base.sessionId(),
                 Instant.now().plusSeconds(20), base.observations());
-        var command = PlanningFixtures.command(request, operation, new OpportunityJson.Obj(Map.of()));
+        var command = PlanningFixtures.command(request, operation, arguments);
         var draft = new OrdinaryPolicy.Draft("software-existing-query", "selected-original-query", "legal software proposal",
                 OrdinaryPolicy.Kind.ORDINARY, Optional.of(command), OrdinaryPolicy.Purpose.READ_ONLY,
                 Optional.empty(), new OpportunityJson.Obj(Map.of()));
@@ -743,6 +747,112 @@ void httpProgressPairsActualRetryAndSkipsExpiredRequest(@TempDir Path root) thro
             }
         } finally {
             System.setOut(originalOut);
+        }
+    }
+
+    @Test void familyLegalityAliasProjectionPreservesCommandAndReconstructs(@TempDir Path root) throws Exception {
+        var candidate1 = new OpportunityJson.Obj(Map.of("id", new OpportunityJson.IntegerValue(new java.math.BigInteger("18446744073709551615")), "name", new OpportunityJson.Text("UTF8-Test-Ünï")));
+        var candidate2 = new OpportunityJson.Text("mixed-order");
+        var candidate3 = new OpportunityJson.Bool(true);
+        var candidates = new OpportunityJson.Arr(List.of(candidate1, candidate2, candidate3));
+        var nativeLegalCandidates = new OpportunityJson.Arr(List.of(candidate1, candidate2, candidate3));
+        var legality = new OpportunityJson.Obj(Map.of(
+            "candidates", candidates,
+            "native_legal_candidates", nativeLegalCandidates,
+            "unknown_sibling", new OpportunityJson.Text("retain-me")
+        ));
+        var proof = new OpportunityJson.Obj(Map.of("family_marriage_legality", legality));
+        var args = new OpportunityJson.Obj(Map.of("planning_proof", proof));
+        Fixture fixture = fixture(false, args);
+        byte[] originalCommandBytes = ActionCodec.encodeCommand(fixture.command());
+        String originalBodySha = ActionCodec.bodySha256(fixture.command());
+        try (LocalModel model = new LocalModel()) {
+            model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+            fixture.planner().bindSelector(provider(model, root, Duration.ofSeconds(2)));
+            var selected = assertInstanceOf(PlanningResult.ActionSelected.class, fixture.planner().plan(fixture.request()));
+            assertSame(fixture.command(), selected.command());
+            assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+            assertEquals(1, model.calls.get());
+
+            var sent = FullJsonTree.parse(model.request.get().get("messages").get(1).get("content").textValue().getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+            assertTrue(sent.has("proposal_projection_schema"), "equal complete arrays should be projected");
+            assertEquals("xar.model-family-legality-alias/v1", sent.get("proposal_projection_schema").textValue());
+            var proposal = sent.get("proposal");
+            var projectedLegality = proposal.get("arguments").get("planning_proof").get("family_marriage_legality");
+            assertTrue(projectedLegality.has("candidates"));
+            assertTrue(!projectedLegality.has("native_legal_candidates"));
+
+            org.junit.jupiter.api.Assertions.assertArrayEquals(originalCommandBytes, ActionCodec.encodeCommand(fixture.command()));
+            assertEquals(originalBodySha, ActionCodec.bodySha256(fixture.command()));
+            assertEquals(originalBodySha, sent.get("body_sha256").textValue());
+            var originalCommand = FullJsonTree.parse(originalCommandBytes, ActionCodec.MAX_COMMAND_BYTES);
+            var originalLegality = originalCommand.get("arguments").get("planning_proof").get("family_marriage_legality");
+            assertEquals(originalLegality.get("candidates"), projectedLegality.get("candidates"));
+
+            var reconstructed = proposal.deepCopy();
+            ((ObjectNode) reconstructed.get("arguments").get("planning_proof").get("family_marriage_legality")).set("native_legal_candidates", projectedLegality.get("candidates").deepCopy());
+            assertEquals(originalCommand, reconstructed);
+
+            assertTrue(model.request.get().get("messages").get(0).get("content").textValue().contains("xar.model-family-legality-alias/v1"));
+            assertTrue(model.request.get().get("messages").get(0).get("content").textValue().contains(
+                    "proposal.arguments.planning_proof.family_marriage_legality.candidates"));
+        }
+    }
+
+    @Test void familyLegalityAliasNegativeCasesLeaveProposalUnchanged(@TempDir Path root) throws Exception {
+        List<OpportunityJson.Obj> negativeArgs = List.of(
+            // Unequal items
+            new OpportunityJson.Obj(Map.of("planning_proof", new OpportunityJson.Obj(Map.of("family_marriage_legality", new OpportunityJson.Obj(Map.of(
+                "candidates", new OpportunityJson.Arr(List.of(new OpportunityJson.Text("a"))),
+                "native_legal_candidates", new OpportunityJson.Arr(List.of(new OpportunityJson.Text("b")))
+            )))))),
+            // Unequal order
+            new OpportunityJson.Obj(Map.of("planning_proof", new OpportunityJson.Obj(Map.of("family_marriage_legality", new OpportunityJson.Obj(Map.of(
+                "candidates", new OpportunityJson.Arr(List.of(new OpportunityJson.Text("a"), new OpportunityJson.Text("b"))),
+                "native_legal_candidates", new OpportunityJson.Arr(List.of(new OpportunityJson.Text("b"), new OpportunityJson.Text("a")))
+            )))))),
+            // Missing one array
+            new OpportunityJson.Obj(Map.of("planning_proof", new OpportunityJson.Obj(Map.of("family_marriage_legality", new OpportunityJson.Obj(Map.of(
+                "candidates", new OpportunityJson.Arr(List.of(new OpportunityJson.Text("a")))
+            )))))),
+            // Empty arrays
+            new OpportunityJson.Obj(Map.of("planning_proof", new OpportunityJson.Obj(Map.of("family_marriage_legality", new OpportunityJson.Obj(Map.of(
+                "candidates", new OpportunityJson.Arr(List.of()),
+                "native_legal_candidates", new OpportunityJson.Arr(List.of())
+            )))))),
+            // Wrong type (object instead of array)
+            new OpportunityJson.Obj(Map.of("planning_proof", new OpportunityJson.Obj(Map.of("family_marriage_legality", new OpportunityJson.Obj(Map.of(
+                "candidates", new OpportunityJson.Obj(Map.of()),
+                "native_legal_candidates", new OpportunityJson.Obj(Map.of())
+            )))))),
+            // Wrong target type (string instead of array) while candidates is valid nonempty array
+            new OpportunityJson.Obj(Map.of("planning_proof", new OpportunityJson.Obj(Map.of("family_marriage_legality", new OpportunityJson.Obj(Map.of(
+                "candidates", new OpportunityJson.Arr(List.of(new OpportunityJson.Text("a"))),
+                "native_legal_candidates", new OpportunityJson.Text("not-an-array")
+            ))))))
+        );
+
+        for (int caseIndex = 0; caseIndex < negativeArgs.size(); caseIndex++) {
+            var args = negativeArgs.get(caseIndex);
+            Fixture fixture = fixture(false, args);
+            try (LocalModel model = new LocalModel()) {
+                model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+                fixture.planner().bindSelector(provider(model, root.resolve("family-negative-" + caseIndex), Duration.ofSeconds(2)));
+                var planned = fixture.planner().plan(fixture.request());
+                var selected = assertInstanceOf(PlanningResult.ActionSelected.class, planned,
+                        planned instanceof PlanningResult.ReadOnlyWait waiting ? waiting.reason() : planned.toString());
+                assertSame(fixture.command(), selected.command());
+                assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+                assertEquals(1, model.calls.get());
+
+                var sent = FullJsonTree.parse(model.request.get().get("messages").get(1).get("content").textValue().getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES);
+                assertTrue(!sent.has("proposal_projection_schema"));
+                assertEquals(args, fixture.command().arguments());
+                assertEquals(ActionCodec.bodySha256(fixture.command()), sent.get("body_sha256").textValue());
+                var proposal = sent.get("proposal");
+                var original = FullJsonTree.parse(ActionCodec.encodeCommand(fixture.command()), ActionCodec.MAX_COMMAND_BYTES);
+                assertEquals(original, proposal);
+            }
         }
     }
 
