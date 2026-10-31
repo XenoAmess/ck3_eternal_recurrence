@@ -21,6 +21,7 @@ import org.xar.ck3.control.application.advance.*;
 import org.xar.ck3.control.application.driver.HeldDriverObservationPort;
 import org.xar.ck3.control.application.effects.NativeEffectRegistry;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
+import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.contracts.ExactRef;
@@ -271,9 +272,23 @@ public final class RootAdvanceInfrastructureFactory {
                     // An incompatible ordinary scope throws above and cannot trigger fallback sampling.
                     context.adopted().authority().requireOutsideObservationScope(same);
                     var validation = ActionCommandScope.validationGuard(parent, same);
-                    if (validation.isPresent()) return sameHeld.retainedEntry(parent, validation.orElseThrow(), deadline);
+                    if (validation.isPresent()) {
+                        var guard = validation.orElseThrow();
+                        try { return sameHeld.retainedEntry(parent, guard, deadline); }
+                        catch (IllegalStateException missing) {
+                            var replayed = RootGuardEvidence.loadFrame(guard, context.archive().withSession(same), context.core().frameLoader());
+                            return sameHeld.retainedEntryReplay(parent, guard, deadline, replayed);
+                        }
+                    }
                     var entry = ActionChildPlanningScope.entryGuard(same, same.head(), parent);
-                    if (entry.isPresent()) return sameHeld.retainedEntry(parent, entry.orElseThrow(), deadline);
+                    if (entry.isPresent()) {
+                        var guard = entry.orElseThrow();
+                        try { return sameHeld.retainedEntry(parent, guard, deadline); }
+                        catch (IllegalStateException missing) {
+                            var replayed = RootGuardEvidence.loadFrame(guard, context.archive().withSession(same), context.core().frameLoader());
+                            return sameHeld.retainedEntryReplay(parent, guard, deadline, replayed);
+                        }
+                    }
                     return sameHeld.current(parent,deadline);
                 });
             }catch(IOException failure){throw new UncheckedIOException("actual held clock observation unavailable",failure);}

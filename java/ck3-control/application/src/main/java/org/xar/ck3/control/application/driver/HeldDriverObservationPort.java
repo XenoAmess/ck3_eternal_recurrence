@@ -193,6 +193,20 @@ public final class HeldDriverObservationPort implements AdvanceObservationPort {
                 && complete.observedAt().equals(guard.observedAt()), "retained entry guard crossed original connection/time");
         return frame(complete);
     }
+    /** Exact source-replayed entry DATA when this producer did not retain the guarded original. This grants no later observation. */
+    public Frame retainedEntryReplay(ActionCommand parent, GuardEvidence guard, Instant deadline, DriverObservationAssembler.Complete replayed) {
+        Objects.requireNonNull(parent);Objects.requireNonNull(guard);Objects.requireNonNull(deadline);Objects.requireNonNull(replayed);
+        StrictJson.require(Instant.now().isBefore(deadline), "retained entry replay deadline expired");
+        StrictJson.require(parent.before().equals(guard.observed()) && parent.source().equals(guard.source())
+                && parent.sessionId().equals(guard.sessionId()) && parent.operation().equals(guard.operation()),
+                "retained entry replay guard crossed parent before/source/session/operation");
+        requireParent(parent, replayed);
+        StrictJson.require(replayed.identity().equals(parent.before()), "retained entry replay differs from the exact original before identity");
+        StrictJson.require(replayed.connectionGeneration().equals(guard.connectionGeneration())
+                && replayed.observedAt().equals(guard.observedAt()), "retained entry replay guard crossed original connection/time");
+        StrictJson.require(replayed.originalEvidence().equals(guard.nativeEvidence()), "retained entry replay evidence differs from guard native evidence");
+        return frame(replayed);
+    }
     @Override public Frame current(ActionCommand parent,Instant deadline) {
         var complete=observeForAdvance(deadline);requireParent(parent,complete);
         return frame(complete);
