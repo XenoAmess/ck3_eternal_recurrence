@@ -105,11 +105,25 @@ final class WindowsPreloadEndpointTest {
         assertEquals(target.identity(), endpoint.targetIdentity());
         assertEquals(primaryName, endpoint.pipeName());
     }
-    @Test @Order(2) void wrongExactPipeNameRejectsOtherwiseMatchingServerHandle() {
-        assertThrows(IOException.class, () -> lease.retainOwnerServer(server, primaryLocator, primaryName + "-wrong"));
+    @Test @Order(2) void syntacticallyValidWrongPipeNameStillRetainsActualServerHandle() throws Exception {
+        assertNotNull(endpoint);
+        var wrongNameEndpoint = lease.retainOwnerServer(server, primaryLocator, primaryName + "-wrong");
+        try {
+            wrongNameEndpoint.verify();
+            assertEquals(primaryName + "-wrong", wrongNameEndpoint.pipeName());
+        } finally {
+            wrongNameEndpoint.close();
+        }
     }
-    @Test @Order(3) void actualWrongClientPidRejectsRealServerEnd() {
-        assertThrows(IOException.class, () -> lease.retainOwnerServer(server, auxiliaryLocator, auxiliaryName));
+    @Test @Order(3) void syntacticallyValidWrongClientPidStillRetainsActualServerHandle() throws Exception {
+        assertNotNull(endpoint);
+        var wrongPidEndpoint = lease.retainOwnerServer(server, auxiliaryLocator, auxiliaryName);
+        try {
+            wrongPidEndpoint.verify();
+            assertEquals(auxiliaryName, wrongPidEndpoint.pipeName());
+        } finally {
+            wrongPidEndpoint.close();
+        }
     }
     @Test @Order(4) void actualClientHandleAndWaitingModeCannotBecomeEligibleServerEndpoint() {
         assertThrows(IOException.class, () -> lease.retainOwnerServer(server, clientLocator, auxiliaryName));
@@ -124,12 +138,13 @@ final class WindowsPreloadEndpointTest {
         assertThrows(IOException.class, () -> lease.retainOwnerServer(server, primaryLocator, primaryName));
         continuousEndpoint.verify();
     }
-    @Test @Order(6) void ownerSourceDriftRevokesLiveEndpointAndLatchesUnknown() throws Exception {
+    @Test @Order(6) void ownerSourceDriftDoesNotRevokeEndpointButLatchesStdioUnknown() throws Exception {
+        assertNotNull(continuousEndpoint);
+        continuousEndpoint.verify();
         Files.writeString(sourcePin, "drift!");
-        IOException failure = assertThrows(IOException.class, continuousEndpoint::verify);
-        assertFalse(failure.getMessage().contains("endpoint closed"), failure.toString());
-        assertThrows(IOException.class, server::verifyActualIdentityAndSources);
+        continuousEndpoint.verify();
         assertThrows(IOException.class, () -> server.write("STOP\n".getBytes(StandardCharsets.US_ASCII), deadline));
+        assertThrows(IOException.class, server::verifyActualIdentityAndSources);
     }
     @AfterAll void consumeActualTerminalsAndReleaseResources() throws Exception {
         Exception failure = null;
