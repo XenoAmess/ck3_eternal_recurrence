@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `e5a38dff72`，136–139共10个生产叶、140两个生产叶、Crown既有空publication单hunk与Sentinel IDLE0两生产叶/两新方法已精确发表，复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进141稳定clock投影 `2251482931` 与timeline primitive分类 `4ad7e6ae59`，前序136–140、Crown既有空publication单hunk和Sentinel IDLE0均已准确发表。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -306,3 +306,15 @@ formal与sealed runtime前像有一处早先未同步差异：RootFacts仍保“
 必要owner实际baseline3src strict0/1.718552秒，仅两新方法1P1F/0skip/OS1/2.153404秒，reset idle0精确SentinelCodec47红；candidate只两changedprod strict0/1.278327秒，同两方法同JVM2P0F/0skip/OS0/1.778244秒。原JBoss LogManager初始化ERROR尾行保留，不改测试成功/进程0事实。此为明确source-derived Native reset/cancel字段与directtyped边界，不是完整publicClockStatusRead封包/registered-read或Game实跑；UNAVAILABLE speed0仍未修、不能称所有状态wire已齐，也未归因worker140失败。不重旧表、无本岗编测/HTTP/Maven/Game/S/MB操作，运行岗自然选择加载边界。证据 `D:/ck3-state/resume91-java-delivery/SENTINEL-IDLE140-ADOPTION.json`，上游manifest/ACTUAL原件保留。
 
 此前Crown空publication单hunk已独立提交 `9b225e0e9b`，仅1+/2-；已按runtime源审同步sealed基线，不造更早历史delta，不把它混进140主包或最新141 augmentation修复。
+
+## 141实际Java auxiliary角色与timeline primitive控制
+
+`2251482931` 单RootAdvanceRuntimeFacts改39+/4-：从当前Complete已有FullSnapshot的actual原生state实际key集合、facts.originalSemanticFields实际producer extras识别Javaaux，再扣除raw同名Native、NativeSemanticNormalizer owned字段与明确Driver派生业务字段。只去已证的augmentation，unknown/expected-only未知key、raw同名/null、原生资源/events与Driver命令历史保持；clock比较与有限失败诊断走同投影，无FullSnapshot旧路径仍strict。已读真实producer428–485、Assembler原始join/FullSnapshot103–169、Normalizer ownedFields及整精确diff；保140当前身份/Push、stamp/history/currentDriver/lease和Crown空publication既有合同。formal整个叶ignore-space-at-eol与sealed候选同，0writer语义改。
+
+140实际有限诊断是同Native SHA12、PT0S并显示8个Java capability/readcache key，未保完整pair、至多8名不能当全部差集。141两个模型均源拒0代码采用（首硬列日志8key、纠错只notes），owner实现；首strict漏OpportunityJson outer import红1/1.868秒保留，唯一import修后单prodstrict0/2.007秒、8source-derived投影checks0/.698秒。覆盖9个Javaaux（含诊断8名以外）、raw同名/unknown Native/规范资源/Driverhistory/Native-owned notice/未知expected-only/缺席存在，FullSnapshot lookup实际callback仍仅源审+strict，非actual140 heap/fullRoot。无D fixedprobe进CI、不重140旧11绿。证据 `D:/ck3-state/resume91-java-delivery/CLOCK141-ADOPTION.json`。
+
+`4ad7e6ae59` Catalog/Inputs两叶46+/1-，只在actual installed binding的preparation确为AdvancePrimitives、supports与archivedverifier存在时分类为TIMELINE_PRIMITIVE，保其它控制路由。消费原command的source-owned expected，零dispatch拒绝要真实RejectedBeforeDispatch；其它须原primitive settlement，clock要typedControlApplied/独立Status、pause要PauseConfirmed、speed/resume要原observerSchema的Applied，再原ActionEffects校验且不得eligibleAdvance。UNKNOWN、不符expected/Family终态不能借用控制分类，源审已对AdvancePrimitives真实supports/expected/prepare/observe闭合，不改它的Native发送或guard。
+
+复用owner两prodstrict0/2.299秒、direct16checks0/.977秒（7fixed/2dynamic真实Registry API、mimic/typedApplied/ControlApplied/缺custody/错schema/ACK/UNKNOWN），D固定332parent软件材料probe不入CI，0JUnit/fullRoot/livechild/Game。只有enum1hunk模型原样，实际binding/API/变量shadow/typedreceipt合同由owner修正，不报整模型采用。两formal叶与sealed候选ignore-space-at-eol同、0writer语义改，证据 `D:/ck3-state/resume91-java-delivery/TIMELINE140-ADOPTION.json`。
+
+运行岗已源审S/Z准确采两包，MB141实际BEGIN只RootFacts1+Catalog/Inputs2共3prod；Sentinel idle0未S采/未MB。此处记录时尚未收到141实际LOOP或Date结果，不把源码发表/8+16软件检查合为新游戏日。M0新的真实CI failure由现有workflow producer少3个env导致，M0两轮真实模型后仅3env修复交Native唯一writer；Java CiBootstrap/OracleAPI不动，本岗只给非MB build-tools缓存位置，不重复全CI或抢写工作流。
