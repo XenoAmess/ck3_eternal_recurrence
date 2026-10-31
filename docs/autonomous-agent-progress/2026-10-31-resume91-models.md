@@ -146,3 +146,23 @@ Root usage120四单审阅单列为REVIEWS91-USAGE120.json，不回写旧99任务
 | 120 | 1,213,368 | 342,785 | 142 | 342,927 | null，未报告 |
 
 这些数字来自两份原始SSE的reported usage，不由字节数估算token；cached缺字段保持null，不能当作0、缓存未命中或命中证据。也不从两个不同请求的耗时/大小推出缓存因果或能力上限。精确反链、原usage对象及每worker真实HTTP计数在`D:/ck3-state/model-dispatch91/RUNTIME-ORDINARY-REPORTED-USAGE120.json`；四项REVIEW与`D:/ck3-state/resume91-root/usage120/DELIVERY.json`另列源采用事实。本次仅只读已知记录，无新增HTTP、API探测、Native查询或CAS扫描。
+
+
+### resume91 rolling122 冻结运营、后到回执与运行采用
+
+固定快照为UTC 2026-10-31T01:07:39.156291+00:00，原件`D:/ck3-state/model-dispatch91/ROLLING122-010739.json`。源码候选累计507个逻辑任务/557次尝试，新地址192.168.1.11为391项/411次，截止当刻客户端在途4，历史区间峰8。同期metrics为running4、waiting0、KV0.0845959596；这些均为该时点观察，客户端POST区间不等于服务端同时推理数，也不表示容量上限或后续永久状态。后继BEGIN/END不回填此窗口。
+
+源审另有较早截止：`REVIEWS91-INCREMENT122.json`冻结至00:58:45.140819，新增审阅32任务/33尝试，分组为raw method/body5、owner纠正测试4、owner纠正源码3、拒绝18、部分研究分析1、未选用诊断原型1。旧118 cohort的10项unknown获得后到回执，仅追加补记；`REVIEWS91.json`、`REVIEWS91-INCREMENT118.json`与`REVIEWS91-USAGE120.json`三个基线未改。分组包含不同采用粒度，不能合成整稿成功率，HTTP终态也不能替代owner审阅。
+
+后到M4原件单列，未并入上述源审截止。329首384例Native差分0失败、核对44,051个完整40B backing slots；边界为原329到标准copy及opaque776，未执行原776/copy1653完整body。producer R2原样采用，core两轮拒绝后owner接管（相对被拒稿+41/−73行），consumer保留模型stream/codec并由owner修补+31/−40行。新776 producer R2经owner仅score-prefix修补+21/−47行，单源strict0/0.675秒、首次512例生成0/0.271秒、44,600 slots；809 producer R2零Java修改，单源strict0/0.685秒、首次384例生成0/0.293秒、65,312 slots。这两项是生成回执，尚非Native差分；776 core/窄forward截断及809 pairphase两轮源拒、owner core/wrapper接管成本分别保留，不授full809、正式部署或Game信用。原件为`D:/ck3-state/resume91-m4-native/merge329-single91/ACTUAL-ACCEPTANCE01.json`及`merge776-single91/INPUTS-ACTUAL03.json`、`sort809-single91/INPUTS-ACTUAL03.json`与各SOURCE-REVIEW。
+
+时间勘误按实际`EVENTS.jsonl`：`m4-merge776-inputs91`的ATTEMPT_END为01:04:51.813943，早于`m4-sort809-inputs91`的POST_BEGIN 01:05:07.144992；这两个首轮producer请求没有重叠。未poll标签或宣布将发不计在途。
+
+usage120后到正式采用回执为`D:/ck3-state/resume91-root/usage120/LIVE-ADOPTION122.json`：正式commit `6d7f6a74f6`已实际装载MB121，补充此前“尚未获回执”的历史时点。worker121/122各新增一次完整ordinary HTTP，与117–120已核实的7次合为9次；业务请求与上述源码候选数分别统计。
+
+| 运行样本 | reported prompt | completion | total | cached |
+| --- | ---: | ---: | ---: | --- |
+| 121 | 344,340 | 137 | 344,477 | null，未报告 |
+| 122 | 345,900 | 139 | 346,039 | null，未报告 |
+
+这些是实际运行的reported usage；缺cached字段不作0或命中判断。正式源码采用、MB装载、运行期HTTP已分别有回执，usage本身授予的Native提交信用仍0，不外推APPLIED、SAVE或新增游戏日。本文档编写仅读取上述已有原件，未额外新增模型POST或编测。

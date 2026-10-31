@@ -180,3 +180,12 @@ M0 portable04/05只部分模型配置/生成器加owner修正被采用；其后�
 这些数字来自两份原始SSE的reported usage，不由字节数估算token；cached缺字段保持null，不能当作0、缓存未命中或命中证据。也不从两个不同请求的耗时/大小推出缓存因果或能力上限。精确反链、原usage对象及每worker真实HTTP计数在`D:/ck3-state/model-dispatch91/RUNTIME-ORDINARY-REPORTED-USAGE120.json`；四项REVIEW与`D:/ck3-state/resume91-root/usage120/DELIVERY.json`另列源采用事实。本次仅只读已知记录，无新增HTTP、API探测、Native查询或CAS扫描。
 
 四个源码候选的真实compiler/行为失败及部分采用成本见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)，并未据HTTP成功授运行装载或游戏推进信用。
+
+
+### resume91 rolling122 冻结运营与采用补记
+
+`D:/ck3-state/model-dispatch91/ROLLING122-010739.json`固定UTC 2026-10-31 01:07:39窗口：源码候选507任务/557尝试，新IP391/411，当刻客户端在途4、历史区间峰8；同期metrics running4/waiting0/KV0.0845959596。这些是冻结观察，不能推出服务端并行推理数、容量上限或缓存因果。源审的另一个截止为00:58:45：`REVIEWS91-INCREMENT122.json`新增32任务/33尝试，raw method/body5、owner纠正测试4、owner纠正源码3、拒绝18、部分分析1、未选用诊断1。旧118的10项unknown仅补后到回执，三个既有review基线未改，不合成统一成功率。
+
+M4有限实际对照保留owner成本：329 producer R2零修改，core由owner接管+41/−73、consumer局部修补+31/−40后，首384例Native差分0失败/44,051完整40B slots；原776/copy1653 body不在此验收内。后到776 producer R2经owner score-prefix修补+21/−47，strict0后首次生成512例/44,600 slots；809 producer R2原样strict0后首次生成384例/65,312 slots。后两项尚无Native差分信用，截断、源拒及owner core/wrapper接管成本不能并为模型完成full809。实际EVENTS还纠正了重叠说法：776inputs END01:04:51.813943早于809inputs BEGIN01:05:07.144992，两个首轮producer请求未重叠。
+
+后到`D:/ck3-state/resume91-root/usage120/LIVE-ADOPTION122.json`确认正式`6d7f6a74f6`已装载MB121。worker121/122各一次完整ordinary HTTP，与117–120的7次合为9次已知业务请求；reported usage依次为344340/137/344477与345900/139/346039，cached均null未报告。源码候选、正式采用、运行期HTTP分记；这些usage不授Native提交或游戏推进信用。精确原件与M4范围见[resume91运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)，未由这些新样本提出能力上限。

@@ -96,3 +96,14 @@ Root Stop4四项真实审阅已纳入：生产首稿为部分采用，真实stri
 Root usage120四单审阅单列为REVIEWS91-USAGE120.json，不回写旧99任务/100尝试冻结cohort或原transport SUMMARY。生产首稿真实strict1/1.635秒为漏BigInteger import；compiler01原样import纠正后strict0/1.917秒、owner生产语义修改0。测试首编7错来自owner classpath漏既有PlanningFixtures，不计模型源码失败；补实际依赖后编译0。首行为1P1F的真实NoSuchFileException来自模型虚构attempt路径，保留失败；fixture02修真实文件引用及负例后，owner再补单次调用、exact-zero、两usage对象替换三组断言，最终2新method同JVM2P0skip/7次软件HTTP、Java0/2.131秒。此时共享采用/装载尚未获回执，不预授loaded、真实运行usage捕获或Game动作信用。
 
 实际普通运行样本另读：119末次request1,207,885B对应reported341236prompt/142completion/341378total；120的1,213,368B对应342785/142/342927，两cached均未报告null。这里是运行输入与服务报告，不是源码实际改写规模，不据此给通用能力上限或缓存结论；详细精确原件反链和7次真实HTTP计数见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)。
+
+
+### resume91 rolling122 采用粒度与有限范围补记
+
+`D:/ck3-state/model-dispatch91/REVIEWS91-INCREMENT122.json`冻结源审至UTC 2026-10-31 00:58:45.140819，新增32任务/33尝试：raw method/body5、owner纠正测试4、owner纠正源码3、拒绝18、部分研究分析1、未选用诊断原型1。旧118的10项unknown仅增加后到回执，三个既有review基线保持不变。方法/整类、局部采用、研究输出与整稿拒绝分别记，不能据这些分组计算统一成功率或新的通用能力上限。
+
+M4的真实范围分别是：329 producer R2零Java修改，core两轮被拒后owner接管+41/−73，difference consumer保留模型stream/codec后由owner修+31/−40，首384例Native差分0失败/44,051完整40B slots，仅覆盖原329到标准copy和opaque776边界。后到776 producer保留R2主体并由owner修score-prefix +21/−47，strict0/首次512例生成0、44,600 slots；809 producer R2零Java修改，strict0/首次384例生成0、65,312 slots。776整core及窄forward截断、809 pairphase两轮源拒和owner core/wrapper接管仍单列；producer生成不等于算法/Native验收，不计full809、正式部署或Game。证据为M4三个目录的`ACTUAL-ACCEPTANCE01.json`或`INPUTS-ACTUAL03.json`及SOURCE-REVIEW，不以HTTP stop替代采用。
+
+运营固定在`ROLLING122-010739.json`的01:07:39窗口：源码507任务/557尝试、新IP391/411、当刻客户端在途4/历史峰8；同期metrics running4/waiting0/KV0.0845959596，不能永久化或外推服务容量。两producer的实际EVENTS为776inputs END01:04:51.813943、809inputs BEGIN01:05:07.144992，前者已经结束，撤回这两次请求重叠的说法。
+
+后到`D:/ck3-state/resume91-root/usage120/LIVE-ADOPTION122.json`确认正式`6d7f6a74f6`装载MB121；121/122新增两次完整ordinary HTTP，与117–120七次合为九次已知业务请求。两次reported usage为344340/137/344477和345900/139/346039，cached均未报告null，不作缓存结论。正式采用和实际装载现在有独立回执，usage仍不授Native提交/APPLIED/游戏日信用。详见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)及[可行性](local-model-executor-feasibility-2026-10-28.md)；未以输入规模或有限行为结果新增能力结论。
