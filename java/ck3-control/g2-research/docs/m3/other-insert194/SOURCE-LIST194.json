@@ -1,0 +1,146 @@
+{
+  "schema": "m3.other-insert194-portable-source-list/v1",
+  "package_number": 58,
+  "new_sources": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertC3A5F0.java",
+      "kind": "main",
+      "bytes": 941,
+      "sha256": "cc2c7d8acd1c72052e5338e341f54b1c1e9eab68e702823812c8f7eb865a718f",
+      "changed_for_delivery": false
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertCallerBinding194.java",
+      "kind": "main",
+      "bytes": 3495,
+      "sha256": "1e76745e6951ffc85800c3bd2de432a647dbaaaad8f99a8d2ce3a75d5b571b18",
+      "changed_for_delivery": false
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/other194/OtherInsertWitness194.java",
+      "kind": "manual",
+      "bytes": 23038,
+      "sha256": "d80cc66a73857fb33c7278d7922046703ba3d6a42c970bc4eb79512578408375",
+      "changed_for_delivery": false
+    }
+  ],
+  "existing_source_closure": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java",
+      "actual_local_raw": {
+        "bytes": 2020,
+        "sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251"
+      },
+      "formal_worktree_raw": {
+        "bytes": 2020,
+        "sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251"
+      },
+      "git_HEAD_blob": {
+        "bytes": 2020,
+        "sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251"
+      },
+      "actual_raw_equals_worktree_raw": true,
+      "actual_raw_equals_git_blob": true,
+      "CRLF_to_LF_only_comparison_equal": true,
+      "Git_HEAD": "0d86fb8aa9c59c6f38a11409e0d9db8dcc271199"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsertC3B960.java",
+      "actual_local_raw": {
+        "bytes": 10777,
+        "sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4"
+      },
+      "formal_worktree_raw": {
+        "bytes": 10777,
+        "sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4"
+      },
+      "git_HEAD_blob": {
+        "bytes": 10777,
+        "sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4"
+      },
+      "actual_raw_equals_worktree_raw": true,
+      "actual_raw_equals_git_blob": true,
+      "CRLF_to_LF_only_comparison_equal": true,
+      "Git_HEAD": "0d86fb8aa9c59c6f38a11409e0d9db8dcc271199"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/map191/MapInsertWitness191Api.java",
+      "actual_local_raw": {
+        "bytes": 1070,
+        "sha256": "4a500e595cab32d3ccf3c4011e47795a607f9013870d837645edb22d386fce0b"
+      },
+      "formal_worktree_raw": {
+        "bytes": 1070,
+        "sha256": "4a500e595cab32d3ccf3c4011e47795a607f9013870d837645edb22d386fce0b"
+      },
+      "git_HEAD_blob": {
+        "bytes": 1070,
+        "sha256": "4a500e595cab32d3ccf3c4011e47795a607f9013870d837645edb22d386fce0b"
+      },
+      "actual_raw_equals_worktree_raw": true,
+      "actual_raw_equals_git_blob": true,
+      "CRLF_to_LF_only_comparison_equal": true,
+      "Git_HEAD": "0d86fb8aa9c59c6f38a11409e0d9db8dcc271199"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "actual_local_raw": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8"
+      },
+      "formal_worktree_raw": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8"
+      },
+      "git_HEAD_blob": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8"
+      },
+      "actual_raw_equals_worktree_raw": true,
+      "actual_raw_equals_git_blob": true,
+      "CRLF_to_LF_only_comparison_equal": true,
+      "Git_HEAD": "0d86fb8aa9c59c6f38a11409e0d9db8dcc271199"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "actual_local_raw": {
+        "bytes": 2735,
+        "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539"
+      },
+      "formal_worktree_raw": {
+        "bytes": 2735,
+        "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539"
+      },
+      "git_HEAD_blob": {
+        "bytes": 2655,
+        "sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a"
+      },
+      "actual_raw_equals_worktree_raw": true,
+      "actual_raw_equals_git_blob": false,
+      "CRLF_to_LF_only_comparison_equal": true,
+      "Git_HEAD": "0d86fb8aa9c59c6f38a11409e0d9db8dcc271199"
+    }
+  ],
+  "closure_count": 8,
+  "new_source_count": 3,
+  "existing_source_count": 5,
+  "formal_paths_are_repository_relative": true,
+  "raw_source_and_Git_blob_hashes_are_distinct_fields": true,
+  "old_Book_Host_required": false,
+  "classroots_required_for_portable_source_closure": false,
+  "publication_hash_scope": "Original source hashes retain first-compile physical input identity; separate publication_git_LF map records Git LF/line-whitespace projection. APIs, execution and expected literals are unchanged. Existing physical CRLF versus Git LF dependencies remain separately identified.",
+  "publication_git_LF": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertC3A5F0.java": {
+      "bytes": 877,
+      "sha256": "a0fd9bec81094e2adf639e9a1177becb06527749ba70f8f6f3c5b215d311cfef"
+    },
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertCallerBinding194.java": {
+      "bytes": 3495,
+      "sha256": "1e76745e6951ffc85800c3bd2de432a647dbaaaad8f99a8d2ce3a75d5b571b18"
+    },
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/other194/OtherInsertWitness194.java": {
+      "bytes": 23038,
+      "sha256": "d80cc66a73857fb33c7278d7922046703ba3d6a42c970bc4eb79512578408375"
+    }
+  }
+}

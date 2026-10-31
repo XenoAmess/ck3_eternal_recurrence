@@ -1,0 +1,119 @@
+{
+  "schema": "m3.other-insert194-portable-result/v1",
+  "package_number": 58,
+  "status": "FIRST_TWO_PRODUCTION_AND_ONE_WITNESS_FOUR_GROUPS_PASS",
+  "production_first": {
+    "begin": "2026-10-31T21:29:26.108635+00:00",
+    "end": "2026-10-31T21:29:26.638481+00:00",
+    "seconds": 0.5298429001122713,
+    "exit": 0,
+    "cached191core_not_recompiled": true,
+    "Native_Game": false
+  },
+  "witness_first_stages": [
+    {
+      "stage": "FIRST_ONE_NEW_WITNESS_STRICT194",
+      "begin": "2026-10-31T21:31:03.877103+00:00",
+      "end": "2026-10-31T21:31:04.743401+00:00",
+      "seconds": 0.8662981996312737,
+      "exit": 0
+    },
+    {
+      "stage": "FIRST_FOUR_GROUPS194",
+      "begin": "2026-10-31T21:31:04.744081+00:00",
+      "end": "2026-10-31T21:31:05.295684+00:00",
+      "seconds": 0.5516094001941383,
+      "exit": 0
+    }
+  ],
+  "observations": {
+    "groups": 4,
+    "Memory": 29,
+    "ports": 10,
+    "total": 39,
+    "frame_Memory": 29,
+    "frame_ports": 2,
+    "delegate_ports": 8,
+    "final_byte_cells": 10
+  },
+  "new_source_hashes": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertC3A5F0.java",
+      "bytes": 941,
+      "sha256": "cc2c7d8acd1c72052e5338e341f54b1c1e9eab68e702823812c8f7eb865a718f"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertCallerBinding194.java",
+      "bytes": 3495,
+      "sha256": "1e76745e6951ffc85800c3bd2de432a647dbaaaad8f99a8d2ce3a75d5b571b18"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/other194/OtherInsertWitness194.java",
+      "bytes": 23038,
+      "sha256": "d80cc66a73857fb33c7278d7922046703ba3d6a42c970bc4eb79512578408375"
+    }
+  ],
+  "source_hashes_preserved": true,
+  "model": {
+    "actual_POSTs": 4,
+    "stop": 3,
+    "length": 1,
+    "transport_retries": 0,
+    "phase_peak": 2,
+    "current_inflight_at_seal": 0,
+    "core": "R1 executable unchanged; owner removed incorrect comments only. Not whole decoded raw adoption.",
+    "binder": "R1 complete decoded raw source; zero owner source edits.",
+    "witness": "R1 length whole discarded. R2 frame DATA partially adopted with three owner corrections; owner foundation/run/delegates. Not a whole raw model Test.",
+    "no_R3": true,
+    "witness_independence": "New194 bodies/candidates/results unseen until witness source freeze; packaging later reads frozen sources."
+  },
+  "receipt_references": [
+    {
+      "local_receipt": "DELIVERY194.json",
+      "bytes": 1582,
+      "sha256": "e3f7cde503b24b19e3b5a03071b68867444ff90de703e30b3571542a17229293",
+      "copied_into_patch": false
+    },
+    {
+      "local_receipt": "RESULT194.json",
+      "bytes": 2310,
+      "sha256": "3e76f805b8a14a0243bbafd5aae8524dad82f0e33cf1005412f1345d78f945b1",
+      "copied_into_patch": false
+    },
+    {
+      "local_receipt": "ACTUAL-SUMMARY194.json",
+      "bytes": 4367,
+      "sha256": "a7536cb8cb10771090c76417d9a0ab29e8ee3e6986022a4d9b0c67dd07bdcd50",
+      "copied_into_patch": false
+    },
+    {
+      "local_receipt": "MODEL-OUTCOMES194.json",
+      "bytes": 6244,
+      "sha256": "e9ad274e079570c9c64eeec5173bf77f1ad09fdf82627f74cf89603dcf375cc0",
+      "copied_into_patch": false
+    },
+    {
+      "local_receipt": "verification-prod194/ACTUAL194.json",
+      "bytes": 808,
+      "sha256": "dd0662a9be239bdd5398f87b801268666f5f81299195914c51f30c36f0212840",
+      "copied_into_patch": false
+    },
+    {
+      "local_receipt": "verification-witness194/ACTUAL194.json",
+      "bytes": 824,
+      "sha256": "53b77ceb012a771ed5d1e3982ec89eb006f12d66a1cbad4abd9d22b4216edf4d",
+      "copied_into_patch": false
+    }
+  ],
+  "limits": [
+    "Four finite scripted groups; 39 observations = 29 Memory + 10 ports, not 39 independent semantic proofs.",
+    "The bound insert callback is void, so this consumer does not dynamically observe the wrapper long return.",
+    "The frame scenario observes child growth and self-recursion, not a second insertOther callback; deeper other-frame recomputation has source review only.",
+    "Ten final byte cells are checked. Delegate exception transparency is not forced by this witness.",
+    "No old 191 Book/Host or green cases are run. No hardware 128-bit atomicity, CPU ABI, MXCSR, EH, Native, natural game trigger or Game evidence.",
+    "Source-only delivery is not a Main/runtime prerequisite. No POM/CI, binary/classroot or local evidence is added."
+  ],
+  "delivery_new_compile_run": false,
+  "old_green_repeated": false,
+  "formal_status": "PARENT_REVIEWED_MATURE_SOURCE_READY_PENDING_FORMAL"
+}
