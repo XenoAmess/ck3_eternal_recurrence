@@ -304,3 +304,18 @@ M1 新 actual183 sentinel→185(15B)→186(72B) 是新消费边，不是旧 case
 P0 Service186 两真实实现请求 stop23.999/10.257秒，reported89260+1810、104464+1281、cached均null；首callback/query形状部分采用并由owner修 binding/有限窗口，第二小helper的Head恒真式与遗漏校验源码拒绝，helper由owner完整接管。首次单Service strict0/1.723207秒后，owner origin匹配改为实际 acceptsGuard，必要单叶增编0/1.544962秒；首回执保留。该 source/strict 不等于原 SAVE 的 SAVE_CONFIRMED 提交或 Seed/实机成功，仍由唯一运行 owner按实际回执计。
 
 自然 checkpoint 仅复用现 reader 一次 metrics GET。固定18:34:04.862634–18:44:04.862634Z：21个新首POST任务、22实际POST、24END（21stop/2length/1reset），窗口真实客户端峰5于18:42:45.106397Z；采样源码0，随后服务running0/waiting0/KV0，持续12–16/24–32仍未达。source扫描18:44:03.532770–04.809465，metrics04.809475–04.860171，非原子。新补 Root proof/3route/3video、M5189和M3 main178四私有目录的12条实际 EVENTS 指针，无新模型调用、benchmark、CAS扫描或旧绿重测；原两未闭中断区间保未知结束时刻，不计当前在途。窗口原件 `WINDOW128-184404.json`。
+
+
+## 2026-10-31 19:57Z：孤儿材料、跨进程摘要、两条消费边与真实窗口
+
+唯一 endpoint 仍为 `http://192.168.1.11:8080/v1` / `qwen38-coder`，无旧 IP 回退。189 的 Store 候选实际 stop17.658秒、reported78961+1276，模型 capture 主体加 owner 捕获入口 Head/读前见证核验后，单叶首 strict0/2.003663秒、正式2c3357545e；Main189确实越至原101180B材料与当次 expected 的严格字节守卫并拒绝，没有重 SAVE 或修改孤儿材料，也没有 SAVE_CONFIRMED 信用。
+
+190 先做真正有限 DATA 定位。模型 stop38.635秒、182836+1738，但输出文件名与蓝图，Java源码采用0；owner 窄程序首 strict0/1.290555秒、首 run0/.830101秒。实际 metadata101180B与 typed pair/session/proof/current495head重建逐字段及整份字节完全相同；旧 cycleAuthority/checkpointBinding 两摘要只是复制，报告明确不能冒当次实际 expected 或私有资格。Root另以同四 ExactRef 两独立 JVM 复现 raw 摘要不同，确认 Map.of 迭代序进入未排序编码；R1候选错绑键与引用拒绝，R2方法原样采用，独立144编码集合、旧周期唯一匹配、改ref负例和跨进程一致均实际通过。完整原件校验后同一个 source candidate 必须同时匹配旧 cycleAuthority 与 binding，不能任意分别挑两个摘要。
+
+Store190 真消费任务 stop13.758秒、72940+494，两个模型 hunk 主体加 owner 修 byte[].equals 身份比较；六个实体字段按同完整 parser 全等，两个旧摘要经实际历史周期验证和真实新七参联合 verifier 验证后才能登记本次新见证。唯一变动源首 strict0/1.532464秒，正式2fa11fbc3d03bacd1b53fa6013ee7276fa373efd。原 metadata/FileWitness 未重写，旧 capture 身份没有被追认。Main190已实际越过该链，19:42:54 END1于下游错误沿用原 SAVE 派发 deadline；这不是提交保存完成。
+
+191 两条真正新消费任务实际19:45:46.863/.864并行 POST，13完整当前源179945B：Inputs stop11.106秒/38057+174，三个 hunk 原样采用；Historical stop16.064秒/38108+1065，主体加 owner 私有 proof/material/head/witness 精确 join 和受检 IO 解包。前者移除两处错误要求保存332帧等于较早321语义帧的等式，保真实 private/actual-material 验证，并只给已合格完整 SEM 使用有限64MiB parseComplete；后者用原归档 canonical SAVE guard/source/pins，在同一 borrowed writer 下调用真正 inputs.saved，不将旧 Native 包当当前 HELLO，不借旧 dispatch deadline 授现在的预算。两源首 strict0/1.810217与1.702847秒，连同 Root 第三 caller 正式063c86b7542dae054929216865fe55152ee8f7e3；Main191实际19:53:58 START，最后收到的19:55:55观察仍在途，后继终态待运行岗回执，不授 SAVE_CONFIRMED/日期信用。三组任务服务 cached tokens 均null，无缓存收益结论。
+
+背景183完整397B三角色共5实际 POST、3stop/2length，复杂 core 两稿拒，Book 两轮长度截断整弃，未第三投；first Host decoded源码原样采用。owner core与从未读 target 的独立 owner Book，首次8显式源 strict0/.790353秒、4新场73全局事件/6比较端口0/.408825秒，19:52:42结束；无旧绿/原Native/Game信用。M2 265 Host主体加 owner imports/Book入口/println机械修，Book两坏后由已读写 target 的 parent owner 手推，明确 nonblind，首次3场29事件通过；271 Host部分采用加 owner 有界校验，Book两坏后由未读 target/结果的 owner 独立写，首次2场10事件/2端口通过。两组模型 Book 请求均未给新生产候选或运行结果，但265后继owner书不冒 blind；复杂方法或 Native owner 最终通过，不追授被拒模型整稿。
+
+自然采样仍只一次 metrics GET。固定19:28:05.818512–19:38:05.818512窗口，后来补入实际存在但迟注册的 M4 startup-review 私目录，严格按同cutoff重算为9实际POST/9END全stop、客户端峰2、当刻源码0；原8计数保留并明确是范围漏项。修订原件 WINDOW128-193805-SCOPE-CORRECTED.json，原193805未覆盖、无额外GET/POST。源码扫描19:37:59.389776–19:38:05.757100，服务单GET05.757117–05.814740为running0/waiting0/KV0，非原子且不是后续时刻实况。M2新两任务19:38:35、M6后继短峰5不回填该窗口，持续12–16/24–32目标仍未达到。完整源齐的真实独立需求直接由 owner 发出；本岗279在零POST时明确退回M2后，它已同批真实派两条，不能让 P0 或中央索引把准备/审阅串成 HTTP 前置。

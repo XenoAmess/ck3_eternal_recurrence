@@ -188,3 +188,19 @@ ABI 答对不能替后继实现或独立 literal 预授正确。M0 同一原28B 
 校验代码要核它是否真的比较独立事实。Service186 纠稿将 Head 检查写成条件两侧都是当前 digest 的恒真式，源码审拒；owner 改为捕获原 Head 后比较前后真实值，并核当前 canonical 原件。独立 witness 也须拒 pass/skip 占位、把读值固定当0、拿同一对象/值自比、吞异常返回成功，以及没有调用目标的手抄模拟。编译通过不能证明这些检查有效。继承 source 合同时用它明确提供的匹配方法，不能凭 record.equals 推两个不同来源角色等价；本岗过严 origin.equals 已按真实 acceptsGuard 合同修订，作为 owner 修改记录。
 
 真实终态时间优先于尚未 poll 完的 tool cell 或 worker 标签。M4 186 两份 Book 的实际 HTTP 区间并不重叠，六任务七次传输实际峰1，先前“并行”已更正且没有补 POST。完整源齐的不同未写角色应直接同批发出，不能把错峰封包说成 HTTP 高并发。M1 新 actual183→185→186 的窄 consumer 在完整 parent 源与固定原件下，一次候选正文/字面值可用，仅 imports 机械修后首次通过；与184两份完整 stop 仍漏唯一新桥并不矛盾，不从短答、完整前缀或某个成功包推通用可靠性。
+
+
+## 2026-10-31 19:57Z：跨进程摘要与真正未写的交付边界
+
+### 2026-10-31 19:37Z：有序字段摘要、置换实现与跨进程验证
+
+- 为模型提供真实编码器与容器构造器，不能只说“JSON 哈希”。本次 `NativeSemanticEvidenceVerifier` 把 `Map.of` 交给保插入序的 `OpportunityJson.Obj`，再由不排序的 `DriverJson.encode` 计算摘要。相同四份 ExactRef 在两个独立 JVM 中得到不同摘要；当前进程重算通过不能证明重启可恢复。涉及持久身份时，用独立进程和真实最小材料验证确定性。
+- 模型第一稿把“改变键的输出顺序”错写成“改变键与引用的对应关系”，且漏了真实导入。编译不能查出前一个语义错误。按真实键固定对应引用后第二稿方法原样采用；以独立 Python 生成的全部 144 个编码集合、实际旧周期摘要唯一匹配、改动引用的负例及两个 JVM 的同序集合验证。有限编码等价只能在完整原件校验之后使用，不能把 DATA 哈希候选当作私有 issuer、SAVE 或 Game 许可。
+- 本次 Root 两次真实模型请求分别为 2026-10-31T19:34:28.384367Z / 6.390 秒与 19:35:04.610721Z / 7.732 秒，后者方法原样采用；实际 cached tokens 均为 null。候选完成、严格编译、正式采用、冷恢复与日期推进仍分别记录，不因 HTTP200 或离线 DATA 通过授运行成功。
+- 本次 Root 首个纯 DATA 复现编译漏建 empty-source 目录，触发 -Werror 路径警告；这是 owner 准备错误。补目录后相同源码通过，不能记成模型源码失败。初次 PHASE0 文件被纠正脚本复用的限制已在 REPRO-PREP-ERRATUM.json 明示，不能声称旧 stderr 原件仍完整保留。
+
+源码预检还要核返回内容是否就是请求的实现，以及比较是否比较了值。roundtrip190 请求完整 Java，却返回 source=文件名和分步蓝图，整份不能授 Java 源码采用，窄诊断由 owner 完成。Store190 则在两个完整实际 JSON 树已通过同一 FullJsonTree parser 归一后，把重新 encode 的 byte[] 用 .equals 比较，实际会比较数组身份；owner 改为对应 JsonNode 值比较，故是部分采用。bytes 内容需要 Arrays.equals；比较树时还要保完整数字和 DecimalToken 合同。不能因候选可编或 stop 就略过这些语义检查。
+
+POST 前在限定正式源码与 delivery 中按实际 RVA、global、FQN 查已存在的 producer，并区分 raw body、API 变体与真正未接的 consumer。held 文件名没命中或其他 owner 尚未回信，都不证明没有实现。M5 190 的七次实际请求后来确认重复已有 Notify181 机制，另一重复99B算法在零 POST 即撤回，原请求和成本保留，不计新机制信用；后继真实协议桥另计。不要为洗掉重复成本补请求或重跑绿例。
+
+已有正确的 Memory、guard、forwarding 基础可以完整交给模型，只请求本次仍未写的 dispatcher 方法。M5 192/195 的两个新 run 方法分别在必要新场景中实际采用，195 方法仅 211 输出 token；196 的新薄装配也实际采用。这是具体软件正例，与复杂 Book 两轮截断或语义拒绝并列；任务、输入和输出规模同时不同，不能当 A/B、速度或通用能力结论，也不为已由 owner 闭合的 Book 补第三轮。
