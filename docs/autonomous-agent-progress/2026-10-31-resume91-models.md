@@ -328,3 +328,12 @@ Store190 真消费任务 stop13.758秒、72940+494，两个模型 hunk 主体加
 新消费边另行模型先行：actual379065B/06CB 的父178 opaque端口接新188；绑定首POST20:19:43.240592→54.038381、stop10.797秒、TTFT1.646秒、reported9779+1700/cache null，完整6241B Java原样采用。独立新run方法POST20:23:57.282840→24:06.336604、stop9.053秒、TTFT3.394秒、21688+801/cache null，3146B方法原样，其余测试类为owner机械复用foundation，不能授整Test原样。两请求实际无重叠、局部峰1。绑定加必要当前接口首严格0/.672223秒；只1新Test首严格0/.824855秒、首次新绑定消费10step/gs58同Memory全64一次转发/foreign拒绝且cursor不增三项0/.128349秒。没有重跑旧188三场；此短分支不访问scratch或moduleBase，-0xB0映射仍仅源审，不能由这10step证明。交付 `hash-insert188/caller-bind188/DELIVERY-BINDING188.json`，正式阶段待唯一Java写者，软件通过不冒Game信用。
 
 复用既有reader一次固定窗口 `[20:16:44.296945,20:26:44.296945]Z`：16真实POST、15实际END（stop11/length4），客户端峰6于20:25:50.468801；cutoff源码在途1，仅map-rehash190 Book。源码扫描20:26:42.631824–44.245207，随后唯一metrics GET20:26:44.245223–44.293705读running2/waiting0/KV约5.303%；这是分时非原子观察，服务全局请求不归因本机源码。持续12–16/24–32仍未达，不用累计调用或瞬间峰值替代，不据此给服务定容量上限。报告 `WINDOW128-202644.json`；Root192、视频191、M3私有host/190及M5私有197真实事件目录已补指针，0重放/0统计POST/不回写旧19:38冻结窗口。
+
+
+## resume91 21:22Z：有限候选、owner 输入勘误与首次验证
+
+同一1.11源码通道，M3 C3B960 的完整814B与已发表 C39C60 同长却不同合同。191实际6逻辑请求/7POST/7END，5stop/1length/1transport reset，局部峰3、该组已0在途。core首稿错捕获时点、漏三次清零、沿旧方法多写字段、global16读取次序；R2五组 exact edits 唯一装配后可执行码0 owner改。首次4源严格0/0.663586秒，随后仅3新witness源严格0/0.955610秒、首次3场0/0.728456秒：64有序步骤、3受控端口、22final cells；3return+3耗尽检查另计。Book两稿均源拒，partial流丢弃后原REQUEST有限重试仍只算第二语义轮；所选Book是独立owner字面数据，Host是机械旧foundation+新端口，不给模型 wholehost 信用。Host R2占位回声有真实同样例输入，责任勘误保；本包正式6917b22a755e798277b636203cc8a213c64efeda，0Native/Game信用。
+
+M2 新消费增量307、319各两个Book均4POST4stop/无传输重试，原有字面台本与 owner 固定可达输入复用，不能称全新 whole blind oracle。307 R2两新块原样采用，首次两组合187/285步骤、23/24端口全0。319 R2仍把释放前 oldbuffer/vtable 读序颠倒并多读[vtable]；owner各一处小hunk修后首次两组合211/309步骤、23/24端口全0，记partial而非raw。没有重编其已绿生产源，也没有为文档新增HTTP或复跑。各标准REVIEW/独立LATER-ACTUAL319与DELIVERY保存来源和首次回执，原拒稿不追认采用。
+
+Root P0196 的真实故障是对已验证后态重新编码后只做 CAS referenceOf，所算key的payload/commit均不存在；现有只读lookup不负责发布。单leaf模型21:15:54.752→21:16:04.662、stop9.909秒/TTFT8.923秒、reported57861+143/cache null，提出使用既有 producer preserveMaterial。owner补完整材料角色与ref长度/SHA，首严格0/2.069757秒；Root随后发现同叶LIFE回放仍以默认1MiB读实际约5.1MiB，owner仅该角色改显式fullMaterial+exact+64MiB解析，默认小材料合同保留，必要严格0/1.874518秒。源码与编译成立不授当前worker恢复或Game进展；运行期真实结果另由Runtime记。新样例/元数据原件审计均只消费既有材料，无探测POST/GET。
