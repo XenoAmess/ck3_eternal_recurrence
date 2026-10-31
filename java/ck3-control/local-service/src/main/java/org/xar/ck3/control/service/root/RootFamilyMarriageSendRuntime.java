@@ -186,8 +186,7 @@ public final class RootFamilyMarriageSendRuntime implements ActionPorts.Preparat
                             FamilyMarriageSendReads.FreshBasis.from(original.basis(), original.freshReads())),
                     command.deadline());
             var result = context.reads().read(same, queries.preparationContract(), readRequest);
-            if (!(result instanceof PlanningReadResult.Known<FamilyMarriageSendReads.Observation> known))
-                throw new IllegalArgumentException("actual independent marriage before storage/preparation read is unavailable");
+            var known = requireKnownMarriageRead(result);
             requireSendable(command, known.value());
             StrictJson.require(FamilyMarriageSendReads.materializedSender(known.receipt())
                     == ((FamilyMarriageSendReads.Prepared) known.value().prepared().orElseThrow()).roles().actor(),
@@ -229,6 +228,26 @@ public final class RootFamilyMarriageSendRuntime implements ActionPorts.Preparat
 
     private static OptionalLong nullable(Long value) {
         return value == null ? OptionalLong.empty() : OptionalLong.of(value);
+    }
+
+    /**
+     * Preserves the actual coordinator unavailable reason and typed failure flags instead of
+     * collapsing every non-Known result into a fixed generic IllegalArgumentException.
+     */
+    static PlanningReadResult.Known<FamilyMarriageSendReads.Observation> requireKnownMarriageRead(
+            PlanningReadResult<FamilyMarriageSendReads.Observation> result) {
+        if (result instanceof PlanningReadResult.Known<FamilyMarriageSendReads.Observation> known)
+            return known;
+        var unavailable = (PlanningReadResult.Unavailable<FamilyMarriageSendReads.Observation>) result;
+        var reason = unavailable.reason();
+        var originalKind = unavailable.original().isPresent()
+                ? unavailable.original().orElseThrow().getClass().getSimpleName() : "none";
+        var decodeFailure = unavailable.decodeFailure().isPresent() ? "decode_failure" : "no_decode_failure";
+        var observedFailure = unavailable.observedFailure().isPresent() ? "observed_failure" : "no_observed_failure";
+        var message = "actual independent marriage before storage/preparation read is unavailable"
+                + ":reason=" + (reason.length() <= 2048 ? reason : reason.substring(0, 2048))
+                + ":original=" + originalKind + ":" + decodeFailure + ":" + observedFailure;
+        throw new IllegalArgumentException(message);
     }
 
     private static boolean sameReview(FamilyNativePreparation.VerifiedBasis first,
