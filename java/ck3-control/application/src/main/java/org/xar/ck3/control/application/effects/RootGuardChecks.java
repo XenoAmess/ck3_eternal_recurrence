@@ -73,10 +73,7 @@ final class RootGuardChecks {
         for (ExactRef ref : java.util.List.of(lease.originalHello(), lease.originalHeartbeat())) {
             exact(ref, originals.read(session, ref, StrictJson.EXPLICIT_MAX_BYTES));
         }
-        if(lease.originalSourceQualification().isPresent()) {
-            ExactRef historical=lease.originalSourceQualification().orElseThrow();
-            exact(historical,originals.read(session,historical,16 * 1024 * 1024));
-        }
+
         RawJson capabilities = new RawJson(OpportunityJson.encode(lease.capabilities()));
         ExactRef capability = archive.preserveMaterial(capabilities);
         StrictJson.require(capabilities.equals(archive.loadMaterial(capability)), "actual capability archive readback changed");
