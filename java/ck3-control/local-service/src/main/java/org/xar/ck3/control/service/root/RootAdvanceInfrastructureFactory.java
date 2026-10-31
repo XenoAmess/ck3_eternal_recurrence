@@ -368,7 +368,7 @@ public final class RootAdvanceInfrastructureFactory {
                 && child.actionId().equals(ActionIds.child(parent.command().actionId(),execution.children().size(),child.operation()))
                 && child.operation().value().equals("resume-map") && resume.state() instanceof ActionState.Settled settled
                 && settled.settlement() instanceof ActionState.Applied && resume.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent()
-                && resume.sequence()<parent.sequence() && child.source().equals(parent.command().source())
+                && child.source().equals(parent.command().source())
                 && child.sessionId().equals(parent.command().sessionId())
                 && child.before().machineId().equals(parent.command().before().machineId())
                 && child.before().game().equals(parent.command().before().game())
