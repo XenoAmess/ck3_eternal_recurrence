@@ -357,3 +357,245 @@ runtime-marriage-held-scope126 `01:36:39.221941Z` 实际POST，10完整当前源
 Root模型输入别名成熟包已自然S/Z plain check/apply0，未单独重启或MB：`D:/ck3-state/resume91-root/model-payload123/DELIVERY.patch`14448B两叶，modelcopy只在两组非空数组JsonNode.equals时去一份family legality重复数组，另写明确schema/system还原说明，原command/bodySHA/Nativeproof/read/deadline/retry不变。actual122请求离线1224362→800340B、833rows全量typed可还原；prodstrict0与两新HTTP methods分组各绿（正例已过、负例fixture修后仅失败1P），无实际模型速度/选择收益预授。已收正式5053722389；新test六处尾空白warning不改生产语义。留126正常增量加载，不是scope恢复前置。
 
 失败ACK细因另外必要保全：Coordinator346–348原来固定genericreason，Ack只有nativeOk/requestId/原framepacket等，没有typed error accessor；NativeWire.CommandResult.error保原顶层error。provider先实际runtime-marriage-ack-reason126于01:38:54 POST→stop7.978秒/TTFT1.902秒/12295in1124out，首答漏nativeOk/expectedID且无64KiB预限，不照采。独立Runtime leaf转obli后复用其真实首答，没有重复首POST；纠错runtime-marriage-ack-reason126-correct02 `01:40:58.887102Z` 新1.11实际POST。目标仅失败诊断actualnativeOk、有界ID和原packet中有界error，严格区分actualexpectedREADID可得/不可得，异常仅diagnostic不改结果，不dump整frame/payload，不发新Query，不设为scope修复门。
+
+## 126–127：真实缺失的婚姻端点与基础游玩配置
+
+scope126最终单源strict0/1.727秒，三个必要软件场景3P0skip/JUnit30.866秒；最初fixture缺两个已有支持class，保留3个环境红，只补CP后复验。范围是实际RootApplicationAssembly OriginReads/deferred/switchboard，不是所有运行Factory wrapper。ACK诊断纠错模型12.119秒返回，owner修变量/catch/512字符界限等后单源strict0/2.082秒；不改ACK/UNKNOWN结果，不另造日志镜像fixture。
+
+MB126 `01:46:36.438277Z`–`01:46:41.927425Z` exit0/5.489秒，application1/local-service2共3源。worker126/PID192768 `01:46:49.096731Z` START、`01:47:17.4095539Z` LOOP_START/next43。实际模型payload822328B，HTTP200/32.262秒/有效TTFT31.283秒，reported prompt233462/completion145/total233607/cached null。输入别名已真实加载，但单次时差不能证明cache或一般性能收益。批43最终PLANNER_STOPPED、worker `01:49:17.898157Z` exit4/148.801秒、next44、日期53144328。
+
+本次真实失败ACK明确 `nativeOk=false, wire_id_match=match, requestId=step-25-2048bc6edae3, error=unsupported native gameplay step`。operation为query-family-marriage-send-outgoing-v1-private，不能把AckReceived当成功。Native owner只读已持Native63实际构建源，证实无该generic路由/alias；底层outbound scanner与specific cold-result路由存在，但字段/schema不同，不能只换Java step名。准确 `D:/ck3-state/resume91-native-integration/NATIVE63-FAMILY-OUTGOING-MAP01.json`；未查询/重编/部署DLL或重启Game。
+
+另外RootLifecycleRuntimeFactory、RootPendingUiRuntime及RootRuntimeDispatcherFactory三处实际wrapper漏转withOriginalReadSource已补。前两模型原样、第三owner源码复查补漏；两源strict0/6.009秒、第三单源strict0/1.758秒，无新JUnit，不把之前软件3P说成这三层完整行为验收。准确 `wrappers127/{RUNTIME.patch,THIRD.patch}`，S/Z最小采用后随127加载。
+
+用户授权基础profile先暂停unsupported的新提案。首轮first_heir_marriage_enabled默认true的五叶开关已模型先行：runtime-firstheir-switch127实际POST01:53:58.907975Z，9完整源380103B，stop26.806秒；owner补真实typed bool/trace/cache清除。7显式源strict0/4.535秒，9配置断言+2实际Family软件case共11检查通过/1.115秒，保pending/result/education及默认启用。独立127配置仅first_heir=false，M5=false/600000ms/qwen1.11不变；不是关闭整个FamilyStage。准确 `firstheir127/DELIVERY.patch`。
+
+MB127 `02:01:44.190172Z`–`02:01:51.610885Z` exit0/7.421秒，application1/local-service7共8源。worker127/PID216432 `02:01:58.745099Z` START、`02:02:28.4227847Z` LOOP_START/next44。批44于 `02:03:25.7126983Z` PLANNER_STOPPED：SOURCE_CONTRACT_REJECTED:family source/contract rejected:bounded marriage UTF-8 input required；0模型HTTP/0attempt/applied，native186/public211/date53144328。worker `02:03:26.274171Z` exit4/87.529秒、next45。firstHeir=false配置已加载，不代表成功走到skip trace或推进日期；前序construction cash/source unavailable为非fatal提案不可用，不能当新婚姻codec根。
+
+## 128进行中：显式暂停全部缺失端点的新婚姻提案
+
+只读复用known canonical264的三个精确payload：FAMILY81B/CHILD_MATRILINEAL94B/DEFAULT_MARRIAGE82B，pending/resolved均null。当前唯一MarriageCodec bounded UTF-8抛点默认262144B；7生产decode调用全部为ChildDefault新legality/values或新intent验证，education不调用此codec。输入由typed Obj编码，超限是源码推导解释，但actual127 raw字节数、heap具体87/94 caller仍unknown，没有CAS扫描或新Native观察。准确 `family128/{CONSUMER-MAP128.json,REVIEW128.md}`。只Codec新API不代表7调用已接线；独立有限role修复继续，不成为basic DATE恢复前置。
+
+总开关runtime-newmarriage-switch128实际 `02:15:18.187177Z` POST新1.11，9完整源382247B，6可写叶+3API/max6800，stop41.615秒/有效TTFT9.902秒/76523in4868out；候选source READY，尚待局部验证/采用。新key new_marriage_proposals_enabled默认true；本basic128独立配置设false，旧first_heir=false/M5=false/600000批/60000操作/qwen1.11保留，旧127配置未改。false仅新FIRST_HEIR/CHILD_DEFAULT/CHILD_MATRILINEAL/RULER提案，pending/result/UNKNOWN、education、fulfillment和ordinary core保持。配置与args已由cmd+Node生成，`provider/prepare-newmarriage128.cjs`；维护run-worker日志只新增该配置字段，无新Python生产模块。
+
+Root独立两叶clock-audits128已S/Z plain check/apply0：仅删3个requireLoadedClass旧代码资格调用，真实strict2源0/2.387秒，无新测试；保真实typed/context/readiness/pending/Timings。准备随128自然增编，不把它当127根因。当前无业务worker或MB在途，尚未启动128；同Game71464保留，普通世界动作/新增日/SAVE仍0。
+
+128六叶候选必要验证实际END：6prod+既有fixture/runner共8源strict0/4.568秒，9配置断言+3真实policy方法共12checks0/1.034秒。新提案false路径Child两分支0read、pending/结果先处理、firstHeir仍教育/保baseline、Ruler Keep而旧UNKNOWN仍进入原response-wait准备边界；纯软件不授实际Native能力。模型propagation六叶部分采用，owner把trace硬编码false纠正为两个真实bool。S/Z plain EOL check失败后ignore-space-change check/apply均0，精确 `marriage128/{DELIVERY.patch,ACTUAL.json}`，Child两个MarriageCodec大role调用暂未改。
+
+MB128 `02:19:01.689820Z`–`02:19:08.876577Z` exit0/7.187秒，default mvn -T2/reuseMB/no clean，实际application2/local-service6共8源（六开关+两clock）。worker128/PID210404 `02:19:16.822338Z` START，STARTED真实记录newMarriage=false/firstHeir=false/M5=false/600000ms/qwen1.11；`02:19:56.9026367Z` LOOP_START/next45，Game71464/出生FILETIME原值，安装40.080秒。Native与Javawriter已同时明确解除安装HOLD；skiptrace、模型选择、真实Native提交/后态和游戏日仍待本轮实际读回，未因配置/编译授成功。
+
+128真实批45 `02:19:56.9538922Z`–`02:21:02.0645179Z` INTERNAL_FAILURE：ContractViolationException:exact planning-read archive version required，65.111秒/0HTTP/0attempt/applied，last_plan null、next46。worker `02:21:02.467472Z` exit4/105.645秒，Game未stop。完整stderr明确NativeArchiveDataCodec.decodeRead166→NativeOutcomeArchive.loadRead734/735→RootCrownRetryRuntime.Installed.crown139→GovernanceCadenceReplay.crown89/Tape.use35→GovernancePolicies.Crown303；本次是CROWN Known.originals首项作为archive.loadRead输入，不再是Marriage UTF-8抛点。具体错误ref/producer角色尚待精确定位，不笼统放宽schema，不把旧Familythrow消失授完整skiptrace/DATE成功。
+
+`02:22:18.130801Z`唯一运行岗本机读canonical268/repair_required/BATCH_INTERRUPTED45、native188/public214/date53144328，pending null/action head旧Focus保持。provider已followup_task唤醒独占D actual版本producer/consumer真实源码→模型候选与必要回归；未新Native观察或宽扫CAS。普通世界动作/新增日/SAVE仍0。
+
+独立完整婚姻制作：M1三叶显式16MiB MarriageCodec role+Review3/Pending2调用sourceREADY；obli Child两call以已带总flag当前S为base，runtime-child-marriage-role128真实POST `02:20:21.721128Z`→stop2.963秒/有效TTFT1.814秒/10932in216out，两个hunk模型原样。API+Child两prodstrict0/2.193秒，`child-role128/DELIVERY.patch`只D未S/MB采；M1负责role边界行为，不将Codec API/软件growth输入当actual127或完整Native婚姻能力。该独立修复不作为basic DATE恢复前置。
+
+## 129准备：治理读取引用角色修复
+
+runtime-crown-read-role129实际 `02:23:18.546598Z` POST新1.11，9完整当前源266304B+128完整stderr，200stop10.757秒/56087in540out。源码精确证GovernanceCollector.query272–275归档known.receipt().original()（DISPATCH角色），RootCrownRetryRuntime139却将Known.originals首ref按完整READ解码。模型诊断采用，但其preserveRead再次归档方案拒绝；owner最小修直接保留协调器已产known.originalReceipt，保原bindReceipt/typed回执/四种READ版本，不新增重验或更改Codec。actual128错误ref尚无索引，保持null，不把源码推导写成读到该原件schema。`archive129/RUNTIME.patch`1538B单生产叶source已审，S/Z plain check0，必要Collector→loadRead软件回归准备中，尚未采用/MB。
+
+同时已到成熟独立制作自然采用，不等待更多前置：M1完整role2caller+1新test strict0/2.071秒、两个必要method同JVM2P0skip/2.177秒，软件growth307352B被full role接受/默认262144拒绝及typed UTF8/JSON负例保留；Codec复用obli同源strict。`marriage127/PRODUCTION-CURRENT-S.patch`三叶与`child-role128/DELIVERY.patch`一叶已S/Z准确采用，共API+7callers接齐，小decision默认不升；basic128关闭新提案不变，actual127输入仍unknown，完整Native功能未完成。
+
+runtime-lifecycle-loadedclasses129实际 `02:24:05.635764Z` POST→stop7.446秒/有效TTFT1.866秒/11304in777out，唯一35行classloop删除模型原样，单叶strict0/2.308秒；`lifecycle-classes129/DELIVERY.patch`已S/Z最小采用，wrapper/真实业务约束保。源证requireLoadedClass当前仅Objects.requireNonNull，已无物理IO/哈希，所以本清理不计作128/Crown根因或已证明的性能改善。以上五源待129自然增编，尚未启动129。
+
+129必要角色回归实际 `02:28:00.446330Z` END：1prod strict0/2.134秒、focusedtest+未改GovFixtures strict0/2.134秒，新4case4P0skip/Java进程1.681秒。真实Collector.crown→软件Archive.loadRead保同READref、V2/V4 typed receipt及v4附件，另UNKNOWN保Unavailable/错frame拒；该软件Archive未做物理NativeArchiveDataCodec全roundtrip，不外推覆盖。既有test仅两capture期望1→0的调整未运行整旧类，`archive129/{RUNTIME.patch,TEST.patch,RESULT129.json}`范围单列。S/Z单生产hunk plain apply0，模型正确诊断/重复preserve实现拒绝/owner直接复用ref分别记录。
+
+MB129 `02:29:05.877134Z`–`02:29:13.321036Z` exit0/7.444秒，reuseMB/no clean，实际governance-policy1/application4/local-service1共6源（角色P0+婚姻4叶+Lifecycle清理1叶）。worker129/PID322220 `02:29:19.945662Z` START，复用未改128独立配置及args，三false/600000批/60000操作/qwen1.11保持。当前安装在途，尚未LOOP或授新业务结果，安装HOLD待实际LOOP/END才同时解除Native/Java；同Game不重启。
+
+129 `02:29:50.9251475Z` 实际LOOP_START/next46，Game71464/出生FILETIME原值，安装30.979秒。Native与Javawriter均已直接收到明确解除安装HOLD；等待本轮实际规划/模型/动作后态，不把小回归或LOOP当游戏推进。
+
+129 `02:30:40.846Z`真实规划越过旧CROWN codec抛点，REALM_MEMBERSHIP_PUBLICATION RefreshRequired→Published，native190/public217/date53144328。实际ordinary HTTP `02:31:16.0517311Z` BEGIN342745B→HTTP200complete13.633秒/有效TTFT12.873秒，reported prompt101066/completion142/total101208/cached null；`02:31:29.9981596Z` ActionSelected王权升级、`02:31:30.7742395Z` afterPlanning Unchanged，无新READ发布。不同profile/提案的耗时与字节只记实际，不归为cache或等价性能收益。
+
+**首个本轮普通世界动作已真实APPLIED（新增日仍0）。** 唯一运行岗 `02:33:04.328213Z`本机canonical281/running读到新action head，精确receipt `D:/ck3-state/ck3-java-g2-resume85-vanilla02/continuity/artifacts/b4dced5565769d363203137cd1d2c62aa15b77b94fe57219aa81b293b181a646.bin`10260B，seq276、SETTLED/APPLIED。action governance-08d4529466e62ff25cc6f9b89717c5d2566aa95db43de258eadaedc9b910daed，operation enact-realm-law-crown-v1-private，request step-3064907890163324-2b6f70931957、submitted `02:31:39.332066Z`，dispatch ref41a310c2…1965B。
+
+独立后态READ step-29-a05b9eb25434于 `02:31:44.093792Z`确认law crown_authority_0→crown_authority_1、prestige220000000→200000000、native.gameplay_verified=true，before native190/public217→后态native191/public218，date53144328不变。actual original evidence42c863bd…1209B/supporting9eaba609…1779B均由该receipt精确引用；不是模型文字、仅正ACK或假结算。普通新增APPLIED1，与旧开局Focus分开；新增游戏日0/SAVE0，dirty保持，继续同Game不重放。
+
+随后stdout `02:32:53.3365309Z` CROWN_AUTHORITY ReadOnlyWait reason retain original governance intent for independent material receipt; never submit it again，`02:32:55.3768528Z` Published/round_read_present=true。尚不能据单轮断言永久pending循环。129唯一main样本 `worker129-thread01.txt`于02:33:04、main elapsed224.56秒：已进入下一ordinary Finance gift/current只读规划，preserveRead→ImmutableArtifactStore.publishReserved→LedgerFiles.read/CreateFile；没有处在未决Native ACTION等待。样本不是全阶段耗时归因，不重复采样或因此停Game。
+
+129第二次CROWN ReadOnlyWait于02:33:29.3667029Z→Blocked02:33:31.3546891Z，随后批46 `02:33:32.088037Z` INCOMPLETE_MIGRATION，detail actual plan publication blocked:Crown complete final-terms post-state unavailable:ContractViolationException:held original query requires its actual paused-map contract and pure original replay。批实际221.112秒、attempt1/applied1/ordinary positiveACK1，eligible advance0；不是无限空批或首动作失败。worker `02:33:32.747382Z` exit4/252.802秒，Game不stop/next47。
+
+## 130进行中：消费已成功CROWN的完整后态
+
+obli精确当前canonical282/repair/BATCH_INTERRUPTED46，CROWN领域payload5573B复制为 `crown130/CROWN-DOMAIN.json`；其pending仍receipt_pending/submitted_verification_pending，resolved/retry null，不能把ACTION已settled偷换为领域已清。当前action head541B仍指向b4dced…10260B，禁止重发该CROWN与旧Focus。只查已知refs，无Native新观察或CAS扫描。
+
+源定位唯一throw RootPlanningReadGuard133–134，FinalTerms旧ReadContract构造无pureReplay，hasPureReplay=false；paused-map本已true。Coordinator仅在negative/unbound ACK/eligible UNKNOWN失败观察分支调用该guard，因此本错误可能遮蔽真实底层失败，未授FinalTerms READ成功。相邻guard withOriginalReadSource尚未包含该exactCrown role，直接只补pureReplay会再撞Collector.currentHeldOriginal无scope；provider按必要两叶完整合同传播，保实际decoder/UNKNOWN，Native owner独立只读已持63 source映射endpoint支持范围，不重启/部署DLL或设置额外运行门。
+
+runtime-crown-post-read130实际 `02:36:10.536935Z` POST新1.11，9完整当前源206830B+129实际brief+完整APPLIED receipt10260B，headers200/有效TTFT6.351秒。当前候选在途，尚未采用/编译/启动130，不把源码修复或APPLIED1外推新增日；下一同Game目标是完成领域消费并继续真实日期推进。
+
+130模型200stop14.700秒/48842in1490out，两个方向部分采用：owner纠正为真实两参(request,id)纯replay构造，Guard用真实operation literal避免未导入类型。最终2832B两叶 `crown130/RUNTIME.patch`：FinalTerms同consumeTerms既作首次decode又作原件pureReplay，guard仅精确Crown typed profile进入已有actualheldscope；失败/UNKNOWN仍真实保留。必要真实END `02:40:25.100127Z`：2prodstrict0/2.158秒、2teststrict0/2.255秒，仅新增2methods2P0skip/Java12.723秒；同original纯replay值相同，negative ACK走真实软件Guard/Collector/Coordinator/archive scope/失败receipt冷读，1scenario READ/0action/ledger0。不称actual130已取得completeTerms或领域已消费。
+
+Native来源范围纠正：只查Bridge.cpp无literal不是endpoint缺席证明。M1在Native63 frozen include/nonwar_router及Bridge真实装配查到exact endpoint/capempty/.4 handler/featureON与成功serde；又闭合源码缺口：.4 mailbox提交WithTurnTick12004 executor，但router登记旧12002 executor，逐指针whitelist会invalid_request→native_law_mailbox_submit_unavailable→okfalse。准确 `D:/ck3-state/resume91-m1-native/crown-finalterms130/MAPPING130.json`；这是冻结源码结论，不是loadedbinary或actual129失败ACK已取回。没有Native新Query/部署/DLL重启，更不重发enact。
+
+S/Z两生产hunk plain check/apply0。MB130 `02:42:32.315375Z`–`02:42:37.101277Z` exit0/4.786秒，reuseMB/no clean，仅application1/native-transport1共2源。worker130/PID308248 `02:42:47.971172Z` START，复用未改basic128args/三false/600000批/60000操作/qwen1.11，安装在途，尚未LOOP或授新日。
+
+备用实际消费路径已分离：obli唯一D写RootGovernanceDomains，真正门位181 completeTermsUnavailable→Blocked，RootCrownRetryRuntime只context（其publish是pending已空后的retry投影）。首runtime-crown-applied-consume130实际 `02:39:50.221440Z` POST，15源245128B+真实domain/receipt/postREAD；stop12.771秒但误以Kind.OUTCOME清pending且擅改cold，整拒未编。r2 `02:41:21.441903Z`实际POST，补真实reducer/cadence/publication合同，D-only待审；不得为了进日伪造clock/fullTerms或清UNKNOWN。
+
+纯失败诊断另task runtime-crown-ack-diagnostic130实际 `02:42:39.736789Z` POST→stop7.510秒/有效TTFT3.367秒/24025in746out，RootGov caller+bounded ACK error helper sourceREADY；到达时130已封产物并START，因此未纳130/不热改。其BEGIN消息后核实只是预告、javac/check.py实际未调用，0MB读取，已撤预告守安装HOLD；不冒实际并发或编绿信用，留下一自然业务更新。
+
+## 131进行中：正常新动作后的同Game业务恢复
+
+130未进入LOOP：`02:43:12.8709161Z` WORKER_FAILED，CVE closed settled continuation cannot change original actions after its recovery；worker `02:43:12.935172Z` exit1/24.964秒，next47未开新批，Game不stop。真实stderr ContinuityBatchJournal.readSettledSameGame1003→Core703→openSameGameBootstrap193。合法CROWN新APPLIED后暴露旧恢复实现仅容许原闭合动作不变；997相邻也禁止DriverActionHistory，retainCapturedAction214–244写死FOCUS，需完整同合同传播，不能只删1003再撞后继。130两Crown叶已MB编入但未实机读取/消费验收，不能称成功。
+
+已因真实END同时解除Native和Javawriter安装HOLD，不等不存在的LOOP。provider独占D Journal，runtime-settled-action-suffix131实际 `02:46:47.993009Z` POST新1.11，7完整当前源501320B+130完整stderr+APPLIED Crownreceipt+known276–282精确eventmap，初10秒无headers；当前在途不冒候选/编绿。obli直接提供7个已缓存完整event，无新liveledger读/扫描。目标保正常合法settled新动作的接续、原Game/session/真实Driver prefix及UNKNOWN不重放，不改持久账本或伪capture。
+
+RootGov ACK诊断后续真实singleleafstrict首轮1/2.403秒，仅旧fields()弃用警告被Werror；不改业务源码，原all,-try另排deprecation后strict0/2.387秒，真实警告/两log均保。`crown-diagnostic130/DELIVERY.patch`只caller+45行bounded helper已S/Z ignore-space check/apply0：非ACK reason原样，ACK input≤65540、requestId≤128/error≤512字符，Native summary置前保outer2048。无新查询/状态或UNKNOWN语义变化、无额外镜像测试，待131自然MB，不追授130已加载。
+
+备用APPLIED领域消费r2模型19.440秒返回，仍有object(Pending)错误、漏ProposalLifecycle引入及cadenceReplay无条件read.orElseThrow等实证接线缺陷，未采未编；obli只D继续纠正，保cold/真receipt/真实law-payment。其成熟与否不门控Journal131，不能为新增日造clock/fullTerms或清未决。
+
+131模型真实OS0/stop19.987秒/110293in924out，只删除997/1003并漏实际Crown必撞的Focus-only222，测试仅描述，整实现拒绝。owner最小接管 `settled131/RUNTIME.patch`4792B单Journal，去两条旧恢复后永禁ACTION及FOCUS唯一operation门，泛化报文；保现有canonical allsettled、owner/source、完整Driver旧版本/原historyprefix/session/实际row及cycle计数/UNKNOWN拒绝。S/Z plain check0，source已独立审，待必要实际row纯retention probe与strict后采用；不是已运行完整readSettledSameGame验收。event277 DRIVER_ACTION_HISTORY确已发布、legacyrow14359B、前后Driver约2.783→2.797MiB的真实单行append，输入来自已缓存精确event/ref，无新Game/ledger写。
+
+131实际GREEN `02:52:45.947209Z` END：1prodstrict0/2.403秒，D actualProbe strict0/1.543秒/run0/1.638秒，3checks通过；真实Crown276+event277恢复Driver111→112（2783088→2797448B）exactprefix/单row/coverage保留，缺canonical与source-derived UNKNOWN拒。两旧closed gate删除仅source审，整readSettledSameGame留本次实机验收，不构造全恢复镜像fixture。单Journal已S/Z plain apply0，owner接管模型缺陷不追授实现信用。
+
+已APPLIED成功消费也成熟自然合入：`crown-success130/DELIVERY.patch`单RootGov基于已含diag的当前S，新CROWN_APPLIED publication kind仅primitive Settled/Applied；reduce保持canonical receipt等式、原pending请求/actor/episode/body与actualArchivedVerifier；NativeEffectEvidence真实compatible receipt，原expected law与所有quoted post-balances逐项比对独立observation。冷上下文、UNKNOWN和未应用分支不放宽，没有完整条款/clock的新值，既有fullTerms历史分支继续兼容。publication/canonical replay/cadence三处均接入新kind且新无read路径不再orElseThrow；实际投影返回enacted/material_result并经既有Domain提交，不手写ledger。
+
+该候选首API/runner红如实保留，r2部分采用后owner修三接口/replay点；2src strict0/2.555秒（all,-try,-deprecation/Werror，旧fields弃用类明确排除），6 actual DATA cases0/1.056秒，覆盖真实276及原native_receipt/无fakefullterms、law/actor/request/payment/UNKNOWN拒。非完整archive/writer/Game重放，生产既有原件验证链源码保留。运行岗独立源审后S/Z ignore-space check/apply0，正式writer按准确delta，不整叶覆盖diag。
+
+MB131 `02:54:13.549042Z`–`02:54:19.868946Z` exit0/6.320秒，reuseMB/no clean，仅application Journal1/local-service RootGov1共2源。worker131/PID179792 `02:54:31.767296Z` START，复用未改basic128配置/args，安装在途尚未LOOP/领域清空/新动作或日期信用；同Game71464、原Crown唯一APPLIED1不重发、next47。
+
+131实际 `02:55:05.3754905Z` LOOP_START/next47，安装33.608秒，旧closed恢复已真实越过，Native/Javawriter均已直接解除HOLD。批47于02:55:48.3142521Z CROWN_AUTHORITY ReadOnlyWait→Published02:55:50.684366Z，再02:56:25.1312172Z sameWait→Blocked02:56:29.3194967Z；`02:56:29.861983Z` INCOMPLETE_MIGRATION，detail actual Council/Crown planning reconciliation unavailable:exact JSON fields required:[previous_sha256,details,after,sequence,kind,identity,at_utc]。批84.421秒/0HTTP/0attempt/applied、新增日0；worker `02:56:30.295599Z` exit4/118.528秒、next48，保Game。
+
+## 132进行中：成功领域后的多余历史复验
+
+运行岗 `02:59:03.563814Z`唯一必要读回canonical287/repair_required/BATCH_INTERRUPTED47、native195/public222/date53144328；CROWN新payload `D:/ck3-state/ck3-java-g2-resume85-vanilla02/continuity/artifacts/33fefba5457d9af3f0f590a4cd46d572082e7c62b163470052eb35ecc88f72c6.bin`7610B已实际读取，pending=null、resolved.status=enacted/material_result=true、真实native_receipt law1/prestige200000000、retry=null。因此131领域成功消费已真正commit；后续cadence失败不能抹掉该结果，也不重发动作。旧Native helper ACK post_balance_raw0仍只元数据，独立receipt才是200m原件。
+
+当前源RootGov382在cadence材料处理逐WINDOW pin strict7字段解析并verifyPin，388另capturePin/FileID，389历史状态/全文再replay；当前方法前已保current typed material/action-request关系、实际APPLIED及真实effect verifier。缓存实际276–282每个topkeys都恰好旧7字段，故并未找到具体offending pin，不能凭字符串放宽通用JSON或伪造新字段。按用户10-28取消不必要运行来源/物理身份全proof的授权，obli只D最小去重复历史循环，保前述当前业务关联，不为取offending pin新增inventory/source审计门。
+
+runtime-crown-cadence-audit132实际 `02:59:51.184794Z` POST新1.11，7完整当前上下文210071B/max2600，首内容已到；实际新canonical/CROWN证据补交同owner，不再重复请求/扫描。当前候选未编/未采、无业务worker/MB在途，下一同Game接续next48，普通APPLIED累计本轮1、游戏日0/SAVE0。
+
+132模型200stop20.778秒/有效TTFT6.735秒/44517in1663out，唯一删除hunk原样采用、owner语义0。`crown-event132/DELIVERY.patch`纯删19行循环，不放宽JSON；方法当前sameSession/ownedAPPLIED/canonicalreceipt/current领域latest请求+enacted/material+actualNativeverifier前缀逐字保留，真实调用者在同writer/current OPTIONAL_CADENCE与ActionEffects后再进入该holder。singleleaf all,-try/Werror strict0/2.488秒/log空；旧deprecated fields就在被删循环，因此无需deprecation排除。不新镜像tests或重旧6DATA。运行岗独立source审，S/Z plainEOL失败后ignore-space check/apply均0。
+
+MB132 `03:02:24.267230Z`–`03:02:29.618422Z` exit0/5.351秒，reuseMB/no clean，只有local-service1源重编。worker132/PID187612 `03:02:43.918973Z` START，同未改basic128args/三false/600000批/60000操作/qwen1.11，安装在途尚未LOOP，Crown唯一已APPLIED1/领域真resolved延续、date0，不重发动作；下一批next48待实际读回。
+
+132实际 `03:03:16.4561438Z` LOOP_START/next48，安装32.537秒，Native/Java两writer均解除HOLD。随后五轮真实qwen HTTP均选择新的CROWN law1→law2（quoted cost100000000），不是重放已成功law0→1；但每轮afterPlanning Published，未有新Native ACTION。已知首次payload375326B/total15.439秒、第二380840B/6.449秒、第四391840B/5.390秒、第五397358B/4.938秒，reported cached均null，TTFT差不授cache命中。第一至后续publication native197→201/public225→229，日期53144328不变。
+
+运行岗有限读canonical294/296及已知精确refs：OPTIONAL_CADENCE首次03:04:55.485Z写后未随后两次Published更新，原actionhead仍seq276/真实APPLIED1；CROWN296完整7878B明确pending=null、resolved enacted/material_result=true、next_turn_consumed=true、marker native199/date53144328，actor31254/同Game与episode。真正根是RootGov.afterPlanning对已消费结果要求nativeRevision精确相等；只读publication导致revision递增后再次消费/发布。不是任意异常沿旧命令，也没有据新proposal授Native提交。
+
+132于 `03:11:16.989779Z`通过现成stopflag请求业务协作停止；批48 `03:11:54.615735Z` CHECKPOINT_DEFERRED，detail operator stop observed during readiness; no new gameplay submitted，518.102秒/0attempt/applied/0day、next49。随后真实captureRestart因latest complete Driver observation缺席抛IOException，worker `03:11:55.095335Z` exit1/551.176秒；不能称成功capture/clean，Game未stop。只在真实END后 `03:14:18.508534Z`消费本岗stopflag，维护helper取消“必须exit0”假设但保实际END/owner/no-next-start检查，实际exit1与canonical状态不变，无新ticket或ledger写。
+
+## 133进行中：同日CROWN消费与协作停止收尾
+
+runtime-crown-consumption-scope133首POST `03:13:34.377986Z`，stop9.696秒但未取当前identity/JsonNode.equals(String)恒假，整拒。r2 `03:14:39.863970Z` POST→stop7.700秒/44855in952out；当前真实296+有限trace输入，两hunk模型原样/owner语义0。`crown-consumption133/DELIVERY.patch`仅Crown latest消费判定改为明确next_turn_consumed/enacted/material_result、同PID/episode/actor/同日且revision不回退；新日/跨上下文/false或缺标记返回真实原后继消费，Council旧exact逻辑保持。2src严格编译0/2.385秒，20谓词检查0/.810秒（actual296正例加明确source-derived反例），非完整Round/Game测试。运行岗源审，S/Z plain EOL失败后ignore-space check/apply均0。
+
+runtime-stop-capture-deferred133首POST `03:14:55.981806Z`→stop25.486秒，错误message matching整拒；correct1 `03:16:53.171939Z`→stop18.891秒，typed方向部分保留但真实imports/serial/行为测试不足，owner最小接管。`stop133/RUNTIME.patch`两叶5381B：Transitions只把原缺观测IOException替换typed MissingDriverObservation；Main真实called captureForStop仅良性OPERATOR_STOP遇此typed缺席时输出WORKER_RESTART_CAPTURE_DEFERRED且不写ticket、不新查询、不标CLEAN，真实IO/UNKNOWN/NO_PROGRESS失败/interrupt仍原抛。2prodstrict0/2.781秒、单teststrict0/1.735秒、新6case同JVM6P0skip/1.463秒；S/Z plain check/apply0。模型correct1三个anchor实际均匹配1，先前未核实的“虚构anchor”判断已撤回，真实模型缺陷另保留。
+
+MB133 `03:21:28.157419Z`–`03:21:35.090540Z` exit0/6.933秒，reuseMB/no clean，实际application1/local-service2共3源。worker133/PID282552 `03:21:40.459621Z` START，同未改basic128独立配置/args，三false/600000批/60000操作/qwen1.11，同Game下一批49；当前安装在途，尚未授LOOP/消费幂等实际正向/新动作/游戏日或停止deferred实机信用。两writer已收本轮安装HOLD，待实际LOOP/END释放，不等发表或其它Native制作。
+
+133实际 `03:22:15.2095991Z` LOOP_START/next49，安装34.750秒；Native与Javawriter两岗均已明确解除安装HOLD。`03:23:06.0236439Z` 首次REALM_MEMBERSHIP_PUBLICATION RefreshRequired→Published，native204/public233/date53144328，仅实际只读发布，尚无本轮HTTP或Native动作信用。正式准确两P0后续已normalFF Crown e61fb04d69/Stop a137a34452，未重绿，发表不作为运行前置。
+
+133 actual qwen `03:23:44.4083344Z` BEGIN408331B→HTTP200 complete5.597秒/TTFT4.793秒，reported prompt122670/completion153/total122823/cached null。`03:23:51.8603891Z` ActionSelected CROWN law2 后afterPlanning实际Unchanged/round_read_present=false，已真正越过132重复发布点，不从HTTP快慢归因cache。
+
+**第二个本轮普通世界动作真实APPLIED（游戏日仍0）。** 运行岗 `03:25:06.797152Z` 有限canonical312读到cycle completed3（旧Focus+两普通Crown）、pending_receipt=null；精确action receipt `D:/ck3-state/ck3-java-g2-resume85-vanilla02/continuity/artifacts/248e2c6abda9281f3bbc56c39ea73c13447177b1ba33555543273de954c5ba0c.bin`9975B实际读取确认seq308/SETTLED/APPLIED。新action governance-70431f38d92bb521b1886c67a84660cd325e28464982f9e1ea345d7b5e7417c2、request step-4188188639565047-5289775f8d4b、submitted `03:23:59.5313009Z`，operation enact-realm-law-crown-v1-private；前态 law1/prestige200000000，独立READ step-29-fba6d2d64a99于 `03:24:04.3159327Z`确认 law2/prestige100000000/native.gameplay_verified=true、native204/public233→205/234/date53144328不变。dispatch628b7b4d…1965B/originale470a6e4…1209B/supportingc0d48359…1779B均原回执精确引用，没有新扫描或假结算。
+
+`03:25:19.3819087Z` 当前CROWN_AUTHORITY ReadOnlyWait保留原治理intent开始独立领域消费，尚不据单轮断言循环；不重发已APPLIED law1→2。继续同Game真实普通决策与日期推进，当前新增普通APPLIED累计2/新增日0/SAVE0。维护brief90仅新增--action薄投影，供已知canonical head/receipt小读，失败node -e命令因cmd引号解析未运行脚本/未读写账本，原命令失败不计业务失败。
+
+133 `03:25:21.5264834Z` ReadOnlyWait→Published/round_read=true，`03:26:07.3244295Z` 再次Published/round_read=false；运行岗 `03:26:53.646719Z` 薄读canonical315/CROWN exact3fa7ba50…7325B确认新的law2 pending=null、resolved enacted/material_result=true，尚无next_turn_consumed。两次发布分别包含READ刷新与真实领域消费，不能误报为已证明无限循环。维护brief90新增--crown-brief，仅投影现canonical精确payload，不宽扫CAS。
+
+**本轮真实模型首次选择DATE_ADVANCE，尚未提交/推进日期。** `03:27:43.7621185Z` qwen BEGIN448648B→200 complete6.947秒/TTFT6.169秒；`03:27:54.2965999Z` ActionSelected reason no war was currently declarable; advance once before the next native query。afterPlanning Published/round_read=false为law2正常首次follow消费，需按新状态重新规划，不能把被替换的旧选择视为提交。随后 `03:28:47.7087153Z` REALM_MEMBERSHIP_PUBLICATION RefreshRequired→Published，native208/public237/date仍53144328。
+
+本轮唯一jcmd main样本 `worker133-thread01.txt`于 `03:28:09Z`、elapsed388.80秒，具体位置Finance gift→OrdinaryFinanceCollector.current/query→CanonicalRootReads→PlanningReadCoordinator.preserveKnownRead→Archive token→ImmutableArtifactStore.writeExistingEmpty338.force；不是CROWN pending或Native DATE等待。只取一次，不将此单栈归为全耗时/唯一根因；真实Finance普通规划caller与既有Military专用弱持久scope不同，已给Root/Javawriter事实，不热改当前worker或新增恢复资格门。
+
+133第二DATE选择：`03:29:28.9510128Z`实际HTTP455524B→200 complete6.609秒/TTFT5.840秒，`03:29:38.7410135Z` afterPlanning Published。运行岗 `03:30:22.765172Z` canonical319薄读：Crown已next_turn_consumed=true/marker207，同日当前208满足133新helper；OPTIONAL_CADENCE Crown no_action=1/lastcheck208/lastactual204。GovernanceCadenceActions.reduce真实先比较priorAction204与同receipt204并no-op，否证“同已完成action不断reset计数”的猜测，未据两次Published开新语义修复。
+
+第三DATE实际HTTP `03:31:12.1610158Z`462418B→200 complete6.702秒/TTFT5.509秒，`03:31:21.8693098Z` Published；`03:32:07.402296Z` canonical321同精确cadence读到no_action=2/lastcheck209/lastactual204，证明有限计数实际前进，未清零。日期仍53144328，以上三次DATE选择都被真实本地publication替换，不能计提交。
+
+批49实际 `03:22:15.3170013Z`–`03:32:16.4212083Z` WALL_TIMEOUT/601.104秒，attempt1/applied1/positive世界动作1、committed_saved_days0/eligibleAdvance0/dirty=true，next50；worker继续同Game自然下一批，未触发零动作NO_PROGRESS自动停止。末plan native210/public239/date53144328。没有人为加长配置、重启或重放已APPLIED law2，既有有限Crown冷却持久保留，继续真实下一日期动作。
+
+批50第四次DATE实际HTTP `03:34:23.3185728Z`476178B→200 complete5.653秒/TTFT4.886秒，`03:34:32.1012524Z` Published；`03:34:51.025004Z` canonical326精确cadence d5ee7cdb…868B实证Crown第三无动作检查已进入next_due_date_raw53145048、lastcheck210、counter0、lastactual204保留。有限冷却真正收敛，非持续清零；没有为此新改源码或跳过业务。
+
+下一qwen `03:36:12.1174388Z` BEGIN483058B→200 complete9.910秒/TTFT8.744秒，`03:36:24.0605844Z` ActionSelected DATE_ADVANCE后afterPlanning **Unchanged**/round_read=false，native211/public240/date53144328。旧publication替代已经越过；尚不凭选择授进日。
+
+`03:37:06.146080Z` 运行岗薄读canonical329精确receipt `D:/ck3-state/ck3-java-g2-resume85-vanilla02/continuity/artifacts/4ffdbd923aa191ad126a1bd290ca4d49d4807122e0257862eb0c2a6b3a48ab3b.bin`5488B，真实COMPOSITE_RUNNING/operation life-advance/action-a614e4f02b313fea35721c57b887d873649607b49d24743807534e6fff931a6f。完整小原件确认handler java.native-driver.life-advance.v1 started `03:36:31.4505744Z`，CAMPAIGN_SENTINEL/speed5/horizon8/starting53144328/target53144520，actual deadline03:42:16.5199434Z；该版本children尚空，故不把COMPOSITE_RUNNING偷换为已Native提交或已推进8日。执行在途，不停止/更新业务，不重放；当前普通世界APPLIED2、日期仍待真实后态。
+
+## 134准备：日期入口观测与原复合动作恢复
+
+133发生了规划→复合执行的实际阶段变化，故仅补一个execution阶段样本（未重复采规划栈）：`worker133-execution-thread01.txt` main elapsed1060.82秒/约03:39:21Z，LifeAdvanceComposite.run70启动入口→Factory.ActualObservations.current266（普通lease已缺席）→HeldDriverObservationPort.current183/observeForAdvance201/observeFull39→NativeGameTransport.observe(Instant)818等待下一push。该调用在timeline.execute74与实际Children操作之前；115已有修复只覆盖带maximumAge的observe，不能拿旧Finance.force样本解释这次等待，也不全局把严格next观测改成旧帧。Factory当前active lease分支可用原typed帧，缺席后误用next-push接口是本次精确生产链。两次inspect路径拼写ck3/control代替ck3-control的只读失败保留，后续正确路径读回，没有源码或业务突变。
+
+133批50实际 `03:32:16.5199434Z`–`03:42:19.3903585Z` **ACTION_UNKNOWN**，detail original action remains UNRESOLVED，attempt1/applied0/eligibleAdvance0/新增日0；worker `03:42:20.016172Z` exit4/1239.557秒、next51，业务0，stderr空。运行岗 `03:43:08.700121Z` 读canonical331/repair_required/BATCH_INTERRUPTED50，精确新receipt `D:/ck3-state/ck3-java-g2-resume85-vanilla02/continuity/artifacts/4a03ea3bdfee5d4618ef6afac527f4d14ab2ba7883eae3fba5fee609948c9a70.bin`5614B/seq330，真实COMPOSITE_UNKNOWN、execution.children=[]/evidence=[]，reason composite incomplete:java.io.UncheckedIOException:Native observation unavailable; no Python fallback。原bodySHA与8天计划保留；没有手清、假APPLIED、重发或新业务worker。空children单独不当作通用“所有可能路径都没有Native写”的证明，恢复须依据真实handler/Children持久化合同。
+
+provider current-entry134实际 `03:43:00.359716Z` POST新1.11，11完整源225725B+实际execution栈，max有限，headers200/有效TTFT7.428秒；独占D Factory/Held/必要接口，current入口复用真实typed parent-before或现成fresh-current读取，next/后态保持实际新revision，禁止一概返回pre-action parent帧。obli恢复组独立 `03:43:16.510731Z` POST，16完整合同336677B+实际329/栈，max5000；当前source明确execute Runtime失败会Pending→CompositeUnknown、Life尚无OriginalContinuation，要求给可实现的原动作正当恢复或具体缺口，不能用匹配reason/空数组私自造终态。后到真实330小原件已同时交两岗，不等待当前Game动作、全图fixture或新来源审计。当前两源码候选尚未审编/采用，未启动134。
+
+current-entry首答200stop39.758秒/56339in3192out，含null ExactRef与未完成注释，整实现拒绝。correct1实际 `03:47:23.738108Z` POST 8完整源→stop14.683秒/TTFT2.481秒/17926in2171out；真实RootGuardChecks.action/read生产逐字把frame.originalEvidence传入GuardEvidence.nativeEvidence，未凭字段名猜等。provider部分保方向、owner修no-scope/nonempty/Unknown回Optional.empty及真实Guard import/connection/time/op约束，sourceREADY `date-current134/RUNTIME.patch`5280B三叶Scope/Held/Factory，尚在必要编测；只允许active原parent且无child入口用guard精确retained Complete，后续current与next保持原真实观测，不全局返preframe。
+
+恢复模型200stop22.661秒/TTFT10.423秒/69722in1489out，返回CONCRETE_GAP/0edits。obli独立源核：Life非OriginalContinuation；continuation token四kind硬限SUCCESSOR/fixture；ActionTransitions禁止Unknown回Running及无许可新增child；ActionEffects拒零child CompositeRejected，CompositeControl还需实际canonical child-control READ。generic reconcile有fresh2min只读window，但不存在当前Life的合法重submit/零child负终态。因此首答“transport死亡/emptychildren即可reject”不采，实际330只读copy完整封 `date-recovery134/REVIEW.md`/ACTUAL.json/SOURCE-BOUNDARIES.json，0prod/0compile/0test/0Native，不私清Unknown。独立唤醒既有sem103regression核Life/AdvanceClock所有mutation是否必须先持久化Children的真实producer，以判断可实现的handler-specific零gamewrite恢复合同或具体反例；不把后续源审当当前旧330已解。
+
+134入口必要回归 `03:51:04.332308Z` 实际END：3prod all,-try/Werror strict0/2.048秒，单test+2原轻helper strict0/1.875秒，2新method同JVM2P0skip/1.453秒；current entry0Native/0facts/0preserve、guard exact原件/错ref/连接/deadline拒绝，entry后current确实读rev9/next同rev拒均过。Scope的active parent/child分支为源码审阅，未称wholeRoot/Game。运行岗独立审三hunk，S/Z plain check/apply0；准确 `date-current134/RUNTIME.patch`5280B/TEST.patch 已给正式writer，尚无MB134/新worker，旧330Unknown仍原样。
+
+runtime-life-zero-child134真实 `03:51:12.607643Z` POST新1.11，18完整133当时S源+seq330完整原件/实际execution栈/max5000；此封包先于上述S三叶采用，版本边界明确。独立读取进一步闭合：Life.run70 current在try外，故该点异常不会到timeline74或cleanup；timeline所有speed/arm/cancel/resume/pause均经submit(children)；Children先父child reservation，ContinuityActionJournal52–110实际commit(preview)并lookup返回后Coordinator才executeChild；primitive INTENT→SUBMITTING再nativePort.submit，Transitions保child前缀不得删。该检查只问唯一handler自身gameplay mutation，READ/PING不等mutation，不增假想外写/源码身份proof。若添加无effect终态，必须显式修ActionReceipt.classify的APPLIED_CONFIRMED默认fallback，不能仅新record并给旧330造APPLIED；模型候选与真实恢复仍待审，不先执行。
+
+134源码实际采用分三组。入口三叶5280B已源审采用；NoGameplay核心11叶37234B明确source opt-in、原action/bodySHA/execution绑定、仅CompositeUnknown且完整child向量为空可生成CompositeNoGameplayWrite，分类TERMINAL_WITHOUT_EFFECT、v12严格codec，Running不因此转终态/Unknown不回Running。所有真实时间轴gameplay操作均先经持久化Children，不根据reason匹配或空数组单独造资格。11prod严格编译0/3.585秒；actual330 DATA的7新方法先5P2F（fixture声明预算错）→仅失败2P，非同JVM最终7P；旧Life针对同新正例真实RED1。NativeOutcomeArchive已strict，未授整个物理Root冷恢复通过。
+
+bootstrap134最终4叶 `date-bootstrap134/DELIVERY04.patch` 只给精确Life CompositeUnknown/空children读取原多批历史与READ_ONLY_UNRESOLVED装配；Driver使用现成latest frame绑定，不拿旧capture public175替当前240。控制器仅在真正新typed无effect终态经过实际reconcile/验证后恢复，未结算动作不获新提交权；shared history跳过无visible/eligible的终态，不加cycle/day。strict4prod0/3.728秒，actual330 predicate/codec8P0F/.840秒；未伪称完整Root冷启动已过。真实最新restart capture是seq215（23:26:45.9516883Z，next34），有界索引215–331共117事件已交owner，未全CAS扫描/新Native查询。
+
+MB134 `04:14:35.448470Z`–`04:14:43.453309Z` exit0/8.004839秒，reuseMB/no clean，实际application14+local-service4共18源。worker134/PID267100 `04:14:49.015911Z` START，**未进入loop**；`04:15:29.591460Z` exit1/40.575555秒，game_stop_requested=false。旧多批history与read-only adoption已经实际越过，失败在真正WAL preview：CompositeCoordinatorSupport.finish→Journal.append106→Writer.preview→Authority→Switchboard→NativeRecordedEvidenceVerifier339→LifeAdvanceRootReplay64→LifeAdvanceEvidence.readRecorded120，旧消费者仍要求“advance has no semantic terminal observation”。本次NoGameplay拟议终态未commit；不把源/单测绿当330已结算，canonical331/next51的原Unknown仍保留。Native/Java两writer均收到真实preloop END并解除安装HOLD，不等待不存在LOOP。
+
+135最高P0只补此实际consumer。`runtime-life-noeffect-consumer135` 于 `04:18:34.854814Z` 真实POST .11，7完整当前源+134完整stderr/max3400，headers3.819/有效TTFT3.821秒；sem owner同步D最小3叶：共享Life纯合同、RootReplay typed无effect分支、generic结构/non-effect验证但继续真实binding verifier回调。当前仅3src必要strict与一直接RootReplay新回归，旧消费者同message作RED；不重7已绿、不新增Root镜像资格，不改bootstrap/Scope/Factory/Held。当前业务worker/MB均0，同Game保留，普通世界APPLIED2/新日0/SAVE0。
+
+135必要验证真实END：3prod strict0/1.794秒；直接actual330→真实registered Life.observe→cold v12 typedNoEffect→LifeRootReplay新4方法同JVM4P0F/1.743秒。旧RootReplay单叶override对同一positive真实RED1F/1.663秒，精确readRecorded120→RootReplay64同原message；首baseline CP脚本误拼只算arg错误，不算产品RED。泛NativeRecordedEvidenceVerifier只strict，未外推完整Writer测试。模型200stop22.132秒后到，漏List import，0模型实现采用；owner同步实现保留，非追认原样模型成果。
+
+运行岗独立逐hunk源审，`life-zero-consumer135/DELIVERY.patch`5437B，S/Z plaincheck因EOL红后ignore-space check/apply均0。MB135 `04:23:38.199884Z`–`04:23:42.903400Z` exit0/4.703514秒，reuseMB/no clean。worker135/PID238548 `04:23:48.418784Z` START，同未改basic128配置/args、三false/600000批/60000操作/qwen1.11；当前安装尚无LOOP，旧330是否真正commit终态仍待实际读回，不能先授恢复/游戏日。两writer已收到本轮真实MB/install HOLD，待真实LOOP或preloop END释放。
+
+135实际只有application3源重编；worker于 `04:24:32.401157Z` preloop exit1/43.982秒，无LOOP，Native/Java两writer均明确解除安装HOLD。原Writer verify已经越过，新故障在其后DriverActionHistoryPublisher.completed100→publish154→RootActionHistoryMaterialSourceFactory.captureActual258→LifeAdvanceRootReplay.readRecorded57→LifeAdvanceEvidence.readRecorded120仍要求Applied semantic。不同于134的verify64，不能把新栈当原修无效或重发原动作。
+
+运行岗 `04:25:24.176575Z` 实际薄读canonical332/repair_required：真实seq332 receipt `D:/ck3-state/ck3-java-g2-resume85-vanilla02/continuity/artifacts/56ba9989fea4db34c6c3fd629857623008d60e9dd5ec79cc97b64c6cf61ca18b.bin`7780B，**COMPOSITE_SETTLED / COMPOSITE_NO_GAMEPLAY_WRITE**，同原action-a614…；因此旧Unknown已通过真正权威WAL合法结算无effect。cyclecompleted3、date53144328不增，非APPLIED、非新游戏日，历史发布/Controller恢复仍未完成。精确新332原件已交consumer136复用，禁止只合成成功终态或伪造Advance history。
+
+136源码定位：CanonicalOnly历史合同要求独立真实material，receipt/record本身不能冒充Advance后态。最高P0将只在精确无effect终态经原source合同核验后返回已有Unchanged、不发布虚构推进历史；正常Applied/UNKNOWN历史和真正Controller后继恢复保持。当前仅D候选/真实小methods模型准备，业务0/MB0，不因单元绿启动新空批。
+
+136 `runtime-life-noeffect-history136` 真实POST `04:26:16.681353Z`，8完整源+135完整stderr/max3200，200stop12.164秒/有效TTFT4.116秒；候选存在Binding-vs-Replay错类型、模式变量越界、漏import/self-head比较，未编未采用，owner同步实现。最终Publisher+RootActionHistoryMaterialSourceFactory两叶 `life-zero-history136/DELIVERY.patch`7678B：已存在的同writer locked.find验证canonical receipt后，typed proof/Effects/emptychild/nonEffect及真实Life回调完成则Unchanged，不造CanonicalOnly/Advance/history。运行岗源审删掉首8302B草稿新增的重复loadReceipt/historicalRecord/loadRecord/head digest审计；原始草稿保留、不把新增审计当必要资格。
+
+收窄后2源strict0/2.406秒，新实际durable332 direct Publisher3P0F：两次消费0history/0Driver/0archiveIO；locked current330不匹配332拒/source拒传播/原Unknown保UNRESOLVED。内存locked仅离线消费者，未改真实账本；RootFactory只strict、非整Root行为绿。运行岗S/Z ignore-spacecheck/apply均0。
+
+provider独立只读紧邻冷恢复，先撤回Journal219“若发布history则拒”假设：该helper只DRIVER_ACTION_HISTORY入口，136明确不发，故不可达/0改/0POST。真正必要漏口是DriverStateAssembler.projectInternal1536默认要求每个settled Gameplay都有coverage，而新NoEffect按合同没有行。单叶 `runtime-noeffect-project136` 于 `04:29:41.007049Z` 真实POST，7完整源223260B+真实3327780B，headers6.392/有效TTFT6.393秒；owner同步最小typed无effect投影、其余coverage/UNKNOWN拒绝保持，必要验证尚在进行。当前没有MB136/业务worker，不因上述静态发现授实机成功。
+
+Assembler136最终 `noeffect-project136/RUNTIME.patch`1288B单hunk，模型length24.144秒/OS1，生产方向部分可用但放sameGame/episode之前、测试伪API/截断，owner纠正位置并复用ActionEffects。strict单prod0/2.423秒；actual332+guardbasis真实Driver3929098B导入软件投影，旧MB精确missingrow被复现，新投影保完整Driver字节/0credit/Unknown拒绝。初轮后继CompositeRejected负例fixture构造失败，生产不改，`04:33:39.407317Z` 仅剩未过2项复验GREEN（probe重编1.350秒/run1.246秒），非同JVM全部重新绿。DriverBootstrap.allsettled与Controller非effect跳cycle分支静态正确，未加不可达Journal改动/新资格。
+
+运行岗逐hunk源审136两叶7678B与Assembler1288B，S/Z最小ignore-space check/apply全0；没有把D固定actual probes带入正式CI。MB136 `04:34:25.394252Z`–`04:34:31.650127Z` exit0/6.255875秒，reuseMB/no clean，实际application2+local-service1共3源。worker136/PID29344 `04:34:37.598982Z` START，同未改basic128args/三false/600000批/60000操作/qwen1.11，安装在途尚无LOOP；当前不能授完整恢复/Native提交或日期推进。两writer均收到真实MB/install HOLD，实际LOOP/END后释放。
+
+工具记录纠正：sem确认134历史实际使用过compile.ps1，违反cmd-only约束，不能把旧文件说成仅存在；旧READY已如实标记，提供compile.cmd同javac@args的未执行复现入口，不删原件/不重跑已绿。135/136实际调用使用cmd，Root及正式writer已收到，不把工具审计设置成业务恢复门。
+
+136实际 `04:35:18.0953631Z` **LOOP_START/next51**，旧Unknown→无effect终态→冷恢复/Driver投影已经真正越过。批51于 `04:35:18.2080301Z`–`04:35:22.2520866Z` 4.044秒 WRITER_UNKNOWN，detail IOException: actual installed composite has no explicit planning domain，attempt0/applied0/date0。worker `04:35:22.661391Z` exit4/45.062秒；stderr精确RootPlanningDomainCatalog.classify226→RootPlanningInputsFactory.actionFacts300→NativeReadinessCollector.createObservation721，不是Native提交Unknown。两writer均已收到真实LOOP/END并解除安装HOLD，当前业务0/MB0。
+
+运行岗 `04:36:34.483096Z` 必要薄读canonical334/running、native217/public243/date53144328，cyclecompleted3、pending_receipt=null，seq332 COMPOSITE_NO_GAMEPLAY_WRITE原件保持；没有新增动作或游戏日。最高P0137已followup provider独占实际domain producer/consumer：Catalog116–128只从actualInstalled.compositeDomains填IdentityHashMap，223–226已匹配真实composite但mapnull；InputsFactory320–327对TERMINAL_WITHOUT_EFFECT本有显式ExternalState，因此优先追Life实际installation缺domain声明，不跳掉真实无effect事实/不引入泛默认domain。模型/必要最小实现准备，不额外来源签发/全树审计/新Native查询。
+
+137后续源核修正上述“补业务domain”推断：JointShortlist.Domain仅7业务域，lifestyle专Focus/perk机会成本，没有日期域；RootLifeRuntimeFactory110确未声明CompositeDomain，但不能凭Life名字塞lifestyle。InputsFactory当前SystemControl负责已认证控制动作的过滤/未决全局阻断，ControlKind尚无日期项。provider已收到实际根与这一消费者合同，考虑专用Life时间控制分类，保真Applied的visible/eligible和Controller进度记账、NoEffect无信用、UNKNOWN仍阻断，不用跳事实/泛默认绕过。
+
+`runtime-life-domain137` 于 `04:38:32.009800Z` 真实POST，8完整相关源+332原件/136完整stack，stop9.302秒/38515in425out/TTFT6.700秒，OS0；已提示不得胡归lifestyle。当前仅source审阅/最小候选阶段，没有137构建/worker或新游戏日信用。
+
+137首模型仍Life→lifestyle并旧constructor锚，整拒。correct1真实 `04:40:17.725429Z` POST，7完整实际源/max3500，stop13.127秒/40070in1370out/TTFT5.504秒；Catalog实际matched Life对象专用SystemControl与ControlKind两hunk原样部分采用，消费case锚不匹配且缺NoEffect/Applied结构，owner最小接管。最终 `life-domain137/RUNTIME.patch`4280B只Catalog+Inputs两叶：已匹配真实Life handler且COMPOSITE/archived verifier存在才LIFE_ADVANCE；既有统一unresolved拒绝不动，新case解码真实AdvancePlan/expected并校验Composite Applied/NoWrite/Rejected及原Effects，RBD另保，不改visible/eligible/Domain枚举，不让普通日期动作假归业务域。
+
+必要验证 `04:43:07.735414Z` END：2prodstrict0/2.238秒，单Dprobecompile0/1.566秒，direct6checks0/.948秒。actual332 NoEffect接受且不变；软件正常Applied独立after日期/revision/timelineflags通过、仍visible/eligible=true；Unknown/错observation/非Life拒。Catalog真实binding分支仅源审+strict，不冒wholeRoot/Game验证。运行岗逐hunk源审，S/Z ignore-space check/apply0。
+
+MB137 `04:43:55.664306Z`–`04:44:01.016150Z` exit0/5.351844秒，reuseMB/no clean，实际仅local-service2源。worker137/PID323236 `04:44:07.356277Z` START，同basic128未改配置/args、三false/600000批/60000操作/qwen1.11；当前安装在途尚未LOOP，next52待真实读回。两writer已收到真实MB/install HOLD，不以candidate/测试信用代实机日期推进。
+
+137实际 `04:44:46.9782293Z` LOOP_START/next52，安装39.622秒；Native与Java两writer均明确解除本轮HOLD。`04:45:38.7696231Z` RETURN RefreshRequired / actual_read_publication_requires_current_proposal，REALM_MEMBERSHIP_PUBLICATION→Published、round_read=true/native219/public246/date53144328；已实际越过136的composite分类失败，当前按真实只读发布后重规划，没有把publication当Native动作或进日。
+
+137首普通qwen `04:46:18.1477297Z` 真HTTP BEGIN489903B→200complete20.325秒/TTFT19.541秒，`04:46:40.5406104Z` ActionSelected DATE_ADVANCE后afterPlanning Unchanged/round_read=false。运行岗 `04:47:24.044774Z` 薄读canonical337/running，actionhead仍真实NoEffect332，没有新日期parent intent/提交；cycle3/日0不变。不能把afterPlanning越过说成已Native执行。
+
+本轮唯一必要jcmd `worker137-thread01.txt` mainelapsed227.89秒：NativeTransport.observe(Instant)818→Held.current197→Factory.current268→PendingUi.Scope.current104→LifeAdvanceComposite.validate63→CompositeCoordinatorSupport.execute23。134修的是Running/run70入口，此处仍是pre-intent validate：Coordinator136已持刚验证initialGuard并传Support，Support23调用validate后25才Intent，普通lease已缺席又误用strict next-push；不是新Native突变或进日等待。138最高P0只借已有typed initialGuard到validate作用域，复用已有Held.retainedEntry，严格next/后态继续真新帧，不造parentexecution/新cache/来源proof。
+
+`runtime-date-validate138` 真POST `04:50:21.277803Z`，8完整当前源114712B+137全栈/max3800，headers4.332/有效TTFT4.334秒，owner同步D最小实现。137于 `04:51:12.304980Z` 通过现成worker-stop.request请求下一协作边界退出；阻塞的Nativeobserve尚受本批原deadline约04:54:47约束，不承诺立即stop，不杀worker/Game、不热改产物/伪终态/重放动作。138源/必要验证就绪仍等137真实结束后增编。
+
+137批52实际 `04:44:47.0712681Z`–`04:54:47.6286497Z` ACTION_UNKNOWN泛名，detail Native transport deadline expired，attempt0/applied0/日0；worker `04:54:48.227938Z` exit4/640.872秒。运行岗 `04:55:20.348180Z` 薄读canonical338/repair_required/BATCH_INTERRUPTED52，actionhead仍相同真实settledNoEffect332/56ba…7780B、pendingnull，没有新日期action record；此为真实链回读，不是仅据attempt0推断。实际END后才消费本岗stopflag（04:55:20.532781Z/exit4），不伪capture或ticket。
+
+138模型stop10.773秒/32753in1184out/OS0，Factory两行原样部分采用；Scope reader错Session/LockedJournal、擅改CURRENT及漏import，owner接管真实接口和finally。`date-validate138/RUNTIME.patch`5232B三叶：已有ActionCommandScope只在Support实际validate回调期间借用initialGuard，package-private发行、同writer/command/current ActionScope匹配、finally恢复，不改CURRENT；Support的Intent/run顺序不变，Factory用该guard走已有retainedEntry。不是新缓存/调度平台，不新增来源校验或改严格next。
+
+138必要 `04:54:52.973263Z` END：3prodstrict0/2.113秒，probecompile0/1.490秒，12directchecks0/1.468秒。旧332/basis仅纯DATA播种Complete，非137失败时真实guard；真实private API回调0Native/facts/archive、错writer/cmd拒、正常/异常finallyclear、next仍调用原transport且同rev拒。Factory仅源审+strict，不冒fullRoot/Game验证。运行岗源审/SZcheck/apply0。
+
+MB138 `04:56:14.140473Z`–`04:56:19.670465Z` exit0/5.529995秒，reuseMB/no clean，实际application2+local-service1共3源；worker138/PID272964 `04:56:26.929474Z` START。实际 `04:57:08.7088805Z` LOOP_START/next53，安装41.779秒，两writer均明确解除本轮HOLD。同未改basic128args/三false/600000批/60000操作/qwen1.11，日期仍待真实动作后态，不因12DATA通过授Native提交/进日。
+
+138实际在模型/validate之前遇到新mandatory Events故障：批53 `04:57:08.8142605Z`–`04:58:07.8207553Z` INTERNAL_FAILURE，IllegalArgumentException: bounded command history required；worker `04:58:08.233520Z` exit4/101.304秒、next54，attempt0/applied0/日0。精确stderr ChoicePlanningJson.decode54→EventPolicies.foreground166→OrdinaryPlanner255。新138 validate修复尚未实跑，不能说无效或已成功Native执行。
+
+运行岗源核ChoicePlanningJson54是commands数组且size<=256，不是MAX_BYTES抛错；EventPolicies165把request.observations.history()完整加入ObjectNode。最高P0139唤醒obligations独占D该实际producer/consumer，立即模型+有限真实材料回归，不关mandatoryevents、不truncate历史/盲抬全局。`runtime-choice-history139` 实POST `05:01:15.080764Z`，8完整当前源111267B+138完整stderr，200stop9.379秒/TTFT3.451秒/24547in990out；首答retainedlimitnone/unbounded整拒未编，窄有限角色纠错准备。
+
+运行岗 `05:02:20.316389Z` 仅现canonical小索引读回sequence342/repair、frame221/public249/date53144328、actionhead仍332NoEffect；java_driver_read_history readheadseq340，afterDriver exact `D:/ck3-state/ck3-java-g2-resume85-vanilla02/continuity/artifacts/4be354e9bdaf9211d9abaa95d9dd6c24ec8ec24f998cc3d0cc331af30dc91be5.bin`4088702B/version131，before f7f15b2…4008900B/version130，最近READ行index253–257。精确afterDriver/readrefs已交obli取count和真实完整history，不宽扫CAS/新Native观测。provider并行只读137同角色的timeline primitive分类传播：基础pause/resume/speed固定+arm/cancel family在当前installation184–189也无业务domain，Catalog PublicPause只GenericPublicPauseRecovery；需先证明子动作消费可达才独立最小候选，不抢Events/不把迟到研究作为139门。
+
+139实际afterDriver `command_history=257` 已取证，非据index推定。第二轮bounded02模型stop7.067秒，语义hunks原样部分采用、owner机械补FullJsonTree import。两叶 `choice-history139/DELIVERY.patch`：默认decode ObjectNode256/byte64KiB保留，新增decodeRetained先以FullJsonTree.MAXIMUM_BYTES=64MiB约束完整wrapper，再保同typed历史解码，EventPolicies单调用改走该lane；不丢行/不关Events/不反importapplication。实际生产SourceReviewed接收的是已经typed Input，不再经默认小byte API。
+
+必要139 strict2prod0/2.335秒，source-derived4095997B wrapper（真实257history+sameframe221/249 guardSEM+实际caps，非failedheap）旧MB精确decode54 RED1/.984秒；candidate257行全部原row无损roundtrip→Mandatory NoCandidate→小encode null→SourceReviewed typedInput/encode null，17directchecks0/1.714秒，默认256/64KiB、JSON UTF8/dupe/trailing/typed与新64MiB有限负例保持。无当前Game/Native/sourceIO，D固定probe不入CI，未授fullRoot/Game。
+
+运行岗独立源审，S/Z ignore-spacecheck/apply0。MB139 `05:09:07.558686Z`–`05:09:12.262431Z` exit0/4.703760秒，reuseMB/no clean，实际wave2-events1+application1共2源；worker139/PID219856 `05:09:18.939345Z` START，同未改basic128args/三false/600000批/60000操作/qwen1.11，next54。两writer均收到本轮真实安装HOLD，尚无LOOP/日期信用，迟到其它研究不作为本轮门。
+
+139实际 `05:10:00.039730Z` LOOP_START/next54，安装41.100秒；两writer均解除本轮HOLD。真实Events完整历史已经越过，qwen `05:11:35.1172599Z` BEGIN503646B→200complete20.408秒/TTFT19.606秒，随后批54 `05:10:00.1397837Z`–`05:12:03.7133961Z` ACTION_UNKNOWN泛名，ContractViolationException: outer runtime scope changed the actual clock observation，attempt0/applied0/日0；worker `05:12:04.328980Z` exit4/165.390秒、next55，stderr空。
+
+运行岗 `05:13:30.531432Z` 薄读canonical346/repair、native223/public252/date53144328，actionhead仍原settledNoEffect332同7780B、pendingnull，没有新intent。唯一throw RootAdvanceRuntimeFacts.current54：LifeAdvanceRootReplay.push(lease.frame()).equals(frame)，capture91另同样整Frame等式/98绑原件ref。Held.retainedEntry的frame208–212与Replay.push逐字段同构，因此不能当构造函数拼错；实际139差字段尚unknown，不拿旧332/source-derived pair冒充。
+
+最高P0140已obli独占RootFacts及必要Collector实际producer契约。`runtime-clock-frame140` 于 `05:16:11.759635Z` 真POST .11，9完整源189876B/max3500，stop14.880秒；首答仅把record.equals拆字段但observedAt/ref/semantic依旧exact，源审拒不编。现明确nativeOwnedNoticeKeys真实producer在Collector活跃planningReadScope.captured.physical，窄2leaf候选将增加active-only零capture/query只读getter并复用既有heldSemantic稳定Native投影，保identity/source/session与实际driverhistory/lease期限、当前Nativepacket角色；54→91/98同合同必要传播。无实际pair时只源派生正负例，失败诊断最多少量差key/字段类，不输出大payload/新增观测。当前业务0/MB0，未起140。

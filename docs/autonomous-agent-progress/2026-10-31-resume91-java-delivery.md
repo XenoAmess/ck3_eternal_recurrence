@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `fca7b5219c`。本波已接Life childless终态11叶、bootstrap4叶、135消费传播3叶及M7 source95四叶；必要绿复用 owner 实际回执。Runtime薄读确认原330 Life parent在canonical332已为COMPOSITE_SETTLED/COMPOSITE_NO_GAMEPLAY_WRITE，非APPLIED、日期未增；134/135先后preloop失败、未LOOP，后继history/project消费仍待136真实验证，不能称完整恢复。已知普通新CROWN APPLIED1与旧FOCUS分列，新增日仍0，不重放旧动作。本岗不写 S/MB/Game/账本，正式源码、装载和业务结果分别记录。
+最新正式源码 FF 已至 `bf81176fa5`，136–139共10个生产叶已按准确小补丁正常发表，复用owner必要strict与direct检查，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140新两叶已由runtime采入实际MB流程，尚未由本岗正式发表。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -264,3 +264,21 @@ receipt v12/typed payload、sealed Ports/Settlement、Effects和NativeOutcomeArc
 `fca7b5219c` M7 source95精确4新叶/2prod2test，无POM：StaticObjectB15000 getter及GrowthPorts、两对应test。四源SHA对DELIVERY03一致，execution token与reviewed03逐项相同，仅补范围注释/EOL。readGs58返回supplied原GS:[58]的QWORD值slot，随后readPointer(slot)再读TLS+0x10 DWORD；它不是GSbase/TLSbase/currentthread实现。signed guard>epoch才call84，正常返回后fresh guard==-1才只写静态对象BYTE0和+12 BYTEFF再call24，正常路径返回静态对象地址。84/24只knownRCX opaque投影；84原source还有known RDX16但本接口未暴露，不是完整NativeABI。此前Growth正文称“哨兵”已改成两次B15000结果比较；新93B明确是静态对象getter，不把地址命名null/sentinel、完成或SAVE信号。
 
 复用owner首4src strict0/1.0262455秒后坏getter2F；只替换getter单TU strict0/0.5403806秒，再仅两个新失败JUnit同JVM2P/0skip/0.6717554秒，未重其它绿。运行CP reviewed03/classes先于bad02/classes，APIshim未进运行，原坏例保。getter与两Test为owner接管，adapter corrected02整class模型byteexact；八次模型HTTP/length与源拒分别保，无模型/owner混记或因TTFT宣cache/模式。formal不执行Native原码或绑定实际TLS/Game，证据 `D:/ck3-state/resume91-java-delivery/M7-SOURCE95-ADOPTION.json`。
+
+## 136–139 已部署消费修复的正式追平
+
+本岗先前在 `95fed0266b` 收尾后completed，早先send_message只投递、未触发新轮；runtime这次followup才真正唤醒。这段没有执行的空档如实保留，不把消息到达当源码审阅或任务在途。恢复后四组准确补丁共10prod分别正常commit/fetch/rebase/FF，远端最终 `bf81176fa50fd4aeb4784227d77571e398b9c398`；继承其它机器已发表祖先，无force/reset/stash/全树stage，固定D probe不进入CI。
+
+`e80db1e996` 采用136 HistoryPublisher/RootActionHistoryMaterialSourceFactory两叶与DriverStateAssembler一叶。已存在同writer locked.find canonical验证、typed proof/Effects/emptychildren和真实Life source callback成立才Unchanged；不造CanonicalOnly、Advance或不存在的history行。Assembler在sameGame/episode之后仅对精确NoGameplayWrite核Effects并跳过不存在的coverage，其余settled/UNKNOWN合同不变。复用两src strict0/2.406秒和actual332 Publisher3P；Assembler单prod strict0/2.423秒、真实3929098B Driver字节保持/0credit/Unknown拒绝，两个后继负控只修软件fixture再独立复验，不合称同JVM全部通过。历史模型整稿拒绝、owner实现；Assembler模型partial+owner位置与Effects修正。
+
+`7c5ff73080` 采用137 Catalog/Inputs两叶，只为实际已匹配LifeAdvanceComposite且有COMPOSITE/replay绑定的handler增加SystemControl.LIFE_ADVANCE。保全局unresolved阻断、真实plan/observer/Effects及正常Applied的visible/eligible，NoEffect无信用，不假归lifestyle。复用strict2src0/2.238秒、direct6checks0/.948秒；Catalog实际安装路径仅源审/strict，非wholeRoot。首模型lifestyle整拒，纠错Catalog/enum两hunk原样，消费case由owner补。
+
+`4d7fa1b86e` 采用138 ActionCommandScope/CompositeCoordinatorSupport/RootAdvanceInfrastructureFactory三叶。仅Support实际pre-INTENT validate回调借原initialGuard，同writer/currentcommand/ActionScope绑定并finally恢复；CURRENT、Intent/run顺序和严格next不变，Factory复用已有retainedEntry。复用strict3src0/2.113秒和direct12checks0/1.468秒；旧332basis只是DATA fakeSession播种，错writer/cmd与异常清理负控，不授actual137 guard、Factory行为或fullRoot。Factory两行模型原样，其余真实接口/finally为owner纠正。
+
+`bf81176fa5` 采用139 ChoicePlanningJson/EventPolicies两叶。新增完整retained wrapper显式64MiB有限入口，先FullJsonTree验证再保typed全历史；默认ObjectNode256/byte64KiB和小结果保持，单实际Events消费走新入口，不截断行。复用strict2src0/2.335秒；actual257历史+同frameSEM/caps派生4095997B wrapper的旧decode54精确RED，候选257原row无损、Mandatory/SourceReviewed null小结果及17directchecks0/1.714秒。它不是失败heap/activechoice/Native验证。首无界模型拒，第二轮两semantic hunk原样+owner机械import。
+
+实际装载与后继故障分列：136 LOOP后缺Life domain、137实际模型接受DATE后validate等待超时、138已LOOP却在更早Events history257失败而未实跑validate、139实际越过Events并再次模型接受后因RootAdvanceRuntimeFacts整Frame等式失败。139于05:12:04.328980Z真实exit4/next55，canonical346/actionhead332/pendingnull，无新日期intent。NoEffect332仍COMPOSITE_SETTLED/TERMINAL_WITHOUT_EFFECT，非APPLIED；runtime最新普通世界APPLIED2与新日0/SAVE0口径不由本岗额外扫描账本。140两叶当前runtime实际MB/install在途，正式源审可继续，不预授修复、LOOP或Game效果。
+
+工具审计后到更正：sem已确认134历史compile.ps1实际执行，违反cmd-only；保留旧原件，compile.cmd只是同javac参数的未执行复现入口，未为审计重跑已绿。135/136实际命令用cmd。此事实与编测结果、模型实现署名分别记录。本次正式交付全用cmd.exe/login:false，没有新增模型调用、javac/JUnit/Maven或Game操作。
+
+运行岗当前页从其已审阅冻结快照精确追加：formal旧96878B历史原字节全部保留，只取该页后继242行；没有复制AGENTS、全局模型历史或其它owner页。
