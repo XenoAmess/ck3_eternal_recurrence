@@ -144,7 +144,10 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
             byte[] expectedBytes=metadataBytes(expected);
             files.verify(existingWitness);
             byte[] actualBytes=files.read(existingWitness,MAX_METADATA);
-            StrictJson.require(Arrays.equals(actualBytes,expectedBytes),"orphan material bytes differ from current verified capture identity");
+            var actualRow=StrictJson.object(FullJsonTree.parse(actualBytes,MAX_METADATA),Set.of("schema","pair","session","proof","original_writer_head","original_writer_head_sha256","checkpoint_binding_sha256","cycle_authority_sha256"));
+            var expectedRow=StrictJson.object(FullJsonTree.parse(expectedBytes,MAX_METADATA),Set.of("schema","pair","session","proof","original_writer_head","original_writer_head_sha256","checkpoint_binding_sha256","cycle_authority_sha256"));
+            for(String key:List.of("schema","pair","session","proof","original_writer_head","original_writer_head_sha256"))
+                StrictJson.require(actualRow.get(key).equals(expectedRow.get(key)),"orphan material entity differs from current verified capture identity");
             files.verify(existingWitness);
             SavedMaterial requalified=readMaterial(borrowed,verified.pair(),existingWitness,false);
             files.verify(existingWitness);
@@ -214,9 +217,9 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         // Both reads prove the immutable saved cycle against its actual historical state. Physical
         // eligibility is checked separately below; a replacement Game must not impersonate the saved owner.
         String cycleAuthority=historicalCycles.verify(borrowed,source,proof,original);WriterContracts.requireDigest(cycleAuthority);
-        StrictJson.require(cycleAuthority.equals(StrictJson.text(row.get("cycle_authority_sha256"))),"actual original cycle authority differs from saved material");
-        if(retained)verifier.verifyRetainedOriginal(borrowed,source,pair,proof,head,digest);
-        else verifier.verifyHistorical(borrowed,source,pair,proof,head,digest);
+        String storedCycleAuthority=StrictJson.text(row.get("cycle_authority_sha256"));WriterContracts.requireDigest(storedCycleAuthority);
+        if(retained)verifier.verifyRetainedOriginal(borrowed,source,pair,proof,head,digest,storedCycleAuthority);
+        else verifier.verifyHistorical(borrowed,source,pair,proof,head,digest,storedCycleAuthority);
         files.verify(manifest);
         return new SavedMaterial(this,pair,source,proof,original,head,digest,manifest,verifier.retainedDriver(borrowed,pair));
     }
