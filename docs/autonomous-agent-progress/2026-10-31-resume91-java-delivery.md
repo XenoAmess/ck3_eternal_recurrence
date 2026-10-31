@@ -133,3 +133,14 @@ READ 新计数回归已正式 `0f39832d5f`：单测试源 strict0/2.2002234秒�
 Stop 新必要测试只用已存在两方向 Native Stop 请求字段→明确 software ActionCommand→实际 stopPreparation 解析/拒绝边界。首模型实际 strict4错8warning，原件保留；其错误复用了 Stop ID 当原 Start ID，并跨负例污染 baseArgs，已连真实诊断限唯一 method 交 `java-m6-stop-preparation-boundary118-correct02`，尚待实际审验。现原包没有 canonical 原 Start/真实 resolved episode/同源三 guarded read 资格闭包，后续不得由解析绿外推完整 Finish、Cancel、Root 或 Game。
 
 Root docs09 `3f290568e0` 是00:06:02冻结13页包的12个实际变更叶；模型运营页只有等价空白差异保正式字节、mode4相同不重写。AGENTS 仅当前 resume91 段，后继108566历史字节完整保留。单次 rebase 遇 restore 后 M3 doc stat-M/diff0 拒绝，随后远端祖先未变的普通 FF push0；不 stash/reset/force。后继真实 MB119 LOOP 已由 Root/运行 owner 报告，未把安装或候选编译当新动作/游戏日。
+
+
+### Stop caller 正式采用后的实际边界（2026-10-31T00:30:23.347Z）
+
+`a95824f967` 已正常 FF 三生产叶与一新增方法，完整交付 `D:/ck3-state/resume91-java-delivery/m6-stop-callers118/DELIVERY.json`。三生产源 strict0/3.5234095秒；只旧 SwayNativeBindings 基线单源 strict0/1.3932464秒，然后新方法精确复现 minus2-zero、zero-minus2 两方向 integer range 拒绝。最后单测试源 strict0/1.6449626秒，仅新方法1P/0skip/2.0250356秒，旧4方法未跑。三调用者的正数解析门现代码已修，完整 pendingProducer/retained Finish 的真实同源资格闭包仍未验证。
+
+测试采用为模型 correct02 部分加 owner 必要断言。模型首稿真实4错8warning及错误原 Start ID、跨负例污染保留。owner 两个新断言问题亦保留：JsonNode.equals 的整数 Node 类型误比改为 ExactRef typed 比较；fractional token 在 canonical command 构造就拒，单独断言这个实际更早边界，不冒称到达 preparer。最终只有生产原3method，修测试未加生产语义。raw logs/JSON 每轮保在 preparation-boundary；没有为此重测旧 Native ACK/Finish value 四绿。
+
+`22fe13faaf` 已正常 FF held120 单叶有限诊断，保原 equality 拒绝，只报至多16个×96字符顶层 key 和总数。原 hunk 因空白 context 无法直接 apply，正式适配仅替换唯一相同 equality 语句为原新增 block，语义0偏移；复用 owner strict0，不称业务故障已修。`47d94f7673` 只精确追加3篇模型经验并改 M6 一段 frequency 旧说法；实际 REQUEST 没有该参数，不是已执行0.3实验。Root/运行 owner 已报120真实 LOOP，安装HOLD解除；本岗无 S/MB/Game 写，没有把 formal adoption 外推该组三 Stop 已在120部署。
+
+逐任务最终采用/拒绝与 owner 成本见 `D:/ck3-state/resume91-java-delivery/MODEL-REVIEWS119.json`。本小批5任务真实最大同时2请求，未称峰5；两大源码前缀的字符/token规模不等于3method改写规模。当前本岗正式源码队列已发，后继真实 P0/成熟叶仍优先，未闭全链不补假输入。
