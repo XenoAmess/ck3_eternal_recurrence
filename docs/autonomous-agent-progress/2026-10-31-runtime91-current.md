@@ -7,6 +7,13 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+
+15:16Z普通批64实况：177保持同一worker。**15:10:02.541835Z真实ordinary qwen BEGIN586211B**，HTTP200complete23.258秒、headers22.522/TTFT22.524秒，reported175802+140=175942/cachednull；15:10:26.1044972 ENTER、15:10:35.9177579 RETURN ActionSelected/Unchanged，选择life-advance。新父 `action-c1e62a60e1f39aeb23c270f40ef3bd76d309be987a18dd6aaa581eceffe96109` 已真实COMPOSITE_RUNNING468，command硬deadline **15:27:09.764598800Z**；较短模型请求deadline15:11:02.1885417仅约束HTTP，不代替执行合同。
+
+其唯一新ARM `child-c2aae3ddfb4ac165830047470cba7c93db85ccda9a3c445528c150f8345b7c58` 实际470Intent→472ACK，dispatch e1f1b2e…1964B、write15:14:11.1632215→RX15:14:11.2849844Z/native_ok=true/conn90。**ARM473已SETTLED/CONTROL_APPLIED**，receipt3c08d280…7271B，独立Status read2c93c7ce…5901B，semantic armed/generation4/start53144328/target53144520/speed5/army0/terminal_or_sentinel；15:16:48.472450Z actualcanonical474/running，completed3/date53144328，resume新Intent/dispatch与真正日期推进仍待后继。旧447/453/459/461不重发，未把ARM或ACK授为新游戏日。
+
+后台Status178合同复核纠正：模型15:09:16.763→22.742Z stop5.978秒给出的单行Head→State候选最终 **REJECTED_AFTER_FULL_CACHE_CONTRACT_AUDIT，0采用/0编测**。完整cache审查发现旧Head409额外once/session验证actual.documents全canonical pins，而State只核anchor/target真实DATA；跨Session缓存下两者不能称完全等价。保原候选/最终REVIEW，不为当前普通游玩扩大commonState资格、增API或重启worker。源码HTTP候选终态与采用分记。
+
 15:07Z真实突破：**177于15:07:07.424752300Z同原版Game71464进入LOOP_START/next64**，START→LOOP177.194秒；15:07:24读到后立即通知Native解除安装HOLD。15:07:40.932818只读canonical465/running/BATCH_STARTED64，cycle.pending=null、completed3/date53144328，原parent461/ARM447/abandoned453/CANCEL459保持真实已结算而未重放，已越本次Inputs177消费者错误。尚未授后继qwen选择/新Native动作或新增日/SAVE。
 
 177仅取一次真实cold栈15:06:15（elapsed125.18秒/CPU58.078秒），historyPublisher→Journal.receipts→archive.loadReceipt→PhysicalStatus.verifyArchivedData147→Writer.requireHistoricalHead415→DomainBodies.reference/ExactRef解析，非等待Native ACK。该调用只消费历史sequence/digest而丢弃Head，现有requireHistoricalState合同是否可替代交现成helper模型先行D-only审查，不成为当前普通批前置；M6既有Archive176仍独占后台，不扩大重复编测。
