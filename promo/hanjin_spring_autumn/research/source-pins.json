@@ -1,0 +1,470 @@
+{
+  "schema" : "hanjin.source-pins.v1",
+  "machine_id" : "4-8e1c2f1861",
+  "prepared_at_utc" : "2026-10-31T05:05:13.091034600Z",
+  "external_evidence_root" : "C:\\workspace\\hanjin-spring-autumn-20261031",
+  "scope" : "Selected installed runtime text sources; not all source indexed files were manually reviewed",
+  "entries" : [ {
+    "item_id" : "3780919688",
+    "relative_path" : "common/bookmarks/bookmarks/00_bookmarks.txt",
+    "bytes" : 48387,
+    "lines" : 1768,
+    "sha256" : "62b6cd7492ca0007ce294730451e5ae703f013d05a7f2d792a13619c3727c17a"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/bookmarks/groups/00_bookmark_groups.txt",
+    "bytes" : 371,
+    "lines" : 9,
+    "sha256" : "72d1a492b31e5200b1d9d8ac2e59ab369439f9591e94d0b1192bb7f083b37dd6"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/casus_belli_types/hd_cycle_luanshi_wars.txt",
+    "bytes" : 3825,
+    "lines" : 141,
+    "sha256" : "ab4bc0d266d7894a67367c1606cd20beb53a91c076af60d87bc1858d0df0bcfc"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/casus_belli_types/zz_hd_sg218_war_cb.txt",
+    "bytes" : 9776,
+    "lines" : 276,
+    "sha256" : "5818be36fc1a4d3f85a67d19bc17d0934c2778ed71f3fadb19167f5b6a3ceb0c"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/character_interactions/WJ_bizhao_request_interaction.txt",
+    "bytes" : 8203,
+    "lines" : 183,
+    "sha256" : "5ff80225b83d1b6ee619681ca1aceb49c02f95e2bf1ab24dd4a34d23efa118b7"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/character_interactions/WJ_office_roads_interactions.txt",
+    "bytes" : 44745,
+    "lines" : 1676,
+    "sha256" : "90d95782c9b06080815574804385e7b50d181952bfc67e542efac81ec0c0551d"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/decisions/hd_court_decisions.txt",
+    "bytes" : 8752,
+    "lines" : 337,
+    "sha256" : "f44c1d97b110513a31db60d7037fdb8090835695d20ebb3f81bd15bde51a8e2f"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/decisions/hd_party_decisions.txt",
+    "bytes" : 9681,
+    "lines" : 348,
+    "sha256" : "09278c199d32c08d7764188249961b771335202e18f1a824a754eada8acb6dff"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/decisions/zz_hd_cao_fengying_decisions.txt",
+    "bytes" : 853,
+    "lines" : 33,
+    "sha256" : "5df9a8d039522123316f9c52cddd5f505f6e31bf420d1a32cfea155bbd36e52d"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/on_action/zz_hd_190_startup.txt",
+    "bytes" : 2518,
+    "lines" : 59,
+    "sha256" : "b0f26d59a4a3fe78f39ae1d76cabae26c79842b3e474d8432df721d63e7b55e5"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/WJ_office_roads_effects.txt",
+    "bytes" : 32716,
+    "lines" : 905,
+    "sha256" : "54b93ef584eb72c6b3b45c76fc33c74e113d979264ad3305ccd4b0c7e7064398"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/hd_court_entry_effects.txt",
+    "bytes" : 571,
+    "lines" : 10,
+    "sha256" : "57ce954472648f1a598b9421deae9b71f8a67257aeaa97487f7fc389d4cf3acd"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/hd_tb_effects.txt",
+    "bytes" : 371,
+    "lines" : 9,
+    "sha256" : "7b32541d909aab96a7ea4bb639e17585afa084ac724a35a564a67fdeef9ff227"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd184r_dong_effects.txt",
+    "bytes" : 10403,
+    "lines" : 223,
+    "sha256" : "a6ac08822d32f722267714b29546d3c99bf095cb4e3c6b1bb1f7de3ea56914e8"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd190_cao_relay_effects.txt",
+    "bytes" : 9246,
+    "lines" : 243,
+    "sha256" : "87d6634cca33028941420efc3b48a269bf0100f01f7ef545d80b3c4504738026"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd_218_history_effects.txt",
+    "bytes" : 82683,
+    "lines" : 2275,
+    "sha256" : "d2920ebe8e344ef0077f172ebefee8ac855b2fd56a75ee64e62832009313decd"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd_cao_fengying_effects.txt",
+    "bytes" : 8710,
+    "lines" : 269,
+    "sha256" : "f6014b34af87309cbe2b7b62ac5b04f6a1894eaef7c4570aca1daf1b8e68be1c"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd_liu_bei_aftermath_effects.txt",
+    "bytes" : 25760,
+    "lines" : 774,
+    "sha256" : "0921a4aefda0f94b35d7b34b987cd26ff01c76dd23f0ea9c355f3fd718a64f50"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd_war_contiguity_effects.txt",
+    "bytes" : 72595,
+    "lines" : 2224,
+    "sha256" : "458fd680459753995fa71c692ed660a428043abb5a71dd310686c96de05cf6d2"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zzzzzzzzzzz_hds_sun_rework_effects.txt",
+    "bytes" : 15867,
+    "lines" : 469,
+    "sha256" : "6741a4f99554e95669510097a7aa39937a2b32dcd5e96e7060b9f3e870a0135f"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/hd_cycle_phase_triggers.txt",
+    "bytes" : 4445,
+    "lines" : 149,
+    "sha256" : "a263f2835675350fc60dc58f2d86574bb619bf422e9d0df7597a8e7e546752fb"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/hd_eastern_han_clothing_triggers.txt",
+    "bytes" : 8141,
+    "lines" : 316,
+    "sha256" : "ceeb9c88bbdf639f402aec1d65792c14222774ce6dc394b70b1874c35313424a"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/hd_han_clothing_pool_triggers.txt",
+    "bytes" : 14661,
+    "lines" : 430,
+    "sha256" : "24602a647c7cd5c2e256cb48eb5b199f94f49d07a4fee3e16cd17e7c5ff98528"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/zz_hd190_cao_relay_triggers.txt",
+    "bytes" : 2019,
+    "lines" : 48,
+    "sha256" : "cf2ff84dceb0a7e1606e0b72d2fb0c0a0d80726a050d79812f478f22cc681633"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/zz_hd_cao_expansion_triggers.txt",
+    "bytes" : 2525,
+    "lines" : 84,
+    "sha256" : "35b97aeecd0aff474df93734629991be55a952aa4aea1087437788d55fdd2344"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/zz_hd_liu_bei_aftermath_triggers.txt",
+    "bytes" : 6185,
+    "lines" : 223,
+    "sha256" : "ad7a040dfe1bc2c16e6a6992b8677b34e4fe0681bd7bc439aa99a42f4d0db834"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/zzzzzzzz_hd_liu_bei_adventurer_ai_gate.txt",
+    "bytes" : 791,
+    "lines" : 21,
+    "sha256" : "f7c415454ec1f27c53048b238f7f639eb29578bfef9d42cd7370d444246016f5"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/zzzzzzzzzzz_hds_sun_rework_triggers.txt",
+    "bytes" : 848,
+    "lines" : 38,
+    "sha256" : "0b8e8689e7fbcf01d85f10900e626f356041723267cb8c44b13d5be137e05916"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "descriptor.mod",
+    "bytes" : 815,
+    "lines" : 26,
+    "sha256" : "078ce6100b8b945cc6ab1ab74e2b9cf1fd95cb8caeccf7c87ce0ff00c0a7a100"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "events/zz_hd190_events.txt",
+    "bytes" : 6660,
+    "lines" : 216,
+    "sha256" : "48bce4c5ed5ae4f0da48151c0b80410287f28b76fda8b75ac8794bb9eae0120f"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "events/zz_hd_cao_chain_events.txt",
+    "bytes" : 7319,
+    "lines" : 380,
+    "sha256" : "03cb66d9d588db99c0e54ee802a2eaaffa55e722eb6dc30abc76e64345436580"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "events/zz_hd_cao_expansion_events.txt",
+    "bytes" : 5327,
+    "lines" : 215,
+    "sha256" : "9f6213d6972ee051ddb123c169e7e56966afb0ee86d404331a449a899de6caa8"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "events/zz_hd_liu_bei_aftermath_events.txt",
+    "bytes" : 13216,
+    "lines" : 404,
+    "sha256" : "c91b7fdb7a23b64878fb206195843e56d874071f2385fdc335734ffffd54ddf3"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "events/zz_hd_liu_bei_late_events.txt",
+    "bytes" : 164,
+    "lines" : 4,
+    "sha256" : "157464ba85ceca6d6d22ed2284e67ba56eca36efc94b6d266e00d23edbeef043"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "events/zz_hd_sun_ce_bawang_events.txt",
+    "bytes" : 876,
+    "lines" : 38,
+    "sha256" : "be7d4abf0b7733a94dd067fed46fbf330e516d864ff7bb4db766b9aea8e0bfe8"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "events/zzzzzzzzzzz_hds_sun_rework_events.txt",
+    "bytes" : 1720,
+    "lines" : 65,
+    "sha256" : "089971a7d026a72c35b22884b2ad60688d69b483f0aae91b1d9486f873231fe9"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "history/characters/east_asian_youzhou_180_200.txt",
+    "bytes" : 8895,
+    "lines" : 596,
+    "sha256" : "69525883c281f528b0530fa2fbeb0cfc305a9c30beb31f25d58daf927a71cd74"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "history/characters/east_asian_yuzhou_180_200.txt",
+    "bytes" : 17346,
+    "lines" : 1261,
+    "sha256" : "0e9c4df965f68771c13316e94aa7eef09bc2ceaa87d67480c4542d73ce207e27"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "history/titles/zz_hd_190_titles.txt",
+    "bytes" : 83042,
+    "lines" : 1285,
+    "sha256" : "2eb9b0a23af0274b936209b1ed6fedc409537ec877c4bcf961fa950067d567b9"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/bookmark/hd_bookmark_difficulty_l_simp_chinese.yml",
+    "bytes" : 89,
+    "lines" : 2,
+    "sha256" : "f59e37cbfd1291c243f751e92f894302a7b0181a4173eca90bc11a72da4404e6"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/hd_cao_expansion_l_simp_chinese.yml",
+    "bytes" : 2108,
+    "lines" : 18,
+    "sha256" : "7a67de5a8effca41227246e287c9c11919f16af106c070dd1cd093ac9211ec91"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/hd_court_l_simp_chinese.yml",
+    "bytes" : 13187,
+    "lines" : 173,
+    "sha256" : "368c3e0ed015d24dccf8ef2bef02ebf5f74f0df0065e3202f557cf6541a8d087"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/hd_party_l_simp_chinese.yml",
+    "bytes" : 51110,
+    "lines" : 573,
+    "sha256" : "7778174d09ec3a0902ef5385a9bc3d6a731beb3ef55744063726711a84537200"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/zz_hd190_cao_relay_l_simp_chinese.yml",
+    "bytes" : 1401,
+    "lines" : 16,
+    "sha256" : "2a1b3da2b10e42b5af02b8c6451382d9fb96213a4b8086a406656ec52ad9af5b"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/zz_hd_cao_chain_l_simp_chinese.yml",
+    "bytes" : 4375,
+    "lines" : 21,
+    "sha256" : "5440c80b412e0e849134774638170546ab007a6f619a98a4ffc2073f43b3d847"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/zz_hd_liu_bei_aftermath_l_simp_chinese.yml",
+    "bytes" : 110,
+    "lines" : 2,
+    "sha256" : "2bf58fd0af332fa50b2e3b6d13935c7c33c11e27cd0b05bd1576a99e1aa3194f"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/zzzzzzzzzzz_hds_sun_rework_l_simp_chinese.yml",
+    "bytes" : 1599,
+    "lines" : 8,
+    "sha256" : "f5609e8f1a28dd453751b45355b1a542a7c7331e1f457eb55beb32038d731158"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "README.md",
+    "bytes" : 14996,
+    "lines" : 99,
+    "sha256" : "766247b914374004a0d1a59aabcbb1dc66116a6ec20d3aa37840a7bbdaf654f9"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/casus_belli_types/hd_dc_kit_cha_tunbing_cb.txt",
+    "bytes" : 5181,
+    "lines" : 152,
+    "sha256" : "b885d5e72d94d61ec459ea8241c1f158292bd6288020a83f9a427aee2b479d7c"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/casus_belli_types/zz_hd_cao_expansion_cb.txt",
+    "bytes" : 4112,
+    "lines" : 118,
+    "sha256" : "336436bc4e43a85f5e6976d9fad11b3d0097bb1e92ad24de9dc67fd1944cdb0e"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/casus_belli_types/zz_hd_cao_fengying_wars.txt",
+    "bytes" : 2955,
+    "lines" : 93,
+    "sha256" : "9edc60ea8f356f7b3351ea4fd9b5c3ac30a9836fd0184d6a06a2c94be5372f67"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/casus_belli_types/zz_hd_sg218_war_cb.txt",
+    "bytes" : 4435,
+    "lines" : 119,
+    "sha256" : "9004b445d87a4f7cd9e39ca055b3fa86e482670dfb7126f6ffaaa28cd680e26b"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/casus_belli_types/zzzzzz_hd4_guandu_cb.txt",
+    "bytes" : 6857,
+    "lines" : 289,
+    "sha256" : "43706c1a7aed1bf9fe3d96f3b03e30ae06c27451c5eb3e142d4f7bc1ef960dd9"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/casus_belli_types/zzzzzz_hds_wars.txt",
+    "bytes" : 6484,
+    "lines" : 160,
+    "sha256" : "d47e060dfc105e60ced875d3d0977a2fce53ac73789baf9eb8e19dc44f2b9088"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/script_values/hd_peace_ai_peace_values.txt",
+    "bytes" : 1016,
+    "lines" : 48,
+    "sha256" : "70f610d3769ad9c72ab352977e5e35f76e0493eb20799340eaf508e44a81a95e"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/script_values/hd_peace_objective_values.txt",
+    "bytes" : 1706,
+    "lines" : 45,
+    "sha256" : "eab66862d8a60d4b14aee9492cabbaab6cc0c328e25cb556e29777b25f954f0f"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/script_values/hd_peace_peace_deal_values.txt",
+    "bytes" : 7080,
+    "lines" : 228,
+    "sha256" : "ffe1da1bce57ea98400e8ed9264aae6efba48103bc62c60d8da9cfdd26afd649"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/script_values/hd_peace_title_demand_values.txt",
+    "bytes" : 2615,
+    "lines" : 53,
+    "sha256" : "f70fb1f015dbcd639f8802e16db720c714c2fd40fd39a7cf9278729aa7b26166"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/scripted_effects/hd_peace_monitor_effects.txt",
+    "bytes" : 2367,
+    "lines" : 59,
+    "sha256" : "e5fe466bcce0a2ba8a6b63ea93fb06c5b9ac52b858cf0a45cf8c50abee8a05a1"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/scripted_effects/hd_peace_peace_deal_effects.txt",
+    "bytes" : 34005,
+    "lines" : 671,
+    "sha256" : "4ab404af7123e0191e4fa3cdeb0c7127c8fc0ef43004996cbfb275ac0229f1b5"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/scripted_effects/hd_peace_routing_effects.txt",
+    "bytes" : 3753,
+    "lines" : 105,
+    "sha256" : "ae1eb7fa83c169c9a499551da58795b27dd37a1191e0997674e1f0c513f4fadf"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/scripted_guis/hd_peace_routing_guis.txt",
+    "bytes" : 2382,
+    "lines" : 59,
+    "sha256" : "ebbbbe8f9954e9eaded4fc7cd91f46bda206773133c232455567d58605236cbd"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/scripted_triggers/hd_peace_objective_triggers.txt",
+    "bytes" : 1596,
+    "lines" : 41,
+    "sha256" : "ed233a8dad41ec6bee4d002f4b661ad1ffdbee7f7ab47a2b9c0403826a99419c"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/scripted_triggers/hd_peace_peace_deal_triggers.txt",
+    "bytes" : 3750,
+    "lines" : 131,
+    "sha256" : "5fafd32f22cf7aaf8322e770504308bda4c3cd95edcd360bb8f2f9daa840b471"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/scripted_triggers/hd_peace_routing_triggers.txt",
+    "bytes" : 8878,
+    "lines" : 205,
+    "sha256" : "59be5d9f0e6244324a272564565473d0fec3f2d753cb47f19286fd8dd2b122f9"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "common/scripted_triggers/hd_peace_title_demand_triggers.txt",
+    "bytes" : 4355,
+    "lines" : 131,
+    "sha256" : "e2ff8e3d7917d13b25a5e8654a010a610ef24ad138ae17c4f0ccc3667b1e8dd9"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "descriptor.mod",
+    "bytes" : 224,
+    "lines" : 12,
+    "sha256" : "1c91ab2d601ff962e2d2b2ac68c06f307c833a01e05de291d6b632b3c1b660f0"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "events/hd_peace_ai_offer_events.txt",
+    "bytes" : 1954,
+    "lines" : 51,
+    "sha256" : "a9962afe7b7ef131529d07707472c6d389198fabc7d75487a70b4e241eac2e0f"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "events/hd_peace_monitor_events.txt",
+    "bytes" : 4051,
+    "lines" : 131,
+    "sha256" : "0a071da8b080e6c449bfefb397026d110988c5aefe0501dfde3d7d6637cf150e"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "events/hd_peace_tribute_events.txt",
+    "bytes" : 14671,
+    "lines" : 207,
+    "sha256" : "3277f88d82e2c3085b6948ec863154c585e4a35c1026ac903de74b667804cbfc"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "gui/hd_peace_negotiated_peace.gui",
+    "bytes" : 47456,
+    "lines" : 669,
+    "sha256" : "ed7bf50c0d4bf1bf4e40ff140ff47bf7a112121af89ae2655d27cf719988aa86"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "gui/hd_peace_routing.gui",
+    "bytes" : 3734,
+    "lines" : 103,
+    "sha256" : "388484c29f68be9cab1e417847cd140f2da0913e125cb878005effbf727d55cb"
+  }, {
+    "item_id" : "3820784621",
+    "relative_path" : "localization/simp_chinese/hd_peace_l_simp_chinese.yml",
+    "bytes" : 32414,
+    "lines" : 311,
+    "sha256" : "1f817a839c02e966e559a0829a177020666b59bcdfd2ad66a8f22bd9504f5e6c"
+  }, {
+    "item_id" : "3797664499",
+    "relative_path" : "descriptor.mod",
+    "bytes" : 111,
+    "lines" : 7,
+    "sha256" : "78c084fe33ecc0ec4d8617c4193a9b3d875e9d16fc4ced4a5610356bc4ba321f"
+  }, {
+    "item_id" : "3797664499",
+    "relative_path" : "gfx/portraits/portrait_modifiers/04_zz_hd_early_era_armor.txt",
+    "bytes" : 54968,
+    "lines" : 746,
+    "sha256" : "dc2896bdb1cffd56728864c16ed3a0ebf673317ae3d7c6d762dbed2c2ad74539"
+  }, {
+    "item_id" : "3797664499",
+    "relative_path" : "gfx/portraits/portrait_modifiers/05_hd_han_clothing_pool.txt",
+    "bytes" : 17281,
+    "lines" : 266,
+    "sha256" : "062859b7ea4eca693f875e925bf104cd88449a557a98e8c5f33f855e312a2ff9"
+  } ],
+  "indexed_source_counts" : {
+    "3780919688" : 3904,
+    "3820784621" : 160,
+    "3797664499" : 508
+  },
+  "selected_source_count" : 76
+}

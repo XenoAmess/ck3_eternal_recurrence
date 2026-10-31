@@ -1,0 +1,361 @@
+{
+  "schema" : "hanjin.machine-receipt.v1",
+  "machine_id" : "4-8e1c2f1861",
+  "prepared_at_utc" : "2026-10-31T05:05:13.159995100Z",
+  "external_evidence_root" : "C:\\workspace\\hanjin-spring-autumn-20261031",
+  "app_id" : 1158310,
+  "repository_base_commit" : "e92852719a0154e485ca6ef5381bb9ad0213288f",
+  "items" : [ {
+    "item_id" : "3780919688",
+    "workshop_url" : "https://steamcommunity.com/sharedfiles/filedetails/?id=3780919688",
+    "download_callback" : {
+      "app_id" : 1158310,
+      "callback_id" : 3406,
+      "item_id" : "3780919688",
+      "result" : 1
+    },
+    "install_info" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3780919688",
+      "size_on_disk" : 3421054984,
+      "timestamp" : 1793189797
+    },
+    "download_finished_at_utc" : "2026-10-31T04:41:05.550628300Z",
+    "download_receipt" : "C:\\workspace\\hanjin-spring-autumn-20261031\\steam\\download-3780919688-1793421391199\\result.json",
+    "download_receipt_sha256" : "9911558781bc8cfb56ee65fd116fcca58cf611e68435199218581de962848389",
+    "subscription_finished_at_utc" : "2026-10-31T04:49:34.288418600Z",
+    "subscription_callback" : {
+      "callback_id" : 1313,
+      "item_id" : "3780919688",
+      "result" : 1
+    },
+    "state_raw" : 5,
+    "subscription_receipt" : "C:\\workspace\\hanjin-spring-autumn-20261031\\steam\\subscribe-3780919688-1793422171916\\result.json",
+    "subscription_receipt_sha256" : "d530934501f638f9b1095e47553ff58f36b06a8a412343a5b691f6a2ab0d5357"
+  }, {
+    "item_id" : "3820784621",
+    "workshop_url" : "https://steamcommunity.com/sharedfiles/filedetails/?id=3820784621",
+    "download_callback" : {
+      "app_id" : 1158310,
+      "callback_id" : 3406,
+      "item_id" : "3820784621",
+      "result" : 1
+    },
+    "install_info" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3820784621",
+      "size_on_disk" : 6334486,
+      "timestamp" : 1792961192
+    },
+    "download_finished_at_utc" : "2026-10-31T04:36:26.791136400Z",
+    "download_receipt" : "C:\\workspace\\hanjin-spring-autumn-20261031\\steam\\download-3820784621-1793421375183\\result.json",
+    "download_receipt_sha256" : "5c1b71a3296224066de006a3eb49d7f5ebc97ec01b345640b142aab5445cb56d",
+    "subscription_finished_at_utc" : "2026-10-31T04:49:38.420178100Z",
+    "subscription_callback" : {
+      "callback_id" : 1313,
+      "item_id" : "3820784621",
+      "result" : 1
+    },
+    "state_raw" : 5,
+    "subscription_receipt" : "C:\\workspace\\hanjin-spring-autumn-20261031\\steam\\subscribe-3820784621-1793422175898\\result.json",
+    "subscription_receipt_sha256" : "48cc720c585c25c35b3635d8dc607ef56eb48424465a9852adeb9259109ee1cd"
+  }, {
+    "item_id" : "3797664499",
+    "workshop_url" : "https://steamcommunity.com/sharedfiles/filedetails/?id=3797664499",
+    "download_callback" : {
+      "app_id" : 1158310,
+      "callback_id" : 3406,
+      "item_id" : "3797664499",
+      "result" : 1
+    },
+    "install_info" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3797664499",
+      "size_on_disk" : 9363904444,
+      "timestamp" : 1792878966
+    },
+    "download_finished_at_utc" : "2026-10-31T04:48:25.144158500Z",
+    "download_receipt" : "C:\\workspace\\hanjin-spring-autumn-20261031\\steam\\download-3797664499-1793421686405\\result.json",
+    "download_receipt_sha256" : "d1506ece67e1b001aa278108d92b0504a42b701b6ea634a801a1f28bc0947e6f",
+    "subscription_finished_at_utc" : "2026-10-31T04:49:42.505132Z",
+    "subscription_callback" : {
+      "callback_id" : 1313,
+      "item_id" : "3797664499",
+      "result" : 1
+    },
+    "state_raw" : 5,
+    "subscription_receipt" : "C:\\workspace\\hanjin-spring-autumn-20261031\\steam\\subscribe-3797664499-1793422180056\\result.json",
+    "subscription_receipt_sha256" : "0e457c0d928965a3ced6200949fba6198f751c167587b6ca02933c3ed5e05870"
+  } ],
+  "unsubscribed_unrelated_items" : [ {
+    "machine_id" : "4-8e1c2f1861",
+    "app_id" : 1158310,
+    "item_id" : "2224124758",
+    "state_before" : 13,
+    "handle" : "13678841899864889864",
+    "started_at_utc" : "2026-10-31T04:33:12.163632600Z",
+    "callback_id" : 1315,
+    "callback_item_id" : "2224124758",
+    "eresult" : 1,
+    "state_after" : 4,
+    "complete" : true,
+    "finished_at_utc" : "2026-10-31T04:33:12.728423900Z"
+  }, {
+    "machine_id" : "4-8e1c2f1861",
+    "app_id" : 1158310,
+    "item_id" : "2291024373",
+    "state_before" : 5,
+    "handle" : "2817485680206683424",
+    "started_at_utc" : "2026-10-31T04:33:09.583837300Z",
+    "callback_id" : 1315,
+    "callback_item_id" : "2291024373",
+    "eresult" : 1,
+    "state_after" : 4,
+    "complete" : true,
+    "finished_at_utc" : "2026-10-31T04:33:10.102215400Z"
+  }, {
+    "machine_id" : "4-8e1c2f1861",
+    "app_id" : 1158310,
+    "item_id" : "2962333032",
+    "state_before" : 5,
+    "handle" : "17175014683133290149",
+    "started_at_utc" : "2026-10-31T04:33:10.104242300Z",
+    "callback_id" : 1315,
+    "callback_item_id" : "2962333032",
+    "eresult" : 1,
+    "state_after" : 4,
+    "complete" : true,
+    "finished_at_utc" : "2026-10-31T04:33:10.666646Z"
+  }, {
+    "machine_id" : "4-8e1c2f1861",
+    "app_id" : 1158310,
+    "item_id" : "2993056101",
+    "state_before" : 5,
+    "handle" : "3905752817287482679",
+    "started_at_utc" : "2026-10-31T04:33:09.019860300Z",
+    "callback_id" : 1315,
+    "callback_item_id" : "2993056101",
+    "eresult" : 1,
+    "state_after" : 4,
+    "complete" : true,
+    "finished_at_utc" : "2026-10-31T04:33:09.578840200Z"
+  }, {
+    "machine_id" : "4-8e1c2f1861",
+    "app_id" : 1158310,
+    "item_id" : "3192256710",
+    "state_before" : 5,
+    "handle" : "1810864244530362191",
+    "started_at_utc" : "2026-10-31T04:33:10.669433900Z",
+    "callback_id" : 1315,
+    "callback_item_id" : "3192256710",
+    "eresult" : 1,
+    "state_after" : 4,
+    "complete" : true,
+    "finished_at_utc" : "2026-10-31T04:33:12.161102900Z"
+  } ],
+  "offline_observation" : {
+    "schema" : "xar.steam-offline-state-probe/v2",
+    "machine_id" : "4-8e1c2f1861",
+    "observed_at_utc" : "2026-10-31T04:50:01.330930+00:00",
+    "nonce" : "339cd34614f7b78d993b32517dacd5ae",
+    "reason" : "observed",
+    "steam" : {
+      "pid" : 13760,
+      "birth_filetime" : "134378949641026140",
+      "exe" : "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "file_version" : "11.15.70.27"
+    },
+    "source" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+      "bytes" : 19452568,
+      "sha256" : "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+      "file_id" : "1407374884294686",
+      "mtime_ns" : "1792620918000000000"
+    },
+    "endpoint" : null,
+    "diagnostics" : [ ],
+    "observation_method" : "native_current_user_byte",
+    "native_evidence" : {
+      "machine_id" : "4-8e1c2f1861",
+      "observed_at_utc" : "2026-10-31T04:50:01.330930+00:00",
+      "nonce" : "339cd34614f7b78d993b32517dacd5ae",
+      "module_base" : "140719262400512",
+      "module_size" : 19730432,
+      "value_rva" : "18435783",
+      "value_address" : "140719280836295",
+      "producer_rva" : "6548332",
+      "producer_anchor_hex" : "440fb6055363b500488d155da67700488bcbe80d713d00",
+      "producer_anchor_sha256" : "16316f5b39bac43273fac08a65f62c45af1d41938ce2d13d830ab16e1474966a",
+      "raw_samples" : [ 1, 1 ],
+      "steam_before" : {
+        "pid" : 13760,
+        "birth_filetime" : "134378949641026140",
+        "exe" : "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version" : "11.15.70.27"
+      },
+      "steam_after" : {
+        "pid" : 13760,
+        "birth_filetime" : "134378949641026140",
+        "exe" : "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version" : "11.15.70.27"
+      },
+      "source_before" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes" : 19452568,
+        "sha256" : "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id" : "1407374884294686",
+        "mtime_ns" : "1792620918000000000"
+      },
+      "source_after" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes" : 19452568,
+        "sha256" : "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id" : "1407374884294686",
+        "mtime_ns" : "1792620918000000000"
+      },
+      "tray_manager_pointer_rva" : "18428640",
+      "tray_manager_address" : "1860452425856",
+      "tray_state_offset" : "340",
+      "tray_state_samples" : [ 4, 4 ]
+    },
+    "status" : "offline",
+    "offline_mode" : true
+  },
+  "final_offline_observation" : {
+    "schema" : "xar.steam-offline-state-probe/v2",
+    "machine_id" : "4-8e1c2f1861",
+    "observed_at_utc" : "2026-10-31T05:02:40.698486+00:00",
+    "nonce" : "b655532cd9d66af7f1fa73c136ef2838",
+    "reason" : "observed",
+    "steam" : {
+      "pid" : 13760,
+      "birth_filetime" : "134378949641026140",
+      "exe" : "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "file_version" : "11.15.70.27"
+    },
+    "source" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+      "bytes" : 19452568,
+      "sha256" : "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+      "file_id" : "1407374884294686",
+      "mtime_ns" : "1792620918000000000"
+    },
+    "endpoint" : null,
+    "diagnostics" : [ ],
+    "observation_method" : "native_current_user_byte",
+    "native_evidence" : {
+      "machine_id" : "4-8e1c2f1861",
+      "observed_at_utc" : "2026-10-31T05:02:40.698486+00:00",
+      "nonce" : "b655532cd9d66af7f1fa73c136ef2838",
+      "module_base" : "140719262400512",
+      "module_size" : 19730432,
+      "value_rva" : "18435783",
+      "value_address" : "140719280836295",
+      "producer_rva" : "6548332",
+      "producer_anchor_hex" : "440fb6055363b500488d155da67700488bcbe80d713d00",
+      "producer_anchor_sha256" : "16316f5b39bac43273fac08a65f62c45af1d41938ce2d13d830ab16e1474966a",
+      "raw_samples" : [ 1, 1 ],
+      "steam_before" : {
+        "pid" : 13760,
+        "birth_filetime" : "134378949641026140",
+        "exe" : "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version" : "11.15.70.27"
+      },
+      "steam_after" : {
+        "pid" : 13760,
+        "birth_filetime" : "134378949641026140",
+        "exe" : "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version" : "11.15.70.27"
+      },
+      "source_before" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes" : 19452568,
+        "sha256" : "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id" : "1407374884294686",
+        "mtime_ns" : "1792620918000000000"
+      },
+      "source_after" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes" : 19452568,
+        "sha256" : "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id" : "1407374884294686",
+        "mtime_ns" : "1792620918000000000"
+      },
+      "tray_manager_pointer_rva" : "18428640",
+      "tray_manager_address" : "1860452425856",
+      "tray_state_offset" : "340",
+      "tray_state_samples" : [ 4, 4 ]
+    },
+    "status" : "offline",
+    "offline_mode" : true
+  },
+  "workshop_index_recovery" : {
+    "destination" : "C:\\workspace\\hanjin-spring-autumn-20261031\\steam\\quarantined-appworkshop_1158310.acf",
+    "machine_id" : "4-8e1c2f1861",
+    "reason" : "Local installation index claims79.31GB installed while actual cache has1.3MB. Failed chunk reuse references deleted original files. Preserve exact stale index; Steam must rebuild its own index from server subscriptions. Do not edit game install, subscriptions, payload or ACLs.",
+    "source" : "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\appworkshop_1158310.acf",
+    "sha256" : "b64e3de929ca7544b44d665835b5abe1a9dcf49f0223b45d7e694520d5b7af63",
+    "bytes" : 31069,
+    "observed_at_utc" : "2026-10-31T04:35:54.239568800Z"
+  },
+  "download_patch_recovery" : {
+    "source" : "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\downloads\\state_1158310_1158310_3780919688.patch",
+    "reason" : "Failed downloader persists a chunk reuse recipe for removed old files; preserve derived patch and force Steam to recreate it",
+    "machine_id" : "4-8e1c2f1861",
+    "destination" : "C:\\workspace\\hanjin-spring-autumn-20261031\\steam\\quarantined-state_1158310_1158310_3780919688.patch",
+    "observed_at_utc" : "2026-10-31T04:35:52.498337Z",
+    "bytes" : 48,
+    "sha256" : "b83aaa9a4f69a8ce14cb6c93e9a0e949f52ec1ddf6179603d3d3c368ebe990df"
+  },
+  "composition_static_scan" : {
+    "main_cb_count" : 126,
+    "scope" : "Static top-level CB definition names and same-path SHA comparison, not engine parse/load or exhaustive reference validation",
+    "same_path_changed" : [ "common\\casus_belli_types\\00_civil_war.txt", "common\\casus_belli_types\\00_conquest.txt", "common\\casus_belli_types\\00_dejure_war.txt", "common\\casus_belli_types\\00_event_war.txt", "common\\casus_belli_types\\00_invasion_war.txt", "common\\casus_belli_types\\00_religious_war.txt", "common\\casus_belli_types\\00_subjugation.txt", "common\\casus_belli_types\\00_tributarize.txt", "common\\casus_belli_types\\00_vassalization.txt", "common\\casus_belli_types\\01_fp1_wars.txt", "common\\casus_belli_types\\03_fp2_wars.txt", "common\\casus_belli_types\\05_fp3_wars.txt", "common\\casus_belli_types\\06_ce1_wars.txt", "common\\casus_belli_types\\07_ep3_wars.txt", "common\\casus_belli_types\\09_mpo_wars.txt", "common\\casus_belli_types\\10_tgp_china_wars.txt", "common\\casus_belli_types\\10_tgp_faction_wars.txt", "common\\casus_belli_types\\10_tgp_japan_wars.txt", "common\\casus_belli_types\\hd_collapse_warlord_war.txt", "common\\casus_belli_types\\hd_cycle_luanshi_wars.txt", "common\\casus_belli_types\\hd_dc_kit_cha_tunbing_cb.txt", "common\\casus_belli_types\\hd_dc_kit_exp_cb.txt", "common\\casus_belli_types\\hd_dc_kit_independence_cb.txt", "common\\casus_belli_types\\hd_dc_kit_taoni_cb.txt", "common\\casus_belli_types\\hd_dc_kit_ten_cb.txt", "common\\casus_belli_types\\zgrc_cb_types.txt", "common\\casus_belli_types\\zzzzzz_hd_removed_chinese_reunification_cb.txt", "common\\casus_belli_types\\zzzz_hd_unification_wars.txt", "common\\casus_belli_types\\zz_dm_obedience_mpo_wars.txt", "common\\casus_belli_types\\zz_hd_253_beifa_cb.txt", "common\\casus_belli_types\\zz_hd_253_history_war_cb.txt", "common\\casus_belli_types\\zz_hd_cao_fengying_wars.txt", "common\\casus_belli_types\\zz_hd_chinese_consolidation_cb.txt", "common\\casus_belli_types\\zz_hd_confederation_wars.txt", "common\\casus_belli_types\\zz_hd_dong_aftermath_wars.txt", "common\\casus_belli_types\\zz_hd_historical_revolt_cb.txt", "common\\casus_belli_types\\zz_hd_hi_cb.txt", "common\\casus_belli_types\\zz_hd_liao_cb.txt", "common\\casus_belli_types\\zz_hd_nbc_war_cb.txt", "common\\casus_belli_types\\zz_hd_sg218_war_cb.txt", "common\\casus_belli_types\\zz_hd_uprising_wars.txt", "common\\casus_belli_types\\zz_hd_wuhu_cb.txt", "common\\casus_belli_types\\zz_hd_yellow_turban_war.txt", "common\\casus_belli_types\\zz_hd_yiguan_cb.txt", "common\\character_interactions\\00_prison_interactions.txt", "common\\character_interactions\\00_vassal_interactions.txt", "common\\character_interactions\\06_ep3_laamp_interactions.txt", "common\\character_interactions\\zzzz_WJ_district_acceptance_00_prison_interactions.txt", "common\\character_interactions\\zzzz_WJ_district_acceptance_00_war.txt", "common\\character_interactions\\zzzz_WJ_district_acceptance_03_fp2_interactions.txt", "common\\great_projects\\types\\00_ministry_projects.txt", "common\\on_action\\hd_court_on_actions.txt", "common\\on_action\\hd_cycle_catalyst_on_actions.txt", "common\\on_action\\hd_dc_kit_col_on_actions.txt", "common\\on_action\\hd_dc_kit_exp_on_actions.txt", "common\\on_action\\hd_dc_kit_on_actions.txt", "common\\on_action\\hd_party_on_actions.txt", "common\\on_action\\war_on_actions.txt", "common\\on_action\\WJ_mingshi_on_actions.txt", "common\\on_action\\zzzzzz_hd_submission_on_actions.txt", "common\\scripted_effects\\00_interaction_effects.txt", "common\\scripted_effects\\00_petition_liege_effects.txt", "common\\scripted_effects\\00_war_effects.txt", "common\\scripted_effects\\05_dlc_fp3_scripted_effects.txt", "common\\scripted_effects\\07_dlc_ep3_scripted_effects.txt", "common\\scripted_effects\\hd_dc_kit_col_effects.txt", "common\\scripted_effects\\hd_dc_kit_sta_effects.txt", "common\\scripted_effects\\zz_hd_22_history_effects.txt", "common\\scripted_effects\\zz_hd_253_history_effects.txt", "common\\scripted_effects\\zz_hd_370_history_effects.txt", "common\\scripted_effects\\zz_hd_531_history_effects.txt", "common\\scripted_effects\\zz_hd_anti_regent_lifecycle_effects.txt", "common\\scripted_effects\\zz_hd_nbc_history_effects.txt", "common\\scripted_effects\\zz_hd_nbc_startup_effects.txt", "common\\scripted_effects\\zz_hd_uprising_war_effects.txt", "common\\scripted_triggers\\hd_dc_kit_sta_triggers.txt", "descriptor.mod", "events\\activities\\hold_court_activity\\hold_court_events_general.txt", "events\\dlc\\ce1\\epidemic_events_2.txt", "events\\game_rule_events.txt", "events\\hd_court_events.txt", "events\\interaction_events\\character_interaction_events.txt", "events\\lifestyles\\governance_lifestyle\\stewardship_duty_events.txt", "events\\zz_hd_253_events.txt" ],
+    "missing_after_replace_path" : [ "hd_89_war_cb", "hd_j16_border_cb", "hd_sg218_baiyi_cb", "hd_sg218_xiangfan_cb", "hd_warlord_revoke_cb", "hd_yiguan_beifa_cb", "hd_yiguan_beihuan_cb", "hd_yiguan_qiyi_cb", "hd_yiguan_taohu_cb" ],
+    "machine_id" : "4-8e1c2f1861",
+    "same_path_equal" : [ ],
+    "peace_cb_count" : 161,
+    "extra_after_replace_path" : [ "artifact_war", "claim_cb", "county_conquest_cb", "county_struggle_cb", "de_jure_cb", "debug_artifact_war", "debug_war", "dissolve_empire_war", "duchy_expansion_cb", "ep3_laamp_adventurer_county_invasion", "expansion_cb", "fp3_install_loyalist_cb", "hd4_guandu_cb", "hd4_tao_xuzhou_cb", "hd_cao_expansion_cb", "hd_cao_fengying_cb", "hd_court_fengzhao_cb", "hd_court_taocuan_cb", "hd_dc_cha_border_raid_cb", "hd_dc_sta_border_clash_cb", "hd_historical_war_cb", "hd_li_jue_changan_cb", "hd_strategic_annex_cb", "hd_yiguan_guinan_cb", "hd_yuan_expansion_cb", "hd_yuan_jizhou_cb", "hds_regional_cb", "hds_wu_invasion_cb", "influence_war_cb", "invasion_war", "make_tributary_cb", "mandala_plunder_cb", "mandala_raze_capital_structure_cb", "minor_religious_war", "naval_duchy_expansion_cb", "naval_expansion_cb", "nomadic_conquest_cb", "nomadic_conquest_duchy_cb", "pam_antiking_cb", "pam_challenge_hof_cb", "pam_humiliation_cb", "pam_investiture_conflict_cb", "reclaim_relic_artifact_war", "tribal_subjugation_cb" ],
+    "observed_at_utc" : "2026-10-31T04:44:13.680116400Z"
+  },
+  "latest_storage_observation" : {
+    "machine_id" : "4-8e1c2f1861",
+    "observed_at_utc" : "2026-10-31T05:04:47.475900200Z",
+    "total_volume_bytes" : 511776722944,
+    "available_bytes" : 92715696128,
+    "system_growth_reserve_bytes" : 16106127360,
+    "this_write_peak_bytes" : 30064771072,
+    "other_unspent_reservations_bytes" : 0,
+    "effective_default_project_quota_bytes" : 51177672294,
+    "sizes" : [ {
+      "path" : "C:\\workspace\\ck3_eternal_recurrence",
+      "bytes" : 5028012758,
+      "files" : 75008,
+      "directories" : 9357,
+      "complete" : true,
+      "error" : null
+    }, {
+      "path" : "C:\\workspace\\hanjin-spring-autumn-20261031",
+      "bytes" : 7490599,
+      "files" : 251,
+      "directories" : 67,
+      "complete" : true,
+      "error" : null
+    }, {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310",
+      "bytes" : 12792584942,
+      "files" : 20924,
+      "directories" : 9953,
+      "complete" : true,
+      "error" : null
+    }, {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\downloads\\1158310",
+      "bytes" : 9784053736,
+      "files" : 8105,
+      "directories" : 5423,
+      "complete" : true,
+      "error" : null
+    } ]
+  },
+  "latest_storage_receipt" : "C:\\workspace\\hanjin-spring-autumn-20261031\\inventory-1793423087540.json",
+  "game_launched_in_this_task" : false,
+  "footage_recorded_in_this_task" : false,
+  "gameplay_compatibility_verified" : false
+}
