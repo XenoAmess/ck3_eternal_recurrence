@@ -292,3 +292,15 @@ SAVE181 Root/runtime 已确认 prepare 的 CRLF decode/default Windows write_tex
 既有 reader 顺序执行，source 截止17:44:11.917093Z；固定17:34:11.917093–17:44:11.917093十分钟17真实 POST/16 END（13stop、2length、1reset），客户端峰4@17:43:59.126951。该刻 source3为 M2 method237 与 M6 core/data183；后相位单 metrics 全服务 running2/waiting0/KV0.0378788，事件扫描17:44:10.603886–11.867580、metrics11.867590–11.912436，非原子。已补 Root183两私有根/M5 consumer185两私有根指针；后补 M5 consumer187两根同 cutoff 重算也不改本窗口数字（两调用均窗外已END），无第二GET，初始窗口字节另存。标准根和此前 M3私有174/176同计，窗口原件 `WINDOW128-174411.json`。持续12–16/24–32仍未达；历史 raw17包含两旧未闭 attempt，known-absent 界线另保，rolling 阶段峰15亦非当前。准备或已END迟消费均不计在途；统计未新增模型 POST/重测。随后真正新372B witness237 host/book 17:45:58.796683/.796746Z 实际并发 POST，独立5完整源13034B、4500/8000预算，不冒为此前快照在途。
 
 成熟验证单列：本岗 M3 175 四逻辑/六真实 transport（两reset、一次stop、三length）模型源码全拒，owner core/ASM脚本首次4显式源 strict0、五新场0，未授原生 ABI/Game；M2 216 两整模型拒后 owner 独立 consumer 原样被生产岗首编，首次消费原381B六场完整 RAM/AL/log 差分0。所有原请求、source拒绝和 owner 验证分开保留，未为本段重跑或发表新增游戏信用。
+
+## 2026-10-31 18:44Z：声明缺口勘误、有限软件采用与新窗口
+
+本轮继续 `192.168.1.11:8080/v1 / qwen38-coder`，没有旧 IP 回退。M3 178 的实际 REQUEST 审计发现 rank/book R2 没带目标三参 select/Bytes/Case 声明，只写“same API”，故错签名/缺 records 不能全归模型无视完整 API；main 的目标 API 已给，不受此勘误。原六请求全0源码采用，owner 接管，不第三轮。M6 copy163 的同类漏签名与本岗177 host 入口缺失按 owner 上下文责任分记。跨机器规则现要求每轮实际前缀含完整目标声明，而非依赖上轮。
+
+M1 新 actual183 sentinel→185(15B)→186(72B) 是新消费边，不是旧 case 第三重投。单 POST 9.479秒、1433输出 token，正文/固定 literal 可用，仅 nested/static imports 机械修后，新 test strict0/.578202秒、实际新 case0/.154719秒，保完整 parent N/RET、低 EAX0/高 RAX非0等有限观察。M4 186 则经逐 EVENTS 审计更正为六逻辑任务七次 transport、区间峰1；两个 Book 区间17:31:14–17:32:02与17:32:33–17:33:41没有重叠。5JUnit覆盖7输入通过不追授两个坏 Book。Root save-proof186 的 WriterContracts.Head 曾被 owner 错报不存在，已按实际 Transitions450/459更正；其它候选拒绝理由和首次 strict 历史不改。
+
+本岗177 三角色各两轮共6POST，whole 源码全拒；core/host R2 实际 full REQUEST 带 frequency_penalty=0.3，但任务/诊断同时变化，无 A/B、backend 生效或收益结论。owner core/host 与未读 target 的独立 owner Book，首次6显式源 strict0/.776425秒，首次3场82步0/.889001秒；只授该软件投影，不授原ABI/Native/Game。M2 237 四模型 whole 同样全拒，独立 owner 三源 byte-exact 在239首次4源strict0/.851265秒、4场49步0/.196979秒，未执行原372B Native。M2 250 新 compound consumer 两语义轮/3POST（含18:38:10 reset后同请求完整重试）whole均编前拒，owner 独立15410B源准备就绪，尚无编/Native信用；没有为补并发做R3。
+
+P0 Service186 两真实实现请求 stop23.999/10.257秒，reported89260+1810、104464+1281、cached均null；首callback/query形状部分采用并由owner修 binding/有限窗口，第二小helper的Head恒真式与遗漏校验源码拒绝，helper由owner完整接管。首次单Service strict0/1.723207秒后，owner origin匹配改为实际 acceptsGuard，必要单叶增编0/1.544962秒；首回执保留。该 source/strict 不等于原 SAVE 的 SAVE_CONFIRMED 提交或 Seed/实机成功，仍由唯一运行 owner按实际回执计。
+
+自然 checkpoint 仅复用现 reader 一次 metrics GET。固定18:34:04.862634–18:44:04.862634Z：21个新首POST任务、22实际POST、24END（21stop/2length/1reset），窗口真实客户端峰5于18:42:45.106397Z；采样源码0，随后服务running0/waiting0/KV0，持续12–16/24–32仍未达。source扫描18:44:03.532770–04.809465，metrics04.809475–04.860171，非原子。新补 Root proof/3route/3video、M5189和M3 main178四私有目录的12条实际 EVENTS 指针，无新模型调用、benchmark、CAS扫描或旧绿重测；原两未闭中断区间保未知结束时刻，不计当前在途。窗口原件 `WINDOW128-184404.json`。

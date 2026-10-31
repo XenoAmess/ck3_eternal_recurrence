@@ -180,3 +180,11 @@ ABI 答对不能替后继实现或独立 literal 预授正确。M0 同一原28B 
 纯 DATA schema 只减少产物格式漂移，不保证源语义正确：M2 226 的完整 JSON 守住格式，却仍错 signed 分支输入与 release-slot 偏移，整拒；两轮后 owner 接管。真实方法短答可用，不授同组复杂 casebook/原生 host 正确。严格区分 source-only literal、已读 target 的 owner 脚本和真实原码差分，最终 owner 绿不追授坏模型稿。
 
 文件尚未落盘不等于目标无人实现。M3 176 ports fixture 在 owner 正写时又被另一 owner 派给模型，实际 POST 原件保留并归 `DUPLICATE_OWNER_COORDINATION`，候选0采用，不计新组件；它不是 caller 目录碰撞。先复用已明确的写权与当前执行状态，不将每次 POST 设为中央 ACK 前置，也不因准备/审阅/迟消费答复而声称 HTTP 在途。
+
+## 2026-10-31 18:44Z：独立纠正请求的声明与实际断言
+
+每轮独立 HTTP，包括纠正轮，都要把本轮目标的完整签名、fully qualified 类型、record 字段和真正祖接口放入实际源码前缀；末条任务也重述准确目标。固定三消息没有上一轮的聊天历史，不能只写“same/exact original API”。M3 178 rank/book 纠正包实际漏目标三参 select 与 Bytes/Case 声明，M6 copy163 与本岗 177 host 也发生入口声明缺失；相关错签名归 owner 上下文成本，独立算术、指令、Java 与数据流错误仍保留。审阅以实际 REQUEST 为准，另加勘误，原请求和失败不回填；不为已由 owner 闭合的业务补第三轮调用。
+
+校验代码要核它是否真的比较独立事实。Service186 纠稿将 Head 检查写成条件两侧都是当前 digest 的恒真式，源码审拒；owner 改为捕获原 Head 后比较前后真实值，并核当前 canonical 原件。独立 witness 也须拒 pass/skip 占位、把读值固定当0、拿同一对象/值自比、吞异常返回成功，以及没有调用目标的手抄模拟。编译通过不能证明这些检查有效。继承 source 合同时用它明确提供的匹配方法，不能凭 record.equals 推两个不同来源角色等价；本岗过严 origin.equals 已按真实 acceptsGuard 合同修订，作为 owner 修改记录。
+
+真实终态时间优先于尚未 poll 完的 tool cell 或 worker 标签。M4 186 两份 Book 的实际 HTTP 区间并不重叠，六任务七次传输实际峰1，先前“并行”已更正且没有补 POST。完整源齐的不同未写角色应直接同批发出，不能把错峰封包说成 HTTP 高并发。M1 新 actual183→185→186 的窄 consumer 在完整 parent 源与固定原件下，一次候选正文/字面值可用，仅 imports 机械修后首次通过；与184两份完整 stop 仍漏唯一新桥并不矛盾，不从短答、完整前缀或某个成功包推通用可靠性。
