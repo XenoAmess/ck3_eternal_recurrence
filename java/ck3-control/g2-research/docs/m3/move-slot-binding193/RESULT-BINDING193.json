@@ -1,0 +1,139 @@
+{
+  "schema": "m3.move-slot-binding193-five-leaf-delivery/v1",
+  "status": "FIRST_TWO_NEW_SOURCES_AND_THREE_GROUPS_PASS",
+  "delivery_status": "PARENT_REVIEWED_CANONICAL_PACKAGE57_PENDING_FORMAL",
+  "package_number": 57,
+  "package_number_reserved": false,
+  "compiled": true,
+  "run": true,
+  "actual_original": "move-slot193/caller-bind193/ACTUAL-BINDING193.json",
+  "actual_original_sha256": "d36b42d3010166d466f84ac5ef0a0282c292330ab0c123cf3936d337986fc95f",
+  "stages": [
+    {
+      "phase": "STRICT2",
+      "begin_utc": "2026-10-31T21:28:30.856541+00:00",
+      "end_utc": "2026-10-31T21:28:31.646146+00:00",
+      "seconds": 0.7895849999040365,
+      "exit": 0
+    },
+    {
+      "phase": "FIRST3GROUPS",
+      "begin_utc": "2026-10-31T21:28:31.648541+00:00",
+      "end_utc": "2026-10-31T21:28:32.128453+00:00",
+      "seconds": 0.4799108998849988,
+      "exit": 0
+    }
+  ],
+  "new_sources": 2,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapInsertMoveSlotBinding193.java": "c5f374cc0c6ffce50d73bca12efb31b6e0288a197c0a0089f10cf47ca21966bb",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MapInsertMoveSlotBindingValidation193.java": "fb2d4e9a65e883ff706486f695071b56060557f771d4e226db189c8f01802fee"
+  },
+  "raw_source_preserved": true,
+  "model_binder_adoption": "R1 rawdecoded2441B zeroowneredits",
+  "model_witness_adoption": "R2 partial8delegateargument assertions/recorder plusowner replacement of script/shared-byte/foreignrejection/cleanupidentity fixture",
+  "actual_model_POSTs": 3,
+  "model_stop": 3,
+  "model_length": 0,
+  "local_phase_peak": 2,
+  "retry_POSTs": 0,
+  "cached_prompt_token_reports": null,
+  "planned_groups": 3,
+  "planned_successful_bound_invocations": 1,
+  "planned_bound_operations": 10,
+  "planned_probe": 165,
+  "planned_hash_hex": "13579BDF",
+  "planned_delegate_roles": 8,
+  "planned_int_returns": 2,
+  "planned_foreign_rejections": 1,
+  "planned_top_checks_if_pass": 31,
+  "executed_top_level_checks": 31,
+  "check_meaning": "31 means30explicitconditions plus1executedcleanupMemoryidentity, not31 independentsemanticassertions; perstepbyte/kind/address/halves guards excluded.",
+  "portable_current_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java",
+      "actual_local_bytes": 2020,
+      "actual_local_raw_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+      "formal_bytes": 2020,
+      "formal_raw_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+      "raw_equal": true,
+      "LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotApi193.java",
+      "actual_local_bytes": 468,
+      "actual_local_raw_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "formal_bytes": 468,
+      "formal_raw_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "raw_equal": true,
+      "LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlot193.java",
+      "actual_local_bytes": 987,
+      "actual_local_raw_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "formal_bytes": 987,
+      "formal_raw_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "raw_equal": true,
+      "LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/RequestE92780.java",
+      "actual_local_bytes": 5224,
+      "actual_local_raw_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "formal_bytes": 5224,
+      "formal_raw_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "raw_equal": true,
+      "LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "actual_local_bytes": 271,
+      "actual_local_raw_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "formal_bytes": 271,
+      "formal_raw_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "raw_equal": true,
+      "LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "actual_local_bytes": 2735,
+      "actual_local_raw_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "formal_bytes": 2735,
+      "formal_raw_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "raw_equal": true,
+      "LF_equal": true
+    }
+  ],
+  "sourceclosure_total_explicit_java_files": 8,
+  "cached_Request_type_limit": "CACHE-PROOF193 identifies old4892B cached Request source versus current5224B source: usedMemory/Raw128 declarations exact, wholewhitespace-removed sourceequal. Localmanifest-source/currentformal rawchecks here do not assert oldcached-source rawidentity or binaryequivalence.",
+  "portable_D_classroot_or_binary_dependency": false,
+  "actual_evidence_copied_to_Git": false,
+  "bound_entry": "MapInsertMoveSlotBinding193.insertSlotC3cf10 -> existingMoveSlot193.move on same nominal SharedMemory",
+  "type_navigation": {
+    "SharedMemory": "extends MapInsert191Api.Memory, RequestE92780.Memory",
+    "callee": "MoveSlot193.move(RequestE92780.Memory,MoveSlotApi193.Ports,long,int,int,long)->void",
+    "cleanup": "MoveSlotApi193.Ports.call856050(RequestE92780.Memory,long)->void"
+  },
+  "site_limit": "two bound invocation labels are the actual two caller edges; delegate site literals are arbitrary adapter input markers, not attested native callsites",
+  "shared_memory_limit": "nominal child interface is required; same-byte views are caller/fixture obligations, with no runtime coherence or CPU probe",
+  "not_proved": [
+    "No fullMapInsert191 algorithm or bothactualparentbranches executed; manual invokesonlynewboundport.",
+    "Only one newbound10operationtrace,8delegatecalls,2intreturns,foreignrejection; no allinputdomain proof.",
+    "31 means30explicitconditions plus1executedcleanupMemoryidentity, not31 independentsemanticassertions; perstepbyte/kind/address/halves guards excluded.",
+    "Nominal SharedMemory interface does not prove backingview coherence or anyhardware128bitatomicity.",
+    "Delegate exceptiontransparency notruntimeforced; no fullCPU/ABI/EH/Native/Game/natural dispatch claim."
+  ],
+  "source_logic_expected_edits": 0,
+  "delivery_new_compile_run": false,
+  "POM_CI_changes": false,
+  "formal_tree_edits_by_drafter": false,
+  "parent_INDEX_edits": false,
+  "Main_prerequisite": false,
+  "finalize_rule": "Parent may run this source-only script with --finalize-actual only after actualreceipt exists; canonicalnumber assignedseparately, no validationrerun.",
+  "actual_groups": 3,
+  "actual_bound_operations": 10,
+  "actual_delegate_roles": 8,
+  "actual_int_returns": 2,
+  "actual_foreign_rejections": 1
+}

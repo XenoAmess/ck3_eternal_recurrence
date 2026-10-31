@@ -1,0 +1,102 @@
+{
+  "schema": "m3.move-slot-binding193-portable-source-list/v1",
+  "status": "FIRST_TWO_NEW_SOURCES_AND_THREE_GROUPS_PASS",
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapInsertMoveSlotBinding193.java",
+      "kind": "main",
+      "bytes": 2441,
+      "sha256": "c5f374cc0c6ffce50d73bca12efb31b6e0288a197c0a0089f10cf47ca21966bb",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "c5f374cc0c6ffce50d73bca12efb31b6e0288a197c0a0089f10cf47ca21966bb",
+      "git_lf_bytes": 2441
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MapInsertMoveSlotBindingValidation193.java",
+      "kind": "test",
+      "bytes": 16259,
+      "sha256": "fb2d4e9a65e883ff706486f695071b56060557f771d4e226db189c8f01802fee",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "e7e67db4b88ff066a89686daac8919edaabfe617172cc29fbe8deeeed9943d10",
+      "git_lf_bytes": 15782
+    }
+  ],
+  "existing_formal_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java",
+      "actual_local_bytes": 2020,
+      "actual_local_raw_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+      "formal_bytes": 2020,
+      "formal_raw_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+      "raw_equal": true,
+      "LF_equal": true,
+      "git_lf_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+      "git_lf_bytes": 2020
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotApi193.java",
+      "actual_local_bytes": 468,
+      "actual_local_raw_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "formal_bytes": 468,
+      "formal_raw_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "raw_equal": true,
+      "LF_equal": true,
+      "git_lf_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "git_lf_bytes": 468
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlot193.java",
+      "actual_local_bytes": 987,
+      "actual_local_raw_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "formal_bytes": 987,
+      "formal_raw_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "raw_equal": true,
+      "LF_equal": true,
+      "git_lf_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "git_lf_bytes": 987
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/RequestE92780.java",
+      "actual_local_bytes": 5224,
+      "actual_local_raw_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "formal_bytes": 5224,
+      "formal_raw_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "raw_equal": true,
+      "LF_equal": true,
+      "git_lf_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "git_lf_bytes": 5224
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "actual_local_bytes": 271,
+      "actual_local_raw_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "formal_bytes": 271,
+      "formal_raw_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "raw_equal": true,
+      "LF_equal": true,
+      "git_lf_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "git_lf_bytes": 271
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "actual_local_bytes": 2735,
+      "actual_local_raw_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "formal_bytes": 2735,
+      "formal_raw_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "raw_equal": true,
+      "LF_equal": true,
+      "git_lf_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+      "git_lf_bytes": 2655
+    }
+  ],
+  "missing_compile_dependencies": [],
+  "manual_main": "org.xar.ck3.research.m3.MapInsertMoveSlotBindingValidation193",
+  "sourceclosure_explicit_java_files": 8,
+  "MapInsert191_core_required": false,
+  "old_Books_required": false,
+  "D_classes_or_evidence_required": false,
+  "POM_CI_changes": false,
+  "new_compile_run_for_delivery": false,
+  "package_number": 57,
+  "hash_scope": "Original sha256/bytes retain actual first-compile physical source identities. git_lf_* separately identify publication LF/line-whitespace projection; execution, APIs and expected literals are unchanged."
+}
