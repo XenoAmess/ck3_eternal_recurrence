@@ -1481,17 +1481,27 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         if (!(durable.originalHistory() instanceof ActionJournal.BoundHistoryBasis bound)
                 || !bound.originalDriverHistory().equals(known.originalHistoryBasis())) missing.add("original_full_history_baseline_not_bound_in_canonical_writer");
         Map<String,DriverSnapshotFacts.ActionRow> rows=new HashMap<>(); known.actionRows().forEach(row -> rows.put(row.actionId(),row));
-        // Canonical interrupted-prefix controls already retain their actual settled effects; no recorder row exists.
+        // These exact source-validated Life controls retain their effects without a second recorder row.
         var prefixControls = new java.util.HashSet<ActionReceipt>();
         for (ActionReceipt parent : durable.actions()) {
             if (!(parent.state() instanceof ActionState.CompositeSettled settled)
-                    || !(settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted)
                     || !parent.command().before().game().equals(known.stamp().game())
                     || !parent.command().before().frame().episodeRunId().equals(known.driver().session().episodeRunId())) continue;
+            boolean cancelledInitialization = settled.settlement() instanceof ActionState.CompositeControlApplied control
+                    && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(parent.command().operation().value())
+                    && settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                    && control.observation().semantic().actual().contains(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText(
+                            new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("progress_status"), "initialization_cancelled"));
+            if (!(settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted) && !cancelledInitialization) continue;
             var children = settled.execution().children().stream().map(child -> durable.actions().stream()
                     .filter(value -> child.actionId().equals(value.command().actionId())).findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("interrupted Life prefix child is absent from canonical Driver actions"))).toList();
+                    .orElseThrow(() -> new IllegalArgumentException("settled Life control child is absent from canonical Driver actions"))).toList();
             org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(parent.command(), settled.execution(), settled.settlement(), children);
+            if (cancelledInitialization) {
+                StrictJson.require(!parent.visibleGameplay() && !parent.eligibleAdvance() && parent.applied().isEmpty(),
+                        "cancelled Life initialization must not carry gameplay or advance credit");
+                prefixControls.add(parent);
+            }
             prefixControls.addAll(children);
         }
         for(ActionReceipt action:durable.actions()) {
