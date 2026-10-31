@@ -12,6 +12,9 @@ import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler;
+import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
+import org.xar.ck3.control.application.driver.DriverTransportNoticeStability;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
 import org.xar.ck3.control.application.effects.NativeEffectEvidence;
 import org.xar.ck3.control.application.planning.PlanningRequest;
@@ -113,6 +116,37 @@ public final class RootFamilyBridge implements FamilyDomainSource.CurrentBridge 
         } catch (ContractViolationException invalid) {
             return false;
         }
+    }
+
+    /** Ownership comes from this already-replayed frame's actual Native packet, never merged diagnostics. */
+    static Set<String> nativeOwnedNoticeKeys(Complete frame,ActionPorts.OutcomeArchive archive) {
+        var basis=NativeEffectEvidence.basis(frame);
+        var manifest=archive.loadFullMaterial(basis.driverFacts());
+        var nativeFrame=DriverObservationEvidenceReader.nativeFrame(basis.driverFacts(),manifest,archive.loadNativeFrame(basis.nativeFrame()));
+        return DriverTransportNoticeStability.nativeOwnedNoticeKeys(DriverObservationAssembler.originalNativeState(nativeFrame));
+    }
+    /** The fresh immutable Native frame stays current; Java notice telemetry grants no new qualification. */
+    static void requireCurrentBasis(ActionCommand command,Complete retained,Complete current,Set<String> nativeOwnedNoticeKeys) {
+        StrictJson.require(retained.identity().equals(command.before())&&current.identity().equals(command.before())
+                &&retained.source().equals(command.source())&&current.source().equals(command.source())
+                &&retained.sessionId().equals(command.sessionId())&&current.sessionId().equals(command.sessionId())
+                &&retained.connectionGeneration().equals(current.connectionGeneration())
+                &&retained.originalEvidence().equals(current.originalEvidence()),
+                "before outbox current Native/frame/source/session differs from retained fresh basis");
+        FamilyNativePreparation.requireCommandFrame(command,current.semantic());
+        requireSameSemantic(retained.semantic(),current.semantic(),nativeOwnedNoticeKeys,current.identity().game().pid(),
+                "before outbox current semantics differ from retained fresh basis");
+    }
+    /** Shared pure DATA comparison after actual current/replay qualification; all non-wrapper fields remain exact. */
+    static void requireSameSemantic(OpportunityJson.Obj retained,OpportunityJson.Obj current,Set<String> nativeOwnedNoticeKeys,long pid,String reason) {
+        var left=DriverTransportNoticeStability.heldSemantic(retained,nativeOwnedNoticeKeys,pid);
+        var right=DriverTransportNoticeStability.heldSemantic(current,nativeOwnedNoticeKeys,pid);
+        if(left.equals(right))return;
+        var changed=new java.util.TreeSet<String>();
+        left.members().forEach((key,value)->{if(!value.equals(right.get(key)))changed.add(key);});
+        right.members().keySet().stream().filter(key->!left.members().containsKey(key)).forEach(changed::add);
+        var reported=changed.stream().limit(16).map(key->key.substring(0,Math.min(96,key.length()))).toList();
+        StrictJson.require(false,reason+"; differing_top_level_keys="+reported+"; differing_top_level_key_count="+changed.size());
     }
 
     /** Seven fraction digits retain every FILETIME tick; no JavaScript Number or microsecond rounding participates. */

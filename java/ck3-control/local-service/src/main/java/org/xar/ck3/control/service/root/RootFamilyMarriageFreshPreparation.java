@@ -162,7 +162,9 @@ public final class RootFamilyMarriageFreshPreparation {
         } else {
             StrictJson.require("ORDINARY_PLANNING".equals(StrictJson.text(m.get("origin")))&&m.get("public_original_query").isNull(),"unknown or mixed family preparation origin");
             var request=originals.original(same,command,ExactRef.fromJson(m.get("planning_request")));
-            StrictJson.require(original.frame().semantic().equals(request.observations().snapshot()),"fresh-review complete actual planning snapshot differs");
+            RootFamilyBridge.requireSameSemantic(request.observations().snapshot(),original.frame().semantic(),
+                    RootFamilyBridge.nativeOwnedNoticeKeys(original.frame(),archive),original.frame().identity().game().pid(),
+                    "fresh-review complete actual planning snapshot differs");
         }
         Optional<FamilyPendingProducer.State> state;
         if(publicOrigin)state=Optional.empty();

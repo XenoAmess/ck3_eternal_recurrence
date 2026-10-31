@@ -69,10 +69,13 @@ public final class RootFamilyMarriageSendAuthority implements FamilyMarriageSend
                 need(request.origin() instanceof CommandOrigin.Gameplay&&request.before().equals(command.before())&&request.deadline().equals(command.deadline()),
                         "before outbox query escaped the actual pre-INTENT gameplay frame/deadline");
                 context.readiness().current(same,command.before(),command.deadline(),lease->{
-                    var actual=bridge.verified(same,lease,command);var original=args.freshBasis().orElseThrow();
-                    need(actual.snapshotEvidence().equals(original.snapshot())&&actual.bridgeEvidence().equals(original.bridge()),
-                            "before outbox scope lacks its current actual native/Bridge originals");
-                    var reads=requireFresh(same,args,command,lease.frame());
+                    var original=args.freshBasis().orElseThrow();var retained=bridge.replay(same,original.bridge());
+                    need(retained.semantic().equals(original.snapshot()),"before outbox retained Bridge/native semantic basis differs");
+                    need(lease.frame().originalEvidence().equals(lease.semantic().originalNativePacket()),
+                            "before outbox current frame and held native packet differ");
+                    var owned=RootFamilyBridge.nativeOwnedNoticeKeys(retained.frame(),context.archive().withSession(same));
+                    RootFamilyBridge.requireCurrentBasis(command,retained.frame(),lease.frame(),owned);
+                    var reads=requireFresh(same,args,command,retained.frame());
                     for(var verified:reads)if(!verified.retainedRoot())for(var guard:List.of(verified.original().before(),verified.original().after()))
                         need(context.clock().instant().isBefore(guard.binding().validUntil()),"actual target legality original expired before outbox preparation");
                     return null;
