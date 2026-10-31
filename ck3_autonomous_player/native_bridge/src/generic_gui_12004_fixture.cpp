@@ -4,6 +4,8 @@
 #include "xar_bridge/ck3_12004_snapshot_foundation.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/frontend_gui_result_v1.hpp"
+#include "xar_bridge/ck3_12004_gui_callback_thunk.hpp"
+#include "xar_bridge/ck3_12004_gui_expression_descriptor.hpp"
 #include "xar_bridge/ingame_ui_mailbox_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/state_snapshot_frame_v1.hpp"
@@ -501,11 +503,142 @@ void FrontendFrames(const std::filesystem::path &output, GuiMemory &gui, PumpFix
   Write(output / "coa-tree.json", ui::FrontendGuiTreeInspectionResultFrameV1(
       "coa-tree", ui::kFrontendCoatOfArmsTreeInspectionV1Step, coa));
 }
+// Owned typed software data, serialized by the unchanged production API.
+// No loaded-image pin validation, live Lobby route or callback execution.
+void WriteLobbyCallbackFrames(const std::filesystem::path &output) {
+  xar::ck3_11906::NamedGuiTreeInspectionV1 inspection{};
+  inspection.scope_root_name = "lobby_random_callback";
+  inspection.root_available = true;
+  inspection.truncated = false;
+  inspection.widget_count = 1;
+  inspection.standard_click_bindings_12004 = true;
+  inspection.callback_thunk_3aa30e0_pin_verified = true;
+  inspection.expression_layout_3a9f960_pin_verified = true;
+  inspection.receiver_candidate_source_pins_verified = false;
+  inspection.refill_receiver_frame_12004 = std::nullopt;
+  xar::ck3_11906::NamedGuiWidgetInspectionV1 widget{};
+  widget.runtime_name = "";
+  widget.child_path = "";
+  widget.depth = 0;
+  widget.child_count = 0;
+  widget.vtable_rva = 0x10028;
+  widget.effective_visible = true;
+  widget.enabled = true;
+  xar::ck3_11906::NamedGuiStandardClickBinding12004V1 binding{};
+  binding.button_base_slot13 = true;
+  binding.primary_group = true;
+  xar::ck3_11906::NamedGuiStandardClickCallback12004V1 callback{};
+  callback.index = 0;
+  callback.callback_vtable_rva = 0x10028;
+  callback.callback_slot2_rva = xar::ck3_12004::kGuiCallbackThunkRva12004V1;
+  callback.indirect_target_3aa30e0 = true;
+  callback.native_target_8_rva = xar::ck3_12004::kGuiExpression3A9F960Rva12004V1;
+  callback.receiver_f0_present = true;
+  callback.expression_descriptor_3a9f960 = true;
+  xar::ck3_11906::NamedGuiExpressionDescriptor12004V1 expression{};
+  expression.chain_count_24_raw = 0;
+  expression.final_type_id_30 = 0;
+  expression.final_kind_34_raw = 0;
+  expression.final_target_38_rva = 0;
+  expression.final_user_data_40_present = false;
+  expression.receiver_type_id_48 = 0;
+  expression.receiver_flag_4c_raw = 0;
+  expression.chain_calls.clear();
+  expression.receiver_entry_candidates_12004 = std::nullopt;
+  callback.expression_3a9f960 = expression;
+  binding.callbacks.push_back(callback);
+  widget.standard_click_binding_12004 = binding;
+  inspection.widgets.push_back(widget);
+  const auto lobby_callback = xar::ck3_11906::FrontendGuiTreeInspectionResultFrameV1(
+      "lobby-callback", "inspect-gui-window-tree-v1", inspection);
+  Write(output / "lobby-callback.json", lobby_callback);
+  xar::ck3_11906::NamedGuiTreeInspectionV1 unavailable_inspection{};
+  unavailable_inspection.scope_root_name = "lobby_random_callback";
+  unavailable_inspection.root_available = false;
+  unavailable_inspection.truncated = false;
+  unavailable_inspection.widget_count = 0;
+  unavailable_inspection.standard_click_bindings_12004 = false;
+  const auto unavailable = xar::ck3_11906::FrontendGuiTreeInspectionResultFrameV1(
+      "lobby-callback-unavailable", "inspect-gui-window-tree-v1", unavailable_inspection);
+  Write(output / "lobby-callback-unavailable.json", unavailable);
+  xar::ck3_11906::NamedGuiTreeInspectionV1 bad_slot_inspection{};
+  bad_slot_inspection.scope_root_name = "lobby_random_callback";
+  bad_slot_inspection.root_available = true;
+  bad_slot_inspection.truncated = false;
+  bad_slot_inspection.widget_count = 1;
+  bad_slot_inspection.standard_click_bindings_12004 = true;
+  bad_slot_inspection.callback_thunk_3aa30e0_pin_verified = true;
+  bad_slot_inspection.expression_layout_3a9f960_pin_verified = true;
+  xar::ck3_11906::NamedGuiWidgetInspectionV1 bad_widget{};
+  bad_widget.runtime_name = "";
+  bad_widget.child_path = "";
+  bad_widget.depth = 0;
+  bad_widget.child_count = 0;
+  bad_widget.vtable_rva = 0x10028;
+  bad_widget.effective_visible = true;
+  bad_widget.enabled = true;
+  xar::ck3_11906::NamedGuiStandardClickBinding12004V1 bad_binding{};
+  bad_binding.button_base_slot13 = true;
+  bad_binding.primary_group = true;
+  xar::ck3_11906::NamedGuiStandardClickCallback12004V1 bad_callback{};
+  bad_callback.index = 0;
+  bad_callback.callback_vtable_rva = 0x10028;
+  bad_callback.callback_slot2_rva = 0;
+  bad_callback.indirect_target_3aa30e0 = false;
+  bad_callback.native_target_8_rva = 0;
+  bad_callback.receiver_f0_present = false;
+  bad_callback.expression_descriptor_3a9f960 = false;
+  bad_binding.callbacks.push_back(bad_callback);
+  bad_widget.standard_click_binding_12004 = bad_binding;
+  bad_slot_inspection.widgets.push_back(bad_widget);
+  const auto bad_slot = xar::ck3_11906::FrontendGuiTreeInspectionResultFrameV1(
+      "lobby-callback-bad-slot", "inspect-gui-window-tree-v1", bad_slot_inspection);
+  Write(output / "lobby-callback-bad-slot.json", bad_slot);
+  xar::ck3_11906::NamedGuiTreeInspectionV1 bad_pin_inspection{};
+  bad_pin_inspection.scope_root_name = "lobby_random_callback";
+  bad_pin_inspection.root_available = true;
+  bad_pin_inspection.truncated = false;
+  bad_pin_inspection.widget_count = 1;
+  bad_pin_inspection.standard_click_bindings_12004 = true;
+  bad_pin_inspection.callback_thunk_3aa30e0_pin_verified = true;
+  bad_pin_inspection.expression_layout_3a9f960_pin_verified = true;
+  xar::ck3_11906::NamedGuiWidgetInspectionV1 pin_widget{};
+  pin_widget.runtime_name = "";
+  pin_widget.child_path = "";
+  pin_widget.depth = 0;
+  pin_widget.child_count = 0;
+  pin_widget.vtable_rva = 0x10028;
+  pin_widget.effective_visible = true;
+  pin_widget.enabled = true;
+  xar::ck3_11906::NamedGuiStandardClickBinding12004V1 pin_binding{};
+  pin_binding.button_base_slot13 = true;
+  pin_binding.primary_group = true;
+  xar::ck3_11906::NamedGuiStandardClickCallback12004V1 pin_callback{};
+  pin_callback.index = 0;
+  pin_callback.callback_vtable_rva = 0x10028;
+  pin_callback.callback_slot2_rva = xar::ck3_12004::kGuiCallbackThunkRva12004V1;
+  pin_callback.indirect_target_3aa30e0 = false;
+  pin_callback.native_target_8_rva = 0;
+  pin_callback.receiver_f0_present = false;
+  pin_callback.expression_descriptor_3a9f960 = false;
+  pin_binding.callbacks.push_back(pin_callback);
+  pin_widget.standard_click_binding_12004 = pin_binding;
+  bad_pin_inspection.widgets.push_back(pin_widget);
+  const auto bad_pin = xar::ck3_11906::FrontendGuiTreeInspectionResultFrameV1(
+      "lobby-callback-bad-pin", "inspect-gui-window-tree-v1", bad_pin_inspection);
+  Write(output / "lobby-callback-bad-pin.json", bad_pin);
+}
 } // namespace
 
 int main(int argc, char **argv) {
   try {
-    Check(argc == 2, "usage: xar_generic_gui_12004_fixture <wire-output-dir>");
+    if (argc == 3 && std::string_view(argv[2]) == "--lobby-only") {
+      const std::filesystem::path output(argv[1]);
+      std::filesystem::create_directories(output);
+      WriteLobbyCallbackFrames(output);
+      return 0;
+    }
+    Check(argc == 2, "usage: xar_generic_gui_12004_fixture <wire-output-dir> [--lobby-only]");
     const std::filesystem::path output(argv[1]);
     std::filesystem::create_directories(output);
     SnapshotMemory snapshot_memory;

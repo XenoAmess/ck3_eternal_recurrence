@@ -209,6 +209,9 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_ck3_generic_gui_12004_fixture
     COMMAND $<TARGET_FILE:xar_ck3_generic_gui_12004_fixture>
       "${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_generic_gui_12004")
+  add_test(NAME xar_ck3_lobby_callback_software_frames_v1
+    COMMAND $<TARGET_FILE:xar_ck3_generic_gui_12004_fixture>
+      "${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_lobby_callback_software_v1" --lobby-only)
 endif()
 
 # Ready adopted LBF/addon/Default/Council/Government source closure.
