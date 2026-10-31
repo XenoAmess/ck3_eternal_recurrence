@@ -118,9 +118,7 @@ public final class GiftActionHistoryEvidence {
         StrictJson.require(registered instanceof DomainBodies.Available,"actual registered Gift body is unavailable; no closure migration is implied");
         var current=(DomainBodies.Available)registered;
         StrictJson.require(body.contractSchema().equals(GiftPendingModel.SCHEMA)&&body.contractSchema().equals(current.reference().contractSchema())
-                &&body.producerSources().equals(current.reference().producerSources())&&current.head().equals(same.persistedHead()),"historical Gift body crossed actual frozen registration closure");
-        for(var pin:current.headSources())same.verifyPin(pin);
-        for(var source:body.producerSources())same.verifyPin(same.capturePin(source,WriterContracts.MAX_PIN_BYTES));
+                &&current.head().equals(same.persistedHead()),"historical Gift body crossed actual current registration schema or head");
         var pin=same.capturePin(body.payload(),ContinuityJson.DOMAIN_MAX_BYTES);
         StrictJson.require(pin.identity().equals(body.identity()),"historical Gift pending payload native identity changed");
         byte[] originalBody=same.readPinned(pin,ContinuityJson.DOMAIN_MAX_BYTES);same.verifyPin(pin);
