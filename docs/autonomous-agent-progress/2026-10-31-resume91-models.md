@@ -206,3 +206,14 @@ M7正式Java `d17b7d9580`、Native `c703f434d2`分记：两C++ core函数原样�
 两个root-clock REVIEW均原样D采用，owner生产语义修改0，同次strict2源0；首命令把-J选项误放argfile、尚未编源就退出，是owner命令成本，不算模型源码失败。记录入口为两`root-clock-*-audit128/REVIEW.json`，不授运行装载/Game信用。源审分组仍以`REVIEWS91-INCREMENT126.json`及后到回执为准，异质结果不合成统一采用率；本包0POST/编测/CAS，不等待大cohort。
 
 运行owner后到报告：worker129于02:31:16.0517311Z实际请求342,745B，200完整返回13.633秒（headers12.872/TTFT12.873）；reported101066/142/101208，cached=null。seq276普通qwen CROWN于02:31:39.332提交，02:31:44.093独立确认law0→1/prestige220m→200m、APPLIED；本轮新增普通APPLIED1，与旧FOCUS分开，新增日0。末plan pendingwait/brief票空不否此前HTTP；后继replay合同故障END/next47不重放已应用动作。证据`D:/ck3-state/resume90-runtime/worker129.stdout.log`；不同请求的payload/token/时延不推alias或cache因果，本文未另读CAS。
+
+
+### resume91 review131 冻结源窗与后到审阅
+
+源HTTP窗固定UTC 02:20:10.328905→02:54:14.974288：49任务、52 BEGIN/51 END，截止时1项在途，窗口客户端区间峰4，新IP历史峰8；12–16目标未达，不能用累计数代替同时请求，也不由客户端区间推服务端并发。截止时在途的m4-selector880-native-inputs91后于02:54:54结束并获源拒回执，不回填成截止时已终态。
+
+冻结主表分组：6项原样采纳，具体生产/隔离scope按owner回执；2项仅源接受待编、14项部分采用、22项拒绝、3项仅分析、2项当刻未知。方法名hunk、循环删除、完整方法、测试与分析的粒度不同，不合成统一采用率；后到源审/行为与正式发表另外记，raw SUMMARY默认adopted=false不替代owner回执。主表及旧记录保持原字节。
+
+M1 Crown R2后到selector回执于03:04:59完成baseline RED→candidate GREEN，零owner语义修改；M7后到memory原样及单NaN方法参与8JUnit绿，但套件使用owner core和其他owner测试，均不回填冻结分类或授完整生产/运行因果。精确范围在后两页补记。
+
+证据为`D:/ck3-state/model-dispatch91/REVIEWS91-INCREMENT131.json`和`REVIEWS91-LATE131-0308.json`，两份SHA已核对；固定源窗不因后继任务扩大。本文档交付0模型POST/GET、0编测/CAS，不改旧review/source SUMMARY，不作为source owner直POST或runtime的门。

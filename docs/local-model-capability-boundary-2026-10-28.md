@@ -127,3 +127,14 @@ M0 thinking04实际REQUEST为true；已记录的SSE增量键仅role/content，�
 M7正式两C++ core函数原样、owner算法改动0，14case/781checks；验证限相同commit header/core/test/module的minimal CMake wrapper 2TU/CTest。Java6生产源、2JUnit的7P覆盖14scenarios，其他CI/adapter仍有部分采用及owner修补；不授fullRoot/runtime/Bridge archive或hosted CI通过。alias离线字节缩减与typed还原也不是运行token/cache/速度实测，详见`REVIEWS91-LATE-ALIAS-M7-123.json`。
 
 统一分开记录源码候选、实际采用、运行期HTTP、Native结果与Game动作；有限case不推出通用能力上限。跨机使用[worker指南](local-model-worker-guide.md)与统一config，本机D路径只用于反链，不作为其他机器依赖；不复制state/账本或据此操作Game。本补记未新增HTTP/编测/CAS，未改配置或旧冻结记录。
+
+
+### resume91 review131 后到测试与署名范围
+
+M7 captured177的memory完整类后到源审为原文采用、owner修改0；Basic仅testNaNUnordered方法原样，其余三个方法/helper经owner修补，Carry两轮模型length未提供可用测试，四项由owner编写。03:07:15→16的真实共享套件8JUnit全绿、0skip，依赖owner core；不能授8个raw模型测试、模型core采用或Native/FFM/Game信用。
+
+SOURCE_READY02中的“尚未编测”是原时点状态，后到compile0及8P回执已另存`D:/ck3-state/model-dispatch91/REVIEWS91-LATE131-0308.json`。冻结主表中memory与M4在途任务的两个未知状态保留；后者后来完整源拒而未编/生成，不能记成真实javac失败，也不能因现在获回执就声称截止时全部已审。
+
+同样，M1 selector真实baseline RED→candidate GREEN只验证source-bound注册边界；Full880的13JUnit/48scenario是软件验证。原样采纳、部分修补、仅接受待编、分析、源拒与后到行为分别记，不从6项原样scope推出全生产采用，不从22项拒绝推出统一编译失败率。输入上下文、实际改写及验证范围仍不同，有限成功或失败不构成普遍能力上限。
+
+反链为`REVIEWS91-INCREMENT131.json`的validation/late_supplements及`REVIEWS91-LATE131-0308.json`，旧主表/SUMMARY不回写。本包只准备三页EOF候选，0模型POST/GET、0编测/CAS；未引用缺owner review的更新Native任务，也不等待其终态。

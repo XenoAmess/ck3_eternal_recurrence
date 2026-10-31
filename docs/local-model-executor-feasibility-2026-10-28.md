@@ -209,3 +209,14 @@ M4六RF merge329组合：Native R2框架经owner +9/−6行修补后，首64例N
 成熟typed任务的成功亦有明确前提。M5 military856050125由owner先固定API/ABI/reset描述符；plan首稿和probe源审纠错后两leaf原样研究采用，owner代码0、21新case、production0，并非模型自主ASM发现。Government128四POST，两首方法原样；probe真实三处OptionalLong.get编译红后一次纠正为getAsLong，generic Optional.get保留，最终3leaf原样、ownerJava0/production0。109 checks来自27数据fixtures+1结构检查，不是109 cases；22C9F60仅16B片段/PDATA0未知，停止组合，不硬派半截源码。
 
 据[worker指南](local-model-worker-guide.md)提供真实直接合同及诊断，两轮后必要时owner接管，保留源审、编译、行为与修补粒度。D回执仅本机证据，其他机器依统一配置在自己的获准root运行caller；不复制本机账本或Game现场。
+
+
+### resume91 review131 软件组合与selector负控
+
+M4正常Full880的软件接线有不同采用成本：binding首稿原样，Backend声明由owner提供；State保留R2主体后owner +14/−4行，Ports两轮原稿源拒后累计修补+140/−145行，新增fixture +8/−4另列。累计与局部diff有重叠，不能直接相加成独立模型改写量。只有新API/binding/两测试类编译，既有算法和旧绿缓存未重编或重跑。
+
+真实13个JUnit方法/48次scenario执行全P、0skip，其中State为1方法/36次，Ports为12方法/12次；没有跨组unique tuple声明。此验收覆盖普通软件caller显式Backend合同，预期事件不是Native telemetry，不授Full880 Native、实际allocator、CRT/EH、生产Backend或Game。原件为`D:/ck3-state/resume91-m4-native/selector880-composed91/ACTUAL-ACCEPTANCE01.json`。
+
+M1 Crown R2源应用零人工语义修改，冻结报告原状态仅接受待编；后到unit/ACTUAL130回执显示真实generated selector baseline编链0后运行RED，candidate编链0后运行GREEN，最终END03:04:59。这里是实际Populate/Register body及header的source-bound负控，不等于whole生产TU/Bridge构建、正式发表或当前已加载，也未证明worker129故障就是该二进制原因。
+
+这种后到行为只补充原任务验收层级，不把旧“待编”记录抹成当时已通过。固定HTTP窗与不同采用粒度见`D:/ck3-state/model-dispatch91/REVIEWS91-INCREMENT131.json`；本小包未新POST/GET或编测，后继source任务继续独立执行。
