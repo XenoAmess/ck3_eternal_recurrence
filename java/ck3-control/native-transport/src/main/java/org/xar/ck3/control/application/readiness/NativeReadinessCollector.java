@@ -1311,8 +1311,15 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
                 && actual.session().sessionId().equals(identity.sessionId()), "actual held Native crossed collector session");
         ExactRef original = preserve(borrowed, ReadinessArchive.Role.NATIVE_PACKET, actual.originalPacket());
         DriverStateAssembler.ObservationWork<T> join = frozen -> {
-            if (mode != CaptureMode.FIRST_CHECKPOINT)
-                require(frozen.projection() instanceof DriverStateSnapshot.Complete, "complete canonical history/Driver is not available; unresolved actions cannot become ready");
+            if (mode != CaptureMode.FIRST_CHECKPOINT) {
+                var projection = frozen.projection();
+                if (!(projection instanceof DriverStateSnapshot.Complete)) {
+                    String detail = projection instanceof DriverStateSnapshot.Incomplete incomplete
+                        ? ": " + incomplete.missingOrUnreconciledFields().stream().limit(16).map(s -> s.length() <= 96 ? s : s.substring(0, 93) + "...").collect(java.util.stream.Collectors.joining(", "))
+                        : "";
+                    require(false, "complete canonical history/Driver is not available; unresolved actions cannot become ready" + detail);
+                }
+            }
             return qualifyPhysical(borrowed, ioDeadline, scopeDeadline, lockedHead, actual, frozen.state(), frozen.facts(), original, work);
         };
         return mode == CaptureMode.FIRST_CHECKPOINT ? driver.withFrozenRawObservation(actual, borrowed, join)

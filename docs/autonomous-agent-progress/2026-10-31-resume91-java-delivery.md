@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进147 isolated Life child cycle accounting单叶，前序146 Journal真实parent参数单行已发 `fd1eddd3b5`；前序145 original reconciliation observer单叶已发 `8b906853ab`；前序144四组22prod（Core10→Life4→consumer5→Boot3）已正常FF至 `5ab4d41e7b`；保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进148 Collector有限missing诊断单叶，前序147 isolated Life child cycle accounting已发 `c60e382b8f`；147实际父374已typed结算但后继历史/Driver缺失，无LOOP/日0；前序146 Journal真实parent参数单行已发 `fd1eddd3b5`；前序145 original reconciliation observer单叶已发 `8b906853ab`；前序144四组22prod（Core10→Life4→consumer5→Boot3）已正常FF至 `5ab4d41e7b`；保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -405,3 +405,12 @@ Main已S/Z采且开始MB146/安装HOLD，仅父readonly finish；145原canonical
 首本地.11 runtime-life-child-cycle147真实07:14:40.379686→07:14:48.322048Z，HTTP200stop7.942秒/TTFT5.306481，39160in+463out/cachednull；候选错误以parentID当children，源拒未编/0采用。owner最小overload，首遗漏expected被Main源审拒后复用原完整谓词，最终owner语义实现。复用owner单prod+probe严格0/2.7052866秒，真实372/373 DATA与default/wrongexpected/body/genericUnknown六assert0/1.0404186秒；仅production roots方法/源码合同，不是完整readSameGameHistory、fullcoldRoot或Game绿。固定D probe/actual软件原件不携CI，不重旧绿，本岗未新模型/编测。
 
 146实际07:11:27.815→07:12:05.051Z preloop END1/37.236秒、无LOOP，canonical373不变；故障先在旧cold cycle要求，未到已修Journal.append，不追授146实机越过。Main已源审147并准备S/Z/MB147安装，只为原prefix只读恢复；原child373独立Applied不重发，parent最新仍Unknown/未授typed终态、新日或SAVE。147单formal叶ignore EOL/尾空白与sealed同且SHA复核，0writer语义改；回执 `D:/ck3-state/resume91-java-delivery/CYCLE147-ADOPTION.json`。
+
+
+## Collector missing148只补真实不完整原因
+
+NativeReadinessCollector只采用1750B单hunk：原非FIRST_CHECKPOINT要求Complete的失败条件/原消息前缀保持；真正DriverStateSnapshot.Incomplete才追加missingOrUnreconciledFields前16项、每项最多96 UTF-16 code units，超长尾省略，输出不读payload/不查询/不新增guard。该record已有List.copyOf与非空约束，Complete/FIRST_CHECKPOINT路径原样；不是放松ready或恢复history/Driver主修。
+
+本地.11 runtime-collector-missing148输出223tokens原样采用，owner生产语义0改；复用07:26:42.923528→07:26:45.336789Z单prod strict0/2.4132571秒/log空。无新镜像测试/IO/Native调用；本岗整叶与sealed候选仅EOL/尾空白同、0writer语义改，不重绿/不造额外模型请求。owner刚交Main的SOURCE_READY，不从strict推S/MB已加载或实机恢复；后续主修按其实际回执另记，不为诊断单起worker。
+
+后到147实机结果：07:19:30.613→07:20:25.067Z preloop END1/54.454秒，无LOOP；canonical374原父真实COMPOSITE_SETTLED/LIFE_CONTROL_PREFIX_INTERRUPTED(9619B)，child373Applied保持，无Advance/date。147cold gate及146真正物理append已越过，随后Controller423 ready(true)因complete canonical history/Driver unavailable失败，148消费视图主修另线；不重父子、不伪cycle/游玩成功。Root已再次明确继续，当前D工作树干净源基线c60e，远端读回42e6c26718，正常rebase继承，不用旧Docs03覆盖当前页。回执 `D:/ck3-state/resume91-java-delivery/DIAGNOSTIC148-ADOPTION.json`。
