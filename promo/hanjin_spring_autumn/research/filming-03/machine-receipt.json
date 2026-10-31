@@ -1,0 +1,1185 @@
+{
+  "schema" : "hanjin.filming03-final-death-machine-record/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "compiled_at_utc" : "2026-10-31T20:20:30.445365Z",
+  "game_operated_by_research_worker" : false,
+  "production_policy_registered" : false,
+  "old_470_second_cut_user_accepted" : false,
+  "new_cut_human_signoff" : null,
+  "invitation_context" : {
+    "schema" : "current-event-window-context-v1",
+    "schema_version" : 1,
+    "status" : "available",
+    "snapshot_revision" : 1232,
+    "date_raw" : 45476784,
+    "current_event_instance_id" : 21,
+    "window_match_count" : 1,
+    "unavailable_reason" : null,
+    "event_definition_key" : "hd_dong_aftermath.0020",
+    "calculated_event_id" : 4010020,
+    "runtime_stats_ordinal" : 5643,
+    "root_scope" : {
+      "status" : "available",
+      "raw_type_index" : 4,
+      "type_key" : "character",
+      "subtype" : 0,
+      "typed_identity" : {
+        "status" : "available",
+        "kind" : "character",
+        "character_id" : 5048
+      }
+    },
+    "saved_scopes" : [ ],
+    "options" : [ {
+      "rendered_index" : 0,
+      "native_option_index" : 0,
+      "shown" : true,
+      "enabled" : true,
+      "fallback" : false,
+      "cancel" : false,
+      "resolved_name" : "照常入朝。",
+      "unavailable_reason" : "",
+      "effect_indicators" : {
+        "status" : "available",
+        "coverage" : "played-character-event-icon-indicators-1.20.0.4-v1",
+        "complete_effect_set" : false,
+        "rows" : [ ]
+      },
+      "effect_preview" : {
+        "status" : "unavailable",
+        "reason" : "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas" : {
+        "status" : "unavailable"
+      },
+      "relationship_deltas" : {
+        "status" : "unavailable"
+      }
+    }, {
+      "rendered_index" : 1,
+      "native_option_index" : 1,
+      "shown" : true,
+      "enabled" : true,
+      "fallback" : false,
+      "cancel" : false,
+      "resolved_name" : "称病不出，过些时日再说。",
+      "unavailable_reason" : "",
+      "effect_indicators" : {
+        "status" : "available",
+        "coverage" : "played-character-event-icon-indicators-1.20.0.4-v1",
+        "complete_effect_set" : false,
+        "rows" : [ ]
+      },
+      "effect_preview" : {
+        "status" : "unavailable",
+        "reason" : "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas" : {
+        "status" : "unavailable"
+      },
+      "relationship_deltas" : {
+        "status" : "unavailable"
+      }
+    } ],
+    "readiness" : {
+      "event_definition_identity_ready" : true,
+      "root_scope_ready" : true,
+      "saved_scopes_ready" : true,
+      "option_presentation_ready" : true,
+      "effect_indicators_ready" : true,
+      "effect_preview_ready" : false,
+      "semantic_decision_ready" : false
+    },
+    "provenance" : {
+      "root" : "module+0x5C6A520->+0x10",
+      "idler_vtable_rva" : "0x44BC418",
+      "manager_offset" : "+0x28",
+      "backend_id" : "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "native_choice" : {
+    "status" : "event_instance_advanced",
+    "postcondition_verified" : true,
+    "old_event_instance_id" : 21,
+    "new_event_instance_id" : null,
+    "selected_option_number" : 1,
+    "selected_native_option_index" : 0,
+    "starting_snapshot_id" : "native:1233",
+    "starting_revision" : 1234,
+    "ending_snapshot_id" : "native:1234",
+    "ending_revision" : 1235,
+    "episode_run_id" : "native-5048-8bb319f75216",
+    "connection_generation" : 1,
+    "bridge_pid" : 2008,
+    "starting_played_character_stress" : {
+      "status" : "available",
+      "character_id" : 5048,
+      "stress_points" : 0,
+      "unavailable_reason" : null
+    },
+    "ending_played_character_stress" : {
+      "status" : "available",
+      "character_id" : 7261,
+      "stress_points" : 0,
+      "unavailable_reason" : null
+    },
+    "starting_played_character_event_traits" : {
+      "schema" : "xar.ck3.player-event-trait-membership/v1",
+      "game_version" : "1.20.0.4",
+      "executable_sha256" : "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "status" : "available",
+      "snapshot_revision" : 1233,
+      "date_raw" : 45476784,
+      "played_character_id" : 5048,
+      "traits" : {
+        "lifestyle_poet" : false,
+        "journaller" : false
+      },
+      "unavailable_reason" : null
+    },
+    "ending_played_character_event_traits" : {
+      "schema" : "xar.ck3.player-event-trait-membership/v1",
+      "game_version" : "1.20.0.4",
+      "executable_sha256" : "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "status" : "available",
+      "snapshot_revision" : 1234,
+      "date_raw" : 45476784,
+      "played_character_id" : 7261,
+      "traits" : {
+        "lifestyle_poet" : false,
+        "journaller" : false
+      },
+      "unavailable_reason" : null
+    },
+    "starting_played_character_gold" : {
+      "status" : "available",
+      "character_id" : 5048,
+      "gold_raw" : 9656675,
+      "scale" : 100000,
+      "unavailable_reason" : null
+    },
+    "ending_played_character_gold" : {
+      "status" : "available",
+      "character_id" : 7261,
+      "gold_raw" : 9656675,
+      "scale" : 100000,
+      "unavailable_reason" : null
+    },
+    "starting_played_character_prestige" : {
+      "status" : "available",
+      "character_id" : 5048,
+      "prestige_raw" : 154154828,
+      "scale" : 100000,
+      "unavailable_reason" : null
+    },
+    "ending_played_character_prestige" : {
+      "status" : "available",
+      "character_id" : 7261,
+      "prestige_raw" : 30000000,
+      "scale" : 100000,
+      "unavailable_reason" : null
+    }
+  },
+  "before_snapshot" : {
+    "date_raw" : 45476784,
+    "snapshot_id" : "native:1232",
+    "revision" : 1233,
+    "native_revision" : 1232,
+    "played_character" : {
+      "character_id" : 5048,
+      "alive" : true,
+      "source" : "native",
+      "stress_points" : 0,
+      "event_trait_membership" : {
+        "schema" : "xar.ck3.player-event-trait-membership/v1",
+        "game_version" : "1.20.0.4",
+        "executable_sha256" : "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status" : "available",
+        "snapshot_revision" : 1232,
+        "date_raw" : 45476784,
+        "played_character_id" : 5048,
+        "traits" : {
+          "lifestyle_poet" : false,
+          "journaller" : false
+        },
+        "unavailable_reason" : null
+      },
+      "betrothed_id" : null,
+      "primary_spouse_id" : null,
+      "spouse_ids" : [ ]
+    },
+    "active_event" : {
+      "source" : "native",
+      "instance_id" : 21,
+      "option_count" : 2,
+      "title" : null,
+      "options" : [ {
+        "index" : 0,
+        "option_number" : 1,
+        "label" : null,
+        "enabled" : true
+      }, {
+        "index" : 1,
+        "option_number" : 2,
+        "label" : null,
+        "enabled" : true
+      } ]
+    },
+    "active_wars" : [ {
+      "war_id" : 31,
+      "player_side" : "defender",
+      "primary_opponent_character_id" : 7164,
+      "player_is_primary_war_leader" : true,
+      "enemy_primary_default_raise_province_id" : 2371,
+      "targeted_title_ids" : [ ],
+      "war_objective_province_ids" : [ ],
+      "objective_province_states" : [ ],
+      "player_relative_war_score" : 13,
+      "allied_armies" : [ {
+        "army_id" : 16777284,
+        "owner_character_id" : 4727,
+        "soldiers" : null,
+        "current_province_id" : 1012,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 105,
+        "owner_character_id" : 5048,
+        "soldiers" : null,
+        "current_province_id" : 757,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : true,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "regular",
+        "army_state_code" : 1,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 106,
+        "owner_character_id" : 5048,
+        "soldiers" : null,
+        "current_province_id" : 758,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : true,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "regular",
+        "army_state_code" : 1,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 108,
+        "owner_character_id" : 5048,
+        "soldiers" : null,
+        "current_province_id" : 783,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : true,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "regular",
+        "army_state_code" : 1,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      } ],
+      "enemy_armies" : [ {
+        "army_id" : 2,
+        "owner_character_id" : 7164,
+        "soldiers" : null,
+        "current_province_id" : 761,
+        "move_target_province_id" : 647,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 647 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 1,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 14,
+        "owner_character_id" : 7128,
+        "soldiers" : null,
+        "current_province_id" : 761,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 16777234,
+        "owner_character_id" : 5963,
+        "soldiers" : null,
+        "current_province_id" : 1528,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 22,
+        "owner_character_id" : 7009,
+        "soldiers" : null,
+        "current_province_id" : 1067,
+        "move_target_province_id" : 761,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 1070, 1069, 1076, 1080, 1079, 1081, 1083, 1082, 1091, 647, 761 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 11,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "moving",
+        "army_state_code" : 7,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 46,
+        "owner_character_id" : 5786,
+        "soldiers" : null,
+        "current_province_id" : 4081,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 16777270,
+        "owner_character_id" : 6081,
+        "soldiers" : null,
+        "current_province_id" : 1067,
+        "move_target_province_id" : 1070,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 1070 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 1,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "moving",
+        "army_state_code" : 7,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 66,
+        "owner_character_id" : 6414,
+        "soldiers" : null,
+        "current_province_id" : 761,
+        "move_target_province_id" : 2431,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 2431 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 1,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 77,
+        "owner_character_id" : 6076,
+        "soldiers" : null,
+        "current_province_id" : 579,
+        "move_target_province_id" : 761,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 576, 644, 645, 632, 621, 761 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 6,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "moving",
+        "army_state_code" : 7,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 78,
+        "owner_character_id" : 6330,
+        "soldiers" : null,
+        "current_province_id" : 2177,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 81,
+        "owner_character_id" : 6219,
+        "soldiers" : null,
+        "current_province_id" : 1067,
+        "move_target_province_id" : 1070,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 1070 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 1,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "moving",
+        "army_state_code" : 7,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 33554518,
+        "owner_character_id" : 7125,
+        "soldiers" : null,
+        "current_province_id" : 623,
+        "move_target_province_id" : 761,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 622, 761 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 2,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "moving",
+        "army_state_code" : 7,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 112,
+        "owner_character_id" : 6308,
+        "soldiers" : null,
+        "current_province_id" : 814,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 113,
+        "owner_character_id" : 4684,
+        "soldiers" : null,
+        "current_province_id" : 647,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "regular",
+        "army_state_code" : 1,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 114,
+        "owner_character_id" : 5720,
+        "soldiers" : null,
+        "current_province_id" : 761,
+        "move_target_province_id" : 2431,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 2431 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 1,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 116,
+        "owner_character_id" : 7009,
+        "soldiers" : null,
+        "current_province_id" : 1067,
+        "move_target_province_id" : 1070,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 1070 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 1,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "moving",
+        "army_state_code" : 7,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 117,
+        "owner_character_id" : 7128,
+        "soldiers" : null,
+        "current_province_id" : 793,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 122,
+        "owner_character_id" : 7164,
+        "soldiers" : null,
+        "current_province_id" : 622,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "regular",
+        "army_state_code" : 1,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 16777342,
+        "owner_character_id" : 6308,
+        "soldiers" : null,
+        "current_province_id" : 1067,
+        "move_target_province_id" : 1070,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 1070 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 1,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "moving",
+        "army_state_code" : 7,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 134,
+        "owner_character_id" : 5725,
+        "soldiers" : null,
+        "current_province_id" : 761,
+        "move_target_province_id" : 2431,
+        "move_target_observable" : true,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ 2431 ],
+        "route_read_status" : "complete_nonempty",
+        "route_source_count" : 1,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      }, {
+        "army_id" : 135,
+        "owner_character_id" : 6244,
+        "soldiers" : null,
+        "current_province_id" : 761,
+        "move_target_province_id" : null,
+        "move_target_observable" : false,
+        "controllable" : false,
+        "source" : "native",
+        "route_province_ids" : [ ],
+        "route_read_status" : "complete_empty",
+        "route_source_count" : 0,
+        "in_combat" : false,
+        "retreating" : false,
+        "army_state" : "sieging",
+        "army_state_code" : 3,
+        "siege_days_left" : null,
+        "siege_province_holder_character_id" : null,
+        "siege_province_in_player_subrealm" : null
+      } ],
+      "source" : "native"
+    } ],
+    "paused" : true,
+    "one_life_terminal" : false,
+    "one_life_terminal_reason" : null,
+    "one_life_settlement_status" : "not_terminal",
+    "succession_lifecycle" : {
+      "schema" : "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle" : "rogue_one_life",
+      "xar_enabled" : "xar_on",
+      "pact_contract" : "terminal_settlement_required",
+      "source" : "legacy-driver-default",
+      "environment_sha256" : null
+    },
+    "continue_as_heir_after_death" : false
+  },
+  "after_snapshot" : {
+    "date_raw" : 45476784,
+    "snapshot_id" : "native:1234",
+    "revision" : 1235,
+    "native_revision" : 1234,
+    "played_character" : {
+      "character_id" : 7261,
+      "alive" : true,
+      "source" : "native",
+      "stress_points" : 0,
+      "event_trait_membership" : {
+        "schema" : "xar.ck3.player-event-trait-membership/v1",
+        "game_version" : "1.20.0.4",
+        "executable_sha256" : "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status" : "available",
+        "snapshot_revision" : 1234,
+        "date_raw" : 45476784,
+        "played_character_id" : 7261,
+        "traits" : {
+          "lifestyle_poet" : false,
+          "journaller" : false
+        },
+        "unavailable_reason" : null
+      },
+      "betrothed_id" : null,
+      "primary_spouse_id" : null,
+      "spouse_ids" : [ ]
+    },
+    "active_event" : null,
+    "active_wars" : [ ],
+    "paused" : true,
+    "one_life_terminal" : true,
+    "one_life_terminal_reason" : "played_character_changed",
+    "one_life_settlement_status" : "pending",
+    "succession_lifecycle" : {
+      "schema" : "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle" : "rogue_one_life",
+      "xar_enabled" : "xar_on",
+      "pact_contract" : "terminal_settlement_required",
+      "source" : "legacy-driver-default",
+      "environment_sha256" : null
+    },
+    "continue_as_heir_after_death" : false
+  },
+  "final_world_snapshot" : {
+    "date_raw" : 45476784,
+    "snapshot_id" : "native:1234",
+    "revision" : 1235,
+    "native_revision" : 1234,
+    "played_character" : {
+      "character_id" : 7261,
+      "alive" : true,
+      "source" : "native",
+      "stress_points" : 0,
+      "event_trait_membership" : {
+        "schema" : "xar.ck3.player-event-trait-membership/v1",
+        "game_version" : "1.20.0.4",
+        "executable_sha256" : "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status" : "available",
+        "snapshot_revision" : 1234,
+        "date_raw" : 45476784,
+        "played_character_id" : 7261,
+        "traits" : {
+          "lifestyle_poet" : false,
+          "journaller" : false
+        },
+        "unavailable_reason" : null
+      },
+      "betrothed_id" : null,
+      "primary_spouse_id" : null,
+      "spouse_ids" : [ ]
+    },
+    "active_event" : null,
+    "active_wars" : [ ],
+    "paused" : true,
+    "one_life_terminal" : true,
+    "one_life_terminal_reason" : "played_character_changed",
+    "one_life_settlement_status" : "pending",
+    "succession_lifecycle" : {
+      "schema" : "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle" : "rogue_one_life",
+      "xar_enabled" : "xar_on",
+      "pact_contract" : "terminal_settlement_required",
+      "source" : "legacy-driver-default",
+      "environment_sha256" : null
+    },
+    "continue_as_heir_after_death" : false
+  },
+  "final_campaign_root" : {
+    "date_raw" : 45476784,
+    "player_character_id" : 7261,
+    "player_character_alive" : true,
+    "primary_title" : {
+      "title_id" : 9500,
+      "tier_raw" : 2,
+      "tier_key" : "county"
+    },
+    "held_title_partition" : [ {
+      "title" : {
+        "title_id" : 9500,
+        "tier_raw" : 2,
+        "tier_key" : "county"
+      },
+      "first_heir_character_id" : 5982,
+      "capital_province_id" : null,
+      "primary" : true,
+      "capital_province_kind" : "landless_noble_family_no_province",
+      "title_key" : "c_hd_nf_longxi_dong"
+    } ],
+    "capital_province_id" : 867,
+    "immediate_liege_character_id" : 7227,
+    "top_liege_character_id" : 8928,
+    "independent" : false,
+    "player_domain_size" : 0,
+    "player_domain_limit" : 3,
+    "source" : {
+      "game_version" : "1.20.0.4",
+      "executable_sha256" : "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "snapshot_id" : "native:1234",
+      "revision" : 1235,
+      "native_revision" : 1234,
+      "date_raw" : 45476784,
+      "paused" : true,
+      "backend_id" : "native-headless"
+    },
+    "binding" : {
+      "snapshot_id" : "native:1234",
+      "revision" : 1235,
+      "native_revision" : 1234,
+      "date_raw" : 45476784,
+      "expected_revision" : 1235
+    }
+  },
+  "reviewed_frames" : {
+    "calendar_date" : "191.6.1",
+    "dong_zhuo_age" : 51,
+    "death_text" : "被谋杀",
+    "heir_character_id" : 7261,
+    "heir_display_name" : "董璜",
+    "heir_age" : 34,
+    "heir_displayed_soldiers" : 500,
+    "heir_displayed_titles" : 1,
+    "news_title" : "国贼伏诛",
+    "news_text" : "王允与吕布合谋诛杀董卓",
+    "news_sole_option" : "天下又要变了",
+    "manually_reviewed_by_research_worker" : true
+  },
+  "native_death_tree_query" : {
+    "step" : "inspect-gui-window-tree-v1",
+    "accepted" : true,
+    "status" : "available",
+    "scope_root_name" : "succession_event_window",
+    "root_available" : true,
+    "truncated" : false,
+    "widget_count" : 348,
+    "read_only" : true,
+    "uses_ocr" : false,
+    "uses_keyboard" : false,
+    "uses_mouse" : false,
+    "business_model_available" : false
+  },
+  "native_after_death_news_read" : {
+    "date_raw" : 45476784,
+    "snapshot_id" : "native:1234",
+    "revision" : 1235,
+    "native_revision" : 1234,
+    "played_character" : {
+      "character_id" : 7261,
+      "alive" : true,
+      "source" : "native",
+      "stress_points" : 0,
+      "event_trait_membership" : {
+        "schema" : "xar.ck3.player-event-trait-membership/v1",
+        "game_version" : "1.20.0.4",
+        "executable_sha256" : "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status" : "available",
+        "snapshot_revision" : 1234,
+        "date_raw" : 45476784,
+        "played_character_id" : 7261,
+        "traits" : {
+          "lifestyle_poet" : false,
+          "journaller" : false
+        },
+        "unavailable_reason" : null
+      },
+      "betrothed_id" : null,
+      "primary_spouse_id" : null,
+      "spouse_ids" : [ ]
+    },
+    "active_event" : null,
+    "active_wars" : [ ],
+    "paused" : true,
+    "one_life_terminal" : true,
+    "one_life_terminal_reason" : "played_character_changed",
+    "one_life_settlement_status" : "pending",
+    "succession_lifecycle" : {
+      "schema" : "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle" : "rogue_one_life",
+      "xar_enabled" : "xar_on",
+      "pact_contract" : "terminal_settlement_required",
+      "source" : "legacy-driver-default",
+      "environment_sha256" : null
+    },
+    "continue_as_heir_after_death" : false
+  },
+  "independent_native_character_window_verification" : [ {
+    "expected_character_id" : 5048,
+    "open" : {
+      "accepted" : true,
+      "status" : "acknowledged_verification_pending",
+      "window_kind" : "character",
+      "requested_subject_id" : 5048,
+      "dispatch_invoked" : true,
+      "native_dispatch_attempted" : true,
+      "verification_pending" : true,
+      "current_subject_id" : 0
+    },
+    "read" : {
+      "accepted" : true,
+      "status" : "observed",
+      "window_kind" : "character",
+      "requested_subject_id" : 0,
+      "current_subject_id" : 5048,
+      "subject_id_available" : true,
+      "effective_visible" : true,
+      "dispatch_invoked" : false,
+      "native_dispatch_attempted" : false,
+      "date_raw" : 45476784,
+      "native_revision" : 1234,
+      "played_character_id" : 7261
+    }
+  }, {
+    "expected_character_id" : 7261,
+    "open" : {
+      "accepted" : true,
+      "status" : "acknowledged_verification_pending",
+      "window_kind" : "character",
+      "requested_subject_id" : 7261,
+      "dispatch_invoked" : true,
+      "native_dispatch_attempted" : true,
+      "verification_pending" : true,
+      "current_subject_id" : 5048
+    },
+    "read" : {
+      "accepted" : true,
+      "status" : "observed",
+      "window_kind" : "character",
+      "requested_subject_id" : 0,
+      "current_subject_id" : 7261,
+      "subject_id_available" : true,
+      "effective_visible" : true,
+      "dispatch_invoked" : false,
+      "native_dispatch_attempted" : false,
+      "date_raw" : 45476784,
+      "native_revision" : 1234,
+      "played_character_id" : 7261
+    }
+  } ],
+  "ordinary_ui_fallbacks" : [ {
+    "action" : "continue_same_campaign_as_heir",
+    "evidence" : "death-modal-continue-click.png.json",
+    "reason" : "No public death-continue submitting step; native tree read is not a submitting capability",
+    "gameplay_new_character_selection" : false
+  }, {
+    "action" : "dismiss_world_news_sole_option",
+    "evidence" : "death-aftermath-dismiss-click.png.json",
+    "reason" : "Original episode terminal; native active_event null while original GUI news visible",
+    "option" : "天下又要变了"
+  } ],
+  "native_prechoice_save" : {
+    "status" : "saved",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\launcher\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "name" : "xar_checkpoint.ck3",
+    "size" : 44261446,
+    "sha256" : "a6d2f7d607bad165b93389970e1e6caaa2b58c46d442948c502177295aa88f49",
+    "date_raw" : 45476784,
+    "overwrite_confirmed" : true,
+    "strategy" : "native-autosave-command-v1",
+    "succession_lifecycle" : {
+      "schema" : "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle" : "rogue_one_life",
+      "xar_enabled" : "xar_on",
+      "pact_contract" : "terminal_settlement_required",
+      "source" : "legacy-driver-default",
+      "environment_sha256" : null
+    },
+    "history_index" : 439,
+    "episode_character_id" : 5048,
+    "episode_run_id" : "native-5048-8bb319f75216"
+  },
+  "sdk_episode_seed_metadata" : {
+    "format_version" : 1,
+    "name" : "xar_episode_seed.ck3",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\launcher\\state\\profile\\save games\\xar_episode_seed.ck3",
+    "size" : 42980005,
+    "sha256" : "e54896d943a3abca322d6584ef8a58932253825d7179d051c1c2aa284fa90857",
+    "date_raw" : 45471312,
+    "character_id" : 5048,
+    "source_run_id" : "native-5048-8bb319f75216",
+    "source_checkpoint_name" : "xar_checkpoint.ck3",
+    "immutable" : true
+  },
+  "save_count_boundary" : {
+    "shooting02_native_save_count" : 1,
+    "shooting03_native_save_count" : 2,
+    "whole_story_native_save_count" : 3,
+    "episode_seed_is_an_additional_game_save" : false,
+    "october_checkpoint_path_overwritten_by_prechoice_save" : true,
+    "october_precise_analysis_retained" : "research/october-battles/",
+    "may1_original_retained_in_shooting02" : true,
+    "sdk_seed_october_sha_is_receipt_metadata_not_independent_fresh_file_check" : true
+  },
+  "story_result" : {
+    "weiyang_invitation_triggered" : true,
+    "entered_court" : true,
+    "dong_zhuo_died" : true,
+    "same_day_succession_observed" : true,
+    "war31_no_longer_in_player_war_list" : true,
+    "coalition_war_won_by_player" : false,
+    "war_end_classification" : "Dong death / CB primary-defender-death invalidation; no player victory asserted",
+    "post_death_plus_one_day_settlement_observed" : false,
+    "all_former_troops_killed" : false,
+    "story_start_date" : "190.1.1",
+    "story_end_date" : "191.6.1",
+    "story_elapsed_days" : 516,
+    "shooting03_resume_date" : "190.5.1",
+    "shooting03_elapsed_days" : 396
+  },
+  "normal_game_exit" : {
+    "schema" : "hanjin.shooting-game-exit.v1",
+    "machine_id" : "4-8e1c2f1861",
+    "finished_at_utc" : "2026-10-31T20:13:54.882511500Z",
+    "game_pid" : "2008",
+    "exit_code" : 0
+  },
+  "boundaries" : [ "World-news acknowledgment option has no script effect; murder ran before this GUI acknowledgment", "Broadcast credit may normalize the killer to mastermind Wang Yun; no direct native killer field verified", "Hidden event0002 was scheduled one day later by source; actual session remained191.6.1", "500 soldiers and one family title are the heir's visible state, not proof that all thirty thousand former troops died", "Immediate liege7227, top liege8928; do not claim direct vassalage to Liu Xie", "Legacy rogue_one_life/xar_on receipt defaults do not prove HanJin has loaded XAR pact mod", "UI fallbacks and native actions are counted separately; query support is not command support", "No new episode teaser, no mechanism teaser, no second campaign played" ],
+  "evidence_pins" : [ {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-final-context-01-request.json",
+    "bytes" : 172,
+    "sha256" : "40e36956ad22b3db5cfc4aa06ee53c23cbeb4557923b9dddb487fcd790d1d432"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-final-context-01-response.json",
+    "bytes" : 11308,
+    "sha256" : "76f53c36bbfcc5a1f9f66994e0c6b3a42897353fc5fcf03fe4baa8be257f7106"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-prechoice-read-response.json",
+    "bytes" : 76118,
+    "sha256" : "26f6a765c5fe4ecd17f1484728bf15a9b1c2e9cdf8e60660301103f6100389f2"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-invitation-01.png",
+    "bytes" : 3306690,
+    "sha256" : "990517aff1c508cf97ca966765a91b5ccf3971c265466e868fb5081bd1357404"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-enter-court-request.json",
+    "bytes" : 172,
+    "sha256" : "341047481f810f6106df4e64c48e96113281e5bf1e0306dc6af18f52810e2e0b"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-enter-court-response.json",
+    "bytes" : 5541,
+    "sha256" : "e8daa1cbfea298fe4d6c8fe9bb2f2a992ae2248606c18b8b6ca448deec7fb1cf"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-enter-court-after-response.json",
+    "bytes" : 45003,
+    "sha256" : "28f1f3f0d17b8d989f072d935eb240d8f645638aa65cfb28c6e1389af93cf08e"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-enter-court-after.png",
+    "bytes" : 3523624,
+    "sha256" : "1a53861a185f78a3edf44af9c29c7739a2152a04128d94bc25d78369892994ee"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-prechoice-save-response.json",
+    "bytes" : 7707,
+    "sha256" : "023422f153bd2563fce6867e13350de0e1d8e61d454e9c6d29b1e2b2c408e2da"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/weiyang-prechoice-save-after-response.json",
+    "bytes" : 76118,
+    "sha256" : "8635219aceb6b5586cc7e007bcf1a209acaf6411f12413487498186ee7a7b8a8"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/death-modal-native-query-request.json",
+    "bytes" : 146,
+    "sha256" : "d0f55867c627247a3b6cc923df85e3a8acee82d9078cdfe8657d142a1b03c927"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/death-modal-native-query-response.json",
+    "bytes" : 135897,
+    "sha256" : "1de20059c68fc361fd0e6c3c9208ab3eae3bae5c057844caa61deb8bf46da13a"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/death-modal-continue-click.png",
+    "bytes" : 3554578,
+    "sha256" : "f14056b6c740bde434ba02c950cd5191c9130ae11fd3c46a1f21d690a95dc898"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/death-modal-continue-click.png.json",
+    "bytes" : 1517,
+    "sha256" : "2fe63a61e3f7ff176e15f137790813b6f4236bf43f5b0ce21666ae86731b1812"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/death-aftermath-read-01-response.json",
+    "bytes" : 45003,
+    "sha256" : "47036b860765a5327fe0ba8a2c934a8fc9e832750c6a4f3c62a6369ddb677f8d"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/death-aftermath-clean.png",
+    "bytes" : 3488913,
+    "sha256" : "5102c462ca8179d45f3236684d1233a6a7e5e43ddf444443133f49ebc0a75553"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/death-aftermath-dismiss-click.png",
+    "bytes" : 3590004,
+    "sha256" : "e980f5e6bfa8bce4ee15bd24eb0f9091f4f0cd20a090eccd9c72990edc376896"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/death-aftermath-dismiss-click.png.json",
+    "bytes" : 1527,
+    "sha256" : "5341cfb15ee0fa63a93011f1847e6ba14ed2b346b2d68a44e0fafbcccfdb0f91"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/final-world-read-01-response.json",
+    "bytes" : 45003,
+    "sha256" : "83581de6d651edaf11e9836ec8d7144569bc5ffde37a01d8d336954066db8420"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/final-dong-character-open-response.json",
+    "bytes" : 826699,
+    "sha256" : "5e4a55e8ab634fe23e1d68aa570a2ab79949ea96f1ec5eae12a8b974bb806f0e"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/final-dong-character-read-response.json",
+    "bytes" : 825999,
+    "sha256" : "719ac15a4dc7871dd51b1ac0551a83cdd17478d36884bf58771859d82b18dbff"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/final-dong-character.png",
+    "bytes" : 3507032,
+    "sha256" : "7c36ab9262bd0f6a8696eed568797b312d9d7891737497a0eb51182436587c04"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/final-heir-character-open-response.json",
+    "bytes" : 826189,
+    "sha256" : "ce6f23c255c8c5823970d14f8b2d245075a74492fcd5161f13b304b454dbc32c"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/final-heir-character-read-response.json",
+    "bytes" : 825793,
+    "sha256" : "f5de31832b52bcf2c3c58a808f5a03e3c18ac1f6666cbe15ab71c1aeabbf4831"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/final-heir-portrait.png",
+    "bytes" : 3689008,
+    "sha256" : "158922f4ff0557e1074af1ec6022367a7b2410eaa5e6d56806caf297b5b69e91"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/final-campaign-root-read-response.json",
+    "bytes" : 38661,
+    "sha256" : "0cc5c19467a11064dba1272b458075663d927f3dee74d31aff01d70502be6a4f"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/native-capabilities-01-response.json",
+    "bytes" : 698579,
+    "sha256" : "5b0367d9d202869df49112dd48a24521d336b6bbaecd0643cd0e3cd991a2c9d9"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/normal-exit-desktop-click.png",
+    "bytes" : 2935558,
+    "sha256" : "8c06b9d2b047ab5941485a431be4555df774a68efb285ae657100fd0a1cb05a4"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/normal-exit-desktop-click.png.json",
+    "bytes" : 1521,
+    "sha256" : "bfc2b373873d9df45a49da7b020243f2a485e7e17a2de3974922646413812f72"
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/launcher/exit.json",
+    "bytes" : 185,
+    "sha256" : "ff1cafa4b587119ad74ed4cccbbae35ad51896931ea83361ce132cf5c9f63d9a"
+  } ],
+  "sealed_raw_takes_from_parent" : [ {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/take-01.mkv",
+    "bytes" : 527925246,
+    "seal_reported_by" : "root",
+    "worker_computed_sha256" : null
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/take-02.mkv",
+    "bytes" : 378894722,
+    "seal_reported_by" : "root",
+    "worker_computed_sha256" : null
+  }, {
+    "path" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-03/take-03.mkv",
+    "bytes" : 114014859,
+    "seal_reported_by" : "root",
+    "worker_computed_sha256" : null
+  } ]
+}

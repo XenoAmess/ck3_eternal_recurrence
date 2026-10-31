@@ -1,0 +1,71 @@
+{
+  "schema": "hanjin.capture-continuation-close/v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--hanjin-spring-autumn--R0001",
+  "recorded_at_utc": "2026-10-31T20:24:01.856111+00:00",
+  "game_pid": "2008",
+  "game_birth_filetime": "134379461963196355",
+  "start_date_raw": 45467280,
+  "end_date_raw": 45476784,
+  "added_game_days": 396,
+  "whole_story_game_days": 516,
+  "actual_end": "DongZhuo_died_1910601_after_native_attend_court_choice; successor_DongHuang7261",
+  "checkpoint_saves_this_attempt": 2,
+  "postdeath_checkpoint_saved": false,
+  "native_mcp_stopped": true,
+  "game_exit": {
+    "schema": "hanjin.shooting-game-exit.v1",
+    "machine_id": "4-8e1c2f1861",
+    "finished_at_utc": "2026-10-31T20:13:54.882511500Z",
+    "game_pid": "2008",
+    "exit_code": 0
+  },
+  "raw_recordings": [
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\take-01.mkv",
+      "bytes": 527925246,
+      "sha256": "f4c79ee3ffb06e54159a783a5a6173c678f98fa760a79beab216127451b43b12",
+      "created_at_utc": "2026-10-31T18:53:06.204364+00:00",
+      "closed_at_utc": "2026-10-31T19:22:02.669142+00:00"
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\take-02.mkv",
+      "bytes": 378894722,
+      "sha256": "c66769a2a5547634013544edf438cfc3f556461b7d21d5a5f7ae97735d67fa55",
+      "created_at_utc": "2026-10-31T19:22:02.996999+00:00",
+      "closed_at_utc": "2026-10-31T19:53:56.804701+00:00"
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\take-03.mkv",
+      "bytes": 114014859,
+      "sha256": "cb43f49a4e24097aca1b16b86f4300a14ab001640c76105b407fddb3da93b785",
+      "created_at_utc": "2026-10-31T19:53:57.104222+00:00",
+      "closed_at_utc": "2026-10-31T20:07:43.843041+00:00"
+    }
+  ],
+  "physical_display_restored": {
+    "machine_id": "4-8e1c2f1861",
+    "at_utc": "2026-10-31T20:17:48.185579+00:00",
+    "before": [
+      1920,
+      1080,
+      60
+    ],
+    "after": [
+      1024,
+      768,
+      60
+    ],
+    "result": 0
+  },
+  "current_game_count": 0,
+  "screen_release_sequence": 14917,
+  "screen_release_state": "done",
+  "human_video_approval": null,
+  "screen_release_readback": {
+    "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\screen-release-readback.json",
+    "bytes": 1528,
+    "sha256": "762d33f781b193841ad51aa150d7a28b3277a670a415d861cf6d46cdf0824666",
+    "event_sequence": 14917
+  }
+}

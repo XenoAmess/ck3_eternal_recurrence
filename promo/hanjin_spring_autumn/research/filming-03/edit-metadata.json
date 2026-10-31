@@ -1,0 +1,618 @@
+{
+  "schema" : "hanjin.episode-metadata/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "recorded_at_utc" : "2026-10-31T20:55:43.846325700Z",
+  "title" : "洛阳炙手，公卿憎我，天下讨我",
+  "series" : "汉晋春秋",
+  "episode" : 1,
+  "player_character" : "董卓",
+  "language" : "zh-CN",
+  "summary" : "从190年董卓开局，经历迁都与讨董战争，打完市丘、伊阙，到191年六月照常入朝，被王允、吕布合谋诛杀，再看董璜接手后的家族和地图。",
+  "video" : "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-reworked-review.mp4",
+  "sha256" : "a023cc2dd16f5fdbe66421cab149e6fbd696f9a7c067c2f05faa6df7d0e23b9b",
+  "bytes" : 41625420,
+  "duration_seconds" : 504.756706,
+  "subtitles" : "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-reworked-review.srt",
+  "subtitles_sha256" : "23814c3b8dbcf7f125b831ab0df5aaf2e7cb644100db3466fb418091df61ba32",
+  "cover" : "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-reworked-cover.jpg",
+  "cover_sha256" : "9bead434d504edb825a2cd3be841847828909bd99a343a7a45135e5f9ed786a5",
+  "narration_engine" : "edge-tts 7.3.1",
+  "voice" : "zh-CN-YunjianNeural",
+  "rate" : "-12%",
+  "pitch" : "-8Hz",
+  "visual_sources" : "Actual recorded gameplay and actual game screenshots; original comparison and promotional cards clearly composed from those screenshots",
+  "narration_only_audio" : true,
+  "microphone_recorded" : false,
+  "actual_game_start" : "190.1.1",
+  "actual_game_end" : "191.6.1",
+  "actual_story_game_days" : 516,
+  "campaign_result" : "Dong Zhuo murdered after entering court; wider anti-Dong war was not militarily resolved by him",
+  "no_next_episode_preview" : true,
+  "xar_promo_version" : "0.3.0",
+  "native_run_manifest" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\project-front-005\\runs\\edit03-front-005\\run-manifest.json",
+  "full_decode_exit_code" : 0,
+  "automated_audit" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\project-front-005\\runs\\edit03-front-005\\editorial-audit\\automated-audit.json",
+  "automated_audit_scope" : "artifact-integrity-and-evidence-completeness",
+  "automated_frame_count" : 18,
+  "review_package" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\human-review-005\\review-package.json",
+  "review_frame_count" : 17,
+  "review_state" : "pending-human-review",
+  "human_signoff" : null,
+  "streams" : [ {
+    "index" : 0,
+    "codec_name" : "h264",
+    "codec_long_name" : "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+    "profile" : "High",
+    "codec_type" : "video",
+    "codec_tag_string" : "avc1",
+    "codec_tag" : "0x31637661",
+    "mime_codec_string" : "avc1.640028",
+    "width" : 1920,
+    "height" : 1080,
+    "coded_width" : 1920,
+    "coded_height" : 1080,
+    "has_b_frames" : 2,
+    "sample_aspect_ratio" : "1:1",
+    "display_aspect_ratio" : "16:9",
+    "pix_fmt" : "yuv420p",
+    "level" : 40,
+    "chroma_location" : "left",
+    "field_order" : "progressive",
+    "is_avc" : "true",
+    "nal_length_size" : "4",
+    "id" : "0x1",
+    "r_frame_rate" : "30/1",
+    "avg_frame_rate" : "15503360/516849",
+    "time_base" : "1/15360",
+    "start_pts" : 328,
+    "start_time" : "0.021354",
+    "duration_ts" : 7752735,
+    "duration" : "504.735352",
+    "bit_rate" : "536938",
+    "bits_per_raw_sample" : "8",
+    "nb_frames" : "15140",
+    "extradata_size" : 46,
+    "disposition" : {
+      "default" : 1,
+      "dub" : 0,
+      "original" : 0,
+      "comment" : 0,
+      "lyrics" : 0,
+      "karaoke" : 0,
+      "forced" : 0,
+      "hearing_impaired" : 0,
+      "visual_impaired" : 0,
+      "clean_effects" : 0,
+      "attached_pic" : 0,
+      "timed_thumbnails" : 0,
+      "non_diegetic" : 0,
+      "captions" : 0,
+      "descriptions" : 0,
+      "metadata" : 0,
+      "dependent" : 0,
+      "still_image" : 0,
+      "multilayer" : 0
+    },
+    "tags" : {
+      "language" : "und",
+      "handler_name" : "VideoHandler",
+      "encoder" : "Lavc63.1.102 libx264"
+    }
+  }, {
+    "index" : 1,
+    "codec_name" : "aac",
+    "codec_long_name" : "AAC (Advanced Audio Coding)",
+    "profile" : "LC",
+    "codec_type" : "audio",
+    "codec_tag_string" : "mp4a",
+    "codec_tag" : "0x6134706d",
+    "mime_codec_string" : "mp4a.40.2",
+    "sample_fmt" : "fltp",
+    "sample_rate" : "48000",
+    "channels" : 2,
+    "channel_layout" : "stereo",
+    "bits_per_sample" : 0,
+    "initial_padding" : 0,
+    "id" : "0x2",
+    "r_frame_rate" : "0/0",
+    "avg_frame_rate" : "0/0",
+    "time_base" : "1/48000",
+    "start_pts" : 0,
+    "start_time" : "0.000000",
+    "duration_ts" : 24228320,
+    "duration" : "504.756667",
+    "bit_rate" : "114035",
+    "nb_frames" : "23683",
+    "extradata_size" : 5,
+    "disposition" : {
+      "default" : 1,
+      "dub" : 0,
+      "original" : 0,
+      "comment" : 0,
+      "lyrics" : 0,
+      "karaoke" : 0,
+      "forced" : 0,
+      "hearing_impaired" : 0,
+      "visual_impaired" : 0,
+      "clean_effects" : 0,
+      "attached_pic" : 0,
+      "timed_thumbnails" : 0,
+      "non_diegetic" : 0,
+      "captions" : 0,
+      "descriptions" : 0,
+      "metadata" : 0,
+      "dependent" : 0,
+      "still_image" : 0,
+      "multilayer" : 0
+    },
+    "tags" : {
+      "language" : "und",
+      "handler_name" : "SoundHandler"
+    }
+  } ],
+  "chapters" : [ {
+    "id" : "v03-01-title",
+    "title" : "汉晋春秋 · 董卓",
+    "start_seconds" : 0.0,
+    "end_seconds" : 10.766666666666667,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-01-title.mp3",
+    "shots" : [ {
+      "source" : "edit-01/cards/title.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 5.383333333333334,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-02/character-dong-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 5.383333333333334,
+      "speed" : 1.0,
+      "framing" : "portrait"
+    } ]
+  }, {
+    "id" : "v03-02-setup",
+    "title" : "190年正月",
+    "start_seconds" : 10.766666666666667,
+    "end_seconds" : 34.4,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-02-setup.mp3",
+    "shots" : [ {
+      "source" : "shooting-02/character-dong-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 11.816666666666666,
+      "speed" : 1.0,
+      "framing" : "portrait"
+    }, {
+      "source" : "shooting-02/character-emperor-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 11.816666666666666,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-03-migration",
+    "title" : "二月一日 · 焚雒西迁",
+    "start_seconds" : 34.4,
+    "end_seconds" : 56.766666666666666,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-03-migration.mp3",
+    "shots" : [ {
+      "source" : "shooting-02/story-progress-02.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.455555555555556,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-02/story-progress-02.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.455555555555556,
+      "speed" : 1.0,
+      "framing" : "event"
+    }, {
+      "source" : "shooting-02/story-progress-03.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.455555555555556,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-04-coalition",
+    "title" : "四月二日 · 关东举兵",
+    "start_seconds" : 56.766666666666666,
+    "end_seconds" : 78.26666666666667,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-04-coalition.mp3",
+    "shots" : [ {
+      "source" : "shooting-02/event-13-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.166666666666667,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-02/war-overview-still.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.166666666666667,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-02/war-start-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.166666666666667,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-05-army",
+    "title" : "乐进领主力",
+    "start_seconds" : 78.26666666666667,
+    "end_seconds" : 102.53333333333333,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-05-army.mp3",
+    "shots" : [ {
+      "source" : "shooting-02/raise-all-after.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 8.088888888888889,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-02/main-army-ready-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 8.088888888888889,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "edit-02/cards/supply-qc.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 8.088888888888889,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-06-shiqiu",
+    "title" : "四月二十四日至五月一日 · 市丘",
+    "start_seconds" : 102.53333333333333,
+    "end_seconds" : 133.4,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-06-shiqiu.mp3",
+    "shots" : [ {
+      "source" : "shooting-02/sortie-progress-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 6.173333333333334,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-02/sortie-progress-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 6.173333333333334,
+      "speed" : 1.0,
+      "framing" : "army"
+    }, {
+      "source" : "shooting-02/after-battle-ui.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 9.26,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-02/war-overview-close-after.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 9.26,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-07-coins",
+    "title" : "五月 · 坏五铢",
+    "start_seconds" : 133.4,
+    "end_seconds" : 150.73333333333335,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-07-coins.mp3",
+    "shots" : [ {
+      "source" : "shooting-02/battle-progress-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 8.666666666666666,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-02/battle-progress-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 8.666666666666666,
+      "speed" : 1.0,
+      "framing" : "event"
+    } ]
+  }, {
+    "id" : "v03-08-letter",
+    "title" : "七月二日 · 刘协来信",
+    "start_seconds" : 150.73333333333335,
+    "end_seconds" : 170.10000000000002,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-08-letter.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/july-event-16-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 9.683333333333334,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/july-event-16-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 9.683333333333334,
+      "speed" : 1.0,
+      "framing" : "letter"
+    } ]
+  }, {
+    "id" : "v03-09-relief",
+    "title" : "合军救援伊阙",
+    "start_seconds" : 170.10000000000002,
+    "end_seconds" : 191.66666666666669,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-09-relief.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/take-01.mkv",
+      "source_seek_seconds" : 1632.0,
+      "display_seconds" : 7.188888888888889,
+      "speed" : 3.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/relief-pending-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.188888888888889,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/relief-march-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.188888888888889,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-10-yique-r2",
+    "title" : "九月至十月 · 伊阙之战",
+    "start_seconds" : 191.66666666666669,
+    "end_seconds" : 235.9666666666667,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-10-yique-r2.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/take-02.mkv",
+      "source_seek_seconds" : 110.0,
+      "display_seconds" : 9.844444444444445,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/take-02.mkv",
+      "source_seek_seconds" : 225.0,
+      "display_seconds" : 15.75111111111111,
+      "speed" : 4.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/yique-combat-progress-02.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 8.86,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/take-02.mkv",
+      "source_seek_seconds" : 355.0,
+      "display_seconds" : 9.844444444444445,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-11-rhyme",
+    "title" : "十月二十八日 · 千里草",
+    "start_seconds" : 235.9666666666667,
+    "end_seconds" : 262.6333333333334,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-11-rhyme.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/october-event-17-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 13.333333333333334,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/october-event-17-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 13.333333333333334,
+      "speed" : 1.0,
+      "framing" : "rhyme"
+    } ]
+  }, {
+    "id" : "v03-12-winter",
+    "title" : "入冬以后 · 潼关失陷",
+    "start_seconds" : 262.6333333333334,
+    "end_seconds" : 290.6,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-12-winter.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/winter-progress-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 20.974999999999998,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/winter-wave-02-42-modal-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 6.991666666666666,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-13-hanzhong",
+    "title" : "三月 · 张鲁据汉中",
+    "start_seconds" : 290.6,
+    "end_seconds" : 310.93333333333334,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-13-hanzhong.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/winter-wave-02-102-modal-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 20.333333333333332,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-14-invitation",
+    "title" : "六月一日 · 未央之约",
+    "start_seconds" : 310.93333333333334,
+    "end_seconds" : 353.2,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-14-invitation.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/weiyang-invitation-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 21.133333333333333,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/weiyang-invitation-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 21.133333333333333,
+      "speed" : 1.0,
+      "framing" : "event"
+    } ]
+  }, {
+    "id" : "v03-15-death",
+    "title" : "同日 · 董卓被谋杀",
+    "start_seconds" : 353.2,
+    "end_seconds" : 378.93333333333334,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-15-death.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/take-03.mkv",
+      "source_seek_seconds" : 460.058,
+      "display_seconds" : 8.577777777777778,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/weiyang-enter-court-after.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 17.155555555555555,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-16a-execution-r3",
+    "title" : "国贼伏诛",
+    "start_seconds" : 378.93333333333334,
+    "end_seconds" : 412.9666666666667,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-16a-execution-r3.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/death-aftermath-clean.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 8.508333333333333,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/death-aftermath-clean.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 17.016666666666666,
+      "speed" : 1.0,
+      "framing" : "aftermath-text"
+    }, {
+      "source" : "shooting-03/death-aftermath-clean.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 8.508333333333333,
+      "speed" : 1.0,
+      "framing" : "event"
+    } ]
+  }, {
+    "id" : "v03-16b-family-r3",
+    "title" : "董卓死后 · 家族",
+    "start_seconds" : 412.9666666666667,
+    "end_seconds" : 439.1,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-16b-family-r3.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/final-dong-character.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 6.700000000000001,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/final-dong-character.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 3.833333333333331,
+      "speed" : 1.0,
+      "framing" : "portrait"
+    }, {
+      "source" : "shooting-03/final-heir-portrait.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 4.133333333333331,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/final-heir-portrait.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 4.36666666666667,
+      "speed" : 1.0,
+      "framing" : "portrait"
+    }, {
+      "source" : "shooting-03/final-dong-character.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.1000000000000005,
+      "speed" : 1.0,
+      "framing" : "portrait"
+    } ]
+  }, {
+    "id" : "v03-16c-realm-r3",
+    "title" : "董卓死后 · 领地和兵力",
+    "start_seconds" : 439.1,
+    "end_seconds" : 465.43333333333334,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-16c-realm-r3.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/final-heir-portrait.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 10.707327403642532,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "edit-03/cards/realm-comparison.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 4.517153748411679,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/final-heir-portrait.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 11.108852181279124,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-17-close",
+    "title" : "董卓这一局",
+    "start_seconds" : 465.43333333333334,
+    "end_seconds" : 487.6333333333333,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-17-close.mp3",
+    "shots" : [ {
+      "source" : "shooting-03/july-event-16-frame.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 11.1,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-03/weiyang-enter-court-after.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 11.1,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "v03-18-promotion",
+    "title" : "Mod《汉晋春秋》",
+    "start_seconds" : 487.6333333333333,
+    "end_seconds" : 504.6333333333333,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\narration\\v03-18-promotion.mp3",
+    "shots" : [ {
+      "source" : "edit-03/cards/tailcard-promo.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 11.333333333333334,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "edit-03/cards/tailcard-credits.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 5.666666666666667,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  } ],
+  "mods" : [ {
+    "name" : "汉晋春秋",
+    "workshop_id" : "3780919688"
+  }, {
+    "name" : "服装搭配包",
+    "workshop_id" : "3797664499"
+  }, {
+    "name" : "议和搭配包",
+    "workshop_id" : "3820784621"
+  } ],
+  "local_entry_note" : "190年董卓选人入口为本局额外添加，未改剧情与兵力。",
+  "promotion" : "Steam 创意工坊搜索：汉晋春秋；前置包按作者页面说明安装。"
+}

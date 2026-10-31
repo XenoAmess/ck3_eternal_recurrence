@@ -1,0 +1,23 @@
+{
+  "schema" : "hanjin.completed-episode-local-delivery/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "created_at_utc" : "2026-10-31T20:54:32.477111400Z",
+  "video" : "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-reworked-review.mp4",
+  "bytes" : 41625420,
+  "sha256" : "a023cc2dd16f5fdbe66421cab149e6fbd696f9a7c067c2f05faa6df7d0e23b9b",
+  "duration_seconds" : 504.757,
+  "subtitles" : "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-reworked-review.srt",
+  "cover" : "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-reworked-cover.jpg",
+  "run_manifest" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\project-front-005\\runs\\edit03-front-005\\run-manifest.json",
+  "native_plan_build" : "passed",
+  "automated_audit" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\project-front-005\\runs\\edit03-front-005\\editorial-audit\\automated-audit.json",
+  "pending_human_review" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-03\\human-review-005",
+  "human_signoff" : null,
+  "full_decode_exit_code" : 0,
+  "gameplay_scope" : "Actual Dong Zhuo personal story 190.1.1 to 191.6.1; entered court and murdered, dynasty and realm aftermath shown; no full military victory or surrender claimed; no next-episode or unplayed mechanism preview",
+  "published_at_utc" : "2026-10-31T20:54:53.018874300Z",
+  "subtitles_sha256" : "23814c3b8dbcf7f125b831ab0df5aaf2e7cb644100db3466fb418091df61ba32",
+  "cover_sha256" : "9bead434d504edb825a2cd3be841847828909bd99a343a7a45135e5f9ed786a5",
+  "audited_video_bytes_copied_without_reencoding" : true,
+  "previous_delivery_directory" : "C:\\workspace\\hanjin-spring-autumn-20261031\\delivery-history\\no-previous"
+}

@@ -1,0 +1,310 @@
+{
+  "schema": "hanjin.filming03.sources/v1",
+  "machine_id": "4-8e1c2f1861",
+  "groups": [
+    {
+      "group": "july-event-16",
+      "source": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\research\\july-event-16\\source-pins.json",
+      "index": {
+        "schema": "hanjin.observed-event-source-index/v1",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-31T19:11:00.994936900Z",
+        "definition_id": "tgp_interaction_event.0015",
+        "game_operated": false,
+        "sources": [
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/events/dlc/tgp/tgp_interaction_events.txt",
+            "bytes": 26420,
+            "sha256": "6110e68839834293855779d8da33ed4a88e1a5610dd8cd0893bc654521d96dc6",
+            "matching_lines": [
+              322,
+              325
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/character_interactions/10_tgp_interactions.txt",
+            "bytes": 272425,
+            "sha256": "b45eda8597c55ea6994e1c4fe65ad28796f1e0bd8351ac2930ef9d5f7e359f34",
+            "matching_lines": [
+              6778
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/localization/simp_chinese/dlc/tgp/tgp_interactions_l_simp_chinese.yml",
+            "bytes": 49779,
+            "sha256": "419fab737420333fabc526bfb18c1934293d698942f0efd0842f266c9eb5f206",
+            "matching_lines": [
+              101
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/10_tgp_interactions.txt",
+            "bytes": 245381,
+            "sha256": "d4e4d1fabe92c9139013ca12958ca7db1cc211be09569babfade26d6cd60bb81",
+            "matching_lines": [
+              6204
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/zzzz_WJ_district_native_aid_interactions.txt",
+            "bytes": 21101,
+            "sha256": "2f8da69e1f0cc0ab92daf307a0a13ba620a2dbfa0002ed86f9047ecdbe440839",
+            "matching_lines": [
+              697
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "group": "october-battles",
+      "source": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\research\\october-battles\\source-pins.json",
+      "index": {
+        "schema": "hanjin.october-battle-and-pending-source-pins/v1",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-31T19:34:56.154233700Z",
+        "game_operated": false,
+        "sources": [
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/zzzz_WJ_district_acceptance_10_tgp_interactions.txt",
+            "bytes": 90537,
+            "sha256": "8dd8d738d9f308a10b3ed933857e5ce8a18feba5baaf9474ee859450bd9e9dd0",
+            "matching_lines": [
+              1066,
+              1071,
+              1076,
+              1189,
+              1221,
+              1271,
+              2059,
+              2067,
+              2079,
+              2091,
+              2103
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/10_tgp_interactions.txt",
+            "bytes": 245381,
+            "sha256": "d4e4d1fabe92c9139013ca12958ca7db1cc211be09569babfade26d6cd60bb81",
+            "matching_lines": [
+              7518,
+              7523,
+              7528,
+              7641,
+              7673,
+              7723,
+              8510,
+              8518,
+              8530,
+              8542,
+              8554
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/character_interactions/10_tgp_interactions.txt",
+            "bytes": 272425,
+            "sha256": "b45eda8597c55ea6994e1c4fe65ad28796f1e0bd8351ac2930ef9d5f7e359f34",
+            "matching_lines": [
+              8072,
+              8077,
+              8082,
+              8207,
+              8239,
+              8289,
+              9069,
+              9077,
+              9089,
+              9101,
+              9113
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/localization/simp_chinese/dlc/tgp/tgp_interactions_l_simp_chinese.yml",
+            "bytes": 49779,
+            "sha256": "419fab737420333fabc526bfb18c1934293d698942f0efd0842f266c9eb5f206",
+            "matching_lines": [
+              188,
+              189,
+              195,
+              196,
+              197,
+              198,
+              199,
+              200
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/history/characters/00_yuzhou.txt",
+            "bytes": 293914,
+            "sha256": "1caaa1173c61d97b8ee0ce73b13117dbcbed4c1e781303de4ba68ea0eac01aeb",
+            "matching_lines": [
+              4025
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/history/characters/east_asian_han_180_200.txt",
+            "bytes": 1578811,
+            "sha256": "04ca67585f3913a835e8961e15b513a279906cc1a60d397d366e6a2212f216b3",
+            "matching_lines": [
+              15086
+            ]
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/names/uuii_book_historical_characters_l_simp_chinese.yml",
+            "bytes": 695474,
+            "sha256": "53c274f3d712d5115b4091a1287286512318bf84b60e85f8289a1b755b99b6bd",
+            "matching_lines": [
+              8838,
+              9668
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "group": "winter-events",
+      "source": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\research\\winter-events\\source-pins.json",
+      "index": {
+        "schema": "hanjin.winter-source-index/v1",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-31T20:03:50.259093500Z",
+        "game_operated": false,
+        "sources": [
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/WJ_peerage_events.txt",
+            "bytes": 25371,
+            "sha256": "a64533b14d4db6e79dec8e8ecdd9fda19ce228d2dc8b922757f0a38254dc952c"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/script_values/WJ_peerage_values.txt",
+            "bytes": 700,
+            "sha256": "f6d922ff23e0d678444e73cf3db239357ccf1dd3f816af00fe6e1b9765c4579d"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/WJ_peerage_effects.txt",
+            "bytes": 20210,
+            "sha256": "51d779d1c19ed20dbf5d19774879a87c976ef34c01e185b999ba581bc6f2e21d"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/on_action/WJ_peerage_on_actions.txt",
+            "bytes": 2078,
+            "sha256": "6c71d431f40f55bf44ca21fb4b31e9ae07e0fe44c5c3ac5c8476cb61a7166a5f"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/mechanisms/WJ_peerage_l_simp_chinese.yml",
+            "bytes": 6728,
+            "sha256": "6b003e15ae375944ad17a8296bcfe594e9c30681ce21b4950f4085fc374fbbd9"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/replace/zzzz_WJ_review_fixes_l_simp_chinese.yml",
+            "bytes": 3087,
+            "sha256": "5a21906c786c5843ebde6aea6dc34b68128c19fbc11d38dfe541ac9098c3a22c"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd190_events.txt",
+            "bytes": 6660,
+            "sha256": "48bce4c5ed5ae4f0da48151c0b80410287f28b76fda8b75ac8794bb9eae0120f"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_190_startup_effects.txt",
+            "bytes": 50588,
+            "sha256": "34a9f9b6705abf4bfc3da8aa7a8de8bef56c3214e1bf04f808e1c5a3d8a1fc05"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/on_action/zz_hd_190_startup.txt",
+            "bytes": 2518,
+            "sha256": "b0f26d59a4a3fe78f39ae1d76cabae26c79842b3e474d8432df721d63e7b55e5"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/zz_hd190_review_l_simp_chinese.yml",
+            "bytes": 855,
+            "sha256": "ad5d78677a6e34258c10ff155a957a6c35492dab280b6aa73a9bea14d54f49ae"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/10_tgp_interactions.txt",
+            "bytes": 245381,
+            "sha256": "d4e4d1fabe92c9139013ca12958ca7db1cc211be09569babfade26d6cd60bb81"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/10_dlc_tgp_scripted_effects.txt",
+            "bytes": 269784,
+            "sha256": "4bda29936826fd64a8e2a87ee7d3995c558c9b2068512184938ab8c5bdb3807e"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/zzzz_WJ_district_acceptance_00_marriage_interactions.txt",
+            "bytes": 45080,
+            "sha256": "5900b160a96f7c87a53b5c3aa299d99fa2463d019502e640e5c598e2da3c4b28"
+          }
+        ]
+      }
+    },
+    {
+      "group": "final-death",
+      "source": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-03\\research\\final-death\\source-pins.json",
+      "index": {
+        "schema": "hanjin.final-death-source-index/v1",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-31T20:20:30.380388600Z",
+        "game_operated": false,
+        "sources": [
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/on_action/zz_hd_palace_crisis_on_actions.txt",
+            "bytes": 3321,
+            "sha256": "02afcc773fd27cda710fa5b53ee41bb9f1682fce0d2055cba9c756d36b84a8a6"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_palace_crisis_effects.txt",
+            "bytes": 21797,
+            "sha256": "313a54235a3c90392c8d0bf2e3dddb251ff2d29af764c3628b9b2238fd63a35c"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_world_news_effects.txt",
+            "bytes": 1142,
+            "sha256": "d919afa5c5bb6e6599391607624aaf8255b60f8294aec785a57eae4906a6236d"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_world_news_events.txt",
+            "bytes": 11321,
+            "sha256": "0f08f8fc74a0c057aae1d53e5aa78d34cd716a1eeff204f35e2ee11f42b45544"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/zz_hd_world_news_l_simp_chinese.yml",
+            "bytes": 19872,
+            "sha256": "8c015a52dc24c7f788b1d947a8d91fc842b57d4414e5d2e4c64efb44867303b9"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_dong_aftermath_events.txt",
+            "bytes": 6500,
+            "sha256": "000360756b983dae72dfc47c5d1fcbbcb1c8aeb15353cfe11c07b818e88e807d"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_dong_aftermath_effects.txt",
+            "bytes": 20756,
+            "sha256": "ccff52c7d0d065252553bb1158f020a9fdd98e4cc0e2f69a9bef6c016e94c87a"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd184r_dong_effects.txt",
+            "bytes": 10403,
+            "sha256": "a6ac08822d32f722267714b29546d3c99bf095cb4e3c6b1bb1f7de3ea56914e8"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/zz_hd_dong_aftermath_l_simp_chinese.yml",
+            "bytes": 1978,
+            "sha256": "d22ae8cd97d75a634bdae783c57ea8829f30a1c6f26dc54ee5e90b344d7cbf32"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3820784621/common/casus_belli_types/zz_hd_confederation_wars.txt",
+            "bytes": 5717,
+            "sha256": "b2074fbafdf28bb48c8212c86321ca5eaf97727747640f41ac1dbeb525a0644a"
+          },
+          {
+            "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3820784621/common/scripted_effects/zz_hd_anti_regent_lifecycle_effects.txt",
+            "bytes": 12225,
+            "sha256": "47e57ed2b177cab19828acd23763fa2713f77d6e54293b419de59135c32fb9bd"
+          }
+        ]
+      }
+    }
+  ]
+}

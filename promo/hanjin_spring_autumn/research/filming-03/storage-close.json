@@ -1,0 +1,16 @@
+{
+  "schema" : "hanjin.final-storage-close/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "observed_at_utc" : "2026-10-31T20:55:59.293574200Z",
+  "package_bytes_nonatomic_snapshot" : 8163221929,
+  "package_budget_bytes" : 8589934592,
+  "edit03_bytes" : 846613154,
+  "edit03_budget_bytes" : 858993459,
+  "regular_file_count" : 24678,
+  "volume_usable_bytes" : 89683357696,
+  "system_growth_and_safety_reserve_bytes" : 37580963840,
+  "within_budget" : true,
+  "raw_duplicated" : false,
+  "deletion_performed" : false,
+  "retention_review_at_utc" : "2026-11-02T19:00:00Z"
+}
