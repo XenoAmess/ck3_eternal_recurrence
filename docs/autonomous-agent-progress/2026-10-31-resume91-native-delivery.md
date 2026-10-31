@@ -93,3 +93,15 @@ Native Windows CMake/Ninja Release、`BUILD_TESTING=ON`、`--parallel 1` 首次�
 三次模型输出分别提出整137KB executor TU、错误首右括号/硬长度截取、截断的递归wrapper，均未采用为实现；owner复用已验CMake切片方式并接管target私有别名单行，按实际来源记录。最终集成输入为 `D:/ck3-state/resume91-m0-native/fullid-owner-ci/candidate-alias/cmake/` 两叶及 `FULLID-CMAKE-ALIAS.diff`，原件、精确命令、缓存差异与结果见同根 `HANDOFF.md`、`RESULT.json`、`ALIAS-PLAN.json`。本岗独立复核后只采用两CMake叶与本页，不部署DLL或操作Game。
 
 117于23:39:17.0609316Z真实LOOP_START、安装9.095秒后已解除安装等待；下一实际Maven/安装BEGIN再暂停新编测，不沿旧117标签空等。
+
+## M7 公开组件与正式 CI 接线（01:29Z）
+
+已验原179B dispatcher与480B constructor的软件合同现有正式公开接口 `m7_idler_components_v1.hpp`、共享core及独立两源测试target。Memory、Symbols与typed callbacks由调用者提供；dispatcher保留callback后fresh cursor/end/list读取、signed32 wrap与typed null终态，constructor保留三次分配、fresh O20、descriptor无条件源读取和query前保存O50。两个生产函数采用本地模型原样方法，未由owner改算法；CMake两轮漏runtime登记后owner补上无条件 `target_sources(xar_ck3_12002_runtime PRIVATE ...)`。测试两轮后由owner修正实际API装配，复用6+8场景，不把接线验证算新增原码语义覆盖。
+
+本岗独立读完公开header/core/test/module及Root/CI上下文，仅采用精确六叶。旧补丁的CRLF context以ignore-space-change匹配，清除新空白行尾空格，未改变算法。Root CMake引入模块；既有static CI目标清单增加专用target，并新增精确CTest步骤。未触及bridge.cpp、DLL部署或实际Game。
+
+首次正式模块验收根为 `D:/ck3-state/resume91-native-integration/m7-formal-ci/`：仅从已采用formal复制四必要叶35,589B，7行最小入口提供CTest和runtime登记目标，直接include原模块。Windows Native CMake/Ninja Release首次配置于01:28:30.577–34.445Z exit0/3.867秒；只构建专用target的两个TU及link，于01:28:43.837–46.288Z exit0/2.451秒。D9025只是原 `/UNDEBUG` 覆盖Release `/DNDEBUG` 的提示，没有为此改旗标。runtime SOURCES属性实际包含新core；完整runtime和Native根没有构建。
+
+同build精确 `xar_ck3_12004_m7_idler_components_v1` CTest于01:28:53.136–53.396Z exit0/0.259秒、1/1通过，测试0.12秒。实际stdout为14场景（dispatch6/construction8）和781检查。原始 `{CONFIGURE01,BUILD01,CTEST01}.{json,stdout,stderr}`、PLAN及LastTest均保留。M7另行把同一public API接入Java facade与7个JUnit方法，Java owner独立发表；本页不以它代替Native行为或实机证据。
+
+上述验证仅证明公开组件、runtime源码登记与专用CTest接线；自然live H/P、真实callee、完整Bridge链接、hosted CI、M7跨继承Goal和Game动作/SAVE均未因此完成。125实际MB/安装BEGIN到达时本组编测已全部END，本岗仅继续小型源码发表；下一真实LOOP后才恢复新的编测。

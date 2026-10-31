@@ -10147,3 +10147,5 @@ include(cmake/event_window_gui_dispatch_v2.cmake)
 include(cmake/event_window_gui_observation_v2.cmake)
 include(cmake/event_window_gui_queued_v2.cmake)
 include(cmake/command_result_json_v1.cmake)
+
+include(cmake/m7_idler_components_v1.cmake)
