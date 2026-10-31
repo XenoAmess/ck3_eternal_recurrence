@@ -87,3 +87,12 @@ Root Stop4四项真实审阅已纳入：生产首稿为部分采用，真实stri
 参数勘误：m6-http-progress116-iofailure-method04的minimal input spec虽声明frequency_penalty=0.3，但actual REQUEST.json没有该键；call91 minimal-spec白名单未转发。故该单不是已执行的0.3惩罚参数实验，服务默认值/效果未知。实际REQUEST SHA256为e383593c14deb0c59f16f9a51ca47b85c7e752917eefd4c51687b98ed502857d。只修正运营描述，没有为验证再POST、修改caller或全局配置。
 
 117/118普通运行期HTTP已真实进入ActionSelected，两次都在Native提交前被业务合同阻断，不能据选择结果授APPLIED或新增日。新的审阅只追加到REVIEWS91-INCREMENT118.json，unknown保持unknown；不从请求thinking参数、未转发参数或不同任务的耗时推出内部模式或新的通用能力结论。具体源采用、owner纠正、编测和运行信用继续分开，反链见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)与[可行性](local-model-executor-feasibility-2026-10-28.md)。
+
+
+
+
+### resume91 usage120 源审与真实运行 token 观测
+
+Root usage120四单审阅单列为REVIEWS91-USAGE120.json，不回写旧99任务/100尝试冻结cohort或原transport SUMMARY。生产首稿真实strict1/1.635秒为漏BigInteger import；compiler01原样import纠正后strict0/1.917秒、owner生产语义修改0。测试首编7错来自owner classpath漏既有PlanningFixtures，不计模型源码失败；补实际依赖后编译0。首行为1P1F的真实NoSuchFileException来自模型虚构attempt路径，保留失败；fixture02修真实文件引用及负例后，owner再补单次调用、exact-zero、两usage对象替换三组断言，最终2新method同JVM2P0skip/7次软件HTTP、Java0/2.131秒。此时共享采用/装载尚未获回执，不预授loaded、真实运行usage捕获或Game动作信用。
+
+实际普通运行样本另读：119末次request1,207,885B对应reported341236prompt/142completion/341378total；120的1,213,368B对应342785/142/342927，两cached均未报告null。这里是运行输入与服务报告，不是源码实际改写规模，不据此给通用能力上限或缓存结论；详细精确原件反链和7次真实HTTP计数见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)。

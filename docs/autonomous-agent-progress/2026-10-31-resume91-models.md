@@ -130,3 +130,19 @@ Root Stop4四项真实审阅已纳入：生产首稿为部分采用，真实stri
 证据：`D:/ck3-state/model-dispatch91/OPERATIONS-INCREMENT118.json`、`REVIEWS91-INCREMENT118.json`、`RUNTIME-ORDINARY-QWEN117-118.json`、`FREQUENCY-PENALTY116-AUDIT.json`；Root四单REVIEW及`D:/ck3-state/resume91-root/stop117/ADOPTION-REVIEW.json`。采集仅标准任务目录、三个显式external事件入口和已知worker stdout，未扫描CAS、未新增模型HTTP。
 
 互链：[可行性](../local-model-executor-feasibility-2026-10-28.md)、[能力边界](../local-model-capability-boundary-2026-10-28.md)。
+
+
+
+
+### resume91 usage120 源审与真实运行 token 观测
+
+Root usage120四单审阅单列为REVIEWS91-USAGE120.json，不回写旧99任务/100尝试冻结cohort或原transport SUMMARY。生产首稿真实strict1/1.635秒为漏BigInteger import；compiler01原样import纠正后strict0/1.917秒、owner生产语义修改0。测试首编7错来自owner classpath漏既有PlanningFixtures，不计模型源码失败；补实际依赖后编译0。首行为1P1F的真实NoSuchFileException来自模型虚构attempt路径，保留失败；fixture02修真实文件引用及负例后，owner再补单次调用、exact-zero、两usage对象替换三组断言，最终2新method同JVM2P0skip/7次软件HTTP、Java0/2.131秒。此时共享采用/装载尚未获回执，不预授loaded、真实运行usage捕获或Game动作信用。
+
+已知worker117/118/119/120的原stdout分别记录1/1/4/1次完整ordinary HTTP END，共7次；Root/运行岗确认均返回SELECT、Native提交仍0。独立精确读取119末次与120的last_plan visit.evidence.model_decision_receipt→attempt，不枚举CAS，也未打开1.2MB request body；两份raw SSE各14,217B和15,598B，均小于20KiB。usage行实际choices非空但delta={}、没有有效content，因此仍应保留usage对象；不是只有choices=[]才可能带usage。
+
+| 运行样本 | request bytes | reported prompt | completion | total | cached |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 119第4次 | 1,207,885 | 341,236 | 142 | 341,378 | null，未报告 |
+| 120 | 1,213,368 | 342,785 | 142 | 342,927 | null，未报告 |
+
+这些数字来自两份原始SSE的reported usage，不由字节数估算token；cached缺字段保持null，不能当作0、缓存未命中或命中证据。也不从两个不同请求的耗时/大小推出缓存因果或能力上限。精确反链、原usage对象及每worker真实HTTP计数在`D:/ck3-state/model-dispatch91/RUNTIME-ORDINARY-REPORTED-USAGE120.json`；四项REVIEW与`D:/ck3-state/resume91-root/usage120/DELIVERY.json`另列源采用事实。本次仅只读已知记录，无新增HTTP、API探测、Native查询或CAS扫描。

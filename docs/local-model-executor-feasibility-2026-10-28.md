@@ -164,3 +164,19 @@ M0 portable04/05只部分模型配置/生成器加owner修正被采用；其后�
 参数勘误：m6-http-progress116-iofailure-method04的minimal input spec虽声明frequency_penalty=0.3，但actual REQUEST.json没有该键；call91 minimal-spec白名单未转发。故该单不是已执行的0.3惩罚参数实验，服务默认值/效果未知。实际REQUEST SHA256为e383593c14deb0c59f16f9a51ca47b85c7e752917eefd4c51687b98ed502857d。只修正运营描述，没有为验证再POST、修改caller或全局配置。
 
 实际采用仍依据owner源审、真实编译与行为回执；Root Stop4首编红、测试首行为红及后续局部纠正分别保留。完整事件与采用反链见[resume91运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)及`D:/ck3-state/model-dispatch91/OPERATIONS-INCREMENT118.json`。未为本次记录追加验证HTTP或扫描CAS。
+
+
+
+
+### resume91 usage120 源审与真实运行 token 观测
+
+已知worker117/118/119/120的原stdout分别记录1/1/4/1次完整ordinary HTTP END，共7次；Root/运行岗确认均返回SELECT、Native提交仍0。独立精确读取119末次与120的last_plan visit.evidence.model_decision_receipt→attempt，不枚举CAS，也未打开1.2MB request body；两份raw SSE各14,217B和15,598B，均小于20KiB。usage行实际choices非空但delta={}、没有有效content，因此仍应保留usage对象；不是只有choices=[]才可能带usage。
+
+| 运行样本 | request bytes | reported prompt | completion | total | cached |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 119第4次 | 1,207,885 | 341,236 | 142 | 341,378 | null，未报告 |
+| 120 | 1,213,368 | 342,785 | 142 | 342,927 | null，未报告 |
+
+这些数字来自两份原始SSE的reported usage，不由字节数估算token；cached缺字段保持null，不能当作0、缓存未命中或命中证据。也不从两个不同请求的耗时/大小推出缓存因果或能力上限。精确反链、原usage对象及每worker真实HTTP计数在`D:/ck3-state/model-dispatch91/RUNTIME-ORDINARY-REPORTED-USAGE120.json`；四项REVIEW与`D:/ck3-state/resume91-root/usage120/DELIVERY.json`另列源采用事实。本次仅只读已知记录，无新增HTTP、API探测、Native查询或CAS扫描。
+
+四个源码候选的真实compiler/行为失败及部分采用成本见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)，并未据HTTP成功授运行装载或游戏推进信用。
