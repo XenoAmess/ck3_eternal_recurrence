@@ -1,4 +1,5 @@
 #include "xar_bridge/family_heir_betrothal_materializer_12004.hpp"
+#include "xar_bridge/family_child_matrilineal_materializer_12004.hpp"
 #include "xar_bridge/ck3_12002_family_query_abi.hpp"
 
 #include <array>
@@ -194,5 +195,143 @@ FamilyRulerMaterializeStatus12004 MaterializeFamilyHeirBetrothalContext12004(
   if (status == Status::complete) output = std::move(prepared);
   return status;
 }
+
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+FamilyRulerMaterializeStatus12004 MaterializeFamilyChildMatrilinealContext12004(
+    const ck3_12002::FamilyBindings &family,
+    const FamilyRulerContextAccess12004 &access,
+    const FamilyMarriageOutgoingRequestV2 &request,
+    FamilyChildMatrilinealPreparedCopy12004 &output) noexcept {
+  output = {};
+  if (request.scope != FamilyMarriageOutgoingScopeV2::action_preparation ||
+      request.route != FamilyMarriageOutgoingRouteV2::child_matrilineal ||
+      request.actor == 0 || request.actor == UINT32_MAX ||
+      request.subject == 0 || request.subject > 0x7FFFFFFFU ||
+      request.candidate == 0 || request.candidate > 0x7FFFFFFFU ||
+      !request.expected_recipient || *request.expected_recipient == 0 ||
+      *request.expected_recipient > 0x7FFFFFFFU ||
+      request.sender ||
+      !request.request_matrilineal_option ||
+      request.require_matrilineal_option_off ||
+      request.actor == request.subject ||
+      request.actor == request.candidate ||
+      request.subject == request.candidate)
+    return Status::invalid_request;
+
+  if (!family.enabled || !family.context.enabled || !family.context.core.enabled ||
+      family.context.redirect_roles == nullptr || family.context.construct_all_roles == nullptr ||
+      family.context.refresh == nullptr || family.context.finalize == nullptr ||
+      family.context.validate == nullptr || family.context.destroy == nullptr ||
+      family.set_boolean_option == nullptr || family.read_boolean_option == nullptr ||
+      family.matrilineal_option == nullptr || family.grand_wedding_option == nullptr ||
+      access.memory.read_memory == nullptr || access.read_boolean_option == nullptr ||
+      access.matrilineal_option_id_slot == 0 || access.grand_wedding_option_id_slot == 0)
+    return Status::unavailable;
+
+  if (access.read_boolean_option != family.read_boolean_option ||
+      access.matrilineal_option_id_slot != reinterpret_cast<std::uintptr_t>(family.matrilineal_option) ||
+      access.grand_wedding_option_id_slot != reinterpret_cast<std::uintptr_t>(family.grand_wedding_option))
+    return Status::unavailable;
+
+  alignas(8) std::array<std::byte, 0x338> storage{};
+  void *context = storage.data();
+  bool owns_context = false;
+  FamilyHeirBetrothalPreparedCopy12004 prepared{};
+  Status status = Status::unavailable;
+
+  try {
+    status = [&]() -> Status {
+      std::uintptr_t database = 0;
+      std::uintptr_t definition = 0;
+      if (!ReadAt(access.memory,
+                  reinterpret_cast<std::uintptr_t>(family.context.interaction_database_slot),
+                  0, database) ||
+          !ReadAt(access.memory, database,
+                  ck3_12002::kMarriageArrangeMarriageInteractionOffset, definition) ||
+          definition == 0) return Status::unavailable;
+
+      std::uint32_t matrilineal_id_before = 0;
+      if (!ReadAt(access.memory, access.matrilineal_option_id_slot, 0, matrilineal_id_before))
+        return Status::unavailable;
+
+      auto actor = std::bit_cast<std::int32_t>(request.actor);
+      auto recipient = std::bit_cast<std::int32_t>(request.candidate);
+      auto subject = std::bit_cast<std::int32_t>(request.subject);
+      auto candidate = std::bit_cast<std::int32_t>(request.candidate);
+      std::int32_t intermediary = -1;
+      std::int32_t added_role = -1;
+
+      family.context.redirect_roles(reinterpret_cast<void *>(definition), &actor, &recipient,
+          &subject, &candidate, &intermediary, &added_role);
+
+      if (std::bit_cast<std::uint32_t>(actor) != request.actor ||
+          std::bit_cast<std::uint32_t>(subject) != request.subject ||
+          std::bit_cast<std::uint32_t>(candidate) != request.candidate ||
+          std::bit_cast<std::uint32_t>(recipient) != *request.expected_recipient)
+        return Status::unavailable;
+
+      const auto returned = family.context.construct_all_roles(context,
+          reinterpret_cast<void *>(definition), actor, recipient, subject,
+          candidate, intermediary, nullptr);
+      owns_context = true;
+      if (returned != context) return Status::unavailable;
+
+      family.context.refresh(context, true);
+      family.context.finalize(context);
+
+      family.set_boolean_option(context, matrilineal_id_before, true);
+      family.context.refresh(context, true);
+      family.context.finalize(context);
+
+      const std::array<std::uint32_t, 2> ids{request.subject, request.candidate};
+      PairObservation before{};
+      auto observed = ReadPairObservation(family.context.core, access.memory, ids, before);
+      if (observed != Status::complete) return observed;
+
+      observed = CopyFamilyRulerPreparedContext12004(family.context, access, context,
+                                                     definition, prepared.materialized);
+      if (observed != Status::complete) return observed;
+
+      const std::array<std::uint32_t, 5> expected_roles{request.actor,
+          *request.expected_recipient, request.subject, request.candidate,
+          std::bit_cast<std::uint32_t>(intermediary)};
+      if (prepared.materialized.roles != expected_roles) return Status::changed;
+
+      if (!prepared.materialized.matrilineal) return Status::unavailable;
+
+      PairObservation after{};
+      observed = ReadPairObservation(family.context.core, access.memory, ids, after);
+      if (observed != Status::complete) return observed;
+      if (before != after) return Status::changed;
+
+      std::uint32_t matrilineal_id_after = 0;
+      if (!ReadAt(access.memory, access.matrilineal_option_id_slot, 0, matrilineal_id_after))
+        return Status::unavailable;
+      if (matrilineal_id_after != matrilineal_id_before) return Status::changed;
+
+      const auto first = before.characters[0].selector;
+      const auto second = before.characters[1].selector;
+      prepared.effective_matrilineal_if_accepted = first == second
+          ? first != 0 : prepared.materialized.matrilineal;
+
+      return Status::complete;
+    }();
+  } catch (...) {
+    status = Status::unavailable;
+  }
+
+  if (owns_context) {
+    owns_context = false;
+    try {
+      family.context.destroy(context);
+    } catch (...) {
+      status = Status::unavailable;
+    }
+  }
+
+  if (status == Status::complete) output = std::move(prepared);
+  return status;
+}
+#endif
 
 } // namespace xar::bridge
