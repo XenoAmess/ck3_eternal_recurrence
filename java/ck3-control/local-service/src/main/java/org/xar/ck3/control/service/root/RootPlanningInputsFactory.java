@@ -301,6 +301,8 @@ public final class RootPlanningInputsFactory {
                             "actual installed action classification required"); }
                     catch (IOException failure) { throw new UncheckedIOException(failure); }
                     if (classification instanceof SystemControl control) {
+                        if (receipt.state() instanceof ActionState.IntentAbandoned)
+                            IntentAbandonmentProof.verifyArchived(receipt, originals);
                         requireSettledControl(control, receipt, lease.snapshot().actions());
                         continue;
                     }
@@ -330,6 +332,29 @@ public final class RootPlanningInputsFactory {
     /** This filters authenticated canonical controls; it neither verifies Native evidence nor grants SAVE/day credit. */
     static void requireSettledControl(SystemControl control, ActionReceipt receipt) {
         requireSettledControl(control, receipt, List.of());
+    }
+    private static void requireAbandonedResumeInCancelledLife(ActionReceipt receipt, List<ActionReceipt> canonicalActions) {
+        StrictJson.require(org.xar.ck3.control.application.advance.LifeAdvanceComposite.isAbandonedResume(receipt), "abandoned resume must be its exact original Life resume");
+        var parent = canonicalActions.stream().filter(value -> value.state() instanceof ActionState.CompositeSettled settled
+                && settled.settlement() instanceof ActionState.CompositeControlApplied control
+                && control.observation().semantic().actual().contains(new ExpectedText(new FieldKey("progress_status"), "initialization_cancelled"))
+                && settled.execution().children().stream().anyMatch(child -> child.actionId().equals(receipt.command().actionId())
+                        && child.bodySha256().equals(receipt.bodySha256()))).toList();
+        StrictJson.require(parent.size() == 1, "abandoned resume requires its unique canonical cancelled Life parent");
+        var settledParent = (ActionState.CompositeSettled) parent.getFirst().state();
+        var control = (ActionState.CompositeControlApplied) settledParent.settlement();
+        var children = settledParent.execution().children().stream().map(bound -> {
+            var matches = canonicalActions.stream().filter(value -> value.command().actionId().equals(bound.actionId())
+                    && value.bodySha256().equals(bound.bodySha256())).toList();
+            StrictJson.require(matches.size() == 1, "cancelled Life child is not uniquely canonical");
+            return matches.getFirst();
+        }).toList();
+        StrictJson.require(children.contains(receipt), "abandoned resume must be in the canonical cancelled Life children");
+        org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireCancelledInitialization(parent.getFirst().command(), settledParent.execution(), control.observation(), children);
+        StrictJson.require(!receipt.visibleGameplay() && !receipt.eligibleAdvance() && receipt.applied().isEmpty() && receipt.ack().isEmpty(),
+                "abandoned resume cannot claim gameplay, advance, applied effect or ACK");
+        StrictJson.require(!parent.getFirst().visibleGameplay() && !parent.getFirst().eligibleAdvance() && parent.getFirst().applied().isEmpty(),
+                "cancelled Life parent cannot claim gameplay or advance");
     }
     static void requireSettledControl(SystemControl control, ActionReceipt receipt, List<ActionReceipt> canonicalActions) {
         Objects.requireNonNull(control);Objects.requireNonNull(receipt);Objects.requireNonNull(canonicalActions);
@@ -376,6 +401,10 @@ public final class RootPlanningInputsFactory {
                         command.before(),command.source(),command.operation(),command.arguments());
                 StrictJson.require(command.expected().equals(expected),
                         "timeline primitive changed its exact source-owned expectation");
+                if (receipt.state() instanceof ActionState.IntentAbandoned) {
+                    requireAbandonedResumeInCancelledLife(receipt, canonicalActions);
+                    break;
+                }
                 if(receipt.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH) {
                     StrictJson.require(receipt.state() instanceof ActionState.RejectedBeforeDispatch,
                             "timeline zero-dispatch control requires its actual rejection");

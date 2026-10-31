@@ -294,9 +294,12 @@ public final class RootDerivedChildAuthority {
                 && child.actionId().equals(ActionIds.child(parent.command().actionId(), keys.size(), child.operation())),
                 "derived child is not the exact last reserved canonical child ID/body/ordinal");
         var previous = new ArrayList<ActionReceipt>();
-        for (var key : keys.subList(0, keys.size() - 1)) {
-            var old = ContinuityActionJournal.lookup(state, key.actionId(), archive).orElseThrow();
-            require(old.settled() && old.bodySha256().equals(key.bodySha256()), "UNKNOWN preceding child forbids subsequent submission or cleanup"); previous.add(old);
+        if (keys.size() > 1) {
+            var all = ContinuityActionJournal.receipts(state, archive);
+            for (var key : keys.subList(0, keys.size() - 1)) {
+                var old = all.stream().filter(receipt -> receipt.command().actionId().equals(key.actionId())).findFirst().orElseThrow();
+                require(old.settled() && old.bodySha256().equals(key.bodySha256()), "UNKNOWN preceding child forbids subsequent submission or cleanup"); previous.add(old);
+            }
         }
         return List.copyOf(previous);
     }

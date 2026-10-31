@@ -4,6 +4,27 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+
+
+
+15:07Z真实突破：**177于15:07:07.424752300Z同原版Game71464进入LOOP_START/next64**，START→LOOP177.194秒；15:07:24读到后立即通知Native解除安装HOLD。15:07:40.932818只读canonical465/running/BATCH_STARTED64，cycle.pending=null、completed3/date53144328，原parent461/ARM447/abandoned453/CANCEL459保持真实已结算而未重放，已越本次Inputs177消费者错误。尚未授后继qwen选择/新Native动作或新增日/SAVE。
+
+177仅取一次真实cold栈15:06:15（elapsed125.18秒/CPU58.078秒），historyPublisher→Journal.receipts→archive.loadReceipt→PhysicalStatus.verifyArchivedData147→Writer.requireHistoricalHead415→DomainBodies.reference/ExactRef解析，非等待Native ACK。该调用只消费历史sequence/digest而丢弃Head，现有requireHistoricalState合同是否可替代交现成helper模型先行D-only审查，不成为当前普通批前置；M6既有Archive176仍独占后台，不扩大重复编测。
+
+15:04Z当前实际：176 **14:52:04.334415Z preloop END1/152.819067秒，无LOOP**，Native安装HOLD已于14:52:08通知解除。控制447/453/459/461均已持久结算且未重放；canonical仍463/repair、cycle.pending精确父461、completed3/date53144328。此次已走到completeCycle1215→ready965→available1140，唯一实际新异常为 `RootPlanningInputsFactory: timeline control requires its original primitive settlement`：TIMELINE_PRIMITIVE消费者仍只接旧Settled，遗漏真实resume453 IntentAbandoned。M2只读审查未找到第二个确定可达缺口，未扩大无关门。
+
+177已模型先行修单个Inputs生产叶：仅实际SystemControl分支先验证完整归档proof，再接受唯一确切cancelled父及完整ARM/resume/CANCEL原向量；原命令/child body/顺序/原件与无推进信用保留。模型14:53:51.025442→14:54:03.613192Z stop/12.587秒，owner补全实际archive调用、唯一child与parent.applied空检查；1prod strict0/2.213824秒。必要2test strict0/1.837秒，冻结MB175基线真实384红→candidate15P0F/1.275秒，使用实际453/447/459/461及缺失、重复、Unknown、错误body/order/flags负例；DATA通过不授真实Session/游玩信用。
+
+**MB177真实15:03:59.038252→15:04:04.232642Z exit0/5.1943915秒**，只增编local-service2源（Inputs177及M6成熟Derived172单方法净3行重复归档读取削减），其余缓存，无clean。Derived独立真fixture基线8读红→candidate4读、每新调用重读、0prior0，1P0F，未把缓存代替真实投影。**worker177/PID330020真实START15:04:10.230454Z**，同无mod Game71464/qwen1.11/basic128，未来ordinary batch1200000ms、单Native60000ms、horizon不变；不刷新历史immutable deadline。当前等待真实cold恢复/LOOP或明确END，再立即解除资源HOLD；HTTP与具名tiny源继续。新增游戏日0/SAVE0。
+
+资源事实另记：Native承认176 START转达迟到，M3实际CL/link/run14:49:54–14:50:03.311、M1 build/run14:50:04.853–22.669、M6 strict14:50:55.968–57.819与既有baseline14:51:02后续均在176窗口内；全部实际END后收束，不追认为无重叠，不据重叠解释该确定源码异常。
+
+14:50Z重要实际：175 **14:47:18.092919Z preloop END1/814.639442秒，无LOOP**，14:47:29已通知Native/Root立即解除安装HOLD。它已真实完成全控制收束：resume453 IntentAbandoned、唯一generation3 CANCEL459 CONTROL_APPLIED，CANCEL原write14:41:04.8327995→RX14:41:04.9394176/native_ok=true/conn88，独立Status read9b3527…5894B确认idle/gen3；父461真正COMPOSITE_SETTLED/COMPOSITE_CONTROL_APPLIED，receiptca6f105…9156B、terminal physicalStatus202cd814…13548B、SEM14:44:17.1479557/native298/public289/paused，ending53144328/initialization_cancelled/三flagfalse。原三child完整保留，不重发任何旧父/ARM/resume/CANCEL，不授日期或SAVE。
+
+最终175 stderr明确 `SessionController.End: complete batch monotonic wall bound expired`，Run.available1099→ready965→completeCycle1215；发生在Opened第二个既有10分钟recovery phase（新取消deadline14:46:49.1802852）收束后的freshReady，并非新source合同错误。实际canonical463/repair/pending_receipt精确461父ca6…，completed3/date不变。175并未用新20分钟普通batch预算扩大这个原恢复窗口。当前源码已正式5481fe7b1be95fcec8a51aedbbd9005e36bf6269/normalpush0，源发布不授普通LOOP。
+
+**176真实START14:49:31.515353Z/PID46628**，复用MB175、同basic128/qwen1.11/未来batch1200000ms/operation60000ms，无新Maven、源码修改或额外模型诊断前置。只按当前463的完整settled控制与真实pending461走现有周期接续，然后next64；不刷新原命令deadline、不重 controls、不清账本。175释放窗口与176新安装HOLD分记，后者按真正LOOP/preloopEND释放，SOURCE HTTP/具名tiny读仍继续。实际新增日0/SAVE0，后继状态待176回执。
+
 14:39Z后到175真实进展：14:37:36.430Z现head454/repair，原resume450已真实453 **INTENT_ABANDONED/v14**，receipt `0adf5d6bf56471a36c4b0b5083ad305c411d1baa69d74efd57e0defafa2e412e.bin`2862B；原body/deadline保，originalIntentRecord366a…/originalActionHead3808…，无Attempt/ACK/Native派发或游戏日信用。parent454保完整ARM+resume向量，Pending reason为需source-issued generation取消。14:39:19.717Z真实canonical455已追加唯一CANCEL reservation child-a0761277…/body03d94c…，`source-qualified successor continuation reserved its original child`；这证明真实freshStatus/token接线已越过，不把reservation授提交、ACK或IDLE。175尚无LOOP/END，安装HOLD保，0新日/SAVE。14:36:09唯一main样本elapsed145.91/CPU55.266秒在真实拟Abandoned append→Authority完整历史decode/verifyReconciliationOriginals/fullMaterial的RawJson解析；不是Native等待，不将单栈归整个耗时/不为性能候选重启在途。
 
 14:35Z继续实机：用户最新再次要求继续，没有新的休假/停止。接手14:13:49.729077Z Win32实读同原版Game71464/出生134378397668266369、supervisor305760/出生134378397644711323仍STILL_ACTIVE，stop/terminal均无；jps没有业务worker/Maven，未双开。172实际13:52:38.419826Z END4/1304.96163秒，canonical452/repair/BATCH_INTERRUPTED63/next64/date53144328。新ARM447已CONTROL_APPLIED/generation3，parent451 COMPOSITE_UNKNOWN只含ARM及resume450；resume450实际仍INTENT_DURABLE，没有Submitting/dispatch/ACK。旧父/ARM/resume均不重放。原cause被Life异常处理中的children.completed二次异常掩盖，不能按过期deadline追认原因。
