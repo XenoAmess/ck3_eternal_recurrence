@@ -242,6 +242,9 @@ jobs:
         timeout-minutes: 45
         env:
           PYTHONDONTWRITEBYTECODE: "1"
+          XAR_ORACLE_PYTHON: ${{ runner.temp }}\g2-static-venv\Scripts\python.exe
+          XAR_ORACLE_REPO: ${{ github.workspace }}
+          XAR_REPO_ROOT: ${{ github.workspace }}
         run: |
           if not defined JAVA_HOME_21_X64 exit /b 1
           if not exist "%JAVA_HOME_21_X64%\bin\java.exe" exit /b 1

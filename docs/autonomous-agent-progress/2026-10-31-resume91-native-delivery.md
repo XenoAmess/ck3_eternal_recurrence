@@ -175,3 +175,25 @@ Fresh 既有三份隔离 unit 现已接正式 CMake 与 static-ci：新增两个
 三个原失败输入 actor_zero / recipient_zero / both_high 于 03:57:26.828–03:57:50.265Z 分别实际 exit0/.415902s、0/.2792491s、0/.3012612s，每项 51 checks/19 malformed/queues0，合153 checks/57严格负例；stderr 均空，Job每项512MiB/15s、最大peak6,758,400B、active0/stopnull。仅这三个新必要场景，未重跑既有 fullid43/旧 whole 场景。成功 accounting 无累计子进程字段，不追认零子进程实测。回执：D:/ck3-state/resume91-m0-native/ci41146299012/gift-controls/unit-job/RUN0{1,2,3}/{ACTUAL.json,stdout.txt,stderr.txt}；原编译/链接失败与模型结果保留于 unit-link。
 
 Claims 与 Gift 四个原失败场景现分别通过有限软件组件验收；原 CI41146299012 的4F不改，完整 hosted CI 尚未重新验证。本轮没有 Native capability、Game、DLL部署、真实动作或新增日信用。
+
+## 2026-10-31T05:59Z 当前 hosted CI 的显式 Oracle 环境修复
+
+M0 读取新的已结束 Official Runner CI 41167158703（HEAD e92852719a0154e485ca6ef5381bb9ad0213288f），实际失败为 step46 的 CiBootstrap.java:655：NOT EXECUTED: explicit XAR_ORACLE_PYTHON required。不是旧 Claims/Gift 四失败。相同 run 的 keyed-query step31、army step30、county step33 元数据为 success；尚未读取这些成功 step 的完整逐例原件，不能据此授旧四例或整个 CI 通过。
+
+只在 Verify Java tools, full reactor and actual HTTP consumer chain 的 step.env 增加三项：XAR_ORACLE_PYTHON 指向工作流前段实际建立的 runner.temp/g2-static-venv/Scripts/python.exe，XAR_ORACLE_REPO 和 XAR_REPO_ROOT 指向 github.workspace。既有 CiBootstrap、执行命令、解释器存在检查和资格语义保持。模型首稿被拒，第二稿三行 hunk 原样采用，0 owner 语义改动；没有用本地测试代替工作流服务端表达式求值。
+
+有限验证运行当前未改 CiBootstrap 的 --verify-canonical-oracle-environment 源文件入口，只读 Files/环境即返回，不执行 Maven、Python 或完整 CI。2026-10-31T05:41:42.171–56.240Z 三个独立 JVM 的实际退出为 baseline1/1.177s（缺 XAR 原拒绝）、positive0/1.075s（显式环境接受并声明 no pipeline qualification）、wrong-path1/1.044s（拒绝不存在解释器）。非零原件保留。GitHub 表达式仅在本地代入固定 context，python.exe 是不执行的身份 fixture；不授真实 Python、GitHub Actions 求值、完整 reactor 或 Game 信用。
+
+原件为 D:/ck3-state/resume91-m0-native/ci-current140/ 的 CI-ORACLE-WORKFLOW02.diff、DELIVERY.md、DELIVERY-STATUS.json、REVIEW-PRODUCER02.json 和 READER-{BASELINE,POSITIVE,WRONG-PATH}01 三组 json/stdout/stderr。本岗精确 patch check/apply0，只有三行 workflow 环境绑定和本页说明，没有新编测、CI 重跑、DLL 部署或 Game 操作。
+
+## 2026-10-31T05:59Z 八 M 已持输入的实际续接范围
+
+本轮按真实未闭输入接续原 owner，不以人数补位。M1 已将 Native63 reset 的 IDLE speed0 与 Java consumer 对齐，保取消后的 IDLE1..5、non-IDLE/ARM1..5；baseline 同两新方法1P1F，候选2P，正式 Java e5a38dff72。UNAVAILABLE0 仍未修；S/MB 是否采用归 runtime，不能从正式 Java SHA 推为 Game 已加载。
+
+M3 notifier-composed148 用146 append501B/clear89B直接接147 move106B/release115B，合811B原码；新 Java 六组合99checks通过，新 Native 单 TU/link/首次六组合分别0/1.677s、0/.104s、0/.026s，6/6输出相符（8 semantic、54 fixture另计），旧16/11未重跑。两模型纠正后的 binder 和新 cases 原样采用；allocator及虚8/20仍受控，未知自然 caller/vptr 未授完成。原件 D:/ck3-state/resume91-m3-native/notifier-composed148/ACTUAL148.json。
+
+M4 已持83B free完整链40EC530→423543C→424E364，不新读PE；四个新Java源首次严格编译0/.677s，实际classes01交M5复用。M5新cleanup consumer、fixtures、runner三个新叶各严格0，16/16新组合通过，未重编M4/旧planner/overlap或重跑旧绿；原件 D:/ck3-state/resume91-m5-native/next-producer140/OWNER-RESULT02.json。M4 Native83目前仅SOURCE_ACCEPTED，尚未首次编跑，不以Java结果授Native差分；cell getter/error-map及实际heap仍显式ports。
+
+M7 复用完整held E92780 345B与26769E0 336B制作实际initializer/producer，五源strict先因四冗余cast触发Werror红，机械删cast后strict0/1.020s，首次四新JUnit4P/.896s，正式Java a4503377ca。另一次具名静态104B读取实际得到U表的CGameIngameInitOptions RTTI和slot0 E91D90，只闭源内安装表身份，不授live U、析构完成或SaveJob。slot0 body未读。M2 family-provider140精确SOURCE_STOP：actual4 ABI/0x338角色布局和education raw双读已有；仍缺完整occupied/generation/lifetime及全部婚姻rows/options双copy producer、五route只读actor-shadow/lineality materializer，不把过滤scanner或send-command binder冒充generic provider。
+
+M6 fresh ACK第二写失败独立新case已0，正式共用harness两叶候选尚在首次接线验收中，未据独立case授新CTest或hosted覆盖。当前实际资源边界为142 LOOP_START05:55:10.7190493Z后解除安装HOLD；新实际MB/安装BEGIN才再次停新编测。曾因自动附带旧AGENTS休假段误暂停未start队列，核当前resume91顶部及运行岗后已纠正；没有新的用户休假请求，不把这次内部误判写成项目已停止。新增游戏动作、日期和SAVE只取runtime实际记录，本岗没有Game操作。
