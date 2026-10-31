@@ -123,8 +123,21 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
                 var active = ActionScope.currentActionId();
                 if (active.isPresent()) {
                     var child = ContinuityActionJournal.lookup(actualLockedHead.state(), active.orElseThrow(), sameWriterArchive);
-                    if (child.isPresent() && lifeCancellationStatusSource(session, actualLockedHead,
-                            child.orElseThrow().command(), sameWriterArchive).isPresent()) {
+                    boolean cancellation = child.isPresent() && lifeCancellationStatusSource(session, actualLockedHead,
+                            child.orElseThrow().command(), sameWriterArchive).isPresent();
+                    var watch = cancellation || child.isEmpty() ? java.util.Optional.<ActionReceipt>empty()
+                            : lifeWatchStatusSource(child.orElseThrow().command(),
+                                    ContinuityActionJournal.receipts(actualLockedHead.state(), sameWriterArchive));
+                    if (watch.isPresent()) {
+                        var original = watch.orElseThrow().command();
+                        StrictJson.require(request.source().equals(original.source()) && request.sessionId().equals(original.sessionId())
+                                && request.before().machineId().equals(original.before().machineId())
+                                && request.before().game().equals(original.before().game())
+                                && request.before().frame().episodeRunId().equals(original.before().frame().episodeRunId())
+                                && request.before().frame().identity().player().equals(original.before().frame().identity().player()),
+                                "read-only Life Status crossed its exact parent source/session/Game/episode/actor");
+                    }
+                    if (cancellation || watch.isPresent()) {
                         return authority.currentDerivedCleanup(session, request.before(), request.deadline(), lease -> {
                             RootGuardChecks.livingPaused(lease);
                             StrictJson.require(lease.bridgeCapabilities().contains(ClockStatusRead.STATUS_CAP),
@@ -159,6 +172,30 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
             });
         } catch (IOException failure) { throw new UncheckedIOException("actual Root planning-read authority unavailable: "
                 + failure.getClass().getSimpleName() + ":" + String.valueOf(failure.getMessage()), failure); }
+    }
+
+    /** Canonical DATA classification only. The caller must supply its actual locked chain and ActionScope.
+     * This never creates a Ready, private continuation token, native permit, or source session. */
+    public static java.util.Optional<ActionReceipt> lifeWatchStatusSource(
+            ActionCommand parent, List<ActionReceipt> canonicalActions) {
+        Objects.requireNonNull(parent);canonicalActions=List.copyOf(canonicalActions);
+        var admitted = org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonicalActions);
+        if (admitted.isEmpty()) return java.util.Optional.empty();
+        var actual = admitted.orElseThrow();
+        if (!actual.command().equals(parent) || !actual.bodySha256().equals(ActionCodec.bodySha256(parent))
+                || !(actual.state() instanceof ActionState.CompositeUnknown unknown)
+                || !unknown.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                || unknown.execution().children().isEmpty()) return java.util.Optional.empty();
+        var last = unknown.execution().children().getLast();
+        var matches = canonicalActions.stream().filter(value -> value.command().actionId().equals(last.actionId())
+                && value.bodySha256().equals(last.bodySha256())).toList();
+        if (matches.size() != 1) return java.util.Optional.empty();
+        var resume = matches.getFirst();
+        if (!resume.command().operation().value().equals("resume-map")
+                || !(resume.state() instanceof ActionState.Settled settled)
+                || !(settled.settlement() instanceof ActionState.Applied)
+                || resume.ack().filter(NativeActionPort.AckReceived::nativeOk).isEmpty()) return java.util.Optional.empty();
+        return java.util.Optional.of(actual);
     }
 
     /** The actual continuation scope supplies its already source-validated private token; DATA cannot issue one. */
