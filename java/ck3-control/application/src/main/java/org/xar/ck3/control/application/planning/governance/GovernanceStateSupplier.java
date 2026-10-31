@@ -65,7 +65,6 @@ public final class GovernanceStateSupplier implements GovernanceCollector.StateS
                     due.requireCurrent(session, captured, request.deadline());
                     List<ExactRef> sources = new ArrayList<>();
                     sources.add(proof.body().payload()); sources.add(proof.input().crownReadback()); sources.add(proof.input().finalTermsConsume());
-                    sources.add(proof.input().source().sourceRef());
                     return new Known<>(captured, sources.stream().distinct().toList());
                 });
             } catch (IOException | IllegalArgumentException unavailable) {

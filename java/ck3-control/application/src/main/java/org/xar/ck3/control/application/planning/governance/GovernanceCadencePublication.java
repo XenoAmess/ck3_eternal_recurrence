@@ -223,7 +223,7 @@ public final class GovernanceCadencePublication implements DomainBodies.Verifier
         return new Input(decode(StrictJson.canonical(row.get("plan"))), ExactRef.fromJson(row.get("previous_body")), refs);
     }
     private static List<ExactRef> evidence(Input input) {
-        var result = new ArrayList<ExactRef>(); result.add(input.previousBody()); result.add(input.plan().source().sourceRef()); result.addAll(input.originalReadEvidence()); return List.copyOf(result);
+        var result = new ArrayList<ExactRef>(); result.add(input.previousBody()); result.addAll(input.originalReadEvidence()); return List.copyOf(result);
     }
     private static DomainBodies.Available available(DomainBodies.Read read) throws IOException {
         if (read instanceof DomainBodies.Available actual) return actual;

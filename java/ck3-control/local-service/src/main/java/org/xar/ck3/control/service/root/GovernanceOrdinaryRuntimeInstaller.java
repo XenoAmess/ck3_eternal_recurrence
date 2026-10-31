@@ -210,7 +210,7 @@ public final class GovernanceOrdinaryRuntimeInstaller {
                     var result=finance.definitions().read(same,FinanceReadContracts.Query.ROOT,finance.readPort(),request);
                     if(result instanceof PlanningReadResult.Unavailable<FinanceReadContracts.Packet> unavailable)return new Unavailable<>(unavailable.reason());
                     var known=(PlanningReadResult.Known<FinanceReadContracts.Packet>)result;
-                    return new Known<>(known.value().result(),List.of(known.originalReceipt(),finance.definitions().contract(FinanceReadContracts.Query.ROOT).sourceRef()));
+                    return new Known<>(known.value().result(),List.of(known.originalReceipt()));
                 } catch(IOException failure) {return new Unavailable<>("actual shared finance ROOT read unavailable: "+failure.getMessage());}
             },retry.clockReads());
             var actualGovernance=new GovernanceCouncilSupplier(collector,nativeGovernance.councilReads());
