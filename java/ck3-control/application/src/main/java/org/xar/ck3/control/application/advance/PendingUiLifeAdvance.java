@@ -110,6 +110,12 @@ public final class PendingUiLifeAdvance {
                     } catch (IOException failure) { held.captured = null; throw new UncheckedIOException("actual pending date current unavailable", failure); }
                     catch (RuntimeException | Error failure) { held.captured = null; throw failure; }
                 }
+                @Override public <T> T withClockControlBasis(ActionCommand command, Instant deadline,
+                        java.util.function.Function<Frame,T> work) {
+                    Objects.requireNonNull(work);
+                    if (active.get() == null) return actualOrdinary.withClockControlBasis(command,deadline,work);
+                    return work.apply(current(command,deadline));
+                }
                 @Override public Frame next(ActionCommand command, ObservationIdentity after, Instant deadline) {
                     Held held = active.get(); if (held == null) return actualOrdinary.next(command, after, deadline);
                     try {

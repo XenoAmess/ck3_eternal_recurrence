@@ -115,7 +115,7 @@ public final class AdvanceClock {
             require(receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED, "native sentinel arm was definitively rejected");
             NativeActionPort.AckReceived ack = receipt.ack().orElseThrow(() -> new IllegalStateException("durable arm has no original ACK"));
             Status arm = AdvancePrimitives.acknowledgedSentinel(ack, plan.armStep()); validateArm(arm, plan);
-            armed = Optional.of(arm); current = current(parent);
+            armed = Optional.of(arm); current = clockControlBasis(parent,bounded(parent,commandTimeout));
         }
         // A freshly observed modal can arrive after arm while the map never ran. In that
         // case the only mutation still needed is cancellation of our confirmed generation.
@@ -204,7 +204,9 @@ public final class AdvanceClock {
         if (!AdvancePolicy.truth(snapshot.semantic(), "paused")) {
             require(plan.dailyWatch().isEmpty(), "daily watch was already running before its original single resume; no replay or control takeover"); return snapshot;
         }
-        Instant deadline = bounded(parent, commandTimeout); AdvanceObservationPort.Frame fresh = current(parent);
+        Instant deadline = bounded(parent, commandTimeout);
+        AdvanceObservationPort.Frame fresh = plan.clockMode() == AdvancePlan.ClockMode.POLLED
+                ? current(parent) : clockControlBasis(parent,deadline);
         AdvanceWait.binding(parent, starting, fresh);
         if (plan.dailyWatch().isPresent()) require(AdvancePolicy.truth(fresh.semantic(), "paused"), "daily watch fresh pre-resume map is already running; no duplicate resume");
         // This last actual read may acquire a new event after the arm read. Do not
@@ -307,6 +309,18 @@ public final class AdvanceClock {
                     case ACTIVE_EVENT, PENDING_INTERACTION, EXCLUSIVE_MODAL_OR_UNKNOWN -> true;
                     default -> false;
                 }), "daily watch fresh control frame changed owner/connection/speed/map; no further mutation");
+    }
+    /** Guard input before a resume; it is never a semantic postcondition or a newly received snapshot. */
+    private AdvanceObservationPort.Frame clockControlBasis(ActionCommand parent, Instant deadline) {
+        return observations.withClockControlBasis(parent,deadline,frame -> {
+            require(frame.source().equals(parent.source()) && frame.sessionId().equals(parent.sessionId())
+                    && frame.identity().machineId().equals(parent.before().machineId())
+                    && frame.identity().game().equals(parent.before().game())
+                    && frame.identity().frame().episodeRunId().equals(parent.before().frame().episodeRunId())
+                    && frame.identity().frame().identity().player().equals(parent.before().frame().identity().player()),
+                    "clock control basis left original held Game/source/session/actor/run");
+            return frame;
+        });
     }
     private AdvanceObservationPort.Frame current(ActionCommand parent) {
         AdvanceObservationPort.Frame frame = observations.current(parent, parent.deadline());

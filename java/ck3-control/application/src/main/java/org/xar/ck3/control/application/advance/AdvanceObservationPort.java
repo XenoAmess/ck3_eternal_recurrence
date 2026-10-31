@@ -16,6 +16,12 @@ public interface AdvanceObservationPort {
     Frame current(ActionCommand parent, Instant deadline);
     Frame next(ActionCommand parent, ObservationIdentity after, Instant deadline);
 
+    /** Conservative default for clock control basis: delegates to current observation. */
+    default <T> T withClockControlBasis(ActionCommand command, Instant deadline, java.util.function.Function<Frame, T> work) {
+        Objects.requireNonNull(work);
+        return work.apply(current(command, deadline));
+    }
+
     /** Original evidence must be preserved before returning. No inferred public revisions or episode IDs. */
     record Frame(ObservationIdentity identity, G2Source source, String sessionId,
             OpportunityJson.Obj semantic, ObservationProvenance provenance, Instant observedAt, ExactRef originalEvidence) {

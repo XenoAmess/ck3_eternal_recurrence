@@ -148,6 +148,19 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         }
         Instant window = ActionObservationWindow.deadline(command);
         boolean reconciling = ActionReconciliationScope.activeFor(command);
+        String controlStep = command.operation().value();
+        if (!reconciling && command.expected().observerSchema().equals(CLOCK_OBSERVER) && ARM.matcher(controlStep).matches()) {
+            return observations.withClockControlBasis(command, window, basis -> {
+                var read = clockStatus.observe(command, basis, window);
+                Status actual = read.status();
+                ArmSpec arm = armSpec(controlStep); Status original = acknowledgedSentinel(ack, controlStep);
+                require(actual.equals(original) && actual.generation().decimal().matches("[1-9][0-9]*"),
+                        "independent status did not observe the exact original arm generation/content");
+                List<ExpectedValue> values = statusValues(actual);
+                require(values.containsAll(armExpected(arm)), "actual independent arm status differs from requested arm");
+                return new ActionPorts.ControlObserved(new ActionState.ControlApplied(read.receipt(), CLOCK_OBSERVER, values));
+            });
+        }
         AdvanceObservationPort.Frame current;
         if (reconciling) {
             try {

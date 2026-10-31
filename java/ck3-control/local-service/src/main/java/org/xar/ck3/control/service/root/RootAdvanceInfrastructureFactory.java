@@ -279,6 +279,31 @@ public final class RootAdvanceInfrastructureFactory {
             }catch(IOException failure){throw new UncheckedIOException("actual held clock observation unavailable",failure);}
         }
         @Override public Frame next(ActionCommand parent,ObservationIdentity after,Instant deadline){return actual(parent,deadline).next(parent,after,deadline);}
+        /** The actual held packet is only a read/control basis; STATUS still supplies its independent original. */
+        @Override public <T> T withClockControlBasis(ActionCommand parent, Instant deadline,
+                java.util.function.Function<Frame,T> work) {
+            Objects.requireNonNull(work);
+            actual(parent,deadline);
+            try {
+                return context.withSession(same -> context.collector().current(same,parent.before(),deadline,lease -> {
+                    var original=lease.frame();
+                    require(original.source().equals(parent.source()) && original.sessionId().equals(parent.sessionId())
+                            && original.identity().machineId().equals(parent.before().machineId())
+                            && original.identity().game().equals(parent.before().game())
+                            && original.identity().frame().episodeRunId().equals(parent.before().frame().episodeRunId())
+                            && original.identity().frame().identity().player().equals(parent.before().frame().identity().player()),
+                            "clock control basis crossed its actual original source/session/Game/episode/actor");
+                    var basis=new Frame(original.identity(),original.source(),original.sessionId(),original.semantic(),
+                            new ObservationProvenance.Push(original.identity().frame().snapshotId(),
+                                    original.identity().frame().identity().nativeRevision(),original.originalEvidence()),
+                            original.observedAt(),original.originalEvidence());
+                    return work.apply(basis);
+                }));
+            } catch(IOException failure) {
+                throw new UncheckedIOException("actual held clock control basis unavailable",failure);
+            }
+        }
+
         private Frame freshReservedChildObservation(ContinuityStorePort.Session same, ActionCommand child,
                 Instant deadline, HeldDriverObservationPort sameHeld) throws IOException {
             var receipt = context.core().journal().locked(same, locked -> locked.find(child.actionId()).orElseThrow());
