@@ -68,6 +68,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     private volatile SettledObservation settledObservation;
     private record TransportContext(SameGameTransportContinuity.Scope scope,SameGameTransportContinuity.Evidence evidence) { }
     private final ThreadLocal<TransportContext> transportContext=new ThreadLocal<>();
+    private record SavedSettledContext(ContinuityStorePort.Session same, ContinuityBatchJournal.SavedSettledHistory role, ContinuityBatchJournal.SettledSameGameData data) { }
+    private final ThreadLocal<SavedSettledContext> savedSettledContext = new ThreadLocal<>();
     /** The actual Root installs its sole NS/M3 adapter, never a caller-provided DATA proof. */
     public synchronized void bindTransportRebindPort(SameGameTransportContinuity.Port actual) {
         StrictJson.require(transportRebindPort==null,"actual same-Game transport port is installed once");
@@ -197,6 +199,22 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         finally { openReadOnlyRecovery.remove(); }
     }
 
+    /** Consume this journal's fully verified saved and settled history without replaying an action. */
+    WriterContracts.Receipt commitSettledSameGameRecovery(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.SettledSameGameData data, SemanticEvidence semantic,
+            ContinuityBatchJournal.SavedSettledHistory role) throws IOException {
+        StrictJson.require(active.get() == same && savedSettledContext.get() == null,
+                "saved settled recovery requires the unique original journal scope");
+        Objects.requireNonNull(role); Objects.requireNonNull(data); Objects.requireNonNull(semantic);
+        role.requireCurrent(same, data);
+        savedSettledContext.set(new SavedSettledContext(same, role, data));
+        try {
+            return commitSettledSameGameRecovery(same, data, semantic);
+        } finally {
+            savedSettledContext.remove();
+        }
+    }
+
     /** Recover an already completed dirty cycle; no action or cycle is executed again. */
     WriterContracts.Receipt commitSettledSameGameRecovery(ContinuityStorePort.Session same,
             ContinuityBatchJournal.SettledSameGameData data, SemanticEvidence semantic) throws IOException {
@@ -313,7 +331,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         return ContinuityJson.digest(proof);
     }
 
-    private void requireSettledRecoveryFrontier(ContinuityState head, SessionIdentity owner, CycleState branch) {
+    private void requireSettledRecoveryFrontier(ContinuityState head, SessionIdentity owner, CycleState branch) throws IOException {
         requireOwner(head, owner); requireFrontier(head, branch); requireLegacyPendingClear(head, branch);
         StrictJson.require((head.status() == ContinuityState.Status.REPAIR_REQUIRED || isOpenReadOnlyBatch(head))
                 && branch.pending().isEmpty() && branch.head().isPresent(),
@@ -328,10 +346,24 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                     && action.command().origin().machineId().equals(owner.machineId()),
                     "settled recovery crossed an original action owner");
         }
+        var context = savedSettledContext.get();
+        Set<ExactRef> confirmedSaveReceipts = Set.of();
+        if (context != null) {
+            StrictJson.require(active.get() == context.same(), "saved settled history lost its actual writer scope");
+            context.role().requireCurrent(context.same(), context.data());
+            StrictJson.require(head.sequence() == context.data().canonicalSequence()
+                    && ContinuityJson.digest(head.toJson()).equals(context.data().canonicalHeadDigest()),
+                    "saved settled history crossed its checked frontier");
+            confirmedSaveReceipts = context.role().confirmedSaveReceipts();
+        }
         for (var action : ContinuityBatchJournal.ordinaryCycleRoots(actions)) {
-            if (action.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && action.visibleGameplay())
-                StrictJson.require(find(branch, archive.receiptReferenceOf(action)).isPresent(),
-                        "settled recovery cannot discard a visible action without its completed cycle");
+            if (action.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && action.visibleGameplay()) {
+                var receiptRef = archive.receiptReferenceOf(action);
+                if (!confirmedSaveReceipts.contains(receiptRef)) {
+                    StrictJson.require(find(branch, receiptRef).isPresent(),
+                            "settled recovery cannot discard a visible action without its completed cycle");
+                }
+            }
         }
     }
 
@@ -661,7 +693,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         CycleState state = state(head.state(), owner); requireLegacyPendingClear(head.state(), state);
         requireFrontier(head.state(), state); validateChain(state); if (state.pending().isPresent()) return Optional.empty();
         VerifiedSemantic checked = verify(session, owner, semantic);
-        requireCurrentFrame(head.state(), state, checked.frame());
+        requireProofFrame(head.state(), state, checked);
         return Optional.of(new CompletedCycleProof(state.completedCycles(), semantic, ContinuityJson.digest(state.toJson())));
     }
     /** Public SAVE/source-store boundary: constructor values alone cannot prove a cycle frontier. */
@@ -687,9 +719,9 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         if (!savedBranch) requireRetainedProofRole(session, head.state(), owner);
         StrictJson.require(selected.session().equals(owner), "cycle proof crossed its actual session owner");
         requireProof(selected, proof); requireFrontier(head.state(), selected); validateChain(selected);
-        if (!savedBranch) { requireLegacyPendingClear(head.state(), selected); requireCurrentFrame(head.state(), selected, proof.frame()); }
-        else requireSavedProofFrame(head.state(),selected,proof.frame());
         VerifiedSemantic verified = verify(session, owner, proof.semantic());
+        if (!savedBranch) { requireLegacyPendingClear(head.state(), selected); requireProofFrame(head.state(), selected, verified); }
+        else requireSavedProofFrame(head.state(),selected,verified);
         StrictJson.require(head.digest().equals(session.head().digest()), "writer changed during completed-cycle proof verification");
         // The checked head is fresh on every call; the result binds stable material across current -> saved.
         return proofMaterialDigest(owner,proof,verified);
@@ -705,7 +737,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(original.toJson().equals(capturedOriginalHead.toJson()),"retained cycle source differs from the actual canonical historical state");
         requireOwner(original,owner);requireRetainedProofRole(session,original,owner);CycleState source=state(original,owner);
         requireLegacyPendingClear(original,source);requireProof(source,proof);requireFrontier(original,source);validateChain(source);
-        requireCurrentFrame(original,source,proof.frame());VerifiedSemantic verified=verify(session,owner,proof.semantic());
+        VerifiedSemantic verified=verify(session,owner,proof.semantic());requireProofFrame(original,source,verified);
         StrictJson.require(current.equals(session.head().digest()),"canonical writer changed during immutable historical cycle verification");
         return proofMaterialDigest(owner,proof,verified);
     }
@@ -1850,10 +1882,9 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         }
         return false;
     }
-    private void requireSavedProofFrame(ContinuityState actual,CycleState saved,ObservationIdentity frame) {
-        if(usesSavedControlBridge(actual,saved,frame))return;
-        if(saved.head().isPresent())requireSameIdentity(load(saved.head().orElseThrow()).semantic().frame(),frame);
-        else if(saved.originFrame().isPresent())requireSameIdentity(saved.originFrame().orElseThrow(),frame);
+    private void requireSavedProofFrame(ContinuityState actual,CycleState saved,VerifiedSemantic verified) {
+        if(usesSavedControlBridge(actual,saved,verified.frame()))return;
+        if(saved.head().isPresent() || saved.originFrame().isPresent()) requireProofFrame(actual,saved,verified);
         // An initial saved branch has no ordinary receipt; its actual paired SAVE was verified above.
     }
     /** Only the exact canonical last-SAVED state may use its actual pair's post-SAVE native frame, with zero new cycle credit. */
@@ -1947,6 +1978,23 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     }
     public static void requireSameIdentity(ObservationIdentity left, ObservationIdentity right) { requireSameOwner(left, right); StrictJson.require(left.frame().identity().equals(right.frame().identity()), "native player/revision/date identity differs"); }
     /** A real SAVE may publish a newer native/public revision while preserving this one actor/episode/date. */
+    /** Same-date verified proof DATA grants no current action or read-publication authority. */
+    private void requireProofFrame(ContinuityState actual, CycleState state, VerifiedSemantic verified) {
+        requireFrontier(actual, state);
+        var frame = verified.frame();
+        if (usesSavedControlBridge(actual, state, frame)) return;
+        if (state.head().isPresent()) {
+            var retained = load(state.head().orElseThrow()).semantic();
+            requireSavedContinuation(retained.frame(), frame);
+            StrictJson.require(!verified.observedAt().isBefore(retained.observedAt()), "proof SEM predates its retained cycle semantic");
+        } else if (state.originFrame().isPresent()) {
+            var retained = state.originFrame().orElseThrow();
+            requireSavedContinuation(retained, frame);
+        } else {
+            requireSettledBinding(actual, frame);
+        }
+    }
+
     private static void requireSavedContinuation(ObservationIdentity before,ObservationIdentity saved) {
         requireSameOwner(before,saved);
         StrictJson.require(before.observationVersion()==saved.observationVersion()
