@@ -244,7 +244,55 @@ public final class RootFamilyMarriageSendRuntime implements ActionPorts.Preparat
                 ? unavailable.original().orElseThrow().getClass().getSimpleName() : "none";
         var decodeFailure = unavailable.decodeFailure().isPresent() ? "decode_failure" : "no_decode_failure";
         var observedFailure = unavailable.observedFailure().isPresent() ? "observed_failure" : "no_observed_failure";
+        var ackDiagnostic = "";
+        if (unavailable.original().isPresent() && unavailable.original().orElseThrow() instanceof NativeActionPort.AckReceived ack) {
+            var expectedIdMatch = unavailable.observedFailure()
+                    .map(failure -> Boolean.toString(failure.requestId().equals(ack.requestId())))
+                    .orElse("unavailable");
+            try {
+                var packet = ack.originalPacket();
+                if (packet.length > 65540) {
+                    ackDiagnostic = "ack_request_id=" + (ack.requestId().length() <= 128 ? ack.requestId() : ack.requestId().substring(0, 128))
+                            + ":nativeOk=" + ack.nativeOk() + ":uninspected_large_frame=" + packet.length;
+                } else {
+                    var frame = org.xar.ck3.control.nativebridge.NativeWire.decode(packet);
+                    if (frame instanceof org.xar.ck3.control.nativebridge.NativeWire.CommandResult commandResult) {
+                        var errorField = commandResult.error();
+                        var presence = errorField.presence();
+                        var token = errorField.token().orElse(null);
+                        String errorSummary;
+                        if (presence == org.xar.ck3.control.nativebridge.NativeWire.Presence.ABSENT) {
+                            errorSummary = "absent";
+                        } else if (presence == org.xar.ck3.control.nativebridge.NativeWire.Presence.NULL) {
+                            errorSummary = "null";
+                        } else if (token != null) {
+                            var bytes = token.value();
+                            var node = org.xar.ck3.control.nativebridge.NativeWire.parse(bytes);
+                            if (node.isTextual()) {
+                                var text = node.textValue();
+                                errorSummary = text.length() <= 512 ? text : text.substring(0, 512);
+                            } else {
+                                errorSummary = node.getNodeType() + ":" + bytes.length;
+                            }
+                        } else {
+                            errorSummary = "unknown";
+                        }
+                        var wireIdMatch = commandResult.requestId().equals(ack.requestId()) ? "match" : "mismatch";
+                        ackDiagnostic = "ack_request_id=" + (ack.requestId().length() <= 128 ? ack.requestId() : ack.requestId().substring(0, 128))
+                                + ":nativeOk=" + ack.nativeOk() + ":wire_id_match=" + wireIdMatch + ":error=" + errorSummary;
+                    } else {
+                        ackDiagnostic = "ack_request_id=" + (ack.requestId().length() <= 128 ? ack.requestId() : ack.requestId().substring(0, 128))
+                                + ":nativeOk=" + ack.nativeOk() + ":frame_type=" + frame.getClass().getSimpleName();
+                    }
+                }
+            } catch (java.io.IOException | RuntimeException diagnosticUnavailable) {
+                ackDiagnostic = "ack_request_id=" + (ack.requestId().length() <= 128 ? ack.requestId() : ack.requestId().substring(0, 128))
+                        + ":nativeOk=" + ack.nativeOk() + ":decode_error";
+            }
+            ackDiagnostic += ":coordinator_read_id_match=" + expectedIdMatch;
+        }
         var message = "actual independent marriage before storage/preparation read is unavailable"
+                + (ackDiagnostic.isEmpty() ? "" : ":ack=" + ackDiagnostic)
                 + ":reason=" + (reason.length() <= 2048 ? reason : reason.substring(0, 2048))
                 + ":original=" + originalKind + ":" + decodeFailure + ":" + observedFailure;
         throw new IllegalArgumentException(message);
