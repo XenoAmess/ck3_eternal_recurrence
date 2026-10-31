@@ -115,6 +115,11 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }
     }
     private final ThreadLocal<ReadOriginalCapture> readOriginalCapture;
+    /** Same-scope parsing reuse for complete RawJson material. Bounded by entry count and total bytes.
+     * Only valid within the current active writer session scope; cleared on scope exit or error. */
+    private static final int MAX_PARSED_ENTRIES = 64;
+    private static final long MAX_PARSED_BYTES = 64L * 1024 * 1024;
+    private final ThreadLocal<ParsedMaterialCache> parsedMaterialCache;
     /** Finite collection budget only. Callers may omit an optional whole group for this
      * exception; missing, changed or invalid originals must continue to fail separately. */
     public static final class ReadOriginalsLimitExceeded extends IOException {
@@ -139,6 +144,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         this.artifacts = Objects.requireNonNull(artifacts); this.sameWriter = Objects.requireNonNull(sameWriter);
         owner = this; borrowed = null; publication=Publication.DURABLE; current = new ThreadLocal<>(); historyBindings = new HistoryBindings();
         readOriginalCapture = new ThreadLocal<>();
+        parsedMaterialCache = new ThreadLocal<>();
         physicalStatusOriginals = new LinkedHashMap<>();
         if (!artifacts.originalWriterLock().equals(sameWriter.originalLockPath())
                 || sameWriter.artifactStore().orElseThrow(() -> new IOException("writer has no immutable artifact store")) != artifacts)
@@ -153,6 +159,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         current = owner.current; historyBindings = owner.historyBindings; this.borrowed = Objects.requireNonNull(borrowed);
         this.publication=Objects.requireNonNull(publication);
         readOriginalCapture = owner.readOriginalCapture;
+        parsedMaterialCache = owner.parsedMaterialCache;
         physicalStatusOriginals = owner.physicalStatusOriginals;
     }
     public ImmutableArtifactStore artifactStore() { return artifacts; }
@@ -226,9 +233,14 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     }
     private <T> T scoped(ContinuityStorePort.Session session, IoWork<T> operation) throws IOException {
         requireSession(session); ContinuityStorePort.Session before = current.get();
+        ParsedMaterialCache cacheBefore = parsedMaterialCache.get();
         current.set(session);
+        if (cacheBefore == null) parsedMaterialCache.set(new ParsedMaterialCache());
         try { return operation.run(); }
-        finally { if (before == null) current.remove(); else current.set(before); }
+        finally {
+            if (before == null) current.remove(); else current.set(before);
+            if (cacheBefore == null) parsedMaterialCache.remove(); else parsedMaterialCache.set(cacheBefore);
+        }
     }
     private void requireSession(ContinuityStorePort.Session session) throws IOException {
         Objects.requireNonNull(session); sameWriter.requireSession(session); session.requireWriter(artifacts.originalWriterLock());
@@ -1445,11 +1457,34 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     }
     @Override public ExactRef preserveMaterial(RawJson original) { return unchecked(() -> writing(() -> token(Objects.requireNonNull(original), true))); }
     @Override public RawJson loadMaterial(ExactRef original) { return unchecked(() -> token(Objects.requireNonNull(original))); }
+    /** Bounded same-scope cache for fully parsed RawJson material. Entries keyed by ExactRef.
+     * Cleared when the owning writer session scope exits. */
+    private static final class ParsedMaterialCache {
+        private final Map<ExactRef, RawJson> entries = new LinkedHashMap<>();
+        private long totalBytes = 0;
+        RawJson get(ExactRef key) { return entries.get(key); }
+        void put(ExactRef key, RawJson value, int bytes) {
+            if (entries.containsKey(key) || entries.size() >= MAX_PARSED_ENTRIES
+                    || totalBytes + bytes > MAX_PARSED_BYTES) return;
+            entries.put(key, value);
+            totalBytes += bytes;
+        }
+    }
     /** Explicit complete Driver/auxiliary DATA only. Borrow the same writer and existing
      * canonical original reader; never broaden ordinary/native JSON or infer Known/Ready. */
     @Override public RawJson loadFullMaterial(ExactRef original) {
-        return unchecked(() -> writing(() -> RawJson.fullMaterial(
-                readBytes(Objects.requireNonNull(original), RawJson.MAXIMUM_BYTES))));
+        return unchecked(() -> writing(() -> {
+            Objects.requireNonNull(original);
+            byte[] bytes = readBytes(original, RawJson.MAXIMUM_BYTES);
+            ParsedMaterialCache cache = parsedMaterialCache.get();
+            if (cache != null) {
+                RawJson cached = cache.get(original);
+                if (cached != null && Arrays.equals(bytes, cached.bytes())) return cached;
+            }
+            RawJson result = RawJson.fullMaterial(bytes);
+            if (cache != null) cache.put(original, result, bytes.length);
+            return result;
+        }));
     }
     @Override public ExactRef materialReferenceOf(RawJson original) { return unchecked(() -> token(Objects.requireNonNull(original), false)); }
     @Override public ExactRef materialReference(String sha256, long bytes) {
