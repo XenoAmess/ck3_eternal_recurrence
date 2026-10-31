@@ -705,20 +705,21 @@ public final class ContinuityBatchJournal implements BatchJournal {
         transitions.bindTransportRebindPort(Objects.requireNonNull(actual));
     }
 
-    /** Canonical DATA for an interrupted applied SAVE whose SAVE_CONFIRMED frontier is still absent. */
+    /** Canonical DATA for the latest applied SAVE beyond the actual confirmed SAVE frontier. */
     public static Optional<ActionReceipt> readOnlySaveFinalizationRoot(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> canonicalActions,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
         if (current == null || owner == null || canonicalActions == null || originals == null
-                || current.status() != ContinuityState.Status.REPAIR_REQUIRED
+                || (current.status() != ContinuityState.Status.REPAIR_REQUIRED && current.status() != ContinuityState.Status.RUNNING)
                 || !current.machineId().equals(owner.machineId())) return Optional.empty();
         try {
             var whole = current.toJson();
             var saved = whole.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD);
-            if (saved != null && !saved.isNull()) return Optional.empty();
             var boundary = whole.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+            String expectedBoundary = current.status() == ContinuityState.Status.REPAIR_REQUIRED
+                    ? JournalKind.BATCH_INTERRUPTED.name() : JournalKind.BATCH_STARTED.name();
             if (boundary == null || !boundary.isObject()
-                    || !JournalKind.BATCH_INTERRUPTED.name().equals(StrictJson.text(boundary.get("boundary")))
+                    || !expectedBoundary.equals(StrictJson.text(boundary.get("boundary")))
                     || !OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)) return Optional.empty();
             StrictJson.text(boundary.get("batch_id"));
             var cycle = whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
@@ -800,10 +801,89 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     return Optional.empty();
                 before = after;
             }
+            if (!saveFinalizationFrontier(current, owner, canonicalActions, originals, cycle, saved, latest, pair))
+                return Optional.empty();
             return Optional.of(latest);
         } catch (IllegalArgumentException | java.util.NoSuchElementException rejected) {
             return Optional.empty();
         }
+    }
+
+    /** Pure DATA frontier discrimination; full historical SAVE/proof replay still precedes any recovery authority. */
+    private static boolean saveFinalizationFrontier(ContinuityState current, SessionIdentity owner,
+            java.util.List<ActionReceipt> actions, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
+            com.fasterxml.jackson.databind.JsonNode cycleValue, com.fasterxml.jackson.databind.JsonNode savedValue,
+            ActionReceipt latest, CheckpointPair pair) {
+        var fields = java.util.Set.of("schema", "session", "basis_cycles", "completed_cycles", "head", "pending_receipt",
+                "retained_legacy_pending_digest", "origin_frame", "episode_origin");
+        var cycle = StrictJson.object(cycleValue, fields);
+        if (!"xar.java-ordinary-cycle-state/v2".equals(StrictJson.text(cycle.get("schema")))) return false;
+        long basis = StrictJson.integer(cycle.get("basis_cycles"), 0, StrictJson.MAX_SAFE_INTEGER);
+        long completed = StrictJson.integer(cycle.get("completed_cycles"), basis, StrictJson.MAX_SAFE_INTEGER);
+        ActionReceipt frontier = saveFinalizationCycleReceipt(owner, cycle, completed, actions, originals);
+        if (frontier.sequence() >= latest.sequence() || !frontier.command().source().equals(latest.command().source())
+                || !frontier.command().before().game().equals(owner.game()) || !frontier.visibleGameplay()) return false;
+        if (savedValue == null || savedValue.isNull()) return current.settledCycles() == 0;
+        var saved = StrictJson.object(savedValue, java.util.Set.of("pair", "state"));
+        var priorCycle = StrictJson.object(saved.get("state"), fields);
+        if (!"xar.java-ordinary-cycle-state/v2".equals(StrictJson.text(priorCycle.get("schema")))
+                || !OrdinaryCycleTransitions.sessionFromJson(priorCycle.get("session")).equals(owner)
+                || !priorCycle.get("pending_receipt").isNull()
+                || StrictJson.integer(priorCycle.get("basis_cycles"), 0, StrictJson.MAX_SAFE_INTEGER) != basis
+                || !java.util.Objects.equals(priorCycle.get("retained_legacy_pending_digest"), cycle.get("retained_legacy_pending_digest"))
+                || !java.util.Objects.equals(priorCycle.get("origin_frame"), cycle.get("origin_frame"))
+                || !java.util.Objects.equals(priorCycle.get("episode_origin"), cycle.get("episode_origin"))) return false;
+        long priorCompleted = StrictJson.integer(priorCycle.get("completed_cycles"), basis, StrictJson.MAX_SAFE_INTEGER);
+        if (priorCompleted != current.settledCycles() || priorCompleted >= completed) return false;
+        var priorPair = CheckpointPairCodec.decode(ContinuityJson.canonical(saved.get("pair")));
+        if (priorPair.saveActionId().equals(latest.command().actionId())
+                || priorPair.frame().frame().identity().dateRaw().longValueExact() != current.settledDateRaw()
+                || priorPair.frame().frame().identity().dateRaw().compareTo(pair.frame().frame().identity().dateRaw()) > 0)
+            return false;
+        var priorMatches = actions.stream().filter(a -> a.command().actionId().equals(priorPair.saveActionId())).toList();
+        if (priorMatches.size() != 1) return false;
+        ActionReceipt prior = priorMatches.getFirst();
+        if (prior.sequence() >= latest.sequence() || !prior.command().operation().value().equals("save-checkpoint")
+                || !prior.command().source().equals(latest.command().source()) || !prior.command().sessionId().equals(owner.sessionId())
+                || !prior.command().before().machineId().equals(owner.machineId()) || !prior.command().before().game().equals(owner.game())
+                || !(prior.state() instanceof org.xar.ck3.control.application.action.ActionState.Settled priorSettled)
+                || !(priorSettled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.Applied priorApplied)
+                || !(priorSettled.dispatch() instanceof org.xar.ck3.control.application.action.NativeActionPort.AckReceived priorAck)
+                || !priorAck.nativeOk() || !priorAck.requestId().equals(priorSettled.attempt().requestId())
+                || priorPair.nativeAckRef().bytes() != priorAck.originalPacket().length
+                || !priorPair.nativeAckRef().sha256().equals(org.xar.ck3.control.application.action.ActionCodec.sha256(priorAck.originalPacket())))
+            return false;
+        var evidence = priorApplied.observation().supportingEvidence();
+        if (evidence.size() != 2 || evidence.getFirst().bytes() == 0 || evidence.getFirst().bytes() > 65536) return false;
+        byte[] priorBytes = originals.loadMaterial(evidence.getFirst()).bytes();
+        if (priorBytes.length != evidence.getFirst().bytes()
+                || !org.xar.ck3.control.application.action.ActionCodec.sha256(priorBytes).equals(evidence.getFirst().sha256())
+                || !CheckpointPairCodec.decode(priorBytes).equals(priorPair)
+                || priorPair.driver().reference().bytes() != evidence.get(1).bytes()
+                || !priorPair.driver().reference().sha256().equals(evidence.get(1).sha256())) return false;
+        var priorFrontier = saveFinalizationCycleReceipt(owner, priorCycle, priorCompleted, actions, originals);
+        return priorFrontier.sequence() < prior.sequence() && prior.sequence() < frontier.sequence()
+                && !ExactRef.fromJson(priorCycle.get("head")).equals(ExactRef.fromJson(cycle.get("head")));
+    }
+
+    /** Reopens the existing small cycle record and its actual canonical action; no SEM/Driver/SAVE body is read. */
+    private static ActionReceipt saveFinalizationCycleReceipt(SessionIdentity owner, com.fasterxml.jackson.databind.node.ObjectNode cycle,
+            long completed, java.util.List<ActionReceipt> actions,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        var ref = ExactRef.fromJson(cycle.get("head"));
+        StrictJson.require(ref.bytes() > 0 && ref.bytes() <= 65536, "bounded original finalization cycle record required");
+        byte[] bytes = originals.loadMaterial(ref).bytes();
+        StrictJson.require(bytes.length == ref.bytes()
+                && org.xar.ck3.control.application.action.ActionCodec.sha256(bytes).equals(ref.sha256()), "finalization cycle original changed");
+        var row = StrictJson.object(StrictJson.parse(bytes, 65536), java.util.Set.of("schema", "session", "receipt_ref", "semantic", "previous", "completed_cycles", "classification"));
+        StrictJson.require("xar.java-ordinary-cycle-record/v1".equals(StrictJson.text(row.get("schema")))
+                && OrdinaryCycleTransitions.sessionFromJson(row.get("session")).equals(owner)
+                && StrictJson.integer(row.get("completed_cycles"), 0, StrictJson.MAX_SAFE_INTEGER) == completed,
+                "finalization cycle record crossed its exact owner/counter");
+        var receiptRef = ExactRef.fromJson(row.get("receipt_ref"));var receipt = originals.loadReceipt(receiptRef);
+        StrictJson.require(actions.contains(receipt) && receipt.settled()
+                && originals.receiptReferenceOf(receipt).equals(receiptRef), "finalization cycle action is not its actual canonical original");
+        return receipt;
     }
 
     /** Canonical DATA classification only; positive SAVE ACK still grants no saved-pair or submit authority. */
