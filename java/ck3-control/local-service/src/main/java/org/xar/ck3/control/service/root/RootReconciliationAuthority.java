@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.driver.*;
@@ -428,13 +429,12 @@ public final class RootReconciliationAuthority {
                         "archived FOCUS getter changed its original action, pure operation or empty arguments");
             }else {
                 List<AllowedRead> allowed=installed(same,original,identity,before,actual,guard.validUntil());
-                List<AllowedRead> matches=allowed.stream().filter(read->org.xar.ck3.control.continuity.ContinuityJson.same(descriptor(read),row.get("read"))
+                List<AllowedRead> matches=allowed.stream().filter(read->sameRole(read.contract(),read.arguments(),read.kind(),readRow)
                         &&read.contract().operation().equals(guard.operation())).toList();
                 require(matches.size()==1,"archived read was not issued by the exact installed original-intent pure query factory");
                 AllowedRead selected=matches.getFirst();
                 selected.contract().requiredCapability().ifPresent(cap->require(receivedCapabilities.contains(cap),
                         "archived received hello did not advertise this exact pure query capability"));
-                held.add(pin(same,selected.contract().sourceRef()));held.add(pin(same,decoder(selected.contract())));
                 if(selected.kind()==QueryKind.FAMILY_MARRIAGE_SEND) {
                     var baseline=org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyMarriageSendReads.arguments(selected.arguments()).beforeRead().orElseThrow();
                     read(same,baseline,WriterContracts.MAX_PIN_BYTES);held.add(same.capturePin(baseline,WriterContracts.MAX_PIN_BYTES));
@@ -554,13 +554,31 @@ public final class RootReconciliationAuthority {
         require(bindings.size()==1,"actual read decoder is not uniquely installed");return bindings.getFirst().decoderSource();
     }
     private ObjectNode descriptor(AllowedRead allowed) {
+        return descriptor(allowed,decoder(allowed.contract()));
+    }
+    private static ObjectNode descriptor(AllowedRead allowed,ExactRef actualDecoder) {
         ReadContract<?> contract=allowed.contract();var row=StrictJson.object().put("kind",allowed.kind().name())
                 .put("contract_id",contract.contractId()).put("operation",contract.operation().value())
                 .put("permission_key",contract.permissionKey()).put("permission_mode",contract.permissionMode().name())
                 .put("wire_profile",contract.wireProfile().name()).put("guard_mode",contract.guardMode().name());
         if(contract.requiredCapability().isPresent())row.put("required_capability",contract.requiredCapability().orElseThrow());else row.putNull("required_capability");
-        row.set("source",contract.sourceRef().toJson());row.set("decoder",decoder(contract).toJson());
+        row.set("source",contract.sourceRef().toJson());row.set("decoder",actualDecoder.toJson());
         row.set("arguments",StrictJson.parse(OpportunityJson.encode(allowed.arguments()),64<<10));return row;
+    }
+    /** Implementation references are typed archival metadata, not query permission or deployment qualification. */
+    private static boolean sameRole(ReadContract<?> contract,OpportunityJson.Obj arguments,QueryKind kind,JsonNode archived) {
+        ExactRef.fromJson(archived.get("source"));ExactRef.fromJson(archived.get("decoder"));
+        return kind.name().equals(StrictJson.text(archived.get("kind")))
+                &&contract.contractId().equals(StrictJson.text(archived.get("contract_id")))
+                &&contract.operation().value().equals(StrictJson.text(archived.get("operation")))
+                &&contract.permissionKey().equals(StrictJson.text(archived.get("permission_key")))
+                &&contract.permissionMode().name().equals(StrictJson.text(archived.get("permission_mode")))
+                &&contract.wireProfile().name().equals(StrictJson.text(archived.get("wire_profile")))
+                &&contract.guardMode().name().equals(StrictJson.text(archived.get("guard_mode")))
+                &&contract.requiredCapability().map(cap->cap.equals(StrictJson.text(archived.get("required_capability"))))
+                        .orElse(archived.get("required_capability").isNull())
+                &&Arrays.equals(StrictJson.canonical(StrictJson.parse(OpportunityJson.encode(arguments),64<<10),StrictJson.EXPLICIT_MAX_BYTES),
+                        StrictJson.canonical(archived.get("arguments"),StrictJson.EXPLICIT_MAX_BYTES));
     }
     private void assertScope(Scope scope,ContinuityStorePort.Session same,Instant deadline)throws IOException{
         store.requireSession(same);require(active.get()==scope&&scope.session()==same,"reconciliation query escaped its original writer/session/thread");
