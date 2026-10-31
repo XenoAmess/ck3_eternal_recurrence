@@ -1,0 +1,309 @@
+{
+  "schema": "m3.map-rehash190-first-software-summary/v1",
+  "package_number": 54,
+  "package_number_status": "CONFIRMED_PARENT_CANONICAL_PACKAGE54",
+  "delivery_status": "SOURCE_READY_FIRST_SOFTWARE_VERIFIED_PENDING_FORMAL",
+  "status": "FIRST_STRICT_AND_SEVEN_SCENES_PASS",
+  "actual_original": "map-rehash190/ACTUAL190.json",
+  "actual_original_sha256": "f709708aac0b0862eec113d0ca3bcedae04921cf105a0a7600728aeb2e7104d3",
+  "actual_evidence_copied_to_Git": false,
+  "actual_caller": "C39C60@C39EAD CALL C3A400",
+  "established_input": "RCX=R14 map; concrete complete86E160 preserves R10; no other incoming register value is guessed.",
+  "complete_normal_source": {
+    "C3A400": 60,
+    "C3B700_RF_prefix": 23,
+    "C3B717_continuation": 235,
+    "C3B802_continuation": 24,
+    "C3B81A_normal_epilogue": 6,
+    "total": 348
+  },
+  "actual_necessary_PE_bytes": 428,
+  "source_bytes": 348,
+  "unwind_bytes": 80,
+  "header_provider_whole_hash_Game": 0,
+  "new_explicit_sources_first_compiled": 4,
+  "production_API_sources": 2,
+  "manual_support_sources": 2,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CapacityIndex179.java",
+      "actual_cached_source": "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndex179.java",
+      "rawcompiled_bytes": 659,
+      "rawcompiled_sha256": "afeab55f1abf87b1db2749b442dfa3f8fde8d42734a43751900cd78f415df9c1",
+      "current_formal_bytes": 658,
+      "current_formal_physical_sha256": "912ea33a12f1c00c3def9cce27d948797840b2e931c13596e7a71e848663fcf6",
+      "physical_bytes_equal": false,
+      "LF_equal": false,
+      "new_copy": false,
+      "exact_LF_line_diff": [
+        "--- actual_cached_source\n",
+        "+++ already_published_formal\n",
+        "@@ -14,7 +14,7 @@\n",
+        " \n",
+        "     private static int selectLarge(int count, int bias) {\n",
+        " \n",
+        "-        int bsr = Integer.numberOfLeadingZeros(count - 1) ^ 31; \n",
+        "+        int bsr = Integer.numberOfLeadingZeros(count - 1) ^ 31;\n",
+        " \n",
+        "         int msbIndex = 31 - Integer.numberOfLeadingZeros(count - 1);\n",
+        " \n"
+      ],
+      "raw_line_repr": [
+        {
+          "line": 17,
+          "raw": "'        int bsr = Integer.numberOfLeadingZeros(count - 1) ^ 31; '",
+          "formal": "'        int bsr = Integer.numberOfLeadingZeros(count - 1) ^ 31;'"
+        }
+      ],
+      "published_format_difference": {
+        "source_list179": "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\delivery\\SOURCE-LIST179.json",
+        "source_list179_sha256": "cc6a2fedb2276141b96e65f3b5c2550cdecb8262da763132a486c66416e52b21",
+        "raw_original_sha_verified_against179": true,
+        "exact_difference": "Only one ASCII SPACE after the semicolon at physical line17 was removed in already published formal source.",
+        "line": 17,
+        "removed_bytes_hex": "20",
+        "raw_original_sha_preserved": true,
+        "no_token_or_binary_equivalence_claim": true,
+        "dependency_recompiled_for_delivery": false
+      }
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/C3e150Api180.java",
+      "actual_cached_source": "D:\\ck3-state\\resume91-m3-native\\c3e150-frontier180\\src\\org\\xar\\ck3\\research\\m3\\C3e150Api180.java",
+      "rawcompiled_bytes": 428,
+      "rawcompiled_sha256": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+      "current_formal_bytes": 428,
+      "current_formal_physical_sha256": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+      "physical_bytes_equal": true,
+      "LF_equal": true,
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/StaticTableBase180.java",
+      "actual_cached_source": "D:\\ck3-state\\resume91-m3-native\\c3e150-frontier180\\src\\org\\xar\\ck3\\research\\m3\\StaticTableBase180.java",
+      "rawcompiled_bytes": 2504,
+      "rawcompiled_sha256": "f42b93157efefefb34c990ce0bd12d910346b0e4b98605c6217d5506679317b0",
+      "current_formal_bytes": 2504,
+      "current_formal_physical_sha256": "f42b93157efefefb34c990ce0bd12d910346b0e4b98605c6217d5506679317b0",
+      "physical_bytes_equal": true,
+      "LF_equal": true,
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "actual_cached_source": "D:\\ck3-state\\resume91-m3-native\\registry-consumer176\\src\\org\\xar\\ck3\\research\\m3\\RegistryConsumerApi176.java",
+      "rawcompiled_bytes": 3364,
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_bytes": 3364,
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "physical_bytes_equal": true,
+      "LF_equal": true,
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "actual_cached_source": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\NativeTaskMemory.java",
+      "rawcompiled_bytes": 271,
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_bytes": 271,
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "physical_bytes_equal": true,
+      "LF_equal": true,
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "actual_cached_source": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\retained\\InGameIdlerEventDispatch.java",
+      "rawcompiled_bytes": 2735,
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_bytes": 2735,
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "physical_bytes_equal": true,
+      "LF_equal": true,
+      "new_copy": false
+    }
+  ],
+  "local_first_source_matched_cache_reuse": true,
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapRehashApi190.java": "fb4bddc4afb75efda84f8b8d44f4aba34161a8f0b2e7ba55edd4f15bc75d93e1",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapRehash190.java": "8967143b33a00b455a00b903918699222336f4ae32afb29c0f3166f266fcbb6c",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MapRehashBook190.java": "fb9cea7322f7122dba8b6d97d2db60644a2f044ad6459e098fe77185429d0bca",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MapRehashValidation190.java": "70306992d207e0168059d20c5e98506ef65b97bde8a13197a3790ef44ebc6f90"
+  },
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "start_utc": "2026-10-31T20:43:53.467346+00:00",
+      "end_utc": "2026-10-31T20:43:54.248372+00:00",
+      "process_seconds": 0.7809981000609696,
+      "exit_code": 0
+    },
+    {
+      "phase": "RUN7",
+      "start_utc": "2026-10-31T20:43:54.250200+00:00",
+      "end_utc": "2026-10-31T20:43:54.444545+00:00",
+      "process_seconds": 0.1943438001908362,
+      "exit_code": 0
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/implicit:none/192MiB/CPU1/empty-sourcepath; only four new explicit sources compiled",
+  "source_preserved": true,
+  "new_scenes": 7,
+  "scripted_source_operations": 125,
+  "events_per_scene": [
+    29,
+    3,
+    0,
+    0,
+    25,
+    29,
+    39
+  ],
+  "opaque_port_calls": 20,
+  "ports_per_scene": [
+    3,
+    2,
+    0,
+    0,
+    3,
+    4,
+    8
+  ],
+  "executed_top_level_checks": 14,
+  "assertion_meaning": "Exactly Completion and complete script exhaustion per scene; per-step kind/address/value/width guards and seeded unobserved cells do not add top-level semantic assertions.",
+  "Completion_classifications": {
+    "RETURNED": 6,
+    "UNSUPPORTED_INT3_AFTER_ERROR_CALLS_RETURNED": 1
+  },
+  "native_INT3_executed": false,
+  "Book_has_finalcells_assertion": false,
+  "case_name_highhalf_limit": "The error scenario seeds both supplied scratch halves and scripts a low-half port mutation; its name is not a final-memory/high-half persistence assertion.",
+  "model_logical_requests": 6,
+  "actual_model_POSTs": 6,
+  "model_stop": 3,
+  "model_length_whole_discarded": 3,
+  "local_phase_peak": 2,
+  "retry_POSTs": 0,
+  "all_cached_prompt_token_reports": null,
+  "actual_model_rounds": [
+    {
+      "directory": "D:\\ck3-state\\resume91-m3-native\\map-rehash190\\core-r1",
+      "POST_BEGIN": "2026-10-31T20:24:57.265283+00:00",
+      "END": "2026-10-31T20:26:24.018439+00:00",
+      "finish_reason": "length",
+      "http_status": 200,
+      "total_ms": 86752.77600018308,
+      "first_nonempty_content_delta_ms": 8131.361200008541,
+      "usage": {
+        "prompt_tokens": 23059,
+        "completion_tokens": 7000,
+        "total_tokens": 30059
+      },
+      "cached_prompt_tokens_if_reported": null,
+      "retry_POSTs": 0
+    },
+    {
+      "directory": "D:\\ck3-state\\resume91-m3-native\\map-rehash190\\book-r1",
+      "POST_BEGIN": "2026-10-31T20:24:57.265482+00:00",
+      "END": "2026-10-31T20:26:59.371331+00:00",
+      "finish_reason": "length",
+      "http_status": 200,
+      "total_ms": 122105.44059984386,
+      "first_nonempty_content_delta_ms": 7920.874099712819,
+      "usage": {
+        "prompt_tokens": 23220,
+        "completion_tokens": 12000,
+        "total_tokens": 35220
+      },
+      "cached_prompt_tokens_if_reported": null,
+      "retry_POSTs": 0
+    },
+    {
+      "directory": "D:\\ck3-state\\resume91-m3-native\\map-rehash190\\core-r2",
+      "POST_BEGIN": "2026-10-31T20:27:39.065286+00:00",
+      "END": "2026-10-31T20:28:01.047726+00:00",
+      "finish_reason": "stop",
+      "http_status": 200,
+      "total_ms": 21981.954799965024,
+      "first_nonempty_content_delta_ms": 810.1758002303541,
+      "usage": {
+        "prompt_tokens": 23387,
+        "completion_tokens": 3548,
+        "total_tokens": 26935
+      },
+      "cached_prompt_tokens_if_reported": null,
+      "retry_POSTs": 0
+    },
+    {
+      "directory": "D:\\ck3-state\\resume91-m3-native\\map-rehash190\\book-r2",
+      "POST_BEGIN": "2026-10-31T20:28:52.448864+00:00",
+      "END": "2026-10-31T20:30:38.189332+00:00",
+      "finish_reason": "length",
+      "http_status": 200,
+      "total_ms": 105739.9802999571,
+      "first_nonempty_content_delta_ms": 811.5121000446379,
+      "usage": {
+        "prompt_tokens": 23565,
+        "completion_tokens": 12000,
+        "total_tokens": 35565
+      },
+      "cached_prompt_tokens_if_reported": null,
+      "retry_POSTs": 0
+    },
+    {
+      "directory": "D:\\ck3-state\\resume91-m3-native\\map-rehash190\\host-owner190\\model-host01",
+      "POST_BEGIN": "2026-10-31T20:27:10.183397+00:00",
+      "END": "2026-10-31T20:27:43.231518+00:00",
+      "finish_reason": "stop",
+      "http_status": 200,
+      "total_ms": 33047.759000211954,
+      "first_nonempty_content_delta_ms": 949.8270000331104,
+      "usage": {
+        "prompt_tokens": 25048,
+        "completion_tokens": 4526,
+        "total_tokens": 29574
+      },
+      "cached_prompt_tokens_if_reported": null,
+      "retry_POSTs": 0
+    },
+    {
+      "directory": "D:\\ck3-state\\resume91-m3-native\\map-rehash190\\host-owner190\\model-host02",
+      "POST_BEGIN": "2026-10-31T20:28:39.522236+00:00",
+      "END": "2026-10-31T20:29:01.160427+00:00",
+      "finish_reason": "stop",
+      "http_status": 200,
+      "total_ms": 21637.823899742216,
+      "first_nonempty_content_delta_ms": 1773.7282998859882,
+      "usage": {
+        "prompt_tokens": 30330,
+        "completion_tokens": 3234,
+        "total_tokens": 33564
+      },
+      "cached_prompt_tokens_if_reported": null,
+      "retry_POSTs": 0
+    }
+  ],
+  "core_model_adoption": "R2 partial plus five owner semantic corrections, original raw candidate and exact changes preserved locally",
+  "Book_model_adoption": 0,
+  "Book_origin": "Owner whole literal replacement after two truncated whole model streams; source-derived after target-source review, not blind and not generated from target execution.",
+  "host_model_adoption": "R2 partial plus owner helper, write guards and method-arity corrections",
+  "host_independence": "Original complete source/callers/current physical declarations and actual Memory ancestors only; no production/Book bodies, candidates or results were supplied to that separate host role.",
+  "scope": "Supplied-storage business projection using existing formal179/180, explicit known arguments and opaque Memory-effect ports, captured/fresh fields, source width/order and actual business scratch writes; rawRAX/ABI-only save traffic excluded.",
+  "not_proved": [
+    "All exponents, count values, alias configurations or finite/nonfinite callback mutation traces.",
+    "Final memory values: the Book has no finalcells assertion; seeded high halves and case names do not add one.",
+    "Unknown C3B960/856050/allocator/error helper implementations or their native execution.",
+    "Hardware atomicity, locks, fairness, concurrency, CPU register/flags/ABI/prologue/stack spill equivalence or C++ EH.",
+    "Original Native execution, natural dispatch/M3/currentGame/EF0, runtime binding or gameplay progression."
+  ],
+  "old_business_production_recompiled": 0,
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "delivery_new_compile_or_run": false,
+  "formal_tree_edited_by_drafter": false,
+  "canonical_summary_or_source_index_edited_by_drafter": false,
+  "Main_prerequisite": false,
+  "parent_review_completed": true,
+  "parent_review_utc": "2026-10-31T20:53:11.836944+00:00"
+}
