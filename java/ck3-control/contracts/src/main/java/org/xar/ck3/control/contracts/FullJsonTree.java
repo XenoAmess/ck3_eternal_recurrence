@@ -27,8 +27,18 @@ public final class FullJsonTree {
     /** No field normalization is applied. Decimal tokens, integer tokens, missing and null stay distinct. */
     public static JsonNode parse(byte[] original, int maximumBytes) {
         requireLimit(maximumBytes);
-        StrictJson.require(original != null && original.length > 0 && original.length <= maximumBytes,
-                "bounded complete JSON material required");
+        if (original == null || original.length == 0 || original.length > maximumBytes) {
+            String frames = StackWalker.getInstance().walk(stream -> stream.skip(1).limit(5)
+                    .map(frame -> {
+                        String name = frame.getClassName();
+                        return name.substring(name.lastIndexOf('.') + 1) + "." + frame.getMethodName()
+                                + ":" + frame.getLineNumber();
+                    }).collect(java.util.stream.Collectors.joining(";")));
+            if (frames.length() > 768) frames = frames.substring(0, 768);
+            StrictJson.require(false, "bounded complete JSON material required: input="
+                    + (original == null ? "null" : original.length) + " max=" + maximumBytes
+                    + " callers=" + frames);
+        }
         try {
             String text = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
                     .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(original)).toString();
