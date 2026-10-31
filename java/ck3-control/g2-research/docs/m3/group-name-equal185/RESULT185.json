@@ -1,0 +1,124 @@
+{
+  "schema": "m3.group-name-equal185-first-software-summary/v1",
+  "package_number": 48,
+  "status": "FIRST_STRICT_AND_SEVEN_SCENES_PASS",
+  "actual_original": "group-name-equal185/ACTUAL185.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\group-name-equal185",
+  "actual_evidence_copied_to_Git": false,
+  "actual_caller": "3790510@379077C; only returned AL consumed",
+  "primary_RF": [
+    "3F6D2B0",
+    "3F6D384(exclusive)"
+  ],
+  "primary_code_bytes": 212,
+  "primary_UW_bytes": 8,
+  "helper_normal": [
+    "1E5A8D0",
+    "1E5A8DE(exclusive)"
+  ],
+  "helper_normal_bytes": 14,
+  "helper_probe_PE_bytes": 16,
+  "helper_tail_CC_bytes_not_adopted": 2,
+  "helper_exact_PDATA_entry": false,
+  "new_PE_bytes": 236,
+  "two_WORD_data_read_attempts": 2,
+  "two_WORD_PE_bytes": 0,
+  "WORD_read_failures": "Unbacked bounded RVA in offset resolution, no fallback or fabricated value",
+  "header_provider_query_Game": 0,
+  "new_explicit_sources_first_compiled": 4,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "local_first_verification_source_matched_cache_reuse": true,
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/GroupNameEqualApi185.java": "bb3eaca1394c4a073ed96460586ebedc90164f4b7678ae79d72053db2538e399",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/GroupNameEqual185.java": "23e26cf67404d9f7b5abf7ac04e40d6114b0d0c8db0b5e5e4723701589c7bb57",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/GroupNameEqualBook185.java": "f4662b30f3b839b9ad620fdd0aa5805828ad9de1ed7ccde28e946cc61eb07886",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/GroupNameEqualValidation185.java": "7d093e401ca4e608bf245252fbc5c459cde038277bffeb2351567d51676fcebe"
+  },
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "start_utc": "2026-10-31T19:32:49.680741+00:00",
+      "end_utc": "2026-10-31T19:32:50.465365+00:00",
+      "process_seconds": 0.7846091999672353,
+      "exit_code": 0
+    },
+    {
+      "phase": "RUN7",
+      "start_utc": "2026-10-31T19:32:50.468087+00:00",
+      "end_utc": "2026-10-31T19:32:50.669588+00:00",
+      "process_seconds": 0.20149180013686419,
+      "exit_code": 0
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/implicit:none/192MiB/CPU1/empty-sourcepath",
+  "source_preserved": true,
+  "new_scenes": 7,
+  "scripted_source_operations": 71,
+  "ops_per_scene": [
+    11,
+    9,
+    9,
+    9,
+    9,
+    11,
+    13
+  ],
+  "operation_counts": {
+    "WORD_read": 35,
+    "WORD_store": 14,
+    "Vector128_read": 12,
+    "byte_read": 10
+  },
+  "executed_top_level_checks": 21,
+  "assertion_meaning": "three executed top-level checks per scene: complete scripted operation consumption, expected AL equality, and AL0/1 domain; per-operation protocol guards not added, domain overlaps a valid expected AL and is not an independent semantic result",
+  "model_logical_requests": 6,
+  "actual_model_POSTs": 6,
+  "all_model_finishes_stop": true,
+  "local_phase_peak": 2,
+  "model_core_book_adoption": 0,
+  "core_book_origin": "owner entire after two whole semantic rejects per role",
+  "host_model_adoption": "second decoded Java source byte-for-byte; zero owner source edits",
+  "host_independence": "Host owner/model used original212B+14B/source receipts/BSS gap/current declarations/caller only; no core/Book bodies/candidates/results",
+  "book_expected_authority": "owner source-literal scripts after target-source review; not blind independent and never target-execution generated",
+  "request_API_audit": "Four actual requests/12messages/all10physicalprefix sources audited; no missing API or incorrect min/CPU-role contract; original REQUEST SHA preserved",
+  "parent_analysis_erratum": "Before reading helper14B parent called it min and speculated CPUfeature role. Both withdrawn. These errors existed only in collaboration messages, not actual model requests or final target.",
+  "correct_helper": "Reads WORD[RDX], then WORD[RCX]; CMOVB selects RDX when RCXvalue<RDXvalue, otherwise RCX including tie; preserves R8/R9",
+  "WORD_roles": "Observed uint16 mask of pointer low16 and observed uint16 limit; no numerical, CPUfeature, page-boundary or currentGame role inference",
+  "scope": "normal AL0/1, exactWORD stores/helper/fresh selectedWORD, Vector128 byte equality and first-left-NUL prefix,16bit wrapping counter and advanced scalar fallback",
+  "uncovered": [
+    "fresh helper scratch values differing from the written WORDs",
+    "all lane positions and pointer-alias/wrap inputs",
+    "unbounded-loop termination"
+  ],
+  "not_proved": [
+    "hardware16B atomicity/alignment/page/fault behavior",
+    "concurrency",
+    "fullCPU/prologue/register/flags/fullEAX/rawRAX/ABI/EH",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_production_recompiled": 0,
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
