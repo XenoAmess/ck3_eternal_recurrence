@@ -284,3 +284,11 @@ M1 新有限依据见执行机 `government-cold-manager184/LOCAL-MODEL-LESSONS18
 Root SAVE181 实现两真请求 stop10.530/13.144秒，reported19464+1099、19549+1572；record/codec 可用，effects 的允许同ID被写成必须同ID由 owner 纠正。独立 probe 第三请求 stop24.941秒/24715+3740，owner 修 API/合法 fixture/负例后首26 checks0；`resume91-root/save-codec181/DELIVERY.json` 分记三叶、测试来源及0物理信用。cached均null，无缓存收益结论。它不授本次冷 SAVE、Native或新游戏日成功。
 
 正式包装经验来自 Native writer 对 M2 193十叶的无EOF marker/逐Git blob核实；本岗 `resume91-runtime/save-cold181/RAW-SHA-ERRATA181.json` 另保两 READY 字段将LF文本SHA误标raw的 owner 勘误，实际 Service/collector 首 strict回执已按真实 read_bytes 哈希，源码未为勘误变化或重编。该批只整理既有证据，不统计新当刻在途/全局峰，不新增模型请求或编测。
+
+## resume91 183 后继封包勘误与17:44有限负载
+
+SAVE181 Root/runtime 已确认 prepare 的 CRLF decode/default Windows write_text 造成 CRCRLF/双空行，模型 old 串相同格式来自 owner 输入；RAW-SHA-ERRATA 与冻结请求保留，逻辑 LF/actual raw 两个 SHA 分开。此条撤销“模型自行双倍空行”的归因，不撤销实际 effects 约束词、probe API/fixture 等错误。M5 `crt4223-source185/consumer-owner/DELIVERY03.json` 首稿 length4000 因附加 review_points 重复整拒，唯一 source-only 纠正 stop/1087输出，正文与旧可见源相同后采用，不反授首稿。M2 226 DATA JSON 格式正确但 signed/偏移语义仍拒；M3 `m3-registry-portsfixture176` 17:42:44.797401–52.073127 的实际新 POST 与已写 owner 交叉，候选0采用，单列协调失误而非新组件。
+
+既有 reader 顺序执行，source 截止17:44:11.917093Z；固定17:34:11.917093–17:44:11.917093十分钟17真实 POST/16 END（13stop、2length、1reset），客户端峰4@17:43:59.126951。该刻 source3为 M2 method237 与 M6 core/data183；后相位单 metrics 全服务 running2/waiting0/KV0.0378788，事件扫描17:44:10.603886–11.867580、metrics11.867590–11.912436，非原子。已补 Root183两私有根/M5 consumer185两私有根指针；后补 M5 consumer187两根同 cutoff 重算也不改本窗口数字（两调用均窗外已END），无第二GET，初始窗口字节另存。标准根和此前 M3私有174/176同计，窗口原件 `WINDOW128-174411.json`。持续12–16/24–32仍未达；历史 raw17包含两旧未闭 attempt，known-absent 界线另保，rolling 阶段峰15亦非当前。准备或已END迟消费均不计在途；统计未新增模型 POST/重测。随后真正新372B witness237 host/book 17:45:58.796683/.796746Z 实际并发 POST，独立5完整源13034B、4500/8000预算，不冒为此前快照在途。
+
+成熟验证单列：本岗 M3 175 四逻辑/六真实 transport（两reset、一次stop、三length）模型源码全拒，owner core/ASM脚本首次4显式源 strict0、五新场0，未授原生 ABI/Game；M2 216 两整模型拒后 owner 独立 consumer 原样被生产岗首编，首次消费原381B六场完整 RAM/AL/log 差分0。所有原请求、source拒绝和 owner 验证分开保留，未为本段重跑或发表新增游戏信用。

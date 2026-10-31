@@ -170,3 +170,13 @@ ABI 答对不能替后继实现或独立 literal 预授正确。M0 同一原28B 
 把“允许”与“必须”逐项对照原约束，并保至少一个不同合法分支的正例。SAVE181 新 Fresh 规则允许同 snapshot ID，但模型误写必须同 ID；owner 纠正，新增 probe 同时核同 ID/新 ID 正例与非法分支。该26项只授软件合同；probe 的伪 Map cast、跳过负例、非法 SHA/不合法 revision fixture 也先由 owner 修，不能把最终绿追授原整 Test。短 x64 或小 API 仍需审 SBB/EAX、LEA/CMOVE、RIP resolved RVA 和实际 CALL/RET；独立 source literal、owner 提示或已读 target 后的 oracle 强度须分别说清，不把软件场景冒原 Native/Game。
 
 补丁包装和字节身份单独记录。无 EOF 换行的叶必须保正确 `\ No newline at end of file`，防止 `}---`/`}diff` 黏住下一 header；`git apply` 成功后仍核目标 Git blob。Windows `write_text` 默认换行转换及 `core.autocrlf` 可令工作树 raw SHA 与逻辑 LF/Git blob 不同；分别记录实际 `read_bytes()` 哈希、规范化文本哈希和编译输入，不能把 LF 预写文本哈希误标 raw SHA，也不据换行差异授算法失败。M2 十叶包装修复和本岗 SAVE181 READY 元数据误标均归 owner，原记录/勘误保留，未为此重跑绿或新发 HTTP。
+
+## 2026-10-31 resume91 后继：封包勘误与有限源码产物
+
+向模型提供源码时，实际文件 raw bytes 与提示文本分别保留、分别哈希。拼包文本先将 CRLF 规范为 LF，Windows 写出使用显式 `newline='\n'`；不要把已含 CRLF 的字符串交给默认换行转换。SAVE181 Root/runtime 的 prepare 曾由此生成 CRCRLF/双空行，模型 old 串的同样双空行来自 owner 输入，不应记成模型自行重复源码。原请求与冻结哈希保留，另加勘误，不回填或为已闭任务重投。具体 source path 误指与 EOL 机械适配仍计 owner 成本，effects 的允许/必须误判等真实模型错误仍独立保留。
+
+简单完整源码交付可使用只有 `path`/`source` 的有限 JSON，并在源码后停止，审阅结论另存 owner 记录。M5 crt185 consumer 首稿源码已完整，但后续 assumptions/review_points 重复到 length4000，整响应拒绝；唯一窄纠正改 source-only，完整 stop 返回与首稿可见正文逐字相同后才原样采用。此例只证明该任务的无界附加文本耗尽预算，任务同时变化、无 A/B，不推通用速度或服务参数收益。任何 length/断流仍不拼源码。
+
+纯 DATA schema 只减少产物格式漂移，不保证源语义正确：M2 226 的完整 JSON 守住格式，却仍错 signed 分支输入与 release-slot 偏移，整拒；两轮后 owner 接管。真实方法短答可用，不授同组复杂 casebook/原生 host 正确。严格区分 source-only literal、已读 target 的 owner 脚本和真实原码差分，最终 owner 绿不追授坏模型稿。
+
+文件尚未落盘不等于目标无人实现。M3 176 ports fixture 在 owner 正写时又被另一 owner 派给模型，实际 POST 原件保留并归 `DUPLICATE_OWNER_COORDINATION`，候选0采用，不计新组件；它不是 caller 目录碰撞。先复用已明确的写权与当前执行状态，不将每次 POST 设为中央 ACK 前置，也不因准备/审阅/迟消费答复而声称 HTTP 在途。
