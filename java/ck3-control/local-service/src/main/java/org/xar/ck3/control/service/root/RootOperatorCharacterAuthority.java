@@ -513,7 +513,6 @@ public final class RootOperatorCharacterAuthority {
                     &&ActionTransitions.dispatch(canonical.state()).filter(actual.ack::equals).isPresent(),"operator canonical attempt or ACK changed before its Window transition");
             Objects.requireNonNull(actual.currentPhysical).requireRetained(actual.same);
             RootOperatorGuardEvidence.requireHistorical(actual.same,actual.command,actual.attempt.guard(),context.archive().withSession(actual.same));
-            for(ExactRef source:prepared.sources){var pin=actual.same.capturePin(source,WriterContracts.MAX_PIN_BYTES);actual.same.verifyPin(pin);}
             var proposed=DriverOperatorRebindProjection.propose(actual.currentPhysical.known(),actual.request);
             var archive=context.archive().withSession(actual.same);
             StrictJson.require(Arrays.equals(archive.loadFullMaterial(actual.window.originals().afterDriver()).bytes(),proposed.driver().encode())
@@ -583,7 +582,6 @@ public final class RootOperatorCharacterAuthority {
                 StrictJson.require(head.digest().equals(same.head().digest()),"operator archive verifier must retain the original actual writer view");
                 if(receipt.state() instanceof ActionState.RejectedBeforeDispatch zero){
                     RootOperatorGuardEvidence.requireHistorical(same,receipt.command(),zero.attempt().guard(),archive);
-                    for(ExactRef source:prepared.sources){var pin=same.capturePin(source,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
                     StrictJson.require(zero.attempt().requestId().equals(zero.dispatch().requestId())
                             &&zero.dispatch().proof().stage()==NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
                             &&zero.dispatch().proof().requestBytesWritten()==0
@@ -593,7 +591,6 @@ public final class RootOperatorCharacterAuthority {
                 }
                 var settled=(ActionState.Settled)receipt.state();
                 var guard=RootOperatorGuardEvidence.requireHistorical(same,receipt.command(),settled.attempt().guard(),archive);
-                for(ExactRef source:prepared.sources){var pin=same.capturePin(source,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
                 if(settled.settlement() instanceof ActionState.Rejected rejection){
                     StrictJson.require(settled.dispatch() instanceof NativeActionPort.AckReceived,"operator rejection requires its actual original ACK");
                     var ack=(NativeActionPort.AckReceived)settled.dispatch();

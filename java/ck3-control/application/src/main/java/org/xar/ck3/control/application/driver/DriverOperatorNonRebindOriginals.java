@@ -48,7 +48,6 @@ public final class DriverOperatorNonRebindOriginals {
         if(identicalInstalled!=null){
             StrictJson.require(identicalInstalled.operation().equals(actual.command().operation()),"operator non-rebind borrowed another installed operation verifier");
             identicalInstalled.verifier().verify(same.head(),actual,archive);
-            var code=same.capturePin(identicalInstalled.definitionSource(),WriterContracts.MAX_PIN_BYTES);same.verifyPin(code);
         }
         var attempt=ActionTransitions.attempt(actual.state()).orElseThrow();var request=attempt.preparedRequest();
         StrictJson.require(request.requiredCapability().filter(OperatorPlayerSwitch.CAPABILITY::equals).isPresent(),"operator non-rebind borrowed another native capability");

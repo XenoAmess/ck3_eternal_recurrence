@@ -106,7 +106,6 @@ public final class DriverOperatorRebindOriginals {
         StrictJson.require(ContinuityJson.same(ContinuityJson.parseObject(canonical.bytes(),ContinuityJson.LEDGER_MAX_BYTES),after.toJson()),
                 "operator canonical commit artifact differs from the actual historical Window head");
         archive.loadMaterial(original.freshReadProof());var freshPin=same.capturePin(original.freshReadProof(),org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);same.verifyPin(freshPin);
-        for(ExactRef source:original.producerSources()){var pin=same.capturePin(source,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
     }
     /** Coverage check for the Bootstrap's actual private current Driver. Arguments alone never issue a current owner or Ready. */
     public static void requireCoveredBy(Session same,ActionReceipt actual,OutcomeArchive archive,DriverStateSnapshot.Complete actualDriver,
