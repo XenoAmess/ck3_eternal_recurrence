@@ -996,6 +996,38 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     private static byte[] bytes(String value) { return value.getBytes(StandardCharsets.UTF_8); }
     private static byte[] packet(String value) { try { return NativeWire.packet(bytes(value)); } catch (IOException failure) { throw new UncheckedIOException(failure); } }
     static final class ScriptedPackets implements NativePacketPort {
+        String fresh179Mode;
+        int fresh179Writes, fresh179EmptyReads;
+        byte[] fresh179Snapshot = new byte[0], fresh179Ack = new byte[0];
+        void configureFresh179(String mode) {
+            StrictJson.require(fresh179Mode == null && Set.of("success", "missing-ack", "negative-ack", "mismatched-ack").contains(mode),
+                    "one finite software fresh-read mode required");
+            fresh179Mode = mode;
+        }
+        private void fresh179(ObjectNode request) throws IOException {
+            var names = new java.util.HashSet<String>(); request.properties().forEach(entry -> names.add(entry.getKey()));
+            StrictJson.require(names.equals(Set.of("type", "protocol_version", "request_id", "step", "expected_revision"))
+                    && "execute_step".equals(NativeWire.text(request.get("type")))
+                    && NativeFreshSnapshotPort.STEP.equals(NativeWire.text(request.get("step")))
+                    && BigInteger.ZERO.equals(NativeWire.integer(request.get("expected_revision"), BigInteger.ZERO, BigInteger.ZERO)),
+                    "actual fixed fresh READ packet required");
+            String id = NativeWire.text(request.get("request_id"));
+            fresh179Writes++;
+            ObjectNode frame = NativeWire.object(NativeWire.parse(Arrays.copyOfRange(latestSnapshot, 4, latestSnapshot.length))).deepCopy();
+            frame.put("read_request_id", id).put("snapshot_id", "software-fresh-" + fresh179Writes);
+            fresh179Snapshot = NativeWire.packet(StrictJson.canonical(frame));
+            ObjectNode result = StrictJson.object().put("schema", NativeFreshSnapshotPort.RESULT_SCHEMA)
+                    .put("request_id", id).put("snapshot_id", frame.path("snapshot_id").textValue());
+            result.set("revision", frame.get("revision"));
+            if (fresh179Mode.equals("mismatched-ack")) result.put("snapshot_id", "different-software-frame");
+            ObjectNode ack = StrictJson.object().put("type", "command_result").put("protocol_version", 1).put("request_id", id);
+            if (fresh179Mode.equals("negative-ack")) ack.put("ok", false).put("error", "controlled fresh read refusal");
+            else { ack.put("ok", true); ack.set("result", result); }
+            fresh179Ack = NativeWire.packet(StrictJson.canonical(ack));
+            queue.addLast(fresh179Snapshot.clone());
+            if (!fresh179Mode.equals("missing-ack")) queue.addLast(fresh179Ack.clone());
+        }
+
         private record GuardedRead(ReadContract<?> contract,PlanningReadRequest request,PlanningReadGuard guard) { }
         private final ThreadLocal<GuardedRead> guardedRead=new ThreadLocal<>();
         private enum ReadAckLoss { UNBOUND, ARMED, AWAITING_READ_FAILURE, HELD, RELEASED }
@@ -1130,6 +1162,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                 throw new IOException("controlled scenario READ write completed; original ACK retained after receive failure");
             }
             if (queue.isEmpty()) {
+                if (fresh179Mode != null && actionWrites > 0) { fresh179EmptyReads++; throw new IOException("controlled no unsolicited push after mutation"); }
                 queue.addLast(heartbeat((NativeWire.Snapshot) NativeWire.decode(latestSnapshot)));
                 queue.addLast(latestSnapshot.clone());
             }
@@ -1152,6 +1185,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         }
         @Override public synchronized void writePacket(byte[] original, Instant deadline) throws IOException {
             var request = NativeWire.parse(Arrays.copyOfRange(original, 4, original.length)); String step = NativeWire.text(request.get("step"));
+            if (fresh179Mode != null && step.equals(NativeFreshSnapshotPort.STEP)) { fresh179(NativeWire.object(request)); return; }
             var wire=NativeWire.decodeExecuteRequest(original);var fields=new RawJson(wire.normalizedAdditionalFields().value());
             List<SoftwareActionScenario> matchingActions=actionScenarios.values().stream().filter(candidate->{
                 Optional<String> capability=candidate.privatePermission().isPresent()?Optional.empty():Optional.of(candidate.requiredCapability());
@@ -1163,6 +1197,16 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             boolean mutation=selectedAction!=null||actionScenarios.isEmpty()&&NativeStepDiscriminator.matchesRequest(action,ExecutableStepBindings.Kind.ACTION,new NativeRequest(step,defaultCapability,fields));
             boolean continuation=step.equals(Stage.HELPER_STATUS.step());
             RawJson extraResult = null; boolean scenarioRead=false;
+            if (mutation && fresh179Mode != null) {
+                var kept = new ArrayDeque<byte[]>();
+                while (!queue.isEmpty()) {
+                    byte[] queued = queue.removeFirst(); var decoded = NativeWire.decode(queued);
+                    boolean publication = decoded instanceof NativeWire.Snapshot || decoded instanceof NativeWire.Notice notice
+                            && notice.kind() == NativeWire.NoticeKind.HEARTBEAT;
+                    if (!publication) kept.addLast(queued);
+                }
+                queue.addAll(kept);
+            }
             if (mutation) actionWrites++; else if (continuation) continuationWrites++; else if (step.equals(QUERY.value())) readWrites++;
             else {
                 RootReadContractCatalog catalog=java.util.Objects.requireNonNull(issuedReadCatalog.get(),"actual read catalog not installed");
@@ -1253,5 +1297,17 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             }
         };
     }
+
+    public void configureSoftwareFreshRead179(String mode) throws IOException {
+        writer.locked(same -> {
+            StrictJson.require(same.head().state().sequence() == 0 && packets.actionWrites == 0,
+                    "software fresh-read scenario precedes original ACTION");
+            packets.configureFresh179(mode); return null;
+        });
+    }
+    public int softwareFreshWrites179() { return packets.fresh179Writes; }
+    public int softwareEmptyAfterMutation179() { return packets.fresh179EmptyReads; }
+    public byte[] softwareFreshSnapshot179() { return packets.fresh179Snapshot.clone(); }
+    public byte[] softwareFreshAck179() { return packets.fresh179Ack.clone(); }
 
 }
