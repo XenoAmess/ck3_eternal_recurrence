@@ -10,6 +10,14 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+19:30Z实际189：**MB18919:21:10.515195→19:21:17.234922Z exit0/6.719731秒，application2/local-service1共3源；worker189/PID178420 19:21:23.368821→19:24:00.754366Z preloop END1/157.385549秒，无LOOP**。19:24:11.491852薄采读到终态立即release Native安装HOLD（观察延迟10.74秒），没有189有效新jcmd/栈，不虚补phase。实际head495/repair、原494APPLIED/physicalpairverified/date53144520、cycle4/pendingnull保持，SAVE_CONFIRMED0/0新SAVE派发/0新游戏日；同Game71464/原birth/supervisor/qwen1.11/basic175与原预算不变。
+
+189自然源采用三小叶：Transitions.verifyHistoricalCompletedCycleProof697仅把原普通Active门改为已存在exactAPPLIED SAVE retained-proof只读role，完整historical capturedState/owner/session/chain/SEM/digest等式不变，模型原样、strict0/2.334549秒；Guard02仅加ordinaryBudget!=null限定自动受管父目录，ordinary行为同188、signed/explicit原scope保，必要strict0/1.952061秒。新真实FreshGenesis→Writer1Test首次strict0/1.817620秒、scope02首JVM1P0skip/2.710519秒，覆盖双parent目录与fileactualallocated计费、finitecap、explicitplan不暗建、fileport lostreturnUNKNOWN/pending及第二次0写；无signed行为claim/SourceSession/NV/Game，不跑188基线或重旧case。
+
+SavedAttachmentSourceStore仅capture方法新增明确的本次source-qualified requalification：原capture witness未持久不假恢复；保真实private VerifiedCheckpoint.requireIssued及cycles.verify，8字段metadata预期完整bytes相同、actual FileWitness前后稳定、full readMaterial(false)历史/physical重验、同borrowed writer/head后才登记新的当前witness，known-map/普通loadOriginal/retained/reload原方法均保。模型主体部分采用、owner补entryhead固定/read前verify，首1src strict19:20:38.338416→40.342078Z exit0/2.003663秒；当前三源+新test正式2c335754继承7c164。
+
+189真实在此新capture147 exactbyte守卫拒绝：`orphan material bytes differ from current verified capture identity`，未达最终SAVE commit，也不能说已经通过新的historical verifier后态。现metadata101180B未删除/改名/重写，188原capture identity仍未持久。190正以该真实metadata、current495/原cycle小DATA和完整typed codec独立roundtrip定位，不盲放宽整个proof；六项原件head/pair/session/proof/head摘要对照相同，但实际189 cycleAuthority/checkpointBinding/expectedBytes未被记录，缺口如实保，不把复制旧hash的DATA probe当actualexpected。Root对semantic material digest的跨JVM稳定性独立取证与Models源码域并行，不依据推断直接授修复/保存或再起空worker。
+
 19:15Z实际188：**MB18819:07:49.565905→19:08:07.158976Z exit0/17.593065秒，仅local-service Guard1源；worker188/PID206256 19:08:16.729754→19:11:40.274388Z preloop END1/203.544634秒，无LOOP**。19:11:52.440811薄采终态，观察延迟12.17秒，先release Native安装HOLD再取stderr；同Game71464/原birth/supervisor、qwen1.11/basic175与既有预算保持，0重SAVE/ARM/resume、0新日。head495/repair、cycle4/pendingnull、原494SAVE APPLIED/physicalpairverified/date53144520保持，最终SAVE_CONFIRMED尚未产生。
 
 188只在普通CheckpointFiles fallback同一actual writer Session内，先admit/requireWrapped/targetRoot，再在file reservation monitor外复用现createManagedDirectories创建缺父，然后走原file计费/预算/原子createNew；每目录受managedroot/64missing/有限inventory/DIRECTORY_GUARD/pending/UNKNOWN合同约束，activePhysical显式WritePlan整分支与NativeFiles未改。748B最小patch经Root strict0/8.315855秒后S/Z普通check/apply0，正式3a17dce。当前source也覆盖signed fallback，后继为更窄ordinary scope准备ordinaryBudget!=null候选02（当前ordinary行为等价），此新收窄未热改188、不冒原用户硬规则或此前测试要求。
