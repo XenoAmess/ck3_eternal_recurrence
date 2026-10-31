@@ -164,7 +164,7 @@ public final class EventPolicies {
             "active_event", "pending_character_interaction", "top_exclusive_modal_choice_hint"));
         actorAndDiagnostics(snapshot, modalSnapshot); mandatory.set("snapshot", modalSnapshot);
         var commands = mandatory.putArray("commands"); request.observations().history().forEach(row -> commands.add(parse(OpportunityJson.encode(row))));
-        var input = ChoicePlanningJson.decode(mandatory);
+        var input = ChoicePlanningJson.decodeRetained(mandatory);
         JsonNode result = mandatorySources.isPresent()
                 ? parse(SourceReviewedMandatoryPlanner.encode(new SourceReviewedMandatoryPlanner(mandatorySources.orElseThrow()).plan(new SourceReviewedMandatoryPlanner.Input(input))))
                 : parse(ChoicePlanningJson.encode(new MandatoryChoicePlanner().plan(input)));

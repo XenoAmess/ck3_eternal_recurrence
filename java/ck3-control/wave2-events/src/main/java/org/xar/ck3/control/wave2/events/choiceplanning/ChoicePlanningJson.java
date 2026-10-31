@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.events.mandatorychoice.MandatoryChoiceCodec;
 import org.xar.ck3.control.events.mandatorychoice.MandatoryChoiceModel.ChoiceIdentity;
 import org.xar.ck3.control.events.mandatorychoice.MandatoryChoiceModel.Decision;
@@ -46,12 +47,22 @@ public final class ChoicePlanningJson {
         return decode(exactObject(parse(raw), Set.of("schema", "snapshot", "commands", "action_steps", "bridge_capabilities")));
     }
 
-    public static PlanningInput decode(ObjectNode row) {
+    public static PlanningInput decode(ObjectNode row) { return decodeInternal(row, 256); }
+
+    public static PlanningInput decodeRetained(ObjectNode row) {
+        validateJsonDomain(row, 0);
+        exactObject(row, Set.of("schema", "snapshot", "commands", "action_steps", "bridge_capabilities"));
+        require(SCHEMA.equals(text(row.get("schema"))), "planning schema");
+        try { FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES); } catch (IllegalArgumentException e) { throw new IllegalArgumentException("retained planning wrapper exceeds finite byte budget", e); }
+        return decodeInternal(row, Integer.MAX_VALUE);
+    }
+
+    private static PlanningInput decodeInternal(ObjectNode row, int maxCommands) {
         validateJsonDomain(row, 0);
         exactObject(row, Set.of("schema", "snapshot", "commands", "action_steps", "bridge_capabilities"));
         require(SCHEMA.equals(text(row.get("schema"))), "planning schema");
         Optional<Snapshot> snapshot = row.get("snapshot").isNull() ? Optional.empty() : Optional.of(snapshot(object(row.get("snapshot"))));
-        JsonNode commands = row.get("commands"); require(commands.isArray() && commands.size() <= 256, "bounded command history required");
+        JsonNode commands = row.get("commands"); require(commands.isArray() && commands.size() <= maxCommands, "bounded command history required");
         List<HistoryRow> history = new ArrayList<>();
         for (JsonNode command : commands) { history.add(history(command)); }
         return new PlanningInput(snapshot, history, strings(row.get("action_steps")), strings(row.get("bridge_capabilities")));
