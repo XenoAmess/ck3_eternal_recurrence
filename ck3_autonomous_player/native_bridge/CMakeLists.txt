@@ -1594,6 +1594,8 @@ add_library(xar_ck3_bridge SHARED
   src/family_marriage_send_outgoing_fields_v2.cpp
   src/family_marriage_send_outgoing_dispatch_v2.cpp
   src/family_marriage_send_outgoing_serializer_v2.cpp
+  src/family_marriage_outgoing_storage_12004.cpp
+  src/family_marriage_outgoing_storage_wire_12004.cpp
   src/campaign_root_context_v1.cpp
   src/campaign_root_context_v1_mailbox.cpp
   src/campaign_root_context_v1_serializer.cpp
