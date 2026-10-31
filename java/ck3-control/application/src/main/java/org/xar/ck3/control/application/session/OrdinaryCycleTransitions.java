@@ -542,7 +542,9 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 CompletedCycleProof completed = proofFromJson(details.get("completed_cycle_proof"));
                 CycleState state = state(actualHead.state(), owner); requireLegacyPendingClear(actualHead.state(), state);
                 requireFrontier(actualHead.state(), state); validateChain(state);
-                requireProof(state, completed); requireCurrentFrame(actualHead.state(), state, completed.frame()); verify(session, owner, completed.semantic());
+                requireProof(state, completed);
+                VerifiedSemantic proofSemantic = verify(session, owner, completed.semantic());
+                requireProofFrame(actualHead.state(), state, proofSemantic);
                 requireSavedContinuation(completed.frame(), pair.frame());
                 String checked = checkpointVerifier.verify(session, owner, pair, completed); WriterContracts.requireDigest(checked);
                 proof.put("checkpoint_digest", checked);
