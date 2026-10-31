@@ -184,3 +184,12 @@ M7正式Java `d17b7d9580`、Native `c703f434d2`分记：两C++ core函数原样�
 此前“分布待收”现获补记：`REVIEWS91-INCREMENT126.json`固定01:43:10截止，21任务/21尝试均stop、21项owner审阅齐；原OS18项0/Root3项未知，未知非拒绝。
 
 异质分组：raw纠正2/scope3、owner test4/source1/Native fixture1、reject6、model helper纠正1、analysis/code拒1、cast cleanup1、direction部分1，合21，不算统一采用率。增量客户端峰3@01:32:59，阶段6/新IP历史8另列；旧5份SHA及Root旧unknown/M7后到补记不回写，后继HTTP不扩窗。本包0POST/编测。
+
+
+### resume91 parallel128 实际并发要求与串行空档
+
+用户反复要求更多真实同时请求，累计调用数、参数、未poll会话或准备任务不能代替。Root承认准备/审阅串行空档：服务余量观察下峰8仍不足，须改进组织，不能用“服务不支持”解释；观察也非最大容量证明。
+
+完整源齐后owner复用call91立即直POST，无需中央ACK；implementation与独立consumer/probe并行，审阅时下一未写方法继续。source_files+task_path自动三消息，免手工巨大body/额外索引前置；MB HOLD只编测，不挡HTTP。12–16为真实积压时初始在途目标，非已达/已实现scheduler，非quota，不凑数。复用caller、不建平台、不造任务/重绿，监视/总结不计模型请求。
+
+`STATUS-PARALLEL128-021352.json`固定02:13:52.729045：源在途1项m7-captured79e-cells92；server running1/wait0/KV0.0214646。新IP历史峰8尚未达目标，旧IP25不混；源码与运行期HTTP分记。后到两root-clock REVIEW为raw D采用、owner语义0、合并strict2src0，不授runtime/Game信用。本包0POST/编测/CAS，不阻128运行。

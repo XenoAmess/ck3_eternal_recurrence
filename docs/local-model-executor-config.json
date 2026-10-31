@@ -28,8 +28,30 @@
   },
   "experiment_notes": "docs/local-model-executor-feasibility-2026-10-28.md",
   "dispatch_policy": {
-    "updated_on": "2026-10-30",
-    "basis": "User requests more frequent real calls and continued capability exploration, while autonomously withholding tasks already shown to exceed the model's capability.",
+    "updated_on": "2026-10-31",
+    "basis": "User repeatedly requests substantially higher actual local-model concurrency. Remove serial preparation/review idle gaps by dispatching complete real source tasks directly from their owners.",
+    "concurrency": {
+      "source_owner_direct_post": true,
+      "central_ack_required": false,
+      "existing_caller": "D:/ck3-state/model-dispatch91/call91.py",
+      "initial_client_in_flight_target": [
+        12,
+        16
+      ],
+      "target_scope": "Operating target for real unfinished source tasks; not an observed concurrency result or a newly implemented scheduler.",
+      "increase_when": "Raise real concurrency beyond the initial target while complete independent work is ready and observed service headroom remains.",
+      "overlap": "Prepare, review and compile candidates while owners dispatch other complete independent implementations and necessary consumers/probes; build holds do not block source HTTP.",
+      "adjust_using": [
+        "actual client POST intervals",
+        "server running and waiting",
+        "transport errors and configured retries",
+        "KV usage",
+        "TTFT and total latency"
+      ],
+      "source_preparation": "Reuse source_files plus task_path, or stable_source_path, in the existing caller; no central packet ACK or additional indexing prerequisite.",
+      "reporting": "Report current real in-flight requests and actual BEGIN/END windows separately from cumulative use, operational targets and runtime decision HTTP.",
+      "avoid": "Do not fill quotas, replay completed work, send empty probes, or count monitoring and summaries as model tasks."
+    },
     "prefer": [
       "Independent real implementation methods and small contract changes with exact declarations and consumers",
       "Actual compiler or behaviour diagnostics, with a narrower corrective request when useful",
