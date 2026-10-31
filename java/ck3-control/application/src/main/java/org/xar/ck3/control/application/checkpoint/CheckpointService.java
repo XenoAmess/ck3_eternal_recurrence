@@ -1,6 +1,8 @@
 package org.xar.ck3.control.application.checkpoint;
 
 import java.io.IOException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.xar.ck3.control.continuity.ContinuityJson;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.time.Clock;
@@ -19,6 +21,9 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.*;
 
 /** Shared SAVE path. Execute once, observe twice, persist complete Driver, verify pair, reconcile read-only. */
 public final class CheckpointService implements ActionPorts.PostconditionPort {
+    /** SAVE is streamed by its physical file producer; it is never a generic small native packet. */
+    private static final long MAXIMUM_SAVE_BYTES = 1024L * 1024L * 1024L;
+    private static final int MAXIMUM_DIAGNOSTIC_WITNESS_BYTES = 65536;
     @FunctionalInterface public interface SeedAdoptionPort { SeedAdoption freezeFirst(CheckpointPair pair, ActionReceipt appliedSave) throws IOException; }
     private static final class AttemptContext {
         private final CheckpointRequest request; private final Optional<FileWitness> before;
@@ -156,8 +161,10 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
                 Optional<FileWitness> observed = files.observe(context.request.expectedSavePath());
                 if (observed.isEmpty() || context.before.filter(observed.orElseThrow()::equals).isPresent()) return new ActionPorts.Pending("SAVE physical file has not changed", List.of());
                 FileWitness current = observed.orElseThrow();
-                if (current.reference().bytes() == 0) return new ActionPorts.Pending("SAVE physical file is still empty", List.of(current.reference()));
-                if (!current.equals(context.prior)) { context.prior = current; return new ActionPorts.Pending("SAVE awaits second stable physical observation", List.of(current.reference())); }
+                if (current.reference().bytes() == 0) return new ActionPorts.Pending("SAVE physical file is still empty", diagnosticWitness(command, current, "empty_file"));
+                if (current.reference().bytes() > MAXIMUM_SAVE_BYTES)
+                    return new ActionPorts.Pending("SAVE physical file exceeds its independent finite observation budget", diagnosticWitness(command, current, "save_budget_exceeded"));
+                if (!current.equals(context.prior)) { context.prior = current; return new ActionPorts.Pending("SAVE awaits second stable physical observation", diagnosticWitness(command, current, "first_stable_observation")); }
                 var ready = poststate(command,attempt,context,ack); requireSavedFrame(command, ready, context.request.lineageId());
                 ExactRef ackRef = publish(command.actionId() + "-ack.json", ack.originalPacket());
                 DriverCheckpointStore.Anchor anchor = drivers.persist(command.actionId(), current, ready.observed(), context.request.lineageId());
@@ -196,6 +203,23 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
                 && after.frame().revision().compareTo(before.frame().revision()) >= 0 && after.frame().identity().nativeRevision().compareTo(before.frame().identity().nativeRevision()) >= 0,
                 "native SAVE poststate crossed Game/session/source/date/actor/episode/lineage");
     }
+    /** Immutable UNKNOWN diagnostic DATA. It cannot qualify a physical pair or replace a later file observation. */
+    private List<ExactRef> diagnosticWitness(ActionCommand command, FileWitness witness, String phase) throws IOException {
+        ActionPorts.OutcomeArchive archive;BorrowedSession sessions;CheckpointCommitVerifier.WriterLeaseVerifier authority;
+        synchronized(this){archive=evidenceArchive;sessions=evidenceSession;authority=evidenceAuthority;}
+        if(archive==null||sessions==null||authority==null)return List.of();
+        var same=sessions.current();authority.require(same);var bound=archive.withSession(same);
+        ObjectNode row=StrictJson.object();row.put("schema","xar.java-checkpoint-diagnostic-witness/v1");
+        row.put("action_id",command.actionId());row.put("action_body_sha256",ActionCodec.bodySha256(command));
+        row.put("phase",phase);row.set("witness",CheckpointPairCodec.fileWitnessToJson(witness));
+        byte[] canonical=ContinuityJson.canonical(row);
+        StrictJson.require(canonical.length<=MAXIMUM_DIAGNOSTIC_WITNESS_BYTES,"finite original SAVE diagnostic witness required");
+        RawJson material=new RawJson(canonical);ExactRef original=bound.preserveMaterial(material);
+        StrictJson.require(original.bytes()==canonical.length && original.sha256().equals(ActionCodec.sha256(canonical))
+                && material.equals(bound.loadMaterial(original)),"immutable SAVE diagnostic witness archive differs");
+        authority.require(same);return List.of(original);
+    }
+
     private ExactRef publish(String name, byte[] raw) throws IOException {
         Path path = evidenceRoot.resolve(name); var existing = files.observe(path);
         if (existing.isPresent()) {

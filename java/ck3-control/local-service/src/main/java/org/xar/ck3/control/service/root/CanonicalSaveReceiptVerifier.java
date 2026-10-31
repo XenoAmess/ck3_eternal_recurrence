@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.application.checkpoint.*;
 import org.xar.ck3.control.application.session.SessionPorts.CompletedCycleProof;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
@@ -142,7 +143,8 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
                         new ExpectedInteger(new FieldKey("played_character_id"),pair.frame().frame().identity().player()),
                         new ExpectedBoolean(new FieldKey("checkpoint_pair_verified"),true))),
                     "canonical SAVE independently observed effect does not prove this exact physical pair");
-            var post=NativeWire.decode(bound.loadNativeFrame(actual.originalEvidence()));
+            byte[] postPacket=bound.loadNativeFrame(actual.originalEvidence());
+            var post=NativeWire.decode(postPacket);
             StrictJson.require(post instanceof NativeWire.Snapshot,"original post-SAVE native snapshot required");
             var snapshot=(NativeWire.Snapshot)post;var nativeState=org.xar.ck3.control.contracts.FullJsonTree.parse(snapshot.state().value(),
                     org.xar.ck3.control.application.driver.DriverJson.MAX_NATIVE_BYTES);var player=nativeState.get("played_character");
@@ -154,12 +156,104 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
                     &&nativeState.path("map_ready").isBoolean()&&nativeState.path("map_ready").booleanValue()
                     &&nativeState.path("paused").isBoolean()&&nativeState.path("paused").booleanValue()
                     &&player.path("alive").isBoolean()&&player.path("alive").booleanValue(),"actual post-SAVE native identity/paused map differs");
+            verifyFreshSnapshotOriginals(same, receipt, bound, actual, snapshot, postPacket);
             var material=StrictJson.object();material.put("schema","xar.canonical-save-receipt-binding/v1");
             material.set("request",requestRef.toJson());material.set("dispatch",dispatchRef.toJson());
             material.set("pair_proof",pairRef.toJson());material.set("post_native",actual.originalEvidence().toJson());material.put("action_body_sha256",receipt.bodySha256());
             material.set("saved_driver",savedDriverRef.toJson());
             material.set("pair",StrictJson.parse(CheckpointPairCodec.encode(pair)));
             writer.requireSession(same);return ContinuityJson.digest(material);
+    }
+    private void verifyFreshSnapshotOriginals(ContinuityStorePort.Session same, ActionReceipt receipt, ActionPorts.OutcomeArchive bound,
+            ActionState.EffectObservation actual, NativeWire.Snapshot snapshot, byte[] postPacket) throws IOException {
+        var provenance = actual.provenance();
+        if (!(provenance instanceof ObservationProvenance.FreshSnapshotQuery)) return;
+        var query = (ObservationProvenance.FreshSnapshotQuery) provenance;
+        var basis = query.basis();
+        if (basis instanceof ObservationProvenance.SameGameWatch) throw new IOException("SAVE cannot use same-game watch fresh basis");
+
+        var readAckRef = query.readAcknowledgement();
+        var readAck = bound.load(readAckRef);
+        if (!(readAck instanceof NativeActionPort.AckReceived)) throw new IOException("fresh snapshot read acknowledgement must be AckReceived");
+        var readAckTyped = (NativeActionPort.AckReceived) readAck;
+        StrictJson.require(readAckTyped.nativeOk() && readAckTyped.requestId().equals(query.requestId()), "fresh snapshot read ACK invalid or ID mismatch");
+        var readCustody = readAckTyped.custody().orElseThrow(() -> new IOException("fresh snapshot read ACK lacks custody"));
+        var command = receipt.command();
+        StrictJson.require(bound.referenceOf(readAckTyped).equals(readAckRef)
+                && readCustody.session().machineId().equals(command.before().machineId())
+                && readCustody.session().machineId().equals(command.source().machineId())
+                && readCustody.session().game().equals(command.before().game())
+                && readCustody.session().sessionId().equals(command.sessionId())
+                && actual.after().machineId().equals(command.before().machineId())
+                && actual.after().game().equals(command.before().game())
+                && actual.source().equals(command.source()) && actual.sessionId().equals(command.sessionId())
+                && snapshot.snapshotId().equals(actual.after().frame().snapshotId())
+                && snapshot.revision().equals(actual.after().frame().identity().nativeRevision()),
+                "fresh SAVE read crossed original ACK/native/source/Game/session identity");
+        StrictJson.require(postPacket.length == actual.originalEvidence().bytes()
+                && ActionCodec.sha256(postPacket).equals(actual.originalEvidence().sha256()),
+                "fresh SAVE native packet differs from its exact archived original");
+
+        var frame = new NativeObservationPort.ObservedFrame(
+            readCustody.session(),
+            snapshot.snapshotId(),
+            snapshot.revision(),
+            new RawJson(snapshot.state().value()),
+            postPacket,
+            actual.observedAt()
+        );
+
+        NativeFreshSnapshotPort.verifyOriginal(readAckTyped, frame, query.snapshotReceived());
+
+        if (basis instanceof ObservationProvenance.LiveAfterSetter) {
+            var setterRef = ((ObservationProvenance.LiveAfterSetter) basis).setterAcknowledgement();
+            var saveAck = receipt.ack().orElseThrow(() -> new IOException("SAVE requires ACK for live setter basis"));
+            StrictJson.require(bound.referenceOf(saveAck).equals(setterRef), "live setter ACK ref mismatch");
+            NativeFreshSnapshotPort.verifyAfterOriginal(saveAck, readAckTyped, frame, query.snapshotReceived());
+        } else if (basis instanceof ObservationProvenance.ColdAfterAcknowledgement) {
+            var originalReceiptRef = ((ObservationProvenance.ColdAfterAcknowledgement) basis).originalReceipt();
+            var originalReceipt = bound.loadReceipt(originalReceiptRef);
+            StrictJson.require(bound.receiptReferenceOf(originalReceipt).equals(originalReceiptRef), "cold original receipt ref mismatch");
+            ContinuityActionJournal.requireHistoricalReceipt(same.head().state(), originalReceipt, bound);
+
+            var originalState = originalReceipt.state();
+            if (!(originalState instanceof ActionState.AckReceived || originalState instanceof ActionState.Unknown)) throw new IOException("cold original must be AckReceived or Unknown");
+
+            var originalAttempt = originalState instanceof ActionState.AckReceived ? ((ActionState.AckReceived) originalState).attempt() : ((ActionState.Unknown) originalState).attempt().orElseThrow(() -> new IOException("cold original Unknown lacks attempt"));
+            var originalAck = originalState instanceof ActionState.AckReceived ? ((ActionState.AckReceived) originalState).dispatch() : ((ActionState.Unknown) originalState).dispatch().orElseThrow(() -> new IOException("cold original Unknown lacks dispatch"));
+            if (!(originalAck instanceof NativeActionPort.AckReceived)) throw new IOException("cold original dispatch must be AckReceived");
+            var originalAckTyped = (NativeActionPort.AckReceived) originalAck;
+
+            StrictJson.require(originalAckTyped.nativeOk() && originalAckTyped.requestId().equals(originalAttempt.requestId()), "cold original ACK invalid");
+            var originalCustody = originalAckTyped.custody().orElseThrow(() -> new IOException("cold original ACK lacks custody"));
+
+            var saveCommand = receipt.command();
+            var originalCommand = originalReceipt.command();
+            StrictJson.require(originalCommand.equals(saveCommand) && originalReceipt.bodySha256().equals(receipt.bodySha256()), "cold original command mismatch");
+            StrictJson.require(originalAttempt.equals(receipt.state() instanceof ActionState.Settled ? ((ActionState.Settled) receipt.state()).attempt() : null), "cold original attempt mismatch");
+            StrictJson.require(originalAckTyped.equals(receipt.state() instanceof ActionState.Settled ? ((ActionState.Settled) receipt.state()).dispatch() : null), "cold original dispatch mismatch");
+
+            StrictJson.require(originalCustody.session().machineId().equals(saveCommand.before().machineId())
+                    && originalCustody.session().game().equals(saveCommand.before().game())
+                    && originalCustody.session().sessionId().equals(saveCommand.sessionId()), "cold original session mismatch");
+
+            originalCustody.verify(originalAckTyped, originalAttempt.guard());
+
+            var originalPost = NativeWire.decode(originalAckTyped.originalPacket());
+            if (!(originalPost instanceof NativeWire.CommandResult)) throw new IOException("cold original packet not CommandResult");
+            var originalResult = (NativeWire.CommandResult) originalPost;
+            StrictJson.require(originalResult.requestId().equals(originalAckTyped.requestId())
+                    && originalResult.nativeOk()
+                    && Arrays.equals(originalResult.payload().value(), originalAckTyped.originalFrame().bytes())
+                    && originalResult.result().token().isPresent() == originalAckTyped.originalResultToken().isPresent()
+                    && (!originalResult.result().token().isPresent() || Arrays.equals(originalResult.result().token().orElseThrow().value(), originalAckTyped.originalResultToken().orElseThrow().bytes())), "cold original packet fields mismatch");
+
+            StrictJson.require(!readAckTyped.requestId().equals(originalAckTyped.requestId()), "cold read ACK ID collision");
+            StrictJson.require(readCustody.session().machineId().equals(originalCustody.session().machineId())
+                    && readCustody.session().game().equals(originalCustody.session().game())
+                    && readCustody.session().sessionId().equals(originalCustody.session().sessionId()), "cold read session mismatch");
+            StrictJson.require(!readCustody.writeEntered().observedAt().isBefore(originalCustody.responseReceived().observedAt()), "cold read write before original ACK");
+        } else throw new IOException("unsupported fresh SAVE acknowledgement basis");
     }
     private byte[] read(ExactRef ref,int maximum)throws IOException {
         var witness=files.observe(Path.of(ref.path())).orElseThrow(()->new IOException("original SAVE source unavailable"));

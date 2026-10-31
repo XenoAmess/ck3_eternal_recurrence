@@ -669,7 +669,16 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         details.set("checkpoint_pair", input.pair().map(pair -> StrictJson.parse(CheckpointPairCodec.encode(pair))).orElseGet(() -> com.fasterxml.jackson.databind.node.NullNode.instance));
         if (input.completedCycleProof().isPresent()) details.set("completed_cycle_proof", proofToJson(input.completedCycleProof().orElseThrow()));
         else details.putNull("completed_cycle_proof");
-        List<ExactRef> evidence = new ArrayList<>(input.evidence()); input.completedCycleProof().ifPresent(proof -> evidence.addAll(proof.semantic().references()));
+        List<ExactRef> evidence = new ArrayList<>(input.evidence());
+        if (input.kind() == JournalKind.SAVE_CONFIRMED) {
+            StrictJson.require(input.pair().isPresent() && input.completedCycleProof().isPresent(),
+                    "confirmed SAVE requires its actual physical pair and completed-cycle proof");
+            var pair = input.pair().orElseThrow();
+            // The complete FileWitness remains in checkpoint_pair, and verify() independently
+            // reopens/revalidates this physical SAVE. It is not a small immutable native packet.
+            evidence.removeIf(ref -> ref.equals(pair.save().reference()));
+        }
+        input.completedCycleProof().ifPresent(proof -> evidence.addAll(proof.semantic().references()));
         return new WriterContracts.Request(BATCH_KIND, ContinuityJson.canonical(details), evidence.stream().distinct().toList());
     }
     void requireCapturedRestartFrame(ContinuityStorePort.Session same,ContinuityState captured,
