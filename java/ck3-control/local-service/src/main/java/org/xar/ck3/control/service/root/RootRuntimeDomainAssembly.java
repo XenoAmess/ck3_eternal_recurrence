@@ -295,6 +295,7 @@ public final class RootRuntimeDomainAssembly {
             context.writer().requireSession(context.borrowedSession());
             List<RootReconciliationAuthority.AllowedRead> actual=new ArrayList<>();
             actual.addAll(shared.army().reconciliationReads(original,identity,current,deadline));
+            actual.addAll(shared.nativeGovernance().reconciliationReads().allowed(original,identity,current,deadline));
             actual.addAll(shared.military().reconciliationReads(original,identity,current,deadline));
             actual.addAll(army.reconciliationReads(original,identity,current,deadline));
             if(original.command().operation().equals(org.xar.ck3.control.application.planning.finance.OrdinaryFinancePolicies.MERCENARY)) {
