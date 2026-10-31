@@ -1,0 +1,378 @@
+{
+  "schema": "m3.map-rehash-insert-binding195-five-leaf-result/v1",
+  "package_number": 59,
+  "canonical_number_source": "parent ACTUAL-SUMMARY-BINDING195.json",
+  "status": "FIRST_TWO_NEW_SOURCES_AND_THREE_GROUPS_PASS",
+  "delivery_status": "PARENT_REVIEWED_MATURE_SOURCE_READY_PENDING_FORMAL",
+  "first_software_validation": {
+    "receipt_file": "ACTUAL-BINDING195.json",
+    "receipt_sha256": "f570003c8abd20d856feaacbda526355cad03ada496d938d86005e6dcbccb0ed",
+    "canonical_summary_file": "ACTUAL-SUMMARY-BINDING195.json",
+    "canonical_summary_sha256": "5e0cb04c42da8b3ccf1c4d43f49da8dfb5d20005f2b57b3c71b09438d5070b39",
+    "stages": [
+      {
+        "phase": "STRICT2",
+        "begin_utc": "2026-10-31T21:34:42.089701+00:00",
+        "end_utc": "2026-10-31T21:34:42.883634+00:00",
+        "seconds": 0.7939195004291832,
+        "exit": 0
+      },
+      {
+        "phase": "FIRST3GROUPS",
+        "begin_utc": "2026-10-31T21:34:42.885817+00:00",
+        "end_utc": "2026-10-31T21:34:43.035542+00:00",
+        "seconds": 0.14972760016098619,
+        "exit": 0
+      }
+    ],
+    "new_explicit_sources": 2,
+    "source_preserved": true,
+    "old_production_recompiled": 0,
+    "old_cases_rerun": 0
+  },
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapRehashInsertBinding195.java",
+      "kind": "main",
+      "bytes": 2596,
+      "sha256": "23eacc739f51384ee930592298c021add0191926d12132da1f85e05f11b1fe1a",
+      "changed_for_delivery": false,
+      "grade": "MODEL_R1_RAW_ZERO_OWNER_EDITS_SOURCE_REVIEWED"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MapRehashInsertBindingValidation195.java",
+      "kind": "test",
+      "bytes": 15509,
+      "sha256": "c1d30fea4fefe12a28b00fa3501ea1094c49fdba02c331ecd0e9568a263b99a9",
+      "changed_for_delivery": false,
+      "grade": "OWNER_WHOLE_WITNESS_REPLACEMENT_BOTH_MODEL_WHOLES_REJECTED_ZERO_CONTENT_ADOPTED"
+    }
+  ],
+  "model_adoption": {
+    "binder": "R1 raw2596B, zero owner edits, adopted after first software pass",
+    "witness": "Both whole model responses rejected, zero model content; owner complete15509B replacement after reading binder",
+    "actual_POSTs": 3,
+    "stop": 2,
+    "length": 1,
+    "retry_POSTs": 0,
+    "cached_prompt_token_reports": null,
+    "bounded_cohort_peak": 2,
+    "seconds_at_peak2": 15.229383,
+    "current_inflight_in_completed_cohort": 0,
+    "R1_witness_failure": "82 repeated import blocks; target class/group implementation absent at length limit",
+    "R2_witness_failure": "Complete stop response still had invalid Java, nominal type and fixture-observation errors",
+    "third_semantic_round": false
+  },
+  "executed_scope": {
+    "groups": 3,
+    "new_bound_invocations": 1,
+    "bound_script_events": 32,
+    "source_core_Memory_events": 29,
+    "opaque_reserve_input_effect_W8": 1,
+    "child_ports": 2,
+    "delegate_roles": 8,
+    "long_return_checks": 2,
+    "foreign_rejections": 1,
+    "executed_top_conditions": 32,
+    "top_condition_decomposition": {
+      "bound": 9,
+      "delegation": 20,
+      "foreign": 3
+    },
+    "observed_frame": {
+      "output": "7000",
+      "child_body": "6F20",
+      "flag_write": "6FE0",
+      "fifth_pointer_write": "6F40"
+    }
+  },
+  "type_navigation": {
+    "SharedMemory": "extends MapRehashApi190.Memory, MapInsert191Api.Memory",
+    "new_edge": "MapRehashInsertBinding195.callc3b960 -> MapInsertC3B960.execute(Input,Memory,Ports)",
+    "child_scratch": "actual source-derived bodyRsp=output-0xE0; no fifth pointer read/replay",
+    "unchanged_inherited_roles": "gs58/call4223a84/call4223a24 retain C3e150Api180.Memory, not a narrower parameter",
+    "unchanged_roles_total": 8
+  },
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapRehashApi190.java",
+      "actual_first_validation_source_raw": {
+        "bytes": 1368,
+        "sha256": "fb4bddc4afb75efda84f8b8d44f4aba34161a8f0b2e7ba55edd4f15bc75d93e1",
+        "LF_bytes": 1368,
+        "LF_sha256": "fb4bddc4afb75efda84f8b8d44f4aba34161a8f0b2e7ba55edd4f15bc75d93e1",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 1368,
+        "sha256": "fb4bddc4afb75efda84f8b8d44f4aba34161a8f0b2e7ba55edd4f15bc75d93e1",
+        "LF_bytes": 1368,
+        "LF_sha256": "fb4bddc4afb75efda84f8b8d44f4aba34161a8f0b2e7ba55edd4f15bc75d93e1",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob": {
+        "bytes": 1368,
+        "sha256": "fb4bddc4afb75efda84f8b8d44f4aba34161a8f0b2e7ba55edd4f15bc75d93e1",
+        "LF_bytes": 1368,
+        "LF_sha256": "fb4bddc4afb75efda84f8b8d44f4aba34161a8f0b2e7ba55edd4f15bc75d93e1",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "4d0758b1b3e9ae6d33e97274051ed92d8d08509e",
+      "actual_formal_raw_equal": true,
+      "actual_git_raw_equal": true,
+      "actual_git_LF_equal": true,
+      "formal_git_raw_equal": true,
+      "formal_git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java",
+      "actual_first_validation_source_raw": {
+        "bytes": 2020,
+        "sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+        "LF_bytes": 2020,
+        "LF_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 2020,
+        "sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+        "LF_bytes": 2020,
+        "LF_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob": {
+        "bytes": 2020,
+        "sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+        "LF_bytes": 2020,
+        "LF_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "4d0758b1b3e9ae6d33e97274051ed92d8d08509e",
+      "actual_formal_raw_equal": true,
+      "actual_git_raw_equal": true,
+      "actual_git_LF_equal": true,
+      "formal_git_raw_equal": true,
+      "formal_git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsertC3B960.java",
+      "actual_first_validation_source_raw": {
+        "bytes": 10777,
+        "sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4",
+        "LF_bytes": 10777,
+        "LF_sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": false
+      },
+      "current_formal_physical_raw": {
+        "bytes": 10777,
+        "sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4",
+        "LF_bytes": 10777,
+        "LF_sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_blob": {
+        "bytes": 10777,
+        "sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4",
+        "LF_bytes": 10777,
+        "LF_sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_snapshot_commit": "4d0758b1b3e9ae6d33e97274051ed92d8d08509e",
+      "actual_formal_raw_equal": true,
+      "actual_git_raw_equal": true,
+      "actual_git_LF_equal": true,
+      "formal_git_raw_equal": true,
+      "formal_git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/C3e150Api180.java",
+      "actual_first_validation_source_raw": {
+        "bytes": 428,
+        "sha256": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+        "LF_bytes": 428,
+        "LF_sha256": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 428,
+        "sha256": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+        "LF_bytes": 428,
+        "LF_sha256": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob": {
+        "bytes": 428,
+        "sha256": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+        "LF_bytes": 428,
+        "LF_sha256": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "4d0758b1b3e9ae6d33e97274051ed92d8d08509e",
+      "actual_formal_raw_equal": true,
+      "actual_git_raw_equal": true,
+      "actual_git_LF_equal": true,
+      "formal_git_raw_equal": true,
+      "formal_git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "actual_first_validation_source_raw": {
+        "bytes": 3364,
+        "sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+        "LF_bytes": 3364,
+        "LF_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 3364,
+        "sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+        "LF_bytes": 3364,
+        "LF_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob": {
+        "bytes": 3364,
+        "sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+        "LF_bytes": 3364,
+        "LF_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "4d0758b1b3e9ae6d33e97274051ed92d8d08509e",
+      "actual_formal_raw_equal": true,
+      "actual_git_raw_equal": true,
+      "actual_git_LF_equal": true,
+      "formal_git_raw_equal": true,
+      "formal_git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "actual_first_validation_source_raw": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "LF_bytes": 271,
+        "LF_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "LF_bytes": 271,
+        "LF_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "LF_bytes": 271,
+        "LF_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "4d0758b1b3e9ae6d33e97274051ed92d8d08509e",
+      "actual_formal_raw_equal": true,
+      "actual_git_raw_equal": true,
+      "actual_git_LF_equal": true,
+      "formal_git_raw_equal": true,
+      "formal_git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "actual_first_validation_source_raw": {
+        "bytes": 2735,
+        "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+        "LF_bytes": 2655,
+        "LF_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+        "CRLF_count": 80,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 2735,
+        "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+        "LF_bytes": 2655,
+        "LF_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+        "CRLF_count": 80,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob": {
+        "bytes": 2655,
+        "sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+        "LF_bytes": 2655,
+        "LF_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+        "CRLF_count": 0,
+        "bare_CR_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "4d0758b1b3e9ae6d33e97274051ed92d8d08509e",
+      "actual_formal_raw_equal": true,
+      "actual_git_raw_equal": false,
+      "actual_git_LF_equal": true,
+      "formal_git_raw_equal": false,
+      "formal_git_LF_equal": true
+    }
+  ],
+  "source_closure_total_Java_files": 9,
+  "normalization_rule": "Raw used/formal/Git hashes are separate. Only CRLF->LF comparison is additionally recorded; no source hash is overwritten or token equivalence assumed.",
+  "ancestor_line_ending_difference": {
+    "physical_used_bytes": 2735,
+    "physical_used_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+    "physical_CRLF_count": 80,
+    "LF_and_Git_bytes": 2655,
+    "LF_and_Git_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a"
+  },
+  "not_proved": [
+    "This finite manual invokes only the new adapter edge and a short real191 grow/selfchild-empty path; complete190 parent business and old Books were not run.",
+    "32 bound script events are29 source-core Memory observations +1 explicit opaque reserve callback input-effect W8 +2 child ports; the reserve implementation is not proved.",
+    "32 executed top conditions are9 bound(including2 child Memory identity conditions)+20 delegation(including16 count/fullinput conditions)+3 foreign, not32 independent semantic assertions; step and byte guards are excluded.",
+    "The synthetic unused poison flag is not an observed natural parent outgoing pointer; incoming fifth is not read or guessed.",
+    "ModuleBase propagation and delegate exception transparency are source-reviewed but not dynamically distinguished by this chosen path.",
+    "Nominal SharedMemory and the coherent finite fixture do not prove arbitrary backing-store coherence, hardware behavior, full CPU ABI, C++ EH, Native, natural caller, Game or EF0.",
+    "Owner saw binder before replacing the entire witness; no blind or whole-model witness adoption is claimed."
+  ],
+  "source_logic_changes_for_delivery": 0,
+  "delivery_new_compile_run": false,
+  "D_classroot_or_binary_dependency": false,
+  "evidence_files_copied_to_patch": false,
+  "POM_CI_changes": false,
+  "formal_tree_edits_by_drafter": false,
+  "parent_INDEX_or_ACTUAL_edits": false,
+  "new_PE": 0,
+  "Native_Game": 0,
+  "Main_prerequisite": false
+}
