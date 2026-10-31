@@ -1,0 +1,39 @@
+{
+  "snapshot_at_utc": "2026-10-31T15:42:25.733456+00:00",
+  "snapshot_boundary": "All active statuses and in-flight counts below describe this frozen source snapshot, not the publication time or a live resource lease.",
+  "schema": "xar.resume91.m5.current-source-index/v1",
+  "owner": "/root/m5_continue",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "progress": "docs/autonomous-agent-progress/2026-10-31-resume91-m5.md",
+  "work_package_complete": false,
+  "scope": "M5 isolated research software only; no Native deployment, S/MB, Game or G2 completion credit.",
+  "mature_results": [
+    "D:/ck3-state/resume91-m5-native/whole-concrete173/RESULT06.json",
+    "D:/ck3-state/resume91-m5-native/normalize-full174/RESULT08.json",
+    "D:/ck3-state/resume91-m5-native/whole-normalized175/RESULT03.json",
+    "D:/ck3-state/resume91-m5-native/helper-3f5f970176/RESULT08.json"
+  ],
+  "source_index_creation": "Absent at exact formal base; added as a new minimal current index rather than copying the untracked Z historical index.",
+  "active_work_package": "normalize-with-helper177",
+  "active_work_status": "177 two new production sources and ONE new independent Book source ready; no compile or execution. Consumer R2 model source unchanged by owner; Book owner takeover after two rejected semantic rounds.",
+  "latest_completed_work_package": "helper3f5f970176",
+  "latest_completed_result": "D:/ck3-state/resume91-m5-native/helper-3f5f970176/RESULT08.json",
+  "current_local_stage_complete": false,
+  "active_source_entries": [
+    "D:/ck3-state/resume91-m5-native/normalize-with-helper177/consumer-owner/DELIVERY.json",
+    "D:/ck3-state/resume91-m5-native/normalize-with-helper177/literal-owner/REVIEW01.json"
+  ],
+  "parent_actual_inflight": {
+    "http": 0,
+    "compile": 0,
+    "PE": 0,
+    "run": 0
+  },
+  "child_HTTP_state": {
+    "at_utc": "2026-10-31T15:42:25.731968+00:00",
+    "consumer_HTTP": 0,
+    "literal_HTTP": 0,
+    "note": "Delivered children and sealed HTTP results inspected for this source snapshot; no new POST or runtime action."
+  },
+  "latest_external_notice": "176finiteactualallEND0LIGHT1returned;177notstarted/doesnotgateactualMain."
+}
