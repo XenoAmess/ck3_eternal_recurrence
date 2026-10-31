@@ -280,3 +280,11 @@ Root在18:56:39.526Z–18:56:47.707Z只做一次有界Win32资源样本：实际
 Z主树含历史大量dirty，禁止全树reset/stash/stage；Java D:/r64d和Native delivery90分别处理精确叶。长期Git规则允许工作包必要验证后立即commit与普通fast-forward push，不需额外审批；只fetch/rebase，不merge/force。源码发表不授权部署DLL或重启当前Game。旧存储保护期限仍按原交接复核，不因续行自动延长或全盘清理。
 
 后继命令纪律审计新增：runtime配置封包在21:57:59Z、22:22:37Z两次经cmd派生PowerShell；obligations财政/M5包另有13个脚本、14次实际执行（Inspect112两次含首次失败），原件见D:/ck3-state/resume91-runtime/m5-collection114/COMMAND-POLICY-INCIDENT.json。M6/java91又承认PREPARE-ARGFILES/PREPARE-HARNESS03/FIX-CANDIDATE-ARGFILE02三次PS准备，不能因外层cmd而追认为合规。各岗已明确改为cmd/login:false及Node或维护既有原生Python入口，禁止PS子进程；保留原事件及产物，不删除或重跑已绿来掩盖，不将纪律纠正冒充新Game进展。
+
+## 2026-10-31 11:38Z：原控制周期结算，普通模型决策进入下一真实故障
+
+同一原版Game71464保持。Main165于11:26:30.323958900Z进入普通LOOP/next60；原398挂起控制周期已由399真实SETTLE，400/running、pending_receipt=null。精确cycle head d6c79e37…2186B继承5cdcbba4…2190B、父396引用不变、CONTROL_ONLY，completed_cycles3/basis0；不重ARM387/CANCEL395，不授新增日。
+
+11:29:21.605959Z普通运行期qwen38-coder@192.168.1.11真实BEGIN558714B，200/28.670秒、有效内容TTFT27.077秒、reported167930+140 tokens、cachednull。11:29:50.619773Z选择life-advance，11:30:00.582Z读回Unchanged，批60随后因HeldDriverObservationPort无法取得原before而中断；worker165于11:30:18.920823Z真实END4/420.044564秒。实际canonical402/repair/next61、pendingnull、日期53144328，新增日0/SAVE0。运行岗沿46node实际ACTION链与399–402持久次序确认失败在validate/preIntent，本选择无新Intent/Running/child或游戏命令派发；401实际Driver READ单列，不凭attempt0作此推断。166正模型先行修Held/归档原件消费，不重放原选择，不把当前快照冒充旧before。
+
+模型运营继续：M0/M1接真实政府直接callee完整193B+52B unwind，ABI先候选后审阅，三个未写方法/消费者/见证独立并行；M6/M7从已闭首验转向各自真实未闭直接callee/IAT目标。11:28前后Native误将旧resume90休假段当成新停止，造成数分钟未启动队列暂停，已公开纠正并恢复；没有用户新休假，未设STOP文件、未强断在途、未重POST已开始任务。所有HTTP候选、软件首验、正式采用、运行期模型选择和世界动作分别记。

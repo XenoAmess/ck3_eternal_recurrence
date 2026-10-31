@@ -73,7 +73,7 @@ curl --connect-timeout 10 --max-time 900 --fail-with-body --silent --show-error 
 | M4 真实原码组合 | 模型能承担明确 API 的 producer、consumer、局部组件；完整 ABI/重定位/端口组合常需 owner 修正，必须保留各自责任 | 10RF/64例/33549完整Row40槽首次 Native→Java差分0；不外推真实allocator/CRT/EH或Game |
 | M3 copy/release 边 | 小 callee 仍可能有对象 slot 转移、虚调用和 fresh load；不能凭名字生成 memcpy | 221B原码的新11例差分通过，保未知自然caller/vptr，模型首稿拒绝及owner补Hook分记 |
 | 字符串与测试材料 | 提取 JSON 返回的源码后再判断转义；样本尺寸实测后再断言超过阈值 | 曾有 owner 转义误疑撤回，以及样本107352B未达262144B的真实模型错误；不能混算 |
-| 参数与推理模式 | 看实际发出的 REQUEST，而不是输入 spec 或意图。当前维护 minimal-spec 白名单未转发 frequency_penalty | 旧0.3参数试验未实际发生；一次 enable_thinking=true 请求无服务模式生效证据，且上下文也变化，不是单变量A/B |
+| 参数与推理模式 | 看实际发出的 REQUEST，而不是输入 spec 或意图。旧 minimal-spec 不转发 frequency_penalty；full-body 路径可携带实际参数 | 旧0.3试验未发生；10:24Z的一次full-body 0.3确实发送但源码被拒。11:02Z新ABI请求实际enable_thinking=true并完整stop，无独立reasoning字段或服务模式生效证据；这些均无单变量A/B，不宣称参数改善 |
 | 历史代码身份与原件DATA | 源码候选必须区分历史implementation/decoder/verifier文件元数据和实际不可变业务原件；删除用户已取消的代码身份审计时，检查同方法相邻live/archive代码pin，不能只删首个报错等式 | Root152模型正确给archive hunk、漏live loop由owner补；单源strict通过并发表，实跑确实越过此门，后继另一独立消费者失败，不授整链恢复 |
 | 多文件权限与冷回放 | 提供实际issuer、消费者、预留/提交顺序和共享状态迁移；只编两个消费者、只测cursor DATA，不代表完整私有token与真正writer reducer已接受 | 5份取消源码候选因真实source回调/普通Running语义/冷回放/API不足拒绝；owner2源strict与实际385原件3项cursor测试通过，后继仍由运行岗补真正reservation reducer |
 | 重复输出与虚构API | 完整API仍可能被忽略；检测到重复import、自我反驳填满reason或虚构构造器，整份拒绝。缩小具体未闭方法/返回范围，必要时owner接管，不把增加输出预算当必然修复 | 实际测试6000截断，缩成3case后stop却仍造API；另2份26k/25k输入的跨源审阅也length。是这些提示/任务的失败记录，不是上下文大小或推理能力的通用上限 |
@@ -105,3 +105,11 @@ worker 使用独立输出目录时，在直接派发的同时报告真实 task I
 实测反例：10:09:26Z观察前十分钟虽有19POST/19END、客户端峰5，采样本机与服务均已空闲；这仍未持续达到高并发目标。根因之一是小原件准备被编译HOLD挡住。随后M4/M7针对明确缺失的短callee继续真实取源与新实现派发。这项调整不增加虚构任务，不重投旧绿，不把准备包计为POST，也不把某次客户端峰值写成服务容量上限。
 
 新增消费者适配须明确记录是在前置完整集合还是逐项消费中执行。Root的Driver无row任务两轮模型都误用逐项循环中的父级直接continue，未先验证完整canonical子项，还跳过已有row冲突；两份均拒绝，owner只接管该生产leaf。实际source合同验证复用一次，缺row豁免与已有row校验分开；软件测试由另一个真实任务模型先行。输入约53k token并不保证输出考虑集合顺序，这只说明这两次提示与答复的失败，不能推成模型能力的通用上限。
+
+## 2026-10-31 11:38Z：让模型先推导合同，保留真实失败归因
+
+原生方法任务可先给完整具名原件、实际调用点的寄存器/栈前后值及相关类型，让模型提出ABI和typed API；owner先核对会影响调用者的宽度、返回值、地址、flags与opaque边界，再并行派发尚未写的方法、消费者和独立见证。不要先由云写好目标算法，也不要把未经核实的API直接传播到整组任务。真实案例中SETNE被误解为CF、JB错沿前一寄存器值、CALL-site RSP与callee-entry RSP混淆；另一次owner漏给仍存活的完整RAX后，模型按错误接口生成消费者，责任属于输入合同而不能追认为模型语义错误。
+
+不以原件字节数给能力定上限：95B方法与消费者最终模型原样候选通过有限验证，193B合同两轮完整stop仍有语义错误，7B reader也曾首轮错RVA后纠正。先保实际请求、完整答复和具体诊断，再作有限窄纠错；重复整类/虚构API/length不能拼片段采用，多轮无效后owner接管该段并派下一真实未闭任务。enable_thinking=true表示请求确实携带该设置，缺少服务端模式与reasoning证据时不称已经启用内部推理或证明能力改善。
+
+JSON业务相等与原件字节保管分开。实际历史回放中Map.of迭代次序令同一evidence对象从reference/kind变为kind/reference，字段值未变却触发消费者重编码字节比较；根因不是浮点损失或byte[]引用相等。窄消费者应使用完整typed Source或完整Obj结构相等，保数组次序、所有字段和数值token；原始ExactRef、长度、SHA和不可变DATA读取照旧，不因结构相等放松原件保管，也不全局改serializer。两份模型分析未定位真实机制并发明API，拒绝与owner实际原件差分分别记录。

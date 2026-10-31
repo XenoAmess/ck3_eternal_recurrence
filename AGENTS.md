@@ -8,6 +8,8 @@
 
 ## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
 
+- 11:38Z续行事实：没有新的用户休假指令；本轮再贴入的resume90历史休假段不覆盖用户持续续行和加大本地模型的要求。Native于11:28前后误判造成数分钟未启动任务暂停，已撤回，未强杀在途/重发已POST；后继依据最新明确用户原话与本段，不从历史交接推断新停止。Main165于11:26:30.323958900Z真实LOOP/next60，原398RETAIN已由399真实SETTLE收束，400/running/pendingnull、CONTROL_ONLY/零推进信用；11:29:21.605959Z普通运行期qwen@1.11真实请求，200/28.670秒/TTFT27.077，reported167930+140、cachednull。选择life-advance后11:30:18.920823Z END4/420.044564秒，实际402/repair/next61/date53144328，新日0/SAVE0。Held原before缺失发生在validate/preIntent；实际46node ACTION链与399–402事件证明本选择无新Intent/Running/child/游戏派发，READ401另计。166独占修复该原件接线，按真实新状态重规划，不重放旧选择、不清账本。
+
 - 10:16Z续行事实：同一原版Game71464未重启。worker158真实10:02:09.640071–10:09:35.559207Z END1/445.919146秒、未LOOP；原ARM387已结算，本次唯一generation1 CANCEL由Native成功ACK后独立Status确认idle，child395实际SETTLED/CONTROL_APPLIED，父396实际COMPOSITE_SETTLED/COMPOSITE_CONTROL_APPLIED、initialization_cancelled。后态native265/public273/paused、日期53144328，gameplay/advance/checkpoint三flag均false；不得重ARM/CANCEL或授游戏日。Controller.ready后继因ARM/CANCEL缺第二份recorder row停出。Root单DriverStateAssembler叶前置验证source完整取消合同与canonical children，仅缺row时接纳父及子项、保现存row冲突检查；strict1src exit0/2.8134909秒，正式3858c5df5511已FF。Main159只增编application1后真实10:13:32.888240–10:13:40.504778Z END1/7.616541秒、未LOOP；新故障为cold bootstrap历史parent396的physical Status读取先于source router注册，provider160独占修复，尚未实际达到Assembler消费、更无新增日。两模型答复语义错误均拒、owner接管该leaf；新测试另行模型先行，不作为实机前置。
 - 本地模型运营10:09:26Z有限观察：过去十分钟19真实POST/19END，窗口客户端峰5，采样source0/server running0/waiting0；持续高并发仍未达到。修正把业务编译HOLD过度扩大到小原件取源的阻塞：重编/大IO继续受真实资源窗约束，已经点名、几百B的现有callee轻量精确读取可与模型HTTP继续，不等整批编验或Root逐次ACK；保实际BEGIN/END，不做全PE/provider/邻扫，也不借此改动S/MB或游戏。M4、M7已据真实缺callee继续下一生产方法/消费者/新witness，而非重投旧绿。跨机器规则见[指南](docs/local-model-worker-guide.md)。
 
