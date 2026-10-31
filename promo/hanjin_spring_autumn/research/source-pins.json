@@ -1,7 +1,7 @@
 {
   "schema" : "hanjin.source-pins.v1",
   "machine_id" : "4-8e1c2f1861",
-  "prepared_at_utc" : "2026-10-31T05:05:13.091034600Z",
+  "prepared_at_utc" : "2026-10-31T05:14:31.230436600Z",
   "external_evidence_root" : "C:\\workspace\\hanjin-spring-autumn-20261031",
   "scope" : "Selected installed runtime text sources; not all source indexed files were manually reviewed",
   "entries" : [ {
@@ -42,6 +42,18 @@
     "sha256" : "90d95782c9b06080815574804385e7b50d181952bfc67e542efac81ec0c0551d"
   }, {
     "item_id" : "3780919688",
+    "relative_path" : "common/decisions/WJ_abdication_decisions.txt",
+    "bytes" : 473,
+    "lines" : 8,
+    "sha256" : "1840e88d3307a4bc30ad0863b768f33c73a33023e3bf75d9d0b5a803d548db3d"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/decisions/WJ_emperor_puppet_decisions.txt",
+    "bytes" : 1225,
+    "lines" : 33,
+    "sha256" : "bd4e2e96c852747537417d17a9cdc69ca5196a3cdb3d21b24d06d436f9dff325"
+  }, {
+    "item_id" : "3780919688",
     "relative_path" : "common/decisions/hd_court_decisions.txt",
     "bytes" : 8752,
     "lines" : 337,
@@ -60,10 +72,34 @@
     "sha256" : "5df9a8d039522123316f9c52cddd5f505f6e31bf420d1a32cfea155bbd36e52d"
   }, {
     "item_id" : "3780919688",
+    "relative_path" : "common/men_at_arms_types/hd_regional_maa_types.txt",
+    "bytes" : 10853,
+    "lines" : 637,
+    "sha256" : "3f1ce4ea2920c477e967c82e5a87807a2dba202c1a46fe41d1cf592794ad9111"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/modifiers/zz_hd_historical_timeline_modifiers.txt",
+    "bytes" : 450,
+    "lines" : 15,
+    "sha256" : "e34bcb70990575df3c954e6b362ed42917e5479f797bc7141ac2bb4afee1e2a9"
+  }, {
+    "item_id" : "3780919688",
     "relative_path" : "common/on_action/zz_hd_190_startup.txt",
     "bytes" : 2518,
     "lines" : 59,
     "sha256" : "b0f26d59a4a3fe78f39ae1d76cabae26c79842b3e474d8432df721d63e7b55e5"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/on_action/zz_hd_dong_aftermath_on_actions.txt",
+    "bytes" : 2469,
+    "lines" : 66,
+    "sha256" : "9064449ae26c860b41e809b7fab5173c69d7cbc07a2ae5be6b29631264f0341a"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/on_action/zz_hd_dynasty_startup.txt",
+    "bytes" : 7569,
+    "lines" : 195,
+    "sha256" : "7288bc82aed581b501b6dc89f5b3130137dba4455bdbad55df770de9cb6edc42"
   }, {
     "item_id" : "3780919688",
     "relative_path" : "common/scripted_effects/WJ_office_roads_effects.txt",
@@ -76,6 +112,12 @@
     "bytes" : 571,
     "lines" : 10,
     "sha256" : "57ce954472648f1a598b9421deae9b71f8a67257aeaa97487f7fc389d4cf3acd"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/hd_court_regent_effects.txt",
+    "bytes" : 16358,
+    "lines" : 495,
+    "sha256" : "d0a61615e1a2abbc4a99df94c864f246317320567f4386167161beb3f17baf6c"
   }, {
     "item_id" : "3780919688",
     "relative_path" : "common/scripted_effects/hd_tb_effects.txt",
@@ -96,10 +138,22 @@
     "sha256" : "87d6634cca33028941420efc3b48a269bf0100f01f7ef545d80b3c4504738026"
   }, {
     "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd_190_startup_effects.txt",
+    "bytes" : 50588,
+    "lines" : 1155,
+    "sha256" : "34a9f9b6705abf4bfc3da8aa7a8de8bef56c3214e1bf04f808e1c5a3d8a1fc05"
+  }, {
+    "item_id" : "3780919688",
     "relative_path" : "common/scripted_effects/zz_hd_218_history_effects.txt",
     "bytes" : 82683,
     "lines" : 2275,
     "sha256" : "d2920ebe8e344ef0077f172ebefee8ac855b2fd56a75ee64e62832009313decd"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd_anti_regent_lifecycle_effects.txt",
+    "bytes" : 12539,
+    "lines" : 314,
+    "sha256" : "ff8a46f3ad0dad85653449ebed4ff7cb2492ca315a2303b094efe9fa70ae667d"
   }, {
     "item_id" : "3780919688",
     "relative_path" : "common/scripted_effects/zz_hd_cao_fengying_effects.txt",
@@ -108,10 +162,22 @@
     "sha256" : "f6014b34af87309cbe2b7b62ac5b04f6a1894eaef7c4570aca1daf1b8e68be1c"
   }, {
     "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd_dong_aftermath_effects.txt",
+    "bytes" : 20756,
+    "lines" : 504,
+    "sha256" : "ccff52c7d0d065252553bb1158f020a9fdd98e4cc0e2f69a9bef6c016e94c87a"
+  }, {
+    "item_id" : "3780919688",
     "relative_path" : "common/scripted_effects/zz_hd_liu_bei_aftermath_effects.txt",
     "bytes" : 25760,
     "lines" : 774,
     "sha256" : "0921a4aefda0f94b35d7b34b987cd26ff01c76dd23f0ea9c355f3fd718a64f50"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_effects/zz_hd_palace_crisis_effects.txt",
+    "bytes" : 21797,
+    "lines" : 560,
+    "sha256" : "313a54235a3c90392c8d0bf2e3dddb251ff2d29af764c3628b9b2238fd63a35c"
   }, {
     "item_id" : "3780919688",
     "relative_path" : "common/scripted_effects/zz_hd_war_contiguity_effects.txt",
@@ -124,6 +190,18 @@
     "bytes" : 15867,
     "lines" : 469,
     "sha256" : "6741a4f99554e95669510097a7aa39937a2b32dcd5e96e7060b9f3e870a0135f"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/WJ_abdication_triggers.txt",
+    "bytes" : 2007,
+    "lines" : 45,
+    "sha256" : "61b4deee9d48385a662a3659e4273d16080d3fbf96954d98204a32b5cb4dc3a3"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "common/scripted_triggers/hd_court_triggers.txt",
+    "bytes" : 3526,
+    "lines" : 108,
+    "sha256" : "dea78252e82d1dcb54ac332a4b5a9aa3cb1bc821b971f03c54393a95cc09ad04"
   }, {
     "item_id" : "3780919688",
     "relative_path" : "common/scripted_triggers/hd_cycle_phase_triggers.txt",
@@ -174,6 +252,12 @@
     "sha256" : "0b8e8689e7fbcf01d85f10900e626f356041723267cb8c44b13d5be137e05916"
   }, {
     "item_id" : "3780919688",
+    "relative_path" : "common/story_cycles/zz_hd_historical_character_story_cycles.txt",
+    "bytes" : 2023,
+    "lines" : 44,
+    "sha256" : "650514b9eb3f0112cd61cfc0360de85e8e8abd1d6325cfc23a6c951d6ff1fe5c"
+  }, {
+    "item_id" : "3780919688",
     "relative_path" : "descriptor.mod",
     "bytes" : 815,
     "lines" : 26,
@@ -198,6 +282,12 @@
     "sha256" : "9f6213d6972ee051ddb123c169e7e56966afb0ee86d404331a449a899de6caa8"
   }, {
     "item_id" : "3780919688",
+    "relative_path" : "events/zz_hd_dong_aftermath_events.txt",
+    "bytes" : 6500,
+    "lines" : 195,
+    "sha256" : "000360756b983dae72dfc47c5d1fcbbcb1c8aeb15353cfe11c07b818e88e807d"
+  }, {
+    "item_id" : "3780919688",
     "relative_path" : "events/zz_hd_liu_bei_aftermath_events.txt",
     "bytes" : 13216,
     "lines" : 404,
@@ -210,6 +300,12 @@
     "sha256" : "157464ba85ceca6d6d22ed2284e67ba56eca36efc94b6d266e00d23edbeef043"
   }, {
     "item_id" : "3780919688",
+    "relative_path" : "events/zz_hd_palace_crisis_events.txt",
+    "bytes" : 19588,
+    "lines" : 608,
+    "sha256" : "733b149a38e9698cd4688d4d83d9601301cf316abbc72003dfddf49035fd9e19"
+  }, {
+    "item_id" : "3780919688",
     "relative_path" : "events/zz_hd_sun_ce_bawang_events.txt",
     "bytes" : 876,
     "lines" : 38,
@@ -220,6 +316,12 @@
     "bytes" : 1720,
     "lines" : 65,
     "sha256" : "089971a7d026a72c35b22884b2ad60688d69b483f0aae91b1d9486f873231fe9"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "history/characters/east_asian_liangzhou_180_200.txt",
+    "bytes" : 11957,
+    "lines" : 829,
+    "sha256" : "61a66234bdedb6fbbe74020c435c1629364a4f4bb8a593486db367a8c9c6fe21"
   }, {
     "item_id" : "3780919688",
     "relative_path" : "history/characters/east_asian_youzhou_180_200.txt",
@@ -274,6 +376,18 @@
     "bytes" : 4375,
     "lines" : 21,
     "sha256" : "5440c80b412e0e849134774638170546ab007a6f619a98a4ffc2073f43b3d847"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/zz_hd_dong_aftermath_l_simp_chinese.yml",
+    "bytes" : 1978,
+    "lines" : 18,
+    "sha256" : "d22ae8cd97d75a634bdae783c57ea8829f30a1c6f26dc54ee5e90b344d7cbf32"
+  }, {
+    "item_id" : "3780919688",
+    "relative_path" : "localization/simp_chinese/zz_hd_historical_world_chains_l_simp_chinese.yml",
+    "bytes" : 16391,
+    "lines" : 148,
+    "sha256" : "64e4adabc431c2d29cd94ecd395fae9f24cf31d0ec86d994bfe006759540af7c"
   }, {
     "item_id" : "3780919688",
     "relative_path" : "localization/simp_chinese/zz_hd_liu_bei_aftermath_l_simp_chinese.yml",
@@ -466,5 +580,5 @@
     "3820784621" : 160,
     "3797664499" : 508
   },
-  "selected_source_count" : 76
+  "selected_source_count" : 95
 }

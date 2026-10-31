@@ -1,7 +1,7 @@
 {
   "schema" : "hanjin.machine-receipt.v1",
   "machine_id" : "4-8e1c2f1861",
-  "prepared_at_utc" : "2026-10-31T05:05:13.159995100Z",
+  "prepared_at_utc" : "2026-10-31T05:14:31.293400900Z",
   "external_evidence_root" : "C:\\workspace\\hanjin-spring-autumn-20261031",
   "app_id" : 1158310,
   "repository_base_commit" : "e92852719a0154e485ca6ef5381bb9ad0213288f",
