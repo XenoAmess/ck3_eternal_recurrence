@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-168 sole-ARM零写入拒绝四prod ef79b84932与必要Controller/Journal两prod c6742bc6ac已正常发表，M7 allocate168四新叶随后精确采用；Main源已S/Z采，尚未收到168 MB或完整业务恢复结果。167真实12:08:28Z END4/708.689秒，canonical413父412Unknown/child411零写入拒绝，next62/新日0/SAVE0。局部证据分列：四源十DATA检查、两consumer六拟议canonical角色检查、M7首四JUnit八finite；都不代替实际父412持久结算/wholeReady。历史Head S JFR54→15与formal独立9次继续分记。本岗无S/MB/Game/账本写入，当前编测/模型HTTP资源0。
+168 sole-ARM零写入拒绝四prod ef79b84932、必要Controller/Journal两prod c6742bc6ac与M7 allocate168四新叶4a1c609df3已正常发表；后继本次按Rootopen1274B→budget最终8282B顺序精确采用四prod。Main现有12unique生产源已S/Z采，尚未收到MB168或完整恢复结果。既有formal30s/S120s差异经Main新授权同波另作exact单常量对齐，归旧baseline同步不归预算模型；九软件预算检查只授其原S/CP组合，不倒授formal已测试。167实际canonical413父412Unknown/child411零写入拒绝，next62/新日0/SAVE0；原ARM/CANCEL父子不重发。本岗无S/MB/Game/账本写入，编测/模型HTTP资源0。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -603,3 +603,13 @@ Main后到167真实12:08:28Z END4/708.689秒，canonical413父412Unknown+child41
 168必要consumer6163B独立正常FFc6742bc6ac，仅Controller+Journal，2Checking/0Skipped、两candidate全文归一同，完整保Journal167与NoGameplay/Prefix原route。Controller只在已settled REJECTED_CONFIRMED的sourceLife CompositeRejected分支先验实际currentcanonical/allsettled/fullcanonicalchildren/sharedsoleARM零写入proof，再原completion/freshSEM/ready(true)，最后Journal同writer重验并走现readSettledSameGame/recoverSettledSameGame，原saved-day invariant/真实persistedHead不变。模型17.817秒/61173+1146整拒，错误重复reconcile且漏fullhelper/zero-write，owner完整实现，0采用追认。2src strict0/2.5875381秒与六DATA检查0/0.9546191秒复用：actual411/412材料仅软件构造拟议currentterminal列表做正例，actual412Unknown、未入canonical、Unknownchild、extraUnknown、wrongowner均拒。无store/transition/frame/ready/wholeController实际执行，未授412真实结算；原四source十检查不重跑、不带fixedD probe进CI。
 
 M7 allocate168现g2-research2main2test/0POM，独立读94B完整ASM+RF12/8BentryJMP/静态HeapAlloc导入及SDK与四源。unsigned>-32拒、0选1、每次freshheapQWORD、HeapAlloc flags0、初次分配先于query/Gate、raw64返回、失败typedCell32写12/full0同source。consumer保持outer原size与innerselectedbytes差异，同Memory/现Gate/critical-section/dispatch复用，未复制旧算法或导入M4/M5研究API。首2prod strict0/0.7061547秒、2Test strict0/0.9228828秒、首4JUnit4P0F0skip/0.8409856秒（八finite，单JVM128MiB/1CPU）复用，0依赖/旧绿重编。7POST6stop1length/峰4/87853+20907tokens；首core截断不拼接，correct02完整main+privatehelper配原API壳、consumerfirstwhole，owner生产算法0；两Test各两轮whole拒后全owner实现，模型Test算法采用0。writer仅删除陈旧Frozen声明说明、缩进/空白，执行tokens全同；四unique新叶同步Z。suppliedJava heap/cells和有限callback不授真实HeapAlloc、loadedslot/heapownership、外callee/NativeEH/unwind/currentU/drain/Game/Save，原unbounded循环不被测试的有限attempt毒值改写。
+
+
+## 168 timeline预算与真实既有窗口差异
+
+Root transport.open1274B日志前置先1Checking/0Skipped，再最终budget8282B四Checking/0Skipped，四candidate全文归一同，未用旧8341B或整叶覆回当前Root诊断。durable child保parent原绝对hard deadline，创建前仍核短admission当前有效且不越parent；仅AdvancePrimitives注册roles在实际transportdispatch入口借既有readDeadline设配置RPC有限窗口，SAVE/其它ACTION保持。Primitives新增兼容6arg constructor，保4/5arg旧行为；每次observe入口只计算一个min(existingActionObservationWindow,now+configuredAdvanceTimeout)，真实注入Clock/正Duration验证，无新任意1hour上限，Factory传实际advanceTimeout。Rootopen只追加closed/deadline/actualNow，actualNow是失败分支后采样，不伪当先前predicate精确时刻或child411根因，原closed/null/expired/deferred/terminal条件未改。
+
+复用最终4prod strict0/2.9665992秒、probecompile0/1.7130894秒、fakeclock九检查0/1.2359103秒；Root日志同次strict覆盖，没有新行为镜像。独立源审读到真正旧基线差异：formal共享ActionObservationWindow.MAXIMUM_WINDOW仍30秒，当前S同叶2分钟；probe readonly预期min120/60=60，而保旧formal应min30/60=30。Main明确先保formal原30、不把缺准确旧delta私混本包，也不将该九P冒formal组合已运行；窗口min合同按真实formal源码审通过，后续有必要的成熟旧delta由Main独立准确同步。首宽model全拒；splitA只reset后completeattempt2两raw方向部分保、owner补import；splitB五raw机械传播部分保、owner拒伪clockgetter/now API并用真实Clock、移无依据上限；Rootopen整method模型原样。固定D probe不CI，无本岗新编测、实际RPC/WAL/wholeRoot/child411失败归因/恢复或日期信用。
+
+
+后到Root/Main明确授权把当前S已实际使用的ActionObservationWindow.MAXIMUM_WINDOW=Duration.ofMinutes(2)作为独立exact一hunk旧baseline-sync正式提交，不能虚构更早准确delta或混归budget/model。本波单独常量commit只改原formal30秒为sealedS2分钟，所有其它源span保持；不反向覆盖S、不新放宽本局已用语义、不重复九绿。正式最终窗口合同与S条件对齐后，原九fakeclock结果仍是此前S/CP实测，不追认另一个formal组合已运行。
