@@ -207,7 +207,7 @@ public final class MapInsertC3B960 {
             ports.terminal4232cf4(memory, 0xC3BC88L);
             throw new UnprojectedInt3();
         }
-        ports.reserveC3b700(memory, 0xC3BC3EL, input.map(), capacity);
+        ports.reserveC3b700(memory, 0xC3BC3EL, input.map(), capacity, input.scratch().bodyRsp() - 8L);
         long fifth = rbp + 0x50L;
         memory.write8(fifth, 0);
         memory.writeInt64(input.scratch().bodyRsp() + 0x20L, fifth);

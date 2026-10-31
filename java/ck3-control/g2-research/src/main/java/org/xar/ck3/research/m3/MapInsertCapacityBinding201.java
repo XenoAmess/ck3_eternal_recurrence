@@ -53,6 +53,11 @@ public final class MapInsertCapacityBinding201 implements MapInsert191Api.Ports 
     }
 
     @Override
+    public void reserveC3b700(MapInsert191Api.Memory memory, long siteRva, long map, int edx, long sourceEntryRsp) {
+        delegate.reserveC3b700(memory, siteRva, map, edx, sourceEntryRsp);
+    }
+
+    @Override
     public void overflow86f210(MapInsert191Api.Memory memory, long siteRva, long rcx, long rdx) {
         delegate.overflow86f210(memory, siteRva, rcx, rdx);
     }

@@ -28,6 +28,9 @@ public final class MapInsert191Api {
         void destroy856050(Memory memory, long siteRva, long descriptor);
         int capacity86e160(Memory memory, long siteRva, int ecx, int edx);
         void reserveC3b700(Memory memory, long siteRva, long map, int edx);
+        default void reserveC3b700(Memory memory, long siteRva, long map, int edx, long sourceEntryRsp) {
+            reserveC3b700(memory, siteRva, map, edx);
+        }
         void overflow86f210(Memory memory, long siteRva, long rcx, long rdx);
         void terminal4232cf4(Memory memory, long siteRva);
     }

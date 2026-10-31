@@ -78,6 +78,11 @@ public final class OtherInsertCallerBinding194 {
         }
 
         @Override
+        public void reserveC3b700(MapInsert191Api.Memory memory, long siteRva, long map, int edx, long sourceEntryRsp) {
+            fallback.reserveC3b700(memory, siteRva, map, edx, sourceEntryRsp);
+        }
+
+        @Override
         public void overflow86f210(Memory memory, long siteRva, long rcx, long rdx) {
             fallback.overflow86f210(memory, siteRva, rcx, rdx);
         }
