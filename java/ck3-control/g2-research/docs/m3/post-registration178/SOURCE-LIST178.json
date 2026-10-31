@@ -1,0 +1,118 @@
+{
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/PostRegistrationApi178.java",
+      "kind": "main",
+      "bytes": 2609,
+      "sha256": "48368d572041e1eb3282f6bb0c337d9de8ddfac272032852ed61e913e9792ca7",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "48368d572041e1eb3282f6bb0c337d9de8ddfac272032852ed61e913e9792ca7",
+      "git_lf_bytes": 2609
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryCandidateSelect178.java",
+      "kind": "main",
+      "bytes": 965,
+      "sha256": "9dc9450930dac2a1308951b5e2b19ea9e9a1f1ea28848de39c468ee297f2ba04",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "9dc9450930dac2a1308951b5e2b19ea9e9a1f1ea28848de39c468ee297f2ba04",
+      "git_lf_bytes": 965
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/PostRegistration178.java",
+      "kind": "main",
+      "bytes": 11815,
+      "sha256": "5a1683b7d692ed37c32622d0816928e44ad6ccd57ab7fbe30be3e83e9046ac4b",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "5a1683b7d692ed37c32622d0816928e44ad6ccd57ab7fbe30be3e83e9046ac4b",
+      "git_lf_bytes": 11815
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryRankBook178.java",
+      "kind": "test",
+      "bytes": 1742,
+      "sha256": "ffb49ef838cbe040cda09f9f47c41e3365b97690f0c76c2fcd49337bde4674ee",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "ffb49ef838cbe040cda09f9f47c41e3365b97690f0c76c2fcd49337bde4674ee",
+      "git_lf_bytes": 1742
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryCandidateValidation178.java",
+      "kind": "test",
+      "bytes": 1898,
+      "sha256": "7a430463123db428008e2c1caa52b29480befa89bd8e551c60f665ae71684cc5",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "7a430463123db428008e2c1caa52b29480befa89bd8e551c60f665ae71684cc5",
+      "git_lf_bytes": 1898
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/PostRegistrationMainCasesApi178.java",
+      "kind": "test",
+      "bytes": 871,
+      "sha256": "e41db9aff1c1144b3d8f0478177f8bb744945cf148753ba543e6695295e5312a",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "e41db9aff1c1144b3d8f0478177f8bb744945cf148753ba543e6695295e5312a",
+      "git_lf_bytes": 871
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/PostRegistrationMainBook178.java",
+      "kind": "test",
+      "bytes": 9420,
+      "sha256": "4df79193fed1b1d2c138151f14ee4890333b192dbec0e95a98c38e4430d39836",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "4df79193fed1b1d2c138151f14ee4890333b192dbec0e95a98c38e4430d39836",
+      "git_lf_bytes": 9420
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/PostRegistrationMainValidation178.java",
+      "kind": "test",
+      "bytes": 14785,
+      "sha256": "666f0ecc346b8e91098f8946544b45a50006f69dd0e8bced8907b51bbab370f3",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "6ca071ac42c133067db0df3c3c2eeaa7dbed38d652dfc105b38a4aadaa1a605c",
+      "git_lf_bytes": 14451
+    }
+  ],
+  "reuse_existing_source_only": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "reuse_existing_source": true,
+      "new_copy": false,
+      "git_lf_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryMemory176.java",
+      "rawcompiled_sha256": "fabdf4685858e1465e8abb1626ea791e00b7ea4d9d5a3df5d6d2b90847ddf49a",
+      "current_formal_physical_sha256": "fabdf4685858e1465e8abb1626ea791e00b7ea4d9d5a3df5d6d2b90847ddf49a",
+      "reuse_existing_source": true,
+      "new_copy": false,
+      "git_lf_sha256": "fabdf4685858e1465e8abb1626ea791e00b7ea4d9d5a3df5d6d2b90847ddf49a"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "reuse_existing_source": true,
+      "new_copy": false,
+      "git_lf_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "reuse_existing_source": true,
+      "new_copy": false,
+      "git_lf_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a"
+    }
+  ],
+  "missing_compile_dependencies": [],
+  "manual_mains": [
+    "org.xar.ck3.research.m3.RegistryCandidateValidation178",
+    "org.xar.ck3.research.m3.PostRegistrationMainValidation178"
+  ],
+  "portable_source_closure_files": 12,
+  "POM_CI_binary_classroot_changes": false,
+  "hash_scope": "sha256/bytes preserve original physical first-compile inputs; git_lf_* identify published line-ending/line-whitespace normalization only. Java tokens and expected data are unchanged."
+}

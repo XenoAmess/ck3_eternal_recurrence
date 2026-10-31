@@ -1,0 +1,145 @@
+{
+  "schema": "m3.post-registration178-first-software-summary/v1",
+  "package_number": 43,
+  "status": "FIRST_STRICT_RANK8_MAIN3_PASS",
+  "actual_original": "post-registration178/ACTUAL178.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\post-registration178",
+  "actual_evidence_copied_to_Git": false,
+  "source_range": [
+    "3790510",
+    "3790A1F(exclusive)"
+  ],
+  "held_RF_code_bytes": 1295,
+  "RF_new_PE_bytes": 1327,
+  "RF_code_bytes": 1295,
+  "RF_UW_bytes": 32,
+  "scalar_extra_actual_PE_bytes": 12,
+  "scalar_inventory_owner_error": "Three4B scalar reads omitted held precheck; possible duplicate reads not excluded. Do not count12B as proven new semantic source.",
+  "header_provider_query_Game": 0,
+  "new_explicit_sources_first_compiled": 8,
+  "existing_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "reuse_existing_source": true,
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryMemory176.java",
+      "rawcompiled_sha256": "fabdf4685858e1465e8abb1626ea791e00b7ea4d9d5a3df5d6d2b90847ddf49a",
+      "current_formal_physical_sha256": "fabdf4685858e1465e8abb1626ea791e00b7ea4d9d5a3df5d6d2b90847ddf49a",
+      "reuse_existing_source": true,
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "reuse_existing_source": true,
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "reuse_existing_source": true,
+      "new_copy": false
+    }
+  ],
+  "first_verification_reused_source_matched_dependency_cache": true,
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/PostRegistrationApi178.java": "48368d572041e1eb3282f6bb0c337d9de8ddfac272032852ed61e913e9792ca7",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryCandidateSelect178.java": "9dc9450930dac2a1308951b5e2b19ea9e9a1f1ea28848de39c468ee297f2ba04",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/PostRegistration178.java": "5a1683b7d692ed37c32622d0816928e44ad6ccd57ab7fbe30be3e83e9046ac4b",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryRankBook178.java": "ffb49ef838cbe040cda09f9f47c41e3365b97690f0c76c2fcd49337bde4674ee",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryCandidateValidation178.java": "7a430463123db428008e2c1caa52b29480befa89bd8e551c60f665ae71684cc5",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/PostRegistrationMainCasesApi178.java": "e41db9aff1c1144b3d8f0478177f8bb744945cf148753ba543e6695295e5312a",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/PostRegistrationMainBook178.java": "4df79193fed1b1d2c138151f14ee4890333b192dbec0e95a98c38e4430d39836",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/PostRegistrationMainValidation178.java": "666f0ecc346b8e91098f8946544b45a50006f69dd0e8bced8907b51bbab370f3"
+  },
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "start_utc": "2026-10-31T18:50:41.497620+00:00",
+      "end_utc": "2026-10-31T18:50:42.377250+00:00",
+      "process_seconds": 0.8796039000153542,
+      "exit_code": 0
+    },
+    {
+      "phase": "RANK8",
+      "start_utc": "2026-10-31T18:50:42.380487+00:00",
+      "end_utc": "2026-10-31T18:50:42.514766+00:00",
+      "process_seconds": 0.13427400030195713,
+      "exit_code": 0
+    },
+    {
+      "phase": "MAIN3",
+      "start_utc": "2026-10-31T18:50:42.517506+00:00",
+      "end_utc": "2026-10-31T18:50:42.704779+00:00",
+      "process_seconds": 0.18727629957720637,
+      "exit_code": 0
+    }
+  ],
+  "strict_actual": "Java21/-Xlint:all/-Werror/-implicit:none/192MiB/CPU1/empty-sourcepath",
+  "source_preserved": true,
+  "rank_cases": 8,
+  "rank_semantic_checks": 24,
+  "rank_checks": [
+    "literal selected pointer",
+    "exact byte read sequence22,21,20 per40B row",
+    "storage unchanged"
+  ],
+  "rank_expected_authority": "Owner originalASM-derived literal data after target source review; not blind independent and not execution-generated",
+  "independent_main_scenes": 3,
+  "main_ports_per_scene": [
+    1,
+    5,
+    9
+  ],
+  "main_memory_events_per_scene": [
+    1,
+    24,
+    34
+  ],
+  "main_listed_check_groups_per_scene": [
+    10,
+    38,
+    50
+  ],
+  "main_total_listed_check_groups": 98,
+  "main_count_meaning": "calls+postWords+probes+ordered-subsequence entries; excludes additional byte/observer/noWrites guards; not total semantic assertions",
+  "main_expected_authority": "Independent owner original1295B/API-only; did not read target main/rank implementations, rejected target candidates or target results",
+  "model_logical_requests": 10,
+  "actual_model_POSTs": 12,
+  "model_finishes": {
+    "stop": 7,
+    "length_whole_discarded": 3,
+    "reset_partial_whole_discarded": 2
+  },
+  "model_core_rank_book_source_adoption": 0,
+  "model_main_host_adoption": "partial second candidate; owner static variable type and labels fixed; not raw whole",
+  "model_main_book_adoption": 0,
+  "owner_input_erratum": "Rank/book R2 full ASM and Memory prefix omitted target signature/Book records; same original API did not carry R1 final message. Preserve original requests and separate owner omission from actual score/SETE/LEA errors.",
+  "scope": "normal business/scratch/byte-memory and23 typed opaque call observations; scalar FP is exact observed instruction result, not Java numeric approximation",
+  "untested_branches": [
+    "positive sizing scalar/reserve",
+    "incoming or captured nonempty collection loops",
+    "occupied main descriptor/group matching and integration with rank helper",
+    "logging and two16B copies",
+    "temp vector object release",
+    "large-string free/error-return-to-TLS"
+  ],
+  "not_proved": [
+    "full CPU/register/prologue/flags/ABI/EH",
+    "opaque helper internals",
+    "thread/concurrent TLS behavior",
+    "original Native execution",
+    "natural currentGame/M3/EF0"
+  ],
+  "old_production_recompiled": 0,
+  "old_case_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
