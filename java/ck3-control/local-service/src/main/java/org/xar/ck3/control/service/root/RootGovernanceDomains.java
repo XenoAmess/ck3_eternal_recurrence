@@ -186,7 +186,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
                         var head=same.head();var archive=core().archive().withSession(same);var changed=publish(same,new Input(domain,Kind.OUTCOME,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.of(archive.receiptReferenceOf(receipt)),Optional.empty(),Optional.empty(),List.of()));
                         if(changed.isPresent())return new Published(head,changed.orElseThrow());
                     }
-                } else if(old.latest().isPresent()&&!hasConsumedAt(old.latest().orElseThrow(),original.before().frame().identity().nativeRevision(),original.before().frame().identity().dateRaw())) {
+                } else if(old.latest().isPresent()&&!(domain==Domain.CROWN?crownConsumedAt(old.latest().orElseThrow(),original.before().game().pid(),original.before().frame().identity().player(),original.before().frame().episodeRunId(),original.before().frame().identity().nativeRevision(),original.before().frame().identity().dateRaw()):hasConsumedAt(old.latest().orElseThrow(),original.before().frame().identity().nativeRevision(),original.before().frame().identity().dateRaw()))) {
                     Optional<ExactRef> read;List<ExactRef> followQueries=List.of();
                     if(domain==Domain.COUNCIL) {
                         var observed=context().finance().definitions().read(same,FinanceReadContracts.Query.ROOT,context().reads(),original);
@@ -479,7 +479,26 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
     private static String originalId(ActionCommand command) {var args=object(StrictJson.parse(OpportunityJson.encode(command.arguments())));if(org.xar.ck3.control.governance.crownauthority.CrownCallerSelection.isCaller(args))return StrictJson.text(args.get("caller_request_id"));return org.xar.ck3.control.governance.council.CouncilCallerSubmission.requestedId(args).orElseGet(()->RequestIds.forActionBody(ActionCodec.bodySha256(command)));}
     private static boolean coldContext(Pending pending,long pid,String episode) {var source=GovernanceDomainDocument.context(object(pending.original()).get("source_context"));return !integer(source.get("bridge_pid")).equals(BigInteger.valueOf(pid))||!StrictJson.text(source.get("episode_run_id")).equals(episode);}
     private static boolean hasConsumedAt(RawJson result,BigInteger revision,BigInteger date) {var row=object(result);return row.has("next_turn_native_revision")&&row.has("next_turn_date_raw")&&revision.equals(integer(row.get("next_turn_native_revision")))&&date.equals(integer(row.get("next_turn_date_raw")))
-            ||row.has("post_native_revision")&&row.has("post_date_raw")&&revision.equals(integer(row.get("post_native_revision")))&&date.equals(integer(row.get("post_date_raw")));}
+            ||row.has("post_native_revision")&&row.has("post_date_raw")&&revision.equals(integer(row.get("post_native_revision")))&&date.equals(integer(row.get("post_date_raw")));
+    }
+    private static boolean crownConsumedAt(RawJson result,long pid,BigInteger actor,String episode,BigInteger revision,BigInteger date) {
+        var row=object(result);
+        if(!row.has("next_turn_consumed")||!row.get("next_turn_consumed").isBoolean()||!row.get("next_turn_consumed").booleanValue())return false;
+        if(!row.has("status")||!"enacted".equals(StrictJson.text(row.get("status"))))return false;
+        if(!row.has("material_result")||!row.get("material_result").isBoolean()||!row.get("material_result").booleanValue())return false;
+        if(!row.has("actor_character_id")||!integer(row.get("actor_character_id")).equals(actor))return false;
+        if(!row.has("episode_run_id")||!StrictJson.text(row.get("episode_run_id")).equals(episode))return false;
+        if(!row.has("next_turn_context"))return false;
+        var ctx=object(row.get("next_turn_context"));
+        if(!ctx.has("bridge_pid")||!integer(ctx.get("bridge_pid")).equals(BigInteger.valueOf(pid)))return false;
+        if(!ctx.has("episode_run_id")||!StrictJson.text(ctx.get("episode_run_id")).equals(episode))return false;
+        if(!row.has("next_turn_native_revision")||!row.has("next_turn_date_raw"))return false;
+        var markerRev=integer(row.get("next_turn_native_revision"));var markerDate=integer(row.get("next_turn_date_raw"));
+        if(revision.compareTo(markerRev)<0)return false;
+        if(date.compareTo(markerDate)<0)return false;
+        if(date.equals(markerDate)&&revision.compareTo(markerRev)>=0)return true;
+        return false;
+    }
     private static ObjectNode context(long pid,String episode) {return StrictJson.object().put("bridge_pid",pid).put("episode_run_id",episode);}
     private static Domain domain(ActionCommand command) {StrictJson.require(OWNED.contains(command.operation()),"operation outside Council/Crown holding scope");return command.operation().equals(GovernancePolicies.CROWN)?Domain.CROWN:Domain.COUNCIL;}
     private static DomainBodies.Slot slot(Domain domain) {return domain==Domain.COUNCIL?DomainBodies.Slot.COUNCIL:DomainBodies.Slot.CROWN;}
