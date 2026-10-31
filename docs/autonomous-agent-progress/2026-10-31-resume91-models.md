@@ -274,3 +274,13 @@ Main P0 C域 `fresh-cold-domain179` 实际15:39:21.386532→15:40:00.412612Z，2
 独立 M2 role187 的4真实POST均stop；host R2 保留顺序脚本算法但 owner 修 Java capture/真实 Resolved 类型，两个 literalbook 完整稿均拒。R2和首稿完整 content 逐字同SHA5bbf8b29bd24ba1e6cff3bc7b6e25419c893f486fddccd701d9dbc50900a23d0，实际REQUEST SHA不同，只记重复候选、不推缓存/后端原因。owner 独立4literal+该部分host实际首次4src strict0/.637388秒、4场0/.143248秒，END15:46:43.031306Z；原件 `role-resolution187/witness-owner/REPEATED-CASES187.json` 及同187根的 `build/JAVAC187/ACTUAL.json`、`build/RUN187/ACTUAL.json`。Wait179的5task/6实际POST为3stop2length1reset，core算法raw/consumer算法加机械API修，三fixture任务0源码采用；owner新两分支与1 actual Header→Wait组合首跑通过，15:56:36.789608Z END，0旧Header5场重测/Native/Game。
 
 一次既有reader+metrics自然观察截止15:57:31.923727Z：实际当前source3（原未闭5减2个已观察中断旧attempt），后相位全服务running3/waiting0/KV0.0782828，非原子。固定15:47:31.923727–15:57:31.923727十分钟29真实POST/25END（21stop4length）、客户端区间峰6@15:56:49.952670，当前3为 M1 footer181 core/literal/notify。持续12–16及24–32仍目标，不能把早先短峰12、累计任务或新派岗算当前。原件 `WINDOW128-155731.json`；本次owner漏先rolling导致一次cutoff断言红保留，补既有依赖后同cutoff出报告，无第二GET/新平台/额外模型调用。普通运行决策HTTP仍由runtime独占且不计源码窗口。
+
+## resume91 181 后继源码采用与包装经验（固定证据批次）
+
+机械输出边界：`m0-heap-formal-relocate176-01` 原23个 package/import 编辑、9新 namespace TU strict0；M3 `portable-delivery172/test-owner/DELIVERY172.json` 七份42.8KB整源回传 length12000/145.209秒整拒，owner 词法迁移，后继20新源 strict0。完整输入规模不是实际修改规模，亦非模型通用规模上限。两项沿原请求和回执，无为文档补 POST/测试。
+
+M1 新有限依据见执行机 `government-cold-manager184/LOCAL-MODEL-LESSONS184.json`：182完整祖源中无关 Calls 混入、185无0x的 owner 提示歧义；184两完整 stop 稿仍漏唯一新桥，全0采用。相对的新185 actual183 consumer 单 POST9.479秒/1433输出，正文/literal保留且仅机械 imports 后首 strict0/实际case0；186两R2生产正文原样首 strict及46断言0。只授具体叶，不由短方法/stop或最终组绿概括稳定能力。M2 207/208 casebook 纠稿返回生产类整拒，有限两轮后 owner 接管，不第三次刷同题。
+
+Root SAVE181 实现两真请求 stop10.530/13.144秒，reported19464+1099、19549+1572；record/codec 可用，effects 的允许同ID被写成必须同ID由 owner 纠正。独立 probe 第三请求 stop24.941秒/24715+3740，owner 修 API/合法 fixture/负例后首26 checks0；`resume91-root/save-codec181/DELIVERY.json` 分记三叶、测试来源及0物理信用。cached均null，无缓存收益结论。它不授本次冷 SAVE、Native或新游戏日成功。
+
+正式包装经验来自 Native writer 对 M2 193十叶的无EOF marker/逐Git blob核实；本岗 `resume91-runtime/save-cold181/RAW-SHA-ERRATA181.json` 另保两 READY 字段将LF文本SHA误标raw的 owner 勘误，实际 Service/collector 首 strict回执已按真实 read_bytes 哈希，源码未为勘误变化或重编。该批只整理既有证据，不统计新当刻在途/全局峰，不新增模型请求或编测。

@@ -160,3 +160,13 @@ ABI 答对不能替后继实现或独立 literal 预授正确。M0 同一原28B 
 消费 wrapper 是否压入返回地址，要读这次真实 caller。旧 manager 在 opaque port 前没有 push，旧 adapter 因而补；Header178 和 M5 新外层 caller 已写原 CALL 槽，沿旧模板再写会重复 callback。M1 Wait179 在发 consumer 请求前纠正 owner 任务，模型算法保留、仅 imports/public 机械修后，新 Header→Wait 严格组合 trace 首次通过；M5 也将其重复写明确记为 owner task 错后删除。分别冻结 physical VA、metadata RVA、call-site RSP 与 callee post-push RSP；不能套前一 wrapper 或因两个同值写最终内存一致就漏记额外副作用。
 
 完整源码前缀还须包含真正用到的祖接口与重载。C179 首20源仍漏 ActionPorts/Receipt/State/CompositeExecution 等6 API，首稿缺方法/错 referenceOf 重载不归为完整上下文能力失败；补齐后只模型纠正 Primitive/LifeReplay 两叶，首叶执行算法原样、后叶 owner 补 exact receipt/body/唯一成员与实际 source 角色。其余3叶 owner 实现；5叶 strict0仅授可编，不授 cold watch、Native/Game 或整5叶模型采用。两轮后不把坏 whole 稿剪成全包成功；实际 REQUEST、源审、owner 改动、必要首次行为回执继续分记。
+
+## 2026-10-31 resume91 后继：有界补丁、任务角色与约束词
+
+机械迁移优先返回有界 exact edit 列表或小 patch；完整当前源码作为输入，不表示必须重吐所有未变文件。M0 九叶 namespace 迁移仅23处 package/import 编辑原样采用并首次 strict0；M3 七份测试42.8KB要求整源回传，12000输出 token 后 length/145.209秒整拒，owner 词法迁移并保原 literal/expected，未拼截断稿或为已闭业务重发。这两单不建立通用速度优势、文件数或复杂度上限。
+
+源码包提供真正祖接口后，还要明确本任务接收者的 fully qualified 类型、允许的方法与目标产物角色；同一祖源文件中的无关 Calls 不是可借 API。M1 Registry182 首 consumer 借错祖 Calls，明确实际两方法后才可用。M2 207 独立 casebook 的完整 stop 纠稿却返回生产类，整拒未编；源码审阅须核类名/角色与实际调用目标，不能由 JSON/stop/可编推 witness 覆盖。所有十六进制提示加 `0x`；M1 185 原 `S-48` 与意图 `S-0x48` 的歧义归 owner 输入成本。结构化纯 DATA fixture 仍只是后继可试的真实任务方案，未实测为有效规则。
+
+把“允许”与“必须”逐项对照原约束，并保至少一个不同合法分支的正例。SAVE181 新 Fresh 规则允许同 snapshot ID，但模型误写必须同 ID；owner 纠正，新增 probe 同时核同 ID/新 ID 正例与非法分支。该26项只授软件合同；probe 的伪 Map cast、跳过负例、非法 SHA/不合法 revision fixture 也先由 owner 修，不能把最终绿追授原整 Test。短 x64 或小 API 仍需审 SBB/EAX、LEA/CMOVE、RIP resolved RVA 和实际 CALL/RET；独立 source literal、owner 提示或已读 target 后的 oracle 强度须分别说清，不把软件场景冒原 Native/Game。
+
+补丁包装和字节身份单独记录。无 EOF 换行的叶必须保正确 `\ No newline at end of file`，防止 `}---`/`}diff` 黏住下一 header；`git apply` 成功后仍核目标 Git blob。Windows `write_text` 默认换行转换及 `core.autocrlf` 可令工作树 raw SHA 与逻辑 LF/Git blob 不同；分别记录实际 `read_bytes()` 哈希、规范化文本哈希和编译输入，不能把 LF 预写文本哈希误标 raw SHA，也不据换行差异授算法失败。M2 十叶包装修复和本岗 SAVE181 READY 元数据误标均归 owner，原记录/勘误保留，未为此重跑绿或新发 HTTP。
