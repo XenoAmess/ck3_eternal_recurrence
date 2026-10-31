@@ -12,7 +12,6 @@ import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.effects.OriginalEvidencePort;
 import org.xar.ck3.control.application.readiness.NativeReadinessCollector;
-import org.xar.ck3.control.application.readiness.NativeSourceProofDocument;
 import org.xar.ck3.control.application.readiness.PhysicalStatusReadAuthority;
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.*;
@@ -68,7 +67,7 @@ public final class RootPhysicalStatusReadAuthority implements PhysicalStatusRead
         Instant until=context.clock().instant().plus(validity);if(deadline.isBefore(until))until=deadline;
         var lease=new Lease(frame,identity,caps,until);
         var pins=new java.util.ArrayList<WriterContracts.Pin>();
-        for(ExactRef ref:List.of(nativeRef,hello,heartbeat,context.source().sourceRef()))
+        for(ExactRef ref:List.of(nativeRef,hello,heartbeat))
             pins.add(same.capturePin(ref,ref==nativeRef?PACKET:WriterContracts.MAX_PIN_BYTES));
         for(ExactRef ref:java.util.stream.Stream.concat(identity.sourceQualification().stream(),identity.epochManifest().stream()).toList())
             pins.add(same.capturePin(ref,PROOF));
@@ -187,9 +186,7 @@ public final class RootPhysicalStatusReadAuthority implements PhysicalStatusRead
                 &&manifest.sha256().equals(proof.ownerSourceEpoch())
                 &&proof.gameExecutable().sha256().equals(hello.gameSha256())&&!proof.completeEvidenceClosure().isEmpty(),
                 "physical Status original complete source qualification drift");
-        var epoch=RootArchivedNativeSourceReader.readEpochData(manifest,read(same,manifest,PROOF,originals),proof);
-        requireSourceClosure(proof,epoch);
-        RootArchivedNativeSourceReader.requireOriginalFiles(proof);
+        RootArchivedNativeSourceReader.readEpochData(manifest,read(same,manifest,PROOF,originals),proof);
         return Set.copyOf(hello.capabilities());
     }
     private void requireStatusCapability(ContinuityStorePort.Session same,PhysicalStatusIdentity identity,OriginalEvidencePort originals)throws IOException {
@@ -205,46 +202,7 @@ public final class RootPhysicalStatusReadAuthority implements PhysicalStatusRead
             assertCurrent(scope,same,scope.deadline());throw failure;
         }
     }
-    /** Original physical files, not an assertion that the closure is nonempty. No live process, Native capture or Driver is consulted. */
-    private static void requireSourceClosure(NativeSourceProofDocument proof,RootArchivedNativeSourceReader.EpochData epoch)throws IOException {
-        var verified=new java.util.HashMap<String,ExactRef>();
-        sourceFilePath(proof.hostConfiguration(),verified);sourceFilePath(proof.source(),verified);
-        ExactRef executable=proof.gameExecutable();sourceFilePath(executable,verified);
-        var closure=proof.completeEvidenceClosure();
-        require(!closure.isEmpty()&&closure.size()<=30000,"finite nonempty complete source closure required");
-        var complete=new java.util.HashMap<String,ExactRef>();
-        for(ExactRef ref:closure) {
-            String path=sourceFilePath(ref,verified);
-            require(complete.putIfAbsent(path,ref)==null,"duplicate physical source path in original complete closure");
-        }
-        var inputs=epoch.inputs();
-        require(!inputs.isEmpty()&&inputs.size()<=30000,"finite original source epoch inputs required");
-        var roles=Set.of("java_runtime","native_source","bridge_dll","injector","game_executable","launcher_settings");
-        var seen=new java.util.HashSet<String>();var singles=new java.util.HashSet<String>();var present=new java.util.HashSet<String>();
-        for(var row:inputs) {
-            String role=row.role().wire();require(roles.contains(role),"unknown physical source epoch role");
-            ExactRef ref=row.source();String path=sourceFilePath(ref,verified);
-            require(seen.add(role+":"+path),"duplicate original role/source epoch row");present.add(role);
-            if(!role.equals("java_runtime")) {
-                ExactRef original=complete.get(path);require(original!=null&&sameContent(original,ref),"native epoch source is absent from the actual complete qualification closure");
-            }
-            if(!role.equals("java_runtime")&&!role.equals("native_source"))require(singles.add(role),"single native artifact source role was duplicated");
-            if(role.equals("game_executable"))require(path.equals(sourcePath(executable))&&sameContent(executable,ref),"HELLO executable source differs from original epoch executable role");
-        }
-        require(present.equals(roles),"original physical source epoch lost a mandatory source/artifact role");
-    }
-    private static String sourceFilePath(ExactRef ref,java.util.Map<String,ExactRef> verified)throws IOException {
-        require(ref.bytes()>0&&java.nio.file.Path.of(ref.path()).isAbsolute(),"nonempty absolute physical source required");
-        String path=sourcePath(ref);ExactRef prior=verified.get(path);
-        if(prior!=null){require(sameContent(prior,ref),"physical source aliases disagree on original bytes/SHA");return path;}
-        // The shared reader checks the persisted native identity and bytes for every actual Witness.
-        // This local table retains this consumer's stricter complete-closure, role and physical-alias checks.
-        verified.put(path,ref);return path;
-    }
-    private static String sourcePath(ExactRef ref)throws IOException {
-        return java.nio.file.Path.of(ref.path()).toRealPath().toString().replace('\\','/').toLowerCase(java.util.Locale.ROOT);
-    }
-    private static boolean sameContent(ExactRef left,ExactRef right){return left.bytes()==right.bytes()&&left.sha256().equals(right.sha256());}
+
     private ExactRef preserve(ContinuityStorePort.Session same,byte[] bytes,int maximum)throws IOException {
         ExactRef ref=context.archive().preserveArtifact(same,bytes,maximum);exact(ref,context.archive().readArtifact(same,ref,maximum));return ref;
     }
