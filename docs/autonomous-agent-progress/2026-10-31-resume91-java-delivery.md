@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式回执：普通 FF 已至 `cb15b8df88`，含恢复/角色切换来源审计削减与婚姻读取失败原因保留。运行 owner 后到确认 MB121 已实际加载 usage120，121/122 两次 ordinary HTTP 已记录真实 reported usage；124 于 2026-10-31T01:19:05.7663185Z 真实进入同 Game 普通循环。源码采用、MB 加载、运行模型 HTTP 与游戏动作分别记；最后新增普通动作/游戏日/SAVE 信用仍为0。本岗没有 S/MB/Game/账本写权，不操作这些现场。
+最新正式回执：普通 FF 已至 `8c7366e2f2`，含 M7 公共组件完整八叶、125 当前 typed Native basis 修复与126角色切换 producer 精确来源审计削减。运行 owner 确认125于 2026-10-31T01:30:51.582790Z 真实进入同 Game 普通循环；此前 usage120 已实际加载 MB121，121/122 ordinary HTTP 已记录真实 reported usage。源码采用、MB 加载、运行模型 HTTP 与游戏动作分别记；最后新增普通动作/游戏日/SAVE 信用仍为0。本岗没有 S/MB/Game/账本写权，不操作这些现场。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -161,3 +161,14 @@ Root docs09 `3f290568e0` 是00:06:02冻结13页包的12个实际变更叶；模�
 `cb15b8df88` before124一prod+便携3test保留真实Unavailable reason（至多2048字符）与original类型/decode/observed flags，Known原样返回，原IAE类别不变，0额外read。owner将helper改package-private供测试，主体模型采用；复用prod strict0/2.026秒、新3P/1.314秒。实际123只留generic原因，这个提交是下一轮诊断，不称业务修复；runtime已报MB124单源增编0与01:19:05真实LOOP，后态仍等实际业务结果。
 
 Root docs10 `7adcca39e4` 按13页冻结清单只8实际变化叶提交；AGENTS只替换当前resume91段，正式108566历史bytes完整保留，未用Z dirty的130253历史覆盖。usage120三EOF `73b6558571`、rolling122三EOF `6d47e48c74` 都精确保留各正式旧prefix，历史当时“尚无loaded回执”原文不改，后到证明另加。当前M7公共组件六源已有owner strict0，正式测试适配尚未READY，未提前采用或复跑旧FFM软件原码绿色。
+
+
+### M7 公共组件正式接线与125当前basis修复
+
+记录时间 2026-10-31T01:35:34.465Z。M7 `d17b7d9580` 已正常FF现有 `g2-research` 模块八叶：公共 `NativeTaskMemory`、`NativeIdlerDispatch`、`NativeIdlerConstruction` 及三个 retained kernel；两JUnit直接调用公共facade。没有新Maven模块、依赖、生产FFM、Game attach或业务调度接线。retained kernel只搬package不改已绿算法；新两个桥保精确参数/返回/异常与lazy symbol callback次序。生产6源strict0/0.919932秒，test2源strict0/1.065753秒；首次public facade JUnit7P/0F/0skip、external0.9019919秒，覆盖6个旧dispatch场景与构造矩阵8场景，非重跑旧FFM原始码。
+
+模型采用分别记：Construction facade首稿编过，Dispatch首API限定名实际javac红后modelcorrect02五行纠正采用；两test为partial模型，owner补受界byte image、terminal异常原对象、callback计数等实际契约，不报whole原样。正式集成只清ConstructionTest行尾空白、Memory额外EOF空行，cached diffcheck0，未为格式重绿。精确八源/hash在 `D:/ck3-state/resume91-java-delivery/M7-IDLER124-ADOPTION.json`。Native独立owner随后发表 `c703f434d2`，Native2TU与CTest14例/781checks实际全0；此为组件正式CI，不是Game部署或完整M7完成。
+
+`5b3cfe06cc`（原本地b099）精准采用basis125三叶。实际保retained Bridge自replay与semantic ref绑定，held lease真实Native packet相同、typed Game/source/session/connection/current业务语义；raw notice ownership从实际packet/manifest读取，不用合并diagnostics冒充。去重新签发current Bridge后比不可变ref的错误路径，普通current与cold Fresh复用现notice稳定比较；owner实现，模型首伪API整拒。3prod strict0/2.064秒，新测试literal int改BigInteger后strict0/1.694秒、5P/0skip/2.051秒；输入是已知ROOT180/202帧加实际124command的明确变体，非完整failedpair，固定D原件probe不带入便携CI。正式三叶与sealed candidate ignoreEOL逐项相同；runtime MB125 localservice3源增编0/5.591秒并实际LOOP，不授新动作或游戏日。
+
+M2后继真未完 `DriverOperatorRebindProducer.requireCommitted` 先完整源码投1.11，方法原样采用后单生产源strict0/1.5744701秒。正式 `8c7366e2f2`（原本地5dd）只按exact installed.sources集合识别已知代码pins并跳过其重复physical verify，其他prepared.sources、全部prepared.evidence仍验；实际Window originals/fresh receive proof、historical state/reduction/metadata关联保持，删除单独installed.sources物理重捕获。没有按路径后缀猜角色、没有盲删所有prepared pins，也没有重125旧14绿或新镜像测试；尚无live Root分支执行/MB装载回执。
