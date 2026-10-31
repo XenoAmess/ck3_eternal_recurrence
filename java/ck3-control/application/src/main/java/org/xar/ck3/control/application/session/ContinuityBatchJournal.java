@@ -210,17 +210,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 known.actionRows(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty());
         return new RetainedReadDriver(facts,afterRef);
     }
-    /** Recover the committed FOCUS history DATA after effect settlement, without issuing another action. */
+    /** Recover committed single-row ACTION history DATA after effect settlement, without issuing another action. */
     private RetainedReadDriver retainCapturedAction(WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
             java.util.List<ActionReceipt> receipts,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
         var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
         String actionId=StrictJson.text(details.get("action_id"));
         var matches=receipts.stream().filter(r->r.command().actionId().equals(actionId)).toList();
         StrictJson.require(matches.size()==1&&matches.getFirst().outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED,
-                "captured ACTION history requires its one settled original FOCUS receipt");
+                "captured ACTION history requires its one settled original applied receipt");
         var action=matches.getFirst();
-        StrictJson.require(action.command().operation().value().equals("private-select-player-lifestyle-stock-focus-v1"),
-                "captured ACTION recovery cannot replay another operation");
         var publication=org.xar.ck3.control.application.driver.DriverActionHistoryState.decode(details,action);
         var known=previous.facts();
         StrictJson.require(publication.predecessor().equals(ContinuityJson.digest(edge.before().toJson()))
@@ -237,11 +235,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var oldHistory=known.driver().commandHistory();var newHistory=driver.commandHistory();
         StrictJson.require(newHistory.size()==oldHistory.size()+1&&newHistory.subList(0,oldHistory.size()).equals(oldHistory)
                         &&driver.session().equals(known.driver().session()),
-                "captured FOCUS ACTION history changed another Driver row or session");
-        var rowRef=publication.legacyRow().orElseThrow(()->new IllegalArgumentException("captured FOCUS requires its actual legacy history row"));
+                "captured ACTION history changed another Driver row or session");
+        var rowRef=publication.legacyRow().orElseThrow(()->new IllegalArgumentException("captured ACTION requires its actual legacy history row"));
         var rowBytes=originals.loadMaterial(rowRef).bytes();
         StrictJson.require(java.util.Arrays.equals(newHistory.getLast().originalRow().json(),rowBytes),
-                "captured FOCUS history row differs from its named original");
+                "captured ACTION history row differs from its named original");
         var coverage=new org.xar.ck3.control.application.driver.DriverSnapshotFacts.ActionRow(actionId,action.bodySha256(),
                 action.sequence(),newHistory.size(),rowRef);
         var rows=new java.util.ArrayList<>(known.actionRows());rows.add(coverage);
@@ -994,14 +992,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         }
                     }
                 } else if(edge.kind().equals(WriterContracts.DRIVER_ACTION_HISTORY_KIND)) {
-                    StrictJson.require(retainedRecovery==null,
-                            "closed settled continuation cannot add another ACTION publication after its original recovery");
                     retained=retainCapturedAction(edge,retained,actions,originals);
                 } else if(edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
                     // Domain DATA does not submit another gameplay action.
                 } else if(edge.kind().equals(WriterContracts.ACTION_LIFECYCLE_KIND)) {
-                    StrictJson.require(retainedRecovery==null,
-                            "closed settled continuation cannot change original actions after its recovery");
+                    // The canonical action journal owns these transitions. Current receipts above
+                    // must all be settled; the original cycle edges below retain their own credit.
                 } else if(edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)) {
                     StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)
                             &&details.get("checkpoint_pair").isNull()&&details.get("completed_cycle_proof").isNull(),
