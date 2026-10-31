@@ -191,7 +191,8 @@ public final class RootReconciliationAuthority {
         ExactRef oldDriver=originalDriver(same,oldBasis);
         ExactRef originalReceipt=bound.receiptReferenceOf(original);
 
-        boolean freshRead = original.command().operation().value().equals("save-checkpoint")
+        boolean freshRead = (original.command().operation().value().equals("save-checkpoint")
+                || original.command().operation().value().equals("resume-map"))
                 && original.ack().isPresent() && original.ack().orElseThrow().nativeOk();
 
         return physical.withReconciliationSnapshot(same,deadline,freshRead,captured->{
@@ -208,7 +209,7 @@ public final class RootReconciliationAuthority {
 
             ObservationProvenance provenance;
             if(freshRead) {
-                provenance=freshSaveProvenance(captured,actual,original,attempt,originalReceipt,bound);
+                provenance=freshAfterAckProvenance(captured,actual,original,attempt,originalReceipt,bound);
             } else {
                 byte[] packet=captured.fullSnapshot().actual().originalPacket();
                 var wire=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(packet,4,packet.length)));
@@ -238,10 +239,11 @@ public final class RootReconciliationAuthority {
         });
     }
 
-    private static ObservationProvenance freshSaveProvenance(RootLifecycleAuthority.SnapshotLease captured,Complete actual,
+    private static ObservationProvenance freshAfterAckProvenance(RootLifecycleAuthority.SnapshotLease captured,Complete actual,
             ActionReceipt original,ActionState.Attempt attempt,ExactRef originalReceipt,ActionPorts.OutcomeArchive bound)throws IOException {
-        require(original.command().operation().value().equals("save-checkpoint") && !original.settled(),
-                "cold after-ACK observation requires its exact unresolved SAVE primitive");
+        require((original.command().operation().value().equals("save-checkpoint")
+                || original.command().operation().value().equals("resume-map")) && !original.settled(),
+                "cold after-ACK observation requires its exact unresolved SAVE or resume-map primitive");
         var fresh=captured.freshSnapshot().orElseThrow(()->new IOException("fresh SAVE reconciliation requires actual independent READ custody"));
         var frame=fresh.originalFrame();var physical=captured.fullSnapshot().actual();
         require(frame.session().equals(physical.session()) && frame.snapshotId().equals(physical.snapshotId())
