@@ -1,0 +1,106 @@
+{
+  "schema": "m3.group-lookup182-first-software-summary/v1",
+  "package_number": 46,
+  "status": "FIRST_STRICT_AND_SIX_SCENES_PASS",
+  "actual_original": "group-lookup182/ACTUAL182.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\group-lookup182",
+  "actual_evidence_copied_to_Git": false,
+  "actual_caller": "3790510@379074B; RCX=context,EDX=hash32; returned holder+60/+6C consumed",
+  "complete_RF": [
+    "3793900",
+    "3793A3A(exclusive)"
+  ],
+  "code_bytes": 314,
+  "UW_bytes": 8,
+  "new_PE_bytes": 322,
+  "header_provider_query_Game": 0,
+  "new_explicit_sources_first_compiled": 4,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "local_first_verification_source_matched_cache_reuse": true,
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/GroupLookupApi182.java": "a6298c03342b25827e11b9e1f1149836508ae82e88e56446e2ef5c3ea57df570",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/GroupLookup182.java": "5d9e8ced41fd80a4e4adac6ebd47aafacd3bdf7311e4fe295d7f8ce2e3319674",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/GroupLookupBook182.java": "ab5d0acd7414508f35ead04e2f70dd4bc52ebb31256d0c4cde120ef5b678410a",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/GroupLookupValidation182.java": "cd582da916e3ca4f19fbe1e0f0d9c6fad65d9402a54b72b7f3a12075ba3b95f4"
+  },
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "start_utc": "2026-10-31T19:05:53.158179+00:00",
+      "end_utc": "2026-10-31T19:05:53.851004+00:00",
+      "process_seconds": 0.692807599902153,
+      "exit_code": 0
+    },
+    {
+      "phase": "RUN6",
+      "start_utc": "2026-10-31T19:05:53.853346+00:00",
+      "end_utc": "2026-10-31T19:05:53.988949+00:00",
+      "process_seconds": 0.13559400010854006,
+      "exit_code": 0
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/implicit:none/192MiB/CPU1/empty-sourcepath",
+  "source_preserved": true,
+  "new_scenes": 6,
+  "scripted_source_steps": 58,
+  "steps_per_scene": [
+    7,
+    9,
+    7,
+    9,
+    9,
+    17
+  ],
+  "top_level_assertions": 12,
+  "assertion_meaning": "one complete scripted-operation consumption and one actualReturned comparison per scene; per-step protocol guards not added as separate top-level assertions",
+  "model_logical_requests": 6,
+  "actual_model_POSTs": 6,
+  "model_finishes": {
+    "stop": 5,
+    "length_whole_discarded": 1
+  },
+  "local_phase_peak": 2,
+  "model_core_book_adoption": 0,
+  "core_book_origin": "owner entire after two rejected semantic candidates per role",
+  "host_model_adoption": "second decoded Java candidate byte-for-byte; zero owner source edits",
+  "host_independence": "Host owner/model saw original314B/all current API and Book record signatures only; no core/Book bodies/candidates/results",
+  "book_expected_authority": "Owner source-literal scripts after target-source review; not blind independent and never target-execution generated",
+  "request_API_audit": "All four core/book requests supplied complete physical current API/target/Book declarations; no178-style missing-API erratum",
+  "scope": "direct entry byteEE0 bypass/sharedXADD observations, captured signed-mask/hash address calculation,24B probing with fresh final byte/pointer and normal-path release",
+  "unreachable_from_entry": "BTS/exclusive mode follows impossible SETE mode2; no invented mode argument or test credit",
+  "atomic_limit": "XADD oldint values and deltas are scripted observations, not backing-counter arithmetic, atomic-wrap, synchronization, fairness or concurrent lock validation",
+  "uncovered": [
+    "DL byte wrap and fallback index overflow fixtures",
+    "unbounded poll/probe termination"
+  ],
+  "not_proved": [
+    "full CPU/prologue/register/flags/ABI/EH",
+    "opaque atomic/PAUSE natural implementation",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_production_recompiled": 0,
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
