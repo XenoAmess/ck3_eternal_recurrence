@@ -1,0 +1,116 @@
+{
+  "schema": "m3.byte-compare184-first-software-summary/v1",
+  "package_number": 47,
+  "status": "FIRST_STRICT_AND_EIGHT_SCENES_PASS",
+  "actual_original": "byte-compare184/ACTUAL184.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\byte-compare184",
+  "actual_evidence_copied_to_Git": false,
+  "actual_caller_sites": [
+    "3F542C0@3F5436A",
+    "3F542C0@3F5441C"
+  ],
+  "complete_RF": [
+    "42270B0",
+    "4227177(exclusive)"
+  ],
+  "code_bytes": 199,
+  "UW_bytes": 4,
+  "new_PE_bytes": 203,
+  "header_provider_query_Game": 0,
+  "new_explicit_sources_first_compiled": 4,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "local_first_verification_source_matched_cache_reuse": true,
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/ByteCompareApi184.java": "3d1bed663ee30059d9d6886cb23e075f7245ca14ed123bbe4140e62dc4a12093",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/ByteCompare184.java": "7600f9020512f7c7124560fb83247e28b793c10f35a7b08bb596922d6344b20f",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ByteCompareBook184.java": "a1ef0325584eebbc69946e2f5e4375e9e08a9bad9a081bbb6fda57385d7539d6",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ByteCompareValidation184.java": "c15887c0a7436c111c52fbc73d44e91b65298f0743f1e2868cbc257c51d67711"
+  },
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "start_utc": "2026-10-31T19:19:54.999314+00:00",
+      "end_utc": "2026-10-31T19:19:55.679383+00:00",
+      "process_seconds": 0.680033499840647,
+      "exit_code": 0
+    },
+    {
+      "phase": "RUN8",
+      "start_utc": "2026-10-31T19:19:55.681614+00:00",
+      "end_utc": "2026-10-31T19:19:55.826091+00:00",
+      "process_seconds": 0.14446339989081025,
+      "exit_code": 0
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/implicit:none/192MiB/CPU1/empty-sourcepath",
+  "source_preserved": true,
+  "new_scenes": 8,
+  "scripted_exact_reads": 33,
+  "reads_per_scene": [
+    0,
+    2,
+    2,
+    4,
+    9,
+    10,
+    3,
+    3
+  ],
+  "top_level_assertions": 16,
+  "assertion_meaning": "one complete exact-read script consumption and one actual int return comparison per scene; per-read guards not added as extra top-level assertions",
+  "model_logical_requests": 6,
+  "actual_model_POSTs": 6,
+  "all_model_finishes_stop": true,
+  "actual_local_phase_peak": 3,
+  "three_actual_HTTP_overlap": [
+    "2026-10-31T19:15:22.257055Z",
+    "2026-10-31T19:15:31.365550Z"
+  ],
+  "core_model_adoption": "second candidate business statements unchanged; owner fixed Memory import and removed false/self-debate comments; partial, not raw whole",
+  "core_owner_business_logic_edits": 0,
+  "book_model_adoption": "partial second candidate; five scenarios unchanged, three owner corrections for unaligned prefix, fourth-word fresh read, fresh-equal return",
+  "host_model_adoption": "second decoded Java source byte-for-byte; zero owner source edits",
+  "host_independence": "Host owner/model saw original199B/complete397B caller/all current declarations only, never target or Book bodies/candidates/results",
+  "book_expected_authority": "Source-derived partial model data with three owner corrections after target-source review; not an untouched blind oracle or execution-generated expectations",
+  "request_API_audit": "All four core/book requests supplied full current8physicalsource/target/Book declarations; no missing-API input error",
+  "scope": "exact observed byte/QWORD reads, unsigned64 length, left-alignment prefix,32/8/byte paths and signed int0/plus1/minus1 result",
+  "fresh_mismatch_rule": "QWORD mismatch rereads right QWORD after branch; BSWAP/CMP/twoSBB yield+1 if this new comparison is equal",
+  "uncovered": [
+    "successful unaligned prefix transitioning into bulk path",
+    "second/third QWORD mismatch fixtures",
+    "byte positive result fixture",
+    "general alias/wrap pointer inputs",
+    "exhaustive uint64-length termination"
+  ],
+  "not_proved": [
+    "hardware memory/page/alignment fault behavior",
+    "concurrency/atomicity",
+    "fullCPU/register/flags/rawRAX/ABI/EH",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_production_recompiled": 0,
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
