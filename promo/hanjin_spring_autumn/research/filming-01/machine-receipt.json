@@ -1,0 +1,487 @@
+{
+  "schema": "hanjin.filming-machine-receipt/v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-31T17:24:32.283705+00:00",
+  "source_role": "Persisted source-backed filming facts; no new Game read or launch during documentation.",
+  "game": {
+    "pid": "12136",
+    "birth_filetime": "134379145931892740",
+    "start_instant": "2026-10-31T10:03:13.189274Z",
+    "exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+  },
+  "launch_argv": [
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "-gdpr-compliant",
+    "-userdir=C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile"
+  ],
+  "profile": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile",
+  "environment": {
+    "schema": "hanjin.shooting-environment.v1",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-31T09:34:46.431046Z",
+    "executable": {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    "file_version": "1.0.0.0",
+    "launcher_raw_version": "1.20.0.4",
+    "injector": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/runtime/build/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "9252d1f9e87921854fd54dfed076f949618130c50b728766c4c773aa0c4b4064"
+    },
+    "dll": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/publish-a02/xar_ck3_bridge.dll",
+      "bytes": 15589376,
+      "sha256": "44c6ad21aa4a7f56b7ca96b2607d0a7918adf09baefc3cef261a8032eda7d335"
+    },
+    "profile": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile",
+    "version_boundary": "Clothes declares 1.20.1.2; exact installed 1.20.0.4 still needs actual rendering verification"
+  },
+  "enabled_mods_in_order": [
+    "mod/main.mod",
+    "mod/clothes.mod",
+    "mod/peace.mod",
+    "mod/hanjin_filming_dongzhuo.mod"
+  ],
+  "profile_input_pins": [
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile/mod/main.mod",
+      "bytes": 898,
+      "sha256": "7152e26abd26f6c34ae40625de46d7ac6bd0ad800aa11ba115b1c24621286f75"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile/mod/clothes.mod",
+      "bytes": 194,
+      "sha256": "54831e7a0191c2bb879e7f571336cdd207940e90b0afc90d1686115f35a9c35c"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile/mod/peace.mod",
+      "bytes": 307,
+      "sha256": "92e583264262fb6c5573908564d5d134bf773d67a066d7bb9fac99e9e612c461"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile/mod/hanjin_filming_dongzhuo.mod",
+      "bytes": 166,
+      "sha256": "9e1fff39f9db39b3fffddfeee8220292f0d3704f2488b6b6337801b5cd6a9378"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile/dlc_load.json",
+      "bytes": 141,
+      "sha256": "0aa93aa2e81ed3d8c1962eb773784c222a99f592761cd60fdbff73f08b92ba79"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile/pdx_settings.txt",
+      "bytes": 525,
+      "sha256": "a7b14c98b35811d874e0864354c66232ac4c165347f4db4baf15e0b77b64111e"
+    }
+  ],
+  "gameplay": {
+    "player_character_id": 5048,
+    "start_date_raw": 45464400,
+    "end_date_raw": 45467280,
+    "new_game_days": 120,
+    "start_calendar_date": "190.1.1",
+    "end_calendar_date": "190.5.1",
+    "final_frame": {
+      "snapshot_id": "native:229",
+      "native_revision": 229,
+      "public_revision": 230,
+      "paused": true,
+      "war_31_still_active": true
+    }
+  },
+  "checkpoint": {
+    "status": "saved",
+    "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-02\\launcher\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 40181838,
+    "sha256": "46ead77a194e755e247fc0ad3777df59f0bc487765463bf67dc6c677a957c1b6",
+    "date_raw": 45467280,
+    "overwrite_confirmed": false,
+    "strategy": "native-autosave-command-v1",
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "rogue_one_life",
+      "xar_enabled": "xar_on",
+      "pact_contract": "terminal_settlement_required",
+      "source": "legacy-driver-default",
+      "environment_sha256": null
+    },
+    "history_index": 100,
+    "episode_character_id": 5048,
+    "episode_run_id": "native-5048-a8074f8e5f13"
+  },
+  "successful_native_checkpoint_operations": 1,
+  "sdk_seed_is_a_materialized_copy_not_second_save": true,
+  "native_history": {
+    "native_command_history_rows_through_save": 100,
+    "native_command_history_ok_rows_through_save": 98,
+    "history_count_semantics": "driver persisted rows; includes queries and controls; not an interchangeable count of world actions or game days",
+    "native_command_history_exact_command_counts": {
+      "center-map-on-landed-title-v1": 1,
+      "life-advance": 40,
+      "move-army-106-to-762": 1,
+      "navigate-ingame-ui-v1": 4,
+      "preview-move-army-106-to-762": 1,
+      "query-army-strengths-v1": 3,
+      "query-battle-control-snapshot-v1-106": 1,
+      "query-campaign-root-context-v1": 2,
+      "query-current-event-window-context-v1": 14,
+      "query-ingame-ui-window-v1": 4,
+      "query-pending-character-interaction-context-v1": 4,
+      "query-player-default-raise-v1": 5,
+      "query-war-declared-overview-v1": 1,
+      "reject-pending-character-interaction": 4,
+      "save-checkpoint": 1,
+      "select-event-option-1": 14
+    }
+  },
+  "ui_raise_all": {
+    "operations": 1,
+    "engine_action": "PlayerRaiseAllRegiments",
+    "gate": "PlayerCanRaiseAnyRallyPoint",
+    "not_typed_default_raise_success": true,
+    "evidence": {
+      "machine_id": "4-8e1c2f1861",
+      "game_pid": "12136",
+      "birth_filetime": "134379145931892740",
+      "native_evidence": [
+        "raise-query-05-response.json",
+        "research-updates/raise-location-validator-02/README.md"
+      ],
+      "native_operation": "fixed single-province CRaiseTroopsCommand(867,-1), final legality false",
+      "original_ui_operation": "PlayerRaiseAllRegiments guarded by PlayerCanRaiseAnyRallyPoint; different existing engine path",
+      "construction_limit": "loaded exact-build DLL offers no multi-rally typed command or arbitrary province parameter, and hot replacement is unsupported; current Game preserved",
+      "scope": "one original Raise All operation, only if enabled; independently verify new controllable armies",
+      "mutation_retry_policy": "never repeat an ambiguous attempt"
+    }
+  },
+  "battle_outcome": "battle-result.json",
+  "normal_exit": {
+    "native_exit_error": {
+      "jsonrpc": "2.0",
+      "id": 20,
+      "result": {
+        "content": [
+          {
+            "text": "Error executing tool ck3_query_normal_exit_context_v1: normal exit requires the fixed actual managed-source inventory",
+            "type": "text"
+          }
+        ],
+        "isError": true
+      }
+    },
+    "managed_inventory_not_fabricated": true,
+    "actual_ui_route": "WM_CLOSE -> original exit dialog -> disable exit autosave -> desktop exit",
+    "ui_route_source": "Root filming owner actual execution handoff, with retained UI screenshots",
+    "exit_receipt": {
+      "schema": "hanjin.shooting-game-exit.v1",
+      "machine_id": "4-8e1c2f1861",
+      "finished_at_utc": "2026-10-31T16:53:54.776744600Z",
+      "game_pid": "12136",
+      "exit_code": 0
+    }
+  },
+  "display_restore": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-31T17:05:23.024317+00:00",
+    "before": [
+      1920,
+      1080,
+      60
+    ],
+    "requested": [
+      1024,
+      768,
+      60
+    ],
+    "change_result": 0,
+    "after": [
+      1024,
+      768,
+      60
+    ],
+    "pyautogui_size": [
+      1024,
+      768
+    ]
+  },
+  "keeper_stop": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "hanjin-dongzhuo-screen-20261031-01",
+    "last_sequence": 14882,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-01\\keeper\\journal.jsonl",
+    "at_utc": "2026-10-31T17:05:23.162586+00:00",
+    "entry_error": null,
+    "checkout_head": "a80399b9a1db2ade6577573fd453f122cbde0d5f",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "screen_release": {
+    "source_path": "C:/workspace/.codex-task-bus/events.jsonl",
+    "source_line_sha256": "3ad815829923534062a48b5ff229d322ec2f5b3e506401a04ea8504f00ae17aa",
+    "expected_sequence": 14882,
+    "event": {
+      "event_id": "f2c9bb339a0d4729ae6698cb51422a27",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "a80399b9a1db2ade6577573fd453f122cbde0d5f"
+      },
+      "kind": "status",
+      "next_step": "Isolated-190-campaign",
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "retirement": {
+        "business_status": "unresolved_red",
+        "kind": "expired-own-claim-released",
+        "prior_sequence": 14882
+      },
+      "schema": "codex.task_bus.v1",
+      "sequence": 14883,
+      "state": "waiting",
+      "summary": "DongZhuo-filming-complete-Game12136-normal-exit0-display-restored-machine_id=4-8e1c2f1861",
+      "task_id": "hanjin-dongzhuo-screen-20261031-01",
+      "timestamp_utc": "2026-10-31T17:14:17.096922+00:00",
+      "to": [
+        "*"
+      ]
+    },
+    "acceptance_green": false
+  },
+  "lifecycle_boundary": "rogue_one_life/xar_on is the generic driver legacy declaration; it does not prove an XAR pact loaded in this campaign.",
+  "not_claimed": [
+    "war31 completed",
+    "native terminal query succeeded",
+    "Weiyang invitation reached",
+    "all filming or editing finished",
+    "MCP legacy lifecycle declaration proves XAR pact loaded",
+    "UI fallback was a native typed default raise"
+  ],
+  "source_receipts": [
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/snapshot-01-response.json",
+      "bytes": 41133,
+      "sha256": "5ed0199d6ad21b7908860e43c716743de4bcb5736486ce1f46f44ccdeddf160f"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/closure-01-snapshot-response.json",
+      "bytes": 99519,
+      "sha256": "19b8a4134b37bee75b09f6776a47c4a614fefdcbc1740d1bcad090eaf97b3e9d"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/checkpoint-01-response.json",
+      "bytes": 7715,
+      "sha256": "d37daa642e9c02337c12febba255d5994c0fc6ea002b4906912ba61dc6357f6a"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/raise-all-ui-fallback.json",
+      "bytes": 749,
+      "sha256": "522f89a587d17bde6e16b00ae7d1d388f6e1bd60cedc44d657e5febaa22f5800"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/snapshot-16-after-ui-raise-response.json",
+      "bytes": 75675,
+      "sha256": "4a5ab150f800ec0f36852e830047b3a762ea20fe1fe2931ad6a408e2bf8b8fdc"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/sortie-01-move-106-response.json",
+      "bytes": 10371,
+      "sha256": "8bfb657d07333be6d347748c5b9b0d2aa4e8c13c8020f9457eeff7a1296c1027"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/battle-01-control-response.json",
+      "bytes": 50837,
+      "sha256": "1782a13e2fd026235810edf88dc52a1557bad7d0f3dd90696950d2f757df9ecd"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/battle-01-final-strength-response.json",
+      "bytes": 207,
+      "sha256": "2014745cd5281c53fb48abb7786dfdc877ce2b1c2ae465c5b2134d9c845bb02a"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/battle-01-terminal-response.json",
+      "bytes": 214,
+      "sha256": "4b49d0470d040222ce6eb746e5c27e2f4eef3ee9aabf0a7ccc7a61ce932e7163"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/battle-01-transition-end-response.json",
+      "bytes": 3488,
+      "sha256": "ba4dc35a9784770bf2f0a49938875713037b237a34c84e9f8a1a692f3cbf056c"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/battle-save-readback/read-result.json",
+      "bytes": 1233,
+      "sha256": "f21fe2eb2ea50dfe5fbd84ca680d2bcc96855bfff50695ca5ee647068cb99ac1"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/battle-save-readback/exact/read-result.json",
+      "bytes": 1248,
+      "sha256": "790b38dd574acd36171af6001c527a489d271adb8b0ec999aeb6a377b14ad1fe"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/battle-save-readback/exact/matched-excerpts.txt",
+      "bytes": 21531,
+      "sha256": "1cf684276f66a80efabc5406f0e4a601b76df5c3ac36abb270592bb6e521ba60"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/prepare-receipt.json",
+      "bytes": 3842,
+      "sha256": "e55c0ddeb4ddc248085efeb36a4e97af4c100b9158b1d54912de101192cfe823"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/launch-started.json",
+      "bytes": 1043,
+      "sha256": "600ae8f50bb68dede49da68c6b9ab864d3aa4262c31bbb737224dcd3b9caf427"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/normal-exit-context-01-response.json",
+      "bytes": 206,
+      "sha256": "cce8a2602543d905bfc7b061f1d59d71b9d962eb40b59bf5d1921c857f11b1b4"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/normal-exit-ui-fallback.json",
+      "bytes": 619,
+      "sha256": "2d636d0181103754f84601db1dad36e44d3d148f9ce29962b3b5ed843dad1ef6"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/exit.json",
+      "bytes": 186,
+      "sha256": "449408ec8ed6c344f8d4419c326261e2748fafbb5b58d3022cf197df5b5cc58b"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/display-restored.json",
+      "bytes": 222,
+      "sha256": "78504ce4ca9d9fd69e96519d86c93f79496b825b5b2b0af6d31d033ca0a18beb"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-01/keeper/report.json",
+      "bytes": 456,
+      "sha256": "9e35da65994ac89c687e9df3b93f265fd0dd8d2fe561063661eb8d6be8b0055b"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/steam-offline-close.json",
+      "bytes": 2436,
+      "sha256": "719d2cd84963dab60fb7a1f67973513cb105a832665c587b45fce8298008f33d"
+    }
+  ],
+  "review_delivery": {
+    "stable_external_manifest": "C:/workspace/hanjin-spring-autumn-20261031/episode01-dongzhuo-delivery.json",
+    "video": "C:/workspace/hanjin-spring-autumn-20261031/episode01-dongzhuo-review.mp4",
+    "subtitles": "C:/workspace/hanjin-spring-autumn-20261031/episode01-dongzhuo-review.srt",
+    "cover": "C:/workspace/hanjin-spring-autumn-20261031/episode01-dongzhuo-cover.jpg",
+    "approximate_duration_seconds": 470,
+    "status": "v3_built_key_frames_verified_waiting_run002_audit_review_decode",
+    "prior_cut_checks_passed": [
+      "native_plan",
+      "native_build",
+      "automated_audit",
+      "review_process",
+      "full_decode"
+    ],
+    "prior_checks_do_not_qualify_new_run": true,
+    "edge_tts": {
+      "version": "7.3.1",
+      "voice": "zh-CN-YunjianNeural",
+      "rate": "-12%",
+      "pitch": "-8Hz"
+    },
+    "human_signoff": null,
+    "mutable_delivery_video_sha256_not_frozen_in_documentation": true,
+    "corrected_segment": "Supply segment replaced by matching 20030/4680/300 footage; Root verified frame245 without sack tooltip and frame446 armor.",
+    "v3_visual_check_source": "Root filming owner actual visual review; not full human signoff.",
+    "v3_visual_frame_pins": [
+      {
+        "path": "C:/workspace/hanjin-spring-autumn-20261031/edit-02/qc-frame-245.png",
+        "bytes": 545319,
+        "sha256": "fab6f27940eb007e8a98e10189a41137861dd81a7a9b13c62d51871e68ef8c87"
+      },
+      {
+        "path": "C:/workspace/hanjin-spring-autumn-20261031/edit-02/qc-frame-446.png",
+        "bytes": 1781318,
+        "sha256": "f8d5892e6937f125046d0ca69232e7d6b9de99f7a038bba049ae359fb9220588"
+      }
+    ]
+  },
+  "steam_offline_at_close": {
+    "receipt": {
+      "schema": "xar.steam-offline-state-probe/v2",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-31T17:23:30.835075+00:00",
+      "nonce": "baf19c20ab25b177e607c40510aed9ac",
+      "reason": "observed",
+      "steam": {
+        "pid": 13760,
+        "birth_filetime": "134378949641026140",
+        "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version": "11.15.70.27"
+      },
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes": 19452568,
+        "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id": "1407374884294686",
+        "mtime_ns": "1792620918000000000"
+      },
+      "endpoint": null,
+      "diagnostics": [],
+      "observation_method": "native_current_user_byte",
+      "native_evidence": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-31T17:23:30.835075+00:00",
+        "nonce": "baf19c20ab25b177e607c40510aed9ac",
+        "module_base": "140719262400512",
+        "module_size": 19730432,
+        "value_rva": "18435783",
+        "value_address": "140719280836295",
+        "producer_rva": "6548332",
+        "producer_anchor_hex": "440fb6055363b500488d155da67700488bcbe80d713d00",
+        "producer_anchor_sha256": "16316f5b39bac43273fac08a65f62c45af1d41938ce2d13d830ab16e1474966a",
+        "raw_samples": [
+          1,
+          1
+        ],
+        "steam_before": {
+          "pid": 13760,
+          "birth_filetime": "134378949641026140",
+          "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+          "file_version": "11.15.70.27"
+        },
+        "steam_after": {
+          "pid": 13760,
+          "birth_filetime": "134378949641026140",
+          "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+          "file_version": "11.15.70.27"
+        },
+        "source_before": {
+          "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+          "bytes": 19452568,
+          "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+          "file_id": "1407374884294686",
+          "mtime_ns": "1792620918000000000"
+        },
+        "source_after": {
+          "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+          "bytes": 19452568,
+          "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+          "file_id": "1407374884294686",
+          "mtime_ns": "1792620918000000000"
+        },
+        "tray_manager_pointer_rva": "18428640",
+        "tray_manager_address": "1860452425856",
+        "tray_state_offset": "340",
+        "tray_state_samples": [
+          4,
+          4
+        ]
+      },
+      "status": "offline",
+      "offline_mode": true
+    },
+    "does_not_requalify_prior_or_future_launch": true
+  }
+}

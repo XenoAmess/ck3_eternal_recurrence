@@ -1,0 +1,205 @@
+{
+  "schema": "hanjin.filming-saved-battle-outcome/v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-31T17:25:08.152556+00:00",
+  "source_role": "Offline projection from the actual saved result; not a successful native terminal query.",
+  "save": {
+    "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-02\\launcher\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "size": 40181838,
+    "sha256": "46ead77a194e755e247fc0ad3777df59f0bc487765463bf67dc6c677a957c1b6",
+    "date_raw": 45467280
+  },
+  "outcome": {
+    "combat_id": 16777217,
+    "combat_results_id": 16777216,
+    "province_id": 762,
+    "winner_character_id": 5048,
+    "leader_character_id": 5048,
+    "winning_side_raw": 0,
+    "start_date": "190.4.24",
+    "end_date": "190.5.1",
+    "attacker_main_participant": 5048,
+    "attacker_commander": 7554,
+    "attacker_initial_soldiers": 20030,
+    "attacker_surviving_soldiers": 20027,
+    "defender_main_participant": 7125,
+    "defender_commander": 7125,
+    "defender_initial_soldiers": 1410,
+    "wiped_saved": true,
+    "source_locator": "combats.combat_results.16777216; melt lines2038377-2038492",
+    "readiness": "offline saved outcome; original typed terminal query remains inconsistent"
+  },
+  "native_terminal_query_original": {
+    "jsonrpc": "2.0",
+    "id": 20,
+    "result": {
+      "content": [
+        {
+          "text": "Error executing tool ck3_query_battle_terminal_transition_v1: native gameplay step failed: typed query result is inconsistent",
+          "type": "text"
+        }
+      ],
+      "isError": true
+    }
+  },
+  "native_transition_end_original": {
+    "jsonrpc": "2.0",
+    "id": 20,
+    "result": {
+      "content": [
+        {
+          "text": "{\n  \"step\": \"query-battle-transition-v1-16777217\",\n  \"accepted\": true,\n  \"status\": \"combat_not_found\",\n  \"query_sequence\": 1,\n  \"snapshot_revision\": 229,\n  \"battle_transition_snapshot\": {\n    \"schema_version\": 1,\n    \"contract_stage\": \"production_exact_combat_lifecycle\",\n    \"status\": \"combat_not_found\",\n    \"battle_transition_ready\": true,\n    \"snapshot_revision\": 229,\n    \"observed_date_raw\": 45467280,\n    \"combat_id\": 16777217,\n    \"province_id\": null,\n    \"phase\": null,\n    \"phase_raw\": null,\n    \"phase_day\": null,\n    \"winner_side\": null,\n    \"winner_raw\": null,\n    \"forced_winner_side\": null,\n    \"forced_winner_raw\": null,\n    \"finalized\": null,\n    \"battle_result_id\": null,\n    \"attacker_public_cunit_ids_in_stored_order\": [],\n    \"defender_public_cunit_ids_in_stored_order\": [],\n    \"current_observation\": null,\n    \"native_owner_recall_inputs_v1\": null\n  },\n  \"backend_id\": \"native-headless\",\n  \"combat_id\": 16777217,\n  \"province_id\": null,\n  \"phase\": null,\n  \"phase_raw\": null,\n  \"phase_day\": null,\n  \"winner_side\": null,\n  \"winner_raw\": null,\n  \"forced_winner_side\": null,\n  \"forced_winner_raw\": null,\n  \"finalized\": null,\n  \"battle_result_id\": null,\n  \"attacker_public_cunit_ids_in_stored_order\": [],\n  \"defender_public_cunit_ids_in_stored_order\": [],\n  \"battle_transition_ready\": true,\n  \"current_observation\": null,\n  \"queried_snapshot_id\": \"native:229\",\n  \"queried_revision\": 230,\n  \"queried_native_revision\": 229,\n  \"schema_version\": 1,\n  \"scope\": \"exact-combat-lifecycle\",\n  \"source\": {\n    \"game_version\": null,\n    \"executable_sha256\": null,\n    \"snapshot_id\": \"native:229\",\n    \"revision\": 230,\n    \"native_revision\": 229,\n    \"date_raw\": 45467280,\n    \"paused\": true,\n    \"backend_id\": \"native-headless\"\n  }\n}",
+          "type": "text"
+        }
+      ],
+      "isError": false,
+      "structuredContent": {
+        "step": "query-battle-transition-v1-16777217",
+        "accepted": true,
+        "status": "combat_not_found",
+        "query_sequence": 1,
+        "snapshot_revision": 229,
+        "battle_transition_snapshot": {
+          "schema_version": 1,
+          "contract_stage": "production_exact_combat_lifecycle",
+          "status": "combat_not_found",
+          "battle_transition_ready": true,
+          "snapshot_revision": 229,
+          "observed_date_raw": 45467280,
+          "combat_id": 16777217,
+          "province_id": null,
+          "phase": null,
+          "phase_raw": null,
+          "phase_day": null,
+          "winner_side": null,
+          "winner_raw": null,
+          "forced_winner_side": null,
+          "forced_winner_raw": null,
+          "finalized": null,
+          "battle_result_id": null,
+          "attacker_public_cunit_ids_in_stored_order": [],
+          "defender_public_cunit_ids_in_stored_order": [],
+          "current_observation": null,
+          "native_owner_recall_inputs_v1": null
+        },
+        "backend_id": "native-headless",
+        "combat_id": 16777217,
+        "province_id": null,
+        "phase": null,
+        "phase_raw": null,
+        "phase_day": null,
+        "winner_side": null,
+        "winner_raw": null,
+        "forced_winner_side": null,
+        "forced_winner_raw": null,
+        "finalized": null,
+        "battle_result_id": null,
+        "attacker_public_cunit_ids_in_stored_order": [],
+        "defender_public_cunit_ids_in_stored_order": [],
+        "battle_transition_ready": true,
+        "current_observation": null,
+        "queried_snapshot_id": "native:229",
+        "queried_revision": 230,
+        "queried_native_revision": 229,
+        "schema_version": 1,
+        "scope": "exact-combat-lifecycle",
+        "source": {
+          "game_version": null,
+          "executable_sha256": null,
+          "snapshot_id": "native:229",
+          "revision": 230,
+          "native_revision": 229,
+          "date_raw": 45467280,
+          "paused": true,
+          "backend_id": "native-headless"
+        }
+      }
+    }
+  },
+  "war31_still_active": true,
+  "casualty_fields_preserved_separately": {
+    "attacker_initial_soldiers": 20030,
+    "attacker_surviving_soldiers": 20027,
+    "saved_participant_casualties": 4,
+    "arithmetic_difference_is_not_rewritten_as_casualties": true
+  },
+  "raw_saved_result_block": "\t\t16777216={\n\t\t\tlocation=762\n\t\t\tattacker={\n\t\t\t\tmain_participant=5048\n\t\t\t\tcommander=7554\n\t\t\t\tinital_soldiers=20030\n\t\t\t\tsurviving_soldiers=20027\n\t\t\t\tparticipants={\n\t\t\t\t\t5048\n\t\t\t\t}\n\t\t\t\tregiment_stats={\n\t\t\t\t\t{\n\t\t\t\t\t\tknight=4294967295\n\t\t\t\t\t\tdamage_last_tick=4.0574\n\t\t\t\t\t\tmain_kills=0.07462\n\t\t\t\t\t\tpursuit_kills=0\n\t\t\t\t\t\tmain_losses=0.04659\n\t\t\t\t\t\tpursuit_losses_maa=0\n\t\t\t\t\t\tpursuit_losses_self=0\n\t\t\t\t\t\tinitial_count=29\n\t\t\t\t\t\tfinal_count=29\n\t\t\t\t\t}\n\t\t\t\t\t{\n\t\t\t\t\t\ttype=\"armored_footmen\"\n\t\t\t\t\t\tknight=4294967295\n\t\t\t\t\t\tdamage_last_tick=19653.78162\n\t\t\t\t\t\tmain_kills=358.41074\n\t\t\t\t\t\tpursuit_kills=0\n\t\t\t\t\t\tmain_losses=4.66518\n\t\t\t\t\t\tpursuit_losses_maa=0\n\t\t\t\t\t\tpursuit_losses_self=0\n\t\t\t\t\t\tinitial_count=20000\n\t\t\t\t\t\tfinal_count=19997\n\t\t\t\t\t}\n\t\t\t\t\t{\n\t\t\t\t\t\tknight=5868\n\t\t\t\t\t\tdamage_last_tick=58.0583\n\t\t\t\t\t\tmain_kills=1.06452\n\t\t\t\t\t\tpursuit_kills=0\n\t\t\t\t\t\tmain_losses=0\n\t\t\t\t\t\tpursuit_losses_maa=0\n\t\t\t\t\t\tpursuit_losses_self=0\n\t\t\t\t\t\tinitial_count=1\n\t\t\t\t\t\tfinal_count=1\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tdefender={\n\t\t\t\tmain_participant=7125\n\t\t\t\tcommander=7125\n\t\t\t\tinital_soldiers=1410\n\t\t\t\tparticipants={\n\t\t\t\t\t7125\n\t\t\t\t}\n\t\t\t\tregiment_stats={\n\t\t\t\t\t{\n\t\t\t\t\t\tknight=4294967295\n\t\t\t\t\t\tdamage_last_tick=0\n\t\t\t\t\t\tmain_kills=0.66931\n\t\t\t\t\t\tpursuit_kills=0\n\t\t\t\t\t\tmain_losses=130.05\n\t\t\t\t\t\tpursuit_losses_maa=0\n\t\t\t\t\t\tpursuit_losses_self=0\n\t\t\t\t\t\tinitial_count=510\n\t\t\t\t\t\tfinal_count=0\n\t\t\t\t\t}\n\t\t\t\t\t{\n\t\t\t\t\t\ttype=\"light_footmen\"\n\t\t\t\t\t\tknight=4294967295\n\t\t\t\t\t\tdamage_last_tick=81.97727\n\t\t\t\t\t\tmain_kills=2.26677\n\t\t\t\t\t\tpursuit_kills=0\n\t\t\t\t\t\tmain_losses=152.99998\n\t\t\t\t\t\tpursuit_losses_maa=0\n\t\t\t\t\t\tpursuit_losses_self=0\n\t\t\t\t\t\tinitial_count=600\n\t\t\t\t\t\tfinal_count=0\n\t\t\t\t\t}\n\t\t\t\t\t{\n\t\t\t\t\t\ttype=\"bowmen\"\n\t\t\t\t\t\tknight=4294967295\n\t\t\t\t\t\tdamage_last_tick=0\n\t\t\t\t\t\tmain_kills=1.77564\n\t\t\t\t\t\tpursuit_kills=0\n\t\t\t\t\t\tmain_losses=76.5\n\t\t\t\t\t\tpursuit_losses_maa=0\n\t\t\t\t\t\tpursuit_losses_self=0\n\t\t\t\t\t\tinitial_count=300\n\t\t\t\t\t\tfinal_count=0\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\twinning_side=0\n\t\t\tstart_date=190.4.24\n\t\t\tend_date=190.5.1\n\t\t\twar_score=0.909\n\t\t\tresult={\n\t\t\t\tprestige=106.10338\n\t\t\t}\n\t\t\tparticipants={\n\t\t\t\t{\n\t\t\t\t\tcharacter=5048\n\t\t\t\t\tcontribution=2796526\n\t\t\t\t\tcasualties=4\n\t\t\t\t}\n\t\t\t}\n\t\t\twin=5048\n\t\t\tleader=5048\n\t\t\tinterested_characters={\n\t\t\t\t5048\n\t\t\t}\n\t\t\tcontribution={\n\t\t\t\t0\n\t\t\t}\n\t\t\twiped=yes\n\t\t}\n",
+  "raw_block_locator": {
+    "path": "combats.combat_results.16777216",
+    "melt_start_line": 2038377,
+    "melt_end_line": 2038492,
+    "source_excerpt": {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/battle-save-readback/exact/matched-excerpts.txt",
+      "bytes": 21531,
+      "sha256": "1cf684276f66a80efabc5406f0e4a601b76df5c3ac36abb270592bb6e521ba60"
+    }
+  },
+  "decoder_readbacks": [
+    {
+      "schema": "hanjin.shooting02-battle-save-limited-readback.v1",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-31T15:28:42.040956500Z",
+      "save_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile/save games/xar_checkpoint.ck3",
+      "save_bytes": 40181838,
+      "save_sha256": "46ead77a194e755e247fc0ad3777df59f0bc487765463bf67dc6c677a957c1b6",
+      "decoder_argv": [
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\native-scope-diagnostic-a01\\tools\\rakaly.exe",
+        "melt",
+        "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-02\\launcher\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "-c",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify"
+      ],
+      "decoder_exit_code": 0,
+      "melted_lines": 3442451,
+      "melted_utf8_characters": 58609383,
+      "matching_lines": 20,
+      "excerpt_truncated": false,
+      "excerpt_path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-02\\research-updates\\battle-save-readback\\matched-excerpts.txt",
+      "stderr_path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-02\\research-updates\\battle-save-readback\\melt.stderr.txt",
+      "save_unchanged": true,
+      "game_operated": false
+    },
+    {
+      "schema": "hanjin.shooting02-battle-save-limited-readback.v1",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-31T15:29:58.900052300Z",
+      "save_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/launcher/state/profile/save games/xar_checkpoint.ck3",
+      "save_bytes": 40181838,
+      "save_sha256": "46ead77a194e755e247fc0ad3777df59f0bc487765463bf67dc6c677a957c1b6",
+      "decoder_argv": [
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\native-scope-diagnostic-a01\\tools\\rakaly.exe",
+        "melt",
+        "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-02\\launcher\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "-c",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify"
+      ],
+      "decoder_exit_code": 0,
+      "melted_lines": 3442451,
+      "melted_utf8_characters": 58609383,
+      "matching_lines": 743,
+      "excerpt_truncated": false,
+      "excerpt_path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-02\\research-updates\\battle-save-readback\\exact\\matched-excerpts.txt",
+      "stderr_path": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-02\\research-updates\\battle-save-readback\\exact\\melt.stderr.txt",
+      "save_unchanged": true,
+      "game_operated": false
+    }
+  ],
+  "legacy_counter_boundary": "melted_utf8_characters in the original helper receipts counts Java UTF-16 code units, not UTF-8 bytes; not used to prove a file size.",
+  "raw_media_or_full_save_copied": false,
+  "decoder_binary_pin": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/native-scope-diagnostic-a01/tools/rakaly.exe",
+    "bytes": 6867456,
+    "sha256": "9d3404f6eb08db3a3d2196a5b2e1ce9b4c8687f2d7df60a4f79cafe75f043101"
+  },
+  "extractor_source_pin": {
+    "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/BattleSaveRead.java",
+    "bytes": 3617,
+    "sha256": "ddc7a91347c88141e228fba9a20f15de21ba4dc7f7100295b1a59ec7f62ccccb"
+  }
+}

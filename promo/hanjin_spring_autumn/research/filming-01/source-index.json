@@ -1,0 +1,713 @@
+{
+  "schema": "hanjin.filming-source-index/v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-31T17:23:48.626866+00:00",
+  "scope": "Reviewed installed event sources, effective overrides and finite native diagnosis; hashes preserve prior observations, not a new install or Game qualification. No raw media or save is copied.",
+  "source_snapshots": [
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/source-pins-effective.json",
+      "bytes": 6476,
+      "sha256": "6d368c4614c7a6da2ba48dcda78af3ce1eaeafe412c62f0cf42938bf07873555",
+      "schema": "hanjin.shooting02-event-research-sources.v1",
+      "observed_at_utc": "2026-10-31T11:05:58.193423300Z"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/source-pins-followup.json",
+      "bytes": 7471,
+      "sha256": "83a701155bb51564ccd86ff25fbd0fbed416304ddfcde37a3f70e69a2d5a53ad",
+      "schema": "hanjin.shooting02-event-followup-sources.v1",
+      "observed_at_utc": "2026-10-31T11:20:10.263799900Z"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/source-pins-final-events.json",
+      "bytes": 5691,
+      "sha256": "e2ac74c38f553a38fca4dbec24537d801dcdcef686f9922748524366781561f8",
+      "schema": "hanjin.shooting02-final-new-event-sources.v1",
+      "observed_at_utc": "2026-10-31T15:32:25.666476Z"
+    },
+    {
+      "path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/raise-location-validator-02/source-pins.json",
+      "bytes": 4273,
+      "sha256": "a7a1414492f2dac75fd15d5515cdf498a1d5056305151564598ccab70dd0b837",
+      "schema": "hanjin.shooting02-default-raise-location-diagnosis.v1",
+      "observed_at_utc": "2026-10-31T11:52:32.090415Z"
+    }
+  ],
+  "entries": [
+    {
+      "source": "external-evidence",
+      "relative_path": null,
+      "observed_absolute_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/raise-query-05-response.json",
+      "bytes": 2377,
+      "sha256": "6e5d6d63fe964e317d55eeae42f50631049c20a502eac2c7b9148dd0f03dd2f1",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "external-evidence",
+      "relative_path": null,
+      "observed_absolute_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/raise-location-validator-02/constructor-298c110.asm.txt",
+      "bytes": 4586,
+      "sha256": "596a99a43af04c9eb98bedf9d7e070e2566c1e13a130b745ff57808ad6881f87",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "external-evidence",
+      "relative_path": null,
+      "observed_absolute_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/raise-location-validator-02/location-basic-24a4520.asm.txt",
+      "bytes": 14154,
+      "sha256": "ccc2d67c123bfa221c3e2849adc7d229399c123abfd2e4fbc40c6b205cd6fd15",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "external-evidence",
+      "relative_path": null,
+      "observed_absolute_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/raise-location-validator-02/location-realm-24a4890.asm.txt",
+      "bytes": 10887,
+      "sha256": "427263dc2ef5761230b80fa69d97ead12f6a9d63a1782a8dd09120b0654cb70e",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "external-evidence",
+      "relative_path": null,
+      "observed_absolute_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/raise-location-validator-02/territory-classifier-2c099d0.asm.txt",
+      "bytes": 10945,
+      "sha256": "4f57aee354cba7131382ae9ead6f74771f89f11a4ab3d431d00816846d3a9ccf",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "external-evidence",
+      "relative_path": null,
+      "observed_absolute_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/research-updates/raise-location-validator-02/validator-298c2a0.asm.txt",
+      "bytes": 18175,
+      "sha256": "5877529f512b2a90450eb5f71acaea7a0b2c0acde64f9d09db1ea8f1a3c3d47f",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "external-evidence",
+      "relative_path": null,
+      "observed_absolute_path": "C:/workspace/hanjin-spring-autumn-20261031/shooting-02/snapshot-14-response.json",
+      "bytes": 56957,
+      "sha256": "0d2c5042d9ff40147b35b2b27b3e2243110913b9deb08f4cc4dd4190b4129622",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "repository-frozen-source",
+      "relative_path": "ck3_autonomous_player/native_bridge/research/ck3_1_20_0_4_army_world.json",
+      "observed_absolute_path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/research/ck3_1_20_0_4_army_world.json",
+      "bytes": 32899,
+      "sha256": "4cb97ccdf7b7e09edee462f6a5cf0f0b751b6fb7c00b5080b6334d4ea1c89762",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "repository-frozen-source",
+      "relative_path": "ck3_autonomous_player/native_bridge/research/disasm_ck3.py",
+      "observed_absolute_path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/research/disasm_ck3.py",
+      "bytes": 1514,
+      "sha256": "82ec4c2f631b2bfc4040832d5571453e238c27bdaa8c43af0494461ea4a71703",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "repository-frozen-source",
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_military.cpp",
+      "observed_absolute_path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12002_military.cpp",
+      "bytes": 29699,
+      "sha256": "1c0b5696657031c47fda701a69071f54ee611155278cc61e786944d4072fe3ac",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "repository-frozen-source",
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_prewar_muster.cpp",
+      "observed_absolute_path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12002_prewar_muster.cpp",
+      "bytes": 8979,
+      "sha256": "3e9d5c63398e00de66ff6902fe71168ff1b82fdf322a53a9fd4e5e9724b08e70",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "repository-frozen-source",
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_military.cpp",
+      "observed_absolute_path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12004_military.cpp",
+      "bytes": 7009,
+      "sha256": "7188855bbe81a2877a7ead3f9c42d63f16a19deb40fa1100eafe61885ae492dd",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "repository-frozen-source",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "observed_absolute_path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1674765,
+      "sha256": "6820d266b2662b3ed312f96ede8c2e6579a8ffb788bdb693fefd3c2991ad31ff",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "repository-frozen-source",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "observed_absolute_path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 898735,
+      "sha256": "0378231cfbfbfe80cf990086b3adb876a1635fe7b60596744785dae0832a535f",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "common/modifiers/10_tgp_modifiers.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/modifiers/10_tgp_modifiers.txt",
+      "bytes": 25862,
+      "sha256": "050142ced133e7721e4395ea908a3dcefd2b6dea730a8c86c4d2d12fc668de5c",
+      "manifest_sources": [
+        "source-pins-effective.json",
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "common/script_values/00_basic_values.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "common/script_values/00_legitimacy_values.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_legitimacy_values.txt",
+      "bytes": 28779,
+      "sha256": "21ef917a99ad2c1923bfff837ef68fcb2216c3accc90067ed1ba8295213d3266",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "common/scripted_effects/00_administrative_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_administrative_effects.txt",
+      "bytes": 14065,
+      "sha256": "c8f8b4d41198afba045e22404445fc6d915bdc75334d9daf3c0f81df01b9c261",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "events/dlc/ep3/ep3_admin_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/events/dlc/ep3/ep3_admin_events.txt",
+      "bytes": 16210,
+      "sha256": "2f5c566de0a0c14f4a18006403daa20d1c1c9b33186be4bc35aab2c38d1ebb5f",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "events/dlc/tgp/tgp_china_career_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/events/dlc/tgp/tgp_china_career_events.txt",
+      "bytes": 11093,
+      "sha256": "5bdcf0a75b46f19c5b93e6474eead3fb2ac8ec789a8bf29ab4b0c455f5521fb5",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "gui/window_rally_points.gui",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/gui/window_rally_points.gui",
+      "bytes": 11430,
+      "sha256": "25545909445bac4e740105c71e28f215f5e7b47a5d43b775d6880949fd3a3848",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "localization/simp_chinese/dlc/tgp/tgp_china_career_events_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/localization/simp_chinese/dlc/tgp/tgp_china_career_events_l_simp_chinese.yml",
+      "bytes": 5774,
+      "sha256": "8ceb54a1b39d4323e678fc463e6af1557b64bd2d74c9df30bc3bcce399ed9bda",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "vanilla",
+      "relative_path": "localization/simp_chinese/rally_points_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/localization/simp_chinese/rally_points_l_simp_chinese.yml",
+      "bytes": 1497,
+      "sha256": "e0c7ace19e61a74fcb8767fc70d2fdcd070caca5a542eecebc537aee6dabb1ae",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/character_interactions/00_tributary_interactions.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/00_tributary_interactions.txt",
+      "bytes": 140167,
+      "sha256": "93e3548caaf2082c1605b52f8c6e3b50bb1692ffc3ecc736b1245956914685a6",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/character_interactions/00_vassal_interactions.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/00_vassal_interactions.txt",
+      "bytes": 89980,
+      "sha256": "507f9634690e90bd72c6e6841e25821392feb379ce94ef9e475e86f3f7e73a00",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/character_interactions/zz_dm_obedience_tributary_interactions.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/character_interactions/zz_dm_obedience_tributary_interactions.txt",
+      "bytes": 10398,
+      "sha256": "29ceb872353752fddaf1fc9f8303c39a2045041487e44ec2c242f98d41629966",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/modifiers/WJ_office_roads_modifiers.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/modifiers/WJ_office_roads_modifiers.txt",
+      "bytes": 1397,
+      "sha256": "00f8d74281459df71ebde1e9f0d354db09caa243623256e46731d8e37648b1b2",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/modifiers/zz_hd_hanfl_modifiers.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/modifiers/zz_hd_hanfl_modifiers.txt",
+      "bytes": 3919,
+      "sha256": "1be97b2b8437bd5c7c8ed43be5591357aa0c628268d0e8f8c8f9ddc1261ab528",
+      "manifest_sources": [
+        "source-pins-followup.json",
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/on_action/zz_hd_190_startup.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/on_action/zz_hd_190_startup.txt",
+      "bytes": 2518,
+      "sha256": "b0f26d59a4a3fe78f39ae1d76cabae26c79842b3e474d8432df721d63e7b55e5",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/on_action/zz_hd_dong_aftermath_on_actions.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/on_action/zz_hd_dong_aftermath_on_actions.txt",
+      "bytes": 2469,
+      "sha256": "9064449ae26c860b41e809b7fab5173c69d7cbc07a2ae5be6b29631264f0341a",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/on_action/zz_hd_dynasty_startup.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/on_action/zz_hd_dynasty_startup.txt",
+      "bytes": 7569,
+      "sha256": "7288bc82aed581b501b6dc89f5b3130137dba4455bdbad55df770de9cb6edc42",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/on_action/zz_hd_hanfl_on_actions.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/on_action/zz_hd_hanfl_on_actions.txt",
+      "bytes": 7454,
+      "sha256": "f85d63997dec3ddeb0c5b46cd6d673a6c70248f3c43411c8e13d54048dc1cd98",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/scripted_effects/WJ_ai_routes_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/WJ_ai_routes_effects.txt",
+      "bytes": 3792,
+      "sha256": "158307b30e820c174c958a23526507aa73fb2d94e2afcb39bb50bc084de519f2",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/scripted_effects/WJ_office_roads_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/WJ_office_roads_effects.txt",
+      "bytes": 32716,
+      "sha256": "54b93ef584eb72c6b3b45c76fc33c74e113d979264ad3305ccd4b0c7e7064398",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/scripted_effects/zz_hd184r_dong_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd184r_dong_effects.txt",
+      "bytes": 10403,
+      "sha256": "a6ac08822d32f722267714b29546d3c99bf095cb4e3c6b1bb1f7de3ea56914e8",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/scripted_effects/zz_hd_190_startup_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_190_startup_effects.txt",
+      "bytes": 50588,
+      "sha256": "34a9f9b6705abf4bfc3da8aa7a8de8bef56c3214e1bf04f808e1c5a3d8a1fc05",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/scripted_effects/zz_hd_anti_regent_lifecycle_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_anti_regent_lifecycle_effects.txt",
+      "bytes": 12539,
+      "sha256": "ff8a46f3ad0dad85653449ebed4ff7cb2492ca315a2303b094efe9fa70ae667d",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/scripted_effects/zz_hd_dong_aftermath_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_dong_aftermath_effects.txt",
+      "bytes": 20756,
+      "sha256": "ccff52c7d0d065252553bb1158f020a9fdd98e4cc0e2f69a9bef6c016e94c87a",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/scripted_effects/zz_hd_hanfl_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_hanfl_effects.txt",
+      "bytes": 20310,
+      "sha256": "1147ecd302469cfd63094d178c5f1a4823678a9fa92e53aa6545b0f417c28980",
+      "manifest_sources": [
+        "source-pins-followup.json",
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/scripted_effects/zz_hd_palace_crisis_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/scripted_effects/zz_hd_palace_crisis_effects.txt",
+      "bytes": 21797,
+      "sha256": "313a54235a3c90392c8d0bf2e3dddb251ff2d29af764c3628b9b2238fd63a35c",
+      "manifest_sources": [
+        "source-pins-effective.json",
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "common/story_cycles/zz_hd_historical_character_story_cycles.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/common/story_cycles/zz_hd_historical_character_story_cycles.txt",
+      "bytes": 2023,
+      "sha256": "650514b9eb3f0112cd61cfc0360de85e8e8abd1d6325cfc23a6c951d6ff1fe5c",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/WJ_ai_routes_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/WJ_ai_routes_events.txt",
+      "bytes": 3224,
+      "sha256": "1638ec54dc6de89df7e906bffeb663ddb5035caa44aa4073f91552c83cf7edb3",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/diarchy_events/diarchy_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/diarchy_events/diarchy_events.txt",
+      "bytes": 329163,
+      "sha256": "5e9bcccff9294013f4b151de35ab53ead464a218c343e3cef55c0b346c0e75c2",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/hd_dc_era_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/hd_dc_era_events.txt",
+      "bytes": 756,
+      "sha256": "bc35132a8b2b245e5f963fba266bc6d15be66d32316e5d6ed6a90772c5a5cc68",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/realm_maintenance_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/realm_maintenance_events.txt",
+      "bytes": 10271,
+      "sha256": "b66fa324e5e771f8543fb631247f54cdf6dd3630a6e648740069a64c2f262ce8",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/zz_hd_anti_regent_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_anti_regent_events.txt",
+      "bytes": 10766,
+      "sha256": "031cc7f31be5cd1ee42c671fa2cb740529a5ab6ac56be154ed5e1a024aa18bff",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/zz_hd_dong_aftermath_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_dong_aftermath_events.txt",
+      "bytes": 6500,
+      "sha256": "000360756b983dae72dfc47c5d1fcbbcb1c8aeb15353cfe11c07b818e88e807d",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/zz_hd_hanfl_dewu_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_hanfl_dewu_events.txt",
+      "bytes": 2781,
+      "sha256": "749275aa79b1ab9debee98ce3f1a7f3bb11122941ffbe32d908b61e1354e7c36",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/zz_hd_hanfl_regional_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_hanfl_regional_events.txt",
+      "bytes": 10052,
+      "sha256": "f9baa58b8e681a7ac49f7ca9531f08dc03e095cebaa080039b72794750604bbb",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/zz_hd_hanfl_timeline_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_hanfl_timeline_events.txt",
+      "bytes": 23715,
+      "sha256": "d92eea94971a62838a2f94b991f87670e03a024c5ca5eb24bae1b20945d1138e",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/zz_hd_palace_crisis_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_palace_crisis_events.txt",
+      "bytes": 19588,
+      "sha256": "733b149a38e9698cd4688d4d83d9601301cf316abbc72003dfddf49035fd9e19",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "events/zz_hd_world_news_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/events/zz_hd_world_news_events.txt",
+      "bytes": 11321,
+      "sha256": "0f08f8fc74a0c057aae1d53e5aa78d34cd716a1eeff204f35e2ee11f42b45544",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "gui/window_military.gui",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/gui/window_military.gui",
+      "bytes": 110064,
+      "sha256": "2fba09ae3a4fb49e14d8d5a1ffd14f3ea3d6247fb67683824ae1887d351fdff3",
+      "manifest_sources": [
+        "raise-location-validator-02/source-pins.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "localization/simp_chinese/hd_court_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/hd_court_l_simp_chinese.yml",
+      "bytes": 13187,
+      "sha256": "368c3e0ed015d24dccf8ef2bef02ebf5f74f0df0065e3202f557cf6541a8d087",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "localization/simp_chinese/hd_dc_era_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/hd_dc_era_l_simp_chinese.yml",
+      "bytes": 2113,
+      "sha256": "7d98b1d9f97450ccf9b93e50b799569a7cffa7ff11f8703079b777e3fe7e276d",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "localization/simp_chinese/mechanisms/WJ_office_and_assessment_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/mechanisms/WJ_office_and_assessment_l_simp_chinese.yml",
+      "bytes": 28430,
+      "sha256": "b114a88dc3e24327b9725e3c05f7e29d26532c6f69753fee65b4ddf20a53098c",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "localization/simp_chinese/zz_hd_dong_aftermath_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/zz_hd_dong_aftermath_l_simp_chinese.yml",
+      "bytes": 1978,
+      "sha256": "d22ae8cd97d75a634bdae783c57ea8829f30a1c6f26dc54ee5e90b344d7cbf32",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "localization/simp_chinese/zz_hd_hanfl_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/zz_hd_hanfl_l_simp_chinese.yml",
+      "bytes": 65991,
+      "sha256": "94dc617b85f37285321a5270ac4878c2c4c282826449015915158fb90c9bc70a",
+      "manifest_sources": [
+        "source-pins-followup.json",
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "localization/simp_chinese/zz_hd_historical_world_chains_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/zz_hd_historical_world_chains_l_simp_chinese.yml",
+      "bytes": 16391,
+      "sha256": "64e4adabc431c2d29cd94ecd395fae9f24cf31d0ec86d994bfe006759540af7c",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "localization/simp_chinese/zz_hd_palace_crisis_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/zz_hd_palace_crisis_l_simp_chinese.yml",
+      "bytes": 9292,
+      "sha256": "08c409c56713d41f9478bbdcb82b8a2140b8f64c149db50a957e73066b6bb059",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3780919688",
+      "relative_path": "localization/simp_chinese/zz_hd_world_news_l_simp_chinese.yml",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3780919688/localization/simp_chinese/zz_hd_world_news_l_simp_chinese.yml",
+      "bytes": 19872,
+      "sha256": "8c015a52dc24c7f788b1d947a8d91fc842b57d4414e5d2e4c64efb44867303b9",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3820784621",
+      "relative_path": "common/character_interactions/00_vassal_interactions.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3820784621/common/character_interactions/00_vassal_interactions.txt",
+      "bytes": 90484,
+      "sha256": "13f3f168419c60a243e6968d7c6cdb6a323fbf1a3139a0ffa37bf6f037610be2",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    },
+    {
+      "source": "workshop:3820784621",
+      "relative_path": "common/scripted_effects/hd_peace_routing_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3820784621/common/scripted_effects/hd_peace_routing_effects.txt",
+      "bytes": 3753,
+      "sha256": "ae1eb7fa83c169c9a499551da58795b27dd37a1191e0997674e1f0c513f4fadf",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3820784621",
+      "relative_path": "common/scripted_effects/zz_hd_anti_regent_lifecycle_effects.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3820784621/common/scripted_effects/zz_hd_anti_regent_lifecycle_effects.txt",
+      "bytes": 12225,
+      "sha256": "47e57ed2b177cab19828acd23763fa2713f77d6e54293b419de59135c32fb9bd",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3820784621",
+      "relative_path": "common/scripted_triggers/hd_peace_routing_triggers.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3820784621/common/scripted_triggers/hd_peace_routing_triggers.txt",
+      "bytes": 8878,
+      "sha256": "59be5d9f0e6244324a272564565473d0fec3f2d753cb47f19286fd8dd2b122f9",
+      "manifest_sources": [
+        "source-pins-effective.json"
+      ]
+    },
+    {
+      "source": "workshop:3820784621",
+      "relative_path": "events/hd_court_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3820784621/events/hd_court_events.txt",
+      "bytes": 4887,
+      "sha256": "d22eb6b5f2d087d633a168c20e254fd38ab46a192e47b74992d486dd6b41d656",
+      "manifest_sources": [
+        "source-pins-final-events.json"
+      ]
+    },
+    {
+      "source": "workshop:3820784621",
+      "relative_path": "events/interaction_events/character_interaction_events.txt",
+      "observed_absolute_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3820784621/events/interaction_events/character_interaction_events.txt",
+      "bytes": 58873,
+      "sha256": "4fb25ef0b00a408512a61b92c11ea4979b4acd356796b45df0966cd46612be18",
+      "manifest_sources": [
+        "source-pins-followup.json"
+      ]
+    }
+  ]
+}

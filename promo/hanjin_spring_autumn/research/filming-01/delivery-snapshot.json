@@ -1,0 +1,18 @@
+{
+  "schema": "hanjin.review-delivery/v1",
+  "machine_id": "4-8e1c2f1861",
+  "created_at_utc": "2026-10-31T17:26:56.537169500Z",
+  "video": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-review.mp4",
+  "bytes": 27844779,
+  "sha256": "80082a16a0925c17706b9ff62ceab48e57c4fef30216139b07df71c42227a00e",
+  "duration_seconds": 470.221,
+  "subtitles": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-review.srt",
+  "cover": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-cover.jpg",
+  "run_manifest": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-02\\project\\runs\\edit-native-002\\run-manifest.json",
+  "native_plan_build": "passed",
+  "automated_audit": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-02\\project\\runs\\edit-native-002\\editorial-audit\\automated-audit.json",
+  "pending_human_review": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-02\\human-review",
+  "human_signoff": null,
+  "full_decode_exit_code": 0,
+  "gameplay_scope": "190.1.1 to 190.5.1; local battle won; wider war ongoing; palace invitation preview not triggered"
+}
