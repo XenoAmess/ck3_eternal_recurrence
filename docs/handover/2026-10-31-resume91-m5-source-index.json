@@ -1512,5 +1512,862 @@
       },
       "limit": "Codepublication/source-onlystrict only, zeroJVM/oldsource/case/Native/Game run; manualmains notautomaticCI."
     }
+  ],
+  "evidence_195_196_197_200": {
+    "snapshot_at_utc": "2026-10-31T20:40:19.486123+00:00",
+    "maturity_cutoff_utc": "2026-10-31T20:21:44Z",
+    "boundary": "Independent append-only frozen195/196/197/200 evidence. Allpriorroot18:27:17 andsupplement19:19:56 snapshotfields/cutoffs remain exacthistoricalbytes. No livequeue/Main/resource/202status inferred.",
+    "mature_results": [
+      {
+        "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/RESULT08.json",
+        "bytes": 5064,
+        "sha256": "8351de3a012926f8ba58cc933da31d59acdaac02cee659491ad45130ca020344"
+      },
+      {
+        "path": "D:/ck3-state/resume91-m5-native/whole-registry196/RESULT05.json",
+        "bytes": 4475,
+        "sha256": "5296c05107b69b482ef198df4fd5ac36cae380e44c5cedd05a39ee32d7e96ee8"
+      },
+      {
+        "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/RESULT06.json",
+        "bytes": 5528,
+        "sha256": "4f924a82f828cc84a343af65b0fe3cf89d67ab61cfd9a5ee1ba602417c8352c1"
+      },
+      {
+        "path": "D:/ck3-state/resume91-m5-native/whole-growth200/RESULT07.json",
+        "bytes": 5864,
+        "sha256": "f51f44226fc9dfe8d4bb56e4c48d4f5ab74c863ac9b78dec44df81ee9557bbf8"
+      }
+    ],
+    "mature_result_details": [
+      {
+        "package": "195",
+        "result": {
+          "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/RESULT08.json",
+          "bytes": 5064,
+          "sha256": "8351de3a012926f8ba58cc933da31d59acdaac02cee659491ad45130ca020344"
+        },
+        "actual": {
+          "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/ACTUAL07.json",
+          "bytes": 2284,
+          "sha256": "c993956e8e59e485590ef993eae3fe1f8e896efb25e2d10b600835236d16a781"
+        },
+        "stages": [
+          {
+            "phase": "PROD01",
+            "begin_utc": "2026-10-31T19:32:14Z",
+            "end_utc": "2026-10-31T19:32:15Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.386725,
+            "receipt": {
+              "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/PROD-ACTUAL04.json",
+              "bytes": 1216,
+              "sha256": "f67fbe0c598d5bc84f1727e91153e1325d0c7ff574b14ba1e2068ed3a23fbfe8"
+            }
+          },
+          {
+            "phase": "TEST01",
+            "begin_utc": "2026-10-31T19:44:54Z",
+            "end_utc": "2026-10-31T19:44:55Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.5730513,
+            "tool_chunk_id": "5e51e8"
+          },
+          {
+            "phase": "RUN01",
+            "begin_utc": "2026-10-31T19:45:00Z",
+            "end_utc": "2026-10-31T19:45:00Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.0509539,
+            "tool_chunk_id": "8ba8d0"
+          }
+        ],
+        "source_leaves": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtRegistry195Calls.java",
+            "bytes": 2622,
+            "sha256": "5f6a30631f6667b9f02427f3fd8b5c46b3d48ba55198802571d348895de861fb"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/witness-api/org/xar/ck3/research/m5/GovernmentCrtRegistry195WitnessApi.java",
+            "bytes": 949,
+            "sha256": "f9fdf1e0bbd34d7c0f102495029d3122c661c58f92857ccb4d77c35c4e545fad"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/literal-owner/book/org/xar/ck3/research/m5/GovernmentCrtRegistry195Fixtures.java",
+            "bytes": 4368,
+            "sha256": "73a4f709bfa7d5bf58f90a82c489cde1c37ff453c644ca6a383d72c36c8f3549"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/host-owner/org/xar/ck3/research/m5/GovernmentCrtRegistry195Probe.java",
+            "bytes": 8591,
+            "sha256": "27ef00b1b1daffb5f5e4eb29e2f0b5fc2f37d6ae5b92dd9a11bbe575181ced91"
+          }
+        ],
+        "adoption": {
+          "producer": "R1 fullthinprotocol rawunchanged owner0",
+          "Book": "two wholemodel Books rejected (R2transportreset firstattemptdiscarded, retrylength6000); ownerindependentoneCPUscene,no targetJava read/run",
+          "host": "only actuallyunwritten run(Witness) R1raw211tokens unchanged owner0; reusable ByteMemory/foreignfoundation and newRETcounters owner",
+          "no_R3": true
+        },
+        "limits_at_original_snapshot": [
+          "194three actual downstreamfunctions remainfullV/sharedmemoryopaque callbacks, not native/IAT implementations",
+          "No exceptional path forUNW_FLAG_UHANDLER2 implemented",
+          "No Dclasses/POM dependency, no Native execution, Game/DLL/ledger/S/MB untouched, no gameplaydays/SAVE/G2completioncredit",
+          "196newwhole remainsseparate readyonly untilownactualfirstcase"
+        ],
+        "first_result": "cases=1 forwarding=7; production1strict0, new3manualstrict0, firstJVM0. No oldM1194algorithm49cases or old192/191whole run.",
+        "case": [
+          "RequestexactDIRECT DF29/DB38 and alreadyownedcallerpush; invoke actual194Calls.bind not algorithm orframeguard copy",
+          "Allthree194innerCALLs exactmetadata/preSP/fullV/allXMM/NV/fullbeforebyteMap, callback2mutatesrightDWORD thenactualfreshread89ABCDEF",
+          "Callback2 EAX80000001 preserved throughEDI, callback3 fullpostV/XMM preservedexceptactualfinalRAX0000000080000001, originalRBX/RDIrestored",
+          "Fullinitial/finalbyteMap; sixQwordeffects48bytewrites +callback4bytes =52; actual194RETreads8callerbytes; adapterwritescallerRET0",
+          "3 foreignCall site/target/kind +3foreignTail +1GS preserveoriginalobject/returnidentity,0memoryqualification"
+        ]
+      },
+      {
+        "package": "196",
+        "result": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-registry196/RESULT05.json",
+          "bytes": 4475,
+          "sha256": "5296c05107b69b482ef198df4fd5ac36cae380e44c5cedd05a39ee32d7e96ee8"
+        },
+        "actual": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-registry196/ACTUAL04.json",
+          "bytes": 3519,
+          "sha256": "798a35c2ce26abd36b8e5993828ce5792842cd1a89c654289725851fb498f35a"
+        },
+        "stages": [
+          {
+            "phase": "PROD01",
+            "begin_utc": "2026-10-31T19:45:47Z",
+            "end_utc": "2026-10-31T19:45:48Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.4373593,
+            "tool_chunk_id": "cb7be1"
+          },
+          {
+            "phase": "TEST01",
+            "begin_utc": "2026-10-31T19:45:53Z",
+            "end_utc": "2026-10-31T19:45:54Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.8185716,
+            "tool_chunk_id": "541a0e"
+          },
+          {
+            "phase": "RUN01",
+            "begin_utc": "2026-10-31T19:45:58Z",
+            "end_utc": "2026-10-31T19:45:59Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.5271683,
+            "tool_chunk_id": "644a14"
+          }
+        ],
+        "source_leaves": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-registry196/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeRegistry196.java",
+            "bytes": 1777,
+            "sha256": "e693816b31457ebeaf9503657dacdcbdd74036c922020662f461a434562d23fe"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-registry196/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeRegistry196Fixtures.java",
+            "bytes": 7257,
+            "sha256": "067a43758d3d556e959b19682510d3b8e0cf2e562caed3207d9a7fd4c7b67e1c"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-registry196/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeRegistry196Probe.java",
+            "bytes": 24708,
+            "sha256": "06e317d11235209a1987ceeda50900154716cf00beeb3e2f833717ea416a7f4b"
+          }
+        ],
+        "adoption": {
+          "consumer": "modelR1 raw1777B owner0, no existingalgorithmcopy",
+          "Book": "owner independent completeCPUtranscript/carry foundation; only actuallyunwritten build-overlay method modelR1 raw1697B owner0, not modeloracle orwholeBook",
+          "host": "mechanical191 acceptedhost reuse, only classname/fixture/subject/output replacements, no oracle/datachange"
+        },
+        "limits_at_original_snapshot": [
+          "Three194downstream ports4247FFC/424DBB0/4248050 remainfullV/sharedmemoryopaque; truecallbacktranscripts not rawalgorithm implementations",
+          "Three185root sites remain not executed in thiswhole",
+          "UNW_FLAG_UHANDLER2 exceptionalpath not implemented",
+          "0oldM1case/190producer run or sourcecompile, no Native/Game/DLL/S/MB/ledger operation; no newgameplaydays/SAVE/G2completioncredit"
+        ],
+        "first_result": "1newmainstrict0/.4373593,2newmanualstrict0/.8185716,FIRSTONEfullwholeJVM0/.5271683, stdoutGovernmentWholeRegistry196Probe:1/1 whole-registry only, allstderr0B.",
+        "composition": [
+          "196thinassembly195bind -> formal191whole -> actual192Notifybridge ->189fullwhole ->actualM4callee186->M1Table186->195protocol->actualM1Dispatch194",
+          "OldopaqueDB38CALL replacedwith3actual194innerCALLs exactmetadata/preSP/fullV/allXMM/NV/fullbeforemaps. SharedsameMemory,no extra push/copy/preRead",
+          "IndependentCPUhome/spill/savedRDI/threeCALLslotcarry, actualfreshrightDWORD89ABCDEF aftercallback2, callback2oldmarker preserved, actualEAX0 andfullpost3allotherGPR/XMM",
+          "10CRTevents=6CALL+2TAIL+1GS+1loop,14atomic/10ordinaryGS/4deep/2diag, allordered events consumed, fulltypedwhole and everybefore/final byteMap exact",
+          "Carry persistence independently sourced from8 namedheldASM frozenSHA, hothelper/token paths do not overwrite newlowerstack/rightDWORD/markerbytes. Initialinput,deep/hashMXCSR and result schema unchanged"
+        ]
+      },
+      {
+        "package": "197",
+        "result": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/RESULT06.json",
+          "bytes": 5528,
+          "sha256": "4f924a82f828cc84a343af65b0fe3cf89d67ab61cfd9a5ee1ba602417c8352c1"
+        },
+        "actual": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/ACTUAL05.json",
+          "bytes": 3540,
+          "sha256": "1f7a8cdea0cf732602ccc9f3554d19c7a6ce2382cae77f6ae76ee154967a7879"
+        },
+        "stages": [
+          {
+            "phase": "PROD01",
+            "begin_utc": "2026-10-31T20:01:40Z",
+            "end_utc": "2026-10-31T20:01:41Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.4380717,
+            "tool_chunk_id": "f00806"
+          },
+          {
+            "phase": "TEST01",
+            "begin_utc": "2026-10-31T20:01:47Z",
+            "end_utc": "2026-10-31T20:01:48Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.8060505,
+            "tool_chunk_id": "8bb0b1"
+          },
+          {
+            "phase": "RUN01",
+            "begin_utc": "2026-10-31T20:01:52Z",
+            "end_utc": "2026-10-31T20:01:53Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.5446419,
+            "tool_chunk_id": "84101c"
+          }
+        ],
+        "source_leaves": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeIndexed197.java",
+            "bytes": 1770,
+            "sha256": "f56dd699b059f1823fa7e3d4d9513570e61e777c78d05e1e83d6c559559b1cc9"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeIndexed197Fixtures.java",
+            "bytes": 7708,
+            "sha256": "52d8bb9fc7bef1562bd58957dd4c0e3cc1664dd982b8d0114967e8cbb163edb5"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeIndexed197Probe.java",
+            "bytes": 24702,
+            "sha256": "5720f67c58d8fc7ab816155a5ff3a3f88d6abf2ec0ccce4908b8721d76ced0dc"
+          }
+        ],
+        "adoption": {
+          "consumer": "modelR1 raw1770B unchanged owner0",
+          "Book": "owner independently sourced two25B CPU/state/timing/IATcarryfoundation; only genuinelyunwritten buildoverlay method modelR1raw2056B unchanged owner0; not modelCPUoracle/wholeBook",
+          "host": "mechanical196acceptedhost names/fixture/execute/output only",
+          "upstream198": "M1 sourceowner separateR2fullprotocol candidate, existingM7arithmetic reused, no M5claim of producer-authorship"
+        },
+        "limits_at_original_snapshot": [
+          "M1upstream198 independentBook/raw arbitraryNR/foreignguards not yetRUN at this snapshot; this197onewhole does not replace its independentcoverage",
+          "MiddleDBB0 raw432Bimplementation remainsopaque callback in197; M1owns new199source/work separately",
+          "Dynamicexternal IATtargets fullNormalReturn remainopaque, no Windows/OS/nativebehavior claims",
+          "Three185root sites still not executed, EHflags2path not implemented",
+          "0oldM1/M7source/case/190producer rebuilt/run; no Native/Game/DLL/S/MB/ledger operation; no gameplaydays/SAVE/G2completioncredit"
+        ],
+        "first_result": "1newmainstrict0/.4380717,2newmanualstrict0/.8060505,FIRSTONEfullwholeJVM0/.5446419; stdoutGovernmentWholeIndexed197Probe:1/1 whole-indexed only, allstderr0B.",
+        "composition": [
+          "197thin198bind -> formal5604 actual196whole ->195Registrybridge->191normalizedwhole->actual194innerports->M1new198twofullABIwrappers->existingM7two25Bcalculationmethods, noalgorithmcopy",
+          "Original two194innerDIRECT CALLs DB4F/7FFC andDB61/8050 now actualindexedIATtail424800E/4248062; childSP=offeredpreCALLSP-8 alreadyownedpush; no secondpush/RET or tableQwordread",
+          "FullRAX tablebase145C5D330 and signedECX2/89ABCDEF exactRCX145C5D380/FFFFFFEEC89E0088, allotherGPR/sixXMM/NV/actualSP preserved; wholeNR sourcecontinuation thenactualcallerRIP/SP/N checked",
+          "Shared43DA4F0 mutated bymiddleopaqueDBB0callback from8888000033334444 toAAAA000066667777; earlierheaderAE4 seesoldtarget, actualthirdindexedtailandlaterfooterA74seefreshtarget, allbefore/finalMaps exact",
+          "10CRT=4CALL4TAIL1GS1loop,14atomic10ordinaryGS4deep2diag, allordered eventsconsumed/fulltypedwhole unchanged"
+        ],
+        "upstream198_original_firstprod": {
+          "path": "D:/ck3-state/resume91-m1-native/government-424dbb0-198/validation198/PROD01-ACTUAL.json",
+          "bytes": 560,
+          "sha256": "2178181de62798591d243767e0260a0b2d63a9304439f3b2998a4ffcb254ef68"
+        }
+      },
+      {
+        "package": "200",
+        "result": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-growth200/RESULT07.json",
+          "bytes": 5864,
+          "sha256": "f51f44226fc9dfe8d4bb56e4c48d4f5ab74c863ac9b78dec44df81ee9557bbf8"
+        },
+        "actual": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-growth200/ACTUAL06.json",
+          "bytes": 2987,
+          "sha256": "b10b7d1b17e8636a9df83d02d3f96aec22802cec386509659e9050e266d1f1d9"
+        },
+        "stages": [
+          {
+            "phase": "PROD01",
+            "begin_utc": "2026-10-31T20:16:40Z",
+            "end_utc": "2026-10-31T20:16:41Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.5420469,
+            "receipt": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-growth200/PROD-ACTUAL04.json",
+              "bytes": 1164,
+              "sha256": "978a4b66dca59a7066d8fcb83626e5742352e9e509edf171b172b75b0d5a57ea"
+            }
+          },
+          {
+            "phase": "TEST01",
+            "begin_utc": "2026-10-31T20:21:37Z",
+            "end_utc": "2026-10-31T20:21:38Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.8684966,
+            "tool_chunk_id": "ed6d0f"
+          },
+          {
+            "phase": "RUN01",
+            "begin_utc": "2026-10-31T20:21:43Z",
+            "end_utc": "2026-10-31T20:21:44Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.6378365,
+            "tool_chunk_id": "caa281"
+          }
+        ],
+        "source_leaves": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/growth-bridge200/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtGrowth200Calls.java",
+            "bytes": 2879,
+            "sha256": "522fcc4bbf297b6935c7ee2ab66f3e5b6cc9fa5d9e8df1071ab45977139d3b82"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-growth200/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeGrowth200.java",
+            "bytes": 1794,
+            "sha256": "a4e028c6f01d216aaae0ac6a7bc42a54eed5aabaa086a7e49a41191de9b397f0"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-growth200/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeGrowth200Fixtures.java",
+            "bytes": 8956,
+            "sha256": "9682fccc21b0973d14bceb65f1c43393b5017910943749f717a61e01e0824c26"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-growth200/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeGrowth200Probe.java",
+            "bytes": 24696,
+            "sha256": "54b87301c46ef17578bdce0a2c3776f5ef4ca221cd69941f31c1de3cfe65d08e"
+          }
+        ],
+        "adoption": {
+          "two_production": "Both modelR1complete raw2879B/1794B unchanged owner0; actual199core/frameguard reused not copied",
+          "Book": "Owner completeCPU/alias/callbacktimelinefoundation, only actuallyunwritten buildoverlay method modelR1raw1792B unchanged owner0; no targetproductionJava read/run or modelCPUoracle credit",
+          "host": "mechanical197acceptedhost names/fixture/subject/output only"
+        },
+        "limits_at_original_snapshot": [
+          "Unknown425B804/E364callee bodies still fullV/sharedmemoryopaque callbacks inthiswhole; M1/M4own new201leaves independently",
+          "NormalDF0 scope, exceptional/arbitraryflags/fullFP/native/OS behavior not qualified",
+          "Three185root sites still not executed bythiswhole",
+          "No oldsubjects/cases/repeatedsourcecompile, no Native/Game/DLL/S/MB/ledger operation or gameplaydays/SAVE/G2completioncredit"
+        ],
+        "first_result": "2newprod20:16:40-41strict0/.5420469,2newmanual20:21:37-38strict0/.8684966,FIRSTONEwhole20:21:43-44exit0/.6378365; stdoutGovernmentWholeGrowth200Probe:1/1 whole-growth only, stderr0B.",
+        "composition": [
+          "WholeGrowth200bind(new185toTailGrowth200protocol,sameMemory,budgetoriginalidentity)->actual197fullwhole->194middleDB58->new200adapter->actualM1Growth199Calls.bind/core432B",
+          "Source-first firstindexedopaqueIATtail callback injects pointerchain/descriptor/cookie0 andoldH/rightDWORD/fresh4F0 effects before199; no earliermap/time/history changed",
+          "Two real199innerCALLs DC3E/425B804 andDC48/E364 exactpreSP/fullV/allXMM/workingNV/fullbeforeMap, P1.RAX72000000 retaineddespiteP2.RAXjunk; downstreamalgorithms stillopaque",
+          "32actual beforeStep(DCAC,currentRDI) events routedthroughoriginalcrtBudget object then32STOSQcookiezero, appendcallback and3descriptorupdates; heap72000000avoidsoldGS[700000]TLSalias",
+          "Independent199save6QWORD+2CALLslot+32REP+append+3descriptor44QWORDeffects=352bytes/336unique; firstexternalmutation84bytes/carry396bytes, final194CALLoverwrites sharedmiddleRETslotDB66 while deeperDC4Dslotpersists",
+          "Actual199finalV [0,DESC,0,40,HEAP,0,300B]+sixP2XMM; actualthirdindexedtail overwritesonlyRA/RCX, fulloldwholeNR/sameNV unchanged",
+          "43CRT=5CALL4TAIL1GS33loop,14atomic10ordinaryGS4deep2diag, allordered events/fulltypedwhole/everybefore-finalMap exact"
+        ],
+        "owner_preparation_note": "Before finalBook actuallysealed, one readerFileNotFound and prepare-test05 existenceassert failed; zeroJava/HTTP/test at those preparations. No targetalgorithm/Book/softwareRED implied, no sourcechange/rePOST. CanonicalReady afteractualBook present succeeded."
+      }
+    ],
+    "upstream198_after_197_freeze": {
+      "boundary": "After197RESULT06/frozenPENDINGpackage; independentM1later evidence/publication only. Original197limits andallformalfalse snapshot are notrewritten;197ONEdoesnotclaimthese43asserts.",
+      "result": {
+        "path": "D:/ck3-state/resume91-m1-native/government-424dbb0-198/RESULT198.json",
+        "bytes": 5939,
+        "sha256": "198556b87f8c90cf09d12b956b65c0dd9eb8974739ea00f015a4fd2d3e90488d"
+      },
+      "stages": [
+        {
+          "phase": "prod",
+          "started_at_utc": "2026-10-31T20:00:30.104973+00:00",
+          "ended_at_utc": "2026-10-31T20:00:30.756140+00:00",
+          "seconds": 0.6517332997173071,
+          "os_exit": 0,
+          "new_source_count": 1
+        },
+        {
+          "phase": "test",
+          "started_at_utc": "2026-10-31T20:04:00.957298+00:00",
+          "ended_at_utc": "2026-10-31T20:04:01.633398+00:00",
+          "seconds": 0.6767170000821352,
+          "os_exit": 0,
+          "new_source_count": 1
+        },
+        {
+          "phase": "witness",
+          "started_at_utc": "2026-10-31T20:04:04.255442+00:00",
+          "ended_at_utc": "2026-10-31T20:04:04.475512+00:00",
+          "seconds": 0.22082269983366132,
+          "os_exit": 0,
+          "new_source_count": 0
+        }
+      ],
+      "witness": {
+        "raw_paths": 2,
+        "binder_paths": 2,
+        "foreign_invokes": 4,
+        "foreign_tails": 1,
+        "delegated_GS": 1,
+        "assertions": 43,
+        "old_endpoint_runs": 0,
+        "Native": 0,
+        "Game": 0
+      },
+      "model_adoption": {
+        "production": "core02 raw source, zero owner executable edits",
+        "witness": "independent owner source-only; both model books wholly rejected"
+      },
+      "first_receipts": [
+        {
+          "path": "D:/ck3-state/resume91-m1-native/government-424dbb0-198/validation198/PROD01-ACTUAL.json",
+          "bytes": 560,
+          "sha256": "2178181de62798591d243767e0260a0b2d63a9304439f3b2998a4ffcb254ef68"
+        },
+        {
+          "path": "D:/ck3-state/resume91-m1-native/government-424dbb0-198/validation198/TEST01-ACTUAL.json",
+          "bytes": 560,
+          "sha256": "7a1780ddb8f90f21c5029e0aceea21b4eaf45116e8affac6c7df169373766ae9"
+        },
+        {
+          "path": "D:/ck3-state/resume91-m1-native/government-424dbb0-198/validation198/WITNESS01-ACTUAL.json",
+          "bytes": 1007,
+          "sha256": "68972234d7637977248fe29b21d56dcd5e2539b0fdb6f447e7c4a63383d72eb1"
+        }
+      ],
+      "original197_frozen_packet": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source197/DELIVERY06.json",
+        "bytes": 12403,
+        "sha256": "9d50c793e4f00d8bf39628b63223a5c4ba82688278b46a0f144c2f655d3e392a"
+      },
+      "actual197_publication_record": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source197/PUBLICATION09.json",
+        "bytes": 2324,
+        "sha256": "26ea50b87673b4b7533f7fb811df1c0e3becc5f9b0d279fc41d14e33417d569d"
+      }
+    },
+    "published_M1_dependencies": [
+      {
+        "commit": "abca10f519d9c0ebf64d271d6ea52cfd845e0697",
+        "formal_main_source_hashes": [
+          {
+            "fqcn": "org.xar.ck3.research.m1.GovernmentIndexedTails198",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentIndexedTails198.java",
+            "bytes": 5302,
+            "sha256": "475f0dde7227226a34f8d2f36627458b8ee895d3ff33cfd9c4f70cd5d60a75a6"
+          }
+        ],
+        "formal_review": {
+          "path": "D:/ck3-state/resume91-java-delivery/m1-indexed198/READONLY-REVIEW.json",
+          "bytes": 23161,
+          "sha256": "cde61a89b0f82ebe1fd4b7cf3662ad7145d090bb8bd0224a9fa6044a78344187"
+        },
+        "formal_projection_receipt": {
+          "path": "D:/ck3-state/resume91-java-delivery/m1-indexed198/FORMAL-STAGED.json",
+          "bytes": 336,
+          "sha256": "4756635c26055f0b7ef4aa268c21f1c713742bef9066abd75cccf4056763f6ee"
+        },
+        "publication_new_compile_or_RUN": 0,
+        "boundary": "ExistingM1ownedprotocol/core dependency, ownerfirstvalidation reused. No duplicateM1casesornewOSNativeGameproof."
+      },
+      {
+        "commit": "351974d255a1150eab8c8830f7fdd2785fd8970b",
+        "formal_main_source_hashes": [
+          {
+            "fqcn": "org.xar.ck3.research.m1.GovernmentRegistryGrowth199",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentRegistryGrowth199.java",
+            "bytes": 7463,
+            "sha256": "09e0ef8ea43d06d0ee4335912552368a4a04b5450353eb4da45eae5f56d57371"
+          },
+          {
+            "fqcn": "org.xar.ck3.research.m1.GovernmentRegistryGrowth199Calls",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentRegistryGrowth199Calls.java",
+            "bytes": 2880,
+            "sha256": "6d097469ea80310ff7c8ea01e63147b0e7913a367669604d93cac28238dea545"
+          }
+        ],
+        "formal_review": {
+          "path": "D:/ck3-state/resume91-java-delivery/m1-growth199/READONLY-REVIEW.json",
+          "bytes": 28807,
+          "sha256": "0390592b53b97eec3a1afb8369b380ffdaf2029260baf677024e6a0c6c2399ea"
+        },
+        "formal_projection_receipt": {
+          "path": "D:/ck3-state/resume91-java-delivery/m1-growth199/FORMAL-STAGED.json",
+          "bytes": 453,
+          "sha256": "1e9a39c35786bd9c7f460ab665b4fae4a9cfd54df743b59af4cc7d32bf9da810"
+        },
+        "publication_new_compile_or_RUN": 0,
+        "boundary": "ExistingM1ownedprotocol/core dependency, ownerfirstvalidation reused. No duplicateM1casesornewOSNativeGameproof."
+      }
+    ],
+    "limits": "Ownedsoftware normalDF0/fullV/sharedmemoryport cases only. 200425B804/E364remaineopaque,3root185sites/EH/OS/privateABI/NativeGame/gameplaydays/SAVE/G2completion unqualified.",
+    "latest_work_not_in_this_supplement": "202andallsuccessors intentionallyunobserved here; no sourceReady/green/firstcompile/publication assertion, docsnotMain/sourcework gate."
+  },
+  "publication_195_197_200_after_cutoff": [
+    {
+      "commit": "5604e5b8b315c62265de0dc4443d4ca598f5c0a0",
+      "main_sources": 2,
+      "manual_support_sources": 5,
+      "adopted_validation": {
+        "path": "D:/ck3-state/resume91-java-delivery/m5-source195196/ADOPTED-VALIDATION.json",
+        "bytes": 8229,
+        "sha256": "2367b3d77a553f8814b261615d83fc50ae996be107b161c1e31757e7e2f19730"
+      },
+      "publication_added_compile_or_RUN": 0,
+      "new_classes_for_publication": false,
+      "existing_formal_blobs_preserved_count_at_package": 107,
+      "counts_are_separate_snapshots_not_additive": true,
+      "formal_source_hashes": [
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentCrtRegistry195Calls.java",
+          "bytes": 2623,
+          "sha256": "72f2eb2303df6339b2518a86a9e9495c0d6ac66c5e2fcc1f8f6a9e56ab6d67f8",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtRegistry195Calls.java",
+            "bytes": 2622,
+            "sha256": "5f6a30631f6667b9f02427f3fd8b5c46b3d48ba55198802571d348895de861fb"
+          },
+          "normalization": {
+            "LF_only_bytes": 2622,
+            "LF_only_sha256": "5f6a30631f6667b9f02427f3fd8b5c46b3d48ba55198802571d348895de861fb",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": true,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "ModelR1 completeprotocolsource rawunchanged owner0; reusesactualM1Dispatch194Calls normalguard, noalgorithmcopy."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeRegistry196.java",
+          "bytes": 1778,
+          "sha256": "a7a7f9351eb8b24f8e8e693a7e583941cf1aa7849679ec2dbee8347a8c69bcd6",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-registry196/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeRegistry196.java",
+            "bytes": 1777,
+            "sha256": "e693816b31457ebeaf9503657dacdcbdd74036c922020662f461a434562d23fe"
+          },
+          "normalization": {
+            "LF_only_bytes": 1777,
+            "LF_only_sha256": "e693816b31457ebeaf9503657dacdcbdd74036c922020662f461a434562d23fe",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": true,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "ModelR1 complete1777B thinconsumer rawunchanged owner0, only195bindthen191same12params/Result."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentCrtRegistry195Fixtures.java",
+          "bytes": 4368,
+          "sha256": "73a4f709bfa7d5bf58f90a82c489cde1c37ff453c644ca6a383d72c36c8f3549",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/literal-owner/book/org/xar/ck3/research/m5/GovernmentCrtRegistry195Fixtures.java",
+            "bytes": 4368,
+            "sha256": "73a4f709bfa7d5bf58f90a82c489cde1c37ff453c644ca6a383d72c36c8f3549"
+          },
+          "normalization": {
+            "LF_only_bytes": 4368,
+            "LF_only_sha256": "73a4f709bfa7d5bf58f90a82c489cde1c37ff453c644ca6a383d72c36c8f3549",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "Two wholemodelBooks rejected (R2firsttransportresetdiscarded, retrylength6000); entirelyowner independentCPUscene, no targetJava read/run fororacle."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentCrtRegistry195Probe.java",
+          "bytes": 8583,
+          "sha256": "1314e709cb0566177aeed387263b3e445031138d96d3e1d5974514db384753da",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/host-owner/org/xar/ck3/research/m5/GovernmentCrtRegistry195Probe.java",
+            "bytes": 8591,
+            "sha256": "27ef00b1b1daffb5f5e4eb29e2f0b5fc2f37d6ae5b92dd9a11bbe575181ced91"
+          },
+          "normalization": {
+            "LF_only_bytes": 8591,
+            "LF_only_sha256": "27ef00b1b1daffb5f5e4eb29e2f0b5fc2f37d6ae5b92dd9a11bbe575181ced91",
+            "trailing_whitespace_lines": 2,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "Onlygenuinely unwrittenrun(Witness) modelR1raw752B/211tokens owner0. ReusedByteMemory/foreignfoundation andnewactualRETcounters owner; notmodelwholehost."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentCrtRegistry195WitnessApi.java",
+          "bytes": 949,
+          "sha256": "f9fdf1e0bbd34d7c0f102495029d3122c661c58f92857ccb4d77c35c4e545fad",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/registry-dispatch-bridge195/witness-api/org/xar/ck3/research/m5/GovernmentCrtRegistry195WitnessApi.java",
+            "bytes": 949,
+            "sha256": "f9fdf1e0bbd34d7c0f102495029d3122c661c58f92857ccb4d77c35c4e545fad"
+          },
+          "normalization": {
+            "LF_only_bytes": 949,
+            "LF_only_sha256": "f9fdf1e0bbd34d7c0f102495029d3122c661c58f92857ccb4d77c35c4e545fad",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "Ownerdeclaration-only protocolwitness; existing185Event reused."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeRegistry196Fixtures.java",
+          "bytes": 7257,
+          "sha256": "067a43758d3d556e959b19682510d3b8e0cf2e562caed3207d9a7fd4c7b67e1c",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-registry196/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeRegistry196Fixtures.java",
+            "bytes": 7257,
+            "sha256": "067a43758d3d556e959b19682510d3b8e0cf2e562caed3207d9a7fd4c7b67e1c"
+          },
+          "normalization": {
+            "LF_only_bytes": 7257,
+            "LF_only_sha256": "067a43758d3d556e959b19682510d3b8e0cf2e562caed3207d9a7fd4c7b67e1c",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "Ownerindependent fullCPUtranscript/carryfoundation. Onlynewbuild-overlaymethod modelR1raw1697B owner0; not modeloracle/wholeBook. Frozen8namedheldASM inputs; no targetexecution."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeRegistry196Probe.java",
+          "bytes": 24708,
+          "sha256": "06e317d11235209a1987ceeda50900154716cf00beeb3e2f833717ea416a7f4b",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-registry196/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeRegistry196Probe.java",
+            "bytes": 24708,
+            "sha256": "06e317d11235209a1987ceeda50900154716cf00beeb3e2f833717ea416a7f4b"
+          },
+          "normalization": {
+            "LF_only_bytes": 24708,
+            "LF_only_sha256": "06e317d11235209a1987ceeda50900154716cf00beeb3e2f833717ea416a7f4b",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "Mechanical191acceptedhostreuse, onlyclassname/fixture/subject/output replacements, nooracle/datachange; notmodelnewhost."
+        }
+      ],
+      "source_delivery": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source195196/DELIVERY06.json",
+        "bytes": 11665,
+        "sha256": "6195f82c83b1fcfced49e145510aba40f7f39fb7f9937aa23e29eaf8040a2186"
+      },
+      "source_closure": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source195196/FQCN-CLOSURE02.json",
+        "bytes": 212051,
+        "sha256": "ef43a3e0c8685bb6cc3ef90806439b0241e83b0b5862cfe3c0ea8fa82efdb6ed"
+      },
+      "formal_review": {
+        "path": "D:/ck3-state/resume91-java-delivery/m5-source195196/READONLY-REVIEW.json",
+        "bytes": 124793,
+        "sha256": "cfc808a08717d1edf8cdd0d4d01bb2bcc5fc3e0c2a35c293b1d73ca536087cd4"
+      },
+      "writer_notice": "Java normalpush/remoteexact/clean; localoriginancestry andallpayloadGitSHA independentlyverified atthissnapshot.",
+      "limit": "Sourcepublication reusesactualownerfirststrict/ONE; no duplicateoldsource/case/JVM/slot, no MavenDpath/POM/CI/nativeGame credit."
+    },
+    {
+      "commit": "4fcb64ef3302413e224ddaab2b2554d1f93779eb",
+      "main_sources": 1,
+      "manual_support_sources": 2,
+      "adopted_validation": {
+        "path": "D:/ck3-state/resume91-java-delivery/m5-source197/ADOPTED-VALIDATION.json",
+        "bytes": 5334,
+        "sha256": "a778cfffcf0a3db2f310f242a63fafd4ac5569dc1cfea47f1ba126abb0962d43"
+      },
+      "publication_added_compile_or_RUN": 0,
+      "new_classes_for_publication": false,
+      "existing_formal_blobs_preserved_count_at_package": 111,
+      "counts_are_separate_snapshots_not_additive": true,
+      "formal_source_hashes": [
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeIndexed197.java",
+          "bytes": 1771,
+          "sha256": "76d9bb9120d8602c66ea26f719214d7643ecd312df933cce6c022c98e90c394b",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeIndexed197.java",
+            "bytes": 1770,
+            "sha256": "f56dd699b059f1823fa7e3d4d9513570e61e777c78d05e1e83d6c559559b1cc9"
+          },
+          "normalization": {
+            "LF_only_bytes": 1770,
+            "LF_only_sha256": "f56dd699b059f1823fa7e3d4d9513570e61e777c78d05e1e83d6c559559b1cc9",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": true,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "ModelR1 complete1770B thinconsumer rawunchanged owner0; only198bindthen196same12params/Result, no algorithmcopy."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeIndexed197Fixtures.java",
+          "bytes": 7708,
+          "sha256": "52d8bb9fc7bef1562bd58957dd4c0e3cc1664dd982b8d0114967e8cbb163edb5",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeIndexed197Fixtures.java",
+            "bytes": 7708,
+            "sha256": "52d8bb9fc7bef1562bd58957dd4c0e3cc1664dd982b8d0114967e8cbb163edb5"
+          },
+          "normalization": {
+            "LF_only_bytes": 7708,
+            "LF_only_sha256": "52d8bb9fc7bef1562bd58957dd4c0e3cc1664dd982b8d0114967e8cbb163edb5",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "OwnerindependentCPU/state/IATtiming/carryfoundation. Only genuinelyunwritten buildoverlay method modelR1raw2056B owner0; notmodelCPUoracle orwholeBook. Noread/run targettoinferexpected."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeIndexed197Probe.java",
+          "bytes": 24702,
+          "sha256": "5720f67c58d8fc7ab816155a5ff3a3f88d6abf2ec0ccce4908b8721d76ced0dc",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-indexed197/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeIndexed197Probe.java",
+            "bytes": 24702,
+            "sha256": "5720f67c58d8fc7ab816155a5ff3a3f88d6abf2ec0ccce4908b8721d76ced0dc"
+          },
+          "normalization": {
+            "LF_only_bytes": 24702,
+            "LF_only_sha256": "5720f67c58d8fc7ab816155a5ff3a3f88d6abf2ec0ccce4908b8721d76ced0dc",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "Mechanical196acceptedhostreuse names/fixture/subject/output only, nooracle/datachange; notmodelnewhost."
+        }
+      ],
+      "source_delivery": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source197/DELIVERY06.json",
+        "bytes": 12403,
+        "sha256": "9d50c793e4f00d8bf39628b63223a5c4ba82688278b46a0f144c2f655d3e392a"
+      },
+      "source_closure": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source197/FQCN-CLOSURE02.json",
+        "bytes": 214571,
+        "sha256": "f45b7d74db9da23f2e55748544740852aaea10407c98f977971c564a720dbcfc"
+      },
+      "formal_review": {
+        "path": "D:/ck3-state/resume91-java-delivery/m5-source197/READONLY-REVIEW.json",
+        "bytes": 119990,
+        "sha256": "c91b6dc7eec414ca91198f2093729ca7ec6c0d17cb67e3aa41280b5263774c60"
+      },
+      "writer_notice": "Java normalpush/remoteexact/clean; localoriginancestry andallpayloadGitSHA independentlyverified atthissnapshot.",
+      "limit": "Sourcepublication reusesactualownerfirststrict/ONE; no duplicateoldsource/case/JVM/slot, no MavenDpath/POM/CI/nativeGame credit.",
+      "pending_at_original_freeze": 1,
+      "old_all_formal_present_false_preserved": true,
+      "resolved_dependency": {
+        "formal_commit": "abca10f519d9c0ebf64d271d6ea52cfd845e0697",
+        "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentIndexedTails198.java",
+        "raw_source_sha256": "042119cee946b263d7692d20dabdb2804f3f59ef5fd5f3304aa17013d5e5377f",
+        "formal_LF_sha256": "475f0dde7227226a34f8d2f36627458b8ee895d3ff33cfd9c4f70cd5d60a75a6",
+        "package_was_pending_at_freeze": true
+      },
+      "independent_publication_record": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source197/PUBLICATION09.json",
+        "bytes": 2324,
+        "sha256": "26ea50b87673b4b7533f7fb811df1c0e3becc5f9b0d279fc41d14e33417d569d"
+      }
+    },
+    {
+      "commit": "7f0957e8842c4a1a09ad47f86fb5b52534752d3b",
+      "main_sources": 2,
+      "manual_support_sources": 2,
+      "adopted_validation": {
+        "path": "D:/ck3-state/resume91-java-delivery/m5-source200/ADOPTED-VALIDATION.json",
+        "bytes": 4250,
+        "sha256": "4d923946805a7df09775541ad8cf02e2cb2854f9f8bf00c3fc2e58591a615a09"
+      },
+      "publication_added_compile_or_RUN": 0,
+      "new_classes_for_publication": false,
+      "existing_formal_blobs_preserved_count_at_package": 116,
+      "counts_are_separate_snapshots_not_additive": true,
+      "formal_source_hashes": [
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentCrtGrowth200Calls.java",
+          "bytes": 2879,
+          "sha256": "522fcc4bbf297b6935c7ee2ab66f3e5b6cc9fa5d9e8df1071ab45977139d3b82",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/growth-bridge200/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtGrowth200Calls.java",
+            "bytes": 2879,
+            "sha256": "522fcc4bbf297b6935c7ee2ab66f3e5b6cc9fa5d9e8df1071ab45977139d3b82"
+          },
+          "normalization": {
+            "LF_only_bytes": 2879,
+            "LF_only_sha256": "522fcc4bbf297b6935c7ee2ab66f3e5b6cc9fa5d9e8df1071ab45977139d3b82",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "ModelR1complete2879B protocolsource rawunchanged owner0, fourth185budgetsameidentity. Actual199core/frameguard reused, notcopied."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeGrowth200.java",
+          "bytes": 1795,
+          "sha256": "1e709e6d6356ce6c0b2df75a3b8f08e6da50fce5f111b163221b1be9e05522b5",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-growth200/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeGrowth200.java",
+            "bytes": 1794,
+            "sha256": "a4e028c6f01d216aaae0ac6a7bc42a54eed5aabaa086a7e49a41191de9b397f0"
+          },
+          "normalization": {
+            "LF_only_bytes": 1794,
+            "LF_only_sha256": "a4e028c6f01d216aaae0ac6a7bc42a54eed5aabaa086a7e49a41191de9b397f0",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": true,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "ModelR1complete1794B thinwhole rawunchanged owner0; only200protocolbindthen197whole, no algorithmcopy."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeGrowth200Fixtures.java",
+          "bytes": 8956,
+          "sha256": "9682fccc21b0973d14bceb65f1c43393b5017910943749f717a61e01e0824c26",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-growth200/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeGrowth200Fixtures.java",
+            "bytes": 8956,
+            "sha256": "9682fccc21b0973d14bceb65f1c43393b5017910943749f717a61e01e0824c26"
+          },
+          "normalization": {
+            "LF_only_bytes": 8956,
+            "LF_only_sha256": "9682fccc21b0973d14bceb65f1c43393b5017910943749f717a61e01e0824c26",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "Owner completeGROW32CPU/alias/callbacktimeline/carryfoundation. Onlyactuallyunwritten buildoverlay method modelR1raw1792B unchanged owner0; notmodelCPUoracle/wholeBook, no targetJava read/run."
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeGrowth200Probe.java",
+          "bytes": 24696,
+          "sha256": "54b87301c46ef17578bdce0a2c3776f5ef4ca221cd69941f31c1de3cfe65d08e",
+          "original_source": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-growth200/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeGrowth200Probe.java",
+            "bytes": 24696,
+            "sha256": "54b87301c46ef17578bdce0a2c3776f5ef4ca221cd69941f31c1de3cfe65d08e"
+          },
+          "normalization": {
+            "LF_only_bytes": 24696,
+            "LF_only_sha256": "54b87301c46ef17578bdce0a2c3776f5ef4ca221cd69941f31c1de3cfe65d08e",
+            "trailing_whitespace_lines": 0,
+            "added_final_LF": false,
+            "projection": "LF/trailing linewhitespace/finalLF only; exactJava lexicaltokenidentity."
+          },
+          "source_adoption": "Mechanical197acceptedhostreuse names/fixture/subject/output only; nooracle/datachange, notmodelnewhost."
+        }
+      ],
+      "source_delivery": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source200/DELIVERY06.json",
+        "bytes": 8462,
+        "sha256": "ee8b08aaa6504bd0ad8f130e5ea6459a204140959394a22f65f0f919427550cd"
+      },
+      "source_closure": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source200/FQCN-CLOSURE02.json",
+        "bytes": 224017,
+        "sha256": "c1d9289ca07b95ead75baeda30d19a35e2fd5a90e5f2180e507f9d1cec3b0a7a"
+      },
+      "formal_review": {
+        "path": "D:/ck3-state/resume91-java-delivery/m5-source200/READONLY-REVIEW.json",
+        "bytes": 124184,
+        "sha256": "8ce96660d0d9461ab21a5c1a611e7414d11b6254d52403b1ffbfc20d267a02f0"
+      },
+      "writer_notice": "Java normalpush/remoteexact/clean; localoriginancestry andallpayloadGitSHA independentlyverified atthissnapshot.",
+      "limit": "Sourcepublication reusesactualownerfirststrict/ONE; no duplicateoldsource/case/JVM/slot, no MavenDpath/POM/CI/nativeGame credit."
+    }
   ]
 }
