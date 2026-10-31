@@ -1006,6 +1006,31 @@ final class SessionControllerRegressionTest {
         @Override public Tick now() { if (!passive) nanos += 1_000_000; return new Tick(nanos, BASE.plusNanos(nanos)); }
         @Override public void waitFor(Duration duration) { nanos += duration.toNanos(); }
     }
+    @Test void preIntentContractRejectionStopsWithoutQuarantiningOrInventingAReceipt() {
+        Fixture fixture=new Fixture(true);
+        fixture.executionFailure=org.xar.ck3.control.application.action.PreIntentPreparationRejectionTest::rejectBeforeIntent;
+        SessionController controller=fixture.controller();
+        BatchReport result=controller.runBatch(limits("pre-intent-source-rejection"));
+        assertEquals(BatchReport.Terminal.PLANNER_STOPPED,result.terminal());
+        assertTrue(result.detail().contains("SOURCE_CONTRACT_REJECTED"));
+        assertTrue(result.detail().contains("held planning semantic differs from lease frame"));
+        assertFalse(controller.isQuarantined());assertEquals(0,result.turns().size());assertEquals(0,fixture.submitted.get());
+        assertTrue(fixture.completedReceipts.isEmpty());
+    }
+    @Test void unrelatedPreIntentControlSignalStillQuarantines() {
+        Fixture fixture=new Fixture(true);
+        fixture.executionFailure=org.xar.ck3.control.application.action.PreIntentPreparationRejectionTest::rejectAnotherCommand;
+        SessionController controller=fixture.controller();
+        BatchReport result=controller.runBatch(limits("pre-intent-mismatched-command"));
+        assertEquals(BatchReport.Terminal.ACTION_UNKNOWN,result.terminal());
+        assertTrue(controller.isQuarantined());assertEquals(0,fixture.submitted.get());assertTrue(result.turns().isEmpty());
+    }
+    @Test void untypedPreparationRuntimeFailureStillQuarantines() {
+        Fixture fixture=new Fixture(true);fixture.executionFailure=command->new IllegalStateException("unclassified prepare failure");
+        SessionController controller=fixture.controller();BatchReport result=controller.runBatch(limits("untyped-prepare-failure"));
+        assertEquals(BatchReport.Terminal.ACTION_UNKNOWN,result.terminal());assertTrue(controller.isQuarantined());assertEquals(0,fixture.submitted.get());
+    }
+
     private static final class Fixture {
         final TestClock time = new TestClock(); final AtomicInteger observed = new AtomicInteger(); final AtomicInteger submitted = new AtomicInteger(); final AtomicInteger reconciled = new AtomicInteger();
         final List<JournalInput> journal = new ArrayList<>(); final boolean completePlanner; boolean withBaseline = true; boolean reconcileExisting; boolean cycleAvailable = true;
@@ -1058,6 +1083,7 @@ final class SessionControllerRegressionTest {
         OfflineAnalysisPort analysis = work -> { throw new AssertionError("no captured incident expected"); };
         RetainedIncidentBatchSource retainedSource = List::of;
         boolean bindRetainedSource = true;
+        java.util.function.Function<ActionCommand,RuntimeException> executionFailure;
         Fixture(boolean completePlanner) { this.completePlanner = completePlanner; }
         private ActionReceipt confirmedFocus(PlanningRequest original) {
             var selected=command(original,"focus-original");
@@ -1118,6 +1144,7 @@ final class SessionControllerRegressionTest {
                 }
                 @Override public ActionReceipt execute(ActionCommand command) {
                     if(readRefreshBeforeDispatch&&!readRefreshIssued){readRefreshIssued=true;if(refreshHasParent)readParentOriginal=command;throw new ReadPublicationRefreshException(command,Optional.empty(),publication(),refreshHasParent?Optional.of(command.actionId()):Optional.empty());}
+                    if(executionFailure!=null)throw executionFailure.apply(command);
                     submitted.incrementAndGet(); return new ActionReceipt(1, 1, command, ActionCodec.bodySha256(command),
                             new ActionState.Unknown(Optional.empty(), Optional.empty(), "original completion lost", List.of(REF)));
                 }

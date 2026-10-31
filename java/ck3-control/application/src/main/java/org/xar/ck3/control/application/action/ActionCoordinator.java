@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** One assembled instance per Game. Durable intent, one native write, independent later observation, one writer. */
@@ -150,7 +151,15 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
     private ActionReceipt executePrimitive(ActionJournal.LockedJournal locked, ActionCommand command, String digest, GuardEvidence initial) {
             preparation.requireProtocolIdentity(command);
             String requestId = RequestIds.forCommand(command);
-            NativeRequest request = Objects.requireNonNull(preparation.prepare(locked.writerSession(), command, requestId));
+            NativeRequest request;
+            var priorHead = locked.head();
+            try { request = Objects.requireNonNull(preparation.prepare(locked.writerSession(), command, requestId)); }
+            catch (ContractViolationException failure) {
+                // executeOwnedLocked already returned every existing selected action; unchanged ACTION head preserves its absence.
+                if (Objects.equals(ContinuityActionJournal.recordHead(priorHead.state()), ContinuityActionJournal.recordHead(locked.head().state())))
+                    throw new PreIntentContractRejection(command, failure);
+                throw failure;
+            }
             NativeStepDiscriminator.requireRequest(command.operation(), ExecutableStepBindings.Kind.ACTION, request);
             checkBarrier(locked, command);
             ActionPreparationScope.within(locked.writerSession(), command, request,

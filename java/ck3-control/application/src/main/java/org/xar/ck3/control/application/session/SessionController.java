@@ -751,6 +751,12 @@ public final class SessionController {
                     if (run.currentTurnRevisionReplans++ >= 1) throw new End(Terminal.ACTION_REJECTED, "native frame changed again after the one allowed zero-dispatch refresh");
                     continue; // A fresh complete observation and plan, never a retry of this command.
                 }
+                catch (org.xar.ck3.control.application.action.PreIntentContractRejection rejection) {
+                    if (!sameCommand(rejection.command(), selected.command())) {
+                        quarantineUnresolved(); throw new End(Terminal.ACTION_UNKNOWN, "pre-intent rejection refers to another command");
+                    }
+                    throw new End(Terminal.PLANNER_STOPPED, "SOURCE_CONTRACT_REJECTED: " + rejection.getMessage());
+                }
                 catch (RuntimeException failure) {
                     quarantineUnresolved(); throw new End(Terminal.ACTION_UNKNOWN, failure.toString());
                 }
