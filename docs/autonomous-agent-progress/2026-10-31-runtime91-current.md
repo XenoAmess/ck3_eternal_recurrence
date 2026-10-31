@@ -10,6 +10,16 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+19:03Z实际187：**MB18718:57:38.140384→18:57:44.492292Z exit0/6.351914秒，仅local-service material factory1源；worker187/PID293640 18:57:48.867151→19:01:31.619644Z preloop END1/222.752500秒，无LOOP**。事前已发fresh安装HOLD，真实END读到后先release Native再取stderr；源HTTP/具名tiny持续，不套旧186窗。仍同Game71464/原birth/supervisor/qwen1.11/basic175、ordinary1200000ms/Native60000ms；0新SAVE/控制重放、0新增游戏日。
+
+187最小2459B factory分支实际采用：现installed archived verifier完整验证真正SAVE Applied后，仅将pair与archived Driver作MATERIAL、独立postframe作NATIVE_FRAME，返回既有CanonicalOnly；不伪legacy compatible result、不generic-pin 68MiB SAVE或rawACK，不替current Driver。模型分支部分采用，owner收窄typed APPLIED-only guard保非Applied fallback；首strict仅旧Missing.OperationKey serial告警红，按既有-Xlint:all,-try,-serial -Werror口径必要strict0/2.262010秒，业务Java无再改。最初patch check误选p3/缺directory仅路径红，按实际a/local-service用S-p1/Z--directory java/ck3-control后普通check/apply全0，未改语义。源正式b8ce111。
+
+**495于19:00:44.5633728Z实际JAVA_DRIVER_ACTION_HISTORY_V1**：exact原SAVE494覆盖成立，legacy_row=null，before/after Driver均1702f07ac37b8d1d6ece66026b7e77f91729a7943dffd8f60614a54423af4dfc/4966525B字节相同，Driver版本151→152；source cf2b3d225ad91bcaeb273c027fe1d6d9349f310a9b98b1d578bd6ce1072e63ff/11145B。event495 actual99608B SHAebdbbe32d20d222de517e32020ed1e3fe99c198fb4a0fbd2c4c8d3a27d3260ca。此为原件history发布，不另授SAVE_CONFIRMED或游戏日。
+
+187真实已到confirmOriginalSave1182→SAVE_CONFIRMED commit preview→RootCheckpointVerifier50→SavedAttachmentSourceStore.capture137，但RootRuntimeStorageGuard.write879在底层首次createNew之前charge844调用Files.getFileStore，对尚不存在的state/checkpoints/attachments/checkpoints父目录抛NoSuchFileException；未持久最终SAVE_CONFIRMED。19:02:12 head495/repair/cycle4/pendingnull、SAVE494仍APPLIED/physicalpairverified/date53144520，原8日/487结算保持。188只修该实际首写预算路径，不能外部手工mkdir绕guard/预算或重SAVE。
+
+187唯一有效jcmd18:59:50Z（本地02:59:50、elapsed122.06秒/CPU12.766秒）在catalog Sway安装/类加载FileInputStream.open0，尚未到新factory。不能以该单栈归全程耗时、把222秒与186的138秒差归某源码或当Native SAVE等待；不热改在途。Native明确freshHOLD187期间研究编译/JVM/provider/heavy/大IO全0，HTTP/tiny正常。
+
 18:49Z实际185/186：**MB18518:14:57.841037→18:15:03.973830Z exit0/6.132793秒，仅local-service Dispatcher1源；worker185/PID289928 18:15:04.123366→18:21:05.702811Z preloop END1/361.579445秒，无LOOP**。185唯一consumer补真实ReconciliationWork第四参数lease.provenance，保实际READ而非伪Push；模型部分采用，首javac启动器误把-J置argfile红未进入Java，必要改launcher后1src strict0/1.693324秒。真实冷收集首次493 Unknown仅first-stable，继而494 SETTLED/APPLIED，原SAVE从未再次execute：7755B receipt `afc50d18b26d2a19b313c7e11726dcd76321afd26a88e69e892b29d0c03e0756.bin`独立验证physical pair/Driver/原ACK，date53144520、actor31254、checkpoint_pair_verified=true。原ACK491/Attempt/body与mtime>ACK规则保持，两次实际稳定FileWitness成立；APPLIED与最终SAVE_CONFIRMED分别记。
 
 185真实退出位于confirmOriginalSave→retainedCycleProof→requireActive，repair状态挡住保存后只读周期证明；18:21:09读终态即release（约3.52秒延迟）。最后有效jcmd18:19:20在Service.requireSavedFrame→Scope.activeFor/canonical receipt，只是该时刻栈，不据其归全程耗时。186仅为当前exact APPLIED SAVE授原周期proof读取与冷Confirmed读回，不放普通requireActive，不重SAVE/ARM473/resume479，不改旧deadline。
