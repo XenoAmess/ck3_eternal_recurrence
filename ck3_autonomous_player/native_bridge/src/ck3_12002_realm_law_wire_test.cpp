@@ -2,6 +2,8 @@
 #include "xar_bridge/crown_authority_cooldown_observer_12004.hpp"
 #include "xar_bridge/crown_authority_cooldown_turn_tick_12004.hpp"
 #include "xar_bridge/realm_law_12004_native.hpp"
+#include "xar_bridge/ck3_12002_nonwar_router.hpp"
+#include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 
 #include <windows.h>
 
@@ -595,6 +597,27 @@ int main(int argc, char **argv) {
     return RunCalendarDeadlineWholeFixture(argv[2]);
   if (argc == 3 && std::string_view(argv[1]) == "--turn-tick-context-wire-dir")
     return RunTurnTickContextWholeFixture(argv[2]);
+  if (argc == 2 && std::string_view(argv[1]) == "--registration-check") {
+    xar::ck3_12002::NonwarMailboxExecutorsV1 executors_12002{};
+    xar::ck3_12002::PopulateNonwarRouterExecutors12002(executors_12002);
+    xar::ck3_11906::MainThreadQueryInstallEnvironmentV1 environment_12002{};
+    xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment_12002, executors_12002);
+    if (environment_12002.permitted_executor_sexquinquagintary != &xar::ck3_12002::ExecuteRealmLawPausedPrivateQuery12002) {
+      std::cerr << "FAIL: 12002 law_final_terms registration mismatch\n";
+      return 1;
+    }
+
+    xar::ck3_12002::NonwarMailboxExecutorsV1 executors_12004{};
+    xar::ck3_12002::PopulateNonwarRouterExecutors12004(executors_12004);
+    xar::ck3_11906::MainThreadQueryInstallEnvironmentV1 environment_12004{};
+    xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment_12004, executors_12004);
+    if (environment_12004.permitted_executor_sexquinquagintary != &xar::ck3_12002::ExecuteRealmLawPausedPrivateQueryWithTurnTick12004) {
+      std::cerr << "FAIL: 12004 law_final_terms registration mismatch\n";
+      return 1;
+    }
+    std::cout << "PASS: 12002/12004 law_final_terms registration isolation verified\n";
+    return 0;
+  }
   Memory memory{};
   InitializeLawMemory(memory);
   const private_law::RealmLawActiveCollectionAccess access{

@@ -32,6 +32,7 @@
 #endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_realm_law.hpp"
+#include "xar_bridge/crown_authority_cooldown_turn_tick_12004.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
 #include "xar_bridge/ck3_12002_realm_law_action_mailbox.hpp"
@@ -343,7 +344,7 @@ void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept 
 #endif
 #endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
-  out.law_final_terms = &ExecuteRealmLawPausedPrivateQuery12002;
+  out.law_final_terms = &ExecuteRealmLawPausedPrivateQueryWithTurnTick12004;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
   out.religion_reform = &ExecutePlayerReligionReformMailbox12002;

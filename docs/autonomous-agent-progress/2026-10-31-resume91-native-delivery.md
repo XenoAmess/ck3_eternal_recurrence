@@ -137,3 +137,11 @@ M2 的新 ABI header、三个小生产 TU、Bridge 五处局部接线及 CMake �
 只读对照当前 Java OriginalPlanRouting/AdvanceClock 与已持 Native63，`life-advance` 为 Java composite；其实际 set-speed-1..5、terminal-a-0 Sentinel Arm、Status、uint64-generation Cancel、resume-map、pause-map 在63均有真实 handler，三 sentinel capability 与 Java 常量逐字相同，`.4` descriptor 明确登记。`.4` serializer 与 Java SentinelCodec 对应20字段和 numeric uint64 generation。初始 idle/reset 的 native speed0 不符合 Java speed1..5，但当前 ordinary AdvanceClock 先 Arm 再 Status、取消保留已 arm speed，所需路径匹配；未外推所有 pre-arm idle 消费。源映射为 `D:/ck3-state/resume91-native-integration/NATIVE63-DATE-ROUTES01.json`，没有新 query、PE读取、启动重验或 alias 修改。
 
 运行岗另请求已结算 CROWN 后 final-terms 读取映射。M1 在 frozen63 与当前正式源确认：`.4` 实际提交 ExecuteRealmLawPausedPrivateQueryWithTurnTick12004，PopulateNonwarRouterExecutors12004 却登记旧 ExecuteRealmLawPausedPrivateQuery12002；MainThreadQueryMailbox 的逐指针白名单会拒绝该组合，产生 submit_unavailable。route 本身存在，不能因 Bridge 字面搜索未命中就称 endpoint 缺席。证据 `D:/ck3-state/resume91-m1-native/crown-finalterms130/MAPPING130.json` 分开记录 source 缺口与未知 loaded binary；隔离登记修复及实际注册回归正在准备，尚未正式采用或部署。runtime129 已实际 CROWN APPLIED 的事实由运行岗保存，不因后续消费失败重发动作。
+
+## CROWN final-terms executor 登记修复（03:07Z）
+
+采用 M1 三叶原样候选：在相同 REALM_LAW_PAUSED_PRIVATE_QUERY feature guard 内加入真实 TurnTick 声明，并仅把 PopulateNonwarRouterExecutors12004 的 law_final_terms 改为其实际提交的 WithTurnTick12004 callback。Populate12002 继续登记旧 callback。既有 realm_law_wire_test 增加 `--registration-check`，直接执行两个版本的实际 Populate→Register，核各自 mailbox permitted slot；既有 TurnTick whole fixture 模块新增独立 CTest 选择器，未重跑旧 wire 矩阵。
+
+没有可直接授等价的 current whole fixture 对象缓存，因此只验证此次实际登记行为：从当前生产源码精确抽取完整 Populate12002、Populate12004、Register 三个函数 body，引用四个真实结构/声明 header，运行新 selector 原断言。未执行的 callback 仅 typed abort 测试符号，实际未触发；`/OPT:NOICF` 和 old/new 指针不同断言防止地址合并遮蔽缺陷。baseline generated TU 编译链接0/3.194秒，唯一 selector 预期 exit1/0.004秒，精确 `.4 registration mismatch`；candidate generated TU 编译链接0/2.910秒，同 selector exit0/0.011秒、`.2/.4 isolation` 通过，03:04:59Z 全部END/资源释放。没有把这两个 generated TU 写成完整 router/whole fixture 编译。
+
+两轮真实模型返回后 impl02/test02 的精确修改原样采用，第一轮缺 include、模糊 span、无关 guard 与测试缺 `.2` 隔离的源码拒绝保留。正式三叶 patch check0/application0，本岗仅增加交付记录。原件 `D:/ck3-state/resume91-m1-native/crown-finalterms130/{DELIVERY130,MODEL-REVIEW130,MAPPING130}.json` 和 `unit/ACTUAL130.json`。该结果闭合源码的登记指针错配；未授 actual query 执行、完整 Bridge ABI、hosted CTest、DLL部署或129 loaded binary根因，未重新提交 CROWN。

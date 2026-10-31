@@ -37,3 +37,7 @@ set(XAR_CROWN_CALENDAR_DEADLINE_WHOLE_OUTPUT_DIR
 add_test(NAME crown_authority_cooldown_calendar_deadline_whole_fixture_12004
     COMMAND xar_crown_authority_cooldown_turn_tick_whole_fixture_12004
       --calendar-deadline-wire-dir "${XAR_CROWN_CALENDAR_DEADLINE_WHOLE_OUTPUT_DIR}")
+
+add_test(NAME crown_authority_cooldown_law_registration_check_12004
+    COMMAND xar_crown_authority_cooldown_turn_tick_whole_fixture_12004
+      --registration-check)
