@@ -1,0 +1,121 @@
+{
+  "schema": "m3.registration-index183-first-software-summary/v1",
+  "package_number": 49,
+  "status": "FIRST_EIGHT_EXPLICIT_SOURCE_CLOSURE_FOUR_SCENES_PASS",
+  "actual_original": "registration-index183/verification-first183/ACTUAL183.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\registration-index183",
+  "actual_evidence_copied_to_Git": false,
+  "real_caller": "3790510@3790545 CALL3F542C0; caller consumes EAX",
+  "complete_normal": [
+    "3F542C0",
+    "3F5444D(exclusive)"
+  ],
+  "normal_code_bytes": 397,
+  "RF_parts": 3,
+  "RF_code_bytes": [
+    68,
+    188,
+    141
+  ],
+  "UW_bytes": 64,
+  "new_PE_bytes": 461,
+  "header_provider_query_Game": 0,
+  "first_explicit_sources": 8,
+  "new_source_files": 5,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/index183/RegistrationIndex183Api.java": "054a183b3c50ba636f62d680353ea8e49a6f67576ccf9cc522f127dea10509a2",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/index183/RegistrationIndexWitness183Api.java": "bd5c2809aab1b4d57d50454a07f16429afb2594d4a090340b354f484383b43da",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/index183/RegistrationIndex3F542C0.java": "04870f4a6898d8324ac8b8ba630105f31c65d1486f78b4d50dad26517969b1c1",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/index183/RegistrationIndexWitnessHost183.java": "1899a8c51bec2493450b54af60c0174ff5d05f5b3a824176ebd55ba8d3d585d8",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/index183/RegistrationIndexWitnessBook183.java": "2c01f31c3436ef72614b4dedeb0ceabab281a15d2058a72829b7683bfc7cb1c5"
+  },
+  "stages": [
+    {
+      "stage": "STRICT1",
+      "begin": "2026-10-31T19:52:41.724723+00:00",
+      "end": "2026-10-31T19:52:42.515086+00:00",
+      "exit": 0,
+      "seconds": 0.790353300049901
+    },
+    {
+      "stage": "FIRST4",
+      "begin": "2026-10-31T19:52:42.515514+00:00",
+      "end": "2026-10-31T19:52:42.924329+00:00",
+      "exit": 0,
+      "seconds": 0.40882520005106926
+    }
+  ],
+  "strict_actual": "Java21/-Xlint:all/-Werror/-proc:none/-implicit:none/192MiB/CPU1/emptyCP/sourcepath",
+  "first_source_hash_match": true,
+  "new_scenes": 4,
+  "global_scripted_events": 73,
+  "events_per_scene": [
+    4,
+    16,
+    25,
+    28
+  ],
+  "comparator_calls_per_scene": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "opaque_comparator_calls": 6,
+  "literal_expected_EAX": [
+    -1,
+    -1,
+    1,
+    2
+  ],
+  "top_level_check_scope": "per-scene exact returned EAX and exhaustion; explicit finalCells storage checks; per-event guards not counted as separate top-level assertions",
+  "scene_semantics": [
+    "zero count, no descriptor or comparator access",
+    "negative count skips search but still takes final heap-record comparison with signed negative R8",
+    "captured first descriptor and fresh mutated home/end slots select a different descriptor and record",
+    "multiple search iterations retain original base/data/length despite controlled comparator mutations and preserve three scratch tail bytes"
+  ],
+  "model_logical_requests": 5,
+  "actual_model_POSTs": 5,
+  "model_stop": 3,
+  "model_length_whole_discarded": 2,
+  "local_phase_peak": 3,
+  "model_core_book_whole_adoption": 0,
+  "core_origin": "owner entire after two wholly rejected semantic candidates",
+  "book_origin": "independent owner literals from original397B and frozen declarations; no target/host/failed Book candidates or run results read",
+  "host_model_adoption": "first decoded Java source byte-for-byte; zero owner source edits; first software closure passed",
+  "scope": "normal business scratch/memory/EAX projection; explicit comparator callsite, RCX/RDX and sign-extended R8 with same-Memory controlled effects",
+  "source_details": "Entry R8 home is overwritten by captured end before consumption and excluded from business projection. Entry RDX home and end are freshly read after search. Tail comparison reverses data argument direction and freshly observes chosen signed length. Count<0 does not automatically return empty.",
+  "not_proved": [
+    "comparator42270B0 internal algorithm by this port test",
+    "all comparator outcomes, alias/wrap inputs or arbitrary search sizes",
+    "hardware128bit atomicity/alignment or concurrency",
+    "full rawCPU/prologue/register/flags/ABI/EH",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
