@@ -121,4 +121,146 @@ final class SwayActualNativeStopPacketTest {
     private static String text(JsonNode row,String key) {return StrictJson.text(row.get(key));}
     private static long number(JsonNode row,String key) {return StrictJson.integer(row.get(key),0,0xffff_fffeL);}
     private static int role(JsonNode row,String key) {return NativeCharacterId.fromJson(row.get(key)).value();}
+
+@Test void actualStopPreparationPreservesSignedRolesAndRejectsBoundaryDrift() throws Exception {
+    List<String> failures = new ArrayList<>();
+    int cases = 0;
+    for (var row : originals()) {
+        byte[] rawReq = wire(row, "stop.request");
+        JsonNode req = parse(rawReq);
+        byte[] rawResp = wire(row, "stop.response");
+        JsonNode resp = parse(rawResp);
+        JsonNode body = resp.at("/result/sway_stop");
+
+        long actor = role(req, "actor_character_id");
+        long target = role(req, "target_character_id");
+        String actionId = text(body, "action_id");
+        String originalActionId = "sway-software-parser-original";
+        long instanceId = number(body, "scheme_instance_id");
+        int generation = Math.toIntExact(number(body, "scheme_instance_generation"));
+
+        var binding = SwayActualNativeStopPacketTest.binding(body);
+        var observed = binding.before();
+        var source = new G2Source(observed.machineId(), NOW.toString(), SwayNativeWire.BUILD, SOURCE);
+        var claims = new JointBudgetSelector.Claims(Set.of(), Set.of(), Set.of(BigInteger.valueOf(actor), BigInteger.valueOf(target)), Set.of());
+        var expected = new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition(1, observed, source, "software-stop-observer", List.of(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText(new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("sway.action_id"), actionId)));
+
+        com.fasterxml.jackson.databind.node.ObjectNode args = StrictJson.object();
+        args.put("schema", SwayNativeBindings.STOP_ARGUMENTS);
+        args.put("original_action_id", originalActionId);
+        args.put("target_character_id", target);
+        args.put("scheme_instance_id", instanceId);
+        args.put("scheme_instance_generation", generation);
+        args.set("original_target_read", SOURCE.toJson());
+        args.set("completion_read", SOURCE.toJson());
+        args.set("opinion_read", SOURCE.toJson());
+
+        var command = new ActionCommand(actionId, observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+                OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(args)), "software-stop-args"), expected, claims, NOW);
+
+        try {
+            var prepared = SwayNativeBindings.stopPreparation().prepare(command);
+            assertEquals(SwayNativeWire.STOP, prepared.step());
+            var fields = StrictJson.parse(prepared.additionalFields().bytes(), SwayNativeWire.MAX);
+            assertEquals(actor, NativeCharacterId.fromJson(fields.get("actor_character_id")).value());
+            assertEquals(target, NativeCharacterId.fromJson(fields.get("target_character_id")).value());
+            assertEquals(actionId, text(fields, "action_id"));
+            assertEquals(instanceId, number(fields, "scheme_instance_id"));
+            assertEquals(generation, Math.toIntExact(number(fields, "scheme_instance_generation")));
+            JsonNode retained = StrictJson.parse(OpportunityJson.encode(command.arguments()));
+            for (String field : List.of("original_target_read", "completion_read", "opinion_read"))
+                assertEquals(SOURCE, ExactRef.fromJson(retained.get(field)), "software command retains its declared original ref");
+        } catch (IllegalArgumentException e) {
+            failures.add(row.get("case").textValue() + ": " + e.getMessage());
+        }
+        cases++;
+    }
+    assertEquals(2, cases);
+    assertEquals(List.of(), failures, "actual Stop preparation preserves signed roles");
+
+    var row = originals().get(0);
+    var req = parse(wire(row, "stop.request"));
+    var resp = parse(wire(row, "stop.response"));
+    var body = resp.at("/result/sway_stop");
+    var binding = SwayActualNativeStopPacketTest.binding(body);
+    var observed = binding.before();
+    var source = new G2Source(observed.machineId(), NOW.toString(), SwayNativeWire.BUILD, SOURCE);
+    var claims = new JointBudgetSelector.Claims(Set.of(), Set.of(), Set.of(BigInteger.valueOf(role(req, "actor_character_id")), BigInteger.valueOf(role(req, "target_character_id"))), Set.of());
+    var expected = new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition(1, observed, source, "software-stop-observer", List.of(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText(new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("sway.action_id"), text(body, "action_id"))));
+
+    com.fasterxml.jackson.databind.node.ObjectNode baseArgs = StrictJson.object();
+    baseArgs.put("schema", SwayNativeBindings.STOP_ARGUMENTS);
+    baseArgs.put("original_action_id", "sway-software-parser-original");
+    baseArgs.put("target_character_id", role(req, "target_character_id"));
+    baseArgs.put("scheme_instance_id", number(body, "scheme_instance_id"));
+    baseArgs.put("scheme_instance_generation", Math.toIntExact(number(body, "scheme_instance_generation")));
+    baseArgs.set("original_target_read", SOURCE.toJson());
+    baseArgs.set("completion_read", SOURCE.toJson());
+    baseArgs.set("opinion_read", SOURCE.toJson());
+
+    var validCommand = new ActionCommand(text(body, "action_id"), observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+            OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(baseArgs)), "software-stop-args"), expected, claims, NOW);
+
+    // Public roles remain exact signed int32 except the -1 absence sentinel.
+    for (String invalid : List.of("-1", "2147483648", "4294967294", "true", "0.0", "\"0\"", "null")) {
+        var invalidArgs = baseArgs.deepCopy();
+        invalidArgs.set("target_character_id", parse(invalid.getBytes(StandardCharsets.UTF_8)));
+        if (invalid.equals("0.0")) {
+            assertThrows(IllegalArgumentException.class, () -> StrictJson.canonical(invalidArgs),
+                    "fractional JSON is rejected during canonical command construction before preparation");
+            continue;
+        }
+        var invalidCommand = new ActionCommand(text(body, "action_id"), observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+                OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(invalidArgs)), "software-stop-args"), expected, claims, NOW);
+        assertThrows(IllegalArgumentException.class, () -> SwayNativeBindings.stopPreparation().prepare(invalidCommand), invalid);
+    }
+
+    // Negative: actor == target
+    var mutated = baseArgs.deepCopy();
+    mutated.put("target_character_id", role(req, "actor_character_id"));
+    var sameActorTarget = new ActionCommand(text(body, "action_id"), observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+            OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(mutated)), "software-stop-args"), expected, claims, NOW);
+    assertThrows(IllegalArgumentException.class, () -> SwayNativeBindings.stopPreparation().prepare(sameActorTarget));
+
+    // Negative: invalid schema
+    mutated = baseArgs.deepCopy();
+    mutated.put("schema", "bad-schema");
+    var badSchema = new ActionCommand(text(body, "action_id"), observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+            OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(mutated)), "software-stop-args"), expected, claims, NOW);
+    assertThrows(IllegalArgumentException.class, () -> SwayNativeBindings.stopPreparation().prepare(badSchema));
+
+    // Negative: invalid action id
+    var badAction = new ActionCommand("invalid-id", observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+            OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(baseArgs)), "software-stop-args"), expected, claims, NOW);
+    assertThrows(IllegalArgumentException.class, () -> SwayNativeBindings.stopPreparation().prepare(badAction));
+
+    // Negative: invalid original action id
+    mutated = baseArgs.deepCopy();
+    mutated.put("original_action_id", "invalid-id");
+    var badOriginal = new ActionCommand(text(body, "action_id"), observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+            OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(mutated)), "software-stop-args"), expected, claims, NOW);
+    assertThrows(IllegalArgumentException.class, () -> SwayNativeBindings.stopPreparation().prepare(badOriginal));
+
+    // Negative: invalid instance/generation relation
+    mutated = baseArgs.deepCopy();
+    mutated.put("scheme_instance_id", 0L);
+    mutated.put("scheme_instance_generation", 1);
+    var badInstance = new ActionCommand(text(body, "action_id"), observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+            OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(mutated)), "software-stop-args"), expected, claims, NOW);
+    assertThrows(IllegalArgumentException.class, () -> SwayNativeBindings.stopPreparation().prepare(badInstance));
+
+    // Negative: missing read ref
+    mutated = baseArgs.deepCopy();
+    mutated.remove("completion_read");
+    var missingRef = new ActionCommand(text(body, "action_id"), observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+            OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(mutated)), "software-stop-args"), expected, claims, NOW);
+    assertThrows(IllegalArgumentException.class, () -> SwayNativeBindings.stopPreparation().prepare(missingRef));
+
+    // Negative: zero-byte read ref
+    mutated = baseArgs.deepCopy();
+    mutated.set("completion_read", new ExactRef("path", 0, "a".repeat(64)).toJson());
+    var zeroRef = new ActionCommand(text(body, "action_id"), observed, source, "software-stop-session", new OperationKey(SwayNativeWire.STOP),
+            OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(mutated)), "software-stop-args"), expected, claims, NOW);
+    assertThrows(IllegalArgumentException.class, () -> SwayNativeBindings.stopPreparation().prepare(zeroRef));
+}
 }

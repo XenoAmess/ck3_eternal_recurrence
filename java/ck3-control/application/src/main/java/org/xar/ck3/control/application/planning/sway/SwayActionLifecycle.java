@@ -18,6 +18,7 @@ import org.xar.ck3.control.application.effects.NativeEffectRegistry;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.m6.M6TerminalSourceComposition;
@@ -68,7 +69,7 @@ public final class SwayActionLifecycle {
                     domain.commit(session, new StartIntent(command.actionId(), targetRead, MandatoryContext.CLEAR,admission), new SwayTransitionCodec.Proofs(List.of(readRef), Optional.empty(), Optional.of(read.after().binding().nativeEvidence())));
                 } else if (command.operation().value().equals(SwayNativeWire.STOP)) {
                     SwayNativeWire.equals(row, "schema", SwayNativeBindings.STOP_ARGUMENTS); ExactRef readRef = ExactRef.fromJson(row.get("original_target_read")); PlanningReadReceipt read = originals.loadRead(readRef);
-                    long target = SwayNativeWire.integer(row, "target_character_id", 1, Integer.MAX_VALUE); require(read.request().before().equals(command.before()) && read.request().source().equals(command.source()) && read.request().sessionId().equals(command.sessionId()), "Sway Stop input crossed command origin");
+                    long target = NativeCharacterId.fromJson(row.get("target_character_id")).value(); require(read.request().before().equals(command.before()) && read.request().source().equals(command.source()) && read.request().sessionId().equals(command.sessionId()), "Sway Stop input crossed command origin");
                     Ledger state = domain.load(session).ledger(); Episode original = state.resolved().orElseThrow();
                     require(original.identity().actionId().equals(SwayNativeWire.string(row, "original_action_id")) && original.identity().schemeInstanceId() == SwayNativeWire.integer(row, "scheme_instance_id", 0, 0xffff_fffeL)
                             && original.identity().schemeInstanceGeneration() == SwayNativeWire.integer(row, "scheme_instance_generation", 0, 255), "selected Stop changed original action/full instance");

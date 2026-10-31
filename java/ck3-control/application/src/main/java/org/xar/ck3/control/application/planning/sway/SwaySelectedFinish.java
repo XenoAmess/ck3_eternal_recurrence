@@ -14,6 +14,7 @@ import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.g2.m6.M6TerminalSourceComposition;
@@ -72,7 +73,7 @@ public final class SwaySelectedFinish {
             var fields=SwayNativeBindings.args(command.arguments(),Set.of("schema","original_action_id","target_character_id","scheme_instance_id","scheme_instance_generation","original_target_read","completion_read","opinion_read"));
             SwayNativeWire.equals(fields,"schema",SwayNativeBindings.STOP_ARGUMENTS);
             SwayNativeWire.equals(fields,"original_action_id",identity.actionId());
-            require(SwayNativeWire.integer(fields,"target_character_id",1,Integer.MAX_VALUE)==identity.targetCharacterId()
+            require(NativeCharacterId.fromJson(fields.get("target_character_id")).value()==identity.targetCharacterId()
                     &&SwayNativeWire.integer(fields,"scheme_instance_id",0,0xffff_fffeL)==identity.schemeInstanceId()
                     &&SwayNativeWire.integer(fields,"scheme_instance_generation",0,255)==identity.schemeInstanceGeneration(),"retained Stop command changed original full identity");
             return new ExistingStop(originalId,originals.receiptReferenceOf(receipt));

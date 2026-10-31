@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
@@ -71,9 +72,9 @@ public final class SwayNativeBindings {
             JsonNode row = args(command.arguments(), Set.of("schema", "original_action_id", "target_character_id", "scheme_instance_id", "scheme_instance_generation", "original_target_read", "completion_read", "opinion_read"));
             SwayNativeWire.equals(row, "schema", STOP_ARGUMENTS); SwayNativeWire.action(command.actionId(), true); SwayNativeWire.action(SwayNativeWire.string(row, "original_action_id"), false);
             require(command.operation().value().equals(SwayNativeWire.STOP), "Sway Stop exact operation differs");
-            long actor = command.before().frame().identity().player().longValueExact(), target = SwayNativeWire.integer(row, "target_character_id", 1, Integer.MAX_VALUE);
+            long actor = command.before().frame().identity().player().longValueExact(), target = NativeCharacterId.fromJson(row.get("target_character_id")).value();
             long id = SwayNativeWire.integer(row, "scheme_instance_id", 0, 0xffff_fffeL); int generation = Math.toIntExact(SwayNativeWire.integer(row, "scheme_instance_generation", 0, 255));
-            SwayNativeWire.currentCharacter(actor); SwayNativeWire.instance(id, generation); require(actor != target, "Sway Stop actor/target differs");
+            NativeCharacterId.of(actor); SwayNativeWire.instance(id, generation); require(actor != target, "Sway Stop actor/target differs");
             for (String field : List.of("original_target_read", "completion_read", "opinion_read")) require(ExactRef.fromJson(row.get(field)).bytes() > 0, "original Stop evidence required");
             ObjectNode extra = StrictJson.object(); extra.put("action_id", command.actionId()); extra.put("actor_character_id", actor); extra.put("target_character_id", target);
             extra.put("scheme_instance_id", id); extra.put("scheme_instance_generation", generation); return primitive(SwayNativeWire.STOP, extra);
