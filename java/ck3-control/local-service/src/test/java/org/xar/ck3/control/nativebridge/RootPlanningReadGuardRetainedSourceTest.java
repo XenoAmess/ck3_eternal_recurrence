@@ -1,4 +1,26 @@
 package org.xar.ck3.control.nativebridge;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.InvocationHandler;
+import java.util.HashSet;
+import java.util.function.Function;
+import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.action.NativeActionPort;
+import org.xar.ck3.control.application.action.PlanningReadReceipt;
+import org.xar.ck3.control.application.action.ActionRecord;
+import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.action.NativeObservationPort;
+import org.xar.ck3.control.application.action.PlanningReadRequest;
+import org.xar.ck3.control.application.action.PlanningReadGuard;
+import org.xar.ck3.control.application.action.PlanningReadFailure;
+import org.xar.ck3.control.contracts.presentation.PresentationOriginals;
+import org.xar.ck3.control.contracts.presentation.FrontendWindowCaptureRequest;
+import org.xar.ck3.control.contracts.presentation.FrontendWindowCaptureOutcome;
+import org.xar.ck3.control.contracts.presentation.OriginalOutcome;
+import org.xar.ck3.control.contracts.presentation.PresentationObservation;
+import java.lang.reflect.Method;
+import org.xar.ck3.control.application.effects.NativeEffectEvidence;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -228,5 +250,135 @@ final class RootPlanningReadGuardRetainedSourceTest {
                 assertEquals(frame.identity(), request.before()); assertEquals(physical.source(), request.source());
             });
         }
+    }
+
+    private static ActionPorts.OutcomeArchive countingArchive(ActionPorts.OutcomeArchive delegate, Set<ExactRef> forbidden, AtomicInteger reloads, AtomicInteger preserves, AtomicInteger loads) {
+        return (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(delegate.getClass().getClassLoader(), new Class<?>[]{ActionPorts.OutcomeArchive.class}, new InvocationHandler() {
+            @SuppressWarnings("unchecked") @Override public Object invoke(Object proxy, java.lang.reflect.Method method, Object[] args) throws Throwable {
+                String name = method.getName();
+                if (name.equals("withSession")) return countingArchive(delegate.withSession((ContinuityStorePort.Session) args[0]), forbidden, reloads, preserves, loads);
+                if (name.equals("inSession")) {
+                    Function<ActionPorts.OutcomeArchive, ?> work = (Function<ActionPorts.OutcomeArchive, ?>) args[1];
+                    return delegate.inSession((ContinuityStorePort.Session) args[0], (ActionPorts.OutcomeArchive inner) -> work.apply(countingArchive(inner, forbidden, reloads, preserves, loads)));
+                }
+                if (name.equals("preserveMaterial")) preserves.incrementAndGet();
+                if (name.equals("loadMaterial") || name.equals("loadFullMaterial") || name.equals("loadNativeFrame") || name.equals("readOriginalPacket")) {
+                    ExactRef ref = (ExactRef) args[0];
+                    if (forbidden.contains(ref)) reloads.incrementAndGet();
+                    if (name.equals("loadMaterial")) loads.incrementAndGet();
+                }
+                try { return method.invoke(delegate, args); } catch (java.lang.reflect.InvocationTargetException failure) { throw failure.getCause(); }
+            }
+        });
+    }
+    private static ActionPorts.OutcomeArchive countingArchive(ActionPorts.OutcomeArchive actual, AtomicInteger loadMaterial, AtomicInteger loadFullMaterial, AtomicInteger loadNativeFrame) {
+        return (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(actual.getClass().getClassLoader(), new Class<?>[]{ActionPorts.OutcomeArchive.class}, new InvocationHandler() {
+            @SuppressWarnings("unchecked") public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if (method.getName().equals("withSession")) {
+                    Object result = method.invoke(actual, args);
+                    return countingArchive((ActionPorts.OutcomeArchive) result, loadMaterial, loadFullMaterial, loadNativeFrame);
+                }
+                if (method.getName().equals("inSession")) {
+                    java.util.function.Function<ActionPorts.OutcomeArchive, ?> work =
+                            (java.util.function.Function<ActionPorts.OutcomeArchive, ?>) args[1];
+                    return actual.inSession((ContinuityStorePort.Session) args[0],
+                            inner -> work.apply(countingArchive(inner, loadMaterial, loadFullMaterial, loadNativeFrame)));
+                }
+                if (method.getName().equals("loadMaterial")) loadMaterial.incrementAndGet();
+                if (method.getName().equals("loadFullMaterial")) loadFullMaterial.incrementAndGet();
+                if (method.getName().equals("loadNativeFrame")) loadNativeFrame.incrementAndGet();
+                try {
+                    return method.invoke(actual, args);
+                } catch (java.lang.reflect.InvocationTargetException e) {
+                    throw e.getCause();
+                }
+            }
+        });
+    }
+    private static void assertRoleExtractionCounts(AtomicInteger loadMaterial, AtomicInteger loadFullMaterial, AtomicInteger loadNativeFrame) {
+        assertTrue(loadMaterial.get() > 0, "role extraction must read the actual basis metadata");
+        assertEquals(0, loadFullMaterial.get(), "role extraction must not read full material payloads");
+        assertEquals(0, loadNativeFrame.get(), "role extraction must not read native frame payloads");
+    }
+    @Test void readBindingDoesNotReloadOldLeasePayloads() throws Exception {
+        withReady("read-binding-no-reload", (actual, probe, same, ready, guard) -> {
+            var semantic = ready.semanticEvidence().orElseThrow();
+            Set<ExactRef> forbidden = new HashSet<>();
+            forbidden.add(semantic.originalNativePacket());
+            forbidden.add(semantic.semantic());
+            forbidden.add(semantic.driverStamp());
+            forbidden.add(semantic.originalDriver());
+            AtomicInteger reloads = new AtomicInteger(), preserves = new AtomicInteger(), loads = new AtomicInteger();
+            ActionPorts.OutcomeArchive counter = countingArchive(actual.archive, forbidden, reloads, preserves, loads);
+            RootPlanningReadGuard countingGuard = new RootPlanningReadGuard(probe.collector, () -> same, counter, actual.observationSource(), Clock.systemUTC(), "test-authority", actual.physicalInputs().originals(), actual.actualReadCatalog());
+            PlanningReadRequest original = request(ready, actual.readContract);
+            PlanningReadGuard verified = countingGuard.verify(same.head(), original, actual.readContract);
+            assertEquals(0, reloads.get(), "readBinding must not reload old lease native/SEM/stamp/driver payloads");
+            assertTrue(preserves.get() > 0, "Root basis metadata must be preserved");
+            assertTrue(loads.get() > 0, "Root basis metadata must be loaded/readback");
+            assertEquals(ready.request().before(), verified.binding().observed());
+            assertEquals(actual.observationSource(), verified.binding().source());
+            assertEquals(ready.request().sessionId(), verified.binding().sessionId());
+            assertTrue(verified.paused() && verified.mapReady() && verified.playerAlive());
+            assertEquals(0, actual.nativeActionWrites());
+        });
+    }
+    @Test void roleGettersDoNotReadFullPayloads() throws Exception {
+        withReady("role-getter-counting", (actual, probe, same, ready, guard) -> {
+            PlanningReadRequest original = request(ready, actual.readContract);
+            PlanningReadGuard verified = guard.verify(same.head(), original, actual.readContract);
+            GuardEvidence basis = verified.binding();
+
+            AtomicInteger loadMaterial = new AtomicInteger();
+            AtomicInteger loadFullMaterial = new AtomicInteger();
+            AtomicInteger loadNativeFrame = new AtomicInteger();
+            ActionPorts.OutcomeArchive counted = countingArchive(actual.archive.withSession(same), loadMaterial, loadFullMaterial, loadNativeFrame);
+
+            var sourceQual = RootGuardEvidence.sourceQualification(basis, counted);
+            var semanticRef = RootGuardEvidence.semanticReference(basis, counted);
+            var driverSource = RootGuardEvidence.originalDriverSource(basis, counted);
+            var writerPoint = RootGuardEvidence.writerPoint(basis, counted);
+            var frameBasis = RootGuardEvidence.frameBasis(basis, counted);
+            int metadataBefore = loadMaterial.get();
+            AtomicInteger callbacks = new AtomicInteger();
+            ExactRef inSessionSemantic = counted.inSession(same, view -> {
+                callbacks.incrementAndGet(); return RootGuardEvidence.semanticReference(basis, view);
+            });
+            assertEquals(semanticRef, inSessionSemantic); assertEquals(1, callbacks.get());
+            assertTrue(loadMaterial.get() > metadataBefore, "the inSession callback must use the shared counted view");
+
+            assertRoleExtractionCounts(loadMaterial, loadFullMaterial, loadNativeFrame);
+
+            assertEquals(same.head().state().sequence(), writerPoint.sequence());
+            assertEquals(same.head().digest(), writerPoint.digest());
+            assertEquals(basis.nativeEvidence(), frameBasis.nativeFrame());
+            assertEquals(basis.source(), actual.observationSource());
+            assertEquals(basis.sessionId(), ready.request().sessionId());
+        });
+    }
+    @Test void loadFrameStillReadsFullPayloads() throws Exception {
+        withReady("load-frame-counting", (actual, probe, same, ready, guard) -> {
+            PlanningReadRequest original = request(ready, actual.readContract);
+            PlanningReadGuard verified = guard.verify(same.head(), original, actual.readContract);
+            GuardEvidence basis = verified.binding();
+
+            AtomicInteger loadMaterial = new AtomicInteger();
+            AtomicInteger loadFullMaterial = new AtomicInteger();
+            AtomicInteger loadNativeFrame = new AtomicInteger();
+            ActionPorts.OutcomeArchive counted = countingArchive(actual.archive.withSession(same), loadMaterial, loadFullMaterial, loadNativeFrame);
+
+            // loadFrame uses the actual frame loader which internally calls archive methods.
+            // The proxy counts these calls on the 'counted' archive instance passed to loadFrame.
+            DriverObservationAssembler.Complete frame = RootGuardEvidence.loadFrame(basis, counted, actual.frameLoader());
+
+            assertTrue(loadFullMaterial.get() > 0, "loadFrame must read full material payloads");
+            assertTrue(loadNativeFrame.get() > 0, "loadFrame must read native frame payloads");
+
+            assertEquals(basis.observed(), frame.identity());
+            assertEquals(basis.source(), frame.source());
+            assertEquals(basis.sessionId(), frame.sessionId());
+            assertEquals(basis.connectionGeneration(), frame.connectionGeneration());
+            assertEquals(basis.observedAt(), frame.observedAt());
+        });
     }
 }
