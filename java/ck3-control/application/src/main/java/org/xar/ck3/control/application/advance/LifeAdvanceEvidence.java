@@ -52,6 +52,10 @@ public final class LifeAdvanceEvidence {
     /** Reads the versioned durable Root guard basis. Historical guards without it return empty. */
     @FunctionalInterface public interface EntryFrameReader {
         Optional<AdvanceObservationPort.Frame> read(ActionCommand parent, GuardEvidence guard, ActionPorts.OutcomeArchive archive);
+        /** Existing canonical primitive's independently observed after-frame; no Game sampling or dispatch. */
+        default Optional<AdvanceObservationPort.Frame> readChild(ActionReceipt child, ActionPorts.OutcomeArchive archive) {
+            return Optional.empty();
+        }
     }
     public static ExactRef preserve(ActionCommand parent, AdvanceObservationPort.Frame starting,
             AdvanceObservationPort.Frame ending, AdvanceClock.ProgressStatus progress, Optional<ClockStatusRead.Observation> clockRead,
@@ -177,7 +181,7 @@ public final class LifeAdvanceEvidence {
         Objects.requireNonNull(value); Objects.requireNonNull(archive);
         return DriverJson.object(archive.loadFullMaterial(value.semantic()).bytes(), RawJson.MAXIMUM_BYTES);
     }
-    private static AdvanceObservationPort.Frame restore(ActionCommand parent, FrameRecord value, ActionPorts.OutcomeArchive archive, BoundFrameVerifier verifier) {
+    static AdvanceObservationPort.Frame restore(ActionCommand parent, FrameRecord value, ActionPorts.OutcomeArchive archive, BoundFrameVerifier verifier) {
         Obj actualSemantic = originalSemantic(value, archive);
         AdvanceObservationPort.Frame rebuilt = Objects.requireNonNull(verifier.rebuild(parent, value, archive));
         require(rebuilt.identity().equals(value.identity()) && rebuilt.source().equals(parent.source()) && rebuilt.sessionId().equals(parent.sessionId())

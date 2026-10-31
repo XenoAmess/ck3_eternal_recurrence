@@ -39,6 +39,10 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
         return Optional.of(push(RootGuardEvidence.loadFrame(guard, archive, frames)));
     }
 
+    @Override public Optional<AdvanceObservationPort.Frame> readChild(ActionReceipt child, ActionPorts.OutcomeArchive archive) {
+        return Optional.of(push(AdvancePrimitiveEvidence.load(child, archive, frames)));
+    }
+
     @Override public AdvanceObservationPort.Frame rebuild(ActionCommand parent, LifeAdvanceEvidence.FrameRecord retained,
             ActionPorts.OutcomeArchive archive) {
         Complete complete = Objects.requireNonNull(frames.load(
@@ -61,6 +65,29 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
             ActionPorts.OutcomeArchive sameWriterArchive) {
         require(proposed.command().origin().machineId().equals(actualLockedHead.state().machineId()),
                 "life replay crossed the actual canonical writer machine");
+        if (proposed.state() instanceof ActionState.CompositeSettled interruptedState
+                && interruptedState.settlement() instanceof ActionState.LifeControlPrefixInterrupted interrupted) {
+            var parent = proposed.command();
+            var observation = interrupted.observation();
+            var canonicalChildren = interruptedState.execution().children().stream().map(child -> {
+                var actual = ContinuityActionJournal.lookup(actualLockedHead.state(), child.actionId(), sameWriterArchive).orElseThrow();
+                require(actual.bodySha256().equals(child.bodySha256()), "interrupted Life child differs from canonical writer");
+                return actual;
+            }).toList();
+            observation.validateParent(parent, interruptedState.execution());
+            observation.validateChildren(parent, canonicalChildren);
+            var actualEnding = LifeAdvanceEvidence.restore(parent, observation.ending(), sameWriterArchive, this);
+            observation.validateFrame(parent, actualEnding, canonicalChildren);
+            // The terminal ending is the existing independent post-state of the last canonical child,
+            // not a fabricated parent clock completion or a new Native observation.
+            var last = readChild(canonicalChildren.getLast(), sameWriterArchive).orElseThrow();
+            require(last.identity().equals(actualEnding.identity()) && last.provenance().equals(actualEnding.provenance())
+                    && last.observedAt().equals(actualEnding.observedAt()) && last.semantic().equals(actualEnding.semantic()),
+                    "interrupted Life ending is not its actual canonical child's post-state");
+            ActionEffects.validateComposite(parent, interruptedState.execution(), interrupted);
+            ActionEffects.validateCompositeChildren(parent, interruptedState.execution(), interrupted, canonicalChildren);
+            return;
+        }
         if (proposed.state() instanceof ActionState.CompositeSettled settled
                 && settled.settlement() instanceof ActionState.CompositeNoGameplayWrite terminal) {
             LifeAdvanceComposite.requireNoGameplayWriteOriginal(proposed.command(), settled.execution());

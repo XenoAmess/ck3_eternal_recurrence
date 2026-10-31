@@ -17,7 +17,7 @@ import org.xar.ck3.control.reconciliation.LateOutcome.State;
 import org.xar.ck3.control.reconciliation.LateOutcome.Status;
 
 /** The production Java owner of life-advance and life-advance-one-day. Native receives only durable children. */
-public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGameplayBeforeChildren {
+public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGameplayBeforeChildren, CompositeActionPort.LifeControlPrefixSource {
     public static final String HANDLER = "java.native-driver.life-advance.v1";
     private final AdvanceObservationPort observations;
     private final AdvanceReadiness.Port readiness;
@@ -159,6 +159,27 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         }
         AdvanceClockArchivedReplay.verifyChildBindings(parent, children);
         AdvancePlan plan = AdvancePlan.decode(parent);
+        if (children.size() <= 2 && children.stream().allMatch(child ->
+                child.command().operation().value().equals("pause-map")
+                || child.command().operation().value().equals("set-speed-" + plan.speed()))) {
+            try {
+                var actualEnding = entryFrames.readChild(children.getLast(), archive);
+                if (actualEnding.isEmpty())
+                    return new ActionPorts.Pending("original Life initialization lacks its canonical child's independent post-state; reconciliation only",
+                            List.of(retained.guard().nativeEvidence()));
+                var ending = actualEnding.orElseThrow();
+                var interruption = new LifeControlPrefixInterruption(parent.actionId(), ActionCodec.bodySha256(parent), retained,
+                        LifeAdvanceEvidence.preserveFrame(ending, archive));
+                interruption.validateParent(parent, retained);
+                interruption.validateChildren(parent, children);
+                interruption.validateFrame(parent, ending, children);
+                return new ActionPorts.LifeControlPrefixInterruptedObserved(interruption);
+            } catch (RuntimeException unavailable) {
+                return new ActionPorts.Pending("original Life initialization post-state remains unconfirmed: "
+                        + unavailable.getClass().getSimpleName() + ": " + Objects.toString(unavailable.getMessage(), "unavailable"),
+                        List.of(retained.guard().nativeEvidence()));
+            }
+        }
         Optional<AdvanceObservationPort.Frame> archivedStart = entryFrames.read(parent, retained.guard(), archive);
         if (archivedStart.isEmpty()) return new ActionPorts.Pending("original life start lacks its complete native/Driver guard basis; no fabricated episode or public revision", List.of(retained.guard().nativeEvidence()));
         AdvanceObservationPort.Frame starting = archivedStart.orElseThrow();
@@ -209,6 +230,12 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         ExactRef basis = LifeAdvanceEvidence.preserve(parent, starting, current, progress, terminal, children, Optional.empty(), archive);
         return completed(parent, plan, current, progress, null, terminal, children, List.of(basis));
     }
+    @Override public void requireControlPrefixInterruption(ActionCommand parent, CompositeExecution retained,
+            LifeControlPrefixInterruption observation, List<ActionReceipt> canonicalChildren) {
+        observation.validateParent(parent, retained);
+        observation.validateChildren(parent, canonicalChildren);
+    }
+
     @Override public void requireNoGameplayWrite(ActionCommand parent, CompositeExecution retained) {
         requireNoGameplayWriteOriginal(parent, retained);
     }
