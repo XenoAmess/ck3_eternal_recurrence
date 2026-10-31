@@ -8,6 +8,13 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+
+15:28Z实际终态：177 **15:27:44.257352Z END4/1414.0269024秒**，普通批64于15:27:43.620157Z ACTION_UNKNOWN/attempted1/applied0/next65。新resume确已真实执行：477Submitting→**479SETTLED/APPLIED**，receipt65ac2000…6875B、timeline.resume_observed=true，dispatch732ebadb…1959B，write15:18:32.4216291→RX15:18:32.5217598Z/native_ok=true/conn90。480于15:19:56.0860779只发布该action history，before_driver==after_driver1702f07…4966525B，不能当fresh后态READ。
+
+父 **481 COMPOSITE_UNKNOWN**（receipt8f706c0d…6262B）完整向量精确ARM473/bodyd8a5c9b3…与resume479/body023a6ef9…，reason为 `life advance postcondition unavailable; no replay: UncheckedIOException: Native observation unavailable; no Python fallback: TransferFailure: Native transport deadline expired`。15:28:05.711960Z只读canonical482/repair/BATCH_INTERRUPTED64、pendingnull/completed3/date53144328；这是两个真实settled子项后的未知父，不再属于“未resume初始化取消”。不重ARM/resume、不刷新旧15:27:09.7645988硬界、不清账本，后继只按原watch恢复481。新增游戏日仍未认证/SAVE0，不从APPLIED resume推日期。
+
+本次普通后态唯一jcmd15:22:27（elapsed1096.98/CPU275.578秒）在AdvanceClock.execute177→current327→ActualObservations.current293→Held.observeForAdvance229/observeFull40→NativeGameTransport.observe819→Pipe.readExact等待新push。精确源码该fallback未走已修115的maxAge/invalid→独立freshREAD分支。Native持有源码有date/pause/heartbeat主动publish，但ReadSnapshot失败和相同snapshot去重均可不发新state，ACK/Heartbeat不保新帧；所持源与当前loaded binary闭包仍unknown，未冒充实机Native行为。179由原两helper分别独占完整生产候选与必要新wire后态验证，真实源HTTP并行，保freshREAD+ACK/原件provenance/冷重放合同；不热接当前pipe或伪Push，不以源码HTTP授修复/日期。M6成熟Archive176单hunk在业务END后的自然窗口已S/Z采用，未单独开编或worker，等待必要主线修复自然增编。
+
 15:16Z普通批64实况：177保持同一worker。**15:10:02.541835Z真实ordinary qwen BEGIN586211B**，HTTP200complete23.258秒、headers22.522/TTFT22.524秒，reported175802+140=175942/cachednull；15:10:26.1044972 ENTER、15:10:35.9177579 RETURN ActionSelected/Unchanged，选择life-advance。新父 `action-c1e62a60e1f39aeb23c270f40ef3bd76d309be987a18dd6aaa581eceffe96109` 已真实COMPOSITE_RUNNING468，command硬deadline **15:27:09.764598800Z**；较短模型请求deadline15:11:02.1885417仅约束HTTP，不代替执行合同。
 
 其唯一新ARM `child-c2aae3ddfb4ac165830047470cba7c93db85ccda9a3c445528c150f8345b7c58` 实际470Intent→472ACK，dispatch e1f1b2e…1964B、write15:14:11.1632215→RX15:14:11.2849844Z/native_ok=true/conn90。**ARM473已SETTLED/CONTROL_APPLIED**，receipt3c08d280…7271B，独立Status read2c93c7ce…5901B，semantic armed/generation4/start53144328/target53144520/speed5/army0/terminal_or_sentinel；15:16:48.472450Z actualcanonical474/running，completed3/date53144328，resume新Intent/dispatch与真正日期推进仍待后继。旧447/453/459/461不重发，未把ARM或ACK授为新游戏日。
