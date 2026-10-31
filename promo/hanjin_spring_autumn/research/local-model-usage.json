@@ -1,7 +1,7 @@
 {
   "schema" : "hanjin.local-model-review.v1",
   "machine_id" : "4-8e1c2f1861",
-  "prepared_at_utc" : "2026-10-31T05:14:30.892244400Z",
+  "prepared_at_utc" : "2026-10-31T05:24:01.954816500Z",
   "external_evidence_root" : "C:\\workspace\\hanjin-spring-autumn-20261031",
   "model" : "qwen38-coder",
   "base_url" : "http://192.168.1.11:8080/v1",
@@ -556,13 +556,79 @@
     "receipt_sha256" : "a30f796b0c74286363d07b464a4916fccad345863095989cfe77a3383949c1be",
     "candidate_sha256" : "407d65940ed70a19d4e85cc66ed9ff5911b75b115eab4a06725aa0ee27fd5aa4",
     "cached_prompt_tokens_if_reported" : null
+  }, {
+    "machine_id" : "4-8e1c2f1861",
+    "task_id" : "26-episode-one-dong-scene-candidates",
+    "attempt" : 1,
+    "started_at_utc" : "2026-10-31T05:16:38.282428400Z",
+    "finished_at_utc" : "2026-10-31T05:17:00.008266800Z",
+    "http_status" : 200,
+    "http_headers_ms" : 1169.3398,
+    "total_ms" : 21725.9037,
+    "sse_done" : true,
+    "finish_reason" : "length",
+    "first_nonempty_content_delta_ms" : 1189.6888,
+    "usage" : {
+      "prompt_tokens" : 2688,
+      "completion_tokens" : 3500,
+      "total_tokens" : 6188
+    },
+    "transport_complete" : false,
+    "receipt_relative_path" : "models/26-episode-one-dong-scene-candidates/attempt-1/result.json",
+    "receipt_sha256" : "c0f9518f4736e9a72feb59d4d7db2c8deeb7b411e55dc1ef23101360c8972866",
+    "candidate_sha256" : null,
+    "cached_prompt_tokens_if_reported" : null
+  }, {
+    "machine_id" : "4-8e1c2f1861",
+    "task_id" : "27-episode-two-cao-scene-candidates",
+    "attempt" : 1,
+    "started_at_utc" : "2026-10-31T05:16:38.314409500Z",
+    "finished_at_utc" : "2026-10-31T05:16:47.027172600Z",
+    "http_status" : 200,
+    "http_headers_ms" : 1405.1724,
+    "total_ms" : 8712.906,
+    "sse_done" : true,
+    "finish_reason" : "stop",
+    "first_nonempty_content_delta_ms" : 1421.4304,
+    "usage" : {
+      "prompt_tokens" : 5360,
+      "completion_tokens" : 931,
+      "total_tokens" : 6291
+    },
+    "transport_complete" : true,
+    "receipt_relative_path" : "models/27-episode-two-cao-scene-candidates/attempt-1/result.json",
+    "receipt_sha256" : "624694dc5f6353b56967fdfda3d80635fc2d0b50190d1b29ff634c51f37d9e61",
+    "candidate_sha256" : "8a5754ce7229debe4a0bb2a08996d45670e0d2da9cdb5796e23365d277fc4a78",
+    "cached_prompt_tokens_if_reported" : null
+  }, {
+    "machine_id" : "4-8e1c2f1861",
+    "task_id" : "28-dong-episode-three-core-conflicts",
+    "attempt" : 1,
+    "started_at_utc" : "2026-10-31T05:17:50.391970800Z",
+    "finished_at_utc" : "2026-10-31T05:17:51.934434500Z",
+    "http_status" : 200,
+    "http_headers_ms" : 603.4923,
+    "total_ms" : 1542.2637,
+    "sse_done" : true,
+    "finish_reason" : "stop",
+    "first_nonempty_content_delta_ms" : 613.2596,
+    "usage" : {
+      "prompt_tokens" : 2575,
+      "completion_tokens" : 132,
+      "total_tokens" : 2707
+    },
+    "transport_complete" : true,
+    "receipt_relative_path" : "models/28-dong-episode-three-core-conflicts/attempt-1/result.json",
+    "receipt_sha256" : "6602560cbf6df65183336fcff314d171a5d4224c16705de56e6d4d20ebb7947b",
+    "candidate_sha256" : "b8885250e36d4ce7468088eff2cd0c5e1a99635033b70154daf763b112354908",
+    "cached_prompt_tokens_if_reported" : null
   } ],
-  "actual_post_attempts" : 25,
-  "transport_complete_candidates" : 22,
+  "actual_post_attempts" : 28,
+  "transport_complete_candidates" : 24,
   "peak_overlapping_post_intervals" : 6,
-  "prompt_tokens" : 648012,
-  "completion_tokens" : 43818,
-  "total_tokens" : 691830,
+  "prompt_tokens" : 658635,
+  "completion_tokens" : 48381,
+  "total_tokens" : 707016,
   "current_in_flight" : 0,
   "semantic_adoption" : "See local-model-review.md; HTTP completion is not semantic acceptance"
 }
