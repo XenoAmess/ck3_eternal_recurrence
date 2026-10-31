@@ -599,7 +599,10 @@ def launch_recording(
     with_decision = decision_publisher_receipt is not None or java_decision_binding is not None
     if (placement_receipt is not None) != with_decision:
         raise ValueError('Placement and actual text publisher binding must be supplied together')
-    profile, launch = map(_read, (profile_path, launch_receipt))
+    _generation_helpers()
+    from managed_desktop1_placement import _read_launch_document, parse_launch_receipt
+    profile = _read(profile_path)
+    launch = _read_launch_document(Path(launch_receipt))
     placement, overlay, publisher, publisher_pin, text = None, None, None, None, None
     validate_profile(profile)
     if continuous != (profile.get("continuous") is True):
@@ -612,8 +615,13 @@ def launch_recording(
         start_signal = Path(start_signal).resolve()
         if not start_signal.is_relative_to(Path(recording_root).resolve()) or start_signal.exists():
             raise ValueError("recording start signal must be new in this recording root")
-    if type(launch.get("pid")) is not int or launch["pid"] != pid:
-        raise ValueError("launch receipt differs from the explicit Game PID")
+    if launch.get("schema") == "xar.java-game-supervisor-owner/v1":
+        identity = parse_launch_receipt(launch)
+        if identity["pid"] != pid:
+            raise ValueError("launch receipt differs from the explicit Game PID")
+    else:
+        if type(launch.get("pid")) is not int or launch["pid"] != pid:
+            raise ValueError("launch receipt differs from the explicit Game PID")
     if with_decision:
         placement = _read(placement_receipt)
         if placement.get('status') != 'GREEN' or placement.get('pid') != pid or placement.get('hwnd') != hwnd:

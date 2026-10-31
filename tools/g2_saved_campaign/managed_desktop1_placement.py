@@ -36,9 +36,11 @@ class PlacementArguments(Protocol):
 
 
 class LaunchReceipt(TypedDict):
-    command: list[str]
-    creation_date: str
+    command: NotRequired[list[str]]
+    creation_date: NotRequired[str]
     pid: int
+    executable: NotRequired[str]
+    creation_filetime: NotRequired[int]
 
 
 class SourcePin(TypedDict):
@@ -100,6 +102,13 @@ class PlacementReceipt(TypedDict):
     foreground_unchanged: NotRequired[bool]
     foreground_observation: NotRequired[foreground_contract.JsonObject]
     background_assignment_verified: NotRequired[bool]
+    observation_only: NotRequired[Literal[True]]
+    window_mutations: NotRequired[Literal[0]]
+    monitor_rect: NotRequired[list[int]]
+    work_rect: NotRequired[list[int]]
+    client_screen_rect: NotRequired[list[int]]
+    fully_visible: NotRequired[Literal[True]]
+    visible: NotRequired[bool]
     error: NotRequired[str]
 
 
@@ -109,10 +118,132 @@ def _positive_integer(value: object, label: str) -> int:
     return value
 
 
+def _read_launch_document(path: Path) -> dict:
+    """Bounded nonempty raw launch document; never normalized."""
+    try:
+        with path.open("rb") as stream:
+            raw = stream.read(1048576 + 1)
+    except OSError as error:
+        raise ValueError("launch document unreadable") from error
+    if not raw or len(raw) > 1048576:
+        raise ValueError("bounded nonempty launch document required")
+    try:
+        value = json.loads(raw.decode("utf-8-sig"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError("launch document is not valid UTF-8 JSON") from error
+    if not isinstance(value, dict):
+        raise ValueError("launch document must be a JSON object")
+    return value
+
+
+def _validate_java_owner_identity(value: dict) -> dict:
+    """Match ordinary Java owner and its immutable HELLO; retain exact FILETIME."""
+    owner_fields = {"schema", "machine_id", "session_id", "supervisor", "game", "configuration",
+                    "native_hello", "launch_evidence", "stop_request_path", "terminal_path"}
+    if set(value) != owner_fields or value.get("schema") != "xar.java-game-supervisor-owner/v1":
+        raise ValueError("exact Java supervisor owner schema required")
+
+    def text(item, label):
+        if not isinstance(item, str) or not item.strip() or len(item) > 32768:
+            raise ValueError(label + " must be bounded nonempty text")
+        return item
+
+    def absolute(item, label):
+        result = Path(text(item, label))
+        if not result.is_absolute():
+            raise ValueError(label + " must be absolute")
+        return result.resolve()
+
+    def birth(item):
+        if (not isinstance(item, str) or not item.isascii() or not item.isdecimal()
+                or not 1 <= len(item) <= 20 or item[0] == "0" or int(item) > 0xffffffffffffffff):
+            raise ValueError("canonical positive uint64 FILETIME string required")
+        return int(item)
+
+    def identity(item, birth_key, kind):
+        if not isinstance(item, dict) or set(item) != {"pid", birth_key, "executable"}:
+            raise ValueError("exact " + kind + " process identity required")
+        if type(item["pid"]) is not int or not 1 <= item["pid"] <= 0xffffffff:
+            raise ValueError("native process PID range required")
+        image = absolute(item["executable"], kind + " executable")
+        names = ("java.exe", "javaw.exe") if kind == "supervisor" else ("ck3.exe",)
+        if image.name.casefold() not in names:
+            raise ValueError(kind + " executable basename differs")
+        return {"pid": item["pid"], "executable": item["executable"], "creation_filetime": birth(item[birth_key])}
+
+    def reference(item, maximum):
+        if not isinstance(item, dict) or set(item) != {"path", "bytes", "sha256"}:
+            raise ValueError("exact launch evidence reference required")
+        path = absolute(item["path"], "evidence path")
+        if type(item["bytes"]) is not int or not 0 < item["bytes"] <= maximum:
+            raise ValueError("bounded positive evidence byte count required")
+        digest = item["sha256"]
+        if (not isinstance(digest, str) or len(digest) != 64
+                or any(char not in "0123456789abcdef" for char in digest)):
+            raise ValueError("lowercase evidence SHA256 required")
+        return path
+
+    machine = text(value["machine_id"], "owner machine")
+    session = text(value["session_id"], "owner session")
+    game = identity(value["game"], "creation_filetime", "game")
+    identity(value["supervisor"], "creation_filetime", "supervisor")
+    # Native hello is metadata here. Never contact its pipe or reinterpret code pins.
+    reference(value["native_hello"], 1048576)
+    stop = absolute(value["stop_request_path"], "owner stop path")
+    terminal = absolute(value["terminal_path"], "owner terminal path")
+    if stop.name != "stop-request.json" or terminal.name != "terminal.json" or stop.parent != terminal.parent:
+        raise ValueError("actual sibling owner control paths required")
+    config = value["configuration"]
+    if (not isinstance(config, dict) or config.get("schema") != "xar.java-game-launch-plan/v4"
+            or config.get("session_id") != session or not isinstance(config.get("review"), dict)
+            or config["review"].get("machine_id") != machine):
+        raise ValueError("owner and configuration identities differ")
+    request = text(config.get("request_id"), "configuration request")
+    configured_game = config["review"].get("game_executable")
+    if (not isinstance(configured_game, dict)
+            or absolute(configured_game.get("path"), "configured Game") != Path(game["executable"]).resolve()):
+        raise ValueError("configured Game executable differs from owner")
+    evidence_root = absolute(config.get("evidence_root"), "launch evidence root")
+    ref = value["launch_evidence"]
+    event_path = reference(ref, 65536)
+    if event_path.parent != evidence_root:
+        raise ValueError("HELLO must be an actual direct child of launch evidence root")
+    with event_path.open("rb") as stream:
+        raw = stream.read(ref["bytes"] + 1)
+    if len(raw) != ref["bytes"] or hashlib.sha256(raw).hexdigest() != ref["sha256"]:
+        raise ValueError("HELLO bytes or SHA256 differ from owner reference")
+    event = json.loads(raw.decode("utf-8"))
+    fields = {"schema", "machine_id", "observed_at_utc", "request_id", "session_id", "event", "game",
+              "accounting", "terminal", "terminal_kind", "detail"}
+    if (not isinstance(event, dict) or set(event) != fields
+            or event["schema"] != "xar.java-game-lifecycle-event/v1" or event["event"] != "HELLO"
+            or event["machine_id"] != machine or event["session_id"] != session or event["request_id"] != request
+            or event["terminal"] is not None or event["terminal_kind"] is not None):
+        raise ValueError("owner requires its own exact HELLO lifecycle row")
+    stamp = text(event["observed_at_utc"], "HELLO timestamp")
+    try:
+        instant = datetime.fromisoformat(stamp[:-1] + "+00:00" if stamp.endswith("Z") else stamp)
+        if instant.tzinfo is None or instant.utcoffset() != timedelta(0):
+            raise ValueError("UTC instant required")
+    except (TypeError, ValueError) as error:
+        raise ValueError("HELLO UTC instant is invalid") from error
+    hello_game = identity(event["game"], "creation_filetime_decimal", "game")
+    if (hello_game["pid"] != game["pid"] or hello_game["creation_filetime"] != game["creation_filetime"]
+            or Path(hello_game["executable"]).resolve() != Path(game["executable"]).resolve()):
+        raise ValueError("HELLO Game generation differs from owner")
+    return game
+
+
 def parse_launch_receipt(value: object) -> LaunchReceipt:
     """Validate the file boundary before constructing the shared launch contract."""
     if not isinstance(value, dict):
         raise ValueError("launch receipt must be a JSON object")
+    if value.get("schema") == "xar.java-game-supervisor-owner/v1":
+        identity = _validate_java_owner_identity(value)
+        return {"pid": identity["pid"], "executable": identity["executable"], "creation_filetime": identity["creation_filetime"]}
+    if (any(key in value for key in ("supervisor", "launch_evidence"))
+            or str(value.get("schema", "")).startswith("xar.java-game-supervisor-owner/")):
+        raise ValueError("malformed Java owner document")
     command: object = value.get("command")
     creation_date: object = value.get("creation_date")
     if (not isinstance(command, list) or not command
@@ -234,6 +365,9 @@ class ProcessGeneration:
 
 
 def game_generation(launch: object) -> ProcessGeneration:
+    if isinstance(launch, dict) and launch.get("schema") == "xar.java-game-supervisor-owner/v1":
+        identity = _validate_java_owner_identity(launch)
+        return ProcessGeneration(identity["pid"], Path(identity["executable"]), creation_filetime=identity["creation_filetime"])
     validated = parse_launch_receipt(launch)
     executable = Path(validated["command"][0]).resolve()
     if executable.name.casefold() != "ck3.exe":
@@ -344,7 +478,8 @@ def place(args: PlacementArguments) -> PlacementReceipt:
     initialized = False
     try:
         deadline_check(args.deadline_utc)
-        launch = parse_launch_receipt(json.loads(args.launch_receipt.read_text(encoding="utf-8-sig")))
+        raw_launch = _read_launch_document(args.launch_receipt)
+        launch = parse_launch_receipt(raw_launch)
         data["pid"] = launch["pid"]
         import win32api
         import win32con
@@ -370,7 +505,7 @@ def place(args: PlacementArguments) -> PlacementReceipt:
         if result not in (0, 1):
             raise RuntimeError("Shell placement requires an explicit STA apartment")
         initialized = True
-        with game_generation(launch) as generation:
+        with game_generation(raw_launch) as generation:
             hwnd = wait_game_window(generation, args.wait_seconds, args.deadline_utc)
             classname = win32gui.GetClassName(hwnd)
             data.update({"hwnd": hwnd, "window_class": classname,
@@ -464,18 +599,144 @@ def place(args: PlacementArguments) -> PlacementReceipt:
     return data
 
 
+def observe_placement(args: PlacementArguments) -> PlacementReceipt:
+    """Attest two stable read-only snapshots of the already placed Game."""
+    if args.receipt.exists() or not args.receipt.parent.is_dir():
+        raise ValueError("observation receipt must be new in an existing admitted directory")
+    data = _new_receipt(args.launch_receipt)
+    data.update(observation_only=True, window_mutations=0)
+    primary = None
+    try:
+        deadline_check(args.deadline_utc)
+        raw_launch = _read_launch_document(args.launch_receipt)
+        launch = parse_launch_receipt(raw_launch)
+        data["pid"] = launch["pid"]
+        import win32api
+        import win32con
+        import win32gui
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "ck3_autonomous_player/src"))
+        from xar_autoplayer.bridge.windows_virtual_desktop import window_virtual_desktop
+        ids, current = desktop_inventory()
+        target = str(uuid.UUID(args.desktop_id))
+        if not ids or target != ids[0]:
+            raise RuntimeError("requested target is not actual Shell Desktop1")
+        if args.expected_current_desktop_id and current != str(uuid.UUID(args.expected_current_desktop_id)):
+            raise RuntimeError("current desktop differs from explicit observation admission")
+        foreground, _ = read_foreground_window_v1()
+        data.update(target_desktop_id=target, current_desktop_id=current, foreground_before=foreground)
+
+        def rect(value):
+            result = tuple(value)
+            if (len(result) != 4 or any(type(item) is not int for item in result)
+                    or result[2] <= result[0] or result[3] <= result[1]):
+                raise RuntimeError("positive exact rectangle required")
+            return result
+
+        def contains(outer, inner):
+            return (outer[0] <= inner[0] and outer[1] <= inner[1]
+                    and inner[2] <= outer[2] and inner[3] <= outer[3])
+
+        with game_generation(raw_launch) as generation:
+            hwnd = wait_game_window(generation, args.wait_seconds, args.deadline_utc)
+            classname = win32gui.GetClassName(hwnd)
+            data.update(hwnd=hwnd, window_class=classname, creation_filetime=generation.creation_filetime)
+
+            def snapshot():
+                deadline_check(args.deadline_utc)
+                check_game_window(generation, hwnd, classname)
+                observed_ids, observed_current = desktop_inventory()
+                observed_foreground, foreground_pid = read_foreground_window_v1()
+                desktop = _desktop_observation(window_virtual_desktop(hwnd))
+                monitor_handle = win32api.MonitorFromWindow(hwnd, 0)
+                if not monitor_handle:
+                    raise RuntimeError("Game has no actual intersecting monitor")
+                info = win32api.GetMonitorInfo(monitor_handle)
+                monitor, work = rect(info["Monitor"]), rect(info["Work"])
+                window, client = rect(win32gui.GetWindowRect(hwnd)), rect(win32gui.GetClientRect(hwnd))
+                origin = win32gui.ClientToScreen(hwnd, client[:2])
+                end = win32gui.ClientToScreen(hwnd, client[2:])
+                screen_client = rect((origin[0], origin[1], end[0], end[1]))
+                visible = bool(win32gui.IsWindowVisible(hwnd))
+                minimized = bool(win32gui.IsIconic(hwnd))
+                topmost = bool(win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE) & win32con.WS_EX_TOPMOST)
+                check_game_window(generation, hwnd, classname)
+                if observed_ids != ids or observed_current != current or observed_foreground != foreground:
+                    raise RuntimeError("desktop inventory/current desktop/foreground changed during observation")
+                if desktop["window_hwnd"] != hwnd or desktop["desktop_id"] != target:
+                    raise RuntimeError("Game HWND is not on actual Desktop1")
+                if current == target:
+                    if not desktop["on_current_virtual_desktop"] or desktop["dwm_cloaked_flags"] != 0:
+                        raise RuntimeError("current Game is cloaked or has inconsistent desktop membership")
+                elif desktop["on_current_virtual_desktop"] or desktop["dwm_cloaked_flags"] != 2:
+                    raise RuntimeError("noncurrent Game must have only actual Shell desktop cloaking")
+                if not visible or minimized:
+                    raise RuntimeError("Game must already be visible and non-minimized")
+                if not contains(monitor, work) or any(not contains(bounds, area)
+                        for bounds in (monitor, work) for area in (window, screen_client)):
+                    raise RuntimeError("complete Game frame and client must be inside monitor work area")
+                return {"ids": list(observed_ids), "current": observed_current, "foreground": observed_foreground,
+                    "foreground_pid": foreground_pid, "desktop": desktop, "monitor_handle": monitor_handle,
+                    "monitor": monitor, "work": work, "window": window, "client": client,
+                    "client_screen": screen_client, "visible": visible, "minimized": minimized, "topmost": topmost}
+
+            before = snapshot()
+            after = snapshot()
+            if before != after:
+                raise RuntimeError("Game observation changed between complete snapshots")
+            deadline_check(args.deadline_utc)
+            check_game_window(generation, hwnd, classname)
+            final_ids, final_current = desktop_inventory()
+            final_foreground, _ = read_foreground_window_v1()
+            if final_ids != ids or final_current != current or final_foreground != foreground:
+                raise RuntimeError("desktop or foreground changed before observation acceptance")
+            observation = foreground_contract.classify_current_saved_launch_foreground_v1({
+                "foreground_before": foreground, "foreground_after": final_foreground,
+                "foreground_after_pid": after["foreground_pid"], "desktop_before": current,
+                "desktop_after": final_current, "game_pid": generation.pid, "owned_auxiliary_pids": []})
+            # Already-owned Game foreground is an observed fact, not an activation request.
+            data.update(before=before["desktop"], after=after["desktop"],
+                window_rect=list(after["window"]), client_rect=list(after["client"]),
+                monitor_rect=list(after["monitor"]), work_rect=list(after["work"]),
+                client_screen_rect=list(after["client_screen"]), topmost=after["topmost"],
+                minimized=after["minimized"], visible=after["visible"], fully_visible=True,
+                foreground_after=final_foreground, foreground_unchanged=True,
+                foreground_observation=observation.to_wire(), current_desktop_after=final_current,
+                current_desktop_unchanged=True, background_assignment_verified=current != target, status="GREEN")
+    except Exception as error:
+        data["status"] = "RED"
+        data["error"] = str(error)
+        primary = error
+    finally:
+        data["at_utc"] = datetime.now(timezone.utc).isoformat()
+        try:
+            with args.receipt.open("x", encoding="utf-8") as stream:
+                json.dump(data, stream, ensure_ascii=False, indent=2)
+        except OSError as receipt_error:
+            raise RuntimeError("placement observation receipt write failed; primary=" + repr(primary)) from receipt_error
+    if primary is not None:
+        raise primary
+    return data
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("launch-receipt", "ui-dependencies", "receipt"):
-        parser.add_argument("--" + name, type=Path, required=True)
+    parser.add_argument("--launch-receipt", type=Path, required=True)
+    parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--desktop-id", required=True)
     parser.add_argument("--expected-current-desktop-id")
     parser.add_argument("--deadline-utc", required=True)
     parser.add_argument("--wait-seconds", type=float, default=30)
+    parser.add_argument("--ui-dependencies", type=Path, required=False)
+    parser.add_argument("--observe-only", action="store_true")
     args = parser.parse_args()
     if args.receipt.exists() or not args.receipt.parent.is_dir():
         parser.error("receipt must be a new file in the caller's admitted output directory")
-    print(json.dumps(place(args), ensure_ascii=False))
+    if args.observe_only:
+        print(json.dumps(observe_placement(args), ensure_ascii=False))
+    else:
+        if args.ui_dependencies is None:
+            parser.error("--ui-dependencies is required for placement")
+        print(json.dumps(place(args), ensure_ascii=False))
 
 
 if __name__ == "__main__":
