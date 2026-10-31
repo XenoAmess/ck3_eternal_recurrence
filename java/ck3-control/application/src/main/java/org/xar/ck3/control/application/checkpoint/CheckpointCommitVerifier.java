@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.application.session.SessionPorts.CompletedCycleProof;
 import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
@@ -91,6 +92,48 @@ public final class CheckpointCommitVerifier {
         WriterContracts.requireDigest(expectedDigest);String actual=historicalDigest(borrowed,source,pair,proof,originalHeadDigest,true);
         StrictJson.require(actual.equals(expectedDigest),"retained original SAVE binding changed");return actual;
     }
+    /** Compatibility overload: validates actual originals once, then matches Root's finite Native material candidates against both expected digests. */
+    public String verifyHistorical(ContinuityStorePort.Session borrowed, SessionIdentity sourceSession, CheckpointPair pair,
+            CompletedCycleProof proof, String originalHeadDigest, String expectedDigest, String expectedCycleAuthority) throws IOException {
+        WriterContracts.requireDigest(expectedDigest); WriterContracts.requireDigest(expectedCycleAuthority);
+        ObjectNode binding = buildVerifiedBinding(borrowed, sourceSession, pair, proof, originalHeadDigest, false);
+        String actualSemantic = StrictJson.text(binding.get("semantic_verifier_sha256"));
+        List<String> candidates = org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier.materialDigestCandidates(proof.semantic());
+        if (!candidates.contains(actualSemantic)) throw new IOException("actual semantic verifier digest is not a Root Native material candidate");
+        for (String candidate : candidates) {
+            ObjectNode authority = StrictJson.object();
+            authority.put("cycle_state_digest", proof.cycleStateDigest());
+            authority.put("semantic_digest", candidate);
+            authority.set("session", org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionToJson(sourceSession));
+            String cycleDigest = ContinuityJson.digest(authority);
+            if (!cycleDigest.equals(expectedCycleAuthority)) continue;
+            binding.put("semantic_verifier_sha256", candidate);
+            String checkpointDigest = ContinuityJson.digest(binding);
+            if (checkpointDigest.equals(expectedDigest)) return checkpointDigest;
+        }
+        throw new IOException("no Root Native material candidate matches both expected checkpoint and cycle authority digests");
+    }
+    /** Retained compatibility overload: validates actual retained originals once, then matches Root's finite Native material candidates. */
+    public String verifyRetainedOriginal(ContinuityStorePort.Session borrowed,SessionIdentity source,CheckpointPair pair,
+            CompletedCycleProof proof,String originalHeadDigest,String expectedDigest,String expectedCycleAuthority)throws IOException {
+        WriterContracts.requireDigest(expectedDigest); WriterContracts.requireDigest(expectedCycleAuthority);
+        ObjectNode binding = buildVerifiedBinding(borrowed, source, pair, proof, originalHeadDigest, true);
+        String actualSemantic = StrictJson.text(binding.get("semantic_verifier_sha256"));
+        List<String> candidates = org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier.materialDigestCandidates(proof.semantic());
+        if (!candidates.contains(actualSemantic)) throw new IOException("actual retained semantic verifier digest is not a Root Native material candidate");
+        for (String candidate : candidates) {
+            ObjectNode authority = StrictJson.object();
+            authority.put("cycle_state_digest", proof.cycleStateDigest());
+            authority.put("semantic_digest", candidate);
+            authority.set("session", org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionToJson(source));
+            String cycleDigest = ContinuityJson.digest(authority);
+            if (!cycleDigest.equals(expectedCycleAuthority)) continue;
+            binding.put("semantic_verifier_sha256", candidate);
+            String checkpointDigest = ContinuityJson.digest(binding);
+            if (checkpointDigest.equals(expectedDigest)) return checkpointDigest;
+        }
+        throw new IOException("no Root Native material candidate matches both expected retained checkpoint and cycle authority digests");
+    }
     public void requireIssued(ContinuityStorePort.Session borrowed, VerifiedCheckpoint verified) throws IOException {
         Objects.requireNonNull(verified); requireLease(borrowed);
         StrictJson.require(verified.issuer==this && borrowed.head().digest().equals(verified.originalHeadDigest),
@@ -109,6 +152,10 @@ public final class CheckpointCommitVerifier {
         return historicalDigest(borrowed,session,pair,proof,originalHeadDigest,false);
     }
     private String historicalDigest(ContinuityStorePort.Session borrowed,SessionIdentity session,CheckpointPair pair,
+            CompletedCycleProof proof,String originalHeadDigest,boolean retained)throws IOException {
+        return ContinuityJson.digest(buildVerifiedBinding(borrowed,session,pair,proof,originalHeadDigest,retained));
+    }
+    private ObjectNode buildVerifiedBinding(ContinuityStorePort.Session borrowed,SessionIdentity session,CheckpointPair pair,
             CompletedCycleProof proof,String originalHeadDigest,boolean retained)throws IOException {
         requireLease(borrowed); Objects.requireNonNull(session); Objects.requireNonNull(pair); Objects.requireNonNull(proof);
         WriterContracts.requireDigest(originalHeadDigest);
@@ -133,7 +180,7 @@ public final class CheckpointCommitVerifier {
         binding.put("cycle_state_sha256",proof.cycleStateDigest()); binding.put("completed_cycles",proof.completedCycles());
         binding.set("pair",StrictJson.parse(CheckpointPairCodec.encode(pair)));
         var refs=binding.putArray("semantic_sources"); proof.semantic().references().forEach(ref->refs.add(ref.toJson()));
-        return ContinuityJson.digest(binding);
+        return binding;
     }
     private byte[] readExact(ExactRef ref) throws IOException {
         var actual=files.observe(Path.of(ref.path())).orElseThrow(()->new IOException("original checkpoint semantic source unavailable"));
