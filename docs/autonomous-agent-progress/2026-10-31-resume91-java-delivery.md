@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-截至本岗 UTC 2026-10-30T23:24:40.069Z：正式普通FF已到 `fd3073fffd`，含 planning ROOT 九生产叶及两必要测试 `1dd796c833`；runtime随后明确确认该组最小S/Z采用并合入MB116，源码、加载和业务结果仍分开。此前 fresh115 `132db9161d`、M5开关/READ期限/held-planning三组、Finance后继均已正常发表。最新收到运行岗回执为MB116实际11源增编0、worker116在23:26:46.960Z真实END0/612.640秒，canonical215/restart34/pendingnull；不据此推断新动作或游戏日。最后已确认普通动作/新增日仍0，不将软件闭包、HTTP源码任务或安装耗时当Game推进。
+最新正式回执：普通 FF 已至 `cb15b8df88`，含恢复/角色切换来源审计削减与婚姻读取失败原因保留。运行 owner 后到确认 MB121 已实际加载 usage120，121/122 两次 ordinary HTTP 已记录真实 reported usage；124 于 2026-10-31T01:19:05.7663185Z 真实进入同 Game 普通循环。源码采用、MB 加载、运行模型 HTTP 与游戏动作分别记；最后新增普通动作/游戏日/SAVE 信用仍为0。本岗没有 S/MB/Game/账本写权，不操作这些现场。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -144,3 +144,20 @@ Root docs09 `3f290568e0` 是00:06:02冻结13页包的12个实际变更叶；模�
 `22fe13faaf` 已正常 FF held120 单叶有限诊断，保原 equality 拒绝，只报至多16个×96字符顶层 key 和总数。原 hunk 因空白 context 无法直接 apply，正式适配仅替换唯一相同 equality 语句为原新增 block，语义0偏移；复用 owner strict0，不称业务故障已修。`47d94f7673` 只精确追加3篇模型经验并改 M6 一段 frequency 旧说法；实际 REQUEST 没有该参数，不是已执行0.3实验。Root/运行 owner 已报120真实 LOOP，安装HOLD解除；本岗无 S/MB/Game 写，没有把 formal adoption 外推该组三 Stop 已在120部署。
 
 逐任务最终采用/拒绝与 owner 成本见 `D:/ck3-state/resume91-java-delivery/MODEL-REVIEWS119.json`。本小批5任务真实最大同时2请求，未称峰5；两大源码前缀的字符/token规模不等于3method改写规模。当前本岗正式源码队列已发，后继真实 P0/成熟叶仍优先，未闭全链不补假输入。
+
+
+### 121–124 的精确正式交付、来源审计削减和运行 usage 回执
+
+记录时间 2026-10-31T01:25:47.314Z。`6d7f6a74f6` usage120 两叶已正式采用并真实装载 MB121，不再是待装。运行 owner 的 `D:/ck3-state/resume91-root/usage120/LIVE-ADOPTION122.json` 后到证明 worker121 reported prompt/completion/total 为344340/137/344477，worker122 为345900/139/346039，cached均未报告而为null；实际 usage 所在 chunk 的 choices 可为 delta{}、finish_reason null。此为服务报告，不以请求字节估token，不从null推缓存命中或性能，不授Native动作信用。
+
+正式121分类与诊断分开：`4540c9d7bc` NoticeStability 仅 Java 注入的 heartbeat/pong 保四项稳定typed身份，其余原生字段不改；三模型业务候选均拒，owner一行接管，strict+6P。`672ca87c9f` preIntent初版3prod+2test，仅在 primitive prepare 且ACTION记录头未变时把合同拒绝分类到SOURCE；`dd0c1710b6` 后继将同catch与专用cause由CVE拓展到IAE，真实128KiB拒绝baseline RED→candidate2case PASS，保真实Intent之后、IO/其它Runtime/native UNKNOWN不重放。后者只按增量test patch应用，未以D整类覆盖正式额外回归。
+
+`20bbb4e0fb` 是正式旧叶到fresh122 sealed input的八hunk前置同步，仅去旧class/producer来源物理审计；不是本轮模型新增实现。其后 `ae0dafec0b` 一生产叶和便携测试统一 Fresh review材料角色16MiB，sorted/fullmaterial/coldload/已验证requested子树保持同域。owner实现，模型整候选拒；strict0，首4P1F为Jackson整数节点fixture宽度误比，修typed断言只重该1P，五unique各绿而非同JVM最终5P。最终正式候选与当时S同叶ignoreEOL一致，实际122越过旧budget不等于婚姻动作完成。`a17d63636b` PendingSources 单叶仅删当前class物理pin/与当前部署metadata等式，保实际命令/request/evidence/session/receipt与1MiB locator；后随MB123实际加载。
+
+`9296539225` 三叶将明确16MiB planning-read arguments角色通过构造器、冷request与冷failure decoder传播，metadata/default128KiB/Raw64MiB保持。原实际122命令867417B派生SendRead args865633B baseline精确128KiB RED，candidate cold-request/metadata1121B/nativefields333B/wire500B往返及有限负例PASS；FailureCodec仅编译和源码传播，不造完整failed图，固定D原件probe不进便携CI。必要3prod strict0/1.504秒，probe1.758秒均复用owner，不重测。
+
+来源审计三组分别正常FF：`39647f395e` Gift一叶删除代码producerSources部署等式/pin循环，保真实历史body payload、head/ACK/独立receipt，复用1prod strict0/1.832秒与原5P/2.239秒；`035203a885` Restore两叶删除loadedClass/producerSource代码pin，保replacement.verify实际活Game资源及保存Driver/body/ReadWindow/UNKNOWN，复用2prod strict0/3.909秒、原5P/20.515秒，五模型exact edit原样；`6633b1c187` Operator三叶只删五行纯code pin，保实际fresh proof/ACK/业务pins，复用3prod strict0/3.249秒与原14P/2.122秒。Operator为partial：owner恢复仍被业务loop使用的import、按Root扩授权补当前分支一行删除，rawdiff计数格式重算；不把这些说成全原样。以上均不授跨部署恢复/当前婚姻故障根因或Game验收。
+
+`cb15b8df88` before124一prod+便携3test保留真实Unavailable reason（至多2048字符）与original类型/decode/observed flags，Known原样返回，原IAE类别不变，0额外read。owner将helper改package-private供测试，主体模型采用；复用prod strict0/2.026秒、新3P/1.314秒。实际123只留generic原因，这个提交是下一轮诊断，不称业务修复；runtime已报MB124单源增编0与01:19:05真实LOOP，后态仍等实际业务结果。
+
+Root docs10 `7adcca39e4` 按13页冻结清单只8实际变化叶提交；AGENTS只替换当前resume91段，正式108566历史bytes完整保留，未用Z dirty的130253历史覆盖。usage120三EOF `73b6558571`、rolling122三EOF `6d47e48c74` 都精确保留各正式旧prefix，历史当时“尚无loaded回执”原文不改，后到证明另加。当前M7公共组件六源已有owner strict0，正式测试适配尚未READY，未提前采用或复跑旧FFM软件原码绿色。
