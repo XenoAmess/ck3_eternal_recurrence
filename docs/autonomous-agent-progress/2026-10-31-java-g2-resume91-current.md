@@ -1,5 +1,15 @@
 # Java / G2 resume91 当前执行记录
 
+## 2026-10-31 16:59 UTC：实际推进八天，首次 SAVE 只读恢复继续
+
+同一原版无模组 Game71464（出生 FILETIME134378397668266369）已实际从 date_raw53144328 推进到53144520，共8个游戏日。Native 原始 ClockRead 证明 completed_daily_ticks=8、overshoot=0、pause_wrapper_called=true、pause_observed=true、abnormal=false；parent484实际 COMPOSITE_SETTLED/APPLIED，487于16:20:06.3099367Z以 ELIGIBLE_ADVANCE 收束，周期 completed4、pending=null。真实结算原件为 continuity/artifacts/1b0af22107acf6d23c865fba40cb9d7425a62e4193647a7822652dbf51b141e4.bin（9081B），完整原件索引在 D:/ck3-state/resume91-runtime/ordinary180-build/ACTUAL-FIRST-8DAYS.json。本段授实际八天；G2整体仍6/8，不将软件组件或八天进展记为完整M6/M7完成。
+
+worker180于16:20:09.1857574Z进入 next65，随后首次自然 SAVE491 已真实发送并于16:21:30.0889983Z收到 native_ok=true ACK，实际 xar_checkpoint.ck3 为68,690,729B。后续错误来自通用证据归档64MiB+4预算误收完整物理SAVE；180于16:21:59.317215Z真实 END4/439.208秒，canonical492/repair、next66。保存文件存在及成功ACK均不等于已完成 saved pair：当前 committed_saved_days=0；不重发 SAVE、不重 ARM/resume、不重启 Game/DLL，不以新抓取或伪造 publicCaptured token 清账。
+
+181恢复正在并行闭合真实原件链：完整SAVE走既有有界流式文件验证，通用CAS预算保持；冷恢复以配置实际绝对路径、lineage、原canonical command/Attempt/正ACK及其UTC为基础，保实际两次稳定FileWitness、独立READ ACK/custody和完整Driver/pair核验。Root新增 ColdAfterAcknowledgement(originalReceipt)及严格codec，仅精确SAVE schema的Live/Cold Fresh允许非回退nativeRevision；普通世界动作仍须严格更新帧。三生产叶首次strict0/1.952674秒已正式a89774948e22发表，新独立软件probe首次strict0/1.709495秒、JVM0/.927269秒、26checks；存档服务单叶strict0/1.517927秒、Canonical原件验证器单叶strict0/1.821110秒。这些是软件验证，尚未授181实机恢复或保存信用。运行岗继续修 SAVE_CONFIRMED 周期收束的真实消费者，MB181/worker181尚未START。
+
+本组本地模型三次真实请求位于 D:/ck3-state/resume91-root/save-codec181/{provenance,effects,new-probe}/http。两实现请求16:52:10Z并行POST，完整stop分别10.530/13.144秒；新probe16:54:29Z真实POST，stop24.941秒，cached均null。模型type/codec可用；effects将“允许同一snapshot”错作“必须同一snapshot”、probe的非法SHA/伪Map API/零revision前置fixture错误由owner审前纠正，采用与纠正分账，不据200或stop授软件绿。实现审阅、其他owner的编验与后继真实HTTP互相重叠；持续高并发仍按有时刻的在途记录，不用本组三次累计数充峰值。
+
 ## 10:16 UTC：独立确认取消，下一修复只重启智能体
 
 worker158在同一原版Game71464真实收到一次generation1 CANCEL的Native成功ACK，再经独立Status结算child395 CONTROL_APPLIED和父396 COMPOSITE_CONTROL_APPLIED（initialization_cancelled）。实际后态native265/public273、暂停、日期53144328，三个游戏/推进/保存flag均false；原ARM387、CANCEL395及父396都不重放。worker158实际10:02:09.640071–10:09:35.559207Z END1/445.919146秒、未LOOP，真实故障是SessionController.ready读取Driver时仍要求ARM/CANCEL的第二份recorder row，并非取消尚未发生。
