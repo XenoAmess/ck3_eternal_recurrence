@@ -250,6 +250,10 @@ public final class RootAdvanceInfrastructureFactory {
             HeldDriverObservationPort sameHeld=actual(parent,deadline);
             try {
                 return context.withSession(same->{
+                    if (ActionChildPlanningScope.isReservedChild(same, same.head(), parent)) {
+                        context.adopted().authority().requireOutsideObservationScope(same);
+                        return sameHeld.current(parent, deadline);
+                    }
                     var borrowed=context.collector().withActiveCurrent(same,parent.before(),deadline,lease->{
                         var original=lease.frame();
                         require(original.identity().equals(parent.before()) && original.source().equals(parent.source())

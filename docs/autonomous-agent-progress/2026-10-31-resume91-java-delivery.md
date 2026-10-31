@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进M7 E91D90 slot0两新叶，前序143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进child observer144两prod/一portable Test；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -354,3 +354,11 @@ formal与sealed runtime前像有一处早先未同步差异：RootFacts仍保“
 现g2-research/captured新增RequestSlot0E91d90与对应Test两叶，无POM/依赖变动，复用已正式RequestE92780.Memory、Request140TestMemory和Idler79eRegressionHost。完整源/测试及独立完整103B source review已读：仅一次BYTE[D8]判非0调用B0，接70后单QWORD vptr=base+44FC298，再48/28；保存原rawEDX只测bit0，末opaque call4223F44只knownRCX原receiver/EDXE0，正常返回原receiver、异常立即保原对象传播。vptr不同于constructor44FC2A8，LEA不偷换成load，未知ABI/free/unwind/当前U/SAVE语义不补造。正式只缩进/LF尾白/EOF加一范围注释，原非白字符相同、0writer算法改。
 
 复用owner首pristine2TU严格编1/.670771秒，唯一实际诊断是failureTest误用Objects.assertSame，未RUN；不追认编译器未报的后继counter诊断。纠错后2TU strict0/1.016394秒，只两新JUnit首次同JVM2P0F0skip/.647138秒（flag0/raw2与flag80/raw3两组、阶段vptr/poison image、opaque callback改storage但return仍receiver、第二cleanup异常原对象/无后续效果），未重140旧4或执行Native103B。六真实HTTP全stop/52092in7439out、阶段峰3/cached未报；首method JE反向源拒，correct02完整24行模型method保留owner算法0；两Test均模型partial+owner阶段/毒值/异常断言。父误判Host同address/samesize map为错误已撤回，不算模型能力失败。证据 `D:/ck3-state/resume91-java-delivery/M7-SLOT0143-ADOPTION.json`；正式source不携本机fixture路径，0Native/Game/SAVE信用。
+
+## child observer144精确reservation路由
+
+准确2199B两prod仅ActionChildPlanningScope新增isReservedChild，absent/原parent返回false，实际child复用reservedParent全部现有writer/head/body/source/session/ordinal/ActionScope检查。RootAdvanceInfrastructureFactory在任何ordinary借用/retainedentry之前对该exact child要求outside scope并走sameHeld.current独立fresh；parent0child入口、原current/entryGuard和strict next不变。完整scope/Factory路径及95行portable新Test均读，2formal叶ignore-space-at-eol同sealed，0writer语义改。
+
+新ChildObserverScope144Test复用原ActionWriterIntegrationFixture，以真实softwareCoordinator/writer/reservation/ACK callback验证错writer/body/staleHead、parententry、ActionScope不偷换、清理、UNKNOWN子停止parent与重复execute保持一Native软件write。不是完整private RootFactory/实际143恢复；原child368和parent369仍UNKNOWN，此补丁不清除或重发。复用2prodstrict0/2.008秒、teststrict0/1.723秒；先missingJNA环境红、后旧cache helper guard返回ABI红保，only D-helper改用assertCurrent并编0/2.468秒后唯一新JUnit1P0F0skip/18.239秒，未重production/test绿。
+
+portable Test只TempDir/no固定D资源；未复制D-only helper。正式fixture源qualification.guard().orElseThrow().assertCurrent与当前SourceQualification Optional源码API匹配，旧compiled cache ABI错误不隐改生产或正式helper。模型方向有用但raw调用reservedParent会回归parent0child，owner最小正确接管、rawhunks0；UNKNOWN原消费/后态验证未放松。runtime已逐hunk源审S/Z采好、尚待自然MB144，不单独worker，不授fullRoot/实机恢复/日。证据 `D:/ck3-state/resume91-java-delivery/CHILD-OBSERVER144-ADOPTION.json`。

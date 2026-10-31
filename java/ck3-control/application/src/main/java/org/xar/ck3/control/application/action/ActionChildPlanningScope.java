@@ -41,6 +41,14 @@ public final class ActionChildPlanningScope {
                 || !running.execution().children().isEmpty()) return Optional.empty();
         return Optional.of(running.execution().guard());
     }
+    /** Child observations must sample fresh state, never borrow the parent's retained entry. */
+    public static boolean isReservedChild(ContinuityStorePort.Session same, WriterContracts.Head actualHead,
+            ActionCommand exactCommand) throws IOException {
+        java.util.Objects.requireNonNull(exactCommand);
+        Held held = CURRENT.get();
+        if (held == null || held.parent().actionId().equals(exactCommand.actionId())) return false;
+        return reservedParent(same, actualHead, exactCommand).isPresent();
+    }
     /** Identifies only the exact child already reserved by this original running parent's Children callback. */
     public static Optional<Parent> reservedParent(ContinuityStorePort.Session same, WriterContracts.Head actualHead,
             ActionCommand exactChild) throws IOException {
