@@ -337,3 +337,21 @@ Store190 真消费任务 stop13.758秒、72940+494，两个模型 hunk 主体加
 M2 新消费增量307、319各两个Book均4POST4stop/无传输重试，原有字面台本与 owner 固定可达输入复用，不能称全新 whole blind oracle。307 R2两新块原样采用，首次两组合187/285步骤、23/24端口全0。319 R2仍把释放前 oldbuffer/vtable 读序颠倒并多读[vtable]；owner各一处小hunk修后首次两组合211/309步骤、23/24端口全0，记partial而非raw。没有重编其已绿生产源，也没有为文档新增HTTP或复跑。各标准REVIEW/独立LATER-ACTUAL319与DELIVERY保存来源和首次回执，原拒稿不追认采用。
 
 Root P0196 的真实故障是对已验证后态重新编码后只做 CAS referenceOf，所算key的payload/commit均不存在；现有只读lookup不负责发布。单leaf模型21:15:54.752→21:16:04.662、stop9.909秒/TTFT8.923秒、reported57861+143/cache null，提出使用既有 producer preserveMaterial。owner补完整材料角色与ref长度/SHA，首严格0/2.069757秒；Root随后发现同叶LIFE回放仍以默认1MiB读实际约5.1MiB，owner仅该角色改显式fullMaterial+exact+64MiB解析，默认小材料合同保留，必要严格0/1.874518秒。源码与编译成立不授当前worker恢复或Game进展；运行期真实结果另由Runtime记。新样例/元数据原件审计均只消费既有材料，无探测POST/GET。
+
+
+## resume91 22:29Z：上下文接线、解析复用与有限窗口
+
+固定源码窗口[22:19:53.517725Z,22:29:53.517725Z]最终登记16真实POST/16END，13stop/3length，客户端峰6；22:29:53截止点可核在途0。事件扫22:29:52.156782–53.473336，随后仅一次服务GET22:29:53.473348–53.514859，running0/waiting0/KV0；两阶段分列。先冻结的索引窗口14/14漏了已发生的M3两条私目录，补登记后另存WINDOW199-RECONCILED-222953，原WINDOW128-222953不改。上一固定窗口21:55:38–22:05:38有34POST/33END、峰11持续13.148131秒；其慢扫描旧在途2已按同截止点实际END另记为1。持续12–16与24–32仍未达，历史峰、角色数或累计请求不代当前事实；运行决策HTTP不混源码计数。
+
+M3 equal196实际5POST/5END、4stop1length，producer2与binder11个唯一匹配exact edits装配0 owner执行改，独立Test第二稿仅26步骨架部分保、owner修DATA与兼容检查。首3prod严格0/.752988秒、新Test严格0/.918389秒、首5组0/.163434秒；26frame事件、8final cells与兼容/拒绝分口径，正式6f5681abb212099467ed63ef70a341c7be63daa7。后继两个旧外层新增五参转发只1POST、stop5.078秒，模型两unique edits原样，首2modified严格0/.633940秒；无新fixture/旧case复跑，不授完整包装图执行。cleanup197另5POST全stop，coreR2/binderR1/独立BookR2原样首次软件通过，API声明与机械host仍owner；8场52事件/28final cells，正式f7122082754ea06d0831ee1af87ed6ba03258d01，不授Native/Game heap。
+
+Archive198三真实POST均stop：首解析缓存候选部分采用，owner修成先完整fresh读取再比较命中；独立反例首稿仅主题保，纠正Test整码拒后owner typed fixture接管，无第三轮。changed1prod首严格0/2.864886秒，新1Test首严格0/1.810872秒、首3JUnit3P0skip/4.303203秒，包含暖命中后payload篡改、同bytes新FileID、缺commit、作用域退出/异常/foreign与UNKNOWN。正式695aba864d73ab127271e746fe6869998ae021c5；未测IO下降或速度。既有195有限栈中578个Exec fullMaterial样本仅92个同栈带inSession，属于路径存在证据，不是同ref缓存命中或收益比例。
+
+M2 consumer360六实际POST最终六Host/Data源exact edits0 owner执行改，真正128-bit Word16借一次R128/W128转换，Context原scalar W16保留；另三Book两轮全拒后由owner非blind数据接管，不能把三组软件首绿写成模型整Book。首次元素130/Context271/Slot369事件均0，正式a2e47c05ea77bfe28e5656789ef5dc4e9b91204c。后继copy370四角色各两轮8POST/8END=5stop3length；Host第二稿不调用目标且自造expected、backward错十进制对齐，均整拒；Basic只部分、其余owner源已交。owner Host另把两个实际四参API误统一成五参，完整API本在输入，M2副本机械修、原件与勘误保，尚不由本记录授首次运行信用。
+
+Controller199首答length3400整弃，唯一窄纠正stop437tokens的三组unique edits原样采用，只在成功SAVE完成原资格/出版/时间检查后正常结束本batch，保stop/失败/旧期限；首单leaf严格0/2.069769秒，正式3015781b332c7213d22805de48dabd3b38ea8d7d。source/strict不是恢复成功。owner先误称实际SAVE是public turn，Root实际路径证明internal SaveRound可使首report只有positive savedDays而无turn；推断已撤回，Loop后继由Root独占，不造Turn/credit。本次测试请求stop却无测试成员，现fixture真实Fresh READ/HELLO或never-saves缺口独立封，不伪软件通过或重跑旧setup红。以上文档只消费已发生原件，不为经验新增模型/测试；本窗口一次GET已单列。
+
+
+后到独立输入勘误：370 Host R2任务曾总括所有copy都有moduleBase第五参，与完整REP/BACKWARD四参stub矛盾，归owner输入；无Script、不调用目标和自造expected等独立整拒理由仍保。原两EOF不改，另见本机M2 `queue-copy364/witness-owner370/OWNER-PROMPT-ARITY-ERRATUM370.json`，SHA256 `0afe523ddb68a561ee598eac43812570bb2329c998b03be690c4b9bfba5c0c07`。
+
+后到独立软件回执：380于22:33:10.421185Z首六场47事件结束0，必要strict0/.858255秒、首RUN0/.157671秒；只修owner Host两处多余实参，Data及三Book原SHA不变，采用仍Basic部分／其余owner，无Native/Game信用。另见同目录 `LATER-ACTUAL370.json`，SHA256 `fbb53041c2b0906b36e1952b20b4b1de9bb4d15958709484079de17838d4aecd`；不把此结果回填上述冻结窗口。

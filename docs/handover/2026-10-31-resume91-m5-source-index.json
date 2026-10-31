@@ -3024,5 +3024,758 @@
       "legacy_scalar_leaves_first_published": 2,
       "genuinely_new204_main": 2
     }
-  ]
+  ],
+  "evidence_205_207": {
+    "snapshot_at_utc": "2026-10-31T22:17:55.506549+00:00",
+    "maturity_cutoff_utc": "2026-10-31T22:00:28Z",
+    "individual_result_cutoffs_utc": {
+      "205": "2026-10-31T21:29:47Z",
+      "207": "2026-10-31T22:00:28Z"
+    },
+    "boundary": "Append-only frozen205/207 normal software evidence. Every older key/value/body and maturity cutoff retained, including root18:27:17,19:19:56,20:21:44,21:06:43. This is not a live status/Main/resource queue snapshot.",
+    "mature_results": [
+      {
+        "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/RESULT08.json",
+        "bytes": 9072,
+        "sha256": "ad0cf42d4fd2dba291a06b38b3f2bfd5ce9817aa9b1fba0779ca38b33b18716c"
+      },
+      {
+        "path": "D:/ck3-state/resume91-m5-native/whole-fill207/RESULT07.json",
+        "bytes": 7585,
+        "sha256": "d636c6c518cf3a623d86457915bdae8652d617e8f3c8d39288e7524c290aa7d7"
+      }
+    ],
+    "mature_result_details": [
+      {
+        "package": "205",
+        "result": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/RESULT08.json",
+          "bytes": 9072,
+          "sha256": "ad0cf42d4fd2dba291a06b38b3f2bfd5ce9817aa9b1fba0779ca38b33b18716c"
+        },
+        "actual": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/ACTUAL07.json",
+          "bytes": 5678,
+          "sha256": "2dbbdaa9e01ca7b785e71304611d60ce0d6b6dffbca159c61565c8d899bebb25"
+        },
+        "first_production_receipt": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/PROD-ACTUAL04.json",
+          "bytes": 1777,
+          "sha256": "d9b26820a699aa56ac34c70eb50b2ec70b43b4901388bae18be2ed11a731df42"
+        },
+        "clock_precision": "External clock UTC seconds; tool elapsed/chunks retained separately. No mtime-derived BEGIN/END or invented subsecond process timestamps.",
+        "stages": [
+          {
+            "name": "PROD01",
+            "clock_begin_utc": "2026-10-31 21:14:39 UTC",
+            "clock_end_utc": "2026-10-31 21:14:40 UTC",
+            "exit_code": 0,
+            "tool_elapsed_seconds": 0.5459491,
+            "tool_chunk_id": "1ab4be"
+          },
+          {
+            "name": "TEST06",
+            "clock_begin_utc": "2026-10-31 21:29:20 UTC",
+            "clock_end_utc": "2026-10-31 21:29:22 UTC",
+            "exit_code": 0,
+            "tool_elapsed_seconds": 2.0021615,
+            "tool_chunk_id": "8305fd"
+          },
+          {
+            "name": "WHOLE01",
+            "clock_begin_utc": "2026-10-31 21:29:30 UTC",
+            "clock_end_utc": "2026-10-31 21:29:32 UTC",
+            "exit_code": 0,
+            "tool_elapsed_seconds": 1.8663729,
+            "tool_chunk_id": "a8c184"
+          },
+          {
+            "name": "NULL01",
+            "clock_begin_utc": "2026-10-31 21:29:39 UTC",
+            "clock_end_utc": "2026-10-31 21:29:40 UTC",
+            "exit_code": 0,
+            "tool_elapsed_seconds": 0.0756934,
+            "tool_chunk_id": "c3a832"
+          },
+          {
+            "name": "BASE01",
+            "clock_begin_utc": "2026-10-31 21:29:46 UTC",
+            "clock_end_utc": "2026-10-31 21:29:47 UTC",
+            "exit_code": 0,
+            "tool_elapsed_seconds": 0.1078155,
+            "tool_chunk_id": "1dbb86"
+          }
+        ],
+        "scope": "New thin3site185full-state Calls adapter plus actualwhole closure over matureM1203/M4203/M5204 and202; complete source-defined normal data and sharedbyteMemory only. No old algorithm copied or old exactfilter expanded.",
+        "limits_at_original_freeze": "Four finite normalJava scenes only, no fault/negative/safety tests, unrepresentedRFLAGS/DF/EH/OS/Native/realGame proof. Unknown lowerFC74/4232A50/dynamicIAT/fill4226F10 remain explicit fullV/sharedMemory ports. No gameactions/days/SAVE/G2-completion credit. No assertions about sustainedlocalmodelconcurrency/backendcache; eachrole/HTTP interval separatelyrecorded.",
+        "original_pending_publication_description_retained": "Notyet formallypublished; mature2main+6manual package tosoleJavawriter, no Dpaths/POMdependency or formalrerun required.",
+        "maturity_cutoff_utc": "2026-10-31T21:29:47Z",
+        "source_leaves": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/leaf-closure205/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtLeaf205Calls.java",
+            "bytes": 3611,
+            "sha256": "3033d6e9c96e5f43d5f565e10684f8da1efe0cd2dea75965381714d556631d5c"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeLeaf205.java",
+            "bytes": 2484,
+            "sha256": "6e2bffc850a14959618c278866c8549f7dfddd2e7f10f5ad22a356c1205b7bc6"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeLeaf205Fixtures.java",
+            "bytes": 8226,
+            "sha256": "2738ac25636e68488912329611b2a3b0f19f3d26c352780300b376cae84a57af"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeLeaf205Probe.java",
+            "bytes": 24695,
+            "sha256": "3028097414ce21b7bade47380d8e85156049228285aa7b2a8da2141cf163b5ff"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/null-book/org/xar/ck3/research/m5/GovernmentSizeLeaf205Fixtures.java",
+            "bytes": 3801,
+            "sha256": "bc488a43909f5604779a4c237b8051dfbf8fdb323c77ff7315025e8ca7e5d241"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/null-host/org/xar/ck3/research/m5/GovernmentSizeLeaf205Probe.java",
+            "bytes": 4521,
+            "sha256": "920968c6fc5bc9b0f69df7d2d332f9391172ce27b3363b259d7aea0555f62084"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/base-book/org/xar/ck3/research/m5/GovernmentBaseLeaf205Fixtures.java",
+            "bytes": 5778,
+            "sha256": "5b7f1847e94feb9386b3d3d11947e83619dc5408c161096a02c3b5700b8f88ac"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/base-host/org/xar/ck3/research/m5/GovernmentBaseLeaf205Probe.java",
+            "bytes": 4807,
+            "sha256": "2f7e89ac9a144295afff9837e9a618a7320b39f70ca75e12fc47db7c38327136"
+          }
+        ],
+        "production_adoption": {
+          "leaf": "GovernmentCrtLeaf205Calls3611B modelR1raw owner0. OnlyDIRECT B259/B18C andF7D/B18C call204core withoriginalfallback; F70/E364 callsFree201core withmature204binder asinnerE384consumer. ChildEntry=preSP-8/SAMEmemory/fullV/N, actualNR RIP/SP/N checked then actualfullV returned. ForeignCall/Tail/GS originalfallback; no newpush/preread/copy/recursion.",
+          "whole": "GovernmentWholeLeaf2052484B modelR1raw owner0. Frozen leaf->old204error->M1ResizeBase203->M4Size203->mature202 composition, original12arguments/SAMEmemory/CPU/budgets/fullports. No algorithm or frame implementation in whole."
+        },
+        "independent_adoption": {
+          "oracle": "All3Books/CPU/maps and hostfoundations owner-independent original-source work. No new203/205 targetproduction/model-output read for expectedvalues.",
+          "model_methods": "Only3 genuinely unwritten methods: wholebuild1811B, NULLdispatch868B, BASEdispatch989B. Each completeR1raw owner0, noR2. Wholeprobe mechanical202rename. No wholeBook/foundation modelcredit.",
+          "immutable_source_seal": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/SEAL03.json",
+            "bytes": 8350,
+            "sha256": "fe07c42d1e9aecf5c26f772f9a6ff7aeb560d8a9ccaf3095caa1c586022a55b0"
+          },
+          "immutable_base_seal": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/BASE-SEAL05.json",
+            "bytes": 4464,
+            "sha256": "09108173ba258d8fd07f6552a2691891708c70983717942f2530c3662825baae"
+          },
+          "method_adoption": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/ADOPTION03.json",
+            "bytes": 4952,
+            "sha256": "be29bd70357bd2f80cea9d5c6949325b1a7bf664d1f1da78785da930c961de27"
+          },
+          "base_method_adoption": {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/BASE-ADOPTION05.json",
+            "bytes": 2443,
+            "sha256": "2fe3e48e5359e471a563d3c95df022f148a6435e9ba0b473fde19d2ce976a205"
+          }
+        },
+        "first_whole": {
+          "cases": 1,
+          "whole_result": "Actual completeGovernmentWhole4798Api.Result equals independentheld baseline; all ordered events and full before/finalbyteMaps checked.",
+          "events": "44CRT=5CALL+5TAIL+1GS+33Loop; existing14atomic/10ordinaryGS/4deep/2diagnostic events genuinely execute within only thisnewcase.",
+          "dynamic_state": "Seed image+5C5DE30=1111222233334444, sizeIAT43DA7C8=5555666677778888, allocIAT43DA388=9999AAAABBBBCCCC. ActualM4size nonnull tail9282 INDIRECT_ABSOLUTE offers originalrestoredentrySP andfreshfirstglobal; its explicitnormalport mutation setsglobal2222333344445555 andallocIATAAAABBBBCCCCDDDD. ActualM1F4C body later freshreads both, emits FB9 INDIRECT_ABSOLUTE AAAABBBBCCCCDDDD with6-byte ownedRETURN image+4251FBF, currentfullV/N. No rawRVA substitutingdynamicabsolute targets.",
+          "stackcarry": "ThreeactualF4C QWORDs savedBX atS-1D0, pushedDI atS-1E0, innerRETURN atS-208 plus24dynamicglobalbytes form48-byte persistentoverlay. OldcallerRETURN S-1D8 is subsequently really overwritten by Resize fillB881 and not incorrectlycarried.",
+          "later_actual_path": "Same real32REP GROW atHEAP72000000, retainedR11400B/4000XMM, actualM4Free61-null, sameLoopBudget. NoF95retrybudget reached in thisnormal whole. Whole does not coverB259/F7D/F70; theseare separateactualnewnormalcombinations below."
+        },
+        "first_combinations": [
+          {
+            "name": "M4SizeNULL -> new205 B259 -> mature204",
+            "cases": 1,
+            "observations": "ActualM4core RCX0 callsB259; leafconsumesphysicalouterRETURN atS-30 withoutsecondpush, mature204 actualFC74 atB190/preSP S-58 writesinnerRETURN atS-60, postRAXA00000 -> legacyA00020, M4DWORD16 keepsupperadjacentbytes, secondactualopaqueB264/4232A50 postfullV thenRAX=-1. ExactactualNormalReturn/fullV/6XMM/N/fullMaps/2orderedopaqueCalls. Outerwrites16bytes andinner8, ordinary2marker mutations, nocorruptRET/NV."
+          },
+          {
+            "name": "M1Base normalF7D -> new205 -> mature204",
+            "cases": 1,
+            "observations": "NonnullrawsizeFFFFFFFFFFFFFFFF followsunsignedsourceF7D normalreturn path, actualFC74 fullpostRAX0 -> scalarimage+542F210, M1 writesonlyDWORD12 preservingupperfourbytes thenEAX0. ActualfullNR/6XMM/N/fullMaps/1orderedopaqueCall, normalmarker, outer8/inner8bytewrites. No retry/F95 or faultinjection."
+          },
+          {
+            "name": "M1Base normalF70 -> new205 -> matureM4Free201",
+            "cases": 1,
+            "observations": "Nonnull/size0 actualF70 consumesmatureFree61. FreePUSHBX0 writesS-38, freshheapglobal5C5DE30/IAT43DA748 actualE37A INDIRECTcall writes6-byteRETURN image+424E380 atS-60 andnormalfullpostlowEAX1 succeeds; sourceM1EAX0. ActualfullNR/6XMM/N/fullMaps/1orderedopaqueCall, outer8/inner8/PUSH8writes. Thisnormalpath does not executeFreeE384failurebranch."
+          }
+        ],
+        "source_model_evidence": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/consumer-owner/REVIEW02.json",
+            "bytes": 1734,
+            "sha256": "23c48078e6e6f34b08f29fb3f9ea10bd757e8e47195ed6158fa6dfddb3acd148"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/leaf-closure205/consumer-owner/DELIVERY02.json",
+            "bytes": 3033,
+            "sha256": "60ef1f2bc16f6af9b0b6ba895a035366aecbd5bb2bb17e10be621e95b721bf5f"
+          }
+        ],
+        "boundary": "Original205 four finite normal scenes: whole1,SizeNULL1,BaseF7D1,BaseF701. Originalwhole fill4226F10 opaque description remains freeze history, later207 actual cached240 closure is separate. PREPARED05, unstarted TEST-READY05 and old SEAL notCovered unchanged; extra BASE-SEAL supplies two new positive cases without retroactive edits."
+      },
+      {
+        "package": "207",
+        "result": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-fill207/RESULT07.json",
+          "bytes": 7585,
+          "sha256": "d636c6c518cf3a623d86457915bdae8652d617e8f3c8d39288e7524c290aa7d7"
+        },
+        "actual": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-fill207/ACTUAL06.json",
+          "bytes": 3331,
+          "sha256": "ff42e60964bdfcbf155e078fc7670c9758b9493775c70835e2c8d0e929c92b2d"
+        },
+        "first_production_receipt": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-fill207/PROD-ACTUAL04.json",
+          "bytes": 1809,
+          "sha256": "a5fae9ebaf01976943b5469483dc065e47fcff5f1b8069243d65ee246052e965"
+        },
+        "clock_precision": "External UTC clock seconds, tool elapsed/chunks independentlyretained. PROD01begin/end same second is0.5891065s, notzero ormtime-inferred.",
+        "stages": [
+          {
+            "name": "PROD01",
+            "clock_begin_utc": "2026-10-31 21:57:16 UTC",
+            "clock_end_utc": "2026-10-31 21:57:16 UTC",
+            "exit_code": 0,
+            "tool_elapsed_seconds": 0.5891065,
+            "tool_chunk_id": "ed9134"
+          },
+          {
+            "name": "TEST01",
+            "clock_begin_utc": "2026-10-31 22:00:19 UTC",
+            "clock_end_utc": "2026-10-31 22:00:20 UTC",
+            "exit_code": 0,
+            "tool_elapsed_seconds": 0.968006,
+            "tool_chunk_id": "a595e3"
+          },
+          {
+            "name": "RUN01",
+            "clock_begin_utc": "2026-10-31 22:00:27 UTC",
+            "clock_end_utc": "2026-10-31 22:00:28 UTC",
+            "exit_code": 0,
+            "tool_elapsed_seconds": 1.0550221,
+            "tool_chunk_id": "505377"
+          }
+        ],
+        "scope": "Actual207whole consumes matureM1MemoryFill206 via precise185DIRECT<->Tail155Opaque adapter and one explicitdualMemory instance, replacing former opaqueB87C/F10 normalport. No old205/206subjectcase rerun or400Balgorithm/normalguardcopy.",
+        "limits_at_original_freeze": "Onefinitecached240 normalJavawholecase. ExtraISA nonzeroNT/SFENCE/M1smallWord paths andconditionalF57->4226EF0/computedJMP03B arbitraryTailNR areNOT executedbythiscase; sourceadapterretainsoriginalfullTail/ABSmetadata. No newPE/externalbody,hardwarefence,OS/ABI/allflags/EH/realGame/savedDay/SAVE/G2-completionqualification. NewM1EF0 directional207 task remainsseparate/opaquehere.",
+        "original_pending_publication_description_retained": "Mature3main+2manual sourceclosure tosoleJavawriter; pendingformalpublication, noDclasspaths/POMdependency/newtestsforformal.",
+        "maturity_cutoff_utc": "2026-10-31T22:00:28Z",
+        "source_leaves": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/fill-closure207/api/org/xar/ck3/research/m5/GovernmentFill207Api.java",
+            "bytes": 367,
+            "sha256": "cdef14b28ed3824e6967a7a688d15b745501902f1298bc1dbe1cd9f00a8538c2"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/fill-closure207/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtFill207Calls.java",
+            "bytes": 2324,
+            "sha256": "194d4dcad3680b83f497510c5d39a5fd1a1b3a5b81e1150640833e0d514bbb48"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-fill207/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeFill207.java",
+            "bytes": 1766,
+            "sha256": "f5c8f692289293c392d26e819b243cdb3eca488af0fa51578c94597803cde6e7"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-fill207/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeFill207Fixtures.java",
+            "bytes": 6495,
+            "sha256": "389c199b6fa67418bbd7bc72380b09b469601b111b616a4f17852abf4b4e0d68"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-fill207/literal-owner/host/org/xar/ck3/research/m5/GovernmentWholeFill207Probe.java",
+            "bytes": 29589,
+            "sha256": "37a21224d07359554c08ae2654e02263f4fc0d8b65197e450bee87e0c91dfb90"
+          }
+        ],
+        "adoption": {
+          "MemoryAPI": "Owner367B pureinterface extendsoldWhole189Memory+actualMemory206; explicitsameStorage Word/NT128/sfence capabilities, noforcecast/copy/defaultnoop.",
+          "bridge": "Complete modelR2raw2324B owner0. R1wrongCalls types+invalidtail override whole-rejected beforecompiler, nofragment/R3. ReusesactualM1bindTail withoriginalfallback/budget, onlyDIRECT B87C/F10 convertedtoactualOpaqueCall metadata/fullV/N/preSP. TransferPorts staysoriginal185fallback forfullopaqueTailNR. ForeignCall/Tail/GS sourceforwardsoriginalobject/result.",
+          "whole": "Complete modelR1raw1766B owner0; onlynewbind andactual205execute withall12originalobjects, explicitstrongerMemory type.",
+          "oracle": "IndependentBook/CPU/maps andwholeHost/strongMemory/fillTrace owner-built fromcompleteoriginal400B/table/publicAPIs/old205data, no206/207targetproduction/modelanswers read fororacle.",
+          "model_method": "Only1673B wholebuild method modelR1rawowner0; no wholeBook/foundation/hostmodelcredit. Hostpresealcounter+3B ownerstrengthening was beforeanycompile, sourcefrozen thereafter."
+        },
+        "independent_evidence": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-fill207/literal-owner/SEAL03.json",
+            "bytes": 4943,
+            "sha256": "7e2d724cc4d76ad3f2b42332b81bc318611a7fd13239811a5c9024c5efa01896"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-fill207/literal-owner/ADOPTION03.json",
+            "bytes": 2431,
+            "sha256": "16d79b8515f0548a3d5a057b3a428caf578a20c5d864050f241d208d38489833"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-fill207/literal-owner/OBSERVATION-LIMITS04.json",
+            "bytes": 1340,
+            "sha256": "db7613648d70bbb9f3abf019d507780e39010eee14d4dbf5b10a3fa3fdd5906e"
+          }
+        ],
+        "normal_inputs": {
+          "destination": "0x72000010",
+          "length_bytes": 240,
+          "byte_value": 0,
+          "feature_byte_at_image_plus_5C5CBB0": "0xA1 (bit2mask0x2 clear)",
+          "threshold_qword_at_image_plus_542F0A8": 1,
+          "new_seed_bytes": 9,
+          "source_jump_table_read": "Not reached by this >16 cached240 path; no synthetictable/defaulttarget needed."
+        },
+        "observed_execution": {
+          "first_cached_store": "OneactualWRITE128 at72000010 beforefirstloopbudget.",
+          "cached128_loop": "OneactualbeforeStep(F80,72000020), theneightordinary128storesat72000020..72000090.",
+          "remaining16_loop": "SixactualbeforeStep(FC0,currentRCX) at720000A0..720000F0, eachimmediatelyfollowedbyone16bytestore.",
+          "combined_effects": "Exactly22 source-ordered effects=15WRITE128(valuezero,width16)+7budget events, eachaddress/width/value/crossorder compared against independentexpectedtrace. All240bytes replaceoldA5 withzero onactualsharedstorage.",
+          "reads": "Actualfeaturebyte,thresholdqword,andownedfillRET eachreadexactlyonce; freshphysicalRETreads oldcaller201RETURN image+425B881. No fillprologue/extraCALLpush/localstackwrite introduced.",
+          "extra_primitives": "Duringfill Word0/NT128zero/SFENCEzero, withindependenteffectports/counters. WholeglobalWord=1 outsidefill; do NOT reportwholeWord=0 orclaim M1shortwordpathwasexecuted. NT writesaddresssamebytes throughseparateNT128effect, sfencehasdistinctobservableevent; noordinarywrite128alias/noop.",
+          "ordered_whole": "50CRTevents=4CALL+5TAIL+1GS+40Loop (old33+new7). Existing14atomic/10ordinaryGS/4deep/2diagnostic steps executewithin thisonlynewcase, not separateoldtests. ExistingactualsizeTail/F4CIATfreshmutation and32REP growthremainactive.",
+          "state_and_maps": "EveryorderedopaqueCall/Tail andbudget pluscompletebefore/finalbyteMaps checked. Thirdindexedtail4248062 sees actualR11=72000010,XMM0zero,XMM1..5 retainedfrom6000allocationpost (notold4000opaquejunk), allotherofferedfullV/N checked. Its explicitnormalportpost restoreslaterheldCPU, actualcompleteGovernmentWhole4798Api.Result matchessource-independentexpected.",
+          "immediate_state_limit": "Immediatefill RA/RCX/R8/R9/R10 areindependentlysource-derived butsomegetoverwrittenby149/199beforethenextobservation. Noextra runtimehook or directassertionofunobservedintermediatefields isclaimed. ActualsurvivingthirdTailR11/XMM andeffects/reads/fullMaps areasserted."
+        },
+        "source_http_evidence": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-fill207/consumer-owner/REVIEW02.json",
+            "bytes": 1670,
+            "sha256": "25dd9b88aca661e57aff21f50107d8d0db3519a2f557e6a304045028edd834d1"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/fill-closure207/consumer-owner/DELIVERY03.json",
+            "bytes": 7656,
+            "sha256": "99cb482c9ad4a85ae54ebdbc9c3833e84c0b7d4fc5cb2ab8b3d6a1fae872d435"
+          }
+        ],
+        "boundary": "One finite cached240 normalwhole. Fifteen ordinary128 stores andseven budget events explicitly compared as one ordered22effect sequence; actual feature/threshold/RET each1. FillWord0/NT0/fence0 but wholeglobalWord1 outsidefill. Immediate overwrittenV fields not separately hooked/observed; hardware/OS/EH/Game and extraTail paths unqualified. Separate upstream20624scene1316 not rerun/countedas207."
+      }
+    ],
+    "published_cross_module_dependencies": [
+      {
+        "commit": "2ac0349af63dc4054eeec0d94baa76a9c41acdb1",
+        "formal_main_source_hashes": [
+          {
+            "fqcn": "org.xar.ck3.research.m1.GovernmentResizeBase203",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentResizeBase203.java",
+            "bytes": 5670,
+            "sha256": "3b286ab7c1142f141da9f581188c56fa79317a47f66f96883464fff5ba4f0cc0"
+          },
+          {
+            "fqcn": "org.xar.ck3.research.m1.GovernmentResizeBase203Calls",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentResizeBase203Calls.java",
+            "bytes": 2213,
+            "sha256": "2e478d086638ee9df1b57f37f6345e86b593111df38bda35641e9bd2077d5bb7"
+          }
+        ],
+        "boundary": "Existing published source dependency reused, not repeated strict/run or new207case/physical ABI/OS proof."
+      },
+      {
+        "commit": "54a91c2901b1b752afd8b6b7e1c0a45481d39445",
+        "formal_main_source_hashes": [
+          {
+            "fqcn": "org.xar.ck3.research.m4.Callee4259250FullState203",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m4/Callee4259250FullState203.java",
+            "bytes": 2279,
+            "sha256": "45e2664585f26aa25e66c383687eaff6292f0f03aa3f3b83cde3b38ba896f99f"
+          },
+          {
+            "fqcn": "org.xar.ck3.research.m4.Callee4259250FullState203Calls",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m4/Callee4259250FullState203Calls.java",
+            "bytes": 2441,
+            "sha256": "c57c6a6d798b5b7b6371611c12ff115106328e4863890dc7ca0b76ae8b087906"
+          }
+        ],
+        "boundary": "Existing published source dependency reused, not repeated strict/run or new207case/physical ABI/OS proof."
+      },
+      {
+        "commit": "aa92be93e8cd75d808f3a4bcc72308ce25dc005e",
+        "formal_main_source_hashes": [
+          {
+            "fqcn": "org.xar.ck3.research.m1.GovernmentMemoryFill206Api",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentMemoryFill206Api.java",
+            "bytes": 897,
+            "sha256": "5b5a61d8d0e554716eb5d43a7d2c9e2b9e2fc551a1301f336d141192865c1686"
+          },
+          {
+            "fqcn": "org.xar.ck3.research.m1.GovernmentMemoryFill206",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentMemoryFill206.java",
+            "bytes": 9774,
+            "sha256": "86aea5a2ee466468e585d488ae39370b3e7dd3f3e01fcf3d6a751cf34b18e3f1"
+          },
+          {
+            "fqcn": "org.xar.ck3.research.m1.GovernmentMemoryFill206Calls",
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentMemoryFill206Calls.java",
+            "bytes": 1955,
+            "sha256": "d2cbfbbbfe98331bc781a7195ad105436bcbb4299b710d4c42c8f8208bf2d8d9"
+          }
+        ],
+        "boundary": "Existing published source dependency reused, not repeated strict/run or new207case/physical ABI/OS proof.",
+        "formal_source_receipts": [
+          {
+            "path": "D:/ck3-state/resume91-java-delivery/m1-memory-fill206/READONLY-REVIEW.json",
+            "bytes": 36694,
+            "sha256": "85b9c2d1e8089c26d3f09261651e7a5aea2b1522351cc3825aa99c57f596e170"
+          },
+          {
+            "path": "D:/ck3-state/resume91-java-delivery/m1-memory-fill206/SOURCES.json",
+            "bytes": 1915,
+            "sha256": "0daac20ee0b4cb093acb8970f22e3ebd51ab76edc101dd533458f9237a0e609b"
+          },
+          {
+            "path": "D:/ck3-state/resume91-java-delivery/m1-memory-fill206/FORMAL-STAGED.json",
+            "bytes": 2314,
+            "sha256": "22110f32755d5588bde295c0da8f109dd2dc46fa0b53b307131f5aa40075af1b"
+          }
+        ],
+        "independent_upstream_scope": "Actual3main/24scene1316explicit M1206 validation is separate existing evidence; no207 oldsubject rerun, no merged newcase count."
+      }
+    ],
+    "limits": "Only represented normal owned-Java state and explicit opaque fullV/sharedMemory ports. Three185root sites, all-flags/DF/fault/EH/OS/Native/privateABI/Game/SAVE/newdays/G2completion unqualified. Whole205 does not execute its three separately tested new routes; whole207 does not assert overwritten immediateV or nonzeroWord/NT/SFENCE/computedTail coverage.",
+    "latest_work_not_in_this_supplement": "208 and successors intentionally excluded; no assertion of their current sourceReady/firstcompile/test/publication or actual business state. Nothing in this document gates Main/gameplay or otherHTTP/source tasks."
+  },
+  "publication_205_207_after_cutoff": {
+    "snapshot_at_utc": "2026-10-31T22:17:55.506549+00:00",
+    "boundary": "Independent source publication observations after the earlier21:06:43 document maturity boundary; no backfill of any original cutoff/RESULT/READY/SEAL. Commit times source metadata only, not execution times.",
+    "publications": [
+      {
+        "package": "205",
+        "commit": "6328e4fb2b9c8be86e2de2300881d2092aae3315",
+        "Git_commit_times_source_metadata_only": [
+          "2026-11-01T05:42:30+08:00",
+          "2026-11-01T05:42:30+08:00"
+        ],
+        "main_sources": 2,
+        "manual_support_sources": 6,
+        "existing_formal_blob_count_at_package": 142,
+        "counts_are_separate_not_additive": true,
+        "formal_source_hashes": [
+          {
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentCrtLeaf205Calls.java",
+            "bytes": 3612,
+            "sha256": "9af303640f05d32e4573ec71dca4b045b69c7c0a8659fa3443b336491ab2c1e4",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/leaf-closure205/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtLeaf205Calls.java",
+              "bytes": 3611,
+              "sha256": "3033d6e9c96e5f43d5f565e10684f8da1efe0cd2dea75965381714d556631d5c"
+            },
+            "normalization": {
+              "LF_only_bytes": 3611,
+              "LF_only_sha256": "3033d6e9c96e5f43d5f565e10684f8da1efe0cd2dea75965381714d556631d5c",
+              "added_final_LF": true,
+              "trailing_whitespace_lines": 0,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Complete modelR1 raw owner0, no algorithm copied. Leaf exact3site adapter and Whole exact12parameter typed composition independently owned."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeLeaf205.java",
+            "bytes": 2485,
+            "sha256": "e6e1a315611fcd821b7ba7c2b77a0d69336278942f4792dba33bc120c70f17c4",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeLeaf205.java",
+              "bytes": 2484,
+              "sha256": "6e2bffc850a14959618c278866c8549f7dfddd2e7f10f5ad22a356c1205b7bc6"
+            },
+            "normalization": {
+              "LF_only_bytes": 2484,
+              "LF_only_sha256": "6e2bffc850a14959618c278866c8549f7dfddd2e7f10f5ad22a356c1205b7bc6",
+              "added_final_LF": true,
+              "trailing_whitespace_lines": 0,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Complete modelR1 raw owner0, no algorithm copied. Leaf exact3site adapter and Whole exact12parameter typed composition independently owned."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentBaseLeaf205Fixtures.java",
+            "bytes": 5778,
+            "sha256": "5b7f1847e94feb9386b3d3d11947e83619dc5408c161096a02c3b5700b8f88ac",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/base-book/org/xar/ck3/research/m5/GovernmentBaseLeaf205Fixtures.java",
+              "bytes": 5778,
+              "sha256": "5b7f1847e94feb9386b3d3d11947e83619dc5408c161096a02c3b5700b8f88ac"
+            },
+            "normalization": {
+              "LF_only_bytes": 5778,
+              "LF_only_sha256": "5b7f1847e94feb9386b3d3d11947e83619dc5408c161096a02c3b5700b8f88ac",
+              "trailing_whitespace_lines": 0,
+              "added_final_LF": false,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Owner complete independent two normal M1F7D->204 andF70->Free201 CPU/maps/counters; no model oracle."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentBaseLeaf205Probe.java",
+            "bytes": 4807,
+            "sha256": "2f7e89ac9a144295afff9837e9a618a7320b39f70ca75e12fc47db7c38327136",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/base-host/org/xar/ck3/research/m5/GovernmentBaseLeaf205Probe.java",
+              "bytes": 4807,
+              "sha256": "2f7e89ac9a144295afff9837e9a618a7320b39f70ca75e12fc47db7c38327136"
+            },
+            "normalization": {
+              "LF_only_bytes": 4807,
+              "LF_only_sha256": "2f7e89ac9a144295afff9837e9a618a7320b39f70ca75e12fc47db7c38327136",
+              "trailing_whitespace_lines": 0,
+              "added_final_LF": false,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Owner memory/foundation; only runDispatch989B modelR1 verbatim owner0."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentSizeLeaf205Fixtures.java",
+            "bytes": 3801,
+            "sha256": "bc488a43909f5604779a4c237b8051dfbf8fdb323c77ff7315025e8ca7e5d241",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/null-book/org/xar/ck3/research/m5/GovernmentSizeLeaf205Fixtures.java",
+              "bytes": 3801,
+              "sha256": "bc488a43909f5604779a4c237b8051dfbf8fdb323c77ff7315025e8ca7e5d241"
+            },
+            "normalization": {
+              "LF_only_bytes": 3801,
+              "LF_only_sha256": "bc488a43909f5604779a4c237b8051dfbf8fdb323c77ff7315025e8ca7e5d241",
+              "trailing_whitespace_lines": 0,
+              "added_final_LF": false,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Owner complete independent null size57B->new205->204 normal composition CPU/data/maps; no model oracle."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentSizeLeaf205Probe.java",
+            "bytes": 4521,
+            "sha256": "920968c6fc5bc9b0f69df7d2d332f9391172ce27b3363b259d7aea0555f62084",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/null-host/org/xar/ck3/research/m5/GovernmentSizeLeaf205Probe.java",
+              "bytes": 4521,
+              "sha256": "920968c6fc5bc9b0f69df7d2d332f9391172ce27b3363b259d7aea0555f62084"
+            },
+            "normalization": {
+              "LF_only_bytes": 4521,
+              "LF_only_sha256": "920968c6fc5bc9b0f69df7d2d332f9391172ce27b3363b259d7aea0555f62084",
+              "trailing_whitespace_lines": 0,
+              "added_final_LF": false,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Owner memory/foundation; only runDispatch868B modelR1 verbatim owner0."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeLeaf205Fixtures.java",
+            "bytes": 8226,
+            "sha256": "2738ac25636e68488912329611b2a3b0f19f3d26c352780300b376cae84a57af",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeLeaf205Fixtures.java",
+              "bytes": 8226,
+              "sha256": "2738ac25636e68488912329611b2a3b0f19f3d26c352780300b376cae84a57af"
+            },
+            "normalization": {
+              "LF_only_bytes": 8226,
+              "LF_only_sha256": "2738ac25636e68488912329611b2a3b0f19f3d26c352780300b376cae84a57af",
+              "trailing_whitespace_lines": 0,
+              "added_final_LF": false,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Owner complete independent57/122B CPU/full maps/carry/IAT timing; only build-overlay1811B modelR1 verbatim owner0. Reuses old202Book as literal data only, no old subject run."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeLeaf205Probe.java",
+            "bytes": 24695,
+            "sha256": "3028097414ce21b7bade47380d8e85156049228285aa7b2a8da2141cf163b5ff",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-leaf205/literal-owner/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeLeaf205Probe.java",
+              "bytes": 24695,
+              "sha256": "3028097414ce21b7bade47380d8e85156049228285aa7b2a8da2141cf163b5ff"
+            },
+            "normalization": {
+              "LF_only_bytes": 24695,
+              "LF_only_sha256": "3028097414ce21b7bade47380d8e85156049228285aa7b2a8da2141cf163b5ff",
+              "trailing_whitespace_lines": 0,
+              "added_final_LF": false,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Mechanical original202 whole host subject/fixture/execute/output rename; no new model host/source algorithm."
+          }
+        ],
+        "source_delivery": {
+          "path": "D:/ck3-state/resume91-m5-native/formal-source205/DELIVERY16.json",
+          "bytes": 13730,
+          "sha256": "0f46bcbff567018164837e2bc0799da9d4592c7d7ce01760d6de96df8412f19f"
+        },
+        "formal_review": {
+          "path": "D:/ck3-state/resume91-java-delivery/m5-source205/READONLY-REVIEW.json",
+          "bytes": 62708,
+          "sha256": "10cafd717704ad0fc15f26d0b2090980dfd342756e182ba19d1ec2a9c6b6869d"
+        },
+        "adopted_validation": {
+          "path": "D:/ck3-state/resume91-java-delivery/m5-source205/ADOPTED-VALIDATION.json",
+          "bytes": 6100,
+          "sha256": "a20ffe6c7155d6096427297cf52f4af6bccca786eab5965494c4f4496d9bae1d"
+        },
+        "formal_projection_receipt": {
+          "path": "D:/ck3-state/resume91-java-delivery/m5-source205/FORMAL-STAGED.json",
+          "bytes": 979,
+          "sha256": "6375be59d87d14a232319cae1154429e2f6d8dd5c906b53723e4abb4990b8ffe"
+        },
+        "formal_sources_receipt": {
+          "path": "D:/ck3-state/resume91-java-delivery/m5-source205/SOURCES.json",
+          "bytes": 3089,
+          "sha256": "d4d98733a8cb607b01c514558d17f3cf34592dba249615646c98a2ccdffa349e"
+        },
+        "publication_added_compile_RUN_classes": 0,
+        "writer_notice": "Normalpush/remoteexact/clean per soleJavawriter; origin ancestry and each Git payload SHA independently checked.",
+        "boundary": "Sourcepublication observed at this document snapshot; not execution at an old maturity cutoff, not CI/Native/Game/extra case proof. No oldsource/case rerun or newOurDclasses.",
+        "original_prepared05": {
+          "path": "D:/ck3-state/resume91-m5-native/formal-source205/PREPARED05.json",
+          "bytes": 2294,
+          "sha256": "4e001ed19339fbf8035ea46ccf4a191ad084ef2e8342819ad2622513be44ea02"
+        },
+        "old_205_wholehost_inverse202_exactbytes": true
+      },
+      {
+        "package": "207",
+        "commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+        "Git_commit_times_source_metadata_only": [
+          "2026-11-01T06:12:08+08:00",
+          "2026-11-01T06:12:08+08:00"
+        ],
+        "main_sources": 3,
+        "manual_support_sources": 2,
+        "existing_formal_blob_count_at_package": 147,
+        "counts_are_separate_not_additive": true,
+        "formal_source_hashes": [
+          {
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentCrtFill207Calls.java",
+            "bytes": 2325,
+            "sha256": "56c973361a07a4503bc1b73496c2c6524ad8b9a5f47498c2b74566bffa149b26",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/fill-closure207/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtFill207Calls.java",
+              "bytes": 2324,
+              "sha256": "194d4dcad3680b83f497510c5d39a5fd1a1b3a5b81e1150640833e0d514bbb48"
+            },
+            "normalization": {
+              "projection": "LF/trailing line whitespace/finalLF only; Java lexical token identity",
+              "added_final_LF": true,
+              "trailing_whitespace_lines": 0,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Complete modelR2raw2324B owner0. R1wrongCalls types+invalidtail override whole-rejected beforecompiler, nofragment/R3. ReusesactualM1bindTail withoriginalfallback/budget, onlyDIRECT B87C/F10 convertedtoactualOpaqueCall metadata/fullV/N/preSP. TransferPorts staysoriginal185fallback forfullopaqueTailNR. ForeignCall/Tail/GS sourceforwardsoriginalobject/result."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentFill207Api.java",
+            "bytes": 367,
+            "sha256": "cdef14b28ed3824e6967a7a688d15b745501902f1298bc1dbe1cd9f00a8538c2",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/fill-closure207/api/org/xar/ck3/research/m5/GovernmentFill207Api.java",
+              "bytes": 367,
+              "sha256": "cdef14b28ed3824e6967a7a688d15b745501902f1298bc1dbe1cd9f00a8538c2"
+            },
+            "normalization": {
+              "projection": "LF/trailing line whitespace/finalLF only; Java lexical token identity",
+              "added_final_LF": false,
+              "trailing_whitespace_lines": 0,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Owner367B shared Memory interface double-extends actual189whole and Memory206; same storage explicit Word/NT128/SFENCE, no cast/view/copy/default no-op."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeFill207.java",
+            "bytes": 1767,
+            "sha256": "62904b16266f82fd7a08ceb8f64407b4a520f8b0eb4e37a0a1b698cf73a48621",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-fill207/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeFill207.java",
+              "bytes": 1766,
+              "sha256": "f5c8f692289293c392d26e819b243cdb3eca488af0fa51578c94597803cde6e7"
+            },
+            "normalization": {
+              "projection": "LF/trailing line whitespace/finalLF only; Java lexical token identity",
+              "added_final_LF": true,
+              "trailing_whitespace_lines": 0,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Complete modelR1raw1766B owner0; onlynewbind andactual205execute withall12originalobjects, explicitstrongerMemory type."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeFill207Fixtures.java",
+            "bytes": 6495,
+            "sha256": "389c199b6fa67418bbd7bc72380b09b469601b111b616a4f17852abf4b4e0d68",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-fill207/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeFill207Fixtures.java",
+              "bytes": 6495,
+              "sha256": "389c199b6fa67418bbd7bc72380b09b469601b111b616a4f17852abf4b4e0d68"
+            },
+            "normalization": {
+              "projection": "LF/trailing line whitespace/finalLF only; Java lexical token identity",
+              "added_final_LF": false,
+              "trailing_whitespace_lines": 0,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Owner independent CPU/maps/foundation and complete Book. Only1673B build method modelR1 verbatim owner0; not complete model oracle/Book."
+          },
+          {
+            "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeFill207Probe.java",
+            "bytes": 29589,
+            "sha256": "37a21224d07359554c08ae2654e02263f4fc0d8b65197e450bee87e0c91dfb90",
+            "original_source": {
+              "path": "D:/ck3-state/resume91-m5-native/whole-fill207/literal-owner/host/org/xar/ck3/research/m5/GovernmentWholeFill207Probe.java",
+              "bytes": 29589,
+              "sha256": "37a21224d07359554c08ae2654e02263f4fc0d8b65197e450bee87e0c91dfb90"
+            },
+            "normalization": {
+              "projection": "LF/trailing line whitespace/finalLF only; Java lexical token identity",
+              "added_final_LF": false,
+              "trailing_whitespace_lines": 0,
+              "Java_tokens_equal": true
+            },
+            "source_adoption": "Owner CPU/one shared byte storage/combined width-value store-budget trace and explicit Word/NT/SFENCE ports. Existing205 foundation reused, changed observer delta individually reviewed; not merely a mechanical rename or whole model host."
+          }
+        ],
+        "source_delivery": {
+          "path": "D:/ck3-state/resume91-m5-native/formal-source207/DELIVERY10.json",
+          "bytes": 9727,
+          "sha256": "c850df17f1ee93ada80bca692fc268dad8961fde4c75f229a17b54f67a2c8801"
+        },
+        "formal_review": {
+          "path": "D:/ck3-state/resume91-java-delivery/m5-source207/READONLY-REVIEW.json",
+          "bytes": 57255,
+          "sha256": "865563ed2e4be0061f09578ceff57e500e510dbba325c8d282a5e5d51c90ab9e"
+        },
+        "adopted_validation": {
+          "path": "D:/ck3-state/resume91-java-delivery/m5-source207/ADOPTED-VALIDATION.json",
+          "bytes": 3639,
+          "sha256": "eed3cc16831915f806cce6f7d538055f6e47c1ef82763c856cb67ef8424d4882"
+        },
+        "formal_projection_receipt": {
+          "path": "D:/ck3-state/resume91-java-delivery/m5-source207/FORMAL-STAGED.json",
+          "bytes": 646,
+          "sha256": "3eb0fd05067cef7fd675ec51e0e2af0fda9ed1f5cb084cecda9a63c7ebfc028a"
+        },
+        "formal_sources_receipt": {
+          "path": "D:/ck3-state/resume91-java-delivery/m5-source207/SOURCES.json",
+          "bytes": 1913,
+          "sha256": "cdd97ddfeffa6adc9f33cbf705509a6c56b9d1c71be6dd262569b35b0319ff51"
+        },
+        "publication_added_compile_RUN_classes": 0,
+        "writer_notice": "Normalpush/remoteexact/clean per soleJavawriter; origin ancestry and each Git payload SHA independently checked.",
+        "boundary": "Sourcepublication observed at this document snapshot; not execution at an old maturity cutoff, not CI/Native/Game/extra case proof. No oldsource/case rerun or newOurDclasses.",
+        "independent_publication_record": {
+          "path": "D:/ck3-state/resume91-m5-native/formal-source207/PUBLICATION11.json",
+          "bytes": 11142,
+          "sha256": "c221543a3ae42f1cb79f9dd3694efc5f4b21164131c62ddf56939f0378692310"
+        },
+        "owner_observer_review": {
+          "path": "D:/ck3-state/resume91-m5-native/formal-source207/OWNER-REVIEW07.json",
+          "bytes": 18284,
+          "sha256": "de2d7fb1e8622a2c4bb5a3485e515501cdaadadd701eb052fea516000b73c5e5"
+        },
+        "host_actual_owner_delta": {
+          "path": "D:/ck3-state/resume91-m5-native/formal-source207/HOST-DELTA06.diff",
+          "bytes": 10287,
+          "sha256": "2d5907a16186cdd3265761cfd661eaaa2231b8a07d182788fa295af0fa129ab1"
+        },
+        "old_formal_main": 127,
+        "old_formal_manual": 20
+      }
+    ]
+  }
 }
