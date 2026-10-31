@@ -9,7 +9,7 @@ import org.xar.ck3.control.contracts.StrictJson;
 
 /** A fresh bounded read/collect window for the unchanged original command. It cannot mint submission authority. */
 public final class ActionObservationWindow {
-    public static final Duration MAXIMUM_WINDOW = Duration.ofSeconds(30);
+    public static final Duration MAXIMUM_WINDOW = Duration.ofMinutes(2);
     private record Window(String actionId, Instant deadline) { }
     private static final ThreadLocal<Window> CURRENT = new ThreadLocal<>();
     private ActionObservationWindow() { }
