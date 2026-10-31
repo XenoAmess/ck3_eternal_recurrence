@@ -319,3 +319,12 @@ Store190 真消费任务 stop13.758秒、72940+494，两个模型 hunk 主体加
 背景183完整397B三角色共5实际 POST、3stop/2length，复杂 core 两稿拒，Book 两轮长度截断整弃，未第三投；first Host decoded源码原样采用。owner core与从未读 target 的独立 owner Book，首次8显式源 strict0/.790353秒、4新场73全局事件/6比较端口0/.408825秒，19:52:42结束；无旧绿/原Native/Game信用。M2 265 Host主体加 owner imports/Book入口/println机械修，Book两坏后由已读写 target 的 parent owner 手推，明确 nonblind，首次3场29事件通过；271 Host部分采用加 owner 有界校验，Book两坏后由未读 target/结果的 owner 独立写，首次2场10事件/2端口通过。两组模型 Book 请求均未给新生产候选或运行结果，但265后继owner书不冒 blind；复杂方法或 Native owner 最终通过，不追授被拒模型整稿。
 
 自然采样仍只一次 metrics GET。固定19:28:05.818512–19:38:05.818512窗口，后来补入实际存在但迟注册的 M4 startup-review 私目录，严格按同cutoff重算为9实际POST/9END全stop、客户端峰2、当刻源码0；原8计数保留并明确是范围漏项。修订原件 WINDOW128-193805-SCOPE-CORRECTED.json，原193805未覆盖、无额外GET/POST。源码扫描19:37:59.389776–19:38:05.757100，服务单GET05.757117–05.814740为running0/waiting0/KV0，非原子且不是后续时刻实况。M2新两任务19:38:35、M6后继短峰5不回填该窗口，持续12–16/24–32目标仍未达到。完整源齐的真实独立需求直接由 owner 发出；本岗279在零POST时明确退回M2后，它已同批真实派两条，不能让 P0 或中央索引把准备/审阅串成 HTTP 前置。
+
+
+## resume91 20:26Z：新组件、真实消费边与固定十分钟观察
+
+本机 `xenoamess-full-tower-eb9d2c1186` 继续同一1.11源码通道。M3 完整814B C39C60 的 core/Book/host 三角色共6实际POST（3stop/3length）、局部区间峰2：core首稿存在具体API/指令/地址/循环错误，唯一纠稿length10000整弃；Book两次length10000整弃，首任务互斥路径错误另计owner。完整核心8480B由owner写，独立Book9313B在未读核心时冻结，generic host第二稿17143B解码源码原样采用。首4源严格0/.668725秒；仅3新witness源严格0/.949361秒后，首次三场10/14/36=60有序步骤、4受控端口及20final cells通过/.560068秒。只授所选正常路径软件观察，不授递归扩容/长搬移/overflow/EH或Native/Game、MXCSR/原子INC。原件与采用分级见本机 `resume91-m3-native/hash-insert188/{DELIVERY188,MODEL-OUTCOMES188}.json`。
+
+新消费边另行模型先行：actual379065B/06CB 的父178 opaque端口接新188；绑定首POST20:19:43.240592→54.038381、stop10.797秒、TTFT1.646秒、reported9779+1700/cache null，完整6241B Java原样采用。独立新run方法POST20:23:57.282840→24:06.336604、stop9.053秒、TTFT3.394秒、21688+801/cache null，3146B方法原样，其余测试类为owner机械复用foundation，不能授整Test原样。两请求实际无重叠、局部峰1。绑定加必要当前接口首严格0/.672223秒；只1新Test首严格0/.824855秒、首次新绑定消费10step/gs58同Memory全64一次转发/foreign拒绝且cursor不增三项0/.128349秒。没有重跑旧188三场；此短分支不访问scratch或moduleBase，-0xB0映射仍仅源审，不能由这10step证明。交付 `hash-insert188/caller-bind188/DELIVERY-BINDING188.json`，正式阶段待唯一Java写者，软件通过不冒Game信用。
+
+复用既有reader一次固定窗口 `[20:16:44.296945,20:26:44.296945]Z`：16真实POST、15实际END（stop11/length4），客户端峰6于20:25:50.468801；cutoff源码在途1，仅map-rehash190 Book。源码扫描20:26:42.631824–44.245207，随后唯一metrics GET20:26:44.245223–44.293705读running2/waiting0/KV约5.303%；这是分时非原子观察，服务全局请求不归因本机源码。持续12–16/24–32仍未达，不用累计调用或瞬间峰值替代，不据此给服务定容量上限。报告 `WINDOW128-202644.json`；Root192、视频191、M3私有host/190及M5私有197真实事件目录已补指针，0重放/0统计POST/不回写旧19:38冻结窗口。
