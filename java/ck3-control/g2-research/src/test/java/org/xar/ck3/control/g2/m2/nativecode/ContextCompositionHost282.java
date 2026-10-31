@@ -5,6 +5,7 @@ import org.xar.ck3.control.g2.m2.nativecode.ContextCompositionData282.Op;
 import org.xar.ck3.control.g2.m2.nativecode.ContextCompositionData282.Scene;
 import org.xar.ck3.control.g2.m2.nativecode.ContextCompositionData282.Step;
 import org.xar.ck3.control.g2.m2.nativecode.PendingContextCopy3076B60.Bits128;
+import org.xar.ck3.control.g2.m2.nativecode.Copy4226860Api.Bits256;
 import org.xar.ck3.control.g2.m2.nativecode.PendingContextWithKnownHelpers3076B60.Memory;
 
 /** Finite, globally ordered scripted callbacks; no default memory or target-derived expectations. */
@@ -54,17 +55,25 @@ public final class ContextCompositionHost282 {
             return step.returned();
         }
         @Override public int read8(long a) { return read(Op.R8, a, 2).values().get(1).intValue(); }
+        @Override public int readScalar16(long a) { return read(Op.R16, a, 2).values().get(1).intValue(); }
         @Override public int read32(long a) { return read(Op.R32, a, 2).values().get(1).intValue(); }
         @Override public long read64(long a) { return read(Op.R64, a, 2).values().get(1).longValue(); }
         @Override public Bits128 read128(long a) {
             Step s = read(Op.R128, a, 3);
             return new Bits128(s.values().get(1).longValue(), s.values().get(2).longValue());
         }
+        @Override public Bits256 read256(long a) {
+            Step s = read(Op.R256, a, 5);
+            return new Bits256(new Bits128(s.values().get(1).longValue(), s.values().get(2).longValue()),
+                    new Bits128(s.values().get(3).longValue(), s.values().get(4).longValue()));
+        }
         @Override public void write8(long a, int v) { write(Op.W8, a, (long) (v & 0xff)); }
         @Override public void write16(long a, int v) { write(Op.W16, a, (long) (v & 0xffff)); }
         @Override public void write32(long a, int v) { write(Op.W32, a, Integer.toUnsignedLong(v)); }
         @Override public void write64(long a, long v) { write(Op.W64, a, v); }
         @Override public void write128(long a, Bits128 v) { write(Op.W128, a, v.low(), v.high()); }
+        @Override public void write256(long a, Bits256 v) { write(Op.W256, a, v.low128().low(), v.low128().high(), v.high128().low(), v.high128().high()); }
+        @Override public void storeFence() { write(Op.FENCE); }
         @Override public org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16 read16(long address) {
             Bits128 bits = read128(address);
             return new org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16(bits.low(), bits.high());

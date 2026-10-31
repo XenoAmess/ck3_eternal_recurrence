@@ -6,7 +6,7 @@ public final class PendingContextWithKnownHelpers3076B60 {
     public interface Memory extends PendingEmbeddedCopy373ACF0.Memory,
             PendingContextChildInit105D2D0.Memory, PendingContextRangeInsertBCB7C0.Memory,
             PendingContextTailCopy2503880.Memory, PendingEmbeddedInit8895D0.Memory,
-            PendingEmbeddedElements37282B0.Memory, PendingEmbedded24Copy260E040.Memory, PendingEmbedded32Copy3727180.Memory { }
+            PendingEmbeddedElements37282B0.Memory, PendingEmbedded24Copy260E040.Memory, PendingEmbedded32Copy3727180.Memory, Copy4226860SharedAdapter395.Memory { }
     public interface Calls {
         void call8895D0(Memory memory, long rcx, long rdx);
         void call37282B0(Memory memory, long rcx, long rdx);
@@ -90,7 +90,7 @@ public final class PendingContextWithKnownHelpers3076B60 {
         PendingContextRangeInsertBCB7C0.Calls rangeCalls = new PendingContextRangeInsertBCB7C0.Calls() {
             public long allocate(PendingContextRangeInsertBCB7C0.Memory m, long target, long rcx, long rdx, int r8d) { return calls.rangeAllocate(memory, target, rcx, rdx, r8d); }
             public void release(PendingContextRangeInsertBCB7C0.Memory m, long target, long rcx, long rdx, int r8d) { calls.rangeRelease(memory, target, rcx, rdx, r8d); }
-            public void call4226860(PendingContextRangeInsertBCB7C0.Memory m, long rcx, long rdx, long r8) { calls.call4226860(memory, rcx, rdx, r8); }
+            public void call4226860(PendingContextRangeInsertBCB7C0.Memory m, long rcx, long rdx, long r8) { PendingMemoryCopy4226860.copy(Copy4226860SharedAdapter395.bind(memory), rcx, rdx, r8, moduleBase); }
             public void call9CF240(PendingContextRangeInsertBCB7C0.Memory m, long rcx, long rdx, long r8) { calls.call9CF240(memory, rcx, rdx, r8); }
         };
         PendingContextTailCopy2503880.Calls tailCalls = new PendingContextTailCopy2503880.Calls() {

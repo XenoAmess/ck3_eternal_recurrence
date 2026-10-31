@@ -24,7 +24,7 @@ public final class PendingSlotWithKnownHelpers2A32770 {
             }
             @Override
             public void call4226860(PendingSlotCapacityWithArray1ACDFB0.Memory m, long rcx, long rdx, long r8) {
-                calls.call4226860(memory, rcx, rdx, r8);
+                PendingMemoryCopy4226860.copy(Copy4226860SharedAdapter395.bind(memory), rcx, rdx, r8, input.moduleBase());
             }
             @Override
             public void call4226F10(PendingSlotCapacityWithArray1ACDFB0.Memory m, long rcx, int edx, long r8) {

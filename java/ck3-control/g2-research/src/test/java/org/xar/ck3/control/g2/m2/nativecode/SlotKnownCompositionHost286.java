@@ -135,5 +135,15 @@ public final class SlotKnownCompositionHost286 {
         @Override public long slotAllocate(Memory m, long t, long c, long d, int e) { return call(Op.SLOTALLOC, m, true, t, c, d, Integer.toUnsignedLong(e)); }
         @Override public void slotRelease(Memory m, long t, long c, long d, int e) { call(Op.SLOTRELEASE, m, false, t, c, d, Integer.toUnsignedLong(e)); }
         @Override public void call4226F10(Memory m, long c, int d, long e) { call(Op.SET, m, false, c, Integer.toUnsignedLong(d), e); }
+
+        @Override public int readScalar16(long a) { return read(Op.R16, a, 2).values().get(1).intValue(); }
+        @Override public Copy4226860Api.Bits256 read256(long a) {
+            Step s = read(Op.R256, a, 5);
+            return new Copy4226860Api.Bits256(new Bits128(s.values().get(1).longValue(), s.values().get(2).longValue()), new Bits128(s.values().get(3).longValue(), s.values().get(4).longValue()));
+        }
+        @Override public void write256(long a, Copy4226860Api.Bits256 v) {
+            write(Op.W256, a, v.low128().low(), v.low128().high(), v.high128().low(), v.high128().high());
+        }
+        @Override public void storeFence() { write(Op.FENCE); }
     }
 }
