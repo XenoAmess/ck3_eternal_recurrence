@@ -163,7 +163,19 @@ public final class RootLifeRuntimeFactory {
                     }
                     var received = (NativeFreshSnapshotPort.Received) fresh;
                     NativeFreshSnapshotPort.verifyAfter(status.receipt().original(), received);
-                    var ending = LifeAdvanceRootReplay.push(context.adopted().observations().project(received.originalFrame(), deadline));
+                    // Borrow this actual writer for recovery DATA; Held.project would open a second writer.
+                    // This callback also runs under the coordinator during the later cancellation terminal read.
+                    require(context.clock().instant().isBefore(deadline)
+                            && !received.originalFrame().observedAt().isAfter(deadline),
+                            "actual received-frame projection deadline expired");
+                    var ending = context.adopted().authority().withFrozenRawObservation(received.originalFrame(), same, frozen -> {
+                        var nativeOriginal = originalArchive.preserveNativeFrame(received.originalFrame());
+                        var projected = context.core().observationAssembler().assemble(received.originalFrame(), frozen.facts(), nativeOriginal);
+                        if (projected instanceof org.xar.ck3.control.application.driver.DriverObservationAssembler.Incomplete missing)
+                            throw new IllegalStateException("incomplete actual semantic observation: " + String.join(",", missing.reasons()));
+                        return LifeAdvanceRootReplay.push((org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete) projected);
+                    });
+                    require(context.clock().instant().isBefore(deadline), "actual waited snapshot projection exceeded its original capture deadline");
                     var custody = status.receipt().original().custody().orElseThrow(); custody.verify(status.receipt());
                     require(!ending.observedAt().isBefore(custody.responseReceived().observedAt()),
                             "Life cancellation has no fresh complete semantic frame after its actual physical Status");

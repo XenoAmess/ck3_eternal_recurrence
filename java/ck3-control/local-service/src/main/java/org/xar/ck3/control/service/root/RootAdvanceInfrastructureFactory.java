@@ -324,7 +324,16 @@ public final class RootAdvanceInfrastructureFactory {
             }
             var received = (NativeFreshSnapshotPort.Received)fresh;
             NativeFreshSnapshotPort.verifyAfter(ack, received);
-            var complete = sameHeld.project(received.originalFrame(), deadline);
+            require(context.clock().instant().isBefore(deadline)
+                    && !received.originalFrame().observedAt().isAfter(deadline), "actual received-frame projection deadline expired");
+            var complete = context.adopted().authority().withFrozenRawObservation(received.originalFrame(), same, frozen -> {
+                var nativeOriginal = context.archive().withSession(same).preserveNativeFrame(received.originalFrame());
+                var projected = context.core().observationAssembler().assemble(received.originalFrame(), frozen.facts(), nativeOriginal);
+                if (projected instanceof org.xar.ck3.control.application.driver.DriverObservationAssembler.Incomplete missing)
+                    throw new IllegalStateException("incomplete actual semantic observation: " + String.join(",", missing.reasons()));
+                return (org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete) projected;
+            });
+            require(context.clock().instant().isBefore(deadline), "actual waited snapshot projection exceeded its original capture deadline");
             require(child.before().machineId().equals(complete.identity().machineId())
                     && child.before().game().equals(complete.identity().game())
                     && child.before().frame().episodeRunId().equals(complete.identity().frame().episodeRunId())
