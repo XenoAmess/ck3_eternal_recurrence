@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码153已发表77893960da，M7 Construct/Assign四leaf已发表8b140c0e02。Main153实际09:14:07.282812Z preloop END1/172.560463秒、未LOOP；此前只读恢复已真正把同一原ARM子动作持久为canonical387 SETTLED/CONTROL_APPLIED，独立STATUS确认gen1armed，原request/dispatch同而未重ARM。canonical388父仍Unknown/next60，日期53144328不增；不把ControlApplied当Advance/普通新日。154取消/父恢复链尚待，旧373/374不重放。本岗不写S/MB/Game/账本。
+最新正式源码已准确交付154取消15生产叶及便携cursor测试/原件、155–157物理Status来源/路由/归档修复；M0 Frontend两Java、M7 copy16/storage八新叶和M1 live ARM六叶已正常FF到408835fb15。最新实际157于09:52:07.511447Z preloop END1/54.895340秒、无LOOP；归档旧code cap已越，后续fresh projection嵌套writer阻塞由运行岗独占158修。canonical388父仍Unknown，原ARM387已SETTLED/CONTROL_APPLIED且未重发，next60/date53144328不增、未CANCEL；旧373/374不重放。M1 live ARM仅正式/软件验收，尚未S/MB加载。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -497,3 +497,22 @@ query153单RootReconciliationAuthority准确包`RUNTIME.patch`5157B在Main逐hun
 ### 153实机后到：原ARM子动作实际持久，父仍未决
 
 Main实际153 START/PID未在本岗补造；直接终态记录为09:14:07.282812Z preloop END1/172.560463秒、未LOOP/next60，HOLD随后解除。关键原件已真正落canonical：同一原ARM动作的event387为SETTLED/CONTROL_APPLIED，receipt `889556bc8c39cb5fc355e1c06484e1947dadcc23b2f083d18792cfdbaa5ecb1b.bin`7272B，独立STATUS `4bf2e55382a0d31c62f70160870152046bd3de868a2ea810c98f49a622f7ed06.bin`15573B；native251/public270、date53144328、generation1 armed。运行岗已核原request/dispatch同一，没有重新ARM；这是真实持久子控制终态，超出前述DATA/源码范围，但不授普通world动作/Advance/日期/SAVE。随后父readonlyobserve期限仍使canonical388父Unknown，取消全组准备154，尚不称整个Root恢复或父已结算。本文前一节“153当刻安装”保留为发表准备时冻结，最新实况以本段为准。
+
+
+## 154–157精确源码、组件消费和实际运行边界
+
+154三组依次正常FF：Domain10叶f7c2e7fb88、Role3叶ec9c5a385b、Root2生产+cursor测试/原件aaba911d28。前置genericcontinuation150已正式，不重复采用。新增取消来源只接受实际canonical Unknown Life前缀、同一注册source和private token、最后独立确认的ARM generation；只允许一个精确CANCEL child和有界只读窗口，已reserved/UNKNOWN不重发。终态仍须独立IDLE Status及完整same-date semantic证明，未授游戏推进。Root部分保持152取消的代码资格审计，不重新引入code pin。全部精确hunk检查通过、当前candidate归一化逐叶相同；未wholecopy或新增编测。
+
+Domain末order154两源strict0/2.893767秒；Role完整软件positive1P/1.794秒及另两新negative2P/2.106秒分组，非同JVM3P/实机权限；Root2prodstrict0/2.467秒、单teststrict0/1.911秒、便携resource-only三cursor DATA方法3P/2.929秒。顺序、private issuer与真实Native权限不能由cursor测试追认。模型多轮原件/截断/拒绝保留：Domain admission仅partial，最终eager boot/order由owner并行实现、model0采用；Role主实现owner，Root候选整拒后owner实现，不能整包归模型。原385父JSON Git blob逐byte保留。
+
+155单RootPhysicalStatusReadAuthority正常FF1a98ae91a8：去live/archive实现代码pin/历史CODE文件closure，保Native/HELLO/HB、custody/Head/profile、真实qualification/epoch JSON及有限DATA读取。3raw model hunks原样，owner只删dead import/local；复用单源strict0/2.432秒，无behavior测试。156三叶75c41aeec7：Dispatcher双入口接已有PhysicalStatusOnly adapter、adapter去两codepins、cold terminal guard走catalog绑定physical authority并比精确PhysicalStatusIdentity；不伪转ordinary observation。两模型4edits原样、owner语义0，strict3源0/2.378秒、无behavior。157两归档叶bbb1bfbf32：去physical/request/adoption和failed READ installed/request CODE重读，保真实Native/packet/qualification/epoch/basis/prepared/outcome/retained DATA、Head及原planning-only scope/recursive strong promotion；模型4方向partial，owner补installed/adoption残余CODE。strict2源0/3.050秒，无镜像/fullRoot测试。
+
+现场后到事实分开记录：154 preloop END1/53.922秒，PhysicalStatus live codepin挡读；155 codepin已越，Dispatcher未注册origin；156路由已越，旧Assembly.class引用cap19394对实际19472失败，inner stack未知、source链解释对应cap不冒直接栈实证；157已越归档codecap，后续LifeFactory fresh project进入assemblerFrozenReader嵌套writer。157实际09:52:07.511447Z END1/54.895340秒，HOLD已解除，0MB/worker；没有token/CANCEL/父settlement/新日。ARM387是同原request/dispatch经独立STATUS的真实CONTROL_APPLIED，父388仍Unknown，原speed373/父374不重发。
+
+M7 caller153三叶46e53ed887接实际E92780→Construct、26769E0→Assign，sameMemory与opaque remainder原样转发；两个首model方法原样，测试partial/owner精确access断言。复用单prodstrict0/0.548秒、两teststrict0/1.229秒、首次新2JUnit2P0skip/0.852秒。copy16三新叶e28cb8b30f仅unsigned16..32分支，两Raw128先读完再写，其他原长不碰Memory只转一次remainder；strict3源0/0.806秒、首次2新JUnit2P/0.815秒（8finitecases）。storage155五新叶be9bdadfc5复用raw64 size，large aligned pointer与P-8回指由实际formal cleanup消费；overflow/large-null显式未执行Native错误边界。2prodstrict0/0.555秒+3teststrict0/1.042秒、首次单JVM4JUnit4P/0.754秒（8finitecases），不重旧绿。production core/adapters首model原样，errorTest纠错后model原样，其余tests的literal/image/access owner修正独列；8logical/9actual POST的connection reset partial usage未知，不拼流。writer仅删obsolete/prompt comments与尾白、执行tokens同；既有g2-research/0POM，copy4096、allocator/heap、完整Native ABI/EH/currentU/naturaldrain/Save保持unknown。
+
+M0 Frontend两Java正常FFe5bbf9fa9f，Zrepo根2Checking/2Applied/0Skipped且normalized candidate2/2同。ControlBuild只抽出已有严格reader的显式Recorded overload；四真实Native serializer软件frame+Java actual request第五文件通过同typedreader，不改System properties，不隐藏显式外部metadata/SDK选择失败。source strict0/2.298秒、test strict0/1.614秒、原四方法4P0skip/3.661秒；两另启external partial lane各预期exit1/1F，保原异常和stderr，不改称positive P。Native组件two TU/helper+unchanged serializer已真实RUN0，whole target/hosted/live Lobby未验，Native3叶由其唯一writer独占。
+
+M1 live ARM五生产+便携test正常FF408835fb15。compatible default callback为model03原样，其余production四处真实API/顺序修及全部四test由owner完成，三test draft拒绝保留。Primitives先独立STATUS后普通current，Clock以held basis作native-sentinel恢复前控制依据；inactive Pending转发、active current/capture及POLLED/postmutation/reconciliation/CANCEL不改。baseline6src strict0/2.208秒→4精确RED，candidate5prodstrict0/2.138秒→同4方法4P0skip/2.936秒，两独立JVM。测试到单次resume提交边界即停，未mutation inside read lease；Factory只source/strict，activePending/actualRoot未验。Main尚未S/MB加载，不授当前157/158修复、真实resume或游戏日。
+
+本波本岗source候选normalized逐叶比对、exact stage/diffcheck和正常fetch/rebase/FFpush均真实0，master408835fb15 clean时完成；全部必要编测复用owner首验，没有为采用重复旧绿/开启模型总结调用。各包PHYSICAL156/ARCHIVE157/FRONTEND156/M7-COPY154/M7-STORAGE155/LIVE-ARM153及154三组ADOPTION.json在本机D:/ck3-state/resume91-java-delivery，区分raw模型、owner修正、正式source、软件边界和实际Game结果。后继成熟source须followup_task唤醒本岗；单纯send给completed岗不代表真实开始。
