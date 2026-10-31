@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码159已发表3858c5df55，继承Native60d2f634d8；本岗成熟source/组件交付已清，Dclean/无编测在途。Main158实际10:09:35.559207Z preloop END1/445.919146秒、无LOOP：原CANCEL395已SETTLED/CONTROL_APPLIED，父396已CompositeControlApplied initialization_cancelled、falseflags且新增日0。后Controller.completeCycle.ready因ARM/CANCEL缺第二记录行失败；159单Assembler只缺row分类修已S/Z采并MB159开始，159实际10:13:40.504778Z preloop END1/7.616541秒、未到新Assembler分支；cold物理archive router未装先阻历史回执读取，HOLD已解除，不授完整恢复或游戏日。原ARM387/speed373/父374均不重放，本岗不写S/MB/Game/账本。
+最新正式runtime160已发表776039f916，M7 retry158四新叶c7569fc56b和API02 gate160四新叶79900e43ee已正常FF；本岗source采用复用实际首验、0新编测。Main160实际10:22:18.740097Z preloop END1/27.542068秒、无LOOP；coldrouter错误已越，后Journal845 InitialNoDispatchHistoryEdge历史payload严格8field解析误类型待161。原CANCEL395/父396已结算且不重放，新增日0；不能把160 source或M7软件绿当Driver/实机恢复。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -534,3 +534,14 @@ Root单DriverStateAssembler CURRENT-S158.patch3293B正常FF3858c5df55。仅首pr
 159后到实际10:13:40.504778Z preloop END1/7.616541秒、无LOOP。cold readUnresolvedSameGame在physical router安装前读取父396 terminalStatus即router unavailable，未到新Assembler分支；395/396已结算不变。HOLD解除，provider160独占冷角色/装配定位，本159source不能追认为实际Driver绿。
 
 M7 retry158新四叶已提前独立源审：完整60B decode与core/adapter/normal/error tests读完，4 frozen SHA一致；fullraw64、非零RAX、negative EAX重试、captured RBX与error-call RCX区分、两refusal targets/finite chronology均对应原源。尚未首编/首4JUnit，0stage/正式采用/模型调用；M7-RETRY158-PRE-REVIEW.json保留，不把SOURCE_READY追认验证通过。
+
+
+## 160冷回放与M7 retry/gate的实际采用
+
+Native ops159三doc1d8553ce12后，本岗两独立成熟source正常rebase/FF：M7 retry158 c7569fc56b、runtime physicalcold160 776039f916。后者两叶5290B只把既有完整physical verifyArchived DATA校验抽到同一static方法；live wrapper保actual writer/original-reader及运行Game/source/session断言，absentroute冷archive用samewriter readArtifact走同完整basis/schema/identity/authority/profile/validity/historicalHead与Native/HELLO/HB/optional qualification/epoch joins。无弱fallback、新registry、伪context/Ready/currentpermission/NativeIO，155/157取消CODE审计与强promotion/scope后继均保。首model弱fallback整拒、owner完整factor；单两源strict0/2.561502秒，无behavior/fullRoot镜像。Main160真实27.542068秒preloop END1：旧coldrouter故障确越，下一Journal845历史InitialNoDispatchHistoryEdge payload严格8field误类型，未到Assembler/Driver完整恢复。原395/396终态不变，无再ARM/CANCEL/新日。
+
+M7 retry158四新叶SHA与提前PRE-REVIEW一致，复用首次4TU strict0/0.8061785秒及单JVM4新JUnit4P0skip/0.7179906秒、4finitecases；没有依赖重编或旧绿。实际held60B控制流保存fullraw64 size、非零rawRAX直接返，handler rawEAX非零（含负）重试，零按capturedRBX allones分两真实错误CALL/INT3边界；异常只记录capturedSizeBits，不伪称known errorRCX。完整首model core method/consumer class、两test corrected02整class采用，owner负责冻结API/error shell和机械组装，算法0；六真实POST/峰2/49189+3750tokens，cached未报。writer只去obsolete comments/LF尾白且执行tokens同。外callee/堆/NativeABI/EH/currentU/drain/Save未验。
+
+M4独立47B寄存器核对发现gate160旧API01漏CALL间接slot时仍活的fullRAX；本岗先前独立审阅只看显式RCX/EAX控制流，也漏该known state，已撤回旧M7-GATE160-PRE-REVIEW并标SUPERSEDED。旧4leaf从未stage、编译或行为运行，不能把owner输入/审阅缺项记为模型错。新API02以(long knownRCX,long liveRAX)原样传到indirect port，不赋予RAX pointer/status/CFG含义。两真实后继model完成core整class+跨两Test完整合同传播，新owner源码改0；不把这两包误说成旧错误第三次反馈。旧composition三static imports+一local typo的owner机械修历史仍保。
+
+新reviewed04四叶source/helddecode再审、SHA4/4核对后，首次4TU strict0/0.7752872秒、首次单JVM4JUnit4P0skip/0.775071秒（5finitecases）真实END，正常FF79900e43ee。truth/composed witnesses分别精确验证Long.MIN_VALUE与negative liveRAX、fullrawRCX、EAX规范0/1及同一有限callback chronology；旧retry/依赖/test未重编重跑。8actualPOST/峰4/27808+8755tokens，cached未报；core/API02两Test传播model原样、adapter首model原样，owner旧四机械修不洗掉。g2-research原POM/依赖不变，Native body/实际IATtarget/完整arity/heap/currentU/drain/Save均未授。对应M7-RETRY158、PHYSICAL-COLD160和M7-GATE160 ADOPTION.json已PUBLISHED_MASTER_CLEAN，分别保local pre-rebase与实际sourcecommit。Z只新增唯一M7八叶，运行source仍Main独占。
