@@ -278,6 +278,8 @@ public final class RootOrdinaryWorkerLoop {
                 if (current.committedLedgerHead().isPresent() && !current.committedLedgerHead().equals(prev.committedLedgerHead())) return true;
                 if (current.committedSavedDays() > prev.committedSavedDays()) return true;
             }
+        } else if (current.committedSavedDays() > 0) {
+            return true;
         }
         return false;
     }
