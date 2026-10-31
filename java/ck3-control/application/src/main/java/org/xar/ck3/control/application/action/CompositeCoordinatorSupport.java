@@ -190,7 +190,7 @@ final class CompositeCoordinatorSupport {
                         &&actualSource.supports(parent.operation()),"fixture completion lost its identical registered composite source");
                 ((FixtureCompositeActionPort)actualSource).requireFixtureCompletion(parent,retained,completed.observation());
             }
-            ActionEffects.validateComposite(parent, retained, settlement); ActionEffects.validateCompositeChildren(retained, settlement, canonicalChildren);
+            ActionEffects.validateComposite(parent, retained, settlement); ActionEffects.validateCompositeChildren(parent, retained, settlement, canonicalChildren);
         }
         catch (RuntimeException failure) { return ActionCoordinator.append(locked, parent, digest, new ActionState.CompositeUnknown(retained, ActionCoordinator.diagnostic("composite effect not proven", failure), List.of())); }
         return ActionCoordinator.append(locked, parent, digest, new ActionState.CompositeSettled(retained, settlement));

@@ -42,8 +42,9 @@ public final class ActionTransitions {
             StrictJson.require(before.handlerId().equals(after.handlerId()) && before.startedAt().equals(after.startedAt()) && before.guard().equals(after.guard()), "composite origin cannot change");
             StrictJson.require(after.children().size() >= before.children().size() && after.children().subList(0, before.children().size()).equals(before.children()), "durable child body/order cannot change");
             boolean sourceContinuation = old.state() instanceof ActionState.CompositeUnknown && next instanceof ActionState.CompositeUnknown
-                    && command.origin() instanceof CommandOrigin.LifecycleTerminal
-                    && command.lifecycleExpected().operation() == LifecycleExpectedPostcondition.Operation.CONTINUE_SUCCESSOR;
+                    && (command.origin() instanceof CommandOrigin.LifecycleTerminal
+                        && command.lifecycleExpected().operation() == LifecycleExpectedPostcondition.Operation.CONTINUE_SUCCESSOR
+                        || lifeCancellationReservation(command, before, after));
             StrictJson.require(next instanceof ActionState.CompositeRunning || sourceContinuation
                     ? after.children().size() <= before.children().size() + 1 : after.children().equals(before.children()),
                     "only a running or source-verified exact successor continuation may reserve one child");
@@ -52,6 +53,22 @@ public final class ActionTransitions {
         if (beforeAttempt.isPresent()) StrictJson.require(beforeAttempt.equals(afterAttempt), "original durable submission attempt cannot change");
         Optional<NativeActionPort.DispatchOutcome> previousDispatch = dispatch(old.state());
         if (previousDispatch.isPresent()) StrictJson.require(previousDispatch.equals(dispatch(next)), "an original ACK or unknown dispatch record cannot be erased or replaced");
+    }
+    /** Cold structural shape only. The registered source and its actual Children still authorize each CANCEL. */
+    private static boolean lifeCancellationReservation(ActionCommand command, CompositeExecution before, CompositeExecution after) {
+        if (!(command.origin() instanceof CommandOrigin.Gameplay)
+                || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(command.operation().value())
+                || !before.handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                || before.children().isEmpty() || before.children().size() > 3
+                || after.children().size() != before.children().size() + 1 || after.children().size() > 4) return false;
+        GuardEvidence guard = before.guard();
+        if (!command.origin().acceptsGuard(guard.origin()) || !command.source().equals(guard.source())
+                || !command.sessionId().equals(guard.sessionId()) || !command.operation().equals(guard.operation())) return false;
+        var plan = org.xar.ck3.control.application.advance.AdvancePlan.decode(command);
+        return plan.clockMode() != org.xar.ck3.control.application.advance.AdvancePlan.ClockMode.POLLED
+                && plan.dailyWatch().isEmpty()
+                && command.expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePlan.OBSERVER)
+                && command.expected().values().equals(plan.expected());
     }
     public static Optional<ActionState.Attempt> attempt(ActionState state) {
         return switch (state) {

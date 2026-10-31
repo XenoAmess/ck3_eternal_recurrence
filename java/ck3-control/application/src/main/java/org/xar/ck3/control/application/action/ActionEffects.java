@@ -234,14 +234,21 @@ public final class ActionEffects {
         effect.provenance().validate(effect.after(), effect.originalEvidence());
         StrictJson.require(effect.sessionId().equals(command.sessionId()) && effect.provenance().independentOf(terminal.requestId())
                 && !effect.originalEvidence().equals(execution.guard().nativeEvidence()), "zero-day semantic evidence must be independent of guard and Status");
-        requireSameControlFrame(command.before(), effect.after());
-        requireSameControlFrame(effect.after(), terminal.after().binding().observed());
+        if (cancelledLifeControl(command, execution, control)) {
+            requireSameLifeControlFrame(command.before(), effect.after());
+            requireSameLifeControlRead(command, terminal);
+        } else {
+            requireSameControlFrame(command.before(), effect.after());
+            requireSameControlFrame(effect.after(), terminal.after().binding().observed());
+        }
         java.util.HashSet<String> requests = new java.util.HashSet<>(); requests.add(terminal.requestId());
         for (PlanningReadReceipt read : control.supportingReads()) {
             StrictJson.require(read.original().nativeOk() && read.request().source().equals(command.source())
                     && read.request().sessionId().equals(command.sessionId())
                     && !requireChronology(read).writeEntered().observedAt().isBefore(execution.startedAt()), "supporting control query is stale, failed or out of scope");
-            requireSameControlFrame(command.before(), read.after().binding().observed());
+            if (cancelledLifeControl(command, execution, control))
+                requireSameLifeControlRead(command, read);
+            else requireSameControlFrame(command.before(), read.after().binding().observed());
             StrictJson.require(effect.provenance().independentOf(read.requestId()), "semantic packet cannot double as a control query ACK");
             requests.add(read.requestId());
         }
@@ -249,6 +256,52 @@ public final class ActionEffects {
             StrictJson.require(effect.actual().contains(new ProposalLifecycle.ExpectedBoolean(new ProposalLifecycle.FieldKey(field), false)), "zero-day control must explicitly decline gameplay, advance and SAVE credit");
         StrictJson.require(ProposalLifecycle.compare(command.expected(), effect.after(), effect.source(), effect.observerSchema(), effect.actual())
                 == ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH, "zero-day parent observation did not match the original exact expectation");
+    }
+    private static boolean cancelledLifeControl(ActionCommand parent, CompositeExecution execution, CompositeControlObservation control) {
+        return org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(parent.operation().value())
+                && execution.handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                && initializationCancelled(control);
+    }
+    private static boolean initializationCancelled(CompositeControlObservation control) {
+        return control.semantic().actual().contains(new ProposalLifecycle.ExpectedText(
+                new ProposalLifecycle.FieldKey("progress_status"), "initialization_cancelled"));
+    }
+    private static void requireSameLifeControlRead(ActionCommand parent, PlanningReadReceipt read) {
+        if (read.request().origin() instanceof CommandOrigin.PhysicalStatusOnly physical) {
+            PhysicalStatusIdentity actual = physical.identity();
+            StrictJson.require(read.contractId().equals(PhysicalStatusIdentity.CONTRACT_ID)
+                    && read.before().guardMode() == ReadContract.GuardMode.STATUS_ONLY
+                    && read.after().guardMode() == ReadContract.GuardMode.STATUS_ONLY
+                    && actual.machineId().equals(parent.before().machineId()) && actual.game().equals(parent.before().game())
+                    && actual.source().equals(parent.source()) && actual.sessionId().equals(parent.sessionId())
+                    && actual.nativeRevision().compareTo(parent.before().frame().identity().nativeRevision()) >= 0,
+                    "Life cancellation physical Status crossed its exact profile/source/Game/session or regressed Native revision");
+            // Physical Status has no actor/date/episode; the full semantic ending and source-owned
+            // canonical cancellation proof validate those facts without inventing a map observation.
+            return;
+        }
+        requireSameLifeControlFrame(parent.before(), lifeControlReadIdentity(read));
+    }
+    private static ProposalLifecycle.ObservationIdentity lifeControlReadIdentity(PlanningReadReceipt read) {
+        if (read.request().origin() instanceof CommandOrigin.Reconciliation) {
+            StrictJson.require(read.contractId().equals("java.tactical-daily-sentinel.status.reconciliation.v1")
+                    && read.request().operation().value().equals(org.xar.ck3.control.application.advance.ClockStatusRead.STEP)
+                    && read.request().arguments().members().isEmpty()
+                    && read.before().guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION
+                    && read.after().guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION,
+                    "Life cancellation supporting reconciliation read lost its exact Status role");
+            return read.after().binding().origin().requireReconciliation().factual();
+        }
+        return read.after().binding().observed();
+    }
+    private static void requireSameLifeControlFrame(ProposalLifecycle.ObservationIdentity expected, ProposalLifecycle.ObservationIdentity actual) {
+        StrictJson.require(expected.machineId().equals(actual.machineId()) && expected.game().equals(actual.game())
+                && expected.observationVersion() == actual.observationVersion()
+                && expected.frame().episodeRunId().equals(actual.frame().episodeRunId())
+                && expected.frame().identity().player().equals(actual.frame().identity().player())
+                && expected.frame().identity().dateRaw().equals(actual.frame().identity().dateRaw())
+                && actual.frame().identity().nativeRevision().compareTo(expected.frame().identity().nativeRevision()) >= 0,
+                "Life cancellation crossed Game/player/episode/date or regressed Native revision");
     }
     private static void requireSameControlFrame(ProposalLifecycle.ObservationIdentity expected, ProposalLifecycle.ObservationIdentity actual) {
         StrictJson.require(expected.machineId().equals(actual.machineId()) && expected.game().equals(actual.game())
@@ -267,11 +320,21 @@ public final class ActionEffects {
             interrupted.observation().validateChildren(parent, children);
             return;
         }
+        if (settlement instanceof ActionState.CompositeControlApplied control && cancelledLifeControl(parent, execution, control.observation())) {
+            org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireCancelledInitialization(parent, execution, control.observation(), children);
+            validateComposite(parent, execution, settlement);
+            return;
+        }
         validateCompositeChildren(execution, settlement, children);
     }
     /** Legacy callers retain their exact previous rules; the new contract requires its actual parent. */
     public static void validateCompositeChildren(CompositeExecution execution, ActionState.Settlement settlement, java.util.List<ActionReceipt> children) {
         StrictJson.require(!(settlement instanceof ActionState.LifeControlPrefixInterrupted), "life control-prefix interruption requires its exact original parent command");
+        StrictJson.require(!(settlement instanceof ActionState.CompositeControlApplied control
+                && execution.handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(execution.guard().operation().value())
+                && initializationCancelled(control.observation())),
+                "Life cancellation requires its original parent and complete source-owned canonical proof");
         StrictJson.require(children.size() == execution.children().size(), "complete canonical child history required");
         if (settlement instanceof ActionState.CompositeNoGameplayWrite noGameplay) {
             StrictJson.require(children.isEmpty() && execution.children().isEmpty()
