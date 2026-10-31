@@ -249,6 +249,29 @@ public final class RootActionHistoryMaterialSourceFactory {
             life.replay().verify(same.head(),actual,originals);
             // The exact typed receipt is already durable. There is no original Advance result, after-frame or history row to create.
         }
+        @Override public void requireLifeControlPrefixInterruption(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals,List<ActionReceipt> canonicalChildren)throws IOException {
+            Objects.requireNonNull(actual);Objects.requireNonNull(originals);Objects.requireNonNull(canonicalChildren);context.writer().requireSession(same);requireOwner(authority,journal,archive);
+            require(actual.state() instanceof ActionState.CompositeSettled
+                    &&((ActionState.CompositeSettled)actual.state()).settlement() instanceof ActionState.LifeControlPrefixInterrupted,
+                    "Life control prefix interruption consumption requires its exact typed composite terminal");
+            require(actual.command().origin() instanceof CommandOrigin.Gameplay
+                    &&actual.command().before().game().equals(context.game().generation())&&actual.command().source().equals(context.source())
+                    &&actual.command().sessionId().equals(context.game().sessionId()),
+                    "Life control prefix interruption consumption crossed its actual settled Game/source/session");
+            var life=catalog.remainingDomains().life();
+            var composite=catalog.bindings().compositeBindings().stream().filter(binding->binding.handler().supports(actual.command().operation())).toList();
+            require(composite.size()==1&&life.installation().composites().stream().anyMatch(binding->binding==composite.getFirst()),
+                    "Life control prefix interruption consumption requires its identical installed Life producer");
+            var replay=catalog.bindings().actualArchivedVerifier(actual.command().operation()).orElseThrow(()->new Missing(MissingReason.UNINSTALLED_OPERATION,actual.command().operation()));
+            require(replay.verifier()==life.replay(),"Life control prefix interruption consumption lost its identical installed Life replay");
+            var settled=(ActionState.CompositeSettled)actual.state();
+            var observation=((ActionState.LifeControlPrefixInterrupted)settled.settlement()).observation();
+            require(composite.getFirst().handler() instanceof CompositeActionPort.LifeControlPrefixSource,
+                    "installed Life producer did not opt into its Life control prefix interruption contract");
+            ((CompositeActionPort.LifeControlPrefixSource)composite.getFirst().handler()).requireControlPrefixInterruption(actual.command(),settled.execution(),observation,canonicalChildren);
+            life.replay().verify(same.head(),actual,originals);
+            // Original ending and children stay archived; no completed Advance report or parent history row is created.
+        }
         @Override public OriginalMaterial capture(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
             return captureActual(same,actual,originals,true,Optional.empty());
         }

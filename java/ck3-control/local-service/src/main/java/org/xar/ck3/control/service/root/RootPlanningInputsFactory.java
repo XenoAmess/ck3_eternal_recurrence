@@ -301,7 +301,7 @@ public final class RootPlanningInputsFactory {
                             "actual installed action classification required"); }
                     catch (IOException failure) { throw new UncheckedIOException(failure); }
                     if (classification instanceof SystemControl control) {
-                        requireSettledControl(control, receipt);
+                        requireSettledControl(control, receipt, lease.snapshot().actions());
                         continue;
                     }
                     if (!(classification instanceof BusinessDomain business))
@@ -329,7 +329,10 @@ public final class RootPlanningInputsFactory {
     }
     /** This filters authenticated canonical controls; it neither verifies Native evidence nor grants SAVE/day credit. */
     static void requireSettledControl(SystemControl control, ActionReceipt receipt) {
-        Objects.requireNonNull(control);Objects.requireNonNull(receipt);
+        requireSettledControl(control, receipt, List.of());
+    }
+    static void requireSettledControl(SystemControl control, ActionReceipt receipt, List<ActionReceipt> canonicalActions) {
+        Objects.requireNonNull(control);Objects.requireNonNull(receipt);Objects.requireNonNull(canonicalActions);
         StrictJson.require(receipt.settled(), "an unresolved system control blocks every ordinary action");
         switch (control.kind()) {
             case LIFE_ADVANCE -> {
@@ -341,11 +344,20 @@ public final class RootPlanningInputsFactory {
                 StrictJson.require(command.expected().values().equals(plan.expected()),
                         "Life timeline control changed its exact typed plan expectation");
                 if(receipt.state() instanceof ActionState.CompositeSettled settled) {
-                    StrictJson.require(settled.settlement() instanceof ActionState.Applied
-                            ||settled.settlement() instanceof ActionState.CompositeNoGameplayWrite
-                            ||settled.settlement() instanceof ActionState.CompositeRejected,
-                            "Life timeline control requires its actual semantic, no-write or rejected composite terminal");
-                    ActionEffects.validateComposite(command,settled.execution(),settled.settlement());
+                    if(settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted) {
+                        var children=settled.execution().children().stream().map(child -> canonicalActions.stream()
+                                .filter(value -> child.actionId().equals(value.command().actionId())).findFirst()
+                                .orElseThrow(() -> new IllegalArgumentException("interrupted Life prefix child is absent from held canonical planning actions"))).toList();
+                        ActionEffects.validateCompositeChildren(command,settled.execution(),settled.settlement(),children);
+                        StrictJson.require(!receipt.visibleGameplay()&&!receipt.eligibleAdvance()&&receipt.applied().isEmpty(),
+                                "interrupted Life prefix cannot claim gameplay or day credit");
+                    } else {
+                        StrictJson.require(settled.settlement() instanceof ActionState.Applied
+                                ||settled.settlement() instanceof ActionState.CompositeNoGameplayWrite
+                                ||settled.settlement() instanceof ActionState.CompositeRejected,
+                                "Life timeline control requires its actual semantic, no-write or rejected composite terminal");
+                        ActionEffects.validateComposite(command,settled.execution(),settled.settlement());
+                    }
                 } else StrictJson.require(receipt.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH,
                         "Life timeline control cannot borrow a primitive or Family-send settlement");
             }

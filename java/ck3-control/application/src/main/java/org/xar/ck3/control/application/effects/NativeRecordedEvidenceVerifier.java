@@ -170,6 +170,23 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
                 ActionEffects.validateCompositeChildren(execution, terminal, List.of());
                 requireNonEffectCompletion(proposed);
                 // Original guard/source checks above and the mandatory installed domain callback below remain exact.
+            } else if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) {
+                StrictJson.require(proposed.state() instanceof ActionState.CompositeSettled,
+                        "Life control prefix interruption requires its original composite execution");
+                var execution = ((ActionState.CompositeSettled) proposed.state()).execution();
+                var canonicalChildren = new java.util.ArrayList<ActionReceipt>();
+                for (var child : execution.children()) {
+                    var actual = org.xar.ck3.control.application.action.ContinuityActionJournal.lookup(actualLockedHead.state(), child.actionId(), archive)
+                            .orElseThrow(() -> new IllegalArgumentException("Life control prefix child is absent from the actual writer head"));
+                    StrictJson.require(!actual.command().actionId().equals(proposed.command().actionId())
+                            && actual.bodySha256().equals(child.bodySha256()),
+                            "Life control prefix child identity changed");
+                    canonicalChildren.add(actual);
+                }
+                ActionEffects.validateCompositeChildren(proposed.command(), execution, interrupted, canonicalChildren);
+                for (var child : canonicalChildren) verify(actualLockedHead, child);
+                requireNonEffectCompletion(proposed);
+                // Original guard/source checks above and the mandatory installed domain callback below remain exact.
             }
             if (settlement instanceof ActionState.CompositeRejected rejected) {
                 var execution = ActionTransitions.composite(proposed.state()).orElseThrow(() -> new IllegalArgumentException("negative parent has no original composite execution"));

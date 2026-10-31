@@ -1539,6 +1539,14 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                         action.command(), settled.execution(), settled.settlement());
                 continue; // The verified no-write terminal has no Native command-history row or cycle credit.
             }
+            if (action.state() instanceof ActionState.CompositeSettled settled
+                    && settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted) {
+                var children = settled.execution().children().stream().map(child -> durable.actions().stream()
+                        .filter(value -> child.actionId().equals(value.command().actionId())).findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("interrupted Life prefix child is absent from canonical Driver actions"))).toList();
+                org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(action.command(), settled.execution(), settled.settlement(), children);
+                continue; // The verified interrupted prefix has no Native command-history row or cycle credit.
+            }
             DriverSnapshotFacts.ActionRow coverage=rows.get(action.command().actionId());
             if(coverage==null || !coverage.bodySha256().equals(action.bodySha256()) || coverage.durableSequence()>action.sequence()) {
                 missing.add("original_history_row_unavailable:"+action.command().actionId()); continue;

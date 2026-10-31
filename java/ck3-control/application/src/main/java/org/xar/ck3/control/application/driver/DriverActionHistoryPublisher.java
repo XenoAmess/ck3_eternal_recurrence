@@ -32,12 +32,16 @@ public final class DriverActionHistoryPublisher implements WriterContracts.Trans
         default void requireNoGameplayWrite(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
             throw new IOException("actual source-owned no-gameplay-write verifier is not installed");
         }
+        /** Exact source-owned Life control prefix interruption contract; this has no Advance recorder material. */
+        default void requireLifeControlPrefixInterruption(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals,List<ActionReceipt> canonicalChildren)throws IOException {
+            throw new IOException("actual source-owned Life control prefix interruption verifier is not installed");
+        }
         DriverActionHistoryCodec.OriginalMaterial capture(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals) throws IOException;
         void requireOriginal(Session same,ActionReceipt actual,DriverActionHistoryCodec.OriginalMaterial captured,
                 ActionPorts.OutcomeArchive originals) throws IOException;
     }
     public sealed interface Disposition permits Unchanged,Published { }
-    public enum Reason { UNRESOLVED, NON_GAMEPLAY, OUTSIDE_ACTIVE_EPISODE, ALREADY_COVERED, OPERATOR_CANONICAL_RECEIPT_VERIFIED, OPERATOR_NO_REBIND_RECEIPT_VERIFIED, NO_GAMEPLAY_WRITE_RECEIPT_VERIFIED }
+    public enum Reason { UNRESOLVED, NON_GAMEPLAY, OUTSIDE_ACTIVE_EPISODE, ALREADY_COVERED, OPERATOR_CANONICAL_RECEIPT_VERIFIED, OPERATOR_NO_REBIND_RECEIPT_VERIFIED, NO_GAMEPLAY_WRITE_RECEIPT_VERIFIED, LIFE_CONTROL_PREFIX_INTERRUPTED_VERIFIED }
     public record Unchanged(Reason reason) implements Disposition {public Unchanged {Objects.requireNonNull(reason);}}
     public record Published(DriverSnapshotFacts.Stamp before,DriverSnapshotFacts.Stamp after,ExactRef fullDriver,
             ExactRef originalSource,Optional<ExactRef> legacyRow) implements Disposition {
@@ -127,6 +131,20 @@ public final class DriverActionHistoryPublisher implements WriterContracts.Trans
         Publication retained=pending;
         if(retained!=null)StrictJson.require(retained.action.equals(actual),"an original ACTION publication must be resolved before another action or owner transfer");
         StrictJson.require(locked.find(actual.command().actionId()).filter(actual::equals).isPresent(),"actual durable completed action required");
+        if(actual.state() instanceof ActionState.CompositeSettled settled
+                &&settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted interrupted) {
+            StrictJson.require(retained==null,"Life control prefix interruption verification cannot replace a pending ACTION publication");
+            var execution=settled.execution();
+            var canonicalChildren=execution.children().stream().map(child->locked.find(child.actionId()).orElseThrow()).toList();
+            ActionEffects.validateCompositeChildren(actual.command(),execution,interrupted,canonicalChildren);
+            StrictJson.require(actual.outcome()==ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT
+                    &&!actual.visibleGameplay()&&!actual.eligibleAdvance()&&actual.applied().isEmpty(),
+                    "interrupted Life prefix cannot claim an Applied gameplay or day effect");
+            var originals=archive.withSession(same);
+            materials.requireOwner(authority,journal,archive);
+            materials.requireLifeControlPrefixInterruption(same,actual,originals,canonicalChildren);
+            return new Unchanged(Reason.LIFE_CONTROL_PREFIX_INTERRUPTED_VERIFIED);
+        }
         if(actual.state() instanceof ActionState.CompositeSettled settled
                 &&settled.settlement() instanceof ActionState.CompositeNoGameplayWrite terminal) {
             StrictJson.require(retained==null,"no-gameplay-write verification cannot replace a pending ACTION publication");
