@@ -1,0 +1,136 @@
+{
+  "schema": "m3.actual178-hash188-binding-first-software-summary/v1",
+  "package_number": 53,
+  "status": "FIRST_NEW_BINDING_AND_THREE_NEW_CHECKS_PASS",
+  "actual_original": "hash-insert188/caller-bind188/DELIVERY-BINDING188.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\hash-insert188\\caller-bind188",
+  "actual_evidence_copied_to_Git": false,
+  "actual_source_consumer_sites": [
+    "3790510@379065B",
+    "3790510@37906CB"
+  ],
+  "new_sources": 2,
+  "existing_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/PostRegistrationApi178.java",
+      "rawcompiled_sha256": "48368d572041e1eb3282f6bb0c337d9de8ddfac272032852ed61e913e9792ca7",
+      "current_formal_physical_sha256": "48368d572041e1eb3282f6bb0c337d9de8ddfac272032852ed61e913e9792ca7",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/hash188/HashInsert188Api.java",
+      "rawcompiled_sha256": "b5f51553db56a9bc124503a9acfba749fed1fab4504bbafec22fe1e6984408b7",
+      "current_formal_physical_sha256": "b5f51553db56a9bc124503a9acfba749fed1fab4504bbafec22fe1e6984408b7",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/hash188/HashInsertC39C60.java",
+      "rawcompiled_sha256": "d0c453a402de9c6d458046013176770639cb8cab0c8b2261bd75cf0a28b28f6a",
+      "current_formal_physical_sha256": "d0c453a402de9c6d458046013176770639cb8cab0c8b2261bd75cf0a28b28f6a",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/hash188/HashInsertWitness188Api.java",
+      "rawcompiled_sha256": "d4dcb35b71207514a525d62b42a2f386680220ece8c2370bac1027d637bf804b",
+      "current_formal_physical_sha256": "d4dcb35b71207514a525d62b42a2f386680220ece8c2370bac1027d637bf804b",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/hash188/HashInsertWitnessBook188.java",
+      "rawcompiled_sha256": "bf402829bbda39acdc775fd5e66ad355496c0e18a4c46a9ffc2c42ecca47a562",
+      "current_formal_physical_sha256": "bf402829bbda39acdc775fd5e66ad355496c0e18a4c46a9ffc2c42ecca47a562",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/hash188/PostRegistrationHashInsertBinding188.java": "276291c2613710f6c726a9a646818a39e9b67ffae271ba0c63d6e049e4526431",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/hash188/HashInsertCallerBindingWitness188.java": "32d0a13ccbed7f646ff52cda6bdbd3026076be9e9647cd8dff2be576588d3724"
+  },
+  "portable_source_closure_files": 10,
+  "portable_binary_or_D_classpath_dependency": false,
+  "behavior": "New PostRegistrationApi178.Ports binder implements actual c39c60 hook through new188execute with one combined Memory;22other methods exactly delegate",
+  "source_scratch_mapping": "callee bodyRsp=callerScratch.sourceRsp-0xB0; CALL push8 plus originalA8 prologue",
+  "stages": [
+    {
+      "stage": "NEW_BINDING_FIRST_STRICT",
+      "begin": "2026-10-31T20:25:45.451422+00:00",
+      "end": "2026-10-31T20:25:46.123649+00:00",
+      "exit": 0,
+      "seconds": 0.6722233002074063,
+      "new_binding": 1,
+      "explicit_support_current_interfaces": 2
+    },
+    {
+      "stage": "FIRST_BINDING_WITNESS_STRICT",
+      "begin": "2026-10-31T20:26:48.763007+00:00",
+      "end": "2026-10-31T20:26:49.587858+00:00",
+      "exit": 0,
+      "seconds": 0.8248545001260936
+    },
+    {
+      "stage": "FIRST_BINDING3",
+      "begin": "2026-10-31T20:26:49.588632+00:00",
+      "end": "2026-10-31T20:26:49.716979+00:00",
+      "exit": 0,
+      "seconds": 0.12834850000217557
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/proc:none/implicit:none/192MiB/CPU1/empty-sourcepath; source-matched prior188cache",
+  "support_interfaces_first_explicitly_compiled_here": 2,
+  "old_business_algorithms_recompiled": 0,
+  "new_binding_checks": 3,
+  "existing_literal_steps_consumed_through_NEW_edge": 10,
+  "new_Book_literal_credit": 0,
+  "old_parent178_or_component188_three_scenes_rerun": false,
+  "checks": [
+    "New binding->real188callee consumes existing independent10step literal and actual outputs",
+    "One gs58 delegate exact sameMemory/full64/once",
+    "Foreign Memory IllegalArgumentException before any captured/foreign cursor or port advances"
+  ],
+  "limits": [
+    "Occupied branch does not dynamically use moduleBase/scratch, so -0xB0/translation covered by source audit only",
+    "Does not execute entire parent178 or old1883scenes again",
+    "New binding witness saw old188owner core/parent178 after original Book hash sealed; unseen new bindingbody/response/results",
+    "No Native/CPUABI/EH/naturalGame credit"
+  ],
+  "model_logical_requests": 2,
+  "actual_model_POSTs": 2,
+  "model_stop": 2,
+  "transport_retries": 0,
+  "local_phase_peak": 1,
+  "model_adoption": {
+    "binding": "Full6241B decoded Java raw0owner edits, first strict/test verified",
+    "test": "Only newrun body3146B raw0owner edits; rest26635B class owner mechanical generic Script+23probe; not whole raw test"
+  },
+  "witness_visibility": "Newbinding target unseen by witness; oldcallee/178body visible for this later role after original independent188Book frozen; frozenBook SHA unchanged",
+  "scope": "Only new callerport consumer and listed finite delegate/identity behavior; source-only offset/moduleBase audit because selected short branch observes neither",
+  "not_proved": [
+    "all22opaque delegate methods exercised",
+    "dynamic scratch/moduleBase translation on other branches",
+    "entire original parent178execution",
+    "physical Native/CPUABI/EH",
+    "natural M3/currentGame/EF0"
+  ],
+  "new_PE_provider_query_Game": 0,
+  "new_runtime_installation": false,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
