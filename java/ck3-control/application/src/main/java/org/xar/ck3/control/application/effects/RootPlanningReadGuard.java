@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.advance.AdvancePrimitives;
+import org.xar.ck3.control.application.advance.ClockStatusRead;
+import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
+import org.xar.ck3.control.application.advance.LifeSentinelCancellation;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
 import org.xar.ck3.control.application.readiness.ReadinessAuthority;
 import org.xar.ck3.control.application.planning.ReadonlyPlanningRetry;
@@ -110,6 +114,28 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
         try {
             var session = RootGuardChecks.session(borrowedSession, actualLockedHead);
             var sameWriterArchive = archive.withSession(session);
+            if (contract.contractId().equals(ClockStatusRead.CONTRACT_ID)
+                    && contract.operation().value().equals(ClockStatusRead.STEP)
+                    && contract.requiredCapability().equals(java.util.Optional.of(ClockStatusRead.STATUS_CAP))
+                    && contract.permissionMode() == ReadContract.PermissionMode.ADVERTISED_CAPABILITY
+                    && contract.wireProfile() == ReadContract.WireProfile.EXECUTE_STEP && contract.hasPureReplay()
+                    && request.arguments().members().isEmpty()) {
+                var active = ActionScope.currentActionId();
+                if (active.isPresent()) {
+                    var child = ContinuityActionJournal.lookup(actualLockedHead.state(), active.orElseThrow(), sameWriterArchive);
+                    if (child.isPresent() && lifeCancellationStatusSource(session, actualLockedHead,
+                            child.orElseThrow().command(), sameWriterArchive).isPresent()) {
+                        return authority.currentDerivedCleanup(session, request.before(), request.deadline(), lease -> {
+                            RootGuardChecks.livingPaused(lease);
+                            StrictJson.require(lease.bridgeCapabilities().contains(ClockStatusRead.STATUS_CAP),
+                                    "actual bridge did not advertise the required query capability");
+                            var binding = RootGuardChecks.readBinding(lease, request.origin(), request.source(), request.sessionId(),
+                                    request.operation(), request.deadline(), sameWriterArchive, clock, actualLockedHead, authorityId, session, originals);
+                            return new PlanningReadGuard(binding, true, true, true, lease.frame().fullBindingSha256());
+                        });
+                    }
+                }
+            }
             return authority.current(session, request.before(), request.deadline(), lease -> {
                 if (isLocalRootPreflight(contract,request)) {
                     RootGuardChecks.livingPaused(lease);
@@ -133,6 +159,33 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
             });
         } catch (IOException failure) { throw new UncheckedIOException("actual Root planning-read authority unavailable: "
                 + failure.getClass().getSimpleName() + ":" + String.valueOf(failure.getMessage()), failure); }
+    }
+
+    /** The actual continuation scope supplies its already source-validated private token; DATA cannot issue one. */
+    public static java.util.Optional<LifeSentinelCancellation> lifeCancellationStatusSource(
+            ContinuityStorePort.Session same, WriterContracts.Head head, ActionCommand child,
+            ActionPorts.OutcomeArchive sameArchive) throws IOException {
+        if (!child.operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)) return java.util.Optional.empty();
+        var reserved = ActionChildPlanningScope.reservedParent(same, head, child);
+        if (reserved.isEmpty()) return java.util.Optional.empty();
+        var parent = ContinuityActionJournal.lookup(head.state(), reserved.orElseThrow().actionId(), sameArchive).orElseThrow();
+        var token = ActionChildPlanningScope.continuationToken(same, head, parent.command(), child);
+        if (token.isEmpty() || !(token.orElseThrow() instanceof LifeSentinelCancellation cancellation)) return java.util.Optional.empty();
+        StrictJson.require(parent.state() instanceof ActionState.CompositeUnknown unknown
+                && unknown.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                && parent.command().equals(cancellation.originalParent())
+                && child.before().equals(cancellation.beforeCancel().identity())
+                && child.source().equals(parent.command().source()) && child.sessionId().equals(parent.command().sessionId())
+                && child.claims().equals(parent.command().claims()) && child.deadline().equals(cancellation.deadline())
+                && child.operation().value().equals(ClockStatusRead.CANCEL_PREFIX + cancellation.generation())
+                && child.arguments().members().isEmpty()
+                && child.expected().equals(AdvancePrimitives.expected(child.before(), child.source(), child.operation(), child.arguments())),
+                "Status basis changed its source-issued original generation cancellation");
+        var actual = ContinuityActionJournal.lookup(head.state(), child.actionId(), sameArchive).orElseThrow();
+        StrictJson.require(actual.command().equals(child) && actual.bodySha256().equals(ActionCodec.bodySha256(child))
+                && actual.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent(),
+                "cancellation Status requires its actual successful canonical original ACK");
+        return java.util.Optional.of(cancellation);
     }
 
     /** Only an already-active real physical read scope may verify adoption; no ordinary-current fallback or recapture. */

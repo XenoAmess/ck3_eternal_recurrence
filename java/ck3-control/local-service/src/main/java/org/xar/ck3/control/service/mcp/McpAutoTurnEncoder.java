@@ -191,7 +191,7 @@ public final class McpAutoTurnEncoder {
         if(connection.isPresent())frame.put("connection_generation",connection.orElseThrow().toString());else frame.putNull("connection_generation");frame.put("bridge_pid",before.game().pid());return frame;
     }
     private static Optional<GuardEvidence> guard(ActionReceipt receipt){return switch(receipt.state()){
-        case ActionState.IntentDurable ignored -> Optional.empty();case ActionState.Submitting value -> Optional.of(value.attempt().guard());case ActionState.AckReceived value -> Optional.of(value.attempt().guard());
+        case ActionState.IntentAbandoned ignored -> Optional.empty();case ActionState.IntentDurable ignored -> Optional.empty();case ActionState.Submitting value -> Optional.of(value.attempt().guard());case ActionState.AckReceived value -> Optional.of(value.attempt().guard());
         case ActionState.Unknown value -> value.attempt().map(ActionState.Attempt::guard);case ActionState.Settled value -> Optional.of(value.attempt().guard());case ActionState.RejectedBeforeDispatch value -> Optional.of(value.attempt().guard());
         case ActionState.CompositeRunning value -> Optional.of(value.execution().guard());case ActionState.CompositeUnknown value -> Optional.of(value.execution().guard());case ActionState.CompositeSettled value -> Optional.of(value.execution().guard());
         case PhysicalActionState value -> Optional.of(value.guard());};}

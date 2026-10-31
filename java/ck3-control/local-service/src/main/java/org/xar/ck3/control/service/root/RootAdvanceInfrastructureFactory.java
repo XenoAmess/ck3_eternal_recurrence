@@ -22,6 +22,7 @@ import org.xar.ck3.control.application.driver.HeldDriverObservationPort;
 import org.xar.ck3.control.application.effects.NativeEffectRegistry;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
+import org.xar.ck3.control.application.effects.RootPlanningReadGuard;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.contracts.ExactRef;
@@ -300,23 +301,33 @@ public final class RootAdvanceInfrastructureFactory {
             Objects.requireNonNull(work);
             actual(parent,deadline);
             try {
-                return context.withSession(same -> context.collector().current(same,parent.before(),deadline,lease -> {
-                    var original=lease.frame();
-                    require(original.source().equals(parent.source()) && original.sessionId().equals(parent.sessionId())
-                            && original.identity().machineId().equals(parent.before().machineId())
-                            && original.identity().game().equals(parent.before().game())
-                            && original.identity().frame().episodeRunId().equals(parent.before().frame().episodeRunId())
-                            && original.identity().frame().identity().player().equals(parent.before().frame().identity().player()),
-                            "clock control basis crossed its actual original source/session/Game/episode/actor");
-                    var basis=new Frame(original.identity(),original.source(),original.sessionId(),original.semantic(),
-                            new ObservationProvenance.Push(original.identity().frame().snapshotId(),
-                                    original.identity().frame().identity().nativeRevision(),original.originalEvidence()),
-                            original.observedAt(),original.originalEvidence());
-                    return work.apply(basis);
-                }));
+                return context.withSession(same -> {
+                    if (RootPlanningReadGuard.lifeCancellationStatusSource(same, same.head(), parent,
+                            context.archive().withSession(same)).isPresent()) {
+                        return context.collector().currentDerivedCleanup(same, parent.before(), deadline,
+                                lease -> clockControlBasis(parent, lease.frame(), work));
+                    }
+                    return context.collector().current(same, parent.before(), deadline,
+                            lease -> clockControlBasis(parent, lease.frame(), work));
+                });
             } catch(IOException failure) {
                 throw new UncheckedIOException("actual held clock control basis unavailable",failure);
             }
+        }
+        private static <T> T clockControlBasis(ActionCommand parent,
+                org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete original,
+                java.util.function.Function<Frame,T> work) {
+            require(original.source().equals(parent.source()) && original.sessionId().equals(parent.sessionId())
+                    && original.identity().machineId().equals(parent.before().machineId())
+                    && original.identity().game().equals(parent.before().game())
+                    && original.identity().frame().episodeRunId().equals(parent.before().frame().episodeRunId())
+                    && original.identity().frame().identity().player().equals(parent.before().frame().identity().player()),
+                    "clock control basis crossed its actual original source/session/Game/episode/actor");
+            var basis = new Frame(original.identity(), original.source(), original.sessionId(), original.semantic(),
+                    new ObservationProvenance.Push(original.identity().frame().snapshotId(),
+                            original.identity().frame().identity().nativeRevision(), original.originalEvidence()),
+                    original.observedAt(), original.originalEvidence());
+            return work.apply(basis);
         }
 
         private Frame freshReservedChildObservation(ContinuityStorePort.Session same, ActionCommand child,

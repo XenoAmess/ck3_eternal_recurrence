@@ -22,11 +22,12 @@ public final class ActionTransitions {
                         : after.phase() == PhysicalActionState.Phase.UNKNOWN || after.phase() == PhysicalActionState.Phase.COMPLETED);
             case ActionState.IntentDurable ignored -> next instanceof PhysicalActionState physical && (physical.phase() == PhysicalActionState.Phase.SUBMITTING
                     || command.arguments().get("automatic_intent") instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj
-                       && (physical.phase()==PhysicalActionState.Phase.UNKNOWN||physical.phase()==PhysicalActionState.Phase.NOT_POSTED)) || next instanceof ActionState.Submitting || next instanceof ActionState.Unknown || next instanceof ActionState.CompositeRunning || next instanceof ActionState.RejectedBeforeDispatch;
+                       && (physical.phase()==PhysicalActionState.Phase.UNKNOWN||physical.phase()==PhysicalActionState.Phase.NOT_POSTED)) || next instanceof ActionState.Submitting || next instanceof ActionState.Unknown || next instanceof ActionState.CompositeRunning || next instanceof ActionState.RejectedBeforeDispatch || next instanceof ActionState.IntentAbandoned;
             case ActionState.Submitting ignored -> next instanceof ActionState.AckReceived || next instanceof ActionState.Unknown || next instanceof ActionState.RejectedBeforeDispatch;
             case ActionState.AckReceived ignored -> next instanceof ActionState.Unknown || next instanceof ActionState.Settled;
             case ActionState.Unknown ignored -> next instanceof ActionState.Unknown || next instanceof ActionState.Settled;
             case ActionState.Settled ignored -> false;
+            case ActionState.IntentAbandoned ignored -> false;
             case ActionState.RejectedBeforeDispatch ignored -> false;
             case ActionState.CompositeRunning ignored -> next instanceof ActionState.CompositeRunning || next instanceof ActionState.CompositeUnknown || next instanceof ActionState.CompositeSettled;
             case ActionState.CompositeUnknown ignored -> next instanceof ActionState.CompositeUnknown || next instanceof ActionState.CompositeSettled;
@@ -59,8 +60,8 @@ public final class ActionTransitions {
         if (!(command.origin() instanceof CommandOrigin.Gameplay)
                 || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(command.operation().value())
                 || !before.handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
-                || before.children().isEmpty() || before.children().size() > 3
-                || after.children().size() != before.children().size() + 1 || after.children().size() > 4) return false;
+                || before.children().isEmpty() || before.children().size() > 4
+                || after.children().size() != before.children().size() + 1 || after.children().size() > 5) return false;
         GuardEvidence guard = before.guard();
         if (!command.origin().acceptsGuard(guard.origin()) || !command.source().equals(guard.source())
                 || !command.sessionId().equals(guard.sessionId()) || !command.operation().equals(guard.operation())) return false;
@@ -74,6 +75,7 @@ public final class ActionTransitions {
         return switch (state) {
             case PhysicalActionState ignored -> Optional.empty();
             case ActionState.IntentDurable ignored -> Optional.empty();
+            case ActionState.IntentAbandoned ignored -> Optional.empty();
             case ActionState.Submitting value -> Optional.of(value.attempt());
             case ActionState.AckReceived value -> Optional.of(value.attempt());
             case ActionState.Unknown value -> value.attempt();

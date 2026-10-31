@@ -13,6 +13,7 @@ public record ActionReceipt(int version, long sequence, ActionCommand command, S
         StrictJson.require(bodySha256 != null && bodySha256.matches("[0-9a-f]{64}") && bodySha256.equals(ActionCodec.bodySha256(command)), "complete canonical action body SHA required");
     }
     public Outcome outcome() {
+        if (state instanceof ActionState.IntentAbandoned) return Outcome.TERMINAL_WITHOUT_EFFECT;
         if (state instanceof PhysicalActionState physical) return physical.terminal() ? Outcome.TERMINAL_WITHOUT_EFFECT : Outcome.UNRESOLVED;
         if (state instanceof ActionState.Settled settled) return classify(settled.settlement());
         if (state instanceof ActionState.CompositeSettled settled) return classify(settled.settlement());

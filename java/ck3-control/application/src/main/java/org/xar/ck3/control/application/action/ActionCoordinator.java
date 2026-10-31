@@ -301,6 +301,10 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             }
             Optional<ActionState.Attempt> attempt = ActionTransitions.attempt(current.state());
             if (attempt.isEmpty()) {
+                if (current.state() instanceof ActionState.IntentDurable && current.command().operation().value().equals("resume-map")) {
+                    Optional<ActionState.IntentAbandoned> abandoned = locked.abandonableIntent(current);
+                    if (abandoned.isPresent()) return append(locked, current.command(), current.bodySha256(), abandoned.orElseThrow());
+                }
                 if (current.state() instanceof ActionState.Unknown) return current;
                 return append(locked, current.command(), current.bodySha256(), new ActionState.Unknown(Optional.empty(), Optional.empty(), "restored intent without a durable send proof; reconciliation only", List.of()));
             }

@@ -31,10 +31,10 @@ public final class CanonicalFundingPending {
     private static final Set<FinanceStatePort.Domain> REQUIRED=Set.of(FinanceStatePort.Domain.CONSTRUCTION,FinanceStatePort.Domain.FACTION_GIFT,
             FinanceStatePort.Domain.MERCENARY,FinanceStatePort.Domain.FEAST,FinanceStatePort.Domain.FIRST_HEIR_MARRIAGE,
             FinanceStatePort.Domain.CHILD_MARRIAGE,FinanceStatePort.Domain.CHILD_DEFAULT_MARRIAGE);
-    public enum Phase { INTENT_DURABLE, SUBMITTING, ACKNOWLEDGED, UNKNOWN, COMPOSITE_RUNNING, COMPOSITE_UNKNOWN, SETTLED, REJECTED_BEFORE_DISPATCH, COMPOSITE_SETTLED,
+    public enum Phase { INTENT_ABANDONED, INTENT_DURABLE, SUBMITTING, ACKNOWLEDGED, UNKNOWN, COMPOSITE_RUNNING, COMPOSITE_UNKNOWN, SETTLED, REJECTED_BEFORE_DISPATCH, COMPOSITE_SETTLED,
         PHYSICAL_SUBMITTING, PHYSICAL_UNKNOWN, PHYSICAL_COMPLETED, PHYSICAL_NOT_POSTED;
         /** Only terminality of an owned submission. Physical completion carries no funding or Game-effect credit. */
-        public boolean settled(){return this==SETTLED||this==REJECTED_BEFORE_DISPATCH||this==COMPOSITE_SETTLED
+        public boolean settled(){return this==INTENT_ABANDONED||this==SETTLED||this==REJECTED_BEFORE_DISPATCH||this==COMPOSITE_SETTLED
                 ||this==PHYSICAL_COMPLETED||this==PHYSICAL_NOT_POSTED;}
     }
     public enum Scope { OWNED_SUBMISSION_INVENTORY }
@@ -146,7 +146,7 @@ public final class CanonicalFundingPending {
     /** Pure classification of original canonical state DATA; this cannot mint current Observed inventory. */
     public static Phase phase(ActionState state) {
         return switch(state) {
-            case ActionState.IntentDurable ignored->Phase.INTENT_DURABLE;case ActionState.Submitting ignored->Phase.SUBMITTING;
+            case ActionState.IntentAbandoned ignored->Phase.INTENT_ABANDONED;case ActionState.IntentDurable ignored->Phase.INTENT_DURABLE;case ActionState.Submitting ignored->Phase.SUBMITTING;
             case ActionState.AckReceived ignored->Phase.ACKNOWLEDGED;case ActionState.Unknown ignored->Phase.UNKNOWN;
             case ActionState.CompositeRunning ignored->Phase.COMPOSITE_RUNNING;case ActionState.CompositeUnknown ignored->Phase.COMPOSITE_UNKNOWN;
             case ActionState.Settled ignored->Phase.SETTLED;case ActionState.RejectedBeforeDispatch ignored->Phase.REJECTED_BEFORE_DISPATCH;

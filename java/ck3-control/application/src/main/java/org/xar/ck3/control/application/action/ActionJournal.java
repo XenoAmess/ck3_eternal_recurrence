@@ -21,6 +21,8 @@ public interface ActionJournal {
             catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
         }
         Optional<ActionReceipt> find(String actionId);
+        /** Only the canonical journal can derive this proof from its complete chain under the held writer lock. */
+        default Optional<ActionState.IntentAbandoned> abandonableIntent(ActionReceipt original) { return Optional.empty(); }
         List<ActionReceipt> unresolved();
         /** Must check ActionTransitions under this lock and return only after durable writer commit. */
         ActionReceipt append(ActionCommand command, String bodySha256, ActionState next);

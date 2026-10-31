@@ -30,6 +30,11 @@ public final class AdvancePrimitiveArchivedReplay {
     }
     private void verify(Optional<WriterContracts.Head> lockedHead, ActionReceipt child, ActionPorts.OutcomeArchive archive) {
         Objects.requireNonNull(child); Objects.requireNonNull(archive);
+        if (child.state() instanceof ActionState.IntentAbandoned) {
+            IntentAbandonmentProof.verifyArchived(child, archive);
+            lockedHead.ifPresent(head -> ContinuityActionJournal.requireHistoricalReceipt(head.state(), child, archive));
+            return;
+        }
         boolean zero = child.state() instanceof ActionState.RejectedBeforeDispatch;
         require(child.bodySha256().equals(ActionCodec.bodySha256(child.command()))
                 && (child.state() instanceof ActionState.Settled || zero), "original settled or zero-write primitive required");
@@ -49,7 +54,8 @@ public final class AdvancePrimitiveArchivedReplay {
         require(command.equals(AdvancePrimitives.child(command, beforeFrame, command.actionId(), command.operation().value(), command.deadline())),
                 "original primitive expected fields differ from the shared actual command producer");
         if (zero) {
-            require(command.operation().value().equals("pause-map") || command.operation().value().startsWith(ClockStatusRead.ARM_PREFIX), "only an actual pause or ARM zero-write result is replayed here");
+            require(command.operation().value().equals("pause-map") || command.operation().value().equals("resume-map")
+                    || command.operation().value().startsWith(ClockStatusRead.ARM_PREFIX), "only an actual pause, resume or ARM zero-write result is replayed here");
             requireOriginalReceipt(lockedHead, child, attempt, dispatch, archive);
             var original = (NativeActionPort.RejectedBeforeDispatch) dispatch;
             require(original.requestId().equals(attempt.requestId())

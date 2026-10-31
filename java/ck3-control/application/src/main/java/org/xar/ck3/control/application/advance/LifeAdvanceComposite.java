@@ -187,7 +187,9 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
             children.add(receipt);
         }
         if (children.stream().anyMatch(child -> child.command().operation().value().startsWith(ClockStatusRead.ARM_PREFIX))
-                && children.stream().noneMatch(child -> child.command().operation().value().equals("resume-map"))) {
+                && children.stream().noneMatch(child -> child.command().operation().value().equals("resume-map") && !isNeverResumedResume(child))) {
+            // Both terminal roles retain the original resume child; its dispatch is never retried.
+            for (var child : children) if (isAbandonedResume(child)) IntentAbandonmentProof.verifyArchived(child, archive);
             if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))
                 return cancelledInitialization(parent, retained, children, ActionObservationWindow.deadline(parent));
             if (children.size() == 1 && children.getFirst().state() instanceof ActionState.RejectedBeforeDispatch) {
@@ -278,11 +280,14 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         var parent = original.command(); var retained = unknown.execution();
         List<ActionReceipt> prefix = canonicalChildren(retained);
         var plan = AdvancePlan.decode(parent);
-        if (plan.clockMode() == AdvancePlan.ClockMode.POLLED || prefix.isEmpty()
-                || !prefix.getLast().command().operation().value().equals(plan.armStep())) return Optional.empty();
+        if (plan.clockMode() == AdvancePlan.ClockMode.POLLED || prefix.isEmpty()) return Optional.empty();
+        ActionReceipt last = prefix.getLast();
+        boolean abandonedResume = isNeverResumedResume(last);
+        if (!last.command().operation().value().equals(plan.armStep()) && !abandonedResume) return Optional.empty();
         if (prefix.stream().anyMatch(child -> !child.settled()) || prefix.stream().anyMatch(child ->
                 child.command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)
-                || child.command().operation().value().equals("resume-map"))) return Optional.empty();
+                || child.command().operation().value().equals("resume-map") && !isNeverResumedResume(child))) return Optional.empty();
+        for (var child : prefix) if (isAbandonedResume(child)) IntentAbandonmentProof.verifyArchived(child, archive);
         if (prefix.size() == 1 && prefix.getFirst().state() instanceof ActionState.RejectedBeforeDispatch) {
             requireRejectedInitialization(parent, retained, prefix);
             return Optional.empty();
@@ -402,6 +407,25 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         var control = new CompositeControlObservation(terminal.status().receipt(), List.of(canceled.read()), semantic);
         requireCancelledInitialization(parent, retained, control, children);
         return new ActionPorts.CompositeControlObserved(control);
+    }
+
+    /** Shape only; the canonical authority and archived replay verify the original full action chain. */
+    public static boolean isAbandonedResume(ActionReceipt child) { return IntentAbandonmentProof.isAbandonedResume(child); }
+    /** The original resume exists, but these two exact terminal roles never reached a Native write. */
+    public static boolean isNeverResumedResume(ActionReceipt child) {
+        if (isAbandonedResume(child)) return true;
+        if (!(child.state() instanceof ActionState.RejectedBeforeDispatch rejected)
+                || !child.command().operation().value().equals("resume-map")
+                || !(child.command().origin() instanceof CommandOrigin.Gameplay)
+                || !child.command().arguments().members().isEmpty()) return false;
+        var command = child.command(); var attempt = rejected.attempt(); var guard = attempt.guard();
+        return rejected.dispatch().proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                && rejected.dispatch().proof().requestBytesWritten() == 0
+                && child.ack().isEmpty() && rejected.dispatch().requestId().equals(attempt.requestId())
+                && command.origin().acceptsGuard(guard.origin()) && command.source().equals(guard.source())
+                && command.sessionId().equals(guard.sessionId()) && command.operation().equals(guard.operation())
+                && command.expected().equals(AdvancePrimitives.expected(command.before(), command.source(), command.operation(), command.arguments()))
+                && attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command));
     }
 
     /** Pure canonical DATA proof shared by the source's physical read callback and its archive replay. */

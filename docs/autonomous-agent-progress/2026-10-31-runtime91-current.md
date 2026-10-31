@@ -1,6 +1,20 @@
 # runtime91 同局续行
 
-machine_id: `xenoamess-full-tower-eb9d2c1186`。唯一运行 owner `/root/runtime91`，独占运行 S/MB、Game、supervisor、账本和业务 worker。用户于本轮明确结束休假停止，要求自动游玩第一优先、八 M 并行和本地模型高并发。
+machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/runtime_continue`，接替已不可访问的 `/root/runtime91`，独占运行 S/MB、Game、supervisor、账本和业务 worker。历史 owner 标签不代表旧进程仍在途。用户于本轮明确结束休假停止，要求自动游玩第一优先、八 M 并行和本地模型高并发。
+
+
+
+14:39Z后到175真实进展：14:37:36.430Z现head454/repair，原resume450已真实453 **INTENT_ABANDONED/v14**，receipt `0adf5d6bf56471a36c4b0b5083ad305c411d1baa69d74efd57e0defafa2e412e.bin`2862B；原body/deadline保，originalIntentRecord366a…/originalActionHead3808…，无Attempt/ACK/Native派发或游戏日信用。parent454保完整ARM+resume向量，Pending reason为需source-issued generation取消。14:39:19.717Z真实canonical455已追加唯一CANCEL reservation child-a0761277…/body03d94c…，`source-qualified successor continuation reserved its original child`；这证明真实freshStatus/token接线已越过，不把reservation授提交、ACK或IDLE。175尚无LOOP/END，安装HOLD保，0新日/SAVE。14:36:09唯一main样本elapsed145.91/CPU55.266秒在真实拟Abandoned append→Authority完整历史decode/verifyReconciliationOriginals/fullMaterial的RawJson解析；不是Native等待，不将单栈归整个耗时/不为性能候选重启在途。
+
+14:35Z继续实机：用户最新再次要求继续，没有新的休假/停止。接手14:13:49.729077Z Win32实读同原版Game71464/出生134378397668266369、supervisor305760/出生134378397644711323仍STILL_ACTIVE，stop/terminal均无；jps没有业务worker/Maven，未双开。172实际13:52:38.419826Z END4/1304.96163秒，canonical452/repair/BATCH_INTERRUPTED63/next64/date53144328。新ARM447已CONTROL_APPLIED/generation3，parent451 COMPOSITE_UNKNOWN只含ARM及resume450；resume450实际仍INTENT_DURABLE，没有Submitting/dispatch/ACK。旧父/ARM/resume均不重放。原cause被Life异常处理中的children.completed二次异常掩盖，不能按过期deadline追认原因。
+
+175已精确S/Z采用：新14叶源合同用IntentAbandoned(originalIntentRecord,originalActionHead)保留原resume子项，不伪造Attempt/ZeroDispatch/ACK/after；现同writer完整ACTION链枚举和独立authority核原Intent唯一事件、原Life父/顺序/完整confirmedARM前缀。v14仅新状态使用，旧schema不变。14prod strict0/3.387秒，原450/451/452全链及变异Submitting/重复Intent/错序等19DATAchecks0/1.629秒，不授真实终态。Journal只扩final bare resume Intent及确切无派发终态的只读接线，保其余bareIntent/Unknown拒绝；Material用两ACTION_RECORD及真实父guard的BEFORE Native packet，0假后态/旧recorder。两prod strict0/3.061秒，8DATAconsumerchecks0/1.783秒；首旧Missing.serial警告红仅编译排除该既存warning，日志prior1保留。两Journal模型虽stop仍有role/last/speed遗漏，owner修正；Material主算法模型采用，owner移入现independent适配及去重复fullchain调用。
+
+未来cause175两leaf另已S/Z：真实live postIntent guard/barrier失败在尚未进入Submitting/Native.submit的词法边界保实际prepared/initial/requestId的BEFORE_WRITE0拒绝并重抛原cause，写记录失败仅suppressed；Life捕获children.completed二次故障时保原cause且不cleanup。严格2prod0/2.022秒；Coordinator旧基线3P2F→候选5P、Life旧0P3F→候选3P，合8P0skip。测试模型四候选拒绝，owner按真实fixture接管；正式c110a8d6e159已normal push。历史450不由该未来分支授no-write。
+
+同自然窗口采用既熟173三leaf LIVE source-issued CANCEL ACK后的held read-only basis→独立STATUS，原ordinary及冷恢复scope保持。该项对应172实际CANCEL432 postAck缺canonical row故障；原3prod strict0/2.893秒、两software边界0/1.452秒复用，不重测旧绿；不授物理scope/Game行为。173不因后台开发先前而重启172，本次只随真正175安装纳入。
+
+**MB175实际14:33:18.976520Z–14:33:26.427968Z exit0/7.451449秒**，reuse/no clean/-T2/source-staleness，实际application16/local-service3共19源，其余缓存。**worker175 START14:33:43.453477Z/PID48376**，同Game/basic128/qwen1.11/next64。Root基于实际批63有动作流程耗时授权未来batch wall1200000ms（旧600000）；operation_timeout60000ms及原Native有限RPC不变，旧450/父任何immutable deadline不改，不用它追认旧失败cause。14:34:52.572240Z现有head仍452，已有brief无LOOP/END，安装HOLD真实保持，SOURCE HTTP和具名tiny读取继续。真正IntentAbandoned提交、generation3一次CANCEL/后态、普通LOOP与日期仍待后继；新增日0/SAVE0。
 
 13:46Z更新最终事实：172 **13:41:42.478781Z真实LOOP/next63**，Main13:42:35读brief后立即Root/Native/Java双writer显式解除172HOLD；53秒通知延迟如实保，不等批终态。13:43:30现canonical440/running/BATCH_STARTED63，父435已真实COMPOSITE_SETTLED/COMPOSITE_CONTROL_APPLIED，CANCEL434已CONTROL_APPLIED，旧432UNKNOWN只是中间记录。435原件 `626e407bc63e90339417a27c102719f4017fa15ae1062a4d5914004534f13bec.bin`8983B，真实semantic为initialization_cancelled/paused=true、gameplay/advance/checkpoint三flags=false、ending53144328；CANCEL434独立STATUS为IDLE/generation2，read `c5620e3f23c8f17928029a33333443f079d083c20f10e13097ed048750fd8acd.bin`15573B。原ARM425+一次CANCEL均不重发；cycle.pending=null/completed3/controlhead1db50f…2186，native294/public284，新增日0。完整既有reconciliation已实际收束，不因173后台LIVE角色候选重启当前业务。
 

@@ -52,6 +52,9 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
             } catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
             return ActionCodec.sha256(ActionReceiptCodec.encodeReceipt(receipt, archive));
         }
+        // This terminal has no native Attempt. The actual writer independently checks every canonical event.
+        if (receipt.state() instanceof ActionState.IntentAbandoned)
+            IntentAbandonmentProof.verify(predecessor, receipt, archive);
         evidenceVerifier.verify(actualLockedHead, receipt);
         if (receipt.state() instanceof ActionState.CompositeSettled settled)
             ActionEffects.validateCompositeChildren(receipt.command(), settled.execution(), settled.settlement(), settled.execution().children().stream()

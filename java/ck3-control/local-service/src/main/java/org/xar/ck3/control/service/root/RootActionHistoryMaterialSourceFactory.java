@@ -523,6 +523,16 @@ public final class RootActionHistoryMaterialSourceFactory {
     /** Only typed settlement originals; mixed publication/writer refs are never mislabelled as material. */
     private static LinkedHashSet<Evidence> independent(ActionReceipt actual,ActionPorts.OutcomeArchive archive)throws Missing {
         var refs=new LinkedHashSet<Evidence>();
+        if (IntentAbandonmentProof.isAbandonedResume(actual)) {
+            var parent = IntentAbandonmentProof.originalParent(actual, archive);
+            var proof = (ActionState.IntentAbandoned) actual.state();
+            refs.add(new Evidence(EvidenceKind.ACTION_RECORD, proof.originalIntentRecord()));
+            refs.add(new Evidence(EvidenceKind.ACTION_RECORD, proof.originalActionHead()));
+            // The original parent guard is BEFORE evidence; no post-state was observed for the abandoned Intent.
+            refs.add(new Evidence(EvidenceKind.NATIVE_FRAME,
+                    ((ActionState.CompositeUnknown) parent.state()).execution().guard().nativeEvidence()));
+            return refs;
+        }
         ActionEffects.observation(actual).ifPresent(value->{refs.add(new Evidence(EvidenceKind.NATIVE_FRAME,value.originalEvidence()));value.supportingEvidence().forEach(ref->refs.add(new Evidence(EvidenceKind.MATERIAL,ref)));});
         ActionState.Settlement settlement=actual.state() instanceof ActionState.Settled value?value.settlement():actual.state() instanceof ActionState.CompositeSettled value?value.settlement():null;
         if(settlement instanceof ActionState.ControlApplied control){refs.add(new Evidence(EvidenceKind.READ,archive.readReferenceOf(control.read())));control.supportingReads().forEach(read->refs.add(new Evidence(EvidenceKind.READ,archive.readReferenceOf(read))));}

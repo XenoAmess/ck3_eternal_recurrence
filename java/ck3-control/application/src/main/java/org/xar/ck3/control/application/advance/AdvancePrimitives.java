@@ -173,6 +173,20 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
                 return new ActionPorts.ControlObserved(new ActionState.ControlApplied(read.receipt(), CLOCK_OBSERVER, values));
             });
         }
+        // The source keeps one actual read-only basis alive through the independent cancellation Status.
+        if (!reconciling && command.expected().observerSchema().equals(CLOCK_OBSERVER) && controlStep.startsWith(ClockStatusRead.CANCEL_PREFIX)) {
+            return observations.withClockControlBasis(command, window, basis -> {
+                var read = clockStatus.observe(command, basis, window);
+                Status actual = read.status();
+                BigInteger generation = cancelGeneration(controlStep);
+                JsonNode result = nativeResult(ack, controlStep);
+                require(result.path("status").isTextual() && result.path("status").textValue().equals("canceled")
+                        && actual.state() == org.xar.ck3.control.reconciliation.LateOutcome.State.IDLE
+                        && SentinelObservation.nativeGeneration(actual).equals(generation), "independent status did not confirm cancellation of the same generation");
+                List<ExpectedValue> values = statusValues(actual);
+                return new ActionPorts.ControlObserved(new ActionState.ControlApplied(read.receipt(), CLOCK_OBSERVER, values));
+            });
+        }
         AdvanceObservationPort.Frame current;
         if (reconciling) {
             try {

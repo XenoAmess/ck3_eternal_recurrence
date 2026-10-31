@@ -608,7 +608,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if (!(receipt.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown unknown)
                 || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())
                 || !unknown.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
-                || unknown.execution().children().size() > 4) return false;
+                || unknown.execution().children().size() > 5) return false;
         var command = receipt.command();
         var guard = unknown.execution().guard();
         return command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
@@ -633,28 +633,41 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var children = new java.util.ArrayList<ActionReceipt>();
             var admitted = new java.util.HashSet<String>();
             admitted.add(parent.command().actionId());
-            boolean pause = false, speed = false, arm = false, cancel = false;
+            boolean pause = false, speed = false, arm = false, cancel = false, resume = false;
             for (var binding : execution.children()) {
                 StrictJson.require(admitted.add(binding.actionId()), "duplicate or recursive Life child");
                 var matches = canonicalActions.stream().filter(action -> action.command().actionId().equals(binding.actionId())).toList();
                 StrictJson.require(matches.size() == 1, "original Life child is not uniquely canonical");
                 var child = matches.getFirst();
+                String operation = child.command().operation().value();
+                boolean bareResume = operation.equals("resume-map")
+                        && child.state() instanceof org.xar.ck3.control.application.action.ActionState.IntentDurable;
                 StrictJson.require(child.bodySha256().equals(binding.bodySha256()) && child.command().arguments().members().isEmpty()
                         && org.xar.ck3.control.application.action.ActionTransitions.composite(child.state()).isEmpty()
-                        && (child.settled() || child.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown)
+                        && (child.settled() || child.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown || bareResume)
                         && org.xar.ck3.control.application.advance.AdvancePrimitives.expected(child.command().before(), child.command().source(),
                                 child.command().operation(), child.command().arguments()).equals(child.command().expected()),
                         "read-only Life prefix retains its actual primitive child");
-                String operation = child.command().operation().value();
                 if (operation.equals("pause-map")) {
-                    StrictJson.require(!pause && !speed && !arm && !cancel, "Life initialization pause order differs");
+                    StrictJson.require(!pause && !speed && !arm && !cancel && !resume, "Life initialization pause order differs");
                     pause = true;
                 } else if (operation.startsWith("set-speed-")) {
-                    StrictJson.require(!speed && !arm && !cancel && operation.equals("set-speed-" + plan.speed()), "only the original finite Life control prefix can reconcile");
+                    StrictJson.require(!speed && !arm && !cancel && !resume && operation.equals("set-speed-" + plan.speed()), "only the original finite Life control prefix can reconcile");
                     speed = true;
                 } else if (operation.equals(plan.armStep())) {
-                    StrictJson.require(!arm && !cancel && plan.clockMode() != org.xar.ck3.control.application.advance.AdvancePlan.ClockMode.POLLED, "only the original finite Life control prefix can reconcile");
+                    StrictJson.require(!arm && !cancel && !resume && plan.clockMode() != org.xar.ck3.control.application.advance.AdvancePlan.ClockMode.POLLED, "only the original finite Life control prefix can reconcile");
                     arm = true;
+                } else if (operation.equals("resume-map")) {
+                    StrictJson.require(arm && !cancel && !resume
+                            && (bareResume && children.size() == execution.children().size() - 1
+                                || org.xar.ck3.control.application.advance.LifeAdvanceComposite.isNeverResumedResume(child)),
+                            "read-only Life resume must be its final bare Intent or exact proven unsubmitted terminal");
+                    var prefixExecution = new org.xar.ck3.control.application.action.CompositeExecution(
+                            execution.handlerId(), execution.startedAt(), execution.guard(),
+                            execution.children().subList(0, children.size()));
+                    org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireArmedInitializationPrefix(
+                            parent.command(), prefixExecution, children);
+                    resume = true;
                 } else if (operation.startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX)) {
                     StrictJson.require(arm && !cancel, "Life cancellation requires its prior ARM");
                     // Validate the prefix (pause/speed/arm) is fully settled and canonical before accepting CANCEL
@@ -664,7 +677,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireArmedInitializationPrefix(
                             parent.command(), prefixExecution, children);
                     // Derive expected generation from the confirmed ARM
-                    var armReceipt = children.getLast();
+                    var armReceipt = children.stream().filter(value -> value.command().operation().value().equals(plan.armStep()))
+                            .findFirst().orElseThrow();
                     var armAck = org.xar.ck3.control.application.advance.AdvancePrimitives.acknowledgedSentinel(
                             armReceipt.ack().orElseThrow(), plan.armStep());
                     var expectedCancelOp = org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX + armAck.generation().decimal();

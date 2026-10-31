@@ -45,6 +45,10 @@ public final class ContinuityActionJournal implements ActionJournal {
             @Override public Optional<ActionReceipt> find(String actionId) {
                 try { return lookup(session.head().state(), actionId, archive); } catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
+            @Override public Optional<ActionState.IntentAbandoned> abandonableIntent(ActionReceipt original) {
+                try { return IntentAbandonmentProof.capture(session.head().state(), original, archive); }
+                catch (IOException failure) { throw new UncheckedIOException(failure); }
+            }
             @Override public List<ActionReceipt> unresolved() {
                 try { return receipts(session.head().state(), archive).stream().filter(receipt -> !receipt.settled()).toList(); }
                 catch (IOException failure) { throw new UncheckedIOException(failure); }
@@ -100,6 +104,9 @@ public final class ContinuityActionJournal implements ActionJournal {
                         }
                     }
                     // Retain raw-only recovery originals as actual event pins, without treating packet bytes as JSON materials.
+                    if (next instanceof ActionState.IntentAbandoned abandoned) {
+                        evidence.add(abandoned.originalIntentRecord()); evidence.add(abandoned.originalActionHead());
+                    }
                     if (next instanceof ActionState.Unknown unknown) evidence.addAll(unknown.evidence());
                     if (next instanceof ActionState.CompositeUnknown unknown) evidence.addAll(unknown.evidence());
                     WriterContracts.Request request = new WriterContracts.Request(KIND, ContinuityJson.canonical(details), evidence.stream().distinct().toList());

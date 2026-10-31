@@ -12,12 +12,20 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 
 /** UNKNOWN has no replay transition. ACK and independently observed game effect remain separate facts. */
 public sealed interface ActionState permits ActionState.IntentDurable, ActionState.Submitting, ActionState.AckReceived,
-        ActionState.Unknown, ActionState.Settled, ActionState.RejectedBeforeDispatch, ActionState.CompositeRunning,
+        ActionState.Unknown, ActionState.Settled, ActionState.RejectedBeforeDispatch, ActionState.IntentAbandoned, ActionState.CompositeRunning,
         ActionState.CompositeUnknown, ActionState.CompositeSettled, PhysicalActionState {
     record Attempt(String requestId, Instant submittedAt, GuardEvidence guard, NativeRequest preparedRequest) {
         public Attempt { StrictJson.text(requestId); Objects.requireNonNull(submittedAt); Objects.requireNonNull(guard); Objects.requireNonNull(preparedRequest); }
     }
     record IntentDurable() implements ActionState { }
+    /** Source-owned canonical proof of abandonment before Submitting; no Attempt, packet, ACK or effect is invented. */
+    record IntentAbandoned(ExactRef originalIntentRecord, ExactRef originalActionHead) implements ActionState {
+        public IntentAbandoned {
+            Objects.requireNonNull(originalIntentRecord); Objects.requireNonNull(originalActionHead);
+            StrictJson.require(originalIntentRecord.bytes() > 0 && originalActionHead.bytes() > 0,
+                    "abandoned Intent requires its actual original record and complete action-head prefix");
+        }
+    }
     record Submitting(Attempt attempt) implements ActionState { public Submitting { Objects.requireNonNull(attempt); } }
     record AckReceived(Attempt attempt, NativeActionPort.AckReceived dispatch) implements ActionState {
         public AckReceived { Objects.requireNonNull(attempt); Objects.requireNonNull(dispatch); matching(attempt, dispatch); }

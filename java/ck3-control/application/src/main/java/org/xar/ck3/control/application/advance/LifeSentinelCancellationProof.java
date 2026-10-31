@@ -29,21 +29,27 @@ final class LifeSentinelCancellationProof {
         parent(parent, execution);
         AdvancePlan plan = AdvancePlan.decode(parent);
         require(children.size() == execution.children().size() && children.size() >= (canceled ? 2 : 1)
-                && children.size() <= (canceled ? 4 : 3), "complete finite original Life prefix required");
+                && children.size() <= (canceled ? 5 : 4), "complete finite original Life prefix required");
         int index = 0; long previous = 0;
         if (children.get(index).command().operation().value().equals("pause-map")) index++;
         if (index < children.size() && children.get(index).command().operation().value().equals("set-speed-" + plan.speed())) index++;
-        require(index < children.size() && children.get(index).command().operation().value().equals(plan.armStep())
-                && children.size() == index + (canceled ? 2 : 1), "Life cancellation permits only optional pause/speed, original ARM, and one CANCEL");
-        ActionReceipt arm = children.get(index);
-        Status armed = confirmedArm(parent, arm);
+        require(index < children.size() && children.get(index).command().operation().value().equals(plan.armStep()),
+                "Life cancellation requires its original ARM after optional pause/speed");
+        ActionReceipt arm = children.get(index); Status armed = confirmedArm(parent, arm);
+        int resumeIndex = index + 1;
+        boolean unsentResume = resumeIndex < children.size()
+                && children.get(resumeIndex).command().operation().value().equals("resume-map");
+        require(children.size() == index + 1 + (unsentResume ? 1 : 0) + (canceled ? 1 : 0),
+                "Life cancellation permits only original ARM, optional proven unsubmitted resume, and one CANCEL");
         for (int ordinal = 0; ordinal < children.size(); ordinal++) {
             ActionReceipt child = children.get(ordinal); ActionCommand command = child.command();
             CompositeExecution.Child bound = execution.children().get(ordinal);
             boolean cancel = canceled && ordinal == children.size() - 1;
+            boolean neverSubmitted = unsentResume && ordinal == resumeIndex;
             boolean confirmedPause = command.operation().value().equals("pause-map") && child.state() instanceof ActionState.Settled pause
                     && pause.settlement() instanceof ActionState.PauseConfirmed;
-            require(child.settled() && (child.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED || confirmedPause)
+            require(child.settled() && (neverSubmitted ? LifeAdvanceComposite.isNeverResumedResume(child)
+                        : child.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED || confirmedPause)
                     && child.sequence() > previous && child.bodySha256().equals(ActionCodec.bodySha256(command))
                     && bound.actionId().equals(command.actionId()) && bound.bodySha256().equals(child.bodySha256())
                     && command.actionId().equals(ActionIds.child(parent.actionId(), ordinal + 1, command.operation()))
@@ -54,9 +60,11 @@ final class LifeSentinelCancellationProof {
                     && (cancel || !command.deadline().isAfter(parent.deadline())),
                     "Life cancellation child is not the complete canonical ordered source-bound timeline child");
             sameFrame(parent, command.before());
-            require(child.state() instanceof ActionState.Settled, "Life initialization child needs its real native attempt");
-            ActionState.Settled settled = (ActionState.Settled) child.state();
-            ActionEffects.validate(command, settled.attempt(), settled.dispatch(), settled.settlement());
+            if (!neverSubmitted) {
+                require(child.state() instanceof ActionState.Settled, "Life initialization control needs its real native attempt");
+                ActionState.Settled settled = (ActionState.Settled) child.state();
+                ActionEffects.validate(command, settled.attempt(), settled.dispatch(), settled.settlement());
+            }
             previous = child.sequence();
         }
         if (canceled) {
