@@ -1492,14 +1492,25 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                     && settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
                     && control.observation().semantic().actual().contains(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText(
                             new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("progress_status"), "initialization_cancelled"));
-            if (!(settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted) && !cancelledInitialization) continue;
+            boolean rejectedInitialization = settled.settlement() instanceof ActionState.CompositeRejected rejected
+                    && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(parent.command().operation().value())
+                    && settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                    && rejected.evidence().isEmpty();
+            if (!(settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted) && !cancelledInitialization && !rejectedInitialization) continue;
             var children = settled.execution().children().stream().map(child -> durable.actions().stream()
                     .filter(value -> child.actionId().equals(value.command().actionId())).findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("settled Life control child is absent from canonical Driver actions"))).toList();
+            if (rejectedInitialization)
+                org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireRejectedInitialization(parent.command(), settled.execution(), children);
             org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(parent.command(), settled.execution(), settled.settlement(), children);
             if (cancelledInitialization) {
                 StrictJson.require(!parent.visibleGameplay() && !parent.eligibleAdvance() && parent.applied().isEmpty(),
                         "cancelled Life initialization must not carry gameplay or advance credit");
+                prefixControls.add(parent);
+            }
+            if (rejectedInitialization) {
+                StrictJson.require(!parent.visibleGameplay() && !parent.eligibleAdvance() && parent.applied().isEmpty(),
+                        "rejected Life initialization must not carry gameplay or advance credit");
                 prefixControls.add(parent);
             }
             prefixControls.addAll(children);
