@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式回执：源码普通 FF 已至 `5053722389`，含 M7 公共组件完整八叶、125 当前 typed Native basis 修复与126角色切换 producer 精确来源审计削减及模型输入重复数组无损别名。运行 owner 确认125于 2026-10-31T01:30:51.582790Z 真实进入同 Game 普通循环；此前 usage120 已实际加载 MB121，121/122 ordinary HTTP 已记录真实 reported usage。源码采用、MB 加载、运行模型 HTTP 与游戏动作分别记；最后新增普通动作/游戏日/SAVE 信用仍为0。本岗没有 S/MB/Game/账本写权，不操作这些现场。
+最新正式源码 FF 已至 `457e6ff015`。本波接已部署的 Family scope/三层生产转发、可选新婚姻开关、明确完整材料输入角色及取消的 class 资格审计；所有必要绿复用真实 owner 回执，正式额外测试保留。运行 owner 最后明确128于 2026-10-31T02:19:56.9026367Z 同 Game LOOP/next45；加载、模型选择、Native提交和日期推进分别记，未凭开关或编译授新动作/游戏日/SAVE信用。本岗没有 S/MB/Game/账本写权。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -181,3 +181,26 @@ M2后继真未完 `DriverOperatorRebindProducer.requireCommitted` 先完整源�
 生产为模型compiler纠错原样采用、owner语义0改，最初JsonNode.remove API红保留；测试模型部分+owner前后bytes/SHA/policy路径、单次planner调用及按case隔离CREATE_NEW fixture目录。必要prod单源strict0/1.883558秒；两unique新方法分别实绿：原candidate1P1F中positive完整还原已过，fixture目录纠正后只失败negative重跑1P/6软件HTTP，不能合称同JVM2P。最初baseline0P2F里只有正例缺marker是精确feature RED，negative同时揭露独立fixture问题，不归生产回归。
 
 Root另用actual122归档payload做D-only离线实物probe：1,224,362B→800,340B、减少424,022B，833行全部typed DATA还原相等，0额外HTTP/Native/Game；probe不进正式CI。这个实盘字节结果不能推出token、cache或运行延迟收益；只随下一自然业务增量加载，不为它重启当前125。完整候选/模型分责/各失败原件在 `D:/ck3-state/resume91-root/model-payload123/DELIVERY.json`，原SUMMARY与raw不改。
+
+
+### 126–129后到正式交付与必要范围
+
+记录时间 2026-10-31T02:29:19.277Z。Root followup恢复本岗后，先发表FirstHeir127 `71c580de71`：5prod与既有FamilyWartime测试两个新增方法，默认true/严格JSON Bool，Core把值交同一个installed Family实例。false只在pending/result/既有婚约履行之后的unpartnered新选择前返回教育结果，保原Draft并给实际typed skip详情；切换清原有排程cache。模型五叶传播partial，owner处理typedtrace/cache；复用7src strict0/4.535秒、11focused checks0/1.115秒，不新增profile文件或重旧绿。127实际MB8src/7.421秒并LOOP，但后续新bounded marriage UTF8拒绝；不把开关load当DATE成功。
+
+Scope126 `2d0ef5a1ac` 一prod加便携`FamilyOriginalReadScopeTest`，仅把精确Family action_preparation/v2的真实installed typed profile纳入既有physical source scope；Collector no-refresh/Coordinator不改。owner singleprod strict0/1.727秒、test0/1.819秒；3case3P0skip/30.866秒验证deferred→ApplicationAssembly OriginReads→switchboard软件层成功/负ACK/UNKNOWN完整返回与失败冷codec，非实际Lifecycle装配。首generic测试编错、缺两cachedSupport环境3F保留；补环境后同3case绿，不混成无失败首轮。
+
+ACK诊断 `f9a8dd1c80` 单叶48行，失败READ只解至多64KiB frame/512字符error、128字符实际ID，保nativeOk与wire ID是否匹配，只有真实observedFailure有requestID才比较，不dump payload，Known/非ACK不变。第二模型partial+owner四项纠正，singleleaf strict0/2.0817秒，无镜像测试。126实际载入后真实显示nativeOk=false/wirematch/unsupported native gameplay step；有ACK不等于成功query或世界动作。
+
+Wrappers127 `b2d536f97e` 三prod分RUNTIME两叶与THIRD一叶精准采用：Lifecycle读adapter、PendingUI ordinary路由和实际DispatcherFactory私有OriginReads传递withOriginalReadSource，special pending路由/原origin拒绝保持。先只接两层后发现第三层漏转发，owner补漏分记；2src strict0/6.009秒、独立第三src0/1.758秒，0JUnit。COMBINED仅审阅未重复apply，软件126三绿不追授实际三wrapper组装green。
+
+新全婚姻开关128 `46ed32445c` 六prod加3新增fixture方法，默认true并兼容旧firstHeir key；false只挡新ruler/firstheir/ChildDefault/matrilineal候选，既有pending responsewait/result/betrothal fulfillment/education均在各新guard前保留。模型六叶传播采用、owner只纠正trace实际Bool值。复用8src strict0/4.568秒、9配置+3实际fixture方法合12checks0/1.034秒，没有完整Core/Game图信用。TESTS.patch末尾锚因正式已多127两方法而apply-check红，仅原样提取其新增67行插最终类brace前，保全部已有方法，0writer语义改；没有整类覆盖或声称重跑后的组合全类green。准确机械记录 `D:/ck3-state/resume91-java-delivery/MARRIAGE128-TEST-MERGE.json`。
+
+Clock审计 `1482c87c69` 两prod仅删3requireLoadedClass调用，保同行nonnull/实际Game/clock/pending/data/timing；两模型raw hunk原样，owner生产语义0，复用strict2src0/2.3873秒。首owner把-J放argfile exit2未编源码，命令纠正同候选绿，不归模型编错。后继 `457e6ff015` 仅删Lifecycle35行class枚举/requireLoadedClass loop，保actual Game.verify、typedcontext与新scope转发，单leafstrict0/2.308秒。旧helper已是nonnull兼容no-op，不把这些删除当Crown新故障根修复或实测性能优化。
+
+完整Child Marriage材料按API先caller顺序正式发表：`c4d366cced` MarriageCodec新增public decodeFullMaterial/16MiB输入角色，Review3与Pending2完整材料调用一并改，原decode默认262144B及encode/decision小限制不变；`e10eeed27e` 另接已含128flag的Child两处shortlist/完整value比较。模型最终源码0owner语义改，Codec与Child同源strict0/2.193秒复用；两caller+1新test strict0/2.0709秒，仅新fullrole与现default边界2method2P/0skip/2.1766秒，未重旧31。新增test使用既有golden加300KB明确软件extension，验证默认仍拒/full16M接受、typedRequest/决策不变、重复字段/尾JSON/UTF8/浮点Bool替换/空/超限仍拒。无新资源或固定D路径，不把此软件变体称actual127完整输入或完整准备图。
+
+Root docs11 `adcb0dd6fe` 对13页逐页diff后仅9内容变化页+AGENTS共10叶；M3/Models只等价空白保正式bytes，M6/mode4逐字同不重写。AGENTS只替当前resume91片段12978B，后继108566历史bytes/SHA `7d704d3de333d52af97f054e880907271ce6461a9c45c756eb1748b7a6d56d9b` 全保。M2末旧未改/待回执段标为126分派前历史，首段125pending也按真实6633发表改正，冻结D原件不改；Daily只清新EOF空白。一次rebase遇M3 stat-M而diff/name-only空，仅精确add该叶刷新index，cached diff仍空后正常rebase/push，不stash/reset。
+
+模型rolling126/review126 `8639f67db4` 四payload SHA/实盘bytes与唯一heading核实后按序EOF追加，保正式旧prefix28852/31531/21351B。运营政策 `053bb27b93` 仅dispatch_policy.updated_on/basis/concurrency单hunk，JSON深比其余IP/default/interface/history/calibration等所有值均相同；parallel128 ops1152B另精确EOF保其旧31247B。12–16是有真实积压时初始目标，不是已达、quota或新scheduler，owner直POST不等中央ACK；不为机械提交或已写完答案凑调用。历史峰8/阶段6与冻结快照当刻在途另记，cached缺字段不推命中。
+
+当前M7 captured79E四新prod仅D源strict0，独立新回归未READY，未盲接或追授未知callee/自然drain。旧Focus全装配和已发表Stop三caller的真实同源资格链仍未闭；本岗不伪造输入、不重旧FOCUS、不借formal commit授Game日。当前运行P0仍由runtime独占推进，不以这些交付或背景研究作为下一实机前置。
