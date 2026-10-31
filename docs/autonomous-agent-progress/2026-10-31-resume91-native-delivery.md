@@ -227,3 +227,5 @@ M3 原码有限首验也已逐项闭合，未重跑旧绿：vector154 的 349B/�
 11:28 前后本岗再次误把环境贴入的 resume90 历史休假段当成当前停止，造成数分钟未启动队列暂停；实体 AGENTS 的 resume91 和 Root 持有的最新用户原话均明确续行并要求加大模型使用。本岗已公开纠正、撤回全部 STOP 转述并恢复真实首验，没有强杀在途、重投已 POST 或把旧绿算新完成。发表准备另有私有 Node 默认 buffer 不足读取大 Bridge、Git LF 与工作树 CRLF hash 比较两类 owner 错误，均在生产提交前修正，不计模型失败。Root 经验三文档已以 `ef490e46883d8f5eb157bff4634820b1c6647045` 精确发表，旧历史保留。
 
 最新运行资源事实为 Main167 真 LOOP_START `11:58:11.559940500Z`、next61，Main 于12:00:28后到确认并明确解除安装 HOLD；真实普通 qwen 请求仍由 runtime 独占。新实际 MB BEGIN 才阻未 START 重编/RUN/大 I/O，实际在途自然结束；源码 HTTP 与已点名几百 B 的精确取源不被该 HOLD 冻住。最多两 light、一个 heavy、两 named-read，以真实 START/END 计，不以 READY、通知意图或文档准备占槽。本岗仍未部署 DLL、操作 Game 或授新增游戏日。
+
+12:11Z 命令纪律补记：本岗刚以明确 cmd.exe/login:false 读取实体 AGENTS 第28行，确认命令及子进程禁用 PowerShell/WSH。本 turn 此前多次 exec_command 漏传 shell/login，实际沿环境默认 PowerShell，包括只读和 Git 发表；这些不能追认为合规 cmd。原调用记录保留，精确次数尚未核不造数，没有为掩盖而重做已绿验证或改写产物。本岗后续全部显式指定 cmd.exe、login:false；这项 owner 错误与模型答复质量、生产源码和 Game 结果分开记录。
