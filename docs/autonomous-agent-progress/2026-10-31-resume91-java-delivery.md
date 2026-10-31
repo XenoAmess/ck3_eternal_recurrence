@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进143实际clock diagnostics/Driver派生历史单RootFacts及Journal时间线子回执cycle归属；前序142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进M7 E91D90 slot0两新叶，前序143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -348,3 +348,9 @@ formal与sealed runtime前像有一处早先未同步差异：RootFacts仍保“
 运行142实际已消除前8个capability差异，但05:57:06.709868Z END4/next58仍剩diagnostics/native_command_history（同Native SHA12 e259aabf928f/PT0S）；此后修这两个明确producer角色，不称142全链已过。143复用actual138 packet1093B/facts38268B/beforeDriver4008900B及afterDriver4088702B真实Reader→Assembler3 Complete；旧142入口对真实只读Java history变化和明确软件observer计数变化分别false，baseline进程0是预期拒绝assert，不是签名/环境失败。新10P0F/1.739秒含2构造前提+8行为，负例先重建完整原生包/refs/facts并Assembler成功才测拒绝，不把非法构造当Native拒；不是failed142 heap/wholeRoot/实机。
 
 首模型688out无有效核心接线整拒0，helper02 12625in/216out、3.128秒/TTFT1.922只helper partial；owner补泛型、去整HELLO保留、所有history/raw/current/capture/diag接线。首singleprod泛型rawKeys-Werror编1/1.777秒与维护GBK二次红保，显式Set<String>唯一修正后strict0/1.871秒；fixturestrict0/1.662秒，旧绿不重，不携固定D probe进CI。runtime已S/Z准确采单叶、与Journal共2prod实际MB143 BEGIN，尚不授143LOOP/Nativechild/新日。证据 `D:/ck3-state/resume91-java-delivery/CLOCK143-ADOPTION.json`。
+
+## M7 E91D90 slot0完整103B软件投影
+
+现g2-research/captured新增RequestSlot0E91d90与对应Test两叶，无POM/依赖变动，复用已正式RequestE92780.Memory、Request140TestMemory和Idler79eRegressionHost。完整源/测试及独立完整103B source review已读：仅一次BYTE[D8]判非0调用B0，接70后单QWORD vptr=base+44FC298，再48/28；保存原rawEDX只测bit0，末opaque call4223F44只knownRCX原receiver/EDXE0，正常返回原receiver、异常立即保原对象传播。vptr不同于constructor44FC2A8，LEA不偷换成load，未知ABI/free/unwind/当前U/SAVE语义不补造。正式只缩进/LF尾白/EOF加一范围注释，原非白字符相同、0writer算法改。
+
+复用owner首pristine2TU严格编1/.670771秒，唯一实际诊断是failureTest误用Objects.assertSame，未RUN；不追认编译器未报的后继counter诊断。纠错后2TU strict0/1.016394秒，只两新JUnit首次同JVM2P0F0skip/.647138秒（flag0/raw2与flag80/raw3两组、阶段vptr/poison image、opaque callback改storage但return仍receiver、第二cleanup异常原对象/无后续效果），未重140旧4或执行Native103B。六真实HTTP全stop/52092in7439out、阶段峰3/cached未报；首method JE反向源拒，correct02完整24行模型method保留owner算法0；两Test均模型partial+owner阶段/毒值/异常断言。父误判Host同address/samesize map为错误已撤回，不算模型能力失败。证据 `D:/ck3-state/resume91-java-delivery/M7-SLOT0143-ADOPTION.json`；正式source不携本机fixture路径，0Native/Game/SAVE信用。
