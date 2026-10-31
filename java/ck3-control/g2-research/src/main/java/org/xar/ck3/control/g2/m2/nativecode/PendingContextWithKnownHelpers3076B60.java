@@ -5,7 +5,7 @@ public final class PendingContextWithKnownHelpers3076B60 {
     private PendingContextWithKnownHelpers3076B60() { }
     public interface Memory extends PendingEmbeddedCopy373ACF0.Memory,
             PendingContextChildInit105D2D0.Memory, PendingContextRangeInsertBCB7C0.Memory,
-            PendingContextTailCopy2503880.Memory { }
+            PendingContextTailCopy2503880.Memory, PendingEmbeddedInit8895D0.Memory { }
     public interface Calls {
         void call8895D0(Memory memory, long rcx, long rdx);
         void call37282B0(Memory memory, long rcx, long rdx);
@@ -21,8 +21,14 @@ public final class PendingContextWithKnownHelpers3076B60 {
         void virtualTail10(Memory memory, long target, long rcx, long rdx, long r8);
     }
     public static long copy(Memory memory, Calls calls, long destination, long source, long moduleBase) {
+        PendingEmbeddedInit8895D0.Calls init8895D0Calls = new PendingEmbeddedInit8895D0.Calls() {
+            public void virtual10(PendingEmbeddedInit8895D0.Memory m, long target, long rcx, long rdx, int r8d) { calls.virtualInit10(memory, target, rcx, rdx, r8d); }
+            public void virtual20(PendingEmbeddedInit8895D0.Memory m, long target, long rcx, long rdx, long r8) { calls.virtualInit20(memory, target, rcx, rdx, r8); }
+        };
         PendingEmbeddedCopy373ACF0.Calls embeddedCalls = new PendingEmbeddedCopy373ACF0.Calls() {
-            public void call8895D0(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) { calls.call8895D0(memory, rcx, rdx); }
+            public void call8895D0(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) {
+                PendingEmbeddedInit8895D0.initialize(memory, init8895D0Calls, rcx, moduleBase);
+            }
             public void call37282B0(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) { calls.call37282B0(memory, rcx, rdx); }
             public void call260E040(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) { calls.call260E040(memory, rcx, rdx); }
             public void call3727180(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) { calls.call3727180(memory, rcx, rdx); }
