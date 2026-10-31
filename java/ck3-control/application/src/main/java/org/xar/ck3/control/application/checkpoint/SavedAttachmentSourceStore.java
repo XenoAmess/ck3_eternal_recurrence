@@ -120,14 +120,38 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
     /** Root calls this from its actual SAVE verifier adapter before the existing writer lease is released. */
     public SavedMaterial capture(VerifiedCheckpoint verified) throws IOException {
         var borrowed=sessions.current();verifier.requireIssued(borrowed,verified);
+        String captureHead=borrowed.head().digest();
         String cycleAuthority=cycles.verify(borrowed,verified.session(),verified.proof());WriterContracts.requireDigest(cycleAuthority);
         Path path=materialPath(verified.pair());var existing=files.observe(path);
         if(existing.isPresent()) {
-            StrictJson.require(existing.orElseThrow().equals(capturedMaterialWitnesses.get(path)),
-                    "existing material has no original capture identity custody; supply its persisted original witness");
-            SavedMaterial retained=load(verified.pair());
-            StrictJson.require(retained.session.equals(verified.session())&&sameProof(retained.proof,verified.proof()),
-                    "same physical pair cannot acquire a different original semantic/cycle source");return retained;
+            var existingWitness=existing.orElseThrow();
+            var mapWitness=capturedMaterialWitnesses.get(path);
+            if(mapWitness!=null) {
+                StrictJson.require(existingWitness.equals(mapWitness),
+                        "existing material has no original capture identity custody; supply its persisted original witness");
+                SavedMaterial retained=load(verified.pair());
+                StrictJson.require(retained.session.equals(verified.session())&&sameProof(retained.proof,verified.proof()),
+                        "same physical pair cannot acquire a different original semantic/cycle source");return retained;
+            }
+            // This is a newly source-qualified current capture witness; the failed preview
+            // did not persist its original capture identity, and that identity is not recovered.
+            // Requalify against the genuine current VerifiedCheckpoint before publishing any map entry.
+            ObjectNode expected=StrictJson.object();expected.put("schema",MATERIAL_SCHEMA);expected.set("pair",StrictJson.parse(CheckpointPairCodec.encode(verified.pair())));
+            expected.set("session",session(verified.session()));expected.set("proof",proof(verified.proof()));
+            expected.set("original_writer_head",verified.originalHead().toJson());
+            expected.put("cycle_authority_sha256",cycleAuthority);
+            expected.put("original_writer_head_sha256",verified.originalHeadDigest());expected.put("checkpoint_binding_sha256",verified.digest());
+            byte[] expectedBytes=metadataBytes(expected);
+            files.verify(existingWitness);
+            byte[] actualBytes=files.read(existingWitness,MAX_METADATA);
+            StrictJson.require(Arrays.equals(actualBytes,expectedBytes),"orphan material bytes differ from current verified capture identity");
+            files.verify(existingWitness);
+            SavedMaterial requalified=readMaterial(borrowed,verified.pair(),existingWitness,false);
+            files.verify(existingWitness);
+            StrictJson.require(sessions.current()==borrowed&&captureHead.equals(borrowed.head().digest()),"orphan requalification changed actual writer head or session");
+            var prior=capturedMaterialWitnesses.putIfAbsent(path,existingWitness);
+            StrictJson.require(prior==null||prior.equals(existingWitness),"orphan material source conflicts with already captured identity");
+            return requalified;
         }
         ObjectNode row=StrictJson.object();row.put("schema",MATERIAL_SCHEMA);row.set("pair",StrictJson.parse(CheckpointPairCodec.encode(verified.pair())));
         row.set("session",session(verified.session()));row.set("proof",proof(verified.proof()));
