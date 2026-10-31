@@ -55,7 +55,10 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
             context.requireCurrent(parent.deadline());var same=context.borrowedSession();context.writer().requireSession(same);
             String head=same.head().digest();
             T result=context.collector().current(same,frame.identity(),parent.deadline(),lease->{
-                requireClockEquivalent(frame, lease.frame(), context.collector().activeNativeOwnedNoticeKeys(same, lease),
+                var raw = context.collector().activeOriginalNativeFrame(same, lease);
+                var aux = lease.driver().auxiliary();
+                var augmentation = clockAugmentationFields(DriverObservationAssembler.originalNativeState(raw), aux);
+                requireClockEquivalent(frame, lease.frame(), augmentation, context.collector().activeNativeOwnedNoticeKeys(same, lease),
                         "outer runtime scope changed the actual clock observation");
                 return work.get();
             });
@@ -64,11 +67,10 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
         }catch(IOException failure){throw new UncheckedIOException("actual outer Root clock readiness unavailable",failure);}
     }
 
-    static boolean clockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual, Set<String> nativeOwnedNoticeKeys) {
+    static boolean clockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual, Set<String> augmentation, Set<String> nativeOwnedNoticeKeys) {
         if (!expected.identity().equals(actual.identity()) || !expected.source().equals(actual.source()) || !expected.sessionId().equals(actual.sessionId())) return false;
         if (!(expected.provenance() instanceof ObservationProvenance.Push)) return false;
         var pid = expected.identity().game().pid();
-        var augmentation = clockAugmentationFields(actual);
         var expectedStable = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, pid);
         var actualStable = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, pid);
         return expectedStable.equals(actualStable);
@@ -79,13 +81,6 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
             "native_command_history", "succession_lifecycle", "campaign_goal", "native_rollback_war_failure",
             "native_rollback_war_failures", "episode_projection", "backend_id", "source", "diagnostics",
             "active_wars", "player_armies");
-
-    private static Set<String> clockAugmentationFields(DriverObservationAssembler.Complete actual) {
-        if (actual.originalProjection().isEmpty()) return Set.of();
-        var full = actual.originalProjection().orElseThrow();
-        return clockAugmentationFields(DriverObservationAssembler.originalNativeState(full.actual()),
-                full.facts().originalSemanticFields());
-    }
 
     static Set<String> clockAugmentationFields(OpportunityJson.Obj rawNative, OpportunityJson.Obj producerFields) {
         // The actual producer copied Driver auxiliary into these extras. A same-name raw Native field
@@ -106,20 +101,19 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
     }
 
     private static void requireClockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual,
-            Set<String> nativeOwnedNoticeKeys, String reason) {
-        if (!clockEquivalent(expected, actual, nativeOwnedNoticeKeys))
-            require(false, reason + "; " + clockDifference(expected, actual, nativeOwnedNoticeKeys));
+            Set<String> augmentation, Set<String> nativeOwnedNoticeKeys, String reason) {
+        if (!clockEquivalent(expected, actual, augmentation, nativeOwnedNoticeKeys))
+            require(false, reason + "; " + clockDifference(expected, actual, augmentation, nativeOwnedNoticeKeys));
     }
 
     static String clockDifference(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual,
-            Set<String> nativeOwnedNoticeKeys) {
+            Set<String> augmentation, Set<String> nativeOwnedNoticeKeys) {
         try {
             var roles = new java.util.ArrayList<String>();
             if (!expected.identity().equals(actual.identity())) roles.add("identity");
             if (!expected.source().equals(actual.source())) roles.add("source");
             if (!expected.sessionId().equals(actual.sessionId())) roles.add("session");
             if (!(expected.provenance() instanceof ObservationProvenance.Push)) roles.add("provenance_kind");
-            var augmentation = clockAugmentationFields(actual);
             var left = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, expected.identity().game().pid());
             var right = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, actual.identity().game().pid());
             var keys = new java.util.TreeSet<String>(left.members().keySet()); keys.addAll(right.members().keySet());
@@ -162,7 +156,10 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
 
     private ProductionAdvanceReadiness.RuntimeFacts capture(ContinuityStorePort.Session same, ActionCommand parent,
             AdvanceObservationPort.Frame frame, DriverHistoryAccess.View history, LeaseSnapshot lease)throws IOException {
-        requireClockEquivalent(frame, lease.frame(), context.collector().activeNativeOwnedNoticeKeys(same, lease),
+        var raw = context.collector().activeOriginalNativeFrame(same, lease);
+        var aux = lease.driver().auxiliary();
+        var augmentation = clockAugmentationFields(DriverObservationAssembler.originalNativeState(raw), aux);
+        requireClockEquivalent(frame, lease.frame(), augmentation, context.collector().activeNativeOwnedNoticeKeys(same, lease),
                 "runtime facts changed the actual clock observation");
         require(lease.frame().source().equals(context.source())
                 && frame.identity().game().equals(context.game().generation())

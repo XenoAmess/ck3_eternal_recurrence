@@ -1103,6 +1103,14 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         return active.captured().physical().nativeOwnedNoticeKeys();
     }
 
+    public org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame activeOriginalNativeFrame(ContinuityStorePort.Session borrowed, LeaseSnapshot expected) {
+        PlanningReadScope active = planningReadScope.get();
+        require(active != null, "no active planning read scope");
+        require(active.borrowed() == borrowed, "borrowed session mismatch");
+        require(active.captured().lease() == expected, "stale or foreign lease");
+        return active.captured().physical().original();
+    }
+
     /** Registered reads borrow the actual outer planning/public observation and cannot replace frozen Driver facts. */
     private <T> T borrowedPlanningRead(PlanningReadScope active, ContinuityStorePort.Session borrowed,
             ObservationIdentity expected, Instant callerDeadline, ReadinessAuthority.CheckedWork<T> work) throws IOException {
