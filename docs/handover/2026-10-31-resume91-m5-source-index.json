@@ -1,6 +1,6 @@
 {
-  "snapshot_at_utc": "2026-10-31T17:05:56.562275+00:00",
-  "snapshot_boundary": "Frozen evidence/document snapshot, not publication time, a live worker/resource lease or a live model queue. Maturity cutoff is actual whole181 END2026-10-31T16:39:08Z. Successor182/183/184 statuses are outside this package and are not asserted here.",
+  "snapshot_at_utc": "2026-10-31T17:34:30.583542+00:00",
+  "snapshot_boundary": "Frozen evidence/document snapshot, not publication time or live resource/model/worker state. Maturity cutoff is actual whole184 END2026-10-31T17:06:28Z. Successor185/186/187/188 states are outside this package and are not asserted.",
   "schema": "xar.resume91.m5.current-source-index/v1",
   "owner": "/root/m5_continue",
   "machine_id": "xenoamess-full-tower-eb9d2c1186",
@@ -16,22 +16,25 @@
     "D:/ck3-state/resume91-m5-native/root-3f5c090178/RESULT05.json",
     "D:/ck3-state/resume91-m5-native/lookup-with-root179/RESULT04.json",
     "D:/ck3-state/resume91-m5-native/normalize-with-root180/RESULT04.json",
-    "D:/ck3-state/resume91-m5-native/whole-with-root181/RESULT04.json"
+    "D:/ck3-state/resume91-m5-native/whole-with-root181/RESULT04.json",
+    "D:/ck3-state/resume91-m5-native/token-3f4f8e0182/RESULT05.json",
+    "D:/ck3-state/resume91-m5-native/normalize-with-token183/RESULT05.json",
+    "D:/ck3-state/resume91-m5-native/whole-with-token184/RESULT07.json"
   ],
   "source_index_creation": "Absent at exact formal base; added as a new minimal current index rather than copying the untracked Z historical index.",
   "active_work_package": "latest_work_not_in_this_snapshot",
-  "active_work_status": "This document records mature177–181 only; it does not observe or assert live successor work, HTTP, compile, execution or resource ownership.",
-  "latest_completed_work_package": "whole-with-root181 at this maturity cutoff only",
-  "latest_completed_result": "D:/ck3-state/resume91-m5-native/whole-with-root181/RESULT04.json",
+  "active_work_status": "This package records mature182–184 only in addition to unchanged prior mature evidence; no live successor HTTP, resource, source or validation status is asserted.",
+  "latest_completed_work_package": "whole-with-token184 at this maturity cutoff only",
+  "latest_completed_result": "D:/ck3-state/resume91-m5-native/whole-with-token184/RESULT07.json",
   "current_local_stage_complete": true,
   "active_source_entries": [],
   "parent_actual_inflight": null,
   "child_HTTP_state": {
     "observed": false,
-    "note": "No live polling or model request performed to create this document; prior zero counts are retained only in the dated prior snapshot below."
+    "note": "No live polling or model request for this document. Past model/resource counts remain only in dated historical snapshots."
   },
-  "latest_external_notice": "181 local firstONE is complete at the stated maturity cutoff; this package does not gate actualMain or successor research.",
-  "maturity_cutoff_utc": "2026-10-31T16:39:08Z",
+  "latest_external_notice": "184 firstONE complete at the stated cutoff; this package does not gate Main or successor source/model/validation work.",
+  "maturity_cutoff_utc": "2026-10-31T17:06:28Z",
   "mature_result_details": [
     {
       "package": "177",
@@ -227,6 +230,149 @@
       "stage_argfile_stdout_stderr_receipts": "See this exact RESULT actual_stages; files are under D:/ck3-state/resume91-m5-native/whole-with-root181/validation",
       "adoption": "Consumer R1 model Java unchanged; Book two semantic rounds rejected then owner entire independent data from originalASM/old175frontliteral (no targetJava read or run); host175 deterministic reuse plus fullMapkey equality and C090value write observation.",
       "limits": "Initial2opaque/MXCSR and suffix153boundary remain owned inputs,31F9empty and153signedskip not new coverage. Old173/175 host checked allseed+explicitbytes but not absence of extra keys; new181 adds it without rerunning oldgreens. Known outer duplicatewrite final-state scope retained. No originalNative/loaded/deployment/Game or G2completion."
+    },
+    {
+      "package": "182",
+      "result": {
+        "path": "D:/ck3-state/resume91-m5-native/token-3f4f8e0182/RESULT05.json",
+        "bytes": 7435,
+        "sha256": "e0dfb26ed14ba529f031c73b4942fc02b681340c11c821e776e789ea9d005e2b"
+      },
+      "scope": "Three first new fullCPU literals, one ordered event cursor for memory atomic/loop/pause/GS/opaque ports; full NormalReturn and exact full final Map; call beforeMap complete equality. Script is port order, not complete instruction-write trace. Constant7bytes are owned input, not actualPE constant/loaded/MXCSR observation.",
+      "stages": [
+        {
+          "ordinal": 1,
+          "begin_utc": "2026-10-31 17:02:37 UTC",
+          "end_utc": "2026-10-31 17:02:38 UTC",
+          "exit_code": 0,
+          "seconds": 0.5313046
+        },
+        {
+          "ordinal": 2,
+          "begin_utc": "2026-10-31 17:02:42 UTC",
+          "end_utc": "2026-10-31 17:02:43 UTC",
+          "exit_code": 0,
+          "seconds": 0.7171706
+        },
+        {
+          "ordinal": 3,
+          "begin_utc": "2026-10-31 17:02:47 UTC",
+          "end_utc": "2026-10-31 17:02:47 UTC",
+          "exit_code": 0,
+          "seconds": 0.0957422
+        }
+      ],
+      "stage_order": "newprod,newtest,firstnewliteral",
+      "stage_argfile_stdout_stderr_receipts": "Exact RESULT actual/logs fields; files under D:/ck3-state/resume91-m5-native/token-3f4f8e0182/validation",
+      "adoption": "API owner declaration; core two model semantic rounds rejected then owner whole. Consumer R1 model raw unchanged. WitnessAPI R1 model raw unchanged. Recorder R2 model subject plus owner two helper-name corrections. Independent Book two model length rounds rejected then owner entire literal data, no targetJava read/run.",
+      "limits": "No Native/Game/S/MB/DLL/G2 credit.",
+      "first_cases": [
+        "inclusive-index-hit-highbit-atomic",
+        "odd-lock-pause-negative-key-hot-fallback",
+        "null-entry-full-threecall-init-fresh-ret"
+      ],
+      "ordered_script_totals": {
+        "atomic": 8,
+        "loop": 2,
+        "pause": 1,
+        "GS": 2,
+        "opaque": 3
+      },
+      "frozen_input_identities": {
+        "raw_crlf_sha256": "bd9c616f1d8a546c7a1afc98318058847e130fe87a88719d57af872307abe871",
+        "normalized_lf_sha256": "420e2870ee267f6d43303b828ec4c768d9b62a1cc338d75c81308069d1971479",
+        "explanation": "prepare01 printed LF-string hash before Windows CRLF file write; same frozen numerical input, both identities preserved."
+      }
+    },
+    {
+      "package": "183",
+      "result": {
+        "path": "D:/ck3-state/resume91-m5-native/normalize-with-token183/RESULT05.json",
+        "bytes": 6777,
+        "sha256": "1b7fd6018d066e2e9789c01862367156a4c21b4291330fa147d809beed2b8c14"
+      },
+      "scope": "ONE new actual174->182fast inclusive2807hit then normalizerTLSblocked;2DWORDatomic/1GS/0opaque,fullV/XMM/NV/RET/exact fullMap. Helper loop/token loop/pause reject unexpected events.",
+      "stages": [
+        {
+          "ordinal": 1,
+          "begin_utc": "2026-10-31 17:03:22 UTC",
+          "end_utc": "2026-10-31 17:03:23 UTC",
+          "exit_code": 0,
+          "seconds": 0.6583984
+        },
+        {
+          "ordinal": 2,
+          "begin_utc": "2026-10-31 17:03:27 UTC",
+          "end_utc": "2026-10-31 17:03:28 UTC",
+          "exit_code": 0,
+          "seconds": 0.7698706
+        },
+        {
+          "ordinal": 3,
+          "begin_utc": "2026-10-31 17:03:34 UTC",
+          "end_utc": "2026-10-31 17:03:34 UTC",
+          "exit_code": 0,
+          "seconds": 0.187965
+        }
+      ],
+      "stage_order": "newprod,newtest,firstnewliteral",
+      "stage_argfile_stdout_stderr_receipts": "Exact RESULT actual/logs fields; files under D:/ck3-state/resume91-m5-native/normalize-with-token183/validation",
+      "adoption": "Consumer R1 model subject plus owner two type edits for ambiguous LoopBudget imports. Independent Book two model rounds whole rejected then owner entire data. Recorder old174 deterministicreuse with fullWORD ports and explicit three stopping callbacks; no new expected generated by subject.",
+      "limits": "Finite owned software only; no Native/loaded/deployment/Game/G2 credit.",
+      "owner_input_correction": "Original27E2count/index contradicted frozen174index1 preRCX2807; owner accepted originalASM2807 before first modelPOST, all old input unchanged."
+    },
+    {
+      "package": "184",
+      "result": {
+        "path": "D:/ck3-state/resume91-m5-native/whole-with-token184/RESULT07.json",
+        "bytes": 8289,
+        "sha256": "e5d26836644b91c8daeeab521d84a6c8b6ddba45d3a776d17ca378d8403848f2"
+      },
+      "scope": "ONE new realwhole->two174normalizers->actual182token fast165hits plus actual176helper/178root.2opaque diag/8GS/14DWORDatomics/4originaldeep steps, helperloop/tokenloop/pause0. FulltypedWhole/Middle/joins/exactfullMap and C090absoluteCALLslot returnvaluewrites exactly2; original181oldsubject0run.",
+      "stages": [
+        {
+          "ordinal": 1,
+          "begin_utc": "2026-10-31 17:05:30 UTC",
+          "end_utc": "2026-10-31 17:05:31 UTC",
+          "exit_code": 0,
+          "seconds": 0.4880197
+        },
+        {
+          "ordinal": 2,
+          "begin_utc": "2026-10-31 17:05:35 UTC",
+          "end_utc": "2026-10-31 17:05:36 UTC",
+          "exit_code": 1,
+          "seconds": 0.6525897
+        },
+        {
+          "ordinal": 3,
+          "begin_utc": "2026-10-31 17:06:21 UTC",
+          "end_utc": "2026-10-31 17:06:22 UTC",
+          "exit_code": 0,
+          "seconds": 0.715789
+        },
+        {
+          "ordinal": 4,
+          "begin_utc": "2026-10-31 17:06:26 UTC",
+          "end_utc": "2026-10-31 17:06:28 UTC",
+          "exit_code": 0,
+          "seconds": 1.0461545
+        }
+      ],
+      "stage_order": "newprod,TEST01ownerRED,TEST02necessaryretry,firstONE",
+      "stage_argfile_stdout_stderr_receipts": "Exact RESULT actual/logs fields; files under D:/ck3-state/resume91-m5-native/whole-with-token184/validation",
+      "adoption": "Thin consumer single semanticR1 modelsource unchanged, actual10054 failedhalfdiscard then configured transportretry200stop. Independent Book two modelsemanticrounds whole rejected then owner entire64line minimaldelta, no targetJava read/run. Host deterministic181recorderreuse plusWORD ports/two extra rejecting callbacks. Owner uncertain claim of OpaqueCall.rspBits wrong was corrected: it IS actualAPI; helperR2task mistaken memory accessor words likewise not counted modelerror, actual answer used correctAPI. Owner mechanical host initially duplicated inherited WORD declarations (TEST01strict1); removed only added two methods, original ports/assertions/Book/prod unchanged, TEST02strict0 and FIRSTONE0. Not a model or algorithm RED.",
+      "limits": "No fullNative instructionwrite multiplicity claim, existing174/176samevalue duplicate bridgewrite remains bounded oldscope.31F9empty/153skip not covered.0Native/loaded/DLL/S/MB/Game/G2credit.",
+      "first_red_preserved": {
+        "path": "D:/ck3-state/resume91-m5-native/whole-with-token184/ACTUAL04-RED.json",
+        "bytes": 872,
+        "sha256": "e9be15ac3b84f95a6c5d360302f9d3348916f9205e5c92ccbc681982d3cccd05"
+      },
+      "owner_host_correction": {
+        "path": "D:/ck3-state/resume91-m5-native/whole-with-token184/RETRY-READY05.json",
+        "bytes": 1340,
+        "sha256": "86574b5e2533d21bc8c114ca65bb7fa1d8ced235a2a88a2bb8b0f001e45df4ca"
+      }
     }
   ],
   "source_publication": [
@@ -295,15 +441,135 @@
       ],
       "local_origin_master_contains_at_snapshot": true,
       "limit": "Source publication and source-only javac, not JVM/manual-case reruns, automatic CI, loaded Native, deployment or Game evidence."
+    },
+    {
+      "commit": "6a4deec7fad2f4416c1c2a33ecc386c46a12922e",
+      "main_sources": 7,
+      "manual_support_test_sources": 7,
+      "source_only_first_compile": [
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source184/MAIN-ACTUAL.json",
+            "bytes": 581,
+            "sha256": "e2cf53d0bb8ceb68e6c346d8969b5c3126801a9495ca98e9e248b7d12aaaec3e"
+          },
+          "begin_utc": "2026-10-31T17:15:42.044625+00:00",
+          "end_utc": "2026-10-31T17:15:42.751434+00:00",
+          "exit_code": 0,
+          "seconds": 0.7068092003464699,
+          "source_count": 7
+        },
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source184/TEST-ACTUAL.json",
+            "bytes": 581,
+            "sha256": "0b6a313c3b491cf9bbd8d6a57ff45949dc45d3584ed20694c2c3bca5e4af301b"
+          },
+          "begin_utc": "2026-10-31T17:15:42.877111+00:00",
+          "end_utc": "2026-10-31T17:15:44.019043+00:00",
+          "exit_code": 0,
+          "seconds": 1.1419314998202026,
+          "source_count": 7
+        }
+      ],
+      "local_origin_master_contains_at_snapshot": true,
+      "new_formal_source_hashes": [
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentNormalizeWithToken183.java",
+          "formal_bytes": 993,
+          "formal_sha256": "8bf3695b3798878fb155b24ede4230c40341b9ec23b03796ae45a07f177d0e78",
+          "original_owned_source_sha256": "cf3bb855d19c9f47b33febf092af91a0d72e808d760a4c4d4c7f32a605517e09"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentNormalizeWithToken183Api.java",
+          "formal_bytes": 322,
+          "formal_sha256": "356411afc568f02fed0ffd1e816879c8fccbdec696a1efe3e06b0a3ed8904bb0",
+          "original_owned_source_sha256": "356411afc568f02fed0ffd1e816879c8fccbdec696a1efe3e06b0a3ed8904bb0"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentTokenLookup182.java",
+          "formal_bytes": 5958,
+          "formal_sha256": "a8c8820ecac706c2ab373ecf18364b112eb3775f0c98467af0a36242248ed500",
+          "original_owned_source_sha256": "a8c8820ecac706c2ab373ecf18364b112eb3775f0c98467af0a36242248ed500"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentTokenLookup182Api.java",
+          "formal_bytes": 1529,
+          "formal_sha256": "6aae326cb99cf4b6586efdc25cbfbff9eebdadc4f5ebb0cef8a3b8b0430cc5e2",
+          "original_owned_source_sha256": "6aae326cb99cf4b6586efdc25cbfbff9eebdadc4f5ebb0cef8a3b8b0430cc5e2"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentTokenLookup182Calls.java",
+          "formal_bytes": 5298,
+          "formal_sha256": "6862f293bfa902b4571acb1bf91448ab828bc05f9dd3381c04a4d0abe71416d3",
+          "original_owned_source_sha256": "5834e1fae0e84eb68da042559c38871857d8e20cb6dc71269a634efd378e34b4"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeToken184.java",
+          "formal_bytes": 3288,
+          "formal_sha256": "51cf76bc86c04c3a7cd7376305d748df13a7ad3e9dfb310704887d4e0a15450f",
+          "original_owned_source_sha256": "21f0120f2d716115fea831e9093f9a69d6b3709bd1be210bad0079cc2b21b863"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeToken184Api.java",
+          "formal_bytes": 332,
+          "formal_sha256": "b63e7e55143153b2e2315ce5ba98a65b4b46d34b474c072c40aa76598e0a09a6",
+          "original_owned_source_sha256": "b63e7e55143153b2e2315ce5ba98a65b4b46d34b474c072c40aa76598e0a09a6"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentNormalizeWithToken183Fixtures.java",
+          "formal_bytes": 3030,
+          "formal_sha256": "1aaa9cd09afed99d851b31925f43cdad61e7982535c86d0cf56ad1d4d3a26e0f",
+          "original_owned_source_sha256": "1aaa9cd09afed99d851b31925f43cdad61e7982535c86d0cf56ad1d4d3a26e0f"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentNormalizeWithToken183Probe.java",
+          "formal_bytes": 9606,
+          "formal_sha256": "2475a85e93a18d2c7f0f8f42ff0bb3b4415de4634ef145f3d9c79ba3d7816cfb",
+          "original_owned_source_sha256": "e8ffe27cc466d086481e0f6f93f5f5a47a49b5e73faffe214bb7d1f4a2c07732"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentTokenLookup182Fixtures.java",
+          "formal_bytes": 8328,
+          "formal_sha256": "f4ccf3bcc0e1505b69d176c53cf196f017d77cdab325ee32856f5a9ca778a62f",
+          "original_owned_source_sha256": "f4ccf3bcc0e1505b69d176c53cf196f017d77cdab325ee32856f5a9ca778a62f"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentTokenLookup182Probe.java",
+          "formal_bytes": 10262,
+          "formal_sha256": "f20675eb638190348c923eda544a98c4fdc4d1638b3ab75eb32b8c2b944f4d64",
+          "original_owned_source_sha256": "8619795ac61909263c6fbac815a6ea2bb98cd4dbba8d822a060db2b906751933"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentTokenLookup182WitnessApi.java",
+          "formal_bytes": 2044,
+          "formal_sha256": "c367cf360a45da9354aba2b1d41b5f23eea72f853fe4be25f0f41e2e13c04bfb",
+          "original_owned_source_sha256": "56800d6aca29752ab58fe20236d5aa0f4079ded2d58859991c661eaba96b51a8"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeToken184Fixtures.java",
+          "formal_bytes": 4149,
+          "formal_sha256": "70173cf4956d1ccef62545602314516e1f8d1043238db8e16f68819ccb308b3b",
+          "original_owned_source_sha256": "70173cf4956d1ccef62545602314516e1f8d1043238db8e16f68819ccb308b3b"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeToken184Probe.java",
+          "formal_bytes": 24167,
+          "formal_sha256": "50874069f36c2c5044eae8ff6874dc60d60b3d3e43b141ffbaf051744cdd357a",
+          "original_owned_source_sha256": "50874069f36c2c5044eae8ff6874dc60d60b3d3e43b141ffbaf051744cdd357a"
+        }
+      ],
+      "limit": "Only new source-only javac; no existing source/case recompiled or run, no JVM or CI/Game/native/deployment credit."
     }
   ],
   "latest_work_not_in_this_snapshot": {
     "packages": [
-      "token-3f4f8e0182",
-      "normalize-with-token183",
-      "whole-with-token184"
+      "crt4223-source185",
+      "M4-independent186",
+      "normalize-with-crt187",
+      "M1-bridge188"
     ],
-    "status": "Outside the frozen maturity cutoff; no current prepared/untested/green/publication assertion in this package. Consult each owner latest sealed receipt separately."
+    "status": "Outside this maturity cutoff. No claim of current0/unstarted/untested/green/in-flight/publication state. In particular a185 production-only strict pass does not establish completed tests; consult owner latest receipts."
   },
   "prior_snapshot_176_complete_177_prepared": {
     "snapshot_at_utc": "2026-10-31T15:42:25.733456+00:00",
@@ -329,5 +595,23 @@
       "note": "Delivered children and sealed HTTP results inspected for this source snapshot; no new POST or runtime action."
     },
     "latest_external_notice": "176finiteactualallEND0LIGHT1returned;177notstarted/doesnotgateactualMain."
+  },
+  "prior_snapshot_181_mature": {
+    "snapshot_at_utc": "2026-10-31T17:05:56.562275+00:00",
+    "snapshot_boundary": "Frozen evidence/document snapshot, not publication time, a live worker/resource lease or a live model queue. Maturity cutoff is actual whole181 END2026-10-31T16:39:08Z. Successor182/183/184 statuses are outside this package and are not asserted here.",
+    "maturity_cutoff_utc": "2026-10-31T16:39:08Z",
+    "latest_completed_work_package": "whole-with-root181 at this maturity cutoff only",
+    "latest_completed_result": "D:/ck3-state/resume91-m5-native/whole-with-root181/RESULT04.json",
+    "current_local_stage_complete": true,
+    "active_work_package": "latest_work_not_in_this_snapshot",
+    "active_work_status": "This document records mature177–181 only; it does not observe or assert live successor work, HTTP, compile, execution or resource ownership.",
+    "latest_work_not_in_this_snapshot": {
+      "packages": [
+        "token-3f4f8e0182",
+        "normalize-with-token183",
+        "whole-with-token184"
+      ],
+      "status": "Outside the frozen maturity cutoff; no current prepared/untested/green/publication assertion in this package. Consult each owner latest sealed receipt separately."
+    }
   }
 }
