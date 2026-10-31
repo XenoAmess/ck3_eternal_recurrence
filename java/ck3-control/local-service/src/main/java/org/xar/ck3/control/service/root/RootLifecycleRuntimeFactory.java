@@ -326,6 +326,7 @@ public final class RootLifecycleRuntimeFactory {
                 @Override public PlanningReadGuard verify(WriterContracts.Head head,PlanningReadRequest request,ReadContract<?> contract){return actual().verify(head,request,contract);}
                 @Override public PlanningReadGuard verifyOriginalCurrent(WriterContracts.Head head,PlanningReadRequest request,ReadContract<?> contract){return actual().verifyOriginalCurrent(head,request,contract);}
                 @Override public void verifyFrontendReadContinuation(WriterContracts.Head head,PlanningReadRequest request,ReadContract<?> contract,PlanningReadGuard before,PlanningReadGuard after){actual().verifyFrontendReadContinuation(head,request,contract,before,after);}
+                @Override public <T> T withOriginalReadSource(WriterContracts.Head head,PlanningReadRequest request,ReadContract<?> contract,java.util.function.Supplier<T> work){return actual().withOriginalReadSource(head,request,contract,Objects.requireNonNull(work));}
             };
         }
 

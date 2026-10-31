@@ -182,6 +182,15 @@ public final class RootRuntimeDispatcherFactory {
     private record OriginReads(PlanningReadCoordinator.ReadGuardPort gameplay, PlanningReadCoordinator.ReadGuardPort frontend,
             PlanningReadCoordinator.ReadGuardPort terminal, PlanningReadCoordinator.ReadGuardPort reconciliation)
             implements PlanningReadCoordinator.ReadGuardPort {
+        @Override public <T> T withOriginalReadSource(WriterContracts.Head head,PlanningReadRequest request,
+                ReadContract<?> contract,java.util.function.Supplier<T> work) {
+            Objects.requireNonNull(work);
+            if(request.origin() instanceof CommandOrigin.Gameplay)return gameplay.withOriginalReadSource(head,request,contract,work);
+            if(request.origin() instanceof CommandOrigin.LifecycleTerminal)return terminal.withOriginalReadSource(head,request,contract,work);
+            if(request.origin() instanceof CommandOrigin.Reconciliation)return reconciliation.withOriginalReadSource(head,request,contract,work);
+            if(request.origin() instanceof CommandOrigin.Frontend)return frontend.withOriginalReadSource(head,request,contract,work);
+            throw new IllegalArgumentException("no installed Root read guard accepts this origin");
+        }
         @Override public PlanningReadGuard verify(WriterContracts.Head head, PlanningReadRequest request, ReadContract<?> contract) {
             if (request.origin() instanceof CommandOrigin.Gameplay) return gameplay.verify(head, request, contract);
             if (request.origin() instanceof CommandOrigin.LifecycleTerminal) return terminal.verify(head, request, contract);

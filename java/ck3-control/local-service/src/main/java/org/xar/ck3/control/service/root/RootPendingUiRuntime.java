@@ -1184,6 +1184,11 @@ public final class RootPendingUiRuntime implements RootDriverRegistryPublicProdu
                 if(!pendingGate()){ordinary.verifyFrontendReadContinuation(head,request,contract,before,after);return;}
                 throw new IllegalArgumentException("pending successor UI cannot borrow frontend continuation");
             }
+            @Override public <T> T withOriginalReadSource(WriterContracts.Head head,PlanningReadRequest request,ReadContract<?> contract,java.util.function.Supplier<T> work){
+                Objects.requireNonNull(work);
+                if(request.origin() instanceof CommandOrigin.PhysicalStatusOnly||contract==reconciliationQuery||admittedReadScope.get()==null&&committedReadScope.get()==null&&!pendingGate())return ordinary.withOriginalReadSource(head,request,contract,work);
+                return work.get();
+            }
         };
     }
     public ActionPorts.GuardPort wrapActions(ActionPorts.GuardPort ordinary) {
