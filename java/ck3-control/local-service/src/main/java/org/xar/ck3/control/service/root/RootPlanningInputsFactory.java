@@ -43,7 +43,7 @@ public final class RootPlanningInputsFactory {
     public record BusinessDomain(Domain domain) implements Classification {
         public BusinessDomain { Objects.requireNonNull(domain); }
     }
-    public enum ControlKind { CHECKPOINT_SAVE, AUB_POLICY_CONTROL, RITE_CREATION_CONTROL, OBSERVER_SAMPLING_CONTROL, GUI_NAVIGATION_CONTROL, GUI_NAVIGATION_FINAL_PENDING, PILGRIMAGE_CONTROL, GUI_PHYSICAL_PRESENTATION, MILITARY_UI_CONTROL, PUBLIC_PAUSE_CONTROL }
+    public enum ControlKind { CHECKPOINT_SAVE, AUB_POLICY_CONTROL, RITE_CREATION_CONTROL, OBSERVER_SAMPLING_CONTROL, GUI_NAVIGATION_CONTROL, GUI_NAVIGATION_FINAL_PENDING, PILGRIMAGE_CONTROL, GUI_PHYSICAL_PRESENTATION, MILITARY_UI_CONTROL, PUBLIC_PAUSE_CONTROL, LIFE_ADVANCE }
     public record SystemControl(ControlKind kind) implements Classification {
         public SystemControl { Objects.requireNonNull(kind); }
     }
@@ -332,6 +332,23 @@ public final class RootPlanningInputsFactory {
         Objects.requireNonNull(control);Objects.requireNonNull(receipt);
         StrictJson.require(receipt.settled(), "an unresolved system control blocks every ordinary action");
         switch (control.kind()) {
+            case LIFE_ADVANCE -> {
+                var command=receipt.command();
+                StrictJson.require(org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(command.operation().value())
+                        &&command.expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePlan.OBSERVER),
+                        "Life timeline control must retain its registered operation and observer");
+                var plan=org.xar.ck3.control.application.advance.AdvancePlan.decode(command);
+                StrictJson.require(command.expected().values().equals(plan.expected()),
+                        "Life timeline control changed its exact typed plan expectation");
+                if(receipt.state() instanceof ActionState.CompositeSettled settled) {
+                    StrictJson.require(settled.settlement() instanceof ActionState.Applied
+                            ||settled.settlement() instanceof ActionState.CompositeNoGameplayWrite
+                            ||settled.settlement() instanceof ActionState.CompositeRejected,
+                            "Life timeline control requires its actual semantic, no-write or rejected composite terminal");
+                    ActionEffects.validateComposite(command,settled.execution(),settled.settlement());
+                } else StrictJson.require(receipt.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH,
+                        "Life timeline control cannot borrow a primitive or Family-send settlement");
+            }
             case PUBLIC_PAUSE_CONTROL -> RootPublicPauseArchiveClassifier.requireSettledReceipt(receipt);
             case CHECKPOINT_SAVE -> StrictJson.require(receipt.command().operation().equals(RootSaveRuntime.OPERATION),
                     "SAVE classification cannot be borrowed by another operation");

@@ -223,6 +223,9 @@ public final class RootPlanningDomainCatalog implements RootPlanningInputsFactor
         if(matched!=null) {
             StrictJson.require(bindings.resolve(command.operation(),command.origin()).filter(value->value.kind()==ExecutableStepBindings.Kind.COMPOSITE).isPresent()
                     && bindings.actualArchivedVerifier(command.operation()).isPresent(),"composite fact lacks actual issued handler/replay");
+            if(matched.handler() instanceof org.xar.ck3.control.application.advance.LifeAdvanceComposite) {
+                return new RootPlanningInputsFactory.SystemControl(RootPlanningInputsFactory.ControlKind.LIFE_ADVANCE);
+            }
             Domain value=composites.get(matched);if(value==null)throw new IOException("actual installed composite has no explicit planning domain");return new RootPlanningInputsFactory.BusinessDomain(value);
         }
         throw new IOException("actual command has no installed source-bound planning domain");
