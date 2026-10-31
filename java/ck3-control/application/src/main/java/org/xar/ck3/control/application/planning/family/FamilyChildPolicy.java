@@ -86,14 +86,14 @@ final class FamilyChildPolicy {
         Arr exclusions = new Arr(excluded.stream().sorted().<Value>map(IntegerValue::new).toList());
         Obj initial = obj("schema", t(MarriageCodec.SCHEMA), "legality", legality, "values", rows(List.of()),
                 "split_successor_verified", new Bool(true), "excluded_candidate_ids", exclusions, "shortlist_limit", n(2));
-        List<BigInteger> shortlist = MarriagePolicy.shortlist(MarriageCodec.decode(bytes(initial)));
+        List<BigInteger> shortlist = MarriagePolicy.shortlist(MarriageCodec.decodeFullMaterial(bytes(initial)));
         List<Value> values = new ArrayList<>();
         for (BigInteger candidate : shortlist) {
             Obj value = owner.read(request, Query.CHILD_VALUE, obj("legality", legality, "subject_read", FamilyOrdinaryPolicy.originalRef(subjectRead.originalReceipt()), "candidate_character_id", new IntegerValue(candidate), "request_matrilineal_option", new Bool(false)));
             if (!integer(value.get("candidate_character_id")).equals(candidate)) throw new IllegalArgumentException("child default comparator set changed");
             values.add(value);
         }
-        Obj choice = decode(MarriageCodec.encodeDecision(MarriagePolicy.choose(MarriageCodec.decode(bytes(initial.with("values", rows(values)))))));
+        Obj choice = decode(MarriageCodec.encodeDecision(MarriagePolicy.choose(MarriageCodec.decodeFullMaterial(bytes(initial.with("values", rows(values)))))));
         Obj observation = obj("split_successor", split, "shortlist_candidate_ids", new Arr(shortlist.stream().<Value>map(IntegerValue::new).toList()),
                 "full_values", rows(values), "policy_decision", choice, "stop_reason", t("complete_shortlist_compared"),
                 "rejected_candidate_ids", new Arr(rejected.stream().sorted().<Value>map(IntegerValue::new).toList()),
