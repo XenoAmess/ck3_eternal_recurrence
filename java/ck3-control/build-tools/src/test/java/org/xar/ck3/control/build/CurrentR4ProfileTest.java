@@ -35,7 +35,11 @@ final class CurrentR4ProfileTest {
         assertEquals(5120,profile.maxFiles());assertEquals(64L<<20,profile.maxLogicalBytes());assertEquals(80L<<20,profile.maxNativeBytes());
         assertEquals(CompleteSourceGraph.modules(CompleteSourceGraph.Profile.G2_FULL_PARITY_20261024_R3),CompleteSourceGraph.modules(profile));
         assertEquals(4<<20,ControlBuild.receiptMaxBytes(ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R4));
-        assertEquals("xar.full-parity-current-oracle-inputs/v10",FullParityCurrentBindings.SCHEMA);
-        assertEquals(42,FullParityCurrentBindings.Role.values().length);
+        assertEquals("xar.full-parity-current-oracle-inputs/v11",FullParityCurrentBindings.SCHEMA);
+        assertEquals(44,FullParityCurrentBindings.Role.values().length);
+        assertEquals(2,java.util.Arrays.stream(FullParityCurrentBindings.Role.values()).filter(r -> r.generation() == 11).count());
+        assertEquals(java.util.Set.of("CONSTRUCTION_REFUND_NATIVE_PACKETS", "CONSTRUCTION_REFUND_SIGNED_GOLDEN"),
+                java.util.Arrays.stream(FullParityCurrentBindings.Role.values()).filter(r -> r.generation() == 11)
+                        .map(FullParityCurrentBindings.Role::name).collect(java.util.stream.Collectors.toSet()));
     }
 }
