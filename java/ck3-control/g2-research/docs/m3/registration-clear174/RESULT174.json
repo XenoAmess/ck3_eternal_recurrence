@@ -1,0 +1,87 @@
+{
+  "schema": "m3.registration-clear174-actual/v1",
+  "recorded_at_utc": "2026-10-31T17:30:07.691367+00:00",
+  "package_number": 38,
+  "status": "FIRST_FINITE_JAVA_CONSUMER_AND_CORE_PASS",
+  "compile_actual": "COMPILE-ACTUAL174.json",
+  "run_actual": "RUN-ACTUAL174.json",
+  "stdout": "RUN-stdout174.txt",
+  "first_new_sources": 8,
+  "reused_formal_source_only": 2,
+  "explicit_compile_sources": 10,
+  "binary_dependency_classpaths": 0,
+  "strict_exit": 0,
+  "compile_seconds": 3.140420200303197,
+  "compile_start_utc": "2026-10-31T17:17:07.158555+00:00",
+  "compile_end_utc": "2026-10-31T17:17:10.298971+00:00",
+  "run_exit": 0,
+  "run_seconds": 0.23870640015229583,
+  "run_start_utc": "2026-10-31T17:17:13.052850+00:00",
+  "run_end_utc": "2026-10-31T17:17:13.291557+00:00",
+  "cases": 8,
+  "semantic_checks": 28,
+  "fixture_checks": 94,
+  "source_preserved": true,
+  "source_effects": [
+    "captured initialbase/end104stride despite callback mutation",
+    "only entered firstpass reloads count; initial0 skips reload",
+    "positive sampled cleanupcount then freshbase; row+48 thenrow+28 cleanup order",
+    "negative freshcount skips cleanup but reaches finalcount0",
+    "identity gate before any access; singleton return used as actual core receiver"
+  ],
+  "finite_Java_only_limits": "negative or oversized initialcount unsupported after2reads; oversized positive freshcleanupcount unsupported beforebase read, retains firstpass effects; not Native branches/proof",
+  "coverage_not_claimed": [
+    "all exceptions/callback effects",
+    "full rawRAX/Win64ABI/EH",
+    "opaque2304040/856050 internals",
+    "naturalregistration/currentGame/EF0/monthly",
+    "heap free or Game APPLIED"
+  ],
+  "model_outcomes": "MODEL-OUTCOMES174.json",
+  "shell": "cmd.exe/login:false then directJDK21",
+  "PS_WSH": false,
+  "old_green_rerun": 0,
+  "Native_execution": 0,
+  "Game_actions": 0,
+  "DLL_changes": 0,
+  "Main_install_prerequisite": false,
+  "source": {
+    "RVA": "25F8A00",
+    "RF_end": "25F8A9A",
+    "code_bytes": 154,
+    "new_PE_bytes": 174,
+    "header_provider_query_hash_Game": 0
+  },
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistrationClearApi174.java": "9e3564b9425e6062226aaee3b9d1f4057ff63e28359cad80a8c8ddb1a9db3ca6",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistrationClear174.java": "b07fa6e696f30e3ca787adcf04cdfa506e7a3e3e699904a30e1eea92d09958db",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/SecondRegistrationConsumer174.java": "d027ebcbdbea300bfc302caac7ac0831443a86000bed81de4f6636a4d090bf71",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ClearCasesApi174.java": "ca9a95b9d1ed2984af4757210f1a44436d06b128ab90566644da101b2a86ff04",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ClearCases174.java": "c2a0b2ef0e58982e8e843057712151beb297e728de3afdbf0eb0b8b706ef7ab9",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RecordedClear174.java": "a2d0e3dc0723cad48925cf131d30b8717a68844f81e4e35ca35dd8699192d0cf",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ClearVerification174.java": "295968da58e955ac31b32313af3f9e97ce3c379bbe42df09cc2d178349139b10",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ClearValidation174.java": "2c472a917a4908919c363aaf35509fabb70c565205a8a26695605ccdec16d6db"
+  },
+  "existing_dependency_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539"
+  },
+  "machine_local_actuals": {
+    "directory": "D:\\ck3-state\\resume91-m3-native\\registration-consumer174",
+    "files": [
+      "ACTUAL174.json",
+      "COMPILE-ACTUAL174.json",
+      "RUN-ACTUAL174.json",
+      "RUN-stdout174.txt",
+      "MODEL-OUTCOMES174.json"
+    ],
+    "copied_to_Git": false
+  },
+  "model_adoption": {
+    "RegistrationClear174": "SECOND_COMPLETE_CANDIDATE_RAW_SOURCE;0owner_logic_edit",
+    "SecondRegistrationConsumer174": "FIRST_COMPLETE_CANDIDATE_RAW_SOURCE;0owner_edit",
+    "ClearVerification174": "FIRST_COMPLETE_CANDIDATE_RAW_SOURCE;0owner_edit",
+    "ClearCases174": "SECOND_COMPLETE_CANDIDATE_PARTIAL;owner8Limits+8Completion_qualifiers_and1R64_address",
+    "API_and_host": "OWNER"
+  }
+}
