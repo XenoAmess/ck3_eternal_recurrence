@@ -226,3 +226,12 @@ M1 Crown R2后到selector回执于03:04:59完成baseline RED→candidate GREEN�
 截止单刻9项已有有效content、1项待headers；服务running10/waiting0/KV0.2853535。35个任务数不代替并发，客户端峰也不代替服务推理峰。26个已终态attempt的content TTFT中位4.094秒、p95约15.848秒；未终态不估算，缺cached字段不推命中。reset按既有配置重试并保留partial，不归为实现能力失败。
 
 该波来自M1真实public UNAVAILABLE0/CI材料、M3新注册record、M4新Full880–Free83组合及首次非法wire测试、M7新cleanup桥及独立测试、M0和Root真实CI诊断。完整输入owner直接POST，无新增调度平台、空探测或旧绿重投；HTTPstop、源审、必要编测、正式采用仍分别记录。原始界限见本机`WINDOW128-074027.json`、`STATUS-PEAK149-074027.json`、`ROLLING-PEAK149-074027.json`与`PEAK149-ANALYSIS.json`，位于D:/ck3-state/model-dispatch91；这些是机器本地出处，不是其他worker使用服务的前置。本文档追加不新增模型POST或编测。
+
+
+### resume91 CI149 后到验收：四次调用与三项行为通过分别记录
+
+Root 后到回执给出 2026-10-31T07:52:49.843115Z 的实际结束结果：6 个当前生产源 strict 通过，两个测试候选 strict 通过，原有 3 个目标方法在同一 JVM 中 3P/0skip。四次真实源码 HTTP 均 stop，但首稿两项拒绝、纠正后两项部分采用；whole raw candidate 采用为 0。本轮未修改生产代码、未重跑 hosted CI、未执行外机分支，不授 Game 或已加载产物信用。
+
+编测成本分开保留：首次 baseline strict 漏既有 Regression 依赖，首次 Reg 两方法运行缺 jna.tmpdir，均属 owner 的命令/环境错误；补依赖后 strict 通过，仅重跑修正 JVM 参数的 Reg 两方法 2P。Defender 的 LF 哈希断言失败是真实基线问题。早先已发表的“当时尚未编测”及其 payload/SHA 不回写，本段记录后到事实。
+
+证据为 Root 的 ci149/DELIVERY.json、四个标准任务目录的最终 REVIEW.json 与原始编测回执。此次经验更新复用这些原件，没有新增模型请求或验证重跑；正式源码是否采用另以唯一 writer 的 Git 回执为准。
