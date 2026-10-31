@@ -998,7 +998,22 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     /** Canonical timeline children remain facts, but their ordinary parent owns cycle credit. */
     static java.util.List<ActionReceipt> ordinaryCycleRoots(java.util.List<ActionReceipt> actions) {
+        return ordinaryCycleRoots(actions, false);
+    }
+    /** The isolated Life path observes its exact canonical control children without inventing their own ordinary cycle. */
+    static java.util.List<ActionReceipt> ordinaryCycleRoots(java.util.List<ActionReceipt> actions, boolean isolatedLife) {
         var children=new java.util.HashSet<org.xar.ck3.control.application.action.CompositeExecution.Child>();
+        if (isolatedLife) {
+            var root = readOnlyLifeRecoveryRoot(actions).orElseThrow();
+            var execution = ((org.xar.ck3.control.application.action.ActionState.CompositeUnknown) root.state()).execution();
+            for (var binding : execution.children()) {
+                var actual = actions.stream().filter(action -> action.command().actionId().equals(binding.actionId())
+                        && action.bodySha256().equals(binding.bodySha256())).findFirst().orElseThrow();
+                if (actual.state() instanceof org.xar.ck3.control.application.action.ActionState.Settled settled
+                        && (settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.Applied
+                        || settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.PauseConfirmed)) children.add(binding);
+            }
+        }
         for(var action:actions) {
             if(action.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled settled)
                 children.addAll(settled.execution().children());
@@ -1232,7 +1247,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     &&ExactRef.fromJson(cycle.get("head")).equals(lastCycleRef),
                     "settled recovery requires the actual closed cycle frontier");
             var unsaved=new java.util.LinkedHashSet<String>();boolean dirty=false;int eligible=0;
-            for(var action:ordinaryCycleRoots(actions)) {
+            for(var action:ordinaryCycleRoots(actions, isolatedLife)) {
                 if(!action.visibleGameplay()&&!action.eligibleAdvance())continue;
                 StrictJson.require(cycleReceipts.contains(originals.receiptReferenceOf(action)),
                         "settled gameplay action lacks its already completed ordinary cycle");

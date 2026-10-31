@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进146 Journal真实parent参数单行，前序145 original reconciliation observer单叶已发 `8b906853ab`；前序144四组22prod（Core10→Life4→consumer5→Boot3）已正常FF至 `5ab4d41e7b`；保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进147 isolated Life child cycle accounting单叶，前序146 Journal真实parent参数单行已发 `fd1eddd3b5`；前序145 original reconciliation observer单叶已发 `8b906853ab`；前序144四组22prod（Core10→Life4→consumer5→Boot3）已正常FF至 `5ab4d41e7b`；保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -396,3 +396,12 @@ runtime已S/Z源审采并MB145实际只重编application1源0/12.978秒；worker
 真实本地.11 runtime-life-parent146首候选HTTP200stop2.945秒/TTFT2.113、14562prompt+152completion，单行原样采用/owner算法0。复用owner单prod strict0/2.0822793秒；唯一新case复用明确software144 parent/children，以真实生产ContinuityActionJournal.locked(session).append穿过Effects/canonical-child，进入Writer.preview callback并核完整parent/source/terminal，再故意停在commit前：candidate1P0F/2.0604166秒，原Journal-only override旧Effects257/append67同message预期RED1F/1.703097秒。两次为独立Java启动，物理commit0、Native0、Game0，不授完整archive/physicalwriter commit/冷Root恢复。无fixed-D Sample probe入便携CI，旧144四/一用例未重跑，本岗未新编测/模型。
 
 Main已S/Z采且开始MB146/安装HOLD，仅父readonly finish；145原canonical373子控制已独立Applied不重发，父在最新已知状态仍Unknown。该单行修复未预授146 LOOP/新typed父终态、游戏日或SAVE。回执 `D:/ck3-state/resume91-java-delivery/PARENT146-ADOPTION.json`，owner实际COMPILE/TEST/BASELINE-TEST-RESULT及READY原件完整保留。
+
+
+## isolated Life cycle147精确原child accounting
+
+只采用ContinuityBatchJournal的2680B两hunk。default ordinaryCycleRoots(actions)委托false，原all-settled/public role、全canonical actions、ordinary cycles与UNKNOWN均不变。唯一private readSameGameHistory loop传原isolatedLife；true时先完整readOnlyLifeRecoveryRoot验证唯一原Life parent/plan/expected/source/session/claims/Game/episode/actor/child ID+body/顺序/截止与其他unresolved，再只把实际Settled Applied或PauseConfirmed的绑定child加入原children集合。原AdvancePrimitives.supports、emptyargs、完整expected(before,source,operation,args)全等谓词随后仍执行，故不泛豁免任意child、错expected或真实worldwrite，不造新cycle或清历史。
+
+首本地.11 runtime-life-child-cycle147真实07:14:40.379686→07:14:48.322048Z，HTTP200stop7.942秒/TTFT5.306481，39160in+463out/cachednull；候选错误以parentID当children，源拒未编/0采用。owner最小overload，首遗漏expected被Main源审拒后复用原完整谓词，最终owner语义实现。复用owner单prod+probe严格0/2.7052866秒，真实372/373 DATA与default/wrongexpected/body/genericUnknown六assert0/1.0404186秒；仅production roots方法/源码合同，不是完整readSameGameHistory、fullcoldRoot或Game绿。固定D probe/actual软件原件不携CI，不重旧绿，本岗未新模型/编测。
+
+146实际07:11:27.815→07:12:05.051Z preloop END1/37.236秒、无LOOP，canonical373不变；故障先在旧cold cycle要求，未到已修Journal.append，不追授146实机越过。Main已源审147并准备S/Z/MB147安装，只为原prefix只读恢复；原child373独立Applied不重发，parent最新仍Unknown/未授typed终态、新日或SAVE。147单formal叶ignore EOL/尾空白与sealed同且SHA复核，0writer语义改；回执 `D:/ck3-state/resume91-java-delivery/CYCLE147-ADOPTION.json`。
