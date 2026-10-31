@@ -1180,6 +1180,78 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return Optional.of(actual);
     }
 
+    /** Read-only replay of an already canonical completed Life advance after its original interrupted batch. */
+    static boolean historicalCompletedLifeCycle(ContinuityState before, ContinuityState after,
+            com.fasterxml.jackson.databind.node.ObjectNode details, String batch, SessionIdentity owner,
+            java.util.List<ActionReceipt> actions,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        String operation = StrictJson.text(details.get("operation"));
+        if (batch == null || before.status() != ContinuityState.Status.REPAIR_REQUIRED
+                || !("RETAIN".equals(operation) || "SETTLE".equals(operation))) return false;
+        var previous = before.toJson(); var current = after.toJson();
+        var boundary = previous.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        if (!boundary.equals(current.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD))
+                || !JournalKind.BATCH_INTERRUPTED.name().equals(boundary.path("boundary").asText())
+                || !batch.equals(boundary.path("batch_id").asText())
+                || !OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
+                || !OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)) return false;
+        var receiptRef = ExactRef.fromJson(details.get("receipt_ref"));
+        var actual = originals.loadReceipt(receiptRef);
+        if (!actions.contains(actual) || !originals.receiptReferenceOf(actual).equals(receiptRef)
+                || actual.sequence() > before.sequence()
+                || actual.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED || !actual.eligibleAdvance()
+                || !actual.visibleGameplay()
+                || !(actual.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled settled)
+                || !(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.Applied)
+                || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(actual.command().operation().value())
+                || !settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)) return false;
+        var command = actual.command();
+        if (!command.before().machineId().equals(owner.machineId()) || !command.before().game().equals(owner.game())
+                || !command.sessionId().equals(owner.sessionId())
+                || !actual.bodySha256().equals(org.xar.ck3.control.application.action.ActionCodec.bodySha256(command))) return false;
+        var children = new java.util.ArrayList<ActionReceipt>();
+        var admitted = new java.util.HashSet<String>();
+        for (var binding : settled.execution().children()) {
+            var matches = actions.stream().filter(child -> child.command().actionId().equals(binding.actionId())
+                    && child.bodySha256().equals(binding.bodySha256())).toList();
+            if (matches.size() != 1 || !admitted.add(binding.actionId())) return false;
+            var child = matches.getFirst();
+            var childCommand = child.command();
+            if (!child.settled() || child.sequence() >= actual.sequence()
+                    || !childCommand.source().equals(command.source()) || !childCommand.sessionId().equals(command.sessionId())
+                    || !childCommand.before().machineId().equals(owner.machineId()) || !childCommand.before().game().equals(owner.game())
+                    || !childCommand.before().frame().episodeRunId().equals(command.before().frame().episodeRunId())
+                    || !childCommand.before().frame().identity().player().equals(command.before().frame().identity().player())) return false;
+            children.add(child);
+        }
+        if (children.isEmpty()) return false;
+        org.xar.ck3.control.application.action.ActionEffects.validateComposite(command, settled.execution(), settled.settlement());
+        org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(command, settled.execution(), settled.settlement(), children);
+        var oldCycle = previous.path(WriterContracts.ORDINARY_CYCLE_FIELD);
+        var newCycle = current.path(WriterContracts.ORDINARY_CYCLE_FIELD);
+        long oldCompleted = StrictJson.integer(oldCycle.get("completed_cycles"), 0, StrictJson.MAX_SAFE_INTEGER);
+        long newCompleted = StrictJson.integer(newCycle.get("completed_cycles"), 0, StrictJson.MAX_SAFE_INTEGER);
+        if ("RETAIN".equals(operation)) {
+            return after.status() == ContinuityState.Status.REPAIR_REQUIRED && oldCompleted == newCompleted
+                    && oldCycle.get("pending_receipt").isNull()
+                    && receiptRef.equals(ExactRef.fromJson(newCycle.get("pending_receipt")))
+                    && oldCycle.get("head").equals(newCycle.get("head"))
+                    && details.get("semantic").isNull() && details.get("cycle_record_ref").isNull()
+                    && details.get("cycle_record").isNull();
+        }
+        var record = details.path("cycle_record");
+        return after.status() == ContinuityState.Status.RUNNING && newCompleted == Math.addExact(oldCompleted, 1)
+                && receiptRef.equals(ExactRef.fromJson(oldCycle.get("pending_receipt")))
+                && newCycle.get("pending_receipt").isNull()
+                && "ELIGIBLE_ADVANCE".equals(record.path("classification").asText())
+                && StrictJson.integer(record.get("completed_cycles"), 0, StrictJson.MAX_SAFE_INTEGER) == newCompleted
+                && receiptRef.equals(ExactRef.fromJson(record.get("receipt_ref")))
+                && record.get("previous").equals(oldCycle.get("head"))
+                && details.get("cycle_record_ref").equals(newCycle.get("head"))
+                && record.get("semantic").equals(details.get("semantic"))
+                && OrdinaryCycleTransitions.sessionFromJson(record.get("session")).equals(owner);
+    }
+
     /** Reads a real zero-credit cancellation cycle completed after its original interrupted batch. */
     static boolean historicalCancelledLifeCycle(ContinuityState before, ContinuityState after,
             com.fasterxml.jackson.databind.node.ObjectNode details, String batch, SessionIdentity owner,
@@ -1401,9 +1473,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         continue;
                     }
                     var receiptRef=ExactRef.fromJson(details.get("receipt_ref"));
-                    boolean recoveredControl = openBatch == null && historicalCancelledLifeCycle(
-                            edge.before(), edge.after(), details, used.isEmpty() ? null : used.getLast(), owner, actions, originals);
-                    StrictJson.require((openBatch!=null || recoveredControl)
+                    boolean recoveredCycle = openBatch == null && (historicalCancelledLifeCycle(
+                            edge.before(), edge.after(), details, used.isEmpty() ? null : used.getLast(), owner, actions, originals)
+                            || historicalCompletedLifeCycle(edge.before(), edge.after(), details,
+                                    used.isEmpty() ? null : used.getLast(), owner, actions, originals));
+                    StrictJson.require((openBatch!=null || recoveredCycle)
                             && OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner),
                             "settled cycle crossed its real active batch or original retained control");
                     if("RETAIN".equals(operation)) {

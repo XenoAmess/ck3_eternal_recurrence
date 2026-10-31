@@ -1035,8 +1035,10 @@ public final class DriverBootstrap {
                 StrictJson.require(new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))
                         && (org.xar.ck3.control.application.session.ContinuityBatchJournal
                                 .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
+                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                .readOnlySaveRecoveryRoot(lease.snapshot().actions()).isPresent()
                             || pendingCancelledLifeCycle(lease.snapshot().actions(),pendingLifeCycle,archive.withSession(same)).isPresent()),
-                        "read-only Life adoption retains the complete canonical action set and exact pending recovery role");
+                        "read-only Life/SAVE adoption retains the complete canonical action set and exact pending recovery role");
             } else {
                 StrictJson.require(lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),
                         "settled continuation cannot replay an unresolved original action");
