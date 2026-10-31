@@ -175,7 +175,16 @@ public final class NativeProjectExeRegistrationTest {
         var first = ControlBuildTest.completedReceiptFixture(temporary.resolve("provider-first"));
         var other = ControlBuildTest.completedReceiptFixture(temporary.resolve("provider-other"));
         var firstRef = first.receiptRef(); var otherRef = other.receiptRef();
-        assertEquals(first.receipt(), NativeProjectExeUac.qualifyCurrentCarrier(firstRef, firstRef, first.receipt().completeDeployment()));
+        assertEquals(first.receipt(), ControlBuild.verifiedCompletedReceipt(firstRef));
+        if (MACHINE.equals(first.receipt().machineId())) {
+            assertEquals(first.receipt(), NativeProjectExeUac.qualifyCurrentCarrier(firstRef, firstRef, first.receipt().completeDeployment()));
+        } else {
+            // This retained Native adapter is bound to its original machine. A valid local
+            // receipt on another host must be rejected rather than relabeled as that machine.
+            IOException foreign = assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyCurrentCarrier(
+                    firstRef, firstRef, first.receipt().completeDeployment()));
+            assertEquals("actual complete qualified carrier and exact current standing binding required", foreign.getMessage());
+        }
         assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyCurrentCarrier(
                 firstRef, otherRef, first.receipt().completeDeployment()), "A standing cannot substitute another qualified carrier");
         assertThrows(IOException.class, () -> NativeProjectExeUac.qualifyCurrentCarrier(
@@ -211,14 +220,16 @@ public final class NativeProjectExeRegistrationTest {
         wire.put("expected_owner_sid", "not-a-Windows-account-SID");
         Path path = temporary.resolve("cli-current-v2.json"); Files.write(path, JSON.writeValueAsBytes(wire));
         var ref = ControlBuild.FileRef.measure(path);
+        String expectedMessage = MACHINE.equals(WindowsJobProcess.currentMachineId())
+                ? "full canonical Windows SID required" : "current native plan schema/machine differs";
         IOException review = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{"review", path.toString()}));
-        assertEquals("full canonical Windows SID required", review.getMessage());
+        assertEquals(expectedMessage, review.getMessage());
         IOException execute = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{
                 "execute-approved-plan", path.toString(), ref.sha256(), plan.deadlineAtUtc()}));
-        assertEquals("full canonical Windows SID required", execute.getMessage());
+        assertEquals(expectedMessage, execute.getMessage());
         IOException admin = assertThrows(IOException.class, () -> NativeProjectExeUac.main(new String[]{
                 "current-native-build-admin-child", path.toString(), Long.toString(ref.bytes()), ref.sha256(), plan.deadlineAtUtc()}));
-        assertEquals("full canonical Windows SID required", admin.getMessage());
+        assertEquals(expectedMessage, admin.getMessage());
         assertFalse(Files.exists(Path.of(plan.intentPath())));
         assertFalse(Files.exists(Path.of(plan.adminChildIntentPath())));
         for (String schema : List.of("xar.current-native-build-uac-plan/v99", "xar.current-native-build-uac-input/v2",

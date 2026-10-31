@@ -458,8 +458,12 @@ final class NativeBridgeDefenderTest {
         try (var input = NativeBridgeDefenderTest.class.getResourceAsStream("/" + name)) {
             assertNotNull(input, "Original producer corpus is mandatory");
             byte[] raw = input.readAllBytes();
+            // Git may normalize this archived JSON text from CRLF to LF. Check content with
+            // canonical LF while preserving the provenance's original byte refs and reader input.
+            byte[] canonical = new String(raw, java.nio.charset.StandardCharsets.UTF_8).replace("\r\n", "\n")
+                    .getBytes(java.nio.charset.StandardCharsets.UTF_8);
             assertEquals(expectedSha, java.util.HexFormat.of().formatHex(
-                    java.security.MessageDigest.getInstance("SHA-256").digest(raw)));
+                    java.security.MessageDigest.getInstance("SHA-256").digest(canonical)));
             return raw;
         }
     }
@@ -467,9 +471,9 @@ final class NativeBridgeDefenderTest {
         // Original FakeCIM producer bytes and provenance; this is software evidence with no administrative Windows observation.
         var mapper = ControlBuild.strictMapper();
         var raw = mapper.readTree(originalCorpus("declared-nullable-python-producer-resume63.json",
-                "f78fd5539e654ecc5e19fd2c5dab478b3f7af9f2fe7bc5bd65a1882a770859dc"));
+                "46aecd14f9c1961533ac5e3de83d43cd8afea47b079749542b4d9ac35cb9ca4a"));
         var source = mapper.readTree(originalCorpus("declared-nullable-python-producer-resume63.provenance.json",
-                "b2f84007e4fcdc19c87783606a6cb8673bdfce98858bc371dfb351e7b917d5d0"));
+                "7f77dbf17bcf214949dc21e512829406b529dc464b63a45a4c9cdaf55a7f6301"));
         assertEquals("SOFTWARE_FAKE_CIM_ONLY_NOT_ADMINISTRATIVE_SYSTEM_EVIDENCE", source.path("source_kind").textValue());
         assertEquals("xenoamess-full-tower-eb9d2c1186", source.path("machine_id").textValue());
         assertEquals("b6dd3d3dc7b4158f6646ab083925a2be898368c3c96b824071856e286960ddec",
