@@ -328,7 +328,7 @@ public final class RootActionHistoryMaterialSourceFactory {
             }
             if(action.isPresent()&&(owned(catalog.remainingDomains().guardian().installation(),action.orElseThrow(),replay)
                     ||owned(catalog.riteCreation().installation(),action.orElseThrow(),replay)
-                    ||owned(life.infrastructure().installation(),action.orElseThrow(),replay)&&AdvancePrimitives.supports(op)))
+                    ||ownedTimeline(life.infrastructure().installation(),catalog.bindings(),action.orElseThrow(),replay)&&AdvancePrimitives.supports(op)))
                 return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,independent(actual,originals),producers);
             if(RootFamilySendRecordingMaterial.supports(actual)) {
                 var original=selected.isOrdinary()
@@ -478,6 +478,16 @@ public final class RootActionHistoryMaterialSourceFactory {
         boolean action=owner.actions().stream().anyMatch(binding->binding.effect()==effect);
         boolean verifier=owner.archived().stream().anyMatch(binding->binding==replay);
         require(!action||verifier,"installed domain action lost its original archived verifier identity");return action&&verifier;
+    }
+    private static boolean ownedTimeline(RootDomainInstallation owner,RootExecutableBindings bindings,NativeEffectRegistry.Binding effect,NativeRecordedEvidenceVerifier.Binding replay){
+        if(owned(owner,effect,replay))return true;
+        var family=bindings.actualFamily(effect.operation()).orElse(null);
+        if(family==null||!owner.actionFamilies().stream().anyMatch(installed->installed==family))return false;
+        var binding=bindings.actionBindings().stream().filter(candidate->candidate.effect()==effect).findFirst().orElse(null);
+        if(binding==null||!binding.effect().producerSource().equals(family.implementationSource())
+                ||!binding.decoderSource().equals(family.decoderSource()))return false;
+        var archived=bindings.archivedBindings().stream().filter(candidate->candidate.operation().equals(effect.operation())).findFirst().orElse(null);
+        return archived!=null&&archived==replay&&archived.definitionSource().equals(family.verifierSource());
     }
     private static Legacy legacy(OperationKey op,ExactRef result,RawJson body,LinkedHashSet<Evidence> evidence,LinkedHashSet<ExactRef> producers){
         Obj original=DriverJson.object(body.bytes(),DriverJson.MAX_NATIVE_BYTES);
