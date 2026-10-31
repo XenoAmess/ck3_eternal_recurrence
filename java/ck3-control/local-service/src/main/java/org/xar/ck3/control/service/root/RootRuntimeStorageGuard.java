@@ -868,6 +868,9 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
             });
         }
         return inWriter(same->{
+            // Parent allocation is its own guarded operation, outside the file reservation monitor.
+            synchronized(this){admit(same);requireWrapped();targetRoot(target);}
+            if(!Files.exists(target.getParent(),LinkOption.NOFOLLOW_LINKS))createManagedDirectories(target.getParent());
             PendingWrite reservation;
             synchronized(this){admit(same);requireWrapped();RootState root=targetRoot(target);
                 if(cards!=null){
