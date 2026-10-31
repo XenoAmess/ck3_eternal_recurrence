@@ -307,6 +307,109 @@ def _response_data(value):
     return {key: getattr(value, key) for key in value.attrs()}
 
 
+class _ObservedGame193(Protocol):
+    def check(self) -> None: ...
+
+
+def _validate_observation_policy(value: object) -> str:
+    if type(value) is not str or value not in ("legacyDesktop1", "existingGameDesktop"):
+        raise ValueError("unknown placement observation policy")
+    return value
+
+
+def _observation_rect193(value: object) -> tuple[int, int, int, int]:
+    if (not isinstance(value, (tuple, list)) or len(value) != 4
+            or any(type(item) is not int for item in value)
+            or value[2] <= value[0] or value[3] <= value[1]):
+        raise ValueError("positive exact observation rectangle required")
+    return tuple(value)
+
+
+def _observation_contains193(outer: tuple[int, int, int, int], inner: tuple[int, int, int, int]) -> bool:
+    return (outer[0] <= inner[0] and outer[1] <= inner[1]
+            and inner[2] <= outer[2] and inner[3] <= outer[3])
+
+
+def _validate_existing_game_placement193(placement: dict[str, object], *, pid: int, hwnd: int) -> None:
+    if (placement.get("status") != "GREEN" or type(placement.get("pid")) is not int
+            or placement["pid"] != pid or type(placement.get("hwnd")) is not int or placement["hwnd"] != hwnd
+            or type(placement.get("creation_filetime")) is not int or placement["creation_filetime"] <= 0):
+        raise ValueError("exact GREEN existing Game placement required")
+    if (any(placement.get(key) is not True for key in ("observation_only", "fully_visible",
+            "current_desktop_unchanged", "foreground_unchanged", "visible"))
+            or type(placement.get("window_mutations")) is not int or placement["window_mutations"] != 0
+            or placement.get("minimized") is not False):
+        raise ValueError("existing Game placement must be a complete read-only visible observation")
+    target = placement.get("target_desktop_id")
+    if (not isinstance(target, str) or not target or placement.get("current_desktop_id") != target
+            or placement.get("current_desktop_after") != target):
+        raise ValueError("existing Game placement target must be its unchanged current desktop")
+    uuid.UUID(target)
+    before, after = placement.get("before"), placement.get("after")
+    for desktop in (before, after):
+        if (not isinstance(desktop, dict) or type(desktop.get("window_hwnd")) is not int
+                or desktop["window_hwnd"] != hwnd or desktop.get("desktop_id") != target
+                or desktop.get("on_current_virtual_desktop") is not True
+                or type(desktop.get("dwm_cloaked_flags")) is not int or desktop["dwm_cloaked_flags"] != 0):
+            raise ValueError("existing Game placement has inconsistent HWND/current desktop or cloaking")
+    if before != after:
+        raise ValueError("existing Game placement desktop observations changed")
+    monitor = _observation_rect193(placement.get("monitor_rect"))
+    work = _observation_rect193(placement.get("work_rect"))
+    window = _observation_rect193(placement.get("window_rect"))
+    client = _observation_rect193(placement.get("client_screen_rect"))
+    if any(not _observation_contains193(monitor, item) for item in (work, window, client)):
+        raise ValueError("existing Game frame and client must be inside its monitor")
+
+
+def _check_existing_game_desktop(game: _ObservedGame193, hwnd: int, desktop_id: str,
+        check_game_window: Callable[[_ObservedGame193, int], None],
+        window_virtual_desktop: Callable[[int], dict[str, object]]) -> dict[str, object]:
+    """Two stable read-only snapshots on the Game's actual current desktop."""
+    from managed_desktop1_placement import desktop_inventory
+    import win32api
+    import win32gui
+
+    def snapshot() -> dict[str, object]:
+        game.check()
+        check_game_window(game, hwnd)
+        ids, current = desktop_inventory()
+        desktop = dict(window_virtual_desktop(hwnd))
+        foreground = win32gui.GetForegroundWindow()
+        if (not ids or current != desktop_id or desktop_id not in ids
+                or type(desktop.get("window_hwnd")) is not int or desktop["window_hwnd"] != hwnd
+                or desktop.get("desktop_id") != desktop_id
+                or desktop.get("on_current_virtual_desktop") is not True
+                or type(desktop.get("dwm_cloaked_flags")) is not int or desktop["dwm_cloaked_flags"] != 0):
+            raise RuntimeError("Game must remain on its actual current desktop, in inventory and uncloaked")
+        monitor_handle = win32api.MonitorFromWindow(hwnd, 0)
+        if not monitor_handle:
+            raise RuntimeError("Game has no actual intersecting monitor")
+        info = win32api.GetMonitorInfo(monitor_handle)
+        monitor, work = _observation_rect193(info["Monitor"]), _observation_rect193(info["Work"])
+        window = _observation_rect193(win32gui.GetWindowRect(hwnd))
+        client = _observation_rect193(win32gui.GetClientRect(hwnd))
+        origin = win32gui.ClientToScreen(hwnd, client[:2])
+        end = win32gui.ClientToScreen(hwnd, client[2:])
+        screen_client = _observation_rect193((origin[0], origin[1], end[0], end[1]))
+        visible, minimized = bool(win32gui.IsWindowVisible(hwnd)), bool(win32gui.IsIconic(hwnd))
+        check_game_window(game, hwnd)
+        game.check()
+        if not visible or minimized:
+            raise RuntimeError("Game must remain visible and non-minimized")
+        if any(not _observation_contains193(monitor, item) for item in (work, window, screen_client)):
+            raise RuntimeError("complete Game frame/client must remain inside the monitor")
+        return {"ids": list(ids), "current": current, "foreground": foreground, "desktop": desktop,
+                "monitor_handle": monitor_handle, "monitor": monitor, "work": work,
+                "window": window, "client": client, "client_screen": screen_client,
+                "visible": visible, "minimized": minimized}
+
+    before, after = snapshot(), snapshot()
+    if before != after:
+        raise RuntimeError("existing Game desktop observation changed between complete snapshots")
+    return after
+
+
 def _generation_helpers():
     sys.path.insert(0, str(Path(__file__).resolve().parent / "g2_saved_campaign"))
     from managed_desktop1_placement import ProcessGeneration, game_generation, check_game_window, deadline_check
@@ -464,9 +567,12 @@ def validate_job(job):
     mode = job.get("capture_mode")
     if mode not in ("game_only", "game_decision", "game_decision_text"):
         raise ValueError("use the fixed Game-only or Game+decision contract")
+    policy = _validate_observation_policy(job.get("placement_observation_policy", "legacyDesktop1"))
     if mode == "game_only":
         if any(job.get(key) is not None for key in ("overlay", "desktop_id", "decision_text_file", "game_creation_filetime", 'decision_text_publisher', 'decision_text_publisher_receipt')):
             raise ValueError("Game-only capture may not contain a partial decision/desktop group")
+        if policy == "existingGameDesktop":
+            raise ValueError("game_only cannot use existingGameDesktop policy")
     elif mode == 'game_decision_text':
         if (job.get('overlay') is not None or not isinstance(job.get('decision_text_publisher'), dict)
                 or not isinstance(job.get('decision_text_publisher_receipt'), dict)
@@ -477,6 +583,11 @@ def validate_job(job):
           or not job.get("desktop_id") or type(job.get("game_creation_filetime")) is not int
           or job["game_creation_filetime"] <= 0):
         raise ValueError("Game+decision capture requires the complete attested group")
+    if policy == "existingGameDesktop":
+        if mode != "game_decision_text" or job["game_creation_filetime"] <= 0:
+            raise ValueError("existingGameDesktop requires a complete text decision/Game group")
+        uuid.UUID(job["desktop_id"])
+
 
 
 
@@ -626,6 +737,9 @@ def launch_recording(
         placement = _read(placement_receipt)
         if placement.get('status') != 'GREEN' or placement.get('pid') != pid or placement.get('hwnd') != hwnd:
             raise ValueError('Actual matching Game placement required')
+        policy = _validate_observation_policy(placement.get("observation_policy", "legacyDesktop1"))
+        if policy == "existingGameDesktop":
+            _validate_existing_game_placement193(placement, pid=pid, hwnd=hwnd)
         if java_decision_binding is not None:
             publisher = read_java_decision_binding(java_decision_binding, game={
                 'pid': pid, 'creation_filetime': placement['creation_filetime'],
@@ -650,6 +764,7 @@ def launch_recording(
         "capture_mode": "game_decision_text" if with_decision else "game_only",
         "game_creation_filetime": placement["creation_filetime"] if with_decision else None,
         "desktop_id": placement["target_desktop_id"] if with_decision else None,
+        "placement_observation_policy": policy if with_decision else "legacyDesktop1",
         "overlay": None, 'decision_text_publisher': publisher, 'decision_text_publisher_receipt': publisher_pin,
         'decision_display_policy': display_policy, "decision_text_file": str(text) if text else None, "ffprobe": str(probe),
         "deadline_utc": profile["deadline_utc"], "max_output_bytes": profile["max_output_bytes"]}
@@ -1228,6 +1343,7 @@ def run_worker(path):
     if job['capture_mode'] == 'game_decision':
         raise ValueError('New worker cannot launch retired legacy decision overlay configuration')
     with_decision = job["capture_mode"] == "game_decision_text"
+    policy = _validate_observation_policy(job.get("placement_observation_policy", "legacyDesktop1"))
     if with_decision:
         sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ck3_autonomous_player/src"))
         from xar_autoplayer.bridge.windows_virtual_desktop import window_virtual_desktop
@@ -1270,19 +1386,22 @@ def run_worker(path):
                 text_process.check()
                 if game.creation_filetime != job["game_creation_filetime"]:
                     raise RuntimeError("Game generation differs from actual placement")
-                desktop_query_deadline = time.monotonic() + 30.0
-                while True:
-                    try:
-                        actual_desktop = window_virtual_desktop(job["hwnd"])["desktop_id"]
-                        break
-                    except OSError as error:
-                        if "IsWindowOnCurrentVirtualDesktop HRESULT" not in str(error):
-                            raise
-                        if time.monotonic() >= desktop_query_deadline:
-                            raise RuntimeError("Game desktop identity unavailable for 30 seconds") from error
-                        time.sleep(.25)
-                if actual_desktop != job["desktop_id"]:
-                    raise RuntimeError("Game left its fixed managed desktop")
+                if policy == "existingGameDesktop":
+                    _check_existing_game_desktop(game, job["hwnd"], job["desktop_id"], check_game_window, window_virtual_desktop)
+                else:
+                    desktop_query_deadline = time.monotonic() + 30.0
+                    while True:
+                        try:
+                            actual_desktop = window_virtual_desktop(job["hwnd"])["desktop_id"]
+                            break
+                        except OSError as error:
+                            if "IsWindowOnCurrentVirtualDesktop HRESULT" not in str(error):
+                                raise
+                            if time.monotonic() >= desktop_query_deadline:
+                                raise RuntimeError("Game desktop identity unavailable for 30 seconds") from error
+                            time.sleep(.25)
+                    if actual_desktop != job["desktop_id"]:
+                        raise RuntimeError("Game left its fixed managed desktop")
             if _window_identity(job["hwnd"], job["pid"]) != window:
                 raise RuntimeError("OBS Game title selector lost uniqueness")
             if watch and watch.error:

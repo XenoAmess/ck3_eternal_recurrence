@@ -25,6 +25,9 @@ from tools import ck3_live_run_id
 from tools.g2_saved_campaign import background_foreground_contract_v1 as foreground_contract
 
 
+ObservationPolicy = Literal["legacyDesktop1", "existingGameDesktop"]
+
+
 class PlacementArguments(Protocol):
     launch_receipt: Path
     ui_dependencies: Path
@@ -33,6 +36,7 @@ class PlacementArguments(Protocol):
     expected_current_desktop_id: str | None
     deadline_utc: str
     wait_seconds: float
+    observation_policy: ObservationPolicy
 
 
 class LaunchReceipt(TypedDict):
@@ -80,6 +84,7 @@ class PlacementReceipt(TypedDict):
     desktop_switches: Literal[0]
     process_launch_or_stop_calls: Literal[0]
     runtime_rendering_qualified: Literal[False]
+    observation_policy: str
     pid: NotRequired[int]
     target_desktop_id: NotRequired[str]
     current_desktop_id: NotRequired[str]
@@ -110,6 +115,16 @@ class PlacementReceipt(TypedDict):
     fully_visible: NotRequired[Literal[True]]
     visible: NotRequired[bool]
     error: NotRequired[str]
+
+
+def validate_observation_policy(value: object) -> ObservationPolicy:
+    """Validate the explicit read-only observation mode without consulting the OS."""
+    if isinstance(value, str):
+        if value == "legacyDesktop1":
+            return "legacyDesktop1"
+        if value == "existingGameDesktop":
+            return "existingGameDesktop"
+    raise ValueError("unsupported observation policy")
 
 
 def _positive_integer(value: object, label: str) -> int:
@@ -282,7 +297,7 @@ def _new_receipt(launch_receipt: Path) -> PlacementReceipt:
                        "machine_identity_api": "ck3_live_run_id.current_machine_id"},
             "launch_receipt": str(launch_receipt.resolve()), "gameplay_input_sent": False,
             "desktop_switches": 0, "process_launch_or_stop_calls": 0,
-            "runtime_rendering_qualified": False}
+            "runtime_rendering_qualified": False, "observation_policy": "legacyDesktop1"}
 
 
 def _desktop_observation(value: dict[str, object]) -> DesktopObservation:
@@ -607,6 +622,8 @@ def observe_placement(args: PlacementArguments) -> PlacementReceipt:
     data.update(observation_only=True, window_mutations=0)
     primary = None
     try:
+        policy = validate_observation_policy(getattr(args, "observation_policy", "legacyDesktop1"))
+        data["observation_policy"] = policy
         deadline_check(args.deadline_utc)
         raw_launch = _read_launch_document(args.launch_receipt)
         launch = parse_launch_receipt(raw_launch)
@@ -618,8 +635,11 @@ def observe_placement(args: PlacementArguments) -> PlacementReceipt:
         from xar_autoplayer.bridge.windows_virtual_desktop import window_virtual_desktop
         ids, current = desktop_inventory()
         target = str(uuid.UUID(args.desktop_id))
-        if not ids or target != ids[0]:
-            raise RuntimeError("requested target is not actual Shell Desktop1")
+        if policy == "legacyDesktop1":
+            if not ids or target != ids[0]:
+                raise RuntimeError("requested target is not actual Shell Desktop1")
+        elif target not in ids or target != current:
+            raise RuntimeError("existing Game target must be in the inventory and current desktop")
         if args.expected_current_desktop_id and current != str(uuid.UUID(args.expected_current_desktop_id)):
             raise RuntimeError("current desktop differs from explicit observation admission")
         foreground, _ = read_foreground_window_v1()
@@ -663,7 +683,8 @@ def observe_placement(args: PlacementArguments) -> PlacementReceipt:
                 if observed_ids != ids or observed_current != current or observed_foreground != foreground:
                     raise RuntimeError("desktop inventory/current desktop/foreground changed during observation")
                 if desktop["window_hwnd"] != hwnd or desktop["desktop_id"] != target:
-                    raise RuntimeError("Game HWND is not on actual Desktop1")
+                    raise RuntimeError("Game HWND is not on actual Desktop1" if policy == "legacyDesktop1"
+                                       else "Game HWND is not on the admitted current desktop")
                 if current == target:
                     if not desktop["on_current_virtual_desktop"] or desktop["dwm_cloaked_flags"] != 0:
                         raise RuntimeError("current Game is cloaked or has inconsistent desktop membership")
@@ -671,9 +692,12 @@ def observe_placement(args: PlacementArguments) -> PlacementReceipt:
                     raise RuntimeError("noncurrent Game must have only actual Shell desktop cloaking")
                 if not visible or minimized:
                     raise RuntimeError("Game must already be visible and non-minimized")
+                frame_bounds = (monitor, work) if policy == "legacyDesktop1" else (monitor,)
                 if not contains(monitor, work) or any(not contains(bounds, area)
-                        for bounds in (monitor, work) for area in (window, screen_client)):
-                    raise RuntimeError("complete Game frame and client must be inside monitor work area")
+                        for bounds in frame_bounds for area in (window, screen_client)):
+                    raise RuntimeError("complete Game frame and client must be inside monitor work area"
+                                       if policy == "legacyDesktop1" else
+                                       "complete Game frame and client must be inside monitor with contained work area")
                 return {"ids": list(observed_ids), "current": observed_current, "foreground": observed_foreground,
                     "foreground_pid": foreground_pid, "desktop": desktop, "monitor_handle": monitor_handle,
                     "monitor": monitor, "work": work, "window": window, "client": client,
@@ -728,7 +752,11 @@ def main():
     parser.add_argument("--wait-seconds", type=float, default=30)
     parser.add_argument("--ui-dependencies", type=Path, required=False)
     parser.add_argument("--observe-only", action="store_true")
+    parser.add_argument("--observation-policy", choices=("legacyDesktop1", "existingGameDesktop"),
+                        default="legacyDesktop1")
     args = parser.parse_args()
+    if args.observation_policy != "legacyDesktop1" and not args.observe_only:
+        parser.error("nonlegacy observation policy requires --observe-only")
     if args.receipt.exists() or not args.receipt.parent.is_dir():
         parser.error("receipt must be a new file in the caller's admitted output directory")
     if args.observe_only:
