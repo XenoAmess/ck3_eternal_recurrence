@@ -1,5 +1,14 @@
 # Java / G2 resume91 当前执行记录
 
+## 10:16 UTC：独立确认取消，下一修复只重启智能体
+
+worker158在同一原版Game71464真实收到一次generation1 CANCEL的Native成功ACK，再经独立Status结算child395 CONTROL_APPLIED和父396 COMPOSITE_CONTROL_APPLIED（initialization_cancelled）。实际后态native265/public273、暂停、日期53144328，三个游戏/推进/保存flag均false；原ARM387、CANCEL395及父396都不重放。worker158实际10:02:09.640071–10:09:35.559207Z END1/445.919146秒、未LOOP，真实故障是SessionController.ready读取Driver时仍要求ARM/CANCEL的第二份recorder row，并非取消尚未发生。
+
+Root模型先行两轮候选都错误地在后置循环直接跳过父记录，漏canonical子项并跳过现有row校验，均拒绝后只接管DriverStateAssembler一个前置collection。复用ActionEffects的真实Life取消source验证，确认完整canonical子项及false信用，仅缺row时接纳父与子项；已有row仍逐项校验。单源严格编译10:10:24.612935–10:10:27.426429Z exit0/2.8134909秒，正式3858c5df5511已普通FF。Main已实际S/Z采用并只增编application1；worker159真实10:13:32.888240–10:13:40.504778Z END1/7.616541秒、未LOOP。cold bootstrap先加载历史parent396的terminalStatus，source router注册尚未执行，verifyPhysicalStatusOriginals拒绝；provider160独占修复历史只读重建/注册顺序。尚未实际达到Assembler新路径，软件测试与正式发表不作为同Game续行前置。
+
+模型流水仍需提高：10:09:26Z有限观察前十分钟19POST/19END、峰5，采样源码与服务均0在途。已取消将全部研究编验HOLD扩展为几百B点名callee取源/HTTP暂停的解释；M4、M7小原件输入继续实读并派新生产方法、消费者及witness。重编、大IO与共享输出仍按运行owner和Native的真实窗口执行，不据累计调用或历史短峰宣称持续高并发。IP仍192.168.1.11:8080/v1，跨机器入口及外部日志记法已正常FF发表，其他机器使用自身获准数据根。
+
+
 ## 2026-10-31 07:47Z UTC：149同Game已恢复进入普通批次59
 
 后到运行owner实际回执：149于07:47:41.7155678Z LOOP_START/next59，worker321540同原Game活跃，安装HOLD已解除；原父374/子373不重发，新增游戏日与SAVE仍0，后续日期动作未预授。149单Transitions源码正式58df67d522已发表，strict与DATA检查不外推为后续游玩成功。下方07:43Z Root片保留其冻结观察时间及尚待149的当时事实。
