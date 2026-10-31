@@ -1009,9 +1009,8 @@ public final class DriverBootstrap {
                     &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
                     "same-Game continuation cannot replace its actual original history");
             if (isolatedLife) {
-                var pending = lease.snapshot().actions().stream().filter(action -> !action.settled()).toList();
-                StrictJson.require(pending.size() == 1
-                        && org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyLifeRecovery(pending.getFirst())
+                StrictJson.require(org.xar.ck3.control.application.session.ContinuityBatchJournal
+                        .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
                         && new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions())),
                         "isolated Life adoption retains the complete canonical pending action set");
             } else {

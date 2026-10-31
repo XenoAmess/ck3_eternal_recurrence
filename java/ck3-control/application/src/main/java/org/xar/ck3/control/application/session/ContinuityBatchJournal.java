@@ -585,13 +585,75 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if (!(receipt.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown unknown)
                 || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())
                 || !unknown.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
-                || !unknown.execution().children().isEmpty()) return false;
+                || unknown.execution().children().size() > 2) return false;
         var command = receipt.command();
         var guard = unknown.execution().guard();
         return command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
                 && command.origin().acceptsGuard(guard.origin())
                 && guard.source().equals(command.source()) && guard.sessionId().equals(command.sessionId())
                 && guard.operation().equals(command.operation()) && guard.observed().equals(command.before());
+    }
+
+    /** Canonical DATA admission only: retains the one Life parent and its finite control prefix for observation. */
+    public static Optional<ActionReceipt> readOnlyLifeRecoveryRoot(java.util.List<ActionReceipt> canonicalActions) {
+        canonicalActions = java.util.List.copyOf(canonicalActions);
+        var roots = canonicalActions.stream().filter(action -> !action.settled() && isReadOnlyLifeRecovery(action)).toList();
+        if (roots.size() != 1) return Optional.empty();
+        var parent = roots.getFirst();
+        var execution = ((org.xar.ck3.control.application.action.ActionState.CompositeUnknown) parent.state()).execution();
+        try {
+            var plan = org.xar.ck3.control.application.advance.AdvancePlan.decode(parent.command());
+            StrictJson.require(parent.command().expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePlan.OBSERVER)
+                    && parent.command().expected().values().equals(plan.expected())
+                    && plan.startingDateRaw().equals(parent.command().before().frame().identity().dateRaw()),
+                    "read-only Life recovery retains its original requested plan");
+            var children = new java.util.ArrayList<ActionReceipt>();
+            var admitted = new java.util.HashSet<String>();
+            admitted.add(parent.command().actionId());
+            boolean pause = false, speed = false;
+            for (var binding : execution.children()) {
+                StrictJson.require(admitted.add(binding.actionId()), "duplicate or recursive Life child");
+                var matches = canonicalActions.stream().filter(action -> action.command().actionId().equals(binding.actionId())).toList();
+                StrictJson.require(matches.size() == 1, "original Life child is not uniquely canonical");
+                var child = matches.getFirst();
+                StrictJson.require(child.bodySha256().equals(binding.bodySha256()) && child.command().arguments().members().isEmpty()
+                        && org.xar.ck3.control.application.action.ActionTransitions.composite(child.state()).isEmpty()
+                        && (child.settled() || child.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown),
+                        "read-only Life prefix retains its actual primitive child");
+                String operation = child.command().operation().value();
+                if (operation.equals("pause-map")) {
+                    StrictJson.require(!pause && !speed, "Life initialization pause order differs");
+                    pause = true;
+                } else {
+                    StrictJson.require(!speed && operation.equals("set-speed-" + plan.speed()), "only the original finite Life control prefix can reconcile");
+                    speed = true;
+                }
+                children.add(child);
+            }
+            long previousSequence = 0;
+            var original = parent.command();
+            for (var child : children) {
+                var command = child.command();
+                StrictJson.require(child.sequence() > previousSequence
+                        && child.bodySha256().equals(org.xar.ck3.control.application.action.ActionCodec.bodySha256(command))
+                        && command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
+                        && command.source().equals(original.source()) && command.sessionId().equals(original.sessionId())
+                        && command.claims().equals(original.claims()) && !command.deadline().isAfter(original.deadline())
+                        && command.before().game().equals(original.before().game())
+                        && command.before().machineId().equals(original.before().machineId())
+                        && command.before().frame().episodeRunId().equals(original.before().frame().episodeRunId())
+                        && command.before().frame().identity().player().equals(original.before().frame().identity().player())
+                        && command.before().frame().identity().dateRaw().compareTo(original.before().frame().identity().dateRaw()) >= 0
+                        && command.before().frame().identity().nativeRevision().compareTo(original.before().frame().identity().nativeRevision()) >= 0,
+                        "Life read-only child changed its original binding");
+                previousSequence = child.sequence();
+            }
+            StrictJson.require(canonicalActions.stream().filter(action -> !action.settled())
+                    .allMatch(action -> admitted.contains(action.command().actionId())), "another unresolved original remains outside the Life prefix");
+            return Optional.of(parent);
+        } catch (IllegalArgumentException rejected) {
+            return Optional.empty();
+        }
     }
 
     /** Ordinary immutable DATA for a living same Game after first primitive FOCUS became UNKNOWN. */
@@ -622,9 +684,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
         Objects.requireNonNull(owner);
         var isolated = transitions.withLocked(same, () -> {
             var originals = transitions.restartArchive(same);
-            var pending = org.xar.ck3.control.application.action.ContinuityActionJournal
-                    .receipts(same.head().state(), originals).stream().filter(action -> !action.settled()).toList();
-            return pending.size() == 1 && isReadOnlyLifeRecovery(pending.getFirst()) ? pending : java.util.List.<ActionReceipt>of();
+            var actions = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(same.head().state(), originals);
+            return readOnlyLifeRecoveryRoot(actions).map(java.util.List::of).orElseGet(java.util.List::of);
         });
         if (!isolated.isEmpty()) {
             var captured = new java.util.concurrent.atomic.AtomicReference<CleanBatchRestart>();
@@ -967,9 +1028,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var originals=transitions.restartArchive(same);
             var actions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state,originals);
             if (isolatedLife) {
-                var pendingActions = actions.stream().filter(action -> !action.settled()).toList();
-                StrictJson.require(pendingActions.size() == 1 && isReadOnlyLifeRecovery(pendingActions.getFirst()),
-                        "isolated recovery retains only one exact read-only Life original");
+                StrictJson.require(readOnlyLifeRecoveryRoot(actions).isPresent(),
+                        "isolated recovery retains one exact Life original and its canonical control prefix");
             } else {
                 StrictJson.require(!actions.isEmpty()&&actions.stream().allMatch(ActionReceipt::settled),
                         "settled recovery cannot discard an unresolved action");
@@ -1197,20 +1257,45 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     /** Closes only a verified canonical no-write original through the existing all-settled recovery transition. */
     public JournalCommit recoverNoGameplaySameGame(SessionIdentity owner, ActionReceipt actual, SemanticEvidence fresh) throws IOException {
+        return recoverLifeTerminalSameGame(owner, actual, fresh, false);
+    }
+
+    /** Resumes ordinary planning only after the actual control prefix has settled without calendar credit. */
+    public JournalCommit recoverLifeControlPrefixSameGame(SessionIdentity owner, ActionReceipt actual, SemanticEvidence fresh) throws IOException {
+        return recoverLifeTerminalSameGame(owner, actual, fresh, true);
+    }
+
+    private JournalCommit recoverLifeTerminalSameGame(SessionIdentity owner, ActionReceipt actual, SemanticEvidence fresh,
+            boolean controlPrefix) throws IOException {
         Objects.requireNonNull(owner);Objects.requireNonNull(actual);Objects.requireNonNull(fresh);
         return store.locked(same -> {
             transitions.withLocked(same, () -> {
                 StrictJson.require(actual.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled,
                         "read-only recovery needs its actual composite terminal");
                 var settled = (org.xar.ck3.control.application.action.ActionState.CompositeSettled) actual.state();
-                StrictJson.require(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.CompositeNoGameplayWrite
-                        && actual.outcome() == ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT,
+                StrictJson.require(actual.outcome() == ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT,
                         "read-only recovery cannot reinterpret another action outcome");
-                var noGameplay = (org.xar.ck3.control.application.action.ActionState.CompositeNoGameplayWrite) settled.settlement();
-                noGameplay.observation().validate(actual.command(), settled.execution());
                 var originals = transitions.restartArchive(same);
-                var canonical = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(same.head().state(), originals)
-                        .stream().filter(receipt -> receipt.command().actionId().equals(actual.command().actionId())).findFirst().orElseThrow();
+                var actions = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(same.head().state(), originals);
+                if (controlPrefix) {
+                    StrictJson.require(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.LifeControlPrefixInterrupted,
+                            "actual source-owned Life prefix terminal required");
+                    var prefix = (org.xar.ck3.control.application.action.ActionState.LifeControlPrefixInterrupted) settled.settlement();
+                    prefix.observation().validateParent(actual.command(), settled.execution());
+                    var children = new java.util.ArrayList<ActionReceipt>();
+                    for (var binding : settled.execution().children()) {
+                        var child = actions.stream().filter(receipt -> receipt.command().actionId().equals(binding.actionId())).findFirst().orElseThrow();
+                        StrictJson.require(child.bodySha256().equals(binding.bodySha256()), "canonical Life child body changed");
+                        children.add(child);
+                    }
+                    prefix.observation().validateChildren(actual.command(), children);
+                } else {
+                    StrictJson.require(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.CompositeNoGameplayWrite,
+                            "actual canonical no-write terminal required");
+                    var noGameplay = (org.xar.ck3.control.application.action.ActionState.CompositeNoGameplayWrite) settled.settlement();
+                    noGameplay.observation().validate(actual.command(), settled.execution());
+                }
+                var canonical = actions.stream().filter(receipt -> receipt.command().actionId().equals(actual.command().actionId())).findFirst().orElseThrow();
                 StrictJson.require(canonical.equals(actual), "read-only recovery retains the complete actual canonical terminal");
                 return true;
             });

@@ -414,6 +414,20 @@ public final class SessionController {
                 ledgerHead = Optional.of(recovered.persistedHead());
                 quarantined = false;
                 localUnresolved = false;
+            } else if (actual.outcome() == ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT
+                    && actual.state() instanceof ActionState.CompositeSettled settled
+                    && settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted prefix) {
+                prefix.observation().validateParent(actual.command(), settled.execution());
+                run.requireCompletion(disposition);
+                StrictJson.require(journal instanceof ContinuityBatchJournal, "Life prefix recovery retains its actual continuity journal");
+                var fresh = run.ready(true);
+                var evidence = fresh.semanticEvidence().orElseThrow(() -> new IOException("Life prefix recovery needs actual fresh semantic evidence"));
+                var recovered = run.measured(Phase.JOURNAL,
+                        () -> ((ContinuityBatchJournal) journal).recoverLifeControlPrefixSameGame(identity, actual, evidence));
+                StrictJson.require(recovered.committedSavedDays() == totalCommittedDays, "Life prefix recovery changed saved-day credit");
+                ledgerHead = Optional.of(recovered.persistedHead());
+                quarantined = false;
+                localUnresolved = false;
             }
             
             return actual;
