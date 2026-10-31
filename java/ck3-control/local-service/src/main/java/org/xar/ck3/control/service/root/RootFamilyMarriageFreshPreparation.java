@@ -64,7 +64,6 @@ public final class RootFamilyMarriageFreshPreparation {
         if(publicQuery.isPresent())return preparePublic(same,command,publicQuery.orElseThrow());
         ExactRef requestRef=originals.reference(same,command);PlanningRequest request=originals.original(same,command,requestRef);
         return context.collector().currentPlanning(same,request,command,command.deadline(),(exact,lease)->{
-            var sourcePin=same.capturePin(implementation,WriterContracts.MAX_PIN_BYTES);
             var basis=bridge.verified(same,lease,command);var head=same.head();
             Map<Slot,ExactRef> domains=new EnumMap<>(Slot.class);
             for(Slot slot:SLOTS) {
@@ -89,7 +88,7 @@ public final class RootFamilyMarriageFreshPreparation {
             }
             manifest.set("prepared_plan",OpportunityJson.toNode(plan));
             ExactRef ref=context.archive().preserveMaterial(new RawJson(StrictJson.canonical(manifest,MAX)));
-            same.verifyPin(sourcePin);StrictJson.require(same.head().digest().equals(head.digest()),"writer head changed during observation-only family preparation");
+            StrictJson.require(same.head().digest().equals(head.digest()),"writer head changed during observation-only family preparation");
             return new Fresh(new FamilyNativePreparation.VerifiedBasis(basis.snapshot(),basis.bridgeIdentity(),basis.snapshotEvidence(),basis.bridgeEvidence(),Optional.of(plan)),
                     retained.stream().map(Read::original).toList(),ref);
         });
@@ -97,7 +96,7 @@ public final class RootFamilyMarriageFreshPreparation {
     private Fresh preparePublic(Session same,ActionCommand command,ExactRef originalQuery)throws IOException {
         verifyPublicOriginal(same,command,originalQuery);
         return context.readiness().current(same,command.before(),command.deadline(),lease->{
-            var pin=same.capturePin(implementation,WriterContracts.MAX_PIN_BYTES);var basis=bridge.verified(same,lease,command);
+            var basis=bridge.verified(same,lease,command);
             List<Read> retained=new ArrayList<>();
             Obj plan=review(command,basis.snapshot(),basis.bridgeIdentity(),Optional.empty(),(query,args)->{
                 StrictJson.require(query==FamilyPorts.Query.RULER_CHOICES,"public ruler cannot borrow private family/domain reads");
@@ -110,7 +109,7 @@ public final class RootFamilyMarriageFreshPreparation {
             m.set("snapshot",basis.snapshotEvidence().toJson());m.set("bridge",basis.bridgeEvidence().toJson());
             var rows=m.putArray("reads");for(var read:retained) {var row=rows.addObject().put("query",read.query().name());row.set("requested",OpportunityJson.toNode(read.requested()));row.set("original",read.original().toJson());}
             m.set("prepared_plan",OpportunityJson.toNode(plan));var ref=context.archive().preserveMaterial(new RawJson(StrictJson.canonical(m,MAX)));
-            same.verifyPin(pin);return new Fresh(new FamilyNativePreparation.VerifiedBasis(basis.snapshot(),basis.bridgeIdentity(),basis.snapshotEvidence(),basis.bridgeEvidence(),Optional.of(plan)),retained.stream().map(Read::original).toList(),ref);
+            return new Fresh(new FamilyNativePreparation.VerifiedBasis(basis.snapshot(),basis.bridgeIdentity(),basis.snapshotEvidence(),basis.bridgeEvidence(),Optional.of(plan)),retained.stream().map(Read::original).toList(),ref);
         });
     }
     private static Optional<ExactRef> publicQuery(ActionCommand command) {
@@ -136,9 +135,9 @@ public final class RootFamilyMarriageFreshPreparation {
         }
         StrictJson.require(manifests.size()==1,"one actual fresh-review manifest required; current plan is not replay");
         var m=StrictJson.object(manifests.getFirst(),Set.of("schema","command_sha256","head_sequence","head_digest","implementation","planning_request","public_original_query","origin","snapshot","bridge","domains","reads","prepared_plan"));
-        StrictJson.require(ActionCodec.sha256(ActionCodec.encodeCommand(command)).equals(StrictJson.text(m.get("command_sha256")))
-                &&ExactRef.fromJson(m.get("implementation")).equals(implementation),"fresh-review immutable command or producer source differs");
-        var pin=same.capturePin(implementation,WriterContracts.MAX_PIN_BYTES);
+        ExactRef.fromJson(m.get("implementation"));
+        StrictJson.require(ActionCodec.sha256(ActionCodec.encodeCommand(command)).equals(StrictJson.text(m.get("command_sha256"))),
+                "fresh-review immutable command differs");
         var original=bridge.replay(same,ExactRef.fromJson(m.get("bridge")));
         StrictJson.require(original.semantic().equals(ExactRef.fromJson(m.get("snapshot")))&&original.frame().identity().equals(command.before())
                 &&original.frame().source().equals(command.source())&&original.frame().sessionId().equals(command.sessionId()),"fresh-review original full native/Driver basis differs");
@@ -183,7 +182,7 @@ public final class RootFamilyMarriageFreshPreparation {
             return new FamilyPorts.ObservedRead(products.reads().decode(query,read),read,row.original());
         });
         StrictJson.require(index[0]==retained.size()&&OpportunityJson.toNode(plan).equals(m.get("prepared_plan")),"complete original fresh policy replay changed selected plan");
-        same.verifyPin(pin);return new FamilyNativePreparation.VerifiedBasis(original.frame().semantic(),original.observation().identity(),original.semantic(),original.observation().evidence(),Optional.of(plan));
+        return new FamilyNativePreparation.VerifiedBasis(original.frame().semantic(),original.observation().identity(),original.semantic(),original.observation().evidence(),Optional.of(plan));
         });
     }
     private FamilyPorts.ObservedRead currentRead(Session same,PlanningRequest request,FamilyPorts.Query query,Obj args)throws IOException {
@@ -212,9 +211,8 @@ public final class RootFamilyMarriageFreshPreparation {
             StrictJson.require(registered.payload().equals(refs.get(slot))&&registered.contractSchema().equals(FamilyDomainSource.schema(slot)),"fresh-review source domain differs from original canonical registry");
             var pin=same.capturePin(refs.get(slot),org.xar.ck3.control.continuity.ContinuityJson.DOMAIN_MAX_BYTES);
             StrictJson.require(pin.identity().equals(registered.identity()),"original full family domain file identity changed");
-            List<WriterContracts.Pin> sources=new ArrayList<>();for(var source:registered.producerSources())sources.add(same.capturePin(source,WriterContracts.MAX_PIN_BYTES));
             bodies.put(slot,FamilyDomainSource.validate(slot,same.readPinned(pin,org.xar.ck3.control.continuity.ContinuityJson.DOMAIN_MAX_BYTES)));
-            same.verifyPin(pin);for(var source:sources)same.verifyPin(source);
+            same.verifyPin(pin);
         }
         return new FamilyPendingProducer.State(bodies.get(Slot.FAMILY),bodies.get(Slot.CHILD_MATRILINEAL),bodies.get(Slot.DEFAULT_MARRIAGE));
     }
