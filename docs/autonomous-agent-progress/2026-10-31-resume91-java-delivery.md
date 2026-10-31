@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `457e6ff015`。本波接已部署的 Family scope/三层生产转发、可选新婚姻开关、明确完整材料输入角色及取消的 class 资格审计；所有必要绿复用真实 owner 回执，正式额外测试保留。运行 owner 最后明确128于 2026-10-31T02:19:56.9026367Z 同 Game LOOP/next45；加载、模型选择、Native提交和日期推进分别记，未凭开关或编译授新动作/游戏日/SAVE信用。本岗没有 S/MB/Game/账本写权。
+最新正式源码 FF 已至 `92acdf38bd`，跨机本地模型指南 `d0974cf62c` 与三页新经验 `531bf67d77` 已正常推送 GitHub master。M7 新11叶组件 `40f12ee29d`、Crown 原读取范围 `3895b11e11` 和有限错误诊断均已准确采用，所有必要绿复用 owner 实际回执。运行 owner 后到事实为同局129一次新的普通 CROWN APPLIED（区别于旧 FOCUS），新增日仍0；随后130在恢复前置 exit1/未 LOOP，不能重放已应用的 CROWN。本岗不写 S/MB/Game/账本，正式源码、装载、业务结果和游戏日分别记录。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -203,4 +203,18 @@ Root docs11 `adcb0dd6fe` 对13页逐页diff后仅9内容变化页+AGENTS共10叶
 
 模型rolling126/review126 `8639f67db4` 四payload SHA/实盘bytes与唯一heading核实后按序EOF追加，保正式旧prefix28852/31531/21351B。运营政策 `053bb27b93` 仅dispatch_policy.updated_on/basis/concurrency单hunk，JSON深比其余IP/default/interface/history/calibration等所有值均相同；parallel128 ops1152B另精确EOF保其旧31247B。12–16是有真实积压时初始目标，不是已达、quota或新scheduler，owner直POST不等中央ACK；不为机械提交或已写完答案凑调用。历史峰8/阶段6与冻结快照当刻在途另记，cached缺字段不推命中。
 
-当前M7 captured79E四新prod仅D源strict0，独立新回归未READY，未盲接或追授未知callee/自然drain。旧Focus全装配和已发表Stop三caller的真实同源资格链仍未闭；本岗不伪造输入、不重旧FOCUS、不借formal commit授Game日。当前运行P0仍由runtime独占推进，不以这些交付或背景研究作为下一实机前置。
+上个快照时M7 captured79E四新prod仅D源strict0，独立新回归尚未READY；后到验收与正式采用见下节，不追授未知callee/自然drain。旧Focus全装配和已发表Stop三caller的真实同源资格链仍未闭；本岗不伪造输入、不重旧FOCUS、不借formal commit授Game日。运行P0由runtime独占推进，不以这些交付或背景研究作为下一实机前置。
+
+
+## 129–130 正式组件、跨机经验发表与真实普通动作边界
+
+记录时间 2026-10-31T02:51:01.354Z。本岗复用已到达的精确成熟包，不新增镜像测试、模型调用或全图编译。所有正常 fetch/rebase/FF push exit0，未 force、whole-stage 或覆盖 Z 历史 dirty。
+
+- archive129 正式 `7138b041b0`：GovernanceCollector 在既有 bindReceipt 后直接返回真实 Known.originalReceipt，避免把 ACK/结果角色再次 preserve 成 READ 元数据；既有两 capture 断言改1→0，新增便携4case。复用 owner 单prod strict0/2.134、两test strict0/2.134、新4P/1.681；这是软件角色 sink，不是 physical NativeOutcomeArchive 或实际128失败ref复现，旧整类不重跑。模型整 edit 被拒，最终最小实现为 owner 接管，不授模型原样实现。
+- 用户明确要供其他机器 worker 使用的指南 `d0974cf62c`：新增 `docs/local-model-worker-guide.md` 9977B，并向 formal AGENTS 插一个1197B入口。原 AGENTS 121591B全部旧字节保留；git apply 引起整文件CRLF后已与纯插入预期逐项核同，并恢复原旧字节+新入口，未复制Z历史。四个仓库相对链接已核；Root 本机 GET/models 真 exit0 的回执仅属本机，其他机器连通未验证。指南使用唯一config、新.11/qwen、稳定三消息、SSE和6次有限退避，跨机各自 roots/machine_id/调用器，不携本机 D 状态或账本。
+- 三页 portable128 新经验 `531bf67d77`：运营2336B/可行性1927B/能力边界1950B的 payload SHA 与 manifest 一致，只精确EOF追加；formal原前缀32399/33311/23228B逐字保留，唯一heading各1。真实窗口27任务/27POST/28END、客户端峰4与历史新IP峰8分列，不把12–16目标当已达。模型未完成、API/业务错误、owner修正及输入规模/实际改写规模仍分开；无为发表新增HTTP或编测。
+- Crown130 原读取闭包 `3895b11e11`：既有 consumeTerms 同时作为 live/pureReplay decoder，显式paused-map；只有精确 Crown final-terms typed profile 借既有original scope。复用owner两prod strict0/2.158、两test strict0/2.255、新2P/0skip/12.723。scope测试是软件Crown-profile负ACK，经真实Collector/Coordinator/failurecodec冷往返，非实际final-terms成功decoder或所有live factory wrapper，实际失败ACK locator仍缺。模型方向partial，owner修BiFunction参数/实际literal/array断言，不授整hunk原样。
+- M7 `40f12ee29d`：现有g2-research新增6prod+5test，NativeTaskMemory原API与POM均不改。79E实际held511B选定分支保持初次cells地址、12字节步长、32位wrap、fresh count/事件值和opaque callback访问顺序；28EED20只是已知四byte FNV及symbolic frame地址投影，未知177ED10完整ABI、pointee/callee语义与Game业务仍留port。复用纠错production strict、首10 Java witness/62checks/0.210439秒、薄2@Test wrapper单TU strict，以及continuation3TU strict0/0.81021秒和首6JUnit6P/0skip/0.75581秒。未重原Native/FFM或假称薄wrapper已执行。6prod忽略注释/空白的执行token逐项与已验D候选相同；正式只去Cells自我纠正提示注释和新叶行尾空白。模型/owner hash、API、测试helper成本沿原审阅保留，不把Java软件绿授自然drain、SAVE或原生callee信用。
+- Crown有限诊断 `92acdf38bd`：RootGovernanceDomains只在Blocked reason前放实际ACK状态/requestID及有限error，packet最多65540B解析、error最多512字符，非ACK原reason不改。formal/input有界ignoreEOL diff0，准确patch仅适配EOL，最终formal/candidate ignoreEOL diff0。复用owner单leafstrict0/2.387，首因旧fields deprecation的-Werror红仍保，明确排除该旧warning后才绿；无镜像test、状态/UNKNOWN/Native调用改变，未包含同叶未READY的semantic候选。
+
+运行后到事实仅引用已给的 owner 原件，不由本岗额外扫描 CAS：runtime129于02:31:39.332提交CROWN、02:31:44.093独立确认APPLIED，law0→1/prestige220m→200m，原回执 `b4dced5565769d363203137cd1d2c62aa15b77b94fe57219aa81b293b181a646.bin`（10260B），新增普通APPLIED1与旧FOCUS分列，新增游戏日/SAVE仍0。随后final-terms纯replay缺口造成失败；130虽已MB编入两叶，却在02:43:12.935172Z前置恢复exit1/24.964秒、未LOOP，安装HOLD已释放。新的合法Crown settled回执不应触发“动作必须不变”旧解释；131最小恢复修复由runtime/provider独占推进。本岗不重开Game、不重放CROWN，不以本次发表宣称自动游玩目标完成。
