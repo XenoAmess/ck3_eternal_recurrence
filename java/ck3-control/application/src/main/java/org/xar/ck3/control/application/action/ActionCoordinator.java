@@ -336,10 +336,10 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
                     boolean[] entered = {false};
                     ActionPorts.PostconditionResult[] observed = {null};
                     result = Objects.requireNonNull(actual.observe(locked.writerSession(), current, ActionObservationWindow.deadline(command),
-                            (frame, identity, basis) -> {
+                            (frame, provenance, identity, basis) -> {
                                 StrictJson.require(!entered[0], "a reconciliation authority may enter the original observer only once");
                                 entered[0] = true;
-                                return observed[0] = ActionReconciliationScope.within(locked, current, attempt, frame, identity, basis,
+                                return observed[0] = ActionReconciliationScope.within(locked, current, attempt, frame, provenance, identity, basis,
                                         authorityId, ActionObservationWindow.deadline(command), clock,
                                         () -> Objects.requireNonNull(postcondition.observe(command, attempt, dispatch)));
                             }));

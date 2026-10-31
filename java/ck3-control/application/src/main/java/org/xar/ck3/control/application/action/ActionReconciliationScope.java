@@ -17,8 +17,8 @@ import org.xar.ck3.control.contracts.StrictJson;
 public final class ActionReconciliationScope {
     private static final ThreadLocal<Held> ACTIVE = new ThreadLocal<>();
     private record Held(ActionJournal.LockedJournal locked, ContinuityStorePort.Session session,
-            ActionReceipt pending, ActionState.Attempt attempt, Complete frame, ReconciliationIdentity identity,
-            GuardEvidence observationGuard, String headDigest, String authorityId, Instant deadline, Clock clock) { }
+            ActionReceipt pending, ActionState.Attempt attempt, Complete frame, ObservationProvenance provenance,
+            ReconciliationIdentity identity, GuardEvidence observationGuard, String headDigest, String authorityId, Instant deadline, Clock clock) { }
     private ActionReconciliationScope() { }
     public static boolean activeFor(ActionCommand command) {
         Held held = ACTIVE.get();
@@ -28,6 +28,8 @@ public final class ActionReconciliationScope {
     }
     public static Complete requireFrame(ActionCommand command) throws IOException { return requireCurrent(command, null).frame(); }
     public static Complete requireFrame(ActionCommand command, ActionState.Attempt attempt) throws IOException { return requireCurrent(command, Objects.requireNonNull(attempt)).frame(); }
+    public static ObservationProvenance requireProvenance(ActionCommand command) throws IOException { return requireCurrent(command, null).provenance(); }
+    public static ObservationProvenance requireProvenance(ActionCommand command, ActionState.Attempt attempt) throws IOException { return requireCurrent(command, Objects.requireNonNull(attempt)).provenance(); }
     public static ReconciliationIdentity requireIdentity(ActionCommand command) throws IOException { return requireCurrent(command, null).identity(); }
     public static ReconciliationIdentity requireIdentity(ActionCommand command, ActionState.Attempt attempt) throws IOException { return requireCurrent(command, Objects.requireNonNull(attempt)).identity(); }
     public static GuardEvidence requireObservationGuard(ActionCommand command) throws IOException { return requireCurrent(command, null).observationGuard(); }
@@ -39,13 +41,13 @@ public final class ActionReconciliationScope {
     }
     /** Package-private: only the sole coordinator enters after its installed Root provider captures actual originals. */
     static <T> T within(ActionJournal.LockedJournal locked, ActionReceipt pending, ActionState.Attempt attempt,
-            Complete frame, ReconciliationIdentity identity, GuardEvidence observationGuard, String authorityId,
+            Complete frame, ObservationProvenance provenance, ReconciliationIdentity identity, GuardEvidence observationGuard, String authorityId,
             Instant deadline, Clock clock, Supplier<T> observer) {
         Objects.requireNonNull(locked); Objects.requireNonNull(pending); Objects.requireNonNull(attempt);
-        Objects.requireNonNull(frame); Objects.requireNonNull(identity); Objects.requireNonNull(observationGuard);
+        Objects.requireNonNull(frame); Objects.requireNonNull(provenance); Objects.requireNonNull(identity); Objects.requireNonNull(observationGuard);
         Objects.requireNonNull(deadline); Objects.requireNonNull(clock); Objects.requireNonNull(observer);
         StrictJson.require(ACTIVE.get() == null, "reconciliation cannot recursively replace the original physical observation");
-        Held held = new Held(locked, locked.writerSession(), pending, attempt, frame, identity, observationGuard,
+        Held held = new Held(locked, locked.writerSession(), pending, attempt, frame, provenance, identity, observationGuard,
                 locked.head().digest(), StrictJson.text(authorityId), deadline, clock);
         try {
             require(held, pending.command(), attempt); ACTIVE.set(held);
@@ -75,7 +77,7 @@ public final class ActionReconciliationScope {
         StrictJson.require(ActionScope.currentActionId().filter(command.actionId()::equals).isPresent()
                 && ActionCommandScope.current().filter(value -> Arrays.equals(ActionCodec.encodeCommand(value), ActionCodec.encodeCommand(command))).isPresent(),
                 "reconciliation data escaped its actual coordinator command/thread scope");
-        ReconciliationIdentity identity = held.identity(); Complete frame = held.frame(); GuardEvidence guard = held.observationGuard();
+        ReconciliationIdentity identity = held.identity(); Complete frame = held.frame(); ObservationProvenance provenance = held.provenance(); GuardEvidence guard = held.observationGuard();
         StrictJson.require(identity.pending().actionId().equals(command.actionId())
                 && identity.pending().bodySha256().equals(actual.bodySha256())
                 && identity.pending().requestId().equals(actualAttempt.requestId())
@@ -84,6 +86,7 @@ public final class ActionReconciliationScope {
                 && frame.sessionId().equals(identity.sessionId()) && frame.connectionGeneration().equals(identity.connectionGeneration())
                 && frame.originalEvidence().equals(identity.nativeEvidence()) && frame.observedAt().equals(identity.observedAt()),
                 "actual reconciliation Complete and identity do not share original source/Native/Driver data");
+        provenance.validate(frame.identity(), frame.originalEvidence());
         StrictJson.require(identity.source().equals(command.source()) && identity.sessionId().equals(command.sessionId()),
                 "reconciliation crossed the original source/session");
         identity.requireOriginalConnection(actualAttempt.guard());

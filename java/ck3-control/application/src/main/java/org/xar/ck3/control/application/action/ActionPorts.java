@@ -69,7 +69,7 @@ public final class ActionPorts {
     }
     @FunctionalInterface public interface ReconciliationWork {
         PostconditionResult apply(org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete actualData,
-                ReconciliationIdentity actualIdentity, GuardEvidence actualObservationGuard);
+                ObservationProvenance actualProvenance, ReconciliationIdentity actualIdentity, GuardEvidence actualObservationGuard);
     }
     public record OperatorRebindObserved(org.xar.ck3.control.application.planning.identity.OperatorPlayerSwitch.Completion observation) implements PostconditionResult {
         public OperatorRebindObserved { Objects.requireNonNull(observation); }

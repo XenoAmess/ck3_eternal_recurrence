@@ -78,7 +78,7 @@ final class ActionReconciliationWriterTest {
     @Test void providerCannotInventCompleteIdentityOrGuardDataToEnterTheActualOriginalObserver() throws Exception {
         var observations = new AtomicInteger();
         try (var f = new ActionWriterIntegrationFixture(root.resolve("missing-qualified-data"), false, action(observations))) {
-            f.coordinator.bindReconciliationObservation((same, pending, deadline, observer) -> observer.apply(null, null, null));
+            f.coordinator.bindReconciliationObservation((same, pending, deadline, observer) -> observer.apply(null, null, null, null));
             var original = f.coordinator.execute(f.command("missing-qualified-original"));
             var recovered = f.coordinator.reconcile(original.command().actionId());
             assertInstanceOf(ActionState.Unknown.class, recovered.state());

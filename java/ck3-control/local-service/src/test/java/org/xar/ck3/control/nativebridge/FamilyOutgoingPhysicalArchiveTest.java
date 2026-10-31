@@ -119,7 +119,7 @@ final class FamilyOutgoingPhysicalArchiveTest {
                     },Clock.systemUTC());
             reconciliation.requireOwner(fixture.writer,fixture.archive,fixture.actualReadCatalog(),physical);
             var guards=new RootReconciliationReadGuard(reconciliation,()->{try{return fixture.writer.borrowedSession();}catch(IOException failure){throw new UncheckedIOException(failure);}},fixture.archive,inputs.source(),Clock.systemUTC(),"software-family-data-query",inputs.originals(),fixture.actualReadCatalog());
-            fixture.bindReconciliationReadGuard(guards);fixture.coordinator.bindReconciliationObservation((same,pendingReceipt,deadline,work)->reconciliation.observe(same,pendingReceipt,deadline,lease->work.apply(lease.complete(),lease.identity(),lease.observationGuard())));
+            fixture.bindReconciliationReadGuard(guards);fixture.coordinator.bindReconciliationObservation((same,pendingReceipt,deadline,work)->reconciliation.observe(same,pendingReceipt,deadline,lease->work.apply(lease.complete(),lease.provenance(),lease.identity(),lease.observationGuard())));
         }
         void original()throws Exception{
             var ready=fixture.ready();var planning=ready.request();var request=new PlanningReadRequest(planning.before(),planning.source(),planning.sessionId(),beforeContract.operation(),EMPTY,planning.deadline());

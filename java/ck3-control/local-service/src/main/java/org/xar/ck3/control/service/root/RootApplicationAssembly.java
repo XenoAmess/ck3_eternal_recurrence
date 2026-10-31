@@ -1252,6 +1252,7 @@ public final class RootApplicationAssembly {
             collector.bindActiveObservationSession(writer::activeSession);
             CheckpointService service = new CheckpointService(files, checkpoints, collector.checkpoint(lineageId), checkpointEvidence, clock, seeds);
             service.bindEvidence(archive, writer::borrowedSession, writer::requireSession);
+            service.bindColdRecovery(savePath, lineageId);
             CheckpointRequestFactory requests = new CheckpointRequestFactory(savePath, collector.checkpoint(lineageId));
             staged = true;
             return new Staged(this, identity, driver, game, inputs, collector, service, requests, files, checkpoints, attachmentEvidence,
@@ -1369,6 +1370,7 @@ public final class RootApplicationAssembly {
             };
             var checkpointService=new CheckpointService(files,checkpoints,routedObservations,checkpointEvidence,clock,seeds);
             checkpointService.bindEvidence(archive,writer::borrowedSession,writer::requireSession);
+            checkpointService.bindColdRecovery(savePath, lineageId);
             var requests=new CheckpointRequestFactory(savePath,routedObservations);
             var staged=new Staged(this,sessionIdentity(driver),driver,game,inputs,collector,checkpointService,requests,files,checkpoints,
                     attachmentEvidence,null,runtime.context().reads(),new RootKnownReadObserver(writer));
@@ -1800,6 +1802,7 @@ public final class RootApplicationAssembly {
             StrictJson.require(collector.identity().equals(identity), "restored stage must reuse the exact fresh publication collector");
             CheckpointService checkpointService = new CheckpointService(files, checkpoints, collector.checkpoint(lineageId), checkpointEvidence, clock, seeds);
             checkpointService.bindEvidence(archive, writer::borrowedSession, writer::requireSession);
+            checkpointService.bindColdRecovery(savePath, lineageId);
             CheckpointRequestFactory requests = new CheckpointRequestFactory(savePath, collector.checkpoint(lineageId));
             Staged candidate = new Staged(this, identity, driver, replacement, null, collector, checkpointService, requests, files, checkpoints,
                     attachmentEvidence, new Restoration(previous, service, binding, runtime), runtime.reads(), new RootKnownReadObserver(writer));
@@ -2511,7 +2514,7 @@ public final class RootApplicationAssembly {
                 Instant deadline, ActionPorts.ReconciliationWork work) throws IOException, InterruptedException {
             if (authority == null) throw new IOException("actual Root reconciliation observation authority is not admitted");
             return authority.observe(same, pending, deadline,
-                    lease -> work.apply(lease.complete(), lease.identity(), lease.observationGuard()));
+                    lease -> work.apply(lease.complete(), lease.provenance(), lease.identity(), lease.observationGuard()));
         }
     }
     private static final class InterruptedAssembly extends RuntimeException {

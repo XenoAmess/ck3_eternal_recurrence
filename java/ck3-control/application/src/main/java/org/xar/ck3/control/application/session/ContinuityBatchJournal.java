@@ -1545,6 +1545,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
     @Override public Optional<CompletedCycleProof> cycleProof(SessionIdentity owner, SemanticEvidence semantic) throws IOException {
         return store.locked(session -> cycleProof(session,owner,semantic));
     }
+    /** Actual archived cycle producer, read under this same original writer; grants no submit or new cycle. */
+    public Optional<CompletedCycleProof> retainedCycleProof(SessionIdentity owner) throws IOException {
+        return store.locked(same -> transitions.withLocked(same, () -> transitions.retainedCycleProof(same, owner)));
+    }
     /** Reads only the actual producer's proof in this identical Session. Missing proof remains absent. */
     public Optional<CompletedCycleProof> cycleProof(ContinuityStorePort.Session original,SessionIdentity owner,SemanticEvidence semantic)throws IOException {
         store.requireSession(Objects.requireNonNull(original));Objects.requireNonNull(owner);Objects.requireNonNull(semantic);

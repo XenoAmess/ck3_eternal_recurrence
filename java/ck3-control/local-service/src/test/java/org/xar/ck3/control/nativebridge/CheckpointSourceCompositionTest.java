@@ -147,7 +147,7 @@ public final class CheckpointSourceCompositionTest {
                 try {
                     return reconciliation.observe(same,original,deadline,lease->{
                         lastCheckpointObservationDeadline.set(deadline);
-                        return work.apply(lease.complete(),lease.identity(),lease.observationGuard());
+                        return work.apply(lease.complete(),lease.provenance(),lease.identity(),lease.observationGuard());
                     });
                 } catch (IOException failure) {
                     retainedReconciliationFailure.compareAndSet(null,failure);

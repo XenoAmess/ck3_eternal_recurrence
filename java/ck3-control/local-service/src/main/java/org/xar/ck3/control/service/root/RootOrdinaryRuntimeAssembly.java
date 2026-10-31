@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletionException;
+import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.ActionTransitions;
+import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.driver.DriverBootstrap;
@@ -386,8 +389,19 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
                 }
             }
             boolean attemptedLifeCancellation = receipt != null;
-            if (receipt == null) receipt = runOperationPhase(owner.clock,java.time.Duration.ofMinutes(10),phaseDeadline->
-                    session.reconcileUnresolvedOriginal(data,phaseDeadline));
+            if (receipt == null) {
+                receipt = runOperationPhase(owner.clock, java.time.Duration.ofMinutes(10), phaseDeadline -> {
+                    var first = session.reconcileUnresolvedOriginal(data, phaseDeadline);
+                    if (first.settled()) return first;
+                    var command = first.command();
+                    if (!command.operation().value().equals("save-checkpoint")) return first;
+                    var dispatch = ActionTransitions.dispatch(first.state());
+                    if (dispatch.isEmpty() || !(dispatch.orElseThrow() instanceof NativeActionPort.AckReceived ack) || !ack.nativeOk()) return first;
+                    var state = first.state();
+                    if (!(state instanceof ActionState.Unknown unknown) || !unknown.reason().equals("SAVE awaits second stable physical observation")) return first;
+                    return session.reconcileUnresolvedOriginal(data, phaseDeadline);
+                });
+            }
             if (receipt != null && !receipt.settled()
                     && !attemptedLifeCancellation
                     && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())) {

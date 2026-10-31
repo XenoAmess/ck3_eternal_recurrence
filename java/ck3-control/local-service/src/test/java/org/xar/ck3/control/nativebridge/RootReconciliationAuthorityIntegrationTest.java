@@ -284,7 +284,7 @@ final class RootReconciliationAuthorityIntegrationTest {
             },actual.archive,inputs.source(),Clock.systemUTC(),"software-reconciliation-query-authority",inputs.originals(),actual.actualReadCatalog());
             guardRef.set(readGuard);actual.bindReconciliationReadGuard(readGuard);
             actual.coordinator.bindReconciliationObservation((same,pendingReceipt,deadline,work)->
-                    reconciliation.observe(same,pendingReceipt,deadline,lease->work.apply(lease.complete(),lease.identity(),lease.observationGuard())));
+                    reconciliation.observe(same,pendingReceipt,deadline,lease->work.apply(lease.complete(),lease.provenance(),lease.identity(),lease.observationGuard())));
         }
         void executeOriginal()throws Exception{executeOriginal(false);}
         void executeOriginal(boolean changedPlayer)throws Exception{

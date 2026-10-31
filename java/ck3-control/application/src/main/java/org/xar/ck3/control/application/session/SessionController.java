@@ -396,7 +396,11 @@ public final class SessionController {
             }
             
             if (actual.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED) {
-                run.completeCycle(actual);
+                if (checkpoint(actual.command())) {
+                    run.confirmOriginalSave(actual, deadline);
+                } else {
+                    run.completeCycle(actual);
+                }
                 run.requireCompletion(disposition);
                 quarantined = false;
                 localUnresolved = false;
@@ -1147,6 +1151,48 @@ public final class SessionController {
             requireTime(); long remaining = untilNanos - clock.now().elapsedNanos();
             if (remaining <= 0) throw new End(Terminal.WALL_TIMEOUT, "complete batch monotonic wall bound expired before poll");
             measured(Phase.IDLE_WAIT, () -> { clock.waitFor(Duration.ofNanos(Math.min(remaining, limits.pollInterval().toNanos()))); return true; });
+        }
+        void confirmOriginalSave(ActionReceipt actual, Instant deadline) throws IOException, InterruptedException {
+            requireTime();
+            StrictJson.require(checkpoint(actual.command()) && actual.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED,
+                    "cold SAVE collection requires its actual settled original");
+            var result = measured(Phase.CHECKPOINT, () -> checkpoints.queryOriginal(actual.command().actionId(), deadline));
+            if (!(result instanceof CheckpointResult.Confirmed confirmed)) {
+                quarantineUnresolved();
+                throw new IOException("original SAVE cold settlement remains unconfirmed");
+            }
+            StrictJson.require(confirmed.action().sequence() == actual.sequence()
+                    && confirmed.action().bodySha256().equals(actual.bodySha256())
+                    && sameCommand(confirmed.action().command(), actual.command())
+                    && confirmed.action().outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED,
+                    "original SAVE collection changed its actual canonical receipt");
+            var pair = confirmed.pair();
+            StrictJson.require(pair.saveActionId().equals(actual.command().actionId())
+                    && pair.nativeAckRef().equals(confirmed.ackEvidence()) && pair.frame().equals(confirmed.poststate())
+                    && pair.frame().machineId().equals(identity.machineId()) && pair.frame().game().equals(identity.game()),
+                    "cold SAVE collection crossed its actual pair/ACK/owner");
+            StrictJson.require(journal instanceof ContinuityBatchJournal, "original SAVE needs the actual continuity cycle source");
+            var proof = measured(Phase.JOURNAL, () -> ((ContinuityBatchJournal) journal).retainedCycleProof(identity));
+            var completed = proof.orElseThrow(() -> new IOException("original SAVE requires its retained pre-SAVE completed-cycle proof"));
+            requireOriginalSaveContinuation(completed.frame(), actual.command().before());
+            requireOriginalSaveContinuation(actual.command().before(), pair.frame());
+            savingProof = Optional.of(completed);
+            // As in live SAVE, retain the true physical pair even if the subsequent journal commit fails.
+            savedPair = Optional.of(pair);
+            commit(JournalKind.SAVE_CONFIRMED, Optional.of(pair.frame()), savedPair,
+                    List.of(pair.save().reference(), pair.driver().reference(), pair.nativeAckRef()));
+            dirty = false; eligibleSinceSave = 0; unsavedGameplayActions.clear(); savingProof = Optional.empty();
+            requireTime();
+        }
+        private void requireOriginalSaveContinuation(org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity before,
+                org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity after) {
+            StrictJson.require(before.machineId().equals(after.machineId()) && before.game().equals(after.game())
+                    && before.observationVersion() == after.observationVersion()
+                    && before.frame().episodeRunId().equals(after.frame().episodeRunId())
+                    && before.frame().identity().player().equals(after.frame().identity().player())
+                    && before.frame().identity().dateRaw().equals(after.frame().identity().dateRaw())
+                    && after.frame().identity().nativeRevision().compareTo(before.frame().identity().nativeRevision()) >= 0,
+                    "original SAVE changed its cycle owner/actor/episode/date or regressed its actual revision");
         }
         void save(Ready ready) throws IOException, InterruptedException {
             requireTime(); live(); StrictJson.require(ready.checkpointEligibility() == CheckpointEligibility.SAFE, "SAVE is not eligible on this native frame");

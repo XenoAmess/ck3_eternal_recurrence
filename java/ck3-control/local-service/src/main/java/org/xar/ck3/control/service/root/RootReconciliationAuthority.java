@@ -21,6 +21,8 @@ import org.xar.ck3.control.application.readiness.NativeReadinessCollector.Source
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
+import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 /**
@@ -108,12 +110,13 @@ public final class RootReconciliationAuthority {
         private final ActionReceipt canonical;
         private final ActionState.Attempt attempt;
         private final Complete before,current;
+        private final ObservationProvenance provenance;
         private final ReconciliationIdentity identity;
         private final List<AllowedRead> reads;
         private Lease(RootReconciliationAuthority owner,RootLifecycleAuthority.SnapshotLease physical,ActionReceipt canonical,
-                ActionState.Attempt attempt,Complete before,Complete current,ReconciliationIdentity identity,List<AllowedRead> reads) {
+                ActionState.Attempt attempt,Complete before,Complete current,ObservationProvenance provenance,ReconciliationIdentity identity,List<AllowedRead> reads) {
             this.owner=owner;this.physical=physical;this.canonical=canonical;this.attempt=attempt;this.before=before;this.current=current;
-            this.identity=identity;this.reads=List.copyOf(reads);
+            this.provenance=provenance;this.identity=identity;this.reads=List.copyOf(reads);
         }
         public ReconciliationIdentity identity(){return identity;}
         public DriverObservationAssembler.FullSnapshot fullSnapshot(){return physical.fullSnapshot();}
@@ -122,6 +125,7 @@ public final class RootReconciliationAuthority {
         public Complete before(){return before;}
         public ActionReceipt canonical(){return canonical;}
         public ActionState.Attempt attempt(){return attempt;}
+        public ObservationProvenance provenance(){return provenance;}
         public SourceQualification sourceQualification(){return physical.sourceQualification();}
         public ExactRef originalHello(){return physical.originalHello();}
         public ExactRef originalHeartbeat(){return physical.originalHeartbeat();}
@@ -141,6 +145,7 @@ public final class RootReconciliationAuthority {
     }
     private record Scope(ContinuityStorePort.Session session,Lease lease,GuardEvidence observation,String head,Instant deadline) { }
     private enum BasisRole { PUSH_OBSERVATION, PURE_QUERY }
+    @SuppressWarnings("serial")
     private static final class RawUnavailable extends IOException {
         private final List<ExactRef> originals;
         private RawUnavailable(String reason,List<ExactRef> originals){super(reason);this.originals=List.copyOf(originals);}
@@ -185,7 +190,11 @@ public final class RootReconciliationAuthority {
         NativeEffectEvidence.FrameBasis oldBasis=RootGuardEvidence.frameBasis(attempt.guard(),bound);
         ExactRef oldDriver=originalDriver(same,oldBasis);
         ExactRef originalReceipt=bound.receiptReferenceOf(original);
-        return physical.withReconciliationSnapshot(same,deadline,captured->{
+
+        boolean freshRead = original.command().operation().value().equals("save-checkpoint")
+                && original.ack().isPresent() && original.ack().orElseThrow().nativeOk();
+
+        return physical.withReconciliationSnapshot(same,deadline,freshRead,captured->{
             captured.assertCurrent(same);
             if(captured.ordinary().isEmpty()) {
                 captured.assertCurrent(same);
@@ -196,6 +205,17 @@ public final class RootReconciliationAuthority {
             Complete actual=captured.ordinary().orElseThrow();
             require(actual.source().equals(original.command().source())&&actual.sessionId().equals(original.command().sessionId()),
                     "fresh reconciliation data crossed original source or held session");
+
+            ObservationProvenance provenance;
+            if(freshRead) {
+                provenance=freshSaveProvenance(captured,actual,original,attempt,originalReceipt,bound);
+            } else {
+                byte[] packet=captured.fullSnapshot().actual().originalPacket();
+                var wire=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(packet,4,packet.length)));
+                require(!wire.has("read_request_id"),"a received READ snapshot cannot be relabelled as an unsolicited push");
+                provenance=new ObservationProvenance.Push(actual.identity().frame().snapshotId(),
+                        actual.identity().frame().identity().nativeRevision(),actual.originalEvidence());
+            }
             byte[] old=read(same,oldDriver,WriterContracts.MAX_PIN_BYTES);
             byte[] current=read(same,captured.originalDriver(),WriterContracts.MAX_PIN_BYTES);
             var evidence=new ReconciliationIdentity.Evidence(actual.originalEvidence(),captured.originalHello(),captured.originalHeartbeat(),
@@ -210,12 +230,60 @@ public final class RootReconciliationAuthority {
                             new RootGuardEvidence.WriterPoint(same.head().state().sequence(),same.head().digest()));
             pending.verify(same,identity);
             List<AllowedRead> reads=installed(same,original,identity,before,actual,captured.validUntil());
-            var lease=new Lease(this,captured,original,attempt,before,actual,identity,reads);
+            var lease=new Lease(this,captured,original,attempt,before,actual,provenance,identity,reads);
             GuardEvidence observation=observationBinding(lease,same);
             var scope=new Scope(same,lease,observation,same.head().digest(),deadline);active.set(scope);
             try {assertScope(scope,same,deadline);T result=observer.apply(lease);assertScope(scope,same,deadline);return result;}
             finally {active.remove();}
         });
+    }
+
+    private static ObservationProvenance freshSaveProvenance(RootLifecycleAuthority.SnapshotLease captured,Complete actual,
+            ActionReceipt original,ActionState.Attempt attempt,ExactRef originalReceipt,ActionPorts.OutcomeArchive bound)throws IOException {
+        require(original.command().operation().value().equals("save-checkpoint") && !original.settled(),
+                "cold after-ACK observation requires its exact unresolved SAVE primitive");
+        var fresh=captured.freshSnapshot().orElseThrow(()->new IOException("fresh SAVE reconciliation requires actual independent READ custody"));
+        var frame=fresh.originalFrame();var physical=captured.fullSnapshot().actual();
+        require(frame.session().equals(physical.session()) && frame.snapshotId().equals(physical.snapshotId())
+                && frame.nativeRevision().equals(physical.nativeRevision()) && frame.observedAt().equals(physical.observedAt())
+                && Arrays.equals(frame.state().bytes(),physical.state().bytes()) && Arrays.equals(frame.originalPacket(),physical.originalPacket()),
+                "actual READ snapshot differs from the complete qualified physical frame");
+        require(actual.originalEvidence().equals(captured.fullSnapshot().originalEvidence())
+                && actual.identity().frame().snapshotId().equals(frame.snapshotId())
+                && actual.identity().frame().identity().nativeRevision().equals(frame.nativeRevision())
+                && actual.observedAt().equals(frame.observedAt()) && actual.connectionGeneration().equals(frame.session().connectionGeneration()),
+                "actual READ and complete Driver projection crossed original snapshot data");
+        var readAck=fresh.acknowledgement();NativeFreshSnapshotPort.verifyOriginal(readAck,frame,fresh.snapshotReceived());
+        var saveAck=original.ack().orElseThrow(()->new IOException("cold SAVE has no retained positive ACK"));
+        require(saveAck.nativeOk() && saveAck.requestId().equals(attempt.requestId()),"cold SAVE ACK differs from its original Attempt");
+        var originalAckRef=bound.preserve(saveAck);
+        require(saveAck.equals(bound.load(originalAckRef)),"cold SAVE ACK does not retain its exact archived original");
+        var save=saveAck.custody().orElseThrow(()->new IOException("original SAVE ACK has no actual chronology"));
+        save.verify(saveAck,attempt.guard());
+        var decoded=NativeWire.decode(saveAck.originalPacket());
+        require(decoded instanceof NativeWire.CommandResult,"original SAVE ACK is not its original command-result packet");
+        var packet=(NativeWire.CommandResult)decoded;
+        require(packet.nativeOk() && packet.requestId().equals(saveAck.requestId())
+                && Arrays.equals(packet.payload().value(),saveAck.originalFrame().bytes())
+                && packet.result().token().isPresent()==saveAck.originalResultToken().isPresent()
+                && (packet.result().token().isEmpty() || Arrays.equals(packet.result().token().orElseThrow().value(),saveAck.originalResultToken().orElseThrow().bytes())),
+                "original SAVE ACK fields differ from their actual framed bytes");
+        var read=readAck.custody().orElseThrow(()->new IOException("fresh READ has no actual chronology"));
+        require(!read.requestId().equals(save.requestId()),"independent READ reused the original SAVE request ID");
+        if(save.session().equals(read.session()) && save.custodyEpoch().equals(read.custodyEpoch())) {
+            NativeFreshSnapshotPort.verifyAfter(saveAck,fresh);
+        } else {
+            require(save.session().machineId().equals(read.session().machineId())
+                    && save.session().game().equals(read.session().game()) && save.session().sessionId().equals(read.session().sessionId())
+                    && read.session().connectionGeneration().compareTo(save.session().connectionGeneration())>=0,
+                    "cold READ crossed the original machine/Game/session or regressed its connection");
+            require(read.writeEntered().observedAt().isAfter(save.responseReceived().observedAt()),
+                    "cold READ was not actually written after the original SAVE ACK");
+        }
+        var readRef=bound.preserve(readAck);
+        require(readAck.equals(bound.load(readRef)),"fresh READ ACK does not retain its exact archived original");
+        return new ObservationProvenance.FreshSnapshotQuery(readAck.requestId(),readRef,fresh.snapshotReceived(),
+                new ObservationProvenance.ColdAfterAcknowledgement(originalReceipt));
     }
 
     /** Actual physical DATA and the existing physical producer's SEM; this is never an ordinary Ready or reconciliation lease. */

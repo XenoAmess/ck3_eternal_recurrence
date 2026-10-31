@@ -29,6 +29,7 @@ import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
+import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
@@ -56,6 +57,7 @@ public final class RootLifecycleAuthority {
         private final Optional<LifecycleIdentity> terminal;
         private final Optional<LifecycleObservationPort.Snapshot> terminalSnapshot;
         private final Optional<ExactRef> terminalSemantic;
+        private final Optional<NativeFreshSnapshotPort.Received> freshSnapshot;
         private final ExactRef hello,heartbeat,driver,semantic;
         private final SourceQualification sources;
         private final Instant until;
@@ -64,13 +66,15 @@ public final class RootLifecycleAuthority {
         private SnapshotLease(RootLifecycleAuthority owner,DriverObservationAssembler.FullSnapshot full,Known known,
                 DriverObservationFacts facts,Optional<DriverObservationAssembler.Complete> ordinary,Optional<LifecycleIdentity> terminal,
                 Optional<LifecycleObservationPort.Snapshot> terminalSnapshot,Optional<ExactRef> terminalSemantic,
+                Optional<NativeFreshSnapshotPort.Received> freshSnapshot,
                 ExactRef hello,ExactRef heartbeat,ExactRef driver,ExactRef semantic,SourceQualification sources,
                 Instant until,Set<String> capabilities,Supplier<DriverStateSnapshot> canonicalProjection) {
             this.owner=owner;this.full=full;this.known=known;this.facts=facts;this.ordinary=ordinary;this.terminal=terminal;
-            this.terminalSnapshot=terminalSnapshot;this.terminalSemantic=terminalSemantic;this.hello=hello;this.heartbeat=heartbeat;
+            this.terminalSnapshot=terminalSnapshot;this.terminalSemantic=terminalSemantic;this.freshSnapshot=freshSnapshot;this.hello=hello;this.heartbeat=heartbeat;
             this.driver=driver;this.semantic=semantic;this.sources=sources;this.until=until;
             this.capabilities=Set.copyOf(capabilities);this.canonicalProjection=canonicalProjection;
         }
+        public Optional<NativeFreshSnapshotPort.Received> freshSnapshot() { return freshSnapshot; }
         public DriverObservationAssembler.FullSnapshot fullSnapshot() { return full; }
         public Known factsKnown() { return known; }
         public DriverObservationFacts freshFacts() { return facts; }
@@ -138,11 +142,15 @@ public final class RootLifecycleAuthority {
 
     /** No planning input, capability projection, onObserved domain hook, publication or second Native observe. */
     public <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,SnapshotWork<T> work) throws IOException {
-        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,freshness);
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,freshness,false);
     }
     /** Only original UNKNOWN reconciliation gets a longer read-only physical lease. */
     public <T>T withReconciliationSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,SnapshotWork<T> work)throws IOException {
-        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2));
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2),false);
+    }
+    /** Fresh SAVE reconciliation: actual independent read, never replay. */
+    public <T>T withReconciliationSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,boolean freshRead,SnapshotWork<T> work)throws IOException {
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2),freshRead);
     }
     /**
      * Qualifies the exact original already accepted by the same transport's bounded wait. This branch
@@ -162,11 +170,16 @@ public final class RootLifecycleAuthority {
     }
     private <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,
             Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness)throws IOException {
+        return withSnapshot(borrowed,callerDeadline,received,work,effectiveFreshness,false);
+    }
+    private <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,
+            Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness,boolean freshRead)throws IOException {
         Objects.requireNonNull(work);Objects.requireNonNull(effectiveFreshness);
         require(!effectiveFreshness.isZero()&&!effectiveFreshness.isNegative()
                 &&effectiveFreshness.compareTo(Duration.ofMinutes(2))<=0,"bounded physical observation window required");
         Instant deadline=deadline(callerDeadline,effectiveFreshness);Scope existing=active.get();
         if(existing!=null){
+            if(freshRead) throw new IOException("fresh reconciliation read cannot borrow an existing physical scope");
             if(received.isPresent())requireSameReceived(received.orElseThrow(),existing.snapshot().fullSnapshot().actual());
             return borrowed(existing,borrowed,deadline,work);
         }
@@ -174,12 +187,31 @@ public final class RootLifecycleAuthority {
         DriverStateAssembler actualDriver=Objects.requireNonNull(driver.resolve(borrowed),"actual adopted Driver authority is unavailable");
         synchronized(transport) {
             final NativeObservationPort.ObservedFrame actual;
+            final Optional<NativeFreshSnapshotPort.Received> freshResult;
             if(received.isPresent()) {
                 actual=received.orElseThrow();requireSameReceived(actual,transport.currentSnapshot(deadline));
+                freshResult=Optional.empty();
+            }else if(freshRead) {
+                NativeFreshSnapshotPort.Result readResult;
+                try { transport.awaitHello(deadline);transport.verifyHeld(deadline);readResult=transport.readFreshFullState(deadline); }
+                catch(InterruptedException failure){Thread.currentThread().interrupt();var interrupted=new InterruptedIOException("actual fresh reconciliation read interrupted");interrupted.initCause(failure);throw interrupted;}
+                if(readResult instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
+                    var outcome=unavailable.dispatch();
+                    if(outcome instanceof NativeActionPort.Unknown unknown) {
+                        try { readResult=transport.collectFreshFullState(unknown.requestId(),deadline); }
+                        catch(InterruptedException failure){Thread.currentThread().interrupt();var interrupted=new InterruptedIOException("actual fresh reconciliation collection interrupted");interrupted.initCause(failure);throw interrupted;}
+                    }
+                }
+                if(!(readResult instanceof NativeFreshSnapshotPort.Received)) throw new IOException("actual fresh reconciliation read unavailable or failed closed");
+                var receivedResult=(NativeFreshSnapshotPort.Received)readResult;
+                actual=receivedResult.originalFrame();
+                requireSameReceived(actual,transport.currentSnapshot(deadline));
+                freshResult=Optional.of(receivedResult);
             }else {
                 try { transport.awaitHello(deadline);transport.verifyHeld(deadline);actual=transport.observe(deadline,effectiveFreshness); }
                 catch(InterruptedException failure){Thread.currentThread().interrupt();var interrupted=new InterruptedIOException("actual physical snapshot interrupted");interrupted.initCause(failure);throw interrupted;}
                 catch(UncheckedIOException failure){throw failure.getCause();}
+                freshResult=Optional.empty();
             }
             require(actual.session().machineId().equals(source.machineId()),"actual physical Native source machine differs");
             ExactRef packet=preserve(borrowed,actual.originalPacket(),MAX_ORIGINAL);
@@ -235,7 +267,7 @@ public final class RootLifecycleAuthority {
                 }
                 ExactRef semantic=preserve(borrowed,DriverJson.encode(full.semantic()),MAX_ORIGINAL);
                 Instant until=earliest(deadline,actual.observedAt().plus(effectiveFreshness),heartbeat.observedAt().plus(effectiveFreshness));
-                var captured=new SnapshotLease(this,full,known,facts,ordinary,terminal,terminalSnapshot,terminalSemantic,helloRef,heartbeatRef,
+                var captured=new SnapshotLease(this,full,known,facts,ordinary,terminal,terminalSnapshot,terminalSemantic,freshResult,helloRef,heartbeatRef,
                         originalDriver,semantic,qualified,until,Set.copyOf(hello.original().capabilities()),frozen::projection);
                 Scope scope=new Scope(borrowed,captured,head,deadline);
                 require(active.get()==null,"physical callback cannot replace another frozen observation");active.set(scope);

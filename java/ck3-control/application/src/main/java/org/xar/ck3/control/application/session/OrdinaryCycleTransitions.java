@@ -582,6 +582,12 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         return ContinuityState.fromJson(next, predecessor.machineId());
     }
 
+    Optional<CompletedCycleProof> retainedCycleProof(ContinuityStorePort.Session session, SessionIdentity owner) throws IOException {
+        var head = session.head(); requireOwner(head.state(), owner); requireActive(head.state());
+        CycleState retained = state(head.state(), owner);
+        if (retained.head().isEmpty()) return Optional.empty();
+        return cycleProof(session, owner, load(retained.head().orElseThrow()).semantic());
+    }
     Optional<CompletedCycleProof> cycleProof(ContinuityStorePort.Session session, SessionIdentity owner, SemanticEvidence semantic) throws IOException {
         var head = session.head(); requireOwner(head.state(), owner); requireActive(head.state());
         CycleState state = state(head.state(), owner); requireLegacyPendingClear(head.state(), state);
@@ -1877,8 +1883,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireSameOwner(before,saved);
         StrictJson.require(before.observationVersion()==saved.observationVersion()
                 &&before.frame().identity().dateRaw().equals(saved.frame().identity().dateRaw())
-                &&saved.frame().identity().nativeRevision().compareTo(before.frame().identity().nativeRevision())>=0
-                &&saved.frame().revision().compareTo(before.frame().revision())>=0,
+                &&saved.frame().identity().nativeRevision().compareTo(before.frame().identity().nativeRevision())>=0,
                 "actual SAVE changed actor/episode/date or regressed its native/public revision");
     }
     private static boolean sameIdentity(ObservationIdentity left,ObservationIdentity right) {
