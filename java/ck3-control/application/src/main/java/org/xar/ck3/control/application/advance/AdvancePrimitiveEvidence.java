@@ -54,21 +54,22 @@ public final class AdvancePrimitiveEvidence {
             } else if (query.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) {
                 require(child.command().operation().value().equals("resume-map"), "cold after acknowledgement basis requires actual resume-map");
                 var originalReceipt = archive.loadReceipt(cold.originalReceipt());
-                require(originalReceipt.state() instanceof ActionState.Unknown,
+                require(originalReceipt.state() instanceof ActionState.AckReceived || originalReceipt.state() instanceof ActionState.Unknown,
                         "cold after acknowledgement requires unresolved original receipt with attempt and dispatch");
-                var unknown = (ActionState.Unknown) originalReceipt.state();
                 var settled = (ActionState.Settled) child.state();
-                require(unknown.attempt().isPresent() && unknown.dispatch().isPresent() && originalReceipt.sequence() < child.sequence(),
-                        "cold after acknowledgement original attempt/dispatch or sequence differs");
+                var originalAttempt = ActionTransitions.attempt(originalReceipt.state()).orElseThrow();
+                var originalDispatch = ActionTransitions.dispatch(originalReceipt.state()).orElseThrow();
+                require(originalReceipt.sequence() < child.sequence(),
+                        "cold after acknowledgement original sequence differs");
                 require(java.util.Arrays.equals(ActionCodec.encodeCommand(originalReceipt.command()), ActionCodec.encodeCommand(child.command())),
                         "cold after acknowledgement original command differs from settled child");
                 require(originalReceipt.bodySha256().equals(child.bodySha256()), "cold after acknowledgement original body SHA differs from settled child");
-                require(unknown.attempt().orElseThrow().equals(settled.attempt()), "cold after acknowledgement original attempt differs from settled child");
+                require(originalAttempt.equals(settled.attempt()), "cold after acknowledgement original attempt differs from settled child");
                 var originalAck = originalReceipt.ack().orElseThrow();
                 var childAck = child.ack().orElseThrow();
                 require(originalAck.nativeOk() && originalAck.equals(childAck)
-                        && unknown.dispatch().orElseThrow().equals(settled.dispatch()), "cold after acknowledgement original dispatch differs from settled child ACK");
-                require(originalAck.requestId().equals(unknown.attempt().orElseThrow().requestId()), "cold after acknowledgement original ACK must bind its attempt request");
+                        && originalDispatch.equals(settled.dispatch()), "cold after acknowledgement original dispatch differs from settled child ACK");
+                require(originalAck.requestId().equals(originalAttempt.requestId()), "cold after acknowledgement original ACK must bind its attempt request");
             } else {
                 require(false, "fresh snapshot query basis must be live or cold after acknowledgement");
             }
