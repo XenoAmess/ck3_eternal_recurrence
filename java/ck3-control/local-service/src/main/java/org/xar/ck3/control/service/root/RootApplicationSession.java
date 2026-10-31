@@ -1061,6 +1061,17 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
     }
     private void requireOwnedContinuation(CompositeContinuationToken token){
         requireOwner();Objects.requireNonNull(token);requireDeadline(token.deadline());var parent=Objects.requireNonNull(token.originalParent());
+        if (token instanceof org.xar.ck3.control.application.advance.LifeSentinelCancellation) {
+            StrictJson.require(parent.origin() instanceof CommandOrigin.Gameplay
+                    && parent.origin().machineId().equals(identity().machineId()) && parent.origin().game().equals(identity().game())
+                    && parent.sessionId().equals(identity().sessionId()), "Life continuation crossed its owned Game/session");
+            var current = owner.actions().find(parent.actionId()).orElseThrow();
+            StrictJson.require(current.command().equals(parent) && current.state() instanceof ActionState.CompositeUnknown,
+                    "Life continuation requires its exact canonical unresolved parent");
+            resourceCatalog.remainingDomains().life().composite().requireContinuation(parent,
+                    ((ActionState.CompositeUnknown) current.state()).execution(), token);
+            return;
+        }
         StrictJson.require(parent.origin() instanceof CommandOrigin.LifecycleTerminal&&parent.operation().value().equals("continue-as-reconciled-successor")
                 &&parent.origin().machineId().equals(identity().machineId())&&parent.origin().game().equals(identity().game())
                 &&parent.sessionId().equals(identity().sessionId()),"continuation crossed its original terminal Continue parent or owned Game/session");

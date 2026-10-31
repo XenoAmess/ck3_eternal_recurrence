@@ -51,6 +51,22 @@ public final class AdvanceClockArchivedReplay {
                     && ending.provenance().independentOf(read.receipt().requestId()), "clock endpoint predates or aliases the terminal Status read");
         });
     }
+    /** Exact source-owned cancellation replay, separate from a real event/modal timeline boundary. */
+    public void verifyCancelled(ActionCommand parent, CompositeExecution execution, AdvanceObservationPort.Frame starting,
+            AdvanceObservationPort.Frame ending, CompositeControlObservation control, List<ActionReceipt> children, ActionPorts.OutcomeArchive archive) {
+        LifeAdvanceComposite.requireCancelledInitialization(parent, execution, control, children);
+        require(starting.identity().equals(parent.before()), "cancelled initialization lost its actual original starting frame");
+        AdvanceWait.binding(parent, starting, ending);
+        require(AdvancePolicy.truth(ending.semantic(), "paused") && AdvancePolicy.truth(ending.semantic(), "map_ready")
+                && ending.identity().frame().identity().dateRaw().equals(starting.identity().frame().identity().dateRaw()),
+                "cancelled initialization ending is not an independently observed same-date paused map");
+        for (var child : children) primitives.verify(child, archive);
+        var read = control.terminalStatus();
+        org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(read, archive);
+        var query = read.original().custody().orElseThrow(); query.verify(read);
+        require(ending.provenance().independentOf(read.requestId()) && !ending.observedAt().isBefore(query.responseReceived().observedAt()),
+                "cancelled initialization ending predates its separate physical Status query");
+    }
     private void verifyWatch(ActionCommand parent, AdvancePlan plan, AdvanceObservationPort.Frame starting, AdvanceObservationPort.Frame ending,
             List<ActionReceipt> children, ActionPorts.OutcomeArchive archive) {
         var watch = plan.dailyWatch().orElseThrow();
@@ -136,6 +152,7 @@ public final class AdvanceClockArchivedReplay {
         switch (progress) {
             case MODAL_INTERRUPTED -> require(early && modal, "clock modal progress differs from original complete frames");
             case BOUNDARY_INTERRUPTED -> require(early && boundary, "clock early boundary is absent");
+            case INITIALIZATION_CANCELLED -> throw new IllegalArgumentException("initialization cancellation requires its exact source-owned full replay");
             case WALL_TIMEOUT_WITH_DATE_PROGRESS -> require(!zero, "clock timeout has no actual game date progress");
             case POSTCONDITION -> require(!zero && (!early || boundary), "clock completed no original day or horizon/boundary");
         }

@@ -373,8 +373,34 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             session.restoreUnresolvedSameGame(data);
             // The original mutation is read-only here; closing its retained cycle can
             // require a fresh full semantic read and multiple durable ledger commits.
-            var receipt = runOperationPhase(owner.clock,java.time.Duration.ofMinutes(10),phaseDeadline->
+            org.xar.ck3.control.application.action.ActionReceipt receipt = null;
+            if (data.unresolvedActions().size() == 1) {
+                var retainedOriginal = data.unresolvedActions().getFirst();
+                if (org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(retainedOriginal.command().operation().value())) {
+                    receipt = runOperationPhase(owner.clock, java.time.Duration.ofMinutes(10), phaseDeadline -> {
+                        var cancellation = installed.remainingDomains().life().composite().cancellationToken(retainedOriginal, phaseDeadline);
+                        if (cancellation.isEmpty()) return null;
+                        session.continueOriginalComposite(cancellation.orElseThrow());
+                        return session.reconcileUnresolvedOriginal(data, phaseDeadline);
+                    });
+                }
+            }
+            boolean attemptedLifeCancellation = receipt != null;
+            if (receipt == null) receipt = runOperationPhase(owner.clock,java.time.Duration.ofMinutes(10),phaseDeadline->
                     session.reconcileUnresolvedOriginal(data,phaseDeadline));
+            if (receipt != null && !receipt.settled()
+                    && !attemptedLifeCancellation
+                    && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())) {
+                var original = receipt;
+                receipt = runOperationPhase(owner.clock, java.time.Duration.ofMinutes(10), phaseDeadline -> {
+                    var source = installed.remainingDomains().life().composite();
+                    var cancellation = source.cancellationToken(original, phaseDeadline);
+                    if (cancellation.isEmpty()) return original;
+                    session.continueOriginalComposite(cancellation.orElseThrow());
+                    // Consume the real retained settlement through the existing Controller/cycle path; no replay of the parent run.
+                    return session.reconcileUnresolvedOriginal(data, phaseDeadline);
+                });
+            }
             if (receipt == null || !receipt.settled() || session.controllerForPublication().isQuarantined()) {
                 throw new IOException("unresolved same-game action remains isolated; cannot proceed to ordinary loop");
             }

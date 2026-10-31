@@ -17,7 +17,7 @@ import org.xar.ck3.control.reconciliation.LateOutcome.State;
 import org.xar.ck3.control.reconciliation.LateOutcome.Status;
 
 /** The production Java owner of life-advance and life-advance-one-day. Native receives only durable children. */
-public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGameplayBeforeChildren, CompositeActionPort.LifeControlPrefixSource {
+public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGameplayBeforeChildren, CompositeActionPort.LifeControlPrefixSource, CompositeActionPort.OriginalContinuation {
     public static final String HANDLER = "java.native-driver.life-advance.v1";
     private final AdvanceObservationPort observations;
     private final AdvanceReadiness.Port readiness;
@@ -27,9 +27,24 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
     private final ActionPorts.OutcomeArchive archive;
     private final Clock clock;
     private final LifeAdvanceEvidence.EntryFrameReader entryFrames;
+    @FunctionalInterface public interface CancellationReads {
+        CancellationRead read(ActionCommand parent, CompositeExecution execution, List<ActionReceipt> canonicalChildren, Instant deadline);
+    }
+    public record CancellationRead(PlanningReadResult.Known<Status> status, AdvanceObservationPort.Frame ending) {
+        public CancellationRead { Objects.requireNonNull(status); Objects.requireNonNull(ending);
+            require(status.value().equals(ClockStatusRead.decode(status.receipt().original())), "actual physical Status value differs"); }
+    }
+    private final CancellationReads cancellationReads;
     public LifeAdvanceComposite(AdvanceObservationPort observations, AdvanceReadiness.Port readiness, AdvanceClock timeline,
             ClockStatusRead statuses, ActionSnapshotReader actions, ActionPorts.OutcomeArchive archive, Clock clock,
             LifeAdvanceEvidence.EntryFrameReader entryFrames) {
+        this(observations, readiness, timeline, statuses, actions, archive, clock, entryFrames,
+                (parent, execution, children, deadline) -> { throw new IllegalStateException("actual Life cancellation terminal reader is not installed"); });
+    }
+    public LifeAdvanceComposite(AdvanceObservationPort observations, AdvanceReadiness.Port readiness, AdvanceClock timeline,
+            ClockStatusRead statuses, ActionSnapshotReader actions, ActionPorts.OutcomeArchive archive, Clock clock,
+            LifeAdvanceEvidence.EntryFrameReader entryFrames, CancellationReads cancellationReads) {
+        this.cancellationReads = Objects.requireNonNull(cancellationReads);
         this.observations = Objects.requireNonNull(observations); this.readiness = Objects.requireNonNull(readiness);
         this.timeline = Objects.requireNonNull(timeline); this.statuses = Objects.requireNonNull(statuses);
         this.actions = Objects.requireNonNull(actions); this.archive = Objects.requireNonNull(archive); this.clock = Objects.requireNonNull(clock);
@@ -157,6 +172,13 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
             if (!receipt.settled()) return new ActionPorts.Pending("original durable life child is still unresolved; reconciliation only", List.of(retained.guard().nativeEvidence()));
             children.add(receipt);
         }
+        if (children.stream().anyMatch(child -> child.command().operation().value().startsWith(ClockStatusRead.ARM_PREFIX))
+                && children.stream().noneMatch(child -> child.command().operation().value().equals("resume-map"))) {
+            if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))
+                return cancelledInitialization(parent, retained, children, ActionObservationWindow.deadline(parent));
+            return new ActionPorts.Pending("original ARM is independently confirmed; source-issued generation cancellation is required before ordinary play",
+                    List.of(retained.guard().nativeEvidence()));
+        }
         AdvanceClockArchivedReplay.verifyChildBindings(parent, children);
         AdvancePlan plan = AdvancePlan.decode(parent);
         if (children.size() <= 2 && children.stream().allMatch(child ->
@@ -230,6 +252,149 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         ExactRef basis = LifeAdvanceEvidence.preserve(parent, starting, current, progress, terminal, children, Optional.empty(), archive);
         return completed(parent, plan, current, progress, null, terminal, children, List.of(basis));
     }
+    /** Issues only from the canonical independently confirmed, never-resumed original ARM prefix. */
+    public Optional<LifeSentinelCancellation> cancellationToken(ActionReceipt original, Instant deadline) {
+        if (!(original.state() instanceof ActionState.CompositeUnknown unknown)) return Optional.empty();
+        ActionReceipt current = actions.find(original.command().actionId()).orElseThrow();
+        require(current.equals(original), "Life cancellation issuer needs its actual canonical parent");
+        var parent = original.command(); var retained = unknown.execution();
+        List<ActionReceipt> prefix = canonicalChildren(retained);
+        var plan = AdvancePlan.decode(parent);
+        if (plan.clockMode() == AdvancePlan.ClockMode.POLLED || prefix.isEmpty()
+                || !prefix.getLast().command().operation().value().equals(plan.armStep())) return Optional.empty();
+        if (prefix.stream().anyMatch(child -> !child.settled()) || prefix.stream().anyMatch(child ->
+                child.command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)
+                || child.command().operation().value().equals("resume-map"))) return Optional.empty();
+        ActionReceipt arm = LifeSentinelCancellationProof.prefix(parent, retained, prefix, false);
+        var armState = (ActionState.Settled) arm.state();
+        PlanningReadReceipt read = ((ActionState.ControlApplied) armState.settlement()).read();
+        if (!clock.instant().isBefore(deadline)) return Optional.empty();
+        // The new cancellation uses a real fresh read and its own deadline, not a renewed historical query qualification.
+        CancellationRead refreshed = cancellationReads.read(parent, retained, prefix, deadline);
+        var beforeCancel = refreshed.ending();
+        requireCancellationFrame(parent, beforeCancel);
+        var status = LifeSentinelCancellationProof.confirmedArm(parent, arm);
+        require(refreshed.status().value().equals(status), "fresh independent Status no longer confirms the original ARM slot");
+        var custody = LifeSentinelCancellationProof.physical(parent, refreshed.status().receipt());
+        require(!beforeCancel.observedAt().isBefore(custody.responseReceived().observedAt()),
+                "Life cancellation starting frame predates its fresh independent ARM Status");
+        return Optional.of(new LifeSentinelCancellation(this, parent, retained, refreshed.status().receipt(), beforeCancel,
+                new BigInteger(status.generation().decimal()), deadline));
+    }
+
+    private List<ActionReceipt> canonicalChildren(CompositeExecution retained) {
+        var result = new ArrayList<ActionReceipt>();
+        for (var bound : retained.children()) {
+            ActionReceipt child = actions.find(bound.actionId()).orElseThrow();
+            require(child.bodySha256().equals(bound.bodySha256()), "Life cancellation child body differs from canonical history");
+            result.add(child);
+        }
+        return List.copyOf(result);
+    }
+
+    private static void requireCancellationFrame(ActionCommand parent, AdvanceObservationPort.Frame frame) {
+        LifeSentinelCancellationProof.sameFrame(parent, frame.identity());
+        require(frame.source().equals(parent.source()) && frame.sessionId().equals(parent.sessionId())
+                && AdvancePolicy.truth(frame.semantic(), "paused") && AdvancePolicy.truth(frame.semantic(), "map_ready"),
+                "Life cancellation requires the actual same-date paused-map source frame");
+    }
+
+    @Override public void requireContinuation(ActionCommand parent, CompositeExecution retained, CompositeContinuationToken token) {
+        require(token instanceof LifeSentinelCancellation, "this Life source issues only sentinel cancellation continuation");
+        LifeSentinelCancellation cancellation = (LifeSentinelCancellation) token;
+        require(cancellation.issuedBy(this) && cancellation.originalParent().equals(parent), "Life cancellation token has another issuer or parent");
+        var original = cancellation.originalExecution();
+        require(retained.handlerId().equals(original.handlerId()) && retained.startedAt().equals(original.startedAt())
+                && retained.guard().equals(original.guard()) && retained.children().size() >= original.children().size()
+                && retained.children().size() <= original.children().size() + 1
+                && retained.children().subList(0, original.children().size()).equals(original.children()),
+                "Life cancellation changed its original durable prefix");
+        var prefix = canonicalChildren(original);
+        ActionReceipt arm = LifeSentinelCancellationProof.prefix(parent, original, prefix, false);
+        var armState = (ActionState.Settled) arm.state();
+        require(ClockStatusRead.decode(cancellation.armedRead().original()).equals(LifeSentinelCancellationProof.confirmedArm(parent, arm))
+                && cancellation.generation().equals(new BigInteger(LifeSentinelCancellationProof.confirmedArm(parent, arm).generation().decimal()))
+                && !cancellation.deadline().isAfter(cancellation.armedRead().request().deadline()),
+                "Life cancellation lost its exact independently confirmed ARM generation");
+        var custody = LifeSentinelCancellationProof.physical(parent, cancellation.armedRead());
+        require(!cancellation.beforeCancel().observedAt().isBefore(custody.responseReceived().observedAt()),
+                "Life cancellation token has no real fresh after-Status paused frame");
+        requireCancellationFrame(parent, cancellation.beforeCancel());
+        if (retained.children().size() > original.children().size()) {
+            var reserved = retained.children().getLast();
+            ActionCommand exact = cancellationChild(parent, cancellation, reserved.actionId());
+            require(reserved.actionId().equals(ActionIds.child(parent.actionId(), retained.children().size(), exact.operation()))
+                    && reserved.bodySha256().equals(ActionCodec.bodySha256(exact)),
+                    "Life cancellation reservation is not its one exact source-issued child");
+        }
+    }
+
+    private static ActionCommand cancellationChild(ActionCommand parent, LifeSentinelCancellation token, String actionId) {
+        var step = new OperationKey(ClockStatusRead.CANCEL_PREFIX + token.generation());
+        var frame = token.beforeCancel();
+        var arguments = new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of());
+        // This is a new, source-qualified control child with a new operation deadline; the historical parent is immutable.
+        return new ActionCommand(actionId, frame.identity(), parent.source(), parent.sessionId(), step, arguments,
+                AdvancePrimitives.expected(frame.identity(), parent.source(), step, arguments), parent.claims(), token.deadline());
+    }
+
+    @Override public void requireContinuationChild(ActionCommand parent, CompositeExecution retained,
+            CompositeContinuationToken token, ActionCommand child) {
+        requireContinuation(parent, retained, token);
+        var cancellation = (LifeSentinelCancellation) token;
+        require(retained.children().size() == cancellation.originalExecution().children().size()
+                && child.actionId().equals(ActionIds.child(parent.actionId(), retained.children().size() + 1, child.operation()))
+                && child.equals(cancellationChild(parent, cancellation, child.actionId())),
+                "Life continuation permits only its one exact original-generation CANCEL");
+    }
+
+    @Override public ActionPorts.PostconditionResult continueOriginal(ActionCommand parent, CompositeExecution retained,
+            CompositeContinuationToken token, Children children) {
+        requireContinuation(parent, retained, token);
+        var cancellation = (LifeSentinelCancellation) token;
+        require(clock.instant().isBefore(cancellation.deadline()), "Life cancellation operation deadline expired");
+        require(retained.children().size() == cancellation.originalExecution().children().size(),
+                "an already reserved cancellation is reconciliation-only and cannot be submitted again");
+        ActionCommand command = cancellationChild(parent, cancellation,
+                children.nextActionId(new OperationKey(ClockStatusRead.CANCEL_PREFIX + cancellation.generation())));
+        ActionReceipt canceled = children.submit(command);
+        if (!canceled.settled() || canceled.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED)
+            return new ActionPorts.Pending("original generation cancellation is unresolved; no retry or resume", List.of(retained.guard().nativeEvidence()));
+        return cancelledInitialization(parent, new CompositeExecution(retained.handlerId(), retained.startedAt(), retained.guard(),
+                children.completed().stream().map(child -> new CompositeExecution.Child(child.command().actionId(), child.bodySha256())).toList()),
+                children.completed(), cancellation.deadline());
+    }
+
+    private ActionPorts.PostconditionResult cancelledInitialization(ActionCommand parent, CompositeExecution retained,
+            List<ActionReceipt> children, Instant deadline) {
+        LifeSentinelCancellationProof.prefix(parent, retained, children, true);
+        // Actual fixed physical Status has no ordinary Driver/Ready or action permission.
+        CancellationRead terminal = cancellationReads.read(parent, retained, children, deadline);
+        var ending = terminal.ending();
+        requireCancellationFrame(parent, ending);
+        var plan = AdvancePlan.decode(parent);
+        var starting = entryFrames.read(parent, retained.guard(), archive).orElseThrow();
+        ExactRef basis = LifeAdvanceEvidence.preserveCancelled(parent, starting, ending, terminal.status().receipt(), children, archive);
+        var semantic = observation(parent, plan, ending, AdvanceClock.ProgressStatus.INITIALIZATION_CANCELLED, null, List.of(basis));
+        var canceled = (ActionState.ControlApplied) ((ActionState.Settled) children.getLast().state()).settlement();
+        var control = new CompositeControlObservation(terminal.status().receipt(), List.of(canceled.read()), semantic);
+        requireCancelledInitialization(parent, retained, control, children);
+        return new ActionPorts.CompositeControlObserved(control);
+    }
+
+    /** Pure canonical DATA proof shared by the source's physical read callback and its archive replay. */
+    public static void requireCancelledInitializationPrefix(ActionCommand parent, CompositeExecution execution, List<ActionReceipt> canonicalChildren) {
+        LifeSentinelCancellationProof.prefix(parent, execution, canonicalChildren, true);
+    }
+    public static void requireArmedInitializationPrefix(ActionCommand parent, CompositeExecution execution, List<ActionReceipt> canonicalChildren) {
+        LifeSentinelCancellationProof.prefix(parent, execution, canonicalChildren, false);
+    }
+    /** The installed archive verifier separately rebuilds the complete paused ending frame. */
+    public static void requireCancelledInitialization(ActionCommand parent, CompositeExecution execution,
+            CompositeControlObservation control, List<ActionReceipt> canonicalChildren) {
+        LifeSentinelCancellationProof.terminal(parent, execution, control, canonicalChildren);
+    }
+
     @Override public void requireControlPrefixInterruption(ActionCommand parent, CompositeExecution retained,
             LifeControlPrefixInterruption observation, List<ActionReceipt> canonicalChildren) {
         observation.validateParent(parent, retained);

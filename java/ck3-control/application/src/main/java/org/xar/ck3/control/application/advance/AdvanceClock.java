@@ -23,7 +23,7 @@ import org.xar.ck3.control.wave3.runtime.timelineowner.TimelineOwnerCodec;
 
 /** One native clock slice inside the original composite's durable Children transaction. No loop/backend/pipe/writer. */
 public final class AdvanceClock {
-    public enum ProgressStatus { POSTCONDITION, MODAL_INTERRUPTED, BOUNDARY_INTERRUPTED, WALL_TIMEOUT_WITH_DATE_PROGRESS }
+    public enum ProgressStatus { POSTCONDITION, MODAL_INTERRUPTED, BOUNDARY_INTERRUPTED, WALL_TIMEOUT_WITH_DATE_PROGRESS, INITIALIZATION_CANCELLED }
     public record Diagnostics(BigInteger startingDateRaw, BigInteger endingDateRaw, int elapsedDays,
             int requestedHorizonDays, int timelineSpeed, String timelinePolicy, ProgressStatus progressStatus,
             Optional<Status> armed, Optional<Status> stopped, boolean canceled,

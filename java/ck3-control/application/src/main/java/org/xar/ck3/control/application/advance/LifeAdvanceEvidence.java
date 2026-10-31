@@ -60,6 +60,16 @@ public final class LifeAdvanceEvidence {
     public static ExactRef preserve(ActionCommand parent, AdvanceObservationPort.Frame starting,
             AdvanceObservationPort.Frame ending, AdvanceClock.ProgressStatus progress, Optional<ClockStatusRead.Observation> clockRead,
             List<ActionReceipt> children, Optional<ExactRef> compatibleResult, ActionPorts.OutcomeArchive archive) {
+        return preserveRead(parent, starting, ending, progress, clockRead.map(ClockStatusRead.Observation::receipt), children, compatibleResult, archive);
+    }
+    public static ExactRef preserveCancelled(ActionCommand parent, AdvanceObservationPort.Frame starting,
+            AdvanceObservationPort.Frame ending, PlanningReadReceipt terminal, List<ActionReceipt> children, ActionPorts.OutcomeArchive archive) {
+        return preserveRead(parent, starting, ending, AdvanceClock.ProgressStatus.INITIALIZATION_CANCELLED,
+                Optional.of(terminal), children, Optional.empty(), archive);
+    }
+    private static ExactRef preserveRead(ActionCommand parent, AdvanceObservationPort.Frame starting,
+            AdvanceObservationPort.Frame ending, AdvanceClock.ProgressStatus progress, Optional<PlanningReadReceipt> clockRead,
+            List<ActionReceipt> children, Optional<ExactRef> compatibleResult, ActionPorts.OutcomeArchive archive) {
         require(starting.identity().equals(parent.before()), "advance evidence did not retain the actual immutable entry frame");
         List<Value> receipts = new ArrayList<>();
         for (ActionReceipt child : children) {
@@ -69,7 +79,7 @@ public final class LifeAdvanceEvidence {
         Obj body = new Obj(Map.of("schema", new Text(SCHEMA), "action_body_sha256", new Text(ActionCodec.bodySha256(parent)),
                 "starting", frame(preserveFrame(starting, archive)), "ending", frame(preserveFrame(ending, archive)),
                 "progress_status", new Text(progress.name()),
-                "clock_read", clockRead.<Value>map(value -> ref(archive.preserveRead(value.receipt()))).orElse(Nil.INSTANCE),
+                "clock_read", clockRead.<Value>map(value -> ref(archive.preserveRead(value))).orElse(Nil.INSTANCE),
                 "children", new Arr(receipts), "compatible_result", compatibleResult.<Value>map(LifeAdvanceEvidence::ref).orElse(Nil.INSTANCE)));
         return archive.preserveMaterial(new RawJson(DriverJson.encode(body)));
     }
@@ -153,6 +163,18 @@ public final class LifeAdvanceEvidence {
         AdvanceClock.ProgressStatus progress = AdvanceClock.ProgressStatus.valueOf(text(body.get("progress_status"), "progress_status"));
         Optional<PlanningReadReceipt> clockRead = body.get("clock_read") == Nil.INSTANCE ? Optional.empty()
                 : Optional.of(archive.loadRead(exactRef(body.get("clock_read"))));
+        if (progress == AdvanceClock.ProgressStatus.INITIALIZATION_CANCELLED) {
+            require(body.get("compatible_result") == Nil.INSTANCE && receipt.state() instanceof ActionState.CompositeSettled settled
+                    && settled.settlement() instanceof ActionState.CompositeControlApplied,
+                    "cancelled initialization has no gameplay-compatible result or ordinary applied settlement");
+            var control = ((ActionState.CompositeControlApplied) ((ActionState.CompositeSettled) receipt.state()).settlement()).observation();
+            require(clockRead.filter(control.terminalStatus()::equals).isPresent(), "cancelled initialization terminal read differs from its archived basis");
+            LifeAdvanceComposite.requireCancelledInitialization(parent, execution, control, children);
+            timeline.verifyCancelled(parent, execution, starting, ending, control, children, archive);
+            var rebuilt = LifeAdvanceComposite.observation(parent, plan, ending, progress, null, List.of(basisRef));
+            require(rebuilt.equals(effect), "cancelled initialization semantic ending differs from its complete original basis");
+            return new Recorded(startingRecord, endingRecord, Optional.empty());
+        }
         Optional<ClockStatusRead.Observation> archivedClock = clockRead.map(value -> new ClockStatusRead.Observation(
                 ClockStatusRead.decode(value.original()), value, archive.referenceOf(value.original())));
         timeline.verify(parent, plan, starting, ending, progress, archivedClock, children, archive);

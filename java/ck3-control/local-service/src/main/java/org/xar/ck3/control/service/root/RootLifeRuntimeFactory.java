@@ -11,6 +11,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.advance.ClockStatusRead;
+import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
+import org.xar.ck3.control.reconciliation.LateOutcome.Status;
+import java.time.Instant;
 import org.xar.ck3.control.application.action.OperationKey;
 import org.xar.ck3.control.application.action.ReadContract;
 import org.xar.ck3.control.application.action.RootExecutableBindings;
@@ -101,7 +106,7 @@ public final class RootLifeRuntimeFactory {
             infrastructure=clockInfrastructure.install(context,scopedReadiness,pendingUiScope);
             replay=new LifeAdvanceRootReplay(context.frameLoader());
             composite=new LifeAdvanceComposite(infrastructure.observations(),scopedReadiness,infrastructure.timeline(),
-                    infrastructure.statuses(),context.core().actions(),context.archive(),context.clock(),replay);
+                    infrastructure.statuses(),context.core().actions(),context.archive(),context.clock(),replay,this::readCancellationStatus);
             commands=new LifeAdvanceCommands(composite,pendingUiScope);
             var binding=new RootExecutableBindings.CompositeBinding(composite,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,
                     Optional.empty(),sources.compositeImplementation(),sources.resultDecoder());
@@ -109,6 +114,62 @@ public final class RootLifeRuntimeFactory {
                     replay.binding(new OperationKey("life-advance-one-day"),sources.archivedVerifier()));
             installation=new RootDomainInstallation("shared-actual-life-advance",List.of(),List.of(),List.of(),List.of(),
                     List.of(binding),archived,List.of(),List.of(),List.of(),List.of(),Set.of(),List.of(),List.of(),List.of(),List.of(),List.of());
+        }
+        /** One genuine fixed physical Status read; its scope never grants ordinary Driver readiness or submission. */
+        private LifeAdvanceComposite.CancellationRead readCancellationStatus(ActionCommand parent, CompositeExecution execution,
+                List<ActionReceipt> proposedChildren, Instant deadline) {
+            try {
+                return context.withSession(same -> {
+                    var originalArchive = context.archive().withSession(same);
+                    var heldHead = same.head();
+                    var actual = ContinuityActionJournal.lookup(heldHead.state(), parent.actionId(), originalArchive).orElseThrow();
+                    require(actual.command().equals(parent) && actual.state() instanceof ActionState.CompositeUnknown unknown
+                            && unknown.execution().equals(execution), "Life physical Status changed its canonical unresolved parent");
+                    var children = execution.children().stream().map(bound -> {
+                        var child = ContinuityActionJournal.lookup(heldHead.state(), bound.actionId(), originalArchive).orElseThrow();
+                        require(child.bodySha256().equals(bound.bodySha256()), "Life physical Status child body differs from canonical history");
+                        return child;
+                    }).toList();
+                    require(children.equals(proposedChildren), "Life physical Status borrowed another child prefix");
+                    if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))
+                        LifeAdvanceComposite.requireCancelledInitializationPrefix(parent, execution, children);
+                    else LifeAdvanceComposite.requireArmedInitializationPrefix(parent, execution, children);
+                    var profile = infrastructure.physicalStatuses();
+                    RootUnknownSentinelReadProfile.requireInstalled(profile, infrastructure.statuses());
+                    PhysicalStatusIdentity.requireProfile(profile);
+                    PlanningReadResult.Known<Status> status = context.physicalStatusReads().withObserved(same, deadline, lease -> {
+                        var request = PlanningReadRequest.newStatusOnly(lease.identity(), profile.operation(),
+                                new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(Map.of()), deadline);
+                        var result = context.reads().read(same, profile, request);
+                        if (!(result instanceof PlanningReadResult.Known<Status> known))
+                            throw new IOException("Life physical Status unavailable: " + ((PlanningReadResult.Unavailable<Status>) result).reason());
+                        require(known.receipt().request().equals(request) && known.receipt().contractId().equals(profile.contractId())
+                                && known.value().equals(ClockStatusRead.decode(known.receipt().original())),
+                                "Life physical Status returned another request or decoded value");
+                        return known;
+                    });
+                    // Exit physical-only custody, then use the existing genuine fresh full-state READ producer.
+                    context.adopted().authority().requireOutsideObservationScope(same);
+                    NativeFreshSnapshotPort.Result fresh;
+                    try { fresh = context.transport().readFreshFullState(deadline); }
+                    catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        var failure = new java.io.InterruptedIOException("Life cancellation fresh after-Status read interrupted; no replay");
+                        failure.initCause(interrupted); throw failure;
+                    }
+                    if (fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
+                        String reason = unavailable.reason();
+                        throw new IOException("Life cancellation fresh after-Status read unavailable: " + reason.substring(0, Math.min(512, reason.length())));
+                    }
+                    var received = (NativeFreshSnapshotPort.Received) fresh;
+                    NativeFreshSnapshotPort.verifyAfter(status.receipt().original(), received);
+                    var ending = LifeAdvanceRootReplay.push(context.adopted().observations().project(received.originalFrame(), deadline));
+                    var custody = status.receipt().original().custody().orElseThrow(); custody.verify(status.receipt());
+                    require(!ending.observedAt().isBefore(custody.responseReceived().observedAt()),
+                            "Life cancellation has no fresh complete semantic frame after its actual physical Status");
+                    return new LifeAdvanceComposite.CancellationRead(status, ending);
+                });
+            } catch (IOException failure) { throw new UncheckedIOException("actual source-owned Life physical Status unavailable", failure); }
         }
         private ContinuityStorePort.Session borrowedSession() {
             try {return context.borrowedSession();}

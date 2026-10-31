@@ -585,7 +585,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if (!(receipt.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown unknown)
                 || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())
                 || !unknown.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
-                || unknown.execution().children().size() > 3) return false;
+                || unknown.execution().children().size() > 4) return false;
         var command = receipt.command();
         var guard = unknown.execution().guard();
         return command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
@@ -610,7 +610,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var children = new java.util.ArrayList<ActionReceipt>();
             var admitted = new java.util.HashSet<String>();
             admitted.add(parent.command().actionId());
-            boolean pause = false, speed = false, arm = false;
+            boolean pause = false, speed = false, arm = false, cancel = false;
             for (var binding : execution.children()) {
                 StrictJson.require(admitted.add(binding.actionId()), "duplicate or recursive Life child");
                 var matches = canonicalActions.stream().filter(action -> action.command().actionId().equals(binding.actionId())).toList();
@@ -624,15 +624,31 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         "read-only Life prefix retains its actual primitive child");
                 String operation = child.command().operation().value();
                 if (operation.equals("pause-map")) {
-                    StrictJson.require(!pause && !speed && !arm, "Life initialization pause order differs");
+                    StrictJson.require(!pause && !speed && !arm && !cancel, "Life initialization pause order differs");
                     pause = true;
                 } else if (operation.startsWith("set-speed-")) {
-                    StrictJson.require(!speed && !arm && operation.equals("set-speed-" + plan.speed()), "only the original finite Life control prefix can reconcile");
+                    StrictJson.require(!speed && !arm && !cancel && operation.equals("set-speed-" + plan.speed()), "only the original finite Life control prefix can reconcile");
                     speed = true;
-                } else {
-                    StrictJson.require(!arm && plan.clockMode() != org.xar.ck3.control.application.advance.AdvancePlan.ClockMode.POLLED
-                            && operation.equals(plan.armStep()), "only the original finite Life control prefix can reconcile");
+                } else if (operation.equals(plan.armStep())) {
+                    StrictJson.require(!arm && !cancel && plan.clockMode() != org.xar.ck3.control.application.advance.AdvancePlan.ClockMode.POLLED, "only the original finite Life control prefix can reconcile");
                     arm = true;
+                } else if (operation.startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX)) {
+                    StrictJson.require(arm && !cancel, "Life cancellation requires its prior ARM");
+                    // Validate the prefix (pause/speed/arm) is fully settled and canonical before accepting CANCEL
+                    var prefixExecution = new org.xar.ck3.control.application.action.CompositeExecution(
+                            execution.handlerId(), execution.startedAt(), execution.guard(),
+                            execution.children().subList(0, children.size()));
+                    org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireArmedInitializationPrefix(
+                            parent.command(), prefixExecution, children);
+                    // Derive expected generation from the confirmed ARM
+                    var armReceipt = children.getLast();
+                    var armAck = org.xar.ck3.control.application.advance.AdvancePrimitives.acknowledgedSentinel(
+                            armReceipt.ack().orElseThrow(), plan.armStep());
+                    var expectedCancelOp = org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX + armAck.generation().decimal();
+                    StrictJson.require(operation.equals(expectedCancelOp), "Life cancellation targets another native generation");
+                    cancel = true;
+                } else {
+                    StrictJson.require(false, "only the original finite Life control prefix can reconcile");
                 }
                 children.add(child);
             }
@@ -644,7 +660,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         && child.bodySha256().equals(org.xar.ck3.control.application.action.ActionCodec.bodySha256(command))
                         && command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
                         && command.source().equals(original.source()) && command.sessionId().equals(original.sessionId())
-                        && command.claims().equals(original.claims()) && !command.deadline().isAfter(original.deadline())
+                        && command.claims().equals(original.claims()) && (!command.deadline().isAfter(original.deadline())
+                            || cancel && child == children.getLast()
+                                && command.operation().value().startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX))
                         && command.before().game().equals(original.before().game())
                         && command.before().machineId().equals(original.before().machineId())
                         && command.before().frame().episodeRunId().equals(original.before().frame().episodeRunId())
