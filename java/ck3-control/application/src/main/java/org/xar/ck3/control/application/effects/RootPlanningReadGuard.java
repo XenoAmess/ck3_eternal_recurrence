@@ -56,6 +56,15 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
     }
     private static boolean isOriginalScopedRead(ReadContract<?> contract) {
         if(isCouncilRead(contract))return true;
+        if(contract.contractId().equals("governance.crown-final-terms-v2") && contract.operation().value().equals("query-realm-law-final-terms-v1-private")) {
+            StrictJson.require(contract.permissionKey().equals("governance.crown-final-terms-clock-v1")
+                    &&contract.permissionMode()==ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE
+                    &&contract.guardMode()==ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP
+                    &&contract.wireProfile()==ReadContract.WireProfile.EXECUTE_STEP
+                    &&contract.requiredCapability().isEmpty()&&contract.hasPureReplay(),
+                    "Crown final-terms original-read scope differs from its exact installed typed profile");
+            return true;
+        }
         if(!contract.contractId().equals("family:marriage-send-outgoing:action_preparation/v2")
                 ||!contract.operation().value().equals("query-family-marriage-send-outgoing-v1-private"))return false;
         StrictJson.require(contract.permissionKey().equals("allow_private_family_marriage_send_outgoing_query")

@@ -81,4 +81,14 @@ final class NativeCrownFinalTermsReadTest {
         assertThrows(IllegalArgumentException.class,()->definition.consume(original));
         assertArrayEquals(observed.completeConsume().bytes(),definition.consumeTerms(original).completeConsume().bytes());
     }
+    @Test void crownFinalTermsContractHasPureReplayAndMatchesDecode() throws Exception {
+        var definition = definition();
+        var receipt = receipt(definition, payload());
+        assertTrue(definition.contract().hasPureReplay(), "Crown final-terms contract must have pure replay");
+        var decoded = definition.contract().decode(receipt);
+        var replayed = definition.contract().replay(receipt);
+        assertEquals(decoded.readback(), replayed.readback());
+        assertArrayEquals(decoded.completeConsume().bytes(), replayed.completeConsume().bytes());
+        assertEquals(decoded.clock(), replayed.clock());
+    }
 }

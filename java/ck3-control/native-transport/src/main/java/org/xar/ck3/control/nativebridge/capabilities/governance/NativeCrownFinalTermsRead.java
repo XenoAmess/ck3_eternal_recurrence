@@ -29,10 +29,10 @@ public final class NativeCrownFinalTermsRead {
         CouncilCodec.requireBuild(exactVersion, exactSha256); version = exactVersion; sha256 = exactSha256;
         contract = new ReadContract<>("governance.crown-final-terms-v2", new OperationKey(CrownFinalTerms.STEP), Optional.empty(),
                 "governance.crown-final-terms-clock-v1", ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE, ReadContract.WireProfile.EXECUTE_STEP,
-                actualNativeSource, request -> {
+                ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP, actualNativeSource, (request, requestId) -> {
                     StrictJson.require(request.arguments().members().isEmpty(), "actual Crown final-terms wire has no domain arguments");
                     return new NativeRequest(CrownFinalTerms.STEP, Optional.empty(), new RawJson(new byte[] {'{', '}'}));
-                }, this::consumeTerms);
+                }, this::consumeTerms, this::consumeTerms);
     }
     public ReadContract<Terms> contract() { return contract; }
     /** Reuse the same actual original read for retry publication; never mint another query or partial law payload. */
