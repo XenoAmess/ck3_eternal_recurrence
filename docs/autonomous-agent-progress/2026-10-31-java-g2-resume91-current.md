@@ -1,12 +1,20 @@
 # Java / G2 resume91 当前执行记录
 
+## 2026-10-31 23:31 UTC：24日周期已结算，同局继续自然保存
+
+后到原件554于23:18:34.299388200Z执行RETAIN，current_cycle_pending指向原552的9088B回执（SHA256 `6288420cb5a7f50c60c32f3b57fd932db54341a54fdbb579abe1345184d22214`）。552/553当刻的pending=null只覆盖那两个事件，不能据此前快照把Main204终态的待结算项清空。555于23:30:53.872017800Z真实SETTLE/ELIGIBLE_ADVANCE，ordinary_cycle_state.completed_cycles从5变6、pending_receipt=null；对应SEM元数据帧native401/public330/date_raw53144904。旧window.last_settled_cycles=5/date53144712另列保留；已确认SAVE仍是528的16日，没有据本次周期结算授24日已保存。
+
+Main206仅将成熟Assembler206与watch205两叶自然合并增编，MB23:27:20.549212–23:27:27.996582Z exit0/7.447376秒，app1/local1；没有MB205或worker205。worker158484于23:27:34.632720Z启动、23:30:55.9029357Z真实进入普通LOOP/next69；556于23:30:58.519479300Z记录BATCH_STARTED69。运行岗23:31:22.086903Z薄读确认后立即释放研究HOLD，同一原版Game71464继续自然SAVE；没有为后台风险修复、新Test、性能或正式发表停止健康worker，也不重放550/552或gen6动作。
+
+具名event554为98797B/SHA256 `1c507c0d8ad50e2d5c714848626663ec9e1d1670e5034e49b408fcd8c75e3258`，555为102439B/`7520c8e03a052e7e02e8d47bf097a67d368ec88fdc6d22be3c3c93f924bd425e`，556为98308B/`3cf3979ad83619b1ff29a0c1b8a4067abd0fe76004265ad41a736dca9226ed72`。Native只读这些既有事件及现成ACTUAL-END202-204.json，证据为 D:/ck3-state/resume91-native-integration/milestone550-tail204-publication/EVENTS554-556-LATER-READBACK.json；未读取所引用Driver/SEM大体或新增Game查询。此前82e4文档将pending=null写得过宽，经Java交付岗指出后，本次明确限定552/553时点并补上554→555，不回写原运行回执。
+
 ## 2026-10-31 23:18 UTC：累计24日已观察、父动作已结算，已确认保存仍16日
 
 同一原版无模组 Game71464（出生 FILETIME134378397668266369）继续保留。原 resume 子项550于23:09:25.618825Z真实 SETTLED/APPLIED；其原生 Push 后态为 native394/public326、date_raw53144904（1066-10-09），从本局原53144328累计实际观察到24个游戏日。551于23:09:50.898934200Z记录父 COMPOSITE_UNKNOWN，是该时点的历史状态，不改写成当时已结算。
 
 后继 Main204 仅增编成熟 AckReceived 兼容生产叶，MB23:13:29.850393–23:13:34.708829Z exit0/4.858439秒；worker177060于23:13:40.074887Z启动。552于23:17:22.760799Z真实 COMPOSITE_SETTLED/APPLIED，独立 fresh_snapshot_query / same_game_watch 后态为 native398、同一日期53144904；553于23:18:00.986796100Z发布该原552的 ACTION 历史。550的Push与552的只读观察分别保留，没有把READ改标Push。旧watch父549早于新child550；父551大于550时原序号条件自然合法，未改历史角色，也没有重放gen6 ARM/resume。
 
-这次父结算尚未形成新的周期或SAVE：552、553的 completed_cycles仍为5、pending=null，last_settled_date_raw仍53144712；已确认保存仍是下段528所证的16日。24日观察、父动作结算与24日已保存是三项不同事实，本段不授后者。553中before_driver与after_driver元数据同SHA，版本162→163；这里只核事件与小回执，没有读取5,345,432B的Driver大体，也不据该元数据变化推断新游戏动作。
+在552、553当刻，completed_cycles为5、pending=null、last_settled_date_raw为53144712；后到554已于23:18:34.299388200Z RETAIN552，其current pending指向该9088B回执。已确认保存仍是下段528所证的16日。24日观察、父动作结算与24日已保存是三项不同事实，本段不授后者。553中before_driver与after_driver元数据同SHA，版本162→163；这里只核事件与小回执，没有读取5,345,432B的Driver大体，也不据该元数据变化推断新游戏动作。
 
 独立有界证据包括550 event98770B/SHA256 `5e98d42fdbad86779b27bb3fad32b847eb82b8668ef424b9feece2ea6bc74277`、551 event98774B/`0a5d1fcf8ebdaeda9cb5d6b0479645583d296a38fe758b29337407fedf2dc065`、552 event98771B/`a44be39a7ddf18702e1615031ae489c4441f494b953af05cfb484e73e42698c8`、553 event99695B/`c21ca92007c38065f8afb6455d1823cd69df9bc45b779e8e9d17943f7e41e346`，原路径均为 continuity/ROOT-CONTINUITY-WINDOW-EVENTS/ 对应八位序号json。550的6877B action回执SHA `0f83b3ff07ac7cc978fac8f8ee0aecf32f40cff7a96f215a329590d02dd0edeb`，552的9088B回执SHA `6288420cb5a7f50c60c32f3b57fd932db54341a54fdbb579abe1345184d22214`；具名事件、540B链记录及小回执核验保存在 D:/ck3-state/resume91-native-integration/milestone550-tail204-publication/FOUR-EVENTS-RECEIPTS-READBACK.json。没有新增Game探测、读取save/Driver/SEM大体或运行测试。
 
