@@ -13,6 +13,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.Clock;
 import java.util.Optional;
 import org.xar.ck3.control.application.session.BatchReport;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartTicket;
 import org.xar.ck3.control.build.WindowsJobProcess;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -107,9 +108,26 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             }
 
             // The real capture owns the clean/pending decision and drains actual offline work. Dirty is preserved.
-            CleanRestartTicket captured = running.core().sessionAccess().current().captureCleanRestart(
-                    running.batchPrefix(), result.nextBatchSequence(), clock.instant().plus(config.operationTimeout()));
-            writeTicket(ticketPath, captured);
+            var currentRunning = running;
+            var currentResult = result;
+            var captured = captureForStop(currentResult, () -> currentRunning.core().sessionAccess().current().captureCleanRestart(
+                    currentRunning.batchPrefix(), currentResult.nextBatchSequence(), clock.instant().plus(config.operationTimeout())));
+            if (captured.isEmpty()) {
+                ObjectNode deferred = event(clock, "WORKER_RESTART_CAPTURE_DEFERRED");
+                deferred.set("game", attached.generation().toJson());
+                deferred.put("next_sequence", Long.toString(result.nextBatchSequence()));
+                deferred.put("loop_terminal", result.stopReason().name());
+                deferred.put("capture_reason", "missing_complete_driver_observation");
+                result.lastReport().ifPresent(actual -> {
+                    deferred.put("last_batch_terminal", actual.terminal().name());
+                    deferred.put("last_batch_detail", actual.detail());
+                });
+                deferred.put("pause_status", "NOT_ATTEMPTED");
+                deferred.put("game_stop_requested", false);
+                emit(deferred);
+                return 0;
+            }
+            writeTicket(ticketPath, captured.orElseThrow());
             ObjectNode completed = event(clock, "CLEAN_WORKER_RESTART_CAPTURED");
             completed.set("game", attached.generation().toJson());
             completed.put("ticket_path", ticketPath.toString());
@@ -157,6 +175,22 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             throw failed;
         } finally {
             closeResources(primary, running, opened, prepared, attached);
+        }
+    }
+
+    @FunctionalInterface interface RestartCapture {
+        CleanRestartTicket capture() throws IOException, InterruptedException;
+    }
+
+    /** Only this typed absence during an already benign cooperative stop defers a capture. */
+    static Optional<CleanRestartTicket> captureForStop(RootOrdinaryWorkerLoop.Result result, RestartCapture capture)
+            throws IOException, InterruptedException {
+        try {
+            return Optional.of(capture.capture());
+        } catch (OrdinaryCycleTransitions.MissingDriverObservation missing) {
+            if (result.stopReason() != RootOrdinaryWorkerLoop.StopReason.OPERATOR_STOP || classifyFailureStop(result))
+                throw missing;
+            return Optional.empty();
         }
     }
 

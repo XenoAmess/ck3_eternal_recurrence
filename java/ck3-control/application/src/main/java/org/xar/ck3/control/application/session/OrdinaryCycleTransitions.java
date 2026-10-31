@@ -681,11 +681,17 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         for(var receipt:ContinuityActionJournal.receipts(captured,archive.withSession(same)))
             StrictJson.require(receipt.settled(),"captured recovery cannot discard an UNKNOWN original action");
     }
+    /** A missing current observation can defer a cooperative stop capture; it is not a ticket. */
+    public static final class MissingDriverObservation extends IOException {
+        private static final long serialVersionUID = 1L;
+        public MissingDriverObservation() { super("restart requires the actual latest complete Driver observation"); }
+    }
+
     ContinuityBatchJournal.CleanRestartTicket captureRestart(ContinuityStorePort.Session same,
             ControllerRestartState controller,org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known known)throws IOException {
         StrictJson.require(active.get()==same&&restartCapture.get()==null,"one actual writer restart capture required");
         requireRestartClean(same,controller.owner());
-        var observation=known.observation().orElseThrow(()->new IOException("restart requires the actual latest complete Driver observation"));
+        var observation=known.observation().orElseThrow(MissingDriverObservation::new);
         StrictJson.require(observation.transport().machineId().equals(controller.owner().machineId())
                 &&observation.transport().game().equals(controller.owner().game())&&observation.transport().sessionId().equals(controller.owner().sessionId()),
                 "restart observation crossed the actual owned Game/session");
