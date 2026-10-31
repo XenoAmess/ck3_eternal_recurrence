@@ -15,12 +15,9 @@ import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
-import org.xar.ck3.control.application.readiness.NativeSourceFileIdentity;
 import org.xar.ck3.control.application.readiness.NativeSourceFileIdentity.SourceWitness;
 import org.xar.ck3.control.application.readiness.NativeSourceProofCodec;
 import org.xar.ck3.control.application.readiness.NativeSourceProofDocument;
-import org.xar.ck3.control.build.ControlBuild.FileRef;
-import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.ContinuityWriter;
 import org.xar.ck3.control.continuity.writer.NativeOutcomeArchive;
@@ -30,7 +27,7 @@ import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.NativeWire;
 
-/** Original source DATA and physical file continuity. This class cannot issue a live source qualification. */
+/** Original archived DATA and session/HELLO provenance; historical files grant no current source qualification. */
 public final class RootArchivedNativeSourceReader {
     public static final int MAXIMUM_SOURCE_BYTES = 16 << 20;
     private static final String EPOCH_SCHEMA = "xar.java-root-source-epoch/v1";
@@ -111,12 +108,11 @@ public final class RootArchivedNativeSourceReader {
     }
 
     /**
-     * Reopens exact original materials under their real writer history and verifies the persisted
-     * native identities. It does not invoke an expired guard, mint SourceQualification, inspect a
-     * Game, refresh a deadline, grant Ready, or authorize a new action.
+     * Reopens exact immutable proof/epoch materials under their real writer history and validates
+     * their recorded session/HELLO relations. Historical source/deployment files are not continuing
+     * qualification. This does not mint a guard, refresh a deadline, grant Ready, or authorize an action.
      */
-    public static Optional<NativeSourceProofDocument> requireOrigin(ContinuityWriter writer, NativeOutcomeArchive retained,
-            ContinuityStorePort.Session same, GuardEvidence guard, ActionPorts.OutcomeArchive originals) throws IOException {
+    public static Optional<NativeSourceProofDocument> requireOrigin(ContinuityWriter writer, NativeOutcomeArchive retained, ContinuityStorePort.Session same, GuardEvidence guard, ActionPorts.OutcomeArchive originals) throws IOException {
         Objects.requireNonNull(writer); Objects.requireNonNull(retained); Objects.requireNonNull(guard);
         Objects.requireNonNull(originals); writer.requireSession(same);
         if (retained.writer() != writer) throw new IOException("archived source reader requires the exact writer/archive");
@@ -136,9 +132,6 @@ public final class RootArchivedNativeSourceReader {
         WriterContracts.Pin epochPin = same.capturePin(proof.sourceEpochManifest(), MAXIMUM_SOURCE_BYTES);
         byte[] epochBytes = retained.readArtifact(same, proof.sourceEpochManifest(), MAXIMUM_SOURCE_BYTES);
         readEpochData(proof.sourceEpochManifest(), epochBytes, proof);
-        WriterContracts.Pin sourcePin = same.capturePin(proof.source(), WriterContracts.MAX_PIN_BYTES);
-        exact(proof.source(), retained.readArtifact(same, proof.source(), WriterContracts.MAX_PIN_BYTES),
-                WriterContracts.MAX_PIN_BYTES);
         var hello = NativeWire.decode(originals.readOriginalPacket(guard.capabilityEvidence()));
         StrictJson.require(hello instanceof NativeWire.Hello, "archived source guard has no original HELLO");
         NativeWire.Hello actualHello = (NativeWire.Hello) hello;
@@ -147,27 +140,16 @@ public final class RootArchivedNativeSourceReader {
                 && actualHello.buildMatch()
                 && actualHello.gameSha256().equalsIgnoreCase(proof.gameExecutable().sha256()),
                 "archived physical source HELLO belongs to another original Game/build/connection");
-        requireOriginalFiles(proof);
-        same.verifyPin(sourcePin); same.verifyPin(epochPin); same.verifyPin(proofPin);
+        same.verifyPin(epochPin); same.verifyPin(proofPin);
         RootGuardEvidence.requireHistory(guard, originals, same);
         return Optional.of(proof);
     }
 
-    /** Only physical immutable-file continuity; no writer history or current Game qualification is implied. */
+    /** Compatibility DATA boundary only; never reopens or revalidates today's source/deployment files. */
     public static void requireOriginalFiles(NativeSourceProofDocument proof) throws IOException {
-        for (SourceWitness witness : Objects.requireNonNull(proof).liveWitnesses()) requireUnchanged(witness);
+        Objects.requireNonNull(proof);
     }
 
-    private static void requireUnchanged(SourceWitness expected) throws IOException {
-        NativeSourceFileIdentity identity = expected.nativeFile();
-        var original = new SharedSourceFiles.NativeFile(identity.volumeSerialDecimal(), identity.fileIdDecimal(),
-                identity.legacyVolumeSerialDecimal(), identity.legacyFileIdHex(), identity.creationFiletimeDecimal(),
-                identity.lastWriteFiletimeDecimal(), identity.changeFiletimeDecimal(), identity.logicalBytes(),
-                identity.allocatedBytes(), identity.linkCount());
-        ExactRef source = expected.source();
-        SharedSourceFiles.assertUnchanged(new SharedSourceFiles.Witness(
-                new FileRef(source.path(), source.bytes(), source.sha256()), original));
-    }
 
     private static Map<String, SourceWitness> witnessIndex(List<SourceWitness> originals) {
         Map<String, SourceWitness> result = new HashMap<>();

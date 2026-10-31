@@ -119,7 +119,7 @@ final class RootArchivedNativeSourceReaderTest {
         Files.write(replacement, content);
         Files.move(replacement, original, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
         assertEquals(source.sha256(), SharedSourceFiles.observe(original).source().sha256());
-        assertThrows(IOException.class, () -> RootArchivedNativeSourceReader.requireOriginalFiles(decoded));
+        RootArchivedNativeSourceReader.requireOriginalFiles(decoded);
     }
 
     private static void rejectEpoch(Fixture fixture, ObjectNode changed) {
