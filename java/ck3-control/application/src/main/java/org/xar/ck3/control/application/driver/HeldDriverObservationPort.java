@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Objects;
 import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.NativeSnapshotWaitPort;
 import org.xar.ck3.control.application.action.ObservationProvenance;
@@ -178,6 +179,19 @@ public final class HeldDriverObservationPort implements AdvanceObservationPort {
             return retained.stream().filter(row -> row.identity().equals(before) && row.originalEvidence().equals(originalEvidence))
                     .findFirst().orElseThrow(() -> new IllegalStateException("actual original before observation is not retained"));
         }
+    }
+    /** Original entry before only; the caller supplies its active canonical parent's guard. No I/O. */
+    public Frame retainedEntry(ActionCommand parent, GuardEvidence guard, Instant deadline) {
+        Objects.requireNonNull(parent);Objects.requireNonNull(guard);Objects.requireNonNull(deadline);
+        StrictJson.require(Instant.now().isBefore(deadline), "retained entry deadline expired");
+        StrictJson.require(parent.before().equals(guard.observed()) && parent.source().equals(guard.source())
+                && parent.sessionId().equals(guard.sessionId()) && parent.operation().equals(guard.operation()),
+                "retained entry guard crossed parent before/source/session/operation");
+        var complete = requireRetained(parent.before(), guard.nativeEvidence());
+        requireParent(parent, complete);
+        StrictJson.require(complete.connectionGeneration().equals(guard.connectionGeneration())
+                && complete.observedAt().equals(guard.observedAt()), "retained entry guard crossed original connection/time");
+        return frame(complete);
     }
     @Override public Frame current(ActionCommand parent,Instant deadline) {
         var complete=observeForAdvance(deadline);requireParent(parent,complete);

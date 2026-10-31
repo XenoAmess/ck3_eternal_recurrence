@@ -28,6 +28,19 @@ public final class ActionChildPlanningScope {
         StrictJson.require(parent.bodySha256().equals(held.parent().bodySha256()) && execution(parent, held).handlerId().equals(held.parent().handlerId()), "only the actual running canonical parent owns this child planning scope");
         return Optional.of(held.parent());
     }
+    /** Original entry DATA only while the actual running parent has not reserved a child. */
+    public static Optional<GuardEvidence> entryGuard(ContinuityStorePort.Session same, WriterContracts.Head actualHead,
+            ActionCommand exactParent) throws IOException {
+        if (CURRENT.get() == null) return Optional.empty();
+        Parent active = current(same, actualHead).orElseThrow();
+        StrictJson.require(active.actionId().equals(exactParent.actionId())
+                && active.bodySha256().equals(ActionCodec.bodySha256(exactParent)), "entry guard crossed its exact parent");
+        Held held = CURRENT.get();
+        ActionReceipt canonical = held.journal().find(active.actionId()).orElseThrow();
+        if (held.continuation() || !(canonical.state() instanceof ActionState.CompositeRunning running)
+                || !running.execution().children().isEmpty()) return Optional.empty();
+        return Optional.of(running.execution().guard());
+    }
     /** Identifies only the exact child already reserved by this original running parent's Children callback. */
     public static Optional<Parent> reservedParent(ContinuityStorePort.Session same, WriterContracts.Head actualHead,
             ActionCommand exactChild) throws IOException {

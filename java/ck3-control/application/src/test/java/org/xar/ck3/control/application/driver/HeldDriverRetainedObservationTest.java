@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.ObservationProvenance;
 import org.xar.ck3.control.application.action.OperationKey;
@@ -85,6 +86,41 @@ final class HeldDriverRetainedObservationTest {
         assertSame(later,held.requireRetained(later.identity(),later.originalEvidence()));
         assertThrows(IllegalStateException.class,()->held.requireRetained(first.identity(),first.originalEvidence()));
         assertEquals(next.actual().observedAt(),later.observedAt());
+    }
+    @Test void activeParentEntryRetainsExactPacketWithoutObservationAndRejectsWrongGuard() {
+        var full=fullAtRevision(8);var before=complete(full);var held=noIo();
+        held.retainVerified(full,before);
+        var parent=parent(before);var guard=entryGuard(parent,before,before.originalEvidence());
+        var entry=held.retainedEntry(parent,guard,Instant.now().plusSeconds(60));
+        assertEquals(before.identity(),entry.identity());assertEquals(before.semantic(),entry.semantic());
+        assertEquals(before.originalEvidence(),entry.originalEvidence());
+        assertEquals(before.originalEvidence(),assertInstanceOf(ObservationProvenance.Push.class,entry.provenance()).originalPacket());
+        var wrong=entryGuard(parent,before,DriverStateAssemblerTest.ref(DriverStateAssemblerTest.bytes("different original")));
+        assertThrows(IllegalStateException.class,()->held.retainedEntry(parent,wrong,Instant.now().plusSeconds(60)));
+        var wrongConnection=new GuardEvidence(guard.origin(),guard.source(),guard.sessionId(),guard.connectionGeneration().add(BigInteger.ONE),
+                guard.operation(),guard.nativeEvidence(),guard.capabilityEvidence(),guard.authorityId(),guard.observedAt(),guard.validUntil());
+        assertThrows(IllegalArgumentException.class,()->held.retainedEntry(parent,wrongConnection,Instant.now().plusSeconds(60)));
+        assertThrows(IllegalArgumentException.class,()->held.retainedEntry(parent,guard,Instant.EPOCH));
+    }
+    @Test void entryReuseDoesNotReplaceLaterCurrentOrStrictNextWithThePreActionFrame() {
+        var firstFull=fullAtRevision(8);var laterFull=fullAtRevision(9);var first=complete(firstFull);
+        var reads=new AtomicInteger();
+        var held=new HeldDriverObservationPort(deadline->{reads.incrementAndGet();return laterFull.actual();},
+                actual->new DriverObservationFacts.Known(laterFull.facts()),actual->laterFull.originalEvidence(),new DriverObservationAssembler(),2);
+        held.retainVerified(firstFull,first);
+        var parent=parent(first);
+        var entry=held.retainedEntry(parent,entryGuard(parent,first,first.originalEvidence()),Instant.now().plusSeconds(60));
+        assertEquals(first.identity(),entry.identity());assertEquals(0,reads.get());
+        var current=held.current(parent,Instant.now().plusSeconds(60));
+        assertEquals(BigInteger.valueOf(9),current.identity().frame().identity().nativeRevision());assertEquals(1,reads.get());
+        assertNotEquals(entry.originalEvidence(),current.originalEvidence());
+        assertThrows(IllegalArgumentException.class,()->held.next(parent,current.identity(),Instant.now().plusSeconds(60)));
+        assertEquals(2,reads.get());
+    }
+    private static GuardEvidence entryGuard(ActionCommand parent,DriverObservationAssembler.Complete before,
+            org.xar.ck3.control.contracts.ExactRef nativeEvidence) {
+        return new GuardEvidence(before.identity(),before.source(),before.sessionId(),before.connectionGeneration(),parent.operation(),
+                nativeEvidence,before.originalEvidence(),"fixture-entry",before.observedAt(),before.observedAt().plusSeconds(60));
     }
     @Test void actualHeldAdvanceCurrentAndNextKeepNativePushProvenanceAndOriginalPacket() {
         var earlier=fullAtRevision(8);var later=fullAtRevision(9);var before=complete(earlier);var observed=complete(later);

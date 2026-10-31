@@ -260,9 +260,11 @@ public final class RootAdvanceInfrastructureFactory {
                                 original.observedAt(),original.originalEvidence());
                     });
                     if(borrowed.isPresent())return borrowed.orElseThrow();
-                    // A genuinely absent ordinary lease is the only path to the original fresh producer.
-                    // An incompatible/foreign/expired scope throws above; it cannot trigger fallback sampling.
+                    // A running parent can reuse its exact guarded entry before any child; later observations stay fresh.
+                    // An incompatible ordinary scope throws above and cannot trigger fallback sampling.
                     context.adopted().authority().requireOutsideObservationScope(same);
+                    var entry = ActionChildPlanningScope.entryGuard(same, same.head(), parent);
+                    if (entry.isPresent()) return sameHeld.retainedEntry(parent, entry.orElseThrow(), deadline);
                     return sameHeld.current(parent,deadline);
                 });
             }catch(IOException failure){throw new UncheckedIOException("actual held clock observation unavailable",failure);}
