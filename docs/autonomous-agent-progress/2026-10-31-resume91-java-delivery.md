@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `fee947f31c`。跨机指南及两波模型经验均已正常推送 GitHub master；本波又接 settled131 恢复解释、Crown 已应用结果消费、132重复审计削减及 M7 新605B组件。所有必要绿复用 owner 实际回执。运行 owner 确认131同局已消费实际CROWN结果为 enacted/pendingnull，132于03:03:16.4561438Z真实LOOP/next48；普通新CROWN APPLIED1与旧FOCUS分列，新增日仍0，不重放已应用动作。本岗不写 S/MB/Game/账本，正式源码、装载、业务结果和游戏日分别记录。
+最新正式源码 FF 已至 `d6c23b2ba9`。跨机指南及两波模型经验均已正常推送 GitHub master；settled131、Crown消费/132审计削减、133同date幂等与良性Stop缺观察延后、M7新605B及组合测试均已精确接收。所有必要绿复用 owner 实际回执。运行 owner 确认131同局已消费CROWN为 enacted/pendingnull，133于03:22:15.2095991Z真实LOOP/next49；普通新CROWN APPLIED1与旧FOCUS分列，新增日仍0，不重放已应用动作。本岗不写 S/MB/Game/账本，正式源码、装载、业务结果和游戏日分别记录。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -231,4 +231,12 @@ Root docs11 `adcb0dd6fe` 对13页逐页diff后仅9内容变化页+AGENTS共10叶
 
 M7 `fee947f31c` 为现g2-research四新叶：SparseIntCells177和Memory/Basic/Carry三test，无POM。1prod与held605B的24项独立source审相符：signed32→64 mask/hash索引、BYTE距离wrap、lookup固定key/后续fresh key/value、float32阈值、carry回滚、nonLOCK INC32、8+1与完整raw128输出分支均保原顺序；opaque helper、symbolic私有frame和Java固定RNE投影不宣称完整NativeABI/MXCSR/DAZ/FTZ/自然drain。正式只补此范围注释并清新test末尾空白，production执行token与已验owner03逐项相同。
 
-必要验收复用owner首次1prod strict0/0.467秒、3test strict0/0.9268406秒及首8JUnit8P/0skip/JVM0/0.7415414秒。外层维护工具在JVM终态和XML保存后因GBK无法打印Unicode而exit1，原件保留，不把它改成外工具成功或当成Java行为红。core是owner接管；Memory完整模型原样、Basic只有NaN方法原样，其余Basic及Carry由owner修补/编写，不能写成8个模型原稿通过。后继composed-one93未到，不作为这4叶前置或虚授已跑，无Native/Game/SAVE信用。
+必要验收复用owner首次1prod strict0/0.467秒、3test strict0/0.9268406秒及首8JUnit8P/0skip/JVM0/0.7415414秒。外层维护工具在JVM终态和XML保存后因GBK无法打印Unicode而exit1，原件保留，不把它改成外工具成功或当成Java行为红。core是owner接管；Memory完整模型原样、Basic只有NaN方法原样，其余Basic及Carry由owner修补/编写，不能写成8个模型原稿通过。当时后继composed-one93未到，不作为这4叶前置；后到独立验收见下段，无Native/Game/SAVE信用。
+
+### 133自然更新与后到M7组合测试
+
+`e61fb04d69` 单RootGov两hunk：已经consumed/enacted的Crown仅同actor/episode/latestcontext/date、native revision不回退时复用；新日期/回退/foreign scope/unconsumed仍不跳查询，Council exact路径不改。第二轮模型完整method原样采用，首答源拒未编。复用owner单leaf+probe邻接strict0/2.385秒、actual296标量predicate20断言0/0.810秒；不是wholeRoot/Native/Game验收。
+
+`a137a34452` 精确Main+OrdinaryCycleTransitions及一新portable test：只在已属良性OPERATOR_STOP且真实capture抛typed MissingDriverObservation时发WORKER_RESTART_CAPTURE_DEFERRED、无ticket/暂停未尝试/Game未请求停；普通CLEAN成功ticket不改、相同文案的普通IOException、UNKNOWN/failure detail、NO_PROGRESS、InterruptedException及unresolved invariant均原样抛。复用ownerstrict+新6P/0skip，不重旧分类组。模型首整拒/第二轮partial，最终helper由owner实现，不授原稿整实现。runtime实际MB133 app1+local2共3prod0/6.933秒，同局03:22:15.2095991Z LOOP/next49，装载不授实际DEFERRED发生或新日。
+
+`d6c23b2ba9` 新增Sparse177EndToEndTest单叶，完整软件79E→clear→28EED20已知frame→177insert共用同table：DEC callback改E+8后tail fresh load、literal hash、slot5、count和9B输出padding均断言。复用首次1TU strict0/0.6450798秒、独立selected1JUnit1P/0skip/0.6452622秒；未重旧8绿。模型两轮拒后owner完成方法，前两外层inline引号失败没有启动JVM、后D runner唯一实际JVM0，原件分别保。正式只补supplied-memory/no liveABI注释与末尾空白，无生产/POM改或自然drain/Game信用。
