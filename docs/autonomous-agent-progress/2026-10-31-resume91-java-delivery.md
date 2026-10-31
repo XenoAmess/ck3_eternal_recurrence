@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进149 settled frontier共享roots单叶，前序148 Assembler已发 `2872eca9bc`；前序148 Collector诊断已发 `a80399b9a1`；148实机已越过旧Driver缺失但preloop END1，无新日；前序147 isolated Life child cycle accounting已发 `c60e382b8f`；147实际父374已typed结算但后继历史/Driver缺失，无LOOP/日0；前序146 Journal真实parent参数单行已发 `fd1eddd3b5`；前序145 original reconciliation observer单叶已发 `8b906853ab`；前序144四组22prod（Core10→Life4→consumer5→Boot3）已正常FF至 `5ab4d41e7b`；保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进M1 UNAVAILABLE0合同两prod/一test，前序149 settled frontier已发 `58df67d522`；同Game149实际07:47:41.7155678Z LOOP/next59，原父子不重发/日未增；前序148 Assembler已发 `2872eca9bc`；前序148 Collector诊断已发 `a80399b9a1`；148实机已越过旧Driver缺失但preloop END1，无新日；前序147 isolated Life child cycle accounting已发 `c60e382b8f`；147实际父374已typed结算但后继历史/Driver缺失，无LOOP/日0；前序146 Journal真实parent参数单行已发 `fd1eddd3b5`；前序145 original reconciliation observer单叶已发 `8b906853ab`；前序144四组22prod（Core10→Life4→consumer5→Boot3）已正常FF至 `5ab4d41e7b`；保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -432,3 +432,14 @@ Main已S/Z采，148同Collector诊断自然装2src；148实际07:39:06.146→07:
 实际.11 runtime-settled-frontier149在07:42:29.265311→07:42:45.754517Z HTTP200stop/OS0，70974in+711out、TTFT11.6001106秒/总16.4888634秒、cachednull；逻辑采用但owner补跨类helper真实限定，未编无效首稿，不称whole原样。复用单prod严格0/2.2773248秒，actual settled374/373 default root新DATA六assert0/1.0326727秒（probe编0/1.4360934），未重147 isolated六绿；无完整requireSettledRecoveryFrontier/commit/fullRoot/Game验收。固定D probe不入CI，wholeformal源与sealed候选仅EOL/尾空白同/0writer语义改。
 
 Main已源审/check并开始自然MB149/安装HOLD；此前148实际preloopEND1、无LOOP，旧Driver缺失已越过后才遇该另一cycle消费者。当前已知父374/子373不变/日0，不预授149 LOOP/完整恢复/新游戏日。证据 `D:/ck3-state/resume91-java-delivery/FRONTIER149-ADOPTION.json`，本岗0新编测/模型/S/MB/Game写。
+
+
+## M1 UNAVAILABLE0公开status合同三叶
+
+精确PRODUCTION91+TEST91三叶只将shared SentinelCodec和LateOutcome.Status的UNAVAILABLE speed下限改0，保已发IDLE0与1..5取消状态；ARM/TRIGGERED/FAILED、Arm请求、Semantic speed仍1..5，JSON整数/类型/unknown enum/flags/其他状态规则不动。UNAVAILABLE仍由原Planner返回UNRESOLVED/READ_UNAVAILABLE/originalCredit0/neverReplay，不升级成功。现Test仅两新方法及两必要旧期待编辑，保其余IDLpositive/旧矩阵/资源；formal整三叶与sealed候选仅EOL/尾空白同，0writer语义改。
+
+源合同可达性由M1 frozen63完整producer map确认：existing-process StartWithPipe/环境启动可在InitializeRuntime前开始public pipe，静态status为UNAVAILABLE0且status路径无sentinelInstalled gate；成功managed Prepare则明确重置IDLE0，两角色不混同。无当前Game槽状态/已载DLL或完整ClockStatusRead公开调用信用。实际model两prod+test首轮0owner Java语义改，two raw production spans/two existing edits/two new methods；任务规模不等于模型完成主线。
+
+复用owner四phase真实红绿：baseline3src strict0/1.6510582秒→仅两新+一必要改法2P1F/OS1/1.918589秒（Codec47）；candidate只两prod strict0/1.4592261秒→同三method3P0F0skip/OS0/1.8197939秒。baseline/candidate是独立Java启动，非同JVM热换；未重旧IDLpositive方法或矩阵。候选test内IDLE sanity断言不外推旧全矩阵重绿。三叶便携无新resource/固定D路径，本岗未新编测/模型，未S/MB/Game/Native部署，不作为worker148/149故障修复或loaded证明。证据 `D:/ck3-state/resume91-java-delivery/UNAVAILABLE91-ADOPTION.json`。
+
+后到运行事实：runtime149于07:47:41.7155678Z真实LOOP/next59/worker321540，同Game旧父374/child373不重发，恢复已进普通批次；新日/普通动作/SAVE仍不能从LOOP或本研究合同授信。此前149 DATA6仅roots边界，真实完整恢复由该后到运行结果单列。
