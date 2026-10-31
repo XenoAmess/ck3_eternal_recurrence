@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式runtime160已发表776039f916，M7 retry158四新叶c7569fc56b和API02 gate160四新叶79900e43ee已正常FF；本岗source采用复用实际首验、0新编测。Main160实际10:22:18.740097Z preloop END1/27.542068秒、无LOOP；coldrouter错误已越，后Journal845 InitialNoDispatchHistoryEdge历史payload严格8field解析误类型待161。原CANCEL395/父396已结算且不重放，新增日0；不能把160 source或M7软件绿当Driver/实机恢复。本岗不写S/MB/Game/账本。
+最新正式runtime161单Journal已发表9b2b32d80d；Main161实际10:42:34.980982Z preloop END1/60.899645秒、无LOOP，HOLD已解除。旧219/schema和FOCUSsuffix已越，后完整history→retainCapturedAction236的Driver行/session比较失败待162；不把sourcehelper6assert冒wholecold绿。M6 reader550fe8c20b/M7 decode68bdcff57a已正式且M6singleprod实际合MB161。本岗复用首验、0新编测，原CANCEL395/父396已settled不重发、新日0，不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -545,3 +545,15 @@ M7 retry158四新叶SHA与提前PRE-REVIEW一致，复用首次4TU strict0/0.806
 M4独立47B寄存器核对发现gate160旧API01漏CALL间接slot时仍活的fullRAX；本岗先前独立审阅只看显式RCX/EAX控制流，也漏该known state，已撤回旧M7-GATE160-PRE-REVIEW并标SUPERSEDED。旧4leaf从未stage、编译或行为运行，不能把owner输入/审阅缺项记为模型错。新API02以(long knownRCX,long liveRAX)原样传到indirect port，不赋予RAX pointer/status/CFG含义。两真实后继model完成core整class+跨两Test完整合同传播，新owner源码改0；不把这两包误说成旧错误第三次反馈。旧composition三static imports+一local typo的owner机械修历史仍保。
 
 新reviewed04四叶source/helddecode再审、SHA4/4核对后，首次4TU strict0/0.7752872秒、首次单JVM4JUnit4P0skip/0.775071秒（5finitecases）真实END，正常FF79900e43ee。truth/composed witnesses分别精确验证Long.MIN_VALUE与negative liveRAX、fullrawRCX、EAX规范0/1及同一有限callback chronology；旧retry/依赖/test未重编重跑。8actualPOST/峰4/27808+8755tokens，cached未报；core/API02两Test传播model原样、adapter首model原样，owner旧四机械修不洗掉。g2-research原POM/依赖不变，Native body/实际IATtarget/完整arity/heap/currentU/drain/Save均未授。对应M7-RETRY158、PHYSICAL-COLD160和M7-GATE160 ADOPTION.json已PUBLISHED_MASTER_CLEAN，分别保local pre-rebase与实际sourcecommit。Z只新增唯一M7八叶，运行source仍Main独占。
+
+
+## M6 reader、decode163与161待结算cycle冷恢复
+
+Root明确批准M6 reader三叶后，按32251B精确patch正常FF550fe8c20b：RootArchivedNativeSourceReader去proof.source历史文件read/pin及liveWitness current physical审计，保immutableproof/epoch/session/writer/archive/history与original HELLO Game/build/connection。requireOriginalFiles保原throws/API、只nonnull compatibility boundary；不重发当前来源资格。affected旧test只末行assertThrows改normalcall，真实同内容FileID swap setup保；新增5软件方法9realwriter/archive scopes验证历史CODE删改允许而proof/epoch损坏、metadata机器/session/source与HELLO pid/connection仍拒。prod02 model语义owner0，legacy01 model语义0，新testtypedhost/helpers owner、methods部分模型纠正与budget05模型9edits分记。复用prodstrict0/1.3846803秒、affected旧原1F→1P、只changedteststrict0/1.7695408秒+新5methods单JVM5P/24.798秒；不可合称一次6P，初5fixture预算F/owner缺StrictJson上下文和1MiB误判撤回原件保。writer仅清6个newblankline尾空格，cachedcheck初2→0、无Java/编测变化。Main后来实际S/Z采singleprod，writer才精确补Z两pairedtests，未写运行prod；MB161自然合载不为reader单重启。
+
+M7 decode163四新叶正常FF68bdcff57a。独立读完52B原decode：第一opaque CALL RCX0后才fresh读两QWORD，RIP resolves542F0B8/5C5D568；count取原encoded low6，再XOR/ROR64；第二opaque CALL携RCX0+decodedliveRBX，最后返捕获值不随callback改memory重读。Gateway保79900 API02后续原knownRCX/liveRAX双参数、不推断handler/lock/global语义。5个count0/1/31/32/63固定literal与独立audit核对，首4TUstrict0/0.9259905秒、新4JUnit4P0skip/0.8183483秒（8finitecases）复用，0旧Gate/retry/依赖重编。主方法modelcorrect02完整保、adapterfirstclass；test两轮后owner修2RVA/4literal及5staticimports，不整Test归模型。7actualPOST峰4/30056+9126tokens，cached未报；writer只删obsolete/instruction comments/尾白，executiontokens同。0POM、新Native body/opaque helpers/heap/currentU/drain/Save/Game授信。
+
+161单Journal9578B正常FF9b2b32d80d，sealed SHAa6a2ad3ecbe4e5420252caa551cd9f65b519d05f51a2ef55376ac14b271d8f1c与candidate全文归一化相同。actual219是genuine9key SETTLED_SAME_GAME_RECOVERY，398是原父396 RETAIN并非8key NoDispatch；新exactpendingLifeCancellation角色以canonicalpending receipt+完整已settled parent/ARM387/CANCEL395来源proof，复用正确完整history reader携既有UnresolvedSameGameData，不伪Unknown/NoDispatch/新cycle/日，也不发行settled recovery或ordinary Ready。Controller原reconcile处理同已settled receipt无dispatch，再原398 idempotentretain后由真实SEM verifier结CONTROL_ONLY/0credit；全history实跑仍待。model首次reset按配置重试，第二HTTP200stop仍只schema/noise建议整拒0采用，owner单Journal完整workflow；production strict0/2.941360秒，actual396/387/39530exactrefs64129B源proof admission6assert0/1.164987秒，不当wholehistory/RuntimeKnown/commit绿。Main已S/Z真Checking/Applied/0Skipped并开始app1+local1 MB161；正式发表与下一实际结果分开。
+
+
+161后到实际10:42:34.980982Z preloop END1/60.899645秒，无LOOP/HOLD已解除。真实旧219/schema和FOCUS-only suffix门已越，完整history1208随后retainCapturedAction236拒captured ACTION history changed another Driver row or session；162由obli独占，不改已结算父子或重controls。本161 source只按实际越过范围授信用，完整cold/Driver恢复未通过，9b2b正式与软件helper6assert不倒授全链。
