@@ -142,6 +142,8 @@ public final class RootPlanningDomainCatalog implements RootPlanningInputsFactor
         }
         var control=classifyControl(bindings,save.action(),command.operation());
         if(control.isPresent())return control.orElseThrow();
+        var timeline=classifyTimelinePrimitive(bindings,command.operation());
+        if(timeline.isPresent())return timeline.orElseThrow();
         if(aub.isPresent()) {
             var runtime=aub.orElseThrow();
             var actualControl=classifyAubControl(bindings,runtime.selectAction(),runtime.confirmAction(),command.operation());
@@ -229,6 +231,18 @@ public final class RootPlanningDomainCatalog implements RootPlanningInputsFactor
             Domain value=composites.get(matched);if(value==null)throw new IOException("actual installed composite has no explicit planning domain");return new RootPlanningInputsFactory.BusinessDomain(value);
         }
         throw new IOException("actual command has no installed source-bound planning domain");
+    }
+    /** The actual shared producer identity distinguishes timeline control from a similarly named action. */
+    static Optional<RootPlanningInputsFactory.Classification> classifyTimelinePrimitive(
+            RootExecutableBindings actual,OperationKey operation) {
+        Objects.requireNonNull(actual);Objects.requireNonNull(operation);
+        var effect=actual.actualActionBinding(operation);
+        if(effect.isEmpty() || !(effect.orElseThrow().preparation()
+                instanceof org.xar.ck3.control.application.advance.AdvancePrimitives)) return Optional.empty();
+        StrictJson.require(org.xar.ck3.control.application.advance.AdvancePrimitives.supports(operation)
+                &&actual.actualArchivedVerifier(operation).isPresent(),
+                "installed timeline control lost its exact selector or archived verifier");
+        return Optional.of(new RootPlanningInputsFactory.SystemControl(RootPlanningInputsFactory.ControlKind.TIMELINE_PRIMITIVE));
     }
     /** Pure metadata classification; the caller still authenticates the actual command and canonical receipt. */
     static java.util.Optional<RootPlanningInputsFactory.Classification> classifyControl(RootExecutableBindings actual,

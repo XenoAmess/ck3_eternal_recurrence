@@ -43,7 +43,7 @@ public final class RootPlanningInputsFactory {
     public record BusinessDomain(Domain domain) implements Classification {
         public BusinessDomain { Objects.requireNonNull(domain); }
     }
-    public enum ControlKind { CHECKPOINT_SAVE, AUB_POLICY_CONTROL, RITE_CREATION_CONTROL, OBSERVER_SAMPLING_CONTROL, GUI_NAVIGATION_CONTROL, GUI_NAVIGATION_FINAL_PENDING, PILGRIMAGE_CONTROL, GUI_PHYSICAL_PRESENTATION, MILITARY_UI_CONTROL, PUBLIC_PAUSE_CONTROL, LIFE_ADVANCE }
+    public enum ControlKind { CHECKPOINT_SAVE, AUB_POLICY_CONTROL, RITE_CREATION_CONTROL, OBSERVER_SAMPLING_CONTROL, GUI_NAVIGATION_CONTROL, GUI_NAVIGATION_FINAL_PENDING, PILGRIMAGE_CONTROL, GUI_PHYSICAL_PRESENTATION, MILITARY_UI_CONTROL, PUBLIC_PAUSE_CONTROL, LIFE_ADVANCE, TIMELINE_PRIMITIVE }
     public record SystemControl(ControlKind kind) implements Classification {
         public SystemControl { Objects.requireNonNull(kind); }
     }
@@ -348,6 +348,37 @@ public final class RootPlanningInputsFactory {
                     ActionEffects.validateComposite(command,settled.execution(),settled.settlement());
                 } else StrictJson.require(receipt.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH,
                         "Life timeline control cannot borrow a primitive or Family-send settlement");
+            }
+            case TIMELINE_PRIMITIVE -> {
+                var command=receipt.command();
+                var expected=org.xar.ck3.control.application.advance.AdvancePrimitives.expected(
+                        command.before(),command.source(),command.operation(),command.arguments());
+                StrictJson.require(command.expected().equals(expected),
+                        "timeline primitive changed its exact source-owned expectation");
+                if(receipt.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH) {
+                    StrictJson.require(receipt.state() instanceof ActionState.RejectedBeforeDispatch,
+                            "timeline zero-dispatch control requires its actual rejection");
+                    break;
+                }
+                StrictJson.require(receipt.state() instanceof ActionState.Settled,
+                        "timeline control requires its original primitive settlement");
+                var settled=(ActionState.Settled)receipt.state();
+                if(receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) {
+                    if(expected.observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.CLOCK_OBSERVER))
+                        StrictJson.require(settled.settlement() instanceof ActionState.ControlApplied observed
+                                &&observed.observerSchema().equals(expected.observerSchema())
+                                &&!receipt.visibleGameplay(), "clock control requires its independent typed Status");
+                    else if(command.operation().value().equals("pause-map"))
+                        StrictJson.require(settled.settlement() instanceof ActionState.PauseConfirmed,
+                                "pause control requires its independently confirmed pause");
+                    else StrictJson.require(settled.settlement() instanceof ActionState.Applied observed
+                                &&observed.observation().observerSchema().equals(expected.observerSchema()),
+                                "speed/resume control requires its independent timeline observation");
+                } else StrictJson.require(settled.settlement() instanceof ActionState.Rejected
+                        ||settled.settlement() instanceof ActionState.NonAppliedTerminal,
+                        "timeline control cannot borrow another terminal or Family-send outcome");
+                ActionEffects.validate(command,settled.attempt(),settled.dispatch(),settled.settlement());
+                StrictJson.require(!receipt.eligibleAdvance(), "a timeline primitive cannot grant an ordinary advance");
             }
             case PUBLIC_PAUSE_CONTROL -> RootPublicPauseArchiveClassifier.requireSettledReceipt(receipt);
             case CHECKPOINT_SAVE -> StrictJson.require(receipt.command().operation().equals(RootSaveRuntime.OPERATION),
