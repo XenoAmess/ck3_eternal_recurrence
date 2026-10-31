@@ -116,3 +116,14 @@ M4的真实范围分别是：329 producer R2零Java修改，core两轮被拒后o
 成功粒度同样保留：Root alias compiler纠正原样strict0、owner生产语义修改0；测试部分采用，两个独立方法分次绿，第三fixture稿代码拒绝后owner只重跑失败负例1P。833行实际122离线样本完整还原及字节缩减；该离线样本/本包当时尚未获自然加载回执，不授token、cache或速度结论。M7两C++ core函数原样、owner算法修改0；正式14case/781checks限定同commit四类原件的minimal CMake wrapper 2TU/CTest。Java6生产源、2JUnit的7P覆盖14scenarios；CI/adapter其他部分含owner修补，15POST包内峰4不等于全服务峰或通用容量。
 
 M4新composed809 producer原样strict0后仅首次64例生成，families33+31/56,677 backing rows；oracle R2另有owner E9 guard +1/−1，不是raw整稿通过。首Native编译/64例在01:43前结束，组合Java差分01:44:35后到，分别记时，不回填冻结窗或授正式/Game信用。详细反链见[可行性](local-model-executor-feasibility-2026-10-28.md)与[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)。后继`REVIEWS91-INCREMENT126.json`的分布只待真实回执补充，不预填未知数字；不据请求参数猜内部thinking模式。
+
+
+### resume91 portable128 输出歧义、模式证据与采用粒度
+
+M2实际REQUEST把输出写成literal `completeJava`/`completecpp`，模型分别用12/22 tokens原样回显，没有实现；这是owner提示歧义加模型未完成，不能抹去此前三个独立语义失败。fields129已改为纯文字要求source含完整实现；修schema不授源码可用。可迁移规则是只指定一个明确输出格式，用文字描述字段内容，别把占位值写成应回传示例；要求default package时不声明package。提供真实直接类型/API，逐项回传源审/编译/行为诊断，不能凭HTTP stop或输入规模认定改写成功。
+
+M0 thinking04实际REQUEST为true；已记录的SSE增量键仅role/content，可见reasoning增量0，仍无可证实的服务模式回执；源码、反馈和owner诊断同时改变，不是mode-only对照。分析可参考但无新实现采用、根因未闭，不能从参数推内部reasoning，也不能把时延差归因thinking/cache。原件为`D:/ck3-state/resume91-m0-native/ci41146299012/claims-thinking04/{REVIEW,MODE-EVIDENCE,MODE-COMPARISON}.json`。
+
+M7正式两C++ core函数原样、owner算法改动0，14case/781checks；验证限相同commit header/core/test/module的minimal CMake wrapper 2TU/CTest。Java6生产源、2JUnit的7P覆盖14scenarios，其他CI/adapter仍有部分采用及owner修补；不授fullRoot/runtime/Bridge archive或hosted CI通过。alias离线字节缩减与typed还原也不是运行token/cache/速度实测，详见`REVIEWS91-LATE-ALIAS-M7-123.json`。
+
+统一分开记录源码候选、实际采用、运行期HTTP、Native结果与Game动作；有限case不推出通用能力上限。跨机使用[worker指南](local-model-worker-guide.md)与统一config，本机D路径只用于反链，不作为其他机器依赖；不复制state/账本或据此操作Game。本补记未新增HTTP/编测/CAS，未改配置或旧冻结记录。

@@ -193,3 +193,16 @@ M7正式Java `d17b7d9580`、Native `c703f434d2`分记：两C++ core函数原样�
 完整源齐后owner复用call91立即直POST，无需中央ACK；implementation与独立consumer/probe并行，审阅时下一未写方法继续。source_files+task_path自动三消息，免手工巨大body/额外索引前置；MB HOLD只编测，不挡HTTP。12–16为真实积压时初始在途目标，非已达/已实现scheduler，非quota，不凑数。复用caller、不建平台、不造任务/重绿，监视/总结不计模型请求。
 
 `STATUS-PARALLEL128-021352.json`固定02:13:52.729045：源在途1项m7-captured79e-cells92；server running1/wait0/KV0.0214646。新IP历史峰8尚未达目标，旧IP25不混；源码与运行期HTTP分记。后到两root-clock REVIEW为raw D采用、owner语义0、合并strict2src0，不授runtime/Game信用。本包0POST/编测/CAS，不阻128运行。
+
+
+### resume91 portable128 跨机复用与实际并发规则
+
+用户要求将新心得、经验与规则提交GitHub供其他机器worker复用。入口为[worker指南](../local-model-worker-guide.md)与[统一配置](../local-model-executor-config.json)。本页D路径仅是本机证据/caller记录，不是跨机依赖；其他机器使用自己的machine_id、获准数据根及caller，不复制本机state/账本，不据文档操作Game。
+
+完整直接API与当前源码置前，唯一任务、真实诊断及返工要求置末，保持配置三消息。source_files+task_path复用caller自动封包，避免手工巨大body或额外索引前置；owner源齐即可直POST，无需中央ACK。实现与独立consumer/probe并行，审阅时继续下一未写方法；MB HOLD限编测。累计调用、参数、准备队列、未poll标签和监视不能代替实际请求并发，不造任务/重绿凑数。
+
+`D:/ck3-state/model-dispatch91/WINDOW128-022010.json`固定02:10:10→02:20:10：27新任务/27真实POST、28 END，客户端区间峰4、末刻源0/服务running0/wait0/KV0；END可含窗前已在途请求，不等于28新任务。新IP历史峰8仍不足，旧IP峰25另列；该观察不证明服务最大容量。源码候选与实际运行期HTTP分账。
+
+两个root-clock REVIEW均原样D采用，owner生产语义修改0，同次strict2源0；首命令把-J选项误放argfile、尚未编源就退出，是owner命令成本，不算模型源码失败。记录入口为两`root-clock-*-audit128/REVIEW.json`，不授运行装载/Game信用。源审分组仍以`REVIEWS91-INCREMENT126.json`及后到回执为准，异质结果不合成统一采用率；本包0POST/编测/CAS，不等待大cohort。
+
+运行owner后到报告：worker129于02:31:16.0517311Z实际请求342,745B，200完整返回13.633秒（headers12.872/TTFT12.873）；reported101066/142/101208，cached=null。seq276普通qwen CROWN于02:31:39.332提交，02:31:44.093独立确认law0→1/prestige220m→200m、APPLIED；本轮新增普通APPLIED1，与旧FOCUS分开，新增日0。末plan pendingwait/brief票空不否此前HTTP；后继replay合同故障END/next47不重放已应用动作。证据`D:/ck3-state/resume90-runtime/worker129.stdout.log`；不同请求的payload/token/时延不推alias或cache因果，本文未另读CAS。

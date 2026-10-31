@@ -198,3 +198,14 @@ Root alias五单的初始生产strict红、测试语法红、后续1P1F及owner�
 M4 composed809 producer R1零owner Java修改，strict单源0/0.5047971秒，首次64例生成0/0.1426794秒，families33+31、56,677完整backing rows；此producer回执不授Native/Game信用。oracle R2保留框架，E9 guard仍由owner +1/−1行修补，非整稿原样采用。源审READY/0CL已是历史：首1TU0/3.7244436秒与首64 Native0/0.7271757秒在01:43快照前结束；组合Java差分01:44:35才后到，不算截止当刻已组合通过。原件为`D:/ck3-state/resume91-m4-native/sort809-composed91/`下`INPUTS-ACTUAL01.json`、`NATIVE-MODEL-REVIEW02.json`及两个Native实际回执。
 
 同一01:43:10冻结窗口的新IP432任务/454尝试、当刻0在途，阶段峰6与历史峰8分记；监视不是模型调用，数量也不构成采用率。冷回放候选虽两次200/stop，仍被源审整拒，不能把传输完成当实现可用；具体边界见[运营页](autonomous-agent-progress/2026-10-31-resume91-models.md)和[能力边界](local-model-capability-boundary-2026-10-28.md)。本次文档交付未POST或编测。
+
+
+### resume91 portable128 复杂候选与成熟typed任务
+
+M4六RF merge329组合：Native R2框架经owner +9/−6行修补后，首64例Native/Java差分绿，不能记为整稿原样或新模型算法完成。十RF full253首稿reset后重试length，部分响应不拼接；R2去重源码前缀99,483→51,113字符，保留完整API、29个external map及纯数据头。数据头8,361B/0函数，10原RF body总4,052B，不能混称。R2输出5,390 tokens后仍需owner +48/−37行修正relocation验证，才首64例双绿。输入缩减、TTFT或不同请求耗时不证明cache因果；仅有限域及standard memmove边界，不授全路径、CRT、full880或Game。
+
+资源时序必须保留：full253首Native实际在worker128安装START与LOOP之间，当时未收到BEGIN、事后才纠正；Java差分在LOOP后。不能把消息空档当真实无重叠，也不重跑抹除记录。原件为`D:/ck3-state/resume91-m4-native/{merge329-composed91,dispatch253-composed91}/ACTUAL-ACCEPTANCE01.json`及后者`NATIVE-CHRONOLOGY-CORRECTION02.json`。
+
+成熟typed任务的成功亦有明确前提。M5 military856050125由owner先固定API/ABI/reset描述符；plan首稿和probe源审纠错后两leaf原样研究采用，owner代码0、21新case、production0，并非模型自主ASM发现。Government128四POST，两首方法原样；probe真实三处OptionalLong.get编译红后一次纠正为getAsLong，generic Optional.get保留，最终3leaf原样、ownerJava0/production0。109 checks来自27数据fixtures+1结构检查，不是109 cases；22C9F60仅16B片段/PDATA0未知，停止组合，不硬派半截源码。
+
+据[worker指南](local-model-worker-guide.md)提供真实直接合同及诊断，两轮后必要时owner接管，保留源审、编译、行为与修补粒度。D回执仅本机证据，其他机器依统一配置在自己的获准root运行caller；不复制本机账本或Game现场。
