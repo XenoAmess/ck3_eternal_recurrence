@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式runtime161单Journal已发表9b2b32d80d；Main161实际10:42:34.980982Z preloop END1/60.899645秒、无LOOP，HOLD已解除。旧219/schema和FOCUSsuffix已越，后完整history→retainCapturedAction236的Driver行/session比较失败待162；不把sourcehelper6assert冒wholecold绿。M6 reader550fe8c20b/M7 decode68bdcff57a已正式且M6singleprod实际合MB161。本岗复用首验、0新编测，原CANCEL395/父396已settled不重发、新日0，不写S/MB/Game/账本。
+最新正式Journal162已发表5e7bbf0c37，Main162实际10:54:00.287831Z preloop END1/54.378167秒、无LOOP/HOLD解除。旧单行假设已改为完整producer合同，实际到State.requireOriginal94因legacy source JSON节点表示比较失败，未到CanonicalOnly397；163归运行岗独占，不冒wholeSession恢复。M1模型HTTP retry159四叶5167fd6453已正式，默认6次/10秒初base、预算优先，尚不预授Main加载。本岗0新编测/模型调用，原CANCEL395/父396已settled不重发、原398pending不伪清、新日0，不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -557,3 +557,10 @@ M7 decode163四新叶正常FF68bdcff57a。独立读完52B原decode：第一opaqu
 
 
 161后到实际10:42:34.980982Z preloop END1/60.899645秒，无LOOP/HOLD已解除。真实旧219/schema和FOCUS-only suffix门已越，完整history1208随后retainCapturedAction236拒captured ACTION history changed another Driver row or session；162由obli独占，不改已结算父子或重controls。本161 source只按实际越过范围授信用，完整cold/Driver恢复未通过，9b2b正式与软件helper6assert不倒授全链。
+
+
+## retry159正式采用与162完整ACTION原件重放
+
+M1 retry159四叶正常FF5167fd6453：缺省最大总attempts从3到6、初始retryBackoff从200ms到10秒；Root明确授权显式非零retry_backoff_ms也作为initial base逐次倍增，先cap60秒再±20% jitter，显式0立即重试。原wall/nano/command deadline及逐attempt stream/archive/progress、永久错误单次、ACCEPT前后到期拒绝全部保留；原较短预算优先，不保证总能完成6次。保五参构造器/schema/范围，无新增配置字段。必要baseline5源strict0/2.6513847秒→六新method4P2F，candidate仅2prodstrict0/1.961834秒→同六新method同一candidate JVM6P0skip/3.2866128秒，两阶段为独立JVM。实际loopback五瞬时错误后第六200使用0backoff；400只1次；首503后softwareClock越原deadline不再发。非零长等待/jitter分布未行为实测，只源审/strict。生产config01/selector02模型执行代码原样、owner补注释与测试API/断言；writer保正式HEAD已有step.value序列化与对应wire-name断言，owner完整候选继承旧Object.toString/缺原断言，仅对照候选作两处投影，不整叶覆盖/不改retry算法。Main/S/MB配置本岗未写，真实加载由运行岗自然边界，不为此单重启。
+
+Journal162单叶5900B正常FF5e7bbf0c37，sealed SHAab8d66e5a60c0963cb1577bb6e29192b54cde0e274ba2b15265785ee6fae5ffb，1Checking/0Skipped、与candidate全文归一化相同。retainCapturedAction两调用传实际same Session，复用State.requireOriginal完整Legacy/Gift多row/CanonicalOnly producer重放；coverage指首primary row的oldsize+1，CanonicalOnly保不变Driver+原source，不再强造legacy单row。原session/所有非history字段由原完整producer验证，并保161pending角色。owner在消费模型前并行实现，后模型非法var声明/冗余>=拒绝0采用；复用strict0/2.291332秒与actual277175→176、309212→213、397287→287不变Driver的typed DATA三形态0/2.061939秒，未构建sameSession/fullhistory镜像，不携固定D probe进CI。Main实际MB162 preloop END1/54.378167秒，full verifier94先拒legacy row changed its canonical original source，未到397；源修复和完整恢复分别记录，下一163独占State/Codec真实roundtrip。无新父子重发/日期/SAVE信用。
