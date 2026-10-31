@@ -351,6 +351,15 @@ public final class RootPlanningInputsFactory {
                         ActionEffects.validateCompositeChildren(command,settled.execution(),settled.settlement(),children);
                         StrictJson.require(!receipt.visibleGameplay()&&!receipt.eligibleAdvance()&&receipt.applied().isEmpty(),
                                 "interrupted Life prefix cannot claim gameplay or day credit");
+                    } else if(settled.settlement() instanceof ActionState.CompositeControlApplied cancelledControl
+                            &&cancelledControl.observation().semantic().actual().contains(new ExpectedText(
+                                    new FieldKey("progress_status"),"initialization_cancelled"))) {
+                        var children=settled.execution().children().stream().map(child -> canonicalActions.stream()
+                                .filter(value -> child.actionId().equals(value.command().actionId()) && child.bodySha256().equals(value.bodySha256())).findFirst()
+                                .orElseThrow(() -> new IllegalArgumentException("Life cancellation child is absent from held canonical planning actions"))).toList();
+                        ActionEffects.validateCompositeChildren(command,settled.execution(),settled.settlement(),children);
+                        StrictJson.require(!receipt.visibleGameplay()&&!receipt.eligibleAdvance()&&receipt.applied().isEmpty(),
+                                "Life cancellation cannot claim gameplay or day credit");
                     } else {
                         StrictJson.require(settled.settlement() instanceof ActionState.Applied
                                 ||settled.settlement() instanceof ActionState.CompositeNoGameplayWrite
