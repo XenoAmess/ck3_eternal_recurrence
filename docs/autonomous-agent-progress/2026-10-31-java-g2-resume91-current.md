@@ -1,5 +1,15 @@
 # Java / G2 resume91 当前执行记录
 
+## 2026-10-31 22:00 UTC：累计16个游戏日与第二次自然保存已确认
+
+同一原版无模组 Game71464（出生 FILETIME134378397668266369）继续保留。worker198/PID329912（出生 FILETIME134379569814969446）于21:53:28.800178Z真实进入普通循环 next68；第二次自然 SAVE527 于21:56:48.6915372Z实际 APPLIED，随后528于21:59:54.820383900Z记录 SAVE_CONFIRMED。这两个时刻分别表示保存动作结算和保存周期确认，不合并记成同一事件。
+
+运行岗22:00:34.063889Z薄读 canonical528/running、date_raw53144712（1066-10-01）、completed_cycles=5、pending=null、native373/public320。从本局原 date_raw53144328 累计实际推进并保存16个游戏日；下方首次八天和首次 SAVE 未确认的段落保留其当时事实。当前历史 interruption 中的 completed_cycles=4 属旧中断快照，不能覆盖当前周期状态的5。
+
+精确原件为 `continuity/ROOT-CONTINUITY-WINDOW-EVENTS/00000528.json`，101652B，SHA256 `a787983a887f449288a0aa194a4336c3b63db1fa49363d3c78d46c76465aeaa9`。Native于22:03:37.180304–22:03:37.181515Z仅对这一具名小event独立读取、核SHA与字段，结果存于 `D:/ck3-state/resume91-native-integration/EXACT-SAVE-CONFIRMED198-READBACK.json`；未读取save/pair/Driver/SEM大体或查询Game。实际Main198两生产类的必要联合strict和增编仅属源码验证，16日与保存信用来自真实运行回执。
+
+worker198常驻继续普通qwen决策；不因文档、性能候选或正式发表重启。原ARM507、resume513及已结算父515不重放，首SAVE491不重发；没有部署新研究DLL或新开Game。G2按最后已确认里程碑仍6/8，16日和两次保存不替代完整M6/M7自然机制、继承与多场景验收。实时决策仍按用户要求只合成到最终视频；本段不授实际OBS录制或绘制通过。
+
 ## 2026-10-31 16:59 UTC：实际推进八天，首次 SAVE 只读恢复继续
 
 同一原版无模组 Game71464（出生 FILETIME134378397668266369）已实际从 date_raw53144328 推进到53144520，共8个游戏日。Native 原始 ClockRead 证明 completed_daily_ticks=8、overshoot=0、pause_wrapper_called=true、pause_observed=true、abnormal=false；parent484实际 COMPOSITE_SETTLED/APPLIED，487于16:20:06.3099367Z以 ELIGIBLE_ADVANCE 收束，周期 completed4、pending=null。真实结算原件为 continuity/artifacts/1b0af22107acf6d23c865fba40cb9d7425a62e4193647a7822652dbf51b141e4.bin（9081B），完整原件索引在 D:/ck3-state/resume91-runtime/ordinary180-build/ACTUAL-FIRST-8DAYS.json。本段授实际八天；G2整体仍6/8，不将软件组件或八天进展记为完整M6/M7完成。
