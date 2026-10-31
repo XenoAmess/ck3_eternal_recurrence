@@ -799,7 +799,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                     awaitHello(deadline);
                     actual = retained;
                 } catch (IOException failure) {
-                    throw new UncheckedIOException("Native observation unavailable; no Python fallback", failure);
+                    throw new UncheckedIOException("Native observation unavailable; no Python fallback: " + observationFailure(failure), failure);
                 }
             }
             if (actual.observedAt().plus(maximumAge).isAfter(Instant.now())) return actual;
@@ -820,7 +820,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if (!snapshotUndelivered || snapshot == null) throw new IOException("Native state snapshot frame budget exhausted");
             verifyEndpoint(); snapshotUndelivered = false;
             return Objects.requireNonNull(acceptedSnapshotFrame,"actual accepted snapshot occurrence unavailable");
-        } catch (IOException failure) { throw new UncheckedIOException("Native observation unavailable; no Python fallback", failure); }
+        } catch (IOException failure) { throw new UncheckedIOException("Native observation unavailable; no Python fallback: " + observationFailure(failure), failure); }
     }
 
     @Override public synchronized ObservedFrame currentSnapshot(Instant captureUntil) throws IOException {
@@ -1562,6 +1562,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     private static RejectedBeforeDispatch zero(String requestId, String reason) {
         return new RejectedBeforeDispatch(requestId, new ZeroDispatchProof(ZeroDispatchStage.BEFORE_WRITE, 0, reason, Optional.empty()));
+    }
+    private static String observationFailure(IOException failure) {
+        String detail = reason(failure);
+        return detail.substring(0, Math.min(512, detail.length()));
     }
     private static String reason(Exception failure) { return failure.getClass().getSimpleName() + ": " + Objects.toString(failure.getMessage(), "unavailable"); }
     @Override public synchronized void close() throws IOException {

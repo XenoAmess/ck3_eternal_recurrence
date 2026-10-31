@@ -4,6 +4,7 @@ import static org.xar.ck3.control.contracts.StrictJson.require;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.UncheckedIOException;
 import java.math.BigInteger;
 import java.time.Duration;
@@ -20,6 +21,8 @@ import org.xar.ck3.control.application.advance.*;
 import org.xar.ck3.control.application.driver.HeldDriverObservationPort;
 import org.xar.ck3.control.application.effects.NativeEffectRegistry;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
+import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
+import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
@@ -252,7 +255,7 @@ public final class RootAdvanceInfrastructureFactory {
                 return context.withSession(same->{
                     if (ActionChildPlanningScope.isReservedChild(same, same.head(), parent)) {
                         context.adopted().authority().requireOutsideObservationScope(same);
-                        return sameHeld.current(parent, deadline);
+                        return freshReservedChildObservation(same, parent, deadline, sameHeld);
                     }
                     var borrowed=context.collector().withActiveCurrent(same,parent.before(),deadline,lease->{
                         var original=lease.frame();
@@ -276,5 +279,36 @@ public final class RootAdvanceInfrastructureFactory {
             }catch(IOException failure){throw new UncheckedIOException("actual held clock observation unavailable",failure);}
         }
         @Override public Frame next(ActionCommand parent,ObservationIdentity after,Instant deadline){return actual(parent,deadline).next(parent,after,deadline);}
+        private Frame freshReservedChildObservation(ContinuityStorePort.Session same, ActionCommand child,
+                Instant deadline, HeldDriverObservationPort sameHeld) throws IOException {
+            var receipt = context.core().journal().locked(same, locked -> locked.find(child.actionId()).orElseThrow());
+            require(receipt.command().equals(child) && receipt.bodySha256().equals(ActionCodec.bodySha256(child)),
+                    "reserved child receipt crossed its actual command/body");
+            var ack = receipt.ack().filter(NativeActionPort.AckReceived::nativeOk)
+                    .orElseThrow(() -> new IOException("actual reserved child has no successful original ACK"));
+            NativeFreshSnapshotPort.Result fresh;
+            try { fresh = context.transport().readFreshFullState(deadline); }
+            catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                var failure = new InterruptedIOException("actual reserved child fresh read interrupted; no replay");
+                failure.initCause(interrupted);throw failure;
+            }
+            if (fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
+                String reason = unavailable.reason();
+                throw new IOException("actual reserved child fresh read unavailable: " + reason.substring(0, Math.min(512, reason.length())));
+            }
+            var received = (NativeFreshSnapshotPort.Received)fresh;
+            NativeFreshSnapshotPort.verifyAfter(ack, received);
+            var complete = sameHeld.project(received.originalFrame(), deadline);
+            require(child.before().machineId().equals(complete.identity().machineId())
+                    && child.before().game().equals(complete.identity().game())
+                    && child.before().frame().episodeRunId().equals(complete.identity().frame().episodeRunId())
+                    && child.sessionId().equals(complete.sessionId()) && child.source().equals(complete.source()),
+                    "observation crossed held parent Game/source/session/episode");
+            return new Frame(complete.identity(), complete.source(), complete.sessionId(), complete.semantic(),
+                    new ObservationProvenance.Push(complete.identity().frame().snapshotId(),
+                            complete.identity().frame().identity().nativeRevision(), complete.originalEvidence()),
+                    complete.observedAt(), complete.originalEvidence());
+        }
     }
 }
