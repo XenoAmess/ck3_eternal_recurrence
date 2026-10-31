@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `ff3875d835`，136–139共10个生产叶与140两个生产叶已按准确小补丁正常发表，复用owner必要strict与direct检查，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码 FF 已至 `e5a38dff72`，136–139共10个生产叶、140两个生产叶、Crown既有空publication单hunk与Sentinel IDLE0两生产叶/两新方法已精确发表，复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -298,3 +298,11 @@ formal与sealed runtime前像有一处早先未同步差异：RootFacts仍保“
 后到runtime明确源审授权：formal旧proof非空门可按D→sealed两行准确同步；未找到更早delta，不伪造其历史来源。只删该require、保Optional.empty，present仍真实capture/requireCurrent，原JSON/lease/history/身份不变；已读ProductionAdvanceReadiness.verifiedCrownMaximum原empty→45，runtime另指出既有AdvanceAdmissionBranchTest有该45断言，不为交付重绿。同步后RootFacts整个叶ignore-space-at-eol与140 sealed候选相同，主补丁53+/5-与本次1+/2-分别计，不追授模型新实现或140根因修复。
 
 140运行后另有8个Java augmentation semantic keys的真实失败，141独立P0由runtime另线推进，不把本次历史合同同步当该故障解决。2leaf140主包ff387、进度4bc已真实在master；本次仅一个生产hunk与本岗说明，0S/MB/Game/模型/编测。
+
+### Sentinel原生reset IDLE0最小合同修复
+
+`e5a38dff72` 精确采用M1 sentinel-idle140三叶，SentinelCodec与LateOutcome.Status只对IDLE状态把speed下界1改0；保取消后的IDLE1..5，ARM、所有非IDLE和SEM仍1..5，不动generation/date/flags/schema/source或动作资格。两生产完整类与两新Test已读，formal三叶ignore-space-at-eol与已验candidate一致、0writer语义改，无新资源/固定D路径/POM。模型首轮两个实现span和两个方法原样采用，owner语义0；未用旧BASE复用伪称模型重写。
+
+必要owner实际baseline3src strict0/1.718552秒，仅两新方法1P1F/0skip/OS1/2.153404秒，reset idle0精确SentinelCodec47红；candidate只两changedprod strict0/1.278327秒，同两方法同JVM2P0F/0skip/OS0/1.778244秒。原JBoss LogManager初始化ERROR尾行保留，不改测试成功/进程0事实。此为明确source-derived Native reset/cancel字段与directtyped边界，不是完整publicClockStatusRead封包/registered-read或Game实跑；UNAVAILABLE speed0仍未修、不能称所有状态wire已齐，也未归因worker140失败。不重旧表、无本岗编测/HTTP/Maven/Game/S/MB操作，运行岗自然选择加载边界。证据 `D:/ck3-state/resume91-java-delivery/SENTINEL-IDLE140-ADOPTION.json`，上游manifest/ACTUAL原件保留。
+
+此前Crown空publication单hunk已独立提交 `9b225e0e9b`，仅1+/2-；已按runtime源审同步sealed基线，不造更早历史delta，不把它混进140主包或最新141 augmentation修复。
