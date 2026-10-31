@@ -64,7 +64,7 @@ public final class ContinuityActionJournal implements ActionJournal {
                     }
                     if (next instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.ControlApplied control) { archive.preserveRead(control.read()); control.supportingReads().forEach(archive::preserveRead); control.reconciledAck().ifPresent(value -> archive.preserve(value.ack())); }
                     if (next instanceof ActionState.CompositeSettled settled) {
-                        ActionEffects.validateCompositeChildren(settled.execution(), settled.settlement(), settled.execution().children().stream()
+                        ActionEffects.validateCompositeChildren(command, settled.execution(), settled.settlement(), settled.execution().children().stream()
                                 .map(child -> lookup(head.state(), child.actionId(), archive).orElseThrow()).toList());
                         if (settled.settlement() instanceof ActionState.CompositeControlApplied control) {
                             archive.preserveRead(control.observation().terminalStatus()); control.observation().supportingReads().forEach(archive::preserveRead);

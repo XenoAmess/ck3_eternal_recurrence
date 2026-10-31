@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进145 original reconciliation observer单叶，前序144四组22prod（Core10→Life4→consumer5→Boot3）已正常FF至 `5ab4d41e7b`；保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进146 Journal真实parent参数单行，前序145 original reconciliation observer单叶已发 `8b906853ab`；前序144四组22prod（Core10→Life4→consumer5→Boot3）已正常FF至 `5ab4d41e7b`；保先前child observer144两prod/一portable Test；144实际preloop END1/59.962秒，未LOOP、原durable child仍unresolved，不授恢复或游戏日；前序M7 E91D90 slot0、143 clock/Journal、142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -387,3 +387,12 @@ Life proof保原完整plan/expected/source/session/Game/actor、精确1–2个ch
 真实本地.11在06:57:08.995684→06:57:25.326241Z stop16.330秒/TTFT4.140秒，30666in+2137out、8fullsources132947B，cached未知。模型主逻辑partial采用，owner以实际var修Complete类型、单次active flag和原Pending分支，将wholemethod收窄两hunk，raw原样hunks0。复用唯一prod strict all,-try/Werror0/7.1420599秒；RootFreeze软件用例仅源码，test compiler/JVM均未spawn，不携UNRUN固定D fixture入CI、不宣称行为绿。
 
 runtime已S/Z源审采并MB145实际只重编application1源0/12.978秒；worker145于07:06:26.292Z实际preloop END1/114.001秒，无LOOP。真实canonical373原child set-speed5已由原request/ACK/dispatch及独立Native236/public267确认SETTLED/APPLIED，speed5/date53144328；没有重发child，父仍Unknown/未新typed terminal。后继真实故障是ContinuityActionJournal.append67漏传parent的Effects调用，Core软件positive用内存journal未覆该真实writer路径，146另线修。此前144实际未恢复事实保留；该子控制Applied不授普通世界动作、游戏日或SAVE信用。本formal单叶与sealed candidate仅EOL/尾空白同、0writer语义改；未新增模型/编测/Game/S/MB操作。证据 `D:/ck3-state/resume91-java-delivery/OBSERVER145-ADOPTION.json`。
+
+
+## parent-aware Journal146真实append边界
+
+只改ContinuityActionJournal.append67的一行，在generic CompositeSettled真实writer入口调用parent-aware ActionEffects.validateCompositeChildren(command,execution,settlement,canonicalChildren)。传当前append的actual command，不用null或重构parent；原canonical子ID/body lookup、transitions/source/UNKNOWN/原writer操作均保持。旧parentless overload的拒绝继续保，其他fixed old-type分支未泛改。plain patch因EOL未应用，ignore-space-change check/apply0后整叶仅EOL/尾空白与sealed同，0writer语义改。
+
+真实本地.11 runtime-life-parent146首候选HTTP200stop2.945秒/TTFT2.113、14562prompt+152completion，单行原样采用/owner算法0。复用owner单prod strict0/2.0822793秒；唯一新case复用明确software144 parent/children，以真实生产ContinuityActionJournal.locked(session).append穿过Effects/canonical-child，进入Writer.preview callback并核完整parent/source/terminal，再故意停在commit前：candidate1P0F/2.0604166秒，原Journal-only override旧Effects257/append67同message预期RED1F/1.703097秒。两次为独立Java启动，物理commit0、Native0、Game0，不授完整archive/physicalwriter commit/冷Root恢复。无fixed-D Sample probe入便携CI，旧144四/一用例未重跑，本岗未新编测/模型。
+
+Main已S/Z采且开始MB146/安装HOLD，仅父readonly finish；145原canonical373子控制已独立Applied不重发，父在最新已知状态仍Unknown。该单行修复未预授146 LOOP/新typed父终态、游戏日或SAVE。回执 `D:/ck3-state/resume91-java-delivery/PARENT146-ADOPTION.json`，owner实际COMPILE/TEST/BASELINE-TEST-RESULT及READY原件完整保留。
