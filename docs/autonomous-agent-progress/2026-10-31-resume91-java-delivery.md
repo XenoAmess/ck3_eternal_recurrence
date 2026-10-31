@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `92acdf38bd`，跨机本地模型指南 `d0974cf62c` 与三页新经验 `531bf67d77` 已正常推送 GitHub master。M7 新11叶组件 `40f12ee29d`、Crown 原读取范围 `3895b11e11` 和有限错误诊断均已准确采用，所有必要绿复用 owner 实际回执。运行 owner 后到事实为同局129一次新的普通 CROWN APPLIED（区别于旧 FOCUS），新增日仍0；随后130在恢复前置 exit1/未 LOOP，不能重放已应用的 CROWN。本岗不写 S/MB/Game/账本，正式源码、装载、业务结果和游戏日分别记录。
+最新正式源码 FF 已至 `fee947f31c`。跨机指南及两波模型经验均已正常推送 GitHub master；本波又接 settled131 恢复解释、Crown 已应用结果消费、132重复审计削减及 M7 新605B组件。所有必要绿复用 owner 实际回执。运行 owner 确认131同局已消费实际CROWN结果为 enacted/pendingnull，132于03:03:16.4561438Z真实LOOP/next48；普通新CROWN APPLIED1与旧FOCUS分列，新增日仍0，不重放已应用动作。本岗不写 S/MB/Game/账本，正式源码、装载、业务结果和游戏日分别记录。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -218,3 +218,17 @@ Root docs11 `adcb0dd6fe` 对13页逐页diff后仅9内容变化页+AGENTS共10叶
 - Crown有限诊断 `92acdf38bd`：RootGovernanceDomains只在Blocked reason前放实际ACK状态/requestID及有限error，packet最多65540B解析、error最多512字符，非ACK原reason不改。formal/input有界ignoreEOL diff0，准确patch仅适配EOL，最终formal/candidate ignoreEOL diff0。复用owner单leafstrict0/2.387，首因旧fields deprecation的-Werror红仍保，明确排除该旧warning后才绿；无镜像test、状态/UNKNOWN/Native调用改变，未包含同叶未READY的semantic候选。
 
 运行后到事实仅引用已给的 owner 原件，不由本岗额外扫描 CAS：runtime129于02:31:39.332提交CROWN、02:31:44.093独立确认APPLIED，law0→1/prestige220m→200m，原回执 `b4dced5565769d363203137cd1d2c62aa15b77b94fe57219aa81b293b181a646.bin`（10260B），新增普通APPLIED1与旧FOCUS分列，新增游戏日/SAVE仍0。随后final-terms纯replay缺口造成失败；130虽已MB编入两叶，却在02:43:12.935172Z前置恢复exit1/24.964秒、未LOOP，安装HOLD已释放。新的合法Crown settled回执不应触发“动作必须不变”旧解释；131最小恢复修复由runtime/provider独占推进。本岗不重开Game、不重放CROWN，不以本次发表宣称自动游玩目标完成。
+
+## settled131、Crown消费132与605B后继正式采用
+
+本波在Native正式 `a38c6a8dd8` 祖先之后按精确patch顺序正常FF，未整叶覆盖：`371d0c6678` 单Journal只去恢复suffix两条永禁ACTION条件及Focus-only operation条件，allsettled、owner/source、Driver前缀/session、真实legacy row和cycle检查保持；复用owner单prod strict0/2.403秒与实际Crown/Driver材料3检查，固定D probe不直接进CI。模型遗漏第三门的完整实现被拒，最终为owner接管，不能授原样模型实现。runtime随后131真实LOOP，旧恢复阻点实际越过。
+
+`3e90b7e0bd` 单RootGovernanceDomains将明确CROWN_APPLIED输入kind传播到reducer、publication和cadence，只接受原canonical primitive APPLIED、原pending law/quoted payment及独立后态/真实NativeEffect材料，不再为已结算结果补发final-terms查询。复用owner两源strict0/2.555秒与6DATA投影/反例0/1.056秒，首runner Optional错误和旧lint边界保留；这是小refs DATA测试，不授全archive/writer图。模型传播partial，owner修API/no-read replay/真实law-payment绑定。runtime131后到实际287 CROWN pendingnull、resolved.enacted/material_resulttrue已提交，这是运行owner事实，不由本岗重新读取账本或补测。
+
+`b2f5133d1f` 随后只删requireMaterialSettlement后19行重复event遍历、fileIdentity/pin与全history replay；前缀sameSession、实际canonical APPLIED、当前typed material/requestID及原effect关系逐字保持。模型删除hunk原样，singleprod all,-try/Werror0/2.488秒；旧deprecation所在循环被删，不再额外排除该lint，未重6DATA或新增镜像test。runtime132单source MB0/5.351秒，03:03:16.4561438Z真实LOOP/next48，不能以audit删除或装载授新游戏日。
+
+用户授权的review131三经验以 `133514d9ce` 精确EOF发表：formal旧prefix34735/35238/25178B全部保留，追加1444/1558/1494B与manifest SHA一致、唯一heading各1。49固定任务窗中的6原样、2待编、14部分、22拒绝、3分析、2当刻未知保持异质scope，不合统一采用率；M1后到selector source-bound红绿、M4软件接线owner成本、M7 memory/单NaN方法与owner core/其他tests署名分开，不回填旧时点。0新增模型调用、编测或config/guide改动。
+
+M7 `fee947f31c` 为现g2-research四新叶：SparseIntCells177和Memory/Basic/Carry三test，无POM。1prod与held605B的24项独立source审相符：signed32→64 mask/hash索引、BYTE距离wrap、lookup固定key/后续fresh key/value、float32阈值、carry回滚、nonLOCK INC32、8+1与完整raw128输出分支均保原顺序；opaque helper、symbolic私有frame和Java固定RNE投影不宣称完整NativeABI/MXCSR/DAZ/FTZ/自然drain。正式只补此范围注释并清新test末尾空白，production执行token与已验owner03逐项相同。
+
+必要验收复用owner首次1prod strict0/0.467秒、3test strict0/0.9268406秒及首8JUnit8P/0skip/JVM0/0.7415414秒。外层维护工具在JVM终态和XML保存后因GBK无法打印Unicode而exit1，原件保留，不把它改成外工具成功或当成Java行为红。core是owner接管；Memory完整模型原样、Basic只有NaN方法原样，其余Basic及Carry由owner修补/编写，不能写成8个模型原稿通过。后继composed-one93未到，不作为这4叶前置或虚授已跑，无Native/Game/SAVE信用。
