@@ -43,7 +43,10 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
     private final CheckpointFiles files; private final DriverCheckpointStore drivers; private final CheckpointRequest.ObservationPort observations;
     private final Path evidenceRoot; private final Clock clock; private final SeedAdoptionPort seeds; private volatile ActionCoordinatorPort actions;
     @FunctionalInterface public interface BorrowedSession { org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session current() throws IOException; }
+    @FunctionalInterface public interface OriginalCollectionWork { CheckpointResult collect(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same) throws IOException; }
+    @FunctionalInterface public interface OriginalCollectionScope { CheckpointResult collect(OriginalCollectionWork work) throws IOException; }
     private ActionPorts.OutcomeArchive evidenceArchive;
+    private volatile OriginalCollectionScope originalCollection;
     private BorrowedSession evidenceSession;
     private CheckpointCommitVerifier.WriterLeaseVerifier evidenceAuthority;
     /** Install the same original writer archive once, before this service enters the executable catalog. */
@@ -61,6 +64,11 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
     }
     public synchronized void bindActions(ActionCoordinatorPort authority) {
         if (actions != null) throw new IllegalStateException("checkpoint action authority already bound"); actions = Objects.requireNonNull(authority);
+    }
+    public synchronized void bindOriginalCollection(OriginalCollectionScope scope) {
+        StrictJson.require(originalCollection == null && actions == null && evidenceArchive != null && coldBinding != null,
+                "original collection must be installed once by the bound source before actions");
+        originalCollection = Objects.requireNonNull(scope);
     }
     /** Installed only by the same Root stage, before this service joins the executable catalog. */
     public synchronized void bindColdRecovery(Path actualSavePath, String actualLineageId) {
@@ -99,7 +107,25 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
     public CheckpointResult queryOriginal(String originalActionId,Instant freshDeadline)throws InterruptedException {
         StrictJson.text(originalActionId);Objects.requireNonNull(freshDeadline);
         AttemptContext context=contexts.get(originalActionId);
-        if(context==null)return new CheckpointResult.Unknown(originalActionId,"original private SAVE context is unavailable; never submit",Optional.empty());
+        if(context==null) {
+            if (originalCollection == null) return new CheckpointResult.Unknown(originalActionId,"original collection scope unavailable; never submit",Optional.empty());
+            Instant now=clock.instant();
+            if(!now.isBefore(freshDeadline))return new CheckpointResult.Unknown(originalActionId,"original SAVE query deadline expired; zero dispatch",Optional.empty());
+            Instant maximum=now.plus(ActionObservationWindow.MAXIMUM_WINDOW);
+            Instant bounded=freshDeadline.isBefore(maximum)?freshDeadline:maximum;
+            if(Thread.interrupted())throw new InterruptedException("original SAVE query interrupted before collection");
+            try {
+                CheckpointResult result = originalCollection.collect(new OriginalCollectionWork() {
+                    @Override public CheckpointResult collect(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same) throws IOException {
+                        return collectColdApplied(originalActionId, same, bounded);
+                    }
+                });
+                if (Thread.interrupted()) throw new InterruptedException("original SAVE collection interrupted; no dispatch");
+                return result;
+            } catch (IOException | IllegalArgumentException | java.io.UncheckedIOException failure) {
+                return new CheckpointResult.Unknown(originalActionId, failure.toString(), Optional.empty());
+            }
+        }
         if(actions==null)throw new IllegalStateException("unique action coordinator is not bound");
         Instant now=clock.instant();
         if(!now.isBefore(freshDeadline))return new CheckpointResult.Unknown(originalActionId,"original SAVE query deadline expired; zero dispatch",Optional.empty());
@@ -116,6 +142,115 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
             return new CheckpointResult.Unknown(originalActionId,failure.toString(),Optional.ofNullable(receipt));
         } finally {originalQuery.remove();}
     }
+    /** Re-collect a canonical already-applied SAVE without recreating a lost pre-dispatch context. */
+    private CheckpointResult collectColdApplied(String actionId,
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same, Instant deadline) throws IOException {
+        ActionPorts.OutcomeArchive archive;
+        CheckpointCommitVerifier.WriterLeaseVerifier authority;
+        ColdBinding installed;
+        synchronized (this) { archive = evidenceArchive; authority = evidenceAuthority; installed = coldBinding; }
+        if (archive == null || authority == null || installed == null) throw new IOException("source-installed original SAVE collection is unavailable");
+        authority.require(same);
+        var head = same.head();
+        var bound = archive.withSession(same);
+        ActionReceipt receipt = ContinuityActionJournal.lookup(head.state(), actionId, bound)
+                .orElseThrow(() -> new IOException("original SAVE is absent from the actual current canonical chain"));
+        try {
+            requireCollectionTime(deadline);
+            var command = receipt.command();
+            StrictJson.require(command.actionId().equals(actionId)
+                    && command.operation().equals(new OperationKey("save-checkpoint"))
+                    && command.origin() instanceof CommandOrigin.Gameplay
+                    && command.origin().machineId().equals(head.state().machineId())
+                    && receipt.bodySha256().equals(ActionCodec.bodySha256(command))
+                    && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                    && receipt.state() instanceof ActionState.Settled settled
+                    && settled.settlement() instanceof ActionState.Applied,
+                    "original collection requires this exact canonical settled gameplay SAVE");
+            var state = (ActionState.Settled) receipt.state();
+            var attempt = state.attempt();
+            if (!(state.dispatch() instanceof NativeActionPort.AckReceived ack))
+                throw new IOException("settled SAVE has no original native acknowledgement");
+            StrictJson.require(ack.nativeOk() && ack.requestId().equals(attempt.requestId())
+                    && attempt.preparedRequest().step().equals("save-checkpoint")
+                    && command.origin().acceptsGuard(attempt.guard().origin())
+                    && attempt.guard().source().equals(command.source())
+                    && attempt.guard().sessionId().equals(command.sessionId())
+                    && attempt.guard().operation().equals(command.operation())
+                    && ack.outbound().isPresent(), "original SAVE changed its prepared request, source, session or positive ACK");
+            ack.custody().orElseThrow(() -> new IOException("original SAVE ACK custody is unavailable")).verify(ack);
+            var requestRef = bound.requestReferenceOf(attempt.preparedRequest());
+            var dispatchRef = bound.referenceOf(ack);
+            var receiptRef = bound.receiptReferenceOf(receipt);
+            StrictJson.require(bound.loadRequest(requestRef).equals(attempt.preparedRequest())
+                    && bound.load(dispatchRef).equals(ack)
+                    && bound.loadReceipt(receiptRef).equals(receipt), "original SAVE archive readback changed its complete receipt/Attempt/ACK");
+            ActionEffects.validate(command, attempt, ack, state.settlement());
+            var effect = ((ActionState.Applied) state.settlement()).observation();
+            StrictJson.require(effect.source().equals(command.source())
+                    && effect.sessionId().equals(command.sessionId())
+                    && effect.observerSchema().equals(CheckpointRequestFactory.OBSERVER_SCHEMA)
+                    && effect.supportingEvidence().size() == 2,
+                    "original SAVE lacks its exact installed poststate and two immutable pair/Driver roles");
+            byte[] pairBytes = bound.loadMaterial(effect.supportingEvidence().getFirst()).bytes();
+            CheckpointPair pair = CheckpointPairCodec.decode(pairBytes);
+            StrictJson.require(java.util.Arrays.equals(CheckpointPairCodec.encode(pair), pairBytes)
+                    && pair.saveActionId().equals(actionId)
+                    && pair.lineageId().equals(installed.lineageId())
+                    && Path.of(pair.save().reference().path()).equals(installed.savePath()),
+                    "original SAVE pair changed its action, complete body, configured path or lineage");
+            requireCollectedContinuation(command.before(), pair.frame());
+            requireCollectedContinuation(pair.frame(), effect.after());
+            byte[] ackPacket = ack.originalPacket();
+            StrictJson.require(pair.nativeAckRef().bytes() == ackPacket.length
+                    && pair.nativeAckRef().sha256().equals(ActionCodec.sha256(ackPacket)),
+                    "paired SAVE ACK differs from the actual original raw acknowledgement");
+            FileWitness ackFile = files.observe(Path.of(pair.nativeAckRef().path()))
+                    .orElseThrow(() -> new IOException("paired original SAVE ACK file is unavailable"));
+            StrictJson.require(ackFile.reference().equals(pair.nativeAckRef())
+                    && java.util.Arrays.equals(files.read(ackFile, ackPacket.length), ackPacket),
+                    "paired original SAVE ACK physical readback changed");
+            byte[] driverBytes = bound.loadMaterial(effect.supportingEvidence().get(1)).bytes();
+            var savedDriver = drivers.readArchivedSnapshot(pair, driverBytes);
+            StrictJson.require(java.util.Arrays.equals(savedDriver.encode(), driverBytes),
+                    "original complete saved Driver archive differs from its exact bytes");
+            var physicalDriver = drivers.readVerifiedOriginal(pair, savedDriver.session());
+            StrictJson.require(java.util.Arrays.equals(physicalDriver.encode(), driverBytes),
+                    "physical saved Driver differs from the original archived Driver");
+            drivers.verify(pair);
+            authority.require(same);
+            StrictJson.require(same.head().digest().equals(head.digest())
+                    && same.head().state().sequence() == head.state().sequence(),
+                    "original SAVE collection changed its actual locked canonical head");
+            requireCollectionTime(deadline);
+            SeedAdoption seed = Objects.requireNonNull(seeds.freezeFirst(pair, receipt));
+            requireCollectionTime(deadline);
+            drivers.verify(pair);
+            files.verify(ackFile);
+            authority.require(same);
+            StrictJson.require(same.head().digest().equals(head.digest())
+                    && same.head().state().sequence() == head.state().sequence()
+                    && ContinuityActionJournal.lookup(same.head().state(), actionId, bound).filter(receipt::equals).isPresent(),
+                    "original SAVE collection no longer retains its identical canonical receipt/head");
+            return new CheckpointResult.Confirmed(pair, pair.nativeAckRef(), pair.frame(), BigDecimal.ZERO, receipt, seed);
+        } catch (IOException | IllegalArgumentException | java.io.UncheckedIOException failure) {
+            return new CheckpointResult.Unknown(actionId, failure.toString(), Optional.of(receipt));
+        }
+    }
+    private void requireCollectionTime(Instant deadline) throws IOException {
+        if (Thread.currentThread().isInterrupted()) throw new IOException("original SAVE collection interrupted; no dispatch");
+        if (!clock.instant().isBefore(deadline)) throw new IOException("original SAVE collection bounded read deadline expired; no dispatch");
+    }
+    private static void requireCollectedContinuation(ObservationIdentity before, ObservationIdentity after) {
+        StrictJson.require(before.machineId().equals(after.machineId()) && before.game().equals(after.game())
+                && before.frame().episodeRunId().equals(after.frame().episodeRunId())
+                && before.frame().identity().player().equals(after.frame().identity().player())
+                && before.frame().identity().dateRaw().equals(after.frame().identity().dateRaw())
+                && before.observationVersion() == after.observationVersion()
+                && after.frame().identity().nativeRevision().compareTo(before.frame().identity().nativeRevision()) >= 0,
+                "original SAVE pair crossed Game/episode/player/date/version or regressed its persistent native revision");
+    }
+
     private CheckpointResult materialized(AttemptContext context,ActionReceipt receipt)throws IOException {
         CheckpointRequest request=Objects.requireNonNull(context).request;String id=request.saveCommand().actionId();
         StrictJson.require(receipt.command().actionId().equals(id)

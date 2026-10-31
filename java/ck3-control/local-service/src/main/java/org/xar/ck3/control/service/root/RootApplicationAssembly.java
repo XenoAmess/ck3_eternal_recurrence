@@ -689,9 +689,13 @@ public final class RootApplicationAssembly {
                         ||cycle==null||cycle.get("head")==null||cycle.get("head").isNull()
                         ||cycle.get("pending_receipt")==null||!cycle.get("pending_receipt").isNull())
                     return Optional.empty();
+                var finalizationHead = same.head().state();
                 boolean settled=actions.withFrozen(same,lease->{
                     boolean result=!lease.snapshot().actions().isEmpty()
                             &&lease.snapshot().actions().stream().allMatch(ActionReceipt::settled);
+                    if (result && ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, new SessionIdentity(game.machineId(), game.generation(), game.sessionId()), lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
+                        result = false;
+                    }
                     lease.assertCurrent();return result;
                 });
                 if(!settled)return Optional.empty();
@@ -735,10 +739,14 @@ public final class RootApplicationAssembly {
             StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty(), "unresolved reconstruction reads the unused actual Core");
             Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
             return writer.locked(same -> {
+                var finalizationHead = same.head().state();
                 boolean pending=actions.withFrozen(same,lease->{
-                    boolean found=lease.snapshot().actions().stream().anyMatch(action->!action.settled()
+                    var identity = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
+                    var originals = archive.withSession(same);
+                    var found=lease.snapshot().actions().stream().anyMatch(action->!action.settled()
                             || action.command().operation().value().equals("private-select-player-lifestyle-stock-focus-v1")
-                            && action.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED);
+                            && action.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED)
+                            || ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, identity, lease.snapshot().actions(), originals).isPresent();
                     lease.assertCurrent();return found;
                 });
                 if(!pending||same.head().state().status()!=org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED)
@@ -1253,6 +1261,7 @@ public final class RootApplicationAssembly {
             CheckpointService service = new CheckpointService(files, checkpoints, collector.checkpoint(lineageId), checkpointEvidence, clock, seeds);
             service.bindEvidence(archive, writer::borrowedSession, writer::requireSession);
             service.bindColdRecovery(savePath, lineageId);
+            service.bindOriginalCollection(work -> writer.locked(work::collect));
             CheckpointRequestFactory requests = new CheckpointRequestFactory(savePath, collector.checkpoint(lineageId));
             staged = true;
             return new Staged(this, identity, driver, game, inputs, collector, service, requests, files, checkpoints, attachmentEvidence,
@@ -1371,6 +1380,7 @@ public final class RootApplicationAssembly {
             var checkpointService=new CheckpointService(files,checkpoints,routedObservations,checkpointEvidence,clock,seeds);
             checkpointService.bindEvidence(archive,writer::borrowedSession,writer::requireSession);
             checkpointService.bindColdRecovery(savePath, lineageId);
+            checkpointService.bindOriginalCollection(work -> writer.locked(work::collect));
             var requests=new CheckpointRequestFactory(savePath,routedObservations);
             var staged=new Staged(this,sessionIdentity(driver),driver,game,inputs,collector,checkpointService,requests,files,checkpoints,
                     attachmentEvidence,null,runtime.context().reads(),new RootKnownReadObserver(writer));
@@ -1803,6 +1813,7 @@ public final class RootApplicationAssembly {
             CheckpointService checkpointService = new CheckpointService(files, checkpoints, collector.checkpoint(lineageId), checkpointEvidence, clock, seeds);
             checkpointService.bindEvidence(archive, writer::borrowedSession, writer::requireSession);
             checkpointService.bindColdRecovery(savePath, lineageId);
+            checkpointService.bindOriginalCollection(work -> writer.locked(work::collect));
             CheckpointRequestFactory requests = new CheckpointRequestFactory(savePath, collector.checkpoint(lineageId));
             Staged candidate = new Staged(this, identity, driver, replacement, null, collector, checkpointService, requests, files, checkpoints,
                     attachmentEvidence, new Restoration(previous, service, binding, runtime), runtime.reads(), new RootKnownReadObserver(writer));

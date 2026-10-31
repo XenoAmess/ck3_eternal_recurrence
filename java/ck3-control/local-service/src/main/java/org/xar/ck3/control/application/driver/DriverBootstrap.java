@@ -1025,6 +1025,7 @@ public final class DriverBootstrap {
                 &&retained.driver().session().bridgePid()==current.game().pid()
                 &&retained.driver().session().pipeName().equals(transport.pipeName()),
                 "settled retained Driver belongs to another physical Game or pipe");
+        var finalizationHead = same.head().state();
         var pendingLifeCycle=isolatedLife?same.head().state().toJson()
                 .path(WriterContracts.ORDINARY_CYCLE_FIELD).get("pending_receipt"):null;
         actions.withFrozen(same,lease->{
@@ -1037,7 +1038,9 @@ public final class DriverBootstrap {
                                 .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
                             || org.xar.ck3.control.application.session.ContinuityBatchJournal
                                 .readOnlySaveRecoveryRoot(lease.snapshot().actions()).isPresent()
-                            || pendingCancelledLifeCycle(lease.snapshot().actions(),pendingLifeCycle,archive.withSession(same)).isPresent()),
+                            || pendingCancelledLifeCycle(lease.snapshot().actions(),pendingLifeCycle,archive.withSession(same)).isPresent()
+                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                .readOnlySaveFinalizationRoot(finalizationHead,new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(old.machineId(),old.game(),old.sessionId()),lease.snapshot().actions(),archive.withSession(same)).isPresent()),
                         "read-only Life/SAVE adoption retains the complete canonical action set and exact pending recovery role");
             } else {
                 StrictJson.require(lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),
