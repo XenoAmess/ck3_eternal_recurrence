@@ -5915,12 +5915,17 @@ std::string HeldTitlePartitionFailureDiagnosticFrame12002(
 std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
                                std::uint64_t revision,
                                const CheckpointSubmission &checkpoint,
-                               std::string_view modal_choice_hint_json = {}) {
+                               std::string_view modal_choice_hint_json = {},
+                               std::string_view read_request_id = {}) {
   std::string result = "{\"type\":\"state_snapshot\",\"protocol_version\":1,"
                        "\"snapshot_id\":\"native:";
   result += Number(revision);
   result += "\",\"revision\":";
   result += Number(revision);
+  if (!read_request_id.empty()) {
+    result += ",\"read_request_id\":";
+    AppendJsonString(result, read_request_id);
+  }
   result += ",\"state\":{\"date_raw\":";
   result += SignedNumber(snapshot.date_raw);
   result += ",\"speed\":";
@@ -12717,7 +12722,8 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
                      WarEntryApplicationMainMailboxWorkerLifetime
                           *mailbox_lifetime = nullptr,
                      SnapshotPublishDiagnostics *diagnostics = nullptr,
-                     const xar::game::Snapshot *observed_snapshot = nullptr) {
+                     const xar::game::Snapshot *observed_snapshot = nullptr,
+                     std::string_view read_request_id = {}) {
   const auto record = [diagnostics](std::string_view status,
                                     std::uint64_t published_revision,
                                     std::size_t payload_bytes) {
@@ -12727,6 +12733,11 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
       diagnostics->payload_bytes = payload_bytes;
     }
   };
+  const bool forced = !read_request_id.empty();
+  if (forced && observed_snapshot == nullptr) {
+    record("fresh_observation_required", revision, 0);
+    return true;
+  }
   if (!bindings.supports_snapshot()) {
     record("unsupported", revision, 0);
     return true;
@@ -12769,16 +12780,30 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
     xar::ck3_12004::ObserveWarPaymentWindowFrame12004(g_war_payment_window_12004,
       PaymentFrame12004(snapshot,g_war_payment_connection_12004.load(std::memory_order_acquire),revision));
 #endif
-  if (previous.has_value() && previous.value() == snapshot &&
+  const bool unchanged = previous.has_value() && previous.value() == snapshot &&
       published_checkpoint_sequence == checkpoint.sequence
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
       && !modal_hint_changed
 #endif
-      ) {
+      ;
+  if (unchanged && !forced) {
     record("deduplicated", revision, 0);
     return true;
   }
-  ++revision;
+  std::uint64_t frame_revision = revision;
+  if (forced) {
+    if (!unchanged || frame_revision == 0) {
+      if (frame_revision == std::numeric_limits<std::uint64_t>::max()) {
+        record("revision_overflow", revision, 0);
+        return true;
+      }
+      ++frame_revision;
+    }
+  } else {
+    // Preserve the ordinary publication path's revision behavior.
+    ++revision;
+    frame_revision = revision;
+  }
   std::string modal_hint_json;
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
   modal_hint_json = "{\"status\":";
@@ -12801,14 +12826,24 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
         xar::mandatory_choice_v1::NativeReceiverIdentityV1(modal_hint.receiver));
   else modal_hint_json += "null";
   modal_hint_json += ",\"max_observation_age_ms\":2000}";
-  g_previous_modal_choice_hint = modal_identity;
+  if (!forced) g_previous_modal_choice_hint = modal_identity;
 #endif
   const auto frame = StateSnapshotFrame(
-      snapshot, revision, checkpoint, modal_hint_json);
-  previous = snapshot;
-  published_checkpoint_sequence = checkpoint.sequence;
+      snapshot, frame_revision, checkpoint, modal_hint_json, read_request_id);
+  if (!forced) {
+    previous = snapshot;
+    published_checkpoint_sequence = checkpoint.sequence;
+  }
   const bool written = xar::bridge::WriteFrame(pipe, frame);
-  record(written ? "written" : "write_failed", revision, frame.size());
+  if (forced && written) {
+    revision = frame_revision;
+    previous = snapshot;
+    published_checkpoint_sequence = checkpoint.sequence;
+#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
+    g_previous_modal_choice_hint = modal_identity;
+#endif
+  }
+  record(written ? "written" : "write_failed", frame_revision, frame.size());
   return written;
 }
 
@@ -15068,6 +15103,43 @@ std::string RunWarOccupationTargetsQueryV1(
   return response;
 }
 
+bool RunFreshFullStateQuery12004(HANDLE pipe,
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view payload) {
+  constexpr std::string_view step = "query-fresh-full-state-v1";
+  constexpr std::string_view capability = "game.query.fresh-full-state.v1";
+  const auto fail = [&](std::string_view reason) {
+    return xar::bridge::WriteFrame(pipe,
+        CommandResultFrame(request_id, step, false, reason));
+  };
+  std::uint64_t expected_revision = 0;
+  if (!xar::bridge::JsonUnsignedField(payload, "expected_revision", expected_revision) ||
+      expected_revision != 0) return fail("fresh_read_requires_revision_zero");
+  if (!game.enabled() || !xar::game::IsCk3_12004Descriptor(game.descriptor()) ||
+      !game.supports_snapshot() || !game.supports(capability))
+    return fail("fresh_full_state_unavailable");
+  xar::game::Snapshot observed{};
+  if (!xar::ck3_12002::ReadFreshFullSnapshot12002(game, observed))
+    return fail("fresh_full_state_read_failed");
+  SnapshotPublishDiagnostics diagnostic{};
+  if (!PublishSnapshot(pipe, game, state.previous_snapshot, state.state_revision,
+          state.checkpoint_submission, state.published_checkpoint_sequence,
+          nullptr, &diagnostic, &observed, request_id)) return false;
+  if (diagnostic.status != "written") return fail("fresh_full_state_not_published");
+  std::string ack = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(ack, request_id);
+  ack += ",\"ok\":true,\"result\":{\"schema\":";
+  AppendJsonString(ack, "xar.native.fresh-full-state-read/v1");
+  ack += ",\"request_id\":";
+  AppendJsonString(ack, request_id);
+  ack += ",\"snapshot_id\":";
+  AppendJsonString(ack, "native:" + Number(diagnostic.revision));
+  ack += ",\"revision\":";
+  ack += Number(diagnostic.revision);
+  ack += "}}";
+  return xar::bridge::WriteFrame(pipe, ack);
+}
+
 std::string RunCoreFrameQuery12004(const xar::game::GameAdapter &game,
     std::string_view request_id, std::string_view payload) {
   constexpr std::string_view step = xar::ck3_12004::kCoreFrameStepV1;
@@ -15712,6 +15784,11 @@ void RunConnectedSession(
         if (!early_step_dispatched && step == xar::ck3_12004::kCoreFrameStepV1) {
           connected = write_frame(pipe, RunCoreFrameQuery12004(
               game, request_id, incoming.payload));
+          early_step_dispatched = true;
+        }
+        if (!early_step_dispatched && step == "query-fresh-full-state-v1") {
+          connected = RunFreshFullStateQuery12004(
+              pipe, game, state, request_id, incoming.payload);
           early_step_dispatched = true;
         }
         if (!early_step_dispatched &&

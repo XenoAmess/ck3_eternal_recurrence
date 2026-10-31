@@ -105,3 +105,19 @@ Native Windows CMake/Ninja Release、`BUILD_TESTING=ON`、`--parallel 1` 首次�
 同build精确 `xar_ck3_12004_m7_idler_components_v1` CTest于01:28:53.136–53.396Z exit0/0.259秒、1/1通过，测试0.12秒。实际stdout为14场景（dispatch6/construction8）和781检查。原始 `{CONFIGURE01,BUILD01,CTEST01}.{json,stdout,stderr}`、PLAN及LastTest均保留。M7另行把同一public API接入Java facade与7个JUnit方法，Java owner独立发表；本页不以它代替Native行为或实机证据。
 
 上述验证仅证明公开组件、runtime源码登记与专用CTest接线；自然live H/P、真实callee、完整Bridge链接、hosted CI、M7跨继承Goal和Game动作/SAVE均未因此完成。125实际MB/安装BEGIN到达时本组编测已全部END，本岗仅继续小型源码发表；下一真实LOOP后才恢复新的编测。
+
+## Fresh owner 读取与关联快照生产路径（02:25Z）
+
+采用 M6 独占候选的四个生产文件、14 处局部修改。WorkerAdapter 增加经现有注册 executor 和 MainThreadQueryMailbox 执行的 fresh snapshot 读取；执行前后核实际 slot、sequence、owner、executor/context 与主线程 stamp，失败读不返回旧快照。Bridge 增加 `query-fresh-full-state-v1`，要求 expected_revision 为零，将实际 owner 观测以 read_request_id 关联的 state_snapshot 先写出，再写同 request_id、snapshot_id、revision 的闭合 ACK。unchanged fresh 观测仍发布，成功写出后才提交 fresh revision/previous/checkpoint 状态。普通发布分支保留原行为，新增 `.4` capability；没有部署 DLL。
+
+本岗独立审阅完整四叶差分，并仅以每个旧块唯一匹配应用 14 处修改。`D:/ck3-state/resume91-native-integration/fresh-formal-apply/APPLY-RESULT.json` 记录全部匹配次数为一，四个正式文件在仅规范 EOL/BOM 后均与实际编译通过的 M6 候选 body 相等，没有集成时算法修改。M6 原候选 semantic TU 严格编译 0/9.620 秒，含 capability 的 `.4` adapter TU 已在必要三 TU 组严格通过；整个 Bridge TU 首次严格通过发生于 01:52:28.790–48.842Z，0/19.940 秒、peak 869040128B、Job active0。此前 C1083 输入闭包失败及 PowerShell roots 数组误算写入预算的 owner 准备错误均保留，没有归作模型语义错误。
+
+三份离线行为证据各自首次通过，均为本次当前源码对象，不借旧 runtime 库。publication unit 为实际 Win32 pipe、原 StateSnapshotFrame/PublishSnapshot 函数，0/0.468 秒；owner executor unit 使用当前 semantic/mailbox 实现，0/0.409 秒，stdout 为 `ok=1 pair_ms=16 raw_reads=4 wrong_owner=0`，覆盖同 clock 连续观测、wrong caller、读失败恢复及 Uninstall 后拒绝；Handler ACK unit 于 02:07:39.823–40.344Z 0/0.405 秒，stdout 为 `fresh-ack: ok=1 raw=5 wrong=0`，覆盖 stale、实际成功、unchanged、失败、恢复、首 snapshot 写失败及卸载后的七条路径。普通非 fresh 扩展的六个 link seam 仅 typed abort，误调用立即失败，不提供成功替身。
+
+M6 的 `production-fresh/{DELIVERY,BRIDGE-RESULT,EXECUTOR-RESULT,PUBLICATION-RESULT,ACK-HANDLER-RESULT,MODEL-REVIEW04}.json` 保存原件与采用范围。生产 primitive/发布/ACK 主体在多次实际源码拒绝后由 owner 接管；模型原样 worker 小方法、serializer 插入及 capability 修改与 owner 补充边界分别记录。三个 unit 目前保留在 D 候选，没有据此宣称已接入正式 CI；ACK 在 snapshot 已成功写出后自身第二次写失败、完整 DLL 链接、公开 dispatcher 运行和 Game 读取仍未验收。本次没有重跑上述已绿 unit，没有 Game 查询、动作、进程重启或 SAVE。
+
+## Hosted CI 新失败与 Native63 路由事实（02:25Z）
+
+实际 hosted run 41146299012 的 step31 共 70 个测试，其中 43 个 faction_fullid 测试通过，证明已发表 5a48 链接修复在该组件的 hosted 构建和行为通过；整组仍有四个失败，不能称 CI 绿。失败是 player_claims_internal_wait_v1 及三个 gift raw identity controls。HTTP/2 CANCEL 是日志下载传输失败；M0 使用任务子进程环境 `GODEBUG=http2client=0` 重取同一日志，exit0/5.333 秒、265012B。Gift 修正过时 source-zero 负例为实际拒绝的 FFFFFFFF sentinel，保留 19 个负例，单 fixture TU 已严格编译 0/7.353 秒，尚未据此授行为通过；Claims 只增加有界真实 site/thread/tick 诊断，原 qualified 条件、计时器及 final checks 保留，尚无根因修复结论。
+
+Runtime126 的实际 Native63 ACK 明确拒绝 `query-family-marriage-send-outgoing-v1-private` 为 unsupported。本岗仅查已持 Native63 frozen source/声明：已有 specific observed-first-heir-marriage-result 路由和冷 pending scanner，需要不同字段与特定观察身份，不能改名冒充 generic prepared outgoing。映射原件为 `D:/ck3-state/resume91-native-integration/NATIVE63-FAMILY-OUTGOING-MAP01.json`。M2 后继 generic endpoint 的三个新 TU 已严格通过，但现有原件缺完整 storage 双拷贝及 finalized actor-shadow 五角色 context provider，当前软件合同只明确 completed_unavailable，不授 Family 读取支持或 G2 完成。128 于 02:19:56.903Z 实际 LOOP 后已解除安装暂停；后继资源只按新的 actual BEGIN/END 管理。

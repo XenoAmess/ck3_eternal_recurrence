@@ -48,7 +48,7 @@ enum class SemanticOperation {
   select_event, reply, acknowledge, raise, move, halt, disband, split, merge, assault_start, assault_stop, declare, marriage, enforce, surrender, white_peace,
   preview, declarations, declarations_for_target, marriage_choices, family_candidates, strengths, combat_v2, combat_v3,
   player_claims, title_own_laws, title_holder, occupation_targets, termination_options, termination_terms, exit_terms, marriage_diagnostic,
-  fixture_run_inbox, actual_truce_expiry
+  fixture_run_inbox, actual_truce_expiry, fresh_full_snapshot
 };
 
 std::string SerializeInboxFixture(ConsoleFixtureResult result) {
@@ -64,6 +64,29 @@ std::string SerializeInboxFixture(ConsoleFixtureResult result) {
   json += ",\"fixed_command\":\"run xar_mcp_inbox.txt\",\"marker_confirmed\":false}";
   return json;
 }
+bool OwnsFreshSnapshotSlot(const QueryMailboxEnvelope &query,
+    const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  if (query.game == nullptr || query.mailbox == nullptr ||
+      query.ticket.sequence == 0 || !query.game->enabled() ||
+      !game::IsCk3_12004Descriptor(query.game->descriptor()) ||
+      !query.game->supports_snapshot() || stamp.pump_epoch == 0 ||
+      stamp.thread_id == 0 || GetCurrentThreadId() != stamp.thread_id ||
+      stamp.tls_initialized != 1 || stamp.tls_main_thread_marker != 1 ||
+      stamp.tls_context == 0 || stamp.jomini_state == 0 ||
+      stamp.game_state == 0) return false;
+  const auto &mailbox = *query.mailbox;
+  return mailbox.state.load(std::memory_order_acquire) ==
+             ck3_11906::MainThreadQueryMailboxStateV1::executing &&
+         !mailbox.stop_requested.load(std::memory_order_acquire) &&
+         mailbox.failure_flags.load(std::memory_order_acquire) == 0 &&
+         mailbox.published_sequence.load(std::memory_order_acquire) ==
+             query.ticket.sequence &&
+         mailbox.owner_thread_id.load(std::memory_order_acquire) == stamp.thread_id &&
+         mailbox.executor.load(std::memory_order_acquire) ==
+             &ExecuteSemanticAdapter12002 &&
+         mailbox.executor_context == &query;
+}
+
 } // namespace
 
 struct WorkerAdapter::SemanticRequest {
@@ -99,6 +122,8 @@ struct WorkerAdapter::SemanticRequest {
   std::string diagnostic_json;
   ConsoleFixtureBindings console_fixture{};
   ConsoleFixtureResult console_result = ConsoleFixtureResult::unavailable;
+  game::Snapshot fresh_snapshot{};
+  bool fresh_available = false;
 };
 
 WorkerAdapter::WorkerAdapter(const game::GameAdapter &native_adapter,
@@ -127,6 +152,39 @@ SnapshotObserverDiagnostics12002 WorkerAdapter::snapshot_observer_diagnostics() 
     result.snapshot_cached = snapshot_.has_value() && snapshot_epoch_ != 0;
   } catch (...) {}
   return result;
+}
+
+bool WorkerAdapter::read_fresh_snapshot(game::Snapshot &output) const noexcept {
+  output = {};
+  if (native_ == nullptr || mailbox_ == nullptr ||
+      GetCurrentThreadId() != worker_thread_id_ || !native_->enabled() ||
+      !game::IsCk3_12004Descriptor(native_->descriptor()) ||
+      !native_->supports_snapshot()) return false;
+  try {
+    SemanticRequest request{};
+    request.operation = SemanticOperation::fresh_full_snapshot;
+    request.envelope.game = native_;
+    request.envelope.mailbox = mailbox_;
+    request.envelope.typed_context = &request;
+    const auto submit = ck3_11906::TrySubmitMainThreadQueryV1(
+        *mailbox_, &ExecuteSemanticAdapter12002,
+        &request.envelope, request.envelope.ticket);
+    if (submit != ck3_11906::MainThreadQuerySubmitResultV1::submitted) return false;
+    auto wait = ck3_11906::WaitForMainThreadQueryV1(
+        *mailbox_, request.envelope.ticket, 8'000);
+    // A running owner still holds this stack context. Wait until terminal;
+    // queued timeouts are cancelled by the existing mailbox API.
+    while (wait == ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+      wait = ck3_11906::WaitForMainThreadQueryV1(
+          *mailbox_, request.envelope.ticket, 2'000);
+    const auto reclaim = ck3_11906::ReclaimMainThreadQueryV1(
+        *mailbox_, request.envelope.ticket);
+    if (wait != ck3_11906::MainThreadQueryWaitResultV1::completed ||
+        reclaim != ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+        !request.fresh_available) return false;
+    output = std::move(request.fresh_snapshot);
+    return true;
+  } catch (...) { return false; }
 }
 
 bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
@@ -326,6 +384,13 @@ bool ObserveAdapterSnapshot12002(void *opaque,
   return adapter != nullptr && adapter->Observe(stamp);
 }
 
+bool ReadFreshFullSnapshot12002(const game::GameAdapter &adapter,
+    game::Snapshot &output) noexcept {
+  output = {};
+  const auto *worker = dynamic_cast<const WorkerAdapter *>(&adapter);
+  return worker != nullptr && worker->read_fresh_snapshot(output);
+}
+
 const game::GameAdapter &NativeAdapter12002(const game::GameAdapter &adapter) noexcept {
   const auto *worker = dynamic_cast<const WorkerAdapter *>(&adapter);
   return worker == nullptr ? adapter : worker->native_adapter();
@@ -452,6 +517,21 @@ bool ExecuteSemanticAdapter12002(void *opaque,
   auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
   if (envelope == nullptr || envelope->typed_context == nullptr) return false;
   auto &request = *static_cast<WorkerAdapter::SemanticRequest *>(envelope->typed_context);
+  if (request.operation == SemanticOperation::fresh_full_snapshot) {
+    request.fresh_available = false;
+    if (&request.envelope != envelope ||
+        !OwnsFreshSnapshotSlot(*envelope, stamp)) return false;
+    game::Snapshot observed{};
+    const bool available = ReadOwnerSnapshotForPublication(*envelope->game, observed) &&
+        observed.date_raw == stamp.date_raw && observed.paused == stamp.paused;
+    if (!OwnsFreshSnapshotSlot(*envelope, stamp)) return false;
+    if (available) {
+      request.fresh_snapshot = std::move(observed);
+      request.fresh_available = true;
+    }
+    // A failed data read is a completed query with no result.
+    return true;
+  }
   auto *diagnostic = request.operation == SemanticOperation::strengths
       ? &g_army_strength_query_diagnostic_v1 : nullptr;
   if (diagnostic != nullptr) diagnostic->native.store("enter");
@@ -519,6 +599,8 @@ bool ExecuteSemanticAdapter12002(void *opaque,
       request.console_result = RunPrivateInboxFixture(request.console_fixture);
       request.diagnostic_json = SerializeInboxFixture(request.console_result);
       break;
+    case SemanticOperation::fresh_full_snapshot:
+      return false; // handled before the ordinary query path
     }
     if (diagnostic != nullptr) diagnostic->native.store("finish");
     const bool finish_result = FinishQueryMailbox(*envelope);

@@ -31,6 +31,7 @@ public:
   const game::AdapterDescriptor &descriptor() const noexcept override;
   bool enabled() const noexcept override;
   bool read_snapshot(game::Snapshot &) const noexcept override;
+  bool read_fresh_snapshot(game::Snapshot &) const noexcept;
   game::PauseSubmitResult submit_pause_map(
       game::Snapshot *observed_snapshot = nullptr) const noexcept override;
   game::ResumeSubmitResult submit_resume_map(
@@ -126,5 +127,6 @@ private:
 bool ExecuteSemanticAdapter12002(void *, const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 bool ObserveAdapterSnapshot12002(void *, const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 const game::GameAdapter &NativeAdapter12002(const game::GameAdapter &) noexcept;
+bool ReadFreshFullSnapshot12002(const game::GameAdapter &, game::Snapshot &) noexcept;
 
 } // namespace xar::ck3_12002

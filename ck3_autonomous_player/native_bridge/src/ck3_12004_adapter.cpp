@@ -148,6 +148,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       ck3_11906::kTacticalDailySentinelStatusCapabilityV1,
       ck3_11906::kTacticalDailySentinelCancelCapabilityV1,
       "game.command.query-campaign-root-context-v1",
+      "game.query.fresh-full-state.v1",
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
       "game.command.query-player-faction-alerts-v1",
 #endif
