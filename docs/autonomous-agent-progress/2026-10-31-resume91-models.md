@@ -235,3 +235,16 @@ Root 后到回执给出 2026-10-31T07:52:49.843115Z 的实际结束结果：6 �
 编测成本分开保留：首次 baseline strict 漏既有 Regression 依赖，首次 Reg 两方法运行缺 jna.tmpdir，均属 owner 的命令/环境错误；补依赖后 strict 通过，仅重跑修正 JVM 参数的 Reg 两方法 2P。Defender 的 LF 哈希断言失败是真实基线问题。早先已发表的“当时尚未编测”及其 payload/SHA 不回写，本段记录后到事实。
 
 证据为 Root 的 ci149/DELIVERY.json、四个标准任务目录的最终 REVIEW.json 与原始编测回执。此次经验更新复用这些原件，没有新增模型请求或验证重跑；正式源码是否采用另以唯一 writer 的 Git 回执为准。
+
+### resume91 墙钟对齐的连接重置有限观察（2026-10-31 12:34Z）
+
+固定窗口为 UTC `[2026-10-31T06:30:00Z, 2026-10-31T12:30:00Z)`。只读 `D:/ck3-state/model-dispatch91/*/EVENTS.jsonl` 标准一级任务根，筛选实际 `ATTEMPT_END`、`base_url` 为当前 `192.168.1.11:8080`，且 `failure` 含 `10054` 或不分大小写的 `reset`；不含另列的自定义输出根，也不将 ordinary runtime 决策 HTTP 混入源码任务。此口径共 35 次失败尝试，未新增模型请求或为本诊断新增服务 GET。
+
+35 次均落在 UTC 分钟除以 10 余 8 的附近：其中 34 次在第 10–11 秒，另一次为 `09:08:09.955545Z`。请求从实际开始到 reset 的耗时最小 0.117682 秒、中位数 10.834317 秒、最大 132.356721 秒，因此这组样本并非相同请求运行时长后才失败。该规律只描述已观察到的共同墙钟相关事件；服务定时任务、代理、网络或其它具体根因仍为 unknown，不能据此断言因果或模型语义能力。
+
+最新两个可直接复核的标准原件如下；均为各自 attempt1，后继配置内重试不算新的语义轮：
+
+- `D:/ck3-state/model-dispatch91/m2-family-child-default172/EVENTS.jsonl`：`12:28:10.557211Z` reset，请求已运行 16.327252 秒。
+- `D:/ck3-state/model-dispatch91/m1-government-shared-composition168-book02/EVENTS.jsonl`：`12:28:10.557642Z` reset，请求已运行 51.172753 秒。
+
+部分 SSE 保留但不拼接或采用，按现有最多 6 次 HTTP 瞬时错误退避策略重试完整原请求；本观察不修改 caller、参数或重试策略，也不授权重放任何 Game/UNKNOWN 动作。完整响应的源码拒绝与 `length` 另行归类，不能将这 35 次连接重置合并为模型源码失败。
