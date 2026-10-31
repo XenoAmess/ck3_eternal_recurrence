@@ -35,41 +35,18 @@ public final class RootM7CheckpointCapture implements RootCheckpointVerifier.Sav
         Objects.requireNonNull(owner); Objects.requireNonNull(verified); Objects.requireNonNull(material);
         RootRuntimeContext current = Objects.requireNonNull(runtimes.require(owner));
         current.writer().requireSession(borrowed);
+        current.requireActiveGame();
         StrictJson.require(current.game().machineId().equals(owner.machineId())
                 && current.game().generation().equals(owner.game()) && current.game().sessionId().equals(owner.sessionId())
                 && verified.session().equals(owner) && material.session().equals(owner)
                 && verified.pair().equals(material.pair()) && verified.proof().equals(material.proof())
-                && verified.digest().equals(material.checkpointDigest()),
+                && verified.originalHeadDigest().equals(material.originalHeadDigest())
+                && verified.originalHeadDigest().equals(borrowed.head().digest()),
                 "M7 checkpoint callback crossed its actual current Game, original private pair or source material");
-        String head = borrowed.head().digest();
-        Instant deadline = current.adopted().authority().withFrozenFacts(borrowed, frozen -> {
-            var candidates = frozen.actions().actions().stream()
-                    .filter(receipt -> receipt.command().actionId().equals(verified.pair().saveActionId())).toList();
-            StrictJson.require(candidates.size() == 1 && frozen.actions().headSha256().equals(head),
-                    "unique actual canonical SAVE parent at the original writer head is required");
-            ActionReceipt actual = candidates.getFirst();
-            StrictJson.require(actual.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
-                    && actual.command().origin() instanceof CommandOrigin.Gameplay
-                    && actual.command().operation().value().equals("save-checkpoint")
-                    && actual.command().origin().machineId().equals(owner.machineId())
-                    && actual.command().origin().game().equals(owner.game())
-                    && actual.command().sessionId().equals(owner.sessionId()),
-                    "M7 source capture requires the actual confirmed same-owner SAVE operation");
-            Instant action = actual.command().deadline();
-            Instant reviewed = current.game().launchPlan().sources().review().expiresAt();
-            return action.isBefore(reviewed) ? action : reviewed;
-        });
-        current.requireCurrent(deadline);
-        var diagnostics = current.transport().diagnostics();
-        var transport = diagnostics.session().orElseThrow(() -> new IOException("actual current SAVE transport unavailable"));
-        var qualification = current.sources().verifyPhysicalOrigin(borrowed, transport, current.source(),
-                verified.proof().semantic().originalNativePacket(), diagnostics, deadline);
-        Optional<RootNativeSourceAuthority.QualifiedMetadata> metadata = current.sources().optionalMetadata(borrowed, qualification);
-        inputs.saved(borrowed, verified, material.witness(), current.source(),
-                metadata.map(m -> m.ownerSourceEpoch()), metadata.map(m -> m.gameExecutable()), Optional.empty());
-        qualification.assertCurrent(borrowed);
-        if (metadata.isPresent()) metadata.orElseThrow().requireCurrent(borrowed);
-        StrictJson.require(head.equals(borrowed.head().digest()), "M7 input capture must not change the actual SAVE writer head");
+        material.requirePhysical(borrowed);
+        historical.capture(borrowed, verified, material.witness());
+        current.requireActiveGame();
+        StrictJson.require(borrowed.head().digest().equals(verified.originalHeadDigest()), "M7 input capture must not change the actual SAVE writer head");
     }
 
     /** Replays actual original SAVE/material/source evidence under the sole writer. Call outside a held writer. */

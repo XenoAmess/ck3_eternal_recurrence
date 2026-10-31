@@ -10,6 +10,7 @@ import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.GuardEvidence;
+import org.xar.ck3.control.application.checkpoint.CheckpointCommitVerifier;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
@@ -47,6 +48,58 @@ public final class RootM7HistoricalCheckpointInputs {
         writer = Objects.requireNonNull(soleWriter); sessions = Objects.requireNonNull(actualWriterAuthority);
         actions = Objects.requireNonNull(actualJournal); archive = Objects.requireNonNull(originalArchive);
         sources = Objects.requireNonNull(actualSources); inputs = Objects.requireNonNull(sameInputs);
+    }
+
+    /** Captures current genuine private VerifiedCheckpoint under the already-held writer, joining it to the actual archived canonical SAVE guard/source. */
+    public M7CheckpointInputs.Saved capture(ContinuityStorePort.Session borrowed, CheckpointCommitVerifier.VerifiedCheckpoint verified, FileWitness originalMaterial) throws IOException {
+        Objects.requireNonNull(borrowed); Objects.requireNonNull(verified); Objects.requireNonNull(originalMaterial);
+        sessions.require(borrowed);
+        String head = borrowed.head().digest();
+        var material = sources.loadRetainedOriginal(borrowed, originalMaterial, verified.pair());
+        StrictJson.require(material.pair().equals(verified.pair()) && material.session().equals(verified.session())
+                && material.proof().equals(verified.proof()) && material.originalHeadDigest().equals(verified.originalHeadDigest())
+                && material.witness().equals(originalMaterial),
+                "private SAVE and retained original material differ in pair, owner, complete proof, head or witness");
+        ActionReceipt save = actions.locked(borrowed, journal -> {
+            var snapshot = journal.snapshot();
+            StrictJson.require(snapshot.headSha256().equals(head), "historical SAVE must be read from the original current canonical writer");
+            var matches = snapshot.actions().stream().filter(value -> value.command().actionId().equals(verified.pair().saveActionId())).toList();
+            StrictJson.require(matches.size() == 1, "unique canonical original SAVE parent is unavailable");
+            return matches.getFirst();
+        });
+        var command = save.command();
+        StrictJson.require(save.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                && save.sequence() <= material.originalHeadSequence()
+                && command.operation().value().equals("save-checkpoint") && command.origin() instanceof CommandOrigin.Gameplay
+                && command.sessionId().equals(material.session().sessionId())
+                && command.origin().machineId().equals(material.session().machineId())
+                && command.origin().game().equals(material.session().game())
+                && command.before().frame().episodeRunId().equals(verified.pair().frame().frame().episodeRunId())
+                && command.before().frame().identity().player().equals(verified.pair().frame().frame().identity().player()),
+                "historical source requires the actual confirmed original same-owner SAVE parent");
+        GuardEvidence guard = switch (save.state()) {
+            case ActionState.Settled settled -> settled.attempt().guard();
+            case ActionState.CompositeSettled settled -> settled.execution().guard();
+            default -> throw new IllegalArgumentException("confirmed SAVE lacks its original durable guard");
+        };
+        StrictJson.require(guard.origin() instanceof CommandOrigin.Gameplay
+                && guard.source().equals(command.source()) && guard.operation().equals(command.operation())
+                && guard.sessionId().equals(command.sessionId()) && guard.observed().machineId().equals(command.before().machineId())
+                && guard.observed().game().equals(command.before().game())
+                && guard.observed().frame().episodeRunId().equals(command.before().frame().episodeRunId())
+                && guard.observed().frame().identity().player().equals(command.before().frame().identity().player()),
+                "canonical SAVE guard crossed its original operation, source or episode owner");
+        OriginalSource original;
+        try { original = archive.inSession(borrowed, bound -> readOriginalSource(borrowed, guard, bound, save.sequence(), material.originalHeadSequence())); }
+        catch (UncheckedIOException failure) { throw failure.getCause(); }
+        M7CheckpointInputs.Saved recovered = inputs.saved(borrowed, verified, originalMaterial, command.source(),
+                original.metadata().map(m -> m.epoch()), original.metadata().map(m -> m.executable()), Optional.empty());
+        var retained = sources.loadRetainedOriginal(borrowed, originalMaterial, verified.pair());
+        StrictJson.require(material.witness().equals(retained.witness())
+                && material.checkpointDigest().equals(retained.checkpointDigest()) && head.equals(borrowed.head().digest()),
+                "historical source reconstruction changed the original saved material or writer head");
+        original.verifyPins(borrowed);
+        sessions.require(borrowed); return recovered;
     }
 
     /** Acquires the original writer. Invoke outside any already-held writer scope; no SAVE, query or restore is submitted. */

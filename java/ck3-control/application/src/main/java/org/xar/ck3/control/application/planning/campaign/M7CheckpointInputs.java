@@ -72,8 +72,7 @@ public final class M7CheckpointInputs {
             Optional<GovernmentContext.Context> government) throws IOException {
         Objects.requireNonNull(verified); writerAuthority.require(borrowed);
         checkpoints.requireIssued(borrowed, verified);
-        org.xar.ck3.control.application.session.OrdinaryCycleTransitions.requireSameIdentity(
-                verified.pair().frame(), verified.proof().semantic().frame());
+
         String head = borrowed.head().digest();
         DriverStateSnapshot.Complete saved = checkpointDrivers.readVerified(verified.pair());
         Optional<KernelCheckpointContinuity.Observation> observation = projectArchived(borrowed,
@@ -99,7 +98,7 @@ public final class M7CheckpointInputs {
         String head = borrowed.head().digest();
         var material = actualSources.loadRetainedOriginal(borrowed, originalMaterial, pair);
         borrowed.requireHistoricalState(material.originalHeadSequence(), material.originalHeadDigest());
-        org.xar.ck3.control.application.session.OrdinaryCycleTransitions.requireSameIdentity(pair.frame(), material.proof().semantic().frame());
+
         DriverStateSnapshot.Complete saved = actualSources.readRetainedDriver(borrowed, material);
         Optional<KernelCheckpointContinuity.Observation> observation = projectArchived(borrowed,
                 material.proof().semantic().frame(), originalSource, saved, material.proof().semantic(),
@@ -230,7 +229,7 @@ public final class M7CheckpointInputs {
                 "paired kernel input crossed actual Driver, Game birth, actor or episode");
         try { return archive.inSession(borrowed, bound -> {
             OpportunityJson.Obj snapshot = OpportunityJson.object(
-                    OpportunityJson.parse(bound.loadMaterial(semantic.semantic()).bytes()), "original full saved/restored SEM");
+                    OpportunityJson.parseComplete(bound.loadMaterial(semantic.semantic()).bytes(), org.xar.ck3.control.contracts.FullJsonTree.MAXIMUM_BYTES), "original full saved/restored SEM");
             NativeCalendarObservation.project(frame, source, snapshot);
             OpportunityJson.Value semanticGoal = snapshot.get("campaign_goal");
             switch (driver.campaignGoal()) {
