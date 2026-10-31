@@ -28,12 +28,16 @@ public final class DriverActionHistoryPublisher implements WriterContracts.Trans
         default void requireOperatorWithoutRebind(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
             throw new IOException("actual source-owned operator non-rebind verifier is not installed");
         }
+        /** Exact source-owned composite no-gameplay contract; this has no Advance recorder material. */
+        default void requireNoGameplayWrite(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
+            throw new IOException("actual source-owned no-gameplay-write verifier is not installed");
+        }
         DriverActionHistoryCodec.OriginalMaterial capture(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals) throws IOException;
         void requireOriginal(Session same,ActionReceipt actual,DriverActionHistoryCodec.OriginalMaterial captured,
                 ActionPorts.OutcomeArchive originals) throws IOException;
     }
     public sealed interface Disposition permits Unchanged,Published { }
-    public enum Reason { UNRESOLVED, NON_GAMEPLAY, OUTSIDE_ACTIVE_EPISODE, ALREADY_COVERED, OPERATOR_CANONICAL_RECEIPT_VERIFIED, OPERATOR_NO_REBIND_RECEIPT_VERIFIED }
+    public enum Reason { UNRESOLVED, NON_GAMEPLAY, OUTSIDE_ACTIVE_EPISODE, ALREADY_COVERED, OPERATOR_CANONICAL_RECEIPT_VERIFIED, OPERATOR_NO_REBIND_RECEIPT_VERIFIED, NO_GAMEPLAY_WRITE_RECEIPT_VERIFIED }
     public record Unchanged(Reason reason) implements Disposition {public Unchanged {Objects.requireNonNull(reason);}}
     public record Published(DriverSnapshotFacts.Stamp before,DriverSnapshotFacts.Stamp after,ExactRef fullDriver,
             ExactRef originalSource,Optional<ExactRef> legacyRow) implements Disposition {
@@ -123,6 +127,19 @@ public final class DriverActionHistoryPublisher implements WriterContracts.Trans
         Publication retained=pending;
         if(retained!=null)StrictJson.require(retained.action.equals(actual),"an original ACTION publication must be resolved before another action or owner transfer");
         StrictJson.require(locked.find(actual.command().actionId()).filter(actual::equals).isPresent(),"actual durable completed action required");
+        if(actual.state() instanceof ActionState.CompositeSettled settled
+                &&settled.settlement() instanceof ActionState.CompositeNoGameplayWrite terminal) {
+            StrictJson.require(retained==null,"no-gameplay-write verification cannot replace a pending ACTION publication");
+            terminal.observation().validate(actual.command(),settled.execution());
+            ActionEffects.validateComposite(actual.command(),settled.execution(),terminal);
+            ActionEffects.validateCompositeChildren(settled.execution(),terminal,List.of());
+            StrictJson.require(actual.outcome()==ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT
+                    &&!actual.visibleGameplay()&&!actual.eligibleAdvance()&&actual.applied().isEmpty(),
+                    "no-gameplay-write receipt cannot claim an applied or Advance effect");
+            var originals=archive.withSession(same);
+            materials.requireOwner(authority,journal,archive);materials.requireNoGameplayWrite(same,actual,originals);
+            return new Unchanged(Reason.NO_GAMEPLAY_WRITE_RECEIPT_VERIFIED);
+        }
         DriverSnapshotFacts.Known before=authority.withFrozenFacts(same,frozen->{
             StrictJson.require(frozen.state() instanceof DriverSnapshotFacts.Known,"actual complete Driver predecessor unavailable");return (DriverSnapshotFacts.Known)frozen.state();
         });

@@ -227,6 +227,28 @@ public final class RootActionHistoryMaterialSourceFactory {
             if(!selected.isOrdinary())
                 for(ExactRef ref:selected.originals()){var pin=same.capturePin(ref,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
         }
+        @Override public void requireNoGameplayWrite(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
+            Objects.requireNonNull(actual);Objects.requireNonNull(originals);context.writer().requireSession(same);requireOwner(authority,journal,archive);
+            require(actual.state() instanceof ActionState.CompositeSettled
+                    &&((ActionState.CompositeSettled)actual.state()).settlement() instanceof ActionState.CompositeNoGameplayWrite,
+                    "no-gameplay-write consumption requires its exact typed composite terminal");
+            require(actual.command().origin() instanceof CommandOrigin.Gameplay
+                    &&actual.command().before().game().equals(context.game().generation())&&actual.command().source().equals(context.source())
+                    &&actual.command().sessionId().equals(context.game().sessionId()),
+                    "no-gameplay-write consumption crossed its actual settled Game/source/session");
+            var life=catalog.remainingDomains().life();
+            var composite=catalog.bindings().compositeBindings().stream().filter(binding->binding.handler().supports(actual.command().operation())).toList();
+            require(composite.size()==1&&life.installation().composites().stream().anyMatch(binding->binding==composite.getFirst()),
+                    "no-gameplay-write consumption requires its identical installed Life producer");
+            var replay=catalog.bindings().actualArchivedVerifier(actual.command().operation()).orElseThrow(()->new Missing(MissingReason.UNINSTALLED_OPERATION,actual.command().operation()));
+            require(replay.verifier()==life.replay(),"no-gameplay-write consumption lost its identical installed Life replay");
+            var settled=(ActionState.CompositeSettled)actual.state();
+            require(composite.getFirst().handler() instanceof CompositeActionPort.ZeroGameplayBeforeChildren,
+                    "installed Life producer did not opt into its durable-child no-gameplay contract");
+            ((CompositeActionPort.ZeroGameplayBeforeChildren)composite.getFirst().handler()).requireNoGameplayWrite(actual.command(),settled.execution());
+            life.replay().verify(same.head(),actual,originals);
+            // The exact typed receipt is already durable. There is no original Advance result, after-frame or history row to create.
+        }
         @Override public OriginalMaterial capture(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
             return captureActual(same,actual,originals,true,Optional.empty());
         }

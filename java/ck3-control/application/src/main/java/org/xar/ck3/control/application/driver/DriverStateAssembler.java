@@ -1533,6 +1533,12 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                     applied.proof().validateParent(action.command());
                 } else if(!operation.equals("continue-death-succession-modal-v1")){missing.add("unknown_terminal_history_operation:"+action.command().actionId());continue;}
             }
+            if (action.state() instanceof ActionState.CompositeSettled settled
+                    && settled.settlement() instanceof ActionState.CompositeNoGameplayWrite) {
+                org.xar.ck3.control.application.action.ActionEffects.validateComposite(
+                        action.command(), settled.execution(), settled.settlement());
+                continue; // The verified no-write terminal has no Native command-history row or cycle credit.
+            }
             DriverSnapshotFacts.ActionRow coverage=rows.get(action.command().actionId());
             if(coverage==null || !coverage.bodySha256().equals(action.bodySha256()) || coverage.durableSequence()>action.sequence()) {
                 missing.add("original_history_row_unavailable:"+action.command().actionId()); continue;
