@@ -16,6 +16,7 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Wire;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 
 /** Durable action metadata. Native originals are archived once and read with exact byte/SHA identity by OutcomeArchive. */
@@ -354,7 +355,7 @@ public final class ActionReceiptCodec {
             control.reconciledAck().ifPresent(value -> row.set("reconciled_ack_ref", value.reference(archive).toJson()));
             row.set("read_ref", archive.readReferenceOf(control.read()).toJson());
             var supporting = row.putArray("supporting_reads"); control.supportingReads().forEach(read -> supporting.add(archive.readReferenceOf(read).toJson()));
-            row.set("observation", ProposalLifecycleCodec.expected(new ExpectedPostcondition(1, control.read().after().binding().observed(), control.read().request().source(), control.observerSchema(), control.actual()))); return row;
+            row.set("observation", ProposalLifecycleCodec.expected(new ExpectedPostcondition(1, controlIdentity(control.read()), control.read().request().source(), control.observerSchema(), control.actual()))); return row;
         }
         if (settlement instanceof ActionState.Rejected rejected) {
             row.put("kind", "REJECTED"); row.put("request_id", rejected.requestId()); row.put("reason", rejected.reason()); row.set("original_evidence", rejected.originalEvidence().toJson()); return row;
@@ -469,7 +470,7 @@ public final class ActionReceiptCodec {
             StrictJson.object(row, reconciled ? Set.of("kind", "read_ref", "supporting_reads", "observation", "reconciled_ack_ref") : Set.of("kind", "read_ref", "supporting_reads", "observation"));
             ObjectNode observation = StrictJson.object(row.get("observation"), Set.of("version", "before", "source", "observer_schema", "values")); StrictJson.integer(observation.get("version"), 1, 1);
             PlanningReadReceipt read = archive.loadRead(ExactRef.fromJson(row.get("read_ref")));
-            StrictJson.require(ProposalLifecycleCodec.decodeObservation(observation.get("before")).equals(read.after().binding().observed()) && G2Wire.source(observation.get("source")).equals(read.request().source()), "control read original observation/source drift");
+            StrictJson.require(ProposalLifecycleCodec.decodeObservation(observation.get("before")).equals(controlIdentity(read)) && G2Wire.source(observation.get("source")).equals(read.request().source()), "control read original observation/source drift");
             StrictJson.require(row.get("supporting_reads").isArray(), "supporting reads array required"); List<PlanningReadReceipt> supporting = new ArrayList<>();
             row.get("supporting_reads").forEach(item -> supporting.add(archive.loadRead(ExactRef.fromJson(item))));
             Optional<ReconciledControlAck> late = Optional.empty();
@@ -502,6 +503,12 @@ public final class ActionReceiptCodec {
         ObjectNode row = StrictJson.object(node, Set.of("handler_id", "started_at", "guard", "children")); StrictJson.require(row.get("children").isArray(), "composite child array required");
         List<CompositeExecution.Child> children = new ArrayList<>(); row.get("children").forEach(item -> { ObjectNode child = StrictJson.object(item, Set.of("action_id", "body_sha256")); children.add(new CompositeExecution.Child(text(child, "action_id"), text(child, "body_sha256"))); });
         return new CompositeExecution(text(row, "handler_id"), Instant.parse(text(row, "started_at")), decodeGuard(row.get("guard")), children);
+    }
+    private static ObservationIdentity controlIdentity(PlanningReadReceipt read) {
+        var origin = read.after().binding().origin();
+        if (origin instanceof CommandOrigin.Gameplay gameplay) return gameplay.before();
+        if (origin instanceof CommandOrigin.Reconciliation reconciliation) return reconciliation.identity().factual();
+        throw new IllegalStateException("unsupported control read origin");
     }
     private static String text(ObjectNode row, String field) { return StrictJson.text(row.get(field)); }
 }
