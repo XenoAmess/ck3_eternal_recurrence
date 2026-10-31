@@ -21,6 +21,7 @@ import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle;
 import org.xar.ck3.control.governance.council.CouncilActionCodec;
 import org.xar.ck3.control.governance.crownauthority.CrownAuthorityCodec;
 import org.xar.ck3.control.governance.crownauthority.CrownAuthorityPolicy;
@@ -37,7 +38,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
             StrictJson.require(implementation.bytes()>0&&!council.isEmpty()&&!crown.isEmpty()&&council.size()<=64&&crown.size()<=32
                     &&council.stream().allMatch(ref->ref.bytes()>0)&&crown.stream().allMatch(ref->ref.bytes()>0),"complete actual domain producer closures required");}
     }
-    private enum Kind { INITIAL,INTENT,OUTCOME,COUNCIL_MATERIAL,CROWN_MATERIAL,COLD_CROWN,FOLLOW_COUNCIL,FOLLOW_CROWN }
+    private enum Kind { INITIAL,INTENT,OUTCOME,COUNCIL_MATERIAL,CROWN_MATERIAL,CROWN_APPLIED,COLD_CROWN,FOLLOW_COUNCIL,FOLLOW_CROWN }
     private record Input(Domain domain,Kind kind,Optional<ExactRef> previous,Optional<ExactRef> command,
             Optional<ExactRef> prepared,Optional<ExactRef> receipt,Optional<ExactRef> read,Optional<ExactRef> initial,List<ExactRef> preflight) {
         private Input {Objects.requireNonNull(domain);Objects.requireNonNull(kind);Objects.requireNonNull(previous);Objects.requireNonNull(command);
@@ -49,6 +50,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
                 case OUTCOME->previous.isPresent()&&command.isEmpty()&&prepared.isEmpty()&&receipt.isPresent()&&read.isEmpty()&&initial.isEmpty()&&preflight.isEmpty();
                 case COUNCIL_MATERIAL->domain==Domain.COUNCIL&&previous.isPresent()&&command.isEmpty()&&prepared.isEmpty()&&receipt.isPresent()&&read.isPresent()&&initial.isEmpty()&&preflight.isEmpty();
                 case CROWN_MATERIAL->domain==Domain.CROWN&&previous.isPresent()&&command.isEmpty()&&prepared.isEmpty()&&receipt.isPresent()&&read.isPresent()&&initial.isEmpty()&&preflight.isEmpty();
+                case CROWN_APPLIED->domain==Domain.CROWN&&previous.isPresent()&&command.isEmpty()&&prepared.isEmpty()&&receipt.isPresent()&&read.isEmpty()&&initial.isEmpty()&&preflight.isEmpty();
                 case COLD_CROWN,FOLLOW_CROWN->domain==Domain.CROWN&&previous.isPresent()&&command.isEmpty()&&prepared.isEmpty()&&receipt.isEmpty()&&read.isPresent()&&initial.isEmpty()&&preflight.isEmpty();
                 case FOLLOW_COUNCIL->domain==Domain.COUNCIL&&previous.isPresent()&&command.isEmpty()&&prepared.isEmpty()&&receipt.isEmpty()&&read.isPresent()&&initial.isEmpty()&&!preflight.isEmpty();
             },"exact governance publication branch fields required");}
@@ -177,10 +179,8 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
                         var changed=publish(same,new Input(domain,Kind.COUNCIL_MATERIAL,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.of(archive.receiptReferenceOf(receipt)),Optional.of(known.originalReceipt()),Optional.empty(),List.of()));
                         if(changed.isPresent())return new Published(head,changed.orElseThrow());
                     } else if(domain==Domain.CROWN&&receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) {
-                        var contract=nativeGovernance().crownFinalTermsRead().contract();var material=context().reads().read(same,contract,new PlanningReadRequest(original.before(),original.source(),original.sessionId(),contract.operation(),new OpportunityJson.Obj(java.util.Map.of()),original.deadline()));
-                        if(material instanceof PlanningReadResult.Unavailable<?> unavailable)return new Blocked("Crown complete final-terms post-state unavailable: "+diagnosticReason(unavailable),List.of(body.reference().payload()));
-                        var known=(PlanningReadResult.Known<?>)material;var head=same.head();var archive=core().archive().withSession(same);
-                        var changed=publish(same,new Input(domain,Kind.CROWN_MATERIAL,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.of(archive.receiptReferenceOf(receipt)),Optional.of(known.originalReceipt()),Optional.empty(),List.of()));
+                        var head=same.head();var archive=core().archive().withSession(same);
+                        var changed=publish(same,new Input(domain,Kind.CROWN_APPLIED,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.of(archive.receiptReferenceOf(receipt)),Optional.empty(),Optional.empty(),List.of()));
                         if(changed.isPresent())return new Published(head,changed.orElseThrow());
                     } else {
                         var head=same.head();var archive=core().archive().withSession(same);var changed=publish(same,new Input(domain,Kind.OUTCOME,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.of(archive.receiptReferenceOf(receipt)),Optional.empty(),Optional.empty(),List.of()));
@@ -210,11 +210,11 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
     private Optional<WriterContracts.Receipt> publish(ContinuityStorePort.Session same,Input input)throws IOException {
         requireSession(same);var head=same.head();var previous=DomainBodies.reference(head.state(),slot(input.domain()));byte[] output=reduce(same,head,previous,input);
         if(previous.isPresent()&&Arrays.equals(output,readBody(same,previous.orElseThrow().payload())))return Optional.empty();
-        if(input.kind()==Kind.COUNCIL_MATERIAL||input.kind()==Kind.CROWN_MATERIAL)actionCadence();
+        if(input.kind()==Kind.COUNCIL_MATERIAL||input.kind()==Kind.CROWN_MATERIAL||input.kind()==Kind.CROWN_APPLIED)actionCadence();
         var ref=core().archive().preserveArtifact(same,output,1_048_576);byte[] producer=encodeInput(input);var request=new DomainBodies.ImportRequest(slot(input.domain()),schema(input.domain()),ref,producer,evidence(input),"governance-domain-"+ActionCodec.sha256(producer));
         var prepared=same.previewImport(request);StrictJson.require(prepared.predecessor().digest().equals(head.digest()),"domain preview crossed the original locked head");var committed=same.commitImport(prepared);var actual=available(same,input.domain());
         StrictJson.require(committed.disposition()!=WriterContracts.Disposition.NO_CHANGE&&actual.reference().payload().equals(ref)&&Arrays.equals(actual.canonicalBody(),output),"actual domain commit and full original readback required");
-        if(input.kind()==Kind.COUNCIL_MATERIAL||input.kind()==Kind.CROWN_MATERIAL) {var receipt=core().archive().withSession(same).loadReceipt(input.receipt().orElseThrow());var reset=actionCadence().publish(same,receipt);if(reset.isPresent())return reset;}
+        if(input.kind()==Kind.COUNCIL_MATERIAL||input.kind()==Kind.CROWN_MATERIAL||input.kind()==Kind.CROWN_APPLIED) {var receipt=core().archive().withSession(same).loadReceipt(input.receipt().orElseThrow());var reset=actionCadence().publish(same,receipt);if(reset.isPresent())return reset;}
         return Optional.of(committed);
     }
     private String verifyPublication(Domain domain,WriterContracts.Head head,Optional<DomainBodies.BodyRef> previous,DomainBodies.ImportRequest request,byte[] body)throws IOException {
@@ -261,6 +261,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
         if(input.kind()==Kind.FOLLOW_COUNCIL||input.kind()==Kind.FOLLOW_CROWN)return encode(follow(old,checkedRead(input.read().orElseThrow(),archive),input.preflight(),archive));
         ActionReceipt receipt=archive.loadReceipt(input.receipt().orElseThrow());var canonical=ContinuityActionJournal.lookup(head.state(),receipt.command().actionId(),archive).orElseThrow(()->new IOException("governance result absent from surviving canonical action chain"));
         StrictJson.require(Arrays.equals(ActionReceiptCodec.encodeReceipt(receipt,archive),ActionReceiptCodec.encodeReceipt(canonical,archive)),"caller receipt differs from actual canonical latest result");
+        if(input.kind()==Kind.CROWN_APPLIED)StrictJson.require(receipt.state() instanceof ActionState.Settled settled&&settled.settlement() instanceof ActionState.Applied,"direct Crown publication cannot consume UNKNOWN, unapplied or nonprimitive receipt");
         if(old.pending().isEmpty())return encode(old);Pending pending=old.pending().orElseThrow();
         StrictJson.require(pending.requestId().equals(originalId(receipt.command()))&&domain(receipt.command())==old.domain(),"canonical result belongs to another original pending command");
         if(ActionTransitions.attempt(receipt.state()).isEmpty())return encode(old);
@@ -280,6 +281,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
         if(receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) {
             var verifier=context().bindings().actualArchivedVerifier(receipt.command().operation()).orElseThrow(()->new IOException("actual original governance effect replay binding missing"));verifier.verifier().verify(head,receipt,archive);
             if(old.domain()==Domain.CROWN) {
+                if(input.kind()==Kind.CROWN_APPLIED) return encode(crownAppliedDirect(old,receipt,archive));
                 if(input.kind()!=Kind.CROWN_MATERIAL) {
                     var retained=original.deepCopy().put("stage","receipt_pending");retained.set("ack",nativeResult(receipt.ack().orElseThrow()));return encode(pending(old,raw(retained)));
                 }
@@ -318,6 +320,41 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
         }
         return raw(row);
     }
+    private Document crownAppliedDirect(Document old,ActionReceipt receipt,ActionPorts.OutcomeArchive archive)throws IOException {
+        var material=NativeEffectEvidence.load(receipt,archive,context().frameLoader());
+        return crownAppliedOriginal(old,receipt,material.compatibleResult());
+    }
+    /** Pure projection of the canonical independently replayed success; no clock or final-terms facts are inferred. */
+    static Document crownAppliedOriginal(Document old,ActionReceipt receipt,RawJson nativeReceipt) {
+        StrictJson.require(old.domain()==Domain.CROWN&&receipt.command().operation().equals(GovernancePolicies.CROWN)
+                &&receipt.state() instanceof ActionState.Settled settled&&settled.settlement() instanceof ActionState.Applied,
+                "direct Crown material requires its original primitive APPLIED settlement");
+        var pending=old.pending().orElseThrow();var original=object(pending.original());var command=receipt.command();
+        StrictJson.require(pending.requestId().equals(originalId(command))&&pending.episodeRunId().equals(command.before().frame().episodeRunId())
+                &&integer(original.get("actor_character_id")).equals(command.before().frame().identity().player())
+                &&!coldContext(pending,command.before().game().pid(),command.before().frame().episodeRunId()),
+                "direct Crown material crossed original pending action/Game/actor/episode");
+        var applied=receipt.applied().orElseThrow().observation();var expected=command.expected();
+        StrictJson.require(expected.values().contains(new ProposalLifecycle.ExpectedText(new ProposalLifecycle.FieldKey("crown.effective_law_key"),StrictJson.text(original.get("law_key")))),
+                "direct Crown receipt must expect the original pending law");
+        var choice=object(original.get("choice"));var balances=choice.get("quoted_post_balances_raw");
+        StrictJson.require(balances!=null&&balances.isArray(),"original quoted post-balances required");
+        for(var amount:balances) {
+            StrictJson.require(amount.isArray()&&amount.size()==2,"original quoted post-balance pair required");
+            String currency=StrictJson.text(amount.get(0));var balance=integer(amount.get(1));
+            StrictJson.require(expected.values().contains(new ProposalLifecycle.ExpectedText(new ProposalLifecycle.FieldKey("crown.balance_"+currency+"_raw"),balance.toString())),
+                    "direct Crown receipt must expect every original quoted post-balance");
+        }
+        StrictJson.require(applied.sessionId().equals(command.sessionId())&&applied.source().equals(command.source())
+                &&ProposalLifecycle.compare(expected,applied.after(),applied.source(),applied.observerSchema(),applied.actual())==ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH,
+                "direct Crown independent observation differs from original expected law/payment");
+        ObjectNode resolved=original.deepCopy().put("status","enacted").put("material_result",true);
+        resolved.put("stage","receipt_pending");resolved.set("ack",nativeResult(receipt.ack().orElseThrow()));
+        resolved.set("native_receipt",object(nativeReceipt));
+        var after=applied.after();resolved.set("post_context",context(after.game().pid(),after.frame().episodeRunId()));
+        resolved.put("post_native_revision",after.frame().identity().nativeRevision()).put("post_date_raw",after.frame().identity().dateRaw());
+        return result(old,Optional.of(raw(resolved)));
+    }
     private Document crownApplied(Document old,ActionReceipt receipt,PlanningReadReceipt afterTerms,ActionPorts.OutcomeArchive archive)throws IOException {
         var original=object(old.pending().orElseThrow().original());var terms=nativeGovernance().crownFinalTermsRead().consumeTerms(afterTerms);var afterFrame=receipt.applied().orElseThrow().observation().after();var queried=afterTerms.request().before();
         StrictJson.require(queried.game().equals(receipt.command().before().game())&&afterTerms.request().source().equals(receipt.command().source())&&queried.frame().episodeRunId().equals(receipt.command().before().frame().episodeRunId())
@@ -347,11 +384,12 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
             var details=GovernanceDomainDocument.object(event.get("details"));var body=DomainBodies.BodyRef.fromJson(details.get("domain_body"));if(!isDomainBodyContract(domain,body))continue;
             var source=StrictJson.object(details.get("source"),Set.of("original_body","producer_input","producer_sources","evidence"));StrictJson.require(ExactRef.fromJson(source.get("original_body")).equals(body.payload()),"canonical material event original body differs");
             var producer=archive.loadMaterial(ExactRef.fromJson(source.get("producer_input")));var json=StrictJson.parse(producer.bytes());if(!INPUT_SCHEMA.equals(StrictJson.text(json.get("schema"))))continue;var input=decodeInput(producer.bytes());
-            if(input.domain()!=domain||input.kind()!=(domain==Domain.COUNCIL?Kind.COUNCIL_MATERIAL:Kind.CROWN_MATERIAL)||!input.receipt().filter(receipt::equals).isPresent())continue;
+            if(input.domain()!=domain||input.kind()!=(domain==Domain.COUNCIL?Kind.COUNCIL_MATERIAL:domain==Domain.CROWN&&input.kind()==Kind.CROWN_APPLIED?Kind.CROWN_APPLIED:Kind.CROWN_MATERIAL)||!input.receipt().filter(receipt::equals).isPresent())continue;
             var bodyPin=same.capturePin(body.payload(),WriterContracts.MAX_PIN_BYTES);StrictJson.require(bodyPin.identity().equals(body.identity()),"canonical material body's original native file identity changed");same.verifyPin(bodyPin);
             var after=ContinuityState.fromJson(event.get("after"),head.state().machineId());same.requireHistoricalState(after.sequence(),org.xar.ck3.control.continuity.ContinuityJson.digest(after.toJson()));StrictJson.require(DomainBodies.reference(after,slot(domain)).filter(body::equals).isPresent(),"material publication is not in the surviving canonical domain chain");
-            var old=decode(domain,readBody(same,input.previous().orElseThrow()));var observed=checkedRead(input.read().orElseThrow(),archive);
-            var replayed=domain==Domain.COUNCIL?councilApplied(old,actual,observed,archive):crownApplied(old,actual,observed,archive);
+            var old=decode(domain,readBody(same,input.previous().orElseThrow()));Document replayed;
+            if(input.kind()==Kind.CROWN_APPLIED)replayed=crownAppliedDirect(old,actual,archive);
+            else {var observed=checkedRead(input.read().orElseThrow(),archive);replayed=domain==Domain.COUNCIL?councilApplied(old,actual,observed,archive):crownApplied(old,actual,observed,archive);}
             StrictJson.require(Arrays.equals(encode(replayed),readBody(same,body.payload())),"actual full Council ROOT/Crown final-terms material reducer differs from canonical publication");
             var core=object(replayed.latest().orElseThrow());var fields=core.fields();while(fields.hasNext()) {var field=fields.next();StrictJson.require(Objects.equals(field.getValue(),latest.get(field.getKey())),"current governance material changed an original applied field");}return;
         }
