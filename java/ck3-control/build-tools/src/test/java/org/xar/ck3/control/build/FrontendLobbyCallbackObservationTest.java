@@ -2,6 +2,7 @@ package org.xar.ck3.control.build;
 import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
@@ -86,7 +87,53 @@ final class FrontendLobbyCallbackObservationTest {
         assertThrows(IOException.class, () -> LobbyVerifyTestInputs.fromRecordedArguments(duplicate));
     }
 
-    private static byte[] original(String name) throws Exception {
+    private LobbyVerifyTestInputs.Recorded softwareRecorded;
+    private byte[] original(String name) throws Exception {
+        // 1. Check for explicit external lanes (recorded arguments or SDK bundle properties) first.
+        //    If present, delegate to the existing global consumer; do not repair or hide failures.
+        List<String> systemProperties = System.getProperties().stringPropertyNames().stream()
+                .map(key -> "-D" + key + "=" + System.getProperty(key)).toList();
+        if (LobbyVerifyTestInputs.fromRecordedArguments(systemProperties).isPresent()
+                || SdkFixtureProductionInputs.hasRecordedArguments(systemProperties)) {
+            return LobbyVerifyTestInputs.original(name + ".json");
+        }
+
+        // 2. Only if no explicit external lane is selected, attempt to load from the software environment.
+        if (softwareRecorded == null) {
+            String env = System.getenv("XAR_FRONTEND_LOBBY_SOFTWARE_FRAMES");
+            if (env != null && !env.isBlank()) {
+                Path sourceDir = Path.of(env);
+                if (!Files.isDirectory(sourceDir)) throw new IOException("Software frames directory missing");
+                Path directory = Files.createDirectory(temporary.resolve("software-lobby-copies"));
+                var originals = new ArrayList<ControlBuild.FileRef>();
+                for (String n : SdkFixtureProductionInputs.LOBBY_NAMES) {
+                    Path copy = directory.resolve(n);
+                    if (n.equals("lobby-callback-request.json")) {
+                        // Fifth file: emitted by actual current Java FrontendLobbyCallbackObservation.arguments()
+                        Files.write(copy, FrontendLobbyCallbackObservation.arguments().getBytes(StandardCharsets.UTF_8));
+                    } else {
+                        // Four files: unchanged from real Native production serializer on owned typed data
+                        Path source = sourceDir.resolve(n);
+                        if (!Files.isRegularFile(source)) throw new IOException("Missing software frame: " + n);
+                        Files.copy(source, copy);
+                    }
+                    originals.add(ControlBuild.FileRef.measure(copy));
+                }
+                var inputs = new LobbyVerifyTestInputs.Inputs(LobbyVerifyTestInputs.SCHEMA,
+                        WindowsJobProcess.currentMachineId(), Instant.now().plusSeconds(3600).toString(),
+                        new SdkFixtureProductionInputs.LobbyWireSet(directory.toString(), originals));
+                Path metadata = temporary.resolve("software-lobby-inputs.json");
+                Files.write(metadata, ControlBuild.strictMapper().writeValueAsBytes(inputs));
+                softwareRecorded = new LobbyVerifyTestInputs.Recorded(ControlBuild.FileRef.measure(metadata), directory.toString());
+            }
+        }
+
+        // 3. Use the typed overload if software provenance was established.
+        if (softwareRecorded != null) {
+            return LobbyVerifyTestInputs.original(softwareRecorded, name + ".json");
+        }
+
+        // 4. Fallback to existing global metadata/V2 lanes if no software env and no explicit args.
         return LobbyVerifyTestInputs.original(name + ".json");
     }
     @Test void actualNativeProducerRoundtripsAndDoesNotGrantSelectionAuthority() throws Exception {

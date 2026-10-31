@@ -427,14 +427,7 @@ public final class ControlBuild {
                     .map(key -> property(key, System.getProperty(key))).toList();
             java.util.Optional<Recorded> selected = fromRecordedArguments(properties);
             if (selected.isPresent()) {
-                Recorded recorded = selected.orElseThrow();
-                requireInputs(recorded, WindowsJobProcess.currentMachineId(), Instant.now());
-                FileRef ref = exact(recorded).lobbyWires().originals().stream()
-                        .filter(value -> Path.of(value.path()).getFileName().toString().equals(name)).findFirst().orElseThrow();
-                byte[] raw;
-                try (var input = Files.newInputStream(absolute(ref.path()))) { raw = input.readNBytes((1 << 20) + 1); }
-                BoundedSourceInputGuard.verifyReadBytes(ref, raw, 1 << 20);
-                requireInputs(recorded, WindowsJobProcess.currentMachineId(), Instant.now()); return raw;
+                return original(selected.orElseThrow(), name);
             }
             // A directory alone is never accepted. This is the pre-existing complete four-package projection.
             final SdkFixtureProductionInputs.CommandArguments bundle;
@@ -449,6 +442,19 @@ public final class ControlBuild {
             byte[] raw;
             try (var input = Files.newInputStream(path)) { raw = input.readNBytes((1 << 20) + 1); }
             if (raw.length < 1 || raw.length > 1 << 20) throw new IOException("Original lobby wire exceeds its explicit bound");
+            return raw;
+        }
+
+        /** Reads a specific frame from an explicitly provided Recorded projection, preserving all strict verification. */
+        public static byte[] original(Recorded recorded, String name) throws IOException {
+            if (!SdkFixtureProductionInputs.LOBBY_NAMES.contains(name)) throw new IOException("One exact lobby basename required");
+            requireInputs(recorded, WindowsJobProcess.currentMachineId(), Instant.now());
+            FileRef ref = exact(recorded).lobbyWires().originals().stream()
+                    .filter(value -> Path.of(value.path()).getFileName().toString().equals(name)).findFirst().orElseThrow();
+            byte[] raw;
+            try (var input = Files.newInputStream(absolute(ref.path()))) { raw = input.readNBytes((1 << 20) + 1); }
+            BoundedSourceInputGuard.verifyReadBytes(ref, raw, 1 << 20);
+            requireInputs(recorded, WindowsJobProcess.currentMachineId(), Instant.now());
             return raw;
         }
         private static Inputs exact(Recorded recorded) throws IOException {
