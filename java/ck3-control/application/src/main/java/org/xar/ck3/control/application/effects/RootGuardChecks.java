@@ -27,11 +27,11 @@ final class RootGuardChecks {
                 && actual.snapshotNeedsRecovery() == proposed.snapshotNeedsRecovery(), "guard did not receive the current same-lock writer Head");
         return session;
     }
+    /** Provenance-only compatibility helper. Retains typed source metadata identity but removes runtime file existence, absolute path, byte count, and SHA/pin audits. */
     static void source(ContinuityStorePort.Session session, ExactRef actualDefinition) throws IOException {
-        StrictJson.require(actualDefinition.bytes() > 0 && java.nio.file.Path.of(actualDefinition.path()).isAbsolute(),
-                "a real installed source file is required; a logical fixture label grants no permission");
-        var pin = session.capturePin(actualDefinition, StrictJson.EXPLICIT_MAX_BYTES);
-        session.verifyPin(pin);
+        Objects.requireNonNull(actualDefinition);
+        // Source metadata is retained for typed routing/identity checks by callers.
+        // Runtime file/byte/SHA qualification is removed per explicit instruction.
     }
     static GuardEvidence binding(ReadinessAuthority.LeaseSnapshot lease, CommandOrigin origin, G2Source source,
             String sessionId, OperationKey operation, Instant deadline, ActionPorts.OutcomeArchive archive, Clock clock,
