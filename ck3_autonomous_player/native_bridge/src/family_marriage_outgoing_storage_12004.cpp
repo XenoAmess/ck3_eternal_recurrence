@@ -162,10 +162,12 @@ bool ReadDefinitionShape(MemoryReader &reader, std::uintptr_t actual_definition,
   return ValidateDefinitionShape(shape);
 }
 
-bool ReadOccupiedShape(MemoryReader &reader, std::uintptr_t object_ptr,
-                       OccupiedShape &shape) {
+bool ReadOccupiedShape(MemoryReader &reader, const ck3_12002::FamilyOutboundBindings &bindings,
+                       std::uintptr_t object_ptr, OccupiedShape &shape) {
   shape.object_ptr = object_ptr;
   shape.vtable = reader.At<std::uintptr_t>(object_ptr);
+  if (reader.failed) return false;
+  if (shape.vtable != bindings.pending_vtable) return false;
   shape.pending_full_id = reader.At<std::uint32_t>(object_ptr, kPendingIdentityOffset);
   shape.definition_ptr = reader.At<std::uintptr_t>(object_ptr, kPendingDefinitionOffset);
   shape.actor = reader.At<std::uint32_t>(object_ptr, kPendingActorOffset);
@@ -253,8 +255,7 @@ bool PerformPass(MemoryReader &reader, const ck3_12002::FamilyOutboundBindings &
     if (object_ptr == 0) continue;
 
     OccupiedShape occupied;
-    if (!ReadOccupiedShape(reader, object_ptr, occupied) ||
-        occupied.vtable != bindings.pending_vtable ||
+    if (!ReadOccupiedShape(reader, bindings, object_ptr, occupied) ||
         occupied.pending_full_id == kInvalidId) return false;
     std::uint32_t low24 = occupied.pending_full_id & 0x00FFFFFFU;
     if (low24 != static_cast<std::uint32_t>(slot)) return false;
@@ -298,7 +299,8 @@ bool PerformPass(MemoryReader &reader, const ck3_12002::FamilyOutboundBindings &
     if (observed != slot_objects[slot]) return reader.Drift();
     if (observed == 0) continue;
     OccupiedShape current;
-    if (!ReadOccupiedShape(reader, observed, current)) return false;
+    if (!ReadOccupiedShape(reader, bindings, observed, current))
+      return reader.failed ? false : reader.Drift();
     if (current != occupied_shapes[occupied_index++]) return reader.Drift();
     if (current.definition_ptr != actual_definition || current.actor != actual_sender)
       continue;
