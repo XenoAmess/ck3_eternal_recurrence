@@ -609,9 +609,9 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }));
     }
 
-    /** Existing failed READ DATA only, under the identical writer and original head. The
-     * source may be outside the immutable store; its actual file pin is never a MATERIAL alias.
-     * Borrowed withSession/inSession views are this same class and execute this same override. */
+    /** Existing failed READ DATA only, under the identical writer and original head.
+     * Implementation references are typed metadata, not deployment-file qualification.
+     * Borrowed withSession/inSession views execute this same original-data verifier. */
     @Override public void verifyReadFailureOriginals(PlanningReadFailure original) {
         unchecked(() -> writing(() -> {
             Objects.requireNonNull(original);
@@ -620,19 +620,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             var head = same.head();
             if (head.state().sequence() != original.headSequence() || !head.digest().equals(original.headDigest()))
                 same.requireHistoricalState(original.headSequence(), original.headDigest());
-            // Replay the installed writer's source closure and this request's exact source
-            // through the existing original-file reader, including native FileID checks.
-            List<Pin> sources = same.captureSources();
-            ReadOriginalCapture capture = readOriginalCapture.get();
-            if (capture != null) for (Pin installedSource : sources)
-                capture.verifiedSourceReferences.add(installedSource.reference());
-            ExactRef source = original.request().source().sourceRef();
-            if (source.bytes() < 1 || source.bytes() > WriterContracts.MAX_PIN_BYTES)
-                throw new IOException("bounded failed-read source original required");
-            int sourceMaximum = Math.toIntExact(source.bytes());
-            Pin requestSource = same.capturePin(source, sourceMaximum);
-            same.readPinned(requestSource, sourceMaximum);
-            rememberReadOriginal(same, requestSource);
+            // Implementation sources remain typed request metadata; only actual failed READ originals are reopened.
             verifyReadAttemptOriginals(original.request(), original.requestId(), original.before(),
                     original.prepared(), original.original());
             if (!original.originalRef().equals(referenceOf(original.original()))
@@ -641,10 +629,6 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                     || !original.prepared().equals(loadRequest(original.preparedRef())))
                 throw new IOException("failed read changed its exact existing outcome or prepared locator");
             verifyGuardOriginals(original.after().binding());
-            // Keep even an external request source pinned over the entire before/wire/after
-            // replay. A fresh same-byte replacement cannot become the original native file.
-            same.verifyPin(requestSource);
-            for (Pin installedSource : sources) same.verifyPin(installedSource);
             var unchanged = same.head();
             if (head.state().sequence() != unchanged.state().sequence() || !head.digest().equals(unchanged.digest()))
                 throw new IOException("canonical head changed during failed-read original verification");
@@ -1122,7 +1106,6 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         // verifies their complete binding and historical source scope without new Native I/O.
         readOriginalPacket(identity.nativeEvidence()); readOriginalPacket(identity.helloEvidence());
         readOriginalPacket(identity.heartbeatEvidence());
-        verifyRetainedSourceOriginal(identity.source().sourceRef());
         if(identity.sourceQualification().isPresent())verifyRetainedSourceOriginal(identity.sourceQualification().orElseThrow());
         if(identity.epochManifest().isPresent())verifyRetainedSourceOriginal(identity.epochManifest().orElseThrow());
         for (ExactRef retained : original.supportingEvidence()) verifyRetainedSourceOriginal(retained);

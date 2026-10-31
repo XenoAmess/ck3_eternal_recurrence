@@ -62,9 +62,6 @@ public final class NativeArchiveDataCodec {
                  if(identity.epochManifest().isPresent())readBytes(identity.epochManifest().orElseThrow(), WriterContracts.MAX_PIN_BYTES);
              }
         }
-        readBytes(read.request().source().sourceRef(), WriterContracts.MAX_PIN_BYTES);
-        if (read.adoption().isPresent())
-            readBytes(read.adoption().orElseThrow().currentRequest().source().sourceRef(), WriterContracts.MAX_PIN_BYTES);
         if (read.retainedMaterial().isPresent())
             readBytes(read.retainedMaterial().orElseThrow().original(), RawJson.MAXIMUM_BYTES);
         return new ReadData(original, read);
