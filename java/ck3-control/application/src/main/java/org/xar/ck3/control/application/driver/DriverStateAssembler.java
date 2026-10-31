@@ -1481,6 +1481,19 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         if (!(durable.originalHistory() instanceof ActionJournal.BoundHistoryBasis bound)
                 || !bound.originalDriverHistory().equals(known.originalHistoryBasis())) missing.add("original_full_history_baseline_not_bound_in_canonical_writer");
         Map<String,DriverSnapshotFacts.ActionRow> rows=new HashMap<>(); known.actionRows().forEach(row -> rows.put(row.actionId(),row));
+        // Canonical interrupted-prefix controls already retain their actual settled effects; no recorder row exists.
+        var prefixControls = new java.util.HashSet<ActionReceipt>();
+        for (ActionReceipt parent : durable.actions()) {
+            if (!(parent.state() instanceof ActionState.CompositeSettled settled)
+                    || !(settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted)
+                    || !parent.command().before().game().equals(known.stamp().game())
+                    || !parent.command().before().frame().episodeRunId().equals(known.driver().session().episodeRunId())) continue;
+            var children = settled.execution().children().stream().map(child -> durable.actions().stream()
+                    .filter(value -> child.actionId().equals(value.command().actionId())).findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("interrupted Life prefix child is absent from canonical Driver actions"))).toList();
+            org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(parent.command(), settled.execution(), settled.settlement(), children);
+            prefixControls.addAll(children);
+        }
         for(ActionReceipt action:durable.actions()) {
             var presentation=verifiedPresentation.get();
             if(presentation!=null&&presentation.contains(action))continue;
@@ -1541,13 +1554,10 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
             }
             if (action.state() instanceof ActionState.CompositeSettled settled
                     && settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted) {
-                var children = settled.execution().children().stream().map(child -> durable.actions().stream()
-                        .filter(value -> child.actionId().equals(value.command().actionId())).findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("interrupted Life prefix child is absent from canonical Driver actions"))).toList();
-                org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(action.command(), settled.execution(), settled.settlement(), children);
                 continue; // The verified interrupted prefix has no Native command-history row or cycle credit.
             }
             DriverSnapshotFacts.ActionRow coverage=rows.get(action.command().actionId());
+            if (coverage==null && prefixControls.contains(action)) continue; // Exact canonical child needs no second recorder row.
             if(coverage==null || !coverage.bodySha256().equals(action.bodySha256()) || coverage.durableSequence()>action.sequence()) {
                 missing.add("original_history_row_unavailable:"+action.command().actionId()); continue;
             }
