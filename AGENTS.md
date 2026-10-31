@@ -8,7 +8,7 @@
 
 ## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
 
-- 02:07Z后继实际：127 MB8src exit0/7.421秒、同Game LOOP/next44，basic first_heir_marriage_enabled=false实际load，但Family分支前后具体caller尚在核定，真实bounded marriage UTF-8 input required终态exit4/next45/Native186/public211/date53144328，新增普通动作/日/SAVE仍0。不要把开关配置当DATE已成功，不等待127旧HOLD；runtime128与M1源先模型修实际有限材料消费。M2 generic Family首源码仅typed unavailable/NotPrepared，缺真实storage/provider不能冒充支持。Root承认模型串行派发空档，历史峰8不等于达标；真实待办由owner直接并行POST，模型地址192.168.1.11，候选/采用/运行期决策分开。
+- 07:43Z后继实际：同一原版Game71464已独立确认CROWN两次世界动作APPLIED（law0→1→2）；日期仍53144328、实际新增游戏日与SAVE均0。LIFE旧未知父已依据实际子回执结算：child373为原speed5请求的独立APPLIED读回，parent374为COMPOSITE_SETTLED/LIFE_CONTROL_PREFIX_INTERRUPTED，不授Advance/新增日且不重发。MB148增编2源exit0/5.603秒后worker148/PID318748真实07:39:06–48Z END1/42.700秒、未进LOOP/next59；旧Driver投影缺项已越过，新故障为OrdinaryCycleTransitions.requireSettledRecoveryFrontier331对已结算timeline child仍要求独立cycle，runtime/obligations149沿共同ordinaryCycleRoots语义修复。07:39:58.637575Z本地模型新IP实际客户端在途首次峰14，仅持续3.540秒；07:40:27当刻10/server10/wait0，不能称持续12–16或容量上限。真实HTTP继续与独立源码/审阅重叠，不等编译窗，不重复已绿业务。 后到07:47:41.7155678Z runtime149同Game真实LOOP_START/next59/worker321540，安装HOLD解除；完整恢复已进普通批次，原父374/子373不重发，新增游戏日/SAVE仍0，不从LOOP预授后续日期动作。
 
 - 用户已明确要求阅读 resume90 总交接与 source-index 后继续任务，同时开展自动游玩智能体开发、G2 M0–M7 制作及原生机制/逻辑研究；第一优先是实际正常游玩。本条结束下方休假停止状态，不依据旧人数编制自动恢复60岗。
 - 用户明确本地模型现在可用，并要求尽全力高并发使用、继续摸清能力边界；后续明确IP改为192.168.1.11并要求记入本地模型运营。当前唯一地址为 `http://192.168.1.11:8080/v1`，模型仍为qwen38-coder，无需密钥，旧192.168.1.7及8000均不自动回退。唯一源码HTTP协调为 `/root/models91`，复用既有调用器与 `docs/local-model-executor-config.json`：实际当前源码三消息前缀、有限输出、SSE首有效内容与总耗时分记、瞬时错误按配置重试。真实未完成需求滚动并行，审阅/实际编测/采用/拒绝分开；运行决策HTTP由运行owner装配，源码候选不冒充游玩决策。

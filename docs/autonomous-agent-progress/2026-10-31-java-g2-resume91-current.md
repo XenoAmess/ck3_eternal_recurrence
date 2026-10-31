@@ -1,5 +1,24 @@
 # Java / G2 resume91 当前执行记录
 
+## 2026-10-31 07:47Z UTC：149同Game已恢复进入普通批次59
+
+后到运行owner实际回执：149于07:47:41.7155678Z LOOP_START/next59，worker321540同原Game活跃，安装HOLD已解除；原父374/子373不重发，新增游戏日与SAVE仍0，后续日期动作未预授。149单Transitions源码正式58df67d522已发表，strict与DATA检查不外推为后续游玩成功。下方07:43Z Root片保留其冻结观察时间及尚待149的当时事实。
+
+## 2026-10-31 07:43Z UTC：两次真实王权动作已生效；同局热接续继续修周期消费者，模型实际峰14
+
+同一原版无mod Game71464/出生FILETIME134378397668266369保留。129/133已通过实际Native提交与独立后态确认CROWN世界动作两次APPLIED，law0→1、1→2，prestige220m→200m→100m。日期仍raw53144328，新增游戏日0、SAVE0；开局Focus、王权世界动作与时间控制分别计。未重1066、未部署研究DLL，业务代码修复只重启智能体。
+
+LIFE133原无子提交分支已由真实handler无写合同结算COMPOSITE_NO_GAMEPLAY_WRITE。LIFE143原speed5 child368收到ACK但后态未知，后继只读reconcile确认同一原request/command/dispatch，child373独立SETTLED/APPLIED；没有重放。147物理Journal.append已保留真实parent并结算parent374/9619B为COMPOSITE_SETTLED/LIFE_CONTROL_PREFIX_INTERRUPTED；只授已确认的速度控制前缀，不授完整Composite成功、Advance或新增日。
+
+147实际在冷恢复因完整history/Driver投影失败。148只在exact typed settled parent/child且coverage==null时免第二ActionRow metadata资格；有row仍完整验证，world动作、standalone、UNKNOWN与原canonical ACK/effects保持。6个actual373/374数据检查及严格编译已通过，final最小窄化仅重单prod strict、不重已绿6例。诊断单叶最多16原因×96字符，原ready条件保持。正式2872eca9bc与a80399b9a1不等于实机恢复完成。
+
+MB148实际07:38:52.391–57.995Z exit0/5.603秒，复用MB/noClean，仅application Assembler1源与native-transport Collector1源。worker148/PID318748于07:39:06.146Z同Game START，07:39:48.846Z END1/42.700秒，无LOOP/next59；已越旧Driver缺项，真实新stack为OrdinaryCycleTransitions.requireSettledRecoveryFrontier331→commitSettledSameGameRecovery211→Journal916→finishObserved1175。canonical parent374/child373保持；149由runtime/obligations独占最小共同ordinaryCycleRoots消费者修复，不清账本、不造completed-cycle，不等待Root CI/正式发表才接续。
+
+本地模型运营07:40:27有限窗：新IP首次实际客户端在途峰14，发生07:39:58.637575–07:40:02.177609Z，仅3.540034秒；≥12共9.803132秒，最近10分钟均值2.0054。单刻source10/server running10/waiting0/KV0.2853535。首次达到12–16初始区间的峰值，尚未持续达到，不推缓存或容量上限。旧峰8报告保留历史。M1 sentinel/RawWindow、M3注册record、M4 Full880-Free83组合与反例、M7 cleanup桥、M0/M6真实CI修复滚动源码先行POST；无输入的SOURCE_STOP不凑任务/人数。
+
+Root独占最新hosted CI41175630056的NativeBridgeDefenderTest与NativeProjectExeRegistrationTest，仅D候选。07:39:17.987/18.003Z两组真实首POST，各两轮。Defender实际LF/CRLF双fixture哈希已确定，首答漏provenance，owner追加可移植LF校验；原provenance refs/JSON raw reader不改。ExeReg首答误把receipt ref当archive并漏生产hardcoded machine合取，已源审拒绝并反馈实际函数，第二答待审。原hosted bootstrap1189tests/13F14E/0skip仍失败；没有将局部候选或HTTP200写成CI绿。M0负责CurrentR4/Frontend/FullParity，M6 WindowsPreload/Custody，M1 RawWindow，不交叉重复派发。Root当前0编测/MB读取，必要验证仅原3失败方法、受运行实窗调度。
+
+
 ## 2026-10-31 02:07Z UTC：127同Game实际接续，新Family有限材料消费故障；扩大源先模型并行
 
 127 MB实际02:01:44.190172–02:01:51.610885Z exit0/7.421秒，application1/local-service7共8源码；worker127/PID216432于02:01:58.745099Z START、02:02:28.4227847Z LOOP/next44。实际新basic profile加载first_heir_marriage_enabled=false，其他profile默认true；五叶开关严格编译及11 focused checks已通过，Scope三leaf生产wrapper转发一并采用。安装读窗随真实LOOP显式释放，不等待旧HOLD。
