@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已准确交付154取消15生产叶及便携cursor测试/原件、155–157物理Status来源/路由/归档修复；M0 Frontend两Java、M7 copy16/storage八新叶和M1 live ARM六叶已正常FF到408835fb15。最新实际157于09:52:07.511447Z preloop END1/54.895340秒、无LOOP；归档旧code cap已越，后续fresh projection嵌套writer阻塞由运行岗独占158修。canonical388父仍Unknown，原ARM387已SETTLED/CONTROL_APPLIED且未重发，next60/date53144328不增、未CANCEL；旧373/374不重放。后到M1 live ARM五叶已由Main S/Z采，连同158两Factory新增hunk共六unique生产源进入MB158；正式158已发表77b843c78b，实际运行终态尚待。本岗不写S/MB/Game/账本。
+最新正式源码159已发表3858c5df55，继承Native60d2f634d8；本岗成熟source/组件交付已清，Dclean/无编测在途。Main158实际10:09:35.559207Z preloop END1/445.919146秒、无LOOP：原CANCEL395已SETTLED/CONTROL_APPLIED，父396已CompositeControlApplied initialization_cancelled、falseflags且新增日0。后Controller.completeCycle.ready因ARM/CANCEL缺第二记录行失败；159单Assembler只缺row分类修已S/Z采并MB159开始，159实际10:13:40.504778Z preloop END1/7.616541秒、未到新Assembler分支；cold物理archive router未装先阻历史回执读取，HOLD已解除，不授完整恢复或游戏日。原ARM387/speed373/父374均不重放，本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -523,3 +523,14 @@ M1 live ARM五生产+便携test正常FF408835fb15。compatible default callback�
 158两Factory最小23+/2-正常FF77b843c78b：LifeFactory初始issuer及Coordinator terminal callback借已有same Session，通过withFrozenRawObservation/raw Native archive/shared assembler Complete组装fresh received frame；Infrastructure reserved-child post-ACK observer同样闭合。真实ACK/STATUS与fresh verifyAfter、custody/source/session/episode及原deadline保，不加Native读取或伪frame。只按DELIVERY2382B与HUNK1890B叠加，后者精确diff比对且408835新withClockControlBasis保留，绝不整copy较旧S helper candidate。owner单源strict0/2.094086秒与0/2.214113秒分组复用，无行为/fullRoot/CANCEL/父settlement/日期授信。
 
 两个模型请求真实先POST；第一答unchecked/move-only被拒，第二答与owner并行已实现的核心方向相近但漏deadline，两项均0源码采用，不追认owner工作。Main随后实际S/Z采用M1五叶和158两hunk（Base重合，共六unique）并开始MB158；因此上节M1尚未加载是此前408835发表时事实，当前按此后到采用更新。运行终态待Main真实读回；canonical388/原ARM387结算与未知父、未CANCEL/日0边界未因source发表改变。
+
+
+## 158实际取消终态与159缺行消费后继
+
+Main158后到真实终态10:09:35.559207Z/445.919146秒：CANCEL395 SETTLED/CONTROL_APPLIED、父396 CompositeControlApplied initialization_cancelled，visibleGameplay/eligibleAdvance等flags为false，新增日仍0。只读STATUS、fresh/borrowed projection与实际取消控制已越过，不把此结果改称Advance/APPLIED游戏日；原ARM387、speed373及前父374不重发。最终preloop仍exit1而无LOOP，Controller.completeCycle.ready缺ARM/CANCEL第二记录行；精确receipt refs由runtime独占现场页后续补记，本岗不猜SHA。
+
+Root单DriverStateAssembler CURRENT-S158.patch3293B正常FF3858c5df55。仅首precollection在sameGame/episode、exact Life operation/HANDLER、typed progress_status=initialization_cancelled并完整parent-aware ActionEffects canonicalchildren验证后，检查parent无gameplay/advance/applied信用，加入parent+children；只有coverage==null才用此集合，present row/body/sequence/legacy以及普通world/UNKNOWN原检逐字保。candidate全文归一化同，未wholecopy其他140/148后继。两模型整拒，owner实现；采用实际STRICT-RESULT03的10:10:24.612935→27.426429Z单源exit0/2.8134909秒，不误用早于compile的SOURCE-READY03 pending字段。无新行为测试/Native/Game信用；Main已S/Z准确采用并开始MB159，真实恢复待运行读回。
+
+159后到实际10:13:40.504778Z preloop END1/7.616541秒、无LOOP。cold readUnresolvedSameGame在physical router安装前读取父396 terminalStatus即router unavailable，未到新Assembler分支；395/396已结算不变。HOLD解除，provider160独占冷角色/装配定位，本159source不能追认为实际Driver绿。
+
+M7 retry158新四叶已提前独立源审：完整60B decode与core/adapter/normal/error tests读完，4 frozen SHA一致；fullraw64、非零RAX、negative EAX重试、captured RBX与error-call RCX区分、两refusal targets/finite chronology均对应原源。尚未首编/首4JUnit，0stage/正式采用/模型调用；M7-RETRY158-PRE-REVIEW.json保留，不把SOURCE_READY追认验证通过。
