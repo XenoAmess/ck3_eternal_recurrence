@@ -22700,7 +22700,8 @@ void RunConnectedSession(
                       }
                     }
                   }
-                } else if (request.route == xar::bridge::FamilyMarriageOutgoingRouteV2::child_matrilineal) {
+                } else if (request.route == xar::bridge::FamilyMarriageOutgoingRouteV2::child_matrilineal ||
+                           request.route == xar::bridge::FamilyMarriageOutgoingRouteV2::child_default) {
                   if (expected_revision != state_revision) {
                     connected = write_frame(
                         pipe, CommandResultFrame(request_id, step, false,

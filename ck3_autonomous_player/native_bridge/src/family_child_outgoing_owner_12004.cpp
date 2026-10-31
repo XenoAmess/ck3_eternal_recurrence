@@ -1,5 +1,6 @@
 #include "xar_bridge/family_child_outgoing_owner_12004.hpp"
 #include "xar_bridge/family_child_matrilineal_materializer_12004.hpp"
+#include "xar_bridge/family_child_default_materializer_12004.hpp"
 #include "xar_bridge/family_heir_outgoing_owner_12004.hpp"
 #include "xar_bridge/ck3_12002_family_subject.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
@@ -124,7 +125,8 @@ bool ExecuteFamilyChildOutgoingOwnerJob12004(
   // 2. Request Validation
   const auto frame = MakeFrame(before, job.native_revision);
 
-  if (job.request.route != FamilyMarriageOutgoingRouteV2::child_matrilineal) {
+  if (job.request.route != FamilyMarriageOutgoingRouteV2::child_matrilineal &&
+      job.request.route != FamilyMarriageOutgoingRouteV2::child_default) {
     job.result.outcome = FamilyHeirOwnerOutcome12004::invalid_request;
     return true;
   }
@@ -166,13 +168,23 @@ bool ExecuteFamilyChildOutgoingOwnerJob12004(
       }
 
       if (first_read_valid) {
-        // Materialize Context using the new child materializer
+        // Materialize Context using the route-specific materializer
         FamilyChildMatrilinealPreparedCopy12004 prepared{};
-        job.result.materialize_status = MaterializeFamilyChildMatrilinealContext12004(
-            job.family_bindings,
-            job.context_access,
-            job.request,
-            prepared);
+
+        if (job.request.route == FamilyMarriageOutgoingRouteV2::child_matrilineal) {
+          job.result.materialize_status = MaterializeFamilyChildMatrilinealContext12004(
+              job.family_bindings,
+              job.context_access,
+              job.request,
+              prepared);
+        } else {
+          // child_default uses ContextBindings (job.family_bindings.context) and no setter
+          job.result.materialize_status = MaterializeFamilyChildDefaultContext12004(
+              job.family_bindings.context,
+              job.context_access,
+              job.request,
+              prepared);
+        }
 
         if (job.result.materialize_status == FamilyRulerMaterializeStatus12004::complete) {
           job.result.prepared = prepared;

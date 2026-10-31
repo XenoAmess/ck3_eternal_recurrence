@@ -77,15 +77,16 @@ std::string SerializeFamilyChildOutgoingOwnerResult12004(
   if (!result.frame_observed) {
     throw std::invalid_argument("frame not observed");
   }
-  if (request.route != FamilyMarriageOutgoingRouteV2::child_matrilineal) {
-    throw std::invalid_argument("non-child_matrilineal route");
+  if (request.route != FamilyMarriageOutgoingRouteV2::child_matrilineal &&
+      request.route != FamilyMarriageOutgoingRouteV2::child_default) {
+    throw std::invalid_argument("non-child route");
   }
 
   bool storage_complete = (result.storage_status == FamilyOutgoingStorageCopyStatus12004::complete);
   bool prepared_complete = (result.materialize_status == FamilyRulerMaterializeStatus12004::complete);
   bool has_prepared = result.prepared.has_value();
 
-  // Consistency checks specific to child_matrilineal
+  // Consistency checks specific to child routes
   if (request.scope == FamilyMarriageOutgoingScopeV2::action_preparation) {
     // Identity is required only when claiming complete prepared or storage
     if ((prepared_complete || has_prepared || storage_complete) && !result.identity_observed) {
@@ -117,10 +118,13 @@ std::string SerializeFamilyChildOutgoingOwnerResult12004(
       if (roles[3] != request.candidate) {
         throw std::invalid_argument("prepared candidate mismatch");
       }
-      // Child route specific: selected matrilineal option must be true
-      if (!result.prepared->materialized.matrilineal) {
-        throw std::invalid_argument("child_matrilineal prepared context lacks selected matrilineal option");
+      // Child route specific: selected matrilineal option must be true ONLY for child_matrilineal
+      if (request.route == FamilyMarriageOutgoingRouteV2::child_matrilineal) {
+        if (!result.prepared->materialized.matrilineal) {
+          throw std::invalid_argument("child_matrilineal prepared context lacks selected matrilineal option");
+        }
       }
+      // child_default preserves actual copied raw Mat/effective Boolean/CanSend without policy enforcement here
     }
 
     // Cross-check hash/sender only when complete stock exists
