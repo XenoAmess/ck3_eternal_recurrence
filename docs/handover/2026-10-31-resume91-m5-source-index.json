@@ -1,6 +1,6 @@
 {
-  "snapshot_at_utc": "2026-10-31T15:42:25.733456+00:00",
-  "snapshot_boundary": "All active statuses and in-flight counts below describe this frozen source snapshot, not the publication time or a live resource lease.",
+  "snapshot_at_utc": "2026-10-31T17:05:56.562275+00:00",
+  "snapshot_boundary": "Frozen evidence/document snapshot, not publication time, a live worker/resource lease or a live model queue. Maturity cutoff is actual whole181 END2026-10-31T16:39:08Z. Successor182/183/184 statuses are outside this package and are not asserted here.",
   "schema": "xar.resume91.m5.current-source-index/v1",
   "owner": "/root/m5_continue",
   "machine_id": "xenoamess-full-tower-eb9d2c1186",
@@ -11,29 +11,323 @@
     "D:/ck3-state/resume91-m5-native/whole-concrete173/RESULT06.json",
     "D:/ck3-state/resume91-m5-native/normalize-full174/RESULT08.json",
     "D:/ck3-state/resume91-m5-native/whole-normalized175/RESULT03.json",
-    "D:/ck3-state/resume91-m5-native/helper-3f5f970176/RESULT08.json"
+    "D:/ck3-state/resume91-m5-native/helper-3f5f970176/RESULT08.json",
+    "D:/ck3-state/resume91-m5-native/normalize-with-helper177/RESULT04.json",
+    "D:/ck3-state/resume91-m5-native/root-3f5c090178/RESULT05.json",
+    "D:/ck3-state/resume91-m5-native/lookup-with-root179/RESULT04.json",
+    "D:/ck3-state/resume91-m5-native/normalize-with-root180/RESULT04.json",
+    "D:/ck3-state/resume91-m5-native/whole-with-root181/RESULT04.json"
   ],
   "source_index_creation": "Absent at exact formal base; added as a new minimal current index rather than copying the untracked Z historical index.",
-  "active_work_package": "normalize-with-helper177",
-  "active_work_status": "177 two new production sources and ONE new independent Book source ready; no compile or execution. Consumer R2 model source unchanged by owner; Book owner takeover after two rejected semantic rounds.",
-  "latest_completed_work_package": "helper3f5f970176",
-  "latest_completed_result": "D:/ck3-state/resume91-m5-native/helper-3f5f970176/RESULT08.json",
-  "current_local_stage_complete": false,
-  "active_source_entries": [
-    "D:/ck3-state/resume91-m5-native/normalize-with-helper177/consumer-owner/DELIVERY.json",
-    "D:/ck3-state/resume91-m5-native/normalize-with-helper177/literal-owner/REVIEW01.json"
-  ],
-  "parent_actual_inflight": {
-    "http": 0,
-    "compile": 0,
-    "PE": 0,
-    "run": 0
-  },
+  "active_work_package": "latest_work_not_in_this_snapshot",
+  "active_work_status": "This document records mature177–181 only; it does not observe or assert live successor work, HTTP, compile, execution or resource ownership.",
+  "latest_completed_work_package": "whole-with-root181 at this maturity cutoff only",
+  "latest_completed_result": "D:/ck3-state/resume91-m5-native/whole-with-root181/RESULT04.json",
+  "current_local_stage_complete": true,
+  "active_source_entries": [],
+  "parent_actual_inflight": null,
   "child_HTTP_state": {
-    "at_utc": "2026-10-31T15:42:25.731968+00:00",
-    "consumer_HTTP": 0,
-    "literal_HTTP": 0,
-    "note": "Delivered children and sealed HTTP results inspected for this source snapshot; no new POST or runtime action."
+    "observed": false,
+    "note": "No live polling or model request performed to create this document; prior zero counts are retained only in the dated prior snapshot below."
   },
-  "latest_external_notice": "176finiteactualallEND0LIGHT1returned;177notstarted/doesnotgateactualMain."
+  "latest_external_notice": "181 local firstONE is complete at the stated maturity cutoff; this package does not gate actualMain or successor research.",
+  "maturity_cutoff_utc": "2026-10-31T16:39:08Z",
+  "mature_result_details": [
+    {
+      "package": "177",
+      "result": {
+        "path": "D:/ck3-state/resume91-m5-native/normalize-with-helper177/RESULT04.json",
+        "bytes": 9199,
+        "sha256": "89e099d15a08ae6934b2f74f5973190d0dd9067377a08002a51ce5a91d2dd938"
+      },
+      "scope": "ONE new174->real176 first-key-hit; original helper mock removed, actual nested3F5F97B->C090 explicit post port; full three preCALL V/NV/memory, owned return slots,1GS/1atomic, complete memory image/full normal return; unexpected helper loop visit rejects.",
+      "stages": [
+        {
+          "stage": "only2newprod-strict",
+          "begin_utc": "2026-10-31T15:43:54Z",
+          "end_utc": "2026-10-31T15:43:54Z",
+          "exit_code": 0,
+          "seconds": 0.3648276
+        },
+        {
+          "stage": "only2newtest-strict",
+          "begin_utc": "2026-10-31T15:43:58Z",
+          "end_utc": "2026-10-31T15:43:59Z",
+          "exit_code": 0,
+          "seconds": 0.5519461
+        },
+        {
+          "stage": "firstONE-new-normalizer-real-helper-composition",
+          "begin_utc": "2026-10-31T15:44:03Z",
+          "end_utc": "2026-10-31T15:44:03Z",
+          "exit_code": 0,
+          "seconds": 0.0623199
+        }
+      ],
+      "stage_argfile_stdout_stderr_receipts": "See this exact RESULT actual_stages; files are under D:/ck3-state/resume91-m5-native/normalize-with-helper177/validation",
+      "adoption": {
+        "consumer": "R2 model Java source unchanged by owner; only exact local child Calls type corrected by model after R1 rejection.",
+        "literal": "Two semantic rounds (2 actual POST) rejected, owner independent whole Book from original ASM/current APIs/old literal input data; target cores not read/run to derive expected.",
+        "host": "Deterministic reuse accepted174 recorder, exact replacement map in READY03; no template-only HTTP."
+      },
+      "limits": [
+        "176 intermediate full hashR8 overwritten by actual174 MOVR8D12C before diag; no separate intermediate assertion in177.",
+        "Four owned buckets same head/end, zero loop path only; no exhaustive topology or cold root initialization coverage.",
+        "Unknown C090 remains explicit fullV/shared-memory port in this case; successor178 now has separate source.",
+        "Old174 independent Book used only as literal input/oracle construction; zero old subject green reruns.",
+        "No original Native execution, loaded identity, S/MB/DLL/Game, new day or G2/M5 completion credit."
+      ]
+    },
+    {
+      "package": "178",
+      "result": {
+        "path": "D:/ck3-state/resume91-m5-native/root-3f5c090178/RESULT05.json",
+        "bytes": 10377,
+        "sha256": "14d22757ff5ed8ce3e84b6f906c818c224db5963b108c4f256a5b8de6c3f5827"
+      },
+      "scope": "3newcases: signed hot guard -1 vs TLS7fffffff; callback fresh guard nonminusone fastreturn; full initialization5CALL.6full opaque snapshots, eachGS1/atomic0, actualabsoluteCALLslots/preSP, fullV/NV/XMM, XMM0xor/MOVSSmem upper96clear, everyfield/padding/heap selflink and complete image, lastcallback fresh originalRET distinct from finalinnerCALLslot.",
+      "stages": [
+        {
+          "stage": "only3newprod-strict",
+          "begin_utc": "2026-10-31T16:03:43Z",
+          "end_utc": "2026-10-31T16:03:43Z",
+          "exit_code": 0,
+          "seconds": 0.4933795
+        },
+        {
+          "stage": "only3newtest-strict",
+          "begin_utc": "2026-10-31T16:03:48Z",
+          "end_utc": "2026-10-31T16:03:48Z",
+          "exit_code": 0,
+          "seconds": 0.7320049
+        },
+        {
+          "stage": "first3newliteral-root240B",
+          "begin_utc": "2026-10-31T16:03:54Z",
+          "end_utc": "2026-10-31T16:03:54Z",
+          "exit_code": 0,
+          "seconds": 0.0997114
+        }
+      ],
+      "stage_argfile_stdout_stderr_receipts": "See this exact RESULT actual_stages; files are under D:/ck3-state/resume91-m5-native/root-3f5c090178/validation",
+      "adoption": {
+        "core": "Model R2 algorithm body plus owner one invalid declaration syntax correction; two semantic rounds/three actual POST due whole10054 retry, no partial stream stitching.",
+        "consumer": "Model R1 subject plus owner deletion of redundant outerCALL write. Wrong original task required it despite176core already owning the slot; owner context error, not independent model failure. Consumer itself compiled here, first179 subject will observe single write.",
+        "literal": "Two semantic rounds rejected, independent owner whole3Book. No targetJava source read/run for expected; callback fullposts/frozen mutation are explicit owned inputs.",
+        "host": "Accepted174 recorder deterministic rename only, no template-only HTTP."
+      },
+      "limits": [
+        "RAW_FLOAT7FA12345 at49F6464 is arbitrary owned bit input, no fresh PE constant or FP arithmetic/MXCSR claim.",
+        "Fullinit lastcallback leaves guard -1 by frozen input; no actual CRT initialization success inference.",
+        "Normal alignment/fault/ABI preconditions, flags/EH and unrepresented machine effects not modeled.",
+        "No original Native execution, loaded identity, S/MB/DLL/Game/newday or M5/G2completion. Old software cases not rerun."
+      ]
+    },
+    {
+      "package": "179",
+      "result": {
+        "path": "D:/ck3-state/resume91-m5-native/lookup-with-root179/RESULT04.json",
+        "bytes": 8539,
+        "sha256": "1f2794013dc52862271586a8ed9dbb72552c53028d738ea4342f73d9785225a5"
+      },
+      "scope": "ONE new176->actual178hotroot firstkeyhit,0opaque/GS1/atomic0/loop0; fullV/NV/XMM/fullbyteimage and C090returnslot write exactly1.",
+      "stages": [
+        {
+          "stage": "only2newprod-strict",
+          "begin_utc": "2026-10-31T16:11:03Z",
+          "end_utc": "2026-10-31T16:11:04Z",
+          "exit_code": 0,
+          "seconds": 0.3802892
+        },
+        {
+          "stage": "only2newtest-strict",
+          "begin_utc": "2026-10-31T16:11:09Z",
+          "end_utc": "2026-10-31T16:11:10Z",
+          "exit_code": 0,
+          "seconds": 0.5870861
+        },
+        {
+          "stage": "firstONEnewcase",
+          "begin_utc": "2026-10-31T16:11:14Z",
+          "end_utc": "2026-10-31T16:11:15Z",
+          "exit_code": 0,
+          "seconds": 0.0914383
+        }
+      ],
+      "stage_argfile_stdout_stderr_receipts": "See this exact RESULT actual_stages; files are under D:/ck3-state/resume91-m5-native/lookup-with-root179/validation",
+      "adoption": "Consumer R1 model Java unchanged; Book two semantic rounds rejected then owner entire independent data; host176 reuse plus necessary C090write multiplicity observation.",
+      "limits": "Finite hotroot/firstkeyhit only; old176 literals used as data, no old subject executed. No Native/loaded/deployment/Game."
+    },
+    {
+      "package": "180",
+      "result": {
+        "path": "D:/ck3-state/resume91-m5-native/normalize-with-root180/RESULT04.json",
+        "bytes": 8858,
+        "sha256": "c6014889505c4649445184b1c1193800235c0ff85709c2a2397afff0c8eddb70"
+      },
+      "scope": "ONE new174->176->actual178hotroot,2fullopaque/2GS/1freshatomic/0loop; fullV/NV/XMM/beforeimages/fullfinalbyteimage and innerC090returnslot write exactly1.",
+      "stages": [
+        {
+          "stage": "only2newprod-strict",
+          "begin_utc": "2026-10-31T16:29:10Z",
+          "end_utc": "2026-10-31T16:29:11Z",
+          "exit_code": 0,
+          "seconds": 0.4053009
+        },
+        {
+          "stage": "only2newtest-strict",
+          "begin_utc": "2026-10-31T16:29:16Z",
+          "end_utc": "2026-10-31T16:29:17Z",
+          "exit_code": 0,
+          "seconds": 0.5670358
+        },
+        {
+          "stage": "firstONEnewcase",
+          "begin_utc": "2026-10-31T16:29:22Z",
+          "end_utc": "2026-10-31T16:29:22Z",
+          "exit_code": 0,
+          "seconds": 0.0580541
+        }
+      ],
+      "stage_argfile_stdout_stderr_receipts": "See this exact RESULT actual_stages; files are under D:/ck3-state/resume91-m5-native/normalize-with-root180/validation",
+      "adoption": "Consumer R1 model Java unchanged; Book R2partial model structure/source plus owner explicit DWORDwidth/diagR9R10/ArrayList corrections, raw source not compiled; host177 reuse plus C090write observation.",
+      "limits": "Intermediate helperhash R8 overwritten later174, no separate assertion. Known existing174/176bridge outerhelper same-value duplicate writes remain, not a complete native write-event equivalence. No Native/loaded/deployment/Game."
+    },
+    {
+      "package": "181",
+      "result": {
+        "path": "D:/ck3-state/resume91-m5-native/whole-with-root181/RESULT04.json",
+        "bytes": 9815,
+        "sha256": "588e97756d15638cc25fa00f900c14bfbd6694bcca322d939293c42d5066569c"
+      },
+      "scope": "ONE new tag4 realwhole->two174normalizers->176->178hotroot,4fullnestedopaque(E24/E8E),8GS/10DWORDatomic/4olddeep input steps,0helperloop; fulltypedWhole/Middle/joins and stronger completebyteMapequality, C090absolute returnvalue written twice at its actual slot.",
+      "stages": [
+        {
+          "stage": "only2newprod-strict",
+          "begin_utc": "2026-10-31T16:38:57Z",
+          "end_utc": "2026-10-31T16:38:57Z",
+          "exit_code": 0,
+          "seconds": 0.4178909
+        },
+        {
+          "stage": "only2newtest-strict",
+          "begin_utc": "2026-10-31T16:39:02Z",
+          "end_utc": "2026-10-31T16:39:03Z",
+          "exit_code": 0,
+          "seconds": 1.062009
+        },
+        {
+          "stage": "firstONEnewcase",
+          "begin_utc": "2026-10-31T16:39:07Z",
+          "end_utc": "2026-10-31T16:39:08Z",
+          "exit_code": 0,
+          "seconds": 0.6718282
+        }
+      ],
+      "stage_argfile_stdout_stderr_receipts": "See this exact RESULT actual_stages; files are under D:/ck3-state/resume91-m5-native/whole-with-root181/validation",
+      "adoption": "Consumer R1 model Java unchanged; Book two semantic rounds rejected then owner entire independent data from originalASM/old175frontliteral (no targetJava read or run); host175 deterministic reuse plus fullMapkey equality and C090value write observation.",
+      "limits": "Initial2opaque/MXCSR and suffix153boundary remain owned inputs,31F9empty and153signedskip not new coverage. Old173/175 host checked allseed+explicitbytes but not absence of extra keys; new181 adds it without rerunning oldgreens. Known outer duplicatewrite final-state scope retained. No originalNative/loaded/deployment/Game or G2completion."
+    }
+  ],
+  "source_publication": [
+    {
+      "commit": "95cd2b1d88b383de3587d66cd4f92ee348ead85b",
+      "main_sources": 42,
+      "manual_support_test_sources": 12,
+      "source_only_first_compile": [
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source177/MAIN-ACTUAL.json",
+            "bytes": 582,
+            "sha256": "baad83725ac0df032c12abf2f322bb997eb0365d9c129242db3b2d1952698662"
+          },
+          "begin_utc": "2026-10-31T16:31:20.989523+00:00",
+          "end_utc": "2026-10-31T16:31:22.425889+00:00",
+          "exit_code": 0,
+          "seconds": 1.4363675001077354,
+          "source_count": 42
+        },
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source177/TEST-ACTUAL.json",
+            "bytes": 582,
+            "sha256": "590b3c7034045710c57762b5bc67de5c88bc62ccce04393400adf46ee2fad299"
+          },
+          "begin_utc": "2026-10-31T16:31:22.571484+00:00",
+          "end_utc": "2026-10-31T16:31:24.143864+00:00",
+          "exit_code": 0,
+          "seconds": 1.5723788002505898,
+          "source_count": 12
+        }
+      ],
+      "local_origin_master_contains_at_snapshot": true,
+      "limit": "Source publication and source-only javac, not JVM/manual-case reruns, automatic CI, loaded Native, deployment or Game evidence."
+    },
+    {
+      "commit": "681dbace0f29cdb526967e44d700019e28f6da1a",
+      "main_sources": 9,
+      "manual_support_test_sources": 11,
+      "source_only_first_compile": [
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source181/MAIN-ACTUAL.json",
+            "bytes": 581,
+            "sha256": "eb60b46a1ca800901cbd1eee2b6f5639bbcd72b3af809377354b9c1fb985196a"
+          },
+          "begin_utc": "2026-10-31T16:58:23.772440+00:00",
+          "end_utc": "2026-10-31T16:58:24.787123+00:00",
+          "exit_code": 0,
+          "seconds": 1.0146801001392305,
+          "source_count": 9
+        },
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source181/TEST-ACTUAL.json",
+            "bytes": 582,
+            "sha256": "76e267e3e297ed279b23169c6a3f1ec1527374e5984681e3a5ee9c1895a71571"
+          },
+          "begin_utc": "2026-10-31T16:58:24.913101+00:00",
+          "end_utc": "2026-10-31T16:58:26.596897+00:00",
+          "exit_code": 0,
+          "seconds": 1.6837968998588622,
+          "source_count": 11
+        }
+      ],
+      "local_origin_master_contains_at_snapshot": true,
+      "limit": "Source publication and source-only javac, not JVM/manual-case reruns, automatic CI, loaded Native, deployment or Game evidence."
+    }
+  ],
+  "latest_work_not_in_this_snapshot": {
+    "packages": [
+      "token-3f4f8e0182",
+      "normalize-with-token183",
+      "whole-with-token184"
+    ],
+    "status": "Outside the frozen maturity cutoff; no current prepared/untested/green/publication assertion in this package. Consult each owner latest sealed receipt separately."
+  },
+  "prior_snapshot_176_complete_177_prepared": {
+    "snapshot_at_utc": "2026-10-31T15:42:25.733456+00:00",
+    "active_work_package": "normalize-with-helper177",
+    "active_work_status": "177 two new production sources and ONE new independent Book source ready; no compile or execution. Consumer R2 model source unchanged by owner; Book owner takeover after two rejected semantic rounds.",
+    "latest_completed_work_package": "helper3f5f970176",
+    "latest_completed_result": "D:/ck3-state/resume91-m5-native/helper-3f5f970176/RESULT08.json",
+    "current_local_stage_complete": false,
+    "active_source_entries": [
+      "D:/ck3-state/resume91-m5-native/normalize-with-helper177/consumer-owner/DELIVERY.json",
+      "D:/ck3-state/resume91-m5-native/normalize-with-helper177/literal-owner/REVIEW01.json"
+    ],
+    "parent_actual_inflight": {
+      "http": 0,
+      "compile": 0,
+      "PE": 0,
+      "run": 0
+    },
+    "child_HTTP_state": {
+      "at_utc": "2026-10-31T15:42:25.731968+00:00",
+      "consumer_HTTP": 0,
+      "literal_HTTP": 0,
+      "note": "Delivered children and sealed HTTP results inspected for this source snapshot; no new POST or runtime action."
+    },
+    "latest_external_notice": "176finiteactualallEND0LIGHT1returned;177notstarted/doesnotgateactualMain."
+  }
 }
