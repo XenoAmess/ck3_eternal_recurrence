@@ -583,10 +583,69 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     }
 
     Optional<CompletedCycleProof> retainedCycleProof(ContinuityStorePort.Session session, SessionIdentity owner) throws IOException {
-        var head = session.head(); requireOwner(head.state(), owner); requireActive(head.state());
+        var head = session.head(); requireOwner(head.state(), owner);
+        requireRetainedProofRole(session, head.state(), owner);
         CycleState retained = state(head.state(), owner);
-        if (retained.head().isEmpty()) return Optional.empty();
-        return cycleProof(session, owner, load(retained.head().orElseThrow()).semantic());
+        requireLegacyPendingClear(head.state(), retained); requireFrontier(head.state(), retained); validateChain(retained);
+        if (retained.pending().isPresent() || retained.head().isEmpty()) return Optional.empty();
+        var semantic = load(retained.head().orElseThrow()).semantic();
+        VerifiedSemantic checked = verify(session, owner, semantic);
+        requireCurrentFrame(head.state(), retained, checked.frame());
+        StrictJson.require(head.digest().equals(session.head().digest()), "retained proof read changed its original writer head");
+        return Optional.of(new CompletedCycleProof(retained.completedCycles(), semantic, ContinuityJson.digest(retained.toJson())));
+    }
+    /** Reading the existing completed branch grants no ordinary action or restart authority. */
+    private void requireRetainedProofRole(ContinuityStorePort.Session session, ContinuityState head, SessionIdentity owner) throws IOException {
+        if (head.status() != ContinuityState.Status.REPAIR_REQUIRED) { requireActive(head); return; }
+        StrictJson.require(active.get() == session, "retained SAVE proof requires the identical locked writer Session");
+        sessionAuthority.require(session); requireOwner(head, owner);
+        ObjectNode whole = head.toJson();
+        ObjectNode boundary = StrictJson.object(whole.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD),
+                Set.of("evidence_id", "session", "batch_id", "boundary"));
+        ObjectNode interruption = StrictJson.object(whole.get("interruption"),
+                Set.of("reason", "source", "evidence_id", "last_settled_frame", "completed_cycles"));
+        StrictJson.require(text(boundary, "boundary").equals(JournalKind.BATCH_INTERRUPTED.name())
+                && sessionFromJson(boundary.get("session")).equals(owner)
+                && text(interruption, "source").equals("java-ordinary-batch-interruption/v2")
+                && text(interruption, "evidence_id").equals(text(boundary, "evidence_id"))
+                && number(whole, "interrupted_window_id") == head.origin().windowId()
+                && number(interruption, "completed_cycles") == head.settledCycles(),
+                "retained SAVE proof requires this actual ordinary interrupted window");
+        var record = archive.loadRecord(ContinuityActionJournal.recordHead(head)
+                .orElseThrow(() -> new IOException("retained SAVE proof has no canonical action head")));
+        ActionReceipt save = record.receipt(); ActionCommand command = save.command();
+        StrictJson.require(save.settled() && save.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                && command.origin() instanceof CommandOrigin.Gameplay
+                && command.expectation() instanceof org.xar.ck3.control.application.action.CommandExpectation.Gameplay
+                && command.protocolIdentity() instanceof org.xar.ck3.control.application.action.ProtocolRequestIdentity.BodyDerived
+                && command.operation().value().equals("save-checkpoint")
+                && command.sessionId().equals(owner.sessionId())
+                && command.origin().machineId().equals(owner.machineId()) && command.origin().game().equals(owner.game())
+                && command.expected().observerSchema().equals(org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory.OBSERVER_SCHEMA)
+                && command.arguments().members().isEmpty()
+                && command.claims().armyIds().isEmpty() && command.claims().allyCharacterIds().isEmpty()
+                && command.claims().characterIds().isEmpty() && command.claims().commitmentKeys().isEmpty()
+                && save.bodySha256().equals(ActionCodec.bodySha256(command))
+                && ContinuityActionJournal.lookup(head, command.actionId(), archive).filter(save::equals).isPresent(),
+                "retained proof requires the current canonical independently APPLIED original SAVE");
+        var expected = List.of(
+                new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedInteger(new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("date_raw"), command.before().frame().identity().dateRaw()),
+                new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedInteger(new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("played_character_id"), command.before().frame().identity().player()),
+                new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean(new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("checkpoint_pair_verified"), true));
+        StrictJson.require(command.expected().values().equals(expected), "retained proof SAVE postcondition differs from its actual factory");
+        var attempt = ActionTransitions.attempt(save.state()).orElseThrow(() -> new IOException("retained SAVE proof lacks its original attempt"));
+        var dispatch = ActionTransitions.dispatch(save.state()).orElseThrow(() -> new IOException("retained SAVE proof lacks its original ACK"));
+        StrictJson.require(dispatch instanceof org.xar.ck3.control.application.action.NativeActionPort.AckReceived ack
+                && ack.nativeOk() && ack.requestId().equals(attempt.requestId()), "retained SAVE proof lacks its positive original ACK");
+        var guard = attempt.guard();
+        StrictJson.require(command.origin().acceptsGuard(guard.origin()) && guard.source().equals(command.source())
+                && guard.sessionId().equals(command.sessionId()) && guard.operation().equals(command.operation())
+                && guard.observed().equals(command.before()), "retained SAVE proof changed its original attempt guard");
+        for (ActionReceipt action : ContinuityActionJournal.receipts(head, archive))
+            StrictJson.require(action.settled(), "retained SAVE proof cannot conceal another unresolved original");
+        CycleState cycle = state(head, owner); requireLegacyPendingClear(head, cycle); requireFrontier(head, cycle); validateChain(cycle);
+        StrictJson.require(cycle.pending().isEmpty() && cycle.head().isPresent(), "retained SAVE proof needs its completed original cycle branch");
+        requireSavedContinuation(load(cycle.head().orElseThrow()).semantic().frame(), command.before());
     }
     Optional<CompletedCycleProof> cycleProof(ContinuityStorePort.Session session, SessionIdentity owner, SemanticEvidence semantic) throws IOException {
         var head = session.head(); requireOwner(head.state(), owner); requireActive(head.state());
@@ -616,7 +675,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 StrictJson.require(selected.completedCycles() == head.state().settledCycles(), "saved cycle proof is not the current surviving saved frontier");
             }
         }
-        if (!savedBranch) requireActive(head.state());
+        if (!savedBranch) requireRetainedProofRole(session, head.state(), owner);
         StrictJson.require(selected.session().equals(owner), "cycle proof crossed its actual session owner");
         requireProof(selected, proof); requireFrontier(head.state(), selected); validateChain(selected);
         if (!savedBranch) { requireLegacyPendingClear(head.state(), selected); requireCurrentFrame(head.state(), selected, proof.frame()); }
