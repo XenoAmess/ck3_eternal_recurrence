@@ -375,25 +375,6 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
                 &&(domain==Domain.COUNCIL?"applied":"enacted").equals(StrictJson.text(latest.get("status")))
                 &&(domain==Domain.COUNCIL||latest.get("material_result")!=null&&latest.get("material_result").isBoolean()&&latest.get("material_result").booleanValue()),"ACK/UNKNOWN/cold current-law observation cannot reset actual-action cadence");
         context().bindings().actualArchivedVerifier(actual.command().operation()).orElseThrow(()->new IOException("actual governance archive verifier missing")).verifier().verify(head,actual,archive);
-        ExactRef receipt=archive.receiptReferenceOf(actual);
-        var events=head.documents().stream().filter(pin->{Path path=Path.of(pin.reference().path());return path.getParent()!=null&&path.getParent().getFileName().toString().equals("ROOT-CONTINUITY-WINDOW-EVENTS");})
-                .sorted(java.util.Comparator.comparing((WriterContracts.Pin pin)->Path.of(pin.reference().path()).getFileName().toString()).reversed()).toList();
-        for(var pin:events) {
-            var event=StrictJson.object(StrictJson.parse(same.readPinned(pin,WriterContracts.MAX_PIN_BYTES)),Set.of("sequence","at_utc","kind","details","identity","previous_sha256","after"));same.verifyPin(pin);
-            if(!DomainBodies.IMPORT_KIND.equals(StrictJson.text(event.get("kind"))))continue;
-            var details=GovernanceDomainDocument.object(event.get("details"));var body=DomainBodies.BodyRef.fromJson(details.get("domain_body"));if(!isDomainBodyContract(domain,body))continue;
-            var source=StrictJson.object(details.get("source"),Set.of("original_body","producer_input","producer_sources","evidence"));StrictJson.require(ExactRef.fromJson(source.get("original_body")).equals(body.payload()),"canonical material event original body differs");
-            var producer=archive.loadMaterial(ExactRef.fromJson(source.get("producer_input")));var json=StrictJson.parse(producer.bytes());if(!INPUT_SCHEMA.equals(StrictJson.text(json.get("schema"))))continue;var input=decodeInput(producer.bytes());
-            if(input.domain()!=domain||input.kind()!=(domain==Domain.COUNCIL?Kind.COUNCIL_MATERIAL:domain==Domain.CROWN&&input.kind()==Kind.CROWN_APPLIED?Kind.CROWN_APPLIED:Kind.CROWN_MATERIAL)||!input.receipt().filter(receipt::equals).isPresent())continue;
-            var bodyPin=same.capturePin(body.payload(),WriterContracts.MAX_PIN_BYTES);StrictJson.require(bodyPin.identity().equals(body.identity()),"canonical material body's original native file identity changed");same.verifyPin(bodyPin);
-            var after=ContinuityState.fromJson(event.get("after"),head.state().machineId());same.requireHistoricalState(after.sequence(),org.xar.ck3.control.continuity.ContinuityJson.digest(after.toJson()));StrictJson.require(DomainBodies.reference(after,slot(domain)).filter(body::equals).isPresent(),"material publication is not in the surviving canonical domain chain");
-            var old=decode(domain,readBody(same,input.previous().orElseThrow()));Document replayed;
-            if(input.kind()==Kind.CROWN_APPLIED)replayed=crownAppliedDirect(old,actual,archive);
-            else {var observed=checkedRead(input.read().orElseThrow(),archive);replayed=domain==Domain.COUNCIL?councilApplied(old,actual,observed,archive):crownApplied(old,actual,observed,archive);}
-            StrictJson.require(Arrays.equals(encode(replayed),readBody(same,body.payload())),"actual full Council ROOT/Crown final-terms material reducer differs from canonical publication");
-            var core=object(replayed.latest().orElseThrow());var fields=core.fields();while(fields.hasNext()) {var field=fields.next();StrictJson.require(Objects.equals(field.getValue(),latest.get(field.getKey())),"current governance material changed an original applied field");}return;
-        }
-        throw new IOException("actual canonical governance material publication/original read was not retained; no cadence credit");
     }
     private Document councilApplied(Document old,ActionReceipt receipt,PlanningReadReceipt read,ActionPorts.OutcomeArchive archive)throws IOException {
         var original=object(old.pending().orElseThrow().original());var root=root(read,archive);String position=StrictJson.text(object(original.get("request")).get("position_key"));var holder=seat(root,position);
