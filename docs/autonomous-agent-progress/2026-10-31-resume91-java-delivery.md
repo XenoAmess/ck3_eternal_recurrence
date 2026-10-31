@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进141稳定clock投影 `2251482931` 与timeline primitive分类 `4ad7e6ae59`，前序136–140、Crown既有空publication单hunk和Sentinel IDLE0均已准确发表。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进142实际active Native帧接线 `0ef7a26bbf` 与M7 request producer五新叶 `a4503377ca`；前序136–141、timeline分类、Crown空publication合同和Sentinel IDLE0均保准确历史。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -318,3 +318,17 @@ formal与sealed runtime前像有一处早先未同步差异：RootFacts仍保“
 复用owner两prodstrict0/2.299秒、direct16checks0/.977秒（7fixed/2dynamic真实Registry API、mimic/typedApplied/ControlApplied/缺custody/错schema/ACK/UNKNOWN），D固定332parent软件材料probe不入CI，0JUnit/fullRoot/livechild/Game。只有enum1hunk模型原样，实际binding/API/变量shadow/typedreceipt合同由owner修正，不报整模型采用。两formal叶与sealed候选ignore-space-at-eol同、0writer语义改，证据 `D:/ck3-state/resume91-java-delivery/TIMELINE140-ADOPTION.json`。
 
 运行岗已源审S/Z准确采两包，MB141实际BEGIN只RootFacts1+Catalog/Inputs2共3prod；Sentinel idle0未S采/未MB。此处记录时尚未收到141实际LOOP或Date结果，不把源码发表/8+16软件检查合为新游戏日。M0新的真实CI failure由现有workflow producer少3个env导致，M0两轮真实模型后仅3env修复交Native唯一writer；Java CiBootstrap/OracleAPI不动，本岗只给非MB build-tools缓存位置，不重复全CI或抢写工作流。
+
+## 新request producer140与active-frame142后继
+
+`a4503377ca` 现g2-research/captured精确新增2prod+3test共846行，0POM/依赖变化：RequestE92780、Request26769e0、Request140TestMemory与两个JUnit类。五完整源/测试和独立345B/336B source审均读，NativeTaskMemory与Idler79eRegressionHost依赖已在formal；两main仅缩进进class，五叶只LF/尾空白/EOF机械清理，全部原非空白字符逐一相同、0writer语义改。defaults26个有序宽度写不bulkclear，双128bit转移/descriptor reset/fresh scratch scalar与flag、supplied views13B+padding、unsigned容量、copy后重读P/原output先发布/后读vtable target与descriptor flag顺序保持。私有scratch和Known寄存器字段只是supplied storage/参数投影，不是物理stack/helper完整ABI、当前U/类型/allocator可用性/自然drain/SAVE证明。
+
+复用owner首pristine3TU18error编红、reviewed5TU仅4冗余cast-Werror红；只机械去cast后5TU strict0/1.0195423秒，首次仅两新TestClass四JUnit同JVM4P0skip/0.8957345秒，0旧绿/Native/PE/Game。覆盖poison224B全image/孔洞与26store、flag0与0x80/异常原对象、initializer→emptyproducer、inline/unsignedcapacity两case与P1→P2 callback重读；未覆盖helper把scratchflag改0、自赋值/nullP/全部异常/真实framehome alias，不以4P补授。manifest五SHA已逐项实核，证据 `D:/ck3-state/resume91-java-delivery/M7-REQUEST140-ADOPTION.json`。
+
+该组12真实模型任务/12尝试、7stop/5length、121955in+41202out、实际峰2/cached未报。最终按MODEL-REVIEW04责任：defaults保25模型写+owner第26个D8；initializer owner接管；producer模型partial+owner六处真实宽度/LEA/刷新P/虚目标修复；TestMemory纠错模型算法保留、owner只删4cast；两个Test全owner，不能whole授模型或把输入规模当改写规模。父提示曾错称Host无readPointer，模型readPointer本来正确；defaults25+D8计数含混由owner承担，原失败与纠错全文保留，不把提示错误算模型失败。
+
+`0ef7a26bbf` 142两prod21+/16-，Collector activeOriginalNativeFrame只取同borrowed writer/exactlease已有physical original，0capture/query/IO。Root current/capture均用该actual raw+lease.driver.auxiliary实际producer角色计算augmentation，再同set传比较/有限诊断；删除不用的v4FullSnapshot helper，保Native同名/规范化与Driver业务、identity/source/session/Push/history/lease及旧Crownabsence。两formal叶与sealed candidate ignore-space-at-eol一致，0writer语义改。
+
+后到source证实本局obs3，Assembler使Complete.originalProjection为空，141保守fallback虽源审正确却使实际新投影未接入；这是owner未覆盖v3caller的遗漏，141原8helper检查不能追认为该接线成功。142复用2prodstrict0/2.745秒，actual138 exactpacket1093B+manifest38268B+beforeDriver4008900B经真实Reader/Assembler3产生emptyFull；首fixture引用多4字段严格拒保，onlyprobe修后旧141三参entry确false（预期assert/进程0），新四参8P0F/1.321秒。非actual141失败heap/wholeRoot/activeThreadLocal getter回调，fixedD probe不入CI、未重旧绿。模型7hunks partial+owner修两真实parserAPI/移死helper，范围/原件在 `D:/ck3-state/resume91-java-delivery/CLOCK142-ADOPTION.json`。
+
+141已实际05:44:22.9506247Z LOOP/next56，后续主投影未越过的v3缺口如上；记录时runtime已S/Z准确采142并实际MB/install BEGIN，尚未授142LOOP、child或游戏日。Sentinel idle0未S采/MB，不把formal研究组件当运行装载。此次正式交付全cmd/login:false、无本岗模型/编测/重型IO/Game/S/MB写；Native可独立自然发表M0准确workflow3env修复。
