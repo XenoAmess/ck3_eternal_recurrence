@@ -327,6 +327,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                     && action.command().origin().game().equals(owner.game())
                     && action.command().origin().machineId().equals(owner.machineId()),
                     "settled recovery crossed an original action owner");
+        }
+        for (var action : ContinuityBatchJournal.ordinaryCycleRoots(actions)) {
             if (action.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && action.visibleGameplay())
                 StrictJson.require(find(branch, archive.receiptReferenceOf(action)).isPresent(),
                         "settled recovery cannot discard a visible action without its completed cycle");
