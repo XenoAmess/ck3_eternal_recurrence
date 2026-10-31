@@ -1,0 +1,117 @@
+{
+  "schema": "m3.equal-forward198-source-only-result/v1",
+  "package_number": null,
+  "status": "FIRST_TWO_MODIFIED_CONSUMERS_STRICT_PASS_SOURCE_ONLY_COMPATIBILITY_FIX",
+  "source_selection": [
+    {
+      "source": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\MapInsertMoveSlotBinding193.java",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapInsertMoveSlotBinding193.java",
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\MapInsertMoveSlotBinding193.java",
+      "bytes": 2655,
+      "sha256": "94c0356ec099edb13e844990f8f004f10854626e6206e9b1a72f8506b4bd5ffa",
+      "kind": "main",
+      "operation": "modify",
+      "preimage": {
+        "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\MapInsertMoveSlotBinding193.java",
+        "bytes": 2441,
+        "sha256": "c5f374cc0c6ffce50d73bca12efb31b6e0288a197c0a0089f10cf47ca21966bb"
+      },
+      "preimage_git_lf_sha256": "c5f374cc0c6ffce50d73bca12efb31b6e0288a197c0a0089f10cf47ca21966bb",
+      "model_R1_unique_edit_unchanged": true,
+      "owner_executable_edits": 0
+    },
+    {
+      "source": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertCallerBinding194.java",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertCallerBinding194.java",
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertCallerBinding194.java",
+      "bytes": 3713,
+      "sha256": "6215f3b4546364eed52ea919bccbb1680eb43cb4ace98ebe7b47b62134399627",
+      "kind": "main",
+      "operation": "modify",
+      "preimage": {
+        "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertCallerBinding194.java",
+        "bytes": 3495,
+        "sha256": "1e76745e6951ffc85800c3bd2de432a647dbaaaad8f99a8d2ce3a75d5b571b18"
+      },
+      "preimage_git_lf_sha256": "1e76745e6951ffc85800c3bd2de432a647dbaaaad8f99a8d2ce3a75d5b571b18",
+      "model_R1_unique_edit_unchanged": true,
+      "owner_executable_edits": 0
+    }
+  ],
+  "strict_first_actual": {
+    "begin": "2026-10-31T22:13:41.801445+00:00",
+    "end": "2026-10-31T22:13:42.435384+00:00",
+    "seconds": 0.633940199855715,
+    "exit_code": 0,
+    "sources": [
+      {
+        "path": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\MapInsertMoveSlotBinding193.java",
+        "bytes": 2655,
+        "sha256": "94c0356ec099edb13e844990f8f004f10854626e6206e9b1a72f8506b4bd5ffa"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertCallerBinding194.java",
+        "bytes": 3713,
+        "sha256": "6215f3b4546364eed52ea919bccbb1680eb43cb4ace98ebe7b47b62134399627"
+      }
+    ],
+    "source_preserved": true,
+    "classpath": [
+      "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\verification-prod196\\classes",
+      "D:\\ck3-state\\resume91-m3-native\\other-insert194\\verification-prod194\\classes",
+      "D:\\ck3-state\\resume91-m3-native\\move-slot193\\build-first193\\classes",
+      "D:\\ck3-state\\resume91-m7-native\\captured-next140\\compile-reviewed04\\classes",
+      "D:\\ck3-state\\resume91-m3-native\\map-insert191\\verification-core191\\classes"
+    ],
+    "RUN": false,
+    "old_source_recompiled": false,
+    "old_case_repeated": false,
+    "Native_Game": false
+  },
+  "strict_first_actual_ref": {
+    "path": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\verification198\\ACTUAL198.json",
+    "bytes": 1278,
+    "sha256": "3e806ae05dc1831d79b844cca627b1c65c9fe67182ee06b613eba2d3fd79c6b9"
+  },
+  "model_task_id": "m3-equal-context-forward198",
+  "model_response": {
+    "path": "D:\\ck3-state\\model-dispatch91\\m3-equal-context-forward198\\ATTEMPT1-CONTENT.txt",
+    "bytes": 1953,
+    "sha256": "d15b200fed10c975d09cffd3db698086d4fdbf8468b5ff7b25100ab09b1c7654"
+  },
+  "model_actual_POST": "2026-10-31T22:10:07.041070Z",
+  "model_actual_END": "2026-10-31T22:10:12.119545Z",
+  "model_finish": "stop",
+  "model_actual_seconds": 5.0780368,
+  "model_content_TTFT_seconds": 1.7374038,
+  "reported_usage": {
+    "prompt_tokens": 10159,
+    "completion_tokens": 636,
+    "total_tokens": 10795,
+    "cached": null
+  },
+  "model_POSTs": 1,
+  "model_phase_peak": 1,
+  "current_HTTP": 0,
+  "owner_executable_edits": 0,
+  "change": "Each existing191Ports consumer explicitly forwards the new five-argument EQUAL callback, including sourceEntryRsp, instead of inheriting default5->old4. Existing four-argument calls and all other source remain unchanged.",
+  "not_changed": [
+    "MapRehash195 type/source",
+    "existing191/193/194 business algorithms",
+    "old RESULT/fixture expected values",
+    "POM/CI/runtime/Game"
+  ],
+  "new_fixture": false,
+  "RUN": false,
+  "old_case_repeated": false,
+  "old_production_recompiled": false,
+  "new_software_package_or_graph_credit": false,
+  "Native_Game": false,
+  "Main_prerequisite": false,
+  "limits": [
+    "Source-level exact forwarding plus first strict only; no new combined graph/dynamic branch/callback exception or natural Game proof.",
+    "Old193/194 first business results remain historical and are not replayed or reclassified.",
+    "Cached RequestE92780 only used Memory/Raw128 declarations match current formal literally; neither outer business method is called.",
+    "Cached OtherInsert wrapper941B versus published877B differs only in eight blank-line trailing spaces, explicitly recorded separately."
+  ]
+}

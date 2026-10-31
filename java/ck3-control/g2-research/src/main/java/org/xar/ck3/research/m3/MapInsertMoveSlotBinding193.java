@@ -16,6 +16,10 @@ public final class MapInsertMoveSlotBinding193 implements MapInsert191Api.Ports 
         return delegate.equal3f6d2b0(memory, siteRva, rcx, rdx);
     }
 
+    @Override public int equal3f6d2b0(MapInsert191Api.Memory memory, long siteRva, long rcx, long rdx, long sourceEntryRsp) {
+        return delegate.equal3f6d2b0(memory, siteRva, rcx, rdx, sourceEntryRsp);
+    }
+
     @Override public void insertSlotC3cf10(MapInsert191Api.Memory memory, long siteRva, long bucket, int probe, int hash, long descriptor) {
         if (!(memory instanceof SharedMemory)) {
             throw new IllegalArgumentException("Foreign MapInsert191Api.Memory rejected");

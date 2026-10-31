@@ -1,0 +1,188 @@
+{
+  "schema": "m3.equal-forward198-portable-source-list/v1",
+  "package_number": null,
+  "changed_sources": [
+    {
+      "source": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\MapInsertMoveSlotBinding193.java",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapInsertMoveSlotBinding193.java",
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\MapInsertMoveSlotBinding193.java",
+      "bytes": 2655,
+      "sha256": "94c0356ec099edb13e844990f8f004f10854626e6206e9b1a72f8506b4bd5ffa",
+      "kind": "main",
+      "operation": "modify",
+      "preimage": {
+        "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\MapInsertMoveSlotBinding193.java",
+        "bytes": 2441,
+        "sha256": "c5f374cc0c6ffce50d73bca12efb31b6e0288a197c0a0089f10cf47ca21966bb"
+      },
+      "preimage_git_lf_sha256": "c5f374cc0c6ffce50d73bca12efb31b6e0288a197c0a0089f10cf47ca21966bb",
+      "model_R1_unique_edit_unchanged": true,
+      "owner_executable_edits": 0
+    },
+    {
+      "source": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertCallerBinding194.java",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertCallerBinding194.java",
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-forward198\\candidate\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertCallerBinding194.java",
+      "bytes": 3713,
+      "sha256": "6215f3b4546364eed52ea919bccbb1680eb43cb4ace98ebe7b47b62134399627",
+      "kind": "main",
+      "operation": "modify",
+      "preimage": {
+        "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertCallerBinding194.java",
+        "bytes": 3495,
+        "sha256": "1e76745e6951ffc85800c3bd2de432a647dbaaaad8f99a8d2ce3a75d5b571b18"
+      },
+      "preimage_git_lf_sha256": "1e76745e6951ffc85800c3bd2de432a647dbaaaad8f99a8d2ce3a75d5b571b18",
+      "model_R1_unique_edit_unchanged": true,
+      "owner_executable_edits": 0
+    }
+  ],
+  "existing_formal_dependencies": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\NativeTaskMemory.java",
+      "bytes": 271,
+      "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "git_lf_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "git_lf_bytes": 271,
+      "actual_CRLF_to_LF_equal": true
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\retained\\InGameIdlerEventDispatch.java",
+      "bytes": 2735,
+      "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "git_lf_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+      "git_lf_bytes": 2655,
+      "actual_CRLF_to_LF_equal": true
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/RequestE92780.java",
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\captured\\RequestE92780.java",
+      "bytes": 5224,
+      "sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "git_lf_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "git_lf_bytes": 5224,
+      "actual_CRLF_to_LF_equal": true
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java",
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\map191\\MapInsert191Api.java",
+      "bytes": 2298,
+      "sha256": "51e7eaccba1968ef5bb9744d6428d662b31dec7b5e048a298ba2e3ebddf1f6fb",
+      "git_lf_sha256": "51e7eaccba1968ef5bb9744d6428d662b31dec7b5e048a298ba2e3ebddf1f6fb",
+      "git_lf_bytes": 2298,
+      "actual_CRLF_to_LF_equal": true
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsertC3B960.java",
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\map191\\MapInsertC3B960.java",
+      "bytes": 10791,
+      "sha256": "b86cff4f989a2f6fc42147a987a0ad779b3f26a466b87ee97ddcffb0ba91b6cd",
+      "git_lf_sha256": "b86cff4f989a2f6fc42147a987a0ad779b3f26a466b87ee97ddcffb0ba91b6cd",
+      "git_lf_bytes": 10791,
+      "actual_CRLF_to_LF_equal": true
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotApi193.java",
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\MoveSlotApi193.java",
+      "bytes": 468,
+      "sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "git_lf_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "git_lf_bytes": 468,
+      "actual_CRLF_to_LF_equal": true
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlot193.java",
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\MoveSlot193.java",
+      "bytes": 987,
+      "sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "git_lf_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "git_lf_bytes": 987,
+      "actual_CRLF_to_LF_equal": true
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertC3A5F0.java",
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertC3A5F0.java",
+      "bytes": 877,
+      "sha256": "a0fd9bec81094e2adf639e9a1177becb06527749ba70f8f6f3c5b215d311cfef",
+      "git_lf_sha256": "a0fd9bec81094e2adf639e9a1177becb06527749ba70f8f6f3c5b215d311cfef",
+      "git_lf_bytes": 877,
+      "actual_CRLF_to_LF_equal": true
+    }
+  ],
+  "complete_portable_Java_source_count": 10,
+  "actual_first_validation": "Only two changed source files first strict .6339402s exit0, with source-matched existing caches. Not one ten-source invocation, and no Test or case RUN.",
+  "cache_source_scope": {
+    "OtherInsert_cached_source": {
+      "path": "D:\\ck3-state\\resume91-m3-native\\other-insert194\\candidate\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertC3A5F0.java",
+      "bytes": 941,
+      "sha256": "cc2c7d8acd1c72052e5338e341f54b1c1e9eab68e702823812c8f7eb865a718f"
+    },
+    "OtherInsert_current_formal_source": {
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\research\\m3\\other194\\OtherInsertC3A5F0.java",
+      "bytes": 877,
+      "sha256": "a0fd9bec81094e2adf639e9a1177becb06527749ba70f8f6f3c5b215d311cfef"
+    },
+    "exact_blank_trailing_space_changes": [
+      {
+        "line": 11,
+        "cached": "        ",
+        "published": ""
+      },
+      {
+        "line": 12,
+        "cached": "        ",
+        "published": ""
+      },
+      {
+        "line": 14,
+        "cached": "        ",
+        "published": ""
+      },
+      {
+        "line": 15,
+        "cached": "        ",
+        "published": ""
+      },
+      {
+        "line": 18,
+        "cached": "        ",
+        "published": ""
+      },
+      {
+        "line": 19,
+        "cached": "        ",
+        "published": ""
+      },
+      {
+        "line": 20,
+        "cached": "        ",
+        "published": ""
+      },
+      {
+        "line": 22,
+        "cached": "        ",
+        "published": ""
+      }
+    ],
+    "Request_used_declaration_proof": {
+      "path": "D:\\ck3-state\\resume91-m3-native\\move-slot193\\CACHE-PROOF193.json",
+      "bytes": 4171,
+      "sha256": "551e0590d9fcd2f59b3683934526436eaffcaffa61c6824d3880f1464772bfa6"
+    }
+  },
+  "published_source_hash_scope": "Original physical hashes are exact input identities; formal writer records publication LF hashes separately. Retained physical CRLF bytes differ explicitly from Git LF.",
+  "machine_specific_classroots_or_evidence_not_in_delivery": true,
+  "POM_CI_changes": false,
+  "publication_git_LF": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MapInsertMoveSlotBinding193.java": {
+      "sha256": "94c0356ec099edb13e844990f8f004f10854626e6206e9b1a72f8506b4bd5ffa",
+      "bytes": 2655
+    },
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/other194/OtherInsertCallerBinding194.java": {
+      "sha256": "6215f3b4546364eed52ea919bccbb1680eb43cb4ace98ebe7b47b62134399627",
+      "bytes": 3713
+    }
+  }
+}

@@ -33,6 +33,11 @@ public final class OtherInsertCallerBinding194 {
         }
 
         @Override
+        public int equal3f6d2b0(Memory memory, long siteRva, long rcx, long rdx, long sourceEntryRsp) {
+            return fallback.equal3f6d2b0(memory, siteRva, rcx, rdx, sourceEntryRsp);
+        }
+
+        @Override
         public void insertSlotC3cf10(Memory memory, long siteRva, long bucket, int probe, int hash, long descriptor) {
             fallback.insertSlotC3cf10(memory, siteRva, bucket, probe, hash, descriptor);
         }
