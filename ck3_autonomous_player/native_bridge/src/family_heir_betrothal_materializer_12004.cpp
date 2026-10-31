@@ -96,7 +96,8 @@ Status ReadPairObservation(const ck3_12002::CoreBindings &core,
 
 bool ValidRequest(const FamilyMarriageOutgoingRequestV2 &request) noexcept {
   if (request.scope != FamilyMarriageOutgoingScopeV2::action_preparation ||
-      request.route != FamilyMarriageOutgoingRouteV2::fulfill_betrothal ||
+      (request.route != FamilyMarriageOutgoingRouteV2::first_heir &&
+       request.route != FamilyMarriageOutgoingRouteV2::fulfill_betrothal) ||
       request.actor == 0 || request.actor == UINT32_MAX ||
       request.subject == 0 || request.subject > 0x7FFFFFFFU ||
       request.candidate == 0 || request.candidate > 0x7FFFFFFFU ||

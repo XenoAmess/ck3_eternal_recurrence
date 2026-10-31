@@ -11,14 +11,15 @@ struct FamilyHeirBetrothalPreparedCopy12004 {
                          const FamilyHeirBetrothalPreparedCopy12004 &) = default;
 };
 
-// Only ACTION_PREPARATION/fulfill_betrothal, mirroring current private
-// Prepare and ReadCurrentFirstHeirBetrothalActionability callers. The caller
-// supplies real owner-thread/frame and previously observed heir/partner.
-// This does not establish their current-heir or existing-betrothal identity.
+// ACTION_PREPARATION for ordinary FIRST_HEIR and fulfillment, using their
+// shared actual default Prepare and private selector/option value contract.
+// The caller supplies real owner-thread/frame and independently observed pair.
+// This component establishes neither primary-heir nor relationship identity.
 // The caller-owned native context is copied with the existing complete two-pass
 // reader, then destroyed before committing output. The private effective
 // lineality comes from the current exact character selector/option contract.
 // No setter, command constructor, send, inventory or Game query is invoked.
+// The historical function name is retained; neither route invokes a setter.
 FamilyRulerMaterializeStatus12004 MaterializeFamilyHeirBetrothalContext12004(
     const ck3_12002::ContextBindings &bindings,
     const FamilyRulerContextAccess12004 &access,

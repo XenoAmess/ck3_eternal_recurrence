@@ -10311,6 +10311,10 @@ bool ReadFamilyChildSubjectAdapter12004(
   return true;
 }
 
+bool ReadFamilyHeirBilateralAdapter12004(void *, const xar::ck3_12002::FamilyBindings &bindings, std::int32_t subject, std::int32_t candidate, xar::bridge::MarriageProposalBilateralRelationshipV1 &output) noexcept {
+  return xar::ck3_12002::ReadFamilyBilateralRelationshipV1(bindings, subject, candidate, output);
+}
+
 bool ReadFamilyHeirRelationshipAdapter12004(
     void *, const xar::ck3_12002::FamilyBindings &bindings, std::int32_t heir,
     xar::ck3_11906::CurrentFirstHeirRelationshipReadV1 &output) noexcept {
@@ -22621,7 +22625,8 @@ void RunConnectedSession(
                       }
                     }
                   }
-                } else if (request.route == xar::bridge::FamilyMarriageOutgoingRouteV2::fulfill_betrothal) {
+                } else if (request.route == xar::bridge::FamilyMarriageOutgoingRouteV2::fulfill_betrothal ||
+                           request.route == xar::bridge::FamilyMarriageOutgoingRouteV2::first_heir) {
                   if (expected_revision != state_revision) {
                     connected = write_frame(
                         pipe, CommandResultFrame(request_id, step, false,
@@ -22647,6 +22652,8 @@ void RunConnectedSession(
                       job.read_snapshot = &ReadGuardianFactoryDiscoveryAdapterSnapshotV1;
                       job.relationship_context = &query.bindings;
                       job.read_relationship = &ReadFamilyHeirRelationshipAdapter12004;
+                      job.bilateral_context = nullptr;
+                      job.read_bilateral = &ReadFamilyHeirBilateralAdapter12004;
                       job.context_access.memory = {nullptr, &ReadFamilyOutgoingOwnerMemory12004};
                       job.context_access.read_boolean_option = query.family12002.read_boolean_option;
                       job.context_access.matrilineal_option_id_slot =

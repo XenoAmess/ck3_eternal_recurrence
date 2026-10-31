@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_family.hpp"
+#include "xar_bridge/marriage_proposal_native_binder_v1.hpp"
 #include "xar_bridge/ck3_12002_family_outbound.hpp"
 #include "xar_bridge/family_heir_betrothal_materializer_12004.hpp"
 #include "xar_bridge/game_contract.hpp"
@@ -26,6 +27,10 @@ using ReadFamilyHeirSnapshot12004 = bool (*)(void *, game::Snapshot &) noexcept;
 using ReadFamilyHeirRelationship12004 = bool (*)(
     void *, const ck3_12002::FamilyBindings &, std::int32_t,
     ck3_11906::CurrentFirstHeirRelationshipReadV1 &) noexcept;
+
+using ReadFamilyHeirBilateral12004 = bool (*)(
+    void *, const ck3_12002::FamilyBindings &, std::int32_t, std::int32_t,
+    MarriageProposalBilateralRelationshipV1 &) noexcept;
 
 enum class FamilyHeirOwnerOutcome12004 : std::uint8_t {
   unavailable, invalid_request, frame_changed, identity_changed, observed
@@ -57,11 +62,14 @@ struct FamilyHeirOutgoingOwnerJob12004 {
   ReadFamilyHeirSnapshot12004 read_snapshot = nullptr;
   void *relationship_context = nullptr;
   ReadFamilyHeirRelationship12004 read_relationship = nullptr;
+  void *bilateral_context = nullptr;
+  ReadFamilyHeirBilateral12004 read_bilateral = nullptr;
   FamilyHeirOwnerResult12004 result{};
 };
 
-// Only fulfill_betrothal. PREP consumes the real published primary-heir scope
-// and repeated actual bilateral relationship, then private owned context and
+// FIRST_HEIR and fulfill_betrothal use actual independent primary scope.
+// Ordinary FIRST_HEIR consumes the full pair bilateral callback; fulfillment
+// retains its existing heir relationship predicate, then owned context and
 // complete bounded inventory. POST invokes neither identity nor constructor:
 // it uses the actual canonical definition and retained request sender.
 bool ExecuteFamilyHeirOutgoingOwnerJob12004(

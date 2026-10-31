@@ -106,7 +106,8 @@ bool ExecuteFamilyHeirOutgoingOwnerJob12004(
   // 2. Request Validation
   const auto frame = MakeFrame(before, job.native_revision);
 
-  if (job.request.route != FamilyMarriageOutgoingRouteV2::fulfill_betrothal) {
+  if (job.request.route != FamilyMarriageOutgoingRouteV2::first_heir &&
+      job.request.route != FamilyMarriageOutgoingRouteV2::fulfill_betrothal) {
     job.result.outcome = FamilyHeirOwnerOutcome12004::invalid_request;
     return true;
   }
@@ -136,69 +137,117 @@ bool ExecuteFamilyHeirOutgoingOwnerJob12004(
           // Source mismatch is data unavailable
           scope_success = false;
         } else {
-          // Read relationship using the supplied callback
-          if (job.read_relationship == nullptr) {
-            scope_success = false;
-          } else {
-            ck3_11906::CurrentFirstHeirRelationshipReadV1 relationship{};
-            if (!job.read_relationship(
-                job.relationship_context,
-                job.family_bindings,
-                static_cast<std::int32_t>(job.request.subject),
-                relationship)) {
+          if (job.request.route == FamilyMarriageOutgoingRouteV2::first_heir) {
+            if (job.read_bilateral == nullptr) {
               scope_success = false;
             } else {
-              // Validate relationship content
-              if (relationship.failure != ck3_11906::CurrentFirstHeirRelationshipFailureV1::none ||
-                  relationship.heir_character_id != static_cast<std::int32_t>(job.request.subject) ||
-                  relationship.relationship.betrothed_character_id != static_cast<std::int32_t>(job.request.candidate)) {
+              auto predicate = [&job](const MarriageProposalBilateralRelationshipV1 &pair) {
+                return pair.subject_character_id == static_cast<std::uint32_t>(job.request.subject) &&
+                    pair.candidate_character_id == static_cast<std::uint32_t>(job.request.candidate) &&
+                    pair.subject_identity_round_trip && pair.candidate_identity_round_trip &&
+                    pair.subject_alive && pair.candidate_alive &&
+                    !pair.subject_has_candidate_as_spouse && !pair.candidate_has_subject_as_spouse &&
+                    !pair.subject_has_candidate_as_betrothed && !pair.candidate_has_subject_as_betrothed;
+              };
+              MarriageProposalBilateralRelationshipV1 first_pair{};
+              if (!job.read_bilateral(job.bilateral_context, job.family_bindings,
+                                      static_cast<std::int32_t>(job.request.subject),
+                                      static_cast<std::int32_t>(job.request.candidate), first_pair) ||
+                  !predicate(first_pair)) {
                 scope_success = false;
               } else {
-                // Materialize Context
                 FamilyHeirBetrothalPreparedCopy12004 prepared{};
                 job.result.materialize_status = MaterializeFamilyHeirBetrothalContext12004(
-                    job.family_bindings.context,
-                    job.context_access,
-                    job.request,
-                    prepared);
-
+                    job.family_bindings.context, job.context_access, job.request, prepared);
                 if (job.result.materialize_status == FamilyRulerMaterializeStatus12004::complete) {
                   job.result.prepared = prepared;
-
-                  // Read Storage Inventory using actual materialized definition
-                  std::uintptr_t definition = prepared.materialized.actual_definition;
+                  const auto definition = prepared.materialized.actual_definition;
                   if (definition != 0) {
-                    // Use actual materialized roles[0] as sender
                     const auto sender = prepared.materialized.roles[0];
                     job.result.storage_status = ReadFamilyOutgoingStorageCopy12004(
-                        job.outbound_bindings,
-                        job.context_access.memory,
-                        definition,
-                        sender,
+                        job.outbound_bindings, job.context_access.memory, definition, sender,
                         job.result.storage);
                   } else {
                     job.result.storage_status = FamilyOutgoingStorageCopyStatus12004::unavailable;
                   }
                 }
-
-                // Repeat relationship check to ensure identity stability
-                ck3_11906::CurrentFirstHeirRelationshipReadV1 relationship_repeat{};
-                if (!job.read_relationship(
-                    job.relationship_context,
-                    job.family_bindings,
-                    static_cast<std::int32_t>(job.request.subject),
-                    relationship_repeat)) {
-                  // Identity drift or failure
-                  identity_drift = true;
-                } else if (relationship_repeat.failure != ck3_11906::CurrentFirstHeirRelationshipFailureV1::none ||
-                           relationship_repeat.heir_character_id != static_cast<std::int32_t>(job.request.subject) ||
-                           relationship_repeat.relationship.betrothed_character_id != static_cast<std::int32_t>(job.request.candidate) ||
-                           relationship_repeat.relationship != relationship.relationship) {
-                  // Identity drift
+                MarriageProposalBilateralRelationshipV1 second_pair{};
+                if (!job.read_bilateral(job.bilateral_context, job.family_bindings,
+                                        static_cast<std::int32_t>(job.request.subject),
+                                        static_cast<std::int32_t>(job.request.candidate), second_pair) ||
+                    !predicate(second_pair) || second_pair != first_pair) {
                   identity_drift = true;
                 } else {
                   job.result.identity_observed = true;
                   scope_success = true;
+                }
+              }
+            }
+          } else {
+            // Read relationship using the supplied callback
+            if (job.read_relationship == nullptr) {
+              scope_success = false;
+            } else {
+              ck3_11906::CurrentFirstHeirRelationshipReadV1 relationship{};
+              if (!job.read_relationship(
+                  job.relationship_context,
+                  job.family_bindings,
+                  static_cast<std::int32_t>(job.request.subject),
+                  relationship)) {
+                scope_success = false;
+              } else {
+                // Validate relationship content
+                if (relationship.failure != ck3_11906::CurrentFirstHeirRelationshipFailureV1::none ||
+                    relationship.heir_character_id != static_cast<std::int32_t>(job.request.subject) ||
+                    relationship.relationship.betrothed_character_id != static_cast<std::int32_t>(job.request.candidate)) {
+                  scope_success = false;
+                } else {
+                  // Materialize Context
+                  FamilyHeirBetrothalPreparedCopy12004 prepared{};
+                  job.result.materialize_status = MaterializeFamilyHeirBetrothalContext12004(
+                      job.family_bindings.context,
+                      job.context_access,
+                      job.request,
+                      prepared);
+
+                  if (job.result.materialize_status == FamilyRulerMaterializeStatus12004::complete) {
+                    job.result.prepared = prepared;
+
+                    // Read Storage Inventory using actual materialized definition
+                    std::uintptr_t definition = prepared.materialized.actual_definition;
+                    if (definition != 0) {
+                      // Use actual materialized roles[0] as sender
+                      const auto sender = prepared.materialized.roles[0];
+                      job.result.storage_status = ReadFamilyOutgoingStorageCopy12004(
+                          job.outbound_bindings,
+                          job.context_access.memory,
+                          definition,
+                          sender,
+                          job.result.storage);
+                    } else {
+                      job.result.storage_status = FamilyOutgoingStorageCopyStatus12004::unavailable;
+                    }
+                  }
+
+                  // Repeat relationship check to ensure identity stability
+                  ck3_11906::CurrentFirstHeirRelationshipReadV1 relationship_repeat{};
+                  if (!job.read_relationship(
+                      job.relationship_context,
+                      job.family_bindings,
+                      static_cast<std::int32_t>(job.request.subject),
+                      relationship_repeat)) {
+                    // Identity drift or failure
+                    identity_drift = true;
+                  } else if (relationship_repeat.failure != ck3_11906::CurrentFirstHeirRelationshipFailureV1::none ||
+                             relationship_repeat.heir_character_id != static_cast<std::int32_t>(job.request.subject) ||
+                             relationship_repeat.relationship.betrothed_character_id != static_cast<std::int32_t>(job.request.candidate) ||
+                             relationship_repeat.relationship != relationship.relationship) {
+                    // Identity drift
+                    identity_drift = true;
+                  } else {
+                    job.result.identity_observed = true;
+                    scope_success = true;
+                  }
                 }
               }
             }

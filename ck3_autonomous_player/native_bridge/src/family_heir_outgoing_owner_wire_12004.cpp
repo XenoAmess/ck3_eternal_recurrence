@@ -75,9 +75,10 @@ std::string SerializeFamilyHeirOutgoingOwnerResult12004(
   if (!result.frame_observed) {
     throw std::invalid_argument("frame not observed");
   }
-  if (request.route != FamilyMarriageOutgoingRouteV2::fulfill_betrothal) {
-    throw std::invalid_argument("non-fulfill_betrothal route");
-  }
+  if (request.route != FamilyMarriageOutgoingRouteV2::first_heir &&
+        request.route != FamilyMarriageOutgoingRouteV2::fulfill_betrothal) {
+      throw std::invalid_argument("non-first_heir/fulfill_betrothal route");
+    }
 
   bool storage_complete = (result.storage_status == FamilyOutgoingStorageCopyStatus12004::complete);
   bool prepared_complete = (result.materialize_status == FamilyRulerMaterializeStatus12004::complete);
