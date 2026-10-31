@@ -196,7 +196,7 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
                             .orElseThrow(() -> new IllegalArgumentException("negative composite child is absent from the actual writer head"));
                     StrictJson.require(actual.bodySha256().equals(child.bodySha256()) && !actual.command().actionId().equals(proposed.command().actionId()), "negative composite child identity changed"); children.add(actual);
                 }
-                ActionEffects.validateCompositeChildren(execution, rejected, children);
+                ActionEffects.validateCompositeChildren(proposed.command(), execution, rejected, children);
                 // The shared reducer only accepts genuine primitive rejected/zero-dispatch children here.
                 for (var child : children) verify(actualLockedHead, child);
                 if (!rejected.evidence().isEmpty()) {
