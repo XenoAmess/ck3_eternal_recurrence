@@ -1,6 +1,9 @@
 package org.xar.ck3.control.application.action;
 
 import java.time.Clock;
+import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
+import org.xar.ck3.control.application.advance.AdvancePrimitives;
+import org.xar.ck3.control.application.advance.ClockStatusRead;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,9 +29,12 @@ final class CompositeContinuationSupport {
         StrictJson.require(java.util.Arrays.equals(ActionCodec.encodeCommand(parent), ActionCodec.encodeCommand(original.command())), "continuation changed the original parent body");
         boolean fixture=FixturePlan.isParent(parent)&&token.kind()==CompositeContinuationToken.Kind.FIXTURE_STARTUP;
         if(fixture)FixturePlan.requireParent(parent);
-        StrictJson.require(fixture||parent.origin() instanceof CommandOrigin.LifecycleTerminal
+        boolean life=token.kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL;
+        if(life)StrictJson.require(LifeAdvanceComposite.accepts(parent.operation().value())&&parent.origin() instanceof CommandOrigin.Gameplay,
+                "only the exact registered Life gameplay parent has sentinel cancel continuation");
+        StrictJson.require(fixture||life||parent.origin() instanceof CommandOrigin.LifecycleTerminal
                 && parent.lifecycleExpected().operation() == LifecycleExpectedPostcondition.Operation.CONTINUE_SUCCESSOR,
-                "only the exact original successor or registered fixture parent has this continuation");
+                "only the exact original successor, registered fixture or Life cancel parent has this continuation");
         if (original.settled()) return new CompositeContinuationReport(original, List.of(), CompositeContinuationReport.Disposition.NO_NEW_CHILD_ATTEMPT);
         StrictJson.require(original.state() instanceof ActionState.CompositeUnknown && clock.instant().isBefore(token.deadline()), "a retained successor cursor and fresh source deadline are required");
         CompositeExecution retained = ((ActionState.CompositeUnknown) original.state()).execution();
@@ -37,6 +43,8 @@ final class CompositeContinuationSupport {
                 "the actual installed composite has no original continuation producer");
         var source = (CompositeActionPort.OriginalContinuation) actual;
         StrictJson.require(!fixture||actual instanceof FixtureCompositeActionPort,"fixture continuation requires its registered source-owned fixture producer");
+        StrictJson.require(!life||actual instanceof LifeAdvanceComposite&&retained.handlerId().equals(LifeAdvanceComposite.HANDLER),
+                "Life cancellation requires its actual registered original producer");
         source.requireContinuation(parent, retained, token);
         for (CompositeExecution.Child child : retained.children()) {
             var existing = locked.find(child.actionId());
@@ -73,6 +81,12 @@ final class CompositeContinuationSupport {
                         "continuation child crossed its exact ordinal/source/session/Game/fresh deadline");
                 if (token.kind() == CompositeContinuationToken.Kind.SUCCESSOR_UI_CLOSE)
                     StrictJson.require(child.operation().equals(LifecycleExpectedPostcondition.Operation.CLOSE_DEATH_MODAL.key()), "Close token cannot authorize another operation");
+                if(life) {
+                    AdvancePrimitives.cancelGeneration(child.operation().value());
+                    StrictJson.require(child.arguments().members().isEmpty()
+                            &&completed().stream().noneMatch(value->value.command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)),
+                            "Life continuation permits only one original generation-bound cancel child");
+                }
                 source.requireContinuationChild(parent, previous, token, child);
                 if(fixture)((FixtureCompositeActionPort)source).requireFixtureChild(parent,previous,child);
                 var reserved = new ArrayList<>(previous.children()); reserved.add(new CompositeExecution.Child(child.actionId(), ActionCodec.bodySha256(child)));
@@ -85,7 +99,7 @@ final class CompositeContinuationSupport {
                 return receipt;
             }
             @Override public org.xar.ck3.control.application.lifecycle.LifecycleCommit lifecycle(org.xar.ck3.control.application.lifecycle.LifecycleChild child) {
-                StrictJson.require(!fixture,"fixture Entry must use its original qualified Entry authority, never a successor lifecycle child");
+                StrictJson.require(!fixture&&!life,"fixture or Life continuation cannot submit a successor lifecycle child");
                 current(); completed(); source.requireContinuation(parent, current(), token);
                 StrictJson.require(clock.instant().isBefore(token.deadline()) && child.parentActionId().equals(parent.actionId())
                         && child.phase() == org.xar.ck3.control.application.lifecycle.LifecycleChild.Phase.SUCCESSOR_PENDING_FINALIZED,
@@ -100,7 +114,7 @@ final class CompositeContinuationSupport {
             }
         };
         ActionPorts.PostconditionResult result;
-        try { result = ActionChildPlanningScope.withinContinuation(locked, parent, retained.handlerId(), token.deadline(), () -> source.continueOriginal(parent, retained, token, children)); }
+        try { result = ActionChildPlanningScope.withinContinuation(locked, parent, retained.handlerId(), token.deadline(), token, () -> source.continueOriginal(parent, retained, token, children)); }
         catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); result = new ActionPorts.Pending("successor continuation interrupted; original children retained", List.of()); }
         catch (ReadPublicationRequiredException publication) { throw publication; }
         catch (RuntimeException failure) { result = new ActionPorts.Pending(ActionCoordinator.diagnostic("source-qualified continuation incomplete", failure), List.of()); }

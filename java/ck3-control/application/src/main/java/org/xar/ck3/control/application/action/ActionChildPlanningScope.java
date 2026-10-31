@@ -1,6 +1,7 @@
 package org.xar.ck3.control.application.action;
 
 import java.io.IOException;
+import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
 import java.time.Instant;
 import java.util.Optional;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
@@ -15,7 +16,7 @@ public final class ActionChildPlanningScope {
         public FixtureCursor {java.util.Objects.requireNonNull(parent);java.util.Objects.requireNonNull(execution);recordedChildren=java.util.List.copyOf(recordedChildren);}
     }
     @FunctionalInterface interface Work<T> { T run() throws InterruptedException; }
-    private record Held(ActionJournal.LockedJournal journal, ContinuityStorePort.Session session, Parent parent, boolean continuation,Instant deadline) {
+    private record Held(ActionJournal.LockedJournal journal, ContinuityStorePort.Session session, Parent parent, boolean continuation,Instant deadline,CompositeContinuationToken continuationToken) {
         private Held {java.util.Objects.requireNonNull(deadline);}
     }
     private static final ThreadLocal<Held> CURRENT = new ThreadLocal<>();
@@ -75,6 +76,26 @@ public final class ActionChildPlanningScope {
                 "reserved child changed its canonical ordinal, complete body, source or session");
         return Optional.of(held.parent());
     }
+    /** Same source-approved token only while its exact parent or last reserved child owns this writer scope. */
+    public static Optional<CompositeContinuationToken> continuationToken(ContinuityStorePort.Session same,
+            WriterContracts.Head actualHead, ActionCommand exactParent, ActionCommand exactCurrentCommand) throws IOException {
+        Held held=CURRENT.get();if(held==null||!held.continuation())return Optional.empty();
+        java.util.Objects.requireNonNull(exactParent);java.util.Objects.requireNonNull(exactCurrentCommand);
+        Parent active;
+        if(exactCurrentCommand.actionId().equals(held.parent().actionId())) {
+            active=current(same,actualHead).orElseThrow();
+            StrictJson.require(java.util.Arrays.equals(ActionCodec.encodeCommand(exactCurrentCommand),ActionCodec.encodeCommand(exactParent)),
+                    "continuation token crossed its active parent command");
+        } else {
+            active=reservedParent(same,actualHead,exactCurrentCommand).orElseThrow();
+        }
+        var parent=held.journal().find(active.actionId()).orElseThrow();
+        StrictJson.require(active.actionId().equals(exactParent.actionId())
+                &&active.bodySha256().equals(ActionCodec.bodySha256(exactParent))
+                &&java.util.Arrays.equals(ActionCodec.encodeCommand(parent.command()),ActionCodec.encodeCommand(exactParent)),
+                "continuation token crossed its exact canonical parent");
+        return Optional.of(held.continuationToken());
+    }
     /** Revalidates the private Held, actual original writer and current canonical parent on every invocation. */
     public static FixtureCursor fixtureCurrent(ContinuityStorePort.Session same,WriterContracts.Head actualHead,
             ActionCommand exactParent,String actualHandlerId)throws IOException {
@@ -109,19 +130,23 @@ public final class ActionChildPlanningScope {
         StrictJson.require(held.continuation() && parent.state() instanceof ActionState.CompositeUnknown
                 && (parent.command().origin() instanceof CommandOrigin.LifecycleTerminal
                     && parent.command().lifecycleExpected().operation() == LifecycleExpectedPostcondition.Operation.CONTINUE_SUCCESSOR
-                    ||FixturePlan.isParent(parent.command())&&FixturePlan.requireParent(parent.command())!=null),
+                    ||FixturePlan.isParent(parent.command())&&FixturePlan.requireParent(parent.command())!=null
+                    ||held.continuationToken().kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL
+                        &&held.parent().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                        &&LifeAdvanceComposite.accepts(parent.command().operation().value())
+                        &&parent.command().origin() instanceof CommandOrigin.Gameplay),
                 "unresolved composite has no source-owned successor continuation scope");
         return ((ActionState.CompositeUnknown) parent.state()).execution();
     }
-    static <T> T withinContinuation(ActionJournal.LockedJournal journal, ActionCommand parent, String handlerId,Instant actualTokenDeadline, Work<T> work) throws InterruptedException {
+    static <T> T withinContinuation(ActionJournal.LockedJournal journal, ActionCommand parent, String handlerId,Instant actualTokenDeadline, CompositeContinuationToken actualToken, Work<T> work) throws InterruptedException {
         StrictJson.require(CURRENT.get() == null, "nested continuation scope is unavailable");
-        CURRENT.set(new Held(journal, journal.writerSession(), new Parent(parent.actionId(), ActionCodec.bodySha256(parent), handlerId), true,actualTokenDeadline));
+        CURRENT.set(new Held(journal, journal.writerSession(), new Parent(parent.actionId(), ActionCodec.bodySha256(parent), handlerId), true,actualTokenDeadline,java.util.Objects.requireNonNull(actualToken)));
         try { return work.run(); } finally { CURRENT.remove(); }
     }
     static <T> T within(ActionJournal.LockedJournal journal, ActionCommand parent, String handlerId, Work<T> work) throws InterruptedException {
         Held previous = CURRENT.get();
         StrictJson.require(previous == null || CompositeContinuationNesting.authorizesPlanning(parent), "nested composite planning scope is unavailable");
-        CURRENT.set(new Held(journal, journal.writerSession(), new Parent(parent.actionId(), ActionCodec.bodySha256(parent), handlerId), false,parent.deadline()));
+        CURRENT.set(new Held(journal, journal.writerSession(), new Parent(parent.actionId(), ActionCodec.bodySha256(parent), handlerId), false,parent.deadline(),null));
         try { return work.run(); } finally { if (previous == null) CURRENT.remove(); else CURRENT.set(previous); }
     }
 }
