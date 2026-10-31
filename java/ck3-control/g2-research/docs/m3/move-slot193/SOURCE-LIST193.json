@@ -1,0 +1,79 @@
+{
+  "schema": "m3.move-slot193-portable-source-list/v1",
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotApi193.java",
+      "kind": "main",
+      "bytes": 468,
+      "sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+      "git_lf_bytes": 468
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlot193.java",
+      "kind": "main",
+      "bytes": 987,
+      "sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+      "git_lf_bytes": 987
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MoveSlotBook193.java",
+      "kind": "test",
+      "bytes": 3958,
+      "sha256": "0d7c339465463cd964dfd4217491fcdd020c6678bad80e47626f7e0b17708e52",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "03b2bc7c9e3fcc99714585ddf61c731b2eb6e78aa28ed85b0ba2da5e5d80bb64",
+      "git_lf_bytes": 3868
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MoveSlotValidation193.java",
+      "kind": "test",
+      "bytes": 7186,
+      "sha256": "bbcdf607ec46e7618369dcdc6c78a87a899eb785098c96f218023066b7430752",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "207a187414b385a6b73d9d340bff427d8df56d5f5eccc81092222f95eba5af48",
+      "git_lf_bytes": 7162
+    }
+  ],
+  "production_API_sources": 2,
+  "manual_support_sources": 2,
+  "existing_formal_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/RequestE92780.java",
+      "bytes": 5224,
+      "sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "existing_formal_source": true,
+      "git_lf_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "bytes": 271,
+      "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "existing_formal_source": true,
+      "git_lf_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "bytes": 2735,
+      "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "existing_formal_source": true,
+      "git_lf_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a"
+    }
+  ],
+  "manual_main": "org.xar.ck3.research.m3.MoveSlotValidation193",
+  "source_closure_explicit_java_files": 7,
+  "missing_source_dependencies": [],
+  "D_classroot_or_binary_required": false,
+  "new_binary_classes": 0,
+  "POM_CI_changes": false,
+  "used_declarations": {
+    "Raw128": "public record Raw128(long low, long high) { }",
+    "Memory": "public interface Memory extends NativeTaskMemory {\n        int readUnsignedByte(long address);\n        void writeByte(long address, byte value);\n        void writeInt16(long address, short value);\n        Raw128 readRaw128(long address);\n        void writeRaw128(long address, Raw128 value);\n    }"
+  },
+  "rawSHA_preserved_publishedLF_writer_handled": true,
+  "delivery_new_compile_or_run": false,
+  "hash_scope": "Original sha256/bytes retain actual first-compile physical inputs. Separate git_lf_* fields identify publication-only EOL/line-whitespace changes; source statements, APIs and expected literals remain unchanged."
+}

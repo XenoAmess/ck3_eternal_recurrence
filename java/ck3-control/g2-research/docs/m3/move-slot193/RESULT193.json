@@ -1,0 +1,90 @@
+{
+  "schema": "m3.move-slot193-software-delivery/v1",
+  "status": "FIRST_STRICT_AND_THREE_SCENES_PASS",
+  "delivery_status": "PARENT_REVIEWED_SOURCE_READY_PENDING_FORMAL",
+  "package_number": 55,
+  "actual_original": "move-slot193/ACTUAL193.json",
+  "actual_original_sha256": "3d724b611200ce26db5dd44950c8a2dfa1724c88b52af0075d96b44686a8c070",
+  "actual_evidence_copied_to_Git": false,
+  "source_bytes": 80,
+  "actual_PE_bytes": 92,
+  "unwind_bytes": 12,
+  "headers_provider_whole_hash_Game": 0,
+  "first_new_explicit_sources": 4,
+  "stages": [
+    {
+      "phase": "STRICT",
+      "start_utc": "2026-10-31T21:02:07.835295+00:00",
+      "end_utc": "2026-10-31T21:02:08.575578+00:00",
+      "process_seconds": 0.7402734002098441,
+      "exit_code": 0
+    },
+    {
+      "phase": "FIRST3",
+      "start_utc": "2026-10-31T21:02:08.578408+00:00",
+      "end_utc": "2026-10-31T21:02:08.718864+00:00",
+      "process_seconds": 0.14045660011470318,
+      "exit_code": 0
+    }
+  ],
+  "new_scenes": 3,
+  "events_per_scene": [
+    2,
+    10,
+    10
+  ],
+  "source_events": 22,
+  "actual_cleanup_calls": 2,
+  "executed_top_level_checks": 3,
+  "assertion_meaning": "Exactly complete script exhaustion after each void move; per-event/byte guards are mixed checks, not additional top-level semantic assertions.",
+  "source_preserved": true,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotApi193.java": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlot193.java": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MoveSlotBook193.java": "0d7c339465463cd964dfd4217491fcdd020c6678bad80e47626f7e0b17708e52",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/MoveSlotValidation193.java": "bbcdf607ec46e7618369dcdc6c78a87a899eb785098c96f218023066b7430752"
+  },
+  "core_adoption": "ModelR2 decodedraw,0owneredit",
+  "Book_adoption": "ModelR2 partial plus8owner fixture/trace corrections and comment removal; target reviewed, not blind; no target execution generated expected.",
+  "host_adoption": "ModelR2 decodedraw,0owneredit; independent of new core/Book candidates/bodies/results during derivation.",
+  "current_portable_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/RequestE92780.java",
+      "bytes": 5224,
+      "sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+      "existing_formal_source": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "bytes": 271,
+      "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "existing_formal_source": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "bytes": 2735,
+      "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "existing_formal_source": true
+    }
+  ],
+  "portable_D_classroot_or_binary_dependency": false,
+  "local_cached_dependency_note": "Local firstcompile reused source-identified cached classes. Old Request source4892B differs from current5224B only whitespace; used Memory/Raw128 declarations byteexact, no whole rawSHA identity asserted. Portable sourceclosure uses currentformal3sources.",
+  "used_declarations": {
+    "Raw128": "public record Raw128(long low, long high) { }",
+    "Memory": "public interface Memory extends NativeTaskMemory {\n        int readUnsignedByte(long address);\n        void writeByte(long address, byte value);\n        void writeInt16(long address, short value);\n        Raw128 readRaw128(long address);\n        void writeRaw128(long address, Raw128 value);\n    }"
+  },
+  "not_proved": [
+    "All three probes and hashes are0; nonzero/high-bit hash/probe domains not covered.",
+    "Book has no finalCells assertion; no final-state/high-half persistence claim beyond ordered observed values and stores.",
+    "One Raw128 API observation does not prove hardware128bit atomicity or a fullCPU/ABI/EH trace.",
+    "Opaque cleanup mutations are supplied inputs, not execution or equivalence proof of actual856050.",
+    "No Native/currentGame/EF0/natural dispatch/runtime binding or gameplay progression proof."
+  ],
+  "delivery_new_compile_run": false,
+  "old_case_reruns": 0,
+  "POM_CI_changes": false,
+  "formal_tree_edits_by_drafter": false,
+  "parent_INDEX_edited": false,
+  "Main_prerequisite": false,
+  "publication_line_endings": "All4 raw validated SHA preserved; formalwriter computes publishedGitLF identities separately, no rawSHA overwritten."
+}
