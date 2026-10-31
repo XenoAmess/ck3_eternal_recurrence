@@ -55,13 +55,18 @@ public final class RootDerivedChildAuthority {
                 }
                 @Override public ExactRef verifyPhysical(ContinuityStorePort.Session same,WriterContracts.Head head,ActionCommand child,
                         PhysicalReadLease lease,ExecutableStepBindings.InstalledStep definition,ActionPorts.OutcomeArchive archive)throws IOException {
-                    require(child.operation().value().equals("pause-map"),"physical derived admission is only an exact pause child");
+                    boolean pause=child.operation().value().equals("pause-map");
+                    require(pause||child.operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX),
+                            "physical derived admission needs an exact pause or source-qualified Life cancel");
                     var scope=ActionChildPlanningScope.reservedParent(same,head,child).orElseThrow(
                             ()->new IOException("physical pause has no actual canonical reserved parent"));
                     var parent=ContinuityActionJournal.lookup(head.state(),scope.actionId(),archive).orElseThrow();
-                    require(RootExecutableBindings.isPublicPauseParent(parent.command())
+                    if(pause) require(RootExecutableBindings.isPublicPauseParent(parent.command())
                             ||!org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(lease.frame().semantic().get("paused"),"paused"),
                             "internal physical derived admission remains limited to a running cleanup pause");
+                    else require(retainedLifeCancel(parent,child)
+                            &&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(lease.frame().semantic().get("paused"),"paused"),
+                            "physical cancellation requires its retained Life parent and actual paused frame");
                     return admit(same,head,child,lease,definition,archive);
                 }
             };
@@ -83,9 +88,8 @@ public final class RootDerivedChildAuthority {
             var scope = ActionChildPlanningScope.reservedParent(same, head, child).orElseThrow(
                     () -> new IOException("INCOMPLETE: no original same-writer composite Children callback owns this child"));
             var parent = ContinuityActionJournal.lookup(head.state(), scope.actionId(), archive).orElseThrow();
-            require(parent.bodySha256().equals(scope.bodySha256()) && parent.state() instanceof ActionState.CompositeRunning,
-                    "derived child lost its actual running canonical parent");
-            var running = ((ActionState.CompositeRunning) parent.state()).execution();
+            require(parent.bodySha256().equals(scope.bodySha256()),"derived child lost its actual canonical parent body");
+            var running = executionFor(parent,child);
             require(running.handlerId().equals(scope.handlerId()), "derived child escaped its actual source-owned handler");
             if(RootExecutableBindings.isPublicPauseParent(parent.command())){
                 requireUnsubmitted(ContinuityActionJournal.lookup(head.state(),child.actionId(),archive),child);
@@ -94,6 +98,7 @@ public final class RootDerivedChildAuthority {
                 unchanged(same,head);return proof;
             }
             var parentBinding = parentBinding(parent, running.handlerId());
+            if(retainedLifeCancel(parent,child))requireCancellation(same,head,parent,child,lease.frame(),parentBinding,archive);
             requireChildDefinition(child, definition);
             requireUnsubmitted(ContinuityActionJournal.lookup(head.state(), child.actionId(), archive), child);
             var before = RootGuardEvidence.loadFrame(running.guard(), archive, context.frameLoader());
@@ -128,9 +133,8 @@ public final class RootDerivedChildAuthority {
                 var parent = archive.loadReceipt(proof.parentReceipt());
                 ContinuityActionJournal.requireHistoricalReceipt(historical, parent, archive);
                 ContinuityActionJournal.requireHistoricalReceipt(head.state(), parent, archive);
-                require(parent.bodySha256().equals(proof.parentBodySha256()) && parent.state() instanceof ActionState.CompositeRunning,
-                        "derived proof changed its historical original running parent");
-                var running = ((ActionState.CompositeRunning) parent.state()).execution();
+                require(parent.bodySha256().equals(proof.parentBodySha256()),"derived proof changed its historical original parent body");
+                var running = executionFor(parent,child.command());
                 require(running.handlerId().equals(proof.handlerId()) && running.children().size() == proof.childOrdinal(),
                         "derived proof changed its historical reserved ordinal or handler");
                 requireUnsubmitted(ContinuityActionJournal.lookup(historical, child.command().actionId(), archive), child.command());
@@ -155,6 +159,29 @@ public final class RootDerivedChildAuthority {
                 if(proof.sourceQualification().isPresent())pin(same, proof.sourceQualification().orElseThrow());
                 unchanged(same, head);
             } catch (IOException failure) { throw new UncheckedIOException("INCOMPLETE: actual original derived-child read/replay authority unavailable", failure); }
+        }
+        private void requireCancellation(ContinuityStorePort.Session same,WriterContracts.Head head,
+                ActionReceipt parent,ActionCommand child,Complete current,
+                RootExecutableBindings.CompositeBinding parentBinding,ActionPorts.OutcomeArchive archive)throws IOException {
+            require(parentBinding.handler() instanceof LifeAdvanceComposite
+                    &&parentBinding.handler() instanceof CompositeActionPort.OriginalContinuation,
+                    "retained cancellation has no actual registered original Life producer");
+            var token=ActionChildPlanningScope.continuationToken(same,head,parent.command(),child).orElseThrow(
+                    ()->new IOException("retained cancellation lost its original private held token"));
+            var source=(CompositeActionPort.OriginalContinuation)parentBinding.handler();
+            var execution=executionFor(parent,child);
+            source.requireContinuation(parent.command(),execution,token);
+            require(token instanceof LifeSentinelCancellation
+                    &&token.kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL
+                    &&context.clock().instant().isBefore(token.deadline())&&!child.deadline().isAfter(token.deadline()),
+                    "retained cancellation changed its actual private token or finite source deadline");
+            var cancellation=(LifeSentinelCancellation)token;
+            source.requireContinuationChild(parent.command(),cancellation.originalExecution(),token,child);
+            require(cancellation.beforeCancel().identity().equals(current.identity())
+                    &&cancellation.beforeCancel().source().equals(current.source())
+                    &&cancellation.beforeCancel().sessionId().equals(current.sessionId())
+                    &&AdvancePrimitives.cancelGeneration(child.operation().value()).equals(cancellation.generation())
+                    &&child.arguments().members().isEmpty(),"retained cancellation changed its actual fresh frame/generation/body");
         }
         private RootExecutableBindings.CompositeBinding parentBinding(ActionReceipt parent, String handlerId) throws IOException {
             require(parent.command().origin() instanceof CommandOrigin.Gameplay && parent.bodySha256().equals(ActionCodec.bodySha256(parent.command())),
@@ -183,9 +210,10 @@ public final class RootDerivedChildAuthority {
         private void qualify(ActionReceipt parent, RootExecutableBindings.CompositeBinding parentBinding, ActionCommand child,
                 Complete original, Complete current, List<ActionReceipt> previous, ActionPorts.OutcomeArchive archive) {
             ActionCommand command = parent.command();
+            boolean retainedCancellation=retainedLifeCancel(parent,child);
             require(original.identity().equals(command.before()) && original.source().equals(command.source()) && original.sessionId().equals(command.sessionId())
                     && current.identity().equals(child.before()) && current.source().equals(child.source()) && current.sessionId().equals(child.sessionId())
-                    && original.connectionGeneration().equals(current.connectionGeneration()), "derived child changed original/current complete source or connection");
+                    && (retainedCancellation||original.connectionGeneration().equals(current.connectionGeneration())), "derived child changed original/current complete source or connection");
             var first = original.identity(); var last = current.identity();
             require(first.machineId().equals(last.machineId()) && first.game().equals(last.game())
                     && first.frame().episodeRunId().equals(last.frame().episodeRunId())
@@ -196,10 +224,15 @@ public final class RootDerivedChildAuthority {
                     && last.frame().identity().dateRaw().compareTo(first.frame().identity().dateRaw()) >= 0,
                     "derived child changed original Game/actor/episode or regressed its public/native/date identity");
             require(command.source().equals(child.source()) && command.sessionId().equals(child.sessionId()) && command.claims().equals(child.claims())
-                    && !child.deadline().isAfter(command.deadline()), "derived child changed original intent source/session/claims/deadline");
+                    && (retainedCancellation||!child.deadline().isAfter(command.deadline())), "derived child changed original intent source/session/claims/deadline");
             var frame = frame(current);
-            require(child.equals(AdvancePrimitives.child(command, frame, child.actionId(), child.operation().value(), child.deadline())),
-                    "derived child body differs from the actual shared timeline child producer");
+            ActionCommand exactChild=retainedCancellation
+                    ?new ActionCommand(child.actionId(),frame.identity(),command.source(),command.sessionId(),child.operation(),
+                        new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of()),
+                        AdvancePrimitives.expected(frame.identity(),command.source(),child.operation(),
+                            new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of())),command.claims(),child.deadline())
+                    :AdvancePrimitives.child(command,frame,child.actionId(),child.operation().value(),child.deadline());
+            require(child.equals(exactChild),"derived child body differs from its actual timeline source producer");
             var intent = intent(command, parentBinding.handler());
             String step = child.operation().value();
             if (step.startsWith(ClockStatusRead.ARM_PREFIX)) require(intent.arm().filter(step::equals).isPresent(), "derived arm differs from the exact original typed parent plan");
@@ -214,6 +247,24 @@ public final class RootDerivedChildAuthority {
                         "derived cancellation has no unique confirmed original same-generation arm and independent Status");
             }
         }
+    }
+    /** Pure canonical cursor classification; native authority still requires the real held source token. */
+    static boolean retainedLifeCancel(ActionReceipt parent,ActionCommand child) {
+        if(!(parent.state() instanceof ActionState.CompositeUnknown unknown)
+                ||!unknown.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                ||!(parent.command().origin() instanceof CommandOrigin.Gameplay)
+                ||!LifeAdvanceComposite.accepts(parent.command().operation().value())
+                ||!child.operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))return false;
+        AdvancePrimitives.cancelGeneration(child.operation().value());
+        require(child.arguments().members().isEmpty(),"retained Life cancel has nonempty arguments");
+        require(AdvancePlan.decode(parent.command()).clockMode()!=AdvancePlan.ClockMode.POLLED,
+                "polled Life parent cannot own a retained sentinel cancellation");
+        return true;
+    }
+    static CompositeExecution executionFor(ActionReceipt parent,ActionCommand child) {
+        if(parent.state() instanceof ActionState.CompositeRunning running)return running.execution();
+        require(retainedLifeCancel(parent,child),"only the exact retained Life cancel can use an unknown derived cursor");
+        return ((ActionState.CompositeUnknown)parent.state()).execution();
     }
     private record Intent(Optional<String> arm, int speed) { }
     private static Intent intent(ActionCommand parent, CompositeActionPort handler) {
@@ -238,7 +289,7 @@ public final class RootDerivedChildAuthority {
                 actual.observedAt(), actual.originalEvidence());
     }
     private static List<ActionReceipt> preceding(ContinuityState state, ActionReceipt parent, ActionCommand child, ActionPorts.OutcomeArchive archive) {
-        var running = ((ActionState.CompositeRunning) parent.state()).execution(); var keys = running.children();
+        var running = executionFor(parent,child); var keys = running.children();
         require(!keys.isEmpty() && keys.getLast().equals(new CompositeExecution.Child(child.actionId(), ActionCodec.bodySha256(child)))
                 && child.actionId().equals(ActionIds.child(parent.command().actionId(), keys.size(), child.operation())),
                 "derived child is not the exact last reserved canonical child ID/body/ordinal");

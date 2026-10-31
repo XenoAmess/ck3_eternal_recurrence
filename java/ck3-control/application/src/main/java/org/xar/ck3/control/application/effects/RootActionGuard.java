@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.advance.*;
 import org.xar.ck3.control.application.readiness.ReadinessAuthority;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
@@ -80,9 +81,18 @@ public final class RootActionGuard implements ActionPorts.GuardPort {
                 publicPauseChild=RootExecutableBindings.isPublicPauseParent(parent.command());
             }
             final boolean sourceOwnedPublicPause=publicPauseChild;
-            if(reservedPause) {
+            var cancellation=sourceQualifiedCancellation(session,actualLockedHead,command,definition,sameWriterArchive);
+            if(reservedPause || cancellation.isPresent()) {
                 var running = authority.currentDerivedCleanup(session,command.before(),command.deadline(),physical -> {
-                    if(!sourceOwnedPublicPause&&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(physical.frame().semantic().get("paused"),"paused"))
+                    if(cancellation.isPresent()) {
+                        var before=cancellation.orElseThrow().beforeCancel();
+                        StrictJson.require(before.identity().equals(physical.frame().identity())
+                                &&before.source().equals(physical.frame().source())
+                                &&before.sessionId().equals(physical.frame().sessionId()),
+                                "Life cancellation changed its actual source-qualified before frame");
+                        RootGuardChecks.livingPaused(physical);
+                    }
+                    if(cancellation.isEmpty()&&!sourceOwnedPublicPause&&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(physical.frame().semantic().get("paused"),"paused"))
                         return java.util.Optional.<GuardEvidence>empty();
                     // The public source owns its exact first map-unavailable attempt and at most one qualified retry.
                     // Internal Life/Battle cleanup retains every original living/map qualification.
@@ -110,6 +120,34 @@ public final class RootActionGuard implements ActionPorts.GuardPort {
                 return withDerived(binding,derived.orElseThrow());
             });
         } catch (IOException failure) { throw new UncheckedIOException("actual Root action authority unavailable", failure); }
+    }
+    private java.util.Optional<LifeSentinelCancellation> sourceQualifiedCancellation(
+            ContinuityStorePort.Session same,WriterContracts.Head head,ActionCommand child,
+            ExecutableStepBindings.InstalledStep definition,ActionPorts.OutcomeArchive currentArchive)throws IOException {
+        if(definition.kind()!=ExecutableStepBindings.Kind.ACTION
+                ||!child.operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))return java.util.Optional.empty();
+        var reserved=ActionChildPlanningScope.reservedParent(same,head,child);
+        if(reserved.isEmpty())return java.util.Optional.empty();
+        var parent=ContinuityActionJournal.lookup(head.state(),reserved.orElseThrow().actionId(),currentArchive).orElseThrow();
+        if(!(parent.state() instanceof ActionState.CompositeUnknown unknown))return java.util.Optional.empty();
+        var actual=installed.composites().find(parent.command().operation()).orElseThrow();
+        StrictJson.require(actual instanceof LifeAdvanceComposite
+                &&actual instanceof CompositeActionPort.OriginalContinuation
+                &&unknown.execution().handlerId().equals(LifeAdvanceComposite.HANDLER),
+                "unresolved cleanup has no actual registered Life continuation producer");
+        var token=ActionChildPlanningScope.continuationToken(same,head,parent.command(),child).orElseThrow(
+                ()->new IOException("Life cancellation has no original source-qualified held token"));
+        var source=(CompositeActionPort.OriginalContinuation)actual;
+        source.requireContinuation(parent.command(),unknown.execution(),token);
+        StrictJson.require(token instanceof LifeSentinelCancellation
+                &&token.kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL
+                &&clock.instant().isBefore(token.deadline())&&!child.deadline().isAfter(token.deadline()),
+                "Life cancellation changed its original source token or finite deadline");
+        var cancellation=(LifeSentinelCancellation)token;
+        source.requireContinuationChild(parent.command(),cancellation.originalExecution(),token,child);
+        StrictJson.require(AdvancePrimitives.cancelGeneration(child.operation().value()).equals(cancellation.generation())
+                &&child.arguments().members().isEmpty(),"Life cancellation changed its original generation or empty arguments");
+        return java.util.Optional.of(cancellation);
     }
     private ExactRef verifyProof(ContinuityStorePort.Session session,ExactRef actual) throws IOException {
         ExactRef proof=Objects.requireNonNull(actual);
