@@ -1714,7 +1714,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                             var connectionOrder=currentTransport.connectionGeneration().compareTo(previousTransport.connectionGeneration());
                             StrictJson.require(connectionOrder>=0,"read guard connection generation regressed");
                             boolean publicResetPermitted=false;
-                            if(connectionOrder>0) {
+                            if(connectionOrder>0&&guard.observed().frame().revision().compareTo(latestObserved.frame().revision())<0) {
                                 var ack=read.original();
                                 var custody=ack.custody().orElseThrow(()->new IllegalArgumentException("new connection read lacks actual custody"));
                                 custody.verify(read);

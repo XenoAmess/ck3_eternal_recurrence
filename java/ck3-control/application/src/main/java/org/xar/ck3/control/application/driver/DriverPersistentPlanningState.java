@@ -250,7 +250,10 @@ public final class DriverPersistentPlanningState {
                     Obj input=object(proof.get("input"),"life input");ExactRef receiptRef=reference(input.get("receipt"));require(!processed.contains(receiptRef),"one life receipt counted twice");
                     ActionReceipt receipt=archive.loadReceipt(receiptRef);var value=AdvanceCompletedRead.read(receipt,archive).orElseThrow();
                     require(value.originalResultRef().equals(reference(input.get("result"))),"life result source differs");
-                    Obj ending=material(archive,reference(input.get("ending_semantic")));var after=from(value.endingFrame());var before=from(receipt.command().before());
+                    ExactRef endingSemanticRef=reference(input.get("ending_semantic"));
+                    byte[] endingBytes=archive.loadFullMaterial(endingSemanticRef).bytes();
+                    exact(endingSemanticRef,endingBytes);
+                    Obj ending=DriverJson.object(endingBytes,RawJson.MAXIMUM_BYTES);var after=from(value.endingFrame());var before=from(receipt.command().before());
                     // The source-bound ending semantic contains its independent full manifest; rebuild that original, never a copied ready flag.
                     ExactRef manifest=reference(ending.get("java_driver_facts_evidence"));Obj body=ending;
                     ExactRef nativeRef=receipt.applied().orElseThrow().observation().originalEvidence();Complete rebuilt=rebuild(new Obj(Map.of("manifest",ref(manifest),"native",ref(nativeRef))),archive);
