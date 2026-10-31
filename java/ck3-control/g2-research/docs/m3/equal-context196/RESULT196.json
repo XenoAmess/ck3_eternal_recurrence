@@ -1,0 +1,122 @@
+{
+  "schema": "m3.equal-context196-first-software-summary/v1",
+  "package_number": 60,
+  "status": "FIRST_THREE_PRODUCTION_ONE_WITNESS_FIVE_GROUPS_PASS",
+  "at_utc": "2026-10-31T22:02:39.351277+00:00",
+  "sources": [
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\map191\\MapInsert191Api.java",
+      "bytes": 2298,
+      "sha256": "51e7eaccba1968ef5bb9744d6428d662b31dec7b5e048a298ba2e3ebddf1f6fb"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\map191\\MapInsertC3B960.java",
+      "bytes": 10791,
+      "sha256": "b86cff4f989a2f6fc42147a987a0ad779b3f26a466b87ee97ddcffb0ba91b6cd"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\equal196\\MapEqualBinding196.java",
+      "bytes": 5264,
+      "sha256": "7a56eb5c9492c0bc55a2fe1bf65e6b7f3eabb7a9efcaf17ae8565bfae2f5beed"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\witness-owner196\\MapEqualWitness196.java",
+      "bytes": 23473,
+      "sha256": "e53720f9308bfadffdfe07cd7d3c05eb68f6ca9410d7ec22cba170448bfa9e03"
+    }
+  ],
+  "first_production": [
+    {
+      "stage": "FIRST_STRICT",
+      "begin": "2026-10-31T21:54:36.520529+00:00",
+      "end": "2026-10-31T21:54:37.273519+00:00",
+      "exit_code": 0,
+      "seconds": 0.7529879999347031,
+      "command": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-Xmx192m",
+        "-J-XX:ActiveProcessorCount=1",
+        "@D:\\ck3-state\\resume91-m3-native\\equal-edge196\\verification-prod196\\strict.args"
+      ]
+    }
+  ],
+  "first_new_witness": [
+    {
+      "stage": "FIRST_STRICT",
+      "begin": "2026-10-31T21:55:51.247747+00:00",
+      "end": "2026-10-31T21:55:52.166135+00:00",
+      "exit_code": 0,
+      "seconds": 0.9183892998844385,
+      "command": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-Xmx192m",
+        "-J-XX:ActiveProcessorCount=1",
+        "@D:\\ck3-state\\resume91-m3-native\\equal-edge196\\verification-witness196\\strict.args"
+      ]
+    },
+    {
+      "stage": "FIRST5GROUPS",
+      "begin": "2026-10-31T21:55:52.168003+00:00",
+      "end": "2026-10-31T21:55:52.331434+00:00",
+      "exit_code": 0,
+      "seconds": 0.1634337999857962,
+      "command": [
+        "C:/jdk-21/bin/java.exe",
+        "-Xmx192m",
+        "-XX:ActiveProcessorCount=1",
+        "-cp",
+        "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\verification-witness196\\classes;D:\\ck3-state\\resume91-m3-native\\equal-edge196\\verification-prod196\\classes;D:\\ck3-state\\resume91-m3-native\\map-insert191\\verification-core191\\classes;D:\\ck3-state\\resume91-m3-native\\group-name-equal185\\build-first185\\classes;D:\\ck3-state\\resume91-m3-native\\registry-consumer176\\build\\classes",
+        "org.xar.ck3.research.m3.equal196.MapEqualWitness196"
+      ]
+    }
+  ],
+  "first_actual_refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\verification-prod196\\ACTUAL196.json",
+      "bytes": 1649,
+      "sha256": "63e2f437314470c236fff5f84eff92a912d03ba205339f0a948b8872f919415c"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\verification-witness196\\ACTUAL196.json",
+      "bytes": 2009,
+      "sha256": "97e799ca1a50afe3ecd9a9d53c57a1be9c2f0b48b70201f55ff6c444f2c91d0a"
+    }
+  ],
+  "original_owner_delivery": {
+    "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\DELIVERY196.json",
+    "bytes": 13630,
+    "sha256": "241284819bd61233886951e4ad7563d0a743551667df2b54df21e6f0203e4752"
+  },
+  "model_outcomes_ref": {
+    "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\MODEL-OUTCOMES196.json",
+    "bytes": 4785,
+    "sha256": "0696742794213c2454392f0565269f466e2bf3909637656f199af6fe27b39dc3"
+  },
+  "parent_source_review": {
+    "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\PARENT-SOURCE-REVIEW196.json",
+    "bytes": 3737,
+    "sha256": "5784c0e21345fc66f72686896567848978cd8ed621a509df369bca58640d77d7"
+  },
+  "frame_events": 26,
+  "frame_Memory_events": 24,
+  "frame_ports": 2,
+  "frame_finalCells": 8,
+  "compatibility_ports": 2,
+  "rejection_groups": 2,
+  "new_groups": 5,
+  "existing_production_changes": "Only two literal source hunks: default five-argument overload delegates old four-argument callback, actual C3B9CA call passes current bodyRsp-8.",
+  "production_adoption": "ProducerR1 two exact edits and BinderR2 eleven exact edits, zero owner executable changes; binder first source wholly rejected.",
+  "witness_adoption": "First length whole discarded; second frame DATA partial plus independent owner DATA/host/compatibility/rejection plumbing. Source-reviewed parent did not alter target or expected values.",
+  "limitations": [
+    "The two vector high halves are preserved in the conversion source; the zero-prefix frame does not independently prove high-half comparison sensitivity.",
+    "Non-equal delegates and arbitrary exceptions remain source-reviewed, not eight new dynamic cases.",
+    "No complete wrapper composition, Native ABI/EH/hardware or natural Game claim.",
+    "IllegalArgumentException text UNWRITTEN_COMPAT196 is preserved model text; no placeholder implementation behavior remains."
+  ],
+  "new_PE": 0,
+  "old_cases_rerun": 0,
+  "old_green_production_recompiled": 0,
+  "Native_Game_S_MB": 0,
+  "Main_prerequisite": false,
+  "formal_status": "PARENT_REVIEWED_MATURE_SOURCE_READY_PENDING_FORMAL"
+}

@@ -18,6 +18,10 @@ public final class MapInsert191Api {
     /** Every callback receives the identical Memory. Only source-established arguments are projected. */
     public interface Ports {
         int equal3f6d2b0(Memory memory, long siteRva, long rcx, long rdx);
+        /** Actual source-entry RSP after the caller CALL push; old ports remain source-compatible. */
+        default int equal3f6d2b0(Memory memory, long siteRva, long rcx, long rdx, long sourceEntryRsp) {
+            return equal3f6d2b0(memory, siteRva, rcx, rdx);
+        }
         void insertSlotC3cf10(Memory memory, long siteRva, long bucket, int probe, int hash, long descriptor);
         void rehashC3a400(Memory memory, long siteRva, long map);
         void insertC3a5f0(Memory memory, long siteRva, long map, long result, int hash, long descriptor);

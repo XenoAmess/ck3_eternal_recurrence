@@ -1,0 +1,146 @@
+{
+  "schema": "m3.equal-context196-portable-source-list/v1",
+  "package_number": 60,
+  "changed_sources": [
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\map191\\MapInsert191Api.java",
+      "bytes": 2298,
+      "sha256": "51e7eaccba1968ef5bb9744d6428d662b31dec7b5e048a298ba2e3ebddf1f6fb",
+      "source": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\map191\\MapInsert191Api.java",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java",
+      "kind": "main",
+      "operation": "modify",
+      "old_source": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\api\\org\\xar\\ck3\\research\\m3\\map191\\MapInsert191Api.java",
+      "old_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+      "old_git_lf_sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\map191\\MapInsertC3B960.java",
+      "bytes": 10791,
+      "sha256": "b86cff4f989a2f6fc42147a987a0ad779b3f26a466b87ee97ddcffb0ba91b6cd",
+      "source": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\map191\\MapInsertC3B960.java",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsertC3B960.java",
+      "kind": "main",
+      "operation": "modify",
+      "old_source": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\candidate\\org\\xar\\ck3\\research\\m3\\map191\\MapInsertC3B960.java",
+      "old_sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4",
+      "old_git_lf_sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\equal196\\MapEqualBinding196.java",
+      "bytes": 5264,
+      "sha256": "7a56eb5c9492c0bc55a2fe1bf65e6b7f3eabb7a9efcaf17ae8565bfae2f5beed",
+      "source": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\candidate\\org\\xar\\ck3\\research\\m3\\equal196\\MapEqualBinding196.java",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/equal196/MapEqualBinding196.java",
+      "kind": "main",
+      "operation": "add"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\witness-owner196\\MapEqualWitness196.java",
+      "bytes": 23473,
+      "sha256": "e53720f9308bfadffdfe07cd7d3c05eb68f6ca9410d7ec22cba170448bfa9e03",
+      "source": "D:\\ck3-state\\resume91-m3-native\\equal-edge196\\witness-owner196\\MapEqualWitness196.java",
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/equal196/MapEqualWitness196.java",
+      "kind": "manual",
+      "operation": "add"
+    }
+  ],
+  "existing_formal_source_dependencies": [
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\group-name-equal185\\src\\org\\xar\\ck3\\research\\m3\\GroupNameEqualApi185.java",
+      "bytes": 635,
+      "sha256": "bb3eaca1394c4a073ed96460586ebedc90164f4b7678ae79d72053db2538e399",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/GroupNameEqualApi185.java",
+      "formal_physical_sha256": "8bb6d06090319dc14c0c88b4ff5ec430eaab6627379d7157f5bc24ea07a7d1c9",
+      "git_lf_sha256": "8bb6d06090319dc14c0c88b4ff5ec430eaab6627379d7157f5bc24ea07a7d1c9",
+      "git_lf_bytes": 621,
+      "exact_CRLF_to_LF_equal": true,
+      "already_formal": true
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\group-name-equal185\\src\\org\\xar\\ck3\\research\\m3\\GroupNameEqual185.java",
+      "bytes": 2934,
+      "sha256": "23e26cf67404d9f7b5abf7ac04e40d6114b0d0c8db0b5e5e4723701589c7bb57",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/GroupNameEqual185.java",
+      "formal_physical_sha256": "23e26cf67404d9f7b5abf7ac04e40d6114b0d0c8db0b5e5e4723701589c7bb57",
+      "git_lf_sha256": "23e26cf67404d9f7b5abf7ac04e40d6114b0d0c8db0b5e5e4723701589c7bb57",
+      "git_lf_bytes": 2934,
+      "exact_CRLF_to_LF_equal": true,
+      "already_formal": true
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\registry-consumer176\\src\\org\\xar\\ck3\\research\\m3\\RegistryConsumerApi176.java",
+      "bytes": 3364,
+      "sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "git_lf_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "git_lf_bytes": 3364,
+      "exact_CRLF_to_LF_equal": true,
+      "already_formal": true
+    },
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\NativeTaskMemory.java",
+      "bytes": 271,
+      "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "git_lf_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "git_lf_bytes": 271,
+      "exact_CRLF_to_LF_equal": true,
+      "already_formal": true
+    },
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\retained\\InGameIdlerEventDispatch.java",
+      "bytes": 2735,
+      "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "git_lf_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+      "git_lf_bytes": 2655,
+      "exact_CRLF_to_LF_equal": true,
+      "already_formal": true
+    }
+  ],
+  "portable_source_closure": [
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsertC3B960.java",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/equal196/MapEqualBinding196.java",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/equal196/MapEqualWitness196.java",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/GroupNameEqualApi185.java",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/GroupNameEqual185.java",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java"
+  ],
+  "portable_source_count": 9,
+  "actual_first_validation": "Three changed/new production sources strict, then only one new Test strict and five groups, with source-matched existing binary dependencies. This was not one nine-source invocation.",
+  "source_identity": "Original physical SHA values describe exact actually compiled inputs. Published Git LF hashes are separately recorded by formal writer; CRLF normalization is explicit.",
+  "manual_host": "MapEqualWitness196 is a finite standalone main, not a new POM/CI gate.",
+  "do_not_copy": [
+    "D classroots",
+    "old 185 or 191 Books/Hosts",
+    "PE/evidence originals",
+    "runtime data",
+    "POM/CI changes"
+  ],
+  "publication_hash_scope": "Original hashes retain physical first-compile inputs. publication_git_LF separately records Git LF/trailing-line-whitespace projection. Execution, API and expected tokens are unchanged; original RESULT remains unchanged.",
+  "publication_git_LF": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java": {
+      "bytes": 2298,
+      "sha256": "51e7eaccba1968ef5bb9744d6428d662b31dec7b5e048a298ba2e3ebddf1f6fb"
+    },
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsertC3B960.java": {
+      "bytes": 10791,
+      "sha256": "b86cff4f989a2f6fc42147a987a0ad779b3f26a466b87ee97ddcffb0ba91b6cd"
+    },
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/equal196/MapEqualBinding196.java": {
+      "bytes": 5264,
+      "sha256": "7a56eb5c9492c0bc55a2fe1bf65e6b7f3eabb7a9efcaf17ae8565bfae2f5beed"
+    },
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/equal196/MapEqualWitness196.java": {
+      "bytes": 23473,
+      "sha256": "e53720f9308bfadffdfe07cd7d3c05eb68f6ca9410d7ec22cba170448bfa9e03"
+    }
+  }
+}

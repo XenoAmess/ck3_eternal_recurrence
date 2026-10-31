@@ -36,7 +36,7 @@ public final class MapInsertC3B960 {
                 if (Long.compareUnsigned(descriptorCapacity, 0x10L) >= 0) {
                     left = memory.readPointer(descriptor);
                 }
-                int equalResult = ports.equal3f6d2b0(memory, 0xC3B9CAL, left, right);
+                int equalResult = ports.equal3f6d2b0(memory, 0xC3B9CAL, left, right, bodyRsp - 8L);
                 if ((equalResult & 0xFF) != 0) {
                     // Found existing key
                     memory.writeInt64(output, bucket);
