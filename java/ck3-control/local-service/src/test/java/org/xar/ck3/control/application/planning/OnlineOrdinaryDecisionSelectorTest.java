@@ -327,6 +327,123 @@ class OnlineOrdinaryDecisionSelectorTest {
         }
     }
 
+    @Test @Timeout(10) void scriptedTransientRetriesThenSelection(@TempDir Path root) throws Exception {
+        Fixture fixture = fixture(false);
+        try (LocalModel model = new LocalModel()) {
+            model.scriptedStatuses.set(List.of(503, 429, 502, 504, 503));
+            model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+            var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(
+                    model.endpoint(), "qwen38-coder", Duration.ofSeconds(5), 6, Duration.ZERO), Clock.systemUTC(), raw -> {
+                Path path = root.resolve("retry-material-" + java.util.UUID.randomUUID() + ".json");
+                byte[] bytes = raw.bytes();
+                Files.write(path, bytes, java.nio.file.StandardOpenOption.CREATE_NEW);
+                return new ExactRef(path.toAbsolutePath().toString(), bytes.length, ActionCodec.sha256(bytes));
+            });
+            fixture.planner().bindSelector((request, proposal) -> selector.select(request, proposal));
+            var planned = fixture.planner().plan(fixture.request());
+            var selected = assertInstanceOf(PlanningResult.ActionSelected.class, planned);
+            assertSame(fixture.command(), selected.command());
+            assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+            assertEquals(6, model.calls.get());
+            var attempts = new ArrayList<com.fasterxml.jackson.databind.JsonNode>();
+            try (var files = Files.list(root)) {
+                for (Path file : files.toList()) {
+                    var json = FullJsonTree.parse(Files.readAllBytes(file), StrictJson.EXPLICIT_MAX_BYTES);
+                    if ("xar.ordinary-model-http-attempt/v1".equals(json.path("schema").asText())) attempts.add(json);
+                }
+            }
+            attempts.sort(java.util.Comparator.comparingInt(row -> row.path("attempt").intValue()));
+            assertEquals(6, attempts.size());
+            assertEquals(List.of(503, 429, 502, 504, 503, 200), attempts.stream().map(row -> row.path("status").intValue()).toList());
+            for (int index = 0; index < attempts.size(); index++) {
+                var row = attempts.get(index);
+                assertEquals(index + 1, row.path("attempt").intValue());
+                assertEquals(index == 5, row.path("complete").booleanValue());
+                assertEquals(index < 5, row.path("transient_failure").booleanValue());
+                assertEquals(index == 5, row.path("failure").textValue().isEmpty());
+            }
+            assertEquals(ActionCodec.bodySha256(fixture.command()), ActionCodec.bodySha256(selected.command()));
+        }
+    }
+
+    @Test @Timeout(10) void scriptedPermanentFailureWaits(@TempDir Path root) throws Exception {
+        Fixture fixture = fixture(false);
+        try (LocalModel model = new LocalModel()) {
+            model.scriptedStatuses.set(List.of(400));
+            model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+            var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(
+                    model.endpoint(), "qwen38-coder", Duration.ofSeconds(5), 6, Duration.ofMillis(1)), Clock.systemUTC(), raw -> {
+                Path path = root.resolve("permanent-material-" + java.util.UUID.randomUUID() + ".json");
+                byte[] bytes = raw.bytes();
+                Files.write(path, bytes, java.nio.file.StandardOpenOption.CREATE_NEW);
+                return new ExactRef(path.toAbsolutePath().toString(), bytes.length, ActionCodec.sha256(bytes));
+            });
+            fixture.planner().bindSelector((request, proposal) -> selector.select(request, proposal));
+            var planned = fixture.planner().plan(fixture.request());
+            var waiting = assertInstanceOf(PlanningResult.ReadOnlyWait.class, planned);
+            assertTrue(waiting.reason().contains("model_http_failure:400"));
+            assertEquals(1, model.calls.get());
+            var retained = retryAttempts(root);
+            assertEquals(1, retained.size());
+            assertEquals(400, retained.getFirst().path("status").intValue());
+            assertTrue(!retained.getFirst().path("transient_failure").booleanValue());
+            assertTrue(!retained.getFirst().path("complete").booleanValue());
+        }
+    }
+
+    @Test @Timeout(10) void deadlineExhaustionAfterTransient(@TempDir Path root) throws Exception {
+        Fixture fixture = fixture(false);
+        java.time.Instant now = Instant.now();
+        AtomicReference<java.time.Instant> clockInstant = new AtomicReference<>(now);
+        Clock testClock = retryClock(clockInstant, java.time.ZoneOffset.UTC);
+        try (LocalModel model = new LocalModel()) {
+            model.scriptedStatuses.set(List.of(503));
+            model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+            var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(
+                    model.endpoint(), "qwen38-coder", Duration.ofSeconds(5), 6, Duration.ofMillis(1)), testClock, raw -> {
+                Path path = root.resolve("deadline-material-" + java.util.UUID.randomUUID() + ".json");
+                byte[] bytes = raw.bytes();
+                Files.write(path, bytes, java.nio.file.StandardOpenOption.CREATE_NEW);
+                var json = FullJsonTree.parse(bytes, StrictJson.EXPLICIT_MAX_BYTES);
+                if ("xar.ordinary-model-http-attempt/v1".equals(json.path("schema").asText()) && json.get("status").intValue() == 503) {
+                    clockInstant.set(now.plusSeconds(6));
+                }
+                return new ExactRef(path.toAbsolutePath().toString(), bytes.length, ActionCodec.sha256(bytes));
+            });
+            fixture.planner().bindSelector((request, proposal) -> selector.select(request, proposal));
+            var planned = fixture.planner().plan(fixture.request());
+            var waiting = assertInstanceOf(PlanningResult.ReadOnlyWait.class, planned);
+            assertTrue(waiting.reason().contains("model_decision_deadline_exhausted"));
+            assertEquals(1, model.calls.get());
+            var retained = retryAttempts(root);
+            assertEquals(1, retained.size());
+            assertEquals(503, retained.getFirst().path("status").intValue());
+            assertTrue(retained.getFirst().path("transient_failure").booleanValue());
+            assertTrue(!retained.getFirst().path("complete").booleanValue());
+        }
+    }
+
+    private static List<com.fasterxml.jackson.databind.JsonNode> retryAttempts(Path root) throws IOException {
+        var rows = new ArrayList<com.fasterxml.jackson.databind.JsonNode>();
+        try (var files = Files.list(root)) {
+            for (Path file : files.toList()) {
+                var value = FullJsonTree.parse(Files.readAllBytes(file), StrictJson.EXPLICIT_MAX_BYTES);
+                if ("xar.ordinary-model-http-attempt/v1".equals(value.path("schema").asText())) rows.add(value);
+            }
+        }
+        return List.copyOf(rows);
+    }
+
+    private static Clock retryClock(AtomicReference<Instant> instant, java.time.ZoneId zone) {
+        return new Clock() {
+            @Override public Instant instant() { return instant.get(); }
+            @Override public java.time.ZoneId getZone() { return zone; }
+            @Override public Clock withZone(java.time.ZoneId other) {
+                return retryClock(instant, java.util.Objects.requireNonNull(other));
+            }
+        };
+    }
+
     private static RootOnlineDecisionSelector provider(LocalModel model, Path directory, Duration timeout)
             throws IOException {
         Files.createDirectories(directory);
@@ -403,6 +520,7 @@ class OnlineOrdinaryDecisionSelectorTest {
         private final AtomicInteger headersSent = new AtomicInteger();
         private final AtomicReference<ObjectNode> request = new AtomicReference<>();
         private final AtomicReference<String> usageJson = new AtomicReference<>("");
+        private final AtomicReference<List<Integer>> scriptedStatuses = new AtomicReference<>(List.of());
         private boolean closed;
         volatile java.util.concurrent.CountDownLatch requestReached;
         volatile java.util.concurrent.CountDownLatch releaseResponse;
@@ -428,8 +546,9 @@ class OnlineOrdinaryDecisionSelectorTest {
                         throw new java.io.IOException("release interrupted", interrupted);
                     }
                 }
-                if (firstUnavailable && actualCall == 1) {
-                    exchange.sendResponseHeaders(503, -1);
+                int status = firstUnavailable && actualCall == 1 ? 503 : (scriptedStatuses.get().size() >= actualCall ? scriptedStatuses.get().get(actualCall - 1) : 200);
+                if (status != 200) {
+                    exchange.sendResponseHeaders(status, -1);
                     return;
                 }
                 Reply planned = reply.get();

@@ -122,6 +122,45 @@ final class RootOrdinaryRuntimeConfigurationTest {
         assertThrows(IOException.class, () -> RootOrdinaryRuntimeConfiguration.read(write(root)), "reject missing environment_sha256");
     }
 
+    @Test void decisionProviderOmittedAttemptsAndBackoffUseDefaults() throws Exception {
+        var root = configuration();
+        var provider = StrictJson.object().put("endpoint", "http://127.0.0.1:8080/v1").put("model", "qwen38-coder").put("timeout_ms", 5000);
+        root.set("decision_provider", provider);
+        var actual = RootOrdinaryRuntimeConfiguration.read(write(root));
+        assertTrue(actual.decisionProvider().isPresent());
+        var dp = actual.decisionProvider().get();
+        assertEquals(6, dp.maximumAttempts());
+        assertEquals(java.time.Duration.ofSeconds(10), dp.retryBackoff());
+    }
+
+    @Test void decisionProviderExplicitAttemptsAndBackoffArePreserved() throws Exception {
+        var root = configuration();
+        var provider = StrictJson.object().put("endpoint", "http://127.0.0.1:8080/v1").put("model", "qwen38-coder").put("timeout_ms", 5000)
+                .put("maximum_attempts", 1).put("retry_backoff_ms", 0);
+        root.set("decision_provider", provider);
+        var actual = RootOrdinaryRuntimeConfiguration.read(write(root));
+        assertTrue(actual.decisionProvider().isPresent());
+        var dp = actual.decisionProvider().get();
+        assertEquals(1, dp.maximumAttempts());
+        assertEquals(java.time.Duration.ofMillis(0), dp.retryBackoff());
+
+        root = configuration();
+        provider = StrictJson.object().put("endpoint", "http://127.0.0.1:8080/v1").put("model", "qwen38-coder").put("timeout_ms", 5000)
+                .put("maximum_attempts", 4).put("retry_backoff_ms", 7);
+        root.set("decision_provider", provider);
+        actual = RootOrdinaryRuntimeConfiguration.read(write(root));
+        assertTrue(actual.decisionProvider().isPresent());
+        dp = actual.decisionProvider().get();
+        assertEquals(4, dp.maximumAttempts());
+        assertEquals(java.time.Duration.ofMillis(7), dp.retryBackoff());
+    }
+
+    @Test void decisionProviderAbsentIsEmpty() throws Exception {
+        var root = configuration();
+        var actual = RootOrdinaryRuntimeConfiguration.read(write(root));
+        assertTrue(actual.decisionProvider().isEmpty());
+    }
+
     private ObjectNode configuration() throws IOException {
         var policy = StrictJson.object(); policy.set("succession_lifecycle", lifecycle());
         policy.put("environment_manifest", "deliberately-does-not-exist.json");

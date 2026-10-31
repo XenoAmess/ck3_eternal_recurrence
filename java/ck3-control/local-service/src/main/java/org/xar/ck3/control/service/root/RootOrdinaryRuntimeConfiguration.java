@@ -15,7 +15,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public final class RootOrdinaryRuntimeConfiguration {
 
-    /** Runtime model endpoint is the base /v1 URI; the provider appends /chat/completions. */
+    /**
+     * Runtime model endpoint is the base /v1 URI; the provider appends /chat/completions.
+     * {@code retryBackoff} is the initial retry delay, including when explicitly configured:
+     * later failed attempts double that base up to 60 seconds before applying up to 20% jitter.
+     * Zero requests immediate retries. The maximum attempts includes the first HTTP request;
+     * every retry and wait remains inside the original decision/action time budget.
+     */
     public record DecisionProvider(java.net.URI endpoint, String model, Duration timeout,
             int maximumAttempts, Duration retryBackoff) {
         public DecisionProvider {
@@ -177,8 +183,8 @@ public final class RootOrdinaryRuntimeConfiguration {
             decisionProvider = java.util.Optional.of(new DecisionProvider(
                     java.net.URI.create(StrictJson.text(provider.get("endpoint"))), StrictJson.text(provider.get("model")),
                     Duration.ofMillis(StrictJson.integer(provider.get("timeout_ms"), 1, 120000)),
-                    provider.has("maximum_attempts") ? (int) StrictJson.integer(provider.get("maximum_attempts"), 1, 6) : 3,
-                    Duration.ofMillis(provider.has("retry_backoff_ms") ? StrictJson.integer(provider.get("retry_backoff_ms"), 0, 10000) : 200)));
+                    provider.has("maximum_attempts") ? (int) StrictJson.integer(provider.get("maximum_attempts"), 1, 6) : 6,
+                    Duration.ofMillis(provider.has("retry_backoff_ms") ? StrictJson.integer(provider.get("retry_backoff_ms"), 0, 10000) : 10000)));
         }
 
         return new RootOrdinaryRuntimeConfiguration(

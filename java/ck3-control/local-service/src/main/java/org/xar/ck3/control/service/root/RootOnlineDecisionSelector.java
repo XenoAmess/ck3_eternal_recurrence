@@ -129,9 +129,10 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 }
                 reason = "model_http_failure:" + exchange.status() + ":" + exchange.failure();
                 if (!exchange.transientFailure() || attempt == config.maximumAttempts()) break;
-                long delay = Math.min(config.retryBackoff().toNanos(), remaining(wallEnd, nanoEnd));
-                if (delay <= 0) break;
-                TimeUnit.NANOSECONDS.sleep(delay);
+                long delay = retryDelayNanos(attempt, config.retryBackoff().toNanos());
+                long remainingBudget = remaining(wallEnd, nanoEnd);
+                if (remainingBudget <= 0) break;
+                TimeUnit.NANOSECONDS.sleep(Math.min(delay, remainingBudget));
             }
             if (remaining(wallEnd, nanoEnd) <= 0) { choice = Choice.WAIT; reason = "model_decision_deadline_exhausted"; }
             ExactRef receipt = receipt(machineId, requestRef, attempts, identity, sha, modelChoice, choice, reason);
@@ -402,6 +403,19 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         } catch (ArithmeticException overflow) { return null; }
     }
     private static Instant earlier(Instant one, Instant two) { return one.isBefore(two) ? one : two; }
+
+    private static long retryDelayNanos(int attempt, long baseNanos) {
+        if (baseNanos <= 0) return 0;
+        long cap = 60_000_000_000L; // 60 seconds in nanos
+        long exponential = baseNanos;
+        for (int i = 1; i < attempt; i++) {
+            exponential = Math.min(exponential * 2, cap);
+        }
+        long jitterBound = (long) (exponential * 0.2);
+        if (jitterBound <= 0) return exponential;
+        long jitter = java.util.concurrent.ThreadLocalRandom.current().nextLong(-jitterBound, jitterBound + 1);
+        return Math.max(0, exponential + jitter);
+    }
     private long nanosUntil(Instant deadline) {
         try { return Duration.between(clock.instant(), deadline).toNanos(); }
         catch (ArithmeticException distant) { return deadline.isAfter(clock.instant()) ? Long.MAX_VALUE : 0; }
