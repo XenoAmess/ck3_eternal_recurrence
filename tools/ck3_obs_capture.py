@@ -58,6 +58,143 @@ def decision_publisher_api():
     return module
 
 
+def read_java_decision_binding(path, *, game, expected=None, identity_reader=None, retry_seconds=2.0):
+    """Read one bounded Java publication; publication does not prove OBS drawing."""
+    schema = "xar.java-root-decision-text/v1"
+    if type(retry_seconds) not in (int, float) or not 0 <= retry_seconds <= 2.0:
+        raise ValueError("Java decision binding retry must be finite and at most two seconds")
+    binding_path = Path(path).resolve()
+    if binding_path.name != "current.binding.json":
+        raise ValueError("Java decision binding must be current.binding.json")
+    text_path = binding_path.parent / "current.txt"
+    if (not isinstance(game, dict) or type(game.get("pid")) is not int or game["pid"] <= 0
+            or type(game.get("creation_filetime")) is not int or game["creation_filetime"] <= 0):
+        raise ValueError("Exact Game PID and integer FILETIME are required")
+    bound_game = {key: game[key] for key in ("pid", "creation_filetime")}
+    if expected is not None and not isinstance(expected, dict):
+        raise ValueError("Expected Java binding must be the normalized publisher group")
+    if identity_reader is None:
+        identity_reader = decision_publisher_api().process_identity
+    deadline = time.monotonic() + retry_seconds
+
+    def bounded_bytes(target, limit):
+        with target.open("rb") as stream:
+            raw = stream.read(limit + 1)
+        if len(raw) > limit:
+            raise ValueError("Java decision publication exceeded its bounded file size")
+        return raw
+
+    def utc_milliseconds(value):
+        if not isinstance(value, str) or "T" not in value:
+            raise ValueError("Java decision publication requires a real UTC ISO instant")
+        try:
+            instant = datetime.fromisoformat(value[:-1] + "+00:00" if value.endswith("Z") else value)
+            if instant.tzinfo is None or instant.utcoffset() != timezone.utc.utcoffset(None):
+                raise ValueError("Java decision instant must use UTC")
+            elapsed = instant - datetime(1970, 1, 1, tzinfo=timezone.utc)
+        except (ValueError, TypeError, OverflowError) as error:
+            raise ValueError("Invalid Java decision UTC instant") from error
+        return (elapsed.days * 86400 + elapsed.seconds) * 1000 + elapsed.microseconds // 1000
+
+    def retry(error):
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise error
+        time.sleep(min(.05, remaining))
+
+    while True:
+        # Only short file sharing locks qualify for a retry, never process-identity failures.
+        try:
+            manifest_raw = bounded_bytes(binding_path, 65536)
+        except PermissionError as error:
+            retry(error)
+            continue
+        manifest = json.loads(manifest_raw.decode("utf-8"))
+        if (not isinstance(manifest, dict) or manifest.get("schema") != schema
+                or manifest.get("status") != "TEXT_PUBLISHED"
+                or manifest.get("creates_desktop_window") is not False
+                or manifest.get("OBS_draw_ack") is not False
+                or type(manifest.get("publication")) is not int or manifest["publication"] <= 0
+                or any(not isinstance(manifest.get(key), str) or not manifest[key].strip()
+                       for key in ("machine_id", "session_id"))):
+            raise ValueError("Actual Java decision publication schema and identity are required")
+        utc_milliseconds(manifest.get("written_at_utc"))
+        manifest_game = manifest.get("game")
+        if not isinstance(manifest_game, dict):
+            raise ValueError("Java decision publication has no exact Game identity")
+        birth = manifest_game.get("creation_filetime")
+        if (type(manifest_game.get("pid")) is not int or manifest_game["pid"] != bound_game["pid"]
+                or not isinstance(birth, str) or not birth or not birth.isascii() or not birth.isdecimal()
+                or int(birth) != bound_game["creation_filetime"]):
+            raise ValueError("Java decision publication belongs to another Game generation")
+        declared_text = manifest.get("decision_text_file")
+        if (not isinstance(declared_text, str) or not Path(declared_text).is_absolute()
+                or Path(declared_text).resolve() != text_path):
+            raise ValueError("Java decision text must be the exact current.txt sibling")
+        declared_size = manifest.get("text_bytes")
+        digest = manifest.get("text_sha256")
+        if (type(declared_size) is not int or not 0 < declared_size <= 32768
+                or not isinstance(digest, str) or len(digest) != 64
+                or any(char not in "0123456789abcdef" for char in digest)):
+            raise ValueError("Java decision publication has invalid text size or SHA256")
+        publisher = manifest.get("publisher")
+        if (not isinstance(publisher, dict) or type(publisher.get("pid")) is not int
+                or publisher["pid"] <= 0 or not isinstance(publisher.get("executable"), str)
+                or not Path(publisher["executable"]).is_absolute()):
+            raise ValueError("Java decision publisher PID and executable are required")
+        start_ms = utc_milliseconds(publisher.get("start_instant_utc"))
+        actual = identity_reader(publisher["pid"])
+        if (not isinstance(actual, dict) or type(actual.get("pid")) is not int
+                or actual["pid"] != publisher["pid"]
+                or type(actual.get("creation_filetime")) is not int or actual["creation_filetime"] <= 0
+                or not isinstance(actual.get("executable"), str) or not Path(actual["executable"]).is_absolute()
+                or Path(actual["executable"]).name.lower() not in ("java.exe", "javaw.exe")
+                or Path(actual["executable"]).resolve() != Path(publisher["executable"]).resolve()
+                or (actual["creation_filetime"] - 116444736000000000) // 10000 != start_ms):
+            raise ValueError("Live Java publisher PID, birth or executable differs")
+        normalized = {
+            "schema": schema, "binding_path": str(binding_path), "session": str(binding_path.parent),
+            "session_id": manifest["session_id"], "machine_id": manifest["machine_id"],
+            "game": dict(bound_game),
+            "publisher": {key: actual[key] for key in ("pid", "creation_filetime", "executable")},
+            "decision_text_file": str(text_path), "publication": manifest["publication"],
+        }
+        if expected is not None:
+            if (any(expected.get(key) != value for key, value in normalized.items() if key != "publication")
+                    or type(expected.get("publication")) is not int or expected["publication"] <= 0
+                    or normalized["publication"] < expected["publication"]):
+                raise ValueError("Java decision publisher binding changed or publication regressed")
+        try:
+            raw = bounded_bytes(text_path, 32768)
+        except PermissionError as error:
+            retry(error)
+            continue
+        # Java replaces text before the manifest; a mixed pair is transient, not a new identity.
+        if len(raw) != declared_size or hashlib.sha256(raw).hexdigest() != digest:
+            retry(RuntimeError("Java decision text/manifest generation did not converge"))
+            continue
+        if not raw.decode("utf-8").startswith("智能体实时决策\n"):
+            raise ValueError("Java decision text is missing its exact generic title")
+        return normalized
+
+
+def _read_recording_decision_binding(job):
+    """Revalidate this recording's original publisher; Java publications may advance."""
+    game = {'pid': job['pid'], 'creation_filetime': job['game_creation_filetime'],
+            'hwnd': job['hwnd'], 'desktop_id': job['desktop_id']}
+    publisher = job['decision_text_publisher']
+    if publisher.get('schema') == 'xar.java-root-decision-text/v1':
+        reference = job['decision_text_publisher_receipt']
+        if (reference.get('mutable_java_binding') is not True
+                or reference.get('path') != publisher['binding_path']):
+            raise ValueError('Exact mutable Java decision binding reference required')
+        current = read_java_decision_binding(reference['path'], game=game, expected=publisher)
+        # Advance only the successful in-memory observation, never the job file or identity.
+        publisher['publication'] = current['publication']
+        return current
+    return decision_publisher_api().read_text_binding(job['decision_text_publisher_receipt'], game=game)
+
+
 def _write_new(path, value):
     with Path(path).open("x", encoding="utf-8") as stream:
         json.dump(value, stream, ensure_ascii=False, indent=2)
@@ -440,6 +577,7 @@ def launch_recording(
     seconds: int | None, *, launch_receipt: str | Path, ffprobe: str | Path,
     placement_receipt: str | Path | None = None, overlay_receipt: str | Path | None = None,
     decision_publisher_receipt: str | Path | None = None,
+    java_decision_binding: str | Path | None = None,
     start_signal: str | Path | None = None, continuous: bool = False,
     worker_handoff: Callable[[object], None] | None = None,
     custody_machine_id: str | None = None,
@@ -456,11 +594,13 @@ def launch_recording(
     display_policy = require_no_retired_decision_window()
     if overlay_receipt is not None:
         raise ValueError('Legacy blue overlay launch is retired; use a real independent decision text publisher')
-    if (placement_receipt is None) != (decision_publisher_receipt is None):
-        raise ValueError('Placement and actual text publisher receipts must be supplied together')
+    if decision_publisher_receipt is not None and java_decision_binding is not None:
+        raise ValueError('Select one Java binding or Python text publisher receipt')
+    with_decision = decision_publisher_receipt is not None or java_decision_binding is not None
+    if (placement_receipt is not None) != with_decision:
+        raise ValueError('Placement and actual text publisher binding must be supplied together')
     profile, launch = map(_read, (profile_path, launch_receipt))
     placement, overlay, publisher, publisher_pin, text = None, None, None, None, None
-    with_decision = decision_publisher_receipt is not None
     validate_profile(profile)
     if continuous != (profile.get("continuous") is True):
         raise ValueError("recording mode differs from the prepared profile")
@@ -478,9 +618,15 @@ def launch_recording(
         placement = _read(placement_receipt)
         if placement.get('status') != 'GREEN' or placement.get('pid') != pid or placement.get('hwnd') != hwnd:
             raise ValueError('Actual matching Game placement required')
-        api = decision_publisher_api(); publisher_pin = api.pin(decision_publisher_receipt)
-        publisher = api.read_text_binding(publisher_pin, game={'pid': pid, 'creation_filetime': placement['creation_filetime'],
-                    'hwnd': hwnd, 'desktop_id': placement['target_desktop_id']})
+        if java_decision_binding is not None:
+            publisher = read_java_decision_binding(java_decision_binding, game={
+                'pid': pid, 'creation_filetime': placement['creation_filetime'],
+                'hwnd': hwnd, 'desktop_id': placement['target_desktop_id']})
+            publisher_pin = {'path': publisher['binding_path'], 'mutable_java_binding': True}
+        else:
+            api = decision_publisher_api(); publisher_pin = api.pin(decision_publisher_receipt)
+            publisher = api.read_text_binding(publisher_pin, game={'pid': pid, 'creation_filetime': placement['creation_filetime'],
+                        'hwnd': hwnd, 'desktop_id': placement['target_desktop_id']})
         text = Path(publisher['decision_text_file']).resolve(strict=True)
         if not text.is_relative_to(Path(publisher['session']).resolve()) or text.stat().st_size > 32768:
             raise ValueError("decision text escaped its finite session scope")
@@ -1134,8 +1280,7 @@ def run_worker(path):
             if watch and watch.error:
                 raise RuntimeError(watch.error)
             if with_decision:
-                decision_publisher_api().read_text_binding(job['decision_text_publisher_receipt'], game={
-                    'pid': job['pid'], 'creation_filetime': job['game_creation_filetime'], 'hwnd': job['hwnd'], 'desktop_id': job['desktop_id']})
+                _read_recording_decision_binding(job)
 
         def screenshots(label, *, replace_latest=False):
             guard()
@@ -1203,7 +1348,8 @@ def run_worker(path):
             if with_decision:
                 text_settings = {"read_from_file": True, "file": job["decision_text_file"],
                     "font": {"face": "Microsoft YaHei", "size": 24, "flags": 0},
-                    "color": 0xffffff, "opacity": 100, "bk_color": 0x151515, "bk_opacity": 88,
+                    "color": 0xffffff, "opacity": 100, "bk_color": 0x000000, "bk_opacity": 60,
+                    "outline": False, "gradient": False,
                     "extents": True, "extents_cx": 760, "extents_cy": 1300, "extents_wrap": True}
                 source_settings[decision] = text_settings
             client.set_current_program_scene(scene)
