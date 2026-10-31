@@ -152,3 +152,11 @@ JSON业务相等与原件字节保管分开。实际历史回放中Map.of迭代�
 复杂候选反复失败后，保留失败并缩到真正尚未写的新方法，不重复派发已闭实现。M3完整Native host、纠正host和机器字节spy三稿都拒绝，owner接管设施；后继给完整新API与原58B、仅交未写Dispatch方法，337token候选原样通过首次1TU编译和4个新受控原码差分。这里证明的是该调度方法，不能说模型生成了整个host、独立重建了ABI，或证明全部机器码任务不行。对后继effects-only消费者给了很强的逐条source合同，也须如实记提示程度；输入21文件和输出完整class，不等于独立完成21文件的改写。仅有源码和stop时仍标source-ready，真实编验后再提升采用等级。[M3实际记录](autonomous-agent-progress/2026-10-31-resume91-m3.md)保留本轮来源。
 
 返回值没有被消费，也不代表调用没有语义。一次历史读取候选把Head版换成State版，完整缓存合同追读发现：Head的once会在当前Session验证canonical DATA pins，State只精确读取anchor/target；跨Session复用的cachedHead尚未完成前者，两者不能直接称等价。该单行候选在完整源审后拒绝，0采用/0编测，owner先前过早接受也已撤回。评估替换时同时核对实际读取、会话与缓存作用域，以及调用的副作用；不从丢弃返回值或严格编译通过推出行为等价。
+
+## 2026-10-31 16:00Z：ABI、实际 caller 与有限采用的后继经验
+
+ABI 答对不能替后继实现或独立 literal 预授正确。M0 同一原28B initializer 首 ABI 答对 full RAX/只改 AL，但两份 witness 与窄 corebook 后来仍把非零返回误作原 handle 或整1；这些 expected 整拒，owner 接管。真实 core02 原样算法经5生产源 strict、9新 Java 场、4原码场与20个双方共同观测字段差分0后，仅授该有限组件。原 GetProcessHeap raw64 写入 global 与 SETNE AL 后 raw RAX 要分别保留；Native 未观测硬件写次数、自然 caller/当前 Game heap 未知，不能由两端返回一致补这些信用。16个真实 task、source/采用/拒绝分别见执行机 `heap-global-init176/MODEL-COHORT16.json` 和 `DELIVERY176.json`；输入文件数或 token 数不是实际改写规模。
+
+消费 wrapper 是否压入返回地址，要读这次真实 caller。旧 manager 在 opaque port 前没有 push，旧 adapter 因而补；Header178 和 M5 新外层 caller 已写原 CALL 槽，沿旧模板再写会重复 callback。M1 Wait179 在发 consumer 请求前纠正 owner 任务，模型算法保留、仅 imports/public 机械修后，新 Header→Wait 严格组合 trace 首次通过；M5 也将其重复写明确记为 owner task 错后删除。分别冻结 physical VA、metadata RVA、call-site RSP 与 callee post-push RSP；不能套前一 wrapper 或因两个同值写最终内存一致就漏记额外副作用。
+
+完整源码前缀还须包含真正用到的祖接口与重载。C179 首20源仍漏 ActionPorts/Receipt/State/CompositeExecution 等6 API，首稿缺方法/错 referenceOf 重载不归为完整上下文能力失败；补齐后只模型纠正 Primitive/LifeReplay 两叶，首叶执行算法原样、后叶 owner 补 exact receipt/body/唯一成员与实际 source 角色。其余3叶 owner 实现；5叶 strict0仅授可编，不授 cold watch、Native/Game 或整5叶模型采用。两轮后不把坏 whole 稿剪成全包成功；实际 REQUEST、源审、owner 改动、必要首次行为回执继续分记。
