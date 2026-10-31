@@ -935,6 +935,24 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return readSameGameHistory(same, owner, false, ignored -> { });
     }
 
+    /** Canonical timeline children remain facts, but their ordinary parent owns cycle credit. */
+    static java.util.List<ActionReceipt> ordinaryCycleRoots(java.util.List<ActionReceipt> actions) {
+        var children=new java.util.HashSet<org.xar.ck3.control.application.action.CompositeExecution.Child>();
+        for(var action:actions) {
+            if(action.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled settled)
+                children.addAll(settled.execution().children());
+        }
+        return actions.stream().filter(action->{
+            var command=action.command();
+            if(!children.contains(new org.xar.ck3.control.application.action.CompositeExecution.Child(
+                    command.actionId(),action.bodySha256())))return true;
+            if(!org.xar.ck3.control.application.advance.AdvancePrimitives.supports(command.operation())
+                    ||!command.arguments().members().isEmpty())return true;
+            return !org.xar.ck3.control.application.advance.AdvancePrimitives.expected(command.before(),command.source(),
+                    command.operation(),command.arguments()).equals(command.expected());
+        }).toList();
+    }
+
     private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same,
             SessionIdentity owner, boolean isolatedLife, java.util.function.Consumer<CleanBatchRestart> captures) throws IOException {
         store.requireSession(same);Objects.requireNonNull(owner);
@@ -1154,7 +1172,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     &&ExactRef.fromJson(cycle.get("head")).equals(lastCycleRef),
                     "settled recovery requires the actual closed cycle frontier");
             var unsaved=new java.util.LinkedHashSet<String>();boolean dirty=false;int eligible=0;
-            for(var action:actions) {
+            for(var action:ordinaryCycleRoots(actions)) {
                 if(!action.visibleGameplay()&&!action.eligibleAdvance())continue;
                 StrictJson.require(cycleReceipts.contains(originals.receiptReferenceOf(action)),
                         "settled gameplay action lacks its already completed ordinary cycle");

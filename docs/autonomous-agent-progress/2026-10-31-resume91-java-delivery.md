@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已跟进142实际active Native帧接线 `0ef7a26bbf` 与M7 request producer五新叶 `a4503377ca`；前序136–141、timeline分类、Crown空publication合同和Sentinel IDLE0均保准确历史。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
+最新正式源码已跟进自然143的Journal时间线子回执cycle归属单叶；前序142 active Native帧 `0ef7a26bbf`、M7 request五叶 `a4503377ca` 与136–141准确历史均保留。只复用owner必要strict/direct/JUnit，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门已获runtime源审授权，按sealed现基线单hunk补同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -332,3 +332,11 @@ formal与sealed runtime前像有一处早先未同步差异：RootFacts仍保“
 后到source证实本局obs3，Assembler使Complete.originalProjection为空，141保守fallback虽源审正确却使实际新投影未接入；这是owner未覆盖v3caller的遗漏，141原8helper检查不能追认为该接线成功。142复用2prodstrict0/2.745秒，actual138 exactpacket1093B+manifest38268B+beforeDriver4008900B经真实Reader/Assembler3产生emptyFull；首fixture引用多4字段严格拒保，onlyprobe修后旧141三参entry确false（预期assert/进程0），新四参8P0F/1.321秒。非actual141失败heap/wholeRoot/activeThreadLocal getter回调，fixedD probe不入CI、未重旧绿。模型7hunks partial+owner修两真实parserAPI/移死helper，范围/原件在 `D:/ck3-state/resume91-java-delivery/CLOCK142-ADOPTION.json`。
 
 141已实际05:44:22.9506247Z LOOP/next56，后续主投影未越过的v3缺口如上；记录时runtime已S/Z准确采142并实际MB/install BEGIN，尚未授142LOOP、child或游戏日。Sentinel idle0未S采/MB，不把formal研究组件当运行装载。此次正式交付全cmd/login:false、无本岗模型/编测/重型IO/Game/S/MB写；Native可独立自然发表M0准确workflow3env修复。
+
+## 自然143时间线子回执cycle归属
+
+单Journal只最终2437B两hunk：canonical CompositeSettled.execution.children精确Child(actionId,bodySHA)关系，加AdvancePrimitives.supports/emptyargs/expected(before,source,operation,args)全等，才不再要求时间线子回执另有ordinary cycle。只改冷恢复最后unsaved/dirty/eligible投影；返回全部actions/history，前all-settled UNKNOWN/owner/source及实际SETTLE回放/count、其他worldwrite子动作原cycle/dirty要求均保。没有删除子history或假造cyclecredit/新平台；formal整叶ignore-space-at-eol与sealed候选同，0writer语义改。
+
+模型真实42,310in/640out、stop9.602秒/TTFT5.660但只比ID漏body，整hunk0采用，owner重写；owner首1982B泛排所有compositechild被runtime拒、未采用。最终scope只timeline，复用singleprodstrict0/2.118秒、新4scopechecks0/.839秒（worldwrite child留root、错expected、精确timeline关联等），旧广版本7check仅旧版结果、不能合11或授final7重绿。实际332只是固定D旧NoEffect DATA，软件Applied parent/child为结构验证，无fullcold/livechild/Game/新日/SAVE，未将probe带CI。
+
+首旧版本严格0后probe用错AckReceived四参而编红，控制台GBK二次错误原件保；初prod/test05:54:41.548–45.445与142实际安装重叠，HOLD到达在Java END之后，如实记录、不称无重叠。142真实LOOP释放后才修fixture/跑旧7；scope返工后最终strict与4新检查另列，未重复旧绿。runtime已源审/SZ准确采，打算自然143增量但此处未收到143实际构建/加载，正式发表不门控主修。证据 `D:/ck3-state/resume91-java-delivery/TIMELINE-COLD143-ADOPTION.json`。
