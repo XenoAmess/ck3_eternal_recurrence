@@ -1075,6 +1075,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
     static Optional<ActionReceipt> pendingCancelledLifeCycle(java.util.List<ActionReceipt> actions, ExactRef pending,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
         if (actions.isEmpty() || actions.stream().anyMatch(action -> !action.settled())) return Optional.empty();
+        return settledCancelledLifeCycle(actions, pending, originals);
+    }
+
+    /** Historical cycle proof belongs to its exact settled parent and children, not unrelated later actions. */
+    private static Optional<ActionReceipt> settledCancelledLifeCycle(java.util.List<ActionReceipt> actions, ExactRef pending,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
         var actual = originals.loadReceipt(pending);
         if (!actions.contains(actual) || actual.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED
                 || actual.visibleGameplay() || actual.eligibleAdvance()
@@ -1091,6 +1097,39 @@ public final class ContinuityBatchJournal implements BatchJournal {
         org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireCancelledInitialization(
                 actual.command(), settled.execution(), control.observation(), children);
         return Optional.of(actual);
+    }
+
+    /** Reads a real zero-credit cancellation cycle completed after its original interrupted batch. */
+    static boolean historicalCancelledLifeCycle(ContinuityState before, ContinuityState after,
+            com.fasterxml.jackson.databind.node.ObjectNode details, String batch, SessionIdentity owner,
+            java.util.List<ActionReceipt> actions,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        String operation = StrictJson.text(details.get("operation"));
+        if (batch == null || before.status() != ContinuityState.Status.REPAIR_REQUIRED
+                || !("RETAIN".equals(operation) || "SETTLE".equals(operation))) return false;
+        var previous = before.toJson(); var current = after.toJson();
+        var boundary = previous.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        if (!boundary.equals(current.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD))
+                || !JournalKind.BATCH_INTERRUPTED.name().equals(boundary.path("boundary").asText())
+                || !batch.equals(boundary.path("batch_id").asText())
+                || !OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
+                || !OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)) return false;
+        var receiptRef = ExactRef.fromJson(details.get("receipt_ref"));
+        var actual = settledCancelledLifeCycle(actions, receiptRef, originals);
+        if (actual.isEmpty() || actual.orElseThrow().sequence() > before.sequence()) return false;
+        var oldCycle = previous.path(WriterContracts.ORDINARY_CYCLE_FIELD);
+        var newCycle = current.path(WriterContracts.ORDINARY_CYCLE_FIELD);
+        if (!oldCycle.get("completed_cycles").equals(newCycle.get("completed_cycles"))) return false;
+        if ("RETAIN".equals(operation)) {
+            return after.status() == ContinuityState.Status.REPAIR_REQUIRED
+                    && oldCycle.get("pending_receipt").isNull()
+                    && receiptRef.equals(ExactRef.fromJson(newCycle.get("pending_receipt")))
+                    && oldCycle.get("head").equals(newCycle.get("head"));
+        }
+        return after.status() == ContinuityState.Status.RUNNING
+                && receiptRef.equals(ExactRef.fromJson(oldCycle.get("pending_receipt")))
+                && newCycle.get("pending_receipt").isNull()
+                && "CONTROL_ONLY".equals(details.path("cycle_record").path("classification").asText());
     }
 
     private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same,
@@ -1280,10 +1319,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         continue;
                     }
                     var receiptRef=ExactRef.fromJson(details.get("receipt_ref"));
-                    boolean retainedControl = pendingControl.isPresent() && "RETAIN".equals(operation)
-                            && receiptRef.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
-                            && edge.after().status() == ContinuityState.Status.REPAIR_REQUIRED;
-                    StrictJson.require((openBatch!=null || retainedControl)
+                    boolean recoveredControl = openBatch == null && historicalCancelledLifeCycle(
+                            edge.before(), edge.after(), details, used.isEmpty() ? null : used.getLast(), owner, actions, originals);
+                    StrictJson.require((openBatch!=null || recoveredControl)
                             && OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner),
                             "settled cycle crossed its real active batch or original retained control");
                     if("RETAIN".equals(operation)) {
