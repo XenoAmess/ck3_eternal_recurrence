@@ -1,0 +1,45 @@
+{
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CapacityIndexApi179.java",
+      "kind": "main",
+      "bytes": 195,
+      "sha256": "9ff656ac033b3e8121fcf5824f2155d5b29bc675db04b775fa7af083ae3fab24",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "b4a400c257fe254d19bff5ec81888c85a93c834a4e753f602779d5e26eff529f",
+      "git_lf_bytes": 189
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CapacityIndex179.java",
+      "kind": "main",
+      "bytes": 659,
+      "sha256": "afeab55f1abf87b1db2749b442dfa3f8fde8d42734a43751900cd78f415df9c1",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "912ea33a12f1c00c3def9cce27d948797840b2e931c13596e7a71e848663fcf6",
+      "git_lf_bytes": 658
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CapacityIndexCases179.java",
+      "kind": "test",
+      "bytes": 1295,
+      "sha256": "5fdde03de6842650c74d677c128f55ef3a1a8e9353af6a90c2a23d36e6fddde5",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "5fdde03de6842650c74d677c128f55ef3a1a8e9353af6a90c2a23d36e6fddde5",
+      "git_lf_bytes": 1295
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CapacityIndexValidation179.java",
+      "kind": "test",
+      "bytes": 676,
+      "sha256": "6b041876f38b041f92e940d1b866f79af6227c589ac755421d7e12879d775823",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "6b041876f38b041f92e940d1b866f79af6227c589ac755421d7e12879d775823",
+      "git_lf_bytes": 676
+    }
+  ],
+  "existing_formal_dependencies": [],
+  "missing_compile_dependencies": [],
+  "manual_main": "org.xar.ck3.research.m3.CapacityIndexValidation179",
+  "POM_CI_binary_classroot_changes": false,
+  "hash_scope": "sha256/bytes preserve original physical first-compile inputs; git_lf_* separately identify published line-ending/line-whitespace normalization. Java tokens and expected data are unchanged."
+}

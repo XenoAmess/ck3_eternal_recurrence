@@ -1,0 +1,125 @@
+{
+  "schema": "m3.capacity-index179-first-software/v1",
+  "status": "FIRST_STRICT_AND12_CASES_PASS",
+  "sources": [
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndexApi179.java",
+      "bytes": 195,
+      "sha256": "9ff656ac033b3e8121fcf5824f2155d5b29bc675db04b775fa7af083ae3fab24"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndex179.java",
+      "bytes": 659,
+      "sha256": "afeab55f1abf87b1db2749b442dfa3f8fde8d42734a43751900cd78f415df9c1"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndexCases179.java",
+      "bytes": 1295,
+      "sha256": "5fdde03de6842650c74d677c128f55ef3a1a8e9353af6a90c2a23d36e6fddde5"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndexValidation179.java",
+      "bytes": 676,
+      "sha256": "6b041876f38b041f92e940d1b866f79af6227c589ac755421d7e12879d775823"
+    }
+  ],
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "command": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-Xmx192m",
+        "-J-XX:ActiveProcessorCount=1",
+        "--release",
+        "21",
+        "-Xlint:all",
+        "-Werror",
+        "-implicit:none",
+        "-encoding",
+        "UTF-8",
+        "-classpath",
+        "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\build\\empty",
+        "-sourcepath",
+        "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\build\\empty",
+        "-d",
+        "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\build\\classes",
+        "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndexApi179.java",
+        "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndex179.java",
+        "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndexCases179.java",
+        "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\CapacityIndexValidation179.java"
+      ],
+      "start_utc": "2026-10-31T18:42:24.414030+00:00",
+      "end_utc": "2026-10-31T18:42:25.019287+00:00",
+      "process_seconds": 0.6052386001683772,
+      "exit_code": 0
+    },
+    {
+      "phase": "RUN",
+      "command": [
+        "C:/jdk-21/bin/java.exe",
+        "-Xmx192m",
+        "-XX:ActiveProcessorCount=1",
+        "-cp",
+        "D:\\ck3-state\\resume91-m3-native\\capacity-index179\\build\\classes",
+        "org.xar.ck3.research.m3.CapacityIndexValidation179"
+      ],
+      "start_utc": "2026-10-31T18:42:25.019993+00:00",
+      "end_utc": "2026-10-31T18:42:25.114237+00:00",
+      "process_seconds": 0.09423170005902648,
+      "exit_code": 0
+    }
+  ],
+  "source_preserved": true,
+  "new_explicit_source_files": 4,
+  "binary_dependency_classpaths": 0,
+  "implicit_compile": false,
+  "new_cases": 12,
+  "semantic_checks": 12,
+  "normal_native_code_bytes": 112,
+  "actual_PE_reads": 128,
+  "beyond_normal_not_adopted": 16,
+  "PDATA_exact_entry": false,
+  "header_provider_query_Game": 0,
+  "old_green_rerun": 0,
+  "Native_execution": 0,
+  "Game_actions": 0,
+  "PS_WSH": false,
+  "shell": "cmd.exe/login:false -> directPython -> directJDK21",
+  "model_core": "code statements unchanged; owner removed false/repetitive comments",
+  "owner_literal_book": "originalASM-derived after target source review; not blind independent, not target-run generated",
+  "raw_RAX_flags_ABI_Native_Game_proof": false,
+  "package_number": 42,
+  "actual_original": "capacity-index179/ACTUAL179.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\capacity-index179",
+  "actual_evidence_copied_to_Git": false,
+  "real_caller": "held3790510@37905B5:ECX=observed scalarresultbits,EDX=0",
+  "source_range": [
+    "86E160",
+    "86E1D0(exclusive)"
+  ],
+  "RF_unwind_claim": false,
+  "new_source_files": 4,
+  "existing_source_dependencies": 0,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CapacityIndexApi179.java": "9ff656ac033b3e8121fcf5824f2155d5b29bc675db04b775fa7af083ae3fab24",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CapacityIndex179.java": "afeab55f1abf87b1db2749b442dfa3f8fde8d42734a43751900cd78f415df9c1",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CapacityIndexCases179.java": "5fdde03de6842650c74d677c128f55ef3a1a8e9353af6a90c2a23d36e6fddde5",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CapacityIndexValidation179.java": "6b041876f38b041f92e940d1b866f79af6227c589ac755421d7e12879d775823"
+  },
+  "model_logical_requests": 3,
+  "actual_model_POSTs": 4,
+  "local_phase_peak": 2,
+  "model_finishes": {
+    "stop": 3,
+    "transient_reset_partial_discarded": 1
+  },
+  "model_code_statement_edits": 0,
+  "model_whole_raw_source_adoption": false,
+  "model_algorithm_adopted": true,
+  "owner_core_change": "comments only; no code statement changed",
+  "book_candidate_whole_adoption": 0,
+  "book_owner": "same owner after target source review; ASM-derived literals, not blind independent",
+  "scope": "pure two-int normal result with exact 32bit wrap before signed clamp; no CPUflags/raw64ABI/unwind/EH/originalNative/Game proof",
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}

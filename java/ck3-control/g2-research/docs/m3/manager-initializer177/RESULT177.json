@@ -1,0 +1,89 @@
+{
+  "schema": "m3.manager-initializer177-first-software/v1",
+  "package_number": 41,
+  "status": "FIRST_SIX_SOURCE_CLOSURE_AND_THREE_INDEPENDENT_SCENES_PASS",
+  "actual_original": "verification-first177/ACTUAL177.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\manager-initializer177",
+  "actual_evidence_copied_to_Git": false,
+  "original_normal_range": [
+    "3763590",
+    "3763727"
+  ],
+  "code_bytes": 407,
+  "actual_RF_count": 6,
+  "not_single_RF": true,
+  "reused_cache_bytes": 250,
+  "new_PE_bytes": 237,
+  "new_code_bytes": 157,
+  "new_UW_bytes": 80,
+  "header_provider_query_hash_Game": 0,
+  "first_new_Java_sources": 4,
+  "existing_formal_source_dependencies": 2,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/manager177/ManagerInitializer177Api.java": "2b95150a97c989ca3cc61712fae810a1157b22a47e9e052bce818de60921169f",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/manager177/ManagerInitializer3763590.java": "d0f07d8e2dc791ee405d27fb94ab454abe121cde7f2560657e130159ce0b80d8",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/manager177/ManagerInitializerWitnessHost177.java": "4442e01f3aa33c8d1f9aeee8518aef81c8a6358aeb69706c7e20eb6002fb06a1",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/manager177/ManagerInitializerWitnessBook177.java": "cd558dcd2cb284e6d23b8aed8f818fdcaaed3ec57eaf061d24dbddf676500872"
+  },
+  "existing_dependency_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539"
+  },
+  "stages": [
+    {
+      "name": "JAVAC",
+      "actual_begin": "2026-10-31T18:25:01.205736+00:00",
+      "actual_end": "2026-10-31T18:25:01.982161+00:00",
+      "seconds": 0.7764308000914752,
+      "exit_code": 0,
+      "argv": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-Xmx192m",
+        "-J-XX:ActiveProcessorCount=1",
+        "@D:\\ck3-state\\resume91-m3-native\\manager-initializer177\\verification-first177\\JAVAC.args"
+      ]
+    },
+    {
+      "name": "RUN",
+      "actual_begin": "2026-10-31T18:25:01.983119+00:00",
+      "actual_end": "2026-10-31T18:25:02.872120+00:00",
+      "seconds": 0.8890057997778058,
+      "exit_code": 0,
+      "argv": [
+        "C:/jdk-21/bin/java.exe",
+        "-Xmx192m",
+        "-XX:ActiveProcessorCount=1",
+        "@D:\\ck3-state\\resume91-m3-native\\manager-initializer177\\verification-first177\\RUN.args"
+      ]
+    }
+  ],
+  "lint_actual": "-Xlint:all,-try -Werror -implicit:none -proc:none",
+  "source_bytes_unchanged": true,
+  "new_scenes": 3,
+  "source_derived_ordered_steps": 82,
+  "scene_steps": [
+    1,
+    31,
+    50
+  ],
+  "ports_per_scene": [
+    0,
+    7,
+    12
+  ],
+  "book_expected_authority": "Original six complete normal RFs and frozen API, independent owner did not read target or host/model candidates/results",
+  "model_logical_calls": 6,
+  "actual_model_POSTs": 6,
+  "whole_model_candidates_adopted": 0,
+  "model_owner_errata": "Host instructions omitted exact target entry signature and used Book177 shortname; preserve owner-input responsibility separately from other concrete bogusJava/source failures. Actual T.3 request trial confounded with diagnostics; no backend/causality claim.",
+  "scope": "Only normalbusinessfield/context/global effects and nine typed opaque call observations; no natural allocator/map/init semantics",
+  "coverage_limitations": [
+    "reserve-nonpositivecount/no-copy branch notcovered after latestscene2choice",
+    "sourcecallee-save/prologue/tempstack/volatileCPU/rawRAX/flags/EH excluded",
+    "threadconcurrentinit/opaqueinternals/Native/currentGame/EF0 unproved"
+  ],
+  "old_green_rerun": 0,
+  "Native_Game_actions": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
