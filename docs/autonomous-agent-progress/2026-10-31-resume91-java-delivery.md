@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式Journal167单叶7c4653fdf8与M7 dispatch167四新叶38d3d7c361已在master。Main167实际11:58:11.559940500Z LOOP/next61，11:59:30 RealmRefresh→Published，12:00:36.0456778Z普通qwen.11 HTTP BEGIN/565613B；本页此快照尚未收到该请求END，不授新动作或日期。历史Head1872122e14、Held166两叶2ede962a17与IAT166四叶f1a275bd4a保留既有有限验证边界，S JFR54→15与formal独立9次分记。原ARM/CANCEL父子不重发，新日0/SAVE0；本岗不写S/MB/Game/账本，当前无编测或模型HTTP在途。
+最新M7 dispatch167四新叶38d3d7c361、Journal167单叶7c4653fdf8已正常发表；本次精确采用168 sole-ARM零写入拒绝四prod11219B补丁，复用strict0/2.527秒与十DATA检查0/1.078秒，不携固定D probe。Main167实际LOOP/next61后12:08:28Z END4/708.689秒，canonical413、父412Unknown、child411零写入拒绝，next62/新日0/SAVE0；168源已S/Z采，尚未获MB或完整恢复回执。原ARM/CANCEL父子不重发；历史Head优化的S JFR54→15与formal独立9次继续分记，不授Game性能。本岗不写S/MB/Game/账本，当前无编测或模型HTTP在途。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -589,3 +589,10 @@ M7 IAT166四新叶正常FFf1a275bd4a，现g2-research2main2test/0POM。独立读
 Journal167精确5220B单叶正常FF7c4653fdf8，保当前pending入口global all-current-actions-settled，历史cancelled-Life proof只验证exact parent与完整canonicalchildren，不受以后无关Unknown干扰。实际398RETAIN/399CONTROL_ONLY SETTLE仅同一interrupted batch/session/boundary、原pending reference、零completedcycles与before REPAIR/after RUNNING组合走已有完整reader；原fresh SEM/count、唯一pending、world/unknown外层权限保。model整实现拒绝，owner接管；复用单prod strict0/2.503797秒和actualpair十DATA断言0/1.268秒，首fixture declared16MiB预算错误只修probe，不重prod。没有携固定D probe进CI，也不把该局部probe当完整history恢复。Main后来真实11:58:11.559940500Z LOOP/next61，解除安装HOLD；RealmRefresh与普通HTTP BEGIN如顶部快照，后态未在本页推断。
 
 M7 dispatch167四新叶正常FF38d3d7c361，现g2-research2main2test/0POM。独立核对28B静态slot/load-config与14B body/RF原件：43DBBA8 QWORD存VA144267630，指向FF E0两字节JMP RAX，LoadConfig GuardCFDispatchFunctionPointer为VA1443DBBA8；slot不是指令本体或KERNEL32 import。adapter接已有Gate和具名critical-section decoder，保完整RAX target、原knownRCX与caller实际消费EAX32，未扩全ABI。两prod首完整model输出保；两Test部分采用，owner补五imports、三return-history写、poison、negative/zero、CS地址/trace断言，未洗为机械改。六POST全stop/峰4，56950输入+9103输出token，cached未报。复用首次2prod strict0/0.6587325秒、2Test strict0/0.8221149秒、首4JUnit4P0F0skip/0.720062秒（八finitecases，单JVM128MiB/1CPU），0依赖重编/旧绿重跑。writer仅两prod范围注释、单test XOR-before-ROR注释及空白纠正，剥注释执行tokens全同；四unique新文件同步Z，不改S/MB。静态PE与软件supplied callbacks不授loaded CFG/IAT行为、其它volatile/fullABI、真实Win32/锁、heap/currentU/drain/Game/Save或hostedCI。
+
+
+## 167实际终态与168 sole-ARM零写入拒绝
+
+Main后到167真实12:08:28Z END4/708.689秒，canonical413父412Unknown+child411原ARM的BEFORE_WRITE/0bytes拒绝，next62、日期不增。前段普通HTTP仅BEGIN是明确时点快照，不是该轮完整结果。168四prod精确11219B补丁SHA bb6e9624b33461c5e3228eec27edbe53fb2b1c33df900a256879ae9a7843e7e8按4Checking/0Skipped正常采用，与四candidate全文归一同。Life.observe及live失败仅保原soleARM拒绝，cleanup在全部真实零写入时不读观察、不追加pause/cancel/resume；source-owned proof完整核原plan/guard、singlecanonicalchild ID/body/bindings/preparedrequest/requestID/BEFORE_WRITE/0bytes/noACK。Primitive archive仅扩ARM零写入，Root cold replay读取完整canonicalchildren并走同source合同与parent-awareEffects，parentless generic拒绝、UNKNOWN与其它原children合同保。
+
+首model仅错误文字建议拒绝；第二model observe和primitive两个exact edits原样采用，虚构helper、空children coldReplay及no-opEffects拒绝，owner补完整source/livecatch/cleanup/Effects/RootCold。四源strict0/2.5270943秒复用，首probe Optional构造错误编红保留，仅fixture改后编译0/1.5076473秒、十DATA检查0/1.0784489秒：actual411/412 observe→source-ownedCompositeRejected→parent-awareEffects→codec与cleanup noIO trap、Unknown/错body/handler/extraChild/parentless负控。未跑完整Root FrameLoader/Session/物理commit，Controller/Journal后继消费缺口已交Main，未把四叶局部绿称wholeReady；fixedD probe不进CI、不重绿，本岗无S/MB/Game操作。
