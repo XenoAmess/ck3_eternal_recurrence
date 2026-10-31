@@ -1014,5 +1014,503 @@
     "base_commit": "f45689f8465491ca5a896846025e40456aebcd8f",
     "187_required": false,
     "boundary": "No189formalcommit/push claim is inferred from D delivery or firstONE. Consult Java solewriter later publication receipt."
-  }
+  },
+  "evidence_after_189_cutoff": {
+    "snapshot_at_utc": "2026-10-31T19:46:51.132652+00:00",
+    "maturity_cutoff_utc": "2026-10-31T19:19:56Z",
+    "boundary": "Append-only datedevidence supplement. Alltop-levelsnapshot fields and18:27:17cutoff remain exacthistoricalbase. This supplement admits only19219:16:06protocol and19119:19:56normalizedONE evidence, notliveactive/HTTP/resource/Game status.",
+    "duplicate_research_correction": {
+      "classification": "190 duplicate algorithm work, not new native mechanism, not formallypublished. Actualcost/evidence preserved.",
+      "existing_producers": [
+        {
+          "FQN": "org.xar.ck3.research.m1.GovernmentThreadNotify181",
+          "commit": "f9756f498cb3bb5fc9fedf805401c5e42122dc18",
+          "source_extent": "4223AEC..4223B2D65B"
+        },
+        {
+          "FQN": "org.xar.ck3.research.m1.GovernmentThreadWait179",
+          "commit": "3b463c95bb1c92a85ef34686c9e2ff9662a2d7c2",
+          "source_extent": "4223B30..4223B9399B"
+        }
+      ],
+      "duplicate_190_result": {
+        "path": "D:/ck3-state/resume91-m5-native/tail-4223aec-source190/RESULT13.json",
+        "bytes": 5720,
+        "sha256": "c8ba995e6bdb53c4b9bc925a4b3d80ff5124329bf2eb7f6a5b2d810180ff7b73"
+      },
+      "duplicate_190_actual": {
+        "path": "D:/ck3-state/resume91-m5-native/tail-4223aec-source190/ACTUAL12.json",
+        "bytes": 2568,
+        "sha256": "e9362e2407bd7d64ee5b6be7f80ce981014e70016a155b785d182c5311f986d5"
+      },
+      "actual_old_190_phases": [
+        {
+          "phase": "PROD01",
+          "begin_utc": "2026-10-31T18:49:28Z",
+          "end_utc": "2026-10-31T18:49:29Z",
+          "exit_code": 0,
+          "elapsed_seconds": 0.3868045,
+          "tool_chunk_id": "c28fb4"
+        },
+        {
+          "phase": "TEST01",
+          "begin_utc": "2026-10-31T18:49:36Z",
+          "end_utc": "2026-10-31T18:49:37Z",
+          "exit_code": 0,
+          "elapsed_seconds": 0.5867685,
+          "tool_chunk_id": "3955d8"
+        },
+        {
+          "phase": "RUN01",
+          "begin_utc": "2026-10-31T18:49:43Z",
+          "end_utc": "2026-10-31T18:49:43Z",
+          "exit_code": 0,
+          "elapsed_seconds": 0.0852031,
+          "tool_chunk_id": "ea79fa",
+          "actual_stdout": "cases=2 forwarding=5"
+        }
+      ],
+      "historical_counts": {
+        "main_compiled": 2,
+        "manual_compiled": 3,
+        "raw_branches_run": 2,
+        "foreign_forward_contracts": 5
+      },
+      "owner_error": "Owner checked cache bysamefilename but failed formalcontent/RVA/global cross-check before190implementation.65B4223AEC alreadyM1Notify181;99B4223B30 alreadyM1Wait179. Ownerduplication cost, notlocalmodelcapability failure/newmechanism credit.",
+      "raw_192_algorithm_request": "Duplicate99BWait179 request stopped beforemodelPOST/schema; new192actualPOSTs implement onlygenuinely missing185-to-M1 protocol bridge.",
+      "old_191_ready03": "Initial190-dependent R1/READY03 grant withdrawn with0START/0compile; originalR1/args/READY retained. NecessarynormalizedR2 onlychanges192bind;191firstactual is normalized19:19:39–56.",
+      "evidence_basis": "190 raw65Bproducer hadbeenmistakenlyredone beforeM1sourcequeryreply. Owner failedformalcontentRVA/global check aftersamefilenamecachemiss;190actual2+3+first2/5 retainedbutduplicateproducerwillNOTbepublishedorcreditednewnative. 192raw99Brequest wasstoppedbeforePOST/schema afterM1reuseconfirmed. Existing115PEcapture/216heldRF readretainedascost, notnewmechanismcredit. New192component isrealunwrittenprotocolboundary.",
+      "no_190_source_or_class_dependency_in_formal192191": true
+    },
+    "mature_results": [
+      {
+        "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/RESULT11.json",
+        "bytes": 5655,
+        "sha256": "7f8bfe8bd54fe300ef4921fb158735f494ee60e07aeea12827da0e9bfd06065b"
+      },
+      {
+        "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/RESULT07.json",
+        "bytes": 4305,
+        "sha256": "5abf5374f87df61bd5b0a1d26b064c4ce2bdfd129c8b999bf435f43ca8e9dfb6"
+      }
+    ],
+    "mature_result_details": [
+      {
+        "package": "192",
+        "result": {
+          "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/RESULT11.json",
+          "bytes": 5655,
+          "sha256": "7f8bfe8bd54fe300ef4921fb158735f494ee60e07aeea12827da0e9bfd06065b"
+        },
+        "actual": {
+          "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/ACTUAL10.json",
+          "bytes": 2328,
+          "sha256": "151f6ae2dbde7c9ad2a545509a136a37d2e247ec91f78077be106cb2c02dacda"
+        },
+        "stages": [
+          {
+            "phase": "PROD01serialRED",
+            "begin_utc": "2026-10-31T19:07:53Z",
+            "end_utc": "2026-10-31T19:07:54Z",
+            "exit_code": 1,
+            "elapsed_seconds": 0.5983101
+          },
+          {
+            "phase": "PROD02twoTransientRetry",
+            "begin_utc": "2026-10-31T19:12:45Z",
+            "end_utc": "2026-10-31T19:12:46Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.481008
+          },
+          {
+            "phase": "TEST01",
+            "begin_utc": "2026-10-31T19:15:58Z",
+            "end_utc": "2026-10-31T19:15:59Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.7191777,
+            "tool_chunk_id": "d8bd53"
+          },
+          {
+            "phase": "RUN01",
+            "begin_utc": "2026-10-31T19:16:06Z",
+            "end_utc": "2026-10-31T19:16:06Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.103824,
+            "tool_chunk_id": "c3f7b0",
+            "actual_stdout": "cases=3 forwarding=7 frameGuards=3"
+          }
+        ],
+        "newmain": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentCrtNative192Calls.java",
+            "bytes": 9848,
+            "sha256": "e6431bbc57bd96811b3af3e2525ea4c80560769673f0ffc54cedebee92fd9ec0"
+          }
+        ],
+        "newmanual": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/witness-api/org/xar/ck3/research/m5/GovernmentCrtNative192WitnessApi.java",
+            "bytes": 982,
+            "sha256": "4aa762cf75851ab44c4f0f747699fb2d94313a55d50a18aa32c58f6590e5b281"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/literal-owner/book/org/xar/ck3/research/m5/GovernmentCrtNative192Fixtures.java",
+            "bytes": 7117,
+            "sha256": "c33d3e965f7c1cac7201daf84182b2ae991e1bb94026daf681e9865c865f0041"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/host-owner/org/xar/ck3/research/m5/GovernmentCrtNative192Probe.java",
+            "bytes": 11217,
+            "sha256": "e0a8fbbad275b682b3ab766d521654a44af95d1da8a3844f10b1f6864df707d1"
+          }
+        ],
+        "adoption": {
+          "producer": "ModeluniqueR2 protocolbody + owner2transientmodifiers afteractualJDK21serialWerror; preservedrawR2/PROD01; API/algorithm/Bookunchanged/noR3",
+          "Book": "Two modelwholecandidates rejected, entirelyindependentowner3protocolcases,0targetJava read/run",
+          "host": "NewrunWitness method R1raw1415B/owner0, ownerfoundation/byteMemory/foreign7/frameguards3 mechanicalreuse; not modelwholehost"
+        },
+        "scope_limit": "Softwareownednormalport protocol only; no physicalIAT/WindowsABI/currentloaded/EH/privateissuer/Native/DLL/Game/S/MB/G2completecredit. OldM1subjecthosts/190producer/189wholecases0rerun. Whole191normalizedcase stillsourceREADY atthe19:16:06cutoff.",
+        "new_component": "Only new185Calls<->M1Iat protocol bridge. ExactNotifyA7F/AEC andWaitAA9/B30, oldM1 rawalgorithms never copied/recompiled. M1tailIat oldport returnsV thenmodelsRET; invocation-owned privateTerminalTail carries new185wholeNormalReturn and is caughtonlyinadapter, avoids duplicated/syntheticRETread. Memorybase185 liveview9primitives/noqualificationread/copy/forcedcast; unusedbyteAtomic explicitunsupported.",
+        "first_scope": {
+          "protocol_cases": 3,
+          "notify": 2,
+          "wait": 1,
+          "foreign_forward_contracts": 7,
+          "corrupted_normalframe_guards": 3,
+          "positive_script_events": {
+            "IATcall": 3,
+            "tail": 3,
+            "GS": 0,
+            "loop": 0
+          },
+          "checks": [
+            "Notify actualTailimage differsfrombindimage but fullIATmapping/wholeNormalReturn identity survives",
+            "Notify externalfullReturn hasarbitraryNV/RIP/SP, rawfunctionhasnolocalRET; callerRETbyte reads forbidden",
+            "Wait low32ECX zero-extension/localRBX/preSP/2CALLslot writes/savedRBXfreshPOP/globalRCXfreshload/IATfreshresolvedtarget allchecked",
+            "Wait afterfullterminalresult exactRIP/SP/NV required before returningfullV; eachone independentlycorrupt rejected afterallscript events consumed",
+            "Allcases completefullV/XMM/fullNV/preSP/targets/beforeMap/finalMap equality, CALLslotbytewrites8perevent; extra/missingbytes rejected",
+            "Sevenforeignkind/site/target Call/Tail+GS sameobjectforward, memoryuntouched"
+          ]
+        },
+        "reused_formal_producers": [
+          {
+            "FQN": "org.xar.ck3.research.m1.GovernmentThreadNotify181",
+            "commit": "f9756f498cb3bb5fc9fedf805401c5e42122dc18",
+            "source_extent": "4223AEC..4223B2D65B"
+          },
+          {
+            "FQN": "org.xar.ck3.research.m1.GovernmentThreadWait179",
+            "commit": "3b463c95bb1c92a85ef34686c9e2ff9662a2d7c2",
+            "source_extent": "4223B30..4223B9399B"
+          }
+        ],
+        "serial_RED": {
+          "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/PROD-ACTUAL05-RED.json",
+          "bytes": 3134,
+          "sha256": "ec5ec6f5a55c95d39ff8dbfa150ddbffcc70a2f1ad4f25a1337c2fea85be1571"
+        },
+        "owner_two_transient_patch": {
+          "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/OWNER-SERIAL05.patch",
+          "bytes": 833,
+          "sha256": "ee4fe240bec6f6273473b6e2ab35b2508a5134d7460559078f291710e6aaf32f"
+        },
+        "necessary_retry": {
+          "path": "D:/ck3-state/resume91-m5-native/wait-4223b30-source192/PROD-ACTUAL07.json",
+          "bytes": 1046,
+          "sha256": "58de886463afe6a3d324798816166289d455c30480e4e98e1ca1fb4add86eb7c"
+        }
+      },
+      {
+        "package": "191",
+        "result": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/RESULT07.json",
+          "bytes": 4305,
+          "sha256": "5abf5374f87df61bd5b0a1d26b064c4ce2bdfd129c8b999bf435f43ca8e9dfb6"
+        },
+        "actual": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/ACTUAL06.json",
+          "bytes": 2657,
+          "sha256": "042e1329ae66faf5da04ba2d8ff63bfabb860cedaa52e43fb19b4a644f32417a"
+        },
+        "stages": [
+          {
+            "phase": "PROD01",
+            "begin_utc": "2026-10-31T19:19:39Z",
+            "end_utc": "2026-10-31T19:19:40Z",
+            "exit_code": 0,
+            "elapsed_seconds": 0.6321154,
+            "tool_chunk_id": "b90d27"
+          },
+          {
+            "phase": "TEST01",
+            "begin_utc": "2026-10-31T19:19:47Z",
+            "end_utc": "2026-10-31T19:19:48Z",
+            "exit_code": 0,
+            "elapsed_seconds": 1.2309234,
+            "tool_chunk_id": "3286be"
+          },
+          {
+            "phase": "RUN01",
+            "begin_utc": "2026-10-31T19:19:55Z",
+            "end_utc": "2026-10-31T19:19:56Z",
+            "exit_code": 0,
+            "elapsed_seconds": 1.2265671,
+            "tool_chunk_id": "e4c912",
+            "actual_stdout": "GovernmentWholeCrtTail191Probe:1/1 whole-crt-tail only"
+          }
+        ],
+        "newmain": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/consumer-owner/candidate/org/xar/ck3/research/m5/GovernmentWholeCrtTail191.java",
+            "bytes": 1708,
+            "sha256": "0640f791baa776c4dc38c33629d51e5c7d7f50c332121505eb67ec8c7cb45703"
+          }
+        ],
+        "newmanual": [
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/literal-owner/book/org/xar/ck3/research/m5/GovernmentWholeCrtTail191Fixtures.java",
+            "bytes": 5502,
+            "sha256": "63059693251488d2c838a83102e94152cb0cc186de160cafd899c77c2bd2e69f"
+          },
+          {
+            "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/probe-reuse/org/xar/ck3/research/m5/GovernmentWholeCrtTail191Probe.java",
+            "bytes": 24703,
+            "sha256": "86f32ef338f65fc9bb7c6963216018de52bbebff39e3ef1cfc4e5827dbc657ad"
+          }
+        ],
+        "adoption": {
+          "thinconsumer": "InitialR1raw190variant preservedbut0compiled; necessaryR2normalized192dependency fullsource rawmodel owner0, same12params andResult; no additionalalgorithmcopy.",
+          "Book": "R1rejected; R2thinBookdelta adopted, owneronekindaccessor correction causedbyownerwrongR2hint (targetKind->kind),0independentmodelAPIfailureforhint;frozeninput/base189Book unchanged.",
+          "host": "Mechanicalcorrect189runnerreuse, onlysubject/Fixture/Probe/outputname changed, same189schema/Memory/Ports, noextraWORD/oracle edits."
+        },
+        "scope_limit": "ONE newownednormal softwarewholecomposition throughalreadyformalM1source,0old189/190/M1subjectcase replay orsource recompile. No physicalOS/privateABI/currentloaded/Native/DLL/Game/S/MB/G2completioncredit. 190duplicatefirstactualevidence retained butwillnotbepublishedorclaimednewnative.",
+        "actual_composition": "WholeCrtTail191 -> Native192Calls -> WholeCrt189 -> M1Registry188/M4Callee186/Boundary185/WholeToken184; footer185DIRECTA7F/AEC executes alreadyformalM1Notify181 viaTerminalTail protocol, currentIATtargetresolve/currentTailimage. No190duplicateproducer/source/class path.",
+        "first_case": {
+          "count": 1,
+          "input_delta_from189": "OnlynewtwoQwords flagI5C5CB48=100000000 high32nonzero, IAT43DBBA8=9999000055556666; allbefore/finalMaps overlaysameownedbytes.",
+          "native_event_delta": "OldfooterTailA7F/DIRECTAEC replaced by actualNotify181 B07/INDIRECT target. FullVonlyRAXfullflag/RCXimage5C5CB08 changed beforetail; sameentryRSP/NV, completeownedHfullReturn passedunchanged soalllaterwholetypedexpected remainsoriginal.",
+          "counts": {
+            "CRTevents": 8,
+            "CRT_CALL": 4,
+            "CRT_TAIL": 2,
+            "CRT_GS": 1,
+            "CRT_loop": 1,
+            "ordinary_GS": 10,
+            "atomic": 14,
+            "ordinary_diagnostic": 2,
+            "deep": 4
+          },
+          "checks": "Fulltypedwhole/middle/joins/result andallV/XMM/NV/RIP/SP/targets/before+finalexactMaps+completeeventconsumption; C090returnslot expectedvaluewrites2.",
+          "not_executed": "M1Wait179 branch not visitedinthiswholecase (separately192first3protocolcase tested), 3root185bridge sitesnotexecuted; dynamicIAT/DB38 remainownedopaqueports; noEH qualification."
+        },
+        "preserved_uncompiled_R1": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/consumer-owner/candidate-r1/org/xar/ck3/research/m5/GovernmentWholeCrtTail191.java",
+          "bytes": 1624,
+          "sha256": "eb58d69a56bd5f658c3e8f0d20c3fa364b948f9543706f108e96fccb6b6ff8a6"
+        },
+        "old_ready03": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/READY03.json",
+          "bytes": 3779,
+          "sha256": "a48ba04a95ace176f45c8385fce8ad363a2c2817c22a3ac9f4dcd838b1e49738"
+        },
+        "normalized_ready05": {
+          "path": "D:/ck3-state/resume91-m5-native/whole-crt-tail191/READY05.json",
+          "bytes": 3925,
+          "sha256": "fdf192f2556dbbbd90c94d7938bb880f2abf78cb5d297cea05819313ff3900ac"
+        }
+      }
+    ],
+    "latest_work_not_in_this_supplement": "195/196 andallsuccessors deliberatelyunobserved; no currentprepared/untested/green/publication/zero inference. Docs/publication do notgateMain/sourcework.",
+    "global_scope": "Ownedsoftware normalportprotocol/composition only; no190mechanismcredit/EH/physicalIAT/currentOS/thread/TLS/privateABI/Native/DLL/S/MB/Game/newdays/G2completion.",
+    "reused_M1_formal_source_hashes": [
+      {
+        "fqcn": "org.xar.ck3.research.m1.GovernmentThreadNotify181",
+        "commit": "f9756f498cb3bb5fc9fedf805401c5e42122dc18",
+        "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentThreadNotify181.java",
+        "bytes": 1760,
+        "sha256": "b383279989cda7e7d0c54f366523d428b62dcc6d7748abb98a5feb80b17ef540"
+      },
+      {
+        "fqcn": "org.xar.ck3.research.m1.GovernmentThreadWait179",
+        "commit": "3b463c95bb1c92a85ef34686c9e2ff9662a2d7c2",
+        "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentThreadWait179.java",
+        "bytes": 5776,
+        "sha256": "934e3511c2ed6a47c6180591236153115ce1f312a26226531d66832adc37b2f2"
+      },
+      {
+        "fqcn": "org.xar.ck3.research.m1.GovernmentThreadHeader178Api",
+        "commit": "3b463c95bb1c92a85ef34686c9e2ff9662a2d7c2",
+        "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m1/GovernmentThreadHeader178Api.java",
+        "bytes": 1463,
+        "sha256": "511ae48b0890093dbfa2d6b86c5e88913c59a729b42345bcf6ef1fcb73d5f4f8"
+      }
+    ]
+  },
+  "publication_after_cutoff": [
+    {
+      "commit": "3af7a65265c306dc761cc9099737236473eae8ee",
+      "publication_after_cutoff": "2026-10-31T18:27:17Z",
+      "main_sources": 2,
+      "manual_support_sources": 5,
+      "source_only_first_compile": [
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source189/MAIN-ACTUAL.json",
+            "bytes": 581,
+            "sha256": "5fe9788fd8b6d3ea7165a8374b731677e2bd8289fcefcf45688365e0e31af54d"
+          },
+          "begin_utc": "2026-10-31T18:50:51.769456+00:00",
+          "end_utc": "2026-10-31T18:50:52.512405+00:00",
+          "exit_code": 0,
+          "seconds": 0.7429406000301242,
+          "new_sources": 2
+        },
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source189/TEST-ACTUAL.json",
+            "bytes": 581,
+            "sha256": "7b0a51788facb2f6eb176ef7a5c3ef542cb2badf18080018cd94100dc7c28444"
+          },
+          "begin_utc": "2026-10-31T18:50:54.514877+00:00",
+          "end_utc": "2026-10-31T18:50:55.947556+00:00",
+          "exit_code": 0,
+          "seconds": 1.4326853998936713,
+          "new_sources": 5
+        }
+      ],
+      "new_formal_source_hashes": [
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeCrt189.java",
+          "bytes": 3177,
+          "sha256": "d39302265b4ee628103137ebf326a2189e6a9e83290fcedc6771ec276bbdd942"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeCrt189Api.java",
+          "bytes": 332,
+          "sha256": "13e0c5cf657a3410264d63eafce650585c1e48a7725db73ad90474a95d6c8ded"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeCrt189Fixtures.java",
+          "bytes": 12566,
+          "sha256": "afc26486465143d70a76e2ad99eec72dd40ce93cce127b8ac20c4f3b56181c29"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeCrt189Ports.java",
+          "bytes": 3534,
+          "sha256": "b142be523a5ec544353827aab4f96fc6354b964e02237c0418934acde5033d9f"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeCrt189PortsApi.java",
+          "bytes": 369,
+          "sha256": "c8a37fe08d459ffffd4e5a2a3b3e3ddfe29ab411ef6b82627394b47f49e8358c"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeCrt189Probe.java",
+          "bytes": 24683,
+          "sha256": "ace4c9c4d35f415585ffd38ce29f7c6ea7e18e27087023251d748bb360357951"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeCrt189WitnessApi.java",
+          "bytes": 583,
+          "sha256": "c69d724923a1fc4c569c9f2f916d7fdc612d57060321695577d2c7fe4b089cc6"
+        }
+      ],
+      "local_origin_master_contains_at_snapshot": true,
+      "writer_notice": "Java solewriter reported normalpush/remoteexact/clean; localoriginancestry independently verified at this documentation snapshot.",
+      "source_delivery": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source189/DELIVERY06.json",
+        "bytes": 10473,
+        "sha256": "6b903d3fa21b2c2f7547c9df8397e39fb4fa27ac576080c5fc4da3129c1d0d8d"
+      },
+      "source_closure": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source189/FQCN-CLOSURE02.json",
+        "bytes": 318169,
+        "sha256": "51918e8fcf48fc5d5fabbf788886fb713aa66908733af4f25ff9ac0aee2ce68e"
+      },
+      "limit": "Codepublication/source-onlystrict only, zeroJVM/oldsource/case/Native/Game run; manualmains notautomaticCI.",
+      "supersedes_historical_delivery_notice": "Top-level source_delivery_189 remains exactprior18:27snapshot history. Explicitlater3af7publication here supersedesdelivery-onlystatus aftercutoff; oldsnapshot is not rewritten."
+    },
+    {
+      "commit": "f851a91f84bd2d788d1b40b769abae9bda9d0c5a",
+      "publication_after_cutoff": "2026-10-31T18:27:17Z",
+      "main_sources": 2,
+      "manual_support_sources": 5,
+      "source_only_first_compile": [
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source192191/MAIN-ACTUAL.json",
+            "bytes": 587,
+            "sha256": "3934d8fde3bda638f8438b17f66ca013e8c6d31d2ee3c3dacae134f9b017182f"
+          },
+          "begin_utc": "2026-10-31T19:34:32.432232+00:00",
+          "end_utc": "2026-10-31T19:34:33.128702+00:00",
+          "exit_code": 0,
+          "seconds": 0.6959781995974481,
+          "new_sources": 2
+        },
+        {
+          "receipt": {
+            "path": "D:/ck3-state/resume91-java-delivery/m5-source192191/TEST-ACTUAL.json",
+            "bytes": 587,
+            "sha256": "d30c08edbfa384702cb4d8edaa4fe257392dfd127f325683bef66a50861e90ac"
+          },
+          "begin_utc": "2026-10-31T19:34:35.391168+00:00",
+          "end_utc": "2026-10-31T19:34:36.485413+00:00",
+          "exit_code": 0,
+          "seconds": 1.0938476002775133,
+          "new_sources": 5
+        }
+      ],
+      "new_formal_source_hashes": [
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentCrtNative192Calls.java",
+          "bytes": 9849,
+          "sha256": "a717560d9649a789487133f6c7cc037201d552fa8cd2c8dc9d61d39e9ede8d50"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m5/GovernmentWholeCrtTail191.java",
+          "bytes": 1709,
+          "sha256": "de355eb68e41a96976b409888e564afd2bc68efcaa82d8407203ea7d61a9a405"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentCrtNative192Fixtures.java",
+          "bytes": 7117,
+          "sha256": "c33d3e965f7c1cac7201daf84182b2ae991e1bb94026daf681e9865c865f0041"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentCrtNative192Probe.java",
+          "bytes": 11217,
+          "sha256": "e0a8fbbad275b682b3ab766d521654a44af95d1da8a3844f10b1f6864df707d1"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentCrtNative192WitnessApi.java",
+          "bytes": 982,
+          "sha256": "4aa762cf75851ab44c4f0f747699fb2d94313a55d50a18aa32c58f6590e5b281"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeCrtTail191Fixtures.java",
+          "bytes": 5413,
+          "sha256": "34bcec172be1ef86beed06355aeca00051b726cb01f7c1c356572e27f6aa760a"
+        },
+        {
+          "formal_path": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m5/GovernmentWholeCrtTail191Probe.java",
+          "bytes": 24703,
+          "sha256": "86f32ef338f65fc9bb7c6963216018de52bbebff39e3ef1cfc4e5827dbc657ad"
+        }
+      ],
+      "local_origin_master_contains_at_snapshot": true,
+      "writer_notice": "Java solewriter reported normalpush/remoteexact/clean; localoriginancestry independently verified at this documentation snapshot.",
+      "source_delivery": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source192191/DELIVERY06.json",
+        "bytes": 12066,
+        "sha256": "a2630043def4254070db11dd9b2d56b9c2098b900ddcefc09fff60cebec6d517"
+      },
+      "source_closure": {
+        "path": "D:/ck3-state/resume91-m5-native/formal-source192191/FQCN-CLOSURE02.json",
+        "bytes": 203587,
+        "sha256": "8de07302f97086b13d70c12ca1725467acba0da71068c98202cfd1701f339656"
+      },
+      "limit": "Codepublication/source-onlystrict only, zeroJVM/oldsource/case/Native/Game run; manualmains notautomaticCI."
+    }
+  ]
 }
