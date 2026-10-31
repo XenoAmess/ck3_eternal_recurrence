@@ -1599,6 +1599,8 @@ add_library(xar_ck3_bridge SHARED
   src/family_ruler_default_copy_12004.cpp
   src/family_ruler_default_materialize_12004.cpp
   src/family_ruler_default_wire_12004.cpp
+  src/family_ruler_outgoing_owner_12004.cpp
+  src/family_ruler_outgoing_owner_wire_12004.cpp
   src/campaign_root_context_v1.cpp
   src/campaign_root_context_v1_mailbox.cpp
   src/campaign_root_context_v1_serializer.cpp
