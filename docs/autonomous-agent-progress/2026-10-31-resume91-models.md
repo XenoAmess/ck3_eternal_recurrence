@@ -217,3 +217,12 @@ M7正式Java `d17b7d9580`、Native `c703f434d2`分记：两C++ core函数原样�
 M1 Crown R2后到selector回执于03:04:59完成baseline RED→candidate GREEN，零owner语义修改；M7后到memory原样及单NaN方法参与8JUnit绿，但套件使用owner core和其他owner测试，均不回填冻结分类或授完整生产/运行因果。精确范围在后两页补记。
 
 证据为`D:/ck3-state/model-dispatch91/REVIEWS91-INCREMENT131.json`和`REVIEWS91-LATE131-0308.json`，两份SHA已核对；固定源窗不因后继任务扩大。本文档交付0模型POST/GET、0编测/CAS，不改旧review/source SUMMARY，不作为source owner直POST或runtime的门。
+
+
+### resume91 peak149：新地址首次峰14，持续时间另计
+
+固定UTC07:30:27.462103→07:40:27.462103源调用窗口有35个新任务、36次真实POST，截止26次END（21stop、4length、1reset），10次仍在途。新IP实际客户端峰14发生07:39:58.637575→07:40:02.177609，仅3.540034秒；至少12在途共9.803132秒，至少10共20.404558秒，十分钟平均2.0054。旧报告中的峰8保留原时点事实；本次只证明首次峰值达到初始12–16区间，不是持续达标。
+
+截止单刻9项已有有效content、1项待headers；服务running10/waiting0/KV0.2853535。35个任务数不代替并发，客户端峰也不代替服务推理峰。26个已终态attempt的content TTFT中位4.094秒、p95约15.848秒；未终态不估算，缺cached字段不推命中。reset按既有配置重试并保留partial，不归为实现能力失败。
+
+该波来自M1真实public UNAVAILABLE0/CI材料、M3新注册record、M4新Full880–Free83组合及首次非法wire测试、M7新cleanup桥及独立测试、M0和Root真实CI诊断。完整输入owner直接POST，无新增调度平台、空探测或旧绿重投；HTTPstop、源审、必要编测、正式采用仍分别记录。原始界限见本机`WINDOW128-074027.json`、`STATUS-PEAK149-074027.json`、`ROLLING-PEAK149-074027.json`与`PEAK149-ANALYSIS.json`，位于D:/ck3-state/model-dispatch91；这些是机器本地出处，不是其他worker使用服务的前置。本文档追加不新增模型POST或编测。

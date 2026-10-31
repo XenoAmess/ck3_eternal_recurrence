@@ -138,3 +138,12 @@ SOURCE_READY02中的“尚未编测”是原时点状态，后到compile0及8P�
 同样，M1 selector真实baseline RED→candidate GREEN只验证source-bound注册边界；Full880的13JUnit/48scenario是软件验证。原样采纳、部分修补、仅接受待编、分析、源拒与后到行为分别记，不从6项原样scope推出全生产采用，不从22项拒绝推出统一编译失败率。输入上下文、实际改写及验证范围仍不同，有限成功或失败不构成普遍能力上限。
 
 反链为`REVIEWS91-INCREMENT131.json`的validation/late_supplements及`REVIEWS91-LATE131-0308.json`，旧主表/SUMMARY不回写。本包只准备三页EOF候选，0模型POST/GET、0编测/CAS；未引用缺owner review的更新Native任务，也不等待其终态。
+
+
+### resume91 peak149：并发、候选质量与反馈责任分列
+
+新地址在2026-10-31 07:39:58.637575 UTC首次出现14个真实客户端在途请求，峰持续3.540034秒；该十分钟平均仅2.0054。07:40:27单刻server running10/waiting0是独立实测，不能改写成server峰14、持续12–16、能力提高或容量上限。源码候选与同Game运行决策不混计，旧峰8冻结记录不回写。
+
+窗口35个新任务/36次POST含真实诊断返工和一次传输重试；26个已结束attempt中21stop、4length、1reset，不是采用率。输出退化、API或语义错误、原文采纳、owner修补及真实编译/行为继续按各自回执判断，context文件数与字符数不当作实际改写规模。
+
+后继Root对两组CI各两轮stop的源审仍只授D候选部分采用，未授编测或正式加载；其中曾把当前`var`声明误反馈为`JsonNode`，Root已核实并承担该反馈错误。错误提示、上下文缺口与模型本身漏API/硬编码等问题需分别保留，不能全归模型失败，也不能因HTTP完整就追认成功。这项源审事实由Root具名后继回执提供，后续实际编测另记；本追加不触发模型请求或验证。
