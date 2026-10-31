@@ -20,6 +20,9 @@ import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.continuity.writer.DomainBodies.Slot;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.driver.PublicDataJson;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.m7.GoalCodec;
 import org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyMarriageSendReads;
@@ -87,7 +90,7 @@ public final class RootFamilyMarriageFreshPreparation {
                 var row=rows.addObject().put("query",read.query().name());row.set("requested",OpportunityJson.toNode(read.requested()));row.set("original",read.original().toJson());
             }
             manifest.set("prepared_plan",OpportunityJson.toNode(plan));
-            ExactRef ref=context.archive().preserveMaterial(new RawJson(StrictJson.canonical(manifest,MAX)));
+            ExactRef ref=context.archive().preserveMaterial(encodeReviewMaterial(manifest));
             StrictJson.require(same.head().digest().equals(head.digest()),"writer head changed during observation-only family preparation");
             return new Fresh(new FamilyNativePreparation.VerifiedBasis(basis.snapshot(),basis.bridgeIdentity(),basis.snapshotEvidence(),basis.bridgeEvidence(),Optional.of(plan)),
                     retained.stream().map(Read::original).toList(),ref);
@@ -108,7 +111,7 @@ public final class RootFamilyMarriageFreshPreparation {
             m.set("implementation",implementation.toJson());m.set("public_original_query",originalQuery.toJson());
             m.set("snapshot",basis.snapshotEvidence().toJson());m.set("bridge",basis.bridgeEvidence().toJson());
             var rows=m.putArray("reads");for(var read:retained) {var row=rows.addObject().put("query",read.query().name());row.set("requested",OpportunityJson.toNode(read.requested()));row.set("original",read.original().toJson());}
-            m.set("prepared_plan",OpportunityJson.toNode(plan));var ref=context.archive().preserveMaterial(new RawJson(StrictJson.canonical(m,MAX)));
+            m.set("prepared_plan",OpportunityJson.toNode(plan));var ref=context.archive().preserveMaterial(encodeReviewMaterial(m));
             return new Fresh(new FamilyNativePreparation.VerifiedBasis(basis.snapshot(),basis.bridgeIdentity(),basis.snapshotEvidence(),basis.bridgeEvidence(),Optional.of(plan)),retained.stream().map(Read::original).toList(),ref);
         });
     }
@@ -126,11 +129,19 @@ public final class RootFamilyMarriageFreshPreparation {
                 .filter(row->eq(row.get("choice_id"),t(intent.choiceId()))&&eq(row.get("played_character_id"),n(intent.actorId()))&&eq(row.get("candidate_character_id"),n(intent.candidateId()))).toList();
         StrictJson.require(selected.size()==1,"public ruler intent is not the unique pair in its actual original native choices");
     }
+    /** The fresh-review manifest has its own finite full-material role and sorted typed wire. */
+    static RawJson encodeReviewMaterial(com.fasterxml.jackson.databind.JsonNode manifest) {
+        return RawJson.fullMaterial(PublicDataJson.encodeTypedBytes(DriverJson.fromNode(manifest),MAX));
+    }
+    static com.fasterxml.jackson.databind.JsonNode loadReviewMaterial(ActionPorts.OutcomeArchive archive,ExactRef ref) {
+        RawJson material=archive.loadFullMaterial(ref);
+        StrictJson.require(archive.materialReferenceOf(material).equals(ref),"original preparation evidence identity differs");
+        return FullJsonTree.parse(material.bytes(),MAX);
+    }
     private FamilyNativePreparation.VerifiedBasis replayOriginal(ActionCommand command,NativeRequest prepared,ActionPorts.OutcomeArchive archive)throws IOException {
         var same=context.borrowedSession();context.writer().requireSession(same);List<com.fasterxml.jackson.databind.JsonNode> manifests=new ArrayList<>();
         for(var ref:prepared.preparationEvidence()) {
-            RawJson material=archive.loadMaterial(ref);StrictJson.require(archive.materialReferenceOf(material).equals(ref),"original preparation evidence identity differs");
-            var value=StrictJson.parse(material.bytes(),MAX);
+            var value=loadReviewMaterial(archive,ref);
             if(value.isObject()&&value.has("schema")&&value.get("schema").isTextual()&&SCHEMA.equals(value.get("schema").textValue()))manifests.add(value);
         }
         StrictJson.require(manifests.size()==1,"one actual fresh-review manifest required; current plan is not replay");
@@ -163,7 +174,7 @@ public final class RootFamilyMarriageFreshPreparation {
         var wire=m.get("reads");StrictJson.require(wire.isArray()&&!wire.isEmpty()&&wire.size()<=32,"complete actual original fresh read sequence required");
         List<Read> retained=new ArrayList<>();for(var raw:wire) {
             var row=StrictJson.object(raw,Set.of("query","requested","original"));
-            retained.add(new Read(FamilyPorts.Query.valueOf(StrictJson.text(row.get("query"))),object(OpportunityJson.parse(row.get("requested").toString().getBytes(java.nio.charset.StandardCharsets.UTF_8))),ExactRef.fromJson(row.get("original"))));
+            retained.add(new Read(FamilyPorts.Query.valueOf(StrictJson.text(row.get("query"))),object(DriverJson.fromNode(row.get("requested"))),ExactRef.fromJson(row.get("original"))));
         }
         var roots=nativeProducts.campaignRoot();var retainedRefs=retained.stream().map(Read::original).toList();
         var target=roots.freshTarget(same,command,original.frame(),retainedRefs);
