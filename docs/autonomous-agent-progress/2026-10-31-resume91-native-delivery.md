@@ -229,3 +229,17 @@ M3 原码有限首验也已逐项闭合，未重跑旧绿：vector154 的 349B/�
 最新运行资源事实为 Main167 真 LOOP_START `11:58:11.559940500Z`、next61，Main 于12:00:28后到确认并明确解除安装 HOLD；真实普通 qwen 请求仍由 runtime 独占。新实际 MB BEGIN 才阻未 START 重编/RUN/大 I/O，实际在途自然结束；源码 HTTP 与已点名几百 B 的精确取源不被该 HOLD 冻住。最多两 light、一个 heavy、两 named-read，以真实 START/END 计，不以 READY、通知意图或文档准备占槽。本岗仍未部署 DLL、操作 Game 或授新增游戏日。
 
 12:11Z 命令纪律补记：本岗刚以明确 cmd.exe/login:false 读取实体 AGENTS 第28行，确认命令及子进程禁用 PowerShell/WSH。本 turn 此前多次 exec_command 漏传 shell/login，实际沿环境默认 PowerShell，包括只读和 Git 发表；这些不能追认为合规 cmd。原调用记录保留，精确次数尚未核不造数，没有为掩盖而重做已绿验证或改写产物。本岗后续全部显式指定 cmd.exe、login:false；这项 owner 错误与模型答复质量、生产源码和 Game 结果分开记录。
+
+## 2026-10-31T13:13Z：子女上下文与实际消费者已分别发表
+
+CHILD_MATRILINEAL 私有 context 的两个生产叶以 `2995959ab5a86fae70649690bfd4672c93dada50` 发表：在原 materializer 同 TU 追加新方法，真实调用 setter(true)，再 refresh/finalize 并复制全部角色和选项；原 fulfill 函数字面保持。仅 changed TU 首编通过，独立新夹具 2P/15 setter-specific negatives/171 assertions、11 次构造/销毁/setter，Java 只消费两份实际 Prepared/42 assertions。它自身不证明自然 child 身份。
+
+实际 CHILD_MATRILINEAL owner 五叶以 `612de603f8ea6d29af45da8692f402c7919be658` 发表。既有 Family callback 使用完整 derived child reader，PREP 重复真实 parent-ID child predicate、adulthood、selector、relationship 与 frame；POST 只消费 retained sender，不再读取原 child proof 或构造 context。两新 TU 严格编译、完整 changed Bridge TU 23.0118647 秒均通过；独立 callback 2 scope/29 negatives/594 assertions，Java 首次消费两份实际 wire 并拒绝六个 cross-scope variants/88 assertions。Writer 仅移除两个新 CPP 空白行尾的 spaces，执行 token 保持。原 RULER/HEIR 与其它 routes 的分支保持。
+
+CHILD_DEFAULT 数据型私有方法两叶以 `ae25ec9f88dc01bb8c28fe6054dffa36e07eddfa` 发表。API 只有 ContextBindings 和 Access，根本没有 setter port；保真实默认 raw Mat、effective 与 CanSend，消费端另行执行 require-off 策略。原 fulfill 和 selected-child 方法字面保持。仅 changed TU 首编通过；新夹具 2P/7N/147 assertions，六次构造尝试中一次原构造抛出不取得 ownership，五次实际 destroy；新 Java oracle 严格编译后只消费两份实际 Prepared/42 assertions。后继 default owner 尚属另包，不借此授已接自然 route。
+
+三包均为普通 fetch/rebase、精确叶 commit/push、ls-remote 同 SHA、干净 delivery90；未重新跑已绿组件或链接/部署 DLL，没有真实 mailbox 查询或 Game 信用。最终补丁和原件在 M2 的 family-child-matrilineal168/DELIVERY170、family-child-owner170/DELIVERY173、family-child-default172/DELIVERY174 与各自 contract-fixture/RESULT*.json。Root 两份经验文档按 exact append 以 `3aeb2e32722c18cbfca3a1f8889c9ae010d47d63` 发表，保 formal models 页旧前缀，未 whole-copy 落后的 Z 页。
+
+M3 后到首验分别保范围：reset159 的 120B/新469和581B caller 首六 Native 整行匹配，334 fixture checks 分列；resetcleanup160 首四个经 formal856050/Free83 的软件组合、54 checks，未授 Native；shift161 原202B 八 unit 加两个新572B caller 首10条完整 RAM/语义行匹配，220 fixture checks 分列、原202零 patch；transfercomposition162 四新 Java 源首编及三个同时接四 helper 的软件组合/123 checks 通过，未知外层 destroy/allocator 仍为 controlled ports。各叶原件位于 M3 registration-reset159、registration-resetcleanup160、registration-shift161、registration-transfercomposition162 的 ACTUAL/HANDOFF 和 native-fixture/，没有重跑旧单叶绿。
+
+资源通知只认实际 tool spawn/END；有一次 M5 prod4 的12:59:16Z END未直接送到 rowref169，造成数分钟无实际占用却等待 terminal，本岗补 fresh followup 后其一新 Test 严格编译、首次5JUnit 通过，已要求 canonical 地址直达。Main171 于13:07:59.142643300Z真实 LOOP_START/next62，Root/runtime13:08:56读回明确 release 安装 HOLD；现恢复两 light/一 heavy 的新首验。未来实际新 MB BEGIN 才阻未 START 的编/RUN/大 I/O，named tiny source 与 HTTP继续；不从旧169/170/171标签推定仍安装。父414 Rejected 与415 publication来自运行岗，源码/软件测试不授新游戏日或动作重放。
