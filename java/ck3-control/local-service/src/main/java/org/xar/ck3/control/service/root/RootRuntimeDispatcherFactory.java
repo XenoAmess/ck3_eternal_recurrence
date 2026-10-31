@@ -90,8 +90,9 @@ public final class RootRuntimeDispatcherFactory {
                 authorityId, core.originals(), bindings.readCatalog()));
         var menuReads = new RootFrontendReadGuard(actual.frontend(), borrowed, core.archive(), source, core.clock(),
                 authorityId, core.originals(), bindings.readCatalog());
+        var physicalReads = new RootMenuPhysicalStatusReads(bindings, source, borrowed);
         ActionPorts.GuardPort actionGuard = new OriginActions(gameplay, menus, terminalActions);
-        PlanningReadCoordinator.ReadGuardPort readGuard = new OriginReads(gameplayReads, menuReads, terminalReads, reconciliationReads);
+        PlanningReadCoordinator.ReadGuardPort readGuard = new OriginReads(gameplayReads, menuReads, terminalReads, reconciliationReads, physicalReads);
         RootMenuSession menu = actual.originalMenu().orElse(null);
         if (menu != null) {
             StrictJson.require(menu.authorityId.equals(authorityId) && menu.writer == core.writer() && menu.game == game
@@ -180,7 +181,8 @@ public final class RootRuntimeDispatcherFactory {
         }
     }
     private record OriginReads(PlanningReadCoordinator.ReadGuardPort gameplay, PlanningReadCoordinator.ReadGuardPort frontend,
-            PlanningReadCoordinator.ReadGuardPort terminal, PlanningReadCoordinator.ReadGuardPort reconciliation)
+            PlanningReadCoordinator.ReadGuardPort terminal, PlanningReadCoordinator.ReadGuardPort reconciliation,
+            PlanningReadCoordinator.ReadGuardPort physical)
             implements PlanningReadCoordinator.ReadGuardPort {
         @Override public <T> T withOriginalReadSource(WriterContracts.Head head,PlanningReadRequest request,
                 ReadContract<?> contract,java.util.function.Supplier<T> work) {
@@ -189,6 +191,7 @@ public final class RootRuntimeDispatcherFactory {
             if(request.origin() instanceof CommandOrigin.LifecycleTerminal)return terminal.withOriginalReadSource(head,request,contract,work);
             if(request.origin() instanceof CommandOrigin.Reconciliation)return reconciliation.withOriginalReadSource(head,request,contract,work);
             if(request.origin() instanceof CommandOrigin.Frontend)return frontend.withOriginalReadSource(head,request,contract,work);
+            if(request.origin() instanceof CommandOrigin.PhysicalStatusOnly)return physical.withOriginalReadSource(head,request,contract,work);
             throw new IllegalArgumentException("no installed Root read guard accepts this origin");
         }
         @Override public PlanningReadGuard verify(WriterContracts.Head head, PlanningReadRequest request, ReadContract<?> contract) {
@@ -196,6 +199,7 @@ public final class RootRuntimeDispatcherFactory {
             if (request.origin() instanceof CommandOrigin.LifecycleTerminal) return terminal.verify(head, request, contract);
             if (request.origin() instanceof CommandOrigin.Reconciliation) return reconciliation.verify(head, request, contract);
             if (request.origin() instanceof CommandOrigin.Frontend) return frontend.verify(head, request, contract);
+            if (request.origin() instanceof CommandOrigin.PhysicalStatusOnly) return physical.verify(head, request, contract);
             throw new IllegalArgumentException("no installed Root read guard accepts this origin");
         }
         @Override public void verifyFrontendReadContinuation(WriterContracts.Head head, PlanningReadRequest request,

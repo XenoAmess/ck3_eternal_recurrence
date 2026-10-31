@@ -31,7 +31,6 @@ public final class RootMenuPhysicalStatusReads implements PlanningReadCoordinato
         PhysicalStatusIdentity.requireProfile(contract);
         try {
             var same=RootLifecycleReadGuard.session(borrowed,head);
-            RootLifecycleReadGuard.pin(same,contract.sourceRef());RootLifecycleReadGuard.pin(same,source.sourceRef());
             return bindings.requirePhysicalStatusAuthority(identity).verify(head,request,contract);
         }catch(IOException failure){throw new UncheckedIOException("actual pre-Driver physical Status source unavailable",failure);}
     }

@@ -433,6 +433,13 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
         else if (guard.origin() instanceof CommandOrigin.LifecycleTerminal) {
             try { terminalGuards.orElseThrow(() -> new IllegalStateException("actual Root terminal guard verifier is not installed")).verify(guard, archive, session, originals); }
             catch (IOException failure) { throw new UncheckedIOException("same-writer terminal originals unavailable", failure); }
+        } else if (guard.origin() instanceof CommandOrigin.PhysicalStatusOnly physical) {
+            if (catalog == null) throw new IllegalStateException("actual source-owned physical Status Root catalog is not installed");
+            try {
+                var actualAuthority = catalog.requirePhysicalStatusAuthority(physical.identity());
+                var verifiedIdentity = actualAuthority.verifyArchived(guard, archive, session, originals);
+                StrictJson.require(verifiedIdentity.equals(physical.identity()), "archived physical Status guard identity changed");
+            } catch (IOException failure) { throw new UncheckedIOException("actual physical Status archived originals unavailable", failure); }
         } else throw new IllegalArgumentException("unregistered command origin has no original-evidence verifier");
     }
     private void original(ContinuityStorePort.Session session, ExactRef reference) {
