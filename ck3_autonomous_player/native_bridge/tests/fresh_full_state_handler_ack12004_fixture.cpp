@@ -9,12 +9,16 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 
 #include <array>
+#include <cstdlib>
+#include <limits>
 #include <atomic>
 #include <cstdio>
 #include <cstring>
 #include <thread>
 #include <utility>
 #include <vector>
+
+extern "C" BOOL (WINAPI *__imp_WriteFile)(HANDLE, LPCVOID, DWORD, LPDWORD, LPOVERLAPPED);
 
 namespace {
 namespace api = xar::ck3_11906;
@@ -386,7 +390,182 @@ void FreshAckProbeWorker(FreshAckWorkerProbe &probe, const game::GameAdapter &na
     probe.failed.store(true, std::memory_order_release);
   }
 }
-bool TestFreshHandlerAck() {
+using AckWriteFileFn = BOOL (WINAPI *)(HANDLE, LPCVOID, DWORD, LPDWORD, LPOVERLAPPED);
+struct AckHeaderWriteFailProbe {
+  HANDLE target_handle = INVALID_HANDLE_VALUE;
+  HANDLE read_handle = INVALID_HANDLE_VALUE;
+  std::atomic<DWORD> target_thread{0};
+  std::atomic<std::uint32_t> target_calls{0};
+  std::atomic<std::uint32_t> delegated_calls{0};
+  std::atomic<std::uint32_t> failed_calls{0};
+  std::atomic<std::uint32_t> snapshot_payload_bytes{0};
+  std::atomic<bool> write_shape_ok{true};
+  std::atomic<bool> snapshot_visible_at_failure{false};
+  std::atomic<bool> installed{false};
+  void **iat_slot = nullptr;
+  AckWriteFileFn original = nullptr;
+  DWORD original_protection = 0;
+};
+std::atomic<AckHeaderWriteFailProbe *> g_ack_write_fail{nullptr};
+std::atomic<AckWriteFileFn> g_ack_write_delegate{nullptr};
+BOOL WINAPI FreshAckWriteFileHook(HANDLE, LPCVOID, DWORD, LPDWORD, LPOVERLAPPED) noexcept;
+bool InstallFreshAckWriteFailHook(AckHeaderWriteFailProbe &) noexcept;
+bool RestoreFreshAckWriteFailHook(AckHeaderWriteFailProbe &) noexcept;
+
+BOOL WINAPI FreshAckWriteFileHook(HANDLE handle, LPCVOID buffer, DWORD size, LPDWORD written, LPOVERLAPPED overlapped) noexcept {
+  const auto delegate = g_ack_write_delegate.load(std::memory_order_acquire);
+  if (delegate == nullptr) {
+    SetLastError(ERROR_INVALID_FUNCTION);
+    return FALSE;
+  }
+  auto *probe = g_ack_write_fail.load(std::memory_order_acquire);
+  if (probe == nullptr || handle != probe->target_handle ||
+      GetCurrentThreadId() != probe->target_thread.load(std::memory_order_acquire)) {
+    return delegate(handle, buffer, size, written, overlapped);
+  }
+  const auto call = probe->target_calls.fetch_add(1, std::memory_order_relaxed) + 1;
+  if (overlapped != nullptr) {
+    probe->write_shape_ok.store(false, std::memory_order_relaxed);
+    return delegate(handle, buffer, size, written, overlapped);
+  }
+  if (call == 1) {
+    if (size != 4 || buffer == nullptr || written == nullptr) {
+      probe->write_shape_ok.store(false, std::memory_order_relaxed);
+      return delegate(handle, buffer, size, written, overlapped);
+    }
+    const auto result = delegate(handle, buffer, size, written, overlapped);
+    ++probe->delegated_calls;
+    if (!result || *written != size) {
+      probe->write_shape_ok.store(false, std::memory_order_relaxed);
+      return result;
+    }
+    const auto *bytes = static_cast<const std::byte *>(buffer);
+    const auto payload_len = static_cast<std::uint32_t>(bytes[0]) |
+                             (static_cast<std::uint32_t>(bytes[1]) << 8U) |
+                             (static_cast<std::uint32_t>(bytes[2]) << 16U) |
+                             (static_cast<std::uint32_t>(bytes[3]) << 24U);
+    if (payload_len == 0) {
+      probe->write_shape_ok.store(false, std::memory_order_relaxed);
+    } else {
+      probe->snapshot_payload_bytes.store(payload_len, std::memory_order_relaxed);
+    }
+    return result;
+  }
+  if (call == 2) {
+    if (buffer == nullptr || written == nullptr) {
+      probe->write_shape_ok.store(false, std::memory_order_relaxed);
+      return delegate(handle, buffer, size, written, overlapped);
+    }
+    const auto expected = probe->snapshot_payload_bytes.load(std::memory_order_relaxed);
+    if (expected == 0 || size != expected) {
+      probe->write_shape_ok.store(false, std::memory_order_relaxed);
+      return delegate(handle, buffer, size, written, overlapped);
+    }
+    const auto result = delegate(handle, buffer, size, written, overlapped);
+    ++probe->delegated_calls;
+    if (!result || *written != size) {
+      probe->write_shape_ok.store(false, std::memory_order_relaxed);
+    }
+    return result;
+  }
+  if (call == 3) {
+    if (probe->write_shape_ok.load(std::memory_order_relaxed) &&
+        probe->delegated_calls.load(std::memory_order_relaxed) == 2 &&
+        probe->failed_calls.load(std::memory_order_relaxed) == 0 &&
+        size == 4 && buffer != nullptr && written != nullptr) {
+      const auto payload = probe->snapshot_payload_bytes.load(std::memory_order_relaxed);
+      const auto expected_total = static_cast<std::uint64_t>(4) + payload;
+      if (expected_total > (std::numeric_limits<DWORD>::max)()) {
+        probe->write_shape_ok.store(false, std::memory_order_relaxed);
+        return delegate(handle, buffer, size, written, overlapped);
+      }
+      std::array<std::byte, 4> peek_header{};
+      DWORD peeked = 0;
+      DWORD available = 0;
+      if (!PeekNamedPipe(probe->read_handle, peek_header.data(), 4, &peeked, &available, nullptr) ||
+          peeked != 4 || available != static_cast<DWORD>(expected_total)) {
+        probe->write_shape_ok.store(false, std::memory_order_relaxed);
+        return delegate(handle, buffer, size, written, overlapped);
+      }
+      const auto *bytes = static_cast<const std::byte *>(peek_header.data());
+      const auto decoded = static_cast<std::uint32_t>(bytes[0]) |
+                           (static_cast<std::uint32_t>(bytes[1]) << 8U) |
+                           (static_cast<std::uint32_t>(bytes[2]) << 16U) |
+                           (static_cast<std::uint32_t>(bytes[3]) << 24U);
+      if (decoded != payload) {
+        probe->write_shape_ok.store(false, std::memory_order_relaxed);
+        return delegate(handle, buffer, size, written, overlapped);
+      }
+      probe->snapshot_visible_at_failure.store(true, std::memory_order_relaxed);
+      probe->failed_calls.store(1, std::memory_order_relaxed);
+      *written = 0;
+      SetLastError(ERROR_WRITE_FAULT);
+      return FALSE;
+    }
+    probe->write_shape_ok.store(false, std::memory_order_relaxed);
+    return delegate(handle, buffer, size, written, overlapped);
+  }
+  probe->write_shape_ok.store(false, std::memory_order_relaxed);
+  return delegate(handle, buffer, size, written, overlapped);
+}
+bool RestoreFreshAckWriteFailHook(AckHeaderWriteFailProbe &probe) noexcept {
+  if (probe.iat_slot == nullptr || probe.original == nullptr) return true;
+  const auto original = reinterpret_cast<void *>(probe.original);
+  const auto hook = reinterpret_cast<void *>(&FreshAckWriteFileHook);
+  if (*probe.iat_slot != original && *probe.iat_slot != hook) return false;
+  DWORD writable_previous = 0;
+  if (!VirtualProtect(probe.iat_slot, sizeof(void *), PAGE_READWRITE,
+                      &writable_previous)) return false;
+  const auto before = InterlockedCompareExchangePointer(
+      reinterpret_cast<void *volatile *>(probe.iat_slot), original, hook);
+  const bool unpatched = before == hook || before == original;
+  DWORD ignored = 0;
+  const bool protected_again = VirtualProtect(probe.iat_slot, sizeof(void *),
+      probe.original_protection, &ignored) != FALSE;
+  if (unpatched) {
+    probe.installed.store(false, std::memory_order_release);
+    auto *expected = &probe;
+    (void)g_ack_write_fail.compare_exchange_strong(expected, nullptr,
+        std::memory_order_acq_rel);
+  }
+  return unpatched && protected_again;
+}
+
+bool InstallFreshAckWriteFailHook(AckHeaderWriteFailProbe &probe) noexcept {
+  if (g_ack_write_fail.load(std::memory_order_acquire) != nullptr ||
+      probe.target_handle == nullptr || probe.target_handle == INVALID_HANDLE_VALUE ||
+      probe.read_handle == nullptr || probe.read_handle == INVALID_HANDLE_VALUE ||
+      probe.target_thread.load(std::memory_order_acquire) == 0) return false;
+  auto **slot = reinterpret_cast<void **>(&::__imp_WriteFile);
+  const auto original = reinterpret_cast<AckWriteFileFn>(*slot);
+  if (original == nullptr || original == &FreshAckWriteFileHook) return false;
+  DWORD protection = 0;
+  if (!VirtualProtect(slot, sizeof(void *), PAGE_READWRITE, &protection)) return false;
+  probe.iat_slot = slot;
+  probe.original = original;
+  probe.original_protection = protection;
+  g_ack_write_delegate.store(original, std::memory_order_release);
+  g_ack_write_fail.store(&probe, std::memory_order_release);
+  const auto before = InterlockedCompareExchangePointer(
+      reinterpret_cast<void *volatile *>(slot),
+      reinterpret_cast<void *>(&FreshAckWriteFileHook),
+      reinterpret_cast<void *>(original));
+  if (before != reinterpret_cast<void *>(original)) {
+    DWORD ignored = 0;
+    (void)VirtualProtect(slot, sizeof(void *), protection, &ignored);
+    g_ack_write_fail.store(nullptr, std::memory_order_release);
+    return false;
+  }
+  probe.installed.store(true, std::memory_order_release);
+  DWORD ignored = 0;
+  if (!VirtualProtect(slot, sizeof(void *), protection, &ignored)) {
+    (void)RestoreFreshAckWriteFailHook(probe);
+    return false;
+  }
+  return true;
+}
+
+bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
   struct PipeGuard {
     HANDLE read = INVALID_HANDLE_VALUE;
     HANDLE write = INVALID_HANDLE_VALUE;
@@ -433,6 +612,8 @@ bool TestFreshHandlerAck() {
   bool installed = true;
 
   FreshAckWorkerProbe probe;
+  AckHeaderWriteFailProbe write_failure;
+  bool hook_restored = false;
   probe.write_handle = pipes.write;
 
   std::thread worker;
@@ -454,6 +635,11 @@ bool TestFreshHandlerAck() {
   };
 
   const auto cleanup = [&] {
+    if (ack_write_failure_only) {
+      const bool restored = RestoreFreshAckWriteFailHook(write_failure);
+      hook_restored = restored && !write_failure.installed.load();
+      if (!restored) std::abort();
+    }
     if (installed) {
       (void)api::UninstallMainThreadQueryMailboxV1(mailbox, 1000);
       installed = false;
@@ -490,6 +676,74 @@ bool TestFreshHandlerAck() {
     return api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).ready;
   });
 
+  if (ack_write_failure_only) {
+  // Case 8: ACK header write failure after successful snapshot publication
+  if (ok) {
+    native.frame.played_character_gold.raw = 444;
+    write_failure.target_handle = pipes.write;
+    write_failure.read_handle = pipes.read;
+    write_failure.target_thread = GetThreadId(worker.native_handle());
+    write_failure.iat_slot = nullptr;
+    write_failure.installed = false;
+    write_failure.target_calls = 0;
+    write_failure.delegated_calls = 0;
+    write_failure.failed_calls = 0;
+    write_failure.write_shape_ok = true;
+    write_failure.snapshot_visible_at_failure = false;
+
+    if (!InstallFreshAckWriteFailHook(write_failure)) {
+      ok = false;
+    } else {
+      // First request: expect snapshot written, ACK header fails
+      ok = request(8, "req8", R"({"expected_revision":0})");
+      if (ok) {
+        ok = probe.call_result == false;
+        ok = ok && write_failure.target_calls.load() == 3;
+        ok = ok && write_failure.delegated_calls.load() == 2;
+        ok = ok && write_failure.failed_calls.load() == 1;
+        ok = ok && write_failure.write_shape_ok.load();
+        ok = ok && write_failure.snapshot_visible_at_failure.load();
+
+        // Consume the one actual state_snapshot frame
+        auto r1 = xar::bridge::TryReadFrame(pipes.read);
+        ok = ok && r1.status == xar::bridge::ReadStatus::frame;
+        if (ok) {
+          // Verify it matches the expected StateSnapshotFrame
+          std::string expected_snapshot = StateSnapshotFrame(native.frame, 1, CheckpointSubmission{}, {}, "req8");
+          ok = ok && r1.payload == expected_snapshot;
+        }
+        // Verify no ACK bytes remain
+        auto r2 = xar::bridge::TryReadFrame(pipes.read);
+        ok = ok && r2.status == xar::bridge::ReadStatus::none;
+
+        // Verify state committed despite ACK failure
+        ok = ok && native.raw_reads.load() == 1;
+        ok = ok && native.wrong_owner.load() == 0;
+        ok = ok && probe.state_revision == 1;
+        ok = ok && probe.previous_snapshot.has_value() && probe.previous_snapshot == native.frame;
+        ok = ok && probe.published_checkpoint_sequence == 0;
+      }
+
+      // Restore hook before recovery
+      hook_restored = RestoreFreshAckWriteFailHook(write_failure);
+      ok = ok && hook_restored && !write_failure.installed.load();
+
+      // Recovery: unchanged frame, new request ID, expect success pair at revision 1
+      if (ok) {
+        ok = request(9, "req9", R"({"expected_revision":0})");
+        if (ok) {
+          ok = probe.call_result == true;
+          ok = ok && ReadFreshSuccessPair(pipes.read, "req9", 1);
+          ok = ok && native.raw_reads.load() == 2;
+          ok = ok && probe.state_revision == 1;
+          ok = ok && probe.previous_snapshot.has_value() && probe.previous_snapshot == native.frame;
+          ok = ok && probe.published_checkpoint_sequence == 0;
+          ok = ok && native.wrong_owner.load() == 0;
+        }
+      }
+    }
+  }
+  } else {
   // Case 1: expected_revision 7 -> error fresh_read_requires_revision_zero
   if (ok) {
     ok = request(1, "req1", "{\"expected_revision\":7}");
@@ -588,10 +842,29 @@ bool TestFreshHandlerAck() {
     }
   }
 
+  }
+
   } catch (...) {
     ok = false;
   }
   cleanup();
+  if (ack_write_failure_only) {
+  MEMORY_BASIC_INFORMATION iat_memory{};
+  const bool iat_restored = write_failure.iat_slot != nullptr &&
+      *write_failure.iat_slot == reinterpret_cast<void *>(write_failure.original) &&
+      VirtualQuery(write_failure.iat_slot, &iat_memory, sizeof(iat_memory)) == sizeof(iat_memory) &&
+      iat_memory.Protect == write_failure.original_protection;
+  ok = ok && hook_restored && iat_restored;
+  ok = ok && native.wrong_owner.load() == 0 && native.raw_reads.load() == 2;
+  ok = ok && memory.iat == reinterpret_cast<void *>(&FakePeek);
+  ok = ok && memory.page_protect == PAGE_READONLY;
+  std::printf("fresh-ack-writefail: ok=%d calls=%u delegated=%u failures=%u visible=%d rev=%llu raw=%u wrong=%u restored=%d\n",
+      ok ? 1 : 0, write_failure.target_calls.load(), write_failure.delegated_calls.load(),
+      write_failure.failed_calls.load(), write_failure.snapshot_visible_at_failure.load() ? 1 : 0,
+      static_cast<unsigned long long>(probe.state_revision), native.raw_reads.load(),
+      native.wrong_owner.load(), hook_restored && iat_restored ? 1 : 0);
+  return ok;
+  }
 
   ok = ok && native.wrong_owner.load() == 0;
   ok = ok && native.raw_reads.load() == 5;
@@ -602,5 +875,13 @@ bool TestFreshHandlerAck() {
       ok ? 1 : 0, native.raw_reads.load(), native.wrong_owner.load());
   return ok;
 }
+bool TestFreshAckWriteFailureOnly() {
+  return TestFreshHandlerAck(true);
+}
 } // namespace
-int main() { return TestFreshHandlerAck() ? 0 : 1; }
+int main(int argc, char **argv) {
+  if (argc == 1) return TestFreshHandlerAck() ? 0 : 1;
+  if (argc == 2 && std::strcmp(argv[1], "--ack-write-failure-only") == 0)
+    return TestFreshAckWriteFailureOnly() ? 0 : 1;
+  return 2;
+}

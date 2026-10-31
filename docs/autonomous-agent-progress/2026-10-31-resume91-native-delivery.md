@@ -197,3 +197,17 @@ M4 已持83B free完整链40EC530→423543C→424E364，不新读PE；四个新J
 M7 复用完整held E92780 345B与26769E0 336B制作实际initializer/producer，五源strict先因四冗余cast触发Werror红，机械删cast后strict0/1.020s，首次四新JUnit4P/.896s，正式Java a4503377ca。另一次具名静态104B读取实际得到U表的CGameIngameInitOptions RTTI和slot0 E91D90，只闭源内安装表身份，不授live U、析构完成或SaveJob。slot0 body未读。M2 family-provider140精确SOURCE_STOP：actual4 ABI/0x338角色布局和education raw双读已有；仍缺完整occupied/generation/lifetime及全部婚姻rows/options双copy producer、五route只读actor-shadow/lineality materializer，不把过滤scanner或send-command binder冒充generic provider。
 
 M6 fresh ACK第二写失败独立新case已0，正式共用harness两叶候选尚在首次接线验收中，未据独立case授新CTest或hosted覆盖。当前实际资源边界为142 LOOP_START05:55:10.7190493Z后解除安装HOLD；新实际MB/安装BEGIN才再次停新编测。曾因自动附带旧AGENTS休假段误暂停未start队列，核当前resume91顶部及运行岗后已纠正；没有新的用户休假请求，不把这次内部误判写成项目已停止。新增游戏动作、日期和SAVE只取runtime实际记录，本岗没有Game操作。
+
+## 2026-10-31T06:04Z Fresh snapshot 成功后 ACK 写失败的持久回归
+
+M6 新增的实际缺边已接同一个 Handler ACK harness：原无参数入口仍执行原七例，独立 --ack-write-failure-only 只执行新增一例。测试对自身 EXE 的 __imp_WriteFile 设精确 handle/thread hook：snapshot 的四字节头与 payload 两次真实 delegate 成功，PeekNamedPipe 确认完整 frame 可见后，让第三次 WriteFile（ACK header）真实返回 FALSE。实际 Handler 返回 false，但此前成功 PublishSnapshot 的 revision/cache1 保持提交；恢复 IAT/页保护后，以新 request_id 读取相同 frame，实际 raw-read2、独立 snapshot+ACK correlation、revision仍1。没有把 ACK 失败错误解释为应回滚已发布快照。
+
+新增的 probe、hook 和 case 正文复用已验冻结源。装卸 primitive 在两轮模型 CAS/页保护错误拒绝后由 owner 接管；thunk 模型可用主体保留，owner 补 const 函数指针与 sync guard，case02 原块采用，五次真实调用及拒绝/部分采用在 MODEL-REVIEW.json 分项。IAT 仅属于本测试 EXE；实际 Handler/Publish/WriteFrame 仍从生产 Bridge 动态生成 include，没有改生产 Fresh 算法。原七例正文逐字保留，本岗只归一 EOL/尾空白。
+
+独立新 fixture 首次编译0/11.371s、缓存十二支撑对象 link0/2.301s、唯一新case0/.412s。该首次 CL 05:43:23.493–34.989Z 与 MB141 05:43:22.567–28.460Z 因通知到达边界有真实重叠，原件保留，不追认物理无重叠。后续 link/RUN 在141 LOOP释放后执行。stdout精确为 calls3/delegated2/failures1/visible1/rev1/raw2/wrong0/restored1，stderr空，Job active0/stopnull。
+
+持久接线没有重复独立case作为验收：在原focused Ninja缓存激活当前两叶模块/共用harness，configure0/2.797s，无新compiler探测；dry-run恰一个fixture TU与同exe link，实际build0/11.361s。十二个支撑OBJ与五个生成include的bytes/mtime十七项均未变。新增注册CTest xar_ck3_fresh_full_state_handler_ack12004_write_failure 于05:59:36.984–37.709Z首次1P0F，CTest .20s/单test .16s、Job .619s/peak12,980,224B/limit128MiB/active0/stopnull；仅这一个新CTest执行，原七例及原三个CTest没有重跑。
+
+正式修改为既有fixture、既有CMake模块和static-ci的一处精确正则。原CI正则有结尾美元锚，新后缀不会自动被前缀选中；本岗给fresh组追加可选_write_failure后缀。06:04:07.069–07.490Z直接从实际formal workflow取完整正则，对同focused cache执行ctest -N，0/.284s，恰列原owner/publication/handler_ack与新增write_failure四名，Total Tests:4，零case执行。这只证明当前持久接线及CI选择器可达，不授hosted CI、完整Native根、公开dispatcher或Game通过。
+
+交付根 D:/ck3-state/resume91-m6-native/fresh-ack-writefail140/，含 DELIVERY.json、RESULT.json、FORMAL-DELIVERY.json、FORMAL-BUILD-READY.json、MODEL-REVIEW.json、formal-validation/ACTUAL-WORKFLOW-REGEX.json、FORMAL-CTEST01-LastTest.log 及 build/COMPILE01、LINK01、RUN01、FORMAL-CONFIGURE01、FORMAL-BUILD01、FORMAL-CTEST01、FORMAL-LIST01 原始ACTUAL/stdout/stderr。Writer应用原件为 D:/ck3-state/resume91-native-integration/ACK-WRITEFAIL140-APPLY.json；首次旧case比较guard误取更早catch，未写任何正式源，修搜索起点后完整正文比较通过。当前所有相关Job均已END，没有DLL部署或Game操作。

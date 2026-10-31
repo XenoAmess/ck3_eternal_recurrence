@@ -218,5 +218,9 @@ function(xar_add_fresh_full_state12004_tests source_root fixture_root)
     target_link_libraries(xar_ck3_fresh_full_state_handler_ack12004_test PRIVATE kernel32 user32)
     add_test(NAME xar_ck3_fresh_full_state_handler_ack12004 COMMAND xar_ck3_fresh_full_state_handler_ack12004_test)
     set_tests_properties(xar_ck3_fresh_full_state_handler_ack12004 PROPERTIES TIMEOUT 10)
+    add_test(NAME xar_ck3_fresh_full_state_handler_ack12004_write_failure
+      COMMAND xar_ck3_fresh_full_state_handler_ack12004_test --ack-write-failure-only)
+    set_tests_properties(xar_ck3_fresh_full_state_handler_ack12004_write_failure
+      PROPERTIES TIMEOUT 10)
 
 endfunction()
