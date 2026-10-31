@@ -41,7 +41,18 @@ public final class DriverPlanningEvidence {
         var normalizedOriginal = DriverTransportNoticeStability.heldSemantic(originalSemantic, nativeOwnedNoticeKeys, frame.identity().game().pid());
         var normalizedCurrent = DriverTransportNoticeStability.heldSemantic(currentSemantic, nativeOwnedNoticeKeys, frame.identity().game().pid());
 
-        StrictJson.require(normalizedOriginal.equals(normalizedCurrent), "held planning semantic differs from lease frame");
+        if (!normalizedOriginal.equals(normalizedCurrent)) {
+            var different = new java.util.TreeSet<String>();
+            normalizedOriginal.members().forEach((key, value) -> {
+                if (!value.equals(normalizedCurrent.get(key))) different.add(key);
+            });
+            normalizedCurrent.members().keySet().stream()
+                    .filter(key -> !normalizedOriginal.members().containsKey(key)).forEach(different::add);
+            var reported = different.stream().limit(16)
+                    .map(key -> key.substring(0, Math.min(key.length(), 96))).toList();
+            StrictJson.require(false, "held planning semantic differs from lease frame; differing_top_level_keys="
+                    + reported + "; differing_top_level_key_count=" + different.size());
+        }
 
         StrictJson.require(facts.driver().equals(known.driver()), "held lease driver/observation mismatch");
         StrictJson.require(facts.transport().game().equals(frame.identity().game()) && facts.transport().machineId().equals(frame.identity().machineId())
