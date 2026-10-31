@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** One assembled instance per Game. Durable intent, one native write, independent later observation, one writer. */
@@ -154,7 +153,7 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             NativeRequest request;
             var priorHead = locked.head();
             try { request = Objects.requireNonNull(preparation.prepare(locked.writerSession(), command, requestId)); }
-            catch (ContractViolationException failure) {
+            catch (IllegalArgumentException failure) {
                 // executeOwnedLocked already returned every existing selected action; unchanged ACTION head preserves its absence.
                 if (Objects.equals(ContinuityActionJournal.recordHead(priorHead.state()), ContinuityActionJournal.recordHead(locked.head().state())))
                     throw new PreIntentContractRejection(command, failure);

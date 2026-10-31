@@ -137,4 +137,41 @@ public final class PreIntentPreparationRejectionTest {
         var result=coordinator.execute(selected);assertInstanceOf(ActionState.Unknown.class,result.state());assertEquals(1,writes[0]);
         assertEquals(result,coordinator.execute(selected));assertEquals(1,writes[0]);
     }
+    public static PreIntentContractRejection rejectBoundedJsonBeforeIntent(ActionCommand selected) {
+        var journal=new Journal();var at=selected.deadline().minusSeconds(1);
+        try {
+            new ActionCoordinator("software-authority",journal,(head,command)->guard(command,at),
+                    command->{OpportunityJson.parse(new byte[131073]);throw new AssertionError("expected actual128KiB parser rejection");},noNative(),
+                    (command,attempt,dispatch)->new ActionPorts.Pending("software observer",List.of(REF)),Clock.fixed(at,ZoneOffset.UTC)).execute(selected);
+        } catch(PreIntentContractRejection rejected) {
+            assertEquals(IllegalArgumentException.class,rejected.getCause().getClass());
+            assertEquals("request exceeds 128 KiB",rejected.getCause().getMessage());
+            assertTrue(journal.records.isEmpty());return rejected;
+        }
+        throw new AssertionError("expected bounded argument rejection");
+    }
+    @Test public void unclassifiedIoActionProgressAndPostIntentIaeRemainIsolated() {
+        for(RuntimeException failure:List.of(new java.io.UncheckedIOException(new IOException("actual IO unavailable")),new IllegalStateException("unclassified preparation state"))) {
+            var journal=new Journal();
+            assertSame(failure,assertThrows(RuntimeException.class,()->coordinator(journal,command->{throw failure;},
+                    (head,command)->guard(command),noNative()).execute(command("unclassified-"+failure.getClass().getSimpleName()))));
+            assertTrue(journal.records.isEmpty());
+        }
+        var progressed=new Journal();var other=command("owned-action");var selected=command("after-action-progress");
+        var argumentFailure=new IllegalArgumentException("argument rejected after another action");
+        assertSame(argumentFailure,assertThrows(IllegalArgumentException.class,()->coordinator(progressed,command->{
+            progressed.append(other,ActionCodec.bodySha256(other),new ActionState.IntentDurable());throw argumentFailure;
+        },(head,command)->guard(command),noNative()).execute(selected)));
+        assertTrue(progressed.find(other.actionId()).isPresent());assertTrue(progressed.find(selected.actionId()).isEmpty());
+        var intent=new Journal();int[] guardCalls={0};var guarded=command("argument-second-guard");
+        assertThrows(IllegalArgumentException.class,()->coordinator(intent,command->new NativeRequest("pause-map",Optional.empty(),new RawJson(new byte[]{'{','}'})),
+                (head,command)->{if(++guardCalls[0]==2)throw new IllegalArgumentException("actual post-Intent guard rejected");return guard(command);},noNative()).execute(guarded));
+        assertInstanceOf(ActionState.IntentDurable.class,intent.find(guarded.actionId()).orElseThrow().state());
+        var nativeJournal=new Journal();int[] calls={0};var submitted=command("argument-native-failure");
+        var actual=coordinator(nativeJournal,command->new NativeRequest("pause-map",Optional.empty(),new RawJson(new byte[]{'{','}'})),
+                (head,command)->guard(command),(permit,request,deadline)->{permit.consumeOnce();calls[0]++;throw new IllegalArgumentException("native completion unavailable");});
+        var retained=actual.execute(submitted);assertInstanceOf(ActionState.Unknown.class,retained.state());assertEquals(1,calls[0]);
+        assertEquals(retained,actual.execute(submitted));assertEquals(1,calls[0]);
+    }
+
 }

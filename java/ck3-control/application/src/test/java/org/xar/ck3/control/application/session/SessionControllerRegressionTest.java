@@ -1031,6 +1031,15 @@ final class SessionControllerRegressionTest {
         assertEquals(BatchReport.Terminal.ACTION_UNKNOWN,result.terminal());assertTrue(controller.isQuarantined());assertEquals(0,fixture.submitted.get());
     }
 
+    @Test void boundedJsonArgumentPreparationStopsAsSourceWithoutQuarantine() {
+        Fixture fixture=new Fixture(true);
+        fixture.executionFailure=org.xar.ck3.control.application.action.PreIntentPreparationRejectionTest::rejectBoundedJsonBeforeIntent;
+        SessionController controller=fixture.controller();BatchReport result=controller.runBatch(limits("actual128k-preparation-rejection"));
+        assertEquals(BatchReport.Terminal.PLANNER_STOPPED,result.terminal());
+        assertTrue(result.detail().contains("SOURCE_CONTRACT_REJECTED"));assertTrue(result.detail().contains("request exceeds 128 KiB"));
+        assertFalse(controller.isQuarantined());assertTrue(result.turns().isEmpty());assertEquals(0,fixture.submitted.get());assertTrue(fixture.completedReceipts.isEmpty());
+    }
+
     private static final class Fixture {
         final TestClock time = new TestClock(); final AtomicInteger observed = new AtomicInteger(); final AtomicInteger submitted = new AtomicInteger(); final AtomicInteger reconciled = new AtomicInteger();
         final List<JournalInput> journal = new ArrayList<>(); final boolean completePlanner; boolean withBaseline = true; boolean reconcileExisting; boolean cycleAvailable = true;
