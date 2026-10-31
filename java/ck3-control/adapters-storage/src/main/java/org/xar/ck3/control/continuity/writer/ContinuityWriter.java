@@ -202,6 +202,11 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private Head retainedHead;
         private boolean retainedHeadHistoryVerified;
         private Head retainedDomainHead;
+        /** Parsed DATA only; every lookup still reopens and verifies the requested actual Pin. */
+        private Head parsedHistoryOwner;
+        private final java.util.LinkedHashMap<Pin, ParsedHistoryEntry> parsedHistory =
+                new java.util.LinkedHashMap<>(32, 0.75f, true);
+        private record ParsedHistoryEntry(ObjectNode document, ContinuityState state) { }
         private Session() { }
         private ContinuityWriter writer() { return ContinuityWriter.this; }
         private void checkOpen() {
@@ -395,7 +400,10 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 requireSameHead(actual, this.head());
                 return retained;
             } catch (org.xar.ck3.control.contracts.ContractViolationException invalidHistory) {
+                invalidateParsedHistory();
                 throw new IOException("actual finite canonical historical state is unavailable", invalidHistory);
+            } catch (IOException | RuntimeException | Error failure) {
+                invalidateParsedHistory(); throw failure;
             }
         }
         @Override public ContinuityState requireHistoricalCanonicalState(long sequence, String expectedDigest) throws IOException {
@@ -413,7 +421,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 requireSameHead(actual,this.head());
                 return retained;
             } catch (IOException|RuntimeException|Error failure) {
-                retainedHeadHistoryVerified=false;
+                retainedHeadHistoryVerified=false; invalidateParsedHistory();
                 throw failure;
             }
         }
@@ -441,7 +449,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 requireSameHead(actual,this.head());
                 return new Head(retained,pins.stream().distinct().toList(),actual.absent(),actual.indexRepairs(),actual.snapshotNeedsRecovery());
             } catch(IOException|RuntimeException|Error failure) {
-                retainedHeadHistoryVerified=false;
+                retainedHeadHistoryVerified=false; invalidateParsedHistory();
                 throw failure;
             }
         }
@@ -660,28 +668,74 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
             return java.util.Optional.of(receipt);
         }
-        private ContinuityState capturedStateAt(Head actual, long sequence) throws IOException {
-            Pin anchor = actual.documents().stream().filter(pin -> pin.reference().equals(layout.anchor())).findFirst()
-                    .orElseThrow(() -> new IOException("canonical anchor is absent from captured history"));
-            ContinuityState anchored = ContinuityState.fromJson(ContinuityJson.parseObject(readPinned(anchor, ContinuityJson.LEDGER_MAX_BYTES),ContinuityJson.LEDGER_MAX_BYTES), layout.machineId());
-            if (sequence == anchored.sequence()) return anchored;
-            StrictJson.require(sequence > anchored.sequence() && sequence <= actual.state().sequence(),
-                    "requested historical state is outside the actual finite canonical chain");
-            return ContinuityState.fromJson(capturedEventAt(actual,sequence).get("after"),layout.machineId());
+        private void invalidateParsedHistory() {
+            // A rejected foreign-thread query must not mutate the owner's private cache.
+            if (Thread.currentThread() != owner) return;
+            parsedHistoryOwner = null; parsedHistory.clear();
         }
-        private ObjectNode capturedEventAt(Head actual,long sequence) throws IOException {
-            java.nio.file.Path path = layout.event(sequence);
-            Pin captured = actual.documents().stream().filter(pin -> java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(path))
-                    .findFirst().orElseThrow(() -> new IOException("requested state is absent from the actual finite canonical history"));
-            ObjectNode document = ContinuityJson.parseObject(readPinned(captured, ContinuityJson.LEDGER_MAX_BYTES),ContinuityJson.LEDGER_MAX_BYTES);
-            StrictJson.object(document, java.util.Set.of("sequence", "at_utc", "kind", "details", "identity", "previous_sha256", "after"));
-            StrictJson.require(StrictJson.integer(document.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER) == sequence,
-                    "captured canonical event sequence differs");
-            ContinuityState state = ContinuityState.fromJson(document.get("after"), layout.machineId());
-            StrictJson.require(state.sequence() == sequence
-                    && StrictJson.text(state.toJson().get("last_event_identity")).equals(StrictJson.text(document.get("identity"))),
-                    "captured canonical event after state binding differs");
-            return document;
+        private void bindParsedHistory(Head actual) {
+            if (parsedHistoryOwner != actual) {
+                invalidateParsedHistory(); parsedHistoryOwner = actual;
+            }
+        }
+        private ParsedHistoryEntry retainParsedHistory(Pin pin, ObjectNode document, ContinuityState state) {
+            if (parsedHistory.size() >= 32) parsedHistory.remove(parsedHistory.keySet().iterator().next());
+            var entry = new ParsedHistoryEntry(document, state); parsedHistory.put(pin, entry); return entry;
+        }
+        private ContinuityState capturedAnchorAt(Head actual) throws IOException {
+            try {
+                requireWriter(layout.lock()); bindParsedHistory(actual);
+                Pin anchor = actual.documents().stream().filter(pin -> pin.reference().equals(layout.anchor())).findFirst()
+                        .orElseThrow(() -> new IOException("canonical anchor is absent from captured history"));
+                byte[] bytes = readPinned(anchor, ContinuityJson.LEDGER_MAX_BYTES);
+                var cached = parsedHistory.get(anchor);
+                if (cached != null) return cached.state();
+                ObjectNode document = ContinuityJson.parseObject(bytes, ContinuityJson.LEDGER_MAX_BYTES);
+                ContinuityState state = ContinuityState.fromJson(document, layout.machineId());
+                return retainParsedHistory(anchor, document, state).state();
+            } catch (IOException | RuntimeException | Error failure) {
+                invalidateParsedHistory(); throw failure;
+            }
+        }
+        private ContinuityState capturedStateAt(Head actual, long sequence) throws IOException {
+            try {
+                ContinuityState anchored = capturedAnchorAt(actual);
+                if (sequence == anchored.sequence()) return anchored;
+                StrictJson.require(sequence > anchored.sequence() && sequence <= actual.state().sequence(),
+                        "requested historical state is outside the actual finite canonical chain");
+                return capturedEventDataAt(actual, sequence).state();
+            } catch (IOException | RuntimeException | Error failure) {
+                invalidateParsedHistory(); throw failure;
+            }
+        }
+        private ParsedHistoryEntry capturedEventDataAt(Head actual, long sequence) throws IOException {
+            try {
+                requireWriter(layout.lock()); bindParsedHistory(actual);
+                java.nio.file.Path path = layout.event(sequence);
+                Pin captured = actual.documents().stream().filter(pin -> java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(path))
+                        .findFirst().orElseThrow(() -> new IOException("requested state is absent from the actual finite canonical history"));
+                byte[] bytes = readPinned(captured, ContinuityJson.LEDGER_MAX_BYTES);
+                var cached = parsedHistory.get(captured);
+                if (cached != null) return cached;
+                ObjectNode document = ContinuityJson.parseObject(bytes, ContinuityJson.LEDGER_MAX_BYTES);
+                StrictJson.object(document, java.util.Set.of("sequence", "at_utc", "kind", "details", "identity", "previous_sha256", "after"));
+                StrictJson.require(StrictJson.integer(document.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER) == sequence,
+                        "captured canonical event sequence differs");
+                ContinuityState state = ContinuityState.fromJson(document.get("after"), layout.machineId());
+                StrictJson.require(state.sequence() == sequence
+                        && StrictJson.text(state.toJson().get("last_event_identity")).equals(StrictJson.text(document.get("identity"))),
+                        "captured canonical event after state binding differs");
+                return retainParsedHistory(captured, document, state);
+            } catch (IOException | RuntimeException | Error failure) {
+                invalidateParsedHistory(); throw failure;
+            }
+        }
+        private ObjectNode capturedEventAt(Head actual, long sequence) throws IOException {
+            try {
+                return capturedEventDataAt(actual, sequence).document().deepCopy();
+            } catch (IOException | RuntimeException | Error failure) {
+                invalidateParsedHistory(); throw failure;
+            }
         }
         public Head head() throws IOException {
             checkOpen();
