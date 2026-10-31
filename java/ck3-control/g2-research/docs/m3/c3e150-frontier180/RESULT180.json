@@ -1,0 +1,97 @@
+{
+  "schema": "m3.c3e150-frontier180-first-software-summary/v1",
+  "package_number": 44,
+  "status": "FIRST_STRICT_AND_SIX_SCENES_PASS",
+  "actual_original": "c3e150-frontier180/ACTUAL180.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\c3e150-frontier180",
+  "actual_evidence_copied_to_Git": false,
+  "actual_caller": "3790510@3790553",
+  "complete_RF": [
+    "C3E150",
+    "C3E1AD(exclusive)"
+  ],
+  "code_bytes": 93,
+  "UW_bytes": 8,
+  "new_PE_bytes": 101,
+  "header_provider_query_Game": 0,
+  "new_explicit_sources_first_compiled": 4,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "local_first_verification_source_matched_cache_reuse": true,
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/C3e150Api180.java": "716b18d0ad831841a5609b642aecdf841dd0ce3d5c9de4444f709ded36aadc50",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/StaticTableBase180.java": "f42b93157efefefb34c990ce0bd12d910346b0e4b98605c6217d5506679317b0",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/StaticTableBaseBook180.java": "7c5e5e4ce5a63f4ee510886472e7c0a219c9398a8adcc976e8ea26325dd4b378",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/StaticTableBaseValidation180.java": "45029559f76b7ac6c7404640fb2eb91405893313007ae7c0c61cdaa44e3edda8"
+  },
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "start_utc": "2026-10-31T18:53:35.334145+00:00",
+      "end_utc": "2026-10-31T18:53:36.022482+00:00",
+      "process_seconds": 0.6883209999650717,
+      "exit_code": 0
+    },
+    {
+      "phase": "RUN6",
+      "start_utc": "2026-10-31T18:53:36.024466+00:00",
+      "end_utc": "2026-10-31T18:53:36.191102+00:00",
+      "process_seconds": 0.16665189992636442,
+      "exit_code": 0
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/implicit:none/192MiB/CPU1/empty-sourcepath",
+  "source_preserved": true,
+  "new_scenes": 6,
+  "memory_call_events_per_scene": [
+    4,
+    4,
+    6,
+    9,
+    6,
+    4
+  ],
+  "top_level_assertions": 12,
+  "assertion_meaning": "one returned-value and one complete EventList equality per scene; additional byte/identity guards not counted",
+  "model_logical_requests": 6,
+  "actual_model_POSTs": 6,
+  "actual_finishes_stop": 6,
+  "local_phase_peak": 2,
+  "core_model_adoption": "second candidate decoded Java source byte-for-byte; owner edits0",
+  "host_model_adoption": "second candidate decoded Java source byte-for-byte; owner edits0",
+  "book_model_adoption": "second candidate partial; owner removed4 fictitious recursive events after footer and corrected comment; other5 scenes unchanged",
+  "API_source_owner": true,
+  "book_independence": "Model received full original93B/frozenAPI only; owner correction after core-source review, not an untouched blind oracle",
+  "host_independence": "Host owner/model saw full original source and all frozen API/Book record signatures, never core/Book bodies/candidates/results",
+  "scope": "GS58 observation, TLS pointer and signed epoch guard, exact header/freshguard/-1 byte stores/footer and fixed static-table address result",
+  "not_proved": [
+    "full CPU/prologue/register/flags/ABI/EH",
+    "thread concurrency",
+    "opaque header/footer natural behavior",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_production_recompiled": 0,
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
