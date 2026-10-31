@@ -22,7 +22,14 @@ public sealed interface ObservationProvenance permits ObservationProvenance.Quer
         }
     }
 
-    sealed interface FreshSnapshotBasis permits ObservationProvenance.LiveAfterSetter, ObservationProvenance.SameGameWatch { }
+    sealed interface FreshSnapshotBasis permits ObservationProvenance.LiveAfterSetter, ObservationProvenance.SameGameWatch, ObservationProvenance.ColdAfterAcknowledgement { }
+
+    record ColdAfterAcknowledgement(ExactRef originalReceipt) implements FreshSnapshotBasis {
+        public ColdAfterAcknowledgement {
+            Objects.requireNonNull(originalReceipt);
+            StrictJson.require(originalReceipt.bytes() > 0, "cold after acknowledgement reference required");
+        }
+    }
     record LiveAfterSetter(ExactRef setterAcknowledgement) implements FreshSnapshotBasis {
         public LiveAfterSetter { Objects.requireNonNull(setterAcknowledgement); StrictJson.require(setterAcknowledgement.bytes() > 0, "live setter acknowledgement reference required"); }
     }

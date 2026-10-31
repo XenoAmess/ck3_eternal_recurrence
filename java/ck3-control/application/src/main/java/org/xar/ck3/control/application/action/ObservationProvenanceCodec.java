@@ -24,9 +24,11 @@ public final class ObservationProvenanceCodec {
             var basis = StrictJson.object();
             if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) {
                 basis.put("kind", "live_after_setter"); basis.set("setter_acknowledgement", live.setterAcknowledgement().toJson());
-            } else {
-                var watch = (ObservationProvenance.SameGameWatch) fresh.basis();
+            } else if (fresh.basis() instanceof ObservationProvenance.SameGameWatch watch) {
                 basis.put("kind", "same_game_watch"); basis.set("original_parent_receipt", watch.originalParentReceipt().toJson()); basis.set("original_resume_receipt", watch.originalResumeReceipt().toJson());
+            } else {
+                var cold = (ObservationProvenance.ColdAfterAcknowledgement) fresh.basis();
+                basis.put("kind", "cold_after_acknowledgement"); basis.set("original_receipt", cold.originalReceipt().toJson());
             }
             row.set("basis", basis);
         } else {
@@ -53,10 +55,13 @@ public final class ObservationProvenanceCodec {
             if (basisKind.equals("live_after_setter")) {
                 var live = StrictJson.object(basis, Set.of("kind", "setter_acknowledgement"));
                 basisValue = new ObservationProvenance.LiveAfterSetter(ExactRef.fromJson(live.get("setter_acknowledgement")));
-            } else {
-                StrictJson.require(basisKind.equals("same_game_watch"), "known fresh snapshot basis kind required");
+            } else if (basisKind.equals("same_game_watch")) {
                 var watch = StrictJson.object(basis, Set.of("kind", "original_parent_receipt", "original_resume_receipt"));
                 basisValue = new ObservationProvenance.SameGameWatch(ExactRef.fromJson(watch.get("original_parent_receipt")), ExactRef.fromJson(watch.get("original_resume_receipt")));
+            } else {
+                StrictJson.require(basisKind.equals("cold_after_acknowledgement"), "known fresh snapshot basis kind required");
+                var cold = StrictJson.object(basis, Set.of("kind", "original_receipt"));
+                basisValue = new ObservationProvenance.ColdAfterAcknowledgement(ExactRef.fromJson(cold.get("original_receipt")));
             }
             String order = StrictJson.text(event.get("order"));
             StrictJson.require(order.matches("[1-9][0-9]{0,19}"), "canonical uint64 snapshot event order required");

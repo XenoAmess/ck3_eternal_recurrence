@@ -133,9 +133,17 @@ public final class ActionEffects {
         StrictJson.require(effect.provenance().independentOf(attempt.requestId()), "an ACK cannot double as an independent effect read");
         StrictJson.require(!effect.originalEvidence().equals(attempt.guard().nativeEvidence()), "effect must retain a different original packet from its before guard");
         StrictJson.require(!effect.observedAt().isBefore(attempt.submittedAt()), "effect observation precedes original submission");
-        StrictJson.require(!effect.after().frame().snapshotId().equals(command.before().frame().snapshotId())
-                && effect.after().frame().identity().nativeRevision().compareTo(command.before().frame().identity().nativeRevision()) > 0,
-                "effect needs an independent later native frame");
+        if (command.operation().value().equals("save-checkpoint")
+                && command.expected().observerSchema().equals(org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory.OBSERVER_SCHEMA)
+                && effect.provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh
+                && (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter || fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement)) {
+            StrictJson.require(effect.after().frame().identity().nativeRevision().compareTo(command.before().frame().identity().nativeRevision()) >= 0,
+                    "SAVE fresh snapshot requires a non-regressed native revision");
+        } else {
+            StrictJson.require(!effect.after().frame().snapshotId().equals(command.before().frame().snapshotId())
+                    && effect.after().frame().identity().nativeRevision().compareTo(command.before().frame().identity().nativeRevision()) > 0,
+                    "effect needs an independent later native frame");
+        }
         StrictJson.require(ProposalLifecycle.compare(command.expected(), effect.after(), effect.source(), effect.observerSchema(), effect.actual())
                 == ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH, "fresh independent postcondition did not match");
     }
@@ -208,6 +216,7 @@ public final class ActionEffects {
             if (ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
                 refs.add(fresh.readAcknowledgement());
                 if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
+                else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) refs.add(cold.originalReceipt());
                 else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
             }
             return java.util.List.copyOf(refs);
@@ -220,6 +229,7 @@ public final class ActionEffects {
             if (pause.observation().provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
                 refs.add(fresh.readAcknowledgement());
                 if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
+                else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) refs.add(cold.originalReceipt());
                 else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
             }
             return java.util.List.copyOf(refs);
@@ -234,6 +244,7 @@ public final class ActionEffects {
             if (applied.observation().provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
                 refs.add(fresh.readAcknowledgement());
                 if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
+                else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) refs.add(cold.originalReceipt());
                 else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
             }
             return java.util.List.copyOf(refs);
@@ -244,6 +255,7 @@ public final class ActionEffects {
             if (control.observation().semantic().provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
                 refs.add(fresh.readAcknowledgement());
                 if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
+                else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) refs.add(cold.originalReceipt());
                 else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
             }
             return java.util.List.copyOf(refs);
