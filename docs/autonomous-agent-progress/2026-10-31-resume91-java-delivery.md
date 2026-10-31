@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `944be53ac8`。本波新增date-current134三生产叶/原测试两方法，以及M7 helpers94九新叶；所有必要绿复用 owner 实际回执。134仅S/Z采用与正式发表，未因这三叶单独启动业务；原330 LIFE UNKNOWN尚未解决，不重放。已知普通新CROWN APPLIED1与旧FOCUS分列，新增日仍0；133曾于03:22:15.2095991Z真实LOOP/next49。本岗不写 S/MB/Game/账本，正式源码、装载、业务结果和游戏日分别记录，跨机指南与新经验均已实际推送GitHub。
+最新正式源码 FF 已至 `fca7b5219c`。本波已接Life childless终态11叶、bootstrap4叶、135消费传播3叶及M7 source95四叶；必要绿复用 owner 实际回执。Runtime薄读确认原330 Life parent在canonical332已为COMPOSITE_SETTLED/COMPOSITE_NO_GAMEPLAY_WRITE，非APPLIED、日期未增；134/135先后preloop失败、未LOOP，后继history/project消费仍待136真实验证，不能称完整恢复。已知普通新CROWN APPLIED1与旧FOCUS分列，新增日仍0，不重放旧动作。本岗不写 S/MB/Game/账本，正式源码、装载和业务结果分别记录。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -245,8 +245,22 @@ M7 `fee947f31c` 为现g2-research四新叶：SparseIntCells177和Memory/Basic/Ca
 
 `32bad45df1` 精确三prod加现HeldDriverRetainedObservationTest两个新方法，保原Clock factory与formal额外内容。ActionChildPlanningScope只在实际canonical running parent、非continuation且无child reservation时返回原entry guard；HeldDriver.retainedEntry绑定exact parent before/source/session/operation、原packet/connection/time并保Push provenance。Factory仅在普通scope真实缺席且不在观测scope时接该入口，不兼容scope仍抛；后续current/strict next仍fresh。复用owner三prod strict0/2.048秒、test+两旧helper strict0/1.875秒、新2P/0skip/1.453秒；2P只授Held软件边界，active/child/Factory为源审，没有wholeRoot、旧330 UNKNOWN恢复或日期推进信用。首模型nullref/注释整拒，纠错partial+owner真实guard关联/API修正分记。Runtime明确尚未为此三叶单起134 worker；正式不作为运行前置。
 
-`944be53ac8` 现g2-research精确新增4prod+5test/1126行，无POM/新依赖：SparseIntCells1783480、SparseIntCells17836d0、SparseIntCells177Growth、Sparse177KnownCalls及五个对应测试。九完整源码/测试及callee/Normal-Growth/KnownCalls源审已读，生产和测试执行token逐一与已验证D候选相同；只补固定JavaFP/RNE、symbolic私有frame与INT3不等同native unwind等范围注释、清新叶末尾空白。两个callee保duplicate不改原value、key/value读取顺序差异、carry/retry/16B完整返回；Growth保typed Plan、opaque allocator/virtual8/16/B15000和两次fresh哨兵调用，KnownCalls只接已知concrete软件边，LocalPair/private-output仍显式port。
+`944be53ac8` 现g2-research精确新增4prod+5test/1126行，无POM/新依赖：SparseIntCells1783480、SparseIntCells17836d0、SparseIntCells177Growth、Sparse177KnownCalls及五个对应测试。九完整源码/测试及callee/Normal-Growth/KnownCalls源审已读，生产和测试执行token逐一与已验证D候选相同；只补固定JavaFP/RNE、symbolic私有frame与INT3不等同native unwind等范围注释、清新叶末尾空白。两个callee保duplicate不改原value、key/value读取顺序差异、carry/retry/16B完整返回；Growth保typed Plan、opaque allocator/virtual8/16和两次fresh B15000结果比较，KnownCalls只接已知concrete软件边，LocalPair/private-output仍显式port。
 
 严格与行为按真实两组复用：前2prod strict0/0.6520281秒、2test strict0/0.9272158秒、首次新5JUnit5P/0skip/0.6801904秒；后5改变源strict0/0.9655688秒，仅新三类3JUnit3P/0skip/0.8170215秒（Plan14 literal、normal growth count2、KnownCalls四declared direct/identity）。旧5和605旧8均未重，不能拼成同JVM8P；KnownCalls growth/retry3480分支未由这一个consumer测试执行。
 
 模型分责沿DELIVERY04原件：3480首length整拒，旧已验177方法只机械BASE，新target五处精确模型edit原样、owner算法0；36d0首完整method加模型纠正，owner去重复nested/noop而未改算法；KnownCalls全类加真实编错后的单method模型纠正，owner算法0。Growth Plan/Normal/apply及五Test均有owner接管，不能把旧BASE复用或owner测试计作模型全算法实现。有限软件成功不授nativeABI/private frame alias/MXCSR/currentGame/natural drain/GUIAccept/SAVE；实际十七HTTP与失败原文保留，不为正式发表新增POST或重绿。精确九叶/候选SHA/范围在 `D:/ck3-state/resume91-java-delivery/M7-HELPERS94-ADOPTION.json`，源交付清单在owner `helpers94/DELIVERY04.json`。
+
+## 零写入终态134–135与M7 source95
+
+`4e1e7c79e8` 核心11prod只给真实registered Life显式ZeroGameplayBeforeChildren opt-in。实际Life无raw NativeActionPort，clock所有写路径先durable Children reservation再executeChild；canonical children无法抹除。因此完整原command/body/start/guard/handler保持且无reserved child，结合实际source合同，才可在read-only reconciliation获得CompositeNoGameplayWriteObservation。不是凭reason/date/死transport或任意handler名字推断。finish重新读取原canonical Unknown，核exact execution及实际registry object、source opt-in与Effects/emptychildren；Running不能直接取得终态，Unknown不回Running、不重run/submit。
+
+receipt v12/typed payload、sealed Ports/Settlement、Effects和NativeOutcomeArchive全部传播，明确TERMINAL_WITHOUT_EFFECT，applied为空、visibleGameplay与eligibleAdvance均false，不造after-state或APPLIED/day/SAVE信用。复用owner11prod strict0/3.585秒；actual330纯DATA七unique为首5P2F（fixture误给StrictJson2MiB）→只失败2P/1.519秒，旧Life单case RED1F仍保，非同JVM最终7P/physical writer验证。三模型并发实现经10054/有限重试完整返回，声明/finish/codec/归档片段partial+owner补实际API/完整guard/Effects/schema/原件绑定，不能称整实现原样。formal只清两新增空白行，固定actual330 D tests不携入便携CI。
+
+`063671fc0c` bootstrap4只保唯一精确childless Life unresolved及完整canonical actions/Driver历史，adoption为READ_ONLY_UNRESOLVED，不授settled资格。source/owner/Game/session与head保持，拿到真实canonical typed no-write终态后才经既有allsettled recovery，saved-day credit必须不变。复用owner4prod strict0/3.728秒、actual330 codec/readOnlypredicate8P/0.840秒，非wholeRoot冷接续；模型截断整拒、多轮partial与owner history/API实现分开。runtime134 app14+local4实际MB0后preloop END1/40.576秒，已越过history/adoption但WAL旧LifeRootReplay仍误索Applied semantic，不称恢复成功。
+
+`70bb3de383` consumer135三叶抽同source-owned纯合同，RootReplay仅CompositeNoGameplayWrite走exact observation/Effects/emptychildren；generic保原guard/source/binding callback，Applied默认replay不改。复用owner3prod strict0/1.794秒、新direct actual330 RootReplay4P+旧consumer同message RED1F。owner先完成、模型22.132秒后到，0原样模型实现信用。Runtime135 preloop END1/43.982秒未LOOP，已越Writer原验证后卡history captureActual→readRecorded旧Applied路径；后到薄读实际canonical332 receipt为7780B的COMPOSITE_NO_GAMEPLAY_WRITE，同parent/日期未增，cyclecompleted3不等于游戏日。136只读history/project消费者另线验证，不先授全部恢复或Native动作。
+
+`fca7b5219c` M7 source95精确4新叶/2prod2test，无POM：StaticObjectB15000 getter及GrowthPorts、两对应test。四源SHA对DELIVERY03一致，execution token与reviewed03逐项相同，仅补范围注释/EOL。readGs58返回supplied原GS:[58]的QWORD值slot，随后readPointer(slot)再读TLS+0x10 DWORD；它不是GSbase/TLSbase/currentthread实现。signed guard>epoch才call84，正常返回后fresh guard==-1才只写静态对象BYTE0和+12 BYTEFF再call24，正常路径返回静态对象地址。84/24只knownRCX opaque投影；84原source还有known RDX16但本接口未暴露，不是完整NativeABI。此前Growth正文称“哨兵”已改成两次B15000结果比较；新93B明确是静态对象getter，不把地址命名null/sentinel、完成或SAVE信号。
+
+复用owner首4src strict0/1.0262455秒后坏getter2F；只替换getter单TU strict0/0.5403806秒，再仅两个新失败JUnit同JVM2P/0skip/0.6717554秒，未重其它绿。运行CP reviewed03/classes先于bad02/classes，APIshim未进运行，原坏例保。getter与两Test为owner接管，adapter corrected02整class模型byteexact；八次模型HTTP/length与源拒分别保，无模型/owner混记或因TTFT宣cache/模式。formal不执行Native原码或绑定实际TLS/Game，证据 `D:/ck3-state/resume91-java-delivery/M7-SOURCE95-ADOPTION.json`。
