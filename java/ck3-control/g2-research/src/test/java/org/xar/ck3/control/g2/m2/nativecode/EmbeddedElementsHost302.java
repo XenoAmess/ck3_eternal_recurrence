@@ -127,5 +127,32 @@ public final class EmbeddedElementsHost302 {
         @Override public void copy4_ADD0D0(Memory memory, long destinationHeader, long rdxZero, long begin, long end) {
             call(Op.COPY4RANGE, memory, false, destinationHeader, rdxZero, begin, end);
         }
+
+        @Override public org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16 read16(long address) {
+            Step step = next(Op.R128);
+            if (step.values().size() != 3 || step.values().get(0).longValue() != address || step.returned() != 0) {
+                throw new AssertionError("read16 at step " + (cursor - 1));
+            }
+            return new org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16(step.values().get(1).longValue(), step.values().get(2).longValue());
+        }
+
+        @Override public void write16(long address, org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16 value) {
+            Step step = next(Op.W128);
+            if (step.values().size() != 3 || step.values().get(0).longValue() != address || step.values().get(1).longValue() != value.lowRaw64() || step.values().get(2).longValue() != value.highRaw64() || step.returned() != 0) {
+                throw new AssertionError("write16 at step " + (cursor - 1));
+            }
+        }
+
+        @Override public long range16Virtual8(Memory memory, long target, long rcx, long rdx, long r8, long r9) {
+            return call(Op.RANGE16_ALLOC, memory, true, target, rcx, rdx, r8, r9);
+        }
+
+        @Override public void range16Virtual16(Memory memory, long target, long rcx, long rdx, long r8, long r9) {
+            call(Op.RANGE16_FREE, memory, false, target, rcx, rdx, r8, r9);
+        }
+
+        @Override public void range16Direct8F8550(Memory memory, long rcx, long rdx, long r8, long r9) {
+            call(Op.RANGE16_DIRECT, memory, false, rcx, rdx, r8, r9);
+        }
     }
 }

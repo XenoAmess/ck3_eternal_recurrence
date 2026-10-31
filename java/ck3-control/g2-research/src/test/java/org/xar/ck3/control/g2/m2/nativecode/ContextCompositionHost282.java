@@ -65,6 +65,13 @@ public final class ContextCompositionHost282 {
         @Override public void write32(long a, int v) { write(Op.W32, a, Integer.toUnsignedLong(v)); }
         @Override public void write64(long a, long v) { write(Op.W64, a, v); }
         @Override public void write128(long a, Bits128 v) { write(Op.W128, a, v.low(), v.high()); }
+        @Override public org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16 read16(long address) {
+            Bits128 bits = read128(address);
+            return new org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16(bits.low(), bits.high());
+        }
+        @Override public void write16(long address, org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16 value) {
+            write128(address, new Bits128(value.lowRaw64(), value.highRaw64()));
+        }
         @Override public void call8895D0(Memory m, long c, long d) { call(Op.C889, m, false, c, d); }
         @Override public void call37282B0(Memory m, long c, long d) { call(Op.C37282, m, false, c, d); }
         @Override public void call260E040(Memory m, long c, long d) { call(Op.C260, m, false, c, d); }
@@ -92,5 +99,14 @@ public final class ContextCompositionHost282 {
         @Override public void replace32_8874D0(Memory m, long c, long d, int e, int f) { call(Op.REPLACE32, m, false, c, d, Integer.toUnsignedLong(e), Integer.toUnsignedLong(f)); }
         @Override public void virtual32Destroy(Memory m, long t, long c, long d) { call(Op.DESTROY32, m, false, t, c, d); }
         @Override public void finalize32_3727EC0(Memory m, long c) { call(Op.FINAL32, m, false, c); }
+        @Override public long range16Virtual8(Memory m, long target, long rcx, long rdx, long r8, long r9) {
+            return call(Op.RANGE16_ALLOC, m, true, target, rcx, rdx, r8, r9);
+        }
+        @Override public void range16Virtual16(Memory m, long target, long rcx, long rdx, long r8, long r9) {
+            call(Op.RANGE16_FREE, m, false, target, rcx, rdx, r8, r9);
+        }
+        @Override public void range16Direct8F8550(Memory m, long rcx, long rdx, long r8, long r9) {
+            call(Op.RANGE16_DIRECT, m, false, rcx, rdx, r8, r9);
+        }
     }
 }

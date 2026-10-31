@@ -28,6 +28,9 @@ public final class PendingContextWithKnownHelpers3076B60 {
         void copy4_B2EEE0(Memory memory, long destinationHeader, long sourceHeader);
         void copy16_8C70B0(Memory memory, long destinationHeader, long rdxZero, long begin, long end);
         void copy4_ADD0D0(Memory memory, long destinationHeader, long rdxZero, long begin, long end);
+        long range16Virtual8(Memory memory,long target,long rcx,long rdx,long r8,long r9);
+        void range16Virtual16(Memory memory,long target,long rcx,long rdx,long r8,long r9);
+        void range16Direct8F8550(Memory memory,long rcx,long rdx,long r8,long r9);
         long copy24Allocate(Memory memory, long target, long rcx, long rdx, int r8d);
         void copy24Release(Memory memory, long target, long rcx, long rdx, int r8d);
         void prepare32_889660(Memory memory,long rcx);
@@ -50,6 +53,9 @@ public final class PendingContextWithKnownHelpers3076B60 {
             public void copy4_B2EEE0(PendingEmbeddedElements37282B0.Memory m, long destinationHeader, long sourceHeader) { calls.copy4_B2EEE0(memory, destinationHeader, sourceHeader); }
             public void copy16_8C70B0(PendingEmbeddedElements37282B0.Memory m, long destinationHeader, long rdxZero, long begin, long end) { calls.copy16_8C70B0(memory, destinationHeader, rdxZero, begin, end); }
             public void copy4_ADD0D0(PendingEmbeddedElements37282B0.Memory m, long destinationHeader, long rdxZero, long begin, long end) { calls.copy4_ADD0D0(memory, destinationHeader, rdxZero, begin, end); }
+            public long range16Virtual8(PendingEmbeddedElements37282B0.Memory m, long target, long rcx, long rdx, long r8, long r9) { return calls.range16Virtual8(memory, target, rcx, rdx, r8, r9); }
+            public void range16Virtual16(PendingEmbeddedElements37282B0.Memory m, long target, long rcx, long rdx, long r8, long r9) { calls.range16Virtual16(memory, target, rcx, rdx, r8, r9); }
+            public void range16Direct8F8550(PendingEmbeddedElements37282B0.Memory m, long rcx, long rdx, long r8, long r9) { calls.range16Direct8F8550(memory, rcx, rdx, r8, r9); }
         };
         PendingEmbedded24Copy260E040.Calls copy24Calls = new PendingEmbedded24Copy260E040.Calls() {
             public long allocate(PendingEmbedded24Copy260E040.Memory m, long target, long rcx, long rdx, int r8d) { return calls.copy24Allocate(memory, target, rcx, rdx, r8d); }

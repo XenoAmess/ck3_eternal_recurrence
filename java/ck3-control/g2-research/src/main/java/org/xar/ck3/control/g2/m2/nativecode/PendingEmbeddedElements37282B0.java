@@ -8,7 +8,7 @@ import org.xar.ck3.study.m6.element172.Element172Candidate;
 /** Full322 normal37282B0, known150/172 element bodies reused, four deepM6ports remain explicit. */
 public final class PendingEmbeddedElements37282B0 {
     private PendingEmbeddedElements37282B0() { }
-    public interface Memory extends Element150Inputs.Memory, Element172Inputs.Memory { }
+    public interface Memory extends Element150Inputs.Memory, Element172Inputs.Memory, org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Memory { }
     public interface Calls {
         void call889780(Memory memory, long rcx, long rdx);
         long allocate(Memory memory, long target, long rcx, long rdx, int r8d);
@@ -18,6 +18,9 @@ public final class PendingEmbeddedElements37282B0 {
         void copy4_B2EEE0(Memory memory, long destinationHeader, long sourceHeader);
         void copy16_8C70B0(Memory memory, long destinationHeader, long rdxZero, long begin, long end);
         void copy4_ADD0D0(Memory memory, long destinationHeader, long rdxZero, long begin, long end);
+        long range16Virtual8(Memory memory,long target,long rcx,long rdx,long r8,long r9);
+        void range16Virtual16(Memory memory,long target,long rcx,long rdx,long r8,long r9);
+        void range16Direct8F8550(Memory memory,long rcx,long rdx,long r8,long r9);
     }
 
     private static final class Adapter150 implements Element150Inputs.Calls {
@@ -32,12 +35,18 @@ public final class PendingEmbeddedElements37282B0 {
         }
     }
 
-    private static final class Adapter172 implements Element172Inputs.Calls {
+    private static final class Adapter172 implements org.xar.ck3.study.m6.range8c194.Element172WithKnownRange194.Calls {
         private final Memory mem;
         private final Calls calls;
         Adapter172(Memory mem, Calls calls) { this.mem = mem; this.calls = calls; }
-        public void copy16_8c70b0(long destinationHeader, long rdxZero, long begin, long end) {
-            calls.copy16_8C70B0(mem, destinationHeader, rdxZero, begin, end);
+        public long virtual8(long target, long rcx, long rdx, long r8, long r9) {
+            return calls.range16Virtual8(mem, target, rcx, rdx, r8, r9);
+        }
+        public void virtual16(long target, long rcx, long rdx, long r8, long r9) {
+            calls.range16Virtual16(mem, target, rcx, rdx, r8, r9);
+        }
+        public void direct8f8550(long rcx, long rdx, long r8, long r9) {
+            calls.range16Direct8F8550(mem, rcx, rdx, r8, r9);
         }
         public void copy4_add0d0(long destinationHeader, long rdxZero, long begin, long end) {
             calls.copy4_ADD0D0(mem, destinationHeader, rdxZero, begin, end);
@@ -93,7 +102,7 @@ public final class PendingEmbeddedElements37282B0 {
             long from = sourceBuffer;
             int remaining = sourceCount;
             do {
-                Element172Candidate.assign(new Element172Inputs.Input(to, from, moduleBase), memory, element172);
+                org.xar.ck3.study.m6.range8c194.Element172WithKnownRange194.assign(new Element172Inputs.Input(to, from, moduleBase), memory, element172);
                 to += 72L;
                 remaining--;
                 from += 72L;

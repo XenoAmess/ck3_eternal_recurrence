@@ -79,6 +79,13 @@ public final class SlotKnownCompositionHost286 {
             Step s = read(Op.R128, a, 3);
             return new Bits128(s.values().get(1).longValue(), s.values().get(2).longValue());
         }
+        @Override public org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16 read16(long a) {
+            Bits128 bits = read128(a);
+            return new org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16(bits.low(), bits.high());
+        }
+        @Override public void write16(long a, org.xar.ck3.study.m6.range8c194.Range8c194Inputs.Word16 v) {
+            write128(a, new Bits128(v.lowRaw64(), v.highRaw64()));
+        }
 
         // Inherited Calls from PendingContextWithKnownHelpers3076B60.Calls
         @Override public void call8895D0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d) { call(Op.C889, m, false, c, d); }
@@ -110,6 +117,11 @@ public final class SlotKnownCompositionHost286 {
         @Override public void replace32_8874D0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, int e, int f) { call(Op.REPLACE32, m, false, c, d, Integer.toUnsignedLong(e), Integer.toUnsignedLong(f)); }
         @Override public void virtual32Destroy(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d) { call(Op.DESTROY32, m, false, t, c, d); }
         @Override public void finalize32_3727EC0(PendingContextWithKnownHelpers3076B60.Memory m, long c) { call(Op.FINAL32, m, false, c); }
+
+        // New range16 callbacks
+        @Override public long range16Virtual8(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, long e, long f) { return call(Op.RANGE16_ALLOC, m, true, t, c, d, e, f); }
+        @Override public void range16Virtual16(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, long e, long f) { call(Op.RANGE16_FREE, m, false, t, c, d, e, f); }
+        @Override public void range16Direct8F8550(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, long e, long f) { call(Op.RANGE16_DIRECT, m, false, c, d, e, f); }
 
         // Declared Calls in PendingSlotWithKnownHelpers2A32770.Calls
         @Override public boolean call2A321F0(Memory m, long c, int d) {
