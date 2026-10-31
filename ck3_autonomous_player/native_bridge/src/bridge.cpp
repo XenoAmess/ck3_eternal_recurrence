@@ -29,6 +29,7 @@
 #include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_features.hpp"
+#include "xar_bridge/family_marriage_send_outgoing_v2.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1) || defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
 #include "xar_bridge/prewar_force_coalition_request12004.hpp"
 #endif
@@ -9940,6 +9941,30 @@ std::string CombatPhaseEventTraceV1ResultFrame(
   return result;
 }
 
+struct FamilyMarriageOutgoingContextV2 {
+  const xar::game::GameAdapter *game = nullptr;
+  const std::uint64_t *revision = nullptr;
+};
+
+bool CaptureFamilyMarriageOutgoingFrameV2Impl(
+    void *context, xar::bridge::FamilyMarriageOutgoingFrameV2 &output) noexcept {
+  if (context == nullptr) return false;
+  const auto *ctx = static_cast<const FamilyMarriageOutgoingContextV2 *>(context);
+  if (ctx->game == nullptr || ctx->revision == nullptr) return false;
+  xar::game::Snapshot snapshot{};
+  if (!xar::game::ReadSnapshot(*ctx->game, snapshot)) return false;
+  if (!snapshot.has_played_character) return false;
+  const std::uint32_t played_id = static_cast<std::uint32_t>(snapshot.played_character_id);
+  if (played_id == 0 || played_id == 0xFFFFFFFFu) return false;
+  output.revision = *ctx->revision;
+  output.date_raw = snapshot.date_raw;
+  output.played_character_id = played_id;
+  output.paused = snapshot.paused;
+  output.map_ready = snapshot.map_ready;
+  output.player_alive = snapshot.played_character_alive;
+  return true;
+}
+
 std::string ArrangeMarriageChoicesResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const std::vector<xar::game::ArrangeMarriageChoice> &choices,
@@ -13111,6 +13136,7 @@ struct WorkerState {
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
   std::uint64_t ranked_marriage_private_query_sequence = 0;
 #endif
+  std::uint64_t family_marriage_outgoing_query_sequence = 0;
   std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
 };
 
@@ -16502,6 +16528,8 @@ void RunConnectedSession(
                     && step != "enable-army-observer-research-sampling-v1"
                     && step != "disable-army-observer-research-sampling-v1"
                     && step != "query-army-observer-research-sampling-v1"
+                    && !(game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+                          step == xar::bridge::kFamilyMarriageSendOutgoingStepV2)
 #if defined(XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004)
                     && step != "enable-army-gathering-research-sampling-v1"
                     && step != "disable-army-gathering-research-sampling-v1"
@@ -22458,6 +22486,62 @@ void RunConnectedSession(
             }
           }
 #endif
+        } else if (step == xar::bridge::kFamilyMarriageSendOutgoingStepV2) {
+          if (!game.enabled() || !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+            connected = write_frame(
+                pipe, CommandResultFrame(request_id, step, false,
+                    "family marriage outgoing requires ck3_12004"));
+          } else if (state.family_marriage_outgoing_query_sequence == UINT64_MAX) {
+            connected = write_frame(
+                pipe, CommandResultFrame(request_id, step, false,
+                    "family marriage outgoing query sequence overflow"));
+          } else {
+            xar::bridge::FamilyMarriageOutgoingRequestV2 request{};
+            if (!xar::bridge::ParseFamilyMarriageOutgoingNativeFieldsV2(
+                    incoming.payload, request)) {
+              connected = write_frame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                      "family marriage outgoing request parse failed"));
+            } else {
+              std::uint64_t expected_revision = 0;
+              if (!xar::bridge::JsonUnsignedField(
+                      incoming.payload, "expected_revision", expected_revision)) {
+                connected = write_frame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                        "family marriage outgoing expected_revision missing"));
+              } else {
+                FamilyMarriageOutgoingContextV2 context{&game, &state_revision};
+                xar::bridge::FamilyMarriageOutgoingReadAccessV2 access{};
+                access.context = &context;
+                access.capture_frame = CaptureFamilyMarriageOutgoingFrameV2Impl;
+                std::string output;
+                const auto status = xar::bridge::ReadFamilyMarriageOutgoingUnavailableV2(
+                    access, request_id, request, expected_revision,
+                    state.family_marriage_outgoing_query_sequence + 1, output);
+                if (status == xar::bridge::FamilyMarriageOutgoingReadStatusV2::completed_unavailable &&
+                    !output.empty()) {
+                  ++state.family_marriage_outgoing_query_sequence;
+                  connected = write_frame(pipe, output);
+                } else if (status == xar::bridge::FamilyMarriageOutgoingReadStatusV2::invalid_request) {
+                  connected = write_frame(
+                      pipe, CommandResultFrame(request_id, step, false,
+                          "family marriage outgoing invalid request"));
+                } else if (status == xar::bridge::FamilyMarriageOutgoingReadStatusV2::frame_unavailable) {
+                  connected = write_frame(
+                      pipe, CommandResultFrame(request_id, step, false,
+                          "family marriage outgoing frame unavailable"));
+                } else if (status == xar::bridge::FamilyMarriageOutgoingReadStatusV2::frame_changed) {
+                  connected = write_frame(
+                      pipe, CommandResultFrame(request_id, step, false,
+                          "family marriage outgoing frame changed"));
+                } else {
+                  connected = write_frame(
+                      pipe, CommandResultFrame(request_id, step, false,
+                          "family marriage outgoing read failed"));
+                }
+              }
+            }
+          }
         } else if (step == "query-arrange-marriage-choices") {
           marriage_choices.clear();
           xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};

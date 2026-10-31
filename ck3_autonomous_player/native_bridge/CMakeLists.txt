@@ -1591,6 +1591,9 @@ add_library(xar_ck3_bridge SHARED
   src/battle_terminal_transition_v1_mailbox.cpp
   src/battle_transition_v1_mailbox.cpp
   src/bridge.cpp
+  src/family_marriage_send_outgoing_fields_v2.cpp
+  src/family_marriage_send_outgoing_dispatch_v2.cpp
+  src/family_marriage_send_outgoing_serializer_v2.cpp
   src/campaign_root_context_v1.cpp
   src/campaign_root_context_v1_mailbox.cpp
   src/campaign_root_context_v1_serializer.cpp
