@@ -1167,6 +1167,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     /** Historical observation DATA stays separate from the immutable completed-cycle SEM. */
     private static void requireSettledObservedContinuation(ObservationIdentity retained,ObservationIdentity next) {
+        requireSettledObservedContinuation(retained,next,false);
+    }
+    private static void requireSettledObservedContinuation(ObservationIdentity retained,ObservationIdentity next,boolean publicResetPermitted) {
         var before=retained.frame();var after=next.frame();
         StrictJson.require(retained.machineId().equals(next.machineId())&&retained.game().equals(next.game())
                 &&retained.observationVersion()==next.observationVersion()
@@ -1174,7 +1177,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&before.episodeRunId().equals(after.episodeRunId())
                 &&after.identity().dateRaw().compareTo(before.identity().dateRaw())>=0
                 &&after.identity().nativeRevision().compareTo(before.identity().nativeRevision())>=0
-                &&after.revision().compareTo(before.revision())>=0,
+                &&(publicResetPermitted||after.revision().compareTo(before.revision())>=0),
                 "settled recovery observation regressed its actual Game, subject, version, date or revision");
     }
 
@@ -1702,10 +1705,25 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     for(var row:details.get("read_rows")) {
                         var read=originals.loadRead(ExactRef.fromJson(row.get("read")));
                         for(var guard:java.util.List.of(read.before().binding(),read.after().binding())) {
-                            requireSettledObservedContinuation(latestObserved,guard.observed());
+                            var currentTransport=new org.xar.ck3.control.application.action.NativeObservationPort.TransportSession(
+                                    guard.source().machineId(),guard.observed().game(),guard.connectionGeneration(),guard.sessionId());
+                            StrictJson.require(previousTransport.machineId().equals(owner.machineId())&&previousTransport.game().equals(owner.game())
+                                    &&previousTransport.sessionId().equals(owner.sessionId())&&currentTransport.machineId().equals(owner.machineId())
+                                    &&currentTransport.game().equals(owner.game())&&currentTransport.sessionId().equals(owner.sessionId())
+                                    &&guard.source().equals(source),"historical READ crossed its actual source/Game/session");
+                            var connectionOrder=currentTransport.connectionGeneration().compareTo(previousTransport.connectionGeneration());
+                            StrictJson.require(connectionOrder>=0,"read guard connection generation regressed");
+                            boolean publicResetPermitted=false;
+                            if(connectionOrder>0) {
+                                var ack=read.original();
+                                var custody=ack.custody().orElseThrow(()->new IllegalArgumentException("new connection read lacks actual custody"));
+                                custody.verify(read);
+                                StrictJson.require(custody.session().equals(currentTransport),"new connection read custody session mismatch");
+                                publicResetPermitted=true;
+                            }
+                            requireSettledObservedContinuation(latestObserved,guard.observed(),publicResetPermitted);
                             latestObserved=guard.observed();
-                            previousTransport=new org.xar.ck3.control.application.action.NativeObservationPort.TransportSession(
-                                    owner.machineId(),owner.game(),guard.connectionGeneration(),owner.sessionId());
+                            previousTransport=currentTransport;
                         }
                     }
                 } else if(edge.kind().equals(WriterContracts.DRIVER_ACTION_HISTORY_KIND)) {
