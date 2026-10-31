@@ -6,7 +6,7 @@ public final class PendingContextWithKnownHelpers3076B60 {
     public interface Memory extends PendingEmbeddedCopy373ACF0.Memory,
             PendingContextChildInit105D2D0.Memory, PendingContextRangeInsertBCB7C0.Memory,
             PendingContextTailCopy2503880.Memory, PendingEmbeddedInit8895D0.Memory,
-            PendingEmbeddedElements37282B0.Memory { }
+            PendingEmbeddedElements37282B0.Memory, PendingEmbedded24Copy260E040.Memory { }
     public interface Calls {
         void call8895D0(Memory memory, long rcx, long rdx);
         void call37282B0(Memory memory, long rcx, long rdx);
@@ -28,6 +28,8 @@ public final class PendingContextWithKnownHelpers3076B60 {
         void copy4_B2EEE0(Memory memory, long destinationHeader, long sourceHeader);
         void copy16_8C70B0(Memory memory, long destinationHeader, long rdxZero, long begin, long end);
         void copy4_ADD0D0(Memory memory, long destinationHeader, long rdxZero, long begin, long end);
+        long copy24Allocate(Memory memory, long target, long rcx, long rdx, int r8d);
+        void copy24Release(Memory memory, long target, long rcx, long rdx, int r8d);
     }
     public static long copy(Memory memory, Calls calls, long destination, long source, long moduleBase) {
         PendingEmbeddedInit8895D0.Calls init8895D0Calls = new PendingEmbeddedInit8895D0.Calls() {
@@ -44,6 +46,10 @@ public final class PendingContextWithKnownHelpers3076B60 {
             public void copy16_8C70B0(PendingEmbeddedElements37282B0.Memory m, long destinationHeader, long rdxZero, long begin, long end) { calls.copy16_8C70B0(memory, destinationHeader, rdxZero, begin, end); }
             public void copy4_ADD0D0(PendingEmbeddedElements37282B0.Memory m, long destinationHeader, long rdxZero, long begin, long end) { calls.copy4_ADD0D0(memory, destinationHeader, rdxZero, begin, end); }
         };
+        PendingEmbedded24Copy260E040.Calls copy24Calls = new PendingEmbedded24Copy260E040.Calls() {
+            public long allocate(PendingEmbedded24Copy260E040.Memory m, long target, long rcx, long rdx, int r8d) { return calls.copy24Allocate(memory, target, rcx, rdx, r8d); }
+            public void release(PendingEmbedded24Copy260E040.Memory m, long target, long rcx, long rdx, int r8d) { calls.copy24Release(memory, target, rcx, rdx, r8d); }
+        };
         PendingEmbeddedCopy373ACF0.Calls embeddedCalls = new PendingEmbeddedCopy373ACF0.Calls() {
             public void call8895D0(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) {
                 PendingEmbeddedInit8895D0.initialize(memory, init8895D0Calls, rcx, moduleBase);
@@ -51,7 +57,9 @@ public final class PendingContextWithKnownHelpers3076B60 {
             public void call37282B0(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) {
                 PendingEmbeddedElements37282B0.copy(memory, elementsCalls, rcx, rdx, moduleBase);
             }
-            public void call260E040(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) { calls.call260E040(memory, rcx, rdx); }
+            public void call260E040(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) {
+                PendingEmbedded24Copy260E040.copy(memory, copy24Calls, rcx, rdx);
+            }
             public void call3727180(PendingEmbeddedCopy373ACF0.Memory m, long rcx, long rdx) { calls.call3727180(memory, rcx, rdx); }
         };
         PendingContextChildInit105D2D0.Calls initCalls = new PendingContextChildInit105D2D0.Calls() {

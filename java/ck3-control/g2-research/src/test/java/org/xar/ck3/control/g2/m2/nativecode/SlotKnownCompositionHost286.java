@@ -101,6 +101,8 @@ public final class SlotKnownCompositionHost286 {
         @Override public void copy4_B2EEE0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d) { call(Op.COPY4_HEAD, m, false, c, d); }
         @Override public void copy16_8C70B0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, long e, long f) { call(Op.COPY16_RANGE, m, false, c, d, e, f); }
         @Override public void copy4_ADD0D0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, long e, long f) { call(Op.COPY4_RANGE, m, false, c, d, e, f); }
+        @Override public long copy24Allocate(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, int e) { return call(Op.ALLOC24, m, true, t, c, d, Integer.toUnsignedLong(e)); }
+        @Override public void copy24Release(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, int e) { call(Op.RELEASE24, m, false, t, c, d, Integer.toUnsignedLong(e)); }
 
         // Declared Calls in PendingSlotWithKnownHelpers2A32770.Calls
         @Override public boolean call2A321F0(Memory m, long c, int d) {

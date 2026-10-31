@@ -85,5 +85,7 @@ public final class ContextCompositionHost282 {
         @Override public void copy4_B2EEE0(Memory m, long c, long d) { call(Op.COPY4_HEAD, m, false, c, d); }
         @Override public void copy16_8C70B0(Memory m, long c, long d, long e, long f) { call(Op.COPY16_RANGE, m, false, c, d, e, f); }
         @Override public void copy4_ADD0D0(Memory m, long c, long d, long e, long f) { call(Op.COPY4_RANGE, m, false, c, d, e, f); }
+        @Override public long copy24Allocate(Memory m, long t, long c, long d, int e) { return call(Op.ALLOC24, m, true, t, c, d, Integer.toUnsignedLong(e)); }
+        @Override public void copy24Release(Memory m, long t, long c, long d, int e) { call(Op.RELEASE24, m, false, t, c, d, Integer.toUnsignedLong(e)); }
     }
 }
