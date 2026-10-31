@@ -303,4 +303,192 @@ class LateOutcomeTest {
         Budget shortLocal = new Budget(1001, 8, 2000, 100, Instant.MAX);
         assertEquals(1, LateOutcomePlanner.assess(attempt(), shortLocal, context(0), List.of()).waitMillis());
     }
+
+    @Test void idleStatusAdmitsZeroSpeedAndPreservesResetFacts() throws IOException {
+        // Source-derived software fixture: simulates Native63 reset/cancel idle state (speed 0..5 legal for IDLE)
+        // This is NOT an actual live ACK or game observation.
+        ObjectNode row = statusRow();
+        row.put("state", "idle");
+        row.put("generation", 0);
+        row.put("starting_date_raw", 0);
+        row.put("target_date_raw", 0);
+        row.put("last_observed_date_raw", 0);
+        row.put("trigger_date_raw", 0);
+        row.put("speed", 0);
+        row.put("mode", "decision_epoch");
+        row.put("army_count", 0);
+        row.put("combat_count", 0);
+        row.put("completed_daily_ticks", 0);
+        row.put("intermediate_pause_count", 0);
+        row.put("trigger_flags", 0);
+        row.putArray("trigger_reasons");
+        row.put("signed_date_delta_from_target_raw", 0);
+        row.put("overshoot_days", -1);
+        row.put("pause_wrapper_called", false);
+        row.put("pause_observed", false);
+        row.put("terminal_observed", false);
+        row.put("abnormal", false);
+
+        Status idle0 = status(row);
+        assertEquals(State.IDLE, idle0.state());
+        assertEquals(0, idle0.speed());
+        assertEquals("0", idle0.generation().decimal());
+        assertEquals(0, idle0.startingDateRaw());
+        assertEquals(0, idle0.targetDateRaw());
+        assertEquals(0, idle0.lastObservedDateRaw());
+        assertEquals(0, idle0.triggerDateRaw());
+        assertEquals(Mode.DECISION_EPOCH, idle0.mode());
+        assertEquals(0, idle0.armyCount());
+        assertEquals(0, idle0.combatCount());
+        assertEquals(0, idle0.completedDailyTicks());
+        assertEquals(0, idle0.intermediatePauseCount());
+        assertEquals(0, idle0.triggerFlags());
+        assertEquals(List.of(), idle0.triggerReasons());
+        assertEquals(0, idle0.signedDateDeltaFromTargetRaw());
+        assertEquals(-1, idle0.overshootDays());
+        assertFalse(idle0.pauseWrapperCalled());
+        assertFalse(idle0.pauseObserved());
+        assertFalse(idle0.terminalObserved());
+        assertFalse(idle0.abnormal());
+
+        // Canceled idle with speed 1..5 remains accepted
+        for (int s = 1; s <= 5; s++) {
+            ObjectNode cancelRow = statusRow();
+            cancelRow.put("state", "idle");
+            cancelRow.put("speed", s);
+            cancelRow.put("generation", 1);
+            cancelRow.put("starting_date_raw", 53279400);
+            cancelRow.put("target_date_raw", 53279424);
+            cancelRow.put("last_observed_date_raw", 53279400);
+            cancelRow.put("trigger_date_raw", 0);
+            cancelRow.put("mode", "terminal_or_sentinel");
+            cancelRow.put("army_count", 0);
+            cancelRow.put("combat_count", 0);
+            cancelRow.put("completed_daily_ticks", 0);
+            cancelRow.put("intermediate_pause_count", 0);
+            cancelRow.put("trigger_flags", 0);
+            cancelRow.putArray("trigger_reasons");
+            cancelRow.put("signed_date_delta_from_target_raw", 0);
+            cancelRow.put("overshoot_days", -1);
+            cancelRow.put("pause_wrapper_called", false);
+            cancelRow.put("pause_observed", false);
+            cancelRow.put("terminal_observed", false);
+            cancelRow.put("abnormal", false);
+            Status canceled = status(cancelRow);
+            assertEquals(State.IDLE, canceled.state());
+            assertEquals(s, canceled.speed());
+        }
+    }
+
+    @Test void nonIdleSpeedZeroAndMalformedTokensAreRejected() throws IOException {
+        // Negative boundaries: speed 0 must be rejected for all non-IDLE states
+        for (String state : List.of("armed", "triggered", "failed", "unavailable")) {
+            ObjectNode row = statusRow();
+            row.put("state", state);
+            row.put("speed", 0);
+            // Ensure other fields are consistent with the state to isolate speed rejection
+            if (state.equals("armed")) {
+                row.put("generation", 1);
+                row.put("starting_date_raw", 53279400);
+                row.put("target_date_raw", 53279424);
+                row.put("last_observed_date_raw", 53279400);
+                row.put("trigger_date_raw", 0);
+                row.put("mode", "terminal_or_sentinel");
+                row.put("army_count", 0);
+                row.put("combat_count", 0);
+                row.put("completed_daily_ticks", 0);
+                row.put("intermediate_pause_count", 0);
+                row.put("trigger_flags", 0);
+                row.putArray("trigger_reasons");
+                row.put("signed_date_delta_from_target_raw", 0);
+                row.put("overshoot_days", -1);
+                row.put("pause_wrapper_called", false);
+                row.put("pause_observed", false);
+                row.put("terminal_observed", false);
+                row.put("abnormal", false);
+            } else if (state.equals("triggered")) {
+                row.put("generation", 1);
+                row.put("starting_date_raw", 53279400);
+                row.put("target_date_raw", 53279424);
+                row.put("last_observed_date_raw", 53279424);
+                row.put("trigger_date_raw", 53279424);
+                row.put("mode", "terminal_or_sentinel");
+                row.put("army_count", 0);
+                row.put("combat_count", 0);
+                row.put("completed_daily_ticks", 1);
+                row.put("intermediate_pause_count", 0);
+                row.put("trigger_flags", 1);
+                row.putArray("trigger_reasons").add("date_deadline");
+                row.put("signed_date_delta_from_target_raw", 0);
+                row.put("overshoot_days", 0);
+                row.put("pause_wrapper_called", true);
+                row.put("pause_observed", true);
+                row.put("terminal_observed", false);
+                row.put("abnormal", false);
+            } else if (state.equals("failed")) {
+                row.put("generation", 1);
+                row.put("starting_date_raw", 53279400);
+                row.put("target_date_raw", 53279424);
+                row.put("last_observed_date_raw", 53279424);
+                row.put("trigger_date_raw", 53279424);
+                row.put("mode", "terminal_or_sentinel");
+                row.put("army_count", 0);
+                row.put("combat_count", 0);
+                row.put("completed_daily_ticks", 1);
+                row.put("intermediate_pause_count", 0);
+                row.put("trigger_flags", 1);
+                row.putArray("trigger_reasons").add("date_deadline");
+                row.put("signed_date_delta_from_target_raw", 0);
+                row.put("overshoot_days", 0);
+                row.put("pause_wrapper_called", true);
+                row.put("pause_observed", true);
+                row.put("terminal_observed", false);
+                row.put("abnormal", true);
+            } else if (state.equals("unavailable")) {
+                row.put("generation", 0);
+                row.put("starting_date_raw", 0);
+                row.put("target_date_raw", 0);
+                row.put("last_observed_date_raw", 0);
+                row.put("trigger_date_raw", 0);
+                row.put("mode", "decision_epoch");
+                row.put("army_count", 0);
+                row.put("combat_count", 0);
+                row.put("completed_daily_ticks", 0);
+                row.put("intermediate_pause_count", 0);
+                row.put("trigger_flags", 0);
+                row.putArray("trigger_reasons");
+                row.put("signed_date_delta_from_target_raw", 0);
+                row.put("overshoot_days", -1);
+                row.put("pause_wrapper_called", false);
+                row.put("pause_observed", false);
+                row.put("terminal_observed", false);
+                row.put("abnormal", false);
+            }
+            assertThrows(ContractViolationException.class, () -> status(row), "speed 0 rejected for " + state);
+        }
+
+        // Negative/out-of-range speeds for any state
+        for (int badSpeed : List.of(-1, 6, 100)) {
+            ObjectNode row = statusRow();
+            row.put("speed", badSpeed);
+            assertThrows(ContractViolationException.class, () -> status(row), "speed " + badSpeed + " rejected");
+        }
+
+        // Strict malformed numeric tokens for speed field
+        for (String token : List.of("true", "1.0", "1e0", "\"1\"", "null", "-1", "18446744073709551616")) {
+            ObjectNode row = statusRow();
+            row.put("speed", "__raw_token__");
+            byte[] raw = row.toString().replace("\"__raw_token__\"", token).getBytes(StandardCharsets.UTF_8);
+            assertThrows(ContractViolationException.class, () -> SentinelCodec.decode(raw), "malformed speed token: " + token);
+        }
+
+        // Arm speed 0 rejection (unchanged contract)
+        assertThrows(ContractViolationException.class, () -> new Arm(u(1), 53279400, 53279424, 0, Mode.TERMINAL_OR_SENTINEL, List.of(), 0), "Arm speed 0 rejected");
+
+        // Direct typed Status construction with speed 0 for non-IDLE
+        assertThrows(ContractViolationException.class, () -> new Status(State.ARMED, u(1), 53279400, 53279424, 53279400, 0, 0, Mode.TERMINAL_OR_SENTINEL, 0, 0, 0, 0, 0, List.of(), 0, -1, false, false, false, false), "Status speed 0 rejected for ARMED");
+        assertThrows(ContractViolationException.class, () -> new Status(State.TRIGGERED, u(1), 53279400, 53279424, 53279424, 53279424, 0, Mode.TERMINAL_OR_SENTINEL, 0, 0, 1, 0, 1, List.of("date_deadline"), 0, 0, true, true, false, false), "Status speed 0 rejected for TRIGGERED");
+        assertThrows(ContractViolationException.class, () -> new Status(State.FAILED, u(1), 53279400, 53279424, 53279424, 53279424, 0, Mode.TERMINAL_OR_SENTINEL, 0, 0, 1, 0, 1, List.of("date_deadline"), 0, 0, true, true, false, true), "Status speed 0 rejected for FAILED");
+        assertThrows(ContractViolationException.class, () -> new Status(State.UNAVAILABLE, u(0), 0, 0, 0, 0, 0, Mode.DECISION_EPOCH, 0, 0, 0, 0, 0, List.of(), 0, -1, false, false, false, false), "Status speed 0 rejected for UNAVAILABLE");
+    }
 }

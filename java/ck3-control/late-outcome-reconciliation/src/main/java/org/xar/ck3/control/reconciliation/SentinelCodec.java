@@ -44,7 +44,7 @@ public final class SentinelCodec {
         reasons.forEach(item -> names.add(StrictJson.text(item)));
         return new Status(typedState, nativeUInt64(row.get("generation")), i32(row.get("starting_date_raw")),
                 i32(row.get("target_date_raw")), i32(row.get("last_observed_date_raw")), i32(row.get("trigger_date_raw")),
-                (int) StrictJson.integer(row.get("speed"), 1, 5), typedMode, u32(row.get("army_count")),
+                (int) StrictJson.integer(row.get("speed"), typedState == State.IDLE ? 0 : 1, 5), typedMode, u32(row.get("army_count")),
                 u32(row.get("combat_count")), u32(row.get("completed_daily_ticks")), u32(row.get("intermediate_pause_count")),
                 u32(row.get("trigger_flags")), names, i32(row.get("signed_date_delta_from_target_raw")),
                 i32(row.get("overshoot_days")), bool(row.get("pause_wrapper_called")), bool(row.get("pause_observed")),

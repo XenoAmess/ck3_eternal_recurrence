@@ -129,7 +129,7 @@ public final class LateOutcome {
             StrictJson.require(startingDateRaw >= 0 && targetDateRaw >= 0 && lastObservedDateRaw >= 0
                     && triggerDateRaw >= 0, "nonnegative native date fields");
             StrictJson.require(overshootDays >= -1, "overshoot days at least -1");
-            StrictJson.require(speed >= 1 && speed <= 5, "status speed 1..5");
+            StrictJson.require(speed >= (state == State.IDLE ? 0 : 1) && speed <= 5, "status speed 0..5 for IDLE, 1..5 otherwise");
             uint32(armyCount); uint32(combatCount); uint32(completedDailyTicks); uint32(intermediatePauseCount);
             StrictJson.require(triggerFlags >= 0 && triggerFlags < (1L << 17), "known sentinel flags only");
             triggerReasons = List.copyOf(triggerReasons);
