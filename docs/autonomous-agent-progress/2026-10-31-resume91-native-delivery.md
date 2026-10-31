@@ -145,3 +145,15 @@ M2 的新 ABI header、三个小生产 TU、Bridge 五处局部接线及 CMake �
 没有可直接授等价的 current whole fixture 对象缓存，因此只验证此次实际登记行为：从当前生产源码精确抽取完整 Populate12002、Populate12004、Register 三个函数 body，引用四个真实结构/声明 header，运行新 selector 原断言。未执行的 callback 仅 typed abort 测试符号，实际未触发；`/OPT:NOICF` 和 old/new 指针不同断言防止地址合并遮蔽缺陷。baseline generated TU 编译链接0/3.194秒，唯一 selector 预期 exit1/0.004秒，精确 `.4 registration mismatch`；candidate generated TU 编译链接0/2.910秒，同 selector exit0/0.011秒、`.2/.4 isolation` 通过，03:04:59Z 全部END/资源释放。没有把这两个 generated TU 写成完整 router/whole fixture 编译。
 
 两轮真实模型返回后 impl02/test02 的精确修改原样采用，第一轮缺 include、模糊 span、无关 guard 与测试缺 `.2` 隔离的源码拒绝保留。正式三叶 patch check0/application0，本岗仅增加交付记录。原件 `D:/ck3-state/resume91-m1-native/crown-finalterms130/{DELIVERY130,MODEL-REVIEW130,MAPPING130}.json` 和 `unit/ACTUAL130.json`。该结果闭合源码的登记指针错配；未授 actual query 执行、完整 Bridge ABI、hosted CTest、DLL部署或129 loaded binary根因，未重新提交 CROWN。
+
+## Fresh 三项持久 CMake/CI 回归（03:24Z）
+
+Fresh 既有三份隔离 unit 现已接正式 CMake 与 static-ci：新增两个 CMake 模块、owner/publication/handler_ack 三份 fixture 和一个仅测试用 abort seam 叶。Root CMake 调用专用装配函数，既有 Windows Native CI 的 target 列表及精确 CTest regex 加入三个新入口。私有 Bridge serializer/PublishSnapshot/WorkerState/Handler 不复制进测试源码：configure 时从实际 Bridge 的唯一签名与列零闭合处生成五个 include，CMAKE_CONFIGURE_DEPENDS 跟踪原源；无旧 runtime 库或旧 ABI 对象。
+
+三个专用目标共享 core2、owner6、wire4 OBJECT 组，12 个支撑 TU 各只编一次，publication 只链接相关子集；另三个 fixture 各编一个 TU 并链接。六个非 fresh 外延只有 typed abort，误入立即失败，仅归测试 OBJECT，未进入生产目标。显式布尔/失败返回检查在 Release 下保留，没有靠被 NDEBUG 关闭的 assert 取得绿。
+
+新接线首次实测根 `D:/ck3-state/resume91-m6-native/production-fresh-ci/`：LANGUAGES NONE 源生成0/0.537秒；CXX configure 的 CMake 本身0，但 ABI Debug 探测留下 owned mspdbsrv，现成 Job 自动收净并将 wrapper 记1，失败原件保留。复用已生成 Ninja，没有重探测或放宽 Job。Release core2 0/10.373秒、wire4 0/7.848秒、owner6 0/32.310秒；owner/publication/ACK 三 fixture+link 分别0/10.379、10.106、11.630秒，均 Job active0/stopnull，没有重编支撑组。
+
+03:11:01.214–04.129Z 首次三个专用 CTest 3P/0F，CTest内部0.61秒、Job2.809秒/active0/stopnull。owner 输出 pair_ms16/raw_reads4/wrong_owner0，publication 验 unchanged 关联、changed revision 和失败写不提交，Handler ACK 输出 raw5/wrong0。此为新正式接线验收，不重复之前三隔离 unit 的绿。完整 DELIVERY.json、RESULT.json、MODEL-REVIEW01.json、CONFIGURE-REVIEW01.json、各 build/*/ACTUAL.json 及 focused-build/Testing/Temporary/LastTest.log 保存来源、失败及实际采用。
+
+本岗独立审完模块、extractor、三个 fixture、seam 与三个集成旧锚点，只复制六新叶和修改两个既有文件。新叶仅规范 EOF/EOL，两个历史 D-only 注释改为 Test-only，没有生产 Fresh 算法变化；应用见 `D:/ck3-state/resume91-native-integration/FRESH-CI-APPLY01.json`。源码制作两轮模型的可用装配部分、截断/错误拒绝和 owner 对 extractor/guard/CI anchor 的必要接管分开记录。未授完整 Native 根、全 feature 矩阵、hosted CI、ACK第二次写失败、公开 dispatcher运行、DLL部署或 Game 完成。
