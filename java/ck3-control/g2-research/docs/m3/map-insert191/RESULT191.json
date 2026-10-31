@@ -1,0 +1,187 @@
+{
+  "schema": "m3.map-insert191-portable-first-software/v1",
+  "package_number": 56,
+  "status": "FIRST_CORE_STRICT_AND_FIRST_THREE_INDEPENDENT_SCENES_PASS",
+  "core_actual": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\verification-core191\\ACTUAL191.json",
+  "core_actual_sha256": "3804f82d41456096c34f56393ba84c2fc5adeebacaf13d3649f507e3799bfb4c",
+  "witness_actual": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\verification-witness191\\ACTUAL191.json",
+  "witness_actual_sha256": "91d2468b7973de9d94df75cf5513522d6e2b283494a6e07c17bb588a37dae6c3",
+  "core_explicit_source_count": 4,
+  "core_sources": [
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\retained\\InGameIdlerEventDispatch.java",
+      "bytes": 2735,
+      "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539"
+    },
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\g2\\common\\nativecore\\task\\NativeTaskMemory.java",
+      "bytes": 271,
+      "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\api\\org\\xar\\ck3\\research\\m3\\map191\\MapInsert191Api.java",
+      "bytes": 2020,
+      "sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\candidate\\org\\xar\\ck3\\research\\m3\\map191\\MapInsertC3B960.java",
+      "bytes": 10777,
+      "sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4"
+    }
+  ],
+  "core_first_strict": {
+    "begin": "2026-10-31T21:04:43.827532+00:00",
+    "end": "2026-10-31T21:04:44.491119+00:00",
+    "exit": 0,
+    "seconds": 0.6635863003320992
+  },
+  "new_witness_explicit_source_count": 3,
+  "new_witness_sources": [
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\api\\org\\xar\\ck3\\research\\m3\\map191\\MapInsertWitness191Api.java",
+      "bytes": 1070,
+      "sha256": "4a500e595cab32d3ccf3c4011e47795a607f9013870d837645edb22d386fce0b"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\host-owner191\\org\\xar\\ck3\\research\\m3\\map191\\MapInsertWitnessHost191.java",
+      "bytes": 16743,
+      "sha256": "d0c9607b2e71fd96e81ac2774de8803de7bdbce9235003a750aaaf2084ecae46"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m3-native\\map-insert191\\book-owner191\\MapInsertWitnessBook191.java",
+      "bytes": 4908,
+      "sha256": "e318c3f4f18cb859fc766b9f5ba14e7c310c99b69efac5d07279eaf2341e90d3"
+    }
+  ],
+  "new_witness_first_stages": [
+    {
+      "stage": "FIRST3WITNESS_STRICT",
+      "begin": "2026-10-31T21:13:10.303519+00:00",
+      "end": "2026-10-31T21:13:11.259127+00:00",
+      "exit": 0,
+      "seconds": 0.9556099995970726
+    },
+    {
+      "stage": "FIRST3SCENES",
+      "begin": "2026-10-31T21:13:11.259676+00:00",
+      "end": "2026-10-31T21:13:11.988126+00:00",
+      "exit": 0,
+      "seconds": 0.7284556003287435
+    }
+  ],
+  "single_seven_source_compile_claimed": false,
+  "old_production_recompiled_for_witness": 0,
+  "new_scenes": 3,
+  "events_per_scene": [
+    10,
+    23,
+    31
+  ],
+  "global_scripted_events": 64,
+  "Memory_events": 61,
+  "opaque_ports": 3,
+  "ports_per_scene": [
+    1,
+    0,
+    2
+  ],
+  "final_cells": 22,
+  "final_cells_per_scene": [
+    2,
+    9,
+    11
+  ],
+  "return_checks": 3,
+  "script_exhaustion_checks": 3,
+  "checks_scope": "Return and exhaustion structural checks plus exact final cells, not28 independent semantic assertions",
+  "complete_normal_code_bytes": 814,
+  "UW_bytes": 24,
+  "actual_new_PE": 838,
+  "header_provider_Game": 0,
+  "core_model_adoption": "R1 complete candidate plus five exact R2 model edits uniquely assembled, zero owner executable-code edits; full parent814source review and software pass",
+  "Book_model_adoption": 0,
+  "Book_owner": "Independent owner derived literal source from complete814ASM/API, did not read current core or either rejected modelBook or target results",
+  "Host_model_adoption": 0,
+  "Host_owner": "Mechanical existing188 foundation plus new typedport method owner code; R1 length whole discarded, R2 placeholder echo has owner-prompt responsibility",
+  "metadata_loss": "Original0PE-stage SOURCE191.json overwritten by owner preparation, no exact backup/rawSHA; LOST retained with erratum, inventory/PDATA/unique838PE and REQUESTs unaffected",
+  "no_incoming_fifth_value_guessed": true,
+  "source_only_port_success_not_callee_algorithm_equivalence": true,
+  "not_proved": [
+    "Long scratch swap/rehash/other-insert branches executed",
+    "Recursive/grow/overflow terminal branches executed",
+    "Arbitrary MXCSR/FP environment",
+    "Hardware atomic INC/128bit",
+    "FullCPU/ABI/EH",
+    "Native/Game/EF0/natural caller"
+  ],
+  "old_cases_rerun": 0,
+  "Native_Game_actions": 0,
+  "formal_status": "MATURE_SOURCE_DELIVERY_PENDING",
+  "Main_prerequisite": false,
+  "delivery_status": "PARENT_REVIEWED_SOURCE_READY_PENDING_FORMAL",
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsert191Api.java",
+      "kind": "main",
+      "bytes": 2020,
+      "sha256": "dec051571c2741a71cb852b1ffb703c62d9a12c166a06ec80e07cd4a38939251",
+      "source_changed_for_delivery": false
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/map191/MapInsertC3B960.java",
+      "kind": "main",
+      "bytes": 10777,
+      "sha256": "7f0bc2945a53a14435c02088b823c54ff4b3096a25e28ba75f89336c05d5a8b4",
+      "source_changed_for_delivery": false
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/map191/MapInsertWitness191Api.java",
+      "kind": "test",
+      "bytes": 1070,
+      "sha256": "4a500e595cab32d3ccf3c4011e47795a607f9013870d837645edb22d386fce0b",
+      "source_changed_for_delivery": false
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/map191/MapInsertWitnessHost191.java",
+      "kind": "test",
+      "bytes": 16743,
+      "sha256": "d0c9607b2e71fd96e81ac2774de8803de7bdbce9235003a750aaaf2084ecae46",
+      "source_changed_for_delivery": false
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/map191/MapInsertWitnessBook191.java",
+      "kind": "test",
+      "bytes": 4908,
+      "sha256": "e318c3f4f18cb859fc766b9f5ba14e7c310c99b69efac5d07279eaf2341e90d3",
+      "source_changed_for_delivery": false
+    }
+  ],
+  "existing_formal_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "bytes": 2735,
+      "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "existing_formal_source": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "bytes": 271,
+      "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "existing_formal_source": true
+    }
+  ],
+  "model_cohort": {
+    "logical_requests": 6,
+    "actual_POSTs": 7,
+    "actual_ENDs": 7,
+    "actual_phase_peak": 3,
+    "current_inflight": 0,
+    "stop": 5,
+    "length": 1,
+    "transport_failure": 1
+  },
+  "model_original_evidence_copied_to_Git": false,
+  "portable_D_classroot_required": false,
+  "new_compile_RUN_for_delivery": false,
+  "publication_hash_scope": "Original physical sources selected and first compiled. Git publication may mechanically normalize whitespace; add published git_lf identities separately and retain these originals."
+}
