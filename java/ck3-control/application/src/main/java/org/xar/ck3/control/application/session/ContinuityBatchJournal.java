@@ -210,9 +210,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 known.actionRows(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty());
         return new RetainedReadDriver(facts,afterRef);
     }
-    /** Recover committed single-row ACTION history DATA after effect settlement, without issuing another action. */
-    private RetainedReadDriver retainCapturedAction(WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
-            java.util.List<ActionReceipt> receipts,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+    /** Recover committed actual ACTION history DATA after effect settlement, without issuing another action. */
+    private RetainedReadDriver retainCapturedAction(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
+            java.util.List<ActionReceipt> receipts,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) throws IOException {
         var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
         String actionId=StrictJson.text(details.get("action_id"));
         var matches=receipts.stream().filter(r->r.command().actionId().equals(actionId)).toList();
@@ -230,18 +231,18 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 "captured ACTION changed its canonical predecessor or complete Driver");
         org.xar.ck3.control.application.driver.DriverActionHistoryState.requireReduction(edge.before(),edge.after(),
                 publication.request(java.util.List.of(publication.beforeDriver(),publication.afterDriver(),publication.originalSource())),true);
+        // Replay the actual producer's material role: complete Legacy/Gift rows or unchanged canonical-only Driver.
+        org.xar.ck3.control.application.driver.DriverActionHistoryState.requireOriginal(same,publication,action,originals);
         var driver=org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.decodeComplete(
                 originals.loadFullMaterial(publication.afterDriver()).bytes());
-        var oldHistory=known.driver().commandHistory();var newHistory=driver.commandHistory();
-        StrictJson.require(newHistory.size()==oldHistory.size()+1&&newHistory.subList(0,oldHistory.size()).equals(oldHistory)
-                        &&driver.session().equals(known.driver().session()),
-                "captured ACTION history changed another Driver row or session");
-        var rowRef=publication.legacyRow().orElseThrow(()->new IllegalArgumentException("captured ACTION requires its actual legacy history row"));
-        var rowBytes=originals.loadMaterial(rowRef).bytes();
-        StrictJson.require(java.util.Arrays.equals(newHistory.getLast().originalRow().json(),rowBytes),
-                "captured ACTION history row differs from its named original");
-        var coverage=new org.xar.ck3.control.application.driver.DriverSnapshotFacts.ActionRow(actionId,action.bodySha256(),
-                action.sequence(),newHistory.size(),rowRef);
+        org.xar.ck3.control.application.driver.DriverSnapshotFacts.ActionRow coverage;
+        if(publication.legacyRow().isPresent()) {
+            // Gift may append several rows; coverage names its verified primary row, not the final receipt row.
+            long index=Math.addExact(known.driver().commandHistory().size(),1L);
+            coverage=new org.xar.ck3.control.application.driver.DriverSnapshotFacts.ActionRow(actionId,action.bodySha256(),
+                    action.sequence(),index,publication.legacyRow().orElseThrow());
+        } else coverage=new org.xar.ck3.control.application.driver.DriverSnapshotFacts.ActionRow(actionId,action.bodySha256(),
+                action.sequence(),new org.xar.ck3.control.application.driver.DriverSnapshotFacts.CanonicalOnly(publication.originalSource()));
         var rows=new java.util.ArrayList<>(known.actionRows());rows.add(coverage);
         var stamp=new org.xar.ck3.control.application.driver.DriverSnapshotFacts.Stamp(publication.afterVersion(),
                 known.stamp().episodeEpoch(),known.stamp().game(),known.stamp().episodeRunId(),
@@ -821,7 +822,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 if (edge.kind().equals(WriterContracts.DRIVER_READ_HISTORY_KIND)) {
                     readDriver = retainCapturedRead(same, owner, edge, readDriver, originals, java.util.List.of(), false);
                 } else if (edge.kind().equals(WriterContracts.DRIVER_ACTION_HISTORY_KIND)) {
-                    readDriver = retainCapturedAction(edge, readDriver, currentReceipts, originals);
+                    readDriver = retainCapturedAction(same,edge, readDriver, currentReceipts, originals);
                 } else if (edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
                     // Real historical domain import is retained; no replayed publication is produced.
                 } else if (edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)) {
@@ -1205,7 +1206,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         }
                     }
                 } else if(edge.kind().equals(WriterContracts.DRIVER_ACTION_HISTORY_KIND)) {
-                    retained=retainCapturedAction(edge,retained,actions,originals);
+                    retained=retainCapturedAction(same,edge,retained,actions,originals);
                 } else if(edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
                     // Domain DATA does not submit another gameplay action.
                 } else if(edge.kind().equals(WriterContracts.ACTION_LIFECYCLE_KIND)) {
