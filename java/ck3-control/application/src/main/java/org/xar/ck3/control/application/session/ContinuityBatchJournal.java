@@ -1533,10 +1533,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
         byte[] packet = ack.outbound().orElseThrow().originalPacket();
         StrictJson.require(packet.length >= 5, "historical SAVE outbound frame absent");
         int length = java.nio.ByteBuffer.wrap(packet, 0, 4).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt();
-        StrictJson.require(length > 0 && length <= org.xar.ck3.control.application.action.RawJson.MAXIMUM_BYTES
+        StrictJson.require(length > 0 && length <= ContinuityJson.DOMAIN_MAX_BYTES
                 && length == packet.length - 4, "historical SAVE outbound frame length differs");
         var outbound = ContinuityJson.parseObject(java.util.Arrays.copyOfRange(packet, 4, packet.length),
-                org.xar.ck3.control.application.action.RawJson.MAXIMUM_BYTES);
+                ContinuityJson.DOMAIN_MAX_BYTES);
         StrictJson.require("execute_step".equals(StrictJson.text(outbound.get("type")))
                 && StrictJson.integer(outbound.get("protocol_version"), 1, 1) == 1
                 && StrictJson.text(outbound.get("request_id")).equals(attempt.requestId())
