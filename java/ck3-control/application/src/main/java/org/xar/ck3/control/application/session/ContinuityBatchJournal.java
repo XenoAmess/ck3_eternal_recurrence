@@ -210,6 +210,27 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 known.actionRows(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty());
         return new RetainedReadDriver(facts,afterRef);
     }
+    /** Non-Applied history is limited to the actual source-owned zero-dispatch Life initialization. */
+    static void requireCapturedActionOutcome(ActionReceipt action,
+            org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication publication,
+            java.util.List<ActionReceipt> receipts,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        if (action.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) return;
+        StrictJson.require(action.outcome()==ActionReceipt.Outcome.REJECTED_CONFIRMED
+                && action.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled,
+                "captured non-Applied ACTION requires its original Life rejection");
+        var settled=(org.xar.ck3.control.application.action.ActionState.CompositeSettled)action.state();
+        StrictJson.require(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.CompositeRejected rejected
+                && rejected.evidence().isEmpty() && rejected.children().equals(settled.execution().children())
+                && publication.legacyRow().isEmpty()
+                && org.xar.ck3.control.application.driver.DriverActionHistoryCodec.decode(originals.loadMaterial(publication.originalSource())).material()
+                    instanceof org.xar.ck3.control.application.driver.DriverActionHistoryCodec.CanonicalOnly,
+                "zero-dispatch Life history requires its original canonical-only material and no recorder row");
+        var children=settled.execution().children().stream().map(bound -> receipts.stream()
+                .filter(child -> child.command().actionId().equals(bound.actionId()) && child.bodySha256().equals(bound.bodySha256()))
+                .findFirst().orElseThrow()).toList();
+        org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireRejectedInitialization(action.command(),settled.execution(),children);
+    }
+
     /** Recover committed actual ACTION history DATA after effect settlement, without issuing another action. */
     private RetainedReadDriver retainCapturedAction(ContinuityStorePort.Session same,
             WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
@@ -217,10 +238,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
         String actionId=StrictJson.text(details.get("action_id"));
         var matches=receipts.stream().filter(r->r.command().actionId().equals(actionId)).toList();
-        StrictJson.require(matches.size()==1&&matches.getFirst().outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED,
-                "captured ACTION history requires its one settled original applied receipt");
+        StrictJson.require(matches.size()==1&&matches.getFirst().settled(),
+                "captured ACTION history requires its one settled original receipt");
         var action=matches.getFirst();
         var publication=org.xar.ck3.control.application.driver.DriverActionHistoryState.decode(details,action);
+        requireCapturedActionOutcome(action,publication,receipts,originals);
         var known=previous.facts();
         StrictJson.require(publication.predecessor().equals(ContinuityJson.digest(edge.before().toJson()))
                         &&publication.actionSequence()==edge.before().sequence()
