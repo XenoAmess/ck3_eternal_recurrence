@@ -1100,17 +1100,17 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         var identity = physical.identity();
         PhysicalStatusOriginals installed;
         synchronized (physicalStatusOriginals) { installed = physicalStatusOriginals.get(identity.game()); }
-        if (installed == null) throw new IOException("actual physical Status archive source router is unavailable");
         // Raw Native packets, source qualification and epoch metadata retain distinct roles.
-        // The actual source-owned provider, rather than an ordinary Driver/living-map codec,
-        // verifies their complete binding and historical source scope without new Native I/O.
+        // Historical bootstrap replays the same complete guard DATA before live factories are installed.
+        // An installed source-owned provider additionally binds its actual runtime context; neither path sends Native I/O.
         readOriginalPacket(identity.nativeEvidence()); readOriginalPacket(identity.helloEvidence());
         readOriginalPacket(identity.heartbeatEvidence());
         if(identity.sourceQualification().isPresent())verifyRetainedSourceOriginal(identity.sourceQualification().orElseThrow());
         if(identity.epochManifest().isPresent())verifyRetainedSourceOriginal(identity.epochManifest().orElseThrow());
         for (ExactRef retained : original.supportingEvidence()) verifyRetainedSourceOriginal(retained);
-        var verified = installed.bindings().requirePhysicalStatusAuthority(identity)
-                .verifyArchived(original, this, same, installed.originals());
+        var verified = installed == null
+                ? org.xar.ck3.control.service.root.RootPhysicalStatusReadAuthority.verifyArchivedData(original,same,this::readArtifact)
+                : installed.bindings().requirePhysicalStatusAuthority(identity).verifyArchived(original,this,same,installed.originals());
         if (!identity.equals(verified)) throw new IOException("physical Status original verifier returned another complete identity");
     }
     private void verifyReconciliationOriginals(ReconciliationIdentity original) throws IOException {

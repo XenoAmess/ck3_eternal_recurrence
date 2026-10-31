@@ -121,8 +121,16 @@ public final class RootPhysicalStatusReadAuthority implements PhysicalStatusRead
         context.writer().requireSession(same);Objects.requireNonNull(archive);Objects.requireNonNull(originals);
         require(originals==context.originals(),"physical Status replay must use the same installed original-evidence reader");
         var identity=binding.origin().requirePhysicalStatusOnly();
-        require(identity.machineId().equals(same.head().state().machineId())&&identity.source().equals(context.source())&&identity.game().equals(context.game().generation())
-                &&identity.sessionId().equals(context.game().sessionId())&&binding.source().equals(identity.source())
+        require(identity.source().equals(context.source())&&identity.game().equals(context.game().generation())
+                &&identity.sessionId().equals(context.game().sessionId()),"physical Status replay crossed its actual runtime Game/source/session");
+        return verifyArchivedData(binding,same,originals);
+    }
+    /** Complete retained guard DATA replay; no live scope, current Game qualification or permission is minted. */
+    public static PhysicalStatusIdentity verifyArchivedData(GuardEvidence binding,ContinuityStorePort.Session same,
+            OriginalEvidencePort originals)throws IOException {
+        Objects.requireNonNull(binding);Objects.requireNonNull(same);Objects.requireNonNull(originals);
+        var identity=binding.origin().requirePhysicalStatusOnly();
+        require(identity.machineId().equals(same.head().state().machineId())&&binding.source().equals(identity.source())
                 &&binding.authorityId().equals(AUTHORITY)&&binding.operation().value().equals(PhysicalStatusIdentity.OPERATION)
                 &&binding.nativeEvidence().equals(identity.nativeEvidence())&&binding.capabilityEvidence().equals(identity.helloEvidence())
                 &&binding.observedAt().equals(identity.observedAt())&&binding.supportingEvidence().size()==1,
@@ -159,7 +167,7 @@ public final class RootPhysicalStatusReadAuthority implements PhysicalStatusRead
         // Later heartbeats are allowed; the originally received heartbeat remains pinned and replayed.
         for(var pin:scope.pins())same.verifyPin(pin);
     }
-    private Set<String> requireOriginals(ContinuityStorePort.Session same,PhysicalStatusIdentity identity,OriginalEvidencePort originals)throws IOException {
+    private static Set<String> requireOriginals(ContinuityStorePort.Session same,PhysicalStatusIdentity identity,OriginalEvidencePort originals)throws IOException {
         var nativePacket=NativeWire.decode(read(same,identity.nativeEvidence(),PACKET,originals));
         require(nativePacket instanceof NativeWire.Snapshot,"physical Status original is not a complete native snapshot packet");
         var snapshot=(NativeWire.Snapshot)nativePacket;
