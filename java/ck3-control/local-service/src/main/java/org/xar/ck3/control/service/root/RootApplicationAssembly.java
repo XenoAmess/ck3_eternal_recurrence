@@ -764,8 +764,8 @@ public final class RootApplicationAssembly {
                     &&owner.sessionId().equals(game.sessionId()),"unresolved Controller belongs to another actual Game");
             return writer.locked(same->{
                 final DriverBootstrap.Adopted result;
-                try{result=DriverBootstrap.adoptUnresolvedSameGame(data.capturedManifest(),data.retainedFacts(),
-                        data.retainedFullDriver(),same,actions,game.nativeTransport(),archive,retainedFrames,deadline);}
+                try{result=DriverBootstrap.adoptUnresolvedSameGame(data,same,actions,game.nativeTransport(),archive,
+                        writer::borrowedSession,retainedFrames,deadline);}
                 catch(InterruptedException interrupted){
                     Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("same-Game unresolved Driver adoption interrupted");
                     failure.initCause(interrupted);throw failure;

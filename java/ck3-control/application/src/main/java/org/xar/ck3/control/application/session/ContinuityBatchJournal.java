@@ -580,11 +580,25 @@ public final class ContinuityBatchJournal implements BatchJournal {
         transitions.bindTransportRebindPort(Objects.requireNonNull(actual));
     }
 
+    /** Eligibility to install read-only reconciliation of the exact original Life parent; grants no terminal or submit authority. */
+    public static boolean isReadOnlyLifeRecovery(ActionReceipt receipt) {
+        if (!(receipt.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown unknown)
+                || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())
+                || !unknown.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                || !unknown.execution().children().isEmpty()) return false;
+        var command = receipt.command();
+        var guard = unknown.execution().guard();
+        return command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
+                && command.origin().acceptsGuard(guard.origin())
+                && guard.source().equals(command.source()) && guard.sessionId().equals(command.sessionId())
+                && guard.operation().equals(command.operation()) && guard.observed().equals(command.before());
+    }
+
     /** Ordinary immutable DATA for a living same Game after first primitive FOCUS became UNKNOWN. */
     public record UnresolvedSameGameData(CleanBatchRestart capturedManifest, ControllerRestartState capturedController,
             org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known retainedFacts, ExactRef retainedFullDriver,
             long canonicalSequence, String canonicalHeadDigest, java.util.List<String> usedBatches, long nextBatchSequence,
-            java.util.List<org.xar.ck3.control.application.action.ActionReceipt> unresolvedActions) {
+            java.util.List<org.xar.ck3.control.application.action.ActionReceipt> unresolvedActions, Optional<SettledSameGameData> retainedHistory) {
         public UnresolvedSameGameData {
             Objects.requireNonNull(capturedManifest); Objects.requireNonNull(capturedController);
             Objects.requireNonNull(retainedFacts); Objects.requireNonNull(retainedFullDriver);
@@ -592,6 +606,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
             usedBatches = java.util.List.copyOf(usedBatches);
             StrictJson.safe(nextBatchSequence, 0);
             unresolvedActions = java.util.List.copyOf(unresolvedActions);
+            retainedHistory = Objects.requireNonNull(retainedHistory);
+        }
+        public UnresolvedSameGameData(CleanBatchRestart capturedManifest, ControllerRestartState capturedController,
+                org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known retainedFacts, ExactRef retainedFullDriver,
+                long canonicalSequence, String canonicalHeadDigest, java.util.List<String> usedBatches, long nextBatchSequence,
+                java.util.List<org.xar.ck3.control.application.action.ActionReceipt> unresolvedActions) {
+            this(capturedManifest, capturedController, retainedFacts, retainedFullDriver, canonicalSequence, canonicalHeadDigest, usedBatches, nextBatchSequence, unresolvedActions, Optional.empty());
         }
     }
 
@@ -599,6 +620,21 @@ public final class ContinuityBatchJournal implements BatchJournal {
     public UnresolvedSameGameData readUnresolvedSameGame(ContinuityStorePort.Session same, SessionIdentity owner) throws IOException {
         store.requireSession(same);
         Objects.requireNonNull(owner);
+        var isolated = transitions.withLocked(same, () -> {
+            var originals = transitions.restartArchive(same);
+            var pending = org.xar.ck3.control.application.action.ContinuityActionJournal
+                    .receipts(same.head().state(), originals).stream().filter(action -> !action.settled()).toList();
+            return pending.size() == 1 && isReadOnlyLifeRecovery(pending.getFirst()) ? pending : java.util.List.<ActionReceipt>of();
+        });
+        if (!isolated.isEmpty()) {
+            var captured = new java.util.concurrent.atomic.AtomicReference<CleanBatchRestart>();
+            var retained = readSameGameHistory(same, owner, true, captured::set);
+            StrictJson.require(captured.get() != null, "isolated Life recovery retains its actual restart capture");
+            return new UnresolvedSameGameData(captured.get(), retained.controller(), retained.retainedFacts(),
+                    retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
+                    new java.util.ArrayList<>(retained.controller().usedBatches()), retained.controller().nextBatchSequence(),
+                    isolated, Optional.of(retained));
+        }
         return transitions.withLocked(same, () -> {
             var head = same.head();
             var state = head.state();
@@ -896,6 +932,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     public SettledSameGameData readSettledSameGame(ContinuityStorePort.Session same,
             SessionIdentity owner) throws IOException {
+        return readSameGameHistory(same, owner, false, ignored -> { });
+    }
+
+    private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same,
+            SessionIdentity owner, boolean isolatedLife, java.util.function.Consumer<CleanBatchRestart> captures) throws IOException {
         store.requireSession(same);Objects.requireNonNull(owner);
         return transitions.withLocked(same,()->{
             var head=same.head();var state=head.state();var whole=state.toJson();
@@ -907,8 +948,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     &&entry.sessionId().equals(owner.sessionId()),"settled recovery crossed the actual Game owner");
             var originals=transitions.restartArchive(same);
             var actions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state,originals);
-            StrictJson.require(!actions.isEmpty()&&actions.stream().allMatch(ActionReceipt::settled),
-                    "settled recovery cannot discard an unresolved action");
+            if (isolatedLife) {
+                var pendingActions = actions.stream().filter(action -> !action.settled()).toList();
+                StrictJson.require(pendingActions.size() == 1 && isReadOnlyLifeRecovery(pendingActions.getFirst()),
+                        "isolated recovery retains only one exact read-only Life original");
+            } else {
+                StrictJson.require(!actions.isEmpty()&&actions.stream().allMatch(ActionReceipt::settled),
+                        "settled recovery cannot discard an unresolved action");
+            }
             for(var action:actions)StrictJson.require(action.command().origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
                     &&action.command().origin().machineId().equals(owner.machineId())
                     &&action.command().origin().game().equals(owner.game())
@@ -1037,6 +1084,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                 "settled restart capture changed its original Driver/action/source owner");
                         retained=new RetainedReadDriver(capturedKnown,manifest.fullDriver());
                         previousTransport=manifest.previousTransport();
+                        captures.accept(manifest);
                     } else {
                         boolean closed=JournalKind.BATCH_INTERRUPTED.name().equals(boundary)
                                 ||retainedRecovery!=null&&java.util.Set.of(JournalKind.BATCH_FINISHED.name(),
@@ -1122,9 +1170,37 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "settled canonical recovery head changed during read");
             var data=new SettledSameGameData(entry,controller,retained.facts(),retained.fullDriver(),previousTransport,
                     source,latest,latestObserved,actions,state.sequence(),head.digest(),history);
+            if (isolatedLife) return data; // Read-only DATA never qualifies a settled recovery before the original settles.
             issuedSettledSameGameData=data;issuedSettledSameGameRecovery=retainedRecovery;
             issuedSettledSameGameOpenBatch=unfinishedReadOnlyBatch;
             return data;
+        });
+    }
+
+    /** Closes only a verified canonical no-write original through the existing all-settled recovery transition. */
+    public JournalCommit recoverNoGameplaySameGame(SessionIdentity owner, ActionReceipt actual, SemanticEvidence fresh) throws IOException {
+        Objects.requireNonNull(owner);Objects.requireNonNull(actual);Objects.requireNonNull(fresh);
+        return store.locked(same -> {
+            transitions.withLocked(same, () -> {
+                StrictJson.require(actual.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled,
+                        "read-only recovery needs its actual composite terminal");
+                var settled = (org.xar.ck3.control.application.action.ActionState.CompositeSettled) actual.state();
+                StrictJson.require(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.CompositeNoGameplayWrite
+                        && actual.outcome() == ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT,
+                        "read-only recovery cannot reinterpret another action outcome");
+                var noGameplay = (org.xar.ck3.control.application.action.ActionState.CompositeNoGameplayWrite) settled.settlement();
+                noGameplay.observation().validate(actual.command(), settled.execution());
+                var originals = transitions.restartArchive(same);
+                var canonical = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(same.head().state(), originals)
+                        .stream().filter(receipt -> receipt.command().actionId().equals(actual.command().actionId())).findFirst().orElseThrow();
+                StrictJson.require(canonical.equals(actual), "read-only recovery retains the complete actual canonical terminal");
+                return true;
+            });
+            var data = readSettledSameGame(same, owner);
+            recoverSettledSameGame(same, data, fresh);
+            long delta = same.head().state().settledDateRaw() - same.head().state().origin().startDateRaw();
+            StrictJson.require(delta >= 0 && delta % 24 == 0, "actual committed saved-day accounting differs");
+            return new JournalCommit(same.persistedHead(), delta / 24);
         });
     }
 

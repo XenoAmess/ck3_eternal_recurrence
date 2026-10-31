@@ -400,6 +400,20 @@ public final class SessionController {
                 run.requireCompletion(disposition);
                 quarantined = false;
                 localUnresolved = false;
+            } else if (actual.outcome() == ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT
+                    && actual.state() instanceof ActionState.CompositeSettled settled
+                    && settled.settlement() instanceof ActionState.CompositeNoGameplayWrite noGameplay) {
+                noGameplay.observation().validate(actual.command(), settled.execution());
+                run.requireCompletion(disposition);
+                StrictJson.require(journal instanceof ContinuityBatchJournal, "no-write recovery retains its actual continuity journal");
+                var fresh = run.ready(true);
+                var evidence = fresh.semanticEvidence().orElseThrow(() -> new IOException("no-write recovery needs actual fresh semantic evidence"));
+                var recovered = run.measured(Phase.JOURNAL,
+                        () -> ((ContinuityBatchJournal) journal).recoverNoGameplaySameGame(identity, actual, evidence));
+                StrictJson.require(recovered.committedSavedDays() == totalCommittedDays, "no-write recovery changed saved-day credit");
+                ledgerHead = Optional.of(recovered.persistedHead());
+                quarantined = false;
+                localUnresolved = false;
             }
             
             return actual;

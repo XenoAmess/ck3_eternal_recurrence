@@ -971,6 +971,26 @@ public final class DriverBootstrap {
             ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
             ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline)
             throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,false);
+    }
+
+    /** Installs the original pending Life only for read-only reconciliation, using its reconstructed latest Driver frame. */
+    public static Adopted adoptUnresolvedSameGame(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline)
+            throws IOException,InterruptedException {
+        if (data.retainedHistory().isPresent())
+            return adoptSameGameHistory(data.retainedHistory().orElseThrow(),same,actions,transport,archive,currentSession,retainedFrames,deadline,true);
+        return adoptUnresolvedSameGame(data.capturedManifest(),data.retainedFacts(),data.retainedFullDriver(),
+                same,actions,transport,archive,retainedFrames,deadline);
+    }
+
+    private static Adopted adoptSameGameHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
+            boolean isolatedLife) throws IOException,InterruptedException {
         Objects.requireNonNull(data);Objects.requireNonNull(same);Objects.requireNonNull(actions);
         Objects.requireNonNull(transport);Objects.requireNonNull(archive);Objects.requireNonNull(currentSession);
         Objects.requireNonNull(deadline);
@@ -986,9 +1006,18 @@ public final class DriverBootstrap {
                 "settled retained Driver belongs to another physical Game or pipe");
         actions.withFrozen(same,lease->{
             StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
-                    &&basis.originalDriverHistory().equals(retained.originalHistoryBasis())
-                    &&lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),
-                    "settled continuation cannot replace history or replay an unresolved original action");
+                    &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
+                    "same-Game continuation cannot replace its actual original history");
+            if (isolatedLife) {
+                var pending = lease.snapshot().actions().stream().filter(action -> !action.settled()).toList();
+                StrictJson.require(pending.size() == 1
+                        && org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyLifeRecovery(pending.getFirst())
+                        && new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions())),
+                        "isolated Life adoption retains the complete canonical pending action set");
+            } else {
+                StrictJson.require(lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),
+                        "settled continuation cannot replay an unresolved original action");
+            }
             lease.assertCurrent();return null;
         });
         var repository=new DriverFactsRepository(retained);
@@ -1027,9 +1056,12 @@ public final class DriverBootstrap {
         var seed=new Seed(data.retainedFullDriver(),retained.originalHistoryBasis(),retained.stamp().driverVersion(),
                 retained.stamp().episodeEpoch(),current,retained.auxiliary(),retained.loop());
         var adopted=new Adopted(seed,data.source(),data.retainedFullDriver(),repository,authority,producer,held,first,
-                AdoptionStatus.QUALIFICATION_REQUIRED,List.of());
-        adopted.settledSameGame=data;
-        producer.recordAdoptionObserved(current,data.source());
+                isolatedLife ? AdoptionStatus.READ_ONLY_UNRESOLVED : AdoptionStatus.QUALIFICATION_REQUIRED,
+                isolatedLife ? List.of("unfinished_original_life_requires_read_only_reconciliation") : List.of());
+        if (!isolatedLife) {
+            adopted.settledSameGame=data;
+            producer.recordAdoptionObserved(current,data.source());
+        }
         return adopted;
     }
 
