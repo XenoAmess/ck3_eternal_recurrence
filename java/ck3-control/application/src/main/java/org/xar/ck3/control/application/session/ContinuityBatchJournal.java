@@ -1399,6 +1399,51 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return recoverLifeTerminalSameGame(owner, actual, fresh, true);
     }
 
+    /** Validate the actual zero-dispatch Life terminal before asking the existing runtime for fresh SEM. */
+    public void requireRejectedLifeInitializationRecovery(SessionIdentity owner, ActionReceipt actual) throws IOException {
+        store.locked(same -> transitions.withLocked(same, () -> {
+            requireRejectedLifeInitializationRecovery(owner, actual,
+                    org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(same.head().state(), transitions.restartArchive(same)));
+            return true;
+        }));
+    }
+
+    static void requireRejectedLifeInitializationRecovery(SessionIdentity owner, ActionReceipt actual,
+            java.util.List<ActionReceipt> canonicalActions) {
+        StrictJson.require(!canonicalActions.isEmpty() && canonicalActions.stream().allMatch(ActionReceipt::settled)
+                && canonicalActions.contains(actual) && actual.command().origin().machineId().equals(owner.machineId())
+                && actual.command().origin().game().equals(owner.game()) && actual.command().sessionId().equals(owner.sessionId())
+                && actual.outcome() == ActionReceipt.Outcome.REJECTED_CONFIRMED && !actual.visibleGameplay()
+                && !actual.eligibleAdvance() && actual.applied().isEmpty()
+                && actual.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled,
+                "Life rejection recovery retains the complete settled canonical zero-credit frontier");
+        var settled = (org.xar.ck3.control.application.action.ActionState.CompositeSettled) actual.state();
+        StrictJson.require(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.CompositeRejected rejected
+                && rejected.evidence().isEmpty() && rejected.children().equals(settled.execution().children()),
+                "Life rejection recovery requires its original complete rejected child vector");
+        var children = settled.execution().children().stream().map(binding -> canonicalActions.stream()
+                .filter(child -> child.command().actionId().equals(binding.actionId()) && child.bodySha256().equals(binding.bodySha256()))
+                .findFirst().orElseThrow()).toList();
+        org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireRejectedInitialization(actual.command(), settled.execution(), children);
+    }
+
+    /** Reuse the normal all-settled transition; no ordinary cycle, Native effect or saved-day credit is created. */
+    public JournalCommit recoverRejectedLifeInitializationSameGame(SessionIdentity owner, ActionReceipt actual, SemanticEvidence fresh) throws IOException {
+        Objects.requireNonNull(owner); Objects.requireNonNull(actual); Objects.requireNonNull(fresh);
+        return store.locked(same -> {
+            transitions.withLocked(same, () -> {
+                requireRejectedLifeInitializationRecovery(owner, actual,
+                        org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(same.head().state(), transitions.restartArchive(same)));
+                return true;
+            });
+            var data = readSettledSameGame(same, owner);
+            recoverSettledSameGame(same, data, fresh);
+            long delta = same.head().state().settledDateRaw() - same.head().state().origin().startDateRaw();
+            StrictJson.require(delta >= 0 && delta % 24 == 0, "actual committed saved-day accounting differs");
+            return new JournalCommit(same.persistedHead(), delta / 24);
+        });
+    }
+
     private JournalCommit recoverLifeTerminalSameGame(SessionIdentity owner, ActionReceipt actual, SemanticEvidence fresh,
             boolean controlPrefix) throws IOException {
         Objects.requireNonNull(owner);Objects.requireNonNull(actual);Objects.requireNonNull(fresh);

@@ -428,6 +428,23 @@ public final class SessionController {
                 ledgerHead = Optional.of(recovered.persistedHead());
                 quarantined = false;
                 localUnresolved = false;
+            } else if (actual.outcome() == ActionReceipt.Outcome.REJECTED_CONFIRMED
+                    && actual.state() instanceof ActionState.CompositeSettled settled
+                    && settled.settlement() instanceof ActionState.CompositeRejected
+                    && settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                    && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(actual.command().operation().value())) {
+                StrictJson.require(journal instanceof ContinuityBatchJournal, "Life rejection recovery retains its actual continuity journal");
+                var continuity = (ContinuityBatchJournal) journal;
+                continuity.requireRejectedLifeInitializationRecovery(identity, actual);
+                run.requireCompletion(disposition);
+                var fresh = run.ready(true);
+                var evidence = fresh.semanticEvidence().orElseThrow(() -> new IOException("Life rejection recovery needs actual fresh semantic evidence"));
+                var recovered = run.measured(Phase.JOURNAL,
+                        () -> continuity.recoverRejectedLifeInitializationSameGame(identity, actual, evidence));
+                StrictJson.require(recovered.committedSavedDays() == totalCommittedDays, "Life rejection recovery changed saved-day credit");
+                ledgerHead = Optional.of(recovered.persistedHead());
+                quarantined = false;
+                localUnresolved = false;
             }
             
             return actual;
