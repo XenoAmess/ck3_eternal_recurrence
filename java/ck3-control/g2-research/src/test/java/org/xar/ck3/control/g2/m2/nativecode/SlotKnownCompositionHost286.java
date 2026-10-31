@@ -104,6 +104,13 @@ public final class SlotKnownCompositionHost286 {
         @Override public long copy24Allocate(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, int e) { return call(Op.ALLOC24, m, true, t, c, d, Integer.toUnsignedLong(e)); }
         @Override public void copy24Release(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, int e) { call(Op.RELEASE24, m, false, t, c, d, Integer.toUnsignedLong(e)); }
 
+        // New 32-byte component callbacks
+        @Override public void prepare32_889660(PendingContextWithKnownHelpers3076B60.Memory m, long c) { call(Op.PREP32, m, false, c); }
+        @Override public long copy32Allocate(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, int e) { return call(Op.ALLOC32, m, true, t, c, d, Integer.toUnsignedLong(e)); }
+        @Override public void replace32_8874D0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, int e, int f) { call(Op.REPLACE32, m, false, c, d, Integer.toUnsignedLong(e), Integer.toUnsignedLong(f)); }
+        @Override public void virtual32Destroy(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d) { call(Op.DESTROY32, m, false, t, c, d); }
+        @Override public void finalize32_3727EC0(PendingContextWithKnownHelpers3076B60.Memory m, long c) { call(Op.FINAL32, m, false, c); }
+
         // Declared Calls in PendingSlotWithKnownHelpers2A32770.Calls
         @Override public boolean call2A321F0(Memory m, long c, int d) {
             if (m != this) throw new AssertionError("same Memory required");
