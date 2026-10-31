@@ -47,6 +47,7 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
     private final Settings settings;
     private final FamilyGuardianCadence guardianCadence = new FamilyGuardianCadence();
     private volatile boolean firstHeirMarriageEnabled = true;
+    private volatile boolean newMarriageProposalsEnabled = true;
     private Optional<WartimeReviewScope> lastWartimeReview = Optional.empty();
     /** Process-local scheduling only: never a candidate, native receipt or action authority.
      * The original episode/actor/date gate is narrowed to the complete unchanged source,
@@ -61,6 +62,8 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
     }
     FamilyGuardianCadence guardianCadence() { return guardianCadence; }
     public void setFirstHeirMarriageEnabled(boolean actual) { firstHeirMarriageEnabled = actual; clearWartimeReview(); }
+    public void setNewMarriageProposalsEnabled(boolean actual) { newMarriageProposalsEnabled = actual; clearWartimeReview(); }
+    boolean newMarriageProposalsEnabled() { return newMarriageProposalsEnabled; }
     public FamilyOrdinaryPolicy(ExactRef implementation, PlanningReadPort reader, Reads reads,
             LedgerSource ledgers, Commands commands, MaterialResults materials, Settings settings) {
         this.implementation = Objects.requireNonNull(implementation); this.reader = Objects.requireNonNull(reader);
@@ -169,6 +172,7 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
         if (attempt.isPresent() && "pending".equals(string(attempt.get().get("status"))))
             return select(request, previous, "life-advance", obj(), detail, "native_arrange_marriage_response_wait",
                     "advance one bounded interval while waiting for the exact spouse or betrothal relationship", Purpose.DATE_ADVANCE);
+        if (!newMarriageProposalsEnabled) return new Keep("new_marriage_proposals_enabled=false: ruler marriage discovery skipped");
         Value retry = attempt.filter(value -> "retry".equals(string(value.get("status")))).map(value -> value.get("candidate_character_id")).orElse(Nil.INSTANCE);
         List<Obj> choices = new ArrayList<>(); Set<String> identities = new HashSet<>();
         if (snapshot.get("arrange_marriage_choices") instanceof Arr rows) {
@@ -261,12 +265,13 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
             return education(request, previous, relation, detail);
         }
         if (!unpartnered(relation)) return education(request, previous, relation, detail);
-        if (!firstHeirMarriageEnabled) {
+        if (!newMarriageProposalsEnabled || !firstHeirMarriageEnabled) {
             Decision continued = education(request, previous, relation, detail
-                    .with("first_heir_marriage_enabled", new Bool(false))
+                    .with("new_marriage_proposals_enabled", new Bool(newMarriageProposalsEnabled))
+                    .with("first_heir_marriage_enabled", new Bool(firstHeirMarriageEnabled))
                     .with("first_heir_marriage_status", t("skipped_by_configuration")));
             if (continued instanceof Replace replaced)
-                return new Replace(replaced.draft(), "first_heir_marriage_enabled=false: optional unpartnered first-heir selection skipped; " + replaced.reason());
+                return new Replace(replaced.draft(), "new_marriage_proposals_enabled=" + newMarriageProposalsEnabled + ", first_heir_marriage_enabled=" + firstHeirMarriageEnabled + ": optional unpartnered first-heir selection skipped; " + replaced.reason());
             return continued;
         }
         ObservedRead legalityRead = readObserved(request, Query.HEIR_LEGALITY, obj("expected_native_revision", snapshot.get("native_revision")));

@@ -114,6 +114,7 @@ public final class RootApplicationAssembly {
         private org.xar.ck3.control.application.planning.OrdinaryDecisionSelector decisionSelector;
         private boolean m5JointPeacetimeEnabled = true;
         private boolean firstHeirMarriageEnabled = true;
+        private boolean newMarriageProposalsEnabled = true;
         private final Set<DriverBootstrap.Adopted> adopted = Collections.newSetFromMap(new IdentityHashMap<>());
         private boolean staged;
         private boolean finished;
@@ -200,6 +201,12 @@ public final class RootApplicationAssembly {
         }
         public synchronized boolean firstHeirMarriageEnabled() {
             return firstHeirMarriageEnabled;
+        }
+        public synchronized void bindNewMarriageProposalsEnabled(boolean actual) {
+            newMarriageProposalsEnabled = actual;
+        }
+        public synchronized boolean newMarriageProposalsEnabled() {
+            return newMarriageProposalsEnabled;
         }
         public synchronized Optional<org.xar.ck3.control.application.planning.OrdinaryDecisionSelector> decisionSelector() {
             return Optional.ofNullable(decisionSelector);

@@ -30,6 +30,7 @@ final class FamilyChildPolicy {
             return new Keep("configured child marriage result already retained");
         }
         if (docs.family().get("pending") instanceof Obj || !matrilinealEligible(previous, request)) return new Keep("prior family pending or nondeferrable action precedes configured child proposal");
+        if (!owner.newMarriageProposalsEnabled()) return new Keep("new_marriage_proposals_enabled=false: configured child matrilineal proposal skipped");
         ObservedRead subjectRead = owner.readObserved(request, Query.CHILD_SUBJECT, obj("expected_native_revision", snapshot.get("native_revision"), "subject_character_id", new IntegerValue(pair.subject())));
         Obj legality = subjectRead.value();
         if (!"available".equals(string(legality.get("status"))) || !yes(legality.get("player_child_verified")))
@@ -71,6 +72,7 @@ final class FamilyChildPolicy {
         }
         if (!defaultEligible(previous, request) || docs.family().get("pending") instanceof Obj || docs.matrilineal().get("pending") instanceof Obj)
             return new Keep("fresh split-successor proposal cannot displace this action or another pending family proposal");
+        if (!owner.newMarriageProposalsEnabled()) return new Keep("new_marriage_proposals_enabled=false: split-successor child default proposal skipped");
         Obj root = owner.read(request, Query.CAMPAIGN_ROOT, obj("expected_revision", snapshot.get("revision")));
         Obj split = split(root, snapshot); if (split == null) return new Keep("current held-title partition has no single distinct secondary heir");
         Value subject = split.get("subject_character_id");

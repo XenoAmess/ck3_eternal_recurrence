@@ -397,4 +397,71 @@ final class FamilyWartimeReviewCadenceTest {
         assertEquals(0, disabled.commands);
     }
 
+    @Test void newMarriageSwitchDefaultsTrueSkipsOnlyNewFirstHeirAndPreservesEducation() {
+        var actual = request(snapshot()); var baseline = baseline("life-advance");
+        Fixture enabled = new Fixture();
+        assertInstanceOf(OrdinaryPolicy.Replace.class, enabled.policy.evaluate(actual, baseline));
+        assertEquals(List.of(FamilyPorts.Query.CURRENT_RELATION, FamilyPorts.Query.HEIR_LEGALITY), enabled.reads);
+        Fixture disabled = new Fixture(); disabled.policy.setNewMarriageProposalsEnabled(false);
+        var retained = assertInstanceOf(OrdinaryPolicy.Replace.class, disabled.policy.evaluate(actual, baseline));
+        assertEquals(List.of(FamilyPorts.Query.CURRENT_RELATION), disabled.reads);
+        assertEquals(baseline.command(), retained.draft().command());
+        assertEquals(baseline.purpose(), retained.draft().purpose());
+        assertEquals(baseline.detail().get("selected_step"), retained.draft().detail().get("selected_step"));
+        assertEquals(new Bool(false), retained.draft().detail().get("new_marriage_proposals_enabled"));
+        assertEquals(new Bool(true), retained.draft().detail().get("first_heir_marriage_enabled"));
+        assertEquals(t("skipped_by_configuration"), retained.draft().detail().get("first_heir_marriage_status"));
+        assertTrue(retained.reason().contains("new_marriage_proposals_enabled=false"));
+        assertEquals(0, disabled.commands);
+        disabled.policy.setNewMarriageProposalsEnabled(true);
+        assertInstanceOf(OrdinaryPolicy.Replace.class, disabled.policy.evaluate(actual, baseline));
+        assertEquals(List.of(FamilyPorts.Query.CURRENT_RELATION, FamilyPorts.Query.CURRENT_RELATION, FamilyPorts.Query.HEIR_LEGALITY), disabled.reads);
+        Fixture oldFlag = new Fixture(); oldFlag.policy.setFirstHeirMarriageEnabled(false);
+        var oldResult = assertInstanceOf(OrdinaryPolicy.Replace.class, oldFlag.policy.evaluate(actual, baseline));
+        assertEquals(new Bool(true), oldResult.draft().detail().get("new_marriage_proposals_enabled"));
+        assertEquals(List.of(FamilyPorts.Query.CURRENT_RELATION), oldFlag.reads);
+    }
+    @Test void newMarriageSwitchPreservesChildPendingAndResolvedBeforeNewReads() {
+        Fixture f = new Fixture(); f.policy.setNewMarriageProposalsEnabled(false);
+        var actual = request(snapshot()); var baseline = baseline("life-advance");
+        var pair = new FamilyPorts.Pair(BigInteger.valueOf(201), BigInteger.valueOf(202));
+        var matri = assertInstanceOf(OrdinaryPolicy.Keep.class, FamilyChildPolicy.matrilineal(f.policy, actual, baseline, f.documents, pair));
+        var child = assertInstanceOf(OrdinaryPolicy.Keep.class, FamilyChildPolicy.childDefault(f.policy, actual, baseline, f.documents));
+        assertTrue(matri.reason().contains("new_marriage_proposals_enabled=false"));
+        assertTrue(child.reason().contains("new_marriage_proposals_enabled=false"));
+        assertTrue(f.reads.isEmpty());
+        Obj unknown = obj("pending", obj("episode_run_id", t("software-family-episode"), "status", t("UNKNOWN"),
+                "heir_character_id", n(201), "candidate_character_id", n(202)), "resolved", Nil.INSTANCE);
+        var pendingMatri = new FamilyPorts.Documents(domain(), unknown, domain(), f.documents.bridge(), f.documents.canonicalHead(), f.documents.importedDocuments());
+        var pendingDefault = new FamilyPorts.Documents(domain(), domain(), unknown, f.documents.bridge(), f.documents.canonicalHead(), f.documents.importedDocuments());
+        assertThrows(IllegalArgumentException.class, () -> FamilyChildPolicy.matrilineal(f.policy, actual, baseline, pendingMatri, pair));
+        assertThrows(IllegalArgumentException.class, () -> FamilyChildPolicy.childDefault(f.policy, actual, baseline, pendingDefault));
+        Obj retained = obj("pending", Nil.INSTANCE, "resolved", obj("episode_run_id", t("software-family-episode"), "status", t("awaiting_current_result")));
+        var resolvedMatri = new FamilyPorts.Documents(domain(), retained, domain(), f.documents.bridge(), f.documents.canonicalHead(), f.documents.importedDocuments());
+        var resolvedDefault = new FamilyPorts.Documents(domain(), domain(), retained, f.documents.bridge(), f.documents.canonicalHead(), f.documents.importedDocuments());
+        assertFalse(assertInstanceOf(OrdinaryPolicy.Keep.class, FamilyChildPolicy.matrilineal(f.policy, actual, baseline, resolvedMatri, pair)).reason().contains("skipped"));
+        assertFalse(assertInstanceOf(OrdinaryPolicy.Keep.class, FamilyChildPolicy.childDefault(f.policy, actual, baseline, resolvedDefault)).reason().contains("skipped"));
+        f.family(unknown);
+        assertInstanceOf(OrdinaryPolicy.Stop.class, f.policy.evaluate(actual, baseline));
+        assertTrue(f.reads.isEmpty()); assertEquals(0, f.commands);
+    }
+    @Test void newMarriageSwitchSkipsRulerDiscoveryButPreservesPendingResponseWait() {
+        Fixture f = new Fixture(); f.policy.setNewMarriageProposalsEnabled(false);
+        var baseline = baseline("life-advance");
+        assertTrue(assertInstanceOf(OrdinaryPolicy.Keep.class, f.policy.evaluateRulerMarriage(request(snapshot()), baseline)).reason().contains("new_marriage_proposals_enabled=false"));
+        assertTrue(f.reads.isEmpty()); assertEquals(0, f.commands);
+        var commandBoundary = new AssertionError("software pending response-wait command producer reached; no Native dispatch");
+        f.commandProducer = (actual, operation, arguments, plan) -> { throw commandBoundary; };
+        var original = request(snapshot());
+        var pendingBase = request(snapshot(), original.source(), 123, "software-family-session",
+                List.of(obj("command", t("arrange-marriage-100-999"), "ok", new Bool(false))));
+        var observation = pendingBase.observations();
+        var pending = new PlanningRequest(pendingBase.before(), pendingBase.source(), pendingBase.sessionId(), pendingBase.deadline(),
+                new PlanningObservation(observation.snapshot(), observation.history(), Set.of(new OperationKey("life-advance")),
+                        observation.bridgeCapabilities(), observation.battleSpeedReadiness(), observation.actionFacts(), observation.campaignGoal(),
+                        observation.crossRunPlan(), observation.initialLifestyleFocusRequired()));
+        assertSame(commandBoundary, assertThrows(AssertionError.class, () -> f.policy.evaluateRulerMarriage(pending, baseline)));
+        assertEquals(1, f.commands); assertTrue(f.reads.isEmpty());
+    }
+
 }
