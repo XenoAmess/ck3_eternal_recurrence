@@ -20,6 +20,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.math.BigInteger;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -110,6 +111,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 raw.put("total_ms", exchange.totalMs()); raw.put("content", exchange.content());
                 raw.put("failure", exchange.failure()); raw.put("complete", exchange.complete());
                 raw.put("transient_failure", exchange.transientFailure());
+                appendUsage(raw, exchange.usage());
                 attempts.add(preserve(raw));
                 if (exchange.status() == 200 && exchange.complete() && exchange.failure().isEmpty()) {
                     try {
@@ -240,7 +242,9 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     }
 
     private record Exchange(int status, byte[] raw, String content, long headersMs, Long ttftMs,
-                            long totalMs, String failure, boolean transientFailure, boolean complete) { }
+                            long totalMs, String failure, boolean transientFailure, boolean complete, Usage usage) { }
+
+    private record Usage(Long promptTokens, Long completionTokens, Long totalTokens, Long cachedPromptTokens) { }
 
     /** One HTTP attempt. Header wait and stream reads share the same original deadline. */
     private Exchange call(byte[] payload, Instant wallEnd, long nanoEnd) {
@@ -252,6 +256,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         StringBuilder content = new StringBuilder();
         String failure = "";
         boolean done = false, stop = false, transientFailure = false;
+        Usage usage = new Usage(null, null, null, null);
         CompletableFuture<HttpResponse<InputStream>> pending = null;
         InputStream body = null;
         ScheduledFuture<?> close = null;
@@ -290,6 +295,15 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                     String event = text.substring(5).stripLeading();
                     if (event.equals("[DONE]")) { done = true; break outer; }
                     JsonNode envelope = FullJsonTree.parse(event.getBytes(StandardCharsets.UTF_8), MAX_LINE_BYTES);
+                    JsonNode usageNode = envelope.get("usage");
+                    if (usageNode != null && usageNode.isObject()) {
+                        usage = new Usage(
+                            nullableCount(usageNode.get("prompt_tokens")),
+                            nullableCount(usageNode.get("completion_tokens")),
+                            nullableCount(usageNode.get("total_tokens")),
+                            nullableCount(usageNode.path("prompt_tokens_details").get("cached_tokens"))
+                        );
+                    }
                     JsonNode choices = envelope.get("choices");
                     if (choices == null || !choices.isArray()) throw new IllegalArgumentException("SSE choices array required");
                     if (choices.isEmpty()) continue; // Usage-only chunk.
@@ -330,7 +344,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             if (pending != null && !pending.isDone()) pending.cancel(true);
         }
         return new Exchange(status, raw.toByteArray(), content.toString(), headersMs, ttftMs, elapsed(started),
-                failure, transientFailure, status == 200 && done && stop && failure.isEmpty());
+                failure, transientFailure, status == 200 && done && stop && failure.isEmpty(), usage);
     }
 
     private ExactRef receipt(String machineId, ExactRef request, List<ExactRef> attempts, String identity, String sha,
@@ -347,6 +361,26 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         return materials.preserve(RawJson.fullMaterial(FullJsonTree.encode(material, MAX_MATERIAL_BYTES)));
     }
     private static ObjectNode object() { return JsonNodeFactory.instance.objectNode(); }
+
+    private static void appendUsage(ObjectNode target, Usage usage) {
+        putNullableLong(target, "prompt_tokens", usage.promptTokens());
+        putNullableLong(target, "completion_tokens", usage.completionTokens());
+        putNullableLong(target, "total_tokens", usage.totalTokens());
+        putNullableLong(target, "cached_prompt_tokens_if_reported", usage.cachedPromptTokens());
+    }
+
+    private static void putNullableLong(ObjectNode target, String field, Long value) {
+        if (value == null) target.putNull(field); else target.put(field, value);
+    }
+
+    private static Long nullableCount(JsonNode value) {
+        if (value == null || !value.isIntegralNumber()) return null;
+        try {
+            BigInteger integer = value.bigIntegerValue();
+            if (integer.signum() < 0 || integer.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) return null;
+            return integer.longValueExact();
+        } catch (ArithmeticException overflow) { return null; }
+    }
     private static Instant earlier(Instant one, Instant two) { return one.isBefore(two) ? one : two; }
     private long nanosUntil(Instant deadline) {
         try { return Duration.between(clock.instant(), deadline).toNanos(); }
@@ -395,6 +429,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             event.put("complete", exchange.complete());
             event.put("transient_failure", exchange.transientFailure());
             event.put("response_wire_bytes", exchange.raw().length);
+            appendUsage(event, exchange.usage());
             emitEvent(event);
         } catch (RuntimeException | IOException ignored) { }
     }

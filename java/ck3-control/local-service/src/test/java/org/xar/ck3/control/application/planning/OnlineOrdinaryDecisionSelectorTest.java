@@ -398,6 +398,7 @@ class OnlineOrdinaryDecisionSelectorTest {
         private final AtomicInteger calls = new AtomicInteger();
         private final AtomicInteger headersSent = new AtomicInteger();
         private final AtomicReference<ObjectNode> request = new AtomicReference<>();
+        private final AtomicReference<String> usageJson = new AtomicReference<>("");
         private boolean closed;
         volatile java.util.concurrent.CountDownLatch requestReached;
         volatile java.util.concurrent.CountDownLatch releaseResponse;
@@ -444,13 +445,18 @@ class OnlineOrdinaryDecisionSelectorTest {
                 choice.putObject("delta");
                 choice.put("finish_reason", planned.finishReason());
                 exchange.getResponseBody().write(("data: " + finish + "\n\n").getBytes(StandardCharsets.UTF_8));
-                ObjectNode usage = StrictJson.object();
-                usage.putArray("choices");
-                ObjectNode counts = usage.putObject("usage");
-                counts.put("prompt_tokens", 10);
-                counts.put("completion_tokens", 2);
-                counts.putObject("prompt_tokens_details").put("cached_tokens", 0);
-                exchange.getResponseBody().write(("data: " + usage + "\n\n").getBytes(StandardCharsets.UTF_8));
+                String injectedUsage = usageJson.get();
+                if (!injectedUsage.isEmpty()) {
+                    exchange.getResponseBody().write(("data: " + injectedUsage + "\n\n").getBytes(StandardCharsets.UTF_8));
+                } else {
+                    ObjectNode usage = StrictJson.object();
+                    usage.putArray("choices");
+                    ObjectNode counts = usage.putObject("usage");
+                    counts.put("prompt_tokens", 10);
+                    counts.put("completion_tokens", 2);
+                    counts.putObject("prompt_tokens_details").put("cached_tokens", 0);
+                    exchange.getResponseBody().write(("data: " + usage + "\n\n").getBytes(StandardCharsets.UTF_8));
+                }
                 exchange.getResponseBody().write("data: [DONE]\n\n".getBytes(StandardCharsets.UTF_8));
                 exchange.getResponseBody().flush();
             } finally { exchange.close(); }
@@ -625,8 +631,123 @@ void httpProgressPairsActualRetryAndSkipsExpiredRequest(@TempDir Path root) thro
     }
 }
 
-@Test @org.junit.jupiter.api.parallel.ResourceLock(org.junit.jupiter.api.parallel.Resources.SYSTEM_OUT)
-void httpProgressWriteFailureDoesNotChangeSelection(@TempDir Path root) throws Exception {
+    @Test @org.junit.jupiter.api.parallel.ResourceLock(org.junit.jupiter.api.parallel.Resources.SYSTEM_OUT)
+    void sseUsageMetricsCapturedInEndAndAttempt(@TempDir Path root) throws Exception {
+        Fixture fixture = fixture(false);
+        java.io.PrintStream originalOut = System.out;
+        java.io.ByteArrayOutputStream capture = new java.io.ByteArrayOutputStream();
+        java.util.concurrent.atomic.AtomicReference<ExactRef> archivedAttempt = new java.util.concurrent.atomic.AtomicReference<>();
+        try {
+            System.setOut(new java.io.PrintStream(capture, true, StandardCharsets.UTF_8));
+            try (LocalModel model = new LocalModel()) {
+                model.usageJson.set("{\"choices\":[],\"usage\":{\"prompt_tokens\":123456,\"completion_tokens\":789,\"total_tokens\":124245,\"prompt_tokens_details\":{\"cached_tokens\":0}}}");
+                model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+                var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(
+                        model.endpoint(), "qwen38-coder", Duration.ofSeconds(5), 1, Duration.ZERO), Clock.systemUTC(), raw -> {
+                    Path path = root.resolve("usage-material-" + java.util.UUID.randomUUID() + ".json");
+                    Files.write(path, raw.bytes(), java.nio.file.StandardOpenOption.CREATE_NEW);
+                    var ref = new ExactRef(path.toAbsolutePath().toString(), raw.bytes().length, ActionCodec.sha256(raw.bytes()));
+                    var material = FullJsonTree.parse(raw.bytes(), org.xar.ck3.control.application.action.RawJson.MAXIMUM_BYTES);
+                    if ("xar.ordinary-model-http-attempt/v1".equals(material.path("schema").asText())) {
+                        archivedAttempt.set(ref);
+                    }
+                    return ref;
+                });
+                fixture.planner().bindSelector((request, proposal) -> selector.select(request, proposal));
+                var planned = fixture.planner().plan(fixture.request());
+                var selected = assertInstanceOf(PlanningResult.ActionSelected.class, planned);
+                assertSame(fixture.command(), selected.command());
+                assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+                assertEquals(1, model.calls.get(), "one real HTTP attempt");
+
+                var lines = capture.toString(StandardCharsets.UTF_8).lines().filter(l -> !l.isBlank())
+                        .map(l -> (ObjectNode) StrictJson.parse(l.getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES)).toList();
+                assertEquals(2, lines.size(), "one BEGIN and one END event");
+                var end = lines.get(1);
+                assertEquals("ORDINARY_MODEL_HTTP_END", end.get("status").textValue());
+                assertEquals(123456, end.get("prompt_tokens").intValue());
+                assertEquals(789, end.get("completion_tokens").intValue());
+                assertEquals(124245, end.get("total_tokens").intValue());
+                assertEquals(0, end.get("cached_prompt_tokens_if_reported").intValue());
+                assertTrue(!end.has("usage") && !end.has("content") && !end.has("wire_base64"));
+
+                var attempt = archivedAttempt.get();
+                assertTrue(attempt != null, "attempt archived");
+                var attemptJson = FullJsonTree.parse(Files.readAllBytes(Path.of(attempt.path())), StrictJson.EXPLICIT_MAX_BYTES);
+                assertEquals("xar.ordinary-model-http-attempt/v1", attemptJson.get("schema").textValue());
+                assertEquals(123456, attemptJson.get("prompt_tokens").intValue());
+                assertEquals(789, attemptJson.get("completion_tokens").intValue());
+                assertEquals(124245, attemptJson.get("total_tokens").intValue());
+                assertEquals(0, attemptJson.get("cached_prompt_tokens_if_reported").intValue());
+            }
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
+
+    @Test @org.junit.jupiter.api.parallel.ResourceLock(org.junit.jupiter.api.parallel.Resources.SYSTEM_OUT)
+    void malformedUsageDoesNotAlterSelectionOrMetrics(@TempDir Path root) throws Exception {
+        java.io.PrintStream originalOut = System.out;
+        try {
+            java.io.ByteArrayOutputStream capture = new java.io.ByteArrayOutputStream();
+            System.setOut(new java.io.PrintStream(capture, true, StandardCharsets.UTF_8));
+            List<String> cases = List.of(
+                "{\"choices\":[],\"usage\":{\"prompt_tokens\":\"string\",\"completion_tokens\":-1,\"total_tokens\":1.5,\"prompt_tokens_details\":\"bad\"}}",
+                "{\"choices\":[]}",
+                "{\"choices\":[],\"usage\":\"not-an-object\"}",
+                "{\"choices\":[],\"usage\":{\"prompt_tokens\":9223372036854775808,\"completion_tokens\":true,\"total_tokens\":0,\"prompt_tokens_details\":{\"cached_tokens\":\"bad\"}}}",
+                "{\"choices\":[],\"usage\":{\"prompt_tokens\":0,\"completion_tokens\":0,\"total_tokens\":0}}",
+                "{\"choices\":[],\"usage\":{\"prompt_tokens\":5,\"completion_tokens\":6,\"total_tokens\":11,\"prompt_tokens_details\":{\"cached_tokens\":4}}}\n\ndata: {\"choices\":[],\"usage\":{\"prompt_tokens\":0}}"
+            );
+            List<List<Boolean>> expectedNulls = List.of(
+                List.of(true, true, true, true),
+                List.of(true, true, true, true),
+                List.of(true, true, true, true),
+                List.of(true, true, false, true),
+                List.of(false, false, false, true),
+                List.of(false, true, true, true)
+            );
+            for (int caseIndex = 0; caseIndex < cases.size(); caseIndex++) {
+                Fixture fixture = fixture(false);
+                try (LocalModel model = new LocalModel()) {
+                    model.usageJson.set(cases.get(caseIndex));
+                    model.reply.set(new Reply(inner(fixture.command(), "SELECT_PROPOSAL").toString(), 0));
+                    var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(
+                            model.endpoint(), "qwen38-coder", Duration.ofSeconds(5), 1, Duration.ZERO), Clock.systemUTC(), raw -> {
+                        Path path = root.resolve("malformed-usage-material-" + java.util.UUID.randomUUID() + ".json");
+                        Files.write(path, raw.bytes(), java.nio.file.StandardOpenOption.CREATE_NEW);
+                        return new ExactRef(path.toAbsolutePath().toString(), raw.bytes().length, ActionCodec.sha256(raw.bytes()));
+                    });
+                    fixture.planner().bindSelector((request, proposal) -> selector.select(request, proposal));
+                    var planned = fixture.planner().plan(fixture.request());
+                    var selected = assertInstanceOf(PlanningResult.ActionSelected.class, planned);
+                    assertSame(fixture.command(), selected.command());
+                    assertSame(fixture.draft(), selected.trace().finalPlan().orElseThrow());
+                    assertEquals(1, model.calls.get());
+
+                    var lines = capture.toString(StandardCharsets.UTF_8).lines().filter(l -> !l.isBlank())
+                            .map(l -> (ObjectNode) StrictJson.parse(l.getBytes(StandardCharsets.UTF_8), StrictJson.EXPLICIT_MAX_BYTES)).toList();
+                    assertEquals(2 * (caseIndex + 1), lines.size(), "exactly one BEGIN and one END per actual call");
+                    var end = lines.get(2 * caseIndex + 1);
+                    assertEquals("ORDINARY_MODEL_HTTP_END", end.get("status").textValue());
+                    assertEquals(expectedNulls.get(caseIndex).get(0), end.get("prompt_tokens").isNull(), "prompt_tokens null state case " + caseIndex);
+                    assertEquals(expectedNulls.get(caseIndex).get(1), end.get("completion_tokens").isNull(), "completion_tokens null state case " + caseIndex);
+                    assertEquals(expectedNulls.get(caseIndex).get(2), end.get("total_tokens").isNull(), "total_tokens null state case " + caseIndex);
+                    assertEquals(expectedNulls.get(caseIndex).get(3), end.get("cached_prompt_tokens_if_reported").isNull(), "cached_prompt_tokens null state case " + caseIndex);
+                    var metricFields = List.of("prompt_tokens", "completion_tokens", "total_tokens", "cached_prompt_tokens_if_reported");
+                    for (int metric = 0; metric < metricFields.size(); metric++) {
+                        if (!expectedNulls.get(caseIndex).get(metric))
+                            assertEquals(0L, end.get(metricFields.get(metric)).longValue(), "reported zero must remain zero");
+                    }
+                }
+            }
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
+
+    @Test @org.junit.jupiter.api.parallel.ResourceLock(org.junit.jupiter.api.parallel.Resources.SYSTEM_OUT)
+    void httpProgressWriteFailureDoesNotChangeSelection(@TempDir Path root) throws Exception {
     var originalOut = System.out;
     try (LocalModel model = new LocalModel()) {
         Fixture fixture = fixture(false);
