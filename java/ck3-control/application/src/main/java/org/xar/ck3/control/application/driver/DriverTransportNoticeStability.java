@@ -44,7 +44,9 @@ public final class DriverTransportNoticeStability {
             if(nativeOwnedNoticeKeys.contains(kind.key)||!diagnostics.members().containsKey(kind.key))continue;
             Notice notice=notice(kind,diagnostics.get(kind.key),actualPid);
             var payload=new LinkedHashMap<>(notice.payload().members());
-            for(String field:kind.wrappers)payload.remove(field);
+            // Java-injected notice telemetry evolves independently of the held Native state.
+            // Keep its typed transport identity; raw Native-owned same-name diagnostics remain exact above.
+            payload.keySet().retainAll(Set.of("type","protocol_version","pid","connection_generation"));
             stable.put(kind.key,new OpportunityJson.Obj(payload));
         }
         fields.put("diagnostics",new OpportunityJson.Obj(stable));
