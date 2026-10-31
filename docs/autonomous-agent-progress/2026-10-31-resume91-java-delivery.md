@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码已发表152单RootDerivedChildAuthority取消历史代码pin/部署等式（d66a804e9c），保实际DATA/sourceQualification与处理器、canonical/frame合同。151于08:38:44.468527Z preloop END1/59.707秒，已越过Codec后被该历史audit阻断；canonical386、ARM384及父385仍Unknown/next60，日0。152当前MB/install中，未授终态。旧Z Core144+Chronology150漏同步已Main真实repo根补齐11unique，正式D早已有源码；不因旧exit0/Skipped回执冒采用。旧373/374不重放，本岗不写S/MB/Game/账本。
+最新正式源码153已发表77893960da，M7 Construct/Assign四leaf已发表8b140c0e02。Main153实际09:14:07.282812Z preloop END1/172.560463秒、未LOOP；此前只读恢复已真正把同一原ARM子动作持久为canonical387 SETTLED/CONTROL_APPLIED，独立STATUS确认gen1armed，原request/dispatch同而未重ARM。canonical388父仍Unknown/next60，日期53144328不增；不把ControlApplied当Advance/普通新日。154取消/父恢复链尚待，旧373/374不重放。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -481,3 +481,19 @@ M1 Source17新单test本地 `113fb8e6c9` 单独修fixture，不是production/Sou
 151真实preloop于08:38:44.468527Z END1/59.707秒、未LOOP，原Codec错误已越过但DerivedChildAuthority.verifyArchived146历史来源等式在Writer.preview阻断真正commit，canonical386/原ARM384及父385Unknown保持。152当刻仅安装，既有DATA回归或源码发表不授新terminal/日期；旧speed373及父374不重放。
 
 Z旧基线差分另线独立纠正：正式D早已包含Core14410leaf和CoreChronology1502leaf（ActionEffects重叠，合11unique）；本岗151发表比对实际指出Z缺Codec v13Core144多hunks。Main/provider进一步核实旧Git在Java子目录应用gitdiff格式补丁出现exit0但`Skipped`，其中Core150实际2Skipped并不代表采用。provider仅在D当前Z副本按两个原授权delta构造`core144-sync151/CURRENT-Z.patch`43489B，保Codec151后继；Main最终从Z仓库根`--directory=java/ck3-control`真实11Checking/11Applied/0Skipped exit0补齐。provider08:50:49.888121Z只读限定11paths确认源码文本除BOM/EOL11/11同capturedS，raw仅2同，不能称11份原字节相同。记录`{DELIVERY,FINAL-UNION-RESULT,POST-APPLY-CONFIRMATION}.json`与REVIEW.md保留旧错误与修正；S/MB未为同步修改，不wholeleaf回盖，不为同步新FF/重绿/新增151模型功劳或业务信用。
+
+## M7 string151四叶首验交付与query153精确基线适配
+
+M7新`RequestConstruct855f00`/`RequestAssign855db0`及各一个JUnit类共4新leaf在existing g2-research正常发表`8b140c0e02dd555f8893aceef709f113f0686fff`，0POM/新依赖。对现有RequestE92780.Memory/Raw128复用；writer已完整读155B/268B objdump与两生产类，先D-only静审再待真实首次测试终态，sealed源SHA未漂移，正式只LF/尾空规范、执行token0改。Construct保3次目的zero写先于全部source读取、alias鲜读、unsigned选路和opaque调用后长度/容量末写；Assign保old容量捕获、copy前元数据、copy后oldP/header鲜读、unsigned growth与normalfree后末publish。`UnsupportedSourcePath`携target/trap/knownregs直接throw，RCX是P-H而非guard量P-H-8，RDX加0x27h；原错误helper/INT3/EH未执行，allocator/copy/free仍供给端口。
+
+必要首验分组保留：Construct单prodstrict0/.502219秒；单Teststrict0/.826623秒→09:01:49.344199–50.158424Z首次2JUnit2P/0skip/.814180秒。Assign单prodstrict0/.583689秒；单Teststrict0/.859149秒→09:02:15.776121–16.449861Z首次2JUnit2P/0skip/.673678秒。是两个独立JVM2P+2P，合10个有限owned场景，不称同JVM4P；旧slot140/cleanup144绿不重。有限witness覆盖inline/alias、捕获参数/回调改未来字段、完整字节镜像、normalgrowth/reuse及unsupported/throwing后停止后续effect，不是Native代码执行、真实heap可用性/所有权、currentU/drain/GUIAccept/SAVE。
+
+模型责任逐项：Construct和Assign主方法在各两次整稿拒绝后owner接管；growth保模型寄存器数学并删3行越原域guard；heap witness保模型finitecase部分并由owner补trace/byteimage/捕获断言，inline及Assign两个test均owner。初+27表述纠为ADD27h/0x27L是owner输入问题，不记模型错误。`M7-STRING151-ADOPTION.json`与M7`MODEL-REVIEW05.json`保6actualphases、原始拒绝/length和采用比例；caller-wiring153两组合Test尚未终态，未夹入此4leaf。
+
+query153单RootReconciliationAuthority准确包`RUNTIME.patch`5157B在Main逐hunk审/SZ真实Checking/Applied后发表`77893960dabf3249818eabf1cdc78c6256e7eadb`。八个业务role字段和canonical arguments字节全比，source/decoder只Strict ExactRef archival metadata，去两code物理pin；当前installedfactory、FOCUS特例、pending/guard/capability/frame/custody及业务material验证保。writer没有自行改候选代码：原D matcher已用`ContinuityJson.same`，原S-input仍`descriptor.equals`，所以原patch首次repo根check1在此旧行不匹配；交付patch只minus-line改为D现前像，所有plus-lines原封保留，最终整leaf与sealedcandidate normalized同。源码producer LongNode→StrictParseBigIntegerNode的17DATA自roundtrip复现属于ownerS-input，不冒称D此前仍有该equals缺陷。
+
+复用owner单prodstrict0/2.628772秒、probe编0/1.629293秒、17DATAchecks0/.887608秒；无actual152failedbasis pointer或fullRoot/Writer/liveStatus绿，固定Dprobe不入CI。首model no-op整拒，correct1方向partial，owner补Arrays.equals、ExactRef类型decode、JsonNode import及原descriptor私有overload，不能whole归模型。152已实际越Derived后失败，153当刻仅MB/install BEGIN；canonical仍386/原ARM384及父385Unknown，未重ARM、不授新日。准确`QUERY153-{PREIMAGE,ADOPTION}.json`保存原check1和机械上下文修正、owner实测与限制。本岗source先发，不等待本文/Native文档发表，不重任何既有绿。
+
+### 153实机后到：原ARM子动作实际持久，父仍未决
+
+Main实际153 START/PID未在本岗补造；直接终态记录为09:14:07.282812Z preloop END1/172.560463秒、未LOOP/next60，HOLD随后解除。关键原件已真正落canonical：同一原ARM动作的event387为SETTLED/CONTROL_APPLIED，receipt `889556bc8c39cb5fc355e1c06484e1947dadcc23b2f083d18792cfdbaa5ecb1b.bin`7272B，独立STATUS `4bf2e55382a0d31c62f70160870152046bd3de868a2ea810c98f49a622f7ed06.bin`15573B；native251/public270、date53144328、generation1 armed。运行岗已核原request/dispatch同一，没有重新ARM；这是真实持久子控制终态，超出前述DATA/源码范围，但不授普通world动作/Advance/日期/SAVE。随后父readonlyobserve期限仍使canonical388父Unknown，取消全组准备154，尚不称整个Root恢复或父已结算。本文前一节“153当刻安装”保留为发表准备时冻结，最新实况以本段为准。
