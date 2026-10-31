@@ -106,6 +106,56 @@ public record NativeRequestChronology(NativeObservationPort.TransportSession ses
                 && !query.writeEntered().observedAt().isBefore(attempt.submittedAt()),
                 "actual sampling query was not sent after the original submitted command and ACK");
     }
+    /** Only the typed original-pending Status profile can bridge an actual same-Game reconnection. */
+    public static void requireReconciledSampledAfter(PlanningReadReceipt read, ActionCommand command,
+            ActionState.Attempt attempt, NativeActionPort.AckReceived actualSubmission) {
+        Objects.requireNonNull(read); Objects.requireNonNull(command); Objects.requireNonNull(attempt);
+        var request = read.request();
+        StrictJson.require(request.origin() instanceof CommandOrigin.Reconciliation
+                && read.contractId().equals("java.tactical-daily-sentinel.status.reconciliation.v1")
+                && request.operation().value().equals(org.xar.ck3.control.application.advance.ClockStatusRead.STEP)
+                && request.arguments().members().isEmpty() && read.adoption().isEmpty()
+                && read.before().guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION
+                && read.after().guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION,
+                "exact typed original-pending sentinel Status reconciliation read required");
+        StrictJson.require(command.origin() instanceof CommandOrigin.Gameplay
+                && command.expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.CLOCK_OBSERVER)
+                && (command.operation().value().startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.ARM_PREFIX)
+                    || command.operation().value().startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX))
+                && org.xar.ck3.control.application.advance.AdvancePrimitives.supports(command.operation()),
+                "reconciliation chronology belongs only to an exact original ARM or generation-bound CANCEL");
+        var identity = request.origin().requireReconciliation(); var pending = identity.pending();
+        StrictJson.require(pending.actionId().equals(command.actionId()) && pending.bodySha256().equals(ActionCodec.bodySha256(command))
+                && pending.requestId().equals(attempt.requestId()) && pending.originalBefore().equals(command.before())
+                && command.source().equals(request.source()) && command.sessionId().equals(request.sessionId())
+                && command.origin().acceptsGuard(attempt.guard().origin()) && command.source().equals(attempt.guard().source())
+                && command.sessionId().equals(attempt.guard().sessionId()) && command.operation().equals(attempt.guard().operation()),
+                "reconciliation query changed its complete original command, Attempt or pending identity");
+        identity.requireOriginalConnection(attempt.guard());
+        StrictJson.require(read.before().binding().origin() instanceof CommandOrigin.Reconciliation
+                && read.after().binding().origin() instanceof CommandOrigin.Reconciliation
+                && identity.sameGuardFrame(read.before().binding().origin().requireReconciliation())
+                && identity.sameGuardFrame(read.after().binding().origin().requireReconciliation())
+                && read.before().originalBindingSha256().equals(identity.bindingSha256())
+                && read.after().originalBindingSha256().equals(identity.bindingSha256()),
+                "reconciliation query guards differ from its exact current factual pending identity");
+        NativeRequestChronology query = custody(read.original()); query.verify(read);
+        NativeRequestChronology original = submission(attempt, actualSubmission);
+        StrictJson.require(!query.requestId().equals(attempt.requestId())
+                && query.session().machineId().equals(original.session().machineId())
+                && query.session().game().equals(original.session().game())
+                && query.session().sessionId().equals(original.session().sessionId()),
+                "reconciliation query is not independent in the same original physical Game/session");
+        int connectionOrder = query.session().connectionGeneration().compareTo(original.session().connectionGeneration());
+        StrictJson.require(connectionOrder >= 0 && (connectionOrder > 0 || query.custodyEpoch().equals(original.custodyEpoch())),
+                "reconciliation query connection regressed or same connection changed custody epoch");
+        if (query.custodyEpoch().equals(original.custodyEpoch()))
+            StrictJson.require(query.writeEntered().order().compareTo(original.responseReceived().order()) > 0,
+                    "same-custody reconciliation query predates its original ACK event");
+        StrictJson.require(!query.writeEntered().observedAt().isBefore(original.responseReceived().observedAt())
+                && !query.writeEntered().observedAt().isBefore(attempt.submittedAt()),
+                "actual reconciliation query was not sent after the original submitted command and ACK");
+    }
     /** Initial modal/source reads precede the actual write; this never equates an ACK with a state transition. */
     public static void requireBeforeSubmission(PlanningReadReceipt actualRead, ActionState.Attempt attempt,
             NativeActionPort.AckReceived actualSubmission) {

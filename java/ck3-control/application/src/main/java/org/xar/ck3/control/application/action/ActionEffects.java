@@ -42,8 +42,13 @@ public final class ActionEffects {
         validateStructure(command, attempt, settlement);
         if (settlement instanceof ActionState.ControlApplied control) {
             NativeActionPort.AckReceived ack = controlAcknowledgement(command, attempt, actualDispatch, control);
-            NativeRequestChronology.requireSampledAfter(control.read(), attempt, ack);
-            control.supportingReads().forEach(read -> NativeRequestChronology.requireSampledAfter(read, attempt, ack));
+            var read = control.read();
+            if (reconciliationClockControl(command, read)) {
+                NativeRequestChronology.requireReconciledSampledAfter(read, command, attempt, ack);
+            } else {
+                NativeRequestChronology.requireSampledAfter(read, attempt, ack);
+            }
+            control.supportingReads().forEach(supporting -> NativeRequestChronology.requireSampledAfter(supporting, attempt, ack));
         } else if (settlement instanceof ActionState.LifecycleControlApplied control) {
             NativeActionPort.AckReceived ack = successfulAck(actualDispatch);
             NativeRequestChronology.requireBeforeSubmission(control.observation().beforeStatus(), attempt, ack);
@@ -76,6 +81,16 @@ public final class ActionEffects {
         NativeRequestChronology actual = read.original().custody().orElseThrow(() -> new IllegalArgumentException("actual query chronology is absent; historical data grants no sampling freshness"));
         actual.verify(read); return actual;
     }
+    private static boolean reconciliationClockControl(ActionCommand command, PlanningReadReceipt read) {
+        return command.origin() instanceof CommandOrigin.Gameplay
+                && command.expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.CLOCK_OBSERVER)
+                && (command.operation().value().startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.ARM_PREFIX)
+                    || command.operation().value().startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX))
+                && read.request().origin() instanceof CommandOrigin.Reconciliation
+                && read.contractId().equals("java.tactical-daily-sentinel.status.reconciliation.v1")
+                && read.before().guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION
+                && read.after().guardMode() == ReadContract.GuardMode.RECONCILIATION_OBSERVATION;
+    }
     private static void validateStructure(ActionCommand command, ActionState.Attempt attempt, ActionState.Settlement settlement) {
         StrictJson.require(!(settlement instanceof ActionState.DirectFixedWindowCompleted || settlement instanceof ActionState.PauseConfirmed || settlement instanceof ActionState.ControlSequenceCompleted), "typed pause/control sequence requires its exact dispatch or canonical children");
         StrictJson.require(!(settlement instanceof ActionState.SwaySchedulerCompleted), "Sway scheduler publication only settles its registered composite");
@@ -98,7 +113,9 @@ public final class ActionEffects {
             PlanningReadReceipt read = control.read();
             StrictJson.require(read.original().nativeOk() && !read.requestId().equals(attempt.requestId()), "native control effect needs an independent successful Status read");
             StrictJson.require(read.request().sessionId().equals(command.sessionId()), "native control read changed session");
-            StrictJson.require(ProposalLifecycle.compare(command.expected(), read.after().binding().observed(), read.request().source(), control.observerSchema(), control.actual())
+            var observed = reconciliationClockControl(command, read)
+                    ? read.after().binding().origin().requireReconciliation().factual() : read.after().binding().observed();
+            StrictJson.require(ProposalLifecycle.compare(command.expected(), observed, read.request().source(), control.observerSchema(), control.actual())
                     == ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH, "native control Status did not prove the exact expected generation/state");
             java.util.HashSet<String> requestIds = new java.util.HashSet<>(); requestIds.add(read.requestId());
             for (PlanningReadReceipt supporting : control.supportingReads()) {
