@@ -1,0 +1,111 @@
+{
+  "schema": "m3.manager-vector186-first-software-summary/v1",
+  "package_number": 50,
+  "status": "FIRST_STRICT_AND_FOUR_SCENES_PASS",
+  "actual_original": "manager-vector186/ACTUAL186.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\manager-vector186",
+  "actual_evidence_copied_to_Git": false,
+  "actual_caller": "3790510@37905FA CALL3763F90; RCX manager from module+5C6A4D0, RDX output vector",
+  "complete_normal": [
+    "3763F90",
+    "3764130(exclusive)"
+  ],
+  "normal_code_bytes": 416,
+  "RF_parts": 3,
+  "RF_code_bytes": [
+    72,
+    335,
+    9
+  ],
+  "UW_bytes": 68,
+  "new_PE_bytes": 484,
+  "header_provider_query_Game": 0,
+  "new_explicit_sources_first_compiled": 4,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "local_first_verification_source_matched_cache_reuse": true,
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/ManagerVectorApi186.java": "7857f0ad1d9c24161e719879c5b0f5e10a1f679dc374a572eda59ca1b66869f9",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/ManagerVector186.java": "16992765013a0cdf182db66ae40eaa774bd519144f80b907e71871a9394399f8",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ManagerVectorBook186.java": "85a563d00dec135e689b4827b17ebf8401aef6746cb50e9cebedd017a4235135",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ManagerVectorValidation186.java": "4b1cb5b6d557a509adc3ac3456d1f4d211ca13eeface6aa70744a13324f638ac"
+  },
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "start_utc": "2026-10-31T20:01:13.522430+00:00",
+      "end_utc": "2026-10-31T20:01:14.260481+00:00",
+      "process_seconds": 0.7380106998607516,
+      "exit_code": 0
+    },
+    {
+      "phase": "RUN4",
+      "start_utc": "2026-10-31T20:01:14.262458+00:00",
+      "end_utc": "2026-10-31T20:01:14.407416+00:00",
+      "process_seconds": 0.14494920009747148,
+      "exit_code": 0
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/implicit:none/192MiB/CPU1/empty-sourcepath",
+  "source_preserved": true,
+  "new_scenes": 4,
+  "scripted_source_operations": 100,
+  "ops_per_scene": [
+    5,
+    21,
+    32,
+    42
+  ],
+  "ports_per_scene": [
+    0,
+    1,
+    4,
+    5
+  ],
+  "executed_top_level_checks": 4,
+  "assertion_meaning": "one complete global scripted-operation consumption check per scene after void collect; per-step kind/address/args/value guards are not added as separate top-level assertions",
+  "model_logical_requests": 6,
+  "actual_model_POSTs": 6,
+  "model_stop": 5,
+  "model_length_whole_discarded": 1,
+  "local_phase_peak": 2,
+  "model_core_book_adoption": 0,
+  "core_book_origin": "owner entire after two wholly rejected semantic candidates per role; Book owner already read target, not blind",
+  "host_model_adoption": "second decoded Java source byte-for-byte; zero owner source edits",
+  "host_independence": "original416B/actual caller/source receipts/current declarations/formal Memory only; no target or Book bodies/candidates/results",
+  "owner_input_erratum": "TARGET scope header stray379? was a documentation typo; actual ASM/API/source consistently3763F90 and both R2 tasks explicitly corrected the typo. No physical API omission; original requests unchanged.",
+  "scope": "normal scan/collect/growth/move-zero/fresh-cleanup/free/publish/last-object writes with explicit typed FP, unlockedINC and virtual-call observations",
+  "captured_and_fresh": "capture scan table/end and multiplier once; fresh count/capacity, append/move/cleanup counts and allocator/data; growth final common path retains captured newData/required count after publication",
+  "not_proved": [
+    "FP CVTDQ2PS/MULSS/CVTT hardware results, MXCSR or exceptions",
+    "unlockedINC backing-store arithmetic/wrap, atomicity or concurrency",
+    "virtual object/allocator internals",
+    "all aliases/count/capacity/overflow cases or loop termination",
+    "fullCPU/prologue/register/flags/ABI/EH",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_production_recompiled": 0,
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}

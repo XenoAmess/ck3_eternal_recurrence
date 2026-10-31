@@ -1,0 +1,68 @@
+{
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/ManagerVectorApi186.java",
+      "kind": "main",
+      "bytes": 1098,
+      "sha256": "7857f0ad1d9c24161e719879c5b0f5e10a1f679dc374a572eda59ca1b66869f9",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "b3474b6f7a18b1860e8331bc55bb0491cb55e99a60d9101990950e20b4118ea3",
+      "git_lf_bytes": 1079
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/ManagerVector186.java",
+      "kind": "main",
+      "bytes": 4686,
+      "sha256": "16992765013a0cdf182db66ae40eaa774bd519144f80b907e71871a9394399f8",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "16992765013a0cdf182db66ae40eaa774bd519144f80b907e71871a9394399f8",
+      "git_lf_bytes": 4686
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ManagerVectorBook186.java",
+      "kind": "test",
+      "bytes": 6116,
+      "sha256": "85a563d00dec135e689b4827b17ebf8401aef6746cb50e9cebedd017a4235135",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "85a563d00dec135e689b4827b17ebf8401aef6746cb50e9cebedd017a4235135",
+      "git_lf_bytes": 6116
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/ManagerVectorValidation186.java",
+      "kind": "test",
+      "bytes": 7353,
+      "sha256": "4b1cb5b6d557a509adc3ac3456d1f4d211ca13eeface6aa70744a13324f638ac",
+      "changed_for_delivery": false,
+      "git_lf_sha256": "4b1cb5b6d557a509adc3ac3456d1f4d211ca13eeface6aa70744a13324f638ac",
+      "git_lf_bytes": 7353
+    }
+  ],
+  "reuse_existing_source_only": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false,
+      "git_lf_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false,
+      "git_lf_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false,
+      "git_lf_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a"
+    }
+  ],
+  "missing_compile_dependencies": [],
+  "manual_main": "org.xar.ck3.research.m3.ManagerVectorValidation186",
+  "portable_source_closure_files": 7,
+  "POM_CI_binary_classroot_changes": false,
+  "hash_scope": "sha256/bytes preserve original physical first-compile inputs; git_lf_* identify published line-ending/line-whitespace normalization only. Java tokens and expected data are unchanged."
+}
