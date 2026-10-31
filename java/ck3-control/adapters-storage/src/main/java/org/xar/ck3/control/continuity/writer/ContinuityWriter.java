@@ -200,6 +200,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private final Thread owner = Thread.currentThread();
         private boolean open = true;
         private Head retainedHead;
+        private boolean retainedHeadHistoryVerified;
         private Head retainedDomainHead;
         private Session() { }
         private ContinuityWriter writer() { return ContinuityWriter.this; }
@@ -399,23 +400,31 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         @Override public Head requireHistoricalHead(long sequence,String expectedDigest) throws IOException {
             requireWriter(layout.lock());StrictJson.safe(sequence,0);requireDigest(expectedDigest);
-            Head actual=store.head();ContinuityState retained=capturedStateAt(actual,sequence);
-            StrictJson.require(ContinuityJson.digest(retained.toJson()).equals(expectedDigest),"historical Head state digest differs from actual ancestry");
-            // Retain the actual complete canonical proof, including descendants. The returned ancestor State
-            // is explicitly read-only: its state/pins cannot pass requireSameHead as the live writer Head.
-            List<Pin> pins=new ArrayList<>(actual.documents());pins.addAll(captureDomain(sources));
-            for(var slot:DomainBodies.Slot.values()) {
-                var stored=DomainBodies.reference(retained,slot);if(stored.isEmpty())continue;
-                var body=stored.orElseThrow();var registered=registration(slot);
-                StrictJson.require(body.contractSchema().equals(registered.contractSchema()),"historical domain contract differs");
-                Pin material=new Pin(body.payload(),body.identity());
-                domainCanonical(artifacts().read(material,registered.maximumBodyBytes()),registered.maximumBodyBytes());pins.add(material);
+            try {
+                Head actual=this.head();ContinuityState retained=capturedStateAt(actual,sequence);
+                StrictJson.require(ContinuityJson.digest(retained.toJson()).equals(expectedDigest),"historical Head state digest differs from actual ancestry");
+                // The store cache can outlive this Session. Verify its canonical DATA once here,
+                // then reuse that proof only while this Session retains the same locked Head.
+                if(!retainedHeadHistoryVerified) {
+                    for(Pin pin:actual.documents())LedgerFiles.verify(pin);
+                    retainedHeadHistoryVerified=true;
+                }
+                List<Pin> pins=new ArrayList<>(actual.documents());pins.addAll(captureDomain(sources));
+                for(var slot:DomainBodies.Slot.values()) {
+                    var stored=DomainBodies.reference(retained,slot);if(stored.isEmpty())continue;
+                    var body=stored.orElseThrow();var registered=registration(slot);
+                    StrictJson.require(body.contractSchema().equals(registered.contractSchema()),"historical domain contract differs");
+                    Pin material=new Pin(body.payload(),body.identity());
+                    domainCanonical(artifacts().read(material,registered.maximumBodyBytes()),registered.maximumBodyBytes());pins.add(material);
+                }
+                // Target ancestry and durable bodies remain exact reads. The returned ancestor
+                // never becomes the live Head or a write permit; current-head checks stay live.
+                requireSameHead(actual,this.head());
+                return new Head(retained,pins.stream().distinct().toList(),actual.absent(),actual.indexRepairs(),actual.snapshotNeedsRecovery());
+            } catch(IOException|RuntimeException|Error failure) {
+                retainedHeadHistoryVerified=false;
+                throw failure;
             }
-            // This proves the historical state and its referenced durable bodies. Individual import
-            // input/evidence replays use requireHistoricalImport; old external CAS input inodes are
-            // not a permanent archive identity contract for every unrelated earlier import.
-            for(Pin pin:pins)LedgerFiles.verify(pin);requireSameHead(actual,store.head());
-            return new Head(retained,pins.stream().distinct().toList(),actual.absent(),actual.indexRepairs(),actual.snapshotNeedsRecovery());
         }
         @Override public DomainBodies.RecordedImport requireHistoricalImport(DomainBodies.Slot slot,long sequence,String afterDigest) throws IOException {
             requireWriter(layout.lock());Objects.requireNonNull(slot);StrictJson.safe(sequence,1);requireDigest(afterDigest);
@@ -657,7 +666,8 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         public Head head() throws IOException {
             checkOpen();
-            Head retained=retainedHead;retainedHead=null;
+            Head retained=retainedHead;boolean historyVerified=retainedHeadHistoryVerified;
+            retainedHead=null;retainedHeadHistoryVerified=false;
             if(retained!=null&&!retained.snapshotNeedsRecovery()&&retained.indexRepairs().isEmpty()) {
                 Pin snapshot=retained.documents().stream()
                         .filter(pin->layout.snapshot().equals(java.nio.file.Path.of(pin.reference().path())))
@@ -665,11 +675,11 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 if(snapshot.identity().equals(LedgerFiles.identity(layout.snapshot()))) {
                     java.nio.file.Path next=layout.event(Math.addExact(retained.state().sequence(),1));
                     if(!java.nio.file.Files.exists(next,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
-                        LedgerFiles.requireAbsent(next);retainedHead=retained;return retained;
+                        LedgerFiles.requireAbsent(next);retainedHead=retained;retainedHeadHistoryVerified=historyVerified;return retained;
                     }
                 }
             }
-            Head actual=store.head();retainedHead=actual;return actual;
+            Head actual=store.head();retainedHead=actual;retainedHeadHistoryVerified=false;return actual;
         }
         public ExactRef persistedHead() throws IOException {
             checkOpen(); return LedgerFiles.read(layout.snapshot(), ContinuityJson.LEDGER_MAX_BYTES).pin().reference();
@@ -703,14 +713,15 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private Receipt commitInternal(Prepared prepared, TransitionAuthority selectedAuthority) throws IOException {
             checkOpen();
             retainedDomainHead = null;
+            retainedHeadHistoryVerified=false;
             try {
                 Receipt receipt = commitPrepared(prepared,selectedAuthority);
-                if (receipt.disposition() != Disposition.COMMITTED) retainedHead = null;
+                if (receipt.disposition() != Disposition.COMMITTED) {retainedHead = null;retainedHeadHistoryVerified=false;}
                 // Retain the Head validated by commitPrepared's readback to avoid re-parsing history in requireCommitted.
                 // If commitPrepared throws, retainedHead remains null (cleared at start), preventing stale cache use.
                 return receipt;
             } catch (IOException | RuntimeException | Error error) {
-                retainedHead = null;
+                retainedHead = null;retainedHeadHistoryVerified=false;
                 throw error;
             } finally {
                 // Authority callbacks can read domains while a commit is being validated.
@@ -766,7 +777,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 if(writes.isEmpty())return new Receipt(Disposition.NO_CHANGE,actual.state(),request.identity(),0,false);
                 // Quote the entire physical commit/recovery before the first pending file is created.
                 return storageGuard.write(LedgerFiles.plan(layout.lock(),writes),()->{
-                    retainedHead=null;
+                    retainedHead=null;retainedHeadHistoryVerified=false;
                     retainedDomainHead=null;
                     int recovered=store.recover(recovery,storageGuard);
                     if(unchanged)return new Receipt(Disposition.NO_CHANGE,actual.state(),request.identity(),recovered,recovered>0);
@@ -779,13 +790,13 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     Head readback=store.head();
                     StrictJson.require(ContinuityJson.same(readback.state().toJson(),committed.toJson())
                             &&!readback.snapshotNeedsRecovery()&&readback.indexRepairs().isEmpty(),"committed ledger readback");
-                    retainedHead = readback;
+                    retainedHead = readback;retainedHeadHistoryVerified=false;
                     return new Receipt(Disposition.COMMITTED,committed,request.identity(),recovered+3,recovered>0);
                 });
             }catch(IOException|RuntimeException error){throw new CommitUncertainException(request.identity(),sequence,error);}
         }
         private Receipt recoverDuplicate(Request request, Head actual) throws IOException {
-            retainedHead=null; // Recovery may mutate persistence; only a normal commit retains its validated readback.
+            retainedHead=null;retainedHeadHistoryVerified=false; // Recovery may mutate persistence; only a normal commit retains its validated readback.
             retainedDomainHead=null;
             try {
                 int recovered = store.recover(actual, storageGuard);
