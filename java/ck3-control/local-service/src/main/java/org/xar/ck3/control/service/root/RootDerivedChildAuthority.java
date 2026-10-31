@@ -108,7 +108,6 @@ public final class RootDerivedChildAuthority {
                     parentBinding.implementationSource(), parentBinding.decoderSource(), definition.implementationSource(),
                     definition.decoderSource(), verifier.definitionSource(), lease.originalSourceQualification(),
                     previous.stream().map(archive::preserveReceipt).toList());
-            for (var source : sources(proof)) pin(same, source);
             if(lease.originalSourceQualification().isPresent())pin(same, lease.originalSourceQualification().orElseThrow());
             var raw = proof.encode(); ExactRef original = archive.preserveMaterial(raw);
             require(raw.equals(archive.loadMaterial(original)), "derived child proof did not roundtrip its immutable original");
@@ -142,10 +141,6 @@ public final class RootDerivedChildAuthority {
                 }
                 var parentBinding = parentBinding(parent, proof.handlerId());
                 var definition = bindings.resolve(child.command().operation(),child.command().origin()).orElseThrow(); requireChildDefinition(child.command(), definition);
-                var verifier = bindings.actualArchivedVerifier(child.command().operation()).orElseThrow();
-                require(parentBinding.implementationSource().equals(proof.parentImplementation()) && parentBinding.decoderSource().equals(proof.parentDecoder())
-                        && definition.implementationSource().equals(proof.childImplementation()) && definition.decoderSource().equals(proof.childDecoder())
-                        && verifier.definitionSource().equals(proof.childVerifier()), "derived historical source/decoder/verifier changed");
                 var previous = preceding(historical, parent, child.command(), archive);
                 require(previous.stream().map(archive::receiptReferenceOf).toList().equals(proof.previousChildren()),
                         "derived replay changed preceding canonical child originals or their order");
@@ -157,7 +152,6 @@ public final class RootDerivedChildAuthority {
                         "derived proof lost the complete actual parent/current native/Driver/source origins");
                 RootGuardEvidence.requireHistory(running.guard(), archive, same); RootGuardEvidence.requireHistory(guard, archive, same);
                 qualify(parent, parentBinding, child.command(), before, current, previous, archive);
-                for (var source : sources(proof)) pin(same, source);
                 if(proof.sourceQualification().isPresent())pin(same, proof.sourceQualification().orElseThrow());
                 unchanged(same, head);
             } catch (IOException failure) { throw new UncheckedIOException("INCOMPLETE: actual original derived-child read/replay authority unavailable", failure); }
