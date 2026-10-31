@@ -115,6 +115,33 @@ final class CompositeCoordinatorSupport {
     }
     static ActionReceipt finish(ActionJournal.LockedJournal locked, ActionCommand parent, String digest, CompositeExecution retained,
             ActionPorts.PostconditionResult result,CompositeActionPort actualSource) {
+        if (result instanceof ActionPorts.LifeControlPrefixInterruptedObserved interrupted) {
+            ActionReceipt current = locked.find(parent.actionId()).orElseThrow();
+            if (!(current.state() instanceof ActionState.CompositeUnknown unknown)
+                    || !current.command().equals(parent) || !current.bodySha256().equals(digest)
+                    || !unknown.execution().equals(retained)) return current;
+            if (!(actualSource instanceof CompositeActionPort.LifeControlPrefixSource source)
+                    || !source.handlerId().equals(retained.handlerId()) || !source.supports(parent.operation())) return current;
+            var children = new ArrayList<ActionReceipt>();
+            try {
+                for (var child : retained.children()) {
+                    var actual = locked.find(child.actionId()).orElseThrow();
+                    StrictJson.require(actual.command().actionId().equals(child.actionId())
+                            && actual.bodySha256().equals(child.bodySha256()) && actual.settled(),
+                            "control-prefix child remains unresolved or differs from its canonical reservation");
+                    children.add(actual);
+                }
+                var canonicalChildren = List.copyOf(children);
+                interrupted.observation().validateParent(parent, retained);
+                interrupted.observation().validateChildren(parent, canonicalChildren);
+                source.requireControlPrefixInterruption(parent, retained, interrupted.observation(), canonicalChildren);
+                var settlement = new ActionState.LifeControlPrefixInterrupted(interrupted.observation());
+                ActionEffects.validateComposite(parent, retained, settlement);
+                ActionEffects.validateCompositeChildren(parent, retained, settlement, canonicalChildren);
+            } catch (RuntimeException failure) { return current; }
+            return ActionCoordinator.append(locked, parent, digest,
+                    new ActionState.CompositeSettled(retained, new ActionState.LifeControlPrefixInterrupted(interrupted.observation())));
+        }
         if (result instanceof ActionPorts.CompositeNoGameplayWriteObserved noGameplay) {
             ActionReceipt current = locked.find(parent.actionId()).orElseThrow();
             if (!(current.state() instanceof ActionState.CompositeUnknown unknown)) {

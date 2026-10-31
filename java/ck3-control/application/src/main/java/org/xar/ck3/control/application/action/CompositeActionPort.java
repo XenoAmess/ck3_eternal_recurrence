@@ -36,4 +36,9 @@ public interface CompositeActionPort {
     interface ZeroGameplayBeforeChildren extends CompositeActionPort {
         void requireNoGameplayWrite(ActionCommand parent, CompositeExecution retained);
     }
+
+    /** Source-owned opt-in for Life control-prefix interrupted terminal. */
+    interface LifeControlPrefixSource extends CompositeActionPort {
+        void requireControlPrefixInterruption(ActionCommand parent, CompositeExecution retained, org.xar.ck3.control.application.advance.LifeControlPrefixInterruption observation, java.util.List<ActionReceipt> canonicalChildren);
+    }
 }

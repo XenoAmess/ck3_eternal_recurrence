@@ -20,6 +20,7 @@ public record ActionReceipt(int version, long sequence, ActionCommand command, S
     }
     private static Outcome classify(ActionState.Settlement settlement) {
         if (settlement instanceof ActionState.FixtureStarted || settlement instanceof ActionState.FixtureBusinessCompleted || settlement instanceof ActionState.DirectFixedWindowCompleted || settlement instanceof ActionState.PauseConfirmed || settlement instanceof ActionState.ControlSequenceCompleted || settlement instanceof ActionState.NativeSourceCompleted || settlement instanceof ActionState.NormalExitPhaseConfirmed || settlement instanceof ActionState.OperatorRebound) return Outcome.TERMINAL_WITHOUT_EFFECT;
+        if (settlement instanceof ActionState.LifeControlPrefixInterrupted) return Outcome.TERMINAL_WITHOUT_EFFECT;
         if (settlement instanceof ActionState.FamilySendConfirmed) return Outcome.SEND_CONFIRMED;
         if (settlement instanceof ActionState.Rejected || settlement instanceof ActionState.CompositeRejected) return Outcome.REJECTED_CONFIRMED;
         if (settlement instanceof ActionState.NonAppliedTerminal) return Outcome.TERMINAL_WITHOUT_EFFECT;

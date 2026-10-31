@@ -8,11 +8,13 @@ public final class ActionEffects {
     private ActionEffects() { }
     /** Structural legacy entry. Read-dependent qualification requires the original dispatch as well. */
     public static void validate(ActionCommand command, ActionState.Attempt attempt, ActionState.Settlement settlement) {
+        StrictJson.require(!(settlement instanceof ActionState.LifeControlPrefixInterrupted), "Life control-prefix interruption belongs only to its registered composite");
         StrictJson.require(!(settlement instanceof ActionState.FixtureStarted || settlement instanceof ActionState.FixtureBusinessCompleted || settlement instanceof ActionState.DirectFixedWindowCompleted || settlement instanceof ActionState.PauseConfirmed || settlement instanceof ActionState.ControlSequenceCompleted || settlement instanceof ActionState.ControlApplied || settlement instanceof ActionState.LifecycleControlApplied
                 || settlement instanceof ActionState.NonAppliedTerminal || settlement instanceof ActionState.FamilySendConfirmed || settlement instanceof ActionState.NativeSourceCompleted || settlement instanceof ActionState.NormalExitPhaseConfirmed || settlement instanceof ActionState.OperatorRebound), "actual original dispatch and request chronology required for read-dependent settlement");
         validateStructure(command, attempt, settlement);
     }
     public static void validate(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome actualDispatch, ActionState.Settlement settlement) {
+        StrictJson.require(!(settlement instanceof ActionState.LifeControlPrefixInterrupted), "Life control-prefix interruption belongs only to its registered composite");
         java.util.Objects.requireNonNull(actualDispatch);
         StrictJson.require(actualDispatch.requestId().equals(attempt.requestId()), "settlement changed the exact original dispatch");
         StrictJson.require(!(settlement instanceof ActionState.CompositeNoGameplayWrite), "no-gameplay-write settlement belongs only to its registered composite");
@@ -126,6 +128,10 @@ public final class ActionEffects {
             StrictJson.require(execution.guard().origin() instanceof CommandOrigin.Frontend
                     &&execution.guard().origin().requireFrontend().sameSession(command.origin().requireFrontend()),"fixture parent lost its original frontend guard");return;
         }
+        if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) {
+            interrupted.observation().validateParent(command, execution);
+            return;
+        }
         if (settlement instanceof ActionState.CompositeNoGameplayWrite noGameplay) {
             noGameplay.observation().validate(command, execution);
             StrictJson.require(execution.children().isEmpty(), "no-gameplay-write requires empty canonical child vector");
@@ -179,6 +185,7 @@ public final class ActionEffects {
     public static java.util.List<org.xar.ck3.control.contracts.ExactRef> supportingEvidence(ActionState.Settlement settlement) {
         if(settlement instanceof ActionState.FixtureStarted started)return started.observation().references();
         if(settlement instanceof ActionState.FixtureBusinessCompleted completed)return completed.observation().references();
+        if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) return java.util.List.of(interrupted.observation().ending().nativeFrame(), interrupted.observation().ending().driverFacts(), interrupted.observation().ending().semantic());
         if (settlement instanceof ActionState.CompositeRejected rejected) return rejected.evidence();
         if (settlement instanceof ActionState.DirectFixedWindowCompleted completed) return completed.completion().references();
         if (settlement instanceof ActionState.PauseConfirmed pause) {
@@ -235,7 +242,19 @@ public final class ActionEffects {
                 && expected.frame().identity().nativeRevision().equals(actual.frame().identity().nativeRevision()), "zero-day control crossed Game/player/episode/date/native revision");
     }
     /** Repeated from the actual original writer head. A caller's list cannot grant child settlement. */
+    public static void validateCompositeChildren(ActionCommand parent, CompositeExecution execution,
+            ActionState.Settlement settlement, java.util.List<ActionReceipt> children) {
+        java.util.Objects.requireNonNull(parent);
+        if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) {
+            interrupted.observation().validateParent(parent, execution);
+            interrupted.observation().validateChildren(parent, children);
+            return;
+        }
+        validateCompositeChildren(execution, settlement, children);
+    }
+    /** Legacy callers retain their exact previous rules; the new contract requires its actual parent. */
     public static void validateCompositeChildren(CompositeExecution execution, ActionState.Settlement settlement, java.util.List<ActionReceipt> children) {
+        StrictJson.require(!(settlement instanceof ActionState.LifeControlPrefixInterrupted), "life control-prefix interruption requires its exact original parent command");
         StrictJson.require(children.size() == execution.children().size(), "complete canonical child history required");
         if (settlement instanceof ActionState.CompositeNoGameplayWrite noGameplay) {
             StrictJson.require(children.isEmpty() && execution.children().isEmpty()

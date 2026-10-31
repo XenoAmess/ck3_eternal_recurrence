@@ -54,7 +54,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         }
         evidenceVerifier.verify(actualLockedHead, receipt);
         if (receipt.state() instanceof ActionState.CompositeSettled settled)
-            ActionEffects.validateCompositeChildren(settled.execution(), settled.settlement(), settled.execution().children().stream()
+            ActionEffects.validateCompositeChildren(receipt.command(), settled.execution(), settled.settlement(), settled.execution().children().stream()
                     .map(child -> ContinuityActionJournal.lookup(predecessor, child.actionId(), archive).orElseThrow()).toList());
         if (receipt.state() instanceof ActionState.IntentDurable || receipt.state() instanceof ActionState.Submitting) {
             protocolIdentityPolicy.requireProtocolIdentity(receipt.command());

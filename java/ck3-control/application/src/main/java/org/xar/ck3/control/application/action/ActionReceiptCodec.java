@@ -32,12 +32,13 @@ public final class ActionReceiptCodec {
     public static final String COMPOSITE_FAILURE_EVIDENCE_SCHEMA = "xar.java-action-receipt/v10";
     public static final String FIXTURE_SCHEMA = "xar.java-action-receipt/v11";
     public static final String COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA = "xar.java-action-receipt/v12";
+    public static final String LIFE_CONTROL_PREFIX_SCHEMA = "xar.java-action-receipt/v13";
     public static final int MAXIMUM_RECEIPT_BYTES = 2 * 1024 * 1024;
     private ActionReceiptCodec() { }
     public static byte[] encodeReceipt(ActionReceipt receipt, ActionPorts.OutcomeArchive archive) {
         boolean evolved = !(receipt.command().origin() instanceof CommandOrigin.Gameplay) || evolved(receipt.state());
         boolean typed = containsPush(receipt.state()); boolean family = containsFamilySend(receipt.state());
-        ObjectNode row = StrictJson.object(); row.put("schema", compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : family ? FAMILY_SEND_SCHEMA : typed ? PROVENANCE_SCHEMA : evolved ? EVOLVED_SCHEMA : SCHEMA); row.put("version", receipt.version()); row.put("sequence", receipt.sequence());
+        ObjectNode row = StrictJson.object(); row.put("schema", lifeControlPrefix(receipt) ? LIFE_CONTROL_PREFIX_SCHEMA : compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : family ? FAMILY_SEND_SCHEMA : typed ? PROVENANCE_SCHEMA : evolved ? EVOLVED_SCHEMA : SCHEMA); row.put("version", receipt.version()); row.put("sequence", receipt.sequence());
         row.put("body_sha256", receipt.bodySha256()); row.set("state", state(receipt.state(), archive, evolved || typed || family, typed, family));
         // The sole command codec owns numeric tokens in arguments. A JsonNode round trip here
         // would erase decimal category/negative zero and change the durable command body SHA.
@@ -49,12 +50,12 @@ public final class ActionReceiptCodec {
     }
     public static ActionReceipt decodeReceipt(byte[] bytes, ActionPorts.OutcomeArchive archive) {
         ObjectNode row = StrictJson.object(ProposalLifecycleCodec.decodePayload(bytes, MAXIMUM_RECEIPT_BYTES), Set.of("schema", "version", "sequence", "command", "body_sha256", "state"));
-        String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema) || COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA.equals(schema), "exact action receipt schema required");
+        String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema) || COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA.equals(schema) || LIFE_CONTROL_PREFIX_SCHEMA.equals(schema), "exact action receipt schema required");
         OpportunityJson.Obj originalCommand = OpportunityJson.object(DriverJson.object(bytes, MAXIMUM_RECEIPT_BYTES).get("command"), "original receipt command");
         ActionCommand command = ActionCodec.decodeCommand(PublicDataJson.encodeTyped(originalCommand).bytes());
         ActionReceipt receipt = new ActionReceipt(Math.toIntExact(StrictJson.integer(row.get("version"), 1, 1)), StrictJson.integer(row.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER),
                 command, text(row, "body_sha256"), state(row.get("state"), archive, !SCHEMA.equals(schema), PROVENANCE_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema), FAMILY_SEND_SCHEMA.equals(schema)));
-        String expectedSchema = compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : containsFamilySend(receipt.state()) ? FAMILY_SEND_SCHEMA : containsPush(receipt.state()) ? PROVENANCE_SCHEMA
+        String expectedSchema = lifeControlPrefix(receipt) ? LIFE_CONTROL_PREFIX_SCHEMA : compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : containsFamilySend(receipt.state()) ? FAMILY_SEND_SCHEMA : containsPush(receipt.state()) ? PROVENANCE_SCHEMA
                 : !(command.origin() instanceof CommandOrigin.Gameplay) || evolved(receipt.state()) ? EVOLVED_SCHEMA : SCHEMA;
         StrictJson.require(expectedSchema.equals(schema), "receipt schema must describe its exact origin/evidence/provenance version");
         return receipt;
@@ -76,6 +77,15 @@ public final class ActionReceiptCodec {
     private static boolean compositeFailureEvidence(ActionReceipt receipt) {
         return receipt.state() instanceof ActionState.CompositeSettled settled
                 && settled.settlement() instanceof ActionState.CompositeRejected rejected && !rejected.evidence().isEmpty();
+    }
+    private static boolean lifeControlPrefix(ActionReceipt receipt) {
+        var value = receipt.state() instanceof ActionState.Settled primitive ? primitive.settlement()
+                : receipt.state() instanceof ActionState.CompositeSettled composite ? composite.settlement() : null;
+        if (!(value instanceof ActionState.LifeControlPrefixInterrupted terminal)) return false;
+        StrictJson.require(receipt.state() instanceof ActionState.CompositeSettled,
+                "Life control-prefix interruption requires its original composite envelope");
+        terminal.observation().validateParent(receipt.command(), ((ActionState.CompositeSettled) receipt.state()).execution());
+        return true;
     }
     private static boolean compositeNoGameplayWrite(ActionReceipt receipt) {
         var value = receipt.state() instanceof ActionState.Settled primitive ? primitive.settlement()
@@ -219,6 +229,23 @@ public final class ActionReceiptCodec {
             default -> throw new IllegalArgumentException("unsupported action state kind");
         };
     }
+    private static ObjectNode lifePrefixFrame(org.xar.ck3.control.application.advance.LifeAdvanceEvidence.FrameRecord frame) {
+        var row = StrictJson.object();
+        row.set("identity", ProposalLifecycleCodec.observation(frame.identity()));
+        row.set("observation_provenance", ObservationProvenanceCodec.encode(frame.provenance()));
+        row.put("observed_at_utc", frame.observedAt().toString());
+        row.set("native_frame", frame.nativeFrame().toJson());
+        row.set("driver_facts", frame.driverFacts().toJson());
+        row.set("semantic", frame.semantic().toJson());
+        return row;
+    }
+    private static org.xar.ck3.control.application.advance.LifeAdvanceEvidence.FrameRecord lifePrefixFrame(JsonNode value) {
+        var row = StrictJson.object(value, Set.of("identity", "observation_provenance", "observed_at_utc", "native_frame", "driver_facts", "semantic"));
+        return new org.xar.ck3.control.application.advance.LifeAdvanceEvidence.FrameRecord(
+                ProposalLifecycleCodec.decodeObservation(row.get("identity")), ObservationProvenanceCodec.decode(row.get("observation_provenance")),
+                Instant.parse(StrictJson.utc(text(row,"observed_at_utc"))), ExactRef.fromJson(row.get("native_frame")),
+                ExactRef.fromJson(row.get("driver_facts")), ExactRef.fromJson(row.get("semantic")));
+    }
     private static ObjectNode attempt(ActionState.Attempt attempt, ActionPorts.OutcomeArchive archive) {
         ObjectNode row = StrictJson.object(); row.put("request_id", attempt.requestId()); row.put("submitted_at", attempt.submittedAt().toString());
         row.set("guard", encodeGuard(attempt.guard())); row.set("prepared_request_ref", archive.requestReferenceOf(attempt.preparedRequest()).toJson()); return row;
@@ -235,6 +262,15 @@ public final class ActionReceiptCodec {
     }
     private static ObjectNode settlement(ActionState.Settlement settlement, ActionPorts.OutcomeArchive archive, boolean evolved, boolean typed, boolean family) {
         ObjectNode row = StrictJson.object();
+        if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) {
+            StrictJson.require(evolved, "Life control-prefix interruption requires receipt v13");
+            row.put("kind", "LIFE_CONTROL_PREFIX_INTERRUPTED");
+            row.put("action_id", interrupted.observation().actionId());
+            row.put("body_sha256", interrupted.observation().bodySha256());
+            row.set("execution", execution(interrupted.observation().execution()));
+            row.set("ending", lifePrefixFrame(interrupted.observation().ending()));
+            return row;
+        }
         if(settlement instanceof ActionState.FixtureStarted started){
             StrictJson.require(evolved&&!typed&&!family,"fixture first-map proof requires exact receipt v11");
             row.put("kind","FIXTURE_STARTED");row.set("observation",FixtureProofCodec.start(started.observation(),archive));return row;
@@ -334,6 +370,12 @@ public final class ActionReceiptCodec {
     }
     private static ActionState.Settlement settlement(JsonNode node, ActionPorts.OutcomeArchive archive, boolean evolved, boolean typed, boolean family) {
         StrictJson.require(node instanceof ObjectNode, "settlement object required"); ObjectNode row = (ObjectNode) node;
+        if (text(row,"kind").equals("LIFE_CONTROL_PREFIX_INTERRUPTED")) {
+            StrictJson.require(evolved, "Life control-prefix interruption requires receipt v13");
+            StrictJson.object(row, Set.of("kind", "action_id", "body_sha256", "execution", "ending"));
+            return new ActionState.LifeControlPrefixInterrupted(new org.xar.ck3.control.application.advance.LifeControlPrefixInterruption(
+                    text(row,"action_id"), text(row,"body_sha256"), execution(row.get("execution")), lifePrefixFrame(row.get("ending"))));
+        }
         if(text(row,"kind").equals("FIXTURE_STARTED")){
             StrictJson.require(evolved&&!typed&&!family,"fixture first-map proof requires exact receipt v11");StrictJson.object(row,Set.of("kind","observation"));
             return new ActionState.FixtureStarted(FixtureProofCodec.start(row.get("observation"),archive));

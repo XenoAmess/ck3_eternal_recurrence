@@ -28,7 +28,7 @@ public sealed interface ActionState permits ActionState.IntentDurable, ActionSta
             evidence = List.copyOf(evidence); if (dispatch.isPresent()) { StrictJson.require(attempt.isPresent(), "dispatch requires original attempt"); matching(attempt.orElseThrow(), dispatch.orElseThrow()); }
         }
     }
-    sealed interface Settlement permits FixtureStarted, FixtureBusinessCompleted, DirectFixedWindowCompleted, PauseConfirmed, ControlSequenceCompleted, Applied, Rejected, ControlApplied, CompositeControlApplied, FrontendApplied, GameplayEntered, LifecycleApplied, NonAppliedTerminal, CompositeRejected, LifecycleControlApplied, SwaySchedulerCompleted, FamilySendConfirmed, NativeSourceCompleted, NormalExitPhaseConfirmed, OperatorRebound, CompositeNoGameplayWrite { }
+    sealed interface Settlement permits FixtureStarted, FixtureBusinessCompleted, DirectFixedWindowCompleted, PauseConfirmed, ControlSequenceCompleted, Applied, Rejected, ControlApplied, CompositeControlApplied, FrontendApplied, GameplayEntered, LifecycleApplied, NonAppliedTerminal, CompositeRejected, LifecycleControlApplied, SwaySchedulerCompleted, FamilySendConfirmed, NativeSourceCompleted, NormalExitPhaseConfirmed, OperatorRebound, CompositeNoGameplayWrite, LifeControlPrefixInterrupted { }
     record FixtureStarted(FixtureStartObservation observation) implements Settlement {public FixtureStarted {Objects.requireNonNull(observation);}}
     record FixtureBusinessCompleted(FixtureBusinessObservation observation) implements Settlement {public FixtureBusinessCompleted {Objects.requireNonNull(observation);}}
     /** A real native pause and independent Push prove only the paused control state. */
@@ -53,6 +53,9 @@ public sealed interface ActionState permits ActionState.IntentDurable, ActionSta
     }
     record CompositeNoGameplayWrite(CompositeNoGameplayWriteObservation observation) implements Settlement {
         public CompositeNoGameplayWrite { Objects.requireNonNull(observation); }
+    }
+    record LifeControlPrefixInterrupted(org.xar.ck3.control.application.advance.LifeControlPrefixInterruption observation) implements Settlement {
+        public LifeControlPrefixInterrupted { Objects.requireNonNull(observation); }
     }
     record NormalExitPhaseConfirmed(org.xar.ck3.control.application.effects.normalexit.NormalExitPhaseObservation observation) implements Settlement {
         public NormalExitPhaseConfirmed { Objects.requireNonNull(observation); }

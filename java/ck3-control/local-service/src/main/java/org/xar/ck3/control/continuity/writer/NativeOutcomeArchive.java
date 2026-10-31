@@ -918,9 +918,18 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                 throw new IOException("canonical composite rejection requires its original composite execution");
             if (settled.settlement() instanceof ActionState.CompositeNoGameplayWrite)
                 throw new IOException("no-gameplay-write terminal requires its original composite execution");
+            if (settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted)
+                throw new IOException("Life control-prefix interruption requires its original composite execution");
             verifySettlementParent(settled.settlement(), original.command()); verifySettlementOriginals(settled.settlement());
         }
         if (original.state() instanceof ActionState.CompositeSettled settled) {
+            if (settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted terminal) {
+                terminal.observation().validateParent(original.command(), settled.execution());
+                ActionEffects.validateComposite(original.command(), settled.execution(), terminal);
+                // This archive decoder verifies retained DATA. Actual canonical children are checked
+                // by the writer's parent-aware Effects call and installed domain replay, without
+                // recursively reopening this same already-committed parent through historical().
+            }
             if (settled.settlement() instanceof ActionState.CompositeNoGameplayWrite terminal) {
                 terminal.observation().validate(original.command(), settled.execution());
                 ActionEffects.validateComposite(original.command(), settled.execution(), terminal);
@@ -1231,6 +1240,12 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     }
     private void verifySettlementOriginals(ActionState.Settlement original) throws IOException {
         switch (original) {
+            case ActionState.LifeControlPrefixInterrupted terminal -> {
+                var ending = terminal.observation().ending();
+                verifyProvenanceOriginal(ending.provenance(), ending.identity(), ending.nativeFrame());
+                loadFullMaterial(ending.driverFacts());
+                loadFullMaterial(ending.semantic());
+            }
             case ActionState.CompositeNoGameplayWrite terminal -> {
                 // Its exact original composite guard was already verified by verifyReceiptOriginals.
                 // This terminal contains no fabricated after-state or additional Native originals.
