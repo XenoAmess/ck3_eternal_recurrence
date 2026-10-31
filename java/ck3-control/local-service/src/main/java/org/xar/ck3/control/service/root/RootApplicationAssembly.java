@@ -113,6 +113,7 @@ public final class RootApplicationAssembly {
         private final ThreadLocal<ContinuityStorePort.Session> planningSession = new ThreadLocal<>();
         private org.xar.ck3.control.application.planning.OrdinaryDecisionSelector decisionSelector;
         private boolean m5JointPeacetimeEnabled = true;
+        private boolean firstHeirMarriageEnabled = true;
         private final Set<DriverBootstrap.Adopted> adopted = Collections.newSetFromMap(new IdentityHashMap<>());
         private boolean staged;
         private boolean finished;
@@ -193,6 +194,12 @@ public final class RootApplicationAssembly {
         }
         public synchronized boolean m5JointPeacetimeEnabled() {
             return m5JointPeacetimeEnabled;
+        }
+        public synchronized void bindFirstHeirMarriageEnabled(boolean actual) {
+            firstHeirMarriageEnabled = actual;
+        }
+        public synchronized boolean firstHeirMarriageEnabled() {
+            return firstHeirMarriageEnabled;
         }
         public synchronized Optional<org.xar.ck3.control.application.planning.OrdinaryDecisionSelector> decisionSelector() {
             return Optional.ofNullable(decisionSelector);

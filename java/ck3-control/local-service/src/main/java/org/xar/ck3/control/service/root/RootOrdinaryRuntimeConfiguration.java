@@ -46,7 +46,7 @@ public final class RootOrdinaryRuntimeConfiguration {
         "freshness_ms", "heartbeat_maximum_age_ms", "batch_id_prefix", "maximum_turns",
         "batch_wall_ms", "readiness_timeout_ms", "poll_interval_ms", "checkpoint_every_advances",
         "maximum_frames_per_operation", "maximum_submissions", "maximum_storage_bytes", "decision_provider",
-        "m5_joint_peacetime_enabled"
+        "m5_joint_peacetime_enabled", "first_heir_marriage_enabled"
     );
 
     private final Path configurationFile;
@@ -73,6 +73,7 @@ public final class RootOrdinaryRuntimeConfiguration {
     private final RootOrdinaryWorkerLoop.Configuration loopConfig;
     private final java.util.Optional<DecisionProvider> decisionProvider;
     private final boolean m5JointPeacetimeEnabled;
+    private final boolean firstHeirMarriageEnabled;
 
     public static RootOrdinaryRuntimeConfiguration read(Path configPath) throws IOException {
         try {
@@ -145,6 +146,11 @@ public final class RootOrdinaryRuntimeConfiguration {
             StrictJson.require(root.get("m5_joint_peacetime_enabled").isBoolean(), "actual JSON boolean required");
             m5JointPeacetimeEnabled = root.get("m5_joint_peacetime_enabled").booleanValue();
         }
+        boolean firstHeirMarriageEnabled = true;
+        if (root.has("first_heir_marriage_enabled")) {
+            StrictJson.require(root.get("first_heir_marriage_enabled").isBoolean(), "actual JSON boolean required");
+            firstHeirMarriageEnabled = root.get("first_heir_marriage_enabled").booleanValue();
+        }
 
         RootOrdinaryWorkerLoop.Configuration loopConfig = new RootOrdinaryWorkerLoop.Configuration(
             batchIdPrefix,
@@ -191,7 +197,7 @@ public final class RootOrdinaryRuntimeConfiguration {
             maximumFramesPerOperation,
             maximumSubmissions,
             maximumStorageBytes,
-            loopConfig, decisionProvider, m5JointPeacetimeEnabled
+            loopConfig, decisionProvider, m5JointPeacetimeEnabled, firstHeirMarriageEnabled
         );
     }
 
@@ -273,7 +279,8 @@ public final class RootOrdinaryRuntimeConfiguration {
         long maximumStorageBytes,
         RootOrdinaryWorkerLoop.Configuration loopConfig,
         java.util.Optional<DecisionProvider> decisionProvider,
-        boolean m5JointPeacetimeEnabled
+        boolean m5JointPeacetimeEnabled,
+        boolean firstHeirMarriageEnabled
     ) {
         this.configurationFile = configurationFile;
         this.machineId = machineId;
@@ -299,6 +306,7 @@ public final class RootOrdinaryRuntimeConfiguration {
         this.loopConfig = loopConfig;
         this.decisionProvider = java.util.Objects.requireNonNull(decisionProvider);
         this.m5JointPeacetimeEnabled = m5JointPeacetimeEnabled;
+        this.firstHeirMarriageEnabled = firstHeirMarriageEnabled;
     }
 
     public Path configurationFile() { return configurationFile; }
@@ -325,4 +333,5 @@ public final class RootOrdinaryRuntimeConfiguration {
     public RootOrdinaryWorkerLoop.Configuration loop() { return loopConfig; }
     public java.util.Optional<DecisionProvider> decisionProvider() { return decisionProvider; }
     public boolean m5JointPeacetimeEnabled() { return m5JointPeacetimeEnabled; }
+    public boolean firstHeirMarriageEnabled() { return firstHeirMarriageEnabled; }
 }

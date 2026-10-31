@@ -367,4 +367,34 @@ final class FamilyWartimeReviewCadenceTest {
         assertTrue(path.isAbsolute() && path.normalize().equals(path), "exact absolute original path required");
         return path.toRealPath();
     }
+    @Test void optionalUnpartneredSwitchDefaultsTrueAndFalseSkipsOnlyNewProposalReads() {
+        var actual = request(snapshot()); var baseline = baseline("query-army-strengths-v1");
+        Fixture original = new Fixture();
+        assertInstanceOf(OrdinaryPolicy.Replace.class, original.policy.evaluate(actual, baseline));
+        assertEquals(List.of(FamilyPorts.Query.CURRENT_RELATION, FamilyPorts.Query.HEIR_LEGALITY), original.reads);
+        Fixture disabled = new Fixture(); disabled.policy.setFirstHeirMarriageEnabled(false);
+        var retained = assertInstanceOf(OrdinaryPolicy.Replace.class, disabled.policy.evaluate(actual, baseline));
+        assertEquals(List.of(FamilyPorts.Query.CURRENT_RELATION), disabled.reads);
+        assertEquals(baseline.command(), retained.draft().command());
+        assertEquals(baseline.purpose(), retained.draft().purpose());
+        assertEquals(new Bool(false), retained.draft().detail().get("first_heir_marriage_enabled"));
+        assertEquals(t("skipped_by_configuration"), retained.draft().detail().get("first_heir_marriage_status"));
+        assertTrue(retained.reason().contains("first_heir_marriage_enabled=false"));
+        assertEquals(0, disabled.commands);
+        disabled.policy.setFirstHeirMarriageEnabled(true);
+        assertInstanceOf(OrdinaryPolicy.Replace.class, disabled.policy.evaluate(actual, baseline));
+        assertEquals(List.of(FamilyPorts.Query.CURRENT_RELATION, FamilyPorts.Query.CURRENT_RELATION, FamilyPorts.Query.HEIR_LEGALITY), disabled.reads);
+    }
+    @Test void optionalSwitchCannotBypassOriginalPendingUnknownOrRetainedResult() {
+        Fixture disabled = new Fixture(); disabled.policy.setFirstHeirMarriageEnabled(false);
+        var actual = request(snapshot()); var baseline = baseline("query-army-strengths-v1");
+        disabled.family(obj("pending", obj("episode_run_id", t("software-family-episode"), "status", t("UNKNOWN")), "resolved", Nil.INSTANCE));
+        assertInstanceOf(OrdinaryPolicy.Stop.class, disabled.policy.evaluate(actual, baseline));
+        assertTrue(disabled.reads.isEmpty());
+        disabled.family(obj("pending", Nil.INSTANCE, "resolved", obj("episode_run_id", t("software-family-episode"), "status", t("refused"))));
+        assertInstanceOf(OrdinaryPolicy.Wait.class, disabled.policy.evaluate(actual, baseline));
+        assertEquals(List.of(FamilyPorts.Query.CURRENT_RELATION), disabled.reads);
+        assertEquals(0, disabled.commands);
+    }
+
 }

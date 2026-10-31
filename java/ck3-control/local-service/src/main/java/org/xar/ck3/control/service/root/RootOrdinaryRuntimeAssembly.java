@@ -168,6 +168,7 @@ public final class RootOrdinaryRuntimeAssembly {
             entered=true;game=actual;lifecycle.adoptAttached(actual);
             core=RootApplicationAssembly.open(app,clock,catalogs.domainRegistrations(),Optional.empty(),storage);
             core.bindM5JointPeacetimeEnabled(config.m5JointPeacetimeEnabled());
+            core.bindFirstHeirMarriageEnabled(config.firstHeirMarriageEnabled());
             ports.bindCore(core);catalogs.bindCore(core);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
         }

@@ -46,6 +46,7 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
     private final MaterialResults materials;
     private final Settings settings;
     private final FamilyGuardianCadence guardianCadence = new FamilyGuardianCadence();
+    private volatile boolean firstHeirMarriageEnabled = true;
     private Optional<WartimeReviewScope> lastWartimeReview = Optional.empty();
     /** Process-local scheduling only: never a candidate, native receipt or action authority.
      * The original episode/actor/date gate is narrowed to the complete unchanged source,
@@ -59,6 +60,7 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
         }
     }
     FamilyGuardianCadence guardianCadence() { return guardianCadence; }
+    public void setFirstHeirMarriageEnabled(boolean actual) { firstHeirMarriageEnabled = actual; clearWartimeReview(); }
     public FamilyOrdinaryPolicy(ExactRef implementation, PlanningReadPort reader, Reads reads,
             LedgerSource ledgers, Commands commands, MaterialResults materials, Settings settings) {
         this.implementation = Objects.requireNonNull(implementation); this.reader = Objects.requireNonNull(reader);
@@ -259,6 +261,14 @@ public final class FamilyOrdinaryPolicy implements OrdinaryPolicy {
             return education(request, previous, relation, detail);
         }
         if (!unpartnered(relation)) return education(request, previous, relation, detail);
+        if (!firstHeirMarriageEnabled) {
+            Decision continued = education(request, previous, relation, detail
+                    .with("first_heir_marriage_enabled", new Bool(false))
+                    .with("first_heir_marriage_status", t("skipped_by_configuration")));
+            if (continued instanceof Replace replaced)
+                return new Replace(replaced.draft(), "first_heir_marriage_enabled=false: optional unpartnered first-heir selection skipped; " + replaced.reason());
+            return continued;
+        }
         ObservedRead legalityRead = readObserved(request, Query.HEIR_LEGALITY, obj("expected_native_revision", snapshot.get("native_revision")));
         Obj legality = legalityRead.value();
         if (!"available".equals(string(legality.get("status")))) throw new MissingInput("first-heir legality unavailable");

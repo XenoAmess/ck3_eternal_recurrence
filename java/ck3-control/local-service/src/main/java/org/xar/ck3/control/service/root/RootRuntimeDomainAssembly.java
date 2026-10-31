@@ -195,6 +195,7 @@ public final class RootRuntimeDomainAssembly {
                 var actualLife=life.install(context,crown);
                 var actualRouteAdvance=routeAdvance.install(context,actualLife);
                 var actualFamily=family.install(context,RootFamilyRuntimeFactory.Shared.from(shared.interactions(),actualLife.commands()));
+                actualFamily.installer().ordinary().setFirstHeirMarriageEnabled(context.core().firstHeirMarriageEnabled());
                 var actualArmy=army.install(context,shared,actualFamily);
                 var actualGuardian=guardian.install(context,shared.interactions());
                 var actualStrengths=strengths.install(context,shared.army().products().frames());
