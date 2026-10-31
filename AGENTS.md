@@ -2,6 +2,8 @@
 
 ## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
 
+- 02:07Z后继实际：127 MB8src exit0/7.421秒、同Game LOOP/next44，basic first_heir_marriage_enabled=false实际load，但Family分支前后具体caller尚在核定，真实bounded marriage UTF-8 input required终态exit4/next45/Native186/public211/date53144328，新增普通动作/日/SAVE仍0。不要把开关配置当DATE已成功，不等待127旧HOLD；runtime128与M1源先模型修实际有限材料消费。M2 generic Family首源码仅typed unavailable/NotPrepared，缺真实storage/provider不能冒充支持。Root承认模型串行派发空档，历史峰8不等于达标；真实待办由owner直接并行POST，模型地址192.168.1.11，候选/采用/运行期决策分开。
+
 - 用户已明确要求阅读 resume90 总交接与 source-index 后继续任务，同时开展自动游玩智能体开发、G2 M0–M7 制作及原生机制/逻辑研究；第一优先是实际正常游玩。本条结束下方休假停止状态，不依据旧人数编制自动恢复60岗。
 - 用户明确本地模型现在可用，并要求尽全力高并发使用、继续摸清能力边界；后续明确IP改为192.168.1.11并要求记入本地模型运营。当前唯一地址为 `http://192.168.1.11:8080/v1`，模型仍为qwen38-coder，无需密钥，旧192.168.1.7及8000均不自动回退。唯一源码HTTP协调为 `/root/models91`，复用既有调用器与 `docs/local-model-executor-config.json`：实际当前源码三消息前缀、有限输出、SSE首有效内容与总耗时分记、瞬时错误按配置重试。真实未完成需求滚动并行，审阅/实际编测/采用/拒绝分开；运行决策HTTP由运行owner装配，源码候选不冒充游玩决策。
 - 用户随后连续要求“加大并发大力使用本地模型”“请求还是太少，给我加大力度”。源码owner可在唯一任务目录直接复用既有call91.py并行派发真实尚未完成任务，models91统一运营/重试记录与结果汇总，不再将人工封包/ACK/索引设为每次POST的串行前置。稳定system由统一配置注入；多文件实现按实际输出给6k–12k有限预算，小修仍窄输出。模型先提出当前真实组件/消费者/装配/诊断候选，审阅和编测期间继续派下一真实任务，不重投已完成业务或以无需求调用凑数；按新服务实况争取24–32在途，峰值与当时实际在途分别记，不把目标写成已达。
@@ -23,6 +25,9 @@
 - 最新121已实机越过held-semantic诊断差异，typed preIntent分类正确给出PLANNER_STOPPED；122进一步改完整fresh-review 16MiB编码/读回，MB122实际exit0/5.298秒/local-service1源，worker122/PID188004于00:56:28.5351843Z同Game LOOP。实际第9次运行期qwen HTTP200/39.211秒后，00:58:24.348443Z exit4/next40，后继默认OpportunityJson 128KiB消费者拒绝，provider123真实模型修正中；不全局放大默认、不重Game/Focus。
 - 122 canonical244/repair/BATCH_INTERRUPTED39/date53144328；完整237–244与唯一Coordinator持久顺序证明婚姻无新INTENT/SUBMITTING/Native ACTION，不能据attempt0作此推论。Root usage120已装MB121并121/122 END实际记录344340/137/344477和345900/139/346039，cached均null；普通动作/新增日/SAVE仍0。源码候选、实际模型选择、Native提交分别计。
 - 模型00:58:45Z新地址有限快照368任务/388尝试、当刻0在途、历史峰8，24–32未达。当前已派M4 776/809和M7生产CI，并追加Gift/Operator/Restore真实残留代码资格审计削减；立即并行有输入的实现，不为次数复述旧绿。历史模型HTTP/审阅冻结cohort与带时刻ADOPTION不回写。
+- 最新126/PID192768同Game于01:47:17.4095539Z LOOP/next43；MB126真实exit0/5.489秒/3源。Root alias5053722389实载，实际模型输入822328B/prompt233462、HTTP200/32.262秒/cachednull（125为1240853B/prompt350677）；只记录本轮收益，不推cache。126真实01:49:17.898157Z END4/next44，Native明确nativeOk=false/wireIDmatch/error unsupported native gameplay step，世界动作/新日/SAVE仍0。
+- 为实际游玩最高优先，Root已授权仅基础无mod profile暂停unsupported的可选unpartnered FirstHeir Marriage覆盖，保pending/result/education与mandatory/combat/UNKNOWN，不跳整个Family stage；立即既有core DATE_ADVANCE→qwen→Native同Game接续。Family独立制作、step/alias与生产双wrapper缺delegation并行修；不盲重Game/DLL/Focus、不伪成功。后续127实际终态再更新。
+- M7 Java d17b7d9580/Native c703f434d2已正式组件与CI接线：Java7P/Native14case781check，非自然Game/M7完成；M4三方法809组合首次64/56677rows差分0。模型最新01:50:56新IP441/463、真实3在途/历史峰8，阶段峰6，源先实现/真实诊断返工持续，0假并发。可见G2仍6/8，Root/全部分支不以formal commit或sourceHTTP授游戏日。
 - 当前入口：[resume91总记录](docs/autonomous-agent-progress/2026-10-31-java-g2-resume91-current.md)、[运行记录](docs/autonomous-agent-progress/2026-10-31-runtime91-current.md)、[模型记录](docs/autonomous-agent-progress/2026-10-31-resume91-models.md)。新增实际游戏日、普通动作、SAVE与G2可见里程碑按真实运行结果更新；不从编译或HTTP推断。
 
 ## 2026-10-30 续行优先级（覆盖历史并发安排）
