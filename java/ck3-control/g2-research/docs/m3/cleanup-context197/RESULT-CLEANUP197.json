@@ -1,0 +1,183 @@
+{
+  "schema": "m3.cleanup-context197-portable-first-result/v1",
+  "package_number": 61,
+  "canonical_number_authority": "Explicit parent assignment after max60, separately from preserved source review and first software receipts.",
+  "status": "FIRST_THREE_PRODUCTION_TWO_MANUAL_AND_EIGHT_SCENES_PASS",
+  "new_sources": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CleanupContext197Api.java",
+      "kind": "main",
+      "bytes": 709,
+      "sha256": "ad9b2db6bb45fb7b17c213b26a8bc8a927696be08ef336663f73776115b40f60",
+      "source_preserved": true,
+      "grade": "OWNER_FROZEN_DECLARATIONS_ONLY"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CleanupContext197.java",
+      "kind": "main",
+      "bytes": 2878,
+      "sha256": "86277da8c2201151b926e7b8357e4fdcb3dc38cb7c3b3cfafd08eecc358719dd",
+      "source_preserved": true,
+      "grade": "MODEL_R2_RAW_ZERO_OWNER_EDITS_SOURCE_REVIEWED_NOT_COMPILED"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotCleanupContextBinding197.java",
+      "kind": "main",
+      "bytes": 1538,
+      "sha256": "08f9c987072136da14ec2f4dfd06cecf2c9d2e89725fa6b193705253753ff424",
+      "source_preserved": true,
+      "grade": "MODEL_R1_RAW_ZERO_OWNER_EDITS_SOURCE_REVIEWED_NOT_COMPILED"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CleanupContextBook197.java",
+      "kind": "test",
+      "bytes": 12750,
+      "sha256": "2eb82d520852a4372b07841c17e1e2075c5cacda71030b64fba9ff407613833d",
+      "source_preserved": true,
+      "grade": "INDEPENDENT_MODEL_R2_RAW_ZERO_OWNER_EDIT"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CleanupContextValidation197.java",
+      "kind": "test",
+      "bytes": 10242,
+      "sha256": "018fae2aab80259ca4427e1c5b0490861d8abb88b279051a2a42e2f543717e69",
+      "source_preserved": true,
+      "grade": "INDEPENDENT_OWNER_MECHANICAL_HOST"
+    }
+  ],
+  "source_preserved": true,
+  "first_software": {
+    "production_receipt_file": "ACTUAL-FIRST-PROD197.json",
+    "production_receipt_sha256": "c8451f778ad131f7ecc7171341908cfd2695e537e2f8071eabd294b0076145e3",
+    "production_stage": {
+      "begin_utc": "2026-10-31T22:09:40.442803+00:00",
+      "end_utc": "2026-10-31T22:09:41.188741+00:00",
+      "seconds": 0.7459145002067089,
+      "exit": 0,
+      "new_explicit_sources": 3
+    },
+    "witness_receipt_file": "ACTUAL-FIRST-WITNESS197.json",
+    "witness_receipt_sha256": "d87e68b39399c36e37b25fe3182fe950cfe5019f0a16f809af989c219583c580",
+    "witness_stages": [
+      {
+        "phase": "STRICT2_NEW_MANUAL",
+        "begin_utc": "2026-10-31T22:12:24.185064+00:00",
+        "end_utc": "2026-10-31T22:12:25.292626+00:00",
+        "seconds": 1.1075339997187257,
+        "exit": 0
+      },
+      {
+        "phase": "FIRST8_SCENES",
+        "begin_utc": "2026-10-31T22:12:25.293606+00:00",
+        "end_utc": "2026-10-31T22:12:25.581966+00:00",
+        "seconds": 0.2883399003185332,
+        "exit": 0
+      }
+    ],
+    "original_combined_result_file": "RESULT197-FIRST-SOFTWARE.json",
+    "original_combined_result_sha256": "4e2c44037b503102baffd0778b61b0bf7e0f5449832c9a00e0bd14e7d4720247"
+  },
+  "actual_counts": {
+    "scenarios": 8,
+    "events": 52,
+    "lower_calls": 6,
+    "final_cells": 28
+  },
+  "Memory_events": 46,
+  "lower_calls": 6,
+  "scene_events": [
+    4,
+    5,
+    11,
+    8,
+    3,
+    16,
+    5,
+    0
+  ],
+  "scene_lower_calls": [
+    0,
+    0,
+    4,
+    1,
+    0,
+    1,
+    0,
+    0
+  ],
+  "scene_final_cells": [
+    3,
+    3,
+    4,
+    3,
+    3,
+    7,
+    5,
+    0
+  ],
+  "observed_stdout": [
+    "197 id=inline_small_capacity outcome=RETURNED events=4 lowerCalls=0 finalCells=3",
+    "197 id=direct_call_null_pointer_skip outcome=RETURNED events=5 lowerCalls=0 finalCells=3",
+    "197 id=direct_call_wrap_failure outcome=RETURNED events=11 lowerCalls=4 finalCells=4",
+    "197 id=adjusted_call_success_high_bit outcome=RETURNED events=8 lowerCalls=1 finalCells=3",
+    "197 id=rejected_header_no_effects outcome=UNSUPPORTED_RESULT events=3 lowerCalls=0 finalCells=3",
+    "197 id=move_slot_normal_cleanup outcome=RETURNED events=16 lowerCalls=1 finalCells=7",
+    "197 id=move_slot_unsupported_stop outcome=THREW_UNSUPPORTED events=5 lowerCalls=0 finalCells=5",
+    "197 id=foreign_callback_identity_fail outcome=THREW_FOREIGN events=0 lowerCalls=0 finalCells=0"
+  ],
+  "adoption": {
+    "API": "owner frozen declarations709B",
+    "core": "modelR2raw2878B/zeroowneredit",
+    "binder": "modelR1raw1538B/zeroowneredit",
+    "Book": "independent modelR2raw12750B/zeroowneredit",
+    "host": "independent owner mechanical10242B; not model whole"
+  },
+  "model_POSTs": 5,
+  "stop": 5,
+  "length": 0,
+  "retry_POSTs": 0,
+  "cohort_peak": 2,
+  "cohort_seconds_at_peak2": 24.196995,
+  "current_HTTP_in_completed_cohort": 0,
+  "reported_cached_prompt_counts": null,
+  "model_rejections": "CoreR1 used nonexistent nested OptionalLong type; BookR1 had actual lower argument/unsigned/null/Move193 trace errors. Each rejected whole; sole correction round retained full physical API. No third semantic round.",
+  "request_audit_file": "REQUEST-AUDIT197.json",
+  "request_audit_sha256": "058328fb6fc0ed0bd18906d68a61e6ce527fe987897d4b81792d9688f23792c7",
+  "parent_source_review_file": "PARENT-SOURCE-REVIEW197.json",
+  "parent_source_review_sha256": "dc093ee03b6c65e6ee4cca4030d10ff5b07f15d6164c2bc2ca912f6b52f6f920",
+  "source_list_file": "SOURCE-LIST-CLEANUP197.json",
+  "source_list_sha256": "b3f21f8cbd2f4f955b208128169872de3136c71eaf77b3200e612cf99193b080",
+  "source_closure_total_Java": 16,
+  "existing_dependency_count": 11,
+  "actual_source_chain": "85608A CALL4223F44;4223F44 JMP40EC530;40EC530 JMP423543C;4235448 JMP424E364",
+  "heap_read_gate": "only nonzero lower61 RCX then [moduleBase+5C5DE30] before IAT43DA748",
+  "cache_scope_and_differences": {
+    "scope": "Cache used for the first software checks only; source closure uses current complete formal source files, not machine-specific class directories.",
+    "AddressFree83Consumer_and_Lower61Inputs": "Cached-origin and current formal raw source bytes match exactly.",
+    "B374Inputs": "Cached-origin4590B SHA0990354c2f98e65a395de6d4592878fb4b8dd50e7a104405b535ccd5bb36da0b versus formal4555B SHA1b4ee44588f6ab5023e4745fa8bf72f0c73454c9624adefbe35922c10c16cdba; full line comparison identifies only trailing spaces in comments/blank lines, used Memory declaration unchanged.",
+    "InlineStorageCleanupPlan": "Cached-origin5441B SHA7fef00991ddd8bca9674e04e101a4cfbf35437547f76edf7b29133e796b9debf versus formal5336B SHA94ec13472e5147d1a8ce136c0ab69827564d901902f9beae3a8422061e698d05; full line comparison identifies CRLF and only blank-line trailing whitespace; algorithm and API lines otherwise byte-equal.",
+    "RequestE92780": "Cached outer source4892B SHA2c374cdad665ef43abfd361f73a7a044ea176374a1c00402fb8a69a2e14b410d differs from current5224B SHAbb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec. Only the used Memory and Raw128 declarations are exact literal matches. No outer initialize/writeDefaults method is called.",
+    "not_claimed": "No raw identity between different source variants or wholesale binary equivalence is inferred from these used-declaration and exact changed-line observations.",
+    "proof_file": "CACHE-PROOF197.json",
+    "proof_sha256": "c4abf2e3ade2d38abaa43d7492f536dbb862d5b99d58f21bdfbbbffcd1fba3a3"
+  },
+  "not_proved": [
+    "Business normal Memory/call projection only, no original17B shadowDWORD, prologue/CPU/fullABI/rawRAX/C++EH/error/trap execution.",
+    "Inline/null/header rejection omit heap/lower/reset only as appropriate; header rejection still makes its three source Memory reads.",
+    "UNSUPPORTED Result and binder IllegalStateException are explicit software classifications, not original Native error returns;193 has already written hash/probe before cleanup callback.",
+    "Fresh heap means the actual global QWORD read occurs at the nonzero lower61 gate in the script; no supplied dynamic heap mutation or natural initializer/currentGame value is proved.",
+    "Negative lastError and high-bit nonzero first-call result are observed; negative mappedBits and callback-thrown exceptions are not exercised.",
+    "Five CORE scenes compare returned Plan path, not every Plan field as an independent assertion; full literal lower argument/event and final byte checks have their stated finite scope.",
+    "52 full ordered event tuples and28 finalCells are not80 independent semantic proofs; missing-byte/step guards do not create additional top-level independent assertions.",
+    "No Native/Game/natural caller/OSheap ownership/fault/liveness/full concurrency proof."
+  ],
+  "old_production_recompiled": 0,
+  "old_cases_rerun": 0,
+  "delivery_new_compile_run": false,
+  "Native_Game": 0,
+  "new_PE": 0,
+  "POM_CI_changes": false,
+  "Main_prerequisite": false,
+  "formal_tree_or_parent_INDEX_edits_by_drafter": false,
+  "raw_evidence_or_classroot_in_patch": false
+}

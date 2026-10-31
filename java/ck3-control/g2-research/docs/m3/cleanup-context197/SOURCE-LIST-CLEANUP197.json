@@ -1,0 +1,437 @@
+{
+  "schema": "m3.cleanup-context197-portable-source-list/v1",
+  "package_number": 61,
+  "status": "FIRST_THREE_PRODUCTION_TWO_MANUAL_AND_EIGHT_SCENES_PASS",
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CleanupContext197Api.java",
+      "kind": "main",
+      "bytes": 709,
+      "sha256": "ad9b2db6bb45fb7b17c213b26a8bc8a927696be08ef336663f73776115b40f60",
+      "source_preserved": true,
+      "grade": "OWNER_FROZEN_DECLARATIONS_ONLY"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CleanupContext197.java",
+      "kind": "main",
+      "bytes": 2878,
+      "sha256": "86277da8c2201151b926e7b8357e4fdcb3dc38cb7c3b3cfafd08eecc358719dd",
+      "source_preserved": true,
+      "grade": "MODEL_R2_RAW_ZERO_OWNER_EDITS_SOURCE_REVIEWED_NOT_COMPILED"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotCleanupContextBinding197.java",
+      "kind": "main",
+      "bytes": 1538,
+      "sha256": "08f9c987072136da14ec2f4dfd06cecf2c9d2e89725fa6b193705253753ff424",
+      "source_preserved": true,
+      "grade": "MODEL_R1_RAW_ZERO_OWNER_EDITS_SOURCE_REVIEWED_NOT_COMPILED"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CleanupContextBook197.java",
+      "kind": "test",
+      "bytes": 12750,
+      "sha256": "2eb82d520852a4372b07841c17e1e2075c5cacda71030b64fba9ff407613833d",
+      "source_preserved": true,
+      "grade": "INDEPENDENT_MODEL_R2_RAW_ZERO_OWNER_EDIT"
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CleanupContextValidation197.java",
+      "kind": "test",
+      "bytes": 10242,
+      "sha256": "018fae2aab80259ca4427e1c5b0490861d8abb88b279051a2a42e2f543717e69",
+      "source_preserved": true,
+      "grade": "INDEPENDENT_OWNER_MECHANICAL_HOST"
+    }
+  ],
+  "existing_formal_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/cleanup/InlineStorageCleanupPlan.java",
+      "actual_validation_source_raw": {
+        "bytes": 5336,
+        "sha256": "94ec13472e5147d1a8ce136c0ab69827564d901902f9beae3a8422061e698d05",
+        "LF_bytes": 5336,
+        "LF_sha256": "94ec13472e5147d1a8ce136c0ab69827564d901902f9beae3a8422061e698d05",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "current_formal_physical_raw": {
+        "bytes": 5336,
+        "sha256": "94ec13472e5147d1a8ce136c0ab69827564d901902f9beae3a8422061e698d05",
+        "LF_bytes": 5336,
+        "LF_sha256": "94ec13472e5147d1a8ce136c0ab69827564d901902f9beae3a8422061e698d05",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 5336,
+        "sha256": "94ec13472e5147d1a8ce136c0ab69827564d901902f9beae3a8422061e698d05",
+        "LF_bytes": 5336,
+        "LF_sha256": "94ec13472e5147d1a8ce136c0ab69827564d901902f9beae3a8422061e698d05",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/cleanup/Free83Inputs.java",
+      "actual_validation_source_raw": {
+        "bytes": 587,
+        "sha256": "04544b51ac216cccd15e7af09b64f1370cd7de020eed64ed56038a199c20aa39",
+        "LF_bytes": 587,
+        "LF_sha256": "04544b51ac216cccd15e7af09b64f1370cd7de020eed64ed56038a199c20aa39",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "current_formal_physical_raw": {
+        "bytes": 587,
+        "sha256": "04544b51ac216cccd15e7af09b64f1370cd7de020eed64ed56038a199c20aa39",
+        "LF_bytes": 587,
+        "LF_sha256": "04544b51ac216cccd15e7af09b64f1370cd7de020eed64ed56038a199c20aa39",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 587,
+        "sha256": "04544b51ac216cccd15e7af09b64f1370cd7de020eed64ed56038a199c20aa39",
+        "LF_bytes": 587,
+        "LF_sha256": "04544b51ac216cccd15e7af09b64f1370cd7de020eed64ed56038a199c20aa39",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/cleanup/Free83Candidate.java",
+      "actual_validation_source_raw": {
+        "bytes": 666,
+        "sha256": "1b39ae0e4ee7c27f39663b56be4e34ef8379fb0b612ae9c32d56bcf56c6099ff",
+        "LF_bytes": 666,
+        "LF_sha256": "1b39ae0e4ee7c27f39663b56be4e34ef8379fb0b612ae9c32d56bcf56c6099ff",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "current_formal_physical_raw": {
+        "bytes": 666,
+        "sha256": "1b39ae0e4ee7c27f39663b56be4e34ef8379fb0b612ae9c32d56bcf56c6099ff",
+        "LF_bytes": 666,
+        "LF_sha256": "1b39ae0e4ee7c27f39663b56be4e34ef8379fb0b612ae9c32d56bcf56c6099ff",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 666,
+        "sha256": "1b39ae0e4ee7c27f39663b56be4e34ef8379fb0b612ae9c32d56bcf56c6099ff",
+        "LF_bytes": 666,
+        "LF_sha256": "1b39ae0e4ee7c27f39663b56be4e34ef8379fb0b612ae9c32d56bcf56c6099ff",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/m4cleanup/lower61/Lower61Inputs.java",
+      "actual_validation_source_raw": {
+        "bytes": 1152,
+        "sha256": "ffb34fd026ec7972ede03dee7ae2d3932825b1c14c17cf6b8556b06f5a5e546e",
+        "LF_bytes": 1152,
+        "LF_sha256": "ffb34fd026ec7972ede03dee7ae2d3932825b1c14c17cf6b8556b06f5a5e546e",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 1152,
+        "sha256": "ffb34fd026ec7972ede03dee7ae2d3932825b1c14c17cf6b8556b06f5a5e546e",
+        "LF_bytes": 1152,
+        "LF_sha256": "ffb34fd026ec7972ede03dee7ae2d3932825b1c14c17cf6b8556b06f5a5e546e",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 1152,
+        "sha256": "ffb34fd026ec7972ede03dee7ae2d3932825b1c14c17cf6b8556b06f5a5e546e",
+        "LF_bytes": 1152,
+        "LF_sha256": "ffb34fd026ec7972ede03dee7ae2d3932825b1c14c17cf6b8556b06f5a5e546e",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/m4cleanup/lower61/AddressFree83Consumer.java",
+      "actual_validation_source_raw": {
+        "bytes": 1964,
+        "sha256": "7ef265008818dcaf88626ef08cd88b0a4135c46e01b3d4da9214aef449cd765b",
+        "LF_bytes": 1964,
+        "LF_sha256": "7ef265008818dcaf88626ef08cd88b0a4135c46e01b3d4da9214aef449cd765b",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 1964,
+        "sha256": "7ef265008818dcaf88626ef08cd88b0a4135c46e01b3d4da9214aef449cd765b",
+        "LF_bytes": 1964,
+        "LF_sha256": "7ef265008818dcaf88626ef08cd88b0a4135c46e01b3d4da9214aef449cd765b",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 1964,
+        "sha256": "7ef265008818dcaf88626ef08cd88b0a4135c46e01b3d4da9214aef449cd765b",
+        "LF_bytes": 1964,
+        "LF_sha256": "7ef265008818dcaf88626ef08cd88b0a4135c46e01b3d4da9214aef449cd765b",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/m4cleanup/b374/B374Inputs.java",
+      "actual_validation_source_raw": {
+        "bytes": 4555,
+        "sha256": "1b4ee44588f6ab5023e4745fa8bf72f0c73454c9624adefbe35922c10c16cdba",
+        "LF_bytes": 4555,
+        "LF_sha256": "1b4ee44588f6ab5023e4745fa8bf72f0c73454c9624adefbe35922c10c16cdba",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "current_formal_physical_raw": {
+        "bytes": 4555,
+        "sha256": "1b4ee44588f6ab5023e4745fa8bf72f0c73454c9624adefbe35922c10c16cdba",
+        "LF_bytes": 4555,
+        "LF_sha256": "1b4ee44588f6ab5023e4745fa8bf72f0c73454c9624adefbe35922c10c16cdba",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 4555,
+        "sha256": "1b4ee44588f6ab5023e4745fa8bf72f0c73454c9624adefbe35922c10c16cdba",
+        "LF_bytes": 4555,
+        "LF_sha256": "1b4ee44588f6ab5023e4745fa8bf72f0c73454c9624adefbe35922c10c16cdba",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/captured/RequestE92780.java",
+      "actual_validation_source_raw": {
+        "bytes": 5224,
+        "sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+        "LF_bytes": 5224,
+        "LF_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 5224,
+        "sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+        "LF_bytes": 5224,
+        "LF_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 5224,
+        "sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+        "LF_bytes": 5224,
+        "LF_sha256": "bb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "actual_validation_source_raw": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "LF_bytes": 271,
+        "LF_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "LF_bytes": 271,
+        "LF_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 271,
+        "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "LF_bytes": 271,
+        "LF_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "actual_validation_source_raw": {
+        "bytes": 2735,
+        "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+        "LF_bytes": 2655,
+        "LF_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+        "CRLF_count": 80,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 2735,
+        "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+        "LF_bytes": 2655,
+        "LF_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+        "CRLF_count": 80,
+        "ends_LF": true
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 2655,
+        "sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+        "LF_bytes": 2655,
+        "LF_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": false,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotApi193.java",
+      "actual_validation_source_raw": {
+        "bytes": 468,
+        "sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+        "LF_bytes": 468,
+        "LF_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "current_formal_physical_raw": {
+        "bytes": 468,
+        "sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+        "LF_bytes": 468,
+        "LF_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 468,
+        "sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+        "LF_bytes": 468,
+        "LF_sha256": "343802213a7a903da8051e71a348e3bdf939fd4af421441dff6ab7aec8fc1254",
+        "CRLF_count": 0,
+        "ends_LF": true
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlot193.java",
+      "actual_validation_source_raw": {
+        "bytes": 987,
+        "sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+        "LF_bytes": 987,
+        "LF_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "current_formal_physical_raw": {
+        "bytes": 987,
+        "sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+        "LF_bytes": 987,
+        "LF_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_blob_raw": {
+        "bytes": 987,
+        "sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+        "LF_bytes": 987,
+        "LF_sha256": "1b104feea7782fc749493a295abc822707bc425c9ec9d1e6eebba8884cd0c54f",
+        "CRLF_count": 0,
+        "ends_LF": false
+      },
+      "formal_Git_snapshot_commit": "42a58ec2987ee5ca54263633d11da1ddecb856a6",
+      "actual_formal_raw_equal": true,
+      "actual_Git_raw_equal": true,
+      "actual_Git_LF_equal": true
+    }
+  ],
+  "new_production": 3,
+  "new_manual_support": 2,
+  "existing_source_count": 11,
+  "total_explicit_Java_sources": 16,
+  "manual_main": "org.xar.ck3.research.m3.CleanupContextValidation197",
+  "source_context_only_not_compile_dependencies": [
+    "RequestCleanup856050",
+    "StorageCleanupFree83Consumer"
+  ],
+  "cache_scope_and_differences": {
+    "scope": "Cache used for the first software checks only; source closure uses current complete formal source files, not machine-specific class directories.",
+    "AddressFree83Consumer_and_Lower61Inputs": "Cached-origin and current formal raw source bytes match exactly.",
+    "B374Inputs": "Cached-origin4590B SHA0990354c2f98e65a395de6d4592878fb4b8dd50e7a104405b535ccd5bb36da0b versus formal4555B SHA1b4ee44588f6ab5023e4745fa8bf72f0c73454c9624adefbe35922c10c16cdba; full line comparison identifies only trailing spaces in comments/blank lines, used Memory declaration unchanged.",
+    "InlineStorageCleanupPlan": "Cached-origin5441B SHA7fef00991ddd8bca9674e04e101a4cfbf35437547f76edf7b29133e796b9debf versus formal5336B SHA94ec13472e5147d1a8ce136c0ab69827564d901902f9beae3a8422061e698d05; full line comparison identifies CRLF and only blank-line trailing whitespace; algorithm and API lines otherwise byte-equal.",
+    "RequestE92780": "Cached outer source4892B SHA2c374cdad665ef43abfd361f73a7a044ea176374a1c00402fb8a69a2e14b410d differs from current5224B SHAbb49b7e8447e1dac1ff5bac3523e2a73562d6666ef936f83071b32c4d5bbc8ec. Only the used Memory and Raw128 declarations are exact literal matches. No outer initialize/writeDefaults method is called.",
+    "not_claimed": "No raw identity between different source variants or wholesale binary equivalence is inferred from these used-declaration and exact changed-line observations.",
+    "proof_file": "CACHE-PROOF197.json",
+    "proof_sha256": "c4abf2e3ade2d38abaa43d7492f536dbb862d5b99d58f21bdfbbbffcd1fba3a3"
+  },
+  "line_endings": "Raw validation/formal/Git hashes remain separate. Retained ancestor is physical2735B/80CRLF SHA8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539 versus Git/LF2655B SHAec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a. Exact CRLF-to-LF comparison only.",
+  "no_D_classroots_binaries_evidence_required": true,
+  "POM_CI_changes": false,
+  "parent_source_review_file": "PARENT-SOURCE-REVIEW197.json",
+  "parent_source_review_sha256": "dc093ee03b6c65e6ee4cca4030d10ff5b07f15d6164c2bc2ca912f6b52f6f920",
+  "publication_hash_scope": "Original source hashes identify first-compile physical inputs. publication_git_LF separately identifies Git LF/trailing-line-whitespace projection with original EOF preserved; execution/API/expected literals are unchanged. Source grades remain historical selection-time labels; first actual receipts provide later software validation.",
+  "publication_git_LF": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CleanupContext197Api.java": {
+      "bytes": 709,
+      "sha256": "ad9b2db6bb45fb7b17c213b26a8bc8a927696be08ef336663f73776115b40f60"
+    },
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/CleanupContext197.java": {
+      "bytes": 2878,
+      "sha256": "86277da8c2201151b926e7b8357e4fdcb3dc38cb7c3b3cfafd08eecc358719dd"
+    },
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/MoveSlotCleanupContextBinding197.java": {
+      "bytes": 1538,
+      "sha256": "08f9c987072136da14ec2f4dfd06cecf2c9d2e89725fa6b193705253753ff424"
+    },
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CleanupContextBook197.java": {
+      "bytes": 12750,
+      "sha256": "2eb82d520852a4372b07841c17e1e2075c5cacda71030b64fba9ff407613833d"
+    },
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/CleanupContextValidation197.java": {
+      "bytes": 10242,
+      "sha256": "018fae2aab80259ca4427e1c5b0490861d8abb88b279051a2a42e2f543717e69"
+    }
+  }
+}
