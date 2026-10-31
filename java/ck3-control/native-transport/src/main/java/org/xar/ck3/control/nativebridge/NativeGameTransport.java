@@ -28,6 +28,7 @@ import org.xar.ck3.control.contracts.semantic.NativeSemanticFingerprint;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.application.action.PhysicalStatusIdentity;
+import org.xar.ck3.control.application.advance.AdvancePrimitives;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.PlanningReadFailure;
 import org.xar.ck3.control.application.action.PlanningReadFailureCodec;
@@ -919,7 +920,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             byte[] packet = NativeWire.execute(id, request.step(), permit.expectedRevision(), request.additionalFields().bytes());
             // Every check above is before the irreversible boundary. No application request is sent by observe/hello.
             latestReadEvidence = null;
-            DispatchOutcome original = dispatch(id, packet, deadline, () -> {
+            Instant actualDeadline = AdvancePrimitives.supports(permit.guard().operation()) ? readDeadline(deadline) : deadline;
+            DispatchOutcome original = dispatch(id, packet, actualDeadline, () -> {
                 permit.consumeOnce();
                 heldSnapshotInvalidated = true;
             });
@@ -1558,7 +1560,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private void open(Instant deadline) throws IOException {
         if(activeMailbox!=null&&activeMailbox.deferredReadDiagnostic!=null)throw new IOException("deferred optional READ scope must return before further transport operations");
         if (terminalFailure != null) throw new IOException("original Native connection is terminal: " + terminalFailure);
-        if (closed || deadline == null || !Instant.now().isBefore(deadline)) throw new IOException("held Native transport closed or caller deadline expired");
+        if (closed || deadline == null || !Instant.now().isBefore(deadline)) {
+            Instant actualNow = Instant.now();
+            throw new IOException("held Native transport closed or caller deadline expired: closed=" + closed + ", deadline=" + deadline + ", actualNow=" + actualNow);
+        }
     }
     private static RejectedBeforeDispatch zero(String requestId, String reason) {
         return new RejectedBeforeDispatch(requestId, new ZeroDispatchProof(ZeroDispatchStage.BEFORE_WRITE, 0, reason, Optional.empty()));

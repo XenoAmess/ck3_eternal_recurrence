@@ -170,7 +170,7 @@ public final class RootAdvanceInfrastructureFactory {
             RootUnknownSentinelReadProfile.requireInstalled(terminalStatus,statuses);
             RootUnknownSentinelReadProfile.requireInstalled(physicalStatus,statuses);
             timeline=new AdvanceClock(observations,statuses,readiness,context.clock(),timings.maximumFrames(),timings.commandTimeout(),timings.advanceTimeout());
-            primitives=new AdvancePrimitives(observations,statuses,context.clock(),timings.maximumFrames(),pendingDate);
+            primitives=new AdvancePrimitives(observations,statuses,context.clock(),timings.maximumFrames(),pendingDate,timings.advanceTimeout());
             replay=new AdvancePrimitiveArchivedReplay(context.frameLoader());
             List<RootExecutableBindings.ActionBinding> fixed=new ArrayList<>();
             List<NativeRecordedEvidenceVerifier.Binding> archived=new ArrayList<>();

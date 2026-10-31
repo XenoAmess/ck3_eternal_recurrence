@@ -9,6 +9,7 @@ import java.io.UncheckedIOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,19 +35,30 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
     private final ClockStatusRead clockStatus;
     private final AdvanceWait waits;
     private final Optional<PendingUiLifeAdvance.Scope> pendingDate;
+    private final Optional<Duration> observationTimeout;
+    private final Clock observationClock;
     public AdvancePrimitives(AdvanceObservationPort observations, ClockStatusRead clockStatus, Clock clock, int maximumFrames) {
-        this(observations,clockStatus,clock,maximumFrames,Optional.empty());
+        this(observations,clockStatus,clock,maximumFrames,Optional.empty(),Optional.empty());
     }
     /** The actual Root passes its identical Life scope; no second observer or continuation permission is created. */
     public AdvancePrimitives(AdvanceObservationPort observations, ClockStatusRead clockStatus, Clock clock, int maximumFrames,
             PendingUiLifeAdvance.Scope samePendingDate) {
-        this(observations,clockStatus,clock,maximumFrames,Optional.of(Objects.requireNonNull(samePendingDate)));
+        this(observations,clockStatus,clock,maximumFrames,Optional.of(Objects.requireNonNull(samePendingDate)),Optional.empty());
+    }
+    public AdvancePrimitives(AdvanceObservationPort observations, ClockStatusRead clockStatus, Clock clock, int maximumFrames,
+            PendingUiLifeAdvance.Scope samePendingDate, Duration configuredObservationTimeout) {
+        this(observations,clockStatus,clock,maximumFrames,Optional.of(Objects.requireNonNull(samePendingDate)),
+                Optional.of(Objects.requireNonNull(configuredObservationTimeout)));
     }
     private AdvancePrimitives(AdvanceObservationPort observations, ClockStatusRead clockStatus, Clock clock, int maximumFrames,
-            Optional<PendingUiLifeAdvance.Scope> pendingDate) {
+            Optional<PendingUiLifeAdvance.Scope> pendingDate, Optional<Duration> observationTimeout) {
         this.observations = Objects.requireNonNull(observations); this.clockStatus = Objects.requireNonNull(clockStatus);
         this.waits = new AdvanceWait(observations, clock, maximumFrames);
         this.pendingDate = pendingDate;
+        this.observationTimeout = Objects.requireNonNull(observationTimeout);
+        this.observationClock = Objects.requireNonNull(clock);
+        observationTimeout.ifPresent(timeout -> require(!timeout.isNegative() && !timeout.isZero(),
+                "configured observation timeout must be positive"));
     }
     public static boolean supports(OperationKey operation) {
         String step = operation.value();
@@ -146,7 +158,7 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
                 return new ActionPorts.RejectionObserved(new ActionState.Rejected(attempt.requestId(), error.textValue(), clockStatus.preserve(ack)));
             return new ActionPorts.Pending("native rejection lacks its exact original error", List.of(clockStatus.preserve(ack)));
         }
-        Instant window = ActionObservationWindow.deadline(command);
+        Instant window = observationDeadline(command);
         boolean reconciling = ActionReconciliationScope.activeFor(command);
         String controlStep = command.operation().value();
         if (!reconciling && command.expected().observerSchema().equals(CLOCK_OBSERVER) && ARM.matcher(controlStep).matches()) {
@@ -208,6 +220,12 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         var observation = new ActionState.EffectObservation(current.identity(), current.source(), current.sessionId(), TIMELINE_OBSERVER,
                 values, current.provenance(), current.observedAt(), current.originalEvidence(), List.of(evidence));
         return step.equals("pause-map") ? new ActionPorts.PauseObserved(observation) : new ActionPorts.EffectObserved(observation);
+    }
+    private Instant observationDeadline(ActionCommand command) {
+        Instant base = ActionObservationWindow.deadline(command);
+        if (observationTimeout.isEmpty()) return base;
+        Instant configured = observationClock.instant().plus(observationTimeout.orElseThrow());
+        return configured.isBefore(base) ? configured : base;
     }
     private static boolean timelineSatisfied(ActionCommand command, AdvanceObservationPort.Frame frame) {
         String step = command.operation().value();

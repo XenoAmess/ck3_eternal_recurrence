@@ -195,7 +195,8 @@ public final class AdvanceClock {
         require(children.completed().stream().allMatch(ActionReceipt::settled), "UNKNOWN child cannot be followed by another native mutation");
         require(!step.equals("resume-map") || children.completed().stream().noneMatch(value -> value.command().operation().value().equals("resume-map")),
                 "a submitted resume cannot be retried, even after a settled rejection");
-        ActionReceipt result = children.submit(AdvancePrimitives.child(parent, frame, children.nextActionId(), step, deadline));
+        require(!deadline.isAfter(parent.deadline()) && clock.instant().isBefore(deadline), "child admission deadline expired or crossed parent");
+        ActionReceipt result = children.submit(AdvancePrimitives.child(parent, frame, children.nextActionId(), step, parent.deadline()));
         if (!result.settled()) throw new ChildUnresolved(result);
         return result;
     }
