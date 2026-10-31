@@ -112,11 +112,13 @@ public final class GovernanceStateSupplier implements GovernanceCollector.StateS
             return session(request, session -> {
                 var head = session.head();
                 StrictJson.require(head.state().machineId().equals(request.before().machineId()), "domain head machine differs");
-                ExactRef headRef = session.persistedHead(); List<ExactRef> originals = new ArrayList<>(); originals.add(headRef);
+                ExactRef headRef = session.persistedHead(); List<ExactRef> originals = new ArrayList<>();
                 Optional<CadenceModels.State> cadenceState = body(session, cadence, request, headRef, originals);
                 Optional<OpeningGate> gate = body(session, opening, request, headRef, originals);
                 Optional<DomainState> councilState = body(session, council, request, headRef, originals);
                 Optional<DomainState> crownState = body(session, crown, request, headRef, originals);
+                // With no imported body, retain the existing absent-state observation metadata.
+                if (originals.isEmpty()) originals.add(headRef);
                 // Optional.empty means unregistered/unimported/unavailable, never clear/zero.
                 return new Known<>(new Durable(request.before(), request.sessionId(), cadenceState, gate, councilState, crownState), originals);
             });
@@ -187,7 +189,7 @@ public final class GovernanceStateSupplier implements GovernanceCollector.StateS
                 StrictJson.require(context.episodeRunId().equals(request.before().frame().episodeRunId()) && actual.value().playedCharacterObject()
                         && request.before().frame().identity().player().equals(actual.value().actorCharacterId())
                         && request.before().frame().identity().dateRaw().equals(actual.value().dateRaw()), "actual Crown retry context crossed the current actor/episode/date");
-                List<ExactRef> originals = new ArrayList<>(actual.originals()); ExactRef head = session.persistedHead(); originals.add(head);
+                List<ExactRef> originals = new ArrayList<>(actual.originals()); ExactRef head = session.persistedHead();
                 var state = body(session, crown, request, head, originals);
                 if (state.isEmpty()) return new Unavailable<CrownRetryCodec.MatchRequest>("actual Crown body is unimported");
                 Obj input = new Obj(Map.of()).with("schema", new Text(CrownRetryCodec.MATCH_SCHEMA))

@@ -32,7 +32,7 @@ final class GovernanceStateSupplierTest {
     private static final class Store implements ContinuityStorePort, ContinuityStorePort.Session {
         final EnumMap<DomainBodies.Slot, DomainBodies.Available> bodies = new EnumMap<>(DomainBodies.Slot.class);
         ContinuityState state; int locks; int mutations; int custodyChecks;
-        boolean replayPins; ExactRef forbiddenPin; final List<ExactRef> capturedPins=new ArrayList<>(); int verifiedPins;
+        ExactRef currentHead=REF; boolean replayPins; ExactRef forbiddenPin; final List<ExactRef> capturedPins=new ArrayList<>(); int verifiedPins;
         Store() {
             var row = StrictJson.object(); row.put("schema", "root.ck3.continuity-window/v1").put("machine_id", SOURCE.machineId())
                     .put("sequence", 0).put("window_id", 1).put("status", "running").put("start_date_raw", 100)
@@ -58,7 +58,7 @@ final class GovernanceStateSupplierTest {
             assertTrue(capturedPins.contains(pin.reference()));verifiedPins++;
         }
         @Override public Head head() { return new Head(state, List.of(), List.of(), List.of(), false); }
-        @Override public ExactRef persistedHead() { return REF; }
+        @Override public ExactRef persistedHead() { return currentHead; }
         @Override public DomainBodies.Read readDomain(DomainBodies.Slot slot) {
             var value = bodies.get(slot); return value == null ? new DomainBodies.Unavailable(DomainBodies.Reason.UNIMPORTED, Optional.of(REF), "unit slot unimported") : value;
         }
@@ -189,15 +189,13 @@ final class GovernanceStateSupplierTest {
         var policy=replay.record(new OrdinaryFeastPolicy(REF,replay.observe(actual),(operation,frame,args)->Optional.empty()));
         var produced=assertInstanceOf(OrdinaryPolicy.Annotate.class,policy.evaluate(request,advance(request)));
         var plan=GovernanceCadencePublication.fromDetail(produced.retained().detail()).orElseThrow();
-        var evidence=new ArrayList<ExactRef>();evidence.add(REF);evidence.addAll(beforeRead.originals());
+        var evidence=new ArrayList<ExactRef>(beforeRead.originals());evidence.add(REF);
         List<ExactRef> exact=evidence.stream().distinct().toList();
-        // This actual production consumer physically pins every business original; old code refs fail here.
+        // The typed replay keeps original DATA and performs no provenance reload.
         var material=replay.replay(store.head(),cadence.reference(),plan,exact);
         assertEquals(List.of(CadenceModels.Domain.FEAST),material.actualReplayedPlan().completeNoActionDomains());
         assertEquals(1,GovernanceCadencePublication.reduce(material.actualReplayedPlan()).row(CadenceModels.Domain.FEAST).consecutiveNoAction());
-        assertFalse(store.capturedPins.contains(historical));assertTrue(store.capturedPins.contains(cadence.reference().payload()));
-        assertTrue(store.capturedPins.contains(store.bodies.get(DomainBodies.Slot.CROWN).reference().payload()));
-        assertEquals(exact,store.capturedPins);assertEquals(exact.size(),store.verifiedPins);
+        assertTrue(store.capturedPins.isEmpty());assertEquals(0,store.verifiedPins);
         assertSame(stateBefore,store.state);assertEquals(0,store.mutations);
         assertEquals(List.of(historical),cadence.reference().producerSources());
         assertEquals(DomainStatus.UNKNOWN,((Known<Durable>)reader.read(request)).value().crown().orElseThrow().status());
@@ -288,5 +286,21 @@ final class GovernanceStateSupplierTest {
         assertThrows(IllegalArgumentException.class, () -> GovernanceCadencePublication.decode(encode(plan.with("complete_no_action_domains", new Arr(List.of(new Bool(true)))))));
         assertThrows(IllegalArgumentException.class, () -> GovernanceCadencePublication.decode(encode(plan.with("schema", new Text("wrong")))));
         assertThrows(IllegalArgumentException.class, () -> GovernanceCadencePublication.decode(encode(new Obj(java.util.Map.of()))));
+    }
+
+    @Test void bookkeepingHeadChangesDoNotEnterImmutableBodyEvidence() {
+        var store=new Store();
+        store.install(DomainBodies.Slot.OPTIONAL_CADENCE,CadenceModels.SCHEMA,
+                CadenceJson.writeState(CadenceModels.State.empty("unit-episode")),List.of(REF));
+        var first=assertInstanceOf(Known.class,supplier(store).read(request()));
+        var body=store.bodies.get(DomainBodies.Slot.OPTIONAL_CADENCE);
+        assertEquals(List.of(body.reference().payload()),first.originals());assertFalse(first.originals().contains(REF));
+        var updated=store.state.toJson().put("sequence",store.state.sequence()+1);
+        store.state=ContinuityState.fromJson(updated,SOURCE.machineId());
+        store.currentHead=new ExactRef("unit-current-mutable-continuity.json",97839,"6".repeat(64));
+        store.bodies.put(DomainBodies.Slot.OPTIONAL_CADENCE,new DomainBodies.Available(body.reference(),body.canonicalBody(),store.currentHead,List.of()));
+        var after=assertInstanceOf(Known.class,supplier(store).read(request()));
+        assertEquals(first.value(),after.value());assertEquals(first.originals(),after.originals());
+        assertFalse(after.originals().contains(store.currentHead));assertEquals(0,store.mutations);
     }
 }

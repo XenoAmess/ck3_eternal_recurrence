@@ -176,7 +176,7 @@ public final class GovernanceCadenceReplay implements GovernanceCadencePublicati
         }
         var exact=evidence.stream().distinct().toList();StrictJson.require(exact.equals(originalReadEvidence) && requested.equals(replayed),
                 "actual replayed ordered domains/evidence differs from publication input");
-        for(ExactRef ref:exact){var pin=borrowed.capturePin(ref,WriterContracts.MAX_PIN_BYTES);borrowed.verifyPin(pin);}
+        // Recorded read references are historical DATA; the actual current body is read below.
         byte[] original=bodies.read(borrowed,previous.payload());authority.requireSession(borrowed);
         return new GovernanceCadencePublication.Material(original,Objects.requireNonNull(replayed),exact);
     }

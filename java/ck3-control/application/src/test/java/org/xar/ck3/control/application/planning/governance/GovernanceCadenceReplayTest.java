@@ -81,7 +81,7 @@ final class GovernanceCadenceReplayTest {
         assertEquals(List.of(CadenceModels.Domain.FEAST),plan.completeNoActionDomains());assertEquals(2,actual.calls);actual.unavailable=true;
         var material=replay.replay(session.head(),session.body,plan,List.of(REF));
         assertEquals(plan,material.actualReplayedPlan());assertArrayEquals(session.original,material.previousBody());
-        assertEquals(2,actual.calls);assertEquals(1,session.pinChecks);
+        assertEquals(2,actual.calls);assertEquals(0,session.pinChecks);
         assertEquals(1,GovernanceCadencePublication.reduce(material.actualReplayedPlan()).row(CadenceModels.Domain.FEAST).consecutiveNoAction());
     }
     @Test void handwrittenPlanHasNoPrivateProducerTranscriptAndCannotQualify() {
@@ -160,7 +160,7 @@ final class GovernanceCadenceReplayTest {
         return new PlanningResult.ActionSelected(draft.command().orElseThrow(),
                 new PlanTrace(request.before(),List.of(visit),Optional.of(draft)));
     }
-    @Test void missingImplementationTraceIsNotBusinessEvidenceButActualReadPinsRemain()throws Exception {
+    @Test void recordedReadsAreReplayedWithoutReopeningHistoricalEvidence()throws Exception {
         var session=new Session();session.unavailable=Optional.of(CODE_TRACE);
         var actual=new ActualFeastReads();var request=actualRequest();var materialReads=new AtomicInteger();
         var replay=new GovernanceCadenceReplay(()->session,same->assertSame(session,same),(same,ref)->{
@@ -171,9 +171,9 @@ final class GovernanceCadenceReplayTest {
         var plan=GovernanceCadencePublication.fromDetail(produced.retained().detail()).orElseThrow();
         var planned=planned(request,policy,produced.retained());
         var evidence=replay.originals(request,planned,plan);actual.unavailable=true;
-        // Old code reaches capturePin(CODE_TRACE) here; no early expected-list assertion hides the real failure.
+        // Neither source code nor already-recorded read references are reloaded during pure replay.
         var material=replay.replay(session.head(),session.body,plan,evidence);
-        assertEquals(List.of(REF),evidence);assertEquals(List.of(REF),session.captured);assertEquals(1,session.pinChecks);
+        assertEquals(List.of(REF),evidence);assertTrue(session.captured.isEmpty());assertEquals(0,session.pinChecks);
         assertEquals(CODE_TRACE,policy.implementationSource());
         assertEquals(Optional.of(CODE_TRACE),planned.trace().visits().getFirst().source());
         assertEquals(2,actual.calls,"replay consumes the original typed reads instead of querying again");
@@ -181,7 +181,7 @@ final class GovernanceCadenceReplayTest {
         assertEquals(plan,material.actualReplayedPlan());
         assertEquals(1,GovernanceCadencePublication.reduce(material.actualReplayedPlan()).row(CadenceModels.Domain.FEAST).consecutiveNoAction());
     }
-    @Test void missingActualReadEvidenceStillRefusesMaterialReplay()throws Exception {
+    @Test void changedRecordedMutableEvidenceDoesNotBlockTypedReplay()throws Exception {
         var session=new Session();session.unavailable=Optional.of(REF);
         var actual=new ActualFeastReads();var request=actualRequest();var materialReads=new AtomicInteger();
         var replay=new GovernanceCadenceReplay(()->session,same->assertSame(session,same),(same,ref)->{
@@ -191,9 +191,37 @@ final class GovernanceCadenceReplayTest {
         var produced=assertInstanceOf(OrdinaryPolicy.Annotate.class,policy.evaluate(request,advance(request)));
         var plan=GovernanceCadencePublication.fromDetail(produced.retained().detail()).orElseThrow();
         var evidence=replay.originals(request,planned(request,policy,produced.retained()),plan);
-        IOException failure=assertThrows(IOException.class,()->replay.replay(session.head(),session.body,plan,evidence));
-        assertTrue(failure.getMessage().contains(REF.path()));assertEquals(List.of(REF),session.captured);
-        assertEquals(0,session.pinChecks);assertEquals(0,materialReads.get());assertEquals(2,actual.calls);
+        var material=replay.replay(session.head(),session.body,plan,evidence);
+        assertEquals(plan,material.actualReplayedPlan());assertEquals(evidence,material.originalReadEvidence());
+        assertTrue(session.captured.isEmpty());assertEquals(0,session.pinChecks);
+        assertEquals(1,materialReads.get());assertEquals(2,actual.calls);
     }
 
+
+    @Test void actualBodyReadAndWriterSessionFailuresStillPropagate() throws Exception {
+        for (boolean rejectSession : List.of(false,true)) {
+            var session=new Session();var actual=new ActualFeastReads();var request=actualRequest();
+            var allowed=new java.util.concurrent.atomic.AtomicBoolean(true);var bodyReads=new AtomicInteger();
+            var replay=new GovernanceCadenceReplay(()->session,same->{
+                assertSame(session,same);if(!allowed.get())throw new IOException("actual writer session unavailable");
+            },(same,ref)->{bodyReads.incrementAndGet();throw new IOException("actual cadence body IO failure");});
+            var policy=replay.record(new OrdinaryFeastPolicy(REF,replay.observe(actual),(operation,frame,args)->Optional.empty()));
+            var produced=assertInstanceOf(OrdinaryPolicy.Annotate.class,policy.evaluate(request,advance(request)));
+            var plan=GovernanceCadencePublication.fromDetail(produced.retained().detail()).orElseThrow();
+            if(rejectSession)allowed.set(false);
+            var failure=assertThrows(IOException.class,()->replay.replay(session.head(),session.body,plan,List.of(REF)));
+            assertTrue(failure.getMessage().contains(rejectSession?"writer session":"body IO"));
+            assertEquals(rejectSession?0:1,bodyReads.get());assertTrue(session.captured.isEmpty());
+        }
+    }
+    @Test void actualCurrentHeadOrCadenceBodyMismatchStillRejectsBeforeBodyRead() {
+        var session=new Session();var actual=new ActualFeastReads();var request=actualRequest();
+        var replay=new GovernanceCadenceReplay(()->session,same->{},(same,ref)->{throw new AssertionError("mismatched head cannot read body");});
+        var policy=replay.record(new OrdinaryFeastPolicy(REF,replay.observe(actual),(operation,frame,args)->Optional.empty()));
+        var produced=assertInstanceOf(OrdinaryPolicy.Annotate.class,policy.evaluate(request,advance(request)));
+        var plan=GovernanceCadencePublication.fromDetail(produced.retained().detail()).orElseThrow();
+        var changed=session.state.toJson().put("sequence",session.state.sequence()+1);
+        var other=new Head(ContinuityState.fromJson(changed,SOURCE.machineId()),List.of(),List.of(),List.of(),false);
+        assertThrows(IllegalArgumentException.class,()->replay.replay(other,session.body,plan,List.of(REF)));
+    }
 }
