@@ -278,6 +278,52 @@ public final class RootAdvanceInfrastructureFactory {
             if(proof.basis() instanceof ObservationProvenance.LiveAfterSetter live) {
                 NativeFreshSnapshotPort.verifyAfterOriginal(successfulAck(archive.load(live.setterAcknowledgement())),
                         read,actual,proof.snapshotReceived());
+            } else if(proof.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) {
+                var originalReceipt=archive.loadReceipt(cold.originalReceipt());
+                require(archive.receiptReferenceOf(originalReceipt).equals(cold.originalReceipt()),"cold original receipt reference differs");
+                require(originalReceipt.state() instanceof ActionState.AckReceived || originalReceipt.state() instanceof ActionState.Unknown,
+                        "cold resume-map requires its actual unresolved acknowledged original");
+                var command=originalReceipt.command();
+                require(originalReceipt.bodySha256().equals(ActionCodec.bodySha256(command)), "cold original command body differs");
+                require(command.origin() instanceof CommandOrigin.Gameplay && command.operation().value().equals("resume-map")
+                        && command.arguments().members().isEmpty(),"cold resume-map requires exact original gameplay primitive");
+                requireFrameBinding(command,complete);
+                var attempt=ActionTransitions.attempt(originalReceipt.state()).orElseThrow();
+                var dispatch=ActionTransitions.dispatch(originalReceipt.state()).orElseThrow();
+                var ack=successfulAck(dispatch);
+                var guard=attempt.guard();
+                require(guard.origin() instanceof CommandOrigin.Gameplay && command.origin().acceptsGuard(guard.origin())
+                        && guard.observed().equals(command.before()) && guard.source().equals(command.source())
+                        && guard.sessionId().equals(command.sessionId()) && guard.operation().equals(command.operation()),
+                        "cold resume-map original Attempt crossed its complete command/guard binding");
+                var prepared=attempt.preparedRequest();var base=AdvancePrimitives.prepareRequest(command);
+                require(prepared.step().equals(base.step()) && prepared.requiredCapability().equals(base.requiredCapability())
+                        && java.util.Arrays.equals(prepared.additionalFields().bytes(),base.additionalFields().bytes()),
+                        "cold resume-map preparation differs from the actual primitive producer");
+                require(ack.requestId().equals(attempt.requestId()),"cold ACK differs from Attempt");
+                var requestRef=archive.requestReferenceOf(attempt.preparedRequest());
+                var dispatchRef=archive.referenceOf(ack);
+                require(archive.loadRequest(requestRef).equals(attempt.preparedRequest()) && archive.load(dispatchRef).equals(ack),"cold originals differ");
+                var outbound=NativeWire.decodeExecuteRequest(ack.outbound().orElseThrow().originalPacket());
+                require(outbound.requestId().equals(attempt.requestId()) && outbound.step().equals("resume-map")
+                        && outbound.expectedRevision().or(()->outbound.expectedSnapshotRevision()).filter(command.before().frame().identity().nativeRevision()::equals).isPresent()
+                        && java.util.Arrays.equals(outbound.normalizedAdditionalFields().value(),attempt.preparedRequest().additionalFields().bytes()),"cold outbound differs");
+                var originalDecoded=NativeWire.decode(ack.originalPacket());
+                require(originalDecoded instanceof NativeWire.CommandResult result && result.nativeOk() && result.requestId().equals(ack.requestId())
+                        && java.util.Arrays.equals(result.payload().value(),ack.originalFrame().bytes())
+                        && result.result().token().isPresent()==ack.originalResultToken().isPresent()
+                        && (result.result().token().isEmpty()||java.util.Arrays.equals(result.result().token().orElseThrow().value(),ack.originalResultToken().orElseThrow().bytes())),"cold ACK packet differs");
+                var prior=ack.custody().orElseThrow();prior.verify(ack,guard);
+                require(!prior.writeEntered().observedAt().isBefore(attempt.submittedAt()),
+                        "cold resume-map actual write predates its canonical Attempt");
+                require(prior.session().machineId().equals(custody.session().machineId()) && prior.session().game().equals(custody.session().game())
+                        && prior.session().sessionId().equals(custody.session().sessionId()) && !read.requestId().equals(ack.requestId()),"cold session/request mismatch");
+                if(prior.session().equals(custody.session()) && prior.custodyEpoch().equals(custody.custodyEpoch())) {
+                    NativeFreshSnapshotPort.verifyAfterOriginal(ack,read,actual,proof.snapshotReceived());
+                } else {
+                    require(custody.session().connectionGeneration().compareTo(prior.session().connectionGeneration())>=0
+                            && custody.writeEntered().observedAt().isAfter(prior.responseReceived().observedAt()),"cold read crossed connection or predates ACK");
+                }
             } else {
                 var watch=(ObservationProvenance.SameGameWatch)proof.basis();
                 var parent=archive.loadReceipt(watch.originalParentReceipt());
