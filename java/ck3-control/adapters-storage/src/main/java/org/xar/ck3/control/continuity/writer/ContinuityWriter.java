@@ -398,6 +398,25 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 throw new IOException("actual finite canonical historical state is unavailable", invalidHistory);
             }
         }
+        @Override public ContinuityState requireHistoricalCanonicalState(long sequence, String expectedDigest) throws IOException {
+            try {
+                requireWriter(layout.lock());
+                StrictJson.safe(sequence,0);
+                requireDigest(expectedDigest);
+                Head actual=this.head();
+                if(!retainedHeadHistoryVerified) {
+                    for(Pin pin:actual.documents())LedgerFiles.verify(pin);
+                    retainedHeadHistoryVerified=true;
+                }
+                ContinuityState retained=capturedStateAt(actual,sequence);
+                StrictJson.require(ContinuityJson.digest(retained.toJson()).equals(expectedDigest),"historical canonical state digest differs");
+                requireSameHead(actual,this.head());
+                return retained;
+            } catch (IOException|RuntimeException|Error failure) {
+                retainedHeadHistoryVerified=false;
+                throw failure;
+            }
+        }
         @Override public Head requireHistoricalHead(long sequence,String expectedDigest) throws IOException {
             requireWriter(layout.lock());StrictJson.safe(sequence,0);requireDigest(expectedDigest);
             try {

@@ -144,7 +144,7 @@ public final class RootPhysicalStatusReadAuthority implements PhysicalStatusRead
                 &&binding.validUntil().equals(Instant.parse(StrictJson.text(body.get("valid_until")))),
                 "physical Status original basis changed its exact finite guard binding");
         long sequence=StrictJson.integer(body.get("writer_sequence"),0,StrictJson.MAX_SAFE_INTEGER);
-        same.requireHistoricalHead(sequence,StrictJson.text(body.get("writer_digest")));
+        same.requireHistoricalCanonicalState(sequence,StrictJson.text(body.get("writer_digest")));
         require(requireOriginals(same,identity,originals).contains(PhysicalStatusIdentity.CAPABILITY),
                 "archived physical Status original HELLO lost its required capability");return identity;
     }

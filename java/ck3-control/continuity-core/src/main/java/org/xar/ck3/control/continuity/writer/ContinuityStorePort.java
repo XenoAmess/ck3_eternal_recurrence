@@ -82,6 +82,10 @@ public interface ContinuityStorePort {
         default ContinuityState requireHistoricalState(long sequence, String expectedDigest) throws IOException {
             throw new IOException("actual canonical historical-state verifier is not installed");
         }
+        /** Read-only actual canonical ancestry with complete captured canonical DATA verification, amortized only for the same original locked Session/retained Head. No configured source/domain material, current/live/write permission. */
+        default ContinuityState requireHistoricalCanonicalState(long sequence, String expectedDigest) throws IOException {
+            throw new IOException("actual canonical historical-state verifier is not installed");
+        }
         /** Read-only ancestor state with its real captured canonical/source/material pins; never a current write permit. */
         default Head requireHistoricalHead(long sequence,String expectedDigest) throws IOException {
             throw new IOException("actual canonical historical-head verifier is not installed");
