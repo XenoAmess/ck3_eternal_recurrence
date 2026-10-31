@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-168 sole-ARM零写入拒绝四prod ef79b84932、必要Controller/Journal两prod c6742bc6ac与M7 allocate168四新叶4a1c609df3已正常发表；后继本次按Rootopen1274B→budget最终8282B顺序精确采用四prod。Main现有12unique生产源已S/Z采，尚未收到MB168或完整恢复结果。既有formal30s/S120s差异经Main新授权同波另作exact单常量对齐，归旧baseline同步不归预算模型；九软件预算检查只授其原S/CP组合，不倒授formal已测试。167实际canonical413父412Unknown/child411零写入拒绝，next62/新日0/SAVE0；原ARM/CANCEL父子不重发。本岗无S/MB/Game/账本写入，编测/模型HTTP资源0。
+168生产主组已按精确hunks正式交付：拒绝四源ef79b84932、恢复消费者c6742bc6ac、预算/open853d629690与独立旧观察窗口baseline常量cc8aa6d647；本波另交Material单Factory与Coverage单Assembler，不重软件绿。Main168十四unique生产源增编后实际12:39:52.388975Z preloopEND1/76.424060秒，无LOOP，安装HOLD解除、MB/业务0；canonical413/父412Unknown仍未结算，失败在source.cancellationToken将原child411Rejected误作confirmed ControlApplied ARM，169该单源在研未授修复。原ARM/CANCEL父子不重发，新日0/SAVE0。M7 allocate168四新叶4a1c609df3保八finite软件组合边界，本岗无S/MB/Game/账本写入、编测/模型HTTP资源0。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -613,3 +613,10 @@ Root transport.open1274B日志前置先1Checking/0Skipped，再最终budget8282B
 
 
 后到Root/Main明确授权把当前S已实际使用的ActionObservationWindow.MAXIMUM_WINDOW=Duration.ofMinutes(2)作为独立exact一hunk旧baseline-sync正式提交，不能虚构更早准确delta或混归budget/model。本波单独常量commit只改原formal30秒为sealedS2分钟，所有其它源span保持；不反向覆盖S、不新放宽本局已用语义、不重复九绿。正式最终窗口合同与S条件对齐后，原九fakeclock结果仍是此前S/CP实测，不追认另一个formal组合已运行。
+
+
+## 168实际preloop终态与材料/缺行投影后继
+
+168必经Material最终3967B单Factory与Coverage2786B单Assembler各1Checking/0Skipped，独立source commits同波发表，不混旧3911或全candidate。Material在实际同writer/原installedLife及identical replay后，拿完整canonicalchild走sharedsoleARM零写入proof，保真实childreceipt、256B rejecteddispatch MATERIAL与1093Bguard BEFORE Native，不read或伪造Advance/after/legacyrow。首既有serial/Werror红、后owner same.head checkedIOException lambda红保，捕canonicalState出lambda修后单prod all,-try,-serial/Werror strict0/2.501166秒；拟议terminal helper→完整Sourcecodec/verifyCanonicalOnly七DATA检查0/0.9849583秒复用，非FullFactory/currentmembership/storecommit/Ready。model13.844秒35169+1186部分canonicalmap/role框架，owner拒虚构proof.guard/materialReferenceOf(proof)并接真实attempt.guard/dispatch原件/fullproof。完整candidate比对曾真实发现唯四行旧正式public RecordingPolicySources4arg exactsource断言在S缺席；Main确认本包保旧，ordinary/private ctor不经过它。只投影该既有constructor比对，新29行hunks不变，不冒whole-owner-leaf相同/模型删除；四行实际83–86及bytes/SHA在LIFE-MATERIAL168回执保留。
+
+Coverage仅把source-validated Life CompositeRejected parent+soleARMchild加入现missingrow collection，先fullsourcehelper+parent-awareEffects与三false/noApplied；所有presentrow仍原body/seq/legacy校验。实际413 suffix零ACTIONpublication/latestpublishedDriver仍396支持producer缺row分析，不当作持久化不存在的heap actionRows实读。单prod strict0/2.6433557秒复用，0新behavior fixture/原10+6+7DATA重跑；model11.826秒46685+1027集合框架部分保，owner补fullproof拒genericNativeRejected泛豁免。Main168实际十四源后12:39:52.388975Z preloopEND1/76.424060秒，无LOOP，12:41:09后到读取才广播；canonical413/父412Unknown未变，reconcile前cancellationToken把真实411Rejected误作confirmedARM，未达本波observe/material新分支，169独占单源。新软件绿/源加载不倒授真实父terminal、ordinaryReady或游戏日；本岗0资源/S/MB/Game写入。
