@@ -77,5 +77,13 @@ public final class ContextCompositionHost282 {
         @Override public void call9CF240(Memory m, long c, long d, long e) { call(Op.FINALIZE, m, false, c, d, e); }
         @Override public long call25037E0(Memory m, long c, long d) { return call(Op.REGISTRY, m, true, c, d); }
         @Override public void virtualTail10(Memory m, long t, long c, long d, long e) { call(Op.TAIL10, m, false, t, c, d, e); }
+        @Override public void call889780(Memory m, long c, long d) { call(Op.PREP_ELEMENTS, m, false, c, d); }
+        @Override public long elementAllocate(Memory m, long t, long c, long d, int e) { return call(Op.ALLOC_ELEMENTS, m, true, t, c, d, Integer.toUnsignedLong(e)); }
+        @Override public void callDBDB80(Memory m, long c, long d, int e, int f) { call(Op.REPLACE_ELEMENTS, m, false, c, d, Integer.toUnsignedLong(e), Integer.toUnsignedLong(f)); }
+        @Override public void virtualElementDestroy(Memory m, long t, long c, long d) { call(Op.DESTROY_ELEMENTS, m, false, t, c, d); }
+        @Override public void copy16_21A5050(Memory m, long c, long d) { call(Op.COPY16_HEAD, m, false, c, d); }
+        @Override public void copy4_B2EEE0(Memory m, long c, long d) { call(Op.COPY4_HEAD, m, false, c, d); }
+        @Override public void copy16_8C70B0(Memory m, long c, long d, long e, long f) { call(Op.COPY16_RANGE, m, false, c, d, e, f); }
+        @Override public void copy4_ADD0D0(Memory m, long c, long d, long e, long f) { call(Op.COPY4_RANGE, m, false, c, d, e, f); }
     }
 }

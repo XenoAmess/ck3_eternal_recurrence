@@ -93,6 +93,14 @@ public final class SlotKnownCompositionHost286 {
         @Override public void call9CF240(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, long e) { call(Op.FINALIZE, m, false, c, d, e); }
         @Override public long call25037E0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d) { return call(Op.REGISTRY, m, true, c, d); }
         @Override public void virtualTail10(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, long e) { call(Op.TAIL10, m, false, t, c, d, e); }
+        @Override public void call889780(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d) { call(Op.PREP_ELEMENTS, m, false, c, d); }
+        @Override public long elementAllocate(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d, int e) { return call(Op.ALLOC_ELEMENTS, m, true, t, c, d, Integer.toUnsignedLong(e)); }
+        @Override public void callDBDB80(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, int e, int f) { call(Op.REPLACE_ELEMENTS, m, false, c, d, Integer.toUnsignedLong(e), Integer.toUnsignedLong(f)); }
+        @Override public void virtualElementDestroy(PendingContextWithKnownHelpers3076B60.Memory m, long t, long c, long d) { call(Op.DESTROY_ELEMENTS, m, false, t, c, d); }
+        @Override public void copy16_21A5050(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d) { call(Op.COPY16_HEAD, m, false, c, d); }
+        @Override public void copy4_B2EEE0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d) { call(Op.COPY4_HEAD, m, false, c, d); }
+        @Override public void copy16_8C70B0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, long e, long f) { call(Op.COPY16_RANGE, m, false, c, d, e, f); }
+        @Override public void copy4_ADD0D0(PendingContextWithKnownHelpers3076B60.Memory m, long c, long d, long e, long f) { call(Op.COPY4_RANGE, m, false, c, d, e, f); }
 
         // Declared Calls in PendingSlotWithKnownHelpers2A32770.Calls
         @Override public boolean call2A321F0(Memory m, long c, int d) {
