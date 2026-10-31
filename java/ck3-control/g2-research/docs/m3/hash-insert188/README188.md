@@ -1,0 +1,19 @@
+# C39C60 normal projection
+
+The full held 814-byte normal source is projected through explicit memory and known argument ports. The core is owner-written after one incorrect complete model candidate and one incomplete length response; neither model core candidate is adopted. Source review is separate from compilation or execution.
+
+Java float conversion/division and ordered comparison are a software convention for this projection. MXCSR rounding, denormals and exception state were not captured; this implementation is not proof of identical results in every physical CPU environment. The selected finite witness uses values away from threshold/exceptional edges. DWORD INC is represented by an exact readInt32/writeInt32 pair, not a single instruction event or an atomic operation.
+
+The original first Book task combined the D51 immediate-empty fast branch with a global16 read and DESTROY that occur only on the other DBA/EDC path. That combination was impossible and is an owner input error. Independent owner Book is limited to the true fast branch and does not claim the other paths. Both incomplete model Book responses are discarded whole; no third request is made.
+
+All callee internals remain typed ports. The existing formal 855F00 construct implementation was found separately; this batch does not rewrite it or claim its algorithm from its name. Recursive C39F5C uses real child scratch frame -0xB0. Overflow ports followed by an unexpectedly returning terminal port end at the explicit unprojected INT3 boundary. CPU register state, EH, natural allocator/string behavior, Native execution and Game outcomes remain outside this software claim.
+
+The first production/API closure compiled four explicit sources (two new, two unchanged formal ancestors) with blankCP. Only the three new manual/support sources then compiled against that exact cache. The first three scenes passed60 globally ordered events (10/14/36), four opaque port calls (1/1/2) and20 final storage cells (2/7/11), with exact return and exhaustion checks. This is a two-stage source closure, not one seven-source compile. No old production or case was rerun.
+
+The occupied, empty-copy and short-displacement scenes check unsigned heap capacities, lowAL consumption, exact32B moves, controlled callback effects, fresh descriptor/count observations and32bit counter wrap. The long scratch displacement loop, global16/DESTROY branch, recursive growth and overflow terminal path are source-reviewed but not runtime-covered. Per-byte/event guards and overlapping final cells are not added into a fabricated independent semantic-assertion total.
+
+Six actual component model POSTs completed three stop and three length, actual phase peak two. The final production is owner source, the Book is a separate owner's original-source literal derivation, and only the second full host source is model decodedraw with zero owner edits and first software validation. The Book was frozen before that helper later read oldcallee/178 source for a different newbinding role; the frozen source and earlier visibility record were not rewritten. New caller binding is excluded from this component's model and software totals.
+
+Git delivery adds two production/API sources, three manual/support sources and three documents, reusing two formal ancestors. It adds no POM/CI, binary/classroot, D classpath requirement, runtime binding or Main prerequisite. Original evidence remains local. Hashes identify first-compiled physical source bytes; later formatting-only publication hashes stay separate from original results. No Native/Game result is inferred.
+
+Publication normalizes line endings and trailing line whitespace without changing Java tokens or expected data. SOURCE-LIST188.json preserves original physical compile hashes and separately records published git_lf_sha256 values; original compile/run results remain unchanged.

@@ -1,0 +1,131 @@
+{
+  "schema": "m3.hash-insert188-first-software-summary/v1",
+  "package_number": 52,
+  "status": "FIRST_TWO_STAGE_SOURCE_CLOSURE_THREE_SCENES_PASS",
+  "actual_originals": [
+    "hash-insert188/verification-core188/ACTUAL188.json",
+    "hash-insert188/verification-witness188/ACTUAL188.json"
+  ],
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\hash-insert188",
+  "actual_evidence_copied_to_Git": false,
+  "actual_callers": [
+    "3790510@379065B",
+    "3790510@37906CB"
+  ],
+  "known_inputs": "RCX map,RDX output,R8D precedinghash EAX,R9 descriptor; output pointer returned",
+  "complete_RF": [
+    "C39C60",
+    "C39F8E(exclusive)"
+  ],
+  "normal_code_bytes": 814,
+  "UW_bytes": 24,
+  "new_PE_bytes": 838,
+  "actual_source_read": "2026-10-31T20:05:00.792228Z",
+  "header_provider_query_Game": 0,
+  "source_precheck": "heldPDATA/147/ownindex/8879cache filenames checked before PE; formal exactRVA/FQN content check zero matches performed after read, not described as precheck",
+  "new_source_files": 5,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/hash188/HashInsert188Api.java": "b5f51553db56a9bc124503a9acfba749fed1fab4504bbafec22fe1e6984408b7",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/hash188/HashInsertC39C60.java": "d0c453a402de9c6d458046013176770639cb8cab0c8b2261bd75cf0a28b28f6a",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/hash188/HashInsertWitness188Api.java": "d4dcb35b71207514a525d62b42a2f386680220ece8c2370bac1027d637bf804b",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/hash188/HashInsertWitnessHost188.java": "e99e1f0cb2fbe873965f796c9d2093a7ad68dc1f2f74f63abac2074feada7a33",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/hash188/HashInsertWitnessBook188.java": "bf402829bbda39acdc775fd5e66ad355496c0e18a4c46a9ffc2c42ecca47a562"
+  },
+  "source_first_compilation": "two new production plus two existing formal ancestors first strict with blankCP; later three new manual/support first strict reusing that exact production cache, no production recompile",
+  "all_source_files_across_two_first_compiles": 7,
+  "single_seven_source_compile_claim": false,
+  "stages": [
+    {
+      "stage": "CORE_FIRST_STRICT",
+      "begin": "2026-10-31T20:19:08.846337+00:00",
+      "end": "2026-10-31T20:19:09.515067+00:00",
+      "exit": 0,
+      "seconds": 0.6687246998772025,
+      "source_count": 4
+    },
+    {
+      "stage": "FIRST3WITNESS_STRICT",
+      "begin": "2026-10-31T20:22:48.616624+00:00",
+      "end": "2026-10-31T20:22:49.565986+00:00",
+      "exit": 0,
+      "seconds": 0.949360600207001
+    },
+    {
+      "stage": "FIRST3SCENES",
+      "begin": "2026-10-31T20:22:49.566507+00:00",
+      "end": "2026-10-31T20:22:50.126561+00:00",
+      "exit": 0,
+      "seconds": 0.5600678999908268
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/proc:none/implicit:none/192MiB/CPU1/empty-sourcepath; blankCP for first production stage",
+  "portable_binary_or_D_classpath_dependency": false,
+  "new_scenes": 3,
+  "global_scripted_events": 60,
+  "events_per_scene": [
+    10,
+    14,
+    36
+  ],
+  "opaque_ports": 4,
+  "ports_per_scene": [
+    1,
+    1,
+    2
+  ],
+  "listed_final_cells": 20,
+  "final_cells_per_scene": [
+    2,
+    7,
+    11
+  ],
+  "assertion_scope": "six return/exhaustion top-level checks plus twenty listed final-cell checks; per-byte/event guards not counted again; no claim of26 independent semantic results",
+  "scene_semantics": [
+    "occupied heap descriptors, unsigned capacities and nonzero lowAL",
+    "empty bucket copy callback effects followed by fresh32bit counter wrap",
+    "collision then immediate-empty next bucket, exact32B move/clearing, fresh descriptor assignment and fresh counter wrap"
+  ],
+  "model_logical_requests": 6,
+  "actual_model_POSTs": 6,
+  "model_stop": 3,
+  "model_length_whole_discarded": 3,
+  "local_phase_peak": 2,
+  "model_core_book_source_adoption": 0,
+  "core_origin": "owner8480B after first whole semantic rejection and second whole length discard",
+  "Book_origin": "independent owner9313B from original814B and frozen declarations before reading target; no failed model Book or target results",
+  "host_model_adoption": "second complete decoded17143B source byte-for-byte; zero owner source edits; first software behavior passed",
+  "owner_Book_input_erratum": "First Book task impossibly mixed fast D51 with global16/DESTROY from DBA/EDC path; correction keeps true fast branch; not model fault",
+  "visibility_stage_boundary": "Book source frozen before later reading oldcallee/178body for a separate newbinding witness role; later visibility does not retroactively change earlier evidence; Book SHA remained identical",
+  "FP_scope": "Javafloat conversion/division/ordered comparison are software convention only; MXCSR/denormals/rounding/exception state not captured and not a physicalCPU equivalence guarantee",
+  "INC_scope": "readInt32/writeInt32 wrap32 non-atomic RMW projection; not a single source instruction observation or concurrency proof",
+  "opaque_and_terminal_scope": "callee internals remain ports; actual selfchild bodyRsp-0xB0 plus explicit outgoing fifth pointer; terminal call if returning reaches UnprojectedInt3, no invented noreturn proof",
+  "reuse_found_separately": "existing formal RequestConstruct855f00 and actualM7 APIs identified by189; no constructor rewrite or substitution into these188port scenes",
+  "not_proved": [
+    "scratch displacement loop/rehash/global16/DESTROY branch behavior",
+    "selfrecursive growth/overflow/terminal runtime behavior",
+    "all alias/counter/FP threshold cases",
+    "natural string/allocator/callee internals",
+    "fullCPU/register/flags/ABI/EH",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_production_recompiled": 0,
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false,
+  "new_caller_binding_excluded": "caller-bind188 is a separate genuinely new consumer and separate model/software cohort"
+}
