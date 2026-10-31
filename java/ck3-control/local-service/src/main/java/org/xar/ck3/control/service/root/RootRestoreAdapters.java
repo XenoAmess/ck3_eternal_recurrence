@@ -111,9 +111,6 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
             return known;
         });
         Materials material = materials.capture(borrowed, request, actual, saved, abandoned); material.replacement().verify();
-        material.replacement().launchPlan().sources().requireLoadedClass(materials.getClass());
-        material.replacement().launchPlan().sources().requireLoadedClass(publications.getClass());
-        var sourcePin = borrowed.capturePin(material.producerSource(), WriterContracts.MAX_PIN_BYTES);
         StrictJson.require(material.replacement().generation().equals(actual.actual().session().game())
                 && material.provisional().expectedSession().equals(actual.actual().session()), "cold restore material crossed actual replacement native owner");
         DriverBootstrap.Staged staged;
@@ -147,7 +144,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
         SavedContinuityAttachment.Input original = physical.input();
         Attachment attachment = new Attachment(event, new SavedContinuityAttachment.Input(original.predecessor(), event.details(), original.basis(), original.game(), original.opening(), original.progress()),physical.material());
         Stage created = new Stage(request, actual, saved, abandoned, material, staged, seed, attachment,reads); stages.put(request.requestId(), created);
-        borrowed.verifyPin(sourcePin); verifyAttachmentSource(borrowed, borrowed.head().state(), event); return attachment;
+        verifyAttachmentSource(borrowed, borrowed.head().state(), event); return attachment;
     }
     /** Additional reducer qualification used together with the sole physical SavedAttachmentSourceStore loader. */
     public void verifyAttachmentSource(ContinuityStorePort.Session borrowed, ContinuityState predecessor, WriterContracts.Request event) throws IOException {
@@ -163,7 +160,6 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
                 && stage.material.completedRow().equals(ExactRef.fromJson(details.get("restored_completed_row"))), "exact staged/final Driver source or delta changed");
         for (ExactRef reference : java.util.List.of(stage.finalSeed.fullDriver(), stage.material.provisional().fullDriver(), stage.material.completedRow()))
             readOriginal(borrowed, reference, ARCHIVED_DRIVER_BYTES);
-        borrowed.verifyPin(borrowed.capturePin(stage.material.producerSource(), WriterContracts.MAX_PIN_BYTES));
     }
     @Override public PublishedDriver publish(Request request, NativeCandidate actual, DriverStateSnapshot.Complete saved,
             WriterContracts.Prepared prepared, WriterContracts.Receipt committed,ReadWindow reads) throws IOException {

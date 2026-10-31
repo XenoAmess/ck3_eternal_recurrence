@@ -137,8 +137,6 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         if(existing!=null)return replay(borrowed,request,actual,saved,abandoned,existing.materials());
         StrictJson.require(captures.size()<64,"bounded original restore material retention exhausted");
         ManagedGameSession replacement=replacement(request,actual);
-        replacement.launchPlan().sources().requireLoadedClass(RootRestoreMaterials.class);
-        replacement.launchPlan().sources().requireLoadedClass(RootRestoreMaterialProjection.class);
         Originals originals=readOriginals(borrowed,request,actual,saved,abandoned,replacement);
         var reduced=RootRestoreMaterialProjection.reduce(originals.projection());
         ExactRef full=archive.preserveArtifact(borrowed,reduced.provisional().encode(),DRIVER_LIMIT);
@@ -243,7 +241,6 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
     private Originals readOriginals(Session borrowed,Request request,NativeCandidate actual,DriverStateSnapshot.Complete saved,
             DriverSnapshotFacts.Known abandoned,ManagedGameSession replacement) throws IOException {
         requireHead(borrowed,request);var pins=new ArrayList<WriterContracts.Pin>();
-        pin(borrowed,producerSource,DOCUMENT_LIMIT,pins);
         if(originalFrozen.isPresent())
             for(ExactRef ref:originalFrozen.orElseThrow().originalReferences())pin(borrowed,ref,WriterContracts.MAX_PIN_BYTES,pins);
         SavedCheckpointMaterial material=requireRetainedSource(borrowed,savedSources,request,saved);
