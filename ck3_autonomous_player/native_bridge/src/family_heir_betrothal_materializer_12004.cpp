@@ -1,4 +1,5 @@
 #include "xar_bridge/family_heir_betrothal_materializer_12004.hpp"
+#include "xar_bridge/family_child_default_materializer_12004.hpp"
 #include "xar_bridge/family_child_matrilineal_materializer_12004.hpp"
 #include "xar_bridge/ck3_12002_family_query_abi.hpp"
 
@@ -333,5 +334,119 @@ FamilyRulerMaterializeStatus12004 MaterializeFamilyChildMatrilinealContext12004(
   return status;
 }
 #endif
+
+FamilyRulerMaterializeStatus12004 MaterializeFamilyChildDefaultContext12004(
+    const ck3_12002::ContextBindings &bindings,
+    const FamilyRulerContextAccess12004 &access,
+    const FamilyMarriageOutgoingRequestV2 &request,
+    FamilyChildDefaultPreparedCopy12004 &output) noexcept {
+  output = {};
+  if (request.scope != FamilyMarriageOutgoingScopeV2::action_preparation ||
+      request.route != FamilyMarriageOutgoingRouteV2::child_default ||
+      request.actor == 0 || request.actor == UINT32_MAX ||
+      request.subject == 0 || request.subject > 0x7FFFFFFFU ||
+      request.candidate == 0 || request.candidate > 0x7FFFFFFFU ||
+      !request.expected_recipient || *request.expected_recipient == 0 ||
+      *request.expected_recipient > 0x7FFFFFFFU ||
+      request.sender ||
+      request.request_matrilineal_option ||
+      !request.require_matrilineal_option_off ||
+      request.actor == request.subject ||
+      request.actor == request.candidate ||
+      request.subject == request.candidate)
+    return Status::invalid_request;
+
+  if (!bindings.enabled || !bindings.core.enabled ||
+      bindings.redirect_roles == nullptr || bindings.construct_all_roles == nullptr ||
+      bindings.refresh == nullptr || bindings.finalize == nullptr ||
+      bindings.validate == nullptr || bindings.destroy == nullptr ||
+      access.memory.read_memory == nullptr || access.read_boolean_option == nullptr ||
+      access.matrilineal_option_id_slot == 0 || access.grand_wedding_option_id_slot == 0)
+    return Status::unavailable;
+
+  alignas(8) std::array<std::byte, 0x338> storage{};
+  void *context = storage.data();
+  bool owns_context = false;
+  FamilyHeirBetrothalPreparedCopy12004 prepared{};
+  Status status = Status::unavailable;
+
+  try {
+    status = [&]() -> Status {
+      std::uintptr_t database = 0;
+      std::uintptr_t definition = 0;
+      if (!ReadAt(access.memory,
+                  reinterpret_cast<std::uintptr_t>(bindings.interaction_database_slot),
+                  0, database) ||
+          !ReadAt(access.memory, database,
+                  ck3_12002::kMarriageArrangeMarriageInteractionOffset, definition) ||
+          definition == 0) return Status::unavailable;
+
+      auto actor = std::bit_cast<std::int32_t>(request.actor);
+      auto recipient = std::bit_cast<std::int32_t>(request.candidate);
+      auto subject = std::bit_cast<std::int32_t>(request.subject);
+      auto candidate = std::bit_cast<std::int32_t>(request.candidate);
+      std::int32_t intermediary = -1;
+      std::int32_t added_role = -1;
+
+      bindings.redirect_roles(reinterpret_cast<void *>(definition), &actor, &recipient,
+          &subject, &candidate, &intermediary, &added_role);
+
+      if (std::bit_cast<std::uint32_t>(actor) != request.actor ||
+          std::bit_cast<std::uint32_t>(subject) != request.subject ||
+          std::bit_cast<std::uint32_t>(candidate) != request.candidate ||
+          std::bit_cast<std::uint32_t>(recipient) != *request.expected_recipient)
+        return Status::unavailable;
+
+      const auto returned = bindings.construct_all_roles(context,
+          reinterpret_cast<void *>(definition), actor, recipient, subject,
+          candidate, intermediary, nullptr);
+      owns_context = true;
+      if (returned != context) return Status::unavailable;
+
+      bindings.refresh(context, true);
+      bindings.finalize(context);
+
+      const std::array<std::uint32_t, 2> ids{request.subject, request.candidate};
+      PairObservation before{};
+      auto observed = ReadPairObservation(bindings.core, access.memory, ids, before);
+      if (observed != Status::complete) return observed;
+
+      observed = CopyFamilyRulerPreparedContext12004(bindings, access, context,
+                                                     definition, prepared.materialized);
+      if (observed != Status::complete) return observed;
+
+      const std::array<std::uint32_t, 5> expected_roles{request.actor,
+          *request.expected_recipient, request.subject, request.candidate,
+          std::bit_cast<std::uint32_t>(intermediary)};
+      if (prepared.materialized.roles != expected_roles) return Status::changed;
+
+      PairObservation after{};
+      observed = ReadPairObservation(bindings.core, access.memory, ids, after);
+      if (observed != Status::complete) return observed;
+      if (before != after) return Status::changed;
+
+      const auto first = before.characters[0].selector;
+      const auto second = before.characters[1].selector;
+      prepared.effective_matrilineal_if_accepted = first == second
+          ? first != 0 : prepared.materialized.matrilineal;
+
+      return Status::complete;
+    }();
+  } catch (...) {
+    status = Status::unavailable;
+  }
+
+  if (owns_context) {
+    owns_context = false;
+    try {
+      bindings.destroy(context);
+    } catch (...) {
+      status = Status::unavailable;
+    }
+  }
+
+  if (status == Status::complete) output = std::move(prepared);
+  return status;
+}
 
 } // namespace xar::bridge
