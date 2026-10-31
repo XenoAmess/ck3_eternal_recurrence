@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式回执：普通 FF 已至 `8c7366e2f2`，含 M7 公共组件完整八叶、125 当前 typed Native basis 修复与126角色切换 producer 精确来源审计削减。运行 owner 确认125于 2026-10-31T01:30:51.582790Z 真实进入同 Game 普通循环；此前 usage120 已实际加载 MB121，121/122 ordinary HTTP 已记录真实 reported usage。源码采用、MB 加载、运行模型 HTTP 与游戏动作分别记；最后新增普通动作/游戏日/SAVE 信用仍为0。本岗没有 S/MB/Game/账本写权，不操作这些现场。
+最新正式回执：源码普通 FF 已至 `5053722389`，含 M7 公共组件完整八叶、125 当前 typed Native basis 修复与126角色切换 producer 精确来源审计削减及模型输入重复数组无损别名。运行 owner 确认125于 2026-10-31T01:30:51.582790Z 真实进入同 Game 普通循环；此前 usage120 已实际加载 MB121，121/122 ordinary HTTP 已记录真实 reported usage。源码采用、MB 加载、运行模型 HTTP 与游戏动作分别记；最后新增普通动作/游戏日/SAVE 信用仍为0。本岗没有 S/MB/Game/账本写权，不操作这些现场。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -172,3 +172,12 @@ Root docs10 `7adcca39e4` 按13页冻结清单只8实际变化叶提交；AGENTS�
 `5b3cfe06cc`（原本地b099）精准采用basis125三叶。实际保retained Bridge自replay与semantic ref绑定，held lease真实Native packet相同、typed Game/source/session/connection/current业务语义；raw notice ownership从实际packet/manifest读取，不用合并diagnostics冒充。去重新签发current Bridge后比不可变ref的错误路径，普通current与cold Fresh复用现notice稳定比较；owner实现，模型首伪API整拒。3prod strict0/2.064秒，新测试literal int改BigInteger后strict0/1.694秒、5P/0skip/2.051秒；输入是已知ROOT180/202帧加实际124command的明确变体，非完整failedpair，固定D原件probe不带入便携CI。正式三叶与sealed candidate ignoreEOL逐项相同；runtime MB125 localservice3源增编0/5.591秒并实际LOOP，不授新动作或游戏日。
 
 M2后继真未完 `DriverOperatorRebindProducer.requireCommitted` 先完整源码投1.11，方法原样采用后单生产源strict0/1.5744701秒。正式 `8c7366e2f2`（原本地5dd）只按exact installed.sources集合识别已知代码pins并跳过其重复physical verify，其他prepared.sources、全部prepared.evidence仍验；实际Window originals/fresh receive proof、historical state/reduction/metadata关联保持，删除单独installed.sources物理重捕获。没有按路径后缀猜角色、没有盲删所有prepared pins，也没有重125旧14绿或新镜像测试；尚无live Root分支执行/MB装载回执。
+
+
+### 实际122模型材料的无损重复数组别名
+
+记录时间 2026-10-31T01:38:54.161Z。Root候选两叶已增量正式FF `5053722389`：Selector只在新parse的model-only命令树里，当两组Family legality候选array完全相等且非空时，保完整candidates并省重复native_legal_candidates，独立proposal_projection_schema与系统说明给出完整还原路径。原实际ActionCommand对象/编码bytes/bodySHA及选择回执验证保持，unknown字段、顺序、UTF8、uint64精度完整；缺失/不等/顺序不同/空/错type六组保持未投影。正式保原test附加方法，只套精确hunk；初次writer误加--directory造成check路径重复红而无mutation，按patch自带java根纠正后apply0。格式只清新空行尾空白，不改语义，不重绿。
+
+生产为模型compiler纠错原样采用、owner语义0改，最初JsonNode.remove API红保留；测试模型部分+owner前后bytes/SHA/policy路径、单次planner调用及按case隔离CREATE_NEW fixture目录。必要prod单源strict0/1.883558秒；两unique新方法分别实绿：原candidate1P1F中positive完整还原已过，fixture目录纠正后只失败negative重跑1P/6软件HTTP，不能合称同JVM2P。最初baseline0P2F里只有正例缺marker是精确feature RED，negative同时揭露独立fixture问题，不归生产回归。
+
+Root另用actual122归档payload做D-only离线实物probe：1,224,362B→800,340B、减少424,022B，833行全部typed DATA还原相等，0额外HTTP/Native/Game；probe不进正式CI。这个实盘字节结果不能推出token、cache或运行延迟收益；只随下一自然业务增量加载，不为它重启当前125。完整候选/模型分责/各失败原件在 `D:/ck3-state/resume91-root/model-payload123/DELIVERY.json`，原SUMMARY与raw不改。
