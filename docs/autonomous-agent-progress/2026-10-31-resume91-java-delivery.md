@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `bf81176fa5`，136–139共10个生产叶已按准确小补丁正常发表，复用owner必要strict与direct检查，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140新两叶已由runtime采入实际MB流程，尚未由本岗正式发表。本岗不写S/MB/Game/账本。
+最新正式源码 FF 已至 `ff3875d835`，136–139共10个生产叶与140两个生产叶已按准确小补丁正常发表，复用owner必要strict与direct检查，未重旧绿。136实际LOOP已越过旧Unknown/无effect终态冷恢复；137、138、139依次加载分类、pre-INTENT guard与完整Events历史入口，后继故障仍逐项保留。139真实END4/next55，actionhead仍NoEffect332；runtime最新口径普通世界APPLIED2、新游戏日0、SAVE0，不能把NoEffect、源码发表或模型接受当进日。140实际LOOP/next55，两叶已正式发表；旧Crown publication非空门这一既有前像差异单独保留待同步，不整叶覆盖。本岗不写S/MB/Game/账本。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -282,3 +282,13 @@ receipt v12/typed payload、sealed Ports/Settlement、Effects和NativeOutcomeArc
 工具审计后到更正：sem已确认134历史compile.ps1实际执行，违反cmd-only；保留旧原件，compile.cmd只是同javac参数的未执行复现入口，未为审计重跑已绿。135/136实际命令用cmd。此事实与编测结果、模型实现署名分别记录。本次正式交付全用cmd.exe/login:false，没有新增模型调用、javac/JUnit/Maven或Game操作。
 
 运行岗当前页从其已审阅冻结快照精确追加：formal旧96878B历史原字节全部保留，只取该页后继242行；没有复制AGENTS、全局模型历史或其它owner页。
+
+## 140时钟语义稳定比较与真实范围
+
+`ff3875d835` 仅RootAdvanceRuntimeFacts与NativeReadinessCollector两叶53+/5-。current/capture两消费者不再比整个重物化Frame record；保exact observation identity/source/session、Push角色、既有heldSemantic稳定Native语义，实际Driver stamp/history basis/currentDriver关联和lease期限均不变。capture的Native packet关联指向当前lease.frame实际packet，非旧重新归档ref；ownership set来自同borrowed Session、exact active lease的已有physical capture，只读getter不capture/query/observe/IO。失败才生成至多8个top-level key名各80chars、角色、两SHA12与时间差，不dump值。
+
+复用owner2prod strict0/2.462744秒及source-derived direct11P/0.801521秒；初fixture ExactRef参数顺序编错和GBK读取错误原件保，只有fixture纠正。actual139两Frame未保存、具体差字段unknown，getter真实callback只source/strict，没有fullRoot/Native/Game/ledger信用。模型bounded02 partial，owner把引用identity比较修成value equals、补imports/helper可见性与bounded failure log；首全exact答与后诊断placeholder答分别拒绝，未以HTTP stop授采用。本岗源码没有新增语义改、未重编或重跑软件绿。runtime实际MB140 native-transport1+local1共2src0/6.100秒，05:28:16.063532Z LOOP/next55，安装45.721秒，仍不以装载授Date动作或进日。
+
+formal与sealed runtime前像有一处早先未同步差异：RootFacts仍保“enabled CROWN runtime facts require their actual retained private publication”两行require，而sealed current此处为允许first advancement缺席的注释；140精确patch不包含它，因此本次保formal原guard并向Root/runtime交付准确diff，不用整叶candidate覆盖。已实际读verifiedCrownMaximum，空due既有分支返回45；这处取消门的来源/最小独立delta另待运行owner说明，不能称两个全叶ignoreEOL完全相同。除该明确差异，RootFacts与candidate一致；Collector仅EOL/行尾空白差异、执行内容相同。
+
+机械审阅过程保真：最初全叶相等断言先揭露上述既有guard差异，再揭露Collector旧行尾空白；一次commit因为审阅尚未生成message文件而exit128，无commit/源码损坏，修正仅比较范围和message文件后正常提交。最终cached diffcheck0、fetch/rebase/push0、master与HEAD均ff3875d835d6dfa938ee1b24c51f548283da4e8f，Dclean。精确source SHA、前像差异和复用actual在 `D:/ck3-state/resume91-java-delivery/CLOCK140-ADOPTION.json`，没有把这些工具问题算模型错误或生产编译失败。
