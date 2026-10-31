@@ -18,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.xar.ck3.control.build.RawWindowCaptureContract.*;
 import static org.xar.ck3.control.build.RawWindowAdmissionBatchMain.*;
 
-/** Mandatory Windows native-directory fixture plus software Collector ports; never opens the retained EXE. */
+/** Actual Windows directory/temp-file metadata plus Source17-shaped software DATA and Collector ports.
+ * The retained real EXE original remains a separate parser fixture and is never relabeled or opened here. */
 final class RawWindowAdmissionBatchMainTest {
 
     private record LauncherFailure(String uniqueId,String exceptionType,String message) { }
@@ -79,17 +80,15 @@ final class RawWindowAdmissionBatchMainTest {
         return RawWindowCaptureJson.reference(path,bytes);
     }
     private Fixture fixture(int count)throws Exception {
-        byte[] bytes;
-        try(var stream=getClass().getResourceAsStream("/native-raw-window/fullhash-source17-original.json")) {
-            if(stream==null)throw new IOException("mandatory retained exact Source17 fixture missing");
-            bytes=stream.readAllBytes();
-        }
-        Path proofPath=temporary.resolve("source17.json");Files.write(proofPath,bytes,StandardOpenOption.CREATE_NEW);
-        FileRef proofRef=RawWindowCaptureJson.reference(proofPath,bytes);
-        RawWindowImageProof.Proof proof=RawWindowImageProof.load(proofRef);
         String machine=WindowsJobProcess.currentMachineId();
+        // Software-only local fixture: current actual Windows runner, bounded temp input, no retained EXE access.
+        Path input=temporary.resolve("software-input.bin");
+        Files.write(input,new byte[4096],StandardOpenOption.CREATE_NEW);
+        SharedSourceFiles.NativeFile nativeFile=SharedSourceFiles.nativeFile(input);
+        FileRef proofRef=write("source17.json",softwareSource17(machine,input,nativeFile));
+        RawWindowImageProof.Proof proof=RawWindowImageProof.load(proofRef);
         if(!proof.machineId().equals(machine))
-            throw new IOException("this retained Source17 fixture requires its explicit machine; no invented cross-machine qualification");
+            throw new IOException("software fixture machine must match current actual Windows runner");
         // Software originals only. No actual financial/operational authority is issued by a test.
         FileRef financial=write("software-financial.json",new SoftwareOriginal("NO_EXECUTION_AUTHORITY"));
         FileRef standing=write("software-standing.json",new SoftwareOriginal("NO_EXECUTION_AUTHORITY"));
@@ -112,6 +111,47 @@ final class RawWindowAdmissionBatchMainTest {
         var authorization=new BatchAuthorization(SCHEMA,machine,"/root/budget_fast_lane","software-batch",
                 "2026-10-24T08:59:00Z",REVIEW,financial,standing,proofRef,temporary.toString(),maximum,approved);
         return new Fixture(authorization,write("batch.json",authorization),write("bindings.json",bindings),List.copyOf(bindings),List.copyOf(requests));
+    }
+
+    private record SoftwareIdentity(String fileId64Decimal,String fileId128Decimal,String volumeSerial64Decimal,long size,String creationFiletime,
+            String lastwriteFiletime,String changeFiletime,int attributes,long links) { }
+
+    private ObjectNode softwareSource17(String machine,Path input,SharedSourceFiles.NativeFile nativeFile) throws IOException {
+        String path=input.toString();
+        String finalPath=SharedSourceFiles.nativePathValue(path);
+        String legacyDecimal=new BigInteger(nativeFile.legacyFileIdHex(),16).toString();
+        // Identity/time/size/link fields below are the actual newly created SOFTWARE input observation.
+        // attributes=32 is explicit parser-fixture DATA, not an independently observed attribute value.
+        SoftwareIdentity identity=new SoftwareIdentity(legacyDecimal,nativeFile.fileIdDecimal(),nativeFile.volumeSerialDecimal(),nativeFile.logicalBytes(),
+                nativeFile.creationFiletimeDecimal(),nativeFile.lastWriteFiletimeDecimal(),nativeFile.changeFiletimeDecimal(),32,nativeFile.linkCount());
+        ObjectNode root=ControlBuild.strictMapper().createObjectNode();
+        root.put("schema","xar.g2.m7.native-static-window-source/v1");
+        root.put("machine_id",machine);
+        root.put("observed_at_utc",Instant.now().toString());
+        // These required schema/status/handle-policy wire literals exercise the strict parser.
+        // They do not assert a real CK3 producer, two native samples, or a retained hash/objdump handle.
+        root.put("status","FRESH_SOURCE_MAPPED_STATIC_WINDOWS_ONLY");
+        root.put("input",path);
+        root.put("final_path",finalPath);
+        root.putArray("ancestor_paths_checked_no_reparse");
+        root.put("handle_policy","GENERIC_READ + FILE_SHARE_READ only; denied write/delete, same handle held across hash/read/objdump/prepost");
+        root.set("before",ControlBuild.strictMapper().valueToTree(identity));
+        root.set("after",ControlBuild.strictMapper().valueToTree(identity));
+        root.put("sha256",RawWindowCaptureJson.hash(Files.readAllBytes(input)));
+        root.put("file_version","SOFTWARE_TEST_NO_EXECUTABLE_VERSION");
+        root.set("pe",ControlBuild.strictMapper().createObjectNode());
+        root.put("objdump_version","SOFTWARE_TEST_NOT_RUN");
+        root.putArray("spans");
+        ObjectNode budget=ControlBuild.strictMapper().createObjectNode();
+        budget.put("one_full_sha_stream_bytes",nativeFile.logicalBytes());
+        budget.put("code_bytes",0);
+        budget.put("metadata_bytes_including_version_buffer",0);
+        budget.putNull("physical_io_total_bytes");
+        budget.put("physical_io_note","SOFTWARE TEST ONLY; no real EXE or objdump run");
+        root.set("budget",budget);
+        root.put("game_pid","SOFTWARE_TEST_NOT_RUN");
+        root.put("authority","SOFTWARE TEST DATA ONLY; current temp-file identity and SHA, not a CK3 producer or same-handle hash/objdump qualification; no execution authority");
+        return root;
     }
     private record SoftwareOriginal(String status) { }
     private FileRef changedBatch(Fixture fixture,String name,List<ApprovedPlan> plans,ReadCaps maximum)throws IOException {
