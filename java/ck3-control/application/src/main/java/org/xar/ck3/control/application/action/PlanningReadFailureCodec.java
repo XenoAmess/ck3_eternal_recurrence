@@ -32,7 +32,7 @@ public final class PlanningReadFailureCodec {
         var requestNode = StrictJson.object(row.get("request"),
                 Set.of("before", "source", "session_id", "operation", "deadline", "arguments_ref"));
         ExactRef argumentsRef = ExactRef.fromJson(requestNode.get("arguments_ref"));
-        var arguments = OpportunityJson.object(OpportunityJson.parse(archive.loadMaterial(argumentsRef).bytes()),
+        var arguments = OpportunityJson.object(OpportunityJson.parseComplete(archive.loadMaterial(argumentsRef).bytes(), PlanningReadRequest.MAX_ARGUMENT_BYTES),
                 "actual failed-read arguments");
         ExactRef outcomeRef = ExactRef.fromJson(row.get("original_ref"));
         ExactRef preparedRef = ExactRef.fromJson(row.get("prepared_ref"));

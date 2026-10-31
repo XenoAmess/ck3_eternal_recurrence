@@ -10,6 +10,8 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 /** One collector contract. Read permission cannot authorize clipboard, foreground or other mutation. */
 public record PlanningReadRequest(CommandOrigin origin, G2Source source, String sessionId,
         OperationKey operation, OpportunityJson.Obj arguments, Instant deadline) {
+    /** Full application read arguments are archived separately from the small request metadata. */
+    public static final int MAX_ARGUMENT_BYTES = 16 * 1024 * 1024;
     public PlanningReadRequest {
         Objects.requireNonNull(origin); Objects.requireNonNull(source); StrictJson.text(sessionId);
         Objects.requireNonNull(operation); Objects.requireNonNull(arguments); Objects.requireNonNull(deadline);
@@ -24,7 +26,7 @@ public record PlanningReadRequest(CommandOrigin origin, G2Source source, String 
             StrictJson.require(physical.identity().source().equals(source) && physical.identity().sessionId().equals(sessionId)
                     && operation.value().equals(PhysicalStatusIdentity.OPERATION) && arguments.members().isEmpty(),
                     "physical status request changed the finite read source/session/operation or empty arguments");
-        OpportunityJson.parse(OpportunityJson.encode(arguments));
+        OpportunityJson.parseComplete(OpportunityJson.encode(arguments), MAX_ARGUMENT_BYTES);
     }
     public PlanningReadRequest(ObservationIdentity before, G2Source source, String sessionId,
             OperationKey operation, OpportunityJson.Obj arguments, Instant deadline) {

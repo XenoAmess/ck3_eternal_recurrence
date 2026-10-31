@@ -146,7 +146,7 @@ public final class NativeArchiveDataCodec {
     private PlanningReadRequest planningRequest(JsonNode request) throws IOException {
         StrictJson.require(request != null && request.isObject(), "archived typed planning request required");
         return CommandOriginCodec.planningRequest(request,
-                OpportunityJson.object(OpportunityJson.parse(token(ExactRef.fromJson(request.get("arguments_ref"))).bytes()), "archived planning arguments"));
+                OpportunityJson.object(OpportunityJson.parseComplete(token(ExactRef.fromJson(request.get("arguments_ref"))).bytes(), PlanningReadRequest.MAX_ARGUMENT_BYTES), "archived planning arguments"));
     }
     private Optional<PlanningReadAdoption> adoption(JsonNode value) throws IOException {
         StrictJson.require(value != null, "v2 read requires explicit adoption object or null");
