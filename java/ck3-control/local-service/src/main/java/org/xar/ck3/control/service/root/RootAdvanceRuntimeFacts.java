@@ -13,12 +13,14 @@ import java.util.function.Supplier;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.action.ObservationProvenance;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.advance.AdvanceObservationPort;
-import org.xar.ck3.control.application.advance.LifeAdvanceRootReplay;
 import org.xar.ck3.control.application.advance.ProductionAdvanceReadiness;
 import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler;
+import org.xar.ck3.control.application.driver.DriverTransportNoticeStability;
 import org.xar.ck3.control.application.history.DriverHistoryAccess;
 import org.xar.ck3.control.application.planning.governance.CrownRetryDue;
 import org.xar.ck3.control.application.planning.governance.CrownRetryPublication;
@@ -51,12 +53,49 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
             context.requireCurrent(parent.deadline());var same=context.borrowedSession();context.writer().requireSession(same);
             String head=same.head().digest();
             T result=context.collector().current(same,frame.identity(),parent.deadline(),lease->{
-                require(LifeAdvanceRootReplay.push(lease.frame()).equals(frame),"outer runtime scope changed the actual clock observation");
+                requireClockEquivalent(frame, lease.frame(), context.collector().activeNativeOwnedNoticeKeys(same, lease),
+                        "outer runtime scope changed the actual clock observation");
                 return work.get();
             });
             context.writer().requireSession(same);require(head.equals(same.head().digest()),"clock readiness changed the original writer head");
             return result;
         }catch(IOException failure){throw new UncheckedIOException("actual outer Root clock readiness unavailable",failure);}
+    }
+
+    static boolean clockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual, Set<String> nativeOwnedNoticeKeys) {
+        if (!expected.identity().equals(actual.identity()) || !expected.source().equals(actual.source()) || !expected.sessionId().equals(actual.sessionId())) return false;
+        if (!(expected.provenance() instanceof ObservationProvenance.Push)) return false;
+        var pid = expected.identity().game().pid();
+        var expectedStable = DriverTransportNoticeStability.heldSemantic(expected.semantic(), nativeOwnedNoticeKeys, pid);
+        var actualStable = DriverTransportNoticeStability.heldSemantic(actual.semantic(), nativeOwnedNoticeKeys, pid);
+        return expectedStable.equals(actualStable);
+    }
+
+    private static void requireClockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual,
+            Set<String> nativeOwnedNoticeKeys, String reason) {
+        if (!clockEquivalent(expected, actual, nativeOwnedNoticeKeys))
+            require(false, reason + "; " + clockDifference(expected, actual, nativeOwnedNoticeKeys));
+    }
+
+    static String clockDifference(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual,
+            Set<String> nativeOwnedNoticeKeys) {
+        try {
+            var roles = new java.util.ArrayList<String>();
+            if (!expected.identity().equals(actual.identity())) roles.add("identity");
+            if (!expected.source().equals(actual.source())) roles.add("source");
+            if (!expected.sessionId().equals(actual.sessionId())) roles.add("session");
+            if (!(expected.provenance() instanceof ObservationProvenance.Push)) roles.add("provenance_kind");
+            var left = DriverTransportNoticeStability.heldSemantic(expected.semantic(), nativeOwnedNoticeKeys, expected.identity().game().pid());
+            var right = DriverTransportNoticeStability.heldSemantic(actual.semantic(), nativeOwnedNoticeKeys, actual.identity().game().pid());
+            var keys = new java.util.TreeSet<String>(left.members().keySet()); keys.addAll(right.members().keySet());
+            var different = keys.stream().filter(key -> !Objects.equals(left.get(key), right.get(key)))
+                    .limit(8).map(key -> key.substring(0, Math.min(80, key.length()))).toList();
+            return "roles=" + roles + "; stable_semantic_keys=" + different
+                    + "; native_refs=" + expected.originalEvidence().sha256().substring(0, 12) + "/" + actual.originalEvidence().sha256().substring(0, 12)
+                    + "; observed_at_delta=" + java.time.Duration.between(expected.observedAt(), actual.observedAt());
+        } catch (RuntimeException unavailable) {
+            return "clock_difference_unavailable=" + unavailable.getClass().getSimpleName();
+        }
     }
 
     private static void requireParent(ActionCommand parent, AdvanceObservationPort.Frame frame) {
@@ -88,14 +127,15 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
 
     private ProductionAdvanceReadiness.RuntimeFacts capture(ContinuityStorePort.Session same, ActionCommand parent,
             AdvanceObservationPort.Frame frame, DriverHistoryAccess.View history, LeaseSnapshot lease)throws IOException {
-        require(LifeAdvanceRootReplay.push(lease.frame()).equals(frame)
-                && lease.frame().source().equals(context.source())
+        requireClockEquivalent(frame, lease.frame(), context.collector().activeNativeOwnedNoticeKeys(same, lease),
+                "runtime facts changed the actual clock observation");
+        require(lease.frame().source().equals(context.source())
                 && frame.identity().game().equals(context.game().generation())
                 && frame.sessionId().equals(context.game().sessionId())
                 && lease.driver().stamp().equals(history.stamp())
                 && lease.driver().originalHistoryBasis().equals(history.originalHistoryBasis())
                 && lease.semantic().frame().equals(frame.identity())
-                && lease.semantic().originalNativePacket().equals(frame.originalEvidence())
+                && lease.semantic().originalNativePacket().equals(lease.frame().originalEvidence())
                 && lease.semantic().originalDriver().equals(history.currentDriverEvidence()),
                 "runtime facts crossed the exact current complete Native/Driver/history lease");
         require(context.clock().instant().isBefore(lease.validUntil()),"actual Life runtime lease expired");
