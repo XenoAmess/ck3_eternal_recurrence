@@ -706,6 +706,23 @@ public final class ContinuityBatchJournal implements BatchJournal {
     public UnresolvedSameGameData readUnresolvedSameGame(ContinuityStorePort.Session same, SessionIdentity owner) throws IOException {
         store.requireSession(same);
         Objects.requireNonNull(owner);
+        var pendingControl = transitions.withLocked(same, () -> {
+            var originals = transitions.restartArchive(same);
+            var state = same.head().state();
+            var pending = state.toJson().path(WriterContracts.ORDINARY_CYCLE_FIELD).get("pending_receipt");
+            if (pending == null || pending.isNull()) return Optional.<ActionReceipt>empty();
+            var actions = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state, originals);
+            return pendingCancelledLifeCycle(actions, ExactRef.fromJson(pending), originals);
+        });
+        if (pendingControl.isPresent()) {
+            var captured = new java.util.concurrent.atomic.AtomicReference<CleanBatchRestart>();
+            var retained = readSameGameHistory(same, owner, false, captured::set, pendingControl);
+            StrictJson.require(captured.get() != null, "pending Life control cycle retains its actual restart capture");
+            return new UnresolvedSameGameData(captured.get(), retained.controller(), retained.retainedFacts(),
+                    retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
+                    new java.util.ArrayList<>(retained.controller().usedBatches()), retained.controller().nextBatchSequence(),
+                    java.util.List.of(pendingControl.orElseThrow()), Optional.of(retained));
+        }
         var isolated = transitions.withLocked(same, () -> {
             var originals = transitions.restartArchive(same);
             var actions = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(same.head().state(), originals);
@@ -1053,9 +1070,36 @@ public final class ContinuityBatchJournal implements BatchJournal {
         }).toList();
     }
 
+    /** A completed source-owned cancellation may still have its original RETAIN awaiting ordinary semantic settlement. */
+    static Optional<ActionReceipt> pendingCancelledLifeCycle(java.util.List<ActionReceipt> actions, ExactRef pending,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        if (actions.isEmpty() || actions.stream().anyMatch(action -> !action.settled())) return Optional.empty();
+        var actual = originals.loadReceipt(pending);
+        if (!actions.contains(actual) || actual.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED
+                || actual.visibleGameplay() || actual.eligibleAdvance()
+                || !(actual.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled settled)
+                || !(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.CompositeControlApplied control)
+                || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(actual.command().operation().value())
+                || !settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                || !control.observation().semantic().actual().contains(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText(
+                        new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("progress_status"), "initialization_cancelled")))
+            return Optional.empty();
+        var children = settled.execution().children().stream().map(bound -> actions.stream()
+                .filter(child -> child.command().actionId().equals(bound.actionId()) && child.bodySha256().equals(bound.bodySha256()))
+                .findFirst().orElseThrow()).toList();
+        org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireCancelledInitialization(
+                actual.command(), settled.execution(), control.observation(), children);
+        return Optional.of(actual);
+    }
+
     private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same,
             SessionIdentity owner, boolean isolatedLife, java.util.function.Consumer<CleanBatchRestart> captures) throws IOException {
-        store.requireSession(same);Objects.requireNonNull(owner);
+        return readSameGameHistory(same, owner, isolatedLife, captures, Optional.empty());
+    }
+    private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same,
+            SessionIdentity owner, boolean isolatedLife, java.util.function.Consumer<CleanBatchRestart> captures,
+            Optional<ActionReceipt> pendingControl) throws IOException {
+        store.requireSession(same);Objects.requireNonNull(owner);Objects.requireNonNull(pendingControl);
         return transitions.withLocked(same,()->{
             var head=same.head();var state=head.state();var whole=state.toJson();
             StrictJson.require((state.status()==ContinuityState.Status.REPAIR_REQUIRED||state.status()==ContinuityState.Status.RUNNING)
@@ -1072,6 +1116,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
             } else {
                 StrictJson.require(!actions.isEmpty()&&actions.stream().allMatch(ActionReceipt::settled),
                         "settled recovery cannot discard an unresolved action");
+            }
+            if (pendingControl.isPresent()) {
+                var ref = ExactRef.fromJson(whole.path(WriterContracts.ORDINARY_CYCLE_FIELD).get("pending_receipt"));
+                StrictJson.require(!isolatedLife && pendingCancelledLifeCycle(actions, ref, originals).equals(pendingControl),
+                        "pending Life control cycle changed its exact canonical receipt or complete source proof");
             }
             for(var action:actions)StrictJson.require(action.command().origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
                     &&action.command().origin().machineId().equals(owner.machineId())
@@ -1229,9 +1278,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         retainedRecovery=edge;
                         continue;
                     }
-                    StrictJson.require(openBatch!=null&&OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner),
-                            "settled cycle crossed its real active batch");
                     var receiptRef=ExactRef.fromJson(details.get("receipt_ref"));
+                    boolean retainedControl = pendingControl.isPresent() && "RETAIN".equals(operation)
+                            && receiptRef.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
+                            && edge.after().status() == ContinuityState.Status.REPAIR_REQUIRED;
+                    StrictJson.require((openBatch!=null || retainedControl)
+                            && OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner),
+                            "settled cycle crossed its real active batch or original retained control");
                     if("RETAIN".equals(operation)) {
                         StrictJson.require(pending==null,"settled recovery cannot overwrite a pending cycle");
                         pending=receiptRef;
@@ -1264,9 +1317,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.require(state.status()!=ContinuityState.Status.RUNNING||retainedRecovery!=null,
                     "READY settled recovery requires its actual prior recovery transition");
             boolean unfinishedReadOnlyBatch=openBatch!=null;
+            boolean retainedControl = pendingControl.isPresent() && pending != null
+                    && pending.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
+                    && pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
             StrictJson.require((!unfinishedReadOnlyBatch||retainedRecovery!=null&&state.status()==ContinuityState.Status.RUNNING)
-                    &&!used.isEmpty()&&pending==null&&latest!=null
-                    &&cycle.get("pending_receipt").isNull()
+                    &&!used.isEmpty()&&(pending==null || retainedControl)&&latest!=null
+                    &&(cycle.get("pending_receipt").isNull() || retainedControl)
                     &&StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
                     &&ExactRef.fromJson(cycle.get("head")).equals(lastCycleRef),
                     "settled recovery requires the actual closed cycle frontier");
@@ -1287,7 +1343,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "settled canonical recovery head changed during read");
             var data=new SettledSameGameData(entry,controller,retained.facts(),retained.fullDriver(),previousTransport,
                     source,latest,latestObserved,actions,state.sequence(),head.digest(),history);
-            if (isolatedLife) return data; // Read-only DATA never qualifies a settled recovery before the original settles.
+            if (isolatedLife || pendingControl.isPresent()) return data; // Pending cycle DATA is not a settled recovery or ordinary Ready grant.
             issuedSettledSameGameData=data;issuedSettledSameGameRecovery=retainedRecovery;
             issuedSettledSameGameOpenBatch=unfinishedReadOnlyBatch;
             return data;
