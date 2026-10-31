@@ -1,0 +1,3 @@
+# Keep the nine immutable reconciliation originals at their exact SHA bytes.
+ACTUAL384-CHILD.json -text
+artifacts/*.bin -text
