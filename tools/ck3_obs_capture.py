@@ -1034,6 +1034,30 @@ def _settings_match(actual, expected):
                else actual.get(key) == value for key, value in expected.items())
 
 
+def _select_gdiplus_input_kind(client) -> str:
+    """Select the highest versioned text_gdiplus kind from the actual OBS input kind list."""
+    response = client.get_input_kind_list(unversioned=False)
+    kinds = getattr(response, "input_kinds", None)
+    if not isinstance(kinds, list) or not kinds:
+        raise ValueError("OBS input kind list is malformed or empty")
+    candidates = []
+    for kind in kinds:
+        if not isinstance(kind, str) or not kind:
+            raise ValueError("OBS input kind list contains an invalid item")
+        if kind == "text_gdiplus":
+            candidates.append((0, kind))
+        elif kind.startswith("text_gdiplus"):
+            if not kind.startswith("text_gdiplus_v"):
+                raise ValueError("Malformed text_gdiplus input kind")
+            suffix = kind[len("text_gdiplus_v"):]
+            if not (suffix and suffix.isascii() and suffix.isdigit() and not suffix.startswith("0")):
+                raise ValueError("Malformed text_gdiplus version")
+            candidates.append((int(suffix), kind))
+    if not candidates:
+        raise ValueError("No valid text_gdiplus input kind found")
+    return max(candidates, key=lambda x: x[0])[1]
+
+
 def _wait_for_start_signal(job, check, screenshots, ready_frame):
     """Keep owned sources reviewable while Root chooses the recording start."""
     if job.get("start_signal") is None:
@@ -1448,10 +1472,15 @@ def run_worker(path):
             if with_decision and by_name[decision]["sceneItemIndex"] <= by_name[source]["sceneItemIndex"]:
                 raise RuntimeError("decision text is behind the Game source")
             for row in client.get_input_list().inputs:
-                expected_kind = "game_capture" if row["inputName"] == source else "text_gdiplus"
-                kind = row.get("unversionedInputKind") or row["inputKind"].removesuffix("_v2")
-                if kind != expected_kind:
-                    raise RuntimeError("owned recording input type changed")
+                if row["inputName"] == source:
+                    kind = row.get("unversionedInputKind") or row["inputKind"].removesuffix("_v2")
+                    if kind != "game_capture":
+                        raise RuntimeError("owned recording input type changed")
+                else:
+                    if row["inputKind"] != decision_input_kind:
+                        raise RuntimeError("owned recording input type changed")
+                    if "unversionedInputKind" in row and row["unversionedInputKind"] != "text_gdiplus":
+                        raise RuntimeError("owned recording input type changed")
             if with_decision:
                 transform = client.get_scene_item_transform(profile["profile_name"], decision_id).scene_item_transform
                 if any(transform.get(key) != value for key, value in decision_transform.items()):
@@ -1473,6 +1502,7 @@ def run_worker(path):
                 "capture_cursor": False, "capture_audio": False, "limit_framerate": False}
             source_settings = {source: game_settings}
             if with_decision:
+                decision_input_kind = _select_gdiplus_input_kind(client)
                 text_settings = {"read_from_file": True, "file": job["decision_text_file"],
                     "font": {"face": "Microsoft YaHei", "size": 24, "flags": 0},
                     "color": 0xffffff, "opacity": 100, "bk_color": 0x000000, "bk_opacity": 60,
@@ -1486,7 +1516,7 @@ def run_worker(path):
             configured = True
             client.create_input(scene, source, "game_capture", game_settings, True)
             if with_decision:
-                client.create_input(scene, decision, "text_gdiplus_v2", text_settings, True)
+                client.create_input(scene, decision, decision_input_kind, text_settings, True)
                 decision_id = client.get_scene_item_id(scene, decision).scene_item_id
                 decision_transform = {"positionX": 1770.0, "positionY": 20.0, "alignment": 5,
                     "scaleX": 1.0, "scaleY": 1.0, "rotation": 0.0, "cropLeft": 0, "cropRight": 0,
@@ -1531,6 +1561,7 @@ def run_worker(path):
                 "game_pid": job["pid"], "game_creation_filetime": game.creation_filetime,
                 "source_settings": client.get_input_settings(source).input_settings,
                 "capture_mode": job["capture_mode"], "decision_source": with_decision,
+                "decision_input_kind": decision_input_kind if with_decision else None,
                 'decision_text_publisher': publisher if with_decision else None,
                 'decision_display_policy': worker_display_policy,
                 "decision_settings": client.get_input_settings(decision).input_settings if with_decision else None,
