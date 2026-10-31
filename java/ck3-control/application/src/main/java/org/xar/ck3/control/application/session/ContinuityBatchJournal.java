@@ -1517,7 +1517,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
 
     /** Exact canonical SAVE DATA only; no private recovery or live readiness is issued. */
-    private ActionReceipt requireHistoricalConfirmedSave(WriterContracts.HistoricalTransition edge, SessionIdentity owner, java.util.List<ActionReceipt> actions, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals, SemanticEvidence completedSemantic, long completedCycles, ExactRef cycleHead) throws IOException {
+    private ActionReceipt requireHistoricalConfirmedSave(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge, SessionIdentity owner, java.util.List<ActionReceipt> actions, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals, SemanticEvidence completedSemantic, long completedCycles, ExactRef cycleHead) throws IOException {
         var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.LEDGER_MAX_BYTES);
         StrictJson.require(edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND), "historical SAVE requires batch kind");
         StrictJson.require("SAVE_CONFIRMED".equals(StrictJson.text(details.get("boundary"))), "historical SAVE requires SAVE_CONFIRMED boundary");
@@ -1528,7 +1528,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair")));
         var proof = OrdinaryCycleTransitions.proofFromJson(details.get("completed_cycle_proof"));
         StrictJson.require(proof.completedCycles() == completedCycles, "historical SAVE proof cycles differ");
-        StrictJson.require(proof.semantic().equals(completedSemantic), "historical SAVE proof semantic differs");
+        transitions.verifyHistoricalCompletedCycleProof(same, owner, proof, edge.before());
 
         var before = edge.before().toJson();
         var after = edge.after().toJson();
@@ -1842,7 +1842,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         StrictJson.require(!used.isEmpty()&&batch.equals(used.getLast())&&(live||interrupted)
                                 &&pending==null&&latest!=null&&lastCycleRef!=null,
                                 "historical SAVE changed its real open or interrupted batch/cycle frontier");
-                        var save=requireHistoricalConfirmedSave(edge,owner,actions,originals,latest,completedCycles,lastCycleRef);
+                        var save=requireHistoricalConfirmedSave(same,edge,owner,actions,originals,latest,completedCycles,lastCycleRef);
                         StrictJson.require(confirmedSaves.add(originals.receiptReferenceOf(save)),
                                 "historical SAVE cannot confirm the same original twice");
                         var pair=CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair")));
