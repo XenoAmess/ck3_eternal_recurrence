@@ -248,3 +248,13 @@ Root 后到回执给出 2026-10-31T07:52:49.843115Z 的实际结束结果：6 �
 - `D:/ck3-state/model-dispatch91/m1-government-shared-composition168-book02/EVENTS.jsonl`：`12:28:10.557642Z` reset，请求已运行 51.172753 秒。
 
 部分 SSE 保留但不拼接或采用，按现有最多 6 次 HTTP 瞬时错误退避策略重试完整原请求；本观察不修改 caller、参数或重试策略，也不授权重放任何 Game/UNKNOWN 动作。完整响应的源码拒绝与 `length` 另行归类，不能将这 35 次连接重置合并为模型源码失败。
+
+### resume91 中断请求、输出碰撞与有限窗口（2026-10-31 14:30Z）
+
+本轮明确继续执行；历史休假段不产生新停止。运营在14:15:28Z首个有限扫描看到4个未闭区间，其中2个是13:57的旧M4请求。14:16:16 Win32实际无call91进程；这两个原SSE都没有DONE/finish/usage、JSON半截，最后mtime13:57:48.483139Z。保原EVENTS，不补造ATTEMPT_END；新M4 owner在14:19:05真实以新唯一目录恢复完整请求。14:30:18.556685Z另一次Win32读回恰有2个实际call91进程，分别为M4 fresh-method175和M5 normalize-full174-core；原旧日志仍不能计当前在途。
+
+冻结口径：`D:/ck3-state/model-dispatch91/context-support175/WINDOW175-143018.json`，源码EVENTS截止14:30:18.267958Z，十分钟窗起14:20:18.267958Z。真实57 POST/57 END，40stop/15length/2reset；本次接续峰12的区间为14:20:51.673164–14:21:01.308690Z（9.635526秒）和14:23:44.135357–14:23:48.276674Z（4.141317秒），合13.776843秒，不是持续12–16。当前有效源码在途2，随后服务metrics running2/waiting0/KV0.045454545454545414；事件扫描14:30:17.042481–18.221614Z、metrics GET18.221628–18.264831Z，非原子。排除运行期普通决策HTTP；不把snapshot之后的新POST回填这个窗口，不以HTTP或软件结果授游戏日。
+
+另有真实输出目录碰撞：m3-global-wrapper166-method和m3-global-wrapper166-binding于14:19:33.908398/.908454Z并行POST，owner误把公共调用器根当两者输出目录。方法正文丢失不可采用，最后binder正文幸存但候选也被审拒；REQUEST损坏，第二个BEGIN在公共EVENTS中也丢失，不能从started_at反造POST时刻。两份真实工具回执与owner事故记录在`D:/ck3-state/resume91-m3-native/registration-allocator-global166/owner-output-collision01/OWNER-ERROR.json`。严格源日志计数与该单列缺失记录分开；碰撞在上述十分钟窗以前，不影响57/57和峰12。已实际发送的两请求不因碰撞归零，但也不伪装成可审候选。必要 replacement/correction用了唯一标准任务根，真实完成并由owner分级采用。
+
+现有call91.py仅补一项针对真实故障的输出隔离：解析输出路径若等于该调用器公共根，则在mkdir/读request/POST以前退出。本次一次无HTTP负例实际exit1/约0.035秒、明确拒绝；未触旧碰撞原件，正常独占目录、固定三消息、参数、重试和游戏行为均无改动。其它机器不用取得此D盘脚本，但也应隔离每个并行任务的请求/响应路径。候选源码、软件编验、正式发表、运行装载、APPLIED和新游戏日继续分开。
