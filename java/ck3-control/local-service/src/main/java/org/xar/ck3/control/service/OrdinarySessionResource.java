@@ -21,6 +21,7 @@ import org.xar.ck3.control.application.session.BatchReport;
 import org.xar.ck3.control.application.session.SessionController;
 import org.xar.ck3.control.contracts.GameLifecycle;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 
 /** Thin local boundary; status and stop ACK are never recorded as native/SAVE completion. */
 @Path("/v1/ordinary-session")
@@ -38,15 +39,16 @@ public final class OrdinarySessionResource {
         SessionController controller = host.current().orElseThrow(); row.put("status", controller.isRetired() ? "RETIRED" : controller.isRunning() ? "RUNNING_BATCH"
                 : controller.isQuarantined() ? "RECONCILIATION_REQUIRED" : "IDLE");
         row.set("session", identity(controller));
-        controller.lastReport().ifPresentOrElse(report -> row.set("last_batch", report(report)), () -> row.putNull("last_batch"));
-        return json(200, row);
+        var lastReport = controller.lastReport();
+        lastReport.ifPresentOrElse(report -> row.set("last_batch", report(report)), () -> row.putNull("last_batch"));
+        return lastReport.isPresent() ? largeJson(200, row) : json(200, row);
     }
     @POST @Path("/{sessionId}/batch") @Consumes(MediaType.APPLICATION_JSON)
     public Response batch(@PathParam("sessionId") String sessionId, byte[] raw) {
         BatchLimits limits;
         try { limits = BatchLimitsWire.decode(raw); }
         catch (IllegalArgumentException failure) { return error(400, "INVALID_REQUEST", failure.getMessage()); }
-        try { return json(200, report(host.batch(sessionId, limits))); }
+        try { return largeJson(200, report(host.batch(sessionId, limits))); }
         catch (IllegalArgumentException failure) { return error(409, "SESSION_REJECTED", failure.getMessage()); }
         catch (IllegalStateException failure) { return error(503, "UNAVAILABLE", failure.getMessage()); }
     }
@@ -147,6 +149,10 @@ public final class OrdinarySessionResource {
     }
     private static Response json(int status, ObjectNode row) {
         return Response.status(status).entity(StrictJson.canonical(row, 1_048_576)).type(MediaType.APPLICATION_JSON_TYPE)
+                .header("X-Xar-Contract-Revision", "xar.ordinary-session/v1").build();
+    }
+    private static Response largeJson(int status, ObjectNode row) {
+        return Response.status(status).entity(FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES)).type(MediaType.APPLICATION_JSON_TYPE)
                 .header("X-Xar-Contract-Revision", "xar.ordinary-session/v1").build();
     }
 }

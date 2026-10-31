@@ -16,6 +16,7 @@ import org.xar.ck3.control.application.session.BatchReport;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartTicket;
 import org.xar.ck3.control.build.WindowsJobProcess;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.platform.GameSupervisorControl;
 import org.xar.ck3.control.platform.ManagedGameSession;
 import org.xar.ck3.control.platform.NativeGameAttachment;
@@ -225,13 +226,13 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         ObjectNode row = OrdinarySessionResource.report(actual);
         row.put("observed_at_utc", clock.instant().toString());
         row.put("next_sequence", Long.toString(nextSequence));
-        byte[] body = StrictJson.canonical(row, StrictJson.EXPLICIT_MAX_BYTES);
+        byte[] body = FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES);
         byte[] line = java.util.Arrays.copyOf(body, body.length + 1);
         line[body.length] = 10;
         Files.createDirectories(config.stateDirectory());
         Files.write(config.stateDirectory().resolve("worker-batches.jsonl"), line,
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
-        emit(row);
+        emit(body);
     }
 
     private static ObjectNode event(Clock clock, String status) {
@@ -241,7 +242,11 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
     }
 
     private static void emit(ObjectNode row) throws IOException {
-        System.out.write(StrictJson.canonical(row, StrictJson.EXPLICIT_MAX_BYTES));
+        emit(StrictJson.canonical(row, StrictJson.EXPLICIT_MAX_BYTES));
+    }
+
+    private static void emit(byte[] body) throws IOException {
+        System.out.write(body);
         System.out.write(10);
         System.out.flush();
         if (System.out.checkError()) throw new IOException("Ordinary worker result stdout failed");
