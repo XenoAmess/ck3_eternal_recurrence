@@ -125,7 +125,7 @@ public final class RootRuntimeDispatcherFactory {
             sole.bindDecisionDisplay(core.audienceDisplay());
             sole.bindPhysicalActions(core.physicalActions());
             sole.bindReconciliationObservation((same, pending, deadline, work) -> actual.reconciliation().observe(same, pending,
-                    deadline, lease -> work.apply(lease.complete(), lease.identity(), lease.observationGuard())));
+                    deadline, lease -> work.apply(lease.complete(), lease.provenance(), lease.identity(), lease.observationGuard())));
             dispatch = core.scopedCoordinator(sole, transport);
         }
         ActionCoordinatorPort coordinator = new RootReadPublicationActions(core, dispatch, actual.readHistory(), actual.actionHistory());
