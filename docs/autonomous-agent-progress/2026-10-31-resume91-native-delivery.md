@@ -157,3 +157,11 @@ Fresh 既有三份隔离 unit 现已接正式 CMake 与 static-ci：新增两个
 03:11:01.214–04.129Z 首次三个专用 CTest 3P/0F，CTest内部0.61秒、Job2.809秒/active0/stopnull。owner 输出 pair_ms16/raw_reads4/wrong_owner0，publication 验 unchanged 关联、changed revision 和失败写不提交，Handler ACK 输出 raw5/wrong0。此为新正式接线验收，不重复之前三隔离 unit 的绿。完整 DELIVERY.json、RESULT.json、MODEL-REVIEW01.json、CONFIGURE-REVIEW01.json、各 build/*/ACTUAL.json 及 focused-build/Testing/Temporary/LastTest.log 保存来源、失败及实际采用。
 
 本岗独立审完模块、extractor、三个 fixture、seam 与三个集成旧锚点，只复制六新叶和修改两个既有文件。新叶仅规范 EOF/EOL，两个历史 D-only 注释改为 Test-only，没有生产 Fresh 算法变化；应用见 `D:/ck3-state/resume91-native-integration/FRESH-CI-APPLY01.json`。源码制作两轮模型的可用装配部分、截断/错误拒绝和 owner 对 extractor/guard/CI anchor 的必要接管分开记录。未授完整 Native 根、全 feature 矩阵、hosted CI、ACK第二次写失败、公开 dispatcher运行、DLL部署或 Game 完成。
+
+## 2026-10-31T03:42Z Claims internal Wait 观测修复
+
+采用 M0 唯一已验 fixture 叶；生产 Wait、真实 GetTickCount64、原 qualified 计数和所有最终断言保持。旧 observer 只接受 Wait 符号所在单个 RUNTIME_FUNCTION 区间，实际计时调用返回地址落在该区间之外；现在按实际 RtlLookupFunctionEntry 和有界 CHAININFO 归一到同一主函数身份，另保留最多各 8 个 armed/worker 原始采样及一次诊断输出。正式源与已验 18,892B 候选仅 EOL、尾空白和过时对象数量注释清理不同；模型 08/09 局部采用与 owner 边界修正分别记录，不称模型整包原样采用。
+
+实际增量验收：新 fixture TU strict0/6.721s；原有 11 个对象的有限链接仍有 7 条未解析边，逐条依据本 fixture 的唯一 player_claims/full_snapshot/Observe 路径证明不执行后，仅 D 内加 exact-signature abort-on-use 测试 seam，未提交这些 seam。新 seam TU strict0/5.442s，12 对象无 archive 链接0/.195s；唯一受限 RUN 于 03:41:41.8902912–03:42:14.3699557Z exit0/32.3734733s、27 checks 全通过，实际 30,000ms 再次 Wait/32,000ms 才释放，同 worker、执行中 context 保留、fresh sequence2 和 idle-null 均过，stderr 空。Job limit512MiB/65s、peak7,446,528B、active0/stopnull；公开 accounting 无累计子进程数且成功未生成 JOB-DIAGNOSTIC，不能追认 totalProcesses1 或实测零子进程。
+
+这是同一生产方法的有限软件组件验收，非 hosted binary 等价、完整 Native Runtime/Bridge 或 Game 验收；原 CI41146299012 的 70 项中 4 失败事实不改。原 30/2 秒 Wait、38 秒 controller、40 秒 barrier 与严格结果未放宽，不重复已绿场景、不部署 DLL/不操作 Game。回执：D:/ck3-state/resume91-m0-native/ci41146299012/claims-unit-job/RUN01/{ACTUAL.json,stdout.txt,stderr.txt}；源码/proof/两次失败链接和模型原件保留于同包。

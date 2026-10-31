@@ -6,6 +6,7 @@
 #include "ck3_12004_player_claims_semantic_mailbox_v1_test.cpp"
 #undef main
 #include <intrin.h>
+#include <limits>
 
 namespace observation {
 using TickFunction = ULONGLONG (WINAPI *)();
@@ -14,6 +15,124 @@ std::atomic<bool> armed{false};
 std::atomic<DWORD> worker_id{0};
 std::atomic<std::uintptr_t> wait_begin{0}, wait_end{0}, first_site{0};
 std::atomic<std::uint64_t> entry_count{0}, first_tick{0}, second_tick{0};
+struct Sample { std::atomic<std::uintptr_t> site{0}; std::atomic<DWORD> thread{0}; std::atomic<std::uint64_t> tick{0}; std::atomic<bool> ready{false}; }; constexpr std::size_t MAX_SAMPLES = 8; std::array<Sample, MAX_SAMPLES> armed_samples; std::array<Sample, MAX_SAMPLES> worker_samples; std::atomic<std::size_t> armed_count{0}; std::atomic<std::size_t> worker_count{0}; std::atomic<std::size_t> total_hook_calls{0};
+std::atomic<DWORD> expected_worker_id{0};
+
+// Forward declaration of the independently implemented normalization helper.
+bool NormalizeRuntimeFunction(
+    DWORD64 image_base,
+    std::size_t image_size,
+    const RUNTIME_FUNCTION &entry,
+    RUNTIME_FUNCTION &primary) noexcept;
+
+// Immutable canonical identity for the actual Wait function entry.
+struct WaitIdentity {
+  DWORD64 image_base = 0;
+  std::size_t image_size = 0;
+  RUNTIME_FUNCTION primary{};
+  bool valid = false;
+};
+WaitIdentity wait_identity;
+
+// Predicate: checks if a return PC belongs to the canonical Wait function.
+bool IsInWaitFunction(std::uintptr_t site) noexcept {
+  if (!wait_identity.valid) return false;
+  const auto addr = static_cast<DWORD64>(site);
+  // Reject if address is outside the known owned image extent.
+  if (addr < wait_identity.image_base || addr - wait_identity.image_base >= wait_identity.image_size) return false;
+
+  // Perform actual lookup for this specific return PC.
+  DWORD64 local_image_base = 0;
+  const auto *function = RtlLookupFunctionEntry(addr, &local_image_base, nullptr);
+  if (function == nullptr || local_image_base != wait_identity.image_base) return false;
+
+  // Normalize the found entry to its canonical primary triple.
+  RUNTIME_FUNCTION normalized{};
+  if (!NormalizeRuntimeFunction(local_image_base, wait_identity.image_size, *function, normalized)) return false;
+
+  // Compare canonical primary triple against the stored Wait primary.
+  // RUNTIME_FUNCTION has BeginAddress, EndAddress, UnwindData (no RelativeCodeAddress).
+  return normalized.BeginAddress == wait_identity.primary.BeginAddress &&
+         normalized.EndAddress == wait_identity.primary.EndAddress &&
+         normalized.UnwindData == wait_identity.primary.UnwindData;
+}
+// Model08 supplied the header decoding/aligned chain traversal. Owner corrected
+// image arithmetic, all-entry bounds, alignment and flag/span rejection.
+static bool InImageRva(std::size_t image_size, std::size_t offset,
+                       std::size_t length) noexcept {
+  return offset <= image_size && length <= image_size - offset;
+}
+
+static DWORD ReadDword(std::uintptr_t address) noexcept {
+  DWORD value;
+  std::memcpy(&value, reinterpret_cast<const void *>(address), sizeof(value));
+  return value;
+}
+
+bool NormalizeRuntimeFunction(DWORD64 image_base, std::size_t image_size,
+                              const RUNTIME_FUNCTION &entry,
+                              RUNTIME_FUNCTION &primary) noexcept {
+  const auto img_base = static_cast<std::uintptr_t>(image_base);
+  if (image_base == 0 || image_size == 0 ||
+      image_size > std::numeric_limits<std::uintptr_t>::max() - img_base) {
+    return false;
+  }
+  RUNTIME_FUNCTION current = entry;
+  constexpr int MAX_CHAIN_DEPTH = 16;
+  for (int depth = 0; depth < MAX_CHAIN_DEPTH; ++depth) {
+    if (current.BeginAddress >= current.EndAddress ||
+        current.EndAddress > image_size || current.UnwindData == 0 ||
+        (current.UnwindData & 3U) != 0 ||
+        !InImageRva(image_size, current.UnwindData, 4)) {
+      return false;
+    }
+    const std::uintptr_t unwind_addr = img_base + current.UnwindData;
+    const auto *header = reinterpret_cast<const BYTE *>(unwind_addr);
+    const BYTE byte0 = header[0];
+    const BYTE version = byte0 & 0x07;
+    const BYTE flags = (byte0 >> 3) & 0x1F;
+    const BYTE count_of_codes = header[2];
+    if ((version != 1 && version != 2) || (flags & ~7U) != 0) {
+      return false;
+    }
+    const std::size_t padded_slots =
+        (static_cast<std::size_t>(count_of_codes) + 1) & ~std::size_t{1};
+    const std::size_t chain_offset = 4 + 2 * padded_slots;
+    if (!InImageRva(image_size, current.UnwindData, chain_offset)) {
+      return false;
+    }
+    const bool has_chain = (flags & 0x04) != 0;
+    if (!has_chain) {
+      if ((flags & 0x03) != 0 &&
+          !InImageRva(image_size, current.UnwindData, chain_offset + sizeof(DWORD))) {
+        return false;
+      }
+      primary = current;
+      return true;
+    }
+    if ((flags & 0x03) != 0 ||
+        !InImageRva(image_size, current.UnwindData,
+                    chain_offset + sizeof(RUNTIME_FUNCTION))) {
+      return false;
+    }
+    const std::uintptr_t chain_addr = unwind_addr + chain_offset;
+    current.BeginAddress = ReadDword(chain_addr);
+    current.EndAddress = ReadDword(chain_addr + 4);
+    current.UnwindData = ReadDword(chain_addr + 8);
+  }
+  // Cyclic or excessively deep chains never gain function ownership.
+  return false;
+}
+
+void RecordSample(std::array<Sample, MAX_SAMPLES> &samples, std::size_t index,
+                  std::uintptr_t site, DWORD thread, std::uint64_t tick) noexcept {
+  if (index >= MAX_SAMPLES) return;
+  auto &sample = samples[index];
+  sample.site.store(site, std::memory_order_relaxed);
+  sample.thread.store(thread, std::memory_order_relaxed);
+  sample.tick.store(tick, std::memory_order_relaxed);
+  sample.ready.store(true, std::memory_order_release);
+}
 
 TickFunction ResolveRealTick() noexcept {
   auto function = real_tick.load(std::memory_order_acquire);
@@ -30,7 +149,14 @@ __declspec(noinline) ULONGLONG WINAPI ObservedTick() noexcept {
   // Call the real WinAPI exactly once and forward its value without adjustment.
   const auto value = ResolveRealTick()();
   const auto site = reinterpret_cast<std::uintptr_t>(_ReturnAddress());
-  if (armed.load(std::memory_order_acquire) && site >= wait_begin.load() && site < wait_end.load()) {
+  total_hook_calls.fetch_add(1, std::memory_order_relaxed);
+  if (armed.load(std::memory_order_acquire)) {
+    const auto sample_thread = GetCurrentThreadId();
+    RecordSample(armed_samples, armed_count.fetch_add(1, std::memory_order_relaxed), site, sample_thread, value);
+    if (sample_thread == expected_worker_id.load(std::memory_order_acquire))
+      RecordSample(worker_samples, worker_count.fetch_add(1, std::memory_order_relaxed), site, sample_thread, value);
+  }
+  if (armed.load(std::memory_order_acquire) && IsInWaitFunction(site)) {
     const auto thread = GetCurrentThreadId();
     DWORD empty = 0;
     (void)worker_id.compare_exchange_strong(empty, thread);
@@ -46,10 +172,11 @@ __declspec(noinline) ULONGLONG WINAPI ObservedTick() noexcept {
   }
   return value;
 }
+void DumpDiagnostics(DWORD64 wait_addr, DWORD64 begin, DWORD64 end, DWORD expected_id) { std::cout << "DIAG wait_addr=" << wait_addr << " begin=" << begin << " end=" << end << " expected_worker=" << expected_id << " observed_worker=" << worker_id.load() << " total_hooks=" << total_hook_calls.load() << " armed_samples=" << armed_count.load() << " worker_samples=" << worker_count.load() << " qualified=" << entry_count.load() << "\n"; for (std::size_t i=0; i<MAX_SAMPLES; ++i) { if (armed_samples[i].ready.load()) std::cout << "A" << i << " t=" << armed_samples[i].thread.load() << " s=" << armed_samples[i].site.load() << " v=" << armed_samples[i].tick.load() << " "; } std::cout << "\n"; for (std::size_t i=0; i<MAX_SAMPLES; ++i) { if (worker_samples[i].ready.load()) std::cout << "W" << i << " t=" << worker_samples[i].thread.load() << " s=" << worker_samples[i].site.load() << " v=" << worker_samples[i].tick.load() << " "; } std::cout << "\n" << std::flush; }
 } // namespace observation
 
 // Resolve only this isolated software EXE's dllimport data references. The
-// eight real production objects and Kernel32 exports are not edited.
+// production object files and Kernel32 exports are not edited.
 extern "C" {
 observation::TickFunction __imp_GetTickCount64 = &observation::ObservedTick;
 }
@@ -105,6 +232,25 @@ int main(int argc, char **argv) {
     Check(begin <= wait_address && wait_address < end, "Wait symbol not in runtime function entry");
     observation::wait_begin.store(begin);
     observation::wait_end.store(end);
+
+    // Read only this already loaded owned image's small headers for its extent.
+    const auto *dos_header = reinterpret_cast<const IMAGE_DOS_HEADER *>(image_base);
+    Check(dos_header->e_magic == IMAGE_DOS_SIGNATURE && dos_header->e_lfanew > 0,
+        "owned image DOS header unavailable");
+    const auto *nt_headers = reinterpret_cast<const IMAGE_NT_HEADERS64 *>(
+        image_base + static_cast<DWORD>(dos_header->e_lfanew));
+    Check(nt_headers->Signature == IMAGE_NT_SIGNATURE &&
+        nt_headers->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC,
+        "owned image NT headers unavailable");
+    const auto image_size = static_cast<std::size_t>(nt_headers->OptionalHeader.SizeOfImage);
+    RUNTIME_FUNCTION normalized_primary{};
+    Check(observation::NormalizeRuntimeFunction(image_base, image_size, *function, normalized_primary),
+        "Wait runtime function normalization failed");
+    observation::wait_identity.image_base = image_base;
+    observation::wait_identity.image_size = image_size;
+    observation::wait_identity.primary = normalized_primary;
+    observation::wait_identity.valid = true;
+
     Check(__imp_GetTickCount64 == &observation::ObservedTick && real_tick != &observation::ObservedTick,
         "isolated import observer did not preserve real timer delegate");
 
@@ -115,6 +261,7 @@ int main(int argc, char **argv) {
     observation::armed.store(true, std::memory_order_release);
     PendingRead first(life, kStrongExplicit);
     const auto real_worker_id = GetThreadId(first.worker.native_handle());
+    observation::expected_worker_id.store(real_worker_id, std::memory_order_release);
     const auto context = first.queued_envelope;
     Check(first.ticket.sequence == 1, "first request sequence changed");
     ControlObservation control;
@@ -158,6 +305,7 @@ int main(int argc, char **argv) {
     controller.join();
     first.Join();
     observation::armed.store(false, std::memory_order_release);
+    observation::DumpDiagnostics(wait_address, begin, end, real_worker_id);
     Check(control.entered && control.repeated_entry && control.executing_context_retained && !barrier.hard_expired.load(),
         "no repeated real Wait start site with retained executing context; no internal timeout branch credit");
     const auto first_tick = observation::first_tick.load();
