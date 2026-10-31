@@ -128,8 +128,7 @@ public final class RootAdvanceInfrastructureFactory {
         public synchronized Installed install(RootRuntimeContext context,AdvanceReadiness.Port sameReadiness,
                 PendingUiLifeAdvance.Scope samePendingDate)throws IOException {
             Objects.requireNonNull(context);
-            context.game().launchPlan().sources().requireLoadedClass(RootUnknownSentinelReadProfile.class);
-            context.game().launchPlan().sources().requireLoadedClass(org.xar.ck3.control.application.action.PauseConfirmation.class);Objects.requireNonNull(sameReadiness);Objects.requireNonNull(samePendingDate);
+            Objects.requireNonNull(sameReadiness);Objects.requireNonNull(samePendingDate);
             Installed prior=installed.get(context);
             if(prior!=null) {
                 require(prior.readiness==sameReadiness && prior.pendingDate==samePendingDate,

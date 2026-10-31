@@ -91,7 +91,6 @@ public final class RootLifeRuntimeFactory {
         private Installed(RootRuntimeContext context,RootCrownRetryRuntime.Prepared retry,Sources sources,
                 RootAdvanceRuntimeFacts.Settings settings,RootAdvanceInfrastructureFactory.Prepared clockInfrastructure)throws IOException {
             this.context=context;this.retry=retry;
-            context.game().launchPlan().sources().requireLoadedClass(PendingUiLifeAdvance.class);
             // Resolve the actual later-adopted authority on every invocation. No dummy
             // Driver, synthetic Known or replacement repository can enter this graph.
             history=new DriverHistoryAccess(()->context.adopted().authority(),context.archive());
