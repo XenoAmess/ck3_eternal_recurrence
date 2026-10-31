@@ -91,7 +91,8 @@ public final class DriverActionHistoryState {
         if(source.material() instanceof DriverActionHistoryCodec.Legacy||source.material() instanceof DriverActionHistoryCodec.GiftLegacyPair) {
             ExactRef rowRef=data.legacyRow().orElseThrow(()->new IllegalArgumentException("legacy recording must retain its actual original row"));
             var row=DriverJson.object(material(rowRef,originals).bytes(),DriverJson.MAX_NATIVE_BYTES);DriverActionHistoryCodec.verifyLegacy(same,actual,row,originals);
-            StrictJson.require(DriverActionHistoryCodec.encode(source).equals(new RawJson(DriverJson.encode(row.get(DriverActionHistoryCodec.SOURCE_FIELD)))),"legacy row changed its canonical original source");
+            var embeddedSource = DriverActionHistoryCodec.decode(new RawJson(DriverJson.encode(row.get(DriverActionHistoryCodec.SOURCE_FIELD))));
+            StrictJson.require(source.equals(embeddedSource), "legacy row changed its canonical original source");
             var history=new ArrayList<>(before.commandHistory());long index=Math.addExact(history.size(),1L);
             StrictJson.require(org.xar.ck3.control.planning.opportunity.OpportunityJson.integer(row.get("index"),"index").longValueExact()==index,"ACTION legacy history index is not contiguous");
             StrictJson.require(row.equals(DriverActionHistoryCodec.legacyRow(index,actual,source,originals)),
@@ -101,7 +102,8 @@ public final class DriverActionHistoryState {
                     new DriverStateSnapshot.Value(DriverJson.encode(actualRows.get(offset)))));
             var expected=new DriverStateSnapshot.Complete(before.session(),history,before.lastCheckpoint(),before.rollbackWarFailure(),before.managedRestoreTransaction(),
                     before.successionExpectation(),before.successionLifecycle(),before.campaignGoal(),before.rollbackWarFailures());
-            StrictJson.require(Arrays.equals(expected.encode(),after.encode()),"ACTION legacy publication changed a non-history full Driver slot");
+            StrictJson.require(DriverJson.object(expected.encode(),DriverJson.MAX_NATIVE_BYTES)
+                    .equals(DriverJson.object(after.encode(),DriverJson.MAX_NATIVE_BYTES)),"ACTION legacy publication changed a non-history full Driver slot");
         } else {
             StrictJson.require(data.legacyRow().isEmpty()&&Arrays.equals(before.encode(),after.encode()),"canonical-only interface cannot manufacture a legacy row or change business Driver fields");
             DriverActionHistoryCodec.verifyCanonicalOnly(same,actual,data.originalSource(),originals);
