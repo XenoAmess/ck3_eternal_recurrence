@@ -183,4 +183,66 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
     private static Obj ref(ExactRef ref) {
         return new Obj(Map.of("path", new Text(ref.path()), "bytes", new IntegerValue(BigInteger.valueOf(ref.bytes())), "sha256", new Text(ref.sha256())));
     }
+    /** Pure DATA encoding-equivalence helper: enumerates deterministic JSON permutations of the four evidence refs. */
+    public static java.util.List<String> materialDigestCandidates(SemanticEvidence evidence) {
+        Objects.requireNonNull(evidence);
+        var refs = java.util.Map.of(
+            "semantic", evidence.semantic(),
+            "native", evidence.originalNativePacket(),
+            "stamp", evidence.driverStamp(),
+            "driver", evidence.originalDriver()
+        );
+        var keys = java.util.List.of("semantic", "native", "stamp", "driver");
+        var innerKeys = java.util.List.of("path", "bytes", "sha256");
+        var candidates = new java.util.LinkedHashSet<String>();
+
+        // Generate all 24 permutations of the 4 top-level keys
+        var topPerms = permutations(keys);
+
+        for (var topPerm : topPerms) {
+            // Generate all 6 permutations of the 3 inner keys
+            var innerPerms = permutations(innerKeys);
+
+            for (var innerPerm : innerPerms) {
+                // Build the Obj map with linked order
+                var members = new java.util.LinkedHashMap<String, Value>();
+                for (int i = 0; i < 4; i++) {
+                    var key = topPerm.get(i);
+                    var ref = refs.get(key);
+                    var innerMap = new java.util.LinkedHashMap<String, Value>();
+                    for (int j = 0; j < 3; j++) {
+                        var innerKey = innerPerm.get(j);
+                        var value = switch (innerKey) {
+                            case "path" -> new Text(ref.path());
+                            case "bytes" -> new IntegerValue(BigInteger.valueOf(ref.bytes()));
+                            case "sha256" -> new Text(ref.sha256());
+                            default -> throw new IllegalArgumentException("unknown inner key");
+                        };
+                        innerMap.put(innerKey, value);
+                    }
+                    members.put(key, new Obj(innerMap));
+                }
+                var obj = new Obj(members);
+                var digest = DriverJson.sha256(DriverJson.encode(obj));
+                candidates.add(digest);
+            }
+        }
+        return java.util.List.copyOf(candidates);
+    }
+
+    private static java.util.List<java.util.List<String>> permutations(java.util.List<String> items) {
+        if (items.isEmpty()) return java.util.List.of(java.util.List.of());
+        var result = new java.util.ArrayList<java.util.List<String>>();
+        for (int i = 0; i < items.size(); i++) {
+            var rest = new java.util.ArrayList<String>(items);
+            var current = rest.remove(i);
+            for (var sub : permutations(rest)) {
+                var perm = new java.util.ArrayList<String>();
+                perm.add(current);
+                perm.addAll(sub);
+                result.add(perm);
+            }
+        }
+        return result;
+    }
 }
