@@ -186,7 +186,10 @@ public final class DriverPersistentPlanningState {
             var reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,DeclarationOpportunityCooldown.snapshot(toNode(ending.semantic())),after);
             reduced=DeclarationOpportunityCooldown.view(reduced.state(),DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),DeclarationOpportunityCooldown.frame(frame));
             processed.add(original);require(processed.size()<=MAX_CHAIN,"finite persistent life receipt bound exceeded");
-            Obj input=new Obj(Map.of("receipt",ref(original),"ending_semantic",ref(archive.materialReferenceOf(new RawJson(DriverJson.encode(ending.semantic())))),
+            RawJson endingSemantic=RawJson.fullMaterial(DriverJson.encode(ending.semantic()));
+            ExactRef endingSemanticRef=archive.preserveMaterial(endingSemantic);
+            exact(endingSemanticRef,endingSemantic.bytes());
+            Obj input=new Obj(Map.of("receipt",ref(original),"ending_semantic",ref(endingSemanticRef),
                     "result",ref(value.originalResultRef())));
             var publication=persist(current,frame,aux,source(aux),"LIFE",input,reduced,processed,archive);aux=publication.auxiliary();
         }
