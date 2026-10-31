@@ -304,6 +304,16 @@ public final class RootActionHistoryMaterialSourceFactory {
             var life=catalog.remainingDomains().life();
             if(!composite.isEmpty()&&life.installation().composites().stream().anyMatch(binding->binding==composite.getFirst())) {
                 require(replay.verifier()==life.replay(),"Life material must use its identical installed archived replay");
+                if (actual.state() instanceof ActionState.CompositeSettled settled
+                        && settled.settlement() instanceof ActionState.CompositeRejected) {
+                    var canonicalState=same.head().state();
+                    var canonicalChildren=settled.execution().children().stream().map(bound->{
+                        var child=ContinuityActionJournal.lookup(canonicalState,bound.actionId(),originals).orElseThrow();
+                        require(child.bodySha256().equals(bound.bodySha256()),"Life rejected child differs from canonical writer");
+                        return child;
+                    }).toList();
+                    return rejectedLifeInitializationMaterial(actual,canonicalChildren,originals,producers);
+                }
                 var recorded=life.replay().readRecorded(actual,originals);var evidence=new LinkedHashSet<Evidence>();
                 frame(evidence,recorded.starting().nativeFrame(),recorded.starting().driverFacts());frame(evidence,recorded.ending().nativeFrame(),recorded.ending().driverFacts());
                 ActionEffects.observation(actual).ifPresent(value->value.supportingEvidence().forEach(ref->evidence.add(new Evidence(EvidenceKind.MATERIAL,ref))));
@@ -473,6 +483,25 @@ public final class RootActionHistoryMaterialSourceFactory {
         Obj original=DriverJson.object(body.bytes(),DriverJson.MAX_NATIVE_BYTES);
         return new Legacy(recording(op,original),Optional.of(result),Optional.empty(),List.copyOf(evidence),List.copyOf(producers));
     }
+    /** The verified zero-dispatch initialization has original refusal material, but no Advance report or after-frame. */
+    static CanonicalOnly rejectedLifeInitializationMaterial(ActionReceipt actual,List<ActionReceipt> canonicalChildren,
+            ActionPorts.OutcomeArchive originals,LinkedHashSet<ExactRef> producers) {
+        require(actual.outcome()==ActionReceipt.Outcome.REJECTED_CONFIRMED && !actual.visibleGameplay() && !actual.eligibleAdvance()
+                && actual.state() instanceof ActionState.CompositeSettled,"actual rejected Life terminal required");
+        var settled=(ActionState.CompositeSettled)actual.state();
+        require(settled.settlement() instanceof ActionState.CompositeRejected rejected && rejected.evidence().isEmpty()
+                && rejected.children().equals(settled.execution().children()),"rejected Life retains its complete original child vector");
+        org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireRejectedInitialization(actual.command(),settled.execution(),canonicalChildren);
+        var evidence=new LinkedHashSet<Evidence>();
+        for(var child:canonicalChildren) {
+            var rejected=(ActionState.RejectedBeforeDispatch)child.state();
+            evidence.add(new Evidence(EvidenceKind.ACTION_RECEIPT,originals.receiptReferenceOf(child)));
+            evidence.add(new Evidence(EvidenceKind.MATERIAL,originals.referenceOf(rejected.dispatch())));
+            evidence.add(new Evidence(EvidenceKind.NATIVE_FRAME,rejected.attempt().guard().nativeEvidence()));
+        }
+        return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,evidence,producers);
+    }
+
     private static CanonicalOnly only(CanonicalReason reason,LinkedHashSet<Evidence> evidence,LinkedHashSet<ExactRef> producers){
         return new CanonicalOnly(reason,List.copyOf(evidence),List.copyOf(producers));
     }
