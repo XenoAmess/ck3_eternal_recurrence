@@ -55,10 +55,10 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
             context.requireCurrent(parent.deadline());var same=context.borrowedSession();context.writer().requireSession(same);
             String head=same.head().digest();
             T result=context.collector().current(same,frame.identity(),parent.deadline(),lease->{
-                var raw = context.collector().activeOriginalNativeFrame(same, lease);
+                var raw = DriverObservationAssembler.originalNativeState(context.collector().activeOriginalNativeFrame(same, lease));
                 var aux = lease.driver().auxiliary();
-                var augmentation = clockAugmentationFields(DriverObservationAssembler.originalNativeState(raw), aux);
-                requireClockEquivalent(frame, lease.frame(), augmentation, context.collector().activeNativeOwnedNoticeKeys(same, lease),
+                var augmentation = clockAugmentationFields(raw, aux);
+                requireClockEquivalent(frame, lease.frame(), raw, augmentation, context.collector().activeNativeOwnedNoticeKeys(same, lease),
                         "outer runtime scope changed the actual clock observation");
                 return work.get();
             });
@@ -67,18 +67,18 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
         }catch(IOException failure){throw new UncheckedIOException("actual outer Root clock readiness unavailable",failure);}
     }
 
-    static boolean clockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual, Set<String> augmentation, Set<String> nativeOwnedNoticeKeys) {
+    static boolean clockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual, OpportunityJson.Obj rawNative, Set<String> augmentation, Set<String> nativeOwnedNoticeKeys) {
         if (!expected.identity().equals(actual.identity()) || !expected.source().equals(actual.source()) || !expected.sessionId().equals(actual.sessionId())) return false;
         if (!(expected.provenance() instanceof ObservationProvenance.Push)) return false;
         var pid = expected.identity().game().pid();
-        var expectedStable = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, pid);
-        var actualStable = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, pid);
+        var expectedStable = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, pid, rawNative);
+        var actualStable = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, pid, rawNative);
         return expectedStable.equals(actualStable);
     }
 
     private static final Set<String> CLOCK_DERIVED_FIELDS = Set.of(
             "format_version", "snapshot_id", "native_revision", "revision", "episode_run_id", "episode_character_id",
-            "native_command_history", "succession_lifecycle", "campaign_goal", "native_rollback_war_failure",
+            "succession_lifecycle", "campaign_goal", "native_rollback_war_failure",
             "native_rollback_war_failures", "episode_projection", "backend_id", "source", "diagnostics",
             "active_wars", "player_armies");
 
@@ -86,6 +86,9 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
         // The actual producer copied Driver auxiliary into these extras. A same-name raw Native field
         // remains Native-owned; normalized Native and joined Driver business fields remain exact too.
         var augmentation = new java.util.HashSet<>(producerFields.members().keySet());
+        // Assembler appends the current Driver rows separately; capture keeps the authoritative
+        // Driver stamp/history-basis/currentDriver relation rather than duplicating old semantic rows.
+        augmentation.add("native_command_history");
         augmentation.removeAll(rawNative.members().keySet());
         augmentation.removeAll(NativeSemanticNormalizer.ownedFields());
         augmentation.removeAll(CLOCK_DERIVED_FIELDS);
@@ -93,29 +96,47 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
     }
 
     static OpportunityJson.Obj clockSemantic(OpportunityJson.Obj semantic, Set<String> augmentation,
-            Set<String> nativeOwnedNoticeKeys, long actualPid) {
+            Set<String> nativeOwnedNoticeKeys, long actualPid, OpportunityJson.Obj rawNative) {
         var stable = DriverTransportNoticeStability.heldSemantic(semantic, nativeOwnedNoticeKeys, actualPid);
         var fields = new java.util.LinkedHashMap<>(stable.members());
         augmentation.forEach(fields::remove);
+        fields.put("diagnostics", clockDiagnostics(OpportunityJson.object(stable.get("diagnostics"), "clock diagnostics"),
+                rawNative, nativeOwnedNoticeKeys));
         return new OpportunityJson.Obj(fields);
     }
 
+    static OpportunityJson.Obj clockDiagnostics(OpportunityJson.Obj joinedStableDiagnostics, OpportunityJson.Obj rawNative, Set<String> nativeOwnedNoticeKeys) {
+        var rawDiag = rawNative.get("diagnostics");
+        Set<String> rawKeys = rawDiag instanceof OpportunityJson.Obj obj ? obj.members().keySet() : java.util.Set.of();
+        var javaKeys = java.util.Set.of("pipe_name", "connected", "bridge_pid", "connection_generation");
+        var retain = new java.util.HashSet<>(rawKeys);
+        retain.addAll(nativeOwnedNoticeKeys);
+        retain.addAll(javaKeys);
+        var members = new java.util.LinkedHashMap<String, OpportunityJson.Value>();
+        for (var entry : joinedStableDiagnostics.members().entrySet()) {
+            if (retain.contains(entry.getKey())) {
+                members.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return new OpportunityJson.Obj(members);
+    }
+
     private static void requireClockEquivalent(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual,
-            Set<String> augmentation, Set<String> nativeOwnedNoticeKeys, String reason) {
-        if (!clockEquivalent(expected, actual, augmentation, nativeOwnedNoticeKeys))
-            require(false, reason + "; " + clockDifference(expected, actual, augmentation, nativeOwnedNoticeKeys));
+            OpportunityJson.Obj rawNative, Set<String> augmentation, Set<String> nativeOwnedNoticeKeys, String reason) {
+        if (!clockEquivalent(expected, actual, rawNative, augmentation, nativeOwnedNoticeKeys))
+            require(false, reason + "; " + clockDifference(expected, actual, rawNative, augmentation, nativeOwnedNoticeKeys));
     }
 
     static String clockDifference(AdvanceObservationPort.Frame expected, DriverObservationAssembler.Complete actual,
-            Set<String> augmentation, Set<String> nativeOwnedNoticeKeys) {
+            OpportunityJson.Obj rawNative, Set<String> augmentation, Set<String> nativeOwnedNoticeKeys) {
         try {
             var roles = new java.util.ArrayList<String>();
             if (!expected.identity().equals(actual.identity())) roles.add("identity");
             if (!expected.source().equals(actual.source())) roles.add("source");
             if (!expected.sessionId().equals(actual.sessionId())) roles.add("session");
             if (!(expected.provenance() instanceof ObservationProvenance.Push)) roles.add("provenance_kind");
-            var left = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, expected.identity().game().pid());
-            var right = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, actual.identity().game().pid());
+            var left = clockSemantic(expected.semantic(), augmentation, nativeOwnedNoticeKeys, expected.identity().game().pid(), rawNative);
+            var right = clockSemantic(actual.semantic(), augmentation, nativeOwnedNoticeKeys, actual.identity().game().pid(), rawNative);
             var keys = new java.util.TreeSet<String>(left.members().keySet()); keys.addAll(right.members().keySet());
             var different = keys.stream().filter(key -> !Objects.equals(left.get(key), right.get(key)))
                     .limit(8).map(key -> key.substring(0, Math.min(80, key.length()))).toList();
@@ -156,10 +177,10 @@ public final class RootAdvanceRuntimeFacts implements ProductionAdvanceReadiness
 
     private ProductionAdvanceReadiness.RuntimeFacts capture(ContinuityStorePort.Session same, ActionCommand parent,
             AdvanceObservationPort.Frame frame, DriverHistoryAccess.View history, LeaseSnapshot lease)throws IOException {
-        var raw = context.collector().activeOriginalNativeFrame(same, lease);
+        var raw = DriverObservationAssembler.originalNativeState(context.collector().activeOriginalNativeFrame(same, lease));
         var aux = lease.driver().auxiliary();
-        var augmentation = clockAugmentationFields(DriverObservationAssembler.originalNativeState(raw), aux);
-        requireClockEquivalent(frame, lease.frame(), augmentation, context.collector().activeNativeOwnedNoticeKeys(same, lease),
+        var augmentation = clockAugmentationFields(raw, aux);
+        requireClockEquivalent(frame, lease.frame(), raw, augmentation, context.collector().activeNativeOwnedNoticeKeys(same, lease),
                 "runtime facts changed the actual clock observation");
         require(lease.frame().source().equals(context.source())
                 && frame.identity().game().equals(context.game().generation())
