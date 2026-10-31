@@ -277,6 +277,10 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         if (prefix.stream().anyMatch(child -> !child.settled()) || prefix.stream().anyMatch(child ->
                 child.command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)
                 || child.command().operation().value().equals("resume-map"))) return Optional.empty();
+        if (prefix.size() == 1 && prefix.getFirst().state() instanceof ActionState.RejectedBeforeDispatch) {
+            requireRejectedInitialization(parent, retained, prefix);
+            return Optional.empty();
+        }
         ActionReceipt arm = LifeSentinelCancellationProof.prefix(parent, retained, prefix, false);
         var armState = (ActionState.Settled) arm.state();
         PlanningReadReceipt read = ((ActionState.ControlApplied) armState.settlement()).read();
