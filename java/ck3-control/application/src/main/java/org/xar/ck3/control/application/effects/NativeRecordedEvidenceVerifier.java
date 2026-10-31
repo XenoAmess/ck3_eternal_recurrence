@@ -161,6 +161,16 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
                     : catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
             StrictJson.require(binding != null, "settlement has no installed original-evidence domain verifier");
             RootGuardChecks.source(session, binding.definitionSource());
+            if (settlement instanceof ActionState.CompositeNoGameplayWrite terminal) {
+                StrictJson.require(proposed.state() instanceof ActionState.CompositeSettled,
+                        "no-gameplay-write terminal requires its original composite execution");
+                var execution = ((ActionState.CompositeSettled) proposed.state()).execution();
+                terminal.observation().validate(proposed.command(), execution);
+                ActionEffects.validateComposite(proposed.command(), execution, terminal);
+                ActionEffects.validateCompositeChildren(execution, terminal, List.of());
+                requireNonEffectCompletion(proposed);
+                // Original guard/source checks above and the mandatory installed domain callback below remain exact.
+            }
             if (settlement instanceof ActionState.CompositeRejected rejected) {
                 var execution = ActionTransitions.composite(proposed.state()).orElseThrow(() -> new IllegalArgumentException("negative parent has no original composite execution"));
                 List<ActionReceipt> children = new java.util.ArrayList<>();

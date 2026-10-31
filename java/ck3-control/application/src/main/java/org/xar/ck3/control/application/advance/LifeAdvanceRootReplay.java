@@ -61,6 +61,14 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
             ActionPorts.OutcomeArchive sameWriterArchive) {
         require(proposed.command().origin().machineId().equals(actualLockedHead.state().machineId()),
                 "life replay crossed the actual canonical writer machine");
+        if (proposed.state() instanceof ActionState.CompositeSettled settled
+                && settled.settlement() instanceof ActionState.CompositeNoGameplayWrite terminal) {
+            LifeAdvanceComposite.requireNoGameplayWriteOriginal(proposed.command(), settled.execution());
+            terminal.observation().validate(proposed.command(), settled.execution());
+            ActionEffects.validateComposite(proposed.command(), settled.execution(), terminal);
+            ActionEffects.validateCompositeChildren(settled.execution(), terminal, java.util.List.of());
+            return;
+        }
         LifeAdvanceEvidence.verifyRecorded(proposed, sameWriterArchive, this, timeline);
     }
 

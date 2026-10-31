@@ -210,9 +210,13 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         return completed(parent, plan, current, progress, null, terminal, children, List.of(basis));
     }
     @Override public void requireNoGameplayWrite(ActionCommand parent, CompositeExecution retained) {
+        requireNoGameplayWriteOriginal(parent, retained);
+    }
+    /** Same source-owned producer contract for the registered handler and archive-only writer revalidation. */
+    public static void requireNoGameplayWriteOriginal(ActionCommand parent, CompositeExecution retained) {
         require(parent.origin() instanceof CommandOrigin.Gameplay, "zero-child Life reconciliation requires its original gameplay parent");
-        require(supports(parent.operation()), "unregistered life composite");
-        require(retained.handlerId().equals(handlerId()), "retained composite handler differs");
+        require(accepts(parent.operation().value()), "unregistered life composite");
+        require(retained.handlerId().equals(HANDLER), "retained composite handler differs");
         require(parent.origin().acceptsGuard(retained.guard().origin())
                 && retained.guard().source().equals(parent.source()) && retained.guard().sessionId().equals(parent.sessionId())
                 && retained.guard().operation().equals(parent.operation()) && retained.guard().observed().equals(parent.before()),
