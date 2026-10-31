@@ -1,0 +1,128 @@
+{
+  "schema": "m3.string-hash187-first-software-summary/v1",
+  "package_number": 51,
+  "status": "FIRST_STRICT_AND_SEVEN_SCENES_PASS",
+  "actual_original": "string-hash187/ACTUAL187.json",
+  "actual_directory": "D:\\ck3-state\\resume91-m3-native\\string-hash187",
+  "actual_evidence_copied_to_Git": false,
+  "actual_callers": [
+    "3790510@3790647",
+    "3790510@37906B7",
+    "3790510@3790741"
+  ],
+  "established_inputs": "data RDX and raw length R8D; caller consumes EAX",
+  "complete_normal_source": {
+    "primary3F7E220": 135,
+    "helper3F7E0E0": 320,
+    "total": 455
+  },
+  "normal_source_bytes_reused_from_held_cache": 455,
+  "necessary_new_PE_source_credit": 0,
+  "actual_avoidable_duplicate_PE_bytes": 143,
+  "duplicate_code_bytes": 135,
+  "duplicate_UW_bytes": 8,
+  "owner_read_erratum": "string-hash187/OWNER-READ-ERRATA187.json",
+  "read_error": "Owner put adaptive inventory and PE read in one exec, then continued reading after cache inventory had already found the complete135B primary. The143PE were avoidable and retained as error, not necessary source credit.",
+  "header_provider_query_Game": 0,
+  "new_explicit_sources_first_compiled": 4,
+  "existing_formal_source_dependencies": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "rawcompiled_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "current_formal_physical_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "rawcompiled_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "current_formal_physical_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "new_copy": false
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "rawcompiled_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "current_formal_physical_sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "new_copy": false
+    }
+  ],
+  "local_first_source_matched_cache_reuse": true,
+  "portable_binary_or_D_classpath_dependency": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/StringHashApi187.java": "2c6314158461b25e5b555a6b0d9613b7607cb571aa33511e042db393bfe343ab",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/StringHash187.java": "f5c2164121dfe229acc71f9833c4f964f30f1c0a7d0be657a150fc7113639612",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/StringHashBook187.java": "bf6abdb4691f8c106d8d5261755475f5219cdd0d65b71f7a8ff51cb5fb10ba8e",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/StringHashValidation187.java": "29b3d42c32865de207abaf933d2e5dfd60e5db8b9b7edef25988cdd05c4d0fbd"
+  },
+  "stages": [
+    {
+      "phase": "COMPILE",
+      "start_utc": "2026-10-31T20:09:20.430468+00:00",
+      "end_utc": "2026-10-31T20:09:21.217838+00:00",
+      "process_seconds": 0.7873565000481904,
+      "exit_code": 0
+    },
+    {
+      "phase": "RUN7",
+      "start_utc": "2026-10-31T20:09:21.220022+00:00",
+      "end_utc": "2026-10-31T20:09:21.392897+00:00",
+      "process_seconds": 0.1728702001273632,
+      "exit_code": 0
+    }
+  ],
+  "strict_actual": "Java21/all/Werror/implicit:none/192MiB/CPU1/empty-sourcepath",
+  "source_preserved": true,
+  "new_scenes": 7,
+  "scripted_source_operations": 64,
+  "ops_per_scene": [
+    8,
+    9,
+    11,
+    9,
+    10,
+    8,
+    9
+  ],
+  "executed_top_level_checks": 14,
+  "assertion_meaning": "exact intEAX and complete global script consumption per scene; per-step kind/address/width/value guards are not added as separate top-level assertions",
+  "literal_expected_EAX_unsigned_hex": [
+    "00000000",
+    "3C2569B2",
+    "B3DD93FA",
+    "3E349DA5",
+    "A291B9C8",
+    "4939650B",
+    "36670B16"
+  ],
+  "model_logical_requests": 5,
+  "actual_model_POSTs": 5,
+  "model_stop": 4,
+  "model_length_whole_discarded": 1,
+  "local_phase_peak": 2,
+  "model_core_book_adoption": 0,
+  "core_book_origin": "owner entire after two whole rejected semantic attempts per role; literal arithmetic separately derived from original ASM after target review, not blind or target-execution generated",
+  "host_model_adoption": "first decoded Java source byte-for-byte; zero owner source edits",
+  "host_independence": "original455B, actual caller excerpts, current physical declarations and real Memory ancestors only; no target/Book bodies, candidates or run results",
+  "scope": "data and exact signed32/unsigned64 arithmetic, explicit two initialized scratch DWORDs, complete helper memory reads/writes and primary fresh pending/state observations; normalized EAX result",
+  "entry_ECX": "Incoming ECX is stored only to an unused home DWORD immediately overwritten0 before consumption. This dead ABI store and callee-save traffic are explicitly excluded, not filled with a guessed0/seed/this. The projection is not a whole-memory or rawABI trace.",
+  "scenarios": [
+    "zero length",
+    "single byte",
+    "three-byte residual",
+    "single DWORD bulk",
+    "DWORD plus byte residual",
+    "unsigned pointer-end wrap skips bulk input",
+    "supplied pending-count3 observation completes a prefix DWORD"
+  ],
+  "not_proved": [
+    "backing scratch persistence, atomicity or natural concurrent mutations",
+    "all length/alias/wrap/partial-pending inputs or arbitrary loop termination",
+    "ABI-storage aliases and fullMemory trace",
+    "fullCPU/prologue/register/flags/ABI/EH",
+    "original Native execution",
+    "natural M3/currentGame/EF0"
+  ],
+  "old_production_recompiled": 0,
+  "old_cases_Native_Game": 0,
+  "POM_CI_binary_classroot_changes": false,
+  "Main_prerequisite": false
+}
