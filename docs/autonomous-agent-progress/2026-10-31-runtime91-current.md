@@ -10,6 +10,20 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/
 
 
 
+17:33Z实际182终态：**worker182/PID37036于17:27:41.320713Z preloop END1/146.495216秒，无LOOP**。17:30:34首次消费终态，观察延迟约173秒；读到即解除Native安装HOLD，不等错误文档/新fixture。实际stderr为`ContinuityBatchJournal.readSameGameHistory1406: settled cycle crossed its real active batch or original retained control`，已越181旧FOCUS/initial-schema parser；最后单栈的immutable publication读取不能替代真实异常。17:33:21独立head仍canonical492/repair_required、cycle4/pendingnull、原SAVE491 ACK_RECEIVED，saved pair仍未认证。8日与487 SETTLE保持，不重491SAVE/473ARM/479resume，不改变原硬deadline。
+
+具名event历史薄摘要`ordinary182-build/HISTORY183-BOUNDARIES.json`实际读1–492后确认：482中断batch64，486 RETAIN与487 ELIGIBLE_ADVANCE SETTLE均在openBatch=null时引用同一真实1b0af221…9081B原receipt，随后488开启65、492中断65；此前398/399、437/438、463/464为中断后CONTROL_ONLY。当前1404仅historicalCancelledLifeCycle识别中断后的原control，所以183由Root独占该Journal实际最小源gate，完整当前API/原event模型先行，不泛开任意闭batch。后台PhysicalStatus147→requireHistoricalHead419重复DATA读取只交隔离研究，不门183，不拿一张栈证明全部146秒瓶颈。
+
+182独立selector探针后继首验另计：真实491的5001B nested receipt及小ACK原件进入实际codec/selector，strict0/1.669秒、首JVM12项0/.923秒；真positiveACK491与singleton exact根成立，software Unknown保同原Attempt+ACK通过，无ACK/多个unresolved/错误role拒绝。仅DATA分类，无Session/Native/Game/largeDriver，不授APPLIED/保存成功或普通Ready权限。
+
+17:29Z续行：**MB182真实17:24:57.409832→17:25:02.612093Z exit0/5.202260秒，仅application1源Journal增编**，reuse/no clean/-T2。Root exact正ACK SAVE DATA selector+modern完整history read route一叶7715B经首strict0/2.426秒后S/Z精确check/apply，保原Life专用bool、oldFOCUS/initialschema、ordinaryCycleRoots与181retainedCycleProof；SAVE unconfirmed DATA早返回，不发issued settled/Ready许可。**worker182/PID37036 START17:25:14.825513Z**，同Game/qwen1.11/basic175与既有预算，不重491SAVE/旧473/479、不刷新原硬deadline。MB编5秒窗未及时事前通知资源岗已如实披露，START前已通知安装HOLD；HTTP/具名tiny源持续。
+
+17:27:13只读仍无LOOP/END，canonical492/repair、491ACK_RECEIVED、cycle4/pendingnull；原8日/487SETTLE真实保持，saved pair未认证。唯一jcmd17:27:39（本地01:27:39+08，elapsed144.64秒/CPU21.328秒）实在现代readSameGameHistory→retainCapturedAction→DriverActionHistory canonical membership→Archive.loadReceipt→PhysicalStatus.verifyArchivedData147→Writer.requireHistoricalHead419→ImmutableArtifactStore.readPublication/Win32 metadata。已实际越181旧FOCUS/initial schema错误，当前是完整历史原件消费；不将单栈推全程耗时或当Native ACK等待，不hot改/重启在途。
+
+Root182两源码HTTP经历真实transport重试后stop，但review误把491当APPLIED/授issuedReady、impl虚构API并错用Life筛子，关键整拒后owner仅接管本叶，无第三大包；另已纠正context封包把event491.details.receipt_ref的540B action-record envelope误标为5001Breceipt，实际应再取nested ExactRef57f8e377…，不回写原请求/不冒模型看过完整ACK。最小actual491 selector新probe独立推进，不成为182Main前置，source/current权限仍由真正运行路径决定。
+
+181四旧fixture兼容后继首验证另计：当前S真实4arg与MB181生产类/JUnit CP，**17:20:29.985165→17:20:33.881802 strict0/3.896643秒**，仅testsource编译，0JVM/0新增Test或断言；不把先前frozenMB180 3arg软件2P冒新Scope4行为。181完整原子合同已正式b5e2c6、182Journal正式958bcd4，发表/软件/实际运行分别记录。
+
 17:14Z实际181终态：**MB18117:10:33.701919→17:10:58.385660Z exit0/24.6837412秒**，reuse/no clean/-T2，application11/local-service5共16源真实增编，其余缓存。**worker181/PID250788真实START17:12:00.004195Z，17:12:43.750067Z preloop END1/43.7458722秒**，没有LOOP。17:13:25读到后立即通知Native解除安装HOLD（约42秒观察延迟）；同Game71464/原birth/既有qwen1.11与普通1200000ms/Native60000ms保持。canonical492/repair/next66、491原SAVE仍ACK_RECEIVED、cycle4/pendingnull，真实8日与487SETTLE保留，saved pair/committed saved days仍未认证；181未进入cold SAVE后态分支，不从完整编译/软件通过授恢复成功。
 
 本次真实stderr新P0位于 `ContinuityBatchJournal.readUnresolvedSameGame905→OrdinaryCycleTransitions.requireInitialNoDispatchHistoryEdge171→strictInitialNoDispatch180`：现代只读isolated入口仅认Life，实际唯一SAVE491不匹配而落旧FOCUS-only fallback，把真正ELIGIBLE_ADVANCE SETTLE487误按initial-no-dispatch的封闭字段解码。该旧fallback后续还要求旧FOCUS，不能把SAVE改名FOCUS/跳过Cycle原件校验。182由Root独占D最小Journal route模型先行，拟source-qualified exact SAVE ACK只读role复用完整现代历史解释；不清真实8日/4cycle、不重SAVE/ARM473/resume479、不刷新原16:40:11.1545362命令deadline，不以旧到期阻止现有bounded只读collect。
