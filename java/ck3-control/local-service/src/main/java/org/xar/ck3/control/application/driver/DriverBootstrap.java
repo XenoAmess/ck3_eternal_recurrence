@@ -1033,6 +1033,7 @@ public final class DriverBootstrap {
                     &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
                     "same-Game continuation cannot replace its actual original history");
             if (isolatedLife) {
+                var owner = new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(old.machineId(), old.game(), old.sessionId());
                 StrictJson.require(new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))
                         && (org.xar.ck3.control.application.session.ContinuityBatchJournal
                                 .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
@@ -1040,7 +1041,9 @@ public final class DriverBootstrap {
                                 .readOnlySaveRecoveryRoot(lease.snapshot().actions()).isPresent()
                             || pendingCancelledLifeCycle(lease.snapshot().actions(),pendingLifeCycle,archive.withSession(same)).isPresent()
                             || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                .readOnlySaveFinalizationRoot(finalizationHead,new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(old.machineId(),old.game(),old.sessionId()),lease.snapshot().actions(),archive.withSession(same)).isPresent()),
+                                .readOnlySaveFinalizationRoot(finalizationHead,owner,lease.snapshot().actions(),archive.withSession(same)).isPresent()
+                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                .readOnlyPendingCompletedLifeCycle(finalizationHead,owner,lease.snapshot().actions(),archive.withSession(same)).isPresent()),
                         "read-only Life/SAVE adoption retains the complete canonical action set and exact pending recovery role");
             } else {
                 StrictJson.require(lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),

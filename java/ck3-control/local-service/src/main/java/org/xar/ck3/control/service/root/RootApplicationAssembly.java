@@ -740,23 +740,31 @@ public final class RootApplicationAssembly {
             Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
             return writer.locked(same -> {
                 var finalizationHead = same.head().state();
-                boolean pending=actions.withFrozen(same,lease->{
-                    var identity = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
-                    var originals = archive.withSession(same);
-                    var found=lease.snapshot().actions().stream().anyMatch(action->!action.settled()
+                var identity = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
+                var originals = archive.withSession(same);
+                record PendingRole(boolean legacyPending, boolean completedLife) { }
+                var snapshot = actions.withFrozen(same, lease -> {
+                    var actionsList = lease.snapshot().actions();
+                    var legacyPending = actionsList.stream().anyMatch(action -> !action.settled()
                             || action.command().operation().value().equals("private-select-player-lifestyle-stock-focus-v1")
-                            && action.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED)
-                            || ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, identity, lease.snapshot().actions(), originals).isPresent();
-                    lease.assertCurrent();return found;
+                            && action.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED)
+                            || ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, identity, actionsList, originals).isPresent();
+                    var completedLife = ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(finalizationHead, identity, actionsList, originals).isPresent();
+                    lease.assertCurrent();
+                    return new PendingRole(legacyPending, completedLife);
                 });
-                if(!pending||same.head().state().status()!=org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED)
+                var status = finalizationHead.status();
+                if ((!snapshot.legacyPending() && !snapshot.completedLife())
+                        || (status != org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED
+                            && !(status == org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING
+                                && snapshot.completedLife())))
                     return Optional.empty();
-                var cycles=new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,cyclePolicy,writer::requireSession);
+                var cycles = new OrdinaryCycleTransitions(archive, semanticVerifier, checkpointVerifiers, cyclePolicy, writer::requireSession);
                 cycles.bindTerminalFrameLoader(frames);
-                var batches=new ContinuityBatchJournal(writer,cycles);
-                var data=batches.readUnresolvedSameGame(same,new SessionIdentity(game.machineId(),game.generation(),game.sessionId()));
-                unresolvedSameGameCycles=cycles;unresolvedSameGameBatches=batches;
-                unresolvedSameGameData=data;unresolvedSameGamePolicy=cyclePolicy;
+                var batches = new ContinuityBatchJournal(writer, cycles);
+                var data = batches.readUnresolvedSameGame(same, identity);
+                unresolvedSameGameCycles = cycles; unresolvedSameGameBatches = batches;
+                unresolvedSameGameData = data; unresolvedSameGamePolicy = cyclePolicy;
                 return Optional.of(data);
             });
         }
