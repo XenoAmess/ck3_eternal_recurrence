@@ -2,7 +2,7 @@
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。owner `/root/java_delivery91`。用户已明确继续；本岗负责 `D:/r64d` 正式 Java 交付，运行 S/MB/Game/账本仍由 runtime91 独占。
 
-最新正式源码 FF 已至 `d6c23b2ba9`。跨机指南及两波模型经验均已正常推送 GitHub master；settled131、Crown消费/132审计削减、133同date幂等与良性Stop缺观察延后、M7新605B及组合测试均已精确接收。所有必要绿复用 owner 实际回执。运行 owner 确认131同局已消费CROWN为 enacted/pendingnull，133于03:22:15.2095991Z真实LOOP/next49；普通新CROWN APPLIED1与旧FOCUS分列，新增日仍0，不重放已应用动作。本岗不写 S/MB/Game/账本，正式源码、装载、业务结果和游戏日分别记录。
+最新正式源码 FF 已至 `944be53ac8`。本波新增date-current134三生产叶/原测试两方法，以及M7 helpers94九新叶；所有必要绿复用 owner 实际回执。134仅S/Z采用与正式发表，未因这三叶单独启动业务；原330 LIFE UNKNOWN尚未解决，不重放。已知普通新CROWN APPLIED1与旧FOCUS分列，新增日仍0；133曾于03:22:15.2095991Z真实LOOP/next49。本岗不写 S/MB/Game/账本，正式源码、装载、业务结果和游戏日分别记录，跨机指南与新经验均已实际推送GitHub。
 
 接手时 `D:/r64d` 为干净 detached `c2acd518ab3290a74607a0b49baba045e802bf24`。本地 GUI `59a7d302`、fixture `6bc7b918`、status `c2acd518` 三个提交完整保留。Native GUI 前置已由唯一 owner 正常发表为 `b87c3ad783`，随后本岗普通 fetch/rebase/fast-forward push exit0：新祖先依次为 GUI `e1d37b1857`、fixture `543bc7e1d5`、status `c627799172`，远端 master 更新到后者。没有全树 reset/stash/stage；源码发表不代表 Native DLL 部署或 Game 新行为。
 
@@ -240,3 +240,13 @@ M7 `fee947f31c` 为现g2-research四新叶：SparseIntCells177和Memory/Basic/Ca
 `a137a34452` 精确Main+OrdinaryCycleTransitions及一新portable test：只在已属良性OPERATOR_STOP且真实capture抛typed MissingDriverObservation时发WORKER_RESTART_CAPTURE_DEFERRED、无ticket/暂停未尝试/Game未请求停；普通CLEAN成功ticket不改、相同文案的普通IOException、UNKNOWN/failure detail、NO_PROGRESS、InterruptedException及unresolved invariant均原样抛。复用ownerstrict+新6P/0skip，不重旧分类组。模型首整拒/第二轮partial，最终helper由owner实现，不授原稿整实现。runtime实际MB133 app1+local2共3prod0/6.933秒，同局03:22:15.2095991Z LOOP/next49，装载不授实际DEFERRED发生或新日。
 
 `d6c23b2ba9` 新增Sparse177EndToEndTest单叶，完整软件79E→clear→28EED20已知frame→177insert共用同table：DEC callback改E+8后tail fresh load、literal hash、slot5、count和9B输出padding均断言。复用首次1TU strict0/0.6450798秒、独立selected1JUnit1P/0skip/0.6452622秒；未重旧8绿。模型两轮拒后owner完成方法，前两外层inline引号失败没有启动JVM、后D runner唯一实际JVM0，原件分别保。正式只补supplied-memory/no liveABI注释与末尾空白，无生产/POM改或自然drain/Game信用。
+
+## current134与M7 helper/Growth实际后继
+
+`32bad45df1` 精确三prod加现HeldDriverRetainedObservationTest两个新方法，保原Clock factory与formal额外内容。ActionChildPlanningScope只在实际canonical running parent、非continuation且无child reservation时返回原entry guard；HeldDriver.retainedEntry绑定exact parent before/source/session/operation、原packet/connection/time并保Push provenance。Factory仅在普通scope真实缺席且不在观测scope时接该入口，不兼容scope仍抛；后续current/strict next仍fresh。复用owner三prod strict0/2.048秒、test+两旧helper strict0/1.875秒、新2P/0skip/1.453秒；2P只授Held软件边界，active/child/Factory为源审，没有wholeRoot、旧330 UNKNOWN恢复或日期推进信用。首模型nullref/注释整拒，纠错partial+owner真实guard关联/API修正分记。Runtime明确尚未为此三叶单起134 worker；正式不作为运行前置。
+
+`944be53ac8` 现g2-research精确新增4prod+5test/1126行，无POM/新依赖：SparseIntCells1783480、SparseIntCells17836d0、SparseIntCells177Growth、Sparse177KnownCalls及五个对应测试。九完整源码/测试及callee/Normal-Growth/KnownCalls源审已读，生产和测试执行token逐一与已验证D候选相同；只补固定JavaFP/RNE、symbolic私有frame与INT3不等同native unwind等范围注释、清新叶末尾空白。两个callee保duplicate不改原value、key/value读取顺序差异、carry/retry/16B完整返回；Growth保typed Plan、opaque allocator/virtual8/16/B15000和两次fresh哨兵调用，KnownCalls只接已知concrete软件边，LocalPair/private-output仍显式port。
+
+严格与行为按真实两组复用：前2prod strict0/0.6520281秒、2test strict0/0.9272158秒、首次新5JUnit5P/0skip/0.6801904秒；后5改变源strict0/0.9655688秒，仅新三类3JUnit3P/0skip/0.8170215秒（Plan14 literal、normal growth count2、KnownCalls四declared direct/identity）。旧5和605旧8均未重，不能拼成同JVM8P；KnownCalls growth/retry3480分支未由这一个consumer测试执行。
+
+模型分责沿DELIVERY04原件：3480首length整拒，旧已验177方法只机械BASE，新target五处精确模型edit原样、owner算法0；36d0首完整method加模型纠正，owner去重复nested/noop而未改算法；KnownCalls全类加真实编错后的单method模型纠正，owner算法0。Growth Plan/Normal/apply及五Test均有owner接管，不能把旧BASE复用或owner测试计作模型全算法实现。有限软件成功不授nativeABI/private frame alias/MXCSR/currentGame/natural drain/GUIAccept/SAVE；实际十七HTTP与失败原文保留，不为正式发表新增POST或重绿。精确九叶/候选SHA/范围在 `D:/ck3-state/resume91-java-delivery/M7-HELPERS94-ADOPTION.json`，源交付清单在owner `helpers94/DELIVERY04.json`。
