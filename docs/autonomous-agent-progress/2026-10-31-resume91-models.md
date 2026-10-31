@@ -258,3 +258,11 @@ Root 后到回执给出 2026-10-31T07:52:49.843115Z 的实际结束结果：6 �
 另有真实输出目录碰撞：m3-global-wrapper166-method和m3-global-wrapper166-binding于14:19:33.908398/.908454Z并行POST，owner误把公共调用器根当两者输出目录。方法正文丢失不可采用，最后binder正文幸存但候选也被审拒；REQUEST损坏，第二个BEGIN在公共EVENTS中也丢失，不能从started_at反造POST时刻。两份真实工具回执与owner事故记录在`D:/ck3-state/resume91-m3-native/registration-allocator-global166/owner-output-collision01/OWNER-ERROR.json`。严格源日志计数与该单列缺失记录分开；碰撞在上述十分钟窗以前，不影响57/57和峰12。已实际发送的两请求不因碰撞归零，但也不伪装成可审候选。必要 replacement/correction用了唯一标准任务根，真实完成并由owner分级采用。
 
 现有call91.py仅补一项针对真实故障的输出隔离：解析输出路径若等于该调用器公共根，则在mkdir/读request/POST以前退出。本次一次无HTTP负例实际exit1/约0.035秒、明确拒绝；未触旧碰撞原件，正常独占目录、固定三消息、参数、重试和游戏行为均无改动。其它机器不用取得此D盘脚本，但也应隔离每个并行任务的请求/响应路径。候选源码、软件编验、正式发表、运行装载、APPLIED和新游戏日继续分开。
+
+### resume91 reader按attempt修复与实际采用（2026-10-31 14:57Z）
+
+本机既有observe91.py、rolling122_snapshot.py、window_last10_128.py已修两份旧M4未闭日志对当前活性的污染，保原raw区间及未知实际END。后继又修按整个task排除造成的新attempt误判：实际目录+task+attempt+原POST限定当前排除，独立新attempt仍保活；rolling消费者也按目录限定。固定两份中断观察及Win32/SSE读回保在`INTERRUPTED-CALLERS175.json`及`context-support175/CALLER-READBACK175-143018.json`，不添加逐POST探测、来源审计门或自动重发。
+
+新未写边界采用真实模型先行：models-interruption-attempt176与models-interruption-probe176于14:47:06.474991/.487792Z并行POST，分别stop26.3435秒、length4500/49.1476秒；首整份修改因具体代码错误编前拒绝，截断probe整份拒。收窄的-correct02两单于14:50:47.172350/.162935Z并行POST，helper stop7.2827秒/5031+818，probe stop19.3382秒/3197+2757、cached均null。纯helper算法partial采用，owner修1处Windows Path语义和3处宽异常，完整reader装配由owner接管；第二份probe仍虚构ast.compile、时间预期和异目录输入错误，未执行即拒，不追认任何模型测试成功。owner新紧凑10数据例首次实际exit0/0.0355053秒；14:54:56.012394Z采用到既有两reader，14:54:59.270949Z真实无metrics运行exit0。四标准任务根REVIEW.json均写实际分级，未改原SUMMARY/EVENTS/旧冻结cohort。新生产Java、Main装载、Native、Game动作及新增日均未由此获得信用。
+
+最新自然观测14:57:38.874162Z，距上次metrics约27分钟，仅一次GET。源码有效在途0，旧2只留raw；随后服务running0/waiting0/KV0，分阶段非原子。前十分钟23POST/26END、峰3，21stop/4length/1reset；`WINDOW128-145738.json`及当前STATUS/ROLLING保细节，不以14:20短峰12替代当前空闲，也不以无需求调用凑使用量。
