@@ -1,0 +1,57 @@
+{
+  "schema": "m3.vector-transfer175-first-software/v1",
+  "at_utc": "2026-10-31T17:49:28.359912+00:00",
+  "package_number": 39,
+  "status": "FIRST_FIVE_SOURCE_SCRIPTED_FINITE_JAVA_SCENES_PASS",
+  "original_RVA": "37690D0",
+  "code_bytes": 578,
+  "new_PE_bytes": 610,
+  "header_provider_query_hash_Game": 0,
+  "original_actual": "verification-first175/ACTUAL175.json",
+  "owner_delivery": "DELIVERY175.json",
+  "new_Java_sources": 2,
+  "reused_formal_sources": 2,
+  "first_cases": 5,
+  "checks_count_not_reported_separately": true,
+  "strict_exit": 0,
+  "strict_seconds": 0.7721775998361409,
+  "actual_lint": "-Xlint:all,-try -Werror -implicit:none -proc:none",
+  "run_exit": 0,
+  "run_seconds": 1.5030839000828564,
+  "last_end_utc": "2026-10-31T17:42:03.237463+00:00",
+  "source_bytes_unchanged": true,
+  "model_logical_calls": 4,
+  "model_transport_POSTs": 6,
+  "model_source_adopted": false,
+  "source_origin": "owner production and ASM-derived scripts; owner saw target, not blind oracle",
+  "covered_scenes": [
+    "equal allocator with callback fresh-recomparison and field changes",
+    "self alias still releases and clears",
+    "initial mismatch/no growth with fresh postcopy data and count",
+    "initial mismatch/growth with zero-byte first copy and fresh allocator/data after callback",
+    "equal entry then unequal callback recompare executes three actual recursive method invocations"
+  ],
+  "not_claimed": [
+    "original native code execution",
+    "all 578B branches",
+    "signed-negative recursive role selection",
+    "nonzero temporary cleanup",
+    "all floating conversion limits",
+    "full ABI/register/exception projection",
+    "opaque allocator/copy/range implementations",
+    "formal Git/S/MB adoption",
+    "Game actions or days"
+  ],
+  "old_green_rerun": 0,
+  "Native_Game_commands": 0,
+  "POM_CI_changes": false,
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/vector175/VectorTransfer37690D0.java": "86447fb4df809f657f080d8b37e4f214d13c501aeb6ed16cc7f2b63b173a2a06",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/vector175/VectorTransferWitness175.java": "df7668380b8f903dfab776d88b147ff3094659f00f24b6bec332ae3d1333b264"
+  },
+  "existing_dependency_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539"
+  },
+  "machine_local_evidence": "Retained under D:\\ck3-state\\resume91-m3-native\\vector-transfer175; original receipts are not copied as Git evidence or rerun."
+}

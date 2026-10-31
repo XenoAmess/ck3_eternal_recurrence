@@ -1,0 +1,83 @@
+{
+  "schema": "m3.registry-consumer176-first-software/v1",
+  "at_utc": "2026-10-31T17:49:28.359912+00:00",
+  "package_number": 40,
+  "status": "FIRST_FOUR_INDEPENDENT_FINITE_JAVA_SCENES_PASS",
+  "original_RVA": "3763730",
+  "code_bytes": 914,
+  "new_PE_bytes": 942,
+  "new_UW_bytes": 28,
+  "header_provider_query_hash_Game": 0,
+  "production_strict": "STRICT-PROD-ACTUAL176.json",
+  "fixtures_actual": "cases-owner/VALIDATION176.jsonl",
+  "owner_cases": "cases-owner/OWNER-CASES176.json",
+  "owner_delivery": "cases-owner/DELIVERY176.json",
+  "source_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumer176.java": "54e2a12c1c20ab4d63e4b971ecfd6bdfb2ac4d514fc2c72b4a0688e534753422",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryMemory176.java": "fabdf4685858e1465e8abb1626ea791e00b7ea4d9d5a3df5d6d2b90847ddf49a",
+    "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryConsumerWitness176.java": "4bfbd1192015c3a514096efef02fda0b9681d606c42877789f1f882cf062704b"
+  },
+  "source_bytes_unchanged": true,
+  "new_production_sources": 2,
+  "new_fixture_sources": 2,
+  "formal_source_dependencies": 2,
+  "production_compile_exit": 0,
+  "production_compile_seconds": 0.6616875999607146,
+  "production_compile_end": "2026-10-31T17:35:33.555912+00:00",
+  "first_fixture_compile_exit": 0,
+  "first_fixture_compile_seconds": 0.9016063003800809,
+  "first_fixture_compile_begin": "2026-10-31T17:46:02.177010+00:00",
+  "first_fixture_compile_end": "2026-10-31T17:46:03.078596+00:00",
+  "first_run_exit": 0,
+  "first_run_seconds": 0.2394493999890983,
+  "last_end_utc": "2026-10-31T17:46:03.318289+00:00",
+  "first_cases": 4,
+  "mixed_checks": 554,
+  "mixed_check_scope": "includes semantic comparisons and per-byte mapped-storage guards; not554semantic assertions",
+  "ports_per_case": [
+    0,
+    6,
+    6,
+    11
+  ],
+  "memory_events_per_case": [
+    9,
+    37,
+    39,
+    46
+  ],
+  "source_effects_covered": [
+    "occupied end sentinel and skipped-phase lack of homeslot reload",
+    "AL low8 for handler100/A8=101/incoming100",
+    "opaque mutated home fresh reload and fresh returned-object vptr for slot0",
+    "actual 3f95fd0/lookup/864a20 return pointers, not output-address substitution",
+    "two full sixteen-byte copies retain nonzero caller high halves",
+    "TLS1 bypasses counter/logger and flags reload",
+    "TLS0 signed-negative counter admits logger then one atomic DWORD port",
+    "logger stack20 retained and stack28 written; valid large-free gap1f"
+  ],
+  "not_claimed": [
+    "finite software normal-call projection only; not full ABI/EH/unwind",
+    "no first-phase objectSlot30 branch and no returning-error INT3 path in this four-case set",
+    "not Native, Game, EF0, natural-trigger or shared-formal adoption evidence"
+  ],
+  "additional_not_claimed": [
+    "full914branchcoverage",
+    "opaquehelperinternals",
+    "loadedNativeidentity",
+    "naturalregistration/currentGame",
+    "EF0writer/name72association"
+  ],
+  "model_outcomes": "MODEL-OUTCOMES176.json",
+  "old_green_rerun": 0,
+  "Native_Game_commands": 0,
+  "POM_CI_changes": false,
+  "binary_classroot_delivery": false,
+  "resource": "freshLIGHT2prodEND17:35:33 andfreshborrowedHEAVYfixture/runEND17:46:03 immediatelyreturned,0futurelease",
+  "existing_dependency_sha256": {
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+    "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539"
+  },
+  "machine_local_evidence": "Retained under D:\\ck3-state\\resume91-m3-native\\registry-consumer176; original receipts are not copied as Git evidence or rerun."
+}

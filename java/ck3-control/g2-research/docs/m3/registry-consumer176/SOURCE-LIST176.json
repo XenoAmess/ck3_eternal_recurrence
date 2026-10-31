@@ -1,0 +1,56 @@
+{
+  "new_source_files": [
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumerApi176.java",
+      "kind": "main",
+      "bytes": 3364,
+      "sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "source_changed_for_delivery": false,
+      "git_lf_sha256": "889cd2514471d0cc7ce061b0c55c54024816f94d6c0c488bc635dc738998c397",
+      "git_lf_bytes": 3364
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/research/m3/RegistryConsumer176.java",
+      "kind": "main",
+      "bytes": 10413,
+      "sha256": "54e2a12c1c20ab4d63e4b971ecfd6bdfb2ac4d514fc2c72b4a0688e534753422",
+      "source_changed_for_delivery": false,
+      "git_lf_sha256": "54e2a12c1c20ab4d63e4b971ecfd6bdfb2ac4d514fc2c72b4a0688e534753422",
+      "git_lf_bytes": 10413
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryMemory176.java",
+      "kind": "test",
+      "bytes": 3725,
+      "sha256": "fabdf4685858e1465e8abb1626ea791e00b7ea4d9d5a3df5d6d2b90847ddf49a",
+      "source_changed_for_delivery": false,
+      "git_lf_sha256": "fabdf4685858e1465e8abb1626ea791e00b7ea4d9d5a3df5d6d2b90847ddf49a",
+      "git_lf_bytes": 3725
+    },
+    {
+      "destination": "java/ck3-control/g2-research/src/test/java/org/xar/ck3/research/m3/RegistryConsumerWitness176.java",
+      "kind": "test",
+      "bytes": 17722,
+      "sha256": "4bfbd1192015c3a514096efef02fda0b9681d606c42877789f1f882cf062704b",
+      "source_changed_for_delivery": false,
+      "git_lf_sha256": "4bfbd1192015c3a514096efef02fda0b9681d606c42877789f1f882cf062704b",
+      "git_lf_bytes": 17722
+    }
+  ],
+  "reuse_existing_source_only": [
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/NativeTaskMemory.java",
+      "sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8",
+      "git_lf_sha256": "acbdeeb1073332991d33fe05d2f560160f9cb0845cc2eb4ed6794bec862e90c8"
+    },
+    {
+      "path": "java/ck3-control/g2-research/src/main/java/org/xar/ck3/control/g2/common/nativecore/task/retained/InGameIdlerEventDispatch.java",
+      "sha256": "8a277b250f0c2533a51bfb7ebaae044af385a4a46095f6f4c76f3b0e25856539",
+      "git_lf_sha256": "ec70f48f8f52a4fb7437cdb154ced708ad17c35dd48fdb7656d86199b52c1f5a"
+    }
+  ],
+  "missing_compile_dependencies": [],
+  "manual_main": "org.xar.ck3.research.m3.RegistryConsumerWitness176",
+  "POM_CI_binary_classroot_changes": false,
+  "hash_scope": "sha256/bytes retain the original physical compile-input values; git_lf_* identify published LF source bytes after mechanical line-end whitespace normalization only."
+}

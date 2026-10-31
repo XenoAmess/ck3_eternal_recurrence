@@ -1,0 +1,9 @@
+# M3 finite source projection 175
+
+Complete578B37690D0 projects ordered vector headers, callback-driven fresh allocator comparisons and caller-owned recursive scratch. Five source-scripted scenarios passed. The owner saw the target while preparing source-derived scripts, so these are not blind independent oracles. Core and tests are entirely owner code after two model requests per role failed or exceeded output budget; 0 model source adopted. Opaque allocate/release/copy/range ports and pure exact scalar result remain supplied observations. Signed-negative recursion, nonzero temporary cleanup, all scalar limits, full ABI/EH, original Native execution, natural Game behavior and EF0 remain unproved.
+
+Source is already in the formal namespace and uses the existing formal NativeTaskMemory interface closure. This adds only exact named Java source files and three documents. The test main is manual; no POM, CI, native executor, binary/classroot or runtime binding is added. Actual source-only compilation and first finite software execution are referenced in RESULT175.json; no existing cases or Native fixture were rerun for delivery. Main installation and gameplay are not gated on this research.
+
+Original receipts and source evidence remain machine-local D. The Git result records the actual compiled candidate's physical hashes. Any formatting-only Git change must be identified separately and must not retroactively rewrite those historical hashes. Java tokens, source behavior and fixture expected values are unchanged for delivery.
+
+Publication normalizes line endings without changing Java tokens or expected data. SOURCE-LIST175.json preserves the original physical compile hashes and separately records published git_lf_sha256 values; original compile/run receipts remain unchanged.
