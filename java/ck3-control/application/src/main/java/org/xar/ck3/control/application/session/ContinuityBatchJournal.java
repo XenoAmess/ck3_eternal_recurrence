@@ -1367,18 +1367,32 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
 
     /** Ordinary immutable DATA for a living same Game after first primitive FOCUS became UNKNOWN. */
-    public record UnresolvedSameGameData(CleanBatchRestart capturedManifest, ControllerRestartState capturedController,
+    public record UnresolvedSameGameData(Optional<CleanBatchRestart> restartCapture, ControllerRestartState capturedController,
             org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known retainedFacts, ExactRef retainedFullDriver,
             long canonicalSequence, String canonicalHeadDigest, java.util.List<String> usedBatches, long nextBatchSequence,
             java.util.List<org.xar.ck3.control.application.action.ActionReceipt> unresolvedActions, Optional<SettledSameGameData> retainedHistory) {
         public UnresolvedSameGameData {
-            Objects.requireNonNull(capturedManifest); Objects.requireNonNull(capturedController);
+            Objects.requireNonNull(restartCapture); Objects.requireNonNull(capturedController);
             Objects.requireNonNull(retainedFacts); Objects.requireNonNull(retainedFullDriver);
             StrictJson.safe(canonicalSequence, 1); WriterContracts.requireDigest(canonicalHeadDigest);
             usedBatches = java.util.List.copyOf(usedBatches);
             StrictJson.safe(nextBatchSequence, 0);
             unresolvedActions = java.util.List.copyOf(unresolvedActions);
             retainedHistory = Objects.requireNonNull(retainedHistory);
+            StrictJson.require(restartCapture.isPresent() || retainedHistory.filter(value ->
+                    value.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
+                    && value.cycleSemantic().isEmpty() && value.controller().savedPair().isEmpty()).isPresent(),
+                    "an absent restart capture requires its actual isolated initial CurrentMap history");
+        }
+        public CleanBatchRestart capturedManifest() {
+            return restartCapture.orElseThrow(() -> new IllegalStateException("initial CurrentMap history has no captured restart manifest"));
+        }
+        public UnresolvedSameGameData(CleanBatchRestart capturedManifest, ControllerRestartState capturedController,
+                org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known retainedFacts, ExactRef retainedFullDriver,
+                long canonicalSequence, String canonicalHeadDigest, java.util.List<String> usedBatches, long nextBatchSequence,
+                java.util.List<ActionReceipt> unresolvedActions, Optional<SettledSameGameData> retainedHistory) {
+            this(Optional.of(Objects.requireNonNull(capturedManifest)), capturedController, retainedFacts, retainedFullDriver,
+                    canonicalSequence, canonicalHeadDigest, usedBatches, nextBatchSequence, unresolvedActions, retainedHistory);
         }
         public UnresolvedSameGameData(CleanBatchRestart capturedManifest, ControllerRestartState capturedController,
                 org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known retainedFacts, ExactRef retainedFullDriver,
@@ -1423,8 +1437,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if (!isolated.isEmpty()) {
             var captured = new java.util.concurrent.atomic.AtomicReference<CleanBatchRestart>();
             var retained = readSameGameHistory(same, owner, isReadOnlyLifeRecovery(isolated.getFirst()), captured::set);
-            StrictJson.require(captured.get() != null, "isolated Life/SAVE recovery retains its actual restart capture");
-            return new UnresolvedSameGameData(captured.get(), retained.controller(), retained.retainedFacts(),
+            boolean initialCurrentMap = isReadOnlyLifeRecovery(isolated.getFirst())
+                    && retained.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
+                    && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty();
+            StrictJson.require(captured.get() != null || initialCurrentMap,
+                    "isolated recovery retains its actual restart capture or fully verified initial CurrentMap history");
+            return new UnresolvedSameGameData(Optional.ofNullable(captured.get()), retained.controller(), retained.retainedFacts(),
                     retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
                     new java.util.ArrayList<>(retained.controller().usedBatches()), retained.controller().nextBatchSequence(),
                     isolated, Optional.of(retained));
@@ -1608,16 +1626,29 @@ public final class ContinuityBatchJournal implements BatchJournal {
             ExactRef retainedFullDriver,
             org.xar.ck3.control.application.action.NativeObservationPort.TransportSession previousTransport,
             org.xar.ck3.control.g2.common.G2Source source,
-            SemanticEvidence latestCycleSemantic,
+            Optional<SemanticEvidence> cycleSemantic,
             ObservationIdentity latestObservedFrame,
             java.util.List<ActionReceipt> settledActions,
             long canonicalSequence, String canonicalHeadDigest, java.util.List<ExactRef> history) {
         public SettledSameGameData {
             Objects.requireNonNull(entry);Objects.requireNonNull(controller);Objects.requireNonNull(retainedFacts);
             Objects.requireNonNull(retainedFullDriver);Objects.requireNonNull(previousTransport);
-            Objects.requireNonNull(source);Objects.requireNonNull(latestCycleSemantic);Objects.requireNonNull(latestObservedFrame);
+            Objects.requireNonNull(source);Objects.requireNonNull(cycleSemantic);Objects.requireNonNull(latestObservedFrame);
             settledActions=java.util.List.copyOf(settledActions);history=java.util.List.copyOf(history);
             StrictJson.safe(canonicalSequence,1);WriterContracts.requireDigest(canonicalHeadDigest);
+        }
+        public SemanticEvidence latestCycleSemantic() {
+            return cycleSemantic.orElseThrow(() -> new IllegalStateException("initial CurrentMap history has no completed cycle SEM"));
+        }
+        public SettledSameGameData(org.xar.ck3.control.continuity.ObservedGameplayEntry.Details entry,
+                ControllerRestartState controller, DriverSnapshotFacts.Known retainedFacts, ExactRef retainedFullDriver,
+                org.xar.ck3.control.application.action.NativeObservationPort.TransportSession previousTransport,
+                org.xar.ck3.control.g2.common.G2Source source, SemanticEvidence latestCycleSemantic,
+                ObservationIdentity latestObservedFrame, java.util.List<ActionReceipt> settledActions,
+                long canonicalSequence, String canonicalHeadDigest, java.util.List<ExactRef> history) {
+            this(entry,controller,retainedFacts,retainedFullDriver,previousTransport,source,
+                    Optional.of(Objects.requireNonNull(latestCycleSemantic)),latestObservedFrame,settledActions,
+                    canonicalSequence,canonicalHeadDigest,history);
         }
     }
 
@@ -2217,11 +2248,23 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     .path("entries").path("OPENING_GATE").get("payload"));
             var opening=org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.decode(
                     originals.loadMaterial(openingRef).bytes());
+            boolean existingOpening = entry.origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
+                    && opening.actionReceipt().isEmpty() && opening.preparedCommand().isEmpty()
+                    && opening.existingObserved().isPresent()
+                    && opening.observed().game().equals(owner.game())
+                    && opening.existingObserved().orElseThrow().game().equals(owner.game())
+                    && opening.observed().frame().snapshotId().equals(entry.snapshotId())
+                    && opening.observed().frame().episodeRunId().equals(entry.episodeId())
+                    && opening.observed().frame().identity().player().longValueExact()==entry.actorId()
+                    && opening.observed().frame().identity().dateRaw().longValueExact()==entry.dateRaw()
+                    && opening.observed().frame().identity().nativeRevision().equals(entry.nativeRevision())
+                    && opening.observed().frame().revision().longValueExact()==entry.revision();
             StrictJson.require(opening.stage()==org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage.COMPLETE
                     &&opening.sessionId().equals(owner.sessionId())&&opening.source().equals(source)
-                    &&opening.checkpoint().isEmpty()&&opening.actionReceipt().isPresent()
-                    &&actions.contains(originals.loadReceipt(opening.actionReceipt().orElseThrow())),
-                    "settled recovery must retain the actually consumed opening action without a SAVE");
+                    &&opening.checkpoint().isEmpty()
+                    &&(opening.actionReceipt().isPresent()
+                        ?actions.contains(originals.loadReceipt(opening.actionReceipt().orElseThrow())):existingOpening),
+                    "settled recovery retains its consumed opening action or exact existing-focus entry");
 
             // Start from the actual first-map Known, then apply already committed Driver DATA.
             var knownOriginal=originals.loadFullMaterial(entry.driverFacts());
@@ -2277,6 +2320,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             int savedDriverIndex=-1;
             var confirmedSaves=new java.util.HashSet<ExactRef>();
             boolean pendingOriginalProven=false;
+            boolean existingOpeningRead=false;
             for(int i=0;i<edges.size();i++) {
                 var edge=edges.get(i);history.add(requested.get(i).reference());
                 var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
@@ -2299,7 +2343,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     }
                     retained=retainCapturedRead(same,owner,edge,retained,originals,java.util.List.of(),false);
                     for(var row:details.get("read_rows")) {
-                        var read=originals.loadRead(ExactRef.fromJson(row.get("read")));
+                        var readReference=ExactRef.fromJson(row.get("read"));
+                        var read=originals.loadRead(readReference);
+                        if(existingOpening && opening.originals().contains(readReference)
+                                && read.request().before().equals(opening.existingObserved().orElseThrow())
+                                && read.request().source().equals(source) && read.request().sessionId().equals(owner.sessionId()))
+                            existingOpeningRead=true;
                         for(var guard:java.util.List.of(read.before().binding(),read.after().binding())) {
                             var currentTransport=new org.xar.ck3.control.application.action.NativeObservationPort.TransportSession(
                                     guard.source().machineId(),guard.observed().game(),guard.connectionGeneration(),guard.sessionId());
@@ -2552,7 +2601,18 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     throw new IOException("settled initial recovery cannot reinterpret canonical transition "+edge.kind());
                 }
             }
+            if(existingOpening) {
+                StrictJson.require(existingOpeningRead,"existing-focus completion requires its actual canonical READ original");
+                requireSettledObservedContinuation(opening.observed(),opening.existingObserved().orElseThrow());
+                requireSettledObservedContinuation(opening.existingObserved().orElseThrow(),latestObserved);
+            }
             var cycle=whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+            boolean initialCurrentMap = isolatedLife && existingOpening && pendingControl.isEmpty()
+                    && state.status()==ContinuityState.Status.REPAIR_REQUIRED
+                    && !whole.has(WriterContracts.ORDINARY_CYCLE_FIELD) && !whole.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
+                    && savedPair.isEmpty() && completedCycles==0 && pending==null && lastCycleRef==null && latest==null
+                    && openBatch==null && used.size()==1 && retainedRecovery==null
+                    && actions.stream().noneMatch(action->action.visibleGameplay()||action.eligibleAdvance());
             StrictJson.require(state.status()!=ContinuityState.Status.RUNNING||retainedRecovery!=null||savedPair.isPresent()||pendingControl.isPresent(),
                     "running history requires its actual prior recovery or complete saved DATA");
             if(savedPair.isPresent()) {
@@ -2567,11 +2627,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean retainedControl = pendingControl.isPresent() && pendingOriginalProven && pending != null
                     && pending.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
                     && pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
-            StrictJson.require((!unfinishedReadOnlyBatch||(retainedRecovery!=null||savedPair.isPresent()||retainedControl)&&state.status()==ContinuityState.Status.RUNNING)
+            StrictJson.require(initialCurrentMap || ((!unfinishedReadOnlyBatch||(retainedRecovery!=null||savedPair.isPresent()||retainedControl)&&state.status()==ContinuityState.Status.RUNNING)
                     &&!used.isEmpty()&&(pending==null || retainedControl)&&latest!=null
                     &&(cycle.get("pending_receipt").isNull() || retainedControl)
                     &&StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
-                    &&ExactRef.fromJson(cycle.get("head")).equals(lastCycleRef),
+                    &&ExactRef.fromJson(cycle.get("head")).equals(lastCycleRef)),
                     "settled recovery requires the actual closed cycle frontier");
             var unsaved=new java.util.LinkedHashSet<String>();boolean dirty=false;int eligible=0;
             for(var action:ordinaryCycleRoots(actions, isolatedLife).stream().filter(a -> !finalizationSave.filter(a::equals).isPresent()).toList()) {
@@ -2594,7 +2654,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.require(same.head().state().sequence()==state.sequence()&&same.head().digest().equals(head.digest()),
                     "settled canonical recovery head changed during read");
             var data=new SettledSameGameData(entry,controller,retained.facts(),retained.fullDriver(),previousTransport,
-                    source,latest,latestObserved,actions,state.sequence(),head.digest(),history);
+                    source,Optional.ofNullable(latest),latestObserved,actions,state.sequence(),head.digest(),history);
             boolean isolated = isolatedLife || isolatedSave || isolatedKnown || pendingControl.isPresent() || pendingKnownCompletion.isPresent();
             if (!isolated && savedPair.isPresent()) {
                 StrictJson.require(pending==null&&cycle.get("pending_receipt").isNull()
