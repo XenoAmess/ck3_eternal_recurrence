@@ -149,9 +149,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
         for(int metadataIndex=0;metadataIndex<metadataEdges.size();metadataIndex++) {
             var metadata=metadataEdges.get(metadataIndex);
             var boundary=ContinuityJson.parseObject(metadata.details(),ContinuityJson.LEDGER_MAX_BYTES);
-            var expectedBoundary=metadataEdges.size()==2&&metadataIndex==0?JournalKind.BATCH_DEFERRED:JournalKind.BATCH_STARTED;
+            var expectedBoundary=metadataEdges.size()==2&&metadataIndex==0?java.util.Set.of(JournalKind.BATCH_DEFERRED.name(),JournalKind.BATCH_FINISHED.name()):java.util.Set.of(JournalKind.BATCH_STARTED.name());
             StrictJson.require(metadata.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
-                    &&expectedBoundary.name().equals(StrictJson.text(boundary.get("boundary")))
+                    &&expectedBoundary.contains(StrictJson.text(boundary.get("boundary")))
                     &&OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
                     &&boundary.get("checkpoint_pair").isNull()&&boundary.get("completed_cycle_proof").isNull()
                     &&metadata.sequence()==predecessor.sequence()+1
