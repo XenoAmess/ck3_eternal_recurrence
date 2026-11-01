@@ -155,8 +155,9 @@ public final class ImmutableArtifactStore {
     private static final class PublicationLease implements AutoCloseable {
         private final LedgerFiles.LeasedDocument metadata;
         private final LedgerFiles.LeasedDocument data;
-        private PublicationLease(LedgerFiles.LeasedDocument metadata, LedgerFiles.LeasedDocument data) {
-            this.metadata = metadata; this.data = data;
+        private final Commit bound;
+        private PublicationLease(LedgerFiles.LeasedDocument metadata, LedgerFiles.LeasedDocument data, Commit bound) {
+            this.metadata = metadata; this.data = data; this.bound = bound;
         }
         @Override public void close() throws IOException { closePair(data, metadata); }
     }
@@ -189,12 +190,11 @@ public final class ImmutableArtifactStore {
     }
     private Published readLeasedPublication(PublicationLease lease, ExactRef expected, int maximum) throws IOException {
         LedgerFiles.Document metadata = lease.metadata.read();
-        Commit bound = decode(metadata);
-        if (!bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
+        if (!lease.bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
         LedgerFiles.Document data = lease.data.read();
         if (data.pin().reference().bytes() > maximum) throw new IOException("leased artifact exceeds its current declared bound");
-        requirePin(data.pin(), bound.payload()); checkRoot();
-        return new Published(data, metadata, bound.planningOrigin());
+        requirePin(data.pin(), lease.bound.payload()); checkRoot();
+        return new Published(data, metadata, lease.bound.planningOrigin());
     }
     private Published acquirePublication(HistoricalReads reads, ExactRef expected, int maximum) throws IOException {
         LedgerFiles.LeasedDocument metadata = null, data = null;
@@ -205,7 +205,7 @@ public final class ImmutableArtifactStore {
             Commit bound = decode(metadata.original());
             if (!bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
             data = LedgerFiles.lease(bound.payload().reference(), maximum);
-            PublicationLease lease = new PublicationLease(metadata, data);
+            PublicationLease lease = new PublicationLease(metadata, data, bound);
             Published actual = readLeasedPublication(lease, expected, maximum);
             long retainedBytes = Math.multiplyExact(2L, Math.addExact(actual.data().pin().reference().bytes(), actual.metadata().pin().reference().bytes()));
             reads.requireActive();
