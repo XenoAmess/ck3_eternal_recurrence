@@ -1,11 +1,11 @@
 {
   "schema": "xar.des-preset-startup-release-evidence.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-11-01T22:29:33.709148+00:00",
+  "observed_at_utc": "2026-11-01T23:39:47.501625+00:00",
   "product": "dynastic-esotericism",
   "workshop_item_id": "3826991345",
   "target_version": "0.2.1",
-  "publication_status": "NOT_UPLOADED_NOT_TAGGED",
+  "publication_status": "WORKSHOP_UPLOAD_RECEIPT_PENDING",
   "tested_product": {
     "source_HEAD": "1770a0443ab3b7a7ea71a57f609539f1d6a7ad98",
     "mod_version": "0.2.0",
@@ -57,8 +57,66 @@
   },
   "procreation": {
     "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047",
-    "status": "RUNNING_PENDING_INDEPENDENT_NATIVE_AND_SAVE_REVIEW",
-    "business_pass": false
+    "status": "P0_POSTCONDITIONS_AND_ORDINARY_CASE_BOUNDARY_VERIFIED",
+    "scope": "Ordinary GUI custom ruler campaign; Native and independently retained Save selected evidence",
+    "native": {
+      "played_character_id": 63197,
+      "date_raw": 53144328,
+      "rite_id": 150,
+      "faith_id": 31,
+      "faith_key": "des_procreation_faith"
+    },
+    "independent_save": {
+      "actor_id": 63197,
+      "rite_id": 150,
+      "rite_key": "des_procreation_rite",
+      "faith_id": 31,
+      "doctrine": "des_doctrine_dynastic",
+      "date": "1066.9.15",
+      "decoder_original_exit_code": 0,
+      "complete_stream": true
+    },
+    "GUI_global_faith_list": {
+      "screenshot": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047\\operator-evidence\\gui\\19-faith-list-bottom.png",
+        "bytes": 1493736,
+        "sha256": "7e2faad795a039bd61d3c1b94fdfca8ea43b37b1a2f5243a48a524b1c3c460b4"
+      },
+      "procreation_followers": 8,
+      "vivhite_followers": 0,
+      "vivhite_counties": 0,
+      "interpretation": "Both actual rows are visible in one game screen; zero-adherent White Faith visibility is directly observed."
+    },
+    "driver_state_replace": "unconfirmed",
+    "driver_state_reason": "save_binding_mismatch",
+    "driver_save_binding_verified": false,
+    "public_original_exit_code": 0,
+    "public_timed_out": false,
+    "public_exit_status": "ORIGINAL_WAIT0",
+    "normal_close_status": "QUALIFIED",
+    "whole_case_pass": false,
+    "cold_reload_performed": false,
+    "public_finished_at_utc": "2026-11-01T23:36:25.204715800Z",
+    "normal_close_qualified": true,
+    "cleanup_proven": true,
+    "managed_thread_finished": true,
+    "host_error": null,
+    "retained_Game_OS_exit_code": 0,
+    "native_process_exit_code": 0,
+    "typed_quit_terminal": "acceptance-typed-quit-009",
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "business_contract_applicable": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "whole_case_pass_scope": "No complete product business matrix pass is claimed. Ordinary promotion case acceptance and qualified boundary are reported separately.",
+    "resource_close_status": "ACTUAL_NORMAL_RESOURCE_CLOSED",
+    "SCREEN_done_sequence": 10146,
+    "recording_duration_seconds": 10.0,
+    "recording_raw_bytes": 2479156,
+    "Root_review_checkpoint_at": "2026-11-01T23:33:37.648950+00:00",
+    "raw_frame_review_performed_by_root": true,
+    "recording_result_boundary": "CAPTURED_UNREVIEWED_NOT_FINAL_VIDEO"
   },
   "full_business_matrix_pass": false,
   "evidence": [
@@ -101,6 +159,75 @@
       "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\R46-RESOURCE-CLOSE-a01.actual.json",
       "bytes": 4095,
       "sha256": "7fa2963d87c9349b6c0c6d27ef7ad31a442708cd0e8d6b5361a9b7c834977ce6"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047\\operator-evidence\\R47-PROCREATION-NATIVE-SAVE-ASSESSMENT-a01.actual.json",
+      "bytes": 13406,
+      "sha256": "8b769481ed661d0856082090e8528240826acef4d3d759219d0cdacdf3827381"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047\\operator-evidence\\R47-NATIVE-RELIGION-OBSERVATION-a01.actual.json",
+      "bytes": 99370,
+      "sha256": "f1b9ad9b4b66bf01a4ec310b6415ebba52ef4857c99af6b549935683fb662196"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047\\operator-evidence\\R47-PROCREATION-INDEPENDENT-READER-a01.actual.json",
+      "bytes": 207447,
+      "sha256": "a6fdd5026dfed97f1c79194a95d16466dc2e548fa9d240a2810f7be2ef82d4d1"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047\\operator-evidence\\gui\\18-faith-details-after.png",
+      "bytes": 1505879,
+      "sha256": "b89b9b50c173ad8cd0bcb048b717b19b832935ef5361bdd536009bd3f691687a"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047\\operator-evidence\\gui\\19-faith-list-bottom.png",
+      "bytes": 1493736,
+      "sha256": "7e2faad795a039bd61d3c1b94fdfca8ea43b37b1a2f5243a48a524b1c3c460b4"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\PROCREATION-PUBLIC-RUN-a06.original-wait.actual.json",
+      "bytes": 2164,
+      "sha256": "c13094b01d44ffc1a33868774f37386ea11716d663bea47ee5b69c4b3e379805"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047\\case-output\\normal-close-result.json",
+      "bytes": 9723,
+      "sha256": "d42eb463253c6f616130e387f475d0b9440886258779a3eb86e5b9b87618d3d3"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\R47-PUBLIC-VERIFY-a01.actual.json",
+      "bytes": 58459,
+      "sha256": "122969afbf31f3c6f65c4e8723f92a73b362a47eb3eb7d202978fced4c725c10"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0047\\host-original-process-exit.json",
+      "bytes": 257,
+      "sha256": "06e8e148331ec5cb5d8f321382095dae7967f4eda6e8a0d22290990a0c049b58"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\R47-SCREEN-RELEASE-CAS-a01.actual.json",
+      "bytes": 1413,
+      "sha256": "c2d77e4dca360ab5b9f5aa75a5e45d92a54b2f466110eb635bcfe90ed125cc50"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\game-cases\\R47-RESOURCE-CLOSE-a01.actual.json",
+      "bytes": 3913,
+      "sha256": "e0e0b59d7503267310998ceb33d32bffc25fd6b632de6dce7cc2cc136dcc80cf"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\targeted-recordings\\procreation\\capture\\r47-procreation-faith-list-a01\\recorder-final.json",
+      "bytes": 1757,
+      "sha256": "923bd28792319a5b485b583a16dda7e951d23850ecce023769c9d3b399dc516d"
     }
-  ]
+  ],
+  "P0_observed_postconditions": {
+    "vivhite_custom_ruler_faith_retained": true,
+    "procreation_custom_ruler_faith_retained": true,
+    "both_Faith_rows_visible_including_zero_adherent_White": true,
+    "procreation_initial_Rite_is_dynastic": true,
+    "scope": "Actual Native, independently decoded Save, and GUI facts; not a substitute for final public exit/whole-case or full matrix completion."
+  },
+  "upload_receipt": null,
+  "public_Workshop_readback": null
 }
