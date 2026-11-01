@@ -46,7 +46,7 @@ public final class RootPendingInteractionEffects implements NativeEffectRegistry
     }
     public List<NativeEffectRegistry.Binding> bindings() { return OPERATIONS.stream().map(operation->new NativeEffectRegistry.Binding(operation,sources.mux(),this,this)).toList(); }
     public List<NativeRecordedEvidenceVerifier.Binding> archivedVerifiers() {
-        List<NativeRecordedEvidenceVerifier.Binding> originalKnown=KnownPendingInteractionEffects.archivedVerifiers(sources.knownEffects(),frames);
+        List<NativeRecordedEvidenceVerifier.Binding> originalKnown=KnownPendingInteractionEffects.archivedVerifiers(sources.knownEffects(),RootAdvanceInfrastructureFactory.freshFrameLoader(frames));
         return OPERATIONS.stream().map(operation->new NativeRecordedEvidenceVerifier.Binding(operation,sources.mux(),(head,receipt,archive)-> {
             if(branch(receipt.command())==Branch.KNOWN)originalKnown.stream().filter(b->b.operation().equals(operation)).findFirst().orElseThrow().verifier().verify(head,receipt,archive);
             else NativeEventEffects.archivedVerifier(operation,sources.eventEffects(),frames,material).verifier().verify(head,receipt,archive);
