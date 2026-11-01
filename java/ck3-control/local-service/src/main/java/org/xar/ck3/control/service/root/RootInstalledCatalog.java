@@ -454,6 +454,34 @@ public final class RootInstalledCatalog {
         remaining.afterInitialEntry(same,actual);
     }
 
+    public FreshCampaignContext initializeConfirmedSaved(ContinuityStorePort.Session same, RootApplicationAssembly.Core.ConfirmedSavedDomainProof actual, java.time.Instant deadline) throws IOException {
+        context.writer().requireSession(same);
+        actual.requireCurrent(same, context);
+        var frame = actual.frame();
+        var campaign = FreshCampaignContext.create(context, same, frame, deadline);
+
+        nativeGovernance.initializeContinuation(same, campaign);
+        if (requiresFreshImport(same, DomainBodies.Slot.CONSTRUCTION)) construction.initializeFresh(same, campaign);
+        factory.sources().finance().initializeFresh(context, same, campaign);
+        factory.sources().prisonerConfiguration().definitions().initialize(same, campaign);
+        factory.sources().governance().afterInitialEntry(same, campaign);
+        factory.sources().governanceDomains().initialize(same, campaign);
+        factory.sources().crossRun().initializeFresh(context, same, campaign);
+        offline.afterInitialEntry(same, campaign);
+
+        var retreatRead = same.readDomain(DomainBodies.Slot.ACTIVE_RETREAT);
+        if (retreatRead instanceof DomainBodies.Available) {
+            army.currentRetreatDomain(same);
+        } else if (retreatRead instanceof DomainBodies.Unavailable unavailable && unavailable.reason() == DomainBodies.Reason.UNIMPORTED) {
+            army.initializeConfirmedSaved(same, actual);
+        } else {
+            throw new IOException("Saved Army initialization cannot replace an unavailable body: " + DomainBodies.Slot.ACTIVE_RETREAT);
+        }
+
+        remaining.afterInitialEntry(same, campaign);
+        return campaign;
+    }
+
     static boolean requiresFreshImport(ContinuityStorePort.Session same,DomainBodies.Slot slot)throws IOException {
         var current=same.readDomain(slot);
         if(current instanceof DomainBodies.Available)return false;

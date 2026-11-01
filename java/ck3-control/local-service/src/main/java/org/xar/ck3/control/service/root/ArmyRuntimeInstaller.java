@@ -179,6 +179,15 @@ public final class ArmyRuntimeInstaller implements AutoCloseable {
         if(actual.adopted()!=context.adopted())throw new IOException("Fresh Army input belongs to another real Driver");
         return required().retreatDomain().initializeNewEpisode(session,actual.frame());
     }
+    /** Saved-specific consumer: requires the actual Core proof and calls the frozen M3 Saved domain method exactly once. */
+    public ArmyRetreatDomain.Known initializeConfirmedSaved(ContinuityStorePort.Session same, RootApplicationAssembly.Core.ConfirmedSavedDomainProof actual) throws IOException {
+        context.writer().requireSession(same);
+        Objects.requireNonNull(actual).requireCurrent(same, context);
+        StrictJson.require(actual.context() == context && actual.adopted() == context.adopted(), "Saved proof crossed the actual Root context or adopted Driver");
+        var product = required();
+        return product.retreatDomain().initializeConfirmedSaved(same, actual.frame());
+    }
+
     /** Restoration retains the latest canonical domain, including claims created after the SAVE. It never imports an empty state. */
     public ArmyRetreatDomain.Known adoptRestored(ContinuityStorePort.Session session,RootRestorationOriginalProof actualRestoration)throws IOException {
         context.writer().requireSession(session);Objects.requireNonNull(actualRestoration).requireCurrent(session);

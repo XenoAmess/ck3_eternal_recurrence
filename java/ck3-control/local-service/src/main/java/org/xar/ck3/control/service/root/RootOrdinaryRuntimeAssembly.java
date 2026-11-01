@@ -278,6 +278,38 @@ public final class RootOrdinaryRuntimeAssembly {
         }
     }
 
+    public static Prepared prepareRetainedLoadedSaved(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            RootJavaSavedBootstrap.ConfirmedSource source)throws IOException {
+        Objects.requireNonNull(config);Objects.requireNonNull(clock);Objects.requireNonNull(source);
+        var saved=source.savedState();
+        if(!saved.machineId().equals(config.machineId()))throw new IOException("confirmed source belongs to another machine");
+        Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application parent");
+        var paths=new WriterContracts.InitialLayout(root.resolve("continuity/continuity.json"),
+                root.resolve("continuity/genesis-anchor.json"),config.machineId());
+        if(!Files.isRegularFile(paths.snapshot(),java.nio.file.LinkOption.NOFOLLOW_LINKS)
+                ||!Files.isRegularFile(paths.anchor(),java.nio.file.LinkOption.NOFOLLOW_LINKS)
+                ||!Files.isDirectory(paths.events(),java.nio.file.LinkOption.NOFOLLOW_LINKS))
+            throw new IOException("loaded Saved continuation requires its existing complete retained store");
+        var origin=saved.origin();
+        var expected=new org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan(
+                config.machineId(),origin.windowId(),origin.targetDays());
+        byte[] wanted=org.xar.ck3.control.continuity.FreshContinuityGenesis.encode(expected);
+        byte[] actual;
+        try(var input=Files.newInputStream(paths.snapshot().getParent().resolve("genesis-request.json"))) {
+            actual=input.readNBytes(org.xar.ck3.control.continuity.FreshContinuityGenesis.MAXIMUM_REQUEST_BYTES+1);
+        }
+        if(!java.util.Arrays.equals(wanted,actual))
+            throw new IOException("loaded Saved genesis request differs from the actual confirmed source policy");
+        var prepared=prepare(config,clock);
+        try {
+            prepared.bindRetainedLoadedSavedSource(source);
+            return prepared;
+        }catch(IOException|RuntimeException|Error failure) {
+            try{prepared.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
+            throw failure;
+        }
+    }
+
     private static org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan genesisRequest(Path request,
             org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan expected)throws IOException {
         byte[] wanted=org.xar.ck3.control.continuity.FreshContinuityGenesis.encode(expected);
@@ -316,6 +348,7 @@ public final class RootOrdinaryRuntimeAssembly {
         private boolean entered;
         private boolean closed;
         private RootJavaSavedBootstrap.ConfirmedSource loadedSavedSource;
+        private RootJavaSavedBootstrap.ConfirmedSource retainedSavedSource;
         private final boolean sourceOnly;
 
         private Prepared(RootOrdinaryRuntimeConfiguration config,Clock clock,NativeLaunchPlan plan,
@@ -368,6 +401,23 @@ public final class RootOrdinaryRuntimeAssembly {
             loadedSavedSource=source;
         }
 
+        /** Binds the actual retained Saved source for an existing non-empty ledger; no fresh genesis or preentry check. */
+        private synchronized void bindRetainedLoadedSavedSource(RootJavaSavedBootstrap.ConfirmedSource source)throws IOException {
+            Objects.requireNonNull(source);
+            if(closed||entered||core!=null||game!=null||loadedSavedSource!=null||retainedSavedSource!=null)
+                throw new IOException("retained loaded Saved source graph is already consumed or closed");
+            if(sourceOnly)throw new IOException("source-only reader cannot bind retained loaded Saved continuation");
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))
+                throw new IOException("retained loaded Saved source requires the actual Saved plan");
+            core=RootApplicationAssembly.open(app,clock,catalogs.domainRegistrations(),Optional.empty(),storage);
+            core.bindM5JointPeacetimeEnabled(config.m5JointPeacetimeEnabled());
+            core.bindFirstHeirMarriageEnabled(config.firstHeirMarriageEnabled());
+            core.bindNewMarriageProposalsEnabled(config.newMarriageProposalsEnabled());
+            ports.bindCore(core);catalogs.bindCore(core);
+            core.requireRetainedConfirmedSaved(source);
+            retainedSavedSource=source;
+        }
+
         /** Consumes an actual private loaded-Saved custody; no Started object or launch is synthesized. */
         public synchronized Running openLoadedSaved(ManagedGameSession actualAttached,
                 RootJavaSavedBootstrap.ConfirmedSource source,
@@ -399,6 +449,40 @@ public final class RootOrdinaryRuntimeAssembly {
             var driver=runOperationPhase(clock,Duration.ofMinutes(10),until->{
                 var admission=RootJavaSavedBootstrap.admitLoaded(source,installed.context(),custody,until);
                 return core.adoptConfirmedSaved(admission,sourceG2,config.retainedFrames(),until);
+            });
+            return opened.finishConfirmedSaved(driver,deadline);
+        }
+
+        /** Opens the actual retained loaded-Saved continuation without launching, replaying Entry or resetting the ledger. */
+        public synchronized Running openRetainedLoadedSaved(ManagedGameSession actualAttached,
+                RootJavaSavedBootstrap.ConfirmedSource source,
+                org.xar.ck3.control.platform.RootProcessAttach.LoadedCustody custody,
+                Instant deadline)throws IOException,InterruptedException {
+            Objects.requireNonNull(actualAttached);Objects.requireNonNull(source);
+            Objects.requireNonNull(custody);Objects.requireNonNull(deadline);
+            if(sourceOnly)throw new IOException("source-only reader cannot open retained loaded Saved continuation");
+            if(closed||entered||core==null||game!=null||retainedSavedSource!=source)
+                throw new IOException("retained loaded Saved graph is unavailable or differs from its retained source");
+            if(actualAttached.mode()!=ManagedGameSession.Mode.ATTACHED||actualAttached.launchPlan()!=plan
+                    ||!(plan.load() instanceof NativeLaunchPlan.SavedGame)
+                    ||custody.game()!=actualAttached||!custody.pair().equals(source.pair()))
+                throw new IOException("retained loaded Saved requires the exact attached Game, Saved plan and private custody");
+            custody.requireCurrent();actualAttached.verify();
+            core.requireRetainedConfirmedSaved(source);
+            entered=true;game=actualAttached;
+            lifecycle.adoptAttached(actualAttached);
+            products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
+            actualAttached.nativeTransport().awaitHello(clock.instant().plus(config.operationTimeout()));
+            var hello=actualAttached.nativeTransport().originalHello();
+            var sourceG2=new G2Source(actualAttached.machineId(),clock.instant().toString(),hello.gameSha256(),
+                    metadata.implementation(RootOrdinaryRuntimeAssembly.class));
+            var opened=new Opened(this,sourceG2);
+            var installed=runOperationPhase(clock,config.operationTimeout(),until->
+                    catalogs.install(core,actualAttached,sourceG2,core.planningReads(),clock,until));
+            opened.installed=installed;
+            var driver=runOperationPhase(clock,Duration.ofMinutes(10),until->{
+                var retained=RootJavaSavedBootstrap.reopenLoaded(source,installed.context(),custody,until);
+                return core.adoptRetainedSaved(retained,sourceG2,config.retainedFrames(),until);
             });
             return opened.finishConfirmedSaved(driver,deadline);
         }
