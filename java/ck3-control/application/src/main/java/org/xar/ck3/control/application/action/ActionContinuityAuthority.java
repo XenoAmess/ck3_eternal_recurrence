@@ -1,6 +1,8 @@
 package org.xar.ck3.control.application.action;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
@@ -38,7 +40,11 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
     }
     @Override public String revalidate(WriterContracts.Head actualLockedHead, WriterContracts.Request request) {
         ContinuityState predecessor = actualLockedHead.state();
-        ActionReceipt receipt = receipt(request); ProtocolIdentityAdmission.requireUnique(ContinuityActionJournal.receipts(predecessor, archive), receipt.command()); ActionTransitions.validate(ContinuityActionJournal.lookup(predecessor, receipt.command().actionId(), archive), receipt.command(), receipt.bodySha256(), receipt.state());
+        ActionReceipt receipt = receipt(request);
+        List<ActionReceipt> canonicalReceipts = ContinuityActionJournal.receipts(predecessor, archive);
+        ProtocolIdentityAdmission.requireUnique(canonicalReceipts, receipt.command());
+        Optional<ActionReceipt> existing = canonicalReceipts.stream().filter(r -> r.command().actionId().equals(receipt.command().actionId())).findFirst();
+        ActionTransitions.validate(existing, receipt.command(), receipt.bodySha256(), receipt.state());
         ActionRecord record = archive.loadRecord(org.xar.ck3.control.contracts.ExactRef.fromJson(request.detailsObject().get("receipt_ref")));
         StrictJson.require(record.previous().equals(ContinuityActionJournal.recordHead(predecessor)), "action record predecessor changed under writer lock");
         PhysicalActionRegistry physical = physicalActions;
@@ -65,9 +71,13 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         return ActionCodec.sha256(ActionReceiptCodec.encodeReceipt(receipt, archive));
     }
     @Override public ContinuityState reduce(ContinuityState predecessor, WriterContracts.Request request) {
-        ActionReceipt receipt = receipt(request); ProtocolIdentityAdmission.requireUnique(ContinuityActionJournal.receipts(predecessor, archive), receipt.command()); StrictJson.require(receipt.sequence() == Math.addExact(predecessor.sequence(), 1), "action event must consume actual next writer sequence");
+        ActionReceipt receipt = receipt(request);
+        List<ActionReceipt> canonicalReceipts = ContinuityActionJournal.receipts(predecessor, archive);
+        ProtocolIdentityAdmission.requireUnique(canonicalReceipts, receipt.command());
+        StrictJson.require(receipt.sequence() == Math.addExact(predecessor.sequence(), 1), "action event must consume actual next writer sequence");
         StrictJson.require(receipt.command().origin().machineId().equals(predecessor.machineId()), "action machine must equal canonical writer machine");
-        ActionTransitions.validate(ContinuityActionJournal.lookup(predecessor, receipt.command().actionId(), archive), receipt.command(), receipt.bodySha256(), receipt.state());
+        Optional<ActionReceipt> existing = canonicalReceipts.stream().filter(r -> r.command().actionId().equals(receipt.command().actionId())).findFirst();
+        ActionTransitions.validate(existing, receipt.command(), receipt.bodySha256(), receipt.state());
         ObjectNode next = predecessor.toJson();
         ActionRecord record = archive.loadRecord(org.xar.ck3.control.contracts.ExactRef.fromJson(request.detailsObject().get("receipt_ref")));
         StrictJson.require(record.previous().equals(ContinuityActionJournal.recordHead(predecessor)), "action record predecessor changed");
