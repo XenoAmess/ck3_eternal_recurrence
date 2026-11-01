@@ -31,6 +31,7 @@ import org.xar.ck3.control.wave2.events.sourcecatalog.EvidenceGrantManifestPubli
 public final class OfflineScanSource {
     public static final int CAPTURED_DIAGNOSTIC_MAXIMUM = 16 << 20;
     private static final int FILE_MAX = 1 << 20;
+    private static final long TOTAL_INVENTORY_MAX = 64L << 20;
     private OfflineScanSource() { }
     public record ExternalOriginal(ExactRef source, long maximumBytes) { }
     public record Loaded(Binding binding, byte[] manifestBytes, List<ExactRef> scanOriginals, List<ExternalOriginal> externalOriginals, Set<ExactRef> diagnosticBeforeRefs) {
@@ -61,7 +62,6 @@ public final class OfflineScanSource {
             incidentRoot = scope.incidentRoot(); scans = scope.scanRoot();
         }
         require(actual.observation().machineId().equals(machineId), "Actual scan belongs to another source machine");
-        verifySource(actual.source().sourceRef());
         require(manifestPath.equals(scans.resolve("incidents-" + manifest.sha256() + ".batch.json")), "Actual manifest filename lost its source digest");
         byte[] indexRaw = read(scans, actual.indexRef());
         require(Path.of(actual.indexRef().path()).equals(scans.resolve(actual.indexRef().sha256() + ".scan.json")), "Actual scan-index filename lost its source digest");
@@ -80,7 +80,7 @@ public final class OfflineScanSource {
         for (JsonNode item : index.path("original_refs")) {
             ExactRef ref = ExactRef.fromJson(item); Path path = absolute(ref.path());
             require(originals.put(path, ref) == null, "Duplicate original journal path");
-            if (path.startsWith(incidentRoot)) { total = Math.addExact(total, ref.bytes()); require(total <= 16L << 20, "Actual internal journal source inventory exceeds its finite bound"); }
+            if (path.startsWith(incidentRoot)) { total = Math.addExact(total, ref.bytes()); require(total <= TOTAL_INVENTORY_MAX, "Actual internal journal source inventory exceeds its finite bound"); }
         }
         ExactRef episodeRef = ExactRef.fromJson(index.get("episode_ref"));
         require(absolute(episodeRef.path()).equals(incidentRoot.resolve("EPISODE.json")) && episodeRef.equals(originals.get(absolute(episodeRef.path()))), "Original episode stamp is outside the actual scan inventory");
@@ -117,12 +117,12 @@ public final class OfflineScanSource {
             ExactRef before = ExactRef.fromJson(origin.get("before_ref"));
             require(absolute(before.path()).equals(incidentRoot.resolve(id + ".before.json")) && before.equals(originals.get(absolute(before.path()))), "Before index lost its complete inventory pin");
             // V2 retains its one receipt; V3 retains only the explicitly declared failed-read set.
-            // Match the producer's 16 MiB scan budget without recursively following any receipt.
+            // Aggregate inventory is separate; each declared failed-read original retains its 16 MiB role.
             for (ExactRef ref : readOriginals.references()) {
                 Path path = absolute(ref.path());
                 if (!path.startsWith(incidentRoot) && !external.containsKey(path)) {
                     total = Math.addExact(total, ref.bytes());
-                    require(total <= 16L << 20, "Actual read-original scan inventory exceeds its finite bound");
+                    require(total <= TOTAL_INVENTORY_MAX, "Actual read-original scan inventory exceeds its finite bound");
                 }
                 long maximum = readOriginals instanceof IncidentReadIndex.KnownReceipt ? FILE_MAX : (16L << 20);
                 declareExternal(originals, external, ref, maximum);
@@ -227,7 +227,6 @@ public final class OfflineScanSource {
         for (ExactRef ref : original.scanOriginals()) read(incidentRoot, ref, original.capturedMaximum(ref));
         for (ExternalOriginal ref : original.externalOriginals()) verifyExternal(ref.source(), ref.maximumBytes());
         if (original.binding() instanceof ObservedScan actual) read(root, actual.indexRef());
-        if (original.binding() instanceof ObservedScan actual) verifySource(actual.source().sourceRef());
         byte[] actual = read(root, manifest); require(java.util.Arrays.equals(actual, original.manifestBytes()), "Original manifest changed during source review");
     }
     private static ExactRef stage(ObjectNode row, String name, Path expected, Map<Path, ExactRef> supplied, Map<Path, ExactRef> actual) {
@@ -257,9 +256,6 @@ public final class OfflineScanSource {
         require(raw.length == ref.bytes() && SourceReviewJson.sha(raw).equals(ref.sha256()), "Actual journal source bytes or SHA changed"); return raw;
     }
     private static ObjectNode json(byte[] raw) { return object(StrictJson.parse(ProjectionJson.object(raw, FILE_MAX).bytes(), FILE_MAX)); }
-    private static void verifySource(ExactRef ref) throws IOException {
-        verifyExternal(ref, 64L << 20);
-    }
     private static void declareExternal(Map<Path, ExactRef> originals, Map<Path, ExternalOriginal> external, ExactRef ref, long maximum) {
         Path path = absolute(ref.path()); require(ref.equals(originals.get(path)), "Declared external original is missing from the complete scan inventory");
         ExternalOriginal old = external.putIfAbsent(path, new ExternalOriginal(ref, maximum));

@@ -65,7 +65,7 @@ public final class EpisodeIncidentJournal {
     private static final int MAX_METADATA = 1 << 20;
     // Complete incident bodies stay within the existing material cap; scan inventory remains separately bounded.
     private static final int MAX_BODY = FullJsonTree.MAXIMUM_BYTES;
-    private static final long MAX_SCAN_BYTES = 16L << 20;
+    private static final long MAX_SCAN_BYTES = 64L << 20;
     private final Configuration configured;
     private final ExactRef episodeRef;
     private final Binding episode;
