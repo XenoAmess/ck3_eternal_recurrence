@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.checkpoint.CheckpointCommitVerifier;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
 import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
@@ -184,16 +185,16 @@ public final class RootJavaSavedBootstrap {
                 StrictJson.require(before.digest().equals(same.head().digest()),"saved READ original capture changed the new writer head");
                 return List.copyOf(originals);
             });
-            StrictJson.require(first.originalFrame().session().equals(second.originalFrame().session())
-                    &&first.originalFrame().nativeRevision().equals(second.originalFrame().nativeRevision())
-                    &&Arrays.equals(first.originalFrame().state().bytes(),second.originalFrame().state().bytes()),
-                    "two actual loaded paused READs did not retain the same original full map"
-                    +"; first_ack="+readOriginals.get(0)+"; first_frame="+readOriginals.get(1)
-                    +"; second_ack="+readOriginals.get(2)+"; second_frame="+readOriginals.get(3)
-                    +"; first_native_revision="+first.originalFrame().nativeRevision()
-                    +"; second_native_revision="+second.originalFrame().nativeRevision()
-                    +"; session_equal="+first.originalFrame().session().equals(second.originalFrame().session())
-                    +"; state_bytes_equal="+Arrays.equals(first.originalFrame().state().bytes(),second.originalFrame().state().bytes()));
+            try {
+                RestoreCheckpointService.requireStableReadProgression(first.originalFrame(), second.originalFrame());
+            } catch (RuntimeException failure) {
+                throw new IOException("two actual loaded paused READs failed stable progression: first_ack=" + readOriginals.get(0)
+                        + "; first_frame=" + readOriginals.get(1)
+                        + "; second_ack=" + readOriginals.get(2)
+                        + "; second_frame=" + readOriginals.get(3)
+                        + "; first_native_revision=" + first.originalFrame().nativeRevision()
+                        + "; second_native_revision=" + second.originalFrame().nativeRevision(), failure);
+            }
             source.requireCurrent();physical.requireCurrent();
             return context.withSession(same->{
                 context.writer().requireSession(same);var head=same.head();
