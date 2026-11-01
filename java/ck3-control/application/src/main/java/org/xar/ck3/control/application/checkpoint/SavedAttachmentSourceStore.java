@@ -278,6 +278,28 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
                     "present confirmed material changed its identity or historical source");
             return current.material;
         }
+        public SavedMaterial requireRetained(ContinuityStorePort.Session same)throws IOException {
+            StrictJson.require(issuer.sessions.current()==same&&same.head().digest().equals(sourceDigest),
+                    "retained qualification crossed the actual old source head or writer Session");
+            same.verifyPin(confirmation.eventPin());
+            var edge=same.readHistoricalTransition(confirmation.eventPin());
+            StrictJson.require(edge.eventIdentity().equals(confirmation.eventIdentity())&&edge.sequence()==confirmation.sequence()
+                    &&edge.kind().equals(confirmation.kind())&&Arrays.equals(edge.details(),confirmation.details())
+                    &&ContinuityJson.same(edge.before().toJson(),confirmation.before().toJson())
+                    &&ContinuityJson.same(edge.after().toJson(),confirmation.after().toJson())
+                    &&ContinuityJson.same(same.head().state().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),
+                        edge.after().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)),
+                    "retained source lost its actual canonical confirmation or surviving saved branch");
+            var current=issuer.loadRetainedOriginal(same,present,material.pair());
+            StrictJson.require(current.pair().equals(material.pair())&&current.witness().equals(present)
+                    &&current.session().equals(material.session())&&sameProof(current.proof(),material.proof())
+                    &&ContinuityJson.same(current.originalHead().toJson(),material.originalHead().toJson())
+                    &&current.originalHeadDigest().equals(material.originalHeadDigest())
+                    &&current.checkpointDigest().equals(material.checkpointDigest())
+                    &&Arrays.equals(current.savedDriver().encode(),material.savedDriver().encode()),
+                    "retained historical material differs from its actual source-qualified identity");
+            return current;
+        }
     }
 
     /** Durable original material only. This never qualifies the current physical pair for reload or grants a new Game. */
