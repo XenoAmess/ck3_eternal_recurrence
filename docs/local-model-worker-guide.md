@@ -1,8 +1,10 @@
 # 本地模型：跨机器 worker 使用与实际经验
 
-> **迁移入口（2026-11-01）**：通用方法、执行规范、能力边界和经验已迁至 [local-model-operations](https://github.com/XenoAmess/local-model-operations)，接手时先读其 [AGENTS](https://github.com/XenoAmess/local-model-operations/blob/main/AGENTS.md)与[使用指南](https://github.com/XenoAmess/local-model-operations/blob/main/docs/usage.md)。下方原正文仅作冻结历史；[精确原文档案](https://github.com/XenoAmess/local-model-operations/blob/8bb613ac38663f0de2caddf16b983ff9e2d44636/docs/history/local-model-worker-guide.md)和[来源及 SHA-256](https://github.com/XenoAmess/local-model-operations/blob/8bb613ac38663f0de2caddf16b983ff9e2d44636/docs/source-origins.md)保留原版本。
+> **父目录共享入口（2026-11-01）**：在消费项目的父目录克隆并同步维护 [local-model-operations](https://github.com/XenoAmess/local-model-operations)；本机指定 checkout 为 `Z:/workspace/local-model-operations`。先 clone，或在已有干净 `main` 上 `git fetch origin` 后 `git merge --ff-only origin/main`；保留本地改动或分叉，不以强制覆盖代替同步。
 >
-> 本项目的[执行器配置](local-model-executor-config.json)仍是 CK3 运行的业务兼容投影，本次不修改配置 schema、服务参数或现用 caller；CK3 运行权限和真实业务记录仍按本项目规定。
+> 接入前先读共享仓库的 [AGENTS](https://github.com/XenoAmess/local-model-operations/blob/main/AGENTS.md)、[使用指南](https://github.com/XenoAmess/local-model-operations/blob/main/docs/usage.md)与[config/executor.json](https://github.com/XenoAmess/local-model-operations/blob/main/config/executor.json)。新经验和代码及时提交推送 `main`；本项目[执行器配置](local-model-executor-config.json)按明确来源显式维护兼容投影，仓库同步不自动切换活跃 Game/worker 的配置或 caller。
+>
+> 下方正文仅作冻结历史；[精确原文档案](https://github.com/XenoAmess/local-model-operations/blob/8bb613ac38663f0de2caddf16b983ff9e2d44636/docs/history/local-model-worker-guide.md)和[来源及 SHA-256](https://github.com/XenoAmess/local-model-operations/blob/8bb613ac38663f0de2caddf16b983ff9e2d44636/docs/source-origins.md)保留原版本。CK3 运行权限和真实业务记录仍按本项目规定。
 
 更新：2026-10-31。所有机器的 worker 共用本指南和 [唯一配置](local-model-executor-config.json)；不以旧交接中的地址、机器名或 D 盘路径配置新任务。用户已明确授权持续高并发使用本地模型，并要求继续探索能力边界。
 

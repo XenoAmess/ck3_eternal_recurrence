@@ -19,7 +19,7 @@ Workshop。** 玩家应从具体产品入口安装；发布者应使用对应的
 | 了解整个项目为何存在、如何运转 | [咒、术、道与辉煌愿景](docs/project-system-overview.md) |
 | 查看自动游玩智能体的真实能力边界 | [进度中心](docs/autonomous-agent-progress/README.md) |
 | 开发或维护 CK3 Mod | [统一开发范式](docs/ck3-mod-development-paradigm.md) |
-| 使用本地模型、查看通用规范与实际经验 | [独立仓库 local-model-operations](https://github.com/XenoAmess/local-model-operations) · [现行使用指南](https://github.com/XenoAmess/local-model-operations/blob/main/docs/usage.md) |
+| 接入本地模型并同步维护父目录共享仓库 | [local-model-operations](https://github.com/XenoAmess/local-model-operations) · [先读使用与配置](https://github.com/XenoAmess/local-model-operations/blob/main/docs/usage.md)；本机 `Z:/workspace/local-model-operations`，先 clone 或安全快进同步 `main`，新经验和代码及时提交推送 |
 | 迁移、验收和发布独立或外部 Mod | [现有工具链与实证方法](docs/external-mod-toolchain.md) |
 | 查找机制、语法、测试和发布知识 | [docs 知识库](docs/README.md) |
 | 使用在线 CK3 家徽编辑器 | [打开 Web 产品](https://xenoamess.github.io/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/) |
