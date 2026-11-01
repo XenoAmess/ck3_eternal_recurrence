@@ -688,7 +688,7 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
                 Queue queue=pending.get();
                 if(queue==null){queue=new Queue(same,same.head(),known,frozen.actions());pending.set(queue);}
                 StrictJson.require(queue.session==same&&queue.head.digest().equals(same.head().digest())&&queue.prepared==null
-                        &&queue.before.stamp().equals(known.stamp())&&Arrays.equals(queue.before.driver().encode(),known.driver().encode()),"read batch crossed its original Driver/head/scope");
+                        &&queue.before.stamp().equals(known.stamp())&&((queue.before.driver()==known.driver()&&known.driver().session().actorId().getClass()==java.math.BigInteger.class)||Arrays.equals(queue.before.driver().encode(),known.driver().encode())),"read batch crossed its original Driver/head/scope");
                 for(Item existing:queue.items)if(existing.known().originalReceipt().equals(actual.originalReceipt())) {
                     StrictJson.require(existing.contract()==identicalInstalled&&existing.known().receipt().equals(actual.receipt()),"same original read changed contract/receipt");return null;
                 }
@@ -726,7 +726,7 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
         Queue queue=pending.get();
         if(queue==null){queue=new Queue(same,same.head(),known,frozen.actions());pending.set(queue);}
         StrictJson.require(queue.session==same&&queue.head.digest().equals(same.head().digest())&&queue.prepared==null
-                &&queue.before.stamp().equals(known.stamp())&&Arrays.equals(queue.before.driver().encode(),known.driver().encode()),
+                &&queue.before.stamp().equals(known.stamp())&&((queue.before.driver()==known.driver()&&known.driver().session().actorId().getClass()==java.math.BigInteger.class)||Arrays.equals(queue.before.driver().encode(),known.driver().encode())),
                 "rich batch crossed its original Driver/head/borrowed scope");
         return queue;
     }
