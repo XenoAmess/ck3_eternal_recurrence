@@ -710,7 +710,10 @@ public final class EpisodeIncidentJournal {
         }
         return measure(target);
     }
-    private static byte[] encode(ObjectNode body) { return ProposalLifecycleCodec.encodePayload(body, MAX_BODY); }
+    private static byte[] encode(ObjectNode body) {
+        byte[] complete = FullJsonTree.encode(body, MAX_BODY);
+        return complete.length <= MAX_METADATA ? ProposalLifecycleCodec.encodePayload(body, MAX_METADATA) : complete;
+    }
     private static RetainedJson.ObjectValue retained(ObjectNode value) { return RetainedJson.object(RetainedJson.parse(encode(value))); }
     private static ObjectNode object(JsonNode node) { StrictJson.require(node instanceof ObjectNode, "Actual JSON object required"); return (ObjectNode)node; }
     private static ObjectNode object(byte[] raw) { return object(FullJsonTree.parse(raw, MAX_BODY)); }
