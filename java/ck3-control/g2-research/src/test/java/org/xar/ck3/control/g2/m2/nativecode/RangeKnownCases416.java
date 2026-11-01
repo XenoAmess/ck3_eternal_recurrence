@@ -1,0 +1,47 @@
+package org.xar.ck3.control.g2.m2.nativecode;
+import java.util.List;
+import org.xar.ck3.control.g2.m2.nativecode.RangeKnownData416.*;
+/** Independent original-source literals; observable data Memory only. */
+public final class RangeKnownCases416 {
+    private RangeKnownCases416() { }
+    private static Step s(Op op,Long... values) {
+        return new Step(op,List.copyOf(java.util.Arrays.asList(values)),0L);
+    }
+    public static List<Scene> scenes() {
+        return List.of(new Scene(new PendingContextRangeInsertBCB7C0.Input(0x8100000000005000L,0,0x8100000000002000L,0x8100000000002003L,0x3300000000L),List.of(
+                s(Op.R32,0x810000000000500CL,0x0000000000000002L),
+                s(Op.R32,0x8100000000005008L,0x0000000000000005L),
+                s(Op.R64,0x8100000000005000L,0x8100000000001000L),
+                s(Op.R32,0x000000330609000CL,0x00000000042268FFL),
+                s(Op.R16,0x8100000000002000L,0x0000000000003130L),
+                s(Op.R8,0x8100000000002002L,0x0000000000000032L),
+                s(Op.W16,0x8100000000001002L,0x0000000000003130L),
+                s(Op.W8,0x8100000000001004L,0x0000000000000032L),
+                s(Op.R32,0x810000000000500CL,0x0000000000000002L),
+                s(Op.R64,0x8100000000005000L,0x8100000000001000L),
+                s(Op.W32,0x810000000000500CL,0x0000000000000005L),
+                s(Op.STEP,0x00000000042209A7L,0x8100000000001000L),
+                s(Op.R8,0x8100000000001000L,0x0000000000000010L),
+                s(Op.R8,0x8100000000001001L,0x0000000000000011L),
+                s(Op.W8,0x8100000000001000L,0x0000000000000011L),
+                s(Op.W8,0x8100000000001001L,0x0000000000000010L),
+                s(Op.STEP,0x00000000042209A7L,0x8100000000001002L),
+                s(Op.R8,0x8100000000001002L,0x0000000000000030L),
+                s(Op.R8,0x8100000000001004L,0x0000000000000032L),
+                s(Op.W8,0x8100000000001002L,0x0000000000000032L),
+                s(Op.W8,0x8100000000001004L,0x0000000000000030L),
+                s(Op.STEP,0x00000000042209A7L,0x8100000000001003L),
+                s(Op.STEP,0x00000000042209A7L,0x8100000000001000L),
+                s(Op.R8,0x8100000000001000L,0x0000000000000011L),
+                s(Op.R8,0x8100000000001004L,0x0000000000000030L),
+                s(Op.W8,0x8100000000001000L,0x0000000000000030L),
+                s(Op.W8,0x8100000000001004L,0x0000000000000011L),
+                s(Op.STEP,0x00000000042209A7L,0x8100000000001001L),
+                s(Op.R8,0x8100000000001001L,0x0000000000000010L),
+                s(Op.R8,0x8100000000001003L,0x0000000000000031L),
+                s(Op.W8,0x8100000000001001L,0x0000000000000031L),
+                s(Op.W8,0x8100000000001003L,0x0000000000000010L),
+                s(Op.STEP,0x00000000042209A7L,0x8100000000001002L)
+        )));
+    }
+}
