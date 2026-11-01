@@ -83,9 +83,11 @@ public final class RootJavaSavedBootstrap {
         private final SavedAttachmentSourceStore store;
         private final SavedAttachmentSourceStore.RequalifiedConfirmed qualified;
         private final SavedAttachmentSourceStore.SavedMaterial material;
+        private final byte[] savedDriverCanonical;
         private ConfirmedSource(ContinuityWriter writer,SavedAttachmentSourceStore store,
                 SavedAttachmentSourceStore.RequalifiedConfirmed qualified,SavedAttachmentSourceStore.SavedMaterial material) {
             this.writer=writer;this.store=store;this.qualified=qualified;this.material=material;
+            this.savedDriverCanonical=material.savedDriver().encode();
         }
         public CheckpointPair pair(){return material.pair();}
         public ContinuityState savedState(){return qualified.confirmation().after();}
@@ -95,7 +97,7 @@ public final class RootJavaSavedBootstrap {
             return writer.locked(same->{
                 writer.requireSession(same);var current=qualified.requireCurrent(same);
                 StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                        &&Arrays.equals(current.savedDriver().encode(),material.savedDriver().encode()),
+                        &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
                         "confirmed source changed its actual saved Driver or session");
                 return current.savedDriver();
             });
@@ -104,7 +106,7 @@ public final class RootJavaSavedBootstrap {
             return writer.locked(same->{
                 writer.requireSession(same);var current=qualified.requireRetained(same);
                 StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                        &&Arrays.equals(current.savedDriver().encode(),material.savedDriver().encode()),
+                        &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
                         "retained source changed its actual saved Driver or session");
                 return current.savedDriver();
             });
@@ -113,7 +115,7 @@ public final class RootJavaSavedBootstrap {
             return writer.readOnlyFrom(activeNewSame, same->{
                 writer.requireSession(same);var current=qualified.requireCurrent(same);
                 StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                        &&Arrays.equals(current.savedDriver().encode(),material.savedDriver().encode()),
+                        &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
                         "confirmed source changed its actual saved Driver or session");
                 return current.savedDriver();
             });
@@ -122,7 +124,7 @@ public final class RootJavaSavedBootstrap {
             return writer.readOnlyFrom(activeNewSame, same->{
                 writer.requireSession(same);var current=qualified.requireRetained(same);
                 StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                        &&Arrays.equals(current.savedDriver().encode(),material.savedDriver().encode()),
+                        &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
                         "retained source changed its actual saved Driver or session");
                 return current.savedDriver();
             });
