@@ -1,5 +1,13 @@
 # runtime91 同局续行
 
+## 2026-11-01 17:07Z：255保留已提交保存入口恢复，完整状态解析预算在ATTACH前拒绝
+
+- 255实际采用九个成熟生产源，MB于17:04:25.047030Z至17:04:32.986923Z exit0/7.939903秒。worker85900于17:04:59.964727Z启动，17:05:33.451770Z END1/33.487047秒；17:05:32.436860900Z已重新取得原confirmation788/source843资格，仍是cycle12/date_raw53145984、new_saved_day_credit=0。
+- 随后在Core.requireRetainedConfirmedSaved读取完整归档savedState97933B/sourceHead95738B后，默认StrictJson.parse的65536B上限拒绝，实际栈停于RootApplicationAssembly.java:315，尚未Native ATTACH。现有显式StrictJson上限1048576亦未改；这是两个完整ledger DATA消费者的预算接线问题，不归因为7MB Driver。冻结17:07:41时P0256仅由M7准备窄消费者修复，未授已装载或运行通过。
+- 原254已提交的canonical SavedEntry/head13和领域正文保留，本次没有重新Entry、附着、双READ、普通LOOP、新游戏日或SAVE，也未要求停止或另起Game。原Game33404由keeper69836保活，未触发预设jcmd。源码采用首轮Catalog混合EOL检查在零变更时拒绝，后仅包装匹配修复并核完整候选LF/正反字节，没有Java语义更改。
+- 累计已确认保存仍69日，本性能epoch新增SAVE_CONFIRMED日0，秒/新增保存日为null；增编、等待和失败恢复成本均计入端到端墙钟。九份具名小回执及冻结事实见`D:/ck3-state/resume91-runtime/runtime-doc255/DELIVERY255.json`。本段只读取冻结小件，未读大SAVE/Driver/新Game状态或编测；此前252–254及更早历史全文保留，正式发表不作为下一P0运行门。
+
+
 ## 2026-11-01 16:44Z：252–254同局恢复推进，SavedEntry已提交，Army资格门后停出
 
 - P0252保留四份真实READ/ACK原件后仍在两READ等式处END1：15:50:01.862322Z启动，15:50:47.704327Z退出，45.842003秒；endpoint于15:50:47.575072500Z释放。两份1087B帧原件的完整state唯一差异为`played_character.event_trait_membership.snapshot_revision`从5到6，各自等于本帧revision；外层request_id、snapshot_id和revision亦随独立READ变化，日期均53145984且paused=true。此精确差异属于本次冻结，不回填旧251“原件差异未知”的历史段。MB252实际0/4.824242秒；原Runtime标签ordinary252-build对应证据目录`ordinaryordinary252-build-build`，原误标签保留，未重建或重命名。
