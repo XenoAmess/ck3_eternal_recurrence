@@ -459,6 +459,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "captured READ crossed its original paused gameplay guards");
             StrictJson.require(read.before().originalBindingSha256().equals(read.after().originalBindingSha256()),
                     "captured READ changed its original complete semantic binding");
+            known=retainReadCapabilities(same,owner,read,known,beforeRef,originals,originalsPins,retainPins);
             // Definition/decoder references remain metadata; only original DATA is pinned.
             if(retainPins){originalsPins.add(same.capturePin(rowRef,WriterContracts.MAX_PIN_BYTES));originalsPins.add(same.capturePin(readRef,WriterContracts.MAX_PIN_BYTES));}
             if(retainPins)for(var ref:source.supportingEvidence())if(!ref.equals(source.definitionSource())&&!ref.equals(source.decoderSource()))
@@ -482,6 +483,89 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var facts=new org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known(driver,stamp,known.originalHistoryBasis(),
                 known.actionRows(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty());
         return new RetainedReadDriver(facts,afterRef);
+    }
+    /** Rebuild persisted historical cache DATA from the exact original READ guard, never a current mint. */
+    private static DriverSnapshotFacts.Known retainReadCapabilities(ContinuityStorePort.Session same,SessionIdentity owner,
+            org.xar.ck3.control.application.action.PlanningReadReceipt read,DriverSnapshotFacts.Known known,ExactRef beforeRef,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
+            java.util.List<WriterContracts.Pin> pins,boolean retainPins)throws IOException {
+        var loader=new org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader(new DriverObservationAssembler());
+        var guard=read.before().binding();
+        org.xar.ck3.control.application.effects.RootGuardEvidence.requireHistory(guard,originals,same);
+        var observed=org.xar.ck3.control.application.effects.RootGuardEvidence.loadFrame(guard,originals,loader);
+        var guardFull=loader.loadFull(org.xar.ck3.control.application.effects.RootGuardEvidence.frameBasis(guard,originals),originals);
+        var semantic=guardFull.facts().originalSemanticFields();
+        var sourceValue=semantic.get(DriverCapabilityStateProducer.STATE_SOURCE);
+        if(sourceValue==null)return known;
+        var source=DriverObservationEvidenceReader.reference(sourceValue);
+        var state=DriverJson.object(originals.loadFullMaterial(source).bytes(),DriverJson.MAX_NATIVE_BYTES);
+        StrictJson.require(DriverCapabilityStateProducer.STATE_SCHEMA.equals(
+                org.xar.ck3.control.planning.opportunity.OpportunityJson.text(state.get("schema"),"capability state schema")),
+                "READ capability source requires its exact persisted state schema");
+        var cause=DriverCapabilityStateProducer.Cause.valueOf(
+                org.xar.ck3.control.planning.opportunity.OpportunityJson.text(state.get("cause"),"capability state cause"));
+        StrictJson.require(cause!=DriverCapabilityStateProducer.Cause.PUBLIC_PLANNING_VIEW,
+                "uncommitted public planning inputs cannot become retained Driver cache");
+        var inputs=DriverObservationEvidenceReader.reference(state.get("inputs"));
+        StrictJson.require(Objects.equals(state.get("state_version"),semantic.get("capability_state_version"))
+                &&Objects.equals(DriverJson.fromNode(inputs.toJson()),semantic.get(
+                    org.xar.ck3.control.application.capabilities.DriverRuntimeCapabilities.AUXILIARY_KEY)),
+                "READ capability state differs from its actual original inputs/version pointers");
+        var cache=org.xar.ck3.control.planning.opportunity.OpportunityJson.object(state.get("cache_values"),"capability cache");
+        var manifest=DriverObservationEvidenceReader.reference(state.get("semantic_source"));
+        var nativeRef=DriverObservationEvidenceReader.reference(cache.get("capability_observed_native_source"));
+        var oldFull=loader.loadFull(new org.xar.ck3.control.application.effects.NativeEffectEvidence.FrameBasis(nativeRef,manifest),originals);
+        var facts=oldFull.facts();var assembled=new DriverObservationAssembler().assemble(oldFull.actual(),facts,oldFull.originalEvidence());
+        StrictJson.require(assembled instanceof DriverObservationAssembler.Complete,"READ capability original frame is incomplete");
+        var frame=(DriverObservationAssembler.Complete)assembled;
+        var driverSource=org.xar.ck3.control.application.effects.RootGuardEvidence.originalDriverSource(guard,originals);
+        StrictJson.require(driverSource.driverRef().equals(beforeRef)
+                &&java.util.Arrays.equals(facts.driver().encode(),known.driver().encode())
+                &&java.util.Arrays.equals(guardFull.facts().driver().encode(),known.driver().encode())
+                &&facts.driverVersion()==known.stamp().driverVersion()&&facts.episodeEpoch()==known.stamp().episodeEpoch()
+                &&guardFull.facts().driverVersion()==known.stamp().driverVersion()
+                &&guardFull.facts().episodeEpoch()==known.stamp().episodeEpoch()
+                &&frame.identity().game().equals(owner.game())&&frame.identity().machineId().equals(owner.machineId())
+                &&frame.source().equals(read.request().source())&&frame.sessionId().equals(owner.sessionId())
+                &&frame.identity().frame().episodeRunId().equals(known.stamp().episodeRunId())
+                &&frame.identity().frame().identity().player().equals(known.driver().session().actorId())
+                &&frame.identity().observationVersion()==observed.identity().observationVersion()
+                &&frame.identity().frame().identity().dateRaw().compareTo(observed.identity().frame().identity().dateRaw())<=0
+                &&frame.identity().frame().identity().nativeRevision().compareTo(observed.identity().frame().identity().nativeRevision())<=0
+                &&frame.identity().frame().revision().compareTo(observed.identity().frame().revision())<=0,
+                "READ capability original crossed its complete historical Driver/owner/source/profile/frame");
+        var originalKnown=new DriverSnapshotFacts.Known(known.driver(),known.stamp(),known.originalHistoryBasis(),
+                known.actionRows(),known.auxiliary(),known.loop(),Optional.of(facts));
+        var restored=DriverCapabilityStateProducer.replay(frame,originalKnown,source,originals);
+        StrictJson.require(!restored.members().containsKey("public_planning_terminal_inputs"),
+                "private public-planning terminal input role cannot become retained cache");
+        for(var field:restored.members().entrySet())StrictJson.require(Objects.equals(semantic.get(field.getKey()),field.getValue()),
+                "READ capability replay differs from its actual original observation: "+field.getKey());
+        var auxiliary=new java.util.LinkedHashMap<>(restored.members());
+        var sourceFields=java.util.Set.of("capability_state_version",DriverCapabilityStateProducer.STATE_SOURCE,
+                org.xar.ck3.control.application.capabilities.DriverRuntimeCapabilities.AUXILIARY_KEY);
+        // Only the pure domain clearing map's field names are used; no cleared/default values enter Driver DATA.
+        var semanticNames=org.xar.ck3.control.application.driver.DriverSemanticReadState.clearForCold(
+                new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of(
+                    org.xar.ck3.control.application.driver.DriverSemanticReadState.SOURCES,
+                    new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of()))));
+        var sourcedFields=new java.util.HashSet<>(semanticNames.members().keySet());
+        sourcedFields.add("capability_window_attempt_sources");
+        sourcedFields.addAll(java.util.Set.of(
+                org.xar.ck3.control.application.driver.DriverPersistentPlanningState.COOLDOWN_STATE,
+                org.xar.ck3.control.application.driver.DriverPersistentPlanningState.COOLDOWN_SOURCE,
+                org.xar.ck3.control.application.driver.DriverPersistentPlanningState.STRATEGY_SOURCE,
+                org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.VIEW_KEY,
+                "one_life_strategy","war_declaration_continuity_v1","war_declaration_continuity_source"));
+        for(var field:known.auxiliary().members().entrySet())if(!cache.members().containsKey(field.getKey())
+                &&!sourceFields.contains(field.getKey())&&!sourcedFields.contains(field.getKey())) {
+            StrictJson.require(!auxiliary.containsKey(field.getKey())||Objects.equals(auxiliary.get(field.getKey()),field.getValue()),
+                    "READ capability recovery would overwrite retained non-cache DATA: "+field.getKey());
+            auxiliary.put(field.getKey(),field.getValue());
+        }
+        if(retainPins)for(var ref:java.util.List.of(source,inputs,manifest,nativeRef))pins.add(same.capturePin(ref,WriterContracts.MAX_PIN_BYTES));
+        return new DriverSnapshotFacts.Known(known.driver(),known.stamp(),known.originalHistoryBasis(),known.actionRows(),
+                new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty());
     }
     /** Non-Applied history is limited to the actual source-owned zero-dispatch Life initialization. */
     static void requireCapturedActionOutcome(ActionReceipt action,
@@ -1418,8 +1502,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if (pendingControl.isPresent()) {
             var captured = new java.util.concurrent.atomic.AtomicReference<CleanBatchRestart>();
             var retained = readSameGameHistory(same, owner, false, captured::set, pendingControl);
-            StrictJson.require(captured.get() != null, "pending Life control cycle retains its actual restart capture");
-            return new UnresolvedSameGameData(captured.get(), retained.controller(), retained.retainedFacts(),
+            boolean initialPending=initialCurrentMapPendingFrontier(same.head().state(),owner)
+                    &&retained.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
+                    &&retained.cycleSemantic().isEmpty()&&retained.controller().savedPair().isEmpty();
+            StrictJson.require(captured.get()!=null||initialPending,
+                    "pending Life cycle retains its actual restart capture or complete initial CurrentMap DATA");
+            return new UnresolvedSameGameData(Optional.ofNullable(captured.get()), retained.controller(), retained.retainedFacts(),
                     retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
                     new java.util.ArrayList<>(retained.controller().usedBatches()), retained.controller().nextBatchSequence(),
                     java.util.List.of(pendingControl.orElseThrow()), Optional.of(retained));
@@ -1855,6 +1943,26 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
 
     /** Exact already-APPLIED Life RETAIN routing DATA; the complete history reader still proves the actual RETAIN edge. */
+    /** Initial pending DATA has no completed cycle SEM or capture; all action/history proof remains mandatory below. */
+    private static boolean initialCurrentMapPendingFrontier(ContinuityState current,SessionIdentity owner) {
+        try {
+            var whole=current.toJson();var cycle=whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+            if(current.status()!=ContinuityState.Status.REPAIR_REQUIRED||current.settledCycles()!=0
+                    ||whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)||cycle==null||!cycle.isObject()
+                    ||!OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
+                    ||StrictJson.integer(cycle.get("basis_cycles"),0,StrictJson.MAX_SAFE_INTEGER)!=0
+                    ||StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)!=0
+                    ||cycle.get("head")==null||!cycle.get("head").isNull()
+                    ||cycle.get("pending_receipt")==null||cycle.get("pending_receipt").isNull()
+                    ||cycle.get("retained_legacy_pending_digest")==null||!cycle.get("retained_legacy_pending_digest").isNull()
+                    ||cycle.get("origin_frame")==null||!cycle.get("origin_frame").isNull()
+                    ||cycle.get("episode_origin")==null||!cycle.get("episode_origin").isNull())return false;
+            var entry=org.xar.ck3.control.continuity.ObservedGameplayEntry.decode(whole.get(WriterContracts.GAMEPLAY_ENTRY_FIELD));
+            return entry.origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
+                    &&entry.machineId().equals(owner.machineId())&&entry.game().equals(owner.game())
+                    &&entry.sessionId().equals(owner.sessionId());
+        } catch(RuntimeException invalid){return false;}
+    }
     public static Optional<ActionReceipt> readOnlyPendingCompletedLifeCycle(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> actions, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
         if(current==null||owner==null||actions==null||originals==null||!current.machineId().equals(owner.machineId()))return Optional.empty();
@@ -1869,10 +1977,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
             if(!(running||interrupted)||batch.isEmpty())return Optional.empty();
             var cycle=whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
             if(cycle==null||!cycle.isObject()||!OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
-                    ||cycle.get("head")==null||cycle.get("head").isNull()
+                    ||cycle.get("head")==null
                     ||cycle.get("pending_receipt")==null||cycle.get("pending_receipt").isNull())return Optional.empty();
+            boolean initialPending=initialCurrentMapPendingFrontier(current,owner);
+            if(cycle.get("head").isNull()&&!initialPending)return Optional.empty();
             long count=StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER);
-            if(count<current.settledCycles()||ExactRef.fromJson(cycle.get("head")).bytes()==0)return Optional.empty();
+            if(count<current.settledCycles()||!initialPending&&ExactRef.fromJson(cycle.get("head")).bytes()==0)return Optional.empty();
             actions=java.util.List.copyOf(actions);
             if(actions.isEmpty()||actions.stream().anyMatch(action->!action.settled())
                     ||actions.stream().map(action->action.command().actionId()).distinct().count()!=actions.size())return Optional.empty();
@@ -1999,6 +2109,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if (children.isEmpty()) return false;
         org.xar.ck3.control.application.action.ActionEffects.validateComposite(command, settled.execution(), settled.settlement());
         org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(command, settled.execution(), settled.settlement(), children);
+        if(!previous.has(WriterContracts.ORDINARY_CYCLE_FIELD)) {
+            return "RETAIN".equals(operation)&&before.settledCycles()==0
+                    &&initialCurrentMapPendingFrontier(after,owner)
+                    &&readOnlyPendingCompletedLifeCycle(after,owner,
+                        org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(after,originals),originals)
+                        .filter(actual::equals).isPresent()
+                    &&details.get("semantic").isNull()&&details.get("cycle_record_ref").isNull()
+                    &&details.get("cycle_record").isNull();
+        }
         var oldCycle = previous.path(WriterContracts.ORDINARY_CYCLE_FIELD);
         var newCycle = current.path(WriterContracts.ORDINARY_CYCLE_FIELD);
         long oldCompleted = StrictJson.integer(oldCycle.get("completed_cycles"), 0, StrictJson.MAX_SAFE_INTEGER);
@@ -2631,7 +2750,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean retainedControl = pendingControl.isPresent() && pendingOriginalProven && pending != null
                     && pending.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
                     && pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
-            StrictJson.require(initialCurrentMap || ((!unfinishedReadOnlyBatch||(retainedRecovery!=null||savedPair.isPresent()||retainedControl)&&state.status()==ContinuityState.Status.RUNNING)
+            boolean firstPending=retainedControl&&initialCurrentMapPendingFrontier(state,owner)&&existingOpening
+                    &&savedPair.isEmpty()&&completedCycles==0&&lastCycleRef==null&&latest==null
+                    &&openBatch==null&&used.size()==1&&retainedRecovery==null;
+            StrictJson.require(initialCurrentMap || firstPending || ((!unfinishedReadOnlyBatch||(retainedRecovery!=null||savedPair.isPresent()||retainedControl)&&state.status()==ContinuityState.Status.RUNNING)
                     &&!used.isEmpty()&&(pending==null || retainedControl)&&latest!=null
                     &&(cycle.get("pending_receipt").isNull() || retainedControl)
                     &&StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
