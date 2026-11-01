@@ -222,6 +222,8 @@ public final class FinanceRuntimeInstaller {
             if(!publicRoot(contract,request))return live().read(same,contract,request);
             try {
                 context.writer().requireSession(same);
+                var pending=context.readHistoryPublisher().pendingCanonicalRead(same,contract,request);
+                if(pending.isPresent())return new PlanningReadResult.Known<>(pending.orElseThrow().value(),pending.orElseThrow().receipt(),pending.orElseThrow().originalReceipt());
                 var canonical=context.readHistoryPublisher().canonicalReadWitness(same,contract,request);
                 if(canonical.isPresent())return canonical.orElseThrow().requireCurrent(same,contract,request);
                 return live().read(same,contract,request);

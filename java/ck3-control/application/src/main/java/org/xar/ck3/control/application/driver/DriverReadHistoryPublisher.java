@@ -24,6 +24,7 @@ import org.xar.ck3.control.application.history.DriverPublicExecuteFailureMateria
 import org.xar.ck3.control.application.history.DriverPublicExecuteFailureRowProducer;
 import org.xar.ck3.control.application.history.DriverReturnedControlHistoryRowProducer;
 import org.xar.ck3.control.application.planning.finance.GiftResolvedEvidence;
+import org.xar.ck3.control.application.planning.finance.FinanceReadContracts;
 import org.xar.ck3.control.application.history.DriverReadHistoryRowProducer.Candidate;
 import org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -518,6 +519,52 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
                 "typed canonical reuse requires its actual complete original query manifest/native frame");
         return (DriverObservationAssembler.Complete)joined;
     }
+    /** Reuses an unchanged successful public ROOT original only while its real READ batch is pending. */
+    public <T> Optional<PlanningReadResult.Known<T>> pendingCanonicalRead(ContinuityStorePort.Session same,
+            ReadContract<T> contract,PlanningReadRequest request)throws IOException {
+        Objects.requireNonNull(same);Objects.requireNonNull(contract);Objects.requireNonNull(request);
+        if(!contract.contractId().equals(FinanceReadContracts.ROOT_CONTRACT_ID)
+                ||!contract.operation().equals(FinanceReadContracts.Query.ROOT.operation()))return Optional.empty();
+        StrictJson.require(catalog.containsIdentity(contract)&&contract.operation().equals(request.operation())
+                &&request.origin() instanceof CommandOrigin.Gameplay,"pending ROOT requires its identical installed ordinary query");
+        if(FinanceReadContracts.rootCapture(request.arguments())!=FinanceReadContracts.RootCapture.PUBLIC_QUERY)return Optional.empty();
+        Queue queue=pending.get();
+        if(queue==null||queue.session!=same||queue.prepared!=null||queue.publication!=null
+                ||queue.commitStarted||queue.commitHead!=null||queue.receipt!=null)return Optional.empty();
+        // A mixed return/failure/unfinished service batch is deliberately left on the original live path.
+        if(!queue.summaries.isEmpty()||!queue.executions.isEmpty()||!queue.deferred.isEmpty()||!queue.observed.isEmpty()
+                ||!queue.failedOriginals.isEmpty()||!queue.failures.isEmpty()||!queue.publicFailures.isEmpty()
+                ||!queue.returnedControls.isEmpty()||!queue.postKnown.isEmpty()||!queue.returnedReads.isEmpty()
+                ||!queue.returnedActions.isEmpty()||!queue.early.isEmpty()||!queue.invalidatedArmyCore.isEmpty())return Optional.empty();
+        final Item retained=queue.items.stream().filter(item->item.contract()==contract
+                &&item.known().receipt().request().equals(request)).findFirst().orElse(null);
+        if(retained==null||!java.time.Instant.now().isBefore(request.deadline()))return Optional.empty();
+        var head=same.head();
+        if(!queue.head.digest().equals(head.digest())||queue.head.state().sequence()!=head.state().sequence())return Optional.empty();
+        return authority.withFrozenFacts(same,frozen->{
+            StrictJson.require(frozen.state() instanceof Known,"pending ROOT requires the actual complete Driver owner");
+            Known known=(Known)frozen.state();
+            if(!queue.before.stamp().equals(known.stamp())
+                    ||!Arrays.equals(queue.before.driver().encode(),known.driver().encode()))return Optional.empty();
+            StrictJson.require(DriverStateAssembler.projectObservation(known,frozen.actions(),frozen.activeActionId())
+                    instanceof DriverStateSnapshot.Complete,"unresolved actions cannot qualify a pending ROOT read");
+            requireSource(known,retained.known().receipt());
+            ActionPorts.OutcomeArchive originals=archive.withSession(same);
+            ExactRef currentNative=DriverObservationEvidenceReader.reference(known.auxiliary().get("capability_observed_native_source"));
+            ExactRef originalNative=retained.known().receipt().before().binding().nativeEvidence();
+            if(originalNative.bytes()!=currentNative.bytes()||!originalNative.sha256().equals(currentNative.sha256()))return Optional.empty();
+            StrictJson.require(Arrays.equals(originals.loadNativeFrame(originalNative),originals.loadNativeFrame(currentNative)),
+                    "pending ROOT original Native packet bytes differ");
+            // Replay the original immutable row, receipt, positive ACK and installed decoder; never recast Known<?>.
+            DriverReadHistoryRowProducer.replay(originals,catalog,contract,retained.known(),retained.candidate());
+            T value=contract.replay(retained.known().receipt());
+            StrictJson.require(pending.get()==queue&&queue.session==same&&queue.prepared==null&&queue.publication==null
+                    &&!queue.commitStarted&&same.head().digest().equals(head.digest()),"pending ROOT escaped its original uncommitted writer scope");
+            if(!java.time.Instant.now().isBefore(request.deadline()))return Optional.empty();
+            return Optional.of(new PlanningReadResult.Known<>(value,retained.known().receipt(),retained.known().originalReceipt()));
+        });
+    }
+
     public boolean hasPending(ContinuityStorePort.Session same) {
         Queue queue=pending.get();if(queue==null)return false;StrictJson.require(queue.session==same,"read queue belongs to another original writer scope");return !queue.items.isEmpty()||!queue.summaries.isEmpty()||!queue.executions.isEmpty()||!queue.deferred.isEmpty()||!queue.observed.isEmpty()||!queue.failures.isEmpty()||!queue.publicFailures.isEmpty()||!queue.returnedControls.isEmpty()||!queue.postKnown.isEmpty()||!queue.returnedReads.isEmpty()||!queue.returnedActions.isEmpty()||!queue.early.isEmpty();
     }
