@@ -8454,7 +8454,7 @@ class NativeHeadlessGameplayDriver:
         return result
 
     def _scripted_widget_stable_frame_v1(self) -> tuple[dict[str, object], ScriptedWidgetBindingV1]:
-        """Wait only for the observed one-pump diagnostic publication gap; never dispatch."""
+        """Re-read observed one-pump publication gaps; never grant owner admission or dispatch."""
         from .gui_window_tree_contract import scripted_widget_binding_v1, scripted_widget_object_v1
         initial = self.take_snapshot()
         current = initial
@@ -8472,6 +8472,17 @@ class NativeHeadlessGameplayDriver:
                 pumps, verified = mailbox.get("pump_epochs"), mailbox.get("owner_verified_pump_epochs")
                 owner, thread = mailbox.get("owner_tid"), mailbox.get("current_tid")
                 started, completed = observer.get("started_ms"), observer.get("completed_ms")
+                completed_observer = (observer.get("read_in_progress") is False
+                    and type(started) is int and isinstance(started, int)
+                    and type(completed) is int and isinstance(completed, int) and completed >= started)
+                # R0062 sampled the same one-pump gap while the observer was
+                # publishing. This permits another read, never an owner binding;
+                # the unchanged admission above must eventually accept it.
+                publishing_observer = (observer.get("read_in_progress") is True
+                    and type(started) is int and isinstance(started, int)
+                    and type(completed) is int and isinstance(completed, int) and 0 <= completed < started
+                    and observer.get("last_read_available") is True
+                    and observer.get("snapshot_cached") is False)
                 if (type(pumps) is not int or not isinstance(pumps, int) or pumps < 2
                         or type(verified) is not int or verified != pumps - 1
                         or type(owner) is not int or not isinstance(owner, int) or owner < 1
@@ -8481,9 +8492,7 @@ class NativeHeadlessGameplayDriver:
                         or mailbox.get("stop") is not False or type(mailbox.get("failure")) is not int
                         or mailbox.get("failure") != 0 or mailbox.get("stamp_read_success") is not True
                         or type(mailbox.get("date_raw")) is not int or mailbox.get("date_raw") != current.get("date_raw")
-                        or observer.get("read_in_progress") is not False
-                        or type(started) is not int or not isinstance(started, int)
-                        or type(completed) is not int or not isinstance(completed, int) or completed < started):
+                        or not (completed_observer or publishing_observer)):
                     raise
                 if attempt == 7:
                     raise BridgeUnavailableError("scripted widget owner sample did not stabilize before bounded read limit") from error
