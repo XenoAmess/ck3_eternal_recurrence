@@ -13,11 +13,12 @@
 - 自动游玩与 M0–M7 制作、原生研究和本地模型使用持续执行。显示修复不授权重放原 SAVE/ARM/RESUME，不重启当前 Game/DLL，不触碰用户的其它窗口。
 
 
-## 本地模型跨机器共享入口（2026-10-31）
+## 本地模型独立规范与 CK3 兼容入口（2026-11-01）
 
-- 所有机器上的worker先读[跨机器使用与新经验](docs/local-model-worker-guide.md)及[唯一配置](docs/local-model-executor-config.json)。当前统一为`http://192.168.1.11:8080/v1`、`qwen38-coder`、无需密钥（客户端必填时用`local`），不自动回退旧IP/8000。用户已要求把新心得、经验和规则提交推送GitHub，供其它机器复用。
+- 所有机器上的 worker 先读独立仓库 [local-model-operations](https://github.com/XenoAmess/local-model-operations) 的 [AGENTS](https://github.com/XenoAmess/local-model-operations/blob/main/AGENTS.md)、[使用指南](https://github.com/XenoAmess/local-model-operations/blob/main/docs/usage.md)、[并发与重试](https://github.com/XenoAmess/local-model-operations/blob/main/docs/concurrency-and-retries.md)、[能力边界](https://github.com/XenoAmess/local-model-operations/blob/main/docs/capability-boundaries.md)及[经验记录](https://github.com/XenoAmess/local-model-operations/blob/main/docs/experience-log.md)。通用方法、规范与新经验在该仓库维护并及时提交推送。当前 CK3 运行仍使用本项目[业务兼容配置](docs/local-model-executor-config.json)；本次迁移不改配置 schema、服务参数或现用 caller。
 - 机器本地caller、数据根、machine_id、证据路径和Game所有权按执行机器实际配置；本机D盘call91.py与当前/root/models91不是其它机器必须存在的入口/智能体。源码owner可直接使用现有兼容HTTP工具并行派发完整真实任务，准备/审阅/编测与其他HTTP重叠，12–16实际在途是初始运营目标，按真实积压/服务队列/错误继续调整，不把目标当已达。
-- 固定三消息当前源码前缀、有限输出、SSE有效内容TTFT、六次瞬时错误退避、半截流丢弃而不拼接、实际REQUEST参数审计与采用分级见指南。HTTP候选、软件验证、正式采用、运行期决策和游戏动作分别记录；不得因模型重试重放游戏动作。
+- 固定三消息当前源码前缀、有限输出、SSE有效内容TTFT、六次瞬时错误退避、半截流丢弃而不拼接、实际REQUEST参数审计与采用分级见[独立仓库现行规范](https://github.com/XenoAmess/local-model-operations/blob/main/docs/concurrency-and-retries.md)。HTTP候选、软件验证、正式采用、运行期决策和游戏动作分别记录；不得因模型重试重放游戏动作。
+- [本仓库旧 worker 指南](docs/local-model-worker-guide.md)的正文冻结为历史；[精确原文档案](https://github.com/XenoAmess/local-model-operations/blob/8bb613ac38663f0de2caddf16b983ff9e2d44636/docs/history/local-model-worker-guide.md)与[来源及 SHA-256](https://github.com/XenoAmess/local-model-operations/blob/8bb613ac38663f0de2caddf16b983ff9e2d44636/docs/source-origins.md)可追溯原版本。CK3 专属来源、运行权限和日常真实业务记录继续留在本项目。
 
 ## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
 
