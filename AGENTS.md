@@ -15,6 +15,8 @@
 
 ## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
 
+- 2026-11-01 02:18Z累计46日已全部确认保存：680于02:18:33.4580937Z真实SAVE_CONFIRMED，saved cycle9/date_raw53145432（1066-10-31）/pair帧native473/public397、pending_receipt=null，从原53144328累计46日全存。运行岗确认同一worker307352的批74首报告internalSAVE8/attempt0，以TURN_BOUND收束并继续next75，head682/pendingnull/cycles9；本次保存收束此前未保存8日，不授新8日推进。680具名event101660B/SHA9de591ed20c8ff9714c9dd57dc11de97da74e3e6d903d9efdfc7e96fd2e7ee8c已独立核对，旧649/38日、591/30日、563/24日及更早截面全保。同局普通qwen/游玩继续，不为文档或后台候选重启健康worker；G2整体仍按最后已确认6/8。
+
 - 2026-11-01 01:45Z累计38日已全部确认保存：649于01:45:55.7218421Z真实SAVE_CONFIRMED，saved cycle8/date_raw53145240（1066-10-23）/pair帧native452/public376、pending_receipt=null，从原53144328累计38日全存。运行岗确认同一worker293360的batch72于01:45:56.7076942Z清洁WALL_TIMEOUT，本批savedDays8/applied1/dirty=false，650 Deferred→651新batch73，worker持续未退出。649具名event101658B/SHA280add18c18c8125d7d3ffde9134b654eac031b562376e9ad3ba7b629bb733b6已独立核对；只读此小事件，旧591/30日与563/24日保存及更早时间截面全保。普通qwen/同局游玩继续，后台候选与文档不重启健康worker；G2整体仍按最后已确认6/8。
 
 - 2026-11-01 00:28Z累计30日已全部确认保存，原worker连续闭环：591于00:28:29.0215478Z真实SAVE_CONFIRMED，saved cycle7/date_raw53145048（1066-10-15）/pair帧native424/public349，从本局原53144328累计30日全存。运行岗确认同一PID31876的batch70于00:28:30.3773693Z到达清洁WALL_TIMEOUT边界，本批savedDays6/dirty=false，随后592 Deferred→593新batch71，未退出或重启worker。591具名event101655B/SHA11345b396fa1cdd309b5bbf89fce24b59491690b93d19fee5b605bb217b4659e已独立核对；无save/Driver/SEM大体读取或新Game查询。下段563/24日保存及更早时点保留，普通qwen/同局游玩继续，不为后台候选、测试或文档重启；G2整体仍按最后已确认6/8。
