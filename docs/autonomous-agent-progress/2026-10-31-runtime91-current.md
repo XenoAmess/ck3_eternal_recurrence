@@ -1,5 +1,15 @@
 # runtime91 同局续行
 
+## 2026-11-01 13:03Z 冻结：旧进程已消失，69 日确认存档原件完整，准备独立冷恢复
+
+- 最后现存启动回执仍为 Main228：worker329844 于09:54:33.654294Z启动，既有stdout/stderr均0B；没有WORKER228-END回执，也没有已采集的LOOP/RETAIN/新SAVE。12:46:59.357568Z实际Win32只读核实旧worker329844、Game71464、supervisor305760均OpenProcess错误87。不能补造退出时间/代码，不能把中间未观测时段当作仍在运行或已有进展；中断原因未知。
+- 13:02:57.978355–57.993035Z在同机XENOAMESS-FULL-TOWER执行一次有限Toolhelp进程名字快照，ck3.exe/java.exe/javaw.exe匹配为空，枚举正常结束且句柄已关闭。此前tasklist无匹配提示被UTF8误解码的显示瑕疵已由本次独立名字核实纠正，不据此扫描环境、全命令行或邻近文件。当前没有已确认的Game/worker/MB，不延用旧228运行HOLD。
+- 12:51:19.147309–20.045715Z仅一次有界流式核验788已确认保存的实际原件：xar_checkpoint.ck3为70,608,826B/SHA223d63069ce58dc325a22292b281647c74c5fddc6cc9195de57e1b1452803c52；Driver checkpoint.json为7,375,386B/SHA2a9e5fe517290373af8307a7159f0a1f32a98a5d7a0cade749d5566d49a53a55；270B原ACK同b0678796…fce。三件全部匹配788原期望，两大文件读取前后stat稳定，历史FileID/mtime/size精确相同；耗时0.898407s，0原件/账本写入，0Game/Native请求。
+- 69日确认存档保持cycle12/date53145984；现存旧头843不更改。旧ordinary cycle13/77日结算与81日最后新鲜观测是原运行的历史后态，不是新存档世界中的已执行动作。特别纠正：843顶层settled frontier仍12/69，不能把ordinary13当顶层13而凭空判定必须回滚。842原婚姻回复已APPLIED且归旧Game，后继不重放原reject/ARM/resume/SAVE，不把旧843伪清洁或手改为788。
+- 现有SavedGame启动实现能指定-loadsave=xar_checkpoint，已找到原真实detached launcher与162项现存classpath；原NEW_GAME配置和过期deadline不得照跑。当前实际缺口是无旧daemon内存对象时，如何由788真实已确认保存为新Gamebirth及新独立Writer签发Java saved-attachment私有资格。现时文件hash/stat核验不能假造缺失的历史manifest FileWitness，也不能借Legacy initialize-once绕已有gameplay_entry。intent独占最小typed冷恢复接线，cause准备具体SAVED_GAME配置/argv，尚未启动新Game或worker。
+- 用户持续续行与性能P0目标有效。05:52Z端到端窗口不重置，后续等待/恢复与失败墙钟继续计入；新增SAVE_CONFIRMED日仍0，s/day=null。69累计历史保存日不作本窗口分母，OpenCode源码试点、正式发表和后台性能候选不作为恢复前置。
+
+
 ## 2026-11-01 09:38Z 冻结：226/227 两次同局恢复，原婚姻回复842真实 APPLIED；cycle 留存尚未完成
 
 - 226 的10个唯一生产源已实际小采用并加载：普通历史校验 scope、同 lease Commit 解码复用、known婚姻精简决策输入、Journal/Authority 原已ACK动作恢复、Bootstrap及freshREAD原件消费者、ActionAuthority同调用已验列表复用、Known effects及Installer真实READ/provenance。MB `09:09:46.380997–09:10:14.182395Z` exit0/27.8014099s（application3、adapters-storage1、native-transport1、local-service5）。worker226/PID121816 `09:10:39.131751Z` START，`09:19:12.243969Z` END1/513.1122338s，未LOOP；原头841未变。首薄读END在09:19:56.782349Z，44.538380s迟延归owner的JFR header/回报间隙。最内错误是中央RootPendingInteractionEffects归档分支仍用默认FrameLoader，报 actual fresh snapshot query verifier is not installed；不是再次派发或原NativeACK丢失。
