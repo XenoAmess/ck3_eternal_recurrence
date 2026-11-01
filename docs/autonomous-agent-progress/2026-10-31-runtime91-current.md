@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-01 07:38Z：Deferred 冷恢复已越过，223 修 WarCore 准备及大诊断消费后实启
+
+- worker221 于 `06:56:11.628960Z` preloop END1/472.150653秒，运行岗延迟1.652853秒读到；精确阻断为真实 RUNNING+BATCH_DEFERRED85 被 settled frontier 拒绝。222 只在已验证私有 SavedSettledContext、实际 session/head/data 与完整历史链内接纳 Deferred；普通 STARTED anchor、动作资格和旧 reducer 校验保留。唯一 changed-TU strict02 为0/2.284466秒，首-J argfile启动错误原件保，未追认为源码绿。
+- worker222/PID226048 于 `07:09:57.664604Z` START、`07:18:58.456933900Z` 实际 LOOP/next86，冷段540.792330秒；首读延迟18.655745秒。825真实SETTLED_SAME_GAME_RECOVERY越过该门。86于 `07:19:01.608722400–07:20:44.462427400Z` PLANNER_STOPPED，attempt0/applied0/saved0；exact cause为WarCore `PENDING_WAR_INTERACTION_PRELUDE` 中 reject-pending-character-interaction 缺actual owner command preparation，finally另报offline enqueue bounded Driver read exceeded。
+- 222于 `07:20:45.005724Z` END4/647.341135秒，`07:21:10.240385Z` 读到，25.234661秒延迟如实保留：期间分析/误把二进制Native包按UTF-8读取造成延后，未成功解码也未新增Game查询，不能据包推暂停状态或额外日期原因。828 repair/BATCH_INTERRUPTED86、pendingnull/next87；实际新鲜帧已到81日，但只有77日完成SETTLE、69日SAVE_CONFIRMED。多出的4日不授新智能体动作或循环信用，不重放旧gen14或已结算819原件。
+- 223最小WarCore两叶把已有完整 known-pending 强命令接入真正 currentPlanning、当前完整上下文核对与原 bindings.prepare；原action ID/body/expected/claims/connection约束及中央Native派发、独立effect和archived验证保持。未只把supports改true或伪造reply。必要2TU同源码严格编译0/2.524172秒；首旧serial告警Werror红保留，未用strict授真实处理成功。
+- 同窗采用offline三叶专用诊断输入：仅真实NativeWindowDiagnostic三种kind、准确原index/body绑定/selectionnull/dispatchfalse/noafter可在原总库存16MiB内读取较大before；小metadata、legacy、默认JSON预算不变。必要新3方法各实际通过：三种大kind与small经public journal/scan/analyzer、四拒绝边界，以及Worker超过2MiB真实durable enqueue/result/failure原件。首2P1F为旧fixture漏真实completion回调，补Journal::acknowledge后只重失败项1P。diagnostic_only仍属未完成来源研究，不冒分析drain成功。
+- Main223仅上述5生产文件普通S/Z最小hunk采用，`07:37:25.491856–07:37:33.979054Z` 增编exit0/8.487197秒；worker223/PID213556 于 `07:37:42.266131Z` 实启同原版Game71464，原2GiB/noXms、模型120秒、Native60秒、batch1200000ms不变。本段仅启动冻结，未预授LOOP/处理窗口/保存。M1/History未成熟新性能候选不作为本次前置；已载compact任务投影尚无新实机模型请求。固定05:52端到端性能窗口仍新增saved0、seconds/day=null，恢复、错误和协调墙钟全保。
+
 ## 2026-11-01 06:48Z：220 越冷恢复但诊断role参数拒绝，221 带修复及两条成熟读取优化实启
 
 - worker220/PID312408 于 `06:39:54.022340700Z` 实际 LOOP/next85，START至LOOP508.633275秒；85于 `06:39:57.320631600–06:40:27.532350800Z` OBSERVATION_UNAVAILABLE，attempt0/applied0/saved0、eligible1/dirtytrue。worker于 `06:40:28.056325Z` END4/542.667269秒，运行岗 `06:40:28.641221Z` 读到，延迟0.584896秒；原terminal detail及822–824小事件冻结，head824/running/BATCH_DEFERRED85/pendingnull，仍77日结算、69日确认保存。
