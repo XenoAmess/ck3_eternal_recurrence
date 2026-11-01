@@ -16,4 +16,14 @@ public final class Tail4242354 {
         // 3. JMP 42421C8 -> call tail42421c8 with site 0x424235B, unchanged rcx, edx=2, r8d=0
         return ports.tail42421c8(memory, 0x424235BL, rcx, edx, r8d);
     }
+
+    public static long execute(Terminal207Api.Memory memory, TerminalTail212Api.Ports ports, long rcx, long calleeEntryRsp) {
+        TerminalTail212Api.Ports adapter = new TerminalTail212Api.Ports() {
+            @Override
+            public long tail42421c8(Terminal207Api.Memory m, long s, long r, int e, int d) {
+                return ports.tail42421c8(m, s, r, e, d, calleeEntryRsp);
+            }
+        };
+        return execute(memory, adapter, rcx);
+    }
 }

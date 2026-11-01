@@ -58,6 +58,18 @@ public final class TerminalTailBinding212 {
                 long rcx = Integer.toUnsignedLong(ecx);
                 Tail4242354.execute(memory, tailPorts, rcx);
             }
+
+            @Override
+            public void call4242354(Terminal207Api.Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
+                if (memory != capturedMemory) {
+                    throw new IllegalArgumentException("Memory identity mismatch");
+                }
+                if (siteRva != 0x4232D44L) {
+                    throw new IllegalArgumentException("Site mismatch");
+                }
+                long rcx = Integer.toUnsignedLong(ecx);
+                Tail4242354.execute(memory, tailPorts, rcx, calleeEntryRsp);
+            }
         };
     }
 }

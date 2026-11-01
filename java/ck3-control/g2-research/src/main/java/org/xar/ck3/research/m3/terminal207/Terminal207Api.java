@@ -22,6 +22,9 @@ public final class Terminal207Api {
             call423283c(memory, siteRva, ecx, edx, r8d);
         }
         void call4242354(Memory memory, long siteRva, int ecx);
+        default void call4242354(Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
+            call4242354(memory, siteRva, ecx);
+        }
     }
     public enum Stop { INT29_ECX7, INT3_4232D49 }
 }

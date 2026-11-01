@@ -58,6 +58,11 @@ public final class TerminalSignalBinding213 {
             public void call4242354(Terminal207Api.Memory memory, long siteRva, int ecx) {
                 fallback.call4242354(memory, siteRva, ecx);
             }
+
+            @Override
+            public void call4242354(Terminal207Api.Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
+                fallback.call4242354(memory, siteRva, ecx, calleeEntryRsp);
+            }
         };
     }
 }

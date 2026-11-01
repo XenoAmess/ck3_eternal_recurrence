@@ -42,7 +42,11 @@ public final class Terminal4232CF4 {
 
         if (!isSet) {
             // 5. JE 0x4232D3F -> CALL 4242354 (site 0x4232D44) with ECX=3
-            ports.call4242354(memory, 0x4232D44L, 3);
+            if (hasContext) {
+                ports.call4242354(memory, 0x4232D44L, 3, terminalEntryRsp - 0x30L);
+            } else {
+                ports.call4242354(memory, 0x4232D44L, 3);
+            }
             // 6. INT3 at 0x4232D49
             return Stop.INT3_4232D49;
         }
@@ -66,7 +70,11 @@ public final class Terminal4232CF4 {
         }
 
         // 10. CALL 4242354 (site 0x4232D44) with ECX=3
-        ports.call4242354(memory, 0x4232D44L, 3);
+        if (hasContext) {
+            ports.call4242354(memory, 0x4232D44L, 3, terminalEntryRsp - 0x30L);
+        } else {
+            ports.call4242354(memory, 0x4232D44L, 3);
+        }
 
         // 11. INT3 at 0x4232D49
         return Stop.INT3_4232D49;
