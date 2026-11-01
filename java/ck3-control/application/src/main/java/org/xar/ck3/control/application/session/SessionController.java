@@ -1294,7 +1294,8 @@ public final class SessionController {
             recordGameplay(receipt); cyclePending = true;
             try {
                 measured(Phase.JOURNAL, () -> { journal.retainCycle(identity, receipt); return true; });
-                Ready fresh = ready(true,receipt);
+                boolean requiresFresh=measured(Phase.JOURNAL,()->journal.requiresFreshAfterCycle(identity,receipt));
+                Ready fresh = ready(true,requiresFresh?receipt:null);
                 if (fresh.semanticEvidence().isEmpty()) throw new End(Terminal.INCOMPLETE_MIGRATION,
                         "the original AUTO remains retained; a fresh archived after-SEM is unavailable");
                 measured(Phase.JOURNAL, () -> journal.settleCycle(identity, receipt, fresh.semanticEvidence().orElseThrow()));

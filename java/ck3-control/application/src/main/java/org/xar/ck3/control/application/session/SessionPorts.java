@@ -262,6 +262,8 @@ public final class SessionPorts {
         default Optional<CompletedCycleProof> cycleProof(SessionIdentity session, SemanticEvidence semantic) throws IOException { return Optional.empty(); }
         /** Persist the classified original receipt before collecting its after-SEM. */
         default void retainCycle(SessionIdentity session, ActionReceipt receipt) throws IOException { throw new IOException("ordinary cycle producer unavailable"); }
+        /** Conservative compatibility default; only the actual cycle journal can identify its already completed original. */
+        default boolean requiresFreshAfterCycle(SessionIdentity session,ActionReceipt receipt)throws IOException { return true; }
         /** Actual AUTO classification plus a fresh archived SEM, under the existing sole writer lock. */
         default CompletedCycleProof settleCycle(SessionIdentity session, ActionReceipt receipt, SemanticEvidence semantic) throws IOException {
             throw new IOException("ordinary cycle producer unavailable");

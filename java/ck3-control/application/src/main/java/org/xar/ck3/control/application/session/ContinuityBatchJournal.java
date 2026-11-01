@@ -3046,6 +3046,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
     @Override public void retainCycle(SessionIdentity owner, ActionReceipt receipt) throws IOException {
         store.locked(session -> transitions.withLocked(session, () -> { transitions.retain(session, owner, receipt); return true; }));
     }
+    @Override public boolean requiresFreshAfterCycle(SessionIdentity session,ActionReceipt receipt)throws IOException {
+        return store.locked(same->transitions.withLocked(same,()->transitions.requiresFreshAfterCycle(same,session,receipt)));
+    }
     @Override public CompletedCycleProof settleCycle(SessionIdentity owner, ActionReceipt receipt, SemanticEvidence semantic) throws IOException {
         return store.locked(session -> transitions.withLocked(session, () -> transitions.settle(session, owner, receipt, semantic)));
     }

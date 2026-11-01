@@ -913,6 +913,20 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var request = cycleRequest(owner, "RETAIN", receiptRef, Optional.empty(), Optional.empty(), Optional.empty());
         session.commit(session.preview(request));
     }
+    /** Select observation DATA only; a completed original still passes the unchanged settle/proof validation. */
+    boolean requiresFreshAfterCycle(ContinuityStorePort.Session session,SessionIdentity owner,ActionReceipt receipt)throws IOException {
+        StrictJson.require(active.get()==session,"cycle observation must use its actual locked writer Session");
+        sessionAuthority.require(session);
+        var head=session.head();requireOwner(head.state(),owner);
+        ExactRef ref=archive.receiptReferenceOf(receipt);
+        StrictJson.require(canonicalReceipt(head.state(),ref,owner).equals(receipt),"cycle observation changed its canonical original receipt");
+        CycleState current=state(head.state(),owner);requireLegacyPendingClear(head.state(),current);requireFrontier(head.state(),current);
+        boolean completed=find(current,ref).isPresent(); // find validates the entire immutable chain, including its origins.
+        if(completed)StrictJson.require(current.pending().isEmpty(),"a completed original cannot conceal another pending cycle");
+        else StrictJson.require(current.pending().filter(ref::equals).isPresent(),"after-SEM requires the exact actual retained pending original");
+        StrictJson.require(head.digest().equals(session.head().digest()),"cycle observation selection changed its actual writer head");
+        return !completed;
+    }
     CompletedCycleProof settle(ContinuityStorePort.Session session, SessionIdentity owner, ActionReceipt receipt, SemanticEvidence semantic) throws IOException {
         var head = session.head(); ExactRef receiptRef = archive.receiptReferenceOf(receipt); canonicalReceipt(head.state(), receiptRef, owner);
         CycleState state = state(head.state(), owner); requireFrontier(head.state(), state);
