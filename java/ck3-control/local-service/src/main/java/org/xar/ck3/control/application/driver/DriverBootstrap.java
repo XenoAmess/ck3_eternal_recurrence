@@ -1263,6 +1263,109 @@ public final class DriverBootstrap {
         StrictJson.require(actual!=null && actual.length==expected.bytes() && expected.sha256().equals(DriverJson.sha256(actual)),"immutable original artifact bytes/SHA differ");
         return actual;
     }
+    public static Adopted adoptRetainedSaved(org.xar.ck3.control.service.root.RootJavaSavedBootstrap.RetainedSaved actual,
+            ContinuityStorePort.Session same,org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,
+            ActionSnapshotReader actions,G2Source source,int retainedFrames,Instant deadline) throws IOException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(same);Objects.requireNonNull(archive);
+        Objects.requireNonNull(actions);Objects.requireNonNull(source);Objects.requireNonNull(deadline);
+        StrictJson.require(Instant.now().isBefore(deadline),"retained saved adoption deadline expired");
+        actual.requireCurrent(same);
+        var game=actual.game();var transport=game.nativeTransport();
+        StrictJson.require(source.machineId().equals(game.machineId())&&transport.diagnostics().session().filter(actual.secondRead().originalFrame().session()::equals).isPresent(),
+                "retained saved adoption crossed its actual new Game/source/transport");
+        var second=actual.secondRead();var raw=second.originalFrame();
+        org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.verifyOriginal(second.acknowledgement(),raw,second.snapshotReceived());
+        StrictJson.require(raw.session().game().equals(game.generation())&&raw.session().sessionId().equals(game.sessionId())
+                &&raw.session().machineId().equals(source.machineId())&&actual.session().machineId().equals(raw.session().machineId())
+                &&actual.session().game().equals(raw.session().game())&&actual.session().sessionId().equals(raw.session().sessionId()),
+                "retained saved current frame crossed its actual new Game/session/source");
+        archive.writer().requireSession(same);
+        var fullDriverRef=actual.fullDriverReference();var factsRef=actual.driverFactsReference();
+        byte[] fullBytes=archive.readArtifact(same,fullDriverRef,Math.min(DriverCheckpointStore.MAX_DRIVER_BYTES,WriterContracts.MAX_PIN_BYTES));
+        StrictJson.require(fullBytes.length==fullDriverRef.bytes()&&fullDriverRef.sha256().equals(DriverJson.sha256(fullBytes)),
+                "retained saved full Driver bytes/SHA differ");
+        var driver=DriverStateSnapshot.decodeComplete(fullBytes);
+        byte[] factsBytes=archive.readArtifact(same,factsRef,DriverJson.MAX_NATIVE_BYTES);
+        StrictJson.require(factsBytes.length==factsRef.bytes()&&factsRef.sha256().equals(DriverJson.sha256(factsBytes)),
+                "retained saved Driver facts bytes/SHA differ");
+        var factsMaterial=org.xar.ck3.control.application.action.RawJson.fullMaterial(factsBytes);
+        var observationRef=DriverSnapshotFacts.observationOriginalReference(factsMaterial);
+        Optional<DriverObservationFacts> replayedObservation=Optional.empty();
+        if(observationRef.isPresent()) {
+            var manifestRef=observationRef.orElseThrow();
+            byte[] manifestBytes=archive.readArtifact(same,manifestRef,DriverJson.MAX_NATIVE_BYTES);
+            StrictJson.require(manifestBytes.length==manifestRef.bytes()&&manifestRef.sha256().equals(DriverJson.sha256(manifestBytes)),
+                    "retained saved observation manifest bytes/SHA differ");
+            var manifestMaterial=org.xar.ck3.control.application.action.RawJson.fullMaterial(manifestBytes);
+            var manifestRow=DriverJson.object(manifestMaterial.bytes(),DriverJson.MAX_NATIVE_BYTES);
+            var packetSha=OpportunityJson.text(manifestRow.get("native_packet_sha256"),"native_packet_sha256");
+            var packetBytes=OpportunityJson.integer(manifestRow.get("native_packet_bytes"),"native_packet_bytes").longValueExact();
+            var nativePin=archive.artifactStore().referenceOf(packetSha,packetBytes,Math.min(DriverJson.MAX_NATIVE_BYTES+4,WriterContracts.MAX_PIN_BYTES));
+            var nativeRef=nativePin.reference();
+            byte[] nativePacket=archive.withSession(same).loadNativeFrame(nativeRef);
+            StrictJson.require(nativePacket.length==packetBytes&&nativeRef.sha256().equals(DriverJson.sha256(nativePacket)),
+                    "retained saved archived native packet bytes/SHA differ");
+            StrictJson.require(DriverObservationEvidenceReader.currentDriverReference(manifestRef,manifestMaterial).equals(fullDriverRef),
+                    "retained saved observation names another exact canonical Driver reference");
+            var archivedFrame=DriverObservationEvidenceReader.nativeFrame(manifestRef,manifestMaterial,nativePacket);
+            var decodedFacts=DriverObservationEvidenceReader.decode(manifestRef,manifestMaterial,
+                    org.xar.ck3.control.application.action.RawJson.fullMaterial(fullBytes),archivedFrame);
+            replayedObservation=Optional.of(decodedFacts);
+        }
+        var known=DriverSnapshotFacts.decodeKnownOriginal(factsMaterial,replayedObservation);
+        StrictJson.require(known.stamp().driverVersion()==actual.driverVersion()&&known.stamp().episodeEpoch()==actual.episodeEpoch()
+                &&known.stamp().game().equals(game.generation())&&Arrays.equals(known.driver().encode(),driver.encode())
+                &&known.driver().session().bridgePid()==game.generation().pid()&&known.driver().session().pipeName().equals(transport.pipeName()),
+                "retained saved Known facts crossed its actual Driver/version/epoch/Game/pipe");
+        var nativeState=DriverObservationAssembler.originalNativeState(raw);
+        var player=OpportunityJson.object(nativeState.get("played_character"),"played_character");
+        StrictJson.require(OpportunityJson.bool(nativeState.get("paused"),"paused")
+                &&OpportunityJson.bool(nativeState.get("map_ready"),"map_ready")&&OpportunityJson.bool(player.get("alive"),"alive")
+                &&OpportunityJson.integer(player.get("character_id"),"character_id").equals(driver.session().actorId())
+                &&driver.session().actorId().equals(actual.source().pair().frame().frame().identity().player()),
+                "retained saved observation must preserve its actual paused living saved actor");
+        var repository=new DriverFactsRepository(known);
+        var producer=new NativeDriverObservationProducer(repository,transport,source,wire->{
+            try{return archive.preserveArtifact(archive.writer().borrowedSession(),wire,
+                    Math.min(DriverJson.MAX_NATIVE_BYTES,WriterContracts.MAX_PIN_BYTES));}
+            catch(IOException failure){throw new UncheckedIOException(failure);}
+        });
+        producer.bindRetainedSaved(actual,same,archive);
+        var authority=new DriverStateAssembler(actions,repository,producer);
+        var held=new HeldDriverObservationPort(transport,authority,frame->{
+            try{return archive.withSession(archive.writer().borrowedSession()).preserveNativeFrame(frame);}
+            catch(IOException failure){throw new UncheckedIOException(failure);}
+        },new DriverObservationAssembler(),retainedFrames);
+        var first=authority.withFrozenRawObservation(raw,same,frozen->{
+            ExactRef nativeOriginal=archive.withSession(same).preserveNativeFrame(raw);
+            var assembler=new DriverObservationAssembler();
+            var fullSnapshot=assembler.projectFull(raw,frozen.facts(),nativeOriginal);
+            var assembled=assembler.assemble(raw,frozen.facts(),nativeOriginal);
+            StrictJson.require(assembled instanceof DriverObservationAssembler.Complete,"retained saved current observation is incomplete");
+            var complete=(DriverObservationAssembler.Complete)assembled;
+            held.retainVerified(fullSnapshot,complete);return complete;
+        });
+        StrictJson.require(first.identity().game().equals(game.generation())&&first.identity().frame().episodeRunId().equals(known.stamp().episodeRunId())
+                &&first.identity().frame().identity().player().equals(known.driver().session().actorId())
+                &&first.source().equals(source)&&first.sessionId().equals(raw.session().sessionId()),
+                "retained saved first frame crossed its actual Game/episode/actor/source/session");
+        actions.withFrozen(same,lease->{
+            lease.assertCurrent();
+            StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis bound
+                    &&bound.originalDriverHistory().equals(known.originalHistoryBasis()),
+                    "retained saved canonical writer does not bind its actual original history basis");
+            var projected=DriverStateAssembler.project(known,lease.snapshot(),Optional.empty());
+            StrictJson.require(projected instanceof DriverStateSnapshot.Complete,"retained saved Driver history is incomplete or unresolved");
+            lease.assertCurrent();return null;
+        });
+        producer.recordAdoptionObserved(raw.session(),source);
+        var seed=new Seed(fullDriverRef,known.originalHistoryBasis(),known.stamp().driverVersion(),known.stamp().episodeEpoch(),
+                raw.session(),known.auxiliary(),known.loop());
+        var adopted=new Adopted(seed,source,fullDriverRef,repository,authority,producer,held,first,AdoptionStatus.QUALIFICATION_REQUIRED,List.of());
+        actual.requireRetained(same);
+        return adopted;
+    }
+
     /** Private saved-load staging; it exposes source DATA and observations, never an admitted Driver. */
     public static final class SavedStaged {
         private final org.xar.ck3.control.service.root.RootJavaSavedBootstrap.Admission admission;
