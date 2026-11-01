@@ -20,6 +20,11 @@ public final class ModuleLookupFromAbortBinding221 {
             }
 
             @Override
+            public int call42591f8(TerminalAbort220Api.Memory memory, long siteRva, int entryEcx, long childEntryRsp) {
+                return fallback.call42591f8(memory, siteRva, entryEcx, childEntryRsp);
+            }
+
+            @Override
             public long readGs60(TerminalAbort220Api.Memory memory, long siteRva) {
                 return fallback.readGs60(memory, siteRva);
             }

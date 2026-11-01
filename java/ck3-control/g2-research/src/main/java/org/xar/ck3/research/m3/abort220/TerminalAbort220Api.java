@@ -11,6 +11,9 @@ public interface TerminalAbort220Api {
     record Input(long moduleBase, int ecx, Scratch scratch) { }
     interface Ports {
         int call42591f8(Memory memory, long siteRva, int entryEcx);
+        default int call42591f8(Memory memory, long siteRva, int entryEcx, long childEntryRsp) {
+            return call42591f8(memory, siteRva, entryEcx);
+        }
         /** Exact GS-relative offset0x60 observation at the named instruction; not GS0x58. */
         long readGs60(Memory memory, long siteRva);
         long call43da798(Memory memory, long siteRva, long actualTarget, long liveRax, int liveEdx);

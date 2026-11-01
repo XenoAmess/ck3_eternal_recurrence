@@ -13,8 +13,9 @@ public final class TerminalAbort4242284 {
         long base = input.moduleBase();
         int entryEcx = input.ecx();
 
-        // 1. Call 42591F8@424228C with known entryECX
-        int eax = ports.call42591f8(memory, 0x424228CL, entryEcx);
+        // 1. Call 42591F8@424228C with known entryECX and child entry RSP
+        long firstChildE = E - 0x30L;
+        int eax = ports.call42591f8(memory, 0x424228CL, entryEcx, firstChildE);
 
         // 2. Branch on low EAX == 1
         if (eax != 1) {
