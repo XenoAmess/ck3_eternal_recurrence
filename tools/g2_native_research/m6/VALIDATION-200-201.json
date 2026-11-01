@@ -1,0 +1,183 @@
+{
+  "schema": "xar.manual-native-witness.validation.v1",
+  "recorded_at_utc": "2026-11-01T13:47:35.183701+00:00",
+  "sources": [
+    {
+      "path": "copy4-add200/Native200Api.hpp",
+      "bytes": 1039,
+      "sha256": "8855ad42f9a2d6db8c2de51ee33c3407d5466170385c79620c413325c0322be7",
+      "EOF_preserved": true
+    },
+    {
+      "path": "copy4-add200/Native200Execute.cpp",
+      "bytes": 10008,
+      "sha256": "64d4501e0f8331b7c6eaa7cf0515a1216620446bcc7db483a59a0a2d68cba5ad",
+      "EOF_preserved": true
+    },
+    {
+      "path": "copy4-add200/Native200Io.cpp",
+      "bytes": 4527,
+      "sha256": "8d944cfca0e7ab2bd43551779e90892dba5e0ae328bdf3e16c0d2c46f2ef2ed6",
+      "EOF_preserved": true
+    },
+    {
+      "path": "copy4-add200/Native200Main.cpp",
+      "bytes": 847,
+      "sha256": "8030efdc2b51654ded3a1793a62c8fab8c656b59dc3e427e101053b9b0501387",
+      "EOF_preserved": true
+    },
+    {
+      "path": "range9d0950-201/Native201Api.hpp",
+      "bytes": 689,
+      "sha256": "baf5d79ca2e45bc91c9533ad185f6c59830b05e2c8fbad222fc08cca448b8a7e",
+      "EOF_preserved": true
+    },
+    {
+      "path": "range9d0950-201/Native201Execute.cpp",
+      "bytes": 5316,
+      "sha256": "0205e44b88662ce9a58482daaf505c4134f309cd52a4cf894e0d7807c60b8ae7",
+      "EOF_preserved": true
+    },
+    {
+      "path": "range9d0950-201/Native201Io.cpp",
+      "bytes": 2888,
+      "sha256": "b201ec88132380bef136fc9c13e9625c14a5b21bffdbedf06c171762ff34eb2a",
+      "EOF_preserved": true
+    },
+    {
+      "path": "range9d0950-201/Native201Main.cpp",
+      "bytes": 646,
+      "sha256": "860ed5d58c973499d564ce3cb9296ff6c8e1e0b6076f611860391184c79a77db",
+      "EOF_preserved": true
+    }
+  ],
+  "groups": [
+    {
+      "group": "copy4-add200",
+      "original_bytes": 351,
+      "original_sha256": "640d693377bdb24ad17d176109b437481cc7546458a4797b9d89cba52f30d75e",
+      "first_raw_cases": 5,
+      "first_threeway_comparisons": 15,
+      "failures": 0,
+      "actual_flags": {
+        "rawUnchanged": true,
+        "protectionsFinal": true,
+        "mappingReleased": true,
+        "callbackGuard": true,
+        "memoryGuard": true
+      },
+      "stages": [
+        {
+          "stage": "executor",
+          "start_utc": "2026-11-01T13:04:42.151614+00:00",
+          "end_utc": "2026-11-01T13:04:46.591699+00:00",
+          "seconds": 4.440079399999377,
+          "exit_code": 0,
+          "launch_cpu_affinity": 1
+        },
+        {
+          "stage": "io",
+          "start_utc": "2026-11-01T13:09:06.697999+00:00",
+          "end_utc": "2026-11-01T13:09:11.790765+00:00",
+          "seconds": 5.092755400000897,
+          "exit_code": 0,
+          "launch_cpu_affinity": 1
+        },
+        {
+          "stage": "link",
+          "start_utc": "2026-11-01T13:21:13.212856+00:00",
+          "end_utc": "2026-11-01T13:21:15.070807+00:00",
+          "seconds": 1.8579492999997456,
+          "exit_code": 0,
+          "launch_cpu_affinity": 1
+        },
+        {
+          "stage": "run",
+          "start_utc": "2026-11-01T13:22:20.288145+00:00",
+          "end_utc": "2026-11-01T13:22:20.363545+00:00",
+          "seconds": 0.07538930000009714,
+          "exit_code": 0,
+          "launch_cpu_affinity": 1
+        }
+      ],
+      "Java_reexecuted_for_comparison": false,
+      "actual_sidecar_sha256": "394e7fb21788b182b25ad8f94af89da9d2739d541dfef0ce3f7fd5400fade82b"
+    },
+    {
+      "group": "range9d0950-201",
+      "original_bytes": 126,
+      "original_sha256": "7cf624784877e13a583ba7675383f324e7e7d7786522046f0cfdfd064377a0d0",
+      "first_raw_cases": 6,
+      "first_threeway_comparisons": 18,
+      "failures": 0,
+      "actual_flags": {
+        "rawUnchanged": true,
+        "protectionsFinal": true,
+        "mappingReleased": true,
+        "callbackGuard": true
+      },
+      "stages": [
+        {
+          "stage": "executor",
+          "start_utc": "2026-11-01T13:28:23.919872+00:00",
+          "end_utc": "2026-11-01T13:28:27.594559+00:00",
+          "seconds": 3.6746856000008847,
+          "exit_code": 0,
+          "launch_cpu_affinity": 1
+        },
+        {
+          "stage": "io",
+          "start_utc": "2026-11-01T13:29:23.114561+00:00",
+          "end_utc": "2026-11-01T13:29:28.350503+00:00",
+          "seconds": 5.235944699999891,
+          "exit_code": 0,
+          "launch_cpu_affinity": 1
+        },
+        {
+          "stage": "link",
+          "start_utc": "2026-11-01T13:30:12.460187+00:00",
+          "end_utc": "2026-11-01T13:30:14.056671+00:00",
+          "seconds": 1.5964841000004526,
+          "exit_code": 0,
+          "launch_cpu_affinity": 1
+        },
+        {
+          "stage": "run",
+          "start_utc": "2026-11-01T13:31:38.383050+00:00",
+          "end_utc": "2026-11-01T13:31:38.503089+00:00",
+          "seconds": 0.12002960000063467,
+          "exit_code": 0,
+          "launch_cpu_affinity": 1
+        }
+      ],
+      "Java_reexecuted_for_comparison": false,
+      "actual_sidecar_sha256": "53e4fc5434d1fc4b2c53929fde2c59f6e60f4d2f41ef58aecdaaf4718d1544c1"
+    }
+  ],
+  "model_contribution": [
+    {
+      "group": "copy4-add200",
+      "Api": "owner frozen actual boundary contract",
+      "Executor": "owner-led, precompile namespace/header-sentinel owner corrections",
+      "Io": "model native-io200 partial local formatter/directinclude corrections",
+      "Main": "model native-io200 with owner directexception include",
+      "expected_data": "owner frozen from normal source; independently asked model witness attempts were rejected and do not receive oracle-success credit"
+    },
+    {
+      "group": "range9d0950-201",
+      "Api": "owner frozen actual boundary contract",
+      "Executor": "model native-executorR2 partial with owner VirtualProtect pointer, directutility, scopedTLS and actual-invariant corrections; R1 length discarded",
+      "Io": "model native-io201 partial directinclude/exact trailing length/unusedformatter/control escapes/streamsize corrections",
+      "Main": "model native-io201 raw646B unchanged",
+      "expected_data": "owner frozen from normal source; independently asked model witness attempts were rejected and do not receive oracle-success credit"
+    }
+  ],
+  "Java_formal": {
+    "200": "85bdd7422c50fae2dfa985babe18a116bd647617",
+    "201": "c1c611573e2fe388ed9c08c22814f1be6b0e220c"
+  },
+  "Game_or_DLL_deployment": false,
+  "source_bytes_equal_first_validated_builds": true,
+  "publication_recompiled_or_reran": false,
+  "scope": "Controlled opaque callbacks and frozen finite inputs only. CLI captures rows and measured guards; comparison with the independent frozen owner rows and already captured Java rows is a separate check. No complete callee/ABI/EH/Game/G2 or performance qualification."
+}

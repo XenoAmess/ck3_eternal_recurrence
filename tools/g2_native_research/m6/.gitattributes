@@ -1,0 +1,9 @@
+# Preserve first-validated manual witness source hashes, whitespace and EOF.
+copy4-add200/Native200Api.hpp -text whitespace=-blank-at-eol,-blank-at-eof
+copy4-add200/Native200Execute.cpp -text whitespace=-blank-at-eol,-blank-at-eof
+copy4-add200/Native200Io.cpp -text whitespace=-blank-at-eol,-blank-at-eof
+copy4-add200/Native200Main.cpp -text whitespace=-blank-at-eol,-blank-at-eof
+range9d0950-201/Native201Api.hpp -text whitespace=-blank-at-eol,-blank-at-eof
+range9d0950-201/Native201Execute.cpp -text whitespace=-blank-at-eol,-blank-at-eof
+range9d0950-201/Native201Io.cpp -text whitespace=-blank-at-eol,-blank-at-eof
+range9d0950-201/Native201Main.cpp -text whitespace=-blank-at-eol,-blank-at-eof
