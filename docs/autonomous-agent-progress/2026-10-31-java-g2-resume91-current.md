@@ -8,6 +8,16 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 17:16 UTC：256已越元数据预算门，停于Prisoner owner匹配
+
+255按已提交的SavedEntry重开，17:04:59.964727Z→17:05:33.451770Z实际END1（33.4870468秒），在Core读取97933B saved与95738B source-head元数据时被默认65536B receipt JSON预算拒绝；此前7MB Driver的初步归因已纠正。256仅把这两处接到既有ContinuityJson显式262144B ledger预算，保留默认receipt上限及全部Pin/SHA/full-tree等式；唯一Core首strict 2.7500071秒通过，实际MB 5.6018731秒通过。
+
+Main256于17:12:46.032782Z启动、17:15:07.974294Z实际END1，墙钟141.9415138秒；已越预算与Retained Driver阶段，finishSaved调用链在PrisonerEpisodeLedger12004.Owner.require:35拒绝Game/player/episode/source/session身份不匹配。endpoint于17:15:07.486769500Z实际释放，Game33404与keeper69836保留，普通研究HOLD据真实终态解除。257由M7独占核修该合同，源码、必要首验、实际装载与运行结果分别记录，不把源码通过当恢复成功。
+
+17:16:57.099251Z既有head只读回执仍为seq13/running、32041B/SHA256 `e8aeefb2a9848486565e95f514c7b4cb6fa222fc3e972f7077cdb846884a3a9c`，与254已提交的SavedEntry相同；未出现新LOOP或SAVE。运行岗仅按预授权条件于17:14:26.047150Z→26.304747Z对该owned worker执行一次Thread.print，exit0，未新增Game查询/JFR；不补采或据此授予提速。完整运行阶段见[运行记录](2026-10-31-runtime91-current.md)。
+
+恢复窗口12:46:59.357568Z→17:16:57.099251Z共16197.741683秒，包含等待、修复、构建、恢复失败及终态读取；新增SAVE_CONFIRMED游戏日0，秒/新增保存日为null，10秒目标未达到。旧69保存日、77结算日、81最后观察日各保原口径，不能作为本窗口分母。
+
 ## 2026-11-01 16:26 UTC：SavedEntry已真实提交，后继重开现有state
 
 254采用Writer与Root两份必要首编源码后，worker于16:19:30.802999Z启动、16:22:36.611128Z以END1结束，墙钟185.808128秒；endpoint于16:22:36.4295783Z释放，同一Game33404与keeper69836保留。16:26:02.232714Z只读核得当前canonical head为seq13/running/pending=false，last_settled_cycles=12、date_raw53145984；包含真实java_confirmed_saved_game_entry、Driver历史基线和domain bodies，head 32041B/SHA256 `e8aeefb2a9848486565e95f514c7b4cb6fa222fc3e972f7077cdb846884a3a9c`。这确认SavedEntry已提交，不能沿用此前0entry的截面描述当前状态，也不等于LOOP或新增保存。
