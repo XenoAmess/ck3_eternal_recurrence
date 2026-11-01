@@ -70,6 +70,9 @@ public final class Terminal4247004Api214 {
     public interface Ports {
         /** Low32 ECX is still incoming code4/8/11; a known observation, not a guessed formal argument. */
         long call424fc74(Memory memory, long siteRva, int ecxBits);
+        default long call424fc74(Memory memory, long siteRva, int ecxBits, long calleeEntryRsp) {
+            return call424fc74(memory, siteRva, ecxBits);
+        }
         long call423b18c(Memory memory, long siteRva);
         void call4232a50(Memory memory, long siteRva);
         void call4247ffc(Memory memory, long siteRva, int ecxBits);

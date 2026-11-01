@@ -15,6 +15,9 @@ public final class Fc74Api238 {
         long call424e2ec(NativeTaskMemory memory, long siteRva, long rcxBits, long rdxBits);
         void call424e364(NativeTaskMemory memory, long siteRva, long rcxBits);
         void call424f8a8(NativeTaskMemory memory, long siteRva, long rcxBits);
+        default void call424f8a8(NativeTaskMemory memory, long siteRva, long rcxBits, long calleeEntryRsp) {
+            call424f8a8(memory, siteRva, rcxBits);
+        }
         void callIat43da420(NativeTaskMemory memory, long siteRva, long actualTarget, int ecxBits);
     }
 }

@@ -58,6 +58,11 @@ public final class E948FromFc74Binding240 {
             }
 
             @Override
+            public void call424f8a8(NativeTaskMemory memory, long siteRva, long rcxBits, long calleeEntryRsp) {
+                fallback.call424f8a8(memory, siteRva, rcxBits, calleeEntryRsp);
+            }
+
+            @Override
             public void callIat43da420(NativeTaskMemory memory, long siteRva, long actualTarget, int ecxBits) {
                 fallback.callIat43da420(memory, siteRva, actualTarget, ecxBits);
             }

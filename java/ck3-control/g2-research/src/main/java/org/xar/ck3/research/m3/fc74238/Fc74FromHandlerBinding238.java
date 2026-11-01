@@ -35,6 +35,17 @@ public final class Fc74FromHandlerBinding238 {
             }
 
             @Override
+            public long call424fc74(Terminal4247004Api214.Memory memory, long siteRva, int ecxBits, long calleeEntryRsp) {
+                if (memory != capturedMemory) {
+                    throw new IllegalArgumentException("Memory identity mismatch");
+                }
+                if (siteRva != 0x424707DL) {
+                    throw new IllegalArgumentException("Site mismatch");
+                }
+                return Fc74Target424FC74.execute(memory, child, new Fc74Api238.Input(moduleBase, ecxBits), calleeEntryRsp);
+            }
+
+            @Override
             public long call423b18c(Terminal4247004Api214.Memory memory, long siteRva) {
                 return fallback.call423b18c(memory, siteRva);
             }

@@ -38,7 +38,7 @@ public final class TerminalHandler4247004 {
             rdi = moduleBase + 0x5C5D320L;
         } else if (codeBits == 4 || codeBits == 8 || codeBits == 11) {
             // FC74 path
-            long header = ports.call424fc74(memory, 0x424707DL, codeBits);
+            long header = ports.call424fc74(memory, 0x424707DL, codeBits, B - 8L);
             if (header == 0L) {
                 return new NormalReturn(0xFFFFFFFFL);
             }
