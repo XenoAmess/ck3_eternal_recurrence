@@ -20,6 +20,11 @@ public final class DispatchHelperBinding218 {
             }
 
             @Override
+            public void call42422d0(TerminalTailTarget217Api.Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
+                fallback.call42422d0(memory, siteRva, ecx, calleeEntryRsp);
+            }
+
+            @Override
             public long call42420c0(TerminalTailTarget217Api.Memory memory, long siteRva, long rcx, long rdx, long r8, long r9) {
                 if (memory != captured || siteRva != 0x4242266L) {
                     throw new IllegalArgumentException("Wrong memory or site for active call42420c0");
@@ -31,6 +36,11 @@ public final class DispatchHelperBinding218 {
             @Override
             public void call4242284(TerminalTailTarget217Api.Memory memory, long siteRva, int ecx) {
                 fallback.call4242284(memory, siteRva, ecx);
+            }
+
+            @Override
+            public void call4242284(TerminalTailTarget217Api.Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
+                fallback.call4242284(memory, siteRva, ecx, calleeEntryRsp);
             }
         };
     }

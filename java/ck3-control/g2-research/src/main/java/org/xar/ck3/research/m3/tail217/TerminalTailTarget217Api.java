@@ -18,8 +18,14 @@ public interface TerminalTailTarget217Api {
     interface Ports {
         long call43da620(Memory memory, long siteRva, long actualTarget, int ecx);
         void call42422d0(Memory memory, long siteRva, int ecx);
+        default void call42422d0(Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
+            call42422d0(memory, siteRva, ecx);
+        }
         long call42420c0(Memory memory, long siteRva, long rcx, long rdx, long r8, long r9);
         void call4242284(Memory memory, long siteRva, int ecx);
+        default void call4242284(Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
+            call4242284(memory, siteRva, ecx);
+        }
     }
 
     sealed interface Outcome permits NormalReturn, Trap { }

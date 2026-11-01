@@ -42,7 +42,7 @@ public final class TerminalTailTarget217 {
                                 int fieldF8 = memory.readInt32(h + 0xF8L);
                                 if (fieldF8 != 0) {
                                     // 5. Direct callee port
-                                    ports.call42422d0(memory, 0x424222AL, ecx);
+                                    ports.call42422d0(memory, 0x424222AL, ecx, E - 0x60L);
                                 }
                             }
                         }
@@ -73,7 +73,7 @@ public final class TerminalTailTarget217 {
         }
 
         // 9. Terminal call and trap
-        ports.call4242284(memory, 0x424227EL, ecx);
+        ports.call4242284(memory, 0x424227EL, ecx, E - 0x60L);
         return Trap.INT3_4242283;
     }
 }
