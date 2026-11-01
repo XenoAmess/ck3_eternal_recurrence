@@ -1,0 +1,16 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "schema": "hanjin.cao-final-text-source-check/v1",
+  "duration_seconds": 553.4666666666667,
+  "scene_count": 20,
+  "narration_subtitle_text_equal": true,
+  "source_eof_bounds_passed": true,
+  "forbidden_prose_passed": true,
+  "visual_seconds": {
+    "video": 448.9833017526232,
+    "still": 104.48336491404345
+  },
+  "video_source_share": 0.8112201308467054,
+  "video_note": "Source MKV includes paused gameplay panels and animated portraits; this is not a claim of unpaused play for all selected video seconds. Original stills cover explicitly recorded gaps.",
+  "human_signoff": null
+}

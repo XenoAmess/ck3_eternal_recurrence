@@ -1,0 +1,180 @@
+{
+  "schema": "hanjin.cao-episode02-event-index/v1",
+  "machine_id": "4-8e1c2f1861",
+  "evidence_root": "C:/workspace/hanjin-spring-autumn-20261031/shooting-04-cao-cao",
+  "scope": "Index of five existing offline research groups and the actually played ending; source evidence and gameplay results remain separate.",
+  "research_groups": [
+    {
+      "id": "opening-events",
+      "readme": "research/opening-events/README.md",
+      "observed_events": "research/opening-events/observed-events.json",
+      "source_pins": "research/opening-events/source-pins.json",
+      "definitions": [
+        "hd_dc_era.0001",
+        "hd_asp.0004",
+        "hd_world_news.0008",
+        "hd_court.0001",
+        "hd_anti_regent.0012",
+        "hd_anti_regent.0004"
+      ],
+      "story_use": "Actual one-world aspiration selection, public news and the anti-Dong opening. Selecting the aspiration does not mean completing it; public notices do not independently add troops or declare a second war."
+    },
+    {
+      "id": "ministry-events",
+      "readme": "research/ministry-events/README.md",
+      "observed_events": "research/ministry-events/observed-events.json",
+      "source_pins": "research/ministry-events/source-pins.json",
+      "definitions": [
+        "tgp_china_ministry.0100",
+        "tgp_china_ministry.0101"
+      ],
+      "story_use": "190.5.18 treasury-budget chain; first options selected, instances8→9→null. This is not evidence of a new ministerial appointment. Optional side events are omitted from the fixed20-scene narration."
+    },
+    {
+      "id": "era-and-chenliu-events",
+      "readme": "research/era-and-chenliu-events/README.md",
+      "observed_events": "research/era-and-chenliu-events/observed-events.json",
+      "source_pins": "research/era-and-chenliu-events/source-pins.json",
+      "definitions": [
+        "hd_hanfl.4202",
+        "hd190.0001",
+        "hd_world_news.0009",
+        "hd_hw.0001",
+        "hd_world_news.0010",
+        "hd190.0102"
+      ],
+      "story_use": "Dong Zhuo killed191.6.1; anti-Dong war invalidated, not Cao Cao victory. Actual first choice at warlord-era settlement191.6.2. Chenliu choice191.6.12 later selected immediate attack; the earlier group's evidence cutoff is retained and does not itself certify that later selection."
+    },
+    {
+      "id": "chenliu-routine-events",
+      "readme": "research/chenliu-routine-events/README.md",
+      "observed_events": "research/chenliu-routine-events/observed-events.json",
+      "source_pins": "research/chenliu-routine-events/source-pins.json",
+      "definitions": [
+        "coming_of_age.1002",
+        "parent.1004",
+        "saas_retainer.1500",
+        "adultery.0002",
+        "adultery.0004"
+      ],
+      "interaction_types": [
+        "arrange_marriage_interaction"
+      ],
+      "story_use": "Cao Ang coming of age, parental help,15-gold text-collation funding and suspicion/denial branch; actual marriage reply rejected. These side events need not enter the Chenliu narration. Stale reply-frame cache is not an independent postcondition; the group's later snapshot evidence supplies that boundary."
+    },
+    {
+      "id": "counter-clockwave-events",
+      "readme": "research/counter-clockwave-events/README.md",
+      "observed_events": "research/counter-clockwave-events/observed-events.json",
+      "source_pins": "research/counter-clockwave-events/source-pins.json",
+      "definitions": [
+        "hd_huangjin.10",
+        "rite_growth.0010"
+      ],
+      "story_use": "Jibei surrender first option creates Qingzhou army33554604;22,000 shown in actual UI, and later strength readbacks are separate evidence. First rite option does not generate that army or convert to the new rite."
+    }
+  ],
+  "major_ending_records": [
+    {
+      "id": "chenliu-final-battle",
+      "kind": "actual-battle-result",
+      "date": "193.9.21 approximately",
+      "event_definition": null,
+      "result": "Cao Ren's Qingzhou army defeats Zhang Miao near Chenliu; Zhang Miao captured. No total-wipe or exact casualty claim.",
+      "evidence": [
+        "battle-pincer-control-response.json",
+        "battle-pincer-control-screen.jpg",
+        "battle-pincer-after.png"
+      ]
+    },
+    {
+      "id": "chenliu-peace-submitted-once",
+      "kind": "negotiated-war-settlement",
+      "date": "193.9.25",
+      "event_definition": null,
+      "war_score": 50,
+      "full_goal_value": 66,
+      "acceptance_without_payment": -25,
+      "payment_gold": 4000,
+      "payment_draft_value_increase": 29,
+      "acceptance_with_payment": 5,
+      "actual_submissions": 1,
+      "result": "War ends, victory window and map change; active_wars=[]; gold6086.35577→2086.35577 and player_domain_size9→27, an increase of18. Not100 warscore, not unification of all Yanzhou.",
+      "evidence": [
+        "final-treaty-ready.png",
+        "settlement-submit-once.png",
+        "settlement-after-submit.png",
+        "settlement-after-submit-response.json",
+        "settlement-root-before-response.json",
+        "settlement-root-after-response.json",
+        "settlement-root-after-screen.jpg"
+      ]
+    },
+    {
+      "id": "east-yanzhou-rest",
+      "kind": "actual-event-choice",
+      "date": "193.10.6",
+      "date_raw": 45497352,
+      "event_definition": "hd190.0103",
+      "instance_id": 26,
+      "selected_display_option_number": 2,
+      "selected_native_option_index": 1,
+      "selected_text": "兵已疲敝，暂且休整。",
+      "old_instance_after": null,
+      "postcondition_verified": true,
+      "result": "Declines further conquest in this run; current event cleared. Complete episode ending without a next-episode or unplayed-mechanism preview.",
+      "evidence": [
+        "ending-advance-1-event-context-response.json",
+        "ending-advance-1-event-hd190-0103.jpg",
+        "ending-choose-rest-response.json",
+        "ending-choose-rest-fresh-response.json"
+      ]
+    }
+  ],
+  "capture_gaps": [
+    {
+      "from_utc": "2026-11-01T09:20:17.4657672Z",
+      "to_utc": "2026-11-01T09:43:32.9777352Z",
+      "coverage": "gathering and departure",
+      "stills": [
+        "gathering-01.png",
+        "sortie-progress-01.png"
+      ]
+    },
+    {
+      "from_utc": "2026-11-01T11:34:18.9674577Z",
+      "to_utc": "2026-11-01T12:35:38.9894409Z",
+      "coverage": "counter-raids, Jibei surrender and Qingzhou/Cao Ren appointment",
+      "stills": [
+        "counter-clockwave-5-event-hd_huangjin-10.jpg",
+        "qingzhou-army-before-assign-screen.jpg",
+        "qingzhou-commander-assign-screen.jpg",
+        "qingzhou-commander-person-screen.jpg"
+      ]
+    }
+  ],
+  "save_and_close": {
+    "sdk_error_evidence": "ending-save-checkpoint-response.json",
+    "sdk_expected_path": "launcher/state/native-session/profile/save games/xar_checkpoint.ck3",
+    "actual_file": "launcher/state/profile/save games/xar_checkpoint.ck3",
+    "actual_file_evidence": "ending-real-save-evidence.json",
+    "actual_file_bytes": 49805919,
+    "actual_file_sha256": "9ba6bf78423062fd2d05eafcf1fcc44a2a7acc9c166a60df07fa83a445e9e9da",
+    "save_confirmed": false,
+    "save_action_replayed": false,
+    "normal_game_exit_evidence": "launcher/exit.json",
+    "normal_game_exit_code": 0,
+    "normal_game_exit_at_utc": "2026-11-01T13:57:38.7000579Z"
+  },
+  "initial_draft_prepared_voice_seconds": 610.3,
+  "final_script_authority": "C:/workspace/hanjin-spring-autumn-20261031/edit-07-cao-cao/front-production.json",
+  "owner_battle_revisions": [
+    "c02-04-collision-v2",
+    "c02-05-hard-fight-v2",
+    "c02-06-retreat-v2"
+  ],
+  "final_video_duration_seconds": null,
+  "final_video_accepted": false,
+  "human_signoff": null,
+  "edl_planned_duration_seconds": 553.467
+}

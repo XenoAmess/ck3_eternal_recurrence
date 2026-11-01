@@ -1,0 +1,418 @@
+{
+  "schema" : "hanjin.cao.suggested-source-shots/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "status" : "all_four_takes_sealed_key_finale_frames_verified",
+  "source_root" : "C:/workspace/hanjin-spring-autumn-20261031/shooting-04-cao-cao",
+  "mapping_basis" : "Actual HTTP UTC or original screenshot write UTC minus original video creation UTC; ffprobe bounds; small raw samples confirm clock alignment. No game or screen operations.",
+  "limitations" : [ "Recommendations identify source material, not a narration edit or final EDL.", "A paused game window is identified as paused footage; no claim of moving battle action where only a paused panel is present.", "Short native event choices can be below one second; never extend across another event merely to fill narration.", "No full-frame unobstructed claim: take03 exposes desktop outside the game and some take02 battles have an old war-result modal over the map.", "Take04 EOF7722.700; all recommended gameplay ranges end before first exit attempt. Desktop/menu after gameplay is excluded. Final holds are continuous original paused footage, not still-image pushes or loops." ],
+  "takes" : {
+    "01" : "take-01-start.mkv",
+    "02" : "take-02-war.mkv",
+    "03" : "take-03-chenliu-treaty.mkv",
+    "04" : "take-04-settlement.mkv"
+  },
+  "shots" : [ {
+    "id" : "opening_cao_selected",
+    "subject" : "190书签内曹操选人卡",
+    "status" : "raw_sample_verified",
+    "take" : "01",
+    "in_seconds" : 242.0,
+    "out_seconds" : 265.0,
+    "hard_out_seconds" : 284.5,
+    "verified_sample_seconds" : [ 248.3 ],
+    "anchor" : "caocao-selected-01.png",
+    "notes" : "曹操已被选中，推荐人物卡与地图可见；此范围不宣称包含最初点击曹操卡的那一刻。"
+  }, {
+    "id" : "opening_identity_three_counties",
+    "subject" : "曹操人物页与三县开局地图",
+    "status" : "raw_sample_verified",
+    "take" : "01",
+    "in_seconds" : 473.3,
+    "out_seconds" : 493.3,
+    "hard_out_seconds" : 899.8,
+    "verified_sample_seconds" : [ 473.9 ],
+    "anchor" : "character-caocao-start-01.png",
+    "notes" : "真实暂停人物页，地图与直辖计数可见。没有另拍逐县点击；县名依实际历史来源及现有截图，不冒充三个县的连续巡览。"
+  }, {
+    "id" : "aspiration_first_choice",
+    "subject" : "本志：奉天子，令不臣，混一天下",
+    "status" : "raw_sample_verified_very_short",
+    "take" : "01",
+    "in_seconds" : 901.33,
+    "out_seconds" : 901.85,
+    "hard_out_seconds" : 901.88,
+    "verified_sample_seconds" : [ 901.5 ],
+    "anchor" : "opening-wave-01-1-event-select-http-meta.json",
+    "action_seek_seconds" : 901.629,
+    "notes" : "本志窗口被原生迅速处理，只有约半秒；不能当作足够承载长段抱负旁白的独立长镜头。"
+  }, {
+    "id" : "raise_army106",
+    "subject" : "原生召兵，army106进入集结",
+    "status" : "raw_sample_verified",
+    "take" : "01",
+    "in_seconds" : 1448.8,
+    "out_seconds" : 1453.5,
+    "hard_out_seconds" : 1800.0,
+    "verified_sample_seconds" : [ 1448.9, 1449.6, 1451.0 ],
+    "anchor" : "raise-01-http-meta.json",
+    "action_seek_seconds" : 1449.188,
+    "notes" : "人物页收起后出现集结军队窗；此段兵员仍为0，不可配成4358人已经集结完成。Native实际回执raised_army_ids=[106]。"
+  }, {
+    "id" : "gathering_and_city_raid_departure",
+    "subject" : "成军4358与市丘突袭出发",
+    "status" : "recording_gap",
+    "gap_utc" : [ "2026-11-01T09:20:17.465767200Z", "2026-11-01T09:43:32.977735200Z" ],
+    "still_evidence" : [ "gathering-01.png", "sortie-progress-01.png" ],
+    "notes" : "两张实况图的UTC落在take01与take02之间，不能伪配成录像动作。可在召兵后直接跳到take02的实际4358人战斗前后画面。"
+  }, {
+    "id" : "shiqiu_battle_entry",
+    "subject" : "市丘突袭：本军4358对敌方25002的初战画面",
+    "status" : "utc_anchor_and_nearby_raw_verified",
+    "take" : "02",
+    "in_seconds" : 349.8,
+    "out_seconds" : 360.0,
+    "hard_out_seconds" : 750.0,
+    "verified_sample_seconds" : [ 442.5 ],
+    "anchor" : "battle-entry.png",
+    "anchor_seek_seconds" : 350.648,
+    "notes" : "战斗面板位于画面下方，主体仍是地图。只作短战斗铺垫；不要将后来整侧联军兵力全部说成曹操直属。"
+  }, {
+    "id" : "shiqiu_reinforcements",
+    "subject" : "援军到场后的市丘战斗，整侧29933对23583",
+    "status" : "raw_sample_verified",
+    "take" : "02",
+    "in_seconds" : 547.5,
+    "out_seconds" : 560.0,
+    "hard_out_seconds" : 750.0,
+    "verified_sample_seconds" : [ 550.7 ],
+    "anchor" : "battle01-retreat-preview-screen.jpg",
+    "notes" : "暂停原生战斗面板，双方数字与市丘之战可读。这个29933是己方参战侧总数，不能称曹操自己的三万兵。"
+  }, {
+    "id" : "cao_yu_death_notice",
+    "subject" : "曹玉死讯",
+    "status" : "parent_visual_source_review_verified",
+    "notes" : "Root已目视核实原始右侧曹玉战死通知，约744秒可取右下通知区域；此处标明采用父任务视觉证据，不冒充本worker另做全帧复核。",
+    "take" : "02",
+    "parent_verified_seek_seconds" : 744.0,
+    "anchor" : "battle01-retreat-preview-late-screen.jpg",
+    "in_seconds" : 742.5,
+    "out_seconds" : 746.5,
+    "hard_out_seconds" : 750.0
+  }, {
+    "id" : "player_retreat_order",
+    "subject" : "自己下达撤退及其后地图",
+    "status" : "utc_action_verified_visual_occlusion",
+    "take" : "02",
+    "in_seconds" : 803.8,
+    "out_seconds" : 809.0,
+    "hard_out_seconds" : 811.0,
+    "verified_sample_seconds" : [ 804.3 ],
+    "anchor" : "battle01-retreat-order-http-meta.json",
+    "action_seek_seconds" : 804.178,
+    "notes" : "指令时千里草窗口遮住中间，约807.7秒才关闭；不要说这是一段无遮挡的撤退行军动画。可短取窗口关闭后地图并配真实撤退回执事实。"
+  }, {
+    "id" : "dong_death_and_war_invalidated",
+    "subject" : "董卓死讯→讨伐战争无效",
+    "status" : "raw_sample_verified",
+    "take" : "02",
+    "in_seconds" : 912.0,
+    "out_seconds" : 914.1,
+    "hard_out_seconds" : 914.15,
+    "verified_sample_seconds" : [ 912.4, 913.1 ],
+    "anchor" : "war33-after-retreat-129-event-select-http-meta.json",
+    "action_seek_seconds" : 912.434,
+    "notes" : "912.4秒国贼伏诛，913.1秒可见完整旧战争无效窗。不要写成联军军事获胜。"
+  }, {
+    "id" : "warlord_era_choice",
+    "subject" : "群雄并起，选择据守故地、自立一方",
+    "status" : "raw_sample_verified_very_short",
+    "take" : "02",
+    "in_seconds" : 914.1,
+    "out_seconds" : 914.85,
+    "hard_out_seconds" : 915.2,
+    "verified_sample_seconds" : [ 914.6 ],
+    "anchor" : "war33-after-retreat-131-event-select-http-meta.json",
+    "action_seek_seconds" : 914.594,
+    "notes" : "窗口不到一秒；第一项有势力落位效果。后方仍压着旧战争无效窗。"
+  }, {
+    "id" : "chenliu_choice_with_real_submit",
+    "subject" : "陈留之谋，实际选择进兵",
+    "status" : "raw_before_after_verified",
+    "take" : "02",
+    "in_seconds" : 1102.0,
+    "out_seconds" : 1105.7,
+    "hard_out_seconds" : 1106.0,
+    "verified_sample_seconds" : [ 1104.7, 1105.5 ],
+    "anchor" : "story01-choose-advance-http-meta.json",
+    "action_seek_seconds" : 1105.124,
+    "notes" : "917.5秒只是事件出现；真正选择在1105.1秒。此推荐包含人物动画、原生第一项提交和窗口消失。"
+  }, {
+    "id" : "chenliu_3486_vs_472",
+    "subject" : "3486对472的小战，精简到开始与结束",
+    "status" : "raw_sample_verified_with_modal_occlusion",
+    "take" : "02",
+    "in_seconds" : 1294.5,
+    "out_seconds" : 1304.0,
+    "hard_out_seconds" : 1320.4,
+    "verified_sample_seconds" : [ 1296.6 ],
+    "anchor" : "chenliu-battle01-control-screen.jpg",
+    "secondary_clip" : {
+      "in_seconds" : 1315.0,
+      "out_seconds" : 1320.0,
+      "hard_out_seconds" : 1320.4,
+      "verified_sample_seconds" : [ 1319.1 ]
+    },
+    "notes" : "双方数字在底部战斗面板可读，中央被旧无效窗遮挡；1319秒已回军队卡。适合下方实际面板特写，不宜假称完整无遮挡战场。"
+  }, {
+    "id" : "mutual_home_sieges",
+    "subject" : "双方换家",
+    "status" : "partial_map_broll_only_key_actions_in_gap",
+    "take" : "03",
+    "in_seconds" : 2697.0,
+    "out_seconds" : 2708.0,
+    "hard_out_seconds" : 2710.0,
+    "verified_sample_seconds" : [ 2700.0 ],
+    "still_evidence" : [ "chenliu-counter-march-screen.jpg", "counter-strengths-current-screen.jpg" ],
+    "notes" : "此片段只是暂停战线地图，不能独立证明两处换家动作；后两张关键实况图在11:34–12:35录像缺口。需用真实图/原生读回说明，或删去没有画面的具体动作。take03需裁游戏窗口。"
+  }, {
+    "id" : "first_treaty_rejected_offer",
+    "subject" : "第一次和约：完整目标−87→给1000变−80，未提交",
+    "status" : "raw_samples_verified_requires_game_window_crop",
+    "take" : "03",
+    "in_seconds" : 158.0,
+    "out_seconds" : 164.0,
+    "hard_out_seconds" : 1098.0,
+    "verified_sample_seconds" : [ 161.6 ],
+    "secondary_clip" : {
+      "in_seconds" : 548.0,
+      "out_seconds" : 554.0,
+      "hard_out_seconds" : 1098.0,
+      "verified_sample_seconds" : [ 552.1 ]
+    },
+    "cancel_clip" : {
+      "in_seconds" : 1093.0,
+      "out_seconds" : 1097.0,
+      "hard_out_seconds" : 1098.0,
+      "verified_sample_seconds" : [ 1096.6 ]
+    },
+    "still_evidence" : [ "treaty-proposal-full.png", "treaty-offer1000.png", "treaty-clear-offer.png", "treaty-after-escape.png" ],
+    "notes" : "真正已加1000的画面在552秒，240秒只是早期操作阶段，不能拿来冒充−80已生效。此处没有提交条约。"
+  }, {
+    "id" : "qingzhou_surrender_22000_and_cao_ren_appointment",
+    "subject" : "济北受降，22000青州军及曹仁原生任命",
+    "status" : "recording_gap",
+    "gap_utc" : [ "2026-11-01T11:34:18.967457700Z", "2026-11-01T12:35:38.989440900Z" ],
+    "still_evidence" : [ "counter-clockwave-5-event-hd_huangjin-10.jpg", "qingzhou-army-before-assign-screen.jpg", "qingzhou-commander-assign-screen.jpg", "qingzhou-commander-person-screen.jpg" ],
+    "notes" : "原生事件及任命均有真实回执、实拍截图；UTC不在任何录像内。可以用后续take04的青州军/Cao Ren战斗录像作已成军状态，不能伪装成当时任命点击实录。"
+  }, {
+    "id" : "final_chenliu_battle_capture_zhang_miao",
+    "subject" : "193年9月陈留决战、张邈被俘",
+    "status" : "raw_finale_samples_verified_requires_game_window_crop",
+    "take" : "04",
+    "hard_out_seconds" : 1145.0,
+    "still_evidence" : [ "battle-pincer-control-screen.jpg", "battle-pincer-after.png" ],
+    "notes" : "真正战斗推进是1141–1143秒。1698/1700/1708/1716均已暂停战后地图，不作快进战斗。1778后可保实际被俘通知；全段裁游戏窗口，左上小建议tooltip存在。",
+    "source_hard_eof_seconds" : 7722.7,
+    "in_seconds" : 1133.0,
+    "out_seconds" : 1144.5,
+    "verified_sample_seconds" : [ 1136.6, 1140.8, 1141.5, 1142.5, 1143.5, 1779.4 ],
+    "available_segments" : [ {
+      "subject" : "交战状态与真实推进",
+      "footage_state" : "Battle ongoing then actual fast day advance at1141.153–1142.686",
+      "in_seconds" : 1130.0,
+      "out_seconds" : 1144.5,
+      "hard_out_seconds" : 1145.0
+    }, {
+      "subject" : "张邈被俘／陈留之战胜利通知",
+      "footage_state" : "Paused post-battle map; readable right-side notification",
+      "in_seconds" : 1778.0,
+      "out_seconds" : 1805.0,
+      "hard_out_seconds" : 1806.0
+    } ],
+    "actual_clock_resume_seek_seconds" : 1141.153,
+    "actual_clock_pause_seek_seconds" : 1142.686,
+    "battle_ended_receipt_seek_seconds" : 1143.89
+  }, {
+    "id" : "final_treaty_and_victory",
+    "subject" : "最终和约：50战分、66完整目标、无钱−25、4000后+5、真实提交胜利",
+    "status" : "raw_finale_samples_verified_requires_game_window_crop",
+    "take" : "04",
+    "hard_out_seconds" : 1916.5,
+    "original_offer_images_reviewed" : {
+      "final-offer-step-0-ready.png" : {
+        "payment" : 0,
+        "acceptance" : -25,
+        "seek_seconds" : 1914.69
+      },
+      "final-offer-step-4-ready.png" : {
+        "payment" : 3000,
+        "acceptance" : -3,
+        "seek_seconds" : 1924.263
+      },
+      "final-offer-step-5-ready.png" : {
+        "payment" : 4000,
+        "acceptance" : 5,
+        "seek_seconds" : 1927.05
+      }
+    },
+    "still_evidence" : [ "final-war-open.png", "final-treaty-ready.png", "final-offer-step-0-ready.png", "final-offer-step-5-ready.png", "settlement-submit-once.png", "settlement-after-submit.png", "settlement-victory-close.png" ],
+    "notes" : "已实帧核对所有报价与胜利节点，最长70秒0金提案段、35秒4000段、35秒胜利窗可按实际VO裁短。每段都是原始连续录像，主要为暂停窗口与人物动画，不能称持续战斗动作。",
+    "anchor_seconds" : {
+      "full_target" : 1844.309,
+      "offer_steps_start" : 1914.69,
+      "offer_steps_end" : 1927.05,
+      "actual_submit" : 2096.918,
+      "victory_close" : 2186.84
+    },
+    "source_hard_eof_seconds" : 7722.7,
+    "in_seconds" : 1844.4,
+    "out_seconds" : 1879.4,
+    "verified_sample_seconds" : [ 1844.4, 1914.7, 1927.1, 2020, 2094.9, 2097.2, 2120 ],
+    "available_segments" : [ {
+      "subject" : "50战分＋完整目标66＋0金−25",
+      "footage_state" : "Paused treaty proposal; ample continuous hold",
+      "in_seconds" : 1844.4,
+      "out_seconds" : 1914.8,
+      "hard_out_seconds" : 1916.5
+    }, {
+      "subject" : "0金−25短段",
+      "footage_state" : "Actual zero-payment UI before increases",
+      "in_seconds" : 1913.8,
+      "out_seconds" : 1916.8,
+      "hard_out_seconds" : 1916.9
+    }, {
+      "subject" : "逐步增款至4000/+5",
+      "footage_state" : "Actual UI payment changes; step4=3000/−3,step5=4000/+5",
+      "in_seconds" : 1916.9,
+      "out_seconds" : 1928.0,
+      "hard_out_seconds" : 1928.5
+    }, {
+      "subject" : "4000/+5可读持留",
+      "footage_state" : "Paused accepted proposal; actual frame2020 still same4000/+5",
+      "in_seconds" : 1927.5,
+      "out_seconds" : 1962.5,
+      "hard_out_seconds" : 2093.7
+    }, {
+      "subject" : "实际签约按钮→胜利转场",
+      "footage_state" : "Actual original submission;2094.9 transition,2097.2 victory visible",
+      "in_seconds" : 2093.8,
+      "out_seconds" : 2098.2,
+      "hard_out_seconds" : 2099.0
+    }, {
+      "subject" : "胜利窗可读持留",
+      "footage_state" : "Original victory window, not a reconstruction",
+      "in_seconds" : 2097.2,
+      "out_seconds" : 2132.2,
+      "hard_out_seconds" : 2186.2
+    }, {
+      "subject" : "关闭胜利窗",
+      "footage_state" : "Actual dismissal and map;2187.5 map verified",
+      "in_seconds" : 2185.5,
+      "out_seconds" : 2188.5,
+      "hard_out_seconds" : 2191.8
+    } ]
+  }, {
+    "id" : "paid_4000_and_expanded_domain",
+    "subject" : "钱6086→2086，直辖9→27",
+    "status" : "raw_finale_samples_verified_requires_game_window_crop",
+    "take" : "04",
+    "hard_out_seconds" : 2099.0,
+    "still_evidence" : [ "settlement-root-before-screen.jpg", "settlement-after-submit.png", "settlement-root-after-screen.jpg" ],
+    "source_hard_eof_seconds" : 7722.7,
+    "in_seconds" : 2090.5,
+    "out_seconds" : 2098.2,
+    "verified_sample_seconds" : [ 2094.9, 2097.2, 2187.5 ],
+    "available_segments" : [ {
+      "subject" : "6086→2086、签约前后顶栏",
+      "footage_state" : "Actual transaction transition; victory overlays center",
+      "in_seconds" : 2090.5,
+      "out_seconds" : 2098.2,
+      "hard_out_seconds" : 2099.0
+    }, {
+      "subject" : "战后顶栏与地图",
+      "footage_state" : "Map after victory modal dismissed, before next event",
+      "in_seconds" : 2187.0,
+      "out_seconds" : 2191.8,
+      "hard_out_seconds" : 2193.0
+    } ],
+    "notes" : "钱与直辖计数取真实HUD，原生结算读回另见root证据。裁图时保顶栏与底部日期，不为放大数字剪掉主体。"
+  }, {
+    "id" : "choose_rest",
+    "subject" : "东略兖州，选择休整",
+    "status" : "raw_finale_samples_verified_requires_game_window_crop",
+    "take" : "04",
+    "hard_out_seconds" : 2406.2,
+    "action_anchor" : "ending-choose-rest-http-meta.json",
+    "notes" : "2384→2401.5只到作答前，若讲已经休整必须接2403.482实际选择和2404.8窗口消失。无需下期预告。",
+    "source_hard_eof_seconds" : 7722.7,
+    "in_seconds" : 2384.0,
+    "out_seconds" : 2405.3,
+    "action_seek_seconds" : 2403.482,
+    "verified_sample_seconds" : [ 2403.2, 2404.8 ],
+    "available_segments" : [ {
+      "subject" : "东略兖州窗口持留",
+      "footage_state" : "Paused event portrait and both choices; no action yet",
+      "in_seconds" : 2195.0,
+      "out_seconds" : 2230.0,
+      "hard_out_seconds" : 2403.35
+    }, {
+      "subject" : "休整第二项实际选择与关闭",
+      "footage_state" : "2403.2 still open,2403.482 submit,2404.8 disappeared",
+      "in_seconds" : 2401.8,
+      "out_seconds" : 2405.3,
+      "hard_out_seconds" : 2406.2
+    } ]
+  }, {
+    "id" : "ending_character_and_map",
+    "subject" : "终态曹操人物及地图",
+    "status" : "raw_finale_samples_verified_requires_game_window_crop",
+    "take" : "04",
+    "hard_out_seconds" : 4192.2,
+    "still_evidence" : [ "ending-character-clean.png", "ending-character-close.png" ],
+    "notes" : "给人物65秒、地图60秒连续原录上限，可按VO裁短；不循环、不截图推拉。4194/4220均实际地图，左上有小建议tooltip；所有候选在首次退出尝试4279秒前。Game正常exit0由父任务实报13:57:38.700Z。",
+    "source_hard_eof_seconds" : 7722.7,
+    "in_seconds" : 2944.5,
+    "out_seconds" : 3009.5,
+    "verified_sample_seconds" : [ 2945.1, 4194, 4220 ],
+    "available_segments" : [ {
+      "subject" : "终态曹操人物＋地图",
+      "footage_state" : "Original paused character panel with portrait animation; continuous65seconds available",
+      "in_seconds" : 2944.5,
+      "out_seconds" : 3009.5,
+      "hard_out_seconds" : 4192.2
+    }, {
+      "subject" : "关闭人物后的终态地图",
+      "footage_state" : "Original paused map; small upper-left hover advice remains; exit not entered in this range",
+      "in_seconds" : 4194.0,
+      "out_seconds" : 4254.0,
+      "hard_out_seconds" : 4278.0
+    }, {
+      "subject" : "休整后较早地图",
+      "footage_state" : "Short actual map before character opened; center hover tooltip present",
+      "in_seconds" : 2404.8,
+      "out_seconds" : 2408.0,
+      "hard_out_seconds" : 2409.5
+    } ]
+  } ],
+  "crop_diagnostics" : {
+    "take03" : {
+      "raw_dimensions" : [ 2560, 1440 ],
+      "desktop_outside_game_visible" : true,
+      "source_layout_receipt" : "window-recording-layout.json",
+      "reported_outer_window_rect" : [ 0, 0, 1936, 1119 ],
+      "client_crop_independently_verified" : true,
+      "instruction" : "Use crop1936:1118:0:0 then preserve aspect ratio into delivery canvas. Do not show the captured Explorer outside the game.",
+      "crop_filter" : "crop=1936:1118:0:0",
+      "crop_verification_source" : "Root independently confirmed raw contact frames; complete lower HUD retained, Explorer starts to the right"
+    },
+    "take04" : {
+      "raw_dimensions" : [ 2560, 1440 ],
+      "desktop_outside_game_visible" : true,
+      "client_crop_independently_verified" : true,
+      "crop_filter" : "crop=1936:1118:0:0",
+      "crop_verification_source" : "Root independently confirmed raw contact frames; complete lower HUD retained, Explorer starts to the right",
+      "instruction" : "Use crop1936:1118:0:0 then preserve aspect ratio into delivery canvas. Do not show the captured Explorer outside the game."
+    }
+  },
+  "finalized_at_utc" : "2026-11-01T15:00:57.255492700Z"
+}

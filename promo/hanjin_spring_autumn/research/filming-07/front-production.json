@@ -1,0 +1,594 @@
+{
+  "schema": "hanjin.cao-front-production/v1",
+  "machine_id": "4-8e1c2f1861",
+  "scope": "Actual 190 Cao Cao to193.10.6; Chenliu war resolved by signed4000-gold treaty; chose rest. Original video wherever available; two recording gaps use actual stills; no future teaser.",
+  "scenes": [
+    {
+      "id": "c02-01-title",
+      "title": "帮过我的朋友，挡住了我的去路",
+      "text": "帮过我的朋友，挡住了我的去路。旧恩未忘，野火难熄。天下是我的。我不会停下。谁也别想阻拦我。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-01-start.mkv",
+          "seek": 248.3,
+          "framing": "event",
+          "speed": 1,
+          "weight": 7
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 1097,
+          "framing": "event",
+          "speed": 1,
+          "weight": 6.867
+        }
+      ]
+    },
+    {
+      "id": "c02-02-start",
+      "title": "这把选曹操",
+      "text": "这把选曹操。一九〇年，三十四岁，手里是己吾、襄邑、雍丘三个县。钱有六千多，兵有四千三百多人。还行，至少不用开局就到处借钱。不过看看周围，这点地方真不算大。曹操的本志，我选一统天下。话是放出去了，往后能拿下多少，得一仗一仗打。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-01-start.mkv",
+          "seek": 473.9,
+          "framing": "full",
+          "speed": 1,
+          "weight": 14
+        },
+        {
+          "source": "shooting-04-cao-cao/take-01-start.mkv",
+          "seek": 490,
+          "framing": "full",
+          "speed": 1,
+          "weight": 8
+        },
+        {
+          "source": "shooting-04-cao-cao/opening-wave-01-1-event-hd_asp-0004.jpg",
+          "seek": 0,
+          "framing": "event",
+          "speed": 1,
+          "weight": 8.5
+        }
+      ]
+    },
+    {
+      "id": "c02-03-march",
+      "title": "西进讨董",
+      "text": "四月，关东举兵讨董。这次曹操自己带队，曹仁守左翼，曹玉在右翼，四千多人往西走。联军里人不少，我也不能光在后面看着。董卓那边已经把天子带去了长安，洛阳都烧了。出兵之前想得挺好，沿着路往前，找上联军一起打。到了市丘，才知道前面等着什么。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-01-start.mkv",
+          "seek": 1448.8,
+          "framing": "full",
+          "speed": 1,
+          "weight": 4.5
+        },
+        {
+          "source": "shooting-04-cao-cao/take-01-start.mkv",
+          "seek": 1460,
+          "framing": "army",
+          "speed": 1,
+          "weight": 7
+        },
+        {
+          "source": "shooting-04-cao-cao/gathering-01.png",
+          "seek": 0,
+          "framing": "full",
+          "speed": 1,
+          "weight": 4
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 200,
+          "framing": "full",
+          "speed": 8,
+          "weight": 10
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 349.8,
+          "framing": "full",
+          "speed": 1,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "c02-04-collision-v2",
+      "title": "四千撞上两万五",
+      "text": "四千三百人，撞上两万五。这一支差不多是我的六倍。先撑住，援军正在往这边赶。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 350,
+          "framing": "army",
+          "speed": 1,
+          "weight": 8
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 400,
+          "framing": "full",
+          "speed": 8,
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "c02-05-hard-fight-v2",
+      "title": "援军到了，仗仍难打",
+      "text": "援军到了，我方将近三万，对面两万三。人数上来了，损失也没停。曹玉战死了，这仗不能再硬顶。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 547.5,
+          "framing": "army",
+          "speed": 1,
+          "weight": 7
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 744,
+          "framing": "death-notice",
+          "speed": 1,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "c02-06-retreat-v2",
+      "title": "把自己的人撤出来",
+      "text": "撤，把自己的人带出来。联军还在打，我这支已经扛不住了。先回去补兵，别连守家的本钱都赔进去。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 807.8,
+          "framing": "full",
+          "speed": 1,
+          "weight": 2.8
+        },
+        {
+          "source": "edit-07-cao-cao/retreat-freeze.png",
+          "seek": 0,
+          "framing": "full",
+          "speed": 1,
+          "weight": 9
+        }
+      ]
+    },
+    {
+      "id": "c02-07-dong-end",
+      "title": "董卓死了，战争作废",
+      "text": "一九一年六月一日，长安传来消息：董卓被杀了。我没打过去，他倒先死在了城里。讨董战争随后就这么作废了，结束窗口写的是无效。这可算不上我打赢。第二天，群雄并起，我选据守故地，自立一方。局势重新落定，手里变成了九个县。兵还得养，地还得守，旁边的人也都开始各想各的了。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/war33-after-retreat-129-event-hd_world_news-0009.jpg",
+          "seek": 0,
+          "framing": "event",
+          "speed": 1,
+          "weight": 8
+        },
+        {
+          "source": "edit-07-cao-cao/invalid-freeze.png",
+          "seek": 0,
+          "framing": "aftermath-text",
+          "speed": 1,
+          "weight": 6
+        },
+        {
+          "source": "shooting-04-cao-cao/war33-after-retreat-131-event-hd_hw-0001.jpg",
+          "seek": 0,
+          "framing": "event",
+          "speed": 1,
+          "weight": 7
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 920,
+          "framing": "full",
+          "speed": 1,
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "id": "c02-08-chenliu-choice",
+      "title": "陈留之谋",
+      "text": "六月十二日，陈留之谋来了。张邈帮过我，这份旧情我记得。现在陈留摆在面前，选项也摆得明白：顾念旧交，这事从缓；或者，即日进兵。我把鼠标放在进兵这边，还是点了下去。片头说的朋友，就是他。刚刚还在一起讨董，董卓一死，我就把兵转向了帮过自己的人。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 1073,
+          "framing": "event",
+          "speed": 1,
+          "weight": 15
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 1102,
+          "framing": "event",
+          "speed": 1,
+          "weight": 3.6
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 1105.7,
+          "framing": "full",
+          "speed": 1,
+          "weight": 14
+        }
+      ]
+    },
+    {
+      "id": "c02-09-first-win",
+      "title": "先拿一场小胜",
+      "text": "三千四百多人，碰上对面四百七十多人的小队。这次总算不是自己人少了。六天打下来，战分到了十八。开头这一下挺顺，我还以为能趁势赶紧把陈留拿稳。结果这场仗真正麻烦的地方，不在眼前这几百个人。我的兵往前走，对面的兵也没闲着，后面的县很快就出了问题。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 1294.5,
+          "framing": "army",
+          "speed": 1,
+          "weight": 6
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 1315,
+          "framing": "army",
+          "speed": 1,
+          "weight": 5
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "seek": 1325,
+          "framing": "full",
+          "speed": 8,
+          "weight": 18
+        }
+      ]
+    },
+    {
+      "id": "c02-10-swap-homes",
+      "title": "两边换家",
+      "text": "陈留占过了，家里的雍丘、襄邑却丢了。往回救，前面又顾不上，后来陈留也没守住。看着地图换来换去，刚才那点小胜的高兴很快就没了。兵就这些，分开了怕谁都打不过，合在一起又总有地方漏着。现在要拿的地方还没拿稳，自己的地倒让人走了进去。这仗越打越不像出门时想的那样。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+          "seek": 2697,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 10
+        },
+        {
+          "source": "shooting-04-cao-cao/chenliu-counter-march-screen.jpg",
+          "seek": 0,
+          "framing": "full",
+          "speed": 1,
+          "weight": 6
+        },
+        {
+          "source": "shooting-04-cao-cao/counter-strengths-current-screen.jpg",
+          "seek": 0,
+          "framing": "full",
+          "speed": 1,
+          "weight": 6
+        },
+        {
+          "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+          "seek": 2710,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "id": "c02-11-first-offer",
+      "title": "第一次谈，谈不拢",
+      "text": "打开议和看看。全套目标要六十九点，我现在只有十八战分。张邈肯不肯接受？负八十七，根本不肯。我试着在草案里放上一千金，还是负八十。行，差得远呢。这一千只是拿来试价，没有送出去，条约也没签。先把草案关掉。想凭刚才那场小胜就让他把地交出来，显然是我想多了。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+          "seek": 159.8,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 12
+        },
+        {
+          "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+          "seek": 550.2,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 12
+        },
+        {
+          "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+          "seek": 1093,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 4
+        },
+        {
+          "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+          "seek": 1096.7,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "c02-12-qingzhou",
+      "title": "济北受降",
+      "text": "这时候，济北受降来了。我选了第一项，手里一下多了两万两千青州军。终于有一支能单独往前压的大军了。可点开一看，还没主将。人是收下了，总得有人带。我把曹仁调过来，他的武力有三十，带这支兵合适。原来的兵已经打得够累了，让他们回去保家，青州军跟着曹仁，去把前面的城重新拿回来。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/counter-clockwave-5-event-hd_huangjin-10.jpg",
+          "seek": 0,
+          "framing": "event",
+          "speed": 1,
+          "weight": 7
+        },
+        {
+          "source": "shooting-04-cao-cao/qingzhou-army-before-assign-screen.jpg",
+          "seek": 0,
+          "framing": "army-panel",
+          "speed": 1,
+          "weight": 6
+        },
+        {
+          "source": "shooting-04-cao-cao/qingzhou-commander-assign-screen.jpg",
+          "seek": 0,
+          "framing": "army-panel",
+          "speed": 1,
+          "weight": 6
+        },
+        {
+          "source": "shooting-04-cao-cao/qingzhou-commander-person-screen.jpg",
+          "seek": 0,
+          "framing": "full",
+          "speed": 1,
+          "weight": 7
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 90,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 7
+        }
+      ]
+    },
+    {
+      "id": "c02-13-two-fronts",
+      "title": "曹仁往前，旧兵回家",
+      "text": "这样才总算能两头都顾一点。原来的队伍往回走，曹仁带新军继续攻城。刚才只能眼看着县城挨个丢，现在至少不用把所有人都拖着来回跑了。不过两万多人往一个地方堆，吃饭也成了麻烦。看着兵数挺威风，真在路上走起来，得留意他们还能撑多久。城要拿，人也不能全耗在城下面。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 270,
+          "framing": "capturegame",
+          "speed": 8,
+          "weight": 15
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 400,
+          "framing": "capturegame",
+          "speed": 8,
+          "weight": 15
+        }
+      ]
+    },
+    {
+      "id": "c02-14-attrition",
+      "title": "大军也会越打越少",
+      "text": "这仗拖进了一九三年。青州军刚来的时候有两万两千，后来只剩一万一左右。不是一场仗全打光了，是一路打、一路耗，兵数就这么降下来了。家里要顾，前面又不能放，张邈也一直没有松口。我现在再看这支军队，已经高兴不起来了。拿到两万多人只是开始，能把多少人带着走到最后，又是另一回事。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 700,
+          "framing": "capturegame",
+          "speed": 8,
+          "weight": 12
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 900,
+          "framing": "capturegame",
+          "speed": 8,
+          "weight": 11
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 1127,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 8
+        }
+      ]
+    },
+    {
+      "id": "c02-15-capture",
+      "title": "陈留再战，张邈被俘",
+      "text": "九月，终于在陈留等到了这一仗。曹仁带着青州军打赢了，张邈被俘。好，打了这么久，总算把人拿住了。前面那些丢了又抢、抢了又丢的地方，这回有机会一并谈下来。可我也不想再拖着这支兵，一座城一座城熬下去了。把议和重新打开，看看这一次，他还肯不肯谈。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 1133,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 11
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 1778,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 10
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 1805,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 9
+        }
+      ]
+    },
+    {
+      "id": "c02-16-second-offer",
+      "title": "五十战分还差一点",
+      "text": "九月二十五日，战分五十。完整的目标现在要六十六点，直接提，对面还是负二十五。张邈人都被抓了，条件照样没全答应。看来这支青州军还没替我把所有价钱都打下来。要继续攻城，当然还能打，可兵已经耗成这样，我更想现在就收手。差的这一截，看看用钱能不能补上。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 1844,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 14
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 1914.7,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 3
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 1880,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 14
+        }
+      ]
+    },
+    {
+      "id": "c02-17-four-thousand",
+      "title": "四千金，换他点头",
+      "text": "草案里放四千金。条约价值往上加了二十九，接受变成正五，他愿意了。四千，开局带的那笔钱大半都得掏出去。刚才一千金连让他松口都做不到，现在能谈成，我倒有点舍不得点了。可再拖下去，兵还要耗，家里也还要防。这回就这样。我提交了这份和约，不再往上加，也不等战分打一百。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 1926.7,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 13
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 2050,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 14
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 2094.5,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "c02-18-settlement",
+      "title": "战争真的结束了",
+      "text": "胜利窗口出来了，地图也换了颜色。这次谈成了。钱从六千多掉到两千多，四千金真付了出去。手里的直辖从九处变成二十七处，一次多了十八处。盯了这么久的陈留，总算拿到手了。张邈以前帮过我，现在人被我抓了，地也交了出来。拿地的时候挺痛快，回头想想，这位旧朋友算是让我得罪到底了。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 2097.5,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 9
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 2186,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 5
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 2945,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 17
+        }
+      ]
+    },
+    {
+      "id": "c02-19-rest",
+      "title": "兵已疲敝，暂且休整",
+      "text": "十月六日，东略兖州又来了，还能接着往前打。这回我选第二项：兵已疲敝，暂且休整。青州军从两万多人打到现在，刚花了四千金把和约签下来，我不想转头又把他们往下一座城里送。天下还没到手，兖州也没让我全拿下。不过这一仗已经打完，该拿的拿到了。把兵收回来，先歇一歇。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 2384,
+          "framing": "event",
+          "speed": 1,
+          "weight": 16
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 2401.5,
+          "framing": "event",
+          "speed": 1,
+          "weight": 4.5
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 4194,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 16
+        }
+      ]
+    },
+    {
+      "id": "c02-20-promo",
+      "title": "汉晋春秋",
+      "text": "这次玩的是《十字军之王三》Mod《汉晋春秋》。想自己试试，在Steam创意工坊搜索汉晋春秋。这局还搭配了服装包和战争谈判议和扩展。最后用四千金谈下来的这份和约，就是在这套组合里玩的。三个创意工坊链接都放在简介里，感兴趣可以点进去看看。",
+      "hold_seconds": 0,
+      "shots": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "seek": 4200,
+          "framing": "capturegame",
+          "speed": 1,
+          "weight": 7
+        },
+        {
+          "source": "edit-07-cao-cao/end-card.png",
+          "seek": 0,
+          "framing": "full",
+          "speed": 1,
+          "weight": 22
+        }
+      ]
+    }
+  ]
+}

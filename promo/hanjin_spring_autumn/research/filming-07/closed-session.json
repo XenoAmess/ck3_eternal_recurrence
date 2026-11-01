@@ -1,0 +1,133 @@
+{
+  "schema": "hanjin.caocao-closed-session/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T15:08:14.462909+00:00",
+  "raw_root": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-04-cao-cao",
+  "edit_root": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-07-cao-cao",
+  "game_pid": "424",
+  "game_birth_filetime": "134379962932318645",
+  "game_exit": {
+    "schema": "hanjin.shooting-game-exit.v1",
+    "machine_id": "4-8e1c2f1861",
+    "finished_at_utc": "2026-11-01T13:57:38.700057900Z",
+    "game_pid": "424",
+    "exit_code": 0
+  },
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "hanjin-caocao-screen-20261101",
+    "last_sequence": 15058,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-04-cao-cao\\keeper\\journal.jsonl",
+    "at_utc": "2026-11-01T14:44:56.592015+00:00",
+    "entry_error": null,
+    "checkout_head": "ef6ac5a3370f38852ad871824bd224e9bc4577d8",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "screen_release_bus_sequence": 15059,
+  "display_restored": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-11-01T14:48:20.453295+00:00",
+    "before": [
+      2560,
+      1440,
+      60
+    ],
+    "after": [
+      1024,
+      768,
+      60
+    ],
+    "change_result": 0,
+    "game_exited": true,
+    "recorder_closed": true
+  },
+  "display_restore_screen_release_bus_sequence": 15062,
+  "sdk_save_confirmed": false,
+  "actual_save_evidence": {
+    "schema": "hanjin.caocao-real-save/v1",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-11-01T13:46:15.666001+00:00",
+    "file": "C:\\workspace\\hanjin-spring-autumn-20261031\\shooting-04-cao-cao\\launcher\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 49805919,
+    "sha256": "9ba6bf78423062fd2d05eafcf1fcc44a2a7acc9c166a60df07fa83a445e9e9da",
+    "sdk_result": "submitted_then_wrong_expected_profile_directory_did_not_materialize",
+    "sdk_error_evidence": "ending-save-checkpoint-response.json",
+    "actual_game_profile": "launcher/state/profile",
+    "not_replayed": true,
+    "binary_header_hex": "53415630313031356630623335383530303030386361660a5531010003008f05",
+    "save_date_independently_parsed": false,
+    "actual_file_materialized": true,
+    "sdk_save_confirmed": false
+  },
+  "key_originals": [
+    {
+      "relative_path": "settlement-root-before-response.json",
+      "bytes": 75565,
+      "sha256": "6a78415f3c60796cf20e8f678f5136517964ef06d63c4bf381cf78b96141ac54"
+    },
+    {
+      "relative_path": "settlement-root-after-response.json",
+      "bytes": 112128,
+      "sha256": "bb2407ff6ec9af77014e0769a8dbe81f6244e793f529782db5f65601fecf6db2"
+    },
+    {
+      "relative_path": "settlement-after-submit-response.json",
+      "bytes": 50224,
+      "sha256": "fb655d43ee1ddd466e576746bac94b0ad60b1d9c326d56461f3847cdbdc7ca1a"
+    },
+    {
+      "relative_path": "ending-choose-rest-response.json",
+      "bytes": 6855,
+      "sha256": "936ecfec37c2c6c0a3a8369c134195e78cf26d99fd1a662c956d98b8ea5451c4"
+    },
+    {
+      "relative_path": "ending-real-save-evidence.json",
+      "bytes": 815,
+      "sha256": "dcfb902def933787bdb2849e0921fa3d3821a1bdd1c212ad10ba7c928bac339f"
+    },
+    {
+      "relative_path": "launcher/exit.json",
+      "bytes": 184,
+      "sha256": "b3a4a412c7e72ae3d70aaad0561a3261ec4feef9d58e3da3efbc25c28f478812"
+    },
+    {
+      "relative_path": "keeper/report.json",
+      "bytes": 459,
+      "sha256": "076dacfb8234e23cfbbe40b1d7799043be272d9dd3ff69b7c9c96900dd99edb5"
+    },
+    {
+      "relative_path": "display-restored.json",
+      "bytes": 205,
+      "sha256": "ff19a6b233f38c9d63135b02e9b4257ef54239a4fddec198c2b5bc8b73377d33"
+    },
+    {
+      "relative_path": "final-treaty-ready.png",
+      "bytes": 2659873,
+      "sha256": "ba4db3fa0619cdaa59ff2c561c16f22da9d385a5e003f3e216bbc80ebeccd4a0"
+    },
+    {
+      "relative_path": "final-offer-step-5-ready.png",
+      "bytes": 2672085,
+      "sha256": "16289ba6cbe8bf6ae8b28a2dd55a0c9f45582a63d0e25bee161b31b30c34fa61"
+    },
+    {
+      "relative_path": "settlement-after-submit.png",
+      "bytes": 2989813,
+      "sha256": "adc99bd9f6e22d0fb91f25776e2f1c0023f81a8bebe5667b051e5c298a2745ad"
+    },
+    {
+      "relative_path": "ending-advance-1-event-hd190-0103.jpg",
+      "bytes": 261491,
+      "sha256": "d53515ac43b9730ccd3ae8568b0ebbb15a9b79bc7c6068aa3cf1db8d0d8bd137"
+    },
+    {
+      "relative_path": "ending-character-clean.png",
+      "bytes": 3245681,
+      "sha256": "b2ef015187a2e542836d56f96cc2c3c474ed8f8fc8b0adced1936074019b3a3e"
+    }
+  ],
+  "human_signoff": null
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "hanjin.caocao-storage-closure/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T15:08:14.462909+00:00",
+  "available_bytes": 83366649856,
+  "filming_bytes": 2266716501,
+  "edit_bytes": 666388380,
+  "filming_budget_bytes": 8589934592,
+  "edit_budget_bytes": 2147483648,
+  "raw_video_bytes": 1266382095,
+  "raw_video_budget_bytes": 4294967296,
+  "system_reserve_bytes": 16106127360,
+  "safety_bytes": 21474836480,
+  "review_at_utc": "2026-11-03T10:30:00Z",
+  "raw_review_at_utc": "2026-12-01T08:40:00Z",
+  "retention_reason": "Current episode review, reproducible edit and recoverable campaign; reassess after user review",
+  "automatic_gc_deployed": false,
+  "raw_duplicated": false
+}

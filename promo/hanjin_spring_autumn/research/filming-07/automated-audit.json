@@ -1,0 +1,121 @@
+{
+  "automated_audit": {
+    "checks": [
+      "subject-bytes-and-sha256",
+      "sampling-plan-bytes-and-sha256",
+      "source-bytes-and-sha256",
+      "required-role-coverage",
+      "evidence-bytes-and-sha256",
+      "external-producer-metadata"
+    ],
+    "evidence_artifact_count": 20,
+    "evidence_bundle_sha256": "A962E95707C36D8165DB675CC2048033E32E92F33A80F9DA978018C97FCF6491",
+    "evidence_plan_sha256": "A3A4B74C2E1203C6FEC7CE49FE2F153A2B70A5B43A46FC33C5F882D080C1D283",
+    "external_producers": [
+      {
+        "adapter_id": "external-java-media",
+        "operation": "extract-review-frame",
+        "tool": "ffmpeg",
+        "tool_version": "9.0.2"
+      }
+    ],
+    "manual_approval_granted": false,
+    "required_roles": [
+      "frame"
+    ],
+    "sample_count": 20,
+    "sample_required_roles": {
+      "sample-000001": [
+        "frame"
+      ],
+      "sample-000002": [
+        "frame"
+      ],
+      "sample-000003": [
+        "frame"
+      ],
+      "sample-000004": [
+        "frame"
+      ],
+      "sample-000005": [
+        "frame"
+      ],
+      "sample-000006": [
+        "frame"
+      ],
+      "sample-000007": [
+        "frame"
+      ],
+      "sample-000008": [
+        "frame"
+      ],
+      "sample-000009": [
+        "frame"
+      ],
+      "sample-000010": [
+        "frame"
+      ],
+      "sample-000011": [
+        "frame"
+      ],
+      "sample-000012": [
+        "frame"
+      ],
+      "sample-000013": [
+        "frame"
+      ],
+      "sample-000014": [
+        "frame"
+      ],
+      "sample-000015": [
+        "frame"
+      ],
+      "sample-000016": [
+        "frame"
+      ],
+      "sample-000017": [
+        "frame"
+      ],
+      "sample-000018": [
+        "frame"
+      ],
+      "sample-000019": [
+        "frame"
+      ],
+      "sample-000020": [
+        "frame"
+      ]
+    },
+    "scope": "artifact-integrity-and-evidence-completeness",
+    "status": "passed",
+    "subject_sha256": "B82C4CB69B91A3E12EAAB4EC99FB4A012FCD3B6F773AF5588646B3CE29DE6B3B",
+    "verifier": "xar_promo.audit/1"
+  },
+  "created_at_utc": "2026-11-01T14:59:57Z",
+  "evidence_bundle": {
+    "bytes": 14705,
+    "collection": "derived",
+    "id": "audit-evidence-bundle",
+    "label": "Complete hash-bound visual evidence bundle",
+    "media_type": "application/json",
+    "path": "editorial-audit/evidence-bundle.json",
+    "role": "evidence-bundle",
+    "sha256": "A962E95707C36D8165DB675CC2048033E32E92F33A80F9DA978018C97FCF6491"
+  },
+  "format_version": 1,
+  "kind": "xar_promo_audit_report",
+  "manual_signoff": {
+    "state": "not-provided"
+  },
+  "subject": {
+    "bytes": 58790308,
+    "collection": "derived",
+    "id": "cao-ep02-video-review",
+    "label": "cao-ep02-video-review.mp4",
+    "media_type": "video/mp4",
+    "path": "artifacts/derived/sha256/B8/B82C4CB69B91A3E12EAAB4EC99FB4A012FCD3B6F773AF5588646B3CE29DE6B3B.mp4",
+    "role": "deliverable",
+    "sha256": "B82C4CB69B91A3E12EAAB4EC99FB4A012FCD3B6F773AF5588646B3CE29DE6B3B",
+    "source_name": "cao-ep02-video-review.mp4"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "schema" : "hanjin.cao-ep02-selected-source-index/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "observed_at_utc" : "2026-11-01T14:59:15.606013400Z",
+  "raw_duplicated" : false,
+  "sources" : [ {
+    "relative_path" : "edit-07-cao-cao/end-card.png",
+    "bytes" : 120325,
+    "modified_epoch_millis" : "1793544796423",
+    "sha256" : "8700a6ad1b479691ccded112275305b962524d8f54210ae26cd1d1661c84f402"
+  }, {
+    "relative_path" : "edit-07-cao-cao/invalid-freeze.png",
+    "bytes" : 2511723,
+    "modified_epoch_millis" : "1793544792949",
+    "sha256" : "44f412108607730c17cca5552fcc9f4fb2a83a24df19b9781a02aa663943e7f1"
+  }, {
+    "relative_path" : "edit-07-cao-cao/retreat-freeze.png",
+    "bytes" : 2959574,
+    "modified_epoch_millis" : "1793544792425",
+    "sha256" : "d95fa56f75104ce3cea77271b7abed6a4e3c70a09e39594f3026106e2cca8f5c"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/chenliu-counter-march-screen.jpg",
+    "bytes" : 265609,
+    "modified_epoch_millis" : "1793533022233",
+    "sha256" : "63133ee27a777282e504283b218895e72ed26420c8ee36c805318028c23cc937"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/counter-clockwave-5-event-hd_huangjin-10.jpg",
+    "bytes" : 253372,
+    "modified_epoch_millis" : "1793533037593",
+    "sha256" : "c1ac2ca96cf8d41febef1fa326a00ef8aaa6c901e6ba67027bc0b8ba9509c35d"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/counter-strengths-current-screen.jpg",
+    "bytes" : 245545,
+    "modified_epoch_millis" : "1793533606286",
+    "sha256" : "d3dc15fc6a08c08ea8c94d3e6e2bd0e6f40aacb1a68a18a5483412e4d942a8b3"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/gathering-01.png",
+    "bytes" : 3622243,
+    "modified_epoch_millis" : "1793525054812",
+    "sha256" : "19d60f473d0bdcbed3c0ac6c2c56128bddab42c1763c2b26218c66e3a445b8fb"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/opening-wave-01-1-event-hd_asp-0004.jpg",
+    "bytes" : 329447,
+    "modified_epoch_millis" : "1793523919092",
+    "sha256" : "96efc14547ae11afb9b7edb7984f008b87f64bb24d1b83cb309ea2e42c03457a"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/qingzhou-army-before-assign-screen.jpg",
+    "bytes" : 236949,
+    "modified_epoch_millis" : "1793533691147",
+    "sha256" : "dd2ead099cd1667bccf57e3bb4bbfac7ed1fe249656636dadac935f4b70769f4"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/qingzhou-commander-assign-screen.jpg",
+    "bytes" : 237596,
+    "modified_epoch_millis" : "1793533695029",
+    "sha256" : "a7943d61b36c519d247c4f3d8c717b6ad980711e1d9f94e1bb7a08493ccf6b3a"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/qingzhou-commander-person-screen.jpg",
+    "bytes" : 237987,
+    "modified_epoch_millis" : "1793533698346",
+    "sha256" : "75ba92e29919fd4e6575c5fa71e0c59a444374fadfb8ff49bede9036d2a1bd5f"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/take-01-start.mkv",
+    "bytes" : 124595228,
+    "modified_epoch_millis" : "1793524817642",
+    "sha256" : "b69b0a7744dee37a970dc6c7907034accbb407bd87565ac9b426f3948c655bb4"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/take-02-war.mkv",
+    "bytes" : 341830683,
+    "modified_epoch_millis" : "1793529256984",
+    "sha256" : "5d325f7b156a2c7c401173cc7124d4acb6f13cfcfeed3000bf9d059360a7e09a"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+    "bytes" : 395124120,
+    "modified_epoch_millis" : "1793532859185",
+    "sha256" : "c98540e570caf6966bd40fb65574a6d95e697dc3f1f524e0c7e0cf198754676e"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/take-04-settlement.mkv",
+    "bytes" : 404832064,
+    "modified_epoch_millis" : "1793544261863",
+    "sha256" : "a6358a4587ea1c24b14a2a47a1f5063d26806ba170f4ab82340ecdd5e6a6641f"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/war33-after-retreat-129-event-hd_world_news-0009.jpg",
+    "bytes" : 346762,
+    "modified_epoch_millis" : "1793527125410",
+    "sha256" : "3de384b155fb68eef730a2ac478f90c13ba2fde78b439ea4cdc90994c090dc1c"
+  }, {
+    "relative_path" : "shooting-04-cao-cao/war33-after-retreat-131-event-hd_hw-0001.jpg",
+    "bytes" : 339150,
+    "modified_epoch_millis" : "1793527127570",
+    "sha256" : "b115a3547ac5b5303b3e03194559ecaae860e8dd36d519bf0a4490d62670b3aa"
+  } ]
+}

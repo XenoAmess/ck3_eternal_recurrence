@@ -1,0 +1,115 @@
+{
+  "schema" : "hanjin.cao.raw-video-index/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "observed_at_utc" : "2026-11-01T14:51:43.057557700Z",
+  "game_operated" : false,
+  "bulk_media_reencoded" : false,
+  "takes" : [ {
+    "source" : "shooting-04-cao-cao/take-01-start.mkv",
+    "state" : "sealed_according_to_parent",
+    "bytes" : 124595228,
+    "filesystem_creation_utc" : "2026-11-01T08:50:17.465767200Z",
+    "filesystem_last_write_utc" : "2026-11-01T09:20:17.642171300Z",
+    "duration_seconds" : 1800.0,
+    "provisional_end_utc" : "2026-11-01T09:20:17.465767200Z",
+    "timeline_anchor_basis" : "original filesystem creation, provisional until sampled frame content match",
+    "sha256" : null,
+    "actual_ffprobe" : {
+      "programs" : [ ],
+      "stream_groups" : [ ],
+      "streams" : [ {
+        "index" : 0,
+        "codec_name" : "h264",
+        "width" : 1920,
+        "height" : 1080,
+        "r_frame_rate" : "30/1"
+      } ],
+      "format" : {
+        "start_time" : "0.000000",
+        "duration" : "1800.000000",
+        "tags" : { }
+      }
+    }
+  }, {
+    "source" : "shooting-04-cao-cao/take-02-war.mkv",
+    "state" : "sealed_according_to_parent",
+    "bytes" : 341830683,
+    "filesystem_creation_utc" : "2026-11-01T09:43:32.977735200Z",
+    "filesystem_last_write_utc" : "2026-11-01T10:34:16.984145300Z",
+    "duration_seconds" : 3043.866,
+    "provisional_end_utc" : "2026-11-01T10:34:16.843735200Z",
+    "timeline_anchor_basis" : "original filesystem creation, provisional until sampled frame content match",
+    "sha256" : null,
+    "actual_ffprobe" : {
+      "programs" : [ ],
+      "stream_groups" : [ ],
+      "streams" : [ {
+        "index" : 0,
+        "codec_name" : "h264",
+        "width" : 1920,
+        "height" : 1080,
+        "r_frame_rate" : "30/1"
+      } ],
+      "format" : {
+        "start_time" : "0.000000",
+        "duration" : "3043.866000",
+        "tags" : { }
+      }
+    }
+  }, {
+    "source" : "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+    "state" : "sealed_according_to_parent",
+    "bytes" : 395124120,
+    "filesystem_creation_utc" : "2026-11-01T10:34:19.001457700Z",
+    "filesystem_last_write_utc" : "2026-11-01T11:34:19.185350800Z",
+    "duration_seconds" : 3599.966,
+    "provisional_end_utc" : "2026-11-01T11:34:18.967457700Z",
+    "timeline_anchor_basis" : "original filesystem creation, provisional until sampled frame content match",
+    "sha256" : null,
+    "actual_ffprobe" : {
+      "programs" : [ ],
+      "stream_groups" : [ ],
+      "streams" : [ {
+        "index" : 0,
+        "codec_name" : "h264",
+        "width" : 2560,
+        "height" : 1440,
+        "r_frame_rate" : "30/1"
+      } ],
+      "format" : {
+        "start_time" : "0.000000",
+        "duration" : "3599.966000",
+        "tags" : { }
+      }
+    }
+  }, {
+    "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+    "state" : "sealed_parent_q_normal_ffmpeg_exit0",
+    "bytes" : 404832064,
+    "filesystem_creation_utc" : "2026-11-01T12:35:38.989440900Z",
+    "filesystem_last_write_utc" : "2026-11-01T14:44:21.863152900Z",
+    "duration_seconds" : 7722.7,
+    "provisional_end_utc" : "2026-11-01T14:44:21.689440900Z",
+    "timeline_anchor_basis" : "Original file creation; final actions verified against raw samples",
+    "game_exit_utc_parent_report" : "2026-11-01T13:57:38.700Z",
+    "post_game_exit_material_excluded_from_suggested_shots" : true,
+    "sha256" : null,
+    "actual_ffprobe" : {
+      "programs" : [ ],
+      "stream_groups" : [ ],
+      "streams" : [ {
+        "index" : 0,
+        "codec_name" : "h264",
+        "width" : 2560,
+        "height" : 1440,
+        "r_frame_rate" : "30/1"
+      } ],
+      "format" : {
+        "start_time" : "0.000000",
+        "duration" : "7722.700000",
+        "tags" : { }
+      }
+    }
+  } ],
+  "all_four_parent_reported_closed" : true
+}

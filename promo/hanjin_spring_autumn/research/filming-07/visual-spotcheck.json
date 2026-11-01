@@ -1,0 +1,24 @@
+{
+  "schema": "hanjin.agent-visual-spotcheck/v1",
+  "machine_id": "4-8e1c2f1861",
+  "subject_sha256": "b82c4cb69b91a3e12eaab4ec99fb4a012fcd3b6f773af5588646b3ce29de6b3b",
+  "whole_contact_samples": 20,
+  "additional_seconds": [
+    430,
+    466,
+    482,
+    509,
+    511,
+    540
+  ],
+  "findings": [
+    "No Explorer desktop visible in sampled cropped gameplay",
+    "4000 offer and acceptance5 readable",
+    "Victory and changed ownership visible",
+    "27 direct domain visible",
+    "Rest option and after-choice map visible",
+    "Mod name and Workshop search visible"
+  ],
+  "scope": "Agent visual spot checks; not complete1x human viewing or human signoff",
+  "human_signoff": null
+}
