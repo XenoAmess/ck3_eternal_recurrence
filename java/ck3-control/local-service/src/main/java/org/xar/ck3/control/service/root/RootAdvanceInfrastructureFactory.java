@@ -438,7 +438,39 @@ public final class RootAdvanceInfrastructureFactory {
                     }
                     return freshParentObservation(same, parent, deadline);
                 });
-            }catch(IOException failure){throw new UncheckedIOException("actual held clock observation unavailable",failure);}
+            }catch(IOException failure){throw new UncheckedIOException(clockObservationFailure(failure),failure);}
+        }
+        /** Diagnostic only; the original IOException remains the thrown cause and no observation is accepted here. */
+        private static String clockObservationFailure(IOException original) {
+            final int limit=1536;
+            var message=new StringBuilder("actual held clock observation unavailable");
+            var seen=new IdentityHashMap<Throwable,Boolean>();
+            Throwable current=original;
+            for(int depth=0;current!=null && depth<8 && message.length()<limit;depth++) {
+                if(seen.put(current,Boolean.TRUE)!=null) {
+                    appendDiagnostic(message," <- [cause cycle]",limit);current=null;break;
+                }
+                appendDiagnostic(message,depth==0?": ":" <- ",limit);
+                appendDiagnostic(message,current.getClass().getName(),limit);
+                String detail=current.getMessage();
+                if(detail!=null && !detail.isEmpty()) {
+                    appendDiagnostic(message,": ",limit);appendDiagnostic(message,detail,limit);
+                }
+                current=current.getCause();
+            }
+            if(current!=null)appendDiagnostic(message," <- [cause limit]",limit);
+            return message.toString();
+        }
+        private static void appendDiagnostic(StringBuilder output,String value,int limit) {
+            for(int index=0;index<value.length() && output.length()<limit;) {
+                char next=value.charAt(index++);
+                if(Character.isHighSurrogate(next)) {
+                    if(index<value.length() && Character.isLowSurrogate(value.charAt(index))) {
+                        if(output.length()+2>limit)break;
+                        output.append(next).append(value.charAt(index++));
+                    } else output.append('\uFFFD');
+                } else output.append(Character.isLowSurrogate(next)?'\uFFFD':next);
+            }
         }
         @Override public Frame next(ActionCommand parent,ObservationIdentity after,Instant deadline){
             actual(parent,deadline);
