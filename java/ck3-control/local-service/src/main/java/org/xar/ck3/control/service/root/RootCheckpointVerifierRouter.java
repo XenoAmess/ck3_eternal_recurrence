@@ -82,6 +82,11 @@ public final class RootCheckpointVerifierRouter implements OrdinaryCycleTransiti
             CompletedCycleProof actualProof)throws IOException {
         return verifyCapture(same,actualOwner,pair,actualProof).digest();
     }
+    @Override public OrdinaryCycleTransitions.CheckpointCaptureResult verifyMaterialCapture(ContinuityStorePort.Session same,SessionIdentity actualOwner,CheckpointPair pair,
+            CompletedCycleProof actualProof)throws IOException {
+        RootCheckpointVerifier.Captured actual = verifyCapture(same,actualOwner,pair,actualProof);
+        return new OrdinaryCycleTransitions.CheckpointCaptureResult(actual.digest(), java.util.Optional.of(actual.material()));
+    }
     /** Same exact route and writer guards; forwards original capture DATA without a fallback qualification. */
     public RootCheckpointVerifier.Captured verifyCapture(ContinuityStorePort.Session same,SessionIdentity actualOwner,CheckpointPair pair,
             CompletedCycleProof actualProof)throws IOException {

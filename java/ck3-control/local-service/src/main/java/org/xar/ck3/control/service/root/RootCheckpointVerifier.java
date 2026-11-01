@@ -55,6 +55,11 @@ public final class RootCheckpointVerifier implements OrdinaryCycleTransitions.Ch
             CompletedCycleProof proof) throws IOException {
         return verifyCapture(borrowed, identity, pair, proof).digest();
     }
+    @Override public OrdinaryCycleTransitions.CheckpointCaptureResult verifyMaterialCapture(ContinuityStorePort.Session borrowed, SessionIdentity identity, CheckpointPair pair,
+            CompletedCycleProof proof) throws IOException {
+        Captured actual = verifyCapture(borrowed, identity, pair, proof);
+        return new OrdinaryCycleTransitions.CheckpointCaptureResult(actual.digest(), java.util.Optional.of(actual.material()));
+    }
     /** Future canonical SAVE admission must compare and record this exact original witness DATA. */
     public Captured verifyCapture(ContinuityStorePort.Session borrowed, SessionIdentity identity, CheckpointPair pair,
             CompletedCycleProof proof) throws IOException {

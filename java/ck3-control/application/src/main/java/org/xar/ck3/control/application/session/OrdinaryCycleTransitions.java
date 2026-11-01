@@ -54,6 +54,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     private static final String STATE_SCHEMA = "xar.java-ordinary-cycle-state/v2";
     private static final String RECORD_SCHEMA = "xar.java-ordinary-cycle-record/v1";
     private static final int MAX_RECORDS = 100_000;
+    private static final String SAVED_MATERIAL_SOURCE = "java-ordinary-session/v2";
     private final ActionPorts.OutcomeArchive archive;
     private final SemanticVerifier semanticVerifier;
     private final CheckpointVerifier checkpointVerifier;
@@ -99,8 +100,17 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     @FunctionalInterface public interface SemanticVerifier {
         VerifiedSemantic verify(ContinuityStorePort.Session actualLockedSession, SessionIdentity session, SemanticEvidence semantic) throws IOException;
     }
+    /** Original capture DATA only; constructing this result grants no SAVE or writer authority. */
+    public record CheckpointCaptureResult(String digest, Optional<org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence> material) {
+        public CheckpointCaptureResult { WriterContracts.requireDigest(digest); Objects.requireNonNull(material); }
+    }
     @FunctionalInterface public interface CheckpointVerifier {
         String verify(ContinuityStorePort.Session actualLockedSession, SessionIdentity session, CheckpointPair pair, CompletedCycleProof proof) throws IOException;
+        /** Legacy producers retain their complete verification with explicit absence of captured material. */
+        default CheckpointCaptureResult verifyMaterialCapture(ContinuityStorePort.Session actualLockedSession,
+                SessionIdentity session, CheckpointPair pair, CompletedCycleProof proof) throws IOException {
+            return new CheckpointCaptureResult(verify(actualLockedSession, session, pair, proof), Optional.empty());
+        }
     }
     /** Root passes its sole ContinuityWriter::requireSession, including actual writer-object ownership. */
     @FunctionalInterface public interface SessionAuthority {
@@ -552,14 +562,10 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             } else if (kind == JournalKind.SAVE_CONFIRMED) {
                 CheckpointPair pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair")));
                 CompletedCycleProof completed = proofFromJson(details.get("completed_cycle_proof"));
-                CycleState state = state(actualHead.state(), owner); requireLegacyPendingClear(actualHead.state(), state);
-                requireFrontier(actualHead.state(), state); validateChain(state);
-                requireProof(state, completed);
-                VerifiedSemantic proofSemantic = verify(session, owner, completed.semantic());
-                requireProofFrame(actualHead.state(), state, proofSemantic);
-                requireSavedContinuation(completed.frame(), pair.frame());
-                String checked = checkpointVerifier.verify(session, owner, pair, completed); WriterContracts.requireDigest(checked);
-                proof.put("checkpoint_digest", checked);
+                var checked = verifySaveCapture(session, actualHead, owner, pair, completed);
+                StrictJson.require(savedMaterialEvidence(details, owner, pair).equals(checked.material()),
+                        "SAVE canonical material differs from the actual current capture");
+                proof.put("checkpoint_digest", checked.digest());
             } else {
                 StrictJson.require(details.get("checkpoint_pair").isNull() && details.get("completed_cycle_proof").isNull(), "batch metadata cannot claim a checkpoint or new completed cycles");
             }
@@ -604,24 +610,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             StrictJson.require(request.kind().equals(BATCH_KIND), "unregistered batch event"); strictBatch(details);
             JournalKind boundary = JournalKind.valueOf(text(details, "boundary"));
             if (boundary == JournalKind.SAVE_CONFIRMED) {
-                var completed = proofFromJson(details.get("completed_cycle_proof")); requireProof(state(predecessor, owner), completed);
-                var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair"))); requireSavedContinuation(completed.frame(), pair.frame());
-                if (predecessor.status() == ContinuityState.Status.REPAIR_REQUIRED) {
-                    ObjectNode original = StrictJson.object(); original.put("evidence_id", text(details, "evidence_id")); original.put("source", "java-reconciled-original-save/v1");
-                    original.put("machine_id", owner.machineId()); original.put("date_raw", pair.frame().frame().identity().dateRaw().longValueExact());
-                    original.put("completed_cycles", completed.completedCycles()); original.set("frame", originalFrame(pair.frame()));
-                    original.set("session", sessionToJson(owner)); original.put("batch_id", text(ContinuityJson.object(predecessor.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)), "batch_id"));
-                    original.set("cycle_record_ref", state(predecessor, owner).head().orElseThrow().toJson());
-                    next = OriginalWindowReducer.reduce(predecessor.toJson(), "reconciled_original_save", original, policy);
-                } else {
-                    ObjectNode original = StrictJson.object(); original.put("evidence_id", text(details, "evidence_id")); original.set("source", details.get("source"));
-                    original.put("machine_id", owner.machineId()); original.put("date_raw", pair.frame().frame().identity().dateRaw().longValueExact());
-                    original.put("completed_cycles", completed.completedCycles()); original.set("frame", originalFrame(pair.frame()));
-                    next = OriginalWindowReducer.reduce(predecessor.toJson(), "settled_batch", original, policy);
-                }
-                // Preserve the exact saved cycle branch for a later source-bound restore authority.
-                ObjectNode saved = StrictJson.object(); saved.set("pair", StrictJson.parse(CheckpointPairCodec.encode(pair)));
-                saved.set("state", state(predecessor, owner).toJson()); next.set(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD, saved);
+                next = reduceConfirmedSave(predecessor, owner, details);
             } else if (boundary == JournalKind.BATCH_INTERRUPTED) {
                 ObjectNode original = StrictJson.object(); original.put("evidence_id", text(details, "evidence_id")); original.set("source", details.get("source"));
                 original.put("machine_id", owner.machineId()); original.put("completed_cycles", predecessor.settledCycles());
@@ -702,6 +691,73 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(cycle.pending().isEmpty() && cycle.head().isPresent(), "retained SAVE proof needs its completed original cycle branch");
         requireSavedContinuation(load(cycle.head().orElseThrow()).semantic().frame(), command.before());
     }
+    /** Deterministic SAVE DATA reduction; also checks the exact old reducer eligibility before capture. */
+    private ObjectNode reduceConfirmedSave(ContinuityState predecessor, SessionIdentity owner, ObjectNode details) {
+        ObjectNode next;
+        var completed = proofFromJson(details.get("completed_cycle_proof")); requireProof(state(predecessor, owner), completed);
+        var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair"))); requireSavedContinuation(completed.frame(), pair.frame());
+        if (predecessor.status() == ContinuityState.Status.REPAIR_REQUIRED) {
+            ObjectNode original = StrictJson.object(); original.put("evidence_id", text(details, "evidence_id")); original.put("source", "java-reconciled-original-save/v1");
+            original.put("machine_id", owner.machineId()); original.put("date_raw", pair.frame().frame().identity().dateRaw().longValueExact());
+            original.put("completed_cycles", completed.completedCycles()); original.set("frame", originalFrame(pair.frame()));
+            original.set("session", sessionToJson(owner)); original.put("batch_id", text(ContinuityJson.object(predecessor.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)), "batch_id"));
+            original.set("cycle_record_ref", state(predecessor, owner).head().orElseThrow().toJson());
+            next = OriginalWindowReducer.reduce(predecessor.toJson(), "reconciled_original_save", original, policy);
+        } else {
+            ObjectNode original = StrictJson.object(); original.put("evidence_id", text(details, "evidence_id")); original.set("source", details.get("source"));
+            original.put("machine_id", owner.machineId()); original.put("date_raw", pair.frame().frame().identity().dateRaw().longValueExact());
+            original.put("completed_cycles", completed.completedCycles()); original.set("frame", originalFrame(pair.frame()));
+            next = OriginalWindowReducer.reduce(predecessor.toJson(), "settled_batch", original, policy);
+        }
+        // Preserve the exact saved cycle branch for a later source-bound restore authority.
+        ObjectNode saved = StrictJson.object(); saved.set("pair", StrictJson.parse(CheckpointPairCodec.encode(pair)));
+        saved.set("state", state(predecessor, owner).toJson()); next.set(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD, saved);
+        var material = savedMaterialEvidence(details, owner, pair);
+        if (material.isPresent()) {
+            requireMaterialHead(predecessor, material.orElseThrow());
+            next.set(org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence.FIELD,
+                    details.get(org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence.FIELD).deepCopy());
+        } else next.remove(org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence.FIELD);
+        return next;
+    }
+    private static void requireMaterialHead(ContinuityState predecessor,
+            org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence material) {
+        StrictJson.require(material.originalHeadSequence() <= predecessor.sequence(), "SAVE material source head lies after its actual predecessor");
+        if (material.originalHeadSequence() == predecessor.sequence())
+            StrictJson.require(material.originalHeadDigest().equals(ContinuityJson.digest(predecessor.toJson())),
+                    "SAVE material changed its exact original predecessor head");
+    }
+    /** Strict versioned DATA only: no private issuer, physical qualification or current authority is created. */
+    static Optional<org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence> savedMaterialEvidence(
+            ObjectNode details, SessionIdentity owner, CheckpointPair pair) {
+        strictBatch(details);
+        StrictJson.require(JournalKind.SAVE_CONFIRMED.name().equals(text(details, "boundary")), "saved material needs the exact SAVE boundary");
+        if (!SAVED_MATERIAL_SOURCE.equals(text(details, "source"))) return Optional.empty();
+        var material = org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence.decode(
+                details.get(org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence.FIELD));
+        material.requireSavedBranch(pair, owner); return Optional.of(material);
+    }
+    /** Full current SAVE admission is repeated for preparation, preview and commit; nothing is replay-cached. */
+    private CheckpointCaptureResult verifySaveCapture(ContinuityStorePort.Session same, WriterContracts.Head head,
+            SessionIdentity owner, CheckpointPair pair, CompletedCycleProof completed) throws IOException {
+        StrictJson.require(locked(head) == same, "SAVE capture requires its actual original writer Session");
+        requireOwner(head.state(), owner);
+        CycleState state = state(head.state(), owner); requireLegacyPendingClear(head.state(), state);
+        requireFrontier(head.state(), state); validateChain(state); requireProof(state, completed);
+        StrictJson.require(ContinuityActionJournal.receipts(head.state(), archive).stream().noneMatch(receipt -> !receipt.settled()
+                        && receipt.command().sessionId().equals(owner.sessionId()) && receipt.command().origin().game().equals(owner.game())),
+                "SAVE capture cannot discard an unresolved original action in its actual owner scope");
+        VerifiedSemantic semantic = verify(same, owner, completed.semantic()); requireProofFrame(head.state(), state, semantic);
+        requireSavedContinuation(completed.frame(), pair.frame());
+        var checked = checkpointVerifier.verifyMaterialCapture(same, owner, pair, completed);
+        if (checked.material().isPresent()) {
+            var material = checked.material().orElseThrow(); material.requireSavedBranch(pair, owner);
+            requireMaterialHead(head.state(), material);
+        }
+        StrictJson.require(head.digest().equals(same.head().digest()), "SAVE capture changed its actual writer head");
+        return checked;
+    }
+
     Optional<CompletedCycleProof> cycleProof(ContinuityStorePort.Session session, SessionIdentity owner, SemanticEvidence semantic) throws IOException {
         var head = session.head(); requireOwner(head.state(), owner); requireActive(head.state());
         CycleState state = state(head.state(), owner); requireLegacyPendingClear(head.state(), state);
@@ -816,7 +872,23 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         session.commit(session.preview(request));
         return cycleProof(session, owner, semantic).orElseThrow(() -> new IOException("cycle commit did not clear its actual pending receipt"));
     }
-    WriterContracts.Request batchRequest(JournalInput input) {
+    WriterContracts.Request batchRequest(JournalInput input) { return batchRequest(input, Optional.empty()); }
+    /** Actual journal SAVE path: admit and capture before freezing canonical request DATA. */
+    WriterContracts.Request batchRequest(ContinuityStorePort.Session same, JournalInput input) throws IOException {
+        Objects.requireNonNull(input);
+        if (input.kind() != JournalKind.SAVE_CONFIRMED) return batchRequest(input);
+        StrictJson.require(active.get() == same, "SAVE request preparation requires its original current authority scope");
+        sessionAuthority.require(same);
+        var head = same.head(); requireOwner(head.state(), input.session());
+        ObjectNode details = batchDetails(input); strictBatch(details);
+        StrictJson.require(input.pair().isPresent() && input.completedCycleProof().isPresent(), "SAVE capture requires actual pair and completed proof");
+        // This dry pure reduction enforces RUNNING/COMPLETE or the exact reconciled-repair role before any capture.
+        reduceConfirmedSave(head.state(), input.session(), details);
+        var captured = verifySaveCapture(same, head, input.session(), input.pair().orElseThrow(), input.completedCycleProof().orElseThrow());
+        StrictJson.require(head.digest().equals(same.head().digest()), "SAVE request capture changed its original predecessor");
+        return batchRequest(input, captured.material());
+    }
+    private static ObjectNode batchDetails(JournalInput input) {
         StrictJson.require(input.kind()!=JournalKind.WORKER_RESTART_CAPTURE,"restart capture requires the private original Controller producer");
         ObjectNode details = StrictJson.object(); details.put("evidence_id", input.batchId() + ":" + input.kind()
                 + input.pair().map(pair -> ":" + pair.saveActionId()).orElse(""));
@@ -825,6 +897,17 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         details.set("checkpoint_pair", input.pair().map(pair -> StrictJson.parse(CheckpointPairCodec.encode(pair))).orElseGet(() -> com.fasterxml.jackson.databind.node.NullNode.instance));
         if (input.completedCycleProof().isPresent()) details.set("completed_cycle_proof", proofToJson(input.completedCycleProof().orElseThrow()));
         else details.putNull("completed_cycle_proof");
+        return details;
+    }
+    private WriterContracts.Request batchRequest(JournalInput input,
+            Optional<org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence> material) {
+        ObjectNode details = batchDetails(input);
+        material.ifPresent(value -> {
+            StrictJson.require(input.kind() == JournalKind.SAVE_CONFIRMED, "only SAVE can carry original material DATA");
+            value.requireSavedBranch(input.pair().orElseThrow(), input.session());
+            details.put("source", SAVED_MATERIAL_SOURCE);
+            details.set(org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence.FIELD, value.toJson());
+        });
         List<ExactRef> evidence = new ArrayList<>(input.evidence());
         if (input.kind() == JournalKind.SAVE_CONFIRMED) {
             StrictJson.require(input.pair().isPresent() && input.completedCycleProof().isPresent(),
@@ -834,6 +917,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             // reopens/revalidates this physical SAVE. It is not a small immutable native packet.
             evidence.removeIf(ref -> ref.equals(pair.save().reference()));
         }
+        material.ifPresent(value -> evidence.add(value.material().reference()));
         input.completedCycleProof().ifPresent(proof -> evidence.addAll(proof.semantic().references()));
         return new WriterContracts.Request(BATCH_KIND, ContinuityJson.canonical(details), evidence.stream().distinct().toList());
     }
@@ -2090,7 +2174,16 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         Set<String> fields=JournalKind.WORKER_RESTART_CAPTURE.name().equals(text(row,"boundary"))
                 ?Set.of("evidence_id","source","session","batch_id","boundary","checkpoint_pair","completed_cycle_proof","restart_manifest")
                 :Set.of("evidence_id","source","session","batch_id","boundary","checkpoint_pair","completed_cycle_proof");
+        if (SAVED_MATERIAL_SOURCE.equals(text(row, "source"))) {
+            StrictJson.require(JournalKind.SAVE_CONFIRMED.name().equals(text(row, "boundary")), "material DATA source is restricted to SAVE");
+            var withMaterial = new HashSet<>(fields);
+            withMaterial.add(org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence.FIELD);
+            fields = withMaterial;
+        }
         StrictJson.object(row,fields,fields);
+        if (JournalKind.SAVE_CONFIRMED.name().equals(text(row, "boundary")))
+            StrictJson.require(Set.of("java-ordinary-session/v1", "java-reconciled-original-save/v1", SAVED_MATERIAL_SOURCE)
+                    .contains(text(row, "source")), "known exact SAVE details source required");
     }
     public static ObjectNode semanticToJson(SemanticEvidence value) {
         ObjectNode row = StrictJson.object(); row.set("frame", ProposalLifecycleCodec.observation(value.frame())); row.set("semantic", value.semantic().toJson());

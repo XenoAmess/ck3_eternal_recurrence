@@ -234,27 +234,34 @@ public final class FinanceRuntimeInstaller {
         }
     }
     private static Optional<FinanceStatePort.Checkpoint> checkpoint(RootRuntimeContext context,Session session)throws IOException {
-        context.writer().requireSession(session);var head=session.head();var state=head.state().toJson();
-        if(!state.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))return Optional.empty();
-        var saved=StrictJson.object(state.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),Set.of("pair","state"));
-        var pair=CheckpointPairCodec.decode(StrictJson.canonical(saved.get("pair")));
+        return checkpointInternal(context.writer(),session,() -> context.savedSources(),() -> context.game().machineId());
+    }
+
+    static Optional<FinanceStatePort.Checkpoint> checkpointInternal(ContinuityWriter writer, Session session,
+            java.util.function.Supplier<SavedAttachmentSourceStore> savedSources,
+            java.util.function.Supplier<String> machineIdProvider) throws IOException {
+        writer.requireSession(session);
+        var head = session.head();
+        var state = head.state().toJson();
+        if (!state.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)) return Optional.empty();
+        var saved = StrictJson.object(state.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD), Set.of("pair", "state"));
+        var pair = CheckpointPairCodec.decode(StrictJson.canonical(saved.get("pair")));
         SavedAttachmentSourceStore.SavedMaterial original;
-        if(state.has(SavedCheckpointMaterialEvidence.FIELD)) {
-            var evidence=SavedCheckpointMaterialEvidence.decode(state.get(SavedCheckpointMaterialEvidence.FIELD));
-            var source=OrdinaryCycleTransitions.sessionFromJson(saved.get("state").get("session"));
-            evidence.requireSavedBranch(pair,source);
-            session.requireHistoricalState(evidence.originalHeadSequence(),evidence.originalHeadDigest());
-            original=context.savedSources().loadRetainedOriginal(session,evidence.material(),pair);
+        if (state.has(SavedCheckpointMaterialEvidence.FIELD)) {
+            var evidence = SavedCheckpointMaterialEvidence.decode(state.get(SavedCheckpointMaterialEvidence.FIELD));
+            var source = OrdinaryCycleTransitions.sessionFromJson(saved.get("state").get("session"));
+            evidence.requireSavedBranch(pair, source);
+            session.requireHistoricalState(evidence.originalHeadSequence(), evidence.originalHeadDigest());
+            original = savedSources.get().loadRetainedOriginal(session, evidence.material(), pair);
             evidence.requireMaterial(original);
         } else {
-            // Legacy history without original manifest identity retains its existing explicit unavailable result.
-            original=context.savedSources().load(pair);
+            original = savedSources.get().load(pair);
         }
-        StrictJson.require(original.pair().equals(pair)
-                &&pair.frame().machineId().equals(context.game().machineId()),"actual saved pair source belongs to another machine");
-        session.requireHistoricalState(original.originalHeadSequence(),original.originalHeadDigest());
-        StrictJson.require(session.head().digest().equals(head.digest()),"actual saved source verification changed the canonical finance head");
-        return Optional.of(new FinanceStatePort.Checkpoint(pair.save().reference(),pair.frame().frame().episodeRunId(),pair.frame().frame().identity().dateRaw()));
+        StrictJson.require(original.pair().equals(pair) && pair.frame().machineId().equals(machineIdProvider.get()),
+                "actual saved pair source belongs to another machine");
+        session.requireHistoricalState(original.originalHeadSequence(), original.originalHeadDigest());
+        StrictJson.require(session.head().digest().equals(head.digest()), "actual saved source verification changed the canonical finance head");
+        return Optional.of(new FinanceStatePort.Checkpoint(pair.save().reference(), pair.frame().frame().episodeRunId(), pair.frame().frame().identity().dateRaw()));
     }
     private static Session borrowed(RootRuntimeContext context) {
         try { return context.borrowedSession(); }

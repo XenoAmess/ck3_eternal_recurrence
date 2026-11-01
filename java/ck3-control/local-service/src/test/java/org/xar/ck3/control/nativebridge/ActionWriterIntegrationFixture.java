@@ -1013,9 +1013,18 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                     "actual fixed fresh READ packet required");
             String id = NativeWire.text(request.get("request_id"));
             fresh179Writes++;
-            ObjectNode frame = NativeWire.object(NativeWire.parse(Arrays.copyOfRange(latestSnapshot, 4, latestSnapshot.length))).deepCopy();
+            byte[] sourceSnapshot = latestSnapshot;
+            BigInteger sourceRevision = ((NativeWire.Snapshot) NativeWire.decode(sourceSnapshot)).revision();
+            for (byte[] queued : queue) {
+                NativeWire.Frame decoded = NativeWire.decode(queued);
+                if (decoded instanceof NativeWire.Snapshot snapshot && snapshot.revision().compareTo(sourceRevision) >= 0) {
+                    sourceSnapshot = queued;
+                    sourceRevision = snapshot.revision();
+                }
+            }
+            ObjectNode frame = NativeWire.object(NativeWire.parse(Arrays.copyOfRange(sourceSnapshot, 4, sourceSnapshot.length))).deepCopy();
             frame.put("read_request_id", id).put("snapshot_id", "software-fresh-" + fresh179Writes);
-            fresh179Snapshot = NativeWire.packet(StrictJson.canonical(frame));
+            fresh179Snapshot = NativeWire.packet(org.xar.ck3.control.contracts.FullJsonTree.encode(frame, NativeWire.MAXIMUM_FRAME_BYTES));
             ObjectNode result = StrictJson.object().put("schema", NativeFreshSnapshotPort.RESULT_SCHEMA)
                     .put("request_id", id).put("snapshot_id", frame.path("snapshot_id").textValue());
             result.set("revision", frame.get("revision"));

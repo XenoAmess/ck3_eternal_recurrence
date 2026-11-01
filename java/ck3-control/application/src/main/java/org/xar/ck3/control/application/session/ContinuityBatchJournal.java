@@ -1863,10 +1863,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
         StrictJson.require(edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND), "historical SAVE requires batch kind");
         StrictJson.require("SAVE_CONFIRMED".equals(StrictJson.text(details.get("boundary"))), "historical SAVE requires SAVE_CONFIRMED boundary");
         var source = StrictJson.text(details.get("source"));
-        StrictJson.require("java-ordinary-session/v1".equals(source) || "java-reconciled-original-save/v1".equals(source), "historical SAVE source role differs");
+        StrictJson.require("java-ordinary-session/v1".equals(source) || "java-reconciled-original-save/v1".equals(source)
+                || "java-ordinary-session/v2".equals(source), "historical SAVE source role differs");
         StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner), "historical SAVE crossed owner");
 
         var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair")));
+        var material = OrdinaryCycleTransitions.savedMaterialEvidence(details, owner, pair);
         var proof = OrdinaryCycleTransitions.proofFromJson(details.get("completed_cycle_proof"));
         StrictJson.require(proof.completedCycles() == completedCycles, "historical SAVE proof cycles differ");
         transitions.verifyHistoricalCompletedCycleProof(same, owner, proof, edge.before());
@@ -1889,6 +1891,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var savedPair = CheckpointPairCodec.decode(ContinuityJson.canonical(saved.get("pair")));
         var savedState = saved.get("state");
         StrictJson.require(savedPair.equals(pair), "historical SAVE saved pair differs");
+        String materialField = org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence.FIELD;
+        if (material.isPresent()) {
+            var actualMaterial = material.orElseThrow();
+            StrictJson.require(actualMaterial.originalHeadSequence() <= edge.before().sequence(), "historical SAVE material source lies after its predecessor");
+            var originalMaterialHead = same.requireHistoricalState(actualMaterial.originalHeadSequence(), actualMaterial.originalHeadDigest());
+            StrictJson.require(originalMaterialHead.machineId().equals(owner.machineId())
+                    && after.has(materialField) && ContinuityJson.same(after.get(materialField), details.get(materialField)),
+                    "historical SAVE material differs from canonical source or exact preserved DATA");
+        } else StrictJson.require(!after.has(materialField), "legacy SAVE cannot retain an earlier material witness");
         StrictJson.require(ContinuityJson.same(savedState, beforeCycle), "historical SAVE saved state differs");
         StrictJson.require(edge.after().settledCycles() == completedCycles, "historical SAVE settled cycles differ");
         StrictJson.require(edge.after().settledDateRaw() == pair.frame().frame().identity().dateRaw().longValueExact(), "historical SAVE settled date differs");
@@ -2543,7 +2554,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
     public JournalCommit commit(ContinuityStorePort.Session original,JournalInput input)throws IOException {
         store.requireSession(Objects.requireNonNull(original));Objects.requireNonNull(input);
         return transitions.withLocked(original, () -> {
-            var request = transitions.batchRequest(input);
+            var request = transitions.batchRequest(original, input);
             var committed = original.commit(original.preview(request));
             long delta = committed.head().settledDateRaw() - committed.head().origin().startDateRaw();
             StrictJson.require(delta >= 0 && delta % 24 == 0, "actual saved frontier contains whole forward game days");
