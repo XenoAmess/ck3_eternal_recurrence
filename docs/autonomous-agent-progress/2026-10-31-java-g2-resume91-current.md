@@ -8,6 +8,14 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 15:17 UTC：恢复已启动新Game，250在旧source锁门前结束
+
+249沿原788/69日保存材料完成source资格后，14:23实际启动新Game33404，由keeper69836保活；这不恢复已不存在的旧Game71464，也不授GameLoaded或新增保存。250五个生产叶完成必要首编并实际采用，MB于14:53:48.109622Z→14:53:53.652643Z通过。worker70560于14:55:06.781770Z启动，14:55:11.287775Z以END1结束，墙钟4.506003秒；旧keeper持有source storage allocation锁，尚未进入Native attach、READ或entry。15:17:36.277149Z仅具名PID及birth检查确认Game与keeper仍活；没有强制解锁、结束owner或重启Game。
+
+251正在实现NoWrites与只读source factory，尚无该轮MB或运行信用。普通研究资源按250实际业务END释放，不能把keeper常驻或消息转达间隙计成持续业务HOLD；P0必要首编仍优先。恢复窗口12:46:59.357568Z→14:55:11.287775Z包含等待、源码修复、资格失败与重试、构建和启动，共7691.930207秒，新增SAVE_CONFIRMED日为0，秒/新增保存日为null。历史69已保存、77已结算、81最后观察分别保留，10秒目标未达到。完整现场与小回执见[运行记录](2026-10-31-runtime91-current.md)。
+
+后台[Native202](https://github.com/XenoAmess/ck3_eternal_recurrence/commit/d542c9876c8e3e43205890a6d93d91e7c48eebd3)的14场/42次对照与[Native203](https://github.com/XenoAmess/ck3_eternal_recurrence/commit/1092aaba8a50c2cc2c38a82d151924e1aa783b43)的7个新whole场/21次对照均已首次通过并正式；所发表见证源码与首编字节一致，无原PE或body复制、DLL部署或重跑旧绿。这些有限受控原件结果不授自然Game、完整ABI/EH、M6/G2完成或保存日性能信用。
+
 ## 2026-11-01 12:51 UTC：原进程已不存在，沿69日实际保存准备恢复
 
 共享模型规范入口已在 `383e59144dec2bd1474706a5c55d913df10f9e7c` 正式完成；本机 canonical checkout 为 `Z:/workspace/local-model-operations`。接手与规范更新时按该仓库规则同步并读取 AGENTS、usage 和 executor 配置，不将同步变成每次 POST 的串行前置，也不自动切换活跃业务配置。
