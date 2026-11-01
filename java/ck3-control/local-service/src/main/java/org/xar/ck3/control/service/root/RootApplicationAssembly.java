@@ -123,6 +123,7 @@ public final class RootApplicationAssembly {
         private RootPrivateBootstrap.Original coldOriginal;
         private ConfirmedSavedCapture confirmedSavedEntry;
         private RetainedSavedCapture retainedSavedEntry;
+        private G2Source retainedSavedExecutionSource;
         private final WriterContracts.TransitionAuthority confirmedSavedAuthority=new WriterContracts.TransitionAuthority() {
             @Override public String revalidate(org.xar.ck3.control.continuity.ContinuityState ignored,WriterContracts.Request request)throws IOException {
                 throw new IOException("confirmed saved entry requires the actual locked writer Head");
@@ -326,6 +327,39 @@ public final class RootApplicationAssembly {
                 }
                 return null;
             });
+        }
+
+        /** Canonical business provenance DATA; live Saved custody remains the private RetainedSaved issuer. */
+        public synchronized G2Source retainedSavedBusinessSource(RootJavaSavedBootstrap.ConfirmedSource source,
+                ManagedGameSession actualGame,G2Source actualExecution)throws IOException {
+            Objects.requireNonNull(source);Objects.requireNonNull(actualGame);Objects.requireNonNull(actualExecution);
+            StrictJson.require(!staged&&!finished&&adopted.isEmpty()&&confirmedSavedEntry==null&&retainedSavedEntry==null,
+                    "retained business source binds only an unused Saved Core");
+            StrictJson.require(retainedSavedExecutionSource==null||retainedSavedExecutionSource.equals(actualExecution),
+                    "retained Saved execution audit cannot change its actual source");
+            actualGame.verify();
+            requireRetainedConfirmedSaved(source);
+            var business=writer.locked(same->{
+                writer.requireSession(same);var head=same.head();
+                var marker=org.xar.ck3.control.continuity.ContinuityJson.object(head.state().toJson().get(
+                        org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD));
+                var details=org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(marker).detailsObject();
+                var canonical=org.xar.ck3.control.g2.common.G2Wire.source(details.get("source"));
+                var session=OrdinaryCycleTransitions.sessionFromJson(details.get("session"));
+                StrictJson.require(session.machineId().equals(actualGame.machineId())
+                        &&session.game().equals(actualGame.generation())&&session.sessionId().equals(actualGame.sessionId())
+                        &&canonical.machineId().equals(actualGame.machineId())
+                        &&actualExecution.machineId().equals(actualGame.machineId())
+                        &&canonical.exactBuild().equals(actualExecution.exactBuild()),
+                        "canonical Saved business source crossed the actual Game/session/machine/build");
+                var pin=same.capturePin(canonical.sourceRef(),WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);
+                StrictJson.require(head.digest().equals(same.head().digest()),
+                        "retained business source selection changed its canonical head");
+                return canonical;
+            });
+            // Current executable provenance is audit DATA, independent of the historical business source.
+            retainedSavedExecutionSource=actualExecution;
+            return business;
         }
 
         public synchronized DriverBootstrap.Adopted adoptRetainedSaved(RootJavaSavedBootstrap.RetainedSaved actual,

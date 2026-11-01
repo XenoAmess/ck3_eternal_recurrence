@@ -474,8 +474,9 @@ public final class RootOrdinaryRuntimeAssembly {
             products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
             actualAttached.nativeTransport().awaitHello(clock.instant().plus(config.operationTimeout()));
             var hello=actualAttached.nativeTransport().originalHello();
-            var sourceG2=new G2Source(actualAttached.machineId(),clock.instant().toString(),hello.gameSha256(),
+            var actualExecutionSource=new G2Source(actualAttached.machineId(),clock.instant().toString(),hello.gameSha256(),
                     metadata.implementation(RootOrdinaryRuntimeAssembly.class));
+            var sourceG2=core.retainedSavedBusinessSource(source,actualAttached,actualExecutionSource);
             var opened=new Opened(this,sourceG2);
             var installed=runOperationPhase(clock,config.operationTimeout(),until->
                     catalogs.install(core,actualAttached,sourceG2,core.planningReads(),clock,until));
