@@ -189,6 +189,97 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         var prior=capturedMaterialWitnesses.putIfAbsent(materialPath(pair),originalMaterial);
         StrictJson.require(prior==null||prior.equals(originalMaterial),"original material source conflicts with already captured identity");return material;
     }
+    /** New present qualification from an actual retained Java SAVE_CONFIRMED edge.
+     * This never reconstructs an unavailable historical capture FileWitness or grants restoration. */
+    public RequalifiedConfirmed requalifyConfirmed(ContinuityStorePort.Session same,
+            WriterContracts.Pin confirmation,CheckpointPair pair)throws IOException {
+        Objects.requireNonNull(same);Objects.requireNonNull(confirmation);Objects.requireNonNull(pair);
+        StrictJson.require(sessions.current()==same,"confirmed source requires this actual old writer Session");
+        var head=same.head();same.verifyPin(confirmation);
+        var edge=same.readHistoricalTransition(confirmation);
+        StrictJson.require(edge.eventPin().equals(confirmation)&&edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
+                &&edge.before().status()==ContinuityState.Status.RUNNING,"present qualification requires the actual running Java SAVE confirmation");
+        var detail=StrictJson.object(ContinuityJson.parseObject(edge.details(),MAX_METADATA),Set.of("evidence_id","source","session","batch_id","boundary","checkpoint_pair","completed_cycle_proof"));
+        StrictJson.require("SAVE_CONFIRMED".equals(StrictJson.text(detail.get("boundary")))
+                &&"java-ordinary-session/v1".equals(StrictJson.text(detail.get("source")))
+                &&pair.equals(CheckpointPairCodec.decode(ContinuityJson.canonical(detail.get("checkpoint_pair")))),
+                "present qualification changed the canonical SAVE pair or producer");
+        var source=OrdinaryCycleTransitions.sessionFromJson(detail.get("session"));
+        var completed=OrdinaryCycleTransitions.proofFromJson(detail.get("completed_cycle_proof"));
+        var before=edge.before().toJson();var cycle=before.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+        var oldBoundary=before.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        StrictJson.require(cycle!=null&&cycle.isObject()&&oldBoundary!=null&&oldBoundary.isObject()
+                &&cycle.has("pending_receipt")&&cycle.get("pending_receipt").isNull()
+                &&OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(source)
+                &&OrdinaryCycleTransitions.sessionFromJson(oldBoundary.get("session")).equals(source)
+                &&"BATCH_STARTED".equals(StrictJson.text(oldBoundary.get("boundary")))
+                &&StrictJson.text(detail.get("batch_id")).equals(StrictJson.text(oldBoundary.get("batch_id")))
+                &&ContinuityJson.digest(cycle).equals(completed.cycleStateDigest())
+                &&StrictJson.integer(cycle.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER)==completed.completedCycles()
+                &&source.machineId().equals(pair.frame().machineId())&&source.game().equals(pair.frame().game()),
+                "present qualification lost the original completed same-owner SAVE branch");
+        var materialPath=materialPath(pair);
+        FileWitness present=files.observe(materialPath).orElseThrow(()->new IOException("confirmed material file is unavailable"));
+        files.verify(present);
+        SavedMaterial material=readMaterial(same,pair,present,false);
+        StrictJson.require(material.session().equals(source)&&sameProof(material.proof(),completed)
+                &&ContinuityJson.same(material.originalHead().toJson(),before),
+                "present confirmed material differs from its actual pre-confirmation source");
+        var transition=StrictJson.object();transition.put("evidence_id",StrictJson.text(detail.get("evidence_id")));
+        transition.set("source",detail.get("source"));transition.put("machine_id",source.machineId());
+        transition.put("date_raw",pair.frame().frame().identity().dateRaw().longValueExact());
+        transition.put("completed_cycles",completed.completedCycles());
+        var actualFrame=StrictJson.object();transition.set("frame",actualFrame);
+        actualFrame.put("date_raw",pair.frame().frame().identity().dateRaw());
+        actualFrame.put("actor_character_id",pair.frame().frame().identity().player());
+        actualFrame.put("episode_run_id",pair.frame().frame().episodeRunId());
+        actualFrame.put("snapshot_id",pair.frame().frame().snapshotId());
+        actualFrame.put("revision",pair.frame().frame().revision());
+        actualFrame.put("native_revision",pair.frame().frame().identity().nativeRevision());
+        var expected=org.xar.ck3.control.continuity.OriginalWindowReducer.reduce(before,"settled_batch",transition,
+                new org.xar.ck3.control.continuity.OriginalWindowReducer.Policy(edge.before().origin().targetDays()));
+        var saved=StrictJson.object();saved.set("pair",StrictJson.parse(CheckpointPairCodec.encode(pair)));saved.set("state",cycle.deepCopy());
+        expected.set(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD,saved);
+        var boundary=StrictJson.object();boundary.set("evidence_id",detail.get("evidence_id"));boundary.set("session",detail.get("session"));
+        boundary.set("batch_id",detail.get("batch_id"));boundary.set("boundary",detail.get("boundary"));
+        expected.set(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD,boundary);
+        expected.put("sequence",edge.sequence());expected.put("last_event_identity",edge.eventIdentity());
+        StrictJson.require(ContinuityJson.same(expected,edge.after().toJson())
+                &&ContinuityJson.same(head.state().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),saved),
+                "present source is not the full canonical confirmation of the current latest saved branch");
+        files.verify(present);same.verifyPin(confirmation);
+        StrictJson.require(sessions.current()==same&&head.digest().equals(same.head().digest()),
+                "present qualification changed the old writer Session or head");
+        return new RequalifiedConfirmed(this,head.state(),head.digest(),edge,material,present);
+    }
+
+    /** Privately issued PRESENT source qualification. It is not a recovered historical witness. */
+    public static final class RequalifiedConfirmed {
+        private final SavedAttachmentSourceStore issuer;
+        private final ContinuityState sourceHead;
+        private final String sourceDigest;
+        private final WriterContracts.HistoricalTransition confirmation;
+        private final SavedMaterial material;
+        private final FileWitness present;
+        private RequalifiedConfirmed(SavedAttachmentSourceStore issuer,ContinuityState sourceHead,String sourceDigest,
+                WriterContracts.HistoricalTransition confirmation,SavedMaterial material,FileWitness present) {
+            this.issuer=issuer;this.sourceHead=sourceHead;this.sourceDigest=sourceDigest;this.confirmation=confirmation;
+            this.material=material;this.present=present;
+        }
+        public ContinuityState sourceHead(){return sourceHead;}
+        public WriterContracts.HistoricalTransition confirmation(){return confirmation;}
+        public SavedMaterial requireCurrent(ContinuityStorePort.Session same)throws IOException {
+            StrictJson.require(issuer.sessions.current()==same&&same.head().digest().equals(sourceDigest),
+                    "present qualification crossed the actual old source head or writer Session");
+            var current=issuer.requalifyConfirmed(same,confirmation.eventPin(),material.pair());
+            StrictJson.require(current.present.equals(present)&&current.sourceDigest.equals(sourceDigest)
+                    &&current.material.originalHeadDigest().equals(material.originalHeadDigest())
+                    &&current.material.checkpointDigest().equals(material.checkpointDigest()),
+                    "present confirmed material changed its identity or historical source");
+            return current.material;
+        }
+    }
+
     /** Durable original material only. This never qualifies the current physical pair for reload or grants a new Game. */
     public SavedMaterial loadRetainedOriginal(ContinuityStorePort.Session borrowed,FileWitness originalMaterial,CheckpointPair exactPair)throws IOException {
         Objects.requireNonNull(borrowed);Objects.requireNonNull(originalMaterial);Objects.requireNonNull(exactPair);
