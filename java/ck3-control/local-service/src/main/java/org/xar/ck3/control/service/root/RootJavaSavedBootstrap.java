@@ -126,7 +126,48 @@ public final class RootJavaSavedBootstrap {
                 "new saved admission did not launch the exact confirmed physical SAVE");
         source.requireCurrent();game.verify();
         Path evidence=game.launchPlan().evidenceRoot().resolve("java-confirmed-saved-"+UUID.randomUUID());
-        RootProcessAttach.Custody physical=RootProcessAttach.retain(creator,started,source.pair(),evidence,deadline);
+        RootProcessAttach.Custody actual=RootProcessAttach.retain(creator,started,source.pair(),evidence,deadline);
+        return completeAdmission(source,context,proof(actual),deadline);
+    }
+
+    public static Admission admitLoaded(ConfirmedSource source,RootRuntimeContext context,RootProcessAttach.LoadedCustody actual,
+            Instant deadline)throws IOException,InterruptedException {
+        Objects.requireNonNull(source);Objects.requireNonNull(context);Objects.requireNonNull(actual);Objects.requireNonNull(deadline);
+        var game=context.game();
+        StrictJson.require(game==actual.game()&&game.mode()==ManagedGameSession.Mode.ATTACHED
+                &&actual.pair().equals(source.pair())&&source.writer!=context.writer()
+                &&!source.writer.originalLockPath().equals(context.writer().originalLockPath())
+                &&!source.pair().frame().game().equals(game.generation()),
+                "loaded saved admission requires exact current attached custody and independent new writer");
+        source.requireCurrent();actual.requireCurrent();
+        Instant bounded=deadline.isBefore(actual.deadline())?deadline:actual.deadline();
+        return completeAdmission(source,context,proof(actual),bounded);
+    }
+
+    private interface PhysicalProof extends AutoCloseable {
+        void requireCurrent()throws IOException;
+        void requireEvidence()throws IOException;
+        void releasePreparation()throws IOException;
+        @Override void close()throws IOException;
+    }
+    private static PhysicalProof proof(RootProcessAttach.Custody actual) {
+        return new PhysicalProof() {
+            public void requireCurrent()throws IOException{actual.requireCurrent();}
+            public void requireEvidence()throws IOException{actual.requireEvidence();}
+            public void releasePreparation()throws IOException{actual.releasePreparation();}
+            public void close()throws IOException{actual.close();}
+        };
+    }
+    private static PhysicalProof proof(RootProcessAttach.LoadedCustody actual) {
+        return new PhysicalProof() {
+            public void requireCurrent()throws IOException{actual.requireCurrent();}
+            public void requireEvidence()throws IOException{actual.requireEvidence();}
+            public void releasePreparation()throws IOException{actual.releasePreparation();}
+            public void close()throws IOException{actual.close();}
+        };
+    }
+    private static Admission completeAdmission(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,
+            Instant deadline)throws IOException,InterruptedException {
         try {
             var first=fresh(context,deadline);var second=fresh(context,deadline);
             NativeFreshSnapshotPort.verifyAfter(first.acknowledgement(),second);
@@ -166,7 +207,7 @@ public final class RootJavaSavedBootstrap {
     public static final class Admission {
         private final ConfirmedSource source;
         private final RootRuntimeContext context;
-        private final RootProcessAttach.Custody physical;
+        private final PhysicalProof physical;
         private final NativeFreshSnapshotPort.Received first,second;
         private final NativeReadinessCollector.SourceQualification qualification;
         private final WriterContracts.Head before;
@@ -175,7 +216,7 @@ public final class RootJavaSavedBootstrap {
         private final Instant deadline;
         private WriterContracts.Prepared prepared;
         private WriterContracts.Receipt receipt;
-        private Admission(ConfirmedSource source,RootRuntimeContext context,RootProcessAttach.Custody physical,
+        private Admission(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,
                 NativeFreshSnapshotPort.Received first,NativeFreshSnapshotPort.Received second,
                 NativeReadinessCollector.SourceQualification qualification,WriterContracts.Head before,
                 ExactRef savedState,ExactRef sourceHead,List<WriterContracts.Pin> originals,Instant deadline) {

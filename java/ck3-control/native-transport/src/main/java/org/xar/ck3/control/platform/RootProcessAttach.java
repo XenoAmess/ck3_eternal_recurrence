@@ -120,6 +120,170 @@ public final class RootProcessAttach {
             throw failure;
         }
     }
+    /** Real current saved-owner attachment proof. It carries no Job, launch or Started capability. */
+    public static final class LoadedCustody implements AutoCloseable {
+        private final ManagedGameSession attached;
+        private final CheckpointPair pair;
+        private final GameSupervisorControl.Descriptor owner;
+        private final SharedSourceFiles.Witness descriptor, save, currentHello, receipt;
+        private final ExactRef descriptorRef;
+        private final Instant deadline;
+        private final Path directory;
+        private final Thread thread=Thread.currentThread();
+        private WindowsJobProcess.ReadOnlyProcessHandle ownerHandle;
+        private Win32Host.Mutex mutex;
+        private SteamOfflineProbe.QualifiedOffline offline;
+        private boolean released,closed;
+        private LoadedCustody(ManagedGameSession attached,CheckpointPair pair,GameSupervisorControl.Descriptor owner,
+                ExactRef descriptorRef,SharedSourceFiles.Witness descriptor,SharedSourceFiles.Witness save,
+                SharedSourceFiles.Witness currentHello,SharedSourceFiles.Witness receipt,Instant deadline,Path directory,
+                WindowsJobProcess.ReadOnlyProcessHandle ownerHandle,Win32Host.Mutex mutex,SteamOfflineProbe.QualifiedOffline offline) {
+            this.attached=attached;this.pair=pair;this.owner=owner;this.descriptorRef=descriptorRef;this.descriptor=descriptor;
+            this.save=save;this.currentHello=currentHello;this.receipt=receipt;this.deadline=deadline;this.directory=directory;
+            this.ownerHandle=ownerHandle;this.mutex=mutex;this.offline=offline;
+        }
+        public ManagedGameSession game(){return attached;}
+        public CheckpointPair pair(){return pair;}
+        public Path evidenceDirectory(){return directory;}
+        public Instant deadline(){return deadline;}
+        public ExactRef evidence(){return exact(receipt.source());}
+        public synchronized void requireEvidence()throws IOException {
+            requireWitness(descriptor);requireWitness(currentHello);requireWitness(receipt);
+            readLoaded(owner.nativeHello(),ColdBootstrapJson.MAX_BYTES);readLoaded(owner.launchEvidence(),ColdBootstrapJson.MAX_BYTES);
+        }
+        public synchronized void requireCurrent()throws IOException {
+            if(closed||released)throw new IOException("Loaded saved preparation is closed or already released");
+            Win32Host.deadline(deadline);
+            if(Thread.currentThread()!=thread)throw new IOException("Loaded saved preparation escaped its actual mutex thread");
+            mutex.requireHeld();offline.verify();requireEvidence();
+            readLoaded(descriptorRef,GameSupervisorControl.MAXIMUM_DESCRIPTOR_BYTES);
+            requireLoadedOwner(attached,owner,ownerHandle,deadline);
+            var reread=GameSupervisorControl.readDescriptor(Path.of(descriptorRef.path()));
+            if(!reread.equals(owner))throw new IOException("Original saved owner descriptor changed");
+            new NativeCheckpointFiles().verify(pair);requireWitness(save);requireLoadedSave(attached,pair);
+            var expected=readLoaded(exact(currentHello.source()),ColdBootstrapJson.MAX_BYTES);
+            if(!Arrays.equals(expected,attached.nativeTransport().originalHello().packet().value()))
+                throw new IOException("Actual attached HELLO changed during saved admission");
+        }
+        public synchronized void releasePreparation()throws IOException {
+            requireCurrent();release();released=true;
+        }
+        private void release()throws IOException {
+            IOException failure=null;
+            if(offline!=null){try{offline.close();}catch(IOException ex){failure=ex;}finally{offline=null;}}
+            if(mutex!=null){try{mutex.close();}catch(IOException ex){if(failure==null)failure=ex;else failure.addSuppressed(ex);}finally{mutex=null;}}
+            if(ownerHandle!=null){try{ownerHandle.close();}catch(RuntimeException ex){var io=new IOException("Loaded owner observer close failed",ex);if(failure==null)failure=io;else failure.addSuppressed(io);}finally{ownerHandle=null;}}
+            if(failure!=null)throw failure;
+        }
+        @Override public synchronized void close()throws IOException {if(!closed){closed=true;release();}}
+    }
+
+    public static LoadedCustody retainLoadedSaved(ManagedGameSession attached,ExactRef ownerDescriptor,
+            CheckpointPair pair,Path freshEvidenceRoot,Instant readDeadline)throws IOException,InterruptedException {
+        Objects.requireNonNull(attached);Objects.requireNonNull(ownerDescriptor);Objects.requireNonNull(pair);
+        Objects.requireNonNull(freshEvidenceRoot);Objects.requireNonNull(readDeadline);Win32Host.deadline(readDeadline);
+        if(attached.mode()!=ManagedGameSession.Mode.ATTACHED||attached.generation().equals(pair.frame().game()))
+            throw new IOException("Loaded saved admission requires a genuine attached new Game generation");
+        readLoaded(ownerDescriptor,GameSupervisorControl.MAXIMUM_DESCRIPTOR_BYTES);
+        var descriptor=SharedSourceFiles.observe(Path.of(ownerDescriptor.path()));
+        if(descriptor.source().bytes()!=ownerDescriptor.bytes()||!descriptor.source().sha256().equals(ownerDescriptor.sha256()))
+            throw new IOException("Actual owner descriptor witness differs from the exact input reference");
+        var owner=GameSupervisorControl.readDescriptor(Path.of(ownerDescriptor.path()));
+        if(!Path.of(ownerDescriptor.path()).toAbsolutePath().normalize().getParent().equals(owner.stopRequestPath().getParent()))
+            throw new IOException("Actual saved owner descriptor/control roots differ");
+        Path parent=attached.launchPlan().evidenceRoot().toRealPath();
+        if(!freshEvidenceRoot.isAbsolute()||!freshEvidenceRoot.normalize().equals(freshEvidenceRoot)
+                ||!freshEvidenceRoot.getParent().toRealPath().equals(parent))
+            throw new IOException("Loaded saved evidence must be a fresh immediate approved child");
+        SharedSourceFiles.plainAncestors(freshEvidenceRoot);Files.createDirectory(freshEvidenceRoot);
+        WindowsJobProcess.ReadOnlyProcessHandle ownerHandle=null;Win32Host.Mutex mutex=null;
+        SteamOfflineProbe.QualifiedOffline offline=null;
+        try {
+            ownerHandle=WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid());
+            mutex=Win32Host.mutex("Local\\XarJavaGameLifecycle-v1",readDeadline);
+            requireLoadedOwner(attached,owner,ownerHandle,readDeadline);
+            var steam=attached.launchPlan().steam();
+            offline=SteamOfflineProbe.observe(new SteamOfflineProbe.Plan(steam.machineId(),steam.steamExecutable(),readDeadline),freshEvidenceRoot.resolve("steam-offline.json"));
+            offline.verify();var observed=Instant.parse(offline.observation().common().observedAtUtc());
+            if(observed.isAfter(Instant.now())||Duration.between(observed,Instant.now()).compareTo(Duration.ofSeconds(10))>0)
+                throw new IOException("Fresh background Steam observation required for loaded saved admission");
+            new NativeCheckpointFiles().verify(pair);requireLoadedSave(attached,pair);
+            var save=SharedSourceFiles.observe(Path.of(pair.save().reference().path()));
+            byte[] hello=attached.nativeTransport().originalHello().packet().value();
+            Path helloPath=freshEvidenceRoot.resolve("attached-hello.packet");write(helloPath,hello);
+            var helloWitness=SharedSourceFiles.observe(helloPath);
+            write(freshEvidenceRoot.resolve("process-inventory.json"),ControlBuild.strictMapper().writeValueAsBytes(Win32Host.processInventory("ck3.exe",readDeadline)));
+            var row=org.xar.ck3.control.contracts.StrictJson.object();
+            row.put("schema","xar.java-loaded-saved-physical/v1");row.put("machine_id",attached.machineId());
+            row.put("request_id",attached.launchPlan().requestId());row.put("session_id",attached.sessionId());
+            row.set("owner_descriptor",ownerDescriptor.toJson());row.set("owner",GameSupervisorControl.identity(owner.supervisorIdentity()));
+            row.set("game",GameSupervisorControl.identity(attached.identity()));row.set("original_native_hello",owner.nativeHello().toJson());
+            row.set("launch_evidence",owner.launchEvidence().toJson());row.set("actual_native_hello",exact(helloWitness.source()).toJson());
+            row.set("save",pair.save().reference().toJson());row.put("observed_at_utc",Instant.now().toString());
+            row.put("read_admission_deadline_utc",readDeadline.toString());row.put("original_launch_deadline_utc",attached.launchPlan().deadline().toString());
+            row.put("job_or_launch_permission",false);
+            Path receiptPath=freshEvidenceRoot.resolve("loaded-saved-physical.json");write(receiptPath,org.xar.ck3.control.contracts.StrictJson.canonical(row,ColdBootstrapJson.MAX_BYTES));
+            LoadedCustody result=new LoadedCustody(attached,pair,owner,ownerDescriptor,descriptor,save,helloWitness,
+                    SharedSourceFiles.observe(receiptPath),readDeadline,freshEvidenceRoot,ownerHandle,mutex,offline);
+            result.requireCurrent();return result;
+        }catch(IOException|RuntimeException|InterruptedException failure) {
+            if(offline!=null)try{offline.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}
+            if(mutex!=null)try{mutex.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}
+            if(ownerHandle!=null)try{ownerHandle.close();}catch(RuntimeException cleanup){failure.addSuppressed(cleanup);}
+            throw failure;
+        }
+    }
+
+    private static void requireLoadedOwner(ManagedGameSession game,GameSupervisorControl.Descriptor owner,
+            WindowsJobProcess.ReadOnlyProcessHandle handle,Instant readDeadline)throws IOException {
+        Win32Host.deadline(readDeadline);game.verify();sources(game);
+        if(handle==null||handle.waitZero()!=258L||!handle.identity().equals(owner.supervisorIdentity())
+                ||!game.identity().equals(owner.gameIdentity())||!game.machineId().equals(owner.machineId())
+                ||!game.sessionId().equals(owner.sessionId())
+                ||new java.math.BigInteger(owner.supervisorIdentity().creationFiletimeDecimal()).compareTo(new java.math.BigInteger(game.identity().creationFiletimeDecimal()))>=0
+                ||!NativeLaunchPlanCodec.toJson(owner.configuration()).equals(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(game.launchPlan()))))
+            throw new IOException("Loaded saved owner, Game birth, complete plan or source identity differs");
+        requireInventory(Win32Host.processInventory("ck3.exe",readDeadline),game.identity(),owner.supervisorIdentity().pid());
+        byte[] original=readLoaded(owner.nativeHello(),ColdBootstrapJson.MAX_BYTES);
+        var decoded=org.xar.ck3.control.nativebridge.NativeWire.decode(original);
+        if(!(decoded instanceof org.xar.ck3.control.nativebridge.NativeWire.Hello before))throw new IOException("Original saved owner HELLO is absent");
+        var transport=game.nativeTransport();var now=transport.originalHello();var diagnostic=transport.diagnostics();
+        var session=diagnostic.session().orElseThrow(()->new IOException("Actual loaded saved Native session absent"));
+        var access=game.presentationAccess();access.requireOwner(game);access.actualGuard().verify(game.generation());
+        var config=access.actualConfig();
+        if(diagnostic.receivedState()!=org.xar.ck3.control.nativebridge.NativeGameTransport.ReceivedState.HELLO_VERIFIED
+                ||diagnostic.terminalFailure().isPresent()||!session.game().equals(game.generation())
+                ||!session.machineId().equals(game.machineId())||!session.sessionId().equals(game.sessionId())
+                ||!config.pipeName().equals(game.launchPlan().pipeName())||before.pid()!=now.pid()||now.pid()!=game.identity().pid()
+                ||!before.buildMatch()||!now.buildMatch()||!before.bridgeVersion().equals(now.bridgeVersion())
+                ||!before.gameSha256().equals(now.gameSha256())||!before.adapterId().equals(now.adapterId())
+                ||!before.adapterStatus().equals(now.adapterStatus())||!before.capabilities().equals(now.capabilities())
+                ||now.connectionGeneration().compareTo(before.connectionGeneration())<0)
+            throw new IOException("Original launch HELLO and actual reconnected Native custody differ");
+        byte[] launch=readLoaded(owner.launchEvidence(),ColdBootstrapJson.MAX_BYTES);
+        var event=ControlBuild.strictMapper().readTree(launch);var birth=event.path("game");
+        if(!"xar.java-game-lifecycle-event/v1".equals(event.path("schema").asText())||!"HELLO".equals(event.path("event").asText())
+                ||!game.machineId().equals(event.path("machine_id").asText())||!game.sessionId().equals(event.path("session_id").asText())
+                ||!game.launchPlan().requestId().equals(event.path("request_id").asText())||birth.path("pid").longValue()!=game.identity().pid()
+                ||!game.identity().creationFiletimeDecimal().equals(birth.path("creation_filetime_decimal").asText())
+                ||!game.identity().executable().equals(birth.path("executable").asText()))
+            throw new IOException("Original loaded Saved launch evidence differs from actual parented Game");
+        game.verify();
+    }
+    private static byte[] readLoaded(ExactRef reference,int maximum)throws IOException {
+        if(reference.bytes()<1||reference.bytes()>maximum)throw new IOException("Finite loaded saved original required");
+        Path path=Path.of(reference.path());var before=SharedSourceFiles.observe(path);
+        if(before.source().bytes()!=reference.bytes()||!before.source().sha256().equals(reference.sha256())
+                ||!Path.of(before.source().path()).toAbsolutePath().normalize().equals(path.toAbsolutePath().normalize()))
+            throw new IOException("Loaded saved original bytes/SHA/path differ");
+        byte[] raw;try(var input=Files.newInputStream(path)){raw=input.readNBytes(maximum+1);}
+        String digest;try{digest=java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(raw));}
+        catch(java.security.NoSuchAlgorithmException impossible){throw new IOException(impossible);}
+        if(raw.length!=reference.bytes()||!digest.equals(reference.sha256())||!before.equals(SharedSourceFiles.observe(path)))
+            throw new IOException("Loaded saved original changed during bounded read");
+        return raw;
+    }
+
     private record Failure(String schema,String machineId,String requestId,String stage,String exceptionType,String detail,String observedAtUtc) { }
     static void requireInventory(Win32Host.ProcessInventory inventory,WindowsJobProcess.ProcessIdentity expected,long actualCreatorPid)throws IOException {
         if(!"ck3.exe".equalsIgnoreCase(inventory.exactName()))throw new IOException("Wrong exact Game inventory");
