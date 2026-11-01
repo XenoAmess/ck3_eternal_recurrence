@@ -1,5 +1,19 @@
 # runtime91 同局续行
 
+## 2026-11-02 恢复授权后268–270终态与21:52独立世界观测
+
+用户已明确“现在开始你可以使用ck3。继续执行任务吧。”；最新恢复授权覆盖此前离线停止状态，旧段保留历史。Runtime 继续独占实机，先以用户手玩后的实际世界与 continuity 为准，不按旧 capture 或69日保存态回滚，不重放已执行、已结算或 UNKNOWN。以下运行事实冻结至 `2026-11-01T21:52:10.869984Z`，源码后到事实另记，不能用编译或正式提交替代装载与行为回执。
+
+268 以既有 Game77132／birth `134380410301009189` 建立当前地图基线，worker77768 于 `21:16:11.414485Z` START，`21:16:58.8498543Z` 实际 LOOP，`21:20:57.590031Z` END4，完整286.175549秒。原恢复前 frontier 与旧运行窗口分开；该轮 ACK 后的原 COMPOSITE_UNKNOWN 保留在 head47，没有据 ACK 或选择授予结算与保存信用。
+
+269 worker99716 于 `21:33:32.498443Z→21:33:38.724991Z` END1／6.2265564秒，在 Journal2209 的开局 action 必需假设处拒绝。270 worker81616 于 `21:47:11.666405Z→21:47:18.661920Z` END1／6.9955162秒，越过该门后在 Journal2594 的 Opening query 必须属于 Driver READ-row 的错误 membership 假设处拒绝。两轮均未进入 LOOP、未到恢复所需 fresh READ 或新动作；已有正常 ATTACHED 与 HELLO，不能写成零 Native IPC。两轮收据均记录没有请求 Game stop/launch。
+
+随后仅 Runtime 执行一次独立只读世界查询：`21:52:08.395993Z→21:52:10.869984Z` exit0／2.473996秒，原件摘要明确一 READ、无业务或来源准入，并在 endpoint 释放后归档成功。同一 Game／keeper67152 的实际帧为 native20、actor31254、paused/map_ready=true；日期从 Runtime 基线53145984到53146176，确认新增8日 **observed**。这份 READ 只提供世界 DATA，不结算原动作或颁发私有恢复权限；canonical-before/after 元数据均为92325B、SHA `5073b00277e0b5e05a7ba6db53a0056a68878d300ce67d288e845602e4ca2e64`，head47 UNKNOWN 仍保，零新增 SAVE_CONFIRMED 日。未为文档重读 live Game、账本、Driver 或 Save。
+
+主性能窗口以 Runtime／Root 报告的 `20:50:46Z` epoch 起点（秒级）计至上述 READ 终态，约3684.870秒，新增确认保存日0，秒/新增保存日为 null；等待、启动、失败与恢复耗时均在窗口内，历史69日不进入分母，暂定10秒/已保存游戏日目标尚未达到。后到源码分别发表：269真实 reconciliation provenance 修复 `9a16c290e9`、有界异常诊断 `bcc6ceea96`、270显式缺席 DATA 角色 `1ad35f1135`；271 `65bb19fdcc` 改按真正 Opening import 的 request/SEM/query 原件重建，只复用首1TU严格编译0／2.007835秒，不在本运行截面追授已恢复、已结算或新 SAVE。原件与完整机器证据继续保留执行机，不复制进仓库。
+
+
+
 ## 2026-11-02 用户自玩边界：Main259 已停止，后继仅离线研究
 
 - 用户最新明确自己游玩 CK3、不要再碰 CK3，覆盖此前持续自动游玩授权。Main259 原自动 Java PID56828／birth134380329048836094 在 2026-11-01T19:05:00.049266Z 核对实际 image/birth 后，仅该 Java 于 19:05:00.255601Z 被终止；Wait signaled／exit130。Game33404 与 keeper69836 未因停止操作被查询、暂停、关闭或重启。自有 OS 监视 session69158 已 Ctrl-C／exit1，不再续监视或启动下一 worker；本段未查询或操作用户 OBS。
