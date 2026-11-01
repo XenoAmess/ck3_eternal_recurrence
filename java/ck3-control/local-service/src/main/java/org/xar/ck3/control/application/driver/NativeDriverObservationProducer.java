@@ -21,6 +21,7 @@ import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.service.root.RootFrozenRunProfile;
 import org.xar.ck3.control.service.root.RootLegacyResumeRuntime;
 import org.xar.ck3.control.service.root.RootRestoreMaterials;
+import org.xar.ck3.control.service.root.RootJavaSavedBootstrap;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -54,6 +55,90 @@ public final class NativeDriverObservationProducer implements DriverObservationF
     private NativeCampaignFixture nativeCampaignFixture;
     private SavedNativeCampaign savedNativeCampaign;
     private RestoredNativeCampaign restoredNativeCampaign;
+    private ConfirmedSavedNativeCampaign confirmedSavedNativeCampaign;
+    /** Exact private Admission custody; precommit and retained-entry checks have different lifetimes. */
+    private static final class ConfirmedSavedNativeCampaign {
+        final RootJavaSavedBootstrap.Admission admission;
+        final NativeOutcomeArchive archive;
+        final ManagedGameSession game;
+        final DriverFactsRepository repository;
+        final NativeGameTransport transport;
+        final G2Source source;
+        final SemanticEvidencePort evidence;
+        final long observationVersion;
+        WriterContracts.Prepared prepared;
+        WriterContracts.Receipt receipt;
+        RootFrozenRunProfile.FrozenRunProfile frozen;
+        ConfirmedSavedNativeCampaign(RootJavaSavedBootstrap.Admission admission,NativeOutcomeArchive archive,
+                NativeDriverObservationProducer owner,long observationVersion) {
+            this.admission=admission;this.archive=archive;game=admission.game();repository=owner.repository;
+            transport=owner.transport;source=owner.source;evidence=owner.archive;this.observationVersion=observationVersion;
+        }
+        void requireOwner(NativeDriverObservationProducer owner,ContinuityStorePort.Session same)throws IOException {
+            archive.writer().requireSession(same);
+            StrictJson.require(owner.confirmedSavedNativeCampaign==this&&admission.game()==game
+                    &&owner.repository==repository&&owner.transport==transport&&owner.source==source&&owner.archive==evidence
+                    &&game.nativeTransport()==transport,
+                    "confirmed saved projection crossed its identical Admission/Driver/archive/Game/source owner");
+        }
+        void requireCurrent(NativeDriverObservationProducer owner)throws IOException {
+            var same=archive.writer().borrowedSession();requireOwner(owner,same);
+            if(receipt==null)admission.requireCurrent(same);
+            else admission.requireRetained(same,receipt);
+            if(frozen!=null) {
+                frozen.requirePlan(game.launchPlan());frozen.requireExplicitNativeCampaign();
+                frozen.initialPolicy().requireSavedProjection(game.launchPlan());
+            }
+        }
+    }
+
+    /** Only the actual new-writer Bootstrap may select this saved projection before its first observation. */
+    synchronized void bindConfirmedSaved(RootJavaSavedBootstrap.Admission actual,
+            ContinuityStorePort.Session same,NativeOutcomeArchive actualArchive)throws IOException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(same);Objects.requireNonNull(actualArchive);
+        StrictJson.require(nativeCampaignFixture==null&&savedNativeCampaign==null&&restoredNativeCampaign==null
+                &&confirmedSavedNativeCampaign==null&&!cleanNativeCampaign&&acceptedSession==null&&lastProjectedReceipt==null
+                &&publicRevision.signum()==0&&transportRevisionOffset.signum()==0,
+                "confirmed saved projection binds once before any observed or retained revision baseline");
+        actualArchive.writer().requireSession(same);actual.requireCurrent(same);
+        var game=actual.game();var admitted=actual.session();var received=actual.secondRead().originalFrame();
+        var current=received.session();var saved=actual.savedDriver().session();
+        StrictJson.require(actualArchive.writer().borrowedSession()==same&&game.nativeTransport()==transport
+                &&source.machineId().equals(game.machineId())&&admitted.machineId().equals(current.machineId())
+                &&admitted.game().equals(current.game())&&admitted.sessionId().equals(current.sessionId())
+                &&current.game().equals(game.generation())&&current.machineId().equals(source.machineId())
+                &&current.sessionId().equals(game.sessionId())
+                &&transport.diagnostics().session().filter(current::equals).isPresent(),
+                "confirmed saved projection requires the actual new Game/source and second fresh READ connection");
+        repository.locked(state->{
+            StrictJson.require(state instanceof DriverSnapshotFacts.Known,"actual confirmed saved complete Driver unavailable");
+            var known=(DriverSnapshotFacts.Known)state;var session=known.driver().session();
+            StrictJson.require(known.stamp().game().equals(game.generation())&&session.bridgePid()==game.generation().pid()
+                    &&session.pipeName().equals(transport.pipeName())&&session.actorId().equals(saved.actorId())
+                    &&session.episodeRunId().equals(saved.episodeRunId()),
+                    "confirmed saved projection crossed its new Driver stamp/pipe/actor or saved episode DATA");
+            return null;
+        });
+        long observationVersion=actual.source().pair().frame().observationVersion();
+        StrictJson.require(observationVersion==DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION
+                ||observationVersion==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION,
+                "confirmed saved projection requires the actual supported saved observation profile");
+        confirmedSavedNativeCampaign=new ConfirmedSavedNativeCampaign(actual,actualArchive,this,observationVersion);
+    }
+
+    /** Core has already recorded this actual commit on Admission; promotion cannot mint or replay it. */
+    synchronized void promoteConfirmedSaved(RootJavaSavedBootstrap.Admission actual,
+            ContinuityStorePort.Session same,WriterContracts.Prepared prepared,WriterContracts.Receipt receipt)throws IOException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(same);Objects.requireNonNull(prepared);Objects.requireNonNull(receipt);
+        var retained=Objects.requireNonNull(confirmedSavedNativeCampaign,"actual confirmed saved binding unavailable");
+        retained.requireOwner(this,same);
+        StrictJson.require(retained.admission==actual,"confirmed saved promotion requires the identical actual Admission");
+        same.requireCommitted(prepared,receipt);actual.requireRetained(same,receipt);
+        if(retained.receipt!=null)StrictJson.require(retained.prepared==prepared&&retained.receipt==receipt,
+                "confirmed saved promotion cannot substitute the original prepared transaction or receipt");
+        else {retained.prepared=prepared;retained.receipt=receipt;}
+    }
+
     private record NativeCampaignFixture(InitialDriverBootstrap.Staged stage,ManagedGameSession game,
             G2Source source,org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,
             InitialEpisodePolicy policy,PreparedFixture prepared) {
@@ -89,7 +174,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
     synchronized void bindNativeCampaignSaved(RootLegacyResumeRuntime.Prepared actual,WriterContracts.Receipt committed,
             ContinuityStorePort.Session same,ActionPorts.OutcomeArchive sameArchive)throws IOException {
         Objects.requireNonNull(actual);Objects.requireNonNull(committed);Objects.requireNonNull(same);Objects.requireNonNull(sameArchive);
-        StrictJson.require(nativeCampaignFixture==null&&savedNativeCampaign==null&&restoredNativeCampaign==null&&acceptedSession==null,
+        StrictJson.require(nativeCampaignFixture==null&&savedNativeCampaign==null&&restoredNativeCampaign==null&&confirmedSavedNativeCampaign==null&&acceptedSession==null,
                 "saved projection must bind once before the sole public revision producer observes");
         StrictJson.require(sameArchive instanceof NativeOutcomeArchive,"saved projection requires the actual long-lived Native archive");
         var archive=(NativeOutcomeArchive)sameArchive;archive.writer().requireSession(same);
@@ -153,7 +238,18 @@ public final class NativeDriverObservationProducer implements DriverObservationF
      * with this producer's real binding; the old Game may already have been retired by the real restore.
      */
     public synchronized void requireNativeCampaignProjectionOrigin(RootFrozenRunProfile.FrozenRunProfile original)throws IOException {
-        Objects.requireNonNull(original);original.requireExplicitNativeCampaign();
+        Objects.requireNonNull(original);
+        if(confirmedSavedNativeCampaign!=null) {
+            var retained=confirmedSavedNativeCampaign;retained.requireCurrent(this);
+            StrictJson.require(retained.observationVersion==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION,
+                    "canonical saved observation does not grant native campaign projection origin");
+            original.requirePlan(retained.game.launchPlan());original.requireExplicitNativeCampaign();
+            original.initialPolicy().requireSavedProjection(retained.game.launchPlan());
+            if(retained.frozen==null)retained.frozen=original;
+            else StrictJson.require(retained.frozen==original,"confirmed saved projection cannot replace its actual private Frozen origin");
+            return;
+        }
+        original.requireExplicitNativeCampaign();
         boolean same=nativeCampaignFixture!=null&&nativeCampaignFixture.policy()==original.initialPolicy()
                 &&original.fixture().filter(value->value==nativeCampaignFixture.prepared()).isPresent()
                 ||savedNativeCampaign!=null&&savedNativeCampaign.frozen()==original
@@ -164,7 +260,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
     synchronized void bindNativeCampaignRestored(RootRestoreMaterials.ColdAdoption actual,DriverBootstrap.Seed exact,
             ContinuityStorePort.Session same,ActionPorts.OutcomeArchive sameArchive)throws IOException {
         Objects.requireNonNull(actual);Objects.requireNonNull(exact);Objects.requireNonNull(same);Objects.requireNonNull(sameArchive);
-        StrictJson.require(nativeCampaignFixture==null&&savedNativeCampaign==null&&restoredNativeCampaign==null&&acceptedSession==null,
+        StrictJson.require(nativeCampaignFixture==null&&savedNativeCampaign==null&&restoredNativeCampaign==null&&confirmedSavedNativeCampaign==null&&acceptedSession==null,
                 "restored projection must bind once before its sole public revision producer observes");
         StrictJson.require(sameArchive instanceof NativeOutcomeArchive,"restored projection requires the actual long-lived Native archive");
         var archive=(NativeOutcomeArchive)sameArchive;archive.writer().requireSession(same);
@@ -242,7 +338,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
             NativeFreshSnapshotPort.Received firstRead)throws IOException {
         Objects.requireNonNull(stage);Objects.requireNonNull(same);Objects.requireNonNull(sameGame);
         Objects.requireNonNull(sameSource);Objects.requireNonNull(sameArchive);Objects.requireNonNull(samePolicy);Objects.requireNonNull(firstRead);
-        StrictJson.require(nativeCampaignFixture==null&&savedNativeCampaign==null&&restoredNativeCampaign==null&&acceptedSession==null,"fixture projection must bind once before the sole public revision producer observes");
+        StrictJson.require(nativeCampaignFixture==null&&savedNativeCampaign==null&&restoredNativeCampaign==null&&confirmedSavedNativeCampaign==null&&acceptedSession==null,"fixture projection must bind once before the sole public revision producer observes");
         sameArchive.writer().requireSession(same);stage.requireFixtureProjectionOwner(same,sameGame,sameSource);
         var prepared=samePolicy.explicitFixture().orElseThrow();samePolicy.requireFixtureProjection(prepared);
         StrictJson.require(stage.policy()==samePolicy&&stage.repository()==repository&&sameGame.nativeTransport()==transport
@@ -264,7 +360,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
     synchronized void bindInitialRecovery(FreshGameplayEntryAuthority.RecoveryAdmission actual,
             ContinuityStorePort.Session same)throws IOException {
         Objects.requireNonNull(actual);actual.requireCurrent(same);
-        StrictJson.require(acceptedSession==null&&lastProjectedReceipt==null&&publicRevision.signum()==0&&transportRevisionOffset.signum()==0,
+        StrictJson.require(confirmedSavedNativeCampaign==null&&acceptedSession==null&&lastProjectedReceipt==null&&publicRevision.signum()==0&&transportRevisionOffset.signum()==0,
                 "initial recovery revision baseline binds once before the new producer's first observation");
         repository.locked(state->{
             StrictJson.require(state instanceof DriverSnapshotFacts.Known known&&known.stamp().equals(actual.facts().stamp())
@@ -290,7 +386,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
     synchronized void bindReadOnlyRecovery(org.xar.ck3.control.application.session.CleanBatchRestart captured,
             DriverSnapshotFacts.Stamp stamp, ContinuityStorePort.Session same) throws IOException {
         Objects.requireNonNull(captured); Objects.requireNonNull(stamp); Objects.requireNonNull(same);
-        StrictJson.require(acceptedSession == null && lastProjectedReceipt == null && publicRevision.signum() == 0 && transportRevisionOffset.signum() == 0,
+        StrictJson.require(confirmedSavedNativeCampaign==null&&acceptedSession == null && lastProjectedReceipt == null && publicRevision.signum() == 0 && transportRevisionOffset.signum() == 0,
                 "read-only recovery baseline binds once before the producer observes");
         
         // Initialize baseline from actual captured manifest
@@ -312,7 +408,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
     synchronized void bindSettledSameGame(org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data, ContinuityStorePort.Session same) throws IOException {
         Objects.requireNonNull(data);
         Objects.requireNonNull(same);
-        StrictJson.require(acceptedSession == null && lastProjectedReceipt == null && publicRevision.signum() == 0 && transportRevisionOffset.signum() == 0,
+        StrictJson.require(confirmedSavedNativeCampaign==null&&acceptedSession == null && lastProjectedReceipt == null && publicRevision.signum() == 0 && transportRevisionOffset.signum() == 0,
                 "settled same-game baseline binds once before the new producer observes");
 
         // Verify current repository state is Known with exact retained stamp and source
@@ -351,7 +447,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
     synchronized void bindCleanRestart(org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission actual,
             org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same)throws IOException {
         Objects.requireNonNull(actual);actual.requireCurrent(same);
-        StrictJson.require(acceptedSession==null&&lastProjectedReceipt==null&&publicRevision.signum()==0&&transportRevisionOffset.signum()==0,
+        StrictJson.require(confirmedSavedNativeCampaign==null&&acceptedSession==null&&lastProjectedReceipt==null&&publicRevision.signum()==0&&transportRevisionOffset.signum()==0,
                 "clean revision baseline is installed once before the new producer receives a current frame");
         repository.locked(state->{
             StrictJson.require(state instanceof DriverSnapshotFacts.Known&&((DriverSnapshotFacts.Known)state).stamp().equals(actual.facts().stamp())
@@ -430,7 +526,10 @@ public final class NativeDriverObservationProducer implements DriverObservationF
             if(nativeCampaignFixture!=null)nativeCampaignFixture.requireCurrent(this);
             if(savedNativeCampaign!=null)savedNativeCampaign.requireCurrent(this);
             if(restoredNativeCampaign!=null)restoredNativeCampaign.requireCurrent(this);
-            boolean explicitNativeCampaign=nativeCampaignFixture!=null||savedNativeCampaign!=null||restoredNativeCampaign!=null||cleanNativeCampaign;
+            if(confirmedSavedNativeCampaign!=null)confirmedSavedNativeCampaign.requireCurrent(this);
+            boolean explicitNativeCampaign=nativeCampaignFixture!=null||savedNativeCampaign!=null||restoredNativeCampaign!=null
+                    ||confirmedSavedNativeCampaign!=null&&confirmedSavedNativeCampaign.observationVersion==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION
+                    ||cleanNativeCampaign;
             long observationVersion=explicitNativeCampaign?DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION:OBSERVATION_CONTRACT_VERSION;
             var diagnostics=transport.diagnostics();
             StrictJson.require(diagnostics.receivedState()==NativeGameTransport.ReceivedState.HELLO_VERIFIED

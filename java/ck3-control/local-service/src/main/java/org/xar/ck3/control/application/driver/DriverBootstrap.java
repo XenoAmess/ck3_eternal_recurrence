@@ -1263,6 +1263,182 @@ public final class DriverBootstrap {
         StrictJson.require(actual!=null && actual.length==expected.bytes() && expected.sha256().equals(DriverJson.sha256(actual)),"immutable original artifact bytes/SHA differ");
         return actual;
     }
+    /** Private saved-load staging; it exposes source DATA and observations, never an admitted Driver. */
+    public static final class SavedStaged {
+        private final org.xar.ck3.control.service.root.RootJavaSavedBootstrap.Admission admission;
+        private final org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive;
+        private final Seed seed;
+        private final DriverSnapshotFacts.Known predecessor;
+        private final DriverFactsRepository repository;
+        private final NativeDriverObservationProducer producer;
+        private final DriverStateAssembler authority;
+        private final HeldDriverObservationPort observations;
+        private final DriverObservationAssembler.Complete first;
+        private final G2Source source;
+        private final long originalSequence;
+        private final String originalDigest;
+        private WriterContracts.Prepared committedPrepared;
+        private WriterContracts.Receipt committedReceipt;
+        private Adopted adopted;
+        private SavedStaged(org.xar.ck3.control.service.root.RootJavaSavedBootstrap.Admission admission,
+                org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,Seed seed,
+                DriverSnapshotFacts.Known predecessor,DriverFactsRepository repository,
+                NativeDriverObservationProducer producer,DriverStateAssembler authority,
+                HeldDriverObservationPort observations,DriverObservationAssembler.Complete first,
+                G2Source source,long originalSequence,String originalDigest) {
+            this.admission=admission;this.archive=archive;this.seed=seed;this.predecessor=predecessor;
+            this.repository=repository;this.producer=producer;this.authority=authority;
+            this.observations=observations;this.first=first;this.source=source;
+            this.originalSequence=originalSequence;this.originalDigest=originalDigest;
+        }
+        public Seed seed(){return seed;}
+        public DriverSnapshotFacts.Known facts(){return repository.locked(state->{
+            StrictJson.require(state instanceof DriverSnapshotFacts.Known,"saved staging lost its actual complete Driver");
+            return (DriverSnapshotFacts.Known)state;
+        });}
+        public DriverObservationAssembler.Complete first(){return first;}
+        public HeldDriverObservationPort observations(){return observations;}
+        public DriverStateAssembler authority(){return authority;}
+        public NativeDriverObservationProducer producer(){return producer;}
+        public G2Source source(){return source;}
+        public NativeObservationPort.TransportSession session(){return seed.expectedSession();}
+    }
+
+    /** Joins the Admission's actual replacement READ to saved business DATA before its canonical bootstrap commit. */
+    public static SavedStaged stageConfirmedSaved(
+            org.xar.ck3.control.service.root.RootJavaSavedBootstrap.Admission actual,
+            ContinuityStorePort.Session same,org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,
+            ActionSnapshotReader actions,G2Source source,int retainedFrames,Instant deadline)throws IOException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(same);Objects.requireNonNull(archive);
+        Objects.requireNonNull(actions);Objects.requireNonNull(source);Objects.requireNonNull(deadline);
+        StrictJson.require(Instant.now().isBefore(deadline),"saved Driver staging deadline expired");
+        archive.writer().requireSession(same);actual.requireCurrent(same);
+        var opening=same.head();
+        var game=actual.game();var transport=game.nativeTransport();
+        var received=actual.secondRead();var raw=received.originalFrame();var session=raw.session();
+        org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.verifyOriginal(
+                received.acknowledgement(),raw,received.snapshotReceived());
+        var owner=actual.session();
+        StrictJson.require(session.game().equals(game.generation())&&session.sessionId().equals(game.sessionId())
+                &&session.machineId().equals(source.machineId())&&owner.machineId().equals(session.machineId())
+                &&owner.game().equals(session.game())&&owner.sessionId().equals(session.sessionId())
+                &&transport.diagnostics().session().filter(session::equals).isPresent()
+                &&!raw.observedAt().isAfter(deadline),"saved Driver crossed its private replacement READ/Game/source");
+        var nativeState=DriverObservationAssembler.originalNativeState(raw);
+        var player=OpportunityJson.object(nativeState.get("played_character"),"played_character");
+        var actor=org.xar.ck3.control.contracts.NativeCharacterId.of(
+                OpportunityJson.integer(player.get("character_id"),"character_id")).asBigInteger();
+        var saved=actual.savedDriver();
+        StrictJson.require(OpportunityJson.bool(nativeState.get("paused"),"paused")
+                &&OpportunityJson.bool(nativeState.get("map_ready"),"map_ready")
+                &&OpportunityJson.bool(player.get("alive"),"alive")&&actor.equals(saved.session().actorId()),
+                "saved Driver requires the actual paused living saved actor");
+        var driver=new DriverStateSnapshot.Complete(new DriverStateSnapshot.Session(
+                transport.pipeName(),session.game().pid(),actor,saved.session().episodeRunId()),
+                saved.commandHistory(),saved.lastCheckpoint(),saved.rollbackWarFailure(),saved.managedRestoreTransaction(),
+                saved.successionExpectation(),saved.successionLifecycle(),saved.campaignGoal(),saved.rollbackWarFailures());
+        byte[] bytes=driver.encode();
+        ExactRef full=archive.preserveArtifact(same,bytes,
+                Math.min(DriverCheckpointStore.MAX_DRIVER_BYTES,WriterContracts.MAX_PIN_BYTES));
+        StrictJson.require(full.bytes()==bytes.length&&full.sha256().equals(DriverJson.sha256(bytes)),
+                "saved Driver archive differs from its exact new complete wire");
+        long savedProfile=actual.source().pair().frame().observationVersion();
+        StrictJson.require(savedProfile==DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION
+                ||savedProfile==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION,
+                "saved Driver projection profile is unsupported");
+        var metadata=new java.util.LinkedHashMap<String,OpportunityJson.Value>();
+        if(savedProfile==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION) {
+            metadata.put("episode_projection",new OpportunityJson.Text(NativeCampaignProjection.WIRE_MODE));
+        } else {
+            // Private new-session DATA: Admission proved this saved episode and the same paused living actor.
+            // Existing producer conflict checks require every present Native value to agree; nothing is overwritten.
+            var active=new OpportunityJson.Obj(java.util.Map.of(
+                    "episode_binding_state",new OpportunityJson.Text("active_resumed"),
+                    "driver_state_restored",new OpportunityJson.Bool(true),
+                    "driver_state_restore_kind",new OpportunityJson.Text("cold_checkpoint"),
+                    "cold_candidate_rejection",OpportunityJson.Nil.INSTANCE));
+            var derived=java.util.Map.<String,OpportunityJson.Value>of(
+                    "native_session_control",active,"episode_identity_pending",new OpportunityJson.Bool(false),
+                    "one_life_terminal",new OpportunityJson.Bool(false),"one_life_terminal_reason",OpportunityJson.Nil.INSTANCE);
+            metadata.putAll(derived);
+        }
+        var auxiliary=new OpportunityJson.Obj(metadata);
+        var stamp=new DriverSnapshotFacts.Stamp(0,0,session.game(),driver.session().episodeRunId(),DriverJson.sha256(bytes));
+        var known=new DriverSnapshotFacts.Known(driver,stamp,full,List.of(),auxiliary,Optional.empty(),Optional.empty());
+        var repository=new DriverFactsRepository(known);
+        var producer=new NativeDriverObservationProducer(repository,transport,source,wire->{
+            try{return archive.preserveArtifact(archive.writer().borrowedSession(),wire,
+                    Math.min(DriverCheckpointStore.MAX_DRIVER_BYTES,WriterContracts.MAX_PIN_BYTES));}
+            catch(IOException failure){throw new UncheckedIOException(failure);}
+        });
+        producer.bindConfirmedSaved(actual,same,archive);
+        var authority=new DriverStateAssembler(actions,repository,producer);
+        var held=new HeldDriverObservationPort(transport,authority,frame->{
+            try{return archive.withSession(archive.writer().borrowedSession()).preserveNativeFrame(frame);}
+            catch(IOException failure){throw new UncheckedIOException(failure);}
+        },new DriverObservationAssembler(),retainedFrames);
+        // The new history basis is not canonical yet: observe through the sole producer, not an action lease.
+        var read=producer.read(raw);
+        if(!(read instanceof DriverObservationFacts.Known available)) {
+            var missing=(DriverObservationFacts.Unavailable)read;
+            throw new IOException("saved Driver first facts unavailable: "+String.join(",",missing.reasons()));
+        }
+        var facts=available.facts();
+        ExactRef original=archive.withSession(same).preserveNativeFrame(raw);
+        var assembler=new DriverObservationAssembler();
+        var fullSnapshot=assembler.projectFull(raw,facts,original);
+        var assembled=assembler.assemble(raw,facts,original);
+        if(!(assembled instanceof DriverObservationAssembler.Complete first))
+            throw new IOException("saved Driver first ordinary projection is incomplete");
+        StrictJson.require(first.identity().frame().identity().player().equals(actor)
+                &&first.identity().frame().episodeRunId().equals(saved.session().episodeRunId()),
+                "saved Driver projection changed the actual saved actor/episode");
+        held.retainVerified(fullSnapshot,first);
+        repository.locked(state->{
+            StrictJson.require(state==known,"saved Driver staging lost its original repository predecessor");
+            repository.replaceObservation(stamp,facts);return null;
+        });
+        var seed=new Seed(full,full,0,0,session,auxiliary,Optional.empty());
+        actual.requireCurrent(same);archive.writer().requireSession(same);
+        StrictJson.require(Instant.now().isBefore(deadline)&&same.head().state().sequence()==opening.state().sequence()
+                &&same.head().digest().equals(opening.digest()),"saved Driver staging changed its canonical predecessor/deadline");
+        return new SavedStaged(actual,archive,seed,known,repository,producer,authority,held,first,source,
+                opening.state().sequence(),opening.digest());
+    }
+
+    /** Admits only the identical staged owner after Core recorded its actual saved-bootstrap commit. */
+    public static Adopted adoptConfirmedSaved(SavedStaged stage,ContinuityStorePort.Session same,
+            WriterContracts.Prepared prepared,WriterContracts.Receipt receipt)throws IOException {
+        Objects.requireNonNull(stage);Objects.requireNonNull(same);Objects.requireNonNull(prepared);Objects.requireNonNull(receipt);
+        synchronized(stage) {
+            stage.archive.writer().requireSession(same);
+            StrictJson.require(prepared.predecessor().state().sequence()==stage.originalSequence
+                    &&prepared.predecessor().digest().equals(stage.originalDigest),
+                    "saved Driver adoption prepared a different staged writer predecessor");
+            same.requireCommitted(prepared,receipt);stage.admission.requireRetained(same,receipt);
+            var current=stage.facts();var seed=stage.seed;
+            StrictJson.require(current.stamp().equals(stage.predecessor.stamp())
+                    &&Arrays.equals(current.driver().encode(),stage.predecessor.driver().encode())
+                    &&current.originalHistoryBasis().equals(seed.originalHistoryBasis())
+                    &&current.stamp().driverSha256().equals(seed.fullDriver().sha256())
+                    &&current.auxiliary().equals(seed.auxiliary())&&current.actionRows().isEmpty()&&current.loop().isEmpty()
+                    &&current.observation().isPresent()
+                    &&current.observation().orElseThrow().transport().equals(seed.expectedSession()),
+                    "saved Driver adoption changed its exact staged Driver/history/observation owner");
+            if(stage.adopted!=null) {
+                StrictJson.require(stage.committedPrepared==prepared&&stage.committedReceipt==receipt,
+                        "saved Driver adoption cannot replace its original prepared/receipt objects");
+                return stage.adopted;
+            }
+            stage.producer.promoteConfirmedSaved(stage.admission,same,prepared,receipt);
+            stage.producer.recordAdoptionObserved(seed.expectedSession(),stage.source);
+            var adopted=new Adopted(seed,stage.source,seed.fullDriver(),stage.repository,stage.authority,stage.producer,
+                    stage.observations,stage.first,AdoptionStatus.QUALIFICATION_REQUIRED,List.of());
+            stage.committedPrepared=prepared;stage.committedReceipt=receipt;stage.adopted=adopted;
+            return adopted;
+        }
+    }
+
     private static final class InterruptedBootstrap extends RuntimeException {
         private static final long serialVersionUID=1L;
         private final InterruptedException interruption;

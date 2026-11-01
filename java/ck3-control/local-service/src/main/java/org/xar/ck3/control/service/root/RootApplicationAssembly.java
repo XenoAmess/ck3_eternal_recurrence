@@ -108,6 +108,142 @@ public final class RootApplicationAssembly {
         private RootLifecycleRuntimeFactory.Prepared lifecycleTransitions;
         private RootLegacyResumeRuntime originalResume;
         private RootPrivateBootstrap.Original coldOriginal;
+        private ConfirmedSavedCapture confirmedSavedEntry;
+        private final WriterContracts.TransitionAuthority confirmedSavedAuthority=new WriterContracts.TransitionAuthority() {
+            @Override public String revalidate(org.xar.ck3.control.continuity.ContinuityState ignored,WriterContracts.Request request)throws IOException {
+                throw new IOException("confirmed saved entry requires the actual locked writer Head");
+            }
+            @Override public String revalidate(WriterContracts.Head predecessor,WriterContracts.Request request)throws IOException {
+                var same=writer.borrowedSession();writer.requireSession(same);
+                var actual=Objects.requireNonNull(confirmedSavedEntry,"actual private saved entry is unavailable");
+                actual.admission.requireCurrent(same);
+                StrictJson.require(predecessor.digest().equals(same.head().digest())
+                        &&predecessor.digest().equals(actual.predecessorDigest)
+                        &&request.kind().equals(org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND)
+                        &&java.util.Arrays.equals(request.details(),actual.request.details())
+                        &&request.evidence().equals(actual.request.evidence()),
+                        "saved entry differs from its actual private producer and locked predecessor");
+                var details=org.xar.ck3.control.continuity.SavedContinuityBootstrap.details(
+                        actual.input,actual.evidenceId,actual.sourceNode);
+                StrictJson.require(org.xar.ck3.control.continuity.ContinuityJson.same(details,request.detailsObject()),
+                        "saved entry detached its actual complete input projection");
+                var known=actual.stage.facts();var bound=archive.withSession(same);
+                StrictJson.require(java.util.Arrays.equals(known.driver().encode(),bound.loadFullMaterial(actual.input.fullDriver()).bytes())
+                        &&java.util.Arrays.equals(DriverSnapshotFacts.encodeKnownOriginal(known).bytes(),
+                                bound.loadFullMaterial(actual.input.driverFacts()).bytes())
+                        &&known.stamp().driverVersion()==actual.input.driverVersion()
+                        &&known.stamp().episodeEpoch()==actual.input.episodeEpoch()
+                        &&actual.stage.source().equals(actual.source)
+                        &&actual.stage.session().game().equals(actual.admission.session().game())
+                        &&actual.stage.session().sessionId().equals(actual.admission.session().sessionId()),
+                        "saved entry changed its actual staged Driver/session originals");
+                org.xar.ck3.control.continuity.SavedContinuityBootstrap.reduce(predecessor.state(),request);
+                var digest=StrictJson.object();digest.put("head_sha256",predecessor.digest());digest.set("entry",details);
+                return org.xar.ck3.control.continuity.ContinuityJson.digest(digest);
+            }
+            @Override public org.xar.ck3.control.continuity.ContinuityState reduce(
+                    org.xar.ck3.control.continuity.ContinuityState before,WriterContracts.Request request) {
+                return org.xar.ck3.control.continuity.SavedContinuityBootstrap.reduce(before,request);
+            }
+        };
+        /** Only the private saved-load entry may precede the normal full runtime table. */
+        private WriterContracts.TransitionAuthority startupWriterAuthority() {
+            return new WriterContracts.TransitionAuthority() {
+                private WriterContracts.TransitionAuthority selected(WriterContracts.Request request) {
+                    return org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND.equals(request.kind())
+                            ?confirmedSavedAuthority:router;
+                }
+                @Override public String revalidate(org.xar.ck3.control.continuity.ContinuityState before,WriterContracts.Request request)throws IOException {
+                    return selected(request).revalidate(before,request);
+                }
+                @Override public String revalidate(WriterContracts.Head before,WriterContracts.Request request)throws IOException {
+                    return selected(request).revalidate(before,request);
+                }
+                @Override public org.xar.ck3.control.continuity.ContinuityState reduce(
+                        org.xar.ck3.control.continuity.ContinuityState before,WriterContracts.Request request)throws IOException {
+                    return selected(request).reduce(before,request);
+                }
+            };
+        }
+        private static final class ConfirmedSavedCapture {
+            final RootJavaSavedBootstrap.Admission admission;
+            final DriverBootstrap.SavedStaged stage;
+            final org.xar.ck3.control.continuity.SavedContinuityBootstrap.Input input;
+            final String evidenceId,predecessorDigest;
+            final com.fasterxml.jackson.databind.node.ObjectNode sourceNode;
+            final G2Source source;
+            final WriterContracts.Request request;
+            WriterContracts.Prepared prepared;
+            WriterContracts.Receipt receipt;
+            DriverBootstrap.Adopted driver;
+            ConfirmedSavedCapture(RootJavaSavedBootstrap.Admission admission,DriverBootstrap.SavedStaged stage,
+                    org.xar.ck3.control.continuity.SavedContinuityBootstrap.Input input,String evidenceId,
+                    String predecessorDigest,com.fasterxml.jackson.databind.node.ObjectNode sourceNode,G2Source source) {
+                this.admission=admission;this.stage=stage;this.input=input;this.evidenceId=evidenceId;
+                this.predecessorDigest=predecessorDigest;this.sourceNode=sourceNode.deepCopy();this.source=source;
+                request=org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(input,evidenceId,this.sourceNode);
+            }
+        }
+
+        /** Private new-daemon saved admission, independent of the unavailable original daemon. */
+        public synchronized DriverBootstrap.Adopted adoptConfirmedSaved(RootJavaSavedBootstrap.Admission actual,
+                G2Source source,int retainedFrames,Instant deadline)throws IOException {
+            Objects.requireNonNull(actual);Objects.requireNonNull(source);Objects.requireNonNull(deadline);
+            StrictJson.require(!staged&&!finished&&adopted.isEmpty()&&confirmedSavedEntry==null,
+                    "confirmed saved Driver binds once to this unused Core");
+            if(menu!=null)StrictJson.require(menu.game==actual.game()&&menu.source.equals(source),
+                    "saved entry crossed an existing actual menu Game/source");
+            return writer.locked(same->{
+                writer.requireSession(same);actual.requireCurrent(same);
+                var predecessor=same.head();
+                var original=DriverBootstrap.stageConfirmedSaved(actual,same,archive,actions,source,retainedFrames,deadline);
+                var bound=archive.withSession(same);
+                var driverFacts=bound.preserveMaterial(DriverSnapshotFacts.encodeKnownOriginal(original.facts()));
+                var input=new org.xar.ck3.control.continuity.SavedContinuityBootstrap.Input(
+                        actual.source().savedState(),actual.savedStateReference(),actual.source().confirmation().eventPin().reference(),
+                        actual.source().sourceHead(),actual.sourceHeadReference(),CheckpointPairCodec.encode(actual.source().pair()),
+                        org.xar.ck3.control.continuity.ContinuityJson.canonical(OrdinaryCycleTransitions.sessionToJson(actual.session())),
+                        org.xar.ck3.control.continuity.ContinuityJson.canonical(
+                                org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.observation(original.first().identity())),
+                        original.seed().fullDriver(),driverFacts,original.seed().driverVersion(),original.seed().episodeEpoch());
+                var sourceNode=StrictJson.object();sourceNode.put("machine_id",source.machineId());
+                sourceNode.put("observed_at_utc",source.observedAtUtc());sourceNode.put("exact_build",source.exactBuild());
+                sourceNode.set("source_ref",source.sourceRef().toJson());
+                String evidenceId="saved-bootstrap-"+actual.source().confirmation().eventIdentity()+"-"+actual.session().sessionId();
+                var capture=new ConfirmedSavedCapture(actual,original,input,evidenceId,predecessor.digest(),sourceNode,source);
+                confirmedSavedEntry=capture;
+                capture.prepared=same.preview(capture.request);
+                var recorded=same.queryCommitted(capture.prepared);
+                capture.receipt=recorded.isPresent()?recorded.orElseThrow():same.commit(capture.prepared);
+                same.requireCommitted(capture.prepared,capture.receipt);
+                actual.recordCommitted(same,capture.prepared,capture.receipt);
+                capture.driver=DriverBootstrap.adoptConfirmedSaved(original,same,capture.prepared,capture.receipt);
+                adopted.add(capture.driver);return capture.driver;
+            });
+        }
+        public RootApplicationSession finishConfirmedSaved(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,
+                FreshSessionConfiguration configuration,FreshSessionServices services)throws IOException,InterruptedException {
+            writer.locked(same->{requireConfirmedSaved(same,driver);return null;});
+            StrictJson.require(installed.context().core()==this&&installed.context().game()==confirmedSavedEntry.admission.game()
+                    &&installed.context().source().equals(confirmedSavedEntry.source),"saved finish crossed the actual installed Game/source");
+            return finishObserved(installed,driver,configuration,services,Optional.empty());
+        }
+        private void requireConfirmedSaved(ContinuityStorePort.Session same,DriverBootstrap.Adopted driver)throws IOException {
+            writer.requireSession(same);var actual=confirmedSavedEntry;
+            StrictJson.require(actual!=null&&actual.driver==driver&&actual.receipt!=null&&actual.prepared!=null&&adopted.contains(driver)
+                    &&driver.authority()==actual.stage.authority()&&driver.producer()==actual.stage.producer()
+                    &&driver.first()==actual.stage.first()&&driver.source().equals(actual.source),
+                    "saved runtime requires this Core's exact committed and adopted Driver");
+            actual.admission.requireRetained(same,actual.receipt);
+        }
+        private long confirmedSavedDays() {
+            var state=Objects.requireNonNull(confirmedSavedEntry).admission.source().savedState();
+            long raw=Math.subtractExact(state.settledDateRaw(),state.origin().startDateRaw());
+            StrictJson.require(raw>=0&&raw%24==0,"confirmed saved source must contain whole saved game days");
+            return raw/24;
+        }
+
+
         private Instant coldBootstrapDeadline;
         private final ReconciliationLink initialReconciliation = new ReconciliationLink();
         private final ThreadLocal<ContinuityStorePort.Session> planningSession = new ThreadLocal<>();
@@ -168,7 +304,7 @@ public final class RootApplicationAssembly {
             originalDomainRegistrations = List.copyOf(domains);
             artifacts = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(configuration.artifactRoot(),
                     configuration.ledger().lock(), configuration.maximumArtifactBytes()),storage);
-            writer = new ContinuityWriter(configuration.ledger(), configuration.writerSources(), router, clock,
+            writer = new ContinuityWriter(configuration.ledger(), configuration.writerSources(), startupWriterAuthority(), clock,
                     new ContinuityWriter.Extensions(domains, Optional.of(artifacts), rollback),storage);
             StrictJson.require(writer.storageGuard()==storage&&artifacts.storageGuard()==storage,
                     "Core ledger and immutable artifact store must retain the identical required storage guard");
@@ -294,6 +430,7 @@ public final class RootApplicationAssembly {
             actual.add(new RootAuthorityRouter.Binding(Set.of(lifecycleTransitions.transitionKind()), lifecycleTransitions.transitionAuthority()));
             actual.add(new RootAuthorityRouter.Binding(Set.of(org.xar.ck3.control.continuity.EpisodeWindow.BEGIN_KIND,
                     org.xar.ck3.control.continuity.EpisodeWindow.BASELINE_KIND), nextWindows.authority()));
+            actual.add(new RootAuthorityRouter.Binding(Set.of(org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND),confirmedSavedAuthority));
             Set<String> required = actual.stream().flatMap(binding -> binding.kinds().stream()).collect(java.util.stream.Collectors.toUnmodifiableSet());
             router.seal(actual, required);
         }
@@ -1182,7 +1319,7 @@ public final class RootApplicationAssembly {
                 derived.requireOwner(context,installed.bindings());
                 staged.prepareDispatcher(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),installed.pendingBindings(),installed.requiredPending(),remaining.lifeReplay());
                 var actualOffline=offline.install(installed,remaining.events().eventSources());actualOffline.requireContext(installed);
-                var root=staged.finish(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),remaining.lifecycle().terminalDecisions(),remaining.lifecycle(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),remaining.lifeReplay(),runtime.planningInputs(),installed.pipeline(),installed.pendingBindings(),installed.requiredPending(),cyclePolicy,actualOffline.port(),sessionClock,Optional.empty(),0,installed.completion(),episodes,savedCapture,restoreMaterials,restorePublication);
+                var root=staged.finish(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),remaining.lifecycle().terminalDecisions(),remaining.lifecycle(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),remaining.lifeReplay(),runtime.planningInputs(),installed.pipeline(),installed.pendingBindings(),installed.requiredPending(),cyclePolicy,actualOffline.port(),sessionClock,confirmedSavedEntry==null?Optional.empty():Optional.of(confirmedSavedEntry.admission.source().pair()),confirmedSavedEntry==null?0:confirmedSavedDays(),installed.completion(),episodes,savedCapture,restoreMaterials,restorePublication);
                 if(admissionOpt.isPresent()){
                     try { root.restoreCleanRestart(same,admissionOpt.orElseThrow()); }
                     catch(InterruptedException interrupted) {
@@ -1205,6 +1342,10 @@ public final class RootApplicationAssembly {
                 } else if (unresolvedSameGameData != null) {
                     // Restore the existing per-graph reader without capture/publication or canonical head changes.
                     runtime.capabilities().restoreRetainedPlanning(same);
+                } else if(confirmedSavedEntry!=null) {
+                    requireConfirmedSaved(same,driver);
+                    installed.initializeFresh(same,driver.first(),deadline);
+                    installed.initializePersistentPlanning(same,driver.first());
                 } else {
                     if (initialRecoveryAdmission != null) {
                         initialRecoveryAdmission.requireCurrent(same);

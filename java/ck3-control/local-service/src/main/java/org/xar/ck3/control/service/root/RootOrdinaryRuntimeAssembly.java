@@ -53,6 +53,11 @@ public final class RootOrdinaryRuntimeAssembly {
     }
 
     public static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
+        return prepare(config,clock,Optional.empty());
+    }
+
+    private static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            Optional<org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan> savedGenesis)throws IOException {
         Objects.requireNonNull(config);Objects.requireNonNull(clock);
         var metadata=new RootOrdinaryImplementationMetadata();
         Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application parent");
@@ -76,9 +81,11 @@ public final class RootOrdinaryRuntimeAssembly {
         boolean anchor=Files.exists(paths.anchor()),snapshot=Files.exists(paths.snapshot()),events=Files.exists(paths.events());
         if((anchor||snapshot||events)&&!(anchor&&snapshot&&events))
             throw new IOException("partial canonical ledger initialization is retained for recovery; it cannot be overwritten");
+        if(savedGenesis.isPresent()&&(anchor||snapshot||events))
+            throw new IOException("confirmed saved bootstrap requires a distinct uninitialized new writer");
         Path request=paths.snapshot().getParent().resolve("genesis-request.json");
         var genesis=anchor?Optional.<org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan>empty()
-                :Optional.of(genesisRequest(request,config.machineId(),clock));
+                :Optional.of(savedGenesis.isPresent()?genesisRequest(request,savedGenesis.orElseThrow()):genesisRequest(request,config.machineId(),clock));
         var actualPorts=new java.util.concurrent.atomic.AtomicReference<RootCoreBoundPorts>();
         var storage=RootRuntimeStorageGuard.ordinary(paths,archiveRoot,()->{
             var actual=actualPorts.get();
@@ -130,6 +137,35 @@ public final class RootOrdinaryRuntimeAssembly {
         }catch(IllegalArgumentException invalid){throw new IOException("invalid original genesis request",invalid);}
     }
 
+    /** Source-qualified policy for a new independent saved-load writer; no old state is rewritten. */
+    public static Prepared prepareConfirmedSaved(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            RootJavaSavedBootstrap.ConfirmedSource source)throws IOException {
+        Objects.requireNonNull(source);
+        var saved=source.savedState();
+        if(!saved.machineId().equals(config.machineId()))throw new IOException("confirmed source belongs to another machine");
+        var origin=saved.origin();
+        var expected=new org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan(
+                config.machineId(),origin.windowId(),origin.targetDays());
+        return prepare(config,clock,Optional.of(expected));
+    }
+
+    private static org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan genesisRequest(Path request,
+            org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan expected)throws IOException {
+        byte[] wanted=org.xar.ck3.control.continuity.FreshContinuityGenesis.encode(expected);
+        try(var channel=java.nio.channels.FileChannel.open(request,java.nio.file.StandardOpenOption.CREATE_NEW,
+                java.nio.file.StandardOpenOption.WRITE)) {
+            var buffer=java.nio.ByteBuffer.wrap(wanted);while(buffer.hasRemaining())channel.write(buffer);channel.force(true);
+        }catch(java.nio.file.FileAlreadyExistsException retained) {
+            // An existing exact request is retained, never replaced by a second policy.
+        }
+        byte[] actual;
+        try(var input=Files.newInputStream(request)) {
+            actual=input.readNBytes(org.xar.ck3.control.continuity.FreshContinuityGenesis.MAXIMUM_REQUEST_BYTES+1);
+        }
+        if(!java.util.Arrays.equals(wanted,actual))throw new IOException("saved-load genesis request differs from its actual confirmed source policy");
+        return expected;
+    }
+
     public static final class Prepared implements AutoCloseable {
         private final RootOrdinaryRuntimeConfiguration config;
         private final Clock clock;
@@ -163,6 +199,56 @@ public final class RootOrdinaryRuntimeAssembly {
         public NativeLaunchPlan plan(){return plan;}
         public List<NativePrivateActionPermission> privatePermissions(){return permissions;}
         public RootRuntimeCatalogFactory catalogs(){return catalogs;}
+        public JavaGameLifecycle lifecycle(){return lifecycle;}
+
+        /** Uses only this Prepared graph's actual Saved creator result; this method never launches. */
+        public synchronized Running openConfirmedSaved(JavaGameLifecycle.Started started,
+                RootJavaSavedBootstrap.ConfirmedSource confirmed,Instant deadline)throws IOException,InterruptedException {
+            Objects.requireNonNull(started);Objects.requireNonNull(confirmed);Objects.requireNonNull(deadline);
+            if(closed||entered||core!=null||game!=null)
+                throw new IOException("confirmed saved graph is already consumed or closed");
+            var actual=Objects.requireNonNull(started.session());
+            if(actual.mode()!=ManagedGameSession.Mode.OWNED||actual.launchPlan()!=plan
+                    ||!(plan.load() instanceof NativeLaunchPlan.SavedGame)
+                    ||lifecycle.currentSession().orElse(null)!=actual)
+                throw new IOException("confirmed saved bootstrap requires this exact owned Saved creator and plan");
+            actual.verify();entered=true;game=actual;
+            core=RootApplicationAssembly.open(app,clock,catalogs.domainRegistrations(),Optional.empty(),storage);
+            core.bindM5JointPeacetimeEnabled(config.m5JointPeacetimeEnabled());
+            core.bindFirstHeirMarriageEnabled(config.firstHeirMarriageEnabled());
+            core.bindNewMarriageProposalsEnabled(config.newMarriageProposalsEnabled());
+            ports.bindCore(core);catalogs.bindCore(core);
+            products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
+            actual.nativeTransport().awaitHello(clock.instant().plus(config.operationTimeout()));
+            var hello=actual.nativeTransport().originalHello();
+            var source=new G2Source(actual.machineId(),clock.instant().toString(),hello.gameSha256(),
+                    metadata.implementation(RootOrdinaryRuntimeAssembly.class));
+            var opened=new Opened(this,source);
+            var installed=runOperationPhase(clock,config.operationTimeout(),until->
+                    catalogs.install(core,actual,source,core.planningReads(),clock,until));
+            opened.installed=installed;
+            var driver=runOperationPhase(clock,Duration.ofMinutes(10),until->{
+                var admission=RootJavaSavedBootstrap.admit(confirmed,installed.context(),lifecycle,started,until);
+                return core.adoptConfirmedSaved(admission,source,config.retainedFrames(),until);
+            });
+            return opened.finishConfirmedSaved(driver,deadline);
+        }
+
+
+
+        /** Opens only this configured old writer and source graph; it creates no Game or live authority. */
+        public synchronized RootApplicationAssembly.Core openSavedSourceCore()throws IOException {
+            if(closed||entered||core!=null||game!=null)
+                throw new IOException("saved source graph is already consumed or closed");
+            entered=true;
+            core=RootApplicationAssembly.open(app,clock,catalogs.domainRegistrations(),Optional.empty(),storage);
+            core.bindM5JointPeacetimeEnabled(config.m5JointPeacetimeEnabled());
+            core.bindFirstHeirMarriageEnabled(config.firstHeirMarriageEnabled());
+            core.bindNewMarriageProposalsEnabled(config.newMarriageProposalsEnabled());
+            ports.bindCore(core);catalogs.bindCore(core);
+            return core;
+        }
+
 
         private synchronized void openCore(ManagedGameSession actual)throws IOException {
             if(closed||entered)throw new IOException("ordinary worker composition is already consumed or closed");
@@ -329,6 +415,25 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             long next=restart.isPresent()?restart.orElseThrow().controller().nextBatchSequence():
                     noDispatch.map(ContinuityBatchJournal.InitialNoDispatchRecovery::nextBatchSequence).orElse(0L);
             return new Running(owner,session,prefix,next);
+        }
+
+        private Running finishConfirmedSaved(DriverBootstrap.Adopted driver,Instant deadline)throws IOException,InterruptedException {
+            if(consumed||installed==null)throw new IOException("actual saved graph installation is unavailable or consumed");
+            consumed=true;
+            if(owner.config.decisionProvider().isPresent()) {
+                var selector=new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(),owner.clock,raw->{
+                    var writer=owner.core.writer();var active=writer.activeSession();
+                    if(active.isPresent())return owner.core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                    return writer.locked(same->owner.core.archive().withSession(same).preserveMaterial(raw));
+                });
+                owner.core.bindDecisionSelector(selector);
+            }
+            var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
+            var session=owner.core.finishConfirmedSaved(installed,driver,configuration,owner.services(source));
+            runOperationPhase(owner.clock,owner.config.operationTimeout(),until->{
+                session.install(new OrdinarySessionHost(),until);return null;
+            });
+            return new Running(owner,session,owner.config.loop().batchIdPrefix(),0L);
         }
 
         private Running finishSettledSameGame(DriverBootstrap.Adopted driver,
