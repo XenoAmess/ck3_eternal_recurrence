@@ -12,7 +12,7 @@
 >
 > 且看我董卓。
 
-片头之后回到玩家口吻，讲这一局遇到了什么、为什么这样走、结果怎样。最新口播逐字见[旁白](research/filming-05/narration.txt)，上轮逐场修改见[文案审查](research/filming-04/language-audit.json)。用户本轮指定将“我可没把联军打服”改为“我可没被联军打服”，只修改这一句，见[单句修正](research/filming-05/README.md)。
+片头之后回到玩家口吻，讲这一局遇到了什么、为什么这样走、结果怎样。最新口播逐字见[旁白](research/filming-06/narration.txt)，上轮逐场修改见[文案审查](research/filming-04/language-audit.json)。用户指定的“我可没被联军打服”保留，见[单句修正](research/filming-05/README.md)；最新按字面替换要求重新制作Edge TTS旁白与字幕，未扩写台词或处理画面，见[重新录音与字幕](research/filming-06/README.md)。
 
 本机`machine_id: 4-8e1c2f1861`。全故事190.1.1至191.6.1，实际516游戏日，其中五月保存后续拍396日。董卓照常入朝后被谋杀，继续到董璜继承。本轮只重剪已有录像，没有新增游戏日或动作。游玩来源见[完整续拍](research/filming-03/README.md)，最新交付见[文案和录屏返修](research/filming-04/README.md)。
 

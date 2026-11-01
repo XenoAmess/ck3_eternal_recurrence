@@ -1,0 +1,13 @@
+{
+  "schema" : "hanjin.edit06-storage-close/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "observed_at_utc" : "2026-11-01T08:11:59.556605300Z",
+  "package_bytes_nonatomic_snapshot" : 9317504346,
+  "package_budget_bytes" : 10737418240,
+  "edit06_bytes" : 332579211,
+  "edit06_budget_bytes" : 536870912,
+  "volume_usable_bytes" : 87295504384,
+  "retention_review_at_utc" : "2026-11-03T04:45:00Z",
+  "within_budget" : true,
+  "deletion_performed" : false
+}

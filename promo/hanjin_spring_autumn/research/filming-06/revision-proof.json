@@ -1,0 +1,14 @@
+{
+  "schema" : "hanjin.edit06-literal-revoice-proof/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "observed_at_utc" : "2026-11-01T08:11:46.058892500Z",
+  "replace_from" : "郿国王",
+  "replace_to" : "郿侯",
+  "actual_replacement_count" : 0,
+  "script_diff_is_only_literal_replace" : true,
+  "all_picture_sources_framing_cuts_unchanged" : true,
+  "fresh_edge_tts_successful_calls" : 19,
+  "new_subtitles_forbidden_title_occurrences" : 0,
+  "new_game_actions" : 0,
+  "human_signoff" : null
+}
