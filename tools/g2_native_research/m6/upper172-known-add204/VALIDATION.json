@@ -1,0 +1,144 @@
+{
+  "schema": "xar.manual-native-witness.validation.v1",
+  "recorded_at_utc": "2026-11-01T16:06:30.594695+00:00",
+  "sources": [
+    {
+      "path": "Native204Api.hpp",
+      "bytes": 1492,
+      "sha256": "714d2b085d4b18d00655fb79aa1d7ea57b84c3afe18e430be526447a6c08f234",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native204Execute.cpp",
+      "bytes": 11345,
+      "sha256": "51c2339a48780e013c96b0b97c2f6fbb2223b4a176bfd159d01eb816ee3b9bd0",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native204Io.cpp",
+      "bytes": 4184,
+      "sha256": "bd473b7d9ca8d67f32dfc3b90fa8a054a49df724a0175728478af91e62c31ded",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native204Main.cpp",
+      "bytes": 1132,
+      "sha256": "ac2b636a5697583ecba6f7cf1229ab6390c40ea4b52a778a86fbe9495cc34e35",
+      "EOF_preserved": true
+    }
+  ],
+  "originals_in_CLI_order": [
+    {
+      "bytes": 172,
+      "sha256": "6f271e3119ea92d8306865b46ced578ebfa70a8cd4c19f61a9253a4d66386213"
+    },
+    {
+      "bytes": 424,
+      "sha256": "0a99a8546db4677b53fd0abd5bde3266ad8c48f38acaaf5ffb380552585c0a69"
+    },
+    {
+      "bytes": 351,
+      "sha256": "640d693377bdb24ad17d176109b437481cc7546458a4797b9d89cba52f30d75e"
+    },
+    {
+      "bytes": 4,
+      "sha256": "c0e336a5f371ef22cd534e094269f2c1a9635cd080b71ffa671086832d3b60b7"
+    }
+  ],
+  "first_stages": [
+    {
+      "stage": "executor",
+      "start_utc": "2026-11-01T15:42:45.053941+00:00",
+      "end_utc": "2026-11-01T15:42:49.823152+00:00",
+      "seconds": 4.769182200001524,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "io",
+      "start_utc": "2026-11-01T15:44:26.569027+00:00",
+      "end_utc": "2026-11-01T15:44:32.400742+00:00",
+      "seconds": 5.831717299999582,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "link",
+      "start_utc": "2026-11-01T15:45:18.654554+00:00",
+      "end_utc": "2026-11-01T15:45:20.395102+00:00",
+      "seconds": 1.7405464000003121,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "run",
+      "start_utc": "2026-11-01T15:46:41.955647+00:00",
+      "end_utc": "2026-11-01T15:46:42.057074+00:00",
+      "seconds": 0.1014184000014211,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    }
+  ],
+  "first_cases": [
+    "upper_separate",
+    "upper_self_alias"
+  ],
+  "executed": 2,
+  "call_hierarchy": "The original172 calls the original424 and original351 as siblings, in that order.",
+  "actual_flags": {
+    "rawUnchanged": true,
+    "protectionsFinal": true,
+    "mappingReleased": true,
+    "callbackGuard": true,
+    "memoryGuard": true,
+    "forbiddenTargetsUnmapped": true
+  },
+  "comparison": {
+    "comparisons": 2,
+    "failures": 0,
+    "receipt_sha256": "0d7f4cbcefa59c0b94af9ed01958eba0a437df3b369370f8caf3376cffd78ef8"
+  },
+  "expected_role": "Read-only transcription of existing Java200 upper assertions, frozen before Native execution. Old first DATA printed five core rows only; there are no cached Java rows for these two upper cases.",
+  "expected_sha256": "41ae65b014f1d5bcd8b8af4ae504f385fe3b3fecdd0b783183e84ca44030d325",
+  "old_assertion_source_sha256": "c67ee045d0c8b01ab48e084c75dd4af490d0809b02e069485ff5426024c8f69b",
+  "cached_Java_upper_rows": 0,
+  "threeway_comparison": false,
+  "new_Java_JVM": 0,
+  "model_contribution": [
+    {
+      "task": "m6-upper172-whole-native-executor204",
+      "status": "REJECTED_WRONG_OUTPUT_ROLE_NO_EXECUTOR_SOURCE",
+      "adopted": false
+    },
+    {
+      "task": "m6-upper172-whole-native-executor204-correct02",
+      "status": "LENGTH_FULL_PARTIAL_DISCARDED_OWNER_EXECUTOR_TAKEOVER",
+      "adopted": false
+    },
+    {
+      "task": "m6-upper172-whole-native-io204",
+      "status": "PARTIAL_SOURCE_ADOPTION_OWNER_MECHANICAL_IO_FIXES_PENDING_FIRST_STRICT",
+      "adopted": true
+    },
+    {
+      "task": "m6-upper172-whole-input-audit204",
+      "status": "PARTIAL_REVIEW_CORRECT_SIBLING_AND_ALIAS_BUT_WRONG_INPUT_PAGES_AND_UNKNOWN_PORT_LABELS",
+      "adopted": false,
+      "hint_level": "OldJavaassertions supplied, reviewnotindependentoracle"
+    },
+    {
+      "task": "m6-upper172-whole-input-audit204-correct02",
+      "status": "REJECTED_SECOND_INPUT_AUDIT_SOURCE_REGRESSIONS",
+      "adopted": false,
+      "hint_level": "OldJavaassertions/sourcepath hints visible; noindependentoracle claim"
+    }
+  ],
+  "model_summary": "Executor owner-written after wrong-role R1 and unread whole-discarded length R2. IO partially adopted with owner bounded reader/quote/unused helper corrections. Main original R1 source preserved. Both source-wrong input audits rejected; visible old expected hints preclude independent-oracle credit.",
+  "preparation_corrections": "The initial central task misstated the sibling caller hierarchy; the owner corrected it from the original172. Mixed-role output hints were removed from the executor task. These are recorded preparation issues, not inferred model performance causes.",
+  "observed_outputs": "Full returned destination RAX, two headers and fixed fields, controlled callback arguments, release-time old header, and six measured guards. COPY records metadata only and does not copy RAM.",
+  "forbidden_targets": "8F8550 and9D0950 remained MEM_RESERVE; no access trace or branch counter was measured.",
+  "publication_recompiled_or_reran": false,
+  "source_bytes_equal_first_validated_builds": true,
+  "Game_or_DLL_deployment": false,
+  "scope": "Finite private Windows x64 parent and sibling originals with controlled COPY/allocator ports. No natural COPY/allocator, full ABI/EH/DF, arbitrary or concurrent RAM, Game/G2 completion or saved-day performance qualification."
+}
