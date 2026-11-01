@@ -162,6 +162,10 @@ public final class RootCrownRetryRuntime {
         public OrdinaryPlanCompletion completion(OrdinaryPlanCompletion downstream) {
             Objects.requireNonNull(downstream);
             return new OrdinaryPlanCompletion() {
+                @Override public SelectionDisposition beforeModel(PlanningRequest original,PlanningResult.ActionSelected proposed) {
+                    // Only the completed no-action downstream preparation is early; retry publication keeps its original phase.
+                    return downstream.beforeModel(original,proposed);
+                }
                 @Override public PlanningDisposition afterPlanning(PlanningRequest original,PlanningResult planned) {
                     try {
                         var same=prepared.session();var changed=publish(same,original);

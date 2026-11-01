@@ -97,7 +97,26 @@ public final class OrdinaryPlanner {
                             Purpose.READ_ONLY, original.domain(), original.detail());
                     result = new RefreshRequired(request.before(), reason,
                             new PlanTrace(request.before(), selected.trace().visits(), Optional.of(deferred)));
-                } else if (selector != null) result = selectProposal(request, selected);
+                } else if (!clock.instant().isBefore(request.deadline())) {
+                    result = new Stopped(request.before(), StopReason.DEADLINE,
+                            "ordinary planning deadline expired before pre-model completion", selected.trace());
+                } else {
+                    OrdinaryPlanCompletion.SelectionDisposition prepared = completion
+                            .map(value -> Objects.requireNonNull(value.beforeModel(request, selected)))
+                            .orElseGet(() -> new OrdinaryPlanCompletion.Unchanged("no pre-model completion"));
+                    if (prepared instanceof OrdinaryPlanCompletion.Published || prepared instanceof OrdinaryPlanCompletion.Blocked) {
+                        Draft original = selected.trace().finalPlan().orElseThrow();
+                        String reason = prepared instanceof OrdinaryPlanCompletion.Blocked blocked
+                                ? "actual_pre_model_completion_blocked:" + blocked.reason()
+                                : "actual_domain_publication_requires_current_proposal";
+                        Draft deferred = new Draft(original.policy(), original.phase(), reason, original.kind(), Optional.empty(),
+                                Purpose.READ_ONLY, original.domain(), original.detail());
+                        PlanTrace trace = new PlanTrace(request.before(), selected.trace().visits(), Optional.of(deferred));
+                        result = prepared instanceof OrdinaryPlanCompletion.Published
+                                ? new RefreshRequired(request.before(), reason, trace)
+                                : new ReadOnlyWait(request.before(), reason, trace);
+                    } else if (selector != null) result = selectProposal(request, selected);
+                }
             }
             realmLifecycle.finalizePlan(scope, result);
             return result;

@@ -23,7 +23,16 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     private static final class PlanningRound {
         private final ContinuityStorePort.Session session;private boolean flushFailed;
         private Optional<Published> readPublication=Optional.empty();
+        private PreparedSelection preparedSelection;
         private PlanningRound(ContinuityStorePort.Session session){this.session=session;}
+    }
+    /** Same-round DATA only; a domain publication is not a Driver READ publication. */
+    private record PreparedSelection(PlanningRequest request, PlanningDisposition actual) {
+        private PreparedSelection {
+            Objects.requireNonNull(request); Objects.requireNonNull(actual);
+            StrictJson.require(actual instanceof Published || actual instanceof Blocked,
+                    "only a completed changed or blocked selection preparation is retained");
+        }
     }
     /** A completed physical-read failure leaves the writer callback as DATA, so writer release errors remain primary. */
     private record ScopeExit<T>(Optional<ScopeResult<T>> result,
@@ -48,6 +57,7 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
             PlanningRound current=new PlanningRound(borrowed);round.set(current);
             try { return new ScopeExit<T>(Optional.of(collector.withPlanningRound(borrowed,()->finishPlanningReads(()->{
                 current.readPublication=Optional.empty();
+                current.preparedSelection=null;
                 return finishOriginalWork(work,()->flushInSession(borrowed),()->current.flushFailed);
             },()->current.readPublication.isPresent(),()->collector.prepareReadPublicationReplan(borrowed)))),Optional.empty()); }
             catch(org.xar.ck3.control.application.planning.PlanningReadFailure failure) {
@@ -111,17 +121,42 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
             return flushInSession(borrowed);
         }catch(IOException failure){throw new UncheckedIOException("actual preparatory read publication failed; no model/action dispatch",failure);}
     }
+    @Override public SelectionDisposition beforeModel(PlanningRequest original,PlanningResult.ActionSelected proposed) {
+        Objects.requireNonNull(original); Objects.requireNonNull(proposed);
+        try {
+            ContinuityStorePort.Session borrowed=core.writer().borrowedSession();
+            PlanningRound current=round.get();
+            StrictJson.require(current!=null&&current.session==borrowed,
+                    "pre-model preparation must retain its actual original writer round");
+            core.writer().requireSession(borrowed);
+            StrictJson.require(current.readPublication.isEmpty()&&current.preparedSelection==null,
+                    "pre-model preparation requires the completed READ barrier and one actual proposal");
+            SelectionDisposition actual=Objects.requireNonNull(downstream.beforeModel(original,proposed));
+            if(actual instanceof Published published)current.preparedSelection=new PreparedSelection(original,published);
+            else if(actual instanceof Blocked blocked)current.preparedSelection=new PreparedSelection(original,blocked);
+            return actual;
+        } catch(IOException failure) {
+            throw new UncheckedIOException("actual pre-model writer preparation failed; no model/action dispatch",failure);
+        }
+    }
     @Override public PlanningDisposition afterPlanning(PlanningRequest original,PlanningResult planned) {
         Objects.requireNonNull(original);Objects.requireNonNull(planned);
         logPlanningOperation("ENTER", original, planned);
         try {
             ContinuityStorePort.Session borrowed=core.writer().borrowedSession();
             StrictJson.require(round.get()!=null&&round.get().session==borrowed,"planning completion must retain its original live writer callback");
-            Optional<Published> changed=round.get().readPublication;
-            if(changed.isEmpty())changed=flushInSession(borrowed);
             PlanningDisposition disposition;
-            if(changed.isPresent())disposition=changed.orElseThrow(); // Domain publication waits for the new complete observation.
-            else disposition=Objects.requireNonNull(downstream.afterPlanning(original,planned),"actual domain planning disposition required");
+            PreparedSelection prepared=round.get().preparedSelection;
+            if(prepared!=null) {
+                StrictJson.require(prepared.request()==original&&planned.trace().before().equals(original.before()),
+                        "pre-model completion cannot cross its exact original request or frame");
+                disposition=prepared.actual();
+            } else {
+                Optional<Published> changed=round.get().readPublication;
+                if(changed.isEmpty())changed=flushInSession(borrowed);
+                if(changed.isPresent())disposition=changed.orElseThrow(); // Domain publication waits for the new complete observation.
+                else disposition=Objects.requireNonNull(downstream.afterPlanning(original,planned),"actual domain planning disposition required");
+            }
             logPlanningOperation("RETURN", original, planned, disposition);
             return disposition;
         }catch(IOException failure){throw new UncheckedIOException("actual read publication failed; original query is retained without replay",failure);}

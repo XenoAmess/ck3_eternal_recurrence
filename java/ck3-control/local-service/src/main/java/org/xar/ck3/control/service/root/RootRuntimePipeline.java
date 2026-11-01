@@ -73,6 +73,13 @@ public final class RootRuntimePipeline {
     public static final class Completion implements OrdinaryPlanCompletion {
         private final List<OrdinaryPlanCompletion> actual;
         public Completion(List<OrdinaryPlanCompletion> actual) { this.actual=List.copyOf(actual);this.actual.forEach(Objects::requireNonNull); }
+        @Override public SelectionDisposition beforeModel(PlanningRequest original,PlanningResult.ActionSelected proposed) {
+            for(var producer:actual) {
+                SelectionDisposition result=Objects.requireNonNull(producer.beforeModel(original,proposed));
+                if(!(result instanceof Unchanged))return result;
+            }
+            return new Unchanged("actual pre-model no-action completions changed no head");
+        }
         @Override public PlanningDisposition afterPlanning(PlanningRequest original,PlanningResult planned) {
             AwaitingOutcome waiting=null;
             for(var producer:actual) {

@@ -21,6 +21,12 @@ public interface OrdinaryPlanCompletion {
     default Optional<Published> beforeSelection(PlanningRequest original, PlanningResult.ActionSelected proposed) {
         return Optional.empty();
     }
+    /** Only completed no-action preparation; called after the real READ barrier and before HTTP.
+     * Root retains a changed/blocked outcome for afterPlanning in this same original round. */
+    default SelectionDisposition beforeModel(PlanningRequest original, PlanningResult.ActionSelected proposed) {
+        return new Unchanged("no pre-model no-action publication");
+    }
+    sealed interface SelectionDisposition permits Unchanged, Published, Blocked { }
     PlanningDisposition afterPlanning(PlanningRequest original, PlanningResult planned);
     ExecutionDisposition afterExecution(ActionReceipt actual);
 
@@ -36,7 +42,7 @@ public interface OrdinaryPlanCompletion {
         public ScopeResult {Objects.requireNonNull(value);Objects.requireNonNull(readPublication);}
     }
 
-    record Unchanged(String reason) implements PlanningDisposition, ExecutionDisposition {
+    record Unchanged(String reason) implements PlanningDisposition, ExecutionDisposition, SelectionDisposition {
         public Unchanged { StrictJson.text(reason); }
     }
 
@@ -58,7 +64,7 @@ public interface OrdinaryPlanCompletion {
 
     /** A changed authoritative head requires a new planning observation before another dispatch. */
     record Published(WriterContracts.Head predecessor, WriterContracts.Receipt actual)
-            implements PlanningDisposition, ExecutionDisposition {
+            implements PlanningDisposition, ExecutionDisposition, SelectionDisposition {
         public Published {
             Objects.requireNonNull(predecessor); Objects.requireNonNull(actual);
             StrictJson.require(actual.disposition() != WriterContracts.Disposition.NO_CHANGE,
@@ -68,7 +74,7 @@ public interface OrdinaryPlanCompletion {
         }
     }
 
-    record Blocked(String reason, List<ExactRef> evidence) implements PlanningDisposition, ExecutionDisposition {
+    record Blocked(String reason, List<ExactRef> evidence) implements PlanningDisposition, ExecutionDisposition, SelectionDisposition {
         public Blocked {
             StrictJson.text(reason); evidence = List.copyOf(evidence);
             evidence.forEach(Objects::requireNonNull);

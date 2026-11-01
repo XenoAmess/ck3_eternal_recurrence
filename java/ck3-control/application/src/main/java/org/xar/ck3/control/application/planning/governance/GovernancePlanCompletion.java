@@ -27,6 +27,29 @@ public final class GovernancePlanCompletion implements OrdinaryPlanCompletion {
         this.borrowedSession = Objects.requireNonNull(borrowedSession); this.authority = Objects.requireNonNull(authority);
         this.publisher = Objects.requireNonNull(publisher); this.evidence = Objects.requireNonNull(evidence);
     }
+    @Override public SelectionDisposition beforeModel(PlanningRequest original, PlanningResult.ActionSelected proposed) {
+        Objects.requireNonNull(original); Objects.requireNonNull(proposed);
+        try {
+            StrictJson.require(proposed.trace().before().equals(original.before()), "cadence completion crossed its original planning frame");
+            var detail=proposed.trace().finalPlan().orElseThrow().detail();
+            var retained=GovernanceCadencePublication.fromDetail(detail);
+            if(retained.isEmpty())return new Unchanged("no changed no-action cadence to prepare before the model");
+            var plan=retained.orElseThrow();
+            StrictJson.require(plan.observed().equals(original.before()) && plan.source().equals(original.source())
+                    && plan.sessionId().equals(original.sessionId()), "actual cadence plan source/session differs");
+            if(GovernanceCadencePublication.reduce(plan).equals(plan.before()))
+                return new Unchanged("no changed no-action cadence to prepare before the model");
+            // This pure probe grants nothing. The unchanged case still performs its original full afterPlanning validation.
+            return switch(afterPlanning(original,proposed)) {
+                case Unchanged unchanged -> unchanged;
+                case Published published -> published;
+                case Blocked blocked -> blocked;
+                default -> throw new IllegalStateException("no-action cadence returned an action-dependent disposition");
+            };
+        } catch(IllegalArgumentException | IllegalStateException unavailable) {
+            return new Blocked("actual cadence plan publication unavailable: " + unavailable.getMessage(), List.of());
+        }
+    }
     @Override public PlanningDisposition afterPlanning(PlanningRequest original, PlanningResult planned) {
         Objects.requireNonNull(original); Objects.requireNonNull(planned);
         try {
