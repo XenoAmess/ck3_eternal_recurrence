@@ -1519,14 +1519,23 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
      * Cleared when the owning writer session scope exits. */
     private static final class ParsedMaterialCache {
         private record Key(ExactRef reference, ParseProfile profile) { }
-        private final Map<Key, RawJson> entries = new LinkedHashMap<>();
+        private record Cached(RawJson value, int bytes) { }
+        private final Map<Key, Cached> entries = new LinkedHashMap<>(16, 0.75f, true);
         private long totalBytes = 0;
-        RawJson get(ExactRef key, ParseProfile profile) { return entries.get(new Key(key, profile)); }
+        RawJson get(ExactRef key, ParseProfile profile) {
+            Cached cached = entries.get(new Key(key, profile));
+            return cached == null ? null : cached.value();
+        }
         void put(ExactRef key, ParseProfile profile, RawJson value, int bytes) {
             Key actual = new Key(key, profile);
-            if (entries.containsKey(actual) || entries.size() >= MAX_PARSED_ENTRIES
-                    || totalBytes + bytes > MAX_PARSED_BYTES) return;
-            entries.put(actual, value);
+            if (entries.containsKey(actual) || bytes < 1 || bytes > MAX_PARSED_BYTES) return;
+            while (entries.size() >= MAX_PARSED_ENTRIES || bytes > MAX_PARSED_BYTES - totalBytes) {
+                var oldest = entries.entrySet().iterator();
+                Cached removed = oldest.next().getValue();
+                oldest.remove();
+                totalBytes -= removed.bytes();
+            }
+            entries.put(actual, new Cached(value, bytes));
             totalBytes += bytes;
         }
     }
