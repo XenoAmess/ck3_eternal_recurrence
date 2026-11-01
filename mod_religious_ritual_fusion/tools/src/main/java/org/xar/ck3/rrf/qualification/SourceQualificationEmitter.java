@@ -30,6 +30,7 @@ import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Gap;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Pin;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Proof;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Request;
+import org.xar.ck3.rrf.qualification.SourceQualificationContracts.RepositoryRelocation;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Result;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Status;
 
@@ -72,6 +73,7 @@ public final class SourceQualificationEmitter {
         JsonNode indexHeader = field(manifest, "source_index");
         JsonNode index = read(new Pin(text(field(runtime, "paths"), text(indexHeader, "path_key")), integer(indexHeader, "bytes"), text(indexHeader, "sha256")));
         JsonNode beforeFiles = field(index, "files"); require(text(index, "schema").equals("ck3-common-source-index-v1") && beforeFiles.isObject(), "frozen source index required");
+        Path previousRoot = previousRepository(runtime, manifest, root, request.machineId());
         require(text(diff, "machine_id").equals(request.machineId()) && text(diff, "source_commit").equals(request.sourceCommit())
                 && bool(diff, "complete_changed_paths") && bool(diff, "working_tree_clean") && bool(diff, "untracked_runtime_source_inputs_checked"), "actual complete clean Root diff required");
         zero(diff, "exit_code"); zero(diff, "original_wait_returncode");
@@ -94,7 +96,7 @@ public final class SourceQualificationEmitter {
         Map<Chain, ObjectNode> prepared = new EnumMap<>(Chain.class);
         for (var plan : request.chains()) {
             JsonNode prior = read(plan.previousQualification()); validatePrevious(prior, request.machineId(), plan.chain());
-            Map<String, Pin> previous = sourceRows(prior, plan.chain() == Chain.PILGRIMAGE_WIRE_SEAM ? "critical_source_pins" : "source_pins", root, false);
+            Map<String, Pin> previous = sourceRows(prior, plan.chain() == Chain.PILGRIMAGE_WIRE_SEAM ? "critical_source_pins" : "source_pins", previousRoot, false);
             Map<String, Pin> verified = new HashMap<>(); Map<String, Pin> evidence = new HashMap<>(); List<Pin> proofRefs = new ArrayList<>();
             Map<String, Pin> proofDependencies = new HashMap<>();
             for (Proof proof : plan.proofs()) {
@@ -250,6 +252,42 @@ public final class SourceQualificationEmitter {
         for (JsonNode row : array(value, "logs")) { Pin pin = parsePin(row); require(pin.bytes() <= 4 * 1024 * 1024, "Maven log exceeds bound"); checked(pin); if (text(row, "status").equals("PASS")) { String log = Files.readString(Path.of(pin.path())); matched |= log.contains("BUILD SUCCESS") && log.contains("Tests run: " + count + ", Failures: 0, Errors: 0, Skipped: 0"); } }
         require(matched, "actual successful Maven log/count missing");
     }
+    private static Path previousRepository(JsonNode runtime, JsonNode manifest, Path root, String machine) throws IOException {
+        if (!runtime.has("source_relocation")) return root;
+        JsonNode value = read(parsePin(field(runtime, "source_relocation")));
+        Set<String> fields = Set.of("schema", "machine_id", "observed_at_utc", "parent_runtime", "parent_manifest",
+                "parent_source_index", "parent_repository", "shared_repository", "base_source_commit", "producer");
+        require(value.isObject() && value.size() == fields.size(), "exact source relocation fields required");
+        for (String field : fields) require(value.has(field), "required relocation field: " + field);
+        require(text(value, "schema").equals("ck3-shared-source-repository-relocation-v1"), "versioned source relocation required");
+        RepositoryRelocation relocation = new RepositoryRelocation(text(value, "machine_id"), text(value, "observed_at_utc"),
+                text(value, "parent_repository"), text(value, "shared_repository"), text(value, "base_source_commit"),
+                parsePin(field(value, "parent_runtime")), parsePin(field(value, "parent_manifest")),
+                parsePin(field(value, "parent_source_index")), parsePin(field(value, "producer")));
+        require(relocation.machineId().equals(machine)
+                && Path.of(relocation.sharedRepository()).toAbsolutePath().normalize().equals(root)
+                && relocation.baseSourceCommit().equals(text(manifest, "source_commit")), "source relocation identity differs");
+        try { require(!java.time.OffsetDateTime.parse(relocation.observedAtUtc()).toInstant().isAfter(Instant.now()), "future source relocation"); }
+        catch (java.time.DateTimeException error) { throw new IOException("timezone-aware relocation observation required", error); }
+        JsonNode parent = read(relocation.parentRuntime()), parentManifest = read(relocation.parentManifest());
+        checked(relocation.parentSourceIndex()); checked(relocation.producer());
+        require(text(parent, "schema").equals("ck3-mod-acceptance-runtime-v1") && text(parent, "machine_id").equals(machine)
+                && parsePin(field(parent, "manifest")).equals(relocation.parentManifest())
+                && parsePin(field(runtime, "manifest")).equals(relocation.parentManifest())
+                && parentManifest.equals(manifest), "source relocation must retain the exact parent runtime and manifest");
+        String sourceKey = text(field(manifest, "source_root"), "path_key");
+        Path previous = Path.of(relocation.parentRepository()).toAbsolutePath().normalize();
+        require(Path.of(text(field(parent, "paths"), sourceKey)).toAbsolutePath().normalize().equals(previous)
+                && Path.of(text(field(runtime, "paths"), sourceKey)).toAbsolutePath().normalize().equals(root),
+                "source relocation parent/shared roots differ from actual runtime paths");
+        JsonNode header = field(manifest, "source_index");
+        for (JsonNode selected : List.of(parent, runtime)) {
+            Pin index = new Pin(text(field(selected, "paths"), text(header, "path_key")), integer(header, "bytes"), text(header, "sha256"));
+            require(index.equals(relocation.parentSourceIndex()), "source relocation must retain the exact frozen parent index");
+        }
+        return previous;
+    }
+
     private static Map<String, Pin> sourceRows(JsonNode value, String key, Path root, boolean relative) throws IOException {
         Map<String, Pin> result = new LinkedHashMap<>();
         for (JsonNode row : array(value, key)) {

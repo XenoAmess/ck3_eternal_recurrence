@@ -78,6 +78,55 @@ final class SourceQualificationTest {
         assertThrows(IOException.class, () -> SourceQualificationEmitter.generate(fixture.request(), directory.resolve("tampered")));
     }
 
+    @Test void actualRelocationProducerPreservesPriorPinsAndQualifiesCurrentSharedCheckout() throws Exception {
+        Fixture fixture = fixture(true);
+        Path shared = directory.resolve("shared-sdk"), relocated = directory.resolve("relocated-base");
+        command(List.of("git", "clone", "--quiet", "--shared", fixture.root().toString(), shared.toString()));
+        Files.createDirectory(relocated);
+        JsonNode originalDelta = Json.read(Files.readAllBytes(Path.of(fixture.request().sourceDelta().path())), JsonNode.class);
+        Pin parentRuntime = Json.read(Json.write(originalDelta.get("base_runtime")), Pin.class);
+        Path actual = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        String producer = """
+                import json,pathlib,sys
+                sys.path.insert(0,str(pathlib.Path(sys.argv[1])/'tools'))
+                import ck3_mod_acceptance_freeze_sources as freezer
+                source=pathlib.Path(sys.argv[2]);runtime=json.loads(source.read_bytes())
+                manifest=json.loads(pathlib.Path(runtime['manifest']['path']).read_bytes())
+                ref,outputs=freezer.relocate_base(source,runtime,manifest,pathlib.Path(sys.argv[3]),pathlib.Path(sys.argv[4]),'synthetic-source-fixture')
+                for name,raw in outputs.items():(pathlib.Path(sys.argv[4])/name).write_bytes(raw)
+                print(json.dumps(ref))
+                """;
+        Pin derived = Json.read(command(List.of(python(actual), "-B", "-X", "utf8", "-c", producer,
+                actual.toString(), parentRuntime.path(), shared.toString(), relocated.toString())).getBytes(StandardCharsets.UTF_8), Pin.class);
+        ObjectNode delta = (ObjectNode) originalDelta.deepCopy(); delta.set("base_runtime", new ObjectMapper().valueToTree(derived));
+        Pin relocatedDelta = json("relocated-delta.json", delta);
+        Pin review = json("shared-current-review.json", Map.of("schema", "ck3-source-only-reviewed-scope-v1",
+                "machine_id", "synthetic-source-fixture", "result", "PASS", "exit_code", 0,
+                "scope", "UNSELECTED_SOURCE_ONLY", "execution_qualified", false,
+                "previous_knowledge_proof", pin(directory.resolve("knowledge.json")), "source_pins", List.of(pin(shared.resolve("other.txt")))));
+        List<ChainPlan> plans = fixture.request().chains().stream().map(plan -> plan.chain() == Chain.OTHER_SOURCE_DELTA
+                ? new ChainPlan(plan.chain(), plan.previousQualification(), List.of(new Proof(ProofKind.SOURCE_REVIEW, review))) : plan).toList();
+        Request request = new Request(1, "synthetic-source-fixture", shared.toString(), fixture.request().sourceCommit(),
+                relocatedDelta, pin(shared.resolve("tools/ck3_mod_acceptance_build_runtime.py")), plans, fixture.request().previousHostDelta());
+        Path output = directory.resolve("relocated-qualified");
+        assertEquals(Status.SOURCE_BOUND_NOT_LIVE, SourceQualificationEmitter.generate(request, output).status());
+        JsonNode qualification = Json.read(Files.readAllBytes(output.resolve("QUALIFICATION.shared_sdk_delta.actual.json")), JsonNode.class);
+        assertTrue(qualification.get("all_declared_source_pins_raw_equal").booleanValue());
+        assertTrue(qualification.get("source_pins").get(0).get("path").textValue().startsWith(shared.toString()));
+        assertEquals(plans.stream().filter(plan -> plan.chain() == Chain.SHARED_SDK_DELTA).findFirst().orElseThrow().previousQualification(),
+                Json.read(Json.write(qualification.get("previous_qualification")), Pin.class));
+        String consumer = """
+                import pathlib,sys
+                sys.path.insert(0,str(pathlib.Path(sys.argv[1])/'tools'))
+                import ck3_mod_acceptance_build_runtime as builder
+                for chain in ('public_control','case_hooks','shared_host','shared_sdk_delta','pilgrimage_wire_seam','other_source_delta'):
+                    builder.qualify(chain,pathlib.Path(sys.argv[3])/('QUALIFICATION.'+chain+'.actual.json'),sys.argv[4],pathlib.Path(sys.argv[2]),['other.txt'],'synthetic-source-fixture')
+                print('RELOCATED_SIX_CONSUMERS_PASS')
+                """;
+        assertTrue(command(List.of(python(actual), "-B", "-X", "utf8", "-c", consumer, actual.toString(), shared.toString(),
+                output.toString(), request.sourceCommit())).contains("RELOCATED_SIX_CONSUMERS_PASS"));
+    }
+
     @Test void strictRequestRejectsMissingWrongTypeAndPreservesRoundTrip() throws Exception {
         Fixture fixture = fixture(true); byte[] bytes = Json.write(fixture.request());
         assertEquals(fixture.request(), Json.read(bytes, Request.class));
@@ -204,8 +253,8 @@ final class SourceQualificationTest {
         Pin beforeOther = pin(root.resolve("other.txt"));
         Pin beforeChanged = pin(root.resolve(changedPath));
         Pin index = json("source-index.json", Map.of("schema", "ck3-common-source-index-v1", "files", indexRows));
-        Pin manifest = json("manifest.json", Map.of("schema", "ck3-mod-acceptance-shared-runtime-v1", "source_commit", base, "machine_id", "synthetic-source-fixture", "source_index", Map.of("path_key", "source_index", "bytes", index.bytes(), "sha256", index.sha256())));
-        Pin runtime = json("runtime.json", Map.of("schema", "ck3-mod-acceptance-runtime-v1", "repo_root", root.toString(), "machine_id", "synthetic-source-fixture", "manifest", manifest, "paths", Map.of("source_index", index.path())));
+        Pin manifest = json("manifest.json", Map.of("schema", "ck3-mod-acceptance-shared-runtime-v1", "source_commit", base, "machine_id", "synthetic-source-fixture", "source_root", Map.of("path_key", "source_root"), "source_index", Map.of("path_key", "source_index", "bytes", index.bytes(), "sha256", index.sha256())));
+        Pin runtime = json("runtime.json", Map.of("schema", "ck3-mod-acceptance-runtime-v1", "repo_root", root.toString(), "machine_id", "synthetic-source-fixture", "manifest", manifest, "paths", Map.of("source_root", root.toString(), "source_index", index.path())));
         source(root, changedPath, "current\n"); git(root, "add", "--all"); git(root, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "--quiet", "-m", "current"); String current = git(root, "rev-parse", "HEAD").strip();
         Pin names = file("paths.txt", changedPath + "\n");
         Pin diff = json("diff.json", Map.of("machine_id", "synthetic-source-fixture", "source_commit", current, "base_commit", base, "complete_changed_paths", true, "working_tree_clean", true, "untracked_runtime_source_inputs_checked", true, "exit_code", 0, "original_wait_returncode", 0, "paths_sha256", names.sha256()));

@@ -24,6 +24,19 @@ public final class SourceQualificationContracts {
     public record Proof(ProofKind kind, Pin receipt) {
         public Proof { if (kind == null || receipt == null) throw new IllegalArgumentException("typed proof required"); }
     }
+    /** A bound parent index keeps its original absolute pins when the SDK checkout moves. */
+    public record RepositoryRelocation(String machineId, String observedAtUtc, String parentRepository,
+            String sharedRepository, String baseSourceCommit, Pin parentRuntime, Pin parentManifest,
+            Pin parentSourceIndex, Pin producer) {
+        public RepositoryRelocation {
+            if (machineId == null || machineId.isBlank() || observedAtUtc == null || observedAtUtc.isBlank()
+                    || parentRepository == null || !Path.of(parentRepository).isAbsolute()
+                    || sharedRepository == null || !Path.of(sharedRepository).isAbsolute()
+                    || baseSourceCommit == null || !baseSourceCommit.matches("[a-f0-9]{40}")
+                    || parentRuntime == null || parentManifest == null || parentSourceIndex == null || producer == null)
+                throw new IllegalArgumentException("explicit parent-to-shared source relocation required");
+        }
+    }
     public record ChainPlan(Chain chain, Pin previousQualification, List<Proof> proofs) {
         public ChainPlan {
             if (chain == null || previousQualification == null) throw new IllegalArgumentException("chain predecessor required");
