@@ -101,27 +101,8 @@ public final class IdentityBearingFileAttributes {
                 if (limit == Integer.MAX_VALUE) throw new IllegalArgumentException("len < 0");
                 if (before.size() < 0) throw new IOException("ledger source size drift");
                 int expected = Math.toIntExact(before.size());
-                bytes = new byte[expected];
-                try (Memory data = new Memory(Math.max(1, Math.min(65_536, expected)))) {
-                    var transferred = new com.sun.jna.ptr.IntByReference();
-                    int offset = 0;
-                    while (offset < expected) {
-                        int requested = Math.min(65_536, expected - offset);
-                        transferred.setValue(0);
-                        if (!Data.VALUE.ReadFile(handle, data, requested, transferred, null))
-                            throw new IOException("source read Win32=" + Native.getLastError());
-                        int count = transferred.getValue();
-                        if (count <= 0 || count > requested) throw new IOException("ledger source size drift");
-                        data.read(0, bytes, offset, count);
-                        offset += count;
-                    }
-                    // One extra byte rejects growth: success requires exactly before.size().
-                    transferred.setValue(0);
-                    if (!Data.VALUE.ReadFile(handle, data, 1, transferred, null))
-                        throw new IOException("source read Win32=" + Native.getLastError());
-                    if (transferred.getValue() != 0) throw new IOException("ledger source size drift");
-                    if (afterContent != null) afterContent.accept(handle);
-                }
+                bytes = readData(handle, expected);
+                if (afterContent != null) afterContent.accept(handle);
             } finally {
                 // Close before after-path observation, as the original content stream did.
                 // A close failure cannot be swallowed as a later NoSuchFileException/absence.
@@ -136,6 +117,126 @@ public final class IdentityBearingFileAttributes {
             throw new IOException("ledger source native identity drift");
         return new BoundedFileRead(after, bytes);
     }
+    /** One thread's bounded read custody. Sharing denies data writes/delete, not metadata or ACL changes. */
+    public static final class ReadOnlyLease implements AutoCloseable {
+        private final Thread thread = Thread.currentThread();
+        private final Path path;
+        private final HANDLE handle;
+        private final WindowsStamp stamp;
+        private final BasicFileAttributes initial;
+        private byte[] bytes;
+        private boolean closed;
+        private boolean failed;
+        private ReadOnlyLease(Path path, HANDLE handle, WindowsStamp stamp,
+                BasicFileAttributes initial, byte[] bytes) {
+            this.path = path; this.handle = handle; this.stamp = stamp;
+            this.initial = initial; this.bytes = bytes;
+        }
+        private void requireOpen() throws IOException {
+            if (Thread.currentThread() != thread) throw new IOException("read lease crossed its owner thread");
+            if (closed) throw new IOException("read lease is closed");
+            if (failed) throw new IOException("read lease failed its current qualification");
+        }
+        /** Fresh name/full identity and current GENERIC_READ authority, without payload reads/hashes. */
+        public BasicFileAttributes verifyCurrent() throws IOException {
+            requireOpen();
+            try { return qualifyLeasePath(path, stamp, initial); }
+            catch (IOException | RuntimeException | Error problem) { failed = true; throw problem; }
+        }
+        /** Captured acquisition DATA, not a new current-permission or pathname qualification. */
+        public BoundedFileRead originalRead() throws IOException {
+            requireOpen(); return new BoundedFileRead(initial, bytes.clone());
+        }
+        public BoundedFileRead read() throws IOException {
+            BasicFileAttributes actual = verifyCurrent();
+            return new BoundedFileRead(actual, bytes.clone());
+        }
+        @Override public void close() throws IOException {
+            if (Thread.currentThread() != thread) throw new IOException("read lease close crossed its owner thread");
+            if (closed) return;
+            closed = true; bytes = null;
+            closeLeaseHandle(handle, "read lease close");
+        }
+    }
+    /** One fresh path observation: the actual GENERIC_READ open binds the queried full native identity. */
+    private static BasicFileAttributes qualifyLeasePath(Path path, WindowsStamp original,
+            BasicFileAttributes initial) throws IOException {
+        try {
+            BasicFileAttributes current = Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+            requireOrdinaryFile(current); ordinaryAttributes(path);
+            HANDLE handle = Kernel32.INSTANCE.CreateFile(nativePath(path.toString()), 0x80000080, 1, null, 3, 0x02200000, null);
+            if (WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("current lease read open Win32=" + Native.getLastError());
+            Throwable failure = null;
+            try {
+                WindowsStamp actual = windowsStamp(handle, true);
+                if (!original.equals(actual)) throw new IOException("lease pathname full native identity/metadata drift");
+                return validated(path, initial, current, original, actual);
+            } catch (IOException | RuntimeException | Error problem) { failure = problem; throw problem; }
+            finally {
+                try { closeLeaseHandle(handle, "current lease read close"); }
+                catch (IOException closing) { if (failure != null) failure.addSuppressed(closing); else throw closing; }
+            }
+        } catch (LinkageError unavailable) { throw new IOException("Windows read lease provider unavailable", unavailable); }
+    }
+    /** Acquire custody before first content read; a separate fresh path read-open qualifies the result. */
+    public static ReadOnlyLease leaseBoundedWindows(Path supplied, int limit) throws IOException {
+        if (!Platform.isWindows()) throw new IOException("native Windows read lease required");
+        if (limit < 0 || limit == Integer.MAX_VALUE) throw new IllegalArgumentException("finite read lease cap required");
+        Path path = Objects.requireNonNull(supplied).toAbsolutePath().normalize();
+        BasicFileAttributes before = Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        requireOrdinaryFile(before);
+        HANDLE handle = null;
+        Throwable failure = null;
+        try {
+            ordinaryAttributes(path);
+            handle = Kernel32.INSTANCE.CreateFile(nativePath(path.toString()), 0x80000080, 1, null, 3, 0x02200000, null);
+            if (WinBase.INVALID_HANDLE_VALUE.equals(handle)) {
+                handle = null; throw new IOException("read lease open Win32=" + Native.getLastError());
+            }
+            WindowsStamp first = windowsStamp(handle, true);
+            BasicFileAttributes original = validated(path, before, before, first, first);
+            if (first.bytes() < 0 || first.bytes() > limit) throw new IOException("read lease exceeds its finite cap");
+            byte[] bytes = readData(handle, Math.toIntExact(first.bytes()));
+            BasicFileAttributes actual = qualifyLeasePath(path, first, original);
+            ReadOnlyLease result = new ReadOnlyLease(path, handle, first, actual, bytes);
+            handle = null;
+            return result;
+        } catch (LinkageError unavailable) {
+            IOException problem = new IOException("Windows read lease provider unavailable", unavailable);
+            failure = problem; throw problem;
+        } catch (IOException | RuntimeException | Error problem) { failure = problem; throw problem; }
+        finally {
+            if (handle != null) try { closeLeaseHandle(handle, "partial read lease close"); }
+            catch (IOException closing) { if (failure != null) failure.addSuppressed(closing); else throw closing; }
+        }
+    }
+    private static void closeLeaseHandle(HANDLE handle, String context) throws IOException {
+        try {
+            if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException(context + " Win32=" + Native.getLastError());
+        } catch (LinkageError unavailable) { throw new IOException(context + " provider unavailable", unavailable); }
+    }
+    private static byte[] readData(HANDLE handle, int expected) throws IOException {
+        byte[] bytes = new byte[expected];
+        try (Memory data = new Memory(Math.max(1, Math.min(65_536, expected)))) {
+            var transferred = new com.sun.jna.ptr.IntByReference();
+            int offset = 0;
+            while (offset < expected) {
+                int requested = Math.min(65_536, expected - offset);
+                transferred.setValue(0);
+                if (!Data.VALUE.ReadFile(handle, data, requested, transferred, null))
+                    throw new IOException("source read Win32=" + Native.getLastError());
+                int count = transferred.getValue();
+                if (count <= 0 || count > requested) throw new IOException("ledger source size drift");
+                data.read(0, bytes, offset, count); offset += count;
+            }
+            transferred.setValue(0);
+            if (!Data.VALUE.ReadFile(handle, data, 1, transferred, null))
+                throw new IOException("source read Win32=" + Native.getLastError());
+            if (transferred.getValue() != 0) throw new IOException("ledger source size drift");
+        }
+        return bytes;
+    }
+
     private static void requireOrdinaryFile(BasicFileAttributes value) throws IOException {
         if (!value.isRegularFile() || value.isSymbolicLink())
             throw new IOException("ordinary identity-bearing ledger file required");

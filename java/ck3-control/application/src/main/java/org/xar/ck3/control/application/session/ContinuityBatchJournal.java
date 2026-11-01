@@ -1856,6 +1856,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return receipt;
     }
 
+    private record CheckedSameGameHistory(SettledSameGameData data, boolean isolated,
+            java.util.Set<ExactRef> confirmedSaveReceipts, WriterContracts.HistoricalTransition retainedRecovery,
+            boolean unfinishedReadOnlyBatch, java.util.List<CleanBatchRestart> capturedManifests) {
+        private CheckedSameGameHistory {
+            Objects.requireNonNull(data);
+            confirmedSaveReceipts = java.util.Set.copyOf(confirmedSaveReceipts);
+            capturedManifests = java.util.List.copyOf(capturedManifests);
+        }
+    }
+
     private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same,
             SessionIdentity owner, boolean isolatedLife, java.util.function.Consumer<CleanBatchRestart> captures) throws IOException {
         return readSameGameHistory(same, owner, isolatedLife, captures, Optional.empty());
@@ -1873,7 +1883,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     whole.get(WriterContracts.GAMEPLAY_ENTRY_FIELD));
             StrictJson.require(entry.machineId().equals(owner.machineId())&&entry.game().equals(owner.game())
                     &&entry.sessionId().equals(owner.sessionId()),"settled recovery crossed the actual Game owner");
-            var originals=transitions.restartArchive(same);
+            var checkedHistory = transitions.restartArchive(same).inHistoricalReadScope(same,
+                    new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192),
+                    originals -> {
+            var capturedManifests = new java.util.ArrayList<CleanBatchRestart>();
             var actions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state,originals);
             var finalizationSave = readOnlySaveFinalizationRoot(state, owner, actions, originals);
             boolean isolatedSave = readOnlySaveRecoveryRoot(actions).isPresent() || finalizationSave.isPresent();
@@ -2158,7 +2171,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                 "settled restart capture changed its original Driver/action/source owner");
                         retained=new RetainedReadDriver(capturedKnown,manifest.fullDriver());
                         previousTransport=manifest.previousTransport();
-                        captures.accept(manifest);
+                        capturedManifests.add(manifest);
                     } else {
                         boolean closed=JournalKind.BATCH_INTERRUPTED.name().equals(boundary)
                                 ||(retainedRecovery!=null||savedPair.isPresent())&&java.util.Set.of(JournalKind.BATCH_FINISHED.name(),
@@ -2279,16 +2292,26 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "settled canonical recovery head changed during read");
             var data=new SettledSameGameData(entry,controller,retained.facts(),retained.fullDriver(),previousTransport,
                     source,latest,latestObserved,actions,state.sequence(),head.digest(),history);
-            if (isolatedLife || isolatedSave || pendingControl.isPresent()) return data; // Isolated/unresolved DATA grants no settled recovery authority.
-            if (savedPair.isPresent()) {
+            boolean isolated = isolatedLife || isolatedSave || pendingControl.isPresent();
+            if (!isolated && savedPair.isPresent()) {
                 StrictJson.require(pending==null&&cycle.get("pending_receipt").isNull()
                         &&actions.stream().allMatch(ActionReceipt::settled)&&!confirmedSaves.isEmpty(),
                         "saved settled recovery requires its complete confirmed SAVE and closed canonical actions");
-                issuedSavedSettledHistory=new SavedSettledHistory(this,data,confirmedSaves);
+            }
+            return new CheckedSameGameHistory(data, isolated, confirmedSaves, retainedRecovery,
+                    unfinishedReadOnlyBatch, capturedManifests);
+            });
+            var data = checkedHistory.data();
+            StrictJson.require(same.head().state().sequence() == state.sequence() && same.head().digest().equals(head.digest()),
+                    "settled canonical recovery head changed while closing historical reads");
+            for (var captured : checkedHistory.capturedManifests()) captures.accept(captured);
+            if (checkedHistory.isolated()) return data; // Isolated/unresolved DATA grants no settled recovery authority.
+            if (data.controller().savedPair().isPresent()) {
+                issuedSavedSettledHistory = new SavedSettledHistory(this, data, checkedHistory.confirmedSaveReceipts());
                 return data;
             }
-            issuedSettledSameGameData=data;issuedSettledSameGameRecovery=retainedRecovery;
-            issuedSettledSameGameOpenBatch=unfinishedReadOnlyBatch;
+            issuedSettledSameGameData=data;issuedSettledSameGameRecovery=checkedHistory.retainedRecovery();
+            issuedSettledSameGameOpenBatch=checkedHistory.unfinishedReadOnlyBatch();
             return data;
         });
     }

@@ -127,6 +127,23 @@ public final class ActionPorts {
     public record FailedReadOriginals(List<ExactRef> references) {
         public FailedReadOriginals { references = List.copyOf(references); }
     }
+    /** Bounds for one optional same-call historical CAS scope, never a current-state or complete-read-set permit.
+     * maximumRetainedBytes counts the retained payload+commit byte arrays, including both custody and
+     * defensive Document copies, not total JVM/RSS allocation. Per-read temporary clones remain finite.
+     * maximumHandles includes scope custody handles and two temporary qualification handles; unrelated
+     * independently owned readers retain their own bounds. An unavailable optimization does full reads.
+     */
+    public record HistoricalReadLimits(int maximumPublications, long maximumRetainedBytes, int maximumHandles) {
+        public HistoricalReadLimits {
+            StrictJson.require(maximumPublications >= 1 && maximumPublications <= 4096
+                    && maximumRetainedBytes >= 1 && maximumRetainedBytes <= 256L * 1024 * 1024
+                    && maximumHandles >= 4 && maximumHandles <= 8192, "finite historical CAS read bounds required");
+        }
+    }
+    @FunctionalInterface public interface CheckedArchiveRead<T> {
+        T read(OutcomeArchive archive) throws java.io.IOException;
+    }
+
     /** Keeps full native packets outside bounded canonical ledger metadata, with original evidence and byte integrity. */
     public interface OutcomeArchive extends org.xar.ck3.control.contracts.presentation.PresentationOriginals {
         /** Existing original DATA only. It neither constructs a PlanningReadReceipt nor grants read/history authority. */
@@ -184,6 +201,16 @@ public final class ActionPorts {
         default <T> T inSession(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session borrowed, java.util.function.Function<OutcomeArchive, T> work) {
             throw new IllegalStateException("same-writer archive callback scope is unavailable");
         }
+        /** Optional optimization only. The default invokes the unchanged full readers and grants no custody.
+         * Implementations must retain all ordinary source/session/current authority checks; a caught
+         * validation or cleanup failure must still prevent the scope from returning a successful result.
+         */
+        default <T> T inHistoricalReadScope(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session session,
+                HistoricalReadLimits limits, CheckedArchiveRead<T> work) throws java.io.IOException {
+            Objects.requireNonNull(session); Objects.requireNonNull(limits); Objects.requireNonNull(work);
+            return work.read(this);
+        }
+
         ExactRef preserve(NativeActionPort.DispatchOutcome original);
         NativeActionPort.DispatchOutcome load(ExactRef original);
         ExactRef preserveRequest(NativeRequest original);

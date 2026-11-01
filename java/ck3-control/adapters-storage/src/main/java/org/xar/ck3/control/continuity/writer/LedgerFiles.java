@@ -35,6 +35,55 @@ final class LedgerFiles {
         Document { bytes = bytes.clone(); }
         @Override public byte[] bytes() { return bytes.clone(); }
     }
+    /** Actual full first read/hash plus same-thread OS custody; never a Pin-only cache. */
+    static final class LeasedDocument implements AutoCloseable {
+        private final IdentityBearingFileAttributes.ReadOnlyLease lease;
+        private final Document document;
+        private LeasedDocument(IdentityBearingFileAttributes.ReadOnlyLease lease, Document document) {
+            this.lease = lease; this.document = document;
+        }
+        /** Captured acquisition DATA, usable to decode the first commit before final pair qualification. */
+        Document original() { return document; }
+        Document read() throws IOException {
+            BasicFileAttributes actual = lease.verifyCurrent();
+            WindowsFileIdentity key = (WindowsFileIdentity) actual.fileKey();
+            FileIdentity identity = new FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(), key.creationFiletimeDecimal(),
+                    actual.lastModifiedTime().toInstant().toString(), actual.size());
+            if (!document.pin().identity().equals(identity)) throw new IOException("leased original full identity drift");
+            return document;
+        }
+        @Override public void close() throws IOException { lease.close(); }
+    }
+    static LeasedDocument lease(Path path, int maximum) throws IOException {
+        IdentityBearingFileAttributes.ReadOnlyLease lease = IdentityBearingFileAttributes.leaseBoundedWindows(path, maximum);
+        try {
+            var observed = lease.originalRead();
+            BasicFileAttributes after = observed.attributes();
+            WindowsFileIdentity key = (WindowsFileIdentity) after.fileKey();
+            FileIdentity identity = new FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(), key.creationFiletimeDecimal(),
+                    after.lastModifiedTime().toInstant().toString(), after.size());
+            byte[] raw = observed.bytes();
+            Document document = new Document(new Pin(new ExactRef(path.toAbsolutePath().normalize().toString(), raw.length, sha(raw)), identity), raw);
+            return new LeasedDocument(lease, document);
+        } catch (IOException | RuntimeException | Error failure) {
+            try { lease.close(); } catch (IOException closing) { failure.addSuppressed(closing); }
+            throw failure;
+        }
+    }
+    static LeasedDocument lease(ExactRef expected, int maximum) throws IOException {
+        LeasedDocument lease = lease(Path.of(expected.path()), maximum);
+        try {
+            Document actual = lease.original();
+            if (actual.pin().reference().bytes() != expected.bytes() || !actual.pin().reference().sha256().equals(expected.sha256())
+                    || !Path.of(expected.path()).toAbsolutePath().normalize().equals(Path.of(actual.pin().reference().path())))
+                throw new IOException("leased original bytes/SHA/path changed");
+            return new LeasedDocument(lease.lease, new Document(new Pin(expected, actual.pin().identity()), actual.bytes()));
+        } catch (IOException | RuntimeException | Error failure) {
+            try { lease.close(); } catch (IOException closing) { failure.addSuppressed(closing); }
+            throw failure;
+        }
+    }
+
     static FileIdentity identity(Path path) throws IOException {
         if (!Platform.isWindows()) throw new IOException("native Windows file identity required");
         Path absolute = path.toAbsolutePath().normalize();

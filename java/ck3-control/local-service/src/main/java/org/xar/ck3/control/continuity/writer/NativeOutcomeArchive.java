@@ -166,6 +166,33 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     public ImmutableArtifactStore artifactStore() { return artifacts; }
     public ContinuityWriter writer() { return sameWriter; }
 
+    /** Explicit optional historical optimization; the application contract owns its checked callback/types. */
+    @Override public <T> T inHistoricalReadScope(ContinuityStorePort.Session session, ActionPorts.HistoricalReadLimits limits,
+            ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        Objects.requireNonNull(limits); Objects.requireNonNull(operation);
+        try { return scoped(session, () -> {
+            ImmutableArtifactStore.HistoricalReads reads = artifacts.beginHistoricalReads(session,
+                    limits.maximumPublications(), limits.maximumRetainedBytes(), limits.maximumHandles(), () -> requireSession(session));
+            Throwable failure = null;
+            try {
+                reads.requireActive();
+                T result = operation.read(new NativeOutcomeArchive(owner, session));
+                reads.requireActive();
+                return result;
+            } catch (IOException problem) {
+                IOException actual = problem instanceof java.nio.file.NoSuchFileException
+                        ? new IOException("historical original validation failed; not optional absence", problem) : problem;
+                reads.recordFailure(actual); failure = actual; throw actual;
+            } catch (RuntimeException | Error problem) {
+                reads.recordFailure(problem); failure = problem; throw problem;
+            } finally { reads.finish(failure); }
+        }); } catch (IOException problem) {
+            IOException actual = problem instanceof java.nio.file.NoSuchFileException
+                    ? new IOException("historical original validation failed; not optional absence", problem) : problem;
+            artifacts.recordHistoricalFailure(actual); throw actual;
+        }
+    }
+
     /** Root installs its identical per-Game catalog router and original-byte port under this writer.
      * This wiring creates no physical scope, authority, observation or read qualification. */
     public void bindPhysicalStatusOriginals(ContinuityStorePort.Session same, GameGeneration actualGame, RootExecutableBindings actualBindings,
@@ -244,26 +271,36 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }
     }
     private void requireSession(ContinuityStorePort.Session session) throws IOException {
-        Objects.requireNonNull(session); sameWriter.requireSession(session); session.requireWriter(artifacts.originalWriterLock());
-        if (borrowed != null && borrowed != session) throw new IOException("cannot rebind an archive borrowed from another writer session");
-        ContinuityStorePort.Session active = current.get();
-        if (active != null && active != session) throw new IOException("different writer sessions cannot share one archive scope");
-        if (sameWriter.artifactStore().orElseThrow(() -> new IOException("writer store detached")) != artifacts)
-            throw new IOException("writer's canonical artifact store changed");
+        try {
+            Objects.requireNonNull(session); sameWriter.requireSession(session); session.requireWriter(artifacts.originalWriterLock());
+            if (borrowed != null && borrowed != session) throw new IOException("cannot rebind an archive borrowed from another writer session");
+            ContinuityStorePort.Session active = current.get();
+            if (active != null && active != session) throw new IOException("different writer sessions cannot share one archive scope");
+            if (sameWriter.artifactStore().orElseThrow(() -> new IOException("writer store detached")) != artifacts)
+                throw new IOException("writer's canonical artifact store changed");
+        } catch (IOException | RuntimeException | Error failure) {
+            artifacts.recordHistoricalFailure(failure); throw failure;
+        }
     }
     private ContinuityStorePort.Session activeSession() throws IOException {
-        ContinuityStorePort.Session result = borrowed != null ? borrowed : current.get();
-        // Long-lived producer callbacks may run inside this exact writer's held scope. Borrow
-        // only its live thread-local session; a foreign scope is an error, never an absent lock.
-        if (result == null) result = sameWriter.activeSession().orElse(null);
-        if (result != null) requireSession(result); return result;
+        try {
+            ContinuityStorePort.Session result = borrowed != null ? borrowed : current.get();
+            // Long-lived producer callbacks may run inside this exact writer's held scope. Borrow
+            // only its live thread-local session; a foreign scope is an error, never an absent lock.
+            if (result == null) result = sameWriter.activeSession().orElse(null);
+            if (result != null) requireSession(result); return result;
+        } catch (IOException | RuntimeException | Error failure) {
+            artifacts.recordHistoricalFailure(failure); throw failure;
+        }
     }
     private <T> T writing(IoWork<T> operation) throws IOException {
         if (activeSession() != null) return operation.run();
         return sameWriter.locked(session -> scoped(session, operation));
     }
-    private static <T> T unchecked(IoWork<T> operation) {
-        try { return operation.run(); } catch (IOException failure) { throw new UncheckedIOException(failure); }
+    private <T> T unchecked(IoWork<T> operation) {
+        try { return operation.run(); }
+        catch (IOException failure) { artifacts.recordHistoricalFailure(failure); throw new UncheckedIOException(failure); }
+        catch (RuntimeException | Error failure) { artifacts.recordHistoricalFailure(failure); throw failure; }
     }
 
     /** Shared actual-byte producer for readiness/Driver data; role contracts stay with their domain producer. */
@@ -272,9 +309,13 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         return (publication==Publication.PLANNING_OBSERVATION?artifacts.publishPlanningRead(original,maximumBytes):artifacts.publish(original,maximumBytes)).reference();
     }
     public byte[] readArtifact(ContinuityStorePort.Session session, ExactRef original, int maximumBytes) throws IOException {
-        requireSession(session); Objects.requireNonNull(original);
-        LedgerFiles.Document result = artifacts.readOriginal(original, maximumBytes);
-        rememberReadOriginal(session, result.pin()); return result.bytes();
+        try {
+            requireSession(session); Objects.requireNonNull(original);
+            LedgerFiles.Document result = artifacts.readOriginal(original, maximumBytes);
+            rememberReadOriginal(session, result.pin()); return result.bytes();
+        } catch (IOException | RuntimeException | Error failure) {
+            artifacts.recordHistoricalFailure(failure); throw failure;
+        }
     }
     private void rememberReadOriginal(ContinuityStorePort.Session session, Pin pin) throws IOException {
         ReadOriginalCapture capture = readOriginalCapture.get();

@@ -69,6 +69,157 @@ public final class ImmutableArtifactStore {
     private final StorageWriteGuard storage;
     private final boolean sharedAggregateCoversArchive;
 
+    @FunctionalInterface interface HistoricalReadAuthority { void require() throws IOException; }
+    private final ThreadLocal<HistoricalReads> historicalReads = new ThreadLocal<>();
+    void recordHistoricalFailure(Throwable failure) {
+        HistoricalReads reads = historicalReads.get();
+        if (reads != null) reads.recordFailure(failure);
+    }
+    @FunctionalInterface private interface OriginalRead<T> { T run() throws IOException; }
+    private <T> T historicalRead(OriginalRead<T> operation) throws IOException {
+        HistoricalReads reads = historicalReads.get();
+        try { return operation.run(); }
+        catch (IOException failure) {
+            if (reads == null) throw failure;
+            IOException actual = failure instanceof NoSuchFileException
+                    ? new IOException("historical CAS original validation failed; not optional absence", failure) : failure;
+            reads.recordFailure(actual); throw actual;
+        } catch (RuntimeException | Error failure) {
+            if (reads != null) reads.recordFailure(failure);
+            throw failure;
+        }
+    }
+    /** Same-call custody; both successful and caught failed reads belong to this exact scope. */
+    final class HistoricalReads implements AutoCloseable {
+        private final Thread thread = Thread.currentThread();
+        private final ContinuityStorePort.Session session;
+        private final HistoricalReadAuthority authority;
+        private final int maximumEntries;
+        private final long maximumBytes;
+        private final int maximumHandles;
+        private final java.util.Map<ExactRef, PublicationLease> entries = new java.util.LinkedHashMap<>();
+        private long bytes;
+        private boolean closed;
+        private volatile Throwable firstFailure;
+        private HistoricalReads(ContinuityStorePort.Session session, int maximumEntries, long maximumBytes,
+                int maximumHandles, HistoricalReadAuthority authority) {
+            this.session = session; this.maximumEntries = maximumEntries; this.maximumBytes = maximumBytes;
+            this.maximumHandles = maximumHandles; this.authority = authority;
+        }
+        synchronized void recordFailure(Throwable failure) {
+            if (firstFailure == null) firstFailure = Objects.requireNonNull(failure);
+        }
+        void requireActive() throws IOException {
+            try {
+                if (Thread.currentThread() != thread || closed || historicalReads.get() != this)
+                    throw new IOException("historical CAS read scope escaped its exact store/thread/lifetime");
+                if (firstFailure != null) throw new IOException("historical CAS read scope already failed", firstFailure);
+                authority.require(); session.requireWriter(config.originalWriterLock());
+            } catch (IOException | RuntimeException | Error failure) { recordFailure(failure); throw failure; }
+        }
+        /** Preserve an already escaping original exception, adding all cleanup errors to it. */
+        void finish(Throwable escaping) throws IOException {
+            if (Thread.currentThread() != thread) throw new IOException("historical CAS close crossed its owner thread");
+            if (closed) return;
+            if (historicalReads.get() != this) recordFailure(new IOException("historical CAS scope detached from its exact store"));
+            closed = true;
+            IOException cleanup = null;
+            try {
+                for (PublicationLease entry : entries.values()) {
+                    try { entry.close(); }
+                    catch (IOException | RuntimeException | Error problem) {
+                        IOException closing = closeFailure(problem);
+                        if (cleanup == null) cleanup = closing; else cleanup.addSuppressed(closing);
+                    }
+                }
+            } finally { entries.clear(); bytes = 0; historicalReads.remove(); }
+            if (escaping != null) {
+                boolean alreadyCarried = false;
+                int causeDepth = 0;
+                for (Throwable cause = escaping; cause != null && causeDepth++ < 16; cause = cause.getCause()) {
+                    if (cause == firstFailure) { alreadyCarried = true; break; }
+                }
+                if (firstFailure != null && !alreadyCarried) escaping.addSuppressed(firstFailure);
+                if (cleanup != null) escaping.addSuppressed(cleanup);
+                return;
+            }
+            if (firstFailure != null) {
+                IOException failure = new IOException("historical CAS validation failed; caught failure cannot grant a result", firstFailure);
+                if (cleanup != null) failure.addSuppressed(cleanup);
+                throw failure;
+            }
+            if (cleanup != null) throw cleanup;
+        }
+        @Override public void close() throws IOException { finish(null); }
+    }
+    private static final class PublicationLease implements AutoCloseable {
+        private final LedgerFiles.LeasedDocument metadata;
+        private final LedgerFiles.LeasedDocument data;
+        private PublicationLease(LedgerFiles.LeasedDocument metadata, LedgerFiles.LeasedDocument data) {
+            this.metadata = metadata; this.data = data;
+        }
+        @Override public void close() throws IOException { closePair(data, metadata); }
+    }
+    private static void closePair(LedgerFiles.LeasedDocument data, LedgerFiles.LeasedDocument metadata) throws IOException {
+        IOException failure = null;
+        if (data != null) try { data.close(); } catch (IOException | RuntimeException | Error problem) { failure = closeFailure(problem); }
+        if (metadata != null) try { metadata.close(); } catch (IOException | RuntimeException | Error problem) {
+            IOException closing = closeFailure(problem);
+            if (failure == null) failure = closing; else failure.addSuppressed(closing);
+        }
+        if (failure != null) throw failure;
+    }
+    private static IOException closeFailure(Throwable problem) {
+        return problem instanceof IOException failure ? failure : new IOException("historical native cleanup failed", problem);
+    }
+    HistoricalReads beginHistoricalReads(ContinuityStorePort.Session session, int maximumEntries,
+            long maximumBytes, int maximumHandles, HistoricalReadAuthority authority) throws IOException {
+        Objects.requireNonNull(session); Objects.requireNonNull(authority);
+        if (maximumEntries < 1 || maximumEntries > 4096 || maximumBytes < 1 || maximumBytes > 256L * 1024 * 1024
+                || maximumHandles < 4 || maximumHandles > 8192)
+            throw new IOException("finite historical CAS read bounds required");
+        if (historicalReads.get() != null) {
+            IOException failure = new IOException("nested historical CAS read scopes are not permitted");
+            recordHistoricalFailure(failure); throw failure;
+        }
+        authority.require(); session.requireWriter(config.originalWriterLock()); checkRoot();
+        HistoricalReads result = new HistoricalReads(session, maximumEntries, maximumBytes, maximumHandles, authority);
+        historicalReads.set(result);
+        return result;
+    }
+    private Published readLeasedPublication(PublicationLease lease, ExactRef expected, int maximum) throws IOException {
+        LedgerFiles.Document metadata = lease.metadata.read();
+        Commit bound = decode(metadata);
+        if (!bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
+        LedgerFiles.Document data = lease.data.read();
+        if (data.pin().reference().bytes() > maximum) throw new IOException("leased artifact exceeds its current declared bound");
+        requirePin(data.pin(), bound.payload()); checkRoot();
+        return new Published(data, metadata, bound.planningOrigin());
+    }
+    private Published acquirePublication(HistoricalReads reads, ExactRef expected, int maximum) throws IOException {
+        LedgerFiles.LeasedDocument metadata = null, data = null;
+        boolean retained = false;
+        Throwable failure = null;
+        try {
+            metadata = LedgerFiles.lease(commit(expected.sha256()), COMMIT_LIMIT);
+            Commit bound = decode(metadata.original());
+            if (!bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
+            data = LedgerFiles.lease(bound.payload().reference(), maximum);
+            PublicationLease lease = new PublicationLease(metadata, data);
+            Published actual = readLeasedPublication(lease, expected, maximum);
+            long retainedBytes = Math.multiplyExact(2L, Math.addExact(actual.data().pin().reference().bytes(), actual.metadata().pin().reference().bytes()));
+            reads.requireActive();
+            if (retainedBytes <= reads.maximumBytes - reads.bytes) {
+                reads.entries.put(expected, lease); reads.bytes += retainedBytes; retained = true;
+            }
+            return actual;
+        } catch (IOException | RuntimeException | Error problem) { failure = problem; throw problem; }
+        finally {
+            if (!retained) try { closePair(data, metadata); }
+            catch (IOException closing) { if (failure != null) failure.addSuppressed(closing); else throw closing; }
+        }
+    }
+
     public ImmutableArtifactStore(Config config, StorageWriteGuard storage) throws IOException {
         this(config, storage, boundary -> { });
     }
@@ -226,42 +377,67 @@ public final class ImmutableArtifactStore {
     }
     /** No creation, repair, overwrite, acquisition or implicit preserve is allowed here. */
     public Pin referenceOf(byte[] original, int maximumBytes) throws IOException {
-        Objects.requireNonNull(original); int maximum = limit(maximumBytes);
-        if (original.length > maximum) throw new IOException("lookup artifact exceeds declared bound");
-        String digest = LedgerFiles.sha(original);
-        return matching(original, readCommitted(new ExactRef(payload(digest).toString(), original.length, digest), maximum));
+        return historicalRead(() -> {
+            Objects.requireNonNull(original); int maximum = limit(maximumBytes);
+            if (original.length > maximum) throw new IOException("lookup artifact exceeds declared bound");
+            String digest = LedgerFiles.sha(original);
+            return matching(original, readCommitted(new ExactRef(payload(digest).toString(), original.length, digest), maximum));
+        });
     }
     /** Read-only exact CAS lookup by the original producer's digest and byte length. No scan or repair. */
     public Pin referenceOf(String sha256, long bytes, int maximumBytes) throws IOException {
-        requireDigest(sha256); StrictJson.safe(bytes, 0); int maximum = limit(maximumBytes);
-        if (bytes > maximum) throw new IOException("lookup artifact exceeds declared bound");
-        return readCommitted(new ExactRef(payload(sha256).toString(), bytes, sha256), maximum).pin();
+        return historicalRead(() -> {
+            requireDigest(sha256); StrictJson.safe(bytes, 0); int maximum = limit(maximumBytes);
+            if (bytes > maximum) throw new IOException("lookup artifact exceeds declared bound");
+            return readCommitted(new ExactRef(payload(sha256).toString(), bytes, sha256), maximum).pin();
+        });
     }
     public byte[] read(Pin expected, int maximumBytes) throws IOException {
-        Objects.requireNonNull(expected); LedgerFiles.Document value = readCommitted(expected.reference(), limit(maximumBytes));
-        requirePin(value.pin(), expected); return value.bytes();
+        return historicalRead(() -> {
+            Objects.requireNonNull(expected); LedgerFiles.Document value = readCommitted(expected.reference(), limit(maximumBytes));
+            requirePin(value.pin(), expected); return value.bytes();
+        });
     }
     public byte[] read(ExactRef expected, int maximumBytes) throws IOException {
-        return readCommitted(Objects.requireNonNull(expected), limit(maximumBytes)).bytes();
+        return historicalRead(() -> {
+            return readCommitted(Objects.requireNonNull(expected), limit(maximumBytes)).bytes();
+        });
     }
     /** One actual committed read retains its verified Pin and detached bytes for the same-package archive. */
     LedgerFiles.Document readOriginal(ExactRef expected, int maximumBytes) throws IOException {
-        return readCommitted(Objects.requireNonNull(expected), limit(maximumBytes));
+        return historicalRead(() -> {
+            return readCommitted(Objects.requireNonNull(expected), limit(maximumBytes));
+        });
     }
     /** Reject foreign paths and invalid bounds before a same-writer caller attempts to capture a Pin.
      * This reads no payload and grants no committed-object or file-identity authority.
      */
     public void requireReference(ExactRef expected, int maximumBytes) throws IOException {
-        Objects.requireNonNull(expected); int maximum = limit(maximumBytes); checkRoot();
-        if (expected.bytes() > maximum || !Path.of(expected.path()).toAbsolutePath().normalize().equals(payload(expected.sha256())))
-            throw new IOException("artifact reference is outside its exact content-addressed root or declared bound");
+        historicalRead(() -> {
+            Objects.requireNonNull(expected); int maximum = limit(maximumBytes); checkRoot();
+            if (expected.bytes() > maximum || !Path.of(expected.path()).toAbsolutePath().normalize().equals(payload(expected.sha256())))
+                throw new IOException("artifact reference is outside its exact content-addressed root or declared bound");
+            return null;
+        });
     }
     private LedgerFiles.Document readCommitted(ExactRef expected,int maximum)throws IOException {return readPublication(expected,maximum).data();}
     private Published readPublication(ExactRef expected,int maximum)throws IOException {
-        requireReference(expected,maximum);
-        LedgerFiles.Document metadata=LedgerFiles.read(commit(expected.sha256()),COMMIT_LIMIT);
-        Commit bound=decode(metadata);if(!bound.payload().reference().equals(expected))throw new IOException("artifact commit/ref drift");
-        return new Published(verifyRaw(bound.payload(),maximum),metadata,bound.planningOrigin());
+        return historicalRead(() -> {
+            requireReference(expected,maximum);
+            HistoricalReads reads = historicalReads.get();
+            if (reads != null) {
+                reads.requireActive();
+                PublicationLease held = reads.entries.get(expected);
+                if (held != null) return readLeasedPublication(held, expected, maximum);
+                // Reserve two transient qualification handles in addition to both new custody handles.
+                if (reads.entries.size() < reads.maximumEntries && reads.entries.size() * 2 <= reads.maximumHandles - 4
+                        && expected.bytes() <= (reads.maximumBytes - reads.bytes) / 2)
+                    return acquirePublication(reads, expected, maximum);
+            }
+            LedgerFiles.Document metadata=LedgerFiles.read(commit(expected.sha256()),COMMIT_LIMIT);
+            Commit bound=decode(metadata);if(!bound.payload().reference().equals(expected))throw new IOException("artifact commit/ref drift");
+            return new Published(verifyRaw(bound.payload(),maximum),metadata,bound.planningOrigin());
+        });
     }
     private LedgerFiles.Document verifyRaw(Pin pin, int maximum) throws IOException {
         LedgerFiles.Document value = LedgerFiles.exact(pin.reference(), maximum); requirePin(value.pin(), pin); return value;
@@ -273,6 +449,12 @@ public final class ImmutableArtifactStore {
         if (!actual.equals(expected)) throw new IOException("artifact native FileID/content identity changed");
     }
     private void requireWrite() throws IOException {
+        HistoricalReads reads = historicalReads.get();
+        if (reads != null) {
+            reads.requireActive();
+            IOException failure = new IOException("publication cannot mutate an active historical read scope");
+            reads.recordFailure(failure); throw failure;
+        }
         WindowsLedgerLock.requireHeld(config.originalWriterLock()); checkRoot();
         if (!lockIdentity.equals(LedgerFiles.identity(config.originalWriterLock()))) throw new IOException("original writer lock identity drift");
     }
