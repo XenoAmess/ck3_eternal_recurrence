@@ -25,6 +25,15 @@ public final class DispatchMiddleBinding219 {
             }
 
             @Override
+            public void call42420f8(NativeTaskMemory memory, long siteRva, long rcx, long calleeEntryRsp) {
+                if (memory != captured || siteRva != 0x42420E0L) {
+                    throw new IllegalArgumentException("Wrong memory or site for active call42420f8");
+                }
+                DispatchMiddle219Api.Input input = new DispatchMiddle219Api.Input(moduleBase, rcx);
+                DispatchMiddle42420F8.execute(captured, child, input, calleeEntryRsp);
+            }
+
+            @Override
             public long leave(NativeTaskMemory memory, long siteRva, int ecx, long liveRbx) {
                 return fallback.leave(memory, siteRva, ecx, liveRbx);
             }

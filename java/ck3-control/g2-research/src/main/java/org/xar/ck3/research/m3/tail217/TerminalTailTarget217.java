@@ -64,7 +64,7 @@ public final class TerminalTailTarget217 {
         long rdx = E - 0x30L;
         long r8 = E - 0x28L;
         long r9 = E - 0x34L;
-        long helperRAX = ports.call42420c0(memory, 0x4242266L, rcx, rdx, r8, r9);
+        long helperRAX = ports.call42420c0(memory, 0x4242266L, rcx, rdx, r8, r9, E - 0x60L);
 
         // 8. Post-helper branch
         int freshHome = memory.readInt32(E + 0x18L);

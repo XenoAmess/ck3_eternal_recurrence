@@ -16,6 +16,9 @@ public interface DispatchMiddle219Api {
         void call43dbba8(Memory memory, long siteRva, long actualTarget,
                         long liveRax, int ecx, int edx, int r8d);
         void call424de88(Memory memory, long siteRva, long rcx);
+        default void call424de88(Memory memory, long siteRva, long rcx, long calleeEntryRsp) {
+            call424de88(memory, siteRva, rcx);
+        }
         void call424e1ac(Memory memory, long siteRva, long rcx, long rdx);
     }
 }

@@ -79,4 +79,22 @@ public final class DispatchMiddle42420F8 {
         // 42421AA: W8(observedptr, 1).
         memory.write8(observedPtr4, 1);
     }
+
+    public static void execute(DispatchMiddle219Api.Memory memory, DispatchMiddle219Api.Ports ports, DispatchMiddle219Api.Input input, long entryRsp) {
+        DispatchMiddle219Api.Ports wrapper = new DispatchMiddle219Api.Ports() {
+            @Override
+            public void call43dbba8(DispatchMiddle219Api.Memory m, long site, long target, long rax, int ecx, int edx, int r8d) {
+                ports.call43dbba8(m, site, target, rax, ecx, edx, r8d);
+            }
+            @Override
+            public void call424de88(DispatchMiddle219Api.Memory m, long site, long rcx) {
+                ports.call424de88(m, site, rcx, entryRsp - 0x30L);
+            }
+            @Override
+            public void call424e1ac(DispatchMiddle219Api.Memory m, long site, long rcx, long rdx) {
+                ports.call424e1ac(m, site, rcx, rdx);
+            }
+        };
+        execute(memory, wrapper, input);
+    }
 }

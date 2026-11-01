@@ -22,6 +22,9 @@ public interface TerminalTailTarget217Api {
             call42422d0(memory, siteRva, ecx);
         }
         long call42420c0(Memory memory, long siteRva, long rcx, long rdx, long r8, long r9);
+        default long call42420c0(Memory memory, long siteRva, long rcx, long rdx, long r8, long r9, long calleeEntryRsp) {
+            return call42420c0(memory, siteRva, rcx, rdx, r8, r9);
+        }
         void call4242284(Memory memory, long siteRva, int ecx);
         default void call4242284(Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
             call4242284(memory, siteRva, ecx);

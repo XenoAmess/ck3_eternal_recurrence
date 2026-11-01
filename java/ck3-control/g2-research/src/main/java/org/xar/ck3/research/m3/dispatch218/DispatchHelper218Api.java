@@ -8,6 +8,9 @@ public interface DispatchHelper218Api {
     interface Ports {
         void enter(NativeTaskMemory memory, long siteRva, int ecx);
         void call42420f8(NativeTaskMemory memory, long siteRva, long rcx);
+        default void call42420f8(NativeTaskMemory memory, long siteRva, long rcx, long calleeEntryRsp) {
+            call42420f8(memory, siteRva, rcx);
+        }
         long leave(NativeTaskMemory memory, long siteRva, int ecx, long liveRbx);
     }
     /** Result-bearing opaque jump ports; they address the same supplied storage. No invented post-RAX. */

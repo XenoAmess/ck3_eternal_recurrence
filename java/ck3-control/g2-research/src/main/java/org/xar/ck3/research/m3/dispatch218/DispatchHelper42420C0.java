@@ -22,4 +22,24 @@ public final class DispatchHelper42420C0 {
         int ecxLeave = memory.readInt32(savedR9);
         return ports.leave(memory, 0x42420E8L, ecxLeave, savedR9);
     }
+
+    public static long execute(NativeTaskMemory memory, DispatchHelper218Api.Ports ports, DispatchHelper218Api.Input input, long entryRsp) {
+        DispatchHelper218Api.Ports wrapper = new DispatchHelper218Api.Ports() {
+            @Override
+            public void enter(NativeTaskMemory m, long siteRva, int ecx) {
+                ports.enter(m, siteRva, ecx);
+            }
+
+            @Override
+            public void call42420f8(NativeTaskMemory m, long siteRva, long rcx) {
+                ports.call42420f8(m, siteRva, rcx, entryRsp - 0x30L);
+            }
+
+            @Override
+            public long leave(NativeTaskMemory m, long siteRva, int ecx, long liveRbx) {
+                return ports.leave(m, siteRva, ecx, liveRbx);
+            }
+        };
+        return execute(memory, wrapper, input);
+    }
 }
