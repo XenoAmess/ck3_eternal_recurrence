@@ -8,6 +8,20 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 22:43 UTC：第二批已推进但周期待结算，保存仍8日
+
+后到Main273终态为22:43:22.105926Z实际END4/249.776377秒。Runtime冻结head82（SHA-256前缀86f40629）：新父80已COMPOSITE_SETTLED/APPLIED，terminal native46/public29/date_raw53146368，从本次基线累计16日已观察；completed_cycles仍1、pending指向原80，确认保存仍为下段首8日。freshAfter拒绝早于terminal的cycle SEM，Root274 producer与History源闭合由各sole owner推进，原ACK、ARM、resume及这8日动作不重放；下段“健康worker继续”仅为22:40保存时点状态。
+
+主窗口20:50:46Z→本次实际END现累计6756.105926秒，包含首SAVE之后的第二批及失败成本，除以已确认保存8日为844.51324075秒/日，10秒目标仍未达到。第二批新增观察8日不充保存分母，亦不将首SAVE时的较短窗口作为当前总耗时。实际END后0worker、无未来研究HOLD；必要274小增编与首次验证优先，真正Ready的G2按实测CPU/IO给有限窗口，不等文档或逐次Root ACK。
+
+## 2026-11-01 22:40 UTC：原周期结算并真实确认保存8日，健康worker继续
+
+Main273于22:39:29.2247071Z实际LOOP，距START16.8951521秒；53于22:39:28.9104739Z真实cycle SETTLE，60于22:40:02.0742603Z真实SAVE_CONFIRMED（98,871B、SHA-256前缀381f14ef）。Runtime冻结head63、completed_cycles=1、pending=null，saved pair为native32/public15/date_raw53146176，从本次53145984基线新增8个确认保存日；本次收束原已推进周期，不再记8日新推进，也不重放原ARM或resume。健康同一worker103136继续next2，无候选重启。
+
+主性能窗口20:50:46Z用户恢复授权→本次SAVE_CONFIRMED为6556.0742603秒，包含等待、失败、冷启动及恢复；除以本窗口8个新增保存日为819.5092825375秒/日，10秒目标尚未达到。此前零新增保存日窗口的null报告保留，旧69日不计入新窗口分母，不只截取本次成功启动或Game运行时间报达标。
+
+Native已核Runtime冻结SUMMARY及53、60两具名event的完整SHA；60本体的batch boundary明确为SAVE_CONFIRMED，未读取70MB save、Driver或活账本，未新增Game查询。下段22:39 START冻结点保持原文；[运行页](2026-10-31-runtime91-current.md)另续完整运行记录。冷研究限制按真实LOOP时刻释放，持续游玩、保存IO及必要P0优先；真正完整Ready的G2窄首编可按实际CPU/IO窗口滚动，不因健康Main常驻设全HOLD，也不预授未来槽。
+
 ## 2026-11-01 22:39 UTC：原动作已确认APPLIED，继续恢复待结算周期
 
 Main272于22:25:59.363660Z→22:26:25.261883Z实际exit1/25.89823秒，未进入LOOP，最后在ready.available因“actual configuration must be an object”停出。Runtime独占薄核的新head52（SHA-256前缀1452b28f）确认：50为原父动作COMPOSITE_SETTLED/APPLIED，fresh ending为native28/public10/date_raw53146176、completion credit全true；51为Driver action，52已RETAIN原50。当前completed_cycles=0、cycle head为空、pending指向原50，新增SAVE_CONFIRMED仍0；旧head47/UNKNOWN仅保留为历史，不重放原ARM、resume或这8个已观察日的推进。
