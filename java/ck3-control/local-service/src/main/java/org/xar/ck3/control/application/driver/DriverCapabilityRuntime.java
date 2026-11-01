@@ -362,6 +362,11 @@ public final class DriverCapabilityRuntime implements PlanningReadCoordinator.Kn
     @Override public void afterUnavailable(ContinuityStorePort.Session borrowed,ReadContract<?> identicalInstalled,
             PlanningReadRequest request,PlanningReadResult.Unavailable<?> actual) {
         requireActive();if(!(request.origin() instanceof CommandOrigin.Gameplay))return;
+        String step=request.operation().value();
+        if(!org.xar.ck3.control.nativebridge.capabilities.army.ArmyWindowCodec.Kind.OVERVIEW
+                .step(org.xar.ck3.control.nativebridge.capabilities.army.ArmyWindowCodec.Operation.QUERY).equals(step)
+                &&!org.xar.ck3.control.nativebridge.capabilities.army.ArmyWindowCodec.Kind.RESULTS
+                .step(org.xar.ck3.control.nativebridge.capabilities.army.ArmyWindowCodec.Operation.QUERY).equals(step))return;
         try { windowAttempts().recordUnavailable(borrowed,identicalInstalled,request,actual);refreshWindowAttempts(borrowed); }
         catch(IOException failure) { throw new UncheckedIOException("original failed query retained; fixed-window attempt publication unavailable",failure); }
     }
