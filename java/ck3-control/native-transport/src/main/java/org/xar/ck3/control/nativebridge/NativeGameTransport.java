@@ -634,7 +634,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] request=NativeWire.execute(id,NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'});
             var capture=new FreshSnapshotCapture(id);pendingFreshSnapshot=capture;
-            return finishFreshRead(capture,retainReadOutcome(dispatch(id,request,deadline,()->{})));
+            return finishFreshRead(capture,retainReadOutcome(dispatch(id,request,readDeadline(deadline),()->{})));
         } catch(IOException|RuntimeException failure) {
             if(sentRequestIds.contains(id)) {
                 if(pendingFreshSnapshot==null)pendingFreshSnapshot=new FreshSnapshotCapture(id);

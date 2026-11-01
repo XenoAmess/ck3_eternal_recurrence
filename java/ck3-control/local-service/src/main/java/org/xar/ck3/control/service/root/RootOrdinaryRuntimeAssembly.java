@@ -189,7 +189,7 @@ public final class RootOrdinaryRuntimeAssembly {
 public Running openSameGameBootstrap(ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline) throws IOException, InterruptedException {
     var opened = open(actual);
     if (pointer.isPresent() && opened.core().matchesCleanRestartHead(pointer.orElseThrow())) {
-        var driver = runOperationPhase(clock,config.operationTimeout(),phaseDeadline->
+        var driver = runOperationPhase(clock,java.time.Duration.ofMinutes(10),phaseDeadline->
                 opened.core().adoptCleanRestart(actual,pointer.orElseThrow(),config.retainedFrames(),cyclePolicy,phaseDeadline));
         return new Opened(this, driver.source()).finish(driver, Optional.of(opened.core().cleanRestartAdmission(driver)), deadline);
     }
@@ -224,7 +224,7 @@ public Running openSameGameBootstrap(ManagedGameSession actual, Optional<Continu
         public Running openCleanRestart(ManagedGameSession actual,ContinuityBatchJournal.CleanRestartTicket ticket,
                 Instant deadline)throws IOException,InterruptedException {
             openCore(actual);
-            var driver=runOperationPhase(clock,config.operationTimeout(),phaseDeadline->
+            var driver=runOperationPhase(clock,java.time.Duration.ofMinutes(10),phaseDeadline->
                     core.adoptCleanRestart(actual,Objects.requireNonNull(ticket),config.retainedFrames(),cyclePolicy,phaseDeadline));
             var admission=core.cleanRestartAdmission(driver);
             var opened=new Opened(this,driver.source());
