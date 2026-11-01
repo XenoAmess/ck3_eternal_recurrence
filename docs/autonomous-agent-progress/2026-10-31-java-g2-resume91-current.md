@@ -8,6 +8,14 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 16:01 UTC：稳定READ已越过，253在跨Writer嵌套锁门结束
+
+251实际达到source资格、Native attachment与LoadedCustody，随后在两次真实READ比较处END1。252将四份真实ACK/frame原件先落盘，机械比较确认full state唯一差异是event-trait membership的snapshot_revision由5到6，且分别等于各自外层revision；同session、日期53145984与paused状态相等。253复用已有typed稳定READ验证后越过该门，随后在新业务Writer的adoptConfirmedSaved Session内重入旧source Writer.locked，被现有嵌套锁保护拒绝。253 worker于16:00:52.109647Z→16:01:44.758646Z实际END1，墙钟52.648997秒，endpoint于16:01:44.6460644Z释放；0 entry、0 LOOP、0新增SAVE。原Game33404与keeper69836保留，没有重启或强制解锁。
+
+普通研究HOLD按上述实际业务终态释放，keeper常驻不延长HOLD；254沿最窄显式只读借用合同修复调用布局，普通锁保护与所有NoWrites写口拒绝保持。恢复窗口12:46:59.357568Z→16:01:44.758646Z累计11685.401078秒，包含等待、源码修复、资格失败与重试、构建和启动；新增SAVE_CONFIRMED游戏日为0，秒/新增保存日为null，10秒目标尚未达到。历史69已保存、77已结算、81最后观察与当前读取到69日保存分别记，不将未归因的4日计为智能体推进。详细阶段与原终态见[运行记录](2026-10-31-runtime91-current.md)。
+
+[Native204](https://github.com/XenoAmess/ck3_eternal_recurrence/commit/dddad8a739bcc46e388be37bb7bdf47a90cf0add)四份已编源码已正式：原172 parent及两个兄弟callee的两组有限whole首验、六项实际守卫与两项旧Java200断言对照均通过。旧Java未输出这两组rows，因此不称缓存Java2或三方对照；正式发表没有重编、重跑或复制原PE/body，也不授自然Game、完整ABI/EH、G2完成或保存日性能信用。
+
 ## 2026-11-01 15:17 UTC：恢复已启动新Game，250在旧source锁门前结束
 
 249沿原788/69日保存材料完成source资格后，14:23实际启动新Game33404，由keeper69836保活；这不恢复已不存在的旧Game71464，也不授GameLoaded或新增保存。250五个生产叶完成必要首编并实际采用，MB于14:53:48.109622Z→14:53:53.652643Z通过。worker70560于14:55:06.781770Z启动，14:55:11.287775Z以END1结束，墙钟4.506003秒；旧keeper持有source storage allocation锁，尚未进入Native attach、READ或entry。15:17:36.277149Z仅具名PID及birth检查确认Game与keeper仍活；没有强制解锁、结束owner或重启Game。
