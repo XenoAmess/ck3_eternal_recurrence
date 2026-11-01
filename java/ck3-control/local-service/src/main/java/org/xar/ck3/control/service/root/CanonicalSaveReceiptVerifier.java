@@ -70,6 +70,7 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
             CompletedCycleProof cycle,boolean physical)throws IOException {
         writer.requireSession(same);
         Objects.requireNonNull(owner); Objects.requireNonNull(pair); Objects.requireNonNull(cycle);
+        String head=same.head().digest();
         ActionReceipt receipt=actions.withFrozen(same,held->{
             var found=held.find(pair.saveActionId()).orElseThrow(()->new IllegalArgumentException("physical pair lacks its canonical original SAVE"));
             held.assertCurrent();return found;
@@ -85,7 +86,7 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
                 &&saved.frame().identity().nativeRevision().compareTo(proof.frame().identity().nativeRevision())>=0
                 &&opening.observationVersion()==saved.observationVersion(),
                 "actual cycle semantic and physical SAVE must share machine/Game/episode/actor/date/observationVersion and monotonic native revisions");
-        return verifyFirst(same,owner,pair,opening,physical).digest();
+        return verifyFirst(same,owner,pair,opening,physical,receipt,head).digest();
     }
     @Override public FirstSaveReceiptVerifier.Original verifyFirst(ContinuityStorePort.Session same,SessionIdentity owner,
             CheckpointPair pair,ObservationIdentity opening,boolean physical)throws IOException {
@@ -96,6 +97,14 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
                 var found=held.find(pair.saveActionId()).orElseThrow(()->new IllegalArgumentException("physical pair lacks its canonical original SAVE"));
                 held.assertCurrent();return found;
             });
+            return verifyFirst(same,owner,pair,opening,physical,receipt,head);
+        }catch(UncheckedIOException failure){throw failure.getCause();}
+    }
+    /** Method-local canonical DATA from this call's lookup; it never escapes as a reuse permit. */
+    private FirstSaveReceiptVerifier.Original verifyFirst(ContinuityStorePort.Session same,SessionIdentity owner,
+            CheckpointPair pair,ObservationIdentity opening,boolean physical,ActionReceipt receipt,String head)throws IOException {
+        writer.requireSession(same);Objects.requireNonNull(owner);Objects.requireNonNull(pair);Objects.requireNonNull(opening);
+        try {
             var command=receipt.command();
             StrictJson.require(receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED
                     &&receipt.state() instanceof ActionState.Settled settled&&settled.settlement() instanceof ActionState.Applied
@@ -116,6 +125,7 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
             material.set("receipt",receiptRef.toJson());material.put("originals_sha256",originals);
             StrictJson.require(head.equals(same.head().digest()),"canonical SAVE verification changed the original writer head");
             var savedDriver=drivers.readArchivedSnapshot(pair,bound.loadMaterial(receipt.applied().orElseThrow().observation().supportingEvidence().get(1)).bytes());
+            StrictJson.require(head.equals(same.head().digest()),"canonical SAVE verification changed the original writer head");
             writer.requireSession(same);return new FirstSaveReceiptVerifier.Original(ContinuityJson.digest(material),receipt,receiptRef,pairRef,savedDriver);
         }catch(UncheckedIOException failure){throw failure.getCause();}
     }
