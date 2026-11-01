@@ -3,10 +3,15 @@ package org.xar.ck3.control.service.root;
 import java.io.IOException;
 import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.action.OperationKey;
+import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.CommandOrigin;
+import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
 import org.xar.ck3.control.application.session.BatchLimits;
 import org.xar.ck3.control.application.session.BatchReport;
 import org.xar.ck3.control.application.session.SessionController;
@@ -47,10 +52,16 @@ public final class RootOrdinaryWorkerLoop {
 
     private final Configuration configuration;
     private final Control control;
+    private final Clock clock;
 
     public RootOrdinaryWorkerLoop(Configuration configuration, Control control) {
+        this(configuration, control, Clock.systemUTC());
+    }
+
+    RootOrdinaryWorkerLoop(Configuration configuration, Control control, Clock clock) {
         this.configuration = Objects.requireNonNull(configuration);
         this.control = Objects.requireNonNull(control);
+        this.clock = Objects.requireNonNull(clock);
     }
 
     public Result run(RootSessionAccess access, long firstDurableBatchSequence) throws IOException, InterruptedException {
@@ -136,6 +147,27 @@ public final class RootOrdinaryWorkerLoop {
                 break;
             }
 
+            if (report.terminal() == BatchReport.Terminal.WALL_TIMEOUT
+                    && currentSession.controller().isQuarantined() && appliedLifeAtWall(report).isPresent()) {
+                try {
+                    if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
+                    // A new read/reconciliation budget never changes the original command deadline.
+                    boolean recovered = currentSession.execution().recoverWallBoundary(report, sequence,
+                            clock.instant().plus(configuration.wallTime()));
+                    if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
+                    if (!recovered || currentSession.controller().isQuarantined()) {
+                        stopReason = StopReason.TERMINAL_FAILURE;
+                        failureDetail = Optional.of(report.terminal().name() + ": " + report.detail());
+                        break;
+                    }
+                } catch (InterruptedException failure) {
+                    Thread.currentThread().interrupt(); stopReason = StopReason.INTERRUPTED;
+                    failureDetail = Optional.of(failure.toString()); break;
+                } catch (IOException | RuntimeException failure) {
+                    stopReason = StopReason.TERMINAL_FAILURE;
+                    failureDetail = Optional.of(failure.toString()); break;
+                }
+            }
             boolean cleanWallBoundary = isCleanWallBoundary(report.terminal(),
                     currentSession.controller().isQuarantined());
             if (report.terminal() == BatchReport.Terminal.CHECKPOINT_DEFERRED && !currentSession.controller().isQuarantined()) {
@@ -228,6 +260,8 @@ public final class RootOrdinaryWorkerLoop {
 
     interface BatchCall {
         BatchReport batch(BatchLimits limits) throws IOException, InterruptedException;
+        default boolean recoverWallBoundary(BatchReport report, long nextBatchSequence, Instant deadline)
+                throws IOException, InterruptedException { return false; }
     }
 
     private final class BatchAccessAdapter implements BatchAccess {
@@ -235,8 +269,71 @@ public final class RootOrdinaryWorkerLoop {
         BatchAccessAdapter(RootSessionAccess access) { this.access = Objects.requireNonNull(access); }
         public BatchCurrent current() throws IOException {
             var root = access.current();
-            return new BatchCurrent(root.controllerForPublication(), root::batch);
+            return new BatchCurrent(root.controllerForPublication(), new BatchCall() {
+                @Override public BatchReport batch(BatchLimits limits) throws IOException, InterruptedException {
+                    return root.batch(limits);
+                }
+                @Override public boolean recoverWallBoundary(BatchReport report, long nextBatchSequence, Instant deadline)
+                        throws IOException, InterruptedException {
+                    return recoverRetainedWallCycle(root, report, nextBatchSequence, deadline);
+                }
+            });
         }
+    }
+
+    private boolean recoverRetainedWallCycle(RootApplicationSession root, BatchReport report,
+            long nextBatchSequence, Instant deadline) throws IOException, InterruptedException {
+        var original = appliedLifeAtWall(report);
+        var controller = root.controllerForPublication();
+        if (original.isEmpty() || !report.session().equals(root.identity()) || !controller.isQuarantined()
+                || controller.isRunning() || controller.isRetired() || control.stopRequested()) return false;
+        ActionReceipt expected = original.orElseThrow();
+        var data = root.withPublicStandaloneRead(deadline, same -> {
+            var actual = root.batchJournal().readUnresolvedSameGame(same, root.identity());
+            var head = same.head();
+            StrictJson.require(actual.canonicalSequence() == head.state().sequence()
+                    && actual.canonicalHeadDigest().equals(head.digest()), "wall recovery DATA changed its actual head");
+            StrictJson.require(actual.capturedController().owner().equals(report.session())
+                    && actual.nextBatchSequence() == nextBatchSequence && nextBatchSequence > 0
+                    && actual.usedBatches().contains(report.batchId())
+                    && report.batchId().equals(actual.capturedController().batchPrefix() + "-" + (nextBatchSequence - 1)),
+                    "wall recovery DATA changed its actual owner or interrupted batch");
+            StrictJson.require(actual.unresolvedActions().size() == 1
+                    && actual.unresolvedActions().getFirst().equals(expected),
+                    "wall recovery DATA changed the exact reported applied Life receipt");
+            return actual;
+        });
+        if (control.stopRequested()) return false;
+        // The DATA read releases its borrowed writer before the original Controller reconciles.
+        // Its retain/settle path revalidates the current canonical receipt and pending frontier.
+        ActionReceipt actual = root.reconcileUnresolvedOriginal(data, deadline);
+        return actual.equals(expected) && isAppliedLife(actual) && root.controllerForPublication() == controller
+                && !controller.isQuarantined() && !controller.isRetired();
+    }
+
+    static Optional<ActionReceipt> appliedLifeAtWall(BatchReport report) {
+        if (report.terminal() != BatchReport.Terminal.WALL_TIMEOUT) return Optional.empty();
+        var receipts = new java.util.ArrayList<ActionReceipt>();
+        report.turns().forEach(turn -> receipts.add(turn.receipt()));
+        report.reconciliations().forEach(turn -> receipts.add(turn.originalReceipt()));
+        report.lifecycleTurns().forEach(turn -> receipts.add(turn.receipt()));
+        report.readPublicationReconciliations().forEach(turn -> receipts.add(turn.originalReceipt()));
+        if (receipts.isEmpty() || receipts.stream().anyMatch(receipt -> !receipt.settled())) return Optional.empty();
+        var latest = receipts.stream().max(java.util.Comparator.comparingLong(ActionReceipt::sequence)).orElseThrow();
+        var command = latest.command();
+        return isAppliedLife(latest) && command.sessionId().equals(report.session().sessionId())
+                && command.origin().machineId().equals(report.session().machineId())
+                && command.origin().game().equals(report.session().game()) ? Optional.of(latest) : Optional.empty();
+    }
+
+    private static boolean isAppliedLife(ActionReceipt receipt) {
+        return receipt.settled() && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                && receipt.visibleGameplay() && receipt.eligibleAdvance()
+                && receipt.command().origin() instanceof CommandOrigin.Gameplay
+                && LifeAdvanceComposite.accepts(receipt.command().operation().value())
+                && receipt.state() instanceof ActionState.CompositeSettled settled
+                && settled.settlement() instanceof ActionState.Applied
+                && settled.execution().handlerId().equals(LifeAdvanceComposite.HANDLER);
     }
 
     static boolean isCleanWallBoundary(BatchReport.Terminal terminal, boolean quarantined) {
