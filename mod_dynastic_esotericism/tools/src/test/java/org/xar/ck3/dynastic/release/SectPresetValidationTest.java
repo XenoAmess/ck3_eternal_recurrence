@@ -26,13 +26,49 @@ final class SectPresetValidationTest {
     @TempDir Path temporary;
 
     @Test
+    void actualStagingCreatesBothPresetFaithsBeforeTheEarliestBookmark() throws IOException {
+        Path source = source();
+        ReleaseProduct product = ReleaseProduct.official(source, ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION);
+        ReleaseBuilder builder = new ReleaseBuilder();
+        ReleaseBuilder.BuildResult built = builder.build(product, source.getParent(), temporary.resolve("created-presets"), REVISION, null, null);
+        String relative = "history/faiths/des_faiths.txt";
+        Path staged = built.staging().resolve(relative);
+        assertTrue(Files.isRegularFile(staged), "Both preset Faiths require creation history in the actual runtime staging");
+        assertArrayEquals(Files.readAllBytes(source.resolve(relative)), Files.readAllBytes(staged));
+        byte[] original = Files.readAllBytes(staged);
+        byte[] changed = new String(original, StandardCharsets.UTF_8).replace("created = yes", "created = no").getBytes(StandardCharsets.UTF_8);
+        Files.write(staged, changed);
+        ReleaseManifest manifest = built.payload();
+        List<ReleaseManifest.FileEntry> entries = manifest.files().stream().map(entry -> entry.path().equals(relative)
+                ? new ReleaseManifest.FileEntry(entry.path(), changed.length, ReleaseBuilder.sha256(changed)) : entry).toList();
+        Files.write(built.manifest(), ManifestJson.encode(new ReleaseManifest(manifest.formatVersion(), manifest.productId(), manifest.modVersion(),
+                manifest.gitTag(), manifest.gitSha(), manifest.workshopItemId(), entries)));
+        assertThrows(IllegalArgumentException.class, () -> builder.verify(product, built.staging(), built.manifest()));
+    }
+
+    @Test
+    void presetHistoryRejectsMissingCreationWrongFaithAndDatesAfterTheBookmark() throws IOException {
+        Fixture fixture = fixture();
+        Path history = fixture.product().source().resolve(SectPreset.FAITH_HISTORY_FILE);
+        String original = Files.readString(history);
+        rejectChangedDefinitions(fixture, SectPreset.FAITH_HISTORY_FILE, List.of(
+                original.replace("created = yes", "created = no"),
+                original.replace("created = yes", ""),
+                original.replace("des_procreation_faith", "catholic"),
+                original.replace("867.1.1", "867.1.2"),
+                original.replace("867.1.1", "1066.9.16")));
+        Files.delete(history);
+        assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
+    }
+
+    @Test
     void actualNineLanguageProducerStagingManifestAndZipPassIndependentExistingAstConsumer() throws Exception {
         Path source = source();
         ReleaseProduct product = ReleaseProduct.official(source, ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION);
         ReleaseBuilder builder = new ReleaseBuilder();
         ReleaseBuilder.BuildResult built = builder.build(product, source.getParent(), temporary.resolve("product"), REVISION, null, null);
-        assertEquals(56, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());
-        assertEquals(56, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());
+        assertEquals(57, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());
+        assertEquals(57, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());
         try (ZipFile archive = new ZipFile(built.archive().toFile(), StandardCharsets.UTF_8)) {
             for (String relative : product.runtimeFiles()) {
                 assertArrayEquals(Files.readAllBytes(built.staging().resolve(relative)), archive.getInputStream(archive.getEntry(product.productId() + "/" + relative)).readAllBytes());
@@ -54,7 +90,15 @@ final class SectPresetValidationTest {
                     raw=(root/relative).read_text(encoding='utf-8-sig').encode('utf-8')
                     return parse_block('{ '+' '.join(melt_tokens(io.BytesIO(raw)))+' }')
                 faiths=read('common/religion/faith_types/des_faiths.txt')
+                histories=read('history/faiths/des_faiths.txt')
                 rites=read('common/religion/rite_types/des_rites.txt')
+                initialization=one(read('common/scripted_effects/des_initialization_effects.txt'),'des_initialize_rite_effect',required=True)
+                assert {row['key'] for row in initialization}=={'if'}
+                default=one(initialization,'if',required=True)
+                assert {row['key'] for row in default}=={'limit','add_rite_doctrine'}
+                assert one(default,'add_rite_doctrine',required=True)=='des_doctrine_none'
+                preserved=one(one(default,'limit',required=True),'NOR',required=True)
+                assert preserved==[{'key':'rite_has_doctrine','value':'des_doctrine_none'},{'key':'rite_has_doctrine','value':'des_doctrine_dynastic'}]
                 coats=read('common/coat_of_arms/coat_of_arms/des_rite_coa.txt')
                 titles=read('common/landed_titles/des_head_of_faith_titles.txt')
                 head_effects=read('common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt')
@@ -86,6 +130,7 @@ final class SectPresetValidationTest {
                 assert actor==[{'key':'is_ai','value':'no'}]
                 expected=json.loads(contract.read_bytes())
                 assert {row['key'] for row in faiths}=={item['faith'] for item in expected}
+                assert {row['key'] for row in histories}=={item['faith'] for item in expected}
                 assert {row['key'] for row in rites}=={item['rite'] for item in expected}
                 assert {row['key'] for row in titles}=={item['headTitle'] for item in expected}
                 assert {row['key'] for row in coats}=={key for item in expected for key in [item['rite']+'_coa',item['headTitle']]}
@@ -109,6 +154,9 @@ final class SectPresetValidationTest {
                     return [row['value'] for row in rows]
                 for item in expected:
                     faith=one(faiths,item['faith'],required=True)
+                    history=one(histories,item['faith'],required=True)
+                    assert history==[{'key':'867.1.1','value':[{'key':'created','value':'yes'}]}]
+                    assert one(faith,'historical',required=True)=='no'
                     rite=one(rites,item['rite'],required=True)
                     assert one(faith,'main_rite',required=True)==item['rite']
                     details=one(faith,'faith_details',required=True)
@@ -138,6 +186,8 @@ final class SectPresetValidationTest {
                     assert one(rite,'name',required=True)==item['rite']
                     tenets=values(rite,'tenets')
                     doctrines=values(rite,'doctrines')
+                    assert 'des_doctrine_dynastic' in doctrines
+                    assert any(row['value'] in doctrines for row in preserved), 'NOR must prevent neutral initialization of each preset'
                     assert len(tenets)==3 and set(tenets)==set(item['tenets'])
                     assert len(item['ordinary'])==25
                     assert len(doctrines)==25+len(item['specials'])
@@ -205,7 +255,7 @@ final class SectPresetValidationTest {
         }
         Files.writeString(group, groupOriginal, StandardCharsets.UTF_8);
         // Actual static presets retain dynastic doctrines without a selecting actor.
-        assertEquals(56, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(57, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -247,7 +297,7 @@ final class SectPresetValidationTest {
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
         }
         Files.writeString(rite, riteOriginal, StandardCharsets.UTF_8);
-        assertEquals(56, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(57, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -285,7 +335,7 @@ final class SectPresetValidationTest {
                 effect.replace("generate_coa = religious_title", ""),
                 effect.replace("set_coa = des_procreation_rite_coa", "set_coa = des_vivhite_rite_coa"),
                 effect + "\nstartup_grant = { title:e_des_procreation_papacy = { change_title_holder = root } }\n"));
-        assertEquals(56, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(57, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -311,7 +361,7 @@ final class SectPresetValidationTest {
             Files.write(staged, original);
             Files.write(built.manifest(), ManifestJson.encode(manifest));
         }
-        assertEquals(56, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
+        assertEquals(57, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
     }
 
     @Test

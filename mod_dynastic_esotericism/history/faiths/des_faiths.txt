@@ -1,0 +1,12 @@
+﻿# Establish both presets before ruler selection without assigning any adherents.
+des_procreation_faith = {
+	867.1.1 = {
+		created = yes
+	}
+}
+
+des_vivhite_faith = {
+	867.1.1 = {
+		created = yes
+	}
+}

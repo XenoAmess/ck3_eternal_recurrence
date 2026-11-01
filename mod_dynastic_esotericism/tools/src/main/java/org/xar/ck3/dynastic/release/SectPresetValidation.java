@@ -40,6 +40,7 @@ public final class SectPresetValidation {
         Map<String, Value> coats = assignments(read(root, SectPreset.COAT_OF_ARMS_FILE), "coat of arms definitions");
         Map<String, Value> headTitles = assignments(read(root, SectPreset.HEAD_TITLE_FILE), "head of faith titles");
         requireKeys(faiths, Set.of(SectPreset.PROCREATION.faithId(), SectPreset.VIVHITE.faithId()), "faith IDs");
+        validateFaithHistory(root);
         requireKeys(rites, Set.of(SectPreset.PROCREATION.riteId(), SectPreset.VIVHITE.riteId()), "rite IDs");
         requireKeys(coats, Set.of(SectPreset.PROCREATION.coatOfArmsId(), SectPreset.VIVHITE.coatOfArmsId(),
                 SectPreset.PROCREATION.headTitleId(), SectPreset.VIVHITE.headTitleId()), "Rite and HoF title coat of arms IDs");
@@ -79,6 +80,18 @@ public final class SectPresetValidation {
             StaticValidation.validateBytes(preset.iconPath(), Files.readAllBytes(root.resolve(preset.iconPath())));
             validateCoatOfArms(root, coats.get(preset.coatOfArmsId()), preset, preset.coatOfArmsId());
             requireScalar(coats, preset.headTitleId(), preset.coatOfArmsId());
+        }
+    }
+
+    private static void validateFaithHistory(Path root) throws IOException {
+        Map<String, Value> histories = assignments(read(root, SectPreset.FAITH_HISTORY_FILE), "preset Faith history");
+        requireKeys(histories, Set.of(SectPreset.PROCREATION.faithId(), SectPreset.VIVHITE.faithId()), "preset Faith history IDs");
+        for (SectPreset preset : SectPreset.values()) {
+            Map<String, Value> history = assignments(block(histories.get(preset.faithId()), preset.faithId()), "preset Faith history");
+            requireKeys(history, Set.of("867.1.1"), "preset creation at the earliest supported bookmark");
+            Map<String, Value> creation = assignments(block(history.get("867.1.1"), "867.1.1"), "preset Faith creation");
+            requireKeys(creation, Set.of("created"), "preset Faith creation");
+            requireScalar(creation, "created", "yes");
         }
     }
 

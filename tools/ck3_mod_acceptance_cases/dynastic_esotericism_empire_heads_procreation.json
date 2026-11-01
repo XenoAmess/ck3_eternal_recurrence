@@ -57,7 +57,7 @@
         "DES_EHF: FIXTURE_ARMED empire_heads_procreation"
       ],
       "requirements": [
-        "actual_original_single_player_independent_duke_product56_fixture6_only_baseline_native_and_Save_pinned",
+        "actual_original_single_player_independent_duke_product57_fixture6_only_baseline_native_and_Save_pinned",
         "actual_selected_preset_static_empire_title_exists_but_has_no_holder_and_Faith_has_no_head_before_input",
         "actual_des_ehf_adopt_once_stock_Faith_Rite_input_retained_without_head_title_or_doctrine_setter",
         "actual_prequalification_create_hof_status_retained_before_any_county_or_resource_input",

@@ -57,7 +57,7 @@ final class EmpireHeadFixtureTest {
         ReleaseBuilder.BuildResult release = new ReleaseBuilder().build(ReleaseProduct.official(
                 repository().resolve("mod_dynastic_esotericism"), ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION),
                 repository(), temporary.resolve("release"), "0".repeat(40), null, null);
-        assertEquals(56, release.payload().files().size());
+        assertEquals(57, release.payload().files().size());
         List<String> arguments = new ArrayList<>(List.of(repository().toString(), release.staging().toString(),
                 temporary.resolve("consumers").toString()));
         for (FixtureEmitter.CaseKind kind : CASES) {
@@ -128,7 +128,7 @@ final class EmpireHeadFixtureTest {
                     assert compiled['case']==case and compiled['whole_product_release_pass'] is False
                     assert compiled['config']['allow_actor_change'] is (not saved)
                     assert json.loads((profile/'dlc_load.json').read_bytes())['enabled_mods']==['mod/product.mod','mod/fixture.mod']
-                    assert len([p for p in (profile/'mod-content/product').rglob('*') if p.is_file()])==56
+                    assert len([p for p in (profile/'mod-content/product').rglob('*') if p.is_file()])==57
                     assert source.read_bytes()==before
                     def reject(label,mutate):
                         bad=copy.deepcopy(manifest);mutate(bad)

@@ -48,7 +48,7 @@ final class NativeBindingTransferFixtureTest {
         ReleaseBuilder.BuildResult release = new ReleaseBuilder().build(ReleaseProduct.official(
                 repository().resolve("mod_dynastic_esotericism"), ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION),
                 repository(), temporary.resolve("release"), "0".repeat(40), null, null);
-        assertEquals(56, release.payload().files().size());
+        assertEquals(57, release.payload().files().size());
         FixtureEmitter.Emission emission = FixtureEmitter.emit(repository(), temporary.resolve("fixture"),
                 "authored-machine", FixtureEmitter.CaseKind.NATIVE_BINDING_TRANSFER);
         assertEquals(9, emission.payload().files().size());
@@ -119,7 +119,7 @@ final class NativeBindingTransferFixtureTest {
                 compiled=json.loads((mounted/'_case_contract.json').read_bytes())
                 assert compiled['case']==case and compiled['whole_product_release_pass'] is False
                 assert compiled['config']['maximum_natural_days']==40
-                assert len([p for p in (profile/'mod-content/product').rglob('*') if p.is_file()])==56
+                assert len([p for p in (profile/'mod-content/product').rglob('*') if p.is_file()])==57
                 assert json.loads((profile/'dlc_load.json').read_bytes())['enabled_mods']==['mod/product.mod','mod/fixture.mod']
                 assert source.read_bytes()==before
                 def reject(label,mutate):

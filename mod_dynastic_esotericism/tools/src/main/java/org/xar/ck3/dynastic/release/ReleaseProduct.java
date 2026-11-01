@@ -62,6 +62,7 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
             DYNASTIC_GROUP_ICON,
             DYNASTIC_DOCTRINE_ICON,
             "gui/window_faith.gui",
+            SectPreset.FAITH_HISTORY_FILE,
             "localization/english/des_l_english.yml",
             "localization/english/des_identity_l_english.yml",
             "localization/english/des_sects_l_english.yml",

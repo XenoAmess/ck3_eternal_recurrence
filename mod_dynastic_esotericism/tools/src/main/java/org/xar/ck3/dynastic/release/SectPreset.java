@@ -15,6 +15,7 @@ public enum SectPreset {
             List.of("special_doctrine_jizya", "special_doctrine_pope_blessing"));
 
     public static final String FAITH_FILE = "common/religion/faith_types/des_faiths.txt";
+    public static final String FAITH_HISTORY_FILE = "history/faiths/des_faiths.txt";
     public static final String RITE_FILE = "common/religion/rite_types/des_rites.txt";
     public static final String COAT_OF_ARMS_FILE = "common/coat_of_arms/coat_of_arms/des_rite_coa.txt";
     public static final String HEAD_TITLE_FILE = "common/landed_titles/des_head_of_faith_titles.txt";
