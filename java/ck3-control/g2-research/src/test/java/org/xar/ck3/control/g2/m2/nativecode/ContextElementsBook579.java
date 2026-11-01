@@ -1,0 +1,114 @@
+package org.xar.ck3.control.g2.m2.nativecode;
+import java.util.ArrayList;
+import java.util.List;
+import org.xar.ck3.research.m5.GovernmentCrtBoundary185Api;
+import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.Bits128;
+import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.VolatileBits;
+import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.NonvolatileBits;
+import static org.xar.ck3.control.g2.m2.nativecode.ContextElementsData579.*;
+
+/** Owner mechanical fixedfixture helpers and fixed literal expectations. */
+public final class ContextElementsBook579 {
+    private ContextElementsBook579() { }
+    public static void main(String[] args) { System.out.println(verify()); }
+    public static int verify() { ContextElementsHost579.verify(wholeContextScene());return 1; }
+    private static VolatileBits vb(long seed,long... pairs) { return vb(seed,null,pairs); }
+    private static VolatileBits vb(long seed,Bits128 x0,long... pairs) {
+        long[] a={seed,seed+1,seed+2,seed+3,seed+4,seed+5,seed+6};
+        if((pairs.length&1)!=0) throw new AssertionError();
+        for(int i=0;i<pairs.length;i+=2) a[Math.toIntExact(pairs[i])]=pairs[i+1];
+        VolatileBits p=v(seed);
+        return new VolatileBits(a[0],a[1],a[2],a[3],a[4],a[5],a[6],x0==null?p.xmm0():x0,p.xmm1(),p.xmm2(),p.xmm3(),p.xmm4(),p.xmm5());
+    }
+    private static NonvolatileBits nb(long a,long b,long c,long d,long e,long f,long g,long h) {
+        return new NonvolatileBits(a,b,c,d,e,f,g,h,n(0x900).xmm6());
+    }
+    private static void invoke(List<Step> s,boolean foreign,long site,long target,int length,
+            boolean indirect,long sp,VolatileBits before,NonvolatileBits current,boolean beforeDf,
+            VolatileBits after,boolean afterDf,List<Cell> effects) {
+        long rip=0x140000000L+site+length;
+        s.add(new Write(8,sp-8,rip));
+        GovernmentCrtBoundary185Api.Call c=new GovernmentCrtBoundary185Api.Call(site,
+            indirect?GovernmentCrtBoundary185Api.TargetKind.INDIRECT_ABSOLUTE:GovernmentCrtBoundary185Api.TargetKind.DIRECT_RVA,
+            target,sp,before,current);
+        GovernmentCrtBoundary185Api.Entry child=new GovernmentCrtBoundary185Api.Entry(0x140000000L,sp-8,before,current);
+        FullCopy437Api.CallResult post=new FullCopy437Api.CallResult(
+            new GovernmentCrtBoundary185Api.NormalReturn(after,rip,sp,current),afterDf);
+        if(foreign) s.add(new ForeignInvoke(new ContextConstructor543Api.CallFrame(c,child,beforeDf,length,rip),post,effects));
+        else s.add(new Invoke(new EmbeddedElements578Api.CallFrame(c,child,beforeDf,length,rip),post,effects));
+        for(Cell e:effects) s.add(new Write(e.widthBytes(),e.addressBits(),e.valueBits(),e.highBits()));
+    }
+    private static Scene wholeContextScene() {
+        List<Step> s=new ArrayList<>();
+        s.add(new Write(8,0xA018L,0x900L,0x0L));
+        s.add(new Write(8,0xA020L,0x901L,0x0L));
+        s.add(new Write(8,0xA010L,0x1000L,0x0L));
+        s.add(new Write(8,0xA000L,0x902L,0x0L));
+        s.add(new Write(8,0x9FF8L,0x903L,0x0L));
+        s.add(new Write(8,0x9FF0L,0x906L,0x0L));
+        s.add(new Write(4,0x1000L,0x0L,0x0L));
+        s.add(new Write(8,0x1008L,0x0L,0x0L));
+        s.add(new Write(4,0x1010L,0xFFFFFFFFL,0x0L));
+        invoke(s,true,0x373AD20L,0x8895D0L,5,false,0x9FD0L,vb(0x10L,1,0x1018L,2,0x2000L),nb(0x900L,0x0L,0x2000L,0x903L,0x904L,0x905L,0x1000L,0x907L),true,vb(0x100L),false,List.of());
+        s.add(new Write(8,0x1100L,0x0L,0x0L));
+        s.add(new Write(8,0x1108L,0x0L,0x0L));
+        s.add(new Write(8,0x1110L,0x1454DE270L,0x0L));
+        s.add(new Write(8,0x1118L,0x14448D1F8L,0x0L));
+        s.add(new Write(8,0x1120L,0x14448D268L,0x0L));
+        s.add(new Write(8,0x1128L,0x0L,0x0L));
+        s.add(new Write(8,0x1130L,0x0L,0x0L));
+        s.add(new Write(8,0x1138L,0x1454DE278L,0x0L));
+        s.add(new Write(4,0x1140L,0x0L,0x0L));
+        s.add(new Write(8,0x1148L,0x0L,0x0L));
+        s.add(new Write(8,0x1150L,0x0L,0x0L));
+        s.add(new Write(8,0x1158L,0x1454DE270L,0x0L));
+        s.add(new Write(4,0x1160L,0xFFFFFFFFL,0x0L));
+        s.add(new Write(2,0x1164L,0x0L,0x0L));
+        s.add(new Write(1,0x1166L,0x0L,0x0L));
+        s.add(new Read(16,0x2000L,0x123456789ABCDEFL,0xFEDCBA9876543210L));
+        s.add(new Write(16,0x1000L,0x123456789ABCDEFL,0xFEDCBA9876543210L));
+        s.add(new Read(4,0x2010L,0x55L,0x0L));
+        s.add(new Write(4,0x1010L,0x55L,0x0L));
+        s.add(new Write(8,0x9FC8L,0x14373ADA6L,0x0L));
+        s.add(new Write(8,0x9FD0L,0x1118L,0x0L));
+        s.add(new Write(8,0x9FD8L,0x0L,0x0L));
+        s.add(new Write(8,0x9FE0L,0x2000L,0x0L));
+        s.add(new Write(8,0x9FE8L,0x903L,0x0L));
+        s.add(new Write(8,0x9FC0L,0x904L,0x0L));
+        s.add(new Write(8,0x9FB8L,0x1000L,0x0L));
+        s.add(new Write(8,0x9FB0L,0x907L,0x0L));
+        s.add(new Read(4,0x210CL,0x1L,0x0L));
+        s.add(new Read(8,0x2100L,0x4000L,0x0L));
+        invoke(s,false,0x37282E1L,0x889780L,5,false,0x9F80L,vb(0x100L,new Bits128(0x123456789ABCDEFL,0xFEDCBA9876543210L),0,0x55L,1,0x1100L,2,0x2100L),nb(0x1L,0x4000L,0x1100L,0x903L,0x904L,0x905L,0x1000L,0x907L),false,vb(0x200L),true,List.of());
+        s.add(new Read(4,0x110CL,0x0L,0x0L));
+        s.add(new Read(4,0x1108L,0x0L,0x0L));
+        s.add(new Read(8,0x1110L,0x1454DE270L,0x0L));
+        s.add(new Read(8,0x1454DE270L,0x7000L,0x0L));
+        s.add(new Read(8,0x7008L,0xA000L,0x0L));
+        invoke(s,false,0x3728316L,0xA000L,3,true,0x9F80L,vb(0x200L,0,0x1L,1,0x1454DE270L,2,0x48L,3,0x8L,4,0xA000L),nb(0x1L,0x4000L,0x1100L,0x903L,0x904L,0x905L,0x1000L,0x907L),true,vb(0x300L,0,0x5000L),false,List.of());
+        s.add(new Read(4,0x110CL,0x0L,0x0L));
+        s.add(new Read(8,0x1100L,0x0L,0x0L));
+        invoke(s,false,0x372836CL,0xDBDB80L,5,false,0x9F80L,vb(0x300L,0,0x5000L,1,0x1100L,2,0x5000L,3,0x0L,4,0x1L),nb(0x1L,0x4000L,0x1100L,0x903L,0x5000L,0x905L,0x0L,0x0L),false,vb(0x400L),true,List.of(new Cell(8,0x1100L,0x5000L,0x0L)));
+        s.add(new Write(4,0x110CL,0x1L,0x0L));
+        s.add(new Read(8,0x1100L,0x5000L,0x0L));
+        s.add(new Budget(0x37283B0L,0x4000L,false));
+        invoke(s,false,0x37283B6L,0x37297F0L,5,false,0x9F80L,vb(0x400L,1,0x5000L,2,0x4000L),nb(0x1L,0x4000L,0x1100L,0x5000L,0x5000L,0x905L,0x0L,0x0L),true,vb(0x500L),false,List.of());
+        s.add(new Read(8,0x9FD0L,0x1118L,0x0L));
+        s.add(new Read(8,0x9FD8L,0x0L,0x0L));
+        s.add(new Read(8,0x9FE0L,0x2000L,0x0L));
+        s.add(new Read(8,0x9FE8L,0x903L,0x0L));
+        s.add(new Read(8,0x9FB0L,0x907L,0x0L));
+        s.add(new Read(8,0x9FB8L,0x1000L,0x0L));
+        s.add(new Read(8,0x9FC0L,0x904L,0x0L));
+        s.add(new Read(8,0x9FC8L,0x14373ADA6L,0x0L));
+        invoke(s,true,0x373ADAEL,0x260E040L,5,false,0x9FD0L,vb(0x500L,0,0x1100L,1,0x1018L,2,0x2018L),nb(0x1118L,0x0L,0x2000L,0x903L,0x904L,0x905L,0x1000L,0x907L),false,vb(0x600L),true,List.of());
+        invoke(s,true,0x373ADBDL,0x3727180L,5,false,0x9FD0L,vb(0x600L,1,0x1118L,2,0x2118L),nb(0x1118L,0x0L,0x2000L,0x903L,0x904L,0x905L,0x1000L,0x907L),true,vb(0x700L),false,List.of(new Cell(8,0xA018L,0x1234ABCDEF112233L,0x0L),new Cell(8,0xA008L,0x8877665544332211L,0x0L)));
+        s.add(new Read(8,0xA018L,0x1234ABCDEF112233L,0x0L));
+        s.add(new Read(8,0xA020L,0x901L,0x0L));
+        s.add(new Read(8,0x9FF0L,0x906L,0x0L));
+        s.add(new Read(8,0x9FF8L,0x903L,0x0L));
+        s.add(new Read(8,0xA000L,0x902L,0x0L));
+        s.add(new Read(8,0xA008L,0x8877665544332211L,0x0L));
+        return new Scene("WHOLE_POSITIVE_GROWTH",new GovernmentCrtBoundary185Api.Entry(0x140000000L,0xA008L,vb(0x10L,1,0x1000L,2,0x2000L),nb(0x900L,0x901L,0x902L,0x903L,0x904L,0x905L,0x906L,0x907L)),true,List.of(new Cell(8,0xA008L,0x1122334455667788L,0x0L),new Cell(16,0x2000L,0x123456789ABCDEFL,0xFEDCBA9876543210L),new Cell(4,0x2010L,0x55L,0x0L),new Cell(8,0x2100L,0x4000L,0x0L),new Cell(4,0x210CL,0x1L,0x0L),new Cell(8,0x1454DE270L,0x7000L,0x0L),new Cell(8,0x7008L,0xA000L,0x0L)),s,new FullCopy437Api.CallResult(new GovernmentCrtBoundary185Api.NormalReturn(vb(0x700L,0,0x1000L),0x8877665544332211L,0xA010L,nb(0x1234ABCDEF112233L,0x901L,0x902L,0x903L,0x904L,0x905L,0x906L,0x907L)),false),false,List.of(new Cell(4,0x1000L,0x89ABCDEFL,0x0L),new Cell(16,0x1000L,0x123456789ABCDEFL,0xFEDCBA9876543210L),new Cell(8,0x1008L,0xFEDCBA9876543210L,0x0L),new Cell(4,0x1010L,0x55L,0x0L),new Cell(8,0x1100L,0x5000L,0x0L),new Cell(8,0x1108L,0x100000000L,0x0L),new Cell(4,0x110CL,0x1L,0x0L),new Cell(8,0x1110L,0x1454DE270L,0x0L),new Cell(8,0x1118L,0x14448D1F8L,0x0L),new Cell(8,0x1120L,0x14448D268L,0x0L),new Cell(8,0x1128L,0x0L,0x0L),new Cell(8,0x1130L,0x0L,0x0L),new Cell(8,0x1138L,0x1454DE278L,0x0L),new Cell(4,0x1140L,0x0L,0x0L),new Cell(8,0x1148L,0x0L,0x0L),new Cell(8,0x1150L,0x0L,0x0L),new Cell(8,0x1158L,0x1454DE270L,0x0L),new Cell(4,0x1160L,0xFFFFFFFFL,0x0L),new Cell(2,0x1164L,0x0L,0x0L),new Cell(1,0x1166L,0x0L,0x0L),new Cell(16,0x2000L,0x123456789ABCDEFL,0xFEDCBA9876543210L),new Cell(4,0x2010L,0x55L,0x0L),new Cell(8,0x2100L,0x4000L,0x0L),new Cell(4,0x210CL,0x1L,0x0L),new Cell(8,0x7008L,0xA000L,0x0L),new Cell(8,0x9F78L,0x1437283BBL,0x0L),new Cell(8,0x9FB0L,0x907L,0x0L),new Cell(8,0x9FB8L,0x1000L,0x0L),new Cell(8,0x9FC0L,0x904L,0x0L),new Cell(8,0x9FC8L,0x14373ADC2L,0x0L),new Cell(8,0x9FD0L,0x1118L,0x0L),new Cell(8,0x9FD8L,0x0L,0x0L),new Cell(8,0x9FE0L,0x2000L,0x0L),new Cell(8,0x9FE8L,0x903L,0x0L),new Cell(8,0x9FF0L,0x906L,0x0L),new Cell(8,0x9FF8L,0x903L,0x0L),new Cell(8,0xA000L,0x902L,0x0L),new Cell(8,0xA008L,0x8877665544332211L,0x0L),new Cell(8,0xA010L,0x1000L,0x0L),new Cell(8,0xA018L,0x1234ABCDEF112233L,0x0L),new Cell(8,0xA020L,0x901L,0x0L),new Cell(8,0x1454DE270L,0x7000L,0x0L)));
+    }
+}
