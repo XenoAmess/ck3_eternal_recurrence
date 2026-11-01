@@ -1,0 +1,143 @@
+{
+  "schema": "xar.manual-native-witness.validation.v1",
+  "recorded_at_utc": "2026-11-01T15:07:54.641429+00:00",
+  "sources": [
+    {
+      "path": "Native203Api.hpp",
+      "bytes": 1444,
+      "sha256": "3b11df84249c5c1cd37058f1be6989e076c99cd6850c0e395fe21dbb849d29a1",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native203Execute.cpp",
+      "bytes": 12600,
+      "sha256": "7a503f0102c61f1695981368f757e4bf582b509b355610d13b2b36c6361f6690",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native203Io.cpp",
+      "bytes": 5251,
+      "sha256": "8d6251b56233d907aaf437f8ecc44cee263b5e52ec3f34e1de6f13c8e99917a3",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native203Main.cpp",
+      "bytes": 1121,
+      "sha256": "25d4a30924bd4e3b22b3a9eff366b1b2ba59a8ad7d41c9db6338b3207a486586",
+      "EOF_preserved": true
+    }
+  ],
+  "originals_in_CLI_order": [
+    {
+      "bytes": 351,
+      "sha256": "640d693377bdb24ad17d176109b437481cc7546458a4797b9d89cba52f30d75e"
+    },
+    {
+      "bytes": 126,
+      "sha256": "7cf624784877e13a583ba7675383f324e7e7d7786522046f0cfdfd064377a0d0"
+    },
+    {
+      "bytes": 194,
+      "sha256": "84d1fd764c92185dab2ad410375479acb4e657d1847674e98ce0cf5615fe68b3"
+    },
+    {
+      "bytes": 4,
+      "sha256": "c0e336a5f371ef22cd534e094269f2c1a9635cd080b71ffa671086832d3b60b7"
+    }
+  ],
+  "first_stages": [
+    {
+      "stage": "executor",
+      "start_utc": "2026-11-01T15:00:49.093964+00:00",
+      "end_utc": "2026-11-01T15:00:53.290326+00:00",
+      "seconds": 4.196360199999617,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "io",
+      "start_utc": "2026-11-01T15:01:32.557246+00:00",
+      "end_utc": "2026-11-01T15:01:37.405744+00:00",
+      "seconds": 4.848498100000143,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "link",
+      "start_utc": "2026-11-01T15:02:16.648181+00:00",
+      "end_utc": "2026-11-01T15:02:18.251291+00:00",
+      "seconds": 1.603102900000522,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "run",
+      "start_utc": "2026-11-01T15:03:03.285344+00:00",
+      "end_utc": "2026-11-01T15:03:03.374386+00:00",
+      "seconds": 0.08903579999969224,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    }
+  ],
+  "first_cases": {
+    "same_RAM_upper351_caller126_reverse194": 7,
+    "executed": 7,
+    "skipped": [],
+    "avx2Eligible": true
+  },
+  "actual_flags": {
+    "rawUnchanged": true,
+    "protectionsFinal": true,
+    "mappingReleased": true,
+    "callbackGuard": true,
+    "memoryGuard": true
+  },
+  "comparisons": [
+    {
+      "mode": "java-only",
+      "comparisons": 7,
+      "failures": 0,
+      "receipt_sha256": "99e680a83513f07242ca2652647e69d61d2851a6855e5f30eb546f75fa79e9d4"
+    },
+    {
+      "mode": "native-only",
+      "comparisons": 7,
+      "failures": 0,
+      "receipt_sha256": "9a31b70775194411eeb866e7aebb2eba357af9d5d0d9de28c502cd447f42fe1f"
+    },
+    {
+      "mode": "all",
+      "comparisons": 21,
+      "failures": 0,
+      "receipt_sha256": "e9f160263630bec537737c644abe222b8e9a1366bd01708a3c8204f2afe8bfe3"
+    }
+  ],
+  "expected_role": "Independent owner-frozen rows; model oracle length outputs discarded unread. Logical pointer roles frozen before execution.",
+  "expected_sha256": "19f52ff06a38e6fec8bd1b5623bb917ff00fc7a9e6cbcc962401dc88a4a57206",
+  "model_contribution": [
+    {
+      "task": "m6-copy4-known-reverse-native-executor203",
+      "status": "REJECTED_API_CALLBACK_AND_OBSERVATION_SEMANTICS",
+      "adopted": false
+    },
+    {
+      "task": "m6-copy4-known-reverse-native-executor203-correct02",
+      "status": "SECOND_SOURCE_REJECTED_OWNER_EXECUTOR_TAKEOVER",
+      "adopted": false
+    },
+    {
+      "task": "m6-copy4-known-reverse-native-io203",
+      "status": "PARTIAL_SOURCE_ADOPTION_PENDING_FIRST_STRICT",
+      "adopted": true
+    }
+  ],
+  "model_summary": "Executor owner-led after two rejected model candidates, reusing mature allocation/MXCSR and CPU helpers. IO partial closing-quote correction; Main original model source preserved.",
+  "owner_input_gap": "An independent source prefix omitted the four-byte float pool. This preparation omission was recorded separately; it is not inferred to cause the discarded length outputs.",
+  "software_formal_commit": "86a6466754332178d9c8c2aaf83b32bc79e343f5",
+  "software_source_package_cutoff": "The Java source package was cut after its14:59 software validation with Native pending. Native first7 passed at15:03; the Java Git publication happened later. The original source-package cutoff remains unchanged.",
+  "observed_outputs": "Final header, RAM words, controlled callback records and five measured guards; no Native access trace or vzeroupper count.",
+  "Game_or_DLL_deployment": false,
+  "publication_recompiled_or_reran": false,
+  "source_bytes_equal_first_validated_builds": true,
+  "scope": "Finite private Windows x64 original-code composition with controlled COPY/allocator ports. No natural COPY/allocator implementation, full ABI/EH/DF, Game/G2 or performance qualification."
+}
