@@ -8,6 +8,14 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 17:33 UTC：257已越Prisoner，planning拒绝fresh-empty分支
+
+257采用两份必要Core/Ordinary消费者及一份private baseline编码复用Root候选，三叶各首strict通过；实际MB于17:28:38.688065Z→44.922720Z通过（6.2346519秒）。同一Game33404/keeper69836下worker95340于17:31:05.983973Z启动，17:33:49.213637Z实际END1，墙钟163.2296596秒。已越Prisoner/source/Army/remaining检查，persistentPlanning调用DriverCapabilityStateProducer.initializeNewEpisode:302时被“actual fresh empty gameplay branch, once”要求拒绝。
+
+普通研究HOLD按真实业务END解除，258由M7独占核修Saved专用planning消费；继续重开已提交的SavedEntry，不能清state或伪造fresh empty分支。源码首编、构建与本次实际越门分别记，仍无新LOOP或SAVE；Root性能候选与功能修改共同装载，没有独立提速或秒/日结论。本轮未新增jcmd/JFR/Game探针。完整运行阶段见[运行记录](2026-10-31-runtime91-current.md)。
+
+恢复窗口12:46:59.357568Z→17:33:49.213637Z共17209.856069秒，包含该区间的等待、准备、修复、构建及失败；新增SAVE_CONFIRMED游戏日0，秒/新增保存日为null，10秒目标未达到。源码轻读按既定范围继续：新246的42568FC完整168B/43条指令及8B标准unwind已交M3独占，末端42568D4仍opaque；176B具名读取与本次worker重叠如实记录，不称全机零噪声，也未扩读相邻callee。
+
 ## 2026-11-01 17:16 UTC：256已越元数据预算门，停于Prisoner owner匹配
 
 255按已提交的SavedEntry重开，17:04:59.964727Z→17:05:33.451770Z实际END1（33.4870468秒），在Core读取97933B saved与95738B source-head元数据时被默认65536B receipt JSON预算拒绝；此前7MB Driver的初步归因已纠正。256仅把这两处接到既有ContinuityJson显式262144B ledger预算，保留默认receipt上限及全部Pin/SHA/full-tree等式；唯一Core首strict 2.7500071秒通过，实际MB 5.6018731秒通过。
