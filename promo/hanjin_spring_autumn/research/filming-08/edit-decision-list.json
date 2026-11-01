@@ -1,0 +1,428 @@
+{
+  "schema" : "hanjin.cao-ep02-confirmed-front/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "scope" : "Audited recut: actual190.1.1 to193.10.6;191 first offer before192 counter-raids and22000 surrender; explicit193 attrition11218; signed4000 treaty,domain9-to27,then rest; native choices retained; real stills only for recording gaps and short result holds; no future teaser.",
+  "human_signoff" : null,
+  "chapters" : [ {
+    "id" : "c02-01-title",
+    "title" : "帮过我的朋友，挡住了我的去路",
+    "start_seconds" : 0.0,
+    "end_seconds" : 13.866666666666667,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02-01-title.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-01-start.mkv",
+      "source_seek_seconds" : 248.3,
+      "display_seconds" : 6.999831734814066,
+      "speed" : 1.0,
+      "framing" : "event"
+    }, {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 1097.0,
+      "display_seconds" : 6.866834931852599,
+      "speed" : 1.0,
+      "framing" : "event"
+    } ]
+  }, {
+    "id" : "c02r2-02-start",
+    "title" : "三县开局",
+    "start_seconds" : 13.866666666666667,
+    "end_seconds" : 32.6,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-02-start.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-01-start.mkv",
+      "source_seek_seconds" : 473.9,
+      "display_seconds" : 11.8,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-04-cao-cao/opening-wave-01-1-event-hd_asp-0004.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 6.933333333333334,
+      "speed" : 1.0,
+      "framing" : "event"
+    } ]
+  }, {
+    "id" : "c02r2-03-march",
+    "title" : "西进讨董",
+    "start_seconds" : 32.6,
+    "end_seconds" : 57.1,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-03-march.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-01-start.mkv",
+      "source_seek_seconds" : 1448.8,
+      "display_seconds" : 4.5,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-04-cao-cao/gathering-01.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 6.0,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 200.0,
+      "display_seconds" : 10.0,
+      "speed" : 1.0,
+      "framing" : "army"
+    }, {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 349.8,
+      "display_seconds" : 4.0,
+      "speed" : 1.0,
+      "framing" : "army"
+    } ]
+  }, {
+    "id" : "c02-04-collision-v2",
+    "title" : "四千撞上两万五",
+    "start_seconds" : 57.1,
+    "end_seconds" : 68.13333333333334,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02-04-collision-v2.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 350.0,
+      "display_seconds" : 7.355555555555555,
+      "speed" : 1.0,
+      "framing" : "army"
+    }, {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 400.0,
+      "display_seconds" : 3.6777777777777776,
+      "speed" : 8.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "c02-05-hard-fight-v2",
+    "title" : "援军到了，仗仍难打",
+    "start_seconds" : 68.13333333333334,
+    "end_seconds" : 80.56666666666668,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02-05-hard-fight-v2.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 547.5,
+      "display_seconds" : 7.252777777777777,
+      "speed" : 1.0,
+      "framing" : "army"
+    }, {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 744.0,
+      "display_seconds" : 5.180555555555556,
+      "speed" : 1.0,
+      "framing" : "death-notice"
+    } ]
+  }, {
+    "id" : "c02-06-retreat-v2",
+    "title" : "把自己的人撤出来",
+    "start_seconds" : 80.56666666666668,
+    "end_seconds" : 93.06666666666668,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02-06-retreat-v2.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 807.8,
+      "display_seconds" : 2.966101694915254,
+      "speed" : 1.0,
+      "framing" : "full"
+    }, {
+      "source" : "edit-07-cao-cao/retreat-freeze.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 9.533898305084746,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "c02r2-07-dong-end",
+    "title" : "董卓被杀，诸侯自立",
+    "start_seconds" : 93.06666666666668,
+    "end_seconds" : 118.86666666666667,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-07-dong-end.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/war33-after-retreat-129-event-hd_world_news-0009.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.0,
+      "speed" : 1.0,
+      "framing" : "event"
+    }, {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 912.0,
+      "display_seconds" : 2.1,
+      "speed" : 1.0,
+      "framing" : "event"
+    }, {
+      "source" : "edit-07-cao-cao/invalid-freeze.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 1.8999999999999997,
+      "speed" : 1.0,
+      "framing" : "aftermath-text"
+    }, {
+      "source" : "shooting-04-cao-cao/war33-after-retreat-131-event-hd_hw-0001.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 14.8,
+      "speed" : 1.0,
+      "framing" : "event"
+    } ]
+  }, {
+    "id" : "c02r2-08-choice",
+    "title" : "旧交与陈留",
+    "start_seconds" : 118.86666666666667,
+    "end_seconds" : 137.56666666666666,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-08-choice.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 1086.85,
+      "display_seconds" : 18.7,
+      "speed" : 1.0,
+      "framing" : "event"
+    } ]
+  }, {
+    "id" : "c02r2-09-first-win",
+    "title" : "六天，小胜",
+    "start_seconds" : 137.56666666666666,
+    "end_seconds" : 150.16666666666666,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-09-first-win.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 1294.5,
+      "display_seconds" : 3.9999999999999996,
+      "speed" : 1.0,
+      "framing" : "panel:1120:280:400:800"
+    }, {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 1315.0,
+      "display_seconds" : 2.4999999999999996,
+      "speed" : 1.0,
+      "framing" : "panel:1120:280:400:800"
+    }, {
+      "source" : "shooting-04-cao-cao/take-02-war.mkv",
+      "source_seek_seconds" : 1319.1,
+      "display_seconds" : 0.8999999999999999,
+      "speed" : 1.0,
+      "framing" : "panel:1040:300:0:780"
+    }, {
+      "source" : "edit-08-cao-cao/source-catalog/first-battle-1319.100.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 5.199999999999999,
+      "speed" : 1.0,
+      "framing" : "panel:1040:300:0:780"
+    } ]
+  }, {
+    "id" : "c02r2-10-first-offer",
+    "title" : "191年十月，先试一次价",
+    "start_seconds" : 150.16666666666666,
+    "end_seconds" : 167.83333333333331,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-10-first-offer.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "source_seek_seconds" : 159.8,
+      "display_seconds" : 8.2,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "source_seek_seconds" : 550.2,
+      "display_seconds" : 3.8169999999999997,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "source_seek_seconds" : 1094.5,
+      "display_seconds" : 2.7,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "source_seek_seconds" : 1097.2,
+      "display_seconds" : 2.949666666666667,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    } ]
+  }, {
+    "id" : "c02r2-11-swap",
+    "title" : "192年，两边换家",
+    "start_seconds" : 167.83333333333331,
+    "end_seconds" : 186.4333333333333,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-11-swap.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "source_seek_seconds" : 2697.0,
+      "display_seconds" : 8.1,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/chenliu-counter-march-screen.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 4.0,
+      "speed" : 1.0,
+      "framing" : "panel:700:260:1220:550"
+    }, {
+      "source" : "shooting-04-cao-cao/chenliu-counter-march-screen.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 6.5,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  }, {
+    "id" : "c02r2-12-surrender",
+    "title" : "192年，青州军来了",
+    "start_seconds" : 186.4333333333333,
+    "end_seconds" : 206.83333333333331,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-12-surrender.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/counter-clockwave-5-event-hd_huangjin-10.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 7.799999999999999,
+      "speed" : 1.0,
+      "framing" : "event"
+    }, {
+      "source" : "shooting-04-cao-cao/qingzhou-army-before-assign-screen.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 3.89,
+      "speed" : 1.0,
+      "framing" : "panel:1100:230:0:850"
+    }, {
+      "source" : "shooting-04-cao-cao/qingzhou-commander-person-screen.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 3.4090000000000003,
+      "speed" : 1.0,
+      "framing" : "panel:420:740:0:0"
+    }, {
+      "source" : "shooting-04-cao-cao/qingzhou-commander-assign-screen.jpg",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 5.301,
+      "speed" : 1.0,
+      "framing" : "panel:1100:230:0:850"
+    } ]
+  }, {
+    "id" : "c02r2-13-attrition",
+    "title" : "193年八月，约一万一",
+    "start_seconds" : 206.83333333333331,
+    "end_seconds" : 229.5333333333333,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-13-attrition.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 270.0,
+      "display_seconds" : 22.7,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    } ]
+  }, {
+    "id" : "c02r2-14-capture",
+    "title" : "张邈被俘，仍不肯交地",
+    "start_seconds" : 229.5333333333333,
+    "end_seconds" : 253.36666666666665,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-14-capture.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 1141.5,
+      "display_seconds" : 3.0000000000000004,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 1778.0,
+      "display_seconds" : 1.9430000000000003,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 1844.4,
+      "display_seconds" : 18.890333333333334,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    } ]
+  }, {
+    "id" : "c02r2-15-offer",
+    "title" : "四千金，接受加五",
+    "start_seconds" : 253.36666666666665,
+    "end_seconds" : 282.7333333333333,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-15-offer.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 1924.3,
+      "display_seconds" : 3.7000000000000006,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 1928.0,
+      "display_seconds" : 25.666666666666668,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    } ]
+  }, {
+    "id" : "c02r2-16-settlement",
+    "title" : "提交和约，九到二十七",
+    "start_seconds" : 282.7333333333333,
+    "end_seconds" : 303.4333333333333,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-16-settlement.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 2096.2,
+      "display_seconds" : 4.5,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 2100.7,
+      "display_seconds" : 9.9,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 2185.5,
+      "display_seconds" : 3.0,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 2188.5,
+      "display_seconds" : 3.2999999999999994,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    } ]
+  }, {
+    "id" : "c02r2-17-rest",
+    "title" : "十月六日，选择休整",
+    "start_seconds" : 303.4333333333333,
+    "end_seconds" : 320.09999999999997,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-17-rest.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 2384.0,
+      "display_seconds" : 5.000000000000001,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 2401.5,
+      "display_seconds" : 3.8000000000000003,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 2945.0,
+      "display_seconds" : 7.866666666666667,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    } ]
+  }, {
+    "id" : "c02r2-18-promo",
+    "title" : "汉晋春秋",
+    "start_seconds" : 320.09999999999997,
+    "end_seconds" : 341.8666666666666,
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\narration\\c02r2-18-promo.mp3",
+    "shots" : [ {
+      "source" : "shooting-04-cao-cao/take-04-settlement.mkv",
+      "source_seek_seconds" : 4194.0,
+      "display_seconds" : 4.0,
+      "speed" : 1.0,
+      "framing" : "capturegame"
+    }, {
+      "source" : "edit-08-cao-cao/end-card.png",
+      "source_seek_seconds" : 0.0,
+      "display_seconds" : 17.766666666666666,
+      "speed" : 1.0,
+      "framing" : "full"
+    } ]
+  } ],
+  "duration_seconds" : 341.8666666666666
+}

@@ -1,0 +1,13 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T16:54:22.680011+00:00",
+  "scene_count": 18,
+  "srt_cue_count": 84,
+  "duration_seconds": 341.8666666666666,
+  "draft_mismatch_scenes": [],
+  "short_or_punctuation_only_cues": [],
+  "overlaps": [],
+  "spoken_text_exact": true,
+  "minimum_cue_seconds": 1.0459999999999923,
+  "human_signoff": null
+}

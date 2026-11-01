@@ -1,0 +1,858 @@
+{
+  "approval_granted": false,
+  "artifact": {
+    "audio_tracks": [
+      {
+        "channels": 2,
+        "codec": "aac",
+        "index": 1,
+        "sample_rate": 48000
+      }
+    ],
+    "bytes": 28292985,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration_seconds": "341.922667",
+    "path": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/cao-ep02-recut-review.mp4",
+    "resolution": {
+      "height": 1080,
+      "width": 1920
+    },
+    "sha256": "8635DCD5FC55168CAF2E81EAEA0BC87E4D8B7195D14532CA8743A4A39439D37F",
+    "subtitle_tracks": [],
+    "video_tracks": [
+      {
+        "average_frame_rate": "17505280/583511",
+        "codec": "h264",
+        "height": 1080,
+        "index": 0,
+        "width": 1920
+      }
+    ]
+  },
+  "format_version": 1,
+  "frames": [
+    {
+      "bytes": 1786509,
+      "chapter_ids": [
+        "c02-01-title"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000001",
+        "label": "extract human-review frame frame-000001",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000001",
+      "path": "frames/frame-000001.png",
+      "roles": [
+        "artifact-first",
+        "chapter-start"
+      ],
+      "sha256": "7369FB08C195C93E56B80D70754C1F67E47CFD7CDB39E309118B445618ED6708",
+      "timestamp_seconds": "0.000000"
+    },
+    {
+      "bytes": 1451587,
+      "chapter_ids": [
+        "c02-01-title"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000002",
+        "label": "extract human-review frame frame-000002",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000002",
+      "path": "frames/frame-000002.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "52A81F414AF2F4BD87CC81A000D24B1441F21184F84859A47CE60752C2A155EA",
+      "timestamp_seconds": "13.833333"
+    },
+    {
+      "bytes": 2143415,
+      "chapter_ids": [
+        "c02r2-02-start"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000003",
+        "label": "extract human-review frame frame-000003",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000003",
+      "path": "frames/frame-000003.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "B7F699450C7AE69EF52DD5D18DB862ED8446644FD5A4C79A5279B186C6E44BEF",
+      "timestamp_seconds": "13.866667"
+    },
+    {
+      "bytes": 1627627,
+      "chapter_ids": [
+        "c02r2-02-start"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000004",
+        "label": "extract human-review frame frame-000004",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000004",
+      "path": "frames/frame-000004.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "16090A84EF317DFC69AD0268D75EC05405282446F9EA3B89491D6EAB9249C231",
+      "timestamp_seconds": "32.566667"
+    },
+    {
+      "bytes": 2141337,
+      "chapter_ids": [
+        "c02r2-03-march"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000005",
+        "label": "extract human-review frame frame-000005",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000005",
+      "path": "frames/frame-000005.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "BACC1B1FCA985F0E1EBAA222D54671ED2F1CB5C3668F94F0FE97897D5494185D",
+      "timestamp_seconds": "32.600000"
+    },
+    {
+      "bytes": 2272945,
+      "chapter_ids": [
+        "c02r2-03-march"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000006",
+        "label": "extract human-review frame frame-000006",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000006",
+      "path": "frames/frame-000006.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "1E2DEDE52F64C9B7E9036C31AC674BB97B22120ECBAC25483A30C3E1F32A70F8",
+      "timestamp_seconds": "57.066667"
+    },
+    {
+      "bytes": 2167888,
+      "chapter_ids": [
+        "c02-04-collision-v2"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000007",
+        "label": "extract human-review frame frame-000007",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000007",
+      "path": "frames/frame-000007.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "AE1D4EDD178E443DDA0D48B11B598DE6603F50093B4A01AAB2DBE73D076222E1",
+      "timestamp_seconds": "57.100000"
+    },
+    {
+      "bytes": 2413402,
+      "chapter_ids": [
+        "c02-04-collision-v2"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000008",
+        "label": "extract human-review frame frame-000008",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000008",
+      "path": "frames/frame-000008.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "D59D69C15B28A2BFCF1EF755F882A5BF2A946EAF299B6432DDDF5A76E3595A40",
+      "timestamp_seconds": "68.100000"
+    },
+    {
+      "bytes": 2168835,
+      "chapter_ids": [
+        "c02-05-hard-fight-v2"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000009",
+        "label": "extract human-review frame frame-000009",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000009",
+      "path": "frames/frame-000009.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "5B01FB3CAD43FE016408FE6D1BAFF271DAD12B2CC4B9F14BF1ECEA2F9CC21CF1",
+      "timestamp_seconds": "68.133333"
+    },
+    {
+      "bytes": 1563141,
+      "chapter_ids": [
+        "c02-05-hard-fight-v2"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000010",
+        "label": "extract human-review frame frame-000010",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000010",
+      "path": "frames/frame-000010.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "D71D3F9655F591B9589120CD2B04D5A829D0917B5BCEC61B1A9683772284581A",
+      "timestamp_seconds": "80.533333"
+    },
+    {
+      "bytes": 2281076,
+      "chapter_ids": [
+        "c02-06-retreat-v2"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000011",
+        "label": "extract human-review frame frame-000011",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000011",
+      "path": "frames/frame-000011.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "7D9D1474C4822EB5F3FD59C5C973614EF3171020B196C9D718C43E03FE9F65EB",
+      "timestamp_seconds": "80.566667"
+    },
+    {
+      "bytes": 2253532,
+      "chapter_ids": [
+        "c02-06-retreat-v2"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000012",
+        "label": "extract human-review frame frame-000012",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000012",
+      "path": "frames/frame-000012.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "2ABC2DD1EF132DE73779E8CACE86DB46EF4948377AD8F6F1017F0120630E33DD",
+      "timestamp_seconds": "93.033333"
+    },
+    {
+      "bytes": 1601729,
+      "chapter_ids": [
+        "c02r2-07-dong-end"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000013",
+        "label": "extract human-review frame frame-000013",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000013",
+      "path": "frames/frame-000013.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "E1D21972DB127AE5C6FF910177F721D9D54656AD8BB41B963BEE055A66A63775",
+      "timestamp_seconds": "93.066667"
+    },
+    {
+      "bytes": 1647351,
+      "chapter_ids": [
+        "c02r2-07-dong-end"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000014",
+        "label": "extract human-review frame frame-000014",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000014",
+      "path": "frames/frame-000014.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "9954BA6D9EDE04819A746FB51B0A0E99FAA240F35D58C076341D89D1D6648117",
+      "timestamp_seconds": "118.833333"
+    },
+    {
+      "bytes": 1288419,
+      "chapter_ids": [
+        "c02r2-08-choice"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000015",
+        "label": "extract human-review frame frame-000015",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000015",
+      "path": "frames/frame-000015.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "CFA880250253B0D69EE4EE29E4120CAD71E4B4C797D0CAD0EEBCDC3E4AE74EE9",
+      "timestamp_seconds": "118.866667"
+    },
+    {
+      "bytes": 1296789,
+      "chapter_ids": [
+        "c02r2-08-choice"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000016",
+        "label": "extract human-review frame frame-000016",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000016",
+      "path": "frames/frame-000016.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "3B366F8BA4EC54D457CEE733ECC535E8F7D56C5B205FE02B15BFA38C3341F64B",
+      "timestamp_seconds": "137.533333"
+    },
+    {
+      "bytes": 568368,
+      "chapter_ids": [
+        "c02r2-09-first-win"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000017",
+        "label": "extract human-review frame frame-000017",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000017",
+      "path": "frames/frame-000017.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "638BE835D07689124916DC859AD97DCB2E9E34AD9969A11C1D8652B7B794AAE9",
+      "timestamp_seconds": "137.566667"
+    },
+    {
+      "bytes": 549413,
+      "chapter_ids": [
+        "c02r2-09-first-win"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000018",
+        "label": "extract human-review frame frame-000018",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000018",
+      "path": "frames/frame-000018.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "86D336BF78AE999601BBB5D81C49E4366327749AC1CED1BC661115036FBB5A8E",
+      "timestamp_seconds": "150.133333"
+    },
+    {
+      "bytes": 1154937,
+      "chapter_ids": [
+        "c02r2-10-first-offer"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000019",
+        "label": "extract human-review frame frame-000019",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000019",
+      "path": "frames/frame-000019.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "1852CE4B3B94F79D406E1BA92F658563F6283457A37E503E6E9BB926EEAABE83",
+      "timestamp_seconds": "150.166667"
+    },
+    {
+      "bytes": 1686019,
+      "chapter_ids": [
+        "c02r2-10-first-offer"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000020",
+        "label": "extract human-review frame frame-000020",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000020",
+      "path": "frames/frame-000020.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "7E0CE2F1F2ADAC8AE2EDE61213C50F43AF95D21281AF9303DB01706457FA4362",
+      "timestamp_seconds": "167.800000"
+    },
+    {
+      "bytes": 1685759,
+      "chapter_ids": [
+        "c02r2-11-swap"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000021",
+        "label": "extract human-review frame frame-000021",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000021",
+      "path": "frames/frame-000021.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "335F6DB2EE161BC0E80C095907492C63C3F304DBFB2D41810FF94041D589F8BA",
+      "timestamp_seconds": "167.833333"
+    },
+    {
+      "bytes": 1806682,
+      "chapter_ids": [
+        "c02r2-11-swap"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000022",
+        "label": "extract human-review frame frame-000022",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000022",
+      "path": "frames/frame-000022.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "184E7D7F5C3B2EC6767843B16494F55E990BB73C825C78B243991D5DA3C72184",
+      "timestamp_seconds": "186.400000"
+    },
+    {
+      "bytes": 1806682,
+      "chapter_ids": [
+        "c02r2-12-surrender"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000023",
+        "label": "extract human-review frame frame-000023",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000023",
+      "path": "frames/frame-000023.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "184E7D7F5C3B2EC6767843B16494F55E990BB73C825C78B243991D5DA3C72184",
+      "timestamp_seconds": "186.433333"
+    },
+    {
+      "bytes": 356076,
+      "chapter_ids": [
+        "c02r2-12-surrender"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000024",
+        "label": "extract human-review frame frame-000024",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000024",
+      "path": "frames/frame-000024.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "72533DBB5448F992731C88250D75A84862D0605B82975D7D006FE993A06E96A0",
+      "timestamp_seconds": "206.800000"
+    },
+    {
+      "bytes": 356076,
+      "chapter_ids": [
+        "c02r2-13-attrition"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000025",
+        "label": "extract human-review frame frame-000025",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000025",
+      "path": "frames/frame-000025.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "72533DBB5448F992731C88250D75A84862D0605B82975D7D006FE993A06E96A0",
+      "timestamp_seconds": "206.833333"
+    },
+    {
+      "bytes": 1625421,
+      "chapter_ids": [
+        "c02r2-13-attrition"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000026",
+        "label": "extract human-review frame frame-000026",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000026",
+      "path": "frames/frame-000026.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "B5B741AEC2AA35F3B5D3D902F88ED9D1FBAEFD4866B1A41B41FBFC8D4247A9DD",
+      "timestamp_seconds": "229.500000"
+    },
+    {
+      "bytes": 1625265,
+      "chapter_ids": [
+        "c02r2-14-capture"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000027",
+        "label": "extract human-review frame frame-000027",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000027",
+      "path": "frames/frame-000027.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "AAC902E011E768B26C1C02B2ADE613A16D902C3C15D7A53A3B187614F88A900A",
+      "timestamp_seconds": "229.533333"
+    },
+    {
+      "bytes": 1233820,
+      "chapter_ids": [
+        "c02r2-14-capture"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000028",
+        "label": "extract human-review frame frame-000028",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000028",
+      "path": "frames/frame-000028.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "6E648B3D386116EE4149F6EB0285750E4677B045DD0727617D19C6878D074EED",
+      "timestamp_seconds": "253.333333"
+    },
+    {
+      "bytes": 1233796,
+      "chapter_ids": [
+        "c02r2-15-offer"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000029",
+        "label": "extract human-review frame frame-000029",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000029",
+      "path": "frames/frame-000029.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "300E4D9E55E5CC327EEAD9B66E5685C33E3CBBE466894B0EBCE8B33EFFAF545E",
+      "timestamp_seconds": "253.366667"
+    },
+    {
+      "bytes": 1275232,
+      "chapter_ids": [
+        "c02r2-15-offer"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000030",
+        "label": "extract human-review frame frame-000030",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000030",
+      "path": "frames/frame-000030.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "53D8B86B21FA34F769410DFE07FE6DF29694307DB21A3BFCB01C5B7F059AFA7C",
+      "timestamp_seconds": "282.700000"
+    },
+    {
+      "bytes": 1275256,
+      "chapter_ids": [
+        "c02r2-16-settlement"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000031",
+        "label": "extract human-review frame frame-000031",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000031",
+      "path": "frames/frame-000031.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "67F3DF64A854EBA34970868520C5374CE60EAEC83892287672246085C67573D3",
+      "timestamp_seconds": "282.733333"
+    },
+    {
+      "bytes": 1807485,
+      "chapter_ids": [
+        "c02r2-16-settlement"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000032",
+        "label": "extract human-review frame frame-000032",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000032",
+      "path": "frames/frame-000032.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "B5FA1A721C24172E6B7D69E1BE2B8208526AC5D94A1E894E185ABC7F8105F4DB",
+      "timestamp_seconds": "303.400000"
+    },
+    {
+      "bytes": 1807440,
+      "chapter_ids": [
+        "c02r2-17-rest"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000033",
+        "label": "extract human-review frame frame-000033",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000033",
+      "path": "frames/frame-000033.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "3C4A729DD1636584616EC36739A4951886B2DBD340ED9449474E1B6A036420B9",
+      "timestamp_seconds": "303.433333"
+    },
+    {
+      "bytes": 1721746,
+      "chapter_ids": [
+        "c02r2-17-rest"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000034",
+        "label": "extract human-review frame frame-000034",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000034",
+      "path": "frames/frame-000034.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "6D39542D46676FF7A87F18DB048BE4B883E241251436CF93DE1ADB47E05F4810",
+      "timestamp_seconds": "320.066667"
+    },
+    {
+      "bytes": 1721690,
+      "chapter_ids": [
+        "c02r2-18-promo"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000035",
+        "label": "extract human-review frame frame-000035",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000035",
+      "path": "frames/frame-000035.png",
+      "roles": [
+        "chapter-start"
+      ],
+      "sha256": "61996FC6C9C53E0AD92AB0FDC7BAFA2E2A1E947C29ABAFA99F16096A75E350C2",
+      "timestamp_seconds": "320.100000"
+    },
+    {
+      "bytes": 208754,
+      "chapter_ids": [
+        "c02r2-18-promo"
+      ],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000036",
+        "label": "extract human-review frame frame-000036",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000036",
+      "path": "frames/frame-000036.png",
+      "roles": [
+        "chapter-end"
+      ],
+      "sha256": "D6EC7A4778F37EF4ED7A967FB2ACD85A6A8EB52DD2BC64A03334CD214275FC6F",
+      "timestamp_seconds": "341.833333"
+    },
+    {
+      "bytes": 208754,
+      "chapter_ids": [],
+      "command": {
+        "audit_directory": "C:/workspace/hanjin-spring-autumn-20261031/edit-08-cao-cao/human-review-001-audit/frames/frame-000037",
+        "label": "extract human-review frame frame-000037",
+        "returncode": 0,
+        "status": "succeeded"
+      },
+      "id": "frame-000037",
+      "path": "frames/frame-000037.png",
+      "roles": [
+        "artifact-final"
+      ],
+      "sha256": "D6EC7A4778F37EF4ED7A967FB2ACD85A6A8EB52DD2BC64A03334CD214275FC6F",
+      "timestamp_seconds": "341.867644"
+    }
+  ],
+  "is_signoff": false,
+  "kind": "xar-promo-review-package",
+  "review_template": {
+    "bytes": 21762,
+    "path": "review-template.json",
+    "sha256": "1DA8A925AEF70141138C538331A823E1E8AD34200CD4E0BE455262886576E38A"
+  },
+  "state": "pending-human-review",
+  "template_only": true,
+  "timeline": {
+    "chapters": [
+      {
+        "boundary_seconds": [],
+        "end_seconds": "13.866667",
+        "id": "c02-01-title",
+        "start_seconds": "0.000000"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "32.600000",
+        "id": "c02r2-02-start",
+        "start_seconds": "13.866667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "57.100000",
+        "id": "c02r2-03-march",
+        "start_seconds": "32.600000"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "68.133333",
+        "id": "c02-04-collision-v2",
+        "start_seconds": "57.100000"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "80.566667",
+        "id": "c02-05-hard-fight-v2",
+        "start_seconds": "68.133333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "93.066667",
+        "id": "c02-06-retreat-v2",
+        "start_seconds": "80.566667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "118.866667",
+        "id": "c02r2-07-dong-end",
+        "start_seconds": "93.066667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "137.566667",
+        "id": "c02r2-08-choice",
+        "start_seconds": "118.866667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "150.166667",
+        "id": "c02r2-09-first-win",
+        "start_seconds": "137.566667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "167.833333",
+        "id": "c02r2-10-first-offer",
+        "start_seconds": "150.166667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "186.433333",
+        "id": "c02r2-11-swap",
+        "start_seconds": "167.833333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "206.833333",
+        "id": "c02r2-12-surrender",
+        "start_seconds": "186.433333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "229.533333",
+        "id": "c02r2-13-attrition",
+        "start_seconds": "206.833333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "253.366667",
+        "id": "c02r2-14-capture",
+        "start_seconds": "229.533333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "282.733333",
+        "id": "c02r2-15-offer",
+        "start_seconds": "253.366667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "303.433333",
+        "id": "c02r2-16-settlement",
+        "start_seconds": "282.733333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "320.100000",
+        "id": "c02r2-17-rest",
+        "start_seconds": "303.433333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "341.866667",
+        "id": "c02r2-18-promo",
+        "start_seconds": "320.100000"
+      }
+    ]
+  }
+}

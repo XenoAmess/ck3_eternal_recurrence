@@ -1,0 +1,48 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T16:38:28.682705+00:00",
+  "policy_version": "1.0.0",
+  "total_volume_bytes": 511776722944,
+  "available_bytes": 83122937856,
+  "current_project_usage_bytes": 39956943446,
+  "effective_project_quota_bytes": 51177672294,
+  "this_write_peak_bytes": 2147483648,
+  "other_unspent_reservations_bytes": 0,
+  "other_reservation_basis": "Prior filming and edit tasks closed; task bus new work is this local recut, no Game or download task started",
+  "system_growth_reserve_bytes": 16106127360,
+  "safety_bytes": 21474836480,
+  "roots": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence",
+      "bytes": 5055245471,
+      "entries": 85992,
+      "complete": true,
+      "wall_seconds": 1.538
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031",
+      "bytes": 12325059297,
+      "entries": 49132,
+      "complete": true,
+      "wall_seconds": 0.871
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310",
+      "bytes": 12792584942,
+      "entries": 30876,
+      "complete": true,
+      "wall_seconds": 1.734
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\downloads\\1158310",
+      "bytes": 9784053736,
+      "entries": 13527,
+      "complete": true,
+      "wall_seconds": 0.991
+    }
+  ],
+  "new_root": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao",
+  "raw_duplicated": false,
+  "review_at_utc": "2026-11-04T00:00:00Z",
+  "admitted": true
+}

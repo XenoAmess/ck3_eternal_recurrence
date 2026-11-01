@@ -1,0 +1,72 @@
+{
+  "schema": "hanjin.cao.first-treaty-cancel-map-availability/v1",
+  "machine_id": "4-8e1c2f1861",
+  "checked_at_utc": "2026-11-01T16:51:40.739Z",
+  "source": "C:/workspace/hanjin-spring-autumn-20261031/shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+  "source_dimensions": [
+    2560,
+    1440
+  ],
+  "status": "requested_short_extension_usable_at_checked_anchors",
+  "crop_filter": "crop=1936:1118:0:0",
+  "diagnostic_scale": "scale=1280:-2",
+  "frames": [
+    {
+      "seek_seconds": 1098,
+      "path": "first-cancel-map-1098.jpg",
+      "extraction_exit_code": 0,
+      "game_date": "191.10.4",
+      "main_modal": null,
+      "old_hover_tooltip": "阳夏男爵领",
+      "player_army_map_count": 3148,
+      "opponent_army_map_count": 1188
+    },
+    {
+      "seek_seconds": 1105,
+      "path": "first-cancel-map-1105.jpg",
+      "extraction_exit_code": 0,
+      "game_date": "191.10.4",
+      "main_modal": null,
+      "old_hover_tooltip": "阳夏男爵领",
+      "player_army_map_count": 3148,
+      "opponent_army_map_count": 1188
+    },
+    {
+      "seek_seconds": 1112,
+      "path": "first-cancel-map-1112.jpg",
+      "extraction_exit_code": 0,
+      "game_date": "191.10.4",
+      "main_modal": null,
+      "old_hover_tooltip": "阳夏男爵领",
+      "player_army_map_count": 3148,
+      "opponent_army_map_count": 1188
+    }
+  ],
+  "observations": [
+    "三个新采点都已关闭草案，中央是暂停地图，没有新事件/议和弹窗，日期都为191.10.4，没有倒退。",
+    "保留原有右侧雍丘被围攻通知、底部阳夏男爵领hover tooltip，不能叫完全没有任何tooltip；它们不是新大弹窗。",
+    "地图上3148/1188、右上总军3632、底部战分+18%；画面是暂停，保持1倍。"
+  ],
+  "requested_edl": {
+    "voice_length_seconds": 28.133,
+    "voice_cancel_phrase_start_seconds": 16.122,
+    "cancel_transition": {
+      "in_seconds": 1093,
+      "out_seconds": 1097.2,
+      "duration_seconds": 4.2
+    },
+    "post_cancel_map": {
+      "in_seconds": 1097.2,
+      "out_seconds": 1105.2,
+      "duration_seconds": 8,
+      "speed": 1
+    },
+    "verdict": "可用。新1098/1105样帧与已有1096.6草案关闭后地图证据相符；1105.2落在1112新核边界之内。"
+  },
+  "checked_hard_out_seconds": 1112,
+  "boundary_semantics": "将1112作为本次有限抽样确认的使用上限；没有把它认作下一弹窗真实开始时刻。该上限不等于逐帧无瞬时覆盖保证，不外推1112之后。",
+  "previous_evidence": "edit-07-cao-cao/source-catalog/map-check-1096.600.jpg",
+  "only_authored_under": "edit-08-cao-cao/source-catalog/",
+  "no_game_mcp_screen_or_editor_operations": true,
+  "no_copy_or_edl_changes": true
+}

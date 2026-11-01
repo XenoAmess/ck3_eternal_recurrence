@@ -1,0 +1,132 @@
+{
+  "schema": "hanjin.caocao-recut-visual-spotcheck/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T17:01:22.766134+00:00",
+  "subject_sha256": "8635dcd5fc55168caf2e81eaea0bc87e4d8b7195d14532ca8743a4a39439d37f",
+  "reviewer": "Codex focused frame inspection",
+  "scope": "15 focused final-video frames and37 native chapter/artifact boundary frames inspected; not continuous playback or user approval",
+  "checks": [
+    {
+      "seconds": 140,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\140.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "5511eadd147f8096199587c07596a72438dbad8f78f15812d8a6da5d677511aa",
+      "observed": "3486对472，底部战斗裁切，无旧无效大窗"
+    },
+    {
+      "seconds": 160,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\160.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "fa982afaa788aa46f345c0745fd7455148de7e704972671d1a479313835c8d50",
+      "observed": "191.10.4首次1000报价，接受度仍负"
+    },
+    {
+      "seconds": 177,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\177.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "dcf8bce290cf68fcd85bbc62ce6ea429b8b03346734e20652c4957791eb129b4",
+      "observed": "受降前换家通知，无田园之乐"
+    },
+    {
+      "seconds": 196,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\196.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "0dcbea158041aa2a9a03c70bc79380fa4648363870d55b942ee57028f3be102d",
+      "observed": "实际青州军22000，空主将"
+    },
+    {
+      "seconds": 199,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\199.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "06c49b3b249de13710c369a7e518714e258a1813fb3d0db515ec51132e521eb0",
+      "observed": "曹仁人物面板武力30，避开无关事件"
+    },
+    {
+      "seconds": 203,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\203.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "c1c68126cdeae5019d1c62401533c2a61d206a69e5046f12d4288b012ff272c1",
+      "observed": "实际任命后曹仁居中将位置，仍22000"
+    },
+    {
+      "seconds": 209,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\209.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "a5c3358395575224c7444c3eef65596c44c3ffefbb34cffeb1ca248cd0a3d6e0",
+      "observed": "193年日期与11218兵力，不再说当前22000"
+    },
+    {
+      "seconds": 233.2,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\233.2.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "5b2f6a4545f6141e89ff34e273d96d0c970620cee7873ea220c388be61ea6a7e",
+      "observed": "敌方参战者被俘与陈留胜利通知，显示张邈"
+    },
+    {
+      "seconds": 259,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\259.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "fde872217e73e5c347587686ce4768e244a7bad50399f94a50d51775542ca268",
+      "observed": "最终4000金报价接受+5，战分50"
+    },
+    {
+      "seconds": 289,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\289.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "fc02edfcde9e9cfccda2b40ff45cd1ad7baed77916d9f7fceb090344466218d7",
+      "observed": "即时胜利窗，顶栏2086金与27直辖，9.25"
+    },
+    {
+      "seconds": 300.5,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\300.5.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "175b6628a775cf8d405d3c44f90117b74187732140941fecbedbe76ca23ef8a9",
+      "observed": "胜利窗关闭后的新地图"
+    },
+    {
+      "seconds": 311.9,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\311.9.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "bef0630632a62d7d6809f4d3d41765db28d90998aa61961bf8cd6d85390e9b73",
+      "observed": "休整消窗后地图，无回营或解散声称"
+    },
+    {
+      "seconds": 316,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\316.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "c23cc634686f4c1636cca281a692bc8d1afd35fa30165097995acea53e3654af",
+      "observed": "10.6休整之后的最终人物页"
+    },
+    {
+      "seconds": 328,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\328.jpg",
+      "exit_code": 0,
+      "stderr": "",
+      "sha256": "01a2cedc590ac2e7d99fc5468e834d22ce7e96dba77ab3b1d77bc31a68d7a591",
+      "observed": "汉晋春秋、Steam创意工坊搜索及组合/简介提示"
+    },
+    {
+      "seconds": 305.5,
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\focused-review\\305.5.jpg",
+      "exit_code": 0,
+      "sha256": "2772044e7dbe00c6df6adc6dcaabc8e270fa2a3a7689da749b2b3d393094363d",
+      "observed": "10.6东略兖州两项实际显示，第二项兵已疲敝暂且休整，与后续消窗/人物终态接续"
+    }
+  ],
+  "outcome": "No audited chronology/strength/modal/HUD/rest-ending mismatch observed in selected frames",
+  "human_signoff": null,
+  "native_chapter_boundary_frames_reviewed": 37
+}

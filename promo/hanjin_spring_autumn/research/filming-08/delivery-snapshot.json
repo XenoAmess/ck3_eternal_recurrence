@@ -1,0 +1,42 @@
+{
+  "schema": "hanjin.review-delivery/v1",
+  "machine_id": "4-8e1c2f1861",
+  "created_at_utc": "2026-11-01T17:02:24.687115900Z",
+  "video": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode02-caocao-audited-review.mp4",
+  "bytes": 28292985,
+  "sha256": "8635dcd5fc55168caf2e81eaea0bc87e4d8b7195d14532ca8743a4a39439d37f",
+  "duration_seconds": 341.923,
+  "subtitles": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode02-caocao-audited-review.srt",
+  "cover": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\cover-final.jpg",
+  "run_manifest": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\project\\runs\\cao-ep02-recut-001\\run-manifest.json",
+  "native_plan_build": "passed",
+  "automated_audit": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\project\\runs\\cao-ep02-recut-001\\editorial-audit\\automated-audit.json",
+  "pending_human_review": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-08-cao-cao\\human-review-001",
+  "human_signoff": null,
+  "full_decode_exit_code": 0,
+  "gameplay_scope": "Actual Cao Cao campaign 190.1.1 to 193.10.6; coalition setback, Chenliu war, actual Qingzhou force, captured Zhang Miao, signed 4000-gold treaty, domain9-to27, then chose rest; two raw recording gaps honestly use original stills; no next-episode or unplayed mechanism preview",
+  "public_delivery_files": [
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode02-caocao-audited-review.mp4",
+      "bytes": 28292985,
+      "sha256": "8635dcd5fc55168caf2e81eaea0bc87e4d8b7195d14532ca8743a4a39439d37f"
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode02-caocao-audited-review.srt",
+      "bytes": 6746,
+      "sha256": "73d12888d749388253b8ea01279fe39b8bc1451fc053abef6fa83e183645f5bc"
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode02-caocao-audited-narration.m4a",
+      "bytes": 4828085,
+      "sha256": "bcb026cd073b0c4deb7733479ca0974299b4ea91985982958c7e5c0a749e13e5"
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode02-caocao-audited-description.txt",
+      "bytes": 1022,
+      "sha256": "1ca703b0798d52781c540ad01a00e8eeaf82a3a9c270923fc7cd65fc9c186628"
+    }
+  ],
+  "description": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode02-caocao-audited-description.txt",
+  "old_review_preserved": true
+}

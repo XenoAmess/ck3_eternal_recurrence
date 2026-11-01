@@ -1,0 +1,616 @@
+{
+  "schema": "hanjin.cao-ep02.chronological-source-replacements/v1",
+  "machine_id": "4-8e1c2f1861",
+  "created_at_utc": "2026-11-01T16:38:27.217Z",
+  "source_root": "C:/workspace/hanjin-spring-autumn-20261031/",
+  "ownership": "Only edit-08-cao-cao/source-catalog authored. No narration/EDL/editor/media/repo/Game changes.",
+  "purpose": "按实际纪年重排的候选镜头，供root剪辑；不是已生成的新影片或正式EDL。",
+  "principles": [
+    "以下order必须保持；同一事件可按旁白裁短，但不能跨hard_out读到下一事件。",
+    "paused_hold一律1倍，不把静止地图8倍伪装成行军；不循环原片补时。",
+    "recording_gap只用对应真实原图，不冒称点击录像。",
+    "10月6日人物终态只放在休整实际选择之后。",
+    "03/04原录包含外桌面，先crop=1936:1118:0:0，等比放入1920×1080，保留顶栏与底部日期。"
+  ],
+  "crop_presets": {
+    "take01_take02_full": {
+      "source_dimensions": [
+        1920,
+        1080
+      ],
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "take03_take04_game": {
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "filter": "crop=1936:1118:0:0",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "width": 1936,
+        "height": 1118
+      },
+      "verified": "沿用Root已核裁切，本次2700与2097.2全帧复核；Explorer在此右侧/下侧，完整底HUD保留。"
+    },
+    "first_battle_panel": {
+      "source_dimensions": [
+        1920,
+        1080
+      ],
+      "filter": "crop=1120:280:400:800",
+      "crop": {
+        "x": 400,
+        "y": 800,
+        "width": 1120,
+        "height": 280
+      },
+      "preview": "edit-08-cao-cao/source-catalog/first-battle-crop-preview.jpg",
+      "verified_at_seconds": [
+        1294.5,
+        1296.6,
+        1315,
+        1317.5
+      ],
+      "notes": "含双方主将、3486/472、焦城之战及末段3482/5；中央旧讨董无效窗口在裁切外。画幅4:1，应等比留边，不能拉伸16:9。"
+    },
+    "first_battle_aftermath_army": {
+      "source_dimensions": [
+        1920,
+        1080
+      ],
+      "filter": "crop=1040:300:0:780",
+      "crop": {
+        "x": 0,
+        "y": 780,
+        "width": 1040,
+        "height": 300
+      },
+      "preview": "edit-08-cao-cao/source-catalog/first-aftermath-crop-preview.jpg",
+      "verified_at_seconds": [
+        1319.1
+      ],
+      "notes": "1319.1已回普通军队卡，须换此裁切。显示3486及三将，避开中央无效窗；此裁切不含右侧战分18盾牌，勿声称18已在特写内可见。"
+    }
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "id": "190_cao_start",
+      "game_date": "190.1.1",
+      "source": "shooting-04-cao-cao/take-01-start.mkv",
+      "footage_state": "paused_hold_portrait_animation",
+      "speed": 1,
+      "in_seconds": 473.9,
+      "out_seconds": 493.3,
+      "hard_out_seconds": 899.8,
+      "crop_preset": "take01_take02_full",
+      "content": "曹操34岁，人物页与三县，6024金左右、4358兵；适合作开局与片名背景。",
+      "evidence": "edit-07-cao-cao/source-catalog/opening-check-473.900.jpg"
+    },
+    {
+      "order": 2,
+      "id": "190_aspiration",
+      "game_date": "190.1.1",
+      "source": "shooting-04-cao-cao/opening-wave-01-1-event-hd_asp-0004.jpg",
+      "footage_state": "actual_still_for_short_native_event",
+      "content": "本志第一项实拍原图；真实录像只有01@901.33–901.85约半秒，不够读长段。",
+      "optional_video": {
+        "source": "shooting-04-cao-cao/take-01-start.mkv",
+        "in_seconds": 901.33,
+        "out_seconds": 901.85,
+        "hard_out_seconds": 901.88,
+        "speed": 1
+      }
+    },
+    {
+      "order": 3,
+      "id": "190_migration_news_optional",
+      "game_date": "190.2.1",
+      "source": "shooting-04-cao-cao/opening-wave-01-3-event-hd_world_news-0008.jpg",
+      "footage_state": "actual_still",
+      "content": "真实本局新闻写天子迁长安与雒阳宫室焚毁；若保留这句，放在4月出兵之前保持纪年，或由文案owner明确回述。",
+      "notes": "这是曹操收到新闻，不是玩家操作董卓迁都；不使用7月地图冒充迁都。"
+    },
+    {
+      "order": 4,
+      "id": "190_april_raise",
+      "game_date": "190.4.2",
+      "source": "shooting-04-cao-cao/take-01-start.mkv",
+      "footage_state": "actual_raise_then_gathering",
+      "speed": 1,
+      "in_seconds": 1448.8,
+      "out_seconds": 1453.5,
+      "hard_out_seconds": 1460,
+      "crop_preset": "take01_take02_full",
+      "content": "4月HUD与真实召兵，军队刚集结时0人。",
+      "notes": "4358成军画面在录像缺口，可接下一真实静图，不说0人已经出发。"
+    },
+    {
+      "order": 5,
+      "id": "190_gathered_4358",
+      "game_date": "190_after_april_raise_before_shiqiu",
+      "source": "shooting-04-cao-cao/gathering-01.png",
+      "footage_state": "actual_still_recording_gap",
+      "content": "4358已集结，原图可短留；对应09:20–09:43录制缺口。"
+    },
+    {
+      "order": 6,
+      "id": "190_shiqiu_entry",
+      "game_date": "190.7",
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "footage_state": "actual_battle_panel",
+      "speed": 1,
+      "in_seconds": 349.8,
+      "out_seconds": 360,
+      "hard_out_seconds": 750,
+      "crop_preset": "take01_take02_full",
+      "content": "曹操4358对25002市丘战斗，不用长战斗铺垫。"
+    },
+    {
+      "order": 7,
+      "id": "190_shiqiu_reinforcements",
+      "game_date": "190_shiqiu_same_battle",
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "footage_state": "paused_battle_panel",
+      "speed": 1,
+      "in_seconds": 547.5,
+      "out_seconds": 560,
+      "hard_out_seconds": 750,
+      "crop_preset": "take01_take02_full",
+      "content": "己方参战侧29933对23583；不能把整侧近三万称作曹操直属。"
+    },
+    {
+      "order": 8,
+      "id": "190_cao_yu_death",
+      "game_date": "190_shiqiu_same_battle",
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "footage_state": "actual_notification",
+      "speed": 1,
+      "in_seconds": 744,
+      "out_seconds": 748.5,
+      "hard_out_seconds": 750,
+      "crop_preset": "take01_take02_full",
+      "content": "右侧曹玉战死通知。可用旧editor已核death-notice framing；本次不另发明新坐标。",
+      "evidence": "shooting-04-cao-cao/battle01-retreat-preview-late-screen.jpg"
+    },
+    {
+      "order": 9,
+      "id": "190_retreat",
+      "game_date": "190_after_shiqiu",
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "footage_state": "brief_actual_post_retreat_map",
+      "speed": 1,
+      "in_seconds": 807.8,
+      "out_seconds": 810.6,
+      "hard_out_seconds": 811,
+      "crop_preset": "take01_take02_full",
+      "content": "原生撤退已执行，千里草窗口关闭后的地图。短取即可，不把停留窗口说成连续行军。"
+    },
+    {
+      "order": 10,
+      "id": "191_dong_death",
+      "game_date": "191.6.1",
+      "source": "shooting-04-cao-cao/war33-after-retreat-129-event-hd_world_news-0009.jpg",
+      "footage_state": "actual_still",
+      "content": "董卓死讯长留以真实原图；录像02@912.0–912.7仅很短。",
+      "optional_video": {
+        "source": "shooting-04-cao-cao/take-02-war.mkv",
+        "in_seconds": 912,
+        "out_seconds": 914.1,
+        "hard_out_seconds": 914.15,
+        "speed": 1,
+        "content": "短片同时含死讯关闭及讨董无效窗口；只在本段使用旧无效窗。"
+      }
+    },
+    {
+      "order": 11,
+      "id": "191_warlord_settlement",
+      "game_date": "191.6.2",
+      "source": "shooting-04-cao-cao/war33-after-retreat-131-event-hd_hw-0001.jpg",
+      "footage_state": "actual_still",
+      "content": "群雄并起、据守故地的实际选项。可短接02@914.1–914.85真实极短消窗，不延长到下一事件。"
+    },
+    {
+      "order": 12,
+      "id": "191_chenliu_advance",
+      "game_date": "191.6.12",
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "footage_state": "paused_event_then_actual_native_choice_disappearance",
+      "speed": 1,
+      "in_seconds": 1097,
+      "out_seconds": 1105.7,
+      "hard_out_seconds": 1106,
+      "crop_preset": "take01_take02_full",
+      "content": "陈留之谋与真实选择进兵；实际提交1105.124。",
+      "notes": "只称『选了即日进兵』，删无证鼠标位置/鼠标点击。事件约1105.2关闭后不要长留旧无效窗。"
+    },
+    {
+      "order": 13,
+      "id": "191_first_skirmish_open",
+      "game_date": "191.7.2",
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "footage_state": "paused_actual_battle_panel",
+      "speed": 1,
+      "in_seconds": 1294.5,
+      "out_seconds": 1300.5,
+      "hard_out_seconds": 1304,
+      "crop_preset": "first_battle_panel",
+      "content": "3486对472；本局底部面板实际名焦城之战。中央旧董卓无效窗被裁除。",
+      "evidence": [
+        "edit-08-cao-cao/source-catalog/first-battle-1294.500.jpg",
+        "edit-08-cao-cao/source-catalog/first-battle-1296.600.jpg"
+      ]
+    },
+    {
+      "order": 14,
+      "id": "191_first_skirmish_end",
+      "game_date": "191.7.6_to_191.7.8",
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "footage_state": "actual_battle_numbers_change",
+      "speed": 1,
+      "in_seconds": 1315,
+      "out_seconds": 1317.5,
+      "hard_out_seconds": 1317.5,
+      "crop_preset": "first_battle_panel",
+      "content": "6日到8日，双方实际降至3482/5。已采1317.5仍战斗面板，不跨入1319军队卡。",
+      "evidence": [
+        "edit-08-cao-cao/source-catalog/first-battle-1315.000.jpg",
+        "edit-08-cao-cao/source-catalog/first-battle-1317.500.jpg"
+      ]
+    },
+    {
+      "order": 15,
+      "id": "191_first_skirmish_aftermath",
+      "game_date": "191.7.8",
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "footage_state": "actual_post_battle_army_card",
+      "speed": 1,
+      "in_seconds": 1319.1,
+      "out_seconds": 1320,
+      "hard_out_seconds": 1320.4,
+      "crop_preset": "first_battle_aftermath_army",
+      "content": "回到军队卡，视角不同必须换裁切；无需凑成长战斗段。",
+      "evidence": "edit-08-cao-cao/source-catalog/first-battle-1319.100.jpg"
+    },
+    {
+      "order": 16,
+      "id": "191_first_treaty_18_minus87",
+      "game_date": "191.10.4",
+      "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "footage_state": "paused_actual_treaty",
+      "speed": 1,
+      "in_seconds": 159.8,
+      "out_seconds": 172.5,
+      "hard_out_seconds": 548,
+      "crop_preset": "take03_take04_game",
+      "content": "18战分、完整索取价值69、接受意愿−87；这是第一次谈判，必须在192换家之前。"
+    },
+    {
+      "order": 17,
+      "id": "191_first_treaty_1000_minus80",
+      "game_date": "191.10.4",
+      "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "footage_state": "actual_add_1000_then_paused_proposal",
+      "speed": 1,
+      "in_seconds": 550.2,
+      "out_seconds": 565,
+      "hard_out_seconds": 1093,
+      "crop_preset": "take03_take04_game",
+      "content": "真正1000金点击在550.207，552.1已是1000/−80。不得拿240秒早期操作冒充。"
+    },
+    {
+      "order": 18,
+      "id": "191_first_treaty_cancel",
+      "game_date": "191.10.4",
+      "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "footage_state": "actual_cancel_then_map",
+      "speed": 1,
+      "in_seconds": 1093,
+      "out_seconds": 1097.2,
+      "hard_out_seconds": 1098,
+      "crop_preset": "take03_take04_game",
+      "content": "草案关闭，未提交；须在第一次谈判段讲清楚。"
+    },
+    {
+      "order": 19,
+      "id": "192_home_sieges_clean_map",
+      "game_date": "192.1.9",
+      "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "footage_state": "paused_clean_front_map",
+      "speed": 1,
+      "in_seconds": 2697,
+      "out_seconds": 2710,
+      "hard_out_seconds": 2710,
+      "crop_preset": "take03_take04_game",
+      "content": "真实受降前战线，右侧雍丘被围攻通知，3059本军/1155敌军，右上总军3546。没有田园之乐大弹窗。",
+      "evidence": "edit-08-cao-cao/source-catalog/year192-map-2700.000.jpg",
+      "notes": "地图暂停，保持1倍；只表示战线状态，不声称画面演出了围城全过程。"
+    },
+    {
+      "order": 20,
+      "id": "192_counter_march_actual_still",
+      "game_date": "192_before_qingzhou_surrender",
+      "source": "shooting-04-cao-cao/chenliu-counter-march-screen.jpg",
+      "footage_state": "actual_still_recording_gap",
+      "content": "受降前本军3001/总军3466，右侧雍丘围战败、襄邑被围攻等实际通知；无无关弹窗。",
+      "notes": "11:37实况截图在03/04录制缺口，诚实用静图。无需新增未知日历日；放在192.1.9地图之后、192受降之前。"
+    },
+    {
+      "order": 21,
+      "id": "192_qingzhou_event",
+      "game_date": "192",
+      "date_raw": 45485808,
+      "source": "shooting-04-cao-cao/counter-clockwave-5-event-hd_huangjin-10.jpg",
+      "footage_state": "actual_still_recording_gap",
+      "content": "真实济北受降第一项；实际生成22000。原图与Native事件源证据，不冒称受降点击录像。"
+    },
+    {
+      "order": 22,
+      "id": "192_qingzhou_22000",
+      "game_date": "192_after_surrender",
+      "date_raw_at_original_ui_read": 45489672,
+      "source": "shooting-04-cao-cao/qingzhou-army-before-assign-screen.jpg",
+      "footage_state": "actual_still_recording_gap",
+      "content": "青州军22000和未设主将原图。该UI帧晚于事件本日，但仍192年，按前后原件顺序排列。"
+    },
+    {
+      "order": 23,
+      "id": "192_qingzhou_cao_ren_assignment",
+      "game_date": "192_after_surrender",
+      "source": "shooting-04-cao-cao/qingzhou-commander-assign-screen.jpg",
+      "footage_state": "actual_still_recording_gap",
+      "content": "曹仁任命实际原图；不是后期193年录像冒充点击。",
+      "additional_actual_still": "shooting-04-cao-cao/qingzhou-commander-person-screen.jpg"
+    },
+    {
+      "order": 24,
+      "id": "193_aug22_11218",
+      "game_date": "193.8.22",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "paused_cao_ren_portrait_and_map",
+      "speed": 1,
+      "in_seconds": 270,
+      "out_seconds": 288,
+      "hard_out_seconds": 648,
+      "crop_preset": "take03_take04_game",
+      "content": "曹仁人物页、青州军11218、全军14496；必须在进入这段前明确193年，旁白不能再以现在时说两万人。",
+      "notes": "可截短6–18秒，停止旧的8倍暂停伪行军；不用270/400两段反复讲同一日期。",
+      "evidence": "edit-07-cao-cao/human-review-001/frames/frame-000025.png"
+    },
+    {
+      "order": 25,
+      "id": "193_sept15_real_battle",
+      "game_date": "193.9.15_to_after_193.9.21",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "ongoing_battle_then_actual_native_day_advance",
+      "speed": 1,
+      "in_seconds": 1133,
+      "out_seconds": 1144.5,
+      "hard_out_seconds": 1145,
+      "crop_preset": "take03_take04_game",
+      "content": "真实交战、原生推进约1141.153–1142.686，1143.890确认战斗结束；不用1698/1700已暂停战后镜头伪快进。"
+    },
+    {
+      "order": 26,
+      "id": "193_zhang_miao_captured",
+      "game_date": "193.9_after_battle_before_settlement",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "paused_actual_post_battle_notifications",
+      "speed": 1,
+      "in_seconds": 1778,
+      "out_seconds": 1805,
+      "hard_out_seconds": 1806,
+      "crop_preset": "take03_take04_game",
+      "content": "右侧9.21敌方参战者被俘/陈留之战胜利通知；不是新一场动作录像。"
+    },
+    {
+      "order": 27,
+      "id": "193_final_treaty_50_66_zero_minus25",
+      "game_date": "193.9.25",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "paused_actual_treaty",
+      "speed": 1,
+      "in_seconds": 1844.4,
+      "out_seconds": 1874.4,
+      "hard_out_seconds": 1916.5,
+      "crop_preset": "take03_take04_game",
+      "content": "50战分、完整索取价值66、0金接受−25。69/66不是所需战分硬门槛。"
+    },
+    {
+      "order": 28,
+      "id": "193_final_payment_change",
+      "game_date": "193.9.25",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "actual_payment_changes",
+      "speed": 1,
+      "in_seconds": 1914.7,
+      "out_seconds": 1928,
+      "hard_out_seconds": 1928.5,
+      "crop_preset": "take03_take04_game",
+      "content": "0金−25→3000−3→4000+5，属于当前193年同次报价变化。"
+    },
+    {
+      "order": 29,
+      "id": "193_final_4000_hold",
+      "game_date": "193.9.25",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "paused_actual_accepted_proposal",
+      "speed": 1,
+      "in_seconds": 1928,
+      "out_seconds": 1953,
+      "hard_out_seconds": 2093.7,
+      "crop_preset": "take03_take04_game",
+      "content": "4000/+5可读连续持留；称191年『上次』1000，不说同次『刚才』。"
+    },
+    {
+      "order": 30,
+      "id": "193_sign_real_treaty",
+      "game_date": "193.9.25",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "actual_submit_transition",
+      "speed": 1,
+      "in_seconds": 2093.8,
+      "out_seconds": 2098.2,
+      "hard_out_seconds": 2099,
+      "crop_preset": "take03_take04_game",
+      "content": "真实提交→胜利，顶栏6086→2086、9/10→27/10。"
+    },
+    {
+      "order": 31,
+      "id": "193_victory_immediate_hud",
+      "game_date": "193.9.25",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "paused_actual_victory_with_immediate_hud",
+      "speed": 1,
+      "in_seconds": 2098.2,
+      "out_seconds": 2123.2,
+      "hard_out_seconds": 2186.2,
+      "crop_preset": "take03_take04_game",
+      "content": "真实9.25胜利窗，日期/2086金/27直辖均在同一原录。无需提前借10.6人物页证明27。",
+      "evidence": "edit-08-cao-cao/source-catalog/year193-victory-2097.200.jpg"
+    },
+    {
+      "order": 32,
+      "id": "193_close_victory",
+      "game_date": "193.9.25",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "actual_victory_dismiss_then_map",
+      "speed": 1,
+      "in_seconds": 2185.5,
+      "out_seconds": 2188.5,
+      "hard_out_seconds": 2191.8,
+      "crop_preset": "take03_take04_game",
+      "content": "实际关闭胜利，短地图/HUD，不跨进10.6新事件。"
+    },
+    {
+      "order": 33,
+      "id": "193_oct06_rest_event",
+      "game_date": "193.10.6",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "paused_actual_event",
+      "speed": 1,
+      "in_seconds": 2384,
+      "out_seconds": 2401.5,
+      "hard_out_seconds": 2403.35,
+      "crop_preset": "take03_take04_game",
+      "content": "东略兖州，两项实际可读；以事件为10.6开端。"
+    },
+    {
+      "order": 34,
+      "id": "193_oct06_actual_rest_choice",
+      "game_date": "193.10.6",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "actual_second_option_and_disappearance",
+      "speed": 1,
+      "in_seconds": 2401.5,
+      "out_seconds": 2405.3,
+      "hard_out_seconds": 2406.2,
+      "crop_preset": "take03_take04_game",
+      "content": "实际2403.482选择休整；2404.8已消窗，必须包含选择后状态。"
+    },
+    {
+      "order": 35,
+      "id": "193_oct06_final_character",
+      "game_date": "193.10.6",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "paused_final_character_portrait_animation",
+      "speed": 1,
+      "in_seconds": 2945,
+      "out_seconds": 2975,
+      "hard_out_seconds": 4192.2,
+      "crop_preset": "take03_take04_game",
+      "content": "休整之后的38岁曹操、2086金、27直辖最终人物页；现在才放，纪年及动作顺序均不回跳。",
+      "notes": "长旁白可延长到3009.5已核连续范围，但不必为动态占比拉长暂停页。"
+    },
+    {
+      "order": 36,
+      "id": "193_oct06_final_map",
+      "game_date": "193.10.6",
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "footage_state": "paused_final_map",
+      "speed": 1,
+      "in_seconds": 4194,
+      "out_seconds": 4224,
+      "hard_out_seconds": 4278,
+      "crop_preset": "take03_take04_game",
+      "content": "人物关闭后的终态地图，可接宣传；左上有小建议tooltip，不能称完全无tooltip画面。"
+    }
+  ],
+  "avoid_sources": [
+    {
+      "source": "shooting-04-cao-cao/counter-strengths-current-screen.jpg",
+      "reason": "中央田园之乐，与换家无关；25517总军已在青州受降后，禁放192受降之前。"
+    },
+    {
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "range": [
+        90,
+        1127
+      ],
+      "rule": "不可放在192受降/任命当时段，也不可用现在时22000；此处已经193年后期。"
+    },
+    {
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "range": [
+        1698,
+        1716
+      ],
+      "reason": "已是暂停战后，不作快进战斗。"
+    },
+    {
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "range": [
+        1105.7,
+        1320.4
+      ],
+      "rule": "中央旧董卓无效窗不能充陈留主叙事长镜；首战须用已核底部crop。"
+    },
+    {
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "range": [
+        2945,
+        4192.2
+      ],
+      "rule": "终态人物只能在10.6休整之后。"
+    },
+    {
+      "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "range": [
+        2697,
+        2710
+      ],
+      "rule": "真实暂停192.1.9地图，1倍可用，不当连续行军动作。"
+    }
+  ],
+  "verification": {
+    "fresh_unique_raw_frames": 7,
+    "fresh_crop_previews": 2,
+    "new_media_total_files": 9,
+    "raw_frame_paths": [
+      "first-battle-1294.500.jpg",
+      "first-battle-1296.600.jpg",
+      "first-battle-1315.000.jpg",
+      "first-battle-1317.500.jpg",
+      "first-battle-1319.100.jpg",
+      "year192-map-2700.000.jpg",
+      "year193-victory-2097.200.jpg"
+    ],
+    "all_extraction_exit_codes": 0,
+    "no_full_movie_decode": true,
+    "no_game_or_screen_access": true,
+    "previous_evidence_reused": [
+      "edit-07-cao-cao/source-catalog/suggested-shots.json",
+      "edit-07-cao-cao/source-catalog/raw-video-index.json",
+      "edit-07-cao-cao/source-catalog/selected-image-anchors.json",
+      "edit-07-cao-cao/copy-audit-01/fact-review.json"
+    ],
+    "limits": "仅给候选可用片段及硬上限；不是要求逐项全部入片。宽hard_out来自已有可读持留边界，本次未重新逐帧扫长段。短战尾只承诺已采1317.5仍是battle panel、1319.1是army card。"
+  }
+}

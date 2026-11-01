@@ -1,0 +1,46 @@
+{
+  "schema": "hanjin.recut-storage-closure/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T17:07:16.000263+00:00",
+  "roots": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence",
+      "bytes": 5055819064,
+      "entries": 86095,
+      "complete": true,
+      "wall_seconds": 1.316
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031",
+      "bytes": 12697223773,
+      "entries": 51295,
+      "complete": true,
+      "wall_seconds": 0.715
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310",
+      "bytes": 12792584942,
+      "entries": 30876,
+      "complete": true,
+      "wall_seconds": 1.446
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\downloads\\1158310",
+      "bytes": 9784053736,
+      "entries": 13527,
+      "complete": true,
+      "wall_seconds": 0.69
+    }
+  ],
+  "current_project_usage_bytes": 40329681515,
+  "effective_project_quota_bytes": 51177672294,
+  "available_bytes": 82737745920,
+  "edit_bytes": 342755421,
+  "edit_peak_budget_bytes": 2147483648,
+  "admitted": true,
+  "new_output_review_at_utc": "2026-11-04T00:00:00Z",
+  "retention_reason": "Current audited review and exact source/cue evidence remain needed until user review; existing original raw sources shared, no duplicate raw or new Game session",
+  "raw_duplicated": false,
+  "files_deleted": 0,
+  "large_files_not_committed": true
+}

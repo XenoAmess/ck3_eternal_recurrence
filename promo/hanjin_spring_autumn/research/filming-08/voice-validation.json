@@ -1,0 +1,12 @@
+{
+  "machine_id" : "4-8e1c2f1861",
+  "observed_at_utc" : "2026-11-01T16:52:48.963101600Z",
+  "draft_sha256" : "d5d86983f1d00f3b5b08382cfad560a412a39719b46847fd1c509b91b0604266",
+  "current_scenes" : 18,
+  "raw_cues" : 74,
+  "all_txt_exact" : true,
+  "all_raw_srt_including_punctuation_exact" : true,
+  "full_current18_audio_decode_exit_code" : 0,
+  "no_additional_tts_requests" : true,
+  "human_signoff" : null
+}
