@@ -1976,38 +1976,66 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                     "saved batch continuation requires its actual completed open frontier");
                             var previous=edges.get(i-1);
                             var previousDetails=ContinuityJson.parseObject(previous.details(),ContinuityJson.LEDGER_MAX_BYTES);
-                            StrictJson.require(previous.kind().equals(OrdinaryCycleTransitions.CYCLE_KIND)
-                                    &&"SETTLE".equals(StrictJson.text(previousDetails.get("operation")))
-                                    &&previous.sequence()+1==edge.sequence()
-                                    &&previous.before().status()==ContinuityState.Status.RUNNING
-                                    &&previous.after().status()==ContinuityState.Status.RUNNING
-                                    &&ContinuityJson.same(previous.after().toJson(),edge.before().toJson())
-                                    &&OrdinaryCycleTransitions.sessionFromJson(previousDetails.get("session")).equals(owner),
-                                    "saved batch continuation requires its immediately preceding canonical Life SETTLE");
-                            var oldBoundary=previous.before().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
-                            StrictJson.require(JournalKind.BATCH_STARTED.name().equals(StrictJson.text(oldBoundary.get("boundary")))
-                                    &&openBatch.equals(StrictJson.text(oldBoundary.get("batch_id")))
-                                    &&OrdinaryCycleTransitions.sessionFromJson(oldBoundary.get("session")).equals(owner)
-                                    &&ContinuityJson.same(oldBoundary,previous.after().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)),
-                                    "saved batch continuation changed its exact previous open batch");
-                            var previousActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(previous.before(),originals);
-                            var original=readOnlyPendingCompletedLifeCycle(previous.before(),owner,previousActions,originals).orElseThrow(
-                                    ()->new IOException("saved batch continuation lacks its exact completed pending Life original"));
-                            var receiptRef=ExactRef.fromJson(previousDetails.get("receipt_ref"));
-                            var beforeCycle=previous.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
-                            var afterCycle=previous.after().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
-                            StrictJson.require(actions.contains(original)&&receiptRef.equals(originals.receiptReferenceOf(original))&&cycleReceipts.contains(receiptRef)
-                                    &&receiptRef.equals(ExactRef.fromJson(beforeCycle.get("pending_receipt")))
-                                    &&afterCycle.get("pending_receipt").isNull()
-                                    &&StrictJson.integer(beforeCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)+1==completedCycles
-                                    &&StrictJson.integer(afterCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
-                                    &&lastCycleRef!=null&&lastCycleRef.equals(ExactRef.fromJson(afterCycle.get("head")))
-                                    &&lastCycleRef.equals(ExactRef.fromJson(previousDetails.get("cycle_record_ref"))),
-                                    "saved batch continuation changed its exact completed cycle or original receipt");
-                            var replay=transitions.reduce(previous.before(),new WriterContracts.Request(previous.kind(),previous.details(),java.util.List.of())).toJson();
-                            replay.put("sequence",previous.sequence());replay.put("last_event_identity",previous.eventIdentity());
-                            StrictJson.require(ContinuityJson.same(replay,previous.after().toJson()),
-                                    "saved batch continuation differs from the actual source-owned SETTLE edge");
+                            if(previous.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
+                                    &&JournalKind.SAVE_CONFIRMED.name().equals(StrictJson.text(previousDetails.get("boundary")))) {
+                                var pair=savedPair.orElseThrow();
+                                var oldBoundary=previous.before().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+                                var beforeCycle=previous.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+                                var afterCycle=previous.after().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+                                var savedState=savedBranch==null?null:savedBranch.get("state");
+                                var saves=actions.stream().filter(value->value.command().actionId().equals(pair.saveActionId())).toList();
+                                StrictJson.require(previous.sequence()+1==edge.sequence()
+                                        &&previous.before().status()==ContinuityState.Status.RUNNING
+                                        &&previous.after().status()==ContinuityState.Status.RUNNING
+                                        &&ContinuityJson.same(previous.after().toJson(),edge.before().toJson())
+                                        &&OrdinaryCycleTransitions.sessionFromJson(previousDetails.get("session")).equals(owner)
+                                        &&openBatch.equals(StrictJson.text(previousDetails.get("batch_id")))
+                                        &&JournalKind.BATCH_STARTED.name().equals(StrictJson.text(oldBoundary.get("boundary")))
+                                        &&openBatch.equals(StrictJson.text(oldBoundary.get("batch_id")))
+                                        &&OrdinaryCycleTransitions.sessionFromJson(oldBoundary.get("session")).equals(owner)
+                                        &&savedThroughSequence==previous.sequence()&&savedBranch!=null
+                                        &&ContinuityJson.same(savedBranch,previous.after().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))
+                                        &&CheckpointPairCodec.decode(ContinuityJson.canonical(previousDetails.get("checkpoint_pair"))).equals(pair)
+                                        &&saves.size()==1&&confirmedSaves.contains(originals.receiptReferenceOf(saves.getFirst()))
+                                        &&ContinuityJson.same(beforeCycle,afterCycle)&&ContinuityJson.same(savedState,afterCycle)
+                                        &&afterCycle.get("pending_receipt").isNull()
+                                        &&StrictJson.integer(afterCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
+                                        &&lastCycleRef!=null&&lastCycleRef.equals(ExactRef.fromJson(afterCycle.get("head"))),
+                                        "saved batch continuation requires its immediately preceding fully verified SAVE frontier");
+                            } else {
+                                StrictJson.require(previous.kind().equals(OrdinaryCycleTransitions.CYCLE_KIND)
+                                        &&"SETTLE".equals(StrictJson.text(previousDetails.get("operation")))
+                                        &&previous.sequence()+1==edge.sequence()
+                                        &&previous.before().status()==ContinuityState.Status.RUNNING
+                                        &&previous.after().status()==ContinuityState.Status.RUNNING
+                                        &&ContinuityJson.same(previous.after().toJson(),edge.before().toJson())
+                                        &&OrdinaryCycleTransitions.sessionFromJson(previousDetails.get("session")).equals(owner),
+                                        "saved batch continuation requires its immediately preceding canonical Life SETTLE");
+                                var oldBoundary=previous.before().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+                                StrictJson.require(JournalKind.BATCH_STARTED.name().equals(StrictJson.text(oldBoundary.get("boundary")))
+                                        &&openBatch.equals(StrictJson.text(oldBoundary.get("batch_id")))
+                                        &&OrdinaryCycleTransitions.sessionFromJson(oldBoundary.get("session")).equals(owner)
+                                        &&ContinuityJson.same(oldBoundary,previous.after().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)),
+                                        "saved batch continuation changed its exact previous open batch");
+                                var previousActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(previous.before(),originals);
+                                var original=readOnlyPendingCompletedLifeCycle(previous.before(),owner,previousActions,originals).orElseThrow(
+                                        ()->new IOException("saved batch continuation lacks its exact completed pending Life original"));
+                                var receiptRef=ExactRef.fromJson(previousDetails.get("receipt_ref"));
+                                var beforeCycle=previous.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+                                var afterCycle=previous.after().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+                                StrictJson.require(actions.contains(original)&&receiptRef.equals(originals.receiptReferenceOf(original))&&cycleReceipts.contains(receiptRef)
+                                        &&receiptRef.equals(ExactRef.fromJson(beforeCycle.get("pending_receipt")))
+                                        &&afterCycle.get("pending_receipt").isNull()
+                                        &&StrictJson.integer(beforeCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)+1==completedCycles
+                                        &&StrictJson.integer(afterCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
+                                        &&lastCycleRef!=null&&lastCycleRef.equals(ExactRef.fromJson(afterCycle.get("head")))
+                                        &&lastCycleRef.equals(ExactRef.fromJson(previousDetails.get("cycle_record_ref"))),
+                                        "saved batch continuation changed its exact completed cycle or original receipt");
+                                var replay=transitions.reduce(previous.before(),new WriterContracts.Request(previous.kind(),previous.details(),java.util.List.of())).toJson();
+                                replay.put("sequence",previous.sequence());replay.put("last_event_identity",previous.eventIdentity());
+                                StrictJson.require(ContinuityJson.same(replay,previous.after().toJson()),
+                                        "saved batch continuation differs from the actual source-owned SETTLE edge");
+                            }
                             openBatch=null;
                         }
                         if(batchPrefix==null) {
