@@ -1,6 +1,16 @@
 # runtime91 同局续行
 
 
+## 2026-11-01 15:17Z：同Game续接250实际在只读来源的分配锁停出，251显式只读接口与独立业务目录并行修复
+
+- Loaded私有权限链、Core实际head0物理原件校验、同一Core的Ordinary接线和新Main共5个独立生产叶均有真实首次strict0；250不合入未来Finance包。MB250于14:53:48.109622Z至14:53:53.652643Z实际exit0/5.543024秒，仅1native-transport+4local-service源。S/Z窄采用原件保；Core的Z子目录git apply曾跳过root相对路径返回0，由完整candidate断言发现，改root加--directory后双target完全LF相等，原失败与纠正sidecar均保，不授业务结果。
+- worker250 PID70560/birth134380185067831509于14:55:06.781770Z真实START，14:55:11.287775Z实际END1/4.506003秒。唯一首错为another live storage owner holds this exact runtime allocation window，真实栈RootRuntimeStorageGuard.requireInitialization144→ImmutableArtifactStore232→Core346→Prepared.openSavedSourceCore327→RootLoadedSavedResumeMain250.run74。失败早于SOURCE_QUALIFIED及NativeGameAttachment调用，故本次无新attachment、READ、保存入口或LOOP，未重launch/旧动作。
+- 原249保活Main在awaitOwner之后才关闭oldPrepared/newPrepared；当前存档来源构造却先申请该写者分配锁，这是实际本轮阻塞。禁止强解锁或杀keeper。只读源核进一步确认Store初始化、owner配额和reserve0、Writer初始化均不是只读reader接口；单跳一个acquire或把readerlease套canonical.lock都不闭合同。251按明确NoWrites Store/Writer模式保physical原件、SHA、fullPin、canonical history和真实session锁，M1/M4原叶owner并行，M7独占Core/Ordinary消费，intent仅Main两factory接线。
+- 现有WindowsLedgerLock已有OPEN_EXISTING、shareREAD|WRITE、无SHARE_DELETE及真实exclusive byte-lock接口，源核可原样复用，不修改全局锁。producer250/Loaded私有凭据不要求业务writer根与原Native LaunchPlan state根相等，因此原平台/producer保留；251准备新的独立业务根D:/ck3-state/ck3-java-resume91-saved69-251，原Game启动状态249、owner descriptor、Save788/profile/原launch deadline14:38:25.822845Z全部不改。新配置/请求只是数据准备、根尚absent，实际首编/运行未授。
+- 15:17:36.277149Z只读owned进程身份/退出核实keeper69836与Game33404均birth exact/STILL_ACTIVE；未做Game日期查询，不能声称新Game已读69日。累计确认保存仍原788的69日，旧81观察/77普通周期截面保，性能epoch05:52Z起零新增SAVE_CONFIRMED，秒/日仍null；失败、等待、恢复与构建全部计墙钟，0以历史累计日或重开目录改变分母。
+
+
+
 ## 2026-11-01 14:29Z：69日原件资格通过、Saved Game真实启动，入口因存档目录分配合同停出
 
 - source-only RUN02 于13:57:39.990956Z至13:58:08.439Z实际exit0/28.4483822秒：原confirmation788/date53145984/completed12、原head843/digest未变，Game/Native请求与账本提交均0。其成功仅是当前原件资格，不是新Game已读日期或新保存。RUN01的Pin membership原红保留：Runtime旧argfile把ExactRef路径反斜杠归一为斜杠，CLI2以实际canonical Pin+完整identity验证修正，未放宽Writer门；RUN02同时切实际Archive230，故不作单一性能因果比较。
