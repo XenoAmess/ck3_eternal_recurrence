@@ -1,5 +1,19 @@
 # runtime91 同局续行
 
+## 2026-11-02 同局累计30日确认保存；完整窗口约359秒／新增保存日
+
+本段依据 Runtime 在 `2026-11-01T23:52:02.430918Z` 封存的 `save-confirmed280`，在下方276失败／22日保存等旧截面之上追加，不改旧cutoff。保持 Game77132／birth `134380410301009189`、actor31254和本轮起点date53145984；不使用旧局69日作为本窗口分母，不重放原已执行或UNKNOWN动作。现场仍由Runtime独占，纯Git文档不作为健康worker继续运行的前置。
+
+143于 `23:49:21.936423600Z` 真实SETTLE／ELIGIBLE_ADVANCE，completed_cycles为4，SEM为native84/public57/date53146704。150于 `23:50:16.834675200Z` 真实SAVE_CONFIRMED，原事件99028B／SHA `179ce9cd0a857c3adacd054fdbe3c40353057b05e916e54059c2d39162863b37`；完整checkpoint pair为native86/public59/date53146704。该日期较本轮基线累计新增30日已保存，比119已确认的22日增加8日。SETTLE与SAVE使用各自真实帧，不能把SETTLE时间或先前观察推进当作已保存时间。
+
+具名冻结143事件100044B／SHA `3bb72c9c272f3e484664af7cf5b4cb5ff97cb1c56f93accabb29ea0b93c4f9b2`、150事件、SUMMARY和HEAD已独立核对长度／SHA与完整pair等式，150的completed-cycle proof与143的SEM一致。冻结head152为running、completed4、pending_receipt=null，记录batch8 BATCH_STARTED，仍保留原interruption历史；此段不据旧UNKNOWN猜测重新派发，也不向冻结之后延伸健康、动作或新增保存信用。
+
+主性能epoch仍为 `20:50:46Z`：至150真实确认保存的完整墙钟为10770.834675200秒／30新增已保存日＝359.0278225066666666666666667秒／日，暂定10秒目标尚未达到。失败、准备、重试、恢复和等待全部包含，旧276 END的8018.262318秒／22日＝364.466469仍是当时历史截面；不能把两段不同窗口当作受控A/B或将变化归因于某份未装载候选。后续等待仍须加入延长窗口。
+
+来源为执行机器 `current-resume268/save-confirmed280/SUMMARY.json`、`00000143.json`、`00000150.json`、`HEAD.frozen.json` 及本次具名独验；仅读取这些已存在冻结DATA，不沿嵌入路径读取实际Save、Driver、SEM大体或live账本，不新增Game查询、部署、重编、运行或保存。源码候选、软件验证、正式发表、实际装载、运行行为与SAVE继续分别记账。
+
+
+
 ## 2026-11-02 后续16／22日确认保存与276失败窗口，目标仍未达到
 
 本段冻结到 Main276 的 `2026-11-01T23:04:24.262318Z` 终态，另记后到的具名原件独验；下方273首8日保存及之后pending80的旧截面全保。同一 Game77132／birth `134380410301009189`，本轮基线 date53145984；不以旧局69日充当本窗口分母，不重放已执行或UNKNOWN动作。Runtime独占现场，文档只读取已冻结DATA，不查询Game、读取实际Save／Driver或操作账本。
