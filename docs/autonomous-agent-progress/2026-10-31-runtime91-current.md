@@ -1,5 +1,15 @@
 # runtime91 同局续行
 
+## 2026-11-01 18:12Z：258同局Saved恢复首次进入LOOP，随后Opening规划输入类型拒绝
+
+- 257加载Root固定Saved Driver编码与两个canonical业务来源消费者，三源MB exit0/6.234652秒；worker95340于17:31:05.983973Z启动，同Game33404实际附着并取得LoadedCustody。Prisoner归属、Saved Army及remaining采用链已越过，随后被普通DriverCapabilityStateProducer.initializeNewEpisode:302的fresh-empty合同拒绝；17:33:48.786340400Z BUSINESS_FAILED、48.790135300Z endpoint RELEASED，17:33:49.213637Z END1/163.229660秒，没有LOOP。冻结后head为sequence20/status=running、cycles12/date_raw53145984，不能继续沿用旧seq13作为当前头；canonical业务source与实际执行source分列，未放宽Owner或重置领域body。
+- 258另设genuine Saved proof门控的缓存初始化：保实际Driver/history，缺项合并且冲突拒绝；修订版明确拒孤立VERSION并按完整材料角色读Driver。Catalog普通fresh路径保留，Root历史CAS scope仅在真实旧readonly Session同次调用内有效。三源MB17:53:47.418706Z至53.271265Z exit0/5.852557秒，worker64084于17:54:41.328521Z启动；17:55:14.125384400Z SOURCE_QUALIFIED仍为原788/cycle12/date53145984/source843，15.421233900Z附着同Game33404，16.424192300Z LoadedCustody。没有重启Game、重做保存入口或重放旧动作。
+- 17:57:35.723961100Z真实ORDINARY_WORKER_LOOP_START/next0，启动墙钟174.395440秒；同刻采用的既有Saved head为sequence20/digest前缀87ce6224，并非重新提交SavedEntry。批0于17:57:35.832000300Z开始、17:58:24.270145900Z以INTERNAL_FAILURE结束，批墙钟48.437483秒，错误为`opening snapshot must be an object`。完整栈落在GovernanceCollector.openingComparison:177，经GovernanceCouncilSupplier:24及RootCrownRetryRuntime:152；不是以源码编译绿代替该分支通过。
+- 实际21为BATCH_STARTED，22为JAVA_DRIVER_READ_HISTORY_V1的Finance读取发布，23为BATCH_INTERRUPTED；最后head93143B/SHA`b8ead39aaf1b2cb9b185a07cd1e181d8709394cd1ca6f532703dc9a2143b5ad7`、sequence23/status=repair_required。17:58:24.365936400Z BUSINESS_END/exit4，24.367969700Z endpoint RELEASED，17:58:24.811644Z进程END4/223.483124秒。LOOP成立与批成功分别记录；attempted/applied/新世界动作正ACK/committed_saved_days均0，Game与keeper继续保留。
+- 原257准备脚本全局数字替换误伤sha256字段，已在Java启动前由preflight拒绝并保留原失败；258首实际执行改用稳定参数化runner。Root scope与编码复用是源码及实际装载事实，单次固定facts读取或恢复LOOP不构成端到端提速证明；没有追加线程、JFR或IO采样。累计确认保存仍69日，本性能epoch新增SAVE_CONFIRMED日0，端到端秒/新增保存日为null，等待、重试、增编、冷恢复及失败墙钟均计入。
+- 本段截至18:12:02Z，只核十七份具名冻结小件：`D:/ck3-state/resume91-runtime/runtime-doc257258/DELIVERY257258.json`。未读大SAVE/Driver、未新增Game查询或编测；全部旧历史逐字保留。259在该冻结时点仅为同局恢复与Opening消费者源码准备，后到采用、首验或运行结果另记，文档发表不作为P0前置。
+
+
 ## 2026-11-01 17:19Z：256越过完整账本预算，Prisoner归属检查拒绝，既有入口不变
 
 - 256仅加载Core两处完整ledger解析修复，MB17:11:50.333009Z至17:11:55.934879Z exit0/5.601873秒。worker46136于17:12:46.032782Z启动；17:13:16.824915700Z SOURCE_QUALIFIED仍指原788/cycle12/date_raw53145984/source843，17:13:17.800176700Z实际附着同Game33404，17:13:18.743226700Z LoadedCustody。此前255的默认64KiB解析门已越过。
