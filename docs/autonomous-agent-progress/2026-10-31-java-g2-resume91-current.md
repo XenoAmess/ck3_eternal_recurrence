@@ -8,6 +8,16 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 16:26 UTC：SavedEntry已真实提交，后继重开现有state
+
+254采用Writer与Root两份必要首编源码后，worker于16:19:30.802999Z启动、16:22:36.611128Z以END1结束，墙钟185.808128秒；endpoint于16:22:36.4295783Z释放，同一Game33404与keeper69836保留。16:26:02.232714Z只读核得当前canonical head为seq13/running/pending=false，last_settled_cycles=12、date_raw53145984；包含真实java_confirmed_saved_game_entry、Driver历史基线和domain bodies，head 32041B/SHA256 `e8aeefb2a9848486565e95f514c7b4cb6fa222fc3e972f7077cdb846884a3a9c`。这确认SavedEntry已提交，不能沿用此前0entry的截面描述当前状态，也不等于LOOP或新增保存。
+
+新失败位于ArmyRetreatDomain.initializeNewEpisode的first-gameplay entry资格检查，发生在Core.finishConfirmedSaved调用的catalog初始化链。255按真实保留的canonical state重开并修正Saved资格消费，不能重新走head0/fresh准入、清账本或重放entry及旧动作。254终态约122秒后才被读取，这段观察延迟保留，不能追记为持续业务HOLD。完整阶段与后继状态见[运行记录](2026-10-31-runtime91-current.md)。
+
+恢复窗口12:46:59.357568Z→16:26:02.232714Z共13142.875146秒，含等待、恢复失败、源码修复、构建、重试及终态读取；新增SAVE_CONFIRMED游戏日仍为0，秒/新增保存日为null，10秒目标未达到。旧788/69日保存、历史77已结算与81最后观察分别保留；本次SavedEntry恢复69日基线，不计新游戏日。
+
+[Native205](https://github.com/XenoAmess/ck3_eternal_recurrence/commit/ab75e86d85b1ae6b12f9a14bc07d5716778c5770)四份已编源码已正式：两个新parent/sibling双growth场景及普通RAM header alias，Native2与新Java2/346项检查首验通过，预冻owner期待与两端共六项pairwise对照无差异。原码、受控COPY/allocator与自然Game、完整ABI/EH、G2完成及保存日性能继续分列；发表没有重编、重跑或Game部署。
+
 ## 2026-11-01 16:01 UTC：稳定READ已越过，253在跨Writer嵌套锁门结束
 
 251实际达到source资格、Native attachment与LoadedCustody，随后在两次真实READ比较处END1。252将四份真实ACK/frame原件先落盘，机械比较确认full state唯一差异是event-trait membership的snapshot_revision由5到6，且分别等于各自外层revision；同session、日期53145984与paused状态相等。253复用已有typed稳定READ验证后越过该门，随后在新业务Writer的adoptConfirmedSaved Session内重入旧source Writer.locked，被现有嵌套锁保护拒绝。253 worker于16:00:52.109647Z→16:01:44.758646Z实际END1，墙钟52.648997秒，endpoint于16:01:44.6460644Z释放；0 entry、0 LOOP、0新增SAVE。原Game33404与keeper69836保留，没有重启或强制解锁。
