@@ -429,3 +429,20 @@ worker guide 已要求完整 spec/API 与写权齐备后直接并行；212 的�
 M7后到213又提供有限对照：11task/11POST=7stop/4length、0reset/retry，峰3只在6.991108、5.545431和33.046093秒三个窗口。whole输出截断后，三个真正完整方法域较短输出均stop；Entry祖类型混淆、两处RAX误清零经源审和模型窄hunk纠正后机械装配。consumer只补四个nested-type imports，属于partial；witness的三个length与一个完整语义错误均弃用，最终三方法由owner盲源编写。完整API仍须逐FQN/record accessor核，短输出与较低TTFT均不推cache，cached全null。这是既有请求的去重审计，不新增11POST，也不授Native/Game信用。
 
 M1/M2 479同一个模型完整答复的不同部分也必须独立分级：API R2 Java143行原字节采用，但伴随合同把真实E−58/childE−60错为E−78且猜类名，合同整段拒后由owner按原源设计；独立liveness两个length及reset半流未读整弃，0片段采用。该组4semantic task/6actual POST=2stop/2length/2reset，峰2累计45.246217秒。不能因Java字段正确追授同答复的合同正确，也不能把未读length当语义失败。已有Guide规则覆盖格式、截断、按产物采用和实际重叠，本批只向Models追加新证据；旧UNKNOWN、Ready、REQUEST和所有先前EOF前缀不改。
+
+
+## 2026-11-01 03:00Z 源模型窗口与分产物采用（223）
+
+固定窗口02:50:17.401193至03:00:17.401193Z有26次真实POST、25次END（23stop、2length），当刻已索引源码在途2；客户端峰4只在两个窗口合计17.705941秒。稍后一次服务GET为running1/waiting0，两次观察非原子快照，也不把服务running归为本机源码数。持续12–16及24–32仍未达到；两份历史中断的真实END继续UNKNOWN，不修造终态。本轮只补八个已发生私有EVENT根，不为统计新增POST。
+
+M3 220/221/222六个真实未写目标共用完整当前前缀同波派发，实际峰6持续15.553051秒；随后唯一abort纠正轮使实现阶段合计7POST/7stop、0retry。shared bounded edits和三薄绑定及91B实例类采用模型字面；74B首稿出现重复局部声明、重复已执行调用和分支外多读，源码审拒后唯一R2完整采用。这里的首稿错误没有实际调用javac，不能写成编译红；10源首次strict0/.8003178秒另计，独立见证不混算。
+
+223两个合同角色各两份完整stop提案未形成可采用的完整typed API，owner仅使用有限source facts后冻结纯声明。随后leaf、actual74 binding、三文件上下文修改同波3POST，峰3仅7.534559秒。leaf/binder完整decoded UTF8源码原样保留；shared首edit把正确Abort API字面标到Terminal207 API路径，owner只精确路由该文件元数据，不能称整edit包raw采用。其新childE声明又撞同方法原局部变量，模型与owner源审均漏检：真实首strict退出1/.7529128秒，owner只改声明及使用两个标识符为firstChildE，另存candidate02后必要strict0/.7830861秒。旧raw、Ready和首红原件完整保留。现有Guide已要求核完整局部作用域，本次只加新的实际反例，不增加重复条文；这七个HTTP不含后继独立Test或224实现。
+
+M2 489提供机制与期待的分级样本：Host模型R2仍有弱静态类型调用辅助方法、effect手增cursor后又logged write导致双消费，owner有限修正，属于partial。Book EARLY首完整方法正确、补三名义imports；FOUR两完整稿均错full preFrame、迟读和effects，最终按首POST前独立ASM oracle由owner接管。原Host/Data/Book在首次两场组合中保持字节，实际95Memory+4Invoke、fullFrame/V/N/DF通过。499只改成熟Host的类名和真实known-init入口，两个exact hunks原样重放；Book两次length9000/6500全文未读整弃，owner按先冻459 literal写新delta，后首次143global（140Memory+3Invoke）场通过。后到actual另存旁注，不回填原失败、Ready或oracle，不把强recipe复用称whole blind。
+
+493的完整R2 REQUEST确实保留50源且末任务含RET、current state、LEA具名纠正，但两份完整响应对象逐字相同；原请求审计与响应SHA均保留，cached均null，不推出缓存、服务内部原因或owner漏发纠正。其API Java部分采用，伴随合同错误栈偏移被拒；独立liveness两stop仍无源码片段采用，owner原ASM矩阵单列。495则API首完整Java原字节采用并sole strict0，模型liveness只有八CALL、三软件hook及区间事实正确，核心栈/alias/current-state矩阵拒后用owner预冻矩阵补齐。同答复的Java、合同与source facts各自分级，不能互相追授正确性。
+
+507的Host在完整模型R1上重放唯一R2三exact hunks，补正确256名义类型、去ghost辅助循环并在窄化前校canonical scalar，owner零Host Java/EOL编辑；这是两答复装配，不能称单whole回答raw。独立Book完整R1加R2 bounded edits大部分可用，owner仍修一处recipe literal和patch作用范围；59global=54Memory+5Invoke期待在独立原源审下冻结，未读新502或Host正文/结果。此处截止只有SourceReady，尚不授JVM或Native行为通过。
+
+M7后到214补充紧凑输出的限制：724token完整证明仍需owner纠preSP、image+next、once SHR与三路径，只是部分source-data，不是代码或fullV交付。213–214经验集12TASK/12POST=8stop/4length、0retry/reset，213峰3三个有限窗口与214独立单流分开，不能将等待或source准备拼成持续并发。215 consumer首稿还因前缀漏actual parent Memory16/FQN而有owner输入成本，同时模型自造dummy producer而未实现所求Calls，完整拒绝；补齐真实父API后的唯一R2源码审正确，来源原样保留，不能把首稿全部降格成机械imports问题。以上均是既有实际请求去重证据，0为文档新增HTTP/编测/Game动作。
