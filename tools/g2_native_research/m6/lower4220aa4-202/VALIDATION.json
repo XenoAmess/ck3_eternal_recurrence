@@ -1,0 +1,145 @@
+{
+  "schema": "xar.manual-native-witness.validation.v1",
+  "recorded_at_utc": "2026-11-01T14:50:23.371413+00:00",
+  "sources": [
+    {
+      "path": "Native202Api.hpp",
+      "bytes": 1014,
+      "sha256": "ed9908141783677f87aad9a31be38c7e8f25815f7008b2a93920a2409c7838eb",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native202Execute.cpp",
+      "bytes": 7522,
+      "sha256": "37e09d16bb4c97664c5dfc7a9db9eeaf43bdfc8f554e3377819cd8a3230ec26a",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native202Io.cpp",
+      "bytes": 4743,
+      "sha256": "3c7ed278819ac4b7db9b4cecc861ab43d47c73e88a351e991d268b9ddf657fcd",
+      "EOF_preserved": true
+    },
+    {
+      "path": "Native202Main.cpp",
+      "bytes": 899,
+      "sha256": "c6d5cbd19343163bb9952f5d9537715ec71955dd50aaccbf9ebaab36d1dba130",
+      "EOF_preserved": true
+    }
+  ],
+  "originals": [
+    {
+      "rva": "[4220AA4,4220B66)",
+      "bytes": 194,
+      "sha256": "84d1fd764c92185dab2ad410375479acb4e657d1847674e98ce0cf5615fe68b3"
+    },
+    {
+      "rva": "[9D0950,9D09CE)",
+      "bytes": 126,
+      "sha256": "7cf624784877e13a583ba7675383f324e7e7d7786522046f0cfdfd064377a0d0"
+    }
+  ],
+  "first_stages": [
+    {
+      "stage": "executor",
+      "start_utc": "2026-11-01T14:43:15.413666+00:00",
+      "end_utc": "2026-11-01T14:43:19.768964+00:00",
+      "seconds": 4.355299999999261,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "io",
+      "start_utc": "2026-11-01T14:44:40.394215+00:00",
+      "end_utc": "2026-11-01T14:44:45.537380+00:00",
+      "seconds": 5.143155199999455,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "link",
+      "start_utc": "2026-11-01T14:45:27.370178+00:00",
+      "end_utc": "2026-11-01T14:45:28.926380+00:00",
+      "seconds": 1.5562012999998842,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "run",
+      "start_utc": "2026-11-01T14:46:23.137693+00:00",
+      "end_utc": "2026-11-01T14:46:23.228339+00:00",
+      "seconds": 0.09064040000157547,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    }
+  ],
+  "first_cases": {
+    "direct": 12,
+    "same_RAM_caller126_to_reverse194": 2,
+    "executed": 14,
+    "skipped": [],
+    "avx2Eligible": true
+  },
+  "actual_flags": {
+    "rawUnchanged": true,
+    "protectionsFinal": true,
+    "mappingReleased": true,
+    "memoryGuard": true
+  },
+  "comparisons": [
+    {
+      "mode": "java-only",
+      "comparisons": 14,
+      "failures": 0,
+      "receipt_sha256": "6fe2b67d6d75b0d1fb454588acb3068edaec4933a400c2a1fa0fe5288ed71828"
+    },
+    {
+      "mode": "native-only",
+      "comparisons": 14,
+      "failures": 0,
+      "receipt_sha256": "61d9a2914be2a1b13fa884b6076f59c05dc7c7fdb8d2b86771bd5a26dabc5d90"
+    },
+    {
+      "mode": "all",
+      "comparisons": 42,
+      "failures": 0,
+      "receipt_sha256": "6cc7e1f4a7c6765341ce36e6613ee88c0f56d608ac5a38fa136f9fb350778a8f"
+    }
+  ],
+  "expected_role": "Independent owner-frozen rows; model oracle attempts rejected. RAX pointer-role normalization was frozen before execution.",
+  "expected_sha256": "62924d3d18177b078bc666fa6e790d9f68b023d1cd67a920f0c849ec86c91324",
+  "model_contribution": [
+    {
+      "task": "m6-reverse4220aa4-native-executor202",
+      "status": "REJECTED_API_FIELD_PROTECTION_AND_GUARD_SEMANTICS",
+      "adopted": false
+    },
+    {
+      "task": "m6-reverse4220aa4-native-executor202-correct02",
+      "status": "PARTIAL_SOURCE_ADOPTION_OWNER_CPU_BIT_AND_CHECKED_DATA_RELEASE_FIXES",
+      "adopted": true,
+      "owner_corrections": [
+        "IneligibleCPU skip checks actual featurebit5, preserving bit5-off SSE cases",
+        "Everydata mapping actually checkedreleased before attributing mappingReleased",
+        "Removed speculative/comment-only pointer-mapping prose; executed token changes limited to two above"
+      ]
+    },
+    {
+      "task": "m6-reverse4220aa4-native-io202",
+      "status": "PARTIAL_SOURCE_ADOPTION_OWNER_MECHANICAL_DECLARATION_AND_FORMAT_CORRECTIONS",
+      "adopted": true,
+      "owner_corrections": [
+        "Exactstreamsize/streampos casts in readers",
+        "Added JSONstring/control escaping for APIstrings",
+        "Qualified five Main calls with real reverse4220aa4_202 namespace and direct exception include"
+      ]
+    }
+  ],
+  "software_formal_commit": "ded2d48016d5f9dede540101146f75a35dc9be1b",
+  "software_formal_cutoff": "Native remained pending when the earlier Java source package was published; this is later independent evidence.",
+  "observed_outputs": "RAM DWORD contents, raw RAX normalized by the frozen pointer role, CPU eligibility/skipped IDs and four measured guards. No Native access trace or vzeroupper event count.",
+  "Game_or_DLL_deployment": false,
+  "publication_recompiled_or_reran": false,
+  "source_bytes_equal_first_validated_builds": true,
+  "scope": "Finite Windows x64 private-code capture only. No arbitrary memory, concurrency, natural feature value, full ABI/EH, Game/G2 completion or performance qualification."
+}

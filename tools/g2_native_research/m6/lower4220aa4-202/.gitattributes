@@ -1,0 +1,5 @@
+# Preserve the exact first-validated source bytes and EOF.
+Native202Api.hpp -text whitespace=-blank-at-eol,-blank-at-eof
+Native202Execute.cpp -text whitespace=-blank-at-eol,-blank-at-eof
+Native202Io.cpp -text whitespace=-blank-at-eol,-blank-at-eof
+Native202Main.cpp -text whitespace=-blank-at-eol,-blank-at-eof
