@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 
@@ -233,6 +234,14 @@ public final class WriterContracts {
     public static byte[] canonical(byte[] raw) { return ContinuityJson.canonical(object(Objects.requireNonNull(raw))); }
     public static ObjectNode object(byte[] raw) { return ContinuityJson.parseObject(raw, ContinuityJson.DOCUMENT_MAX_BYTES); }
     public static void requireDigest(String value) {
-        StrictJson.require(value != null && value.matches("[0-9a-f]{64}"), "lowercase SHA-256 required");
+        if (value == null || value.length() != 64) {
+            throw new ContractViolationException("lowercase SHA-256 required");
+        }
+        for (int i = 0; i < 64; i++) {
+            char c = value.charAt(i);
+            if (c < '0' || c > '9' && c < 'a' || c > 'f') {
+                throw new ContractViolationException("lowercase SHA-256 required");
+            }
+        }
     }
 }
