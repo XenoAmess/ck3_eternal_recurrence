@@ -2616,7 +2616,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     && !whole.has(WriterContracts.ORDINARY_CYCLE_FIELD) && !whole.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
                     && savedPair.isEmpty() && completedCycles==0 && pending==null && lastCycleRef==null && latest==null
                     && openBatch==null && used.size()==1 && retainedRecovery==null
-                    && actions.stream().noneMatch(action->action.visibleGameplay()||action.eligibleAdvance());
+                    && ordinaryCycleRoots(actions,isolatedLife).stream().noneMatch(action->action.visibleGameplay()||action.eligibleAdvance());
             StrictJson.require(state.status()!=ContinuityState.Status.RUNNING||retainedRecovery!=null||savedPair.isPresent()||pendingControl.isPresent(),
                     "running history requires its actual prior recovery or complete saved DATA");
             if(savedPair.isPresent()) {
