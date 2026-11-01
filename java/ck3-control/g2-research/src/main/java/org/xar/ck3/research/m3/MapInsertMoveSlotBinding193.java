@@ -63,4 +63,8 @@ public final class MapInsertMoveSlotBinding193 implements MapInsert191Api.Ports 
     @Override public void terminal4232cf4(MapInsert191Api.Memory memory, long siteRva) {
         delegate.terminal4232cf4(memory, siteRva);
     }
+
+    @Override public void terminal4232cf4(MapInsert191Api.Memory memory, long siteRva, long terminalEntryRsp) {
+        delegate.terminal4232cf4(memory, siteRva, terminalEntryRsp);
+    }
 }

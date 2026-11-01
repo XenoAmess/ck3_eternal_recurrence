@@ -15,7 +15,7 @@ public final class MapRehash190 {
             long rdx = r10;
             long rcx = entryRsp + 0x8L;
             ports.call86f210(memory, rcx, rdx);
-            ports.call4232cf4(memory);
+            ports.call4232cf4(memory, entryRsp - 0x30L);
             return MapRehashApi190.Completion.UNSUPPORTED_INT3_AFTER_ERROR_CALLS_RETURNED;
         }
         rehash(memory, ports, moduleBase, r10, eax, scratch);

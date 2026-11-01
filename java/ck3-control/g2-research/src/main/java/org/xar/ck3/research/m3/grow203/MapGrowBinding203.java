@@ -80,6 +80,11 @@ public final class MapGrowBinding203 {
             public void terminal4232cf4(MapInsert191Api.Memory mem, long siteRva) {
                 fallback.terminal4232cf4(mem, siteRva);
             }
+
+            @Override
+            public void terminal4232cf4(MapInsert191Api.Memory mem, long siteRva, long terminalEntryRsp) {
+                fallback.terminal4232cf4(mem, siteRva, terminalEntryRsp);
+            }
         };
     }
 }

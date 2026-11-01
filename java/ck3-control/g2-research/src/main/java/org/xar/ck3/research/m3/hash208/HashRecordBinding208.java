@@ -74,6 +74,11 @@ public final class HashRecordBinding208 {
             public void terminal4232cf4(HashInsert188Api.Memory m, long siteRva) {
                 fallback.terminal4232cf4(m, siteRva);
             }
+
+            @Override
+            public void terminal4232cf4(HashInsert188Api.Memory m, long siteRva, long terminalEntryRsp) {
+                fallback.terminal4232cf4(m, siteRva, terminalEntryRsp);
+            }
         };
     }
 }

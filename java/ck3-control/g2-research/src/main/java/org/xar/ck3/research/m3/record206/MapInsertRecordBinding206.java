@@ -71,6 +71,11 @@ public final class MapInsertRecordBinding206 {
             public void terminal4232cf4(MapInsert191Api.Memory m, long siteRva) {
                 fallback.terminal4232cf4(m, siteRva);
             }
+
+            @Override
+            public void terminal4232cf4(MapInsert191Api.Memory m, long siteRva, long terminalEntryRsp) {
+                fallback.terminal4232cf4(m, siteRva, terminalEntryRsp);
+            }
         };
     }
 }

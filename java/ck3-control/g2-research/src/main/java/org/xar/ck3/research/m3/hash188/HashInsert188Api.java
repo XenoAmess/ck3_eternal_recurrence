@@ -27,6 +27,9 @@ public final class HashInsert188Api {
         void reserveC3b700(Memory memory, long siteRva, long map, int edx);
         void overflow86f210(Memory memory, long siteRva, long rcx, long rdx);
         void terminal4232cf4(Memory memory, long siteRva);
+        default void terminal4232cf4(Memory memory, long siteRva, long terminalEntryRsp) {
+            terminal4232cf4(memory, siteRva);
+        }
     }
     /** Actual INT3 boundary reached only if the source's terminal call returns; no invented noreturn proof. */
     public static final class UnprojectedInt3 extends RuntimeException {

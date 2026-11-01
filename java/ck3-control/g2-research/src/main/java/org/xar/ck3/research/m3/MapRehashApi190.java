@@ -19,6 +19,9 @@ public final class MapRehashApi190 {
         void call86f210(Memory memory, long output, long map);
         /** No newly established argument register is invented after 86F210. */
         void call4232cf4(Memory memory);
+        default void call4232cf4(MapRehashApi190.Memory memory, long terminalEntryRsp) {
+            call4232cf4(memory);
+        }
     }
 
     public enum Completion {

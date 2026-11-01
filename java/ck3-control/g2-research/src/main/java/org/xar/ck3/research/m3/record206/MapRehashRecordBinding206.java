@@ -54,6 +54,11 @@ public final class MapRehashRecordBinding206 {
             public void call4232cf4(MapRehashApi190.Memory m) {
                 fallback.call4232cf4(m);
             }
+
+            @Override
+            public void call4232cf4(MapRehashApi190.Memory m, long terminalEntryRsp) {
+                fallback.call4232cf4(m, terminalEntryRsp);
+            }
         };
     }
 }

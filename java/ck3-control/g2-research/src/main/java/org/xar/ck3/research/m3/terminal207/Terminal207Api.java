@@ -9,6 +9,9 @@ public final class Terminal207Api {
     /** Only source-established arguments. Missing machine context must remain unsupported at the port. */
     public interface Ports {
         long call4246fb4(Memory memory, long siteRva);
+        default long call4246fb4(Memory memory, long siteRva, long calleeEntryRsp) {
+            return call4246fb4(memory, siteRva);
+        }
         void call4247004(Memory memory, long siteRva, int ecx);
         int call43da258(Memory memory, long siteRva, long code, int ecx);
         void call423283c(Memory memory, long siteRva, int ecx, int edx, int r8d);

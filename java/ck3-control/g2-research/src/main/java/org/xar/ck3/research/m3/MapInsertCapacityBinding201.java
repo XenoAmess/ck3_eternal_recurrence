@@ -71,4 +71,9 @@ public final class MapInsertCapacityBinding201 implements MapInsert191Api.Ports 
     public void terminal4232cf4(MapInsert191Api.Memory memory, long siteRva) {
         delegate.terminal4232cf4(memory, siteRva);
     }
+
+    @Override
+    public void terminal4232cf4(MapInsert191Api.Memory memory, long siteRva, long terminalEntryRsp) {
+        delegate.terminal4232cf4(memory, siteRva, terminalEntryRsp);
+    }
 }

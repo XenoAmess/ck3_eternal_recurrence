@@ -8,8 +8,22 @@ public final class Terminal4232CF4 {
     private Terminal4232CF4() { }
 
     public static Stop trace(Memory memory, Ports ports, long moduleBase) {
+        return traceInternal(memory, ports, moduleBase, false, 0L);
+    }
+
+    public static Stop trace(Memory memory, Ports ports, long moduleBase, long terminalEntryRsp) {
+        return traceInternal(memory, ports, moduleBase, true, terminalEntryRsp);
+    }
+
+    private static Stop traceInternal(Memory memory, Ports ports, long moduleBase, boolean hasContext, long terminalEntryRsp) {
         // 1. CALL 4246FB4 (site 0x4232CF8)
-        long rawRAX = ports.call4246fb4(memory, 0x4232CF8L);
+        long rawRAX;
+        if (hasContext) {
+            long S = terminalEntryRsp - 0x30L;
+            rawRAX = ports.call4246fb4(memory, 0x4232CF8L, S);
+        } else {
+            rawRAX = ports.call4246fb4(memory, 0x4232CF8L);
+        }
 
         // 2. TEST RAX,RAX (full 64-bit check)
         if (rawRAX != 0L) {

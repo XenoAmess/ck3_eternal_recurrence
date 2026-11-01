@@ -73,6 +73,18 @@ public final class HashTerminalBinding208 {
                 Terminal207Api.Stop stop = Terminal4232CF4.trace(capturedMemory, terminalPorts, moduleBase);
                 throw new UnsupportedOperationException("Terminal stop: " + stop);
             }
+
+            @Override
+            public void terminal4232cf4(HashInsert188Api.Memory m, long siteRva, long terminalEntryRsp) {
+                if (m != capturedMemory) {
+                    throw new IllegalArgumentException("Foreign memory instance passed to terminal4232cf4");
+                }
+                if (siteRva != SITE_RVA) {
+                    throw new IllegalArgumentException("Wrong site RVA passed to terminal4232cf4: " + Long.toHexString(siteRva));
+                }
+                Terminal207Api.Stop stop = Terminal4232CF4.trace(capturedMemory, terminalPorts, moduleBase, terminalEntryRsp);
+                throw new UnsupportedOperationException("Terminal stop: " + stop);
+            }
         };
     }
 }

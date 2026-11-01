@@ -73,4 +73,9 @@ public final class MapRehashCleanupContextBinding199 implements MapRehashApi190.
     public void call4232cf4(MapRehashApi190.Memory memory) {
         delegate.call4232cf4(memory);
     }
+
+    @Override
+    public void call4232cf4(MapRehashApi190.Memory memory, long terminalEntryRsp) {
+        delegate.call4232cf4(memory, terminalEntryRsp);
+    }
 }

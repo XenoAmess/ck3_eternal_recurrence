@@ -178,7 +178,7 @@ public final class HashInsertC39C60 {
         int capacity=p.capacity86e160(m,0xC39F2FL,currentMask+1,1);
         if(capacity>=0x1F) {
             p.overflow86f210(m,0xC39F83L,rbp+0x40L,in.map());
-            p.terminal4232cf4(m,0xC39F88L);
+            p.terminal4232cf4(m,0xC39F88L,in.scratch().bodyRsp()-8L);
             throw new UnprojectedInt3();
         }
         p.reserveC3b700(m,0xC39F3EL,in.map(),capacity);

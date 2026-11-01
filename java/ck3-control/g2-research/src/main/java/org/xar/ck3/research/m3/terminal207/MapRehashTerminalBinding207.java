@@ -61,6 +61,16 @@ public final class MapRehashTerminalBinding207 {
             }
 
             @Override
+            public void call4232cf4(MapRehashApi190.Memory mem, long terminalEntryRsp) {
+                if (mem != memory) {
+                    throw new IllegalArgumentException("Memory identity mismatch");
+                }
+                Terminal207Api.Stop stop = Terminal4232CF4.trace(memory, terminalPorts, moduleBase, terminalEntryRsp);
+                throw new UnsupportedOperationException(
+                    "Terminal4232CF4 returned Stop: " + stop.name());
+            }
+
+            @Override
             public long gs58(C3e150Api180.Memory mem) {
                 return fallback.gs58(mem);
             }

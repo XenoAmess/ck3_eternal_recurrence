@@ -90,6 +90,18 @@ public final class MapInsertTerminalBinding207 {
                 Terminal207Api.Stop stop = Terminal4232CF4.trace(capturedMemory, terminalPorts, moduleBase);
                 throw new UnsupportedOperationException("Terminal4232CF4 returned Stop: " + stop);
             }
+
+            @Override
+            public void terminal4232cf4(MapInsert191Api.Memory memory, long siteRva, long terminalEntryRsp) {
+                if (memory != capturedMemory) {
+                    throw new IllegalArgumentException("Memory identity mismatch");
+                }
+                if (siteRva != 0xC3BC88L) {
+                    throw new IllegalArgumentException("Unexpected site RVA: " + Long.toHexString(siteRva));
+                }
+                Terminal207Api.Stop stop = Terminal4232CF4.trace(capturedMemory, terminalPorts, moduleBase, terminalEntryRsp);
+                throw new UnsupportedOperationException("Terminal4232CF4 returned Stop: " + stop);
+            }
         };
     }
 }

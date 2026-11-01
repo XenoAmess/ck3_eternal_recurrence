@@ -56,6 +56,11 @@ public final class HashCapacityBinding209 {
             public void terminal4232cf4(HashInsert188Api.Memory memory, long siteRva) {
                 fallback.terminal4232cf4(memory, siteRva);
             }
+
+            @Override
+            public void terminal4232cf4(HashInsert188Api.Memory memory, long siteRva, long terminalEntryRsp) {
+                fallback.terminal4232cf4(memory, siteRva, terminalEntryRsp);
+            }
         };
     }
 }

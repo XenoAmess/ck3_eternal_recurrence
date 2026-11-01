@@ -204,7 +204,7 @@ public final class MapInsertC3B960 {
         int capacity = ports.capacity86e160(memory, 0xC3BC2FL, currentMask + 1, 1);
         if (capacity >= 0x1F) {
             ports.overflow86f210(memory, 0xC3BC83L, rbp + 0x40L, input.map());
-            ports.terminal4232cf4(memory, 0xC3BC88L);
+            ports.terminal4232cf4(memory, 0xC3BC88L, input.scratch().bodyRsp() - 8L);
             throw new UnprojectedInt3();
         }
         ports.reserveC3b700(memory, 0xC3BC3EL, input.map(), capacity, input.scratch().bodyRsp() - 8L);
