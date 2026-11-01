@@ -28,6 +28,11 @@ public final class TerminalTailBinding212 {
             }
 
             @Override
+            public void call4247004(Terminal207Api.Memory memory, long siteRva, int ecx, long calleeEntryRsp) {
+                fallback.call4247004(memory, siteRva, ecx, calleeEntryRsp);
+            }
+
+            @Override
             public int call43da258(Terminal207Api.Memory memory, long siteRva, long code, int ecx) {
                 return fallback.call43da258(memory, siteRva, code, ecx);
             }
@@ -35,6 +40,11 @@ public final class TerminalTailBinding212 {
             @Override
             public void call423283c(Terminal207Api.Memory memory, long siteRva, int ecx, int edx, int r8d) {
                 fallback.call423283c(memory, siteRva, ecx, edx, r8d);
+            }
+
+            @Override
+            public void call423283c(Terminal207Api.Memory memory, long siteRva, int ecx, int edx, int r8d, long calleeEntryRsp) {
+                fallback.call423283c(memory, siteRva, ecx, edx, r8d, calleeEntryRsp);
             }
 
             @Override

@@ -28,7 +28,11 @@ public final class Terminal4232CF4 {
         // 2. TEST RAX,RAX (full 64-bit check)
         if (rawRAX != 0L) {
             // 3. CALL 4247004 (site 0x4232D07) with ECX=0x16
-            ports.call4247004(memory, 0x4232D07L, 0x16);
+            if (hasContext) {
+                ports.call4247004(memory, 0x4232D07L, 0x16, terminalEntryRsp - 0x30L);
+            } else {
+                ports.call4247004(memory, 0x4232D07L, 0x16);
+            }
         }
 
         // 4. TEST BYTE PTR [RIP+0x11FC4F5], 0x2
@@ -55,7 +59,11 @@ public final class Terminal4232CF4 {
 
         // 9. CALL 423283C (site 0x4232D3A)
         //    Args: ECX=3, EDX=0x40000015, R8D=1
-        ports.call423283c(memory, 0x4232D3AL, 3, 0x40000015, 1);
+        if (hasContext) {
+            ports.call423283c(memory, 0x4232D3AL, 3, 0x40000015, 1, terminalEntryRsp - 0x30L);
+        } else {
+            ports.call423283c(memory, 0x4232D3AL, 3, 0x40000015, 1);
+        }
 
         // 10. CALL 4242354 (site 0x4232D44) with ECX=3
         ports.call4242354(memory, 0x4232D44L, 3);
