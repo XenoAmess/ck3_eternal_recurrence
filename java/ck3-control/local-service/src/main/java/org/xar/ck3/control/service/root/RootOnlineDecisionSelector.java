@@ -64,7 +64,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             + "These are implementation/archive references, not game facts; all original ROOT fields remain in root_facts. "
             + "rows without root_ref are already complete. Evaluate every row using its own exact frame and stamps. "
             + "Shared facts mean equal JSON values only, never a new observation or authority. "
-            + "When proposal_projection_schema is xar.model-family-legality-alias/v1, reconstruct proposal.arguments.planning_proof.family_marriage_legality.native_legal_candidates as the complete exact same JSON array as proposal.arguments.planning_proof.family_marriage_legality.candidates; all original array entries/unknown fields/precision/order are represented. proposal_id and body_sha256 still identify the original unprojected command; no hash recalculation of projected bytes.";
+            + "When proposal_projection_schema is xar.model-family-legality-alias/v1, reconstruct proposal.arguments.planning_proof.family_marriage_legality.native_legal_candidates as the complete exact same JSON array as proposal.arguments.planning_proof.family_marriage_legality.candidates; all original array entries/unknown fields/precision/order are represented. proposal_id and body_sha256 still identify the original unprojected command; no hash recalculation of projected bytes. "
+            + "When history_declarable_wars_projection_schema is xar.model-history-declarable-wars-alias/v1, restore history[i].result.declarable_wars from history[history[i].result.declarable_wars_history_ref].result.declarable_wars IN FULL and remove only the new technical declarable_wars_history_ref; use the original row's source frame, query sequence and stamps. Equal values are not new observations or authority. proposal_id and body_sha256 still identify the original unprojected command; no recalculation.";
 
     private final RootOrdinaryRuntimeConfiguration.DecisionProvider config;
     private final Clock clock;
@@ -174,6 +175,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             if (isQualifyingRootContextRead(row)) history.set(index, projectRootContextRead((ObjectNode) row, rootFacts));
         }
         data.put("history_projection_schema", "xar.model-root-history-dictionary/v1");
+        if (applyDeclarableWarHistoryAlias(history)) data.put("history_declarable_wars_projection_schema", "xar.model-history-declarable-wars-alias/v1");
         ArrayNode capabilities = data.putArray("capabilities");
         request.observations().bridgeCapabilities().stream().sorted().forEach(capabilities::add);
         ArrayNode routable = data.putArray("routable_operations");
@@ -222,6 +224,58 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         return root.isObject() && root.path("status").asText().equals("available")
                 && root.path("snapshot_revision").isIntegralNumber() && heir.isObject()
                 && heir.path("snapshot_revision").isIntegralNumber();
+    }
+
+    /** Narrow successful DECLARABLE_WARS shape; unfamiliar/UNKNOWN rows remain complete and unchanged. */
+    private static boolean isQualifyingDeclarableWarsRead(JsonNode row) {
+        if (!row.isObject() || row.size() != 5 || !row.path("index").isIntegralNumber()
+                || !row.path("command").isTextual() || !row.path("command").textValue().equals("query-declarable-wars")
+                || !row.path("ok").isBoolean() || !row.path("ok").booleanValue()) return false;
+        JsonNode source = row.path("read_history_source"), result = row.path("result");
+        if (!source.isObject() || !source.path("schema").asText().equals("xar.driver-read-history-source/v1")
+                || !source.path("kind").asText().equals("DECLARABLE_WARS")
+                || !source.path("payload_field").asText().equals("declarable_wars")
+                || !source.path("source_frame").isObject() || !source.path("source_frame").path("frame").isObject()
+                || !source.path("source_frame").path("game").isObject()
+                || !source.path("source_frame").path("machine_id").isTextual()
+                || !result.isObject() || !result.path("status").asText().equals("available")) return false;
+        JsonNode wars = result.path("declarable_wars");
+        return wars.isArray() && !wars.isEmpty();
+    }
+
+    /** Intern complete arrays by JsonNode.equals; preserve all unknown fields and distinct metadata. */
+    private static boolean applyDeclarableWarHistoryAlias(ArrayNode history) {
+        // A pre-existing ref could be mistaken for our projection under the request-wide marker.
+        // Preserve the entire history without this alias whenever that technical name is occupied.
+        for (JsonNode row : history) {
+            if (row.path("result").has("declarable_wars_history_ref")) return false;
+        }
+        List<JsonNode> interned = new ArrayList<>();
+        List<Integer> positions = new ArrayList<>();
+        boolean changed = false;
+        for (int i = 0; i < history.size(); i++) {
+            JsonNode row = history.get(i);
+            if (!isQualifyingDeclarableWarsRead(row)) continue;
+            ObjectNode result = (ObjectNode) row.get("result");
+            if (result.has("declarable_wars_history_ref")) continue; // Collision: skip unchanged.
+            JsonNode wars = result.get("declarable_wars");
+            int firstIndex = -1;
+            for (int j = 0; j < interned.size(); j++) {
+                if (interned.get(j).equals(wars)) { firstIndex = positions.get(j); break; }
+            }
+            if (firstIndex < 0) {
+                interned.add(wars);
+                positions.add(i);
+            } else {
+                ObjectNode projected = row.deepCopy();
+                ObjectNode projectedResult = (ObjectNode) projected.get("result");
+                projectedResult.remove("declarable_wars");
+                projectedResult.put("declarable_wars_history_ref", firstIndex);
+                history.set(i, projected);
+                changed = true;
+            }
+        }
+        return changed;
     }
 
     /** Structural JSON equality preserves integer precision and all unknown ROOT fields. */
