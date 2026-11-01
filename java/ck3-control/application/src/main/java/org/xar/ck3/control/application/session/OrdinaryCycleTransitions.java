@@ -521,7 +521,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 StrictJson.require(details.get("semantic").isNull() && details.get("cycle_record_ref").isNull() && details.get("cycle_record").isNull(), "RETAIN cannot claim a completed SEM");
                 StrictJson.require(state.pending().isEmpty() || state.pending().orElseThrow().equals(receiptRef), "another AUTO already awaits its fresh SEM");
                 StrictJson.require(find(state, receiptRef).isEmpty(), "a canonical AUTO already completed in this cycle branch cannot be counted again");
-                if (!matchesSettledActionContinuation(state, receipt))
+                if (!matchesSettledActionContinuation(state, receipt)
+                        && !matchesRecordedKnownCompletion(session, actualHead, state, receipt))
                     requireCurrentFrame(actualHead.state(), state, receipt.command().before());
             } else {
                 StrictJson.require(operation.equals("SETTLE"), "unknown ordinary cycle operation");
@@ -1891,6 +1892,27 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireObservedContinuation(adopted.frame(), before);
         StrictJson.require(before.frame().revision().compareTo(adopted.frame().frame().revision()) >= 0,
                 "canonical action regressed its adopted observation's public revision");
+        return true;
+    }
+
+    /** Retain only the exact already-applied known reply; this grants no current action or SAVE proof. */
+    private boolean matchesRecordedKnownCompletion(ContinuityStorePort.Session same, WriterContracts.Head head,
+            CycleState branch, ActionReceipt receipt) throws IOException {
+        var originals = archive.withSession(same);
+        var known = ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(head.state(), branch.session(),
+                ContinuityActionJournal.receipts(head.state(), originals), originals);
+        if (known.filter(receipt::equals).isEmpty()) return false;
+        var before = receipt.command().before();
+        requireObservedBindingNotRegressed(head.state(), before);
+        StrictJson.require(before.frame().revision().compareTo(StrictJson.integer(
+                head.state().toJson().get("latest_binding").get("revision"), BigInteger.ZERO, StrictJson.UINT64_MAX)) >= 0,
+                "confirmed reply regressed its canonical public revision");
+        var retained = load(branch.head().orElseThrow()).semantic();
+        requireObservedContinuation(retained.frame(), before);
+        StrictJson.require(before.frame().revision().compareTo(retained.frame().frame().revision()) >= 0
+                && !((ActionState.Settled) receipt.state()).attempt().guard().observedAt().isBefore(retained.observedAt()),
+                "confirmed reply predates or regresses its retained cycle observation");
+        StrictJson.require(head.digest().equals(same.head().digest()), "confirmed reply retention changed its actual writer head");
         return true;
     }
 

@@ -696,6 +696,9 @@ public final class RootApplicationAssembly {
                     if (result && ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, new SessionIdentity(game.machineId(), game.generation(), game.sessionId()), lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
                         result = false;
                     }
+                    if (result && ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(finalizationHead, new SessionIdentity(game.machineId(), game.generation(), game.sessionId()), lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
+                        result = false;
+                    }
                     lease.assertCurrent();return result;
                 });
                 if(!settled)return Optional.empty();
@@ -749,7 +752,8 @@ public final class RootApplicationAssembly {
                     var legacyPending = actionsList.stream().anyMatch(action -> !action.settled()
                             || action.command().operation().value().equals("private-select-player-lifestyle-stock-focus-v1")
                             && action.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED)
-                            || saveFinalization;
+                            || saveFinalization
+                            || ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(finalizationHead, identity, actionsList, originals).isPresent();
                     var completedLife = ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(finalizationHead, identity, actionsList, originals).isPresent();
                     lease.assertCurrent();
                     return new PendingRole(legacyPending, completedLife, saveFinalization);
