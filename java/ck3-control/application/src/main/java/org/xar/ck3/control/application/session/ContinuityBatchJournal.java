@@ -256,7 +256,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty()),driverRef);
     }
     /** Replays committed typed READ DATA only; no query, live decoder or Native action is invoked. */
-    private RetainedReadDriver retainCapturedRead(ContinuityStorePort.Session same,SessionIdentity owner,
+    private static RetainedReadDriver retainCapturedRead(ContinuityStorePort.Session same,SessionIdentity owner,
             WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
             java.util.List<WriterContracts.Pin> originalsPins,boolean retainPins)throws IOException {
@@ -729,6 +729,30 @@ public final class ContinuityBatchJournal implements BatchJournal {
     /** Construction-only installation of the actual NS/M3 producer; DATA inputs never replace this port. */
     public void bindTransportRebindPort(SameGameTransportContinuity.Port actual) {
         transitions.bindTransportRebindPort(Objects.requireNonNull(actual));
+    }
+
+    public record CapturedReadReplay(org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known facts, org.xar.ck3.control.contracts.ExactRef fullDriver, java.util.List<WriterContracts.Pin> originalPins) {
+        public CapturedReadReplay { originalPins = java.util.List.copyOf(originalPins); }
+    }
+
+    public static CapturedReadReplay replayCapturedRead(ContinuityStorePort.Session same, SessionPorts.SessionIdentity owner,
+            WriterContracts.HistoricalTransition actualEdge, org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known previous,
+            org.xar.ck3.control.contracts.ExactRef previousFullDriver, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) throws java.io.IOException {
+        Objects.requireNonNull(same); Objects.requireNonNull(owner); Objects.requireNonNull(actualEdge);
+        Objects.requireNonNull(previous); Objects.requireNonNull(previousFullDriver); Objects.requireNonNull(originals);
+        StrictJson.require(WriterContracts.DRIVER_READ_HISTORY_KIND.equals(actualEdge.kind()), "exact actual canonical typed READ publication required");
+        var canonical = same.readHistoricalTransition(actualEdge.eventPin());
+        StrictJson.require(canonical.sequence() == actualEdge.sequence()
+                && canonical.kind().equals(actualEdge.kind())
+                && canonical.eventIdentity().equals(actualEdge.eventIdentity())
+                && java.util.Arrays.equals(canonical.details(), actualEdge.details())
+                && ContinuityJson.same(canonical.before().toJson(), actualEdge.before().toJson())
+                && ContinuityJson.same(canonical.after().toJson(), actualEdge.after().toJson())
+                && canonical.eventPin().equals(actualEdge.eventPin()),
+                "captured READ replay differs from the actual canonical edge");
+        var pins = new java.util.ArrayList<WriterContracts.Pin>();
+        var result = retainCapturedRead(same, owner, canonical, new RetainedReadDriver(previous, previousFullDriver), originals, pins, true);
+        return new CapturedReadReplay(result.facts(), result.fullDriver(), pins);
     }
 
     /** Canonical DATA for the latest applied SAVE beyond the actual confirmed SAVE frontier. */
