@@ -403,6 +403,7 @@ public final class GovernancePolicies {
         return new Replace(new Draft("java-ordinary-governance-v1", phase, reason, kind, Optional.of(command), Purpose.WORLD_ACTION, domain, detail), reason);
     }
     public static boolean existingFocus(Obj query) {
+        query = GovernanceCollector.actualLifestyleState(query);
         if (!(query.get("snapshot") instanceof Obj snapshot) || !(snapshot.get("current_focus") instanceof Obj focus)
                 || !new Text("present").equals(focus.get("presence"))) return false;
         Obj readiness = object(snapshot.get("readiness"), "opening readiness"), progress = object(snapshot.get("current_lifestyle_progress"), "opening XP/points");

@@ -174,7 +174,7 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
         if (martialRead instanceof Unavailable<Obj> unavailable) return new Unavailable<>(unavailable.reason());
         Known<Obj> wealth = (Known<Obj>) wealthRead, martial = (Known<Obj>) martialRead;
         bindLife(request, wealth.value()); bindLife(request, martial.value());
-        Obj snapshot = object(wealth.value().get("snapshot"), "opening snapshot");
+        Obj snapshot = object(actualLifestyleState(wealth.value()).get("snapshot"), "opening snapshot");
         Value traits = snapshot.get("actor_traits");
         Obj evidence = new Obj(Map.of()).with("schema", new Text(LifestyleMinCodec.FIRST_FOCUS_SCHEMA))
                 .with("wealth", focusObservation(wealth.value())).with("martial", focusObservation(martial.value()))
@@ -284,7 +284,27 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
         }
         StrictJson.require(receipt.before().originalBindingSha256().equals(receipt.after().originalBindingSha256()), "full semantic read binding drift");
     }
+    /** Select the actual STATE carried by the native-illegal stock-focus dialect. */
+    static Obj actualLifestyleState(Obj query) {
+        if (!new Text("stock_focus_readback_red").equals(query.get("status"))) return query;
+        StrictJson.require(query.members().keySet().equals(java.util.Set.of("status", "state", "focus")),
+                "stock focus negative wrapper has unexpected fields");
+        Obj state = object(query.get("state"), "stock focus actual state");
+        Obj focus = object(query.get("focus"), "stock focus actual observation");
+        StrictJson.require(new Text("available").equals(state.get("status"))
+                && new Text("observed").equals(focus.get("status"))
+                && new Bool(false).equals(focus.get("native_legal")), "stock focus negative dialect differs");
+        Obj stateFrame = object(state.get("source_frame"), "stock focus state frame");
+        Obj focusFrame = object(focus.get("source_frame"), "stock focus observation frame");
+        StrictJson.require(stateFrame.equals(focusFrame)
+                && text(state.get("episode_run_id"), "stock focus state episode")
+                        .equals(text(focus.get("episode_run_id"), "stock focus observation episode")),
+                "stock focus actual state/observation binding differs");
+        object(state.get("snapshot"), "stock focus actual snapshot");
+        return state;
+    }
     static void bindLife(PlanningRequest request, Obj query) {
+        query = actualLifestyleState(query);
         if (!List.of(new Text("available"), new Text("stock_focus_available")).contains(query.get("status"))) return;
         Obj source = object(query.get("source_frame"), "LIFE source frame"), snapshot = object(query.get("snapshot"), "LIFE snapshot");
         var frame = request.before().frame();
