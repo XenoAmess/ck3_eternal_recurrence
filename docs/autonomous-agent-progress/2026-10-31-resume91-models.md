@@ -469,3 +469,17 @@ M2 519的三个真实互斥Page分支首次整链通过，2105global精确消费
 531新负向整链首次39global（37Memory、1RootInvoke、1PageInvoke）通过，0Context/init/budget触达。首POST前，独立原件审发现owner原配方flag1会跳过logger且请求count不足；父另冻annex改实际输入，原Recipe与manifest不回写。Book首length7500全文未读，R2明确按owner已冻oracle编码，仅补CallResult import后SourceReady；父最终又纠三处flag观察宽度8→1，原模型源码、Ready和oracle均保，不追认原raw整书。另一次528首次strict的名义接口错误来自owner声称sibling Memory兼容，后用明确strong union修正；配方可达性、观察宽度和Java名义类型是三个不同责任点。39步负向通过不授后续正向Page/Context/init整链成功。
 
 495 API-only封包同样曾向completed岗send_message而未启动，后true followup才完成独立字节/API/原381核对并交Java；只复用sole508首次strict，无新HTTP或编绿。这批运营更新只读现有具名原件、追加新截止点和新经验，不改旧TAIL223、原REQUEST/失败/Ready/oracle，不为文档发模型请求、重编或触碰Game。
+
+## 2026-11-01 05:00Z：当前状态传递、显式未知与后到证据
+
+本机有限窗口04:50:13.893681—05:00:13.893681Z在补登记真实EVENT后，按同一截止点重建为23次POST、19次END（17stop、2length），客户端峰7仅7.759632秒、截止源码在途4。初始索引扫描的3保留；实际服务GET05:00:13.843176—13.890197的running4/waiting0另列，既非原子也晚于运行期原deadline。此处不归因先前超时、不授持续12—16或24—32目标已达。原件为本机`WINDOW228-20261101-050013.json`及`QUEUE-RUNTIME82-20261101-050013.json`。
+
+M3 228六个源码任务/六POST均stop：四份完整typed合同提案0采用，owner另冻918B纯API后，两实现R1完整decoded UTF8字节原样采用；首次三源strict0/.7902423秒另存，未回写cohort旧未编译字段。100B的void业务在首normalopaque返后用UNKNOWN保未观察的RCX/RDX，首回调前的零元素仍保EntryArguments；每element/IAT读取与异常前缀按原件保留。接口提案失败与完整冻结接口下的实现成功分别计，均不升级为full185/物理NV栈/RET/EH或Native/Game。证据为`callback-span228/{MODEL-COHORT228-SOURCE,PARENT-SOURCE-REVIEW228,delivery228/DELIVERY228}.json`。
+
+M7 221消费者为qualified成熟218参照加三个模型exact hunks；223则是一个完整file-hunk重放、四组净符号变化，不能写成四个原始hunk或全新整类实现。223首稿的MemoryView.v、BusinessPorts.v与outer v三个不可变引用未carry当前状态，还使用不存在的Memory.invoke，源审在javac前整拒；唯一R2改同一private Frame并通过实际Calls更新，7869B原字节采用、0owner Java/EOL改。221九POST=8stop/1length，峰4仅10.157972秒；223九POST=6stop/3length，峰5仅8.705341秒。各冻结current0，不推缓存或持续负载。证据为两`MODEL-COHORT221/223.json`及223`SOURCE-REVIEW-R1-223/SOURCE-ADOPTION223/SOURCE-READY-PRODUCER223.json`。
+
+M2 546首整链252global、549首两场合88global实际软件通过；前者Grow方法是owner先冻oracle后模型编码，后者producer由owner按233B原件实现，各Host/Book/API的部分或原样来源继续分别记录，绿例不追授失败稿或独立oracle能力。531后到勘误确认三处widthBytes8原已存在owner预喂oracle：W8的BYTE8bits被owner译成8bytes，R2编码该输入；最终widthBytes1修正归owner期待成本，不能当清洁提示下模型宽度失败。原TAIL225、oracle/REQUEST/Ready/raw未改。证据为`known-growth540/DELIVERY546.json`、`context-callee543/DELIVERY549.json`和`POST-TAIL225-OWNER-WIDTH531.json`。
+
+运行岗为排查新的真实no-header deadline另授权一次modelcard GET；05:05:06.854933—.900988Z的`/v1/models`实际200，仅reported`max_model_len=1048576`，响应未声明HTTP请求体字节上限。请求字节不能约算成实际token门，也不能由后来queue0、短TTFT或服务字段null判定先前超时、排队、context或cache原因。该只读GET不计模型POST、运行选择或游戏动作。原件为`MODELCARD-RUNTIME82-ONCE.json`。
+
+本次只追加新证据与一项状态传递审阅步骤，既有三消息、有限输出整弃、递归API闭包及分产物采用规则继续复用；不回填旧TAIL225，不纳入229/230后继。本机D路径只定位证据，不是其它机器使用统一入口的前置。全部精确size/SHA、原文档前像和追加片段见本机`D:/ck3-state/model-dispatch91/context-support175/TAIL228-MANIFEST.json`；本次文档整理0新模型POST/编RUN/Native/Game。
