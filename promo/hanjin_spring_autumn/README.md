@@ -9,6 +9,7 @@
 - [董卓专题](research/dong-zhuo.md)：权臣、郿侯、西凉兵、本纪，以及未央之约的实际入朝结局。
 - [第一期完整续拍](research/filming-03/README.md)：从五月真实保存继续到191.6.1，伊阙胜利、未央入朝、董卓死亡及董璜继承；旧470秒版已被用户否定。
 - [第一期文案与画面返修](research/filming-04/README.md)：审查全部口播，去掉解释事件写法和反复总结的句子；把长截图段改成这局的原始录像，保留实际点击和状态切换。
+- [第一期Bilibili封面](images/bilibili-20261101/README.md)：董卓、洛阳火光与已定三行片名，提供16:9宽版及独立重排的4:3版。
 - [代码分析](research/code-analysis.md)：人物链、官制、服装、议和和组合覆盖问题。
 - [本地模型使用与审阅](research/local-model-review.md)：28 次真实调用，采用与剔除的结论。
 - [下载、空间与机器记录](research/operations.md)：订阅、下载、退订、Steam 离线及保留期限。

@@ -1,0 +1,37 @@
+{
+  "schema": "hanjin.bilibili-generated-covers/v1",
+  "machine_id": "4-8e1c2f1861",
+  "created_at_utc": "2026-11-01T07:07:12.889377+00:00",
+  "mode": "built-in imagegen",
+  "images": [
+    {
+      "file": "dong-zhuo-16x9.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2830619,
+      "sha256": "d683eb54a95aa6cf413c36a9a43805cbbf6dc8708180acdcbd45919e45cb865d",
+      "source_generated_image": "C:\\Users\\Administrator\\.codex\\generated_images\\01a190ad-8c06-74e1-834d-d4f84e81b3ea\\exec-9287b3ec-e1e8-4610-b426-505dac298004.png"
+    },
+    {
+      "file": "dong-zhuo-4x3.png",
+      "requested_aspect_ratio": "4:3",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 2783998,
+      "sha256": "3c6e2a52c74fc2ecb59101722a074a55770fddecdfb6ff27aa1914bc196d1847",
+      "source_generated_image": "C:\\Users\\Administrator\\.codex\\generated_images\\01a190ad-8c06-74e1-834d-d4f84e81b3ea\\exec-c07b9707-afd1-4af9-83ad-e8a7d39ef637.png"
+    }
+  ],
+  "visual_review": "Title glyphs, brand, portrait, matching art direction and separate compositions inspected. Second cover recomposed with first as reference.",
+  "original_generated_files_retained": true,
+  "uploaded": false,
+  "storage_check": {
+    "volume_free_bytes": 87714426880,
+    "new_project_asset_bytes": 5614617,
+    "system_growth_reserve_bytes": 16106127360,
+    "safety_margin_bytes": 21474836480,
+    "estimated_peak_this_write_bytes": 33554432
+  },
+  "retention": "Final project artwork tracked with the episode; default generated originals follow the shared retention policy."
+}
