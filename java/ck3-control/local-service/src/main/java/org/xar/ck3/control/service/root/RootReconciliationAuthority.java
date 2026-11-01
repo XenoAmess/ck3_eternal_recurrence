@@ -192,7 +192,8 @@ public final class RootReconciliationAuthority {
         ExactRef originalReceipt=bound.receiptReferenceOf(original);
 
         boolean freshRead = (original.command().operation().value().equals("save-checkpoint")
-                || original.command().operation().value().equals("resume-map"))
+                || original.command().operation().value().equals("resume-map")
+                || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(original))
                 && original.ack().isPresent() && original.ack().orElseThrow().nativeOk();
 
         return physical.withReconciliationSnapshot(same,deadline,freshRead,captured->{
@@ -242,8 +243,9 @@ public final class RootReconciliationAuthority {
     private static ObservationProvenance freshAfterAckProvenance(RootLifecycleAuthority.SnapshotLease captured,Complete actual,
             ActionReceipt original,ActionState.Attempt attempt,ExactRef originalReceipt,ActionPorts.OutcomeArchive bound)throws IOException {
         require((original.command().operation().value().equals("save-checkpoint")
-                || original.command().operation().value().equals("resume-map")) && !original.settled(),
-                "cold after-ACK observation requires its exact unresolved SAVE or resume-map primitive");
+                || original.command().operation().value().equals("resume-map")
+                || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(original)) && !original.settled(),
+                "cold after-ACK observation requires its exact unresolved SAVE, resume-map or known pending primitive");
         var fresh=captured.freshSnapshot().orElseThrow(()->new IOException("fresh SAVE reconciliation requires actual independent READ custody"));
         var frame=fresh.originalFrame();var physical=captured.fullSnapshot().actual();
         require(frame.session().equals(physical.session()) && frame.snapshotId().equals(physical.snapshotId())
