@@ -395,3 +395,18 @@ M2 range410 的 Host两轮stop后R2完整类原样采用；独立Book R1 length8
 
 
 - 213后到EOL勘误单独追加：本尾中“两个首实现原样”指完整模型Java文本及执行tokens，不能理解为decoded LF bytes与Windows physical bytes相同。leaf为模型LF7206B→physical7371B/165CRLF，binder为LF2858B→physical2920B/62CRLF；规范LF后逐字相等、0Java token及EOF更改，但含owner EOL序列化维护。实际首strict使用physical SHA309a…/fa78…；原模型/候选/合同/Ready/本尾原冻结哈希保持，OWNER-EOL-ERRATUM213记录独立归因，不重HTTP或绿。
+
+
+### 2026-11-01 01:24:31 UTC：实际输出合同、独立事件书与新原码 RAM 消费
+
+- 固定01:14:31–01:24:31窗口为8次真实POST、9次END（7stop/2length），客户端峰2累计62.207421秒；当刻source1，随后单次服务读取running1/waiting0/KV约3.54%，不是原子快照。持续12–16仍未达到。WINDOW211-20261101-012431与独立PEAK-DURATION保原窗口；下面01:27后的软件结果作为后到事实，不回填该采样，也不把准备、退避或等待编译算在途。
+
+- M3 214实际HTTP json_object与首Task Java-only冲突是owner责任，JSON头不判模型格式失败；其length/无用catalog与后轮完整影子target自测等错误分记。213/214独立见证模型均两轮whole0后owner从原ASM/纯API完整接管，首次新3组65events和5组101events通过，不追授坏稿。215纠正轮新五方法/旧整类指令冲突另封原REQUEST旁注；五实际方法仍因虚构字段、rotate/address/event错误全拒，owner书只Ready，不在此冒行为绿。现有占位归因规则又被449BookR2实证：任务直接给source值“complete FullCopyBackwardCases449.java”，模型15tokens逐字回声；整稿0采用不变，但不作清洁提示下算法能力失败。PARENT-PROMPT-AUDIT449-R2保实际请求/任务/响应SHA，历史summary/oracle不改、无R3。
+
+- M3 215完整69B新leaf与真实211binder、成熟indexed-tail复用binder三独立R1全stop；客户端峰3仅6.507875秒。leaf1403B/wrapper1364B与decoded原字节相等；tail仅owner删`0x4246ECE L`中的一空格，1794→1793B，记partial而非raw。owner纯API与三实现共四新源首次strict0/.760759，旧祖源未重编、0行为RUN。独立见证POST发生在三生产流结束之后，不记峰4，也不把四源strict授原生frame/EH/Game。
+
+- M2 449Host两轮完整stop：首稿假RSP、零存储、未启用的trace等whole拒，纠稿仍需owner修long count、17个public实现、null Script构造、boxed Long值比较与不可变期待列表；记partial。独立Book首length10000整弃，第二轮占位回声整拒，最终由owner从事先冻结的原ASM字面矩阵全转写。word helper只打包原输入字节；三有限场中每次被读区间与先前写区间不交的源静态证据支持这些快照，不推广为一般别名规则。三场33/273/529合131个总事件，其中18STEP；全NR/DF原期待不改。后到01:27:50三新源首strict0/.929373、首JVM0/.185895 stdout3；未重编producer、未跑旧Data/Native。
+
+- M2 455两次完整stop均因实际Memory/API、输入budget、正常返回guards或unsigned整宽约束错误整拒0片段，owner只完整实现新consumer，旧381仅供真实协议/parser参考，未读新454算法body/results。01:28:54首1新strict0/.714217、首JVM0/.186026 stdout7：新full437目标首次消费旧389独立原码七份8192B BEFORE/AFTER，RAM/RAX差分0。自有24B真实REP栈、fresh RET/SP/N/DF作为软件输入合同另核；旧原码wire没有完整V/N捕获，不授独立Native全寄存器、AVX/NT或Game资格。原115208B输入与source SHA保，0原Native/旧Data/source重跑；原Ready和两模型拒绝不改。
+
+- M7 208/209后到经验补现有规则：即使7B full185首稿仍可能虚构固定RET、混nested类型/漏NRgate；正确机械参考后的窄两hunk与薄consumer可用，而wholewitness的reset/length整弃，完整短方法仍须owner修fixture/API。CALL前后已知值、IRQ后状态边界不能因短JSON proof而混同。新SELF210生产完整首稿3628B可原样采用；5POST=2stop/3length，三份length不作未读语义结论，完整boundary稿拒后owner新2方法首2P，仅1个正常parent输入加foreign guard；父子execute两次不冒2个输入。所有局部成功、首次软件与正式来源仍分层，不把stop、短答或TTFT下降推为缓存/普遍阈值。
