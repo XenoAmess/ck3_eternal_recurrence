@@ -285,8 +285,10 @@ public final class RootAdvanceInfrastructureFactory {
                         "cold resume-map requires its actual unresolved acknowledged original");
                 var command=originalReceipt.command();
                 require(originalReceipt.bodySha256().equals(ActionCodec.bodySha256(command)), "cold original command body differs");
-                require(command.origin() instanceof CommandOrigin.Gameplay && command.operation().value().equals("resume-map")
-                        && command.arguments().members().isEmpty(),"cold resume-map requires exact original gameplay primitive");
+                var knownPending = org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(originalReceipt);
+                require((command.origin() instanceof CommandOrigin.Gameplay && command.operation().value().equals("resume-map")
+                        && command.arguments().members().isEmpty()) || knownPending,
+                        "cold original requires exact resume-map or known-pending recovery primitive");
                 requireFrameBinding(command,complete);
                 var attempt=ActionTransitions.attempt(originalReceipt.state()).orElseThrow();
                 var dispatch=ActionTransitions.dispatch(originalReceipt.state()).orElseThrow();
@@ -296,7 +298,8 @@ public final class RootAdvanceInfrastructureFactory {
                         && guard.observed().equals(command.before()) && guard.source().equals(command.source())
                         && guard.sessionId().equals(command.sessionId()) && guard.operation().equals(command.operation()),
                         "cold resume-map original Attempt crossed its complete command/guard binding");
-                var prepared=attempt.preparedRequest();var base=AdvancePrimitives.prepareRequest(command);
+                var prepared=attempt.preparedRequest();
+                var base=knownPending?org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionEffects.preparation().prepare(command):AdvancePrimitives.prepareRequest(command);
                 require(prepared.step().equals(base.step()) && prepared.requiredCapability().equals(base.requiredCapability())
                         && java.util.Arrays.equals(prepared.additionalFields().bytes(),base.additionalFields().bytes()),
                         "cold resume-map preparation differs from the actual primitive producer");
@@ -305,7 +308,7 @@ public final class RootAdvanceInfrastructureFactory {
                 var dispatchRef=archive.referenceOf(ack);
                 require(archive.loadRequest(requestRef).equals(attempt.preparedRequest()) && archive.load(dispatchRef).equals(ack),"cold originals differ");
                 var outbound=NativeWire.decodeExecuteRequest(ack.outbound().orElseThrow().originalPacket());
-                require(outbound.requestId().equals(attempt.requestId()) && outbound.step().equals("resume-map")
+                require(outbound.requestId().equals(attempt.requestId()) && outbound.step().equals(command.operation().value())
                         && outbound.expectedRevision().or(()->outbound.expectedSnapshotRevision()).filter(command.before().frame().identity().nativeRevision()::equals).isPresent()
                         && java.util.Arrays.equals(outbound.normalizedAdditionalFields().value(),attempt.preparedRequest().additionalFields().bytes()),"cold outbound differs");
                 var originalDecoded=NativeWire.decode(ack.originalPacket());
