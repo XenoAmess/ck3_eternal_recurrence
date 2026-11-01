@@ -27,5 +27,8 @@ public final class F8a8Api242 {
         default void call424f780(Memory memory, long siteRva, long rcx, long rdx, long r8, long r9, long calleeEntryRsp) {
             call424f780(memory, siteRva, rcx, rdx, r8, r9);
         }
+        default void call424f800(Memory memory, long siteRva, long rcx, long rdx, long r8, long r9, long calleeEntryRsp) {
+            call424f800(memory, siteRva, rcx, rdx, r8, r9);
+        }
     }
 }

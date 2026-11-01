@@ -49,6 +49,11 @@ public final class F780FromF8Binding243 {
                         new F780Api243.Scratch(calleeEntryRsp));
                 F780Target424F780.execute(capturedMemory, child, input);
             }
+
+            @Override
+            public void call424f800(F8a8Api242.Memory memory, long siteRva, long rcx, long rdx, long r8, long r9, long calleeEntryRsp) {
+                fallback.call424f800(memory, siteRva, rcx, rdx, r8, r9, calleeEntryRsp);
+            }
         };
     }
 }
