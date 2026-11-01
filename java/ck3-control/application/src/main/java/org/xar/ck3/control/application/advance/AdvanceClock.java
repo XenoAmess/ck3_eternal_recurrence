@@ -361,14 +361,20 @@ public final class AdvanceClock {
     public static void requireAfterControl(ActionCommand parent, AdvanceObservationPort.Frame previous,
             ClockStatusRead.Observation terminal, AdvanceObservationPort.Frame ending) {
         AdvanceWait.binding(parent, previous, ending);
+        Optional<PhysicalStatusIdentity> physical = terminal.physicalIdentity();
+        if (physical.isPresent()) terminal.requirePhysicalParent(parent);
         require(AdvancePolicy.truth(ending.semantic(), "paused") && AdvancePolicy.truth(ending.semantic(), "map_ready")
                 && ending.identity().frame().identity().dateRaw().equals(previous.identity().frame().identity().dateRaw())
                 && ending.identity().frame().identity().nativeRevision().compareTo(previous.identity().frame().identity().nativeRevision()) >= 0
                 && ending.identity().frame().revision().compareTo(previous.identity().frame().revision()) >= 0
-                && ending.identity().frame().revision().compareTo(terminal.receipt().after().binding().observed().frame().revision()) >= 0
-                && ending.identity().frame().identity().nativeRevision().compareTo(terminal.receipt().after().binding().observed().frame().identity().nativeRevision()) >= 0
+                && (physical.isPresent()
+                    ? ending.identity().frame().identity().nativeRevision().compareTo(physical.orElseThrow().nativeRevision()) >= 0
+                    : ending.identity().frame().revision().compareTo(terminal.receipt().after().binding().observed().frame().revision()) >= 0
+                        && ending.identity().frame().identity().nativeRevision().compareTo(terminal.receipt().after().binding().observed().frame().identity().nativeRevision()) >= 0)
                 && !ending.provenance().equals(previous.provenance()) && ending.provenance().independentOf(terminal.receipt().requestId())
-                && !ending.observedAt().isBefore(terminal.receipt().after().binding().observedAt())
+                && !ending.observedAt().isBefore(physical.isPresent()
+                    ? terminal.receipt().original().custody().orElseThrow().responseReceived().observedAt()
+                    : terminal.receipt().after().binding().observedAt())
                 && !ending.originalEvidence().equals(terminal.originalEvidence()),
                 "control terminal requires a fresh independent stable paused semantic read after Status");
     }

@@ -29,6 +29,10 @@ public final class ClockStatusRead {
     private final ReadContract<Status> contract;
     private final Optional<ReadContract<Status>> reconciliation;
     private final ActionPorts.OutcomeArchive archive;
+    @FunctionalInterface public interface ParentStatusRead {
+        Observation observe(ActionCommand parent, AdvanceObservationPort.Frame current, Instant deadline);
+    }
+    private final Optional<ParentStatusRead> parentStatusRead;
     // Factory ownership preserves the exact installed object; Root still grants all actual source/session/custody authority.
     private static final Set<ReadContract<Status>> REGISTERED = java.util.Collections.newSetFromMap(new java.util.WeakHashMap<>());
     public static ReadContract<Status> registeredContract(ExactRef actualNativeDefinition) {
@@ -53,8 +57,19 @@ public final class ClockStatusRead {
             ReadContract<Status> exactReconciliation, ActionPorts.OutcomeArchive archive) {
         this(reads, exactInstalled, Optional.of(Objects.requireNonNull(exactReconciliation)), archive);
     }
+    public ClockStatusRead(PlanningReadPort reads, ReadContract<Status> exactInstalled,
+            ReadContract<Status> exactReconciliation, ActionPorts.OutcomeArchive archive, ParentStatusRead parentStatusRead) {
+        this(reads, exactInstalled, Optional.of(Objects.requireNonNull(exactReconciliation)), archive,
+                Optional.of(Objects.requireNonNull(parentStatusRead)));
+    }
     private ClockStatusRead(PlanningReadPort reads, ReadContract<Status> exactInstalled,
             Optional<ReadContract<Status>> exactReconciliation, ActionPorts.OutcomeArchive archive) {
+        this(reads, exactInstalled, exactReconciliation, archive, Optional.empty());
+    }
+    private ClockStatusRead(PlanningReadPort reads, ReadContract<Status> exactInstalled,
+            Optional<ReadContract<Status>> exactReconciliation, ActionPorts.OutcomeArchive archive,
+            Optional<ParentStatusRead> parentStatusRead) {
+        this.parentStatusRead = Objects.requireNonNull(parentStatusRead);
         this.reads = Objects.requireNonNull(reads); this.archive = Objects.requireNonNull(archive);
         this.contract = Objects.requireNonNull(exactInstalled); this.reconciliation = exactReconciliation;
         requireRegisteredContract(exactInstalled);
@@ -85,7 +100,27 @@ public final class ClockStatusRead {
     public record Observation(Status status, PlanningReadReceipt receipt, ExactRef originalEvidence) {
         public Observation {
             Objects.requireNonNull(status); Objects.requireNonNull(receipt); Objects.requireNonNull(originalEvidence);
-            require(originalEvidence.bytes() > 0 && receipt.contractId().equals(CONTRACT_ID)
+            if (receipt.request().origin() instanceof CommandOrigin.PhysicalStatusOnly physical) {
+                var identity = physical.identity();
+                require(originalEvidence.bytes() > 0 && receipt.contractId().equals(PhysicalStatusIdentity.CONTRACT_ID)
+                        && receipt.archiveVersion() == PlanningReadReceipt.ArchiveVersion.PHYSICAL_STATUS_V3
+                        && receipt.request().operation().value().equals(PhysicalStatusIdentity.OPERATION)
+                        && receipt.request().arguments().members().isEmpty() && receipt.adoption().isEmpty()
+                        && receipt.before().guardMode() == ReadContract.GuardMode.STATUS_ONLY
+                        && receipt.after().guardMode() == ReadContract.GuardMode.STATUS_ONLY
+                        && receipt.before().binding().origin() instanceof CommandOrigin.PhysicalStatusOnly before
+                        && before.identity().equals(identity)
+                        && receipt.after().binding().origin() instanceof CommandOrigin.PhysicalStatusOnly after
+                        && after.identity().equals(identity)
+                        && receipt.before().readiness() instanceof PlanningReadGuard.PhysicalStatus beforeStatus
+                        && beforeStatus.identity().equals(identity)
+                        && receipt.after().readiness() instanceof PlanningReadGuard.PhysicalStatus afterStatus
+                        && afterStatus.identity().equals(identity)
+                        && receipt.before().originalBindingSha256().equals(PhysicalStatusIdentityCodec.bindingSha256(identity))
+                        && receipt.after().originalBindingSha256().equals(PhysicalStatusIdentityCodec.bindingSha256(identity))
+                        && status.equals(decode(receipt.original())), "exact original physical clock Status DATA required");
+                receipt.original().custody().orElseThrow(() -> new IllegalArgumentException("physical Status actual query custody absent")).verify(receipt);
+            } else require(originalEvidence.bytes() > 0 && receipt.contractId().equals(CONTRACT_ID)
                     && receipt.request().operation().equals(new OperationKey(STEP))
                     && receipt.request().arguments().members().isEmpty()
                     && receipt.request().origin() instanceof CommandOrigin.Gameplay
@@ -95,6 +130,18 @@ public final class ClockStatusRead {
                     && receipt.after().paused() && receipt.after().mapReady() && receipt.after().playerAlive()
                     && status.equals(decode(receipt.original())),
                     "independent original paused clock Status contract/value/evidence required");
+        }
+        public Optional<PhysicalStatusIdentity> physicalIdentity() {
+            return receipt.request().origin() instanceof CommandOrigin.PhysicalStatusOnly physical
+                    ? Optional.of(physical.identity()) : Optional.empty();
+        }
+        /** Exact retained facts only; the installed Root callback separately owns current permission. */
+        public void requirePhysicalParent(ActionCommand parent) {
+            var actual = physicalIdentity().orElseThrow(() -> new IllegalArgumentException("physical parent Status required"));
+            require(LifeAdvanceComposite.accepts(parent.operation().value()) && parent.origin() instanceof CommandOrigin.Gameplay
+                    && actual.source().equals(parent.source()) && actual.sessionId().equals(parent.sessionId())
+                    && actual.game().equals(parent.before().game()) && actual.machineId().equals(parent.before().machineId()),
+                    "physical Status crossed its exact retained Life parent source/session/Game/machine");
         }
     }
     /** The current original-pending callback supplies authority; this method creates no gameplay observation or submitter. */
@@ -119,6 +166,28 @@ public final class ClockStatusRead {
             throw new IllegalStateException("native clock reconciliation status unavailable: "
                     + ((PlanningReadResult.Unavailable<Status>) result).reason());
         } catch (java.io.IOException failure) { throw new java.io.UncheckedIOException("actual reconciliation Status scope unavailable", failure); }
+    }
+    /** Only the installed source-owned retained-parent callback may issue this finite physical read. */
+    public Observation observeRetainedParent(ActionCommand parent, AdvanceObservationPort.Frame current, Instant deadline) {
+        require(LifeAdvanceComposite.accepts(parent.operation().value())
+                && current.source().equals(parent.source()) && current.sessionId().equals(parent.sessionId())
+                && current.identity().game().equals(parent.before().game())
+                && current.identity().machineId().equals(parent.before().machineId())
+                && current.identity().frame().episodeRunId().equals(parent.before().frame().episodeRunId())
+                && current.identity().frame().identity().player().equals(parent.before().frame().identity().player()),
+                "retained parent Status crossed its actual current owner/frame");
+        if (parentStatusRead.isEmpty()) return observe(parent, current, deadline);
+        var callback = parentStatusRead.orElseThrow();
+        Observation read = Objects.requireNonNull(callback.observe(parent, current, deadline));
+        read.requirePhysicalParent(parent);
+        var identity = read.physicalIdentity().orElseThrow();
+        require(read.receipt().request().deadline().equals(deadline)
+                && identity.nativeRevision().compareTo(current.identity().frame().identity().nativeRevision()) >= 0
+                && !identity.observedAt().isBefore(current.observedAt())
+                && read.originalEvidence().equals(archive.referenceOf(read.receipt().original())),
+                "retained physical Status changed its current Native/time/deadline/original evidence");
+        org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(read.receipt(), archive);
+        return read;
     }
     public Observation observe(ActionCommand parent, AdvanceObservationPort.Frame current, Instant deadline) {
         require(current.source().equals(parent.source()) && current.sessionId().equals(parent.sessionId())

@@ -242,7 +242,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
             ActionReceipt arm = children.stream().filter(receipt -> receipt.command().operation().value().equals(plan.armStep())
                     && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED).findFirst().orElseThrow(() -> new IllegalStateException("retained exact arm missing"));
             Status armed = AdvancePrimitives.acknowledgedSentinel(arm.ack().orElseThrow(), plan.armStep()); AdvanceClock.validateArm(armed, plan);
-            var read = statuses.observe(parent, current, window); Status actual = read.status();
+            var read = statuses.observeRetainedParent(parent, current, window); Status actual = read.status();
             if (actual.state() == State.TRIGGERED) AdvanceClock.validateStop(armed, actual, plan, end);
             else if (boundary && end.compareTo(plan.targetDateRaw()) < 0 && actual.state() == State.IDLE && actual.generation().equals(armed.generation())
                     && children.stream().anyMatch(receipt -> receipt.command().operation().value().equals(ClockStatusRead.CANCEL_PREFIX + armed.generation().decimal())

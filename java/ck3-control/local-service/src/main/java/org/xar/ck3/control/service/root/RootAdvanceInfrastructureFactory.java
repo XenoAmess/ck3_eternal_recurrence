@@ -168,7 +168,7 @@ public final class RootAdvanceInfrastructureFactory {
                 ReadContract<Status> exactTerminalStatus,ReadContract<Status> exactPhysicalStatus) {
             context=actualContext;this.sources=sources;this.timings=timings;readiness=sameReadiness;pendingDate=samePendingDate;
             observations=pendingDate.observations(new ActualObservations(context,timings));
-            statuses=new ClockStatusRead(context.reads(),exactInstalledStatus,exactUnknownStatus,context.archive());
+            statuses=new ClockStatusRead(context.reads(),exactInstalledStatus,exactUnknownStatus,context.archive(),this::observeRetainedParentStatus);
             unknownStatus=Objects.requireNonNull(exactUnknownStatus);terminalStatus=Objects.requireNonNull(exactTerminalStatus);physicalStatus=Objects.requireNonNull(exactPhysicalStatus);
             RootUnknownSentinelReadProfile.requireInstalled(unknownStatus,statuses);
             RootUnknownSentinelReadProfile.requireInstalled(terminalStatus,statuses);
@@ -200,6 +200,89 @@ public final class RootAdvanceInfrastructureFactory {
             var effect=NativeEffectRegistry.Binding.existing(operation,sources.primitiveProducer(),primitives,primitives);
             var binding=new RootExecutableBindings.ActionBinding(effect,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,Optional.of(capability),sources.primitiveDecoder());
             return new RootExecutableBindings.IssuedAction(binding,replay.binding(operation,sources.primitiveVerifier()));
+        }
+        /** One canonical retained Life parent may borrow the actual physical-only Status source; no Ready or action permission. */
+        private ClockStatusRead.Observation observeRetainedParentStatus(ActionCommand parent,
+                AdvanceObservationPort.Frame current,Instant deadline) {
+            try {
+                return context.withSession(same->{
+                    context.requireCurrent(deadline);context.writer().requireSession(same);
+                    context.adopted().authority().requireOutsideObservationScope(same);
+                    require(ActionScope.currentActionId().filter(parent.actionId()::equals).isPresent()
+                            && ActionCommandScope.current().filter(value->java.util.Arrays.equals(
+                                ActionCodec.encodeCommand(value),ActionCodec.encodeCommand(parent))).isPresent(),
+                            "physical Life Status escaped its original coordinator parent");
+                    var archive=context.archive().withSession(same);var head=same.head();
+                    var actions=context.core().journal().locked(same,locked->List.copyOf(locked.snapshot().actions()));
+                    var original=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(actions)
+                            .orElseThrow(()->new IOException("physical Life Status has no unique canonical read-only parent"));
+                    require(original.bodySha256().equals(ActionCodec.bodySha256(parent))
+                            && java.util.Arrays.equals(ActionCodec.encodeCommand(original.command()),ActionCodec.encodeCommand(parent)),
+                            "physical Life Status changed its actual original parent command");
+                    var execution=((ActionState.CompositeUnknown)original.state()).execution();
+                    var children=execution.children().stream().map(binding->{
+                        var matches=actions.stream().filter(value->value.command().actionId().equals(binding.actionId())).toList();
+                        require(matches.size()==1&&matches.getFirst().bodySha256().equals(binding.bodySha256())
+                                &&matches.getFirst().settled(),"physical Life Status cannot cross an unresolved or replaced child");
+                        return matches.getFirst();
+                    }).toList();
+                    require(!children.isEmpty(),"physical Life Status requires its complete original child prefix");
+                    AdvanceClockArchivedReplay.verifyChildBindings(parent,children);requireWatchRole(original,children.getLast());
+                    var plan=AdvancePlan.decode(parent);
+                    var arm=children.stream().filter(value->value.command().operation().value().equals(plan.armStep()))
+                            .findFirst().orElseThrow(()->new IOException("physical Life Status lost its original ARM"));
+                    AdvanceClock.validateArm(AdvancePrimitives.acknowledgedSentinel(
+                            arm.ack().filter(NativeActionPort.AckReceived::nativeOk).orElseThrow(),plan.armStep()),plan);
+                    var manifest=org.xar.ck3.control.planning.opportunity.OpportunityJson.object(
+                            current.semantic().get("java_driver_facts_evidence"),"actual parent Status Driver basis");
+                    ExactRef facts=ExactRef.fromJson(org.xar.ck3.control.planning.opportunity.OpportunityJson.toNode(manifest));
+                    var complete=context.frameLoader().load(new NativeEffectEvidence.FrameBasis(current.originalEvidence(),facts),archive);
+                    require(complete.identity().equals(current.identity())&&complete.source().equals(current.source())
+                            &&complete.sessionId().equals(current.sessionId())&&complete.semantic().equals(current.semantic())
+                            &&complete.observedAt().equals(current.observedAt())&&complete.originalEvidence().equals(current.originalEvidence()),
+                            "physical Life Status changed its complete original current observation");
+                    requireFrameBinding(parent,complete);
+                    require(current.provenance() instanceof ObservationProvenance.FreshSnapshotQuery,
+                            "physical Life Status requires its actual independent current READ");
+                    verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery)current.provenance(),complete,archive);
+                    var pins=List.of(same.capturePin(current.originalEvidence(),org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES),
+                            same.capturePin(facts,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES));
+                    var observation=context.physicalStatusReads().withObserved(same,deadline,lease->{
+                        var identity=lease.identity();var frame=lease.frame();
+                        require(identity.source().equals(parent.source())&&identity.game().equals(parent.before().game())
+                                &&identity.machineId().equals(parent.before().machineId())&&identity.sessionId().equals(parent.sessionId())
+                                &&frame.nativeRevision().compareTo(current.identity().frame().identity().nativeRevision())>=0
+                                &&!frame.observedAt().isBefore(current.observedAt()),
+                                "physical Life Status crossed the original source/Game/session or regressed Native time");
+                        var state=org.xar.ck3.control.application.driver.DriverJson.object(frame.state().bytes(),
+                                org.xar.ck3.control.application.driver.DriverJson.MAX_NATIVE_BYTES);
+                        var player=org.xar.ck3.control.planning.opportunity.OpportunityJson.object(state.get("played_character"),"physical Life Status player");
+                        require(org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(state.get("paused"),"paused")
+                                &&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(state.get("map_ready"),"map_ready")
+                                &&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(player.get("alive"),"alive")
+                                &&org.xar.ck3.control.planning.opportunity.OpportunityJson.integer(player.get("character_id"),"character_id")
+                                    .equals(parent.before().frame().identity().player())
+                                &&org.xar.ck3.control.planning.opportunity.OpportunityJson.integer(state.get("date_raw"),"date_raw")
+                                    .compareTo(current.identity().frame().identity().dateRaw())>=0,
+                                "physical Life Status requires the actual paused living original actor and nonregressing date");
+                        RootUnknownSentinelReadProfile.requirePhysicalProfile(physicalStatus);
+                        var request=PlanningReadRequest.newStatusOnly(identity,physicalStatus.operation(),
+                                new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(Map.of()),deadline);
+                        var result=context.reads().read(same,physicalStatus,request);
+                        if(!(result instanceof PlanningReadResult.Known<Status>))
+                            throw new IOException("actual physical Life Status query unavailable: "+((PlanningReadResult.Unavailable<Status>)result).reason());
+                        var known=(PlanningReadResult.Known<Status>)result;
+                        require(known.receipt().request().equals(request)&&known.receipt().contractId().equals(physicalStatus.contractId())
+                                &&known.value().equals(ClockStatusRead.decode(known.receipt().original())),
+                                "physical Life Status returned another original query or decoded value");
+                        return new ClockStatusRead.Observation(known.value(),known.receipt(),archive.preserve(known.receipt().original()));
+                    });
+                    for(var pin:pins)same.verifyPin(pin);
+                    context.requireCurrent(deadline);context.writer().requireSession(same);
+                    require(head.digest().equals(same.head().digest()),"physical Life Status changed canonical history");
+                    return observation;
+                });
+            } catch(IOException failure) {throw new UncheckedIOException("actual retained Life physical Status unavailable",failure);}
         }
         public AdvanceObservationPort observations(){return observations;}
         public ClockStatusRead statuses(){return statuses;}

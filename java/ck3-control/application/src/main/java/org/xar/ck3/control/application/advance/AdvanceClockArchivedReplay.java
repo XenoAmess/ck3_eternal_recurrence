@@ -45,10 +45,18 @@ public final class AdvanceClockArchivedReplay {
         if (plan.dailyWatch().isPresent()) verifyWatch(parent, plan, starting, ending, children, archive);
         verifySequence(plan, starting, ending, progress, terminal, children);
         terminal.ifPresent(read -> {
-            primitives.verifyIndependentRead(parent, read.receipt(), archive);
+            if (read.physicalIdentity().isPresent()) {
+                read.requirePhysicalParent(parent);
+                org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(read.receipt(), archive);
+                read.receipt().original().custody().orElseThrow().verify(read.receipt());
+                require(ending.identity().frame().identity().nativeRevision().compareTo(read.physicalIdentity().orElseThrow().nativeRevision()) >= 0,
+                        "clock endpoint predates its physical Status Native identity");
+            } else primitives.verifyIndependentRead(parent, read.receipt(), archive);
             require(read.status().equals(ClockStatusRead.decode(read.receipt().original()))
                     && read.originalEvidence().equals(archive.referenceOf(read.receipt().original())), "clock final independent Status original changed");
-            require(!ending.observedAt().isBefore(read.receipt().after().binding().observedAt())
+            require(!ending.observedAt().isBefore(read.physicalIdentity().isPresent()
+                    ? read.receipt().original().custody().orElseThrow().responseReceived().observedAt()
+                    : read.receipt().after().binding().observedAt())
                     && ending.provenance().independentOf(read.receipt().requestId()), "clock endpoint predates or aliases the terminal Status read");
         });
     }
