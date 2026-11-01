@@ -8,6 +8,16 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 17:58 UTC：258已真正进入Saved LOOP，随后opening规划合同失败
+
+258三份最终生产叶构建于17:53:47.418706Z→53.271265Z实际通过（5.8525568秒），同一Game33404/keeper69836下worker64084于17:54:41.328521Z启动。17:57:35.7239611Z实际ORDINARY_WORKER_LOOP_START确认Saved启动链已越过，启动墙钟174.39544秒；同刻SAVED_ENTRY_ADOPTED记录当前head为seq20/digest `87ce6224ae659cf8078307e1b69111f86329848047f74cb9e51191ec03f64591`。254的seq13是原SavedEntry提交截面，不能继续当作当前head。
+
+随后batch0以INTERNAL_FAILURE结束，完整批墙钟48.4374827秒；GovernanceCouncilSupplier.openingComparison:24→RootCrownRetryRuntime:152调用链要求opening snapshot为object。worker于17:58:24.811644Z实际END4（223.4831243秒），endpoint此前已RELEASED，batch回执next_sequence=1、committed ledger为93143B/SHA256 `b8ead39aaf1b2cb9b185a07cd1e181d8709394cd1ca6f532703dc9a2143b5ad7`。普通HOLD按真实LOOP/终态解除，晚到通知间隙不记为持续业务HOLD；259沿实际当前state恢复并修该对象合同，不重entry、Game或旧动作。完整阶段见[运行记录](2026-10-31-runtime91-current.md)。
+
+本轮0世界动作、0新增SAVE；恢复窗口12:46:59.357568Z→17:58:24.811644Z共18685.454076秒，保留区间内全部等待、修复、构建和失败，秒/新增保存日为null，10秒目标未达到。baseline编码复用与bounded archive scope已随功能修改实际加载，未做独立基准，不据单次LOOP授予提速；旧69已保存日不作为新窗口分母。
+
+Native来源继续按真实资格分列：新247的42568D4没有covering RF，仅在[D4,FC)40B上界内逐指令闭合正常CFG，实际读取37B/11条指令至两个RET，未借前一RF或unwind、未读末尾padding及邻target。LOCK XADD32返回旧值的合同已交M3独占；该来源闭合与软件首编不授予完整ABI/EH或Game行为资格。
+
 ## 2026-11-01 17:33 UTC：257已越Prisoner，planning拒绝fresh-empty分支
 
 257采用两份必要Core/Ordinary消费者及一份private baseline编码复用Root候选，三叶各首strict通过；实际MB于17:28:38.688065Z→44.922720Z通过（6.2346519秒）。同一Game33404/keeper69836下worker95340于17:31:05.983973Z启动，17:33:49.213637Z实际END1，墙钟163.2296596秒。已越Prisoner/source/Army/remaining检查，persistentPlanning调用DriverCapabilityStateProducer.initializeNewEpisode:302时被“actual fresh empty gameplay branch, once”要求拒绝。
