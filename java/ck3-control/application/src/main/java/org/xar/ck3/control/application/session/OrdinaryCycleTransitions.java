@@ -720,7 +720,9 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         sessionAuthority.require(session);
         var head = session.head(); requireOwner(head.state(), owner); requireActive(head.state());
         CycleState state = state(head.state(), owner); requireLegacyPendingClear(head.state(), state);
-        requireFrontier(head.state(), state); validateChain(state);
+        requireFrontier(head.state(), state);
+        archive.inHistoricalReadScope(session, new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(
+                4096, 256L * 1024 * 1024, 8192), ignored -> { validateChain(state); return true; });
         StrictJson.require(state.pending().isEmpty(), "ordinary submission cannot discard an unfinished cycle");
         StrictJson.require(ContinuityActionJournal.receipts(head.state(), archive).stream().allMatch(ActionReceipt::settled),
                 "ordinary submission cannot discard an unresolved original action");
