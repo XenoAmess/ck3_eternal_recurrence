@@ -72,6 +72,7 @@ rrfa_seed_inputs_effect = {
                     add_piety = { value = ${PIETY} subtract = piety }
                     set_variable = { name = rrfa_piety_before value = piety }
                     rrfa_seed_long_display_name_effect = yes
+                    ${UI_FAMILY_PREVIEW_SEED}
                     add_character_flag = rrfa_seed_done
                     rrfa_seed_readiness_diagnostics_effect = yes
                     if = {
