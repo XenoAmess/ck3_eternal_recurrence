@@ -35,6 +35,15 @@ public final class CheckpointCommitVerifier {
         default DriverStateSnapshot.Complete retainedDriver(ContinuityStorePort.Session borrowed,CheckpointPair pair)throws IOException {
             throw new IOException("immutable complete saved Driver original is unavailable");
         }
+        default java.util.Optional<SaveWithDriver> verifyWithDriver(ContinuityStorePort.Session borrowed,SessionIdentity source,CheckpointPair pair,CompletedCycleProof proof,boolean retained)throws IOException {
+            return java.util.Optional.empty();
+        }
+    }
+    public record SaveWithDriver(String digest,DriverStateSnapshot.Complete savedDriver) {
+        public SaveWithDriver {
+            org.xar.ck3.control.continuity.writer.WriterContracts.requireDigest(digest);
+            java.util.Objects.requireNonNull(savedDriver);
+        }
     }
     public static final class VerifiedCheckpoint {
         private final CheckpointCommitVerifier issuer;
@@ -95,8 +104,13 @@ public final class CheckpointCommitVerifier {
     /** Compatibility overload: validates actual originals once, then matches Root's finite Native material candidates against both expected digests. */
     public String verifyHistorical(ContinuityStorePort.Session borrowed, SessionIdentity sourceSession, CheckpointPair pair,
             CompletedCycleProof proof, String originalHeadDigest, String expectedDigest, String expectedCycleAuthority) throws IOException {
+        return ContinuityJson.digest(checkedHistorical(borrowed,sourceSession,pair,proof,originalHeadDigest,expectedDigest,expectedCycleAuthority).binding());
+    }
+    private CheckedBinding checkedHistorical(ContinuityStorePort.Session borrowed, SessionIdentity sourceSession, CheckpointPair pair,
+            CompletedCycleProof proof, String originalHeadDigest, String expectedDigest, String expectedCycleAuthority) throws IOException {
         WriterContracts.requireDigest(expectedDigest); WriterContracts.requireDigest(expectedCycleAuthority);
-        ObjectNode binding = buildVerifiedBinding(borrowed, sourceSession, pair, proof, originalHeadDigest, false);
+        CheckedBinding checked=buildVerifiedBinding(borrowed,sourceSession,pair,proof,originalHeadDigest,false);
+        ObjectNode binding=checked.binding();
         String actualSemantic = StrictJson.text(binding.get("semantic_verifier_sha256"));
         ObjectNode currentAuthority = StrictJson.object();
         currentAuthority.put("cycle_state_digest", proof.cycleStateDigest());
@@ -104,7 +118,7 @@ public final class CheckpointCommitVerifier {
         currentAuthority.set("session", org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionToJson(sourceSession));
         String currentCycleDigest = ContinuityJson.digest(currentAuthority);
         String currentCheckpointDigest = ContinuityJson.digest(binding);
-        if (currentCycleDigest.equals(expectedCycleAuthority) && currentCheckpointDigest.equals(expectedDigest)) return currentCheckpointDigest;
+        if (currentCycleDigest.equals(expectedCycleAuthority) && currentCheckpointDigest.equals(expectedDigest)) return checked;
         List<String> candidates = org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier.materialDigestCandidates(proof.semantic());
         if (!candidates.contains(actualSemantic)) throw new IOException("actual semantic verifier digest is not a Root Native material candidate");
         for (String candidate : candidates) {
@@ -116,15 +130,20 @@ public final class CheckpointCommitVerifier {
             if (!cycleDigest.equals(expectedCycleAuthority)) continue;
             binding.put("semantic_verifier_sha256", candidate);
             String checkpointDigest = ContinuityJson.digest(binding);
-            if (checkpointDigest.equals(expectedDigest)) return checkpointDigest;
+            if (checkpointDigest.equals(expectedDigest)) return checked;
         }
         throw new IOException("no Root Native material candidate matches both expected checkpoint and cycle authority digests");
     }
     /** Retained compatibility overload: validates actual retained originals once, then matches Root's finite Native material candidates. */
     public String verifyRetainedOriginal(ContinuityStorePort.Session borrowed,SessionIdentity source,CheckpointPair pair,
             CompletedCycleProof proof,String originalHeadDigest,String expectedDigest,String expectedCycleAuthority)throws IOException {
+        return ContinuityJson.digest(checkedRetained(borrowed,source,pair,proof,originalHeadDigest,expectedDigest,expectedCycleAuthority).binding());
+    }
+    private CheckedBinding checkedRetained(ContinuityStorePort.Session borrowed,SessionIdentity source,CheckpointPair pair,
+            CompletedCycleProof proof,String originalHeadDigest,String expectedDigest,String expectedCycleAuthority)throws IOException {
         WriterContracts.requireDigest(expectedDigest); WriterContracts.requireDigest(expectedCycleAuthority);
-        ObjectNode binding = buildVerifiedBinding(borrowed, source, pair, proof, originalHeadDigest, true);
+        CheckedBinding checked=buildVerifiedBinding(borrowed,source,pair,proof,originalHeadDigest,true);
+        ObjectNode binding=checked.binding();
         String actualSemantic = StrictJson.text(binding.get("semantic_verifier_sha256"));
         ObjectNode currentAuthority = StrictJson.object();
         currentAuthority.put("cycle_state_digest", proof.cycleStateDigest());
@@ -132,7 +151,7 @@ public final class CheckpointCommitVerifier {
         currentAuthority.set("session", org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionToJson(source));
         String currentCycleDigest = ContinuityJson.digest(currentAuthority);
         String currentCheckpointDigest = ContinuityJson.digest(binding);
-        if (currentCycleDigest.equals(expectedCycleAuthority) && currentCheckpointDigest.equals(expectedDigest)) return currentCheckpointDigest;
+        if (currentCycleDigest.equals(expectedCycleAuthority) && currentCheckpointDigest.equals(expectedDigest)) return checked;
         List<String> candidates = org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier.materialDigestCandidates(proof.semantic());
         if (!candidates.contains(actualSemantic)) throw new IOException("actual retained semantic verifier digest is not a Root Native material candidate");
         for (String candidate : candidates) {
@@ -144,9 +163,22 @@ public final class CheckpointCommitVerifier {
             if (!cycleDigest.equals(expectedCycleAuthority)) continue;
             binding.put("semantic_verifier_sha256", candidate);
             String checkpointDigest = ContinuityJson.digest(binding);
-            if (checkpointDigest.equals(expectedDigest)) return checkpointDigest;
+            if (checkpointDigest.equals(expectedDigest)) return checked;
         }
         throw new IOException("no Root Native material candidate matches both expected retained checkpoint and cycle authority digests");
+    }
+    /** Same-call verified DATA for the package-owned material producer; never an input permit. */
+    DriverStateSnapshot.Complete verifyMaterialDriver(ContinuityStorePort.Session borrowed,SessionIdentity source,CheckpointPair pair,
+            CompletedCycleProof proof,String originalHeadDigest,String expectedDigest,String expectedCycleAuthority,boolean retained)throws IOException {
+        requireLease(borrowed);String current=borrowed.head().digest();
+        CheckedBinding checked=retained
+                ?checkedRetained(borrowed,source,pair,proof,originalHeadDigest,expectedDigest,expectedCycleAuthority)
+                :checkedHistorical(borrowed,source,pair,proof,originalHeadDigest,expectedDigest,expectedCycleAuthority);
+        DriverStateSnapshot.Complete saved=checked.savedDriver().isPresent()
+                ?checked.savedDriver().orElseThrow():saves.retainedDriver(borrowed,pair);
+        requireLease(borrowed);
+        StrictJson.require(current.equals(borrowed.head().digest()),"saved material validation changed the current writer head");
+        return saved;
     }
     public void requireIssued(ContinuityStorePort.Session borrowed, VerifiedCheckpoint verified) throws IOException {
         Objects.requireNonNull(verified); requireLease(borrowed);
@@ -167,12 +199,13 @@ public final class CheckpointCommitVerifier {
     }
     private String historicalDigest(ContinuityStorePort.Session borrowed,SessionIdentity session,CheckpointPair pair,
             CompletedCycleProof proof,String originalHeadDigest,boolean retained)throws IOException {
-        return ContinuityJson.digest(buildVerifiedBinding(borrowed,session,pair,proof,originalHeadDigest,retained));
+        return ContinuityJson.digest(buildVerifiedBinding(borrowed,session,pair,proof,originalHeadDigest,retained).binding());
     }
-    private ObjectNode buildVerifiedBinding(ContinuityStorePort.Session borrowed,SessionIdentity session,CheckpointPair pair,
+    private record CheckedBinding(ObjectNode binding,java.util.Optional<DriverStateSnapshot.Complete> savedDriver) { }
+    private CheckedBinding buildVerifiedBinding(ContinuityStorePort.Session borrowed,SessionIdentity session,CheckpointPair pair,
             CompletedCycleProof proof,String originalHeadDigest,boolean retained)throws IOException {
         requireLease(borrowed); Objects.requireNonNull(session); Objects.requireNonNull(pair); Objects.requireNonNull(proof);
-        WriterContracts.requireDigest(originalHeadDigest);
+        WriterContracts.requireDigest(originalHeadDigest);String current=borrowed.head().digest();
         var savedFrame=pair.frame(); var actualFrame=proof.semantic().frame();
         StrictJson.require(borrowed.head().state().machineId().equals(session.machineId())
                 && session.machineId().equals(savedFrame.machineId()) && session.game().equals(savedFrame.game())
@@ -186,15 +219,27 @@ public final class CheckpointCommitVerifier {
         for (ExactRef ref:proof.semantic().references()) readExact(ref);
         String semanticDigest=semantics.verify(borrowed,session,proof.semantic()); WriterContracts.requireDigest(semanticDigest);
         DriverStateSnapshot.Complete before=DriverStateSnapshot.decodeComplete(readExact(proof.semantic().originalDriver()));
-        DriverStateSnapshot.Complete saved=retained?saves.retainedDriver(borrowed,pair):drivers.readVerifiedOriginal(pair,before.session());
+        java.util.Optional<SaveWithDriver> combined=retained
+                ?Objects.requireNonNull(saves.verifyWithDriver(borrowed,session,pair,proof,true)):java.util.Optional.empty();
+        DriverStateSnapshot.Complete saved;
+        if(retained)saved=combined.isPresent()?combined.orElseThrow().savedDriver():saves.retainedDriver(borrowed,pair);
+        else saved=drivers.readVerifiedOriginal(pair,before.session());
         requireSaveProjection(before,saved,pair); if(!retained)drivers.verifyOriginal(pair,before.session());
-        String saveDigest=retained?saves.verifyRetained(borrowed,session,pair,proof):saves.verify(borrowed,session,pair,proof); WriterContracts.requireDigest(saveDigest); requireLease(borrowed);
+        if(!retained)combined=Objects.requireNonNull(saves.verifyWithDriver(borrowed,session,pair,proof,false));
+        String saveDigest=combined.isPresent()?combined.orElseThrow().digest()
+                :retained?saves.verifyRetained(borrowed,session,pair,proof):saves.verify(borrowed,session,pair,proof);
+        WriterContracts.requireDigest(saveDigest);requireLease(borrowed);
+        if(combined.isPresent())StrictJson.require(Arrays.equals(saved.encode(),combined.orElseThrow().savedDriver().encode()),
+                "combined canonical SAVE Driver differs from the verified complete projection");
         ObjectNode binding=StrictJson.object(); binding.put("writer_head_sha256",originalHeadDigest);
         binding.put("session_id",session.sessionId()); binding.put("canonical_save_sha256",saveDigest); binding.put("semantic_verifier_sha256",semanticDigest);
         binding.put("cycle_state_sha256",proof.cycleStateDigest()); binding.put("completed_cycles",proof.completedCycles());
         binding.set("pair",StrictJson.parse(CheckpointPairCodec.encode(pair)));
         var refs=binding.putArray("semantic_sources"); proof.semantic().references().forEach(ref->refs.add(ref.toJson()));
-        return binding;
+        java.util.Optional<DriverStateSnapshot.Complete> archived=combined.map(SaveWithDriver::savedDriver);
+        if(retained&&archived.isEmpty())archived=java.util.Optional.of(saved);
+        StrictJson.require(current.equals(borrowed.head().digest()),"SAVE binding validation changed the current writer head");
+        return new CheckedBinding(binding,archived);
     }
     private byte[] readExact(ExactRef ref) throws IOException {
         var actual=files.observe(Path.of(ref.path())).orElseThrow(()->new IOException("original checkpoint semantic source unavailable"));

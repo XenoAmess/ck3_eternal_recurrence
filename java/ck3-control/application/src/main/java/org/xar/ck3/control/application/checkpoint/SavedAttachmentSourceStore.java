@@ -206,6 +206,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         files.verify(originalMaterial);StrictJson.require(current.equals(borrowed.head().digest()),"retained saved material verification mutated canonical head");return result;
     }
     private SavedMaterial readMaterial(ContinuityStorePort.Session borrowed,CheckpointPair pair,FileWitness manifest,boolean retained)throws IOException {
+        String current=borrowed.head().digest();
         ObjectNode row=StrictJson.object(FullJsonTree.parse(files.read(manifest,MAX_METADATA),MAX_METADATA),Set.of("schema","pair","session","proof","original_writer_head","original_writer_head_sha256","checkpoint_binding_sha256","cycle_authority_sha256"));
         StrictJson.require(MATERIAL_SCHEMA.equals(StrictJson.text(row.get("schema")))
                 &&pair.equals(CheckpointPairCodec.decode(StrictJson.canonical(row.get("pair")))),"immutable material belongs to a different physical pair");
@@ -218,10 +219,10 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         // eligibility is checked separately below; a replacement Game must not impersonate the saved owner.
         String cycleAuthority=historicalCycles.verify(borrowed,source,proof,original);WriterContracts.requireDigest(cycleAuthority);
         String storedCycleAuthority=StrictJson.text(row.get("cycle_authority_sha256"));WriterContracts.requireDigest(storedCycleAuthority);
-        if(retained)verifier.verifyRetainedOriginal(borrowed,source,pair,proof,head,digest,storedCycleAuthority);
-        else verifier.verifyHistorical(borrowed,source,pair,proof,head,digest,storedCycleAuthority);
+        DriverStateSnapshot.Complete saved=verifier.verifyMaterialDriver(borrowed,source,pair,proof,head,digest,storedCycleAuthority,retained);
         files.verify(manifest);
-        return new SavedMaterial(this,pair,source,proof,original,head,digest,manifest,verifier.retainedDriver(borrowed,pair));
+        StrictJson.require(sessions.current()==borrowed&&current.equals(borrowed.head().digest()),"saved material read changed the current writer session or head");
+        return new SavedMaterial(this,pair,source,proof,original,head,digest,manifest,saved);
     }
     /** Only an admitted private RestoreBinding can transfer this original custody to its replacement aggregate. */
     synchronized SavedMaterial reopenOriginal(ContinuityStorePort.Session same,RestoreCheckpointService.OrdinaryReopenCustody custody)throws IOException {

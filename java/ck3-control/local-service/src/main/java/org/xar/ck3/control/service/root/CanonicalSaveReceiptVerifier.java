@@ -50,11 +50,16 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
     }
     @Override public String verify(ContinuityStorePort.Session same,SessionIdentity owner,CheckpointPair pair,
             CompletedCycleProof cycle)throws IOException {
-        return verifySaved(same,owner,pair,cycle,true);
+        return verifySaved(same,owner,pair,cycle,true).digest();
     }
     @Override public String verifyRetained(ContinuityStorePort.Session same,SessionIdentity owner,CheckpointPair pair,
             CompletedCycleProof cycle)throws IOException {
-        return verifySaved(same,owner,pair,cycle,false);
+        return verifySaved(same,owner,pair,cycle,false).digest();
+    }
+    @Override public java.util.Optional<CheckpointCommitVerifier.SaveWithDriver> verifyWithDriver(ContinuityStorePort.Session same,SessionIdentity owner,CheckpointPair pair,
+            CompletedCycleProof cycle,boolean retained)throws IOException {
+        var original=verifySaved(same,owner,pair,cycle,!retained);
+        return java.util.Optional.of(new CheckpointCommitVerifier.SaveWithDriver(original.digest(),original.savedDriver()));
     }
     @Override public DriverStateSnapshot.Complete retainedDriver(ContinuityStorePort.Session same,CheckpointPair pair)throws IOException {
         writer.requireSession(same);
@@ -66,7 +71,7 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
             return DriverStateSnapshot.decodeComplete(bound.loadMaterial(actual.supportingEvidence().get(1)).bytes());
         }catch(UncheckedIOException failure){throw failure.getCause();}
     }
-    private String verifySaved(ContinuityStorePort.Session same,SessionIdentity owner,CheckpointPair pair,
+    private FirstSaveReceiptVerifier.Original verifySaved(ContinuityStorePort.Session same,SessionIdentity owner,CheckpointPair pair,
             CompletedCycleProof cycle,boolean physical)throws IOException {
         writer.requireSession(same);
         Objects.requireNonNull(owner); Objects.requireNonNull(pair); Objects.requireNonNull(cycle);
@@ -86,7 +91,7 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
                 &&saved.frame().identity().nativeRevision().compareTo(proof.frame().identity().nativeRevision())>=0
                 &&opening.observationVersion()==saved.observationVersion(),
                 "actual cycle semantic and physical SAVE must share machine/Game/episode/actor/date/observationVersion and monotonic native revisions");
-        return verifyFirst(same,owner,pair,opening,physical,receipt,head).digest();
+        return verifyFirst(same,owner,pair,opening,physical,receipt,head);
     }
     @Override public FirstSaveReceiptVerifier.Original verifyFirst(ContinuityStorePort.Session same,SessionIdentity owner,
             CheckpointPair pair,ObservationIdentity opening,boolean physical)throws IOException {
