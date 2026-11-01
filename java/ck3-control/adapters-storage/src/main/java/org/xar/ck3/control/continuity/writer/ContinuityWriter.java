@@ -186,6 +186,48 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         requireSession(active);
         return java.util.Optional.of(active);
     }
+    /** Read old source DATA only, under its real mutex and the exact suspended mutable caller scope. */
+    public <T> T readOnlyFrom(ContinuityStorePort.Session activeNewSame, SessionWork<T> work) throws IOException {
+        if (!readOnly) throw new IOException("source-only reads require the actual readonly receiver");
+        StorageWriteGuard.requireNoWritesOpen(storageGuard);
+        Objects.requireNonNull(work);
+        ContinuityStorePort.Session active = ACTIVE_SESSION.get();
+        if (active == null || active != activeNewSame || !(active instanceof ContinuityWriter.Session outer))
+            throw new IOException("source-only reads require the exact active mutable writer Session");
+        ContinuityWriter caller = outer.writer();
+        if (caller == this || caller.readOnly || caller.layout.lock().equals(layout.lock()))
+            throw new IOException("source-only reads require distinct mutable caller and readonly source writers");
+        caller.requireSession(outer);
+        try (WindowsLedgerLock ignored = WindowsLedgerLock.acquire(layout.lock())) {
+            Session inner = new Session();
+            Throwable primary = null;
+            outer.suspended = true;
+            try {
+                ACTIVE_SESSION.set(inner);
+                return work.run(inner);
+            } catch (IOException | RuntimeException | Error failure) {
+                primary = failure;
+                throw failure;
+            } finally {
+                boolean expectedInner = ACTIVE_SESSION.get() == inner;
+                inner.open = false;
+                ACTIVE_SESSION.set(outer);
+                outer.suspended = false;
+                try {
+                    if (ACTIVE_SESSION.get() != outer)
+                        throw new IOException("source-only read did not restore the exact caller Session");
+                    caller.requireSession(outer);
+                    if (!expectedInner)
+                        throw new IOException("source-only callback changed its active source Session");
+                    StorageWriteGuard.requireNoWritesOpen(storageGuard);
+                } catch (IOException | RuntimeException | Error restoration) {
+                    if (primary == null) throw restoration;
+                    if (primary != restoration) primary.addSuppressed(restoration);
+                }
+            }
+        }
+    }
+
     public Receipt commit(Prepared prepared) throws IOException {
         if (readOnly) throw new IOException("readonly writer cannot commit");
         return locked(session -> session.commit(prepared));
@@ -239,6 +281,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private final ContinuityStore store = ContinuityWriter.this.store;
         private final Thread owner = Thread.currentThread();
         private boolean open = true;
+        private boolean suspended;
         private Head retainedHead;
         private boolean retainedHeadHistoryVerified;
         private Head retainedDomainHead;
@@ -295,7 +338,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private Session() { }
         private ContinuityWriter writer() { return ContinuityWriter.this; }
         private void checkOpen() throws IOException {
-            StrictJson.require(open && Thread.currentThread() == owner, "live original-lock session on owning thread required");
+            StrictJson.require(open && !suspended && Thread.currentThread() == owner, "live original-lock session on owning thread required");
             if(readOnly) StorageWriteGuard.requireNoWritesOpen(storageGuard);
         }
         @Override public void requireWriter(java.nio.file.Path originalWriterLock) throws IOException {
