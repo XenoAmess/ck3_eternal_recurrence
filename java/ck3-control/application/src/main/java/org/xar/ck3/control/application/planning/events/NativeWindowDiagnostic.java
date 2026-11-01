@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
@@ -63,7 +64,9 @@ public final class NativeWindowDiagnostic {
         if(kind.orElseThrow()==EpisodeIncidentJournal.Kind.MANDATORY)
             body.set("mandatory_choice_hint",snapshot.get("top_exclusive_modal_choice_hint"));
         var plan = StrictJson.object().putNull("selected_step"); plan.set("unhandled_native_window_diagnostic", body);
-        return Optional.of(OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(plan, ActionCommand.MAX_ARGUMENT_BYTES)),
+        var raw = FullJsonTree.encode(plan, FullJsonTree.MAXIMUM_BYTES);
+        var canonical = raw.length <= ActionCommand.MAX_ARGUMENT_BYTES ? StrictJson.canonical(plan, ActionCommand.MAX_ARGUMENT_BYTES) : raw;
+        return Optional.of(OpportunityJson.object(OpportunityJson.parseComplete(canonical, FullJsonTree.MAXIMUM_BYTES),
                 "actual unavailable native window diagnostic"));
     }
 }

@@ -37,6 +37,7 @@ import org.xar.ck3.control.contracts.CrossJsDecimalUInt64;
 import org.xar.ck3.control.contracts.offline.OfflineBatchBinding;
 import org.xar.ck3.control.contracts.offline.IncidentReadIndex;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest;
 import org.xar.ck3.control.events.interactionfallback.InteractionFallback;
 import org.xar.ck3.control.g2.common.G2Source;
@@ -61,7 +62,9 @@ public final class EpisodeIncidentJournal {
     private static final String AFTER_INDEX_SCHEMA = "xar.episode-incident-after-index/v2";
     private static final String LEGACY_AFTER_INDEX_SCHEMA = "xar.episode-incident-after-index/v1";
     private static final String UNSETTLED_SCHEMA = "xar.episode-incident-unsettled-observation/v1";
-    private static final int MAX_BODY = 1 << 20;
+    private static final int MAX_METADATA = 1 << 20;
+    // Complete incident bodies stay within the existing material cap; scan inventory remains separately bounded.
+    private static final int MAX_BODY = FullJsonTree.MAXIMUM_BYTES;
     private static final long MAX_SCAN_BYTES = 16L << 20;
     private final Configuration configured;
     private final ExactRef episodeRef;
@@ -130,7 +133,7 @@ public final class EpisodeIncidentJournal {
     /** A real current full-frame archive basis; this stamp does not qualify an initial entry or restore. */
     public static EpisodeIncidentJournal initializeObserved(Configuration configured, Binding actual, ExactRef originalBasis) throws IOException {
         plainDirectory(configured.incidentRoot()); plainDirectory(configured.scanRoot()); verifyExternal(originalBasis);
-        require(originalBasis.bytes() <= MAX_BODY, "Bounded typed original observation basis required");
+        require(originalBasis.bytes() <= MAX_METADATA, "Bounded typed original observation basis required");
         Path stamp = configured.incidentRoot().resolve("EPISODE.json");
         try (var listing = Files.list(configured.incidentRoot())) { require(listing.findAny().isEmpty(), "New observed journal must actually be empty"); }
         ObjectNode row = binding(actual); row.put("schema", OBSERVED_STAMP_SCHEMA); row.set("original_observation_basis", originalBasis.toJson());
@@ -193,7 +196,7 @@ public final class EpisodeIncidentJournal {
         Objects.requireNonNull(actual); Objects.requireNonNull(originalRead); episode.requireEpisode(actual);
         verifyReadOriginals(originalRead);
         verifyEpisode(); verifyExternal(actualFrame);
-        ObjectNode plan = object(StrictJson.parse(DriverJson.encode(retainedPlan)));
+        ObjectNode plan = object(DriverJson.encode(retainedPlan));
         require(plan.path("selected_step").isNull(), "Blocked capture must explicitly retain a null selected step");
         boolean diagnostic = plan.path("unhandled_native_window_diagnostic").isObject();
         require(!(originalRead instanceof FailedRead) || diagnostic, "Failed query cannot manufacture a first-rendered fallback");
@@ -232,7 +235,7 @@ public final class EpisodeIncidentJournal {
                         new InteractionBeforeEvidence.GuiSourcePin(InteractionFallback.GUI_SOURCE, InteractionFallback.GUI_SHA256));
                 require(body instanceof InteractionBeforeEvidence.Prepared, "Original blocked interaction capture unavailable"); raw = ((InteractionBeforeEvidence.Prepared)body).json();
             }
-            ObjectNode actualBody = object(StrictJson.parse(raw)); actualBody.put("stage", "planning_diagnostic").put("dispatch_attempted", false);
+            ObjectNode actualBody = object(raw); actualBody.put("stage", "planning_diagnostic").put("dispatch_attempted", false);
             if (!diagnostic && kind == Kind.EVENT) object(actualBody.get("selection")).putNull("selected_step");
             ExactRef before = write(configured, configured.incidentRoot().resolve(id + ".before.json"), encode(actualBody));
             ObjectNode index = binding(actual); index.put("incident_id", id).put("kind", kind.name())
@@ -348,7 +351,7 @@ public final class EpisodeIncidentJournal {
                 index.set("after_observation", ProposalLifecycleCodec.observation(pair.after().identity())); index.set("after_frame", pair.after().originalEvidence().toJson());
                 var evidence = index.putArray("supporting_refs"); effect.supportingEvidence().forEach(ref -> evidence.add(ref.toJson()));
                 Optional<RawJson> policyInput=EventIncidentReceipt.prepare(command.arguments(),projected.compatibleResult().orElseThrow(),ticket.before(),after,new RawJson(raw));
-                if(policyInput.isPresent())index.set("policy_receipt_input",StrictJson.parse(policyInput.orElseThrow().bytes(),MAX_BODY));else index.putNull("policy_receipt_input");
+                if(policyInput.isPresent())index.set("policy_receipt_input",StrictJson.parse(policyInput.orElseThrow().bytes(),MAX_METADATA));else index.putNull("policy_receipt_input");
                 // A mismatch must remain inspectable and unresolved. The coordinator already converts
                 // this verifier's failure into UNKNOWN; no event selection is submitted again.
                 write(configured, afterIndex, encode(index));verifyPolicyReceipt(index,object(read(ticket.index())),originalBeforeBody,read(after));return null;
@@ -436,7 +439,7 @@ public final class EpisodeIncidentJournal {
             require(files.size() <= 1282, "Finite episode incident inventory exceeded");
             List<ExactRef> originals = new ArrayList<>(); List<ObjectNode> incidents = new ArrayList<>(); Set<String> indexedIds = new java.util.HashSet<>(); int incomplete = 0, diagnosticOnly = 0; long bytes = 0;
             Optional<ExactRef> originalBasis = originalObservationBasis();
-            if (originalBasis.isPresent()) { ExactRef ref = originalBasis.orElseThrow(); require(ref.bytes() <= MAX_BODY, "Bounded typed original basis required"); verifyExternal(ref); originals.add(ref); }
+            if (originalBasis.isPresent()) { ExactRef ref = originalBasis.orElseThrow(); require(ref.bytes() <= MAX_METADATA, "Bounded typed original basis required"); verifyExternal(ref); originals.add(ref); }
             for (Path path : files) {
                 plain(path); require(Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS), "Incident root contains an unexpected entry");
                 String filename = path.getFileName().toString();
@@ -556,7 +559,7 @@ public final class EpisodeIncidentJournal {
         } catch (IllegalArgumentException malformed) { throw new IOException("Malformed versioned before-index read originals", malformed); }
     }
     private static void verifyReadOriginals(ReadOriginals original) throws IOException {
-        if (original instanceof KnownRead known) require(known.original().bytes() > 0 && known.original().bytes() <= MAX_BODY,
+        if (original instanceof KnownRead known) require(known.original().bytes() > 0 && known.original().bytes() <= MAX_METADATA,
                 "Bounded actual private receipt required");
         for (ExactRef ref : original.refs()) verifyExternal(ref);
     }
@@ -651,7 +654,7 @@ public final class EpisodeIncidentJournal {
         if(input.isNull()) {
             StrictJson.require(!"exact-source-reviewed-populist-refuse-preserve-realm".equals(object(actualBeforeBody).path("policy").asText()),"current populist after index lost its actual policy receipt input");return;
         }
-        EventIncidentReceipt.verify(new RawJson(StrictJson.canonical(input,MAX_BODY)),text(beforeIndex,"arguments_sha256"),
+        EventIncidentReceipt.verify(new RawJson(StrictJson.canonical(input,MAX_METADATA)),text(beforeIndex,"arguments_sha256"),
             ExactRef.fromJson(afterIndex.get("before_ref")),ExactRef.fromJson(afterIndex.get("after_ref")),new RawJson(actualBeforeBody),new RawJson(actualAfterBody));
     }
     private static void requireProgress(Binding actual, ExactRef original) throws IOException {
@@ -710,7 +713,7 @@ public final class EpisodeIncidentJournal {
     private static byte[] encode(ObjectNode body) { return ProposalLifecycleCodec.encodePayload(body, MAX_BODY); }
     private static RetainedJson.ObjectValue retained(ObjectNode value) { return RetainedJson.object(RetainedJson.parse(encode(value))); }
     private static ObjectNode object(JsonNode node) { StrictJson.require(node instanceof ObjectNode, "Actual JSON object required"); return (ObjectNode)node; }
-    private static ObjectNode object(byte[] raw) { return object(StrictJson.parse(raw, MAX_BODY)); }
+    private static ObjectNode object(byte[] raw) { return object(FullJsonTree.parse(raw, MAX_BODY)); }
     private static String text(JsonNode row, String name) { return StrictJson.text(row.get(name)); }
     private static java.math.BigInteger integer(JsonNode row, String name) { JsonNode value = row.get(name); StrictJson.require(value != null && value.isIntegralNumber(), "Exact integer required: " + name); return value.bigIntegerValue(); }
     private static Path absolute(Path value) { StrictJson.require(value != null && value.isAbsolute() && value.equals(value.normalize()), "Absolute normalized incident root required"); return value; }
