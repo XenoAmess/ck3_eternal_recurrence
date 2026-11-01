@@ -238,3 +238,8 @@ POST 前在限定正式源码与 delivery 中按实际 RVA、global、FQN 查已
 唯一匹配的 literal edit 只证明替换位置唯一，仍须核所在方法的局部作用域和声明类型。M3 reserve202 首稿把只在 execute 中声明的 bodyRsp 用进 private grow，另将较窄 callback Memory 直接传给另一名义接口；两项在编译前源审拒绝。后继应使用该方法实际可见的当前 frame，并在身份校验后传已捕获的强类型 Memory。异常类型等后到明确要求另记 owner 合同成本，不能追认为首稿已违反明确要求。
 
 “无需修改其它文件”的审阅结论只能覆盖本轮实际提供的消费者。Root203 的七份完整源支持 authority 三处修改，却未包含另一个真正消费 Cold basis 的 Factory；该 Factory 的 SameGameWatch 强转换随后成为确定缺口。保留可采用的局部实现，同时拒绝超出输入集合的全链结论；这项漏取消费者属于 owner 输入覆盖责任，不扩展成模型在完整输入下失败的结论。
+
+
+冻结目标声明时，省去不必要的无方法体 private 构造器原型。M3 record206 的目标文字含 `private MapRecord86F210206();`，首稿逐字搬进 concrete class，实际 store/return 语句虽对，整类仍不合法。另两个收到同类原型的 binder 首稿却自行生成了合法方法体，因此只能记录 owner 的非必要锚定成本，不能推成唯一原因或通用能力失败。需要构造器时用文字说明访问级别和签名，并要求合法实现；保留原请求，不为已闭业务重投。
+
+匿名回调的身份检查要核左右变量的实际来源。factory 捕获值与 override 参数同名时，`memory != memory` 是恒假，不能证明 callback 使用了捕获的对象；同时核传给 helper 的是具有所需名义接口的捕获值。局部 exact edit 还须与整个方法已有声明核重名：Root207 的新变量 checked 与原 String checked 冲突，模型和 owner 首次源审都漏过，实际 strict 首红后仅 owner 改两个标识符。源审拒绝与真实编译红分别记录；正确业务条件、唯一匹配或完整 stop 都不替代这项检查。
