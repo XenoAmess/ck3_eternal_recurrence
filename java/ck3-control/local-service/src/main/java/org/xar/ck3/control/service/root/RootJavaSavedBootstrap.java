@@ -307,6 +307,184 @@ public final class RootJavaSavedBootstrap {
         }
     }
 
+    /** Recover only an already committed saved entry under new actual physical READ custody. */
+    public static RetainedSaved reopenLoaded(ConfirmedSource source,RootRuntimeContext context,
+            RootProcessAttach.LoadedCustody actual,Instant deadline)throws IOException,InterruptedException {
+        Objects.requireNonNull(source);Objects.requireNonNull(context);Objects.requireNonNull(actual);Objects.requireNonNull(deadline);
+        var game=context.game();
+        StrictJson.require(game==actual.game()&&game.mode()==ManagedGameSession.Mode.ATTACHED
+                &&actual.pair().equals(source.pair())&&source.writer!=context.writer()
+                &&!source.writer.originalLockPath().equals(context.writer().originalLockPath())
+                &&!source.pair().frame().game().equals(game.generation()),
+                "retained saved entry requires exact attached custody and independent writer");
+        source.requireCurrent();actual.requireCurrent();
+        Instant bounded=deadline.isBefore(actual.deadline())?deadline:actual.deadline();
+        var physical=proof(actual);
+        try {
+            var entry=context.withSession(same->{
+                context.writer().requireSession(same);var head=same.head();
+                var marker=head.state().toJson().get(org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD);
+                StrictJson.require(marker instanceof ObjectNode,"retained saved entry marker is absent");
+                StrictJson.require(!(head.state().pendingCycle() instanceof ContinuityState.Present)
+                        &&ContinuityActionJournal.receipts(head.state(),context.archive().withSession(same)).isEmpty(),
+                        "retained saved startup cannot erase a gameplay or pending cycle history");
+                WriterContracts.HistoricalTransition found=null;
+                for(var pin:head.documents()) {
+                    var document=ContinuityJson.parseObject(same.readPinned(pin,ContinuityJson.LEDGER_MAX_BYTES),ContinuityJson.LEDGER_MAX_BYTES);
+                    if(KIND.equals(document.path("kind").asText())&&ContinuityJson.same(marker,document.get("details"))) {
+                        StrictJson.require(found==null,"retained saved entry is not unique in actual canonical history");
+                        found=same.readHistoricalTransition(pin);
+                    }
+                }
+                StrictJson.require(found!=null,"retained saved marker has no actual canonical entry");
+                same.requireDomainImportContinuation(found.sequence(),ContinuityJson.digest(found.after().toJson()));
+                requireSavedHistorical(source,context,same,found,true);
+                StrictJson.require(head.digest().equals(same.head().digest()),"retained saved lookup changed current head");
+                return found;
+            });
+            var first=fresh(context,bounded);var second=fresh(context,bounded);
+            NativeFreshSnapshotPort.verifyAfter(first.acknowledgement(),second);
+            requireRaw(source,context,first);requireRaw(source,context,second);
+            var originals=context.withSession(same->{
+                context.writer().requireSession(same);var head=same.head();
+                requireSavedHistorical(source,context,same,entry,true);
+                var archive=context.archive().withSession(same);var refs=new ArrayList<ExactRef>();
+                for(var read:List.of(first,second)) {
+                    archive.preserve(read.acknowledgement());refs.add(archive.referenceOf(read.acknowledgement()));
+                    refs.add(archive.preserveNativeFrame(read.originalFrame()));
+                }
+                StrictJson.require(head.digest().equals(same.head().digest()),"retained READ capture changed current writer");
+                return List.copyOf(refs);
+            });
+            try {RestoreCheckpointService.requireStableReadProgression(first.originalFrame(),second.originalFrame());}
+            catch(RuntimeException failure) {throw new IOException("retained saved READ progression failed: originals="+originals,failure);}
+            source.requireCurrent();physical.requireCurrent();
+            return context.withSession(same->{
+                context.writer().requireSession(same);var head=same.head();
+                var row=requireSavedHistorical(source,context,same,entry,true);
+                var historicalOpening=ContinuityJson.object(ContinuityJson.object(row.get("opening")).get("frame"));
+                StrictJson.require(second.originalFrame().nativeRevision().compareTo(new java.math.BigInteger(
+                        StrictJson.text(historicalOpening.get("native_revision"))))>=0,
+                        "retained current READ regressed behind actual saved opening");
+                var refs=new ArrayList<ExactRef>(originals);
+                refs.addAll(org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(row).evidence());
+                var oldSource=ContinuityJson.object(row.get("source"));
+                StrictJson.require(StrictJson.text(oldSource.get("machine_id")).equals(game.machineId())
+                        &&StrictJson.text(oldSource.get("exact_build")).equals(context.source().exactBuild()),
+                        "retained saved historical source belongs to another machine/build");
+                refs.add(ExactRef.fromJson(oldSource.get("source_ref")));
+                var qualification=context.sources().verifyPhysicalOrigin(same,second.originalFrame().session(),context.source(),
+                        originals.get(3),context.transport().diagnostics(),bounded);
+                qualification.assertCurrent(same);qualification.proof().ifPresent(refs::add);
+                var pins=new ArrayList<WriterContracts.Pin>();
+                for(var ref:refs.stream().distinct().toList()) {
+                    var pin=same.capturePin(ref,Math.toIntExact(ref.bytes()));same.verifyPin(pin);pins.add(pin);
+                }
+                StrictJson.require(head.digest().equals(same.head().digest()),"retained qualification changed current writer");
+                var retained=new RetainedSaved(source,context,physical,first,second,qualification,entry,List.copyOf(pins),bounded);
+                retained.requireCurrent(same);physical.releasePreparation();return retained;
+            });
+        }catch(IOException|RuntimeException|Error|InterruptedException failure) {
+            try{physical.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}throw failure;
+        }
+    }
+
+    private static ObjectNode requireSavedHistorical(ConfirmedSource source,RootRuntimeContext context,
+            ContinuityStorePort.Session same,WriterContracts.HistoricalTransition original,boolean initial)throws IOException {
+        context.writer().requireSession(same);
+        var actual=same.readHistoricalTransition(original.eventPin());
+        StrictJson.require(actual.sequence()==original.sequence()&&actual.eventIdentity().equals(original.eventIdentity())
+                &&Arrays.equals(actual.details(),original.details())
+                &&ContinuityJson.same(actual.before().toJson(),original.before().toJson())
+                &&ContinuityJson.same(actual.after().toJson(),original.after().toJson()),
+                "retained saved entry differs from actual complete canonical edge");
+        var row=ContinuityJson.parseObject(actual.details(),StrictJson.INPUT_MAX_BYTES);
+        var request=org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(row);
+        StrictJson.require(KIND.equals(actual.kind())&&request.identity().equals(actual.eventIdentity()),
+                "retained saved canonical request identity differs");
+        org.xar.ck3.control.continuity.SavedContinuityBootstrap.requireSavedAdmissionReduction(actual.before(),actual.after(),request,true);
+        var owner=OrdinaryCycleTransitions.sessionFromJson(row.get("session"));
+        var expectedOwner=new SessionIdentity(context.game().machineId(),context.game().generation(),context.game().sessionId());
+        var current=same.head().state();
+        StrictJson.require(owner.equals(expectedOwner)&&ContinuityJson.same(current.toJson().get(
+                org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD),row)
+                &&ContinuityJson.same(current.toJson().get("game_binding"),actual.after().toJson().get("game_binding"))
+                &&current.origin().equals(actual.after().origin()),"retained saved current owner/origin/marker changed");
+        if(initial) {
+            same.requireDomainImportContinuation(actual.sequence(),ContinuityJson.digest(actual.after().toJson()));
+            StrictJson.require(current.settledCycles()==source.savedState().settledCycles()
+                    &&current.settledDateRaw()==source.savedState().settledDateRaw()
+                    &&ContinuityJson.same(current.toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD),row.get("full_driver")),
+                    "retained saved startup no longer has original saved basis/baseline");
+        }
+        var savedRef=ExactRef.fromJson(row.get("saved_state_reference"));
+        var headRef=ExactRef.fromJson(row.get("source_head_reference"));
+        var input=new org.xar.ck3.control.continuity.SavedContinuityBootstrap.Input(source.savedState(),savedRef,
+                source.confirmation().eventPin().reference(),source.sourceHead(),headRef,CheckpointPairCodec.encode(source.pair()),
+                ContinuityJson.canonical(row.get("session")),ContinuityJson.canonical(row.get("opening")),
+                ExactRef.fromJson(row.get("full_driver")),ExactRef.fromJson(row.get("driver_facts")),
+                StrictJson.integer(row.get("driver_version"),0,StrictJson.MAX_SAFE_INTEGER),
+                StrictJson.integer(row.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER));
+        StrictJson.require(ContinuityJson.same(row,org.xar.ck3.control.continuity.SavedContinuityBootstrap.details(
+                input,StrictJson.text(row.get("evidence_id")),row.get("source"))),"retained saved source details differ from qualified source");
+        var archive=context.archive();
+        StrictJson.require(Arrays.equals(ContinuityJson.canonical(source.savedState().toJson()),archive.readArtifact(same,savedRef,MAX_STATE))
+                &&Arrays.equals(ContinuityJson.canonical(source.sourceHead().toJson()),archive.readArtifact(same,headRef,MAX_STATE)),
+                "retained saved archived source snapshots differ from actual old states");
+        for(var ref:List.of(input.fullDriver(),input.driverFacts()))archive.readArtifact(same,ref,WriterContracts.MAX_PIN_BYTES);
+        return row;
+    }
+
+    /** A new private read qualification for an actual previously committed saved entry. */
+    public static final class RetainedSaved {
+        private final ConfirmedSource source;
+        private final RootRuntimeContext context;
+        private final PhysicalProof physical;
+        private final NativeFreshSnapshotPort.Received first,second;
+        private final NativeReadinessCollector.SourceQualification qualification;
+        private final WriterContracts.HistoricalTransition entry;
+        private final List<WriterContracts.Pin> originals;
+        private final Instant deadline;
+        private final ObjectNode row;
+        private RetainedSaved(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,
+                NativeFreshSnapshotPort.Received first,NativeFreshSnapshotPort.Received second,
+                NativeReadinessCollector.SourceQualification qualification,WriterContracts.HistoricalTransition entry,
+                List<WriterContracts.Pin> originals,Instant deadline) {
+            this.source=source;this.context=context;this.physical=physical;this.first=first;this.second=second;
+            this.qualification=qualification;this.entry=entry;this.originals=originals;this.deadline=deadline;
+            this.row=ContinuityJson.parseObject(entry.details(),StrictJson.INPUT_MAX_BYTES);
+        }
+        public ConfirmedSource source(){return source;}
+        public SessionIdentity session(){return new SessionIdentity(game().machineId(),game().generation(),game().sessionId());}
+        public ManagedGameSession game(){return context.game();}
+        public NativeFreshSnapshotPort.Received firstRead(){return first;}
+        public NativeFreshSnapshotPort.Received secondRead(){return second;}
+        public WriterContracts.HistoricalTransition originalEntry(){return entry;}
+        public ExactRef fullDriverReference(){return ExactRef.fromJson(row.get("full_driver"));}
+        public ExactRef driverFactsReference(){return ExactRef.fromJson(row.get("driver_facts"));}
+        public ExactRef savedStateReference(){return ExactRef.fromJson(row.get("saved_state_reference"));}
+        public ExactRef sourceHeadReference(){return ExactRef.fromJson(row.get("source_head_reference"));}
+        public long driverVersion(){return StrictJson.integer(row.get("driver_version"),0,StrictJson.MAX_SAFE_INTEGER);}
+        public long episodeEpoch(){return StrictJson.integer(row.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER);}
+        public void requireCurrent(ContinuityStorePort.Session same)throws IOException {
+            context.writer().requireSession(same);
+            StrictJson.require(context.clock().instant().isBefore(deadline),"retained saved preparation deadline expired");
+            game().verify();physical.requireEvidence();qualification.assertCurrent(same);
+            requireOriginals(same);requireSavedHistorical(source,context,same,entry,true);source.requireCurrent(same);
+        }
+        public void requireRetained(ContinuityStorePort.Session same)throws IOException {
+            context.writer().requireSession(same);game().verify();physical.requireEvidence();
+            requireOriginals(same);requireSavedHistorical(source,context,same,entry,false);source.requireRetained(same);
+        }
+        private void requireOriginals(ContinuityStorePort.Session same)throws IOException {
+            for(var pin:originals)same.verifyPin(pin);
+            NativeFreshSnapshotPort.verifyOriginal(first.acknowledgement(),first.originalFrame(),first.snapshotReceived());
+            NativeFreshSnapshotPort.verifyAfter(first.acknowledgement(),second);
+            requireRaw(source,context,first);requireRaw(source,context,second);
+            RestoreCheckpointService.requireStableReadProgression(first.originalFrame(),second.originalFrame());
+        }
+    }
+
     private static NativeFreshSnapshotPort.Received fresh(RootRuntimeContext context,Instant deadline)throws IOException,InterruptedException {
         var result=context.transport().readFreshFullState(deadline);
         if(result instanceof NativeFreshSnapshotPort.Received received) {
