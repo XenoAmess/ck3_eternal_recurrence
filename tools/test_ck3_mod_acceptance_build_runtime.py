@@ -1584,11 +1584,14 @@ class QualifiedV3ProductionArtifact(unittest.TestCase):
             self.assertEqual(argv, ['git', 'merge-base', '--is-ancestor', self.producer.config.source_commit, 'HEAD'])
             return types.SimpleNamespace(returncode=0)
 
+        self.empty_fixture_support()
         before = {path: builder.native_successor.pin(path) for path in self.producer.config.output.rglob('*') if path.is_file()}
         with patch.object(builder.native_successor.subprocess, 'check_output', side_effect=observed), \
              patch.object(builder.native_successor.subprocess, 'run', side_effect=ancestor), \
              patch.object(builder.native_successor.Producer, 'execute', side_effect=AssertionError('read-only')):
             self.consume(replay_source_root=shared)
+            result = self.consume_empty_support(replay_source_root=shared)
+            self.assertEqual(result, {'ref': self.q['fixture_link_support'], 'fixture_production_targets': {}})
             with self.assertRaisesRegex(ValueError, 'existing read-only v3'):
                 self.producer.plan(self.rows, replay_source_root=shared)
             selected = shared / self.fixture.names[0]
@@ -1665,12 +1668,12 @@ class QualifiedV3ProductionArtifact(unittest.TestCase):
         self.refresh()
         self.q['source_commit'] = self.producer.config.source_commit
 
-    def consume_empty_support(self) -> object:
+    def consume_empty_support(self, *, replay_source_root=None) -> object:
         bridge = {'name': 'xar_ck3_bridge', 'artifacts': [{'path': 'xar_ck3_bridge.dll'},
             {'path': 'xar_ck3_bridge.lib'}, {'path': 'xar_ck3_bridge.pdb'}]}
         return builder.qualified_fixture_link_support(self.q, self.refs, self.producer.config.machine_id,
             self.scope, self.producer.native, self.producer.build, {}, {'bridge': bridge}, {'bridge': bridge},
-            [], self.producer.build, {'configurations': [{'targets': []}]})
+            [], self.producer.build, {'configurations': [{'targets': []}]}, replay_source_root=replay_source_root)
 
     def test_empty_v3_support_reaches_complete_readonly_consumer(self) -> None:
         self.empty_fixture_support()
