@@ -12,6 +12,7 @@
 - [project-causality-architecture/](project-causality-architecture/README.md) — **《project因果律》系统架构图册**：整体系统、四个 Loop、自动玩家 + MCP、自动化验收，以及权威证据、产品族、生成投影和四环飞轮共 11 张 Mermaid / SVG / PNG 架构图
 - [project-system-promo-30m-director-treatment.md](project-system-promo-30m-director-treatment.md) — **《project因果律》30 分钟体系说明片导演案**：现行正片结构、逐章论证、四个 Loop 与制作顺序
 - [project-system-promo-director-treatment.md](project-system-promo-director-treatment.md) — **8:20 预告与技术预演案**：保留素材、旁白和构建经验，不再承担体系正片说明任务
+- [hanjin-spring-autumn-filming-lessons-2026-11-01.md](hanjin-spring-autumn-filming-lessons-2026-11-01.md) — **《汉晋春秋》董卓篇拍摄复盘与用户要求**：一集拍完整、玩家口吻、实录优先、战斗压缩、删除未拍预告、工坊宣传及单句修改同步配音字幕
 - [ck3-mod-development-paradigm.md](ck3-mod-development-paradigm.md) — **新建、维护与发布 CK3 Mod 的统一行为范式**：玩家行为合同、原版优先、垂直切片、单一权威来源、L0–L3、fresh-cache 发布闭环与 Definition of Done
 - [consolidation-inventory-2026-08-30.md](consolidation-inventory-2026-08-30.md) — 全产品、分支与脏工作树的 master 收口分类（merged / already-contained / superseded / unfinished-preserved）
 - [branch-management.md](branch-management.md) — master 单一集成线、短命分支 ledger、冻结证据 sidecar 与跨 common-dir/独立 clone 的完整清理流程
