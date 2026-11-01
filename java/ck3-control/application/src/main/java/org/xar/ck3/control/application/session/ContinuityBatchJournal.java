@@ -1424,10 +1424,32 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 "settled recovery observation regressed its actual Game, subject, version, date or revision");
     }
 
+    /** Pure parsed DATA retained only between the two readers of one completed-cycle SEM. */
+    private record SettledSemanticBody(SemanticEvidence semantic,org.xar.ck3.control.application.action.RawJson original,
+            org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj body) { }
+    private static SettledSemanticBody captureSettledSemanticBody(SemanticEvidence semantic,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        var original=originals.loadFullMaterial(semantic.semantic());
+        return new SettledSemanticBody(semantic,original,DriverJson.object(original.bytes(),DriverJson.MAX_NATIVE_BYTES));
+    }
+    private static org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj readSettledSemanticBody(
+            SemanticEvidence semantic,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
+            SettledSemanticBody retained) {
+        var original=originals.loadFullMaterial(semantic.semantic());
+        if(retained==null)return DriverJson.object(original.bytes(),DriverJson.MAX_NATIVE_BYTES);
+        StrictJson.require(retained.semantic().equals(semantic)&&retained.original().equals(original),
+                "settled semantic DATA changed between its original readers");
+        return retained.body();
+    }
     private static org.xar.ck3.control.application.action.NativeObservationPort.TransportSession settledSemanticTransport(
             SemanticEvidence semantic,SessionIdentity owner,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
-        var body=DriverJson.object(originals.loadFullMaterial(semantic.semantic()).bytes(),DriverJson.MAX_NATIVE_BYTES);
+        return settledSemanticTransport(semantic,owner,originals,null);
+    }
+    private static org.xar.ck3.control.application.action.NativeObservationPort.TransportSession settledSemanticTransport(
+            SemanticEvidence semantic,SessionIdentity owner,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,SettledSemanticBody retained) {
+        var body=readSettledSemanticBody(semantic,originals,retained);
         var manifestRef=DriverObservationEvidenceReader.reference(body.get("java_driver_facts_evidence"));
         var manifest=originals.loadFullMaterial(manifestRef);
         var transport=org.xar.ck3.control.application.driver.DriverObservationEvidenceReader.nativeFrame(
@@ -1439,8 +1461,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     /** Replays the actual capability/persistent owner captured by a completed cycle, without reinitializing the episode. */
     private static RetainedReadDriver retainSettledCapabilities(SemanticEvidence semantic,RetainedReadDriver previous,
-            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
-        var body=DriverJson.object(originals.loadFullMaterial(semantic.semantic()).bytes(),DriverJson.MAX_NATIVE_BYTES);
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,SettledSemanticBody captured) {
+        StrictJson.require(captured.semantic().equals(semantic),"settled capability parse crossed its complete original SEM");
+        var body=captured.body();
         var manifestRef=DriverObservationEvidenceReader.reference(body.get("java_driver_facts_evidence"));
         var manifest=originals.loadFullMaterial(manifestRef);
         var actual=DriverObservationEvidenceReader.nativeFrame(manifestRef,manifest,originals.loadNativeFrame(semantic.originalNativePacket()));
@@ -2202,10 +2225,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                 &&ExactRef.fromJson(record.get("receipt_ref")).equals(receiptRef),
                                 "settled recovery cannot grant new cycle credit");
                         latest=OrdinaryCycleTransitions.semanticFromJson(details.get("semantic"));
-                        retained=retainSettledCapabilities(latest,retained,originals);
+                        var parsedSemantic=captureSettledSemanticBody(latest,originals);
+                        retained=retainSettledCapabilities(latest,retained,originals,parsedSemantic);
                         requireSettledObservedContinuation(latestObserved,latest.frame());
                         latestObserved=latest.frame();
-                        previousTransport=settledSemanticTransport(latest,owner,originals);
+                        previousTransport=settledSemanticTransport(latest,owner,originals,parsedSemantic);
                         lastCycleRef=ExactRef.fromJson(details.get("cycle_record_ref"));
                         pending=null;
                     }
