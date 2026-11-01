@@ -83,7 +83,7 @@ public final class RootLoadedSavedResumeMain250 {
             });
             var source = RootJavaSavedBootstrap.qualify(oldCore, new NativeCheckpointFiles(), oldConfig.stateDirectory().resolve("checkpoints/attachments"), oldSourcePrepared.plan().pipeName(), pair, confirmation);
             emit(event(clock, "SOURCE_QUALIFIED").put("source_head_sequence", source.sourceHead().sequence()).put("confirmation_sequence", source.confirmation().sequence()).put("saved_date_raw", source.savedState().settledDateRaw()).put("saved_cycles", source.savedState().settledCycles()).put("new_saved_day_credit", 0));
-            newPrepared = RootOrdinaryRuntimeAssembly.prepareFreshLoadedSaved(newConfig, clock, source);
+            newPrepared = RootOrdinaryRuntimeAssembly.prepareLoadedSaved(newConfig, clock, source);
             StrictJson.require(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(newPrepared.plan())).equals(NativeLaunchPlanCodec.toJson(ownerDescriptor.configuration())), "actual Prepared plan differs from exact owner descriptor");
             read(ownerDescriptorRef); read(requestRef); read(oldConfigRef); read(newConfigRef); read(pairRef); read(confirmationRef);
             attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(newPrepared.plan(), ownerDescriptor.generation(), newPrepared.privatePermissions(), newConfig.maximumFramesPerOperation(), newConfig.maximumSubmissions()), clock.instant().plus(newConfig.operationTimeout()), newConfig.operationTimeout());

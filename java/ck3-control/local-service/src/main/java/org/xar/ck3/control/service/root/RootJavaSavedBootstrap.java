@@ -172,20 +172,34 @@ public final class RootJavaSavedBootstrap {
             var first=fresh(context,deadline);var second=fresh(context,deadline);
             NativeFreshSnapshotPort.verifyAfter(first.acknowledgement(),second);
             requireRaw(source,context,first);requireRaw(source,context,second);
+            var readOriginals=context.withSession(same->{
+                context.writer().requireSession(same);var before=same.head();
+                StrictJson.require(before.state().status()==ContinuityState.Status.AWAITING_INITIAL_ENTRY,
+                        "saved READ originals require the exact unconsumed fresh writer");
+                var archive=context.archive().withSession(same);var originals=new ArrayList<ExactRef>();
+                for(var read:List.of(first,second)) {
+                    archive.preserve(read.acknowledgement());originals.add(archive.referenceOf(read.acknowledgement()));
+                    originals.add(archive.preserveNativeFrame(read.originalFrame()));
+                }
+                StrictJson.require(before.digest().equals(same.head().digest()),"saved READ original capture changed the new writer head");
+                return List.copyOf(originals);
+            });
             StrictJson.require(first.originalFrame().session().equals(second.originalFrame().session())
                     &&first.originalFrame().nativeRevision().equals(second.originalFrame().nativeRevision())
                     &&Arrays.equals(first.originalFrame().state().bytes(),second.originalFrame().state().bytes()),
-                    "two actual loaded paused READs did not retain the same original full map");
+                    "two actual loaded paused READs did not retain the same original full map"
+                    +"; first_ack="+readOriginals.get(0)+"; first_frame="+readOriginals.get(1)
+                    +"; second_ack="+readOriginals.get(2)+"; second_frame="+readOriginals.get(3)
+                    +"; first_native_revision="+first.originalFrame().nativeRevision()
+                    +"; second_native_revision="+second.originalFrame().nativeRevision()
+                    +"; session_equal="+first.originalFrame().session().equals(second.originalFrame().session())
+                    +"; state_bytes_equal="+Arrays.equals(first.originalFrame().state().bytes(),second.originalFrame().state().bytes()));
             source.requireCurrent();physical.requireCurrent();
             return context.withSession(same->{
                 context.writer().requireSession(same);var head=same.head();
                 StrictJson.require(head.state().status()==ContinuityState.Status.AWAITING_INITIAL_ENTRY,
                         "new saved admission requires the exact unconsumed fresh writer");
-                var archive=context.archive().withSession(same);var refs=new ArrayList<ExactRef>();
-                for(var read:List.of(first,second)) {
-                    archive.preserve(read.acknowledgement());refs.add(archive.referenceOf(read.acknowledgement()));
-                    refs.add(archive.preserveNativeFrame(read.originalFrame()));
-                }
+                var refs=new ArrayList<ExactRef>(readOriginals);
                 ExactRef savedState= context.archive().preserveArtifact(same,ContinuityJson.canonical(source.savedState().toJson()),MAX_STATE);
                 ExactRef sourceHead=context.archive().preserveArtifact(same,ContinuityJson.canonical(source.sourceHead().toJson()),MAX_STATE);
                 refs.add(savedState);refs.add(sourceHead);
