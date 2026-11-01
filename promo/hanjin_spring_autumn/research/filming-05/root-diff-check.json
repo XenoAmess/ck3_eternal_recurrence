@@ -1,0 +1,23 @@
+{
+  "schema": "hanjin.single-line-root-diff-check/v1",
+  "machine_id": "4-8e1c2f1861",
+  "checked_at_utc": "2026-11-01T06:18:36.804624+00:00",
+  "scene_count": 19,
+  "changed_text_scenes": [
+    "v03-16c-realm-r3"
+  ],
+  "target_text_is_exact_requested_single_character_replacement": true,
+  "all19_original_shot_lists_and_titles_identical": true,
+  "concat_entries": 19,
+  "directly_reused_same_segment_paths": 18,
+  "changed_segment_index_zero_based": 17,
+  "all_subtitle_text_is_exact_requested_single_character_replacement": true,
+  "root_sampled_frame_seconds": 337.5535,
+  "root_sampled_frame_path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-05\\final-media-proof\\wording-frame.jpg",
+  "root_sampled_frame_sha256": "8496f554da807c88738200cb2c03506e0e100f8c2f1c7f04591fdef557e3e408",
+  "root_observation": "Burned-in subtitle visibly matches the exact requested wording; sampled frame only, not full human playback.",
+  "human_signoff": null,
+  "published_video_sha256_verified": "9b4bc1dc98229db8d59c80a558845f2a9120021f5df540ea0395cd91e0e86fad",
+  "published_video_bytes_verified": 42032673,
+  "published_subtitles_cover_description_and_metadata_sha256_verified": true
+}

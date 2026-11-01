@@ -1,0 +1,11 @@
+{
+  "schema": "hanjin.exact-user-line-change/v1",
+  "machine_id": "4-8e1c2f1861",
+  "authority": "explicit user instruction",
+  "scene_id": "v03-16c-realm-r3",
+  "before": "我可没把联军打服",
+  "after": "我可没被联军打服",
+  "changed_characters": 1,
+  "baseline_video_sha256": "72e204a26bbbe3301b422fd946de0b1181ba52b10fb22d612acaf33f334d7225",
+  "scope": "Update the exact spoken line, matching subtitles and final video; preserve every other spoken word and existing gameplay sources."
+}

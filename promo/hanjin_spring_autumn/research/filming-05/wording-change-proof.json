@@ -1,0 +1,148 @@
+{
+  "schema" : "hanjin.edit05-exact-word-reuse-proof/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "recorded_at_utc" : "2026-11-01T06:17:23.360108700Z",
+  "before" : "我可没把联军打服",
+  "after" : "我可没被联军打服",
+  "changed_character_count" : 1,
+  "all_other_source_fields_equal" : true,
+  "full_picture_schedule_unchanged" : true,
+  "new_game_days" : 0,
+  "new_game_actions" : 0,
+  "new_game_sessions" : 0,
+  "human_signoff" : null,
+  "reused_segments" : [ {
+    "id" : "v03-01-title",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-01-title-7cf002468926.mp4",
+    "bytes" : 796416,
+    "sha256" : "b15e94c6adbb4024a3245bd88912cbc1ba14ada1087c84c01fe0cf92ef5aece7",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-01-title.mp3",
+    "audio_sha256" : "ea6fba7eca076ecc760f03d7676e727dd075700df8d0a28ea238b76409853891"
+  }, {
+    "id" : "v03-02-setup",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-02-setup-e3c2ce5fe70f.mp4",
+    "bytes" : 1774386,
+    "sha256" : "b58e06c875be7676de6b428b7b7059287ac98922993b38877008749894d6942b",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-02-setup.mp3",
+    "audio_sha256" : "dc1a975410e54b54f15f9430acfde95ab94719ed1c710ff6589f13b004820346"
+  }, {
+    "id" : "v03-03-migration",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-03-migration-c1aa9523ab70.mp4",
+    "bytes" : 3057804,
+    "sha256" : "9908572d13bdbe9f9bdab09660bc395e80dc643a76a37e2f05a451b5d401e447",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-03-migration.mp3",
+    "audio_sha256" : "fb4911152f10c4abd1b49e936edb37de5ff7703ea953096ca50c52bec066b335"
+  }, {
+    "id" : "v03-04-coalition",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-04-coalition-0943b33989cc.mp4",
+    "bytes" : 1916828,
+    "sha256" : "65d0385a73164e7cd6009657f037a11bd37e8e7e1ff7a954929139cb01cc3c1e",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-04-coalition.mp3",
+    "audio_sha256" : "79ce2ee99a64fac8402674ed0d1733d685b5c942fcc843735438a1c2ef29cc57"
+  }, {
+    "id" : "v03-05-army",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-05-army-e817c747569b.mp4",
+    "bytes" : 2037623,
+    "sha256" : "20aa98e578ef28da128ead1a68d79ce64d8a163b4fff4547123d2b137d3b65d0",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-05-army.mp3",
+    "audio_sha256" : "814e0f15e025bc32413c7d300b9ca336da1409c34de24131d3280709eeb38487"
+  }, {
+    "id" : "v03-06-shiqiu",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-06-shiqiu-84ffa5f496ee.mp4",
+    "bytes" : 2547817,
+    "sha256" : "1134281529437732ad88a25a0b285e6a0926bc8b1417fd1155697e3cb78d1431",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-06-shiqiu.mp3",
+    "audio_sha256" : "5b16320b9c6b48711f885fdb6beaf6873df3200a2b402720d1efd93c71cd2ad5"
+  }, {
+    "id" : "v03-07-coins",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-07-coins-f7bb1b72bbfc.mp4",
+    "bytes" : 1814167,
+    "sha256" : "076e27ea3955200f4ff64582f0533bc16da921ca7f1cc718af16e1f04bef040e",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-07-coins.mp3",
+    "audio_sha256" : "10843051b26538e6f166d4e6c1ce1eb667b886a37b96a7df352de67f29cb88bb"
+  }, {
+    "id" : "v03-08-letter",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-08-letter-da0c7ed7437d.mp4",
+    "bytes" : 1168292,
+    "sha256" : "12d2c0d1447731b884fb75f241bf01bef764edc6d4d1dab1133a2d49fa1d6973",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-08-letter.mp3",
+    "audio_sha256" : "cd9d4bb52691aeb34e36264159b68b900c0bca4b2c2e1a285c4ee34d9b8c69bc"
+  }, {
+    "id" : "v03-09-relief",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-09-relief-29320de8bfbf.mp4",
+    "bytes" : 2030239,
+    "sha256" : "1195ce3169a54b49cf15945e99c265ba20215c997ba1f9ce8f54ce659dc16f68",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-09-relief.mp3",
+    "audio_sha256" : "009c07191122e45e172d514d8342405fb79b272d5a6665b5a111753a590f6bdc"
+  }, {
+    "id" : "v03-10-yique-r2",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-10-yique-r2-166507e2d84e.mp4",
+    "bytes" : 3959923,
+    "sha256" : "17584c3bba6275124bcf52d71fc7a367e8725cdab27b481409a1e04a8120f1e2",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-10-yique-r2.mp3",
+    "audio_sha256" : "d2b5c6feb344f9de00a668ce6c044f74064ee40c087d20d5d86b6559b219564c"
+  }, {
+    "id" : "v03-11-rhyme",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-11-rhyme-57ef994b6a60.mp4",
+    "bytes" : 2147039,
+    "sha256" : "45a6b6d2a2178d8f588959a785f83ce9279c590917cabea5359ccb60a6aabcee",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-11-rhyme.mp3",
+    "audio_sha256" : "1145045c0c8a4fd1c881ad7bf2ebbadf0ccbb4d1846de74de97769ce40a12d84"
+  }, {
+    "id" : "v03-12-winter",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-12-winter-e21d0121c60e.mp4",
+    "bytes" : 3859861,
+    "sha256" : "62668ee913c81ea2ccc3d4f3e24c0a7de960fff9639fcaedb4ad1ed3b51e3aa8",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-12-winter.mp3",
+    "audio_sha256" : "489bb7c41fcbd2dcebbe554ca5461315024b6d412c072d343a86aa3641d86990"
+  }, {
+    "id" : "v03-13-hanzhong",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-13-hanzhong-550864538f9e.mp4",
+    "bytes" : 2623174,
+    "sha256" : "6a40c0b225ea18e0bea5ee644d8984dbfd071f4fc2789defa5dc2939552d90b4",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-13-hanzhong.mp3",
+    "audio_sha256" : "25829a93e4ff5d2aae006315d2380418d5d3850dc62810c6b9486954851e2b42"
+  }, {
+    "id" : "v03-14-invitation",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-14-invitation-caa093511f34.mp4",
+    "bytes" : 3418001,
+    "sha256" : "95a35a4f68528a8d590b163572479c6199f460372dec8b5d5f991748914d5eae",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-14-invitation.mp3",
+    "audio_sha256" : "eee2b6464fa31388183147034c9a0d32de0715d66db5206f97f00539a002dfd6"
+  }, {
+    "id" : "v03-15-death",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-15-death-98558bc5b36e.mp4",
+    "bytes" : 2690529,
+    "sha256" : "1a6907900e17c7f461cb79a32b6026406a5cd89a68505942e8bc330eab9f4a44",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-15-death.mp3",
+    "audio_sha256" : "3a92183ffa8d291f2b16f388c2693bd7f820b1aa13ed21c1756aaa47c278a7b2"
+  }, {
+    "id" : "v03-16a-execution-r3",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-16a-execution-r3-c4d67f4a2384.mp4",
+    "bytes" : 2292624,
+    "sha256" : "feb229b34f44c635f659cb4414a9ff21a0d70ea865b9e0cb3a6ca68bccec0cce",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-16a-execution-r3.mp3",
+    "audio_sha256" : "4c52101a5f6684df65c517d8ef782437fc27682356e55ce6aec73aece1c52542"
+  }, {
+    "id" : "v03-16b-family-r3",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-16b-family-r3-bbb46eff780b.mp4",
+    "bytes" : 1149448,
+    "sha256" : "e15221438c7ff2233b907cf756a0824c70f77541e58a2b3099c6c6ae587a9ed1",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-16b-family-r3.mp3",
+    "audio_sha256" : "d0a0e746c87666e3826c2d919ad9eee4caf3b5559ca2eb654550984b042506da"
+  }, {
+    "id" : "v03-18-promotion",
+    "path" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\segments\\v03-18-promotion-9da50bef8dfb.mp4",
+    "bytes" : 694477,
+    "sha256" : "c1ed32edf2d8e23987f7ff440cebe242884ed9d13332fbafaaa4ab804b3a2d8b",
+    "audio" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\narration\\v03-18-promotion.mp3",
+    "audio_sha256" : "3f0e024fdce4c382bfc63f60f4ea9eaee73c99df40e11575c7737ced71b96558"
+  } ],
+  "changed_segment" : "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-05\\segments\\v03-16c-realm-r3-a5c15975f34c.mp4",
+  "changed_segment_sha256" : "567bd2bb53dca25e573370c58e2e21fdff286d98b3629744262cecdceb4d4f13",
+  "reused_encoded_segments" : 18,
+  "reencoded_segments" : 1,
+  "changed_audio_sha256" : "056cd6da6d44bedd8b80a3dc4f9e2bdb525e3805271fb24d39fea83c582546bb",
+  "changed_audio_text_sha256" : "284bbf697a78b5c0cbbe0cc923b70ebbea94a2cd6c4d96cec8fd2d63b2f0d320",
+  "complete_srt_sha256" : "413ece1d9096e0577764f6823bd20e1fff3e609b3f0004be3cd4d5dea8c522d7"
+}

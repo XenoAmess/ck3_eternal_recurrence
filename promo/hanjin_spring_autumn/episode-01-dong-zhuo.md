@@ -10,7 +10,7 @@
 >
 > 且看我董卓。
 
-片头之后回到玩家口吻，讲这一局遇到了什么、为什么这样走、结果怎样。最新口播逐字见[旁白](research/filming-04/narration.txt)，逐场修改见[文案审查](research/filming-04/language-audit.json)；本页是分场与取材说明，不再保留旧版口播供误用。
+片头之后回到玩家口吻，讲这一局遇到了什么、为什么这样走、结果怎样。最新口播逐字见[旁白](research/filming-05/narration.txt)，上轮逐场修改见[文案审查](research/filming-04/language-audit.json)。用户本轮指定将“我可没把联军打服”改为“我可没被联军打服”，只修改这一句，见[单句修正](research/filming-05/README.md)。
 
 本机`machine_id: 4-8e1c2f1861`。全故事190.1.1至191.6.1，实际516游戏日，其中五月保存后续拍396日。董卓照常入朝后被谋杀，继续到董璜继承。本轮只重剪已有录像，没有新增游戏日或动作。游玩来源见[完整续拍](research/filming-03/README.md)，最新交付见[文案和录屏返修](research/filming-04/README.md)。
 
@@ -101,4 +101,4 @@
 
 ## 交付范围
 
-Edge TTS继续使用`zh-CN-YunjianNeural`、rate`-12%`、pitch`-8Hz`。19场配音时间线363.967秒，实际新成片363.990364秒；实录85.84%，必要游戏截图15.5秒，标题／说明／宣传卡另计。成片、字幕、封面和带工坊链接的简介均已本地交付，见[本轮记录](research/filming-04/README.md)与[字节快照](research/filming-04/delivery-snapshot.json)。旧470秒和8分25秒文件保留历史原样，新片已独立检查；人工签核仍null，不制造完整1倍速批准。
+Edge TTS继续使用`zh-CN-YunjianNeural`、rate`-12%`、pitch`-8Hz`。文案／实录版约6分04秒；实录85.84%，必要游戏截图15.5秒，标题／说明／宣传卡另计。最新单句修正同步到配音、字幕和成片，见[本轮记录](research/filming-05/README.md)。此前版本与快照保持历史原样；人工签核仍null，不制造完整1倍速批准。

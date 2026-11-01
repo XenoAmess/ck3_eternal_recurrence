@@ -1,0 +1,14 @@
+{
+  "schema" : "hanjin.edit05-storage-admission/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "observed_at_utc" : "2026-11-01T06:13:24.590832700Z",
+  "shared_package_actual_bytes" : 8603247660,
+  "available_bytes" : 88250519552,
+  "shared_package_peak_bytes" : 10737418240,
+  "this_write_peak_bytes" : 536870912,
+  "system_growth_reserve_bytes" : 16106127360,
+  "safety_margin_bytes" : 21474836480,
+  "status" : "ADMITTED_EXACT_ONE_CHARACTER_FIX",
+  "raw_duplication_planned" : false,
+  "review_at_utc" : "2026-11-03T04:45:00Z"
+}
