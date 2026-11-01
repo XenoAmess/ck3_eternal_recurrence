@@ -987,8 +987,11 @@ public final class SessionController {
             return ready(false);
         }
         Ready ready(boolean stoppingForSave) throws IOException, InterruptedException {
+            return ready(stoppingForSave,null);
+        }
+        Ready ready(boolean stoppingForSave,ActionReceipt actualTerminal) throws IOException, InterruptedException {
             while(true){
-                var captured=planningScope.inPlanningScope(()->available(stoppingForSave));
+                var captured=planningScope.inPlanningScope(()->available(stoppingForSave,actualTerminal));
                 if(captured.readPublication().isPresent()){replanAfterPublication();continue;}
                 Observation observed=captured.value();
                 if(observed instanceof Ready ready)return ready;
@@ -1117,6 +1120,9 @@ public final class SessionController {
             completeCycle(actual);
         }
         Observation available(boolean stoppingForSave) throws IOException,InterruptedException {
+            return available(stoppingForSave,null);
+        }
+        Observation available(boolean stoppingForSave,ActionReceipt actualTerminal) throws IOException,InterruptedException {
             long readyUntil = Math.min(untilNanos, clock.now().elapsedNanos() + limits.readinessTimeout().toNanos());
             String waitingReason = "readiness deadline expired before observation";
             while (true) {
@@ -1129,7 +1135,9 @@ public final class SessionController {
                 }
                 Instant until = began.utc().plusNanos(readyUntil - began.elapsedNanos());
                 Instant planningUntil = deadline();
-                Observation result = measured(Phase.OBSERVATION, () -> observations.observe(identity, until, planningUntil));
+                Observation result = measured(Phase.OBSERVATION, () -> actualTerminal==null
+                        ?observations.observe(identity,until,planningUntil)
+                        :observations.observeAfter(identity,actualTerminal,until,planningUntil));
                 if (result instanceof Ready ready) {
                     identity.require(ready.request()); StrictJson.require(!ready.request().deadline().isAfter(planningUntil), "observation extended batch planning deadline");
                     // A late actual Ready still describes an observed date; it grants no extended execution deadline.
@@ -1286,7 +1294,7 @@ public final class SessionController {
             recordGameplay(receipt); cyclePending = true;
             try {
                 measured(Phase.JOURNAL, () -> { journal.retainCycle(identity, receipt); return true; });
-                Ready fresh = ready(true);
+                Ready fresh = ready(true,receipt);
                 if (fresh.semanticEvidence().isEmpty()) throw new End(Terminal.INCOMPLETE_MIGRATION,
                         "the original AUTO remains retained; a fresh archived after-SEM is unavailable");
                 measured(Phase.JOURNAL, () -> journal.settleCycle(identity, receipt, fresh.semanticEvidence().orElseThrow()));

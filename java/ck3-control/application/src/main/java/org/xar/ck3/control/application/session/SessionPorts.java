@@ -179,6 +179,12 @@ public final class SessionPorts {
         default Observation observe(SessionIdentity expected, Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
             return observe(expected, readinessDeadline);
         }
+        /** Post-terminal readiness keeps the actual receipt; settlement independently verifies strict original-evidence freshness. */
+        default Observation observeAfter(SessionIdentity expected, ActionReceipt actualTerminal,
+                Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
+            Objects.requireNonNull(actualTerminal);
+            return observe(expected, readinessDeadline, planningDeadline);
+        }
         /** Default deny. Only this installed Root observation source may reopen its private canonical operator execution. */
         default SemanticEvidence requireOperatorRebound(SessionIdentity expected,ActionReceipt actual,Instant deadline)throws IOException,InterruptedException {
             Objects.requireNonNull(expected);Objects.requireNonNull(actual);Objects.requireNonNull(deadline);

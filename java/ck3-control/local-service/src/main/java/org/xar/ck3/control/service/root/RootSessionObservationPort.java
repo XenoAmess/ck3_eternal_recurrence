@@ -70,6 +70,97 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
     @Override public SessionPorts.Observation observe(SessionPorts.SessionIdentity expected,Instant readinessDeadline,Instant planningDeadline) throws IOException,InterruptedException {
         return core.withBorrowed(()->observeBorrowed(core.activeBorrowedSession(),expected,readinessDeadline,planningDeadline));
     }
+    /** Actual post-RETAIN observation barrier; the received packet itself remains immutable. */
+    @Override public SessionPorts.Observation observeAfter(SessionPorts.SessionIdentity expected,
+            org.xar.ck3.control.application.action.ActionReceipt actualTerminal,Instant readinessDeadline,Instant planningDeadline)
+            throws IOException,InterruptedException {
+        Objects.requireNonNull(expected);Objects.requireNonNull(actualTerminal);
+        Objects.requireNonNull(readinessDeadline);Objects.requireNonNull(planningDeadline);
+        return core.withBorrowed(()->{
+            var same=core.activeBorrowedSession();writer.requireSession(same);
+            StrictJson.require(ordinary.identity().equals(expected),"after-SEM observer crossed its installed physical owner");
+            var archive=core.archive().withSession(same);var head=same.head();
+            var found=core.journal().locked(same,locked->locked.find(actualTerminal.command().actionId()));
+            var canonical=found.orElseThrow(()->new IOException("after-SEM barrier has no canonical original action"));
+            StrictJson.require(canonical.equals(actualTerminal)&&actualTerminal.outcome()==org.xar.ck3.control.application.action.ActionReceipt.Outcome.APPLIED_CONFIRMED,
+                    "after-SEM barrier requires the exact canonical confirmed original");
+            var command=actualTerminal.command();
+            StrictJson.require(command.sessionId().equals(expected.sessionId())&&command.before().machineId().equals(expected.machineId())
+                    &&command.before().game().equals(expected.game()),"after-SEM original crossed its owned session/Game");
+            var cycle=StrictJson.object(head.state().toJson().get(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_CYCLE_FIELD),
+                    java.util.Set.of("schema","session","basis_cycles","completed_cycles","head","pending_receipt","retained_legacy_pending_digest","origin_frame","episode_origin"));
+            var receiptRef=archive.receiptReferenceOf(actualTerminal);
+            StrictJson.require("xar.java-ordinary-cycle-state/v2".equals(cycle.path("schema").asText())
+                    &&org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(expected)
+                    &&org.xar.ck3.control.contracts.ExactRef.fromJson(cycle.get("pending_receipt")).equals(receiptRef),
+                    "after-SEM barrier is not this actual retained pending cycle");
+            var terminal=terminalBarrier(actualTerminal,archive);
+            var before=command.before();var after=terminal.frame();
+            StrictJson.require(after.machineId().equals(before.machineId())&&after.game().equals(before.game())
+                    &&after.observationVersion()==before.observationVersion()
+                    &&after.frame().episodeRunId().equals(before.frame().episodeRunId())
+                    &&after.frame().identity().player().equals(before.frame().identity().player())
+                    &&!terminal.observedAt().isAfter(Instant.now()),"after-SEM terminal changed its original actor/episode or actual time");
+            var pin=same.capturePin(receiptRef,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);
+            ordinary.discardPlanningCaptureAtOrBefore(same,terminal.observedAt());
+            var retained=transport.latestObservedSnapshot();
+            if(retained.isEmpty()||!retained.orElseThrow().observedAt().isAfter(terminal.observedAt())
+                    ||retained.orElseThrow().nativeRevision().compareTo(after.frame().identity().nativeRevision())<0) {
+                var queried=transport.readFreshFullState(readinessDeadline);
+                if(!(queried instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received)) {
+                    var unavailable=(org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Unavailable)queried;
+                    var original=archive.preserve(unavailable.dispatch());
+                    throw new IOException("actual after-SEM READ unavailable; original="+original+"; "+unavailable.reason());
+                }
+                org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.verifyOriginal(
+                        received.acknowledgement(),received.originalFrame(),received.snapshotReceived());
+                var packet=received.originalFrame();
+                StrictJson.require(packet.session().machineId().equals(expected.machineId())&&packet.session().game().equals(expected.game())
+                        &&packet.session().sessionId().equals(expected.sessionId())
+                        &&packet.observedAt().isAfter(terminal.observedAt())
+                        &&packet.nativeRevision().compareTo(after.frame().identity().nativeRevision())>=0,
+                        "actual after-SEM READ did not follow the original terminal in this owned Game");
+                archive.preserve(received.acknowledgement());archive.preserveNativeFrame(packet);
+                transport.acceptedSnapshotRevision(packet).requireOriginal(transport.currentSnapshot(readinessDeadline));
+            }
+            same.verifyPin(pin);StrictJson.require(head.digest().equals(same.head().digest()),"after-SEM original changed during its independent READ");
+            var result=observeBorrowed(same,expected,readinessDeadline,planningDeadline);
+            if(result instanceof SessionPorts.Ready ready) {
+                var semantic=ready.semanticEvidence().orElseThrow(()->new IOException("after-SEM observation has no actual archived semantic evidence"));
+                var frame=semantic.frame();
+                StrictJson.require(semantic.observedAt().isAfter(terminal.observedAt())
+                        &&frame.machineId().equals(after.machineId())&&frame.game().equals(after.game())
+                        &&frame.frame().episodeRunId().equals(after.frame().episodeRunId())
+                        &&frame.frame().identity().player().equals(after.frame().identity().player())
+                        &&frame.frame().identity().nativeRevision().compareTo(after.frame().identity().nativeRevision())>=0
+                        &&frame.frame().identity().dateRaw().compareTo(after.frame().identity().dateRaw())>=0,
+                        "actual after-SEM Ready reused an earlier terminal packet or changed its original owner");
+            }
+            same.verifyPin(pin);return result;
+        });
+    }
+    private record TerminalBarrier(org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity frame,Instant observedAt) { }
+    private TerminalBarrier terminalBarrier(org.xar.ck3.control.application.action.ActionReceipt receipt,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive archive) {
+        var semantic=org.xar.ck3.control.application.action.ActionEffects.observation(receipt);
+        if(semantic.isPresent()) {
+            var effect=semantic.orElseThrow();
+            StrictJson.require(effect.sessionId().equals(receipt.command().sessionId())&&effect.source().equals(receipt.command().source()),
+                    "after-SEM terminal lost its actual original source/session");
+            return new TerminalBarrier(effect.after(),effect.observedAt());
+        }
+        if(receipt.state() instanceof org.xar.ck3.control.application.action.ActionState.Settled settled
+                &&settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.ControlApplied control)
+            return new TerminalBarrier(control.read().after().binding().observed(),control.read().after().binding().observedAt());
+        if(receipt.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeSettled settled
+                &&settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.SwaySchedulerCompleted scheduler) {
+            var proof=scheduler.proof();proof.validateParent(receipt.command());var actual=core.frameLoader().load(proof.finalFrame(),archive);
+            StrictJson.require(actual.sessionId().equals(receipt.command().sessionId())&&actual.source().equals(receipt.command().source())
+                    &&actual.originalEvidence().equals(proof.finalFrame().nativeFrame()),"after-SEM Sway terminal lost its actual original source");
+            return new TerminalBarrier(actual.identity(),actual.observedAt());
+        }
+        throw new IllegalArgumentException("actual original action has no supported ordinary terminal barrier");
+    }
     private SessionPorts.Observation observeBorrowed(ContinuityStorePort.Session same,SessionPorts.SessionIdentity expected,Instant deadline,Instant planningDeadline) throws IOException,InterruptedException {
         writer.requireSession(same);
         StrictJson.require(ordinary.identity().equals(expected),"session observer crossed its actual physical owner");

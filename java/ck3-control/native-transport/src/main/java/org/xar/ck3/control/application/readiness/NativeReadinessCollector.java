@@ -416,6 +416,21 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         planningRoundScope.set(new PlanningRoundScope(borrowed));
         try { return work.run(); } finally { planningRoundScope.remove(); }
     }
+    /** DATA cache boundary only; an actual caller still owns all observation/source permissions. */
+    public void discardPlanningCaptureAtOrBefore(ContinuityStorePort.Session borrowed,Instant observedAfter)throws IOException {
+        Objects.requireNonNull(borrowed);Objects.requireNonNull(observedAfter);
+        ObservationSessionAuthority actualWriter=observationSession;
+        require(actualWriter!=null,"actual original writer observation authority is not installed");actualWriter.require(borrowed);
+        require(identity.machineId().equals(borrowed.head().state().machineId()),"after-SEM cache boundary crossed its actual writer");
+        require(planningReadScope.get()==null&&heldReadScope.get()==null&&publicPlanningScope.get()==null,
+                "after-SEM cache boundary requires the original physical freeze to have exited");
+        require(!observedAfter.isAfter(clock.instant()),"after-SEM cache boundary cannot invent a future observation");
+        PlanningRoundScope round=planningRoundScope.get();
+        if(round==null)return;
+        require(round.borrowed==borrowed,"after-SEM cache boundary cannot borrow another planning writer");
+        if(round.captured!=null&&!round.captured.physical().original().observedAt().isAfter(observedAfter))round.captured=null;
+        if(round.retainedPacket!=null&&!round.retainedPacket.observedAt().isAfter(observedAfter))round.retainedPacket=null;
+    }
     private <T> T retainedPlanningRead(PlanningRoundScope round, ContinuityStorePort.Session borrowed,
             ObservationIdentity expected, Instant deadline, ReadinessAuthority.CheckedWork<T> work) throws IOException {
         require(round.borrowed == borrowed, "planning round cannot borrow another writer Session");
