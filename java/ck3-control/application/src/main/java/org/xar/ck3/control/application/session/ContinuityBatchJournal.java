@@ -137,18 +137,44 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 "zero-dispatch suffix changed captured business state: "+field);
     }
     private record RetainedReadDriver(org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known facts,ExactRef fullDriver) { }
-    /** Reopens only the full Driver actually published by an immediately preceding confirmed SAVE. */
+    /** Reopens only a confirmed SAVE's full Driver across its finite unchanged batch metadata. */
     private RetainedReadDriver retainConfirmedSaveDriver(SessionIdentity owner, WriterContracts.HistoricalTransition savedEdge,
+            java.util.List<WriterContracts.HistoricalTransition> metadataEdges,
             WriterContracts.HistoricalTransition readEdge, RetainedReadDriver previous, CheckpointPair pair, ActionReceipt save,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) throws IOException {
         var known=previous.facts();var old=known.driver();
         var details=ContinuityJson.parseObject(readEdge.details(),ContinuityJson.LEDGER_MAX_BYTES);
-        StrictJson.require(savedEdge.sequence()+1==readEdge.sequence()
-                &&ContinuityJson.same(savedEdge.after().toJson(),readEdge.before().toJson())
+        StrictJson.require(metadataEdges.size()<=2,"saved Driver READ metadata span exceeds its finite source role");
+        var predecessor=savedEdge;
+        for(int metadataIndex=0;metadataIndex<metadataEdges.size();metadataIndex++) {
+            var metadata=metadataEdges.get(metadataIndex);
+            var boundary=ContinuityJson.parseObject(metadata.details(),ContinuityJson.LEDGER_MAX_BYTES);
+            var expectedBoundary=metadataEdges.size()==2&&metadataIndex==0?JournalKind.BATCH_DEFERRED:JournalKind.BATCH_STARTED;
+            StrictJson.require(metadata.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
+                    &&expectedBoundary.name().equals(StrictJson.text(boundary.get("boundary")))
+                    &&OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
+                    &&boundary.get("checkpoint_pair").isNull()&&boundary.get("completed_cycle_proof").isNull()
+                    &&metadata.sequence()==predecessor.sequence()+1
+                    &&metadata.before().status()==ContinuityState.Status.RUNNING&&metadata.after().status()==ContinuityState.Status.RUNNING
+                    &&ContinuityJson.same(predecessor.after().toJson(),metadata.before().toJson()),
+                    "saved Driver READ crossed a noncanonical batch metadata continuation");
+            var before=metadata.before().toJson();var after=metadata.after().toJson();
+            for(String field:java.util.List.of("sequence","last_event_identity",WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)) {
+                before.remove(field);after.remove(field);
+            }
+            StrictJson.require(ContinuityJson.same(before,after),"saved Driver READ batch metadata changed business DATA");
+            var replay=transitions.reduce(metadata.before(),new WriterContracts.Request(metadata.kind(),metadata.details(),java.util.List.of())).toJson();
+            replay.put("sequence",metadata.sequence());replay.put("last_event_identity",metadata.eventIdentity());
+            StrictJson.require(ContinuityJson.same(replay,metadata.after().toJson()),
+                    "saved Driver READ metadata differs from its actual source-owned reducer");
+            predecessor=metadata;
+        }
+        StrictJson.require(predecessor.sequence()+1==readEdge.sequence()
+                &&ContinuityJson.same(predecessor.after().toJson(),readEdge.before().toJson())
                 &&known.stamp().game().equals(owner.game())&&pair.frame().game().equals(owner.game())
                 &&StrictJson.integer(details.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(known.stamp().driverVersion(),1)
                 &&StrictJson.integer(details.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER)==known.stamp().episodeEpoch(),
-                "saved Driver READ requires its exact adjacent confirmed SAVE/version/epoch/Game");
+                "saved Driver READ requires its exact confirmed SAVE/metadata/version/epoch/Game");
         var driverRef=save.applied().orElseThrow().observation().supportingEvidence().get(1);
         StrictJson.require(ExactRef.fromJson(details.get("before_driver")).equals(driverRef)
                 &&driverRef.bytes()==pair.driver().reference().bytes()&&driverRef.sha256().equals(pair.driver().reference().sha256())
@@ -1910,6 +1936,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             Optional<CheckpointPair> savedPair=Optional.empty();
             com.fasterxml.jackson.databind.JsonNode savedBranch=null;
             long savedThroughSequence=0;
+            int savedDriverIndex=-1;
             var confirmedSaves=new java.util.HashSet<ExactRef>();
             boolean pendingOriginalProven=false;
             for(int i=0;i<edges.size();i++) {
@@ -1918,18 +1945,19 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 if(edge.kind().equals(org.xar.ck3.control.continuity.ObservedGameplayEntry.KIND)) {
                     StrictJson.require(edge.sequence()==1,"settled initial recovery has another gameplay entry");
                 } else if(edge.kind().equals(WriterContracts.DRIVER_READ_HISTORY_KIND)) {
-                    if(savedPair.isPresent()&&i>0&&savedThroughSequence==edges.get(i-1).sequence()
+                    if(savedPair.isPresent()&&savedDriverIndex>=0&&savedDriverIndex<i
                             &&StrictJson.integer(details.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(retained.facts().stamp().driverVersion(),1)) {
-                        var savedEdge=edges.get(i-1);
+                        var savedEdge=edges.get(savedDriverIndex);
                         var savedDetails=ContinuityJson.parseObject(savedEdge.details(),ContinuityJson.LEDGER_MAX_BYTES);
                         StrictJson.require(savedEdge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
-                                &&JournalKind.SAVE_CONFIRMED.name().equals(StrictJson.text(savedDetails.get("boundary"))),
-                                "saved Driver READ requires its actual immediately preceding SAVE confirmation");
+                                &&JournalKind.SAVE_CONFIRMED.name().equals(StrictJson.text(savedDetails.get("boundary")))
+                                &&savedThroughSequence==savedEdge.sequence(),
+                                "saved Driver READ requires its actual latest fully verified SAVE confirmation");
                         var pair=savedPair.orElseThrow();
                         var saves=actions.stream().filter(value->value.command().actionId().equals(pair.saveActionId())).toList();
                         StrictJson.require(saves.size()==1&&confirmedSaves.contains(originals.receiptReferenceOf(saves.getFirst())),
                                 "saved Driver READ requires its one fully verified canonical SAVE receipt");
-                        retained=retainConfirmedSaveDriver(owner,savedEdge,edge,retained,pair,saves.getFirst(),originals);
+                        retained=retainConfirmedSaveDriver(owner,savedEdge,edges.subList(savedDriverIndex+1,i),edge,retained,pair,saves.getFirst(),originals);
                     }
                     retained=retainCapturedRead(same,owner,edge,retained,originals,java.util.List.of(),false);
                     for(var row:details.get("read_rows")) {
@@ -2062,6 +2090,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         savedPair=Optional.of(pair);
                         savedBranch=edge.after().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD).deepCopy();
                         savedThroughSequence=edge.sequence();
+                        savedDriverIndex=i;
                         if(pair.frame().frame().identity().nativeRevision().compareTo(latestObserved.frame().identity().nativeRevision())>=0
                                 &&pair.frame().frame().revision().compareTo(latestObserved.frame().revision())>=0) {
                             requireSettledObservedContinuation(latestObserved,pair.frame());latestObserved=pair.frame();
