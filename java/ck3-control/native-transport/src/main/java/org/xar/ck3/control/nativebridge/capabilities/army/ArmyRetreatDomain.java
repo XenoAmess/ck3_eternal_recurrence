@@ -18,6 +18,9 @@ import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.continuity.ObservedGameplayEntry;
+import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
+import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PublicMethod;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj;
@@ -28,6 +31,7 @@ public final class ArmyRetreatDomain {
     private static final String INPUT = "xar.army-retreat-reducer-input/v1";
     private static final String INITIAL = "xar.army-retreat-qualified-first-episode/v1";
     private static final String OBSERVED_INITIAL = "xar.army-retreat-observed-first-episode/v1";
+    private static final String SAVED_INITIAL = "xar.army-retreat-confirmed-saved-first-episode/v1";
     public record Known(ActiveRetreatState.State state, DomainBodies.Available original) {
         public Known { Objects.requireNonNull(state); Objects.requireNonNull(original); }
     }
@@ -65,6 +69,18 @@ public final class ArmyRetreatDomain {
                 evidence.stream().distinct().toList(), "retreat-" + ActionCodec.sha256(encoded));
         session.commitImport(session.previewImport(request)); return read(session);
     }
+    /** Preserve the exact confirmed Saved Army body; absence never grants an empty reset. */
+    public Known initializeConfirmedSaved(ContinuityStorePort.Session session, Complete actualOpening) throws IOException {
+        session.requireWriter(artifacts.originalWriterLock()); var head = session.head();
+        StrictJson.require(DomainBodies.reference(head.state(), DomainBodies.Slot.ACTIVE_RETREAT).isEmpty(), "existing retreat domain cannot be reset by Saved import");
+        var qualified = qualifySaved(head, actualOpening, archive.withSession(session));
+        var input = StrictJson.object().put("schema", SAVED_INITIAL);
+        input.set("entry", qualified.entry()); input.set("actual", basis(NativeEffectEvidence.basis(actualOpening)));
+        byte[] encoded = ContinuityJson.canonical(input, ContinuityJson.DOMAIN_MAX_BYTES);
+        var request = new DomainBodies.ImportRequest(DomainBodies.Slot.ACTIVE_RETREAT, ActiveRetreatState.SCHEMA,
+                qualified.original().payload(), encoded, qualified.evidence(), "retreat-confirmed-saved-" + ActionCodec.sha256(encoded));
+        session.commitImport(session.previewImport(request)); return read(session);
+    }
     /** Explicit first-entry producer. A missing slot alone can never call this qualification or create empty state. */
     public Known initializeNewEpisode(ContinuityStorePort.Session session, Complete actualInitialFrame) throws IOException {
         session.requireWriter(artifacts.originalWriterLock()); var bound = archive.withSession(session); var head = session.head();
@@ -95,6 +111,18 @@ public final class ArmyRetreatDomain {
                     if (previous.isEmpty()) {
                         ObjectNode initial = StrictJson.object(StrictJson.parse(request.producerInput()), Set.of("schema", "entry", "actual"));
                         var schema = StrictJson.text(initial.get("schema"));
+                        if (schema.equals(SAVED_INITIAL)) {
+                            StrictJson.require(request.slot() == DomainBodies.Slot.ACTIVE_RETREAT && request.contractSchema().equals(ActiveRetreatState.SCHEMA), "Saved retreat input/slot schema mismatch");
+                            Complete actual = frames.load(frameBasis(initial.get("actual")), archive);
+                            var qualified = qualifySaved(actualHead, actual, archive);
+                            StrictJson.require(qualified.entry().equals(initial.get("entry"))
+                                    && request.originalBody().equals(qualified.original().payload())
+                                    && request.evidence().containsAll(qualified.evidence())
+                                    && Arrays.equals(actualBody, qualified.body()), "Saved retreat import differs from its exact confirmed original body/frame");
+                            var preserved = ActiveRetreatState.decode(DriverJson.object(qualified.body(), ContinuityJson.DOMAIN_MAX_BYTES));
+                            ActiveRetreatState.requireClaimsRetained(preserved, ActiveRetreatState.decode(DriverJson.object(actualBody, ContinuityJson.DOMAIN_MAX_BYTES)));
+                            return ActionCodec.sha256(ContinuityJson.canonical(StrictJson.object().put("actual_head_digest", actualHead.digest()).put("saved_body_sha256", ActionCodec.sha256(actualBody)), ContinuityJson.DOMAIN_MAX_BYTES));
+                        }
                         StrictJson.require((schema.equals(INITIAL) || schema.equals(OBSERVED_INITIAL)) && request.slot() == DomainBodies.Slot.ACTIVE_RETREAT && request.contractSchema().equals(ActiveRetreatState.SCHEMA), "first retreat body lacks exact qualified initialization provenance");
                         Complete actual = frames.load(frameBasis(initial.get("actual")), archive);
                         var root = head.toJson();
@@ -130,6 +158,66 @@ public final class ArmyRetreatDomain {
                     for (var claim : state.claims()) StrictJson.require(next.claims().stream().anyMatch(candidate -> candidate.key().equals(claim.key())), "retreat reducer discarded an original exclusion");
                     return ActionCodec.sha256(ContinuityJson.canonical(StrictJson.object().put("actual_head_digest", ContinuityJson.digest(head.toJson())).put("result_sha256", ActionCodec.sha256(actualBody)), ContinuityJson.DOMAIN_MAX_BYTES));
                 }});
+    }
+    private record SavedBody(ObjectNode entry, DomainBodies.BodyRef original, byte[] body, List<ExactRef> evidence) { }
+    private SavedBody qualifySaved(WriterContracts.Head head, Complete actual, ActionPorts.OutcomeArchive originals) throws IOException {
+        var root = head.state().toJson();
+        StrictJson.require(root.hasNonNull(SavedContinuityBootstrap.FIELD), "no original committed Saved entry qualifies Army import");
+        var entry = ArmyJson.object(root.get(SavedContinuityBootstrap.FIELD));
+        var request = SavedContinuityBootstrap.request(entry);
+        StrictJson.require(ContinuityJson.same(root.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD), entry.get("full_driver"))
+                && head.state().settledCycles() == StrictJson.integer(entry.get("saved_completed_cycles"), 0, StrictJson.MAX_SAFE_INTEGER),
+                "Saved Army import crossed its original Driver baseline or saved campaign progress");
+        var savedRef = ExactRef.fromJson(entry.get("saved_state_reference"));
+        var sourceRef = ExactRef.fromJson(entry.get("source_head_reference"));
+        var saved = ContinuityState.fromJson(ContinuityJson.parseObject(readSavedOriginal(savedRef, ContinuityJson.LEDGER_MAX_BYTES, Optional.empty()), ContinuityJson.LEDGER_MAX_BYTES), head.state().machineId());
+        var source = ContinuityState.fromJson(ContinuityJson.parseObject(readSavedOriginal(sourceRef, ContinuityJson.LEDGER_MAX_BYTES, Optional.empty()), ContinuityJson.LEDGER_MAX_BYTES), head.state().machineId());
+        var projected = SavedContinuityBootstrap.details(new SavedContinuityBootstrap.Input(saved, savedRef,
+                ExactRef.fromJson(entry.get("confirmation_reference")), source, sourceRef,
+                ContinuityJson.canonical(entry.get("checkpoint_pair")), ContinuityJson.canonical(entry.get("session")), ContinuityJson.canonical(entry.get("opening")),
+                ExactRef.fromJson(entry.get("full_driver")), ExactRef.fromJson(entry.get("driver_facts")),
+                StrictJson.integer(entry.get("driver_version"), 0, StrictJson.MAX_SAFE_INTEGER), StrictJson.integer(entry.get("episode_epoch"), 0, StrictJson.MAX_SAFE_INTEGER)),
+                StrictJson.text(entry.get("evidence_id")), entry.get("source"));
+        StrictJson.require(ContinuityJson.same(projected, entry), "Saved Army source projection changed its committed marker");
+        var body = DomainBodies.reference(saved, DomainBodies.Slot.ACTIVE_RETREAT).orElseThrow(() -> new IOException("confirmed saved Army body is absent; no empty migration is authorized"));
+        var latest = DomainBodies.reference(source, DomainBodies.Slot.ACTIVE_RETREAT).orElseThrow(() -> new IOException("source head lost the confirmed saved Army body"));
+        StrictJson.require(body.equals(latest) && body.contractSchema().equals(ActiveRetreatState.SCHEMA), "source head changed the confirmed saved Army body");
+        byte[] raw = readSavedOriginal(body.payload(), ContinuityJson.DOMAIN_MAX_BYTES, Optional.of(body.identity()));
+        ActiveRetreatState.decode(DriverJson.object(raw, ContinuityJson.DOMAIN_MAX_BYTES));
+        var opening = ArmyJson.object(entry.get("opening")); var frame = ArmyJson.object(opening.get("frame"));
+        var session = ArmyJson.object(entry.get("session")); var identity = actual.identity(); var current = identity.frame();
+        var game = org.xar.ck3.control.contracts.GameGeneration.fromJson(opening.get("game"));
+        StrictJson.require(identity.machineId().equals(head.state().machineId()) && identity.machineId().equals(StrictJson.text(opening.get("machine_id")))
+                && identity.game().equals(game) && game.equals(org.xar.ck3.control.contracts.GameGeneration.fromJson(root.get("game_binding")))
+                && actual.sessionId().equals(StrictJson.text(session.get("session_id")))
+                && current.episodeRunId().equals(StrictJson.text(frame.get("episode_run_id")))
+                && current.identity().player().equals(new java.math.BigInteger(StrictJson.text(frame.get("played_character_id"))))
+                && current.identity().dateRaw().equals(new java.math.BigInteger(StrictJson.text(frame.get("date_raw"))))
+                && current.identity().dateRaw().longValueExact() == head.state().settledDateRaw()
+                && current.revision().compareTo(new java.math.BigInteger(StrictJson.text(frame.get("revision")))) >= 0
+                && current.identity().nativeRevision().compareTo(new java.math.BigInteger(StrictJson.text(frame.get("native_revision")))) >= 0
+                && identity.observationVersion() == StrictJson.integer(opening.get("observation_version"), 1, StrictJson.MAX_SAFE_INTEGER),
+                "Saved Army frame crossed its original machine/Game/session/actor/date/revision");
+        Complete replay = frames.load(NativeEffectEvidence.basis(actual), originals);
+        ArmyRetreatFrames.same(new ArmyRetreatFrames.Current(actual, java.time.Instant.MAX), new ArmyRetreatFrames.Current(replay, java.time.Instant.MAX));
+        List<ExactRef> evidence = new ArrayList<>(request.evidence()); evidence.add(body.payload());
+        var actualBasis = NativeEffectEvidence.basis(actual); evidence.add(actualBasis.nativeFrame()); evidence.add(actualBasis.driverFacts());
+        return new SavedBody(entry.deepCopy(), body, raw, evidence.stream().distinct().toList());
+    }
+    /** Exact source DATA reads retain their real Windows identity, independent of the new CAS root. */
+    private static byte[] readSavedOriginal(ExactRef reference, int maximum, Optional<WriterContracts.FileIdentity> expected) throws IOException {
+        StrictJson.require(reference.bytes() > 0 && reference.bytes() <= maximum, "bounded Saved Army original required");
+        var read = IdentityBearingFileAttributes.readBoundedWindows(java.nio.file.Path.of(reference.path()), maximum);
+        byte[] raw = read.bytes();
+        StrictJson.require(raw.length == reference.bytes() && ActionCodec.sha256(raw).equals(reference.sha256()), "Saved Army original bytes/SHA changed");
+        if (expected.isPresent()) {
+            var attributes = read.attributes();
+            StrictJson.require(attributes.fileKey() instanceof IdentityBearingFileAttributes.WindowsFileIdentity, "Saved Army original needs its Windows file identity");
+            var key = (IdentityBearingFileAttributes.WindowsFileIdentity) attributes.fileKey();
+            var identity = new WriterContracts.FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(), key.creationFiletimeDecimal(), attributes.lastModifiedTime().toInstant().toString(), attributes.size());
+            StrictJson.require(identity.equals(expected.orElseThrow()), "Saved Army original native identity changed");
+        }
+        return raw;
     }
     private ObjectNode qualifyInitial(WriterContracts.Head head, Complete actual, ActionPorts.OutcomeArchive archive) throws IOException {
         var root = head.state().toJson(); StrictJson.require(root.has(WriterContracts.GAMEPLAY_ENTRY_FIELD) && !root.get(WriterContracts.GAMEPLAY_ENTRY_FIELD).isNull(), "no original committed first-gameplay entry qualifies a retreat reset");
