@@ -1463,10 +1463,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.safe(nextBatchSequence, 0);
             unresolvedActions = java.util.List.copyOf(unresolvedActions);
             retainedHistory = Objects.requireNonNull(retainedHistory);
-            StrictJson.require(restartCapture.isPresent() || retainedHistory.filter(value ->
-                    value.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
-                    && value.cycleSemantic().isEmpty() && value.controller().savedPair().isEmpty()).isPresent(),
-                    "an absent restart capture requires its actual isolated initial CurrentMap history");
+            var retained=retainedHistory.orElse(null);
+            StrictJson.require(restartCapture.isPresent() || retained!=null
+                    && retained.controller().equals(capturedController)
+                    && (retained.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
+                        && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty()
+                        || savedPendingLifeData(retained,unresolvedActions)),
+                    "an absent restart capture requires its actual isolated CurrentMap or saved pending Life history");
         }
         public CleanBatchRestart capturedManifest() {
             return restartCapture.orElseThrow(() -> new IllegalStateException("initial CurrentMap history has no captured restart manifest"));
@@ -1484,6 +1487,22 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 java.util.List<org.xar.ck3.control.application.action.ActionReceipt> unresolvedActions) {
             this(capturedManifest, capturedController, retainedFacts, retainedFullDriver, canonicalSequence, canonicalHeadDigest, usedBatches, nextBatchSequence, unresolvedActions, Optional.empty());
         }
+    }
+
+    /** DATA shape only: full canonical SAVE/cycle/RETAIN validation remains in readSameGameHistory. */
+    private static boolean savedPendingLifeData(SettledSameGameData history,java.util.List<ActionReceipt> pending) {
+        if(!(history.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap)
+                ||history.cycleSemantic().isEmpty()||history.controller().savedPair().isEmpty()||pending.size()!=1)return false;
+        var actual=pending.getFirst();var command=actual.command();var owner=history.controller().owner();
+        return history.settledActions().contains(actual)&&actual.sequence()<history.canonicalSequence()
+                &&actual.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED&&actual.visibleGameplay()&&actual.eligibleAdvance()
+                &&actual.state() instanceof ActionState.CompositeSettled settled
+                &&settled.settlement() instanceof ActionState.Applied
+                &&settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                &&org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(command.operation().value())
+                &&command.origin() instanceof CommandOrigin.Gameplay&&command.source().equals(history.source())
+                &&command.before().machineId().equals(owner.machineId())&&command.before().game().equals(owner.game())
+                &&command.sessionId().equals(owner.sessionId())&&actual.bodySha256().equals(ActionCodec.bodySha256(command));
     }
 
     /** Read original authenticated historical transitions; grants no readiness/submit/epoch token. */
@@ -1505,8 +1524,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean initialPending=initialCurrentMapPendingFrontier(same.head().state(),owner)
                     &&retained.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
                     &&retained.cycleSemantic().isEmpty()&&retained.controller().savedPair().isEmpty();
-            StrictJson.require(captured.get()!=null||initialPending,
-                    "pending Life cycle retains its actual restart capture or complete initial CurrentMap DATA");
+            StrictJson.require(captured.get()!=null||initialPending
+                    ||savedPendingLifeData(retained,java.util.List.of(pendingControl.orElseThrow())),
+                    "pending Life cycle retains its actual restart capture or complete initial/saved CurrentMap DATA");
             return new UnresolvedSameGameData(Optional.ofNullable(captured.get()), retained.controller(), retained.retainedFacts(),
                     retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
                     new java.util.ArrayList<>(retained.controller().usedBatches()), retained.controller().nextBatchSequence(),
