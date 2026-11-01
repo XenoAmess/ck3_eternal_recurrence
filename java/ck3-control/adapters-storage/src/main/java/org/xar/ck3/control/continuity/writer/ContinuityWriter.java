@@ -876,31 +876,35 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             for (Pin pin : actual.documents()) LedgerFiles.verify(pin);
             for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
             long sequence = Math.addExact(actual.state().sequence(), 1);
-            ObjectNode after = reduced.toJson(); after.put("sequence", sequence); after.put("last_event_identity", request.identity());
+            ObjectNode after = reduced.toJson(); after.put("sequence", sequence);
+            String requestIdentity = request.identity();
+            after.put("last_event_identity", requestIdentity);
             ContinuityState committed = ContinuityState.fromJson(after, layout.machineId());
             ContinuityEvent event = new ContinuityEvent(sequence, OffsetDateTime.ofInstant(clock.instant(), ZoneOffset.UTC).toString(),
-                    request.kind(), request.details(), request.identity(), actual.digest(), committed);
+                    request.kind(), request.details(), requestIdentity, actual.digest(), committed);
             // Apply the retained envelope validator and both output caps before the first write.
             byte[] eventBytes = ContinuityJson.canonical(ContinuityEvent.fromJson(event.toJson(), actual.state()).toJson());
             if (eventBytes.length + 1 > ContinuityJson.LEDGER_MAX_BYTES || committed.canonicalBytes().length + 1 > ContinuityJson.LEDGER_MAX_BYTES)
                 throw new IOException("original writer output cap");
-            LedgerFiles.requireAbsent(layout.event(sequence)); LedgerFiles.requireAbsent(layout.sourceIndex(request.sourceKey()));
+            LedgerFiles.requireAbsent(layout.event(sequence));
+            String requestSourceKey = request.sourceKey();
+            LedgerFiles.requireAbsent(layout.sourceIndex(requestSourceKey));
             boolean unchanged=ContinuityJson.same(actual.state().toJson(),reduced.toJson());
             List<LedgerFiles.AtomicWrite> recovery=store.recoveryWrites(actual);
             List<LedgerFiles.AtomicWrite> writes=new ArrayList<>(recovery);
             LedgerFiles.AtomicWrite eventWrite=LedgerFiles.prepareAtomic(layout.event(sequence),eventBytes,false,ContinuityJson.LEDGER_MAX_BYTES);
             LedgerFiles.AtomicWrite snapshotWrite=LedgerFiles.prepareAtomic(layout.snapshot(),committed.canonicalBytes(),true,ContinuityJson.LEDGER_MAX_BYTES);
-            LedgerFiles.AtomicWrite indexWrite=LedgerFiles.prepareAtomic(layout.sourceIndex(request.sourceKey()),
-                    ContinuityJson.canonical(new IndexRepair(layout.sourceIndex(request.sourceKey()),sequence,request.identity()).toJson()),false);
+            LedgerFiles.AtomicWrite indexWrite=LedgerFiles.prepareAtomic(layout.sourceIndex(requestSourceKey),
+                    ContinuityJson.canonical(new IndexRepair(layout.sourceIndex(requestSourceKey),sequence,requestIdentity).toJson()),false);
             if(!unchanged){writes.add(eventWrite);writes.add(snapshotWrite);writes.add(indexWrite);}
             try {
-                if(writes.isEmpty())return new Receipt(Disposition.NO_CHANGE,actual.state(),request.identity(),0,false);
+                if(writes.isEmpty())return new Receipt(Disposition.NO_CHANGE,actual.state(),requestIdentity,0,false);
                 // Quote the entire physical commit/recovery before the first pending file is created.
                 return storageGuard.write(LedgerFiles.plan(layout.lock(),writes),()->{
                     retainedHead=null;retainedHeadHistoryVerified=false;
                     retainedDomainHead=null;
                     int recovered=store.recover(recovery,storageGuard);
-                    if(unchanged)return new Receipt(Disposition.NO_CHANGE,actual.state(),request.identity(),recovered,recovered>0);
+                    if(unchanged)return new Receipt(Disposition.NO_CHANGE,actual.state(),requestIdentity,recovered,recovered>0);
                     LedgerFiles.atomic(storageGuard,layout.lock(),eventWrite);
                     faults.reached(WriterFaultProbe.Boundary.EVENT_PUBLISHED,sequence);
                     LedgerFiles.atomic(storageGuard,layout.lock(),snapshotWrite);
@@ -911,9 +915,9 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     StrictJson.require(ContinuityJson.same(readback.state().toJson(),committed.toJson())
                             &&!readback.snapshotNeedsRecovery()&&readback.indexRepairs().isEmpty(),"committed ledger readback");
                     retainedHead = readback;retainedHeadHistoryVerified=false;
-                    return new Receipt(Disposition.COMMITTED,committed,request.identity(),recovered+3,recovered>0);
+                    return new Receipt(Disposition.COMMITTED,committed,requestIdentity,recovered+3,recovered>0);
                 });
-            }catch(IOException|RuntimeException error){throw new CommitUncertainException(request.identity(),sequence,error);}
+            }catch(IOException|RuntimeException error){throw new CommitUncertainException(requestIdentity,sequence,error);}
         }
         private Receipt recoverDuplicate(Request request, Head actual) throws IOException {
             retainedHead=null;retainedHeadHistoryVerified=false; // Recovery may mutate persistence; only a normal commit retains its validated readback.
@@ -1086,7 +1090,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         return List.copyOf(result);
     }
     static void requireSameHead(Head expected, Head actual) {
-        StrictJson.require(ContinuityJson.same(expected.state().toJson(), actual.state().toJson())
+        StrictJson.require(java.util.Arrays.equals(expected.state().canonicalBytes(), actual.state().canonicalBytes())
                 && expected.documents().equals(actual.documents()) && expected.absent().equals(actual.absent())
                 && expected.indexRepairs().equals(actual.indexRepairs())
                 && expected.snapshotNeedsRecovery() == actual.snapshotNeedsRecovery(), "real head/source/file-identity CAS drift");
