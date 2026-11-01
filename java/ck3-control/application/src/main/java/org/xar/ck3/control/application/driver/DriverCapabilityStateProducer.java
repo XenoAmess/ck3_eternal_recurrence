@@ -378,6 +378,85 @@ public final class DriverCapabilityStateProducer {
                 "Saved cache actor/day/profile changed or its actual frame regressed");
     }
 
+    /** Rebuild the real cache held before a canonical READ, then mint only for the actual current Driver CAS. */
+    public static InitialAuxiliary restoreCapturedReadState(Complete frame,Known current,
+            org.xar.ck3.control.continuity.writer.WriterContracts.HistoricalTransition edge,
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader loader,
+            ActionPorts.OutcomeArchive archive) throws IOException {
+        Objects.requireNonNull(edge);Objects.requireNonNull(same);Objects.requireNonNull(loader);
+        var details=org.xar.ck3.control.continuity.ContinuityJson.parseObject(edge.details(),
+                org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES);
+        require(edge.kind().equals(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_READ_HISTORY_KIND)
+                &&details.get("read_rows")!=null&&details.get("read_rows").isArray()
+                &&details.get("read_rows").size()>0,"actual canonical READ cache source required");
+        var readRef=ExactRef.fromJson(details.get("read_rows").get(0).get("read"));
+        var read=archive.loadRead(readRef);
+        org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(read,archive);
+        require(archive.readReferenceOf(read).equals(readRef),"READ cache original locator differs");
+        var guard=read.before().binding();
+        org.xar.ck3.control.application.effects.RootGuardEvidence.requireHistory(guard,archive,same);
+        var guardFrame=org.xar.ck3.control.application.effects.RootGuardEvidence.loadFrame(guard,archive,loader);
+        var guardBasis=org.xar.ck3.control.application.effects.RootGuardEvidence.frameBasis(guard,archive);
+        var guardFull=loader.loadFull(guardBasis,archive);
+        Obj semantic=guardFull.facts().originalSemanticFields();
+        ExactRef source=decodeReference(object(semantic.get(STATE_SOURCE),"actual READ capability state source"));
+        Obj state=DriverJson.object(readMaterial(archive,source).bytes(),DriverJson.MAX_NATIVE_BYTES);
+        ExactRef oldInputs=decodeReference(object(state.get("inputs"),"original capability inputs"));
+        require(reference(oldInputs).equals(semantic.get(DriverRuntimeCapabilities.AUXILIARY_KEY))
+                &&state.get("state_version").equals(semantic.get(VERSION)),"READ capability pointers/version differ from the original state");
+        Obj cache=object(state.get("cache_values"),"original capability cache");
+        ExactRef oldSemantic=decodeReference(object(state.get("semantic_source"),"original capability semantic source"));
+        ExactRef oldNative=decodeReference(object(cache.get(NATIVE),"original capability native source"));
+        var oldBasis=new org.xar.ck3.control.application.effects.NativeEffectEvidence.FrameBasis(oldNative,oldSemantic);
+        var full=loader.loadFull(oldBasis,archive);
+        var assembled=new DriverObservationAssembler().assemble(full.actual(),full.facts(),full.originalEvidence());
+        require(assembled instanceof Complete,"original cache frame is not a complete actual projection");
+        Complete original=(Complete)assembled;
+        var facts=full.facts();
+        var beforeRef=ExactRef.fromJson(details.get("before_driver"));
+        var driverSource=org.xar.ck3.control.application.effects.RootGuardEvidence.originalDriverSource(guard,archive);
+        require(driverSource.driverRef().equals(beforeRef)
+                &&Arrays.equals(facts.driver().encode(),archive.loadFullMaterial(beforeRef).bytes())
+                &&facts.driverVersion()==guardFull.facts().driverVersion()
+                &&facts.episodeEpoch()==guardFull.facts().episodeEpoch()
+                &&original.identity().game().equals(frame.identity().game())&&original.identity().machineId().equals(frame.identity().machineId())
+                &&original.source().equals(frame.source())&&original.sessionId().equals(frame.sessionId())
+                &&original.identity().frame().episodeRunId().equals(frame.identity().frame().episodeRunId())
+                &&original.identity().frame().identity().player().equals(frame.identity().frame().identity().player())
+                &&original.identity().frame().identity().dateRaw().equals(frame.identity().frame().identity().dateRaw())
+                &&original.identity().observationVersion()==frame.identity().observationVersion()
+                &&original.identity().frame().identity().nativeRevision().compareTo(guardFrame.identity().frame().identity().nativeRevision())<=0
+                &&original.identity().frame().revision().compareTo(guardFrame.identity().frame().revision())<=0,
+                "original capability cache crossed its canonical READ Driver/Game/source/profile/frame");
+        Map<String,Value> originalAux=new LinkedHashMap<>(object(state.get("owner_auxiliary"),"original owner auxiliary").members());
+        originalAux.put(VERSION,state.get("state_version"));originalAux.put(STATE_SOURCE,reference(source));
+        originalAux.put(DriverRuntimeCapabilities.AUXILIARY_KEY,reference(oldInputs));
+        var stamp=new Stamp(facts.driverVersion(),facts.episodeEpoch(),facts.transport().game(),
+                facts.driver().session().episodeRunId(),DriverJson.sha256(facts.driver().encode()));
+        // READ-only qualification preserves these actual non-history slots; none is fabricated empty.
+        var previous=new Known(facts.driver(),stamp,current.originalHistoryBasis(),current.actionRows(),
+                new Obj(originalAux),current.loop(),Optional.of(facts));
+        Obj recovered=replay(original,previous,source,archive);
+        require(recovered.equals(previous.auxiliary()),"original complete capability auxiliary replay differs");
+        var owner=new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(
+                frame.identity().machineId(),frame.identity().game(),frame.sessionId());
+        var continued=org.xar.ck3.control.application.session.ContinuityBatchJournal.replayCapturedRead(
+                same,owner,edge,previous,beforeRef,archive);
+        var after=continued.facts();
+        require(after.stamp().equals(current.stamp())&&Arrays.equals(after.driver().encode(),current.driver().encode())
+                &&after.originalHistoryBasis().equals(current.originalHistoryBasis())&&after.actionRows().equals(current.actionRows())
+                &&after.loop().equals(current.loop()),"capability continuation differs from the actual replayed current Driver");
+        for(var entry:current.auxiliary().members().entrySet())require(Objects.equals(entry.getValue(),after.auxiliary().get(entry.getKey())),
+                "capability continuation would overwrite actual current auxiliary: "+entry.getKey());
+        same.verifyPin(edge.eventPin());for(var pin:continued.originalPins())same.verifyPin(pin);
+        // The old capsule remains immutable. Current Driver/auxiliary stay the CAS owner of the new mint.
+        Obj reframed=DriverSemanticReadState.invalidate(frame,after.auxiliary(),archive);
+        InitialAuxiliary result=mint(frame,current,reframed,version(recovered).add(BigInteger.ONE),Cause.OBSERVED_FRAME,archive);
+        require(replay(frame,current,result.source(),archive).equals(result.auxiliary()),"continued current cache failed full original replay");
+        return result;
+    }
+
     /** The exact successfully decoded/archived read is the producer; an ACK or request alone is refused. */
     public static InitialAuxiliary observeRead(Complete frame,Known current,PlanningReadResult.Known<?> actual,
             ActionPorts.OutcomeArchive archive) {
