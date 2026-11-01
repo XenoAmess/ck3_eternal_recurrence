@@ -80,12 +80,17 @@ public final class RootCheckpointVerifierRouter implements OrdinaryCycleTransiti
 
     @Override public String verify(ContinuityStorePort.Session same,SessionIdentity actualOwner,CheckpointPair pair,
             CompletedCycleProof actualProof)throws IOException {
+        return verifyCapture(same,actualOwner,pair,actualProof).digest();
+    }
+    /** Same exact route and writer guards; forwards original capture DATA without a fallback qualification. */
+    public RootCheckpointVerifier.Captured verifyCapture(ContinuityStorePort.Session same,SessionIdentity actualOwner,CheckpointPair pair,
+            CompletedCycleProof actualProof)throws IOException {
         writer.requireSession(same);requirePairOwner(actualOwner,pair);Objects.requireNonNull(actualProof);
         Entry selected;
         synchronized(this) {selected=entries.get(actualOwner);}
         if(selected==null)throw new IOException("no actual checkpoint verifier registered for the exact session and Game generation");
         requireVerifier(selected.verifier());String before=same.head().digest();
-        String result=selected.verifier().verify(same,actualOwner,pair,actualProof);
+        RootCheckpointVerifier.Captured result=selected.verifier().verifyCapture(same,actualOwner,pair,actualProof);
         writer.requireSession(same);
         if(!same.head().digest().equals(before))throw new IOException("checkpoint route verification changed the original canonical writer");
         return result;

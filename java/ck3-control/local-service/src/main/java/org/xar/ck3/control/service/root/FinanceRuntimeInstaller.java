@@ -12,6 +12,9 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
+import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.effects.*;
 import org.xar.ck3.control.application.planning.*;
 import org.xar.ck3.control.application.planning.finance.*;
@@ -235,7 +238,19 @@ public final class FinanceRuntimeInstaller {
         if(!state.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))return Optional.empty();
         var saved=StrictJson.object(state.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),Set.of("pair","state"));
         var pair=CheckpointPairCodec.decode(StrictJson.canonical(saved.get("pair")));
-        var original=context.savedSources().load(pair);StrictJson.require(original.pair().equals(pair)
+        SavedAttachmentSourceStore.SavedMaterial original;
+        if(state.has(SavedCheckpointMaterialEvidence.FIELD)) {
+            var evidence=SavedCheckpointMaterialEvidence.decode(state.get(SavedCheckpointMaterialEvidence.FIELD));
+            var source=OrdinaryCycleTransitions.sessionFromJson(saved.get("state").get("session"));
+            evidence.requireSavedBranch(pair,source);
+            session.requireHistoricalState(evidence.originalHeadSequence(),evidence.originalHeadDigest());
+            original=context.savedSources().loadRetainedOriginal(session,evidence.material(),pair);
+            evidence.requireMaterial(original);
+        } else {
+            // Legacy history without original manifest identity retains its existing explicit unavailable result.
+            original=context.savedSources().load(pair);
+        }
+        StrictJson.require(original.pair().equals(pair)
                 &&pair.frame().machineId().equals(context.game().machineId()),"actual saved pair source belongs to another machine");
         session.requireHistoricalState(original.originalHeadSequence(),original.originalHeadDigest());
         StrictJson.require(session.head().digest().equals(head.digest()),"actual saved source verification changed the canonical finance head");

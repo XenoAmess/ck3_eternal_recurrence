@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.xar.ck3.control.application.checkpoint.CheckpointCommitVerifier;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
+import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.SessionPorts.CompletedCycleProof;
@@ -42,7 +43,20 @@ public final class RootCheckpointVerifier implements OrdinaryCycleTransitions.Ch
     public void requireOwner(ContinuityWriter actual)throws IOException {
         if(writer!=Objects.requireNonNull(actual)||!isBound())throw new IOException("checkpoint verifier is not the actual bound producer of this sole writer");
     }
+    /** DATA result of this actual capture. The digest may use a compatible current verifier projection;
+     * the material keeps its own original stored binding digest. Neither is reconstructed by decoding. */
+    public record Captured(String digest, SavedCheckpointMaterialEvidence material) {
+        public Captured {
+            org.xar.ck3.control.continuity.writer.WriterContracts.requireDigest(digest);
+            Objects.requireNonNull(material);
+        }
+    }
     @Override public String verify(ContinuityStorePort.Session borrowed, SessionIdentity identity, CheckpointPair pair,
+            CompletedCycleProof proof) throws IOException {
+        return verifyCapture(borrowed, identity, pair, proof).digest();
+    }
+    /** Future canonical SAVE admission must compare and record this exact original witness DATA. */
+    public Captured verifyCapture(ContinuityStorePort.Session borrowed, SessionIdentity identity, CheckpointPair pair,
             CompletedCycleProof proof) throws IOException {
         writer.requireSession(borrowed); SavedAttachmentSourceStore store = sources;SavedCapture actual=capture;
         if (store == null||actual==null) throw new IOException("actual cycle-qualified saved source store/input producer is not bound");
@@ -51,6 +65,6 @@ public final class RootCheckpointVerifier implements OrdinaryCycleTransitions.Ch
         String originalHead = borrowed.head().digest(); actual.capture(borrowed, identity, verified, material);
         writer.requireSession(borrowed);
         if (!originalHead.equals(borrowed.head().digest())) throw new IOException("SAVE capture changed the original canonical writer during read-only verification");
-        return verified.digest();
+        return new Captured(verified.digest(), SavedCheckpointMaterialEvidence.fromMaterial(material));
     }
 }
