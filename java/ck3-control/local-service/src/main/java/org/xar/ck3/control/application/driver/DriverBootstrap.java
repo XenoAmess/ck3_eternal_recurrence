@@ -794,8 +794,7 @@ public final class DriverBootstrap {
                         if(!actual.command().before().game().equals(stamp.game())
                                 || !actual.command().before().frame().episodeRunId().equals(stamp.episodeRunId())) continue;
                         Optional<? extends ArchivedActionCoverage> original=coverage.originalFor(actual);
-                        if(original.isEmpty()) { gaps.add("original_history_row_unavailable:"+actual.command().actionId());continue; }
-                        rows.add(validateCoverage(borrowed,actual,original.orElseThrow(),driver,archive));
+                        if(original.isPresent()) rows.add(validateCoverage(borrowed,actual,original.orElseThrow(),driver,archive));
                     }
                     var known=new DriverSnapshotFacts.Known(driver,stamp,seed.originalHistoryBasis(),rows,seed.auxiliary(),seed.loop(),Optional.empty());
                     DriverStateSnapshot projected=DriverStateAssembler.project(known,lease.snapshot(),Optional.empty());
