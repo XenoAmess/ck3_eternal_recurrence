@@ -1,5 +1,13 @@
 # Java / G2 resume91 当前执行记录
 
+## 2026-11-01 00:04 UTC：累计24个游戏日已全部确认保存
+
+同一原版无模组 Game71464（出生 FILETIME134378397668266369）继续保留。原561 SAVE沿已持久原件只读恢复，563于00:04:32.103951Z真实记录SAVE_CONFIRMED；java_ordinary_saved_cycle.state.completed_cycles=6、pending_receipt=null，last_settled_date_raw=53144904（1066-10-09），从本局原53144328累计24个游戏日已全部保存。563所保checkpoint pair帧为native404/public333；先前23:31Z的24日已结算、16日已保存是当时事实，原文保留。
+
+独立核对的具名原件为 `continuity/ROOT-CONTINUITY-WINDOW-EVENTS/00000563.json`，101387B，SHA256 `73571a15540aa00c127054b60e8461bed8a177fa8f6487e6a2f7d7dbcc2b2f11`，event identity为 `72d1364d2c690150b0c5d21a4820efc14fcd7dc5dd4ebf0b763fb951724be6a3`。该事件所保save文件元数据为68,193,417B/SHA256 `7fd69211f3cdf97773ba42fdbd1c5c2afbde30a57f760999f8265cb6f909370e`；本次文档核对只读101387B事件，未重读save、Driver、SEM或pair大体。证据为 `D:/ck3-state/resume91-native-integration/milestone563-publication/EXACT-SAVE-CONFIRMED208-READBACK.json`，不将引用元数据冒充本岗对大文件的独立验证。
+
+Main208仅local-service一源实际增编，23:58:06.248278–23:58:11.547123Z exit0/5.298850秒；worker31876于23:58:18.038803Z启动，00:04:32.3810592Z真实LOOP/next70，运行岗00:04:39.121152Z薄读后立即释放研究HOLD。同一worker继续普通qwen决策，不因文档、背景编验或性能候选重启；未重发原561 SAVE或已结算ARM/resume，未部署研究DLL或新开Game。G2整体仍按最后已确认6/8，保存24日不代替完整M6/M7机制、多场景和自然游玩验收。
+
 ## 2026-10-31 23:31 UTC：24日周期已结算，同局继续自然保存
 
 后到原件554于23:18:34.299388200Z执行RETAIN，current_cycle_pending指向原552的9088B回执（SHA256 `6288420cb5a7f50c60c32f3b57fd932db54341a54fdbb579abe1345184d22214`）。552/553当刻的pending=null只覆盖那两个事件，不能据此前快照把Main204终态的待结算项清空。555于23:30:53.872017800Z真实SETTLE/ELIGIBLE_ADVANCE，ordinary_cycle_state.completed_cycles从5变6、pending_receipt=null；对应SEM元数据帧native401/public330/date_raw53144904。旧window.last_settled_cycles=5/date53144712另列保留；已确认SAVE仍是528的16日，没有据本次周期结算授24日已保存。

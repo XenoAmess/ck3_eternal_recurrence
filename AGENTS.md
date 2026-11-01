@@ -15,6 +15,8 @@
 
 ## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
 
+- 2026-11-01 00:04Z累计24日已全部确认保存：同一原版无mod Game71464/出生FILETIME134378397668266369保留，原561 SAVE经只读恢复后，563于00:04:32.103951Z真实SAVE_CONFIRMED，ordinary saved cycle为6、date_raw53144904（1066-10-09），从原53144328累计24日全部保存；pair帧native404/public333。563原event101387B/SHA73571a15540aa00c127054b60e8461bed8a177fa8f6487e6a2f7d7dbcc2b2f11已具名独立核对，未读save/Driver/SEM大体或新增Game查询。Main208仅local-service一源增编后，原worker31876于00:04:32.3810592Z真实LOOP/next70，运行岗00:04:39.121152Z薄读即释放研究HOLD，继续普通qwen。下段23:31Z的24日结算/16日保存保留为历史截面，不覆盖新563；不重SAVE/ARM/resume、不重启Game或为后台候选重启worker，G2仍按最后已确认6/8。
+
 - 23:31Z实际24日周期已结算、保存仍16日：554于23:18:34.299388200Z真实RETAIN552，current_cycle_pending指向该9088B父回执；555于23:30:53.872017800Z真实SETTLE/ELIGIBLE_ADVANCE、completed_cycles5→6/pending=null，SEM帧native401/public330/date_raw53144904。Main206仅成熟Assembler206+watch205增编后，worker158484于23:30:55.9029357Z真实LOOP/next69，556于23:30:58.519479300Z记录BATCH_STARTED69；同一原版Game继续自然SAVE，不因后台候选、测试或文档重启。累计24日已观察并周期结算，已确认保存仍528的16日；下段552/553时点的pending=null不能覆盖后到554，也不把观察或周期结算当成24日已保存。
 
 - 23:18Z实际24日已观察、已确认保存仍16日：同一原版无mod Game71464/原birth保留。原resume子550于23:09:25.618825Z真实SETTLED/APPLIED，Push后态native394/public326/date_raw53144904（1066-10-09），从原53144328累计24日；551于23:09:50.898934200Z父COMPOSITE_UNKNOWN是当时状态。Main204只增编AckReceived兼容单叶后，552于23:17:22.760799Z真实COMPOSITE_SETTLED/APPLIED，独立SameGameWatch后态native398/同日期，553于23:18:00.986796100Z发布该原552的ACTION历史。父结算与SAVE分别记：552/553当刻completed_cycles为5、pending=null；554于23:18:34.299388200Z RETAIN552后pending指向该9088B回执。已确认保存仍528对应的16日，未授24日已保存。旧watch父549小于新child550，实际父551大于550的顺序自然合法，未改角色或重放gen6 ARM/resume。worker204于23:18:40.207169Z preloopEND1/300.132287秒；本段冻结该真实终态，后继按运行owner新回执继续原局，不以文档、软件绿或模型HTTP授新日/SAVE。
