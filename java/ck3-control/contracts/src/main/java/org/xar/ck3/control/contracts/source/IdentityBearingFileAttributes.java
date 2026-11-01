@@ -35,6 +35,16 @@ public final class IdentityBearingFileAttributes {
     }
     private static final class Api { private static final AttributeApi VALUE = Native.load("kernel32", AttributeApi.class); }
     private record WindowsStamp(WindowsFileIdentity key, long bytes, long creation, long modified, boolean directory) { }
+    /** Fresh per-call bytes transferred to the caller; the reader retains no copy or cache. */
+    public record BoundedFileRead(BasicFileAttributes attributes, byte[] bytes) {
+        public BoundedFileRead { Objects.requireNonNull(attributes); Objects.requireNonNull(bytes); }
+    }
+    private interface DataApi extends com.sun.jna.win32.StdCallLibrary {
+        boolean ReadFile(HANDLE handle, Pointer buffer, int requested,
+                com.sun.jna.ptr.IntByReference transferred, Pointer overlapped);
+    }
+    private static final class Data { private static final DataApi VALUE = Native.load("kernel32", DataApi.class); }
+
     private record Snapshot(BasicFileAttributes original, Object fileKey) implements BasicFileAttributes {
         private Snapshot { Objects.requireNonNull(original); Objects.requireNonNull(fileKey); }
         @Override public FileTime lastModifiedTime() { return original.lastModifiedTime(); }
@@ -61,6 +71,76 @@ public final class IdentityBearingFileAttributes {
             return new Snapshot(before, observed.key());
         } catch (LinkageError unavailable) { throw new IOException("Windows source identity provider unavailable", unavailable); }
     }
+    /**
+     * Bounded ordinary Windows content read whose before identity belongs to its data handle.
+     * A separate ordinary path observation after the bytes still binds the requested name.
+     * General metadata and whole-parent readers retain their existing independent contracts.
+     */
+    public static BoundedFileRead readBoundedWindows(Path supplied, int limit) throws IOException {
+        return readBoundedWindows(supplied, limit, null);
+    }
+    /** Package-local seam for controlled real-file replacement/close-failure regression cases. */
+    static BoundedFileRead readBoundedWindows(Path supplied, int limit,
+            java.util.function.Consumer<HANDLE> afterContent) throws IOException {
+        if (!Platform.isWindows()) throw new IOException("native Windows file identity required");
+        Path path = Objects.requireNonNull(supplied).toAbsolutePath().normalize();
+        BasicFileAttributes nioBefore = Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        requireOrdinaryFile(nioBefore);
+        BasicFileAttributes before;
+        byte[] bytes;
+        try {
+            ordinaryAttributes(path);
+            HANDLE handle = Kernel32.INSTANCE.CreateFile(nativePath(path.toString()), 0x80000080, 7, null, 3, 0x02200000, null);
+            if (WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("source identity open Win32=" + Native.getLastError());
+            try {
+                WindowsStamp observed = windowsStamp(handle, true);
+                before = new Snapshot(nioBefore, observed.key());
+                if (before.size() > limit) throw new IOException("named ledger source exceeds finite cap: path=" + path
+                        + ", actual_bytes=" + before.size() + ", cap=" + limit);
+                // Match readNBytes(limit + 1)'s invalid-length case without integer overflow/allocation.
+                if (limit == Integer.MAX_VALUE) throw new IllegalArgumentException("len < 0");
+                if (before.size() < 0) throw new IOException("ledger source size drift");
+                int expected = Math.toIntExact(before.size());
+                bytes = new byte[expected];
+                try (Memory data = new Memory(Math.max(1, Math.min(65_536, expected)))) {
+                    var transferred = new com.sun.jna.ptr.IntByReference();
+                    int offset = 0;
+                    while (offset < expected) {
+                        int requested = Math.min(65_536, expected - offset);
+                        transferred.setValue(0);
+                        if (!Data.VALUE.ReadFile(handle, data, requested, transferred, null))
+                            throw new IOException("source read Win32=" + Native.getLastError());
+                        int count = transferred.getValue();
+                        if (count <= 0 || count > requested) throw new IOException("ledger source size drift");
+                        data.read(0, bytes, offset, count);
+                        offset += count;
+                    }
+                    // One extra byte rejects growth: success requires exactly before.size().
+                    transferred.setValue(0);
+                    if (!Data.VALUE.ReadFile(handle, data, 1, transferred, null))
+                        throw new IOException("source read Win32=" + Native.getLastError());
+                    if (transferred.getValue() != 0) throw new IOException("ledger source size drift");
+                    if (afterContent != null) afterContent.accept(handle);
+                }
+            } finally {
+                // Close before after-path observation, as the original content stream did.
+                // A close failure cannot be swallowed as a later NoSuchFileException/absence.
+                if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException("source identity close Win32=" + Native.getLastError());
+            }
+        } catch (LinkageError unavailable) { throw new IOException("Windows source identity provider unavailable", unavailable); }
+        BasicFileAttributes after = read(path);
+        requireOrdinaryFile(after);
+        if (!(after.fileKey() instanceof WindowsFileIdentity)
+                || !before.fileKey().equals(after.fileKey()) || before.size() != after.size()
+                || !before.lastModifiedTime().toInstant().equals(after.lastModifiedTime().toInstant()))
+            throw new IOException("ledger source native identity drift");
+        return new BoundedFileRead(after, bytes);
+    }
+    private static void requireOrdinaryFile(BasicFileAttributes value) throws IOException {
+        if (!value.isRegularFile() || value.isSymbolicLink())
+            throw new IOException("ordinary identity-bearing ledger file required");
+    }
+
     /**
      * Windows ledger observation: two complete root-to-leaf observations, with ordinary parents.
      * Every node retains NIO metadata and full native identity in both observations.
@@ -160,6 +240,12 @@ public final class IdentityBearingFileAttributes {
     private static WindowsStamp windowsStamp(Path path) throws IOException {
         HANDLE handle = Kernel32.INSTANCE.CreateFile(nativePath(path.toString()), 0x80, 7, null, 3, 0x02200000, null);
         if (WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("source identity open Win32=" + Native.getLastError());
+        try { return windowsStamp(handle, false); }
+        finally {
+            if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException("source identity close Win32=" + Native.getLastError());
+        }
+    }
+    private static WindowsStamp windowsStamp(HANDLE handle, boolean ordinaryFile) throws IOException {
         try (Memory id = new Memory(24); Memory basic = new Memory(40); Memory standard = new Memory(24)) {
             if (!Api.VALUE.GetFileInformationByHandleEx(handle, 18, id, 24)
                     || !Api.VALUE.GetFileInformationByHandleEx(handle, 0, basic, 40)
@@ -167,13 +253,13 @@ public final class IdentityBearingFileAttributes {
                 throw new IOException("source identity query Win32=" + Native.getLastError());
             if ((basic.getInt(32) & 0x400) != 0 || standard.getByte(20) != 0)
                 throw new IOException("source reparse or delete-pending identity rejected");
+            if (ordinaryFile && ((basic.getInt(32) & 0x40) != 0 || standard.getByte(21) != 0))
+                throw new IOException("ordinary identity-bearing ledger file required");
             byte[] little = id.getByteArray(8, 16), big = new byte[16];
             for (int index = 0; index < big.length; index++) big[index] = little[15 - index];
             WindowsFileIdentity key = new WindowsFileIdentity(Long.toUnsignedString(id.getLong(0)),
                 new BigInteger(1, big).toString(), Long.toUnsignedString(basic.getLong(0)));
             return new WindowsStamp(key, standard.getLong(8), basic.getLong(0), basic.getLong(16), standard.getByte(21) != 0);
-        } finally {
-            if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException("source identity close Win32=" + Native.getLastError());
         }
     }
 }

@@ -46,15 +46,13 @@ final class LedgerFiles {
                 value.lastModifiedTime().toInstant().toString(), value.size());
     }
     static Document read(Path path, int limit) throws IOException {
-        FileIdentity before = identity(path);
-        if (before.bytes() > limit) throw new IOException("named ledger source exceeds finite cap: path=" + path.toAbsolutePath().normalize()
-                + ", actual_bytes=" + before.bytes() + ", cap=" + limit);
-        byte[] raw;
-        try (var input = Files.newInputStream(path, StandardOpenOption.READ)) { raw = input.readNBytes(limit + 1); }
-        if (raw.length > limit || raw.length != before.bytes()) throw new IOException("ledger source size drift");
-        FileIdentity after = identity(path);
-        if (!before.equals(after)) throw new IOException("ledger source native identity drift");
-        return new Document(new Pin(new ExactRef(path.toAbsolutePath().normalize().toString(), raw.length, sha(raw)), after), raw);
+        var observed = IdentityBearingFileAttributes.readBoundedWindows(path, limit);
+        BasicFileAttributes after = observed.attributes();
+        WindowsFileIdentity key = (WindowsFileIdentity) after.fileKey();
+        FileIdentity identity = new FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(), key.creationFiletimeDecimal(),
+                after.lastModifiedTime().toInstant().toString(), after.size());
+        byte[] raw = observed.bytes();
+        return new Document(new Pin(new ExactRef(path.toAbsolutePath().normalize().toString(), raw.length, sha(raw)), identity), raw);
     }
     static Document exact(ExactRef expected, int maximum) throws IOException {
         Document actual = read(Path.of(expected.path()), maximum);
