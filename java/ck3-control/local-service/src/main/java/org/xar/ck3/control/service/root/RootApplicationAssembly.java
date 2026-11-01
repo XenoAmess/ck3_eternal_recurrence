@@ -186,6 +186,46 @@ public final class RootApplicationAssembly {
         }
 
         /** Private new-daemon saved admission, independent of the unavailable original daemon. */
+        public void requireConfirmedSavedPreentry(RootJavaSavedBootstrap.ConfirmedSource source) throws java.io.IOException {
+            Objects.requireNonNull(source);
+            writer.locked(same -> {
+                writer.requireSession(same);
+                var head = same.head();
+                StrictJson.require(head.indexRepairs().isEmpty() && !head.snapshotNeedsRecovery(),
+                        "confirmed saved preentry requires a clean actual writer head");
+                var state = head.state();
+                StrictJson.require(state.sequence() == 0 && state.status() == org.xar.ck3.control.continuity.ContinuityState.Status.AWAITING_INITIAL_ENTRY,
+                        "confirmed saved preentry requires the actual empty fresh store");
+                var savedState = source.savedState();
+                var origin = savedState.origin();
+                var plan = new org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan(savedState.machineId(), origin.windowId(), origin.targetDays());
+                var expectedBytes = org.xar.ck3.control.continuity.FreshContinuityGenesis.encode(plan);
+                var row = state.toJson();
+                var genesis = StrictJson.object(row.get(org.xar.ck3.control.continuity.FreshContinuityGenesis.FIELD), java.util.Set.of("schema", "planned_window_id", "target_days", "original_request"));
+                var originalRef = org.xar.ck3.control.contracts.ExactRef.fromJson(genesis.get("original_request"));
+                final String expectedSha256;
+                try {
+                    expectedSha256 = java.util.HexFormat.of().formatHex(
+                            java.security.MessageDigest.getInstance("SHA-256").digest(expectedBytes));
+                } catch (java.security.NoSuchAlgorithmException unavailable) {
+                    throw new java.io.IOException("required SHA-256 is unavailable", unavailable);
+                }
+                StrictJson.require(originalRef.bytes() == expectedBytes.length && originalRef.sha256().equals(expectedSha256),
+                        "actual genesis original request reference differs from the reconstructed plan encoding");
+                var pin = same.capturePin(originalRef, org.xar.ck3.control.continuity.FreshContinuityGenesis.MAXIMUM_REQUEST_BYTES);
+                StrictJson.require(pin.reference().equals(originalRef),
+                        "captured genesis pin differs from the actual requested original reference");
+                same.verifyPin(pin);
+                var actualBytes = same.readPinned(pin, org.xar.ck3.control.continuity.FreshContinuityGenesis.MAXIMUM_REQUEST_BYTES);
+                StrictJson.require(java.util.Arrays.equals(actualBytes, expectedBytes),
+                        "actual pinned genesis original request bytes differ from the reconstructed plan encoding");
+                var expectedState = org.xar.ck3.control.continuity.FreshContinuityGenesis.initial(plan, originalRef);
+                StrictJson.require(org.xar.ck3.control.continuity.ContinuityJson.same(expectedState.toJson(), row),
+                        "actual fresh store state differs from the reconstructed genesis initial state");
+                return null;
+            });
+        }
+
         public synchronized DriverBootstrap.Adopted adoptConfirmedSaved(RootJavaSavedBootstrap.Admission actual,
                 G2Source source,int retainedFrames,Instant deadline)throws IOException {
             Objects.requireNonNull(actual);Objects.requireNonNull(source);Objects.requireNonNull(deadline);
