@@ -312,10 +312,12 @@ public final class RootApplicationAssembly {
                 var savedPin=same.capturePin(savedRef,org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES);
                 var sourcePin=same.capturePin(sourceRef,org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES);
                 same.verifyPin(savedPin);same.verifyPin(sourcePin);
-                var savedJson=StrictJson.parse(same.readPinned(savedPin,
-                        org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES));
-                var sourceJson=StrictJson.parse(same.readPinned(sourcePin,
-                        org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES));
+                var savedJson=org.xar.ck3.control.continuity.ContinuityJson.parseObject(same.readPinned(savedPin,
+                        org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES),
+                        org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES);
+                var sourceJson=org.xar.ck3.control.continuity.ContinuityJson.parseObject(same.readPinned(sourcePin,
+                        org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES),
+                        org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES);
                 StrictJson.require(org.xar.ck3.control.continuity.ContinuityJson.same(savedJson,saved.toJson())
                         &&org.xar.ck3.control.continuity.ContinuityJson.same(sourceJson,source.sourceHead().toJson()),
                         "retained saved pinned complete states differ from their qualified source");
