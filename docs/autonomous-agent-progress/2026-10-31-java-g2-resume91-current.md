@@ -8,6 +8,18 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 12:51 UTC：原进程已不存在，沿69日实际保存准备恢复
+
+共享模型规范入口已在 `383e59144dec2bd1474706a5c55d913df10f9e7c` 正式完成；本机 canonical checkout 为 `Z:/workspace/local-model-operations`。接手与规范更新时按该仓库规则同步并读取 AGENTS、usage 和 executor 配置，不将同步变成每次 POST 的串行前置，也不自动切换活跃业务配置。
+
+225的原reject命令经838→839实际ACK后因旧frame消费进入840UNKNOWN；226取得实际READ后仍缺中央freshFrameLoader接线。227中央wrapper修复后，原同dispatch命令于09:33:08.9112846Z真实842 SETTLED/APPLIED，未重发；随后RETAIN因oldcycle77与actual.before81不等被拒。账本截面为843/repair、pending=null、cycle13；已保存69日、已结算77日、最后观察81日分别保留，未归因的4日不计agent新增日。
+
+228四生产叶已在 `bddaf5f2` 原子正式，实际MB09:53:54.091955Z→09:54:05.092850Z通过，worker于09:54:33.654294Z START/PID329844。10:04的preloop只代表当时截面；12:46:59.357568Z具名Win32核实该worker、原Game71464和supervisor305760均已不存在，END文件缺失、双日志0B，实际退出时刻和原因未知，不能推称LOOP或延续旧HOLD。运行岗当前准备249 saved-attach恢复，尚无新Game/worker启动。
+
+12:51:19.147309Z→12:51:20.045715Z对788实际SAVE 70,608,826B、Driver 7,375,386B和ACK 270B作一次有限流式核验：字节数/SHA均等原件，SAVE与Driver的前后stat、FileID及mtime也等原保存身份。此证据确认69日保存材料仍完整，不替代新启动权限或新增SAVE。具名小回执为 `D:/ck3-state/resume91-runtime/RESUME249-CURRENT-READBACK.json` 和 `SAVED788-RESTORE-PHYSICAL249.json`；恢复后续见[运行记录](2026-10-31-runtime91-current.md)。
+
+性能窗口09:54:33.654294Z→12:46:59.357568Z端到端墙钟为10345.703274秒，新增SAVE_CONFIRMED日为0，秒/新增保存日为null；10秒/日目标尚未达到，69个历史保存日不作此窗口分母。既有226 JFR的完整30.2111814秒录制已离线解析，实际历史链已在read scope内；M1 immutable DATA缓存230和M4 Writer231已完成各自新首验，源码/软件验证/正式发表不授运行期提速或新保存信用。
+
 ## 2026-11-01 04:46 UTC：累计69日全保存，同一worker继续批82
 
 同一原版无模组 Game71464（出生 FILETIME134378397668266369）继续保留。788于04:46:32.491427600Z真实SAVE_CONFIRMED，java_ordinary_saved_cycle.state.completed_cycles=12、pending_receipt=null、date_raw53145984，checkpoint pair帧native538/public464。从本局原53144328累计69个游戏日已全部保存；下段743/61日、712/54日与更早保存截面保留各自当时事实。
