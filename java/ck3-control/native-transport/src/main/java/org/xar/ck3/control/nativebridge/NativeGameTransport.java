@@ -660,7 +660,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         capture.outcome=Objects.requireNonNull(outcome);
         if(outcome instanceof Unknown)return freshUnavailable(capture,"original fresh READ outcome is UNKNOWN; never replay");
         if(outcome instanceof RejectedBeforeDispatch||outcome instanceof AckReceived ack&&!ack.nativeOk()) {
-            pendingFreshSnapshot=null;return freshUnavailable(capture,"original fresh READ was rejected without an accepted independent state proof");
+            pendingFreshSnapshot=null;return freshUnavailable(capture,freshRejectionDiagnostic(outcome));
         }
         if(capture.invalid!=null)return freshUnavailable(capture,capture.invalid);
         if(capture.frame==null||capture.received==null)return freshUnavailable(capture,"positive ACK has no independently received matching original state packet");
@@ -670,6 +670,44 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             heldSnapshotInvalidated = false;
             return received;
         } catch(IOException|RuntimeException failure){return freshUnavailable(capture,reason(failure));}
+    }
+    /** Diagnostic only: the original outcome and every acceptance/pending predicate remain unchanged. */
+    private static String freshRejectionDiagnostic(DispatchOutcome actual) {
+        final int limit=512;
+        var message=new StringBuilder(limit);
+        boolean beforeWrite=actual instanceof RejectedBeforeDispatch;
+        message.append(beforeWrite?"original fresh READ rejected before write; request_id=":
+                "original fresh READ received negative Native ACK; request_id=");
+        appendFreshDiagnostic(message,actual.requestId(),Math.min(limit,message.length()+128));
+        message.append(beforeWrite?"; reason=":"; error=");
+        if(actual instanceof RejectedBeforeDispatch rejected) {
+            appendFreshDiagnostic(message,rejected.proof().reason(),limit);
+        } else if(actual instanceof AckReceived ack) {
+            try {
+                var decoded=NativeWire.decode(ack.originalPacket());
+                if(decoded instanceof NativeWire.CommandResult original && !original.nativeOk()
+                        && original.requestId().equals(ack.requestId())
+                        && Arrays.equals(original.payload().value(),ack.originalFrame().bytes())) {
+                    if(original.error().presence()==NativeWire.Presence.ABSENT)message.append("<absent>");
+                    else appendFreshDiagnostic(message,new String(original.error().token().orElseThrow().value(),
+                            java.nio.charset.StandardCharsets.UTF_8),limit);
+                } else message.append("<original ACK fields differ>");
+            } catch(IOException|RuntimeException malformed) {
+                appendFreshDiagnostic(message,"<original error unavailable: "+malformed.getClass().getSimpleName()+">",limit);
+            }
+        }
+        return message.toString();
+    }
+    private static void appendFreshDiagnostic(StringBuilder output,String value,int limit) {
+        for(int index=0;index<value.length() && output.length()<limit;) {
+            char next=value.charAt(index++);
+            if(Character.isHighSurrogate(next)) {
+                if(index<value.length() && Character.isLowSurrogate(value.charAt(index))) {
+                    if(output.length()+2>limit)break;
+                    output.append(next).append(value.charAt(index++));
+                } else output.append('\uFFFD');
+            } else output.append(Character.isLowSurrogate(next)?'\uFFFD':next);
+        }
     }
     private NativeFreshSnapshotPort.Unavailable freshUnavailable(FreshSnapshotCapture capture,String reason) {
         DispatchOutcome original=capture.outcome;
