@@ -2107,7 +2107,8 @@ class Producer:
 
 
 def verified_fixture_object_bindings(config_value: object, configured_outputs: list[str], *,
-                                     noncompiled_replay: object = None) -> FixtureObjectProof:
+                                     noncompiled_replay: object = None,
+                                     replay_source_root: Path | None = None) -> FixtureObjectProof:
     """Read-only replay of the original source/dependency/options and object proof."""
     config = parse_config(config_value)
     outputs = strings(configured_outputs)
@@ -2127,7 +2128,8 @@ def verified_fixture_object_bindings(config_value: object, configured_outputs: l
     incremental_ref = pin(producer.meta / "INCREMENTAL-RESULT.actual.json")
     incremental = read(Path(incremental_ref["path"]))
     plan_ref = checked(incremental["production_plan"])
-    selected, borrowed, _ = producer.plan(rows, existing_plan=plan_ref, noncompiled_replay=noncompiled_replay)
+    selected, borrowed, _ = producer.plan(rows, existing_plan=plan_ref, noncompiled_replay=noncompiled_replay,
+                                         replay_source_root=replay_source_root)
     inputs = producer.original_fixture_inputs(rows)
     require({row.output for row in selected} == set(inputs.compiled)
             and all(borrowed[name] == path for name, path in inputs.borrowed.items()),

@@ -746,6 +746,7 @@ def qualified_configured_fixture_links(
     snapshot_root: Path, build_root: Path, reply: Path,
     actual_inputs: dict[str, set[Path]],
     noncompiled_replay: object = None,
+    replay_source_root: Path | None = None,
 ) -> FixtureLinkSupportResult:
     """Validate configured-to-physical objects against original production and link evidence."""
     support = native_successor.obj(support_value)
@@ -818,7 +819,7 @@ def qualified_configured_fixture_links(
     native_successor.require(config.get("source_commit") == native_commit and config.get("machine_id") == machine,
                              "Fixture production config identity differs")
     proof = native_successor.verified_fixture_object_bindings(config, sorted(str(path) for path in all_paths),
-        noncompiled_replay=noncompiled_replay)
+        noncompiled_replay=noncompiled_replay, replay_source_root=replay_source_root)
     native_successor.require(objects == proof.objects, "Fixture objects differ from verified original production bindings")
     for field, expected in (("production_plan", proof.production_plan),
                             ("incremental_production_result", proof.incremental_production_result),
@@ -929,7 +930,7 @@ def qualified_fixture_link_support(
                 replay_source_root=replay_source_root)
         return qualified_configured_fixture_links(support, ref, machine, native_successor.string(value["source_commit"]),
             scope, indexed, production, targets, fixtures, model, snapshot_root, build_root, reply, actual_inputs,
-            noncompiled_replay)
+            noncompiled_replay, replay_source_root)
     native_successor.require(actual_inputs, "Actual external fixture objects need their exact source-bound link-support receipt")
     declared = native_successor.obj(support.get("fixtures", {}))
     file_api = native_successor.obj(support.get("fixture_file_api", {}))
