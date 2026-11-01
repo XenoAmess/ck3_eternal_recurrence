@@ -395,7 +395,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 if (sequence > actual.state().sequence())
                     throw new IOException("requested historical state is beyond the actual canonical head");
                 ContinuityState retained = capturedStateAt(actual, sequence);
-                if (!ContinuityJson.digest(retained.toJson()).equals(expectedDigest))
+                if (!LedgerFiles.sha(retained.canonicalBytes()).equals(expectedDigest))
                     throw new IOException("historical state differs from the exact expected canonical digest");
                 requireSameHead(actual, this.head());
                 return retained;
@@ -417,7 +417,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     retainedHeadHistoryVerified=true;
                 }
                 ContinuityState retained=capturedStateAt(actual,sequence);
-                StrictJson.require(ContinuityJson.digest(retained.toJson()).equals(expectedDigest),"historical canonical state digest differs");
+                StrictJson.require(LedgerFiles.sha(retained.canonicalBytes()).equals(expectedDigest),"historical canonical state digest differs");
                 requireSameHead(actual,this.head());
                 return retained;
             } catch (IOException|RuntimeException|Error failure) {
@@ -429,7 +429,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             requireWriter(layout.lock());StrictJson.safe(sequence,0);requireDigest(expectedDigest);
             try {
                 Head actual=this.head();ContinuityState retained=capturedStateAt(actual,sequence);
-                StrictJson.require(ContinuityJson.digest(retained.toJson()).equals(expectedDigest),"historical Head state digest differs from actual ancestry");
+                StrictJson.require(LedgerFiles.sha(retained.canonicalBytes()).equals(expectedDigest),"historical Head state digest differs from actual ancestry");
                 // The store cache can outlive this Session. Verify its canonical DATA once here,
                 // then reuse that proof only while this Session retains the same locked Head.
                 if(!retainedHeadHistoryVerified) {
