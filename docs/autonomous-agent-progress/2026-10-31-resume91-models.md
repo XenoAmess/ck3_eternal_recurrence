@@ -377,3 +377,21 @@ Root207 单 hunk 模型算法可用，但新 checked 与现有同名声明冲突
 M7 双callee203 共19个真实任务/19POST，12stop、7length、无reset。C5D0两次whole length整弃，改为实际未写方法域后 growthExit 的完整1503B方法可原样采用，enter/front/loop仍需owner局部修正，机械State/dispatcher由owner；C040完整类也有两处owner operand/snapshot修正。combined薄consumer完整执行源码保留，EOF LF包装单列；所有模型见证稿均弃，owner按ASM独立冻结小见证后才读新生产源码。首次三prod、两Test strict0，单次4P/5逻辑输入，无Native/Game信用。方法拆分跨过输出限制只带来一个完整可用域，不能推出位宽、控制流、FP也自动正确，亦不据原码字节数设阈值。
 
 M2 range410 的 Host两轮stop后R2完整类原样采用；独立Book R1 length8000整流弃且未读正文，R2虽完整stop却漏CPU/mask读取、LE字面写反及STEP顺序错，整稿0采用，owner仅将正文读取前冻结的7场oracle转写。首次软件7场42events/10STEP通过；414漏建empty-source目录的路径Werror是owner准备红，补目录未改源码。后继416 Host同样R2原样source-ready；Book length6500与完整stop稿均整弃，后者多count读、漏COPY后fresh buffer读、三次range与oddcenter/alias错，owner按先冻33events/6STEP转写，尚不在本条授后继运行绿。R2压缩示意newScene/newPending被回抄另记owner格式歧义，不掩盖独立语义错；不为已接管Book刷第三轮，不把Host采用转授整Book。
+
+
+### 2026-11-01 00:49:33 UTC：完整方法、上下文接线与实际失败归因
+
+- 冻结最近十分钟00:39:33–00:49:33：16次真实POST、16次END（9stop/6length/1reset），客户端峰5只维持1.564798秒；当刻源码在途1，随后一次服务读取running1/waiting0/KV约2.90%。事件扫描与服务读取不是原子快照，12–16持续目标仍未达到。证据为WINDOW211-20261101-004933及独立PEAK-DURATION；两个旧中断调用未知实际END仍保留原件并排除当前，不伪造结束，也不回改TAIL208或旧窗口。
+
+- M3 211按真实当层frame闭合8个API/leaf/trace、6个producer/active及14个pureforwarder，分别首次strict；有限独立5组20events/79mixedchecks通过，未执行上游全部caller图。leaf/binder两完整首稿原样，API任务中新方法正确而旧anchor仍错，owner只重定位同一方法仍记role partial，不把执行tokens未改说成整份edits原样成功。212区分callee4242354、CALLsite4232D44和tail-site424235B，首binder错常量源拒，唯一纠正原样采用；三新源仅首次strict，未补旧case。
+
+- 213/214真实347B/618B完整源先交模型推ABI/API与opaque边界；两个合同角色各两份完整提案均拒后owner收束纯声明，不把API视为模型采用。合同冻结后，213叶与consumer两个首实现可原样源审、首次三源strict0；214接线首稿原样，主方法首稿因重复重跑/虚构read8/header与LEA/分支等whole拒，纠正稿完整主流程可用但仍漏四处RMW旧读，owner四条窄补后首次三源strict0/.710995。R2的signed guard因selector已排invalid、仅正code可达，没有把不可达负数分支再报成新错误。合同设计失败、后续方法实现采用及owner修正分别记；源码/编译不授EH、完整机器ABI、Native或Game。
+
+- actual CALL 槽所有权沿现有指南核真实caller：M7 207 sole BBA6→337C200薄consumer在11份完整physical/68686B与同domain机械参考下，唯一R1 stop945tokens完整class原样源审，保preSP−8、sameMemory栈context、原fallback/Float32/budget及实际NR三项校验。随后M7整批首次3P/4个direct输入与正式bd2601e…分别由其owner记录，但BBA6接线和Displace未动态执行，不能把整批绿追授这条自然消费。M7 204–206多份薄adapter原样采用和多份独立witness拒后owner接管仍逐角色保留；不会把完整API/机械scaffold当测试可信的替代条件。
+
+- M2 424整manual首length12000整体丢弃，改成两个真正未写完整方法域，未拼任何截断。首次两方法完整但都拒；唯一各自纠正明确使用owner预冻原件oracle做Java编码，372仍拒后owner，133可部分保并做boxed断言与unused helper机械修。总5个语义任务/7次真实POST含两reset自动原请求重试；最终framework+372归owner，133归oracle编码partial。两新positive首次软件2scene/25explicit/55trace/4fullCALL/2STEP通过，保完整poison V/N/XMM、SP/RIP及postDF；不重复旧两场，也不授M1 knownSET或原生Game资格。
+
+- 211的参数文件before-parse红、208补丁noEOF header黏连和独立D的autoCRLF字节差异均归owner容器/工具成本，Java原字节及原失败分别保留；已有noEOF/EOL规则只补新证据，不重复扩成新算法结论。所有cached_tokens仍按服务实际null记录，不从TTFT、任务长度、stop或局部成功推后台缓存或普遍能力阈值。
+
+
+- 213后到EOL勘误单独追加：本尾中“两个首实现原样”指完整模型Java文本及执行tokens，不能理解为decoded LF bytes与Windows physical bytes相同。leaf为模型LF7206B→physical7371B/165CRLF，binder为LF2858B→physical2920B/62CRLF；规范LF后逐字相等、0Java token及EOF更改，但含owner EOL序列化维护。实际首strict使用physical SHA309a…/fa78…；原模型/候选/合同/Ready/本尾原冻结哈希保持，OWNER-EOL-ERRATUM213记录独立归因，不重HTTP或绿。
