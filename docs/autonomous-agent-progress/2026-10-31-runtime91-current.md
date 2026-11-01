@@ -1,5 +1,15 @@
 # runtime91 同局续行
 
+## 2026-11-01 06:31Z：219 实际暖结算到77日，220 自然窗口加载性能与诊断修复
+
+- worker219/PID212412 于 `06:16:38.618642Z` 实际 END4/2113.434880秒，`06:19:07.040185Z` 读到，延迟148.421543秒；不把漏采区间写成进程持续运行。终态821/repair_required/BATCH_INTERRUPTED84、next85、pendingnull，累计77 observed/settled、69 SAVE_CONFIRMED，新增8日尚未保存。
+- 83的运行期 qwen 实际输入2081833B，HTTP200/complete、TTFT98.453秒/total99.397秒，reported627813+146=627959/cachednull；120秒请求窗口实际容纳了本次超过60秒的响应，不倒推82的无headers超时原因。原gen14 ARM、resume和parent均实际Applied不重放；816父后态独立观测在原deadline内，后到append不冒过期观测。
+- 83于 `06:07:48.538745700Z` WALL_TIMEOUT后，同一worker实际进入既有original只读暖恢复；819于 `06:16:01.035281800Z` SETTLE/ELIGIBLE_ADVANCE、cycle13，完整SEM实际native562/public487/date53146176。随后同worker开始84，证明暖接续已执行；report至SETTLE约492.488秒，未授性能达标。84在EventPolicies.evaluate113捕获read-selection异常时，NativeWindowDiagnostic.plan66又因完整诊断的旧1MiB编码预算失败；原read-selection异常文字未成功保存，不能声称上游问题已解决。
+- 自然END后仅小hunk采用六生产叶：Writer同Head派生first-match元数据索引、Archive按protocol/full profile复用解析、WriterContracts固定64ASCII摘要检查、和平Life决策的专用紧凑scope，以及NativeWindowDiagnostic/EpisodeIncidentJournal的完整诊断有限读取编码。保所有原件实际读取、身份/SHA、Session/head与普通动作验证；小basis/read/policy元数据仍1MiB，incident扫描aggregate仍16MiB，不扩大公共CAS或全局JSON默认。
+- 紧凑schema为 `peaceful_clock_advance_admission/v1`，保完整当前snapshot/ROOT、原command/ID/SHA和全部planner visit核心；其他域annotation/evidence仍由Java保留与重验，明确这是任务投影。actual219冻结请求与真实33visit的软件probe完整wire2081833→62772B，新8项各通过；不称无损压缩、相同模型选择、实机新请求或已测提速。异常/未知/超限仍回完整旧route。
+- 六源于 `06:31:11.404351–06:31:19.191665Z` 实际增编exit0/7.787313秒：continuity-core1/application2/adapters-storage1/local-service2。worker220/PID312408 于 `06:31:25.389066Z` 使用原2GiB/noXms、模型120秒、Native60秒、batch1200000ms配置实启同一无mod Game71464，冻结时仍preloop；不预授恢复、保存或新日，不重Game/DLL/旧ARM/resume。
+- 10秒/新增确认保存日仍为最高P0目标，固定performance epoch `05:52:00Z`以来新增SAVE_CONFIRMED日0，seconds/day=null；等待、失败、恢复和本次安装空档全计墙钟。现有743→788基线568.1898202秒/保存日，不以增步长或少保存授达标。小原件冻结见 `D:/ck3-state/resume91-runtime/ordinary220-build/ACTUAL-219-END-WARM819.json`，六源采用各有ADOPTION220回执，MB/START原件独立保存；此段以后结果另记。
+
 ## 2026-11-01 05:44Z：219 同局进入83，冷恢复与实际 fresh READ 分阶段
 
 - 218/PID203832 于 `05:33:41.633473Z` 真实 preloop END1/140.727733 秒，`05:33:41.811856Z` 读到，延迟0.178383秒；已越过639的旧 SAVE 行覆盖门，canonical799/pendingnull/69日全部保存保持，没有新动作或 LOOP。
