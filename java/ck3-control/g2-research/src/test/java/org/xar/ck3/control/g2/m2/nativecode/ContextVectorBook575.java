@@ -1,4 +1,8 @@
 package org.xar.ck3.control.g2.m2.nativecode;
+import static org.xar.ck3.control.g2.m2.nativecode.ContextVectorData575.*;
+import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.Bits128;
+import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.VolatileBits;
+import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.NonvolatileBits;
 /** Owner source-frozen finite whole233 -> real130 -> real251 witness; mature563 literal reuse explicit. */
 public final class ContextVectorBook575 {
  private ContextVectorBook575() { }
@@ -165,5 +169,95 @@ public final class ContextVectorBook575 {
   ContextVectorHost575.verify(scene);
   return 1;
  }
- public static void main(String[] args) { System.out.println(verify()); }
+ /** Owner-derived finite growth expectation; old Scene supplies only unchanged declarative setup. */
+ public static Scene growthScene() {
+  final Scene base = constructorScene();
+  final long vec=D+0x18, P=0x8100000000040000L, OLD=0x8100000000050000L, NEW=OLD+8;
+  final long A1=D+0x30, A2=0x8100000000060000L, VT3=0x8100000000007100L;
+  final long ALLOC=0x7FFF777788889999L, RELEASE=0x7FFFAAAABBBBCCCCL, ALT=P+0x1000;
+  final long oldLow=0x0706050403020100L, oldHigh=0x0F0E0D0C0B0A0908L;
+  final long freshLow=0x0123456789ABCDEFL, freshHigh=0xFEDCBA9876543210L, freshTail=0x1122334455667788L;
+  final var initial = new java.util.ArrayList<Cell>(base.initialMemory());
+  initial.addAll(java.util.List.of(c(8,VT2+8,ALLOC),c(8,A2,VT3),c(8,VT3+0x10,RELEASE),
+      c128(OLD,oldLow,oldHigh),c(8,OLD+0x10,0x1716151413121110L)));
+
+  final ConstructorInvoke beforeVector=(ConstructorInvoke)base.steps().get(60);
+  final var prepared=java.util.List.of(w(8,vec,OLD),w(4,vec+8,0));
+  final var before=beforeVector.result().normalReturn().volatileBits();
+  final NonvolatileBits allocationN=n(1,0,vec,P,0x2005,0x2006,D,0x2008);
+  final VolatileBits allocationV=new VolatileBits(VT2,A1,24,8,ALLOC,before.r10Bits(),before.r11Bits(),
+      before.xmm0(),before.xmm1(),before.xmm2(),before.xmm3(),before.xmm4(),before.xmm5());
+  final var allocationFrame=vectorFrame(0x260E098,ALLOC,allocationV,allocationN,false);
+  final VolatileBits allocationPost=v(0x9000,NEW,0x9100000000000002L,0x9300000000000003L);
+  final var allocationResult=result(allocationPost,allocationN,M+0x260E09B,E-0x68,true);
+  final var allocationEffects=java.util.List.of(w(4,vec+0xC,1),w(8,vec+0x10,A2));
+
+  final NonvolatileBits releaseN=n(1,NEW,vec,P,0x2005,0x2006,D,0x2008);
+  final VolatileBits releaseV=new VolatileBits(VT3,A2,OLD,8,0,allocationPost.r10Bits(),allocationPost.r11Bits(),
+      new Bits128(oldLow,oldHigh),new Bits128(oldHigh,0),allocationPost.xmm2(),allocationPost.xmm3(),allocationPost.xmm4(),allocationPost.xmm5());
+  final var releaseFrame=vectorFrame(0x260E0E1,RELEASE,releaseV,releaseN,true);
+  final VolatileBits releasePost=v(0xA000,0xA100000000000001L,0xA200000000000002L,0xA300000000000003L);
+  final var releaseResult=result(releasePost,releaseN,M+0x260E0E4,E-0x68,false);
+  // The source pointer was captured before the callback; its bytes remain fresh reads.
+  final var releaseEffects=java.util.List.of(w(8,S+0x18,ALT),w128(P,freshLow,freshHigh),w(8,P+0x10,freshTail));
+
+  final VolatileBits lastV=new VolatileBits(vec,D+0x118,S+0x118,releasePost.r8Bits(),releasePost.r9Bits(),releasePost.r10Bits(),releasePost.r11Bits(),
+      new Bits128(freshLow,freshHigh),new Bits128(freshTail,0),releasePost.xmm2(),releasePost.xmm3(),releasePost.xmm4(),releasePost.xmm5());
+  final NonvolatileBits outerN=beforeVector.frame().call().nonvolatileBits();
+  final var lastFrame=ctorFrame(0x373ADBD,0x3727180,lastV,outerN,false);
+  final VolatileBits lastPost=v(0xB000,0xB100000000000001L,0xB200000000000002L,0xB300000000000003L);
+  final var lastResult=result(lastPost,outerN,M+0x373ADC2,E-0x38,true);
+
+  final var steps=new java.util.ArrayList<Step>(base.steps().subList(0,60));
+  steps.add(new ConstructorInvoke(beforeVector.frame(),beforeVector.result(),prepared));
+  steps.addAll(prepared);
+  // Physical parent CALL, then the actual251 prologue, source count and allocator lookup.
+  steps.addAll(java.util.List.of(w(8,E-0x40,M+0x373ADB3),w(8,E-0x48,S),w(8,E-0x38,D+0x118),
+      r(4,S+0x24,1),w(8,E-0x28,0x2004),r(8,S+0x18,P),w(4,vec+0xC,0),r(4,vec+8,0),
+      r(8,vec+0x10,A1),w(8,E-0x30,0),r(8,A1,VT2),r(8,VT2+8,ALLOC),w(8,E-0x70,M+0x260E09B)));
+  steps.add(new VectorInvoke(allocationFrame,allocationResult,allocationEffects));
+  steps.addAll(allocationEffects);
+  // One old-record copy. The wide store overlaps the later OLD+10h scalar read.
+  steps.addAll(java.util.List.of(r(4,vec+0xC,1),r(8,vec,OLD),new Budget(0x260E0B0,OLD),
+      r128(OLD,oldLow,oldHigh),w128(NEW,oldLow,oldHigh),r(8,OLD+0x10,oldHigh),w(8,NEW+0x10,oldHigh),
+      r(8,vec+0x10,A2),r(8,vec,OLD),r(8,A2,VT3),r(8,VT3+0x10,RELEASE),w(8,E-0x70,M+0x260E0E4)));
+  steps.add(new VectorInvoke(releaseFrame,releaseResult,releaseEffects));
+  steps.addAll(releaseEffects);
+  steps.addAll(java.util.List.of(w(8,vec,NEW),r(8,E-0x30,0),w(4,vec+8,1),w(4,vec+0xC,1),r(8,vec,NEW),
+      new Budget(0x260E100,P),r128(P,freshLow,freshHigh),w128(NEW,freshLow,freshHigh),
+      r(8,P+0x10,freshTail),w(8,NEW+0x10,freshTail),r(8,E-0x38,D+0x118),r(8,E-0x28,0x2004),
+      r(8,E-0x48,S),r(8,E-0x40,M+0x373ADB3),w(8,E-0x40,M+0x373ADC2)));
+  steps.add(new ConstructorInvoke(lastFrame,lastResult,java.util.List.of()));
+  steps.addAll(base.steps().subList(84,90));
+
+  final var finalMemory=new java.util.ArrayList<Cell>();
+  for(Cell cell:base.finalMemory()) {
+   long a=cell.addressBits();
+   if(a==vec || a==vec+0x10 || a==S+0x18 || (Long.compareUnsigned(a,P)>=0 && Long.compareUnsigned(a,P+0x20)<0)) continue;
+   finalMemory.add(cell);
+  }
+  finalMemory.addAll(java.util.List.of(c(8,vec,NEW),c(8,vec+0x10,A2),c(8,S+0x18,ALT),
+      c128(P,freshLow,freshHigh),c(8,P+0x10,freshTail),c(8,OLD,oldLow),c128(NEW,freshLow,freshHigh),c(8,NEW+0x10,freshTail),
+      c(8,A2,VT3),c(8,VT3+0x10,RELEASE),c(8,VT2+8,ALLOC),c(8,VT2+0x20,TARGET2),c(8,M+0x448D2B0,TARGET1),
+      c(8,E-0x70,M+0x260E0E4),c(8,E-0x40,M+0x373ADC2),c(8,E+8,D),
+      c(8,E-8,0x2003),c(8,E-0x10,0x2004),c(8,E-0x18,0x2007)));
+  final var expected=result(v(0xB000,D,0xB200000000000002L,0xB300000000000003L),n0(),RET,E+8,true);
+  return new Scene("CONSTRUCTOR_REAL_INIT_REAL_VECTOR_GROWTH_BOTH_LOOPS",base.entry(),base.directionFlagSet(),
+      java.util.List.copyOf(initial),java.util.List.copyOf(steps),expected,java.util.List.copyOf(finalMemory));
+ }
+ public static int verifyGrowth() {
+  Scene scene=growthScene();
+  long reads=scene.steps().stream().filter(Read.class::isInstance).count();
+  long writes=scene.steps().stream().filter(Write.class::isInstance).count();
+  long vectors=scene.steps().stream().filter(VectorInvoke.class::isInstance).count();
+  long constructors=scene.steps().stream().filter(ConstructorInvoke.class::isInstance).count();
+  long embedded=scene.steps().stream().filter(EmbeddedInvoke.class::isInstance).count();
+  long budgets=scene.steps().stream().filter(Budget.class::isInstance).count();
+  if(scene.steps().size()!=117 || reads!=41 || writes!=68 || vectors!=2 || constructors!=2 || embedded!=2 || budgets!=2)
+   throw new AssertionError("growth source trace shape");
+  ContextVectorHost575.verifyComplete(scene);
+  return 1;
+ }
+
+ public static void main(String[] args) { System.out.println(args.length==1 && args[0].equals("growth") ? verifyGrowth() : verify()); }
 }

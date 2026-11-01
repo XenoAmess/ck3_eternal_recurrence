@@ -11,11 +11,16 @@ import org.xar.ck3.control.g2.m2.nativecode.FullCopy437Api;
 import org.xar.ck3.control.g2.m2.nativecode.ContextConstructor543Api;
 import org.xar.ck3.control.g2.m2.nativecode.ContextConstructorWithKnownEmbeddedInit560;
 import org.xar.ck3.control.g2.m2.nativecode.ContextConstructorWithKnownEmbeddedVector574;
+import org.xar.ck3.control.g2.m2.nativecode.EmbeddedVector565Api;
 import org.xar.ck3.control.g2.m2.nativecode.ContextVectorData575;
 
 public final class ContextVectorHost575 {
 
-    public static void verify(ContextVectorData575.Scene scene) {
+    public static void verify(ContextVectorData575.Scene scene) { verify(scene, false); }
+
+    public static void verifyComplete(ContextVectorData575.Scene scene) { verify(scene, true); }
+
+    private static void verify(ContextVectorData575.Scene scene, boolean requireCompleteFinalMemory) {
         if (scene.steps().size() > 512) {
             throw new IllegalStateException("Step limit exceeded");
         }
@@ -42,6 +47,13 @@ public final class ContextVectorHost575 {
             } else if (step instanceof ContextVectorData575.EmbeddedInvoke) {
                 ContextVectorData575.EmbeddedInvoke inv = (ContextVectorData575.EmbeddedInvoke) step;
                 validateFrame(inv.frame());
+                validateResult(inv.result());
+                for (ContextVectorData575.Write w : inv.effects()) {
+                    validateWrite(w);
+                }
+            } else if (step instanceof ContextVectorData575.VectorInvoke) {
+                ContextVectorData575.VectorInvoke inv = (ContextVectorData575.VectorInvoke) step;
+                inv.frame().checkNormalReturn(inv.result());
                 validateResult(inv.result());
                 for (ContextVectorData575.Write w : inv.effects()) {
                     validateWrite(w);
@@ -243,13 +255,43 @@ public final class ContextVectorHost575 {
         ContextConstructorWithKnownEmbeddedVector574.VectorCalls vectorCalls = new ContextConstructorWithKnownEmbeddedVector574.VectorCalls() {
             @Override
             public FullCopy437Api.CallResult invoke(FullCopy437Api.Memory suppliedMemory, GovernmentCrtBoundary185Api.LoopBudget suppliedBudget, EmbeddedVector565Api.CallFrame frame) {
+                // Reject foreign memory/budget objects BEFORE consuming events or applying effects.
                 if (suppliedMemory != memory) {
                     throw new IllegalStateException("Memory identity mismatch");
                 }
                 if (suppliedBudget != budget) {
                     throw new IllegalStateException("Budget identity mismatch");
                 }
-                throw new UnsupportedOperationException("Allocator/release opaque calls not expected in this scene");
+
+                // The two real indirect vector allocator/release call sites.
+                if (cursor[0] >= scene.steps().size()) {
+                    throw new IllegalStateException("Unexpected invoke: steps exhausted");
+                }
+                ContextVectorData575.Step step = scene.steps().get(cursor[0]++);
+                if (!(step instanceof ContextVectorData575.VectorInvoke)) {
+                    throw new IllegalStateException("Expected VectorInvoke step at cursor " + (cursor[0]-1));
+                }
+                ContextVectorData575.VectorInvoke inv = (ContextVectorData575.VectorInvoke) step;
+                if (!inv.frame().equals(frame)) {
+                    throw new IllegalStateException("Frame mismatch at cursor " + (cursor[0]-1));
+                }
+                inv.frame().checkNormalReturn(inv.result());
+                for (ContextVectorData575.Write effect : inv.effects()) {
+                    ContextVectorData575.Write w = effect;
+                    validateWrite(w);
+                    if (w.widthBytes() == 1) {
+                        memory.writeByte(w.addressBits(), (int) w.lowBits());
+                    } else if (w.widthBytes() == 2) {
+                        memory.writeWord(w.addressBits(), (int) w.lowBits());
+                    } else if (w.widthBytes() == 4) {
+                        memory.writeDword(w.addressBits(), (int) w.lowBits());
+                    } else if (w.widthBytes() == 8) {
+                        memory.writeQword(w.addressBits(), w.lowBits());
+                    } else if (w.widthBytes() == 16) {
+                        memory.write128(w.addressBits(), new Bits128(w.lowBits(), w.highBits()));
+                    }
+                }
+                return inv.result();
             }
         };
 
@@ -264,6 +306,13 @@ public final class ContextVectorHost575 {
         // Check Final Memory Cells (Unlogged peek)
         for (ContextVectorData575.Cell cell : scene.finalMemory()) {
             verifyCell(ram, cell);
+        }
+        if (requireCompleteFinalMemory) {
+            java.util.Set<Long> covered = new java.util.HashSet<>();
+            for (ContextVectorData575.Cell cell : scene.finalMemory()) {
+                for (int i = 0; i < cell.widthBytes(); i++) covered.add(cell.addressBits() + i);
+            }
+            if (!covered.equals(ram.keySet())) throw new IllegalStateException("Final cells do not cover exactly the defined RAM");
         }
 
         // Check Step Exhaustion

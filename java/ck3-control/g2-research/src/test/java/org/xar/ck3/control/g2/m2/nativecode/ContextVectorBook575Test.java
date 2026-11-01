@@ -8,4 +8,9 @@ final class ContextVectorBook575Test {
     void wholeContextEmbeddedAndVector() {
         assertEquals(1, ContextVectorBook575.verify());
     }
+
+    @Test
+    void growthCopiesBothVectorLoops() {
+        assertEquals(1, ContextVectorBook575.verifyGrowth());
+    }
 }

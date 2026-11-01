@@ -3,16 +3,18 @@ import java.util.List;
 import org.xar.ck3.research.m5.GovernmentCrtBoundary185Api;
 import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.Bits128;
 import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.VolatileBits;
-import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.NonvolatileBits;
+ import org.xar.ck3.research.m5.GovernmentPrimaryTail155Api.NonvolatileBits;
+ import org.xar.ck3.control.g2.m2.nativecode.EmbeddedVector565Api;
 /** Pure declared input values and protocol only; no expected Scene. */
 public final class ContextVectorData575 {
  private ContextVectorData575() { }
  public record Cell(int widthBytes,long addressBits,long lowBits,long highBits) { }
- public sealed interface Step permits Read,Write,ConstructorInvoke,EmbeddedInvoke,Budget { }
+ public sealed interface Step permits Read,Write,ConstructorInvoke,EmbeddedInvoke,VectorInvoke,Budget { }
  public record Read(int widthBytes,long addressBits,long lowBits,long highBits) implements Step { }
  public record Write(int widthBytes,long addressBits,long lowBits,long highBits) implements Step { }
  public record ConstructorInvoke(ContextConstructor543Api.CallFrame frame,FullCopy437Api.CallResult result,List<Write> effects) implements Step { }
  public record EmbeddedInvoke(EmbeddedInit550Api.CallFrame frame,FullCopy437Api.CallResult result,List<Write> effects) implements Step { }
+ public record VectorInvoke(EmbeddedVector565Api.CallFrame frame,FullCopy437Api.CallResult result,List<Write> effects) implements Step { }
  public record Budget(long headerRva,long guardAddressBits) implements Step { }
  public record Scene(String name,GovernmentCrtBoundary185Api.Entry entry,boolean directionFlagSet,List<Cell> initialMemory,List<Step> steps,FullCopy437Api.CallResult expectedResult,List<Cell> finalMemory) { }
  public static final long M=0x3300000000L,E=0x810000000000A008L,D=0x8100000000020000L,S=0x8100000000030000L,VT2=0x8100000000007000L,TARGET1=0x7FFF111122223333L,TARGET2=0x7FFF444455556666L,RET=0xAABBCCDD11223344L;
@@ -28,6 +30,9 @@ public final class ContextVectorData575 {
  public static Read r128(long address,long low,long high) { return new Read(16,address,low,high); }
  public static Write w128(long address,long low,long high) { return new Write(16,address,low,high); }
  public static ContextConstructor543Api.CallFrame ctorFrame(long site,long target,VolatileBits v,NonvolatileBits n,boolean df) { long sp=E-0x38;return new ContextConstructor543Api.CallFrame(new GovernmentCrtBoundary185Api.Call(site,GovernmentCrtBoundary185Api.TargetKind.DIRECT_RVA,target,sp,v,n),new GovernmentCrtBoundary185Api.Entry(M,sp-8,v,n),df,5,M+site+5); }
+ public static ContextConstructor543Api.CallFrame ctorFrameAt(long site,long target,long callRsp,long imageBase,VolatileBits v,NonvolatileBits n,boolean df) { return new ContextConstructor543Api.CallFrame(new GovernmentCrtBoundary185Api.Call(site,GovernmentCrtBoundary185Api.TargetKind.DIRECT_RVA,target,callRsp,v,n),new GovernmentCrtBoundary185Api.Entry(imageBase,callRsp-8,v,n),df,5,imageBase+site+5); }
  public static EmbeddedInit550Api.CallFrame embeddedFrame(long site,long target,VolatileBits v,NonvolatileBits n,boolean df) { long sp=E-0x68;return new EmbeddedInit550Api.CallFrame(new GovernmentCrtBoundary185Api.Call(site,GovernmentCrtBoundary185Api.TargetKind.INDIRECT_ABSOLUTE,target,sp,v,n),new GovernmentCrtBoundary185Api.Entry(M,sp-8,v,n),df,3,M+site+3); }
+ public static EmbeddedVector565Api.CallFrame vectorFrame(long site,long target,VolatileBits v,NonvolatileBits n,boolean df) { long sp=E-0x68;return new EmbeddedVector565Api.CallFrame(new GovernmentCrtBoundary185Api.Call(site,GovernmentCrtBoundary185Api.TargetKind.INDIRECT_ABSOLUTE,target,sp,v,n),new GovernmentCrtBoundary185Api.Entry(M,sp-8,v,n),df,3,M+site+3); }
+ public static EmbeddedVector565Api.CallFrame vectorFrameAt(long site,long target,long callRsp,long imageBase,VolatileBits v,NonvolatileBits n,boolean df) { return new EmbeddedVector565Api.CallFrame(new GovernmentCrtBoundary185Api.Call(site,GovernmentCrtBoundary185Api.TargetKind.INDIRECT_ABSOLUTE,target,callRsp,v,n),new GovernmentCrtBoundary185Api.Entry(imageBase,callRsp-8,v,n),df,3,imageBase+site+3); }
  public static FullCopy437Api.CallResult result(VolatileBits v,NonvolatileBits n,long rip,long sp,boolean df) { return new FullCopy437Api.CallResult(new GovernmentCrtBoundary185Api.NormalReturn(v,rip,sp,n),df); }
 }
