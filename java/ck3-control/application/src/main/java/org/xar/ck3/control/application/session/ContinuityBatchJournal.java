@@ -2345,10 +2345,6 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     for(var row:details.get("read_rows")) {
                         var readReference=ExactRef.fromJson(row.get("read"));
                         var read=originals.loadRead(readReference);
-                        if(existingOpening && opening.originals().contains(readReference)
-                                && read.request().before().equals(opening.existingObserved().orElseThrow())
-                                && read.request().source().equals(source) && read.request().sessionId().equals(owner.sessionId()))
-                            existingOpeningRead=true;
                         for(var guard:java.util.List.of(read.before().binding(),read.after().binding())) {
                             var currentTransport=new org.xar.ck3.control.application.action.NativeObservationPort.TransportSession(
                                     guard.source().machineId(),guard.observed().game(),guard.connectionGeneration(),guard.sessionId());
@@ -2374,6 +2370,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 } else if(edge.kind().equals(WriterContracts.DRIVER_ACTION_HISTORY_KIND)) {
                     retained=retainCapturedAction(same,edge,retained,actions,originals);
                 } else if(edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
+                    if(existingOpening) {
+                        var imported=org.xar.ck3.control.continuity.writer.DomainBodies.BodyRef.fromJson(details.get("domain_body"));
+                        if(imported.slot()==org.xar.ck3.control.continuity.writer.DomainBodies.Slot.OPENING_GATE
+                                &&imported.payload().equals(openingRef)) {
+                            requireExistingOpeningImport(same,edge,opening,openingRef,owner,originals);
+                            existingOpeningRead=true;
+                        }
+                    }
                     // Domain DATA does not submit another gameplay action.
                 } else if(edge.kind().equals(WriterContracts.ACTION_LIFECYCLE_KIND)) {
                     // The canonical action journal owns these transitions. Current receipts above
@@ -2602,7 +2606,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 }
             }
             if(existingOpening) {
-                StrictJson.require(existingOpeningRead,"existing-focus completion requires its actual canonical READ original");
+                StrictJson.require(existingOpeningRead,"existing-focus completion requires its actual canonical Opening import and READ originals");
                 requireSettledObservedContinuation(opening.observed(),opening.existingObserved().orElseThrow());
                 requireSettledObservedContinuation(opening.existingObserved().orElseThrow(),latestObserved);
             }
@@ -2677,6 +2681,70 @@ public final class ContinuityBatchJournal implements BatchJournal {
             issuedSettledSameGameOpenBatch=checkedHistory.unfinishedReadOnlyBatch();
             return data;
         });
+    }
+
+    /** Replays the existing-focus import's own immutable query provenance; no Driver READ-row membership is implied. */
+    private static void requireExistingOpeningImport(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge,
+            org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.Document opening,
+            ExactRef openingRef, SessionIdentity owner,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) throws IOException {
+        var slot=org.xar.ck3.control.continuity.writer.DomainBodies.Slot.OPENING_GATE;
+        var recorded=same.requireHistoricalImport(slot,edge.sequence(),ContinuityJson.digest(edge.after().toJson()));
+        StrictJson.require(recorded.body().payload().equals(openingRef)
+                &&recorded.body().equals(org.xar.ck3.control.continuity.writer.DomainBodies.reference(edge.after(),slot).orElseThrow()),
+                "existing-focus import differs from its exact canonical body");
+        var input=StrictJson.object(StrictJson.parse(recorded.request().producerInput()),java.util.Set.of("schema","kind","previous","original"));
+        StrictJson.require("xar.java-opening-transitions/v5".equals(StrictJson.text(input.get("schema")))
+                &&"EXISTING".equals(StrictJson.text(input.get("kind"))),"existing-focus completion requires its actual typed producer input");
+        var previousRef=ExactRef.fromJson(input.get("previous"));var inputRef=ExactRef.fromJson(input.get("original"));
+        StrictJson.require(recorded.request().evidence().equals(java.util.List.of(previousRef,inputRef))
+                &&org.xar.ck3.control.continuity.writer.DomainBodies.reference(recorded.predecessor().state(),slot)
+                    .filter(body->body.payload().equals(previousRef)).isPresent(),"existing-focus import changed its actual previous body/evidence");
+        var previous=org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.decode(originals.loadMaterial(previousRef).bytes());
+        var payload=StrictJson.object(StrictJson.parse(originals.loadMaterial(inputRef).bytes()),java.util.Set.of("request","semantic","query"));
+        var requestRef=ExactRef.fromJson(payload.get("request"));var queryRef=ExactRef.fromJson(payload.get("query"));
+        var request=org.xar.ck3.control.application.planning.PlanningWire.decodeRequest(originals.loadFullMaterial(requestRef).bytes());
+        var rawSemantic=StrictJson.object(payload.get("semantic"),java.util.Set.of("frame","semantic","native","stamp","driver","observed_at"));
+        var semantic=new SemanticEvidence(org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(rawSemantic.get("frame")),
+                ExactRef.fromJson(rawSemantic.get("semantic")),ExactRef.fromJson(rawSemantic.get("native")),
+                ExactRef.fromJson(rawSemantic.get("stamp")),ExactRef.fromJson(rawSemantic.get("driver")),
+                Instant.parse(StrictJson.utc(StrictJson.text(rawSemantic.get("observed_at")))));
+        StrictJson.require(previous.actionReceipt().isEmpty()&&previous.preparedCommand().isEmpty()&&previous.checkpoint().isEmpty()
+                &&previous.existingObserved().isPresent()
+                &&previous.stage()==org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage.AWAIT_SUBMIT
+                &&!previous.existingObserved().orElseThrow().frame().snapshotId().equals(request.before().frame().snapshotId())
+                &&request.before().equals(opening.existingObserved().orElseThrow())&&semantic.frame().equals(request.before())
+                &&request.source().equals(opening.source())&&request.sessionId().equals(owner.sessionId())
+                &&request.before().machineId().equals(owner.machineId())&&request.before().game().equals(owner.game()),
+                "existing-focus completion changed its following actual request/SEM/owner");
+        org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.requireSameEpisode(previous,request.before(),request.source());
+        var query=originals.loadRead(queryRef);
+        StrictJson.require(query.contractId().equals("governance.planning.private-query-player-lifestyle-formal-v1")
+                &&query.request().origin() instanceof CommandOrigin.Gameplay
+                &&query.request().operation().value().equals("private-query-player-lifestyle-formal-v1")
+                &&query.request().arguments().members().isEmpty()&&query.request().before().equals(request.before())
+                &&query.request().source().equals(request.source())&&query.request().sessionId().equals(request.sessionId())
+                &&query.before().binding().observed().equals(request.before())&&query.after().binding().observed().equals(request.before())
+                &&query.before().binding().nativeEvidence().equals(semantic.originalNativePacket())
+                &&query.after().binding().nativeEvidence().equals(semantic.originalNativePacket()),
+                "existing-focus formal READ changed its actual contract/request/source/SEM frame");
+        query.original().custody().orElseThrow(()->new IOException("existing-focus READ lacks original custody")).verify(query);
+        var result=DriverJson.object(query.original().originalResultToken().orElseThrow(
+                ()->new IOException("existing-focus READ lacks its exact result token")).bytes(),DriverJson.MAX_NATIVE_BYTES);
+        StrictJson.require(org.xar.ck3.control.application.planning.governance.GovernancePolicies.existingFocus(result),
+                "existing-focus READ has no actual qualified focus/progress");
+        originals.loadFullMaterial(semantic.semantic());originals.loadFullMaterial(semantic.driverStamp());
+        originals.loadFullMaterial(semantic.originalDriver());originals.loadNativeFrame(semantic.originalNativePacket());
+        settledSemanticTransport(semantic,owner,originals);
+        var refs=new java.util.ArrayList<>(previous.originals());refs.add(inputRef);refs.addAll(semantic.references());refs.add(requestRef);refs.add(queryRef);
+        var expected=new org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.Document(previous.observed(),previous.source(),
+                previous.sessionId(),org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage.COMPLETE,
+                Optional.empty(),Optional.empty(),refs.stream().distinct().toList(),Optional.empty(),Optional.of(request.before()));
+        StrictJson.require(java.util.Arrays.equals(org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.encode(expected),
+                org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.encode(opening))
+                &&java.util.Arrays.equals(originals.loadMaterial(openingRef).bytes(),org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.encode(expected)),
+                "existing-focus body differs from its exact recorded producer result");
     }
 
     /** Closes only a verified canonical no-write original through the existing all-settled recovery transition. */
