@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-02 用户自玩边界：Main259 已停止，后继仅离线研究
+
+- 用户最新明确自己游玩 CK3、不要再碰 CK3，覆盖此前持续自动游玩授权。Main259 原自动 Java PID56828／birth134380329048836094 在 2026-11-01T19:05:00.049266Z 核对实际 image/birth 后，仅该 Java 于 19:05:00.255601Z 被终止；Wait signaled／exit130。Game33404 与 keeper69836 未因停止操作被查询、暂停、关闭或重启。自有 OS 监视 session69158 已 Ctrl-C／exit1，不再续监视或启动下一 worker；本段未查询或操作用户 OBS。
+- 仅读已有小 stdout/START/END：Main259 18:55:04.882106Z START，18:59:41.6555439Z 真实 LOOP，启动 276.773437 秒；沿原 SavedEntry 接续到实际 head24／next1，不是新 SavedEntry 或新 SAVE。强制停止的 runner END 为 19:05:00.262925Z／exit130／595.380815 秒，不能写成业务自然失败或清洁收束。既有模型 HTTP 在 19:04:38.0314642Z 开始，HTTP200、11.007 秒、TTFT6.747 秒、61,140B 输入、17,557+144=17,701 tokens、cached=null；随后 ActionSelected 仅为规划结果。这些小回执不足以证明后续 Native 提交或世界结果，保 UNKNOWN，不为收尾补查询或 SAVE。
+- 259 后到单次 JVM 栈诊断已因既有 stdout 出现 LOOP 而 SKIPPED，未启动 jcmd。旧 256 栈与 258/259 的源码、编译、装载及运行分别保留；Main259 MB 为 18:51:05.460796Z→18:51:13.805879Z／0／8.345091 秒。
+- D 自有稳定启动器新增 USER-OFFLINE-ONLY.json 存在即拒的执行门，无绕过参数；CLI execute 与直接 execute 的 trap 验证均在 spec／进程模块前拒绝，现有 bundle 的纯 JSON/argv dry-run 通过，0 Java/Native/Game 进程或查询。原启动器逐字节 inverse 对回历史 18c49162…44654，不改旧执行材料。离线门只覆盖此启动器，不冒充系统级权限隔离；新明确用户授权前不移除。
+- 05:52Z 性能窗口到停止回执累计 47580.255601 秒，新增 SAVE_CONFIRMED 游戏日仍为0，秒/日为 null；历史69日／788保留，不能作本窗口分母。停止后仅源码研究、审阅、临时目录内软件验证与纯 Git；不启动自动游玩、Native/Game 查询或动作、恢复、录像/界面和部署。
+
+
 ## 2026-11-01 18:12Z：258同局Saved恢复首次进入LOOP，随后Opening规划输入类型拒绝
 
 - 257加载Root固定Saved Driver编码与两个canonical业务来源消费者，三源MB exit0/6.234652秒；worker95340于17:31:05.983973Z启动，同Game33404实际附着并取得LoadedCustody。Prisoner归属、Saved Army及remaining采用链已越过，随后被普通DriverCapabilityStateProducer.initializeNewEpisode:302的fresh-empty合同拒绝；17:33:48.786340400Z BUSINESS_FAILED、48.790135300Z endpoint RELEASED，17:33:49.213637Z END1/163.229660秒，没有LOOP。冻结后head为sequence20/status=running、cycles12/date_raw53145984，不能继续沿用旧seq13作为当前头；canonical业务source与实际执行source分列，未放宽Owner或重置领域body。
