@@ -33,6 +33,14 @@ public final class KnownPendingInteractionEffects implements NativeEffectRegistr
                 &&custody.permissionMode()==ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE,
                 "actual canonical complete prisoner collection contract zero required");
     }
+    /** Exact factual recheck against Root's current complete Driver; it does not grant dispatch or source authority. */
+    public static void requireCurrent(org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete actual, ActionCommand command) {
+        Objects.requireNonNull(actual);
+        Objects.requireNonNull(command);
+        Prepared prepared = prepared(command);
+        RootInteractionContextProjection.requireExact(actual, prepared.context());
+    }
+
     public List<NativeEffectRegistry.Binding> bindings(ExactRef actualSource) {
         need(actualSource.bytes()>0,"actual pending effect producer source required");
         return java.util.Arrays.stream(Action.values()).map(action->new NativeEffectRegistry.Binding(

@@ -27,6 +27,8 @@ import org.xar.ck3.control.nativebridge.capabilities.army.ArmyOrdinaryActionServ
 import org.xar.ck3.control.nativebridge.capabilities.army.ArmyOrdinaryPlannerCalls;
 import org.xar.ck3.control.nativebridge.capabilities.army.ArmyTypes;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PublicMethod;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionEffects;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionPostcondition;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson.Text;
 import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
@@ -153,6 +155,14 @@ public final class RootRuntimeCommands implements MilitaryPlanningDecision.Comma
                             "Root strong preparation cannot replace an existing original selection or its canonical command");
                     ActionCommand actual = held.command();
                     context.collector().currentPlanning(same, request, request.deadline(), (original, lease) -> {
+                        if (RootPendingInteractionEffects.OPERATIONS.contains(actual.operation())
+                                && KnownPendingInteractionPostcondition.SCHEMA.equals(actual.expected().observerSchema())
+                                && actual.arguments().get("known_pending_plan") instanceof Obj) {
+                            StrictJson.require(original == request && lease.executableSteps().contains(actual.operation())
+                                    && lease.bridgeCapabilities().contains("game.command." + actual.operation().value()),
+                                    "retained known pending proposal lost its current native preparation binding");
+                            KnownPendingInteractionEffects.requireCurrent(lease.frame(), actual);
+                        }
                         var composite = context.bindings().composites().find(actual.operation());
                         if (composite.isPresent()) composite.orElseThrow().validate(actual);
                         else context.bindings().prepare(same, actual, actual.actionId());
@@ -164,6 +174,19 @@ public final class RootRuntimeCommands implements MilitaryPlanningDecision.Comma
                 if (LifeAdvanceComposite.accepts(proposed.operation().value())) {
                     actual = context.collector().currentPlanning(same, request, request.deadline(),
                             (original, lease) -> life.prepareExistingProposal(request, proposed));
+                } else if (RootPendingInteractionEffects.OPERATIONS.contains(proposed.operation())
+                        && proposed.expected().observerSchema().equals(KnownPendingInteractionPostcondition.SCHEMA)
+                        && proposed.arguments().get("known_pending_plan") instanceof Obj) {
+                    actual = context.collector().currentPlanning(same, request, request.deadline(), (original, lease) -> {
+                        StrictJson.require(original == request, "Root command preparation replaced the original collector request");
+                        StrictJson.require(lease.executableSteps().contains(proposed.operation()),
+                                "pending interaction operation is not in current executable steps");
+                        StrictJson.require(request.observations().bridgeCapabilities().contains("game.command." + proposed.operation().value()),
+                                "pending interaction capability is not in current bridge capabilities");
+                        KnownPendingInteractionEffects.requireCurrent(lease.frame(), proposed);
+                        context.bindings().prepare(same, proposed, proposed.actionId());
+                        return proposed;
+                    });
                 } else {
                     actual = dispatch(request, proposed.operation(), proposed.arguments(), proposed.arguments(), proposed.actionId(), Optional.empty());
                 }
