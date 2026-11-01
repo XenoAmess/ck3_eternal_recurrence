@@ -79,13 +79,13 @@ public final class SwaySelectedFinish {
             return new ExistingStop(originalId,originals.receiptReferenceOf(receipt));
         }
         var refs=new ArrayList<ExactRef>();var targetResult=read(session,definitions.target(identity.targetCharacterId()),current,arguments(identity.targetCharacterId(),Optional.empty()));
-        if(!(targetResult instanceof PlanningReadResult.Known<SwayNativeWire.TargetRead> target))return retained(Reason.CURRENT_SOURCE_UNAVAILABLE,"actual current target quote unavailable",refs);
+        if(!(targetResult instanceof PlanningReadResult.Known<SwayNativeWire.TargetRead> target))return sourceUnavailable(targetResult,"actual current target quote unavailable",refs);
         refs.add(originals.readReferenceOf(target.receipt()));
         var completionResult=read(session,definitions.plane(SwayObservationReads.Kind.COMPLETION,identity),current,arguments(identity.targetCharacterId(),Optional.of(identity.schemeInstanceId())));
-        if(!(completionResult instanceof PlanningReadResult.Known<SwayObservationReads.Plane> completion))return retained(Reason.CURRENT_SOURCE_UNAVAILABLE,"actual original full-instance completion read unavailable",refs);
+        if(!(completionResult instanceof PlanningReadResult.Known<SwayObservationReads.Plane> completion))return sourceUnavailable(completionResult,"actual original full-instance completion read unavailable",refs);
         refs.add(originals.readReferenceOf(completion.receipt()));
         var opinionResult=read(session,definitions.plane(SwayObservationReads.Kind.OPINION,identity),current,arguments(identity.targetCharacterId(),Optional.empty()));
-        if(!(opinionResult instanceof PlanningReadResult.Known<SwayObservationReads.Plane> opinion))return retained(Reason.CURRENT_SOURCE_UNAVAILABLE,"actual independent named benefit read unavailable",refs);
+        if(!(opinionResult instanceof PlanningReadResult.Known<SwayObservationReads.Plane> opinion))return sourceUnavailable(opinionResult,"actual independent named benefit read unavailable",refs);
         refs.add(originals.readReferenceOf(opinion.receipt()));
         for(var original:List.of(target.receipt(),completion.receipt(),opinion.receipt())) {
             NativeRecordedEvidenceVerifier.requireRead(original,originals);
@@ -108,6 +108,18 @@ public final class SwaySelectedFinish {
         var command=new ActionCommand(actionId,current.before(),current.source(),current.sessionId(),new OperationKey(SwayNativeWire.STOP),
                 OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(row)),"selected Sway Finish arguments"),expected,claims,current.deadline());
         return new NewStop(command,refs);
+    }
+    static SwaySelectedFinish.Retained sourceUnavailable(PlanningReadResult<?> actual, String legacyDetail, List<ExactRef> refs) {
+        String detail = legacyDetail;
+        if (actual instanceof PlanningReadResult.Unavailable<?> unavailable) {
+            String reason = unavailable.reason();
+            if (reason.codePointCount(0, reason.length()) > 2048) {
+                int end = reason.offsetByCodePoints(0, 2048);
+                reason = reason.substring(0, end) + "...";
+            }
+            detail = legacyDetail + ": " + reason;
+        }
+        return new SwaySelectedFinish.Retained(Reason.CURRENT_SOURCE_UNAVAILABLE, detail, refs);
     }
     private static Retained retained(Reason reason,String detail,List<ExactRef> refs){return new Retained(reason,detail,refs);}
     private <T> PlanningReadResult<T> read(ContinuityStorePort.Session session,ReadContract<T> contract,SwayActionLifecycle.View current,OpportunityJson.Obj arguments) {
