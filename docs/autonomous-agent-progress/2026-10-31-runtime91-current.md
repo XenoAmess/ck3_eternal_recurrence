@@ -1,5 +1,17 @@
 # runtime91 同局续行
 
+## 2026-11-02 272原父动作已应用，周期仍待结算与保存
+
+本段运行事实截止 `2026-11-01T22:26:25.261883Z`，依据 Runtime 于22:31封存的九份具名副本；此前 head47/49 UNKNOWN 截面完整保留，后到结果不回填旧段。Runtime 继续独占实机，原ARM/resume未重放，没有请求新Game launch/stop，同一 Game77132／birth `134380410301009189` 保留。
+
+Main272 worker96352 于 `22:25:59.363660Z` START，`22:26:25.261883Z` END1／25.898230秒，未LOOP。运行岗记录该轮使用完整 Root physical Status 回调、Clock REV02及其余三App与Journal272的实际缓存；正式源码、编译和运行回执分开。50真实成为 `COMPOSITE_SETTLED/APPLIED`，原父回执8932B／SHA `f973587f41a430027b2c7999e3da46eba0b16b53743a9a93fc5fcec68e91e77a`。其独立fresh snapshot于 `22:26:14.442524300Z` 确认 native28/public10/date53146176，completion/gameplay/advance/checkpoint四项均true；这是原动作的后到确认，不是又执行一次ARM/resume。
+
+运行岗冻结事实记51为Driver action history、52为周期RETAIN。head52为repair_required，周期pending仍指向原50父回执，completed_cycles为0、周期head尚为null；因此父APPLIED不等于普通周期SETTLE，也不等于确认保存。随后 `completeCycle→ready.available` 因实际configuration缺席拒绝，原异常为 `actual configuration must be an object`。原始失败和待处理周期完整保留，273在本冻结截止仅为后继源码准备，不在本段追授恢复或保存结果。
+
+从Runtime基线53145984到53146176仍为8日observed，新增SAVE_CONFIRMED日0。主性能epoch `20:50:46Z` 至本次END的完整窗口为5739.261883秒，等待、冷启动、失败与恢复均计入；秒/新增确认保存日为null，不用历史69日作分母，暂定10秒/已保存游戏日目标尚未达到。文档只消费 `current-resume268/runtime-doc272/FACTS.json` 所列冻结副本，未读取其来源的live Game、mutable账本、Driver或Save路径，没有新增查询、编译或运行。
+
+
+
 ## 2026-11-02 恢复授权后268–270终态与21:52独立世界观测
 
 用户已明确“现在开始你可以使用ck3。继续执行任务吧。”；最新恢复授权覆盖此前离线停止状态，旧段保留历史。Runtime 继续独占实机，先以用户手玩后的实际世界与 continuity 为准，不按旧 capture 或69日保存态回滚，不重放已执行、已结算或 UNKNOWN。以下运行事实冻结至 `2026-11-01T21:52:10.869984Z`，源码后到事实另记，不能用编译或正式提交替代装载与行为回执。
