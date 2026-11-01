@@ -336,6 +336,59 @@ final class AcceptanceFixtureTest {
             }
         }
     }
+    @Test void uiFamilyInputIsExactlyBoundedAndCrossesTheFrozenFixtureReader() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        String helper = "common/scripted_effects/rrfa_family_preview_seed_effects.txt";
+        String ready = "RRFAT: TEST PASS family_preview_input_ready_32";
+        for (String recipe : List.of("ui-rejection", "core-rite", "cold-rite")) {
+            Request request = bundledRequest(repository, recipe);
+            var emitted = FixtureEmitter.emit(repository, directory.resolve("family-input-" + recipe), "synthetic-fixture-machine", request);
+            var bound = org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(manifestPin(emitted.manifest()), "synthetic-fixture-machine", repository);
+            assertEquals(request, bound.request());
+            boolean ui = request.kind() == CaseKind.UI_REJECTION;
+            assertEquals(ui, emitted.payload().files().containsKey(helper));
+            assertEquals(ui, emitted.payload().receipt().requiredMarkers().contains(ready));
+            assertObservationDecision(emitted.fixture(), request);
+            Path seed = emitted.fixture().resolve("common/scripted_effects/rrfa_seed_effects.txt");
+            if (!ui) {
+                if (Files.exists(seed)) assertFalse(keys(Clausewitz.parse(Files.readString(seed))).contains("rrfa_seed_family_preview_effect"));
+                continue;
+            }
+            assertEquals(1L, keys(Clausewitz.parse(Files.readString(seed))).stream().filter("rrfa_seed_family_preview_effect"::equals).count());
+            assertEquals(List.of("RRFAT: TEST PASS fixture_ready", "RRFAT: TEST PASS no_product_change_readback", ready), emitted.payload().receipt().requiredMarkers());
+            assertTrue(emitted.payload().producerSourcePins().stream().anyMatch(pin -> pin.path().replace((char) 92, '/').endsWith("/" + helper)));
+            Clausewitz.Block effects = Clausewitz.parse(Files.readString(emitted.fixture().resolve(helper)));
+            Clausewitz.Block preparation = effects.block("rrfa_seed_family_preview_effect").block("if");
+            List<Clausewitz.Entry> calls = preparation.entries().stream().filter(entry -> entry.key().equals("rrfa_seed_family_preview_child_effect")).toList();
+            assertEquals(32, calls.size());
+            Set<String> names = new java.util.LinkedHashSet<>();
+            for (int index = 0; index < calls.size(); index++) {
+                if (!(calls.get(index).value() instanceof Clausewitz.Block call)) throw new AssertionError("Family input call must have a NAME parameter");
+                String name = "rrfa_fixture_family_" + String.format(Locale.ROOT, "%02d", index + 1);
+                assertEquals(name, call.atom("NAME", ""));
+                names.add(name);
+            }
+            assertEquals(32, names.size());
+            Clausewitz.Block child = effects.block("rrfa_seed_family_preview_child_effect");
+            Clausewitz.Block create = child.block("create_character");
+            assertEquals("20", create.atom("age", ""));
+            assertEquals("$NAME$", create.atom("name", ""));
+            assertEquals("scope:rrfa_seed_actor", create.atom("employer", ""));
+            assertEquals("scope:rrfa_seed_actor.faith", create.atom("faith", ""));
+            assertEquals("scope:rrfa_seed_actor.culture", create.atom("culture", ""));
+            assertEquals("scope:rrfa_seed_actor.location", create.atom("location", ""));
+            Clausewitz.Block related = child.block("if").block("scope:rrfa_family_seed_child");
+            assertEquals("scope:rrfa_seed_actor", related.atom("set_father", ""));
+            assertEquals("scope:rrfa_a", related.atom("set_character_rite", ""));
+            assertTrue(keys(effects).stream().noneMatch(key -> key.startsWith("rrf_")));
+            assertEquals("32", preparation.block("if").block("limit").block("variable_list_size").atom("value", ""));
+            for (String language : List.of("english", "simp_chinese")) {
+                String text = Files.readString(emitted.fixture().resolve("localization/" + language + "/rrfa_observation_l_" + language + ".yml"));
+                for (String name : names) assertEquals(1L, text.lines().filter(line -> line.startsWith(" " + name + ":0 ")).count());
+            }
+        }
+    }
+
     @Test void sharedParserProducerPinsCannotBeRemovedFromFrozenFixture() throws IOException {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
         FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, directory.resolve("shared-source-fixture"), "synthetic-fixture-machine", bundledRequest(repository, "core-rite"));
@@ -415,7 +468,7 @@ final class AcceptanceFixtureTest {
                     for (String registrar : List.of("on_actions", "on_game_start_after_lobby", "events")) assertFalse(coldKeys.contains(registrar));
                 }
                 assertObservationDecision(target, request);
-            } else { assertEquals(11, emitted.payload().files().size()); assertObservationDecision(target, request); }
+            } else { assertEquals(request.kind() == CaseKind.UI_REJECTION ? 12 : 11, emitted.payload().files().size()); assertObservationDecision(target, request); }
             assertTrue(Files.readString(target.resolve("events/rrfa_observation_events.txt")).contains(request.mode().wire() + "_persisted_readback"));
         }
     }
@@ -609,7 +662,10 @@ final class AcceptanceFixtureTest {
         for (String forbidden : List.of("cost", "cooldown", "days")) assertFalse(keys(decision).contains(forbidden));
         // The shared locale also carries the fresh-only seed's name; a cold
         // fixture keeps this inert text while excluding every seed effect.
-        Set<String> expected = Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm", "rrfa_fixture_long_vassal_name");
+        Set<String> expected = new java.util.LinkedHashSet<>(Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm", "rrfa_fixture_long_vassal_name"));
+        if (request.kind() == CaseKind.UI_REJECTION) {
+            for (int index = 1; index <= 32; index++) expected.add("rrfa_fixture_family_" + String.format(Locale.ROOT, "%02d", index));
+        }
         for (String language : List.of("english", "simp_chinese")) {
             String text = Files.readString(fixture.resolve("localization/" + language + "/rrfa_observation_l_" + language + ".yml"));
             assertTrue(text.startsWith("\ufeffl_" + language + ":\n"));

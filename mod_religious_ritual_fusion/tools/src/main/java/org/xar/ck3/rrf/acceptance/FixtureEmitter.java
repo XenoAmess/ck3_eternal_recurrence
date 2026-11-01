@@ -76,6 +76,7 @@ public final class FixtureEmitter {
         Path evidence = producer.resolve("resources/acceptance/native-source-evidence.json"); checkedResource(evidence, "/acceptance/native-source-evidence.json"); pins.add(pin(evidence));
         List<String> assets = new ArrayList<>(COMMON);
         assets.addAll(request.kind() == CaseKind.COLD_RELOAD ? COLD : FRESH);
+        if (request.kind() == CaseKind.UI_REJECTION) assets.add("common/scripted_effects/rrfa_family_preview_seed_effects.txt");
         Map<String, byte[]> payloads = new LinkedHashMap<>();
         for (String relative : assets) {
             Path template = producer.resolve("resources/acceptance").resolve(relative);
@@ -97,15 +98,25 @@ public final class FixtureEmitter {
                     .replace("${SOURCE_B_EXCLUSIVE}", FixtureContracts.SOURCE_B.get(2).value())
                     .replace("${PIETY}", request.setup() instanceof FreshSetup fresh ? Integer.toString(fresh.piety()) : "0")
                     .replace("${EXPECTED_B}", request.mode() == FixtureContracts.Mode.RITE ? "rrfa_source_b_rite" : "rrfa_source_b_faith_rite")
+                    .replace("${UI_FAMILY_PREVIEW_SEED}", request.kind() == CaseKind.UI_REJECTION ? "rrfa_seed_family_preview_effect = yes" : "")
                     .replace("${OBSERVATION_DECISION}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa_observe_cold_decision" : "rrfa_observe_" + request.kind().wire() + "_decision")
                     .replace("${OBSERVATION_EVENT}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa.22" : request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == FixtureContracts.Mode.RITE ? "rrfa.20" : "rrfa.21");
+            if (request.kind() == CaseKind.UI_REJECTION && relative.startsWith("localization/")) {
+                String label = relative.contains("/simp_chinese/") ? "验收家属 " : "Fixture family child ";
+                StringBuilder names = new StringBuilder(rendered).append('\n');
+                for (int index = 1; index <= 32; index++) {
+                    names.append(" rrfa_fixture_family_").append(String.format(java.util.Locale.ROOT, "%02d", index))
+                            .append(":0 \"").append(label).append(index).append("\"\n");
+                }
+                rendered = names.toString();
+            }
             if (rendered.contains("${")) throw new IllegalArgumentException("unresolved fixture template token");
             payloads.put(relative, (relative.equals("descriptor.mod") ? rendered : "\ufeff" + rendered).getBytes(StandardCharsets.UTF_8));
         }
         payloads.put(FixtureContracts.REQUEST_FILE, Json.write(request));
         List<String> markers = switch (request.kind()) {
             case CORE -> List.of("RRFAT: TEST PASS fixture_ready", "RRFAT: TEST PASS " + request.mode().wire() + "_success_readback");
-            case UI_REJECTION -> List.of("RRFAT: TEST PASS fixture_ready", "RRFAT: TEST PASS no_product_change_readback");
+            case UI_REJECTION -> List.of("RRFAT: TEST PASS fixture_ready", "RRFAT: TEST PASS no_product_change_readback", "RRFAT: TEST PASS family_preview_input_ready_32");
             case COLD_RELOAD -> List.of("RRFAT: TEST PASS " + request.mode().wire() + "_persisted_readback");
         };
         Files.createDirectories(destination);

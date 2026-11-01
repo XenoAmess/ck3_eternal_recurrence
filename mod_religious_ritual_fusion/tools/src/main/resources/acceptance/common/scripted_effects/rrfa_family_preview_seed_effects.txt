@@ -1,0 +1,102 @@
+# UI_REJECTION fixture input only. No RRF product list/action is used here.
+rrfa_seed_family_preview_effect = {
+    if = {
+        limit = {
+            this = scope:rrfa_seed_actor
+            exists = scope:rrfa_a
+            is_alive = yes
+            is_adult = yes
+            is_female = no
+            NOT = { has_character_flag = rrfa_family_seed_attempted }
+        }
+        add_character_flag = rrfa_family_seed_attempted
+        clear_variable_list = rrfa_family_seed_children
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_01 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_02 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_03 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_04 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_05 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_06 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_07 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_08 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_09 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_10 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_11 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_12 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_13 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_14 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_15 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_16 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_17 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_18 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_19 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_20 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_21 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_22 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_23 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_24 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_25 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_26 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_27 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_28 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_29 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_30 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_31 }
+        rrfa_seed_family_preview_child_effect = { NAME = rrfa_fixture_family_32 }
+        if = {
+            limit = { variable_list_size = { name = rrfa_family_seed_children value = 32 } }
+            add_character_flag = rrfa_family_seed_complete
+            debug_log = "RRFAT: TEST PASS family_preview_input_ready_32"
+        }
+        else = { debug_log = "RRFAT: TEST FAIL family_preview_input_incomplete" }
+    }
+    else = { debug_log = "RRFAT: TEST FAIL family_preview_input_invalid_or_replayed" }
+}
+
+rrfa_seed_family_preview_child_effect = {
+    clear_saved_scope = rrfa_family_seed_child
+    create_character = {
+        age = 20
+        name = $NAME$
+        gender_female_chance = 0
+        random_traits = no
+        faith = scope:rrfa_seed_actor.faith
+        culture = scope:rrfa_seed_actor.culture
+        location = scope:rrfa_seed_actor.location
+        employer = scope:rrfa_seed_actor
+        save_scope_as = rrfa_family_seed_child
+    }
+    if = {
+        limit = { exists = scope:rrfa_family_seed_child }
+        scope:rrfa_family_seed_child = {
+            set_father = scope:rrfa_seed_actor
+            set_character_rite = scope:rrfa_a
+        }
+        if = {
+            limit = {
+                scope:rrfa_family_seed_child = {
+                    is_child_of = scope:rrfa_seed_actor
+                    is_alive = yes
+                    is_ai = yes
+                    is_adult = yes
+                    is_landed = no
+                    faith = scope:rrfa_seed_actor.faith
+                    rite = scope:rrfa_a
+                    NOR = {
+                        has_character_flag = ai_will_not_convert
+                        this = faith.religious_head
+                        rite.head_of_rite ?= this
+                    }
+                }
+            }
+            add_to_variable_list = { name = rrfa_family_seed_children target = scope:rrfa_family_seed_child }
+            scope:rrfa_family_seed_child = {
+                debug_log = "RRFAT: DIAG FAMILY_PREVIEW_INPUT_CHILD"
+                debug_log_scopes = yes
+            }
+        }
+        else = { debug_log = "RRFAT: TEST FAIL family_preview_input_child_ineligible" }
+    }
+    else = { debug_log = "RRFAT: TEST FAIL family_preview_input_child_missing" }
+    clear_saved_scope = rrfa_family_seed_child
+}
