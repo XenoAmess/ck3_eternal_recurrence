@@ -79,4 +79,69 @@ public interface StorageWriteGuard extends AutoCloseable {
         if(bytes<0||bytes>WriterContracts.MAX_PIN_BYTES)
             throw new IllegalArgumentException("finite complete file logical-byte quote required");
     }
+
+    /**
+     * Returns a new independent NoWrites guard instance that denies all writes.
+     * This object grants no allocation owner or quota.
+     */
+    public static StorageWriteGuard noWrites() {
+        return new NoWrites();
+    }
+
+    /**
+     * Checks if the supplied guard is a NoWrites instance (including closed ones).
+     * Uses concrete final implementation identity/type, NOT a caller-overridable boolean.
+     */
+    public static boolean isNoWrites(StorageWriteGuard supplied) {
+        return supplied instanceof NoWrites;
+    }
+
+    /**
+     * Requires the supplied guard to be an open NoWrites instance.
+     * Rejects a foreign role or a closed NoWrites object with IOException.
+     */
+    public static void requireNoWritesOpen(StorageWriteGuard supplied) throws IOException {
+        if (!(supplied instanceof NoWrites)) {
+            throw new IOException("NoWrites role required");
+        }
+        if (((NoWrites) supplied).closed) {
+            throw new IOException("NoWrites role is closed");
+        }
+    }
+
+    /**
+     * Actual final nested NoWrites implementation with private constructor.
+     * Grants no permission and cannot create/repair/recover.
+     */
+    final class NoWrites implements StorageWriteGuard {
+        private volatile boolean closed = false;
+
+        private NoWrites() {
+            // Private constructor ensures only noWrites() creates instances.
+        }
+
+        @Override
+        public void close() throws IOException {
+            // Idempotently marks that NoWrites object closed, owns no physical resources and performs no IO.
+            closed = true;
+        }
+
+        @Override
+        public void requireInitialization(Path originalLock, List<Path> exactManagedRoots) throws IOException {
+            // ALWAYS throw IOException before using arguments/calling the write callback.
+            throw new IOException("NoWrites guard denies initialization");
+        }
+
+        @Override
+        public OptionalLong enforcedAggregateMaximumBytes(Path originalLock, Path managedDirectory) throws IOException {
+            // ALWAYS throw IOException before using arguments/calling the write callback.
+            throw new IOException("NoWrites guard denies quota enforcement");
+        }
+
+        @Override
+        public <T> T write(WritePlan plan, PhysicalWrite<T> actualIO) throws IOException {
+            // ALWAYS throw IOException before using arguments/calling the write callback.
+            throw new IOException("NoWrites guard denies writes");
+        }
+    }
 }

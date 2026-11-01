@@ -36,6 +36,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
     private final Extensions extensions;
     private final WriterFaultProbe faults;
     private final StorageWriteGuard storageGuard;
+    private final boolean readOnly;
     /** One captured history cache is reused across same-process writer sessions. */
     private final ContinuityStore store;
     /** Exact physical outputs only; this is neither Game admission nor an observed initial window. */
@@ -46,6 +47,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
     /** The sole writer's initial CREATE_NEW path, using its existing storage owner and original lock. */
     public static Initialized initializeFresh(org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan plan,
             ExactRef actualPlanOriginal,InitialLayout paths,StorageWriteGuard storage)throws IOException {
+        if(StorageWriteGuard.isNoWrites(storage)) throw new IOException("genesis cannot use a no-writes denial guard");
         Objects.requireNonNull(plan);Objects.requireNonNull(actualPlanOriginal);Objects.requireNonNull(paths);Objects.requireNonNull(storage);
         if(ACTIVE_SESSION.get()!=null)throw new IOException("genesis cannot nest an original writer session");
         StrictJson.require(plan.machineId().equals(paths.machineId()),"genesis plan and actual output machine differ");
@@ -104,27 +106,50 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             return new Initialized(layout,anchor.pin(),snapshot.pin(),held.readOriginalPin(),head);
         }
     }
+    public static ContinuityWriter readOnlyExisting(
+            Layout layout, java.util.List<ExactRef> trustedSources,
+            TransitionAuthority authority, java.time.Clock clock,
+            Extensions extensions, StorageWriteGuard storageGuard) throws IOException {
+        StorageWriteGuard.requireNoWritesOpen(storageGuard);
+        return new ContinuityWriter(layout, trustedSources, authority, clock, extensions, storageGuard, WriterFaultProbe.NONE, true);
+    }
+
     public ContinuityWriter(Layout layout,List<ExactRef> trustedSources,TransitionAuthority authority,
             StorageWriteGuard storageGuard)throws IOException {
         this(layout,trustedSources,authority,Clock.systemUTC(),Extensions.none(),storageGuard);
     }
+
     public ContinuityWriter(Layout layout,List<ExactRef> trustedSources,TransitionAuthority authority,Clock clock,
             StorageWriteGuard storageGuard)throws IOException {
         this(layout,trustedSources,authority,clock,Extensions.none(),storageGuard);
     }
+
     public ContinuityWriter(Layout layout,List<ExactRef> trustedSources,TransitionAuthority authority,Clock clock,
             Extensions extensions,StorageWriteGuard storageGuard)throws IOException {
         this(layout,trustedSources,authority,clock,extensions,storageGuard,WriterFaultProbe.NONE);
     }
+
     ContinuityWriter(Layout layout,List<ExactRef> trustedSources,TransitionAuthority authority,Clock clock,
             Extensions extensions,StorageWriteGuard storageGuard,WriterFaultProbe faults)throws IOException {
+        this(layout,trustedSources,authority,clock,extensions,storageGuard,faults,false);
+    }
+
+    private ContinuityWriter(Layout layout,List<ExactRef> trustedSources,TransitionAuthority authority,Clock clock,
+            Extensions extensions,StorageWriteGuard storageGuard,WriterFaultProbe faults,boolean readOnly)throws IOException {
         this.layout=Objects.requireNonNull(layout);sources=List.copyOf(trustedSources);
         StrictJson.require(!sources.isEmpty()&&sources.size()<=MAXIMUM_CONFIGURED_SOURCES,"reviewed finite reducer/writer source closure");
         this.authority=Objects.requireNonNull(authority);this.clock=Objects.requireNonNull(clock);
         this.extensions=Objects.requireNonNull(extensions);this.storageGuard=Objects.requireNonNull(storageGuard);
         this.faults=Objects.requireNonNull(faults);
+        this.readOnly=readOnly;
         this.store=new ContinuityStore(layout);
-        storageGuard.requireInitialization(layout.lock(),List.of(layout.snapshot().getParent(),layout.events()));
+        if(readOnly) {
+            StorageWriteGuard.requireNoWritesOpen(storageGuard);
+        } else {
+            if(StorageWriteGuard.isNoWrites(storageGuard))
+                throw new IOException("mutable writer cannot use a NoWrites role");
+            storageGuard.requireInitialization(layout.lock(),List.of(layout.snapshot().getParent(),layout.events()));
+        }
         if(extensions.artifacts().isPresent()){
             ImmutableArtifactStore actual=extensions.artifacts().orElseThrow();
             StrictJson.require(actual.originalWriterLock().equals(layout.lock())
@@ -134,7 +159,10 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
     }
     /** Actual configured allocation authority; no constructor or write has an unguarded fallback. */
     public StorageWriteGuard storageGuard(){return storageGuard;}
-    public Prepared preview(Request request) throws IOException { return locked(session -> session.preview(request)); }
+    public Prepared preview(Request request) throws IOException {
+        if (readOnly) throw new IOException("readonly writer cannot preview");
+        return locked(session -> session.preview(request));
+    }
     public java.nio.file.Path originalLockPath() { return layout.lock(); }
     /** Actual immutable configuration handle; this getter never creates or rebinds a store. */
     public java.util.Optional<ImmutableArtifactStore> artifactStore() { return extensions.artifacts(); }
@@ -158,14 +186,25 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         requireSession(active);
         return java.util.Optional.of(active);
     }
-    public Receipt commit(Prepared prepared) throws IOException { return locked(session -> session.commit(prepared)); }
+    public Receipt commit(Prepared prepared) throws IOException {
+        if (readOnly) throw new IOException("readonly writer cannot commit");
+        return locked(session -> session.commit(prepared));
+    }
     @Override public DomainBodies.Read read(DomainBodies.Slot slot) throws IOException { return locked(session -> session.readDomain(slot)); }
-    @Override public DomainBodies.PreparedImport previewImport(DomainBodies.ImportRequest request) throws IOException { return locked(session -> session.previewImport(request)); }
-    @Override public Receipt commitImport(DomainBodies.PreparedImport prepared) throws IOException { return locked(session -> session.commitImport(prepared)); }
+    @Override public DomainBodies.PreparedImport previewImport(DomainBodies.ImportRequest request) throws IOException {
+        if (readOnly) throw new IOException("readonly writer cannot preview import");
+        return locked(session -> session.previewImport(request));
+    }
+    @Override public Receipt commitImport(DomainBodies.PreparedImport prepared) throws IOException {
+        if (readOnly) throw new IOException("readonly writer cannot commit import");
+        return locked(session -> session.commitImport(prepared));
+    }
     @Override public RollbackPair.Plan previewRollback(ExactRef proof) throws IOException {
+        if (readOnly) throw new IOException("readonly writer cannot preview rollback");
         return locked(session -> { Head head = session.head(); return RollbackPair.plan(head, rollbackEvidence(head, proof)); });
     }
     @Override public RollbackPair.Commit commitRollback(RollbackPair.Plan plan) throws IOException {
+        if (readOnly) throw new IOException("readonly writer cannot commit rollback");
         return locked(session -> RollbackPairTransaction.commit(layout, new ContinuityStore(layout), plan, this::rollbackEvidence,
                 OffsetDateTime.ofInstant(clock.instant(), ZoneOffset.UTC).toString(), faults, storageGuard));
     }
@@ -186,6 +225,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         return locked(session -> LedgerFiles.read(layout.snapshot(), ContinuityJson.LEDGER_MAX_BYTES).pin().reference());
     }
     public <T> T locked(SessionWork<T> work) throws IOException {
+        if(readOnly) StorageWriteGuard.requireNoWritesOpen(storageGuard);
         Objects.requireNonNull(work);
         if (ACTIVE_SESSION.get() != null) throw new IOException("nested original writer sessions are not permitted; borrow the active session");
         try (WindowsLedgerLock ignored = WindowsLedgerLock.acquire(layout.lock())) {
@@ -254,8 +294,9 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         private Session() { }
         private ContinuityWriter writer() { return ContinuityWriter.this; }
-        private void checkOpen() {
+        private void checkOpen() throws IOException {
             StrictJson.require(open && Thread.currentThread() == owner, "live original-lock session on owning thread required");
+            if(readOnly) StorageWriteGuard.requireNoWritesOpen(storageGuard);
         }
         @Override public void requireWriter(java.nio.file.Path originalWriterLock) throws IOException {
             checkOpen(); Objects.requireNonNull(originalWriterLock);
@@ -598,7 +639,9 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             }
         }
         @Override public org.xar.ck3.control.continuity.EpisodeWindow.CommittedBegin beginEpisodeWindow(org.xar.ck3.control.continuity.EpisodeWindow.Begin begin) throws IOException {
-            requireWriter(layout.lock());Objects.requireNonNull(begin);Request request=begin.request();
+            if (writer().readOnly) throw new IOException("readonly writer cannot begin episode window");
+            requireWriter(layout.lock());
+            Objects.requireNonNull(begin);Request request=begin.request();
             Receipt receipt=commit(preview(request));Head actual=store.head();
             ContinuityEvent event=store.duplicate(request,actual).orElseThrow(()->new IOException("BEGIN has no actual committed canonical event"));
             org.xar.ck3.control.continuity.EpisodeWindow.CommittedBegin result=new org.xar.ck3.control.continuity.EpisodeWindow.CommittedBegin(
@@ -606,7 +649,9 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             requireEpisodeWindowBegin(result);requireSameHead(actual,store.head());return result;
         }
         @Override public org.xar.ck3.control.continuity.EpisodeWindow.CommittedBaseline baselineEpisodeWindow(org.xar.ck3.control.continuity.EpisodeWindow.Baseline baseline) throws IOException {
-            requireWriter(layout.lock());Objects.requireNonNull(baseline);requireEpisodeWindowBegin(baseline.begin());
+            if (writer().readOnly) throw new IOException("readonly writer cannot baseline episode window");
+            requireWriter(layout.lock());
+            Objects.requireNonNull(baseline);requireEpisodeWindowBegin(baseline.begin());
             Request request=baseline.request();commit(preview(request));Head actual=store.head();
             ContinuityEvent event=store.duplicate(request,actual).orElseThrow(()->new IOException("BASELINE has no actual committed canonical event"));
             var result=new org.xar.ck3.control.continuity.EpisodeWindow.CommittedBaseline(baseline,event.sequence(),event.identity(),
@@ -721,7 +766,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 invalidateParsedHistory(); parsedHistoryOwner = actual;
             }
         }
-        private HistoryIndex parsedHistoryIndex(Head actual) {
+        private HistoryIndex parsedHistoryIndex(Head actual) throws IOException {
             checkOpen();
             StrictJson.require(parsedHistoryOwner == actual, "structural index requires the same captured Head");
             if (parsedHistoryIndex == null) parsedHistoryIndex = new HistoryIndex(actual.documents(), layout.anchor());
@@ -805,11 +850,14 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             checkOpen(); return LedgerFiles.read(layout.snapshot(), ContinuityJson.LEDGER_MAX_BYTES).pin().reference();
         }
         public Prepared preview(Request request) throws IOException {
+            if (writer().readOnly) throw new IOException("readonly writer cannot preview");
             StrictJson.require(!DomainBodies.IMPORT_KIND.equals(request.kind()), "domain imports use their registered original-producer path");
             return previewInternal(request, authority);
         }
         private Prepared previewInternal(Request request, TransitionAuthority selectedAuthority) throws IOException {
-            checkOpen(); Objects.requireNonNull(request);
+            checkOpen();
+            if (writer().readOnly) throw new IOException("readonly writer cannot preview internal");
+            Objects.requireNonNull(request);
             Head before = this.head(); List<Pin> actualSources = captureDomain(sources), evidence = capture(request);
             var committed = store.duplicate(request, before);
             if (committed.isPresent()) {
@@ -827,11 +875,13 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             return new Prepared(before, request, actualSources, evidence, reduced, precondition);
         }
         public Receipt commit(Prepared prepared) throws IOException {
+            if (writer().readOnly) throw new IOException("readonly writer cannot commit");
             StrictJson.require(!DomainBodies.IMPORT_KIND.equals(prepared.request().kind()), "domain imports use their registered original-producer path");
             return commitInternal(prepared, authority);
         }
         private Receipt commitInternal(Prepared prepared, TransitionAuthority selectedAuthority) throws IOException {
             checkOpen();
+            if (writer().readOnly) throw new IOException("readonly writer cannot commit internal");
             retainedDomainHead = null;
             retainedHeadHistoryVerified=false;
             try {
@@ -850,6 +900,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             }
         }
         private Receipt commitPrepared(Prepared prepared, TransitionAuthority selectedAuthority) throws IOException {
+            if (writer().readOnly) throw new IOException("readonly writer cannot commit prepared");
             Objects.requireNonNull(prepared);
             Request request = prepared.request();
             // Sources and evidence are checked before any recovery or durable write.
@@ -920,6 +971,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             }catch(IOException|RuntimeException error){throw new CommitUncertainException(requestIdentity,sequence,error);}
         }
         private Receipt recoverDuplicate(Request request, Head actual) throws IOException {
+            if (writer().readOnly) throw new IOException("readonly writer cannot recover duplicate");
             retainedHead=null;retainedHeadHistoryVerified=false; // Recovery may mutate persistence; only a normal commit retains its validated readback.
             retainedDomainHead=null;
             try {
@@ -977,7 +1029,9 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             }
         }
         @Override public DomainBodies.PreparedImport previewImport(DomainBodies.ImportRequest request) throws IOException {
-            checkOpen(); DomainBodies.Registration registration = registration(request.slot());
+            checkOpen();
+            if (writer().readOnly) throw new IOException("readonly writer cannot preview import");
+            DomainBodies.Registration registration = registration(request.slot());
             StrictJson.require(registration.contractSchema().equals(request.contractSchema()), "exact registered domain body contract");
             Head head = this.head(); var original = LedgerFiles.exact(request.originalBody(), registration.maximumBodyBytes());
             domainCanonical(original.bytes(), registration.maximumBodyBytes());
@@ -992,6 +1046,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         @Override public Receipt commitImport(DomainBodies.PreparedImport prepared) throws IOException {
             checkOpen();
+            if (writer().readOnly) throw new IOException("readonly writer cannot commit import");
             retainedDomainHead=null;
             try {
                 return commitDomainImport(prepared);
@@ -1000,7 +1055,9 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             }
         }
         private Receipt commitDomainImport(DomainBodies.PreparedImport prepared) throws IOException {
-            checkOpen(); DomainBodies.ImportRequest request = prepared.request(); DomainBodies.Registration registration = registration(request.slot());
+            checkOpen();
+            if (writer().readOnly) throw new IOException("readonly writer cannot commit domain import");
+            DomainBodies.ImportRequest request = prepared.request(); DomainBodies.Registration registration = registration(request.slot());
             StrictJson.require(registration.contractSchema().equals(request.contractSchema()), "registered domain schema");
             List<ExactRef> expectedConfigured = new ArrayList<>(sources);
             StrictJson.require(prepared.sources().stream().map(Pin::reference).toList().equals(expectedConfigured)
