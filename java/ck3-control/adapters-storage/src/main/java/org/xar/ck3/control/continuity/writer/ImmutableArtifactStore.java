@@ -68,6 +68,7 @@ public final class ImmutableArtifactStore {
     private final long allocationUnit;
     private final StorageWriteGuard storage;
     private final boolean sharedAggregateCoversArchive;
+    private final boolean readonlyMode;
 
     @FunctionalInterface interface HistoricalReadAuthority { void require() throws IOException; }
     private final ThreadLocal<HistoricalReads> historicalReads = new ThreadLocal<>();
@@ -78,7 +79,10 @@ public final class ImmutableArtifactStore {
     @FunctionalInterface private interface OriginalRead<T> { T run() throws IOException; }
     private <T> T historicalRead(OriginalRead<T> operation) throws IOException {
         HistoricalReads reads = historicalReads.get();
-        try { return operation.run(); }
+        try {
+            if (readonlyMode) StorageWriteGuard.requireNoWritesOpen(storage);
+            return operation.run();
+        }
         catch (IOException failure) {
             if (reads == null) throw failure;
             IOException actual = failure instanceof NoSuchFileException
@@ -113,6 +117,7 @@ public final class ImmutableArtifactStore {
             try {
                 if (Thread.currentThread() != thread || closed || historicalReads.get() != this)
                     throw new IOException("historical CAS read scope escaped its exact store/thread/lifetime");
+                if (readonlyMode) StorageWriteGuard.requireNoWritesOpen(storage);
                 if (firstFailure != null) throw new IOException("historical CAS read scope already failed", firstFailure);
                 authority.require(); session.requireWriter(config.originalWriterLock());
             } catch (IOException | RuntimeException | Error failure) { recordFailure(failure); throw failure; }
@@ -175,6 +180,7 @@ public final class ImmutableArtifactStore {
     }
     HistoricalReads beginHistoricalReads(ContinuityStorePort.Session session, int maximumEntries,
             long maximumBytes, int maximumHandles, HistoricalReadAuthority authority) throws IOException {
+        if (readonlyMode) StorageWriteGuard.requireNoWritesOpen(storage);
         Objects.requireNonNull(session); Objects.requireNonNull(authority);
         if (maximumEntries < 1 || maximumEntries > 4096 || maximumBytes < 1 || maximumBytes > 256L * 1024 * 1024
                 || maximumHandles < 4 || maximumHandles > 8192)
@@ -224,8 +230,21 @@ public final class ImmutableArtifactStore {
         this(config, storage, boundary -> { });
     }
     ImmutableArtifactStore(Config config, StorageWriteGuard storage, FaultProbe faults) throws IOException {
+        this(config, storage, faults, false);
+    }
+    private ImmutableArtifactStore(Config config, StorageWriteGuard storage, FaultProbe faults, boolean readonlyMode) throws IOException {
         this.config = Objects.requireNonNull(config); this.storage = Objects.requireNonNull(storage);
         this.faults = Objects.requireNonNull(faults);
+        this.readonlyMode = readonlyMode;
+        if (readonlyMode) {
+            StorageWriteGuard.requireNoWritesOpen(storage);
+            lockIdentity = LedgerFiles.identity(config.originalWriterLock());
+            rootIdentity = directoryStamp(config.root());
+            allocationUnit = 0; // No allocation unit was observed; publication is forbidden.
+            sharedAggregateCoversArchive = false;
+            return;
+        }
+        if (StorageWriteGuard.isNoWrites(storage)) throw new IOException("mutable store cannot use the noWrites denial guard");
         // The local CAS cap and the shared package authority must both admit initialization before any mkdir.
         if (config.maximumStoredBytes() < 4096) throw new IOException("archive budget cannot cover its directory guard");
         lockIdentity = LedgerFiles.identity(config.originalWriterLock());
@@ -243,6 +262,9 @@ public final class ImmutableArtifactStore {
             sharedAggregateCoversArchive = enforced.isPresent() && enforced.getAsLong() > 0 && enforced.getAsLong() <= config.maximumStoredBytes();
             reserve(0);
         }
+    }
+    public static ImmutableArtifactStore readOnlyExisting(Config config, StorageWriteGuard storage) throws IOException {
+        return new ImmutableArtifactStore(config, storage, boundary -> { }, true);
     }
     public Path originalWriterLock() { return config.originalWriterLock(); }
     /** Writer and archive must hold this identical required package allocation authority. */
@@ -449,6 +471,10 @@ public final class ImmutableArtifactStore {
         if (!actual.equals(expected)) throw new IOException("artifact native FileID/content identity changed");
     }
     private void requireWrite() throws IOException {
+        if (readonlyMode) {
+            IOException failure = new IOException("immutable artifact store is in readonly mode; publication is denied");
+            recordHistoricalFailure(failure); throw failure;
+        }
         HistoricalReads reads = historicalReads.get();
         if (reads != null) {
             reads.requireActive();
@@ -459,6 +485,7 @@ public final class ImmutableArtifactStore {
         if (!lockIdentity.equals(LedgerFiles.identity(config.originalWriterLock()))) throw new IOException("original writer lock identity drift");
     }
     private void checkRoot() throws IOException {
+        if (readonlyMode) StorageWriteGuard.requireNoWritesOpen(storage);
         if (!rootIdentity.equals(directoryStamp(config.root()))) throw new IOException("artifact root native identity changed");
     }
     private Path payload(String digest) { requireDigest(digest); return config.root().resolve(digest + ".bin"); }
