@@ -68,8 +68,24 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
     }
     private String verifySaved(ContinuityStorePort.Session same,SessionIdentity owner,CheckpointPair pair,
             CompletedCycleProof cycle,boolean physical)throws IOException {
-        Objects.requireNonNull(cycle);
-        return verifyFirst(same,owner,pair,cycle.semantic().frame(),physical).digest();
+        writer.requireSession(same);
+        Objects.requireNonNull(owner); Objects.requireNonNull(pair); Objects.requireNonNull(cycle);
+        ActionReceipt receipt=actions.withFrozen(same,held->{
+            var found=held.find(pair.saveActionId()).orElseThrow(()->new IllegalArgumentException("physical pair lacks its canonical original SAVE"));
+            held.assertCurrent();return found;
+        });
+        var opening=receipt.command().before();
+        var proof=cycle.semantic().frame();
+        var saved=pair.frame();
+        StrictJson.require(proof.machineId().equals(saved.machineId())&&proof.game().equals(saved.game())
+                &&proof.frame().episodeRunId().equals(saved.frame().episodeRunId())
+                &&proof.frame().identity().player().equals(saved.frame().identity().player())
+                &&proof.frame().identity().dateRaw().equals(saved.frame().identity().dateRaw())
+                &&proof.observationVersion()==saved.observationVersion()
+                &&saved.frame().identity().nativeRevision().compareTo(proof.frame().identity().nativeRevision())>=0
+                &&opening.observationVersion()==saved.observationVersion(),
+                "actual cycle semantic and physical SAVE must share machine/Game/episode/actor/date/observationVersion and monotonic native revisions");
+        return verifyFirst(same,owner,pair,opening,physical).digest();
     }
     @Override public FirstSaveReceiptVerifier.Original verifyFirst(ContinuityStorePort.Session same,SessionIdentity owner,
             CheckpointPair pair,ObservationIdentity opening,boolean physical)throws IOException {
