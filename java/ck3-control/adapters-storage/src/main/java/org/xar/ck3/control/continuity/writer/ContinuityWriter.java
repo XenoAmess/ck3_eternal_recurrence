@@ -207,6 +207,51 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private final java.util.LinkedHashMap<Pin, ParsedHistoryEntry> parsedHistory =
                 new java.util.LinkedHashMap<>(32, 0.75f, true);
         private record ParsedHistoryEntry(ObjectNode document, ContinuityState state) { }
+        /** Immutable Pin metadata only; bytes and native identity are still read at original sites. */
+        private HistoryIndex parsedHistoryIndex;
+        private static final class HistoryIndex {
+            private final List<Pin> documents;
+            private final ExactRef anchorReference;
+            private final java.util.Map<Path, Pin> paths = new java.util.HashMap<>();
+            private final java.util.Map<Pin, Pin> pins = new java.util.HashMap<>();
+            private int pathCursor;
+            private int pinCursor;
+            private Pin anchor;
+            private HistoryIndex(List<Pin> documents, ExactRef anchorReference) {
+                this.documents = documents; this.anchorReference = anchorReference;
+            }
+            private Pin path(Path requested, String missing) throws IOException {
+                Pin retained = paths.get(requested);
+                if (retained != null) return retained;
+                while (pathCursor < documents.size()) {
+                    Pin candidate = documents.get(pathCursor);
+                    Path normalized = Path.of(candidate.reference().path()).toAbsolutePath().normalize();
+                    // A failed Path conversion must remain the next item on a later scan.
+                    paths.putIfAbsent(normalized, candidate);
+                    pathCursor++;
+                    if (normalized.equals(requested)) return paths.get(requested);
+                }
+                throw new IOException(missing);
+            }
+            private Pin pin(Pin requested, String missing) throws IOException {
+                Pin retained = pins.get(requested);
+                if (retained != null) return retained;
+                while (pinCursor < documents.size()) {
+                    Pin candidate = documents.get(pinCursor);
+                    pins.putIfAbsent(candidate, candidate);
+                    pinCursor++;
+                    if (candidate.equals(requested)) return pins.get(requested);
+                }
+                throw new IOException(missing);
+            }
+            private Pin anchor() throws IOException {
+                if (anchor != null) return anchor;
+                for (Pin candidate : documents) {
+                    if (candidate.reference().equals(anchorReference)) { anchor = candidate; return candidate; }
+                }
+                throw new IOException("canonical anchor is absent from captured history");
+            }
+        }
         private Session() { }
         private ContinuityWriter writer() { return ContinuityWriter.this; }
         private void checkOpen() {
@@ -260,6 +305,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
         private java.util.List<HistoricalTransition> readHistoricalTransitions(
                 java.util.List<Pin> actualEvents, Head actual) throws IOException {
+            HistoryIndex index = new HistoryIndex(actual.documents(), layout.anchor());
             final class CachedHistory {
                 private final java.util.Map<Pin,ObjectNode> documents=new java.util.HashMap<>();
                 private final java.util.Map<Long,ContinuityState> states=new java.util.HashMap<>();
@@ -276,14 +322,12 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 }
                 ObjectNode event(long sequence)throws IOException {
                     java.nio.file.Path path=layout.event(sequence);
-                    Pin captured=actual.documents().stream().filter(pin->java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(path))
-                            .findFirst().orElseThrow(()->new IOException("requested state is absent from the actual finite canonical history"));
+                    Pin captured=index.path(path,"requested state is absent from the actual finite canonical history");
                     return document(captured);
                 }
                 ContinuityState anchor()throws IOException {
                     if(anchored!=null)return anchored;
-                    Pin pin=actual.documents().stream().filter(value->value.reference().equals(layout.anchor())).findFirst()
-                            .orElseThrow(()->new IOException("canonical anchor is absent from captured history"));
+                    Pin pin=index.anchor();
                     anchored=ContinuityState.fromJson(ContinuityJson.parseObject(readPinned(pin,ContinuityJson.LEDGER_MAX_BYTES),ContinuityJson.LEDGER_MAX_BYTES),layout.machineId());
                     return anchored;
                 }
@@ -305,8 +349,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             CachedHistory history=new CachedHistory();
             java.util.List<HistoricalTransition> results=new java.util.ArrayList<>();
             for(Pin actualEvent:actualEvents) {
-                Pin captured=actual.documents().stream().filter(actualEvent::equals).findFirst()
-                        .orElseThrow(()->new IOException("event pin is not in this actual captured canonical history"));
+                Pin captured=index.pin(actualEvent,"event pin is not in this actual captured canonical history");
                 ObjectNode event=history.document(captured);
                 long sequence=StrictJson.integer(event.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER);
                 ContinuityState before=history.state(Math.subtractExact(sequence,1)),after=history.state(sequence);
@@ -671,12 +714,18 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private void invalidateParsedHistory() {
             // A rejected foreign-thread query must not mutate the owner's private cache.
             if (Thread.currentThread() != owner) return;
-            parsedHistoryOwner = null; parsedHistory.clear();
+            parsedHistoryOwner = null; parsedHistory.clear(); parsedHistoryIndex = null;
         }
         private void bindParsedHistory(Head actual) {
             if (parsedHistoryOwner != actual) {
                 invalidateParsedHistory(); parsedHistoryOwner = actual;
             }
+        }
+        private HistoryIndex parsedHistoryIndex(Head actual) {
+            checkOpen();
+            StrictJson.require(parsedHistoryOwner == actual, "structural index requires the same captured Head");
+            if (parsedHistoryIndex == null) parsedHistoryIndex = new HistoryIndex(actual.documents(), layout.anchor());
+            return parsedHistoryIndex;
         }
         private ParsedHistoryEntry retainParsedHistory(Pin pin, ObjectNode document, ContinuityState state) {
             if (parsedHistory.size() >= 32) parsedHistory.remove(parsedHistory.keySet().iterator().next());
@@ -685,8 +734,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         private ContinuityState capturedAnchorAt(Head actual) throws IOException {
             try {
                 requireWriter(layout.lock()); bindParsedHistory(actual);
-                Pin anchor = actual.documents().stream().filter(pin -> pin.reference().equals(layout.anchor())).findFirst()
-                        .orElseThrow(() -> new IOException("canonical anchor is absent from captured history"));
+                Pin anchor = parsedHistoryIndex(actual).anchor();
                 byte[] bytes = readPinned(anchor, ContinuityJson.LEDGER_MAX_BYTES);
                 var cached = parsedHistory.get(anchor);
                 if (cached != null) return cached.state();
@@ -712,8 +760,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             try {
                 requireWriter(layout.lock()); bindParsedHistory(actual);
                 java.nio.file.Path path = layout.event(sequence);
-                Pin captured = actual.documents().stream().filter(pin -> java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(path))
-                        .findFirst().orElseThrow(() -> new IOException("requested state is absent from the actual finite canonical history"));
+                Pin captured = parsedHistoryIndex(actual).path(path, "requested state is absent from the actual finite canonical history");
                 byte[] bytes = readPinned(captured, ContinuityJson.LEDGER_MAX_BYTES);
                 var cached = parsedHistory.get(captured);
                 if (cached != null) return cached;
