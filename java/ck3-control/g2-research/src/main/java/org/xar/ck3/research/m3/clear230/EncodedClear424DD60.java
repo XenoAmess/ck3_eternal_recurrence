@@ -85,7 +85,12 @@ public final class EncodedClear424DD60 {
             // Call 43dbba8 with arguments
             // IndirectArguments: ECX is cookie low6, R8 is current full64 cookie
             IndirectArguments args = new IndirectArguments(ecxLow6, cookie, rdxR9State);
-            ports.call43dbba8(memory, 0x424DDE5L, iatTarget, decodedRax, args);
+            if (ports instanceof EncodedClear230BoundsPorts) {
+                EncodedClear230BoundsPorts boundsPorts = (EncodedClear230BoundsPorts) ports;
+                boundsPorts.call43dbba8WithBounds(memory, 0x424DDE5L, iatTarget, decodedRax, args, new EncodedClear230BoundsPorts.DecodedBounds(savedBegin, savedEnd));
+            } else {
+                ports.call43dbba8(memory, 0x424DDE5L, iatTarget, decodedRax, args);
+            }
 
             // After opaque return: refresh global cookie, entryRcx, outer, descriptor, begin/end
             cookie = memory.readPointer(moduleBase + 0x542F0B8L);
@@ -122,7 +127,12 @@ public final class EncodedClear424DD60 {
         // If rdi (current begin) == UINT64_MAX, skip direct E364 and post-free cookie reload
         if (rdi != 0xFFFFFFFFFFFFFFFFL) {
             // Call 424e364 with RCX = current begin (rdi)
-            ports.call424e364(memory, 0x424DE32L, rdi);
+            if (ports instanceof EncodedClear230BoundsPorts) {
+                EncodedClear230BoundsPorts boundsPorts = (EncodedClear230BoundsPorts) ports;
+                boundsPorts.call424e364WithBounds(memory, 0x424DE32L, rdi, new EncodedClear230BoundsPorts.DecodedBounds(savedBegin, savedEnd));
+            } else {
+                ports.call424e364(memory, 0x424DE32L, rdi);
+            }
 
             // After normal return, fresh global cookie => R8
             cookie = memory.readPointer(moduleBase + 0x542F0B8L);
