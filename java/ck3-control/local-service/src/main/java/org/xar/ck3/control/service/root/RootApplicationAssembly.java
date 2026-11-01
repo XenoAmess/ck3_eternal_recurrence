@@ -67,10 +67,23 @@ public final class RootApplicationAssembly {
     public static Core open(RootApplicationConfiguration configuration, Clock clock,
             List<DomainBodies.Registration> domains, Optional<RollbackPair.Authority> rollback,StorageWriteGuard storage) throws IOException {
         Objects.requireNonNull(configuration);Objects.requireNonNull(storage);
+        if(StorageWriteGuard.isNoWrites(storage)) throw new IOException("mutable entry cannot use NoWrites denial guard");
         try {
             return new Core(configuration,clock,List.copyOf(domains),Objects.requireNonNull(rollback),storage);
         }catch(IOException|RuntimeException|Error failure){
             try{storage.close();}catch(IOException|RuntimeException|Error closeFailure){if(closeFailure!=failure)failure.addSuppressed(closeFailure);}
+            throw failure;
+        }
+    }
+
+    public static Core openReadOnlySavedSource(RootApplicationConfiguration configuration,
+            Clock clock, List<DomainBodies.Registration> domains, StorageWriteGuard storage) throws IOException {
+        Objects.requireNonNull(configuration); Objects.requireNonNull(storage);
+        StorageWriteGuard.requireNoWritesOpen(storage);
+        try {
+            return new Core(configuration, clock, List.copyOf(domains), Optional.empty(), storage, true);
+        } catch (IOException | RuntimeException | Error failure) {
+            try { storage.close(); } catch (IOException | RuntimeException | Error closeFailure) { if (closeFailure != failure) failure.addSuppressed(closeFailure); }
             throw failure;
         }
     }
@@ -339,13 +352,24 @@ public final class RootApplicationAssembly {
         private final RootDecisionDisplay decisionDisplay;
         private Core(RootApplicationConfiguration configuration, Clock clock, List<DomainBodies.Registration> domains,
                 Optional<RollbackPair.Authority> rollback,StorageWriteGuard storage) throws IOException {
+            this(configuration, clock, domains, rollback, storage, false);
+        }
+        private Core(RootApplicationConfiguration configuration, Clock clock, List<DomainBodies.Registration> domains,
+                Optional<RollbackPair.Authority> rollback,StorageWriteGuard storage, boolean readonly) throws IOException {
             this.configuration = configuration; this.clock = Objects.requireNonNull(clock);
             decisionDisplay = new RootDecisionDisplay(clock, configuration.ledger().snapshot().getParent());
             originalDomainRegistrations = List.copyOf(domains);
-            artifacts = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(configuration.artifactRoot(),
-                    configuration.ledger().lock(), configuration.maximumArtifactBytes()),storage);
-            writer = new ContinuityWriter(configuration.ledger(), configuration.writerSources(), startupWriterAuthority(), clock,
-                    new ContinuityWriter.Extensions(domains, Optional.of(artifacts), rollback),storage);
+            if (readonly) {
+                artifacts = ImmutableArtifactStore.readOnlyExisting(new ImmutableArtifactStore.Config(configuration.artifactRoot(),
+                        configuration.ledger().lock(), configuration.maximumArtifactBytes()), storage);
+                writer = ContinuityWriter.readOnlyExisting(configuration.ledger(), configuration.writerSources(), startupWriterAuthority(), clock,
+                        new ContinuityWriter.Extensions(domains, Optional.of(artifacts), Optional.empty()), storage);
+            } else {
+                artifacts = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(configuration.artifactRoot(),
+                        configuration.ledger().lock(), configuration.maximumArtifactBytes()), storage);
+                writer = new ContinuityWriter(configuration.ledger(), configuration.writerSources(), startupWriterAuthority(), clock,
+                        new ContinuityWriter.Extensions(domains, Optional.of(artifacts), rollback), storage);
+            }
             StrictJson.require(writer.storageGuard()==storage&&artifacts.storageGuard()==storage,
                     "Core ledger and immutable artifact store must retain the identical required storage guard");
             archive = new NativeOutcomeArchive(artifacts, writer); originals = new ArchiveOriginalEvidencePort(archive);

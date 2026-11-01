@@ -16,6 +16,7 @@ import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.ActionTransitions;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.driver.DriverBootstrap;
 import org.xar.ck3.control.application.driver.InitialDriverState;
@@ -26,6 +27,7 @@ import org.xar.ck3.control.application.session.SessionClock;
 import org.xar.ck3.control.build.runtime.HostMode;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.continuity.writer.StorageWriteGuard;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativePrivateActionPermission;
@@ -56,6 +58,79 @@ public final class RootOrdinaryRuntimeAssembly {
         return prepare(config,clock,Optional.empty());
     }
 
+    /** Source-only reader for an existing old Saved daemon; no allocation, genesis, or write authority. */
+    public static Prepared prepareReadOnlySavedSource(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
+        Objects.requireNonNull(config);Objects.requireNonNull(clock);
+        var metadata=new RootOrdinaryImplementationMetadata();
+        Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application parent");
+        byte[] raw;
+        try(InputStream input=Files.newInputStream(config.launchPlanFile())) {
+            raw=input.readNBytes(NativeLaunchPlanCodec.MAXIMUM_BYTES+1);
+        }
+        if(raw.length>NativeLaunchPlanCodec.MAXIMUM_BYTES)throw new IOException("launch configuration exceeds its codec limit");
+        var planDocument=org.xar.ck3.control.contracts.StrictJson.parse(raw,NativeLaunchPlanCodec.MAXIMUM_BYTES);
+        var planConfiguration=planDocument.has("configuration")?planDocument.get("configuration"):planDocument;
+        NativeLaunchPlan plan=NativeLaunchPlanCodec.fromJson(planConfiguration).accept();
+        var paths=new WriterContracts.InitialLayout(root.resolve("continuity/continuity.json"),
+                root.resolve("continuity/genesis-anchor.json"),config.machineId());
+        Path archiveRoot=root.resolve("continuity/artifacts");
+        // Strictly require existing layout; never create directories or genesis.
+        if(!Files.isRegularFile(paths.snapshot(),java.nio.file.LinkOption.NOFOLLOW_LINKS)
+                ||!Files.isRegularFile(paths.anchor(),java.nio.file.LinkOption.NOFOLLOW_LINKS)
+                ||!Files.isDirectory(paths.events(),java.nio.file.LinkOption.NOFOLLOW_LINKS))
+            throw new IOException("source-only reader requires its existing complete pre-entry store");
+        var outputRoots=List.of(config.stateDirectory(),archiveRoot,paths.snapshot().getParent(),
+                root.resolve("checkpoints"),root.resolve("receipts"),root.resolve("artifacts"),plan.profileDirectory().resolve("save games"),plan.evidenceRoot());
+        // Inert storage guard for product composition only; no allocation admission.
+        var storage=RootRuntimeStorageGuard.ordinary(paths,archiveRoot,()->{
+            throw new IOException("source-only reader has no live writer authority");
+        },outputRoots,config.maximumStorageBytes(),clock);
+        var noWrites=StorageWriteGuard.noWrites();
+        try {
+            var layout=new WriterContracts.Layout(paths.snapshot(),metadata.file(paths.anchor()),config.machineId());
+            var app=new RootApplicationConfiguration(config.machineId(),HostMode.COMPLETE_MIGRATION,clock.instant(),
+                    metadata.file(config.launchPlanFile()),layout,List.of(metadata.implementation(RootOrdinaryRuntimeAssembly.class)),
+                    archiveRoot,config.maximumStorageBytes());
+            var ports=new RootCoreBoundPorts(app);
+            var files=readOnlyFiles(new NativeCheckpointFiles(),noWrites);
+            var operator=RootOperatorCharacterAuthority.prepareOrdinary(metadata.file(config.nativeImplementation()),metadata);
+            var runtimePorts=new RootRuntimeSourceProducts.OrdinaryRuntimePorts(ports,files,storage,
+                    OriginalRuntimeHandoffProof.unavailable(),operator,metadata,clock);
+            var products=RootOrdinaryPlainProducts.prepare(config,app,runtimePorts,config.initialPolicy(),plan);
+            var catalogs=products.runtime().catalogs();
+            List<NativePrivateActionPermission> permissions=List.of();
+            var lifecycle=new JavaGameLifecycle(permissions,config.operationTimeout());
+            return new Prepared(config,clock,plan,metadata,app,ports,storage,files,products,catalogs,permissions,lifecycle,noWrites);
+        }catch(IOException|RuntimeException|Error failure) {
+            try{noWrites.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
+            try{storage.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
+            throw failure;
+        }
+    }
+
+    /** Fresh independent business root for loaded Saved continuation; requires absent root before writes. */
+    public static Prepared prepareFreshLoadedSaved(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            RootJavaSavedBootstrap.ConfirmedSource source)throws IOException {
+        Objects.requireNonNull(config);Objects.requireNonNull(clock);Objects.requireNonNull(source);
+        var saved=source.savedState();
+        if(!saved.machineId().equals(config.machineId()))throw new IOException("confirmed source belongs to another machine");
+        var origin=saved.origin();
+        var expected=new org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan(
+                config.machineId(),origin.windowId(),origin.targetDays());
+        // Require fresh root absent BEFORE any writes to avoid mutating retained249 or old843.
+        Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application root");
+        if(!Files.notExists(root,java.nio.file.LinkOption.NOFOLLOW_LINKS))
+            throw new IOException("fresh loaded Saved continuation requires an absent business root");
+        var prepared=prepare(config,clock,Optional.of(expected));
+        try {
+            prepared.bindLoadedSavedSource(source);
+            return prepared;
+        }catch(IOException|RuntimeException|Error failure) {
+            try{prepared.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
+            throw failure;
+        }
+    }
+
     private static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock,
             Optional<org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan> savedGenesis)throws IOException {
         Objects.requireNonNull(config);Objects.requireNonNull(clock);
@@ -73,7 +148,7 @@ public final class RootOrdinaryRuntimeAssembly {
                 root.resolve("continuity/genesis-anchor.json"),config.machineId());
         Path archiveRoot=root.resolve("continuity/artifacts");
         var outputRoots=List.of(config.stateDirectory(),archiveRoot,paths.snapshot().getParent(),
-                root.resolve("checkpoints"),root.resolve("receipts"),root.resolve("artifacts"),plan.profileDirectory().resolve("save games"));
+                root.resolve("checkpoints"),root.resolve("receipts"),root.resolve("artifacts"),plan.profileDirectory().resolve("save games"),plan.evidenceRoot());
         for(Path directory:outputRoots)Files.createDirectories(directory);
         Files.createDirectories(config.stateDirectory().resolve("incidents/inputs"));
         Files.createDirectories(config.stateDirectory().resolve("incidents/scan"));
@@ -113,6 +188,27 @@ public final class RootOrdinaryRuntimeAssembly {
             try {storage.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
             throw failure;
         }
+    }
+
+    private static CheckpointFiles readOnlyFiles(CheckpointFiles actual,StorageWriteGuard guard)throws IOException {
+        StorageWriteGuard.requireNoWritesOpen(guard);Objects.requireNonNull(actual);
+        return new CheckpointFiles() {
+            @Override public Optional<FileWitness> observe(Path path)throws IOException {
+                StorageWriteGuard.requireNoWritesOpen(guard);return actual.observe(path);
+            }
+            @Override public byte[] read(FileWitness expected,int maximumBytes)throws IOException {
+                StorageWriteGuard.requireNoWritesOpen(guard);return actual.read(expected,maximumBytes);
+            }
+            @Override public FileWitness createNew(Path target,byte[] body)throws IOException {
+                throw new IOException("source-only checkpoint files cannot create");
+            }
+            @Override public FileWitness replace(Path target,byte[] body)throws IOException {
+                throw new IOException("source-only checkpoint files cannot replace");
+            }
+            @Override public FileWitness copyNew(FileWitness source,Path target)throws IOException {
+                throw new IOException("source-only checkpoint files cannot copy");
+            }
+        };
     }
 
     private static org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan genesisRequest(Path request,String machineId,Clock clock)throws IOException {
@@ -212,6 +308,7 @@ public final class RootOrdinaryRuntimeAssembly {
         private final RootRuntimeCatalogFactory catalogs;
         private final List<NativePrivateActionPermission> permissions;
         private final JavaGameLifecycle lifecycle;
+        private final StorageWriteGuard noWrites;
         private final OriginalWindowReducer.Policy cyclePolicy=new OriginalWindowReducer.Policy(OriginalWindowReducer.TARGET_DAYS);
         private final NativeReadiness.Policy policy=new NativeReadiness.Policy(false,false,Optional.empty(),Duration.ZERO,false);
         private RootApplicationAssembly.Core core;
@@ -219,27 +316,47 @@ public final class RootOrdinaryRuntimeAssembly {
         private boolean entered;
         private boolean closed;
         private RootJavaSavedBootstrap.ConfirmedSource loadedSavedSource;
+        private final boolean sourceOnly;
 
         private Prepared(RootOrdinaryRuntimeConfiguration config,Clock clock,NativeLaunchPlan plan,
                 RootOrdinaryImplementationMetadata metadata,RootApplicationConfiguration app,RootCoreBoundPorts ports,
                 RootRuntimeStorageGuard storage,CheckpointFiles files,RootRuntimeSourceProducts.PlainPrepared products,
                 RootRuntimeCatalogFactory catalogs,List<NativePrivateActionPermission> permissions,JavaGameLifecycle lifecycle) {
+            this(config,clock,plan,metadata,app,ports,storage,files,products,catalogs,permissions,lifecycle,null);
+        }
+
+        private Prepared(RootOrdinaryRuntimeConfiguration config,Clock clock,NativeLaunchPlan plan,
+                RootOrdinaryImplementationMetadata metadata,RootApplicationConfiguration app,RootCoreBoundPorts ports,
+                RootRuntimeStorageGuard storage,CheckpointFiles files,RootRuntimeSourceProducts.PlainPrepared products,
+                RootRuntimeCatalogFactory catalogs,List<NativePrivateActionPermission> permissions,JavaGameLifecycle lifecycle,
+                StorageWriteGuard noWrites) {
             this.config=config;this.clock=clock;this.plan=plan;this.metadata=metadata;this.app=app;this.ports=ports;
             this.storage=storage;this.files=files;this.products=products;this.catalogs=catalogs;
-            this.permissions=List.copyOf(permissions);this.lifecycle=lifecycle;
+            this.permissions=List.copyOf(permissions);this.lifecycle=lifecycle;this.noWrites=noWrites;
+            this.sourceOnly=noWrites!=null;
         }
         public RootOrdinaryRuntimeConfiguration configuration(){return config;}
         public InitialEpisodePolicy initialPolicy(){return config.initialPolicy();}
         public NativeLaunchPlan plan(){return plan;}
-        public List<NativePrivateActionPermission> privatePermissions(){return permissions;}
-        public RootRuntimeCatalogFactory catalogs(){return catalogs;}
-        public JavaGameLifecycle lifecycle(){return lifecycle;}
+        public List<NativePrivateActionPermission> privatePermissions(){
+            if(sourceOnly)throw new IllegalStateException("source-only reader exposes no live private permissions");
+            return permissions;
+        }
+        public RootRuntimeCatalogFactory catalogs(){
+            if(sourceOnly)throw new IllegalStateException("source-only reader exposes no live catalog authority");
+            return catalogs;
+        }
+        public JavaGameLifecycle lifecycle(){
+            if(sourceOnly)throw new IllegalStateException("source-only reader exposes no live lifecycle authority");
+            return lifecycle;
+        }
 
         /** Uses only this Prepared graph's actual Saved creator result; this method never launches. */
         private synchronized void bindLoadedSavedSource(RootJavaSavedBootstrap.ConfirmedSource source)throws IOException {
             Objects.requireNonNull(source);
             if(closed||entered||core!=null||game!=null||loadedSavedSource!=null)
                 throw new IOException("loaded Saved source graph is already consumed or closed");
+            if(sourceOnly)throw new IOException("source-only reader cannot bind loaded Saved continuation");
             if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))
                 throw new IOException("loaded Saved source requires the actual Saved plan");
             core=RootApplicationAssembly.open(app,clock,catalogs.domainRegistrations(),Optional.empty(),storage);
@@ -258,6 +375,7 @@ public final class RootOrdinaryRuntimeAssembly {
                 Instant deadline)throws IOException,InterruptedException {
             Objects.requireNonNull(actualAttached);Objects.requireNonNull(source);
             Objects.requireNonNull(custody);Objects.requireNonNull(deadline);
+            if(sourceOnly)throw new IOException("source-only reader cannot open loaded Saved continuation");
             if(closed||entered||core==null||game!=null||loadedSavedSource!=source)
                 throw new IOException("loaded Saved graph is unavailable or differs from its retained source");
             if(actualAttached.mode()!=ManagedGameSession.Mode.ATTACHED||actualAttached.launchPlan()!=plan
@@ -288,6 +406,7 @@ public final class RootOrdinaryRuntimeAssembly {
         public synchronized Running openConfirmedSaved(JavaGameLifecycle.Started started,
                 RootJavaSavedBootstrap.ConfirmedSource confirmed,Instant deadline)throws IOException,InterruptedException {
             Objects.requireNonNull(started);Objects.requireNonNull(confirmed);Objects.requireNonNull(deadline);
+            if(sourceOnly)throw new IOException("source-only reader cannot open confirmed Saved continuation");
             if(closed||entered||core!=null||game!=null)
                 throw new IOException("confirmed saved graph is already consumed or closed");
             var actual=Objects.requireNonNull(started.session());
@@ -323,8 +442,13 @@ public final class RootOrdinaryRuntimeAssembly {
         public synchronized RootApplicationAssembly.Core openSavedSourceCore()throws IOException {
             if(closed||entered||core!=null||game!=null)
                 throw new IOException("saved source graph is already consumed or closed");
+            if(sourceOnly) {
+                StorageWriteGuard.requireNoWritesOpen(noWrites);
+                core=RootApplicationAssembly.openReadOnlySavedSource(app,clock,catalogs.domainRegistrations(),noWrites);
+            } else {
+                core=RootApplicationAssembly.open(app,clock,catalogs.domainRegistrations(),Optional.empty(),storage);
+            }
             entered=true;
-            core=RootApplicationAssembly.open(app,clock,catalogs.domainRegistrations(),Optional.empty(),storage);
             core.bindM5JointPeacetimeEnabled(config.m5JointPeacetimeEnabled());
             core.bindFirstHeirMarriageEnabled(config.firstHeirMarriageEnabled());
             core.bindNewMarriageProposalsEnabled(config.newMarriageProposalsEnabled());
@@ -334,6 +458,7 @@ public final class RootOrdinaryRuntimeAssembly {
 
 
         private synchronized void openCore(ManagedGameSession actual)throws IOException {
+            if(sourceOnly)throw new IOException("source-only reader cannot open a live Core");
             if(closed||entered||core!=null||loadedSavedSource!=null)throw new IOException("ordinary worker composition is already consumed or closed");
             Objects.requireNonNull(actual);
             if(actual.mode()!=ManagedGameSession.Mode.ATTACHED)throw new IOException("ordinary worker requires the actual supervisor attachment");
@@ -347,6 +472,7 @@ public final class RootOrdinaryRuntimeAssembly {
         }
 
         public Opened open(ManagedGameSession actual)throws IOException,InterruptedException {
+            if(sourceOnly)throw new IOException("source-only reader cannot open live ordinary session");
             openCore(actual);
             actual.nativeTransport().awaitHello(clock.instant().plus(config.operationTimeout()));
             var hello=actual.nativeTransport().originalHello();
@@ -392,6 +518,7 @@ public Running openSameGameBootstrap(ManagedGameSession actual, Optional<Continu
 
         public Running openCleanRestart(ManagedGameSession actual,ContinuityBatchJournal.CleanRestartTicket ticket,
                 Instant deadline)throws IOException,InterruptedException {
+            if(sourceOnly)throw new IOException("source-only reader cannot open clean restart");
             openCore(actual);
             var driver=runOperationPhase(clock,java.time.Duration.ofMinutes(10),phaseDeadline->
                     core.adoptCleanRestart(actual,Objects.requireNonNull(ticket),config.retainedFrames(),cyclePolicy,phaseDeadline));
@@ -431,6 +558,10 @@ public Running openSameGameBootstrap(ManagedGameSession actual, Optional<Continu
                 try {core.closeCompletion().toCompletableFuture().join();}
                 catch(RuntimeException|Error close){failure=merge(failure,close);}
             }else try {storage.close();}catch(IOException|RuntimeException|Error close){failure=close;}
+            if(sourceOnly) {
+                try {noWrites.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
+                try {storage.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
+            }
             if(game!=null)try {game.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
             if(failure!=null)throwClose(failure);
         }
