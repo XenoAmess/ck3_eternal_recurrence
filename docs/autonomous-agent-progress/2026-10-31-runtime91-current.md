@@ -1,5 +1,13 @@
 # runtime91 同局续行
 
+## 2026-11-01 15:43Z：251已同局附着并取得LoadedCustody，实际两READ完整map比较失败，入口仍未提交
+
+- P0251的NoWrites Guard/Writer、existing-only Store、Core/Ordinary消费者与Main共6个独立生产叶已实际采用。MB251于15:35:22.045773Z至15:35:28.715466Z exit0/6.669698秒；worker59796/birth134380209672908732于15:36:07.289424Z START，15:37:00.463004Z END1/53.173570秒。本轮未启动新Game，继续249的Game33404与keeper69836；旧来源843和新251独立业务根分开，不强解锁或终止保活进程。
+- 15:36:39.543285800Z真实SOURCE_QUALIFIED：来源confirmation788、saved cycle12/date_raw53145984、source_head843、新保存日信用0。15:36:40.639153500Z实际ATTACHMENT到Game33404，15:36:41.704173300Z真实LOADED_CUSTODY_QUALIFIED；这些是本轮已到达的阶段，不等同保存入口完成。
+- 15:37:00.344241600Z在RootJavaSavedBootstrap.completeAdmission:175拒绝，原文为two actual loaded paused READs did not retain the same original full map。依据该现行源码执行次序，可推此前verifyAfter与两次requireRaw已经通过，即实际帧的paused/mapready/living actor及与来源69日配对日期等前置检查已越过；这是源码顺序推断，不代替完整admission。两份完整map或native revision的具体差异尚未在本冻结中取得，不归因为metadata、不放宽等式或重放动作。15:37:00.346304300Z endpoint实际RELEASED，game_stop_requested=false。
+- 15:41:51.148833Z已冻结的小head仍sequence0/status=awaiting_initial_entry；本轮无entry、LOOP或新增SAVE_CONFIRMED。累计仍原788的69日；性能epoch新增确认保存日0，秒/日仍null，等待、失败、恢复与构建均计墙钟。六个具名小原件与15:43:22冻结见D:/ck3-state/resume91-runtime/runtime-doc251terminal/DELIVERY251-TERMINAL.json；本段只消费冻结材料，无新Game查询、大SAVE/Driver读取或编测。P0252独占诊断继续，不以本段发表为运行前置。
+
+
 
 ## 2026-11-01 15:17Z：同Game续接250实际在只读来源的分配锁停出，251显式只读接口与独立业务目录并行修复
 
