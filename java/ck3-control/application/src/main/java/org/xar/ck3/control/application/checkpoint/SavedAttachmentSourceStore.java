@@ -261,10 +261,15 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         private final WriterContracts.HistoricalTransition confirmation;
         private final SavedMaterial material;
         private final FileWitness present;
+        private byte[] materialSavedDriverEncoded;
         private RequalifiedConfirmed(SavedAttachmentSourceStore issuer,ContinuityState sourceHead,String sourceDigest,
                 WriterContracts.HistoricalTransition confirmation,SavedMaterial material,FileWitness present) {
             this.issuer=issuer;this.sourceHead=sourceHead;this.sourceDigest=sourceDigest;this.confirmation=confirmation;
             this.material=material;this.present=present;
+        }
+        private synchronized byte[] requireSavedDriverEncoded() {
+            if (materialSavedDriverEncoded == null) materialSavedDriverEncoded = material.savedDriver().encode();
+            return materialSavedDriverEncoded;
         }
         public ContinuityState sourceHead(){return sourceHead;}
         public WriterContracts.HistoricalTransition confirmation(){return confirmation;}
@@ -296,7 +301,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
                     &&ContinuityJson.same(current.originalHead().toJson(),material.originalHead().toJson())
                     &&current.originalHeadDigest().equals(material.originalHeadDigest())
                     &&current.checkpointDigest().equals(material.checkpointDigest())
-                    &&Arrays.equals(current.savedDriver().encode(),material.savedDriver().encode()),
+                    &&Arrays.equals(current.savedDriver().encode(),requireSavedDriverEncoded()),
                     "retained historical material differs from its actual source-qualified identity");
             return current;
         }
