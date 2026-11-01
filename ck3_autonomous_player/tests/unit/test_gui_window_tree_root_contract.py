@@ -51,6 +51,28 @@ def actual_R0007_owner_samples() -> tuple[dict[str, object], dict[str, object]]:
     return frames[0], frames[1]
 
 
+def actual_R0062_owner_samples() -> tuple[dict[str, object], dict[str, object]]:
+    """Project two original heartbeats onto the recorded, unchanged paused frame.
+
+    The second combination is test input, not an additional live snapshot.
+    Original wire pins, line numbers, times and failed MCP call remain in the fixture.
+    """
+    path = Path(__file__).resolve().parents[1] / "fixtures/scripted_widget_owner_sampling_R0062.json"
+    fixture = contract.scripted_widget_object_v1(json.loads(path.read_text(encoding="utf-8")))
+    samples = fixture["samples"]
+    if not isinstance(samples, list) or len(samples) != 2:
+        raise ValueError("Two original R0062 owner samples required")
+    frames = []
+    for row in samples:
+        sample = contract.scripted_widget_object_v1(row)
+        frame = deepcopy(contract.scripted_widget_object_v1(fixture["snapshot"]))
+        diagnostics = contract.scripted_widget_object_v1(frame["diagnostics"])
+        diagnostics["last_heartbeat"] = sample["heartbeat"]
+        frame["diagnostics"] = diagnostics
+        frames.append(frame)
+    return frames[0], frames[1]
+
+
 def scripted_query(binding: contract.ScriptedWidgetBindingV1, generation: str = "9007199254740999") -> dict[str, object]:
     return {"schema": "ck3-native-scripted-widget-controls-v1", "step": contract.SCRIPTED_WIDGET_QUERY_STEP,
             **{key: binding[key] for key in ("native_revision", "connection_generation", "game_pid", "played_character_id", "date_raw")},
@@ -158,6 +180,64 @@ class ScriptedWidgetTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(sleep.call_count, 7)
         self.driver._execute_primitive_step.assert_not_called()
         self.assertFalse(list(Path(self.temp.name).glob("scripted-widget-controls/*.claim.json")))
+
+    async def test_actual_R0062_publishing_owner_samples_reach_mcp_query_once(self) -> None:
+        pending, self.frame = actual_R0062_owner_samples()
+        self.binding = contract.scripted_widget_binding_v1(self.frame)
+        with self.assertRaisesRegex(ValueError, "current verified application owner"):
+            contract.scripted_widget_binding_v1(pending)
+        # Exercise both starting and ending observations through the real MCP
+        # transport. Only the diagnostic snapshots may be read again.
+        self.driver.take_snapshot = Mock(side_effect=[pending, deepcopy(self.frame),
+                                                      deepcopy(pending), deepcopy(self.frame)])
+        async with Client(mcp_server.create_server(self.driver)) as client:
+            with patch("xar_autoplayer.bridge.native_driver.time.sleep") as sleep:
+                observed = await client.session.call_tool("ck3_query_scripted_widget_controls_v1", {
+                    "root_name": "custom_actual_window", "expected_revision": str(self.frame["revision"])})
+            self.assertFalse(observed.is_error, str(observed))
+            self.assertTrue(observed.structured_content["available"])
+        self.assertEqual(sleep.call_count, 2)
+        self.assertEqual(self.driver.take_snapshot.call_count, 4)
+        self.driver._execute_primitive_step.assert_called_once()
+        self.assertEqual(len(list(Path(self.temp.name).glob("scripted-widget-controls/query-*.json"))), 1)
+        self.assertFalse(list(Path(self.temp.name).glob("scripted-widget-controls/*.claim.json")))
+
+    def test_actual_R0062_publishing_owner_wait_is_bounded_without_dispatch(self) -> None:
+        pending, self.frame = actual_R0062_owner_samples()
+        self.driver.take_snapshot = Mock(return_value=pending)
+        with patch("xar_autoplayer.bridge.native_driver.time.sleep") as sleep:
+            with self.assertRaisesRegex(BridgeUnavailableError, "bounded read limit"):
+                self.query()
+        self.assertEqual(sleep.call_count, 7)
+        self.assertEqual(self.driver.take_snapshot.call_count, 8)
+        self.driver._execute_primitive_step.assert_not_called()
+        self.assertFalse(list(Path(self.temp.name).glob("scripted-widget-controls/*")))
+
+    def test_actual_R0062_publishing_wait_rejects_other_observer_and_pump_states(self) -> None:
+        pending, self.frame = actual_R0062_owner_samples()
+        for field, value in (("read_in_progress", 1), ("started_ms", True),
+                             ("completed_ms", 358932859.0), ("completed_ms", -1),
+                             ("completed_ms", 358933109), ("completed_ms", 358933110),
+                             ("last_read_available", False), ("last_read_available", 1),
+                             ("snapshot_cached", True), ("snapshot_cached", 0),
+                             ("owner_verified_pump_epochs", 17390),
+                             ("owner_verified_pump_epochs", 17388)):
+            with self.subTest(field=field, value=value):
+                broken = deepcopy(pending)
+                diagnostics = contract.scripted_widget_object_v1(broken["diagnostics"])
+                heartbeat = contract.scripted_widget_object_v1(diagnostics["last_heartbeat"])
+                key = "main_thread_query_mailbox_v1" if field == "owner_verified_pump_epochs" else "snapshot_observer_12002"
+                state = contract.scripted_widget_object_v1(heartbeat[key])
+                state[field] = value
+                heartbeat[key] = state
+                diagnostics["last_heartbeat"] = heartbeat
+                broken["diagnostics"] = diagnostics
+                self.driver.take_snapshot = Mock(return_value=broken)
+                with patch("xar_autoplayer.bridge.native_driver.time.sleep") as sleep:
+                    with self.assertRaises(ValueError):
+                        self.query()
+                sleep.assert_not_called()
+                self.driver._execute_primitive_step.assert_not_called()
 
     def test_owner_sampling_rejects_frame_and_owner_drift_before_dispatch(self) -> None:
         pending, stable = actual_R0007_owner_samples()
