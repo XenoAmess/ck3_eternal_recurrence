@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-01 16:44Z：252–254同局恢复推进，SavedEntry已提交，Army资格门后停出
+
+- P0252保留四份真实READ/ACK原件后仍在两READ等式处END1：15:50:01.862322Z启动，15:50:47.704327Z退出，45.842003秒；endpoint于15:50:47.575072500Z释放。两份1087B帧原件的完整state唯一差异为`played_character.event_trait_membership.snapshot_revision`从5到6，各自等于本帧revision；外层request_id、snapshot_id和revision亦随独立READ变化，日期均53145984且paused=true。此精确差异属于本次冻结，不回填旧251“原件差异未知”的历史段。MB252实际0/4.824242秒；原Runtime标签ordinary252-build对应证据目录`ordinaryordinary252-build-build`，原误标签保留，未重建或重命名。
+- P0253复用现有typed稳定READ progression合同，越过两READ检查后在新可写Writer事务内再次进入旧来源Writer.locked，被原全局nested-session检查拒绝。MB于16:00:41.677432Z至46.274260Z exit0/4.596830秒；运行16:00:52起至16:01:44.758646Z END1/52.648997秒，endpoint16:01:44.646064400Z释放。此轮尚未提交保存入口，原全局guard未放宽。
+- P0254实际加载Writer.readOnlyFrom与Root三Admission阶段的受限来源接线。MB16:17:34.338718Z至39.662064Z exit0/5.323346秒；继续Game33404/keeper69836。16:20:01.020375100Z SOURCE_QUALIFIED仍指原confirmation788、cycle12/date_raw53145984/source843；16:20:02.102983500Z实际ATTACHMENT，16:20:03.358599400Z LoadedCustody。后续真实保存入口和Driver/domain DATA已经提交，随后在ArmyRetreatDomain.initializeNewEpisode:73的旧first-gameplay-entry资格门拒绝。16:22:36.429578300Z endpoint释放，16:22:36.611128Z END1/185.808128秒；运行岗约16:24:38Z才消费终态，约122秒读取延迟计入实际恢复成本。
+- 16:26:02.232714Z具名冻结的新251账本为sequence13/status=running、top-level settled cycles12/date_raw53145984、无pending receipt；原32041B冻结含`java_confirmed_saved_game_entry`、`java_driver_history_baseline`及`java_domain_bodies_v1`。这证明恢复入口及其元数据已提交，不是普通LOOP或新增游戏日/SAVE。后继255必须按该真实canonical history retained reopening继续，不能再当head0重做初始入口；冻结时intent的RetainedSaved、M7消费者与M3 Army修复仍在准备，未授255已启动或通过。
+- 原788累计69日确认保存保持；本性能epoch新增SAVE_CONFIRMED日仍0，端到端等待、失败、增编、恢复及读取迟延全部计墙钟，秒/新增保存日仍null。十八份具名小原件和16:44:35冻结见`D:/ck3-state/resume91-runtime/runtime-doc252254/DELIVERY252254.json`。本段未查询Game、读取大SAVE/Driver或重新编测，正式发表不作为下一P0运行门；旧251及更早全文逐字保留。
+
+
 ## 2026-11-01 15:43Z：251已同局附着并取得LoadedCustody，实际两READ完整map比较失败，入口仍未提交
 
 - P0251的NoWrites Guard/Writer、existing-only Store、Core/Ordinary消费者与Main共6个独立生产叶已实际采用。MB251于15:35:22.045773Z至15:35:28.715466Z exit0/6.669698秒；worker59796/birth134380209672908732于15:36:07.289424Z START，15:37:00.463004Z END1/53.173570秒。本轮未启动新Game，继续249的Game33404与keeper69836；旧来源843和新251独立业务根分开，不强解锁或终止保活进程。
