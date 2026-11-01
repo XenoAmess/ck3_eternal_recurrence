@@ -650,7 +650,14 @@ public final class RootAdvanceInfrastructureFactory {
                 failure.initCause(interrupted);throw failure;
             }
             if(fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
-                String reason=unavailable.reason();throw new IOException("actual fresh read unavailable: "+reason.substring(0,Math.min(512,reason.length())));
+                var dispatch=unavailable.dispatch();var original=archive.preserve(dispatch);
+                var frame=unavailable.originalFrame().map(archive::preserveNativeFrame);
+                String kind=dispatch instanceof NativeActionPort.AckReceived ack?"ACK/native_ok="+ack.nativeOk():
+                        dispatch instanceof NativeActionPort.RejectedBeforeDispatch?"REJECTED_BEFORE_DISPATCH":"UNKNOWN";
+                String reason=unavailable.reason();
+                throw new IOException("actual fresh read unavailable: kind="+kind+"; request_id="+dispatch.requestId()
+                        +"; dispatch_ref="+original+"; frame_ref="+frame.map(Object::toString).orElse("absent")
+                        +"; reason="+reason.substring(0,Math.min(512,reason.length())));
             }
             var received=(NativeFreshSnapshotPort.Received)fresh;
             require(context.clock().instant().isBefore(deadline) && !received.originalFrame().observedAt().isAfter(deadline),
