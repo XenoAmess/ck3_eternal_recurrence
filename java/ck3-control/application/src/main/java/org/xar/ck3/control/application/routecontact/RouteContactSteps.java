@@ -17,6 +17,11 @@ public final class RouteContactSteps {
         public RouteContactProofs.Scope scope() { return new RouteContactProofs.Scope(subjectId, targetId, hostiles); }
     }
     public static boolean supports(String value) {
+        // Source proof: parse() first gate requires non-null and startsWith(HORIZON|WINDOW). QUERY is not accepted by parse().
+        // Null and non-route prefixes cannot reach later validation; avoid ContractViolationException allocation for these negatives.
+        if (value == null || !(value.startsWith(HORIZON) || value.startsWith(WINDOW))) {
+            return false;
+        }
         try { parse(value); return true; }
         catch (IllegalArgumentException unavailable) { return false; }
     }
