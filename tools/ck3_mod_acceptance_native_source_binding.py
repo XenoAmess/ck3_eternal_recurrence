@@ -14,7 +14,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-from typing import Protocol, TypedDict, NotRequired, runtime_checkable
+from typing import Literal, Protocol, TypedDict, NotRequired, runtime_checkable
 
 from build_native_configured_successor import (
     NONCOMPILED_CONSUMER_RELATIVE as NONCOMPILED_CONSUMER_RELATIVE,
@@ -99,6 +99,13 @@ def qualified_native_source_checkout(binding_path: Path | None, *, root: Path,
     require(not binding_path.is_symlink(), "Source checkout binding cannot be symbolic")
     binding_ref = pin(binding_path)
     value = json.loads(binding_path.read_text(encoding="utf-8-sig"))
+    if isinstance(value, dict) and value.get("schema") == FROZEN_RELOCATION_SCHEMA:
+        require(native_shared_python_host_delta is None,
+                "Frozen source relocation permits no Native or shared-host byte difference")
+        return dict(validate_frozen_source_relocation(value, root=root, runtime_commit=runtime_commit,
+            native_commit=native_commit, machine=machine, qualified_native_ref=qualified_native_ref,
+            qualification=qualification, snapshot_ref=snapshot_ref, snapshot=snapshot,
+            binding_ref=binding_ref))
     if isinstance(value, dict) and value.get("schema") in {
             "ck3-native-same-root-shared-python-host-binding-v1",
             "ck3-native-same-root-host-and-fixture-cmake-binding-v1",
@@ -268,6 +275,135 @@ def qualified_native_source_checkout(binding_path: Path | None, *, root: Path,
                       shared_python_host_delta=shared_host["ref"],
                       shared_host_qualification=shared_host["shared_host_qualification"])
     return result
+
+
+FROZEN_RELOCATION_SCHEMA: Literal["ck3-native-frozen-input-source-relocation-v1"] = "ck3-native-frozen-input-source-relocation-v1"
+
+
+class FrozenSourceRelocation(TypedDict):
+    schema: Literal["ck3-native-frozen-input-source-relocation-v1"]
+    machine_id: str
+    observed_at_utc: str
+    runtime_repo_root: str
+    runtime_source_commit: str
+    native_source_commit: str
+    original_native_source_base: str
+    snapshot_native_base: str
+    qualified_native: FilePin
+    snapshot: FilePin
+    producer: FilePin
+
+
+class FrozenRelocationContext(TypedDict):
+    native_source_base: Path
+    binding_ref: FilePin
+
+
+def validate_frozen_source_relocation(value: object, *, root: Path, runtime_commit: str,
+        native_commit: str, machine: str, qualified_native_ref: object, qualification: object,
+        snapshot_ref: object, snapshot: object, binding_ref: FilePin) -> FrozenRelocationContext:
+    """Compare every frozen input with S; historical compile paths stay historical."""
+    relocation, actual_q, frozen = host_obj(value), host_obj(qualification), host_obj(snapshot)
+    fields = {"schema", "machine_id", "observed_at_utc", "runtime_repo_root", "runtime_source_commit",
+              "native_source_commit", "original_native_source_base", "snapshot_native_base",
+              "qualified_native", "snapshot", "producer"}
+    host_require(set(relocation) == fields and relocation["schema"] == FROZEN_RELOCATION_SCHEMA,
+                 "Exact frozen source relocation fields required")
+    host_require(relocation["machine_id"] == machine == actual_q.get("machine_id") == frozen.get("machine_id")
+        and relocation["runtime_source_commit"] == runtime_commit
+        and relocation["native_source_commit"] == native_commit == actual_q.get("source_commit") == frozen.get("root_commit")
+        and re.fullmatch("[0-9a-f]{40}", runtime_commit) is not None
+        and re.fullmatch("[0-9a-f]{40}", native_commit) is not None,
+        "Frozen source relocation machine or compile/runtime identity differs")
+    host_require(host_checked(relocation["qualified_native"]) == host_checked(qualified_native_ref)
+        and host_checked(relocation["snapshot"]) == host_checked(snapshot_ref)
+        and host_checked(relocation["producer"]) == host_pin(Path(__file__)),
+        "Frozen source relocation must retain exact original evidence and actual producer")
+    host_require(host_timestamp(actual_q.get("observed_at_utc"))
+        <= host_timestamp(relocation["observed_at_utc"]) <= datetime.now(timezone.utc),
+        "Frozen source relocation must follow the original qualification")
+    root = root.resolve()
+    original = Path(host_string(frozen["Root_native_source_base"])).resolve()
+    frozen_root = Path(host_string(frozen["snapshot_native_base"])).resolve()
+    host_require(Path(host_string(relocation["runtime_repo_root"])).resolve() == root
+        and Path(host_string(relocation["original_native_source_base"])).resolve() == original
+        and Path(host_string(relocation["snapshot_native_base"])).resolve() == frozen_root,
+        "Relocation must preserve original Native paths separately from S")
+    checkout(root, runtime_commit)
+    tracked = {path.removeprefix(NATIVE_PREFIX) for path in
+        git(root, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0") if path}
+    rows = [host_obj(row) for row in host_arr(frozen["files"])]
+    names: set[str] = set()
+    native = root / NATIVE_PREFIX
+    host_require(native.is_dir() and not native.is_symlink() and not native.is_junction()
+        and native.resolve().is_relative_to(root), "Native relocation needs an ordinary subtree inside S")
+    for row in rows:
+        relative = host_string(row.get("native_relative"))
+        host_require(relative and "\\" not in relative and ":" not in relative and not relative.startswith("/")
+            and all(part not in {"", ".", ".."} for part in relative.split("/"))
+            and "source" not in row and "original_source_pin" not in row and relative not in names,
+            "Relocation accepts only the complete unique original tracked Native inventory")
+        names.add(relative)
+        expected = host_parse_signature({key: row[key] for key in ("bytes", "sha256")})
+        for base in (native, frozen_root):
+            path = base / relative
+            host_require(not path.is_symlink() and path.is_file() and path.resolve().is_relative_to(base.resolve())
+                and host_signature(path.read_bytes()) == expected,
+                "Frozen Native relocation raw input differs: " + relative)
+    actual: set[str] = set()
+    for path in native.rglob("*"):
+        host_require(not path.is_symlink() and not path.is_junction(), "Linked Native relocation input rejected")
+        if path.is_file():
+            actual.add(path.relative_to(native).as_posix())
+    host_require(names == tracked == actual and host_exact_integer(frozen["source_count"]) == len(rows) == len(names),
+        "Frozen source relocation must cover every tracked and actual Native file")
+    checkout(root, runtime_commit)
+    return {"native_source_base": original, "binding_ref": binding_ref}
+
+
+def produce_frozen_source_relocation(root: Path, qualification_path: Path,
+        output: Path, machine: str) -> FilePin:
+    root = root.resolve()
+    qualification_ref = host_pin(qualification_path)
+    qualification = host_read(qualification_path)
+    host_require(qualification.get("schema") == "ck3-qualified-native-build-v1"
+        and qualification.get("actual_live_business_qualified") is False,
+        "Original qualified Native evidence required")
+    snapshot_ref = host_checked(qualification["snapshot"])
+    snapshot = host_read(Path(snapshot_ref["path"]))
+    commit = git(root, "rev-parse", "HEAD")
+    value: FrozenSourceRelocation = {
+        "schema": FROZEN_RELOCATION_SCHEMA, "machine_id": machine,
+        "observed_at_utc": datetime.now(timezone.utc).isoformat(),
+        "runtime_repo_root": str(root), "runtime_source_commit": commit,
+        "native_source_commit": host_string(qualification["source_commit"]),
+        "original_native_source_base": host_string(snapshot["Root_native_source_base"]),
+        "snapshot_native_base": host_string(snapshot["snapshot_native_base"]),
+        "qualified_native": qualification_ref, "snapshot": snapshot_ref, "producer": host_pin(Path(__file__)),
+    }
+    output = output.resolve()
+    host_require(not output.is_relative_to(root) and not output.exists(), "Fresh relocation receipt outside S required")
+    raw = (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+    host_require(len(raw) <= 16384, "Frozen source relocation metadata exceeds 16KiB")
+    future: FilePin = {"path": str(output), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+    validate_frozen_source_relocation(value, root=root, runtime_commit=commit,
+        native_commit=host_string(qualification["source_commit"]), machine=machine,
+        qualified_native_ref=qualification_ref, qualification=qualification,
+        snapshot_ref=snapshot_ref, snapshot=snapshot, binding_ref=future)
+    with output.open("xb") as stream:
+        stream.write(raw)
+    return host_pin(output)
+
+
+def frozen_relocation_main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(description="Bind an unchanged complete frozen Native inventory to a clean SDK source checkout")
+    for name in ("repo-root", "qualification", "output"):
+        parser.add_argument("--" + name, type=Path, required=True)
+    args = parser.parse_args(argv)
+    from ck3_live_run_id import current_machine_id
+    result = produce_frozen_source_relocation(args.repo_root, args.qualification, args.output, current_machine_id())
+    print(json.dumps({"source_binding": result, "native_rebuilt": False, "game_started": False}))
+    return 0
 
 
 # Same-root source successor maintenance; no Native build or live credit.
@@ -1024,4 +1160,6 @@ def same_root_main() -> int:
 
 
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["frozen-relocation"]:
+        raise SystemExit(frozen_relocation_main(sys.argv[2:]))
     raise SystemExit(same_root_main())

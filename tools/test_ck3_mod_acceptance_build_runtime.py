@@ -201,6 +201,7 @@ class QualifiedNativeConsumer(unittest.TestCase):
             'published_dll': builder.pin(self.published), 'Defender_settings_verified': binding,
             'finite_tests': [{'name': row['target'], 'execution': row['execution'], 'exe': row['executable']} for row in fixtures]})
         self.qualification = {'schema': 'ck3-qualified-native-build-v1', 'machine_id': MACHINE,
+            'observed_at_utc': '2026-10-20T00:00:01+00:00',
             'source_commit': self.commit, 'actual_live_business_qualified': False, 'delivery': delivery,
             'snapshot': snapshot, 'profile': profile, 'configured_scope': scope, 'source_verification': source_verification,
             'production_freeze': freeze, 'original_dll': builder.pin(self.dll), 'published_dll': builder.pin(self.published),
@@ -216,6 +217,28 @@ class QualifiedNativeConsumer(unittest.TestCase):
         self.assertEqual(len(result['native_files']), 2)
         self.assertEqual(result['dll'], builder.pin(self.published))
         self.assertEqual(result['qualification_ref'], builder.pin(self.qualification_path))
+
+    def test_frozen_source_relocation_producer_reaches_original_native_consumer(self):
+        relocated = self.base / 'shared-sdk'
+        subprocess.run(['git', 'clone', '--quiet', '--shared', str(self.root), str(relocated)], check=True, capture_output=True)
+        module = builder.module(HERE / 'ck3_mod_acceptance_native_source_binding.py', 'owned_frozen_source_relocation')
+        receipt = self.base / 'frozen-relocation.json'
+        module.produce_frozen_source_relocation(relocated, self.qualification_path, receipt, MACHINE)
+        result = builder.qualify_native(self.qualification_path, relocated, self.commit, MACHINE,
+            builder.pin(self.old_dll), self.old_manifest, native_source_checkout_binding=receipt)
+        self.assertEqual(result['compile_commit'], self.commit)
+        self.assertEqual(result['source_checkout_binding'], builder.pin(receipt))
+        self.assertEqual(result['dll'], builder.pin(self.published))
+        self.assertEqual(result['snapshot_root'], str(self.snapshot_root))
+        before = (relocated / builder.NATIVE_PREFIX / 'src/dll.cpp').read_bytes()
+        (relocated / builder.NATIVE_PREFIX / 'src/dll.cpp').write_bytes(before.replace(b'int', b'Int', 1))
+        subprocess.run(['git', 'add', '.'], cwd=relocated, check=True, capture_output=True)
+        subprocess.run(['git', '-c', 'user.name=finite-consumer', '-c', 'user.email=finite@example.invalid',
+            'commit', '-qm', 'actual one-byte Native mismatch'], cwd=relocated, check=True, capture_output=True)
+        with self.assertRaisesRegex(ValueError, 'raw input differs'):
+            module.produce_frozen_source_relocation(relocated, self.qualification_path,
+                self.base / 'rejected-relocation.json', MACHINE)
+        self.assertFalse((self.base / 'rejected-relocation.json').exists())
 
     def test_argc2_finite_wire_emitter_allowed_and_pinned(self):
         self.fixture_execution['argv'].append(str(self.base / 'new-wire-dir'))
@@ -406,6 +429,7 @@ class QualifiedNativeConsumer(unittest.TestCase):
         native = self.put('native-index', {'schema': 'ck3-common-native-source-index-v1', 'files': {}})
         host = builder.pin(self.native / 'src/dll.cpp')
         manifest = self.put('base-manifest', {'schema': 'ck3-mod-acceptance-shared-runtime-v1', 'machine_id': MACHINE,
+            'source_root': {'path_key': 'source_root'},
             'source_commit': base_commit, 'host': {'path_key': 'host', **{k: host[k] for k in ('bytes', 'sha256')}},
             'source_index': {'path_key': 'source_index', **{k: source[k] for k in ('bytes', 'sha256')}},
             'native_source_index': {'path_key': 'native_source_index', **{k: native[k] for k in ('bytes', 'sha256')}},
@@ -413,7 +437,7 @@ class QualifiedNativeConsumer(unittest.TestCase):
                        for name, ref in [('dll', builder.pin(self.old_dll)), ('injector', builder.pin(self.exe))]}})
         runtime = self.put('base-runtime', {'schema': 'ck3-mod-acceptance-runtime-v1', 'repo_root': str(self.root),
             'machine_id': MACHINE, 'manifest': manifest,
-            'paths': {'host': host['path'], 'source_index': source['path'], 'native_source_index': native['path'],
+            'paths': {'source_root': str(self.root), 'host': host['path'], 'source_index': source['path'], 'native_source_index': native['path'],
                       'dll': str(self.old_dll), 'injector': str(self.exe)}})
         scene = self.base / 'admitted-scene'
         scene.mkdir()
@@ -434,6 +458,32 @@ class QualifiedNativeConsumer(unittest.TestCase):
         self.assertEqual(delta['source_commit'], args.source_commit)
         self.assertEqual(delta['changes'][0]['after'], builder.sig(b'# new source metadata\n'))
         self.assertFalse((args.output / 'runtime.local.json').exists())
+
+    def test_public_freezer_emits_bound_base_for_explicit_shared_checkout(self):
+        freezer, args, identity = self.freezer_input()
+        original = args.base_runtime.read_bytes()
+        shared = self.base / 'shared-source'
+        subprocess.run(['git', 'clone', '--quiet', '--shared', str(self.root), str(shared)], check=True, capture_output=True)
+        args.shared_source_root = shared
+        with patch.dict(sys.modules, {'ck3_live_run_id': identity}):
+            delta = builder.read(freezer.freeze(args)['path'])
+        derived = builder.read(delta['base_runtime']['path'])
+        relocation = builder.read(derived['source_relocation']['path'])
+        self.assertEqual(derived['repo_root'], str(shared.resolve()))
+        self.assertEqual(derived['paths']['source_root'], str(shared.resolve()))
+        self.assertEqual(relocation['parent_runtime'], builder.pin(args.base_runtime))
+        self.assertEqual(relocation['parent_source_index']['path'], derived['paths']['source_index'])
+        self.assertEqual(args.base_runtime.read_bytes(), original)
+        self.assertEqual([row['path'] for row in delta['changes']], ['tools/metadata_producer.py'])
+
+    def test_product_repository_identity_keeps_linked_product_and_sdk_roots_distinct(self):
+        shared = self.base / 'linked-shared-source'
+        subprocess.run(['git', 'worktree', 'add', '--quiet', '--detach', str(shared), self.commit],
+                       cwd=self.root, check=True, capture_output=True)
+        identity = builder.product_repository_identity(shared, self.commit, self.root, self.commit)
+        self.assertEqual(identity.repository, self.root.resolve())
+        self.assertTrue(identity.explicitly_selected)
+        self.assertEqual(builder.product_repository_identity(shared, self.commit, None, None).repository, shared)
 
     def test_public_freezer_refuses_dirty_head_before_output(self):
         freezer, args, identity = self.freezer_input()

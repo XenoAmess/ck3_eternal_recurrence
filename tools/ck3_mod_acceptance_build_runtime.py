@@ -44,6 +44,36 @@ class StockReadOnlyCapabilityRule:
     required_flags: tuple[str, ...] = ()
 
 
+@dataclass(frozen=True)
+class ProductRepositoryIdentity:
+    repository: Path
+    source_commit: str
+    explicitly_selected: bool
+
+
+def product_repository_identity(shared_root: Path, shared_commit: str,
+        product_repository: Path | None, product_commit: str | None) -> ProductRepositoryIdentity:
+    """Keep product provenance separate from the selected shared SDK checkout."""
+    if product_repository is None:
+        require(product_commit is None, "Product source commit requires an explicit product repository")
+        return ProductRepositoryIdentity(shared_root, shared_commit, False)
+    if not isinstance(product_commit, str) or re.fullmatch("[0-9a-f]{40}", product_commit) is None:
+        raise ValueError("Explicit product repository requires its exact clean source commit")
+    product = product_repository.resolve()
+    require(not product_repository.is_symlink(), "Product repository must be an ordinary source checkout")
+    def observe(root: Path, arguments: list[str]) -> str:
+        return subprocess.run(["git", *arguments], cwd=root, capture_output=True,
+                              text=True, check=True).stdout.strip()
+    require(Path(observe(product, ["rev-parse", "--show-toplevel"])).resolve() == product
+            and observe(product, ["rev-parse", "HEAD"]) == product_commit
+            and not observe(product, ["status", "--porcelain", "--untracked-files=all"]),
+            "Product checkout must be clean at its explicit source commit")
+    def common(root: Path) -> Path:
+        return (root / observe(root, ["rev-parse", "--git-common-dir"])).resolve()
+    require(common(product) == common(shared_root), "Product and SDK must be explicit linked source checkouts")
+    return ProductRepositoryIdentity(product, product_commit, True)
+
+
 _FRONTEND_NATIVE_SOURCES = (
     "src/bridge.cpp", "src/ck3_12004_adapter.cpp", "src/frontend_gui_route_v1.cpp",
     "src/frontend_gui_result_v1.cpp",
@@ -1876,6 +1906,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--task-prefix", default="ck3-acceptance-")
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--product", required=True)
+    parser.add_argument("--product-repository", type=Path,
+                        help="Explicit linked product/fixture source checkout, independent of shared SDK source")
+    parser.add_argument("--product-source-commit",
+                        help="Actual clean commit of the explicitly selected product repository")
     parser.add_argument("--case", required=True)
     parser.add_argument("--qualification", action="append", default=[], metavar="CHAIN=ACTUAL_RECEIPT")
     parser.add_argument("--native-profile", type=Path, help="actual qualified global native profile when new required tools need their compiled flags checked")
@@ -1889,6 +1923,8 @@ def main(argv: list[str] | None = None) -> int:
     root = Path(runtime["repo_root"]).resolve()
     require(Path(runtime["paths"][manifest["source_root"]["path_key"]]).resolve() == root,
             "The selected global SDK/source_root must remain the actual Root repository")
+    product_source = product_repository_identity(root, args.source_commit,
+        args.product_repository, args.product_source_commit)
     sys.path[:0] = [str(root / "tools"), str(root / "ck3_autonomous_player/src"), str(root)]
     import ck3_live_run_id
     machine = ck3_live_run_id.current_machine_id()
@@ -2013,6 +2049,10 @@ def main(argv: list[str] | None = None) -> int:
     new_manifest["shared_provider_scope"] = "one public SDK/host, qualified global production DLL, independent product policy only"
     manifest_ref = add("manifest.json", new_manifest)
     new_runtime = {k: v for k, v in runtime.items() if k not in {"manifest", "paths", "recording", "graphics_cache"}}
+    # The host and allocator inherit S; product policy and immutable fixtures use C.
+    # The existing public consumer already exposes these as separate roots.
+    new_runtime.pop("source_relocation", None)
+    new_runtime["repo_root"] = str(product_source.repository)
     new_runtime.update(userdir_root=str(scene / "managed-states"), artifacts_root=str(scene / "live"), manifest=manifest_ref)
     new_runtime["paths"] = {**runtime["paths"], "host": str(destination / "shared-host.py"), "source_index": source_ref["path"], "native_source_index": native_ref["path"], "dll": native_bundle["dll"]["path"]}
     for key, relative in (("reviewed_launcher", "tools/ck3_mod_acceptance_launcher.py"),
@@ -2051,6 +2091,10 @@ def main(argv: list[str] | None = None) -> int:
         "previous_native_source_index": refs["native_source_index"], "previous_native_DLL": refs["dll"],
         "new_native_source_index": native_ref, "new_native_DLL": native_bundle["dll"],
         "product_catalog": pin(args.products), "independent_case": args.case,
+        "product_repository": str(product_source.repository),
+        "product_source_commit": product_source.source_commit,
+        "explicit_product_repository": product_source.explicitly_selected,
+        "shared_repository": str(root),
         "actual_global_native_profile": native_bundle["profile_ref"],
         "native_recompiled_by_this_metadata_builder": False, "unchanged_SDK_body_rehashed": False, "case_private_host": False,
         "game_started": False, "allocated": False, "public_prepare_executed": False,
