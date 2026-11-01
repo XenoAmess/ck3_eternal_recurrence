@@ -1029,9 +1029,15 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             throw new IOException("bounded retained source original required");
         ContinuityStorePort.Session session = activeSession();
         if (session == null) throw new IOException("source original requires its actual owning writer session");
+        // One exact-read producer supplies this call's Pin and detached bytes; the final read
+        // revalidates both. This is entry/exit qualification, not continuous pathname custody.
         int maximum = Math.toIntExact(original.bytes());
-        Pin pin = session.capturePin(original, maximum);
-        byte[] bytes = session.readPinned(pin, maximum); session.verifyPin(pin);
+        session.requireWriter(artifacts.originalWriterLock());
+        LedgerFiles.Document result = LedgerFiles.exact(original, maximum);
+        Pin pin = result.pin();
+        session.requireWriter(artifacts.originalWriterLock());
+        byte[] bytes = result.bytes();
+        session.verifyPin(pin);
         rememberReadOriginal(session, pin);
         return bytes;
     }
