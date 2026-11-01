@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-01 09:05Z 冻结：225 新普通提交资格已实越，原回复获 ACK 后后态仍 UNKNOWN；226 正准备
+
+- 224 实际于 `08:13:23.344033Z` END4 / `706.8833706s`；批88的普通婚姻拒绝选择在提交前误经 SAVE 同日 proof，实际 attempted/applied/saved 均0。不是 Native 失败，也没有重发游戏动作。该批 phase：观察28.134s、规划119.857s、结果消费19.733s、Journal5.264s（1个未返回 span）、分析入队2.707s；phase 仪表不据此当作互斥耗时分解。
+- 225 自然装入 M1 受限历史读取6源与普通提交资格4源（Journal重合，9个唯一生产源），MB `08:29:03.970372–08:29:13.097402Z` exit0 / `9.1270341s`。普通动作新 `validateOrdinarySubmission` 仍完整核当前 SEM、writer/session/head、历史链与 pending/UNKNOWN；checkpoint 继续原 SAVE proof，不凭普通资格授新日或保存。worker225/PID299244 实际 `08:29:21.705751Z` START，`08:37:56.783119400Z` LOOP/next89，cold `515.0773684s`；运行岗 `08:38:55.532087Z` 才读到，58.748968s 延迟归 owner 长分析/原件审阅间隙，不能隐藏为实时观察。
+- 批89真实 qwen 请求 `08:38:59.352876300Z` 开始，完整输入2,110,096B；HTTP200/complete、headers86.680s/TTFT86.682s/total87.417s。`08:40:42.867206Z` ActionSelected 后，实际837 INTENT_DURABLE、838 SUBMITTING、839 ACK_RECEIVED；原生 reject 的 WRITE `08:42:17.911264Z`、RX `08:42:18.012053600Z`，相差0.100790s且 native_ok=true。839 event.at 为 `08:42:50.362452700Z`：Writer在 atomic writes/readback 前构造该时间，RX→event构造32.350399s只能定位前置处理区间，不能称完整持久化写耗时。
+- 独立效果观察随后因 `Native publication predates submission` 失败，840于 `08:43:36.728476700Z` 记录原动作 UNKNOWN；841实际 repair_required / BATCH_INTERRUPTED89 / next90 / cycle pending=null，不等于 action840已结算。worker225 `08:43:47.924008Z` END4 / `866.2182696s`；运行岗 `08:44:56.813304Z` 读到，68.889296s 延迟同样明确披露。批89 attempted1/applied0/saved0，ACTION phase176.736s、观察31.268s、规划114.757s、结果消费15.025s、Journal7.250s、分析入队1.208s；不从 positive ACK 推独立效果成功。原 body/Attempt/ACK 保留，只允许恢复 READ，绝不重 reject；原 action deadline `08:58:00.758851700Z` 不修改。
+- 本段冻结仍为81日最后新鲜观测、77日已结算、69日 SAVE_CONFIRMED；额外4日未归因新动作，不授新的 cycle/SAVE。10秒/新增确认保存日窗口仍从05:52Z起完整计入恢复、失败与等待，新增保存0，s/day=null。226当前无 worker/MB：已 S/Z 小采用普通历史 scope、同 lease Commit 解析复用、known婚姻精简模型上下文、Journal/Authority精确已ACK原动作恢复、Bootstrap/真实独立 READ 原件消费者与 ActionAuthority 同调用列表复用，共8个唯一生产源；各必要首 strict 已有真实回执，尚不授加载、恢复或提速。精简输入离线 actual224 全wire2,110,090→64,859B，不冒225已实用该输入。最后 Known effects/Installer 两叶仍 owner 按真实 provenance API 接管实现，两模型错误候选已拒；不放宽 publication-after-submission，也不以旧 cache 帧替后态。
+
+
 ## 2026-11-01 08:02Z：223 再越冷恢复后暴露窗口投影及诊断尾部三点，224 五源实际加载
 
 - worker223/PID213556 于 `07:46:35.528480200Z` 实际 LOOP/next87，START至LOOP533.262349秒；薄读延迟29.946097秒。87于 `07:46:38.789195700–07:47:35.624432400Z` PLANNER_STOPPED、attempt0/applied0/saved0，首因精确为 held planning semantic 唯一不同字段 `war_results_window_v1_observation`。`07:47:36.119480Z` worker END4/593.853359秒，`07:47:53.526297Z` 读到，延迟17.406817秒。831为repair/BATCH_INTERRUPTED87/pendingnull，cycles13；仍仅77日已结算、69日已确认保存，最新81日观测不归新动作或循环。
