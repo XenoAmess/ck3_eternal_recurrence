@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-01 17:19Z：256越过完整账本预算，Prisoner归属检查拒绝，既有入口不变
+
+- 256仅加载Core两处完整ledger解析修复，MB17:11:50.333009Z至17:11:55.934879Z exit0/5.601873秒。worker46136于17:12:46.032782Z启动；17:13:16.824915700Z SOURCE_QUALIFIED仍指原788/cycle12/date_raw53145984/source843，17:13:17.800176700Z实际附着同Game33404，17:13:18.743226700Z LoadedCustody。此前255的默认64KiB解析门已越过。
+- 随后在Catalog.initializeConfirmedSaved:466调用PrisonersRuntimeDefinitions.initialize:128，PrisonerEpisodeLedger12004.Owner.require:35拒绝Game/player/episode/source/session归属。17:15:07.483198600Z真实BUSINESS_FAILED，17:15:07.486769500Z endpoint RELEASED，17:15:07.974294Z END1/141.941514秒；在Army初始化前停出。17:19:03冻结时尚未确定哪一归属分量不同，不据异常总消息推断具体原因；257由M7继续核实，后到诊断不回填本时点。
+- 17:16:57.099251Z具名只读head冻结为32041B/SHA`e8aeefb2a9848486565e95f514c7b4cb6fa222fc3e972f7077cdb846884a3a9c`，与254后完整head逐字相同：sequence13/status=running、cycles12/date53145984，保留原SavedEntry/Driver baseline和已导入领域。没有新canonical提交、重做Entry、普通LOOP、新日或SAVE；Game/keeper保活，无停止或新launch。
+- 唯一进程归属核对后的线程快照于17:14:26.047150Z至26.304747Z取得，exit0/20467B；该刻main为RUNNABLE，处在JNA CloseHandle/真实原件校验，经RetainedSavedNativeCampaign.produce的Driver采用链。它只是一次栈截面，不是耗时分布，也不能把整个141.94秒归给CloseHandle；没有新增Game查询或JFR。十二份具名小件见`D:/ck3-state/resume91-runtime/runtime-doc256/DELIVERY256.json`。
+- 累计确认保存仍69日，本性能epoch新增SAVE_CONFIRMED日0，端到端秒/新增保存日为null，失败、等待、增编和恢复墙钟继续计入。本段只消费冻结小件，未读大SAVE/Driver/新Game状态、编测或另取线程；保留全部旧运行历史，发表不作为后继P0运行门。
+
+
 ## 2026-11-01 17:07Z：255保留已提交保存入口恢复，完整状态解析预算在ATTACH前拒绝
 
 - 255实际采用九个成熟生产源，MB于17:04:25.047030Z至17:04:32.986923Z exit0/7.939903秒。worker85900于17:04:59.964727Z启动，17:05:33.451770Z END1/33.487047秒；17:05:32.436860900Z已重新取得原confirmation788/source843资格，仍是cycle12/date_raw53145984、new_saved_day_credit=0。
