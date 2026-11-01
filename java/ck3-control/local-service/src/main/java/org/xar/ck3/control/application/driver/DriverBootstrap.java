@@ -636,7 +636,21 @@ public final class DriverBootstrap {
         java.util.Map<String,DriverSnapshotFacts.ActionRow> rows=new java.util.HashMap<>();facts.actionRows().forEach(row->rows.put(row.actionId(),row));
         HistoryCoverageReader coverage=receipt->{
             var row=rows.get(receipt.command().actionId());if(row==null)return Optional.empty();
-            StrictJson.require(row.bodySha256().equals(receipt.bodySha256())&&row.durableSequence()==receipt.sequence(),"restart action coverage crossed its actual canonical receipt");
+            StrictJson.require(row.bodySha256().equals(receipt.bodySha256()),"restart action coverage crossed its actual canonical receipt");
+            boolean exactSequence=row.durableSequence()==receipt.sequence();
+            if(!exactSequence&&row.durableSequence()<receipt.sequence()&&receipt.settled()
+                    &&receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED
+                    &&receipt.command().operation().value().equals("save-checkpoint")
+                    &&row.coverageSource() instanceof DriverSnapshotFacts.LegacyHistoryRow legacy) {
+                var original=DriverJson.object(facts.driver().commandHistory().get(Math.toIntExact(legacy.historyIndex()-1)).originalRow().json(),DriverJson.MAX_NATIVE_BYTES);
+                if(!original.members().containsKey(DriverActionHistoryCodec.SOURCE_FIELD)
+                        &&new OpportunityJson.Text("save-checkpoint").equals(original.get("command"))
+                        &&new OpportunityJson.Bool(true).equals(original.get("ok"))) {
+                    var checkpoint=OpportunityJson.object(OpportunityJson.object(original.get("result"),"result").get("checkpoint"),"checkpoint");
+                    exactSequence=new OpportunityJson.Text(receipt.command().actionId()).equals(checkpoint.get("java_action_id"));
+                }
+            }
+            StrictJson.require(exactSequence,"restart action coverage crossed its actual canonical receipt");
             ExactRef ref=archive.receiptReferenceOf(receipt);
             if(row.coverageSource() instanceof DriverSnapshotFacts.LegacyHistoryRow legacy)return Optional.of(new ArchivedHistoryRow(ref,legacy.historyIndex(),legacy.originalRow()));
             return Optional.of(new ArchivedCanonicalOnly(ref,((DriverSnapshotFacts.CanonicalOnly)row.coverageSource()).originalSource()));
