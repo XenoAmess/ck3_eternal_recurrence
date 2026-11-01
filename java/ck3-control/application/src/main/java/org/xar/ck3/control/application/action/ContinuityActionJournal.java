@@ -41,22 +41,24 @@ public final class ContinuityActionJournal implements ActionJournal {
             final ActionPorts.OutcomeArchive archive = bound;
             LockedJournal view = new LockedJournal() {
             private Snapshot retainedSnapshot;
+            private WriterContracts.Head cachedReceiptsHead;
+            private List<ActionReceipt> cachedReceiptsList;
             @Override public ContinuityStorePort.Session writerSession() { try { session.head(); return session; } catch (IOException failure) { throw new UncheckedIOException(failure); } }
             @Override public Optional<ActionReceipt> find(String actionId) {
-                try { return lookup(session.head().state(), actionId, archive); } catch (IOException failure) { throw new UncheckedIOException(failure); }
+                try { return cachedReceipts(session.head()).stream().filter(receipt -> receipt.command().actionId().equals(actionId)).findFirst(); } catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
             @Override public Optional<ActionState.IntentAbandoned> abandonableIntent(ActionReceipt original) {
                 try { return IntentAbandonmentProof.capture(session.head().state(), original, archive); }
                 catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
             @Override public List<ActionReceipt> unresolved() {
-                try { return receipts(session.head().state(), archive).stream().filter(receipt -> !receipt.settled()).toList(); }
+                try { return cachedReceipts(session.head()).stream().filter(receipt -> !receipt.settled()).toList(); }
                 catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
             @Override public ActionReceipt append(ActionCommand command, String bodySha256, ActionState next) {
                 try {
                     var head = session.head();
-                    List<ActionReceipt> prior = receipts(head.state(), archive);
+                    List<ActionReceipt> prior = cachedReceipts(head);
                     ProtocolIdentityAdmission.requireUnique(prior, command);
                     ActionTransitions.validate(prior.stream().filter(value -> value.command().actionId().equals(command.actionId())).findFirst(),
                             command, bodySha256, next);
@@ -123,9 +125,15 @@ public final class ContinuityActionJournal implements ActionJournal {
                     if (!state.has("java_driver_history_baseline")) basis = new MissingHistoryBasis();
                     else if (state.get("java_driver_history_baseline").isNull()) basis = new NullHistoryBasis();
                     else basis = new BoundHistoryBasis(org.xar.ck3.control.contracts.ExactRef.fromJson(state.get("java_driver_history_baseline")));
-                    Snapshot complete = new Snapshot(head.state().sequence(), head.digest(), receipts(head.state(), archive), basis);
+                    Snapshot complete = new Snapshot(head.state().sequence(), head.digest(), cachedReceipts(head), basis);
                     retainedSnapshot = complete; return complete;
                 } catch (IOException failure) { throw new UncheckedIOException(failure); }
+            }
+            private List<ActionReceipt> cachedReceipts(WriterContracts.Head head) throws IOException {
+                if (cachedReceiptsHead != null && cachedReceiptsHead.state().sequence() == head.state().sequence()
+                        && cachedReceiptsHead.digest().equals(head.digest())) return cachedReceiptsList;
+                List<ActionReceipt> complete = receipts(head.state(), archive);
+                cachedReceiptsHead = head; cachedReceiptsList = complete; return complete;
             }
         };
         current.set(view); try { return operation.apply(view); } finally { current.remove(); }
