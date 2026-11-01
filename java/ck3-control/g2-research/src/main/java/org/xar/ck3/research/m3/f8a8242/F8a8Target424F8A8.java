@@ -35,7 +35,7 @@ public final class F8a8Target424F8A8 {
         pointer = memory.readPointer(b - 0x28L);
         memory.readPointer(pointer + 0x3A0L);
         memory.writeInt64(pointer + 0x3A0L, 0L);
-        ports.call424f780(memory, 0x424F955L, b + 0x18L, b + 0x28L, b - 0x18L, b + 0x20L);
+        ports.call424f780(memory, 0x424F955L, b + 0x18L, b + 0x28L, b - 0x18L, b + 0x20L, b - 0x58L);
         ports.call424f800(memory, 0x424F96AL, b + 0x18L, b - 0x2CL, b - 0x10L, b - 0x30L);
     }
 }
