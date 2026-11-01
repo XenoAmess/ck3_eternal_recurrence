@@ -1,5 +1,13 @@
 # Java / G2 resume91 当前执行记录
 
+## 2026-11-01 00:28 UTC：累计30日全保存，同一worker连续进入批71
+
+同一原版无模组 Game71464（出生 FILETIME134378397668266369）继续保留。591于00:28:29.0215478Z真实SAVE_CONFIRMED，java_ordinary_saved_cycle.state.completed_cycles=7、pending_receipt=null、date_raw53145048（1066-10-15），checkpoint pair帧native424/public349。从本局原53144328累计30个游戏日已全部保存；下段563对应的24日保存仍保留其当时事实。
+
+运行岗确认原worker31876持续运行：batch70于00:28:30.3773693Z以清洁WALL_TIMEOUT收束，本批savedDays=6、dirty=false；随后592 Deferred→593新batch71，继续普通refresh和qwen决策。这里是同一worker在时间边界后的正常接续，未退出或重启，也未重放SAVE/ARM/resume。后台Reader209、Canonical性能候选和新测试不作为当前游玩前置，不为其重启健康worker；真实保存与源码、软件和性能验证分别记。
+
+独立具名原件为 `continuity/ROOT-CONTINUITY-WINDOW-EVENTS/00000591.json`，101655B，SHA256 `11345b396fa1cdd309b5bbf89fce24b59491690b93d19fee5b605bb217b4659e`。本次只读该事件并核对保存状态；同worker和批次边界来自运行岗现成报告，未新增Game查询、读取save/Driver/SEM或pair大体。证据为 `D:/ck3-state/resume91-native-integration/milestone591-publication/EXACT-SAVE-CONFIRMED208-EVENT591-READBACK.json`；运行页另由Runtime独立记录，不在此重复封包。G2仍按最后已确认6/8，不将累计30日保存授为全部原生机制或M6/M7多场景完成。
+
 ## 2026-11-01 00:04 UTC：累计24个游戏日已全部确认保存
 
 同一原版无模组 Game71464（出生 FILETIME134378397668266369）继续保留。原561 SAVE沿已持久原件只读恢复，563于00:04:32.103951Z真实记录SAVE_CONFIRMED；java_ordinary_saved_cycle.state.completed_cycles=6、pending_receipt=null，last_settled_date_raw=53144904（1066-10-09），从本局原53144328累计24个游戏日已全部保存。563所保checkpoint pair帧为native404/public333；先前23:31Z的24日已结算、16日已保存是当时事实，原文保留。

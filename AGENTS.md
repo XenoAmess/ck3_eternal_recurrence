@@ -15,6 +15,8 @@
 
 ## 2026-10-31 resume91 明确续行、实际游玩优先与本地模型并发
 
+- 2026-11-01 00:28Z累计30日已全部确认保存，原worker连续闭环：591于00:28:29.0215478Z真实SAVE_CONFIRMED，saved cycle7/date_raw53145048（1066-10-15）/pair帧native424/public349，从本局原53144328累计30日全存。运行岗确认同一PID31876的batch70于00:28:30.3773693Z到达清洁WALL_TIMEOUT边界，本批savedDays6/dirty=false，随后592 Deferred→593新batch71，未退出或重启worker。591具名event101655B/SHA11345b396fa1cdd309b5bbf89fce24b59491690b93d19fee5b605bb217b4659e已独立核对；无save/Driver/SEM大体读取或新Game查询。下段563/24日保存及更早时点保留，普通qwen/同局游玩继续，不为后台候选、测试或文档重启；G2整体仍按最后已确认6/8。
+
 - 2026-11-01 00:04Z累计24日已全部确认保存：同一原版无mod Game71464/出生FILETIME134378397668266369保留，原561 SAVE经只读恢复后，563于00:04:32.103951Z真实SAVE_CONFIRMED，ordinary saved cycle为6、date_raw53144904（1066-10-09），从原53144328累计24日全部保存；pair帧native404/public333。563原event101387B/SHA73571a15540aa00c127054b60e8461bed8a177fa8f6487e6a2f7d7dbcc2b2f11已具名独立核对，未读save/Driver/SEM大体或新增Game查询。Main208仅local-service一源增编后，原worker31876于00:04:32.3810592Z真实LOOP/next70，运行岗00:04:39.121152Z薄读即释放研究HOLD，继续普通qwen。下段23:31Z的24日结算/16日保存保留为历史截面，不覆盖新563；不重SAVE/ARM/resume、不重启Game或为后台候选重启worker，G2仍按最后已确认6/8。
 
 - 23:31Z实际24日周期已结算、保存仍16日：554于23:18:34.299388200Z真实RETAIN552，current_cycle_pending指向该9088B父回执；555于23:30:53.872017800Z真实SETTLE/ELIGIBLE_ADVANCE、completed_cycles5→6/pending=null，SEM帧native401/public330/date_raw53144904。Main206仅成熟Assembler206+watch205增编后，worker158484于23:30:55.9029357Z真实LOOP/next69，556于23:30:58.519479300Z记录BATCH_STARTED69；同一原版Game继续自然SAVE，不因后台候选、测试或文档重启。累计24日已观察并周期结算，已确认保存仍528的16日；下段552/553时点的pending=null不能覆盖后到554，也不把观察或周期结算当成24日已保存。
