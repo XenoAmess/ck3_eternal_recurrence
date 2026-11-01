@@ -890,6 +890,7 @@ def qualified_fixture_link_support(
     snapshot_root: Path, build_root: Path, indexed_input: object, production_input: object,
     targets_input: object, fixtures_input: object, reply: Path, model_input: object,
     noncompiled_replay: object = None,
+    replay_source_root: Path | None = None,
 ) -> FixtureLinkSupportResult | None:
     value, refs = native_successor.obj(value_input), native_successor.obj(refs_input)
     scope, indexed = native_successor.obj(scope_input), native_successor.obj(indexed_input)
@@ -924,7 +925,8 @@ def qualified_fixture_link_support(
             qualified_v3_production_artifact(value, refs, scope, snapshot, freeze,
                 machine=machine, native_commit=native_successor.string(value["source_commit"]),
                 compile_native_root=Path(native_successor.string(snapshot["Root_native_source_base"])).resolve(),
-                snapshot_root=snapshot_root, build_root=build_root, configured_artifacts=artifacts)
+                snapshot_root=snapshot_root, build_root=build_root, configured_artifacts=artifacts,
+                replay_source_root=replay_source_root)
         return qualified_configured_fixture_links(support, ref, machine, native_successor.string(value["source_commit"]),
             scope, indexed, production, targets, fixtures, model, snapshot_root, build_root, reply, actual_inputs,
             noncompiled_replay)
@@ -991,6 +993,7 @@ def qualified_v3_production_artifact(
     snapshot_value: object, freeze_value: object, *, machine: str, native_commit: str,
     compile_native_root: Path, snapshot_root: Path, build_root: Path,
     configured_artifacts: set[Path],
+    replay_source_root: Path | None = None,
 ) -> None:
     """Verify the explicit v3 attempt output without changing the CMake artifact."""
     original_error = "Selected original DLL is not the actual File API production artifact"
@@ -1033,7 +1036,7 @@ def qualified_v3_production_artifact(
             and result.get("dll") == original, "Explicit v3 Q/PLAN/result/link output differs")
     producer = native_successor.Producer(config)  # Parsers only; no gate, initialize, configure or execution.
     rows = producer.commands()
-    selected, borrowed, replay = producer.plan(rows, existing_plan=plan_ref)
+    selected, borrowed, replay = producer.plan(rows, existing_plan=plan_ref, replay_source_root=replay_source_root)
     inputs = producer.original_fixture_inputs(rows)
     require(replay == plan_ref and inputs.plan == plan_ref and inputs.dll.resolve() == Path(original["path"]).resolve()
             and inputs.production_execution == refs["production_build_receipt"]
@@ -1126,6 +1129,12 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
         qualify("shared_host", Path(source_checkout["shared_host_qualification"]["path"]),
                 commit, root, [HOST_RELATIVE], machine)
     compile_native_root = source_checkout["native_source_base"]
+    # The relocation validator has already checked every S and frozen Native byte.
+    # Keep original CMake/config paths; only the existing-plan source comparison uses S.
+    replay_source_root = None
+    if (native_source_checkout_binding is not None
+            and read(native_source_checkout_binding).get("schema") == "ck3-native-frozen-input-source-relocation-v1"):
+        replay_source_root = root
     compile_repo = compile_native_root.parent.parent
     require((compile_repo / NATIVE_PREFIX).resolve() == compile_native_root,
             "Verified Native source root has an unexpected repository structure")
@@ -1227,7 +1236,8 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
     if Path(refs["original_dll"]["path"]).resolve() not in configured_artifacts:
         qualified_v3_production_artifact(value, refs, scope, snapshot, freeze,
             machine=machine, native_commit=native_commit, compile_native_root=compile_native_root,
-            snapshot_root=snapshot_root, build_root=build_root, configured_artifacts=configured_artifacts)
+            snapshot_root=snapshot_root, build_root=build_root, configured_artifacts=configured_artifacts,
+            replay_source_root=replay_source_root)
     pending, production = [names["xar_ck3_bridge"]], {}
     while pending:
         target_id = pending.pop()
@@ -1269,7 +1279,8 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
                 "Fixture executable is not its actual configured artifact")
         zero_execution(row["execution"], machine, row["executable"])
     link_support = qualified_fixture_link_support(value, refs, machine, scope, snapshot_root, build_root,
-        indexed, production, actual_targets, fixtures, reply, model, source_checkout.get("noncompiled_replay"))
+        indexed, production, actual_targets, fixtures, reply, model, source_checkout.get("noncompiled_replay"),
+        replay_source_root)
     profile_expansion_scope(expansion, production, actual_targets, snapshot_root, indexed, fixtures,
                             link_support["fixture_production_targets"] if link_support else None)
     binding = read(refs["defender_binding"]["path"])

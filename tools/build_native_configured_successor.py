@@ -883,11 +883,15 @@ class Producer:
             "production_plan": plan_ref, "current_capture": checked(current_capture), "stale_outputs": stale}
 
     def plan(self, rows: list[Compile], *, existing_plan: Pin | None = None,
-             noncompiled_replay: object = None) -> tuple[list[Compile], dict[str, Path], Pin]:
+             noncompiled_replay: object = None,
+             replay_source_root: Path | None = None) -> tuple[list[Compile], dict[str, Path], Pin]:
         c = self.config
+        require(replay_source_root is None or (existing_plan is not None
+                and c.schema == "ck3-configured-native-successor-v3"),
+                "Relocated source is restricted to an existing read-only v3 production plan")
         if c.schema == "ck3-configured-native-successor-v3":
             require(noncompiled_replay is None, "v3 uses its actual development source, without replay aliases")
-            return self.predecessor_plan(rows, existing_plan=existing_plan)
+            return self.predecessor_plan(rows, existing_plan=existing_plan, replay_source_root=replay_source_root)
         require(noncompiled_replay is None or existing_plan is not None,
                 "Noncompiled replay is restricted to an existing read-only production plan")
         replay = None if noncompiled_replay is None else verified_noncompiled_consumer_replay(c, noncompiled_replay)
@@ -1155,16 +1159,36 @@ class Producer:
         return QualifiedPredecessor(reference, snapshot_ref, commands_ref, checked(plan["original_dependencies"]),
             source_root, objects, tuple(libraries), signatures)
 
-    def predecessor_plan(self, rows: list[Compile], *, existing_plan: Pin | None = None
+    def predecessor_plan(self, rows: list[Compile], *, existing_plan: Pin | None = None,
+                         replay_source_root: Path | None = None
             ) -> tuple[list[Compile], dict[str, Path], Pin]:
+        require(replay_source_root is None or (existing_plan is not None
+                and self.config.schema == "ck3-configured-native-successor-v3"),
+                "Relocated source is restricted to an existing read-only v3 production plan")
+        source_root = ROOT if replay_source_root is None else replay_source_root.resolve()
+        if replay_source_root is not None:
+            def observed(*arguments: str) -> str:
+                return subprocess.check_output(["git", *arguments], cwd=source_root).decode("utf-8").strip()
+            require(Path(observed("rev-parse", "--show-toplevel")).resolve() == source_root
+                    and not observed("status", "--porcelain", "--untracked-files=all"),
+                    "Read-only replay source must be an actual clean checkout")
+            ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", self.config.source_commit, "HEAD"],
+                                      cwd=source_root, capture_output=True)
+            require(ancestor.returncode == 0, "Replay source must descend from the original Native compile commit")
+            tracked = observed("ls-files", "--", PREFIX).splitlines()
+        else:
+            tracked = git("ls-files", "--", PREFIX).splitlines()
         prior = self.qualified_predecessor()
         current: dict[str, Pin] = {}
-        for name in git("ls-files", "--", PREFIX).splitlines():
+        for name in tracked:
             relative_name = name.removeprefix(PREFIX)
-            original, development = pin(ROOT/name), pin(self.native/relative_name)
+            original, development = pin(source_root/name), pin(self.native/relative_name)
             require((original["bytes"], original["sha256"]) == (development["bytes"], development["sha256"]),
-                    "Development native source differs from the current committed Root")
+                    "Development native source differs from the selected committed source")
             current[relative_name] = development
+        if replay_source_root is not None:
+            require({path.relative_to(source_root/PREFIX).as_posix() for path in (source_root/PREFIX).rglob("*")
+                     if path.is_file()} == set(current), "Replay source contains stale or untracked Native files")
         require({path.relative_to(self.native).as_posix() for path in self.native.rglob("*") if path.is_file()}
                 == set(current), "Development native source contains stale or untracked files")
         changed = {name for name in prior.source_signatures.keys() | current.keys()

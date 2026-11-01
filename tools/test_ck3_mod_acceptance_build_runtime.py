@@ -1546,16 +1546,55 @@ class QualifiedV3ProductionArtifact(unittest.TestCase):
         self.support['producer_config'] = self.document('explicit-config.json', self.config)
         self.q = {'fixture_results': [], 'fixture_link_support': self.document('support.json', self.support)}
 
-    def consume(self):
+    def consume(self, *, replay_source_root=None):
         return builder.qualified_v3_production_artifact(self.q, self.refs, self.scope, self.snapshot, self.freeze,
             machine=self.producer.config.machine_id, native_commit=self.producer.config.source_commit,
             compile_native_root=self.repository / builder.NATIVE_PREFIX, snapshot_root=self.producer.native,
-            build_root=self.producer.build, configured_artifacts={self.producer.build / 'xar_ck3_bridge.dll'})
+            build_root=self.producer.build, configured_artifacts={self.producer.build / 'xar_ck3_bridge.dll'},
+            replay_source_root=replay_source_root)
 
     def test_real_producer_v3_output_is_readonly_and_exactly_mapped(self):
         before = {path: builder.native_successor.pin(path) for path in self.producer.config.output.rglob('*') if path.is_file()}
         with patch.object(builder.native_successor.Producer, 'execute', side_effect=AssertionError('read-only')):
             self.consume()
+        self.assertEqual(before, {path: builder.native_successor.pin(path) for path in self.producer.config.output.rglob('*') if path.is_file()})
+
+    def test_existing_v3_plan_replays_selected_checkout_without_using_product_native(self):
+        shared = self.case.root / 'shared-checkout'
+        for name in self.fixture.names:
+            target = shared / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((self.repository / name).read_bytes())
+        source = self.repository / self.fixture.names[0]
+        source.write_bytes(source.read_bytes() + b'\nproduct-only Native change\n')
+
+        def observed(argv, *, cwd):
+            self.assertEqual(cwd, shared)
+            arguments = argv[1:]
+            if arguments == ['rev-parse', '--show-toplevel']:
+                return str(shared).encode()
+            if arguments == ['status', '--porcelain', '--untracked-files=all']:
+                return b''
+            self.assertEqual(arguments, ['ls-files', '--', builder.NATIVE_PREFIX])
+            return '\n'.join(self.fixture.names).encode()
+
+        def ancestor(argv, *, cwd, capture_output):
+            self.assertEqual(cwd, shared)
+            self.assertTrue(capture_output)
+            self.assertEqual(argv, ['git', 'merge-base', '--is-ancestor', self.producer.config.source_commit, 'HEAD'])
+            return types.SimpleNamespace(returncode=0)
+
+        before = {path: builder.native_successor.pin(path) for path in self.producer.config.output.rglob('*') if path.is_file()}
+        with patch.object(builder.native_successor.subprocess, 'check_output', side_effect=observed), \
+             patch.object(builder.native_successor.subprocess, 'run', side_effect=ancestor), \
+             patch.object(builder.native_successor.Producer, 'execute', side_effect=AssertionError('read-only')):
+            self.consume(replay_source_root=shared)
+            with self.assertRaisesRegex(ValueError, 'existing read-only v3'):
+                self.producer.plan(self.rows, replay_source_root=shared)
+            selected = shared / self.fixture.names[0]
+            selected.write_bytes(selected.read_bytes() + b'\nNative bytes differ\n')
+            with self.assertRaisesRegex(ValueError, 'selected committed source'):
+                self.consume(replay_source_root=shared)
         self.assertEqual(before, {path: builder.native_successor.pin(path) for path in self.producer.config.output.rglob('*') if path.is_file()})
 
     def test_v1_v2_cannot_authorize_out_of_fileapi_dll(self):
