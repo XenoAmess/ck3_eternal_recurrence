@@ -1,5 +1,16 @@
 # runtime91 同局续行
 
+## 2026-11-01 03:58Z：214 原期限空子动作停出，215 直接复用现成只读恢复
+
+- 214/PID87440 于 `03:51:29.507737Z` 实际 END4/2022.349571 秒，`03:51:34.862595Z` 薄读捕获，延迟5.355秒；79 从 `03:30:50.703367700Z` 至 `03:51:28.895516800Z` 为 ACTION_UNKNOWN，attempt1/applied0/positiveACK0/saved0。累计61日已结算且已确认保存保持，不授新日。真实原件冻结于 `D:/ck3-state/resume91-runtime/ordinary214-build/ACTUAL-END214-EMPTY-PARENT.json`，仅8份具名小事件及实际父回执，无大 Driver/SEM/SAVE 重读。
+- 79 运行期 qwen 有一次59.683秒无 headers/TTFT 的 deadline 失败，后续四次独立新 proposal 请求分别 HTTP200/52.854、48.913、11.445、11.856秒；新请求属于正常 fresh round，不复用半截响应或重放动作。三轮 RefreshRequired 后，`03:49:27.919068400Z` 实际 ActionSelected/Unchanged；不能从前三轮刷新推断无限循环。同期 source HTTP 区间与运行端 HTTP 分记，不据交叠或后来空队列认定超时原因。
+- 751/753 两轮各4份 ROOT finance READ 的 request/before/after/contract 同轮相同、request_id/original_ref 不同；跨轮 native/public 从514/438变515/439，旧 cache 依完整帧和原包拒绝属现合同。独立只读核对已封 `finance-repeat215/cause-readonly/DELIVERY215-FINANCE-READONLY.json`；四次同轮读取为性能候选，不能把4→1冒充跨轮收束修复，也不能仅因业务字段相同互换不同帧原件。
+- 原父 `action-91acb5f5495f67a68f0587fac131faafe1448b1359727c31c3ea6585ed7eaabf`/body`b584934e278564c681231d81d644c14ec9407d79c2579d96503b79ff130fdb11` 在756于 `03:50:25.181017300Z` INTENT_DURABLE、757于 `03:50:51.716652300Z` COMPOSITE_RUNNING，原 deadline 恒为 `03:50:50.703367700Z`。758于 `03:51:22.854258Z` COMPOSITE_UNKNOWN，真实原因 runtime context deadline expired，完整 execution.children=[]，无新 child/dispatch/ACK/游戏推进；759 repair/BATCH_INTERRUPTED79、cycle pending=null，保原未知父不重放。
+- 79 原 report 实际 fullwall1238.192秒，PLANNING869.918、OBSERVATION187.097、ACTION117.381、OUTCOME_CONSUMPTION59.326、JOURNAL4.272秒，所有 nonreturned_spans=0；5次模型客户端总184.751秒独立计。`ordinary214-build/BATCH79-PHASE-REPORT.json` 来自已有 stdout，不以阶段总量推断锁、IO、GC或某个 source 根因。
+- 现源码已有严格 no-child no-gameplay-write 路：Journal empty selector→LifeAdvanceComposite.observe 原件验证→installed ZeroSource→Composite.finish canonical/body/execution 复验→freshSEM 后普通只读收束；不是伪造 InitializationCancelled。独立13完整源/实际小 DATA 的 qwen 只读审查 `03:55:10Z` 实发、43.592秒 stop，同源审结论，无生产补丁或额外编测前置。最终记录 `empty-composite215/FINAL-DELIVERY.json`，实际终态仍由运行授信。
+- 215/PID41444 于 `03:54:36.221779Z` 实际 START，0源改/0MB，复用 MB214 与仅-Xmx2048m/无-Xms、1200000毫秒 batch wall、60000毫秒 Native RPC，保同一无mod Game71464/原出生。`03:58:04.981051Z` 薄读仍 preloop/running、尚无 LOOP 或终态；本段仅冻结该时点，不预授旧父结算、新批动作或新日，继续实际薄采，不等待文档/金融性能/正式发表。
+
+
 machine_id: `xenoamess-full-tower-eb9d2c1186`。当前唯一运行 owner `/root/runtime_continue`，接替已不可访问的 `/root/runtime91`，独占运行 S/MB、Game、supervisor、账本和业务 worker。历史 owner 标签不代表旧进程仍在途。用户于本轮明确结束休假停止，要求自动游玩第一优先、八 M 并行和本地模型高并发。
 
 
