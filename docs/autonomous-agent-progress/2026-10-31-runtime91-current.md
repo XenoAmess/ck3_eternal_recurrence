@@ -1,5 +1,16 @@
 # runtime91 同局续行
 
+
+## 2026-11-01 14:29Z：69日原件资格通过、Saved Game真实启动，入口因存档目录分配合同停出
+
+- source-only RUN02 于13:57:39.990956Z至13:58:08.439Z实际exit0/28.4483822秒：原confirmation788/date53145984/completed12、原head843/digest未变，Game/Native请求与账本提交均0。其成功仅是当前原件资格，不是新Game已读日期或新保存。RUN01的Pin membership原红保留：Runtime旧argfile把ExactRef路径反斜杠归一为斜杠，CLI2以实际canonical Pin+完整identity验证修正，未放宽Writer门；RUN02同时切实际Archive230，故不作单一性能因果比较。
+- 最终成熟生产叶与已采用Archive230/Writer231/keeper共同组成12个独立生产叶。MB249于14:21:55.068113Z至14:22:23.238294Z实际exit0/28.170179秒，2core+1application+1storage+1native-transport+7local-service，stderr0；无测试重跑。实际路径、EOL投影和正逆检查在R91/source249-final/ADOPTION249-FINAL.json，不能以编译绿授admission或提速。
+- prelaunch实际Toolhelp具名ck3.exe结果为空。14:23:25.849505Z发出既有detached launcher，14:23:26.731167Z exit0；真实keeper PID69836/birth134380166063260202。owner.json随后实证SAVED_GAME、Game33404/birth134380166368581534、原69日SAVE引用与实际Native HELLO。使用新的独立root D:/ck3-state/ck3-java-resume91-saved69-249，原843所有历史保留；未启动NEW_GAME/1066，未重放842或旧ARM/resume/SAVE。
+- 14:23:53.236160800Z主线实际CONFIRMED_SAVED_SOURCE_QUALIFIED；14:24:19.718562100Z实际SAVED_DAEMON_BUSINESS_FAILED，IOException指向旧profile/save games超出新runtime issuer-declared allocation roots。该错发生在真实Started及keeper.retain之后的openConfirmedSaved，尚未admit/LOOP；14:24:19.727131300Z实际ENDPOINT_RELEASE=RELEASED/game_stop_requested=false，守护进程继续保留原Game Job。
+- 14:26:54只读新head为sequence0/awaiting_initial_entry，尚无保存入口；14:29:41.822736Z仅双owned PID身份/退出核为birth exact且STILL_ACTIVE。未作新的Game/Native观测，不能声称载入后已读69日期。P0250由M7独占实际profile save-dir issuer与消费入口，intent独占真实owner保留来源、fresh attachment/HELLO及两次READ的新typed资格，不伪跨JVM Started，不以热代码限制重启活Game。
+- 此冻结仍69日历史已确认保存，当前性能epoch零新增SAVE_CONFIRMED、秒/日null；81观察/77普通周期/69保存的旧时点分列，恢复等待、失败、构建与后继修复墙钟全计。最新回执之后另追加，不回写本段；OpenCode独立试点和正式发表均不作为实际恢复前置。
+
+
 ## 2026-11-01 13:03Z 冻结：旧进程已消失，69 日确认存档原件完整，准备独立冷恢复
 
 - 最后现存启动回执仍为 Main228：worker329844 于09:54:33.654294Z启动，既有stdout/stderr均0B；没有WORKER228-END回执，也没有已采集的LOOP/RETAIN/新SAVE。12:46:59.357568Z实际Win32只读核实旧worker329844、Game71464、supervisor305760均OpenProcess错误87。不能补造退出时间/代码，不能把中间未观测时段当作仍在运行或已有进展；中断原因未知。
