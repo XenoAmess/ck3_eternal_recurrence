@@ -192,7 +192,7 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
             try {
                 var frame = ActionReconciliationScope.requireFrame(command, attempt);
                 current = new AdvanceObservationPort.Frame(frame.identity(), frame.source(), frame.sessionId(), frame.semantic(),
-                        new ObservationProvenance.Push(frame.identity().frame().snapshotId(), frame.identity().frame().identity().nativeRevision(), frame.originalEvidence()),
+                        ActionReconciliationScope.requireProvenance(command, attempt),
                         frame.observedAt(), frame.originalEvidence());
             } catch (IOException failure) { throw new UncheckedIOException("reconciliation frame unavailable", failure); }
         } else {
