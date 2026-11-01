@@ -99,9 +99,12 @@
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 					background = { using = Background_Area alpha = 0.65 }
+					# A plain widget does not distribute box layout to its children.
+					# Fill each page explicitly; only the scroll viewport has fixed height.
 
 					vbox = {
 						visible = "[GetVariableSystem.HasValue( 'rrf_editor_page', 'tenets' )]"
+						size = { 100% 100% }
 						margin = { 12 10 }
 						spacing = 10
 						hbox = {
@@ -142,6 +145,7 @@
 
 					vbox = {
 						visible = "[GetVariableSystem.HasValue( 'rrf_editor_page', 'doctrines' )]"
+						size = { 100% 100% }
 						margin = { 12 10 }
 						spacing = 10
 						text_label_left = { text = "RRF_CANDIDATE_DOCTRINES" }
@@ -169,6 +173,7 @@
 					scrollbox = {
 						name = "rrf_identity_scroll"
 						visible = "[GetVariableSystem.HasValue( 'rrf_editor_page', 'identity' )]"
+						size = { 100% 100% }
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
 						blockoverride "scrollbox_content" {

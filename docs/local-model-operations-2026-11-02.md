@@ -1,0 +1,15 @@
+# 2026-11-02 本地模型规范接入与宗教礼仪融合修复
+
+`machine_id: 4-8e1c2f1861`；观察日期为本机自然日2026-11-02（Asia/Shanghai）。用户明确要求同步项目到最新，采用独立仓库规范并加强本地模型使用。本记录绑定本机路径，不覆盖其他机器的配置。
+
+项目从`900922169`快进到`734a096cd`，保留远端后续正常推进。父目录新克隆`C:/workspace/local-model-operations`，共享来源为[`865161d5de1b6b35e63b35a5c3630350844c4842`](https://github.com/XenoAmess/local-model-operations/tree/865161d5de1b6b35e63b35a5c3630350844c4842)。本机没有`Z:/workspace/local-model-operations`；不把其他机器的绝对路径当作前提。
+
+已读取该版本AGENTS、usage、executor、能力证据和运营规范。当前离线源码任务直接调用其`scripts/call.py`及唯一共享`config/executor.json`：`qwen38-coder`，固定system／当前完整源码与合同／具体任务三消息，有限输出、SSE和共享瞬时错误重试。未修改活跃Game、旧worker或本项目兼容配置。
+
+每日维护首轮退出75：pnpm安装`opencode-ai@1.19.5`时跳过postinstall，`bin/opencode.exe`仍是479B文本占位。检查实际包和平台二进制后，以已验证的同包Windows二进制建立硬链接，遵循postinstall的copyBinary行为；没有执行其PowerShell CPU探测。03:39:06+08:00共享每日检查实际通过，registry latest与实际CLI均为1.19.5。维护修复由owner完成，不算模型生成能力。
+
+三个真实工作流并行派发，首轮实际POST峰值3；增加一轮测试纠正，共4 POST，全部完整stop，无传输重试。未凑12–16请求。三个工作流分别为GUI修复、Java布局回归、相邻窗口同类缺陷检查。模型提供了融合影响一处有效fill修改，但遗漏同父层的另外两页；owner补齐。两版Java测试存在AST读取、错误层级替换和视口定位问题，全部拒绝，最终测试由owner实现。HTTP成功与代码采用分开记录。
+
+原始REQUEST、SSE、模型回答、诊断和软件验证回执保存在本机`C:/workspace/rrf-ui-layout-20261102`，按通用存储策略复核，不提交原版游戏材料或未审原始回答。原始模型证据的下一次用途复核为2026-11-08T19:00:00Z；小型可复用结论留本记录及共享仓库能力条目。准备、审阅和纠错人工耗时未独立计量，保持unknown，不宣称净节时。
+
+窗口修复与软件结果见[模组布局记录](../mod_religious_ritual_fusion/docs/ui-layout-2026-11-02.md)。按同步后最新授权，用户自行玩游戏期间保持离线；本轮不做CK3查询、部署、捕获或启动。后续只有新的真实任务才继续请求，不重复已闭合任务刷调用。

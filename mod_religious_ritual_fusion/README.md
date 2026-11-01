@@ -6,6 +6,8 @@
 
 2026-10-29，`machine_id: 4-8e1c2f1861`的R0057五项UI补验与R0058三项冷载补验分别通过并正常关闭，见[续工记录](docs/live-review-resume-2026-10-29.md)。这些局部补验不改写原12项／20项完整矩阵的incomplete；SDK续行及county宗教地图颜色样本仍有缺口。正式tag固定于Source A，后继入口修复不重建已发布内容。见[0.2实际发布记录](docs/publication-0.2.0-alpha-2026-10-29.md)和[永久changelog](../docs/release-changelogs/religious-ritual-fusion/0.2.0.md)。
 
+2026-11-02修复“融合影响”页签正文挤在100×100视口的问题，三个页签均显式填满编辑区，并补布局回归。当前为离线源码修复，未部署或更新Workshop，修复后实机画面待验证，见[布局记录](docs/ui-layout-2026-11-02.md)。
+
 - [可行性分析报告](docs/feasibility-2026-10-24.md)
 - [编码方案](docs/implementation-plan-2026-10-24.md)
 - [测试验收方案](docs/test-acceptance-plan-2026-10-24.md)
