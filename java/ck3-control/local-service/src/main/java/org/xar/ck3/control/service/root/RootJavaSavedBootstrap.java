@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.checkpoint.CheckpointCommitVerifier;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
@@ -28,6 +29,7 @@ import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.ContinuityWriter;
+import org.xar.ck3.control.continuity.writer.NativeOutcomeArchive;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
@@ -73,7 +75,7 @@ public final class RootJavaSavedBootstrap {
                 StrictJson.require(action.settled(),"confirmed saved source cannot erase an unresolved canonical action");
             var actual=store.requalifyConfirmed(same,confirmation,pair);
             var material=actual.requireCurrent(same);
-            return new ConfirmedSource(writer,store,actual,material);
+            return new ConfirmedSource(writer,store,actual,material,sourceCore.archive());
         });
     }
 
@@ -84,10 +86,14 @@ public final class RootJavaSavedBootstrap {
         private final SavedAttachmentSourceStore.RequalifiedConfirmed qualified;
         private final SavedAttachmentSourceStore.SavedMaterial material;
         private final byte[] savedDriverCanonical;
+        private final NativeOutcomeArchive sourceArchive;
         private ConfirmedSource(ContinuityWriter writer,SavedAttachmentSourceStore store,
-                SavedAttachmentSourceStore.RequalifiedConfirmed qualified,SavedAttachmentSourceStore.SavedMaterial material) {
+                SavedAttachmentSourceStore.RequalifiedConfirmed qualified,SavedAttachmentSourceStore.SavedMaterial material,
+                NativeOutcomeArchive sourceArchive) {
             this.writer=writer;this.store=store;this.qualified=qualified;this.material=material;
             this.savedDriverCanonical=material.savedDriver().encode();
+            this.sourceArchive=Objects.requireNonNull(sourceArchive);
+            StrictJson.require(sourceArchive.writer()==writer,"confirmed source archive must belong to the actual source writer");
         }
         public CheckpointPair pair(){return material.pair();}
         public ContinuityState savedState(){return qualified.confirmation().after();}
@@ -113,20 +119,28 @@ public final class RootJavaSavedBootstrap {
         }
         private DriverStateSnapshot.Complete requireCurrent(ContinuityStorePort.Session activeNewSame)throws IOException {
             return writer.readOnlyFrom(activeNewSame, same->{
-                writer.requireSession(same);var current=qualified.requireCurrent(same);
-                StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                        &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
-                        "confirmed source changed its actual saved Driver or session");
-                return current.savedDriver();
+                writer.requireSession(same);
+                return sourceArchive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(1024, 64L * 1024 * 1024, 256),
+                        ignoredArchive -> {
+                    var current=qualified.requireCurrent(same);
+                    StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
+                            &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
+                            "confirmed source changed its actual saved Driver or session");
+                    return current.savedDriver();
+                });
             });
         }
         private DriverStateSnapshot.Complete requireRetained(ContinuityStorePort.Session activeNewSame)throws IOException {
             return writer.readOnlyFrom(activeNewSame, same->{
-                writer.requireSession(same);var current=qualified.requireRetained(same);
-                StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                        &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
-                        "retained source changed its actual saved Driver or session");
-                return current.savedDriver();
+                writer.requireSession(same);
+                return sourceArchive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(1024, 64L * 1024 * 1024, 256),
+                        ignoredArchive -> {
+                    var current=qualified.requireRetained(same);
+                    StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
+                            &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
+                            "retained source changed its actual saved Driver or session");
+                    return current.savedDriver();
+                });
             });
         }
     }

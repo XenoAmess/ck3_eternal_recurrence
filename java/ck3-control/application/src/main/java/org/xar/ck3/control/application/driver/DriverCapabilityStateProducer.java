@@ -59,7 +59,7 @@ public final class DriverCapabilityStateProducer {
         public Obj auxiliary() { return auxiliary; }
         public ExactRef source() { return source; }
     }
-    public enum Cause { INITIAL_NEW_EPISODE, MARRIAGE_QUERY, CAMPAIGN_ROOT_QUERY, OBSERVED_FRAME, RETREAT_DOMAIN, IMMUTABLE_SEED, INDEPENDENT_READINESS, MARRIAGE_ATTEMPT, SEMANTIC_QUERY, PERSISTENT_PLANNING, PUBLIC_PLANNING_VIEW }
+    public enum Cause { INITIAL_NEW_EPISODE, INITIAL_CONFIRMED_SAVED, MARRIAGE_QUERY, CAMPAIGN_ROOT_QUERY, OBSERVED_FRAME, RETREAT_DOMAIN, IMMUTABLE_SEED, INDEPENDENT_READINESS, MARRIAGE_ATTEMPT, SEMANTIC_QUERY, PERSISTENT_PLANNING, PUBLIC_PLANNING_VIEW }
 
     /** Actual current-frame input DATA. Private construction and raw-scope custody prevent this
      * uncommitted view from becoming a Driver publication, readiness or a reusable action permit. */
@@ -316,6 +316,66 @@ public final class DriverCapabilityStateProducer {
         putInitial(aux,CONFIG,configuration(configuration));putInitial(aux,PATHS,paths(presentation));
         putInitial(aux,INITIAL,reference(archivedStartupPolicy));putInitial(aux,READS,new Obj(Map.of("marriage",Nil.INSTANCE,"campaign_root",Nil.INSTANCE)));
         return mint(first,current,DriverSemanticReadState.initializeFresh(new Obj(aux)),BigInteger.ZERO,Cause.INITIAL_NEW_EPISODE,archive);
+    }
+
+    /** Saved-entry DATA supplementation only; Root's genuine private proof gates the publication. */
+    public static InitialAuxiliary initializeConfirmedSaved(Complete first,Known current,DynamicCapabilities.Configuration configuration,
+            CapabilitySessionPresentation presentation,ExactRef archivedStartupPolicy,ExactRef archivedSavedDetails,
+            ActionPorts.OutcomeArchive archive) {
+        Objects.requireNonNull(first);Objects.requireNonNull(current);Objects.requireNonNull(configuration);Objects.requireNonNull(presentation);
+        require(!current.auxiliary().members().containsKey(DriverRuntimeCapabilities.AUXILIARY_KEY)
+                &&!current.auxiliary().members().containsKey(STATE_SOURCE)&&!current.auxiliary().members().containsKey(VERSION),
+                "Saved cache supplementation cannot replace an existing or partial capability state");
+        require(presentation.driverStateRestored()&&presentation.restoreKind().equals(Optional.of(CapabilitySessionPresentation.RestoreKind.COLD_CHECKPOINT))
+                &&presentation.bindingState()==CapabilitySessionPresentation.BindingState.ACTIVE_RESUMED
+                &&presentation.driverStateError().isEmpty()&&presentation.coldCandidateRejection().isEmpty()
+                &&presentation.episodeTransitionError().isEmpty(),"actual Saved session presentation required");
+        requireSavedInitialization(first,current,archivedSavedDetails,archive);
+        presentation.validateConfiguration(configuration);readMaterial(archive,archivedStartupPolicy);
+        Map<String,Value> aux=new LinkedHashMap<>(current.auxiliary().members());
+        putInitial(aux,"arrange_marriage_choices",new Arr(List.of()));putInitial(aux,"arrange_marriage_query_sequence",Nil.INSTANCE);
+        for(String key:List.of("campaign_root_context_query","active_combat_retreat_token","episode_seed","episode_transition",
+                "succession_reconciliation","independent_battle_speed_readiness"))putInitial(aux,key,Nil.INSTANCE);
+        putInitial(aux,"driver_state_restored",new Bool(true));putInitial(aux,"driver_state_error",Nil.INSTANCE);
+        putInitial(aux,"restore_kind",new Text("cold_checkpoint"));putInitial(aux,"episode_binding_state",new Text("active_resumed"));
+        for(String key:List.of("cold_candidate_rejection","episode_transition_error"))putInitial(aux,key,Nil.INSTANCE);
+        putInitial(aux,CONFIG,configuration(configuration));putInitial(aux,PATHS,paths(presentation));
+        putInitial(aux,INITIAL,reference(archivedStartupPolicy));putInitial(aux,READS,new Obj(Map.of("marriage",Nil.INSTANCE,"campaign_root",Nil.INSTANCE)));
+        putInitial(aux,"capability_saved_initialization_source",reference(archivedSavedDetails));
+        // Derive defaults from an empty map, then reject every conflict with actual existing data.
+        for(var entry:DriverSemanticReadState.initializeFresh(new Obj(Map.of())).members().entrySet())
+            putInitial(aux,entry.getKey(),entry.getValue());
+        var result=mint(first,current,new Obj(aux),BigInteger.ZERO,Cause.INITIAL_CONFIRMED_SAVED,archive);
+        require(replay(first,current,result.source(),archive).equals(result.auxiliary()),"Saved cache failed its identical original replay");
+        return result;
+    }
+    private static void requireSavedInitialization(Complete frame,Known current,ExactRef original,ActionPorts.OutcomeArchive archive) {
+        var row=org.xar.ck3.control.continuity.ContinuityJson.parseObject(readMaterial(archive,original).bytes(),
+                org.xar.ck3.control.contracts.StrictJson.INPUT_MAX_BYTES);
+        org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(row);
+        var session=org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionFromJson(row.get("session"));
+        var source=org.xar.ck3.control.g2.common.G2Wire.source(row.get("source"));
+        var opening=row.get("opening");var savedFrame=opening.get("frame");
+        var baseline=ExactRef.fromJson(row.get("full_driver"));byte[] driver=archive.loadFullMaterial(baseline).bytes();
+        require(driver.length==baseline.bytes()&&DriverJson.sha256(driver).equals(baseline.sha256()),
+                "Saved cache full Driver original bytes/SHA differ");
+        require(Arrays.equals(driver,current.driver().encode())&&current.originalHistoryBasis().equals(baseline)
+                &&current.stamp().driverVersion()==org.xar.ck3.control.contracts.StrictJson.integer(row.get("driver_version"),0,org.xar.ck3.control.contracts.StrictJson.MAX_SAFE_INTEGER)
+                &&current.stamp().episodeEpoch()==org.xar.ck3.control.contracts.StrictJson.integer(row.get("episode_epoch"),0,org.xar.ck3.control.contracts.StrictJson.MAX_SAFE_INTEGER),
+                "Saved cache full Driver/history/stamp differs from the canonical baseline");
+        require(current.actionRows().isEmpty()&&current.loop().isEmpty()
+                &&session.game().equals(frame.identity().game())&&session.machineId().equals(frame.identity().machineId())
+                &&session.sessionId().equals(frame.sessionId())&&source.equals(frame.source())
+                &&current.stamp().game().equals(frame.identity().game())
+                &&current.stamp().episodeRunId().equals(frame.identity().frame().episodeRunId()),
+                "Saved cache crossed its actual current Game/session/source/episode");
+        require(org.xar.ck3.control.contracts.StrictJson.text(savedFrame.get("episode_run_id")).equals(frame.identity().frame().episodeRunId())
+                &&new BigInteger(org.xar.ck3.control.contracts.StrictJson.text(savedFrame.get("played_character_id"))).equals(frame.identity().frame().identity().player())
+                &&new BigInteger(org.xar.ck3.control.contracts.StrictJson.text(savedFrame.get("date_raw"))).equals(frame.identity().frame().identity().dateRaw())
+                &&frame.identity().frame().identity().nativeRevision().compareTo(new BigInteger(org.xar.ck3.control.contracts.StrictJson.text(savedFrame.get("native_revision"))))>=0
+                &&frame.identity().frame().revision().compareTo(new BigInteger(org.xar.ck3.control.contracts.StrictJson.text(savedFrame.get("revision"))))>=0
+                &&frame.identity().observationVersion()==org.xar.ck3.control.contracts.StrictJson.integer(opening.get("observation_version"),1,org.xar.ck3.control.contracts.StrictJson.MAX_SAFE_INTEGER),
+                "Saved cache actor/day/profile changed or its actual frame regressed");
     }
 
     /** The exact successfully decoded/archived read is the producer; an ACK or request alone is refused. */
@@ -592,6 +652,15 @@ public final class DriverCapabilityStateProducer {
                     &&terminal.semanticSource().equals(semantic)&&terminal.stateVersion().equals(version)
                     &&Arrays.equals(readMaterial(archive,terminal.fullDriver()).bytes(),originalDriver.driver().encode()),
                     "private terminal capability role crossed its actual raw Native/full Driver source");
+        }
+        if(cause==Cause.INITIAL_CONFIRMED_SAVED) {
+            require(owner.members().containsKey("capability_saved_initialization_source"),"Saved cache original qualification DATA missing");
+            requireSavedInitialization(originalFrame,originalDriver,
+                    decodeReference(object(owner.get("capability_saved_initialization_source"),"capability_saved_initialization_source")),archive);
+        } else if(owner.members().containsKey("capability_saved_initialization_source")) {
+            var saved=decodeReference(object(owner.get("capability_saved_initialization_source"),"capability_saved_initialization_source"));
+            org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(org.xar.ck3.control.continuity.ContinuityJson.parseObject(
+                    readMaterial(archive,saved).bytes(),org.xar.ck3.control.contracts.StrictJson.INPUT_MAX_BYTES));
         }
         Map<String,Value> output=new LinkedHashMap<>(owner.members());
         output.put(VERSION,new Text(version.toString()));output.put(STATE_SOURCE,reference(originalState));

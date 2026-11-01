@@ -454,9 +454,16 @@ public final class RootInstalledCatalog {
         remaining.afterInitialEntry(same,actual);
     }
 
+    private RootApplicationAssembly.Core.ConfirmedSavedDomainProof savedCapabilityProof;
+
     public FreshCampaignContext initializeConfirmedSaved(ContinuityStorePort.Session same, RootApplicationAssembly.Core.ConfirmedSavedDomainProof actual, java.time.Instant deadline) throws IOException {
         context.writer().requireSession(same);
         actual.requireCurrent(same, context);
+        synchronized(this) {
+            StrictJson.require(savedCapabilityProof==null||savedCapabilityProof==actual,
+                    "Saved capability initialization cannot replace its actual private proof");
+            savedCapabilityProof=actual;
+        }
         var frame = actual.frame();
         var campaign = FreshCampaignContext.create(context, same, frame, deadline);
 
@@ -570,6 +577,12 @@ public final class RootInstalledCatalog {
     private void initializeCapabilityState(ContinuityStorePort.Session same, DriverObservationAssembler.Complete actual) throws IOException {
         var authority = context.adopted().authority();
         ActionPorts.OutcomeArchive archive = context.archive().withSession(same);
+        RootApplicationAssembly.Core.ConfirmedSavedDomainProof saved;
+        synchronized(this){saved=savedCapabilityProof;}
+        if(saved!=null) {
+            saved.requireCurrent(same,context);
+            StrictJson.require(saved.frame()==actual&&saved.adopted()==context.adopted(),"Saved capability frame/Driver differs from its private proof");
+        }
         authority.withFrozenFacts(same, frozen -> {
             StrictJson.require(frozen.state() instanceof DriverSnapshotFacts.Known, "persistent planning requires the actual complete Driver");
             var known = (DriverSnapshotFacts.Known) frozen.state();
@@ -601,6 +614,22 @@ public final class RootInstalledCatalog {
             }
 
             var archivedPolicy = archive.preserveMaterial(sources.initialPolicy().lifecycle());
+            if(saved!=null) {
+                saved.requireCurrent(same,context);
+                var details=org.xar.ck3.control.continuity.ContinuityJson.object(same.head().state().toJson().get(
+                        org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD));
+                org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(details);
+                var original=archive.preserveMaterial(new RawJson(org.xar.ck3.control.continuity.ContinuityJson.canonical(details)));
+                var resumed=new CapabilitySessionPresentation(true,configured.driverStateError(),
+                        java.util.Optional.of(CapabilitySessionPresentation.RestoreKind.COLD_CHECKPOINT),
+                        CapabilitySessionPresentation.BindingState.ACTIVE_RESUMED,configured.coldCandidateRejection(),
+                        configured.episodeTransitionError(),configured.queueDirectory(),configured.driverStatePath());
+                var initialSaved=DriverCapabilityStateProducer.initializeConfirmedSaved(actual,known,
+                        sources.capabilityConfiguration(),resumed,archivedPolicy,original,archive);
+                saved.requireCurrent(same,context);
+                authority.publishCapabilityInputs(same,initialSaved.expectedStamp(),initialSaved.expectedAuxiliarySha256(),initialSaved);
+                saved.requireCurrent(same,context);return null;
+            }
             var initial = DriverCapabilityStateProducer.initializeNewEpisode(
                 actual,
                 known,
