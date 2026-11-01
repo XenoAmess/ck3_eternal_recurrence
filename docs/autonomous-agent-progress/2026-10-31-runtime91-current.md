@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-01 09:38Z 冻结：226/227 两次同局恢复，原婚姻回复842真实 APPLIED；cycle 留存尚未完成
+
+- 226 的10个唯一生产源已实际小采用并加载：普通历史校验 scope、同 lease Commit 解码复用、known婚姻精简决策输入、Journal/Authority 原已ACK动作恢复、Bootstrap及freshREAD原件消费者、ActionAuthority同调用已验列表复用、Known effects及Installer真实READ/provenance。MB `09:09:46.380997–09:10:14.182395Z` exit0/27.8014099s（application3、adapters-storage1、native-transport1、local-service5）。worker226/PID121816 `09:10:39.131751Z` START，`09:19:12.243969Z` END1/513.1122338s，未LOOP；原头841未变。首薄读END在09:19:56.782349Z，44.538380s迟延归owner的JFR header/回报间隙。最内错误是中央RootPendingInteractionEffects归档分支仍用默认FrameLoader，报 actual fresh snapshot query verifier is not installed；不是再次派发或原NativeACK丢失。
+- 226冷段唯一新性能录制实际jcmd于 `09:14:06.895993–09:14:07.600393Z` exit0，PID/birth守卫通过；关闭初始环境/系统属性事件，配置30秒/16MiB。现成perf226.jfr为5,437,496B，单完整chunk覆盖文件、header实际30.2111814s，lastwrite09:14:37.777625Z；header观察时间09:19:20另列。首次jfr summary超15秒而未授可解析/DataLoss0，后由M0独立有限流式读取分析，不重采。旧helper误传--help在旧PID OpenProcess错误87前置退出，未启动旧录制，准备成本明记；不从单录制窗推全链耗时或磁盘/杀毒原因。
+- 227只修中央KNOWN归档delegate安装现有freshFrameLoader，Event分支及默认拒绝全保。唯一1TU首strict0/2.566941s后，MB `09:23:56.517641–09:24:03.675747Z` exit0/7.1581096s；worker227/PID323900 `09:24:11.816554Z` START，`09:34:40.127618Z` END1/628.3110835s，未LOOP。ACK237独立软件验证在09:23:48.766772Z已END，比MB BEGIN早7.750869s，不能因NOW通知近邻伪称实际编译重叠。09:34:39.777474Z已薄读WORKER_FAILED（结果时间09:34:39.568524600Z），随后实际END及时收取；无精确END首读时间便不造延迟数值。
+- 原pending:8c0e5d…10d40婚姻拒绝已由842在 `09:33:08.911284600Z` 真实SETTLED/APPLIED，event SHA ea4cd9095894c84d65136f3fd49b81ecf5fdf33d20f8a23767f57b41cf9a1977，receipt23708B/571e927c…aacb69c。仍是原839的a90ab6a6…25468 dispatch，没有重reject；独立READ实际收到 `09:31:36.204266900Z`，native586/public506/date53146272、cold_after_acknowledgement指向原840。known_pending_independent_effect_verified为true，随后843 JAVA_DRIVER_ACTION_HISTORY发布实际before/after Driver引用。此为动作效果与recorder成功，不是新推进日或保存。
+- 后继completeCycle的RETAIN preview在Transitions.revalidate525仍要求原cycle旧帧等于原command.before，报 native player/revision/date identity differs。当前头843/repair_required，cycle13及pending=null保持，旧cycle77而command.before81；没有RETAIN或新cycle SETTLE。下一冷入口的全settled历史又会要求842已有cycle，故228同时由History独占留存角色、intent独占相应冷入口，不能只修warm路径后盲起。当前81最后新鲜观测/77已结算/69确认保存仍分列，额外4日不归本拒绝动作。05:52Z端到端目标窗未重置，新增保存0，s/day=null；228尚无MB/START或修复成功信用。
+
+
 ## 2026-11-01 09:05Z 冻结：225 新普通提交资格已实越，原回复获 ACK 后后态仍 UNKNOWN；226 正准备
 
 - 224 实际于 `08:13:23.344033Z` END4 / `706.8833706s`；批88的普通婚姻拒绝选择在提交前误经 SAVE 同日 proof，实际 attempted/applied/saved 均0。不是 Native 失败，也没有重发游戏动作。该批 phase：观察28.134s、规划119.857s、结果消费19.733s、Journal5.264s（1个未返回 span）、分析入队2.707s；phase 仪表不据此当作互斥耗时分解。
