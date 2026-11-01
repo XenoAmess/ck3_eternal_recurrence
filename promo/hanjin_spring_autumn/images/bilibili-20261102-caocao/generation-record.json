@@ -1,0 +1,45 @@
+{
+  "schema": "hanjin.bilibili-generated-covers/v1",
+  "machine_id": "4-8e1c2f1861",
+  "created_at_utc": "2026-11-01T17:28:37.552547+00:00",
+  "episode": 2,
+  "episode_title": "帮过我的朋友，挡住了我的去路",
+  "mode": "built-in imagegen",
+  "images": [
+    {
+      "file": "cao-cao-16x9.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2799197,
+      "sha256": "8b38c42ed4077f7fe572e90d4824eba00c5c69b508b268c229e47ba423b52c98",
+      "source_generated_image": "C:\\Users\\Administrator\\.codex\\generated_images\\01a190ad-8c06-74e1-834d-d4f84e81b3ea\\exec-b1db22ae-c5db-4ad1-bcf0-d82d706e814c.png"
+    },
+    {
+      "file": "cao-cao-4x3.png",
+      "requested_aspect_ratio": "4:3",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 2702680,
+      "sha256": "961f1d66fdd573c74002b8a0b73842a9ecbbf28aad36d736c30951609358b5d4",
+      "source_generated_image": "C:\\Users\\Administrator\\.codex\\generated_images\\01a190ad-8c06-74e1-834d-d4f84e81b3ea\\exec-2eae0ba0-693f-49c4-95f3-53148ef66023.png"
+    }
+  ],
+  "visual_review": "Both actual outputs inspected: exact title wording, series brand, Cao Cao portrait, matching face/style, separate wide and4:3 compositions, clear lower-right duration badge area. The wide native raster has generator integer-pixel rounding, as with episode01; no post-generation stretch or crop.",
+  "original_generated_files_retained": true,
+  "uploaded": false,
+  "storage_check": {
+    "volume_free_bytes": 82678476800,
+    "new_project_asset_bytes": 5501877,
+    "estimated_peak_this_write_bytes": 33554432,
+    "system_growth_reserve_bytes": 16106127360,
+    "safety_margin_bytes": 21474836480,
+    "project_usage_baseline_bytes": 40329681515,
+    "baseline_evidence": "../../research/filming-08/storage-closure.json",
+    "effective_project_quota_bytes": 51177672294,
+    "other_unspent_reservations_bytes": 0,
+    "task_close_available_bytes": 82668355584,
+    "task_close_at_utc": "2026-11-01T17:29:52.885588+00:00"
+  },
+  "retention": "Final selected project artwork tracked with episode; default generated originals follow shared retention policy with derived review in48hours."
+}
