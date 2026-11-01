@@ -1,0 +1,47 @@
+{
+  "schema" : "hanjin.edit04-retained-static-reasons/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "recorded_at_utc" : "2026-11-01T04:56:24.620085100Z",
+  "source" : "Owner-selected chosen-media-plan.json, including genuine recording gaps and limited unique heir footage",
+  "stills" : [ {
+    "scene" : "v03-01-title",
+    "source" : "edit-01/cards/title.png",
+    "reason" : "Intentional title graphic",
+    "display_seconds" : 4.0
+  }, {
+    "scene" : "v03-04-coalition",
+    "source" : "shooting-02/event-13-frame.png",
+    "reason" : "关东举兵原始弹窗在未录制空档，保短真实截图",
+    "display_seconds" : 3.0
+  }, {
+    "scene" : "v03-04-coalition",
+    "source" : "shooting-02/war-overview-still.png",
+    "reason" : "原始敌我兵力总览截图，未找到同一总览连续录像",
+    "display_seconds" : 3.5
+  }, {
+    "scene" : "v03-05-army",
+    "source" : "edit-02/cards/supply-qc.png",
+    "reason" : "20,030／4,680／300同军队说明卡；没有可靠的容量tooltip实录，保短证据图",
+    "display_seconds" : 7.0
+  }, {
+    "scene" : "v03-16c-realm-r3",
+    "source" : "shooting-03/final-heir-portrait.png",
+    "reason" : "500兵／1头衔／0直属领地的真实继承页。有限董璜录像已给前一场，不重复循环冒充更多实录",
+    "display_seconds" : 9.0
+  }, {
+    "scene" : "v03-16c-realm-r3",
+    "source" : "edit-03/cards/realm-comparison.png",
+    "reason" : "前后领地对照是明确说明卡，不冒充游戏动态",
+    "display_seconds" : 4.5
+  }, {
+    "scene" : "v03-18-promotion",
+    "source" : "edit-03/cards/tailcard-promo.png",
+    "reason" : "工坊搜索与Mod名称需可读，宣传尾卡无需强换无关录像",
+    "display_seconds" : 13.68888888888891
+  }, {
+    "scene" : "v03-18-promotion",
+    "source" : "edit-03/cards/tailcard-credits.png",
+    "reason" : "依赖与来源信息卡",
+    "display_seconds" : 6.84444444444445
+  } ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "hanjin.edit04-root-local-delivery-readback/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T05:07:29.181670+00:00",
+  "new_video_sha256": "72e204a26bbbe3301b422fd946de0b1181ba52b10fb22d612acaf33f334d7225",
+  "video_bytes": 42030519,
+  "new_video_readable": true,
+  "subtitles_cover_description_hashes_verified": true,
+  "previous_reworked_video_sha256_unchanged": true,
+  "human_signoff": null
+}

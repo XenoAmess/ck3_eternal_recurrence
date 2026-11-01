@@ -1,0 +1,34 @@
+{
+  "schema": "hanjin.edit04-root-targeted-review/v1",
+  "machine_id": "4-8e1c2f1861",
+  "reviewed_at_utc": "2026-11-01T05:04:20.836943+00:00",
+  "reviewer": "Codex root visual inspection",
+  "scope": "Five-frame contact sheet plus full-resolution166.6 and312.0; sampled checks only, not full human playback",
+  "inspected_final_sha256": "72e204a26bbbe3301b422fd946de0b1181ba52b10fb22d612acaf33f334d7225",
+  "human_signoff": null,
+  "config_cues_match_all19_final_scene_texts": true,
+  "findings": [
+    "Migration event text and subtitle agree; actual click follows the sampled frame",
+    "At166.6s actual green+19% visible; on-screen date190.10.28, later source767.4 checked by media owner shows10.29",
+    "At312s Dong Huang34 page shows no spouse and0children; subtitle agrees",
+    "At319s return to dead Dong Zhuo page matches spoken return to Dong Zhuo",
+    "At360s Mod title and Steam Workshop search promotion visible"
+  ],
+  "frames": [
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\final-media-proof\\contact.jpg",
+      "sha256": "446ac35bf475107c91162fa7f29f36a6de5451937d6874b467b1abff70a9b2ad",
+      "bytes": 246408
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\final-media-proof\\frame-166.600.jpg",
+      "sha256": "30f7bae2a62ebb9fdb530d5b76c36ab5d5c8a2e80c638ece9ae549ac456961e5",
+      "bytes": 322634
+    },
+    {
+      "path": "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-04\\final-media-proof\\frame-312.000.jpg",
+      "sha256": "1d0970fff33de54c68f44fa2a77b0da28510557f22b34707b3575b85be5b2ecb",
+      "bytes": 499964
+    }
+  ]
+}

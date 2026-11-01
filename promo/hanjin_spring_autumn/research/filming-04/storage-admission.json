@@ -1,0 +1,27 @@
+{
+  "schema": "hanjin.edit04-storage-admission/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T04:37:17.863552+00:00",
+  "root": "C:\\workspace\\hanjin-spring-autumn-20261031",
+  "current_project_usage_bytes": 8163234914,
+  "regular_files": 24682,
+  "total_volume_bytes": 511776722944,
+  "available_bytes": 88729051136,
+  "this_write_peak_bytes": 1073741824,
+  "other_unspent_reservations_bytes": 0,
+  "system_growth_reserve_bytes": 16106127360,
+  "safety_margin_bytes": 21474836480,
+  "effective_project_quota_bytes": 10737418240,
+  "edit04_budget_bytes": 1073741824,
+  "quota_override": {
+    "owner": "hanjin-dongzhuo-language-video-20261101",
+    "reason": "User requested a further narration rewrite and replacement of stills with existing recorded video; prior run retained",
+    "max_project_bytes": 10737418240,
+    "review_at_utc": "2026-11-03T04:45:00Z"
+  },
+  "raw_duplication_planned": false,
+  "admitted": true,
+  "policy_version": "1.0.0",
+  "shared_package_peak_bytes": 10737418240,
+  "status": "ADMITTED_USER_REQUESTED_EDIT04"
+}

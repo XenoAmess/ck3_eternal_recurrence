@@ -1,0 +1,11 @@
+《汉晋春秋》内测版 · 董卓实玩
+洛阳炙手，公卿憎我，天下讨我。
+
+本次使用的三个创意工坊条目：
+汉晋春秋：https://steamcommunity.com/sharedfiles/filedetails/?id=3780919688
+配套服装包：https://steamcommunity.com/sharedfiles/filedetails/?id=3797664499
+战争谈判议和扩展：https://steamcommunity.com/sharedfiles/filedetails/?id=3820784621
+
+安装方式、所需前置和游戏版本要求，以各作者页面为准。
+本局额外添加了190年董卓选人入口，未改剧情与兵力。
+中文旁白：Edge TTS，zh-CN-YunjianNeural。

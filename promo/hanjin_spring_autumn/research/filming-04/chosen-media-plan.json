@@ -1,0 +1,578 @@
+{
+  "schema": "hanjin.edit04-chosen-video-plan/v1",
+  "machine_id": "4-8e1c2f1861",
+  "based_on_edl": "edit-04/edit-decision-list.json",
+  "chapter_count": 19,
+  "fixed_total_duration_seconds": 363.9666666666666,
+  "game_operated": false,
+  "old_edit_mutated": false,
+  "bulk_media_reencoded": false,
+  "scope": "Read-only source advice. All in/out values are source seconds. Clips must never read past hard_out_seconds or EOF. No looping, synthetic motion or substitution of dead Dong Zhuo for Dong Huang.",
+  "duration_rule": "For video, display=(out_seconds-in_seconds)/speed. Listed clips fit the present narration durations. Root may shorten within bounds; do not extend to fill narration beyond hard_out. Still cards have explicit display_seconds.",
+  "obstruction_scope": "Inspected sampled frames show original game UI, with no external tool/desktop/black capture in the recommended windows. This is targeted visual sampling, not an assertion that every frame of every sealed take was audited. In-game notifications/tooltips are called out below.",
+  "evidence": [
+    "inventory.json",
+    "preliminary-anchors.tsv",
+    "migration-click-contact.jpg",
+    "rhyme-click-contact.jpg",
+    "terminal-clicks-contact.jpg",
+    "heir-final-contact.jpg"
+  ],
+  "chapters": [
+    {
+      "id": "v03-01-title",
+      "duration_seconds": 10.766666666666667,
+      "status": "video_plus_intentional_title_card",
+      "clips": [
+        {
+          "kind": "still",
+          "source": "edit-01/cards/title.png",
+          "display_seconds": 4.0,
+          "reason": "Intentional title graphic"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-02/take-03-campaign.mkv",
+          "in_seconds": 20.0,
+          "out_seconds": 26.766666666666666,
+          "hard_out_seconds": 100.0,
+          "speed": 1.0,
+          "content": "董卓50岁人物页，真实人物动画",
+          "evidence": "campaign-contact.jpg"
+        }
+      ]
+    },
+    {
+      "id": "v03-02-setup",
+      "duration_seconds": 17.733333333333334,
+      "status": "video_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-02/take-03-campaign.mkv",
+          "in_seconds": 40.0,
+          "out_seconds": 48.86666666666667,
+          "hard_out_seconds": 100.0,
+          "speed": 1.0,
+          "content": "董卓实际人物页",
+          "evidence": "campaign-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-02/take-03-campaign.mkv",
+          "in_seconds": 135.0,
+          "out_seconds": 143.86666666666667,
+          "hard_out_seconds": 155.0,
+          "speed": 1.0,
+          "content": "刘协8岁人物页，真实呼吸与衣物动画",
+          "evidence": "campaign-contact.jpg"
+        }
+      ],
+      "anchor_note": "character-dong-01.png拍于11:05:14，正值录屏空档；所荐不是该截图瞬间，而是同一角色同一开局稍后真实人物页。刘协截图11:10:45.837对应约135.567s。"
+    },
+    {
+      "id": "v03-03-migration",
+      "duration_seconds": 20.03333333333333,
+      "status": "continuous_event_choice_and_camera_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-02/take-04-migration-war.mkv",
+          "in_seconds": 0.3,
+          "out_seconds": 20.33333333333333,
+          "hard_out_seconds": 30.0,
+          "speed": 1.0,
+          "content": "焚雒西迁正文→真实选择关闭→镜头到长安",
+          "evidence": "migration-click-contact.jpg"
+        }
+      ],
+      "transitions": [
+        {
+          "source_seconds_before": 10.0,
+          "source_seconds_after": 10.5,
+          "observed": "迁都窗口消失"
+        },
+        {
+          "source_seconds": 12.0,
+          "observed": "原生镜头已转到长安一带"
+        }
+      ],
+      "anchor_note": "story-progress-02.png11:17:22.189约take03/531.919s；take04接续相同迁都窗口。Native选择请求11:18:40.605、响应11:18:41.034，吻合take04约10秒关闭。无需用静图模拟点击。"
+    },
+    {
+      "id": "v03-04-coalition",
+      "duration_seconds": 18.7,
+      "status": "formation_popup_video_gap_later_war_video_available",
+      "clips": [
+        {
+          "kind": "still",
+          "source": "shooting-02/event-13-frame.png",
+          "display_seconds": 3.0,
+          "reason": "关东举兵原始弹窗在未录制空档，保短真实截图"
+        },
+        {
+          "kind": "still",
+          "source": "shooting-02/war-overview-still.png",
+          "display_seconds": 3.5,
+          "reason": "原始敌我兵力总览截图，未找到同一总览连续录像"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-02/take-05-war-army.mkv",
+          "in_seconds": 30.0,
+          "out_seconds": 42.2,
+          "hard_out_seconds": 100.0,
+          "speed": 1.0,
+          "content": "战争已开始后的真实地图／刘协人物页；不是关东弹窗出现录像",
+          "evidence": "war-contact.jpg"
+        }
+      ],
+      "gap": "event-13-frame11:34:49.297、war-overview11:36:10.509均落在take04约11:28:30结束与take05约11:38:19开始之间。不可声称已录下成立弹窗或原始点击。take05/0–10另有原版战争通知，但不能替代未录的关东正文。"
+    },
+    {
+      "id": "v03-05-army",
+      "duration_seconds": 19.3,
+      "status": "gathering_and_main_army_video_with_short_supply_card",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-02/take-06-gathering.mkv",
+          "in_seconds": 0.0,
+          "out_seconds": 4.0,
+          "hard_out_seconds": 30.0,
+          "speed": 1.0,
+          "content": "召集后的真实多军地图，当前选择并非两万主力",
+          "evidence": "gather-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-02/take-07-sortie.mkv",
+          "in_seconds": 3,
+          "out_seconds": 5.377,
+          "hard_out_seconds": 30.0,
+          "speed": 1.0,
+          "content": "乐进主力20,030人的真实军队面板",
+          "evidence": "sortie-contact.jpg"
+        },
+        {
+          "kind": "still",
+          "source": "edit-02/cards/supply-qc.png",
+          "display_seconds": 7.0,
+          "reason": "20,030／4,680／300同军队说明卡；没有可靠的容量tooltip实录，保短证据图"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-02/take-07-sortie.mkv",
+          "in_seconds": 10,
+          "out_seconds": 15.923,
+          "hard_out_seconds": 30.0,
+          "speed": 1.0,
+          "content": "乐进主力20,030人的真实军队面板",
+          "evidence": "sortie-contact.jpg"
+        }
+      ],
+      "avoid": "take06/120–360有不相干信件遮挡；take06末尾选中5000人且有tooltip，不能配两万主力旁白。RaiseAll点击截图12:17:38在take06开始前，主力ready截图12:47:25在录屏空档，不能冒称拍到这两个瞬间。"
+    },
+    {
+      "id": "v03-06-shiqiu",
+      "duration_seconds": 18.066666666666663,
+      "status": "combat_state_and_after_available_resolution_gap",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-02/take-07-sortie.mkv",
+          "in_seconds": 60.0,
+          "out_seconds": 68.06666666666666,
+          "hard_out_seconds": 120.0,
+          "speed": 1.0,
+          "content": "市丘20,030对1,410的真实战斗面板；本段暂停，不能冒充多日战斗快进",
+          "evidence": "sortie-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-02/take-08-story-continuation.mkv",
+          "in_seconds": 22.0,
+          "out_seconds": 32.0,
+          "hard_out_seconds": 170.0,
+          "speed": 1.0,
+          "content": "五月一日战后，主力20,027人的实录",
+          "evidence": "afterbattle-contact.jpg"
+        }
+      ],
+      "gap": "实际战斗日推进及消灭终点未在当前连续样本中；不要把暂停的十分钟战斗窗加速冒充伤亡进程。用日期跳切把战前/战斗状态与May1真实后态接起；结果已有保存证据。"
+    },
+    {
+      "id": "v03-07-coins",
+      "duration_seconds": 16.766666666666666,
+      "status": "event_and_dismiss_video_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-02/take-08-story-continuation.mkv",
+          "in_seconds": 0.0,
+          "out_seconds": 16.766666666666666,
+          "hard_out_seconds": 20.0,
+          "speed": 1.0,
+          "content": "坏五铢原版弹窗→实际关闭→五月地图",
+          "evidence": "coins-short-contact.jpg"
+        }
+      ],
+      "anchor_note": "旧battle-progress-01.png13:49:09在录屏空档，但同一待处理坏五铢窗口在take08开头确实仍在，0–10s可见、15s已关闭。不要拿静图替代已有真实关闭。"
+    },
+    {
+      "id": "v03-08-letter",
+      "duration_seconds": 12.86666666666666,
+      "status": "video_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-01.mkv",
+          "in_seconds": 958.0,
+          "out_seconds": 970.8666666666667,
+          "hard_out_seconds": 980.0,
+          "speed": 1.0,
+          "content": "刘协来信真实窗及随后地图；信中命王弘助战",
+          "evidence": "letter-relief-contact.jpg"
+        }
+      ],
+      "anchor_note": "july-event-16-frame19:09:04.041对应957.837s；920–965样本窗在、980已关闭。关闭精确帧没有二次细扫，hard_out980以内不会越到另一事件。"
+    },
+    {
+      "id": "v03-09-relief",
+      "duration_seconds": 16.133333333333326,
+      "status": "real_army_map_and_march_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-01.mkv",
+          "in_seconds": 1625.0,
+          "out_seconds": 1641.1333333333334,
+          "hard_out_seconds": 1660.0,
+          "speed": 1.0,
+          "content": "合军前后军队数字及救援路线地图，1632s主力已30,417",
+          "evidence": "letter-relief-contact.jpg"
+        }
+      ],
+      "avoid": "不要为此复用take02/65s的长老支持弹窗，内容与救援无关；同阶段地图/军队原片更合适。"
+    },
+    {
+      "id": "v03-10-yique-r2",
+      "duration_seconds": 23.1,
+      "status": "real_combat_progress_and_victory_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 110.0,
+          "out_seconds": 115.9,
+          "hard_out_seconds": 150.0,
+          "speed": 1.0,
+          "content": "伊阙开始30,417对35,949",
+          "evidence": "rhyme-winter-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 225.0,
+          "out_seconds": 231.0,
+          "hard_out_seconds": 300.0,
+          "speed": 4.0,
+          "content": "真实战斗数值进展，4倍播放，源32.4秒输出8.1秒",
+          "evidence": "rhyme-winter-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 331.0,
+          "out_seconds": 339.26666666666665,
+          "hard_out_seconds": 350.0,
+          "speed": 1.0,
+          "content": "胜利字样与实战结果面板",
+          "evidence": "rhyme-winter-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 766.3,
+          "out_seconds": 768.857,
+          "hard_out_seconds": 770,
+          "speed": 1,
+          "framing": "war-score",
+          "content": "Post-battle actual green +19% war shield after rhyme window closed; crop lower-right to avoid showing future event title",
+          "evidence": "shooting-03/october-event-17-frame.png; source-audit/rhyme-click-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 355,
+          "out_seconds": 359.8763333333333,
+          "hard_out_seconds": 380,
+          "speed": 1.0,
+          "content": "Actual surviving main army 30214 after battle",
+          "evidence": "rhyme-winter-contact.jpg"
+        }
+      ],
+      "optional_after_only": {
+        "source": "shooting-03/take-02.mkv",
+        "in_seconds": 355.0,
+        "hard_out_seconds": 380.0,
+        "content": "战后主力30,214；可替换最后一段，但不可当战争19分总览"
+      }
+    },
+    {
+      "id": "v03-11-rhyme",
+      "duration_seconds": 20.166666666666657,
+      "status": "continuous_rhyme_and_actual_choice_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 746.0,
+          "out_seconds": 766.1666666666666,
+          "hard_out_seconds": 770.0,
+          "speed": 1.0,
+          "content": "千里草真实人物动画和正文→实际点击关闭→地图",
+          "evidence": "rhyme-click-contact.jpg"
+        }
+      ],
+      "transitions": [
+        {
+          "source_seconds_before": 763.7,
+          "source_seconds_after": 764.0,
+          "observed": "童谣窗口消失"
+        }
+      ],
+      "anchor_note": "october-event-17-frame19:34:04.394对应721.397s；选择请求19:34:46.606约763.609s，与原片关闭吻合。"
+    },
+    {
+      "id": "v03-12-winter",
+      "duration_seconds": 22.46666666666667,
+      "status": "continuous_winter_map_to_peerage_notice_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 1527.0,
+          "out_seconds": 1540.7,
+          "hard_out_seconds": 1560.0,
+          "speed": 1.0,
+          "content": "冬季地图、通知及岁禄窗口；1534样本地图、1547样本5金年禄窗口",
+          "evidence": "rhyme-winter-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 1546.0,
+          "out_seconds": 1554.7666666666667,
+          "hard_out_seconds": 1560.0,
+          "speed": 1.0,
+          "content": "冬季地图、通知及岁禄窗口；1534样本地图、1547样本5金年禄窗口",
+          "evidence": "rhyme-winter-contact.jpg"
+        }
+      ],
+      "anchor_note": "winter-progress图19:47:37.558→1534.561s；年禄图19:47:49.750→1546.753s。未细读所有通知tooltip，旁白具体王匡/潼关事实仍以原图与既有研究为准。"
+    },
+    {
+      "id": "v03-13-hanzhong",
+      "duration_seconds": 17.2,
+      "status": "world_news_video_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-02.mkv",
+          "in_seconds": 1688.0,
+          "out_seconds": 1705.2,
+          "hard_out_seconds": 1710.0,
+          "speed": 1.0,
+          "content": "张鲁据汉中真实消息及随后地图；1690窗在、1710已关闭",
+          "evidence": "rhyme-winter-contact.jpg"
+        }
+      ],
+      "anchor_note": "截图19:50:13.568→1690.571s；已核原生上下文与截图日期分开记录，不把画面时点回填成精确触发日期。"
+    },
+    {
+      "id": "v03-14-invitation",
+      "duration_seconds": 35.133333333333326,
+      "status": "continuous_invitation_to_selected_option_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-03.mkv",
+          "in_seconds": 427.8,
+          "out_seconds": 462.93333333333334,
+          "hard_out_seconds": 463.0,
+          "speed": 1.0,
+          "content": "未央之约正文、两选项、真实选择，末尾衔接死亡",
+          "evidence": "terminal-a-contact.jpg; terminal-clicks-contact.jpg"
+        }
+      ],
+      "transitions": [
+        {
+          "source_seconds_before": 462.5,
+          "source_seconds_after": 463.0,
+          "observed": "未央选项切到死亡界面"
+        }
+      ],
+      "avoid": "本段不可任意延长越过463s，否则死窗会抢在下一场旁白前出现；也不可从463s以后起剪还声称看见选项。"
+    },
+    {
+      "id": "v03-15-death",
+      "duration_seconds": 18.96666666666664,
+      "status": "real_death_window_and_continue_transition_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-03.mkv",
+          "in_seconds": 463.0,
+          "out_seconds": 477.96666666666664,
+          "hard_out_seconds": 500.0,
+          "speed": 1.0,
+          "content": "死亡窗真实人物动作、董卓51岁与继承人34岁",
+          "evidence": "terminal-a-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-03/take-03.mkv",
+          "in_seconds": 627.0,
+          "out_seconds": 631.0,
+          "hard_out_seconds": 632.0,
+          "speed": 1.0,
+          "content": "原版继续继承的真实点击，死窗→国贼伏诛",
+          "evidence": "terminal-clicks-contact.jpg"
+        }
+      ],
+      "transitions": [
+        {
+          "source_seconds_before": 629.0,
+          "source_seconds_after": 630.0,
+          "observed": "死亡窗关闭，国贼伏诛原版窗显露"
+        }
+      ]
+    },
+    {
+      "id": "v03-16a-execution-r3",
+      "duration_seconds": 20.133333333333326,
+      "status": "real_news_and_dismiss_available",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-03.mkv",
+          "in_seconds": 732.0,
+          "out_seconds": 752.1333333333333,
+          "hard_out_seconds": 753.0,
+          "speed": 1.0,
+          "content": "国贼伏诛正文和人物动画→唯一按钮真实关闭→地图",
+          "evidence": "terminal-b-contact.jpg; terminal-clicks-contact.jpg"
+        }
+      ],
+      "transitions": [
+        {
+          "source_seconds_before": 750.0,
+          "source_seconds_after": 751.0,
+          "observed": "国贼伏诛窗口消失"
+        }
+      ]
+    },
+    {
+      "id": "v03-16b-family-r3",
+      "duration_seconds": 12.5,
+      "status": "short_true_heir_video_then_dead_dong_video",
+      "clips": [
+        {
+          "kind": "video",
+          "source": "shooting-03/take-03.mkv",
+          "in_seconds": 818.2,
+          "out_seconds": 825.7,
+          "hard_out_seconds": 826.6,
+          "speed": 1.0,
+          "content": "董璜34岁真实人物页，无妻子子女；必须配前半句",
+          "evidence": "heir-final-contact.jpg"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-03/take-03.mkv",
+          "in_seconds": 777.0,
+          "out_seconds": 782.0,
+          "hard_out_seconds": 810.0,
+          "speed": 1.0,
+          "content": "死去董卓51岁人物页；仅配后半回看死者",
+          "evidence": "terminal-b-contact.jpg"
+        }
+      ],
+      "hard_boundary": "董璜开始可见约818s，原片EOF826.7。可用约8.5秒，此场用7.5秒；不循环、放慢或把死董页冒充董璜。"
+    },
+    {
+      "id": "v03-16c-realm-r3",
+      "duration_seconds": 23.4,
+      "status": "static_evidence_acceptable_insufficient_unique_heir_video",
+      "clips": [
+        {
+          "kind": "still",
+          "source": "shooting-03/final-heir-portrait.png",
+          "display_seconds": 9.0,
+          "reason": "500兵／1头衔／0直属领地的真实继承页。有限董璜录像已给前一场，不重复循环冒充更多实录"
+        },
+        {
+          "kind": "still",
+          "source": "edit-03/cards/realm-comparison.png",
+          "display_seconds": 4.5,
+          "reason": "前后领地对照是明确说明卡，不冒充游戏动态"
+        },
+        {
+          "kind": "video",
+          "source": "shooting-03/take-03.mkv",
+          "in_seconds": 792.0,
+          "out_seconds": 801.9,
+          "hard_out_seconds": 810.0,
+          "speed": 1.0,
+          "content": "同日死董卓页及身后地图，仅配后半董卓身亡/领地图变；禁止作为董璜500兵证据",
+          "evidence": "terminal-b-contact.jpg"
+        }
+      ],
+      "allowed_alternative": "若不希望回死董卓页，可延用明确标注真实截图的继承页；宁短静图，不能复制最后8秒董璜片到两章冒充两段新实录。"
+    },
+    {
+      "id": "v03-18-promotion",
+      "duration_seconds": 20.53333333333336,
+      "status": "intentional_promotion_graphics_static_acceptable",
+      "clips": [
+        {
+          "kind": "still",
+          "source": "edit-03/cards/tailcard-promo.png",
+          "display_seconds": 13.68888888888891,
+          "reason": "工坊搜索与Mod名称需可读，宣传尾卡无需强换无关录像"
+        },
+        {
+          "kind": "still",
+          "source": "edit-03/cards/tailcard-credits.png",
+          "display_seconds": 6.84444444444445,
+          "reason": "依赖与来源信息卡"
+        }
+      ]
+    }
+  ],
+  "removed_old_chapter": {
+    "id": "v03-17-close",
+    "status": "removed_by_current_edit04_plan",
+    "recommendation": "Do not restore old recap merely to use additional footage."
+  },
+  "reliability_notes": [
+    "Filesystem creation anchors are provisional timing estimates. Important transitions were then checked in the actual decoded video, with native request/response file times agreeing.",
+    "Native request times, screenshot times and video PTS are separate facts; source ranges above use observed video PTS.",
+    "Paused event windows are genuine video with character animation, but should not be advertised as camera travel or battlefield progress.",
+    "All durations are finite; the consumer must cap media before the next UI state or EOF rather than extending sources to narration automatically."
+  ],
+  "selected_at_utc": "2026-11-01T04:51:43.158675+00:00",
+  "root_adjustments": [
+    "Supply card at 6.377 to13.377 to match spoken 4680 capacity and300 reserve",
+    "Battle victory enters at7.4s matching spoken win, shortened actual fast-forward to1.5s at4x",
+    "New-year notice enters at13.7s matching spoken peerage income",
+    "Battle green +19% cue15.667-18.224 uses actual post-battle lower-right war shield recording; no battle victory dialog mislabelled as score evidence",
+    "Source war-score crop confirmed visible date190.10.29, green+19%; a later actual post-battle view, not the10.16 victory window"
+  ],
+  "source_stats_seconds": {
+    "recorded_video": 312.4333333333334,
+    "game_screenshot": 15.5,
+    "card": 36.03333333333336
+  }
+}

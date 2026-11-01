@@ -1,0 +1,19 @@
+{
+  "schema": "hanjin.edit04-local-model-review/v1",
+  "machine_id": "4-8e1c2f1861",
+  "reviewed_at_utc": "2026-11-01T04:40:26.476627+00:00",
+  "tasks": [
+    {
+      "task_id": "36-dongzhuo-language-rewrite-first-half",
+      "decision": "rejected",
+      "reason": "Only one wrong title text returned, no requested scenes; self-contradictory English meta reasoning in removed_problem despite stop and valid JSON."
+    },
+    {
+      "task_id": "37-dongzhuo-language-rewrite-second-half",
+      "decision": "rejected",
+      "reason": "Telegraphic summary rather than natural spoken prose; factual subject error makes Xiliang troops the people quieting down; repeats phrases claimed removed. No sentence adopted."
+    }
+  ],
+  "owner_rewrite": true,
+  "runtime_game_decisions": 0
+}

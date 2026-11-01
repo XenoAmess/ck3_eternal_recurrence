@@ -1,0 +1,14 @@
+{
+  "schema" : "hanjin.edit04-published-storage-close/v1",
+  "machine_id" : "4-8e1c2f1861",
+  "observed_at_utc" : "2026-11-01T05:06:51.653897400Z",
+  "package_bytes_nonatomic_snapshot" : 8603231259,
+  "package_budget_bytes" : 10737418240,
+  "edit04_bytes" : 397610820,
+  "edit04_budget_bytes" : 1073741824,
+  "volume_usable_bytes" : 88259731456,
+  "within_budget" : true,
+  "raw_duplicated" : false,
+  "deletion_performed" : false,
+  "retention_review_at_utc" : "2026-11-03T04:45:00Z"
+}
