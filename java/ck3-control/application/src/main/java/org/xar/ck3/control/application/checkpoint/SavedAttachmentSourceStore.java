@@ -253,6 +253,20 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         return new RequalifiedConfirmed(this,head.state(),head.digest(),edge,material,present);
     }
 
+    /** Immediate retained DATA for this call, not a source qualification or current permit. */
+    public static final class RetainedMaterialResult {
+        private final SavedMaterial material;
+        private final byte[] driverEncoding;
+        private RetainedMaterialResult(SavedMaterial material, byte[] driverEncoding) {
+            this.material = material;
+            this.driverEncoding = driverEncoding;
+        }
+        public SavedMaterial material() { return material; }
+        public boolean matchesDriverEncoding(byte[] expected) {
+            return java.util.Arrays.equals(driverEncoding, expected);
+        }
+    }
+
     /** Privately issued PRESENT source qualification. It is not a recovered historical witness. */
     public static final class RequalifiedConfirmed {
         private final SavedAttachmentSourceStore issuer;
@@ -283,7 +297,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
                     "present confirmed material changed its identity or historical source");
             return current.material;
         }
-        public SavedMaterial requireRetained(ContinuityStorePort.Session same)throws IOException {
+        public RetainedMaterialResult requireRetainedResult(ContinuityStorePort.Session same)throws IOException {
             StrictJson.require(issuer.sessions.current()==same&&same.head().digest().equals(sourceDigest),
                     "retained qualification crossed the actual old source head or writer Session");
             same.verifyPin(confirmation.eventPin());
@@ -300,10 +314,15 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
                     &&current.session().equals(material.session())&&sameProof(current.proof(),material.proof())
                     &&ContinuityJson.same(current.originalHead().toJson(),material.originalHead().toJson())
                     &&current.originalHeadDigest().equals(material.originalHeadDigest())
-                    &&current.checkpointDigest().equals(material.checkpointDigest())
-                    &&Arrays.equals(current.savedDriver().encode(),requireSavedDriverEncoded()),
+                    &&current.checkpointDigest().equals(material.checkpointDigest()),
                     "retained historical material differs from its actual source-qualified identity");
-            return current;
+            byte[] freshEncoding = current.savedDriver().encode();
+            StrictJson.require(Arrays.equals(freshEncoding, requireSavedDriverEncoded()),
+                    "retained historical material differs from its actual source-qualified identity");
+            return new RetainedMaterialResult(current, freshEncoding);
+        }
+        public SavedMaterial requireRetained(ContinuityStorePort.Session same)throws IOException {
+            return requireRetainedResult(same).material();
         }
     }
 

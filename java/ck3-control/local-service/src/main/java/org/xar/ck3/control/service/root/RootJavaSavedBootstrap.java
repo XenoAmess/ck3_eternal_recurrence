@@ -110,9 +110,11 @@ public final class RootJavaSavedBootstrap {
         }
         private DriverStateSnapshot.Complete requireRetained()throws IOException {
             return writer.locked(same->{
-                writer.requireSession(same);var current=qualified.requireRetained(same);
-                StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                        &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
+                writer.requireSession(same);var result=qualified.requireRetainedResult(same);
+                var current=result.material();
+                StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair()),
+                        "retained source changed its actual saved Driver or session");
+                StrictJson.require(result.matchesDriverEncoding(savedDriverCanonical),
                         "retained source changed its actual saved Driver or session");
                 return current.savedDriver();
             });
@@ -135,9 +137,11 @@ public final class RootJavaSavedBootstrap {
                 writer.requireSession(same);
                 return sourceArchive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(1024, 64L * 1024 * 1024, 256),
                         ignoredArchive -> {
-                    var current=qualified.requireRetained(same);
-                    StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                            &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
+                    var result=qualified.requireRetainedResult(same);
+                    var current=result.material();
+                    StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair()),
+                            "retained source changed its actual saved Driver or session");
+                    StrictJson.require(result.matchesDriverEncoding(savedDriverCanonical),
                             "retained source changed its actual saved Driver or session");
                     return current.savedDriver();
                 });
