@@ -410,3 +410,22 @@ M2 range410 的 Host两轮stop后R2完整类原样采用；独立Book R1 length8
 - M2 455两次完整stop均因实际Memory/API、输入budget、正常返回guards或unsigned整宽约束错误整拒0片段，owner只完整实现新consumer，旧381仅供真实协议/parser参考，未读新454算法body/results。01:28:54首1新strict0/.714217、首JVM0/.186026 stdout7：新full437目标首次消费旧389独立原码七份8192B BEFORE/AFTER，RAM/RAX差分0。自有24B真实REP栈、fresh RET/SP/N/DF作为软件输入合同另核；旧原码wire没有完整V/N捕获，不授独立Native全寄存器、AVX/NT或Game资格。原115208B输入与source SHA保，0原Native/旧Data/source重跑；原Ready和两模型拒绝不改。
 
 - M7 208/209后到经验补现有规则：即使7B full185首稿仍可能虚构固定RET、混nested类型/漏NRgate；正确机械参考后的窄两hunk与薄consumer可用，而wholewitness的reset/length整弃，完整短方法仍须owner修fixture/API。CALL前后已知值、IRQ后状态边界不能因短JSON proof而混同。新SELF210生产完整首稿3628B可原样采用；5POST=2stop/3length，三份length不作未读语义结论，完整boundary稿拒后owner新2方法首2P，仅1个正常parent输入加foreign guard；父子execute两次不冒2个输入。所有局部成功、首次软件与正式来源仍分层，不把stop、短答或TTFT下降推为缓存/普遍阈值。
+
+
+## 2026-11-01 02:12Z 源模型窗口与其后独立证据（219）
+
+固定窗口为02:02:05.529528至02:12:05.529528Z：27次真实POST、27次END（18stop、6length、3reset）；客户端峰6只持续3.352150秒。当刻已索引源码在途0，稍后唯一服务GET为running0/waiting0/KV0，二者不是原子快照；持续高并发目标仍未达。随后219实现等新请求属于后到事实，不回填此窗口。配置仍以worker guide和唯一executor config为准；机器本地D路径只作证据，不成为其它机器的入口前置。
+
+M3 218先共用完整前缀同波派三个未写目标，实际峰3持续5.411886秒；leaf首稿原样采用，caller首稿漏captured identity，tails首稿错成熟类包名、漏资格校验且匿名类赋值不满足effectively-final，后二者唯一R2完整源码分别原样采用。五个task共5POST/5stop、0retry，owner只写纯API；4new首次strict0/.7724743秒，0旧源重编/行为验收。M3 219两独立合同角色各两份完整stop提案均未采用typedAPI，owner源审后设计纯声明；随后真正未写的void-effects leaf与actual218 middlebinding同波实现，两个R1分别有guard/虚构nested Memory问题，唯一R2源码3501B/1531B逐字采用，0owner Java/EOL变化。leaf R1同时受owner分号文字未显式圈定分支块的歧义影响，原ASM/REQUEST和独立勘误都保留，不能当干净提示下的孤立能力失败。219这8个task/8POST/8stop无retry，峰2三个短窗累计41.722619秒；3new首次strict0/.6586871秒，独立witness另计，不授CPU/RET/EH或Game信用。
+
+M2 467在完整当前API及成熟455解析/Memory实现参考下，新15254B consumer首稿全文逐字采用，0owner代码或格式修补。之后才首次消费两份新原码RAM：cached513字节与NT1573121字节，16777392B wire、两份4MiB RAM及RAX差分通过；实际CPUID1 ECX=2128097803/XCR0=231，原1653/16/172B保持。consumer还独立核软件拥有的RET/SP/N/DF与NT写计数/fence边界，这些不冒充原码捕获的全寄存器或硬件并发语义。Native Arena/Runner候选含Win32结构/query/资源异常问题，由owner有执行意义地修正，不能把整条管线都记成模型raw。旧CPU0七场和旧Data测试没有为此重跑。SourceReady、原模型失败和后到实际回执分开保留。
+
+M7 的 210/211/212 有限审计集包含 11 个 task ID、12 次真实 POST：7 次 stop、4 次 length、1 次 reset，cached tokens 均未报告。这不是服务容量或通用成功率结论。4 次 length 分别是 210 递归见证两轮、边界见证首轮和 212 消费者见证首轮；即使任务按完整方法输出，仍可能耗尽有限预算。现有 worker guide 已覆盖截断整流丢弃与较窄输出规则，这里仅补这批实际证据，不另加重复规则。
+
+212 的 direct 方法首份完整 4532B 源尚有 API/entry fixture 问题；模型随后给出的 3 个 exact hunks 重放为 3006B 方法，在原 7618B 与最终 7747B Test 中逐字出现一次，owner 对该方法零编辑。这应与 producer 4224B、consumer 2657B 整类 raw 采用分别记录，不能把含 owner 消费者方法的最终 Test 记成模型整包。IAE-only 调整为 IAE 或 ISE、同时排除 NPE，发生在首次 Test 编译之前，是 fixture 拒绝合同修正，不是生产失败。211 后到档案关联也只属于后续补注，不回写原 UNKNOWN 截止事实。
+
+worker guide 已要求完整 spec/API 与写权齐备后直接并行；212 的新增反例是实际派发错峰：producer 完整结束后才派见证，consumer 又在 direct 首轮结束后才 POST。因此这组虽有三个角色，真实峰值只有 2，两个重叠窗口为 13.122672 秒和 7.111633 秒，合计 20.234305 秒，不能记成峰 3 或持续高并发。应在资料齐备时同波派发独立角色，以实际 POST_BEGIN—ATTEMPT_END 计算重叠。这批源码、证明和有限软件验证均不授 Native、EH、当前 Game、新增日或 SAVE 信用。
+
+M7后到213又提供有限对照：11task/11POST=7stop/4length、0reset/retry，峰3只在6.991108、5.545431和33.046093秒三个窗口。whole输出截断后，三个真正完整方法域较短输出均stop；Entry祖类型混淆、两处RAX误清零经源审和模型窄hunk纠正后机械装配。consumer只补四个nested-type imports，属于partial；witness的三个length与一个完整语义错误均弃用，最终三方法由owner盲源编写。完整API仍须逐FQN/record accessor核，短输出与较低TTFT均不推cache，cached全null。这是既有请求的去重审计，不新增11POST，也不授Native/Game信用。
+
+M1/M2 479同一个模型完整答复的不同部分也必须独立分级：API R2 Java143行原字节采用，但伴随合同把真实E−58/childE−60错为E−78且猜类名，合同整段拒后由owner按原源设计；独立liveness两个length及reset半流未读整弃，0片段采用。该组4semantic task/6actual POST=2stop/2length/2reset，峰2累计45.246217秒。不能因Java字段正确追授同答复的合同正确，也不能把未读length当语义失败。已有Guide规则覆盖格式、截断、按产物采用和实际重叠，本批只向Models追加新证据；旧UNKNOWN、Ready、REQUEST和所有先前EOF前缀不改。
