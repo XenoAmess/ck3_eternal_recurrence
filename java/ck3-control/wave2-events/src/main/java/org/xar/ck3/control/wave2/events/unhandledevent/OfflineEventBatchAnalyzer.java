@@ -3,6 +3,8 @@ package org.xar.ck3.control.wave2.events.unhandledevent;
 import static org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.*;
 import static org.xar.ck3.control.wave2.events.unhandledevent.SourceReviewJson.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -22,6 +24,7 @@ import org.xar.ck3.control.contracts.offline.OfflineEventAnalysisWire;
 import org.xar.ck3.control.contracts.projection.EventSourceReadContext;
 import org.xar.ck3.control.contracts.projection.ProjectionEvidenceGrant;
 import org.xar.ck3.control.contracts.projection.ProjectionEvidenceRole;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.wave2.events.interactionregistry.InteractionRegistry;
 import org.xar.ck3.control.wave2.events.uirecoveryidentity.OfflineMandatoryChoiceReviewProducer;
 import org.xar.ck3.control.wave2.events.interactionregistry.InteractionRegistryCodec;
@@ -92,8 +95,8 @@ public final class OfflineEventBatchAnalyzer {
         // Source pins are checked before any durable output. A stale/cross-root request cannot publish partial knowledge.
         for (ObjectValue item : incidents) {
             require(observedScan || !interaction(item) || hasAfter(item), "legacy completed interaction batch requires its original after receipt");
-            captured(configured.incidentRoot(), pins, item, "before");
-            if (hasAfter(item)) captured(configured.incidentRoot(), pins, item, "after");
+            captured(originalScan, configured.incidentRoot(), pins, item, "before");
+            if (hasAfter(item)) captured(originalScan, configured.incidentRoot(), pins, item, "after");
         }
         Path output = configured.knowledgeRoot().resolve(request.batchId()); Path reportPath = output.resolve("EVENT-SOURCE-REVIEW.json");
         boolean idempotent = Files.exists(reportPath, LinkOption.NOFOLLOW_LINKS); ObjectValue previous = null;
@@ -110,14 +113,31 @@ public final class OfflineEventBatchAnalyzer {
         List<Value> entries = new ArrayList<>(), known = new ArrayList<>(), unresolved = new ArrayList<>();
         Map<String, ExactRef> outputs = new LinkedHashMap<>(); List<ProjectionEvidenceGrant> grants = new ArrayList<>();
         for (ObjectValue item : incidents) {
-            if (skip(item)) {
+            if (!diagnosticBefore(originalScan, pins, item) && skip(item)) {
                 unresolved.add(obj(f("incident_id", v(item, "incident_id")), f("event_definition_key", v(item, "event_definition_key")),
                         f("status", s("unknown_unable_to_source_review")), f("reason", s("original event definition key unavailable; no analysis completion"))));
                 continue;
             }
             try {
                 String incident = required(item, "incident_id");
-                ObjectValue before = RetainedJson.object(RetainedJson.parse(captured(configured.incidentRoot(), pins, item, "before")));
+                if (diagnosticBefore(originalScan, pins, item)) {
+                    byte[] raw = captured(originalScan, configured.incidentRoot(), pins, item, "before");
+                    JsonNode parsed = FullJsonTree.parse(raw, OfflineScanSource.CAPTURED_DIAGNOSTIC_MAXIMUM);
+                    require(parsed instanceof ObjectNode, "actual diagnostic before object required");
+                    ObjectNode body = (ObjectNode) parsed;
+                    require("xar.unhandled-native-window-diagnostic/v1".equals(StrictJson.text(body.get("schema")))
+                            && incident.equals(StrictJson.text(body.get("incident_id")))
+                            && text(item, "kind").equals(StrictJson.text(body.get("kind")))
+                            && "planning_diagnostic".equals(StrictJson.text(body.get("stage")))
+                            && body.get("selection") != null && body.get("selection").isNull()
+                            && body.get("dispatch_attempted") != null && body.get("dispatch_attempted").isBoolean() && !body.get("dispatch_attempted").booleanValue()
+                            && !hasAfter(item), "actual diagnostic before crossed its strict NativeWindowDiagnostic role");
+                    String reason = StrictJson.text(body.get("diagnostic_reason"));
+                    unresolved.add(obj(f("incident_id", s(incident)), f("kind", s(text(item, "kind"))),
+                            f("status", s("diagnostic_only")), f("reason", s(reason))));
+                    continue;
+                }
+                ObjectValue before = RetainedJson.object(RetainedJson.parse(captured(originalScan, configured.incidentRoot(), pins, item, "before")));
                 if(mandatory(item)&&eq(before,"schema",s("xar.unhandled-native-window-diagnostic/v1"))) {
                     require(eq(before,"incident_id",s(incident))&&eq(before,"kind",s("unknown_mandatory_choice"))
                             &&eq(before,"stage",s("planning_diagnostic"))&&eq(before,"dispatch_attempted",b(false))
@@ -130,7 +150,7 @@ public final class OfflineEventBatchAnalyzer {
                         ? OfflineMandatoryChoiceReviewProducer.ROOT_INCIDENT_SCHEMA : interaction(item)
                         ? "xar.pending-interaction-left-reply/v1" : "xar.unhandled-event-first-rendered/v1")), "incident source SHA/identity differs");
                 if (hasAfter(item)) {
-                    ObjectValue after = RetainedJson.object(RetainedJson.parse(captured(configured.incidentRoot(), pins, item, "after")));
+                    ObjectValue after = RetainedJson.object(RetainedJson.parse(captured(originalScan, configured.incidentRoot(), pins, item, "after")));
                     require(eq(after, "incident_id", s(incident)), "event after source SHA/identity differs");
                     if (interaction(item)) {
                         ExactRef beforeRef = pins.get(fixed(Path.of(required(item, "before")))); ObjectValue declared = o(after, "before");
@@ -273,16 +293,24 @@ public final class OfflineEventBatchAnalyzer {
     private static boolean mandatory(ObjectValue item) { return eq(item, "kind", s("unknown_mandatory_choice")); }
     private static boolean skip(ObjectValue item) { return !mandatory(item) && !interaction(item) && (v(item, "event_definition_key") instanceof NullValue || eq(item, "event_definition_key", s(""))); }
     private static boolean hasAfter(ObjectValue item) { return !(v(item, "after") instanceof NullValue) && !eq(item, "after", s("")); }
-    private static byte[] captured(Path root, Map<Path, ExactRef> pins, ObjectValue item, String stage) throws IOException {
-        Path path = fixed(Path.of(required(item, stage))); ExactRef ref = pins.get(path);
-        require(ref != null && eq(item, stage + "_sha256", s(ref.sha256())), "captured source reference missing or crossed its manifest pin"); return read(root, ref);
+    private static boolean diagnosticBefore(OfflineScanSource.Loaded scan, Map<Path, ExactRef> pins, ObjectValue item) {
+        Path path = fixed(Path.of(required(item, "before")));
+        ExactRef ref = pins.get(path);
+        return ref != null && scan.diagnosticBeforeRefs().contains(ref);
     }
-    private static byte[] read(Path root, ExactRef ref) throws IOException {
-        Path path = fixed(Path.of(ref.path())); require(path.startsWith(root) && !path.equals(root) && ref.bytes() > 0 && ref.bytes() <= SOURCE_MAXIMUM,
+    private static byte[] captured(OfflineScanSource.Loaded scan, Path root, Map<Path, ExactRef> pins, ObjectValue item, String stage) throws IOException {
+        Path path = fixed(Path.of(required(item, stage))); ExactRef ref = pins.get(path);
+        require(ref != null && eq(item, stage + "_sha256", s(ref.sha256())), "captured source reference missing or crossed its manifest pin");
+        return read(root, ref, stage.equals("before") ? scan.capturedMaximum(ref) : SOURCE_MAXIMUM);
+    }
+    private static byte[] read(Path root, ExactRef ref, int maximum) throws IOException {
+        require(maximum == SOURCE_MAXIMUM || maximum == OfflineScanSource.CAPTURED_DIAGNOSTIC_MAXIMUM, "Finite captured input role required");
+        Path path = fixed(Path.of(ref.path())); require(path.startsWith(root) && !path.equals(root) && ref.bytes() > 0 && ref.bytes() <= maximum,
                 "captured source escapes its fixed incident root or role bound");
-        byte[] raw = EvidenceGrantManifestPublisher.readStable(path, SOURCE_MAXIMUM);
+        byte[] raw = EvidenceGrantManifestPublisher.readStable(path, maximum);
         require(raw.length == ref.bytes() && sha(raw).equals(ref.sha256()), "actual captured source pin changed"); return raw;
     }
+    private static byte[] read(Path root, ExactRef ref) throws IOException { return read(root, ref, SOURCE_MAXIMUM); }
     public static byte[] encode(Result result) {
         List<Value> outputs = result.outputs().stream().map(ref -> (Value) exactRef(ref)).toList();
         var grants = result.grants();

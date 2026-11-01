@@ -34,6 +34,7 @@ import org.xar.ck3.control.contracts.offline.OfflineAnalysisFiles;
 import org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest;
 import org.xar.ck3.control.contracts.offline.OfflineEventAnalysisWire;
 import org.xar.ck3.control.wave2.events.sourcecatalog.EvidenceGrantManifestPublisher;
+import org.xar.ck3.control.wave2.events.unhandledevent.OfflineScanSource;
 
 /** One Core-owned bounded worker. Queue ACK follows immutable work publication; completion follows
  * the actual original analyzer, source-bound knowledge publication and original journal acknowledgement.
@@ -156,7 +157,7 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         if(count>=settings.retainedWorkMaximum()&&!Files.exists(requestPath,LinkOption.NOFOLLOW_LINKS))
             throw new IOException("finite offline work retention requires policy review before another durable job");
         // Validate real immutable inputs before the durable ACK. The original analyzer revalidates them again.
-        readExact(original.manifestRef(),MAX);for(ExactRef captured:original.capturedRefs())readExact(captured,MAX);
+        readExact(original.manifestRef(),MAX);readCaptured(work);
         ExactRef durable=publish(requestPath,encodeWork(work));
         Job job=new Job(work,durable);jobs.put(key,job);restoreOrSubmit(engine,job);
         return job.ticket();
@@ -238,7 +239,7 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         if(unresolved==null||!unresolved.isArray())throw new IOException("actual source analysis lacks its unresolved inventory");
         if(!unresolved.isEmpty())throw new AnalysisIncomplete("UNRESOLVED_SOURCE_RESEARCH: "+unresolved.size()+" original incidents require the exact source/materials recorded in "+reportRef.path(),Optional.of(reportRef));
         requireCoverage(report,request);
-        for(ExactRef captured:request.capturedRefs())readExact(captured,MAX);
+        readCaptured(work);
         List<ExactRef> reviews=new ArrayList<>();reviews.add(reportRef);
         for(JsonNode row:body.get("outputs")) {
             ExactRef output=ExactRef.fromJson(row);Path target=Path.of(output.path());
@@ -266,6 +267,13 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
             throw new IOException("retained completion changed the actual committed shared knowledge publication");
         org.xar.ck3.control.contracts.projection.ProjectionEvidenceCodec.decode(readExact(knowledge,1_048_576));
         return new SessionPorts.AnalysisCompletion(job.work.request().batchId(),reviews,knowledge);
+    }
+    private void readCaptured(Work work) throws IOException {
+        var request=work.request();
+        OfflineScanSource.Loaded loaded=null;
+        if(request.capturedRefs().stream().anyMatch(ref->ref.bytes()>MAX))
+            loaded=OfflineScanSource.load(work.binding().incidentRoot(),Optional.of(work.binding().scanRoot()),work.binding().machineId(),request.manifestRef(),request.capturedRefs());
+        for(ExactRef captured:request.capturedRefs())readExact(captured,loaded==null?MAX:Math.max(MAX,loaded.capturedMaximum(captured)));
     }
     private void requireCoverage(JsonNode report,BatchRequest request)throws IOException {
         JsonNode original=OfflineEventAnalysisWire.parseMetadataObject(readExact(request.manifestRef(),MAX));

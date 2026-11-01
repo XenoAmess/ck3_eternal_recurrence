@@ -9,6 +9,7 @@ import java.nio.file.LinkOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,17 +24,21 @@ import org.xar.ck3.control.contracts.offline.IncidentReadIndex;
 import org.xar.ck3.control.contracts.offline.OfflineBatchBinding.Binding;
 import org.xar.ck3.control.contracts.offline.OfflineBatchBinding.ObservedScan;
 import org.xar.ck3.control.contracts.projection.ProjectionJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.wave2.events.sourcecatalog.EvidenceGrantManifestPublisher;
 
 /** Loads the real manifest, complete scan index and its original journal files under fixed server roots. */
 public final class OfflineScanSource {
+    public static final int CAPTURED_DIAGNOSTIC_MAXIMUM = 16 << 20;
     private static final int FILE_MAX = 1 << 20;
     private OfflineScanSource() { }
     public record ExternalOriginal(ExactRef source, long maximumBytes) { }
-    public record Loaded(Binding binding, byte[] manifestBytes, List<ExactRef> scanOriginals, List<ExternalOriginal> externalOriginals) {
-        public Loaded { manifestBytes = manifestBytes.clone(); scanOriginals = List.copyOf(scanOriginals); externalOriginals = List.copyOf(externalOriginals); }
-        public Loaded(Binding binding, byte[] manifestBytes, List<ExactRef> scanOriginals) { this(binding, manifestBytes, scanOriginals, List.of()); }
+    public record Loaded(Binding binding, byte[] manifestBytes, List<ExactRef> scanOriginals, List<ExternalOriginal> externalOriginals, Set<ExactRef> diagnosticBeforeRefs) {
+        public Loaded { manifestBytes = manifestBytes.clone(); scanOriginals = List.copyOf(scanOriginals); externalOriginals = List.copyOf(externalOriginals); diagnosticBeforeRefs = Set.copyOf(diagnosticBeforeRefs); }
+        public Loaded(Binding binding, byte[] manifestBytes, List<ExactRef> scanOriginals) { this(binding, manifestBytes, scanOriginals, List.of(), Set.of()); }
+        public Loaded(Binding binding, byte[] manifestBytes, List<ExactRef> scanOriginals, List<ExternalOriginal> externalOriginals) { this(binding, manifestBytes, scanOriginals, externalOriginals, Set.of()); }
         @Override public byte[] manifestBytes() { return manifestBytes.clone(); }
+        public int capturedMaximum(ExactRef ref) { return diagnosticBeforeRefs.contains(ref) ? CAPTURED_DIAGNOSTIC_MAXIMUM : FILE_MAX; }
     }
 
     public static Loaded load(Path incidentRoot, Optional<Path> scanRoot, String machineId,
@@ -71,10 +76,11 @@ public final class OfflineScanSource {
                 && actual.source().equals(OfflineBatchBinding.source(index.get("source"))), "Original scan index differs from its actual manifest binding");
         require(index.path("original_refs").isArray() && index.path("original_refs").size() <= 1026, "Bounded complete journal source inventory required");
         Map<Path, ExactRef> originals = new LinkedHashMap<>(); long total = 0;
+        Set<ExactRef> diagnosticBeforeRefs = new HashSet<>();
         for (JsonNode item : index.path("original_refs")) {
             ExactRef ref = ExactRef.fromJson(item); Path path = absolute(ref.path());
             require(originals.put(path, ref) == null, "Duplicate original journal path");
-            if (path.startsWith(incidentRoot)) { total = Math.addExact(total, ref.bytes()); require(total <= 16L << 20, "Actual internal journal source inventory exceeds its finite bound"); read(incidentRoot, ref); }
+            if (path.startsWith(incidentRoot)) { total = Math.addExact(total, ref.bytes()); require(total <= 16L << 20, "Actual internal journal source inventory exceeds its finite bound"); }
         }
         ExactRef episodeRef = ExactRef.fromJson(index.get("episode_ref"));
         require(absolute(episodeRef.path()).equals(incidentRoot.resolve("EPISODE.json")) && episodeRef.equals(originals.get(absolute(episodeRef.path()))), "Original episode stamp is outside the actual scan inventory");
@@ -124,9 +130,15 @@ public final class OfflineScanSource {
             if (diagnostic) {
                 require(diagnostics && "planning_diagnostic".equals(text(origin, "capture_stage")) && origin.get("action_id").isNull(), "Planning diagnostic cannot claim a submitted action");
                 declareExternal(originals, external, ExactRef.fromJson(origin.get("original_frame_ref")), (64L << 20) + 4); actualDiagnosticCount++;
+                if (qualifiesNativeDiagnostic(incidentRoot, before, origin)) {
+                    require(!originals.containsKey(incidentRoot.resolve(id + ".after.json"))
+                            && !originals.containsKey(incidentRoot.resolve(id + ".after-index.json")), "Native planning diagnostic cannot claim an after");
+                    diagnosticBeforeRefs.add(before);
+                }
             } else require(!text(origin, "action_id").isBlank(), "Submitted before index needs its real action identity");
             actualCapturedCount++;
         }
+        for (var entry : originals.entrySet()) if (entry.getKey().startsWith(incidentRoot)) read(incidentRoot, entry.getValue(), diagnosticBeforeRefs.contains(entry.getValue()) ? CAPTURED_DIAGNOSTIC_MAXIMUM : FILE_MAX);
         for (var entry : originals.entrySet()) if (!entry.getKey().startsWith(incidentRoot)) {
             ExternalOriginal role = external.get(entry.getKey()); require(role != null && role.source().equals(entry.getValue()), "Only explicitly declared original basis/frame may escape the journal scope"); verifyExternal(role.source(), role.maximumBytes());
         }
@@ -152,7 +164,7 @@ public final class OfflineScanSource {
             StrictJson.object(row, fields);
             Path beforePath = incidentRoot.resolve(id + ".before.json");
             ExactRef before = stage(row, "before", beforePath, supplied, originals); used.put(beforePath, before);
-            ObjectNode beforeBody = json(read(incidentRoot, before));
+            ObjectNode beforeBody = diagnosticBeforeRefs.contains(before) ? object(FullJsonTree.parse(read(incidentRoot, before, CAPTURED_DIAGNOSTIC_MAXIMUM), CAPTURED_DIAGNOSTIC_MAXIMUM)) : json(read(incidentRoot, before));
             require(id.equals(text(beforeBody, "incident_id")), "Actual before identity differs from its batch");
             if (!kind.equals("unknown_mandatory_choice")) {
                 String definitionField = kind.equals("unhandled_event") ? "event_definition_key" : "interaction_definition_key";
@@ -181,7 +193,29 @@ public final class OfflineScanSource {
         require(used.equals(supplied), "Captured inventory must be exactly the actual batch's before/after originals");
         require(StrictJson.integer(index.get("incomplete_after"), 0, 1026) >= incomplete, "Actual scan lost incomplete-after diagnostics");
         read(scans, actual.indexRef()); read(scans, manifest);
-        return new Loaded(binding, raw, originals.entrySet().stream().filter(entry -> !external.containsKey(entry.getKey())).map(Map.Entry::getValue).toList(), List.copyOf(external.values()));
+        return new Loaded(binding, raw, originals.entrySet().stream().filter(entry -> !external.containsKey(entry.getKey())).map(Map.Entry::getValue).toList(), List.copyOf(external.values()), diagnosticBeforeRefs);
+    }
+
+    private static boolean qualifiesNativeDiagnostic(Path root, ExactRef before, ObjectNode origin) throws IOException {
+        byte[] raw = read(root, before, CAPTURED_DIAGNOSTIC_MAXIMUM);
+        ObjectNode body = object(FullJsonTree.parse(raw, CAPTURED_DIAGNOSTIC_MAXIMUM));
+        if (!"xar.unhandled-native-window-diagnostic/v1".equals(text(body, "schema"))) {
+            require(raw.length <= FILE_MAX, "Legacy before body exceeds its unchanged role bound");
+            return false;
+        }
+        String expectedKind = switch (text(origin, "kind")) {
+            case "EVENT" -> "unhandled_event";
+            case "INTERACTION" -> "pending_character_interaction";
+            case "MANDATORY" -> "unknown_mandatory_choice";
+            default -> throw new IllegalArgumentException("Unknown original diagnostic kind");
+        };
+        require(text(origin, "incident_id").equals(text(body, "incident_id"))
+                && expectedKind.equals(text(body, "kind"))
+                && "planning_diagnostic".equals(text(body, "stage"))
+                && body.path("selection").isNull() && body.path("dispatch_attempted").isBoolean()
+                && !body.path("dispatch_attempted").booleanValue()
+                && origin.get("origin").equals(body.get("origin")), "Native diagnostic crossed its original index binding");
+        return true;
     }
 
     public static void recheck(Path incidentRoot, Optional<Path> scanRoot, ExactRef manifest, Loaded original) throws IOException {
@@ -190,7 +224,7 @@ public final class OfflineScanSource {
             var scope = IncidentJournalLayout.scope(incidentRoot, root, actual.observation().machineId(), actual.observation().game(), actual.sessionId(), actual.observation().frame().episodeRunId(), actual.source().sourceRef());
             require(absolute(manifest.path()).getParent().equals(scope.scanRoot()), "Rechecked scan escaped its derived identity"); incidentRoot = scope.incidentRoot(); root = scope.scanRoot();
         }
-        for (ExactRef ref : original.scanOriginals()) read(incidentRoot, ref);
+        for (ExactRef ref : original.scanOriginals()) read(incidentRoot, ref, original.capturedMaximum(ref));
         for (ExternalOriginal ref : original.externalOriginals()) verifyExternal(ref.source(), ref.maximumBytes());
         if (original.binding() instanceof ObservedScan actual) read(root, actual.indexRef());
         if (original.binding() instanceof ObservedScan actual) verifySource(actual.source().sourceRef());
@@ -215,9 +249,11 @@ public final class OfflineScanSource {
                 && scan.observation().frame().episodeRunId().equals(observation.frame().episodeRunId())
                 && scan.source().equals(OfflineBatchBinding.source(value.get("source"))) && scan.sessionId().equals(text(value, "session_id")), "Journal original crossed physical Game, source, session or episode");
     }
-    private static byte[] read(Path root, ExactRef ref) throws IOException {
-        Path path = absolute(ref.path()); require(path.startsWith(root) && !path.equals(root) && ref.bytes() > 0 && ref.bytes() <= FILE_MAX, "Original source escapes its fixed journal role");
-        byte[] raw = EvidenceGrantManifestPublisher.readStable(path, FILE_MAX);
+    private static byte[] read(Path root, ExactRef ref) throws IOException { return read(root, ref, FILE_MAX); }
+    private static byte[] read(Path root, ExactRef ref, int maximum) throws IOException {
+        require(maximum == FILE_MAX || maximum == CAPTURED_DIAGNOSTIC_MAXIMUM, "Finite original journal role required");
+        Path path = absolute(ref.path()); require(path.startsWith(root) && !path.equals(root) && ref.bytes() > 0 && ref.bytes() <= maximum, "Original source escapes its fixed journal role");
+        byte[] raw = EvidenceGrantManifestPublisher.readStable(path, maximum);
         require(raw.length == ref.bytes() && SourceReviewJson.sha(raw).equals(ref.sha256()), "Actual journal source bytes or SHA changed"); return raw;
     }
     private static ObjectNode json(byte[] raw) { return object(StrictJson.parse(ProjectionJson.object(raw, FILE_MAX).bytes(), FILE_MAX)); }
