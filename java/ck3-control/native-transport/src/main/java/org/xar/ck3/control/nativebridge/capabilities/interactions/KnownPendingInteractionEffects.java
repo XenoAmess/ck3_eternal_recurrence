@@ -22,11 +22,29 @@ import org.xar.ck3.control.wave2.prisoners.releasepreview.PrisonerOptionIntent;
 /** Native pending producer -> independent Driver/custody observations -> same-writer original replay. */
 public final class KnownPendingInteractionEffects implements NativeEffectRegistry.Observer,ActionPorts.PreparationPort {
     private record Prepared(InteractionModels.Context context,Plan plan) { }
+    /** The installed producer keeps a received frame and its actual publication proof together. */
+    public record Observation(NativeEffectSnapshots.Pair frames,ObservationProvenance provenance) {
+        public Observation {Objects.requireNonNull(frames);Objects.requireNonNull(provenance);}
+    }
+    @FunctionalInterface public interface ActualObservationPort {
+        Observation read(ActionCommand command,ActionState.Attempt attempt,NativeActionPort.AckReceived acknowledgement)
+                throws java.io.IOException;
+    }
+    private final Optional<ActualObservationPort> actualObservation;
     private final NativeEffectSnapshots snapshots;
     private final PlanningReadPort reads;
     private final ReadContract<RawJson> custody;
     public KnownPendingInteractionEffects(NativeEffectSnapshots actualSnapshots,PlanningReadPort actualReads,
             ReadContract<RawJson> actualPrisonerCollectionZero) {
+        this(actualSnapshots,actualReads,actualPrisonerCollectionZero,Optional.empty());
+    }
+    public KnownPendingInteractionEffects(NativeEffectSnapshots actualSnapshots,PlanningReadPort actualReads,
+            ReadContract<RawJson> actualPrisonerCollectionZero,ActualObservationPort actualAfter) {
+        this(actualSnapshots,actualReads,actualPrisonerCollectionZero,Optional.of(Objects.requireNonNull(actualAfter)));
+    }
+    private KnownPendingInteractionEffects(NativeEffectSnapshots actualSnapshots,PlanningReadPort actualReads,
+            ReadContract<RawJson> actualPrisonerCollectionZero,Optional<ActualObservationPort> actualAfter) {
+        actualObservation=Objects.requireNonNull(actualAfter);
         snapshots=Objects.requireNonNull(actualSnapshots);reads=Objects.requireNonNull(actualReads);
         custody=Objects.requireNonNull(actualPrisonerCollectionZero);
         need(custody.operation().value().equals(PrisonerNativeQueries.STEP)
@@ -101,7 +119,20 @@ public final class KnownPendingInteractionEffects implements NativeEffectRegistr
         Prepared selected=prepared(command);
         if(!(dispatch instanceof NativeActionPort.AckReceived ack)||!ack.nativeOk()||ack.originalResultToken().isEmpty())
             return NativeEffectRegistry.Projected.pending("original Native reply result is unknown; do not replay",List.of(attempt.guard().nativeEvidence()));
-        NativeEffectSnapshots.Pair pair=snapshots.read(command,attempt);
+        Observation observed;
+        if(actualObservation.isPresent()) {
+            try {observed=Objects.requireNonNull(actualObservation.orElseThrow().read(command,attempt,ack));}
+            catch(java.io.IOException failure) {throw new java.io.UncheckedIOException("actual known pending after observation unavailable",failure);}
+        } else {
+            var frames=snapshots.read(command,attempt);
+            try {
+                observed=new Observation(frames,ActionReconciliationScope.activeFor(command)
+                        ?ActionReconciliationScope.requireProvenance(command,attempt):NativeEffectSnapshots.publication(frames.after()));
+            } catch(java.io.IOException failure) {
+                throw new java.io.UncheckedIOException("actual known pending reconciliation provenance unavailable",failure);
+            }
+        }
+        NativeEffectSnapshots.Pair pair=observed.frames();
         List<PlanningReadReceipt> actualReads=new ArrayList<>();
         Optional<KnownPendingInteractionPostcondition.PrisonerAfter> prisoners=Optional.empty();
         if(selected.plan().classification()==Classification.KNOWN_RECEIVED_RANSOM) {
@@ -117,14 +148,14 @@ public final class KnownPendingInteractionEffects implements NativeEffectRegistr
                 }
             }
         }
-        var projected=project(command,attempt,dispatch,pair,prisoners);
+        var projected=project(command,attempt,dispatch,pair,prisoners,observed.provenance());
         if(!(projected.result() instanceof ActionPorts.EffectObserved))return projected;
         ExactRef evidence=snapshots.evidence(command,attempt,pair,actualReads,projected.compatibleResult().orElseThrow());
         return NativeEffectSnapshots.withEvidence(projected,List.of(evidence));
     }
     private static NativeEffectRegistry.Projected project(ActionCommand command,ActionState.Attempt attempt,
             NativeActionPort.DispatchOutcome dispatch,NativeEffectSnapshots.Pair pair,
-            Optional<KnownPendingInteractionPostcondition.PrisonerAfter> prisoners) {
+            Optional<KnownPendingInteractionPostcondition.PrisonerAfter> prisoners,ObservationProvenance provenance) {
         Prepared selected=prepared(command);
         if(!(dispatch instanceof NativeActionPort.AckReceived ack)||!ack.nativeOk()||ack.originalResultToken().isEmpty())
             return NativeEffectRegistry.Projected.pending("original Native reply result is unknown; do not replay",List.of(pair.after().originalEvidence()));
@@ -134,7 +165,7 @@ public final class KnownPendingInteractionEffects implements NativeEffectRegistr
         if(!verified.verified())return NativeEffectRegistry.Projected.pending(
                 "known reply independent effect incomplete: "+String.join(", ",verified.missing()),List.of(pair.after().originalEvidence()));
         return NativeEffectSnapshots.observed(command,attempt,pair.after(),KnownPendingInteractionPostcondition.SCHEMA,verified.actual(),
-                NativeEffectSnapshots.publication(pair.after()),new RawJson(org.xar.ck3.control.planning.opportunity.OpportunityJson.encode(verified.compatibleResult())),List.of());
+                provenance,new RawJson(org.xar.ck3.control.planning.opportunity.OpportunityJson.encode(verified.compatibleResult())),List.of());
     }
     public static List<NativeRecordedEvidenceVerifier.Binding> archivedVerifiers(ExactRef actualSource,NativeEffectEvidence.FrameLoader frames) {
         Objects.requireNonNull(frames);need(actualSource.bytes()>0,"actual archived pending verifier source required");
@@ -153,7 +184,13 @@ public final class KnownPendingInteractionEffects implements NativeEffectRegistr
                                 ()->new IllegalArgumentException("archived custody projection unavailable"));
                         prisoners=Optional.of(new KnownPendingInteractionPostcondition.PrisonerAfter(original.frames().after().identity(),collection));
                     } else need(original.independentReads().isEmpty(),"ordinary pending lifecycle has no substitute independent read");
-                    NativeEffectRegistry.Projected replayed=project(receipt.command(),settled.attempt(),settled.dispatch(),original.frames(),prisoners);
+                    var stored=((ActionState.Applied)settled.settlement()).observation().provenance();
+                    ObservationProvenance provenance=NativeEffectSnapshots.publication(original.frames().after());
+                    if(stored instanceof ObservationProvenance.FreshSnapshotQuery fresh) {
+                        frames.verifyFreshSnapshotQuery(fresh,original.frames().after(),archive);
+                        provenance=fresh;
+                    } else need(stored.equals(provenance),"archived known pending publication differs from its actual original frame");
+                    NativeEffectRegistry.Projected replayed=project(receipt.command(),settled.attempt(),settled.dispatch(),original.frames(),prisoners,provenance);
                     replayed=NativeEffectSnapshots.withEvidence(replayed,((ActionState.Applied)settled.settlement()).observation().supportingEvidence());
                     NativeEffectEvidence.requireSame(settled.settlement(),replayed,original.compatibleResult());
                 })).toList();

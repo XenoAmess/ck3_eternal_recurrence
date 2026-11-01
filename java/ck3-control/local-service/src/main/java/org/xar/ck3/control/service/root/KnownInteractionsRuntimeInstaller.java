@@ -20,6 +20,7 @@ import org.xar.ck3.control.application.planning.military.WarCorePlanner;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.contracts.*;
 import org.xar.ck3.control.nativebridge.capabilities.interactions.*;
+import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
 
@@ -58,7 +59,7 @@ public final class KnownInteractionsRuntimeInstaller {
         definitions=new InteractionCapabilities.Installation(sources.nativeDefinitions(),sources.readPlan(),heir);
         capabilities=new InteractionCapabilities(definitions,context.reads(),new CurrentActions(context));
         var snapshots=new NativeEffectSnapshots(()->context.adopted().observations(),context.archive(),context.frameLoader());
-        effects=new KnownPendingInteractionEffects(snapshots,context.reads(),actualPrisoners.collectionContract());
+        effects=new KnownPendingInteractionEffects(snapshots,context.reads(),actualPrisoners.collectionContract(),this::observeKnownPendingAfter);
         var prisoner=KnownPendingInteractionPolicy.prisonerRead(actualPrisoners.collectionContract());
         var root=published(context.finance().definitions().contract(FinanceReadContracts.Query.ROOT),
                 request->FinanceReadContracts.rootArguments(FinanceReadContracts.RootCapture.PUBLIC_QUERY));
@@ -74,9 +75,57 @@ public final class KnownInteractionsRuntimeInstaller {
                 ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,Optional.of("game.command."+binding.operation().value()),sources.effectsDecoder())).toList();
         installation=new RootDomainInstallation("shared-known-interactions",List.of(),
                 definitions.contracts().stream().map(read->new RootReadContractCatalog.InstalledRead(read,sources.readDecoder())).toList(),
-                List.of(),actions,List.of(),KnownPendingInteractionEffects.archivedVerifiers(sources.effects(),context.frameLoader()),
+                List.of(),actions,List.of(),KnownPendingInteractionEffects.archivedVerifiers(sources.effects(),RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader())),
                 List.of(),List.of(),List.of(),List.of(),Set.of(),List.of(),List.of(),
                 actions.stream().map(binding->new RootDomainInstallation.FixedDomain(binding,Domain.diplomacy)).toList(),List.of(),List.of());
+    }
+    /** A fresh READ proves only the independent after state; the original mutation is never resent. */
+    private KnownPendingInteractionEffects.Observation observeKnownPendingAfter(ActionCommand command,ActionState.Attempt attempt,
+            NativeActionPort.AckReceived acknowledgement)throws IOException {
+        requireLiveBinding();
+        if(ActionReconciliationScope.activeFor(command)) {
+            var snapshots=new NativeEffectSnapshots(()->context.adopted().observations(),context.archive(),context.frameLoader());
+            return new KnownPendingInteractionEffects.Observation(snapshots.read(command,attempt),
+                    ActionReconciliationScope.requireProvenance(command,attempt));
+        }
+        return context.withSession(same->{
+            context.writer().requireSession(same);
+            StrictJson.require(ActionScope.currentActionId().filter(command.actionId()::equals).isPresent()
+                    &&acknowledgement.nativeOk()&&acknowledgement.requestId().equals(attempt.requestId()),
+                    "known pending after read requires its actual active action and original positive ACK");
+            var archive=context.archive().withSession(same);
+            var proof=new java.util.concurrent.atomic.AtomicReference<ObservationProvenance.FreshSnapshotQuery>();
+            var snapshots=new NativeEffectSnapshots(()->context.adopted().observations(),archive,context.frameLoader(),(original,deadline)->{
+                context.requireCurrent(deadline);context.writer().requireSession(same);
+                NativeFreshSnapshotPort.Result fresh=context.transport().readFreshFullState(deadline);
+                if(fresh instanceof NativeFreshSnapshotPort.Unavailable missing && missing.dispatch() instanceof NativeActionPort.Unknown)
+                    fresh=context.transport().collectFreshFullState(missing.dispatch().requestId(),deadline);
+                if(fresh instanceof NativeFreshSnapshotPort.Unavailable missing)
+                    throw new IOException("known pending actual fresh read unavailable: "+missing.reason());
+                var received=(NativeFreshSnapshotPort.Received)fresh;
+                NativeFreshSnapshotPort.verifyAfter(acknowledgement,received);
+                StrictJson.require(context.clock().instant().isBefore(deadline)&&!received.originalFrame().observedAt().isAfter(deadline),
+                        "known pending received-frame projection deadline expired");
+                var actualProof=new ObservationProvenance.FreshSnapshotQuery(received.acknowledgement().requestId(),
+                        archive.preserve(received.acknowledgement()),received.snapshotReceived(),
+                        new ObservationProvenance.LiveAfterSetter(archive.preserve(acknowledgement)));
+                var complete=context.adopted().authority().withFrozenRawObservation(received.originalFrame(),same,frozen->{
+                    var nativeOriginal=archive.preserveNativeFrame(received.originalFrame());
+                    var projected=context.core().observationAssembler().assemble(received.originalFrame(),frozen.facts(),nativeOriginal);
+                    if(projected instanceof org.xar.ck3.control.application.driver.DriverObservationAssembler.Incomplete missing)
+                        throw new IllegalStateException("incomplete actual known pending after frame: "+String.join(",",missing.reasons()));
+                    return (Complete)projected;
+                });
+                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(actualProof,complete,archive);
+                context.writer().requireSession(same);
+                StrictJson.require(context.clock().instant().isBefore(deadline),"known pending fresh projection exceeded observation deadline");
+                proof.set(actualProof);return Optional.of(complete);
+            });
+            var pair=snapshots.read(command,attempt);
+            var actualProof=Objects.requireNonNull(proof.get(),"known pending fresh after proof is unavailable");
+            RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(actualProof,pair.after(),archive);
+            return new KnownPendingInteractionEffects.Observation(pair,actualProof);
+        });
     }
     public RootDomainInstallation installation() { requireLiveBinding();return installation; }
     public KnownPendingInteractionEffects actualEffects() { requireLiveBinding();return effects; }
