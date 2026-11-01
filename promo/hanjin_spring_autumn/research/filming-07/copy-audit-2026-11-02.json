@@ -1,0 +1,40 @@
+{
+  "schema": "hanjin.caocao-copy-audit/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-01T16:05:31.281059+00:00",
+  "video_sha256": "b82c4cb69b91a3e12eaab4ec99fb4a012fcd3b6f773af5588646b3ce29de6b3b",
+  "scenes_reviewed": 20,
+  "subtitle_cues_reviewed": 132,
+  "full_text_review": true,
+  "spot_frame_seconds": [
+    60.5,
+    162,
+    172.75,
+    224.94,
+    320,
+    339,
+    483,
+    494
+  ],
+  "broken_subtitle_cues": [
+    43,
+    55,
+    120
+  ],
+  "outcome": "copy-revision-required",
+  "original_script_changed": false,
+  "new_tts": false,
+  "video_rendered": false,
+  "human_signoff": null,
+  "inputs": {
+    "front-production.json": "19d6d3fde8ed184668f7e918d0eb44be78d2411b1b82ec9efd56058d1adf150b",
+    "edit-decision-list.json": "9ae14374577538321be6d6e32be6dfe23372a37e9b3b8187f6b80c91c37baa38",
+    "episode02.srt": "440aa2f872aca6aa90fccb0997c5895cc7b6bb999dc1a10c6ff367b4b20cbfc0",
+    "description.txt": "4e7abaeba2b8c6aece70e7706ecd5ab518c7dc710124a39be304c034cdaf22e9",
+    "delivery-snapshot.json": "3ba3aaf39787a332d169bd6095b83ac5b414ea62c0330b8bfc7b3d19da2a9687"
+  },
+  "independent_reviews": [
+    "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-07-cao-cao\\copy-audit-01\\language-review.md",
+    "C:\\workspace\\hanjin-spring-autumn-20261031\\edit-07-cao-cao\\copy-audit-01\\fact-review.json"
+  ]
+}

@@ -1,0 +1,641 @@
+{
+  "schema": "hanjin.cao-ep02.fact-picture-review/v1",
+  "machine_id": "4-8e1c2f1861",
+  "reviewed_at_utc": "2026-11-01T16:05:01.861Z",
+  "status": "issues_confirmed_no_changes_made",
+  "subject": {
+    "run_id": "cao-ep02-002",
+    "video": "C:/workspace/hanjin-spring-autumn-20261031/edit-07-cao-cao/cao-ep02-video-review.mp4",
+    "video_sha256": "b82c4cb69b91a3e12eaab4ec99fb4a012fcd3b6f773af5588646b3ce29de6b3b",
+    "duration_seconds": 553.556,
+    "human_signoff": null
+  },
+  "scope": {
+    "copy": "当前20场全文已读；以filming-07与当前外置front-production、EDL、working.srt为准，未沿用初稿。",
+    "image": "对当前run002已有逐章帧、Root本次60.5/162/224.94/320等成片抽样，以及少量已有原始截图/原片样帧进行核对；未逐帧观看整片。",
+    "repository_external_json_semantic_equal": true,
+    "semantic_comparison": "两份front-production.json和两份edit-decision-list.json经JSON解析比较均True；字节格式不同，不宣称字节相同。",
+    "read_only": true,
+    "game_mcp_screen_operated": false,
+    "copy_or_video_modified": false,
+    "only_authored_file": "edit-07-cao-cao/copy-audit-01/fact-review.json",
+    "automated_audit_boundary": "原自动审计仅证明文件完整性与取证覆盖；不替代本次台词/时间/画面审计。"
+  },
+  "bases": {
+    "repo_front": "C:/workspace/ck3_eternal_recurrence/promo/hanjin_spring_autumn/research/filming-07/front-production.json",
+    "repo_edl": "C:/workspace/ck3_eternal_recurrence/promo/hanjin_spring_autumn/research/filming-07/edit-decision-list.json",
+    "external_root": "C:/workspace/hanjin-spring-autumn-20261031/",
+    "subtitle": "edit-07-cao-cao/episode02-working.srt",
+    "delivery": "edit-07-cao-cao/delivery-001.json",
+    "current_render_review": "edit-07-cao-cao/human-review-001/review-package.json",
+    "root_current_render_samples": "edit-07-cao-cao/copy-audit-01/contact.jpg",
+    "raw_timing": "edit-07-cao-cao/source-catalog/raw-video-index.json",
+    "timing_precision": "旁白起止取当前SRT；镜头起止取当前EDL display_seconds×speed。切帧与消窗边界约有一帧误差，注明约值。UTC由原片创建时刻与seek相加，属于已有事件/样帧核对后的剪辑定位，非独立时钟保证。"
+  },
+  "raw_anchors": [
+    {
+      "source": "shooting-04-cao-cao/take-01-start.mkv",
+      "start_utc": "2026-11-01T08:50:17.4657672Z",
+      "duration_seconds": 1800
+    },
+    {
+      "source": "shooting-04-cao-cao/take-02-war.mkv",
+      "start_utc": "2026-11-01T09:43:32.9777352Z",
+      "duration_seconds": 3043.866
+    },
+    {
+      "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+      "start_utc": "2026-11-01T10:34:19.0014577Z",
+      "duration_seconds": 3599.966
+    },
+    {
+      "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+      "start_utc": "2026-11-01T12:35:38.9894409Z",
+      "duration_seconds": 7722.7
+    }
+  ],
+  "findings": [
+    {
+      "id": "F01",
+      "classification": "confirmed_picture_gap",
+      "priority": "medium",
+      "chapters": [
+        "c02-03-march"
+      ],
+      "quote": "董卓那边已经把天子带去了长安，洛阳都烧了。",
+      "narration_seconds": [
+        58.841,
+        63.869
+      ],
+      "narration_timecode": "00:58.841–01:03.869",
+      "finding": "本局确实出现过迁都焚洛新闻；当前入选镜头却没有该新闻或迁都/焚洛画面。60.5秒实际是190年7月行军地图。这是画面缺证，不能说迁都未发生。",
+      "selected_source": {
+        "source": "shooting-04-cao-cao/take-02-war.mkv",
+        "in": 200,
+        "out": 277.902,
+        "speed": 8,
+        "movie_in": 59.46,
+        "movie_out": 69.197,
+        "approx_utc_in": "2026-11-01T09:46:52.978Z",
+        "approx_utc_out": "2026-11-01T09:48:10.880Z"
+      },
+      "evidence": [
+        "edit-07-cao-cao/copy-audit-01/contact.jpg",
+        "shooting-04-cao-cao/opening-wave-01-3-event-hd_world_news-0008.jpg"
+      ],
+      "source_observation": "原始world_news.0008实际帧日期190.2.1，正文写董卓挟天子往长安、雒阳宫室遭焚毁。",
+      "suggestion": "在此句换入本局world_news.0008真实新闻截图/其实际短录像，并以『此前』承接；或删短该句。不要把行军地图说成迁都实拍。"
+    },
+    {
+      "id": "F02",
+      "classification": "non_issue",
+      "priority": "none",
+      "chapters": [
+        "c02-03-march"
+      ],
+      "quote": "四月，关东举兵讨董。",
+      "narration_seconds": [
+        44.467,
+        47.406
+      ],
+      "finding": "四月有本局直接证据。当前章开头可读190.4.2，结算窗也记讨伐190.4.2开始。不能因后半行军剪到7月而判四月错误。",
+      "evidence": [
+        "edit-07-cao-cao/human-review-001/frames/frame-000005.png",
+        "shooting-04-cao-cao/story01-choose-advance-screen.jpg"
+      ],
+      "suggestion": "可保留。若需更清楚，改『四月二日，关东举兵讨董』并维持4月HUD开头。"
+    },
+    {
+      "id": "F03",
+      "classification": "confirmed_action_and_sync_mismatch",
+      "priority": "high",
+      "chapters": [
+        "c02-08-chenliu-choice"
+      ],
+      "quote": "我把鼠标放在进兵这边，还是点了下去。",
+      "narration_seconds": [
+        159.221,
+        163.453
+      ],
+      "narration_timecode": "02:39.221–02:43.453",
+      "finding": "选『即日进兵』确实完成，但现有执行证据是Native事件选项提交，不是鼠标点击证据。入选的选项窗约160.2秒消失；162秒该句仍在说鼠标时，中央已是旧讨董『无效』窗口。已有1104.7原片样帧也未展示鼠标停在进兵按钮上。不得据此声称镜头展示了鼠标犹豫/点击。",
+      "selected_sources": [
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "in": 1073,
+          "out": 1087.156,
+          "speed": 1,
+          "movie_in": 142.9,
+          "movie_out": 157.056
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "in": 1102,
+          "out": 1105.398,
+          "speed": 1,
+          "movie_in": 157.056,
+          "movie_out": 160.454
+        },
+        {
+          "source": "shooting-04-cao-cao/take-02-war.mkv",
+          "in": 1105.7,
+          "out": 1118.913,
+          "speed": 1,
+          "movie_in": 160.454,
+          "movie_out": 173.667
+        }
+      ],
+      "actual_native_action": {
+        "request": "shooting-04-cao-cao/story01-choose-advance-request.json",
+        "tool": "ck3_select_event_option",
+        "event_instance_id": 15,
+        "option_number": 1,
+        "started_utc": "2026-11-01T10:01:58.1015853Z"
+      },
+      "evidence": [
+        "edit-07-cao-cao/copy-audit-01/contact.jpg",
+        "edit-07-cao-cao/source-catalog/click-check-1104.700.jpg",
+        "shooting-04-cao-cao/story01-choose-advance-screen.jpg",
+        "shooting-04-cao-cao/story01-choose-advance-http-meta.json"
+      ],
+      "suggestion": "改为『我还是选了即日进兵』，将这句与真实选项窗消失对齐；删去鼠标位置/点击方式的描述。缩短旧『无效』窗镜头，避免观众误认陈留战争当场无效。"
+    },
+    {
+      "id": "F04",
+      "classification": "confirmed_chronology_and_unrelated_modal",
+      "priority": "high",
+      "chapters": [
+        "c02-10-swap-homes",
+        "c02-11-first-offer",
+        "c02-12-qingzhou"
+      ],
+      "quote": "兵就这些，分开了怕谁都打不过，合在一起又总有地方漏着。",
+      "narration_seconds": [
+        218.709,
+        225.087
+      ],
+      "affected_selected_movie_seconds": [
+        219.017,
+        225.06
+      ],
+      "finding": "c10这6.044秒用了counter-strengths-current-screen.jpg；实际中央是无关『田园之乐』，右上25517总军，已在青州兵受降之后。c12到268.533秒才说『济北受降来了』，因此既抢先展示受降后军数，又以无关事件遮挡换家地图。",
+      "selected_source": {
+        "source": "shooting-04-cao-cao/counter-strengths-current-screen.jpg",
+        "type": "actual_still",
+        "movie_in": 219.017,
+        "movie_out": 225.06
+      },
+      "evidence": [
+        "edit-07-cao-cao/copy-audit-01/contact.jpg",
+        "shooting-04-cao-cao/counter-strengths-current-screen.jpg",
+        "shooting-04-cao-cao/research/counter-clockwave-events/README.md"
+      ],
+      "additional_confirmed_ordering": "c10章首地图明确192.1.9，后面c11第一次议和画面却回191.10.4；没有回顾提示。并非所有c10素材都来自同一时点。",
+      "suggestion": "去掉这张田园事件图；换用受降前且无无关弹窗的地图。首次议和应排在192年换家段之前，或明确说『早在191年十月，我就试过谈一次』，避免无标识回跳。"
+    },
+    {
+      "id": "F05",
+      "classification": "confirmed_count_and_chronology_mismatch",
+      "priority": "high",
+      "chapters": [
+        "c02-12-qingzhou",
+        "c02-13-two-fronts",
+        "c02-14-attrition"
+      ],
+      "quote": "不过两万多人往一个地方堆，吃饭也成了麻烦。",
+      "narration_seconds": [
+        317.527,
+        322.129
+      ],
+      "narration_timecode": "05:17.527–05:22.129",
+      "finding": "该句是现在时两万多人，当前片中却为193.8.22地图，青州军牌11218，右上全军14496，两个口径都不到两万。c13章首尾同一193.8.22暂停地图，8倍速并没有提供兵力从22000降至11000的实际过程。c12尾部已经提前使用同一后期素材，c14才说『这仗拖进了一九三年』，时间标记落后于画面。",
+      "selected_sources": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "in": 90,
+          "out": 97.184,
+          "movie_in": 295.116,
+          "movie_out": 302.3,
+          "speed": 1
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "in": 270,
+          "out": 395.2,
+          "movie_in": 302.3,
+          "movie_out": 317.95,
+          "speed": 8,
+          "approx_utc_in": "2026-11-01T12:40:08.989Z",
+          "approx_utc_out": "2026-11-01T12:42:14.189Z"
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "in": 400,
+          "out": 525.2,
+          "movie_in": 317.95,
+          "movie_out": 333.6,
+          "speed": 8,
+          "approx_utc_in": "2026-11-01T12:42:18.989Z",
+          "approx_utc_out": "2026-11-01T12:44:24.189Z"
+        }
+      ],
+      "evidence": [
+        "edit-07-cao-cao/copy-audit-01/contact.jpg",
+        "edit-07-cao-cao/human-review-001/frames/frame-000024.png",
+        "edit-07-cao-cao/human-review-001/frames/frame-000025.png",
+        "edit-07-cao-cao/human-review-001/frames/frame-000026.png"
+      ],
+      "suggestion": "把193年的过渡提前到第一段193年录像前；把『两万多人往一个地方堆』改成回顾初领22000的句子并配22000原始截图，或按当前画面说『现在只剩一万一，还得顾补给』。不要把暂停地图8倍速当实际行军变化。"
+    },
+    {
+      "id": "F06",
+      "classification": "non_issue_with_evidence_limit",
+      "priority": "none",
+      "chapters": [
+        "c02-12-qingzhou",
+        "c02-14-attrition"
+      ],
+      "quote": "青州军刚来的时候有两万两千，后来只剩一万一左右。",
+      "narration_seconds": [
+        336.398,
+        342.293
+      ],
+      "finding": "这句本身明确是前后比较，22000与后期约11000均有真实证据，不是虚报当前兵力。c14起始193.8.22牌11218，末段193.9.15牌10658，与『一万一左右』相符。问题在前章现在时/提前后期画面，而不在此句数字。",
+      "evidence": [
+        "shooting-04-cao-cao/qingzhou-army-before-assign-screen.jpg",
+        "shooting-04-cao-cao/research/counter-clockwave-events/README.md",
+        "edit-07-cao-cao/human-review-001/frames/frame-000027.png",
+        "edit-07-cao-cao/human-review-001/frames/frame-000028.png"
+      ],
+      "suggestion": "可保留前后数字；宜明确『到193年八月，只剩一万一左右』。现有核对没有分解每一笔损失，不能追加精确的饥饿/战死人数或单一损失原因。"
+    },
+    {
+      "id": "F07",
+      "classification": "numbers_correct_explanation_ambiguous",
+      "priority": "medium",
+      "chapters": [
+        "c02-11-first-offer",
+        "c02-16-second-offer"
+      ],
+      "quotes": [
+        "全套目标要六十九点，我现在只有十八战分。",
+        "九月二十五日，战分五十。完整的目标现在要六十六点，直接提，对面还是负二十五。"
+      ],
+      "narration_seconds": [
+        [
+          237.306,
+          242.079
+        ],
+        [
+          396.733,
+          405.965
+        ]
+      ],
+      "finding": "数值与本局真实UI一致。69/66是完整目标的索取价值（显示−69/−66），18/50是战争分数，−87/−25是合计接受意愿；三者不能写成同一种通过门槛。当前全文没有明确说『达到69/66战分必能签』，所以不判数字错误或已经确证的硬门槛误述，但并排比较且省略其他项容易让人误解。",
+      "actual_terms": [
+        {
+          "game_date": "191.10.4",
+          "war_score": 18,
+          "demands_value": -69,
+          "continue_war_willingness": -36,
+          "acceptance": -87
+        },
+        {
+          "game_date": "193.9.25",
+          "war_score": 50,
+          "demands_value": -66,
+          "continue_war_willingness": -9,
+          "acceptance": -25
+        }
+      ],
+      "evidence": [
+        "shooting-04-cao-cao/treaty-proposal-full.png",
+        "shooting-04-cao-cao/final-treaty-ready.png",
+        "edit-07-cao-cao/human-review-001/frames/frame-000021.png",
+        "edit-07-cao-cao/human-review-001/frames/frame-000032.png"
+      ],
+      "suggestion": "简化成『十八战分，开这份完整条件，他的接受意愿是负八十七』；后次说『战分到了五十，完整条件开出去，接受意愿仍是负二十五』。如保留69/66，明确称『索取价值』，不要暗示它等于所需战分。"
+    },
+    {
+      "id": "F08",
+      "classification": "confirmed_temporal_wording_problem",
+      "priority": "medium",
+      "chapters": [
+        "c02-17-four-thousand"
+      ],
+      "quote": "刚才一千金连让他松口都做不到，现在能谈成，我倒有点舍不得点了。",
+      "narration_seconds": [
+        439.322,
+        446.367
+      ],
+      "narration_timecode": "07:19.322–07:26.367",
+      "finding": "首次1000金试价发生于191.10.4；最终4000金谈判在193.9.25，相隔近两年。『刚才』能指影片前面，但在本句中容易误导为同轮谈判只把1000加到4000。中间战分18→50、目标价值69→66、继续作战意愿等条件都变了。",
+      "evidence": [
+        "shooting-04-cao-cao/treaty-offer1000.png",
+        "shooting-04-cao-cao/treaty-proposal-full.png",
+        "shooting-04-cao-cao/final-treaty-ready.png",
+        "shooting-04-cao-cao/final-offer-step-5-ready.png"
+      ],
+      "selected_sources": [
+        {
+          "source": "shooting-04-cao-cao/take-03-chenliu-treaty.mkv",
+          "in": 550.2,
+          "out": 562.688,
+          "game_date": "191.10.4",
+          "approx_utc_in": "2026-11-01T10:43:29.201Z"
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "in": 1926.7,
+          "out": 1939.903,
+          "game_date": "193.9.25",
+          "approx_utc_in": "2026-11-01T13:07:45.689Z"
+        }
+      ],
+      "suggestion": "改『191年那次，一千金也没谈成。现在打到五十战分，再出四千，他总算点头。』或更短『上次一千金没谈成，这次总算肯答应了。』勿归因成同条件下多给3000便解决。"
+    },
+    {
+      "id": "F09",
+      "classification": "confirmed_action_order_reversal_not_date_rollback",
+      "priority": "low",
+      "chapters": [
+        "c02-18-settlement",
+        "c02-19-rest"
+      ],
+      "quote": "十月六日，东略兖州又来了，还能接着往前打。",
+      "narration_seconds": [
+        493.367,
+        498.849
+      ],
+      "finding": "c18从474.457秒开始已用193.10.6曹操人物页，随后c19再放同日『东略兖州』选休整。原实拍是先选休整、再打开终态人物页；剪辑反过来了。两段日期同为193.10.6，不是游戏日期倒退，也不能说c19重复推进到10月6日。",
+      "selected_sources": [
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "in": 2945,
+          "out": 2963.81,
+          "movie_in": 474.457,
+          "movie_out": 493.267,
+          "game_date": "193.10.6",
+          "approx_utc_in": "2026-11-01T13:24:43.989Z"
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "in": 2384,
+          "out": 2397.954,
+          "movie_in": 493.267,
+          "movie_out": 507.221,
+          "game_date": "193.10.6",
+          "approx_utc_in": "2026-11-01T13:15:22.989Z"
+        },
+        {
+          "source": "shooting-04-cao-cao/take-04-settlement.mkv",
+          "in": 2401.5,
+          "out": 2405.425,
+          "movie_in": 507.221,
+          "movie_out": 511.146,
+          "game_date": "193.10.6",
+          "approx_utc_in": "2026-11-01T13:15:40.489Z"
+        }
+      ],
+      "evidence": [
+        "edit-07-cao-cao/human-review-001/frames/frame-000036.png",
+        "edit-07-cao-cao/copy-audit-01/contact.jpg",
+        "shooting-04-cao-cao/ending-choose-rest-screen.jpg",
+        "edit-07-cao-cao/source-catalog/selected-image-anchors.json"
+      ],
+      "suggestion": "人物终态移到休整之后；c18结算段用9月25日胜利/HUD/map证据。若保留人物页，给清楚的『战后总账』表述，避免当作签约当刻画面。"
+    },
+    {
+      "id": "F10",
+      "classification": "non_issue",
+      "priority": "none",
+      "chapters": [
+        "c02-17-four-thousand",
+        "c02-18-settlement",
+        "c02-19-rest"
+      ],
+      "quotes": [
+        "我提交了这份和约",
+        "四千金真付了出去",
+        "直辖从九处变成二十七处",
+        "这回我选第二项：兵已疲敝，暂且休整"
+      ],
+      "finding": "这些主线结果均有真实后态/画面。当前EDL末次报价确实含真实提交与胜利；c19第二段2401.5–2405.425也包含实际约2403.482选第二项后的消窗。不是战争仍没结束或仅预览草案；不得因前述镜头错位否认真实收束。",
+      "evidence": [
+        "shooting-04-cao-cao/settlement-after-submit-response.json",
+        "shooting-04-cao-cao/ending-choose-rest-response.json",
+        "edit-07-cao-cao/human-review-001/frames/frame-000035.png",
+        "edit-07-cao-cao/source-catalog/finale-end-check-2403.200.jpg",
+        "edit-07-cao-cao/source-catalog/finale-end-check-2404.800.jpg"
+      ],
+      "suggestion": "保留结果事实；只修时间与镜头对位。"
+    },
+    {
+      "id": "U01",
+      "classification": "not_established_by_this_review",
+      "priority": "low",
+      "chapters": [
+        "c02-13-two-fronts",
+        "c02-14-attrition"
+      ],
+      "quotes": [
+        "吃饭也成了麻烦",
+        "是一路打、一路耗"
+      ],
+      "finding": "已证22000→约11000的前后差异，本轮有限原件核对没有逐笔划分战斗、补给、行军损耗，也未证明画面中那个11218牌当刻正因缺粮减员。宽泛『打、耗』可作玩家回顾，但不可在此基础上扩写精确机制因果。",
+      "suggestion": "若不补相应既有补给实证，使用『兵也在越打越少』一类不指定原因的表达。"
+    },
+    {
+      "id": "U02",
+      "classification": "not_established_by_this_review",
+      "priority": "low",
+      "chapters": [
+        "c02-20-promo"
+      ],
+      "quote": "三个创意工坊链接都放在简介里。",
+      "narration_seconds": [
+        546.477,
+        552.869
+      ],
+      "finding": "三包实际启用已有记录；本轮是本地成片文案审计，没有核验公开平台发布简介是否已经包含三个可点击链接。",
+      "suggestion": "发布时对照实际简介即可；这不是本局游戏事实错误，本报告不冒称已公开发布。"
+    }
+  ],
+  "scene_coverage": [
+    {
+      "chapter": "c02-01-title",
+      "movie_seconds": [
+        0,
+        13.867
+      ],
+      "result": "片名与主观宣言，未发现事实问题；『旧恩未忘，野火难熄』属于风格判断。"
+    },
+    {
+      "chapter": "c02-02-start",
+      "movie_seconds": [
+        13.867,
+        44.367
+      ],
+      "result": "开局年龄/三县/约6000金/4358兵与已有开局画面、原始研究一致，本志实际选一统天下；未发现新事实问题。"
+    },
+    {
+      "chapter": "c02-03-march",
+      "movie_seconds": [
+        44.367,
+        74.067
+      ],
+      "result": "四月非问题；迁都真实但入选画面缺证，见F01/F02。"
+    },
+    {
+      "chapter": "c02-04-collision-v2",
+      "movie_seconds": [
+        74.067,
+        85.1
+      ],
+      "result": "4358对约25000、约六倍与已有战斗实读一致；未发现新事实问题。"
+    },
+    {
+      "chapter": "c02-05-hard-fight-v2",
+      "movie_seconds": [
+        85.1,
+        97.533
+      ],
+      "result": "援军双方约3万/2.3万与已有战斗证据一致；曹玉死讯已有原始通知且当前使用744秒段，未发现新事实矛盾。"
+    },
+    {
+      "chapter": "c02-06-retreat-v2",
+      "movie_seconds": [
+        97.533,
+        110.033
+      ],
+      "result": "己方撤退有原生实际动作，不把联军全体撤退；静帧时长属于剪辑问题，未判新事实错误。"
+    },
+    {
+      "chapter": "c02-07-dong-end",
+      "movie_seconds": [
+        110.033,
+        142.9
+      ],
+      "result": "191.6.1死亡、讨董无效而非胜利、次日群雄并起与原始实况/定义一致。"
+    },
+    {
+      "chapter": "c02-08-chenliu-choice",
+      "movie_seconds": [
+        142.9,
+        173.667
+      ],
+      "result": "6月12日与进兵选择实际成立；鼠标与消窗对位不成立，见F03。"
+    },
+    {
+      "chapter": "c02-09-first-win",
+      "movie_seconds": [
+        173.667,
+        202.9
+      ],
+      "result": "3486对472与战分18已有原始实读；未新增取证逐日复验六天，本轮未发现相反证据。"
+    },
+    {
+      "chapter": "c02-10-swap-homes",
+      "movie_seconds": [
+        202.9,
+        235.133
+      ],
+      "result": "换家叙述有既有战况基础，但插入受降后25517军数/无关田园弹窗，且后接191年议和回跳，见F04。"
+    },
+    {
+      "chapter": "c02-11-first-offer",
+      "movie_seconds": [
+        235.133,
+        268.433
+      ],
+      "result": "191.10.4数字18/69/−87/1000→−80、草案未提交成立；术语要澄清，见F07。"
+    },
+    {
+      "chapter": "c02-12-qingzhou",
+      "movie_seconds": [
+        268.433,
+        302.3
+      ],
+      "result": "真实22000、无主将、曹仁武力30有原始静帧及实际任命证据；最后一镜已跳193年，见F05。"
+    },
+    {
+      "chapter": "c02-13-two-fronts",
+      "movie_seconds": [
+        302.3,
+        333.6
+      ],
+      "result": "现时两万人配11218且全章193.8.22暂停画面，见F05/U01。"
+    },
+    {
+      "chapter": "c02-14-attrition",
+      "movie_seconds": [
+        333.6,
+        366.367
+      ],
+      "result": "22000→约11000回顾本身成立；193过渡应提前，精确损失原因未细分，见F05/F06/U01。"
+    },
+    {
+      "chapter": "c02-15-capture",
+      "movie_seconds": [
+        366.367,
+        396.633
+      ],
+      "result": "当前已用真实1133秒起含战斗结束的段，继以1778战后；193年9月张邈被俘与原始战后记录一致，未沿用旧1700秒伪快进疑点。"
+    },
+    {
+      "chapter": "c02-16-second-offer",
+      "movie_seconds": [
+        396.633,
+        426.467
+      ],
+      "result": "193.9.25、50/66/−25都成立；不是66战分硬门槛，见F07。"
+    },
+    {
+      "chapter": "c02-17-four-thousand",
+      "movie_seconds": [
+        426.467,
+        458.967
+      ],
+      "result": "4000/让步价值约29/+5/真实提交成立；『刚才一千』跨近两年，见F08。"
+    },
+    {
+      "chapter": "c02-18-settlement",
+      "movie_seconds": [
+        458.967,
+        493.267
+      ],
+      "result": "胜利、付款、直辖9→27都成立；后半提前用了10.6选休整后的终态人物，见F09/F10。"
+    },
+    {
+      "chapter": "c02-19-rest",
+      "movie_seconds": [
+        493.267,
+        525.1
+      ],
+      "result": "10.6事件与选第二项实际完成；与c18同日，不是日期回退，见F09/F10；『先歇一歇』不追认为已经解散全部军队。"
+    },
+    {
+      "chapter": "c02-20-promo",
+      "movie_seconds": [
+        525.1,
+        553.467
+      ],
+      "result": "三包组合与实际使用一致，无下期/未拍机制预告；公开简介链接未在本轮核验，见U02。"
+    }
+  ],
+  "recommended_priority_order": [
+    "先修F05现在时军数冲突",
+    "去掉F04提前受降后的无关弹窗并理顺191→192→193",
+    "去掉F03鼠标动作虚构及消窗不同步",
+    "修F08首次/最终谈判时间措辞",
+    "补F01迁都真实新闻画面或缩句",
+    "用F07术语澄清避免硬门槛误解",
+    "最后调整F09同日动作顺序"
+  ],
+  "limitations": [
+    "这是基于当前20场完整文案与有针对性的成片/原片抽样审计，不是整片逐帧复看或重新解码。",
+    "没有操作Game、MCP、桌面；没有重录/重渲染；没有改仓库或任何文案。",
+    "确认问题与解释歧义、未核实项分别列出，未把未拍画面说成未发生。",
+    "本报告不是成片人工签核；human_signoff保持null。"
+  ]
+}
