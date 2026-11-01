@@ -1,0 +1,196 @@
+{
+  "schema": "xar.manual-native-witness.validation.v1",
+  "recorded_at_utc": "2026-11-01T16:20:30.628496+00:00",
+  "sources": [
+    {
+      "path": "Native205Api.hpp",
+      "bytes": 1616,
+      "sha256": "1da11255a3d91863ba4d54bbff26210a4ea78fa0844910e029b90466142abe67",
+      "EOF_preserved": true,
+      "contribution": "Owner API"
+    },
+    {
+      "path": "Native205Execute.cpp",
+      "bytes": 17777,
+      "sha256": "b8d05f0c78f8bdbe9ed91ecf978470f1e96cfa2c0b9fef4d078c6d379c840f15",
+      "EOF_preserved": true,
+      "contribution": "Model R2 partial with significant owner corrections"
+    },
+    {
+      "path": "Native205Io.cpp",
+      "bytes": 4652,
+      "sha256": "9dfe74ae9f31c6f894d9a310364fa7d57c300a0a4c9f363d4549d5d9d8021236",
+      "EOF_preserved": true,
+      "contribution": "Original R1 model source"
+    },
+    {
+      "path": "Native205Main.cpp",
+      "bytes": 1160,
+      "sha256": "1a5e096b6af49cd3c2ddcef2877cebfece7e2d0cbc5ed55c5d5ea526336911b1",
+      "EOF_preserved": true,
+      "contribution": "Original R1 model source"
+    }
+  ],
+  "originals_in_CLI_order": [
+    {
+      "bytes": 172,
+      "sha256": "6f271e3119ea92d8306865b46ced578ebfa70a8cd4c19f61a9253a4d66386213"
+    },
+    {
+      "bytes": 424,
+      "sha256": "0a99a8546db4677b53fd0abd5bde3266ad8c48f38acaaf5ffb380552585c0a69"
+    },
+    {
+      "bytes": 351,
+      "sha256": "640d693377bdb24ad17d176109b437481cc7546458a4797b9d89cba52f30d75e"
+    },
+    {
+      "bytes": 4,
+      "sha256": "c0e336a5f371ef22cd534e094269f2c1a9635cd080b71ffa671086832d3b60b7"
+    }
+  ],
+  "first_stages": [
+    {
+      "stage": "io",
+      "start_utc": "2026-11-01T16:04:21.980431+00:00",
+      "end_utc": "2026-11-01T16:04:27.856143+00:00",
+      "seconds": 5.875708900002792,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "executor",
+      "start_utc": "2026-11-01T16:07:25.326165+00:00",
+      "end_utc": "2026-11-01T16:07:30.669252+00:00",
+      "seconds": 5.343088999998145,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "link",
+      "start_utc": "2026-11-01T16:08:18.702074+00:00",
+      "end_utc": "2026-11-01T16:08:20.229816+00:00",
+      "seconds": 1.5277404000007664,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "run",
+      "start_utc": "2026-11-01T16:09:09.337311+00:00",
+      "end_utc": "2026-11-01T16:09:09.455382+00:00",
+      "seconds": 0.1180714000001899,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "witness",
+      "start_utc": "2026-11-01T16:10:11.086412+00:00",
+      "end_utc": "2026-11-01T16:10:12.787145+00:00",
+      "seconds": 1.700727299998107,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    },
+    {
+      "stage": "wire",
+      "start_utc": "2026-11-01T16:10:19.262261+00:00",
+      "end_utc": "2026-11-01T16:10:19.626884+00:00",
+      "seconds": 0.3646216999986791,
+      "exit_code": 0,
+      "launch_cpu_affinity": 1
+    }
+  ],
+  "first_cases": [
+    "separate_double_growth",
+    "source16_header_alias_double_growth"
+  ],
+  "first_case_count": 2,
+  "first_Java_case_count": 2,
+  "first_Java_checks": 346,
+  "call_hierarchy": "Unmodified parent172 calls sibling424 then sibling351. Both growth branches execute in the same original parent invocation.",
+  "actual_flags": {
+    "rawUnchanged": true,
+    "protectionsFinal": true,
+    "mappingReleased": true,
+    "callbackGuard": true,
+    "memoryGuard": true,
+    "forbiddenTargetsUnmapped": true
+  },
+  "comparisons": [
+    {
+      "mode": "java-only",
+      "comparisons": 2,
+      "failures": 0,
+      "receipt_sha256": "8c6e43a02ad9e1ebf2e0f68fb6c520c9ca8162a841f0d798075a50693bc78ecb"
+    },
+    {
+      "mode": "native-only",
+      "comparisons": 2,
+      "failures": 0,
+      "receipt_sha256": "2e85ec9a13efcd04f087ae0fcd36c549bf2657f7167c7c61286ec373c8779c0a"
+    },
+    {
+      "mode": "all",
+      "comparisons": 6,
+      "failures": 0,
+      "receipt_sha256": "0f732b4109adfe11f98e4263c4dbeda84afc6e637ea0f4a4962ae2dba4ea95a0"
+    }
+  ],
+  "all_pairwise_comparisons": 6,
+  "differences": 0,
+  "expected_role": "Owner-derived expected rows frozen before any model, Java or Native output; both independent model-oracle attempts rejected. No independent-model-oracle success claim.",
+  "expected_sha256": "d487c51b6b8fbcdf3947c165abd6348b8e4cddec5237aa096c586c10eabeeb0b",
+  "input_sha256": "dc5a5804191bae59a261f0ab7c15b1f96392d08347e0ca2088c0299c77291514",
+  "observed_outputs": "Full destination RAX equality, fixed parent fields, two headers, both actual release-time old headers, 32-byte N16 and16-byte N4 windows, and seven typed callbacks per case.",
+  "alias_role": "Parents D and S distinct in both cases; case1 source16 begins at D+0x10, ordinary destination-header RAM alias read after parent clears that header.",
+  "controlled_ports": "COPY records its three arguments with no RAM effect. Allocator16 and allocator4 virtual slots8/16 are controlled; free16 preserves four-register capture, free4 three.",
+  "forbidden_targets": "8F8550 and9D0950 remain MEM_RESERVE. This is a page-state measurement, not Native access trace or branch counting.",
+  "model_contribution": [
+    {
+      "task": "m6-upper172-double-growth-native-executor205",
+      "at_utc": "2026-11-01T16:00:37.875610+00:00",
+      "status": "REJECTED_SOURCE_SEMANTICS_BEFORE_COMPILE",
+      "adopted": false
+    },
+    {
+      "task": "m6-upper172-double-growth-java-witness205",
+      "at_utc": "2026-11-01T16:00:37.876827+00:00",
+      "status": "REJECTED_SOURCE_SEMANTICS_BEFORE_COMPILE",
+      "adopted": false
+    },
+    {
+      "task": "m6-upper172-double-growth-native-io205",
+      "at_utc": "2026-11-01T16:00:37.884970+00:00",
+      "status": "RAW_SOURCE_ADOPTED_FIRST_STRICT_PENDING",
+      "adopted": true
+    },
+    {
+      "task": "m6-upper172-double-growth-independent-oracle205",
+      "at_utc": "2026-11-01T16:00:37.877939+00:00",
+      "status": "REJECTED_SOURCE_SEMANTICS_BEFORE_COMPILE",
+      "adopted": false
+    },
+    {
+      "task": "m6-upper172-double-growth-native-executor205-correct02",
+      "at_utc": "2026-11-01T16:06:21.318542+00:00",
+      "status": "PARTIAL_SOURCE_ADOPTION_SIGNIFICANT_OWNER_INPUT_AND_CALLBACK_CORRECTIONS_FIRST_STRICT_PENDING",
+      "adopted": true
+    },
+    {
+      "task": "m6-upper172-double-growth-java-witness205-correct02",
+      "at_utc": "2026-11-01T16:06:21.325088+00:00",
+      "status": "REJECTED_COMPLETE_SOURCE_SEMANTICS_OWNER_TAKES_OVER",
+      "adopted": false
+    },
+    {
+      "task": "m6-upper172-double-growth-independent-oracle205-correct02",
+      "at_utc": "2026-11-01T16:06:21.325424+00:00",
+      "status": "REJECTED_COMPLETE_SOURCE_SEMANTICS_OWNER_TAKES_OVER",
+      "adopted": false
+    }
+  ],
+  "model_summary": "IO4652B and Main1160B original R1 sources. Executor R2 partial retained with significant owner pointer, case byte-count/end, free-R9, array, role and RAM-guard corrections. Both Java attempts rejected; final manual witness owner-written. Both oracle attempts rejected.",
+  "publication_recompiled_or_reran": false,
+  "source_bytes_equal_first_validated_builds": true,
+  "Game_or_DLL_deployment": false,
+  "scope": "Two finite private Windows x64 original-code whole profiles with controlled ports. No natural COPY/allocator, full ABI/EH/DF, invalid or concurrent RAM, Game/G2 completion or saved-day performance qualification."
+}
