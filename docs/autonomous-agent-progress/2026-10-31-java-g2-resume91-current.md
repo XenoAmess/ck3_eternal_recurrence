@@ -8,6 +8,16 @@
 
 禁止用放大批步、降低保存频率或校验、删去失败窗口、只计Game跑速伪造目标。性能分析先以当前必要小证据和既有采样定位热点，再做最小真实修复；源码/软件验证/正式采用/实际行为/保存分账。保留同一原版无mod Game，不因性能目标重启Game或重放已结算及UNKNOWN动作。
 
+## 2026-11-01 22:39 UTC：原动作已确认APPLIED，继续恢复待结算周期
+
+Main272于22:25:59.363660Z→22:26:25.261883Z实际exit1/25.89823秒，未进入LOOP，最后在ready.available因“actual configuration must be an object”停出。Runtime独占薄核的新head52（SHA-256前缀1452b28f）确认：50为原父动作COMPOSITE_SETTLED/APPLIED，fresh ending为native28/public10/date_raw53146176、completion credit全true；51为Driver action，52已RETAIN原50。当前completed_cycles=0、cycle head为空、pending指向原50，新增SAVE_CONFIRMED仍0；旧head47/UNKNOWN仅保留为历史，不重放原ARM、resume或这8个已观察日的推进。
+
+从用户恢复授权20:50:46Z到Main272实际END共5739.261883秒，本窗口新增确认保存日为0，秒/新增保存日记null，10秒目标未达到；原69已保存日不作本窗口分母。父动作APPLIED、周期RETAIN和SAVE分别记，未以软件首验、源码发表或观察日代替保存；[运行页](2026-10-31-runtime91-current.md)保留完整冻结证据及失败窗口。
+
+必要Journal273最终REV04（301093B、源码SHA-256前缀0aee61b3）仅1TU，于22:38:38.760147Z首编exit0/2.2477337秒；旧f0候选首绿及Ready.scope遗留REV03标签分账保留，不当成最终源或额外一次编译。Runtime直接GO与Native登记归为同一attempt，0重复START；SourceReady至GO的协调等待计入墙钟，不称资源HOLD。绿classes即时交Runtime，未等模型、正式或整批ACK。
+
+Main273已于22:39:12.329555Z真实启动worker103136，沿同Game77132/keeper67152、business268、head52恢复pending50周期；截至本段START冻结点未授LOOP、周期结算或新SAVE。该轮0MB，不重旧源；仅未START研究编译和大IO让位实际恢复，源码HTTP、轻量具名原件、审阅和纯Git继续，后续按真实LOOP/业务END释放，不按keeper寿命延长。Native仅消费既有小回执与Runtime冻结副本，未查Game、读活账本或操作端点。
+
 ## 2026-11-01 21:16 UTC：用户恢复CK3授权，新存档启动已进入业务LOOP
 
 用户最新明确恢复CK3使用并继续任务，19:05的离线限制保留为历史，不再作为当前禁令；[当前权限](../../AGENTS.md)仍由Runtime独占Game、worker、S/MB和账本，资源顺序为实际游玩与恢复、P0必要小增编和首次验证、G2编测。源码HTTP、轻量具名原件、审阅和正常Git继续，不设逐次Root或正式发表前置。
