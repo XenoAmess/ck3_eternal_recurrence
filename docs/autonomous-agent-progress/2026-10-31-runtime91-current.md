@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-01 06:48Z：220 越冷恢复但诊断role参数拒绝，221 带修复及两条成熟读取优化实启
+
+- worker220/PID312408 于 `06:39:54.022340700Z` 实际 LOOP/next85，START至LOOP508.633275秒；85于 `06:39:57.320631600–06:40:27.532350800Z` OBSERVATION_UNAVAILABLE，attempt0/applied0/saved0、eligible1/dirtytrue。worker于 `06:40:28.056325Z` END4/542.667269秒，运行岗 `06:40:28.641221Z` 读到，延迟0.584896秒；原terminal detail及822–824小事件冻结，head824/running/BATCH_DEFERRED85/pendingnull，仍77日结算、69日确认保存。
+- 新因精确为EpisodeIncidentJournal.encode把64MiB声明预算传给ProposalLifecycleCodec.encodePayload，而callee先要求预算不超过ProjectionJson.MAX_BYTES=8MiB，任意小body也先拒。此为owner/多岗静态审漏核实际callee常量，不把污染前提下的模型候选记成干净提示能力失败；先前strict0不授捕获行为成功。旧source599e/原strict/REQUEST都保，未回写。原read-selection异常文字仍未成功落盘，未声称已解决其上游原因。
+- 221只改该encode：先有限完整编码得到实际长度，原1MiB内继续原Codec守旧字节，大body使用专用完整材料编码；公共Projection8MiB、默认JSON及元数据限制不变。必要changed1TU strict0/1.968729秒；真NativeWindowDiagnostic.plan→publicJournal的8MiB新诊断capture/repeat/scan及wrong binding/原件drift两新方法首次2P0skip，0Game或旧绿重跑。
+- 同自然窗口小采用M1的LedgerFiles/IdentityBearingFileAttributes单data-handle读取及M3的同LockedJournal、实际seq+digest完整latest-action投影复用。M1真实Windows11新+13必要general共24P；M3首strict0+68有限DATAchecks，first/newhead/static/postcommit完整链仍保。原读取/hash/身份/head和owner约束继续验证，未授真实速度收益；History跨保存proof闭包仍未成熟，未作为221启动门。
+- Main221实际 `06:47:56.388406–06:48:03.190584Z` 增编exit0/6.802176秒，contracts1/application2/adapters1；worker221/PID333268 于 `06:48:19.478320Z` 用原2GiB/noXms、模型120秒/Native60秒/batch1200000ms实启同原版Game71464，冻结仅preloop，不预授后继保存或新日。M7233的0.869085秒strict与MB已有真实重叠，资源记录独立保，不称无噪声或据此推编译耗时因果。
+- 原220一次有界Thread.print仅说明当时在历史SAVE proof的归档读取链，mainCPU7.984秒/elapsed326秒，不等于全段耗时归因；授权5秒process IO pair恰遇END，第二alive guard拒、第一点未提前落盘，无可报数字，记录owner脚本缺陷且未重采死PID。10秒/新增确认保存日窗口仍从05:52固定计，新增saved0、seconds/day=null，失败/空档/恢复墙钟不剔除。
+
 ## 2026-11-01 06:31Z：219 实际暖结算到77日，220 自然窗口加载性能与诊断修复
 
 - worker219/PID212412 于 `06:16:38.618642Z` 实际 END4/2113.434880秒，`06:19:07.040185Z` 读到，延迟148.421543秒；不把漏采区间写成进程持续运行。终态821/repair_required/BATCH_INTERRUPTED84、next85、pendingnull，累计77 observed/settled、69 SAVE_CONFIRMED，新增8日尚未保存。
