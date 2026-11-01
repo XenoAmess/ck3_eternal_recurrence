@@ -229,8 +229,7 @@ public final class EventRuntimeInstaller {
                 var contract=windows.issue(context.readCatalog(),selected);
                 return new EventReadBinding.ReceiptResolution<>(contract,windows.request(selected).arguments(),known->{
                     var result=OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(known.value().normalized())),"actual fixed-window original");
-                    String field=overview?"war_declared_overview_v1_observation":"war_results_window_v1_observation";
-                    return new EventPolicies.ReadPublication(result,Optional.of(request.observations().snapshot().with(field,result)));
+                    return new EventPolicies.ReadPublication(result,Optional.empty());
                 });
             }));
         }catch(IOException failure){throw fixedWindowFailure(failure);}

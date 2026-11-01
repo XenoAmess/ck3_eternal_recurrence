@@ -97,8 +97,9 @@ public final class EventPolicies {
         @Override public Decision evaluate(PlanningRequest request, Draft previous) {
             Objects.requireNonNull(request); Objects.requireNonNull(previous);
             PlanningRequest current = request; Set<OperationKey> attempted = new HashSet<>();
+            java.util.EnumMap<WarResultsPolicy.WindowKind, OpportunityJson.Obj> overlays = new java.util.EnumMap<>(WarResultsPolicy.WindowKind.class);
             for (int count = 0; count <= 5; count++) {
-                Decision result = evaluateCollected(current, previous);
+                Decision result = evaluateCollected(current, previous, overlays);
                 if (!(result instanceof Replace replacement) || !replacement.draft().policy().equals("native-read-collector")) return result;
                 OperationKey operation = new OperationKey(replacement.draft().phase());
                 if (!attempted.add(operation)) return diagnosticWait(current, null, "same native query already returned no usable window", incidentCapture);
@@ -129,12 +130,18 @@ public final class EventPolicies {
                 current = new PlanningRequest(current.before(), current.source(), current.sessionId(), current.deadline(),
                     new PlanningObservation(next, history, base.actionSteps(), base.bridgeCapabilities(), base.battleSpeedReadiness(),
                         base.actionFacts(), base.campaignGoal(), base.crossRunPlan(), base.initialLifestyleFocusRequired()));
+                for (WarResultsPolicy.WindowKind kind : WarResultsPolicy.WindowKind.values()) {
+                    if (!kind.queryStep().equals(operation.value())) continue;
+                    StrictJson.require(captured.operation().equals(operation) && publication.snapshot().isEmpty(),
+                            "fixed-window publication must retain its actual query and frozen planning snapshot");
+                    overlays.put(kind, publication.result());
+                }
             }
             return new Wait("bounded native foreground query budget reached");
         }
-        private Decision evaluateCollected(PlanningRequest request, Draft previous) {
+        private Decision evaluateCollected(PlanningRequest request, Draft previous, java.util.EnumMap<WarResultsPolicy.WindowKind, OpportunityJson.Obj> overlays) {
             return switch (stage) {
-                case TERMINAL_AND_FOREGROUND_WINDOWS -> foreground(request, previous, sameSharedBinding, mandatorySources, incidentCapture, readContracts);
+                case TERMINAL_AND_FOREGROUND_WINDOWS -> foreground(request, previous, sameSharedBinding, mandatorySources, incidentCapture, readContracts, overlays);
                 case EVENT_AND_INTERACTION_CONTINUATION -> continuation(request, previous, trusted, nativeObservations, contextValidator, incidentCapture);
                 case EVENT_MATERIAL_POSTCONDITION -> material(request, previous, nativeObservations);
                 default -> throw new IllegalStateException("event policy owns exactly three declared stages");
@@ -142,11 +149,11 @@ public final class EventPolicies {
         }
     }
 
-    private static OrdinaryPolicy.Decision foreground(PlanningRequest request, OrdinaryPolicy.Draft previous, OrdinaryCorePolicy.CommandBinding sameSharedBinding, Optional<EventSourceReadContext> mandatorySources, EventIncidentCapturePort captures, List<EventReadBinding<?>> readContracts) {
+    private static OrdinaryPolicy.Decision foreground(PlanningRequest request, OrdinaryPolicy.Draft previous, OrdinaryCorePolicy.CommandBinding sameSharedBinding, Optional<EventSourceReadContext> mandatorySources, EventIncidentCapturePort captures, List<EventReadBinding<?>> readContracts, java.util.EnumMap<WarResultsPolicy.WindowKind, OpportunityJson.Obj> overlays) {
         if (previous.kind() == OrdinaryPolicy.Kind.TERMINAL) return new OrdinaryPolicy.Keep("terminal owner retains priority");
         ObjectNode snapshot = snapshot(request);
         for (WarResultsPolicy.WindowKind kind : WarResultsPolicy.WindowKind.values()) {
-            ObjectNode input = wrapper(request, kind.inputSchema()); input.set("snapshot", windowProjection(snapshot, kind));
+            ObjectNode input = wrapper(request, kind.inputSchema()); input.set("snapshot", windowProjection(snapshot, kind, overlays.get(kind)));
             OperationKey query = new OperationKey(kind.queryStep());
             boolean installedRead = request.observations().bridgeCapabilities().contains(kind.queryCapability())
                     && readContracts.stream().anyMatch(binding -> binding.supports(query));
@@ -464,9 +471,10 @@ public final class EventPolicies {
         var steps = object.putArray("action_steps"); steps(request).forEach(steps::add);
         var caps = object.putArray("bridge_capabilities"); request.observations().bridgeCapabilities().stream().sorted().forEach(caps::add); return object;
     }
-    private static ObjectNode windowProjection(ObjectNode snapshot, WarResultsPolicy.WindowKind kind) {
+    private static ObjectNode windowProjection(ObjectNode snapshot, WarResultsPolicy.WindowKind kind, OpportunityJson.Obj overlay) {
         ObjectNode result = pick(snapshot, List.of("snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id", "paused", "map_ready",
             kind.publicPrefix() + "_observation", kind.publicPrefix() + "_query_attempt", kind.publicPrefix() + "_close_pending", "war_results_window_v1_check_due", "war_results_window_v1_next_check_date_raw"));
+        if (overlay != null) result.set(kind.publicPrefix() + "_observation", (ObjectNode) parse(OpportunityJson.encode(overlay)));
         actorAndDiagnostics(snapshot, result); return result;
     }
     private static void actorAndDiagnostics(ObjectNode snapshot, ObjectNode result) {
