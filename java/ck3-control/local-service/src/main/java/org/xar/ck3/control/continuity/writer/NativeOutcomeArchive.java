@@ -119,6 +119,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
      * Only valid within the current active writer session scope; cleared on scope exit or error. */
     private static final int MAX_PARSED_ENTRIES = 64;
     private static final long MAX_PARSED_BYTES = 64L * 1024 * 1024;
+    private enum ParseProfile { PROTOCOL, FULL_MATERIAL }
     private final ThreadLocal<ParsedMaterialCache> parsedMaterialCache;
     /** Finite collection budget only. Callers may omit an optional whole group for this
      * exception; missing, changed or invalid originals must continue to fail separately. */
@@ -490,7 +491,17 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     private ExactRef packet(byte[] original, boolean preserve) throws IOException {
         return preserve ? publish(original, WriterContracts.MAX_PIN_BYTES) : reference(original, WriterContracts.MAX_PIN_BYTES);
     }
-    private RawJson token(ExactRef ref) throws IOException { return new RawJson(readBytes(ref, RawJson.MAXIMUM_BYTES)); }
+    private RawJson token(ExactRef ref) throws IOException {
+        byte[] bytes = readBytes(ref, RawJson.MAXIMUM_BYTES);
+        ParsedMaterialCache cache = parsedMaterialCache.get();
+        if (cache != null) {
+            RawJson cached = cache.get(ref, ParseProfile.PROTOCOL);
+            if (cached != null && Arrays.equals(bytes, cached.bytes())) return cached;
+        }
+        RawJson result = new RawJson(bytes);
+        if (cache != null) cache.put(ref, ParseProfile.PROTOCOL, result, bytes.length);
+        return result;
+    }
     private ObjectNode metadata(ExactRef ref) throws IOException {
         JsonNode value = StrictJson.parse(readBytes(ref, META_LIMIT), META_LIMIT);
         StrictJson.require(value instanceof ObjectNode, "typed archive metadata object required"); return (ObjectNode) value;
@@ -1457,16 +1468,18 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     }
     @Override public ExactRef preserveMaterial(RawJson original) { return unchecked(() -> writing(() -> token(Objects.requireNonNull(original), true))); }
     @Override public RawJson loadMaterial(ExactRef original) { return unchecked(() -> token(Objects.requireNonNull(original))); }
-    /** Bounded same-scope cache for fully parsed RawJson material. Entries keyed by ExactRef.
+    /** Bounded same-scope cache for fully parsed RawJson material. Entries keyed by ExactRef and validation profile.
      * Cleared when the owning writer session scope exits. */
     private static final class ParsedMaterialCache {
-        private final Map<ExactRef, RawJson> entries = new LinkedHashMap<>();
+        private record Key(ExactRef reference, ParseProfile profile) { }
+        private final Map<Key, RawJson> entries = new LinkedHashMap<>();
         private long totalBytes = 0;
-        RawJson get(ExactRef key) { return entries.get(key); }
-        void put(ExactRef key, RawJson value, int bytes) {
-            if (entries.containsKey(key) || entries.size() >= MAX_PARSED_ENTRIES
+        RawJson get(ExactRef key, ParseProfile profile) { return entries.get(new Key(key, profile)); }
+        void put(ExactRef key, ParseProfile profile, RawJson value, int bytes) {
+            Key actual = new Key(key, profile);
+            if (entries.containsKey(actual) || entries.size() >= MAX_PARSED_ENTRIES
                     || totalBytes + bytes > MAX_PARSED_BYTES) return;
-            entries.put(key, value);
+            entries.put(actual, value);
             totalBytes += bytes;
         }
     }
@@ -1478,11 +1491,11 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             byte[] bytes = readBytes(original, RawJson.MAXIMUM_BYTES);
             ParsedMaterialCache cache = parsedMaterialCache.get();
             if (cache != null) {
-                RawJson cached = cache.get(original);
+                RawJson cached = cache.get(original, ParseProfile.FULL_MATERIAL);
                 if (cached != null && Arrays.equals(bytes, cached.bytes())) return cached;
             }
             RawJson result = RawJson.fullMaterial(bytes);
-            if (cache != null) cache.put(original, result, bytes.length);
+            if (cache != null) cache.put(original, ParseProfile.FULL_MATERIAL, result, bytes.length);
             return result;
         }));
     }
