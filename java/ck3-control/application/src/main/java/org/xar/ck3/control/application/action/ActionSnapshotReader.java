@@ -26,7 +26,7 @@ public final class ActionSnapshotReader {
                 private void alive() { if (!active.get()) throw new IllegalStateException("action snapshot lease is closed"); }
                 @Override public ActionJournal.Snapshot snapshot() { alive(); return frozen; }
                 @Override public Optional<String> activeActionId() { alive(); return ActionScope.currentActionId(); }
-                @Override public Optional<ActionReceipt> find(String actionId) { alive(); return locked.find(actionId); }
+                @Override public Optional<ActionReceipt> find(String actionId) { alive(); return locked.snapshot().actions().stream().filter(receipt -> receipt.command().actionId().equals(actionId)).findFirst(); }
                 @Override public void assertCurrent() {
                     alive(); ActionJournal.Snapshot current = locked.snapshot();
                     org.xar.ck3.control.contracts.StrictJson.require(current.ledgerSequence() == frozen.ledgerSequence() && current.headSha256().equals(frozen.headSha256()), "writer head changed during Driver freeze");
