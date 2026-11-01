@@ -109,6 +109,24 @@ public final class RootJavaSavedBootstrap {
                 return current.savedDriver();
             });
         }
+        private DriverStateSnapshot.Complete requireCurrent(ContinuityStorePort.Session activeNewSame)throws IOException {
+            return writer.readOnlyFrom(activeNewSame, same->{
+                writer.requireSession(same);var current=qualified.requireCurrent(same);
+                StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
+                        &&Arrays.equals(current.savedDriver().encode(),material.savedDriver().encode()),
+                        "confirmed source changed its actual saved Driver or session");
+                return current.savedDriver();
+            });
+        }
+        private DriverStateSnapshot.Complete requireRetained(ContinuityStorePort.Session activeNewSame)throws IOException {
+            return writer.readOnlyFrom(activeNewSame, same->{
+                writer.requireSession(same);var current=qualified.requireRetained(same);
+                StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
+                        &&Arrays.equals(current.savedDriver().encode(),material.savedDriver().encode()),
+                        "retained source changed its actual saved Driver or session");
+                return current.savedDriver();
+            });
+        }
     }
 
     /** The new managed creator, two genuine independent READs and the exact new writer are all required. */
@@ -251,7 +269,7 @@ public final class RootJavaSavedBootstrap {
             context.writer().requireSession(same);
             StrictJson.require(receipt==null&&before.digest().equals(same.head().digest())
                     &&context.clock().instant().isBefore(deadline),"saved admission escaped its exact precommit new writer point");
-            physical.requireCurrent();qualification.assertCurrent(same);requireOriginals(same);source.requireCurrent();
+            physical.requireCurrent();qualification.assertCurrent(same);requireOriginals(same);source.requireCurrent(same);
         }
         /** Only the exact real new-writer transaction can enter the retained phase. */
         public synchronized void recordCommitted(ContinuityStorePort.Session same,WriterContracts.Prepared actual,
@@ -267,13 +285,13 @@ public final class RootJavaSavedBootstrap {
                     &&source.pair().equals(CheckpointPairCodec.decode(ContinuityJson.canonical(row.get("checkpoint_pair"))))
                     &&session().equals(OrdinaryCycleTransitions.sessionFromJson(row.get("session"))),
                     "saved admission actual transaction differs from its private source snapshots/pair/owner");
-            requireOriginals(same);source.requireCurrent();physical.requireCurrent();
+            requireOriginals(same);source.requireCurrent(same);physical.requireCurrent();
             physical.releasePreparation();prepared=actual;receipt=committed;
         }
         public synchronized void requireRetained(ContinuityStorePort.Session same,WriterContracts.Receipt committed)throws IOException {
             context.writer().requireSession(same);
             StrictJson.require(receipt!=null&&committed==receipt&&prepared!=null,"saved admission lacks its exact actual committed entry");
-            same.requireCommitted(prepared,receipt);game().verify();physical.requireEvidence();requireOriginals(same);source.requireRetained();
+            same.requireCommitted(prepared,receipt);game().verify();physical.requireEvidence();requireOriginals(same);source.requireRetained(same);
         }
         private void requireOriginals(ContinuityStorePort.Session same)throws IOException {
             for(var pin:originals)same.verifyPin(pin);
