@@ -1,5 +1,19 @@
 # runtime91 同局续行
 
+## 2026-11-02 后续16／22日确认保存与276失败窗口，目标仍未达到
+
+本段冻结到 Main276 的 `2026-11-01T23:04:24.262318Z` 终态，另记后到的具名原件独验；下方273首8日保存及之后pending80的旧截面全保。同一 Game77132／birth `134380410301009189`，本轮基线 date53145984；不以旧局69日充当本窗口分母，不重放已执行或UNKNOWN动作。Runtime独占现场，文档只读取已冻结DATA，不查询Game、读取实际Save／Driver或操作账本。
+
+83 SETTLE 后，90于 `22:52:45.750913700Z` 真实 SAVE_CONFIRMED，事件99112B／SHA `ddfa3176b89cd6c0bcfcf2204eba5d2931fa030e026b0665e6d828f1986a493c`，pair为native50/public34/date53146368，actor31254，本轮累计新增16日已保存。112 SETTLE 后，119于 `23:01:48.316089500Z` 真实 SAVE_CONFIRMED，事件99258B／SHA `f63477bf27cc1da59df0448d7fe828c2acf6fec756936bf2986346b622f886e8`，pair为native65/public50/date53146512，本轮累计新增22日已保存。Root后到独验四份具名SETTLE／SAVE事件，长度、SHA、完整pair与Game／日期一致；这是对两次历史保存的补证，不回填原 METRICS276 当时尚未独读后两SAVE原件的cutoff。
+
+主性能epoch仍从 `20:50:46Z` 起算：至90为7319.750913700秒／16日＝457.48443210625秒/新增已保存日；至119为7862.316089500秒／22日＝357.378004068181818…秒/日。延长至276 END，完整8018.262318秒／22日＝364.466469秒/日，仍高于暂定10秒目标，全部准备、失败、恢复和等待均保留。276首个save-only批5用50.0397519秒确认此前失败worker275已推进的6日，不能单独当作完整推进加保存的提速结论。
+
+276 worker 时间戳墙钟235.151218秒（reported monotonic235.1512264秒）后END；新普通批6为 `23:01:49.351855800Z`→`23:04:23.831628300Z`、154.479263秒，ACTION_UNKNOWN且零新增SAVE，其独立秒/新增保存日为null。reported PLANNING78.334962秒，包含一次8.539秒模型HTTP；精确规划phase起止未序列化，completion ENTER／RETURN标记不是规划入口。旧268的180.2348856秒／3HTTP和本次78.334962秒／1HTTP属于不同实际窗口，不是受控A/B，也不能归因于某项候选优化。冻结head138为repair_required，原137 UNKNOWN及22日保存保留；额外新日、后继277／278恢复或warm成功不在此段追授，后续失败等待须继续进入延长窗口。
+
+来源仅为 Runtime `saved-frontiers278/SUMMARY.json` 与83／90／112／119具名冻结事件、`closed276` START／END／两条report、冻结head138，以及 Root `save-confirmation278/INDEPENDENT-VERIFICATION278.json` 和 `runtime-performance276/METRICS276.json`；原件留执行机器，不沿其外部Save／Driver路径读取。正式源码、候选首编、真实装载、运行行为及SAVE各自记账，本次纯Git更新不是worker放行门。
+
+
+
 ## 2026-11-02 273首个新增8日已确认保存，后续8日待结算保存
 
 本段分列两次实际截止，保留此前head47/49 UNKNOWN及head52待结算的全部历史。Runtime独占实机，同一Game77132／birth `134380410301009189` 继续；本次文档只核具名冻结DATA及已结束worker的小回执，不操作Game、Native、worker或账本，不重放原ARM/resume。Journal273已独立首编通过并以 `5040b14da900cfaafc51d4382967c36b77b93a6c` 正式发表；源码、首编与以下实际运行结果分别记账。
