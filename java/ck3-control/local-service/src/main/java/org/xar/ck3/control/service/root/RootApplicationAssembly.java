@@ -2349,7 +2349,7 @@ public final class RootApplicationAssembly {
                 controllerActions.bind(result);
                 if(restoring){restoration.runtime().catalog().bindSession(result);core.restoreCandidate=result;}
                 else if(next){nextEpisode.catalog.bindSession(result);nextEpisode.hostCandidate=result;}
-                else { core.activeSession = result; core.activeLifecycle = domainLifecycle; }
+                else { historyCatalog.bindSession(result); core.activeSession = result; core.activeLifecycle = domainLifecycle; }
                 if(!restoring&&!next&&core.coldOriginal!=null){
                     StrictJson.require(historyCatalog.context()==core.coldOriginal.context()&&driver==core.coldOriginal.adopted(),
                             "cold postbind must consume the exact privately committed and adopted Root");
