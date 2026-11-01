@@ -2430,6 +2430,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
     @Override public Optional<CompletedCycleProof> cycleProof(SessionIdentity owner, SemanticEvidence semantic) throws IOException {
         return store.locked(session -> cycleProof(session,owner,semantic));
     }
+    @Override public void validateOrdinarySubmission(SessionIdentity session, SemanticEvidence semantic) throws IOException {
+        store.locked(same -> { validateOrdinarySubmission(same, session, semantic); return true; });
+    }
+    /** Root may borrow the existing sole writer lock; no nested store/OS lock is opened. */
+    public void validateOrdinarySubmission(ContinuityStorePort.Session borrowed, SessionIdentity session, SemanticEvidence semantic) throws IOException {
+        store.requireSession(Objects.requireNonNull(borrowed)); Objects.requireNonNull(session); Objects.requireNonNull(semantic);
+        transitions.withLocked(borrowed, () -> { transitions.validateOrdinarySubmission(borrowed, session, semantic); return true; });
+    }
+
     /** Actual archived cycle producer, read under this same original writer; grants no submit or new cycle. */
     public Optional<CompletedCycleProof> retainedCycleProof(SessionIdentity owner) throws IOException {
         return store.locked(same -> transitions.withLocked(same, () -> transitions.retainedCycleProof(same, owner)));

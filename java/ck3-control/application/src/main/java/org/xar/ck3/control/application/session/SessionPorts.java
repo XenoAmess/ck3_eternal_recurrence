@@ -248,6 +248,10 @@ public final class SessionPorts {
         }
         /** Sole ContinuityWriter adapter runs its real reducer and revalidation inside its existing writer lock. */
         JournalCommit commit(JournalInput input) throws IOException;
+        /** Current archived SEM submission qualification only; never a SAVE or completed-cycle proof. */
+        default void validateOrdinarySubmission(SessionIdentity session, SemanticEvidence semantic) throws IOException {
+            throw new IOException("actual ordinary submission qualification is unavailable");
+        }
         /** Absent means that the original cycle producer has not been adopted; it never grants zero cycles. */
         default Optional<CompletedCycleProof> cycleProof(SessionIdentity session, SemanticEvidence semantic) throws IOException { return Optional.empty(); }
         /** Persist the classified original receipt before collecting its after-SEM. */

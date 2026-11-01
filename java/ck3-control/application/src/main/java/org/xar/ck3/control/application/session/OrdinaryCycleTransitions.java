@@ -709,6 +709,40 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireProofFrame(head.state(), state, checked);
         return Optional.of(new CompletedCycleProof(state.completedCycles(), semantic, ContinuityJson.digest(state.toJson())));
     }
+    /** Qualify only current ordinary submission; this value cannot serve as a SAVE/cycle proof. */
+    public void validateOrdinarySubmission(ContinuityStorePort.Session session, SessionIdentity owner, SemanticEvidence semantic) throws IOException {
+        Objects.requireNonNull(session); Objects.requireNonNull(owner); Objects.requireNonNull(semantic);
+        if (active.get() == null) {
+            withLocked(session, () -> { validateOrdinarySubmission(session, owner, semantic); return true; });
+            return;
+        }
+        StrictJson.require(active.get() == session, "ordinary submission cannot replace its original writer Session");
+        sessionAuthority.require(session);
+        var head = session.head(); requireOwner(head.state(), owner); requireActive(head.state());
+        CycleState state = state(head.state(), owner); requireLegacyPendingClear(head.state(), state);
+        requireFrontier(head.state(), state); validateChain(state);
+        StrictJson.require(state.pending().isEmpty(), "ordinary submission cannot discard an unfinished cycle");
+        StrictJson.require(ContinuityActionJournal.receipts(head.state(), archive).stream().allMatch(ActionReceipt::settled),
+                "ordinary submission cannot discard an unresolved original action");
+        var verified = verify(session, owner, semantic); var frame = verified.frame();
+        requireObservedBindingNotRegressed(head.state(), frame);
+        StrictJson.require(frame.frame().revision().compareTo(StrictJson.integer(head.state().toJson().get("latest_binding").get("revision"),
+                BigInteger.ZERO, StrictJson.UINT64_MAX)) >= 0, "ordinary submission regressed its canonical public revision");
+        if (state.head().isPresent()) {
+            var retained = load(state.head().orElseThrow()).semantic();
+            requireObservedContinuation(retained.frame(), frame);
+            StrictJson.require(frame.frame().revision().compareTo(retained.frame().frame().revision()) >= 0
+                    && !verified.observedAt().isBefore(retained.observedAt()),
+                    "ordinary submission regressed its retained cycle public revision or observation time");
+        } else if (state.originFrame().isPresent()) {
+            var retained = state.originFrame().orElseThrow();
+            requireObservedContinuation(retained, frame);
+            StrictJson.require(frame.frame().revision().compareTo(retained.frame().revision()) >= 0,
+                    "ordinary submission regressed its origin public revision");
+        } else requireSettledBinding(head.state(), frame);
+        StrictJson.require(head.digest().equals(session.head().digest()), "ordinary submission changed its actual writer head");
+    }
+
     /** Public SAVE/source-store boundary: constructor values alone cannot prove a cycle frontier. */
     public String verifyCompletedCycleProof(ContinuityStorePort.Session session, SessionIdentity owner, CompletedCycleProof proof) throws IOException {
         Objects.requireNonNull(session); Objects.requireNonNull(owner); Objects.requireNonNull(proof);

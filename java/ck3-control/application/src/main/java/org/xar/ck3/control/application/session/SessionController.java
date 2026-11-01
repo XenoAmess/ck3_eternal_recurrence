@@ -769,9 +769,8 @@ public final class SessionController {
                         && selected.command().source().equals(ready.request().source())
                         && selected.command().sessionId().equals(identity.sessionId())
                         && !selected.command().deadline().isAfter(run.deadline()), "selected command crossed observation/session/deadline");
-                // Ordinary submission requires its archived current SEM and actual cycle producer.
-                // The independent terminal branch retains its real LifecycleIdentity instead.
-                run.proof(ready);
+                if (checkpoint(selected.command())) run.proof(ready);
+                else run.requireOrdinarySubmission(ready);
                 run.requireTime(); run.live();
                 if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
                 ActionReceipt receipt;
@@ -1220,6 +1219,12 @@ public final class SessionController {
             commit(JournalKind.SAVE_CONFIRMED, Optional.of(actual.frame()), savedPair,
                     List.of(actual.save().reference(), actual.driver().reference(), actual.nativeAckRef()));
             dirty = false; eligibleSinceSave = 0; unsavedGameplayActions.clear(); savingProof = Optional.empty(); requireTime();
+        }
+        void requireOrdinarySubmission(Ready ready) throws IOException, InterruptedException {
+            var semantic = ready.semanticEvidence().orElseThrow(() -> new End(Terminal.INCOMPLETE_MIGRATION,
+                    "ordinary submission requires actual archived current SEM"));
+            StrictJson.require(semantic.frame().equals(ready.request().before()), "ordinary submission SEM crossed its exact ready frame");
+            measured(Phase.JOURNAL, () -> { journal.validateOrdinarySubmission(identity, semantic); return true; });
         }
         CompletedCycleProof proof(Ready ready) throws IOException, InterruptedException {
             if (ready.semanticEvidence().isEmpty()) throw new End(Terminal.INCOMPLETE_MIGRATION,
