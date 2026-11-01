@@ -1,5 +1,19 @@
 # runtime91 同局续行
 
+## 2026-11-02 273首个新增8日已确认保存，后续8日待结算保存
+
+本段分列两次实际截止，保留此前head47/49 UNKNOWN及head52待结算的全部历史。Runtime独占实机，同一Game77132／birth `134380410301009189` 继续；本次文档只核具名冻结DATA及已结束worker的小回执，不操作Game、Native、worker或账本，不重放原ARM/resume。Journal273已独立首编通过并以 `5040b14da900cfaafc51d4382967c36b77b93a6c` 正式发表；源码、首编与以下实际运行结果分别记账。
+
+Main273 worker103136／birth `134380463523304456` 于 `2026-11-01T22:39:12.329555Z` START。53于 `22:39:28.910473900Z` 实际SETTLE，普通completed_cycles成为1、pending=null；Runtime记 `22:39:29.2247071Z` 到达LOOP。60于 `22:40:02.074260300Z` 实际记录SAVE_CONFIRMED，原事件98871B／SHA `381f14efd79bafde8c4a21d8ed3cddd5ce32e0f9932a2ae6c5cea2949e2dd35e`。保存pair为native32/public15/date53146176，actor31254；相对本轮基线53145984新增8日已保存。冻结head63为running／completed1／pending=null，保存pair一致、当时next2。Root另以三份具名冻结原件独立核实，未读取实际Save或Driver大体。
+
+主性能epoch `20:50:46Z` 至60的完整窗口为6556.074260300秒，包含所有冷启动、等待、失败及恢复；除以本窗口新增8个SAVE_CONFIRMED日，为819.5092825375秒/已保存日，尚未达到暂定10秒目标。旧局累计69日不作本窗口分母，也不以候选首编或日期观察代替保存。
+
+后到终态截止 `22:43:22.105926Z`：同一worker已END4／249.776377秒，不能继续称其健康常驻。第二批父80已COMPOSITE_SETTLED/APPLIED，实际terminal observation为 `22:43:07.739887200Z`，native46/public29/date53146368，即本轮累计16日observed；冻结head82仍completed1、pending指向该80回执，已保存pair仍为native32/public15/date53146176，故仅8日已保存，另8日尚待周期结算与保存。原异常为 `the cycle SEM must be collected after the actual terminal observation`，实际栈在OrdinaryCycleTransitions.freshAfter；保留已应用动作及原回执，不以重放修复。此后运行恢复不在本冻结段追授。
+
+将同一性能窗口延长至这次END，完整墙钟为6756.105926秒、仍仅8个新增确认保存日，对应844.51324075秒/已保存日；首SAVE之后到END的子窗口没有新增SAVE，单独秒/新增保存日为null。两次截止和分母各自保留，不删除后续失败耗时，也不授16日已保存。证据限于Runtime `save-confirmed273-final` 的SUMMARY/53/60/HEAD63、`recovery-outcome274` 的SUMMARY/head82/父80冻结件、Main273 START/END/stderr以及Root `save-confirmation273/INDEPENDENT-VERIFICATION273-EXACT.json`；不沿这些JSON内的外部路径读取原Save、Driver或新现场。
+
+
+
 ## 2026-11-02 272原父动作已应用，周期仍待结算与保存
 
 本段运行事实截止 `2026-11-01T22:26:25.261883Z`，依据 Runtime 于22:31封存的九份具名副本；此前 head47/49 UNKNOWN 截面完整保留，后到结果不回填旧段。Runtime 继续独占实机，原ARM/resume未重放，没有请求新Game launch/stop，同一 Game77132／birth `134380410301009189` 保留。
