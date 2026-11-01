@@ -227,7 +227,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var owner = data.controller().owner();
         var branch = state(head.state(), owner);
         requireSettledRecoveryFrontier(head.state(), owner, branch);
-        if (head.state().status() == ContinuityState.Status.RUNNING)
+        if (isOpenReadOnlyBatch(head.state()))
             requireOpenReadOnlyRecovery(same, head.state(), owner, branch);
         StrictJson.require(branch.head().isPresent()
                 && load(branch.head().orElseThrow()).semantic().equals(data.latestCycleSemantic()),
@@ -311,7 +311,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var owner = sessionFromJson(details.get("session"));
         var branch = state(head.state(), owner);
         requireSettledRecoveryFrontier(head.state(), owner, branch);
-        if (head.state().status() == ContinuityState.Status.RUNNING)
+        if (isOpenReadOnlyBatch(head.state()))
             requireOpenReadOnlyRecovery(same, head.state(), owner, branch);
         StrictJson.require(head.digest().equals(text(details, "predecessor_head_digest"))
                 && branch.head().filter(ExactRef.fromJson(details.get("cycle_record_ref"))::equals).isPresent()
@@ -333,7 +333,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
 
     private void requireSettledRecoveryFrontier(ContinuityState head, SessionIdentity owner, CycleState branch) throws IOException {
         requireOwner(head, owner); requireFrontier(head, branch); requireLegacyPendingClear(head, branch);
-        StrictJson.require((head.status() == ContinuityState.Status.REPAIR_REQUIRED || isOpenReadOnlyBatch(head))
+        StrictJson.require((head.status() == ContinuityState.Status.REPAIR_REQUIRED
+                || isOpenReadOnlyBatch(head) || isDeferredReadOnlyBatch(head))
                 && branch.pending().isEmpty() && branch.head().isPresent(),
                 "settled recovery requires a completed interrupted cycle");
         validateChain(branch);
@@ -347,6 +348,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                     "settled recovery crossed an original action owner");
         }
         var context = savedSettledContext.get();
+        StrictJson.require(!isDeferredReadOnlyBatch(head) || context != null,
+                "deferred batch recovery requires this journal's fully verified saved history role");
         Set<ExactRef> confirmedSaveReceipts = Set.of();
         if (context != null) {
             StrictJson.require(active.get() == context.same(), "saved settled history lost its actual writer scope");
@@ -374,6 +377,13 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 && JournalKind.BATCH_STARTED.name().equals(StrictJson.text(boundary.get("boundary")));
     }
 
+    private static boolean isDeferredReadOnlyBatch(ContinuityState state) {
+        if (state.status() != ContinuityState.Status.RUNNING) return false;
+        var boundary = state.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        return boundary != null && boundary.isObject()
+                && JournalKind.BATCH_DEFERRED.name().equals(StrictJson.text(boundary.get("boundary")));
+    }
+
     private void requireOpenReadOnlyRecovery(ContinuityStorePort.Session same, ContinuityState current,
             SessionIdentity owner, CycleState branch) throws IOException {
         var anchor = openReadOnlyRecovery.get();
@@ -395,7 +405,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         strictSettledSameGameRecovery(details);
         var owner = sessionFromJson(details.get("session"));
         var branch = state(predecessor, owner);
-        StrictJson.require((predecessor.status() == ContinuityState.Status.REPAIR_REQUIRED || isOpenReadOnlyBatch(predecessor))
+        StrictJson.require((predecessor.status() == ContinuityState.Status.REPAIR_REQUIRED
+                || isOpenReadOnlyBatch(predecessor) || isDeferredReadOnlyBatch(predecessor))
                 && ContinuityJson.digest(predecessor.toJson()).equals(text(details, "predecessor_head_digest"))
                 && branch.pending().isEmpty()
                 && branch.head().filter(ExactRef.fromJson(details.get("cycle_record_ref"))::equals).isPresent(),
@@ -413,12 +424,12 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         recovery.set("cycle_record_ref", details.get("cycle_record_ref"));
         recovery.set("frame", originalFrame(fresh.frame()));
         final ObjectNode next;
-        if (isOpenReadOnlyBatch(predecessor)) {
+        if (isOpenReadOnlyBatch(predecessor) || isDeferredReadOnlyBatch(predecessor)) {
             var boundary = StrictJson.object(predecessor.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD),
                     Set.of("evidence_id", "session", "batch_id", "boundary"));
             StrictJson.require(sessionFromJson(boundary.get("session")).equals(owner)
                     && text(boundary, "batch_id").equals(text(details, "batch_id")),
-                    "unfinished batch recovery crossed its actual STARTED batch");
+                    "read-only batch recovery crossed its actual retained batch");
             requireObservedBindingNotRegressed(predecessor, fresh.frame());
             next = predecessor.toJson();
             next.set("latest_binding", originalFrame(fresh.frame()));
