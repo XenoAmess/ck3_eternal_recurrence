@@ -44,6 +44,15 @@ import org.xar.ck3.control.application.advance.AdvanceProgress;
 import org.xar.ck3.control.application.advance.AdvanceHistory;
 import org.xar.ck3.control.application.advance.ClockStatusRead;
 import org.xar.ck3.control.application.capabilities.CampaignRootContextJson;
+import org.xar.ck3.control.application.planning.OrdinaryPolicy;
+import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.InteractionModels;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionEffects;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionPlanCodec;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionPostcondition;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionRules;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.PendingContext;
+import org.xar.ck3.control.nativebridge.capabilities.interactions.PendingContextCodec;
 
 /** Selects one exact legal proposal or waits. It cannot construct or submit an action. */
 public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelector {
@@ -170,6 +179,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     }
 
     private byte[] requestPayload(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
+        byte[] knownPending = tryCompactKnownPendingPayload(request, proposal, sha);
+        if (knownPending != null) return knownPending;
         byte[] compact = tryCompactPayload(request, proposal, sha);
         if (compact != null) return compact;
         ObjectNode data = object();
@@ -227,6 +238,265 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         messages.addObject().put("role", "system").put("content", policy);
         messages.addObject().put("role", "user").put("content", new String(FullJsonTree.encode(data, MAX_MATERIAL_BYTES), StandardCharsets.UTF_8));
         return FullJsonTree.encode(payload, MAX_MATERIAL_BYTES);
+    }
+
+
+    private static final String KNOWN_PENDING_SCHEMA = "xar.model-known-pending-admission/v1";
+    private static final String KNOWN_PENDING_POLICY = "You decide admission of ONE original known-marriage REJECT proposal or WAIT, never an alternative action. Full command, legality, context, current facts and unknown snapshot fields are retained. Only snapshot.diagnostics.hello.capabilities is projected to the required action subset. ROOT cache keeps its original binding and may be stale; it is not current evidence or required by this marriage rule. Historical transport and other-domain trace detail/evidence remain in Java, outside this narrow scope. Java independently owns full qualification, once dispatch and effect verification. This is a task projection, not lossless or Native AI optimality. Reply exactly JSON with decision SELECT_PROPOSAL or WAIT, proposal_id and body_sha256 copied exactly, and short reason. Selection proves no action or saved day.";
+
+    /** One already prepared marriage-reject intent; this task projection grants no action or Source authority. */
+    private byte[] tryCompactKnownPendingPayload(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
+        try {
+            if (!isKnownMarriageRejectCandidate(request, proposal, sha)) return null;
+            JsonNode snapshot = OpportunityJson.toNode(request.observations().snapshot());
+            boolean currentRootVerified = hasCurrentCompleteRoot(snapshot, request);
+            var hello = (ObjectNode) snapshot.path("diagnostics").path("hello");
+            hello.putArray("capabilities").add("game.command.reject-pending-character-interaction");
+            ObjectNode data = object();
+            data.put("decision_context_schema", KNOWN_PENDING_SCHEMA);
+            data.put("decision_scope", "known_marriage_reject_admission/v1");
+            data.put("hello_capabilities_projection", "required_action_subset/v1");
+            data.put("dependency_scope", "only this proposal's required subset; complete registries stay in Java");
+            data.put("root_context_scope", "retained_cache_only_not_used_for_marriage_reply_admission");
+            data.put("current_root_verified_for_request", currentRootVerified);
+            data.put("proposal_id", proposal.command().actionId()); data.put("body_sha256", sha);
+            data.put("planning_deadline", request.deadline().toString());
+            data.set("proposal", FullJsonTree.parse(ActionCodec.encodeCommand(proposal.command()), ActionCodec.MAX_COMMAND_BYTES));
+            data.set("snapshot", snapshot);
+            data.putArray("required_capabilities").add("game.command.reject-pending-character-interaction");
+            data.putArray("required_routable_operations").add("reject-pending-character-interaction");
+            var selected = proposal.trace().finalPlan().orElseThrow();
+            ObjectNode chosen = data.putObject("final_plan");
+            chosen.put("policy", selected.policy()); chosen.put("phase", selected.phase()); chosen.put("reason", selected.reason());
+            chosen.put("kind", selected.kind().name()); chosen.put("purpose", selected.purpose().name());
+            if (selected.domain().isPresent()) chosen.put("domain", selected.domain().orElseThrow().name()); else chosen.putNull("domain");
+            ArrayNode visits = data.putArray("planner_visits");
+            for (var visit : proposal.trace().visits()) {
+                ObjectNode step = visits.addObject(); step.put("stage", visit.stage().name());
+                step.put("outcome", visit.outcome().name()); step.put("reason", visit.reason());
+            }
+            ArrayNode facts = data.putArray("action_facts");
+            request.observations().actionFacts().forEach(fact -> {
+                ObjectNode actual = facts.addObject(); actual.put("action_id", fact.actionId());
+                actual.put("body_sha256", fact.bodySha256()); actual.put("state", fact.state().name());
+                actual.put("unresolved", fact.unresolved()); actual.put("scope", fact.scope().name());
+                actual.put("domain", String.valueOf(fact.domain()));
+                actual.set("affected_claims", ActionCodec.claims(fact.affectedClaims()));
+            });
+            byte[] payload = encodeModelInput(data, KNOWN_PENDING_POLICY);
+            return payload.length <= MAX_COMPACT_LIFE_BYTES ? payload : null;
+        } catch (RuntimeException unsupportedOrTooLarge) {
+            return null;
+        }
+    }
+
+    private static InteractionModels.Context knownPendingCurrentContext(PlanningRequest request, ActionCommand command) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(command);
+        var snapshotNode = OpportunityJson.toNode(request.observations().snapshot());
+        var frame = request.before().frame();
+        var identity = frame.identity();
+
+        // 1. Verify basic snapshot safety and identity matches request
+        if (!snapshotNode.path("paused").isBoolean() || !snapshotNode.path("paused").booleanValue()) throw new IllegalArgumentException("kp_paused_required");
+        if (!snapshotNode.path("map_ready").isBoolean() || !snapshotNode.path("map_ready").booleanValue()) throw new IllegalArgumentException("kp_map_ready_required");
+        var played = snapshotNode.path("played_character");
+        if (!played.isObject() || !played.path("alive").isBoolean() || !played.path("alive").booleanValue()) throw new IllegalArgumentException("kp_player_alive_required");
+        if (!snapshotNode.path("active_wars").isArray() || snapshotNode.path("active_wars").size() != 0) throw new IllegalArgumentException("kp_no_active_wars_required");
+        if (!snapshotNode.path("player_armies").isArray() || snapshotNode.path("player_armies").size() != 0) throw new IllegalArgumentException("kp_no_player_armies_required");
+        for (String nullable : List.of("active_event", "one_life_terminal_reason", "driver_state_error", "episode_transition_error", "cold_candidate_rejection")) {
+            if (!snapshotNode.path(nullable).isNull()) throw new IllegalArgumentException("kp_null_field_required:" + nullable);
+        }
+        for (String inactive : List.of("one_life_terminal", "episode_identity_pending")) {
+            if (!snapshotNode.path(inactive).isBoolean() || snapshotNode.path(inactive).booleanValue()) throw new IllegalArgumentException("kp_inactive_field_required:" + inactive);
+        }
+        JsonNode modal = snapshotNode.get("top_exclusive_modal_choice_hint");
+        if (modal != null && !modal.isNull()) throw new IllegalArgumentException("kp_no_modal_hint_required");
+
+        if (!snapshotNode.path("snapshot_id").isTextual() || !snapshotNode.path("snapshot_id").textValue().equals(frame.snapshotId())) throw new IllegalArgumentException("kp_snapshot_id_mismatch");
+        if (!snapshotNode.path("revision").isIntegralNumber() || !snapshotNode.path("revision").bigIntegerValue().equals(frame.revision())) throw new IllegalArgumentException("kp_revision_mismatch");
+        if (!snapshotNode.path("native_revision").isIntegralNumber() || !snapshotNode.path("native_revision").bigIntegerValue().equals(identity.nativeRevision())) throw new IllegalArgumentException("kp_native_revision_mismatch");
+        if (!snapshotNode.path("date_raw").isIntegralNumber() || !snapshotNode.path("date_raw").bigIntegerValue().equals(identity.dateRaw())) throw new IllegalArgumentException("kp_date_raw_mismatch");
+        if (!snapshotNode.path("episode_run_id").isTextual() || !snapshotNode.path("episode_run_id").textValue().equals(frame.episodeRunId())) throw new IllegalArgumentException("kp_episode_run_id_mismatch");
+        var playerChar = snapshotNode.path("played_character").path("character_id");
+        if (!playerChar.isIntegralNumber() || !playerChar.bigIntegerValue().equals(identity.player())) throw new IllegalArgumentException("kp_player_id_mismatch");
+
+        // 2. Derive Build from diagnostics.hello (strict profile check)
+        var diagnostics = snapshotNode.path("diagnostics");
+        if (!diagnostics.isObject()) throw new IllegalArgumentException("kp_diagnostics_required");
+        var hello = diagnostics.path("hello");
+        if (!hello.isObject()) throw new IllegalArgumentException("kp_hello_required");
+        boolean expectedProfile = hello.has("expected_ck3_version") || hello.has("expected_ck3_sha256");
+        boolean nativeProfile = hello.has("game_version") || hello.has("executable_sha256");
+        if (expectedProfile == nativeProfile) throw new IllegalArgumentException("kp_ambiguous_hello_profile");
+        String version = expectedProfile ? StrictJson.text(hello.get("expected_ck3_version")) : StrictJson.text(hello.get("game_version"));
+        String sha = expectedProfile ? StrictJson.text(hello.get("expected_ck3_sha256")) : StrictJson.text(hello.get("executable_sha256"));
+        InteractionModels.Build build = null;
+        for (InteractionModels.Build b : InteractionModels.Build.values()) {
+            if (b.version().equals(version) && b.sha256().equalsIgnoreCase(sha)) { build = b; break; }
+        }
+        if (build == null) throw new IllegalArgumentException("kp_unsupported_build");
+
+        // 3. Verify connection generation and PID
+        var diagConnGen = diagnostics.path("connection_generation");
+        if (!diagConnGen.isIntegralNumber() || diagConnGen.bigIntegerValue().signum() <= 0) throw new IllegalArgumentException("kp_invalid_connection_generation");
+        var diagPid = diagnostics.path("bridge_pid");
+        if (!diagPid.isIntegralNumber() || !diagPid.bigIntegerValue().equals(BigInteger.valueOf(request.before().game().pid()))) throw new IllegalArgumentException("kp_bridge_pid_mismatch");
+
+        // 4. Parse current ControlFrame from snapshot
+        var speedNode = snapshotNode.path("speed");
+        if (!speedNode.isIntegralNumber()) throw new IllegalArgumentException("kp_speed_required");
+        int speed = speedNode.bigIntegerValue().intValueExact();
+        if (speed < 0 || speed > 5) throw new IllegalArgumentException("kp_speed_range");
+
+        var localPlayerNode = snapshotNode.path("local_player_id");
+        Long localPlayerId = null;
+        if (!localPlayerNode.isNull()) {
+            if (!localPlayerNode.isIntegralNumber()) throw new IllegalArgumentException("kp_local_player_id_type");
+            localPlayerId = localPlayerNode.bigIntegerValue().longValueExact();
+            if (localPlayerId < 0 || localPlayerId > 0xffffffffL) throw new IllegalArgumentException("kp_local_player_range");
+        }
+
+        var episodeCharNode = snapshotNode.path("episode_character_id");
+        if (!episodeCharNode.isIntegralNumber()) throw new IllegalArgumentException("kp_episode_character_id_required");
+        long episodeCharacterId = NativeCharacterId.fromJson(episodeCharNode).value();
+        if (!episodeCharNode.bigIntegerValue().equals(identity.player())) throw new IllegalArgumentException("kp_episode_actor_mismatch");
+
+        var activeEventNode = snapshotNode.path("active_event");
+        boolean activeEvent = !activeEventNode.isNull();
+
+        var pendingNode = snapshotNode.path("pending_character_interaction");
+        if (!pendingNode.isObject()) throw new IllegalArgumentException("kp_pending_object_required");
+        var pendingInstanceNode = pendingNode.path("instance_id");
+        var pendingSenderNode = pendingNode.path("sender_character_id");
+        var pendingNotificationNode = pendingNode.path("auto_accept_notification");
+        if (!pendingInstanceNode.isIntegralNumber() || !pendingSenderNode.isIntegralNumber() || !pendingNotificationNode.isBoolean()) throw new IllegalArgumentException("kp_pending_fields_invalid");
+        int pendingInstance = pendingInstanceNode.bigIntegerValue().intValueExact();
+        if (pendingInstance == -1) throw new IllegalArgumentException("kp_pending_instance_sentinel");
+        var pendingSender = NativeCharacterId.of(pendingSenderNode.bigIntegerValue());
+        boolean pendingNotification = pendingNotificationNode.booleanValue();
+        InteractionModels.PendingSummary pending = new InteractionModels.PendingSummary(new InteractionModels.PendingId(pendingInstance), pendingSender, pendingNotification);
+
+        var betrothedNode = played.path("betrothed_id");
+        Long betrothedId = null;
+        if (!betrothedNode.isNull()) {
+            if (!betrothedNode.isIntegralNumber()) throw new IllegalArgumentException("kp_betrothed_id_type");
+            betrothedId = (long) NativeCharacterId.of(betrothedNode.bigIntegerValue()).value();
+        }
+
+        var spouseIdsNode = played.path("spouse_ids");
+        if (!spouseIdsNode.isArray()) throw new IllegalArgumentException("kp_spouse_ids_array_required");
+        List<Long> spouseIds = new ArrayList<>();
+        for (JsonNode spouse : spouseIdsNode) {
+            if (!spouse.isIntegralNumber()) throw new IllegalArgumentException("kp_spouse_id_type");
+            spouseIds.add((long) NativeCharacterId.of(spouse.bigIntegerValue()).value());
+        }
+
+        if (new java.util.HashSet<>(spouseIds).size() != spouseIds.size()) throw new IllegalArgumentException("kp_duplicate_spouse");
+        var controls = new InteractionModels.ControlFrame(
+            true, true, true, speed, localPlayerId, episodeCharacterId, frame.episodeRunId(), activeEvent, pending, betrothedId, spouseIds
+        );
+
+        // 5. Verify encoded group_context matches current snapshot
+        var args = command.arguments();
+        var groupContext = args.get("group_context");
+        if (!(groupContext instanceof OpportunityJson.Obj)) throw new IllegalArgumentException("kp_group_context_object_required");
+        var gcNode = OpportunityJson.toNode((OpportunityJson.Obj) groupContext);
+        var gcBuild = gcNode.path("build");
+        if (!gcBuild.isTextual() || !gcBuild.textValue().equals(build.name())) throw new IllegalArgumentException("kp_build_mismatch");
+        var gcConn = gcNode.path("connection_generation");
+        if (!gcConn.isIntegralNumber() || !gcConn.bigIntegerValue().equals(diagConnGen.bigIntegerValue())) throw new IllegalArgumentException("kp_connection_generation_mismatch");
+        var gcControls = gcNode.path("controls");
+        if (!gcControls.isObject()) throw new IllegalArgumentException("kp_controls_object_required");
+
+        // Compare controls fields
+        if (!gcControls.path("paused").isBoolean() || !gcControls.path("paused").booleanValue()) throw new IllegalArgumentException("kp_ctrl_paused_mismatch");
+        if (!gcControls.path("map_ready").isBoolean() || !gcControls.path("map_ready").booleanValue()) throw new IllegalArgumentException("kp_ctrl_map_ready_mismatch");
+        if (!gcControls.path("alive").isBoolean() || !gcControls.path("alive").booleanValue()) throw new IllegalArgumentException("kp_ctrl_alive_mismatch");
+        if (!gcControls.path("speed").isIntegralNumber() || gcControls.path("speed").bigIntegerValue().intValueExact() != speed) throw new IllegalArgumentException("kp_ctrl_speed_mismatch");
+        if (!gcControls.path("episode_character_id").isIntegralNumber() || gcControls.path("episode_character_id").bigIntegerValue().longValueExact() != episodeCharacterId) throw new IllegalArgumentException("kp_ctrl_episode_char_mismatch");
+        if (!gcControls.path("episode_run_id").isTextual() || !gcControls.path("episode_run_id").textValue().equals(frame.episodeRunId())) throw new IllegalArgumentException("kp_ctrl_episode_run_mismatch");
+        if (!gcControls.path("active_event").isBoolean() || gcControls.path("active_event").booleanValue() != activeEvent) throw new IllegalArgumentException("kp_ctrl_active_event_mismatch");
+
+        var gcLocalPlayer = gcControls.path("local_player_id");
+        if (localPlayerId == null) { if (!gcLocalPlayer.isNull()) throw new IllegalArgumentException("kp_ctrl_local_player_null_mismatch"); }
+        else { if (!gcLocalPlayer.isIntegralNumber() || gcLocalPlayer.bigIntegerValue().longValueExact() != localPlayerId) throw new IllegalArgumentException("kp_ctrl_local_player_mismatch"); }
+
+        var gcBetrothed = gcControls.path("betrothed_id");
+        if (betrothedId == null) { if (!gcBetrothed.isNull()) throw new IllegalArgumentException("kp_ctrl_betrothed_null_mismatch"); }
+        else { if (!gcBetrothed.isIntegralNumber() || gcBetrothed.bigIntegerValue().longValueExact() != betrothedId) throw new IllegalArgumentException("kp_ctrl_betrothed_mismatch"); }
+
+        var gcSpouses = gcControls.path("spouse_ids");
+        if (!gcSpouses.isArray() || gcSpouses.size() != spouseIds.size()) throw new IllegalArgumentException("kp_ctrl_spouses_mismatch");
+        for (int i = 0; i < spouseIds.size(); i++) {
+            if (!gcSpouses.get(i).isIntegralNumber() || gcSpouses.get(i).bigIntegerValue().longValueExact() != spouseIds.get(i)) throw new IllegalArgumentException("kp_ctrl_spouse_item_mismatch");
+        }
+
+        var gcPending = gcControls.path("pending");
+        if (pending == null) { if (!gcPending.isNull()) throw new IllegalArgumentException("kp_ctrl_pending_null_mismatch"); }
+        else {
+            if (!gcPending.isObject()) throw new IllegalArgumentException("kp_ctrl_pending_object_required");
+            if (!gcPending.path("instance_id").isIntegralNumber() || gcPending.path("instance_id").bigIntegerValue().intValueExact() != pendingInstance) throw new IllegalArgumentException("kp_ctrl_pending_instance_mismatch");
+            if (!gcPending.path("sender_id").isIntegralNumber() || !NativeCharacterId.of(gcPending.path("sender_id").bigIntegerValue()).equals(pendingSender)) throw new IllegalArgumentException("kp_ctrl_pending_sender_mismatch");
+            if (!gcPending.path("notification").isBoolean() || gcPending.path("notification").booleanValue() != pendingNotification) throw new IllegalArgumentException("kp_ctrl_pending_notification_mismatch");
+        }
+
+        return new InteractionModels.Context(request.before(), request.source(), request.sessionId(), diagConnGen.bigIntegerValue(), build, request.deadline(), controls);
+    }
+
+    private static boolean isKnownMarriageRejectCandidate(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
+        try {
+            ActionCommand command = proposal.command();
+            OriginalCommandClocks.requireCurrentProposal(request, command);
+            if (!command.operation().value().equals("reject-pending-character-interaction")) return false;
+            if (!command.expected().observerSchema().equals(KnownPendingInteractionPostcondition.SCHEMA)) return false;
+            if (!ActionCodec.bodySha256(command).equals(sha)) return false;
+            if (!command.before().equals(request.before()) || !command.source().equals(request.source())
+                    || !command.sessionId().equals(request.sessionId()) || !command.deadline().equals(request.deadline())) return false;
+            var finalPlan = proposal.trace().finalPlan().orElseThrow();
+            if (!finalPlan.command().equals(java.util.Optional.of(command))) return false;
+            if (!finalPlan.kind().equals(OrdinaryPolicy.Kind.FOREGROUND) || !finalPlan.purpose().equals(OrdinaryPolicy.Purpose.WORLD_ACTION)) return false;
+            if (!request.observations().actionSteps().contains(new OperationKey("reject-pending-character-interaction"))) return false;
+            if (!request.observations().bridgeCapabilities().contains("game.command.reject-pending-character-interaction")) return false;
+            var snapshot = request.observations().snapshot();
+            if (!(snapshot.get("active_wars") instanceof OpportunityJson.Arr wars) || !wars.items().isEmpty()) return false;
+            if (!(snapshot.get("player_armies") instanceof OpportunityJson.Arr armies) || !armies.items().isEmpty()) return false;
+            JsonNode helloCaps = OpportunityJson.toNode(snapshot).path("diagnostics").path("hello").path("capabilities");
+            if (!helloCaps.isArray()) return false;
+            boolean requiredAdvertised = false;
+            for (JsonNode capability : helloCaps) {
+                if (!capability.isTextual()) return false;
+                if (capability.textValue().equals("game.command.reject-pending-character-interaction")) requiredAdvertised = true;
+            }
+            if (!requiredAdvertised) return false;
+            for (var fact : request.observations().actionFacts()) if (fact.unresolved()) return false;
+            var nativePrep = KnownPendingInteractionEffects.preparation().prepare(command);
+            if (!nativePrep.step().equals("reject-pending-character-interaction") || !nativePrep.requiredCapability().equals(Optional.of("game.command.reject-pending-character-interaction"))) return false;
+            var args = command.arguments();
+            if (!(args.get("known_pending_plan") instanceof OpportunityJson.Obj planObj)) return false;
+            if (!(planObj.get("java_policy_plan") instanceof OpportunityJson.Obj policyPlan)) return false;
+            var storedPlan = KnownPendingInteractionPlanCodec.decode(OpportunityJson.toNode(policyPlan));
+            if (storedPlan.classification() != KnownPendingInteractionRules.Classification.KNOWN_MARRIAGE) return false;
+            if (!storedPlan.selected().filter(a -> a == KnownPendingInteractionRules.Action.REJECT).isPresent()) return false;
+            if (!storedPlan.ruleId().equals("arrange-marriage-reject-only-v1")) return false;
+            if (!storedPlan.blockedReasons().isEmpty() || storedPlan.requiredStep().isPresent() || storedPlan.requiredTool().isPresent()) return false;
+            if (storedPlan.warId().isPresent() || storedPlan.prisonerId().isPresent() || storedPlan.quotedGoldRaw().isPresent()) return false;
+            if (storedPlan.ordinaryGoldReady()) return false;
+            if (storedPlan.originalWarSignature().isPresent() && !storedPlan.originalWarSignature().orElseThrow().isEmpty()) return false;
+            var currentContext = knownPendingCurrentContext(request, command);
+            var wrapper = planObj.get("original_context_wrapper");
+            if (!(wrapper instanceof OpportunityJson.Obj)) return false;
+            var pendingId = currentContext.controls().pending();
+            if (pendingId == null) return false;
+            var original = PendingContextCodec.decode(new RawJson(OpportunityJson.encode(wrapper)), currentContext, pendingId.instance());
+            var input = new KnownPendingInteractionRules.Input(original, currentContext, List.of(), Optional.of(List.of()), Optional.empty(), Optional.empty(), request.observations().actionSteps().stream().map(k -> k.value()).collect(java.util.stream.Collectors.toSet()));
+            var reevaluated = KnownPendingInteractionRules.evaluate(input);
+            if (!reevaluated.equals(storedPlan)) return false;
+            if (!reevaluated.selected().filter(a -> a == KnownPendingInteractionRules.Action.REJECT).isPresent()) return false;
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     /** A task projection for one already prepared peaceful Life intent; never a qualification token. */

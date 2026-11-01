@@ -1,0 +1,351 @@
+{
+  "original_context_wrapper": {
+    "step": "query-pending-character-interaction-context-v1",
+    "accepted": true,
+    "backend_id": "native-headless",
+    "status": "available",
+    "query_sequence": 1,
+    "snapshot_revision": 576,
+    "queried_snapshot_id": "fixture:576",
+    "queried_revision": 500,
+    "queried_native_revision": 576,
+    "pending_character_interaction_context": {
+      "auto_accept": {
+        "status": "available",
+        "value": false,
+        "reason": null
+      },
+      "build": {
+        "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "version": "1.20.0.4"
+      },
+      "date_raw": 53146272,
+      "deadline": {
+        "age_days": 0,
+        "expiration_days": 60,
+        "remaining_days": 60,
+        "expiry_boundary_status": "not_reached"
+      },
+      "definition": {
+        "canonical_key": "arrange_marriage_interaction",
+        "deterministic_key_hash": 1298930137,
+        "runtime_ordinal": 17
+      },
+      "legality": {
+        "accept": {
+          "status": "available",
+          "allowed": true,
+          "reason": null
+        },
+        "acknowledge": {
+          "status": "available",
+          "allowed": false,
+          "reason": "normal_reply_channel"
+        },
+        "block": {
+          "status": "available",
+          "allowed": false,
+          "reason": "native_reply_not_allowed"
+        },
+        "reject": {
+          "status": "available",
+          "allowed": true,
+          "reason": null
+        }
+      },
+      "pending_interaction_id": -2130706399,
+      "provenance": {
+        "auto_accept_trigger_evaluator_rva": "0x372DF10",
+        "backend_id": "ck3-1.20.0.4-native-pending-character-interaction-context-v1",
+        "character_storage_slot_rva": "0x5C67568",
+        "common_war_relation_rva": "0x28BC250",
+        "cost_evaluator_rva": "0x310CEC0",
+        "expiration_days_rva": "0x5C68CFC",
+        "local_routing_predicate_rva": "0x136D190",
+        "pending_storage_slot_rva": "0x5D1EC80",
+        "reply_primary_vtable_rva": "0x448BC28",
+        "reply_secondary_vtable_rva": "0x448BBF8",
+        "reply_validator_rva": "0x2968470",
+        "script_identifier_name_rva": "0x3F4F8E0",
+        "target_type_registry_getter_rva": "0x3795A60",
+        "target_type_registry_rva": "0x54F2AF0",
+        "war_defeat_special_vtable_rva": "0x46C3B90",
+        "war_victory_special_vtable_rva": "0x46C3AB0",
+        "war_white_peace_special_vtable_rva": "0x46C3B20"
+      },
+      "readiness": {
+        "stable_definition_ready": true,
+        "roles_ready": true,
+        "target_type_key_ready": true,
+        "target_typed_identity_ready": true,
+        "send_options_ready": true,
+        "routing_ready": true,
+        "deadline_ready": true,
+        "auto_accept_ready": true,
+        "reply_legality_ready": true,
+        "generic_costs_ready": true,
+        "same_frame_ready": true,
+        "special_war_binding_ready": false,
+        "special_outcome_terms_ready": false,
+        "structured_terms_ready": false,
+        "interaction_semantic_decision_ready": false,
+        "not_ready_reasons": [
+          "special_interaction_subtype_opaque",
+          "special_outcome_terms_unavailable",
+          "structured_exchanges_unavailable",
+          "structured_effect_preview_unavailable"
+        ]
+      },
+      "reason": null,
+      "roles": {
+        "actor_character_id": 501,
+        "recipient_character_id": 29829,
+        "secondary_actor_character_id": 901,
+        "secondary_recipient_character_id": 903,
+        "intermediary_character_id": -1
+      },
+      "routing": {
+        "kind": 0,
+        "played_character_id": 29829,
+        "current_responder_role": "recipient",
+        "reply_execution_channel": "recipient",
+        "local_route": true,
+        "auto_accept_notification": false
+      },
+      "schema": "pending-character-interaction-context-v1",
+      "schema_version": 1,
+      "send_options": {
+        "exclusive": false,
+        "definition_count": 6,
+        "context_count": 6,
+        "rows": [
+          {
+            "native_index": 0,
+            "numeric_flag_identifier": 100,
+            "selected": false,
+            "is_shown": true,
+            "is_valid": true,
+            "canonical_flag_status": "unavailable",
+            "canonical_flag_key": null,
+            "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+          },
+          {
+            "native_index": 1,
+            "numeric_flag_identifier": 101,
+            "selected": false,
+            "is_shown": true,
+            "is_valid": true,
+            "canonical_flag_status": "unavailable",
+            "canonical_flag_key": null,
+            "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+          },
+          {
+            "native_index": 2,
+            "numeric_flag_identifier": 102,
+            "selected": false,
+            "is_shown": true,
+            "is_valid": true,
+            "canonical_flag_status": "unavailable",
+            "canonical_flag_key": null,
+            "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+          },
+          {
+            "native_index": 3,
+            "numeric_flag_identifier": 103,
+            "selected": false,
+            "is_shown": true,
+            "is_valid": true,
+            "canonical_flag_status": "unavailable",
+            "canonical_flag_key": null,
+            "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+          },
+          {
+            "native_index": 4,
+            "numeric_flag_identifier": 104,
+            "selected": false,
+            "is_shown": true,
+            "is_valid": true,
+            "canonical_flag_status": "unavailable",
+            "canonical_flag_key": null,
+            "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+          },
+          {
+            "native_index": 5,
+            "numeric_flag_identifier": 105,
+            "selected": false,
+            "is_shown": true,
+            "is_valid": true,
+            "canonical_flag_status": "unavailable",
+            "canonical_flag_key": null,
+            "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+          }
+        ]
+      },
+      "snapshot_revision": 576,
+      "status": "available",
+      "target": {
+        "present": false,
+        "raw_type_index": 0,
+        "raw_16_bytes_hex": "00000000000000000000000000000000",
+        "type_key_status": "absent",
+        "type_key": null,
+        "type_key_reason": null,
+        "typed_identity_status": "absent",
+        "typed_identity": null,
+        "typed_identity_reason": null
+      },
+      "terms": {
+        "special_data_present": true,
+        "special_war_binding": {
+          "status": "unavailable",
+          "value": null,
+          "reason": "special_interaction_subtype_opaque"
+        },
+        "structured_costs": {
+          "status": "available",
+          "reason": null,
+          "value": {
+            "raw_scale": 100000,
+            "payer_role": "actor",
+            "application_timing": "on_send",
+            "pending_payment_state": "already_applied",
+            "entries": [
+              {
+                "resource_key": "gold",
+                "raw": 0
+              },
+              {
+                "resource_key": "prestige",
+                "raw": 0
+              },
+              {
+                "resource_key": "piety",
+                "raw": 0
+              },
+              {
+                "resource_key": "renown",
+                "raw": 0
+              },
+              {
+                "resource_key": "influence",
+                "raw": 0
+              },
+              {
+                "resource_key": "herd",
+                "raw": 0
+              },
+              {
+                "resource_key": "treasury",
+                "raw": 0
+              },
+              {
+                "resource_key": "treasury_or_gold",
+                "raw": 0
+              },
+              {
+                "resource_key": "merit",
+                "raw": 0
+              },
+              {
+                "resource_key": "barter_goods",
+                "raw": 0
+              }
+            ]
+          }
+        },
+        "structured_exchanges": {
+          "status": "unavailable",
+          "value": null,
+          "reason": "structured_exchanges_unavailable"
+        },
+        "structured_effect_preview": {
+          "status": "unavailable",
+          "value": null,
+          "reason": "structured_effect_preview_unavailable"
+        },
+        "recipient_ai_acceptance_score": {
+          "status": "unavailable",
+          "value": null,
+          "reason": "recipient_ai_acceptance_score_unavailable"
+        },
+        "recipient_ai_final_decision": {
+          "status": "unavailable",
+          "value": null,
+          "reason": "recipient_ai_final_decision_unavailable"
+        }
+      }
+    }
+  },
+  "group_context_blueprint": {
+    "build": "CROZIER4",
+    "connection_generation": 134,
+    "controls": {
+      "paused": true,
+      "map_ready": true,
+      "alive": true,
+      "speed": 5,
+      "local_player_id": 1,
+      "episode_character_id": 29829,
+      "episode_run_id": "episode-1",
+      "active_event": false,
+      "pending": {
+        "instance_id": -2130706399,
+        "sender_id": 501,
+        "notification": false
+      },
+      "betrothed_id": null,
+      "spouse_ids": []
+    }
+  },
+  "retained_root_cache": {
+    "query_sequence": 1,
+    "campaign_root_context": {
+      "schema_version": 1,
+      "status": "available",
+      "snapshot_revision": 547,
+      "date_raw": 53145984,
+      "local_player_id": 1,
+      "player_character_id": 29829,
+      "player_character_alive": true,
+      "primary_title": null,
+      "capital_province_id": null,
+      "immediate_liege_character_id": null,
+      "top_liege_character_id": 29829,
+      "independent": true,
+      "government": null,
+      "selected_game_rule_tokens": [],
+      "native_selected_game_rule_token_count": 0,
+      "readiness": {
+        "capital_ready": true,
+        "government_ready": true,
+        "lieges_ready": true,
+        "player_identity_ready": true,
+        "primary_title_ready": true,
+        "ready": true,
+        "same_frame_ready": true,
+        "selected_game_rule_tokens_ready": true
+      },
+      "unavailable_reason": null,
+      "provenance": {
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "backend_id": "ck3-1.20.0.4-native-campaign-root-context-v1",
+        "primary_title_rva": "0x289DA10",
+        "capital_province_rva": "0x28B1CB0",
+        "immediate_liege_rva": "0x28BFC50",
+        "top_liege_rva": "0x28BFD80",
+        "government_rva": "0x28C2DF0",
+        "selected_game_rule_service_slot_rva": "0x5CB3D78"
+      }
+    },
+    "cache_binding": {
+      "snapshot_id": "fixture:547",
+      "revision": 472,
+      "native_revision": 547,
+      "date_raw": 53145984,
+      "actor_character_id": 29829,
+      "bridge_pid": 123,
+      "connection_generation": 129
+    }
+  }
+}
