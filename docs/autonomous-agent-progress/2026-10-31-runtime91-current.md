@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-01 08:02Z：223 再越冷恢复后暴露窗口投影及诊断尾部三点，224 五源实际加载
+
+- worker223/PID213556 于 `07:46:35.528480200Z` 实际 LOOP/next87，START至LOOP533.262349秒；薄读延迟29.946097秒。87于 `07:46:38.789195700–07:47:35.624432400Z` PLANNER_STOPPED、attempt0/applied0/saved0，首因精确为 held planning semantic 唯一不同字段 `war_results_window_v1_observation`。`07:47:36.119480Z` worker END4/593.853359秒，`07:47:53.526297Z` 读到，延迟17.406817秒。831为repair/BATCH_INTERRUPTED87/pendingnull，cycles13；仍仅77日已结算、69日已确认保存，最新81日观测不归新动作或循环。
+- 6178B原report已有phase：fullwall56.8345744秒，OBSERVATION29.5824591、PLANNING11.2495023、OUTCOME_CONSUMPTION13.9172557、JOURNAL1.660299、LIFECYCLE0.0134224、ANALYSIS_ENQUEUE0.3793088秒（末项1个nonreturned span）。这些是现有运行仪表，不新增采样，不把cold533秒重复计入或全部归因Native。WarCore223强准备修复本轮仍未实际触达，后到6项pure-current测试只授软件验证。
+- 已源证Window READ publisher把normalized结果直接加入冻结PlanningRequest.snapshot，下一currentPlanning与原held语义比较必拒。224的Installer+EventPolicies只将本次真实Captured结果放在本evaluate私有map、投影到纯WarResults policy input，原snapshot/lease全等、源身份、真实history/ref和派发约束不动；首2TU严格编译0/4.140208秒，必要独立回归后续进行，不冒运行成功。
+- 两个tail也以有限小metadata/stat定位：当前唯一incident scope两份before各15,351,868B，完整库存30,708,285B确超过16MiB，不是重复计数。历史G2Source.source_ref是旧RootOrdinaryRuntimeAssembly.class（19,394B），重编后为19,472B；G2Source合同明定caller provenance、never opens path/never grants permission，该历史代码重验错误地成为DATA消费门。224仅将incident库存专用总额对齐为64MiB并删除两处代码文件audit，真实manifest/index/source绑定及frame/basis/read外件完整身份/SHA仍验；单diagnostic16MiB、legacy/metadata1MiB及Worker默认2MiB不变。两叶首strict0/2.295289秒；新聚合/漂移反例后续独立，不读实际大body重hash，不把diagnostic_only称完成分析。
+- 同自然窗口采用M1已成熟单Archive外部原件读取融合：同LedgerFiles.exact返回Pin与clone bytes，末尾实际verifyPin和Session资格完整保，三次完整读取变两次。首strict0/2.699259秒及4新physical软件测试各P；承认少一次中间瞬态采样，不称全观察等价/持续custody或实测加速。M1较大API/scope及History包未成熟行为部分不作为本轮前置。
+- Main224恰wave2-events1/application2/local-service2共5生产文件，`08:01:20.115109–08:01:28.358930Z` 增编exit0/8.243823秒；worker224/PID180180 于 `08:01:36.460679Z` 用原2GiB/noXms、模型120秒/Native60秒/batch1200000ms实启同一原版Game71464。本段只冻结START，未预授后到LOOP/窗口效果/保存/提速；旧gen14不重放。固定05:52性能窗口新增确认保存日仍0，seconds/day=null，恢复和失败墙钟保留。
+
 ## 2026-11-01 07:38Z：Deferred 冷恢复已越过，223 修 WarCore 准备及大诊断消费后实启
 
 - worker221 于 `06:56:11.628960Z` preloop END1/472.150653秒，运行岗延迟1.652853秒读到；精确阻断为真实 RUNNING+BATCH_DEFERRED85 被 settled frontier 拒绝。222 只在已验证私有 SavedSettledContext、实际 session/head/data 与完整历史链内接纳 Deferred；普通 STARTED anchor、动作资格和旧 reducer 校验保留。唯一 changed-TU strict02 为0/2.284466秒，首-J argfile启动错误原件保，未追认为源码绿。
