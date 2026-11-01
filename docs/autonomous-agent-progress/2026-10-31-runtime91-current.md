@@ -1,5 +1,14 @@
 # runtime91 同局续行
 
+## 2026-11-01 05:44Z：219 同局进入83，冷恢复与实际 fresh READ 分阶段
+
+- 218/PID203832 于 `05:33:41.633473Z` 真实 preloop END1/140.727733 秒，`05:33:41.811856Z` 读到，延迟0.178383秒；已越过639的旧 SAVE 行覆盖门，canonical799/pendingnull/69日全部保存保持，没有新动作或 LOOP。
+- 首故障为完整本地 history/coverage 校验后 `DriverBootstrap.adoptInternal817→awaitHello` 使用旧60秒调用窗口：deadline `05:32:37.917993400Z`、实际检查 `05:33:41.525229800Z`、closed=false；这不是已经观测到 Native ACK 慢。219仅让两个 clean bootstrap 的本地整体阶段使用现有固定10分钟有限窗，配套 fresh READ dispatch 复用既有 `readDeadline`，按 min(caller, now+configured60000ms) 截止；旧动作期限、全局预算、HELLO/Ping 合同不变。
+- 两个生产叶的成熟候选与实际 S 归一 LF 全等并随 MB219 加载；MB 于 `05:41:10.962454–05:41:17.835105Z` 实际 exit0/6.872651 秒。Native 原971B补丁含8个CRLF，机械转纯LF963B后普通 Z check/apply0，Java token不变；不把包装失败或软件测试当运行故障/成功。
+- worker219/PID212412 于 `05:41:25.183782Z` START，同原版无mod Game71464于 `05:44:13.313388300Z` 真实 LOOP/next83；运行岗 `05:44:26.404918Z` 读到，延迟13.091530秒并释放安装HOLD。该次已观测 head800/running/pendingnull，累计仍69 observed/settled/confirmed saved；本记录不重读 latest 替换冻结。
+- 原 model120 profile/argv 保留：模型请求120000ms、Native RPC60000ms、batch1200000ms、6次瞬时尝试、2GiB heap且无Xms。此次只授冷启动越门与进入普通循环，不预授 Finance consumer/模型HTTP/新增日期、Loop217暖恢复或任何提速收益，也不为文档重启当前worker。
+- 完整证据冻结 `D:/ck3-state/resume91-runtime/ordinary219-build/ACTUAL-218-END219-LOOP.json`：原218终态、219编译/START/首行LOOP、两候选与实际S SHA、Native EOL包装及原profile逐引用保存；原历史全文保留，0大 Driver/SAVE/SEM/Game读取，后继新业务按运行回执另记。
+
 ## 2026-11-01 05:22Z：69 日全部保存；216 干净收尾，217 新 clean-restart 回执覆盖门
 
 - 788 的累计 69 日结算及保存事实不变。216/PID183348 于 05:06:57.309084Z 实际 END4，2184.566511 秒；82 从 04:46:36.761268300Z 到 05:06:40.722431100Z WALL_TIMEOUT，attempt/applied/saved 均 0、dirty=false。05:06:56.795078100Z 已经实际 CLEAN_WORKER_RESTART_CAPTURED，canonical799/running/next83/pending=null，cycle12/date53145984，无新增 Intent、Native 写或游戏日。原 END 在 05:07:02.060848Z 读到，延迟 4.751764 秒。
