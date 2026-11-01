@@ -1,0 +1,16 @@
+{
+  "schema": "hanjin.user-archive-acceptance/v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-01T08:33:35.138084+00:00",
+  "user_directive": "入库。你来继续拍摄第二期。",
+  "episode": 1,
+  "version": "edit06-001",
+  "catalog_status": "archived-current",
+  "video": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-title-corrected-review.mp4",
+  "video_bytes": 42029310,
+  "video_sha256": "f42bbca607c485442a8bdf5d8ea0ecede9b72155c587de134607eccc35b1baed",
+  "subtitles": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-title-corrected-review.srt",
+  "narration_audio": "C:\\workspace\\hanjin-spring-autumn-20261031\\episode01-dongzhuo-title-corrected-review-narration.m4a",
+  "external_publication": false,
+  "full_playback_review_not_claimed": true
+}
