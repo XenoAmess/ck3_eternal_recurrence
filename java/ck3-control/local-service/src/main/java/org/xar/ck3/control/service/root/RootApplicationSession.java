@@ -76,6 +76,7 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
     private final Clock clock;
     private final ReentrantLock calls = new ReentrantLock();
     private volatile OrdinarySessionHost installedHost;
+    private volatile RootApplicationAssembly.Core.SavedLiveToken heldSavedLiveToken;
     private boolean rebindAttempted;
     private ContinuityBatchJournal.ReboundCycle rebound;
     private boolean autoPresentationActive;
@@ -726,6 +727,7 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
             installedHost = host;
             host.bindRoot(owner.sessionAccess());
             prepareTransportContinuity(deadline);
+            if (heldSavedLiveToken != null) heldSavedLiveToken.markInstalled(this);
         } finally {
             calls.unlock();
         }
@@ -1116,6 +1118,8 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
         try {
             StrictJson.require(installedHost!=null&&installedHost.current().orElseThrow()==controller&&!controller.isRetired()&&!controller.isRunning(),
                     "only the actual installed original controller can retire its public Host");
+            owner.revokeSavedLive(this);
+            heldSavedLiveToken = null;
             try {closeResourcesForRetirement();}
             catch(IOException failure){throw new java.io.UncheckedIOException("actual per-Game resource disposal failed",failure);}
             finally {installedHost.retire(controller);}
@@ -1124,9 +1128,22 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
     /** Cleanup retains archive/writer custody and supplies no normal-exit evidence or Game termination permission. */
     void closeResourcesForRetirement()throws IOException {
         calls.lock();
-        try {owner.releaseCatalogResources(resourceCatalog);}
+        try {
+            owner.revokeSavedLive(this);
+            heldSavedLiveToken = null;
+            owner.releaseCatalogResources(resourceCatalog);
+        }
         finally {calls.unlock();}
     }
+    void bindSavedLiveToken(RootApplicationAssembly.Core.SavedLiveToken token) {
+        StrictJson.require(heldSavedLiveToken == null && installedHost == null && !controller.isRetired(), "Saved live token binds once to an actual not-installed nonretired Root");
+        heldSavedLiveToken = token;
+    }
+
+    boolean ownsSavedLiveToken(RootApplicationAssembly.Core.SavedLiveToken token) {
+        return heldSavedLiveToken == token && !controller.isRetired();
+    }
+
     private void requireInstalled() {
         requireOwner();requireNoPendingCheckpointAdoption(); StrictJson.require(!controller.isQuarantined(), "original ordinary session is quarantined; read-only original reconciliation is required");
     }

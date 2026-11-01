@@ -755,6 +755,7 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
                 session.install(new OrdinarySessionHost(),until);return null;
             });
             if(retained.isPresent())owner.core.writer().locked(same->{retained.orElseThrow().requireRetained(same);return null;});
+            owner.core.promoteSavedLive(session);
             return new Running(owner,session,owner.config.loop().batchIdPrefix(),next);
         }
 

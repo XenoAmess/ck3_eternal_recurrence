@@ -67,6 +67,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
         final G2Source source;
         final SemanticEvidencePort evidence;
         final List<WriterContracts.Pin> capturedReadPins;
+        private volatile org.xar.ck3.control.service.root.RootApplicationAssembly.Core.SavedLiveToken liveToken;
         RetainedSavedNativeCampaign(RootJavaSavedBootstrap.RetainedSaved actual,NativeOutcomeArchive archive,
                 NativeDriverObservationProducer owner,List<WriterContracts.Pin> capturedReadPins) {
             this.actual=actual;this.archive=archive;game=actual.game();repository=owner.repository;
@@ -80,7 +81,10 @@ public final class NativeDriverObservationProducer implements DriverObservationF
                     &&owner.archive==evidence&&game.nativeTransport()==transport,
                     "retained saved projection crossed its actual private Game/Driver/archive/source owner");
             for(var pin:capturedReadPins)same.verifyPin(pin);
-            actual.requireRetained(same);
+            game.verify();
+            var token=liveToken;
+            if(token==null) actual.requireRetained(same);
+            else token.requireCurrent(owner,null,actual);
         }
     }
 
@@ -181,6 +185,7 @@ public final class NativeDriverObservationProducer implements DriverObservationF
         WriterContracts.Prepared prepared;
         WriterContracts.Receipt receipt;
         RootFrozenRunProfile.FrozenRunProfile frozen;
+        private volatile org.xar.ck3.control.service.root.RootApplicationAssembly.Core.SavedLiveToken liveToken;
         ConfirmedSavedNativeCampaign(RootJavaSavedBootstrap.Admission admission,NativeOutcomeArchive archive,
                 NativeDriverObservationProducer owner,long observationVersion) {
             this.admission=admission;this.archive=archive;game=admission.game();repository=owner.repository;
@@ -195,8 +200,13 @@ public final class NativeDriverObservationProducer implements DriverObservationF
         }
         void requireCurrent(NativeDriverObservationProducer owner)throws IOException {
             var same=archive.writer().borrowedSession();requireOwner(owner,same);
+            game.verify();
             if(receipt==null)admission.requireCurrent(same);
-            else admission.requireRetained(same,receipt);
+            else {
+                var token=liveToken;
+                if(token==null) admission.requireRetained(same,receipt);
+                else token.requireCurrent(owner,admission,null);
+            }
             if(frozen!=null) {
                 frozen.requirePlan(game.launchPlan());frozen.requireExplicitNativeCampaign();
                 frozen.initialPolicy().requireSavedProjection(game.launchPlan());
@@ -463,6 +473,26 @@ public final class NativeDriverObservationProducer implements DriverObservationF
     }
 
     public static final long OBSERVATION_CONTRACT_VERSION=DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION;
+
+    public synchronized void activateSavedLive(org.xar.ck3.control.service.root.RootApplicationAssembly.Core.SavedLiveToken token) throws IOException {
+        Objects.requireNonNull(token);
+        if(confirmedSavedNativeCampaign!=null&&retainedSavedNativeCampaign!=null)
+            throw new IOException("cannot activate live token for multiple saved campaigns");
+        if(confirmedSavedNativeCampaign!=null) {
+            var campaign=confirmedSavedNativeCampaign;
+            campaign.requireCurrent(this);
+            token.requireCurrent(this,campaign.admission,null);
+            campaign.liveToken=token;
+        } else if(retainedSavedNativeCampaign!=null) {
+            var campaign=retainedSavedNativeCampaign;
+            campaign.requireCurrent(this);
+            token.requireCurrent(this,null,campaign.actual);
+            campaign.liveToken=token;
+        } else {
+            throw new IOException("no saved campaign to activate live token");
+        }
+    }
+
     public NativeDriverObservationProducer(DriverFactsRepository sameRepository,NativeGameTransport sameHeldTransport,
             G2Source actualSource,SemanticEvidencePort actualArchive) {
         repository=Objects.requireNonNull(sameRepository);transport=Objects.requireNonNull(sameHeldTransport);

@@ -124,6 +124,101 @@ public final class RootApplicationAssembly {
         private ConfirmedSavedCapture confirmedSavedEntry;
         private RetainedSavedCapture retainedSavedEntry;
         private G2Source retainedSavedExecutionSource;
+        private final java.util.concurrent.atomic.AtomicReference<SavedLiveToken> savedLiveToken =
+                new java.util.concurrent.atomic.AtomicReference<>();
+
+        /** Private successful Saved assembly and installation; no caller-created live issuer exists. */
+        public static final class SavedLiveToken {
+            private final Core owner;
+            private final RootApplicationSession session;
+            private final DriverBootstrap.Adopted adopted;
+            private final org.xar.ck3.control.application.driver.NativeDriverObservationProducer producer;
+            private final ManagedGameSession game;
+            private final org.xar.ck3.control.nativebridge.NativeGameTransport transport;
+            private final ContinuityWriter writer;
+            private final NativeOutcomeArchive archive;
+            private final G2Source businessSource;
+            private final RootJavaSavedBootstrap.Admission confirmed;
+            private final RootJavaSavedBootstrap.RetainedSaved retained;
+            private volatile boolean installed;
+            private volatile boolean promoted;
+            private volatile boolean revoked;
+
+            private SavedLiveToken(Core owner,RootApplicationSession session,DriverBootstrap.Adopted adopted,
+                    ManagedGameSession game,org.xar.ck3.control.nativebridge.NativeGameTransport transport,
+                    RootJavaSavedBootstrap.Admission confirmed,RootJavaSavedBootstrap.RetainedSaved retained) {
+                this.owner=owner;this.session=session;this.adopted=adopted;this.producer=adopted.producer();
+                this.game=game;this.transport=transport;this.writer=owner.writer;this.archive=owner.archive;
+                this.businessSource=adopted.source();this.confirmed=confirmed;this.retained=retained;
+                StrictJson.require((confirmed==null)!=(retained==null),"one exact original Saved role required");
+            }
+            private void requireIdentity(org.xar.ck3.control.application.driver.NativeDriverObservationProducer expected,
+                    RootJavaSavedBootstrap.Admission actualConfirmed,RootJavaSavedBootstrap.RetainedSaved actualRetained)throws IOException {
+                // Deliberately no Core/Session/Host monitor, borrowed writer acquisition, or historical proof here.
+                if(revoked||owner.savedLiveToken.get()!=this||owner.activeSession!=session
+                        ||expected!=producer||adopted.producer()!=producer||session.driver()!=adopted
+                        ||!session.ownsSavedLiveToken(this)||session.writer()!=writer||session.archive()!=archive
+                        ||owner.writer!=writer||owner.archive!=archive||archive.writer()!=writer
+                        ||confirmed!=actualConfirmed||retained!=actualRetained
+                        ||!adopted.source().equals(businessSource)||game.nativeTransport()!=transport
+                        ||(confirmed!=null?confirmed.game()!=game:retained.game()!=game))
+                    throw new IOException("Saved live token lost its exact active Core/Root/Driver/producer/Game/archive/source owner");
+            }
+            public void requireCurrent(org.xar.ck3.control.application.driver.NativeDriverObservationProducer expected,
+                    RootJavaSavedBootstrap.Admission confirmed,RootJavaSavedBootstrap.RetainedSaved retained)throws IOException {
+                if(!installed||!promoted)throw new IOException("Saved live token has not completed both successful phases");
+                requireIdentity(expected,confirmed,retained);
+            }
+            void markInstalled(RootApplicationSession actual)throws IOException {
+                if(actual!=session||installed||promoted)throw new IOException("Saved installation cannot be forged or repeated");
+                requireIdentity(producer,confirmed,retained);installed=true;
+            }
+            private void requirePromotable(RootApplicationSession actual)throws IOException {
+                if(actual!=session||!installed||promoted)throw new IOException("Saved live promotion requires its one completed installation");
+                requireIdentity(producer,confirmed,retained);
+            }
+        }
+        private void mintSavedLive(RootApplicationSession actual,DriverBootstrap.Adopted driver)throws IOException {
+            writer.requireSession(writer.borrowedSession());
+            var game=confirmedSavedGame();var transport=game.nativeTransport();
+            synchronized(this) {
+                if(resourcesClosed||requestsClosed||activeSession!=actual||!actual.ownedBy(this)
+                        ||actual.driver()!=driver||!adopted.contains(driver)||savedLiveToken.get()!=null)
+                    throw new IOException("Saved live assembly requires this exact open completed Root graph");
+                var token=new SavedLiveToken(this,actual,driver,game,transport,
+                        confirmedSavedEntry==null?null:confirmedSavedEntry.admission,
+                        retainedSavedEntry==null?null:retainedSavedEntry.actual);
+                if(!savedLiveToken.compareAndSet(null,token))throw new IOException("Saved live assembly already exists");
+                try {actual.bindSavedLiveToken(token);}
+                catch(RuntimeException|Error failure){token.revoked=true;savedLiveToken.compareAndSet(token,null);throw failure;}
+            }
+        }
+        void promoteSavedLive(RootApplicationSession actual)throws IOException {
+            var token=savedLiveToken.get();
+            if(token==null)throw new IOException("Saved graph never completed its private live assembly");
+            writer.locked(same->{
+                writer.requireSession(same);
+                token.requirePromotable(actual);
+                synchronized(this) {
+                    if(resourcesClosed||requestsClosed||savedLiveToken.get()!=token||activeSession!=actual
+                            ||token.revoked||token.promoted||!token.installed)
+                        throw new IOException("closed Saved graph cannot promote or revive");
+                    token.promoted=true;
+                }
+                // Do not hold the Core monitor while acquiring the Producer monitor.
+                try {token.producer.activateSavedLive(token);token.requireCurrent(token.producer,token.confirmed,token.retained);}
+                catch(IOException|RuntimeException|Error failure){token.revoked=true;savedLiveToken.compareAndSet(token,null);throw failure;}
+                return null;
+            });
+        }
+        void revokeSavedLive(RootApplicationSession actual) {
+            var token=savedLiveToken.get();
+            if(token!=null&&token.session==actual){token.revoked=true;savedLiveToken.compareAndSet(token,null);}
+        }
+        private void revokeSavedLive() {
+            var token=savedLiveToken.getAndSet(null);if(token!=null)token.revoked=true;
+        }
+
         private final WriterContracts.TransitionAuthority confirmedSavedAuthority=new WriterContracts.TransitionAuthority() {
             @Override public String revalidate(org.xar.ck3.control.continuity.ContinuityState ignored,WriterContracts.Request request)throws IOException {
                 throw new IOException("confirmed saved entry requires the actual locked writer Head");
@@ -1238,7 +1333,7 @@ public final class RootApplicationAssembly {
         /** Retire the actual current public controller before Game cleanup while the original ledger remains open for cleanup evidence. */
         public void stopPublicRequests(){
             RootApplicationSession current;
-            synchronized(this){requestsClosed=true;current=activeSession;}
+            synchronized(this){revokeSavedLive();requestsClosed=true;current=activeSession;}
             if(current!=null){
                 if(current.hasInstalledHost()&&!current.isRetired())current.retire();
                 else try{current.closeResourcesForRetirement();}catch(IOException failure){throw new UncheckedIOException(failure);}
@@ -1249,7 +1344,7 @@ public final class RootApplicationAssembly {
             RootStartupNextResources.Prepared actual;
             synchronized(this){
                 if(resourcesClosed){propagateCloseFailure(closeFailure);return;}
-                resourcesClosed=true;actual=nextResources;
+                revokeSavedLive();resourcesClosed=true;actual=nextResources;
             }
             Throwable failure=null;
             try {stopPublicRequests();}catch(RuntimeException|Error cause){failure=cause;}
@@ -1571,6 +1666,7 @@ public final class RootApplicationAssembly {
                     installed.initializeConfirmedSaved(same,savedProof,deadline);
                     installed.initializePersistentPlanning(same,driver.first());
                     if(retainedSavedEntry!=null)root.retainSavedBatchIds(same,retainedSavedEntry.actual);
+                    mintSavedLive(root,driver);
                 } else {
                     if (initialRecoveryAdmission != null) {
                         initialRecoveryAdmission.requireCurrent(same);
@@ -2210,7 +2306,7 @@ public final class RootApplicationAssembly {
             // The same Core monitor and original writer already validated this private stage before the Host CAS.
             pendingRestore.restoredActionHistory.commit();
             activeLifecycle=pendingRestore.lifecycleDomain;
-            activeSession=successor;restoreCandidate=null;pendingRestore=null;restoredFirstDomains=null;
+            revokeSavedLive();activeSession=successor;restoreCandidate=null;pendingRestore=null;restoredFirstDomains=null;
         }
         private Supplier<ContinuityStorePort.Session> borrowed() {
             return () -> { try { return writer.borrowedSession(); } catch (IOException failure) { throw new UncheckedIOException(failure); } };
@@ -2362,7 +2458,7 @@ public final class RootApplicationAssembly {
             this.core=core;this.stage=stage;this.successor=successor;this.host=host;this.history=Objects.requireNonNull(history);}
         void commit(){
             history.commit();successor.commitInstalledHost(host);stage.publishedSuccessor=successor;
-            core.activeSession=successor;core.activeLifecycle=stage.checkpointStage.lifecycleDomain;
+            core.revokeSavedLive();core.activeSession=successor;core.activeLifecycle=stage.checkpointStage.lifecycleDomain;
             core.lastPublishedNext=stage;core.pendingNext=null;core.nextAttempt=null;core.nextStageEntered=false;
         }
     }
@@ -2719,7 +2815,7 @@ public final class RootApplicationAssembly {
                 controllerActions.bind(result);
                 if(restoring){restoration.runtime().catalog().bindSession(result);core.restoreCandidate=result;}
                 else if(next){nextEpisode.catalog.bindSession(result);nextEpisode.hostCandidate=result;}
-                else { historyCatalog.bindSession(result); core.activeSession = result; core.activeLifecycle = domainLifecycle; }
+                else { historyCatalog.bindSession(result); core.revokeSavedLive();core.activeSession = result; core.activeLifecycle = domainLifecycle; }
                 if(!restoring&&!next&&core.coldOriginal!=null){
                     StrictJson.require(historyCatalog.context()==core.coldOriginal.context()&&driver==core.coldOriginal.adopted(),
                             "cold postbind must consume the exact privately committed and adopted Root");
