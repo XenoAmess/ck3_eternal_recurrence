@@ -66,10 +66,12 @@ public final class NativeDriverObservationProducer implements DriverObservationF
         final NativeGameTransport transport;
         final G2Source source;
         final SemanticEvidencePort evidence;
+        final List<WriterContracts.Pin> capturedReadPins;
         RetainedSavedNativeCampaign(RootJavaSavedBootstrap.RetainedSaved actual,NativeOutcomeArchive archive,
-                NativeDriverObservationProducer owner) {
+                NativeDriverObservationProducer owner,List<WriterContracts.Pin> capturedReadPins) {
             this.actual=actual;this.archive=archive;game=actual.game();repository=owner.repository;
             transport=owner.transport;source=owner.source;evidence=owner.archive;
+            this.capturedReadPins=List.copyOf(capturedReadPins);
         }
         void requireCurrent(NativeDriverObservationProducer owner)throws IOException {
             var same=archive.writer().borrowedSession();archive.writer().requireSession(same);
@@ -77,14 +79,16 @@ public final class NativeDriverObservationProducer implements DriverObservationF
                     &&owner.repository==repository&&owner.transport==transport&&owner.source==source
                     &&owner.archive==evidence&&game.nativeTransport()==transport,
                     "retained saved projection crossed its actual private Game/Driver/archive/source owner");
+            for(var pin:capturedReadPins)same.verifyPin(pin);
             actual.requireRetained(same);
         }
     }
 
     /** An already canonical saved entry binds this fresh daemon's existing canonical3 producer. */
     synchronized void bindRetainedSaved(RootJavaSavedBootstrap.RetainedSaved actual,
-            ContinuityStorePort.Session same,NativeOutcomeArchive actualArchive)throws IOException {
+            ContinuityStorePort.Session same,NativeOutcomeArchive actualArchive,List<WriterContracts.Pin> capturedReadPins)throws IOException {
         Objects.requireNonNull(actual);Objects.requireNonNull(same);Objects.requireNonNull(actualArchive);
+        Objects.requireNonNull(capturedReadPins);
         StrictJson.require(nativeCampaignFixture==null&&savedNativeCampaign==null&&restoredNativeCampaign==null
                 &&confirmedSavedNativeCampaign==null&&retainedSavedNativeCampaign==null&&!cleanNativeCampaign
                 &&acceptedSession==null&&lastProjectedReceipt==null&&publicRevision.signum()==0
@@ -104,6 +108,48 @@ public final class NativeDriverObservationProducer implements DriverObservationF
         StrictJson.require(actual.source().pair().frame().observationVersion()
                 ==DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION,
                 "retained saved binding requires its actual canonical3 source profile");
+        ExactRef expectedReference=actual.fullDriverReference();
+        long expectedVersion=actual.driverVersion();
+        var canonicalBinding=ContinuityJson.object(same.head().state().toJson().get("latest_binding"));
+        var canonicalRevision=canonicalBinding.get("revision");
+        StrictJson.require(canonicalRevision!=null&&!canonicalRevision.isNull()
+                &&(canonicalRevision.isTextual()||canonicalRevision.isIntegralNumber()),
+                "retained Saved canonical public revision is absent");
+        BigInteger baseline=new BigInteger(canonicalRevision.asText());new PublicRevision(baseline);
+        var originals=actualArchive.withSession(same);
+        for(var edge:actual.readHistorySuffix()) {
+            StrictJson.require(edge.kind().equals(WriterContracts.DRIVER_READ_HISTORY_KIND),
+                    "retained saved Driver suffix contains a non-READ edge");
+            var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
+            StrictJson.require(ExactRef.fromJson(details.get("before_driver")).equals(expectedReference)
+                    &&StrictJson.integer(details.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER)==expectedVersion
+                    &&StrictJson.integer(details.get("after_version"),1,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(expectedVersion,1)
+                    &&StrictJson.integer(details.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER)==actual.episodeEpoch(),
+                    "retained saved Driver suffix changed its linked original references/version/epoch");
+            expectedReference=ExactRef.fromJson(details.get("after_driver"));
+            expectedVersion=Math.addExact(expectedVersion,1);
+            // The original READ was already replayed under this same private Root qualification.
+            // Only archived typed DATA is consulted here; no new Native READ or full Driver reload.
+            var rows=details.get("read_rows");
+            StrictJson.require(rows!=null&&rows.isArray()&&!rows.isEmpty()&&rows.size()<=128,
+                    "retained public baseline requires finite actual READ rows");
+            for(var row:rows) {
+                var read=originals.loadRead(ExactRef.fromJson(row.get("read")));
+                for(var guard:List.of(read.before(),read.after())) {
+                    var observed=guard.binding().observed();
+                    StrictJson.require(observed.machineId().equals(admitted.machineId())&&observed.game().equals(admitted.game())
+                            &&observed.observationVersion()==DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION
+                            &&guard.binding().sessionId().equals(admitted.sessionId()),
+                            "retained public baseline crossed its actual READ owner/profile");
+                    baseline=baseline.max(observed.frame().revision());
+                }
+            }
+        }
+        StrictJson.require(actual.readHistorySuffix().isEmpty()||!capturedReadPins.isEmpty(),
+                "retained READ suffix requires its actual replayed original pins");
+        for(var pin:capturedReadPins)same.verifyPin(pin);
+        final ExactRef currentReference=expectedReference;
+        final long currentVersion=expectedVersion;
         repository.locked(state->{
             StrictJson.require(state instanceof DriverSnapshotFacts.Known,"retained saved full Driver unavailable");
             var known=(DriverSnapshotFacts.Known)state;var current=known.driver().session();
@@ -111,12 +157,14 @@ public final class NativeDriverObservationProducer implements DriverObservationF
                     &&current.pipeName().equals(transport.pipeName())
                     &&current.actorId().equals(actual.source().pair().frame().frame().identity().player())
                     &&known.stamp().episodeRunId().equals(current.episodeRunId())
-                    &&known.stamp().driverSha256().equals(actual.fullDriverReference().sha256())
-                    &&known.stamp().driverVersion()==actual.driverVersion()&&known.stamp().episodeEpoch()==actual.episodeEpoch(),
+                    &&known.stamp().driverSha256().equals(currentReference.sha256())
+                    &&known.stamp().driverVersion()==currentVersion&&known.stamp().episodeEpoch()==actual.episodeEpoch(),
                     "retained saved binding differs from its actual canonical full Driver/version/epoch/actor");
             return null;
         });
-        retainedSavedNativeCampaign=new RetainedSavedNativeCampaign(actual,actualArchive,this);
+        // As in settled same-Game continuation, this new receiver continues after actual historical revisions.
+        new PublicRevision(baseline);publicRevision=baseline;transportRevisionOffset=baseline;
+        retainedSavedNativeCampaign=new RetainedSavedNativeCampaign(actual,actualArchive,this,capturedReadPins);
         retainedSavedNativeCampaign.requireCurrent(this);
     }
 

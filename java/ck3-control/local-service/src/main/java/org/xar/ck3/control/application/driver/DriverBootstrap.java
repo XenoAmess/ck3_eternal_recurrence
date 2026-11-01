@@ -1284,7 +1284,7 @@ public final class DriverBootstrap {
         byte[] fullBytes=archive.readArtifact(same,fullDriverRef,Math.min(DriverCheckpointStore.MAX_DRIVER_BYTES,WriterContracts.MAX_PIN_BYTES));
         StrictJson.require(fullBytes.length==fullDriverRef.bytes()&&fullDriverRef.sha256().equals(DriverJson.sha256(fullBytes)),
                 "retained saved full Driver bytes/SHA differ");
-        var driver=DriverStateSnapshot.decodeComplete(fullBytes);
+        var originalDriver=DriverStateSnapshot.decodeComplete(fullBytes);
         byte[] factsBytes=archive.readArtifact(same,factsRef,DriverJson.MAX_NATIVE_BYTES);
         StrictJson.require(factsBytes.length==factsRef.bytes()&&factsRef.sha256().equals(DriverJson.sha256(factsBytes)),
                 "retained saved Driver facts bytes/SHA differ");
@@ -1312,11 +1312,24 @@ public final class DriverBootstrap {
                     org.xar.ck3.control.application.action.RawJson.fullMaterial(fullBytes),archivedFrame);
             replayedObservation=Optional.of(decodedFacts);
         }
-        var known=DriverSnapshotFacts.decodeKnownOriginal(factsMaterial,replayedObservation);
-        StrictJson.require(known.stamp().driverVersion()==actual.driverVersion()&&known.stamp().episodeEpoch()==actual.episodeEpoch()
-                &&known.stamp().game().equals(game.generation())&&Arrays.equals(known.driver().encode(),driver.encode())
-                &&known.driver().session().bridgePid()==game.generation().pid()&&known.driver().session().pipeName().equals(transport.pipeName()),
+        var originalKnown=DriverSnapshotFacts.decodeKnownOriginal(factsMaterial,replayedObservation);
+        StrictJson.require(originalKnown.stamp().driverVersion()==actual.driverVersion()&&originalKnown.stamp().episodeEpoch()==actual.episodeEpoch()
+                &&originalKnown.stamp().game().equals(game.generation())&&Arrays.equals(originalKnown.driver().encode(),originalDriver.encode())
+                &&originalKnown.driver().session().bridgePid()==game.generation().pid()&&originalKnown.driver().session().pipeName().equals(transport.pipeName()),
                 "retained saved Known facts crossed its actual Driver/version/epoch/Game/pipe");
+        var replayPins=new java.util.ArrayList<WriterContracts.Pin>();
+        DriverSnapshotFacts.Known current=originalKnown;
+        ExactRef currentReference=fullDriverRef;
+        for(var edge:actual.readHistorySuffix()) {
+            var replay=org.xar.ck3.control.application.session.ContinuityBatchJournal.replayCapturedRead(
+                    same,actual.session(),edge,current,currentReference,archive.withSession(same));
+            current=replay.facts();currentReference=replay.fullDriver();
+            replayPins.add(edge.eventPin());replayPins.addAll(replay.originalPins());
+        }
+        for(var pin:replayPins)same.verifyPin(pin);
+        final DriverSnapshotFacts.Known known=current;
+        final ExactRef currentDriverReference=currentReference;
+        final DriverStateSnapshot.Complete driver=known.driver();
         var nativeState=DriverObservationAssembler.originalNativeState(raw);
         var player=OpportunityJson.object(nativeState.get("played_character"),"played_character");
         StrictJson.require(OpportunityJson.bool(nativeState.get("paused"),"paused")
@@ -1330,7 +1343,7 @@ public final class DriverBootstrap {
                     Math.min(DriverJson.MAX_NATIVE_BYTES,WriterContracts.MAX_PIN_BYTES));}
             catch(IOException failure){throw new UncheckedIOException(failure);}
         });
-        producer.bindRetainedSaved(actual,same,archive);
+        producer.bindRetainedSaved(actual,same,archive,List.copyOf(replayPins));
         var authority=new DriverStateAssembler(actions,repository,producer);
         var held=new HeldDriverObservationPort(transport,authority,frame->{
             try{return archive.withSession(archive.writer().borrowedSession()).preserveNativeFrame(frame);}
@@ -1359,9 +1372,9 @@ public final class DriverBootstrap {
             lease.assertCurrent();return null;
         });
         producer.recordAdoptionObserved(raw.session(),source);
-        var seed=new Seed(fullDriverRef,known.originalHistoryBasis(),known.stamp().driverVersion(),known.stamp().episodeEpoch(),
+        var seed=new Seed(currentDriverReference,known.originalHistoryBasis(),known.stamp().driverVersion(),known.stamp().episodeEpoch(),
                 raw.session(),known.auxiliary(),known.loop());
-        var adopted=new Adopted(seed,source,fullDriverRef,repository,authority,producer,held,first,AdoptionStatus.QUALIFICATION_REQUIRED,List.of());
+        var adopted=new Adopted(seed,source,currentDriverReference,repository,authority,producer,held,first,AdoptionStatus.QUALIFICATION_REQUIRED,List.of());
         actual.requireRetained(same);
         return adopted;
     }

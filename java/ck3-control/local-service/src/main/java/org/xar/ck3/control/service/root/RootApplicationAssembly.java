@@ -291,8 +291,10 @@ public final class RootApplicationAssembly {
             Objects.requireNonNull(source);
             writer.locked(same->{
                 writer.requireSession(same);
+                RootJavaSavedBootstrap.requireRetainedSavedSourceSuffix(source,same,archive);
                 var state=same.head().state();var row=state.toJson();var saved=source.savedState();
-                StrictJson.require(state.status()==org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING
+                StrictJson.require((state.status()==org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING
+                        ||state.status()==org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED)
                         &&state.sequence()>0&&state.machineId().equals(saved.machineId())
                         &&state.origin().equals(saved.origin())&&state.settledCycles()==saved.settledCycles()
                         &&state.settledDateRaw()==saved.settledDateRaw(),
@@ -380,6 +382,10 @@ public final class RootApplicationAssembly {
         }
 
         public static final class ConfirmedSavedDomainProof {
+            /** Source DATA only; requireCurrent remains the separate private-proof guard. */
+            public java.util.List<WriterContracts.HistoricalTransition> readHistorySuffix() {
+                return owner.retainedSavedEntry==null?java.util.List.of():owner.retainedSavedEntry.actual.readHistorySuffix();
+            }
             private final Core owner;
             private final RootRuntimeContext context;
             private final DriverBootstrap.Adopted driver;
@@ -1556,9 +1562,15 @@ public final class RootApplicationAssembly {
                     runtime.capabilities().restoreRetainedPlanning(same);
                 } else if(confirmedSavedEntry!=null||retainedSavedEntry!=null) {
                     requireConfirmedSaved(same,driver);
+                    if(retainedSavedEntry!=null&&!retainedSavedEntry.actual.consumedBatchIds().isEmpty()) {
+                        var retained=retainedSavedEntry.actual;
+                        var current=initialRecoverySemantic(same,driver,retained.session());
+                        root.recoverSavedReadOnlyBatch(same,retained,current);
+                    }
                     var savedProof=new ConfirmedSavedDomainProof(this,installed.context(),driver);
                     installed.initializeConfirmedSaved(same,savedProof,deadline);
                     installed.initializePersistentPlanning(same,driver.first());
+                    if(retainedSavedEntry!=null)root.retainSavedBatchIds(same,retainedSavedEntry.actual);
                 } else {
                     if (initialRecoveryAdmission != null) {
                         initialRecoveryAdmission.requireCurrent(same);

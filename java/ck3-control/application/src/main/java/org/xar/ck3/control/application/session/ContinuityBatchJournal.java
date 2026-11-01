@@ -136,6 +136,151 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&(!before.has(field)||ContinuityJson.same(before.get(field),after.get(field))),
                 "zero-dispatch suffix changed captured business state: "+field);
     }
+    /** A checked source port implemented by Root's actual privately constructed retained Saved issuer. */
+    public interface SavedReadOnlyRecoverySource {
+        void requireCurrent(ContinuityStorePort.Session same) throws IOException;
+        WriterContracts.HistoricalTransition originalEntry();
+        java.util.List<WriterContracts.HistoricalTransition> readHistorySuffix();
+        java.util.List<String> consumedBatchIds();
+    }
+    /** This Journal alone constructs the exact held-head recovery context; it is not public DATA admission. */
+    static final class SavedReadOnlyRecovery {
+        private final ContinuityBatchJournal issuer;
+        private final ContinuityStorePort.Session same;
+        private final SessionIdentity owner;
+        private final SavedReadOnlyRecoverySource source;
+        private final String digest, batch;
+        private final ExactRef driver;
+        private final java.util.List<WriterContracts.Pin> pins;
+        private SavedReadOnlyRecovery(ContinuityBatchJournal issuer,ContinuityStorePort.Session same,SessionIdentity owner,
+                SavedReadOnlyRecoverySource source,String digest,String batch,ExactRef driver,java.util.List<WriterContracts.Pin> pins) {
+            this.issuer=issuer;this.same=same;this.owner=owner;this.source=source;this.digest=digest;this.batch=batch;
+            this.driver=driver;this.pins=java.util.List.copyOf(pins);
+        }
+        SessionIdentity owner(){return owner;}
+        String digest(){return digest;}
+        String batch(){return batch;}
+        ExactRef driver(){return driver;}
+        java.util.List<ExactRef> history(){return pins.stream().map(WriterContracts.Pin::reference).toList();}
+        void requireCurrent(ContinuityStorePort.Session actual)throws IOException {
+            issuer.store.requireSession(actual);
+            StrictJson.require(actual==same&&actual.head().digest().equals(digest),"Saved recovery crossed its exact issuer Session/head");
+            source.requireCurrent(actual);
+            for(var pin:pins)actual.verifyPin(pin);
+            StrictJson.require(actual.head().digest().equals(digest),"Saved recovery source changed its held canonical head");
+        }
+    }
+    /** Records only the qualified zero-action interrupted Saved batch; never an initial Entry or a new SAVE. */
+    public WriterContracts.Receipt recoverSavedReadOnlyBatch(ContinuityStorePort.Session same,SessionIdentity owner,
+            SavedReadOnlyRecoverySource source,SemanticEvidence current)throws IOException {
+        store.requireSession(same);Objects.requireNonNull(owner);Objects.requireNonNull(source);Objects.requireNonNull(current);
+        return transitions.withLocked(same,()->{
+            var actual=admitSavedReadOnlyRecovery(same,owner,source);
+            return transitions.commitSavedReadOnlyRecovery(same,actual,current);
+        });
+    }
+    private SavedReadOnlyRecovery admitSavedReadOnlyRecovery(ContinuityStorePort.Session same,SessionIdentity owner,
+            SavedReadOnlyRecoverySource source)throws IOException {
+        store.requireSession(same);source.requireCurrent(same);var head=same.head();var state=head.state();
+        StrictJson.require(state.status()==ContinuityState.Status.REPAIR_REQUIRED
+                &&!(state.pendingCycle() instanceof ContinuityState.Present),"Saved recovery requires an actual interrupted nonpending head");
+        var original=Objects.requireNonNull(source.originalEntry());var entry=same.readHistoricalTransition(original.eventPin());
+        requireSavedRecoveryEdge(entry,original);
+        StrictJson.require(org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND.equals(entry.kind()),"actual canonical Saved entry required");
+        var marker=org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(
+                ContinuityJson.parseObject(entry.details(),StrictJson.INPUT_MAX_BYTES)).detailsObject();
+        org.xar.ck3.control.continuity.SavedContinuityBootstrap.requireSavedAdmissionReduction(entry.before(),entry.after(),
+                org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(marker),true);
+        StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(marker.get("session")).equals(owner)
+                &&owner.machineId().equals(state.machineId())
+                &&ContinuityJson.same(state.toJson().get("game_binding"),owner.game().toJson())
+                &&ContinuityJson.same(state.toJson().get(org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD),marker)
+                &&state.origin().equals(entry.after().origin())&&state.settledCycles()==entry.after().settledCycles()
+                &&state.settledDateRaw()==entry.after().settledDateRaw(),"Saved recovery changed its actual Saved owner/origin/frontier");
+        var archive=transitions.restartArchive(same);
+        StrictJson.require(org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state,archive).isEmpty(),"Saved read-only recovery cannot discard any original action");
+        requireSavedRecoveryNoPending(state.toJson());
+        var directory=java.nio.file.Path.of(same.persistedHead().path()).toAbsolutePath().normalize().resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
+        var events=new java.util.TreeMap<Long,WriterContracts.Pin>();
+        StrictJson.require(head.state().sequence()>entry.sequence()&&head.state().sequence()-entry.sequence()<=4096,"finite actual Saved recovery suffix required");
+        for(var pin:head.documents()) {
+            var path=java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize();String name=path.getFileName().toString();
+            if(path.getParent().equals(directory)&&name.matches("[0-9]{8}\\.json")) {
+                long sequence=Long.parseLong(name.substring(0,8));
+                if(sequence>entry.sequence())StrictJson.require(events.putIfAbsent(sequence,pin)==null,"duplicate Saved suffix event");
+            }
+        }
+        var ordered=new java.util.ArrayList<WriterContracts.Pin>();
+        for(long sequence=entry.sequence()+1;sequence<=head.state().sequence();sequence++)
+            ordered.add(Objects.requireNonNull(events.get(sequence),"missing actual Saved suffix event"));
+        StrictJson.require(events.size()==ordered.size(),"Saved recovery suffix contains a foreign event sequence");
+        var edges=same.readHistoricalTransitions(ordered);var expectedReads=java.util.List.copyOf(source.readHistorySuffix());
+        var consumed=java.util.List.copyOf(source.consumedBatchIds());
+        StrictJson.require(consumed.size()==1,"Saved recovery requires exactly one actual interrupted batch");
+        String batch=consumed.getFirst(),previous=ContinuityJson.digest(entry.after().toJson());int phase=0,readIndex=0;
+        ExactRef driver=ExactRef.fromJson(marker.get("full_driver"));long version=StrictJson.integer(marker.get("driver_version"),0,StrictJson.MAX_SAFE_INTEGER);
+        long epoch=StrictJson.integer(marker.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
+        var allPins=new java.util.ArrayList<WriterContracts.Pin>();allPins.add(entry.eventPin());allPins.addAll(ordered);
+        for(var edge:edges) {
+            StrictJson.require(ContinuityJson.digest(edge.before().toJson()).equals(previous),"Saved recovery canonical prefix is discontinuous");
+            if(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND.equals(edge.kind())) {
+                StrictJson.require(phase==0,"domain import cannot follow the Saved interrupted batch");
+                var d=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
+                var body=org.xar.ck3.control.continuity.writer.DomainBodies.BodyRef.fromJson(d.get("domain_body"));
+                same.requireHistoricalImport(body.slot(),edge.sequence(),ContinuityJson.digest(edge.after().toJson()));
+            }else if(OrdinaryCycleTransitions.BATCH_KIND.equals(edge.kind())) {
+                var d=StrictJson.object(ContinuityJson.parseObject(edge.details(),StrictJson.INPUT_MAX_BYTES),java.util.Set.of(
+                        "evidence_id","source","session","batch_id","boundary","checkpoint_pair","completed_cycle_proof"));
+                String boundary=StrictJson.text(d.get("boundary"));
+                StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(d.get("session")).equals(owner)
+                        &&batch.equals(StrictJson.text(d.get("batch_id")))&&d.get("checkpoint_pair").isNull()&&d.get("completed_cycle_proof").isNull()
+                        &&StrictJson.text(d.get("evidence_id")).equals(batch+":"+boundary),"Saved recovery changed actual batch metadata");
+                if(phase==0){StrictJson.require(JournalKind.BATCH_STARTED.name().equals(boundary)
+                        &&"java-ordinary-session/v1".equals(StrictJson.text(d.get("source"))),"Saved recovery requires its sole actual START");phase=1;}
+                else{StrictJson.require(phase==1&&JournalKind.BATCH_INTERRUPTED.name().equals(boundary)
+                        &&"java-ordinary-batch-interruption/v2".equals(StrictJson.text(d.get("source"))),"Saved recovery requires its final actual INTERRUPTED");phase=2;}
+                var reduced=transitions.reduce(edge.before(),new WriterContracts.Request(OrdinaryCycleTransitions.BATCH_KIND,edge.details(),java.util.List.of())).toJson();
+                reduced.put("sequence",edge.sequence());reduced.put("last_event_identity",edge.eventIdentity());
+                StrictJson.require(ContinuityJson.same(reduced,edge.after().toJson()),"Saved suffix batch differs from the complete original reducer");
+            }else if(WriterContracts.DRIVER_READ_HISTORY_KIND.equals(edge.kind())) {
+                StrictJson.require(phase==1&&readIndex<expectedReads.size(),"Saved READ is outside its actual open batch");
+                requireSavedRecoveryEdge(edge,expectedReads.get(readIndex++));
+                var d=ContinuityJson.parseObject(edge.details(),StrictJson.INPUT_MAX_BYTES);
+                StrictJson.require("xar.driver-read-publication/v1".equals(StrictJson.text(d.get("schema")))
+                        &&ExactRef.fromJson(d.get("before_driver")).equals(driver)
+                        &&StrictJson.integer(d.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER)==version
+                        &&StrictJson.integer(d.get("after_version"),1,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(version,1)
+                        &&StrictJson.integer(d.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER)==epoch
+                        &&StrictJson.text(d.get("predecessor_head_sha256")).equals(previous)
+                        &&StrictJson.text(d.get("read_head_sha256")).equals(previous)
+                        &&StrictJson.integer(d.get("read_head_sequence"),0,StrictJson.MAX_SAFE_INTEGER)==edge.before().sequence(),"Saved READ crossed Driver version/epoch/prefix");
+                var before=edge.before().toJson();var after=edge.after().toJson();var fields=new java.util.HashSet<String>();
+                before.fieldNames().forEachRemaining(fields::add);after.fieldNames().forEachRemaining(fields::add);
+                fields.removeAll(java.util.Set.of("sequence","last_event_identity",WriterContracts.DRIVER_READ_HISTORY_FIELD));
+                for(String field:fields)StrictJson.require(before.has(field)==after.has(field)&&(!before.has(field)||ContinuityJson.same(before.get(field),after.get(field))),"Saved READ changed business field: "+field);
+                StrictJson.require(ContinuityJson.same(after.get(WriterContracts.DRIVER_READ_HISTORY_FIELD),d),"Saved READ registry changed");
+                driver=ExactRef.fromJson(d.get("after_driver"));version++;
+                allPins.add(same.capturePin(driver,WriterContracts.MAX_PIN_BYTES));
+            }else throw new IOException("Saved recovery suffix contains an unqualified event kind");
+            previous=ContinuityJson.digest(edge.after().toJson());
+        }
+        StrictJson.require(phase==2&&readIndex==expectedReads.size()&&head.digest().equals(previous),"complete actual interrupted Saved suffix required");
+        StrictJson.require(same.head().digest().equals(head.digest()),"Saved recovery canonical read changed the actual head");
+        return new SavedReadOnlyRecovery(this,same,owner,source,head.digest(),batch,driver,allPins);
+    }
+    private static void requireSavedRecoveryEdge(WriterContracts.HistoricalTransition actual,WriterContracts.HistoricalTransition expected) {
+        StrictJson.require(actual.sequence()==expected.sequence()&&actual.kind().equals(expected.kind())&&actual.eventIdentity().equals(expected.eventIdentity())
+                &&java.util.Arrays.equals(actual.details(),expected.details())&&actual.eventPin().equals(expected.eventPin())
+                &&ContinuityJson.same(actual.before().toJson(),expected.before().toJson())&&ContinuityJson.same(actual.after().toJson(),expected.after().toJson()),"Saved recovery edge differs from actual canonical original");
+    }
+    private static void requireSavedRecoveryNoPending(com.fasterxml.jackson.databind.node.ObjectNode state) {
+        for(String field:java.util.Set.of("pending_cycle","pending_actions","unknown_actions","UNKNOWN","pending_receipt")) {
+            var value=state.get(field);StrictJson.require(value==null||value.isNull()||value.isContainerNode()&&value.isEmpty(),"Saved recovery cannot discard pending/UNKNOWN field: "+field);
+        }
+        var cycle=state.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+        StrictJson.require(cycle==null||cycle.isNull()||cycle.isObject()&&cycle.has("pending_receipt")&&cycle.get("pending_receipt").isNull(),"Saved recovery has an ordinary pending receipt");
+    }
+
     private record RetainedReadDriver(org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known facts,ExactRef fullDriver) { }
     /** Reopens only a confirmed SAVE's full Driver across its finite unchanged batch metadata. */
     private RetainedReadDriver retainConfirmedSaveDriver(SessionIdentity owner, WriterContracts.HistoricalTransition savedEdge,

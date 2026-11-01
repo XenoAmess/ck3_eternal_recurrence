@@ -244,6 +244,21 @@ public final class SessionController {
     public void bindRestartDriver(org.xar.ck3.control.application.driver.DriverStateAssembler actual){
         Objects.requireNonNull(actual);StrictJson.require(restartDriver==null&&!running.get()&&usedBatches.isEmpty()&&lastReport.isEmpty(),"restart Driver is bound once before execution");restartDriver=actual;
     }
+    /** Construction DATA only: retain actual canonical consumed IDs after all ordinary bindings. */
+    public void retainConsumedSavedBatches(SessionIdentity actualOwner,List<String> consumed) {
+        Objects.requireNonNull(actualOwner);Objects.requireNonNull(consumed);
+        StrictJson.require(running.compareAndSet(false,true),"Saved consumed batch retention requires an idle Controller");
+        try {
+            StrictJson.require(identity.equals(actualOwner)&&!retired&&usedBatches.isEmpty()&&lastReport.isEmpty()
+                    &&restartDriver!=null,"Saved consumed batches belong to the actual unused fully bound Controller");
+            var originals=List.copyOf(consumed);
+            StrictJson.require(originals.size()<65_536&&new HashSet<>(originals).size()==originals.size(),
+                    "finite unique actual consumed Saved batch IDs required");
+            for(String id:originals)StrictJson.text(id);
+            usedBatches.addAll(originals);
+        } finally {running.set(false);}
+    }
+
     static final class CapturedRestart {
         private final SessionController issuer;private final ControllerRestartState state;
         private CapturedRestart(SessionController issuer,ControllerRestartState state){this.issuer=issuer;this.state=state;}

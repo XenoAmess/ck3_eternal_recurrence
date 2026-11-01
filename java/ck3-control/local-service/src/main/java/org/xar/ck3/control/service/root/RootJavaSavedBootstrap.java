@@ -353,7 +353,7 @@ public final class RootJavaSavedBootstrap {
                     }
                 }
                 StrictJson.require(found!=null,"retained saved marker has no actual canonical entry");
-                same.requireDomainImportContinuation(found.sequence(),ContinuityJson.digest(found.after().toJson()));
+                requireReadOnlySavedContinuation(same,found);
                 requireSavedHistorical(source,context,same,found,true);
                 StrictJson.require(head.digest().equals(same.head().digest()),"retained saved lookup changed current head");
                 return found;
@@ -397,12 +397,163 @@ public final class RootJavaSavedBootstrap {
                     var pin=same.capturePin(ref,Math.toIntExact(ref.bytes()));same.verifyPin(pin);pins.add(pin);
                 }
                 StrictJson.require(head.digest().equals(same.head().digest()),"retained qualification changed current writer");
-                var retained=new RetainedSaved(source,context,physical,first,second,qualification,entry,List.copyOf(pins),bounded);
+                var suffix=requireReadOnlySavedContinuation(same,entry);pins.addAll(suffix.originalPins());
+                var retained=new RetainedSaved(source,context,physical,first,second,qualification,entry,List.copyOf(pins),bounded,
+                        suffix.reads(),head.state().status()==ContinuityState.Status.REPAIR_REQUIRED
+                                ?List.of(StrictJson.text(ContinuityJson.object(head.state().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)).get("batch_id"))):List.of());
                 retained.requireCurrent(same);physical.releasePreparation();return retained;
             });
         }catch(IOException|RuntimeException|Error|InterruptedException failure) {
             try{physical.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}throw failure;
         }
+    }
+
+    /** Pure existing-ledger checks. This creates no physical/Native/dispatch qualification. */
+    public static void requireRetainedSavedSourceSuffix(ConfirmedSource source,ContinuityStorePort.Session same,
+            NativeOutcomeArchive archive)throws IOException {
+        Objects.requireNonNull(source);Objects.requireNonNull(same);Objects.requireNonNull(archive);
+        archive.writer().requireSession(same);var head=same.head();var state=head.state();
+        StrictJson.require(source.writer!=archive.writer()&&!source.writer.originalLockPath().equals(archive.writer().originalLockPath())
+                &&!(state.pendingCycle() instanceof ContinuityState.Present)
+                &&ContinuityActionJournal.receipts(state,archive.withSession(same)).isEmpty(),
+                "retained Saved startup requires independent writer and empty canonical action/pending history");
+        var marker=ContinuityJson.object(state.toJson().get(org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD));
+        WriterContracts.HistoricalTransition entry=null;
+        for(var pin:head.documents()) {
+            var row=ContinuityJson.parseObject(same.readPinned(pin,ContinuityJson.LEDGER_MAX_BYTES),ContinuityJson.LEDGER_MAX_BYTES);
+            if(KIND.equals(row.path("kind").asText())&&ContinuityJson.same(marker,row.get("details"))) {
+                StrictJson.require(entry==null,"retained Saved marker has more than one canonical entry");
+                entry=same.readHistoricalTransition(pin);
+            }
+        }
+        StrictJson.require(entry!=null,"retained Saved marker lacks its actual canonical entry");
+        var request=org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(marker);
+        StrictJson.require(request.identity().equals(entry.eventIdentity()),"retained Saved canonical request identity differs");
+        org.xar.ck3.control.continuity.SavedContinuityBootstrap.requireSavedAdmissionReduction(entry.before(),entry.after(),request,true);
+        var owner=OrdinaryCycleTransitions.sessionFromJson(marker.get("session"));
+        StrictJson.require(state.machineId().equals(owner.machineId())
+                &&ContinuityJson.same(state.toJson().get("game_binding"),entry.after().toJson().get("game_binding"))
+                &&state.origin().equals(source.savedState().origin())&&state.origin().equals(entry.after().origin())
+                &&state.settledCycles()==source.savedState().settledCycles()&&state.settledDateRaw()==source.savedState().settledDateRaw()
+                &&ContinuityJson.same(marker.get("checkpoint_pair"),StrictJson.parse(CheckpointPairCodec.encode(source.pair())))
+                &&ExactRef.fromJson(marker.get("confirmation_reference")).equals(source.confirmation().eventPin().reference())
+                &&ContinuityJson.same(state.toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD),marker.get("full_driver")),
+                "retained Saved startup changed source pair, owner, origin or saved frontier/baseline");
+        requireReadOnlySavedContinuation(same,entry);
+        StrictJson.require(head.digest().equals(same.head().digest()),"retained Saved preflight changed actual head");
+    }
+
+    /** One domain-import prefix, optionally followed by one closed actionless interrupted READ batch. */
+    private record SavedReadOnlySuffix(List<WriterContracts.HistoricalTransition> reads,List<WriterContracts.Pin> originalPins) {
+        private SavedReadOnlySuffix {reads=List.copyOf(reads);originalPins=List.copyOf(originalPins);}
+    }
+    private static SavedReadOnlySuffix requireReadOnlySavedContinuation(
+            ContinuityStorePort.Session same,WriterContracts.HistoricalTransition entry)throws IOException {
+        var head=same.head();var cursor=entry.after();
+        same.requireHistoricalCanonicalState(entry.sequence(),ContinuityJson.digest(cursor.toJson()));
+        var marker=ContinuityJson.parseObject(entry.details(),StrictJson.INPUT_MAX_BYTES);
+        var owner=OrdinaryCycleTransitions.sessionFromJson(marker.get("session"));
+        var directory=Path.of(same.persistedHead().path()).toAbsolutePath().normalize().resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
+        var eventPins=new java.util.TreeMap<Long,WriterContracts.Pin>();
+        for(var pin:head.documents()) {
+            var path=Path.of(pin.reference().path()).toAbsolutePath().normalize();
+            if(directory.equals(path.getParent())&&path.getFileName().toString().matches("[0-9]{8}\\.json")) {
+                long sequence=Long.parseLong(path.getFileName().toString().substring(0,8));
+                StrictJson.require(eventPins.putIfAbsent(sequence,pin)==null,"duplicate actual Saved continuation event");
+            }
+        }
+        var requested=new ArrayList<WriterContracts.Pin>();
+        for(long sequence=Math.addExact(entry.sequence(),1);sequence<=head.state().sequence();sequence++) {
+            var pin=eventPins.get(sequence);StrictJson.require(pin!=null,"Saved continuation lacks contiguous canonical events");requested.add(pin);
+        }
+        var edges=requested.isEmpty()?List.<WriterContracts.HistoricalTransition>of():same.readHistoricalTransitions(requested);
+        var reads=new ArrayList<WriterContracts.HistoricalTransition>();
+        var originalPins=new ArrayList<WriterContracts.Pin>();
+        int phase=0;String batch=null;long expectedSequence=entry.sequence();
+        ExactRef driver=ExactRef.fromJson(marker.get("full_driver"));
+        long version=StrictJson.integer(marker.get("driver_version"),0,StrictJson.MAX_SAFE_INTEGER);
+        long epoch=StrictJson.integer(marker.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
+        for(var edge:edges) {
+            StrictJson.require(edge.sequence()==Math.addExact(expectedSequence,1)
+                    &&ContinuityJson.same(cursor.toJson(),edge.before().toJson()),"Saved continuation changed its actual full predecessor");
+            var row=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
+            var projected=edge.before().toJson();
+            if(edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
+                StrictJson.require(phase==0,"domain imports must precede the retained read-only batch");
+                var body=org.xar.ck3.control.continuity.writer.DomainBodies.BodyRef.fromJson(row.get("domain_body"));
+                var actual=same.requireHistoricalImport(body.slot(),edge.sequence(),ContinuityJson.digest(edge.after().toJson()));
+                // Keep the original stronger attachment rule: the actual external original must still exist,
+                // retain its native Pin, and be byte-identical to the exact durable registered body.
+                var original=ExactRef.fromJson(ContinuityJson.object(row.get("source")).get("original_body"));
+                StrictJson.require(original.bytes()>0&&original.bytes()<=WriterContracts.MAX_PIN_BYTES,"finite original domain body required");
+                int maximum=Math.toIntExact(original.bytes());var originalPin=same.capturePin(original,maximum);
+                var durablePin=new WriterContracts.Pin(body.payload(),body.identity());
+                same.verifyPin(originalPin);same.verifyPin(durablePin);
+                StrictJson.require(Arrays.equals(same.readPinned(originalPin,maximum),same.readPinned(durablePin,maximum)),
+                        "retained original domain body differs from exact durable payload");
+                originalPins.add(originalPin);originalPins.add(durablePin);
+                StrictJson.require(ContinuityJson.same(actual.predecessor().state().toJson(),edge.before().toJson())
+                        &&ContinuityJson.same(actual.receipt().head().toJson(),edge.after().toJson()),"Saved continuation domain reducer differs");
+                projected=edge.after().toJson();
+            }else if(edge.kind().equals(WriterContracts.ORDINARY_BATCH_KIND)) {
+                StrictJson.object(row,java.util.Set.of("evidence_id","source","session","batch_id","boundary","checkpoint_pair","completed_cycle_proof"));
+                StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(row.get("session")).equals(owner)
+                        &&row.get("checkpoint_pair").isNull()&&row.get("completed_cycle_proof").isNull(),
+                        "Saved read-only batch changed owner or claimed a pair/cycle proof");
+                String boundary=StrictJson.text(row.get("boundary"));String id=StrictJson.text(row.get("batch_id"));
+                String evidence=StrictJson.text(row.get("evidence_id"));
+                StrictJson.require(evidence.equals(id+":"+boundary),"Saved read-only batch evidence identity differs");
+                if("BATCH_STARTED".equals(boundary)) {
+                    StrictJson.require(phase==0&&edge.before().status()==ContinuityState.Status.RUNNING
+                            &&!projected.has(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)
+                            &&"java-ordinary-session/v1".equals(StrictJson.text(row.get("source"))),
+                            "Saved startup cannot reuse an earlier or unfinished batch");
+                    batch=id;phase=1;
+                }else {
+                    StrictJson.require("BATCH_INTERRUPTED".equals(boundary)&&phase==1&&id.equals(batch)
+                            &&edge.before().status()==ContinuityState.Status.RUNNING
+                            &&"java-ordinary-batch-interruption/v2".equals(StrictJson.text(row.get("source"))),
+                            "Saved startup requires one matching original read-only interruption");
+                    var interruption=StrictJson.object();interruption.put("evidence_id",evidence);interruption.set("source",row.get("source"));
+                    interruption.put("machine_id",owner.machineId());interruption.put("completed_cycles",edge.before().settledCycles());
+                    interruption.set("frame",edge.before().toJson().get("latest_binding"));
+                    interruption.put("reason","ordinary Java batch interrupted; original unsettled actions remain retained without replay");
+                    projected=OriginalWindowReducer.reduce(projected,"ordinary_batch_interrupted",interruption);phase=2;
+                }
+                var boundaryRow=StrictJson.object();boundaryRow.put("evidence_id",evidence);boundaryRow.set("session",row.get("session"));
+                boundaryRow.put("batch_id",id);boundaryRow.put("boundary",boundary);
+                projected.set(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD,boundaryRow);
+            }else if(edge.kind().equals(WriterContracts.DRIVER_READ_HISTORY_KIND)) {
+                StrictJson.require(phase==1,"Saved retained READ must belong to its one actual open batch");
+                StrictJson.object(row,java.util.Set.of("schema","evidence_id","token","source","predecessor_head_sha256",
+                        "read_head_sha256","read_head_sequence","before_version","after_version","episode_epoch","before_driver","after_driver","read_rows"));
+                StrictJson.text(row.get("evidence_id"));StrictJson.text(row.get("token"));
+                String predecessor=ContinuityJson.digest(edge.before().toJson());
+                StrictJson.require("xar.driver-read-publication/v1".equals(StrictJson.text(row.get("schema")))
+                        &&ContinuityJson.same(row.get("source"),marker.get("source"))
+                        &&StrictJson.text(row.get("predecessor_head_sha256")).equals(predecessor)
+                        &&StrictJson.text(row.get("read_head_sha256")).equals(predecessor)
+                        &&StrictJson.integer(row.get("read_head_sequence"),0,StrictJson.MAX_SAFE_INTEGER)==edge.before().sequence()
+                        &&ExactRef.fromJson(row.get("before_driver")).equals(driver)
+                        &&StrictJson.integer(row.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER)==version
+                        &&StrictJson.integer(row.get("after_version"),1,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(version,1)
+                        &&StrictJson.integer(row.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER)==epoch,
+                        "Saved retained READ changed source or actual full Driver/version/epoch/head chain");
+                var rows=row.get("read_rows");StrictJson.require(rows!=null&&rows.isArray()&&!rows.isEmpty()&&rows.size()<=128,
+                        "finite original Saved READ rows required");
+                for(var item:rows)StrictJson.object(item,java.util.Set.of("index","contract_id","row","read","definition_source","decoder_source"));
+                driver=ExactRef.fromJson(row.get("after_driver"));version=Math.addExact(version,1);
+                projected.set(WriterContracts.DRIVER_READ_HISTORY_FIELD,row);reads.add(edge);
+            }else throw new IOException("Saved startup suffix contains a non-read-only canonical event: "+edge.kind());
+            projected.put("sequence",edge.sequence());projected.put("last_event_identity",edge.eventIdentity());
+            StrictJson.require(ContinuityJson.same(projected,edge.after().toJson()),"Saved continuation differs from complete actual reducer result");
+            cursor=edge.after();expectedSequence=edge.sequence();
+        }
+        StrictJson.require((phase==0&&head.state().status()==ContinuityState.Status.RUNNING
+                ||phase==2&&head.state().status()==ContinuityState.Status.REPAIR_REQUIRED)
+                &&ContinuityJson.same(cursor.toJson(),head.state().toJson())
+                &&head.digest().equals(same.head().digest()),"Saved startup did not retain its exact closed original continuation");
+        return new SavedReadOnlySuffix(reads,originalPins);
     }
 
     private static ObjectNode requireSavedHistorical(ConfirmedSource source,RootRuntimeContext context,
@@ -427,7 +578,7 @@ public final class RootJavaSavedBootstrap {
                 &&ContinuityJson.same(current.toJson().get("game_binding"),actual.after().toJson().get("game_binding"))
                 &&current.origin().equals(actual.after().origin()),"retained saved current owner/origin/marker changed");
         if(initial) {
-            same.requireDomainImportContinuation(actual.sequence(),ContinuityJson.digest(actual.after().toJson()));
+            requireReadOnlySavedContinuation(same,actual);
             StrictJson.require(current.settledCycles()==source.savedState().settledCycles()
                     &&current.settledDateRaw()==source.savedState().settledDateRaw()
                     &&ContinuityJson.same(current.toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD),row.get("full_driver")),
@@ -452,7 +603,7 @@ public final class RootJavaSavedBootstrap {
     }
 
     /** A new private read qualification for an actual previously committed saved entry. */
-    public static final class RetainedSaved {
+    public static final class RetainedSaved implements org.xar.ck3.control.application.session.ContinuityBatchJournal.SavedReadOnlyRecoverySource {
         private final ConfirmedSource source;
         private final RootRuntimeContext context;
         private final PhysicalProof physical;
@@ -462,13 +613,17 @@ public final class RootJavaSavedBootstrap {
         private final List<WriterContracts.Pin> originals;
         private final Instant deadline;
         private final ObjectNode row;
+        private final List<WriterContracts.HistoricalTransition> readHistorySuffix;
+        private final List<String> consumedBatchIds;
         private RetainedSaved(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,
                 NativeFreshSnapshotPort.Received first,NativeFreshSnapshotPort.Received second,
                 NativeReadinessCollector.SourceQualification qualification,WriterContracts.HistoricalTransition entry,
-                List<WriterContracts.Pin> originals,Instant deadline) {
+                List<WriterContracts.Pin> originals,Instant deadline,List<WriterContracts.HistoricalTransition> readHistorySuffix,List<String> consumedBatchIds) {
             this.source=source;this.context=context;this.physical=physical;this.first=first;this.second=second;
             this.qualification=qualification;this.entry=entry;this.originals=originals;this.deadline=deadline;
             this.row=ContinuityJson.parseObject(entry.details(),StrictJson.INPUT_MAX_BYTES);
+            this.readHistorySuffix=List.copyOf(readHistorySuffix);this.consumedBatchIds=List.copyOf(consumedBatchIds);
+            nextSequence();
         }
         public ConfirmedSource source(){return source;}
         public SessionIdentity session(){return new SessionIdentity(game().machineId(),game().generation(),game().sessionId());}
@@ -476,6 +631,16 @@ public final class RootJavaSavedBootstrap {
         public NativeFreshSnapshotPort.Received firstRead(){return first;}
         public NativeFreshSnapshotPort.Received secondRead(){return second;}
         public WriterContracts.HistoricalTransition originalEntry(){return entry;}
+        public List<WriterContracts.HistoricalTransition> readHistorySuffix(){return readHistorySuffix;}
+        public List<String> consumedBatchIds(){return consumedBatchIds;}
+        public long nextSequence(){
+            if(consumedBatchIds.isEmpty())return 0;
+            String id=consumedBatchIds.getLast();int separator=id.lastIndexOf('-');
+            StrictJson.require(separator>0,"retained batch has no original prefix/sequence");
+            String ordinal=id.substring(separator+1);StrictJson.require(ordinal.matches("0|[1-9][0-9]*"),"retained batch ordinal is not canonical");
+            long value=new java.math.BigInteger(ordinal).longValueExact();StrictJson.safe(value,0);
+            long next=Math.addExact(value,1);StrictJson.safe(next,0);return next;
+        }
         public ExactRef fullDriverReference(){return ExactRef.fromJson(row.get("full_driver"));}
         public ExactRef driverFactsReference(){return ExactRef.fromJson(row.get("driver_facts"));}
         public ExactRef savedStateReference(){return ExactRef.fromJson(row.get("saved_state_reference"));}
@@ -487,6 +652,10 @@ public final class RootJavaSavedBootstrap {
             StrictJson.require(context.clock().instant().isBefore(deadline),"retained saved preparation deadline expired");
             game().verify();physical.requireEvidence();qualification.assertCurrent(same);
             requireOriginals(same);requireSavedHistorical(source,context,same,entry,true);source.requireCurrent(same);
+            var publication=same.head().state().toJson().get(WriterContracts.DRIVER_READ_HISTORY_FIELD);
+            StrictJson.require(readHistorySuffix.isEmpty()?publication==null||publication.isNull()
+                    :ContinuityJson.same(publication,ContinuityJson.parseObject(readHistorySuffix.getLast().details(),ContinuityJson.LEDGER_MAX_BYTES)),
+                    "retained preparation acquired another Driver READ after actual capture");
         }
         public void requireRetained(ContinuityStorePort.Session same)throws IOException {
             context.writer().requireSession(same);game().verify();physical.requireEvidence();
@@ -494,6 +663,14 @@ public final class RootJavaSavedBootstrap {
         }
         private void requireOriginals(ContinuityStorePort.Session same)throws IOException {
             for(var pin:originals)same.verifyPin(pin);
+            for(var edge:readHistorySuffix) {
+                var actual=same.readHistoricalTransition(edge.eventPin());
+                StrictJson.require(actual.sequence()==edge.sequence()&&actual.kind().equals(edge.kind())
+                        &&actual.eventIdentity().equals(edge.eventIdentity())&&Arrays.equals(actual.details(),edge.details())
+                        &&ContinuityJson.same(actual.before().toJson(),edge.before().toJson())
+                        &&ContinuityJson.same(actual.after().toJson(),edge.after().toJson()),
+                        "retained READ suffix changed its complete original canonical edge");
+            }
             NativeFreshSnapshotPort.verifyOriginal(first.acknowledgement(),first.originalFrame(),first.snapshotReceived());
             NativeFreshSnapshotPort.verifyAfter(first.acknowledgement(),second);
             requireRaw(source,context,first);requireRaw(source,context,second);

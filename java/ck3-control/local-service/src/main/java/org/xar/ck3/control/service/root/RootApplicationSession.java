@@ -815,6 +815,39 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
             return owner.withBorrowed(()->controller.captureCleanRestart(owner.activeBorrowedSession(),batchPrefix,nextSequence));
         } finally {calls.unlock();}
     }
+    /** Genuine saved-only journal recovery runs after authority sealing, before domain initialization. */
+    void recoverSavedReadOnlyBatch(ContinuityStorePort.Session same,RootJavaSavedBootstrap.RetainedSaved actual,
+            SessionPorts.SemanticEvidence current)throws IOException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(current);calls.lock();
+        try {
+            writer.requireSession(same);owner.requirePublicWork(this);requireNoPendingCheckpointAdoption();
+            StrictJson.require(installedHost==null&&!controller.isRetired()&&!controller.isRunning()
+                    &&actual.game()==game&&actual.session().machineId().equals(driver.session().machineId())
+                    &&actual.session().game().equals(driver.session().game())&&actual.session().sessionId().equals(driver.session().sessionId())
+                    &&!actual.consumedBatchIds().isEmpty(),
+                    "saved-only recovery requires the actual interrupted unused pre-Host Game/session owner");
+            actual.requireCurrent(same);
+            batchJournal.recoverSavedReadOnlyBatch(same,actual.session(),actual,current);
+            // The genuine commit changes the startup suffix. Only lasting retained qualification is valid now.
+            actual.requireRetained(same);
+        } finally {calls.unlock();}
+    }
+
+    /** Core construction consumes only the private issuer's already used batch DATA, without a restart token. */
+    void retainSavedBatchIds(ContinuityStorePort.Session same,RootJavaSavedBootstrap.RetainedSaved actual)throws IOException {
+        Objects.requireNonNull(actual);calls.lock();
+        try {
+            writer.requireSession(same);owner.requirePublicWork(this);requireNoPendingCheckpointAdoption();
+            StrictJson.require(installedHost==null&&!controller.isRetired()&&!controller.isRunning()
+                    &&actual.game()==game&&actual.session().machineId().equals(driver.session().machineId())
+                    &&actual.session().game().equals(driver.session().game())&&actual.session().sessionId().equals(driver.session().sessionId()),
+                    "retained Saved batch DATA requires the actual unused pre-Host Game/session owner");
+            actual.requireRetained(same);
+            controller.retainConsumedSavedBatches(actual.session(),actual.consumedBatchIds());
+            actual.requireRetained(same);
+        } finally {calls.unlock();}
+    }
+
     /** Actual clean Driver/new HELLO adoption precedes this one restoration of the original Controller counters. */
     public void restoreCleanRestart(ContinuityBatchJournal.CleanRestartAdmission actual)throws IOException,InterruptedException {
         calls.lockInterruptibly();

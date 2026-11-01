@@ -587,6 +587,15 @@ public final class RootInstalledCatalog {
             StrictJson.require(frozen.state() instanceof DriverSnapshotFacts.Known, "persistent planning requires the actual complete Driver");
             var known = (DriverSnapshotFacts.Known) frozen.state();
 
+            if(saved!=null&&!saved.readHistorySuffix().isEmpty()) {
+                saved.requireCurrent(same,context);
+                var edges=saved.readHistorySuffix();
+                var continued=DriverCapabilityStateProducer.restoreCapturedReadState(actual,known,
+                        edges.get(edges.size()-1),same,context.frameLoader(),archive);
+                saved.requireCurrent(same,context);
+                authority.publishCapabilityInputs(same,continued.expectedStamp(),continued.expectedAuxiliarySha256(),continued);
+                saved.requireCurrent(same,context);return null;
+            }
             if (known.auxiliary().members().containsKey(DriverCapabilityStateProducer.STATE_SOURCE)) {
                 var ref = DriverObservationEvidenceReader.reference(known.auxiliary().get(DriverCapabilityStateProducer.STATE_SOURCE));
                 var replay = DriverCapabilityStateProducer.replay(actual, known, ref, archive);

@@ -481,11 +481,12 @@ public final class RootOrdinaryRuntimeAssembly {
             var installed=runOperationPhase(clock,config.operationTimeout(),until->
                     catalogs.install(core,actualAttached,sourceG2,core.planningReads(),clock,until));
             opened.installed=installed;
-            var driver=runOperationPhase(clock,Duration.ofMinutes(10),until->{
+            record RetainedAdoption(RootJavaSavedBootstrap.RetainedSaved source,DriverBootstrap.Adopted driver) { }
+            var adoption=runOperationPhase(clock,Duration.ofMinutes(10),until->{
                 var retained=RootJavaSavedBootstrap.reopenLoaded(source,installed.context(),custody,until);
-                return core.adoptRetainedSaved(retained,sourceG2,config.retainedFrames(),until);
+                return new RetainedAdoption(retained,core.adoptRetainedSaved(retained,sourceG2,config.retainedFrames(),until));
             });
-            return opened.finishConfirmedSaved(driver,deadline);
+            return opened.finishConfirmedSaved(adoption.driver(),Optional.of(adoption.source()),deadline);
         }
 
         public synchronized Running openConfirmedSaved(JavaGameLifecycle.Started started,
@@ -717,7 +718,28 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
         }
 
         private Running finishConfirmedSaved(DriverBootstrap.Adopted driver,Instant deadline)throws IOException,InterruptedException {
+            return finishConfirmedSaved(driver,Optional.empty(),deadline);
+        }
+        private Running finishConfirmedSaved(DriverBootstrap.Adopted driver,Optional<RootJavaSavedBootstrap.RetainedSaved> retained,
+                Instant deadline)throws IOException,InterruptedException {
             if(consumed||installed==null)throw new IOException("actual saved graph installation is unavailable or consumed");
+            long next=0L;
+            if(retained.isPresent()) {
+                var actual=retained.orElseThrow();
+                owner.core.writer().locked(same->{actual.requireRetained(same);return null;});
+                String prefix=owner.config.loop().batchIdPrefix();long previous=-1L;
+                for(String id:actual.consumedBatchIds()) {
+                    if(!id.startsWith(prefix+"-"))throw new IOException("retained Saved batch prefix differs from actual loop configuration");
+                    String ordinal=id.substring(prefix.length()+1);
+                    if(!ordinal.matches("0|[1-9][0-9]*"))throw new IOException("retained Saved batch ordinal is not canonical");
+                    long value=new java.math.BigInteger(ordinal).longValueExact();
+                    if(value<=previous)throw new IOException("retained Saved batch IDs are not strictly ordered and unique");
+                    previous=value;
+                }
+                next=actual.nextSequence();
+                if(next!=(previous<0?0L:Math.addExact(previous,1L)))
+                    throw new IOException("retained Saved next batch sequence differs from its actual consumed IDs");
+            }
             consumed=true;
             if(owner.config.decisionProvider().isPresent()) {
                 var selector=new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(),owner.clock,raw->{
@@ -732,7 +754,8 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             runOperationPhase(owner.clock,owner.config.operationTimeout(),until->{
                 session.install(new OrdinarySessionHost(),until);return null;
             });
-            return new Running(owner,session,owner.config.loop().batchIdPrefix(),0L);
+            if(retained.isPresent())owner.core.writer().locked(same->{retained.orElseThrow().requireRetained(same);return null;});
+            return new Running(owner,session,owner.config.loop().batchIdPrefix(),next);
         }
 
         private Running finishSettledSameGame(DriverBootstrap.Adopted driver,

@@ -126,6 +126,53 @@ public final class OriginalWindowReducer {
                 if (date >= number(state, "target_date_raw", 0)) state.put("status", "complete");
                 else state.put("status", "running");
             }
+            case "saved_read_only_recovery" -> {
+                StrictJson.object(details,Set.of("evidence_id","source","machine_id","session","batch_id","completed_cycles","frame","driver_ref","predecessor_head_digest"));
+                StrictJson.require("java-saved-read-only-recovery/v1".equals(StrictJson.text(source))
+                        &&previous!=null&&ContinuityJson.digest(previous).equals(StrictJson.text(details.get("predecessor_head_digest"))),
+                        "Saved read-only recovery changed its exact predecessor/source");
+                ObjectNode marker=SavedContinuityBootstrap.request(object(state.get(SavedContinuityBootstrap.FIELD))).detailsObject();
+                ObjectNode owner=object(details.get("session"));
+                StrictJson.object(owner,Set.of("machine_id","game","session_id"));StrictJson.text(owner.get("session_id"));
+                ObjectNode boundary=object(state.get(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD));
+                ObjectNode interruption=object(state.get("interruption"));
+                StrictJson.require("repair_required".equals(StrictJson.text(state.get("status")))
+                        &&StrictJson.text(owner.get("machine_id")).equals(machine)
+                        &&ContinuityJson.same(owner.get("game"),state.get("game_binding"))
+                        &&ContinuityJson.same(owner,marker.get("session"))&&ContinuityJson.same(owner,boundary.get("session"))
+                        &&"BATCH_INTERRUPTED".equals(StrictJson.text(boundary.get("boundary")))
+                        &&"java-ordinary-batch-interruption/v2".equals(StrictJson.text(interruption.get("source")))
+                        &&StrictJson.text(boundary.get("evidence_id")).equals(StrictJson.text(interruption.get("evidence_id")))
+                        &&StrictJson.text(boundary.get("batch_id")).equals(StrictJson.text(details.get("batch_id")))
+                        &&StrictJson.text(boundary.get("evidence_id")).equals(StrictJson.text(details.get("batch_id"))+":BATCH_INTERRUPTED")
+                        &&number(state,"interrupted_window_id",1)==number(state,"window_id",1)
+                        &&number(details,"completed_cycles",0)==number(state,"last_settled_cycles",0)
+                        &&number(interruption,"completed_cycles",0)==number(state,"last_settled_cycles",0),
+                        "Saved read-only recovery crossed its actual interrupted owner/batch/window/frontier");
+                for(String field:Set.of("pending_cycle","pending_actions","unknown_actions","UNKNOWN","pending_receipt",
+                        org.xar.ck3.control.continuity.writer.WriterContracts.ACTION_LIFECYCLE_FIELD)) {
+                    JsonNode value=state.get(field);
+                    StrictJson.require(value==null||value.isNull()||value.isContainerNode()&&value.isEmpty(),"Saved recovery cannot discard pending/action/UNKNOWN: "+field);
+                }
+                JsonNode cycle=state.get(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_CYCLE_FIELD);
+                StrictJson.require(cycle==null||cycle.isNull()||cycle.isObject()&&cycle.has("pending_receipt")&&cycle.get("pending_receipt").isNull(),
+                        "Saved recovery has an ordinary pending receipt");
+                var driver=org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("driver_ref"));
+                JsonNode reads=state.get(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_READ_HISTORY_FIELD);
+                var expectedDriver=org.xar.ck3.control.contracts.ExactRef.fromJson(reads==null||reads.isNull()?marker.get("full_driver"):reads.get("after_driver"));
+                StrictJson.require(driver.equals(expectedDriver),"Saved recovery did not retain the actual final Driver");
+                ObjectNode retained=frame(object(state.get("latest_binding"))),actual=frame(object(details.get("frame")));
+                StrictJson.require(number(actual,"date_raw",0)==number(state,"last_settled_date_raw",0)
+                        &&number(actual,"date_raw",0)==number(retained,"date_raw",0)
+                        &&number(actual,"actor_character_id",1)==number(retained,"actor_character_id",1)
+                        &&StrictJson.text(actual.get("episode_run_id")).equals(StrictJson.text(retained.get("episode_run_id")))
+                        &&StrictJson.integer(actual.get("native_revision"),java.math.BigInteger.ZERO,StrictJson.UINT64_MAX)
+                            .compareTo(StrictJson.integer(retained.get("native_revision"),java.math.BigInteger.ZERO,StrictJson.UINT64_MAX))>=0
+                        &&StrictJson.integer(actual.get("revision"),java.math.BigInteger.ONE,StrictJson.UINT64_MAX)
+                            .compareTo(StrictJson.integer(retained.get("revision"),java.math.BigInteger.ONE,StrictJson.UINT64_MAX))>=0,
+                        "Saved read-only recovery cannot change its saved subject/date or regress actual revisions");
+                state.put("status","running");binding(state,actual);
+            }
             case "captured_no_dispatch_recovery" -> {
                 ObjectNode retainedFrame=frame(object(state.get("latest_binding"))),actual=frame(object(details.get("frame")));
                 StrictJson.require("repair_required".equals(StrictJson.text(state.get("status")))

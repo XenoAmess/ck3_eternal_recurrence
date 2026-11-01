@@ -194,6 +194,58 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 "initial no-dispatch recovery operation/frontier differs");
     }
 
+    private static final String SAVED_READ_ONLY_RECOVERY_OPERATION="SAVED_READ_ONLY_RECOVERY";
+    private record SavedReadOnlyRecoveryContext(ContinuityBatchJournal.SavedReadOnlyRecovery admission,SemanticEvidence semantic) { }
+    private final ThreadLocal<SavedReadOnlyRecoveryContext> savedReadOnlyRecoveryContext=new ThreadLocal<>();
+    WriterContracts.Receipt commitSavedReadOnlyRecovery(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.SavedReadOnlyRecovery admission,SemanticEvidence semantic)throws IOException {
+        StrictJson.require(active.get()==same&&savedReadOnlyRecoveryContext.get()==null,"Saved recovery requires the actual unique Journal scope");
+        Objects.requireNonNull(semantic);admission.requireCurrent(same);
+        ObjectNode row=StrictJson.object();row.put("evidence_id","saved-read-only:"+admission.digest());
+        row.put("source","java-saved-read-only-recovery/v1");row.set("session",sessionToJson(admission.owner()));
+        row.put("operation",SAVED_READ_ONLY_RECOVERY_OPERATION);row.put("predecessor_head_digest",admission.digest());
+        row.put("batch_id",admission.batch());row.set("semantic",semanticToJson(semantic));row.set("driver_ref",admission.driver().toJson());
+        var refs=new ArrayList<ExactRef>(admission.history());refs.addAll(semantic.references());refs.add(admission.driver());
+        var request=new WriterContracts.Request(CYCLE_KIND,ContinuityJson.canonical(row),refs.stream().distinct().toList());
+        savedReadOnlyRecoveryContext.set(new SavedReadOnlyRecoveryContext(admission,semantic));
+        try {var prepared=same.preview(request);var receipt=same.commit(prepared);same.requireCommitted(prepared,receipt);return receipt;}
+        finally {savedReadOnlyRecoveryContext.remove();}
+    }
+    private String revalidateSavedReadOnlyRecovery(ContinuityStorePort.Session same,WriterContracts.Head head,ObjectNode details)throws IOException {
+        strictSavedReadOnlyRecovery(details);var context=savedReadOnlyRecoveryContext.get();
+        StrictJson.require(context!=null,"Saved recovery needs its actual private Journal source context");
+        var actual=context.admission();actual.requireCurrent(same);
+        StrictJson.require(head.digest().equals(actual.digest())&&text(details,"predecessor_head_digest").equals(actual.digest())
+                &&sessionFromJson(details.get("session")).equals(actual.owner())&&text(details,"batch_id").equals(actual.batch())
+                &&ContinuityJson.same(details.get("semantic"),semanticToJson(context.semantic()))
+                &&ExactRef.fromJson(details.get("driver_ref")).equals(actual.driver())
+                &&context.semantic().originalDriver().equals(actual.driver()),"Saved recovery changed its exact producer/head/current Driver/SEM");
+        var checked=verify(same,actual.owner(),context.semantic());
+        // The pure reducer also applies the exact same-subject/date/revision/zero-credit Saved guards.
+        reduceSavedReadOnlyRecovery(head.state(),details);
+        var proof=StrictJson.object();proof.put("head",head.digest());proof.put("semantic",checked.materialDigest());proof.put("batch",actual.batch());
+        return ContinuityJson.digest(proof);
+    }
+    private ContinuityState reduceSavedReadOnlyRecovery(ContinuityState predecessor,ObjectNode details) {
+        strictSavedReadOnlyRecovery(details);var owner=sessionFromJson(details.get("session"));requireOwner(predecessor,owner);
+        StrictJson.require(ContinuityJson.digest(predecessor.toJson()).equals(text(details,"predecessor_head_digest")),"Saved recovery predecessor changed");
+        var original=StrictJson.object();original.put("evidence_id",text(details,"evidence_id"));original.set("source",details.get("source"));
+        original.put("machine_id",owner.machineId());original.set("session",details.get("session"));original.put("batch_id",text(details,"batch_id"));
+        original.put("completed_cycles",predecessor.settledCycles());original.set("frame",originalFrame(semanticFromJson(details.get("semantic")).frame()));
+        original.set("driver_ref",details.get("driver_ref"));original.set("predecessor_head_digest",details.get("predecessor_head_digest"));
+        var next=OriginalWindowReducer.reduce(predecessor.toJson(),"saved_read_only_recovery",original,policy);
+        var expected=predecessor.toJson();expected.put("status","running");expected.set("latest_binding",original.get("frame"));
+        StrictJson.require(ContinuityJson.same(expected,next),"Saved read-only recovery may change only status and actual latest binding");
+        return ContinuityState.fromJson(next,predecessor.machineId());
+    }
+    private static void strictSavedReadOnlyRecovery(ObjectNode row) {
+        StrictJson.object(row,Set.of("evidence_id","source","session","operation","predecessor_head_digest","batch_id","semantic","driver_ref"));
+        StrictJson.require(SAVED_READ_ONLY_RECOVERY_OPERATION.equals(text(row,"operation"))
+                &&"java-saved-read-only-recovery/v1".equals(text(row,"source")),"Saved recovery operation/source differs");
+        WriterContracts.requireDigest(text(row,"predecessor_head_digest"));StrictJson.text(row.get("evidence_id"));StrictJson.text(row.get("batch_id"));
+        sessionFromJson(row.get("session"));semanticFromJson(row.get("semantic"));ExactRef.fromJson(row.get("driver_ref"));
+    }
+
     private static final String SETTLED_SAME_GAME_OPERATION = "SETTLED_SAME_GAME_RECOVERY";
     private final ThreadLocal<WriterContracts.HistoricalTransition> openReadOnlyRecovery = new ThreadLocal<>();
 
@@ -515,6 +567,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         ObjectNode proof = StrictJson.object(); proof.put("head_digest", actualHead.digest()); proof.put("request", request.identity());
         if (request.kind().equals(NEXT_BASELINE_KIND)) return revalidateNextBaseline(session,actualHead,details);
         if (request.kind().equals(CYCLE_KIND)) {
+            if (SAVED_READ_ONLY_RECOVERY_OPERATION.equals(text(details,"operation"))) return revalidateSavedReadOnlyRecovery(session,actualHead,details);
             if (SETTLED_SAME_GAME_OPERATION.equals(text(details, "operation"))) return revalidateSettledSameGameRecovery(session, actualHead, details);
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return revalidateInitialNoDispatchRecovery(session,actualHead,details);
             if (text(details,"operation").equals("TRANSPORT_REBIND")) return revalidateTransport(session,actualHead,details);
@@ -577,6 +630,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireOwner(predecessor, owner); ObjectNode next = predecessor.toJson();
         if (request.kind().equals(NEXT_BASELINE_KIND)) return reduceNextBaseline(predecessor,details);
         if (request.kind().equals(CYCLE_KIND)) {
+            if (SAVED_READ_ONLY_RECOVERY_OPERATION.equals(text(details,"operation"))) return reduceSavedReadOnlyRecovery(predecessor,details);
             if (SETTLED_SAME_GAME_OPERATION.equals(text(details, "operation"))) return reduceSettledSameGameRecovery(predecessor, details);
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return reduceInitialNoDispatchRecovery(predecessor,details);
             if (text(details,"operation").equals("TRANSPORT_REBIND")) return reduceTransport(predecessor,details);
