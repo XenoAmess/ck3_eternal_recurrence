@@ -43,6 +43,9 @@ public record ContinuityEvent(long sequence, String atUtc, String kind, byte[] d
         }else if(ObservedGameplayEntry.KIND.equals(kind)) {
             ObservedGameplayEntry.requireReduction(previous,after,
                     new org.xar.ck3.control.continuity.writer.WriterContracts.Request(kind,ContinuityJson.canonical(details),java.util.List.of()),true);
+        }else if(SavedContinuityBootstrap.KIND.equals(kind)) {
+            SavedContinuityBootstrap.requireSavedAdmissionReduction(previous, after,
+                    SavedContinuityBootstrap.request(details), true);
         }else if(org.xar.ck3.control.continuity.writer.WriterContracts.GAMEPLAY_ENTRY_KIND.equals(kind)) {
             org.xar.ck3.control.continuity.writer.WriterContracts.requireGameplayEntryReduction(previous,after,
                     new org.xar.ck3.control.continuity.writer.WriterContracts.Request(kind,ContinuityJson.canonical(details),java.util.List.of()),true);

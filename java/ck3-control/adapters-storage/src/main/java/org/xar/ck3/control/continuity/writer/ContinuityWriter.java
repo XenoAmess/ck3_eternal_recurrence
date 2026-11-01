@@ -1098,6 +1098,10 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
     private static void validateReduction(ContinuityState before, ContinuityState after, Request request) {
         Objects.requireNonNull(after);
         StrictJson.require(before.machineId().equals(after.machineId()) && before.sequence() == after.sequence(), "reducer cannot own sequence/machine");
+        if(org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND.equals(request.kind())) {
+            org.xar.ck3.control.continuity.SavedContinuityBootstrap.requireSavedAdmissionReduction(before, after, request, false);
+            return;
+        }
         if(org.xar.ck3.control.continuity.EpisodeWindow.isTransition(request.kind())) {
             if(!ContinuityJson.same(before.toJson(),after.toJson()))org.xar.ck3.control.continuity.EpisodeWindow.requireReduction(before,after,request,false);
             return; // The exact whole-state reducer already preserves every unrelated/UNKNOWN field.
