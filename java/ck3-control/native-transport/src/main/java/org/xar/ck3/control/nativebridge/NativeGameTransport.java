@@ -46,6 +46,8 @@ import org.xar.ck3.control.application.action.NativeRequestChronology;
 import org.xar.ck3.control.application.action.NativePlanningReadPort;
 import org.xar.ck3.control.application.action.ReadPermit;
 import org.xar.ck3.control.application.action.ReadContract;
+import org.xar.ck3.control.application.action.PlanningReadReceipt;
+import org.xar.ck3.control.application.action.PlanningReadRequest;
 import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.action.LifecycleIdentity;
 import org.xar.ck3.control.application.action.ReconciliationIdentity;
@@ -246,6 +248,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private boolean unknownSeen;
         private boolean completed;
         private boolean pendingSeen;
+        private boolean readOnlyPrefixConsumed;
         private boolean released;
         private MailboxScope() { }
         public void complete(DispatchOutcome originalTerminal) throws IOException {
@@ -261,6 +264,63 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 if (isCouncilTransportStatus(ack))
                     throw new IOException("pending or idle transport status is not a consumed native terminal result");
                 completed = true;
+            }
+        }
+        /** Consumes only this held, actually received READ prefix; it grants no submit or retry permission. */
+        public void consumeReadOnlyPrefix(List<PlanningReadReceipt> originals) throws IOException {
+            synchronized (NativeGameTransport.this) {
+                current();
+                if (unknownSeen || assignment != null || helperCompleted || helperRejectedBeforeSubmit
+                        || receiptPending || receiptCompleted || readOnlyPrefixConsumed || terminalFailure != null || closed)
+                    throw new IOException("read prefix cannot replace unknown, assignment, receipt or completed custody");
+                List<PlanningReadReceipt> reads = List.copyOf(Objects.requireNonNull(originals));
+                if (reads.isEmpty() || reads.size() > 3002 || reads.size() != attempted.size()
+                        || reads.size() != originalOutcomes.size() || lastOutcome != reads.getLast().original())
+                    throw new IOException("complete identical original mailbox READ prefix required");
+                PlanningReadRequest first = reads.getFirst().request();
+                String initialStep = first.operation().value();
+                if (!initialStep.equals("private-query-council-composition-candidates-v1")
+                        && !initialStep.equals("private-query-council-final-gates-v1"))
+                    throw new IOException("only an original Council QUERY or GATES can begin a read prefix");
+                NativeRequestChronology previous = null;
+                for (int index = 0; index < reads.size(); index++) {
+                    PlanningReadReceipt read = reads.get(index); String id = attempted.get(index);
+                    ReadPermit permit = actualReads.get(id); WrittenRequest written = writtenRequests.get(id);
+                    if (!id.equals(read.requestId()) || originalOutcomes.get(index) != read.original()
+                            || permit == null || !permit.consumed() || written == null || written.completed().isEmpty()
+                            || !permit.readGuard().equals(read.before()) || !permit.origin().equals(first.origin())
+                            || !read.request().origin().equals(first.origin()) || !read.request().source().equals(first.source())
+                            || !read.request().sessionId().equals(first.sessionId()) || !read.request().deadline().equals(first.deadline())
+                            || !permit.contract().contractId().equals(read.contractId())
+                            || !permit.preparedRequest().step().equals(index == 0 ? initialStep : COUNCIL_STATUS))
+                        throw new IOException("mailbox READ prefix changed its consumed permit, frame, source or actual ACK");
+                    try {
+                        if (!permit.contract().prepare(read.request(), id).equals(permit.preparedRequest()))
+                            throw new IOException("mailbox READ prefix changed its actual prepared request");
+                        NativeRequestChronology actual = read.original().custody().orElseThrow(
+                                () -> new IOException("mailbox READ original chronology unavailable"));
+                        actual.verify(read);
+                        if (!actual.session().equals(session()) || !actual.custodyEpoch().equals(custodyEpoch)
+                                || previous != null && (actual.writeEntered().order().compareTo(previous.responseReceived().order()) <= 0
+                                || actual.writeEntered().observedAt().isBefore(previous.responseReceived().observedAt())))
+                            throw new IOException("mailbox READ prefix crossed this actual connection, epoch or response order");
+                        previous = actual;
+                        Object decoded = permit.contract().replay(read);
+                        if (index < reads.size() - 1) {
+                            if (!(decoded instanceof org.xar.ck3.control.governance.council.CouncilPrivateCodec.Pending))
+                                throw new IOException("an earlier mailbox READ was not genuinely pending");
+                        } else {
+                            if (!(decoded instanceof org.xar.ck3.control.governance.council.CouncilPrivateCodec.Terminal terminal))
+                                throw new IOException("mailbox READ prefix has no accepted typed terminal");
+                            org.xar.ck3.control.governance.council.CouncilPrivateCodec.requireTerminalBinding(terminal,
+                                    initialStep, org.xar.ck3.control.nativebridge.capabilities.governance.PrivateCouncilReads.nativeFrame(first));
+                        }
+                    } catch (RuntimeException invalid) {
+                        throw new IOException("mailbox READ prefix failed its original registered decoder", invalid);
+                    }
+                }
+                readOnlyPrefixConsumed = true;
+                pendingSeen = false;
             }
         }
         /** Leaves only this original optional READ prefix, after a real current after guard and original archive check. */

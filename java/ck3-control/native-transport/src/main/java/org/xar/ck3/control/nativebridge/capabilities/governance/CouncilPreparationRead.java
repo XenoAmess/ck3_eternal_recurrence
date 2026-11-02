@@ -44,6 +44,8 @@ public final class CouncilPreparationRead implements GovernanceActionPreparation
                 StrictJson.require(fresh.get("council_composition_candidates").equals(previous.get("council_composition_candidates"))
                         && fresh.get("council_final_gates").equals(previous.get("council_final_gates")), "Council source changed between selection and original submit transaction");
                 context.retainPreflight(command, receipts);
+                try { context.mailbox(command).consumeReadOnlyPrefix(receipts); }
+                catch (java.io.IOException failure) { throw new java.io.UncheckedIOException("actual Council read-prefix custody unavailable", failure); }
                 // Do not complete the scope: the original one-submit operation and its canonical continuations follow.
                 return;
             }
