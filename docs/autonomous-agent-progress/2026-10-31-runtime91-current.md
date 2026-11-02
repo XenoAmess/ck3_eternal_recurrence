@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-02 10:33:38.851956300Z：Quarkus Dev 实际源码重载后已同局恢复并新增确认保存8日，804累计151日（原143+8），date_raw53149608、native445/public404、saved cycle23、pending=null。首次重载失败与必要308修复保留；同一Dev宿主restart2于10:09:18恢复LOOP，之后798SETTLE→804SAVE完成验收，后续游玩按运行岗新回执继续。操作及来源见[Dev启动与更新操作](../maintenance/2026-11-02-quarkus-worker-operations.md)。
+
+主窗口真实SAVE761→804：4980.634829500秒／新增8保存日＝622.5793536875秒／保存日，准备、失败和恢复等待全计；完整epoch49372.851956300／151＝326.9725295119为累计次指标。10秒目标未达，旧100／143等切点与本轮所有失败历史保留，不授未装载候选或Civic优化实速。
+
 Dev 默认入口与更新操作已接线：[普通 worker 的 Dev 启动与更新操作](../maintenance/2026-11-02-quarkus-worker-operations.md)。09:33基线同局LOOP、09:35真实源采用／扫描、旧委托正常完成与同宿主新loader分别已见；新delegate于09:46:47因settled recovery frontier合同失败，0新LOOP／SAVE、原143saved保持，宿主存活不授业务恢复成功。功能修复独立继续。
 
 装载事实入口：[Quarkus worker 装载事实与重载边界](../maintenance/2026-11-02-quarkus-worker-loading-boundaries.md)。Main301 保持普通入口与原游玩版本；旧 dev 软件重载／新增类边界、760 个 CP 路径与 36 源有限比对分别记，不授当前切换或速度收益。

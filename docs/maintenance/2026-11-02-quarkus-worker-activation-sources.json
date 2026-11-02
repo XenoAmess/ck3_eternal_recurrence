@@ -1,0 +1,142 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-activation.sources.v1",
+  "cutoff_SAVE_CONFIRMED_utc": "2026-11-02T10:33:38.851956300Z",
+  "status": "ACTUAL_DEV_RELOAD_RESUME_SAVE_CONFIRMED",
+  "actual_default_mode": "quarkus-dev",
+  "plain_fallback": "explicit emergency selection only",
+  "same_host_and_birth_across_restart0_1_2": true,
+  "Game_Dll_restarted": false,
+  "prior_acknowledged_settled_UNKNOWN_replayed": false,
+  "earlier_failed_reload_preserved": true,
+  "post_fix_resume": {
+    "delegate_STARTED_utc": "2026-11-02T09:57:23.743509400Z",
+    "LOOP_utc": "2026-11-02T10:09:18.480041400Z",
+    "startup_wall_seconds": "714.736532"
+  },
+  "SAVE_CONFIRMED": {
+    "sequence": 804,
+    "prior_SETTLE_sequence": 798,
+    "new_saved_days": 8,
+    "current_root_total_saved_days": 151,
+    "date_raw": "53149608",
+    "native_revision": 445,
+    "public_revision": 404,
+    "completed_cycles": 23,
+    "pending_receipt": null
+  },
+  "performance": {
+    "primary_window": "previous actual SAVE761 to actual SAVE804, including Dev preparation, failed attempts, stop, reload failure, source fix and recovery",
+    "primary_seconds": "4980.634829500",
+    "primary_new_saved_days": 8,
+    "primary_seconds_per_new_saved_day": "622.5793536875",
+    "post_fix_LOOP_to_SAVE_subwindow_seconds": "1460.371914900",
+    "post_fix_subwindow_seconds_per_new_saved_day": "182.5464893625",
+    "root_epoch_seconds_per_saved_day": "326.9725295119205298013245033",
+    "ten_second_goal_achieved": false,
+    "speedup_proved": false
+  },
+  "root_epoch_seconds": "49372.851956300",
+  "limits": "Existing-class source reload plus actual same-Game resume and new SAVE accepted. No new dependency-class hotload, automatic object replacement, background-candidate loading or speedup inferred. Local keys locate private evidence; no raw machine configuration or Game bodies are published.",
+  "sources": [
+    {
+      "role": "original_plain_END",
+      "local_key": "runtime/current-resume268/business-recovery301/ACTUAL-END301.json",
+      "bytes": 266,
+      "sha256": "e51da2286976417a339fbb5a1136ce890f574fd3a3b69f95387d1d964654fb87"
+    },
+    {
+      "role": "cooperative_handoff",
+      "local_key": "runtime/quarkus-dev307-runtime/ACTUAL-HANDOFF307.json",
+      "bytes": 424,
+      "sha256": "8fb1480631e34dc185e9ec03b0ed7080a4ec514a6b7b4f010e6a3e018c88a9cc"
+    },
+    {
+      "role": "baseline_dev_LOOP",
+      "local_key": "runtime/quarkus-dev307-runtime/attempt05/ACTUAL-LOOP307-1.json",
+      "bytes": 464,
+      "sha256": "a483f8f254d14f3f50cc7ebef269edb805efdc21e2ec08c798742e901cd92e0b"
+    },
+    {
+      "role": "first_actual_reload",
+      "local_key": "runtime/quarkus-dev307-runtime/RELOAD-LIFECYCLE-PROOF307.json",
+      "bytes": 6324,
+      "sha256": "ecf53e224d4d9c8b6f935ff9542ff089a829d9680e6cdcf1ac664c30342c4aef"
+    },
+    {
+      "role": "post_reload_failure_retained",
+      "local_key": "runtime/quarkus-dev307-runtime/reload-failure01/SUMMARY.json",
+      "bytes": 4087,
+      "sha256": "deabf3f9bf882a9a0ad1b235f33d5bcb194dedcd05cc62d565034ed3a60afc5b"
+    },
+    {
+      "role": "stack_ref_erratum",
+      "local_key": "runtime/quarkus-dev307-runtime/reload-failure01/STACK-REF-ERRATUM307.json",
+      "bytes": 854,
+      "sha256": "81ff6d07935a1b9e6b0adbf443d6b0c843f0543b39d11f4bb9d2db7ad6381ed1"
+    },
+    {
+      "role": "functional_source_adoption",
+      "local_key": "runtime/quarkus-dev307-runtime/functional-reload308/SOURCE-ADOPTED.json",
+      "bytes": 876,
+      "sha256": "99bd15eee70ee49782f48b14349a344e97c639bb4f2bd2ee2bd7c1c37ca8c339"
+    },
+    {
+      "role": "functional_automatic_GET",
+      "local_key": "runtime/quarkus-dev307-runtime/functional-reload308/TRIGGER-ACTUAL.json",
+      "bytes": 682,
+      "sha256": "25e5e966694802ce59d70104fafe390c85614cb2381e60502bf33d19925a051b"
+    },
+    {
+      "role": "functional_delegate_START",
+      "local_key": "runtime/quarkus-dev307-runtime/attempt05/LIFECYCLE-005.json",
+      "bytes": 792,
+      "sha256": "ba0689dc19a726db143697601586ba54287f2aeada4c4b2933375a91cf8dd997"
+    },
+    {
+      "role": "post_fix_LOOP",
+      "local_key": "runtime/quarkus-dev307-runtime/attempt05/ACTUAL-LOOP307-2.json",
+      "bytes": 464,
+      "sha256": "4f6a9e698da5d20316a32c99cbfa296a993ce4f685402f063212976cf36c661a"
+    },
+    {
+      "role": "SAVE_CONFIRMED_summary",
+      "local_key": "runtime/current-resume268/save-confirmed30731/SUMMARY.json",
+      "bytes": 5986,
+      "sha256": "ab26a799787ebfbb2689621a8bfbfe1f95c8d47224c0e47d0ea538413ad0e3a8"
+    },
+    {
+      "role": "default_mode",
+      "local_key": "runtime/ACTIVE-RUNTIME-MODE.json",
+      "bytes": 1915,
+      "sha256": "ed44b84a495897bbbbe2456c27057cea03523c3ad48b7c265ec3e8f4358732c7"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/ACCEPTANCE307.json",
+      "bytes": 4629,
+      "sha256": "e2ae7c7db25907c10a56e1ec8a3bd803aeae5e8e4dd43f18c463fd8b1ca5805e"
+    },
+    {
+      "local_key": "root/save30731-verified.json",
+      "bytes": 1324,
+      "sha256": "f5c3773e178a48dadd626faba43c231b72dde181f6b6a858e96291078192c8d0"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/post-reload-save307/ACTUAL-SAVE307.json",
+      "bytes": 380,
+      "sha256": "c230255d66e42ab399d98fc2e3fa2a05952a186c8d18eb5f116a51e84754f540"
+    },
+    {
+      "role": "Root independently verified frozen canonical event",
+      "local_key": "runtime/current-resume268/save-confirmed30731/00000798.json",
+      "bytes": 99948,
+      "sha256": "d2ebd9215e2cc184b4c84f367684a4ccac5c0cb4f7c3e348350c0e8b4a5cb590"
+    },
+    {
+      "role": "Root independently verified frozen canonical event",
+      "local_key": "runtime/current-resume268/save-confirmed30731/00000804.json",
+      "bytes": 98943,
+      "sha256": "af2e523713e8a76a22da7729cfd5e7527431ca5fa9a8af3d300f722fe4a6932d"
+    }
+  ],
+  "new_writer_javac_JVM_Maven_GET_Game_operations": 0
+}
