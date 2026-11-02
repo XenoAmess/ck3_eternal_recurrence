@@ -396,7 +396,10 @@ public final class IdentityBearingFileAttributes {
         }
     }
     private static WindowsStamp windowsStamp(HANDLE handle, boolean ordinaryFile) throws IOException {
-        try (Memory id = new Memory(24); Memory basic = new Memory(40); Memory standard = new Memory(24)) {
+        try (Memory owner = new Memory(88)) {
+            Pointer id = owner.share(0, 24);
+            Pointer basic = owner.share(24, 40);
+            Pointer standard = owner.share(64, 24);
             if (!Api.VALUE.GetFileInformationByHandleEx(handle, 18, id, 24)
                     || !Api.VALUE.GetFileInformationByHandleEx(handle, 0, basic, 40)
                     || !Api.VALUE.GetFileInformationByHandleEx(handle, 1, standard, 24))
