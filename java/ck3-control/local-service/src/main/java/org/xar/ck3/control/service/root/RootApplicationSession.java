@@ -900,6 +900,26 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
         } finally { calls.unlock(); }
     }
 
+    /** The cold Council source enters the ordinary Root call before borrowing its actual writer. */
+    public ActionReceipt recoverOriginalCouncil(String actionId,Instant deadline)throws IOException,InterruptedException {
+        calls.lockInterruptibly();
+        try {
+            requireOwner();requireNoPendingCheckpointAdoption();requireDeadline(deadline);
+            StrictJson.require(controller.isQuarantined()&&!controller.isRunning(),
+                    "original Council recovery requires its idle quarantined Controller");
+            return owner.withBorrowed(()->resourceCatalog.nativeGovernance().recoverOriginalCouncil(
+                    owner.activeBorrowedSession(),actionId,deadline));
+        }finally {calls.unlock();}
+    }
+    @Override public ActionReceipt reconcileOriginalCouncil(ContinuityStorePort.Session same,String actionId,
+            Instant deadline,org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator actualCoordinator)
+            throws IOException,InterruptedException {
+        if(!calls.isHeldByCurrentThread())throw new IOException("borrowed Council recovery requires its original active Root call");
+        writer.requireSession(same);requireOwner();requireNoPendingCheckpointAdoption();requireDeadline(deadline);
+        StrictJson.require(actualCoordinator==resourceCatalog.nativeGovernance().continuations(),
+                "Council recovery requires this installed catalog's actual continuation coordinator");
+        return coordinator.reconcileOriginalCouncil(same,actionId,deadline,actualCoordinator);
+    }
     public ActionReceipt reconcileUnresolvedOriginal(ContinuityBatchJournal.UnresolvedSameGameData data, Instant deadline) throws IOException, InterruptedException {
         calls.lockInterruptibly();
         try {

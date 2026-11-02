@@ -42,6 +42,17 @@ final class RootReadPublicationActions implements ActionCoordinatorPort {
             }
         }catch(IOException failure){throw new UncheckedIOException("actual action/query outcome retained; READ publication unavailable, no replay",failure);}
     }
+    @Override public ActionReceipt reconcileOriginalCouncil(ContinuityStorePort.Session same,String actionId,
+            java.time.Instant deadline,org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator actualCoordinator)
+            throws IOException,InterruptedException {
+        core.writer().requireSession(same);
+        var original=core.journal().locked(same,locked->locked.find(actionId).orElseThrow()).command();
+        try {
+            var receipt=actual.reconcileOriginalCouncil(same,actionId,deadline,actualCoordinator);
+            histories.completed(same,receipt);reads.flushActualReads(same);return receipt;
+        }catch(ReadPublicationRequiredException pending){throw refreshed(same,original,pending);}
+        catch(IOException|InterruptedException|RuntimeException|Error failure){flushFailure(same,failure);throw failure;}
+    }
     @Override public ActionReceipt reconcile(String actionId) {
         try{return core.withBorrowed(()->reconcileInSession(core.writer().borrowedSession(),actionId));}
         catch(IOException failure){throw new UncheckedIOException(failure);}

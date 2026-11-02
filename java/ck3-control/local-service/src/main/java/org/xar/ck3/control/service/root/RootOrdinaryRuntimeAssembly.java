@@ -805,6 +805,14 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             // The original mutation is read-only here; closing its retained cycle can
             // require a fresh full semantic read and multiple durable ledger commits.
             org.xar.ck3.control.application.action.ActionReceipt receipt = null;
+            if (data.unresolvedActions().size() == 1
+                    && data.unresolvedActions().getFirst().command().operation().value().equals("private-assign-councillor-v1")) {
+                var original = data.unresolvedActions().getFirst();
+                receipt = runOperationPhase(owner.clock, java.time.Duration.ofMinutes(10), phaseDeadline -> {
+                    var recovered = session.recoverOriginalCouncil(original.command().actionId(), phaseDeadline);
+                    return recovered.settled() ? session.reconcileUnresolvedOriginal(data, phaseDeadline) : recovered;
+                });
+            }
             if (data.unresolvedActions().size() == 1) {
                 var retainedOriginal = data.unresolvedActions().getFirst();
                 if (org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(retainedOriginal.command().operation().value())) {
