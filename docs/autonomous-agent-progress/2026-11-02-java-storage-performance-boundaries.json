@@ -1,0 +1,214 @@
+{
+  "schema": "ck3.java-storage-performance-boundaries/v1",
+  "evidence_cutoff_utc": "2026-11-02T08:09:00.733133+00:00",
+  "purpose": "按类名/方法找已有来源及边界；不是新的性能结论、运行资格或修改授权。",
+  "location_policy": "local_key 是执行机 owner/unit/相对文件导航；原件留原执行机，不发布绝对路径、二进制、JFR、完整 XML 或游戏材料。",
+  "metric_boundary": "主指标为完整窗口墙钟秒数/新增 SAVE_CONFIRMED 日，失败、准备、重试、冷恢复与等待全计入；零保存日为 null。以下证据均不证明10秒/日达标。",
+  "entries": [
+    {
+      "work": "208",
+      "targets": [
+        {
+          "fqn": "org.xar.ck3.control.service.root.RootRuntimeStorageGuard",
+          "methods": [
+            "checkCapacity"
+          ]
+        }
+      ],
+      "grade": "SOURCE_API_NEGATIVE_NO_JVM",
+      "established": "单次整表缓存会省掉晚到 IOException、漏掉后续路径到 FileStore 的变更，或改变第一异常顺序；同调用局部范围不提供稳定文件系统映射证明。",
+      "evidence": [
+        {
+          "local_key": "m6/capacity-check208/FINDINGS208.json",
+          "bytes": 6991,
+          "sha256": "ef349e4cdab9c8e8e0cdca3d08e17ead5e8efea1c02c14dbade6bffc2e8c0baa"
+        }
+      ],
+      "source_sha256": "3ef0bbebc9cbb979f1ea999faed6a6d578f3186f3cba55c91f3913e624133d9c",
+      "limits": "未执行 remount、provider 注入或反例 JVM；不是所有可能重设计均不可能的证明。",
+      "current_formal_git_sha256": "db913be50f52cf9c4b41e553acefe6273e3124677e9e5f0f565dd76664187c95",
+      "formal_projection": "本次 Git blob 与冻结源仅按 LF/尾白投影相等；原303物理 current/formal whole-raw-equal 结论只属于其旧切点。"
+    },
+    {
+      "work": "222",
+      "targets": [
+        {
+          "fqn": "org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes",
+          "methods": [
+            "leaseBoundedWindows"
+          ]
+        },
+        {
+          "fqn": "org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes.ReadOnlyLease",
+          "methods": [
+            "verifyCurrent",
+            "read",
+            "originalRead",
+            "close"
+          ]
+        }
+      ],
+      "grade": "HISTORICAL_SOURCE_AND_XML",
+      "evidence": [
+        {
+          "local_key": "m3/checkpoint-lease305/PRIOR-LEASE-EVIDENCE305.json",
+          "bytes": 4473,
+          "sha256": "165359dd594e7fc09713e652191fdcff9bb8291abc1b938946d324844ab522d3"
+        },
+        {
+          "local_key": "m1/archive-readset222/implementation-owner222/lease-test-owner222/validation222/junit-reports/TEST-junit-jupiter.xml",
+          "bytes": 36679,
+          "sha256": "3299a2949e1e2ee36994fe92ed639454230b8ed9ebbc7b4fd6c3129fbb4be6dd"
+        }
+      ],
+      "source_versions": {
+        "frozen_v02_delivery_current_formal_sha256": "a820920ed30288e9237bb5755650b471bfe9303bf4127dc1e9abe8a914dabf1d",
+        "initial_candidate_sha256": "919f608384b166df868068aaae12dd84761813b8a85af33169fc7b9c8d5bc235",
+        "current_formal_git_sha256": "a820920ed30288e9237bb5755650b471bfe9303bf4127dc1e9abe8a914dabf1d",
+        "frozen_to_git_LF_blanktail_equal": true
+      },
+      "prior_results": {
+        "methods": 9,
+        "passed": 8,
+        "failed": 1,
+        "mapping_method_passed": "writableViewSurvivesBothCreatorHandlesWithoutSafeLeaseGrant()",
+        "failed_method": "actualCloseFailureIsNotSwallowedInControlledCorruptFieldFixture()"
+      },
+      "actual_compile_receipt_navigation": "NOT_HELD_BY_THIS_INDEX",
+      "later_failed_only_retry": "独立后继1P沿原记录分账；此索引未核其精确回执，不构造 ACTUAL 路径。",
+      "loaded_source_binding": "UNKNOWN；当前正式源相等不能追授旧编译源或当前装载绑定。"
+    },
+    {
+      "work": "224",
+      "targets": [
+        {
+          "fqn": "org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes",
+          "methods": [
+            "leaseBoundedWindows"
+          ]
+        }
+      ],
+      "grade": "WIN32_PRIMITIVE_ONLY",
+      "evidence": [
+        {
+          "local_key": "root/performance224/mapping-20261101T074430858683Z/ACTUAL.json",
+          "bytes": 1287,
+          "sha256": "1a217874977ab04c30aabb5bd1cfabc9701e85722befa686e4df0dd05d9e2a1f"
+        }
+      ],
+      "established": "单进程、单4字节D盘NTFS临时文件；file/section句柄均关闭但可写view存活，候选只读open以ERROR32拒绝；view写BBBB被fresh read观察且mtime不变。",
+      "limits": "不是整套 Java 候选或全部文件系统证明，没有跨进程、性能、现行 lease 集成或新探针资格。"
+    },
+    {
+      "work": "303",
+      "targets": [
+        {
+          "fqn": "org.xar.ck3.control.service.root.RootRuntimeStorageGuard",
+          "methods": [
+            "checkCapacity"
+          ]
+        }
+      ],
+      "grade": "REUSED_208_SOURCE_AND_RESOLVED_CLASS_METADATA",
+      "evidence": [
+        {
+          "local_key": "root/capacity-resolution303/FINDINGS303.json",
+          "bytes": 9459,
+          "sha256": "3539de515dc742a0e79162bf3f5a68c502d6c2544cb3be7bcd4d8ccab8f24002"
+        }
+      ],
+      "established": "当时完整当前源与208原冻结源逐字相等，复用原Source/API反例；新303无patch、POST或JVM。",
+      "resolved_class": {
+        "bytes": 93342,
+        "sha256": "1b85b53af103b3f0563791967e1b9e6ab8ecffc785fc2d7c3f2396feed56003f",
+        "basis": "原first-resolved class解码metadata，未为索引读取活跃MB。"
+      },
+      "compiled_source_sha256": null,
+      "original_strict_receipt": "NOT_HELD",
+      "limits": "SourceFile/LineNumberTable不是精确编译源身份；不把当前源追认为已装载，也不把符号lookup公式当实测次数。"
+    },
+    {
+      "work": "302-steady",
+      "targets": [
+        {
+          "fqn": "org.xar.ck3.control.service.root.RootRuntimeStorageGuard",
+          "methods": [
+            "checkCapacity"
+          ]
+        },
+        {
+          "fqn": "org.xar.ck3.control.continuity.writer.ImmutableArtifactStore",
+          "methods": [
+            "writeExistingEmpty"
+          ]
+        },
+        {
+          "fqn": "org.xar.ck3.control.application.action.PlanningReadCoordinator",
+          "methods": [
+            "preserveKnownRead"
+          ]
+        }
+      ],
+      "grade": "ONE_CLOSED_JFR_AND_EXISTING_CACHED_PARSE",
+      "evidence": [
+        {
+          "local_key": "m5/checkpoint-journal302/jfr302/FINDINGS04.json",
+          "bytes": 31091,
+          "sha256": "12d19fee20dba6160b8aa683e21896e1286e0e9bedbe4f6655adc07e93ef7202"
+        },
+        {
+          "local_key": "m5/checkpoint-journal302/jfr302/RUN01-ACTUAL.json",
+          "bytes": 1334,
+          "sha256": "d7f49544380b88f42804841ed4ec802b809520f50b37048ca07f95499e94cf37"
+        }
+      ],
+      "window_utc": [
+        "2026-11-02T06:57:01.663450Z",
+        "2026-11-02T06:57:46.736938Z"
+      ],
+      "seconds": 45.0734885,
+      "scope": "批20 PLANNING/publication；一次已闭录制与一次成功cached解析，无新增录制或JVM。",
+      "recorded": {
+        "main_ExecutionSample": 215,
+        "main_NativeMethodSample": 825,
+        "FileForce_events": 170,
+        "FileForce_sum_seconds": 6.1188926,
+        "FileForce_threshold_ms": 20
+      },
+      "limits": "未覆盖ACTION/SAVE或精确phase span；重叠sample不是调用次数、CPU占比或wall。阈值下缺事件不等于零IO，force总和不归因全部阶段耗时；无A/B、源码装载相等或fsync删除资格。"
+    },
+    {
+      "work": "304",
+      "targets": [],
+      "mechanism": "Windows只读设备/卷metadata",
+      "grade": "READONLY_TOPOLOGY_CONTEXT",
+      "evidence": [
+        {
+          "local_key": "native/storage-topology304/exactD-Win32-ACTUAL.json",
+          "bytes": 1300,
+          "sha256": "35d168ccc9bf7d0a7adaf4c9c38f7c998741e468481878fe01c7cbfe7eece239"
+        },
+        {
+          "local_key": "native/storage-topology304/logicalD-ACTUAL.json",
+          "bytes": 884,
+          "sha256": "48e372961843ffd234340a26f6bc3c8e4724de46dc7f27ca499281ffb2090261"
+        },
+        {
+          "local_key": "native/storage-topology304/exactC-Win32-ACTUAL.json",
+          "bytes": 1595,
+          "sha256": "4878647d488978841cdc8fba9ac8bf2d3576423a47fad6fa5593304ecf279153"
+        },
+        {
+          "local_key": "native/storage-topology304/FINDINGS304-C-APPEND.json",
+          "bytes": 2013,
+          "sha256": "08d91b26abc78cabf3ec794b68ac5753431244d650334fc7f6d229fe98db74f3"
+        }
+      ],
+      "established": "D为NTFS、SATA bus11且seekPenalty=true的旋转HDD metadata；C为NTFS、NVMe bus17且seekPenalty=false。",
+      "C_reference_qualification": "M5早期索引未持C精确ref保其旧切点；本次由Root提供现成C小metadata后核验，无新设备probe。",
+      "limits": "不含SMART/健康/RPM、benchmark、主线程IO份额或全部fsync因果；不授权/实施迁移、改FileID/锁/路径或当前worker配置。"
+    }
+  ],
+  "preserved_history": "resume90 handoff/source-index及各原UNKNOWN/失败cutoff不改；本索引仅后到导航。",
+  "new_probe_Java_Game_or_raw_upload": false
+}

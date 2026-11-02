@@ -1,5 +1,7 @@
 # runtime91 同局续行
 
+性能资料按类名／方法的来源与边界见[存储性能边界索引](2026-11-02-java-storage-performance-boundaries.json)：208／303源级反例、222旧软件结果、224原生primitive、302单次JFR与304只读设备metadata分别列示；原件留执行机，不授性能达标或新运行／修改权限。
+
 ## 2026-11-02 07:31Z 保存里程碑：562确认本局累计100日
 
 556真实SETTLE后，562于07:30:50.076580300Z SAVE_CONFIRMED：同Game77132／birth134380410301009189、actor31254／同session，saved date53148384／pair306/265／cycle16／pending=null，累计100＝旧84＋532前沿8＋本次8；旧69日属于另一Game，不进分母。`save-confirmed30122` 两具名冻结event为556／100017B／SHA `37f8e1bd6372ce10621342ee3d916680c2405164df913ab2ee4bda0b0dc99659`、562／99012B／SHA `5f88472709fb25b3affc3c7116e3eddfb17bce0b3ada553f3cf5c2a755e8ac96`；SETTLE与SAVE边界、完整pair／cycle／session及后态已核，与Root `save30122-verified.json` 独验一致。532／92日仅沿原冻结SUMMARY保切点，本段不另冒其event独验。07:31:39薄report至批22均TURN_BOUND／dirty=false，批22保存8日并继续next23；同PID73928及head564 running为Runtime当时报告，不延授后继健康。
