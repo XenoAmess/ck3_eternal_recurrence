@@ -218,6 +218,29 @@ public final class DriverActionHistoryCodec {
         String head=same.head().digest();
         StrictJson.require(ContinuityActionJournal.requireHistoricalReceipt(same.head().state(),actual,originals).equals(source.record()),
                 "original action source record is not the actual retained canonical writer member");
+        requireCanonicalSupporting(same,actual,source,originals);
+        StrictJson.require(same.head().digest().equals(head),"original action source writer changed during archive verification");
+    }
+    /** One fresh complete canonical chain for this finite DATA batch; no retained proof or permission is issued. */
+    public static void requireCanonicalMemberships(Session same,List<ActionReceipt> actuals,List<Source> sources,
+            ActionPorts.OutcomeArchive originals) throws IOException {
+        var checkedActuals=List.copyOf(actuals);var checkedSources=List.copyOf(sources);
+        StrictJson.require(checkedActuals.size()==checkedSources.size()&&checkedActuals.size()<=100_000,
+                "canonical publication membership batch differs or exceeds its bound");
+        if(checkedActuals.isEmpty())return;
+        var head=same.head();String digest=head.digest();
+        var records=ContinuityActionJournal.requireHistoricalReceipts(head.state(),checkedActuals,originals);
+        for(int index=0;index<checkedActuals.size();index++) {
+            var source=checkedSources.get(index);
+            StrictJson.require(records.get(index).equals(source.record()),
+                    "original action source record is not the actual retained canonical writer member");
+            requireCanonicalSupporting(same,checkedActuals.get(index),source,originals);
+            StrictJson.require(same.head().digest().equals(digest),
+                    "original action source writer changed during archive verification");
+        }
+    }
+    private static void requireCanonicalSupporting(Session same,ActionReceipt actual,Source source,
+            ActionPorts.OutcomeArchive originals) throws IOException {
         if(source.material() instanceof GiftLegacyPair pair) {
             requireGiftOperation(actual);
             var captured=org.xar.ck3.control.application.planning.finance.GiftActionHistoryEvidence.verifyArchived(same,actual,pair.originals(),originals);
@@ -227,7 +250,6 @@ public final class DriverActionHistoryCodec {
                     &&pair.receiptNumbers().equals(org.xar.ck3.control.application.history.DriverReadHistoryRichMaterial.PublicNumbers.fromResults(captured.receiptResult(),captured.receiptPublic())),"Gift pair changed its owning public integer roles");
         }
         var pin=same.capturePin(source.record(),WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);
-        StrictJson.require(same.head().digest().equals(head),"original action source writer changed during archive verification");
     }
     public static void requireSource(ActionReceipt actual,Source source,ActionPorts.OutcomeArchive originals) throws IOException {
         Objects.requireNonNull(actual);Objects.requireNonNull(source);Objects.requireNonNull(originals);

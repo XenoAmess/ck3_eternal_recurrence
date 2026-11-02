@@ -638,6 +638,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private RetainedReadDriver retainCapturedAction(ContinuityStorePort.Session same,
             WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
             java.util.List<ActionReceipt> receipts,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) throws IOException {
+        return retainCapturedAction(same,edge,previous,receipts,originals,null,null);
+    }
+    /** Deferred entries stay local to the full-history callback and are verified together before that callback can return. */
+    private RetainedReadDriver retainCapturedAction(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
+            java.util.List<ActionReceipt> receipts,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
+            java.util.List<org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication> deferredPublications,
+            java.util.List<ActionReceipt> deferredActuals) throws IOException {
+        StrictJson.require((deferredPublications==null)==(deferredActuals==null),"complete local ACTION validation batch required");
         var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
         String actionId=StrictJson.text(details.get("action_id"));
         var matches=receipts.stream().filter(r->r.command().actionId().equals(actionId)).toList();
@@ -660,7 +669,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
         org.xar.ck3.control.application.driver.DriverActionHistoryState.requireReduction(edge.before(),edge.after(),
                 publication.request(java.util.List.of(publication.beforeDriver(),publication.afterDriver(),publication.originalSource())),true);
         // Replay the actual producer's material role: complete Legacy/Gift rows or unchanged canonical-only Driver.
-        org.xar.ck3.control.application.driver.DriverActionHistoryState.requireOriginal(same,publication,action,originals);
+        if(deferredPublications==null)
+            org.xar.ck3.control.application.driver.DriverActionHistoryState.requireOriginal(same,publication,action,originals);
+        else {deferredPublications.add(publication);deferredActuals.add(action);}
         var driver=org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.decodeComplete(
                 originals.loadFullMaterial(publication.afterDriver()).bytes());
         org.xar.ck3.control.application.driver.DriverSnapshotFacts.ActionRow coverage;
@@ -2566,6 +2577,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192),
                     originals -> {
             var capturedManifests = new java.util.ArrayList<CleanBatchRestart>();
+            var actionPublications = new java.util.ArrayList<org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication>();
+            var actionOriginals = new java.util.ArrayList<ActionReceipt>();
             var actions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state,originals);
             var finalizationSave = readOnlySaveFinalizationRoot(state, owner, actions, originals);
             var pendingKnownCompletion = readOnlyPendingKnownCompletionRoot(state, owner, actions, originals);
@@ -2717,7 +2730,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         }
                     }
                 } else if(edge.kind().equals(WriterContracts.DRIVER_ACTION_HISTORY_KIND)) {
-                    retained=retainCapturedAction(same,edge,retained,actions,originals);
+                    retained=retainCapturedAction(same,edge,retained,actions,originals,actionPublications,actionOriginals);
                 } else if(edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
                     if(existingOpening) {
                         var imported=org.xar.ck3.control.continuity.writer.DomainBodies.BodyRef.fromJson(details.get("domain_body"));
@@ -3009,6 +3022,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var controller=new ControllerRestartState(owner,batchPrefix,used.size(),used,unsaved,
                     savedPair,Optional.of(same.persistedHead()),eligible,dirty,false,false,savedRaw/24,
                     java.util.Set.of(),false);
+            // All reconstructed Drivers above are local DATA. Complete originals and a fresh canonical chain
+            // must pass before any result, captured manifest callback or saved-history role can escape.
+            org.xar.ck3.control.application.driver.DriverActionHistoryState.requireOriginals(same,actionPublications,actionOriginals,originals);
             StrictJson.require(same.head().state().sequence()==state.sequence()&&same.head().digest().equals(head.digest()),
                     "settled canonical recovery head changed during read");
             var data=new SettledSameGameData(entry,controller,retained.facts(),retained.fullDriver(),previousTransport,

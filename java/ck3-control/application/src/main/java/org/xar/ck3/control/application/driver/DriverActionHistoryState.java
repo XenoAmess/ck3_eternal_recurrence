@@ -80,6 +80,27 @@ public final class DriverActionHistoryState {
     }
     /** Replays complete archived before/after Drivers and the unchanged original recording path, never Receipt-as-Driver. */
     public static void requireOriginal(Session same,Publication data,ActionReceipt actual,ActionPorts.OutcomeArchive originals) throws IOException {
+        requireOriginal(same,data,actual,originals,true);
+    }
+    /** Complete original validation and one final fresh membership batch, with no unchecked result or authority returned. */
+    public static void requireOriginals(Session same,List<Publication> publications,List<ActionReceipt> actuals,
+            ActionPorts.OutcomeArchive originals) throws IOException {
+        var checkedData=List.copyOf(publications);var checkedActuals=List.copyOf(actuals);
+        StrictJson.require(checkedData.size()==checkedActuals.size()&&checkedData.size()<=100_000,
+                "original ACTION publication batch differs or exceeds its bound");
+        if(checkedData.isEmpty())return;
+        String head=same.head().digest();
+        var sources=new ArrayList<DriverActionHistoryCodec.Source>(checkedData.size());
+        for(int index=0;index<checkedData.size();index++) {
+            var data=checkedData.get(index);var actual=checkedActuals.get(index);
+            requireOriginal(same,data,actual,originals,false);
+            sources.add(DriverActionHistoryCodec.decode(material(data.originalSource(),originals)));
+        }
+        DriverActionHistoryCodec.requireCanonicalMemberships(same,checkedActuals,sources,originals);
+        StrictJson.require(same.head().digest().equals(head),"original ACTION batch changed its actual writer head");
+    }
+    private static void requireOriginal(Session same,Publication data,ActionReceipt actual,
+            ActionPorts.OutcomeArchive originals,boolean directMembership) throws IOException {
         StrictJson.require(!(actual.command().expectation() instanceof org.xar.ck3.control.application.action.CommandExpectation.OperatorRebind),
                 "operator identity receipt has no separate Driver ACTION publication or version increment");
         var source=DriverActionHistoryCodec.decode(material(data.originalSource(),originals));
@@ -90,7 +111,9 @@ public final class DriverActionHistoryState {
                 &&actual.command().before().frame().episodeRunId().equals(before.session().episodeRunId()),"ACTION full Driver crossed original Game/episode");
         if(source.material() instanceof DriverActionHistoryCodec.Legacy||source.material() instanceof DriverActionHistoryCodec.GiftLegacyPair) {
             ExactRef rowRef=data.legacyRow().orElseThrow(()->new IllegalArgumentException("legacy recording must retain its actual original row"));
-            var row=DriverJson.object(material(rowRef,originals).bytes(),DriverJson.MAX_NATIVE_BYTES);DriverActionHistoryCodec.verifyLegacy(same,actual,row,originals);
+            var row=DriverJson.object(material(rowRef,originals).bytes(),DriverJson.MAX_NATIVE_BYTES);
+            if(directMembership)DriverActionHistoryCodec.verifyLegacy(same,actual,row,originals);
+            else DriverActionHistoryCodec.verifyLegacy(actual,row,originals);
             var embeddedSource = DriverActionHistoryCodec.decode(new RawJson(DriverJson.encode(row.get(DriverActionHistoryCodec.SOURCE_FIELD))));
             StrictJson.require(source.equals(embeddedSource), "legacy row changed its canonical original source");
             var history=new ArrayList<>(before.commandHistory());long index=Math.addExact(history.size(),1L);
@@ -106,7 +129,8 @@ public final class DriverActionHistoryState {
                     .equals(DriverJson.object(after.encode(),DriverJson.MAX_NATIVE_BYTES)),"ACTION legacy publication changed a non-history full Driver slot");
         } else {
             StrictJson.require(data.legacyRow().isEmpty()&&Arrays.equals(before.encode(),after.encode()),"canonical-only interface cannot manufacture a legacy row or change business Driver fields");
-            DriverActionHistoryCodec.verifyCanonicalOnly(same,actual,data.originalSource(),originals);
+            if(directMembership)DriverActionHistoryCodec.verifyCanonicalOnly(same,actual,data.originalSource(),originals);
+            else DriverActionHistoryCodec.verifyCanonicalOnly(actual,data.originalSource(),originals);
         }
         // Implementation producers remain archived DATA; business roles are verified by requireSource above.
     }

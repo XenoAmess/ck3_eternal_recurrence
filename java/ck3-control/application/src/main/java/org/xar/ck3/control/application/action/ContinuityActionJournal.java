@@ -181,6 +181,30 @@ public final class ContinuityActionJournal implements ActionJournal {
                 "historical action record has another complete original receipt body");
         return actual.record();
     }
+    /** Fresh batch DATA validation. Each original record is decoded once in this invocation, never cached across calls. */
+    public static List<org.xar.ck3.control.contracts.ExactRef> requireHistoricalReceipts(ContinuityState state,
+            List<ActionReceipt> exacts, ActionPorts.OutcomeArchive archive) {
+        var checked = List.copyOf(exacts);
+        StrictJson.require(checked.size() <= 100_000, "bounded historical receipt batch required");
+        if (checked.isEmpty()) return List.of();
+        for (var exact : checked) StrictJson.require(exact.sequence() <= state.sequence()
+                && exact.command().origin().machineId().equals(state.machineId()),
+                "historical receipt crossed actual writer machine/sequence");
+        var complete = historical(state, archive);
+        var bySequence = new java.util.HashMap<Long, Historical>();
+        for (var item : complete) StrictJson.require(bySequence.put(item.receipt().sequence(), item) == null,
+                "canonical action chain repeated a receipt sequence");
+        var result = new ArrayList<org.xar.ck3.control.contracts.ExactRef>(checked.size());
+        for (var exact : checked) {
+            var actual = bySequence.get(exact.sequence());
+            StrictJson.require(actual != null, "receipt is not in the surviving canonical action record chain");
+            StrictJson.require(java.util.Arrays.equals(ActionReceiptCodec.encodeReceipt(exact, archive),
+                    ActionReceiptCodec.encodeReceipt(actual.receipt(), archive)),
+                    "historical action record has another complete original receipt body");
+            result.add(actual.record());
+        }
+        return List.copyOf(result);
+    }
     private record Historical(org.xar.ck3.control.contracts.ExactRef record, ActionReceipt receipt) { }
     private static List<Historical> historical(ContinuityState state, ActionPorts.OutcomeArchive archive) {
         List<Historical> history = new ArrayList<>();
