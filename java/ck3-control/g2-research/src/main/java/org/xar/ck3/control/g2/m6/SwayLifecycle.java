@@ -21,6 +21,7 @@ import org.xar.ck3.control.g2.m6.G2M6Contracts.NamedValue;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.Stamp;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 /** Pure reducer for original Sway observations. The guarded query and sole writer stay outside. */
 public final class SwayLifecycle {
@@ -191,7 +192,7 @@ public final class SwayLifecycle {
         for (JsonNode row : census.get("active_sway_instances")) {
             long fullId = integer(row, "scheme_instance_id", 0, 0xffff_fffeL);
             require(integer(row, "scheme_instance_generation", 0, 255) == fullId >>> 24, "census full instance generation differs");
-            long target = integer(row, "target_character_id", 1, 0xffff_fffeL);
+            long target = NativeCharacterId.fromJson(row.get("target_character_id")).value();
             active |= fullId == identity.schemeInstanceId() && target == identity.targetCharacterId();
         }
         return Optional.of(new MaterialFact(named(opinion.get("scheme_sway_opinion")), named(opinion.get("sway_blocker_opinion")), optionalOpinion(proof.inputs().opinion().orElseThrow()), active, false));
@@ -245,7 +246,7 @@ public final class SwayLifecycle {
     private static Episode episode(Proof proof) {
         JsonNode read = parse(proof.originalResolved()); JsonNode receipt = read.get("native_receipt");
         JsonNode identity = receipt == null || receipt.isNull() ? read.get("recovered_instance_observation") : receipt;
-        Identity tuple = new Identity(text(read, "action_id"), integer(read, "actor_character_id", 1, 0xffff_fffeL), integer(read, "target_character_id", 1, 0xffff_fffeL),
+        Identity tuple = new Identity(text(read, "action_id"), NativeCharacterId.fromJson(read.get("actor_character_id")).value(), NativeCharacterId.fromJson(read.get("target_character_id")).value(),
                 integer(identity, "scheme_instance_id", 0, 0xffff_fffeL), Math.toIntExact(integer(identity, "scheme_instance_generation", 0, 255)));
         return new Episode(tuple, Optional.empty(), Optional.empty(), Optional.empty(), proof.originalResolved());
     }

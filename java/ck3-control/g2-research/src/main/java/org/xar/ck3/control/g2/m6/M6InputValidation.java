@@ -104,7 +104,7 @@ final class M6InputValidation {
                 && BigInteger.valueOf(signed(read, date)).equals(queried.frame().identity().dateRaw()), "Sway read crossed its actual query frame");
     }
     static void exactIdentity(JsonNode read, Identity identity, boolean instance) {
-        exactIdentity(read, identity.nativeSubject(), instance);
+        exactIdentity(read, identity.nativeSubject(), instance, true);
     }
     static void exactIdentity(JsonNode read, NativeSubject identity, boolean instance) {
         exactIdentity(read, identity, instance, false);
