@@ -167,19 +167,31 @@ public final class SwayRuntimeInstaller {
         OrdinarySwayPolicy policy = OrdinarySwayPolicyFactory.create(prepared.sources.policy(), context.reads(), sharedRoot, inputs,
                 request -> prepared.configuration.capabilities(), SwayOrdinaryComposite::expected);
         RootDomainIntentPreparation.Binding pending = new RootDomainIntentPreparation.Binding("sway-original-native-intent/v2", prepared.sources.pendingProducer(), command -> {
-            String operation = command.operation().value();
-            if (operation.equals(SwayNativeWire.STOP)) return true;
-            if (!operation.startsWith(SwayNativeWire.START)) return false;
-            String target = operation.substring(SwayNativeWire.START.length());
-            try { long full = Long.parseLong(target); return target.equals(Long.toString(full)) && full > 0 && full <= 0xffff_ffffL
-                    && context.bindings().actualFamily(command.operation()).filter(value -> value == nativeActions.startFamily()).isPresent(); }
-            catch (NumberFormatException invalid) { return false; }
+            return supportsPendingOperation(command.operation(), nativeActions.startFamily(), key -> context.bindings().actualFamily(key));
         }, lifecycle.pendingProducer());
         installation = new RootDomainInstallation("sway-actual-native-and-ordinary/v2", List.of(prepared.registration()), List.of(), nativeReads.families(),
                 List.of(nativeActions.selectedStop()), List.of(parent), List.of(nativeActions.selectedStopReplay(), composite.recorded(prepared.sources.composite())), List.of(nativeActions.startFamily()), List.of(), List.of(),
                 List.of(pending), Set.of(new OperationKey(SwayNativeWire.STOP)), List.of(policy), List.of(followingCompletion()),
                 List.of(new RootDomainInstallation.FixedDomain(nativeActions.selectedStop(), Domain.diplomacy)), List.of(new RootDomainInstallation.FamilyDomain(nativeActions.startFamily(), Domain.diplomacy)), List.of(new RootDomainInstallation.CompositeDomain(parent, Domain.diplomacy)));
         return installation;
+    }
+    static boolean supportsPendingOperation(org.xar.ck3.control.application.action.OperationKey operation,
+            org.xar.ck3.control.application.action.RootExecutableBindings.Family<?> expectedStart,
+            java.util.function.Function<org.xar.ck3.control.application.action.OperationKey,
+                    java.util.Optional<org.xar.ck3.control.application.action.RootExecutableBindings.Family<?>>> actualFamily) {
+        String value = operation.value();
+        if (value.equals(SwayNativeWire.STOP)) return true;
+        if (!value.startsWith(SwayNativeWire.START)) return false;
+        String suffix = value.substring(SwayNativeWire.START.length());
+        final long target;
+        try {
+            target = Long.parseLong(suffix);
+            org.xar.ck3.control.contracts.NativeCharacterId.of(target);
+        } catch (IllegalArgumentException invalid) {
+            return false;
+        }
+        if (!suffix.equals(Long.toString(target))) return false;
+        return actualFamily.apply(operation).filter(family -> family == expectedStart).isPresent();
     }
     /** Actual consumer for the shared optional-parent implementation once that contract is installed. */
     public synchronized SwayOrdinaryExecutor executor() { StrictJson.require(executor != null, "actual Sway products not installed"); return executor; }
