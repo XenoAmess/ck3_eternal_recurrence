@@ -1,0 +1,198 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T20:28:19.309911600Z",
+  "previous_published_history_retained": true,
+  "SAVE_CONFIRMED": {
+    "event": 1231,
+    "SETTLE_event": 1225,
+    "new_saved_days": 6,
+    "total_saved_days": 234,
+    "date_raw": "53151600",
+    "native_revision": 690,
+    "public_revision": 635,
+    "completed_cycles": 34,
+    "pending_receipt": null
+  },
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "performance": {
+    "primary_window": "SAVE1188(228saved) -> SAVE1231(234saved)",
+    "start_UTC": "2026-11-02T19:38:06.136226200Z",
+    "end_UTC": "2026-11-02T20:28:19.309911600Z",
+    "full_wall_seconds": "3013.173685400",
+    "new_saved_days": 6,
+    "seconds_per_new_saved_day_rounded": "502.1956142333333333333333333",
+    "included_costs": "Includes all batch53/54 zero-save work, preparation, clean stop, reload, 681.2034688s cold recovery, JFR343, monitoring failures/repair, research overlap, actual55 and waiting. No subtraction or C2/cohort A/B claim.",
+    "independent_Root_includes": [
+      "zero-save batches53 and54",
+      "cooperative stop and preparation",
+      "twelve-source adoption and oneGET",
+      "681.2034688-second cold recovery",
+      "all batch55 planning/actions/save/validation and waiting",
+      "sampling and parallel preparation/validation overlap"
+    ],
+    "root_epoch_seconds": "85053.309911600",
+    "root_epoch_total_saved_days": 234,
+    "root_epoch_seconds_per_saved_day": "363.4756833829059829059829060",
+    "root_epoch_metric_role": "Cumulative secondary metric only; not the primary window denominator.",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "controlled_AB_or_causal_speedup": false
+  },
+  "coherent_source_adoption_and_recovery": {
+    "source_count": 12,
+    "cohort_owner_report": [
+      "329:2sources",
+      "330",
+      "331:2sources",
+      "333:4sources",
+      "334:2sources",
+      "335"
+    ],
+    "existing_FQN_qualified_count": 104,
+    "new_FQN_count": 0,
+    "owner_reported_MODE_adoptions_at_cutoff": 54,
+    "same_host_pid": 81616,
+    "same_host_birth": "134381101737409714",
+    "new_delegate_instance": "a8bc13d0-6492-4a1d-ba49-54c85a64f9b8",
+    "new_delegate_START_UTC": "2026-11-02T19:58:15.153794700Z",
+    "new_delegate_runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:4@25fe6192@25fe6192",
+    "actual_LOOP_UTC": "2026-11-02T20:09:36.357263500Z",
+    "full_START_to_LOOP_seconds": "681.203468800",
+    "old_delegate_COMPLETE_UTC": "2026-11-02T19:57:54.987400200Z",
+    "old_delegate_exit_code": 0,
+    "source_adoption_refs_only": [
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/0-SOURCE-ADOPTED.json",
+        "bytes": 3971,
+        "sha256": "ff8d8f62c387f28aaefc472c431cb3984fdff488b29748b79d0dd22068f5e953"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/1-SOURCE-ADOPTED.json",
+        "bytes": 9456,
+        "sha256": "8be386ce46d388f060e9d7b86d9010534ae5f7715ce790d2add3457967d79ba3"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/2-SOURCE-ADOPTED.json",
+        "bytes": 7677,
+        "sha256": "0963f69647381e8e1fb95920440c9c9602860da5163bc3c17281fcfa076c7f1a"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/3-SOURCE-ADOPTED.json",
+        "bytes": 3991,
+        "sha256": "d45fd662e432df224cba9cc8a47f26d93a1dd215166bb13f57615fa106329474"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/4-SOURCE-ADOPTED.json",
+        "bytes": 3537,
+        "sha256": "d4a6799f4103cb3ebfab0bb771fcd4817b95f65c832d56bdce563b9669e2e3b9"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/5-SOURCE-ADOPTED.json",
+        "bytes": 3414,
+        "sha256": "8a01696ec3a5675aa45853afea3c4aed7ad64920879e62189c0f09dd9532c72d"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/6-SOURCE-ADOPTED.json",
+        "bytes": 3452,
+        "sha256": "abef40a78275fb6b395efba2f50853ffe5d443edc6982efe27ba38a1db9f0210"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/7-SOURCE-ADOPTED.json",
+        "bytes": 10961,
+        "sha256": "82f9e33e4a731cc2efec9704ab68fdc904811f263b7c8bf38265c4e856b37dbc"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/8-SOURCE-ADOPTED.json",
+        "bytes": 20388,
+        "sha256": "64f40c7eae06d08d93b9ee1edb26f83778b1927be254153cfb8c270fc0ac9fa2"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/9-SOURCE-ADOPTED.json",
+        "bytes": 13570,
+        "sha256": "6b90389531c7bef6be59133c52800de9d1352ad71ad45628ab7ad8e2ee69a13a"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/10-SOURCE-ADOPTED.json",
+        "bytes": 5327,
+        "sha256": "824c9f684036c8212d1c7b860a0bff4df9d9fb1a876053004301cb736b3be0e2"
+      },
+      {
+        "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/11-SOURCE-ADOPTED.json",
+        "bytes": 10676,
+        "sha256": "00b88d7b73dd965cbd42e5b96da2fcb35fde2969d156249fa6525c053f551fd5"
+      }
+    ],
+    "acceptance": "Owner frozen same-JVM new-loader and same-Game LOOP followed by independently verified newSAVE; earlier HANDOFF-SUMMARY PENDING SAVE remains its original cutoff.",
+    "per_leaf_hotpath_hit_or_causal_speedup": "UNKNOWN",
+    "optional_hint": {
+      "status": "restored",
+      "source_report": 53,
+      "kind": "legacy reserve floor",
+      "reserve_floor_nanos": "921454957300",
+      "saved_life_tail_nanos": "0",
+      "qualification": "Availability of legacy floor DATA import only; not exact learned tail, at-use applicability, actual defer success or speed."
+    }
+  },
+  "verification": "Only existing bounded Root/window/current/prior/handoff/close metadata read. Decimal SAVE-to-SAVE arithmetic independently recomputed. No repeated raw event/batch/Save/Driver reads, live query, GET, worker action or new Java. Root preparation frame-selection assertion error is not a business failure.",
+  "sources": [
+    {
+      "local_key": "root/save33555c-verified.json",
+      "bytes": 1326,
+      "sha256": "04d27c3228c17977410bba7c89a0ba5dec1760cde927fec9caad5a90f09bab9f",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "root/save33555c-window.json",
+      "bytes": 1453,
+      "sha256": "67c914b8655734f969fa90050b767d7e9f3452136627877d4b8b186cdb446ab8",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/save33555c-window/SUMMARY.json",
+      "bytes": 3461,
+      "sha256": "205891c945bf7a4504b197d86738eced2ff7daed6e0a757d96df69ec12f21678",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed32652/SUMMARY.json",
+      "bytes": 5991,
+      "sha256": "23b583c91a4e77a98ef09cc6269cc43d79b9811437a77c8503c55463a53a1222",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed33555c/SUMMARY.json",
+      "bytes": 5993,
+      "sha256": "c51a402e24d491b1d0d366899f68141549c7e67e674630b93ba99abf48017d7a",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-cohort329-335-reload/HANDOFF-SUMMARY.json",
+      "bytes": 8912,
+      "sha256": "cb6f88a907a508ec4b70c9ee53a95841fba85b32dcc7c6e158a5ce34e8ce9869",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/post-life-watch33555c/ACTUAL-SAVE.json",
+      "bytes": 753,
+      "sha256": "74bd4f0daa83ac62d2c90cb8fa00c00595f363d91f6f40aa514b8a859b4ce4f3",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed33555c/00001225.json",
+      "bytes": 99881,
+      "sha256": "98a3d9d2affd1147b228a30872663707eb383abbd98291f4a99a377f3bdf8169",
+      "qualification": "Root independently read and verified this named frozen event. Formal writer compared only bounded Root/SUMMARY metadata, not the raw event/Save/Driver body."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed33555c/00001231.json",
+      "bytes": 98876,
+      "sha256": "b415fa3413db44176a515b07642dba63dff25613625927a5a43a1bfcd19ca7e7",
+      "qualification": "Root independently read and verified this named frozen event. Formal writer compared only bounded Root/SUMMARY metadata, not the raw event/Save/Driver body."
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0,
+  "later_delegate_health_inferred": false
+}
