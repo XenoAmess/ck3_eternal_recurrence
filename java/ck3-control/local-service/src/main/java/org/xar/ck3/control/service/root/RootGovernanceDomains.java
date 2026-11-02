@@ -438,9 +438,31 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
         ObjectNode helper,material;
         if(receipt.command().operation().equals(GovernancePolicies.COUNCIL)) {
             var effect=receipt.applied().orElseThrow().observation();var leaf=object(StrictJson.parse(archive.loadMaterial(effect.supportingEvidence().getFirst()).bytes()));
-            var compatible=archive.loadMaterial(ExactRef.fromJson(leaf.get("compatible_material")));material=StrictJson.object();material.set("council_assign_councillor_receipt",StrictJson.parse(compatible.bytes()));
+            var compatibleRef=ExactRef.fromJson(leaf.get("compatible_material"));
+            boolean recovered=NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(StrictJson.text(leaf.get("schema")));
+            if(recovered) {
+                // reduce already ran the installed canonical verifier; select only its unique linked Council leaf.
+                var shared=leaf;var retained=shared.get("supporting_materials");
+                StrictJson.require(retained!=null&&retained.isArray()&&retained.size()==1,"recovered Council requires its sole original chain leaf");
+                var chainRef=ExactRef.fromJson(retained.get(0));
+                StrictJson.require(effect.supportingEvidence().contains(chainRef),"recovered Council chain is outside its exact effect closure");
+                leaf=object(StrictJson.parse(archive.loadMaterial(chainRef).bytes()));
+                StrictJson.require(Objects.equals(shared.get("before"),leaf.get("before"))&&Objects.equals(shared.get("after"),leaf.get("after"))
+                        &&compatibleRef.equals(ExactRef.fromJson(leaf.get("compatible_material"))),"recovered Council chain changed its actual frame/compatible material");
+            }
+            String schema=StrictJson.text(leaf.get("schema"));
+            StrictJson.require((NativeCouncilAssignmentEffects.SCHEMA.equals(schema)
+                    ||recovered&&"xar.java.council-assignment-current-seat-basis/v1".equals(schema))
+                    &&receipt.bodySha256().equals(StrictJson.text(leaf.get("command_body_sha256")))
+                    &&ActionTransitions.attempt(receipt.state()).orElseThrow().requestId().equals(StrictJson.text(leaf.get("original_request_id"))),
+                    "Council material requires its exact registered original chain schema/command/attempt");
+            var continuations=leaf.get("continuations");
+            StrictJson.require(continuations!=null&&continuations.isArray()&&!continuations.isEmpty()
+                    &&continuations.size()<=org.xar.ck3.control.application.action.council.CouncilContinuationModel.MAX_ACTIVE_REQUESTS,
+                    "complete bounded original Council continuation chain required");
+            var compatible=archive.loadMaterial(compatibleRef);material=StrictJson.object();material.set("council_assign_councillor_receipt",StrictJson.parse(compatible.bytes()));
             // The complete canonical verifier above already replayed all statuses. Locate its actual helper terminal ACK.
-            helper=null;for(JsonNode item:leaf.get("continuations")) {var retained=org.xar.ck3.control.application.action.council.CouncilContinuationCodec.decodeEntry(archive.loadMaterial(ExactRef.fromJson(item.get("entry"))).bytes());if(retained.outcome().isPresent()) {var outcome=archive.load(retained.outcome().orElseThrow());if(outcome instanceof NativeActionPort.AckReceived ack) {var result=nativeResult(ack);if(result.has("council_assign_councillor_ack"))helper=result;}}}
+            helper=null;for(JsonNode item:continuations) {var retained=org.xar.ck3.control.application.action.council.CouncilContinuationCodec.decodeEntry(archive.loadMaterial(ExactRef.fromJson(item.get("entry"))).bytes());if(retained.outcome().isPresent()) {var outcome=archive.load(retained.outcome().orElseThrow());if(outcome instanceof NativeActionPort.AckReceived ack) {var result=nativeResult(ack);if(result.has("council_assign_councillor_ack"))helper=result;}}}
             StrictJson.require(helper!=null,"canonical Council continuation lacks its original complete helper ACK");
         } else {
             var evidence=NativeEffectEvidence.load(receipt,archive,context().frameLoader());material=object(StrictJson.parse(evidence.compatibleResult().bytes()));helper=nativeResult(receipt.ack().orElseThrow());
