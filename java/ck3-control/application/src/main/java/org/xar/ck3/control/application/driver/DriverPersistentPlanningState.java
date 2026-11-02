@@ -294,7 +294,14 @@ public final class DriverPersistentPlanningState {
     private static Known withAuxiliary(Known original,Obj auxiliary) {return new Known(original.driver(),original.stamp(),original.originalHistoryBasis(),original.actionRows(),auxiliary,original.loop(),original.observation());}
     private static List<ExactRef> processed(Obj auxiliary,ActionPorts.OutcomeArchive archive) {Obj proof=material(archive,source(auxiliary));return array(proof.get("processed"),"processed").stream().map(DriverPersistentPlanningState::reference).toList();}
     private static Frame from(org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity value) {var frame=value.frame();return new Frame(frame.identity().player(),frame.episodeRunId(),frame.identity().dateRaw(),frame.identity().nativeRevision(),BigInteger.valueOf(value.game().pid()),Optional.of(frame.snapshotId()));}
-    private static Complete rebuild(Obj basis,ActionPorts.OutcomeArchive archive) {ExactRef manifest=reference(basis.get("manifest")),nativeRef=reference(basis.get("native"));RawJson body=archive.loadMaterial(manifest);var nativeFrame=DriverObservationEvidenceReader.nativeFrame(manifest,body,archive.loadNativeFrame(nativeRef));var driver=archive.loadMaterial(DriverObservationEvidenceReader.currentDriverReference(manifest,body));var facts=DriverObservationEvidenceReader.decode(manifest,body,driver,nativeFrame);var result=new DriverObservationAssembler().assemble(nativeFrame,facts,nativeRef);require(result instanceof Complete,"persistent source full Driver/native replay unavailable");return (Complete)result;}
+    private static Complete rebuild(Obj basis,ActionPorts.OutcomeArchive archive) {
+        ExactRef manifest=reference(basis.get("manifest")),nativeRef=reference(basis.get("native"));
+        RawJson body=archive.loadMaterial(manifest);
+        byte[] nativeBytes=archive.loadNativeFrame(nativeRef);
+        var driver=archive.loadMaterial(DriverObservationEvidenceReader.currentDriverReference(manifest,body));
+        var result=DriverObservationEvidenceReader.replayOriginals(manifest,body,driver,nativeBytes,nativeRef);
+        require(result instanceof Complete,"persistent source full Driver/native replay unavailable");return (Complete)result;
+    }
     private static ExactRef source(Obj auxiliary) {return reference(auxiliary.get(COOLDOWN_SOURCE));}
     private static Obj material(ActionPorts.OutcomeArchive archive,ExactRef reference) {RawJson raw=archive.loadMaterial(reference);exact(reference,raw.bytes());return DriverJson.object(raw.bytes(),StrictJson.EXPLICIT_MAX_BYTES);}
     private static Obj node(com.fasterxml.jackson.databind.JsonNode value) {return object(parse(StrictJson.canonical(value)),"typed state");}

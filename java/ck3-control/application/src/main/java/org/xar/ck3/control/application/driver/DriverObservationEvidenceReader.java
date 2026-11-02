@@ -78,9 +78,33 @@ public final class DriverObservationEvidenceReader {
                 OpportunityJson.object(row.get("original_semantic_fields"),"original_semantic_fields"),manifestReference);
     }
 
+    /** Pure same-call replay from captured originals; no archive callback or permission is retained. */
+    public static DriverObservationAssembler.Result replayOriginals(ExactRef manifestReference,RawJson manifest,
+            RawJson fullDriver,byte[] framedNative,ExactRef nativeReference) {
+        Objects.requireNonNull(fullDriver);
+        var row=checkedManifest(manifestReference,manifest);
+        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                "bounded archived original native frame required");
+        // This private copy cannot change between framing/hash checks and the constructed immutable frame.
+        var actual=nativeFrame(row,framedNative.clone());
+        byte[] driverBytes=fullDriver.bytes();
+        requireExact(reference(row.get("driver_ref")),driverBytes,"archived complete Driver");
+        var driver=DriverStateSnapshot.decodeComplete(driverBytes);
+        G2Source source=source(row.get("source"));
+        StrictJson.require(driver.session().bridgePid()==actual.session().game().pid()
+                && source.machineId().equals(actual.session().machineId()),"archived Driver/source crossed actual Game");
+        var facts=new DriverObservationFacts(driver,longInteger(row,"driver_version",0),longInteger(row,"episode_epoch",0),actual.session(),
+                actual.snapshotId(),actual.nativeRevision(),string(row,"native_state_sha256"),
+                OpportunityJson.integer(row.get("public_revision"),"public_revision"),longInteger(row,"observation_version",1),source,
+                OpportunityJson.object(row.get("original_semantic_fields"),"original_semantic_fields"),manifestReference);
+        return new DriverObservationAssembler().assemble(actual,facts,nativeReference);
+    }
+
     /** Reconstructs the original received frame using exact token byte offsets; lexical numeric tokens are retained. */
     public static NativeObservationPort.ObservedFrame nativeFrame(ExactRef manifestReference,RawJson manifest,byte[] framedNative) {
-        var row=checkedManifest(manifestReference,manifest);
+        return nativeFrame(checkedManifest(manifestReference,manifest),framedNative);
+    }
+    private static NativeObservationPort.ObservedFrame nativeFrame(OpportunityJson.Obj row,byte[] framedNative) {
         StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
                 "bounded archived original native frame required");
         int length=ByteBuffer.wrap(framedNative,0,4).order(ByteOrder.LITTLE_ENDIAN).getInt();
@@ -113,8 +137,8 @@ public final class DriverObservationEvidenceReader {
         return new ExactRef(string(ref,"path"),longInteger(ref,"bytes",0),string(ref,"sha256"));
     }
     private static OpportunityJson.Obj checkedManifest(ExactRef reference,RawJson manifest) {
-        Objects.requireNonNull(manifest);requireExact(reference,manifest.bytes(),"semantic facts manifest");
-        var row=DriverJson.object(manifest.bytes(),DriverJson.MAX_NATIVE_BYTES);
+        Objects.requireNonNull(manifest);byte[] bytes=manifest.bytes();requireExact(reference,bytes,"semantic facts manifest");
+        var row=DriverJson.object(bytes,DriverJson.MAX_NATIVE_BYTES);
         StrictJson.require(row.members().keySet().equals(FIELDS) && SCHEMA.equals(string(row,"schema")),"exact semantic evidence manifest contract required");
         return row;
     }
