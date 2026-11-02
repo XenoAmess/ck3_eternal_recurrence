@@ -18,6 +18,9 @@ public final class HashInsert188Api {
     /** Every callback receives the identical Memory. Only source-established arguments are projected. */
     public interface Ports {
         int equal3f6d2b0(Memory memory, long siteRva, long rcx, long rdx);
+        default int equal3f6d2b0(Memory memory, long siteRva, long rcx, long rdx, long sourceEntryRsp) {
+            return equal3f6d2b0(memory, siteRva, rcx, rdx);
+        }
         void copy855f00(Memory memory, long siteRva, long rcx, long rdx);
         void assign855db0(Memory memory, long siteRva, long rcx, long rdx, long r8);
         void rehashC3a400(Memory memory, long siteRva, long map);

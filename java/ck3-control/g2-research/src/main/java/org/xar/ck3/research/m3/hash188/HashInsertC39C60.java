@@ -28,7 +28,7 @@ public final class HashInsertC39C60 {
                 if(Long.compareUnsigned(bucketCapacity,0x10L)>=0) right=m.readPointer(right);
                 long left=descriptor;
                 if(Long.compareUnsigned(descriptorCapacity,0x10L)>=0) left=m.readPointer(descriptor);
-                if((p.equal3f6d2b0(m,0xC39CCAL,left,right)&0xFF)!=0) {
+                if((p.equal3f6d2b0(m,0xC39CCAL,left,right,in.scratch().bodyRsp()-8L)&0xFF)!=0) {
                     m.writeInt64(output,bucket);
                     m.write8(output+8L,0);
                     return output;
