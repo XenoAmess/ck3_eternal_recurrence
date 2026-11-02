@@ -15,6 +15,7 @@ import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complet
 import org.xar.ck3.control.application.readiness.ReadinessAuthority;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.governance.council.CouncilActionCodec;
 import org.xar.ck3.control.governance.council.CouncilPrivateCodec;
@@ -107,21 +108,63 @@ public final class RootCouncilRecoverySeatReader {
                     &&old.request().operation().equals(contract.operation())&&old.request().before().equals(frame.identity())
                     &&old.request().source().equals(frame.source())&&old.request().sessionId().equals(frame.sessionId()),
                     "retained Council read checkpoint changed its actual tuple/contract/source");
-            if(old.known().isEmpty()) {
+            var reference=old.known().isPresent()?old.known():knownNavigation(original,checkpoint,old);
+            if(reference.isEmpty()) {
                 // Only this exact previous ID may be collected. An absent outcome never permits another QUERY.
                 var actual=context.transport().collectOriginalOutcome(old.requestId(),deadline);
                 if(actual.isPresent())original.seatReadLifecycle().received(same,contract,old.request(),old.requestId(),actual.orElseThrow());
                 throw new IOException("original Council seat read remains collect-only; request_id="+old.requestId());
             }
-            var receipt=bound.loadRead(old.known().orElseThrow());
+            var receipt=bound.loadRead(reference.orElseThrow());
             StrictJson.require(receipt.contractId().equals(old.contractId())&&receipt.request().equals(old.request())
-                    &&receipt.requestId().equals(old.requestId())&&bound.readReferenceOf(receipt).equals(old.known().orElseThrow())
+                    &&receipt.requestId().equals(old.requestId())&&bound.readReferenceOf(receipt).equals(reference.orElseThrow())
                     &&bound.requestReferenceOf(contract.prepare(receipt.request(),receipt.requestId())).equals(old.prepared())
                     &&old.outcome().filter(bound.referenceOf(receipt.original())::equals).isPresent(),
                     "retained Council read differs from its complete original checkpoint");
-            contract.decode(receipt);result.add(receipt);
+            NativeRecordedEvidenceVerifier.requireRead(receipt,bound);
+            var decoded=contract.decode(receipt);
+            if(old.known().isEmpty()) {
+                original.requireCurrent();
+                original.seatReadLifecycle().known(same,contract,new PlanningReadResult.Known<>(decoded,receipt,reference.orElseThrow()));
+                StrictJson.require(original.seatCheckpoint().orElseThrow().reads().stream().anyMatch(
+                        saved->saved.requestId().equals(old.requestId())&&saved.known().equals(reference)),
+                        "actual recovered known read was not canonically checkpointed");
+            }
+            result.add(receipt);
         }
         original.requireCurrent();return List.copyOf(result);
+    }
+
+    /** Machine-local immutable original locators are DATA hints, never source or Native permission. */
+    private Optional<ExactRef> knownNavigation(CouncilContinuationCoordinator.RecoveryOriginal original,
+            CouncilContinuationCoordinator.SeatCheckpoint checkpoint,CouncilContinuationCoordinator.SeatRead expected)throws IOException {
+        String configured=System.getProperty("xar.ck3.council.known-read-navigation");
+        if(configured==null)return Optional.empty();
+        var path=java.nio.file.Path.of(configured);
+        StrictJson.require(path.isAbsolute(),"known read navigation requires an explicit absolute machine-local path");
+        byte[] bytes;
+        try(var input=java.nio.file.Files.newInputStream(path)){bytes=input.readNBytes(65537);}
+        StrictJson.require(bytes.length<=65536,"finite known read navigation document required");
+        var document=StrictJson.object(StrictJson.parse(bytes,65536),java.util.Set.of("schema","machine_id","entries"));
+        StrictJson.require("xar.ck3.council-known-read-navigation/v1".equals(StrictJson.text(document.get("schema")))
+                &&original.command().before().machineId().equals(StrictJson.text(document.get("machine_id")))
+                &&document.get("entries").isArray()&&document.get("entries").size()>0&&document.get("entries").size()<=16,
+                "known read navigation belongs to another machine or is unbounded");
+        Optional<ExactRef> found=Optional.empty();
+        for(var item:document.get("entries")) {
+            var entry=StrictJson.object(item,java.util.Set.of("action_id","body_sha256","tuple_ref","contract_id","request_id","prepared_ref","outcome_ref","known_ref"));
+            if(!expected.requestId().equals(StrictJson.text(entry.get("request_id"))))continue;
+            StrictJson.require(found.isEmpty()
+                    &&original.command().actionId().equals(StrictJson.text(entry.get("action_id")))
+                    &&ActionCodec.bodySha256(original.command()).equals(StrictJson.text(entry.get("body_sha256")))
+                    &&checkpoint.tuple().equals(ExactRef.fromJson(entry.get("tuple_ref")))
+                    &&expected.contractId().equals(StrictJson.text(entry.get("contract_id")))
+                    &&expected.prepared().equals(ExactRef.fromJson(entry.get("prepared_ref")))
+                    &&expected.outcome().filter(ExactRef.fromJson(entry.get("outcome_ref"))::equals).isPresent(),
+                    "known read navigation differs from its exact canonical original/tuple/PREPARED/ACK");
+            found=Optional.of(ExactRef.fromJson(entry.get("known_ref")));
+        }
+        return found;
     }
 
     /** Received retains actual originals inside the physical scope; canonical commits occur after it closes. */
