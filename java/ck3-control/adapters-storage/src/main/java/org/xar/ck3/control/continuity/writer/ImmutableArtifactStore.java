@@ -258,7 +258,7 @@ public final class ImmutableArtifactStore {
             data = LedgerFiles.lease(bound.payload().reference(), maximum);
             PublicationLease lease = new PublicationLease(metadata, data, bound);
             Published actual = readLeasedPublication(lease, expected, maximum);
-            long retainedBytes = Math.multiplyExact(2L, Math.addExact(actual.data().pin().reference().bytes(), actual.metadata().pin().reference().bytes()));
+            long retainedBytes = Math.addExact(data.retainedBytes(), metadata.retainedBytes());
             reads.requireActive();
             if (retainedBytes <= reads.maximumBytes - reads.bytes) {
                 reads.entries.put(expected, lease); reads.bytes += retainedBytes; retained = true;

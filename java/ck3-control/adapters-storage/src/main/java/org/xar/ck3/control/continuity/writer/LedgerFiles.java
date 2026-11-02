@@ -53,6 +53,7 @@ final class LedgerFiles {
             return document;
         }
         @Override public void close() throws IOException { lease.close(); }
+        long retainedBytes() { return document.bytes.length; }
     }
     static LeasedDocument lease(Path path, int maximum) throws IOException {
         IdentityBearingFileAttributes.ReadOnlyLease lease = IdentityBearingFileAttributes.leaseBoundedWindows(path, maximum);
@@ -64,6 +65,7 @@ final class LedgerFiles {
                     after.lastModifiedTime().toInstant().toString(), after.size());
             byte[] raw = observed.bytes();
             Document document = new Document(new Pin(new ExactRef(path.toAbsolutePath().normalize().toString(), raw.length, sha(raw)), identity), raw);
+            lease.releaseOriginalBytes();
             return new LeasedDocument(lease, document);
         } catch (IOException | RuntimeException | Error failure) {
             try { lease.close(); } catch (IOException closing) { failure.addSuppressed(closing); }

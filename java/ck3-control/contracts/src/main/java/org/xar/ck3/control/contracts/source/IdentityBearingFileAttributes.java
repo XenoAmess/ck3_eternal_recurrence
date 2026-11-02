@@ -145,11 +145,19 @@ public final class IdentityBearingFileAttributes {
         }
         /** Captured acquisition DATA, not a new current-permission or pathname qualification. */
         public BoundedFileRead originalRead() throws IOException {
-            requireOpen(); return new BoundedFileRead(initial, bytes.clone());
+            requireOpen();
+            if (bytes == null) throw new IOException("read lease content was retired");
+            return new BoundedFileRead(initial, bytes.clone());
         }
         public BoundedFileRead read() throws IOException {
             BasicFileAttributes actual = verifyCurrent();
+            if (bytes == null) throw new IOException("read lease content was retired");
             return new BoundedFileRead(actual, bytes.clone());
+        }
+        /** Retire captured content only; custody/current qualification and close remain active. */
+        public void releaseOriginalBytes() throws IOException {
+            requireOpen();
+            bytes = null;
         }
         @Override public void close() throws IOException {
             if (Thread.currentThread() != thread) throw new IOException("read lease close crossed its owner thread");
