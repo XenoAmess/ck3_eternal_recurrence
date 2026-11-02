@@ -40,9 +40,9 @@ public final class FullJsonTree {
                     + " callers=" + frames);
         }
         try {
-            String text = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
-                    .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(original)).toString();
-            try (JsonParser parser = FACTORY.createParser(text)) {
+            var buffer = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(original));
+            try (JsonParser parser = buffer.hasArray() ? FACTORY.createParser(buffer.array(), buffer.arrayOffset() + buffer.position(), buffer.remaining()) : FACTORY.createParser(buffer.toString())) {
                 StrictJson.require(parser.nextToken() != null, "complete JSON value required");
                 JsonNode result = read(parser, 0);
                 StrictJson.require(parser.nextToken() == null, "trailing complete JSON rejected");
