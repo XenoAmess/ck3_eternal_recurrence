@@ -87,17 +87,33 @@ public final class DriverObservationEvidenceReader {
                 "bounded archived original native frame required");
         // This private copy cannot change between framing/hash checks and the constructed immutable frame.
         var actual=nativeFrame(row,framedNative.clone());
+        var facts=replayFacts(manifestReference,row,fullDriver,actual);
+        return new DriverObservationAssembler().assemble(actual,facts,nativeReference);
+    }
+
+    /** Pure full projection also preserves death/unavailable scopes; the caller retains its production assembler. */
+    public static DriverObservationAssembler.FullSnapshot projectOriginals(ExactRef manifestReference,RawJson manifest,
+            RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,DriverObservationAssembler actualAssembler) {
+        Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
+        var row=checkedManifest(manifestReference,manifest);
+        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                "bounded archived original native frame required");
+        var actual=nativeFrame(row,framedNative.clone());
+        var facts=replayFacts(manifestReference,row,fullDriver,actual);
+        return actualAssembler.projectFull(actual,facts,nativeReference);
+    }
+    private static DriverObservationFacts replayFacts(ExactRef manifestReference,OpportunityJson.Obj row,
+            RawJson fullDriver,NativeObservationPort.ObservedFrame actual) {
         byte[] driverBytes=fullDriver.bytes();
         requireExact(reference(row.get("driver_ref")),driverBytes,"archived complete Driver");
         var driver=DriverStateSnapshot.decodeComplete(driverBytes);
         G2Source source=source(row.get("source"));
         StrictJson.require(driver.session().bridgePid()==actual.session().game().pid()
                 && source.machineId().equals(actual.session().machineId()),"archived Driver/source crossed actual Game");
-        var facts=new DriverObservationFacts(driver,longInteger(row,"driver_version",0),longInteger(row,"episode_epoch",0),actual.session(),
+        return new DriverObservationFacts(driver,longInteger(row,"driver_version",0),longInteger(row,"episode_epoch",0),actual.session(),
                 actual.snapshotId(),actual.nativeRevision(),string(row,"native_state_sha256"),
                 OpportunityJson.integer(row.get("public_revision"),"public_revision"),longInteger(row,"observation_version",1),source,
                 OpportunityJson.object(row.get("original_semantic_fields"),"original_semantic_fields"),manifestReference);
-        return new DriverObservationAssembler().assemble(actual,facts,nativeReference);
     }
 
     /** Reconstructs the original received frame using exact token byte offsets; lexical numeric tokens are retained. */

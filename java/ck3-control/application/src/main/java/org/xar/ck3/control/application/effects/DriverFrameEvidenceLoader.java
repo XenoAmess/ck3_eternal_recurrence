@@ -19,10 +19,9 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     public DriverObservationAssembler.FullSnapshot loadFull(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
         var manifest = archive.loadFullMaterial(basis.driverFacts()); RootGuardChecks.exact(basis.driverFacts(), manifest.bytes());
         byte[] nativePacket = archive.loadNativeFrame(basis.nativeFrame()); RootGuardChecks.exact(basis.nativeFrame(), nativePacket);
-        var actual = DriverObservationEvidenceReader.nativeFrame(basis.driverFacts(), manifest, nativePacket);
         var driverReference = DriverObservationEvidenceReader.currentDriverReference(basis.driverFacts(), manifest);
         var driver = archive.loadFullMaterial(driverReference); RootGuardChecks.exact(driverReference, driver.bytes());
-        var facts = DriverObservationEvidenceReader.decode(basis.driverFacts(), manifest, driver, actual);
-        return assembler.projectFull(actual, facts, basis.nativeFrame());
+        return DriverObservationEvidenceReader.projectOriginals(basis.driverFacts(), manifest, driver, nativePacket,
+                basis.nativeFrame(), assembler);
     }
 }
