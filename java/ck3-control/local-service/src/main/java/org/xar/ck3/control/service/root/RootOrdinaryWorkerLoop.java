@@ -9,6 +9,11 @@ import java.util.Optional;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.action.OperationKey;
 import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionObservationWindow;
+import org.xar.ck3.control.application.action.ActionTransitions;
+import org.xar.ck3.control.application.action.NativeActionPort;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
@@ -147,6 +152,22 @@ public final class RootOrdinaryWorkerLoop {
                 break;
             }
 
+            if (report.terminal() == BatchReport.Terminal.CHECKPOINT_UNKNOWN && currentSession.controller().isQuarantined()) {
+                try {
+                    if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
+                    boolean recovered = currentSession.execution().recoverCheckpointStability(report, sequence,
+                            clock.instant().plus(ActionObservationWindow.MAXIMUM_WINDOW));
+                    if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
+                    if (recovered && !currentSession.controller().isQuarantined()) continue;
+                } catch (InterruptedException failure) {
+                    Thread.currentThread().interrupt(); stopReason = StopReason.INTERRUPTED;
+                    failureDetail = Optional.of(failure.toString()); break;
+                } catch (IOException | RuntimeException failure) {
+                    stopReason = StopReason.TERMINAL_FAILURE;
+                    failureDetail = Optional.of(failure.toString()); break;
+                }
+                // Unqualified or still-unconfirmed originals retain the original failure path below.
+            }
             if (report.terminal() == BatchReport.Terminal.WALL_TIMEOUT
                     && currentSession.controller().isQuarantined() && appliedLifeAtWall(report).isPresent()) {
                 try {
@@ -260,6 +281,8 @@ public final class RootOrdinaryWorkerLoop {
 
     interface BatchCall {
         BatchReport batch(BatchLimits limits) throws IOException, InterruptedException;
+        default boolean recoverCheckpointStability(BatchReport report, long nextBatchSequence, Instant deadline)
+                throws IOException, InterruptedException { return false; }
         default boolean recoverWallBoundary(BatchReport report, long nextBatchSequence, Instant deadline)
                 throws IOException, InterruptedException { return false; }
     }
@@ -273,12 +296,63 @@ public final class RootOrdinaryWorkerLoop {
                 @Override public BatchReport batch(BatchLimits limits) throws IOException, InterruptedException {
                     return root.batch(limits);
                 }
+                @Override public boolean recoverCheckpointStability(BatchReport report, long nextBatchSequence, Instant deadline)
+                        throws IOException, InterruptedException {
+                    return recoverRetainedSaveStability(root, report, nextBatchSequence, deadline);
+                }
                 @Override public boolean recoverWallBoundary(BatchReport report, long nextBatchSequence, Instant deadline)
                         throws IOException, InterruptedException {
                     return recoverRetainedWallCycle(root, report, nextBatchSequence, deadline);
                 }
             });
         }
+    }
+
+    /** One bounded collection of this live Root's original ACK SAVE; no batch or command deadline is extended. */
+    private boolean recoverRetainedSaveStability(RootApplicationSession root, BatchReport report,
+            long nextBatchSequence, Instant deadline) throws IOException, InterruptedException {
+        var controller = root.controllerForPublication();
+        if (report.terminal() != BatchReport.Terminal.CHECKPOINT_UNKNOWN || !report.session().equals(root.identity())
+                || controller.lastReport().filter(report::equals).isEmpty() || !controller.isQuarantined()
+                || controller.isRunning() || controller.isRetired() || control.stopRequested()
+                || !clock.instant().isBefore(deadline)) return false;
+        var retained = root.withPublicStandaloneRead(deadline, same -> {
+            var data = root.batchJournal().readUnresolvedSameGame(same, root.identity());
+            var head = same.head();
+            StrictJson.require(data.canonicalSequence() == head.state().sequence()
+                    && data.canonicalHeadDigest().equals(head.digest()), "warm SAVE DATA changed its actual head");
+            StrictJson.require(data.capturedController().owner().equals(report.session())
+                    && data.nextBatchSequence() == nextBatchSequence && nextBatchSequence > 0
+                    && data.usedBatches().contains(report.batchId())
+                    && report.batchId().equals(data.capturedController().batchPrefix() + "-" + (nextBatchSequence - 1)),
+                    "warm SAVE DATA changed its actual owner or interrupted batch");
+            if (data.retainedHistory().isEmpty() || data.retainedHistory().orElseThrow().cycleSemantic().isEmpty()
+                    || data.capturedController().savedPair().isEmpty() || data.unresolvedActions().size() != 1
+                    || !awaitsSecondStableSave(data.unresolvedActions().getFirst()))
+                return Optional.<ContinuityBatchJournal.UnresolvedSameGameData>empty();
+            return Optional.of(data);
+        });
+        if (retained.isEmpty() || control.stopRequested() || !clock.instant().isBefore(deadline)) return false;
+        var data = retained.orElseThrow();var original = data.unresolvedActions().getFirst();
+        // Release the DATA reader's borrowed writer before using this same live Controller's original reconciliation.
+        ActionReceipt actual = root.reconcileUnresolvedOriginal(data, deadline);
+        if (!actual.settled() && awaitsSecondStableSave(actual) && !control.stopRequested()
+                && clock.instant().isBefore(deadline)) actual = root.reconcileUnresolvedOriginal(data, deadline);
+        return actual.settled() && actual.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                && actual.bodySha256().equals(original.bodySha256())
+                && java.util.Arrays.equals(ActionCodec.encodeCommand(actual.command()), ActionCodec.encodeCommand(original.command()))
+                && root.controllerForPublication() == controller && !controller.isQuarantined() && !controller.isRetired()
+                && controller.savedPair().filter(pair -> pair.saveActionId().equals(original.command().actionId())).isPresent();
+    }
+
+    /** Eligibility DATA only; the existing original observer, physical pair and canonical SAVE commit remain mandatory. */
+    static boolean awaitsSecondStableSave(ActionReceipt actual) {
+        if (!(actual.state() instanceof ActionState.Unknown unknown)
+                || !unknown.reason().equals("SAVE awaits second stable physical observation")
+                || !ContinuityBatchJournal.isReadOnlySaveRecovery(actual)) return false;
+        var dispatch = ActionTransitions.dispatch(actual.state());
+        return dispatch.isPresent() && dispatch.orElseThrow() instanceof NativeActionPort.AckReceived ack
+                && ack.outbound().isPresent();
     }
 
     private boolean recoverRetainedWallCycle(RootApplicationSession root, BatchReport report,
