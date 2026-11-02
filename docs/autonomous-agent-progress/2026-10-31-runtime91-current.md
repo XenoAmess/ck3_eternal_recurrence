@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+## 2026-11-02 06:31Z 后到切点：399确认累计61日，Main301同worker继续至next18
+
+393真实SETTLE后，399于06:30:18.407256300Z SAVE_CONFIRMED；同Game77132／原birth、actor31254／同session，saved date53147448／pair211/170／cycle11／pending=null，累计61＝旧38＋8＋7＋8。`save-confirmed30117` 两冻结event为393／100008B／SHA `dda6df782a5c11bc15396b016b40a6ff7c480788c1f1747f8b146823eed21914`、399／99002B／SHA `5599de58f7f3cbb3eb876b9a0bdee0332bbbb90a43ce58d6183926492d276391`；实际SETTLE与SAVE、完整pair和后态已核，与Root `save30117-verified.json` 独验相符。后到 `save30116-verified.json` 也独验前段363/369，原53日发表切点不回写。`recovery-outcome30108` 薄SUMMARY／冻结HEAD核等：06:31:16.487681Z head402 running／completed11／pending=null／BATCH_STARTED18；三批薄report分别saved8/7/8、TURN_BOUND且dirty=false。运行岗报告同PID73928，后继健康不外推。
+
+主184 SAVE→399完整23647.391202100秒／新增23日＝1028.147443569565217391304348秒／日；全Root epoch34772.407256300秒／61日＝570.0394632180327868852459016秒／日，失败、准备、冷恢复和等待全计入，均未达10秒。337→399完整1035.154900100秒／新增15日＝69.01032667333333333333333333秒／日及369→399的495.550751900／8＝61.9438439875秒／日仅连续子窗，不替代主窗口。旧38／46／53及全部历史字节保留；本次仅具名冻结原件与薄metadata，0新Java／HTTP／Game查询、Save／Driver大读、动作、部署或重启，不门Runtime。此稿固定399切点，更晚SAVE另行记账。
+
 ## 2026-11-02 06:24Z 截止：同一 Main301 已确认累计53日保存，旧38日与首次46日切点保留
 
 同一原版 Game77132／birth134380410301009189、actor31254／同session继续。Main301／Java73928／birth134380728856015988于06:01:25.600644Z实际START，06:02:34.802174300Z真实LOOP。331在06:11:40.411591400Z SETTLE／ELIGIBLE_ADVANCE后，337于06:13:03.252356200Z真实SAVE_CONFIRMED：date53147088、pair native177/public136、saved-cycle9／pending=null，累计46日＝旧38＋新8。331原件100004B／SHA `cbab692be828121bc2e4ba787b56795f86c74cb73258cc0df59d91705d7a3905`，337原件98995B／SHA `aead42fc74a42b5ebdee9179790894527ab1e8936d3e5f701be33b7310bfdbef`；Runtime `save-confirmed301/SUMMARY.json` 与Root `save301-verified.json` 两具名事件独验相符。batch15的已冻结完整reportline24为TURN_BOUND／本批saved8／dirty=false／next16，head339 running只是该时点。
