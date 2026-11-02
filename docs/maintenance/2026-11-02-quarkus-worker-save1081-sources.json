@@ -1,0 +1,91 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T17:52:21.467107600Z",
+  "prior_published_cutoff_retained": {
+    "event": 1023,
+    "total_saved_days": 197
+  },
+  "SAVE_CONFIRMED": {
+    "event": 1081,
+    "SETTLE_event": 1075,
+    "new_saved_days": 7,
+    "total_saved_days": 204,
+    "date_raw": "53150880",
+    "native_revision": 604,
+    "public_revision": 546,
+    "completed_cycles": 30,
+    "pending_receipt": null
+  },
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "performance": {
+    "primary_window": "SAVE1023 -> SAVE1081; complete wall, including batch45 exit4, original cancellation, preparation, same-JVM reload/recovery and all batch46 waiting",
+    "full_wall_seconds": "3315.308890200",
+    "new_saved_days": 7,
+    "seconds_per_new_saved_day": "473.6155557428571428571428571",
+    "root_epoch_seconds": "75695.467107600",
+    "root_epoch_total_saved_days": 204,
+    "root_epoch_seconds_per_saved_day": "371.0562113117647058823529412",
+    "root_epoch_metric_role": "Cumulative secondary metric, never this window denominator",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "causal_speedup_proved": false
+  },
+  "source_adoption_and_recovery": {
+    "authority": "Root/Runtime existing actual owner report accompanying this independently verified SAVE cutoff; full per-leaf source/activation refs are not held by this formal metadata reader at publication cutoff.",
+    "same_Java_host_pid": 81616,
+    "new_delegate_instance_prefix": "2a95",
+    "coherent_sources_adopted": 6,
+    "reported_new_loader_UTC_to_second": "2026-11-02T17:20:49Z",
+    "reported_LOOP_UTC_to_second": "2026-11-02T17:35:09Z",
+    "reported_cold_recovery_seconds": "859.808",
+    "reported_preparation_seconds": "196.5",
+    "failed_batch45_terminal": "exit4",
+    "original_cancel_count_reported": 1,
+    "new_game_or_replayed_old_control_granted": false,
+    "not_yet_adopted_at_SAVE_cutoff": [
+      "life-budget318",
+      "bulk-child-qualification319",
+      "known-driver321"
+    ],
+    "per_leaf_hotpath_hits": "UNKNOWN",
+    "per_leaf_causal_speedup": "UNKNOWN"
+  },
+  "verification": "Root independently verified1075/1081 named frozen SETTLE/SAVE events. Writer checked only existing bounded Root receipt and current/prior frozen SUMMARY metadata and recomputed exactDecimal UTC arithmetic. Owner-reported adoption/failure/recovery observations are separately attributed; no new Game/GET/Java query, event/batch/Save/Driver body read, worker action or future health assertion.",
+  "sources": [
+    {
+      "local_key": "root/save31947-verified.json",
+      "bytes": 1324,
+      "sha256": "1777693b3cb93bc966f0513a44927fb63ca8787b597ee1b9cdd31351cbcc20d0",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31947/SUMMARY.json",
+      "bytes": 5991,
+      "sha256": "e31880e0be7feb848dd648ac4e8914f5d08bd2d9af1a9637aff7d8915334cc6a",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31445/SUMMARY.json",
+      "bytes": 5991,
+      "sha256": "1e74c4d0769edb55e6c868afcf1b593c40a4532eef01a3696cea7cbe28fa3a33",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31947/00001075.json",
+      "bytes": 99878,
+      "sha256": "e6e1cf61411ff78153ebb3aa469356944c6f2976200624bcbf61b40912ee40b9",
+      "qualification": "Root independently verified this named frozen event. Formal writer used the existing Root receipt and bounded SUMMARY; no repeated event/Save/Driver body read."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31947/00001081.json",
+      "bytes": 98873,
+      "sha256": "a9f85b3a422541c94c2608c2a3d89206fcffd3d3b3a26dbba1bd0b2f30d3b889",
+      "qualification": "Root independently verified this named frozen event. Formal writer used the existing Root receipt and bounded SUMMARY; no repeated event/Save/Driver body read."
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0,
+  "later_delegate_health_inferred": false
+}
