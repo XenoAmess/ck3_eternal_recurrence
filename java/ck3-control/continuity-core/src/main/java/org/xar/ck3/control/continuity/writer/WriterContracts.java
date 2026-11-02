@@ -77,8 +77,21 @@ public final class WriterContracts {
 
     public record Request(String kind, byte[] details, List<ExactRef> evidence) {
         public Request {
-            StrictJson.text(kind); details = canonical(details); evidence = List.copyOf(evidence);
-            ObjectNode row = object(details);
+            StrictJson.text(kind);
+            ObjectNode row;
+            if (kind.equals(DRIVER_ACTION_HISTORY_KIND)) {
+                // Optimized path: parse once, canonicalize, reuse tree.
+                // Keep original null guard before the first full parse.
+                // Preserves DOCUMENT_MAX_BYTES input limit and canonical output validation.
+                row = object(Objects.requireNonNull(details));
+                details = ContinuityJson.canonical(row);
+                evidence = List.copyOf(evidence);
+            } else {
+                // Original path for all other kinds.
+                details = canonical(details);
+                evidence = List.copyOf(evidence);
+                row = object(details);
+            }
             StrictJson.text(row.get("evidence_id"));
             var source = row.get("source");
             StrictJson.require(source != null && !source.isNull() && !source.isMissingNode()
