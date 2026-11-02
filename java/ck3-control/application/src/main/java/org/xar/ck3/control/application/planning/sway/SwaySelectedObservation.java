@@ -21,7 +21,7 @@ public final class SwaySelectedObservation {
     public SwayObservationReads.DirectBatch read(ContinuityStorePort.Session same,SwayActionLifecycle.View current,SwayObservationReads.DirectQuery query)throws IOException {
         require(query.subject().actors().actorCharacterId()==current.before().frame().identity().player().longValueExact(),"direct Sway read crossed current player");
         var definition=definitions.direct(query);var result=reads.read(same,definition,new PlanningReadRequest(current.before(),current.source(),current.sessionId(),definition.operation(),SwayObservationReads.arguments(query),current.deadline()));
-        if(!(result instanceof PlanningReadResult.Known<SwayObservationReads.DirectPlane> known))throw new IOException("actual direct Sway native observation unavailable");
+        if(!(result instanceof PlanningReadResult.Known<SwayObservationReads.DirectPlane> known))throw unavailable(result);
         var originals=archive.withSession(same);NativeRecordedEvidenceVerifier.requireRead(known.receipt(),originals);
         require(known.receipt().request().before().equals(current.before())&&known.receipt().request().source().equals(current.source())&&known.receipt().request().sessionId().equals(current.sessionId()),"direct Sway original crossed full frame/source/session");
         var batch=new SwayObservationReads.DirectBatch(known.value(),Optional.empty());var actors=query.subject().actors();var ledger=domain.load(same).ledger();
@@ -37,5 +37,17 @@ public final class SwaySelectedObservation {
         var change=new SwayFormalState.LifecycleObserved(observed);var reduced=SwayFormalState.reduce(ledger,change);
         if(!java.util.Arrays.equals(SwayFormalCodec.encode(ledger),SwayFormalCodec.encode(reduced)))domain.commit(same,change,new SwayTransitionCodec.Proofs(List.of(originals.readReferenceOf(known.receipt())),Optional.empty(),Optional.empty()));
         return new SwayObservationReads.DirectBatch(batch.primary(),Optional.of(composition.wire()));
+    }
+    static IOException unavailable(PlanningReadResult<?> actual) {
+        String detail = "actual direct Sway native observation unavailable";
+        if (actual instanceof PlanningReadResult.Unavailable<?> unavailable) {
+            String reason = unavailable.reason();
+            if (reason.codePointCount(0, reason.length()) > 2048) {
+                int end = reason.offsetByCodePoints(0, 2048);
+                reason = reason.substring(0, end) + "...";
+            }
+            detail = detail + ": " + reason;
+        }
+        return new IOException(detail);
     }
 }
