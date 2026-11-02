@@ -1260,6 +1260,70 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 ? Optional.of(unresolved.getFirst()) : Optional.empty();
     }
 
+    /** Pure DATA selection of one original Council UNKNOWN; no current or submission authority. */
+    public static Optional<ActionReceipt> readOnlyPositiveAckCouncilRecoveryRoot(java.util.List<ActionReceipt> canonicalActions) {
+        try {
+            var unresolved=java.util.List.copyOf(canonicalActions).stream().filter(action->!action.settled()).toList();
+            if(unresolved.size()!=1)return Optional.empty();
+            var actual=unresolved.getFirst();var command=actual.command();
+            if(!(actual.state() instanceof ActionState.Unknown)
+                    ||!(command.origin() instanceof CommandOrigin.Gameplay)
+                    ||!(command.expectation() instanceof CommandExpectation.Gameplay)
+                    ||!(command.protocolIdentity() instanceof org.xar.ck3.control.application.action.ProtocolRequestIdentity.BodyDerived)
+                    ||!command.operation().value().equals("private-assign-councillor-v1")
+                    ||!actual.bodySha256().equals(ActionCodec.bodySha256(command)))return Optional.empty();
+            var args=command.arguments();
+            if(!args.members().keySet().equals(java.util.Set.of("position_key","candidate_character_id","original_query","expected_has_incumbent","expected_incumbent_character_id"))
+                    ||!(args.get("position_key") instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.Text position)
+                    ||!java.util.Set.of("councillor_steward","councillor_chancellor","councillor_court_chaplain").contains(position.value())
+                    ||!(args.get("candidate_character_id") instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.IntegerValue candidate)
+                    ||candidate.value().signum()<=0||candidate.value().bitLength()>31
+                    ||!(args.get("expected_has_incumbent") instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.Bool occupied)
+                    ||!(args.get("expected_incumbent_character_id") instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.IntegerValue incumbent)
+                    ||!(args.get("original_query") instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj))return Optional.empty();
+            if(occupied.value()?(incumbent.value().signum()<=0||incumbent.value().bitLength()>31||incumbent.value().equals(candidate.value()))
+                    :!incumbent.value().equals(java.math.BigInteger.valueOf(-1)))return Optional.empty();
+            var expected=command.expected();
+            if(!expected.before().equals(command.before())||!expected.source().equals(command.source())
+                    ||!expected.observerSchema().equals("xar.java.governance-independent-effect/v1")
+                    ||!expected.values().equals(java.util.List.of(
+                        new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText(new FieldKey("council.position_key"),position.value()),
+                        new ExpectedInteger(new FieldKey("council.incumbent_character_id"),candidate.value()),
+                        new ExpectedBoolean(new FieldKey("native.gameplay_verified"),true)))
+                    ||!command.claims().armyIds().isEmpty()||!command.claims().allyCharacterIds().isEmpty()
+                    ||!command.claims().characterIds().equals(java.util.Set.of(candidate.value()))
+                    ||!command.claims().commitmentKeys().equals(java.util.Set.of("council-seat:"+position.value())))return Optional.empty();
+            var attempt=org.xar.ck3.control.application.action.ActionTransitions.attempt(actual.state()).orElse(null);
+            var dispatch=org.xar.ck3.control.application.action.ActionTransitions.dispatch(actual.state()).orElse(null);
+            if(attempt==null||!(dispatch instanceof NativeActionPort.AckReceived ack)||!ack.nativeOk()
+                    ||ack.originalResultToken().isEmpty()||ack.outbound().isEmpty()||ack.custody().isEmpty()
+                    ||!ack.requestId().equals(attempt.requestId())
+                    ||!attempt.preparedRequest().step().equals(command.operation().value())
+                    ||attempt.preparedRequest().requiredCapability().isPresent())return Optional.empty();
+            var fields=org.xar.ck3.control.planning.opportunity.OpportunityJson.parse(attempt.preparedRequest().additionalFields().bytes());
+            if(!(fields instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj prepared)
+                    ||!prepared.members().keySet().equals(java.util.Set.of("candidate_character_id"))
+                    ||!candidate.equals(prepared.get("candidate_character_id")))return Optional.empty();
+            var wire=ack.outbound().orElseThrow().originalPacket();
+            if(wire.length<5||wire.length>org.xar.ck3.control.application.action.RawJson.MAXIMUM_BYTES+4)return Optional.empty();
+            int payloadLength=java.nio.ByteBuffer.wrap(wire,0,4).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt();
+            if(payloadLength<1||payloadLength!=wire.length-4)return Optional.empty();
+            var packet=org.xar.ck3.control.planning.opportunity.OpportunityJson.parse(java.util.Arrays.copyOfRange(wire,4,wire.length));
+            if(!(packet instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj outbound)
+                    ||!outbound.members().keySet().equals(java.util.Set.of("type","protocol_version","request_id","step","expected_revision","candidate_character_id"))
+                    ||!new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text("execute_step").equals(outbound.get("type"))
+                    ||!new org.xar.ck3.control.planning.opportunity.OpportunityJson.IntegerValue(java.math.BigInteger.ONE).equals(outbound.get("protocol_version"))
+                    ||!new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(attempt.requestId()).equals(outbound.get("request_id"))
+                    ||!new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(command.operation().value()).equals(outbound.get("step"))
+                    ||!new org.xar.ck3.control.planning.opportunity.OpportunityJson.IntegerValue(command.before().frame().identity().nativeRevision()).equals(outbound.get("expected_revision"))
+                    ||!candidate.equals(outbound.get("candidate_character_id")))return Optional.empty();
+            var guard=attempt.guard();
+            return command.origin().acceptsGuard(guard.origin())&&guard.source().equals(command.source())
+                    &&guard.sessionId().equals(command.sessionId())&&guard.operation().equals(command.operation())
+                    &&guard.observed().equals(command.before())?Optional.of(actual):Optional.empty();
+        } catch(RuntimeException rejected){return Optional.empty();}
+    }
+
     /** DATA-only completion of the exact already-applied known reply; no fresh observation or submit permission. */
     public static Optional<ActionReceipt> readOnlyPendingKnownCompletionRoot(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> canonicalActions,
@@ -1469,7 +1533,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     && (retained.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
                         && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty()
                         || savedPendingLifeData(retained,unresolvedActions)
-                        || savedIsolatedLifeData(retained,unresolvedActions)),
+                        || savedIsolatedLifeData(retained,unresolvedActions)
+                        || savedIsolatedCouncilData(retained,unresolvedActions)),
                     "an absent restart capture requires its actual isolated CurrentMap or saved pending Life history");
         }
         public CleanBatchRestart capturedManifest() {
@@ -1518,6 +1583,18 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&actual.bodySha256().equals(ActionCodec.bodySha256(command));
     }
 
+    /** Saved historical Council DATA only; the whole reader proves every original before this shape is consumed. */
+    private static boolean savedIsolatedCouncilData(SettledSameGameData history,java.util.List<ActionReceipt> isolated) {
+        if(!(history.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap)
+                ||history.cycleSemantic().isEmpty()||history.controller().savedPair().isEmpty()||isolated.size()!=1)return false;
+        var actual=isolated.getFirst();var command=actual.command();var owner=history.controller().owner();
+        return history.settledActions().contains(actual)&&actual.sequence()<history.canonicalSequence()
+                &&readOnlyPositiveAckCouncilRecoveryRoot(history.settledActions()).filter(actual::equals).isPresent()
+                &&command.source().equals(history.source())&&command.before().machineId().equals(owner.machineId())
+                &&command.before().game().equals(owner.game())&&command.sessionId().equals(owner.sessionId())
+                &&actual.bodySha256().equals(ActionCodec.bodySha256(command));
+    }
+
     /** Read original authenticated historical transitions; grants no readiness/submit/epoch token. */
     public UnresolvedSameGameData readUnresolvedSameGame(ContinuityStorePort.Session same, SessionIdentity owner) throws IOException {
         store.requireSession(same);
@@ -1552,6 +1629,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var finalization = readOnlySaveFinalizationRoot(current, owner, actions, originals);
             return readOnlyLifeRecoveryRoot(actions).or(() -> readOnlySaveRecoveryRoot(actions))
                     .or(() -> readOnlyKnownPendingRecoveryRoot(actions))
+                    .or(() -> readOnlyPositiveAckCouncilRecoveryRoot(actions))
                     .or(() -> readOnlyPendingKnownCompletionRoot(current, owner, actions, originals)).or(() -> finalization)
                     .map(java.util.List::of).orElseGet(java.util.List::of);
         });
@@ -1561,7 +1639,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean initialCurrentMap = isReadOnlyLifeRecovery(isolated.getFirst())
                     && retained.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
                     && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty();
-            StrictJson.require(captured.get() != null || initialCurrentMap || savedIsolatedLifeData(retained,isolated),
+            StrictJson.require(captured.get() != null || initialCurrentMap || savedIsolatedLifeData(retained,isolated)
+                    || savedIsolatedCouncilData(retained,isolated),
                     "isolated recovery retains its actual restart capture or fully verified initial/saved CurrentMap Life history");
             return new UnresolvedSameGameData(Optional.ofNullable(captured.get()), retained.controller(), retained.retainedFacts(),
                     retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
@@ -2374,12 +2453,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var finalizationSave = readOnlySaveFinalizationRoot(state, owner, actions, originals);
             var pendingKnownCompletion = readOnlyPendingKnownCompletionRoot(state, owner, actions, originals);
             boolean isolatedKnown = readOnlyKnownPendingRecoveryRoot(actions).isPresent();
+            boolean isolatedCouncil = readOnlyPositiveAckCouncilRecoveryRoot(actions).isPresent();
             boolean isolatedSave = readOnlySaveRecoveryRoot(actions).isPresent() || finalizationSave.isPresent();
             if (isolatedLife) {
                 StrictJson.require(readOnlyLifeRecoveryRoot(actions).isPresent(),
                         "isolated recovery retains one exact Life original and its canonical control prefix");
             } else {
-                StrictJson.require(!actions.isEmpty()&&(actions.stream().allMatch(ActionReceipt::settled) || isolatedSave || isolatedKnown),
+                StrictJson.require(!actions.isEmpty()&&(actions.stream().allMatch(ActionReceipt::settled) || isolatedSave || isolatedKnown || isolatedCouncil),
                         "settled recovery cannot discard an unresolved action outside its exact positive-ACK SAVE or known pending");
             }
             if (pendingControl.isPresent()) {
@@ -2814,7 +2894,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "settled canonical recovery head changed during read");
             var data=new SettledSameGameData(entry,controller,retained.facts(),retained.fullDriver(),previousTransport,
                     source,Optional.ofNullable(latest),latestObserved,actions,state.sequence(),head.digest(),history);
-            boolean isolated = isolatedLife || isolatedSave || isolatedKnown || pendingControl.isPresent() || pendingKnownCompletion.isPresent();
+            boolean isolated = isolatedLife || isolatedSave || isolatedKnown || isolatedCouncil || pendingControl.isPresent() || pendingKnownCompletion.isPresent();
             if (!isolated && savedPair.isPresent()) {
                 StrictJson.require(pending==null&&cycle.get("pending_receipt").isNull()
                         &&actions.stream().allMatch(ActionReceipt::settled)&&!confirmedSaves.isEmpty(),
