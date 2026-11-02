@@ -1620,7 +1620,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty()
                         || savedPendingLifeData(retained,unresolvedActions)
                         || savedIsolatedLifeData(retained,unresolvedActions)
-                        || savedIsolatedCouncilData(retained,unresolvedActions)),
+                        || savedIsolatedCouncilData(retained,unresolvedActions)
+                        || savedIsolatedSaveData(retained,unresolvedActions)),
                     "an absent restart capture requires its actual isolated CurrentMap or saved pending Life history");
         }
         public CleanBatchRestart capturedManifest() {
@@ -1681,6 +1682,18 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&actual.bodySha256().equals(ActionCodec.bodySha256(command));
     }
 
+    /** Saved original positive-ACK SAVE DATA only; no stable-file confirmation or submit authority is issued here. */
+    private static boolean savedIsolatedSaveData(SettledSameGameData history,java.util.List<ActionReceipt> isolated) {
+        if(!(history.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap)
+                ||history.cycleSemantic().isEmpty()||history.controller().savedPair().isEmpty()||isolated.size()!=1)return false;
+        var actual=isolated.getFirst();var command=actual.command();var owner=history.controller().owner();
+        return history.settledActions().contains(actual)&&actual.sequence()<history.canonicalSequence()
+                &&readOnlySaveRecoveryRoot(history.settledActions()).filter(actual::equals).isPresent()
+                &&command.source().equals(history.source())&&command.before().machineId().equals(owner.machineId())
+                &&command.before().game().equals(owner.game())&&command.sessionId().equals(owner.sessionId())
+                &&actual.bodySha256().equals(ActionCodec.bodySha256(command));
+    }
+
     /** Read original authenticated historical transitions; grants no readiness/submit/epoch token. */
     public UnresolvedSameGameData readUnresolvedSameGame(ContinuityStorePort.Session same, SessionIdentity owner) throws IOException {
         store.requireSession(same);
@@ -1726,7 +1739,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     && retained.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
                     && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty();
             StrictJson.require(captured.get() != null || initialCurrentMap || savedIsolatedLifeData(retained,isolated)
-                    || savedIsolatedCouncilData(retained,isolated),
+                    || savedIsolatedCouncilData(retained,isolated) || savedIsolatedSaveData(retained,isolated),
                     "isolated recovery retains its actual restart capture or fully verified initial/saved CurrentMap Life history");
             return new UnresolvedSameGameData(Optional.ofNullable(captured.get()), retained.controller(), retained.retainedFacts(),
                     retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
