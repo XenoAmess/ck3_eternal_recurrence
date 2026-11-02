@@ -41,7 +41,7 @@ public final class ContinuityActionJournal implements ActionJournal {
             final ActionPorts.OutcomeArchive archive = bound;
             LockedJournal view = new LockedJournal() {
             private Snapshot retainedSnapshot;
-            private WriterContracts.Head cachedReceiptsHead;
+            private ContinuityState cachedReceiptsState;
             private List<ActionReceipt> cachedReceiptsList;
             @Override public ContinuityStorePort.Session writerSession() { try { session.head(); return session; } catch (IOException failure) { throw new UncheckedIOException(failure); } }
             @Override public Optional<ActionReceipt> find(String actionId) {
@@ -113,7 +113,15 @@ public final class ContinuityActionJournal implements ActionJournal {
                     if (next instanceof ActionState.CompositeUnknown unknown) evidence.addAll(unknown.evidence());
                     WriterContracts.Request request = new WriterContracts.Request(KIND, ContinuityJson.canonical(details), evidence.stream().distinct().toList());
                     var committed = session.commit(session.preview(request));
-                    return lookup(committed.head(), command.actionId(), archive).orElseThrow();
+                    var committedState = committed.head();
+                    var history = historical(committedState, archive);
+                    var target = history.stream().filter(item -> item.receipt().command().actionId().equals(command.actionId())).findFirst().orElseThrow();
+                    var latest = new java.util.LinkedHashMap<String, ActionReceipt>();
+                    for (var item : history) latest.putIfAbsent(item.receipt().command().actionId(), item.receipt());
+                    var complete = List.copyOf(latest.values());
+                    cachedReceiptsList = complete;
+                    cachedReceiptsState = committedState;
+                    return target.receipt();
                 } catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
             @Override public Snapshot snapshot() {
@@ -130,10 +138,10 @@ public final class ContinuityActionJournal implements ActionJournal {
                 } catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
             private List<ActionReceipt> cachedReceipts(WriterContracts.Head head) throws IOException {
-                if (cachedReceiptsHead != null && cachedReceiptsHead.state().sequence() == head.state().sequence()
-                        && cachedReceiptsHead.digest().equals(head.digest())) return cachedReceiptsList;
+                if (cachedReceiptsState != null && cachedReceiptsState.sequence() == head.state().sequence()
+                        && ContinuityJson.digest(cachedReceiptsState.toJson()).equals(head.digest())) return cachedReceiptsList;
                 List<ActionReceipt> complete = receipts(head.state(), archive);
-                cachedReceiptsHead = head; cachedReceiptsList = complete; return complete;
+                cachedReceiptsList = complete; cachedReceiptsState = head.state(); return complete;
             }
         };
         current.set(view); try { return operation.apply(view); } finally { current.remove(); }
