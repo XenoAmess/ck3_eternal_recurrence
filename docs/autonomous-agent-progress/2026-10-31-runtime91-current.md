@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+## 2026-11-02 04:12Z Main293 终态：旧周期与 active batch 校验仍阻塞
+
+后到冻结 `closed293/INDEX.json` 的四份原件及 `recovery-outcome293/SUMMARY.json` 已逐项核长度与SHA。Main293／Java73756 实际 `04:11:33.266696Z`→`04:12:07.855383Z` END1，UTC墙钟34.588687秒／runner reported 34.588685秒；未进入LOOP、新增SAVE_CONFIRMED为0。真实stderr在 ContinuityBatchJournal:2832 报 settled cycle crossed its real active batch or original retained control。head227及SHA `038565b67e2483e2241c6d5b09e4288e1e3d56cc8d4f80c1c7edada498d1e025` 完全不变，新action metadata0／new_receipts为空；completed_cycles7／pending=null，原224 SETTLED/APPLIED与38日保存前沿保留，不据此重发Council或把head的running标签当健康worker。
+
+Root主epoch至本次END完整墙钟26481.855383秒／38新增确认保存日＝696.8909311315789473684210526秒／日，仍未达10秒目标，全部失败与等待均在分子。本次单独零保存窗口只报告上述实际秒数，秒／新增保存日为null；下方289–292及更早截止不改。History后继P0294由其源码owner独占修复，尚不在本段授软件绿、装载或恢复成功。本次仅已有冻结小件与文档插入，没有新增Game／Native查询、Driver／Save大读、账本写入、编测、部署或重启，也不作为恢复前置。
+
 ## 2026-11-02 03:58Z 原 Council 已结算，四次冷恢复仍未进入 LOOP，保存仍38日
 
 本段合并消费 Runtime 已冻结的 `closed289` 至 `closed292/INDEX.json`、各四份 START／END／stdout／stderr，以及对应 `recovery-outcome289` 至 `292/SUMMARY.json`，逐项核长度与SHA；未沿元数据路径读取 live账本、Driver或Save。四次均 END1、未进入LOOP、无新增SAVE_CONFIRMED，旧截止完整保留。表中秒数为各实际runner报告值，UTC起止另列。
