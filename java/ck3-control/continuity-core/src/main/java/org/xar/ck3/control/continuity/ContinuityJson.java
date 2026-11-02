@@ -38,7 +38,7 @@ public final class ContinuityJson {
 
     public static ObjectNode parseObject(byte[] raw, int maximum) {
         // Reuse strict UTF-8, duplicate-key and finite input bounds at the boundary.
-        StrictJson.parse(raw, maximum);
+        StrictJson.validate(raw, maximum);
         try {
             JsonNode value = MAPPER.readTree(raw);
             ObjectNode row = object(value);

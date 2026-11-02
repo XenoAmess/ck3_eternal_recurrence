@@ -1,11 +1,14 @@
 package org.xar.ck3.control.contracts;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.StreamReadConstraints;
 import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -78,6 +81,50 @@ public final class StrictJson {
         return switch (profile) {
             case PYTHON_CHILD_EXPORTS_4300 -> read(raw, maximumBytes, PYTHON_CHILD_EXPORTS_MAPPER);
         };
+    }
+
+    /**
+     * Validate the default strict profile without retaining a container tree.
+     * Scalar materialization uses the original mapper's own deserializer; all
+     * non-container and unsuccessful paths retain the original read contract.
+     */
+    public static void validate(byte[] raw, int maximumBytes) {
+        require(maximumBytes > 0 && maximumBytes <= EXPLICIT_MAX_BYTES, "explicit JSON input byte budget");
+        require(raw != null && raw.length > 0 && raw.length <= maximumBytes, "bounded nonempty UTF-8 JSON required");
+        final String text;
+        try {
+            text = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(raw)).toString();
+        } catch (CharacterCodingException error) {
+            throw new ContractViolationException("invalid UTF-8 JSON", error);
+        }
+        boolean complete = false;
+        try (JsonParser parser = MAPPER.getFactory().createParser(text)) {
+            var configuration = MAPPER.getDeserializationConfig();
+            configuration.initialize(parser);
+            JsonToken token = parser.nextToken();
+            if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY) {
+                var context = ((DefaultDeserializationContext) MAPPER.getDeserializationContext())
+                        .createInstance(configuration, parser, null);
+                var nodeType = MAPPER.constructType(JsonNode.class);
+                var scalar = context.findRootValueDeserializer(nodeType);
+                int depth = 1;
+                while (depth > 0) {
+                    token = parser.nextToken();
+                    if (token == null) { break; }
+                    if (token.isStructStart()) { depth++; }
+                    else if (token.isStructEnd()) { depth--; }
+                    else if (token.isScalarValue()) {
+                        context.readRootValue(parser, nodeType, scalar, null);
+                    }
+                }
+                complete = depth == 0 && parser.nextToken() == null;
+            }
+        } catch (IOException | RuntimeException error) {
+            // Preserve the original first failure and cause on this pure DATA path.
+            complete = false;
+        }
+        if (!complete) { read(raw, maximumBytes, MAPPER); }
     }
 
     private static JsonNode read(byte[] raw, int maximumBytes, ObjectMapper mapper) {
