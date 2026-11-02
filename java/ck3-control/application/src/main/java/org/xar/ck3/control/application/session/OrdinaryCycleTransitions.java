@@ -401,7 +401,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 || isFullySavedFinishedBatch(head, owner, branch))
                 && branch.pending().isEmpty() && branch.head().isPresent(),
                 "settled recovery requires a completed interrupted cycle");
-        validateChain(branch);
+        Set<ExactRef> completedReceipts = validatedBranchReceipts(branch);
         var actions = ContinuityActionJournal.receipts(head, archive);
         StrictJson.require(!actions.isEmpty() && actions.stream().allMatch(ActionReceipt::settled),
                 "settled recovery cannot discard an UNKNOWN or pending original");
@@ -424,15 +424,19 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                     "saved settled history crossed its checked frontier");
             confirmedSaveReceipts = context.role().confirmedSaveReceipts();
         }
+        boolean revalidateCompletedChain = false;
         for (var action : ContinuityBatchJournal.ordinaryCycleRoots(actions)) {
             if (action.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && action.visibleGameplay()) {
                 var receiptRef = archive.receiptReferenceOf(action);
                 if (!confirmedSaveReceipts.contains(receiptRef)) {
-                    StrictJson.require(find(branch, receiptRef).isPresent(),
+                    revalidateCompletedChain = true;
+                    StrictJson.require(completedReceipts.contains(receiptRef),
                             "settled recovery cannot discard a visible action without its completed cycle");
                 }
             }
         }
+        // Requalify the complete chain after all actual Archive/role callbacks before admission.
+        if (revalidateCompletedChain) validateChain(branch);
     }
 
     private static boolean isOpenReadOnlyBatch(ContinuityState state) {
@@ -1928,7 +1932,16 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     private Optional<CycleRecord> walk(CycleState state, Optional<ExactRef> wanted) {
         return walk(state,wanted,new HashSet<>(),new HashSet<>());
     }
+    private Set<ExactRef> validatedBranchReceipts(CycleState state) {
+        Set<ExactRef> receipts = new HashSet<>();
+        walk(state, Optional.empty(), new HashSet<>(), new HashSet<>(), receipts);
+        return Set.copyOf(receipts);
+    }
     private Optional<CycleRecord> walk(CycleState state,Optional<ExactRef> wanted,Set<ExactRef> origins,Set<ExactRef> allRecords) {
+        return walk(state, wanted, origins, allRecords, null);
+    }
+    private Optional<CycleRecord> walk(CycleState state,Optional<ExactRef> wanted,Set<ExactRef> origins,Set<ExactRef> allRecords,
+            Set<ExactRef> branchReceipts) {
         Optional<ExactRef> cursor = state.head(); Set<ExactRef> seen = new HashSet<>(); Set<String> actionIds = new HashSet<>();
         Optional<CycleRecord> found = Optional.empty(); long expected = state.completedCycles();
         while (cursor.isPresent()) {
@@ -1950,6 +1963,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             expected = Math.subtractExact(expected, record.classification() == Classification.CONTROL_ONLY ? 0 : 1);
             StrictJson.require(expected >= state.basisCycles(), "cycle record grants credit below its retained branch basis");
             cursor = record.previous();
+            if (branchReceipts != null) branchReceipts.add(record.receipt());
         }
         StrictJson.require(expected == state.basisCycles(), "cycle record chain does not terminate at its exact retained basis");
         if(state.episodeOrigin().isPresent()) {
