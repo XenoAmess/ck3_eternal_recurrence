@@ -68,9 +68,12 @@ public final class DriverCheckpointStore {
         return new Anchor(witness, index);
     }
     public void verify(CheckpointPair pair) throws IOException {
-        files.verify(pair);
-        StrictJson.require(files.observe(Path.of(pair.nativeAckRef().path())).map(FileWitness::reference).filter(pair.nativeAckRef()::equals).isPresent(), "original Native ACK evidence remains exact and available");
-        validateAnchor(parse(files.read(pair.driver(), MAX_DRIVER_BYTES)), pair.save(), pair.frame(), pair.lineageId(), pair.saveActionId(), pair.historyIndex()); files.verify(pair);
+        try (CheckpointFiles.Verification verification = files.beginVerification(pair)) {
+            verification.verify(pair);
+            StrictJson.require(verification.observe(Path.of(pair.nativeAckRef().path())).map(FileWitness::reference).filter(pair.nativeAckRef()::equals).isPresent(), "original Native ACK evidence remains exact and available");
+            validateAnchor(parse(verification.read(pair.driver(), MAX_DRIVER_BYTES)), pair.save(), pair.frame(), pair.lineageId(), pair.saveActionId(), pair.historyIndex());
+            verification.verify(pair);
+        }
     }
     /** The physical saved Driver is reread in full; an in-memory WAL tail cannot stand in for this source. */
     public DriverStateSnapshot.Complete readVerified(CheckpointPair pair) throws IOException {

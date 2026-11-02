@@ -18,4 +18,30 @@ public interface CheckpointFiles {
         if (!observe(Path.of(expected.reference().path())).filter(expected::equals).isPresent()) throw new IOException("checkpoint file identity or bytes changed");
     }
     default void verify(CheckpointPair pair) throws IOException { verify(pair.save()); verify(pair.driver()); }
+
+    /** Read-only verification boundary; the default adapter grants no file custody. */
+    public interface Verification extends AutoCloseable {
+        Optional<FileWitness> observe(Path path) throws IOException;
+        byte[] read(FileWitness expected, int maximumBytes) throws IOException;
+        void verify(CheckpointPair pair) throws IOException;
+        @Override void close() throws IOException;
+    }
+
+    /** Creates a fresh independent transparent read adapter for the pair. */
+    default Verification beginVerification(CheckpointPair pair) throws IOException {
+        return new Verification() {
+            @Override public Optional<FileWitness> observe(Path path) throws IOException {
+                return CheckpointFiles.this.observe(path);
+            }
+            @Override public byte[] read(FileWitness expected, int maximumBytes) throws IOException {
+                return CheckpointFiles.this.read(expected, maximumBytes);
+            }
+            @Override public void verify(CheckpointPair pair) throws IOException {
+                CheckpointFiles.this.verify(pair);
+            }
+            @Override public void close() throws IOException {
+                // No-op close for the transparent default adapter.
+            }
+        };
+    }
 }

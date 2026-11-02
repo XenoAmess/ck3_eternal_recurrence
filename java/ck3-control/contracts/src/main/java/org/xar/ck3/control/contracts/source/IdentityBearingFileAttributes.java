@@ -210,6 +210,47 @@ public final class IdentityBearingFileAttributes {
             catch (IOException closing) { if (failure != null) failure.addSuppressed(closing); else throw closing; }
         }
     }
+
+    /**
+     * Optional acquisition seam: returns empty ONLY when the initial CreateFile fails with
+     * ERROR_SHARING_VIOLATION (32) and no handle was acquired. All other failures preserve
+     * the original IOException/unchecked behavior of leaseBoundedWindows.
+     */
+    public static java.util.Optional<ReadOnlyLease> tryLeaseBoundedWindows(Path supplied, int limit) throws IOException {
+        if (!Platform.isWindows()) throw new IOException("native Windows read lease required");
+        if (limit < 0 || limit == Integer.MAX_VALUE) throw new IllegalArgumentException("finite read lease cap required");
+        Path path = Objects.requireNonNull(supplied).toAbsolutePath().normalize();
+        BasicFileAttributes before = Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        requireOrdinaryFile(before);
+        HANDLE handle = null;
+        Throwable failure = null;
+        try {
+            ordinaryAttributes(path);
+            handle = Kernel32.INSTANCE.CreateFile(nativePath(path.toString()), 0x80000080, 1, null, 3, 0x02200000, null);
+            if (WinBase.INVALID_HANDLE_VALUE.equals(handle)) {
+                handle = null;
+                int error = Native.getLastError();
+                if (error == 32) return java.util.Optional.empty();
+                throw new IOException("read lease open Win32=" + error);
+            }
+            WindowsStamp first = windowsStamp(handle, true);
+            BasicFileAttributes original = validated(path, before, before, first, first);
+            if (first.bytes() < 0 || first.bytes() > limit) throw new IOException("read lease exceeds its finite cap");
+            byte[] bytes = readData(handle, Math.toIntExact(first.bytes()));
+            BasicFileAttributes actual = qualifyLeasePath(path, first, original);
+            ReadOnlyLease result = new ReadOnlyLease(path, handle, first, actual, bytes);
+            java.util.Optional<ReadOnlyLease> wrapped = java.util.Optional.of(result);
+            handle = null;
+            return wrapped;
+        } catch (LinkageError unavailable) {
+            IOException problem = new IOException("Windows read lease provider unavailable", unavailable);
+            failure = problem; throw problem;
+        } catch (IOException | RuntimeException | Error problem) { failure = problem; throw problem; }
+        finally {
+            if (handle != null) try { closeLeaseHandle(handle, "partial read lease close"); }
+            catch (IOException closing) { if (failure != null) failure.addSuppressed(closing); else throw closing; }
+        }
+    }
     private static void closeLeaseHandle(HANDLE handle, String context) throws IOException {
         try {
             if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException(context + " Win32=" + Native.getLastError());

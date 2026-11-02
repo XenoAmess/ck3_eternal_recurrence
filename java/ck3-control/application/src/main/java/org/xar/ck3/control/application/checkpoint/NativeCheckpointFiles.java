@@ -14,6 +14,7 @@ import java.util.UUID;
 import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FileStatIdentity;
+import org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 
 /** Reuses the shared Windows file producer; this adapter never launches Game or changes SAVE. */
@@ -93,5 +94,177 @@ public final class NativeCheckpointFiles implements CheckpointFiles {
                     || !result.reference().sha256().equals(source.reference().sha256())) throw new IOException("immutable seed readback differs");
             verify(source); return result;
         } finally { Files.deleteIfExists(temporary); }
+    }
+
+    /** One verification body owns one optional retained pair; no application callback is replayed. */
+    @Override public CheckpointFiles.Verification beginVerification(CheckpointPair pair) throws IOException {
+        if (pair == null) return CheckpointFiles.super.beginVerification(null);
+        long saveBytes = pair.save().reference().bytes();
+        long driverBytes = pair.driver().reference().bytes();
+        if (saveBytes > PairVerification.RETAINED_SUM_LIMIT
+                || driverBytes > PairVerification.RETAINED_SUM_LIMIT - saveBytes)
+            return CheckpointFiles.super.beginVerification(pair);
+        return new PairVerification(pair);
+    }
+
+    private final class PairVerification implements CheckpointFiles.Verification {
+        private static final long RETAINED_SUM_LIMIT = 128L << 20;
+        private static final int NEW = 0;
+        private static final int LEASED = 1;
+        private static final int CONSERVATIVE = 2;
+        private final CheckpointPair boundPair;
+        private final Thread owner = Thread.currentThread();
+        private volatile boolean failed;
+        private boolean closed;
+        private int mode = NEW;
+        private RetainedWitness save;
+        private RetainedWitness driver;
+
+        private PairVerification(CheckpointPair boundPair) { this.boundPair = boundPair; }
+
+        private void requireOpen() throws IOException {
+            if (Thread.currentThread() != owner) throw new IOException("checkpoint verification crossed its owner thread");
+            if (closed) throw new IOException("checkpoint verification is closed");
+            if (failed) throw new IOException("checkpoint verification failed its qualification");
+        }
+
+        @Override public Optional<FileWitness> observe(Path path) throws IOException {
+            try {
+                requireOpen();
+                // ACK observations, including a captured pathname collision, retain the original full read.
+                return NativeCheckpointFiles.this.observe(path);
+            } catch (IOException | RuntimeException | Error problem) { failed = true; throw problem; }
+        }
+
+        @Override public byte[] read(FileWitness expected, int maximumBytes) throws IOException {
+            try {
+                requireOpen();
+                if (mode != LEASED || !driver.expected.equals(expected))
+                    return NativeCheckpointFiles.this.read(expected, maximumBytes);
+                // Preserve the old read's before-check -> cap -> bytes -> after-check order.
+                qualify(driver);
+                if (expected.reference().bytes() > maximumBytes) throw new IOException("bounded Driver read exceeded");
+                byte[] raw = driver.lease.originalRead().bytes();
+                qualify(driver);
+                if (raw.length != expected.reference().bytes()) throw new IOException("Driver size changed");
+                return raw;
+            } catch (IOException | RuntimeException | Error problem) { failed = true; throw problem; }
+        }
+
+        @Override public void verify(CheckpointPair supplied) throws IOException {
+            try {
+                requireOpen();
+                if (boundPair == null || !boundPair.equals(supplied)) {
+                    NativeCheckpointFiles.this.verify(supplied);
+                    return;
+                }
+                if (mode == CONSERVATIVE) {
+                    NativeCheckpointFiles.this.verify(supplied);
+                    return;
+                }
+                if (mode == NEW) {
+                    acquirePair();
+                    if (mode == CONSERVATIVE) NativeCheckpointFiles.this.verify(supplied);
+                    // Acquisition captured, hashed and freshly qualified Save before touching Driver.
+                    return;
+                }
+                qualify(save);
+                qualify(driver);
+            } catch (IOException | RuntimeException | Error problem) { failed = true; throw problem; }
+        }
+
+        private void acquirePair() throws IOException {
+            long saveBytes = boundPair.save().reference().bytes();
+            long driverBytes = boundPair.driver().reference().bytes();
+            // Allocate the holder before acquiring its handle; Error cannot strand an unowned lease.
+            save = new RetainedWitness(boundPair.save());
+            Path savePath = Path.of(boundPair.save().reference().path());
+            SharedSourceFiles.plainAncestors(savePath);
+            var first = IdentityBearingFileAttributes.tryLeaseBoundedWindows(savePath, Math.toIntExact(saveBytes));
+            if (first.isEmpty()) {
+                save = null;
+                mode = CONSERVATIVE;
+                return;
+            }
+            save.lease = first.orElseThrow();
+            capture(save);
+            driver = new RetainedWitness(boundPair.driver());
+            Path driverPath = Path.of(boundPair.driver().reference().path());
+            SharedSourceFiles.plainAncestors(driverPath);
+            var second = IdentityBearingFileAttributes.tryLeaseBoundedWindows(driverPath, Math.toIntExact(driverBytes));
+            if (second.isEmpty()) {
+                // A failed close throws before any fallback and before any application body can continue.
+                releaseOwned();
+                mode = CONSERVATIVE;
+                return;
+            }
+            driver.lease = second.orElseThrow();
+            capture(driver);
+            mode = LEASED;
+        }
+
+        private void capture(RetainedWitness retained) throws IOException {
+            // originalRead supplies acquisition DATA only. qualify below obtains current read authority.
+            byte[] raw = retained.lease.originalRead().bytes();
+            retained.sha256 = DriverCheckpointStore.sha256(raw);
+            qualify(retained);
+            // Only the IBFA lease retains payload. This hash's clone is not retained by this scope.
+        }
+
+        private void qualify(RetainedWitness retained) throws IOException {
+            Path path = Path.of(retained.expected.reference().path());
+            SharedSourceFiles.plainAncestors(path);
+            SharedSourceFiles.NativeFile current = SharedSourceFiles.nativeFile(path);
+            retained.lease.verifyCurrent();
+            String unixNs = new BigInteger(current.lastWriteFiletimeDecimal()).subtract(UNIX_EPOCH_FILETIME)
+                    .multiply(BigInteger.valueOf(100)).toString();
+            FileWitness projected = new FileWitness(
+                    new ExactRef(path.toAbsolutePath().normalize().toString(), current.logicalBytes(), retained.sha256),
+                    new FileStatIdentity(BigInteger.valueOf(current.logicalBytes()), current.fileIdDecimal(), unixNs));
+            // Run full Shared native decoding each time, but retain only the original public Witness comparison.
+            // In particular, do not freeze allocated bytes, link count or change time into a new equality.
+            if (!projected.equals(retained.expected)) throw new IOException("checkpoint file identity or bytes changed");
+        }
+
+        private void releaseOwned() throws IOException {
+            RetainedWitness last = driver, first = save;
+            driver = null;
+            save = null;
+            Throwable primary = null;
+            if (last != null && last.lease != null) {
+                try { last.lease.close(); }
+                catch (IOException | RuntimeException | Error problem) { primary = problem; }
+            }
+            if (first != null && first.lease != null) {
+                try { first.lease.close(); }
+                catch (IOException | RuntimeException | Error problem) {
+                    if (primary == null) primary = problem;
+                    else if (primary != problem) primary.addSuppressed(problem);
+                }
+            }
+            if (primary instanceof IOException problem) throw problem;
+            if (primary instanceof RuntimeException problem) throw problem;
+            if (primary instanceof Error problem) throw problem;
+        }
+
+        @Override public void close() throws IOException {
+            if (Thread.currentThread() != owner) {
+                failed = true;
+                throw new IOException("checkpoint verification close crossed its owner thread");
+            }
+            if (closed) return;
+            closed = true;
+            try { releaseOwned(); }
+            catch (IOException | RuntimeException | Error problem) { failed = true; throw problem; }
+        }
+    }
+
+    private static final class RetainedWitness {
+        private final FileWitness expected;
+        private IdentityBearingFileAttributes.ReadOnlyLease lease;
+        private String sha256;
+        private RetainedWitness(FileWitness expected) {
+            this.expected = expected;
+        }
     }
 }

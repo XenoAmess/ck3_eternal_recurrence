@@ -894,6 +894,9 @@ public final class RootRuntimeStorageGuard implements StorageWriteGuard,AutoClos
         });
     }
     private final class GuardedFiles implements CheckpointFiles {
+        @Override public CheckpointFiles.Verification beginVerification(org.xar.ck3.control.application.checkpoint.CheckpointPair pair)throws IOException{
+            return nativeFiles.beginVerification(pair);
+        }
         @Override public Optional<FileWitness> observe(Path path)throws IOException{return nativeFiles.observe(path);}
         @Override public byte[] read(FileWitness expected,int maximumBytes)throws IOException{return nativeFiles.read(expected,maximumBytes);}
         @Override public FileWitness createNew(Path target,byte[] body)throws IOException{
