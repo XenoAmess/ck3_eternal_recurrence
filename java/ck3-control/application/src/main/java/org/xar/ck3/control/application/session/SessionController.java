@@ -95,6 +95,8 @@ public final class SessionController {
     private final ThreadLocal<CheckpointInvocation> checkpointInvocation=new ThreadLocal<>();
     private volatile boolean retired;
     private long totalCommittedDays;
+    /** Same-Controller saved workload estimate; retained across zero-dispatch budget deferrals. */
+    private long savedLifeTailNanos;
     private volatile Optional<NaturalEpisodeAdoption> naturalAdoption=Optional.empty();
     private Optional<ContinuityBatchJournal.ReboundTransport> transportAdoption=Optional.empty();
     /** Minted only after this actual Controller consumed its original journal's private admission. */
@@ -784,6 +786,7 @@ public final class SessionController {
                         && selected.command().source().equals(ready.request().source())
                         && selected.command().sessionId().equals(identity.sessionId())
                         && !selected.command().deadline().isAfter(run.deadline()), "selected command crossed observation/session/deadline");
+                run.deferUnissuedLifeIfBudgetInsufficient(ready, selected.command(), checkpointsEnabled);
                 if (checkpoint(selected.command())) run.proof(ready);
                 else run.requireOrdinarySubmission(ready);
                 run.requireTime(); run.live();
@@ -899,10 +902,40 @@ public final class SessionController {
                         retired || quarantined || localUnresolved || pendingReadParent.isPresent()
                                 || publicCheckpointUnknown.isPresent() || run.cyclePending || run.pendingUi.isPresent()
                                 || run.checkpointAdoptionDeferred || run.journalUnknown || run.observedPendingAction));
+                if (!quarantined) savedLifeTailNanos = Math.max(savedLifeTailNanos, observedSavedLifeTailNanos(report));
                 lastLimits = Optional.of(limits); lastReport = Optional.of(report); completedAnalyses.clear(); failedAnalyses.clear();
             } finally { running.set(false); }
         }
         return lastReport.orElseThrow();
+    }
+
+    /** Scheduling estimate only; no action qualification or completion guarantee is minted. */
+    static long lifeBudgetReserveNanos(BatchLimits limits, long observedSavedLifeTailNanos) {
+        long readiness = limits.readinessTimeout().toNanos();
+        long floor = Math.max(limits.wallTime().toNanos() / 2, readiness);
+        if (observedSavedLifeTailNanos <= 0) return floor;
+        long forecast = observedSavedLifeTailNanos > Long.MAX_VALUE - readiness
+                ? Long.MAX_VALUE : observedSavedLifeTailNanos + readiness;
+        return Math.max(floor, forecast);
+    }
+
+    private static long observedSavedLifeTailNanos(BatchReport report) {
+        if (report.dirtySinceSave() || report.committedSavedDays() <= 0 || report.lastSavedPair().isEmpty()
+                || report.turns().stream().noneMatch(turn -> turn.receipt().settled()
+                    && turn.receipt().outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                    && turn.receipt().visibleGameplay() && turn.receipt().eligibleAdvance()
+                    && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(turn.receipt().command().operation().value())
+                    && turn.receipt().state() instanceof ActionState.CompositeSettled settled
+                    && settled.settlement() instanceof ActionState.Applied
+                    && settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER))) return 0;
+        long firstAction = Long.MAX_VALUE, finalCheckpoint = -1;
+        for (var span : report.phases()) {
+            if (span.terminal() != PhaseTerminal.RETURNED) continue;
+            if (span.phase() == Phase.ACTION) firstAction = Math.min(firstAction, span.began().elapsedNanos());
+            if (span.phase() == Phase.CHECKPOINT) finalCheckpoint = Math.max(finalCheckpoint, span.ended().elapsedNanos());
+        }
+        // An envelope preserves overlap, gaps and all actual tail work rather than summing nested spans.
+        return firstAction != Long.MAX_VALUE && finalCheckpoint > firstAction ? finalCheckpoint - firstAction : 0;
     }
 
     private final class Run {
@@ -972,6 +1005,23 @@ public final class SessionController {
             var disposition=Objects.requireNonNull(measured(Phase.OUTCOME_CONSUMPTION,()->completion.afterPlanning(ready.request(),planned)),"actual planning completion disposition required");
             requireTime();
             return new PlannedRound(ready,planned,disposition);
+        }
+        void deferUnissuedLifeIfBudgetInsufficient(Ready ready, ActionCommand selected, boolean checkpointsEnabled) {
+            if (!checkpointsEnabled || terminalConstraint.isPresent() || pendingOnly
+                    || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(selected.operation().value())
+                    || dirty || eligibleSinceSave != 0 || !unsavedGameplayActions.isEmpty() || savedPair.isEmpty()
+                    || quarantined || localUnresolved || retired || cyclePending || journalUnknown || observedPendingAction
+                    || pendingReadParent.isPresent() || publicCheckpointUnknown.isPresent() || pendingUi.isPresent()
+                    || checkpointAdoptionDeferred || !turns.isEmpty() || !reconciliations.isEmpty()
+                    || !lifecycleTurns.isEmpty() || !readReconciliations.isEmpty() || !revisionReplans.isEmpty()
+                    || ready.request().observations().actionFacts().stream().anyMatch(fact -> fact.actionId().equals(selected.actionId()))) return;
+            var now = clock.now();
+            if (!now.utc().isBefore(selected.deadline())) return; // Preserve the original expired-command failure path.
+            long remaining = Math.min(untilNanos - now.elapsedNanos(), Duration.between(now.utc(), selected.deadline()).toNanos());
+            long reserve = lifeBudgetReserveNanos(limits, savedLifeTailNanos);
+            if (remaining < reserve) throw new End(Terminal.WALL_TIMEOUT,
+                    "PRE_INTENT_LIFE_BUDGET_DEFERRED: remaining_nanos=" + remaining + "; reserve_nanos=" + reserve
+                    + "; no action INTENT submitted; next batch must freshly observe and plan");
         }
         void requireTime() { if (clock.now().elapsedNanos() >= untilNanos) throw new End(Terminal.WALL_TIMEOUT, "complete batch monotonic wall bound expired"); }
         Instant deadline() { requireTime(); return began.utc().plusNanos(untilNanos - began.elapsedNanos()); }

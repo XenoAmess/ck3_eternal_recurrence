@@ -152,6 +152,19 @@ public final class RootOrdinaryWorkerLoop {
                 break;
             }
 
+            if (isUnissuedLifeBudgetDeferral(report)) {
+                if (currentSession.controller().isQuarantined() || currentSession.controller().isRetired()) {
+                    stopReason = StopReason.TERMINAL_FAILURE;
+                    failureDetail = Optional.of("budget deferral lost its actual clean Controller"); break;
+                }
+                if (previousReport.filter(previous -> sameUnissuedLifeBudgetScope(previous, report)).isPresent()) {
+                    stopReason = StopReason.NO_PROGRESS;
+                    failureDetail = Optional.of("a second consecutive fresh batch still lacks the estimated Life budget; no action was issued"); break;
+                }
+                // One new normal batch, never a renewed command or a reused selected plan.
+                previousReport = Optional.of(report); continue;
+            }
+
             if (report.terminal() == BatchReport.Terminal.CHECKPOINT_UNKNOWN && currentSession.controller().isQuarantined()) {
                 try {
                     if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
@@ -408,6 +421,36 @@ public final class RootOrdinaryWorkerLoop {
                 && receipt.state() instanceof ActionState.CompositeSettled settled
                 && settled.settlement() instanceof ActionState.Applied
                 && settled.execution().handlerId().equals(LifeAdvanceComposite.HANDLER);
+    }
+
+    /** A private producer detail on the actual zero-dispatch report; no new action capability. */
+    static boolean isUnissuedLifeBudgetDeferral(BatchReport report) {
+        if (report.terminal() != BatchReport.Terminal.WALL_TIMEOUT
+                || !report.detail().startsWith("PRE_INTENT_LIFE_BUDGET_DEFERRED: ")
+                || report.dirtySinceSave() || report.eligibleAdvancesSinceSave() != 0 || report.committedSavedDays() != 0
+                || report.lastSavedPair().isEmpty() || report.lastPlan().isEmpty()
+                || !report.turns().isEmpty() || !report.reconciliations().isEmpty() || !report.lifecycleTurns().isEmpty()
+                || !report.readPublicationReconciliations().isEmpty() || !report.revisionReplans().isEmpty()
+                || report.phases().stream().anyMatch(span -> span.phase() == BatchReport.Phase.ACTION
+                    || span.phase() == BatchReport.Phase.ACTION_RECONCILIATION || span.phase() == BatchReport.Phase.CHECKPOINT)) return false;
+        var selected = report.lastPlan().orElseThrow().finalPlan().flatMap(plan -> plan.command());
+        return selected.filter(command -> command.origin() instanceof CommandOrigin.Gameplay
+                && LifeAdvanceComposite.accepts(command.operation().value())
+                && command.sessionId().equals(report.session().sessionId())
+                && command.origin().machineId().equals(report.session().machineId())
+                && command.origin().game().equals(report.session().game())).isPresent();
+    }
+
+    static boolean sameUnissuedLifeBudgetScope(BatchReport previous, BatchReport current) {
+        if (!isUnissuedLifeBudgetDeferral(previous) || !isUnissuedLifeBudgetDeferral(current)
+                || !previous.session().equals(current.session())) return false;
+        var before = previous.lastPlan().orElseThrow().before();
+        var after = current.lastPlan().orElseThrow().before();
+        // Fresh READ revisions, snapshot IDs and domain imports do not manufacture game-day progress.
+        return before.machineId().equals(after.machineId()) && before.game().equals(after.game())
+                && before.frame().episodeRunId().equals(after.frame().episodeRunId())
+                && before.frame().identity().player().equals(after.frame().identity().player())
+                && before.frame().identity().dateRaw().equals(after.frame().identity().dateRaw());
     }
 
     static boolean isCleanWallBoundary(BatchReport.Terminal terminal, boolean quarantined) {
