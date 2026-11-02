@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.NativeSwayActionId;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.projection.ProjectionJson;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.Episode;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.Identity;
@@ -162,8 +163,8 @@ public final class SwayHistoricalImport {
             source = root.get("applied_instance_observation");
         }
         object(source);
-        return new Identity(action, integer(root, "actor_character_id", 1, 0xFFFF_FFFEL),
-                integer(root, "target_character_id", 1, 0xFFFF_FFFEL),
+        return new Identity(action, NativeCharacterId.fromJson(root.get("actor_character_id")).value(),
+                NativeCharacterId.fromJson(root.get("target_character_id")).value(),
                 integer(source, "scheme_instance_id", 0, 0xFFFF_FFFEL),
                 Math.toIntExact(integer(source, "scheme_instance_generation", 0, 255)));
     }
@@ -181,8 +182,8 @@ public final class SwayHistoricalImport {
             StrictJson.require(text(row, "action_id").equals(action),
                     "historical plane action differs");
         }
-        return new Identity(action, integer(row, "actor_character_id", 1, 0xFFFF_FFFEL),
-                integer(row, "target_character_id", 1, 0xFFFF_FFFEL),
+        return new Identity(action, NativeCharacterId.fromJson(row.get("actor_character_id")).value(),
+                NativeCharacterId.fromJson(row.get("target_character_id")).value(),
                 integer(row, "scheme_instance_id", 0, 0xFFFF_FFFEL),
                 Math.toIntExact(integer(row, "scheme_instance_generation", 0, 255)));
     }

@@ -22,7 +22,7 @@ public final class SwayLegacyImport {
     public record Pending(String actionId, long actor, long target, SwayFormalState.PendingStage stage,
             BigInteger preEpoch, BigInteger preContainer, int preDate, BigInteger preRevision,
             int preOpinion, Optional<String> episode, ProjectionJson original) {
-        public Pending { SwayNativeWire.action(actionId, false); SwayNativeWire.character(actor); SwayNativeWire.character(target); require(actor != target && preOpinion >= -100 && preOpinion <= 100, "historical pending actor/target/opinion differs"); Objects.requireNonNull(stage); SwayNativeWire.u64(preEpoch, 1); SwayNativeWire.u64(preContainer, 1); SwayNativeWire.u64(preRevision, 1); Objects.requireNonNull(episode); episode.ifPresent(StrictJson::text); Objects.requireNonNull(original); }
+        public Pending { SwayNativeWire.action(actionId, false); SwayNativeWire.actionCharacter(actor); SwayNativeWire.actionCharacter(target); require(actor != target && preOpinion >= -100 && preOpinion <= 100, "historical pending actor/target/opinion differs"); Objects.requireNonNull(stage); SwayNativeWire.u64(preEpoch, 1); SwayNativeWire.u64(preContainer, 1); SwayNativeWire.u64(preRevision, 1); Objects.requireNonNull(episode); episode.ifPresent(StrictJson::text); Objects.requireNonNull(original); }
     }
     public record OriginalIntent(Kind kind, ProjectionJson original) {
         public OriginalIntent { Objects.requireNonNull(kind); Objects.requireNonNull(original); if (kind == Kind.PENDING) pending(original); else SwayHistoricalImport.parse(original); }
@@ -32,7 +32,7 @@ public final class SwayLegacyImport {
         }
         public Identity requireCurrent(SwayNativeWire.TargetRead current) {
             JsonNode row = StrictJson.parse(original.bytes(), SwayFormalCodec.MAX);
-            long actor = SwayNativeWire.integer(row, "actor_character_id", 1, 0xffff_fffeL), target = SwayNativeWire.integer(row, "target_character_id", 1, 0xffff_fffeL);
+            long actor = SwayNativeWire.actionCharacter(row, "actor_character_id"), target = SwayNativeWire.actionCharacter(row, "target_character_id");
             require(actor == current.binding().actor() && target == current.target() && current.matching(), "historical attachment needs current matching actor/target");
             Optional<Identity> expected = kind == Kind.RESOLVED ? Optional.of(SwayHistoricalImport.parse(original).identity()) : retainedPendingIdentity(pending(original));
             List<SwayNativeWire.Instance> candidates = current.instances().stream().filter(value -> value.target() == target)
@@ -58,7 +58,7 @@ public final class SwayLegacyImport {
             require(archivedOriginal.bytes() == original.bytes().length && archivedOriginal.sha256().equals(org.xar.ck3.control.application.action.ActionCodec.sha256(original.bytes())), "imported whole original reference differs");
             JsonNode root = StrictJson.object(StrictJson.parse(original.bytes(), SwayFormalCodec.MAX), Set.of("schema", "pending", "resolved"));
             require(root.get("pending").isNull() == pending.isEmpty() && root.get("resolved").isNull() == resolved.isEmpty(), "imported original nullable branches differ");
-            pending.ifPresent(value -> require(StrictJson.parse(value.original().bytes(), SwayFormalCodec.MAX).equals(root.get("pending")) && value.actionId().equals(SwayNativeWire.string(root.get("pending"), "action_id")) && value.actor() == SwayNativeWire.integer(root.get("pending"), "actor_character_id", 1, 0xffff_ffffL) && value.target() == SwayNativeWire.integer(root.get("pending"), "target_character_id", 1, 0xffff_ffffL), "imported pending differs from whole original"));
+            pending.ifPresent(value -> require(StrictJson.parse(value.original().bytes(), SwayFormalCodec.MAX).equals(root.get("pending")) && value.actionId().equals(SwayNativeWire.string(root.get("pending"), "action_id")) && value.actor() == SwayNativeWire.actionCharacter(root.get("pending"), "actor_character_id") && value.target() == SwayNativeWire.actionCharacter(root.get("pending"), "target_character_id"), "imported pending differs from whole original"));
             resolved.ifPresent(value -> require(StrictJson.parse(value.originalResolved().bytes(), SwayFormalCodec.MAX).equals(root.get("resolved")), "imported resolved differs from whole original"));
         }
         public OriginalIntent currentIntent() {
@@ -80,7 +80,7 @@ public final class SwayLegacyImport {
         Set<String> allowed = new java.util.HashSet<>(required); allowed.addAll(Set.of("episode_run_id", "followup", "ack", "native_applied_receipt", "native_receipt_source"));
         Set<String> actual = new java.util.HashSet<>(); row.fieldNames().forEachRemaining(actual::add); require(actual.containsAll(required) && allowed.containsAll(actual), "legacy pending fields differ");
         String action = SwayNativeWire.string(row, "action_id"); SwayNativeWire.action(action, false);
-        long actor = SwayNativeWire.integer(row, "actor_character_id", 1, 0xffff_fffeL), target = SwayNativeWire.integer(row, "target_character_id", 1, 0xffff_fffeL); require(actor != target, "legacy pending actor cannot equal target");
+        long actor = SwayNativeWire.actionCharacter(row, "actor_character_id"), target = SwayNativeWire.actionCharacter(row, "target_character_id"); require(actor != target, "legacy pending actor cannot equal target");
         var stage = switch (SwayNativeWire.string(row, "stage")) { case "submission_unresolved" -> SwayFormalState.PendingStage.SUBMISSION_UNRESOLVED; case "receipt_pending" -> SwayFormalState.PendingStage.RECEIPT_PENDING; case "postcondition_pending" -> SwayFormalState.PendingStage.POSTCONDITION_PENDING; default -> throw new IllegalArgumentException("unknown legacy pending stage"); };
         if (row.has("ack")) require(row.get("ack").isObject(), "legacy ACK object required");
         if (row.has("followup")) require(row.get("followup").isObject(), "legacy followup object required");
@@ -95,8 +95,8 @@ public final class SwayLegacyImport {
         JsonNode receipt = row.get("native_applied_receipt"); require(receipt.isObject(), "retained legacy receipt object required");
         SwayNativeWire.equals(receipt, "schema", "active-scheme-sway-formal-private-v1"); SwayNativeWire.equals(receipt, "stage", "applied");
         require(SwayNativeWire.bool(receipt, "postcondition_verified") && SwayNativeWire.string(receipt, "action_id").equals(pending.actionId()), "historical receipt original action differs");
-        if (receipt.has("actor_character_id")) require(SwayNativeWire.integer(receipt, "actor_character_id", 1, 0xffff_fffeL) == pending.actor(), "historical receipt actor differs");
-        if (receipt.has("target_character_id")) require(SwayNativeWire.integer(receipt, "target_character_id", 1, 0xffff_fffeL) == pending.target(), "historical receipt target differs");
+        if (receipt.has("actor_character_id")) require(SwayNativeWire.actionCharacter(receipt, "actor_character_id") == pending.actor(), "historical receipt actor differs");
+        if (receipt.has("target_character_id")) require(SwayNativeWire.actionCharacter(receipt, "target_character_id") == pending.target(), "historical receipt target differs");
         String build = SwayNativeWire.string(receipt, "exact_ck3_build"), exe = SwayNativeWire.string(receipt, "exe_sha256");
         require(build.equals("1.20.0.4") && exe.equals("98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")
                 || build.equals("1.20.0.3") && exe.equals("94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"), "unknown historical pending receipt build/executable pair");
@@ -111,7 +111,7 @@ public final class SwayLegacyImport {
             for (String name : List.of("before", "after")) {
                 JsonNode frame = source.get(name); require(frame != null && frame.isObject(), "historical receipt frame missing");
                 if (frame.has("episode_run_id")) episodes.add(SwayNativeWire.string(frame, "episode_run_id"));
-                if (frame.has("actor_character_id")) require(SwayNativeWire.integer(frame, "actor_character_id", 1, 0xffff_fffeL) == pending.actor(), "historical receipt sidecar actor differs");
+                if (frame.has("actor_character_id")) require(SwayNativeWire.actionCharacter(frame, "actor_character_id") == pending.actor(), "historical receipt sidecar actor differs");
             }
         }
         require(episodes.size() <= 1 && episodes.stream().allMatch(currentEpisode::equals), "historical pending episode/source conflicts with current restored frame");
