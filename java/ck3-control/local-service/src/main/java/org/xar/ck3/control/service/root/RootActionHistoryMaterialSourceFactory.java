@@ -163,6 +163,7 @@ public final class RootActionHistoryMaterialSourceFactory {
         }
     }
     public enum MissingReason { UNINSTALLED_OPERATION, ORIGINAL_COMPATIBLE_RESULT_ABSENT, ORIGINAL_EXCEPTION_REPORT_ABSENT, INDEPENDENT_DOMAIN_ORIGINAL_ABSENT }
+    @SuppressWarnings("serial")
     public static final class Missing extends IOException {
         private static final long serialVersionUID=1L;
         private final MissingReason reason;private final OperationKey operation;
@@ -300,6 +301,46 @@ public final class RootActionHistoryMaterialSourceFactory {
             require(producers.size()<=64,"actual branch producer closure exceeds its explicit source DTO bound");
             if(!selected.isOrdinary())
                 for(ExactRef ref:producers){var pin=same.capturePin(ref,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
+            if(op.value().equals(org.xar.ck3.control.governance.council.CouncilActionCodec.PRIVATE_ASSIGN)
+                    &&actual.state() instanceof ActionState.RejectedBeforeDispatch zero) {
+                require(action.isPresent()&&composite.isEmpty()
+                        &&owned(catalog.nativeGovernance().installation(),action.orElseThrow(),replay),
+                        "Council zero-dispatch history requires its identical installed action and replay");
+                String originalHead=same.head().digest();
+                ExactRef originalReceipt=originals.receiptReferenceOf(actual);
+                require(originals.loadReceipt(originalReceipt).equals(actual),"Council zero-dispatch receipt changed");
+                ExactRef originalRecord=ContinuityActionJournal.requireHistoricalReceipt(same.head().state(),actual,originals);
+                require(originals.loadRecord(originalRecord).receipt().equals(actual),"Council zero-dispatch is not its canonical original record");
+                var attempt=zero.attempt();var dispatch=zero.dispatch();var guard=attempt.guard();
+                require(actual.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH
+                        &&!actual.visibleGameplay()&&!actual.eligibleAdvance()&&actual.applied().isEmpty()
+                        &&dispatch.proof().stage()==NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                        &&dispatch.proof().requestBytesWritten()==0&&attempt.requestId().equals(dispatch.requestId()),
+                        "Council zero-dispatch cannot borrow an ACK, UNKNOWN or applied effect");
+                ExactRef dispatchRef=originals.referenceOf(dispatch);
+                require(originals.load(dispatchRef).equals(dispatch),"Council zero-dispatch original proof changed");
+                ExactRef preparedRef=originals.requestReferenceOf(attempt.preparedRequest());
+                var prepared=originals.loadRequest(preparedRef);
+                require(prepared.equals(attempt.preparedRequest()),"Council zero-dispatch original preparation changed");
+                NativeStepDiscriminator.requireRequest(op,ExecutableStepBindings.Kind.ACTION,prepared);
+                require(actual.command().origin().acceptsGuard(guard.origin())&&guard.source().equals(actual.command().source())
+                        &&guard.sessionId().equals(actual.command().sessionId())&&guard.operation().equals(op),
+                        "Council zero-dispatch original guard crossed command/source/session");
+                RootGuardEvidence.requireHistory(guard,originals,same);
+                var before=RootGuardEvidence.loadFrame(guard,originals,context.frameLoader());
+                require(before.identity().equals(actual.command().before())&&before.source().equals(actual.command().source())
+                        &&before.sessionId().equals(actual.command().sessionId()),"Council zero-dispatch original frame crossed command");
+                var evidence=new LinkedHashSet<Evidence>();
+                evidence.add(new Evidence(EvidenceKind.ACTION_RECEIPT,originalReceipt));
+                evidence.add(new Evidence(EvidenceKind.ACTION_RECORD,originalRecord));
+                evidence.add(new Evidence(EvidenceKind.MATERIAL,dispatchRef));
+                evidence.add(new Evidence(EvidenceKind.MATERIAL,preparedRef));
+                evidence.add(new Evidence(EvidenceKind.NATIVE_FRAME,guard.nativeEvidence()));
+                guard.supportingEvidence().forEach(ref->evidence.add(new Evidence(EvidenceKind.MATERIAL,ref)));
+                context.writer().requireSession(same);
+                require(originalHead.equals(same.head().digest()),"Council zero-dispatch history changed the writer head");
+                return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,evidence,producers);
+            }
             replay.verifier().verify(same.head(),actual,originals);
             var life=catalog.remainingDomains().life();
             if(!composite.isEmpty()&&life.installation().composites().stream().anyMatch(binding->binding==composite.getFirst())) {
