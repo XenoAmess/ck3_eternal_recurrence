@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-02 23:06:03.785643500Z实际1380 SAVE_CONFIRMED，1374 SETTLE，本局265日全部保存；saved date53152344/native775/public722/cycle38/pending=null，同Game77132／原birth。Root已具名独验冻结事件，保存帧775/722不混同cycle语义773/720。1341／258日22:24:21.646847Z→1380／265日完整2502.138796500秒／新增7日＝357.448399500秒／日，含359 GET、63零保存、监护失败恢复、采样、全部等待及64全链，10秒未达、非A/B；累计265仅另列次指标。
+
+359方法体官方更新与其后新增7日SAVE分别实证闭合，同119020／出生134381255919633818、188ed278委托、restart1@636a035e，无新增Game／Java重启或动作重控。源码／软件／正式／实际更新／后继SAVE各自记录；不授具体VIEW或其他分支、私有heap／thread对象、因果速度或未来健康。65续行只为运行owner历史交接，不计未确认保存。见[1380来源索引](../maintenance/2026-11-02-quarkus-worker-save1380-after-instrumentation359-sources.json)。旧全文逐字保留，只读冻结小metadata，不重复Save／Driver／canonical原件，不为文档编测或重载；JFR批次OBS／PLAN口径依独立后见勘误，不据此猜相位。
+
 2026-11-02 22:24:21.646847Z实际1341 SAVE_CONFIRMED，1335 SETTLE，本局258日全部保存，saved date53152176/native754/public701/cycle37/pending=null，同Game77132／原birth。Root已具名独验冻结事件；1308／250日21:55:17.803991600Z→1341／258日完整1743.842855400秒／新增8日＝217.980356925秒／日，含watcher修复／通知延迟、61零保存、62全链及全部等待，10秒未达、非A/B。累计258仅另列次指标，不替代新增8分母；保存帧754/701不混同cycle语义752/699。
 
 1341之后359现有方法体真实原地instrumentation，官方22:26:15.685／743Z、2.896秒；唯一GET4.876843600010034秒、STOP0，同119020／出生134381255919633818、188ed278委托、restart1@636a035e loader，后见已有planning RETURN。此后见尚无新诊断phase或更新后SAVE，不授normal nanos/schema、私有heap／thread对象、因果提速或未来健康；359 GET及其后等待留在1341→下一保存确认窗，不能归因给已完成的258日。见[1341保存与359更新索引](../maintenance/2026-11-02-quarkus-worker-save1341-instrumentation359-sources.json)。全部旧字节／原切点保留；只消费小份冻结metadata，不重复canonical事件、Save／Driver或查询现场，不为文档重载或编测。

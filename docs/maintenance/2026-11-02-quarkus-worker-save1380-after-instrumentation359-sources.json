@@ -1,0 +1,113 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1380,
+  "SETTLE": 1374,
+  "confirmed_UTC": "2026-11-02T23:06:03.785643500Z",
+  "total_saved_days": 265,
+  "saved_frame": {
+    "date_raw": "53152344",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "775",
+    "played_character_id": "31254",
+    "revision": "722",
+    "snapshot_id": "native:775"
+  },
+  "completed_cycles": 38,
+  "pending_receipt": null,
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "main_window": {
+    "status": "INDEPENDENT_SAVED_FRONTIER_WINDOW",
+    "receipt_refs": [
+      {
+        "path": "D:\\ck3-state\\resume91-root\\save35561-verified.json",
+        "bytes": 1410,
+        "sha256": "b6b52827da031e7626646c6b5f12cbb8cd32197d65f6db4b7c1cd0eb657a0f2c"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-root\\save359641-verified.json",
+        "bytes": 1418,
+        "sha256": "4de3053f5cc83a006532b0d82b4ad3cd2b7723ca3185abd46c8ffa5a2183248f"
+      }
+    ],
+    "from_SAVE": 1341,
+    "to_SAVE": 1380,
+    "from_confirmed_at": "2026-11-02T22:24:21.646847Z",
+    "to_confirmed_at": "2026-11-02T23:06:03.785643500Z",
+    "elapsed_seconds": "2502.138796500",
+    "new_SAVE_CONFIRMED_days": 7,
+    "seconds_per_new_saved_day": "357.448399500",
+    "cumulative_saved_days": 265,
+    "target_seconds_per_saved_day": 10,
+    "target_achieved": false,
+    "all_intervening_wall_time_included": true,
+    "limits": "All waiting, failures, preparation, recovery and zero-save batches in the endpoint interval remain counted. No A/B or source-specific speed claim; later actions/GET/waiting belong to the next window."
+  },
+  "after359_saved_acceptance": {
+    "source_formal_commit": "320192609ab2e3b1c0374bc0ce9da56d988f2ac9",
+    "prior_independent_instrumentation": {
+      "same_host": {
+        "pid": 119020,
+        "birth": "134381255919633818",
+        "image": "C:\\jdk-21\\bin\\java.exe"
+      },
+      "same_delegate": "188ed278-3356-4bf8-ac0a-e177c8c79197",
+      "same_loader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@636a035e@636a035e",
+      "GET": 1,
+      "STOP": 0,
+      "official_no_restart": true
+    },
+    "new_saved_days_after_prior1341_frontier": 7,
+    "qualification": "Official359 body update and subsequent independently confirmed new SAVE are distinct frozen facts, now temporally closed. Not causal speedup, A/B, exact branch/privateheap/thread identity or future health proof. The old1341 document correctly retains NOT_YET_CONFIRMED at its earlier cutoff."
+  },
+  "secondary_cumulative_only": {
+    "root_epoch_seconds": "94517.785643500",
+    "seconds_per_saved_day": "356.6708892207547169811320755",
+    "denominator": 265,
+    "does_not_replace_main_new7_window": true
+  },
+  "sources": [
+    {
+      "local_key": "root/save359641-verified.json",
+      "bytes": 1418,
+      "sha256": "4de3053f5cc83a006532b0d82b4ad3cd2b7723ca3185abd46c8ffa5a2183248f"
+    },
+    {
+      "local_key": "root/save359641-window.json",
+      "bytes": 1105,
+      "sha256": "29a09578da7767238724f042723df54e101ecf140d942237cf485dcd7d2f46e8"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed359641/SUMMARY.json",
+      "bytes": 6859,
+      "sha256": "d6546493349c9e21fb0784a5320f1931bfd427df7d9d3327ebeb5ca612b80d11"
+    },
+    {
+      "local_key": "root/instrumentation359-verified.json",
+      "bytes": 2804,
+      "sha256": "c7157876b021f590cd2efd77adcacc34457e4663f5c79960dc4c4c48d3ec3f2e"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed359641/00001374.json",
+      "bytes": 99881,
+      "sha256": "3c2f9f21e8242ac100c723cfb54c36dd4cfe1063ccbb96f925a39d73e13d5cea",
+      "qualification": "Root independently read named frozen canonical events; formal writer only compares bounded metadata, without event/body reads."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed359641/00001380.json",
+      "bytes": 98876,
+      "sha256": "3f37538298dbc6786363518ae52723204e24c55b12b4e3c69db45a964c9b3d6e",
+      "qualification": "Root independently read named frozen canonical events; formal writer only compares bounded metadata, without event/body reads."
+    }
+  ],
+  "limits": [
+    "1341->1380 includes359 GET, zero-save batch63, monitoring failure/recovery, sampling, waiting and full64. No elapsed interval removed.",
+    "Historical progress to65 is a Runtime handoff cutoff, not a health guarantee or new saved day.",
+    "JFR OBS-versus-PLAN batch attribution remains separately corrected; no new precise phase attribution inferred from this SAVE.",
+    "Saved775/722 differs from prior cycle semantic773/720.",
+    "Metadata only: no repeated canonical event/rawSave/fullDriver, active process/source or Game query, GET, reload, compile/test or deployment.",
+    "All earlier AGENTS/runtime history bytes preserved. Prior unrelated reader process associations remain UNKNOWN separately."
+  ]
+}
