@@ -146,7 +146,8 @@ public final class ContinuityActionJournal implements ActionJournal {
     }
     /** Read-only canonical projection. A state object alone grants no writer or submit qualification. */
     public static Optional<ActionReceipt> lookup(ContinuityState state, String actionId, ActionPorts.OutcomeArchive archive) {
-        return receipts(state, archive).stream().filter(receipt -> receipt.command().actionId().equals(actionId)).findFirst();
+        for (Historical item : historical(state, archive)) if (item.receipt().command().actionId().equals(actionId)) return java.util.Optional.of(item.receipt());
+        return java.util.Optional.empty();
     }
     public static List<ActionReceipt> receipts(ContinuityState state, ActionPorts.OutcomeArchive archive) {
         java.util.LinkedHashMap<String, ActionReceipt> latest = new java.util.LinkedHashMap<>();
