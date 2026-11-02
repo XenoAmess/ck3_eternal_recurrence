@@ -75,6 +75,25 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
         this.reconciliationGuards = Objects.requireNonNull(actualReconciliationGuardVerifier);
         this.operatorGuards = java.util.Optional.empty();
     }
+    /** Installs reconciliation replay while retaining the exact live executable catalog. */
+    public static NativeRecordedEvidenceVerifier withReconciliationGuard(ActionPorts.OutcomeArchive archive,
+            Supplier<ContinuityStorePort.Session> borrowedSession, OriginalEvidencePort originals,
+            NativeEffectEvidence.FrameLoader frames, RootExecutableBindings actualCatalog,
+            ReconciliationGuardVerifier actualReconciliationGuardVerifier) {
+        return new NativeRecordedEvidenceVerifier(archive, borrowedSession, originals, frames, actualCatalog,
+                java.util.Optional.of(Objects.requireNonNull(actualReconciliationGuardVerifier)));
+    }
+    private NativeRecordedEvidenceVerifier(ActionPorts.OutcomeArchive archive,
+            Supplier<ContinuityStorePort.Session> borrowedSession, OriginalEvidencePort originals,
+            NativeEffectEvidence.FrameLoader frames, RootExecutableBindings actualCatalog,
+            java.util.Optional<ReconciliationGuardVerifier> actualReconciliationGuardVerifier) {
+        this.archive = Objects.requireNonNull(archive); this.borrowedSession = Objects.requireNonNull(borrowedSession);
+        this.originals = Objects.requireNonNull(originals); this.frames = Objects.requireNonNull(frames);
+        this.catalog = Objects.requireNonNull(actualCatalog); this.bindings = Map.of();
+        this.terminalGuards = java.util.Optional.empty(); this.derivedGuards = java.util.Optional.empty();
+        this.reconciliationGuards = Objects.requireNonNull(actualReconciliationGuardVerifier);
+        this.operatorGuards = java.util.Optional.empty();
+    }
     /** The same live catalog that owns executable objects also owns their exact archived replay. */
     public NativeRecordedEvidenceVerifier(ActionPorts.OutcomeArchive archive, Supplier<ContinuityStorePort.Session> borrowedSession,
             OriginalEvidencePort originals, NativeEffectEvidence.FrameLoader frames, RootExecutableBindings actualCatalog) {
