@@ -64,6 +64,7 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
         if (!(dispatch instanceof NativeActionPort.AckReceived original)) return NativeEffectRegistry.Projected.pending("original Council result unknown; collect its original request only", List.of(attempt.guard().nativeEvidence()));
         var context = GovernanceActionScope.current(command); var same = context.session(command); var scope = context.mailbox(command);
         var results = new ArrayList<CouncilContinuationReceipt>();
+        NativeEffectSnapshots.Pair receiptQueryPair = null;
         try {
             CouncilContinuationPolicy.requireOriginalPending(command, attempt, original);
             var prior = continuation.retained(same);
@@ -74,7 +75,7 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
             for (int count = 0; progress.next().isPresent(); count++) {
                 StrictJson.require(count < maximumContinuations && clock.instant().isBefore(ActionObservationWindow.deadline(command)), "Council continuation deadline/budget exhausted; original requests retained, no requeue");
                 Stage next = progress.next().orElseThrow();
-                if (next == Stage.RECEIPT_QUERY) snapshots.read(command, attempt); // require actual newer Native+Driver material before receipt issue
+                if (next == Stage.RECEIPT_QUERY) receiptQueryPair = snapshots.read(command, attempt); // retain the actual newer Native+Driver frame used for this receipt query
                 CouncilContinuationReceipt receipt = continuation.continueOnce(same, command, attempt, next, ActionObservationWindow.deadline(command)); results.add(receipt);
                 if (receipt.status() != Status.ACK) return NativeEffectRegistry.Projected.pending("Council continuation result UNKNOWN; collect exact original ID only", List.of(receipt.latestRecord()));
                 prior = continuation.retained(same);
@@ -97,7 +98,8 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
                 return rejected;
             }
             StrictJson.require(progress.receipt().filter(value -> value.status() == CouncilActionCodec.ReceiptStatus.APPLIED).isPresent(), "Council original native receipt did not verify incumbent assignment");
-            var pair = snapshots.read(command, attempt); var boundArchive = archive.withSession(same);
+            StrictJson.require(receiptQueryPair != null, "Council applied receipt lacks its actual receipt-query Native+Driver frame");
+            var pair = receiptQueryPair; var boundArchive = archive.withSession(same);
             continuation.verifyCanonicalChain(same, same.head(), results);
             policy.requirePreflight(command, attempt, results.getFirst().request().supportingEvidence(), boundArchive, original);
             RawJson compatible = compatible(progress.receipt().orElseThrow());
