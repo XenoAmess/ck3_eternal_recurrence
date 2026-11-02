@@ -4,6 +4,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.math.BigInteger;
+import java.util.Map;
+import java.util.Set;
+import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.*;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import java.util.Optional;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
@@ -90,6 +96,109 @@ final class SettledRecoveryFrontier344Test {
         }));
         assertEquals(commits, h.fixture.store.commits);
         assertArrayEquals(before, h.fixture.store.current.canonicalBytes());
+    }
+
+    @Test void twoDistinctVisibleRootsNeedTheirOwnCompletedCycles() throws IOException {
+        for (String coverage : List.of("both", "missing-second", "wrong-second")) {
+            var fixture = new Fixture(false);
+            fixture.journal.retainCycle(OWNER, fixture.receipt);
+            fixture.journal.settleCycle(OWNER, fixture.receipt,
+                    semantic(frame(2, 24024, "completed-first"), TIME.plusSeconds(3)));
+            ExactRef firstCycle = ExactRef.fromJson(fixture.store.current.toJson()
+                    .get(WriterContracts.ORDINARY_CYCLE_FIELD).get("head"));
+            ExactRef firstReceipt = fixture.archive.receiptReferenceOf(fixture.receipt);
+            ExactRef previousAction = ContinuityActionJournal.recordHead(fixture.store.current).orElseThrow();
+
+            var before = frame(2, 24024, "completed-first");
+            var source = fixture.receipt.command().source();
+            var operation = new OperationKey("advance_life");
+            List<ExpectedValue> flags = List.of(
+                    new ExpectedBoolean(new FieldKey("native.gameplay_verified"), true),
+                    new ExpectedBoolean(new FieldKey("timeline.advance_verified"), true),
+                    new ExpectedBoolean(new FieldKey("timeline.checkpoint_eligible"), true),
+                    new ExpectedText(new FieldKey("progress_status"), "postcondition"));
+            var command = new ActionCommand("auto-second-349", before, source, OWNER.sessionId(), operation,
+                    new OpportunityJson.Obj(Map.of()),
+                    new ExpectedPostcondition(1, before, source, "fixture-observer/v1", flags),
+                    new JointBudgetSelector.Claims(Set.of(), Set.of(), Set.of(), Set.of()), TIME.plusSeconds(40));
+            var guard = new GuardEvidence(before, source, OWNER.sessionId(), BigInteger.TWO, operation,
+                    REF, REF, "fixture", TIME.plusSeconds(4), TIME.plusSeconds(40));
+            var observed = new ActionState.EffectObservation(frame(3, 24048, "terminal-second"), source,
+                    OWNER.sessionId(), "fixture-observer/v1", flags, new ObservationProvenance.Query("native-second-349"),
+                    TIME.plusSeconds(5), REF);
+            var second = new ActionReceipt(1, fixture.store.current.sequence() + 1, command,
+                    ActionCodec.bodySha256(command), new ActionState.CompositeSettled(
+                            new CompositeExecution("advance-life/v1", TIME.plusSeconds(4), guard, List.of()),
+                            new ActionState.Applied(observed)));
+            fixture.archive.preserveReceipt(second);
+            ExactRef secondAction = fixture.archive.preserveRecord(new ActionRecord(second, Optional.of(previousAction)));
+            ObjectNode linked = fixture.store.current.toJson(); linked.put("sequence", second.sequence());
+            linked.set(ContinuityActionJournal.STATE_FIELD, secondAction.toJson());
+            fixture.store.current = ContinuityState.fromJson(linked, OWNER.machineId());
+            fixture.journal.retainCycle(OWNER, second);
+            fixture.journal.settleCycle(OWNER, second,
+                    semantic(frame(3, 24048, "completed-second"), TIME.plusSeconds(6)));
+            ExactRef secondCycle = ExactRef.fromJson(fixture.store.current.toJson()
+                    .get(WriterContracts.ORDINARY_CYCLE_FIELD).get("head"));
+            assertNotEquals(firstCycle, secondCycle);
+            ObjectNode actualSecondCycle = ContinuityJson.parseObject(fixture.archive.loadMaterial(secondCycle).bytes(),
+                    ContinuityJson.DOCUMENT_MAX_BYTES);
+            assertEquals(firstCycle, ExactRef.fromJson(actualSecondCycle.get("previous")));
+            assertEquals(fixture.archive.receiptReferenceOf(second), ExactRef.fromJson(actualSecondCycle.get("receipt_ref")));
+            var roots = ContinuityActionJournal.receipts(fixture.store.current, fixture.archive);
+            assertEquals(2, roots.size());
+            assertEquals(2, roots.stream().map(value -> value.command().actionId()).distinct().count());
+            assertTrue(roots.stream().allMatch(value -> value.visibleGameplay()
+                    && value.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED));
+            fixture.journal.commit(new JournalInput(OWNER, "batch-349", JournalKind.BATCH_INTERRUPTED,
+                    Optional.empty(), Optional.empty(), Optional.empty(), List.of()));
+            assertEquals(ContinuityState.Status.REPAIR_REQUIRED, fixture.store.current.status());
+
+            ObjectNode state = fixture.store.current.toJson();
+            ObjectNode branch = (ObjectNode) state.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+            if (coverage.equals("missing-second")) {
+                branch.set("head", firstCycle.toJson()); branch.put("completed_cycles", 4);
+            } else if (coverage.equals("wrong-second")) {
+                ObjectNode wrong = actualSecondCycle.deepCopy(); wrong.set("receipt_ref", firstReceipt.toJson());
+                ExactRef wrongRef = fixture.archive.preserveMaterial(new RawJson(ContinuityJson.canonical(wrong)));
+                branch.set("head", wrongRef.toJson());
+            }
+            fixture.store.current = ContinuityState.fromJson(state, OWNER.machineId());
+            var archive = new Reads(fixture, secondCycle);
+            var authority = new OrdinaryCycleTransitions(archive, (same, owner, value) -> {
+                fixture.store.requireSession(same); assertEquals(OWNER, owner);
+                return new OrdinaryCycleTransitions.VerifiedSemantic(value.frame(), value.observedAt(),
+                        "fixture-semantic-349", "f".repeat(64));
+            }, (same, owner, pair, proof) -> { throw new AssertionError("no private SAVE permission"); },
+                    new OriginalWindowReducer.Policy(10958), fixture.store::requireSession);
+            fixture.store.authority = authority;
+            var details = StrictJson.object(); details.put("evidence_id", "settled-multiroot-349");
+            details.put("source", "java-settled-same-game-recovery/v1");
+            details.set("session", OrdinaryCycleTransitions.sessionToJson(OWNER));
+            details.put("operation", "SETTLED_SAME_GAME_RECOVERY");
+            details.put("predecessor_head_digest", fixture.store.head().digest());
+            details.put("batch_id", "batch-349"); details.put("next_sequence", 350);
+            details.set("cycle_record_ref", branch.get("head"));
+            details.set("semantic", OrdinaryCycleTransitions.semanticToJson(
+                    semantic(frame(4, 24048, "fresh-two-root-recovery"), TIME.plusSeconds(9))));
+            var request = new WriterContracts.Request(OrdinaryCycleTransitions.CYCLE_KIND,
+                    ContinuityJson.canonical(details), List.of());
+            byte[] original = fixture.store.current.canonicalBytes(); int commits = fixture.store.commits;
+            fixture.store.locked(same -> authority.withLocked(same, () -> {
+                if (coverage.equals("both")) {
+                    var prepared = same.preview(request);
+                    assertEquals(same.head().digest(), prepared.predecessor().digest());
+                    assertEquals(fixture.store.current.settledCycles(), prepared.reduced().settledCycles());
+                } else {
+                    var rejected = assertThrows(IllegalArgumentException.class, () -> same.preview(request), coverage);
+                    assertTrue(rejected.getMessage().contains(coverage.equals("missing-second")
+                            ? "cannot discard a visible action" : "occurs twice"), rejected.getMessage());
+                }
+                return null;
+            }));
+            assertEquals(commits, fixture.store.commits, coverage);
+            assertArrayEquals(original, fixture.store.current.canonicalBytes(), coverage);
+        }
     }
 
     private static final class Harness {
