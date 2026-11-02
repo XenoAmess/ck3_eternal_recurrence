@@ -80,6 +80,15 @@ public final class GovernanceActionScope implements ActionCoordinatorPort {
         catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); throw new IllegalStateException("governance reconciliation interrupted", interrupted); }
         catch (IOException failure) { throw new UncheckedIOException(failure); }
     }
+    @Override public ActionReceipt reconcileOriginalCouncil(ContinuityStorePort.Session borrowed, String actionId, java.time.Instant deadline, org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator actual) throws java.io.IOException, java.lang.InterruptedException {
+        Objects.requireNonNull(borrowed); Objects.requireNonNull(actual);
+        borrowed.requireWriter(originalWriterLock);
+        try {
+            return coordinator.reconcileOriginalCouncil(borrowed, actionId, deadline, actual);
+        } finally {
+            borrowed.requireWriter(originalWriterLock);
+        }
+    }
     @Override public ActionReceipt reconcile(ContinuityStorePort.Session borrowed, String actionId) {
         return journal.locked(borrowed, locked -> {
             ActionCommand command = locked.find(actionId).orElseThrow(() -> new IllegalArgumentException("unknown original governance action")).command();
