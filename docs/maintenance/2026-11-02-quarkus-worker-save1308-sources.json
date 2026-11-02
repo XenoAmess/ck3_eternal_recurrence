@@ -1,0 +1,114 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1308,
+  "confirmed_UTC": "2026-11-02T21:55:17.803991600Z",
+  "SETTLE": 1302,
+  "total_saved_days": 250,
+  "saved_frame": {
+    "date_raw": "53151984",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "735",
+    "played_character_id": "31254",
+    "revision": "682",
+    "snapshot_id": "native:735"
+  },
+  "completed_cycles": 36,
+  "pending_receipt": null,
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "main_window": {
+    "scope": "Independent Decimal subtraction of named independently verified saved frontiers",
+    "from_SAVE": 1274,
+    "to_SAVE": 1308,
+    "from": "2026-11-02T21:18:03.291471500Z",
+    "to": "2026-11-02T21:55:17.803991600Z",
+    "from_saved_days": 242,
+    "to_saved_days": 250,
+    "elapsed_seconds": "2234.512520100",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "279.3140650125",
+    "target_seconds_per_day": 10,
+    "target_achieved": false,
+    "includes": "All wall time between actual confirmations: stop59 and71.3157089s cooperative release, four Java plus resource structural adoption and one95.7227851s GET, same-JVM restart1 and658.7121925s cold restoration, new45s JFR, actual355 noSTOP instrumentation4.9911858s HTTP, full original60 life and save pipeline, preparation, queueing and waiting. No interval removed.",
+    "later_window_cost": "Watcher head<=1309 refusal, close repair at21:57:11.168541 and notification delay occurred after1308 confirmation21:55:17.803991600; these remain recorded and belong to1308->next frontier, not this closed1274->1308 window.",
+    "instrumentation": "Official body class replacement while same host119020/delegate188/restart1 loader alive, followed by named read1284 and original60 new8days confirmed at1308. No branch-specific invocation or heap/thread-object probe.",
+    "limits": "Not A/B, not isolated source speedup. Earlier cumulative saved days excluded from this window denominator; no future61 health or saved credit inferred."
+  },
+  "actual_355_followthrough": {
+    "same_host": {
+      "pid": 119020,
+      "birth": "134381255919633818",
+      "image": "C:\\jdk-21\\bin\\java.exe"
+    },
+    "same_delegate": "188ed278-3356-4bf8-ac0a-e177c8c79197",
+    "same_loader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@636a035e@636a035e",
+    "instrumentation_source_unit": 355,
+    "source_formal_commit": "a18003d52ca2869f41c8144133ed5a4fe47a4ce4",
+    "instrumentation_doc_commit": "48d20aef95aae21675d8b87d44047c10cfa84895",
+    "instrumentation_source_index": "2026-11-02-quarkus-body-instrumentation355-sources.json",
+    "qualified": "Existing body instrumentation on the same host119020/delegate188/restart1 was followed by eight newly confirmed saved days at1308. The earlier instrumentation-only record correctly credited zero new saved days at its own cutoff and remains unchanged.",
+    "not_qualified": [
+      "Specific355 VIEW branch invocation",
+      "Private heap or thread object identity",
+      "Causal speedup or A/B comparison",
+      "Future batch61 health or subsequent saved credit"
+    ]
+  },
+  "later_window_boundary": {
+    "after_SAVE1308": "Watcher head<=1309 refusal, close repair21:57:11.168541 and notification delay occurred after this confirmation; retained in1308->next saved-frontier wall, not retroactively inserted into1274->1308.",
+    "source": "Root independently frozen save35260-window.json later_window_cost"
+  },
+  "cumulative_secondary_metric_only": {
+    "root_epoch_seconds": "90271.803991600",
+    "seconds_per_saved_day": "361.0872159664",
+    "denominator": 250,
+    "does_not_replace_main_window": true
+  },
+  "sources": [
+    {
+      "local_key": "root/save35260-verified.json",
+      "bytes": 1401,
+      "sha256": "123fefcd9afe0a5c9f9376357a72525f20d3dc6415b7ccf69ff5fea572b28be5",
+      "formal_writer_read": "bounded frozen metadata only"
+    },
+    {
+      "local_key": "root/save35260-window.json",
+      "bytes": 1500,
+      "sha256": "0df4d4590a995b2cc66b4dd5d2099e922d677e6209bc8ad270d63a3425a7878d",
+      "formal_writer_read": "bounded frozen metadata only"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed35260/SUMMARY.json",
+      "bytes": 5976,
+      "sha256": "db0d86014bd5129c75c706ca65050ed68f5cd34c8da3d76fe72900ae9d805197",
+      "formal_writer_read": "bounded frozen metadata only"
+    },
+    {
+      "local_key": "root/instrumentation355-verified.json",
+      "bytes": 3019,
+      "sha256": "450bbfb87c625cee3b59788e3b49f766f714d1768e01955fb0874fe441ec1de5",
+      "formal_writer_read": "bounded frozen metadata only"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed35260/00001302.json",
+      "bytes": 99881,
+      "sha256": "1171408649892ff4af67d5ab4ccc534c2b272684a5b2a3f75434cf2f63b01874",
+      "qualification": "Root independently read the two named frozen canonical events. Formal writer consumes only Root/Runtime bounded metadata, without repeating event/body reads."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed35260/00001308.json",
+      "bytes": 98876,
+      "sha256": "47cd0a7263f35fbb91dbd9f77f12a8e0af57b54eb19b8715cd1ec9af057c91aa",
+      "qualification": "Root independently read the two named frozen canonical events. Formal writer consumes only Root/Runtime bounded metadata, without repeating event/body reads."
+    }
+  ],
+  "limits": [
+    "No raw Save, full Driver, canonical event, Game/Native/live process or current worker query by formal writer.",
+    "No new compile/test, GET, source adoption, reload, host launch or controls for documentation.",
+    "Original Runtime and Root cutoffs retained; saved pair uses735/682, not the earlier cycle semantic733/680 frame.",
+    "Keep all original AGENTS/runtime bytes and earlier212/228/234/242/instrumentation-only cutoffs unchanged.",
+    "Explicit writer operations are metadata/Python/Git only; prior unrelated bare-data command association remains UNKNOWN in its own358 erratum."
+  ]
+}

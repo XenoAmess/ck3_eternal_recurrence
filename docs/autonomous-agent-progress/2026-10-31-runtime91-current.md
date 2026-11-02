@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-02 21:55:17.803991600Z实际1308 SAVE_CONFIRMED：1302 SETTLE，本局累计250保存日，saved date53151984/native735/public682/cycle36/pending=null。同Game77132／原birth不变；Root已具名独验两冻结事件。同host119020／原birth、188ed278委托、restart1@636a035e loader在355现有方法体instrumentation之后，原60业务链真实新增8日并确认保存。这是实际方法体替换之后的保存验收，不授具体VIEW分支、私有heap／thread身份、单leaf因果或提速；旧instrumentation-only当时新增保存0的事实不改。来源见[1308保存索引](../maintenance/2026-11-02-quarkus-worker-save1308-sources.json)。
+
+1274／242日21:18:03.291471500Z→1308／250日21:55:17.803991600Z完整2234.512520100秒／新增8日＝279.3140650125秒／日，包含退出71.3157089秒、唯一GET95.7227851秒、658.7121925秒冷恢复、JFR、355无STOP方法体更新HTTP4.9911858秒、原60全链、准备排队及等待，10秒目标未达且非A/B。累计250分母仅另列次指标，不替代本窗新增8。watcher head<=1309误拒、21:57:11 close修复及通知延迟在1308之后，保入1308→下一确认窗；不因迟消费改变SAVE实际时间。61及后态仅各自历史切点，未来健康独立；保存旧全文，不为文档新查询、部署、GET、编测或现场动作。
+
 2026-11-02 21:36:27Z后到实际能力：355 DriverPersistentPlanningState现有类方法体已由官方Quarkus instrumentation替换。单次GET21:36:24.299009→29.290187Z／回执4.9911858秒，官方报告3.011秒；同119020／原birth、同188ed278委托与restart1@636a035e loader保持，冻结该委托生命周期无新START／COMPLETE，0STOP／0新host。Root独核后继1284业务read，未对355 VIEW分支、私有heap或thread对象作probe；本记录新增保存日0，不报有限秒／日，不授运行速度或下一SAVE。来源见[355实际instrumentation索引](../maintenance/2026-11-02-quarkus-body-instrumentation355-sources.json)。
 
 原START21:25:03.784867Z→LOOP21:36:02.497059500Z冷恢复658.7121925秒在此次body替换之前，不与旧682秒窗口作A/B。独立353记录21:34:25→21:35:10全为preLOOP且在355窗外，typed parsedEntry inclusive130／stableParserTree leaf15只证明具名helper被采到；parsedValue／historyIndex仍UNKNOWN，不能相加当调用数／耗时，不授精确PC／loader／整tuplehash或实速。既有1274／242保存切点与全部历史正文原字节保留；新类型、字段、方法、API及任意热改仍独立资格，当前Runtime继续普通游玩，文档0现场查询／GET／编测。
