@@ -23,7 +23,7 @@ public final class GovernmentCrtBoundary185 {
                 memory.writeDword(s.rbx,observed | -1);
                 break;
             }
-            if(guard==-1) {
+            if(memory.readDword(s.rbx)==-1) {
                 s.rcx=100L;
                 directCall(s,memory,calls,0x4223aa9L,0x4223b30L);
                 continue;
