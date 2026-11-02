@@ -1314,9 +1314,17 @@ public final class ContinuityBatchJournal implements BatchJournal {
         try {
             var unresolved=java.util.List.copyOf(canonicalActions).stream().filter(action->!action.settled()).toList();
             if(unresolved.size()!=1)return Optional.empty();
-            var actual=unresolved.getFirst();var command=actual.command();
-            if(!(actual.state() instanceof ActionState.Unknown)
-                    ||!(command.origin() instanceof CommandOrigin.Gameplay)
+            var actual=unresolved.getFirst();
+            if(!(actual.state() instanceof ActionState.Unknown))return Optional.empty();
+            return positiveAckCouncilOriginal(actual);
+        } catch(RuntimeException rejected){return Optional.empty();}
+    }
+
+    /** Shared original command/positive wire ACK DATA; callers retain their own exact lifecycle state role. */
+    private static Optional<ActionReceipt> positiveAckCouncilOriginal(ActionReceipt actual) {
+        try {
+            var command=actual.command();
+            if(!(command.origin() instanceof CommandOrigin.Gameplay)
                     ||!(command.expectation() instanceof CommandExpectation.Gameplay)
                     ||!(command.protocolIdentity() instanceof org.xar.ck3.control.application.action.ProtocolRequestIdentity.BodyDerived)
                     ||!command.operation().value().equals("private-assign-councillor-v1")
@@ -2223,6 +2231,66 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return Optional.of(actual);
     }
 
+    /** Historical DATA of the exact positive-ACK Council original completed after its interrupted saved batch. */
+    private boolean historicalCompletedCouncilCycle(WriterContracts.HistoricalTransition edge,
+            com.fasterxml.jackson.databind.node.ObjectNode details,String batch,SessionIdentity owner,
+            java.util.List<ActionReceipt> actions,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        var before=edge.before();var after=edge.after();String operation=StrictJson.text(details.get("operation"));
+        if(batch==null||before.status()!=ContinuityState.Status.REPAIR_REQUIRED
+                ||!("RETAIN".equals(operation)||"SETTLE".equals(operation)))return false;
+        var previous=before.toJson();var current=after.toJson();
+        var boundary=previous.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        if(!ContinuityJson.same(boundary,current.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD))
+                ||!JournalKind.BATCH_INTERRUPTED.name().equals(boundary.path("boundary").asText())
+                ||!batch.equals(boundary.path("batch_id").asText())
+                ||!OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
+                ||!OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)
+                ||!previous.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))return false;
+        var receiptRef=ExactRef.fromJson(details.get("receipt_ref"));var actual=originals.loadReceipt(receiptRef);
+        if(!actions.contains(actual)||!originals.receiptReferenceOf(actual).equals(receiptRef)
+                ||actual.sequence()>before.sequence()||actual.outcome()!=ActionReceipt.Outcome.APPLIED_CONFIRMED
+                ||!actual.visibleGameplay()||actual.eligibleAdvance()
+                ||!(actual.state() instanceof ActionState.Settled settled)
+                ||!(settled.settlement() instanceof ActionState.Applied)
+                ||positiveAckCouncilOriginal(actual).filter(actual::equals).isEmpty())return false;
+        var command=actual.command();
+        if(!command.before().machineId().equals(owner.machineId())||!command.before().game().equals(owner.game())
+                ||!command.sessionId().equals(owner.sessionId())||!command.source().machineId().equals(owner.machineId()))return false;
+        var historicalActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(before,originals);
+        if(!historicalActions.contains(actual)||historicalActions.stream().anyMatch(action->!action.settled())
+                ||!originals.loadRecord(org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(before).orElseThrow()).receipt().equals(actual))return false;
+        var oldCycle=previous.path(WriterContracts.ORDINARY_CYCLE_FIELD);var newCycle=current.path(WriterContracts.ORDINARY_CYCLE_FIELD);
+        if(!oldCycle.isObject()||!newCycle.isObject()
+                ||!OrdinaryCycleTransitions.sessionFromJson(oldCycle.get("session")).equals(owner)
+                ||!OrdinaryCycleTransitions.sessionFromJson(newCycle.get("session")).equals(owner)
+                ||oldCycle.get("head")==null||oldCycle.get("head").isNull())return false;
+        long oldCompleted=StrictJson.integer(oldCycle.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER);
+        long newCompleted=StrictJson.integer(newCycle.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER);
+        boolean shape;
+        if("RETAIN".equals(operation)) {
+            shape=after.status()==ContinuityState.Status.REPAIR_REQUIRED&&oldCompleted==newCompleted
+                    &&oldCycle.get("pending_receipt").isNull()&&receiptRef.equals(ExactRef.fromJson(newCycle.get("pending_receipt")))
+                    &&ContinuityJson.same(oldCycle.get("head"),newCycle.get("head"))
+                    &&details.get("semantic").isNull()&&details.get("cycle_record_ref").isNull()&&details.get("cycle_record").isNull();
+        } else {
+            var record=details.path("cycle_record");
+            shape=after.status()==ContinuityState.Status.RUNNING&&newCompleted==Math.addExact(oldCompleted,1)
+                    &&receiptRef.equals(ExactRef.fromJson(oldCycle.get("pending_receipt")))&&newCycle.get("pending_receipt").isNull()
+                    &&"VISIBLE_GAMEPLAY".equals(record.path("classification").asText())
+                    &&StrictJson.integer(record.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER)==newCompleted
+                    &&receiptRef.equals(ExactRef.fromJson(record.get("receipt_ref")))
+                    &&ContinuityJson.same(record.get("previous"),oldCycle.get("head"))
+                    &&ContinuityJson.same(details.get("cycle_record_ref"),newCycle.get("head"))
+                    &&ContinuityJson.same(record.get("semantic"),details.get("semantic"))
+                    &&OrdinaryCycleTransitions.sessionFromJson(record.get("session")).equals(owner);
+        }
+        if(!shape)return false;
+        var replay=transitions.reduce(before,new WriterContracts.Request(edge.kind(),edge.details(),java.util.List.of())).toJson();
+        replay.put("sequence",edge.sequence());replay.put("last_event_identity",edge.eventIdentity());
+        return ContinuityJson.same(replay,after.toJson());
+    }
+
     /** Read-only replay of an already canonical completed Life advance after its original interrupted batch. */
     static boolean historicalCompletedLifeCycle(ContinuityState before, ContinuityState after,
             com.fasterxml.jackson.databind.node.ObjectNode details, String batch, SessionIdentity owner,
@@ -2839,7 +2907,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     boolean recoveredCycle = openBatch == null && (historicalCancelledLifeCycle(
                             edge.before(), edge.after(), details, used.isEmpty() ? null : used.getLast(), owner, actions, originals)
                             || historicalCompletedLifeCycle(edge.before(), edge.after(), details,
-                                    used.isEmpty() ? null : used.getLast(), owner, actions, originals));
+                                    used.isEmpty() ? null : used.getLast(), owner, actions, originals)
+                            || historicalCompletedCouncilCycle(edge,details,
+                                    used.isEmpty() ? null : used.getLast(),owner,actions,originals));
                     StrictJson.require((openBatch!=null || recoveredCycle)
                             && OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner),
                             "settled cycle crossed its real active batch or original retained control");
