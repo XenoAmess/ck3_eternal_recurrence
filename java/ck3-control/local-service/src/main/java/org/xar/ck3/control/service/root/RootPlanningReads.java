@@ -15,11 +15,23 @@ import org.xar.ck3.control.continuity.writer.ContinuityWriter;
 public final class RootPlanningReads implements PlanningReadPort {
     private final ContinuityWriter writer;
     private volatile PlanningReadCoordinator installed;
-    RootPlanningReads(ContinuityWriter writer) { this.writer = Objects.requireNonNull(writer); }
+    private final RootPlanningReads sourceOwner;
+    private volatile PlanningReadPort planningDelegate;
+    RootPlanningReads(ContinuityWriter writer) {
+        this.writer = Objects.requireNonNull(writer); sourceOwner = this;
+    }
+    private RootPlanningReads(RootPlanningReads actualOwner) {
+        sourceOwner = Objects.requireNonNull(actualOwner); writer = sourceOwner.writer;
+    }
     synchronized void bind(PlanningReadCoordinator actual) {
+        if (sourceOwner != this) throw new IllegalStateException("only the original Root read owner can be bound");
         if (installed != null) throw new IllegalStateException("Root planning coordinator already installed"); installed = Objects.requireNonNull(actual);
     }
-    public boolean isBound() { return installed != null; }
+    public boolean isBound() { return sourceOwner.installed != null; }
+    /** Only an explicit caller opts in; the view retains this same writer and one-shot source owner. */
+    @Override public PlanningReadPort planningReads() {
+        return sourceOwner == this ? new RootPlanningReads(this) : this;
+    }
     @Override public <T> PlanningReadResult<T> read(ReadContract<T> contract, PlanningReadRequest request) {
         // The sole journal inherits an active Driver freeze, or opens its own original writer lease
         // when the ordinary planner calls outside capture. It never creates another writer object.
@@ -61,8 +73,15 @@ public final class RootPlanningReads implements PlanningReadPort {
     @Override public <T> PlanningReadResult<T> adoptOriginal(ContinuityStorePort.Session same,PlanningReadCoordinator.OriginalRead<T> original,org.xar.ck3.control.application.action.NativeActionPort.AckReceived ack,PlanningReadRequest current,org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj semantic)throws IOException {
         writer.requireSession(same);return required().adoptOriginal(same,original,ack,current,semantic);
     }
-    private PlanningReadCoordinator required() {
-        PlanningReadCoordinator actual = installed;
-        if (actual == null) throw new IllegalStateException("actual Root planning coordinator has not been installed"); return actual;
+    private PlanningReadPort required() {
+        PlanningReadCoordinator actual = sourceOwner.installed;
+        if (actual == null) throw new IllegalStateException("actual Root planning coordinator has not been installed");
+        if (sourceOwner == this) return actual;
+        PlanningReadPort selected = planningDelegate;
+        if (selected == null) synchronized (this) {
+            selected = planningDelegate;
+            if (selected == null) planningDelegate = selected = actual.planningReads();
+        }
+        return selected;
     }
 }
