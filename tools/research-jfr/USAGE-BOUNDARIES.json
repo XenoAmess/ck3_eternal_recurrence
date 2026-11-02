@@ -1,0 +1,30 @@
+{
+  "role": "DATED_UNCHANGED_OFFLINE_REFERENCE_UTILITY_NOT_PRODUCTION_RUNTIME_DEPENDENCY",
+  "source_file": "AnalyzeRecording276V2.java",
+  "language_runtime": "Java21,jdk.jfr.consumer. Existingexactsourcecompiledcache provenance is separately held; no new compile is claimed for this publication.",
+  "invocation_shape_reference_only_not_executed": "java -Xmx192m -XX:ActiveProcessorCount=1 -cp <isolated-compiled-tool-directory> AnalyzeRecording276V2 <one-explicitly-closed-small-recording.jfr>",
+  "input_preconditions": [
+    "Explicit knownclosedimmutable localJFR, ownerfrozenbytes/SHA/headercompleteextent first; never a growing recording or liveVM.",
+    "Ownerauthorizes bounded disk/CPU resources and externalhardtimeout; currentverifiedscope<=16MiBclosedinput,192MiBCPU1/30s,notageneralunboundedinputclaim.",
+    "Noattach/recording/sourcepatch/Runtimeaction fromthisJavautility. Filehash/68Bheader checks belongtoownerwrapper."
+  ],
+  "outputs": [
+    "SeparatedExecutionSample/NativeMethodSample typedthreadleaf/inclusive/categories;globaldurations/GCevents/CPUload/sampleallocationweights.",
+    "JVMInformation allnonstructural eventfields underrecorded_configuration,upto50configurationrows;ifrecorded.",
+    "RealUTC10sbuckets andfirst/lasteventextent,whichdifferfromrecordingheader."
+  ],
+  "mandatory_output_exclusions_for_other_recordings": [
+    "window_samples",
+    "window_duration_events_by_start_not_clipped"
+  ],
+  "why_excluded": "These two legacyfields use fixed276timestamps inthisunchangeddatedsource. Theycannotbeapplied tootherrecordings. Existing313ownerwrapper removes both;do notpublisholdlabels asnewphases.",
+  "known_capture_gaps": [
+    "DedicatedJavaAgent/NativeAgent values andperthreadThreadAllocationStatistics values arenotretained;startupagentargs onlyifpresentinJVMInformation.",
+    "Configurationrowscap50cantruncate;typedtoplists truncate;stackdepthcaps64and24signatures differ.",
+    "Collectionmaps/settingslists growwithclosedinputcardinality, soexternalfiniteinput/time/memorybounds areessential. Topoutputcaps arenotinternalmapcaps.",
+    "Aggregateddurationeventsnotheaderclipped,thread/type/nestedGCoverlap;samplecounts/weightsnotexacttime/calls/allocatedbytes.",
+    "JNAReadFileisnotnecessarilyobserved asjdk.FileRead;20ms thresholdfurtherlimitsobservedIO."
+  ],
+  "adoption_label": "Publishonlyasreviewablereference withthese limits. A genericcleanreplacement wouldbeaseparatesourcetask/modelreview/firstvalidation,notretrospectivegreen.",
+  "public_hygiene": "No rawrecordings,argvoutput,GameIDs,machinepaths,profileJSONorevidencebodyareincludedinthepublicationunit."
+}
