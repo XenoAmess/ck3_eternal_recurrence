@@ -1,5 +1,13 @@
 # runtime91 同局续行
 
+## 2026-11-02 05:47Z 截止：原Council297真实SETTLED/APPLIED，Main300仍在Sway归档门END1
+
+仅已闭 `closed300/INDEX.json` 四份原件、`recovery-outcome300/SUMMARY.json` 与具名19815B原回执独核。原 `governance-66d439…` 已在297真实 SETTLED／APPLIED，回执SHA `f99473f80e058369b592a6776a952ae1e739beb23b51ac7c458f537775bce030`；与旧288 UNKNOWN的action/body/request/prepared-request/原dispatch链接核等。其真实fresh_snapshot_query后态观察为154/115／date53146896／actor31254，确证chancellor33947及gameplay_verified；这项后到canonical结算保留，旧288及前段“当时仍UNKNOWN”不回写。当前head300／running／SHA `e61c1b9209e97dfbafc7761439ce6ca2ae71fa816f5a7afbd90af6b21e4302ad`，completed_cycles8／cycle pending=null，新增action metadata20354B；saved-cycle仍6，不能把completed8当已保存8cycle或新增日。
+
+Main300／Java106520／birth134380718030787158实际05:43:23.077774Z→05:47:01.561291Z END1，完整UTC 218.483517秒／reported 218.483517秒；END由同PID/birth的GetProcessTimes精确恢复，不以失联wrapper推定仍运行。0LOOP／0新增SAVE，stderr实际为 `actual Sway following-turn consumption unavailable: actual Root reconciliation guard verifier is not installed`。最新观察157/115、日期不变，保存仍38日与pair105/78；head的running是该canonical标签，不代表进程健康。
+
+Root主epoch至Main300 END完整32175.561291秒／38新增确认保存日＝846.7252971315789473684210526秒／日，仍未达10秒；本次218.483517秒／0新增SAVE_CONFIRMED窗口的秒／新增保存日为null。后继P0301已以明确named typed factory修正catalog六参被Java选作Terminal void重载而丢弃Complete的接线，App+Root正式 `27cdbea4c5c116690d48b81d55394d8b50d00572`，分别复用首1TU0／1.7092285及2.1154286秒；旧P0293源码/首编/正式历史保留，其当时路由误判另有后到勘误。这里只授源码与首编，独立软件guard路由见证及实际后继运行分列，不授301已LOOP／恢复或新SAVE。旧299及更早全历史字节保，本次0新增Java／HTTP／Game或Native查询、Driver／Save大读、S／MB采用、部署或重启，不门Runtime。
+
 ## 2026-11-02 05:43Z 截止：299启动后END1；后到独核Native287不改canonical288 UNKNOWN
 
 具名 `closed299/INDEX.json` 的四份已闭原件与 `recovery-outcome299/SUMMARY.json` 已核长度/SHA。Main299／Java86320实际05:31:17.870168Z→05:34:18.919188Z END1，完整UTC 181.04902秒／reported 181.0490273秒，0LOOP／0新增SAVE。真实stderr为 current Council seat observation unavailable，内因 `recovered Council source is closed, stale or changed`；保该实际诊断，不把源编译或START当恢复完成。head295／repair_required／SHA `89251be0e7c9701c1a560c5ff417973804f9b5af53b29a06e638fb819c640238`，无新receipt或action metadata，原288 UNKNOWN不重发；completed_cycles7／cycle pending=null，最新观察150/111／date53146896，保存仍38日及pair105/78。
