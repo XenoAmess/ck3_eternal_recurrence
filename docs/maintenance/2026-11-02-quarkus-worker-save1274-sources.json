@@ -1,0 +1,101 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T21:18:03.291471500Z",
+  "previous_published_history_retained": true,
+  "SAVE_CONFIRMED": {
+    "event": 1274,
+    "SETTLE_event": 1268,
+    "new_saved_days": 8,
+    "total_saved_days": 242,
+    "date_raw": "53151792",
+    "native_revision": 715,
+    "public_revision": 661,
+    "completed_cycles": 35,
+    "pending_receipt": null
+  },
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "performance": {
+    "primary_window": "SAVE1231(234saved) -> SAVE1274(242saved)",
+    "start_UTC": "2026-11-02T20:28:19.309911600Z",
+    "end_UTC": "2026-11-02T21:18:03.291471500Z",
+    "full_wall_seconds": "2983.981559900",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "372.9976949875",
+    "included_costs": [
+      "zero-save batch56 cooperative stop and launcher metadata fixes",
+      "old Java/outer resource release and one actual new host",
+      "new host cold START-to-LOOP 682.361271800 seconds",
+      "zero-Intent batch57 budget defer",
+      "batch58 original Life and SAVE including intermediate UNKNOWN",
+      "all waits, source/compile/research overlap, JFR350 and monitoring overhead"
+    ],
+    "independent_Root_includes": "all wall time including preparation, old host clean delegate stop and controlled host exit, new host launch and 682.3612718s cold recovery, budget-deferred zero-action batch57, original batch58 actions, UNKNOWN observation and natural save confirmation; no costs removed",
+    "root_epoch_seconds": "88037.291471500",
+    "root_epoch_total_saved_days": 242,
+    "root_epoch_seconds_per_saved_day": "363.7904606260330578512396694",
+    "root_epoch_metric_role": "Cumulative secondary metric only, excluded from primary window denominator.",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "controlled_AB_or_causal_speedup": false
+  },
+  "runtime_boundary": {
+    "Root_owner_reported_new_Dev_host_pid": 119020,
+    "Root_owner_reported_delegate_prefix": "c110",
+    "Root_owner_reported_restart": 0,
+    "cold_START_to_LOOP_seconds": "682.361271800",
+    "host_fact_qualification": "Host/delegate reported by Root at this named SAVE cutoff; formal writer did not newly query host/process/flags. Independently verified fact here is the same-Game saved frontier.",
+    "budget_deferred_batch57": "Zero Intent/actions in deferred batch, included in complete window. No unchanged old command replay or deadline relaxation inferred.",
+    "following_batch59": "Runtime/Root historical report only, no later health inference.",
+    "source_352_353_adoption_or_speed": "Not granted by source/compile/Test publication; current saved frontier does not establish these candidates loaded."
+  },
+  "verification": "Existing bounded Root/current/prior/window metadata only. Decimal primary subtraction and event-ref SHA/size comparison recomputed. No raw events/batches/Save/Driver reads, live Game or host query, GET, Java, migration or launch.",
+  "sources": [
+    {
+      "local_key": "root/save34257-verified.json",
+      "bytes": 1324,
+      "sha256": "5ec52043ca07543ccc92bb2c6637bcb9eeb45a05218b6b9ecc060bf81ca54d16",
+      "bounded_metadata_read_by_formal_writer": true
+    },
+    {
+      "local_key": "root/save34257-window.json",
+      "bytes": 956,
+      "sha256": "d45a3f4870307b61e97e95a4478beef55fa6fd649bb95e403bdcaeacb17b939c",
+      "bounded_metadata_read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/save34257-window/SUMMARY.json",
+      "bytes": 2898,
+      "sha256": "7db856daa4493eaf834afa2cfcbd47873e3d2c874b436904924e72c0f33ad1eb",
+      "bounded_metadata_read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed33555c/SUMMARY.json",
+      "bytes": 5993,
+      "sha256": "c51a402e24d491b1d0d366899f68141549c7e67e674630b93ba99abf48017d7a",
+      "bounded_metadata_read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed34257/SUMMARY.json",
+      "bytes": 5991,
+      "sha256": "2e0712cbbde401b54875e7df7f3db02ea64fcf8ea3de8c154bfdcb878a5c2407",
+      "bounded_metadata_read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed34257/00001268.json",
+      "bytes": 99879,
+      "sha256": "c3d140e4022b1c5e9ef65f565c44bf2e3c47a4893b419305fe5cf79abd7da007",
+      "qualification": "Root independently read named frozen event. Formal writer compared bounded Root/window/SUMMARY metadata only; no repeated raw event/Save/Driver/body read."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed34257/00001274.json",
+      "bytes": 98874,
+      "sha256": "0ebef920bcbccab22ec7a0ede4f8e55950e819a48accddfa8d20ec3d824df032",
+      "qualification": "Root independently read named frozen event. Formal writer compared bounded Root/window/SUMMARY metadata only; no repeated raw event/Save/Driver/body read."
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0,
+  "later_delegate_health_inferred": false
+}
