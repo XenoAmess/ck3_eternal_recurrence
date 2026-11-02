@@ -96,13 +96,20 @@ public final class DriverObservationEvidenceReader {
     /** Pure same-call replay from captured originals; no archive callback or permission is retained. */
     public static DriverObservationAssembler.Result replayOriginals(ExactRef manifestReference,RawJson manifest,
             RawJson fullDriver,byte[] framedNative,ExactRef nativeReference) {
+        return replayOriginalsWithScopedDriverDecode(manifestReference,manifest,fullDriver,framedNative,nativeReference,null);
+    }
+
+    /** Optional nominal issuer; it can only return values internally decoded by the final production loader. */
+    public static DriverObservationAssembler.Result replayOriginalsWithScopedDriverDecode(ExactRef manifestReference,RawJson manifest,
+            RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,
+            org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
         Objects.requireNonNull(fullDriver);
         var row=checkedManifest(manifestReference,manifest);
         StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
                 "bounded archived original native frame required");
         // This private copy cannot change between framing/hash checks and the constructed immutable frame.
         var actual=nativeFrame(row,framedNative.clone());
-        var facts=replayFacts(manifestReference,row,fullDriver,actual);
+        var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
         return new DriverObservationAssembler().assemble(actual,facts,nativeReference);
     }
 

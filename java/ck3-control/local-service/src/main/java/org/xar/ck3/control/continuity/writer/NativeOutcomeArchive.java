@@ -1666,4 +1666,8 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             return bytes;
         }));
     }
+
+    @Override public org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader scopedDriverDecoder() {
+        return completeDriverDecoder;
+    }
 }

@@ -214,6 +214,13 @@ public final class ActionPorts {
             return work.read(this);
         }
 
+        /** Optional DATA-only decoder for complete Driver material. Returns null if unavailable.
+         * Strict legacy fallback remains mandatory when null. No source/session authority is implied.
+         */
+        default org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader scopedDriverDecoder() {
+            return null;
+        }
+
         ExactRef preserve(NativeActionPort.DispatchOutcome original);
         NativeActionPort.DispatchOutcome load(ExactRef original);
         ExactRef preserveRequest(NativeRequest original);
