@@ -1,0 +1,105 @@
+{
+  "schema": "ck3.quarkus-loading-boundaries.sources.v1",
+  "date": "2026-11-02",
+  "scope": "Saved evidence and bounded current source/argument metadata; original raw artifacts stay on the execution machine. local_key is an owner evidence-registry key, not a public file link.",
+  "current_args": {
+    "local_key": "business-recovery301/ordinary-recovery301.args",
+    "bytes": 72622,
+    "sha256": "55dff771777cae62414ca2e56164420ed246796763bb8bcf52d6d891b1ae193b",
+    "main": "org.xar.ck3.control.service.root.RootOrdinaryWorkerMain",
+    "mode": "resume",
+    "classpath_path_entries": 760
+  },
+  "bounded_parity": {
+    "explicit_source_rows": 36,
+    "source_pins_still_equal": 36,
+    "current_runtime_source_LF_matches": 36,
+    "current_formal_LF_matches": 27,
+    "formal_differences": 9,
+    "full_classpath_or_reactor_parity": "UNKNOWN",
+    "four_entry_original_compiled_source_pins": "NOT_HELD",
+    "first_origin_is_metadata_not_live_loader_inspection": true
+  },
+  "sources": [
+    {
+      "local_key": "resume63/quarkus-worker-dev01/multimodule-v4-09/evidence03/ACTUAL.json",
+      "bytes": 9466,
+      "sha256": "70036aa81950edf772e9bd432ae110d06076a99ecee72e9c5e750b2d5aef8759"
+    },
+    {
+      "local_key": "resume63/quarkus-worker-dev01/LIFECYCLE-REGRESSIONS-ACTUAL07.json",
+      "bytes": 78423,
+      "sha256": "a5dcf17a84288a410707e09a6d62e54f41feed102a986cda48a7cefdf500897f"
+    },
+    {
+      "local_key": "resume63/quarkus-worker-dev01/multimodule-v4-09/evidence-newclass64-r2/HOT-RESULT.json",
+      "bytes": 24783,
+      "sha256": "d2abb3ef449e0c7e8c872a534a64c89804953cebd33fb589b84944242b36071f"
+    },
+    {
+      "local_key": "resume63/quarkus-worker-dev01/multimodule-v4-09/evidence-newclass64-r2/ACTUAL.json",
+      "bytes": 9257,
+      "sha256": "fe3dad89f51e728674c8837dd435482ef008e9fca050d48717e2c1b94e377d15"
+    },
+    {
+      "local_key": "resume63/quarkus-worker-dev01/PRODUCTION-DEV-INVOCATION03.json",
+      "bytes": 2971,
+      "sha256": "590873e5eb0da70d31e705cd49869244eadcd977f02c920ed86bf2f4f33e61b8"
+    },
+    {
+      "local_key": "resume64/quarkus-host01/ACTUAL.json",
+      "bytes": 1325,
+      "sha256": "40bf5f2182bf4cdeeba4276f06cda62f2c72eb04953e48def5a3d25c2ad836b9"
+    },
+    {
+      "local_key": "resume64/quarkus-host01/SOURCE-STOP.json",
+      "bytes": 1225,
+      "sha256": "977a871b6aa96c65ee6a0477406d1e8e0a9a32a01f66444f7a583a2076005366"
+    },
+    {
+      "local_key": "resume64/quarkus-host01/class-index64/DEV60-HOST-RESTART-OFFLINE-OBSERVATION01.json",
+      "bytes": 3255,
+      "sha256": "0f9374e12d669dbb3a744efe830094500a75707254051b9080b0423671d5ad30"
+    },
+    {
+      "local_key": "quarkus-dev306/FINDINGS306.json",
+      "bytes": 12912,
+      "sha256": "9e2265fd708f7bed7fa13b1d88cb3e62fb11a66a9426c486cd7e0b7866827ccb"
+    },
+    {
+      "local_key": "quarkus-dev306/SOURCE-INDEX306.json",
+      "bytes": 4158,
+      "sha256": "5a29ed1db43ffe79cf0f8eec7fc07281f510df457fe1fcaf064dcd93778e78df"
+    },
+    {
+      "local_key": "quarkus-dev306/SOURCE-INPUT306.json",
+      "bytes": 7250,
+      "sha256": "b3f47cb76e03759e7c25ceb1eca8f8e9a86a1853959b09cbaa272b14a50f25fa"
+    },
+    {
+      "local_key": "quarkus-dev306/EXPLICIT-SOURCE-PARITY306.json",
+      "bytes": 49130,
+      "sha256": "ecedd5fc083504c6d353da01865815143bef3e83409523243897004d75f36f77"
+    },
+    {
+      "local_key": "quarkus-dev306/ENTRY-FIRST-PATHS306.json",
+      "bytes": 2400,
+      "sha256": "892ea919d1bbcaa7747af264a18bddafd0d7de5475f718a2d0f64b8dc001f97a"
+    },
+    {
+      "local_key": "quarkus-dev306/MODEL-REVIEW306.json",
+      "bytes": 6437,
+      "sha256": "dbf150a30df1eb6a55abda7f4db1b2d27cfbc6d06b49b9092f207966ba632f46"
+    }
+  ],
+  "official_sources": [
+    "https://quarkus.io/guides/command-mode-reference/#development-mode",
+    "https://quarkus.io/guides/class-loading-reference/",
+    "https://quarkus.io/version/3.40/guides/maven-tooling/",
+    "https://quarkus.io/guides/lifecycle/"
+  ],
+  "new_java_javac_Maven_Game_operations": 0,
+  "current_gameplay_version_changed": false,
+  "whole_model_research_responses_adopted": 0,
+  "historical_test_results_are_current_game_acceptance": false
+}

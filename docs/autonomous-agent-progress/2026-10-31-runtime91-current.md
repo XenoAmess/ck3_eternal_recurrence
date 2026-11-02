@@ -1,5 +1,7 @@
 # runtime91 同局续行
 
+装载事实入口：[Quarkus worker 装载事实与重载边界](../maintenance/2026-11-02-quarkus-worker-loading-boundaries.md)。Main301 保持普通入口与原游玩版本；旧 dev 软件重载／新增类边界、760 个 CP 路径与 36 源有限比对分别记，不授当前切换或速度收益。
+
 性能资料按类名／方法的来源与边界见[存储性能边界索引](2026-11-02-java-storage-performance-boundaries.json)：208／303源级反例、222旧软件结果、224原生primitive、302单次JFR与304只读设备metadata分别列示；原件留执行机，不授性能达标或新运行／修改权限。
 
 ## 2026-11-02 07:31Z 保存里程碑：562确认本局累计100日
