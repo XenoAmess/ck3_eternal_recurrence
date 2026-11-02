@@ -47,10 +47,23 @@ final class LedgerFiles {
         Document read() throws IOException {
             BasicFileAttributes actual = lease.verifyCurrent();
             WindowsFileIdentity key = (WindowsFileIdentity) actual.fileKey();
-            FileIdentity identity = new FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(), key.creationFiletimeDecimal(),
-                    actual.lastModifiedTime().toInstant().toString(), actual.size());
-            if (!document.pin().identity().equals(identity)) throw new IOException("leased original full identity drift");
+            String modified = actual.lastModifiedTime().toInstant().toString();
+            long bytes = actual.size();
+            if (!matchesIdentity(document.pin().identity(), key, modified, bytes))
+                throw new IOException("leased original full identity drift");
             return document;
+        }
+
+        // Equal fields inherit the immutable expected record's successful validation.
+        // A mismatch retains the original constructor and its failure precedence.
+        static boolean matchesIdentity(FileIdentity expected, WindowsFileIdentity key, String modifiedInstant, long bytes) {
+            if (expected.volumeSerialDecimal().equals(key.volumeSerialDecimal())
+                    && expected.fileIdDecimal().equals(key.fileIdDecimal())
+                    && expected.creationFiletimeDecimal().equals(key.creationFiletimeDecimal())
+                    && expected.modifiedInstant().equals(modifiedInstant)
+                    && expected.bytes() == bytes) return true;
+            return expected.equals(new FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(),
+                    key.creationFiletimeDecimal(), modifiedInstant, bytes));
         }
         @Override public void close() throws IOException { lease.close(); }
         long retainedBytes() { return document.bytes.length; }
