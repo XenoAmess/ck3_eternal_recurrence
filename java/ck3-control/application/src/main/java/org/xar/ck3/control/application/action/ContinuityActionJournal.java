@@ -56,12 +56,17 @@ public final class ContinuityActionJournal implements ActionJournal {
                 catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
             @Override public ActionReceipt append(ActionCommand command, String bodySha256, ActionState next) {
+                boolean traceSubmitting = next instanceof ActionState.Submitting;
+                long appendStarted = traceSubmitting ? System.nanoTime() : 0L;
+                long appendValidated = 0L, appendMaterials = 0L, appendPreviewed = 0L, appendCommitted = 0L, appendHistory = 0L, appendSelected = 0L;
+                int appendPhase = 0;
                 try {
                     var head = session.head();
                     List<ActionReceipt> prior = cachedReceipts(head);
                     ProtocolIdentityAdmission.requireUnique(prior, command);
                     ActionTransitions.validate(prior.stream().filter(value -> value.command().actionId().equals(command.actionId())).findFirst(),
                             command, bodySha256, next);
+                    if (traceSubmitting) { appendValidated = System.nanoTime(); appendPhase = 1; }
                     if (next instanceof PhysicalActionState physical) PhysicalActionCodec.preserve(physical, archive);
                     ActionTransitions.attempt(next).ifPresent(attempt -> archive.preserveRequest(attempt.preparedRequest()));
                     ActionTransitions.dispatch(next).ifPresent(archive::preserve);
@@ -112,17 +117,44 @@ public final class ContinuityActionJournal implements ActionJournal {
                     if (next instanceof ActionState.Unknown unknown) evidence.addAll(unknown.evidence());
                     if (next instanceof ActionState.CompositeUnknown unknown) evidence.addAll(unknown.evidence());
                     WriterContracts.Request request = new WriterContracts.Request(KIND, ContinuityJson.canonical(details), evidence.stream().distinct().toList());
-                    var committed = session.commit(session.preview(request));
+                    if (traceSubmitting) { appendMaterials = System.nanoTime(); appendPhase = 2; }
+                    var prepared = session.preview(request);
+                    if (traceSubmitting) { appendPreviewed = System.nanoTime(); appendPhase = 3; }
+                    var committed = session.commit(prepared);
+                    if (traceSubmitting) { appendCommitted = System.nanoTime(); appendPhase = 4; }
                     var committedState = committed.head();
                     var history = historical(committedState, archive);
+                    if (traceSubmitting) { appendHistory = System.nanoTime(); appendPhase = 5; }
                     var target = history.stream().filter(item -> item.receipt().command().actionId().equals(command.actionId())).findFirst().orElseThrow();
                     var latest = new java.util.LinkedHashMap<String, ActionReceipt>();
                     for (var item : history) latest.putIfAbsent(item.receipt().command().actionId(), item.receipt());
                     var complete = List.copyOf(latest.values());
                     cachedReceiptsList = complete;
                     cachedReceiptsState = committedState;
+                    if (traceSubmitting) { appendSelected = System.nanoTime(); appendPhase = 6; }
                     return target.receipt();
                 } catch (IOException failure) { throw new UncheckedIOException(failure); }
+                finally {
+                    if (traceSubmitting) {
+                        try {
+                            long appendEnded = System.nanoTime();
+                            // Never clear a caller's interrupt or invoke diagnostic IO on an already interrupted thread.
+                            if (!Thread.currentThread().isInterrupted()) {
+                                String id = command.actionId(); id = id.substring(0, Math.min(128, id.length())).replaceAll("[^A-Za-z0-9_.:-]", "_");
+                                System.err.println("ACTION_APPEND_PHASE action=" + id + " thread=" + Thread.currentThread().threadId()
+                                        + " phase=" + appendPhase + " event_ns=" + appendEnded
+                                        + " elapsed_ns=" + Math.max(0L, appendEnded - appendStarted)
+                                        + " validation_ns=" + (appendPhase >= 1 ? Math.max(0L, appendValidated - appendStarted) : -1L)
+                                        + " materials_ns=" + (appendPhase >= 2 ? Math.max(0L, appendMaterials - appendValidated) : -1L)
+                                        + " preview_ns=" + (appendPhase >= 3 ? Math.max(0L, appendPreviewed - appendMaterials) : -1L)
+                                        + " commit_ns=" + (appendPhase >= 4 ? Math.max(0L, appendCommitted - appendPreviewed) : -1L)
+                                        + " history_ns=" + (appendPhase >= 5 ? Math.max(0L, appendHistory - appendCommitted) : -1L)
+                                        + " selection_ns=" + (appendPhase >= 6 ? Math.max(0L, appendSelected - appendHistory) : -1L)
+                                        + " returned=" + (appendPhase == 6));
+                            }
+                        } catch (Throwable diagnosticUnavailable) { /* Diagnostic output never controls the original append outcome. */ }
+                    }
+                }
             }
             @Override public Snapshot snapshot() {
                 try {
