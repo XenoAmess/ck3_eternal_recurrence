@@ -19,6 +19,10 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     public DriverObservationAssembler.FullSnapshot loadFull(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
         var manifest = archive.loadFullMaterial(basis.driverFacts()); RootGuardChecks.exact(basis.driverFacts(), manifest.bytes());
         byte[] nativePacket = archive.loadNativeFrame(basis.nativeFrame()); RootGuardChecks.exact(basis.nativeFrame(), nativePacket);
+        StrictJson.require(nativePacket.length >= 5
+                && nativePacket.length <= org.xar.ck3.control.application.driver.DriverJson.MAX_NATIVE_BYTES + 4,
+                "bounded archived original native frame required");
+        nativePacket = nativePacket.clone();
         var driverReference = DriverObservationEvidenceReader.currentDriverReference(basis.driverFacts(), manifest);
         var driver = archive.loadFullMaterial(driverReference); RootGuardChecks.exact(driverReference, driver.bytes());
         return DriverObservationEvidenceReader.projectOriginals(basis.driverFacts(), manifest, driver, nativePacket,
