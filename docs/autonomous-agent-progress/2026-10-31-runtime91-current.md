@@ -1,5 +1,13 @@
 # runtime91 同局续行
 
+## 2026-11-02 05:43Z 截止：299启动后END1；后到独核Native287不改canonical288 UNKNOWN
+
+具名 `closed299/INDEX.json` 的四份已闭原件与 `recovery-outcome299/SUMMARY.json` 已核长度/SHA。Main299／Java86320实际05:31:17.870168Z→05:34:18.919188Z END1，完整UTC 181.04902秒／reported 181.0490273秒，0LOOP／0新增SAVE。真实stderr为 current Council seat observation unavailable，内因 `recovered Council source is closed, stale or changed`；保该实际诊断，不把源编译或START当恢复完成。head295／repair_required／SHA `89251be0e7c9701c1a560c5ff417973804f9b5af53b29a06e638fb819c640238`，无新receipt或action metadata，原288 UNKNOWN不重发；completed_cycles7／cycle pending=null，最新观察150/111／date53146896，保存仍38日及pair105/78。
+
+本段另读既有 `council-continuation29802/SUMMARY.json` 与record2四份冻结ENTRY／OUTCOME／result／frame。287是原 `governance-66d439…` 的 RECEIPT_STATUS／真实Native ACK；637B结果SHA `cc67f7ce8079f67b9d7460e7cdd88702eda1d9acfb08ec50d97e5b59d5699f22` 确为 accepted／applied／query_sequence495／post native151/public151／date53146896／owner31254／chancellor33947，身份roundtrip与postcondition_verified为true，request／同Game／custody及原frame链接核等。此后到原件证明保留在Native层，canonical288仍UNKNOWN，不能据此伪造SETTLED、重派assignment或授新增保存日；前段“未独读287”的旧截止保持历史。
+
+Root主epoch至299 END完整31412.919188秒／38新增确认保存日＝826.6557681052631578947368421秒／日，仍未达10秒。此次299窗口181.04902秒／0新增SAVE_CONFIRMED，秒／新增保存日为null；后续等待不从未来窗口扣除。Main300／Java106520仅已核05:43:23.077774Z真实START、canonical before同head295，尚不授LOOP／END／恢复／新SAVE；未来终态另记。旧296–298与全部历史字节原保，本段仅现成冻结留证，0新增编测、HTTP、Game／Native查询、Driver／Save大读、S／MB采用、部署或重启，Runtime继续独占现场且不等文档。
+
 ## 2026-11-02 05:31Z 截止：Main296–298均曾LOOP，38日保存前沿未变；299仅START
 
 仅消费 `closed296/297/298/INDEX.json` 指向的十二份已闭stdout/stderr/START/END、对应 `recovery-outcome*/SUMMARY.json`、三份真实LOOP marker及原件报告，逐项核长度/SHA。Main296／Java73064实际04:37:49.324698Z启动，04:38:41.8695263Z LOOP／next12，04:40:24.709980Z END4；完整UTC 155.385282秒／reported 155.3852885秒。批次 INTERNAL_FAILURE：`read descendant changed unrelated canonical field: java_domain_bodies_v1`；head236／repair_required／SHA `af721f4428097d7484ad0fcfc0c7a0a63cc6a4b5d7cdf28422c6ba4a159a78a7`，无新receipt或action metadata。LOOP时间以具名原marker为准，不沿口述的05:38笔误。
