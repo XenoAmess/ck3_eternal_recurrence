@@ -94,7 +94,6 @@ public final class CouncilSelection {
     }
     private static Query decodePayload(ObservationIdentity observed, Position role, Obj original, Obj payload, boolean privateGates) {
         var expected = observed.frame();
-        if (privateGates) bindPrivateOuter(observed, original);
         var frame = new CouncilModels.Frame(privateGates ? "native:" + expected.identity().nativeRevision() : expected.snapshotId(),
                 privateGates ? expected.identity().nativeRevision() : expected.revision(), expected.identity().nativeRevision(),
                 expected.identity().dateRaw().intValueExact(), expected.identity().player().intValueExact());
@@ -135,10 +134,15 @@ public final class CouncilSelection {
     }
     public static Decision choose(Query query) {
         if (!query.available()) return new Decision(Outcome.QUERY_UNAVAILABLE, Optional.empty(), query, "private_query_unavailable");
-        Optional<Candidate> selected = query.candidates().stream().filter(Candidate::nativeLegal)
-                .sorted(Comparator.comparingInt(Candidate::skill).reversed().thenComparing(Candidate::characterId)).findFirst();
+        Optional<Candidate> selected = Optional.empty();
+        Comparator<Candidate> comparator = Comparator.comparingInt(Candidate::skill).reversed().thenComparing(Candidate::characterId);
+        for (Candidate candidate : query.candidates()) {
+            if (!candidate.nativeLegal()) continue;
+            if (selected.isEmpty() || comparator.compare(candidate, selected.get()) < 0) selected = Optional.of(candidate);
+        }
+        final Optional<Candidate> selectedForThreshold = selected;
         if (selected.isEmpty()) return new Decision(Outcome.NO_CHANGE, selected, query, "no_eligible_candidates");
-        if (query.incumbentSkill().filter(value -> selected.orElseThrow().skill() <= value).isPresent())
+        if (query.incumbentSkill().filter(value -> selectedForThreshold.orElseThrow().skill() <= value).isPresent())
             return new Decision(Outcome.NO_CHANGE, selected, query, "incumbent_not_outperformed");
         return new Decision(query.incumbent().isPresent() ? Outcome.REPLACE_REQUIRED : Outcome.ASSIGN_REQUIRED,
                 selected, query, "native_final_gate_and_observed_skill");
