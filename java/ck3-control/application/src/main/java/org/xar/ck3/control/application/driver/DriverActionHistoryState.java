@@ -130,7 +130,9 @@ public final class DriverActionHistoryState {
             StrictJson.require(DriverJson.object(expected.encode(),DriverJson.MAX_NATIVE_BYTES)
                     .equals(DriverJson.object(after.encode(),DriverJson.MAX_NATIVE_BYTES)),"ACTION legacy publication changed a non-history full Driver slot");
         } else {
-            StrictJson.require(data.legacyRow().isEmpty()&&Arrays.equals(before.encode(),after.encode()),"canonical-only interface cannot manufacture a legacy row or change business Driver fields");
+            StrictJson.require(data.legacyRow().isEmpty(),"canonical-only interface cannot manufacture a legacy row or change business Driver fields");
+            byte[] beforeBytes=before.encode();
+            StrictJson.require(Arrays.equals(beforeBytes,before==after?beforeBytes:after.encode()),"canonical-only interface cannot manufacture a legacy row or change business Driver fields");
             if(directMembership)DriverActionHistoryCodec.verifyCanonicalOnly(same,actual,data.originalSource(),originals);
             else DriverActionHistoryCodec.verifyCanonicalOnly(actual,data.originalSource(),originals);
         }
