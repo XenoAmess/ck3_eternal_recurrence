@@ -106,7 +106,7 @@ public final class RootApplicationAssembly {
         private final ActionSnapshotReader actions;
         private org.xar.ck3.control.application.driver.FreshGameplayEntryAuthority.RecoveryAdmission initialRecoveryAdmission;
         private final DriverObservationAssembler assembler = new DriverObservationAssembler();
-        private final DriverFrameEvidenceLoader frames = new DriverFrameEvidenceLoader(assembler);
+        private final DriverFrameEvidenceLoader frames = new DriverFrameEvidenceLoader(assembler, true);
         private final NativeSemanticEvidenceVerifier semanticVerifier;
         private final RootPlanningReads reads;
         private final RootKnownReadObserver knownReads;
@@ -621,7 +621,7 @@ public final class RootApplicationAssembly {
             }
             StrictJson.require(writer.storageGuard()==storage&&artifacts.storageGuard()==storage,
                     "Core ledger and immutable artifact store must retain the identical required storage guard");
-            archive = new NativeOutcomeArchive(artifacts, writer); originals = new ArchiveOriginalEvidencePort(archive);
+            archive = new NativeOutcomeArchive(artifacts, writer, frames); originals = new ArchiveOriginalEvidencePort(archive);
             journal = new ContinuityActionJournal(writer, archive); actions = new ActionSnapshotReader(journal);
             observedEntry=new FreshGameplayEntryAuthority(writer,archive);
             semanticVerifier = new NativeSemanticEvidenceVerifier(archive::readArtifact); reads = new RootPlanningReads(writer);

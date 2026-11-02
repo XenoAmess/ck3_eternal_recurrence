@@ -109,19 +109,34 @@ public final class DriverObservationEvidenceReader {
     /** Pure full projection also preserves death/unavailable scopes; the caller retains its production assembler. */
     public static DriverObservationAssembler.FullSnapshot projectOriginals(ExactRef manifestReference,RawJson manifest,
             RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,DriverObservationAssembler actualAssembler) {
+        return projectOriginalsWithScopedDriverDecode(manifestReference,manifest,fullDriver,framedNative,
+                nativeReference,actualAssembler,null);
+    }
+
+    /** Optional nominal issuer; it can only return values internally decoded by the final production loader. */
+    public static DriverObservationAssembler.FullSnapshot projectOriginalsWithScopedDriverDecode(ExactRef manifestReference,
+            RawJson manifest,RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,
+            DriverObservationAssembler actualAssembler,
+            org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
         Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
         var row=checkedManifest(manifestReference,manifest);
         StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
                 "bounded archived original native frame required");
         var actual=nativeFrame(row,framedNative.clone());
-        var facts=replayFacts(manifestReference,row,fullDriver,actual);
+        var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
         return actualAssembler.projectFull(actual,facts,nativeReference);
     }
     private static DriverObservationFacts replayFacts(ExactRef manifestReference,OpportunityJson.Obj row,
             RawJson fullDriver,NativeObservationPort.ObservedFrame actual) {
+        return replayFacts(manifestReference,row,fullDriver,actual,null);
+    }
+    private static DriverObservationFacts replayFacts(ExactRef manifestReference,OpportunityJson.Obj row,
+            RawJson fullDriver,NativeObservationPort.ObservedFrame actual,
+            org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
         byte[] driverBytes=fullDriver.bytes();
         requireExact(reference(row.get("driver_ref")),driverBytes,"archived complete Driver");
-        var driver=DriverStateSnapshot.decodeComplete(driverBytes);
+        var driver=actualDecoder==null ? DriverStateSnapshot.decodeComplete(driverBytes)
+                : actualDecoder.decodeCompleteDriverBytes(driverBytes);
         G2Source source=source(row.get("source"));
         StrictJson.require(driver.session().bridgePid()==actual.session().game().pid()
                 && source.machineId().equals(actual.session().machineId()),"archived Driver/source crossed actual Game");

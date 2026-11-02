@@ -58,6 +58,7 @@ import org.xar.ck3.control.application.action.ReconciliationIdentity;
 import org.xar.ck3.control.application.action.ReconciliationPendingBinding;
 import org.xar.ck3.control.application.action.RootExecutableBindings;
 import org.xar.ck3.control.application.effects.OriginalEvidencePort;
+import org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader;
 import org.xar.ck3.control.application.lifecycle.LifecycleProofCodec;
 import org.xar.ck3.control.application.lifecycle.LifecycleTransitionProof;
 import org.xar.ck3.control.application.planning.sway.SwaySchedulerCompletion;
@@ -121,6 +122,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     private static final long MAX_PARSED_BYTES = 64L * 1024 * 1024;
     private enum ParseProfile { PROTOCOL, FULL_MATERIAL }
     private final ThreadLocal<ParsedMaterialCache> parsedMaterialCache;
+    private final DriverFrameEvidenceLoader completeDriverDecoder;
     /** Finite collection budget only. Callers may omit an optional whole group for this
      * exception; missing, changed or invalid originals must continue to fail separately. */
     public static final class ReadOriginalsLimitExceeded extends IOException {
@@ -142,6 +144,11 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     @FunctionalInterface private interface IoWork<T> { T run() throws IOException; }
 
     public NativeOutcomeArchive(ImmutableArtifactStore artifacts, ContinuityWriter sameWriter) throws IOException {
+        this(artifacts, sameWriter, null);
+    }
+    /** Root alone opts its identical final frame loader into pure complete-Driver DATA reuse. */
+    public NativeOutcomeArchive(ImmutableArtifactStore artifacts, ContinuityWriter sameWriter,
+            DriverFrameEvidenceLoader completeDriverDecoder) throws IOException {
         this.artifacts = Objects.requireNonNull(artifacts); this.sameWriter = Objects.requireNonNull(sameWriter);
         owner = this; borrowed = null; publication=Publication.DURABLE; current = new ThreadLocal<>(); historyBindings = new HistoryBindings();
         readOriginalCapture = new ThreadLocal<>();
@@ -151,6 +158,14 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                 || sameWriter.artifactStore().orElseThrow(() -> new IOException("writer has no immutable artifact store")) != artifacts)
             throw new IOException("archive must use this exact writer's installed immutable store");
         artifacts.identity();
+        this.completeDriverDecoder = completeDriverDecoder;
+        if (completeDriverDecoder != null) completeDriverDecoder.bindDriverDecodeOwner(owner, session -> unchecked(() -> {
+            requireSession(session);
+            ParsedMaterialCache cache = parsedMaterialCache.get();
+            if (cache == null) throw new IOException("actual archive scope required for complete Driver DATA");
+            if (cache.commandReads != null) cache.commandReads.requireActive();
+            return null;
+        }));
     }
     private NativeOutcomeArchive(NativeOutcomeArchive original, ContinuityStorePort.Session borrowed) {
         this(original,borrowed,original.publication);
@@ -161,6 +176,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         this.publication=Objects.requireNonNull(publication);
         readOriginalCapture = owner.readOriginalCapture;
         parsedMaterialCache = owner.parsedMaterialCache;
+        completeDriverDecoder = owner.completeDriverDecoder;
         physicalStatusOriginals = owner.physicalStatusOriginals;
     }
     public ImmutableArtifactStore artifactStore() { return artifacts; }
@@ -271,8 +287,10 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         ParsedMaterialCache cacheBefore = parsedMaterialCache.get();
         current.set(session);
         if (cacheBefore == null) parsedMaterialCache.set(new ParsedMaterialCache());
-        try { return operation.run(); }
-        finally {
+        try {
+            if (completeDriverDecoder == null) return operation.run();
+            return completeDriverDecoder.inCompleteDriverDecodeScope(owner, session, this, ignored -> operation.run());
+        } finally {
             if (before == null) current.remove(); else current.set(before);
             if (cacheBefore == null) parsedMaterialCache.remove(); else parsedMaterialCache.set(cacheBefore);
         }
