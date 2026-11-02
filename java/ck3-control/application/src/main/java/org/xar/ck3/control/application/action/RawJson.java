@@ -86,4 +86,9 @@ public final class RawJson {
     }
     @Override public boolean equals(Object other) { return other instanceof RawJson raw && Arrays.equals(bytes, raw.bytes); }
     @Override public int hashCode() { return Arrays.hashCode(bytes); }
+
+    /** Compares actual original bytes without exposing, cloning or retaining the caller's array. */
+    public boolean contentEquals(byte[] expected) {
+        return Arrays.equals(expected, bytes);
+    }
 }

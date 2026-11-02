@@ -537,7 +537,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         ParsedMaterialCache cache = parsedMaterialCache.get();
         if (cache != null) {
             RawJson cached = cache.get(ref, ParseProfile.PROTOCOL);
-            if (cached != null && Arrays.equals(bytes, cached.bytes())) return cached;
+            if (cached != null && cached.contentEquals(bytes)) return cached;
         }
         RawJson result = new RawJson(bytes);
         if (cache != null) cache.put(ref, ParseProfile.PROTOCOL, result, bytes.length);
@@ -1548,7 +1548,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             ParsedMaterialCache cache = parsedMaterialCache.get();
             if (cache != null) {
                 RawJson cached = cache.get(original, ParseProfile.FULL_MATERIAL);
-                if (cached != null && Arrays.equals(bytes, cached.bytes())) return cached;
+                if (cached != null && cached.contentEquals(bytes)) return cached;
             }
             RawJson result = RawJson.fullMaterial(bytes);
             if (cache != null) cache.put(original, ParseProfile.FULL_MATERIAL, result, bytes.length);
