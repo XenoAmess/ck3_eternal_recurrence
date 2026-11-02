@@ -357,7 +357,9 @@ public final class RootAdvanceInfrastructureFactory {
                     && snapshot.snapshotId().equals(identity.frame().snapshotId())
                     && snapshot.revision().equals(identity.frame().identity().nativeRevision()),
                     "fresh READ crossed actual Native/Driver identity/source/connection");
-            NativeFreshSnapshotPort.verifyOriginal(read,actual,proof.snapshotReceived());
+            if(!(proof.basis() instanceof ObservationProvenance.LiveAfterSetter)) {
+                NativeFreshSnapshotPort.verifyOriginal(read,actual,proof.snapshotReceived());
+            }
             if(proof.basis() instanceof ObservationProvenance.LiveAfterSetter live) {
                 NativeFreshSnapshotPort.verifyAfterOriginal(successfulAck(archive.load(live.setterAcknowledgement())),
                         read,actual,proof.snapshotReceived());
