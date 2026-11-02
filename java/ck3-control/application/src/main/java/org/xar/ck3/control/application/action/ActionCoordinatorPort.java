@@ -25,6 +25,11 @@ public interface ActionCoordinatorPort {
         java.util.Objects.requireNonNull(same); java.util.Objects.requireNonNull(actual);
         return DirectFixedWindowQueryInvocation.forward(same, actual, () -> reconcile(same, actual.actionId()));
     }
+    default ActionReceipt reconcileOriginalCouncil(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            String actionId, java.time.Instant deadline, org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator actual)
+            throws java.io.IOException,InterruptedException {
+        throw new java.io.IOException("actual source-owned original Council recovery is not installed");
+    }
     ActionReceipt execute(ActionCommand command);
     ActionReceipt reconcile(String actionId);
 }

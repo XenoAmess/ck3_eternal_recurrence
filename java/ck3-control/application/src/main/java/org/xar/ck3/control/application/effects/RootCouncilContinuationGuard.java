@@ -25,6 +25,46 @@ public final class RootCouncilContinuationGuard implements CouncilContinuationPo
         readiness = Objects.requireNonNull(actualReadiness); archive = Objects.requireNonNull(sameArchive); source = Objects.requireNonNull(exactSource);
         this.clock = Objects.requireNonNull(clock); this.authorityId = StrictJson.text(authorityId); this.originals = Objects.requireNonNull(originals); installed = Objects.requireNonNull(actualInstalled);
     }
+    /** The original ACK is historical; current physical cleanup custody supplies only finite observer reads. */
+    public GuardEvidence currentRecovered(ContinuityStorePort.Session same, WriterContracts.Head head,
+            ActionReceipt originalParent, Instant deadline) throws IOException {
+        Objects.requireNonNull(originalParent);Objects.requireNonNull(deadline);RootGuardChecks.session(()->same,head);
+        var command=originalParent.command();var sameArchive=archive.withSession(same);
+        StrictJson.require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyPositiveAckCouncilRecoveryRoot(
+                ContinuityActionJournal.receipts(head.state(),sameArchive)).filter(originalParent::equals).isPresent()
+                && command.source().equals(source),"exact canonical original positive-ACK Council UNKNOWN required");
+        var attempt=ActionTransitions.attempt(originalParent.state()).orElseThrow();
+        var ack=(NativeActionPort.AckReceived)ActionTransitions.dispatch(originalParent.state()).orElseThrow();
+        StrictJson.require(attempt.guard().authorityId().equals(authorityId)
+                && ack.equals(sameArchive.load(sameArchive.referenceOf(ack)))
+                && attempt.preparedRequest().equals(sameArchive.loadRequest(sameArchive.requestReferenceOf(attempt.preparedRequest()))),
+                "recovered Council changed its actual original packet, preparation or authority");
+        ack.custody().orElseThrow().verify(ack,attempt.guard());RootGuardEvidence.body(attempt.guard(),sameArchive);
+        var binding=installed.actualActionBinding(command.operation()).orElseThrow();
+        var descriptor=installed.resolve(command.operation()).orElseThrow();
+        StrictJson.require(descriptor.kind()==ExecutableStepBindings.Kind.ACTION
+                && descriptor.guardMode()==ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP
+                && descriptor.implementationSource().equals(binding.producerSource())
+                && installed.actualArchivedVerifier(command.operation()).isPresent(),"recovered Council exact original callable unavailable");
+        RootGuardChecks.source(same,source.sourceRef());RootGuardChecks.source(same,binding.producerSource());RootGuardChecks.source(same,descriptor.decoderSource());
+        var bound=ActionObservationWindow.deadline(command);var until=deadline.isBefore(bound)?deadline:bound;
+        StrictJson.require(clock.instant().isBefore(until),"recovered Council observation window expired");
+        return readiness.currentDerivedCleanup(same,command.before(),until,actual->{
+            RootGuardChecks.session(()->same,head);RootGuardChecks.livingPaused(actual);
+            var before=command.before();var current=actual.frame().identity();
+            StrictJson.require(current.machineId().equals(before.machineId()) && current.game().equals(before.game())
+                    && current.frame().episodeRunId().equals(before.frame().episodeRunId())
+                    && current.frame().identity().player().equals(before.frame().identity().player())
+                    && current.frame().identity().nativeRevision().compareTo(before.frame().identity().nativeRevision())>=0
+                    && (!actual.frame().connectionGeneration().equals(attempt.guard().connectionGeneration())
+                        || current.frame().revision().compareTo(before.frame().revision())>=0)
+                    && current.frame().identity().dateRaw().compareTo(before.frame().identity().dateRaw())>=0,
+                    "recovered Council current source regressed or changed actual Game/actor");
+            descriptor.requiredCapability().ifPresent(cap->StrictJson.require(actual.bridgeCapabilities().contains(cap),"original Council capability unavailable"));
+            return RootGuardChecks.binding(actual,command.origin(),source,command.sessionId(),command.operation(),until,
+                    sameArchive,clock,head,authorityId,same,originals);
+        });
+    }
     @Override public GuardEvidence current(ContinuityStorePort.Session same, WriterContracts.Head head, ActionReceipt originalParent, Instant deadline) throws IOException {
         Objects.requireNonNull(originalParent); Objects.requireNonNull(deadline); RootGuardChecks.session(() -> same, head);
         var command = originalParent.command();

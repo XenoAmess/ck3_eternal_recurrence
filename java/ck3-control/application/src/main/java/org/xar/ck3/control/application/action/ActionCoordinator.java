@@ -79,6 +79,39 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
         Objects.requireNonNull(command);
         return journal.locked(borrowed, locked -> ActionScope.run(command.actionId(), () -> executeLocked(locked, command, List.of())));
     }
+    /** Explicit original-positive-ACK observer; generic Council reconciliation remains collect-only. */
+    public ActionReceipt reconcileOriginalCouncil(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            String actionId, Instant deadline, org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator actual)
+            throws java.io.IOException,InterruptedException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(deadline);
+        InterruptedException[] interrupted={null};
+        try {
+            var returned=journal.locked(same,locked->ActionScope.run(actionId,()->ActionObservationWindow.reconcile(actionId,clock,()->{
+                var original=locked.find(actionId).orElseThrow(()->new IllegalArgumentException("original Council action absent"));
+                if(original.settled())return original;
+                preparation.requireOutsideReadOnlyScope(same,original.command());
+                return ActionCommandScope.within(original.command(),()->{
+                    try {
+                        var completed=actual.observeRecoveredOriginal(same,actionId,deadline);
+                        var result=completed.consume(same,original);
+                        var attempt=ActionTransitions.attempt(original.state()).orElseThrow();
+                        var dispatch=ActionTransitions.dispatch(original.state()).orElseThrow();
+                        if(result instanceof ActionPorts.Pending pending)
+                            return append(locked,original.command(),original.bodySha256(),new ActionState.Unknown(Optional.of(attempt),Optional.of(dispatch),pending.reason(),pending.evidence()));
+                        ActionState.Settlement settlement;
+                        if(result instanceof ActionPorts.EffectObserved effect)settlement=new ActionState.Applied(effect.observation());
+                        else if(result instanceof ActionPorts.RejectionObserved rejected)settlement=rejected.rejection();
+                        else throw new IllegalArgumentException("unrelated recovered Council terminal");
+                        ActionEffects.validate(original.command(),attempt,dispatch,settlement);
+                        return append(locked,original.command(),original.bodySha256(),new ActionState.Settled(attempt,dispatch,settlement));
+                    } catch(java.io.IOException failure){throw new java.io.UncheckedIOException(failure);}
+                    catch(InterruptedException failure){interrupted[0]=failure;return original;}
+                });
+            })));
+            if(interrupted[0]!=null)throw interrupted[0];
+            return returned;
+        }catch(java.io.UncheckedIOException failure){throw failure.getCause();}
+    }
     /** Only the installed automatic physical producer can use this same writer/journal path. */
     private void requireOutsideCaptureReadOnly(ActionCommand command) {
         if(preparation instanceof RootExecutableBindings installed) {

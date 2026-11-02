@@ -31,6 +31,14 @@ public final class CouncilContinuationPorts {
         void verifyOutcome(ContinuityStorePort.Session same, WriterContracts.Head head, ActionReceipt parent,
                 List<Retained> prior, Entry next, NativeActionPort.DispatchOutcome original, ActionPorts.OutcomeArchive archive) throws IOException;
     }
+    /** Bound once by the actual Root source; decoded DATA cannot implement an issued permission. */
+    public interface RecoveryAuthority {
+        GuardEvidence currentRecovered(ContinuityStorePort.Session same, WriterContracts.Head head,
+                ActionReceipt originalParent, Instant deadline) throws IOException;
+        ActionPorts.PostconditionResult observeRecovered(ContinuityStorePort.Session same,
+                ActionReceipt originalParent, ActionState.Attempt originalAttempt,
+                NativeActionPort.AckReceived originalAck, Instant deadline) throws IOException, InterruptedException;
+    }
     @FunctionalInterface public interface SeedAuthority {
         State readCompleteOriginal(ContinuityStorePort.Session same, WriterContracts.Head actualHead,
                 ExactRef completeOriginalManifest, ActionPorts.OutcomeArchive archive) throws IOException;

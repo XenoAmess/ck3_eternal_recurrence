@@ -2,6 +2,7 @@ package org.xar.ck3.control.application.action.council;
 
 import java.time.Clock;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.action.NativeRequest;
@@ -10,6 +11,7 @@ import static org.xar.ck3.control.application.action.council.CouncilContinuation
 
 /** Only the coordinator package mints a live permit after an actual original-writer ISSUED commit. */
 public final class CouncilContinuationPermit {
+    private final Optional<CouncilContinuationCoordinator.RecoveryOriginal> recoveryOriginal;
     private final Request request;
     private final NativeRequest prepared;
     private final Runnable verifyIssued;
@@ -18,9 +20,15 @@ public final class CouncilContinuationPermit {
     private final AtomicBoolean consumed = new AtomicBoolean();
     private boolean open = true;
     CouncilContinuationPermit(Request request, NativeRequest prepared, Runnable verifyIssued, Clock clock) {
+        this(request, prepared, verifyIssued, clock, Optional.empty());
+    }
+    CouncilContinuationPermit(Request request, NativeRequest prepared, Runnable verifyIssued, Clock clock,
+            Optional<CouncilContinuationCoordinator.RecoveryOriginal> recoveryOriginal) {
+        this.recoveryOriginal = Objects.requireNonNull(recoveryOriginal);
         this.request = Objects.requireNonNull(request); this.prepared = Objects.requireNonNull(prepared);
         this.verifyIssued = Objects.requireNonNull(verifyIssued); this.clock = Objects.requireNonNull(clock);
     }
+    public Optional<CouncilContinuationCoordinator.RecoveryOriginal> recoveryOriginal() { return recoveryOriginal; }
     public String originalActionId() { return request.scope().parentActionId(); }
     public String originalBodySha256() { return request.scope().parentBodySha256(); }
     public String originalAttemptRequestId() { return request.scope().originalAttemptRequestId(); }
@@ -33,6 +41,8 @@ public final class CouncilContinuationPermit {
     public void consumeOnce() {
         StrictJson.require(open && owner == Thread.currentThread() && clock.instant().isBefore(request.deadline())
                 && !clock.instant().isAfter(guard().validUntil()), "continuation permit is closed, stale or on another thread");
+        if (recoveryOriginal.isPresent()) try { recoveryOriginal.orElseThrow().requireCurrent(); }
+        catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
         verifyIssued.run(); StrictJson.require(consumed.compareAndSet(false, true), "original continuation permit was already consumed");
     }
     void close() { open = false; }

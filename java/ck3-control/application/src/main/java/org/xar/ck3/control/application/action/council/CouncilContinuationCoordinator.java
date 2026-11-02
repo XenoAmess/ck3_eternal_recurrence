@@ -40,6 +40,147 @@ public final class CouncilContinuationCoordinator {
     private final FaultProbe faults;
     private final ThreadLocal<ContinuityStorePort.Session> active = new ThreadLocal<>();
     private Runtime runtime;
+    private CouncilContinuationPorts.RecoveryAuthority recoveryAuthority;
+    private boolean recoveryStarted;
+    private final ThreadLocal<RecoveryOriginal> recovered = new ThreadLocal<>();
+
+    /** Opaque live role for one unchanged original; only this coordinator can issue it. */
+    public static final class RecoveryOriginal {
+        private final CouncilContinuationCoordinator issuer;
+        private final ContinuityStorePort.Session same;
+        private final ActionReceipt parent;
+        private final ActionState.Attempt attempt;
+        private final NativeActionPort.AckReceived ack;
+        private final Instant deadline;
+        private final Thread owner = Thread.currentThread();
+        private boolean open = true;
+        private GuardEvidence qualifiedGuard;
+        private RecoveryOriginal(CouncilContinuationCoordinator issuer, ContinuityStorePort.Session same,
+                ActionReceipt parent, ActionState.Attempt attempt, NativeActionPort.AckReceived ack, Instant deadline) {
+            this.issuer=issuer; this.same=same; this.parent=parent; this.attempt=attempt; this.ack=ack; this.deadline=deadline;
+        }
+        public ActionCommand command() { return parent.command(); }
+        public ActionState.Attempt attempt() { return attempt; }
+        public NativeActionPort.AckReceived originalAck() { return ack; }
+        public void requireCurrent() throws IOException { issuer.requireRecoveredRetained(this); }
+    }
+    /** One actual source observer result; construction is private and consumption remains session/action scoped. */
+    public static final class RecoveryCompletion {
+        private final CouncilContinuationCoordinator issuer;
+        private final ContinuityStorePort.Session same;
+        private final ActionReceipt parent;
+        private final ActionPorts.PostconditionResult result;
+        private final Instant deadline;
+        private final Thread owner = Thread.currentThread();
+        private final java.util.concurrent.atomic.AtomicBoolean consumed = new java.util.concurrent.atomic.AtomicBoolean();
+        private RecoveryCompletion(CouncilContinuationCoordinator issuer, ContinuityStorePort.Session same,
+                ActionReceipt parent, ActionPorts.PostconditionResult result, Instant deadline) {
+            this.issuer=issuer;this.same=same;this.parent=parent;this.result=result;this.deadline=deadline;
+        }
+        public ActionPorts.PostconditionResult consume(ContinuityStorePort.Session actual, ActionReceipt original) throws IOException {
+            StrictJson.require(owner==Thread.currentThread() && actual==same && parent.equals(original)
+                    && ActionScope.currentActionId().filter(parent.command().actionId()::equals).isPresent()
+                    && issuer.clock.instant().isBefore(deadline), "recovered Council completion escaped its exact live original");
+            issuer.scoped(same,()->{
+                StrictJson.require(issuer.canonical(same.head(),parent.command().actionId()).equals(parent),"recovered Council original changed before terminal consumption");
+                var guard=issuer.recoverySource().currentRecovered(same,same.head(),parent,deadline);
+                issuer.verifyRecoveredFresh(parent,ActionTransitions.attempt(parent.state()).orElseThrow(),guard,deadline);
+                return null;
+            });
+            StrictJson.require(consumed.compareAndSet(false,true),"recovered Council completion already consumed");
+            return result;
+        }
+    }
+    private static final class RecoveryInterrupted extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        private final InterruptedException original;
+        private RecoveryInterrupted(InterruptedException original) { super(original);this.original=original; }
+    }
+    public synchronized void bindRecoveryAuthority(CouncilContinuationPorts.RecoveryAuthority actual) {
+        StrictJson.require(recoveryAuthority==null && !recoveryStarted,"actual Council recovery source binds once before recovery use");
+        recoveryAuthority=Objects.requireNonNull(actual);
+    }
+    private synchronized CouncilContinuationPorts.RecoveryAuthority recoverySource() {
+        recoveryStarted=true;
+        return Objects.requireNonNull(recoveryAuthority,"actual Council recovery source is not installed");
+    }
+    public RecoveryCompletion observeRecoveredOriginal(ContinuityStorePort.Session same,String actionId,Instant callerDeadline)
+            throws IOException,InterruptedException {
+        Objects.requireNonNull(callerDeadline);
+        try { return scoped(same,()->{
+            StrictJson.require(recovered.get()==null,"recovered Council scope cannot nest");
+            var parent=canonical(same.head(),actionId);
+            var all=ContinuityActionJournal.receipts(same.head().state(),runtime().archive().withSession(same));
+            StrictJson.require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyPositiveAckCouncilRecoveryRoot(all)
+                    .filter(parent::equals).isPresent(),"only the unique exact original positive-ACK Council UNKNOWN may recover");
+            var attempt=ActionTransitions.attempt(parent.state()).orElseThrow();
+            var ack=(NativeActionPort.AckReceived)ActionTransitions.dispatch(parent.state()).orElseThrow();
+            var bound=ActionObservationWindow.deadline(parent.command());
+            var deadline=callerDeadline.isBefore(bound)?callerDeadline:bound;
+            var token=new RecoveryOriginal(this,same,parent,attempt,ack,deadline);
+            recovered.set(token);
+            try {
+                recoveredGuard(token);
+                ActionPorts.PostconditionResult result;
+                try { result=Objects.requireNonNull(recoverySource().observeRecovered(same,parent,attempt,ack,deadline)); }
+                catch(InterruptedException interrupted){throw new RecoveryInterrupted(interrupted);}
+                recoveredGuard(token);
+                StrictJson.require(result instanceof ActionPorts.Pending || result instanceof ActionPorts.EffectObserved
+                        || result instanceof ActionPorts.RejectionObserved,"Council recovery cannot issue unrelated terminal authority");
+                return new RecoveryCompletion(this,same,parent,result,deadline);
+            } finally {token.open=false;recovered.remove();}
+        }); } catch(RecoveryInterrupted interrupted){throw interrupted.original;}
+    }
+    private RecoveryOriginal recovery(ContinuityStorePort.Session same,ActionReceipt parent) throws IOException {
+        var token=recovered.get();
+        if(token==null)return null;
+        StrictJson.require(token.same==same && token.parent.equals(parent),"recovered Council crossed its exact original/session");
+        return token;
+    }
+    public RecoveryOriginal currentRecoveryOriginal(ContinuityStorePort.Session same,String originalActionId) throws IOException {
+        var token=recovered.get();
+        StrictJson.require(token!=null && token.same==same && token.command().actionId().equals(originalActionId),
+                "no actual active recovered Council original for this session/action");
+        token.requireCurrent();return token;
+    }
+    /** No Root/readiness callback: this also runs under the Native transport monitor. */
+    private void requireRecoveredRetained(RecoveryOriginal token) throws IOException {
+        requireRecoveredScope(token);
+        StrictJson.require(token.qualifiedGuard!=null && !clock.instant().isAfter(token.qualifiedGuard.validUntil()),
+                "recovered Council source-qualified lease expired");
+    }
+    private void requireRecoveredScope(RecoveryOriginal token) throws IOException {
+        requireSession(token.same);
+        StrictJson.require(token.issuer==this && recovered.get()==token && token.open && token.owner==Thread.currentThread()
+                && ActionScope.currentActionId().filter(token.command().actionId()::equals).isPresent()
+                && clock.instant().isBefore(token.deadline)
+                && canonical(token.same.head(),token.command().actionId()).equals(token.parent),"recovered Council source is closed, stale or changed");
+    }
+    /** Source qualification runs before issuing/validating a query, outside the transport monitor. */
+    private GuardEvidence recoveredGuard(RecoveryOriginal token) throws IOException {
+        requireRecoveredScope(token);
+        var guard=recoverySource().currentRecovered(token.same,token.same.head(),token.parent,token.deadline);
+        verifyRecoveredFresh(token.parent,token.attempt,guard,token.deadline);
+        token.qualifiedGuard=guard;
+        return guard;
+    }
+    private void verifyRecoveredFresh(ActionReceipt parent,ActionState.Attempt original,GuardEvidence guard,Instant deadline) {
+        var old=original.guard(); var before=old.observed();var current=guard.observed();var now=clock.instant();
+        StrictJson.require(parent.state() instanceof ActionState.Unknown && guard.origin() instanceof CommandOrigin.Gameplay
+                && before.machineId().equals(current.machineId()) && before.game().equals(current.game())
+                && before.frame().episodeRunId().equals(current.frame().episodeRunId())
+                && before.frame().identity().player().equals(current.frame().identity().player())
+                && current.frame().identity().nativeRevision().compareTo(before.frame().identity().nativeRevision())>=0
+                && (!guard.connectionGeneration().equals(old.connectionGeneration())
+                    || current.frame().revision().compareTo(before.frame().revision())>=0)
+                && current.frame().identity().dateRaw().compareTo(before.frame().identity().dateRaw())>=0
+                && guard.source().equals(old.source()) && guard.sessionId().equals(old.sessionId())
+                && guard.authorityId().equals(old.authorityId()) && guard.operation().equals(parent.command().operation())
+                && !guard.supportingEvidence().isEmpty() && now.isBefore(deadline)
+                && now.isBefore(ActionObservationWindow.deadline(parent.command()))
+                && !guard.observedAt().isAfter(now) && !now.isAfter(guard.validUntil()),
+                "recovered Council source changed original identity, chronology or bounded observation authority");
+    }
 
     public CouncilContinuationCoordinator(Path originalWriterLock, List<ExactRef> exactProducerSources, Clock clock) {
         this(originalWriterLock, exactProducerSources, clock, boundary -> { });
@@ -67,7 +208,10 @@ public final class CouncilContinuationCoordinator {
     private CouncilContinuationReceipt issueAndSend(ContinuityStorePort.Session same, ActionJournal.LockedJournal locked,
             ActionCommand parent, ActionState.Attempt original, Stage stage, Instant callerDeadline) throws IOException {
         Objects.requireNonNull(stage); Objects.requireNonNull(callerDeadline); Runtime r = runtime();
-        ActionReceipt actual = canonical(locked.head(), parent.actionId()); requireOriginal(actual, parent, original, true);
+        ActionReceipt actual = canonical(locked.head(), parent.actionId());
+        RecoveryOriginal recovery = recovery(same,actual);
+        requireOriginal(actual,parent,original,recovery==null);
+        if(recovery!=null)recovery.requireCurrent();
         StrictJson.require(ActionScope.currentActionId().filter(parent.actionId()::equals).isPresent(), "continuation requires the original coordinator-owned parent scope");
         Instant observationDeadline = ActionObservationWindow.deadline(parent);
         Instant deadline = callerDeadline.isBefore(observationDeadline) ? callerDeadline : observationDeadline;
@@ -76,7 +220,9 @@ public final class CouncilContinuationCoordinator {
         Scope scope = new Scope(parent.actionId(), actual.bodySha256(), original.requestId());
         if (view.state().active().isPresent() && !view.state().active().orElseThrow().equals(scope)) view = rotate(same, view);
         StrictJson.require(view.records().stream().allMatch(row -> row.status() == Status.ACK), "original ISSUED or UNKNOWN continuation blocks all further request IDs");
-        GuardEvidence guard = r.guard().current(same, locked.head(), actual, deadline); verifyFresh(actual, original, guard, deadline);
+        GuardEvidence guard;
+        if(recovery==null){guard=r.guard().current(same,locked.head(),actual,deadline);verifyFresh(actual,original,guard,deadline);}
+        else {guard=recoveredGuard(recovery);verifyRecoveredFresh(actual,original,guard,deadline);}
         List<ExactRef> supporting = List.copyOf(r.policy().prepareEvidence(same, locked.head(), actual, stage, view.records(), r.archive()));
         String id = RequestIds.nextRead(); NativeRequest prepared = new NativeRequest(stage.step(), Optional.empty(), new RawJson(new byte[] {'{', '}'}));
         ExactRef preparedRef = r.archive().preserveRequest(prepared), parentRef = r.archive().preserveReceipt(actual);
@@ -95,7 +241,7 @@ public final class CouncilContinuationCoordinator {
                 StrictJson.require(current.body().reference().payload().equals(custody.domainPayload()) && same.head().digest().equals(issuedHead)
                         && current.records().getLast().equals(issued), "durable original ISSUED state changed before the one native write");
             } catch (IOException failure) { throw new UncheckedIOException(failure); }
-        }, clock);
+        }, clock, Optional.ofNullable(recovery));
         NativeActionPort.DispatchOutcome outcome;
         try { outcome = Objects.requireNonNull(r.nativePort().submit(permit, prepared, deadline)); }
         catch (InterruptedException interrupted) {
@@ -260,14 +406,18 @@ public final class CouncilContinuationCoordinator {
             } else {
                 StrictJson.require(in.get("closed_scope").isNull(), "request transition cannot archive its scope");
                 Retained next = retained(ExactRef.fromJson(in.get("record"))); ActionReceipt parent = canonical(head, next.request().scope().parentActionId());
-                requireOriginal(parent, runtime().archive().loadReceipt(next.request().originalParentReceipt()).command(), ActionTransitions.attempt(parent.state()).orElseThrow(), kind.equals("ISSUE"));
+                RecoveryOriginal recovery=recovery(same,parent);
+                requireOriginal(parent, runtime().archive().loadReceipt(next.request().originalParentReceipt()).command(), ActionTransitions.attempt(parent.state()).orElseThrow(), kind.equals("ISSUE") && recovery==null);
+                if(kind.equals("ISSUE") && recovery!=null)recovery.requireCurrent();
                 StrictJson.require(parent.bodySha256().equals(next.request().scope().parentBodySha256())
                         && ActionTransitions.attempt(parent.state()).orElseThrow().requestId().equals(next.request().scope().originalAttemptRequestId()), "continuation row changed the original attempt");
                 verifyRequest(next.request());
                 if (kind.equals("ISSUE")) {
                     StrictJson.require(next.request().issuedSequence() == Math.addExact(head.state().sequence(), 1), "issued request did not consume the actual next sequence");
-                    GuardEvidence actual = runtime().guard().current(same, head, parent, next.request().deadline());
-                    verifyFresh(parent, ActionTransitions.attempt(parent.state()).orElseThrow(), actual, next.request().deadline());
+                    GuardEvidence actual;
+                    if(recovery==null){actual=runtime().guard().current(same,head,parent,next.request().deadline());
+                        verifyFresh(parent,ActionTransitions.attempt(parent.state()).orElseThrow(),actual,next.request().deadline());}
+                    else {actual=recoveredGuard(recovery);verifyRecoveredFresh(parent,recovery.attempt(),actual,next.request().deadline());}
                     StrictJson.require(actual.origin().equals(next.request().guard().origin()) && actual.source().equals(next.request().guard().source())
                             && actual.connectionGeneration().equals(next.request().guard().connectionGeneration())
                             && actual.nativeEvidence().equals(next.request().guard().nativeEvidence()) && actual.capabilityEvidence().equals(next.request().guard().capabilityEvidence()), "actual source frame changed before continuation issue");
