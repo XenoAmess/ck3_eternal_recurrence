@@ -39,7 +39,8 @@ public final class RootGuiPresentation implements GuiService.PresentationPlane,A
    @Override public PresentationIntent automaticIntent(ActionCommand command){return RootGuiPresentation.automaticIntent(command);}
    @Override public void verifyDeferredOwner(ActionCommand command)throws IOException{commandOwner.require(command).autoCamera.verifyOwner(command);}
    @Override public boolean liveCustody(Session same,ActionCommand command)throws IOException{try{return commandOwner.require(command).autoCamera.liveCustody(same,command);}catch(IOException|IllegalArgumentException unavailable){return false;}}
-   @Override public void beforeNative(Session same,ActionCommand command,GuardEvidence guard,List<ActionReceipt> history,PhysicalActionRegistry.Queue queue)throws IOException{
+   @Override public void beforeNative(Session same,ActionCommand command,GuardEvidence guard,java.util.function.Supplier<List<ActionReceipt>> historySupplier,PhysicalActionRegistry.Queue queue)throws IOException{
+    var history=historySupplier.get();
     try{businessOwner.require(command).autoCamera.beforeNative(same,command,guard,history,queue);}catch(IOException unavailable){/* no installed actual AUTO owner */}
    }
    @Override public void queued(Session same,ActionCommand command,GuardEvidence guard,PresentationPermit permit)throws IOException{commandOwner.require(command).autoCamera.queued(same,command,guard,permit);}

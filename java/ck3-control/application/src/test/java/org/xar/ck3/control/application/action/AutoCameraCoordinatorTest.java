@@ -91,7 +91,7 @@ class AutoCameraCoordinatorTest {
  static PhysicalActionRegistry.Binding binding(Before before){
   return new PhysicalActionRegistry.Binding(new OperationKey("test-camera"),TransportKind.PRESENTATION_MMAP,
    List.of(DecisionDisplayTest.command("source","pause-map").source().sourceRef()),new PhysicalActionRegistry.Producer(){
-    @Override public void beforeNative(ContinuityStorePort.Session same,ActionCommand c,GuardEvidence g,List<ActionReceipt> history,PhysicalActionRegistry.Queue queue)throws java.io.IOException{before.apply(same,c,g,history,queue);}
+    @Override public void beforeNative(ContinuityStorePort.Session same,ActionCommand c,GuardEvidence g,java.util.function.Supplier<List<ActionReceipt>> history,PhysicalActionRegistry.Queue queue)throws java.io.IOException{before.apply(same,c,g,history.get(),queue);}
     @Override public GuardEvidence guard(WriterContracts.Head head,ActionCommand c){throw new AssertionError("no physical request in this software boundary test");}
     @Override public PreparedAction prepare(ContinuityStorePort.Session same,ActionCommand c,String id){throw new AssertionError();}
     @Override public PhysicalOutcome post(PhysicalSubmission p,PreparedAction r,java.time.Instant d){throw new AssertionError();}

@@ -232,7 +232,7 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             permit.beforeFirstWrite(()->{
                 PhysicalActionRegistry registry=physicalActions;if(registry==null)return;
                 for(var binding:registry.installed())try{
-                    binding.producer().beforeNative(locked.writerSession(),command,atSubmission,locked.snapshot().actions(),
+                    binding.producer().beforeNative(locked.writerSession(),command,atSubmission,() -> locked.snapshot().actions(),
                         camera->PhysicalCoordinatorSupport.defer(locked,camera,registry,authorityId,clock,intentPreparation,intentBarrier));
                 }catch(java.io.IOException|RuntimeException cameraUnavailable){ /* Optional presentation never replays or replaces the original native action. */ }
             });

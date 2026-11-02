@@ -25,7 +25,7 @@ public final class PhysicalActionRegistry {
     }
     public interface Producer {
         default boolean automatic(ActionCommand command) { return false; }
-        default void beforeNative(ContinuityStorePort.Session same,ActionCommand command,GuardEvidence guard,List<ActionReceipt> history,Queue queue) throws IOException { }
+        default void beforeNative(ContinuityStorePort.Session same,ActionCommand command,GuardEvidence guard,java.util.function.Supplier<List<ActionReceipt>> history,Queue queue) throws IOException { }
         default org.xar.ck3.control.contracts.presentation.PresentationIntent automaticIntent(ActionCommand command) {
             throw new IllegalStateException("actual automatic intent producer unavailable");
         }
