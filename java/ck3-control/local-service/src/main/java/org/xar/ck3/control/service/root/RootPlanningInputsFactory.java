@@ -249,11 +249,19 @@ public final class RootPlanningInputsFactory {
                 "planning inputs crossed their actual current Game, source, Driver or episode");
         adopted.authority().withFrozenFacts(actual.session(), frozen -> {
             StrictJson.require(frozen.state() instanceof Known current && current.stamp().equals(actual.driver().stamp())
-                    && DriverJson.sha256(DriverJson.encode(current.auxiliary())).equals(
-                            DriverJson.sha256(DriverJson.encode(actual.driver().auxiliary()))),
+                    && sameAuxiliary(current.auxiliary(), actual.driver().auxiliary()),
                     "planning inputs no longer hold the actual frozen Driver state");
             return null;
         });
+    }
+
+    private static boolean sameAuxiliary(OpportunityJson.Obj first, OpportunityJson.Obj second) {
+        if (first == second) {
+            // Identity fast path still validates encoding (depth, size, nulls) before accepting equality.
+            DriverJson.encode(first);
+            return true;
+        }
+        return DriverJson.sha256(DriverJson.encode(first)).equals(DriverJson.sha256(DriverJson.encode(second)));
     }
 
     private static Optional<Goal> campaignGoal(Complete frame) throws IOException {
