@@ -1651,6 +1651,7 @@ public final class RootApplicationAssembly {
                 if(archive.reconciliationHistoryBinding(historyEpoch)!=pendingBinding)
                     throw new IOException("initial reconciliation archive lost the identical qualified history binding");
                 var reconciliation=new RootReconciliationAuthority(writer,archive,physical,pendingBinding,originals,frameLoader,installed.bindings().readCatalog(),remaining.reconciliationReads(),clock);
+                context.bindReconciliation(reconciliation,physical);
                 derived.requireOwner(context,installed.bindings());
                 staged.prepareDispatcher(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),installed.pendingBindings(),installed.requiredPending(),remaining.lifeReplay());
                 var actualOffline=offline.install(installed,remaining.events().eventSources());actualOffline.requireContext(installed);
