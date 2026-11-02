@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+## 2026-11-02 07:12Z 独立切点：502确认累计84日，旧399／61日记录保留
+
+423 SETTLE→429于06:39:04.510779200Z SAVE_CONFIRMED累计69日（date53147640／pair229/188／cycle12），459 SETTLE→465于06:52:51.718523300Z保存累计77日（53147832／250/209／cycle13），496 SETTLE→502于07:08:51.259087500Z保存累计84日（53148000／270/229／cycle14），三次均pending=null，同Game77132／原birth、actor31254／同session。`save-confirmed30118/19/20` 六份具名冻结event逐bytes／SHA、SETTLE与SAVE边界、完整pair及后态核等，与Root `save30118/19/20-verified.json` 独验一致；502为99009B／SHA `b2bd74f3cc85905ea47ceca0f8ab6a1034d7896fa27876eee70ae225cfa67377`。累计84＝旧38＋8＋7＋8＋8＋8＋7，未把SETTLE另计保存日。07:12:12薄report的批15–20分别saved8/7/8/8/8/7、均TURN_BOUND／dirty=false，批20完整958.4790345秒／7保存日并继续next21；同PID73928及head508 running仅为运行岗当时报告，不延授未来健康。
+
+主184 SAVE（11月1日23:56:11.0160542Z／38日）→502完整25960.243033300秒／新增46日＝564.3531094195652173913043478秒／日，全Root epoch37085.259087500秒／84日＝441.4911796130952380952380952秒／日，所有失败、冷恢复、准备、重试和等待全计入，仍未达10秒。337→502的3348.006731300／38＝88.10544029736842105263157895秒／日、465→502的959.540564200／7＝137.0772234571428571428571429秒／日仅子窗，不代替主指标；采样所在批的完整wall保留，不估算采样开销份额。本段固定502／84日切点，不追扩更晚SAVE；旧38／46／53／61与全部历史字节保留。仅现成冻结event／薄metadata／Root独验，0新Java、HTTP、Game查询、Save／Driver大读、动作、S／MB采用或worker重启，不门Runtime。
+
 ## 2026-11-02 06:31Z 后到切点：399确认累计61日，Main301同worker继续至next18
 
 393真实SETTLE后，399于06:30:18.407256300Z SAVE_CONFIRMED；同Game77132／原birth、actor31254／同session，saved date53147448／pair211/170／cycle11／pending=null，累计61＝旧38＋8＋7＋8。`save-confirmed30117` 两冻结event为393／100008B／SHA `dda6df782a5c11bc15396b016b40a6ff7c480788c1f1747f8b146823eed21914`、399／99002B／SHA `5599de58f7f3cbb3eb876b9a0bdee0332bbbb90a43ce58d6183926492d276391`；实际SETTLE与SAVE、完整pair和后态已核，与Root `save30117-verified.json` 独验相符。后到 `save30116-verified.json` 也独验前段363/369，原53日发表切点不回写。`recovery-outcome30108` 薄SUMMARY／冻结HEAD核等：06:31:16.487681Z head402 running／completed11／pending=null／BATCH_STARTED18；三批薄report分别saved8/7/8、TURN_BOUND且dirty=false。运行岗报告同PID73928，后继健康不外推。
