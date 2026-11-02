@@ -247,7 +247,10 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     /** One already prepared marriage-reject intent; this task projection grants no action or Source authority. */
     private byte[] tryCompactKnownPendingPayload(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
         try {
-            if (!isKnownMarriageRejectCandidate(request, proposal, sha)) return null;
+            if (!isKnownMarriageRejectCandidate(request, proposal, sha)) {
+                knownPendingFallback(proposal, sha, "eligibility_not_confirmed", null);
+                return null;
+            }
             JsonNode snapshot = OpportunityJson.toNode(request.observations().snapshot());
             boolean currentRootVerified = hasCurrentCompleteRoot(snapshot, request);
             var hello = (ObjectNode) snapshot.path("diagnostics").path("hello");
@@ -284,10 +287,30 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 actual.set("affected_claims", ActionCodec.claims(fact.affectedClaims()));
             });
             byte[] payload = encodeModelInput(data, KNOWN_PENDING_POLICY);
-            return payload.length <= MAX_COMPACT_LIFE_BYTES ? payload : null;
+            if (payload.length <= MAX_COMPACT_LIFE_BYTES) return payload;
+            knownPendingFallback(proposal, sha, "candidate_over_limit", payload.length);
+            return null;
         } catch (RuntimeException unsupportedOrTooLarge) {
+            knownPendingFallback(proposal, sha, "compact_construction_unsupported", null);
             return null;
         }
+    }
+
+    /** Best-effort classification only: no command material or inner failure details are published. */
+    private void knownPendingFallback(PlanningResult.ActionSelected proposal, String sha,
+            String reason, Integer candidateBytes) {
+        try {
+            if (!proposal.command().operation().value().equals("reject-pending-character-interaction")) return;
+            ObjectNode event = object();
+            event.put("schema", "xar.ordinary-model-known-pending-fallback/v1");
+            event.put("observed_at_utc", clock.instant().toString());
+            event.put("proposal_id", proposal.command().actionId());
+            event.put("body_sha256", sha);
+            event.put("reason", reason);
+            event.put("payload_limit_bytes", MAX_COMPACT_LIFE_BYTES);
+            if (candidateBytes != null) event.put("candidate_payload_bytes", candidateBytes.intValue());
+            emitEvent(event);
+        } catch (RuntimeException | IOException ignored) { }
     }
 
     private static InteractionModels.Context knownPendingCurrentContext(PlanningRequest request, ActionCommand command) {
