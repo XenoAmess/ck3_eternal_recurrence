@@ -1,0 +1,66 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T15:27:32.056856200Z",
+  "prior_published_cutoff_retained": {
+    "event": 917,
+    "total_saved_days": 173
+  },
+  "SAVE_CONFIRMED": {
+    "event": 959,
+    "SETTLE_event": 951,
+    "new_saved_days": 8,
+    "total_saved_days": 181,
+    "date_raw": "53150328",
+    "native_revision": 537,
+    "public_revision": 478,
+    "completed_cycles": 27,
+    "pending_receipt": null
+  },
+  "performance": {
+    "primary_window": "SAVE917 -> SAVE959; preparation, failed batch39, waiting, same-host reload/cold recovery, actual play, settlement and save verification all retained",
+    "full_wall_seconds": "4476.527636500",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "559.5659545625",
+    "root_epoch_seconds": "67006.056856200",
+    "root_epoch_total_saved_days": 181,
+    "root_epoch_seconds_per_saved_day": "370.1992091502762430939226519",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "speedup_proved": false
+  },
+  "verification": "Root independently verified951/959 named frozen events. Formal writer checked only existing SUMMARY+Root receipts and exactDecimal UTC window; no new event/Save/Driver body/Game read.",
+  "source_boundary": "Retention312 andAssembler312 were not loaded before this SAVE. Later source adoption/reload and behavior are separate receipts; no benefit assigned to this cutoff. SameGame continuation only, no future delegate health inference.",
+  "sources": [
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31140/SUMMARY.json",
+      "bytes": 5986,
+      "sha256": "4366cd1bbcc73040063d2089472fc85a7e5060a436d0f253c061e3ceac74ee3c",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "root/save31140-verified.json",
+      "bytes": 1324,
+      "sha256": "5205c8fdde6f146995dde22228a48bd03948739dfe216334c8deac6719a63def",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "root/save31140-window.json",
+      "bytes": 1468,
+      "sha256": "798d5d3d165ef16936d095879f8663f67f83e99d85fe713cc2a9aa66431110b3",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31140/00000951.json",
+      "bytes": 99877,
+      "sha256": "035b427c84594dcc665345189670de01787e1c1e5d84aa14d71e49e74e804d1c",
+      "qualification": "Root independently verified named frozen event; this doc writer used existing Root receipt and SUMMARY, no repeated event/body read."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31140/00000959.json",
+      "bytes": 98872,
+      "sha256": "5f702e6737147ffe94fd5cb55d895f3232d3e23ef3f54084c1d012725f9f8b46",
+      "qualification": "Root independently verified named frozen event; this doc writer used existing Root receipt and SUMMARY, no repeated event/body read."
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0
+}
