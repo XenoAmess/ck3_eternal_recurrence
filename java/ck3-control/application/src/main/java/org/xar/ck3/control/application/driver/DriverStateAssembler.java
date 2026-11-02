@@ -1481,6 +1481,7 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         if (!(durable.originalHistory() instanceof ActionJournal.BoundHistoryBasis bound)
                 || !bound.originalDriverHistory().equals(known.originalHistoryBasis())) missing.add("original_full_history_baseline_not_bound_in_canonical_writer");
         Map<String,DriverSnapshotFacts.ActionRow> rows=new HashMap<>(); known.actionRows().forEach(row -> rows.put(row.actionId(),row));
+        var validatedHistoryRows=new java.util.BitSet();
         // These exact source-validated Life controls retain their effects without a second recorder row.
         var prefixControls = new java.util.HashSet<ActionReceipt>();
         for (ActionReceipt parent : durable.actions()) {
@@ -1593,7 +1594,8 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                 if(coverage.durableSequence()!=action.sequence())missing.add("canonical_action_source_sequence_disagrees:"+action.command().actionId());
                 continue;
             }
-            OpportunityJson.Obj row=DriverJson.object(known.driver().commandHistory().get(Math.toIntExact(coverage.historyIndex()-1)).originalRow().json(),DriverJson.MAX_NATIVE_BYTES);
+            int historyIndex=Math.toIntExact(coverage.historyIndex()-1);
+            OpportunityJson.Obj row=DriverJson.object(known.driver().commandHistory().get(historyIndex).originalRow().json(),DriverJson.MAX_NATIVE_BYTES);
             boolean ok=OpportunityJson.bool(row.get("ok"),"history.ok");
             if(row.members().containsKey(DriverActionHistoryCodec.SOURCE_FIELD)&&coverage.durableSequence()!=action.sequence())
                 missing.add("original_action_source_sequence_disagrees:"+action.command().actionId());
@@ -1601,9 +1603,11 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                     :action.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED;
             if (!action.command().operation().value().equals(OpportunityJson.text(row.get("command"),"command"))
                     || ok!=originalOk) missing.add("original_history_result_disagrees:"+action.command().actionId());
+            validatedHistoryRows.set(historyIndex);
         }
-        for(var row:known.driver().commandHistory()) {
-            OpportunityJson.Obj original=DriverJson.object(row.originalRow().json(),DriverJson.MAX_NATIVE_BYTES);
+        for(int historyIndex=0;historyIndex<known.driver().commandHistory().size();historyIndex++) {
+            if(validatedHistoryRows.get(historyIndex))continue;
+            OpportunityJson.Obj original=DriverJson.object(known.driver().commandHistory().get(historyIndex).originalRow().json(),DriverJson.MAX_NATIVE_BYTES);
             OpportunityJson.text(original.get("command"),"command"); OpportunityJson.bool(original.get("ok"),"ok");
         }
         return missing.isEmpty() ? known.driver() : new DriverStateSnapshot.Incomplete(missing);
