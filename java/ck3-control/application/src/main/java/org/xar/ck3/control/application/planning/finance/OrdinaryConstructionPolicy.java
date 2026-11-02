@@ -99,7 +99,8 @@ public final class OrdinaryConstructionPolicy implements OrdinaryPolicy {
             if (!selection.opportunity().admitsOptionalQuote()) return new NotApplicable("selected concrete war or ordinary work keeps priority over optional construction");
             Obj procurement = previous.detail().get("war_mercenary_decision_v1") instanceof Obj value ? value : obj();
             String kind = previous.detail().get("construction_expenditure_kind") instanceof Text value ? value.value() : "new_building";
-            var current = collector.before(request, selection, procurement, kind);
+            var view = collector.planningView();
+            var current = view.before(request, selection, procurement, kind);
             if (current instanceof OrdinaryConstructionCollector.FrameChanged changed) return new Refresh(changed.reason());
             if (current instanceof OrdinaryConstructionCollector.Missing missing) return deferred(missing.reason());
             var prepared = ((OrdinaryConstructionCollector.Available) current).value();
@@ -123,7 +124,7 @@ public final class OrdinaryConstructionPolicy implements OrdinaryPolicy {
                 return deferred("actual owned-submission inventory unavailable: " + missing.reason());
             Result before = OrdinaryWartimeConstruction.compose(prepared.before().input());
             if (before.disposition() != Disposition.OPTIONAL_QUERY_ALLOWED) return deferred(reason(before));
-            var quote = collector.quote(prepared);
+            var quote = view.quote(prepared);
             if (quote instanceof OrdinaryConstructionCollector.QuoteFrameChanged changed) return new Refresh(changed.reason());
             if (quote instanceof OrdinaryConstructionCollector.QuoteMissing missing) return deferred(missing.reason());
             var quoted = (OrdinaryConstructionCollector.Quoted) quote;

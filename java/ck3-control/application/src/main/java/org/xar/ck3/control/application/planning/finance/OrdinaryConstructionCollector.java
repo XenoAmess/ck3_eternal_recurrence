@@ -83,6 +83,10 @@ public final class OrdinaryConstructionCollector {
     }
     public FinanceStatePort.Result state(PlanningRequest request) { return finance.state(request); }
     public FinanceStatePort.Result state(Session session, PlanningRequest request) { return finance.state(Objects.requireNonNull(session), request); }
+    /** Explicit narrow planning-observation view for the same collector's before/quote reads only. */
+    public OrdinaryConstructionCollector planningView() {
+        return new OrdinaryConstructionCollector(finance.planningView(), ending, funding);
+    }
     public Read before(PlanningRequest request, Selection selection, Obj procurementDecision, String expenditureKind) {
         return before(Optional.empty(), request, selection, procurementDecision, expenditureKind);
     }
