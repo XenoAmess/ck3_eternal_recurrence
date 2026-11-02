@@ -179,6 +179,129 @@ public final class RootReconciliationAuthority {
     }
 
     /** The canonical pending/Attempt is authenticated before any fresh Native I/O. No history publication occurs here. */
+    /** Private original-positive-ACK Council frame capture. It publishes no action and grants no AllowedRead. */
+    public GuardEvidence observeRecoveredCouncilFrame(ContinuityStorePort.Session same,
+            org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator.RecoveryOriginal actualOriginal,Instant deadline)throws IOException {
+        return captureRecoveredCouncilObservation(same,actualOriginal,deadline).guard();
+    }
+    public org.xar.ck3.control.application.action.council.CouncilContinuationPorts.RecoveredObservation captureRecoveredCouncilObservation(ContinuityStorePort.Session same,
+            org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator.RecoveryOriginal actualOriginal,Instant deadline)throws IOException {
+        Objects.requireNonNull(actualOriginal).requireCurrent();
+        ActionReceipt original=actualOriginal.originalParent();
+        Objects.requireNonNull(original);Objects.requireNonNull(deadline);store.requireSession(same);
+        require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyPositiveAckCouncilRecoveryRoot(ContinuityActionJournal.receipts(same.head().state(),archive.withSession(same)))
+                .filter(original::equals).isPresent(),"only the actual private original positive-ACK Council may capture a recovered frame");
+        require(active.get()==null&&publicWindowSnapshot.get()==null,"reconciliation observation cannot replace an original pending/public-window scope");
+        require(clock.instant().isBefore(deadline),"reconciliation deadline expired before any Native I/O");
+        ActionState.Attempt attempt=pending.requirePending(same,original);
+        var bound=archive.withSession(same);
+        RootGuardEvidence.requireHistory(attempt.guard(),bound,same);
+        Complete before=RootGuardEvidence.loadFrame(attempt.guard(),bound,frames);
+        NativeEffectEvidence.FrameBasis oldBasis=RootGuardEvidence.frameBasis(attempt.guard(),bound);
+        ExactRef oldDriver=originalDriver(same,oldBasis);
+        ExactRef originalReceipt=bound.receiptReferenceOf(original);
+
+        boolean freshRead=true;
+
+        return physical.withReconciliationSnapshot(same,deadline,freshRead,captured->{
+            captured.assertCurrent(same);
+            if(captured.ordinary().isEmpty()) {
+                captured.assertCurrent(same);
+                throw new RawUnavailable("actual current player is missing, dead or changed; unresolved primitive has no same-actor reconciliation data",
+                        java.util.stream.Stream.concat(List.of(captured.fullSnapshot().originalEvidence(),captured.originalHello(),captured.originalHeartbeat(),
+                                captured.freshFacts().semanticFactsEvidence(),captured.originalDriver(),captured.originalSemantic()).stream(),captured.sourceQualification().proof().stream()).toList());
+            }
+            Complete actual=captured.ordinary().orElseThrow();
+            require(actual.source().equals(original.command().source())&&actual.sessionId().equals(original.command().sessionId()),
+                    "fresh reconciliation data crossed original source or held session");
+
+            ObservationProvenance provenance;
+            if(freshRead) {
+                provenance=freshAfterCouncilAckProvenance(captured,actual,original,attempt,originalReceipt,bound,actualOriginal);
+            } else {
+                byte[] packet=captured.fullSnapshot().actual().originalPacket();
+                var wire=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(packet,4,packet.length)));
+                require(!wire.has("read_request_id"),"a received READ snapshot cannot be relabelled as an unsolicited push");
+                provenance=new ObservationProvenance.Push(actual.identity().frame().snapshotId(),
+                        actual.identity().frame().identity().nativeRevision(),actual.originalEvidence());
+            }
+            byte[] old=read(same,oldDriver,WriterContracts.MAX_PIN_BYTES);
+            byte[] current=read(same,captured.originalDriver(),WriterContracts.MAX_PIN_BYTES);
+            var evidence=new ReconciliationIdentity.Evidence(actual.originalEvidence(),captured.originalHello(),captured.originalHeartbeat(),
+                    captured.freshFacts().semanticFactsEvidence(),captured.originalDriver(),captured.sourceQualification().proof());
+            // This is DATA only. The same pending binder reopens all canonical originals and either authenticates
+            // the exact unchanged Driver or invokes its private finite history-append provider before any lease exists.
+            ReconciliationIdentity identity=Arrays.equals(old,current)
+                    ?ReconciliationIdentity.fromCanonical(original,actual.identity(),actual.source(),actual.sessionId(),
+                            actual.connectionGeneration(),originalReceipt,oldDriver,evidence,actual.observedAt())
+                    :ReconciliationIdentity.fromCanonicalHistoryAppend(original,actual.identity(),actual.source(),actual.sessionId(),
+                            actual.connectionGeneration(),originalReceipt,oldDriver,evidence,actual.observedAt(),
+                            new RootGuardEvidence.WriterPoint(same.head().state().sequence(),same.head().digest()));
+            pending.verify(same,identity);
+            List<AllowedRead> reads=List.of(); // No generic query or Council STATUS permission escapes this private DATA capture.
+            var lease=new Lease(this,captured,original,attempt,before,actual,provenance,identity,reads);
+            GuardEvidence observation=observationBinding(lease,same);
+            var scope=new Scope(same,lease,observation,same.head().digest(),deadline);active.set(scope);
+            try {assertScope(scope,same,deadline);actualOriginal.requireCurrent();
+                var result=new org.xar.ck3.control.application.action.council.CouncilContinuationPorts.RecoveredObservation(lease.observationGuard(),lease.provenance());
+                assertScope(scope,same,deadline);actualOriginal.requireCurrent();return result;}
+            finally {active.remove();}
+        });
+    }
+
+    private static ObservationProvenance freshAfterCouncilAckProvenance(RootLifecycleAuthority.SnapshotLease captured,Complete actual,
+            ActionReceipt original,ActionState.Attempt attempt,ExactRef originalReceipt,ActionPorts.OutcomeArchive bound,
+            org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator.RecoveryOriginal actualOriginal)throws IOException {
+        actualOriginal.requireCurrent();
+        require(actualOriginal.originalParent().equals(original)&&actualOriginal.command().equals(original.command())
+                &&actualOriginal.attempt().equals(attempt)&&actualOriginal.originalAck().equals(original.ack().orElseThrow())
+                &&original.state() instanceof ActionState.Unknown
+                &&original.command().operation().value().equals("private-assign-councillor-v1")&&!original.settled(),
+                "fresh Council observation requires the exact active private original positive-ACK recovery role");
+        var fresh=captured.freshSnapshot().orElseThrow(()->new IOException("fresh SAVE reconciliation requires actual independent READ custody"));
+        var frame=fresh.originalFrame();var physical=captured.fullSnapshot().actual();
+        require(frame.session().equals(physical.session()) && frame.snapshotId().equals(physical.snapshotId())
+                && frame.nativeRevision().equals(physical.nativeRevision()) && frame.observedAt().equals(physical.observedAt())
+                && Arrays.equals(frame.state().bytes(),physical.state().bytes()) && Arrays.equals(frame.originalPacket(),physical.originalPacket()),
+                "actual READ snapshot differs from the complete qualified physical frame");
+        require(actual.originalEvidence().equals(captured.fullSnapshot().originalEvidence())
+                && actual.identity().frame().snapshotId().equals(frame.snapshotId())
+                && actual.identity().frame().identity().nativeRevision().equals(frame.nativeRevision())
+                && actual.observedAt().equals(frame.observedAt()) && actual.connectionGeneration().equals(frame.session().connectionGeneration()),
+                "actual READ and complete Driver projection crossed original snapshot data");
+        var readAck=fresh.acknowledgement();NativeFreshSnapshotPort.verifyOriginal(readAck,frame,fresh.snapshotReceived());
+        var saveAck=original.ack().orElseThrow(()->new IOException("cold SAVE has no retained positive ACK"));
+        require(saveAck.nativeOk() && saveAck.requestId().equals(attempt.requestId()),"cold SAVE ACK differs from its original Attempt");
+        var originalAckRef=bound.preserve(saveAck);
+        require(saveAck.equals(bound.load(originalAckRef)),"cold SAVE ACK does not retain its exact archived original");
+        var save=saveAck.custody().orElseThrow(()->new IOException("original SAVE ACK has no actual chronology"));
+        save.verify(saveAck,attempt.guard());
+        var decoded=NativeWire.decode(saveAck.originalPacket());
+        require(decoded instanceof NativeWire.CommandResult,"original SAVE ACK is not its original command-result packet");
+        var packet=(NativeWire.CommandResult)decoded;
+        require(packet.nativeOk() && packet.requestId().equals(saveAck.requestId())
+                && Arrays.equals(packet.payload().value(),saveAck.originalFrame().bytes())
+                && packet.result().token().isPresent()==saveAck.originalResultToken().isPresent()
+                && (packet.result().token().isEmpty() || Arrays.equals(packet.result().token().orElseThrow().value(),saveAck.originalResultToken().orElseThrow().bytes())),
+                "original SAVE ACK fields differ from their actual framed bytes");
+        var read=readAck.custody().orElseThrow(()->new IOException("fresh READ has no actual chronology"));
+        require(!read.requestId().equals(save.requestId()),"independent READ reused the original SAVE request ID");
+        if(save.session().equals(read.session()) && save.custodyEpoch().equals(read.custodyEpoch())) {
+            NativeFreshSnapshotPort.verifyAfter(saveAck,fresh);
+        } else {
+            require(save.session().machineId().equals(read.session().machineId())
+                    && save.session().game().equals(read.session().game()) && save.session().sessionId().equals(read.session().sessionId())
+                    && read.session().connectionGeneration().compareTo(save.session().connectionGeneration())>=0,
+                    "cold READ crossed the original machine/Game/session or regressed its connection");
+            require(read.writeEntered().observedAt().isAfter(save.responseReceived().observedAt()),
+                    "cold READ was not actually written after the original SAVE ACK");
+        }
+        var readRef=bound.preserve(readAck);
+        require(readAck.equals(bound.load(readRef)),"fresh READ ACK does not retain its exact archived original");
+        return new ObservationProvenance.FreshSnapshotQuery(readAck.requestId(),readRef,fresh.snapshotReceived(),
+                new ObservationProvenance.ColdAfterAcknowledgement(originalReceipt));
+    }
+
     public <T>T withObserved(ContinuityStorePort.Session same,ActionReceipt original,Instant deadline,LeaseWork<T> observer)throws IOException {
         Objects.requireNonNull(original);Objects.requireNonNull(deadline);Objects.requireNonNull(observer);store.requireSession(same);
         require(active.get()==null&&publicWindowSnapshot.get()==null,"reconciliation observation cannot replace an original pending/public-window scope");
@@ -468,9 +591,18 @@ public final class RootReconciliationAuthority {
                 "archived reconciliation raw/Driver data differs from its factual identity");
         require(originalDriver(same,basisFrames).equals(identity.evidence().currentOriginalDriver()),
                 "reconciliation full Driver is not the current actual manifest Driver");
-        require(Arrays.equals(read(same,identity.pending().originalBeforeDriver(),WriterContracts.MAX_PIN_BYTES),
-                read(same,identity.evidence().currentOriginalDriver(),WriterContracts.MAX_PIN_BYTES)),
-                "archived unresolved primitive published another full Driver");
+        if(identity.driverRelation()==ReconciliationIdentity.DriverRelation.EXACT) {
+            require(Arrays.equals(read(same,identity.pending().originalBeforeDriver(),WriterContracts.MAX_PIN_BYTES),
+                    read(same,identity.evidence().currentOriginalDriver(),WriterContracts.MAX_PIN_BYTES)),
+                    "archived unresolved primitive published another full Driver");
+        } else {
+            // pending.verifyHistorical above has authenticated the complete finite canonical history append.
+            require(role==BasisRole.PUSH_OBSERVATION&&original.state() instanceof ActionState.Unknown
+                    &&original.command().operation().value().equals("private-assign-councillor-v1")
+                    &&original.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent()
+                    &&identity.historyPoint().filter(new RootGuardEvidence.WriterPoint(sequence,StrictJson.text(point.get("digest")))::equals).isPresent(),
+                    "only the explicit original Council observation may retain its verified Driver history append");
+        }
         require(before.identity().equals(identity.pending().originalBefore()),"actual before frame differs from the canonical primitive");
         ExactRef semantic=ExactRef.fromJson(row.get("semantic"));byte[] semanticBytes=actualOriginals.read(same,semantic,WriterContracts.MAX_PIN_BYTES);
         exact(semantic,semanticBytes);require(DriverJson.object(semanticBytes,DriverJson.MAX_NATIVE_BYTES).equals(actual.semantic()),

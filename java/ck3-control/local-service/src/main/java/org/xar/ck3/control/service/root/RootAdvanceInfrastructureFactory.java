@@ -369,9 +369,11 @@ public final class RootAdvanceInfrastructureFactory {
                 var command=originalReceipt.command();
                 require(originalReceipt.bodySha256().equals(ActionCodec.bodySha256(command)), "cold original command body differs");
                 var knownPending = org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(originalReceipt);
+                var councilPending=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyPositiveAckCouncilRecoveryRoot(List.of(originalReceipt))
+                        .filter(originalReceipt::equals).isPresent();
                 require((command.origin() instanceof CommandOrigin.Gameplay && command.operation().value().equals("resume-map")
-                        && command.arguments().members().isEmpty()) || knownPending,
-                        "cold original requires exact resume-map or known-pending recovery primitive");
+                        && command.arguments().members().isEmpty()) || knownPending || councilPending,
+                        "cold original requires exact resume-map, known-pending or original positive-ACK Council recovery primitive");
                 requireFrameBinding(command,complete);
                 var attempt=ActionTransitions.attempt(originalReceipt.state()).orElseThrow();
                 var dispatch=ActionTransitions.dispatch(originalReceipt.state()).orElseThrow();
@@ -382,7 +384,11 @@ public final class RootAdvanceInfrastructureFactory {
                         && guard.sessionId().equals(command.sessionId()) && guard.operation().equals(command.operation()),
                         "cold resume-map original Attempt crossed its complete command/guard binding");
                 var prepared=attempt.preparedRequest();
-                var base=knownPending?org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionEffects.preparation().prepare(command):AdvancePrimitives.prepareRequest(command);
+                var base=councilPending?new NativeRequest(command.operation().value(),Optional.empty(),
+                        new RawJson(org.xar.ck3.control.contracts.StrictJson.canonical(org.xar.ck3.control.governance.council.CouncilActionCodec.wireFields(
+                                org.xar.ck3.control.nativebridge.capabilities.governance.GovernanceActionPreparation.councilRequest(command,attempt.requestId()),true))))
+                        :knownPending?org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionEffects.preparation().prepare(command):AdvancePrimitives.prepareRequest(command);
+                if(councilPending)org.xar.ck3.control.nativebridge.capabilities.governance.CouncilContinuationPolicy.requireOriginalPending(command,attempt,ack);
                 require(prepared.step().equals(base.step()) && prepared.requiredCapability().equals(base.requiredCapability())
                         && java.util.Arrays.equals(prepared.additionalFields().bytes(),base.additionalFields().bytes()),
                         "cold resume-map preparation differs from the actual primitive producer");

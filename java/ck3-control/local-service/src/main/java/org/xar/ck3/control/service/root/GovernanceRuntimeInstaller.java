@@ -77,6 +77,7 @@ public final class GovernanceRuntimeInstaller {
         private final NativeCrownFinalTermsRead finalTerms;
         private RootApplicationAssembly.Core originalCore;
         private RootRuntimeContext current;
+        private Installed currentInstalled;
         private CouncilContinuationPolicy policy;
         private Prepared(Path lock, Sources sources, Config config, Clock clock, CouncilContinuationPorts.SeedAuthority seed) {
             writerLock = Objects.requireNonNull(lock).toAbsolutePath().normalize(); this.sources = Objects.requireNonNull(sources);
@@ -110,18 +111,46 @@ public final class GovernanceRuntimeInstaller {
                                     config.authorityId(), actual.originals(), actual.bindings()).current(same, head, parent, deadline);
                         }, new CouncilContinuationPorts.NativePort() {
                             @Override public NativeActionPort.DispatchOutcome submit(CouncilContinuationPermit permit, NativeRequest exact, java.time.Instant deadline) throws IOException, InterruptedException {
-                                return active().transport().continueCouncil(permit, exact, deadline);
+                                return permit.recoveryOriginal().isPresent()
+                                        ?active().transport().continueRecoveredCouncil(permit,exact,deadline)
+                                        :active().transport().continueCouncil(permit, exact, deadline);
                             }
                             @Override public Optional<NativeActionPort.AckReceived> collectOriginalOutcome(String requestId, java.time.Instant deadline) throws IOException, InterruptedException {
                                 return active().transport().collectOriginalOutcome(requestId, deadline);
                             }
                         }, policy);
+                continuation.bindRecoveryAuthority(new CouncilContinuationPorts.RecoveryAuthority() {
+                    @Override public GuardEvidence currentRecovered(ContinuityStorePort.Session same,WriterContracts.Head head,
+                            ActionReceipt original,java.time.Instant deadline)throws IOException {
+                        RootRuntimeContext actual=active();actual.writer().requireSession(same);
+                        return new RootCouncilContinuationGuard(actual.readiness(),actual.archive(),actual.source(),clock,
+                                config.authorityId(),actual.originals(),actual.bindings()).currentRecovered(same,head,original,deadline);
+                    }
+                    @Override public CouncilContinuationPorts.RecoveredObservation captureRecoveredObservation(ContinuityStorePort.Session same,
+                            CouncilContinuationCoordinator.RecoveryOriginal original,java.time.Instant deadline)throws IOException {
+                        RootRuntimeContext actual=active();actual.writer().requireSession(same);
+                        return actual.reconciliation().captureRecoveredCouncilObservation(same,original,deadline);
+                    }
+                    @Override public GuardEvidence observationRecovered(ContinuityStorePort.Session same,
+                            CouncilContinuationCoordinator.RecoveryOriginal original,java.time.Instant deadline)throws IOException {
+                        RootRuntimeContext actual=active();actual.writer().requireSession(same);
+                        return actual.reconciliation().observeRecoveredCouncilFrame(same,original,deadline);
+                    }
+                    @Override public ActionPorts.PostconditionResult observeRecovered(ContinuityStorePort.Session same,ActionReceipt original,
+                            ActionState.Attempt attempt,NativeActionPort.AckReceived ack,java.time.Instant deadline)throws IOException,InterruptedException {
+                        return installed().observeRecoveredOriginal(same,original,attempt,ack,deadline);
+                    }
+                });
             } else {
                 StrictJson.require(originalCore == context.core(), "a prepared governance graph cannot be rebound to another Core/writer");
                 StrictJson.require(current != context, "actual governance runtime is installed exactly once per physical Game");
                 current = context;
             }
-            return new Installed(this, context);
+            Installed result=new Installed(this, context);currentInstalled=result;return result;
+        }
+        private synchronized Installed installed()throws IOException {
+            if(currentInstalled==null||currentInstalled.context!=current)throw new IOException("actual Council recovery runtime has not been installed");
+            return currentInstalled;
         }
         private synchronized RootRuntimeContext active() {
             return Objects.requireNonNull(current, "actual governance Game context has not been installed");
@@ -142,6 +171,8 @@ public final class GovernanceRuntimeInstaller {
         private final NativeCouncilReadPort council;
         private final RootDomainInstallation installation;
         private NativeGovernanceEffects observer;
+        private NativeCouncilAssignmentEffects privateCouncil;
+        private RootGovernanceDomains originalCouncilDomains;
         private Installed(Prepared prepared, RootRuntimeContext context) throws IOException {
             this.prepared = prepared; this.context = context;
             lifecycle = new NativeLifestyleReadPort(context.reads(), prepared.planning, context.archive());
@@ -168,7 +199,7 @@ public final class GovernanceRuntimeInstaller {
             var archived = new ArrayList<NativeRecordedEvidenceVerifier.Binding>();
             for (OperationKey operation : prepared.config.admittedActions()) {
                 if (operation.value().equals(CouncilActionCodec.PRIVATE_ASSIGN)) archived.add(NativeCouncilAssignmentEffects.archivedVerifier(prepared.sources.councilEffectVerifier(),
-                        prepared.continuation, prepared.policy, context.frameLoader(), this::session));
+                        prepared.continuation, prepared.policy, RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), this::session));
                 else archived.add(NativeGovernanceEffects.archivedVerifier(operation, prepared.sources.effectVerifier(), context.frameLoader(), prepared.receipts, lifecycle,
                         Optional.of(prepared.planning.focusStateReconciliation())));
             }
@@ -234,6 +265,28 @@ public final class GovernanceRuntimeInstaller {
             return ((RootCouncilContinuationSeeds)prepared.seed).preserveCanonical(same);
         }
         public CouncilContinuationCoordinator continuations() { return prepared.continuation; }
+        synchronized void bindOriginalCouncilDomains(RootGovernanceDomains actual,RootRuntimeContext owner)throws IOException {
+            StrictJson.require(owner==context&&prepared.active()==context&&(originalCouncilDomains==null||originalCouncilDomains==actual),
+                    "original Council materials must belong to the identical installed runtime");
+            originalCouncilDomains=Objects.requireNonNull(actual);
+        }
+        private synchronized RootGovernanceDomains originalCouncilDomains()throws IOException {
+            if(originalCouncilDomains==null)throw new IOException("actual original Council domain material reader is not installed");
+            return originalCouncilDomains;
+        }
+        /** Only the real coordinator can settle the original canonical positive-ACK Council through new read-only observations. */
+        public ActionReceipt recoverOriginalCouncil(ContinuityStorePort.Session same,String actionId,java.time.Instant deadline)
+                throws IOException,InterruptedException {
+            context.writer().requireSession(same);requireCurrent(deadline);
+            return context.actions().reconcileOriginalCouncil(same,actionId,deadline,prepared.continuation);
+        }
+        private ActionPorts.PostconditionResult observeRecoveredOriginal(ContinuityStorePort.Session same,ActionReceipt original,
+                ActionState.Attempt attempt,NativeActionPort.AckReceived ack,java.time.Instant deadline)throws IOException,InterruptedException {
+            context.writer().requireSession(same);requireCurrent(deadline);
+            var preflight=originalCouncilDomains().originalCouncilPreflight(same,original);
+            effects();
+            return privateCouncil.observeRecovered(same,original.command(),attempt,ack,deadline,preflight).result();
+        }
         public RootReconciliationAuthority.QueryPolicy reconciliationReads(){return (original,identity,current,deadline)->{
             if(!NativeGovernanceEffects.kind(original.command().operation()).filter(NativeGovernanceEffects.Kind.FOCUS::equals).isPresent())
                 return List.of();
@@ -266,7 +319,7 @@ public final class GovernanceRuntimeInstaller {
             catch (IOException failure) { throw new UncheckedIOException(failure); }
             if (observer == null) {
                 var snapshots = new NativeEffectSnapshots(context.adopted().observations(), context.archive(), context.frameLoader());
-                var privateCouncil = new NativeCouncilAssignmentEffects(prepared.continuation, prepared.policy, snapshots, context.archive(), context.frameLoader(), this::session,
+                privateCouncil = new NativeCouncilAssignmentEffects(prepared.continuation, prepared.policy, snapshots, context.archive(), RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), this::session,
                         prepared.clock, prepared.config.maximumContinuations());
                 observer = new NativeGovernanceEffects(snapshots, context.reads(), prepared.receipts, new NativeGovernanceEffects.SessionPort() {
                     @Override public ContinuityStorePort.Session current(ActionCommand command) {

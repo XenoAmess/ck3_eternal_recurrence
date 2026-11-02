@@ -83,6 +83,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
     public synchronized RootDomainInstallation install(RootRuntimeContext actual,GovernanceRuntimeInstaller.Installed nativeInstalled)throws IOException {
         StrictJson.require(actual.core()==core()&&(context==null||context!=actual),"governance domains install once per actual physical Game on the same Core");
         context=Objects.requireNonNull(actual);nativeGovernance=Objects.requireNonNull(nativeInstalled);actual.requireCurrent(actual.clock().instant().plusSeconds(1));
+        nativeInstalled.bindOriginalCouncilDomains(this,actual);
         return new RootDomainInstallation("native-governance-domains",domainRegistrations(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),
                 pendingBindings(),OWNED,List.of(),List.of(this),List.of(),List.of(),List.of());
     }
@@ -293,6 +294,59 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
         if(old.domain()==Domain.COUNCIL)return encode(old);
         Optional<NativeActionPort.AckReceived> ack=receipt.ack();if(ack.isEmpty())return encode(old);
         var next=original.deepCopy().put("stage","receipt_pending");next.set("ack",nativeResult(ack.orElseThrow()));return encode(pending(old,raw(next)));
+    }
+    /** Original canonical Council INTENT material, never a new preparation or dispatch permission. */
+    public List<PlanningReadReceipt> originalCouncilPreflight(ContinuityStorePort.Session same,ActionReceipt original)throws IOException {
+        requireSession(same);Objects.requireNonNull(original);
+        StrictJson.require(original.command().operation().equals(GovernancePolicies.COUNCIL)
+                &&original.state() instanceof ActionState.Unknown&&original.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent(),
+                "only the original unresolved positive-ACK private Council owns retained preflight");
+        var head=same.head();var archive=core().archive().withSession(same);
+        var canonical=ContinuityActionJournal.lookup(head.state(),original.command().actionId(),archive)
+                .orElseThrow(()->new IOException("original Council is absent from the canonical action chain"));
+        StrictJson.require(Arrays.equals(ActionReceiptCodec.encodeReceipt(original,archive),ActionReceiptCodec.encodeReceipt(canonical,archive)),
+                "retained Council differs from the complete actual canonical receipt");
+        var attempt=ActionTransitions.attempt(original.state()).orElseThrow(()->new IOException("original Council attempt missing"));
+        var actual=available(same,Domain.COUNCIL);var pending=decode(Domain.COUNCIL,actual.canonicalBody()).pending()
+                .orElseThrow(()->new IOException("original Council pending body missing"));
+        StrictJson.require(pending.requestId().equals(originalId(original.command()))
+                &&pending.original().equals(makePending(original.command(),attempt.preparedRequest())),
+                "retained Council pending differs from its original selected command and preparation");
+        var events=head.documents().stream().filter(pin->{
+            Path path=Path.of(pin.reference().path());return path.getParent()!=null
+                    &&path.getParent().getFileName().toString().equals("ROOT-CONTINUITY-WINDOW-EVENTS")
+                    &&path.getFileName().toString().matches("[0-9]{8}\\.json");
+        }).sorted(java.util.Comparator.comparing((WriterContracts.Pin pin)->pin.reference().path()).reversed()).toList();
+        int inspected=0;
+        for(var pin:events) {
+            StrictJson.require(++inspected<=4096,"bounded actual canonical Council import lookup exhausted");
+            JsonNode event=StrictJson.parse(same.readPinned(pin,StrictJson.EXPLICIT_MAX_BYTES),StrictJson.EXPLICIT_MAX_BYTES);same.verifyPin(pin);
+            if(!DomainBodies.IMPORT_KIND.equals(StrictJson.text(event.get("kind"))))continue;
+            JsonNode details=event.get("details");
+            if(!DomainBodies.BodyRef.fromJson(details.get("domain_body")).equals(actual.reference()))continue;
+            var edge=same.readHistoricalTransition(pin);
+            StrictJson.require(edge.kind().equals(DomainBodies.IMPORT_KIND)
+                    &&DomainBodies.reference(edge.after(),DomainBodies.Slot.COUNCIL).filter(actual.reference()::equals).isPresent(),
+                    "retained Council body lacks its actual canonical import edge");
+            JsonNode originalDetails=StrictJson.parse(edge.details(),StrictJson.EXPLICIT_MAX_BYTES);
+            var input=decodeInput(archive.loadMaterial(ExactRef.fromJson(originalDetails.get("source").get("producer_input"))).bytes());
+            StrictJson.require(input.domain()==Domain.COUNCIL&&input.kind()==Kind.INTENT&&!input.preflight().isEmpty(),
+                    "retained Council body lacks its original private INTENT preflight");
+            var command=ActionCodec.decodeCommand(archive.loadMaterial(input.command().orElseThrow()).bytes());
+            StrictJson.require(Arrays.equals(ActionCodec.encodeCommand(command),ActionCodec.encodeCommand(original.command()))
+                    &&archive.loadRequest(input.prepared().orElseThrow()).equals(attempt.preparedRequest()),
+                    "retained Council producer input differs from its whole original command and preparation");
+            var reads=new ArrayList<PlanningReadReceipt>();
+            for(var ref:input.preflight()) {
+                var read=checkedRead(ref,archive);
+                StrictJson.require(read.request().before().equals(command.before())&&read.request().source().equals(command.source())
+                        &&read.request().sessionId().equals(command.sessionId()),"retained Council preflight crossed its original frame/source/session");
+                reads.add(read);
+            }
+            StrictJson.require(same.head().digest().equals(head.digest()),"retained Council preflight crossed the actual locked head");
+            return List.copyOf(reads);
+        }
+        throw new IOException("actual canonical Council INTENT domain import not found");
     }
     public static RawJson makePending(ActionCommand command,NativeRequest actualPrepared) {
         var row=StrictJson.object().put("stage","submission_unresolved").put("episode_run_id",command.before().frame().episodeRunId()).put("pre_native_revision",command.before().frame().identity().nativeRevision()).put("pre_date_raw",command.before().frame().identity().dateRaw());
