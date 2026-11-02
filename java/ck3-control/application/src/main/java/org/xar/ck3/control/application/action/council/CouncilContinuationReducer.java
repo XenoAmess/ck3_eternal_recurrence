@@ -19,7 +19,7 @@ public final class CouncilContinuationReducer {
         StrictJson.require(prior.stream().noneMatch(row -> row.request().requestId().equals(next.request().requestId())), "original continuation request ID is never reused");
         StrictJson.require(prior.isEmpty() || prior.getLast().request().issuedSequence() < next.request().issuedSequence(), "continuation issue sequence must advance");
         var refs = new ArrayList<>(before.records()); refs.add(next.reference());
-        return new State(before.machineId(), Optional.of(next.request().scope()), refs, before.completedScopeChain());
+        return new State(before.machineId(), Optional.of(next.request().scope()), refs, before.completedScopeChain(),before.seatCheckpoint());
     }
     public static State outcome(State before, List<Retained> prior, Retained previous, Retained next, boolean collectedLate) {
         align(before, prior); StrictJson.require(previous.request().equals(next.request()) && before.active().filter(next.request().scope()::equals).isPresent(), "continuation request body/scope is immutable");
@@ -30,7 +30,16 @@ public final class CouncilContinuationReducer {
         else StrictJson.require(next.entry().issued().orElseThrow().record().equals(previous.reference()), "result erased the exact original issued row");
         var refs = new ArrayList<>(before.records()); int index = refs.indexOf(previous.reference());
         StrictJson.require(index >= 0 && index == refs.size() - 1, "only the current last issued continuation may receive its original result");
-        refs.set(index, next.reference()); return new State(before.machineId(), before.active(), refs, before.completedScopeChain());
+        refs.set(index, next.reference()); return new State(before.machineId(), before.active(), refs, before.completedScopeChain(),before.seatCheckpoint());
+    }
+    /** Pure DATA pointer replacement; the owning registered verifier validates the immutable checkpoint transition. */
+    public static State seatCheckpoint(State before,List<Retained> prior,Scope actualScope,ExactRef checkpoint) {
+        align(before,prior);
+        StrictJson.require(before.active().filter(actualScope::equals).isPresent()
+                &&prior.stream().allMatch(row->row.status()==Status.ACK),"seat checkpoint requires the exact fully acknowledged original continuation scope");
+        java.util.Objects.requireNonNull(checkpoint);
+        StrictJson.require(checkpoint.bytes()>0,"actual immutable seat checkpoint required");
+        return new State(before.machineId(),before.active(),before.records(),before.completedScopeChain(),Optional.of(checkpoint));
     }
     public static State rotate(State before, List<Retained> prior, ActionReceipt actualSettledParent, ExactRef completeArchive) {
         align(before, prior); Scope scope = before.active().orElseThrow(() -> new IllegalArgumentException("no original scope to archive"));

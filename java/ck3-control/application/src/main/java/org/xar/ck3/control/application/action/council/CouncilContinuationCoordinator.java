@@ -31,7 +31,7 @@ public final class CouncilContinuationCoordinator {
     @FunctionalInterface public interface FaultProbe { void after(Boundary boundary) throws IOException; }
     private record Runtime(ActionJournal journal, ActionPorts.OutcomeArchive archive, CouncilContinuationPorts.GuardPort guard,
             CouncilContinuationPorts.NativePort nativePort, CouncilContinuationPorts.Policy policy) { }
-    private record Commit(ExactRef payload, ExactRef event) { }
+    private record Commit(ExactRef payload, ExactRef event,WriterContracts.Receipt receipt) { }
     private record View(DomainBodies.Available body, State state, List<Retained> records) { }
     @FunctionalInterface private interface Work<T> { T run() throws IOException; }
     private final Path originalLock;
@@ -43,6 +43,192 @@ public final class CouncilContinuationCoordinator {
     private CouncilContinuationPorts.RecoveryAuthority recoveryAuthority;
     private boolean recoveryStarted;
     private final ThreadLocal<RecoveryOriginal> recovered = new ThreadLocal<>();
+
+    public record SeatRead(String contractId,PlanningReadRequest request,String requestId,ExactRef prepared,
+            Optional<ExactRef> outcome,Optional<ExactRef> known,Optional<String> failure) {
+        public SeatRead {
+            StrictJson.text(contractId);Objects.requireNonNull(request);StrictJson.text(requestId);Objects.requireNonNull(prepared);
+            Objects.requireNonNull(outcome);Objects.requireNonNull(known);Objects.requireNonNull(failure);
+            StrictJson.require(known.isEmpty()||outcome.isPresent()&&failure.isEmpty(),"known seat read needs its actual outcome and no failure");
+        }
+    }
+    public record SeatCheckpoint(ExactRef tuple,List<SeatRead> reads) {
+        public SeatCheckpoint {
+            Objects.requireNonNull(tuple);reads=List.copyOf(reads);
+            StrictJson.require(tuple.bytes()>0&&reads.size()<=MAX_ACTIVE_REQUESTS
+                    &&reads.stream().map(SeatRead::requestId).distinct().count()==reads.size(),"finite distinct actual seat read ids required");
+        }
+    }
+    private record SeatRow(Scope scope,ExactRef parent,Optional<ExactRef> previous,long sequence,String predecessor,SeatCheckpoint value) { }
+    private static final String SEAT_CHECKPOINT_SCHEMA="xar.java-council-recovery-seat-checkpoint/v1";
+
+    private SeatRow seatRow(ExactRef reference) {
+        var row=StrictJson.object(StrictJson.parse(readMaterial(reference),MAX_BODY_BYTES),
+                Set.of("schema","scope","parent","previous","sequence","predecessor","tuple","reads"));
+        StrictJson.require(SEAT_CHECKPOINT_SCHEMA.equals(StrictJson.text(row.get("schema"))),"exact seat checkpoint schema required");
+        var subject=StrictJson.object(row.get("scope"),Set.of("parent_action_id","parent_body_sha256","original_attempt_request_id"));
+        Scope scope=new Scope(StrictJson.text(subject.get("parent_action_id")),StrictJson.text(subject.get("parent_body_sha256")),StrictJson.text(subject.get("original_attempt_request_id")));
+        StrictJson.require(row.get("reads").isArray(),"actual seat reads array required");var reads=new ArrayList<SeatRead>();
+        for(var item:row.get("reads")) {
+            var read=StrictJson.object(item,Set.of("contract_id","request","request_id","prepared","outcome","known","failure"));
+            var argumentRef=ExactRef.fromJson(read.get("request").get("arguments_ref"));
+            var arguments=org.xar.ck3.control.application.driver.DriverJson.object(readMaterial(argumentRef),PlanningReadRequest.MAX_ARGUMENT_BYTES);
+            reads.add(new SeatRead(StrictJson.text(read.get("contract_id")),CommandOriginCodec.planningRequest(read.get("request"),arguments),
+                    StrictJson.text(read.get("request_id")),ExactRef.fromJson(read.get("prepared")),seatRef(read.get("outcome")),seatRef(read.get("known")),
+                    read.get("failure").isNull()?Optional.empty():Optional.of(StrictJson.text(read.get("failure")))));
+        }
+        return new SeatRow(scope,ExactRef.fromJson(row.get("parent")),seatRef(row.get("previous")),
+                StrictJson.integer(row.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER),StrictJson.text(row.get("predecessor")),
+                new SeatCheckpoint(ExactRef.fromJson(row.get("tuple")),reads));
+    }
+    private static Optional<ExactRef> seatRef(JsonNode value) { return value.isNull()?Optional.empty():Optional.of(ExactRef.fromJson(value)); }
+    private byte[] seatBody(SeatRow checkpoint) {
+        var row=StrictJson.object().put("schema",SEAT_CHECKPOINT_SCHEMA);
+        var scope=row.putObject("scope");scope.put("parent_action_id",checkpoint.scope().parentActionId()).put("parent_body_sha256",checkpoint.scope().parentBodySha256())
+                .put("original_attempt_request_id",checkpoint.scope().originalAttemptRequestId());
+        row.set("parent",checkpoint.parent().toJson());row.set("previous",checkpoint.previous().map(ExactRef::toJson).orElse(null));
+        row.put("sequence",checkpoint.sequence()).put("predecessor",checkpoint.predecessor());row.set("tuple",checkpoint.value().tuple().toJson());
+        var items=row.putArray("reads");for(var read:checkpoint.value().reads()) {
+            var item=items.addObject().put("contract_id",read.contractId()).put("request_id",read.requestId());
+            var arguments=preserveMaterial(org.xar.ck3.control.planning.opportunity.OpportunityJson.encode(read.request().arguments()));
+            item.set("request",CommandOriginCodec.planningRequest(read.request(),arguments));item.set("prepared",read.prepared().toJson());
+            item.set("outcome",read.outcome().map(ExactRef::toJson).orElse(null));item.set("known",read.known().map(ExactRef::toJson).orElse(null));
+            if(read.failure().isPresent())item.put("failure",read.failure().orElseThrow());else item.putNull("failure");
+        }
+        return StrictJson.canonical(row,MAX_BODY_BYTES);
+    }
+    private GuardEvidence verifySeatTuple(ActionReceipt parent,ExactRef tuple) {
+        var row=StrictJson.object(StrictJson.parse(readMaterial(tuple),MAX_BODY_BYTES),Set.of("schema","command_body_sha256","original_request_id","before","after","reconciliation_guard","provenance"));
+        var attempt=ActionTransitions.attempt(parent.state()).orElseThrow();
+        StrictJson.require("xar.java.council-current-seat-observation/v1".equals(StrictJson.text(row.get("schema")))
+                &&parent.bodySha256().equals(StrictJson.text(row.get("command_body_sha256")))&&attempt.requestId().equals(StrictJson.text(row.get("original_request_id"))),
+                "seat tuple crossed original command or attempt");
+        GuardEvidence guard=CommandOriginCodec.guard(row.get("reconciliation_guard"));var identity=guard.origin().requireReconciliation();
+        var proof=ObservationProvenanceCodec.decode(row.get("provenance"));
+        StrictJson.require(proof instanceof ObservationProvenance.FreshSnapshotQuery
+                &&identity.pending().actionId().equals(parent.command().actionId())&&identity.pending().bodySha256().equals(parent.bodySha256())
+                &&identity.pending().requestId().equals(attempt.requestId())&&identity.pending().originalBefore().equals(parent.command().before())
+                &&identity.pending().originalReceipt().equals(runtime().archive().receiptReferenceOf(parent))
+                &&identity.source().equals(parent.command().source())&&identity.sessionId().equals(parent.command().sessionId())
+                &&guard.operation().equals(parent.command().operation())&&guard.authorityId().equals(attempt.guard().authorityId()),"seat tuple is not the actual original Council observation DATA");
+        proof.validate(identity.factual(),identity.nativeEvidence());identity.requireOriginalConnection(attempt.guard());
+        var after=StrictJson.object(row.get("after"),Set.of("native_frame","driver_facts"));
+        var before=StrictJson.object(row.get("before"),Set.of("native_frame","driver_facts"));
+        var original=org.xar.ck3.control.application.effects.RootGuardEvidence.frameBasis(attempt.guard(),runtime().archive());
+        StrictJson.require(ExactRef.fromJson(before.get("native_frame")).equals(original.nativeFrame())&&ExactRef.fromJson(before.get("driver_facts")).equals(original.driverFacts())
+                &&ExactRef.fromJson(after.get("native_frame")).equals(identity.nativeEvidence())
+                &&ExactRef.fromJson(after.get("driver_facts")).equals(identity.evidence().observationManifest()),"seat tuple lost its exact before/after frame basis");
+        return guard;
+    }
+    private void verifySeatReads(ActionReceipt parent,SeatCheckpoint value) throws IOException {
+        var tupleGuard=verifySeatTuple(parent,value.tuple());var identity=tupleGuard.origin().requireReconciliation();
+        boolean statusAllowed=false;
+        for(var read:value.reads()) {
+            var request=read.request();String operation=request.operation().value();
+            StrictJson.require(operation.equals("private-query-council-composition-candidates-v1")||operation.equals("private-council-application-main-status-v1"),"seat checkpoint cannot name another read operation");
+            StrictJson.require(request.before().equals(identity.factual())&&request.source().equals(parent.command().source())&&request.sessionId().equals(parent.command().sessionId()),"seat read crossed exact captured frame/source/session");
+            StrictJson.require(!read.requestId().equals(ActionTransitions.attempt(parent.state()).orElseThrow().requestId()),"seat read reused assignment request id");
+            var prepared=runtime().archive().loadRequest(read.prepared());
+            StrictJson.require(prepared.step().equals(operation)&&prepared.requiredCapability().isEmpty(),"seat prepared request changed its operation/capability");
+            if(operation.equals("private-query-council-composition-candidates-v1"))StrictJson.require(!statusAllowed&&request.arguments().members().keySet().equals(Set.of("position_key")),"seat QUERY must be first and name its actual position");
+            else StrictJson.require(statusAllowed&&request.arguments().members().isEmpty(),"seat STATUS requires its actual earlier known QUERY");
+            if(read.outcome().isPresent())StrictJson.require(runtime().archive().load(read.outcome().orElseThrow()).requestId().equals(read.requestId()),"seat outcome crossed original read id");
+            if(read.known().isPresent()) {
+                var known=runtime().archive().loadRead(read.known().orElseThrow());
+                StrictJson.require(known.request().equals(request)&&known.contractId().equals(read.contractId())&&known.requestId().equals(read.requestId())
+                        &&known.original().equals(runtime().archive().load(read.outcome().orElseThrow()))
+                        &&runtime().archive().readReferenceOf(known).equals(read.known().orElseThrow()),"known seat receipt lost exact request/outcome archive");
+                org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(known,runtime().archive());statusAllowed=true;
+            } else StrictJson.require(read==value.reads().getLast(),"an unfinished original seat read blocks all later request ids");
+        }
+    }
+    private State verifySeatTransition(ContinuityStorePort.Session same,WriterContracts.Head head,State before,ExactRef reference) throws IOException {
+        SeatRow row=seatRow(reference);var parent=runtime().archive().loadReceipt(row.parent());
+        StrictJson.require(row.previous().equals(before.seatCheckpoint())&&row.sequence()==Math.addExact(head.state().sequence(),1)
+                &&row.predecessor().equals(head.digest())&&canonical(head,row.scope().parentActionId()).equals(parent)
+                &&parent.bodySha256().equals(row.scope().parentBodySha256())
+                &&ActionTransitions.attempt(parent.state()).orElseThrow().requestId().equals(row.scope().originalAttemptRequestId()),"seat checkpoint lost its actual predecessor/original canonical scope");
+        requireOriginal(parent,parent.command(),ActionTransitions.attempt(parent.state()).orElseThrow(),false);verifySeatReads(parent,row.value());
+        if(row.previous().isPresent()) {
+            var old=seatRow(row.previous().orElseThrow()).value();
+            StrictJson.require(old.tuple().equals(row.value().tuple()),"pending seat tuple cannot be replaced");
+            var a=old.reads();var b=row.value().reads();
+            StrictJson.require(b.size()==a.size()||b.size()==a.size()+1,"one actual seat read transition required");
+            for(int i=0;i<Math.max(0,a.size()-1);i++)StrictJson.require(a.get(i).equals(b.get(i)),"seat checkpoint changed an earlier actual read");
+            if(!a.isEmpty()) {
+                var prior=a.getLast();var next=b.get(a.size()-1);
+                StrictJson.require(prior.contractId().equals(next.contractId())&&prior.request().equals(next.request())&&prior.requestId().equals(next.requestId())&&prior.prepared().equals(next.prepared()),"seat original prepared identity is immutable");
+                if(prior.known().isPresent())StrictJson.require(prior.equals(next),"known original seat receipt is immutable");
+                if(prior.outcome().isPresent()&&!prior.outcome().equals(next.outcome()))StrictJson.require(runtime().archive().load(prior.outcome().orElseThrow()) instanceof NativeActionPort.Unknown
+                        &&next.outcome().isPresent()&&runtime().archive().load(next.outcome().orElseThrow()) instanceof NativeActionPort.AckReceived,"only actual original late ACK can resolve a seat UNKNOWN");
+                if(b.size()>a.size())StrictJson.require(prior.known().isPresent(),"prepared or UNKNOWN original read is collect-only");
+            }
+        } else StrictJson.require(row.value().reads().isEmpty(),"seat tuple must be durably committed before query preparation");
+        return CouncilContinuationReducer.seatCheckpoint(before,load(before),row.scope(),reference);
+    }
+    private Optional<SeatCheckpoint> readSeatHistory(ContinuityStorePort.Session same,WriterContracts.Head head,State current) throws IOException {
+        var next=current.seatCheckpoint();Optional<SeatCheckpoint> answer=Optional.empty();var seen=new java.util.HashSet<ExactRef>();
+        while(next.isPresent()) {
+            var ref=next.orElseThrow();StrictJson.require(seen.add(ref)&&seen.size()<=MAX_ACTIVE_REQUESTS*4+1,"finite acyclic seat checkpoint history required");
+            var row=seatRow(ref);if(answer.isEmpty())answer=Optional.of(row.value());
+            var edge=same.readHistoricalTransition(same.capturePin(event(head,row.sequence()),MAX_BODY_BYTES));
+            var original=same.requireHistoricalImport(DomainBodies.Slot.COUNCIL_CONTINUATION,row.sequence(),ContinuityJson.digest(edge.after().toJson()));
+            var input=StrictJson.object(StrictJson.parse(original.request().producerInput(),MAX_BODY_BYTES),Set.of("schema","kind","record","seed_manifest","closed_scope"));
+            StrictJson.require(INPUT_SCHEMA.equals(StrictJson.text(input.get("schema")))&&"SEAT_CHECKPOINT".equals(StrictJson.text(input.get("kind")))
+                    &&ExactRef.fromJson(input.get("record")).equals(ref)&&input.get("seed_manifest").isNull()&&input.get("closed_scope").isNull(),"actual canonical import does not bind this seat checkpoint");
+            var previous=DomainBodies.reference(original.predecessor().state(),DomainBodies.Slot.COUNCIL_CONTINUATION).orElseThrow();
+            var before=CouncilContinuationCodec.decodeState(readMaterial(previous.payload()));
+            var expected=verifySeatTransition(same,original.predecessor(),before,ref);
+            StrictJson.require(Arrays.equals(CouncilContinuationCodec.encodeState(expected),readMaterial(original.body().payload())),"canonical seat checkpoint did not replay its complete exact state");
+            next=row.previous();
+        }
+        return answer;
+    }
+    private Commit checkpointSeat(RecoveryOriginal token,SeatCheckpoint value) throws IOException {
+        token.requireCurrent();return scoped(token.same,()->{
+            var head=token.same.head();if(token.seatHead!=null)StrictJson.require(token.seatHead.digest().equals(head.digest()),"unrelated canonical head drift cannot become a seat checkpoint");
+            var view=view(token.same);Scope scope=new Scope(token.command().actionId(),token.parent.bodySha256(),token.attempt.requestId());
+            var row=new SeatRow(scope,runtime().archive().receiptReferenceOf(token.parent),view.state().seatCheckpoint(),Math.addExact(head.state().sequence(),1),head.digest(),value);
+            ExactRef ref=preserveMaterial(seatBody(row));var expected=verifySeatTransition(token.same,head,view.state(),ref);
+            var refs=new ArrayList<ExactRef>(List.of(ref,value.tuple(),row.parent(),view.body().reference().payload()));
+            for(var read:value.reads()){refs.add(read.prepared());read.outcome().ifPresent(refs::add);read.known().ifPresent(refs::add);}
+            var commit=commit(token.same,expected,input("SEAT_CHECKPOINT",Optional.of(ref),Optional.empty(),Optional.empty()),refs);
+            token.seatHead=token.same.head();return commit;
+        });
+    }
+    private void seatReadUpdate(RecoveryOriginal token,ReadContract<?> contract,PlanningReadRequest request,String id,NativeRequest prepared,
+            Optional<NativeActionPort.DispatchOutcome> outcome,Optional<PlanningReadReceipt> known,Optional<String> failure) throws IOException {
+        var value=token.seatCheckpoint().orElseThrow(()->new IOException("actual same-capture tuple is not durably checkpointed"));
+        var reads=new ArrayList<>(value.reads());int index=-1;for(int i=0;i<reads.size();i++)if(reads.get(i).requestId().equals(id))index=i;
+        ExactRef preparedRef=runtime().archive().preserveRequest(prepared);Optional<ExactRef> outcomeRef=outcome.map(runtime().archive()::preserve);
+        Optional<ExactRef> knownRef=known.map(runtime().archive()::preserveRead);
+        if(index>=0) {var old=reads.get(index);if(outcomeRef.isEmpty())outcomeRef=old.outcome();if(knownRef.isEmpty())knownRef=old.known();
+            reads.set(index,new SeatRead(contract.contractId(),request,id,preparedRef,outcomeRef,knownRef,failure));}
+        else {StrictJson.require(outcome.isEmpty()&&known.isEmpty(),"original seat outcome requires durable PREPARED navigation");
+            reads.add(new SeatRead(contract.contractId(),request,id,preparedRef,outcomeRef,knownRef,failure));}
+        checkpointSeat(token,new SeatCheckpoint(value.tuple(),reads));
+    }
+    public void verifyCanonicalSeatCheckpoint(ContinuityStorePort.Session same,WriterContracts.Head head,Scope scope,ExactRef tuple,List<ExactRef> knownReadRefs) throws IOException {
+        scoped(same,()->{
+            StrictJson.require(same.head().digest().equals(head.digest()),"seat verifier requires exact actual canonical head");
+            var state=view(same).state();Optional<SeatCheckpoint> found=Optional.empty();var visited=new java.util.HashSet<ExactRef>();
+            while(true) {
+                if(state.active().filter(scope::equals).isPresent()) {found=readSeatHistory(same,head,state);break;}
+                if(state.completedScopeChain().isEmpty())break;var closure=state.completedScopeChain().orElseThrow();
+                StrictJson.require(visited.add(closure)&&visited.size()<=MAX_ACTIVE_REQUESTS,"finite canonical retired scopes required");
+                var closed=StrictJson.object(StrictJson.parse(readMaterial(closure),MAX_BODY_BYTES),Set.of("schema","previous_state","settled_parent"));
+                StrictJson.require("xar.java-council-closed-scope/v1".equals(StrictJson.text(closed.get("schema"))),"actual closed Council scope archive required");
+                var parent=runtime().archive().loadReceipt(ExactRef.fromJson(closed.get("settled_parent")));
+                ContinuityActionJournal.requireHistoricalReceipt(head.state(),parent,runtime().archive());
+                StrictJson.require(parent.settled(),"only truly settled parent may archive a seat scope");
+                state=CouncilContinuationCodec.decodeState(readMaterial(ExactRef.fromJson(closed.get("previous_state"))));
+            }
+            var checkpoint=found.orElseThrow(()->new IOException("canonical seat checkpoint absent for this original scope"));
+            StrictJson.require(checkpoint.tuple().equals(tuple)&&!checkpoint.reads().isEmpty()&&checkpoint.reads().stream().allMatch(read->read.known().isPresent()&&read.failure().isEmpty())
+                    &&checkpoint.reads().stream().map(read->read.known().orElseThrow()).toList().equals(List.copyOf(knownReadRefs)),"seat evidence differs from complete ordered canonical known originals");
+            StrictJson.require(same.head().digest().equals(head.digest()),"canonical head changed during seat DATA replay");return null;
+        });
+    }
 
     /** Opaque live role for one unchanged original; only this coordinator can issue it. */
     public static final class RecoveryOriginal {
@@ -101,6 +287,57 @@ public final class CouncilContinuationCoordinator {
             observationProvenance.validate(guard.origin().requireReconciliation().factual(),guard.nativeEvidence());
             return observationProvenance;
         }
+        private WriterContracts.Head seatHead;
+        public Optional<SeatCheckpoint> seatCheckpoint() throws IOException {
+            requireCurrent();return issuer.scoped(same,()->issuer.readSeatHistory(same,same.head(),issuer.view(same).state()));
+        }
+        public WriterContracts.Receipt checkpointSeatTuple(ExactRef actualSameCaptureTuple) throws IOException {
+            requireCurrent();var guard=issuer.verifySeatTuple(parent,actualSameCaptureTuple);
+            StrictJson.require(observationGuard().equals(guard),"only this private role's actual same-capture tuple can begin live checkpointing");
+            var tuple=StrictJson.object(StrictJson.parse(issuer.readMaterial(actualSameCaptureTuple),MAX_BODY_BYTES),Set.of("schema","command_body_sha256","original_request_id","before","after","reconciliation_guard","provenance"));
+            StrictJson.require(ObservationProvenanceCodec.decode(tuple.get("provenance")).equals(observationProvenance()),"tuple lost this same actual FreshQuery proof");
+            var old=seatCheckpoint();
+            StrictJson.require(old.isEmpty()||old.orElseThrow().tuple().equals(actualSameCaptureTuple),"old prepared/known tuple is immutable; reopen its actual checkpoint instead");
+            return issuer.checkpointSeat(this,new SeatCheckpoint(actualSameCaptureTuple,old.map(SeatCheckpoint::reads).orElse(List.of()))).receipt();
+        }
+        public WriterContracts.Head seatCheckpointHead() throws IOException {
+            requireCurrent();var actual=same.head();if(seatHead==null)seatHead=actual;
+            StrictJson.require(actual.digest().equals(seatHead.digest())&&actual.documents().equals(seatHead.documents())
+                    &&actual.absent().equals(seatHead.absent())&&actual.indexRepairs().equals(seatHead.indexRepairs()),"unrelated writer drift is not this role's committed seat checkpoint");
+            return actual;
+        }
+        public PlanningReadCoordinator.ReadLifecycleObserver seatReadLifecycle() {
+            return new PlanningReadCoordinator.ReadLifecycleObserver() {
+                private void require(ContinuityStorePort.Session actual) throws IOException {
+                    StrictJson.require(actual==same,"seat read observer escaped its actual borrowed writer");requireCurrent();
+                }
+                private SeatRead original(String id) throws IOException {
+                    return seatCheckpoint().orElseThrow().reads().stream().filter(read->read.requestId().equals(id)).findFirst()
+                            .orElseThrow(()->new IOException("actual original seat read was not durably prepared"));
+                }
+                @Override public void prepared(ContinuityStorePort.Session actual,ReadContract<?> contract,PlanningReadRequest request,String id,NativeRequest prepared)throws IOException {
+                    require(actual);StrictJson.require(contract.prepare(request,id).equals(prepared),"seat observer changed actual installed preparation");
+                    issuer.seatReadUpdate(RecoveryOriginal.this,contract,request,id,prepared,Optional.empty(),Optional.empty(),Optional.empty());
+                }
+                @Override public void received(ContinuityStorePort.Session actual,ReadContract<?> contract,PlanningReadRequest request,String id,NativeActionPort.DispatchOutcome outcome)throws IOException {
+                    require(actual);var old=original(id);
+                    issuer.seatReadUpdate(RecoveryOriginal.this,contract,request,id,issuer.runtime().archive().loadRequest(old.prepared()),Optional.of(outcome),Optional.empty(),Optional.empty());
+                }
+                @Override public void known(ContinuityStorePort.Session actual,ReadContract<?> contract,PlanningReadResult.Known<?> known)throws IOException {
+                    require(actual);var read=known.receipt();var old=original(read.requestId());
+                    StrictJson.require(known.originalReceipt().equals(issuer.runtime().archive().readReferenceOf(read)),"seat Known must retain its actual original receipt ref");
+                    issuer.seatReadUpdate(RecoveryOriginal.this,contract,read.request(),read.requestId(),issuer.runtime().archive().loadRequest(old.prepared()),Optional.of(read.original()),Optional.of(read),Optional.empty());
+                }
+                @Override public void failed(ContinuityStorePort.Session actual,ReadContract<?> contract,PlanningReadRequest request,Optional<NativeActionPort.DispatchOutcome> outcome,String reason)throws IOException {
+                    require(actual);var all=seatCheckpoint().orElseThrow().reads();
+                    var old=all.stream().filter(read->read.contractId().equals(contract.contractId())&&read.request().equals(request)
+                            &&outcome.map(value->value.requestId().equals(read.requestId())).orElse(true)).reduce((a,b)->b)
+                            .orElseThrow(()->new IOException("failed seat read has no actual PREPARED id; no UNKNOWN is invented"));
+                    issuer.seatReadUpdate(RecoveryOriginal.this,contract,request,old.requestId(),issuer.runtime().archive().loadRequest(old.prepared()),outcome,Optional.empty(),Optional.of(reason));
+                }
+            };
+        }
+
         public void requireCurrent() throws IOException { issuer.requireRecoveredRetained(this); }
     }
     /** One actual source observer result; construction is private and consumption remains session/action scoped. */
@@ -435,7 +672,14 @@ public final class CouncilContinuationCoordinator {
         } else {
             StrictJson.require(previous.isPresent() && in.get("seed_manifest").isNull(), "unimported continuation state is unavailable");
             State before = CouncilContinuationCodec.decodeState(readMaterial(previous.orElseThrow().payload())); List<Retained> prior = load(before);
-            if (kind.equals("ROTATE")) {
+            if(kind.equals("SEAT_CHECKPOINT")) {
+                StrictJson.require(in.get("closed_scope").isNull(),"seat checkpoint is not a retired scope");
+                var ref=ExactRef.fromJson(in.get("record"));var row=seatRow(ref);
+                var parent=canonical(head,row.scope().parentActionId());var token=recovery(same,parent);
+                StrictJson.require(token!=null,"live seat checkpoint requires its actual private recovered original");
+                token.requireCurrent();StrictJson.require(request.evidence().contains(ref)&&request.evidence().contains(row.value().tuple()),"seat checkpoint original refs must be pinned");
+                expected=verifySeatTransition(same,head,before,ref);
+            } else if (kind.equals("ROTATE")) {
                 StrictJson.require(in.get("record").isNull(), "closed scope is a distinct transition"); ExactRef closed = ExactRef.fromJson(in.get("closed_scope"));
                 var closure = StrictJson.object(StrictJson.parse(readMaterial(closed), MAX_BODY_BYTES), Set.of("schema", "previous_state", "settled_parent"));
                 StrictJson.require("xar.java-council-closed-scope/v1".equals(StrictJson.text(closure.get("schema"))) && ExactRef.fromJson(closure.get("previous_state")).equals(previous.orElseThrow().payload()), "closed scope lost the complete prior manifest");
@@ -485,7 +729,7 @@ public final class CouncilContinuationCoordinator {
                 "council-continuation-" + same.head().state().sequence() + "-" + body.sha256());
         var result = same.commitImport(same.previewImport(request)); View actual = view(same);
         StrictJson.require(actual.body().reference().payload().equals(body) && actual.state().equals(state), "canonical continuation commit readback differs");
-        return new Commit(body, event(same.head(), result.head().sequence()));
+        return new Commit(body, event(same.head(), result.head().sequence()),result);
     }
     private View view(ContinuityStorePort.Session same) throws IOException {
         requireSession(same); var read = same.readDomain(DomainBodies.Slot.COUNCIL_CONTINUATION);

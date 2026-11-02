@@ -12,6 +12,7 @@ import org.xar.ck3.control.contracts.StrictJson;
 /** One original Council action and its immutable, separately durable continuation requests. */
 public final class CouncilContinuationModel {
     public static final String SCHEMA = "xar.java-council-continuations/v1";
+    public static final String SEAT_STATE_SCHEMA = "xar.java-council-continuations/v2";
     public static final int MAX_BODY_BYTES = 1_048_576;
     public static final int MAX_ACTIVE_REQUESTS = 1024;
     private CouncilContinuationModel() { }
@@ -57,9 +58,15 @@ public final class CouncilContinuationModel {
         public Request request() { return entry.request(); }
         public Status status() { return entry.status(); }
     }
-    public record State(String machineId, Optional<Scope> active, List<ExactRef> records, Optional<ExactRef> completedScopeChain) {
+    public record State(String machineId, Optional<Scope> active, List<ExactRef> records, Optional<ExactRef> completedScopeChain,
+            Optional<ExactRef> seatCheckpoint) {
+        public State(String machineId,Optional<Scope> active,List<ExactRef> records,Optional<ExactRef> completedScopeChain) {
+            this(machineId,active,records,completedScopeChain,Optional.empty());
+        }
         public State {
             StrictJson.text(machineId); Objects.requireNonNull(active); records = List.copyOf(records); Objects.requireNonNull(completedScopeChain);
+            seatCheckpoint=Objects.requireNonNull(seatCheckpoint);
+            StrictJson.require(seatCheckpoint.isEmpty()||active.isPresent(),"seat recovery checkpoint belongs to an actual active original scope");
             StrictJson.require(records.size() <= MAX_ACTIVE_REQUESTS && (active.isPresent() || records.isEmpty()), "bounded explicit active continuation scope required");
             StrictJson.require(new java.util.HashSet<>(records).size() == records.size(), "continuation manifest cannot repeat an immutable row");
         }

@@ -16,17 +16,23 @@ import static org.xar.ck3.control.application.action.council.CouncilContinuation
 public final class CouncilContinuationCodec {
     private CouncilContinuationCodec() { }
     public static byte[] encodeState(State state) {
-        ObjectNode row = StrictJson.object(); row.put("schema", SCHEMA); row.put("machine_id", state.machineId());
+        ObjectNode row = StrictJson.object(); row.put("schema", state.seatCheckpoint().isPresent()?SEAT_STATE_SCHEMA:SCHEMA); row.put("machine_id", state.machineId());
         row.set("active", state.active().map(CouncilContinuationCodec::scope).orElse(null));
         var records = row.putArray("records"); state.records().forEach(ref -> records.add(ref.toJson()));
         row.set("completed_scope_chain", state.completedScopeChain().map(ExactRef::toJson).orElse(null));
+        state.seatCheckpoint().ifPresent(ref->row.set("seat_checkpoint",ref.toJson()));
         return StrictJson.canonical(row, MAX_BODY_BYTES);
     }
     public static State decodeState(byte[] raw) {
-        ObjectNode row = StrictJson.object(StrictJson.parse(raw, MAX_BODY_BYTES), Set.of("schema", "machine_id", "active", "records", "completed_scope_chain"));
-        StrictJson.require(SCHEMA.equals(text(row, "schema")), "exact continuation manifest schema required");
-        return new State(text(row, "machine_id"), row.get("active").isNull() ? Optional.empty() : Optional.of(scope(row.get("active"))),
-                refs(row.get("records")), optionalRef(row.get("completed_scope_chain")));
+        JsonNode parsed=StrictJson.parse(raw,MAX_BODY_BYTES);
+        boolean seat=SEAT_STATE_SCHEMA.equals(parsed.path("schema").asText());
+        var fields=new java.util.HashSet<>(Set.of("schema","machine_id","active","records","completed_scope_chain"));
+        if(seat)fields.add("seat_checkpoint");
+        ObjectNode row=StrictJson.object(parsed,fields);
+        StrictJson.require(seat||SCHEMA.equals(text(row,"schema")),"exact continuation manifest schema required");
+        StrictJson.require(!seat||!row.get("seat_checkpoint").isNull(),"v2 requires its explicit actual seat checkpoint");
+        return new State(text(row,"machine_id"),row.get("active").isNull()?Optional.empty():Optional.of(scope(row.get("active"))),
+                refs(row.get("records")),optionalRef(row.get("completed_scope_chain")),seat?Optional.of(ExactRef.fromJson(row.get("seat_checkpoint"))):Optional.empty());
     }
     public static byte[] encodeEntry(Entry value) {
         var row = StrictJson.object(); row.put("schema", "xar.java-council-continuation-entry/v1"); row.set("request", request(value.request()));
