@@ -83,7 +83,7 @@ public final class DriverActionHistoryState {
         StrictJson.require(!(actual.command().expectation() instanceof org.xar.ck3.control.application.action.CommandExpectation.OperatorRebind),
                 "operator identity receipt has no separate Driver ACTION publication or version increment");
         var source=DriverActionHistoryCodec.decode(material(data.originalSource(),originals));
-        DriverActionHistoryCodec.requireCanonicalMembership(same,actual,source,originals);DriverActionHistoryCodec.requireSource(actual,source,originals);
+        DriverActionHistoryCodec.requireSource(actual,source,originals);
         DriverStateSnapshot.Complete before=DriverStateSnapshot.decodeComplete(fullMaterial(data.beforeDriver(),originals).bytes());
         DriverStateSnapshot.Complete after=DriverStateSnapshot.decodeComplete(fullMaterial(data.afterDriver(),originals).bytes());
         StrictJson.require(actual.command().before().game().pid()==before.session().bridgePid()
