@@ -201,14 +201,18 @@ public final class CrownRetryPublication implements DomainBodies.Verifier {
         Objects.requireNonNull(input); Objects.requireNonNull(material);
         StrictJson.require(material.actualCurrent().equals(input.currentObserved()) && material.actualSource().equals(input.source()),
                 "retry source material must bind the complete current Native/Driver frame");
-        requireBytes(input.previousBody(), material.previousBody()); requireBytes(input.crownReadback(), material.crownReadback());
-        requireBytes(input.finalTermsConsume(), material.finalTermsConsume());
-        ObjectNode old = StrictJson.object(ContinuityJson.parseObject(material.previousBody(), MAX_BODY_BYTES), Set.of("pending", "resolved", "retry"));
+        byte[] prevBytes = material.previousBody();
+        requireBytes(input.previousBody(), prevBytes);
+        byte[] crownBytes = material.crownReadback();
+        requireBytes(input.crownReadback(), crownBytes);
+        byte[] termsBytes = material.finalTermsConsume();
+        requireBytes(input.finalTermsConsume(), termsBytes);
+        ObjectNode old = StrictJson.object(ContinuityJson.parseObject(prevBytes, MAX_BODY_BYTES), Set.of("pending", "resolved", "retry"));
         nullableObject(old.get("pending")); nullableObject(old.get("resolved")); nullableObject(old.get("retry"));
         StrictJson.require(old.get("pending").isNull(), "an original pending/UNKNOWN Crown command cannot publish a replacement retry");
-        var crown = CrownAuthorityCodec.decodeReadback(material.crownReadback());
+        var crown = CrownAuthorityCodec.decodeReadback(crownBytes);
         var choice = CrownAuthorityPolicy.choose(crown);
-        var terms = CrownFinalTermsCodec.decodeReadback(material.finalTermsConsume());
+        var terms = CrownFinalTermsCodec.decodeReadback(termsBytes);
         var frame = input.currentObserved().frame(); var identity = frame.identity();
         StrictJson.require(terms.build() == CrownFinalTerms.Build.CK3_12004
                 && CrownFinalTerms.Build.CK3_12004.version().equals(crown.sourceFrame().exactCk3Build())
@@ -218,7 +222,7 @@ public final class CrownRetryPublication implements DomainBodies.Verifier {
                 && crown.sourceFrame().queriedNativeRevision().compareTo(terms.queriedNativeRevision()) <= 0
                 && terms.payload().actorCharacterId().equals(identity.player())
                 && terms.payload().dateRaw().equals(identity.dateRaw()), "retry requires ordered exact .4 native queries for this full actor/date");
-        ObjectNode consume = StrictJson.object(StrictJson.parse(material.finalTermsConsume()), Set.of("schema", "expected_revision", "request_id", "before_snapshot", "after_snapshot", "command_result"));
+        ObjectNode consume = StrictJson.object(StrictJson.parse(termsBytes), Set.of("schema", "expected_revision", "request_id", "before_snapshot", "after_snapshot", "command_result"));
         bindActualAfter(consume.get("after_snapshot"), input.queryObserved());
         ObjectNode next = old.deepCopy(); next.putNull("retry");
         if (choice.status() != CrownAuthorityPolicy.Status.NATIVE_BLOCKED || choice.lawKey() == null) return canonical(next);
