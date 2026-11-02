@@ -125,7 +125,7 @@ public final class DriverObservationAssembler {
                     fields.put("player_armies",canonical.get("player_armies"));
                 }
                 case 3,4 -> {
-                    OpportunityJson.Obj canonical=canonicalNativeState(actual).semantic();
+                    OpportunityJson.Obj canonical=normalizeCanonicalState(state, actual);
                     for(String key:NativeSemanticNormalizer.ownedFields())
                         if(canonical.members().containsKey(key))fields.put(key,canonical.get(key));
                     fields.put("active_wars",canonical.get("active_wars"));
@@ -193,6 +193,10 @@ public final class DriverObservationAssembler {
     /** Sole current receive/fingerprint/publication/archive route: normalize only the exact original framed packet. */
     public static CanonicalNativeState canonicalNativeState(ObservedFrame original) {
         OpportunityJson.Obj raw=originalNativeState(Objects.requireNonNull(original));
+        return new CanonicalNativeState(normalizeCanonicalState(raw, original));
+    }
+    /** Private helper holds the existing canonical normalization body, receiving only state parsed in the same call. */
+    private static OpportunityJson.Obj normalizeCanonicalState(OpportunityJson.Obj raw, ObservedFrame original) {
         // Preserve historical military's order and parser; contracts cannot depend on a military/application module.
         OpportunityJson.Obj military=canonicalMilitaryState(raw);
         var nativeTree=(com.fasterxml.jackson.databind.node.ObjectNode)DriverJson.toNode(raw);
@@ -202,7 +206,7 @@ public final class DriverObservationAssembler {
         // Untouched original fields retain their lexical JSON tokens; derived fields cross the explicit normalized bridge.
         for(String key:NativeSemanticNormalizer.ownedFields())
             if(canonical.has(key))fields.put(key,canonicalField(raw,key,canonical.get(key)));
-        return new CanonicalNativeState(new OpportunityJson.Obj(fields));
+        return new OpportunityJson.Obj(fields);
     }
     private static OpportunityJson.Value canonicalField(OpportunityJson.Obj raw,String key,com.fasterxml.jackson.databind.JsonNode canonical) {
         // These values were only retained or filtered by the lower normalizer, never numerically transformed.
