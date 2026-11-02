@@ -168,17 +168,19 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
                             ||canonical.filter(value->!value.command().before().game().equals(original.before().game())).isPresent())) {
                         var observed=context().reads().read(same,nativeGovernance().planningReads().crown(),new PlanningReadRequest(original.before(),original.source(),original.sessionId(),nativeGovernance().planningReads().crown().operation(),new OpportunityJson.Obj(java.util.Map.of()),original.deadline()));
                         if(observed instanceof PlanningReadResult.Unavailable<?> unavailable)return new Blocked("cold Crown current-law observation unavailable: "+unavailable.reason(),List.of(body.reference().payload()));
-                        var read=((PlanningReadResult.Known<?>)observed).receipt();var head=same.head();var changed=publish(same,new Input(domain,Kind.COLD_CROWN,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(core().archive().withSession(same).preserveRead(read)),Optional.empty(),List.of()));
-                        if(changed.isPresent())return new Published(head,changed.orElseThrow());continue;
+                        var read=((PlanningReadResult.Known<?>)observed).receipt();var readPublished=publishCompletedReads(same);var head=same.head();var changed=publish(same,new Input(domain,Kind.COLD_CROWN,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(core().archive().withSession(same).preserveRead(read)),Optional.empty(),List.of()));
+                        if(changed.isPresent())return new Published(head,changed.orElseThrow());
+                        if(readPublished.isPresent())return readPublished.orElseThrow();continue;
                     }
                     if(canonical.isEmpty())return new Unchanged("original pending has no canonical Java action; do not recreate or submit it");
                     var receipt=canonical.orElseThrow();
                     if(domain==Domain.COUNCIL&&receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) {
                         var root=context().finance().definitions().read(same,FinanceReadContracts.Query.ROOT,context().reads(),original);
                         if(root instanceof PlanningReadResult.Unavailable<?> unavailable)return new Blocked("Council independent ROOT read unavailable: "+unavailable.reason(),List.of(body.reference().payload()));
-                        var known=(PlanningReadResult.Known<FinanceReadContracts.Packet>)root;var head=same.head();var archive=core().archive().withSession(same);
+                        var known=(PlanningReadResult.Known<FinanceReadContracts.Packet>)root;var readPublished=publishCompletedReads(same);var head=same.head();var archive=core().archive().withSession(same);
                         var changed=publish(same,new Input(domain,Kind.COUNCIL_MATERIAL,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.of(archive.receiptReferenceOf(receipt)),Optional.of(known.originalReceipt()),Optional.empty(),List.of()));
                         if(changed.isPresent())return new Published(head,changed.orElseThrow());
+                        if(readPublished.isPresent())return readPublished.orElseThrow();
                     } else if(domain==Domain.CROWN&&receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) {
                         var head=same.head();var archive=core().archive().withSession(same);
                         var changed=publish(same,new Input(domain,Kind.CROWN_APPLIED,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.of(archive.receiptReferenceOf(receipt)),Optional.empty(),Optional.empty(),List.of()));
@@ -191,22 +193,31 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
                     Optional<ExactRef> read;List<ExactRef> followQueries=List.of();
                     if(domain==Domain.COUNCIL) {
                         var observed=context().finance().definitions().read(same,FinanceReadContracts.Query.ROOT,context().reads(),original);
-                        if(observed instanceof PlanningReadResult.Unavailable<?>)continue;read=Optional.of(((PlanningReadResult.Known<?>)observed).originalReceipt());
+                        if(observed instanceof PlanningReadResult.Unavailable<?>) {var published=publishCompletedReads(same);if(published.isPresent())return published.orElseThrow();continue;}
+                        read=Optional.of(((PlanningReadResult.Known<?>)observed).originalReceipt());
                         var prior=object(old.latest().orElseThrow());String position=StrictJson.text(object(object(prior.get("action_ack")).get("council_assign_councillor_ack")).get("position_key"));
                         var role=Arrays.stream(CouncilSelection.Position.values()).filter(value->value.key().equals(position)).findFirst().orElseThrow();
                         var nativeQuery=nativeGovernance().councilReads().readPrivate(original,role);
-                        if(nativeQuery instanceof GovernanceObservationSupplier.Unavailable<?>)continue;
+                        if(nativeQuery instanceof GovernanceObservationSupplier.Unavailable<?>) {var published=publishCompletedReads(same);if(published.isPresent())return published.orElseThrow();continue;}
                         followQueries=((GovernanceObservationSupplier.Known<?>)nativeQuery).originals();
                     } else {
                         var contract=nativeGovernance().planningReads().crown();var observed=context().reads().read(same,contract,new PlanningReadRequest(original.before(),original.source(),original.sessionId(),contract.operation(),new OpportunityJson.Obj(java.util.Map.of()),original.deadline()));
-                        if(observed instanceof PlanningReadResult.Unavailable<?>)continue;read=Optional.of(((PlanningReadResult.Known<?>)observed).originalReceipt());
+                        if(observed instanceof PlanningReadResult.Unavailable<?>) {var published=publishCompletedReads(same);if(published.isPresent())return published.orElseThrow();continue;}
+                        read=Optional.of(((PlanningReadResult.Known<?>)observed).originalReceipt());
                     }
-                    var head=same.head();var changed=publish(same,new Input(domain,domain==Domain.COUNCIL?Kind.FOLLOW_COUNCIL:Kind.FOLLOW_CROWN,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.empty(),read,Optional.empty(),followQueries));
+                    var readPublished=publishCompletedReads(same);var head=same.head();var changed=publish(same,new Input(domain,domain==Domain.COUNCIL?Kind.FOLLOW_COUNCIL:Kind.FOLLOW_CROWN,Optional.of(body.reference().payload()),Optional.empty(),Optional.empty(),Optional.empty(),read,Optional.empty(),followQueries));
                     if(changed.isPresent())return new Published(head,changed.orElseThrow());
+                    if(readPublished.isPresent())return readPublished.orElseThrow();
                 }
             }
             return new Unchanged("Council/Crown original state unchanged; UNKNOWN is never resubmitted");
         } catch(IOException|IllegalArgumentException|IllegalStateException failure) {return new Blocked("actual Council/Crown planning reconciliation unavailable: "+failure.getMessage(),List.of());}
+    }
+    /** Each original read has returned out of its Driver freeze; publish it before a domain changes the head. */
+    private Optional<Published> publishCompletedReads(ContinuityStorePort.Session same)throws IOException {
+        requireSession(same);
+        return context().readHistoryPublisher().flushActualReads(same)
+                .map(committed->new Published(committed.predecessor(),committed.actual()));
     }
     private Optional<WriterContracts.Receipt> publish(ContinuityStorePort.Session same,Input input)throws IOException {
         requireSession(same);var head=same.head();var previous=DomainBodies.reference(head.state(),slot(input.domain()));byte[] output=reduce(same,head,previous,input);
