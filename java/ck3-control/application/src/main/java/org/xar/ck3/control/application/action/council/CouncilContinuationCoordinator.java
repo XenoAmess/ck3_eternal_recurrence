@@ -55,6 +55,8 @@ public final class CouncilContinuationCoordinator {
         private final Thread owner = Thread.currentThread();
         private boolean open = true;
         private GuardEvidence qualifiedGuard;
+        private GuardEvidence observationGuard;
+        private ObservationProvenance observationProvenance;
         private RecoveryOriginal(CouncilContinuationCoordinator issuer, ContinuityStorePort.Session same,
                 ActionReceipt parent, ActionState.Attempt attempt, NativeActionPort.AckReceived ack, Instant deadline) {
             this.issuer=issuer; this.same=same; this.parent=parent; this.attempt=attempt; this.ack=ack; this.deadline=deadline;
@@ -62,6 +64,43 @@ public final class CouncilContinuationCoordinator {
         public ActionCommand command() { return parent.command(); }
         public ActionState.Attempt attempt() { return attempt; }
         public NativeActionPort.AckReceived originalAck() { return ack; }
+        public ActionReceipt originalParent() { return parent; }
+        /** Deep physical source capture only; callers must be outside Native transport locks. */
+        public GuardEvidence captureObservationGuard() throws IOException {
+            issuer.recoveredGuard(this);
+            var captured=issuer.recoverySource().captureRecoveredObservation(same,this,deadline);
+            var guard=captured.guard();
+            requireCurrent();
+            StrictJson.require(guard.origin() instanceof CommandOrigin.Reconciliation,"actual dedicated Council reconciliation guard required");
+            var identity=guard.origin().requireReconciliation();
+            StrictJson.require(identity.pending().actionId().equals(command().actionId())
+                    &&identity.pending().bodySha256().equals(parent.bodySha256())
+                    &&identity.pending().requestId().equals(attempt.requestId())
+                    &&identity.pending().originalBefore().equals(command().before())
+                    &&identity.pending().originalReceipt().equals(issuer.runtime().archive().receiptReferenceOf(parent))
+                    &&identity.source().equals(command().source())&&identity.sessionId().equals(command().sessionId())
+                    &&guard.source().equals(identity.source())&&guard.sessionId().equals(identity.sessionId())
+                    &&guard.connectionGeneration().equals(identity.connectionGeneration())
+                    &&guard.nativeEvidence().equals(identity.nativeEvidence())&&guard.capabilityEvidence().equals(identity.capabilityEvidence())
+                    &&guard.operation().equals(command().operation())&&guard.authorityId().equals(attempt.guard().authorityId())
+                    &&!guard.supportingEvidence().isEmpty()&&!issuer.clock.instant().isAfter(guard.validUntil()),
+                    "recovered Council observation crossed its real original/source/frame custody");
+            identity.requireOriginalConnection(attempt.guard());
+            captured.provenance().validate(identity.factual(),identity.nativeEvidence());
+            observationGuard=guard;observationProvenance=captured.provenance();return guard;
+        }
+        /** Exact already captured DATA; no second physical occurrence is sampled here. */
+        public GuardEvidence observationGuard() throws IOException {
+            requireCurrent();StrictJson.require(observationGuard!=null&&!issuer.clock.instant().isAfter(observationGuard.validUntil()),
+                    "actual recovered Council observation guard is absent or expired");
+            return observationGuard;
+        }
+        public ObservationProvenance observationProvenance() throws IOException {
+            var guard=observationGuard();
+            StrictJson.require(observationProvenance!=null,"actual recovered observation provenance is absent");
+            observationProvenance.validate(guard.origin().requireReconciliation().factual(),guard.nativeEvidence());
+            return observationProvenance;
+        }
         public void requireCurrent() throws IOException { issuer.requireRecoveredRetained(this); }
     }
     /** One actual source observer result; construction is private and consumption remains session/action scoped. */

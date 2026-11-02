@@ -31,10 +31,27 @@ public final class CouncilContinuationPorts {
         void verifyOutcome(ContinuityStorePort.Session same, WriterContracts.Head head, ActionReceipt parent,
                 List<Retained> prior, Entry next, NativeActionPort.DispatchOutcome original, ActionPorts.OutcomeArchive archive) throws IOException;
     }
+    /** Same actual held occurrence only; this DATA record never issues a permission. */
+    public record RecoveredObservation(GuardEvidence guard,ObservationProvenance provenance) {
+        public RecoveredObservation {
+            java.util.Objects.requireNonNull(guard);java.util.Objects.requireNonNull(provenance);
+            org.xar.ck3.control.contracts.StrictJson.require(guard.origin() instanceof CommandOrigin.Reconciliation,
+                    "actual dedicated recovered observation guard required");
+            provenance.validate(guard.origin().requireReconciliation().factual(),guard.nativeEvidence());
+        }
+    }
     /** Bound once by the actual Root source; decoded DATA cannot implement an issued permission. */
     public interface RecoveryAuthority {
         GuardEvidence currentRecovered(ContinuityStorePort.Session same, WriterContracts.Head head,
                 ActionReceipt originalParent, Instant deadline) throws IOException;
+        default GuardEvidence observationRecovered(ContinuityStorePort.Session same,
+                CouncilContinuationCoordinator.RecoveryOriginal original,Instant deadline) throws IOException {
+            throw new IOException("actual recovered Council observation source is not installed");
+        }
+        default RecoveredObservation captureRecoveredObservation(ContinuityStorePort.Session same,
+                CouncilContinuationCoordinator.RecoveryOriginal original,Instant deadline) throws IOException {
+            throw new IOException("actual recovered Council observation/provenance source is not installed");
+        }
         ActionPorts.PostconditionResult observeRecovered(ContinuityStorePort.Session same,
                 ActionReceipt originalParent, ActionState.Attempt originalAttempt,
                 NativeActionPort.AckReceived originalAck, Instant deadline) throws IOException, InterruptedException;

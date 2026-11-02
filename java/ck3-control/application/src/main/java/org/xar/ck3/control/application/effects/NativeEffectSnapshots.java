@@ -175,6 +175,25 @@ public final class NativeEffectSnapshots {
         StrictJson.require(pending.evidence().isEmpty(), "direct-window pending sample has a single explicit original basis");
         return NativeEffectRegistry.Projected.pending(pending.reason(), List.of(actual.basis()));
     }
+    /** Only the private coordinator-owned original may capture a cross-connection Council after frame. */
+    public Pair readRecovered(org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator.RecoveryOriginal original)
+            throws java.io.IOException {
+        Objects.requireNonNull(original);original.requireCurrent();
+        var parent=original.originalParent();var command=original.command();var attempt=original.attempt();
+        StrictJson.require(parent.command().equals(command)&&ActionTransitions.attempt(parent.state()).filter(attempt::equals).isPresent()
+                &&ActionTransitions.dispatch(parent.state()).filter(original.originalAck()::equals).isPresent(),
+                "recovered Council snapshot escaped its actual original attempt/ACK");
+        var loader=originalFrames.orElseThrow(()->new IllegalStateException("actual original Council full-frame loader is absent"));
+        Complete before=RootGuardEvidence.loadFrame(attempt.guard(),archive,loader);
+        GuardEvidence guard=original.captureObservationGuard();var identity=guard.origin().requireReconciliation();
+        Complete after=loader.load(new NativeEffectEvidence.FrameBasis(identity.nativeEvidence(),identity.evidence().observationManifest()),archive);
+        StrictJson.require(before.identity().equals(command.before())&&before.source().equals(command.source())&&before.sessionId().equals(command.sessionId())
+                &&after.identity().equals(identity.factual())&&after.source().equals(identity.source())&&after.sessionId().equals(identity.sessionId())
+                &&after.connectionGeneration().equals(identity.connectionGeneration())&&after.originalEvidence().equals(identity.nativeEvidence())
+                &&after.observedAt().equals(identity.observedAt())&&!after.observedAt().isBefore(attempt.submittedAt())
+                &&original.observationGuard().equals(guard),"recovered Council before/after originals differ from their actual qualified source");
+        return new Pair(before,after,java.util.Optional.of(identity));
+    }
     public Pair read(ActionCommand command, ActionState.Attempt attempt) {
         var actual = originals(command, attempt, false, pendingReply(command.operation()));
         java.util.Optional<ReconciliationIdentity> reconciliation=java.util.Optional.empty();
