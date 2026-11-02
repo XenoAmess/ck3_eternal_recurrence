@@ -588,17 +588,34 @@ public final class ContinuityBatchJournal implements BatchJournal {
         org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireRejectedInitialization(action.command(),settled.execution(),children);
     }
 
-    /** Exact archived Council before-write rejection DATA; no legacy row, effect or new dispatch is issued. */
-    private static void requireCapturedCouncilZeroDispatch(ContinuityStorePort.Session same,ActionReceipt action,
+    /** Exact Council or SAVE before-write rejection DATA; no legacy row, effect, SAVE credit or new dispatch is issued. */
+    private static void requireCapturedPrimitiveZeroDispatch(ContinuityStorePort.Session same,ActionReceipt action,
             org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication publication,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals)throws IOException {
-        StrictJson.require(action.command().operation().value().equals("private-assign-councillor-v1")
+        StrictJson.require((action.command().operation().value().equals("private-assign-councillor-v1")
+                ||action.command().operation().value().equals("save-checkpoint"))
                 &&action.state() instanceof org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch
                 &&action.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH
                 &&!action.visibleGameplay()&&!action.eligibleAdvance()&&action.applied().isEmpty()
                 &&publication.legacyRow().isEmpty(),"captured Council rejection requires its exact no-effect original role");
         var zero=(org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch)action.state();
         var attempt=zero.attempt();var dispatch=zero.dispatch();var guard=attempt.guard();
+        if(action.command().operation().value().equals("save-checkpoint")) {
+            var command=action.command();
+            StrictJson.require(command.arguments().members().isEmpty()
+                    &&command.expected().observerSchema().equals(org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory.OBSERVER_SCHEMA)
+                    &&command.expected().values().equals(java.util.List.of(
+                        new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedInteger(
+                            new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("date_raw"),command.before().frame().identity().dateRaw()),
+                        new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedInteger(
+                            new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("played_character_id"),command.before().frame().identity().player()),
+                        new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean(
+                            new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("checkpoint_pair_verified"),true)))
+                    &&attempt.preparedRequest().step().equals("save-checkpoint")
+                    &&attempt.preparedRequest().requiredCapability().equals(Optional.of("game.command.save-checkpoint"))
+                    &&attempt.preparedRequest().additionalFields().equals(new org.xar.ck3.control.application.action.RawJson(new byte[]{'{','}'})),
+                    "captured zero-write SAVE changed its actual empty arguments, postcondition or prepared primitive");
+        }
         StrictJson.require(dispatch.proof().stage()==org.xar.ck3.control.application.action.NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
                 &&dispatch.proof().requestBytesWritten()==0&&attempt.requestId().equals(dispatch.requestId()),
                 "captured Council rejection cannot borrow ACK, UNKNOWN or an after-write outcome");
@@ -654,9 +671,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 "captured ACTION history requires its one settled original receipt");
         var action=matches.getFirst();
         var publication=org.xar.ck3.control.application.driver.DriverActionHistoryState.decode(details,action);
-        if(action.command().operation().value().equals("private-assign-councillor-v1")
+        if((action.command().operation().value().equals("private-assign-councillor-v1")
+                ||action.command().operation().value().equals("save-checkpoint"))
                 &&action.state() instanceof org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch)
-            requireCapturedCouncilZeroDispatch(same,action,publication,originals);
+            requireCapturedPrimitiveZeroDispatch(same,action,publication,originals);
         else requireCapturedActionOutcome(action,publication,receipts,originals);
         var known=previous.facts();
         StrictJson.require(publication.predecessor().equals(ContinuityJson.digest(edge.before().toJson()))

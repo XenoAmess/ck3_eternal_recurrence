@@ -23,6 +23,9 @@ import org.xar.ck3.control.application.routecontact.RouteContactComposite;
 import org.xar.ck3.control.application.routecontact.RouteContactEvidenceArchive;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedInteger;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
 import org.xar.ck3.control.contracts.ExactRef;
 
 /** The actual installed domain material adapters. No handler, query, recorder or writer is constructed here. */
@@ -301,6 +304,57 @@ public final class RootActionHistoryMaterialSourceFactory {
             require(producers.size()<=64,"actual branch producer closure exceeds its explicit source DTO bound");
             if(!selected.isOrdinary())
                 for(ExactRef ref:producers){var pin=same.capturePin(ref,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
+            if(op.equals(RootSaveRuntime.OPERATION)&&actual.state() instanceof ActionState.RejectedBeforeDispatch zero) {
+                require(action.isPresent()&&composite.isEmpty()
+                        &&action.orElseThrow()==catalog.save().action().effect()
+                        &&owned(catalog.save().installation(),action.orElseThrow(),replay),
+                        "SAVE zero-dispatch history requires its identical installed action and replay");
+                var command=actual.command();
+                require(command.arguments().members().isEmpty()
+                        &&command.expected().observerSchema().equals(org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory.OBSERVER_SCHEMA)
+                        &&command.expected().values().equals(List.of(
+                            new ExpectedInteger(new FieldKey("date_raw"),command.before().frame().identity().dateRaw()),
+                            new ExpectedInteger(new FieldKey("played_character_id"),command.before().frame().identity().player()),
+                            new ExpectedBoolean(new FieldKey("checkpoint_pair_verified"),true))),
+                        "SAVE zero-dispatch requires its original checkpoint command and postcondition");
+                String originalHead=same.head().digest();
+                ExactRef originalReceipt=originals.receiptReferenceOf(actual);
+                require(originals.loadReceipt(originalReceipt).equals(actual),"SAVE zero-dispatch receipt changed");
+                ExactRef originalRecord=ContinuityActionJournal.requireHistoricalReceipt(same.head().state(),actual,originals);
+                require(originals.loadRecord(originalRecord).receipt().equals(actual),"SAVE zero-dispatch is not its canonical original record");
+                var attempt=zero.attempt();var dispatch=zero.dispatch();var guard=attempt.guard();
+                require(actual.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH
+                        &&!actual.visibleGameplay()&&!actual.eligibleAdvance()&&actual.applied().isEmpty()
+                        &&dispatch.proof().stage()==NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                        &&dispatch.proof().requestBytesWritten()==0&&attempt.requestId().equals(dispatch.requestId()),
+                        "SAVE zero-dispatch cannot qualify an ACK, UNKNOWN, applied effect or saved pair");
+                ExactRef dispatchRef=originals.referenceOf(dispatch);
+                require(originals.load(dispatchRef).equals(dispatch),"SAVE zero-dispatch original proof changed");
+                ExactRef preparedRef=originals.requestReferenceOf(attempt.preparedRequest());
+                var prepared=originals.loadRequest(preparedRef);
+                require(prepared.equals(attempt.preparedRequest())&&prepared.step().equals(RootSaveRuntime.OPERATION.value())
+                        &&prepared.requiredCapability().equals(Optional.of("game.command.save-checkpoint"))
+                        &&prepared.additionalFields().objectFieldNames().isEmpty()&&prepared.preparationEvidence().isEmpty(),
+                        "SAVE zero-dispatch original preparation changed");
+                NativeStepDiscriminator.requireRequest(op,ExecutableStepBindings.Kind.ACTION,prepared);
+                require(command.origin().acceptsGuard(guard.origin())&&guard.source().equals(command.source())
+                        &&guard.sessionId().equals(command.sessionId())&&guard.operation().equals(op),
+                        "SAVE zero-dispatch original guard crossed command/source/session");
+                RootGuardEvidence.requireHistory(guard,originals,same);
+                var before=RootGuardEvidence.loadFrame(guard,originals,context.frameLoader());
+                require(before.identity().equals(command.before())&&before.source().equals(command.source())
+                        &&before.sessionId().equals(command.sessionId()),"SAVE zero-dispatch original frame crossed command");
+                var evidence=new LinkedHashSet<Evidence>();
+                evidence.add(new Evidence(EvidenceKind.ACTION_RECEIPT,originalReceipt));
+                evidence.add(new Evidence(EvidenceKind.ACTION_RECORD,originalRecord));
+                evidence.add(new Evidence(EvidenceKind.MATERIAL,dispatchRef));
+                evidence.add(new Evidence(EvidenceKind.MATERIAL,preparedRef));
+                evidence.add(new Evidence(EvidenceKind.NATIVE_FRAME,guard.nativeEvidence()));
+                guard.supportingEvidence().forEach(ref->evidence.add(new Evidence(EvidenceKind.MATERIAL,ref)));
+                context.writer().requireSession(same);
+                require(originalHead.equals(same.head().digest()),"SAVE zero-dispatch history changed the writer head");
+                return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,evidence,producers);
+            }
             if(op.value().equals(org.xar.ck3.control.governance.council.CouncilActionCodec.PRIVATE_ASSIGN)
                     &&actual.state() instanceof ActionState.RejectedBeforeDispatch zero) {
                 require(action.isPresent()&&composite.isEmpty()

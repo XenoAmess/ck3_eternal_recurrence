@@ -1586,16 +1586,20 @@ public final class RootApplicationAssembly {
             return finishObserved(installed, driver, configuration, services, Optional.empty());
         }
 
-        /** Completes only archived zero-write Council coverage after the real settled recovery/Controller restore. */
+        /** Completes archived zero-write Council or never-written SAVE coverage after real settled recovery/Controller restore. */
         private void publishMissingSettledCouncilHistory(ContinuityStorePort.Session same,
                 DriverBootstrap.Adopted driver,Staged staged)throws IOException {
             writer.requireSession(same);
             for(var actual:settledSameGameData.settledActions()) {
-                if(!actual.command().operation().value().equals("private-assign-councillor-v1")
-                        ||!(actual.state() instanceof org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch))continue;
+                if(!(actual.state() instanceof org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch zero))continue;
+                String operation=actual.command().operation().value();
+                if(!operation.equals("private-assign-councillor-v1")
+                        &&!(operation.equals("save-checkpoint")
+                            &&zero.dispatch().proof().stage()==org.xar.ck3.control.application.action.NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                            &&zero.dispatch().proof().requestBytesWritten()==0))continue;
                 boolean missing=driver.authority().withFrozenFacts(same,frozen->{
                     if(!(frozen.state() instanceof org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known known))
-                        throw new IOException("settled Council history requires the actual complete Driver");
+                        throw new IOException("settled zero-write history requires the actual complete Driver");
                     return known.actionRows().stream().noneMatch(row->row.actionId().equals(actual.command().actionId()));
                 });
                 if(missing) {
@@ -1603,7 +1607,7 @@ public final class RootApplicationAssembly {
                     StrictJson.require(published instanceof DriverActionHistoryPublisher.Published
                             ||published instanceof DriverActionHistoryPublisher.Unchanged unchanged
                                 &&unchanged.reason()==DriverActionHistoryPublisher.Reason.ALREADY_COVERED,
-                            "settled zero-write Council coverage was not published");
+                            "settled zero-write history coverage was not published");
                 }
             }
         }
