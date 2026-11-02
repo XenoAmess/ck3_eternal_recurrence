@@ -1082,7 +1082,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if (retained == null || snapshotUndelivered) actual = observe(deadline);
             else {
                 try {
-                    awaitHello(deadline);
+                    open(deadline);
+                    awaitHello(readDeadline(deadline));
                     actual = retained;
                 } catch (IOException failure) {
                     throw new UncheckedIOException("Native observation unavailable; no Python fallback: " + observationFailure(failure), failure);
@@ -1098,10 +1099,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Only frames actually received in this held session can become observations. */
     @Override public synchronized ObservedFrame observe(Instant deadline) throws InterruptedException {
         try {
-            awaitHello(deadline);
+            open(deadline);
+            Instant effectiveDeadline = readDeadline(deadline);
+            awaitHello(effectiveDeadline);
             if (!hello.capabilities().contains("game.state.snapshot")) throw new IOException("Native DLL did not advertise game.state.snapshot");
             if (!snapshotUndelivered) {
-                for (int frames = 0; frames < maximumFramesPerOperation && !snapshotUndelivered; frames++) read(deadline);
+                for (int frames = 0; frames < maximumFramesPerOperation && !snapshotUndelivered; frames++) read(effectiveDeadline);
             }
             if (!snapshotUndelivered || snapshot == null) throw new IOException("Native state snapshot frame budget exhausted");
             verifyEndpoint(); snapshotUndelivered = false;
