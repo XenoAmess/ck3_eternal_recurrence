@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-02 16:57:06.158217400Z固定后到切点：1017 SETTLE后，1023真实SAVE_CONFIRMED新增8日、本局累计197日（189＋8），date_raw53150712、native579/public520、saved cycle29、pending=null。Root已具名独验1017／1023冻结事件；来源见[1023保存索引](../maintenance/2026-11-02-quarkus-worker-save1023-sources.json)。
+
+主SAVE994→1023完整1345.711214700秒／8＝168.2139018375秒／新增保存日，规划、动作、中间UNKNOWN、确认、研究交叉与等待全部保留；累计epoch72380.158217400／197＝367.4119706467秒／日仅次指标，10秒目标未达，也不授C1／C2对照或因果提速。本窗同Dev宿主81616／原birth、同delegate00034985，没有重载或worker更换；batch44内1021 UNKNOWN→1022 APPLIED→1023 CONFIRMED由原Controller正常收束，随后清洁WALL_TIMEOUT，dirty=false，没有重交SAVE或更改原deadline。该中间UNKNOWN不是terminal失败，也不是未装载Loop991候选的验收。原994及更早记录全文保留，后继实际运行由Runtime独占；本次文档0新Java／GET／Game或Save／Driver大体读取，不外推未来健康。
+
 2026-11-02 16:34:40.447002700Z固定切点：986 SETTLE后，994真实SAVE_CONFIRMED新增8日、本局累计189日（181＋8），date_raw53150520、native561/public502、saved cycle28、pending=null；Root已具名独验986／994冻结事件。原SAVE沿989 ACK→990 UNKNOWN→993 APPLIED只读恢复，没有重新提交或更改旧deadline。来源见[994保存及Dev参数索引](../maintenance/2026-11-02-quarkus-worker-save994-sources.json)。
 
 主SAVE959→994完整4028.390146500秒／8＝503.5487683125秒／新增保存日，包含失败、两次冷恢复、准备、采样、协调和等待；累计epoch71034.447002700／189＝375.8436349349秒／日仅次指标，10秒目标未达。8日推进发生在C2宿主启动前，本窗还包含必要Journal990修复，不能作为C1／C2对照或候选提速证据。

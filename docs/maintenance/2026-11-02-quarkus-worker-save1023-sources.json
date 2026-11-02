@@ -1,0 +1,98 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T16:57:06.158217400Z",
+  "prior_published_cutoff_retained": {
+    "event": 994,
+    "total_saved_days": 189
+  },
+  "SAVE_CONFIRMED": {
+    "event": 1023,
+    "SETTLE_event": 1017,
+    "new_saved_days": 8,
+    "total_saved_days": 197,
+    "date_raw": "53150712",
+    "native_revision": 579,
+    "public_revision": 520,
+    "completed_cycles": 29,
+    "pending_receipt": null
+  },
+  "same_host": {
+    "pid": 81616,
+    "birth": "134381101737409714",
+    "delegate_instance_id": "00034985-ee6a-4839-bd38-18b9150fa617",
+    "source_reload_or_new_host_in_this_window": false
+  },
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "performance": {
+    "primary_window": "SAVE994 -> SAVE1023, complete elapsed wall including planning, action, intermediate UNKNOWN, confirmation, research overlap and waiting",
+    "full_wall_seconds": "1345.711214700",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "168.2139018375",
+    "root_epoch_seconds": "72380.158217400",
+    "root_epoch_total_saved_days": 197,
+    "root_epoch_seconds_per_saved_day": "367.4119706467005076142131980",
+    "root_epoch_metric_role": "Cumulative secondary metric, not this window denominator",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "controlled_C1_C2_comparison": false,
+    "speedup_proved": false
+  },
+  "batch44": {
+    "terminal": "WALL_TIMEOUT",
+    "saved_days": 8,
+    "dirty_since_save": false,
+    "intermediate_UNKNOWN_to_APPLIED_to_SAVE_CONFIRMED": [
+      1021,
+      1022,
+      1023
+    ],
+    "delegate_terminal_failure": false,
+    "new_SAVE_submission_or_action_replay": false,
+    "immutable_original_deadline": "2026-11-02T16:54:42.959147400Z"
+  },
+  "source_boundary": "No reload or host replacement in this window. Intermediate UNKNOWN resolved in the same original Controller/delegate; it is not a terminal failure or evidence of warm-save-loop991 candidate adoption. Ledger314 source publication/software tests are separate from runtime adoption and measured gain. Existing Dev launch/forceC2/effective-flags rules from SAVE994 remain in force.",
+  "verification": "Root independently verified1017/1023 named frozen events. Formal writer checked only existing bounded Root/window/SUMMARY metadata, the prior frozen SUMMARY and exactDecimal UTC arithmetic. Batch44 detail is credited to Runtime window metadata, not a repeated raw batch read. No Game query, GET, Save/Driver body read, Java validation or worker action.",
+  "sources": [
+    {
+      "local_key": "root/save31445-verified.json",
+      "bytes": 1324,
+      "sha256": "0ab44b0f59466ef8b35f239938694fcf9b2982879bfdf354cb54cb143f7f68f3",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/save1023-window314/SUMMARY.json",
+      "bytes": 5838,
+      "sha256": "9cf0ba203ed7c4419f7de4e1d1378ee4399e66774e5a7af87544ef845928db65",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31445/SUMMARY.json",
+      "bytes": 5991,
+      "sha256": "1e74c4d0769edb55e6c868afcf1b593c40a4532eef01a3696cea7cbe28fa3a33",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31344/SUMMARY.json",
+      "bytes": 5986,
+      "sha256": "a6edfdf9b5843b922b023e21839e6318895bd4f966548b68fd8c3bd665d5502b",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31445/00001017.json",
+      "bytes": 99888,
+      "sha256": "cf39414bcb664c4aec54776bdb60b5d674dc8b944913d6748102b27d046baf6e",
+      "qualification": "Root independently verified named frozen event. Formal writer used the existing Root receipt and SUMMARY without repeated event/body reads."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31445/00001023.json",
+      "bytes": 98875,
+      "sha256": "d9fee2dff87f160da7b8fe9dbddc22a8aa0e979d8bc11d97fe8141962a24b4aa",
+      "qualification": "Root independently verified named frozen event. Formal writer used the existing Root receipt and SUMMARY without repeated event/body reads."
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0,
+  "later_delegate_health_inferred": false
+}

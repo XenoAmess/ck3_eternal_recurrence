@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-02 后到1023固定切点：本局累计197日保存
+
+- 1023于16:57:06.158217400Z真实SAVE_CONFIRMED新增8日、累计197日，date53150712／native579/public520／saved cycle29／pending=null，Root已独验1017 SETTLE与1023冻结事件。主SAVE994→1023完整1345.711214700秒／8＝168.2139018375秒／新增保存日，全部规划、动作、UNKNOWN及等待计入，10秒目标未达；累计367.412秒／日仅次指标，不授C2因果提速。
+- 同Dev81616／原birth和delegate00034985，本窗无重载／新worker；batch44的1021 UNKNOWN由同一Controller正常到1022 APPLIED／1023 CONFIRMED并清洁WALL_TIMEOUT，没有重新提交SAVE或延长旧deadline。中间UNKNOWN不是terminal故障，不作未装载Loop991候选的运行验收。既有Dev显式forceC2及实际flags核验规则沿用，原994及更早全文保留；来源见[运行记录](docs/autonomous-agent-progress/2026-10-31-runtime91-current.md)，不为文档触发现场动作或外推后继健康。
+
 ## 2026-11-02 后到994固定切点：189日确认保存，Dev显式保留C2选项
 
 - 994于16:34:40.447002700Z真实SAVE_CONFIRMED新增8日、累计189日，date53150520／native561/public502／saved cycle28／pending=null；Root已具名独验986 SETTLE与994冻结事件。原989 ACK→990 UNKNOWN→993 APPLIED只读恢复，没有重新提交SAVE或修改旧deadline，同Game／原birth保留。
