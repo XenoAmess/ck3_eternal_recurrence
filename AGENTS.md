@@ -1,5 +1,11 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-02 后到994固定切点：189日确认保存，Dev显式保留C2选项
+
+- 994于16:34:40.447002700Z真实SAVE_CONFIRMED新增8日、累计189日，date53150520／native561/public502／saved cycle28／pending=null；Root已具名独验986 SETTLE与994冻结事件。原989 ACK→990 UNKNOWN→993 APPLIED只读恢复，没有重新提交SAVE或修改旧deadline，同Game／原birth保留。
+- 主SAVE959→994完整4028.390146500秒／8＝503.5487683125秒／新增保存日，含失败、两次冷恢复、准备、采样及等待，10秒目标未达；累计375.8436秒／日仅次指标。8日推进发生在C2宿主之前，必要Journal990修复同次采用，本窗不授C1／C2对照或提速因果。
+- 默认继续quarkus-dev，后继正常Dev启动显式保留`-DforceC2=true`并核对实际JVM flags，不回用旧Tier1启动默认值；普通Main仅显式应急回退。新宿主81616／出生134381101737409714的实际flags为TieredStopAtLevel=4、UseCompiler=true、CPU1、2GiB、SerialGC、instrumentation=false，16:34:40.707658400Z已进入LOOP。这不证明每个方法实际Tier4或未来健康。旧151及后继历史全文保留，最新来源见[运行记录](docs/autonomous-agent-progress/2026-10-31-runtime91-current.md)；Runtime独占现场，文档不触发更新或动作。
+
 ## 2026-11-02 后到959固定切点：本局累计181日确认保存
 
 - 959于15:27:32.056856200Z真实SAVE_CONFIRMED新增8日、累计181日，date53150328／native537、公版478／saved cycle27／pending=null；Root已具名独验951 SETTLE与959冻结事件。同Game／原birth继续。主SAVE917→959完整4476.527636500秒／8＝559.5659545625秒／新增保存日，失败、准备、重载／冷恢复、等待全计入，10秒目标未达；累计370.199秒／日仅次指标。Retention312与Assembler312在本次保存前未装载，不能授候选提速。原173及更早切点不改，来源见[运行记录](docs/autonomous-agent-progress/2026-10-31-runtime91-current.md)；Runtime继续独占现场，文档不触发查询、更新或动作。

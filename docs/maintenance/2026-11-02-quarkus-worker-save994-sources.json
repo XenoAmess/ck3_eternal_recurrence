@@ -1,0 +1,127 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T16:34:40.447002700Z",
+  "prior_published_cutoff_retained": {
+    "event": 959,
+    "total_saved_days": 181
+  },
+  "SAVE_CONFIRMED": {
+    "event": 994,
+    "SETTLE_event": 986,
+    "new_saved_days": 8,
+    "total_saved_days": 189,
+    "date_raw": "53150520",
+    "native_revision": 561,
+    "public_revision": 502,
+    "completed_cycles": 28,
+    "pending_receipt": null
+  },
+  "same_game": {
+    "pid": 77132,
+    "creation_filetime": "134380410301009189"
+  },
+  "original_SAVE_recovery": {
+    "ACK_event": 989,
+    "UNKNOWN_event": 990,
+    "APPLIED_event": 993,
+    "resubmission": false,
+    "deadline_changed": false
+  },
+  "performance": {
+    "primary_window": "SAVE959 -> SAVE994, including failures, two cold recoveries, preparation, profiling, coordination, waiting and original SAVE read-only recovery",
+    "full_wall_seconds": "4028.390146500",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "503.5487683125",
+    "root_epoch_seconds": "71034.447002700",
+    "root_epoch_total_saved_days": 189,
+    "root_epoch_seconds_per_saved_day": "375.8436349349206349206349206",
+    "root_epoch_metric_role": "Cumulative secondary metric, not this window denominator",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "controlled_C1_C2_comparison": false,
+    "speedup_proved": false,
+    "eight_observed_days_predate_C2_host": true
+  },
+  "Dev_launch": {
+    "mode": "quarkus-dev",
+    "future_normal_launch_required_option": "-DforceC2=true",
+    "verify_effective_flags_after_launch": true,
+    "plain_Main": "Explicit emergency fallback only",
+    "new_host_pid": 81616,
+    "birth_filetime": "134381101737409714",
+    "delegate_instance": "00034985-ee6a-4839-bd38-18b9150fa617",
+    "started_at_utc": "2026-11-02T16:23:36.904430300Z",
+    "LOOP_at_utc": "2026-11-02T16:34:40.707658400Z",
+    "effective_flags": {
+      "TieredCompilation": "true",
+      "TieredStopAtLevel": "4",
+      "UseCompiler": "true",
+      "ActiveProcessorCount": "1",
+      "MaxHeapSize": "2147483648",
+      "UseSerialGC": "true"
+    },
+    "live_reload_instrumentation": false,
+    "host_transition": "New Dev JVM after prior failed delegate ended and old host/outer exited; same Game retained. This handoff is not a same-JVM reload.",
+    "limits": "TieredStopAtLevel=4 permits that tier; it does not establish every method compiled there or a causal performance benefit."
+  },
+  "source_adoption_boundary": "Necessary Journal990 compiled source640f1892 and C2 launch option were adopted in this handoff. Formal source commit54ef684d retains other formal-only changes and is not evidence that its entire blob was loaded. Retention312/Assembler312 adoption occurred earlier in this complete window; none is individually credited for its duration.",
+  "verification": "Root independently verified986/994 named frozen events. Formal writer checked existing bounded metadata and effective flag receipt and recomputed the Decimal UTC window. No new event/Save/Driver body/Game read, Java validation, probe or GET.",
+  "sources": [
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31344/SUMMARY.json",
+      "bytes": 5986,
+      "sha256": "a6edfdf9b5843b922b023e21839e6318895bd4f966548b68fd8c3bd665d5502b",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "root/save31344-verified.json",
+      "bytes": 1324,
+      "sha256": "0ce8a39886a3ca14fca5b88eef3af6af3ad7141a603b7121a66a9116f58e0155",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "root/save31344-window.json",
+      "bytes": 2270,
+      "sha256": "d3bd4b3b6dadeb5ea6fc26bcee5d70bda2306e9f4ef6f72466123dea5e6610f1",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/attempt07/DEV-LAUNCH-READY307.json",
+      "bytes": 5658,
+      "sha256": "21f13230abf819c0af32e27bb482106f2d8d0575573eab5d203daaa41193b649",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/attempt07/ACTUAL-LOOP307-1.json",
+      "bytes": 464,
+      "sha256": "aad3d3240c6968c20c3911f2f40c5f2d02281fb3d159cb57460903b7787d2aa9",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "native-integration/dev307-attempt07-vmflags314-once/ACTUAL.json",
+      "bytes": 5281,
+      "sha256": "af7ea7497b9fe8f82d7b50ec78091667276514f3808a60694a5481e86933e8f3",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "native-integration/dev307-attempt07-vmflags314-once/SELECTED-FLAGS.json",
+      "bytes": 2730,
+      "sha256": "783cccc8d74e860f72c0f848038916b325c6ac5e2e84f2d8ef8bb8e591d239b3",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31344/00000986.json",
+      "bytes": 99877,
+      "sha256": "06a528daed77b97d41718d40ceaa0213551ad0f26c9f5187b3a8666ec1b9f5cb",
+      "qualification": "Root independently verified this named frozen event. Formal writer used existing Root receipt and SUMMARY without repeating event/body reads."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31344/00000994.json",
+      "bytes": 98880,
+      "sha256": "e946d002e6efe57777c5a6e47af8c3b0e25d7cd504a06c300314fe5ff36d4276",
+      "qualification": "Root independently verified this named frozen event. Formal writer used existing Root receipt and SUMMARY without repeating event/body reads."
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0,
+  "later_delegate_health_inferred": false
+}

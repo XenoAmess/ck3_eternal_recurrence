@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+2026-11-02 16:34:40.447002700Z固定切点：986 SETTLE后，994真实SAVE_CONFIRMED新增8日、本局累计189日（181＋8），date_raw53150520、native561/public502、saved cycle28、pending=null；Root已具名独验986／994冻结事件。原SAVE沿989 ACK→990 UNKNOWN→993 APPLIED只读恢复，没有重新提交或更改旧deadline。来源见[994保存及Dev参数索引](../maintenance/2026-11-02-quarkus-worker-save994-sources.json)。
+
+主SAVE959→994完整4028.390146500秒／8＝503.5487683125秒／新增保存日，包含失败、两次冷恢复、准备、采样、协调和等待；累计epoch71034.447002700／189＝375.8436349349秒／日仅次指标，10秒目标未达。8日推进发生在C2宿主启动前，本窗还包含必要Journal990修复，不能作为C1／C2对照或候选提速证据。
+
+同Game77132／原birth保留；旧失败委托结束、旧宿主及outer退出后，新Dev宿主81616／出生134381101737409714启动，delegate00034985于16:34:40.707658400Z进入LOOP。现成实际VM.flags核对TieredCompilation=true、TieredStopAtLevel=4、UseCompiler=true、CPU1、最大堆2GiB、SerialGC，instrumentation=false；这不证明每个方法已编到Tier4。后继正常Dev启动沿用显式`-DforceC2=true`并核实际flags，普通Main仍仅显式应急回退。必要Journal990源码采用、运行进入LOOP与保存确认分别记账，不把整份formal blob视为已装载；原181及更早全文保留，本次文档0新Java／GET／Game查询／Save或Driver大体读取／worker动作，不外推后继健康。
+
 2026-11-02 15:27:32.056856200Z固定后到切点：951 SETTLE后，959真实SAVE_CONFIRMED新增8日、本局累计181日（173＋8），date_raw53150328、native537/public478、saved cycle27、pending=null；同Game77132／原birth继续。Root已具名独验951／959两冻结事件，本稿仅复核现成SUMMARY及Root小回执；来源见[959保存索引](../maintenance/2026-11-02-quarkus-worker-save959-sources.json)。
 
 主SAVE917→959完整4476.527636500秒／8＝559.5659545625秒／新增保存日，包含失败批39、准备、等待、同宿主重载／冷恢复、游玩、结算与保存校验；全epoch67006.056856200／181＝370.1992091503秒／日仅累计次指标，10秒目标未达。Retention312及Assembler312在该SAVE之前未装载，不据此授候选收益。原173及更早切点字节保留；后继运行与一致采用由Runtime独占，本次0新Java／GET／Game查询／Save或Driver大体读取／worker动作，不外推未来健康。
