@@ -1,5 +1,15 @@
 # runtime91 同局续行
 
+## 2026-11-02 02:02Z 同局恢复终态：head216，确认保存仍38日
+
+本段只读取 Runtime 已冻结的 `closed287/INDEX.json`、`closed288/INDEX.json`、各自四份 START／END／stdout／stderr 和两份 `recovery-outcome287/288/SUMMARY.json`，逐项核长度与SHA；全部旧截止保留。运行岗明确286只有源码／参数准备、0START，本段不制造286的运行或END。Main287／Java43168 实际 `01:47:00.097952Z`→`01:48:08.147306Z` END1／68.0493598秒，终态为 actual same-runtime reconciliation authority has not been installed。Main288／Java108744 实际 `02:00:32.772522Z`→`02:02:29.462863Z` END1／116.6903487秒，真实stack指向 NativeCouncilAssignmentEffects.projectRecovered:344，错误为 Council receipt differs from real fresh after Native+Driver frame。两次均未进入LOOP、无新SAVE，运行岗报告均无新JFR。
+
+冻结head212（SHA `a195dd4885b5505433943f56e6ed71584348f54d22e8022c43e9712f0857d516`）及head216（SHA `b890732d5ec46ed4c8cc778664f061ca3c2433d4c4ac37ec86ac91b0984b7d1e`）均repair_required，completed_cycles6／pending_receipt=null，保存前沿仍为date53146896／38日；两份SUMMARY均记录new_action_metadata_bytes=0、new_receipts为空。Runtime同期说明新增211/212、213/214、215/216为原continuation的状态／receipt请求与ACK，最后Native状态applied仍不能替代原209的canonical APPLIED结算；本段未逐份独验这些ACK，也不据head变化授新assignment、世界推进或保存信用。原208 positiveACK／209UNKNOWN完整保留，不重派发、清账或回滚旧save。
+
+主性能epoch继续从 `2026-11-01T20:50:46Z` 起算，到Main288 END完整墙钟18703.462863秒／38新增确认保存日＝492.1963911315789473684210526秒／日，仍未达暂定10秒目标。所有失败、准备、恢复与等待都包含；Main287和Main288各自都是零新增保存窗口，分别只报告68.0493598秒与116.6903487秒，秒／新增保存日为null。旧69日不进入分母，Main285的453.862030184210秒／日和更早保存子窗按原截止保留。
+
+同一 Game77132／birth134380410301009189由Runtime独占恢复。P0288 Core单行绑定及另外两个构造入口的软件首编、正式发表分别留证，不能授Main288闭环成功；后继P0289按实际新原件修复，不以本页发布作前置。本次没有新增Game／Native查询、进程控制、账本写入、Driver／Save大体读取、部署、编测或重启。
+
 ## 2026-11-02 01:38Z Main285 终态：历史 Council 零派发拒绝仍阻塞，保存仍38日
 
 Main285／Java47644 于 `01:37:39.387764Z` START，`01:38:12.757147Z` END1，reported 33.3693871秒；未进入LOOP，新增SAVE_CONFIRMED为0。Runtime 已冻结 `closed285/INDEX.json` 及四份 START／END／stdout／stderr；本次实读并核长度、SHA。实际 stderr 指向 `ContinuityBatchJournal.requireCapturedActionOutcome:575`：旧历史消费只接纳 Life 的非Applied拒绝，未接纳原198 Council REJECTED_BEFORE_DISPATCH／BEFORE_WRITE0及已发布201的 canonical-only 历史。这里有本次真实stack，与下方Main280 stderr为空、没有完整stack的历史分别记录。
