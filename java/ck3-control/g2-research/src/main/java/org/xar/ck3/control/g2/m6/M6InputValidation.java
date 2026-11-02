@@ -112,7 +112,9 @@ final class M6InputValidation {
     private static void exactIdentity(JsonNode read,NativeSubject identity,boolean instance,boolean signedCharacters) {
         long actor=signedCharacters?NativeCharacterId.fromJson(read.get("actor_character_id")).value():integer(read,"actor_character_id",0,0xffff_fffeL);
         long target=signedCharacters?NativeCharacterId.fromJson(read.get("target_character_id")).value():integer(read,"target_character_id",0,0xffff_fffeL);
-        require(actor == identity.actorCharacterId() && target == identity.targetCharacterId(), "Sway actor or target differs");
+        long expectedActor = signedCharacters ? identity.actorCharacterId() : NativeCharacterId.of(identity.actorCharacterId()).asRawUInt32().longValueExact();
+        long expectedTarget = signedCharacters ? identity.targetCharacterId() : NativeCharacterId.of(identity.targetCharacterId()).asRawUInt32().longValueExact();
+        require(actor == expectedActor && target == expectedTarget, "Sway actor or target differs");
         if (instance) require(integer(read, "scheme_instance_id", 0, 0xffff_fffeL) == identity.schemeInstanceId()
                 && integer(read, "scheme_instance_generation", 0, 255) == identity.schemeInstanceGeneration(), "Sway full instance or generation differs");
     }

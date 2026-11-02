@@ -116,7 +116,7 @@ public final class M6TerminalSourceComposition {
                 ? M6CommonEndSources.normalize(termination.get("common_native_end"), termination) : null;
         JsonNode commonEnd = M6CommonEndSources.retained(common, termination, original);
         JsonNode pair = null, causal = null;
-        if (execution != null && termination != null && same(execution, original) && same(termination, original)) {
+        if (execution != null && termination != null && sameCrossLane(execution, original) && same(termination, original)) {
             ObjectNode joined = StrictJson.object(); joined.set("execution_read", execution); joined.set("termination_read", termination);
             pair = joined; causal = M6CausalSources.consume(execution, termination);
         }
@@ -252,6 +252,16 @@ public final class M6TerminalSourceComposition {
         value.put("target_character_id", identity.targetCharacterId()); value.put("scheme_instance_id", identity.schemeInstanceId()); value.put("scheme_instance_generation", identity.schemeInstanceGeneration()); return value;
     }
     static boolean same(JsonNode value, JsonNode original) { return value != null && value.isObject() && IDS.stream().allMatch(field -> exactIntegerEquals(value.get(field), original.get(field))); }
+    /** Raw Native execution/relation characters compared only with a signed public identity. */
+    static boolean sameCrossLane(JsonNode raw, JsonNode signed) {
+        if (raw == null || signed == null || !raw.isObject() || !signed.isObject()) return false;
+        for (String field : List.of("actor_character_id", "target_character_id")) {
+            BigInteger rawId = StrictJson.integer(raw.get(field), BigInteger.ZERO, BigInteger.valueOf(0xffff_fffeL));
+            if (!rawId.equals(NativeCharacterId.fromJson(signed.get(field)).asRawUInt32())) return false;
+        }
+        return exactIntegerEquals(raw.get("scheme_instance_id"), signed.get("scheme_instance_id"))
+                && exactIntegerEquals(raw.get("scheme_instance_generation"), signed.get("scheme_instance_generation"));
+    }
     static boolean exactIntegerEquals(JsonNode left, JsonNode right) { return left != null && right != null && left.isIntegralNumber() && right.isIntegralNumber() && left.bigIntegerValue().equals(right.bigIntegerValue()); }
     static void actual4(JsonNode value) {
         object(value); String build = value.has("build_version") ? text(value, "build_version") : text(value, "exact_ck3_build");

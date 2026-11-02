@@ -26,7 +26,7 @@ final class M6CausalSources {
     static JsonNode consume(JsonNode execution, JsonNode termination) {
         if (!bool(execution, "available") || !bool(termination, "available") || bool(execution, "retention_gap") || bool(termination, "retention_gap")) return null;
         actual4(execution); actual4(termination);
-        if (!same(execution, termination)) return null;
+        if (!sameCrossLane(execution, termination)) return null;
         Map<DynamicKey, JsonNode> sources = new HashMap<>();
         for (JsonNode row : execution.get("records")) {
             if (!COMPLETE.equals(text(row, "source_branch"))) continue;
@@ -44,7 +44,7 @@ final class M6CausalSources {
             JsonNode invocation = endInvocation(row.get("native_invocation"), row), relation = relation(row.get("cause_relation"), row, invocation);
             if (relation == null) continue;
             JsonNode parent = sources.get(key(relation, "parent_toast_invocation_id"));
-            if (parent == null || !same(parent, row) || !terminalTransition(row, row) || !bool(invocation, "post_frame_observed")
+            if (parent == null || !sameCrossLane(parent, row) || !terminalTransition(row, row) || !bool(invocation, "post_frame_observed")
                     || !exactIntegerEquals(invocation.get("pre_date_raw"), parent.get("date_raw"))
                     || !exactIntegerEquals(invocation.get("post_date_raw"), invocation.get("pre_date_raw"))) continue;
             ObjectNode result = StrictJson.object(); result.put("schema", "xar.ck3.sway-end-causal-observation.12004.v1");
@@ -100,7 +100,7 @@ final class M6CausalSources {
         require(integer(relation, "source_contract_version", 1, 1) == 1 && bool(relation, "relationship_observed") && bool(relation, "native_returns_observed")
                 && !bool(relation, "native_returns_truncated"), "causal relationship contract differs");
         u64(relation, "branch_source_sequence", 1); u64(relation, "parent_toast_invocation_id", 1);
-        require(same(relation, record), "causal relationship full identity differs");
+        require(sameCrossLane(relation, record), "causal relationship full identity differs");
         for (String field : List.of("observer_session_identity", "owner_thread_id")) require(exactIntegerEquals(relation.get(field), invocation.get(field)), "causal dynamic session/thread differs");
         require(exactIntegerEquals(relation.get("end_original_invocation_id"), invocation.get("original_invocation_id"))
                 && exactIntegerEquals(relation.get("end_original_rva"), invocation.get("original_rva")), "causal original invocation differs");
