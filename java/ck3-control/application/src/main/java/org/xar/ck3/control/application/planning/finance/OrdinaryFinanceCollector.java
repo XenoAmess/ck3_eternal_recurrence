@@ -84,6 +84,10 @@ public final class OrdinaryFinanceCollector {
         this.definitions = Objects.requireNonNull(definitions); this.reads = Objects.requireNonNull(reads); this.state = Objects.requireNonNull(state);
         this.borrowed = Objects.requireNonNull(borrowed);
     }
+    /** Explicit planning-observation view for private Stage.evaluate paths only. */
+    public OrdinaryFinanceCollector planningView() {
+        return new OrdinaryFinanceCollector(definitions, reads.planningReads(), state, borrowed);
+    }
     private Optional<Session> borrowedSession() {
         return borrowed.map(source -> Objects.requireNonNull(source.get(),"actual finance writer Session is not held"));
     }

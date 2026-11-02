@@ -174,13 +174,13 @@ public final class OrdinaryFinancePolicies {
     private OrdinaryPolicy.Decision mercenary(PlanningRequest request,OrdinaryPolicy.Draft previous) {
         if(!request.observations().warInProgress()||!ordinaryFrame(request))return new OrdinaryPolicy.NotApplicable("mercenary current-cash stage preserves selected war/window work");
         if(!quiet(previous))return observeRecovery(request,previous);
-        var current=collector.current(request);
+        var current=collector.planningView().current(request);
         if(!(current instanceof OrdinaryFinanceCollector.Known<OrdinaryFinanceCollector.Current> known))return missing(current,"war_cash");
         var c=known.value();var procurement=c.state().ledger(FinanceStatePort.Domain.MERCENARY);
         if(procurement.isEmpty()||procurement.orElseThrow().pending()!=FinanceStatePort.Pending.CLEAR)return defer("actual mercenary procurement ledger unavailable or pending","war_cash");
         Obj gap=OrdinaryFinanceCollector.financingGap(request,c);
         if(WarFinancingCapabilityGap.observe(FinancingGapCodec.decode(org.xar.ck3.control.application.driver.DriverJson.encode(gap))).isPresent())
-            previous=financingObservation(previous,gap,collector.loan(request));
+            previous=financingObservation(previous,gap,collector.planningView().loan(request));
         var durable=MercenaryProcurement.decode(procurement.orElseThrow().document().bytes());
         var barrier=MercenaryProcurement.barrier(request.observations().snapshot(),durable);
         if(barrier!=MercenaryProcurement.NewHireBarrier.CLEAR)return annotate(previous,"war_mercenary_pending_v1",
@@ -198,9 +198,9 @@ public final class OrdinaryFinancePolicies {
     }
     private OrdinaryPolicy.Decision gift(PlanningRequest request,OrdinaryPolicy.Draft previous) {
         if(!quiet(previous)||!ordinaryFrame(request))return new OrdinaryPolicy.NotApplicable("faction gift preserves independently selected work");
-        var current=collector.current(request);
+        var current=collector.planningView().current(request);
         if(!(current instanceof OrdinaryFinanceCollector.Known<OrdinaryFinanceCollector.Current> known))return missing(current,"faction_gift");
-        var gift=collector.gift(request,known.value());
+        var gift=collector.planningView().gift(request,known.value());
         if(!(gift instanceof OrdinaryFinanceCollector.Known<OrdinaryFinanceCollector.Gift> chosen))return missing(gift,"faction_gift");
         var g=chosen.value();Obj args=obj("choice",object(parse(FactionGiftPolicy.encode(g.selected())),"actual gift choice"),
                 "minimum_gold_reserve_raw",new IntegerValue(g.minimumGoldReserveRaw()),
@@ -213,7 +213,7 @@ public final class OrdinaryFinancePolicies {
     private OrdinaryPolicy.Decision observeRecovery(PlanningRequest request,OrdinaryPolicy.Draft previous) {
         var actual=collector.state(request);if(!(actual instanceof FinanceStatePort.Known known))return new OrdinaryPolicy.NotApplicable("actual original emergency recovery body unavailable; current war order retained");
         var body=known.snapshot().ledger(FinanceStatePort.Domain.MERCENARY);if(body.isEmpty())return new OrdinaryPolicy.NotApplicable("actual original mercenary body unavailable; current war order retained");
-        Optional<Obj> root=Optional.empty();var read=collector.query(FinanceReadContracts.Query.ROOT,request);
+        Optional<Obj> root=Optional.empty();var read=collector.planningView().query(FinanceReadContracts.Query.ROOT,request);
         if(read instanceof OrdinaryFinanceCollector.Known<FinanceReadContracts.Packet> value&&value.value().result().get("campaign_root_context") instanceof Obj actualRoot)root=Optional.of(actualRoot);
         var recovery=MercenaryProcurement.recovery(request.observations().snapshot(),MercenaryProcurement.decode(body.orElseThrow().document().bytes()),root);
         return recovery.<OrdinaryPolicy.Decision>map(value->annotate(previous,"war_emergency_recovery_v1",value,"actual emergency cash-buffer recovery retained beside the current war order"))
