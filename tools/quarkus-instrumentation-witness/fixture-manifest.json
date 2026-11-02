@@ -1,0 +1,40 @@
+{
+  "schema": "xar.private-fixture-source/v1",
+  "frozen_inputs": [
+    {
+      "path": "pom.xml",
+      "bytes": 1371,
+      "sha256": "69b3ffd296feb1f7c110ec52e5fcb85381c728a39d9817282c2048085d7ee9eb"
+    },
+    {
+      "path": "business/pom.xml",
+      "bytes": 275,
+      "sha256": "e8f27227017094e9106b6bc21e0e71c467a20dc6b97ffed3ac939b562461cc66"
+    },
+    {
+      "path": "host/pom.xml",
+      "bytes": 869,
+      "sha256": "d9f20080bd3225ae3ef6e6e2161305513115c7ad6f8255545af863506ccfda76"
+    },
+    {
+      "path": "business/src/main/java/org/xar/research/newclass310/BusinessRevision.java",
+      "bytes": 183,
+      "sha256": "21591d63fc9b85c71ff1a1d70cda85a72d7123b3afd465bf4c97adf41370c02d"
+    },
+    {
+      "path": "host/src/main/java/org/xar/research/newclass310/ProbeResource.java",
+      "bytes": 2005,
+      "sha256": "07a9b6f70160e40941444f1aa65cbe3ab1f7fd34952b5ace17b896d884b2d003"
+    },
+    {
+      "path": "host/src/main/java/org/xar/research/newclass310/InstrumentationProbe311.java",
+      "bytes": 4335,
+      "sha256": "933b345e16a5a729bda0e4ec629225fcf51dabacb704b364042db73196d56b02"
+    },
+    {
+      "path": "host/src/main/resources/application.properties",
+      "bytes": 134,
+      "sha256": "522edc33c63f08bfd4becacefc5bfacf4d7653a0a42b4489c00087c5d58962de"
+    }
+  ]
+}

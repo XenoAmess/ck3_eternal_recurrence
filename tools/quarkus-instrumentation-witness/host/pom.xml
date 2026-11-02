@@ -1,0 +1,6 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"><modelVersion>4.0.0</modelVersion><parent><groupId>org.xar.research</groupId><artifactId>instrumentation-reactor311</artifactId><version>1.0.0</version></parent>
+<artifactId>instrumentation-host311</artifactId>
+<dependencies><dependency><groupId>org.xar.research</groupId><artifactId>instrumentation-business311</artifactId><version>1.0.0</version></dependency><dependency><groupId>io.quarkus</groupId><artifactId>quarkus-rest-jackson</artifactId></dependency></dependencies>
+<build><plugins>
+<plugin><groupId>io.quarkus.platform</groupId><artifactId>quarkus-maven-plugin</artifactId><version>3.40.1.1</version><extensions>true</extensions>
+<executions><execution><goals><goal>build</goal><goal>generate-code</goal><goal>generate-code-tests</goal></goals></execution></executions></plugin></plugins></build></project>
