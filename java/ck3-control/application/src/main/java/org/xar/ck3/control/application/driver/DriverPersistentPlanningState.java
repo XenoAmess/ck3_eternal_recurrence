@@ -262,7 +262,7 @@ public final class DriverPersistentPlanningState {
                     state=DeclarationOpportunityCooldown.decode(DeclarationOpportunityCooldown.encode(state),before);
                     reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,DeclarationOpportunityCooldown.snapshot(toNode(ending)),after);
                 } else {require(mode.equals("VIEW"),"unknown cooldown source transition");require(proof.get("input")==Nil.INSTANCE,"view source has unexpected input");reduced=DeclarationOpportunityCooldown.view(state,DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),identity);}
-                reduced=DeclarationOpportunityCooldown.view(reduced.state(),DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),identity);
+                if(!mode.equals("VIEW")) reduced=DeclarationOpportunityCooldown.view(reduced.state(),DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),identity);
             }
             require(node(DeclarationOpportunityCooldown.encode(reduced.state())).equals(proof.get("state"))&&node(DeclarationOpportunityCooldown.encodeView(reduced.view())).equals(proof.get("view")),"cooldown pure source replay differs");
             List<ExactRef> next=array(proof.get("processed"),"processed").stream().map(DriverPersistentPlanningState::reference).toList();
