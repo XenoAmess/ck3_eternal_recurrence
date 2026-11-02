@@ -1,5 +1,13 @@
 # runtime91 同局续行
 
+## 2026-11-02 04:30Z Main294–295：实际越过历史门并LOOP，随后Council材料消费失败
+
+仅消费 `closed294/INDEX.json`、`closed295/INDEX.json` 的八份已闭冻结原件、两份 `recovery-outcome*/SUMMARY.json` 与1069B的 `business-recovery295/ACTUAL-LOOP295.json`，长度/SHA逐项核对，没有为本段新增现场查询。Main294／Java101512 实际04:20:46.986715Z→04:21:31.935083Z END1，UTC墙钟44.948368秒／reported 44.9483816秒，未LOOP；已越过上一处Journal历史门，真实stderr在 OrdinaryCycleTransitions:388 报 `settled recovery requires a completed interrupted cycle`。原head227及 `038565b67e2483e2241c6d5b09e4288e1e3d56cc8d4f80c1c7edada498d1e025` 保持不变。
+
+Main295／Java86736 实际04:29:11.489695Z启动，04:30:21.0688664Z真实LOOP／next11，随后04:30:46.378114Z END4；完整UTC墙钟94.888419秒／reported 94.8884286秒。此后到END覆盖“当时已LOOP”的当前状态，不抹该marker。真实stderr在 RootGovernanceDomains.councilApplied:443 报 NullPointerException，外层材料的 `continuations` 缺席；该次报告 INTERNAL_FAILURE／committed_saved_days=0，head231／repair_required／SHA `e6d671d5f7dadd17f48d83e68e71864c9073f7dc2edd6b946380e9e529de8219`，completed_cycles7／pending=null／date53146896，最新观察pair133/91。两次均新增action metadata0／new_receipts为空，原224 SETTLED/APPLIED与38日确认保存前沿105/78仍保留，不能沿旧209 UNKNOWN重派发Council，也不能把LOOP或head标签当后继健康。
+
+Journal294已正式 `fe08a7516b48bff2710af7aace899e336bbec282`，Transitions295已正式 `b95ca5b59234ff14c25a3309e689a542d46f2a11`，均复用各自唯一实际首编0。真实Main295确已越过历史/frontier并进入LOOP；后续Council消费故障由独占P0296源码任务处理，本段不给其软件、装载或恢复成功信用。Root主epoch至本次END完整27600.378114秒／38新增确认保存日＝726.3257398421052631578947368秒／日，仍未达10秒；本次两次尝试覆盖的599.391399秒窗口新增确认保存为0，秒／新增保存日为null，各自零保存窗口同为null，失败与间隔均保留。下方293及更早截止、原件与全部旧历史字节不改。本次仅文档插入，0新增编测、HTTP、Game／Native查询、Driver／Save大读、部署或重启，不作为Runtime继续运行的门。
+
 ## 2026-11-02 04:12Z Main293 终态：旧周期与 active batch 校验仍阻塞
 
 后到冻结 `closed293/INDEX.json` 的四份原件及 `recovery-outcome293/SUMMARY.json` 已逐项核长度与SHA。Main293／Java73756 实际 `04:11:33.266696Z`→`04:12:07.855383Z` END1，UTC墙钟34.588687秒／runner reported 34.588685秒；未进入LOOP、新增SAVE_CONFIRMED为0。真实stderr在 ContinuityBatchJournal:2832 报 settled cycle crossed its real active batch or original retained control。head227及SHA `038565b67e2483e2241c6d5b09e4288e1e3d56cc8d4f80c1c7edada498d1e025` 完全不变，新action metadata0／new_receipts为空；completed_cycles7／pending=null，原224 SETTLED/APPLIED与38日保存前沿保留，不据此重发Council或把head的running标签当健康worker。
