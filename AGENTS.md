@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-02 实际保存切点：1341确认本局258日；后到359原地更新分别记录
+
+- 1341于22:24:21.646847Z真实SAVE_CONFIRMED，1335 SETTLE；本局累计258日全部保存，saved cycle37/date53152176/native754/public701、pending=null，同Game77132／原birth。Root已具名独验两冻结事件。1308→1341完整1743.842855400秒／新增8保存日＝217.980356925秒／日，包含1308之后watcher修复和通知延迟、61零保存、62全链及等待；10秒目标未达，非A/B，不用累计258作本窗分母。
+- 359方法体于1341之后真实instrumentation：官方22:26:15.685／743Z、2.896秒，唯一GET4.876843600010034秒、STOP0；同host119020／出生134381255919633818、188ed278委托、restart1@636a035e loader，随后已有planning RETURN。该切点尚无新diagnostic phase或更新后SAVE确认，不授nanos/schema、私有heap／thread对象、速度或未来健康；359 GET及其等待归1341→下一确认窗。来源见[1341保存与359更新索引](docs/maintenance/2026-11-02-quarkus-worker-save1341-instrumentation359-sources.json)。全部旧正文原字节保留，不为文档触发编测、查询或运行操作。
+
 ## 2026-11-02 实际保存切点：1308确认本局250日，355方法体更新后新增保存通过
 
 - 1308于21:55:17.803991600Z真实SAVE_CONFIRMED，1302 SETTLE；本局累计250日全部保存，saved cycle36/date53151984/native735/public682、pending=null。同Game77132／原birth保持；Root具名独验两冻结事件。355现有类方法体instrumentation后，同119020／原birth、188ed278委托、restart1@636a035e loader沿原60链确认新增8保存日；不授具体VIEW分支、私有heap／thread对象或因果提速，旧instrumentation记录当时新增SAVE0的切点完整保留。

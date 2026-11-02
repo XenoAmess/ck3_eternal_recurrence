@@ -1,0 +1,152 @@
+{
+  "schema": "ck3.actual-saved-frontier-and-later-instrumentation.v1",
+  "fixed_SAVE_CONFIRMED": 1341,
+  "confirmed_UTC": "2026-11-02T22:24:21.646847Z",
+  "SETTLE": 1335,
+  "total_saved_days": 258,
+  "saved_frame": {
+    "date_raw": "53152176",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "754",
+    "played_character_id": "31254",
+    "revision": "701",
+    "snapshot_id": "native:754"
+  },
+  "completed_cycles": 37,
+  "pending_receipt": null,
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "main_window": {
+    "status": "INDEPENDENT_SAVED_FRONTIER_WINDOW",
+    "from_SAVE": 1308,
+    "to_SAVE": 1341,
+    "from_confirmed_at": "2026-11-02T21:55:17.803991600Z",
+    "to_confirmed_at": "2026-11-02T22:24:21.646847Z",
+    "elapsed_seconds": "1743.842855400",
+    "new_SAVE_CONFIRMED_days": 8,
+    "seconds_per_new_saved_day": "217.980356925",
+    "cumulative_saved_days": 258,
+    "target_seconds_per_saved_day": 10,
+    "target_achieved": false,
+    "included": "All intervening wall time, watcher repair, zero-save batch61, waiting and batch62. No exclusions. Later 359 GET and waiting belong to the next window.",
+    "limits": "Endpoint arithmetic from independently verified immutable saved frontiers; no A/B or source-specific speed attribution."
+  },
+  "secondary_cumulative_only": {
+    "root_epoch_seconds": "92015.646847",
+    "seconds_per_saved_day": "356.6497939806201550387596899",
+    "denominator": 258,
+    "does_not_replace_main_new8_window": true
+  },
+  "later_359_instrumentation": {
+    "source_formal_commit": "320192609ab2e3b1c0374bc0ce9da56d988f2ac9",
+    "same_host": {
+      "pid": 119020,
+      "birth": "134381255919633818",
+      "image": "C:\\jdk-21\\bin\\java.exe"
+    },
+    "same_delegate": "188ed278-3356-4bf8-ac0a-e177c8c79197",
+    "same_loader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@636a035e@636a035e",
+    "STOP": 0,
+    "GET": 1,
+    "GET_seconds": 4.876843600010034,
+    "official_UTC": "2026-11-02T22:26:15.685/743Z",
+    "official_instrumentation_seconds": 2.896,
+    "existing_planning_RETURN_after_GET": true,
+    "new_diagnostic_phase": "NOT_YET_OBSERVED",
+    "new_SAVE_after_359": "NOT_YET_CONFIRMED",
+    "private_heap_or_thread_identity": "NOT_PROBED",
+    "window_boundary": "359 GET and subsequent waiting occurred after1341; retain in1341->next confirmed frontier, never1308->1341. The already258 saved days predate359 replacement.",
+    "qualification": "Official frozen instrumentation metadata on same host/delegate/loader. No new phase/nanos schema, privateobject, SAVE, causal speedup, A/B or future health qualification."
+  },
+  "sources": [
+    {
+      "local_key": "root/save35561-verified.json",
+      "bytes": 1410,
+      "sha256": "b6b52827da031e7626646c6b5f12cbb8cd32197d65f6db4b7c1cd0eb657a0f2c"
+    },
+    {
+      "local_key": "root/save35561-window.json",
+      "bytes": 734,
+      "sha256": "e8f5cf11397be0f92d3a206cb6a242c05769551f70ed1c33c6c8590d58e0c9b9"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed35561/SUMMARY.json",
+      "bytes": 6851,
+      "sha256": "364d02c9637d355942b83b882a565d0db255ba4c9d267cae332eb4ad6db9723e"
+    },
+    {
+      "local_key": "root/instrumentation359-verified.json",
+      "bytes": 2804,
+      "sha256": "c7157876b021f590cd2efd77adcacc34457e4663f5c79960dc4c4c48d3ec3f2e"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation359/ACTUAL-INSTRUMENTATION-FIRST.json",
+      "bytes": 3177,
+      "sha256": "512ec6ea7479914f970265a5b7b9e28ae53474f40e223632f5ef50dec75cd097"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed35561/00001335.json",
+      "bytes": 99881,
+      "sha256": "938a51ca9c955881cb9bf19b0f0ec10fb7c1b42cddbc10843a0bb55839d58c8a",
+      "qualification": "Root independently read the named frozen canonical event; formal writer reads bounded verification metadata only, without repeating event/body reads."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed35561/00001341.json",
+      "bytes": 98873,
+      "sha256": "1e9d8b50585af8612fcd4d4ea67002bb1cc83591e46d7db4eed0d1186fc757f2",
+      "qualification": "Root independently read the named frozen canonical event; formal writer reads bounded verification metadata only, without repeating event/body reads."
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation359/OWNER-BEFORE.frozen.json",
+      "bytes": 1693,
+      "sha256": "52a094ae72cd1e6bb6f63a9792a3cca5e5e3a2937960850eecd068bb68774185",
+      "writer_read": "reference carried from Root independently verified frozen metadata; no active class/source/process read"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation359/OWNER-AFTER.frozen.json",
+      "bytes": 1649,
+      "sha256": "f8ea75df2b8fc9ecf3a1cb0f121077e7e0af0d4c988d780b354e1c8832b59bfd",
+      "writer_read": "reference carried from Root independently verified frozen metadata; no active class/source/process read"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation359/LIFECYCLE-AFTER.frozen.jsonl",
+      "bytes": 2258,
+      "sha256": "dcac0034aa10ad1574f52c9995c3790139ac2d40603d097676f94b5c4d12cdc3",
+      "writer_read": "reference carried from Root independently verified frozen metadata; no active class/source/process read"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation359/OFFICIAL-INSTRUMENTATION.raw.log",
+      "bytes": 1499,
+      "sha256": "171c76d8cb71e32c43dba7242299a94c442b7e7dd3f5c736e0bbb573b2c3dd48",
+      "writer_read": "reference carried from Root independently verified frozen metadata; no active class/source/process read"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation359/TRIGGER-ACTUAL.json",
+      "bytes": 428,
+      "sha256": "6342946406a56d232458a6059560e4b1fad9651c0d915ece83841061d32025c7",
+      "writer_read": "reference carried from Root independently verified frozen metadata; no active class/source/process read"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation359/SOURCE-ADOPTED.json",
+      "bytes": 2105,
+      "sha256": "10e6679f9bac01572bc88b6d4716e555e0135fce31c0e0c20edf26fdf4c40aea",
+      "writer_read": "reference carried from Root independently verified frozen metadata; no active class/source/process read"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation359/PREPARED.json",
+      "bytes": 4377,
+      "sha256": "11df2b02ac46c7471133478c5278dd33b56b70bd0e01f8540b3df464c29db285",
+      "writer_read": "reference carried from Root independently verified frozen metadata; no active class/source/process read"
+    }
+  ],
+  "limits": [
+    "Read only bounded Root/Runtime frozen metadata; no repeat1335/1341 canonical event, rawSave/fullDriver, active class/source or process query.",
+    "No compile/test, GET, source adoption, deployment, host/delegate control or Game action for this documentation.",
+    "1308->1341 includes post1308 watcher repair/notification delay, zero-save batch61, all batch62 and waiting. No exclusions and no cumulative258 denominator for this main window.",
+    "Saved frame754/701 is distinct from prior cycle semantic752/699.",
+    "All earlier AGENTS/runtime bytes and prior saved/instrumentation cutoffs retained unchanged.",
+    "Prior unrelated data-command process association remains UNKNOWN in its separate erratum; no desktop/process investigation."
+  ]
+}

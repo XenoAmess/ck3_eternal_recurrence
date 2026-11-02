@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-02 22:24:21.646847Z实际1341 SAVE_CONFIRMED，1335 SETTLE，本局258日全部保存，saved date53152176/native754/public701/cycle37/pending=null，同Game77132／原birth。Root已具名独验冻结事件；1308／250日21:55:17.803991600Z→1341／258日完整1743.842855400秒／新增8日＝217.980356925秒／日，含watcher修复／通知延迟、61零保存、62全链及全部等待，10秒未达、非A/B。累计258仅另列次指标，不替代新增8分母；保存帧754/701不混同cycle语义752/699。
+
+1341之后359现有方法体真实原地instrumentation，官方22:26:15.685／743Z、2.896秒；唯一GET4.876843600010034秒、STOP0，同119020／出生134381255919633818、188ed278委托、restart1@636a035e loader，后见已有planning RETURN。此后见尚无新诊断phase或更新后SAVE，不授normal nanos/schema、私有heap／thread对象、因果提速或未来健康；359 GET及其后等待留在1341→下一保存确认窗，不能归因给已完成的258日。见[1341保存与359更新索引](../maintenance/2026-11-02-quarkus-worker-save1341-instrumentation359-sources.json)。全部旧字节／原切点保留；只消费小份冻结metadata，不重复canonical事件、Save／Driver或查询现场，不为文档重载或编测。
+
 2026-11-02 21:55:17.803991600Z实际1308 SAVE_CONFIRMED：1302 SETTLE，本局累计250保存日，saved date53151984/native735/public682/cycle36/pending=null。同Game77132／原birth不变；Root已具名独验两冻结事件。同host119020／原birth、188ed278委托、restart1@636a035e loader在355现有方法体instrumentation之后，原60业务链真实新增8日并确认保存。这是实际方法体替换之后的保存验收，不授具体VIEW分支、私有heap／thread身份、单leaf因果或提速；旧instrumentation-only当时新增保存0的事实不改。来源见[1308保存索引](../maintenance/2026-11-02-quarkus-worker-save1308-sources.json)。
 
 1274／242日21:18:03.291471500Z→1308／250日21:55:17.803991600Z完整2234.512520100秒／新增8日＝279.3140650125秒／日，包含退出71.3157089秒、唯一GET95.7227851秒、658.7121925秒冷恢复、JFR、355无STOP方法体更新HTTP4.9911858秒、原60全链、准备排队及等待，10秒目标未达且非A/B。累计250分母仅另列次指标，不替代本窗新增8。watcher head<=1309误拒、21:57:11 close修复及通知延迟在1308之后，保入1308→下一确认窗；不因迟消费改变SAVE实际时间。61及后态仅各自历史切点，未来健康独立；保存旧全文，不为文档新查询、部署、GET、编测或现场动作。
