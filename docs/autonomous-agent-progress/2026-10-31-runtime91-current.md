@@ -1,5 +1,7 @@
 # runtime91 同局续行
 
+Dev 默认入口与更新操作已接线：[普通 worker 的 Dev 启动与更新操作](../maintenance/2026-11-02-quarkus-worker-operations.md)。09:33基线同局LOOP、09:35真实源采用／扫描、旧委托正常完成与同宿主新loader分别已见；新delegate于09:46:47因settled recovery frontier合同失败，0新LOOP／SAVE、原143saved保持，宿主存活不授业务恢复成功。功能修复独立继续。
+
 装载事实入口：[Quarkus worker 装载事实与重载边界](../maintenance/2026-11-02-quarkus-worker-loading-boundaries.md)。Main301 保持普通入口与原游玩版本；旧 dev 软件重载／新增类边界、760 个 CP 路径与 36 源有限比对分别记，不授当前切换或速度收益。
 
 性能资料按类名／方法的来源与边界见[存储性能边界索引](2026-11-02-java-storage-performance-boundaries.json)：208／303源级反例、222旧软件结果、224原生primitive、302单次JFR与304只读设备metadata分别列示；原件留执行机，不授性能达标或新运行／修改权限。

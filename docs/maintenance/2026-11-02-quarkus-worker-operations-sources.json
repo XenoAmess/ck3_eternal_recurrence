@@ -1,0 +1,149 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-operations.sources.v1",
+  "cutoff_utc": "2026-11-02T09:46:47.176607700Z",
+  "scope": "Actual production compile, source adoption and lifecycle receipts. Raw machine/source/launcher values stay private; local_key is evidence-registry navigation, not a public file link.",
+  "status": {
+    "default_mode": "quarkus-dev",
+    "plain_fallback_requires_explicit_selection": true,
+    "actual_baseline_sameGame_LOOP": true,
+    "actual_source_change_and_one_scan": true,
+    "old_delegate_completed_exit0_before_new_loader": true,
+    "same_host_and_birth_new_instance_and_loader": true,
+    "post_reload_LOOP": false,
+    "post_reload_new_SAVE_CONFIRMED": false,
+    "delegate_status": "FAILED_DELEGATE",
+    "failure_type": "org.xar.ck3.control.contracts.ContractViolationException",
+    "failure_reason": "settled recovery requires a completed interrupted cycle",
+    "failure_source_method": "OrdinaryCycleTransitions.requireSettledRecoveryFrontier",
+    "saved_days_unchanged": 143,
+    "completed_cycles": 22,
+    "pending_receipt": null,
+    "boundary": "BATCH_FINISHED",
+    "full_business_acceptance": false
+  },
+  "production_compile": {
+    "actual_translation_units": 3095,
+    "declared_main_sources": 3099,
+    "not_selected_native_diagnostics_sources": 4,
+    "exit_code": 0,
+    "elapsed_seconds": 113.00511410000036,
+    "full_old760CP_byte_parity": "NOT_CLAIMED"
+  },
+  "helper": {
+    "original_bytes": 4499,
+    "original_sha256": "ce0476859adb620d928d080ab89e6c1bb135ad1fd462d01514ad084aa5c8ed2c",
+    "formal_bytes": 4499,
+    "formal_sha256": "ce0476859adb620d928d080ab89e6c1bb135ad1fd462d01514ad084aa5c8ed2c",
+    "projection": "LF/blanktail only, original EOF retained",
+    "original_actual_runtime_invocation_reused": true,
+    "writer_executed_helper": false
+  },
+  "sources": [
+    {
+      "local_key": "quarkus-dev307/COMPILED-HANDOFF307.json",
+      "bytes": 4412,
+      "sha256": "6b37c1d894594a6a83f4c26076645885ae808cbd294caf0b84f3f61239d8178f"
+    },
+    {
+      "local_key": "quarkus-dev307/production01/ACTUAL.json",
+      "bytes": 658,
+      "sha256": "43234cacf81ed8a64bea2e7c8eca141bbc9542a5d93b2fd949795d6dd5ceba29"
+    },
+    {
+      "local_key": "runtime/ACTIVE-RUNTIME-MODE.json",
+      "bytes": 1422,
+      "sha256": "881a888cbb852115e595f1267a65140c0d8fd5696af4d8858bc9267e2037ecdf"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/prepare-current-runtime307.py",
+      "bytes": 2817,
+      "sha256": "9f28462d8568a7bfe59fdd7aa4b27f4585718bf1ec751f926e17065cb96fee4c"
+    },
+    {
+      "local_key": "runtime/current-resume268/prepare-owned-ordinary.py",
+      "bytes": 5573,
+      "sha256": "816573289a936d8498b77d3a9acd016a3a4fa4d0849af481a5e050093c99edef"
+    },
+    {
+      "local_key": "runtime/current-resume268/apply-runtime-sources.py",
+      "bytes": 4771,
+      "sha256": "569407a197adb9698e63a423ac171ca236b4a3fc41fee4c2e7da3b24eeb2779c"
+    },
+    {
+      "local_key": "runtime/current-resume268/run-owned-ordinary.py",
+      "bytes": 6779,
+      "sha256": "37e163d3eb871d5ac2d6ccbed345daf8ce40668b3ccdaffbb32fe98afbffba4f"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/attempt05/DEV-LAUNCH-READY307.json",
+      "bytes": 4789,
+      "sha256": "bbc51708b146fa43290863fb722621b43eea88a48686047db7fa59ba2de00e91"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/attempt05/ACTUAL-LOOP307-1.json",
+      "bytes": 464,
+      "sha256": "a483f8f254d14f3f50cc7ebef269edb805efdc21e2ec08c798742e901cd92e0b"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/attempt05/LIFECYCLE-001.json",
+      "bytes": 792,
+      "sha256": "be3ce2238cdd95f606c6a0c3070b9af6d6e31ee452d2ed3341810ef6d70a5f30"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/attempt05/LIFECYCLE-002.json",
+      "bytes": 791,
+      "sha256": "67bc3ef0513f5ee75455b378232cc7d9278966363b11b06d8a4b89f14ea619da"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/attempt05/LIFECYCLE-003.json",
+      "bytes": 792,
+      "sha256": "5b920c09cf58bac6bc6c4dac2f395feacf003e54869c8e3a6bf464d9d9a06bdd"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/hot-reload302/SOURCE-ADOPTED.json",
+      "bytes": 871,
+      "sha256": "c1444557bf3ce62274c9608462a16ccfc9f38dc468a9f7dea7b61e89b89254d1"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/hot-reload302/TRIGGER-ACTUAL.json",
+      "bytes": 683,
+      "sha256": "d163fbc16446074a293549ccefc8f38d8b534ec38b74ef3a8f7057d018eebfce"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/reload-failure01/SUMMARY.json",
+      "bytes": 4087,
+      "sha256": "deabf3f9bf882a9a0ad1b235f33d5bcb194dedcd05cc62d565034ed3a60afc5b"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/reload-failure01/LIFECYCLE-004.json",
+      "bytes": 848,
+      "sha256": "0a071673ff07c86f68c271b3d7094a6d04524330b5ea20ce389011ba54d59463"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/reload-failure01/failure-stack.txt",
+      "bytes": 3528,
+      "sha256": "2b655e31fb5014d6f625adddf56285f15865675e4e70a982e5ee55cff64935f6"
+    },
+    {
+      "local_key": "quarkus-dev307/adopt-and-trigger307.py",
+      "bytes": 4499,
+      "sha256": "ce0476859adb620d928d080ab89e6c1bb135ad1fd462d01514ad084aa5c8ed2c"
+    },
+    {
+      "local_key": "quarkus-dev307-runtime/reload-failure01/STACK-REF-ERRATUM307.json",
+      "bytes": 854,
+      "sha256": "81ff6d07935a1b9e6b0adbf443d6b0c843f0543b39d11f4bb9d2db7ad6381ed1"
+    }
+  ],
+  "new_writer_javac_JVM_Maven_Game_operations": 0,
+  "source_custody_note": {
+    "summary_stack_ref_matches_file_at_review": false,
+    "summary_declared_stack_bytes": 3502,
+    "summary_declared_stack_sha256": "fcdd2df54e017ed013fd36133a17a873407c3366c1e07ad8bb19b60795be358f",
+    "stack_file_as_read_bytes": 3528,
+    "stack_file_as_read_sha256": "2b655e31fb5014d6f625adddf56285f15865675e4e70a982e5ee55cff64935f6",
+    "scope": "The named stack file is independently read and pinned at review; its old summary pointer differs. The unchanged lifecycle event independently identifies the same failure type and instance. No old frozen metadata rewritten.",
+    "owner_erratum": "Runtime computed the old ref from its LF string before Windows newline conversion; physical CRLF normalized to LF independently matches the old summary ref. Original summary and stack remain unchanged.",
+    "LF_normalization_matches_old_summary_ref": true
+  }
+}

@@ -1,3 +1,5 @@
+普通游玩与同局恢复默认选择 Quarkus Dev 的 `ordinary-worker-dev` 入口；普通 Main 仅作明确紧急回退。独占输出、实际所有权交接、单叶采用后自动扫描及分阶段验收见[普通 worker 的 Dev 启动与更新操作](../../docs/maintenance/2026-11-02-quarkus-worker-operations.md)。下文通用开发宿主命令不替代这项业务入口选择。
+
 使用 JDK 21 和命令行默认的 Maven（不低于 3.10.0），从仓库根目录启动现有 Quarkus 开发宿主：
 
 ```cmd
