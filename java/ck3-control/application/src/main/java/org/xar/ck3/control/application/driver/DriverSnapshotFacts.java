@@ -58,7 +58,9 @@ public final class DriverSnapshotFacts {
         public Known {
             Objects.requireNonNull(driver); Objects.requireNonNull(stamp); Objects.requireNonNull(originalHistoryBasis);
             actionRows=List.copyOf(actionRows); Objects.requireNonNull(auxiliary); Objects.requireNonNull(loop); Objects.requireNonNull(observation);
-            StrictJson.require(originalHistoryBasis.bytes()>0 && stamp.driverSha256().equals(DriverJson.sha256(driver.encode()))
+            StrictJson.require(originalHistoryBasis.bytes()>0, "full Driver facts/stamp mismatch");
+            final byte[] driverBytes = driver.encode();
+            StrictJson.require(stamp.driverSha256().equals(DriverJson.sha256(driverBytes))
                     && stamp.episodeRunId().equals(driver.session().episodeRunId()) && stamp.game().pid()==driver.session().bridgePid(),
                     "full Driver facts/stamp mismatch");
             java.util.Set<String> actions=new java.util.HashSet<>();
@@ -67,10 +69,14 @@ public final class DriverSnapshotFacts {
                 if(row.coverageSource() instanceof LegacyHistoryRow legacy)
                     StrictJson.require(legacy.historyIndex()<=driver.commandHistory().size(),"original legacy history ordinal exceeds the complete Driver");
             }
-            observation.ifPresent(value -> StrictJson.require(value.driverVersion()==stamp.driverVersion()
-                    && value.episodeEpoch()==stamp.episodeEpoch()
-                    && value.transport().game().equals(stamp.game())
-                    && java.util.Arrays.equals(value.driver().encode(),driver.encode()),"semantic facts crossed Driver version"));
+            observation.ifPresent(value -> {
+                StrictJson.require(value.driverVersion()==stamp.driverVersion()
+                        && value.episodeEpoch()==stamp.episodeEpoch()
+                        && value.transport().game().equals(stamp.game()),"semantic facts crossed Driver version");
+                if (value.driver() != driver) {
+                    StrictJson.require(java.util.Arrays.equals(value.driver().encode(), driverBytes), "semantic facts crossed Driver version");
+                }
+            });
         }
     }
     public record Unavailable(List<String> reasons) implements State {
