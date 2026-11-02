@@ -60,6 +60,8 @@ public final class CouncilContinuationCoordinator {
         }
     }
     private record SeatRow(Scope scope,ExactRef parent,Optional<ExactRef> previous,long sequence,String predecessor,SeatCheckpoint value) { }
+    /** Same-callback validated DATA only; never retained across a callback or writer commit. */
+    private record SeatReadState(WriterContracts.Head head,Optional<SeatCheckpoint> checkpoint) { }
     private static final String SEAT_CHECKPOINT_SCHEMA="xar.java-council-recovery-seat-checkpoint/v1";
 
     private SeatRow seatRow(ExactRef reference) {
@@ -184,9 +186,14 @@ public final class CouncilContinuationCoordinator {
         }
         return answer;
     }
-    private Commit checkpointSeat(RecoveryOriginal token,SeatCheckpoint value) throws IOException {
+    private Commit checkpointSeat(RecoveryOriginal token,SeatCheckpoint value,WriterContracts.Head observedHead) throws IOException {
         token.requireCurrent();return scoped(token.same,()->{
-            var head=token.same.head();if(token.seatHead!=null)StrictJson.require(token.seatHead.digest().equals(head.digest()),"unrelated canonical head drift cannot become a seat checkpoint");
+            var head=token.same.head();
+            StrictJson.require(observedHead==null||head.digest().equals(observedHead.digest())
+                    &&head.documents().equals(observedHead.documents())&&head.absent().equals(observedHead.absent())
+                    &&head.indexRepairs().equals(observedHead.indexRepairs())&&head.snapshotNeedsRecovery()==observedHead.snapshotNeedsRecovery(),
+                    "same-callback seat proof cannot cross a canonical head change");
+            if(token.seatHead!=null)StrictJson.require(token.seatHead.digest().equals(head.digest()),"unrelated canonical head drift cannot become a seat checkpoint");
             var view=view(token.same);Scope scope=new Scope(token.command().actionId(),token.parent.bodySha256(),token.attempt.requestId());
             var row=new SeatRow(scope,runtime().archive().receiptReferenceOf(token.parent),view.state().seatCheckpoint(),Math.addExact(head.state().sequence(),1),head.digest(),value);
             ExactRef ref=preserveMaterial(seatBody(row));var expected=verifySeatTransition(token.same,head,view.state(),ref);
@@ -196,9 +203,9 @@ public final class CouncilContinuationCoordinator {
             token.seatHead=token.same.head();return commit;
         });
     }
-    private void seatReadUpdate(RecoveryOriginal token,ReadContract<?> contract,PlanningReadRequest request,String id,NativeRequest prepared,
+    private void seatReadUpdate(RecoveryOriginal token,SeatReadState observed,ReadContract<?> contract,PlanningReadRequest request,String id,NativeRequest prepared,
             Optional<NativeActionPort.DispatchOutcome> outcome,Optional<PlanningReadReceipt> known,Optional<String> failure) throws IOException {
-        var value=token.seatCheckpoint().orElseThrow(()->new IOException("actual same-capture tuple is not durably checkpointed"));
+        var value=observed.checkpoint().orElseThrow(()->new IOException("actual same-capture tuple is not durably checkpointed"));
         var reads=new ArrayList<>(value.reads());int index=-1;for(int i=0;i<reads.size();i++)if(reads.get(i).requestId().equals(id))index=i;
         ExactRef preparedRef=runtime().archive().preserveRequest(prepared);Optional<ExactRef> outcomeRef=outcome.map(runtime().archive()::preserve);
         Optional<ExactRef> knownRef=known.map(runtime().archive()::preserveRead);
@@ -206,7 +213,7 @@ public final class CouncilContinuationCoordinator {
             reads.set(index,new SeatRead(contract.contractId(),request,id,preparedRef,outcomeRef,knownRef,failure));}
         else {StrictJson.require(outcome.isEmpty()&&known.isEmpty(),"original seat outcome requires durable PREPARED navigation");
             reads.add(new SeatRead(contract.contractId(),request,id,preparedRef,outcomeRef,knownRef,failure));}
-        checkpointSeat(token,new SeatCheckpoint(value.tuple(),reads));
+        checkpointSeat(token,new SeatCheckpoint(value.tuple(),reads),observed.head());
     }
     public void verifyCanonicalSeatCheckpoint(ContinuityStorePort.Session same,WriterContracts.Head head,Scope scope,ExactRef tuple,List<ExactRef> knownReadRefs) throws IOException {
         scoped(same,()->{
@@ -288,9 +295,13 @@ public final class CouncilContinuationCoordinator {
             return observationProvenance;
         }
         private WriterContracts.Head seatHead;
-        public Optional<SeatCheckpoint> seatCheckpoint() throws IOException {
-            requireCurrent();return issuer.scoped(same,()->issuer.readSeatHistory(same,same.head(),issuer.view(same).state()));
+        private SeatReadState seatReadState() throws IOException {
+            requireCurrent();return issuer.scoped(same,()->{
+                var head=same.head();
+                return new SeatReadState(head,issuer.readSeatHistory(same,head,issuer.view(same).state()));
+            });
         }
+        public Optional<SeatCheckpoint> seatCheckpoint() throws IOException { return seatReadState().checkpoint(); }
         public WriterContracts.Receipt checkpointSeatTuple(ExactRef actualSameCaptureTuple) throws IOException {
             requireCurrent();var guard=issuer.verifySeatTuple(parent,actualSameCaptureTuple);
             StrictJson.require(observationGuard().equals(guard),"only this private role's actual same-capture tuple can begin live checkpointing");
@@ -298,7 +309,7 @@ public final class CouncilContinuationCoordinator {
             StrictJson.require(ObservationProvenanceCodec.decode(tuple.get("provenance")).equals(observationProvenance()),"tuple lost this same actual FreshQuery proof");
             var old=seatCheckpoint();
             StrictJson.require(old.isEmpty()||old.orElseThrow().tuple().equals(actualSameCaptureTuple),"old prepared/known tuple is immutable; reopen its actual checkpoint instead");
-            return issuer.checkpointSeat(this,new SeatCheckpoint(actualSameCaptureTuple,old.map(SeatCheckpoint::reads).orElse(List.of()))).receipt();
+            return issuer.checkpointSeat(this,new SeatCheckpoint(actualSameCaptureTuple,old.map(SeatCheckpoint::reads).orElse(List.of())),null).receipt();
         }
         public WriterContracts.Head seatCheckpointHead() throws IOException {
             requireCurrent();var actual=same.head();if(seatHead==null)seatHead=actual;
@@ -311,29 +322,30 @@ public final class CouncilContinuationCoordinator {
                 private void require(ContinuityStorePort.Session actual) throws IOException {
                     StrictJson.require(actual==same,"seat read observer escaped its actual borrowed writer");requireCurrent();
                 }
-                private SeatRead original(String id) throws IOException {
-                    return seatCheckpoint().orElseThrow().reads().stream().filter(read->read.requestId().equals(id)).findFirst()
+                private SeatRead original(SeatReadState observed,String id) throws IOException {
+                    return observed.checkpoint().orElseThrow().reads().stream().filter(read->read.requestId().equals(id)).findFirst()
                             .orElseThrow(()->new IOException("actual original seat read was not durably prepared"));
                 }
                 @Override public void prepared(ContinuityStorePort.Session actual,ReadContract<?> contract,PlanningReadRequest request,String id,NativeRequest prepared)throws IOException {
                     require(actual);StrictJson.require(contract.prepare(request,id).equals(prepared),"seat observer changed actual installed preparation");
-                    issuer.seatReadUpdate(RecoveryOriginal.this,contract,request,id,prepared,Optional.empty(),Optional.empty(),Optional.empty());
+                    var observed=seatReadState();
+                    issuer.seatReadUpdate(RecoveryOriginal.this,observed,contract,request,id,prepared,Optional.empty(),Optional.empty(),Optional.empty());
                 }
                 @Override public void received(ContinuityStorePort.Session actual,ReadContract<?> contract,PlanningReadRequest request,String id,NativeActionPort.DispatchOutcome outcome)throws IOException {
-                    require(actual);var old=original(id);
-                    issuer.seatReadUpdate(RecoveryOriginal.this,contract,request,id,issuer.runtime().archive().loadRequest(old.prepared()),Optional.of(outcome),Optional.empty(),Optional.empty());
+                    require(actual);var observed=seatReadState();var old=original(observed,id);
+                    issuer.seatReadUpdate(RecoveryOriginal.this,observed,contract,request,id,issuer.runtime().archive().loadRequest(old.prepared()),Optional.of(outcome),Optional.empty(),Optional.empty());
                 }
                 @Override public void known(ContinuityStorePort.Session actual,ReadContract<?> contract,PlanningReadResult.Known<?> known)throws IOException {
-                    require(actual);var read=known.receipt();var old=original(read.requestId());
+                    require(actual);var read=known.receipt();var observed=seatReadState();var old=original(observed,read.requestId());
                     StrictJson.require(known.originalReceipt().equals(issuer.runtime().archive().readReferenceOf(read)),"seat Known must retain its actual original receipt ref");
-                    issuer.seatReadUpdate(RecoveryOriginal.this,contract,read.request(),read.requestId(),issuer.runtime().archive().loadRequest(old.prepared()),Optional.of(read.original()),Optional.of(read),Optional.empty());
+                    issuer.seatReadUpdate(RecoveryOriginal.this,observed,contract,read.request(),read.requestId(),issuer.runtime().archive().loadRequest(old.prepared()),Optional.of(read.original()),Optional.of(read),Optional.empty());
                 }
                 @Override public void failed(ContinuityStorePort.Session actual,ReadContract<?> contract,PlanningReadRequest request,Optional<NativeActionPort.DispatchOutcome> outcome,String reason)throws IOException {
-                    require(actual);var all=seatCheckpoint().orElseThrow().reads();
+                    require(actual);var observed=seatReadState();var all=observed.checkpoint().orElseThrow().reads();
                     var old=all.stream().filter(read->read.contractId().equals(contract.contractId())&&read.request().equals(request)
                             &&outcome.map(value->value.requestId().equals(read.requestId())).orElse(true)).reduce((a,b)->b)
                             .orElseThrow(()->new IOException("failed seat read has no actual PREPARED id; no UNKNOWN is invented"));
-                    issuer.seatReadUpdate(RecoveryOriginal.this,contract,request,old.requestId(),issuer.runtime().archive().loadRequest(old.prepared()),outcome,Optional.empty(),Optional.of(reason));
+                    issuer.seatReadUpdate(RecoveryOriginal.this,observed,contract,request,old.requestId(),issuer.runtime().archive().loadRequest(old.prepared()),outcome,Optional.empty(),Optional.of(reason));
                 }
             };
         }
