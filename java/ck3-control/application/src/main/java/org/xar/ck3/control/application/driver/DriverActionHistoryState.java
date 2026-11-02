@@ -105,8 +105,10 @@ public final class DriverActionHistoryState {
                 "operator identity receipt has no separate Driver ACTION publication or version increment");
         var source=DriverActionHistoryCodec.decode(material(data.originalSource(),originals));
         DriverActionHistoryCodec.requireSource(actual,source,originals);
-        DriverStateSnapshot.Complete before=DriverStateSnapshot.decodeComplete(fullMaterial(data.beforeDriver(),originals).bytes());
-        DriverStateSnapshot.Complete after=DriverStateSnapshot.decodeComplete(fullMaterial(data.afterDriver(),originals).bytes());
+        RawJson beforeOriginal=fullMaterial(data.beforeDriver(),originals);
+        DriverStateSnapshot.Complete before=DriverStateSnapshot.decodeComplete(beforeOriginal.bytes());
+        RawJson afterOriginal=fullMaterial(data.afterDriver(),originals);
+        DriverStateSnapshot.Complete after=beforeOriginal.equals(afterOriginal)?before:DriverStateSnapshot.decodeComplete(afterOriginal.bytes());
         StrictJson.require(actual.command().before().game().pid()==before.session().bridgePid()
                 &&actual.command().before().frame().episodeRunId().equals(before.session().episodeRunId()),"ACTION full Driver crossed original Game/episode");
         if(source.material() instanceof DriverActionHistoryCodec.Legacy||source.material() instanceof DriverActionHistoryCodec.GiftLegacyPair) {
