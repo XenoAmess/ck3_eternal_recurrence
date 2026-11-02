@@ -1,0 +1,92 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T12:12:19.326654300Z",
+  "prior_published_cutoff_retained": {
+    "event": 837,
+    "total_saved_days": 159
+  },
+  "SAVE_CONFIRMED": {
+    "event": 871,
+    "SETTLE_event": 864,
+    "new_saved_days": 8,
+    "total_saved_days": 167,
+    "date_raw": "53149992",
+    "native_revision": 487,
+    "public_revision": 426,
+    "completed_cycles": 25,
+    "pending_receipt": null
+  },
+  "post_recovery": {
+    "same_Dev_host_birth": true,
+    "restart": 4,
+    "runtime_loader_suffix": "63347e71",
+    "delegate_STARTED_utc": "2026-11-02T11:51:08.303528Z",
+    "LOOP_utc": "2026-11-02T12:05:17.672258100Z",
+    "startup_wall_seconds": "849.368730100",
+    "adopted_relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory.java",
+    "adopted_source_sha256": "5dcc2bd0b3bbe877b5683581f0054c0b05cc8e1f39322d186c66cf33e60a7355",
+    "scan_HTTP_status": 200,
+    "scan_elapsed_seconds": "5.541177899998729",
+    "class_binary_to_source_first_origin_independent_verification": "NOT_HELD; source adoption receipt, lifecycle, LOOP and newSAVE qualified separately"
+  },
+  "performance": {
+    "primary_window": "SAVE837 -> SAVE871, all failures, coordination, source adoption, scan, cold recovery and waiting before the confirmed SAVE included",
+    "seconds": "2828.778450000",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "353.597306250",
+    "root_epoch_seconds": "55293.326654300",
+    "root_epoch_total_saved_days": 167,
+    "root_epoch_seconds_per_saved_day": "331.0977643970059880239520958",
+    "secondary_LOOP_to_SAVE_seconds": "421.654396200",
+    "secondary_excludes_prior_failure_cold": true,
+    "ten_second_goal_achieved": false,
+    "speedup_proved": false
+  },
+  "independent_writer_verification": "Two named frozen events physical bytes/SHA, actual SETTLE operation/SAVE boundary, full pair/cycle/proof/date/sameGame checked against SUMMARY. No live ledger/Game/Save/Driver body opened.",
+  "Runtime_report_separate": "Original child856ACK/857UNKNOWN and parent858UNKNOWN were recovered as860childAPPLIED/861parentAPPLIED. No ARM/resume replay or immutable deadline change reported; those individual action receipts were not reread for this document.",
+  "continuation_cutoff": "head873/next36 only as Runtime frozen report; no future health inferred",
+  "post_SAVE_coordination": "Automatic freeze at12:12:29, Runtime consumed after12:16 according to owner; unmeasured reporting delay preserved separately, not compilerCPU or part of window ending12:12:19.",
+  "sources": [
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31035/SUMMARY.json",
+      "bytes": 5986,
+      "sha256": "9c9f153b919acf7343bcb8f7f53fb58625b8a401f8af92791186977ec60090bf"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31035/00000864.json",
+      "bytes": 99720,
+      "sha256": "1e40577da6eb439fb1948b7da6771bf491df6dfc9707be27945bea1540852409"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31035/00000871.json",
+      "bytes": 98710,
+      "sha256": "172bc7d2dd4f8d5bbce26928e96e779f3a56a38d7da537e6b9bf6e62d2cc40da"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed30933/SUMMARY.json",
+      "bytes": 5983,
+      "sha256": "20e562c2b44bd926d08e1b6afcc9b60da34716258055164cc9f45015b39c7d01"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/attempt05/LIFECYCLE-009.json",
+      "bytes": 789,
+      "sha256": "bfc8d2824da72e99a932838c3a6b56ba358f32e983ec191caa02e7eddc8e9b35"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/attempt05/ACTUAL-LOOP307-4.json",
+      "bytes": 464,
+      "sha256": "72cc78d01e1d3f20d7401c3bd4340ed1a84c2b29973e463282f8357e7a8b3bb8"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/recovery-parent858/SOURCE-ADOPTED.json",
+      "bytes": 900,
+      "sha256": "4ef5bcb650de7e35d3df3d4c621b3495e5c18a181dd05647163c4567fc23d001"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/recovery-parent858/TRIGGER-ACTUAL.json",
+      "bytes": 682,
+      "sha256": "21766550a70da74ef34099d1b8e173671cbfc7c9c9d986dbe11e953aae4b90ee"
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0
+}

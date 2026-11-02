@@ -1,5 +1,9 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-02 后到871切点：同Dev宿主累计167日已保存
+
+- 871于12:12:19.326654300Z真实SAVE_CONFIRMED新增8日、累计167日，date53149992／native487、公版426／saved cycle25／pending=null。同Dev宿主restart4经自然恢复重新LOOP后保存；主SAVE837→871全2828.778450000秒／8＝353.59730625秒／保存日，包含失败、协调与849.3687301秒恢复，10秒目标未达，不授优化提速。原159及更早验收不改；来源见[运行记录](docs/autonomous-agent-progress/2026-10-31-runtime91-current.md)，后续现场仍由Runtime独占，文档不触发更新或查询。
+
 ## 2026-11-02 后到837切点：Dev同宿主续行累计159日已保存
 
 - 837于11:25:10.548204300Z真实SAVE_CONFIRMED，830为此前SETTLE，新增8日、累计159日；date53149800／native467、公版415／saved cycle24／pending=null。同Dev宿主restart3在一次coherent6源更新后恢复LOOP并完成该保存；来源及完整窗口见[运行记录](docs/autonomous-agent-progress/2026-10-31-runtime91-current.md)。804／151日验收及全部失败历史原样保留。
