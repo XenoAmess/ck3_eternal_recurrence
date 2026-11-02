@@ -590,8 +590,13 @@ public final class CouncilContinuationCoordinator {
         StrictJson.require(StrictJson.text(details.get("machine_id")).equals(head.state().machineId()), "continuation event crossed machines");
         DomainBodies.BodyRef body = DomainBodies.BodyRef.fromJson(details.get("domain_body"));
         StrictJson.require(body.slot() == DomainBodies.Slot.COUNCIL_CONTINUATION && body.contractSchema().equals(SCHEMA)
-                && body.payload().equals(payload) && body.producerSources().equals(sources), "continuation event references another domain/body/producer");
+                && body.payload().equals(payload), "continuation event references another domain/body");
         ObjectNode source = StrictJson.object(details.get("source"), Set.of("original_body", "producer_input", "producer_sources", "evidence"));
+        StrictJson.require(source.get("producer_sources").isArray()
+                && source.get("producer_sources").size() == body.producerSources().size(), "continuation event lost its exact historical producer closure");
+        var historicalSources = new ArrayList<ExactRef>();
+        for (var producer : source.get("producer_sources")) historicalSources.add(ExactRef.fromJson(producer));
+        StrictJson.require(body.producerSources().equals(historicalSources), "continuation event producer closure differs from its original body DATA");
         StrictJson.require(ExactRef.fromJson(source.get("original_body")).equals(payload), "continuation publication lost its original full body");
         ObjectNode input = StrictJson.object(StrictJson.parse(readMaterial(ExactRef.fromJson(source.get("producer_input"))), MAX_BODY_BYTES), Set.of("schema", "kind", "record", "seed_manifest", "closed_scope"));
         StrictJson.require(INPUT_SCHEMA.equals(StrictJson.text(input.get("schema"))) && kinds.contains(StrictJson.text(input.get("kind")))
