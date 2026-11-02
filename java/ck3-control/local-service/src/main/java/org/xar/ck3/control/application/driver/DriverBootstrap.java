@@ -1052,6 +1052,8 @@ public final class DriverBootstrap {
                                 .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
                             || org.xar.ck3.control.application.session.ContinuityBatchJournal
                                 .readOnlySaveRecoveryRoot(lease.snapshot().actions()).isPresent()
+                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                .readOnlyPositiveAckCouncilRecoveryRoot(lease.snapshot().actions()).isPresent()
                             || pendingCancelledLifeCycle(lease.snapshot().actions(),pendingLifeCycle,archive.withSession(same)).isPresent()
                             || org.xar.ck3.control.application.session.ContinuityBatchJournal
                                 .readOnlySaveFinalizationRoot(finalizationHead,owner,lease.snapshot().actions(),archive.withSession(same)).isPresent()
