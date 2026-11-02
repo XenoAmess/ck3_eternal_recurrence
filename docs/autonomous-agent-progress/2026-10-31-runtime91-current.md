@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+2026-11-02 14:12:55.529219700Z固定后到切点：905 SETTLE后，917真实SAVE_CONFIRMED新增6日、本局累计173日（167＋6），date_raw53150136、native512/public452、saved cycle26、pending=null。905冻结event99877B／SHA `ea11ba4164920fd8ef2c9387ffb5e3aba0658854b33b7684c054fc498fb5f217`及917／98608B／SHA `0fe9fe5b44e69a371408d5340ff5ebf9e1845a7a9566836460c124e973f8f5fb`已逐字节／SHA、实际SETTLE与SAVE边界、完整pair／cycle／proof／同Game核等。来源见[917保存索引](../maintenance/2026-11-02-quarkus-worker-save311-sources.json)。
+
+主SAVE871→917完整7236.202565400秒／新增6保存日＝1206.033760900秒／保存日，所有失败、源准备、宿主交接、冷恢复、协调与保存前等待计入；全epoch62529.529219700／173＝361.4423654318秒／日仅累计次指标，10秒目标未达，不授优化提速。原907为BEFORE_WRITE零字节拒绝、未重派，917属于不同的新SAVE（Runtime报告与pair中的新actionId分列；本稿未重读907动作原件）。Runtime报告当前Dev实例继续next39，仅该切点，不外推后继健康。
+
+原151验收、159／167及全部历史字节完整保留。本次0新Java／GET／Game查询／Save或Driver大体读取／worker动作。310帧投影候选与后到别名修正没有本次实载或收益授信；源码发表、实际装载、行为与确认保存分别记录。
+
 2026-11-02 12:12:19.326654300Z固定后到切点：864 SETTLE后，871真实SAVE_CONFIRMED新增8日、本局累计167日（159＋8），date_raw53149992、native487/public426、saved cycle25、pending=null。864冻结event99720B／SHA `1e40577da6eb439fb1948b7da6771bf491df6dfc9707be27945bea1540852409`及871／98710B／SHA `172bc7d2dd4f8d5bbce26928e96e779f3a56a38d7da537e6b9bf6e62d2cc40da`已逐字节／SHA、实际SETTLE与SAVE边界、完整pair／cycle／proof／同Game核等。来源见[871保存索引](../maintenance/2026-11-02-quarkus-worker-save310-sources.json)。
 
 同Dev宿主自然采用已验证的RootAdvanceInfrastructureFactory单叶302后，仅自动扫描一次（HTTP200／5.5411779秒）；restart4于11:51:08.303528Z开始，12:05:17.672258100Z恢复LOOP，完整恢复849.3687301秒。原子项及父UNKNOWN随后沿原回执恢复APPLIED、旧deadline未改、控制未重派（Runtime报告；本稿未重读各action原件）；head873／next36只为冻结报告时点，不授后继健康。

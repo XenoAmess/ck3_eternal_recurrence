@@ -1,0 +1,62 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T14:12:55.529219700Z",
+  "prior_published_cutoff_retained": {
+    "event": 871,
+    "total_saved_days": 167
+  },
+  "SAVE_CONFIRMED": {
+    "event": 917,
+    "SETTLE_event": 905,
+    "new_saved_days": 6,
+    "total_saved_days": 173,
+    "date_raw": "53150136",
+    "native_revision": 512,
+    "public_revision": 452,
+    "completed_cycles": 26,
+    "pending_receipt": null
+  },
+  "performance": {
+    "primary_window": "SAVE871 -> SAVE917; all failed attempts, source preparation, Java-host transition, cold recovery, waiting and coordination retained",
+    "full_wall_seconds": "7236.202565400",
+    "new_saved_days": 6,
+    "seconds_per_new_saved_day": "1206.033760900",
+    "root_epoch_seconds": "62529.529219700",
+    "root_epoch_total_saved_days": 173,
+    "root_epoch_seconds_per_saved_day": "361.4423654317919075144508671",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "speedup_proved": false
+  },
+  "independent_writer_verification": "Both named frozen events physical bytes/SHA, actual SETTLE operation/SAVE boundary, complete pair/cycle/proof/date/sameGame verified against SUMMARY and prior saved cutoff; no live ledger/Game/Save/Driver body opened.",
+  "Runtime_report_separate": "Original SAVE907 remained RejectedBeforeDispatch BEFORE_WRITE0 and was not resent. A distinct new SAVE action is the confirmed917 pair. Continued next39 on the current Dev host/loader instance is a Runtime report cutoff only; no future health inferred and lifecycle/individual action bodies were not reread.",
+  "source_boundary": "Frame-join310 rev01 was not adopted according to Runtime/History report; its later alias correction and other source-only candidates receive no credit for this SAVE or elapsed window. Software publication, actual loading and behavior remain separate.",
+  "sources": [
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31138/SUMMARY.json",
+      "bytes": 5986,
+      "sha256": "551bccc7b95d35b05d56f11f3b02f0b2291f812f8610bb3e95b0f9a84d5d8cf2"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31138/00000905.json",
+      "bytes": 99877,
+      "sha256": "ea11ba4164920fd8ef2c9387ffb5e3aba0658854b33b7684c054fc498fb5f217"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31138/00000917.json",
+      "bytes": 98608,
+      "sha256": "0fe9fe5b44e69a371408d5340ff5ebf9e1845a7a9566836460c124e973f8f5fb"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31035/SUMMARY.json",
+      "bytes": 5986,
+      "sha256": "9c9f153b919acf7343bcb8f7f53fb58625b8a401f8af92791186977ec60090bf"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/save917-window311.json",
+      "bytes": 1129,
+      "sha256": "b1b6ba1f350f4a3fac73f4c55a873dbddf797f053d1821c2e33d509e0607e485"
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0
+}
