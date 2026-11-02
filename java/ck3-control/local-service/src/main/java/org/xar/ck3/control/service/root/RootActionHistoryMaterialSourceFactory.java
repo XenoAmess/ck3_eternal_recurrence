@@ -395,7 +395,13 @@ public final class RootActionHistoryMaterialSourceFactory {
                 require(originalHead.equals(same.head().digest()),"Council zero-dispatch history changed the writer head");
                 return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,evidence,producers);
             }
-            replay.verifier().verify(same.head(),actual,originals);
+            Optional<LifeAdvanceEvidence.Recorded> recordedLife;
+            if(replay.verifier() instanceof org.xar.ck3.control.application.advance.LifeAdvanceRootReplay lifeReplay)
+                recordedLife=lifeReplay.verifyAndReadRecorded(same.head(),actual,originals);
+            else {
+                replay.verifier().verify(same.head(),actual,originals);
+                recordedLife=Optional.empty();
+            }
             var life=catalog.remainingDomains().life();
             if(!composite.isEmpty()&&life.installation().composites().stream().anyMatch(binding->binding==composite.getFirst())) {
                 require(replay.verifier()==life.replay(),"Life material must use its identical installed archived replay");
@@ -409,7 +415,8 @@ public final class RootActionHistoryMaterialSourceFactory {
                     }).toList();
                     return rejectedLifeInitializationMaterial(actual,canonicalChildren,originals,producers);
                 }
-                var recorded=life.replay().readRecorded(actual,originals);var evidence=new LinkedHashSet<Evidence>();
+                var recorded=recordedLife.orElseThrow(()->new IllegalArgumentException("advance has no semantic terminal observation"));
+                var evidence=new LinkedHashSet<Evidence>();
                 frame(evidence,recorded.starting().nativeFrame(),recorded.starting().driverFacts());frame(evidence,recorded.ending().nativeFrame(),recorded.ending().driverFacts());
                 ActionEffects.observation(actual).ifPresent(value->value.supportingEvidence().forEach(ref->evidence.add(new Evidence(EvidenceKind.MATERIAL,ref))));
                 if(recorded.originalCompatible().isEmpty())return only(CanonicalReason.RECONCILED_WITHOUT_ORIGINAL_REPORT,evidence,producers);

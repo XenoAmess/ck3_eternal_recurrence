@@ -85,6 +85,12 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
 
     @Override public void verify(WriterContracts.Head actualLockedHead, ActionReceipt proposed,
             ActionPorts.OutcomeArchive sameWriterArchive) {
+        verifyAndReadRecorded(actualLockedHead, proposed, sameWriterArchive);
+    }
+
+    /** Original full qualification with its same-invocation DATA result; no current or writer permission. */
+    public Optional<LifeAdvanceEvidence.Recorded> verifyAndReadRecorded(WriterContracts.Head actualLockedHead,
+            ActionReceipt proposed, ActionPorts.OutcomeArchive sameWriterArchive) {
         require(proposed.command().origin().machineId().equals(actualLockedHead.state().machineId()),
                 "life replay crossed the actual canonical writer machine");
         if (proposed.state() instanceof ActionState.CompositeSettled interruptedState
@@ -108,7 +114,7 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
                     "interrupted Life ending is not its actual canonical child's post-state");
             ActionEffects.validateComposite(parent, interruptedState.execution(), interrupted);
             ActionEffects.validateCompositeChildren(parent, interruptedState.execution(), interrupted, canonicalChildren);
-            return;
+            return Optional.empty();
         }
         if (proposed.state() instanceof ActionState.CompositeSettled settled
                 && settled.settlement() instanceof ActionState.CompositeNoGameplayWrite terminal) {
@@ -116,7 +122,7 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
             terminal.observation().validate(proposed.command(), settled.execution());
             ActionEffects.validateComposite(proposed.command(), settled.execution(), terminal);
             ActionEffects.validateCompositeChildren(settled.execution(), terminal, java.util.List.of());
-            return;
+            return Optional.empty();
         }
         if (proposed.state() instanceof ActionState.CompositeSettled settled
                 && settled.settlement() instanceof ActionState.CompositeRejected rejected) {
@@ -129,9 +135,9 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
             LifeAdvanceComposite.requireRejectedInitialization(proposed.command(), settled.execution(), children);
             ActionEffects.validateComposite(proposed.command(), settled.execution(), rejected);
             ActionEffects.validateCompositeChildren(proposed.command(), settled.execution(), rejected, children);
-            return;
+            return Optional.empty();
         }
-        LifeAdvanceEvidence.verifyRecorded(proposed, sameWriterArchive, this, timeline);
+        return Optional.of(LifeAdvanceEvidence.readRecorded(proposed, sameWriterArchive, this, timeline));
     }
 
     public static AdvanceObservationPort.Frame push(Complete complete) {
