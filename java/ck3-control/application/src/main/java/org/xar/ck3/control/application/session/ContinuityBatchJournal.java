@@ -588,6 +588,52 @@ public final class ContinuityBatchJournal implements BatchJournal {
         org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireRejectedInitialization(action.command(),settled.execution(),children);
     }
 
+    /** Exact archived Council before-write rejection DATA; no legacy row, effect or new dispatch is issued. */
+    private static void requireCapturedCouncilZeroDispatch(ContinuityStorePort.Session same,ActionReceipt action,
+            org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication publication,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals)throws IOException {
+        StrictJson.require(action.command().operation().value().equals("private-assign-councillor-v1")
+                &&action.state() instanceof org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch
+                &&action.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH
+                &&!action.visibleGameplay()&&!action.eligibleAdvance()&&action.applied().isEmpty()
+                &&publication.legacyRow().isEmpty(),"captured Council rejection requires its exact no-effect original role");
+        var zero=(org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch)action.state();
+        var attempt=zero.attempt();var dispatch=zero.dispatch();var guard=attempt.guard();
+        StrictJson.require(dispatch.proof().stage()==org.xar.ck3.control.application.action.NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                &&dispatch.proof().requestBytesWritten()==0&&attempt.requestId().equals(dispatch.requestId()),
+                "captured Council rejection cannot borrow ACK, UNKNOWN or an after-write outcome");
+        var dispatchRef=originals.referenceOf(dispatch);
+        var preparedRef=originals.requestReferenceOf(attempt.preparedRequest());
+        StrictJson.require(originals.load(dispatchRef).equals(dispatch)
+                &&originals.loadRequest(preparedRef).equals(attempt.preparedRequest()),
+                "captured Council rejection changed its original dispatch or preparation");
+        org.xar.ck3.control.application.action.NativeStepDiscriminator.requireRequest(action.command().operation(),
+                org.xar.ck3.control.application.action.ExecutableStepBindings.Kind.ACTION,attempt.preparedRequest());
+        StrictJson.require(action.command().origin().acceptsGuard(guard.origin())
+                &&guard.source().equals(action.command().source())&&guard.sessionId().equals(action.command().sessionId())
+                &&guard.operation().equals(action.command().operation()),"captured Council rejection crossed original guard/source/session");
+        org.xar.ck3.control.application.effects.RootGuardEvidence.requireHistory(guard,originals,same);
+        var before=org.xar.ck3.control.application.effects.RootGuardEvidence.loadFrame(guard,originals,
+                new org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader(new DriverObservationAssembler()));
+        StrictJson.require(before.identity().equals(action.command().before())&&before.source().equals(action.command().source())
+                &&before.sessionId().equals(action.command().sessionId()),"captured Council rejection crossed its full original frame");
+        var source=org.xar.ck3.control.application.driver.DriverActionHistoryCodec.decode(originals.loadMaterial(publication.originalSource()));
+        StrictJson.require(source.material() instanceof org.xar.ck3.control.application.driver.DriverActionHistoryCodec.CanonicalOnly,
+                "captured Council rejection requires its actual canonical-only source");
+        var only=(org.xar.ck3.control.application.driver.DriverActionHistoryCodec.CanonicalOnly)source.material();
+        var evidence=new java.util.LinkedHashSet<org.xar.ck3.control.application.driver.DriverActionHistoryCodec.Evidence>();
+        evidence.add(new org.xar.ck3.control.application.driver.DriverActionHistoryCodec.Evidence(
+                org.xar.ck3.control.application.driver.DriverActionHistoryCodec.EvidenceKind.MATERIAL,dispatchRef));
+        evidence.add(new org.xar.ck3.control.application.driver.DriverActionHistoryCodec.Evidence(
+                org.xar.ck3.control.application.driver.DriverActionHistoryCodec.EvidenceKind.MATERIAL,preparedRef));
+        evidence.add(new org.xar.ck3.control.application.driver.DriverActionHistoryCodec.Evidence(
+                org.xar.ck3.control.application.driver.DriverActionHistoryCodec.EvidenceKind.NATIVE_FRAME,guard.nativeEvidence()));
+        for(var ref:guard.supportingEvidence())evidence.add(new org.xar.ck3.control.application.driver.DriverActionHistoryCodec.Evidence(
+                org.xar.ck3.control.application.driver.DriverActionHistoryCodec.EvidenceKind.MATERIAL,ref));
+        StrictJson.require(only.reason()==org.xar.ck3.control.application.driver.DriverActionHistoryCodec.CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER
+                &&only.evidence().containsAll(evidence),"captured Council rejection lost its actual original material roles");
+    }
+
     /** Recover committed actual ACTION history DATA after effect settlement, without issuing another action. */
     private RetainedReadDriver retainCapturedAction(ContinuityStorePort.Session same,
             WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
@@ -599,10 +645,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 "captured ACTION history requires its one settled original receipt");
         var action=matches.getFirst();
         var publication=org.xar.ck3.control.application.driver.DriverActionHistoryState.decode(details,action);
-        requireCapturedActionOutcome(action,publication,receipts,originals);
+        if(action.command().operation().value().equals("private-assign-councillor-v1")
+                &&action.state() instanceof org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch)
+            requireCapturedCouncilZeroDispatch(same,action,publication,originals);
+        else requireCapturedActionOutcome(action,publication,receipts,originals);
         var known=previous.facts();
         StrictJson.require(publication.predecessor().equals(ContinuityJson.digest(edge.before().toJson()))
-                        &&publication.actionSequence()==edge.before().sequence()
+                        &&publication.actionSequence()==action.sequence()&&publication.actionSequence()<=edge.before().sequence()
                         &&publication.beforeVersion()==known.stamp().driverVersion()
                         &&publication.episodeEpoch()==known.stamp().episodeEpoch()
                         &&publication.beforeDriver().equals(previous.fullDriver())
