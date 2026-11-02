@@ -185,7 +185,11 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                 reads.recordFailure(actual); failure = actual; throw actual;
             } catch (RuntimeException | Error problem) {
                 reads.recordFailure(problem); failure = problem; throw problem;
-            } finally { reads.finish(failure); }
+            } finally {
+                boolean finishSucceeded = false;
+                try { reads.finish(failure); finishSucceeded = true; }
+                finally { reads.reportDiagnostics(finishSucceeded); }
+            }
         }); } catch (IOException problem) {
             IOException actual = problem instanceof java.nio.file.NoSuchFileException
                     ? new IOException("historical original validation failed; not optional absence", problem) : problem;

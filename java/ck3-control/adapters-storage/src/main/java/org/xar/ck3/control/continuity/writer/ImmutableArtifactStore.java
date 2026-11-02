@@ -105,6 +105,51 @@ public final class ImmutableArtifactStore {
         private long bytes;
         private boolean closed;
         private volatile Throwable firstFailure;
+        private long publicationAttempts;
+        private long heldPathAttempts;
+        private long acquisitionAttempts;
+        private long retainedPublications;
+        private long unretainedPublications;
+        private long fallbackAttempts;
+        private long entryBoundFallbacks;
+        private long handleBoundFallbacks;
+        private long byteBoundFallbacks;
+        private long largestFallbackExpectedBytes;
+        private int peakEntries;
+        private long peakBytes;
+        private static long nextCount(long value) { return value == Long.MAX_VALUE ? value : value + 1; }
+        private void recordRetained() {
+            retainedPublications = nextCount(retainedPublications);
+            peakEntries = Math.max(peakEntries, entries.size());
+            peakBytes = Math.max(peakBytes, bytes);
+        }
+        private void recordFallback(ExactRef expected) {
+            fallbackAttempts = nextCount(fallbackAttempts);
+            largestFallbackExpectedBytes = Math.max(largestFallbackExpectedBytes, expected.bytes());
+            // Classify the first failed predicate in the unchanged admission order.
+            if (entries.size() >= maximumEntries) entryBoundFallbacks = nextCount(entryBoundFallbacks);
+            else if (entries.size() * 2 > maximumHandles - 4) handleBoundFallbacks = nextCount(handleBoundFallbacks);
+            else if (expected.bytes() > (maximumBytes - bytes) / 2) byteBoundFallbacks = nextCount(byteBoundFallbacks);
+        }
+        /** Best-effort completed-scope DATA only; never current or custody qualification. */
+        void reportDiagnostics(boolean finishSucceeded) {
+            if (Thread.currentThread() != thread) return;
+            try {
+                System.getLogger(ImmutableArtifactStore.class.getName()).log(System.Logger.Level.INFO,
+                        "HISTORICAL_CAS_METRICS publication_attempts=" + publicationAttempts
+                        + " held_path_attempts=" + heldPathAttempts + " acquisition_attempts=" + acquisitionAttempts
+                        + " acquired_retained=" + retainedPublications + " acquired_unretained=" + unretainedPublications
+                        + " fallback_attempts=" + fallbackAttempts + " entry_bound=" + entryBoundFallbacks
+                        + " handle_bound=" + handleBoundFallbacks + " byte_bound=" + byteBoundFallbacks
+                        + " largest_fallback_expected_bytes=" + largestFallbackExpectedBytes
+                        + " peak_entries=" + peakEntries + " peak_retained_bytes=" + peakBytes
+                        + " maximum_entries=" + maximumEntries + " maximum_retained_bytes=" + maximumBytes
+                        + " maximum_handles=" + maximumHandles + " finish_succeeded=" + (finishSucceeded ? 1 : 0)
+                        + " validation_failed=" + (firstFailure == null ? 0 : 1));
+            } catch (RuntimeException | Error diagnosticFailure) {
+                // Only this optional diagnostic outlet is contained. Work and close are outside this try.
+            }
+        }
         private HistoricalReads(ContinuityStorePort.Session session, int maximumEntries, long maximumBytes,
                 int maximumHandles, HistoricalReadAuthority authority) {
             this.session = session; this.maximumEntries = maximumEntries; this.maximumBytes = maximumBytes;
@@ -217,6 +262,9 @@ public final class ImmutableArtifactStore {
             reads.requireActive();
             if (retainedBytes <= reads.maximumBytes - reads.bytes) {
                 reads.entries.put(expected, lease); reads.bytes += retainedBytes; retained = true;
+                reads.recordRetained();
+            } else {
+                reads.unretainedPublications = HistoricalReads.nextCount(reads.unretainedPublications);
             }
             return actual;
         } catch (IOException | RuntimeException | Error problem) { failure = problem; throw problem; }
@@ -449,12 +497,19 @@ public final class ImmutableArtifactStore {
             HistoricalReads reads = historicalReads.get();
             if (reads != null) {
                 reads.requireActive();
+                reads.publicationAttempts = HistoricalReads.nextCount(reads.publicationAttempts);
                 PublicationLease held = reads.entries.get(expected);
-                if (held != null) return readLeasedPublication(held, expected, maximum);
+                if (held != null) {
+                    reads.heldPathAttempts = HistoricalReads.nextCount(reads.heldPathAttempts);
+                    return readLeasedPublication(held, expected, maximum);
+                }
                 // Reserve two transient qualification handles in addition to both new custody handles.
                 if (reads.entries.size() < reads.maximumEntries && reads.entries.size() * 2 <= reads.maximumHandles - 4
-                        && expected.bytes() <= (reads.maximumBytes - reads.bytes) / 2)
+                        && expected.bytes() <= (reads.maximumBytes - reads.bytes) / 2) {
+                    reads.acquisitionAttempts = HistoricalReads.nextCount(reads.acquisitionAttempts);
                     return acquirePublication(reads, expected, maximum);
+                }
+                reads.recordFallback(expected);
             }
             LedgerFiles.Document metadata=LedgerFiles.read(commit(expected.sha256()),COMMIT_LIMIT);
             Commit bound=decode(metadata);if(!bound.payload().reference().equals(expected))throw new IOException("artifact commit/ref drift");
