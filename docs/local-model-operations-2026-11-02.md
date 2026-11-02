@@ -23,3 +23,5 @@
 2026-11-02后继：独立规范已正常快进至`0fe3600`，已读更新后的HTTP能力及运营规则，沿用唯一共享config。最终Git三方合并审阅为一个真实逻辑请求、两次POST：首段连接重置按规则整次丢弃，第二次200/stop/DONE；模型保留双方AGENTS授权文字的建议经owner审阅部分采用，错误hunk行数被拒绝并机械重算，未制造无重叠的Python源码冲突。原件在`C:/workspace/rrf-ui-release-20261102/git-linear-sync-review-a01`；执行、采用和净节时仍分列，未测净节时。
 
 R0064实际UI、后继发布和R0066缓存正常0已完成；共享模型HTTP成功不抵扣这些实机事实。所有请求均有具体代码、文案或合并任务，未按人数或次数凑调用。最终来源及原失败见[0.2.1发布记录](../mod_religious_ritual_fusion/docs/publication-0.2.1-alpha-2026-11-02.md)。
+
+闭场已再同步规范仓库至`c4a27aa`并读取新的任务单位及准备成本规则；本次真实合并案例`HTTP-GIT-MERGE-001`及脱敏证据已正常发布至[`50903b08b6528d307c1fbb4f2c000f9ae9b3e622`](https://github.com/XenoAmess/local-model-operations/commit/50903b08b6528d307c1fbb4f2c000f9ae9b3e622)。该请求1次逻辑／2次POST，首截流整弃，完成段47,414输入／2,012输出tokens、TTFT0.979360秒；保留文档部分采用和owner纠正hunk，未授源码、Game或净节时信用。

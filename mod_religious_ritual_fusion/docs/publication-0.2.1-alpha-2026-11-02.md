@@ -49,3 +49,9 @@ R0065/a77实际缓存90文件与原生稳定主菜单已观察，但Root错过�
 | 匿名回读闭证 | `network/anonymous-review-a01/PUBLIC-READBACK-REVIEW-CLOSED.actual.json` | 5740 | `8696589c448177c3c856df6b3d5a39ba90defaa08a3858da4880a10da9702003` |
 | Notes完整语义比较 | `network/anonymous-review-a01/NOTES-SEMANTIC.actual.json` | 1680 | `ecf4c41fd97d38ee24833967e473d01f307b947e599e53e1fc73ef43063693d3` |
 | 后台恢复离线 | `network/STEAM-OFFLINE-AFTER-PUBLISH.actual.json` | 2436 | `2a0296648cf0a224de507c6a95e5115e3a06afc76d633daaab3641125c8079b9` |
+
+## 本机最终闭场
+
+`machine_id: 4-8e1c2f1861`，2026-11-02T03:03:44.810026+00:00：后台Steam原生读回离线；无Game、SCREEN或本任务host/keeper，桌面恢复原1024×768。C盘总量511,776,722,944B，可用85,202,866,176B（85.20GB／79.35GiB）。本轮未删除文件，未改变三项禁回装屏障。仅清点新W工作包39,121文件，逻辑1,691,066,903B、按4096B簇上界1,780,121,600B，低于2GiB额度；未声称全项目清点。全2GiB已保守计入保留占用，未将未用额度或历史清理重复记回收。全局存储head短CAS至revision390，关闭本轮重型写入资格；当前必要输入、冻结runtime、关键失败与最终证据于2026-11-08T19:00:00Z复核。
+
+闭场原件`W/TASK-CLOSE.actual.json`为2384B／SHA`3c12596e48eddc21ce01fe788b064152fd24542a4d46642ec6b119e399ddb440`。源码同步采用普通rebase及push，唯一AGENTS首部冲突保留双方授权；本次生产代码与实测前8c提交逐字相同，原正式tag仍解析SourceA994，不移动来源身份。
