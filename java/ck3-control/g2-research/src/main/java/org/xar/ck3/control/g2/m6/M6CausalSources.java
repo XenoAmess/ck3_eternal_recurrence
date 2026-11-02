@@ -120,15 +120,20 @@ final class M6CausalSources {
 
     static boolean terminalTransition(JsonNode row, JsonNode original) {
         if (!exactIntegerEquals(row.get("pre_status"), StrictJson.object().numberNode(0))
-                || !exactIntegerEquals(row.get("post_status"), StrictJson.object().numberNode(1))
-                || !exactIntegerEquals(row.get("pre_owner"), original.get("actor_character_id"))) return false;
-        JsonNode owner = row.get("post_owner");
-        if (owner == null || !owner.isIntegralNumber() || (!exactIntegerEquals(owner, original.get("actor_character_id"))
-                && !owner.bigIntegerValue().equals(BigInteger.valueOf(0xffff_ffffL)))) return false;
+                || !exactIntegerEquals(row.get("post_status"), StrictJson.object().numberNode(1))) return false;
+        BigInteger actorRaw = org.xar.ck3.control.contracts.NativeCharacterId.fromJson(original.get("actor_character_id")).asRawUInt32();
+        BigInteger allOnes = BigInteger.valueOf(0xffff_ffffL);
+        JsonNode preOwner = row.get("pre_owner");
+        if (preOwner == null || !preOwner.isIntegralNumber()) return false;
+        if (!preOwner.bigIntegerValue().equals(actorRaw)) return false;
+        JsonNode postOwner = row.get("post_owner");
+        if (postOwner == null || !postOwner.isIntegralNumber()) return false;
+        if (!postOwner.bigIntegerValue().equals(actorRaw) && !postOwner.bigIntegerValue().equals(allOnes)) return false;
         for (String field : List.of("executing_source_observed", "post_read_succeeded", "post_instance_present", "post_exact_instance_join_ready",
                 "post_status_observed", "native_terminal_state_observed", "native_terminal_transition_observed")) if (!bool(row, field)) return false;
         return !bool(row, "post_storage_slot_reused");
     }
+
     private static DynamicKey key(JsonNode value, String toast) {
         return new DynamicKey(u64(value, "observer_session_identity", 1), integer(value, "owner_thread_id", 1, 0xffff_ffffL), u64(value, toast, 1), u64(value, "branch_source_sequence", 1));
     }
