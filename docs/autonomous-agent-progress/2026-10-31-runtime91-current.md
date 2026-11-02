@@ -1,5 +1,13 @@
 # runtime91 同局续行
 
+## 2026-11-02 07:31Z 保存里程碑：562确认本局累计100日
+
+556真实SETTLE后，562于07:30:50.076580300Z SAVE_CONFIRMED：同Game77132／birth134380410301009189、actor31254／同session，saved date53148384／pair306/265／cycle16／pending=null，累计100＝旧84＋532前沿8＋本次8；旧69日属于另一Game，不进分母。`save-confirmed30122` 两具名冻结event为556／100017B／SHA `37f8e1bd6372ce10621342ee3d916680c2405164df913ab2ee4bda0b0dc99659`、562／99012B／SHA `5f88472709fb25b3affc3c7116e3eddfb17bce0b3ada553f3cf5c2a755e8ac96`；SETTLE与SAVE边界、完整pair／cycle／session及后态已核，与Root `save30122-verified.json` 独验一致。532／92日仅沿原冻结SUMMARY保切点，本段不另冒其event独验。07:31:39薄report至批22均TURN_BOUND／dirty=false，批22保存8日并继续next23；同PID73928及head564 running为Runtime当时报告，不延授后继健康。
+
+主184 SAVE→562完整27279.060526100秒／新增62日＝439.9848471951612903225806452秒／日；全Root epoch38404.076580300秒／100日＝384.040765803秒／日，所有失败、冷恢复、准备、重试和等待全计入，仍未达10秒。337→562的4666.824224100／54＝86.42267081666666666666666667秒／日、532→562的680.489952800／8＝85.061244100秒／日仅子窗，不能代主指标。原502／84日稿与全部历史字节保留，此稿固定562／100日，不追扩更晚保存。
+
+Root后到调查状态单列：三项P0302性能源码已正式、尚未装载健康Main301；45秒steady JFR仅覆盖PLANNING，P0304只读设备metadata显示D旋转HDD／C NVMe，均不授迁移或速度归因。P0305两文件readonlylease的必要映射写入反证仍在进行，尚未冻结API或改生产；M0 OpenCode四源码只读pilot也未出结果，不授完成。本次仅现成冻结原件／薄metadata／Root报告，0新增Java、HTTP、Game查询、Save／Driver大读、部署、热换或worker重启，不门Runtime。
+
 ## 2026-11-02 07:12Z 独立切点：502确认累计84日，旧399／61日记录保留
 
 423 SETTLE→429于06:39:04.510779200Z SAVE_CONFIRMED累计69日（date53147640／pair229/188／cycle12），459 SETTLE→465于06:52:51.718523300Z保存累计77日（53147832／250/209／cycle13），496 SETTLE→502于07:08:51.259087500Z保存累计84日（53148000／270/229／cycle14），三次均pending=null，同Game77132／原birth、actor31254／同session。`save-confirmed30118/19/20` 六份具名冻结event逐bytes／SHA、SETTLE与SAVE边界、完整pair及后态核等，与Root `save30118/19/20-verified.json` 独验一致；502为99009B／SHA `b2bd74f3cc85905ea47ceca0f8ab6a1034d7896fa27876eee70ae225cfa67377`。累计84＝旧38＋8＋7＋8＋8＋8＋7，未把SETTLE另计保存日。07:12:12薄report的批15–20分别saved8/7/8/8/8/7、均TURN_BOUND／dirty=false，批20完整958.4790345秒／7保存日并继续next21；同PID73928及head508 running仅为运行岗当时报告，不延授未来健康。
