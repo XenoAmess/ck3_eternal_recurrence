@@ -34,9 +34,26 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
     private final Supplier<ContinuityStorePort.Session> originalSession;
     private final Clock clock;
     private final int maximumContinuations;
+    private static final String SEAT_SCHEMA = "xar.java.council-assignment-current-seat-basis/v1";
+    private static final String TUPLE_SCHEMA = "xar.java.council-current-seat-observation/v1";
+    @FunctionalInterface public interface RecoverySeatReader {
+        List<PlanningReadReceipt> read(ContinuityStorePort.Session same,
+                CouncilContinuationCoordinator.RecoveryOriginal original, GuardEvidence sameCaptureObservation,
+                java.time.Instant deadline) throws IOException, InterruptedException;
+    }
+    private final RecoverySeatReader recoverySeats;
+    private final NativeCouncilReadPort.ReplayConfiguration recoverySeatReplay;
     public NativeCouncilAssignmentEffects(CouncilContinuationCoordinator continuation, CouncilContinuationPolicy policy,
             NativeEffectSnapshots snapshots, ActionPorts.OutcomeArchive archive, NativeEffectEvidence.FrameLoader frames,
             Supplier<ContinuityStorePort.Session> originalSession, Clock clock, int maximumContinuations) {
+        this(continuation, policy, snapshots, archive, frames, originalSession, clock, maximumContinuations, null, null);
+    }
+    public NativeCouncilAssignmentEffects(CouncilContinuationCoordinator continuation, CouncilContinuationPolicy policy,
+            NativeEffectSnapshots snapshots, ActionPorts.OutcomeArchive archive, NativeEffectEvidence.FrameLoader frames,
+            Supplier<ContinuityStorePort.Session> originalSession, Clock clock, int maximumContinuations,
+            RecoverySeatReader recoverySeats, NativeCouncilReadPort.ReplayConfiguration recoverySeatReplay) {
+        this.recoverySeats = recoverySeats; this.recoverySeatReplay = recoverySeatReplay;
+        StrictJson.require((recoverySeats == null) == (recoverySeatReplay == null), "recovered Council seat reader and pure replay configuration must be installed together");
         this.continuation = Objects.requireNonNull(continuation); this.policy = Objects.requireNonNull(policy); this.snapshots = Objects.requireNonNull(snapshots);
         this.archive = Objects.requireNonNull(archive); this.frames = Objects.requireNonNull(frames); this.originalSession = Objects.requireNonNull(originalSession);
         this.clock = Objects.requireNonNull(clock); StrictJson.require(maximumContinuations >= 3 && maximumContinuations <= MAX_ACTIVE_REQUESTS, "bounded complete Council continuation budget required");
@@ -154,17 +171,48 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
             }
             StrictJson.require(progress.receipt().filter(value -> value.status() == CouncilActionCodec.ReceiptStatus.APPLIED).isPresent(),
                     "recovered Council lacks its independent verified native assignment receipt");
-            NativeEffectSnapshots.Pair pair = snapshots.readRecovered(role);
-            GuardEvidence observation = role.observationGuard();
+            var applied = progress.receipt().orElseThrow();
+            requireReceiptQueryFrame(results, applied);
+            StrictJson.require(recoverySeats != null && recoverySeatReplay != null,
+                    "actual current Council seat reader/replay is not installed; no receipt or assignment replay");
+            var checkpoint = role.seatCheckpoint();
+            NativeEffectSnapshots.Pair pair;
+            GuardEvidence observation;
+            ObservationProvenance provenance;
+            ExactRef tuple;
+            if (checkpoint.isPresent()) {
+                tuple = checkpoint.orElseThrow().tuple();
+                var retainedObservation = loadSeatTuple(tuple, command, originalAttempt, frames, boundArchive);
+                pair = retainedObservation.pair(); observation = retainedObservation.guard(); provenance = retainedObservation.provenance();
+            } else {
+                pair = snapshots.readRecovered(role); observation = role.observationGuard(); provenance = role.observationProvenance();
+                tuple = preserveSeatTuple(command, originalAttempt, pair, observation, provenance, boundArchive);
+            }
             role.requireCurrent();
             RawJson compatible = compatible(progress.receipt().orElseThrow());
-            ObservationProvenance provenance = role.observationProvenance();
             StrictJson.require(provenance instanceof ObservationProvenance.FreshSnapshotQuery,
                     "recovered Council after frame requires its actual same-occurrence fresh READ provenance");
             frames.verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery) provenance, pair.after(), boundArchive);
-            var projected = projectRecovered(command, originalAttempt, pair, progress.receipt().orElseThrow(), compatible, List.of(), provenance);
-            ExactRef chain = preserve(command, originalAttempt, pair, results, compatible, boundArchive);
-            ExactRef basis = preserveRecovered(command, originalAttempt, pair, observation, chain, compatible, boundArchive);
+            requireSeatReadAfterReceipt(results, provenance, pair, boundArchive);
+            if (checkpoint.isEmpty()) role.checkpointSeatTuple(tuple);
+            StrictJson.require(role.seatCheckpoint().filter(value -> value.tuple().equals(tuple)).isPresent(),
+                    "same-capture Council tuple has no actual canonical checkpoint; no QUERY is authorized");
+            List<PlanningReadReceipt> seatReads;
+            try { seatReads = List.copyOf(recoverySeats.read(same, role, observation, until)); }
+            catch (IOException failure) { throw new IOException("current Council seat observation unavailable; retained same-capture tuple="
+                    + tuple.sha256() + ":" + tuple.bytes(), failure); }
+            var seat = CouncilRecoverySeatProof.require(command, originalAttempt, applied, pair, observation, seatReads,
+                    recoverySeatReplay.definitions(), recoverySeatReplay.connectedVersion(), recoverySeatReplay.connectedSha256());
+            requireReadOriginals(seatReads, boundArchive);
+            requireDistinctSeatRequests(results, originalAttempt, seatReads);
+            requireCanonicalSeatReads(role, tuple, seatReads, boundArchive);
+            continuation.verifyCanonicalSeatCheckpoint(same, same.head(),
+                    new Scope(command.actionId(), ActionCodec.bodySha256(command), originalAttempt.requestId()),
+                    tuple, seatReads.stream().map(boundArchive::readReferenceOf).toList());
+            role.requireCurrent();
+            var projected = projectRecoveredSeat(command, originalAttempt, pair, applied, seat, compatible, List.of(), provenance);
+            ExactRef chain = preserveSeatChain(command, originalAttempt, pair, results, compatible, tuple, seatReads, boundArchive);
+            ExactRef basis = preserveRecovered(command, originalAttempt, pair, observation, chain, compatible, seatReads, boundArchive);
             role.requireCurrent();
             return NativeEffectSnapshots.withEvidence(projected, List.of(basis, chain));
         } finally { policyScope.close(); }
@@ -175,7 +223,8 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
     }
     /** Full generic v3 basis first: the existing archive and writer discover and qualify every reconciliation original. */
     private static ExactRef preserveRecovered(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
-            GuardEvidence observation, ExactRef chain, RawJson compatible, ActionPorts.OutcomeArchive archive) {
+            GuardEvidence observation, ExactRef chain, RawJson compatible, List<PlanningReadReceipt> seatReads,
+            ActionPorts.OutcomeArchive archive) {
         StrictJson.require(observation.origin() instanceof CommandOrigin.Reconciliation
                 && pair.reconciliation().filter(identity -> identity.sameGuardFrame(observation.origin().requireReconciliation())).isPresent(),
                 "Council recovered Pair lost its same-occurrence actual Root reconciliation guard");
@@ -201,7 +250,9 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
         row.set("before", frame(NativeEffectEvidence.basis(pair.before())));
         row.set("after", frame(NativeEffectEvidence.basis(pair.after())));
         row.set("compatible_material", material.toJson());
-        row.putArray("independent_reads"); row.putArray("supporting_materials").add(chain.toJson());
+        var independent = row.putArray("independent_reads");
+        for (var read : seatReads) independent.add(archive.readReferenceOf(read).toJson());
+        row.putArray("supporting_materials").add(chain.toJson());
         row.set("reconciliation_guard", CommandOriginCodec.guard(observation));
         RawJson body = new RawJson(StrictJson.canonical(row)); ExactRef result = archive.preserveMaterial(body);
         StrictJson.require(body.equals(archive.loadMaterial(result)) && compatible.equals(archive.loadMaterial(material)),
@@ -215,12 +266,18 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
                 : CouncilContinuationPolicy.replay(command, attempt, original, rows, archive);
     }
     public NativeRecordedEvidenceVerifier.Binding archivedVerifier(ExactRef actualDefinitionSource) {
-        return archivedVerifier(actualDefinitionSource, continuation, policy, frames, originalSession);
+        return archivedVerifier(actualDefinitionSource, continuation, policy, frames, originalSession, recoverySeatReplay);
     }
     /** Pure archive replay is available before a new Game has any adopted Driver; it captures no old Game owner. */
     public static NativeRecordedEvidenceVerifier.Binding archivedVerifier(ExactRef actualDefinitionSource,
             CouncilContinuationCoordinator continuation, CouncilContinuationPolicy policy,
             NativeEffectEvidence.FrameLoader frames, Supplier<ContinuityStorePort.Session> originalSession) {
+        return archivedVerifier(actualDefinitionSource, continuation, policy, frames, originalSession, null);
+    }
+    public static NativeRecordedEvidenceVerifier.Binding archivedVerifier(ExactRef actualDefinitionSource,
+            CouncilContinuationCoordinator continuation, CouncilContinuationPolicy policy,
+            NativeEffectEvidence.FrameLoader frames, Supplier<ContinuityStorePort.Session> originalSession,
+            NativeCouncilReadPort.ReplayConfiguration recoverySeatReplay) {
         return new NativeRecordedEvidenceVerifier.Binding(new OperationKey(CouncilActionCodec.PRIVATE_ASSIGN), actualDefinitionSource,
                 (head, parent, archive) -> {
                     try {
@@ -237,13 +294,17 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
                         if (NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(StrictJson.text(StrictJson.parse(body.bytes()).get("schema")))) {
                             recovered = NativeEffectEvidence.load(parent, archive, frames);
                             StrictJson.require(recovered.reconciliationGuard().isPresent() && recovered.frames().reconciliation().isPresent()
-                                    && recovered.independentReads().isEmpty() && recovered.supportingMaterials().size() == 1,
+                                    && recovered.supportingMaterials().size() == 1,
                                     "Council recovered v3 basis requires its exact actual guard and sole strict original chain leaf");
                             body = exact(recovered.supportingMaterials().getFirst(), archive);
                         } else StrictJson.require(effect.supportingEvidence().size() == 1,
                                 "legacy Council v1 requires one complete original evidence leaf");
-                        var row = StrictJson.object(StrictJson.parse(body.bytes()), Set.of("schema", "command_body_sha256", "original_request_id", "before", "after", "continuations", "compatible_material"));
-                        StrictJson.require(SCHEMA.equals(StrictJson.text(row.get("schema"))) && parent.bodySha256().equals(StrictJson.text(row.get("command_body_sha256")))
+                        var parsed = StrictJson.parse(body.bytes());
+                        boolean currentSeat = SEAT_SCHEMA.equals(StrictJson.text(parsed.get("schema")));
+                        var fields = new java.util.HashSet<>(Set.of("schema", "command_body_sha256", "original_request_id", "before", "after", "continuations", "compatible_material"));
+                        if (currentSeat) fields.addAll(Set.of("seat_reads", "observation_tuple"));
+                        var row = StrictJson.object(parsed, Set.copyOf(fields));
+                        StrictJson.require((currentSeat || SCHEMA.equals(StrictJson.text(row.get("schema")))) && parent.bodySha256().equals(StrictJson.text(row.get("command_body_sha256")))
                                 && settled.attempt().requestId().equals(StrictJson.text(row.get("original_request_id"))), "Council evidence leaf crossed canonical parent/original attempt");
                         Complete before = frames.load(frameBasis(row.get("before")), archive), after = frames.load(frameBasis(row.get("after")), archive);
                         StrictJson.require(before.identity().equals(parent.command().before()) && before.source().equals(parent.command().source()) && before.sessionId().equals(parent.command().sessionId())
@@ -266,9 +327,31 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
                                 && (recovered == null || recovered.compatibleResult().equals(compatible)),
                                 "Council history projection differs from original native receipt or recovered v3 basis");
                         NativeEffectRegistry.Projected replayed;
-                        if (recovered == null) replayed = project(parent.command(), settled.attempt(), pair,
+                        if (currentSeat) {
+                            StrictJson.require(recovered != null && recoverySeatReplay != null,
+                                    "current-seat Council basis requires its actual Root-installed pure replay decoder and reconciliation closure");
+                            requireReceiptQueryFrame(chain, progress.receipt().orElseThrow());
+                            requireSeatReadAfterReceipt(chain, effect.provenance(), pair, archive);
+                            var seatReads = loadSeatReads(row.get("seat_reads"), archive);
+                            requireDistinctSeatRequests(chain, settled.attempt(), seatReads);
+                            StrictJson.require(seatReads.equals(recovered.independentReads()), "current Council seat read closure differs from generic evidence");
+                            var observation = recovered.reconciliationGuard().orElseThrow();
+                            continuation.verifyCanonicalSeatCheckpoint(same, head,
+                                    new Scope(parent.command().actionId(), parent.bodySha256(), settled.attempt().requestId()),
+                                    ExactRef.fromJson(row.get("observation_tuple")), seatReads.stream().map(archive::readReferenceOf).toList());
+                            requireSeatTuple(ExactRef.fromJson(row.get("observation_tuple")), parent.command(), settled.attempt(), pair,
+                                    observation, effect.provenance(), archive);
+                            StrictJson.require(effect.provenance() instanceof ObservationProvenance.FreshSnapshotQuery,
+                                    "current Council seat lost its actual fresh READ provenance");
+                            frames.verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery) effect.provenance(), after, archive);
+                            var seat = CouncilRecoverySeatProof.require(parent.command(), settled.attempt(), progress.receipt().orElseThrow(), pair,
+                                    observation, seatReads, recoverySeatReplay.definitions(), recoverySeatReplay.connectedVersion(), recoverySeatReplay.connectedSha256());
+                            replayed = projectRecoveredSeat(parent.command(), settled.attempt(), pair, progress.receipt().orElseThrow(), seat,
+                                    compatible, effect.supportingEvidence(), effect.provenance());
+                        } else if (recovered == null) replayed = project(parent.command(), settled.attempt(), pair,
                                 progress.receipt().orElseThrow(), compatible, effect.supportingEvidence());
                         else {
+                            StrictJson.require(recovered.independentReads().isEmpty(), "legacy recovered Council basis must not hide independent seat reads");
                             StrictJson.require(effect.provenance() instanceof ObservationProvenance.FreshSnapshotQuery,
                                     "recovered Council archive lost its actual fresh READ provenance");
                             frames.verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery) effect.provenance(), after, archive);
@@ -378,6 +461,168 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
                     ExactRef.fromJson(row.get("result_domain_payload")), ExactRef.fromJson(row.get("result_event"))));
         }
         return List.copyOf(result);
+    }
+    /** Exact original receipt occurrence is separate from the new current-seat observation. */
+    private static void requireReceiptQueryFrame(List<CouncilContinuationReceipt> chain, CouncilActionCodec.Receipt applied) {
+        StrictJson.require(!chain.isEmpty(), "actual original Council receipt chain required");
+        var query = chain.stream().filter(value -> value.request().stage() == Stage.RECEIPT_QUERY).findFirst().orElseThrow();
+        var terminal = chain.getLast();
+        StrictJson.require(terminal.request().stage() == Stage.RECEIPT_QUERY || terminal.request().stage() == Stage.RECEIPT_STATUS,
+                "original applied Council receipt must come from its actual receipt-query group");
+        var expected = query.request().guard().observed().frame().identity();
+        var actual = terminal.request().guard().observed().frame().identity();
+        StrictJson.require(applied.status() == CouncilActionCodec.ReceiptStatus.APPLIED
+                && expected.nativeRevision().equals(actual.nativeRevision()) && expected.dateRaw().equals(actual.dateRaw())
+                && expected.player().equals(actual.player())
+                && applied.postSnapshotId().equals("native:" + actual.nativeRevision())
+                && applied.postNativeRevision().equals(actual.nativeRevision()) && applied.postPublicRevision().equals(actual.nativeRevision())
+                && applied.postDateRaw() == actual.dateRaw().intValueExact() && applied.ownerId() == actual.player().intValueExact(),
+                "original Council receipt differs from its own actual receipt-query Native frame");
+    }
+    private record SeatObservation(NativeEffectSnapshots.Pair pair, GuardEvidence guard, ObservationProvenance provenance) { }
+    /** Archived tuple DATA is rebuilt, never installed as a new current Native/Root permission. */
+    private static SeatObservation loadSeatTuple(ExactRef ref, ActionCommand command, ActionState.Attempt attempt,
+            NativeEffectEvidence.FrameLoader frames, ActionPorts.OutcomeArchive archive) {
+        var row = StrictJson.object(StrictJson.parse(exact(ref, archive).bytes()),
+                Set.of("schema", "command_body_sha256", "original_request_id", "before", "after", "reconciliation_guard", "provenance"));
+        StrictJson.require(TUPLE_SCHEMA.equals(StrictJson.text(row.get("schema")))
+                && ActionCodec.bodySha256(command).equals(StrictJson.text(row.get("command_body_sha256")))
+                && attempt.requestId().equals(StrictJson.text(row.get("original_request_id"))),
+                "archived current Council tuple crossed its actual command/original attempt");
+        var observation = CommandOriginCodec.guard(row.get("reconciliation_guard"));
+        StrictJson.require(observation.origin() instanceof CommandOrigin.Reconciliation,
+                "archived current Council tuple requires its original reconciliation DATA");
+        var before = frames.load(frameBasis(row.get("before")), archive);
+        var after = frames.load(frameBasis(row.get("after")), archive);
+        var pair = new NativeEffectSnapshots.Pair(before, after, Optional.of(observation.origin().requireReconciliation()));
+        var provenance = ObservationProvenanceCodec.decode(row.get("provenance"));
+        requireSeatTuple(ref, command, attempt, pair, observation, provenance, archive);
+        return new SeatObservation(pair, observation, provenance);
+    }
+    private static void requireCanonicalSeatReads(CouncilContinuationCoordinator.RecoveryOriginal role, ExactRef tuple,
+            List<PlanningReadReceipt> reads, ActionPorts.OutcomeArchive archive) throws IOException {
+        var checkpoint = role.seatCheckpoint().orElseThrow();
+        StrictJson.require(checkpoint.tuple().equals(tuple) && checkpoint.reads().size() == reads.size(),
+                "current Council seat list differs from its actual canonical checkpoint");
+        for (int index = 0; index < reads.size(); index++) {
+            var retained = checkpoint.reads().get(index); var actual = reads.get(index);
+            StrictJson.require(retained.request().equals(actual.request()) && retained.requestId().equals(actual.requestId())
+                    && retained.contractId().equals(actual.contractId())
+                    && retained.known().filter(archive.readReferenceOf(actual)::equals).isPresent()
+                    && retained.outcome().filter(archive.referenceOf(actual.original())::equals).isPresent(),
+                    "current Council seat result/ACK/read ID has no exact canonical checkpoint navigation");
+        }
+    }
+    private static void requireSeatReadAfterReceipt(List<CouncilContinuationReceipt> chain, ObservationProvenance proof,
+            NativeEffectSnapshots.Pair pair, ActionPorts.OutcomeArchive archive) throws IOException {
+        StrictJson.require(proof instanceof ObservationProvenance.FreshSnapshotQuery && !chain.isEmpty(),
+                "current Council seat requires the actual independent fresh READ after its original applied receipt");
+        var fresh = (ObservationProvenance.FreshSnapshotQuery) proof;
+        var prior = chain.getLast().outcome().orElseThrow();
+        var loaded = archive.load(fresh.readAcknowledgement());
+        StrictJson.require(prior instanceof NativeActionPort.AckReceived && loaded instanceof NativeActionPort.AckReceived,
+                "actual old receipt ACK and independent fresh-read ACK required");
+        var previous = (NativeActionPort.AckReceived) prior;
+        var current = (NativeActionPort.AckReceived) loaded;
+        var previousCustody = previous.custody().orElseThrow();
+        var currentCustody = current.custody().orElseThrow();
+        previousCustody.verify(previous); currentCustody.verify(current);
+        var before = previousCustody.session(); var after = currentCustody.session();
+        StrictJson.require(current.nativeOk() && fresh.requestId().equals(current.requestId())
+                && !current.requestId().equals(previous.requestId())
+                && before.machineId().equals(after.machineId()) && before.game().equals(after.game())
+                && before.sessionId().equals(after.sessionId())
+                && after.connectionGeneration().compareTo(before.connectionGeneration()) >= 0
+                && !currentCustody.writeEntered().observedAt().isBefore(previousCustody.responseReceived().observedAt())
+                && !pair.after().observedAt().isBefore(previousCustody.responseReceived().observedAt()),
+                "current Council seat fresh READ precedes or crosses its original applied receipt");
+        if (previousCustody.custodyEpoch().equals(currentCustody.custodyEpoch())) {
+            StrictJson.require(before.equals(after)
+                    && currentCustody.writeEntered().order().compareTo(previousCustody.responseReceived().order()) > 0,
+                    "current Council seat fresh READ lost exact same-epoch receipt-before-read chronology");
+        }
+    }
+    private static void requireDistinctSeatRequests(List<CouncilContinuationReceipt> chain, ActionState.Attempt original,
+            List<PlanningReadReceipt> reads) {
+        var ids = new java.util.HashSet<String>(); ids.add(original.requestId());
+        for (var old : chain) StrictJson.require(ids.add(old.request().requestId()), "original Council request identity repeated");
+        for (var read : reads) StrictJson.require(ids.add(read.requestId()), "current Council seat reused an original assignment/continuation request");
+    }
+    private static void requireReadOriginals(List<PlanningReadReceipt> reads, ActionPorts.OutcomeArchive archive) {
+        StrictJson.require(!reads.isEmpty() && reads.size() <= 16, "bounded complete actual Council seat reads required");
+        for (var read : reads) {
+            var ref = archive.readReferenceOf(read);
+            StrictJson.require(read.equals(archive.loadRead(ref)), "current Council seat receipt changed after archive");
+            NativeRecordedEvidenceVerifier.requireRead(read, archive);
+        }
+    }
+    private static ObjectNode seatTuple(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
+            GuardEvidence guard, ObservationProvenance provenance) {
+        var row = StrictJson.object().put("schema", TUPLE_SCHEMA).put("command_body_sha256", ActionCodec.bodySha256(command))
+                .put("original_request_id", attempt.requestId());
+        row.set("before", frame(NativeEffectEvidence.basis(pair.before())));
+        row.set("after", frame(NativeEffectEvidence.basis(pair.after())));
+        row.set("reconciliation_guard", CommandOriginCodec.guard(guard));
+        row.set("provenance", ObservationProvenanceCodec.encode(provenance));
+        return row;
+    }
+    private static ExactRef preserveSeatTuple(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
+            GuardEvidence guard, ObservationProvenance provenance, ActionPorts.OutcomeArchive archive) {
+        RawJson body = new RawJson(StrictJson.canonical(seatTuple(command, attempt, pair, guard, provenance)));
+        ExactRef ref = archive.preserveMaterial(body);
+        StrictJson.require(body.equals(exact(ref, archive)), "complete current Council observation tuple changed"); return ref;
+    }
+    private static void requireSeatTuple(ExactRef ref, ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
+            GuardEvidence guard, ObservationProvenance provenance, ActionPorts.OutcomeArchive archive) {
+        StrictJson.require(exact(ref, archive).equals(new RawJson(StrictJson.canonical(seatTuple(command, attempt, pair, guard, provenance)))),
+                "current Council observation tuple lost its exact same-capture guard/frame/FreshQuery");
+    }
+    private static ExactRef preserveSeatChain(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
+            List<CouncilContinuationReceipt> chain, RawJson compatible, ExactRef tuple, List<PlanningReadReceipt> reads,
+            ActionPorts.OutcomeArchive archive) {
+        var row = StrictJson.object().put("schema", SEAT_SCHEMA).put("command_body_sha256", ActionCodec.bodySha256(command))
+                .put("original_request_id", attempt.requestId());
+        row.set("before", frame(NativeEffectEvidence.basis(pair.before())));
+        row.set("after", frame(NativeEffectEvidence.basis(pair.after())));
+        var entries = row.putArray("continuations");
+        for (var receipt : chain) {
+            var entry = entries.addObject(); entry.set("entry", receipt.latestRecord().toJson());
+            entry.set("result_domain_payload", receipt.resultDomainPayload().toJson());
+            entry.set("result_event", receipt.resultEvent().toJson());
+        }
+        row.set("compatible_material", archive.preserveMaterial(compatible).toJson());
+        row.set("observation_tuple", tuple.toJson());
+        var encoded = row.putArray("seat_reads");
+        for (var read : reads) encoded.add(archive.readReferenceOf(read).toJson());
+        RawJson body = new RawJson(StrictJson.canonical(row)); ExactRef ref = archive.preserveMaterial(body);
+        StrictJson.require(body.equals(exact(ref, archive)), "current Council seat and original receipt chain changed"); return ref;
+    }
+    private static List<PlanningReadReceipt> loadSeatReads(JsonNode array, ActionPorts.OutcomeArchive archive) {
+        StrictJson.require(array != null && array.isArray() && !array.isEmpty() && array.size() <= 16,
+                "bounded archived current Council seat group required");
+        var reads = new ArrayList<PlanningReadReceipt>();
+        for (var value : array) {
+            ExactRef ref = ExactRef.fromJson(value); var read = archive.loadRead(ref);
+            StrictJson.require(ref.equals(archive.readReferenceOf(read)), "archived Council seat read locator changed"); reads.add(read);
+        }
+        requireReadOriginals(reads, archive); return List.copyOf(reads);
+    }
+    private static NativeEffectRegistry.Projected projectRecoveredSeat(ActionCommand command, ActionState.Attempt attempt,
+            NativeEffectSnapshots.Pair pair, CouncilActionCodec.Receipt original, CouncilModels.Candidates current,
+            RawJson compatible, List<ExactRef> supporting, ObservationProvenance provenance) {
+        Complete after = pair.after();
+        StrictJson.require(original.status() == CouncilActionCodec.ReceiptStatus.APPLIED
+                && current.seat().position() == original.position() && current.seat().incumbentId().isPresent()
+                && current.seat().incumbentId().getAsInt() == original.incumbentId(), "current Council seat differs from independently verified original assignment receipt");
+        List<ExpectedValue> actual = List.of(new ExpectedText(new FieldKey("council.position_key"), current.seat().position().key()),
+                new ExpectedInteger(new FieldKey("council.incumbent_character_id"), java.math.BigInteger.valueOf(current.seat().incumbentId().getAsInt())),
+                new ExpectedBoolean(new FieldKey("native.gameplay_verified"), true));
+        StrictJson.require(org.xar.ck3.control.g2.planning.ProposalLifecycle.compare(command.expected(), after.identity(), after.source(), NativeGovernanceEffects.SCHEMA, actual)
+                == org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH, "current independently read Council seat did not meet requested postcondition");
+        var observed = new ActionState.EffectObservation(after.identity(), after.source(), after.sessionId(), NativeGovernanceEffects.SCHEMA, actual,
+                Objects.requireNonNull(provenance), after.observedAt(), after.originalEvidence(), supporting);
+        ActionEffects.validate(command, attempt, new ActionState.Applied(observed));
+        return new NativeEffectRegistry.Projected(new ActionPorts.EffectObserved(observed), Optional.of(compatible));
     }
     private static RawJson compatible(CouncilActionCodec.Receipt receipt) { return new RawJson(receipt.original().bytes()); }
     private static ObjectNode frame(NativeEffectEvidence.FrameBasis frame) { var row = StrictJson.object(); row.set("native_frame", frame.nativeFrame().toJson()); row.set("driver_facts", frame.driverFacts().toJson()); return row; }

@@ -264,6 +264,148 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
     }
 
+    private static final String COUNCIL_SEAT_QUERY = "private-query-council-composition-candidates-v1";
+    private RecoveredSeatMailbox activeRecoveredSeatMailbox;
+    /** This private marker adds no assignment, ISSUED permit or historical wire custody. */
+    private final class RecoveredSeatMailbox {
+        private final Thread owner = Thread.currentThread();
+        private final CouncilContinuationCoordinator.RecoveryOriginal original;
+        private final GuardEvidence observation;
+        private final Instant deadline;
+        private final MailboxScope scope;
+        private final String position;
+        private ReadPermit admitted;
+        private String readBinding;
+        private boolean released;
+        private RecoveredSeatMailbox(CouncilContinuationCoordinator.RecoveryOriginal original,
+                GuardEvidence observation, Instant deadline, MailboxScope scope) {
+            this.original = original; this.observation = observation; this.deadline = deadline; this.scope = scope;
+            this.position = org.xar.ck3.control.nativebridge.capabilities.governance.GovernanceActionPreparation
+                    .councilRequest(original.command(), original.attempt().requestId()).position().key();
+        }
+        private void current() throws IOException {
+            if (activeRecoveredSeatMailbox != this || released || owner != Thread.currentThread()
+                    || activeCouncilRecovery != null || mailboxPoison != null || terminalFailure != null || closed)
+                throw new IOException("recovered seat mailbox escaped its actual private role, owner or live transport");
+            scope.current();
+            if (scope.unknownSeen || scope.readOnlyPrefixConsumed || scope.deferredReadDiagnostic != null)
+                throw new IOException("recovered seat mailbox cannot continue an unknown or consumed READ prefix");
+            requireRecoveredSeatGuard(original, observation, deadline);
+        }
+        private void authorize(ReadPermit permit, NativeRequest request, Instant requestDeadline) throws IOException {
+            current();
+            var guard = permit.guard(); var contract = permit.contract();
+            var identity = observation.origin().requireReconciliation();
+            if (admitted != null || requestDeadline.isAfter(deadline)
+                    || !(permit.origin() instanceof CommandOrigin.Gameplay gameplay)
+                    || !gameplay.before().equals(identity.factual()) || !guard.origin().equals(permit.origin())
+                    || !guard.source().equals(observation.source()) || !guard.sessionId().equals(observation.sessionId())
+                    || !guard.connectionGeneration().equals(observation.connectionGeneration())
+                    || !guard.nativeEvidence().equals(observation.nativeEvidence())
+                    || !guard.capabilityEvidence().equals(observation.capabilityEvidence())
+                    || !guard.authorityId().equals(observation.authorityId())
+                    || !guard.observedAt().equals(observation.observedAt())
+                    || !guard.operation().equals(contract.operation())
+                    || contract.permissionMode() != ReadContract.PermissionMode.SOURCE_QUALIFIED_PRIVATE
+                    || contract.guardMode() != ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP
+                    || contract.advertisedRequired() || request.requiredCapability().isPresent()
+                    || !request.equals(permit.preparedRequest()) || !request.step().equals(contract.operation().value())
+                    || permit.consumed() || sentRequestIds.contains(permit.requestId()))
+                throw new IOException("recovered seat READ changed its real permit, same-capture frame/source/guard or deadline");
+            if (readBinding != null && !readBinding.equals(permit.readGuard().originalBindingSha256()))
+                throw new IOException("recovered seat READ changed its actual full binding between QUERY and STATUS");
+            var fields = NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+            if (scope.attempted.isEmpty()) {
+                if (!request.step().equals(COUNCIL_SEAT_QUERY)
+                        || contract.wireProfile() != ReadContract.WireProfile.EXECUTE_STEP
+                        || !fields.equals(StrictJson.object().put("position_key", position)))
+                    throw new IOException("recovered seat mailbox begins only with its exact selected-position composition QUERY");
+            } else if (!request.step().equals(COUNCIL_STATUS)
+                    || contract.wireProfile() != ReadContract.WireProfile.COUNCIL_MAILBOX_STATUS || !fields.isEmpty()
+                    || !(scope.lastOutcome instanceof AckReceived ack) || !isCouncilPending(ack)) {
+                throw new IOException("recovered seat mailbox STATUS requires its preceding actual pending ACK");
+            }
+            if (readBinding == null) readBinding = permit.readGuard().originalBindingSha256();
+            admitted = permit;
+        }
+        private void dispatch(String requestId, String step, boolean continuation) throws IOException {
+            current();
+            if (continuation || admitted == null || !admitted.requestId().equals(requestId)
+                    || !admitted.preparedRequest().step().equals(step)
+                    || activeMailbox.actualReads.get(requestId) != admitted)
+                throw new IOException("only the exact admitted recovered-seat READ may enter this write");
+        }
+    }
+
+    private void requireRecoveredSeatGuard(CouncilContinuationCoordinator.RecoveryOriginal original,
+            GuardEvidence observation, Instant deadline) throws IOException {
+        original.requireCurrent();
+        var command = original.command(); var attempt = original.attempt();
+        var before = attempt.guard(); Instant now = Instant.now();
+        if (!(observation.origin() instanceof CommandOrigin.Reconciliation)
+                || !observation.equals(original.observationGuard()) || hello == null
+                || !now.isBefore(deadline) || !now.isBefore(observation.validUntil()) || observation.observedAt().isAfter(now)
+                || !config.sessionId().equals(command.sessionId()) || !command.sessionId().equals(observation.sessionId())
+                || !observation.sessionId().equals(before.sessionId())
+                || !hello.connectionGeneration().equals(observation.connectionGeneration())
+                || !observation.source().equals(command.source()) || !observation.source().equals(before.source())
+                || !observation.operation().equals(command.operation()) || !observation.operation().equals(before.operation())
+                || !observation.authorityId().equals(before.authorityId()))
+            throw new IOException("recovered seat scope changed its actual captured reconciliation guard or current HELLO/source");
+        var identity = observation.origin().requireReconciliation(); var pending = identity.pending();
+        if (!pending.actionId().equals(command.actionId()) || !pending.bodySha256().equals(ActionCodec.bodySha256(command))
+                || !pending.requestId().equals(attempt.requestId()) || !pending.originalBefore().equals(command.before())
+                || !identity.observedAt().equals(observation.observedAt()))
+            throw new IOException("recovered seat scope differs from the unchanged actual original pending action");
+        identity.requireOriginalConnection(before);
+        org.xar.ck3.control.nativebridge.capabilities.governance.CouncilContinuationPolicy
+                .requireOriginalPending(command, attempt, original.originalAck());
+        requireIdentity(observation.origin()); requireRawEvidence(observation); requireLivingPausedMap();
+    }
+
+    /** Root and archive/checkpoint work runs outside the Native monitor; only its RPCs reenter it. */
+    public <T> T withRecoveredSeatMailbox(CouncilContinuationCoordinator.RecoveryOriginal original,
+            GuardEvidence sameCaptureObservation, Instant deadline, MailboxWork<T> work)
+            throws IOException, InterruptedException {
+        Objects.requireNonNull(original); Objects.requireNonNull(sameCaptureObservation);
+        Objects.requireNonNull(deadline); Objects.requireNonNull(work);
+        final RecoveredSeatMailbox seat;
+        synchronized (this) {
+            open(deadline);
+            if (activeMailbox != null || activeCouncilRecovery != null || activeRecoveredSeatMailbox != null || mailboxPoison != null)
+                throw new IOException("recovered seat mailbox cannot nest or replace unresolved Native custody");
+            verifyEndpoint();
+            requireRecoveredSeatGuard(original, sameCaptureObservation, deadline);
+            MailboxScope scope = new MailboxScope();
+            seat = new RecoveredSeatMailbox(original, sameCaptureObservation, deadline, scope);
+            activeMailbox = scope; activeRecoveredSeatMailbox = seat;
+        }
+        try {
+            T result = work.run(seat.scope);
+            synchronized (this) {
+                if (activeRecoveredSeatMailbox != seat || activeMailbox != seat.scope || seat.released
+                        || terminalFailure != null || closed || mailboxPoison != null || seat.scope.unknownSeen)
+                    throw new IOException("recovered seat callback cannot return after unknown or lost Native custody");
+                original.requireCurrent();
+                if (!seat.scope.attempted.isEmpty() && (!seat.scope.readOnlyPrefixConsumed || !seat.scope.completed))
+                    throw new IOException("recovered seat callback must consume its full typed READ prefix and last actual terminal ACK");
+            }
+            return result;
+        } finally {
+            synchronized (this) {
+                if (!seat.scope.attempted.isEmpty() && (seat.scope.unknownSeen || !seat.scope.completed
+                        || !seat.scope.readOnlyPrefixConsumed)) {
+                    mailboxPoison = "recovered seat READ remains unresolved; no producer may overwrite its actual custody";
+                    unresolvedMailboxRequestIds = List.copyOf(seat.scope.attempted); latestReadEvidence = null;
+                }
+                seat.admitted = null; seat.released = true; seat.scope.released = true;
+                if (activeMailbox == seat.scope) activeMailbox = null;
+                if (activeRecoveredSeatMailbox == seat) activeRecoveredSeatMailbox = null;
+            }
+        }
+    }
+
+
     @FunctionalInterface public interface MailboxWork<T> {
         T run(MailboxScope scope) throws IOException, InterruptedException;
     }
@@ -367,6 +509,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 ActionPorts.OutcomeArchive boundArchive) throws IOException {
             synchronized(NativeGameTransport.this) {
                 current();Objects.requireNonNull(live);Objects.requireNonNull(sharedFailureDiagnostic);Objects.requireNonNull(boundArchive);
+                if (activeRecoveredSeatMailbox != null) throw new IOException("recovered seat scope cannot convert unresolved custody to optional READ deferral");
                 if(assignment!=null||terminalFailure!=null||closed||lastOutcome!=live.original()
                         ||attempted.isEmpty()||originalOutcomes.size()!=attempted.size()
                         ||new HashSet<>(attempted).size()!=attempted.size())
@@ -458,7 +601,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if (activeMailbox != null) activeMailbox.record(outcome);
         return outcome;
     }
-    private void requireDispatchScope(String step, boolean continuation) throws IOException {
+    private void requireDispatchScope(String step, boolean continuation, String requestId) throws IOException {
+        if (activeRecoveredSeatMailbox != null) activeRecoveredSeatMailbox.dispatch(requestId, step, continuation);
         if (activeCouncilRecovery != null) throw new IOException("ordinary Native dispatch is blocked during the exact recovered Council RPC");
         if (mailboxPoison != null) throw new IOException(mailboxPoison);
         if (activeMailbox != null) {
@@ -574,7 +718,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Sole actual Driver caller invokes this after successful original adoption, never on a refusal branch.
      * This sends no Game action and waits for no PONG/snapshot. Every original attempt is retained and never resent. */
     public synchronized PingAttempt startHandshake(Instant deadline)throws IOException,InterruptedException {
-        if (activeCouncilRecovery != null) throw new IOException("recovered Council RPC cannot start another Native producer");
+        if (activeCouncilRecovery != null || activeRecoveredSeatMailbox != null) throw new IOException("recovered Council RPC or seat scope cannot start another Native producer");
         open(deadline);if(hello==null)throw new IOException("original held HELLO and successful actual Driver adoption must precede ping");verifyEndpoint();
         if(handshakeAttempt!=null) {
             if(handshakeAttempt.failure().isPresent())throw new IOException("original ping transfer remains failed/unknown; no resend: "+handshakeAttempt.failure().orElseThrow().message());
@@ -1078,6 +1222,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     @Override public synchronized DispatchOutcome read(ReadPermit permit, NativeRequest request, Instant deadline) throws InterruptedException {
         Objects.requireNonNull(permit); Objects.requireNonNull(request); String id = permit.requestId();
         try {
+            if (activeRecoveredSeatMailbox != null) activeRecoveredSeatMailbox.current();
             if (permit.consumed() || sentRequestIds.contains(id))
                 return retainReadOutcome(recordMailboxOutcome(new Unknown(id, "original read request already attempted; allocate a new guarded read instead of replaying it", retainedOutbound(id), Optional.empty())));
             open(deadline); verifyEndpoint();
@@ -1127,8 +1272,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 case SNAPSHOT_REVISION_ONLY -> NativeWire.executeSnapshotRevisionOnly(id, request.step(), permit.expectedRevision(), request.additionalFields().bytes());
                 case COUNCIL_MAILBOX_STATUS -> NativeWire.executeCouncilMailboxStatus(id, request.step(), request.additionalFields().bytes());
             };
-            if(activeMailbox!=null)activeMailbox.actualReads.put(id,permit);
-            return retainReadOutcome(dispatch(id, packet, readDeadline(deadline), permit::consumeOnce));
+            RecoveredSeatMailbox seat = activeRecoveredSeatMailbox;
+            if (seat != null) seat.authorize(permit, request, deadline);
+            try {
+                if(activeMailbox!=null)activeMailbox.actualReads.put(id,permit);
+                return retainReadOutcome(dispatch(id, packet, readDeadline(deadline), permit::consumeOnce));
+            } finally { if (seat != null) seat.admitted = null; }
         } catch (IOException | RuntimeException failure) { return retainReadOutcome(zero(id, reason(failure))); }
     }
     /** One actual newly ISSUED read-only RPC; historical assignment/ACK data never become live write custody. */
@@ -1366,7 +1515,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private DispatchOutcome dispatch(String id, byte[] packet, Instant deadline, Runnable consumePermit, boolean continuation) throws InterruptedException {
         try {
             var payload = NativeWire.object(NativeWire.parse(Arrays.copyOfRange(packet, 4, packet.length)));
-            requireDispatchScope(NativeWire.text(payload.get("step")), continuation);
+            requireDispatchScope(NativeWire.text(payload.get("step")), continuation, id);
         } catch (IOException failure) { return zero(id, reason(failure)); }
         return recordMailboxOutcome(dispatchOriginal(id, packet, deadline, consumePermit));
     }
