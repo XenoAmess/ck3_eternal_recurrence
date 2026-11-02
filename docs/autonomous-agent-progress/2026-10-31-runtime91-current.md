@@ -1,5 +1,24 @@
 # runtime91 同局续行
 
+## 2026-11-02 03:58Z 原 Council 已结算，四次冷恢复仍未进入 LOOP，保存仍38日
+
+本段合并消费 Runtime 已冻结的 `closed289` 至 `closed292/INDEX.json`、各四份 START／END／stdout／stderr，以及对应 `recovery-outcome289` 至 `292/SUMMARY.json`，逐项核长度与SHA；未沿元数据路径读取 live账本、Driver或Save。四次均 END1、未进入LOOP、无新增SAVE_CONFIRMED，旧截止完整保留。表中秒数为各实际runner报告值，UTC起止另列。
+
+| Main／Java | UTC START → END | reported秒 | 实际阻点 |
+| --- | --- | ---: | --- |
+| 289／78632 | 03:19:32.278084 → 03:20:24.780015 | 52.5019435 | continuation event references another domain/body/producer；真实stack在 Coordinator.verifyCanonicalEvent:592 |
+| 290／82700 | 03:26:29.205162 → 03:29:12.467475 | 163.2623207 | current Council seat observation unavailable；保留真实same-capture tuple，Known回执导航未闭 |
+| 291／77128 | 03:47:52.466219 → 03:49:02.256980 | 69.790767 | artifact commit/ref drift；运行机器导航把原ExactRef反斜杠改成了正斜杠 |
+| 292／60592 | 03:55:32.059162 → 03:58:37.815926 | 185.7567691 | actual Sway following-turn consumption unavailable: actual Root reconciliation guard verifier is not installed |
+
+291的路径差异由 Runtime 编码产生；`navigation-correction292/RECEIPT.json` 及具名冻结commit核对证明，5799B原Known回执SHA仍为 `826a5c4d8d52e379ac522ddac6f97a7a575f9210cfd233e64ca0f21426ea84e5`，只修机器DATA字符串，不修改原artifact、commit或ledger，也不放宽Store／Codec校验。291 stdout还包含JFR startup记录，本段不把该失败窗口说成0JFR，也未读取录制大体。Main290／291的head222同SHA `0e4f4d023ad1bcd56c199cf30f87c22d4875226c0a5a35b366c15527f191dc7d`；Main289 head216及更早209UNKNOWN保留为当时事实。
+
+Main292 后到原件224已真实 SETTLED／APPLIED，operation为private-assign-councillor-v1。独立读取的冻结receipt19856B／SHA `396e88a45efb020c6b21230f28b657edd88af3ed6beedcb23e98a40abcf27cde` 与SUMMARY内完整state、body、action和序号相等。这是原动作恢复结算，不能继续把旧209UNKNOWN当最新终态，也不据此重发assignment。head227／SHA `038565b67e2483e2241c6d5b09e4288e1e3d56cc8d4f80c1c7edada498d1e025` 的canonical状态为running、completed_cycles7／pending_receipt=null；进程却已END1，不能把head标签当成健康worker或普通LOOP。最新binding为native128／public88／date53146896，已确认保存前沿仍为native105／public78／同日期38日，没有新推进或保存信用。
+
+Root主性能epoch仍从 `2026-11-01T20:50:46Z` 起算，到Main292 END完整墙钟25671.815926秒／38新增确认保存日＝675.5741033157894736842105263秒／日，未达暂定10秒目标。失败、准备、恢复、等待全部计入；本段四次恢复覆盖的UTC总窗口2345.537842秒新增保存0，其秒／新增保存日为null，每个单次零保存窗口亦为null。旧69日不进分母，下方492.196391秒／日等历史子窗不改。
+
+同一Game77132／birth134380410301009189仍由Runtime独占。P0293仅把Sway结果验证接到现成实际Root reconciliation回调，首1TU编译0／2.4493668秒及正式 `06d5c9ae56f28bc4839a524fcf39def66a527b49` 独立留证，不追授本段恢复成功。正式源码中的既有209 signed pending分类器仍保全，与本机原S基线分账；源码、编译、装载、实际运行和SAVE分别确认。此文档仅追加冻结事实，不新增Game／Native查询、动作、进程控制、部署、重启或编测，也不作为后继恢复前置。
+
 ## 2026-11-02 02:02Z 同局恢复终态：head216，确认保存仍38日
 
 本段只读取 Runtime 已冻结的 `closed287/INDEX.json`、`closed288/INDEX.json`、各自四份 START／END／stdout／stderr 和两份 `recovery-outcome287/288/SUMMARY.json`，逐项核长度与SHA；全部旧截止保留。运行岗明确286只有源码／参数准备、0START，本段不制造286的运行或END。Main287／Java43168 实际 `01:47:00.097952Z`→`01:48:08.147306Z` END1／68.0493598秒，终态为 actual same-runtime reconciliation authority has not been installed。Main288／Java108744 实际 `02:00:32.772522Z`→`02:02:29.462863Z` END1／116.6903487秒，真实stack指向 NativeCouncilAssignmentEffects.projectRecovered:344，错误为 Council receipt differs from real fresh after Native+Driver frame。两次均未进入LOOP、无新SAVE，运行岗报告均无新JFR。
