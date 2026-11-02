@@ -62,6 +62,21 @@ public final class DriverObservationEvidenceReader {
         var row=checkedManifest(manifestReference,manifest);
         requireExact(reference(row.get("driver_ref")),fullDriver.bytes(),"archived complete Driver");
         var driver=DriverStateSnapshot.decodeComplete(fullDriver.bytes());
+        return bindDecodedDriver(manifestReference,row,driver,actual);
+    }
+
+    /** Same encoded original and protocol bounds; the immutable typed Driver needs no second full decode. */
+    public static DriverObservationFacts decodeTypedDriver(ExactRef manifestReference,RawJson manifest,
+            DriverStateSnapshot.Complete typedDriver,NativeObservationPort.ObservedFrame actual) {
+        Objects.requireNonNull(typedDriver);Objects.requireNonNull(actual);
+        var fullDriver=new RawJson(typedDriver.encode());
+        var row=checkedManifest(manifestReference,manifest);
+        requireExact(reference(row.get("driver_ref")),fullDriver.bytes(),"archived complete Driver");
+        return bindDecodedDriver(manifestReference,row,typedDriver,actual);
+    }
+
+    private static DriverObservationFacts bindDecodedDriver(ExactRef manifestReference,OpportunityJson.Obj row,
+            DriverStateSnapshot.Complete driver,NativeObservationPort.ObservedFrame actual) {
         StrictJson.require(actual.session().equals(session(row.get("transport")))
                 && actual.snapshotId().equals(string(row,"snapshot_id"))
                 && actual.nativeRevision().equals(OpportunityJson.integer(row.get("native_revision"),"native_revision"))

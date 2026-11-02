@@ -698,7 +698,7 @@ public final class DriverCapabilityStateProducer {
         readMaterial(archive,decodeReference(object(cache.get(INITIAL),INITIAL)));
         ExactRef semantic=decodeReference(object(state.get("semantic_source"),"semantic_source"));RawJson manifest=readMaterial(archive,semantic);
         var nativeFrame=DriverObservationEvidenceReader.nativeFrame(semantic,manifest,archive.loadNativeFrame(originalFrame.originalEvidence()));
-        var originalFacts=DriverObservationEvidenceReader.decode(semantic,manifest,new RawJson(originalDriver.driver().encode()),nativeFrame);
+        var originalFacts=DriverObservationEvidenceReader.decodeTypedDriver(semantic,manifest,originalDriver.driver(),nativeFrame);
         require(originalFacts.driverVersion()==originalDriver.stamp().driverVersion()
                 && originalFacts.episodeEpoch()==originalDriver.stamp().episodeEpoch()
                 && originalFacts.snapshotId().equals(originalFrame.identity().frame().snapshotId())
