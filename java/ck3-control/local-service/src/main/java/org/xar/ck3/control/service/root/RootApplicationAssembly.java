@@ -1586,6 +1586,28 @@ public final class RootApplicationAssembly {
             return finishObserved(installed, driver, configuration, services, Optional.empty());
         }
 
+        /** Completes only archived zero-write Council coverage after the real settled recovery/Controller restore. */
+        private void publishMissingSettledCouncilHistory(ContinuityStorePort.Session same,
+                DriverBootstrap.Adopted driver,Staged staged)throws IOException {
+            writer.requireSession(same);
+            for(var actual:settledSameGameData.settledActions()) {
+                if(!actual.command().operation().value().equals("private-assign-councillor-v1")
+                        ||!(actual.state() instanceof org.xar.ck3.control.application.action.ActionState.RejectedBeforeDispatch))continue;
+                boolean missing=driver.authority().withFrozenFacts(same,frozen->{
+                    if(!(frozen.state() instanceof org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known known))
+                        throw new IOException("settled Council history requires the actual complete Driver");
+                    return known.actionRows().stream().noneMatch(row->row.actionId().equals(actual.command().actionId()));
+                });
+                if(missing) {
+                    var published=staged.actionHistory().completed(same,actual);
+                    StrictJson.require(published instanceof DriverActionHistoryPublisher.Published
+                            ||published instanceof DriverActionHistoryPublisher.Unchanged unchanged
+                                &&unchanged.reason()==DriverActionHistoryPublisher.Reason.ALREADY_COVERED,
+                            "settled zero-write Council coverage was not published");
+                }
+            }
+        }
+
         private RootApplicationSession finishObserved(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services,Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission> admissionOpt)throws IOException,InterruptedException{
             var context=installed.context();
             var game=context.game();
@@ -1651,6 +1673,7 @@ public final class RootApplicationAssembly {
                         var failure=new java.io.InterruptedIOException("settled same-Game Controller restoration interrupted");
                         failure.initCause(interrupted);throw failure;
                     }
+                    publishMissingSettledCouncilHistory(same,driver,staged);
                     runtime.capabilities().restoreRetainedPlanning(same);
                 } else if (unresolvedSameGameData != null) {
                     // Restore the existing per-graph reader without capture/publication or canonical head changes.
