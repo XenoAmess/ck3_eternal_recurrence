@@ -1,0 +1,94 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T18:34:57.473923300Z",
+  "prior_published_cutoff_retained": {
+    "event": 1081,
+    "total_saved_days": 204
+  },
+  "SAVE_CONFIRMED": {
+    "event": 1122,
+    "SETTLE_event": 1116,
+    "new_saved_days": 8,
+    "total_saved_days": 212,
+    "date_raw": "53151072",
+    "native_revision": 628,
+    "public_revision": 571,
+    "completed_cycles": 31,
+    "pending_receipt": null
+  },
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "performance": {
+    "primary_window": "SAVE1081 -> SAVE1122; complete wall including batch47 zero saved days, preparation stop, reload/bootstrap, the45-second JFR and all waiting",
+    "full_wall_seconds": "2556.006815700",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "319.5008519625",
+    "root_epoch_seconds": "78251.473923300",
+    "root_epoch_total_saved_days": 212,
+    "root_epoch_seconds_per_saved_day": "369.1107260533018867924528302",
+    "root_epoch_metric_role": "Cumulative secondary metric, never this window denominator",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "causal_speedup_proved": false
+  },
+  "source_adoption_and_recovery": {
+    "authority": "Root/Runtime existing actual owner report accompanying this independently verified SAVE cutoff; full per-leaf activation and batch48 phase refs are not held by this formal metadata reader at publication cutoff.",
+    "same_Java_host_pid": 81616,
+    "same_Java_host_birth_filetime": "134381101737409714",
+    "delegate_instance_prefix": "bd247",
+    "restart": 2,
+    "coherent_production_cohort": [
+      "life-budget318 SessionController and Loop",
+      "bulk-child-qualification319 Journal",
+      "known-driver321 DriverSnapshotFacts"
+    ],
+    "reported_new_delegate_START_UTC": "2026-11-02T18:05:35.3929115Z",
+    "reported_LOOP_UTC": "2026-11-02T18:14:28.6495323Z",
+    "reported_BOOT_seconds": "533.2566208",
+    "reported_batch47_saved_days": 0,
+    "life_budget318_defer_exercised": false,
+    "life_budget318_note": "Owner reports sufficient actual admission budget in this batch; this SAVE does not validate a deferred batch.",
+    "background_candidate320_adopted_at_SAVE_cutoff": false,
+    "per_leaf_hotpath_hits": "UNKNOWN",
+    "per_leaf_causal_speedup": "UNKNOWN",
+    "batch48_phase_breakdown": "NOT_HELD",
+    "JFR_overhead_fraction": "UNKNOWN"
+  },
+  "verification": "Root independently verified1116/1122 named frozen SETTLE/SAVE events. Writer checked only existing bounded Root receipt and current/prior frozen SUMMARY metadata and recomputed exactDecimal UTC arithmetic. Owner-reported adoption/failure/recovery observations are separately attributed; no new Game/GET/Java query, event/batch/Save/Driver body read, worker action or future health assertion.",
+  "sources": [
+    {
+      "local_key": "root/save31848-verified.json",
+      "bytes": 1324,
+      "sha256": "e2cabe5f167fe28f9d5bd7664ec077fc15159fa2b42d771180df4012fa848258",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31848/SUMMARY.json",
+      "bytes": 5988,
+      "sha256": "0b2b758711d141051516cdf60632382889b78b479684c6770b050a6e59fb273a",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31947/SUMMARY.json",
+      "bytes": 5991,
+      "sha256": "e31880e0be7feb848dd648ac4e8914f5d08bd2d9af1a9637aff7d8915334cc6a",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31848/00001116.json",
+      "bytes": 99875,
+      "sha256": "56299a045d022f50f8ca57a770097d959f1efd68f19a80bcd005d3785040810c",
+      "qualification": "Root independently verified this named frozen event. Formal writer used the existing Root receipt and bounded SUMMARY; no repeated event/Save/Driver body read."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31848/00001122.json",
+      "bytes": 98873,
+      "sha256": "07d1f06031e6afbde63a2004f5bb2500ef011187b03c2b056f20181104ac406f",
+      "qualification": "Root independently verified this named frozen event. Formal writer used the existing Root receipt and bounded SUMMARY; no repeated event/Save/Driver body read."
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0,
+  "later_delegate_health_inferred": false
+}
