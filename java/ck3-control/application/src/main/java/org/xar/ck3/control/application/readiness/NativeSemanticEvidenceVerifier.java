@@ -68,8 +68,10 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
                     "semantic contract observation version differs from archived stamp");
             require(DriverObservationAssembler.bindingSha256(semantic).equals(text(stamp.get("full_binding_sha256"), "full_binding_sha256")),
                     "semantic binding differs from archived complete-frame stamp");
-            require(evidence.originalDriver().sha256().equals(text(stamp.get("driver_sha256"), "driver_sha256"))
-                    && Arrays.equals(driver.encode(), driverBytes), "complete original Driver bytes/hash differ");
+            require(evidence.originalDriver().sha256().equals(text(stamp.get("driver_sha256"), "driver_sha256")),
+                    "complete original Driver bytes/hash differ");
+            byte[] canonicalDriver = driver.encode();
+            require(Arrays.equals(canonicalDriver, driverBytes), "complete original Driver bytes/hash differ");
             require(evidence.observedAt().equals(Instant.parse(text(stamp.get("observed_at"), "observed_at"))), "semantic observed time differs from actual stamp");
             require("state_snapshot".equals(text(raw.get("type"), "type"))
                     && BigInteger.ONE.equals(integer(raw.get("protocol_version"), "protocol_version")), "original native state_snapshot required");
@@ -78,7 +80,7 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
             Obj nativeState = object(raw.get("state"), "state");
             boolean nativeCampaign=id.observationVersion()==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION;
             boolean canonical=id.observationVersion()==DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION||nativeCampaign;
-            if(canonical)requireCanonicalProjection(borrowed,evidence,semantic,nativeBytes,driverBytes);
+            if(canonical)requireCanonicalProjection(borrowed,evidence,semantic,nativeBytes,driverBytes,driver,canonicalDriver);
             else requireNativeState(nativeState, semantic);
             for (Obj row : List.of(semantic, stamp)) {
                 require(frame.snapshotId().equals(text(row.get("snapshot_id"), "snapshot_id"))
@@ -121,7 +123,7 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
     }
     /** Current canonical profiles replay their sole original producer; raw fields may have legitimate normalized values. */
     private void requireCanonicalProjection(ContinuityStorePort.Session borrowed,SemanticEvidence evidence,Obj semantic,
-            byte[] nativeBytes,byte[] driverBytes)throws IOException {
+            byte[] nativeBytes,byte[] driverBytes,DriverStateSnapshot.Complete driver,byte[] canonicalDriver)throws IOException {
         ExactRef manifestRef=DriverObservationEvidenceReader.reference(semantic.get("java_driver_facts_evidence"));
         RawJson manifest=RawJson.fullMaterial(read(borrowed,manifestRef,DriverJson.MAX_NATIVE_BYTES));
         var actual=DriverObservationEvidenceReader.nativeFrame(manifestRef,manifest,nativeBytes);
@@ -133,7 +135,15 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
             manifestDriver=read(borrowed,driverRef,ReadinessArchive.Role.DRIVER.maximumBytes());
         }
         require(Arrays.equals(manifestDriver,driverBytes),"canonical manifest and original Driver bytes differ");
-        var facts=DriverObservationEvidenceReader.decode(manifestRef,manifest,RawJson.fullMaterial(manifestDriver),actual);
+        org.xar.ck3.control.application.driver.DriverObservationFacts facts=null;
+        // Later archive callbacks may have changed a borrowed original array. Reuse only unchanged DATA.
+        if(Arrays.equals(manifestDriver,canonicalDriver)) {
+            try { facts=DriverObservationEvidenceReader.decodeTypedDriver(manifestRef,manifest,driver,actual); }
+            catch(IllegalArgumentException incompatibleTypedProfile) {
+                // The original complete-material lane permits number tokens wider than the typed helper.
+            }
+        }
+        if(facts==null)facts=DriverObservationEvidenceReader.decode(manifestRef,manifest,RawJson.fullMaterial(manifestDriver),actual);
         require(facts.observationVersion()==evidence.frame().observationVersion(),
                 "canonical SEM must retain its exact original facts observation version");
         var assembler=new DriverObservationAssembler();
