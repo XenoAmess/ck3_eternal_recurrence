@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-02 21:36:27Z后到实际能力：355 DriverPersistentPlanningState现有类方法体已由官方Quarkus instrumentation替换。单次GET21:36:24.299009→29.290187Z／回执4.9911858秒，官方报告3.011秒；同119020／原birth、同188ed278委托与restart1@636a035e loader保持，冻结该委托生命周期无新START／COMPLETE，0STOP／0新host。Root独核后继1284业务read，未对355 VIEW分支、私有heap或thread对象作probe；本记录新增保存日0，不报有限秒／日，不授运行速度或下一SAVE。来源见[355实际instrumentation索引](../maintenance/2026-11-02-quarkus-body-instrumentation355-sources.json)。
+
+原START21:25:03.784867Z→LOOP21:36:02.497059500Z冷恢复658.7121925秒在此次body替换之前，不与旧682秒窗口作A/B。独立353记录21:34:25→21:35:10全为preLOOP且在355窗外，typed parsedEntry inclusive130／stableParserTree leaf15只证明具名helper被采到；parsedValue／historyIndex仍UNKNOWN，不能相加当调用数／耗时，不授精确PC／loader／整tuplehash或实速。既有1274／242保存切点与全部历史正文原字节保留；新类型、字段、方法、API及任意热改仍独立资格，当前Runtime继续普通游玩，文档0现场查询／GET／编测。
+
 2026-11-02 21:18:03.291471500Z固定保存切点：1268 SETTLE后，1274真实SAVE_CONFIRMED新增8日、本局累计242日（234＋8），date_raw53151792、native715/public661、saved cycle35、pending=null。Root已独验两具名冻结事件；来源见[1274保存索引](../maintenance/2026-11-02-quarkus-worker-save1274-sources.json)。
 
 主SAVE1231（20:28:19.309911600Z）→1274完整2983.981559900秒／8＝372.9976949875秒／新增保存日，包括零保存56批温和停止、launcher准备修正、旧Java／outer释放和唯一新host、682.3612718秒冷恢复、57批零Intent预算deferred、58批原Life／SAVE与中间UNKNOWN自然确认、全部研究交叉／JFR350／监护及等待。10秒目标未达，非A/B，不授单叶、instrumentation或C2因果提速。累计epoch88037.291471500／242＝363.7904606260秒／日仅次指标，不作本窗分母。

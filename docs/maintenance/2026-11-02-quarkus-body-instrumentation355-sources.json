@@ -1,0 +1,157 @@
+{
+  "schema": "ck3.quarkus-business-body-instrumentation.addendum.v1",
+  "fixed_official_log_UTC": "2026-11-02T21:36:27.279Z..21:36:27.342Z",
+  "frozen_owner_after_UTC": "2026-11-02T21:38:18.775346+00:00",
+  "source": {
+    "class": "DriverPersistentPlanningState",
+    "unit": 355,
+    "raw_source_sha256": "698192f758cc5ea3dbc0bc0d6bb63e322262a4c7ad879f25c2640b06dce43747",
+    "body_only": true,
+    "new_methods_fields_types_lambdas": 0,
+    "formal_source_commit": "a18003d52ca2869f41c8144133ed5a4fe47a4ce4"
+  },
+  "same_host": {
+    "pid": 119020,
+    "birth": "134381255919633818",
+    "image": "C:\\jdk-21\\bin\\java.exe"
+  },
+  "same_delegate": "188ed278-3356-4bf8-ac0a-e177c8c79197",
+  "same_loader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@636a035e@636a035e",
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "observed_runtime": {
+    "source_adopted_UTC": "2026-11-02T21:36:24.284284+00:00",
+    "one_GET": {
+      "began_at_utc": "2026-11-02T21:36:24.299009+00:00",
+      "ended_at_utc": "2026-11-02T21:36:29.290187+00:00",
+      "elapsed_seconds": 4.9911858000123175,
+      "http_status": 200,
+      "failure": null,
+      "trigger_count": 1,
+      "STOP": 0,
+      "actual_instrumentation_proved": false,
+      "acceptance": "Official instrumentation result, same host/delegate/loader, subsequent business progress and new SAVE remain separate."
+    },
+    "official_instrumentation_seconds": "3.011",
+    "STOP": 0,
+    "new_host_launches": 0,
+    "new_START_or_COMPLETE_for_current_delegate_in_frozen_lifecycle": 0,
+    "subsequent_business_event1284": "Independently verified by Root; no claim about355 VIEW branch invocation or existing heap/thread identity."
+  },
+  "preceding_cold_recovery": {
+    "START_UTC": "2026-11-02T21:25:03.784867Z",
+    "LOOP_UTC": "2026-11-02T21:36:02.497059500Z",
+    "START_to_LOOP_seconds": "658.7121925",
+    "meaning": "Preceded body instrumentation. Different earlier682second window is not an A/B comparator."
+  },
+  "separate_353_recording": {
+    "coverage": {
+      "host_pid": 119020,
+      "birth_filetime": "134381255919633818",
+      "instance": "188ed278",
+      "restart": 1,
+      "recording_start_utc": "2026-11-02T21:34:25.131995Z",
+      "recording_end_utc": "2026-11-02T21:35:10.228210Z",
+      "actual_LOOP_utc": "2026-11-02T21:36:02.4970595Z",
+      "entire_record_is_preLOOP": true,
+      "Runtime_START_to_LOOP_seconds": 658.7121925,
+      "natural_historical_scope_finish_utc": "2026-11-02T21:35:06.388Z",
+      "cohort_note": "352 Registry/Coordinator/RootGui +353 Snapshot6ee9 +354CoreIndex. Later355 body instrumentation at21:36:27 is outside this recording.",
+      "exact_internal_phase_spans_UTC": null
+    },
+    "parsedEntry_business_inclusive_samples": 130,
+    "stableParserTree_business_leaf_samples": 15,
+    "parsedValue": "UNKNOWN_NOT_FOUND_IN_EXPORTED_TOP_TABLES",
+    "historyIndex": "UNKNOWN_NOT_FOUND_IN_EXPORTED_TOP_TABLES",
+    "limits": "Recording21:34:25..21:35:10 entirely preLOOP and before355 instrumentation. Typed symbols are positive sampled execution evidence, not calls/time/speed, precisePC/classloader/wholetuplehash or355 branch proof; inclusive and leaf counts must not be added."
+  },
+  "saved_days_from_this_instrumentation_record": 0,
+  "last_published_saved_frontier": {
+    "SAVE": 1274,
+    "total_saved_days": 242,
+    "source_index": "2026-11-02-quarkus-worker-save1274-sources.json"
+  },
+  "performance": {
+    "target_seconds_per_new_saved_day": 10,
+    "target_met": false,
+    "new_SAVE_or_causal_speed_claim": false,
+    "no_finite_seconds_per_day_for_zero_new_saves": true
+  },
+  "limits": [
+    "Existing compatible body replacement observed; not arbitrary field/method/API/new dependency types or all-class HotSwap qualification.",
+    "Same recorded host/delegate/loader is metadata continuity, not private heap/thread object identity probe.",
+    "Original preparation/adoption/HTTP receipts marked actual_instrumentation_proved=false are historical cutoffs; this later official-log/owner/lifecycle verification is separate, none rewritten.",
+    "No future health, next SAVE,355 VIEW execution or no-recovery-cost generalization."
+  ],
+  "sources": [
+    {
+      "local_key": "root/instrumentation355-verified.json",
+      "bytes": 3019,
+      "sha256": "450bbfb87c625cee3b59788e3b49f766f714d1768e01955fb0874fe441ec1de5",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation355/SOURCE-ADOPTED.json",
+      "bytes": 2828,
+      "sha256": "0dd2c7d75d8c98848f51555c49551cc9e49123018dcd31ecfe9f3433c5050709",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation355/PREPARED.json",
+      "bytes": 4170,
+      "sha256": "a1892d8ec9f6da18519f4d5af49a76f69152cad542db9d1a9a19bc0f75484599",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation355/TRIGGER-ACTUAL.json",
+      "bytes": 417,
+      "sha256": "e3d1b75b04d4a474802bcea0f14a4142a4c8b240b9fe50015bbe502314add89a",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation355/OWNER-BEFORE.frozen.json",
+      "bytes": 1693,
+      "sha256": "7c758347c4fdffc451e68647f0ba2a51bc5fde7d7c5aa6819ae490f8db1c6a50",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation355/OWNER-AFTER.frozen.json",
+      "bytes": 1649,
+      "sha256": "63a7f31c8c0949e9b3403e2be62cd14f784d8319623e62bc58d66914d9ef82a1",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation355/LIFECYCLE-AFTER.frozen.jsonl",
+      "bytes": 2258,
+      "sha256": "dcac0034aa10ad1574f52c9995c3790139ac2d40603d097676f94b5c4d12cdc3",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation355/OFFICIAL-INSTRUMENTATION.raw.log",
+      "bytes": 4302,
+      "sha256": "79ab5f61089e08626760ff1be1ac8f92e3b9bda4d2083948b31baa00fdf8864d",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "m5/jfr-post353-cold352/HELPER353-OBSERVATIONS02.json",
+      "bytes": 25262,
+      "sha256": "1d96053c185eb21c22af8bfaa24593dd00ddc821770a6fefe22ab02c05a4b395",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "m5/jfr-post353-cold352/CONTEXT352-01.json",
+      "bytes": 1138,
+      "sha256": "e6afa89eba84455048576e363879f38b13adef64a94cdfffa83426c5ebe0654f",
+      "formal_writer_read": "bounded frozen metadata/log only"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/body-instrumentation355/POST-INSTRUMENTATION-EVENT1284.frozen.json",
+      "bytes": 97858,
+      "sha256": "ce08b399ee19f605e24450d861093d107c9910796cebe56320c24437174c1f92",
+      "qualification": "Root independently read exact named post-instrumentation business event1284; formal writer did not repeat this event/body read."
+    }
+  ],
+  "formal_writer_scope": "Frozen bounded Root/Runtime/M5 metadata and log only; no raw1284/Save/Driver/JFR aggregate/event pass, live process/Game query, GET, JVM/compile/launch. Prior unrelated writer reader358 default association remains UNKNOWN in its own erratum."
+}

@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-02 355业务方法体实际instrumentation通过
+
+- 21:36:27.279／27.342Z官方Quarkus日志实际确认355现有类方法体经instrumentation替换且无需重启，报告3.011秒；唯一GET为21:36:24.299009→29.290187Z，单次耗时回执4.9911858秒。前后同host119020／birth134381255919633818、同188ed278委托、同restart1@636a035e loader，冻结生命周期该委托只有原START，无新增START／COMPLETE、无STOP或新host。Root独核后继1284业务事件；未probe355 VIEW分支或私有heap／thread对象，不授新增SAVE或提速。
+- 此前真实LOOP为21:36:02.497059500Z，冷恢复658.7121925秒，不能与旧682秒窗口作A/B。353的独立preLOOP采样仅正证parsedEntry业务inclusive130／stableParserTree业务leaf15，parsedValue／historyIndex未见仍UNKNOWN，不作调用数或时间。保持242保存日切点及所有旧正文，10秒目标未达；新增类型／字段／方法等结构变更仍须分别资格。来源见[355实际instrumentation索引](docs/maintenance/2026-11-02-quarkus-body-instrumentation355-sources.json)，Runtime继续独占实际运行，文档不触发新查询、GET或编测。
+
 ## 2026-11-02 后到1274固定切点：本局累计242日保存
 
 - 1274于21:18:03.291471500Z真实SAVE_CONFIRMED新增8日、累计242日，date53151792／native715/public661／saved cycle35／pending=null；Root独验1268 SETTLE及1274冻结事件。主SAVE1231→1274完整2983.981559900秒／8＝372.9976949875秒／新增保存日，零保存批、准备、旧host释放及新host启动、682.3612718秒冷恢复、57批预算deferred、58批原动作与UNKNOWN自然结算、采样和全部等待全计，10秒目标未达，非A/B。
