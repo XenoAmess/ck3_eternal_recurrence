@@ -97,6 +97,8 @@ public final class SessionController {
     private long totalCommittedDays;
     /** Same-Controller saved workload estimate; retained across zero-dispatch budget deferrals. */
     private long savedLifeTailNanos;
+    private long retainedLifeReserveNanos;
+    private Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> lifeBudgetSubject = Optional.empty();
     private volatile Optional<NaturalEpisodeAdoption> naturalAdoption=Optional.empty();
     private Optional<ContinuityBatchJournal.ReboundTransport> transportAdoption=Optional.empty();
     /** Minted only after this actual Controller consumed its original journal's private admission. */
@@ -902,11 +904,110 @@ public final class SessionController {
                         retired || quarantined || localUnresolved || pendingReadParent.isPresent()
                                 || publicCheckpointUnknown.isPresent() || run.cyclePending || run.pendingUi.isPresent()
                                 || run.checkpointAdoptionDeferred || run.journalUnknown || run.observedPendingAction));
-                if (!quarantined) savedLifeTailNanos = Math.max(savedLifeTailNanos, observedSavedLifeTailNanos(report));
+                if (!quarantined) {
+                    var hint = retainLifeBudgetHint(report, currentLifeBudgetHint());
+                    if (hint.isPresent()) {
+                        var row = decodedLifeBudgetHint(hint.orElseThrow(), identity);
+                        savedLifeTailNanos = hintNanos(row.get("saved_life_tail_nanos")); retainedLifeReserveNanos = hintNanos(row.get("reserve_floor_nanos"));
+                        lifeBudgetSubject = Optional.of(org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(row.get("subject")));
+                    }
+                }
                 lastLimits = Optional.of(limits); lastReport = Optional.of(report); completedAnalyses.clear(); failedAnalyses.clear();
             } finally { running.set(false); }
         }
         return lastReport.orElseThrow();
+    }
+
+    /** Advisory scheduling DATA only. An invalid or absent hint never grants admission or recovery. */
+    public boolean restoreLifeBudgetHint(org.xar.ck3.control.application.action.RawJson hint) {
+        Objects.requireNonNull(hint);
+        if (!running.compareAndSet(false, true)) return false;
+        try {
+            if (retired || quarantined || localUnresolved || lastReport.isPresent()) return false;
+            var row = decodedLifeBudgetHint(hint, identity);
+            var subject = org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(row.get("subject"));
+            long tail = hintNanos(row.get("saved_life_tail_nanos")), floor = hintNanos(row.get("reserve_floor_nanos"));
+            if (lifeBudgetSubject.isPresent()) return lifeBudgetSubject.orElseThrow().equals(subject)
+                    && savedLifeTailNanos == tail && retainedLifeReserveNanos == floor;
+            savedLifeTailNanos = tail; retainedLifeReserveNanos = floor; lifeBudgetSubject = Optional.of(subject);
+            return true;
+        } catch (IllegalArgumentException unavailable) { return false; }
+        finally { running.set(false); }
+    }
+
+    /** Same actual callback report and prior advisory DATA; no Controller, writer or Native callback is invoked. */
+    public static Optional<org.xar.ck3.control.application.action.RawJson> retainLifeBudgetHint(
+            BatchReport report, Optional<org.xar.ck3.control.application.action.RawJson> previous) {
+        Objects.requireNonNull(report); Objects.requireNonNull(previous);
+        try {
+            if (report.lastSavedPair().isEmpty()) return Optional.empty();
+            var anchor = report.lastSavedPair().orElseThrow().frame();
+            if (!anchor.machineId().equals(report.session().machineId()) || !anchor.game().equals(report.session().game())) return Optional.empty();
+            long tail = 0, floor = 0;
+            var subject = anchor;
+            if (previous.isPresent()) {
+                try {
+                    var old = decodedLifeBudgetHint(previous.orElseThrow(), report.session());
+                    var historical = org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(old.get("subject"));
+                    if (sameLifeBudgetSubject(historical, anchor)) {
+                        tail = hintNanos(old.get("saved_life_tail_nanos")); floor = hintNanos(old.get("reserve_floor_nanos")); subject = historical;
+                    }
+                } catch (IllegalArgumentException unavailable) { /* Optional telemetry is not an action or source permit. */ }
+            }
+            if (Set.of(Terminal.TURN_BOUND, Terminal.OPERATOR_STOP, Terminal.WALL_TIMEOUT, Terminal.EPISODE_HANDOFF).contains(report.terminal())) {
+                long measured = observedSavedLifeTailNanos(report);
+                if (measured > 0) { tail = Math.max(tail, measured); subject = anchor; }
+            }
+            if (tail == 0 && floor == 0) return Optional.empty();
+            var row = StrictJson.object(); row.put("schema", "xar.life-budget-hint/v1");
+            row.set("owner", OrdinaryCycleTransitions.sessionToJson(report.session()));
+            row.set("subject", org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.observation(subject));
+            row.put("saved_life_tail_nanos", Long.toString(tail)); row.put("reserve_floor_nanos", Long.toString(floor));
+            var hint = new org.xar.ck3.control.application.action.RawJson(StrictJson.canonical(row, 16_384));
+            decodedLifeBudgetHint(hint, report.session());
+            return Optional.of(hint);
+        } catch (IllegalArgumentException unavailable) { return Optional.empty(); }
+    }
+
+    private static com.fasterxml.jackson.databind.node.ObjectNode decodedLifeBudgetHint(
+            org.xar.ck3.control.application.action.RawJson hint, SessionIdentity owner) {
+        var fields = Set.of("schema", "owner", "subject", "saved_life_tail_nanos", "reserve_floor_nanos");
+        var row = StrictJson.object(StrictJson.parse(hint.bytes(), 16_384), fields, fields);
+        StrictJson.require("xar.life-budget-hint/v1".equals(StrictJson.text(row.get("schema")))
+                && owner.equals(OrdinaryCycleTransitions.sessionFromJson(row.get("owner"))), "scheduling hint owner/schema differs");
+        var subject = org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(row.get("subject"));
+        StrictJson.require(subject.machineId().equals(owner.machineId()) && subject.game().equals(owner.game()), "scheduling hint crossed owned Game");
+        StrictJson.require(hintNanos(row.get("saved_life_tail_nanos")) > 0 || hintNanos(row.get("reserve_floor_nanos")) > 0, "positive known scheduling hint required");
+        return row;
+    }
+
+    private static long hintNanos(com.fasterxml.jackson.databind.JsonNode value) {
+        String text = StrictJson.text(value);
+        StrictJson.require(text.matches("0|[1-9][0-9]{0,18}"), "canonical finite scheduling nanoseconds required");
+        long nanos = Long.parseLong(text);
+        StrictJson.require(nanos <= Duration.ofDays(1).toNanos(), "scheduling hint exceeds finite telemetry bound"); return nanos;
+    }
+
+    static boolean sameLifeBudgetSubject(org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity historical,
+            org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity current) {
+        return historical.machineId().equals(current.machineId()) && historical.game().equals(current.game())
+                && historical.frame().episodeRunId().equals(current.frame().episodeRunId())
+                && historical.frame().identity().player().equals(current.frame().identity().player())
+                && historical.frame().identity().dateRaw().compareTo(current.frame().identity().dateRaw()) <= 0;
+    }
+
+    long retainedLifeBudgetReserveNanos(BatchLimits limits,
+            org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity current) {
+        if (lifeBudgetSubject.filter(subject -> sameLifeBudgetSubject(subject, current)).isEmpty()) return lifeBudgetReserveNanos(limits, 0);
+        return Math.max(lifeBudgetReserveNanos(limits, savedLifeTailNanos), retainedLifeReserveNanos);
+    }
+
+    private Optional<org.xar.ck3.control.application.action.RawJson> currentLifeBudgetHint() {
+        if (lifeBudgetSubject.isEmpty() || savedLifeTailNanos == 0 && retainedLifeReserveNanos == 0) return Optional.empty();
+        var row = StrictJson.object(); row.put("schema", "xar.life-budget-hint/v1"); row.set("owner", OrdinaryCycleTransitions.sessionToJson(identity));
+        row.set("subject", org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.observation(lifeBudgetSubject.orElseThrow()));
+        row.put("saved_life_tail_nanos", Long.toString(savedLifeTailNanos)); row.put("reserve_floor_nanos", Long.toString(retainedLifeReserveNanos));
+        return Optional.of(new org.xar.ck3.control.application.action.RawJson(StrictJson.canonical(row, 16_384)));
     }
 
     /** Scheduling estimate only; no action qualification or completion guarantee is minted. */
@@ -924,6 +1025,7 @@ public final class SessionController {
                 || report.turns().stream().noneMatch(turn -> turn.receipt().settled()
                     && turn.receipt().outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
                     && turn.receipt().visibleGameplay() && turn.receipt().eligibleAdvance()
+                    && sameLifeBudgetSubject(turn.receipt().command().before(), report.lastSavedPair().orElseThrow().frame())
                     && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(turn.receipt().command().operation().value())
                     && turn.receipt().state() instanceof ActionState.CompositeSettled settled
                     && settled.settlement() instanceof ActionState.Applied
@@ -1018,7 +1120,7 @@ public final class SessionController {
             var now = clock.now();
             if (!now.utc().isBefore(selected.deadline())) return; // Preserve the original expired-command failure path.
             long remaining = Math.min(untilNanos - now.elapsedNanos(), Duration.between(now.utc(), selected.deadline()).toNanos());
-            long reserve = lifeBudgetReserveNanos(limits, savedLifeTailNanos);
+            long reserve = retainedLifeBudgetReserveNanos(limits, selected.before());
             if (remaining < reserve) throw new End(Terminal.WALL_TIMEOUT,
                     "PRE_INTENT_LIFE_BUDGET_DEFERRED: remaining_nanos=" + remaining + "; reserve_nanos=" + reserve
                     + "; no action INTENT submitted; next batch must freshly observe and plan");

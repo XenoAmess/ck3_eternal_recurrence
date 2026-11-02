@@ -69,7 +69,13 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                 var originalTicket = readTicket(ticketPath);
                 running = prepared.openCleanRestart(attached, originalTicket, clock.instant().plus(config.operationTimeout()));
             }
+            var schedulingController = running.core().sessionAccess().current().controllerForPublication();
+            var importedLifeHint = readLifeBudgetHint(config.stateDirectory().resolve("worker-batches.jsonl"), schedulingController.identity());
+            boolean restoredLifeHint = importedLifeHint.filter(schedulingController::restoreLifeBudgetHint).isPresent();
+            var schedulingHints = new java.util.concurrent.atomic.AtomicReference<Optional<org.xar.ck3.control.application.action.RawJson>>(
+                    restoredLifeHint ? importedLifeHint : Optional.empty());
             ObjectNode initial = event(clock, "ORDINARY_WORKER_LOOP_START");
+            initial.put("life_budget_hint_status", restoredLifeHint ? "restored" : "not_available");
             initial.set("game", attached.generation().toJson());
             initial.put("next_sequence", Long.toString(running.nextBatchSequence()));
             initial.put("ordinary_batch_started", false);
@@ -80,7 +86,9 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             var control = new RootOrdinaryWorkerLoop.Control() {
                 @Override public boolean stopRequested() { return Files.exists(config.stopPath()); }
                 @Override public void onBatchCompleted(BatchReport actual, long nextSequence) throws IOException {
-                    recordBatch(config, clock, actual, nextSequence);
+                    var hint = org.xar.ck3.control.application.session.SessionController.retainLifeBudgetHint(actual, schedulingHints.get());
+                    schedulingHints.set(hint);
+                    recordBatch(config, clock, actual, nextSequence, hint);
                 }
             };
             result = new RootOrdinaryWorkerLoop(actualLoop, control).run(running.core().sessionAccess(), running.nextBatchSequence());
@@ -255,9 +263,100 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         }
     }
 
+    /** Bounded optional telemetry snapshot. No original, ticket, Driver or Game is opened here. */
+    static Optional<org.xar.ck3.control.application.action.RawJson> readLifeBudgetHint(Path path,
+            org.xar.ck3.control.application.session.SessionPorts.SessionIdentity owner) {
+        final int maximum = 1_048_576;
+        try (var channel = FileChannel.open(path, StandardOpenOption.READ)) {
+            long end = channel.size(), start = Math.max(0, end - maximum);
+            var data = ByteBuffer.allocate((int) (end - start)); channel.position(start);
+            while (data.hasRemaining()) { int count = channel.read(data); if (count <= 0) break; }
+            byte[] bytes = data.array(); int size = data.position(), first = 0;
+            if (start > 0) { while (first < size && bytes[first] != 10) first++; first++; }
+            int last = size - 1; while (last >= first && bytes[last] != 10) last--;
+            for (int records = 0; last >= first && records < 64; records++) {
+                int previous = last - 1; while (previous >= first && bytes[previous] != 10) previous--;
+                int beginning = previous + 1;
+                if (last > beginning) {
+                    try {
+                        var parsed = FullJsonTree.parse(java.util.Arrays.copyOfRange(bytes, beginning, last), maximum);
+                        if (parsed instanceof ObjectNode row) {
+                            var hint = lifeBudgetHintFromReport(row, owner);
+                            if (hint.isPresent()) return hint;
+                        }
+                    } catch (IllegalArgumentException unavailable) { /* A partial/bad optional line grants no metric. */ }
+                }
+                last = previous;
+            }
+        } catch (IOException | IllegalArgumentException unavailable) { /* Missing or unreadable optional history preserves the old fallback. */ }
+        return Optional.empty();
+    }
+
+    static Optional<org.xar.ck3.control.application.action.RawJson> lifeBudgetHintFromReport(ObjectNode row,
+            org.xar.ck3.control.application.session.SessionPorts.SessionIdentity owner) {
+        try {
+            if (!"xar.ordinary-session-batch-result/v1".equals(StrictJson.text(row.get("schema")))
+                    || !owner.machineId().equals(StrictJson.text(row.get("machine_id")))
+                    || owner.game().pid() != StrictJson.integer(row.get("game_pid"), 1, 4_294_967_295L)
+                    || !owner.game().creationFiletime().value().toString().equals(StrictJson.text(row.get("game_creation_filetime")))
+                    || !owner.sessionId().equals(StrictJson.text(row.get("session_id")))) return Optional.empty();
+            var pair = org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.decode(FullJsonTree.encode(row.get("last_saved_pair"), 65_536));
+            ObjectNode hint;
+            if (row.hasNonNull("life_budget_hint")) {
+                var fields = java.util.Set.of("schema", "owner", "subject", "saved_life_tail_nanos", "reserve_floor_nanos");
+                hint = StrictJson.object(row.get("life_budget_hint"), fields, fields);
+                if (!"xar.life-budget-hint/v1".equals(StrictJson.text(hint.get("schema")))
+                        || !owner.equals(OrdinaryCycleTransitions.sessionFromJson(hint.get("owner")))) return Optional.empty();
+                long tail = lifeHintNanos(hint.get("saved_life_tail_nanos")), floor = lifeHintNanos(hint.get("reserve_floor_nanos"));
+                if (tail == 0 && floor == 0) return Optional.empty();
+            } else {
+                if (!"WALL_TIMEOUT".equals(StrictJson.text(row.get("terminal"))) || !row.get("dirty_since_save").isBoolean()
+                        || row.get("dirty_since_save").booleanValue()) return Optional.empty();
+                for (String name : java.util.List.of("attempted_turns", "original_action_reconciliation_count", "zero_dispatch_revision_replan_count",
+                        "lifecycle_turn_count", "reported_action_tail_count", "committed_saved_days", "eligible_advances_since_save"))
+                    if (StrictJson.integer(row.get(name), 0, StrictJson.MAX_SAFE_INTEGER) != 0) return Optional.empty();
+                for (String name : java.util.List.of("last_actions", "last_original_action_reconciliations", "last_lifecycle_turns", "last_read_publication_reconciliations"))
+                    if (row.get(name) == null || !row.get(name).isArray() || !row.get(name).isEmpty()) return Optional.empty();
+                String detail = StrictJson.text(row.get("detail"));
+                String prefix = "PRE_INTENT_LIFE_BUDGET_DEFERRED: remaining_nanos=", middle = "; reserve_nanos=",
+                        suffix = "; no action INTENT submitted; next batch must freshly observe and plan";
+                int split = detail.indexOf(middle, prefix.length());
+                if (detail.length() > 1024 || !detail.startsWith(prefix) || !detail.endsWith(suffix) || split < 0) return Optional.empty();
+                String remainingText = detail.substring(prefix.length(), split);
+                if (!remainingText.matches("0|-?[1-9][0-9]{0,18}")) return Optional.empty();
+                long remaining = Long.parseLong(remainingText);
+                long reserve = lifeHintNanos(StrictJson.object().put("value", detail.substring(split + middle.length(), detail.length() - suffix.length())).get("value"));
+                if (reserve <= 0 || remaining >= reserve) return Optional.empty();
+                var plan = StrictJson.object(row.get("last_plan"), java.util.Set.of("before", "visits", "final_plan"));
+                var command = org.xar.ck3.control.application.action.ActionCodec.decodeCommand(FullJsonTree.encode(plan.get("final_plan").get("command"), 1_048_576));
+                var subject = org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(plan.get("before"));
+                if (!(command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay)
+                        || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(command.operation().value())
+                        || !command.before().equals(subject) || !command.sessionId().equals(owner.sessionId())) return Optional.empty();
+                hint = StrictJson.object(); hint.put("schema", "xar.life-budget-hint/v1"); hint.set("owner", OrdinaryCycleTransitions.sessionToJson(owner));
+                hint.set("subject", org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.observation(subject));
+                hint.put("saved_life_tail_nanos", "0"); hint.put("reserve_floor_nanos", Long.toString(reserve));
+            }
+            var subject = org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(hint.get("subject"));
+            var anchor = pair.frame();
+            if (!subject.machineId().equals(owner.machineId()) || !subject.game().equals(owner.game())
+                    || !anchor.machineId().equals(owner.machineId()) || !anchor.game().equals(owner.game())
+                    || !subject.frame().episodeRunId().equals(anchor.frame().episodeRunId())
+                    || !subject.frame().identity().player().equals(anchor.frame().identity().player())
+                    || subject.frame().identity().dateRaw().compareTo(anchor.frame().identity().dateRaw()) > 0) return Optional.empty();
+            return Optional.of(new org.xar.ck3.control.application.action.RawJson(StrictJson.canonical(hint, 16_384)));
+        } catch (IllegalArgumentException | NullPointerException unavailable) { return Optional.empty(); }
+    }
+
+    private static long lifeHintNanos(com.fasterxml.jackson.databind.JsonNode value) {
+        String text = StrictJson.text(value); StrictJson.require(text.matches("0|[1-9][0-9]{0,18}"), "canonical scheduling nanoseconds required");
+        long nanos = Long.parseLong(text); StrictJson.require(nanos <= java.time.Duration.ofDays(1).toNanos(), "bounded scheduling telemetry required"); return nanos;
+    }
+
     private static void recordBatch(RootOrdinaryRuntimeConfiguration config, Clock clock,
-            BatchReport actual, long nextSequence) throws IOException {
+            BatchReport actual, long nextSequence, Optional<org.xar.ck3.control.application.action.RawJson> lifeHint) throws IOException {
         ObjectNode row = OrdinarySessionResource.report(actual);
+        lifeHint.ifPresent(hint -> row.set("life_budget_hint", StrictJson.parse(hint.bytes(), 16_384)));
         row.put("observed_at_utc", clock.instant().toString());
         row.put("next_sequence", Long.toString(nextSequence));
         byte[] body = FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES);
