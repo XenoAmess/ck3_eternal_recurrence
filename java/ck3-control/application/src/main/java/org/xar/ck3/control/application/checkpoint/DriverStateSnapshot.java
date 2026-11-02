@@ -42,6 +42,14 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
             StrictJson.require(!(lastCheckpoint instanceof Missing) && !(rollbackWarFailure instanceof Missing) && !(managedRestoreTransaction instanceof Missing)
                     && !(successionExpectation instanceof Missing) && !(campaignGoal instanceof Missing), "required original Driver fields may be null, never absent");
         }
+        /** Strict bytes stay local; only detached typed DATA reaches the fixed anchor verifier. */
+        static Complete decodeAndVerify(byte[] raw, java.util.function.BiConsumer<Complete, ObjectNode> verifier) {
+            Objects.requireNonNull(verifier);
+            ObjectNode row = object(parse(raw));
+            Complete complete = decodeParsedComplete(row);
+            verifier.accept(complete, row);
+            return complete;
+        }
         public byte[] encode() {
             ObjectNode row = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode(); row.put("format_version", 2); row.put("pipe_name", session.pipeName()); row.put("bridge_pid", session.bridgePid());
             row.put("episode_character_id", session.actorId()); row.put("episode_run_id", session.episodeRunId());
@@ -52,7 +60,10 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
         }
     }
     static Complete decodeComplete(byte[] raw) {
-        ObjectNode row = object(parse(raw)); Set<String> allowed = Set.of("format_version","pipe_name","bridge_pid","episode_character_id","episode_run_id","last_checkpoint","command_history","rollback_war_failure","managed_restore_transaction","succession_expectation","succession_lifecycle","campaign_goal","rollback_war_failures");
+        return decodeParsedComplete(object(parse(raw)));
+    }
+    private static Complete decodeParsedComplete(ObjectNode row) {
+        Set<String> allowed = Set.of("format_version","pipe_name","bridge_pid","episode_character_id","episode_run_id","last_checkpoint","command_history","rollback_war_failure","managed_restore_transaction","succession_expectation","succession_lifecycle","campaign_goal","rollback_war_failures");
         row.fieldNames().forEachRemaining(key -> StrictJson.require(allowed.contains(key), "unmigrated top-level Driver field: " + key));
         StrictJson.integer(row.get("format_version"), 2, 2); StrictJson.require(row.get("command_history") != null && row.get("command_history").isArray(), "full Driver history required");
         List<HistoryEntry> history = new ArrayList<>(); for (JsonNode item : row.get("command_history")) { ObjectNode entry = object(item); history.add(new HistoryEntry(StrictJson.integer(entry.get("index"), 1, StrictJson.MAX_SAFE_INTEGER), new Value(bytes(entry)))); }

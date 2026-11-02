@@ -86,9 +86,11 @@ public final class DriverCheckpointStore {
         Objects.requireNonNull(expected);files.verify(pair);
         var ack=files.observe(Path.of(pair.nativeAckRef().path())).orElseThrow(()->new IOException("original SAVE ACK source unavailable"));
         StrictJson.require(ack.reference().equals(pair.nativeAckRef()),"original SAVE ACK differs");
-        byte[] raw=files.read(pair.driver(),MAX_DRIVER_BYTES);var complete=DriverStateSnapshot.decodeComplete(raw);
-        StrictJson.require(complete.session().equals(expected),"physical saved Driver differs from its actual verified source session");
-        validateAnchor(parse(raw),pair.save(),pair.frame(),pair.lineageId(),pair.saveActionId(),pair.historyIndex(),expected.pipeName());
+        byte[] raw=files.read(pair.driver(),MAX_DRIVER_BYTES);
+        var complete=DriverStateSnapshot.Complete.decodeAndVerify(raw, (decoded, row) -> {
+            StrictJson.require(decoded.session().equals(expected),"physical saved Driver differs from its actual verified source session");
+            validateAnchor(row,pair.save(),pair.frame(),pair.lineageId(),pair.saveActionId(),pair.historyIndex(),expected.pipeName());
+        });
         files.verify(pair);return complete;
     }
     public void verifyOriginal(CheckpointPair pair,DriverStateSnapshot.Session expected)throws IOException {readVerifiedOriginal(pair,expected);}
@@ -97,9 +99,8 @@ public final class DriverCheckpointStore {
         Objects.requireNonNull(pair);Objects.requireNonNull(raw);
         StrictJson.require(raw.length==pair.driver().reference().bytes()
                 &&sha256(raw).equals(pair.driver().reference().sha256()),"archived complete saved Driver differs from the original physical pair");
-        var complete=DriverStateSnapshot.decodeComplete(raw);
-        validateAnchor(parse(raw),pair.save(),pair.frame(),pair.lineageId(),pair.saveActionId(),pair.historyIndex(),complete.session().pipeName());
-        return complete;
+        return DriverStateSnapshot.Complete.decodeAndVerify(raw, (complete, row) ->
+                validateAnchor(row,pair.save(),pair.frame(),pair.lineageId(),pair.saveActionId(),pair.historyIndex(),complete.session().pipeName()));
     }
     private void validateIdentity(ObjectNode document, ObservationIdentity frame) {validateIdentity(document,frame,pipeName);}
     private static ArrayNode validateIdentity(ObjectNode document,ObservationIdentity frame,String expectedPipe) {
