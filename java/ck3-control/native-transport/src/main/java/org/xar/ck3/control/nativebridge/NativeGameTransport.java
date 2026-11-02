@@ -33,6 +33,8 @@ import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.PlanningReadFailure;
 import org.xar.ck3.control.application.action.PlanningReadFailureCodec;
 import org.xar.ck3.control.application.action.CommandOrigin;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator;
 import org.xar.ck3.control.application.action.council.CouncilContinuationPermit;
 import org.xar.ck3.control.application.action.council.CouncilContinuationModel.Stage;
 import org.xar.ck3.control.application.action.FrontendFrame;
@@ -225,6 +227,43 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             "private-assign-councillor-v1", "private-query-assign-councillor-receipt-v1",
             "private-council-application-main-status-v1");
 
+    /** A private lane for one actual new ISSUED read, never reconstructed assignment custody. */
+    private CouncilRecoveryRole activeCouncilRecovery;
+    private final class CouncilRecoveryRole {
+        private final Thread owner = Thread.currentThread();
+        private final CouncilContinuationPermit issued;
+        private final CouncilContinuationCoordinator.RecoveryOriginal original;
+        private final String requestId;
+        private final Stage stage;
+        private final Instant deadline;
+        private boolean writeClaimed;
+        private boolean released;
+        private CouncilRecoveryRole(CouncilContinuationPermit issued,
+                CouncilContinuationCoordinator.RecoveryOriginal original, Instant deadline) {
+            this.issued = issued; this.original = original; this.deadline = deadline;
+            this.requestId = issued.requestId(); this.stage = issued.stage();
+        }
+        private void binding() throws IOException {
+            if (activeCouncilRecovery != this || released || owner != Thread.currentThread()
+                    || activeMailbox != null || mailboxPoison != null
+                    || issued.recoveryOriginal().orElse(null) != original
+                    || !requestId.equals(issued.requestId()) || stage != issued.stage())
+                throw new IOException("recovered Council RPC escaped its exact private permit, stage or thread");
+        }
+        /** Invoked by dispatchOriginal immediately before recording and entering the actual new write. */
+        private void consumeAtWrite() {
+            try {
+                binding();
+                if (writeClaimed) throw new IOException("recovered Council RPC already claimed its one write");
+                original.requireCurrent();
+                writeClaimed = true;
+                issued.consumeOnce();
+                binding(); open(deadline); verifyEndpoint();
+                requireRecoveredGuard(issued, original);
+            } catch (IOException failure) { throw new UncheckedIOException(failure); }
+        }
+    }
+
     @FunctionalInterface public interface MailboxWork<T> {
         T run(MailboxScope scope) throws IOException, InterruptedException;
     }
@@ -382,7 +421,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     /** No automatic unlock: UNKNOWN requires a separately implemented, source-bound reconciliation protocol. */
     public synchronized <T> T withMailbox(Instant deadline, MailboxWork<T> work) throws IOException, InterruptedException {
-        Objects.requireNonNull(work); open(deadline);
+        Objects.requireNonNull(work);
+        if (activeCouncilRecovery != null) throw new IOException("recovered Council RPC cannot acquire an ordinary mailbox");
+        open(deadline);
         if (activeMailbox != null || mailboxPoison != null) throw new IOException("held mailbox is already scoped or unresolved");
         awaitHello(deadline); verifyEndpoint();
         MailboxScope scope = new MailboxScope(); activeMailbox = scope;boolean returned=false;
@@ -418,6 +459,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         return outcome;
     }
     private void requireDispatchScope(String step, boolean continuation) throws IOException {
+        if (activeCouncilRecovery != null) throw new IOException("ordinary Native dispatch is blocked during the exact recovered Council RPC");
         if (mailboxPoison != null) throw new IOException(mailboxPoison);
         if (activeMailbox != null) {
             activeMailbox.current();
@@ -532,6 +574,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Sole actual Driver caller invokes this after successful original adoption, never on a refusal branch.
      * This sends no Game action and waits for no PONG/snapshot. Every original attempt is retained and never resent. */
     public synchronized PingAttempt startHandshake(Instant deadline)throws IOException,InterruptedException {
+        if (activeCouncilRecovery != null) throw new IOException("recovered Council RPC cannot start another Native producer");
         open(deadline);if(hello==null)throw new IOException("original held HELLO and successful actual Driver adoption must precede ping");verifyEndpoint();
         if(handshakeAttempt!=null) {
             if(handshakeAttempt.failure().isPresent())throw new IOException("original ping transfer remains failed/unknown; no resend: "+handshakeAttempt.failure().orElseThrow().message());
@@ -1088,11 +1131,83 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return retainReadOutcome(dispatch(id, packet, readDeadline(deadline), permit::consumeOnce));
         } catch (IOException | RuntimeException failure) { return retainReadOutcome(zero(id, reason(failure))); }
     }
+    /** One actual newly ISSUED read-only RPC; historical assignment/ACK data never become live write custody. */
+    public synchronized DispatchOutcome continueRecoveredCouncil(CouncilContinuationPermit issued, NativeRequest prepared,
+            Instant deadline) throws IOException, InterruptedException {
+        Objects.requireNonNull(issued); Objects.requireNonNull(prepared); Objects.requireNonNull(deadline);
+        if (activeCouncilRecovery != null || activeMailbox != null)
+            throw new IOException("recovered Council RPC cannot nest or enter an ordinary mailbox");
+        if (mailboxPoison != null) throw new IOException(mailboxPoison);
+        open(deadline); verifyEndpoint();
+        var original = issued.recoveryOriginal().orElseThrow(() -> new IOException("actual private recovered original is required"));
+        original.requireCurrent();
+        var command = original.command(); var attempt = original.attempt(); var ack = original.originalAck();
+        if (!issued.originalActionId().equals(command.actionId())
+                || !issued.originalBodySha256().equals(ActionCodec.bodySha256(command))
+                || !issued.originalAttemptRequestId().equals(attempt.requestId()))
+            throw new IOException("recovered Council permit differs from its exact canonical original command/attempt");
+        org.xar.ck3.control.nativebridge.capabilities.governance.CouncilContinuationPolicy
+                .requireOriginalPending(command, attempt, ack);
+        if (issued.stage() != Stage.HELPER_STATUS && issued.stage() != Stage.RECEIPT_QUERY && issued.stage() != Stage.RECEIPT_STATUS)
+            throw new IOException("recovered Council RPC is outside its fixed read-only stages");
+        if (!prepared.equals(issued.preparedRequest()) || prepared.requiredCapability().isPresent()
+                || !prepared.step().equals(issued.stage().step())
+                || !NativeWire.object(NativeWire.parse(prepared.additionalFields().bytes())).isEmpty())
+            throw new IOException("recovered Council RPC differs from its exact ISSUED stage and empty arguments");
+        requireRecoveredGuard(issued, original);
+        String id = issued.requestId();
+        if (issued.consumed() || sentRequestIds.contains(id)) {
+            if (terminalFailure == null) terminalFailure = "recovered Council request was already attempted; collect that exact original only";
+            latestReadEvidence = null;
+            return new Unknown(id, terminalFailure, retainedOutbound(id), Optional.empty());
+        }
+        if (sentRequestIds.size() >= maximumSubmissions) throw new IOException("Native request identity retention limit reached");
+        byte[] packet = issued.stage() == Stage.RECEIPT_QUERY
+                ? NativeWire.execute(id, COUNCIL_RECEIPT, issued.guard().origin().expectedRevision(), prepared.additionalFields().bytes())
+                : NativeWire.executeCouncilMailboxStatus(id, COUNCIL_STATUS, prepared.additionalFields().bytes());
+        var role = new CouncilRecoveryRole(issued, original, deadline);
+        activeCouncilRecovery = role;
+        try {
+            role.binding(); latestReadEvidence = null;
+            // This private call alone bypasses ordinary mailbox admission. All other producer writes remain fenced.
+            DispatchOutcome outcome = dispatchOriginal(id, packet, readDeadline(deadline), role::consumeAtWrite);
+            if (outcome instanceof Unknown && terminalFailure == null)
+                terminalFailure = "actual recovered Council RPC is UNKNOWN; no new producer or replay is authorized";
+            return outcome;
+        } finally {
+            role.released = true; activeCouncilRecovery = null;
+        }
+    }
+    private void requireRecoveredGuard(CouncilContinuationPermit issued,
+            CouncilContinuationCoordinator.RecoveryOriginal original) throws IOException {
+        GuardEvidence fresh = issued.guard(); GuardEvidence before = original.attempt().guard();
+        var command = original.command(); Instant now = Instant.now();
+        if (hello == null || !config.sessionId().equals(issued.sessionId())
+                || !fresh.sessionId().equals(issued.sessionId()) || !before.sessionId().equals(fresh.sessionId())
+                || !command.sessionId().equals(fresh.sessionId())
+                || !hello.connectionGeneration().equals(fresh.connectionGeneration())
+                || !fresh.authorityId().equals(before.authorityId()) || !fresh.operation().equals(before.operation())
+                || !fresh.operation().equals(command.operation())
+                || !fresh.source().sourceRef().equals(before.source().sourceRef())
+                || !fresh.source().exactBuild().equals(before.source().exactBuild())
+                || !fresh.source().equals(command.source())
+                || !sameCouncilLife(before.origin(), fresh.origin())
+                || !now.isBefore(fresh.validUntil()) || fresh.observedAt().isAfter(now))
+            throw new IOException("recovered Council RPC crossed its actual current session/guard or historical source/Game/actor binding");
+        // The old connection and custody epoch remain historical DATA; only the current HELLO must match the new guard.
+        if (fresh.origin().expectedRevision().compareTo(before.origin().expectedRevision()) < 0
+                || (issued.stage() == Stage.RECEIPT_QUERY
+                    && fresh.origin().expectedRevision().compareTo(before.origin().expectedRevision()) <= 0))
+            throw new IOException("recovered Council RPC lacks its required actual current native revision");
+        requireIdentity(fresh.origin()); requireRawEvidence(fresh); requireLivingPausedMap();
+    }
+
     /** Only a live original-writer continuation permit can poll or inspect this held Council mutation. */
     public synchronized DispatchOutcome continueCouncil(CouncilContinuationPermit permit, NativeRequest exactRequest,
             Instant deadline) throws InterruptedException {
         Objects.requireNonNull(permit); Objects.requireNonNull(exactRequest); String id = permit.requestId();
         try {
+            if (permit.recoveryOriginal().isPresent()) throw new IOException("recovered Council permit requires its exact private RPC lane");
             if (permit.consumed() || sentRequestIds.contains(id))
                 return recordMailboxOutcome(new Unknown(id, "original continuation already attempted; collect that exact original only", retainedOutbound(id), Optional.empty()));
             open(deadline); verifyEndpoint();

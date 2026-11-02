@@ -31,12 +31,55 @@ public final class CouncilContinuationPolicy implements CouncilContinuationPorts
         this.definitions = Objects.requireNonNull(definitions); this.frames = Objects.requireNonNull(frames);
         CouncilCodec.requireBuild(version, sha256); this.version = version; this.sha256 = sha256;
     }
+    private final ThreadLocal<RecoveryScope> recoveryScope = new ThreadLocal<>();
+    final class RecoveryScope implements AutoCloseable {
+        private final CouncilContinuationCoordinator.RecoveryOriginal original;
+        private final ContinuityStorePort.Session same;
+        private final List<PlanningReadReceipt> reads;
+        private final Thread thread = Thread.currentThread();
+        private RecoveryScope(CouncilContinuationCoordinator.RecoveryOriginal original,
+                ContinuityStorePort.Session same, List<PlanningReadReceipt> reads) {
+            this.original = original; this.same = same; this.reads = List.copyOf(reads);
+        }
+        private void require(ContinuityStorePort.Session actual, ActionReceipt parent) throws IOException {
+            StrictJson.require(recoveryScope.get() == this && thread == Thread.currentThread() && actual == same
+                    && parent.state() instanceof ActionState.Unknown && original.command().equals(parent.command())
+                    && original.attempt().equals(ActionTransitions.attempt(parent.state()).orElseThrow())
+                    && original.originalAck().equals(ActionTransitions.dispatch(parent.state()).orElseThrow()),
+                    "recovered policy escaped its actual private original/session/action/thread");
+            original.requireCurrent();
+        }
+        @Override public void close() {
+            StrictJson.require(recoveryScope.get() == this && thread == Thread.currentThread(), "recovered policy scope close crossed owner");
+            recoveryScope.remove();
+        }
+    }
+    RecoveryScope beginRecovery(ContinuityStorePort.Session same,
+            CouncilContinuationCoordinator.RecoveryOriginal original, List<PlanningReadReceipt> reads) throws IOException {
+        Objects.requireNonNull(same); Objects.requireNonNull(original); Objects.requireNonNull(reads);
+        original.requireCurrent();
+        StrictJson.require(recoveryScope.get() == null && !reads.isEmpty() && reads.size() <= 3002,
+                "one finite actual recovered policy scope required");
+        var scope = new RecoveryScope(original, same, reads); recoveryScope.set(scope); return scope;
+    }
     @Override public List<ExactRef> prepareEvidence(ContinuityStorePort.Session same, WriterContracts.Head head, ActionReceipt parent,
-            Stage stage, List<Retained> prior, ActionPorts.OutcomeArchive archive) {
-        var context = GovernanceActionScope.current(parent.command());
-        StrictJson.require(context.session(parent.command()) == same, "continuation borrowed another original writer"); context.mailbox(parent.command());
-        if (!prior.isEmpty()) return prior.getFirst().request().supportingEvidence();
-        var reads = context.preflight(parent.command());
+            Stage stage, List<Retained> prior, ActionPorts.OutcomeArchive archive) throws IOException {
+        RecoveryScope recovered = recoveryScope.get();
+        List<PlanningReadReceipt> reads;
+        if (recovered != null) {
+            recovered.require(same, parent);
+            if (!prior.isEmpty()) {
+                var retained = prior.getFirst().request().supportingEvidence();
+                requirePreflight(parent.command(), recovered.original.attempt(), retained, archive, recovered.original.originalAck());
+                return retained;
+            }
+            reads = recovered.reads;
+        } else {
+            var context = GovernanceActionScope.current(parent.command());
+            StrictJson.require(context.session(parent.command()) == same, "continuation borrowed another original writer"); context.mailbox(parent.command());
+            if (!prior.isEmpty()) return prior.getFirst().request().supportingEvidence();
+            reads = context.preflight(parent.command());
+        }
         StrictJson.require(!reads.isEmpty() && reads.size() <= 3002, "actual held-scope final-gates preflight is required");
         var body = StrictJson.object().put("schema", PREFLIGHT_SCHEMA).put("command_body_sha256", parent.bodySha256())
                 .put("original_request_id", ActionTransitions.attempt(parent.state()).orElseThrow().requestId());
@@ -49,11 +92,16 @@ public final class CouncilContinuationPolicy implements CouncilContinuationPorts
     }
     @Override public void verifyIssue(ContinuityStorePort.Session same, WriterContracts.Head head, ActionReceipt parent,
             List<Retained> prior, Request next, ActionPorts.OutcomeArchive archive) throws IOException {
-        var context = GovernanceActionScope.current(parent.command());
-        StrictJson.require(context.session(parent.command()) == same, "continuation lost original Session"); context.mailbox(parent.command());
+        RecoveryScope recovered = recoveryScope.get();
+        if (recovered != null) recovered.require(same, parent);
+        else {
+            var context = GovernanceActionScope.current(parent.command());
+            StrictJson.require(context.session(parent.command()) == same, "continuation lost original Session"); context.mailbox(parent.command());
+        }
         var attempt = ActionTransitions.attempt(parent.state()).orElseThrow();
         requirePreflight(parent.command(), attempt, next.supportingEvidence(), archive, parent.ack().orElseThrow());
-        Progress progress = replay(parent.command(), attempt, parent.ack().orElseThrow(), prior, archive);
+        Progress progress = recovered == null ? replay(parent.command(), attempt, parent.ack().orElseThrow(), prior, archive)
+                : replayRecovered(parent.command(), attempt, parent.ack().orElseThrow(), prior, archive);
         StrictJson.require(progress.next().filter(next.stage()::equals).isPresent(), "Council continuation stage is not the next original native operation");
         StrictJson.require(prior.stream().allMatch(row -> row.request().supportingEvidence().equals(next.supportingEvidence())), "continuation changed its original preflight basis");
         var actual = RootGuardEvidence.loadFrame(next.guard(), archive, frames);
@@ -162,6 +210,81 @@ public final class CouncilContinuationPolicy implements CouncilContinuationPorts
             }
         }
         return new Progress(next, Optional.ofNullable(helper), Optional.ofNullable(receipt));
+    }
+    public static Progress replayRecovered(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.AckReceived original,
+            List<Retained> rows, ActionPorts.OutcomeArchive archive) throws IOException {
+        requireOriginalPending(command, attempt, original);
+        var previousCustody = GovernanceReadChronology.requireAck(original, attempt.guard());
+        StrictJson.require(!previousCustody.writeEntered().observedAt().isBefore(attempt.submittedAt()), "Council original native write predates the canonical attempt");
+        GuardEvidence previousGuard = attempt.guard();
+        Optional<Stage> next = Optional.of(Stage.HELPER_STATUS); CouncilActionCodec.Ack helper = null; CouncilActionCodec.Receipt receipt = null;
+        var ids = new HashSet<String>(); ids.add(attempt.requestId()); long sequence = 0; java.math.BigInteger nativeSequence = java.math.BigInteger.ZERO;
+        for (Retained retained : rows) {
+            StrictJson.require(retained.entry().equals(CouncilContinuationCodec.decodeEntry(exact(retained.reference(), archive).bytes())), "continuation entry differs from its original archive");
+            Request request = retained.request();
+            StrictJson.require(retained.status() == Status.ACK && next.filter(request.stage()::equals).isPresent()
+                    && request.scope().parentActionId().equals(command.actionId()) && request.scope().parentBodySha256().equals(ActionCodec.bodySha256(command))
+                    && request.scope().originalAttemptRequestId().equals(attempt.requestId()) && ids.add(request.requestId()) && request.issuedSequence() > sequence,
+                    "Council continuation replay crossed original scope/order or unresolved request"); sequence = request.issuedSequence();
+            var outcome = archive.load(retained.entry().outcome().orElseThrow());
+            StrictJson.require(outcome instanceof NativeActionPort.AckReceived, "continuation does not have an original ACK");
+            var ack = (NativeActionPort.AckReceived) outcome; requireWire(request, ack); var material = result(ack);
+            var actualCustody = GovernanceReadChronology.requireAck(ack, request.guard());
+            requireRecoveredAfter(command, attempt, original, retained, previousCustody, actualCustody, previousGuard, archive);
+            StrictJson.require(!actualCustody.writeEntered().observedAt().isBefore(request.issuedAt())
+                    && !actualCustody.responseReceived().observedAt().isAfter(request.deadline()), "Council continuation escaped its original issued time/deadline");
+            previousCustody = actualCustody; previousGuard = request.guard();
+            if (isPending(material, request.stage().step())) {
+                if (request.stage() == Stage.RECEIPT_QUERY) next = Optional.of(Stage.RECEIPT_STATUS);
+                continue;
+            }
+            var actualSequence = CouncilCodec.u64(material.get("query_sequence"), true);
+            StrictJson.require(actualSequence.compareTo(nativeSequence) > 0, "Council original native terminal sequence did not advance"); nativeSequence = actualSequence;
+            if (request.stage() == Stage.HELPER_STATUS) {
+                helper = decodeHelperTerminal(new RawJson(StrictJson.canonical(material)), GovernanceActionPreparation.councilRequest(command, attempt.requestId()));
+                next = helper.status() == CouncilActionCodec.AckStatus.HELPER_INVOKED_VERIFICATION_PENDING ? Optional.of(Stage.RECEIPT_QUERY) : Optional.empty();
+            } else {
+                StrictJson.require(helper != null, "receipt query precedes original helper terminal");
+                envelope(material, CouncilActionCodec.RECEIPT, "council_assign_councillor_receipt");
+                receipt = CouncilActionCodec.decodeReceipt(StrictJson.canonical(material.get("council_assign_councillor_receipt")), helper);
+                StrictJson.require(CouncilCodec.text(material, "status").equals(CouncilCodec.text(CouncilCodec.object(StrictJson.parse(receipt.original().bytes())), "status"))
+                        && CouncilCodec.u64(material.get("snapshot_revision"), true).equals(request.guard().observed().frame().identity().nativeRevision()), "receipt terminal crossed its actual query native frame");
+                next = Optional.empty();
+            }
+        }
+        return new Progress(next, Optional.ofNullable(helper), Optional.ofNullable(receipt));
+    }
+    /** Pure replay DATA only; callers separately verify every actual canonical ISSUED/result event. */
+    private static void requireRecoveredAfter(ActionCommand command, ActionState.Attempt attempt,
+            NativeActionPort.AckReceived original, Retained retained, NativeRequestChronology previous,
+            NativeRequestChronology actual, GuardEvidence previousGuard, ActionPorts.OutcomeArchive archive) throws IOException {
+        if (previous.session().equals(actual.session()) && previous.custodyEpoch().equals(actual.custodyEpoch())) {
+            GovernanceReadChronology.requireAfter(previous, actual); return;
+        }
+        Request request = retained.request();
+        ActionReceipt parent = archive.loadReceipt(request.originalParentReceipt());
+        StrictJson.require(parent.state() instanceof ActionState.Unknown && parent.command().equals(command)
+                && parent.bodySha256().equals(ActionCodec.bodySha256(command))
+                && ActionTransitions.attempt(parent.state()).filter(attempt::equals).isPresent()
+                && ActionTransitions.dispatch(parent.state()).filter(original::equals).isPresent(),
+                "cold epoch bridge lacks its exact original positive-ACK canonical UNKNOWN");
+        requireOriginalPending(command, attempt, original);
+        IssuedCustody issued = retained.entry().issued().orElseThrow();
+        Entry source = CouncilContinuationCodec.decodeEntry(exact(issued.record(), archive).bytes());
+        StrictJson.require(source.status() == Status.ISSUED && source.request().equals(request)
+                && retained.entry().resultSequence() > request.issuedSequence()
+                && request.guard().source().equals(command.source()) && request.guard().sessionId().equals(command.sessionId())
+                && request.guard().observed().game().equals(command.before().game())
+                && !request.guard().capabilityEvidence().equals(previousGuard.capabilityEvidence())
+                && actual.session().machineId().equals(previous.session().machineId())
+                && actual.session().game().equals(previous.session().game())
+                && actual.session().sessionId().equals(previous.session().sessionId())
+                && actual.session().connectionGeneration().compareTo(previous.session().connectionGeneration()) >= 0
+                && !actual.custodyEpoch().equals(previous.custodyEpoch())
+                && !actual.requestId().equals(previous.requestId())
+                && !actual.writeEntered().observedAt().isBefore(previous.responseReceived().observedAt())
+                && !actual.writeEntered().observedAt().isBefore(attempt.submittedAt()),
+                "cold continuation lacks distinct actual HELLO/epoch, ISSUED custody or ordered original physical subject");
     }
     /** Original semantic terminal -> shared exact helper DTO. A native rejected helper has an all-zero pre-frame. */
     public static CouncilActionCodec.Ack decodeHelperTerminal(RawJson original, CouncilActionCodec.Request expected) {

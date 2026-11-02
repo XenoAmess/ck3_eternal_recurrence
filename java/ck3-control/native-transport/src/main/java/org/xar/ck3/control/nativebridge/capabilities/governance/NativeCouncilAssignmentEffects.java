@@ -93,6 +93,127 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
             return projected;
         } catch (IOException failure) { throw new UncheckedIOException("original Council continuation/effect evidence unavailable; never replay", failure); }
     }
+    public NativeEffectRegistry.Projected observeRecovered(ContinuityStorePort.Session same, ActionCommand command,
+            ActionState.Attempt originalAttempt, NativeActionPort.AckReceived originalAck, java.time.Instant observationDeadline,
+            List<PlanningReadReceipt> originalPreflight) throws IOException, InterruptedException {
+        Objects.requireNonNull(observationDeadline); Objects.requireNonNull(originalPreflight);
+        var role = continuation.currentRecoveryOriginal(same, command.actionId());
+        role.requireCurrent();
+        StrictJson.require(command.operation().value().equals(CouncilActionCodec.PRIVATE_ASSIGN)
+                && role.command().equals(command) && role.attempt().equals(originalAttempt) && role.originalAck().equals(originalAck),
+                "recovered Council changed its actual original command/attempt/positive ACK");
+        CouncilContinuationPolicy.requireOriginalPending(command, originalAttempt, originalAck);
+        java.time.Instant bound = ActionObservationWindow.deadline(command);
+        java.time.Instant until = observationDeadline.isBefore(bound) ? observationDeadline : bound;
+        StrictJson.require(clock.instant().isBefore(until), "recovered Council read-only observer window expired");
+        var boundArchive = archive.withSession(same);
+        var results = new ArrayList<CouncilContinuationReceipt>();
+        var policyScope = policy.beginRecovery(same, role, List.copyOf(originalPreflight));
+        try {
+            for (Retained old : continuation.retained(same)) {
+                if (!old.request().scope().parentActionId().equals(command.actionId())) continue;
+                role.requireCurrent();
+                CouncilContinuationReceipt receipt = continuation.recover(same, old.request().requestId(), until);
+                results.add(receipt);
+                if (receipt.status() != Status.ACK)
+                    return NativeEffectRegistry.Projected.pending("original Council continuation remains UNKNOWN; collect only, never reissue",
+                            List.of(receipt.latestRecord()));
+            }
+            if (!results.isEmpty()) continuation.verifyCanonicalChain(same, same.head(), results);
+            var prior = results.isEmpty() ? List.<Retained>of() : retained(results, boundArchive);
+            var progress = CouncilContinuationPolicy.replayRecovered(command, originalAttempt, originalAck, prior, boundArchive);
+            for (int count = 0; progress.next().isPresent(); count++) {
+                role.requireCurrent();
+                StrictJson.require(count < maximumContinuations && results.size() < MAX_ACTIVE_REQUESTS
+                        && clock.instant().isBefore(until), "recovered Council observer deadline/budget exhausted; no assignment replay");
+                Stage next = progress.next().orElseThrow();
+                if (next == Stage.RECEIPT_QUERY) snapshots.readRecovered(role);
+                CouncilContinuationReceipt receipt = continuation.continueOnce(same, command, originalAttempt, next, until);
+                results.add(receipt);
+                if (receipt.status() != Status.ACK)
+                    return NativeEffectRegistry.Projected.pending("recovered Council request UNKNOWN; retain its exact original ID",
+                            List.of(receipt.latestRecord()));
+                continuation.verifyCanonicalChain(same, same.head(), results);
+                prior = retained(results, boundArchive);
+                progress = CouncilContinuationPolicy.replayRecovered(command, originalAttempt, originalAck, prior, boundArchive);
+                if (progress.next().filter(stage -> stage == Stage.HELPER_STATUS || stage == Stage.RECEIPT_STATUS).isPresent())
+                    Thread.sleep(10);
+            }
+            role.requireCurrent();
+            StrictJson.require(!results.isEmpty(), "recovered Council has no complete actual continuation chain");
+            continuation.verifyCanonicalChain(same, same.head(), results);
+            policy.requirePreflight(command, originalAttempt, results.getFirst().request().supportingEvidence(), boundArchive, originalAck);
+            if (progress.helper().filter(value -> value.status() == CouncilActionCodec.AckStatus.REJECTED_BEFORE_SUBMIT).isPresent()) {
+                var helper = progress.helper().orElseThrow();
+                if (helper.disposition() != CouncilActionCodec.HelperDisposition.REJECTED_WITHOUT_INVOCATION)
+                    return NativeEffectRegistry.Projected.pending("recovered Council helper unresolved; never replay original assignment",
+                            results.stream().map(CouncilContinuationReceipt::latestRecord).toList());
+                ExactRef basis = preserveRejection(command, originalAttempt, results, helper, boundArchive);
+                role.requireCurrent();
+                return reject(command, originalAttempt, helper, basis);
+            }
+            StrictJson.require(progress.receipt().filter(value -> value.status() == CouncilActionCodec.ReceiptStatus.APPLIED).isPresent(),
+                    "recovered Council lacks its independent verified native assignment receipt");
+            NativeEffectSnapshots.Pair pair = snapshots.readRecovered(role);
+            GuardEvidence observation = role.observationGuard();
+            role.requireCurrent();
+            RawJson compatible = compatible(progress.receipt().orElseThrow());
+            ObservationProvenance provenance = role.observationProvenance();
+            StrictJson.require(provenance instanceof ObservationProvenance.FreshSnapshotQuery,
+                    "recovered Council after frame requires its actual same-occurrence fresh READ provenance");
+            frames.verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery) provenance, pair.after(), boundArchive);
+            var projected = projectRecovered(command, originalAttempt, pair, progress.receipt().orElseThrow(), compatible, List.of(), provenance);
+            ExactRef chain = preserve(command, originalAttempt, pair, results, compatible, boundArchive);
+            ExactRef basis = preserveRecovered(command, originalAttempt, pair, observation, chain, compatible, boundArchive);
+            role.requireCurrent();
+            return NativeEffectSnapshots.withEvidence(projected, List.of(basis, chain));
+        } finally { policyScope.close(); }
+    }
+    private static List<Retained> retained(List<CouncilContinuationReceipt> receipts, ActionPorts.OutcomeArchive archive) {
+        return receipts.stream().map(receipt -> new Retained(receipt.latestRecord(),
+                CouncilContinuationCodec.decodeEntry(exact(receipt.latestRecord(), archive).bytes()))).toList();
+    }
+    /** Full generic v3 basis first: the existing archive and writer discover and qualify every reconciliation original. */
+    private static ExactRef preserveRecovered(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
+            GuardEvidence observation, ExactRef chain, RawJson compatible, ActionPorts.OutcomeArchive archive) {
+        StrictJson.require(observation.origin() instanceof CommandOrigin.Reconciliation
+                && pair.reconciliation().filter(identity -> identity.sameGuardFrame(observation.origin().requireReconciliation())).isPresent(),
+                "Council recovered Pair lost its same-occurrence actual Root reconciliation guard");
+        var identity = observation.origin().requireReconciliation(); var pending = identity.pending();
+        StrictJson.require(pending.actionId().equals(command.actionId()) && pending.bodySha256().equals(ActionCodec.bodySha256(command))
+                && pending.requestId().equals(attempt.requestId()) && pending.originalBefore().equals(command.before())
+                && observation.operation().equals(command.operation()) && observation.authorityId().equals(attempt.guard().authorityId())
+                && identity.factual().equals(pair.after().identity()) && identity.source().equals(pair.after().source())
+                && identity.sessionId().equals(pair.after().sessionId()) && identity.connectionGeneration().equals(pair.after().connectionGeneration())
+                && identity.nativeEvidence().equals(pair.after().originalEvidence())
+                && identity.evidence().observationManifest().equals(NativeEffectEvidence.basis(pair.after()).driverFacts()),
+                "Council recovered observation crossed original pending or actual after frame");
+        identity.requireOriginalConnection(attempt.guard());
+        for (var frame : List.of(pair.before(), pair.after())) {
+            var original = NativeEffectEvidence.basis(frame);
+            StrictJson.require(original.nativeFrame().sha256().equals(ActionCodec.sha256(archive.loadNativeFrame(original.nativeFrame())))
+                    && original.driverFacts().equals(archive.materialReferenceOf(archive.loadFullMaterial(original.driverFacts()))),
+                    "recovered Council complete frame originals changed");
+        }
+        ExactRef material = archive.preserveMaterial(compatible);
+        var row = StrictJson.object().put("schema", NativeEffectEvidence.RECONCILIATION_SCHEMA)
+                .put("command_body_sha256", ActionCodec.bodySha256(command)).put("request_id", attempt.requestId());
+        row.set("before", frame(NativeEffectEvidence.basis(pair.before())));
+        row.set("after", frame(NativeEffectEvidence.basis(pair.after())));
+        row.set("compatible_material", material.toJson());
+        row.putArray("independent_reads"); row.putArray("supporting_materials").add(chain.toJson());
+        row.set("reconciliation_guard", CommandOriginCodec.guard(observation));
+        RawJson body = new RawJson(StrictJson.canonical(row)); ExactRef result = archive.preserveMaterial(body);
+        StrictJson.require(body.equals(archive.loadMaterial(result)) && compatible.equals(archive.loadMaterial(material)),
+                "recovered Council generic v3 evidence changed");
+        return result;
+    }
+    private static CouncilContinuationPolicy.Progress replayChain(ActionCommand command, ActionState.Attempt attempt,
+            NativeActionPort.AckReceived original, List<Retained> rows, ActionPorts.OutcomeArchive archive) throws IOException {
+        boolean recovered = rows.stream().anyMatch(row -> archive.loadReceipt(row.request().originalParentReceipt()).state() instanceof ActionState.Unknown);
+        return recovered ? CouncilContinuationPolicy.replayRecovered(command, attempt, original, rows, archive)
+                : CouncilContinuationPolicy.replay(command, attempt, original, rows, archive);
+    }
     public NativeRecordedEvidenceVerifier.Binding archivedVerifier(ExactRef actualDefinitionSource) {
         return archivedVerifier(actualDefinitionSource, continuation, policy, frames, originalSession);
     }
@@ -110,8 +231,17 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
                         }
                         StrictJson.require(settled.settlement() instanceof ActionState.Applied && settled.dispatch() instanceof NativeActionPort.AckReceived, "private Council archived verifier requires its actual primitive effect/original pending ACK");
                         var effect = ((ActionState.Applied) settled.settlement()).observation();
-                        StrictJson.require(effect.supportingEvidence().size() == 1, "private Council requires one complete original evidence leaf");
+                        StrictJson.require(!effect.supportingEvidence().isEmpty(), "private Council requires its complete original evidence leaf");
                         RawJson body = exact(effect.supportingEvidence().getFirst(), archive);
+                        NativeEffectEvidence.Original recovered = null;
+                        if (NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(StrictJson.text(StrictJson.parse(body.bytes()).get("schema")))) {
+                            recovered = NativeEffectEvidence.load(parent, archive, frames);
+                            StrictJson.require(recovered.reconciliationGuard().isPresent() && recovered.frames().reconciliation().isPresent()
+                                    && recovered.independentReads().isEmpty() && recovered.supportingMaterials().size() == 1,
+                                    "Council recovered v3 basis requires its exact actual guard and sole strict original chain leaf");
+                            body = exact(recovered.supportingMaterials().getFirst(), archive);
+                        } else StrictJson.require(effect.supportingEvidence().size() == 1,
+                                "legacy Council v1 requires one complete original evidence leaf");
                         var row = StrictJson.object(StrictJson.parse(body.bytes()), Set.of("schema", "command_body_sha256", "original_request_id", "before", "after", "continuations", "compatible_material"));
                         StrictJson.require(SCHEMA.equals(StrictJson.text(row.get("schema"))) && parent.bodySha256().equals(StrictJson.text(row.get("command_body_sha256")))
                                 && settled.attempt().requestId().equals(StrictJson.text(row.get("original_request_id"))), "Council evidence leaf crossed canonical parent/original attempt");
@@ -120,15 +250,31 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
                                 && before.originalEvidence().equals(settled.attempt().guard().nativeEvidence()), "Council archived original before-frame changed");
                         StrictJson.require(after.identity().equals(effect.after()) && after.source().equals(effect.source()) && after.sessionId().equals(effect.sessionId())
                                 && after.observedAt().equals(effect.observedAt()) && after.originalEvidence().equals(effect.originalEvidence()), "Council archived actual post-frame changed");
-                        var pair = new NativeEffectSnapshots.Pair(before, after); var chain = decodeChain(row.get("continuations"), archive);
+                        var pair = recovered == null ? new NativeEffectSnapshots.Pair(before, after)
+                                : new NativeEffectSnapshots.Pair(before, after, recovered.frames().reconciliation());
+                        if (recovered != null) StrictJson.require(NativeEffectEvidence.basis(recovered.frames().before()).equals(frameBasis(row.get("before")))
+                                && NativeEffectEvidence.basis(recovered.frames().after()).equals(frameBasis(row.get("after"))),
+                                "recovered Council chain frames differ from its complete generic v3 basis");
+                        var chain = decodeChain(row.get("continuations"), archive);
                         continuation.verifyCanonicalChain(same, head, chain);
                         policy.requirePreflight(parent.command(), settled.attempt(), chain.getFirst().request().supportingEvidence(), archive, (NativeActionPort.AckReceived) settled.dispatch());
                         var retained = chain.stream().map(receipt -> new Retained(receipt.latestRecord(), CouncilContinuationCodec.decodeEntry(exact(receipt.latestRecord(), archive).bytes()))).toList();
-                        var progress = CouncilContinuationPolicy.replay(parent.command(), settled.attempt(), (NativeActionPort.AckReceived) settled.dispatch(), retained, archive);
+                        var progress = replayChain(parent.command(), settled.attempt(), (NativeActionPort.AckReceived) settled.dispatch(), retained, archive);
                         StrictJson.require(progress.next().isEmpty() && progress.receipt().isPresent(), "archived Council chain is incomplete");
                         RawJson compatible = exact(ExactRef.fromJson(row.get("compatible_material")), archive);
-                        StrictJson.require(compatible.equals(compatible(progress.receipt().orElseThrow())), "Council history projection differs from original native receipt");
-                        var replayed = project(parent.command(), settled.attempt(), pair, progress.receipt().orElseThrow(), compatible, effect.supportingEvidence());
+                        StrictJson.require(compatible.equals(compatible(progress.receipt().orElseThrow()))
+                                && (recovered == null || recovered.compatibleResult().equals(compatible)),
+                                "Council history projection differs from original native receipt or recovered v3 basis");
+                        NativeEffectRegistry.Projected replayed;
+                        if (recovered == null) replayed = project(parent.command(), settled.attempt(), pair,
+                                progress.receipt().orElseThrow(), compatible, effect.supportingEvidence());
+                        else {
+                            StrictJson.require(effect.provenance() instanceof ObservationProvenance.FreshSnapshotQuery,
+                                    "recovered Council archive lost its actual fresh READ provenance");
+                            frames.verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery) effect.provenance(), after, archive);
+                            replayed = projectRecovered(parent.command(), settled.attempt(), pair, progress.receipt().orElseThrow(),
+                                    compatible, effect.supportingEvidence(), effect.provenance());
+                        }
                         NativeEffectEvidence.requireSame(settled.settlement(), replayed, compatible);
                     } catch (IOException failure) { throw new UncheckedIOException("canonical Council continuation replay unavailable", failure); }
                 });
@@ -166,7 +312,7 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
         policy.requirePreflight(parent.command(), settled.attempt(), chain.getFirst().request().supportingEvidence(), archive,
                 (NativeActionPort.AckReceived) settled.dispatch());
         var retained = chain.stream().map(receipt -> new Retained(receipt.latestRecord(), CouncilContinuationCodec.decodeEntry(exact(receipt.latestRecord(), archive).bytes()))).toList();
-        var progress = CouncilContinuationPolicy.replay(parent.command(), settled.attempt(), (NativeActionPort.AckReceived) settled.dispatch(), retained, archive);
+        var progress = replayChain(parent.command(), settled.attempt(), (NativeActionPort.AckReceived) settled.dispatch(), retained, archive);
         StrictJson.require(progress.next().isEmpty() && progress.receipt().isEmpty() && progress.helper().isPresent(), "Council rejection requires the complete original helper-only terminal chain");
         var helper = progress.helper().orElseThrow();
         RawJson compatible = exact(ExactRef.fromJson(row.get("compatible_material")), archive);
@@ -188,6 +334,23 @@ public final class NativeCouncilAssignmentEffects implements NativeEffectRegistr
                 == org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH, "Council actual incumbent did not meet the requested postcondition");
         var observation = new ActionState.EffectObservation(after.identity(), after.source(), after.sessionId(), NativeGovernanceEffects.SCHEMA, actual,
                 new ObservationProvenance.Push(after.identity().frame().snapshotId(), id.nativeRevision(), after.originalEvidence()), after.observedAt(), after.originalEvidence(), supporting);
+        ActionEffects.validate(command, attempt, new ActionState.Applied(observation));
+        return new NativeEffectRegistry.Projected(new ActionPorts.EffectObserved(observation), Optional.of(compatible));
+    }
+    private static NativeEffectRegistry.Projected projectRecovered(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
+            CouncilActionCodec.Receipt receipt, RawJson compatible, List<ExactRef> supporting, ObservationProvenance provenance) {
+        StrictJson.require(receipt.status() == CouncilActionCodec.ReceiptStatus.APPLIED, "Council ACK/rejection is not independent applied material");
+        Complete after = pair.after(); var id = after.identity().frame().identity();
+        StrictJson.require(receipt.postSnapshotId().equals("native:" + id.nativeRevision()) && receipt.postNativeRevision().equals(id.nativeRevision())
+                && receipt.postPublicRevision().equals(id.nativeRevision()) && receipt.postDateRaw() == id.dateRaw().intValueExact()
+                && receipt.ownerId() == id.player().intValueExact() && !after.observedAt().isBefore(attempt.submittedAt()), "Council receipt differs from real fresh after Native+Driver frame");
+        List<ExpectedValue> actual = List.of(new ExpectedText(new FieldKey("council.position_key"), receipt.position().key()),
+                new ExpectedInteger(new FieldKey("council.incumbent_character_id"), java.math.BigInteger.valueOf(receipt.incumbentId())),
+                new ExpectedBoolean(new FieldKey("native.gameplay_verified"), true));
+        StrictJson.require(org.xar.ck3.control.g2.planning.ProposalLifecycle.compare(command.expected(), after.identity(), after.source(), NativeGovernanceEffects.SCHEMA, actual)
+                == org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH, "Council actual incumbent did not meet the requested postcondition");
+        var observation = new ActionState.EffectObservation(after.identity(), after.source(), after.sessionId(), NativeGovernanceEffects.SCHEMA, actual,
+                Objects.requireNonNull(provenance), after.observedAt(), after.originalEvidence(), supporting);
         ActionEffects.validate(command, attempt, new ActionState.Applied(observation));
         return new NativeEffectRegistry.Projected(new ActionPorts.EffectObserved(observation), Optional.of(compatible));
     }
