@@ -23,7 +23,8 @@ public final class GovernmentResizeBase203Calls {
                         && call.callSiteRva() == 0x425B85EL
                         && call.targetBits() == 0x4251F4CL) {
                     Entry childEntry = new Entry(imageBase, call.rspBits() - 8L, call.volatileBits(), call.nonvolatileBits());
-                    NormalReturn result = GovernmentResizeBase203.execute(childEntry, memory, fallback, budget);
+                    GovernmentCrtBoundary185Api.Calls innerCalls = org.xar.ck3.research.m4.Allocate94FullState282Calls.bind(imageBase, memory, fallback, budget);
+                    NormalReturn result = GovernmentResizeBase203.execute(childEntry, memory, innerCalls, budget);
                     if (result.returnRipBits() != imageBase + 0x425B863L
                             || result.callerRspBits() != call.rspBits()
                             || !result.nonvolatileBits().equals(call.nonvolatileBits())) {
