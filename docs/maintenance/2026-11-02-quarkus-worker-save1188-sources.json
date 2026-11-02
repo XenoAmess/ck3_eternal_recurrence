@@ -1,0 +1,116 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T19:38:06.136226200Z",
+  "previous_published_history_retained": true,
+  "SAVE_CONFIRMED": {
+    "event": 1188,
+    "SETTLE_event": 1182,
+    "new_saved_days": 8,
+    "total_saved_days": 228,
+    "date_raw": "53151456",
+    "native_revision": 667,
+    "public_revision": 611,
+    "completed_cycles": 33,
+    "pending_receipt": null
+  },
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "performance": {
+    "primary_window": "SAVE1155(220saved) -> SAVE1188(228saved)",
+    "start_UTC": "2026-11-02T19:03:56.308196500Z",
+    "end_UTC": "2026-11-02T19:38:06.136226200Z",
+    "full_wall_seconds": "2049.828029700",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "256.2285037125",
+    "included_costs": "All batch51 zero-SAVE work, post-SAVE1155 seven-source revalidation/preparation, cooperative stop, source adoption, one GET, 618.724602600-second recovery, batch52 planning including41.065-second model response, actions/publication/checkpoint/confirmation, research overlap and waiting. No subtraction.",
+    "root_epoch_seconds": "82040.136226200",
+    "root_epoch_total_saved_days": 228,
+    "root_epoch_seconds_per_saved_day": "359.8251588868421052631578947",
+    "root_epoch_metric_role": "Cumulative secondary metric; never the primary window denominator.",
+    "target_seconds_per_day": 10,
+    "target_met": false,
+    "controlled_AB_or_causal_speedup": false
+  },
+  "coherent_source_adoption_and_recovery": {
+    "source_count": 7,
+    "existing_type_count": 72,
+    "new_type_count": 0,
+    "cohort_owner_report": [
+      "historical-command320:3sources",
+      "postcommit-memo322",
+      "command-validation323",
+      "council-pure324",
+      "crown-buffers328"
+    ],
+    "same_host_pid": 81616,
+    "same_host_birth": "134381101737409714",
+    "old_delegate_instance": "bd24764a-689e-4e63-8967-3ed3984df747",
+    "old_delegate_COMPLETE_UTC": "2026-11-02T19:07:59.293921300Z",
+    "old_delegate_exit_code": 0,
+    "new_delegate_instance": "01b154fa-36a5-4a59-881f-97a50225b280",
+    "new_delegate_START_UTC": "2026-11-02T19:08:18.228453200Z",
+    "new_delegate_runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:3@4c1c76cf@4c1c76cf",
+    "actual_LOOP_UTC": "2026-11-02T19:18:36.953055800Z",
+    "full_START_to_LOOP_seconds": "618.724602600",
+    "trigger_count": 1,
+    "acceptance": "Existing frozen owner lifecycle/new-loader/same-Game LOOP plus later independently verified newSAVE. Earlier HANDOFF-SUMMARY new_post_reload_SAVE_confirmed=false remains its historical preSAVE cutoff.",
+    "not_adopted_at_this_cutoff": [
+      "329",
+      "330",
+      "331",
+      "333",
+      "334"
+    ],
+    "per_leaf_hotpath_hit_and_speedup": "UNKNOWN",
+    "budget_hint_or_defer_qualification": "No new forecast/defer behavior qualification from this SAVE."
+  },
+  "verification": "Root independently verified1182/1188 named frozen SETTLE/SAVE. Formal writer read only existing bounded Root/current/prior SUMMARY, full-window and handoff metadata and recomputed Decimal UTC deltas. No new Game/GET/Java query, repeated raw event/batch/Save/Driver body read, worker operation or future-health assertion.",
+  "sources": [
+    {
+      "local_key": "root/save32652-verified.json",
+      "bytes": 1324,
+      "sha256": "37ec1713afa6522b14a1c099d3886247cb8ec1b973eb6292427eb4ae5375fc56",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed32652/SUMMARY.json",
+      "bytes": 5991,
+      "sha256": "23b583c91a4e77a98ef09cc6269cc43d79b9811437a77c8503c55463a53a1222",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed31850/SUMMARY.json",
+      "bytes": 5991,
+      "sha256": "bd356b6c2d6feb48babfcce03419b2f73a6a2a232e3a27706df9b448e428266a",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/save32652-window/SUMMARY.json",
+      "bytes": 7278,
+      "sha256": "1092f45345bf91075a8a455af45984e1ff932c1e9ad7417e0646b4c136e64fe4",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-performance326-reload/HANDOFF-SUMMARY.json",
+      "bytes": 7398,
+      "sha256": "3522f7277b68a6a74012ccc099561c8a4bc2cc8d8c6ff6215668b5999427c6cd",
+      "read_by_formal_writer": true
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed32652/00001182.json",
+      "bytes": 99878,
+      "sha256": "d31a7123d65e2fe42059e8670738b9369a2f1092febc51dc9b123d9a6d162ee6",
+      "qualification": "Root independently verified this named frozen event. Formal writer checked only the bounded Root receipt and SUMMARY; no repeated event/Save/Driver body read."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed32652/00001188.json",
+      "bytes": 98873,
+      "sha256": "42a04afa5db1ecf9f5261d355d6af3b9e6464a83ca0e93ed30e2a2c3fc019dd7",
+      "qualification": "Root independently verified this named frozen event. Formal writer checked only the bounded Root receipt and SUMMARY; no repeated event/Save/Driver body read."
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0,
+  "later_delegate_health_inferred": false
+}
