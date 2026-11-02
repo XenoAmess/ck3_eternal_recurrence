@@ -99,19 +99,19 @@ public final class DriverCheckpointStore {
         return complete;
     }
     private void validateIdentity(ObjectNode document, ObservationIdentity frame) {validateIdentity(document,frame,pipeName);}
-    private static void validateIdentity(ObjectNode document,ObservationIdentity frame,String expectedPipe) {
+    private static ArrayNode validateIdentity(ObjectNode document,ObservationIdentity frame,String expectedPipe) {
         StrictJson.require(StrictJson.integer(document.get("format_version"), 2, 2) == 2 && expectedPipe.equals(StrictJson.text(document.get("pipe_name"))), "complete v2 Driver for this pipe required");
         StrictJson.require(NativeCharacterId.fromJson(document.get("episode_character_id")).asBigInteger().equals(frame.frame().identity().player())
                 && frame.frame().episodeRunId().equals(StrictJson.text(document.get("episode_run_id")))
                 && StrictJson.integer(document.get("bridge_pid"), 1, 0xffff_ffffL) == frame.game().pid(), "current Driver episode and actual Game process identity");
         StrictJson.require(!document.hasNonNull("managed_restore_transaction"), "pending managed restore must be reconciled before SAVE");
-        history(document);
+        return history(document);
     }
     private void validateAnchor(ObjectNode document, FileWitness save, ObservationIdentity frame, String lineage, String action, long index) {
         validateAnchor(document,save,frame,lineage,action,index,pipeName);
     }
     private static void validateAnchor(ObjectNode document,FileWitness save,ObservationIdentity frame,String lineage,String action,long index,String expectedPipe) {
-        validateIdentity(document,frame,expectedPipe); ArrayNode history = history(document);
+        ArrayNode history = validateIdentity(document,frame,expectedPipe);
         StrictJson.require(index <= history.size(), "full original history includes SAVE anchor");
         ObjectNode checkpoint = object(document.get("last_checkpoint")); ObjectNode row = object(history.get(Math.toIntExact(index - 1)));
         ObjectNode saved = object(object(row.get("result")).get("checkpoint"));
