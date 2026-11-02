@@ -70,8 +70,8 @@ public final class ContinuityActionJournal implements ActionJournal {
                     }
                     if (next instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.ControlApplied control) { archive.preserveRead(control.read()); control.supportingReads().forEach(archive::preserveRead); control.reconciledAck().ifPresent(value -> archive.preserve(value.ack())); }
                     if (next instanceof ActionState.CompositeSettled settled) {
-                        ActionEffects.validateCompositeChildren(command, settled.execution(), settled.settlement(), settled.execution().children().stream()
-                                .map(child -> lookup(head.state(), child.actionId(), archive).orElseThrow()).toList());
+                        ActionEffects.validateCompositeChildren(command, settled.execution(), settled.settlement(),
+                                compositeChildren(head.state(), settled.execution().children(), archive));
                         if (settled.settlement() instanceof ActionState.CompositeControlApplied control) {
                             archive.preserveRead(control.observation().terminalStatus()); control.observation().supportingReads().forEach(archive::preserveRead);
                         }
@@ -143,6 +143,16 @@ public final class ContinuityActionJournal implements ActionJournal {
     public ContinuityStorePort.Session borrowedWriterSession() {
         LockedJournal active = current.get();
         StrictJson.require(active != null, "no live original writer session is borrowed"); return active.writerSession();
+    }
+    /** One fresh complete canonical DATA snapshot for a multi-child selection, never the prior callback cache. */
+    private static List<ActionReceipt> compositeChildren(ContinuityState state, List<CompositeExecution.Child> children,
+            ActionPorts.OutcomeArchive archive) {
+        if (children.size() < 2) return children.stream()
+                .map(child -> lookup(state, child.actionId(), archive).orElseThrow()).toList();
+        var latest = new java.util.HashMap<String, ActionReceipt>();
+        for (Historical item : historical(state, archive))
+            latest.putIfAbsent(item.receipt().command().actionId(), item.receipt());
+        return children.stream().map(child -> Optional.ofNullable(latest.get(child.actionId())).orElseThrow()).toList();
     }
     /** Read-only canonical projection. A state object alone grants no writer or submit qualification. */
     public static Optional<ActionReceipt> lookup(ContinuityState state, String actionId, ActionPorts.OutcomeArchive archive) {
