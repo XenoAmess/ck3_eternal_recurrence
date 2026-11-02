@@ -1,0 +1,149 @@
+{
+  "schema": "ck3.quarkus-ordinary-worker-save.addendum.v1",
+  "fixed_cutoff_SAVE_CONFIRMED_utc": "2026-11-02T11:25:10.548204300Z",
+  "prior_published_cutoff_retained": {
+    "event": 804,
+    "total_saved_days": 151
+  },
+  "SAVE_CONFIRMED": {
+    "event": 837,
+    "SETTLE_event": 830,
+    "new_saved_days": 8,
+    "total_saved_days": 159,
+    "date_raw": "53149800",
+    "native_revision": 467,
+    "public_revision": 415,
+    "completed_cycles": 24,
+    "pending_receipt": null
+  },
+  "post_recovery": {
+    "same_Dev_host_birth": true,
+    "restart": 3,
+    "runtime_loader_suffix": "789d4f5d",
+    "delegate_STARTED_utc": "2026-11-02T11:05:48.760349500Z",
+    "LOOP_utc": "2026-11-02T11:18:19.270254100Z",
+    "startup_wall_seconds": "750.509904600",
+    "one_scan_HTTP_status": 200,
+    "scan_elapsed_seconds": "7.110773200009135",
+    "source_adoption_receipt_group": [
+      {
+        "relative_path": "application/src/main/java/org/xar/ck3/control/application/action/ContinuityActionJournal.java",
+        "adopted_source_sha256": "0a295f75bc89050d1d999beb58062135dbf75c2dacc1e28eb703d14e977d5866",
+        "adopted_at_utc": "2026-11-02T11:05:41.550887+00:00"
+      },
+      {
+        "relative_path": "application/src/main/java/org/xar/ck3/control/application/driver/DriverActionHistoryCodec.java",
+        "adopted_source_sha256": "9a2f025c787ffbf7b22e94076bfd47a6c6accd43da094281414e7d9dc9df706a",
+        "adopted_at_utc": "2026-11-02T11:05:41.572331+00:00"
+      },
+      {
+        "relative_path": "application/src/main/java/org/xar/ck3/control/application/driver/DriverActionHistoryState.java",
+        "adopted_source_sha256": "1227187459434ac0c0e7f9f93d8eef0912242491924de22a77cc0baa2a44c968",
+        "adopted_at_utc": "2026-11-02T11:05:41.586976+00:00"
+      },
+      {
+        "relative_path": "application/src/main/java/org/xar/ck3/control/application/session/ContinuityBatchJournal.java",
+        "adopted_source_sha256": "71dc1a1017b95d7518c388341d429258af3a7ed216e9badb99613972f1a4cb26",
+        "adopted_at_utc": "2026-11-02T11:05:41.601852+00:00"
+      },
+      {
+        "relative_path": "local-service/src/main/java/org/xar/ck3/control/continuity/writer/NativeArchiveDataCodec.java",
+        "adopted_source_sha256": "ad56ad889946f0b7c0651c0bd36c0f9d6b5558a7e45aeb95f114e538940f3bb4",
+        "adopted_at_utc": "2026-11-02T11:05:41.626924+00:00"
+      },
+      {
+        "relative_path": "local-service/src/main/java/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive.java",
+        "adopted_source_sha256": "0f54e0c7143ae4bfcb5a3456af830c8b4b06b61608e3cd82e3294188dfd69ac8",
+        "adopted_at_utc": "2026-11-02T11:05:41.660582+00:00"
+      }
+    ],
+    "class_binary_to_source_first_origin_independent_verification": "NOT_HELD; adoption receipts, lifecycle, same-Game LOOP and newSAVE are separate actual evidence"
+  },
+  "performance": {
+    "primary_window": "SAVE804 -> SAVE837, all preparation, failures, coordination, source scan and recovery waiting included",
+    "seconds": "3091.696248000",
+    "new_saved_days": 8,
+    "seconds_per_new_saved_day": "386.462031000",
+    "root_epoch_seconds": "52464.548204300",
+    "root_epoch_total_saved_days": 159,
+    "root_epoch_seconds_per_saved_day": "329.9657119767295597484276730",
+    "ten_second_goal_achieved": false,
+    "speedup_proved": false
+  },
+  "verification": "Writer independently read the two named frozen events, checked physical bytes/SHA, SETTLE operation and SAVE boundary, exact pair/cycle/proof/date/Game against frozen SUMMARY. No live Game/ledger/Save/Driver body opened.",
+  "observer_erratum": "Two DATA-only observer attempts used boundary instead of cycle operation for SETTLE; both stopped before any freeze. Actual SAVE unchanged; no business action repeated.",
+  "continuation_cutoff": "head839/next34 as reported by Runtime only; no future health or outcome inferred",
+  "sources": [
+    {
+      "local_key": "runtime/current-resume268/save-confirmed30933/SUMMARY.json",
+      "bytes": 5983,
+      "sha256": "20e562c2b44bd926d08e1b6afcc9b60da34716258055164cc9f45015b39c7d01"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed30933/00000830.json",
+      "bytes": 99723,
+      "sha256": "7507212e98761e02fc56ec4f4bb117cf8d1764ff67fb73b93844852352bfd28b"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed30933/00000837.json",
+      "bytes": 98704,
+      "sha256": "0feb3e64ce8df5dea6474f94410c5db45362b71dd48108ce01a9cf3ecfeb1ac6"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed30731/SUMMARY.json",
+      "bytes": 5986,
+      "sha256": "ab26a799787ebfbb2689621a8bfbfe1f95c8d47224c0e47d0ea538413ad0e3a8"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/post-recovery-save309/ACTUAL-SAVE309.json",
+      "bytes": 594,
+      "sha256": "613d5f3db9d2de007e894ae209f208360a616a8419380a52b656be772e2b30b8"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/attempt05/LIFECYCLE-007.json",
+      "bytes": 792,
+      "sha256": "9a14e5a6fc461c81fd8eb80a2f0c97fa6c42761883d2283407102427d0a03251"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/attempt05/ACTUAL-LOOP307-3.json",
+      "bytes": 464,
+      "sha256": "b818919fa9777c15de40f9211ce0be4c9e16b83b47556e44d711afa5db15d2cb"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/coherent-recovery309/TRIGGER-ACTUAL.json",
+      "bytes": 443,
+      "sha256": "cdbaa239d10018bae5464ddf4d33b7564cb8175af2120aa7131e58d83aabd4b4"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/coherent-recovery309/0-SOURCE-ADOPTED.json",
+      "bytes": 953,
+      "sha256": "ec62272dc258f5fe4959725c1ea7d7b9350130cb932136f81777657a98404460"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/coherent-recovery309/1-SOURCE-ADOPTED.json",
+      "bytes": 956,
+      "sha256": "5ef8513fc8befc7fe1db815626fe2ed246031cb6ea3c98afd4cddb126d4c4f13"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/coherent-recovery309/2-SOURCE-ADOPTED.json",
+      "bytes": 956,
+      "sha256": "10dd092aefe07388dad837b9fba44e67e0f38f291726229d3c40a1bf60ea268e"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/coherent-recovery309/3-SOURCE-ADOPTED.json",
+      "bytes": 955,
+      "sha256": "cf0c12bb8206ba1bc2413171e9883dcd93b7a62abf023f60d2dc9ca1f892c455"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/coherent-recovery309/4-SOURCE-ADOPTED.json",
+      "bytes": 995,
+      "sha256": "c41f653a2d0d2a2ecae5c267619cf8357c8761481075e9f0a7a9cf14f05190ae"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/coherent-recovery309/5-SOURCE-ADOPTED.json",
+      "bytes": 991,
+      "sha256": "cbfec008c303003e34ecae10b8316e8d732115b0296c25379b48b82c21dbe217"
+    }
+  ],
+  "new_writer_Java_Maven_GET_Game_operations": 0
+}

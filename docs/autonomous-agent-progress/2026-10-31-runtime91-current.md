@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+2026-11-02 11:25:10.548204300Z固定后到切点：830 SETTLE后，837真实SAVE_CONFIRMED新增8日、本局累计159日（151＋8），date_raw53149800、native467/public415、saved cycle24、pending=null。两具名冻结event为830／99723B／SHA `7507212e98761e02fc56ec4f4bb117cf8d1764ff67fb73b93844852352bfd28b`及837／98704B／SHA `0feb3e64ce8df5dea6474f94410c5db45362b71dd48108ce01a9cf3ecfeb1ac6`；字节、SHA、实际边界、完整pair／cycle／proof及同Game已独核。来源见[后到保存索引](../maintenance/2026-11-02-quarkus-worker-save309-sources.json)。
+
+同Dev宿主的coherent6源组（bulk309四App＋Archive／Codec308）在11:05:41–48采用并仅自动扫描一次，HTTP200／7.1107732秒；restart3的新loader于11:05:48.760349500Z开始，11:18:19.270254100Z恢复LOOP，完整恢复750.5099046秒，之后才有837保存。原Life UNKNOWN沿原回执只读恢复，未重派旧控制（Runtime报告）；head839／next34仅为后到报告切点，不授未来健康。观察器两次DATA字段断言错误保留，未重试业务动作或改变SAVE时间。
+
+主窗口SAVE804→837完整3091.696248000秒／新增8保存日＝386.462031秒／保存日，所有失败、准备、协调、扫描及冷恢复等待全计入；全epoch52464.548204300／159＝329.9657119767秒／日另列，10秒目标未达，不授优化实速。原804／151日验收与全部历史字节保留；本段只现成冻结小件，0新Java／GET／Game查询／Save或Driver大体读取／worker操作。
+
 2026-11-02 10:33:38.851956300Z：Quarkus Dev 实际源码重载后已同局恢复并新增确认保存8日，804累计151日（原143+8），date_raw53149608、native445/public404、saved cycle23、pending=null。首次重载失败与必要308修复保留；同一Dev宿主restart2于10:09:18恢复LOOP，之后798SETTLE→804SAVE完成验收，后续游玩按运行岗新回执继续。操作及来源见[Dev启动与更新操作](../maintenance/2026-11-02-quarkus-worker-operations.md)。
 
 主窗口真实SAVE761→804：4980.634829500秒／新增8保存日＝622.5793536875秒／保存日，准备、失败和恢复等待全计；完整epoch49372.851956300／151＝326.9725295119为累计次指标。10秒目标未达，旧100／143等切点与本轮所有失败历史保留，不授未装载候选或Civic优化实速。

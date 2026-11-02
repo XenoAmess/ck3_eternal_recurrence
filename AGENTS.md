@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-02 后到837切点：Dev同宿主续行累计159日已保存
+
+- 837于11:25:10.548204300Z真实SAVE_CONFIRMED，830为此前SETTLE，新增8日、累计159日；date53149800／native467、公版415／saved cycle24／pending=null。同Dev宿主restart3在一次coherent6源更新后恢复LOOP并完成该保存；来源及完整窗口见[运行记录](docs/autonomous-agent-progress/2026-10-31-runtime91-current.md)。804／151日验收及全部失败历史原样保留。
+- 主SAVE804→837完整3091.696248000秒／8＝386.462031秒／保存日，失败、协调与750.5099046秒恢复均计入；10秒目标未达，不据此证明性能提速。后续现场仍由Runtime独占，本次文档不触发GET、Game查询或worker操作。
+
 ## 2026-11-02 P0307 实际Dev重载与同局SAVE已验收
 
 - 默认普通游玩／同局恢复现已实际使用Quarkus Dev；plain Main仅显式紧急回退，准备／采用／启动入口均有对应守门。可复用源码采用后单次自动扫描及运行步骤见[Dev启动与更新操作](docs/maintenance/2026-11-02-quarkus-worker-operations.md)。
