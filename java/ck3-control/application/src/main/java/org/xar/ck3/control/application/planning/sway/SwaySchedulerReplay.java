@@ -133,7 +133,7 @@ public final class SwaySchedulerReplay implements SwayCanonicalDomain.SchedulerV
     }
     private static SwayNativeWire.TargetRead target(Run run, ActionPorts.OutcomeArchive archive) {
         return run.reads().stream().map(archive::loadRead).filter(value -> value.request().operation().value().startsWith(SwayNativeWire.TARGET)).map(value -> {
-            long target = SwayNativeWire.integer(StrictJson.parse(OpportunityJson.encode(value.request().arguments())), "target_character_id", 1, 0xffff_ffffL);
+            long target = SwayNativeWire.actionCharacter(StrictJson.parse(OpportunityJson.encode(value.request().arguments())), "target_character_id");
             return SwayNativeWire.target(value.original().originalFrame().bytes(), value.requestId(), SwayNativeBindings.bind(value, new OperationKey(SwayNativeWire.TARGET + target)), target);
         }).findFirst().orElseThrow(() -> new IllegalArgumentException("formal result requires actual original target read"));
     }

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.Identity;
 import org.xar.ck3.control.planning.swayreuse.ReusedSwayOpportunity.ObservationGap;
@@ -172,8 +173,8 @@ public final class OrdinarySwaySchedule {
         }
         if (root.frontier().isEmpty()) { return none(Reason.FRONTIER_UNAVAILABLE, state); }
         List<Long> targets = root.frontier().orElseThrow();
-        if (targets.stream().anyMatch(value -> value == null || value <= 0 || value > 0xffff_ffffL
-                || value == frame.actorCharacterId()) || new HashSet<>(targets).size() != targets.size()) {
+        if (targets.stream().anyMatch(value -> value == null || value < Integer.MIN_VALUE || value > Integer.MAX_VALUE
+                || value == -1 || value == frame.actorCharacterId()) || new HashSet<>(targets).size() != targets.size()) {
             return none(Reason.FRONTIER_UNAVAILABLE, state);
         }
         List<Long> membership = new ArrayList<>(targets); membership.sort(Long::compare);
@@ -228,7 +229,7 @@ public final class OrdinarySwaySchedule {
     private static Decision job(Job job, Reason reason, long target, Optional<String> action, State state) {
         return new Decision(Optional.of(job), reason, Optional.of(target), action, Optional.of(state));
     }
-    private static void character(long value) { require(value > 0 && value <= 0xffff_ffffL, "actual full32 character ID required"); }
+    private static void character(long value) { NativeCharacterId.of(value); }
     private static void text(String value) { require(value != null && !value.isBlank(), "nonempty text required"); }
     private static void positive(BigInteger value) { require(value != null && value.signum() > 0, "positive integer required"); }
     private static void require(boolean value, String message) { if (!value) { throw new IllegalArgumentException(message); } }

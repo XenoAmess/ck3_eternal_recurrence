@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.m6.G2M6Contracts.Identity;
@@ -130,7 +131,7 @@ public final class SwayScheduleWire {
         StrictJson.require(value.isArray(), "actual JSON array required");
         List<Long> result = new ArrayList<>(); value.forEach(item -> result.add(character(item))); return List.copyOf(result);
     }
-    private static long character(JsonNode value) { return StrictJson.integer(value, 1, 0xffff_ffffL); }
+    private static long character(JsonNode value) { return NativeCharacterId.fromJson(value).value(); }
     private static BigInteger integer(JsonNode value) { return StrictJson.integer(value, MIN, MAX); }
     private static BigInteger positive(JsonNode value) { return StrictJson.integer(value, BigInteger.ONE, MAX); }
     private static boolean flag(JsonNode value) { StrictJson.require(value != null && value.isBoolean(), "actual JSON boolean required"); return value.booleanValue(); }

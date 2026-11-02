@@ -23,6 +23,7 @@ import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.PlanningResult;
 import org.xar.ck3.control.application.planning.PlanningStage;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Claims;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition;
@@ -165,7 +166,7 @@ public final class OrdinarySwayPolicy implements OrdinaryPolicy {
         if (job == Job.QUERY_SELECTED_TARGET) fields.add("native_ai_rank_claimed");
         StrictJson.object(value, fields); require(!flag(value.get("submit_allowed")), "proposal is not submit authority");
         if (job == Job.QUERY_SELECTED_TARGET) require(!flag(value.get("native_ai_rank_claimed")), "native rank is not claimed");
-        var target = value.has("target_character_id") ? Optional.of(StrictJson.integer(value.get("target_character_id"), 1, 0xffff_ffffL))
+        var target = value.has("target_character_id") ? Optional.of((long) NativeCharacterId.fromJson(value.get("target_character_id")).value())
                 : Optional.<Long>empty();
         var action = value.has("action_id") ? Optional.of(StrictJson.text(value.get("action_id"))) : Optional.<String>empty();
         var stagedDecision = new OrdinarySwaySchedule.Decision(Optional.of(job),
@@ -175,8 +176,7 @@ public final class OrdinarySwayPolicy implements OrdinaryPolicy {
     }
     private static long character(OpportunityJson.Value value) {
         BigInteger id = OpportunityJson.integer(value, "character_id");
-        require(id.signum() > 0 && id.compareTo(BigInteger.valueOf(0xffff_ffffL)) <= 0, "full character identity required");
-        return id.longValueExact();
+        return NativeCharacterId.of(id).value();
     }
     private static boolean flag(JsonNode value) {
         require(value != null && value.isBoolean(), "actual Sway boolean required"); return value.booleanValue();
