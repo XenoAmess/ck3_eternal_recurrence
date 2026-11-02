@@ -64,9 +64,10 @@ public final class GovernanceCadenceActions {
         StrictJson.require(Arrays.equals(ActionReceiptCodec.encodeReceipt(receipt,archive),ActionReceiptCodec.encodeReceipt(canonical,archive))&&receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED
                 &&input.domain()==domain(receipt.command().operation()),"cadence reset needs its exact canonical applied domain action");
         StrictJson.require(receipt.state() instanceof ActionState.Settled,"actual primitive governance settlement required");var settled=(ActionState.Settled)receipt.state();ActionEffects.validate(receipt.command(),settled.attempt(),settled.settlement());
-        context.bindings().actualArchivedVerifier(receipt.command().operation()).orElseThrow(()->new IOException("actual action native material verifier missing")).verifier().verify(head,receipt,archive);
         if(input.domain()==CadenceModels.Domain.COUNCIL||input.domain()==CadenceModels.Domain.CROWN){
             if(civicDomains==null)throw new IOException("actual Council/Crown material holder was not bound");civicDomains.requireMaterialSettlement(same,receipt);
+        }else{
+            context.bindings().actualArchivedVerifier(receipt.command().operation()).orElseThrow(()->new IOException("actual action native material verifier missing")).verifier().verify(head,receipt,archive);
         }
         if(input.domain()==CadenceModels.Domain.FEAST){
             var read=same.readDomain(DomainBodies.Slot.FEAST);if(!(read instanceof DomainBodies.Available body))throw new IOException("actual settled Feast holder unavailable");
