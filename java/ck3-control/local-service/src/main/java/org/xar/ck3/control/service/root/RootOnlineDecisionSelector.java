@@ -179,6 +179,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     }
 
     private byte[] requestPayload(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
+        byte[] council = tryCompactCouncilPayload(request, proposal, sha);
+        if (council != null) return council;
         byte[] knownPending = tryCompactKnownPendingPayload(request, proposal, sha);
         if (knownPending != null) return knownPending;
         byte[] compact = tryCompactPayload(request, proposal, sha);
@@ -227,6 +229,16 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         return encodeModelInput(orderedData, POLICY);
     }
 
+
+    private byte[] tryCompactCouncilPayload(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
+        try {
+            var projected = org.xar.ck3.control.service.root.RootCouncilDecisionProjection.project(request, proposal, sha);
+            if (projected.isEmpty()) return null;
+            return encodeModelInput(projected.get(), RootCouncilDecisionProjection.POLICY);
+        } catch (RuntimeException unsupportedOrTooLarge) {
+            return null;
+        }
+    }
 
     private byte[] encodeModelInput(ObjectNode data, String policy) {
         ObjectNode payload = object(); payload.put("model", config.model()); payload.put("temperature", 0);
