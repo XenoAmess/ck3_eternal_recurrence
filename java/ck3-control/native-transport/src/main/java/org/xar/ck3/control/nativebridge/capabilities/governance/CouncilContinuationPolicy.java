@@ -182,7 +182,7 @@ public final class CouncilContinuationPolicy implements CouncilContinuationPorts
         StrictJson.require(wire.requestId().equals(attempt.requestId()) && wire.step().equals(command.operation().value())
                 && wire.expectedRevision().filter(command.before().frame().identity().nativeRevision()::equals).isPresent() && wire.expectedSnapshotRevision().isEmpty()
                 && StrictJson.parse(wire.normalizedAdditionalFields().value()).equals(StrictJson.parse(attempt.preparedRequest().additionalFields().bytes()))
-                && StrictJson.parse(wire.normalizedAdditionalFields().value()).equals(CouncilActionCodec.wireFields(expected, true)), "original Council outbound differs from durable selected candidate primitive");
+                && StrictJson.parse(wire.normalizedAdditionalFields().value()).equals(StrictJson.parse(StrictJson.canonical(CouncilActionCodec.wireFields(expected, true)))), "original Council outbound differs from durable selected candidate primitive");
         StrictJson.require(isPending(result(original), CouncilActionCodec.PRIVATE_ASSIGN), "original private Council result is not its genuine pending transport ACK");
     }
     public static void requireWire(Request request, NativeActionPort.AckReceived original) throws IOException {
