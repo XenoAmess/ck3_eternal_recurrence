@@ -120,7 +120,8 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
                     &&owner.sessionId().equals(command.sessionId())
                     &&command.expected().observerSchema().equals(CheckpointRequestFactory.OBSERVER_SCHEMA),
                     "canonical settled primitive SAVE must bind this original opening/session");
-            var bound=archive.withSession(same);String originals=verifyOriginal(same,receipt,bound,physical);
+            var validatedDrivers=new java.util.HashMap<CheckpointPair,java.util.Map.Entry<byte[],DriverStateSnapshot.Complete>>();
+            var bound=archive.withSession(same);String originals=verifyOriginal(same,receipt,bound,physical,validatedDrivers);
             ExactRef pairRef=receipt.applied().orElseThrow().observation().supportingEvidence().getFirst();
             CheckpointPair actualPair=CheckpointPairCodec.decode(bound.loadMaterial(pairRef).bytes());
             StrictJson.require(actualPair.equals(pair),"canonical SAVE belongs to another physical checkpoint pair");
@@ -129,12 +130,17 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
             var material=StrictJson.object();material.put("schema","xar.canonical-save-receipt-binding/v2");
             material.set("receipt",receiptRef.toJson());material.put("originals_sha256",originals);
             StrictJson.require(head.equals(same.head().digest()),"canonical SAVE verification changed the original writer head");
-            var savedDriver=drivers.readArchivedSnapshot(pair,bound.loadMaterial(receipt.applied().orElseThrow().observation().supportingEvidence().get(1)).bytes());
+            byte[] freshDriverBytes=bound.loadMaterial(receipt.applied().orElseThrow().observation().supportingEvidence().get(1)).bytes();
+            var savedDriver=readSavedDriver(drivers,pair,freshDriverBytes,validatedDrivers);
             StrictJson.require(head.equals(same.head().digest()),"canonical SAVE verification changed the original writer head");
             writer.requireSession(same);return new FirstSaveReceiptVerifier.Original(ContinuityJson.digest(material),receipt,receiptRef,pairRef,savedDriver);
         }catch(UncheckedIOException failure){throw failure.getCause();}
     }
     private String verifyOriginal(ContinuityStorePort.Session same,ActionReceipt receipt,ActionPorts.OutcomeArchive bound,boolean physical)throws IOException {
+        return verifyOriginal(same,receipt,bound,physical,null);
+    }
+    private String verifyOriginal(ContinuityStorePort.Session same,ActionReceipt receipt,ActionPorts.OutcomeArchive bound,boolean physical,
+            java.util.Map<CheckpointPair,java.util.Map.Entry<byte[],DriverStateSnapshot.Complete>> validatedDrivers)throws IOException {
             writer.requireSession(same);var command=receipt.command();
             StrictJson.require(command.operation().equals(new OperationKey("save-checkpoint"))&&command.origin() instanceof CommandOrigin.Gameplay
                     &&command.expected().observerSchema().equals(CheckpointRequestFactory.OBSERVER_SCHEMA)
@@ -159,7 +165,8 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
             ExactRef pairRef=actual.supportingEvidence().getFirst();byte[] pairBytes=bound.loadMaterial(pairRef).bytes();
             CheckpointPair pair=CheckpointPairCodec.decode(pairBytes);
             ExactRef savedDriverRef=actual.supportingEvidence().get(1);
-            var originalSavedDriver=drivers.readArchivedSnapshot(pair,bound.loadMaterial(savedDriverRef).bytes());
+            byte[] originalDriverBytes=bound.loadMaterial(savedDriverRef).bytes();
+            var originalSavedDriver=drivers.readArchivedSnapshot(pair,originalDriverBytes);
             if(physical)drivers.verifyOriginal(pair,originalSavedDriver.session());
             StrictJson.require(pair.saveActionId().equals(command.actionId())&&Arrays.equals(pairBytes,CheckpointPairCodec.encode(pair)),
                     "SAVE physical material differs from its original exact pair");
@@ -193,7 +200,16 @@ public final class CanonicalSaveReceiptVerifier implements CheckpointCommitVerif
             material.set("pair_proof",pairRef.toJson());material.set("post_native",actual.originalEvidence().toJson());material.put("action_body_sha256",receipt.bodySha256());
             material.set("saved_driver",savedDriverRef.toJson());
             material.set("pair",StrictJson.parse(CheckpointPairCodec.encode(pair)));
-            writer.requireSession(same);return ContinuityJson.digest(material);
+            writer.requireSession(same);String digest=ContinuityJson.digest(material);
+            if(validatedDrivers!=null)validatedDrivers.put(pair,java.util.Map.entry(originalDriverBytes,originalSavedDriver));
+            return digest;
+    }
+    /** Reuses only immutable decoded DATA after the caller has performed its second fresh archive read. */
+    private static DriverStateSnapshot.Complete readSavedDriver(DriverCheckpointStore drivers,CheckpointPair pair,byte[] freshBytes,
+            java.util.Map<CheckpointPair,java.util.Map.Entry<byte[],DriverStateSnapshot.Complete>> validatedDrivers)throws IOException {
+        var validated=validatedDrivers.get(pair);
+        return validated!=null&&Arrays.equals(validated.getKey(),freshBytes)
+                ?validated.getValue():drivers.readArchivedSnapshot(pair,freshBytes);
     }
     private void verifyFreshSnapshotOriginals(ContinuityStorePort.Session same, ActionReceipt receipt, ActionPorts.OutcomeArchive bound,
             ActionState.EffectObservation actual, NativeWire.Snapshot snapshot, byte[] postPacket) throws IOException {
