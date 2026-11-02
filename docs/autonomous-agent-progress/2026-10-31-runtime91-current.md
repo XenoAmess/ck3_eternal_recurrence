@@ -1,5 +1,17 @@
 # runtime91 同局续行
 
+## 2026-11-02 05:31Z 截止：Main296–298均曾LOOP，38日保存前沿未变；299仅START
+
+仅消费 `closed296/297/298/INDEX.json` 指向的十二份已闭stdout/stderr/START/END、对应 `recovery-outcome*/SUMMARY.json`、三份真实LOOP marker及原件报告，逐项核长度/SHA。Main296／Java73064实际04:37:49.324698Z启动，04:38:41.8695263Z LOOP／next12，04:40:24.709980Z END4；完整UTC 155.385282秒／reported 155.3852885秒。批次 INTERNAL_FAILURE：`read descendant changed unrelated canonical field: java_domain_bodies_v1`；head236／repair_required／SHA `af721f4428097d7484ad0fcfc0c7a0a63cc6a4b5d7cdf28422c6ba4a159a78a7`，无新receipt或action metadata。LOOP时间以具名原marker为准，不沿口述的05:38笔误。
+
+Main297／Java11468实际04:50:35.132643Z启动，04:51:28.696586Z LOOP／next13，05:04:01.024579Z协作END0；完整UTC 805.891936秒／reported 805.8919397秒，不能把停止等待的短子段当整个运行窗口。真实报告为 CHECKPOINT_DEFERRED／`operator stop observed during readiness; no new gameplay submitted`，head273／running／SHA `f33106186c1fa2795fc567def31fd682318d0f2e4fa9a8b816787dcb0b090a35`，无新receipt或action metadata；该head标签不表示进程仍在运行。
+
+Main298／Java112744实际05:08:43.977216Z启动，05:09:46.3672201Z LOOP／next14，05:29:52.317261Z END4；完整UTC 1268.340045秒／reported 1268.3400471秒。新Council `governance-66d439…` 的canonical回执288仍为 UNKNOWN，原reason包含 `Native transport deadline expired`；批次ACTION_UNKNOWN另报mailbox callback未带已验证归档terminal ACK或原可选READ deferral返回。head289／repair_required／SHA `b2865f93b6de7d31ae839373c0d3309fe416992fef4c80c098e8010cc46bb2c4`，新增action metadata18010B。不得把Native层状态或源码首绿当作canonical SETTLED，也不得重发该UNKNOWN assignment。
+
+三次同原Game77132／birth134380410301009189、actor31254，completed_cycles7／cycle pending=null；最新观察分别135/94、137/97、150/111，date始终53146896。确认保存仍38日及原pair105/78，三次均0新增SAVE_CONFIRMED。Root主epoch至Main298 END完整31146.317261秒／38新增确认保存日＝819.6399279210526315789473684秒／日，10秒目标未达；本段Main296 START→Main298 END完整3122.992563秒（含失败、运行、间隔及等待）新增确认保存0，秒／新增保存日为null，各次零保存窗口同为null，不拿历史38作本段增量分母。
+
+P0296／297／298源码分别已正式 `4b07eeca79dfb20542245ec1ffdca4fdfcd757db`／`40c88c196ae156e84861cc6ac709a51afc6f677a`／`ed4907fe88091ee68068a0d75b66d6a9ad11d114`。P0299只保receipt QUERY前真实Pair并复用、缺席仍拒，已正式 `bb8a409a2a95263981a8e3c2abc70b5fb865c10c`，复用唯一首1TU0／2.047967秒，原精确project／canonical／preflight／archive／拒绝／cold门保留，无完整warm issuer行为JVM信用。实际299／Java86320仅已核05:31:17.870168Z START，不能据此授LOOP、装载全部候选、恢复或新SAVE；后到终态另记。下方294/295及全部旧截止原字节保留，原件只机器留存；本次0新增Java／HTTP／Game或Native查询、Driver／Save大读、S／MB采用、部署或重启，不作Runtime运行前置。
+
 ## 2026-11-02 04:30Z Main294–295：实际越过历史门并LOOP，随后Council材料消费失败
 
 仅消费 `closed294/INDEX.json`、`closed295/INDEX.json` 的八份已闭冻结原件、两份 `recovery-outcome*/SUMMARY.json` 与1069B的 `business-recovery295/ACTUAL-LOOP295.json`，长度/SHA逐项核对，没有为本段新增现场查询。Main294／Java101512 实际04:20:46.986715Z→04:21:31.935083Z END1，UTC墙钟44.948368秒／reported 44.9483816秒，未LOOP；已越过上一处Journal历史门，真实stderr在 OrdinaryCycleTransitions:388 报 `settled recovery requires a completed interrupted cycle`。原head227及 `038565b67e2483e2241c6d5b09e4288e1e3d56cc8d4f80c1c7edada498d1e025` 保持不变。
