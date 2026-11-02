@@ -1,5 +1,15 @@
 # runtime91 同局续行
 
+## 2026-11-02 01:38Z Main285 终态：历史 Council 零派发拒绝仍阻塞，保存仍38日
+
+Main285／Java47644 于 `01:37:39.387764Z` START，`01:38:12.757147Z` END1，reported 33.3693871秒；未进入LOOP，新增SAVE_CONFIRMED为0。Runtime 已冻结 `closed285/INDEX.json` 及四份 START／END／stdout／stderr；本次实读并核长度、SHA。实际 stderr 指向 `ContinuityBatchJournal.requireCapturedActionOutcome:575`：旧历史消费只接纳 Life 的非Applied拒绝，未接纳原198 Council REJECTED_BEFORE_DISPATCH／BEFORE_WRITE0及已发布201的 canonical-only 历史。这里有本次真实stack，与下方Main280 stderr为空、没有完整stack的历史分别记录。
+
+`recovery-outcome285/SUMMARY.json` 冻结 head210／repair_required，SHA `d20945d7a60a978d4e65ee18ed21223f9d992c051b71c5a11565289d309cbf31` 与启动前完全相同；新action metadata字节0、new_receipts为空。completed_cycles6／pending_receipt=null，已确认保存仍38日／date53146896；原208 positiveACK／209UNKNOWN保留，不据此重发、清理或授assignment成功。仍为同一 Game77132／birth134380410301009189，本段没有沿冻结DATA中的路径读取实际Save、Driver或live账本。
+
+Root主性能窗口继续从 `2026-11-01T20:50:46Z` 起算，到本次END完整墙钟为17246.757147秒／38新增确认保存日＝453.8620301842105263157894737秒／日，未达暂定10秒目标。全部失败、准备、恢复、等待仍在窗口；Main285自身33.3693871秒的零新增保存窗口，其秒／新增保存日为null。先前保存时的292.763580373684秒／日和Main284终态352.803785710526秒／日保留为各自历史截止，旧69日不进入此窗口分母。
+
+后到源码修复另记：Journal P0286 最终REV02已以 `19003d76cd56f33bdf4be2ead9006fe0b5ef3d2b` 正常发表，复用唯一改后1TU strict0／2.4128481秒；早一版c498首编通过但未装载，后发现原receipt198与publication前head200序号不同才修正。源码、首编和正式提交不追授Main285恢复成功，后续实际装载、运行及保存须按Runtime新回执记录。Runtime独占现场，本次仅插入文档，保全旧历史，不新增Game／Native查询、动作、部署、重启或编测，也不作为恢复前置。
+
 ## 2026-11-02 00:34Z 运行终态：38 日保存前沿保留，Council 恢复仍未闭
 
 本段只消费 Runtime 已冻结的 `closed280/INDEX.json`、`closed284/INDEX.json`、两份 ACTUAL-END 与 `recovery-outcome283/28402/SUMMARY.json`；此前 23:56 的健康 next9 是当时截面。Main280/Java110752 已于 00:01:56.890408Z END4（823.0153281 秒），batch9 的实际 ClassCast 为 RejectedBeforeDispatch→Settled；stderr 为零，未持完整 Java stack，不编造源码行号。原198 Council REJECTED_BEFORE_DISPATCH 的真实原因是 held mailbox custody 限制，BEFORE_WRITE/0bytes，非 unsupported Native step，不能据 attempt0 或这个批终态重发旧动作。
