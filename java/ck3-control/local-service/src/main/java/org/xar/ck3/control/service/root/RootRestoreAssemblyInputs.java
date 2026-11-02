@@ -64,6 +64,7 @@ public final class RootRestoreAssemblyInputs {
         reconciliation=new RootReconciliationAuthority(context.writer(),context.archive(),remaining.lifecycle().physical(),
                 pending,context.originals(),
                 context.frameLoader(),catalog.bindings().readCatalog(),remaining.reconciliationReads(),context.clock());
+        context.bindReconciliation(reconciliation,remaining.lifecycle().physical());
         var installedOffline=shared.offline().install(catalog,remaining.events().eventSources());
         installedOffline.requireContext(catalog);offline=installedOffline.port();
 

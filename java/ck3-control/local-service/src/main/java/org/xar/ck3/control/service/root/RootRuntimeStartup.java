@@ -241,6 +241,7 @@ public final class RootRuntimeStartup {
             var reconciliation=new RootReconciliationAuthority(actual.writer(),actual.archive(),physical,
                     pendingBinding,context.originals(),
                     context.frameLoader(),installed.bindings().readCatalog(),remaining.reconciliationReads(),clock);
+            context.bindReconciliation(reconciliation,physical);
             derived.requireOwner(context,installed.bindings());
             staged.prepareDispatcher(start.authorityId(),installed.bindings(),installed.frontend().authority(),physical,reconciliation,
                     remaining.lifecycle().closeAdmission(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),
