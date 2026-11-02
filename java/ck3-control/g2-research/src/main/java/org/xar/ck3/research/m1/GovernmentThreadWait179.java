@@ -17,6 +17,25 @@ public final class GovernmentThreadWait179 {
             GovernmentCallee164Api.Entry entry,
             GovernmentSharedManager167Api.Memory memory,
             GovernmentThreadHeader178Api.Ports ports) {
+        return executeInternal(entry, memory, ports, false);
+    }
+
+    /**
+     * Explicit paired-port entry: the port must freshly resolve each indirect CALL operand
+     * before writing its return slot. Legacy execute retains producer-owned CALL pushes.
+     */
+    public static GovernmentCallee164Api.NormalReturn executeWithPortOwnedCallPush(
+            GovernmentCallee164Api.Entry entry,
+            GovernmentSharedManager167Api.Memory memory,
+            GovernmentThreadHeader178Api.Ports ports) {
+        return executeInternal(entry, memory, ports, true);
+    }
+
+    private static GovernmentCallee164Api.NormalReturn executeInternal(
+            GovernmentCallee164Api.Entry entry,
+            GovernmentSharedManager167Api.Memory memory,
+            GovernmentThreadHeader178Api.Ports ports,
+            boolean portOwnedCallPush) {
         Objects.requireNonNull(entry);
         Objects.requireNonNull(memory);
         Objects.requireNonNull(ports);
@@ -49,7 +68,7 @@ public final class GovernmentThreadWait179 {
 
             // 04223B68: call qword ptr [rip + 0x1b6982] -> 0x43da4f0
             long callSiteRsp = rsp;
-            memory.writeQword(rsp - 8, imageBase + 0x4223B6E);
+            if (!portOwnedCallPush) memory.writeQword(rsp - 8, imageBase + 0x4223B6E);
             rsp -= 8;
 
             GovernmentThreadHeader178Api.IatCall iatCall1 = new GovernmentThreadHeader178Api.IatCall(
@@ -76,7 +95,7 @@ public final class GovernmentThreadWait179 {
 
             // 04223B7A: call qword ptr [rip + 0x1b6998] -> 0x43da518
             long callSiteRsp2 = rsp;
-            memory.writeQword(rsp - 8, imageBase + 0x4223B80);
+            if (!portOwnedCallPush) memory.writeQword(rsp - 8, imageBase + 0x4223B80);
             rsp -= 8;
 
             GovernmentThreadHeader178Api.IatCall iatCall2 = new GovernmentThreadHeader178Api.IatCall(

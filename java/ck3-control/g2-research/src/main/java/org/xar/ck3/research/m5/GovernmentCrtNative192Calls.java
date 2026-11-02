@@ -71,7 +71,7 @@ public final class GovernmentCrtNative192Calls {
             );
             GovernmentThreadHeader178Api.Ports ports = new PortsAdapter(boundImage, sharedMemory, fallback);
             try {
-                GovernmentThreadWait179.execute(entry, sharedMemory, ports);
+                GovernmentThreadWait179.executeWithPortOwnedCallPush(entry, sharedMemory, ports);
                 throw new UnsupportedOperationException("unexpected normal Wait return");
             } catch (TerminalTail t) {
                 if (t.owner != ports) throw t;
@@ -98,7 +98,7 @@ public final class GovernmentCrtNative192Calls {
             );
             GovernmentThreadHeader178Api.Ports ports = new PortsAdapter(transfer.entry().imageBaseBits(), sharedMemory, fallback);
             try {
-                GovernmentThreadNotify181.execute(entry, sharedMemory, ports);
+                GovernmentThreadNotify181.executeWithPortOwnedCallPush(entry, sharedMemory, ports);
                 throw new UnsupportedOperationException("unexpected normal Notify return");
             } catch (TerminalTail t) {
                 if (t.owner != ports) throw t;
@@ -136,6 +136,19 @@ public final class GovernmentCrtNative192Calls {
                 GovernmentCrtBoundary185Api.NormalReturn captured = fallback.tail(tail);
                 throw new TerminalTail(this, captured);
             } else {
+                // The operand above is evaluated before the architectural CALL push.
+                // Only these three exact paired-producer sites own a new return slot.
+                long continuation;
+                if (iat.callSiteRva() == 0x4223B68L && iat.slotRva() == 0x43DA4F0L) {
+                    continuation = 0x4223B6EL;
+                } else if (iat.callSiteRva() == 0x4223B7AL && iat.slotRva() == 0x43DA518L) {
+                    continuation = 0x4223B80L;
+                } else if (iat.callSiteRva() == 0x4223B15L && iat.slotRva() == 0x43DA5B0L) {
+                    continuation = 0x4223B1BL;
+                } else {
+                    throw new UnsupportedOperationException("unowned indirect CALL site/slot");
+                }
+                memory.writeQword(iat.rspBits() - 8, invocationImage + continuation);
                 GovernmentCrtBoundary185Api.Call call = new GovernmentCrtBoundary185Api.Call(
                         iat.callSiteRva(),
                         GovernmentCrtBoundary185Api.TargetKind.INDIRECT_ABSOLUTE,
