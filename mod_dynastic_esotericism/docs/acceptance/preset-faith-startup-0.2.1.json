@@ -5,7 +5,7 @@
   "product": "dynastic-esotericism",
   "workshop_item_id": "3826991345",
   "target_version": "0.2.1",
-  "publication_status": "WORKSHOP_UPLOAD_RECEIPT_PENDING",
+  "publication_status": "WORKSHOP_PUBLISHED_PUBLIC_TEXT_VERIFIED_STEAM_OFFLINE_RESTORED",
   "tested_product": {
     "source_HEAD": "1770a0443ab3b7a7ea71a57f609539f1d6a7ad98",
     "mod_version": "0.2.0",
@@ -228,6 +228,29 @@
     "procreation_initial_Rite_is_dynastic": true,
     "scope": "Actual Native, independently decoded Save, and GUI facts; not a substitute for final public exit/whole-case or full matrix completion."
   },
-  "upload_receipt": null,
-  "public_Workshop_readback": null
+  "upload_receipt": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\publish-receipt.json",
+    "bytes": 658,
+    "sha256": "6b8c7bb1e8e1f4054e30459b2dc1afddcf00b79909a4df8a65f7ea75e533571f"
+  },
+  "public_Workshop_readback": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\PUBLIC-FULL-TEXT-VERIFIED-a01.actual.json",
+    "bytes": 2397,
+    "sha256": "391b7c75010b0be7ef71517fe4d9b7594d218c4ea0c1086953ebfa3dbdd03baa"
+  },
+  "publication_record": "publication-0.2.1-2026-11-02.json",
+  "published_payload": {
+    "source_HEAD": "10a6549d3b5fc6b43033aa97d41e9f876b91b5a4",
+    "git_tag": "dynastic-esotericism-v0.2.1",
+    "manifest": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\formal-0.2.1-postupload-clean-10a6549-a01.manifest.json",
+      "bytes": 10136,
+      "sha256": "05693c0afdcdb3b29d60230449fde1c7e252296bb54d616e356262773b0b0c8b"
+    },
+    "archive": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\formal-0.2.1-postupload-clean-10a6549-a01.zip",
+      "bytes": 916571,
+      "sha256": "cdea1eafa4511b9d78b6de948ab333b49e409cc07ba456e770439bff03265ce5"
+    }
+  }
 }

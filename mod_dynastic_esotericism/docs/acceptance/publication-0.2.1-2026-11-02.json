@@ -1,0 +1,161 @@
+{
+  "schema": "xar.des-workshop-publication-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-02T00:12:53.874384+00:00",
+  "version": "0.2.1",
+  "workshop_item_id": "3826991345",
+  "app_id": 1158310,
+  "operation": "update",
+  "operation_id": "des-0.2.1-preset-faith-startup-20261102-a01",
+  "status": "PUBLISHED_PUBLIC_TEXT_VERIFIED_STEAM_OFFLINE_CLEAN_STAGING_VERIFIED",
+  "payload_source_HEAD": "10a6549d3b5fc6b43033aa97d41e9f876b91b5a4",
+  "git_tag": "dynastic-esotericism-v0.2.1",
+  "tag_object": "437090d51e2f66a4b65d96bc9ade9c8e6684d5d1",
+  "tag_moved": false,
+  "upload": {
+    "submitted_at": "2026-11-02T00:07:01.757701+00:00",
+    "stage": "complete",
+    "steam_result": 1,
+    "original_exit_code": 0,
+    "timed_out": false,
+    "receipt": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\publish-receipt.json",
+      "bytes": 658,
+      "sha256": "6b8c7bb1e8e1f4054e30459b2dc1afddcf00b79909a4df8a65f7ea75e533571f"
+    },
+    "original_wait": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\PUBLISH-ORIGINAL-WAIT.actual.json",
+      "bytes": 867,
+      "sha256": "c549edb4887548d9d99d6e33d3c22b27f7d4c38dab8348de8f084c1d2581174d"
+    },
+    "stdout": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\publish.stdout.json",
+      "bytes": 289,
+      "sha256": "86c800c0db38b878e2da31bbcbd9eeaa09600a7152ae11d55aa46615b0dc7c01"
+    },
+    "plan": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\publish-plan.json",
+      "bytes": 2162,
+      "sha256": "d076f96781ca98e74f8e8f270507ff2f3e1b188526f9fa32a87270ec48f8faa5"
+    }
+  },
+  "public_readback": {
+    "observed_at_utc": "2026-11-02T00:09:55.550309+00:00",
+    "title_exact": true,
+    "description_exact": true,
+    "change_notes_exact": true,
+    "changelog_entry_id": "1793578036",
+    "file_size": "1952182",
+    "creator": "76561198273714027",
+    "app_id": 1158310,
+    "visibility": 0,
+    "tags": [
+      "Religion",
+      "Gameplay",
+      "1.20 'Crozier'"
+    ],
+    "evidence": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\PUBLIC-FULL-TEXT-VERIFIED-a01.actual.json",
+      "bytes": 2397,
+      "sha256": "391b7c75010b0be7ef71517fe4d9b7594d218c4ea0c1086953ebfa3dbdd03baa"
+    },
+    "first_readback_exit": 1,
+    "first_readback_error": "HTTP 429",
+    "first_readback_wait": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\PUBLIC-READBACK-ORIGINAL-WAIT-a01.actual.json",
+      "bytes": 1070,
+      "sha256": "6594aa6c35e8b95b1d69e9c59931390cbad62add9fb38e6bbf8675013c9d872e"
+    },
+    "successful_original_wait": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\PUBLIC-READBACK-ORIGINAL-WAIT-a02.actual.json",
+      "bytes": 1806,
+      "sha256": "4b782b04d22ae02b3197ce09fee4aeef25bbb26e6c8a4efae13e703e6943d976"
+    },
+    "repeat_submit_performed": false
+  },
+  "steam_restored": {
+    "status": "offline",
+    "offline_mode": true,
+    "observed_at_utc": "2026-11-02T00:08:23.495735+00:00",
+    "evidence": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\STEAM-OFFLINE-RESTORED-a03.actual.json",
+      "bytes": 2461,
+      "sha256": "fd2782d549c10699263889c3debfd9740d9895784d4f7860fe7e61e31ca3a5fe"
+    }
+  },
+  "post_upload_clean_package": {
+    "staging": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\formal-0.2.1-postupload-clean-10a6549-a01",
+    "files": 57,
+    "payload_bytes": 1952182,
+    "manifest": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\formal-0.2.1-postupload-clean-10a6549-a01.manifest.json",
+      "bytes": 10136,
+      "sha256": "05693c0afdcdb3b29d60230449fde1c7e252296bb54d616e356262773b0b0c8b"
+    },
+    "archive": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\formal-0.2.1-postupload-clean-10a6549-a01.zip",
+      "bytes": 916571,
+      "sha256": "cdea1eafa4511b9d78b6de948ab333b49e409cc07ba456e770439bff03265ce5"
+    },
+    "all_57_bytes_and_manifest_metadata_equal_original_tagged_package": true,
+    "inner_remote_file_id_absent": true,
+    "build_original_exit": 0,
+    "independent_verify_original_exit": 0,
+    "delivery": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\release-final-021-a01\\POST-UPLOAD-CLEAN-DELIVERY-a01.actual.json",
+      "bytes": 12682,
+      "sha256": "4ebe4d0f523f08db7242760057d3e44e03aa5dddc0f31e2a01ecf60ffde438e7"
+    }
+  },
+  "release_format_CI": {
+    "original_tag_run": 41363565235,
+    "original_conclusion": "failure",
+    "original_error": "ModuleNotFoundError: No module named 'pydantic'",
+    "infrastructure_fix_HEAD": "a9e62a097ba01d34d2927e329e69142c6bc62571",
+    "corrected_run": 41364591440,
+    "corrected_conclusion": "success",
+    "evidence": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\logs\\RELEASE021-CI-CORRECTED-FORMAT-a01.actual.json",
+      "bytes": 14876,
+      "sha256": "edf7b7c6b7ce8fc3355c1b0e6f1698cd8141cf0031eacece3e724dd9bba7550b"
+    },
+    "actual_CI_57_payload_equals_tagged_57": true,
+    "source_vs_generated_descriptor_18_bytes": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\release-ci-repair-021-a01\\CI-SOURCE-VS-PROJECTION-18B-a01.actual.json",
+      "bytes": 4717,
+      "sha256": "b62a71f4ca18dfff523536791db059561f1d84e763820512fa537c3cd1961422"
+    }
+  },
+  "resource_display_close": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\RESOURCE-DISPLAY-CLOSE-a01.actual.json",
+    "bytes": 864,
+    "sha256": "527cffc052d01663b78a330d9062cc95c76afc7badaa05571fdd2e9545f54402"
+  },
+  "deployment": {
+    "evidence": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\OUTER-DEPLOYED-021-a01.actual.json",
+      "bytes": 1558,
+      "sha256": "d81539ec621d50eb8c15d448ae50cc7bb345a325ddd2bf4b0f382db2095b1ec4"
+    },
+    "actual_outer_version": "0.2.1",
+    "actual_outer_path_target": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\formal-0.2.1-postupload-clean-10a6549-a01",
+    "remote_file_id_only_outer": true,
+    "global_dlc_load_unchanged": true,
+    "performed_by": "Root"
+  },
+  "business_limits": {
+    "full_product_business_matrix_pass": false,
+    "workshop_cache_game_acceptance_claimed": false,
+    "cold_reload_performed": false,
+    "vivhite_R46_public_exit": 2,
+    "procreation_R47_public_exit": 0,
+    "procreation_R47_qualified_boundary_pass": true,
+    "procreation_R47_business_pass": false,
+    "SDK_driver_save_binding_verified": false
+  },
+  "screen_release": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\preset-fix-20261102\\publish-021-20261102-a01\\SCREEN-RELEASE-CAS-a01.actual.json",
+    "bytes": 1365,
+    "sha256": "99ef3f88baf6a0ca5d6e3cf09a54875c7c983cb458b2357fe9e67ed2e6a59f43"
+  }
+}
