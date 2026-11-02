@@ -90,6 +90,25 @@ public final class WorkerLifeBudgetHistory334Test {
         assertTrue(RootOrdinaryWorkerMain.readLifeBudgetHint(log, OWNER).isEmpty(), "an oversized cut row cannot be pieced together");
     }
 
+    @Test void nonInstantUtcPairIsOnlyAnUnavailableOptionalHint() throws Exception {
+        var valid = legacy(); valid.set("life_budget_hint", hint(frame(11, "episode-1", 480), "800000000000", "0"));
+        assertTrue(RootOrdinaryWorkerMain.lifeBudgetHintFromReport(valid, OWNER).isPresent());
+        var changed = valid.deepCopy();
+        String alternateUtc = "2026-11-02 19:00:00Z";
+        assertEquals(alternateUtc, StrictJson.utc(alternateUtc));
+        ((ObjectNode) changed.get("last_saved_pair")).put("observed_at_utc", alternateUtc);
+        RuntimeException oldDecoderFailure = assertThrows(java.time.DateTimeException.class, () ->
+                org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.decode(FullJsonTree.encode(changed.get("last_saved_pair"), 65_536)));
+        assertFalse(oldDecoderFailure instanceof IllegalArgumentException);
+        assertFalse(oldDecoderFailure instanceof NullPointerException);
+        assertTrue(RootOrdinaryWorkerMain.lifeBudgetHintFromReport(changed, OWNER).isEmpty());
+        Path log = temporary.resolve("optional-non-instant.jsonl");
+        Files.writeString(log, new String(FullJsonTree.encode(valid, 65_536), StandardCharsets.UTF_8) + "\n"
+                + new String(FullJsonTree.encode(changed, 65_536), StandardCharsets.UTF_8) + "\n", StandardCharsets.UTF_8);
+        var retained = StrictJson.parse(RootOrdinaryWorkerMain.readLifeBudgetHint(log, OWNER).orElseThrow().bytes());
+        assertEquals("800000000000", retained.get("saved_life_tail_nanos").textValue());
+    }
+
     private static ObservationIdentity frame(int actor, String episode, int date) {
         return new ObservationIdentity(OWNER.machineId(), GAME, new JointBudgetSelector.ProposalFrame(
                 new JointBudgetSelector.Frame(BigInteger.valueOf(actor), BigInteger.ONE, BigInteger.valueOf(date)),

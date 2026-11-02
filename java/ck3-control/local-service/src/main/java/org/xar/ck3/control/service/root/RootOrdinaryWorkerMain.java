@@ -345,7 +345,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                     || !subject.frame().identity().player().equals(anchor.frame().identity().player())
                     || subject.frame().identity().dateRaw().compareTo(anchor.frame().identity().dateRaw()) > 0) return Optional.empty();
             return Optional.of(new org.xar.ck3.control.application.action.RawJson(StrictJson.canonical(hint, 16_384)));
-        } catch (IllegalArgumentException | NullPointerException unavailable) { return Optional.empty(); }
+        } catch (IllegalArgumentException | NullPointerException | java.time.DateTimeException unavailable) { return Optional.empty(); }
     }
 
     private static long lifeHintNanos(com.fasterxml.jackson.databind.JsonNode value) {
