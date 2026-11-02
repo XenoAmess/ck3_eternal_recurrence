@@ -48,7 +48,7 @@ public record ActionCommand(String actionId, CommandOrigin origin, G2Source sour
         }
         byte[] originalArguments = DriverJson.encode(arguments);
         ProjectionJson.object(originalArguments, MAX_ARGUMENT_BYTES);
-        DriverJson.object(originalArguments, MAX_ARGUMENT_BYTES);
+        OpportunityJson.require(org.xar.ck3.control.contracts.FullJsonTree.parse(originalArguments, MAX_ARGUMENT_BYTES).isObject(), "full JSON must be an object");
     }
     /** Existing schemas retain the original implicit body-derived protocol identity. */
     public ActionCommand(String actionId, CommandOrigin origin, G2Source source, String sessionId,
