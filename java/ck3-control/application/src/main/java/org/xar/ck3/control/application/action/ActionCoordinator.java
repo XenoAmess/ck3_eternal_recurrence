@@ -225,19 +225,107 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
                 }
                 throw failure;
             }
+            long submissionStartedNanos = System.nanoTime();
             Instant submittedAt = clock.instant();
             ActionState.Attempt attempt = new ActionState.Attempt(requestId, submittedAt, atSubmission, request);
-            ActionReceipt submitting = append(locked, command, digest, new ActionState.Submitting(attempt));
+            long appendStartedNanos = System.nanoTime();
+            try {
+                String id = command.actionId(); id = id.substring(0, Math.min(128, id.length())).replaceAll("[^A-Za-z0-9_.:-]", "_");
+                System.err.println("ACTION_SUBMISSION_PHASE action=" + id + " thread=" + Thread.currentThread().threadId() + " phase=submitting_append_enter event_ns=" + appendStartedNanos);
+            } catch (Throwable diagnosticUnavailable) { /* Diagnostic output never controls the original action. */ }
+            ActionReceipt submitting;
+            boolean appendReturned = false;
+            try {
+                submitting = append(locked, command, digest, new ActionState.Submitting(attempt));
+                appendReturned = true;
+            } finally {
+                long appendEndedNanos = System.nanoTime();
+                try {
+                    String id = command.actionId(); id = id.substring(0, Math.min(128, id.length())).replaceAll("[^A-Za-z0-9_.:-]", "_");
+                    System.err.println("ACTION_SUBMISSION_PHASE action=" + id + " thread=" + Thread.currentThread().threadId() + " phase=submitting_append_exit event_ns=" + appendEndedNanos
+                            + " elapsed_ns=" + Math.max(0L, appendEndedNanos - appendStartedNanos) + " returned=" + appendReturned);
+                } catch (Throwable diagnosticUnavailable) { /* Diagnostic output never replaces an append failure. */ }
+            }
             SubmissionPermit permit = new SubmissionPermit(command, digest, submitting.sequence(), requestId, submittedAt, atSubmission, request);
             permit.beforeFirstWrite(()->{
-                PhysicalActionRegistry registry=physicalActions;if(registry==null)return;
-                for(var binding:registry.installed())try{
-                    binding.producer().beforeNative(locked.writerSession(),command,atSubmission,() -> locked.snapshot().actions(),
-                        camera->PhysicalCoordinatorSupport.defer(locked,camera,registry,authorityId,clock,intentPreparation,intentBarrier));
-                }catch(java.io.IOException|RuntimeException cameraUnavailable){ /* Optional presentation never replays or replaces the original native action. */ }
+                var callbackJournal = locked; // Preserve original first-use lambda capture order and the exact journal instance.
+                long callbackStartedNanos = System.nanoTime();
+                try {
+                    String id = command.actionId(); id = id.substring(0, Math.min(128, id.length())).replaceAll("[^A-Za-z0-9_.:-]", "_");
+                    System.err.println("ACTION_SUBMISSION_PHASE action=" + id + " thread=" + Thread.currentThread().threadId() + " phase=before_first_write_enter event_ns=" + callbackStartedNanos);
+                } catch (Throwable diagnosticUnavailable) { /* Diagnostics hold no dispatch capability. */ }
+                try {
+                    PhysicalActionRegistry registry=physicalActions;if(registry==null)return;
+                    int bindingOrdinal = 0;
+                    for(var binding:registry.installed()) {
+                        int ordinal = bindingOrdinal++;
+                        long writerElapsedNanos = 0L;
+                        long hookStartedNanos = 0L;
+                        boolean hookEntered = false;
+                        boolean hookReturned = false;
+                        try {
+                            var producer = binding.producer();
+                            long writerStartedNanos = System.nanoTime();
+                            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same;
+                            try { same = callbackJournal.writerSession(); }
+                            finally { writerElapsedNanos = Math.max(0L, System.nanoTime() - writerStartedNanos); }
+                            hookStartedNanos = System.nanoTime(); hookEntered = true;
+                            producer.beforeNative(same,command,atSubmission,() -> {
+                                long historyStartedNanos = System.nanoTime();
+                                try {
+                                    System.err.println("ACTION_SUBMISSION_PHASE phase=history_get_enter thread=" + Thread.currentThread().threadId()
+                                            + " event_ns=" + historyStartedNanos);
+                                } catch (Throwable diagnosticUnavailable) { /* Fixed stage/thread only: original Supplier captures only locked. */ }
+                                try { return locked.snapshot().actions(); }
+                                finally {
+                                    long historyEndedNanos = System.nanoTime();
+                                    try {
+                                        System.err.println("ACTION_SUBMISSION_PHASE phase=history_get_exit thread=" + Thread.currentThread().threadId()
+                                                + " event_ns=" + historyEndedNanos + " elapsed_ns=" + Math.max(0L, historyEndedNanos - historyStartedNanos));
+                                    } catch (Throwable diagnosticUnavailable) { /* Snapshot exception remains unchanged. */ }
+                                }
+                            },camera->PhysicalCoordinatorSupport.defer(locked,camera,registry,authorityId,clock,intentPreparation,intentBarrier));
+                            hookReturned = true;
+                        } catch(java.io.IOException|RuntimeException cameraUnavailable) { /* Optional presentation never replays or replaces the original native action. */ }
+                        finally {
+                            long bindingEndedNanos = System.nanoTime();
+                            long hookElapsedNanos = hookEntered ? Math.max(0L, bindingEndedNanos - hookStartedNanos) : 0L;
+                            try {
+                                String id = command.actionId(); id = id.substring(0, Math.min(128, id.length())).replaceAll("[^A-Za-z0-9_.:-]", "_");
+                                System.err.println("ACTION_SUBMISSION_PHASE action=" + id + " thread=" + Thread.currentThread().threadId() + " phase=before_native_binding event_ns=" + bindingEndedNanos
+                                        + " binding=" + ordinal + " writer_ns=" + writerElapsedNanos + " hook_entered=" + hookEntered
+                                        + " hook_ns=" + hookElapsedNanos
+                                        + " hook_returned=" + hookReturned);
+                            } catch (Throwable diagnosticUnavailable) { /* Formatting/output failures cannot swallow a producer Error or replay a hook. */ }
+                        }
+                    }
+                } finally {
+                    long callbackEndedNanos = System.nanoTime();
+                    try {
+                        String id = command.actionId(); id = id.substring(0, Math.min(128, id.length())).replaceAll("[^A-Za-z0-9_.:-]", "_");
+                        System.err.println("ACTION_SUBMISSION_PHASE action=" + id + " thread=" + Thread.currentThread().threadId() + " phase=before_first_write_exit event_ns=" + callbackEndedNanos
+                                + " elapsed_ns=" + Math.max(0L, callbackEndedNanos - callbackStartedNanos));
+                    } catch (Throwable diagnosticUnavailable) { /* Original callback result or failure is preserved. */ }
+                }
             });
             NativeActionPort.DispatchOutcome outcome;
-            try { outcome = Objects.requireNonNull(nativePort.submit(permit, request, command.deadline())); }
+            long nativeStartedNanos = System.nanoTime();
+            try {
+                String id = command.actionId(); id = id.substring(0, Math.min(128, id.length())).replaceAll("[^A-Za-z0-9_.:-]", "_");
+                System.err.println("ACTION_SUBMISSION_PHASE action=" + id + " thread=" + Thread.currentThread().threadId() + " phase=native_submit_enter event_ns=" + nativeStartedNanos
+                        + " since_submission_ns=" + Math.max(0L, nativeStartedNanos - submissionStartedNanos));
+            } catch (Throwable diagnosticUnavailable) { /* Logging is not a second submit. */ }
+            try {
+                try { outcome = Objects.requireNonNull(nativePort.submit(permit, request, command.deadline())); }
+                finally {
+                    long nativeEndedNanos = System.nanoTime();
+                    try {
+                        String id = command.actionId(); id = id.substring(0, Math.min(128, id.length())).replaceAll("[^A-Za-z0-9_.:-]", "_");
+                        System.err.println("ACTION_SUBMISSION_PHASE action=" + id + " thread=" + Thread.currentThread().threadId() + " phase=native_submit_exit event_ns=" + nativeEndedNanos
+                                + " inclusive_ns=" + Math.max(0L, nativeEndedNanos - nativeStartedNanos));
+                    } catch (Throwable diagnosticUnavailable) { /* Includes prewire hooks/transport/ACK, never labels it physical write or CPU time. */ }
+                }
+            }
             catch (InterruptedException interrupted) {
                 Thread.interrupted();
                 try { return append(locked, command, digest, unknown(attempt, Optional.empty(), "interrupted after SUBMITTING; no replay")); }
