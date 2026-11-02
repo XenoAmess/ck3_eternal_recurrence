@@ -1,5 +1,15 @@
 # runtime91 同局续行
 
+## 2026-11-02 00:34Z 运行终态：38 日保存前沿保留，Council 恢复仍未闭
+
+本段只消费 Runtime 已冻结的 `closed280/INDEX.json`、`closed284/INDEX.json`、两份 ACTUAL-END 与 `recovery-outcome283/28402/SUMMARY.json`；此前 23:56 的健康 next9 是当时截面。Main280/Java110752 已于 00:01:56.890408Z END4（823.0153281 秒），batch9 的实际 ClassCast 为 RejectedBeforeDispatch→Settled；stderr 为零，未持完整 Java stack，不编造源码行号。原198 Council REJECTED_BEFORE_DISPATCH 的真实原因是 held mailbox custody 限制，BEFORE_WRITE/0bytes，非 unsupported Native step，不能据 attempt0 或这个批终态重发旧动作。
+
+Main284/Java98044 于 00:31:27.905595Z START，00:34:12.543857Z END4（164.638268 秒）；batch10 终态为 ACTION_UNKNOWN，错误为 mailbox callback returned without a verified archived terminal ACK or original optional READ deferral。head199→210 均 repair_required，canonical cycle completed6/pending_receipt=null，已确认保存仍38日/date53146896；这不消除 action209 的 UNKNOWN。原208 positive ACK 与完整 outbound/result/custody 原件均已冻结；Root `original-council285/INDEPENDENT-VERIFICATION285.json` 核过六份原件，candidate45458/expected_revision110 与 prepared 字段相等，ACK 只证明提交，不证明 assignment APPLIED。
+
+主性能窗口仍从 2026-11-01 20:50:46Z 起算；到 Main284 END 的完整墙钟 13406.543857 秒/38新增确认保存日 = 352.8037857105263157894736842 秒/日，未达10秒目标。失败、恢复、等待全部包含。原184保存时的292.763580373684秒/日及单批44.2309733秒/日留作历史子窗；本次 Main280 最后失败批与 Main284 各自新增 SAVE_CONFIRMED 为0，不能给这两个零保存窗口报有限秒/日或借旧69日作分母。
+
+此段冻结到上述运行终态，不把后来285候选首编或正式发表当作已装载/已恢复/已结算。Runtime 独占同局恢复与现场，保存原208/209及全部历史，不重 assignment/UNKNOWN，不回滚世界或旧save；本次文档没有新增 Game/Native 查询、账本写入、部署、编测或重启。
+
 ## 2026-11-02 同worker后续累计38日确认保存，完整窗口约292.76秒／新增保存日
 
 本段截止 Runtime `save-confirmed28008/SUMMARY.json` 的 `2026-11-01T23:57:17.697568Z` 冻结，保留下方30日保存及更早失败截面。仍为 Game77132／birth `134380410301009189`、actor31254／本轮基线date53145984；运行岗报告同一Main280／Java110752后续普通批完成并继续，未因文档或背景候选重启。现场由Runtime独占，本段不新增Game或进程查询。
