@@ -338,6 +338,10 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         ContinuityStorePort.Session session = activeSession();
         return session == null ? artifacts.read(original, maximumBytes) : readArtifact(session, original, maximumBytes);
     }
+    /** Same-read detached Store DATA; preserve readBytes current checks and defensive copy. */
+    byte[] readForCodec(ExactRef original, int maximumBytes) throws IOException {
+        return readBytes(original, maximumBytes);
+    }
     private ExactRef reference(byte[] original, int maximumBytes) throws IOException {
         activeSession();
         return artifacts.referenceOf(original, maximumBytes).reference();
@@ -567,7 +571,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         return unchecked(() -> reference(dispatchBytes(Objects.requireNonNull(original), false), META_LIMIT));
     }
     @Override public NativeActionPort.DispatchOutcome load(ExactRef original) {
-        return unchecked(() -> new NativeArchiveDataCodec(this::readBytes).decodeDispatchData(original));
+        return unchecked(() -> NativeArchiveDataCodec.forArchive(this).decodeDispatchData(original));
     }
     private byte[] dispatchBytes(NativeActionPort.DispatchOutcome original, boolean preserve) throws IOException {
         String dispatchSchema = DISPATCH_SCHEMA;
@@ -615,7 +619,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         row.set("additional_fields_ref", token(original.additionalFields(), preserve).toJson()); return encoded(row);
     }
     @Override public NativeRequest loadRequest(ExactRef original) {
-        return unchecked(() -> new NativeArchiveDataCodec(this::readBytes).decodePreparedRequestData(original));
+        return unchecked(() -> NativeArchiveDataCodec.forArchive(this).decodePreparedRequestData(original));
     }
     private void verifyPreparationOriginals(NativeRequest original) throws IOException {
         // Exact originals are custody metadata. Their role/schema and transitive proof closure are
@@ -780,7 +784,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     }
     @Override public PlanningReadReceipt loadRead(ExactRef original) {
         return unchecked(() -> writing(() -> {
-            PlanningReadReceipt result = new NativeArchiveDataCodec(this::readBytes).decodeRead(original);
+            PlanningReadReceipt result = NativeArchiveDataCodec.forArchive(this).decodeRead(original);
             verifyReadOriginals(result); return result;
         }));
     }

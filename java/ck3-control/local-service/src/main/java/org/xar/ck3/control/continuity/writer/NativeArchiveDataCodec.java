@@ -39,7 +39,11 @@ public final class NativeArchiveDataCodec {
         public ReadData { Objects.requireNonNull(original); Objects.requireNonNull(receipt); }
     }
     private final OriginalBytes originals;
-    public NativeArchiveDataCodec(OriginalBytes originals) { this.originals = Objects.requireNonNull(originals); }
+    private final NativeOutcomeArchive archive;
+    public NativeArchiveDataCodec(OriginalBytes originals) { this.originals = Objects.requireNonNull(originals); this.archive = null; }
+    private NativeArchiveDataCodec(NativeOutcomeArchive archive) { this.originals = null; this.archive = Objects.requireNonNull(archive); }
+    /** Concrete Store-backed DATA only; arbitrary OriginalBytes retains its clone and hash. */
+    static NativeArchiveDataCodec forArchive(NativeOutcomeArchive archive) { return new NativeArchiveDataCodec(archive); }
     /** Uses the existing held native exact-file reader; no store, writer, lock or file is created.
      * Each read retains its actual native identity before/after. Original historical identity,
      * canonical membership, source admission and late-adoption head are not granted here. */
@@ -71,6 +75,12 @@ public final class NativeArchiveDataCodec {
         if (maximumBytes < 1 || maximumBytes > WriterContracts.MAX_PIN_BYTES
                 || original.bytes() < 0 || original.bytes() > maximumBytes)
             throw new IOException("explicit finite original DATA bound required");
+        if (archive != null) {
+            byte[] bytes = archive.readForCodec(original, maximumBytes);
+            if (bytes.length != original.bytes() || bytes.length > maximumBytes)
+                throw new IOException("retained DATA length differs from original ref");
+            return bytes;
+        }
         byte[] bytes = Objects.requireNonNull(originals.read(original, maximumBytes)).clone();
         if (bytes.length != original.bytes() || bytes.length > maximumBytes)
             throw new IOException("retained DATA length differs from original ref");
