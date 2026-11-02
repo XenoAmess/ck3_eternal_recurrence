@@ -26,7 +26,7 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
         @Override public int hashCode() { return java.util.Arrays.hashCode(json); }
     }
     record HistoryEntry(long index, Value originalRow) {
-        public HistoryEntry { StrictJson.safe(index, 1); Objects.requireNonNull(originalRow); ObjectNode row = object(parse(originalRow.json()));
+        public HistoryEntry { StrictJson.safe(index, 1); Objects.requireNonNull(originalRow); ObjectNode row = object(parse(originalRow.json));
             StrictJson.require(StrictJson.integer(row.get("index"), 1, StrictJson.MAX_SAFE_INTEGER) == index, "history entry typed index equals original integer token"); }
     }
     record Session(String pipeName, long bridgePid, BigInteger actorId, String episodeRunId) {
@@ -45,7 +45,7 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
         public byte[] encode() {
             ObjectNode row = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode(); row.put("format_version", 2); row.put("pipe_name", session.pipeName()); row.put("bridge_pid", session.bridgePid());
             row.put("episode_character_id", session.actorId()); row.put("episode_run_id", session.episodeRunId());
-            var history = row.putArray("command_history"); commandHistory.forEach(entry -> history.add(parse(entry.originalRow().json())));
+            var history = row.putArray("command_history"); commandHistory.forEach(entry -> history.add(parse(entry.originalRow().json)));
             put(row,"last_checkpoint",lastCheckpoint); put(row,"rollback_war_failure",rollbackWarFailure); put(row,"managed_restore_transaction",managedRestoreTransaction);
             put(row,"succession_expectation",successionExpectation); put(row,"succession_lifecycle",successionLifecycle); put(row,"campaign_goal",campaignGoal); put(row,"rollback_war_failures",rollbackWarFailures);
             return bytes(row);
@@ -61,7 +61,7 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
                 slot(row,"last_checkpoint"),slot(row,"rollback_war_failure"),slot(row,"managed_restore_transaction"),slot(row,"succession_expectation"),slot(row,"succession_lifecycle"),slot(row,"campaign_goal"),slot(row,"rollback_war_failures"));
     }
     private static Slot slot(ObjectNode row, String key) { return !row.has(key) ? new Missing() : row.get(key).isNull() ? new NullValue() : new Value(bytes(row.get(key))); }
-    private static void put(ObjectNode row, String key, Slot slot) { switch (slot) { case Missing ignored -> { } case NullValue ignored -> row.putNull(key); case Value value -> row.set(key,parse(value.json())); } }
+    private static void put(ObjectNode row, String key, Slot slot) { switch (slot) { case Missing ignored -> { } case NullValue ignored -> row.putNull(key); case Value value -> row.set(key,parse(value.json)); } }
     private static byte[] checked(byte[] raw) { JsonNode value=parse(raw); StrictJson.require(!value.isNull(),"null has its own explicit Driver slot"); return bytes(value); }
     private static JsonNode parse(byte[] raw) {
         // The sole material parser validates JSON tokens. Opaque decimal lexemes are not binary64 fields.
