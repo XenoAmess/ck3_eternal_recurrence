@@ -174,8 +174,10 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             ImmutableArtifactStore.HistoricalReads reads = artifacts.beginHistoricalReads(session,
                     limits.maximumPublications(), limits.maximumRetainedBytes(), limits.maximumHandles(), () -> requireSession(session));
             Throwable failure = null;
+            ParsedMaterialCache commandCache = parsedMaterialCache.get();
             try {
                 reads.requireActive();
+                Objects.requireNonNull(commandCache).commandReads = reads;
                 T result = operation.read(new NativeOutcomeArchive(owner, session));
                 reads.requireActive();
                 return result;
@@ -186,6 +188,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             } catch (RuntimeException | Error problem) {
                 reads.recordFailure(problem); failure = problem; throw problem;
             } finally {
+                if (commandCache != null) commandCache.clearCommands();
                 boolean finishSucceeded = false;
                 try { reads.finish(failure); finishSucceeded = true; }
                 finally { reads.reportDiagnostics(finishSucceeded); }
@@ -854,9 +857,21 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             if (!encoded.equals(loadMaterial(ref))) throw new IOException("complete lifecycle proof sidecar readback changed");
         }
     }
+    /** Exact canonical DATA reuse is narrower than the generic inSession material cache. */
+    @Override public ActionCommand decodeCanonicalCommand(byte[] canonical) {
+        return unchecked(() -> {
+            ParsedMaterialCache cache = parsedMaterialCache.get();
+            if (cache == null || cache.commandReads == null)
+                return org.xar.ck3.control.application.action.ActionCodec.decodeCommand(canonical);
+            cache.commandReads.requireActive();
+            if (activeSession() == null) throw new IOException("historical command decoding lost its actual writer session");
+            return cache.decodeCommand(canonical);
+        });
+    }
+
     @Override public ActionReceipt loadReceipt(ExactRef original) {
         return unchecked(() -> writing(() -> {
-            ActionReceipt result = ActionReceiptCodec.decodeReceipt(readBytes(original, ActionReceiptCodec.MAXIMUM_RECEIPT_BYTES), this);
+            ActionReceipt result = ActionReceiptCodec.decodeReceiptUsingCanonicalCommand(readBytes(original, ActionReceiptCodec.MAXIMUM_RECEIPT_BYTES), this);
             verifyReceiptOriginals(result); return result;
         }));
     }
@@ -1530,6 +1545,39 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         private record Cached(RawJson value, int bytes) { }
         private final Map<Key, Cached> entries = new LinkedHashMap<>(16, 0.75f, true);
         private long totalBytes = 0;
+        // Only an actual successful historical scope activates these pure DATA entries.
+        private ImmutableArtifactStore.HistoricalReads commandReads;
+        private static final int MAX_COMMAND_ENTRIES = 16;
+        private static final long MAX_COMMAND_KEY_BYTES = 8L * 1024 * 1024;
+        private final Map<java.nio.ByteBuffer, ActionCommand> commands = new LinkedHashMap<>(16, 0.75f, true);
+        private long commandKeyBytes;
+        void clearCommands() {
+            commands.clear(); commandKeyBytes = 0; commandReads = null;
+        }
+        ActionCommand decodeCommand(byte[] canonical) {
+            if (canonical == null || canonical.length < 1
+                    || canonical.length > org.xar.ck3.control.application.action.ActionCodec.MAX_COMMAND_BYTES)
+                return org.xar.ck3.control.application.action.ActionCodec.decodeCommand(canonical);
+            // Private immutable snapshot, including on hits: never retain the caller's array.
+            // The read-only key and its private backing never escape or change position/limit.
+            byte[] snapshot = canonical.clone();
+            java.nio.ByteBuffer key = java.nio.ByteBuffer.wrap(snapshot).asReadOnlyBuffer();
+            ActionCommand cached = commands.get(key);
+            if (cached != null) return cached;
+            ActionCommand decoded = org.xar.ck3.control.application.action.ActionCodec.decodeCommand(snapshot);
+            if (decoded.origin() instanceof CommandOrigin.Gameplay
+                    && decoded.expectation() instanceof org.xar.ck3.control.application.action.CommandExpectation.Gameplay) {
+                // This bounds retained canonical arrays, not decoded graph overhead or total RSS.
+                while (commands.size() >= MAX_COMMAND_ENTRIES
+                        || snapshot.length > MAX_COMMAND_KEY_BYTES - commandKeyBytes) {
+                    var oldest = commands.entrySet().iterator();
+                    int removedBytes = oldest.next().getKey().remaining();
+                    oldest.remove(); commandKeyBytes -= removedBytes;
+                }
+                commands.put(key, decoded); commandKeyBytes += snapshot.length;
+            }
+            return decoded;
+        }
         RawJson get(ExactRef key, ParseProfile profile) {
             Cached cached = entries.get(new Key(key, profile));
             return cached == null ? null : cached.value();

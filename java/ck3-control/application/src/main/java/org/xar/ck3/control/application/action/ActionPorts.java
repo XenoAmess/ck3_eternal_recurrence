@@ -146,6 +146,9 @@ public final class ActionPorts {
 
     /** Keeps full native packets outside bounded canonical ledger metadata, with original evidence and byte integrity. */
     public interface OutcomeArchive extends org.xar.ck3.control.contracts.presentation.PresentationOriginals {
+        /** Pure DATA decoding only; no original-byte, receipt or writer authority is inferred.
+         * The default always performs the complete original command validation. */
+        default ActionCommand decodeCanonicalCommand(byte[] canonical) { return ActionCodec.decodeCommand(canonical); }
         /** Existing original DATA only. It neither constructs a PlanningReadReceipt nor grants read/history authority. */
         default void verifyReadAttemptOriginals(PlanningReadRequest request, String actualRequestId,
                 PlanningReadGuard before, NativeRequest prepared, NativeActionPort.DispatchOutcome original) {
