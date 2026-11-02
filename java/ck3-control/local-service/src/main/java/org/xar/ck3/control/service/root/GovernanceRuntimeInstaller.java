@@ -172,9 +172,12 @@ public final class GovernanceRuntimeInstaller {
         private final RootDomainInstallation installation;
         private NativeGovernanceEffects observer;
         private NativeCouncilAssignmentEffects privateCouncil;
+        private final NativeCouncilReadPort.ReplayConfiguration recoverySeatReplay;
         private RootGovernanceDomains originalCouncilDomains;
         private Installed(Prepared prepared, RootRuntimeContext context) throws IOException {
             this.prepared = prepared; this.context = context;
+            recoverySeatReplay = new NativeCouncilReadPort.ReplayConfiguration(prepared.privateReads, prepared.config.maximumStatusPolls(),
+                    prepared.config.gameVersion(), prepared.config.executableSha256());
             lifecycle = new NativeLifestyleReadPort(context.reads(), prepared.planning, context.archive());
             var refresh = new CouncilPreparationRead(context.reads(), prepared.privateReads, context.archive(), prepared.clock,
                     prepared.config.maximumStatusPolls(), prepared.config.gameVersion(), prepared.config.executableSha256());
@@ -199,7 +202,7 @@ public final class GovernanceRuntimeInstaller {
             var archived = new ArrayList<NativeRecordedEvidenceVerifier.Binding>();
             for (OperationKey operation : prepared.config.admittedActions()) {
                 if (operation.value().equals(CouncilActionCodec.PRIVATE_ASSIGN)) archived.add(NativeCouncilAssignmentEffects.archivedVerifier(prepared.sources.councilEffectVerifier(),
-                        prepared.continuation, prepared.policy, RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), this::session));
+                        prepared.continuation, prepared.policy, RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), this::session, recoverySeatReplay));
                 else archived.add(NativeGovernanceEffects.archivedVerifier(operation, prepared.sources.effectVerifier(), context.frameLoader(), prepared.receipts, lifecycle,
                         Optional.of(prepared.planning.focusStateReconciliation())));
             }
@@ -319,8 +322,12 @@ public final class GovernanceRuntimeInstaller {
             catch (IOException failure) { throw new UncheckedIOException(failure); }
             if (observer == null) {
                 var snapshots = new NativeEffectSnapshots(context.adopted().observations(), context.archive(), context.frameLoader());
+                var recoverySeats = new org.xar.ck3.control.application.effects.RootCouncilRecoverySeatReader(context, prepared.privateReads, prepared.continuation,
+                        RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), prepared.config.maximumStatusPolls());
                 privateCouncil = new NativeCouncilAssignmentEffects(prepared.continuation, prepared.policy, snapshots, context.archive(), RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), this::session,
-                        prepared.clock, prepared.config.maximumContinuations());
+                        prepared.clock, prepared.config.maximumContinuations(), (same, original, observation, deadline) -> {
+                            requireCurrent(deadline); return recoverySeats.read(same, original, observation, deadline);
+                        }, recoverySeatReplay);
                 observer = new NativeGovernanceEffects(snapshots, context.reads(), prepared.receipts, new NativeGovernanceEffects.SessionPort() {
                     @Override public ContinuityStorePort.Session current(ActionCommand command) {
                         if(ActionReconciliationScope.activeFor(command))return session();
