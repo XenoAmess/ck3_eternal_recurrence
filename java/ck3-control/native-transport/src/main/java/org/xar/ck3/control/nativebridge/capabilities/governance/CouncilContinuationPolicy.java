@@ -177,12 +177,19 @@ public final class CouncilContinuationPolicy implements CouncilContinuationPorts
     public static void requireOriginalPending(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.AckReceived original) throws IOException {
         StrictJson.require(command.operation().value().equals(CouncilActionCodec.PRIVATE_ASSIGN) && original.requestId().equals(attempt.requestId())
                 && original.outbound().isPresent() && attempt.preparedRequest().step().equals(command.operation().value()), "original private Council attempt/ACK required");
-        var wire = NativeWire.decodeExecuteRequest(original.outbound().orElseThrow().originalPacket());
+        byte[] outbound = original.outbound().orElseThrow().originalPacket();
+        var wire = NativeWire.decodeExecuteRequest(outbound);
         var expected = GovernanceActionPreparation.councilRequest(command, attempt.requestId());
         StrictJson.require(wire.requestId().equals(attempt.requestId()) && wire.step().equals(command.operation().value())
                 && wire.expectedRevision().filter(command.before().frame().identity().nativeRevision()::equals).isPresent() && wire.expectedSnapshotRevision().isEmpty()
                 && StrictJson.parse(wire.normalizedAdditionalFields().value()).equals(StrictJson.parse(attempt.preparedRequest().additionalFields().bytes()))
                 && StrictJson.parse(wire.normalizedAdditionalFields().value()).equals(StrictJson.parse(StrictJson.canonical(CouncilActionCodec.wireFields(expected, true)))), "original Council outbound differs from durable selected candidate primitive");
+        // Verify raw outbound candidate token before Jackson normalization
+        byte[] rawBody = java.util.Arrays.copyOfRange(outbound, 4, outbound.length);
+        var rawJson = StrictJson.parse(rawBody);
+        var rawCandidate = rawJson.get("candidate_character_id");
+        StrictJson.require(StrictJson.integer(rawCandidate, java.math.BigInteger.ONE, java.math.BigInteger.valueOf(Integer.MAX_VALUE))
+                .equals(java.math.BigInteger.valueOf(expected.candidateId())), "raw original Council candidate must be its exact selected integer");
         StrictJson.require(isPending(result(original), CouncilActionCodec.PRIVATE_ASSIGN), "original private Council result is not its genuine pending transport ACK");
     }
     public static void requireWire(Request request, NativeActionPort.AckReceived original) throws IOException {
