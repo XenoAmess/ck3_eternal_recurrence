@@ -105,29 +105,34 @@ public final class ContinuityJson {
     private static void quote(String value, StringBuilder out) {
         out.append('"');
         String hex = "0123456789abcdef";
+        int start = 0;
         for (int index = 0; index < value.length(); index++) {
             char current = value.charAt(index);
-            switch (current) {
-                case '"' -> out.append("\\\"");
-                case '\\' -> out.append("\\\\");
-                case '\b' -> out.append("\\b");
-                case '\f' -> out.append("\\f");
-                case '\n' -> out.append("\\n");
-                case '\r' -> out.append("\\r");
-                case '\t' -> out.append("\\t");
-                default -> {
-                    if (current < 0x20) {
-                        out.append("\\u00").append(hex.charAt(current >> 4)).append(hex.charAt(current & 15));
-                    } else if (Character.isHighSurrogate(current)) {
-                        StrictJson.require(index + 1 < value.length() && Character.isLowSurrogate(value.charAt(index + 1)),
-                                "unpaired continuity Unicode surrogate");
-                        out.append(current).append(value.charAt(++index));
-                    } else {
-                        StrictJson.require(!Character.isLowSurrogate(current), "unpaired continuity Unicode surrogate");
-                        out.append(current);
-                    }
+            if (current == '"' || current == '\\' || current == '\b' || current == '\f' || current == '\n' || current == '\r' || current == '\t' || current < 0x20 || Character.isSurrogate(current)) {
+                if (start < index) { out.append(value, start, index); }
+                if (current == '"') { out.append("\\\""); }
+                else if (current == '\\') { out.append("\\\\"); }
+                else if (current == '\b') { out.append("\\b"); }
+                else if (current == '\f') { out.append("\\f"); }
+                else if (current == '\n') { out.append("\\n"); }
+                else if (current == '\r') { out.append("\\r"); }
+                else if (current == '\t') { out.append("\\t"); }
+                else if (current < 0x20) {
+                    out.append("\\u00").append(hex.charAt(current >> 4)).append(hex.charAt(current & 15));
+                } else if (Character.isHighSurrogate(current)) {
+                    StrictJson.require(index + 1 < value.length() && Character.isLowSurrogate(value.charAt(index + 1)),
+                            "unpaired continuity Unicode surrogate");
+                    out.append(current).append(value.charAt(++index));
+                } else {
+                    StrictJson.require(!Character.isLowSurrogate(current), "unpaired continuity Unicode surrogate");
+                    out.append(current);
                 }
+                start = index + 1;
             }
+        }
+        if (start < value.length()) {
+            out.ensureCapacity(out.length() + (value.length() - start) + 1);
+            out.append(value, start, value.length());
         }
         out.append('"');
     }
