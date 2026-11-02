@@ -1,5 +1,15 @@
 # runtime91 同局续行
 
+## 2026-11-02 06:24Z 截止：同一 Main301 已确认累计53日保存，旧38日与首次46日切点保留
+
+同一原版 Game77132／birth134380410301009189、actor31254／同session继续。Main301／Java73928／birth134380728856015988于06:01:25.600644Z实际START，06:02:34.802174300Z真实LOOP。331在06:11:40.411591400Z SETTLE／ELIGIBLE_ADVANCE后，337于06:13:03.252356200Z真实SAVE_CONFIRMED：date53147088、pair native177/public136、saved-cycle9／pending=null，累计46日＝旧38＋新8。331原件100004B／SHA `cbab692be828121bc2e4ba787b56795f86c74cb73258cc0df59d91705d7a3905`，337原件98995B／SHA `aead42fc74a42b5ebdee9179790894527ab1e8936d3e5f701be33b7310bfdbef`；Runtime `save-confirmed301/SUMMARY.json` 与Root `save301-verified.json` 两具名事件独验相符。batch15的已冻结完整reportline24为TURN_BOUND／本批saved8／dirty=false／next16，head339 running只是该时点。
+
+后到同worker第二次保存另记：363于06:20:32.134648800Z真实SETTLE后，369于06:22:02.856504400Z SAVE_CONFIRMED，date53147256、pair194/153、saved-cycle10／pending=null，累计53日＝46＋新7。`save-confirmed30116` 两原件363／100006B／SHA `60c8a65ef6a9d5407ddee5cf4826a7f99c952ef1c5d1c72a54732c0d1700b5e6`、369／99005B／SHA `73b6b5cf624f2818857ea2a23fa3ceb68412e4e7dc088b402c6bd4fb7567d971`，已逐SHA、实际boundary、完整pair、sameGame/session、cycle与后态核等。`recovery-outcome30106/SUMMARY.json` 及同根冻结HEAD核等：06:24:31.627492Z head375／running／completed10／pending=null，BATCH_STARTED17；运行岗在此切点报告仍为同PID73928。该截面不延称后继持续健康，也不把SETTLE本身当SAVE。
+
+主新增保存窗口从184 SAVE（2026-11-01 23:56:11.0160542Z／38日）延至369：完整23151.8404502秒／新增15日＝1543.456030013333333333333333秒／日，包含全部失败、准备、恢复和等待，未达10秒。184→337的首次新增8日窗口22612.236302秒／8＝2826.52953775秒／日完整保留。Root epoch从20:50:46Z至337为33737.2523562／46＝733.418529482608695652173913秒／日，延至369为34276.8565044／53＝646.7331415924528301886792453秒／日；旧69日不进分母。337→369的539.6041482／7＝77.08630688571428571428571429秒／日，以及Main301 START→337的697.6517122／8＝87.206464025秒／日仅是明确子窗，不能代替上述主窗口。
+
+本段只读取具名已存在冻结事件、START／LOOP、report与两份薄SUMMARY／HEAD及Root独验；未读取Save、Driver或SEM大体，未新增Java、HTTP、Game／Native查询、动作、S／MB采用、部署或重启。P0301源码／首编、私有软件guard路由6PASS与此后真实LOOP／SAVE分别记账；旧300失败及全部历史字节保留。Runtime继续独占现场，G2仍按最后确认6/8，文档及正式发表不作为运行前置。
+
 ## 2026-11-02 05:47Z 截止：原Council297真实SETTLED/APPLIED，Main300仍在Sway归档门END1
 
 仅已闭 `closed300/INDEX.json` 四份原件、`recovery-outcome300/SUMMARY.json` 与具名19815B原回执独核。原 `governance-66d439…` 已在297真实 SETTLED／APPLIED，回执SHA `f99473f80e058369b592a6776a952ae1e739beb23b51ac7c458f537775bce030`；与旧288 UNKNOWN的action/body/request/prepared-request/原dispatch链接核等。其真实fresh_snapshot_query后态观察为154/115／date53146896／actor31254，确证chancellor33947及gameplay_verified；这项后到canonical结算保留，旧288及前段“当时仍UNKNOWN”不回写。当前head300／running／SHA `e61c1b9209e97dfbafc7761439ce6ca2ae71fa816f5a7afbd90af6b21e4302ad`，completed_cycles8／cycle pending=null，新增action metadata20354B；saved-cycle仍6，不能把completed8当已保存8cycle或新增日。
