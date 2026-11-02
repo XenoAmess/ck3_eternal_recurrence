@@ -2,11 +2,11 @@
 
 目录采用仓库独立模组的 `mod_<英文小写下划线>` 约定：`mod_religious_ritual_fusion`。
 
-已公开版本为 **0.2.0 Alpha**，Workshop ID **3826756673**，2026-10-29T19:42:56Z实际更新同一条目。完整文案和四张补验图已公开回读；真实Steam下载90文件与正式manifest逐项一致，R0060公共缓存配置与实际主菜单加载组合验收通过并正常退出；独立VFS路径读回仍UNKNOWN。正在落实[人工审核八项整改与验收方案](docs/manual-review-followup-2026-10-25.md)，完整业务仍有GAP。历史实测继续按各自范围引用，不能以发布或下载成功替代。
+已公开版本为 **0.2.1 Alpha**，Workshop ID **3826756673**，2026-11-02T00:14:31Z更新同一条目。本次修复三个编辑页尺寸与“融合影响”裁切；R0064实测32人名单首末往返滚动及取消无状态改变。真实Steam下载90文件与正式manifest逐项一致，R0066独立缓存主菜单加载与正常退出通过。完整业务矩阵仍有GAP，不以发布、下载或菜单加载替代。详见[本版发布记录](docs/publication-0.2.1-alpha-2026-11-02.md)与[永久changelog](../docs/release-changelogs/religious-ritual-fusion/0.2.1.md)。
 
 2026-10-29，`machine_id: 4-8e1c2f1861`的R0057五项UI补验与R0058三项冷载补验分别通过并正常关闭，见[续工记录](docs/live-review-resume-2026-10-29.md)。这些局部补验不改写原12项／20项完整矩阵的incomplete；SDK续行及county宗教地图颜色样本仍有缺口。正式tag固定于Source A，后继入口修复不重建已发布内容。见[0.2实际发布记录](docs/publication-0.2.0-alpha-2026-10-29.md)和[永久changelog](../docs/release-changelogs/religious-ritual-fusion/0.2.0.md)。
 
-2026-11-02修复“融合影响”页签正文挤在100×100视口的问题，三个页签均显式填满编辑区，并补布局回归。当前为离线源码修复，未部署或更新Workshop，修复后实机画面待验证，见[布局记录](docs/ui-layout-2026-11-02.md)。
+2026-11-02，`machine_id: 4-8e1c2f1861`，已完成修复后实机、同条目发布及缓存菜单验收；早期失败原件保留。见[布局记录](docs/ui-layout-2026-11-02.md)。
 
 - [可行性分析报告](docs/feasibility-2026-10-24.md)
 - [编码方案](docs/implementation-plan-2026-10-24.md)
