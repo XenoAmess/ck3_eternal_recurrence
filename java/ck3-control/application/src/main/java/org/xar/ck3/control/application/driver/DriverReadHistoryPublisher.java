@@ -1129,7 +1129,17 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
     }
     private WriterContracts.Head requirePredecessor(ContinuityStorePort.Session same,Queue queue,DriverStateAssembler.Frozen frozen) throws IOException {
         StrictJson.require(queue.session==same&&frozen.state() instanceof Known,"actual same read-publication predecessor unavailable");
-        Known known=(Known)frozen.state();StrictJson.require(known.stamp().equals(queue.before.stamp())&&Arrays.equals(known.driver().encode(),queue.before.driver().encode()),"read-history Driver prefix/version changed");
+        Known known=(Known)frozen.state();
+        boolean samePredecessor=known.stamp().equals(queue.before.stamp());
+        if(samePredecessor){
+            byte[] currentDriver=known.driver().encode();
+            // Keep the first full validation; public actor subclasses retain the original second encode.
+            byte[] priorDriver=known.driver()==queue.before.driver()
+                    &&known.driver().session().actorId().getClass()==java.math.BigInteger.class
+                    ?currentDriver:queue.before.driver().encode();
+            samePredecessor=Arrays.equals(currentDriver,priorDriver);
+        }
+        StrictJson.require(samePredecessor,"read-history Driver prefix/version changed");
         for(Item item:queue.items)requireSource(known,item.known().receipt());
         for(ObservedItem item:queue.observed)requireObservedSource(known,item.inputs(),archive.withSession(same));
         if(!queue.failures.isEmpty()||!queue.publicFailures.isEmpty()||!queue.returnedControls.isEmpty()||!queue.postKnown.isEmpty()||!queue.returnedReads.isEmpty()||!queue.returnedActions.isEmpty()||!queue.early.isEmpty()){
