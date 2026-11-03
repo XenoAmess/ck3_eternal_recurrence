@@ -367,7 +367,7 @@ public final class PublicSnapshotCodec {
                     .equals(StrictJson.integer(checked.get("player_character_id"),BigInteger.ONE,BigInteger.valueOf(Integer.MAX_VALUE))),
                     "faction semantic payload crossed the containing snapshot actor");
         }
-        snapshot.set(field,StrictJson.parse((encode?publicBody:numeric).bytes(),FactionAlertsCodec.MAX_BYTES));
+        snapshot.set(field,encode?StrictJson.parse(publicBody.bytes(),FactionAlertsCodec.MAX_BYTES):checked);
     }
     private static void transform(ObjectNode root,List<String> path,boolean encode) {
         transform(root,path,encode,path.size()>1);
@@ -483,7 +483,7 @@ public final class PublicSnapshotCodec {
         if(!(value instanceof ObjectNode optional)){require(!marked,"public optional revision metadata has no actual component");return;}
         if(!encode)require(marked,"object optional ROOT component requires explicit public DATA encoding branch");
         boolean decimal=!encode&&OPTIONAL_HEIR_DECIMAL.equals(row.get(OPTIONAL_HEIR_ENCODING).textValue());
-        ObjectNode trial=optional.deepCopy();
+        ObjectNode trial=decimal?optional.deepCopy():optional;
         if(decimal)positiveRole(trial,List.of("snapshot_revision"),false);
         boolean typed=NativePlayerHeirObservation12004.parseOptionalComponent(trial,root).observation()!=null;
         if(!encode){
