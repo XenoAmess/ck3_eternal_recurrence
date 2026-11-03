@@ -879,8 +879,13 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     @Override public ActionCommand decodeCanonicalCommand(byte[] canonical) {
         return unchecked(() -> {
             ParsedMaterialCache cache = parsedMaterialCache.get();
-            if (cache == null || cache.commandReads == null)
-                return org.xar.ck3.control.application.action.ActionCodec.decodeCommand(canonical);
+            if (cache == null || cache.commandReads == null) {
+                if (cache == null) return org.xar.ck3.control.application.action.ActionCodec.decodeCommand(canonical);
+                ContinuityStorePort.Session active = current.get();
+                if (active == null || (borrowed != null && borrowed != active))
+                    return org.xar.ck3.control.application.action.ActionCodec.decodeCommand(canonical);
+                return cache.decodeCommand(canonical);
+            }
             cache.commandReads.requireActive();
             if (activeSession() == null) throw new IOException("historical command decoding lost its actual writer session");
             return cache.decodeCommand(canonical);
@@ -1563,7 +1568,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         private record Cached(RawJson value, int bytes) { }
         private final Map<Key, Cached> entries = new LinkedHashMap<>(16, 0.75f, true);
         private long totalBytes = 0;
-        // Only an actual successful historical scope activates these pure DATA entries.
+        // Pure byte-decoded Gameplay DATA stays private to the owning archive scope.
         private ImmutableArtifactStore.HistoricalReads commandReads;
         private static final int MAX_COMMAND_ENTRIES = 16;
         private static final long MAX_COMMAND_KEY_BYTES = 8L * 1024 * 1024;
