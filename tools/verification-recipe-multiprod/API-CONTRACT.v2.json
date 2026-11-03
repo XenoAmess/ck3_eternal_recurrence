@@ -1,0 +1,18 @@
+{
+  "schema": "xar.verification-recipe-multiprod-api/v2",
+  "module": "prepare_verification_recipe.py",
+  "public_API": "Preserve prepare_production(request_path), prepare_tests(production_ready_pin,actual_pin,verified_pin), RecipeError.code/detail; metadata only, no execution, approval or lease.",
+  "request_schema": "xar.verification-recipe-request/v2",
+  "profile": "two-prod-one-test-explicit-methods",
+  "production_sources": "Exactly two ordered entries with exact keys {source:pin,class_name:FQN,source_ready:pin}; distinct canonical source paths and top-level class names. A common SourceReady may bind both entries. Each SourceReady must bind its paired source pin.",
+  "other_request_fields": ["schema", "profile", "output_root", "test_source", "test_ready", "test_class", "methods", "templates", "sdk_declaration"],
+  "old_single_fields": "production_source/production_class/production_ready are unsupported in v2, old v1 module is unchanged.",
+  "sdk_declaration": "External Native issuer, schema xar.native-sdk-declaration/v2; sources.production is the exact ordered two source pins, sources.test is exact one Test pin. Other proof/316 SDK entries/required_families/families fields retain v1 meaning. No blanket whole SDK or stem closure claim.",
+  "coherent_dependencies": "A required family equal to either selected top-level class or a nested family under that class belongs to the jointly compiled sources, in production and Test phases. It must never be admitted as current support from an old SDK family pin. Source-time metadata may record planned names/relative class paths only. Required non-produced families still need Native-qualified SDK origins.",
+  "production_args": "Original verified 748-shaped 13-token template has its final single .java token replaced by the two source paths in request order. Exactly one javac command and one output directory; 14 compiler tokens, productionTUs2 and phase.sources exact ordered two pins. SDK316 literal order/duplicates, strict compiler options, sourcepath and VM caps unchanged.",
+  "actual_binding_before_Test": "Native actual must match prepared production CONFIG and command, source_TUs=2, and config.sources exact ordered two pins; success/VERIFIED link/class manifest unchanged. Exact current class manifest must include both top-level .class leaves AND every explicitly required co-produced nested family. Missing second top-level or nested family refuses OUTPUT_MANIFEST before tests directory creation. Never prefill future hashes.",
+  "Test_prefix": "One shared actual production output prefix supplies both top-level and nested produced families at index0. Standalone JUnit jar and SDK tail retain v1 positions; all actual produced family pins derive from the admitted output manifest. Test TU/new method selection remains unchanged.",
+  "finite_scope": "Exactly2 production, exactly1 Test, explicit method selectors; zero/one/three production entries, duplicates, class selectors, scan and unsupported template shapes named refusal. No generic reactor, SDK rebuild or business source edits.",
+  "preserved_v1_guards": "Original JUnit jar admitted CONFIG pin, source/SourceReady hashes, Native external SDK declaration, ordered SDK316, no implicit compile, exact output manifest, within-root temp/reports, create-only D output and no execution/approval/lease.",
+  "Native_adapter": "Still owned/executed by Native. For separate source and output roots use pinned CONFIG.fixture.task_root for original within-root temp preflight, not SourceReady.parent."
+}

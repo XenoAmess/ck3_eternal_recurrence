@@ -1,0 +1,10 @@
+{
+  "schema": "xar.multiprod-known-design-fixture-addendum/v1",
+  "ordering": "Native supplied this bounded existing JNA fixture qualification after the two model roles' source inputs were frozen. Do not rewrite their inputs or grade missing later fields as model defects.",
+  "request_optional_fixture": "Absent means original noJNA profile. False requires only {requires_JNA:false}. True exact object {requires_JNA:true,basis:pin,helper:pin}, identical to external SDK declaration.fixture; existing Native766 CONFIG and pure software_jvm_fixture308 source pins are required.",
+  "basis": "Must declare requires_JNA=true and fixture or fixture308 with Windows_JNA_required=true, existing absolute source task_root and exactly java.io.tmpdir/jna.tmpdir property dirs inside that source root. No other JVM/JNA flags are inferred.",
+  "new_output": "True profile creates new owned tmp and jna-tmp directories, emits both -Djava.io.tmpdir and -Djna.tmpdir inside new output root, keeps Native fixture.task_root preflight and exact128m/CPU1 direct Java budget inherited from766. NoJNA profile keeps v1's existing command budget.",
+  "authority": "Native explicit message for named managed-supervisor-safe-stop coherent2P first; metadata/JNA parameter qualification only, not Java/OSchild/Runtime pass or a resource lease.",
+  "business_old_prepared_untouched": true,
+  "no_SDK_or_business_source_rebuild": true
+}
