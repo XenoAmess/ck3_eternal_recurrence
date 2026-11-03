@@ -901,21 +901,74 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             checkOpen();
             if (writer().readOnly) throw new IOException("readonly writer cannot preview internal");
             Objects.requireNonNull(request);
-            Head before = this.head(); List<Pin> actualSources = captureDomain(sources), evidence = capture(request);
-            var committed = store.duplicate(request, before);
-            if (committed.isPresent()) {
-                // Like the original WindowLedger.apply, recover an exact durable outcome before
-                // consulting expired live business preconditions. This is already-committed DATA:
-                // its digest is the captured event identity, never fresh reducer qualification.
-                for (Pin pin : actualSources) LedgerFiles.verify(pin);
-                for (Pin pin : evidence) LedgerFiles.verify(pin);
-                requireSameHead(before, store.head());
-                return new Prepared(before, request, actualSources, evidence, before.state(), committed.orElseThrow().identity());
+            boolean diagnostics = false;
+            long start = 0L;
+            long headEnd = -1L, sourcesEnd = -1L, evidenceEnd = -1L, duplicateEnd = -1L, revalidateEnd = -1L, reduceEnd = -1L, validateEnd = -1L;
+            int phase = 0, completedPhase = 0;
+            boolean duplicatePath = false;
+            long duplicateValidationEnd = 0L;
+            boolean returned = false;
+            try {
+                try {
+                    diagnostics = "true".equals(System.getProperty("ck3.dev.writerPhaseDiagnostics"));
+                } catch (Throwable ignored) { diagnostics = false; }
+                if (diagnostics) start = System.nanoTime();
+                phase = 1;
+                Head before = this.head();
+                if (diagnostics) { headEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 2;
+                List<Pin> actualSources = captureDomain(sources);
+                if (diagnostics) { sourcesEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 3;
+                List<Pin> evidence = capture(request);
+                if (diagnostics) { evidenceEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 4;
+                var committed = store.duplicate(request, before);
+                if (diagnostics) { duplicateEnd = System.nanoTime(); completedPhase = phase; }
+                if (committed.isPresent()) {
+                    duplicatePath = true; phase = 8;
+                    for (Pin pin : actualSources) LedgerFiles.verify(pin);
+                    for (Pin pin : evidence) LedgerFiles.verify(pin);
+                    requireSameHead(before, store.head());
+                    Prepared duplicatePrepared = new Prepared(before, request, actualSources, evidence, before.state(), committed.orElseThrow().identity());
+                    if (diagnostics) duplicateValidationEnd = System.nanoTime();
+                    returned = true;
+                    return duplicatePrepared;
+                }
+                phase = 5;
+                String precondition = selectedAuthority.revalidate(before, request); requireDigest(precondition);
+                if (diagnostics) { revalidateEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 6;
+                ContinuityState reduced = selectedAuthority.reduce(before.state(), request);
+                if (diagnostics) { reduceEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 7;
+                validateReduction(before.state(), reduced, request);
+                Prepared result = new Prepared(before, request, actualSources, evidence, reduced, precondition);
+                if (diagnostics) { validateEnd = System.nanoTime(); completedPhase = phase; }
+                returned = true;
+                return result;
+            } finally {
+                if (diagnostics) {
+                    try {
+                        if (!Thread.currentThread().isInterrupted()) {
+                            long end = System.nanoTime();
+                            System.err.println("WRITER_PREVIEW_INTERNAL phase=" + phase + " thread=" + Thread.currentThread().threadId()
+                                    + " event_ns=" + end
+                                    + " elapsed_ns=" + Math.max(0L, end - start)
+                                    + " head_ns=" + (completedPhase >= 1 ? Math.max(0L, headEnd - start) : -1L)
+                                    + " sources_ns=" + (completedPhase >= 2 ? Math.max(0L, sourcesEnd - headEnd) : -1L)
+                                    + " evidence_ns=" + (completedPhase >= 3 ? Math.max(0L, evidenceEnd - sourcesEnd) : -1L)
+                                    + " duplicate_ns=" + (completedPhase >= 4 ? Math.max(0L, duplicateEnd - evidenceEnd) : -1L)
+                                    + " revalidate_ns=" + (!duplicatePath && completedPhase >= 5 ? Math.max(0L, revalidateEnd - duplicateEnd) : -1L)
+                                    + " reduce_ns=" + (!duplicatePath && completedPhase >= 6 ? Math.max(0L, reduceEnd - revalidateEnd) : -1L)
+                                    + " validate_ns=" + (!duplicatePath && completedPhase >= 7 ? Math.max(0L, validateEnd - reduceEnd) : -1L)
+                                    + " duplicate_path=" + duplicatePath
+                                    + " duplicate_validation_ns=" + (duplicatePath && returned ? Math.max(0L, duplicateValidationEnd - duplicateEnd) : -1L)
+                                    + " returned=" + returned);
+                        }
+                    } catch (Throwable ignored) { /* Diagnostic output never controls the original preview outcome. */ }
+                }
             }
-            String precondition = selectedAuthority.revalidate(before, request); requireDigest(precondition);
-            ContinuityState reduced = selectedAuthority.reduce(before.state(), request);
-            validateReduction(before.state(), reduced, request);
-            return new Prepared(before, request, actualSources, evidence, reduced, precondition);
         }
         public Receipt commit(Prepared prepared) throws IOException {
             if (writer().readOnly) throw new IOException("readonly writer cannot commit");
@@ -946,56 +999,98 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             if (writer().readOnly) throw new IOException("readonly writer cannot commit prepared");
             Objects.requireNonNull(prepared);
             Request request = prepared.request();
-            // Sources and evidence are checked before any recovery or durable write.
-            for (Pin pin : prepared.sources()) LedgerFiles.verify(pin);
-            StrictJson.require(prepared.sources().stream().map(Pin::reference).toList().equals(sources), "configured source closure");
-            for (Pin pin : prepared.evidence()) LedgerFiles.verify(pin);
-            StrictJson.require(prepared.evidence().stream().map(Pin::reference).toList().equals(request.evidence()), "evidence closure");
-            Head actual = this.head();
-            // Exact duplicate only repairs already committed persistence; no reducer rerun or new credit.
-            if (store.duplicate(request, actual).isPresent()) {
-                return recoverDuplicate(request, actual);
-            }
-            requireSameHead(prepared.predecessor(), actual);
-            String precondition = selectedAuthority.revalidate(actual, request); requireDigest(precondition);
-            StrictJson.require(precondition.equals(prepared.preconditionDigest()), "actual domain preconditions changed inside original writer lock");
-            ContinuityState reduced = selectedAuthority.reduce(actual.state(), request);
-            validateReduction(actual.state(), reduced, request);
-            ObjectNode reducedDocument = reduced.toJson();
-            StrictJson.require(ContinuityJson.same(reducedDocument, prepared.reduced().toJson()), "same reducer result changed after preview");
-            // Re-read sources after actual validation/reduction, before durable mutation.
-            for (Pin pin : prepared.sources()) LedgerFiles.verify(pin);
-            for (Pin pin : prepared.evidence()) LedgerFiles.verify(pin);
-            // This held operation already projected the full history. Recheck its exact
-            // bytes/native identities and every absence without parsing that history again.
-            for (Pin pin : actual.documents()) LedgerFiles.verify(pin);
-            for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
-            long sequence = Math.addExact(actual.state().sequence(), 1);
-            ObjectNode after = reducedDocument.deepCopy(); after.put("sequence", sequence);
-            String requestIdentity = request.identity();
-            after.put("last_event_identity", requestIdentity);
-            ContinuityState committed = ContinuityState.fromJson(after, layout.machineId());
-            ContinuityEvent event = new ContinuityEvent(sequence, OffsetDateTime.ofInstant(clock.instant(), ZoneOffset.UTC).toString(),
-                    request.kind(), request.details(), requestIdentity, actual.digest(), committed);
-            // Apply the retained envelope validator and both output caps before the first write.
-            byte[] eventBytes = ContinuityJson.canonical(ContinuityEvent.fromJson(event.toJson(), actual.state()).toJson());
-            if (eventBytes.length + 1 > ContinuityJson.LEDGER_MAX_BYTES || committed.canonicalBytes().length + 1 > ContinuityJson.LEDGER_MAX_BYTES)
-                throw new IOException("original writer output cap");
-            LedgerFiles.requireAbsent(layout.event(sequence));
-            String requestSourceKey = request.sourceKey();
-            LedgerFiles.requireAbsent(layout.sourceIndex(requestSourceKey));
-            boolean unchanged=ContinuityJson.same(actual.state().toJson(),reducedDocument);
-            List<LedgerFiles.AtomicWrite> recovery=store.recoveryWrites(actual);
-            List<LedgerFiles.AtomicWrite> writes=new ArrayList<>(recovery);
-            LedgerFiles.AtomicWrite eventWrite=LedgerFiles.prepareAtomic(layout.event(sequence),eventBytes,false,ContinuityJson.LEDGER_MAX_BYTES);
-            LedgerFiles.AtomicWrite snapshotWrite=LedgerFiles.prepareAtomic(layout.snapshot(),committed.canonicalBytes(),true,ContinuityJson.LEDGER_MAX_BYTES);
-            LedgerFiles.AtomicWrite indexWrite=LedgerFiles.prepareAtomic(layout.sourceIndex(requestSourceKey),
-                    ContinuityJson.canonical(new IndexRepair(layout.sourceIndex(requestSourceKey),sequence,requestIdentity).toJson()),false);
-            if(!unchanged){writes.add(eventWrite);writes.add(snapshotWrite);writes.add(indexWrite);}
+            boolean diagnostics = false;
+            long start = 0L;
+            long sourceEnd = -1L, evidenceEnd = -1L, closureEnd = -1L, headEnd = -1L, duplicateEnd = -1L, predecessorEnd = -1L, revalidateEnd = -1L, reduceEnd = -1L, validateEnd = -1L, freshSourceEnd = -1L, freshEvidenceEnd = -1L, documentEnd = -1L, absenceEnd = -1L, planEnd = -1L, writeEnd = -1L;
+            int phase = 0, completedPhase = 0;
+            long duplicateRecoveryNs = -1L;
+            boolean returned = false;
             try {
-                if(writes.isEmpty())return new Receipt(Disposition.NO_CHANGE,actual.state(),requestIdentity,0,false);
-                // Quote the entire physical commit/recovery before the first pending file is created.
-                return storageGuard.write(LedgerFiles.plan(layout.lock(),writes),()->{
+                try {
+                    diagnostics = "true".equals(System.getProperty("ck3.dev.writerPhaseDiagnostics"));
+                } catch (Throwable ignored) { diagnostics = false; }
+                if (diagnostics) start = System.nanoTime();
+                phase = 1;
+                for (Pin pin : prepared.sources()) LedgerFiles.verify(pin);
+                if (diagnostics) { sourceEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 2;
+                StrictJson.require(prepared.sources().stream().map(Pin::reference).toList().equals(sources), "configured source closure");
+                for (Pin pin : prepared.evidence()) LedgerFiles.verify(pin);
+                if (diagnostics) { evidenceEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 3;
+                StrictJson.require(prepared.evidence().stream().map(Pin::reference).toList().equals(request.evidence()), "evidence closure");
+                if (diagnostics) { closureEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 4;
+                Head actual = this.head();
+                if (diagnostics) { headEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 5;
+                boolean duplicate = store.duplicate(request, actual).isPresent();
+                if (diagnostics) { duplicateEnd = System.nanoTime(); completedPhase = phase; }
+                if (duplicate) {
+                    phase = 16;
+                    Receipt duplicateReceipt = recoverDuplicate(request, actual);
+                    if (diagnostics) duplicateRecoveryNs = Math.max(0L, System.nanoTime() - duplicateEnd);
+                    returned = true;
+                    return duplicateReceipt;
+                }
+                phase = 6;
+                requireSameHead(prepared.predecessor(), actual);
+                if (diagnostics) { predecessorEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 7;
+                String precondition = selectedAuthority.revalidate(actual, request); requireDigest(precondition);
+                StrictJson.require(precondition.equals(prepared.preconditionDigest()), "actual domain preconditions changed inside original writer lock");
+                if (diagnostics) { revalidateEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 8;
+                ContinuityState reduced = selectedAuthority.reduce(actual.state(), request);
+                if (diagnostics) { reduceEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 9;
+                validateReduction(actual.state(), reduced, request);
+                ObjectNode reducedDocument = reduced.toJson();
+                StrictJson.require(ContinuityJson.same(reducedDocument, prepared.reduced().toJson()), "same reducer result changed after preview");
+                if (diagnostics) { validateEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 10;
+                for (Pin pin : prepared.sources()) LedgerFiles.verify(pin);
+                if (diagnostics) { freshSourceEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 11;
+                for (Pin pin : prepared.evidence()) LedgerFiles.verify(pin);
+                if (diagnostics) { freshEvidenceEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 12;
+                for (Pin pin : actual.documents()) LedgerFiles.verify(pin);
+                if (diagnostics) { documentEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 13;
+                for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
+                if (diagnostics) { absenceEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 14;
+                long sequence = Math.addExact(actual.state().sequence(), 1);
+                ObjectNode after = reducedDocument.deepCopy(); after.put("sequence", sequence);
+                String requestIdentity = request.identity();
+                after.put("last_event_identity", requestIdentity);
+                ContinuityState committed = ContinuityState.fromJson(after, layout.machineId());
+                ContinuityEvent event = new ContinuityEvent(sequence, OffsetDateTime.ofInstant(clock.instant(), ZoneOffset.UTC).toString(),
+                        request.kind(), request.details(), requestIdentity, actual.digest(), committed);
+                byte[] eventBytes = ContinuityJson.canonical(ContinuityEvent.fromJson(event.toJson(), actual.state()).toJson());
+                if (eventBytes.length + 1 > ContinuityJson.LEDGER_MAX_BYTES || committed.canonicalBytes().length + 1 > ContinuityJson.LEDGER_MAX_BYTES)
+                    throw new IOException("original writer output cap");
+                LedgerFiles.requireAbsent(layout.event(sequence));
+                String requestSourceKey = request.sourceKey();
+                LedgerFiles.requireAbsent(layout.sourceIndex(requestSourceKey));
+                boolean unchanged=ContinuityJson.same(actual.state().toJson(),reducedDocument);
+                List<LedgerFiles.AtomicWrite> recovery=store.recoveryWrites(actual);
+                List<LedgerFiles.AtomicWrite> writes=new ArrayList<>(recovery);
+                LedgerFiles.AtomicWrite eventWrite=LedgerFiles.prepareAtomic(layout.event(sequence),eventBytes,false,ContinuityJson.LEDGER_MAX_BYTES);
+                LedgerFiles.AtomicWrite snapshotWrite=LedgerFiles.prepareAtomic(layout.snapshot(),committed.canonicalBytes(),true,ContinuityJson.LEDGER_MAX_BYTES);
+                LedgerFiles.AtomicWrite indexWrite=LedgerFiles.prepareAtomic(layout.sourceIndex(requestSourceKey),
+                        ContinuityJson.canonical(new IndexRepair(layout.sourceIndex(requestSourceKey),sequence,requestIdentity).toJson()),false);
+                if(!unchanged){writes.add(eventWrite);writes.add(snapshotWrite);writes.add(indexWrite);}
+                if (diagnostics) { planEnd = System.nanoTime(); completedPhase = phase; }
+                phase = 15;
+                try {
+                    if(writes.isEmpty()){
+                        Receipt noChangeReceipt = new Receipt(Disposition.NO_CHANGE,actual.state(),requestIdentity,0,false);
+                        returned = true;
+                        return noChangeReceipt;
+                    }
+                    Receipt result = storageGuard.write(LedgerFiles.plan(layout.lock(),writes),()->{
                     retainedHead=null;retainedHeadHistoryVerified=false;
                     retainedDomainHead=null;
                     int recovered=store.recover(recovery,storageGuard);
@@ -1012,7 +1107,39 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     retainedHead = readback;retainedHeadHistoryVerified=false;
                     return new Receipt(Disposition.COMMITTED,committed,requestIdentity,recovered+3,recovered>0);
                 });
-            }catch(IOException|RuntimeException error){throw new CommitUncertainException(requestIdentity,sequence,error);}
+                    if (diagnostics) { writeEnd = System.nanoTime(); completedPhase = phase; }
+                    returned = true;
+                    return result;
+                }catch(IOException|RuntimeException error){throw new CommitUncertainException(requestIdentity,sequence,error);}
+            } finally {
+                if (diagnostics) {
+                    try {
+                        if (!Thread.currentThread().isInterrupted()) {
+                            long end = System.nanoTime();
+                            System.err.println("WRITER_COMMIT_PREPARED phase=" + phase + " thread=" + Thread.currentThread().threadId()
+                                    + " event_ns=" + end
+                                    + " elapsed_ns=" + Math.max(0L, end - start)
+                                    + " source_ns=" + (completedPhase >= 1 ? Math.max(0L, sourceEnd - start) : -1L)
+                                    + " evidence_ns=" + (completedPhase >= 2 ? Math.max(0L, evidenceEnd - sourceEnd) : -1L)
+                                    + " closure_ns=" + (completedPhase >= 3 ? Math.max(0L, closureEnd - evidenceEnd) : -1L)
+                                    + " head_ns=" + (completedPhase >= 4 ? Math.max(0L, headEnd - closureEnd) : -1L)
+                                    + " duplicate_ns=" + (completedPhase >= 5 ? Math.max(0L, duplicateEnd - headEnd) : -1L)
+                                    + " predecessor_ns=" + (completedPhase >= 6 ? Math.max(0L, predecessorEnd - duplicateEnd) : -1L)
+                                    + " revalidate_ns=" + (completedPhase >= 7 ? Math.max(0L, revalidateEnd - predecessorEnd) : -1L)
+                                    + " reduce_ns=" + (completedPhase >= 8 ? Math.max(0L, reduceEnd - revalidateEnd) : -1L)
+                                    + " validate_ns=" + (completedPhase >= 9 ? Math.max(0L, validateEnd - reduceEnd) : -1L)
+                                    + " fresh_source_ns=" + (completedPhase >= 10 ? Math.max(0L, freshSourceEnd - validateEnd) : -1L)
+                                    + " fresh_evidence_ns=" + (completedPhase >= 11 ? Math.max(0L, freshEvidenceEnd - freshSourceEnd) : -1L)
+                                    + " document_ns=" + (completedPhase >= 12 ? Math.max(0L, documentEnd - freshEvidenceEnd) : -1L)
+                                    + " absence_ns=" + (completedPhase >= 13 ? Math.max(0L, absenceEnd - documentEnd) : -1L)
+                                    + " plan_ns=" + (completedPhase >= 14 ? Math.max(0L, planEnd - absenceEnd) : -1L)
+                                    + " write_ns=" + (completedPhase >= 15 ? Math.max(0L, writeEnd - planEnd) : -1L)
+                                    + " duplicate_recovery_ns=" + duplicateRecoveryNs
+                                    + " returned=" + returned);
+                        }
+                    } catch (Throwable ignored) { /* Diagnostic output never controls the original commit outcome. */ }
+                }
+            }
         }
         private Receipt recoverDuplicate(Request request, Head actual) throws IOException {
             if (writer().readOnly) throw new IOException("readonly writer cannot recover duplicate");
