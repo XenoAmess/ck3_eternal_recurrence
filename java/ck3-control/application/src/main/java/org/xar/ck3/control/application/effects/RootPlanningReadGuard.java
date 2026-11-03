@@ -122,22 +122,7 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
                     && request.arguments().members().isEmpty()) {
                 var active = ActionScope.currentActionId();
                 if (active.isPresent()) {
-                    var child = ContinuityActionJournal.lookup(actualLockedHead.state(), active.orElseThrow(), sameWriterArchive);
-                    boolean cancellation = child.isPresent() && lifeCancellationStatusSource(session, actualLockedHead,
-                            child.orElseThrow().command(), sameWriterArchive).isPresent();
-                    var watch = cancellation || child.isEmpty() ? java.util.Optional.<ActionReceipt>empty()
-                            : lifeWatchStatusSource(child.orElseThrow().command(),
-                                    ContinuityActionJournal.receipts(actualLockedHead.state(), sameWriterArchive));
-                    if (watch.isPresent()) {
-                        var original = watch.orElseThrow().command();
-                        StrictJson.require(request.source().equals(original.source()) && request.sessionId().equals(original.sessionId())
-                                && request.before().machineId().equals(original.before().machineId())
-                                && request.before().game().equals(original.before().game())
-                                && request.before().frame().episodeRunId().equals(original.before().frame().episodeRunId())
-                                && request.before().frame().identity().player().equals(original.before().frame().identity().player()),
-                                "read-only Life Status crossed its exact parent source/session/Game/episode/actor");
-                    }
-                    if (cancellation || watch.isPresent()) {
+                    if (statusHistoryCallScope(session, actualLockedHead, request, active.orElseThrow(), sameWriterArchive)) {
                         return authority.currentDerivedCleanup(session, request.before(), request.deadline(), lease -> {
                             RootGuardChecks.livingPaused(lease);
                             StrictJson.require(lease.bridgeCapabilities().contains(ClockStatusRead.STATUS_CAP),
@@ -172,6 +157,29 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
             });
         } catch (IOException failure) { throw new UncheckedIOException("actual Root planning-read authority unavailable: "
                 + failure.getClass().getSimpleName() + ":" + String.valueOf(failure.getMessage()), failure); }
+    }
+
+    private static boolean statusHistoryCallScope(ContinuityStorePort.Session same, WriterContracts.Head head,
+            PlanningReadRequest request, String activeActionId, ActionPorts.OutcomeArchive sameArchive) throws IOException {
+        return sameArchive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192),
+            scoped -> {
+                var child = ContinuityActionJournal.lookup(head.state(), activeActionId, scoped);
+                boolean cancellation = child.isPresent() && lifeCancellationStatusSource(same, head,
+                        child.orElseThrow().command(), scoped).isPresent();
+                var watch = cancellation || child.isEmpty() ? java.util.Optional.<ActionReceipt>empty()
+                        : lifeWatchStatusSource(child.orElseThrow().command(),
+                                ContinuityActionJournal.receipts(head.state(), scoped));
+                if (watch.isPresent()) {
+                    var original = watch.orElseThrow().command();
+                    StrictJson.require(request.source().equals(original.source()) && request.sessionId().equals(original.sessionId())
+                            && request.before().machineId().equals(original.before().machineId())
+                            && request.before().game().equals(original.before().game())
+                            && request.before().frame().episodeRunId().equals(original.before().frame().episodeRunId())
+                            && request.before().frame().identity().player().equals(original.before().frame().identity().player()),
+                            "read-only Life Status crossed its exact parent source/session/Game/episode/actor");
+                }
+                return cancellation || watch.isPresent();
+            });
     }
 
     /** Canonical DATA classification only. The caller must supply its actual locked chain and ActionScope.
