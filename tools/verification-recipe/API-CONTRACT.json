@@ -1,0 +1,49 @@
+{
+  "schema": "xar.verification-recipe-api/v1",
+  "module": "prepare_verification_recipe.py",
+  "public_API": {
+    "prepare_production(request_path)": "Read a pinned-request JSON path. Validate all inputs before creating output_root. Return Prepared-READY pin dictionary. No process or Java execution.",
+    "prepare_tests(production_ready_pin, actual_pin, verified_pin)": "Read dictionaries {path,bytes,sha256}. Revalidate the frozen request and original inputs plus exact Native production output manifest. Create only the previously absent tests subdirectory. Return Prepared-READY pin dictionary.",
+    "RecipeError": "ValueError subclass with stable .code and .detail; all supported refusals use named code. No approvals or leases are emitted."
+  },
+  "request": {
+    "schema": "xar.verification-recipe-request/v1",
+    "profile": "one-prod-one-test-explicit-methods",
+    "output_root": "absolute D path, absent, parent already exists, resolved under D; no symlink redirection",
+    "production_source": "pin to exactly one .java TU",
+    "test_source": "pin to exactly one .java TU",
+    "production_ready": "pin to owner's frozen SourceReady",
+    "test_ready": "pin to owner's frozen SourceReady",
+    "production_class": "fully qualified top-level name matching package and source stem",
+    "test_class": "fully qualified top-level name matching package and source stem",
+    "methods": "nonempty unique list of simple Java method identifiers, not selectors, class names, scans or signatures",
+    "templates": "object with prod_config,prod_args,test_config,test_args,junit_args pins; exact qualified 748/750-shaped templates",
+    "sdk_declaration": "pin to external Native issuer declaration described below"
+  },
+  "Native_sdk_declaration": {
+    "schema": "xar.native-sdk-declaration/v1",
+    "issuer": "/root/native_continue",
+    "scope": "nonempty explicit review scope",
+    "sources": "object production/test exact source pins; binds declaration to this selected unit",
+    "sdk_config": "pin to verified production CONFIG",
+    "sdk_actual": "pin to successful production ACTUAL",
+    "sdk_verified": "pin to corresponding VERIFIED with actual reference",
+    "sdk_args": "pin to original production argfile, exact 316-entry tail",
+    "sdk_entries": "ordered 316 paths identical to decoded sdk_args CP; duplicates retained",
+    "required_families": "object production/test, each explicit FQN list reviewed by Native; test may include selected production_class",
+    "families": "object FQN -> {index,root,relative,pin}; first-hit directory class from SDK entries, not an approval boolean; production_class excluded because it binds future actual prefix"
+  },
+  "production_output_binding": "Native ACTUAL must reference generated production CONFIG, phase=prod, exact command, success with no timeout/error/pin change, and nonempty class pins under generated production/classes. VERIFIED must reference that ACTUAL and same classes. Actual manifest must exactly equal existing *.class leaves; selected top-level class must exist. No new compilation is performed by the preparer.",
+  "output": "output_root/production/{CONFIG.json,PROD.args,PREPARED-READY.json,classes,empty-source}; after actual binding output_root/tests/{CONFIG.json,TEST.args,JUNIT.args,PREPARED-READY.json,classes-test,empty-source,reports,tmp}. CONFIG retains original runner-consumed field shapes. Prepared readiness means metadata prepared, not Native-approved or executed.",
+  "refusal_codes": ["REQUEST_SCHEMA", "UNSUPPORTED_PROFILE", "INVALID_SELECTOR", "PIN_MISMATCH", "MISSING_INPUT", "UNSAFE_PATH", "OUTPUT_EXISTS", "TEMPLATE_PROFILE", "SDK_DECLARATION_REQUIRED", "SDK_QUALIFICATION", "MISSING_FAMILY", "PRODUCTION_NOT_VERIFIED", "OUTPUT_MANIFEST", "BOUNDED_INPUT"],
+  "limits": {"JSON_or_argfile_bytes": 2097152, "source_bytes": 4194304, "class_bytes": 16777216, "selectors": 64, "class_manifest": 1024},
+  "trust_boundary": "Native declaration is externally supplied review evidence. Tool validates identity and consistency, never infers ABI/source qualification from an old successful compilation. Only the Native owner can issue the declaration for real use. Tests may use isolated synthetic declarations as DATA, never as real SDK approvals.",
+  "runner_and_helpers_read": [
+    "D:/ck3-state/resume91-native-integration/prepare_advance_clock748.py",
+    "D:/ck3-state/resume91-native-integration/advance_clock_prod748.py",
+    "D:/ck3-state/resume91-native-integration/prepare_clock_tests750.py",
+    "D:/ck3-state/resume91-native-integration/clock_test750.py",
+    "D:/ck3-state/resume91-native-integration/javac_argfile_guard430.py",
+    "D:/ck3-state/resume91-native-integration/software_jvm_fixture308.py"
+  ]
+}
