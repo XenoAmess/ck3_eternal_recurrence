@@ -129,12 +129,14 @@ public final class DriverSnapshotFacts {
                 GameGeneration.fromJson(DriverJson.toNode(stampRow.get("game"))),string(stampRow,"episode_run_id"),string(stampRow,"driver_sha256"));
         StrictJson.require(row.get("action_rows") instanceof OpportunityJson.Arr,"complete Known action rows must be an array");
         var actions=new java.util.ArrayList<ActionRow>();
+        java.util.Set<String> actionFields=null,legacyFields=null,canonicalFields=null;
         for(var item:((OpportunityJson.Arr)row.get("action_rows")).items()) {
-            var action=checked(item,java.util.Set.of("action_id","body_sha256","durable_sequence","coverage_source"));
+            if(actionFields==null)actionFields=java.util.Set.of("action_id","body_sha256","durable_sequence","coverage_source");
+            var action=checked(item,actionFields);
             var source=OpportunityJson.object(action.get("coverage_source"),"coverage_source");CoverageSource coverage;
             switch(string(source,"kind")) {
-                case "legacy-history-row" -> {checked(source,java.util.Set.of("kind","history_index","original_row"));coverage=new LegacyHistoryRow(number(source,"history_index",1),reference(source.get("original_row")));}
-                case "canonical-only" -> {checked(source,java.util.Set.of("kind","original_source"));coverage=new CanonicalOnly(reference(source.get("original_source")));}
+                case "legacy-history-row" -> {if(legacyFields==null)legacyFields=java.util.Set.of("kind","history_index","original_row");checked(source,legacyFields);coverage=new LegacyHistoryRow(number(source,"history_index",1),reference(source.get("original_row")));}
+                case "canonical-only" -> {if(canonicalFields==null)canonicalFields=java.util.Set.of("kind","original_source");checked(source,canonicalFields);coverage=new CanonicalOnly(reference(source.get("original_source")));}
                 default -> throw new IllegalArgumentException("unknown complete Known action coverage source");
             }
             actions.add(new ActionRow(string(action,"action_id"),string(action,"body_sha256"),number(action,"durable_sequence",1),coverage));
