@@ -29,6 +29,11 @@ public final class LifecyclePublicResultCodec {
                     new Role(java.util.stream.Stream.concat(java.util.stream.Stream.of("succession_reconciliation"),
                             role.path().stream()).toList(), role.required()))).toList();
 
+    private static final List<Role> DEATH_ROLES = List.of(new Role(REVISION.path(), false));
+
+    private static final java.util.regex.Pattern CANONICAL_DECIMAL_PATTERN =
+            java.util.regex.Pattern.compile("0|[1-9][0-9]*");
+
     private LifecyclePublicResultCodec() { }
 
     /** Same optional revision DATA role as terminal inspection; this never asserts a DEATH transition. */
@@ -76,7 +81,7 @@ public final class LifecyclePublicResultCodec {
         Objects.requireNonNull(kind); Objects.requireNonNull(originalResult);
         ObjectNode original = object(originalResult);
         validateOriginal(kind, original);
-        ObjectNode publicResult = original.deepCopy();
+        ObjectNode publicResult = original;
         for (Role role : roles(kind)) transform(publicResult, role, true);
         PublicSnapshotCodec.publicNumbers(publicResult, "");
         RawJson encoded = PublicDataJson.encodePreservingDecimals(publicResult,originalResult);
@@ -98,7 +103,7 @@ public final class LifecyclePublicResultCodec {
     private static List<Role> roles(Kind kind) {
         return switch (kind) {
             // Death preserves missing/null from the actual native terminal frame.
-            case DEATH -> List.of(new Role(REVISION.path(), false));
+            case DEATH -> DEATH_ROLES;
             case CONTINUE_SUCCESSOR -> CONTINUED_ROLES;
             case NEXT_EPISODE, ACTOR_SWITCH -> List.of();
         };
@@ -132,7 +137,7 @@ public final class LifecyclePublicResultCodec {
             parent.put(field, value.bigIntegerValue().toString());
         } else {
             StrictJson.require(value.isTextual() && value.textValue().length() <= 4300
-                    && value.textValue().matches("0|[1-9][0-9]*"),
+                    && CANONICAL_DECIMAL_PATTERN.matcher(value.textValue()).matches(),
                     "public lifecycle revision requires a canonical decimal string");
             parent.put(field, new BigInteger(value.textValue()));
         }
