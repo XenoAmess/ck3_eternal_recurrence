@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 
@@ -40,9 +41,14 @@ public final class FullJsonTree {
                     + " callers=" + frames);
         }
         try {
-            var buffer = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
+            CharBuffer decoded = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
                     .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(original));
-            try (JsonParser parser = buffer.hasArray() ? FACTORY.createParser(buffer.array(), buffer.arrayOffset() + buffer.position(), buffer.remaining()) : FACTORY.createParser(buffer.toString())) {
+            // Match the original String API's short fixed-buffer parser route; keep its large Reader route.
+            try (JsonParser parser = decoded.hasArray() && decoded.remaining() <= 0x8000
+                    ? FACTORY.createParser(decoded.array(), decoded.arrayOffset() + decoded.position(), decoded.remaining())
+                    : FACTORY.createParser(decoded.toString())) {
+                // The parser owns its input; do not retain the decoded backing array in this local during tree construction.
+                decoded = null;
                 StrictJson.require(parser.nextToken() != null, "complete JSON value required");
                 JsonNode result = read(parser, 0);
                 StrictJson.require(parser.nextToken() == null, "trailing complete JSON rejected");
