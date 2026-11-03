@@ -73,9 +73,7 @@ public final class DriverSnapshotFacts {
                 StrictJson.require(value.driverVersion()==stamp.driverVersion()
                         && value.episodeEpoch()==stamp.episodeEpoch()
                         && value.transport().game().equals(stamp.game()),"semantic facts crossed Driver version");
-                if (value.driver() != driver) {
-                    StrictJson.require(java.util.Arrays.equals(value.driver().encode(), driverBytes), "semantic facts crossed Driver version");
-                }
+                StrictJson.require(java.util.Arrays.equals(value.driver().encode(), driver.encode()), "semantic facts crossed Driver version");
             });
         }
     }
