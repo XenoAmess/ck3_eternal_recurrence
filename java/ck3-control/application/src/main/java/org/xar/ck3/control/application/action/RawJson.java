@@ -34,7 +34,12 @@ public final class RawJson {
         if (input == null || input.length < 1 || input.length > MAXIMUM_BYTES) throw new IllegalArgumentException("bounded original Native token required");
         bytes = input.clone();
         try {
-            StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
+            boolean ascii = true;
+            for (byte value : bytes) {
+                if (value < 0) { ascii = false; break; }
+            }
+            // All nonnegative bytes are valid UTF-8; the original byte parser still validates JSON.
+            if (!ascii) StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
                     .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(bytes));
             validateDocument(factory);
         } catch (IOException error) { throw new IllegalArgumentException("invalid UTF-8/duplicate/token Native JSON", error); }
