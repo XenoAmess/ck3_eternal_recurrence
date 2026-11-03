@@ -519,9 +519,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
         StrictJson.require(assembled instanceof DriverObservationAssembler.Complete,"READ capability original frame is incomplete");
         var frame=(DriverObservationAssembler.Complete)assembled;
         var driverSource=org.xar.ck3.control.application.effects.RootGuardEvidence.originalDriverSource(guard,originals);
+        byte[] knownDriverBytes=null;
         StrictJson.require(driverSource.driverRef().equals(beforeRef)
-                &&java.util.Arrays.equals(facts.driver().encode(),known.driver().encode())
-                &&java.util.Arrays.equals(guardFull.facts().driver().encode(),known.driver().encode())
+                &&java.util.Arrays.equals(facts.driver().encode(),knownDriverBytes=known.driver().encode())
+                &&java.util.Arrays.equals(guardFull.facts().driver().encode(),
+                    known.driver().session().actorId().getClass()==java.math.BigInteger.class?knownDriverBytes:known.driver().encode())
                 &&facts.driverVersion()==known.stamp().driverVersion()&&facts.episodeEpoch()==known.stamp().episodeEpoch()
                 &&guardFull.facts().driverVersion()==known.stamp().driverVersion()
                 &&guardFull.facts().episodeEpoch()==known.stamp().episodeEpoch()
@@ -534,6 +536,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&frame.identity().frame().identity().nativeRevision().compareTo(observed.identity().frame().identity().nativeRevision())<=0
                 &&frame.identity().frame().revision().compareTo(observed.identity().frame().revision())<=0,
                 "READ capability original crossed its complete historical Driver/owner/source/profile/frame");
+        knownDriverBytes=null;
         var originalKnown=new DriverSnapshotFacts.Known(known.driver(),known.stamp(),known.originalHistoryBasis(),
                 known.actionRows(),known.auxiliary(),known.loop(),Optional.of(facts));
         var restored=DriverCapabilityStateProducer.replay(frame,originalKnown,source,originals);
