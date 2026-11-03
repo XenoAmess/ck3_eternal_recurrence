@@ -517,7 +517,22 @@ public final class ImmutableArtifactStore {
         });
     }
     private LedgerFiles.Document verifyRaw(Pin pin, int maximum) throws IOException {
-        LedgerFiles.Document value = LedgerFiles.exact(pin.reference(), maximum); requirePin(value.pin(), pin); return value;
+        // Same fresh read and validation order as LedgerFiles.exact/read, with one final payload copy.
+        Path path = Path.of(pin.reference().path());
+        var observed = IdentityBearingFileAttributes.readBoundedWindows(path, maximum);
+        BasicFileAttributes after = observed.attributes();
+        WindowsFileIdentity key = (WindowsFileIdentity) after.fileKey();
+        FileIdentity identity = new FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(), key.creationFiletimeDecimal(),
+                after.lastModifiedTime().toInstant().toString(), after.size());
+        byte[] raw = observed.bytes();
+        Pin actual = new Pin(new ExactRef(path.toAbsolutePath().normalize().toString(), raw.length, LedgerFiles.sha(raw)), identity);
+        if (actual.reference().bytes() != pin.reference().bytes() || !actual.reference().sha256().equals(pin.reference().sha256())
+                || !Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(Path.of(actual.reference().path())))
+            throw new IOException("named source bytes/SHA/path changed: path=" + pin.reference().path()
+                    + ", expected_bytes=" + pin.reference().bytes() + ", actual_bytes=" + actual.reference().bytes()
+                    + ", expected_sha256=" + pin.reference().sha256() + ", actual_sha256=" + actual.reference().sha256());
+        LedgerFiles.Document value = new LedgerFiles.Document(new Pin(pin.reference(), actual.identity()), raw);
+        requirePin(value.pin(), pin); return value;
     }
     private static Pin matching(byte[] expected, LedgerFiles.Document actual) throws IOException {
         if (!Arrays.equals(expected, actual.bytes())) throw new IOException("same content key has different bytes"); return actual.pin();
