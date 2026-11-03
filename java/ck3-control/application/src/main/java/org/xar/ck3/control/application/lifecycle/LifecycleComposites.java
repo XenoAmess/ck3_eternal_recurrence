@@ -27,6 +27,7 @@ import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 /** Actual three-branch Java successor. Root installs this same instance in the coordinator and writer router. */
@@ -489,7 +490,7 @@ public final class LifecycleComposites implements CompositeActionPort.OriginalCo
         if(!(outcome instanceof SeedStarted started))throw new IOException("original seed replacement is not proven; query only: "+outcome);
         StrictJson.require(started.oldGame().equals(parent.origin().game())&&started.pipeName().equals(observed.facts().driver().session().pipeName()),"replacement crossed original Game/pipe");
         replacements.put(parent.actionId(),started);NativeObservationPort.ObservedFrame loaded=awaitSeedMap(parent,started,seed);loadedFrames.put(parent.actionId(),loaded);
-        ObjectNode state=LifecycleJson.parse(loaded.state().bytes(),16<<20);BigInteger actor=LifecycleJson.integer(LifecycleJson.object(state.get("played_character")).get("character_id"),BigInteger.ONE);
+        ObjectNode state=LifecycleJson.parse(loaded.state().bytes(),16<<20);BigInteger actor=NativeCharacterId.fromJson(LifecycleJson.object(state.get("played_character")).get("character_id")).asBigInteger();
         requireCurrentTerminalStrategy(observed.facts());
         LifecycleReducer.Reduction reduction=LifecycleReducer.nextEpisode(observed.facts(),seed,started.newGame().pid(),actor,LifecycleJson.integer(state.get("date_raw"),BigInteger.ZERO),newRun(actor),clock.instant());
         finalDomainAttempted.add(parent.actionId());return finish(parent,children,observed,LifecycleChild.Phase.NEXT_EPISODE_COMMITTED,reduction,started.newGame(),
@@ -512,7 +513,7 @@ public final class LifecycleComposites implements CompositeActionPort.OriginalCo
         private JsonNodeCheck(){ }
         static void checkSeed(ObjectNode state,SeedArtifact seed){ObjectNode player=LifecycleJson.object(state.get("played_character"));
             StrictJson.require(LifecycleJson.bool(state.get("paused"))&&LifecycleJson.bool(state.get("map_ready"))&&LifecycleJson.bool(player.get("alive"))
-                    &&LifecycleJson.integer(player.get("character_id"),BigInteger.ONE).equals(seed.characterId())&&LifecycleJson.integer(state.get("date_raw"),BigInteger.ZERO).equals(seed.dateRaw()),"actual seed map/player/date not yet confirmed");}
+                    &&NativeCharacterId.fromJson(player.get("character_id")).asBigInteger().equals(seed.characterId())&&LifecycleJson.integer(state.get("date_raw"),BigInteger.ZERO).equals(seed.dateRaw()),"actual seed map/player/date not yet confirmed");}
     }
     private static void requireLoadedScope(SeedStarted started,NativeObservationPort.ObservedFrame frame){StrictJson.require(frame.session().game().equals(started.newGame())&&frame.session().sessionId().equals(started.sessionId()),"loaded frame came from another private replacement transport");}
     @FunctionalInterface private interface DomainCommitter { LifecycleCommit commit(LifecycleChild child) throws IOException; }
