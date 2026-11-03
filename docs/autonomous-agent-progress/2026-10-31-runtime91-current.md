@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-03 04:30:59.370916100Z四源码采用后的新委托实际START：同125308／出生134381493561057204，d19140aa-e357-44c4-bf0c-8c934044dc9b、restart1@689091c3。原e61的75已先结束；本次唯一GET04:30:51.671627→59.405789Z／HTTP200／7.7341694秒，STOP请求0、新host0。四份源码采用回执与官方Restart的57具名输出全对应、newFQN0；91项接受回执为Runtime／Root报告，旧三源helper的THREE_SOURCE标签已勘误为实际四源，不重做操作。
+
+实际raw为P0399 DriverBootstrap＋Core、临时到期Writer113779／0e7f2271、Protocol4662／81b385；Writer截止元数据05:26:30.813Z不等于已经观察到到期执行，正常正式19065仍exacttrue opt-in／默认关闭，Core也不等于整文件正式版本。官方started2.818秒／live reload7.607秒与HTTP时长分别记录，不充作LOOP或冷恢复耗时。04:33:02.142634Z冻结状态BOOT／loop=null，保存仍1498／289日，source→START已闭而个别方法／cache命中、LOOP、后SAVE和速度仍各自待证；1498→该冻结2420.181068800秒／零新增确认保存，不用累计289作分母。Root已证74→75同JVM warm入口，随后75 END4且无新SAVE，不能写成功解决性能／功能。见[四源码重载START来源](../maintenance/2026-11-03-quarkus-worker-four-source-reload-start-sources.json)。旧1498／281／273／265／BOOT／LOOP全文原字节保留，本次仅小冻结metadata与短日志，0新编测／GET／Game／部署或重载。
+
 2026-11-03 03:52:41.961565200Z实际1498 SAVE_CONFIRMED，1492 SETTLE，本局289日全部保存；saved date53152920/native849/public786/cycle41/actor31254/pending=null，同Game77132／原birth。Root已具名独验两冻结事件；保存849/786不混同cycle语义847/784。1460／281日→1498／289日完整5449.436732800秒／新增8日＝681.179591600秒／日，所有失败、准备、冷恢复和等待保留，10秒未达、非A/B。累计Root epoch111715.961565200／289＝386.5604206408…秒／日仅次指标，不替代新增8分母。
 
 本窗包含72零保存、八源码准备、旧宿主释放、e61的827.098675700秒冷恢复、一次Thread观察、73完整业务与SAVE。既有八源码采用→03:30:26.721503800Z实际LOOP→本次新增8日确认保存各自有独立来源；不据此证明逐叶方法／分支、cache命中、因果提速或未来健康。旧03:19 BOOT、03:33保存仍281的LOOP记录及281／273／265正文原字节保留。见[1498保存来源](../maintenance/2026-11-03-quarkus-worker-save1498-eight-source-sources.json)；本次只消费Root具名小verifier／window和冻结SUMMARY，0raw Save／Driver／canonical大体读取，0新查询／GET／编测／部署或重启，G2仍6/8。

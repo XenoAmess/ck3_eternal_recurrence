@@ -1,0 +1,197 @@
+{
+  "schema": "ck3.actual-same-JVM-reload-START-frontier.v1",
+  "fixed_cutoff_UTC": "2026-11-03T04:33:02.142634+00:00",
+  "evidence_frozen_UTC": "2026-11-03T04:33:11.044662+00:00",
+  "actual_host": {
+    "pid": 125308,
+    "birth": "134381493561057204",
+    "exit": 259,
+    "image": "C:\\jdk-21\\bin\\java.exe",
+    "exit_filetime": "0"
+  },
+  "new_delegate": {
+    "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@689091c3@689091c3",
+    "exit_code": null,
+    "failure_type": null,
+    "host_pid": "125308",
+    "instance_id": "d19140aa-e357-44c4-bf0c-8c934044dc9b",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-03T04:30:59.370916100Z",
+    "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@689091c3@689091c3",
+    "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+    "status": "DELEGATE_STARTED"
+  },
+  "source_count": 4,
+  "existing_named_outputs": 57,
+  "new_named_types": 0,
+  "official_Restart_exact_named_output_match": {
+    "names_count": 57,
+    "four_outer_type_counts": {
+      "DriverBootstrap": 18,
+      "RootApplicationAssembly": 30,
+      "ContinuityWriter": 8,
+      "ProtocolIdentityAdmission": 1
+    },
+    "whole_set_equal_to_four_source_receipt_compiled_names": true
+  },
+  "source_projection": [
+    {
+      "relative_path": "local-service/src/main/java/org/xar/ck3/control/application/driver/DriverBootstrap.java",
+      "adopted_raw_bytes": 134769,
+      "adopted_raw_sha256": "0bf247c27ff69cc91d0cb01ce79f3447d59683f4234241aee896dec69efee930",
+      "adopted_at_utc": "2026-11-03T04:30:51.611894+00:00",
+      "formal_blob_bytes_at_documentation": 134769,
+      "formal_blob_sha256_at_documentation": "0bf247c27ff69cc91d0cb01ce79f3447d59683f4234241aee896dec69efee930",
+      "whole_raw_equals_formal_blob": true,
+      "named_original_output_count": 18
+    },
+    {
+      "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+      "adopted_raw_bytes": 246094,
+      "adopted_raw_sha256": "f6021b3f51d0ee167228e440fd025e6ca17a1c625b31832e445c38d00322738b",
+      "adopted_at_utc": "2026-11-03T04:30:51.636878+00:00",
+      "formal_blob_bytes_at_documentation": 253181,
+      "formal_blob_sha256_at_documentation": "d6625e9881991b01a80c1a325bee16a84c8f64a57e439848a4ada52370b79485",
+      "whole_raw_equals_formal_blob": false,
+      "named_original_output_count": 30,
+      "relationship": "Runtime adopted owner rawCore f6021b3f. Formal Core preserves independent outside-owned-hunk differences and is not the whole compiled/adopted raw; no wholeformal equivalence/adoption claim."
+    },
+    {
+      "relative_path": "adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityWriter.java",
+      "adopted_raw_bytes": 113779,
+      "adopted_raw_sha256": "0e7f22712afad37c0c6897a5886afff67341c1c3c6f2bf2ca691ce61619a0ed8",
+      "adopted_at_utc": "2026-11-03T04:30:51.656770+00:00",
+      "formal_blob_bytes_at_documentation": 112425,
+      "formal_blob_sha256_at_documentation": "1522ba5239761f29f271813224244c78d0caa4c6183cd3e992195f2b599507ce",
+      "whole_raw_equals_formal_blob": false,
+      "named_original_output_count": 8,
+      "relationship": "Runtime adopted temporary-expiring Writer0e7f2271 with expiry2026-11-03T05:26:30.813Z. Normal formal19065cbcfc remains exacttrue opt-in/defaultoff; it is a distinct source, not this adopted raw."
+    },
+    {
+      "relative_path": "application/src/main/java/org/xar/ck3/control/application/action/ProtocolIdentityAdmission.java",
+      "adopted_raw_bytes": 4662,
+      "adopted_raw_sha256": "81b38534c2f275919b93d8a3d914f9afe24880df23f9d912c188feaf1a03d757",
+      "adopted_at_utc": "2026-11-03T04:30:51.664701+00:00",
+      "formal_blob_bytes_at_documentation": 4662,
+      "formal_blob_sha256_at_documentation": "81b38534c2f275919b93d8a3d914f9afe24880df23f9d912c188feaf1a03d757",
+      "whole_raw_equals_formal_blob": true,
+      "named_original_output_count": 1
+    }
+  ],
+  "single_actual_GET": {
+    "began_at_utc": "2026-11-03T04:30:51.671627+00:00",
+    "ended_at_utc": "2026-11-03T04:30:59.405789+00:00",
+    "elapsed_seconds": 7.734169399976963,
+    "http_status": 200,
+    "failure": null,
+    "GET": 1,
+    "STOP": 0,
+    "new_host": false,
+    "acceptance": "Actual newdelegate, Writer logs, LOOP and next SAVE each remain separate evidence."
+  },
+  "official_log_timing_boundary": {
+    "Quarkus_started_seconds": 2.818,
+    "Quarkus_live_reload_total_seconds": 7.607,
+    "HTTP_elapsed_seconds": 7.734169399976963,
+    "qualification": "Different reported intervals; no LOOP/cold-recovery or A/B speed claim."
+  },
+  "temporary_Writer_expiry_metadata": {
+    "UTC": "2026-11-03T05:26:30.813000+00:00",
+    "epoch_ms": 1793683590813,
+    "raw_sha256": "0e7f22712afad37c0c6897a5886afff67341c1c3c6f2bf2ca691ce61619a0ed8",
+    "normal_formal_commit": "19065cbcfcdf4e69153de99c5401bf4f55820c6a",
+    "normal_defaultoff_retained": true,
+    "expiry_metadata_not_observed_expiry_execution": true
+  },
+  "source_count_label_erratum": "The execute stdout event retained THREE_SOURCE from a three-source helper. Actual PREPARED, four source receipts and91 accepted adoptions prove four sources; no operation was repeated.",
+  "Root_authorized_report": {
+    "qualification": "Explicit Root task report in this session, not a new independent canonical/lifecycle/branch reconstruction by formal writer.",
+    "old_delegate_prefix": "e61fcf9a",
+    "old_delegate_batch75_already_ended_before_GET": true,
+    "batch74_to75_same_JVM_warm_entry_evidenced": true,
+    "batch75_exit_code": 4,
+    "new_saved_days_since1498": 0,
+    "saved_days_at_frozen_cutoff": 289,
+    "accepted_adoption_receipts_reported": 91,
+    "count_boundary": "57 named original outputs were independently matched with official Restart names;91 accepted adoption receipts are Runtime/Root reported, not57 families or four manual javac units."
+  },
+  "START_acceptance_only": {
+    "state": "BOOTSTRAP",
+    "LOOP_proved": false,
+    "new_SAVE_proved": false,
+    "individual_P0399_Writer_Protocol_branch_or_cachehit_proved": false,
+    "speed_or_functional_resolution_proved": false
+  },
+  "latest_confirmed_SAVE_preserved": {
+    "source_index": "docs/maintenance/2026-11-03-quarkus-worker-save1498-eight-source-sources.json",
+    "bytes": 5657,
+    "sha256": "9f951b097dced2acdf79acfd25c28d017a185c70f92694053e2c5216df600867",
+    "SAVE": 1498,
+    "saved_days": 289,
+    "confirmed_UTC": "2026-11-03T03:52:41.961565200Z",
+    "last_closed_window_seconds_per_new_saved_day": "681.179591600",
+    "target10_achieved": false
+  },
+  "open_since_SAVE1498_at_frozen_BOOT": {
+    "from_UTC": "2026-11-03T03:52:41.961565200Z",
+    "to_UTC": "2026-11-03T04:33:02.142634+00:00",
+    "elapsed_seconds": "2420.181068800",
+    "new_confirmed_saved_days": 0,
+    "seconds_per_new_saved_day": null,
+    "qualification": "Open interval elapsed through this frozenBOOT only, includes intervening batch74/75 failure and all preparation/recovery/waiting. Do not divide by cumulative289 or claim a closed nextSAVE window."
+  },
+  "sources": [
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/start-evidence/ACTUAL-NEW-DELEGATE.json",
+      "bytes": 7201,
+      "sha256": "1cbdfa863c96221a69ad2f704af15836b0995689d57f9c00f84e23768a4459fe"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/0-SOURCE-ADOPTED.json",
+      "bytes": 19837,
+      "sha256": "378e19809b746abd697fade683b259a5d4c30b5fd910bba9c05bcbbc59c8deb6"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/1-SOURCE-ADOPTED.json",
+      "bytes": 32259,
+      "sha256": "4801c5f111a515101d309d6800b03eba35de648e037ee5983784e6fcd17325c7"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/2-SOURCE-ADOPTED.json",
+      "bytes": 11033,
+      "sha256": "e2e632a480fcdc3985cf09921ecb55f1c610dcd488ca70c98a667520a03afc43"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/3-SOURCE-ADOPTED.json",
+      "bytes": 3392,
+      "sha256": "db49331ae5d165cf4860f8266dfc47cab7269bd99cf3641eb439bfcf00cddda8"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/PREPARED.json",
+      "bytes": 72010,
+      "sha256": "db445def7cfd277c81ed9d19bd7a915826d913bda445bcae51aebff3125c0b91"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/TRIGGER-ACTUAL.json",
+      "bytes": 349,
+      "sha256": "834b7d34ead0933480684149813167fc3f56672c9110b1e8c45c4a5f105cd778"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/start-evidence/OWNER-START.frozen.json",
+      "bytes": 1187,
+      "sha256": "e3d477203f4743e5ab24158b6d07d3ca6a4897a9d0d1c39176f401126d38f3bd"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/necessary-bootstrap399-writer422-expiry-protocol-rev03/start-evidence/RELOAD-START.raw.log",
+      "bytes": 7514,
+      "sha256": "1b429411bc996ff05c6c5c346f1890278fbcddcb0a1aab59781e55d21ab288c2"
+    }
+  ],
+  "limits": [
+    "Actual source adoption and samehost Quarkus newloader/delegateSTART are separately evidenced; individual method execution, diagnostic output, LOOP, laterSAVE and speed each need separate evidence.",
+    "No newhost/STOPrequest/Gamequery by this recorded handoff; old batch75 terminal is distinct from STOPrequest0.",
+    "FormalCore whole differs from adopted raw; temporary-expiringWriter differs from normaldefaultoff formal source.",
+    "Only named small frozen metadata and short official reload log were read; no source/class/Save/Driver/currentC material bodies or live queries for this documentation.",
+    "Original1498/281/273/265/BOOT/LOOP history retained byteexact. No document-triggered compilation/Test/GET/Game/worker/reload/deployment action."
+  ]
+}
