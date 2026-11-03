@@ -164,8 +164,10 @@ public final class SharedSourceFiles {
             NativeEntryState state = new NativeEntryState((basic.getInt(32) & 0x400) != 0,
                     standard.getByte(20) != 0, standard.getByte(21) != 0, directory);
             if (state.rejected()) throw new NativeEntryStateException(state);
-            byte[] little = id.getByteArray(8, 16), big = new byte[16];
-            for (int index = 0; index < big.length; index++) big[index] = little[15 - index];
+            byte[] big = id.getByteArray(8, 16);
+            for (int left = 0, right = big.length - 1; left < right; left++, right--) {
+                byte value = big[left]; big[left] = big[right]; big[right] = value;
+            }
             long legacyBytes = (Integer.toUnsignedLong(legacy.getInt(32)) << 32) | Integer.toUnsignedLong(legacy.getInt(36));
             NativeFacts standardFacts = new NativeFacts(standard.getLong(8), Long.toUnsignedString(basic.getLong(0)),
                     Long.toUnsignedString(basic.getLong(16)), Integer.toUnsignedLong(standard.getInt(16)));
@@ -173,9 +175,9 @@ public final class SharedSourceFiles {
                     Long.toUnsignedString(legacy.getLong(20)), Integer.toUnsignedLong(legacy.getInt(40)));
             if (!standardFacts.equals(legacyFacts)) throw new NativeFactsChangedException(standardFacts, legacyFacts);
             return new NativeFile(Long.toUnsignedString(id.getLong(0)), new BigInteger(1, big).toString(), Integer.toUnsignedString(legacy.getInt(28)),
-                    java.util.HexFormat.of().toHexDigits(legacy.getInt(44)) + java.util.HexFormat.of().toHexDigits(legacy.getInt(48)), Long.toUnsignedString(basic.getLong(0)),
-                    Long.toUnsignedString(basic.getLong(16)), Long.toUnsignedString(basic.getLong(24)),
-                    standard.getLong(8), standard.getLong(0), Integer.toUnsignedLong(standard.getInt(16)));
+                    java.util.HexFormat.of().toHexDigits(legacy.getInt(44)) + java.util.HexFormat.of().toHexDigits(legacy.getInt(48)), standardFacts.creationFiletimeDecimal(),
+                    standardFacts.lastWriteFiletimeDecimal(), Long.toUnsignedString(basic.getLong(24)),
+                    standardFacts.logicalBytes(), standard.getLong(0), standardFacts.linkCount());
         }
     }
     /** Extended spelling is only for Win32 calls; persisted paths retain the caller's normalized Path. */
@@ -258,11 +260,18 @@ public final class SharedSourceFiles {
         if (!sameIdentityAndContent(expected, observe(Path.of(expected.source().path())))) throw new IOException("baseline/sibling source content or native identity changed");
     }
     private static boolean sameIdentityAndContent(Witness before, Witness after) {
-        return before.source().bytes() == after.source().bytes() && before.source().sha256().equals(after.source().sha256())
-                && before.nativeFile().identityKey().equals(after.nativeFile().identityKey())
-                && before.nativeFile().legacyVolumeSerialDecimal().equals(after.nativeFile().legacyVolumeSerialDecimal())
-                && before.nativeFile().legacyFileIdHex().equals(after.nativeFile().legacyFileIdHex())
-                && before.nativeFile().lastWriteFiletimeDecimal().equals(after.nativeFile().lastWriteFiletimeDecimal());
+        if (before.source().bytes() != after.source().bytes()) return false;
+        if (!before.source().sha256().equals(after.source().sha256())) return false;
+        NativeFile beforeNative = before.nativeFile();
+        String beforeVolume = beforeNative.volumeSerialDecimal(), beforeId = beforeNative.fileIdDecimal(), beforeCreation = beforeNative.creationFiletimeDecimal();
+        NativeFile afterNative = after.nativeFile();
+        String afterVolume = afterNative.volumeSerialDecimal(), afterId = afterNative.fileIdDecimal(), afterCreation = afterNative.creationFiletimeDecimal();
+        return beforeVolume.equals(afterVolume)
+                && beforeId.equals(afterId)
+                && beforeCreation.equals(afterCreation)
+                && beforeNative.legacyVolumeSerialDecimal().equals(afterNative.legacyVolumeSerialDecimal())
+                && beforeNative.legacyFileIdHex().equals(afterNative.legacyFileIdHex())
+                && beforeNative.lastWriteFiletimeDecimal().equals(afterNative.lastWriteFiletimeDecimal());
     }
 }
 
