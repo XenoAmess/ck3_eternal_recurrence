@@ -1,0 +1,91 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1639,
+  "fixed_SETTLE": 1633,
+  "confirmed_UTC": "2026-11-03T09:41:45.354157Z",
+  "total_saved_days": 312,
+  "new_saved_days_since1605": 8,
+  "saved_frame": {
+    "date_raw": "53153472",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "932",
+    "played_character_id": "31254",
+    "revision": "873",
+    "snapshot_id": "native:932"
+  },
+  "saved_cycle": 44,
+  "pending_receipt": null,
+  "same_Game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "Root_independent_two_named_event_verification": {
+    "status": "INDEPENDENT_NAMED_CANONICAL_EVENT_VERIFIED",
+    "two_frozen_event_refs": [
+      {
+        "bytes": 99878,
+        "sha256": "33ca29121bcdba2b2ac49ec5908c818848b922b000beb88c298ea7f13a1e88e7"
+      },
+      {
+        "bytes": 98870,
+        "sha256": "f2f40d3245cf318cf47ad3d29d88d46d50923468dd891dd58ac2cc11c61d4d0c"
+      }
+    ],
+    "writer_scope": "Read small frozen metadata only; no raw canonical events, Save, Driver, source or class bodies."
+  },
+  "main_window": {
+    "from_SAVE": 1605,
+    "from_saved_days": 304,
+    "from_confirmed_UTC": "2026-11-03T08:59:23.059310100Z",
+    "to_SAVE": 1639,
+    "to_saved_days": 312,
+    "elapsed_seconds": "2542.294846900",
+    "new_SAVE_CONFIRMED_days": 8,
+    "seconds_per_new_saved_day": "317.7868558625",
+    "subtracted_seconds": "0",
+    "target10_achieved": false,
+    "A_B": false,
+    "includes": "All84 zeroSAVE and old200 partial/discarding, later complete natural model decisions,85 OBS/PLAN/original ARM/resume/parent/journal/SETTLE/checkpoint/SAVE, metadata errors and finite reader renewal, all waits and actual resource intersections. No elapsed excluded. No newGET, host replacement or action replay in this window."
+  },
+  "cumulative_secondary_only": {
+    "Root_epoch_seconds": "132659.354157",
+    "saved_days": 312,
+    "seconds_per_saved_day": "425.1902376826923076923076923",
+    "not_primary_window_denominator": true
+  },
+  "later86_owner_report": "Original SAVE closed; samehost/delegate starts next86 naturally. Unique next-Life follow p0repair482c, existing stdout collector02; no background candidate reload.",
+  "prior_SAVE_index_preserved": {
+    "path": "docs/maintenance/2026-11-03-quarkus-worker-save1605-model-repair-sources.json",
+    "bytes": 8951,
+    "sha256": "5caed3343d6faeb41553bd6464ae001773330f485b6dc371040d666945064ac5"
+  },
+  "sources": [
+    {
+      "local_key": "root/savep0repair482b1-verified.json",
+      "bytes": 1427,
+      "sha256": "fa8288f441bb291a9568d8338ebe11d78c848dbdaf98ee01f13bb351522752e9"
+    },
+    {
+      "local_key": "root/savep0repair482b1-window.json",
+      "bytes": 1120,
+      "sha256": "732c051d8568a8b26a6f15f5aadcb396ba0cc34cc3e2a446cb21b85b6b6fb107"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedp0repair482b1/SUMMARY.json",
+      "bytes": 6868,
+      "sha256": "0ba54513712c3131cb2a90ce52f847731524fb562a13fcdf95e472998e4e7cad"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/savep0repair482b1-window/SUMMARY.json",
+      "bytes": 2137,
+      "sha256": "9b5ae3f8644dc827df0da2885f9e68d82dcf0a4f2ba0577e5dda8847b8cea50d"
+    }
+  ],
+  "limits": [
+    "Historical named SAVE frontier only; later head/health requires later evidence.",
+    "All zero-save failures, partial discarded responses, preparation, waiting and85wholechain retained; no A/B or per-leaf/cache-hit speed claim.",
+    "Five actual adopted raw sources are distinct from formal whole sources and individual method execution.",
+    "Saved312 does not grant video draw or natural M6/M7 acceptance; G2 stays6/8.",
+    "Documentation performs no compile/Test/HTTP/GET/Game/Native/UI/control/deployment or resource reservation."
+  ]
+}

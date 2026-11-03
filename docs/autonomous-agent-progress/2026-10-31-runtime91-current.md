@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-03 09:41:45.354157Z实际1639 SAVE_CONFIRMED，1633 SETTLE，本局312日全部保存；saved date53153472/native932/public873/cycle44/actor31254/pending=null，同Game77132／原birth。Root具名独验两冻结事件；保存932/873不混同cycle语义930/871。1605／304日→1639／312日完整2542.294846900秒／新增8日＝317.7868558625秒／日，84零保存、旧200 partial弃置、准备和等待、85观察／规划／原ARM／resume／归档／SETTLE／SAVE均计入。10秒目标未达、非A/B；wholeRoot132659.354157秒／312＝425.19023768…秒／日只作次指标。
+
+同76092／出生134381592437332478、0b689be2-e53c-4615-acd5-c9bf5f6519a2自然继续86为运行owner历史切点，无本窗新GET、宿主替换或动作重放；不据此授未来健康、逐叶方法／cache命中、因果提速、视频实际画面或自然M6/M7通过。见[1639保存来源](../maintenance/2026-11-03-quarkus-worker-save1639-sources.json)。仅消费Root小verifier／window及冻结SUMMARY，不读raw Save／Driver／canonical事件大体，不做新HTTP／查询／GET／编测／部署／控制；旧304／296／289等正文原字节保，G2仍6/8。
+
 2026-11-03 08:59:23.059310100Z实际1605 SAVE_CONFIRMED，1599 SETTLE，本局304日全部保存；saved date53153280/native911/public852/cycle43/actor31254/pending=null，同Game77132／原birth。Root已独验两冻结事件，保存帧911/852不混同cycle语义909/850。1556／296日→1605／304日完整8440.975410600秒／新增8日＝1055.121926325秒／日，全部81／82零保存、后端故障与维修、准备协调、取消516、必要采用／GET、冷恢复及83规划／ARM／resume／归档／SETTLE／SAVE和等待全计。10秒目标未达、非A/B；wholeRoot累计428.016642…秒／日仅次指标。
 
 同76092／出生134381592437332478，新0b689be2-e53c-4615-acd5-c9bf5f6519a2／restart1@61eaf99，08:25:43.575203Z START→08:35:15.602344400Z LOOP，冷恢复572.027141400秒；本次五源与39现有具名模块输出metadata分列，101项接受／80项源码投影不等于方法运行次数或软件cache字节等同。唯一GET HTTP200、STOP0、无新host；首game model于08:37:58.565228900Z实际BEGIN，HTTP200／complete=true、3.236秒，后续ARM1588 CONTROL_APPLIED和新增8日保存各有回执。ARM append单调含嵌套56.451353700秒、提交至physicalwrite56.465735700秒与write至ACK0.121456900秒分别记，不叠加／不当CPU或纯IO，也不从不同材料和服务状态授组／单叶提速。
