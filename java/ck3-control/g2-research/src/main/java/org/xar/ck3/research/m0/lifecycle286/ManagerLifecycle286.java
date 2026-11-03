@@ -23,6 +23,16 @@ public final class ManagerLifecycle286 {
         return DeletingWrappers284.executeManager(entry,memory,destructor);
     }
 
+    /** Explicit opt-in to the held wrapper free chain as well as the static supplier. */
+    public static GovernmentCrtBoundary185Api.NormalReturn executeWithStaticObjectAndWrapperFree(
+            GovernmentCrtBoundary185Api.Entry entry,
+            GovernmentCrtBoundary185Api.Memory memory,
+            GovernmentCrtBoundary185Api.Calls residual,
+            GovernmentCrtBoundary185Api.LoopBudget budget) {
+        return executeWithStaticObject357(entry,memory,DeletingWrapperFreeCalls.bind(
+                entry.imageBaseBits(),memory,residual),budget);
+    }
+
     /** Explicitly enables the qualified static supplier; legacy execute remains residual. */
     public static GovernmentCrtBoundary185Api.NormalReturn executeWithStaticObject357(
             GovernmentCrtBoundary185Api.Entry entry,
