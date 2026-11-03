@@ -62,7 +62,10 @@ public final class ActionReceiptCodec {
         ObjectNode row = StrictJson.object(ProposalLifecycleCodec.decodePayload(bytes, MAXIMUM_RECEIPT_BYTES), Set.of("schema", "version", "sequence", "command", "body_sha256", "state"));
         String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema) || COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA.equals(schema) || LIFE_CONTROL_PREFIX_SCHEMA.equals(schema) || INTENT_ABANDONED_SCHEMA.equals(schema) || FRESH_SNAPSHOT_QUERY_SCHEMA.equals(schema), "exact action receipt schema required");
         OpportunityJson.Obj originalCommand = OpportunityJson.object(DriverJson.object(bytes, MAXIMUM_RECEIPT_BYTES).get("command"), "original receipt command");
-        byte[] canonicalCommand = PublicDataJson.encodeTyped(originalCommand).bytes();
+        byte[] canonicalCommand = PublicDataJson.encodeTypedBytes(originalCommand, RawJson.MAXIMUM_BYTES);
+        // The encoder returns a fresh local array; keep encodeTyped's original
+        // RawJson protocol validation before passing those bytes to the decoder.
+        new RawJson(canonicalCommand);
         ActionCommand command = !reuseCanonicalCommand || archive == null ? ActionCodec.decodeCommand(canonicalCommand)
                 : archive.decodeCanonicalCommand(canonicalCommand);
         ActionReceipt receipt = new ActionReceipt(Math.toIntExact(StrictJson.integer(row.get("version"), 1, 1)), StrictJson.integer(row.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER),
