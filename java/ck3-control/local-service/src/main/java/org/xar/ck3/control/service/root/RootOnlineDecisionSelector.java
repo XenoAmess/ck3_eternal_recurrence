@@ -923,6 +923,9 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             close = WATCHDOG.schedule(() -> { try { actualBody.close(); } catch (IOException ignored) { } },
                     Math.max(1, remaining(wallEnd, nanoEnd)), TimeUnit.NANOSECONDS);
             byte[] buffer = new byte[2048];
+            var utf8 = status == 200 ? StandardCharsets.UTF_8.newDecoder()
+                    .onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT) : null;
             outer: while (true) {
                 if (remaining(wallEnd, nanoEnd) <= 0) throw new java.net.http.HttpTimeoutException("decision stream deadline");
                 int count = body.read(buffer);
@@ -930,15 +933,15 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 if (raw.size() + count > MAX_WIRE_BYTES) throw new IllegalArgumentException("model response wire limit exceeded");
                 raw.write(buffer, 0, count);
                 if (status != 200) continue;
-                for (int index = 0; index < count; index++) {
-                    byte next = buffer[index];
-                    if (next != '\n') {
-                        if (line.size() >= MAX_LINE_BYTES) throw new IllegalArgumentException("model SSE line limit exceeded");
-                        line.write(next); continue;
-                    }
-                    String text = StandardCharsets.UTF_8.newDecoder().onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
-                            .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT)
-                            .decode(java.nio.ByteBuffer.wrap(line.toByteArray())).toString();
+                for (int index = 0; index < count;) {
+                    int start = index;
+                    while (index < count && buffer[index] != '\n') index++;
+                    int length = index - start;
+                    if (length > MAX_LINE_BYTES - line.size()) throw new IllegalArgumentException("model SSE line limit exceeded");
+                    if (length != 0) line.write(buffer, start, length);
+                    if (index == count) break;
+                    index++;
+                    String text = utf8.reset().decode(java.nio.ByteBuffer.wrap(line.toByteArray())).toString();
                     line.reset();
                     if (text.endsWith("\r")) text = text.substring(0, text.length() - 1);
                     if (!text.startsWith("data:")) continue;
