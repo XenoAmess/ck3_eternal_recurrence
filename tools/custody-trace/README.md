@@ -71,3 +71,51 @@ root and retains its files for review. It never recursively removes the given ro
 Software results,
 repository publication, non-Windows operation and Runtime adoption are distinct
 qualifications; no benchmark or live integration is provided here.
+
+The neighboring `test_custody_trace_portable_boundaries.py` provides a Python
+unittest entry. Its source defines five methods and six public CLI invocations,
+separate from the six scenarios in the `portable_cli_witness.py` driver above.
+Keep the Test beside the analyzer and pinned producer, and use this command:
+
+```text
+python path/to/custody-trace/test_custody_trace_portable_boundaries.py --work-root ABSOLUTE_EXISTING_OWNED_DIRECTORY -v PortableCliBoundaryTests
+```
+
+Replace `ABSOLUTE_EXISTING_OWNED_DIRECTORY` with an existing absolute owned
+directory. Normal unittest progress and its final summary go to stderr; interpret
+its exit status and summary as the Test result. That standard stderr output is
+expected and does not by itself indicate a business CLI failure.
+
+Each method creates a disposable `TemporaryDirectory` inside the work root and
+registers unittest cleanup for that child. The supplied work root remains. The
+portable driver above retains its fresh child and files for review. These are
+different evidence-retention behaviors. Current execution qualification comes
+from the actual receipt for the named entry; source counts and this README do not
+establish a run, passed checks, publication or Runtime adoption.
+
+The neighboring `default_producer_search_witness.py` is a separate single-scenario
+developer check. It puts the pinned analyzer in a tool-only directory, puts the
+pinned producer in a different working directory, and invokes the analyzer without
+`--producer`. A missing adjacent default producer must not be rescued by the
+producer in the working directory. Choose one invocation form:
+
+```text
+python path/to/custody-trace/default_producer_search_witness.py --work-root ABSOLUTE_EXISTING_OWNED_DIRECTORY
+python path/to/custody-trace/default_producer_search_witness.py --source-dir path/to/custody-trace --work-root ABSOLUTE_EXISTING_OWNED_DIRECTORY
+```
+
+`--source-dir` defaults to the resolved witness file directory; an override selects
+the directory containing the exact analyzer and producer peers. `--work-root` is
+required and must name an existing absolute owned directory. The witness creates
+one unique child there, retains its fixture files and raw `cli.stdout.bin` and
+`cli.stderr.bin` logs, and does not delete the supplied root.
+
+The intended outcome of its one business CLI child is exit 2 with an empty stdout
+and a `FileNotFoundError` for the missing tool-side producer. It also checks that
+no output was created and the copied analyzer and working-directory producer bytes
+are unchanged. Only after those assertions does the outer witness exit 0 and print
+its JSON manifest. On ordinary bounded-output or timeout failure, a bounded raw
+prefix is retained when cleanup and log creation succeed. If cleanup or log
+creation itself fails, evidence may be incomplete. Read the actual outer result and retained logs for this named entry;
+these source expectations do not establish a passed run, native custody, another
+platform qualification or Runtime adoption.
