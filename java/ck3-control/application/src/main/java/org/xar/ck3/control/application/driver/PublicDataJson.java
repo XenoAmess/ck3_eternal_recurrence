@@ -92,53 +92,66 @@ public final class PublicDataJson {
     public static RawJson encodePreservingDecimals(JsonNode projected,RawJson original) {
         Objects.requireNonNull(original);
         var source=DriverJson.object(original.bytes(),RawJson.MAXIMUM_BYTES);
-        return new RawJson(DriverJson.encode(preserveDecimals(source,domain(projected,0),"")));
+        return new RawJson(DriverJson.encode(preserveDecimals(source,domain(projected,0),new String[65],new int[65],0)));
     }
     /** The same decimal-preserving projection over an explicitly complete Driver DATA material. */
     public static RawJson encodePreservingFullMaterial(JsonNode projected,RawJson original) {
         Objects.requireNonNull(original);
         var source=DriverJson.object(original.bytes(),RawJson.MAXIMUM_BYTES);
-        return RawJson.fullMaterial(DriverJson.encode(preserveDecimals(source,domain(projected,0),"")));
+        return RawJson.fullMaterial(DriverJson.encode(preserveDecimals(source,domain(projected,0),new String[65],new int[65],0)));
     }
-    private static OpportunityJson.Value preserveDecimals(OpportunityJson.Value original,OpportunityJson.Value projected,String path) {
+    private static OpportunityJson.Value preserveDecimals(OpportunityJson.Value original,OpportunityJson.Value projected,String[] names,int[] indexes,int depth) {
         if(original instanceof OpportunityJson.DecimalValue decimal) {
-            StrictJson.require(projected instanceof OpportunityJson.DecimalValue,"original decimal category changed at "+path);
+            boolean category=projected instanceof OpportunityJson.DecimalValue;
+            StrictJson.require(category,category?null:"original decimal category changed at "+diagnosticPath(names,indexes,depth));
             var after=(OpportunityJson.DecimalValue)projected;
             var originalValue=new BigDecimal(decimal.token());
-            StrictJson.require(originalValue.compareTo(
-                    decimal.token().equals(after.token()) ? originalValue : new BigDecimal(after.token()))==0,
-                    "original decimal value changed at "+path);
+            boolean equal=originalValue.compareTo(
+                    decimal.token().equals(after.token()) ? originalValue : new BigDecimal(after.token()))==0;
+            StrictJson.require(equal,equal?null:"original decimal value changed at "+diagnosticPath(names,indexes,depth));
             return decimal;
         }
         if(original instanceof OpportunityJson.Obj before&&projected instanceof OpportunityJson.Obj after) {
             var fields=new LinkedHashMap<String,OpportunityJson.Value>();
             boolean unchanged=true;
             for(var entry:after.members().entrySet()) {
-                var child=preserveDecimals(before.get(entry.getKey()),entry.getValue(),path+"/"+entry.getKey());
+                var child=preserveDecimals(before.get(entry.getKey()),entry.getValue(),names,indexes,objectPath(names,depth,entry.getKey()));
                 fields.put(entry.getKey(),child);
                 unchanged &= child==entry.getValue();
             }
             for(var entry:before.members().entrySet())if(!after.members().containsKey(entry.getKey()))
-                requireNoDecimal(entry.getValue(),path+"/"+entry.getKey());
+                requireNoDecimal(entry.getValue(),names,indexes,objectPath(names,depth,entry.getKey()));
             return unchanged ? after : new OpportunityJson.Obj(fields);
         }
         if(original instanceof OpportunityJson.Arr before&&projected instanceof OpportunityJson.Arr after) {
             var rows=new ArrayList<OpportunityJson.Value>();
             boolean unchanged=true;
             for(int index=0;index<after.items().size();index++) {
-                var child=preserveDecimals(index<before.items().size()?before.items().get(index):null,after.items().get(index),path+"/"+index);
+                var child=preserveDecimals(index<before.items().size()?before.items().get(index):null,after.items().get(index),names,indexes,arrayPath(names,indexes,depth,index));
                 rows.add(child);
                 unchanged &= child==after.items().get(index);
             }
-            for(int index=after.items().size();index<before.items().size();index++)requireNoDecimal(before.items().get(index),path+"/"+index);
+            for(int index=after.items().size();index<before.items().size();index++)requireNoDecimal(before.items().get(index),names,indexes,arrayPath(names,indexes,depth,index));
             return unchanged ? after : new OpportunityJson.Arr(rows);
         }
-        requireNoDecimal(original,path);return projected;
+        requireNoDecimal(original,names,indexes,depth);return projected;
     }
-    private static void requireNoDecimal(OpportunityJson.Value value,String path) {
-        StrictJson.require(!(value instanceof OpportunityJson.DecimalValue),"original decimal removed at "+path);
-        if(value instanceof OpportunityJson.Obj object)for(var entry:object.members().entrySet())requireNoDecimal(entry.getValue(),path+"/"+entry.getKey());
-        else if(value instanceof OpportunityJson.Arr array)for(int index=0;index<array.items().size();index++)requireNoDecimal(array.items().get(index),path+"/"+index);
+    private static void requireNoDecimal(OpportunityJson.Value value,String[] names,int[] indexes,int depth) {
+        boolean noDecimal=!(value instanceof OpportunityJson.DecimalValue);
+        StrictJson.require(noDecimal,noDecimal?null:"original decimal removed at "+diagnosticPath(names,indexes,depth));
+        if(value instanceof OpportunityJson.Obj object)for(var entry:object.members().entrySet())requireNoDecimal(entry.getValue(),names,indexes,objectPath(names,depth,entry.getKey()));
+        else if(value instanceof OpportunityJson.Arr array)for(int index=0;index<array.items().size();index++)requireNoDecimal(array.items().get(index),names,indexes,arrayPath(names,indexes,depth,index));
+    }
+    private static int objectPath(String[] names,int depth,String name) {
+        names[depth]=name;return depth+1;
+    }
+    private static int arrayPath(String[] names,int[] indexes,int depth,int index) {
+        names[depth]=null;indexes[depth]=index;return depth+1;
+    }
+    private static String diagnosticPath(String[] names,int[] indexes,int depth) {
+        String path="";
+        for(int index=0;index<depth;index++)path=names[index]==null?path+"/"+indexes[index]:path+"/"+names[index];
+        return path;
     }
 
     private static OpportunityJson.Value domain(JsonNode value, int depth) {
