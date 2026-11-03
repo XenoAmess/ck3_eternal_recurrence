@@ -407,7 +407,7 @@ public final class PublicSnapshotCodec {
         JsonNode rows=slice.get("army_strengths");require(rows.isArray(),"Core rows required");
         for(JsonNode item:rows){require(item instanceof ObjectNode,"Core row required");ObjectNode row=(ObjectNode)item;
             JsonNode power=row.get("ai_base_power_raw");require(power!=null,"Core power slot required");if(power.isNull())continue;
-            if(encode){require(power.isIntegralNumber(),"exact Core signed64 required");power.bigIntegerValue().longValueExact();row.put("ai_base_power_raw",power.bigIntegerValue().toString());}
+            if(encode){require(power.isIntegralNumber(),"exact Core signed64 required");BigInteger exact=power.bigIntegerValue();exact.longValueExact();row.put("ai_base_power_raw",exact.toString());}
             else{require(power.isTextual()&&power.textValue().matches("0|-?[1-9][0-9]*")&&power.textValue().length()<=20,"canonical Core signed64 required");
                 BigInteger value=new BigInteger(power.textValue());require(value.bitLength()<=63,"Core signed64 width");value.longValueExact();row.put("ai_base_power_raw",value);}
         }
