@@ -83,12 +83,27 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             var bounds = config.loop();
             var actualLoop = new RootOrdinaryWorkerLoop.Configuration(running.batchPrefix(), bounds.maximumTurns(),
                     bounds.wallTime(), bounds.readinessTimeout(), bounds.pollInterval(), bounds.checkpointEveryEligibleAdvances());
+            var warmRunning = running;
             var control = new RootOrdinaryWorkerLoop.Control() {
                 @Override public boolean stopRequested() { return Files.exists(config.stopPath()); }
                 @Override public void onBatchCompleted(BatchReport actual, long nextSequence) throws IOException {
                     var hint = org.xar.ck3.control.application.session.SessionController.retainLifeBudgetHint(actual, schedulingHints.get());
                     schedulingHints.set(hint);
                     recordBatch(config, clock, actual, nextSequence, hint);
+                }
+                @Override public boolean captureCleanPlanningWall(BatchReport actual,long nextSequence)
+                        throws IOException,InterruptedException {
+                    var current=warmRunning.core().sessionAccess().current();
+                    var captured=current.captureCleanPlanningWall(warmRunning.batchPrefix(),nextSequence,actual,
+                            clock.instant().plus(config.operationTimeout()));
+                    if(captured.isEmpty())return false;
+                    writeTicket(ticketPath,captured.orElseThrow());
+                    ObjectNode warm=event(clock,"CLEAN_UNISSUED_PLANNING_WARM_BATCH");
+                    warm.set("game",current.identity().game().toJson());
+                    warm.put("batch_id",actual.batchId());warm.put("next_sequence",Long.toString(nextSequence));
+                    warm.put("capture_sequence",Long.toString(captured.orElseThrow().sequence()));
+                    warm.put("saved_day_credit",0);warm.put("gameplay_credit",false);
+                    emit(warm);return true;
                 }
             };
             result = new RootOrdinaryWorkerLoop(actualLoop, control).run(running.core().sessionAccess(), running.nextBatchSequence());

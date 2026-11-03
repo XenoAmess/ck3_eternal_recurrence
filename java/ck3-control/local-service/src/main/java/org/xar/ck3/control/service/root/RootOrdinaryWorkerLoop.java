@@ -40,6 +40,8 @@ public final class RootOrdinaryWorkerLoop {
     public interface Control {
         boolean stopRequested();
         void onBatchCompleted(BatchReport report, long nextBatchSequence) throws IOException, InterruptedException;
+        /** Only the actual Root implementation opts in after its privately qualified canonical capture. */
+        default boolean captureCleanPlanningWall(BatchReport report,long nextBatchSequence)throws IOException,InterruptedException {return false;}
     }
 
     public enum StopReason {
@@ -81,6 +83,8 @@ public final class RootOrdinaryWorkerLoop {
         long sequence = firstDurableBatchSequence;
         Optional<BatchReport> lastReport = Optional.empty();
         Optional<BatchReport> previousReport = Optional.empty();
+        boolean unissuedWarmUsed = false;
+        Optional<SessionController.BatchBoundary> unissuedWarmBoundary = Optional.empty();
         StopReason stopReason = StopReason.OPERATOR_STOP;
         Optional<String> failureDetail = Optional.empty();
 
@@ -152,16 +156,32 @@ public final class RootOrdinaryWorkerLoop {
                 break;
             }
 
+            var actualBoundary = currentSession.controller().lastBatchBoundary();
+            if (unissuedWarmUsed && !currentSession.controller().isRunning()
+                    && !currentSession.controller().isQuarantined() && !currentSession.controller().isRetired()
+                    && currentSession.controller().lastReport().filter(known -> known == report).isPresent()
+                    && actualBoundary.filter(boundary -> boundary.batchId().equals(report.batchId())
+                        && boundary.session().equals(report.session()) && !boundary.pendingAction()).isPresent()
+                    && (report.turns().stream().anyMatch(turn -> turn.receipt().settled()
+                        && turn.receipt().outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                        && turn.receipt().visibleGameplay() && turn.receipt().command().origin() instanceof CommandOrigin.Gameplay
+                        && turn.receipt().command().sessionId().equals(report.session().sessionId())
+                        && turn.receipt().command().origin().machineId().equals(report.session().machineId())
+                        && turn.receipt().command().origin().game().equals(report.session().game()))
+                        || forwardDateAfterWarm(report, actualBoundary, unissuedWarmBoundary))) {
+                unissuedWarmUsed = false; unissuedWarmBoundary = Optional.empty();
+            }
             if (isUnissuedLifeBudgetDeferral(report)) {
                 if (currentSession.controller().isQuarantined() || currentSession.controller().isRetired()) {
                     stopReason = StopReason.TERMINAL_FAILURE;
                     failureDetail = Optional.of("budget deferral lost its actual clean Controller"); break;
                 }
-                if (previousReport.filter(previous -> sameUnissuedLifeBudgetScope(previous, report)).isPresent()) {
+                if (unissuedWarmUsed || previousReport.filter(previous -> sameUnissuedLifeBudgetScope(previous, report)).isPresent()) {
                     stopReason = StopReason.NO_PROGRESS;
                     failureDetail = Optional.of("a second consecutive fresh batch still lacks the estimated Life budget; no action was issued"); break;
                 }
                 // One new normal batch, never a renewed command or a reused selected plan.
+                unissuedWarmUsed = true; unissuedWarmBoundary = actualBoundary;
                 previousReport = Optional.of(report); continue;
             }
 
@@ -245,6 +265,26 @@ public final class RootOrdinaryWorkerLoop {
                 continue;
             } else if (cleanWallBoundary) {
                 if (noProgressAfterWall(report, currentSession.controller().lastBatchBoundary(), configuration.wallTime())) {
+                    if (!unissuedWarmUsed && report.detail().equals("complete batch monotonic wall bound expired")
+                            && !report.dirtySinceSave() && report.eligibleAdvancesSinceSave()==0
+                            && report.committedSavedDays()==0 && report.lastSavedPair().isPresent()
+                            && report.revisionReplans().isEmpty() && report.failedAnalysisBatchIds().isEmpty()
+                            && report.phases().stream().allMatch(span->span.terminal()==BatchReport.PhaseTerminal.RETURNED)
+                            && !currentSession.controller().isRunning() && !currentSession.controller().isRetired()
+                            && currentSession.controller().lastReport().filter(known->known==report).isPresent()) {
+                        try {
+                            if (control.stopRequested()) {stopReason=StopReason.OPERATOR_STOP;break;}
+                            if (control.captureCleanPlanningWall(report,sequence)) {
+                                unissuedWarmUsed=true;unissuedWarmBoundary=actualBoundary;
+                                previousReport=Optional.of(report);continue;
+                            }
+                        } catch (InterruptedException failure) {
+                            Thread.currentThread().interrupt();stopReason=StopReason.CALLBACK_FAILURE;
+                            failureDetail=Optional.of(failure.toString());break;
+                        } catch (IOException|RuntimeException failure) {
+                            stopReason=StopReason.CALLBACK_FAILURE;failureDetail=Optional.of(failure.toString());break;
+                        }
+                    }
                     stopReason = StopReason.NO_PROGRESS;
                     break;
                 }
@@ -451,6 +491,19 @@ public final class RootOrdinaryWorkerLoop {
                 && before.frame().episodeRunId().equals(after.frame().episodeRunId())
                 && before.frame().identity().player().equals(after.frame().identity().player())
                 && before.frame().identity().dateRaw().equals(after.frame().identity().dateRaw());
+    }
+
+    private static boolean forwardDateAfterWarm(BatchReport current,
+            Optional<SessionController.BatchBoundary> actual, Optional<SessionController.BatchBoundary> warm) {
+        if (actual.isEmpty() || warm.isEmpty() || !warm.orElseThrow().session().equals(current.session())
+                || actual.orElseThrow().lastObservation().isEmpty() || warm.orElseThrow().lastObservation().isEmpty()) return false;
+        var before = warm.orElseThrow().lastObservation().orElseThrow();
+        var after = actual.orElseThrow().lastObservation().orElseThrow();
+        return before.machineId().equals(current.session().machineId()) && before.game().equals(current.session().game())
+                && before.machineId().equals(after.machineId()) && before.game().equals(after.game())
+                && before.frame().episodeRunId().equals(after.frame().episodeRunId())
+                && before.frame().identity().player().equals(after.frame().identity().player())
+                && after.frame().identity().dateRaw().compareTo(before.frame().identity().dateRaw()) > 0;
     }
 
     static boolean isCleanWallBoundary(BatchReport.Terminal terminal, boolean quarantined) {

@@ -291,18 +291,66 @@ public final class SessionController {
             String batchPrefix,long nextSequence)throws IOException {
         StrictJson.require(running.compareAndSet(false,true),"clean restart requires an idle Controller");
         try {
-            requireCleanRestartIdle();StrictJson.require(journal instanceof ContinuityBatchJournal&&restartDriver!=null,"actual canonical restart producers are required");
-            StrictJson.require(pendingAnalyses.isEmpty()&&retainedAnalysisInputs.isEmpty()&&failedAnalyses.isEmpty(),"offline work must actually drain before capture");
-            var state=new ControllerRestartState(identity,batchPrefix,nextSequence,usedBatches,unsavedGameplayActions,savedPair,ledgerHead,
-                    eligibleSinceSave,dirty,quarantined,localUnresolved,totalCommittedDays,completedAnalysisIds,stopRequested.get());
-            var known=restartDriver.withFrozenFacts(same,frozen->{
-                StrictJson.require(frozen.activeActionId().isEmpty()&&frozen.actions().actions().stream().allMatch(ActionReceipt::settled)
-                        &&frozen.state() instanceof org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known,"active or unresolved Driver/action cannot restart");
-                return (org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known)frozen.state();
-            });
-            // Leave the immutable Driver read scope before the actual metadata commit; the same writer lock remains held.
-            return ((ContinuityBatchJournal)journal).captureCleanRestart(same,new CapturedRestart(this,state),known);
+            return captureRestartLocked(same,batchPrefix,nextSequence);
         } finally {running.set(false);}
+    }
+    /** Scheduling-only opt-in: the same original private capture still proves canonical pending/source state. */
+    public Optional<ContinuityBatchJournal.CleanRestartTicket> captureCleanPlanningWall(
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            String batchPrefix,long nextSequence,BatchReport actual)throws IOException {
+        Objects.requireNonNull(actual);
+        StrictJson.require(running.compareAndSet(false,true),"planning wall capture requires the idle original Controller");
+        try {
+            if(!isCleanPlanningWall(actual,batchPrefix,nextSequence))return Optional.empty();
+            return Optional.of(captureRestartLocked(same,batchPrefix,nextSequence));
+        } finally {running.set(false);}
+    }
+    private boolean isCleanPlanningWall(BatchReport actual,String batchPrefix,long nextSequence) {
+        if(lastReport.filter(known->known==actual).isEmpty() || !actual.session().equals(identity)
+                || nextSequence<=0 || !actual.batchId().equals(batchPrefix+"-"+(nextSequence-1))
+                || lastLimits.filter(limits->limits.batchId().equals(actual.batchId())
+                    &&actual.fullWallNanos()>=limits.wallTime().toNanos()).isEmpty()
+                || actual.terminal()!=Terminal.WALL_TIMEOUT
+                || !actual.detail().equals("complete batch monotonic wall bound expired")
+                || retired||quarantined||localUnresolved||stopRequested()
+                || dirty||eligibleSinceSave!=0||!unsavedGameplayActions.isEmpty()||savedPair.isEmpty()
+                || !savedPair.equals(actual.lastSavedPair())||!ledgerHead.equals(actual.committedLedgerHead())
+                || pendingReadParent.isPresent()||publicCheckpointUnknown.isPresent()
+                || !pendingAnalyses.isEmpty()||!retainedAnalysisInputs.isEmpty()||!failedAnalyses.isEmpty()
+                || actual.dirtySinceSave()||actual.eligibleAdvancesSinceSave()!=0||actual.committedSavedDays()!=0
+                || !actual.failedAnalysisBatchIds().isEmpty()||!actual.turns().isEmpty()
+                || !actual.reconciliations().isEmpty()||!actual.lifecycleTurns().isEmpty()
+                || !actual.readPublicationReconciliations().isEmpty()||!actual.revisionReplans().isEmpty()
+                || actual.phases().stream().anyMatch(span->span.terminal()!=PhaseTerminal.RETURNED
+                    ||span.phase()==Phase.ACTION||span.phase()==Phase.ACTION_RECONCILIATION||span.phase()==Phase.CHECKPOINT)
+                || actual.phases().stream().noneMatch(span->span.phase()==Phase.PLANNING)
+                || actual.phases().stream().noneMatch(span->span.phase()==Phase.OBSERVATION))return false;
+        var boundary=lastBatchBoundary.filter(value->value.batchId().equals(actual.batchId())
+                &&value.session().equals(identity)&&!value.pendingAction()&&!value.observedDateChanged()
+                &&value.observationCount()>0&&value.firstObservation().isPresent()&&value.lastObservation().isPresent());
+        if(boundary.isEmpty())return false;
+        var first=boundary.orElseThrow().firstObservation().orElseThrow();
+        var last=boundary.orElseThrow().lastObservation().orElseThrow();
+        return first.machineId().equals(identity.machineId())&&first.game().equals(identity.game())
+                &&first.machineId().equals(last.machineId())&&first.game().equals(last.game())
+                &&first.frame().episodeRunId().equals(last.frame().episodeRunId())
+                &&first.frame().identity().player().equals(last.frame().identity().player())
+                &&first.frame().identity().dateRaw().equals(last.frame().identity().dateRaw());
+    }
+    /** Both callers hold the original running CAS; no public DATA can construct CapturedRestart. */
+    private ContinuityBatchJournal.CleanRestartTicket captureRestartLocked(
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,String batchPrefix,long nextSequence)throws IOException {
+        requireCleanRestartIdle();StrictJson.require(journal instanceof ContinuityBatchJournal&&restartDriver!=null,"actual canonical restart producers are required");
+        StrictJson.require(pendingAnalyses.isEmpty()&&retainedAnalysisInputs.isEmpty()&&failedAnalyses.isEmpty(),"offline work must actually drain before capture");
+        var state=new ControllerRestartState(identity,batchPrefix,nextSequence,usedBatches,unsavedGameplayActions,savedPair,ledgerHead,
+                eligibleSinceSave,dirty,quarantined,localUnresolved,totalCommittedDays,completedAnalysisIds,stopRequested.get());
+        var known=restartDriver.withFrozenFacts(same,frozen->{
+            StrictJson.require(frozen.activeActionId().isEmpty()&&frozen.actions().actions().stream().allMatch(ActionReceipt::settled)
+                &&frozen.state() instanceof org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known,"active or unresolved Driver/action cannot restart");
+            return (org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known)frozen.state();
+        });
+        // Leave the immutable Driver read scope before the actual metadata commit; the same writer lock remains held.
+        return ((ContinuityBatchJournal)journal).captureCleanRestart(same,new CapturedRestart(this,state),known);
     }
     /** Only the new actual Root owner can consume the original writer's private canonical admission. */
     public void restoreCleanRestart(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,

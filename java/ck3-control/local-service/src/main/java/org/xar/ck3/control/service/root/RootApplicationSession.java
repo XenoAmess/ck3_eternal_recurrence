@@ -817,6 +817,17 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
             return owner.withBorrowed(()->controller.captureCleanRestart(owner.activeBorrowedSession(),batchPrefix,nextSequence));
         } finally {calls.unlock();}
     }
+    /** The Root calls lock and original Controller CAS jointly qualify one clean unissued wall capture. */
+    public Optional<ContinuityBatchJournal.CleanRestartTicket> captureCleanPlanningWall(
+            String batchPrefix,long nextSequence,BatchReport actual,Instant deadline)throws IOException,InterruptedException {
+        Objects.requireNonNull(actual);calls.lockInterruptibly();
+        try {
+            requireOwner();requireNoPendingCheckpointAdoption();requireDeadline(deadline);
+            controller.drainForCleanRestart(deadline);
+            return owner.withBorrowed(()->controller.captureCleanPlanningWall(
+                    owner.activeBorrowedSession(),batchPrefix,nextSequence,actual));
+        } finally {calls.unlock();}
+    }
     /** Genuine saved-only journal recovery runs after authority sealing, before domain initialization. */
     void recoverSavedReadOnlyBatch(ContinuityStorePort.Session same,RootJavaSavedBootstrap.RetainedSaved actual,
             SessionPorts.SemanticEvidence current)throws IOException {
