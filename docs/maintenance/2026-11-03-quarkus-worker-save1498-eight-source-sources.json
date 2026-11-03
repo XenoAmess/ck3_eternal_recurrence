@@ -1,0 +1,121 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1498,
+  "SETTLE": 1492,
+  "confirmed_UTC": "2026-11-03T03:52:41.961565200Z",
+  "total_saved_days": 289,
+  "saved_frame": {
+    "date_raw": "53152920",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "849",
+    "played_character_id": "31254",
+    "revision": "786",
+    "snapshot_id": "native:849"
+  },
+  "completed_cycles": 41,
+  "pending_receipt": null,
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "main_window": {
+    "status": "INDEPENDENT_SAVED_FRONTIER_WINDOW",
+    "from_SAVE": 1460,
+    "to_SAVE": 1498,
+    "from_confirmed_at": "2026-11-03T02:21:52.524832400Z",
+    "to_confirmed_at": "2026-11-03T03:52:41.961565200Z",
+    "elapsed_seconds": "5449.436732800",
+    "new_SAVE_CONFIRMED_days": 8,
+    "seconds_per_new_saved_day": "681.179591600",
+    "cumulative_saved_days": 289,
+    "target_seconds_per_saved_day": 10,
+    "target_achieved": false,
+    "all_intervening_wall_time_included": true,
+    "limits": "All waiting, failures, preparation, recovery and zero-save batches in the endpoint interval remain counted. No A/B or source-specific speed claim; later actions/GET/waiting belong to the next window.",
+    "receipt_refs": [
+      {
+        "local_key": "root/savecpu4r701-verified.json",
+        "bytes": 1423,
+        "sha256": "76664d71bcddf8d339a1b5d6a400f36cc3ae946d641055a6d4848d8527cf7113"
+      },
+      {
+        "local_key": "root/savep0399r731-verified.json",
+        "bytes": 1425,
+        "sha256": "57c5018ac75a383d98ea041b0164ca96919e084998e62296aae64d91deb5ae83"
+      }
+    ]
+  },
+  "secondary_cumulative_only": {
+    "root_epoch_UTC": "2026-11-01T20:50:46Z",
+    "root_epoch_seconds": "111715.961565200",
+    "denominator": 289,
+    "seconds_per_saved_day": "386.5604206408304498269896194",
+    "does_not_replace_main_new8_window": true,
+    "verifier_field_new_saved_days_is_epoch_total_not_window_delta": true
+  },
+  "adoption_LOOP_new_SAVE_chain": {
+    "qualification": "Existing published small source/startup and later LOOP evidence, followed by the new Root independently verified saved frontier. Separate grades, no individual-method probe.",
+    "prior_published_source_index": {
+      "path": "docs/maintenance/2026-11-03-quarkus-worker-save1460-cpu4-sources.json",
+      "bytes": 8143,
+      "sha256": "83c2b7601fa643420892fe749dfc183b55330ce5c0c103bfd305fb29864d4291"
+    },
+    "prior_published_LOOP_index": {
+      "path": "docs/maintenance/2026-11-03-quarkus-worker-loop399-sources.json",
+      "bytes": 2863,
+      "sha256": "88b2c36788cb0dca0b9996c3e7ed3d544669bfcd68212a3a095dc9169facd5cd"
+    },
+    "actual_host": {
+      "pid": 125308,
+      "birth": "134381493561057204"
+    },
+    "actual_delegate": "e61fcf9a-c790-4f5d-9e9e-9f3d5af67bfc",
+    "START_UTC": "2026-11-03T03:16:39.622828100Z",
+    "LOOP_UTC": "2026-11-03T03:30:26.721503800Z",
+    "START_to_LOOP_seconds": "827.098675700",
+    "adopted_sources": 8,
+    "named_original_compiled_outputs": 86,
+    "accepted_adoptions": 87,
+    "source_cohort": "Publisher + reduced-tree Writer +369B four-source group +focus two-source group;374 retained from prior actual adoption.",
+    "new_saved_days_after_prior1460": 8,
+    "individual_source_methods_cache_hits_or_speed_proved": false
+  },
+  "Root_authorized_window_composition": "Full interval includes zero-save batch72, eight-source preparation, old host release,827.098675700s cold recovery, one Thread observation, all batch73 and SAVE plus every intervening failure/wait. No subtraction or source-specific causal speed claim.",
+  "G2_last_complete_acceptance": "6/8",
+  "sources": [
+    {
+      "local_key": "root/savep0399r731-verified.json",
+      "bytes": 1425,
+      "sha256": "57c5018ac75a383d98ea041b0164ca96919e084998e62296aae64d91deb5ae83"
+    },
+    {
+      "local_key": "root/savep0399r731-window.json",
+      "bytes": 1114,
+      "sha256": "41f92fcd767cc1d202fb91fd89ff225a52af3dcd26015005f73d8c1a1e9ff99c"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedp0399r731/SUMMARY.json",
+      "bytes": 6866,
+      "sha256": "f34276306870983785202ed3e3cfcef371c0b38ca60a5e0afecebde88704d84e"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedp0399r731/00001492.json",
+      "bytes": 99881,
+      "sha256": "30231ca7d04d397591030d85ecf5d709d4f57ba177fada7a2d133896a8ded97a",
+      "qualification": "Root independently read named frozen event; formal writer compares only small verifier/SUMMARY metadata, not event or material body."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedp0399r731/00001498.json",
+      "bytes": 98876,
+      "sha256": "4972dde1599ba8f3ff6a399740dde06e63a490101ecc8f2b473cef8422d2b788",
+      "qualification": "Root independently read named frozen event; formal writer compares only small verifier/SUMMARY metadata, not event or material body."
+    }
+  ],
+  "limits": [
+    "10-second target not reached; endpoint-to-endpoint wall time and new8days denominator, non-A/B.",
+    "Saved849/786 is distinct from completed-cycle semantic847/784; no cycle frame substituted for saved pair.",
+    "Only small named verifier/window/SUMMARY metadata read. No rawSave/Driver/canonicalevent bodies opened, no new query/compiler/Test/GET/Game/worker/deployment action.",
+    "Eight-source adoption, LOOP and subsequent newSAVE are evidenced separately; individual methods/branches/cache hits, causal speedup or future health remain unproved.",
+    "Old281/273/265 and all previous AGENTS/runtime bytes preserved by insertion-only inverse proof."
+  ]
+}
