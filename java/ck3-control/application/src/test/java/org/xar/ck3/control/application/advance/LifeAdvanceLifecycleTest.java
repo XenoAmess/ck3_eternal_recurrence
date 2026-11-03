@@ -69,6 +69,73 @@ final class LifeAdvanceLifecycleTest {
                 new ProposalFrame(new Frame(BigInteger.valueOf(29829), integer(semantic.get("native_revision"), "native_revision"), integer(semantic.get("date_raw"), "date_raw")),
                         text(semantic.get("snapshot_id"), "snapshot_id"), integer(semantic.get("revision"), "revision"), text(semantic.get("episode_run_id"), "episode")), 1);
     }
+    /** P0 whole-request deadline DATA regression. No Native transport or actual Root authority. */
+    @Test void normalStopStatusKeepsOriginalParentDeadlineAcrossSeventySecondGuardData() {
+        MutableClock clock = new MutableClock(NOW);
+        Fixture fixture = new Fixture(false, false, false, true, true, 2,
+                clock, NOW.plusSeconds(300), Duration.ofSeconds(60));
+        byte[] originalParent = ActionCodec.encodeCommand(fixture.parent);
+        fixture.beforeDirectClockStatus = request -> {
+            assertEquals(fixture.parent.deadline(), request.deadline(),
+                    "the whole Status request must retain the immutable parent deadline");
+            assertTrue(clock.instant().isBefore(request.deadline()));
+            clock.advance(Duration.ofSeconds(70));
+            assertTrue(clock.instant().isBefore(request.deadline()),
+                    "logical historical-guard work must remain inside the same original request");
+        };
+        AdvanceObservationPort.Frame starting = fixture.current(fixture.parent, fixture.parent.deadline());
+        AdvanceClock.Outcome outcome = fixture.timeline.execute(fixture.parent, fixture, starting, fixture.plan);
+        assertEquals(1, fixture.directClockStatusReads.size());
+        assertEquals(fixture.parent.deadline(), outcome.diagnostics().nativeStopRead().orElseThrow().receipt().request().deadline());
+        assertEquals(List.of(fixture.plan.armStep(), "resume-map"), fixture.steps);
+        assertFalse(fixture.canceled);
+        assertTrue(fixture.children.stream().allMatch(ActionReceipt::settled));
+        assertTrue(fixture.children.stream().allMatch(child -> child.command().deadline().equals(fixture.parent.deadline())));
+        assertEquals(NOW.plusSeconds(70), clock.instant());
+        assertArrayEquals(originalParent, ActionCodec.encodeCommand(fixture.parent));
+    }
+
+    /** Both clock-direct Status reads use the parent budget; the cancel child's read is a separate role. */
+    @Test void earlyBoundaryStatusesKeepOriginalParentDeadlineBeforeAndAfterCancel() {
+        MutableClock clock = new MutableClock(NOW);
+        Fixture fixture = new Fixture(true, false, false, false, false, 1,
+                clock, NOW.plusSeconds(300), Duration.ofSeconds(60));
+        byte[] originalParent = ActionCodec.encodeCommand(fixture.parent);
+        fixture.beforeDirectClockStatus = request -> {
+            assertEquals(fixture.parent.deadline(), request.deadline(),
+                    "both normal and post-cancel whole Status requests must retain the same parent deadline");
+            assertTrue(clock.instant().isBefore(request.deadline()));
+            clock.advance(Duration.ofSeconds(70));
+            assertTrue(clock.instant().isBefore(request.deadline()));
+        };
+        AdvanceObservationPort.Frame starting = fixture.current(fixture.parent, fixture.parent.deadline());
+        AdvanceClock.Outcome outcome = fixture.timeline.execute(fixture.parent, fixture, starting, fixture.plan);
+        assertEquals(2, fixture.directClockStatusReads.size());
+        assertTrue(fixture.directClockStatusReads.stream().allMatch(request -> request.deadline().equals(fixture.parent.deadline())));
+        assertNotSame(fixture.directClockStatusReads.getFirst(), fixture.directClockStatusReads.getLast());
+        assertEquals(List.of(fixture.plan.armStep(), ClockStatusRead.CANCEL_PREFIX + "37"), fixture.steps);
+        assertTrue(fixture.canceled);
+        assertFalse(fixture.resumed);
+        assertTrue(outcome.diagnostics().canceled());
+        assertEquals(State.IDLE, outcome.diagnostics().nativeStopRead().orElseThrow().status().state());
+        assertEquals(fixture.parent.deadline(), outcome.diagnostics().nativeStopRead().orElseThrow().receipt().request().deadline());
+        assertTrue(fixture.children.stream().allMatch(ActionReceipt::settled));
+        assertTrue(fixture.children.stream().allMatch(child -> child.command().deadline().equals(fixture.parent.deadline())));
+        assertEquals(NOW.plusSeconds(140), clock.instant());
+        assertArrayEquals(originalParent, ActionCodec.encodeCommand(fixture.parent));
+    }
+
+    private static final class MutableClock extends Clock {
+        private Instant now;
+        MutableClock(Instant initial) { now = initial; }
+        void advance(Duration elapsed) { now = now.plus(elapsed); }
+        @Override public java.time.ZoneId getZone() { return ZoneOffset.UTC; }
+        @Override public Clock withZone(java.time.ZoneId zone) {
+            if (!ZoneOffset.UTC.equals(zone)) throw new IllegalArgumentException("UTC software clock required");
+            return this;
+        }
+        @Override public Instant instant() { return now; }
+    }
     @Test void armThenNewModalCancelsWithoutResumeAndSettlesAtSameNativeRevision() {
         Fixture fixture = new Fixture(true, false, false);
         ActionPorts.PostconditionResult result = fixture.life.run(fixture.parent, fixture);
@@ -415,6 +482,10 @@ final class LifeAdvanceLifecycleTest {
         boolean armed; boolean canceled; boolean resumed; boolean rosterDriftAfterSpeed; boolean laggingPause;
         int reads; int requests; int entryReads; int actualSpeed; int nativeRevision=1; int postResumeReads;
         final Obj base; final AdvancePlan plan; final ActionCommand parent; final AdvancePrimitives primitives; final LifeAdvanceComposite life;
+        final AdvanceClock timeline; final Instant fixtureDeadline;
+        boolean insidePrimitiveObserver;
+        final List<PlanningReadRequest> directClockStatusReads = new ArrayList<>();
+        java.util.function.Consumer<PlanningReadRequest> beforeDirectClockStatus = request -> { };
         private static WriterContracts.Head softwareHead() {
             Obj state = json("""
                     {"schema":"root.ck3.continuity-window/v1","sequence":100,"window_id":1,
@@ -428,8 +499,14 @@ final class LifeAdvanceLifecycleTest {
             this(modalAfterArm,unknownResume,modalAfterResume,false,false,1);
         }
         Fixture(boolean modalAfterArm, boolean unknownResume, boolean modalAfterResume, boolean watchMode, boolean finishDay, int initialSpeed) {
+            this(modalAfterArm, unknownResume, modalAfterResume, watchMode, finishDay, initialSpeed,
+                    CLOCK, NOW.plusSeconds(30), Duration.ofSeconds(1));
+        }
+        Fixture(boolean modalAfterArm, boolean unknownResume, boolean modalAfterResume, boolean watchMode,
+                boolean finishDay, int initialSpeed, Clock runtimeClock, Instant parentDeadline, Duration commandTimeout) {
             this.modalAfterArm = modalAfterArm; this.unknownResume = unknownResume; this.modalAfterResume = modalAfterResume;
             this.watchMode=watchMode; this.finishDay=finishDay; this.actualSpeed=initialSpeed;
+            this.fixtureDeadline = parentDeadline;
             ExactRef manifest = archive.preserveMaterial(raw(json("{\"schema\":\"fixture-original-driver-facts\",\"actual_full_driver\":true}")));
             Obj initial = json("""
                     {"snapshot_id":"native:1","revision":1,"native_revision":1,"date_raw":53288256,
@@ -455,22 +532,22 @@ final class LifeAdvanceLifecycleTest {
             if (watchMode) capabilities.add("game.state.pending-character-interaction");
             AdvanceReadiness.Port readiness = (command, frame) -> watchMode ? AdvanceHistory.verifiedFacts(command,frame,List.of(),available,capabilities,45,true,manifest)
                     : new AdvanceReadiness.Facts(frame.identity(), STEPS, CAPS, false, false, false, 45, manifest);
-            AdvanceClock clock = new AdvanceClock(this, status, readiness, CLOCK, 16, Duration.ofSeconds(1), Duration.ofSeconds(2));
-            primitives = new AdvancePrimitives(this, status, CLOCK, 16);
-            life = new LifeAdvanceComposite(this, readiness, clock, status, new ActionSnapshotReader(new SnapshotJournal(this)), archive, CLOCK,
+            timeline = new AdvanceClock(this, status, readiness, runtimeClock, 16, commandTimeout, Duration.ofSeconds(2));
+            primitives = new AdvancePrimitives(this, status, runtimeClock, 16);
+            life = new LifeAdvanceComposite(this, readiness, timeline, status, new ActionSnapshotReader(new SnapshotJournal(this)), archive, runtimeClock,
                     (command, guard, store) -> { entryReads++; return Optional.empty(); });
             if (watchMode) {
-                var request=new PlanningRequest(identity(base),SOURCE,"fixture-session",NOW.plusSeconds(30),
+                var request=new PlanningRequest(identity(base),SOURCE,"fixture-session",parentDeadline,
                         new PlanningObservation(base,List.of(),available,capabilities,Optional.empty(),List.of(),Optional.empty(),Optional.empty(),false));
                 var original=new ActionCommand("fixture-life",identity(base),SOURCE,"fixture-session",new OperationKey("life-advance-one-day"),new Obj(Map.of()),
                         new ExpectedPostcondition(1,identity(base),SOURCE,"fixture/skeleton",List.of(new ExpectedBoolean(new FieldKey("paused"),true))),
-                        new Claims(Set.of(),Set.of(),Set.of(),Set.of()),NOW.plusSeconds(30));
+                        new Claims(Set.of(),Set.of(),Set.of(),Set.of()),parentDeadline);
                 parent=life.prepare(request,original); plan=AdvancePlan.decode(parent);
             } else {
                 plan = new AdvancePlan(START, START.add(AdvancePlan.DAY), 1, 1, "fixture_exact_native_clock", true, AdvancePlan.ClockMode.EXACT_SENTINEL, Optional.empty());
                 parent = new ActionCommand("fixture-life", identity(base), SOURCE, "fixture-session", new OperationKey("life-advance"),
                         new Obj(Map.of(AdvancePlan.KEY, plan.json())), new ExpectedPostcondition(1, identity(base), SOURCE, AdvancePlan.OBSERVER, plan.expected()),
-                        new Claims(Set.of(), Set.of(), Set.of(), Set.of()), NOW.plusSeconds(30));
+                        new Claims(Set.of(), Set.of(), Set.of(), Set.of()), parentDeadline);
             }
         }
         private static Obj watchArmy(int id,int owner,int province,boolean controllable) {
@@ -505,6 +582,10 @@ final class LifeAdvanceLifecycleTest {
         }
         @Override public AdvanceObservationPort.Frame next(ActionCommand command, ObservationIdentity after, Instant deadline) { return current(command, deadline); }
         @Override public <T> PlanningReadResult<T> read(ReadContract<T> contract, PlanningReadRequest request) {
+            if (!insidePrimitiveObserver) {
+                directClockStatusReads.add(request);
+                beforeDirectClockStatus.accept(request);
+            }
             String id = "status-query-" + ++requests;
             var frame = current(parent, request.deadline());
             var binding = guard(request.operation(), frame);
@@ -532,7 +613,11 @@ final class LifeAdvanceLifecycleTest {
                 if (command.operation().value().equals("resume-map")) resumed = true;
                 dispatch = ack(exchange, nativeToken(command.operation().value(), canceled ? "canceled" : "available", currentStatus()));
             }
-            ActionPorts.PostconditionResult observed = primitives.observe(command, attempt, dispatch);
+            ActionPorts.PostconditionResult observed;
+            boolean previousPrimitiveObserver = insidePrimitiveObserver;
+            insidePrimitiveObserver = true;
+            try { observed = primitives.observe(command, attempt, dispatch); }
+            finally { insidePrimitiveObserver = previousPrimitiveObserver; }
             ActionState state;
             if (observed instanceof ActionPorts.Pending pending) state = new ActionState.Unknown(Optional.of(attempt), Optional.of(dispatch), pending.reason(), pending.evidence());
             else {
@@ -598,7 +683,7 @@ final class LifeAdvanceLifecycleTest {
             ExactRef originalBasis = RootGuardEvidence.preservePhysicalRead(originals, operation,
                     "fixture-real-primitive-observer", archive, originalHead);
             return new GuardEvidence(frame.identity(), SOURCE, "fixture-session", BigInteger.ONE, operation, frame.originalEvidence(), DEFINITION,
-                    "fixture-real-primitive-observer", frame.observedAt(), NOW.plusSeconds(30), List.of(originalBasis));
+                    "fixture-real-primitive-observer", frame.observedAt(), fixtureDeadline, List.of(originalBasis));
         }
         CompositeExecution execution() {
             var start = produced.values().stream().filter(value -> value.identity().equals(parent.before())).min(java.util.Comparator.comparing(AdvanceObservationPort.Frame::observedAt)).orElseThrow();
