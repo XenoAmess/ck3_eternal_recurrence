@@ -301,7 +301,24 @@ public final class DriverActionHistoryCodec {
         var row=new LinkedHashMap<String,Value>();row.put("bytes",number(reference.bytes()));
         row.put("path",new Text(reference.path()));row.put("sha256",new Text(reference.sha256()));return new Obj(row);
     }
-    private static ExactRef reference(Value value) {return ExactRef.fromJson(DriverJson.toNode(object(value,"reference")));}
+    private static ExactRef reference(Value value) {
+        Obj row=object(value,"reference");
+        var fields=Set.of("path","bytes","sha256");
+        StrictJson.require(row.members().keySet().equals(fields),"exact JSON fields required: "+fields);
+        Value pathValue=row.get("path");
+        StrictJson.require(pathValue instanceof Text,"JSON string required");
+        String path=StrictJson.text(((Text)pathValue).value());
+        Value bytesValue=row.get("bytes");
+        StrictJson.require(bytesValue instanceof IntegerValue,"exact JSON integer required; no boolean, float or string");
+        BigInteger count=((IntegerValue)bytesValue).value();
+        StrictJson.require(count.compareTo(BigInteger.ZERO)>=0
+                &&count.compareTo(BigInteger.valueOf(StrictJson.MAX_SAFE_INTEGER))<=0,"integer outside contract range");
+        long bytes=count.longValueExact();
+        Value shaValue=row.get("sha256");
+        StrictJson.require(shaValue instanceof Text,"JSON string required");
+        String sha256=StrictJson.text(((Text)shaValue).value());
+        return new ExactRef(path,bytes,sha256);
+    }
     private static Optional<ExactRef> nullableRef(Value value) {Objects.requireNonNull(value);return value==Nil.INSTANCE?Optional.empty():Optional.of(reference(value));}
     private static Optional<String> nullableText(Value value) {Objects.requireNonNull(value);return value==Nil.INSTANCE?Optional.empty():Optional.of(text(value,"original error"));}
     private static IntegerValue number(long value) {return new IntegerValue(BigInteger.valueOf(value));}
