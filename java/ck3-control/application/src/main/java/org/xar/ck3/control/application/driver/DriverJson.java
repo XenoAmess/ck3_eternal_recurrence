@@ -65,7 +65,24 @@ public final class DriverJson {
         }
         return model(value,depth);
     }
-    public static byte[] encodeNode(JsonNode value) { return encode(fromNode(value)); }
+    public static byte[] encodeNode(JsonNode value) {
+        OpportunityJson.Value result=model(value,0);
+        byte[] raw=encode(result);
+        StrictJson.require(raw.length<=MAX_NATIVE_BYTES,"bounded normalized native tree required");
+        return repeatableEncoding(result) ? raw : encode(result);
+    }
+    private static boolean repeatableEncoding(OpportunityJson.Value value) {
+        return switch(value) {
+            case OpportunityJson.Obj object -> {for(var item:object.members().values())if(!repeatableEncoding(item))yield false;yield true;}
+            case OpportunityJson.Arr array -> {for(var item:array.items())if(!repeatableEncoding(item))yield false;yield true;}
+            // BigInteger subclasses may override toString; preserve their original second encoding.
+            case OpportunityJson.IntegerValue integer -> integer.value()==null || integer.value().getClass()==java.math.BigInteger.class;
+            case OpportunityJson.Text ignored -> true;
+            case OpportunityJson.DecimalValue ignored -> true;
+            case OpportunityJson.Bool ignored -> true;
+            case OpportunityJson.Nil ignored -> true;
+        };
+    }
     private static JsonNode node(OpportunityJson.Value value,int depth) {
         StrictJson.require(value!=null && depth<=64,"bounded typed native tree required");
         var factory=JsonNodeFactory.instance;
