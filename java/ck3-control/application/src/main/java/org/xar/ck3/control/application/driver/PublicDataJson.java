@@ -163,9 +163,26 @@ public final class PublicDataJson {
             return new OpportunityJson.Obj(fields);
         }
         if (value.isArray()) {
-            var rows = new ArrayList<OpportunityJson.Value>();
-            for (JsonNode row : value) rows.add(domain(row, depth + 1));
-            return new OpportunityJson.Arr(rows);
+            OpportunityJson.Value first = null;
+            OpportunityJson.Value second = null;
+            ArrayList<OpportunityJson.Value> rows = null;
+            for (JsonNode row : value) {
+                var child = domain(row, depth + 1);
+                if (first == null) first = child;
+                else if (second == null) second = child;
+                else {
+                    if (rows == null) {
+                        rows = new ArrayList<>();
+                        rows.add(first);
+                        rows.add(second);
+                    }
+                    rows.add(child);
+                }
+            }
+            if (rows != null) return new OpportunityJson.Arr(rows);
+            if (second != null) return new OpportunityJson.Arr(java.util.List.of(first, second));
+            if (first != null) return new OpportunityJson.Arr(java.util.List.of(first));
+            return new OpportunityJson.Arr(java.util.List.of());
         }
         if (value.isTextual()) return new OpportunityJson.Text(value.textValue());
         if (value.isIntegralNumber()) return new OpportunityJson.IntegerValue(value.bigIntegerValue());
