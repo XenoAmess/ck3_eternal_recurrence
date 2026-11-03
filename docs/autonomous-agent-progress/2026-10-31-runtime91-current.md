@@ -1,5 +1,9 @@
 # runtime91 同局续行
 
+2026-11-03 10:14:51.110032Z实际1669 SAVE_CONFIRMED，1663 SETTLE，本局320日全部保存；saved date53153664/native951/public892/cycle45/actor31254/pending=null，同Game77132／原birth，Root具名独验两冻结事件。1639／312日→1669／320日完整1985.755875秒／新增8日＝248.219484375秒／日，全部失败、准备、等待、86业务和保存确认全计。10秒目标未达、非A/B；wholeRoot134645.110032秒／320＝420.76596885秒／日只作次指标。
+
+运行owner报告87同worker自然继续为历史切点，不授未来健康或新源码／单叶因果收益。见[1669保存来源](../maintenance/2026-11-03-quarkus-worker-save1669-sources.json)。旧312／304及全部历史正文原字节保留；本次仅读Root现成小verifier／window和既有正式索引，不读raw Save／Driver／事件大体，不做新HTTP／查询／GET／编测／部署／控制，G2仍6/8。
+
 2026-11-03 09:41:45.354157Z实际1639 SAVE_CONFIRMED，1633 SETTLE，本局312日全部保存；saved date53153472/native932/public873/cycle44/actor31254/pending=null，同Game77132／原birth。Root具名独验两冻结事件；保存932/873不混同cycle语义930/871。1605／304日→1639／312日完整2542.294846900秒／新增8日＝317.7868558625秒／日，84零保存、旧200 partial弃置、准备和等待、85观察／规划／原ARM／resume／归档／SETTLE／SAVE均计入。10秒目标未达、非A/B；wholeRoot132659.354157秒／312＝425.19023768…秒／日只作次指标。
 
 同76092／出生134381592437332478、0b689be2-e53c-4615-acd5-c9bf5f6519a2自然继续86为运行owner历史切点，无本窗新GET、宿主替换或动作重放；不据此授未来健康、逐叶方法／cache命中、因果提速、视频实际画面或自然M6/M7通过。见[1639保存来源](../maintenance/2026-11-03-quarkus-worker-save1639-sources.json)。仅消费Root小verifier／window及冻结SUMMARY，不读raw Save／Driver／canonical事件大体，不做新HTTP／查询／GET／编测／部署／控制；旧304／296／289等正文原字节保，G2仍6/8。

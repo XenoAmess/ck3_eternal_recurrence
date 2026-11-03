@@ -1,0 +1,80 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1669,
+  "fixed_SETTLE": 1663,
+  "confirmed_UTC": "2026-11-03T10:14:51.110032Z",
+  "total_saved_days": 320,
+  "new_saved_days_since1639": 8,
+  "saved_frame": {
+    "date_raw": "53153664",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "951",
+    "played_character_id": "31254",
+    "revision": "892",
+    "snapshot_id": "native:951"
+  },
+  "saved_cycle": 45,
+  "pending_receipt": null,
+  "same_Game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "Root_independent_two_named_event_verification": {
+    "status": "INDEPENDENT_NAMED_CANONICAL_EVENT_VERIFIED",
+    "two_frozen_event_refs": [
+      {
+        "bytes": 99878,
+        "sha256": "88f7ba05ebab4fa9b7f80a6dba052614a17a1a4ef00d923205393fca399c20d0"
+      },
+      {
+        "bytes": 98870,
+        "sha256": "9026cee1c9ca761b032c8d8d3ac08d8d810f091ee1f2b0f287a8fe7f71c9375b"
+      }
+    ],
+    "writer_scope": "OnlyRoot small frozen verification/window and prior formalindex; no raw event or Save/Driverbody read."
+  },
+  "main_window": {
+    "from_SAVE": 1639,
+    "from_saved_days": 312,
+    "from_confirmed_UTC": "2026-11-03T09:41:45.354157Z",
+    "to_SAVE": 1669,
+    "to_saved_days": 320,
+    "elapsed_seconds": "1985.755875",
+    "new_SAVE_CONFIRMED_days": 8,
+    "seconds_per_new_saved_day": "248.219484375",
+    "subtracted_seconds": "0",
+    "target10_achieved": false,
+    "A_B": false,
+    "all_intervening_wall_time_included": true,
+    "includes": "All failures, preparation, waiting,86business and full confirmation; no elapsed excluded."
+  },
+  "cumulative_secondary_only": {
+    "Root_epoch_seconds": "134645.110032",
+    "saved_days": 320,
+    "seconds_per_saved_day": "420.76596885",
+    "not_primary_window_denominator": true
+  },
+  "later87_owner_report": "Same worker naturally continued87; historical cutpoint only, not future health or saved credit.",
+  "prior_SAVE_index_preserved": {
+    "path": "docs/maintenance/2026-11-03-quarkus-worker-save1639-sources.json",
+    "bytes": 3815,
+    "sha256": "6f52bc3f01273438d8305c15286b64550ec7c3e1403f24b0c3182a5203fe3cd3"
+  },
+  "sources": [
+    {
+      "local_key": "root/savep0repair482c1-verified.json",
+      "bytes": 1410,
+      "sha256": "a0592269631ff059a337015c38bfa0c0fc7dbd8ab1e97805d28d6bb461df5bab"
+    },
+    {
+      "local_key": "root/savep0repair482c1-window.json",
+      "bytes": 1114,
+      "sha256": "0ee4eeab9fdac46c3bb0e4fdd3897e74ef62f2c3c134fc5edad70fb168eb1486"
+    }
+  ],
+  "limits": [
+    "No A/B or per-leaf/cache-hit/runtime speed claim.",
+    "No canonical event, Save or Driverbody read or new operation was done for documentation.",
+    "Original source/software/formal/adoption/LOOP/SAVE cutoffs remain separate; naturalM6/M7 not granted,G2still6/8."
+  ]
+}
