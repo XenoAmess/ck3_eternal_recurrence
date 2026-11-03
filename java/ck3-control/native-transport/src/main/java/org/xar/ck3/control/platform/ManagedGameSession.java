@@ -166,12 +166,15 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         if(shutdown!=null)return shutdown;
         if(stopping||closed)throw new IOException("Previous stop is UNKNOWN; no second mutation");
         Win32Host.deadline(deadline);stopping=true;
+        boolean finalGateRejected=false;
         try{
         WindowsJobProcess.Accounting before=process.accounting();boolean wasRunning=process.isRunning();
         if(kind==GameLifecycle.TerminalKind.NATURAL_EXIT&&before.activeProcesses()!=0)kind=GameLifecycle.TerminalKind.OWNER_STOP;
         evidence.write(LifecycleEvidence.Event.STOP_REQUESTED,process.identity(),before,null,kind,requireRunning&&!wasRunning?"Expected running Game was already signalled; preserve terminal":"Owner stopping original Job, never reopening PID");
         IOException trackingFailure=null;
         try{owner.verifyTracking(this);}catch(IOException invalid){trackingFailure=invalid;}
+        try{Win32Host.deadline(deadline);}
+        catch(IOException expired){stopping=false;finalGateRejected=true;throw expired;}
         if(before.activeProcesses()!=0)process.terminate(125);
         WindowsJobProcess.CommandResult actual=process.await(Duration.ofSeconds(20),deadline,()->{});
         ExactRef terminalProof=evidence.write(LifecycleEvidence.Event.STOPPED,process.identity(),actual.accounting(),actual,kind,"Original root wait/exit and Job accounting consumed before cleanup");
@@ -192,6 +195,7 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         if(watchdog!=null)watchdog.cancel();
         return shutdown;
         }catch(IOException|InterruptedException|RuntimeException failure){
+            if(finalGateRejected)throw failure;
             // Cleanup requests on the original held Job are permitted after an unknown stop; no ACK becomes proof.
             try{process.close();}catch(RuntimeException cleanup){failure.addSuppressed(cleanup);}closed=true;
             try{transport.close();}catch(IOException|RuntimeException cleanup){failure.addSuppressed(cleanup);}

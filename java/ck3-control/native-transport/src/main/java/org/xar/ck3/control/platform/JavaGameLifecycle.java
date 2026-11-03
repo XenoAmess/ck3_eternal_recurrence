@@ -227,7 +227,7 @@ public final class JavaGameLifecycle {
                     Path.of(plan.sources().review().gameExecutable().path()).getParent(),environment,plan.evidenceRoot().resolve("game.stdout"),plan.evidenceRoot().resolve("game.stderr"),plan.gameMemoryBytes());
             WindowsJobProcess.ConsoleMode display=plan.windowPolicy()==NativeLaunchPlan.WindowPolicy.MINIMIZED_NO_ACTIVATE
                     ?WindowsJobProcess.ConsoleMode.GUI_MINIMIZED_NO_ACTIVATE:WindowsJobProcess.ConsoleMode.GUI_SHOWN_NO_ACTIVATE;
-            process=WindowsJobProcess.start(command,display,suspended->{
+            process=WindowsJobProcess.startBefore(command,display,plan.deadline(),suspended->{
                 WindowsPreloadCustody.Lease held=WindowsPreloadCustody.prepare(suspended,new WindowsPreloadCustody.DllRef(plan.sources().review().bridgeDll(),plan.deadline(),()->{}));
                 if(!lease.compareAndSet(null,held)){held.close();throw new IOException("Original suspended callback repeated");}
                 try{
@@ -364,7 +364,7 @@ public final class JavaGameLifecycle {
         Path root=plan.evidenceRoot();ControlBuild.FileRef injector=plan.sources().review().injector();
         WindowsJobProcess.CommandSpec command=new WindowsJobProcess.CommandSpec(Path.of(injector.path()),List.of(Long.toString(held.targetIdentity().pid()),plan.sources().review().bridgeDll().path()),root,plan.environment(),root.resolve("injector.stdout"),root.resolve("injector.stderr"),plan.injectorMemoryBytes());
         Files.write(root.resolve("injector-argv.json"),ControlBuild.strictMapper().writeValueAsBytes(command),StandardOpenOption.CREATE_NEW);
-        try(WindowsJobProcess original=WindowsJobProcess.start(command)){
+        try(WindowsJobProcess original=WindowsJobProcess.startBefore(command,WindowsJobProcess.ConsoleMode.NO_WINDOW,plan.deadline())){
             WindowsJobProcess.CommandResult actual=original.await(plan.injectorTimeout(),plan.deadline(),()->{});
             evidence.write(LifecycleEvidence.Event.INJECTOR_EXIT,held.targetIdentity(),actual.accounting(),actual,null,"Original C++ startup argv [PID,DLL], exactly once, actual inner exit/Job preserved");
             if(!actual.passed())throw new IOException("C++ injector failed/UNKNOWN; no second submission: "+actual);

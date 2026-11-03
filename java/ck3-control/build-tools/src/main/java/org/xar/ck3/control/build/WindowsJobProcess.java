@@ -687,12 +687,31 @@ public final class WindowsJobProcess implements AutoCloseable {
         requireWindows(); Objects.requireNonNull(hook);
         return start(spec, consoleMode, Native.load("kernel32", JobKernel32.class, W32APIOptions.UNICODE_OPTIONS), null, hook);
     }
+    /** The original deadline bounds native creation and primary-thread resume, not failure cleanup. */
+    public static synchronized WindowsJobProcess startBefore(CommandSpec spec, ConsoleMode consoleMode,
+            Instant originalDeadline) throws IOException {
+        Objects.requireNonNull(spec); Objects.requireNonNull(consoleMode); Objects.requireNonNull(originalDeadline);
+        requireWindows();
+        return start(spec, consoleMode, Native.load("kernel32", JobKernel32.class, W32APIOptions.UNICODE_OPTIONS),
+                null, null, originalDeadline);
+    }
+    public static synchronized WindowsJobProcess startBefore(CommandSpec spec, ConsoleMode consoleMode,
+            Instant originalDeadline, PreResumeHook hook) throws IOException {
+        Objects.requireNonNull(spec); Objects.requireNonNull(consoleMode); Objects.requireNonNull(originalDeadline); Objects.requireNonNull(hook);
+        requireWindows();
+        return start(spec, consoleMode, Native.load("kernel32", JobKernel32.class, W32APIOptions.UNICODE_OPTIONS),
+                null, hook, originalDeadline);
+    }
     private static WindowsJobProcess start(CommandSpec spec, ConsoleMode consoleMode, JobKernel32 api,
             RedirectedStdio redirected) throws IOException {
         return start(spec, consoleMode, api, redirected, null);
     }
     private static WindowsJobProcess start(CommandSpec spec, ConsoleMode consoleMode, JobKernel32 api,
             RedirectedStdio redirected, PreResumeHook hook) throws IOException {
+        return start(spec, consoleMode, api, redirected, hook, null);
+    }
+    private static WindowsJobProcess start(CommandSpec spec, ConsoleMode consoleMode, JobKernel32 api,
+            RedirectedStdio redirected, PreResumeHook hook, Instant originalDeadline) throws IOException {
         Objects.requireNonNull(consoleMode);
         requireWindows();
         if (!Files.isRegularFile(spec.executable()) || !Files.isDirectory(spec.cwd())) {
@@ -727,6 +746,8 @@ public final class WindowsJobProcess implements AutoCloseable {
                 case DETACHED -> 0x00000008; // DETACHED_PROCESS: never combine CREATE_NO_WINDOW.
             };
             try (Memory environment = environmentBlock(spec.environment())) {
+                if (originalDeadline != null && !Instant.now().isBefore(originalDeadline))
+                    throw new IOException("Original process creation deadline expired");
                 require(api.CreateProcessW(spec.executable().toString(), Native.toCharArray(command),
                         null, null, true, new DWORD(0x4 | 0x400 | consoleFlag), environment,
                         spec.cwd().toString(), startup, owner.process));
@@ -750,6 +771,8 @@ public final class WindowsJobProcess implements AutoCloseable {
                     lease.verify();
                 } finally { target.active = false; }
             }
+            if (originalDeadline != null && !Instant.now().isBefore(originalDeadline))
+                throw new IOException("Original process resume deadline expired");
             int previousSuspendCount = api.ResumeThread(owner.process.hThread);
             if (previousSuspendCount == -1) throw new Win32Exception(Native.getLastError());
             if (previousSuspendCount != 1) throw new IOException("original primary thread suspend count differs from one");
