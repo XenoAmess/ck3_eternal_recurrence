@@ -23,6 +23,20 @@ public final class ManagerLifecycle286 {
         return DeletingWrappers284.executeManager(entry,memory,destructor);
     }
 
+    /** Explicitly composes the mature static CRT routes and wrapper free chain. */
+    public static GovernmentCrtBoundary185Api.NormalReturn executeWithStaticCrtAndWrapperFree(
+            GovernmentCrtBoundary185Api.Entry entry,
+            GovernmentCrtBoundary185Api.Memory memory,
+            GovernmentCrtBoundary185Api.Calls residual,
+            GovernmentCrtBoundary185Api.LoopBudget budget) {
+        GovernmentCrtBoundary185Api.Calls crt=
+                org.xar.ck3.research.m0.staticobject362.StaticObjectHeader362Calls.bind(
+                        entry.imageBaseBits(),memory,
+                        org.xar.ck3.research.m0.staticobject361.StaticObjectFooter361Calls.bind(
+                                entry.imageBaseBits(),memory,residual),budget);
+        return executeWithStaticObjectAndWrapperFree(entry,memory,crt,budget);
+    }
+
     /** Explicit opt-in to the held wrapper free chain as well as the static supplier. */
     public static GovernmentCrtBoundary185Api.NormalReturn executeWithStaticObjectAndWrapperFree(
             GovernmentCrtBoundary185Api.Entry entry,
