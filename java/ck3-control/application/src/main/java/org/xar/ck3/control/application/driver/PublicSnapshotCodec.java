@@ -709,8 +709,14 @@ public final class PublicSnapshotCodec {
     }
     /** Open Native extensions retain their original JSON type; unknown unsafe numeric roles are rejected, never guessed. */
     public static void publicNumbers(JsonNode value,String path) {
-        if(value.isIntegralNumber())require(value.bigIntegerValue().abs().compareTo(SAFE)<=0,"unqualified unsafe numeric public role at "+path);
-        if(value.isFloatingPointNumber())require(Double.isFinite(value.doubleValue()),"nonfinite public float at "+path);
+        if(value.isIntegralNumber()) {
+            boolean safeInteger=value.bigIntegerValue().abs().compareTo(SAFE)<=0;
+            require(safeInteger,safeInteger?null:"unqualified unsafe numeric public role at "+path);
+        }
+        if(value.isFloatingPointNumber()) {
+            boolean finiteFloat=Double.isFinite(value.doubleValue());
+            require(finiteFloat,finiteFloat?null:"nonfinite public float at "+path);
+        }
         if(value.isObject())value.properties().forEach(entry -> publicNumbers(entry.getValue(),path+"/"+entry.getKey().replace("~","~0").replace("/","~1")));
         else if(value.isArray())for(int i=0;i<value.size();i++)publicNumbers(value.get(i),path+"/"+i);
     }
