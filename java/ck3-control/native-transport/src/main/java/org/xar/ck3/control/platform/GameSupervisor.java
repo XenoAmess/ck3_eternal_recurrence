@@ -152,7 +152,11 @@ public final class GameSupervisor {
             }
             if (command != null) {
                 // Preserve the caller's operation deadline; a STOP failure never becomes a successful terminal.
-                return new Completed(command.requestId(), owner.stop(command.deadline(), GameLifecycle.TerminalKind.OWNER_STOP));
+                try {
+                    return new Completed(command.requestId(), owner.stop(command.deadline(), GameLifecycle.TerminalKind.OWNER_STOP));
+                } catch (ManagedGameSession.StopDeadlineRefused refused) {
+                    rejected.accept(bounded(refused.toString()));
+                }
             }
             Boolean running = null;
             try {

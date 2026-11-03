@@ -165,7 +165,7 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         if(!generation.equals(expected))throw new IOException("Stop belongs to a different original Game generation");
         if(shutdown!=null)return shutdown;
         if(stopping||closed)throw new IOException("Previous stop is UNKNOWN; no second mutation");
-        Win32Host.deadline(deadline);stopping=true;
+        requireStopDeadline(deadline);stopping=true;
         boolean finalGateRejected=false;
         try{
         WindowsJobProcess.Accounting before=process.accounting();boolean wasRunning=process.isRunning();
@@ -173,7 +173,7 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         evidence.write(LifecycleEvidence.Event.STOP_REQUESTED,process.identity(),before,null,kind,requireRunning&&!wasRunning?"Expected running Game was already signalled; preserve terminal":"Owner stopping original Job, never reopening PID");
         IOException trackingFailure=null;
         try{owner.verifyTracking(this);}catch(IOException invalid){trackingFailure=invalid;}
-        try{Win32Host.deadline(deadline);}
+        try{requireStopDeadline(deadline);}
         catch(IOException expired){stopping=false;finalGateRejected=true;throw expired;}
         if(before.activeProcesses()!=0)process.terminate(125);
         WindowsJobProcess.CommandResult actual=process.await(Duration.ofSeconds(20),deadline,()->{});
@@ -206,6 +206,19 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         }
     }
     private static Instant min(Instant a,Instant b){return a.isBefore(b)?a:b;}
+    /** In-process control category for a known pre-termination deadline refusal; not a Native/Game issuer or successful terminal. */
+    static final class StopDeadlineRefused extends IOException {
+        private static final long serialVersionUID = 1L;
+        private StopDeadlineRefused(IOException original) { super(original.getMessage()); initCause(original); }
+    }
+    /** Shared deadline validation only; this creates no session or resource admission. */
+    static void requireStopDeadline(Instant deadline)throws IOException{
+        try{Win32Host.deadline(deadline);}
+        catch(IOException expired){
+            if(deadline==null)throw expired;
+            throw new StopDeadlineRefused(expired);
+        }
+    }
     /** Resource/execution failure remains in the terminal; cleanup proves only the original root signal and Job0. */
     static boolean cleanupProven(WindowsJobProcess process,WindowsJobProcess.CommandResult actual){
         return !process.isRunning()&&actual.accounting().activeProcesses()==0;
