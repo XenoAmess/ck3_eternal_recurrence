@@ -101,7 +101,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     public RootOnlineDecisionSelector(RootOrdinaryRuntimeConfiguration.DecisionProvider config, Clock clock, MaterialSink materials) {
         this.config = Objects.requireNonNull(config); this.clock = Objects.requireNonNull(clock);
         this.materials = Objects.requireNonNull(materials);
-        http = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).build();
+        http = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).proxy(java.net.ProxySelector.of(null)).build();
         String base = config.endpoint().toString();
         while (base.endsWith("/")) base = base.substring(0, base.length() - 1);
         completionEndpoint = URI.create(base + "/chat/completions");
