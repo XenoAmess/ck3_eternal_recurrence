@@ -1,0 +1,79 @@
+{
+  "schema": "ck3.annual-save-actual-adoption-loop-sources/v1",
+  "status": "ACTUAL_ADOPTED_SAMEHOST_LOOP_AND_COMPLETED_UNSAVED_CYCLE;NO_NEW_ANNUAL_SAVE",
+  "source_formal_commit": "60fffd5357ed3e8cb87fed6795679486308c6473",
+  "actual_loop": {
+    "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\annual-save-next\\actual-adoption02\\loop-evidence\\SUMMARY.json",
+    "bytes": 2603,
+    "sha256": "65137a51982cf50aa4df80c1cc7d757d30c69f4b1a0150c444f7da000f2148ff"
+  },
+  "unsaved_interval": {
+    "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\annual-save-next\\actual-adoption02\\ACTUAL-LOOP-AND-UNSAVED-INTERVAL.json",
+    "bytes": 1674,
+    "sha256": "9e75c724120e97415ac6fc8aa979183f2714fd5f8ffa28fedd0c530b89b61771"
+  },
+  "source_adoption": {
+    "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\annual-save-next\\actual-adoption02\\SOURCE-ADOPTED.json",
+    "bytes": 2653,
+    "sha256": "53eb451a947d85b6fccbb555ec72590d3e4f2587d0bfb5ebcddd17cd0dcf5756"
+  },
+  "original102_readonly_settlement": {
+    "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\annual-save-next\\actual-adoption02\\original102-readonly-settled\\SUMMARY.json",
+    "bytes": 5867,
+    "sha256": "7d9f3d783e1ce2575b354778904a4b4dfdae5cd4aeb0d51fccede3b2c99e695c"
+  },
+  "first_completed_unsaved_cycle": {
+    "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\annual-save-next\\actual-save-watch03\\FIRST-UNSAVED-CYCLE.json",
+    "bytes": 637,
+    "sha256": "b9a2c16b6a21a86f372783098598da479b4dd07d2d3d2dfe21535569861f2928"
+  },
+  "owner_frozen": {
+    "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\annual-save-next\\actual-adoption02\\loop-evidence\\OWNER-LOOP.frozen.json",
+    "bytes": 1652,
+    "sha256": "406bb4d8fd1775636f691c68e08f740b87f5ff69cef6ab63a7489e0902943c39"
+  },
+  "raw_loop": {
+    "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\annual-save-next\\actual-adoption02\\loop-evidence\\LOOP-START.raw.jsonl",
+    "bytes": 336,
+    "sha256": "3adc06c62c89be3735da52d03aca67f4b13e183cccdd23c2b3890fd041ec33a7"
+  },
+  "actual_new_delegate": {
+    "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\annual-save-next\\actual-adoption02\\ACTUAL-NEW-DELEGATE.json",
+    "bytes": 11345,
+    "sha256": "7e6c4357acbff42294135fb8ac5419ec1d819b8944a2ea35f6e6a35c1c9f1db8"
+  },
+  "same_host": {
+    "pid": 76092,
+    "birth": "134381592437332478",
+    "exit": 259,
+    "image": "C:\\jdk-21\\bin\\java.exe",
+    "exit_filetime": "0"
+  },
+  "delegate": "46d109b7-5a5e-42b0-be77-a51d5cb7143e",
+  "restart": 5,
+  "actual_GAME": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "started_utc": "2026-11-03T17:19:58.908319100Z",
+  "loop_utc": "2026-11-03T17:52:37.045677200Z",
+  "START_to_LOOP_seconds": "1958.137358100",
+  "GET_HTTP_seconds": "111.1121979",
+  "completed_cycle": 52,
+  "saved_cycle": 51,
+  "saved_date_raw": 53154744,
+  "confirmed_saved_days": 365,
+  "observed_days": 373,
+  "unsaved_days": 8,
+  "new_confirmed_saved_days": 0,
+  "pending": null,
+  "ordinary_batch_started_at_LOOP": false,
+  "annual_threshold_raw_ticks": 8760,
+  "source_formal_boundary": "ActualController1ec2 andactualPolicya5ad; formalPolicyretains225Binitialbaseline branch. Noformalwholeoverwrite/adoptionassumption.",
+  "limits": [
+    "Original102 action completed throughreadonlyrecovery;no newaction/replay credit orforcedannualSAVE.",
+    "LOOP isreal,butcomplete365daynewpolicySAVE andmethod-levelexecution/cachehits/speedareunproved.",
+    "Allpreparation/failure/cold/GET/waitcostpreserved;no finite secondsperday withzero newconfirmedSAVE;old/newpolicies not pooled.",
+    "No newGamequery/GET/Java/JVM/JFR/Runtimeadoption oroldsoftware replay fordocs;G2 remains6/8."
+  ]
+}
