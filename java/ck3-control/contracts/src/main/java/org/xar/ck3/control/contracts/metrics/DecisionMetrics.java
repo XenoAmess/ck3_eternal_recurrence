@@ -194,8 +194,43 @@ public final class DecisionMetrics {
     static Tick tick(JsonNode value) {
         ObjectNode item = StrictJson.object(value, Set.of("clock_domain_id", "elapsed_nanos", "utc", "thread_id", "thread_cpu_nanos"));
         JsonNode cpu = item.get("thread_cpu_nanos");
-        return new Tick(text(item, "clock_domain_id"), decimal(item.get("elapsed_nanos")), Instant.parse(StrictJson.utc(text(item, "utc"))),
+        return new Tick(text(item, "clock_domain_id"), decimal(item.get("elapsed_nanos")), utcInstant(text(item, "utc")),
                 decimal(item.get("thread_id")), cpu.isNull() ? OptionalLong.empty() : OptionalLong.of(decimal(cpu)));
+    }
+    private static Instant utcInstant(String value) {
+        // This private caller has already applied the existing node text contract.
+        int length = value.length();
+        boolean shared = (length == 20 || (length >= 22 && length <= 30))
+                && value.charAt(4) == '-' && value.charAt(7) == '-'
+                && value.charAt(10) == 'T' && value.charAt(13) == ':'
+                && value.charAt(16) == ':' && value.charAt(length - 1) == 'Z'
+                && (length == 20 || value.charAt(19) == '.');
+        if (shared) {
+            for (int index = 0; index < length - 1; index++) {
+                if (index == 4 || index == 7 || index == 10 || index == 13
+                        || index == 16 || index == 19) {
+                    continue;
+                }
+                char digit = value.charAt(index);
+                if (digit < '0' || digit > '9') {
+                    shared = false;
+                    break;
+                }
+            }
+        }
+        if (shared) {
+            int hour = (value.charAt(11) - '0') * 10 + value.charAt(12) - '0';
+            int minute = (value.charAt(14) - '0') * 10 + value.charAt(15) - '0';
+            int second = (value.charAt(17) - '0') * 10 + value.charAt(18) - '0';
+            if (hour <= 23 && minute <= 59 && second <= 59) {
+                try {
+                    return Instant.parse(value);
+                } catch (java.time.format.DateTimeParseException ignored) {
+                    // Re-run the original pipeline so its first error and cause remain authoritative.
+                }
+            }
+        }
+        return Instant.parse(StrictJson.utc(value));
     }
     private static ObjectNode saved(SavedObservation saved) {
         ObjectNode item = StrictJson.object(); item.put("machine_id", saved.machineId()); item.put("date_raw", saved.dateRaw());
