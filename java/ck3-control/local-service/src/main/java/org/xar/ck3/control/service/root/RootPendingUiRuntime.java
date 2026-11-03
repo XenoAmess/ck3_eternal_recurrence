@@ -1857,9 +1857,11 @@ public final class RootPendingUiRuntime implements RootDriverRegistryPublicProdu
         });
     }
     private Optional<SuccessorUiObligation> finalizedMarker(ContinuityStorePort.Session same)throws IOException {
-        return assembler().withFrozenFacts(same,frozen->{if(!(frozen.state() instanceof Known known))return Optional.empty();
+        var actual=assembler();context.writer().requireSession(same);
+        Optional<SuccessorUiObligation> marker=actual.inspectFactsData(factsState->{if(!(factsState instanceof Known known))return Optional.empty();
             var value=known.auxiliary().members().get(SuccessorUiObligation.AUXILIARY_KEY);if(value==null)return Optional.empty();
             var state=SuccessorUiObligationCodec.decode(DriverJson.encode(value));return state.phase()==SuccessorUiObligation.Phase.FINALIZED?Optional.of(state):Optional.empty();});
+        context.writer().requireSession(same);return marker;
     }
     /** Later READ/BATCH recovery requires a real historical Cycle admission and an independent current binding. */
     public Optional<LifecycleEpisodeInputs.CurrentAdoptionBinding> admittedCurrent(ContinuityStorePort.Session same,ActionReceipt exactParent,Instant deadline)throws IOException {

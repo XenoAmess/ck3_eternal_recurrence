@@ -836,6 +836,16 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         }
     }
 
+    /** Inspects one captured immutable in-memory State as DATA only. No ACTION history, source,
+     * writer/current/Game qualification or observation custody is supplied by this callback. */
+    public <T>T inspectFactsData(java.util.function.Function<DriverSnapshotFacts.State,T> inspection) {
+        Objects.requireNonNull(inspection);
+        var captured=facts.locked(state -> state);
+        int prior=readFreezeDepth.get();readFreezeDepth.set(prior+1);
+        try { return inspection.apply(captured); }
+        finally { if(prior==0)readFreezeDepth.remove();else readFreezeDepth.set(prior); }
+    }
+
     public <T>T withFrozenFacts(DriverWork<T> work) throws IOException {
         Objects.requireNonNull(work);
         try {
