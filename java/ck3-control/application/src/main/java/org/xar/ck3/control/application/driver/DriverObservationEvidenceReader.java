@@ -25,7 +25,7 @@ import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
-/** Pure replay of the real semantic producer manifest. It performs no archive, writer or native operations. */
+/** Replay of real semantic producer originals. The explicit archive opt-in only selects its existing nominal byte decoder; original reads stay with the caller. */
 public final class DriverObservationEvidenceReader {
     public static final String SCHEMA="xar.java-driver-observation-evidence/v1";
     private static final Set<String> FIELDS=Set.of("schema","driver_ref","driver_version","episode_epoch","transport",
@@ -58,10 +58,16 @@ public final class DriverObservationEvidenceReader {
 
     public static DriverObservationFacts decode(ExactRef manifestReference,RawJson manifest,RawJson fullDriver,
             NativeObservationPort.ObservedFrame actual) {
+        return decode(manifestReference,manifest,fullDriver,actual,null);
+    }
+
+    public static DriverObservationFacts decode(ExactRef manifestReference,RawJson manifest,RawJson fullDriver,
+            NativeObservationPort.ObservedFrame actual,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive actualArchive) {
         Objects.requireNonNull(fullDriver);Objects.requireNonNull(actual);
         var row=checkedManifest(manifestReference,manifest);
         requireExact(reference(row.get("driver_ref")),fullDriver.bytes(),"archived complete Driver");
-        var driver=DriverStateSnapshot.decodeComplete(fullDriver.bytes());
+        var loader=actualArchive==null?null:actualArchive.scopedDriverDecoder();
+        var driver=loader==null?DriverStateSnapshot.decodeComplete(fullDriver.bytes()):loader.decodeCompleteDriverBytes(fullDriver.bytes());
         return bindDecodedDriver(manifestReference,row,driver,actual);
     }
 

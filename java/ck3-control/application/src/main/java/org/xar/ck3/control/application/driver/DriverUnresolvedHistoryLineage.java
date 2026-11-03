@@ -43,7 +43,7 @@ final class DriverUnresolvedHistoryLineage {
         StrictJson.require(named.driverRef().equals(originalDriver),"unresolved history starts at another original Driver");
         var basis=RootGuardEvidence.frameBasis(attempt.guard(),bound);var manifest=bound.loadFullMaterial(basis.driverFacts());
         var nativeFrame=DriverObservationEvidenceReader.nativeFrame(basis.driverFacts(),manifest,bound.loadNativeFrame(basis.nativeFrame()));
-        var facts=DriverObservationEvidenceReader.decode(basis.driverFacts(),manifest,bound.loadFullMaterial(originalDriver),nativeFrame);
+        var facts=DriverObservationEvidenceReader.decode(basis.driverFacts(),manifest,bound.loadFullMaterial(originalDriver),nativeFrame,bound);
         StrictJson.require(facts.transport().game().equals(action.command().before().game())&&facts.source().equals(action.command().source())
                 &&facts.transport().sessionId().equals(action.command().sessionId()),"unresolved predecessor crossed original Game/source/session");
         var all=events(same,target);var selected=new ArrayList<Event>();ExactRef cursor=targetDriver;
@@ -150,7 +150,7 @@ final class DriverUnresolvedHistoryLineage {
                         &&cached.historicalSource().filter(basis.driverFacts()::equals).isPresent()&&basis.nativeFrame().equals(originalNative)
                         &&source.invocation().equals(ExactRef.fromJson(row.get("original")))&&source.headSequence()==sequence&&source.headDigest().equals(predecessor),"early history cannot substitute missing cached source/current frame authority");
                 var manifest=bound.loadFullMaterial(basis.driverFacts());var nativeFrame=DriverObservationEvidenceReader.nativeFrame(basis.driverFacts(),manifest,bound.loadNativeFrame(originalNative));
-                var observation=DriverObservationEvidenceReader.decode(basis.driverFacts(),manifest,bound.loadFullMaterial(originalDriver),nativeFrame);
+                var observation=DriverObservationEvidenceReader.decode(basis.driverFacts(),manifest,bound.loadFullMaterial(originalDriver),nativeFrame,bound);
                 var known=DriverSnapshotFacts.decodeKnownOriginal(bound.loadFullMaterial(cached.originalKnown()),Optional.of(observation));
                 StrictJson.require(known.stamp().driverVersion()==StrictJson.integer(details.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER),"early cached Driver version differs from real history predecessor");
                 history=decoded.historyEntry();evidence=source.evidence();
