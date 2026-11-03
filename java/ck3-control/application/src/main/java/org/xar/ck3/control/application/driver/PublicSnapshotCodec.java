@@ -250,7 +250,10 @@ public final class PublicSnapshotCodec {
     }
     public static RawJson decodePlanningSnapshotData(RawJson canonicalPublic) {
         Obj original=DriverJson.object(Objects.requireNonNull(canonicalPublic).bytes(),RawJson.MAXIMUM_BYTES);
-        return RawJson.fullMaterial(DriverJson.encode(decodePublic(canonicalPublic,!original.members().containsKey("native_command_history"))));
+        boolean semanticOnly=!original.members().containsKey("native_command_history");
+        Objects.requireNonNull(canonicalPublic);
+        if(semanticOnly)require(canonicalPublic.bytes().length<=SEMANTIC_MAXIMUM_BYTES,"private semantic snapshot exceeds the 8 MiB UTF-8 read bound");
+        return RawJson.fullMaterial(DriverJson.encode(decodePublicParsed(canonicalPublic,semanticOnly,original)));
     }
     /** Finite recorder DATA only; this never constructs or admits a Snapshot, observation or source proof. */
     public static Arr encodePlanningHistoryData(Arr originalNumericRows) {
@@ -281,7 +284,11 @@ public final class PublicSnapshotCodec {
     private static Obj decodePublic(RawJson publicJson,boolean semanticOnly) {
         Objects.requireNonNull(publicJson);
         if(semanticOnly)require(publicJson.bytes().length<=SEMANTIC_MAXIMUM_BYTES,"private semantic snapshot exceeds the 8 MiB UTF-8 read bound");
-        ObjectNode tree=node(DriverJson.object(publicJson.bytes(),RawJson.MAXIMUM_BYTES));publicNumbers(tree,"");
+        return decodePublicParsed(publicJson,semanticOnly,DriverJson.object(publicJson.bytes(),RawJson.MAXIMUM_BYTES));
+    }
+    /** Only this invocation's original bounded parser result may enter this private split. */
+    private static Obj decodePublicParsed(RawJson publicJson,boolean semanticOnly,Obj originalPublic) {
+        ObjectNode tree=node(originalPublic);publicNumbers(tree,"");
         JsonNode marker=tree.remove(PROJECTION_FIELD);boolean campaign=marker!=null;
         if(campaign) {
             require(marker instanceof ObjectNode,"explicit public snapshot projection object required");
