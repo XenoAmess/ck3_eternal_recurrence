@@ -168,7 +168,8 @@ public final class StrictJson {
     }
 
     public static String text(String value) {
-        require(value != null && !value.isEmpty() && value.codePointCount(0, value.length()) <= 32_768,
+        require(value != null && !value.isEmpty()
+                && (value.length() <= 32_768 || value.codePointCount(0, value.length()) <= 32_768),
                 "nonempty bounded text required");
         for (int index = 0; index < value.length(); index++) {
             char current = value.charAt(index);
