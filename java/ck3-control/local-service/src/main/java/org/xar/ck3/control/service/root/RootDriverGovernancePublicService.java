@@ -60,6 +60,116 @@ public final class RootDriverGovernancePublicService {
         revision(frame,input.expectedRevision(),false,"private realm-law query revision mismatch");var known=read(same,frame,installed.crownFinalTermsRead().contract(),new OpportunityJson.Obj(java.util.Map.of()),deadline);
         var raw=new RawJson(CrownFinalTermsCodec.encode(known.value().readback()));runtime.archive().withSession(same).preserveMaterial(raw);return DriverGovernancePublicProjection.output(raw,Shape.FINAL_TERMS);
     }
+    /** Immutable original READ data only; this slot cannot issue a query, action or saved-history role. */
+    private record M7GovernmentCapture(Session session, Complete frame,
+            org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known driver, String head,
+            PlanningReadResult.Known<RawJson> original,
+            org.xar.ck3.control.wave2.governance.government.GovernmentContext.Context context) { }
+    private M7GovernmentCapture m7Government;
+
+    /** Explicit ordinary-planning read. Public/terminal inputs and Ready/SAVE callbacks never call it. */
+    void captureM7Government(RootPlanningInputsFactory.Capture actual) throws IOException {
+        m7Government=null;
+        java.util.Objects.requireNonNull(actual);
+        runtime.writer().requireSession(actual.session());
+        StrictJson.require(actual.context()==runtime && actual.frame().source().equals(runtime.source())
+                && actual.frame().sessionId().equals(runtime.game().sessionId()),
+                "M7 government capture crossed its actual installed Root context/source/session");
+        // This held-only entry rejects absence rather than recapturing Native or trusting a public DATA Capture.
+        runtime.collector().borrowCurrent(actual.session(),actual.frame().identity(),actual.deadline(),lease->{
+            StrictJson.require(lease.frame()==actual.frame() && lease.driver()==actual.driver(),
+                    "M7 government input is not the actual held planning frame/Driver");
+            return null;
+        });
+        if(!m7GovernmentEligible(actual.frame().semantic()))return;
+        String head=actual.session().head().digest();
+        ReadContract<RawJson> contract=definitions.government();
+        PlanningReadRequest originalRequest=request(actual.frame(),contract,new OpportunityJson.Obj(java.util.Map.of()),actual.deadline());
+        PlanningReadResult<RawJson> result=runtime.reads().read(actual.session(),contract,originalRequest);
+        if(result instanceof PlanningReadResult.Unavailable<RawJson>)return;
+        var observed=(PlanningReadResult.Known<RawJson>)result;
+        StrictJson.require(observed.receipt().request().equals(originalRequest),
+                "M7 government result lost its actual issued planning READ request");
+        requireM7GovernmentOriginal(actual.session(),actual.frame(),observed);
+        var archive=runtime.archive().withSession(actual.session());
+        // An unavailable adapter can legitimately lack a native player; it cannot enrich this actor's Context.
+        if(!m7GovernmentObservedActorMatches(observed.value(),actual.frame().identity().frame().identity().player()))return;
+        var context=m7GovernmentContext(
+                DriverGovernanceReadDefinitions.snapshot(actual.frame(),observed.receipt().before().binding(),archive),observed.value());
+        org.xar.ck3.control.wave2.governance.government.GovernmentContextCodec.requireCurrentPlayerBinding(
+                context,actual.frame().identity().frame().identity().player());
+        StrictJson.require(head.equals(actual.session().head().digest()),
+                "M7 government original READ changed the held authoritative writer head");
+        m7Government=new M7GovernmentCapture(actual.session(),actual.frame(),actual.driver(),head,observed,context);
+    }
+
+    /** Pure DATA admission only: missing or another native player cannot become a current-actor Context. */
+    static boolean m7GovernmentObservedActorMatches(RawJson normalizedNative,BigInteger actor) {
+        var player=StrictJson.parse(normalizedNative.bytes()).get("player_character_id");
+        return player!=null && !player.isNull()
+                && org.xar.ck3.control.contracts.NativeCharacterId.fromJson(player).asBigInteger().equals(actor);
+    }
+
+    /** Pure composition after original READ qualification. Retain native numeric token kinds and opaque decimals. */
+    static org.xar.ck3.control.wave2.governance.government.GovernmentContext.Context m7GovernmentContext(
+            ObjectNode originalSnapshot,RawJson normalizedNative) {
+        java.util.Objects.requireNonNull(originalSnapshot);java.util.Objects.requireNonNull(normalizedNative);
+        String request="{\"schema\":\""
+                +org.xar.ck3.control.wave2.governance.government.GovernmentContextCodec.REQUEST_SCHEMA
+                +"\",\"query_permitted\":true,\"snapshot\":"+originalSnapshot
+                +",\"government_observation\":"
+                +new String(normalizedNative.bytes(),java.nio.charset.StandardCharsets.UTF_8)+"}";
+        return org.xar.ck3.control.wave2.governance.government.GovernmentContextCodec.decodeAndBuild(
+                request.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
+
+    /** Pure eligibility, including the original missing/null lifecycle and goal distinctions; no query permission. */
+    static boolean m7GovernmentEligible(OpportunityJson.Obj snapshot) {
+        var goal=snapshot.get("campaign_goal");
+        var lifecycle=snapshot.get("succession_lifecycle");
+        return goal instanceof OpportunityJson.Obj && lifecycle instanceof OpportunityJson.Obj state
+                && state.get("lifecycle") instanceof OpportunityJson.Text value
+                && value.value().equals(org.xar.ck3.control.wave2.governance.government.GovernmentContext.ORDINARY_LIFECYCLE);
+    }
+
+    /** Ready consumes the successful earlier READ only in the identical original held frame/Driver/session. */
+    java.util.Optional<org.xar.ck3.control.wave2.governance.government.GovernmentContext.Context> currentM7Government(
+            Session same,org.xar.ck3.control.application.planning.PlanningRequest request,Complete frame,
+            org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known driver) throws IOException {
+        runtime.writer().requireSession(same);
+        M7GovernmentCapture captured=m7Government;
+        if(captured==null || !m7GovernmentMatches(captured.session(),captured.frame(),captured.driver(),captured.head(),
+                same,request,frame,driver,same.head().digest()))return java.util.Optional.empty();
+        requireM7GovernmentOriginal(same,frame,captured.original());
+        return java.util.Optional.of(captured.context());
+    }
+
+    /** Pure DATA comparison; an equal reconstructed frame/Driver does not replace the actual held objects. */
+    static boolean m7GovernmentMatches(Session originalSession,Complete originalFrame,
+            org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known originalDriver,String originalHead,
+            Session same,org.xar.ck3.control.application.planning.PlanningRequest request,Complete frame,
+            org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known driver,String currentHead) {
+        return originalSession==same && originalFrame==frame && originalDriver==driver && originalHead.equals(currentHead)
+                && request.before().equals(frame.identity()) && request.source().equals(frame.source())
+                && request.sessionId().equals(frame.sessionId()) && request.observations().snapshot().equals(frame.semantic());
+    }
+
+    private void requireM7GovernmentOriginal(Session same,Complete frame,PlanningReadResult.Known<RawJson> observed) throws IOException {
+        runtime.writer().requireSession(same);
+        var contract=definitions.government();var receipt=observed.receipt();var request=receipt.request();
+        var archive=runtime.archive().withSession(same);
+        StrictJson.require(runtime.readCatalog().containsIdentity(contract) && receipt.contractId().equals(contract.contractId())
+                && request.operation().equals(contract.operation()) && request.arguments().members().isEmpty()
+                && request.before().equals(frame.identity()) && request.source().equals(frame.source())
+                && request.source().equals(runtime.source()) && request.sessionId().equals(frame.sessionId())
+                && observed.originalReceipt().equals(archive.readReferenceOf(receipt))
+                && receipt.equals(archive.loadRead(observed.originalReceipt())),
+                "M7 government capture lost its installed contract or exact original request/receipt/source");
+        GovernanceNativeReads.verifyGuards(receipt);
+        RootGuardEvidence.requireHistory(receipt.before().binding(),archive,same);
+        RootGuardEvidence.requireHistory(receipt.after().binding(),archive,same);
+    }
+
     public RawJson government(Session same,Complete frame,Revision input,Instant deadline)throws IOException {
         revision(frame,input.expectedRevision(),false,"government runtime adapter requires a living paused player");var known=read(same,frame,definitions.government(),new OpportunityJson.Obj(java.util.Map.of()),deadline);
         runtime.archive().withSession(same).preserveMaterial(known.value());return DriverGovernancePublicProjection.output(known.value(),Shape.GOVERNMENT);

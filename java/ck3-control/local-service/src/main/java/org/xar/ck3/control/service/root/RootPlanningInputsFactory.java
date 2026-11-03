@@ -53,11 +53,19 @@ public final class RootPlanningInputsFactory {
     @FunctionalInterface public interface OfflineInputs {
         OfflineObservation collect(Capture actual, PlanningRequest complete) throws IOException;
     }
+    @FunctionalInterface public interface GovernmentInputs {
+        void capture(Capture actual) throws IOException;
+    }
     public record Products(RootExecutableBindings bindings, CrossRunPlanningDomain crossRun,
-            DomainCatalog domains, OpeningInputs opening, OfflineInputs offline) {
+            DomainCatalog domains, OpeningInputs opening, OfflineInputs offline, GovernmentInputs government) {
+        /** Existing product callers retain their original read sequence without an implicit government query. */
+        public Products(RootExecutableBindings bindings, CrossRunPlanningDomain crossRun,
+                DomainCatalog domains, OpeningInputs opening, OfflineInputs offline) {
+            this(bindings, crossRun, domains, opening, offline, actual -> { });
+        }
         public Products {
             Objects.requireNonNull(bindings); Objects.requireNonNull(crossRun); Objects.requireNonNull(domains);
-            Objects.requireNonNull(opening); Objects.requireNonNull(offline);
+            Objects.requireNonNull(opening); Objects.requireNonNull(offline); Objects.requireNonNull(government);
         }
     }
     public record Capture(RootRuntimeContext context, Session session, Complete frame, Known driver,
@@ -174,6 +182,8 @@ public final class RootPlanningInputsFactory {
                             capabilities.battleSpeedReadiness(), facts, goal, Optional.of(next), required));
             OfflineObservation offline = Objects.requireNonNull(products.offline().collect(capture, complete));
             offline.binding().require(capture);
+            // Only the actual ordinary producer may collect this optional original READ, before Ready exists.
+            if (purpose == InputPurpose.ORDINARY_READY) products.government().capture(capture);
             requireCurrent(capture, actualAdopted, products);
             StrictJson.require(head.equals(borrowed.head().digest()), "planning input reads changed the authoritative writer head");
             return new NativeReadinessCollector.PlanningInputs(capabilities.actionSteps(), capabilities.bridgeCapabilities(),

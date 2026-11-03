@@ -261,10 +261,17 @@ public final class RootInstalledCatalog {
             try{context.withSession(same->{bindNativeCampaignCapabilitySource(actualCapabilities,actual.authority(),Optional.empty());return null;});}
             catch(IOException failed){throw new UncheckedIOException(failed);}
         }
+        final RootDriverGovernancePublicService governmentInputs;
+        try {
+            var product=additionalDomains.driverRegistry().product(RootDriverRegistryPublicProducts.Kind.GOVERNANCE,
+                    RootDriverGovernancePublicSupplier.Installed.class);
+            product.requireContext(context); governmentInputs=product.service();
+        } catch(IOException failure) { throw new UncheckedIOException("actual same-context government input producer unavailable",failure); }
         kernelInputs=new M7KernelInputs(context.writer(),context.writer()::requireSession,actual.authority());
-        readyPublication=new RootM7ReadyPublication(context.sources(),kernelInputs);
+        readyPublication=new RootM7ReadyPublication(context.sources(),kernelInputs,governmentInputs::currentM7Government);
         planning=RootPlanningInputsFactory.create(context,actual,actualCapabilities,
-                new RootPlanningInputsFactory.Products(bindings,crossRun,domainCatalog,governance.openingInputs(),offline.offlineInputs()));
+                new RootPlanningInputsFactory.Products(bindings,crossRun,domainCatalog,governance.openingInputs(),offline.offlineInputs(),
+                        governmentInputs::captureM7Government));
         return planning;
     }
     /** Called only after genuine warm publication and before this catalog installs its planning products. */
