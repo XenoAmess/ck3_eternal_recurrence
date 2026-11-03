@@ -208,17 +208,20 @@ public final class StrictJson {
         text(value);
         try {
             String normalized = value;
-            if (normalized.matches("[0-9]{8}[^0-9].+")) {
+            if (normalized.length() > 4 && normalized.charAt(4) != '-'
+                    && normalized.matches("[0-9]{8}[^0-9].+")) {
                 normalized = LocalDate.parse(normalized.substring(0, 8), DateTimeFormatter.BASIC_ISO_DATE)
                         + normalized.substring(8);
-            } else if (normalized.matches("[0-9]{4}-W[0-9]{2}-[0-9].+")) {
+            } else if (normalized.length() > 5 && normalized.charAt(5) == 'W'
+                    && normalized.matches("[0-9]{4}-W[0-9]{2}-[0-9].+")) {
                 normalized = LocalDate.parse(normalized.substring(0, 10), DateTimeFormatter.ISO_WEEK_DATE)
                         + normalized.substring(10);
             }
             if (normalized.length() > 10 && normalized.charAt(10) == ' ') {
                 normalized = normalized.substring(0, 10) + "T" + normalized.substring(11);
             }
-            if (normalized.length() >= 17 && normalized.substring(11, 17).matches("[0-9]{6}")) {
+            if (normalized.length() >= 17 && normalized.charAt(13) != ':'
+                    && normalized.substring(11, 17).matches("[0-9]{6}")) {
                 normalized = normalized.substring(0, 13) + ":" + normalized.substring(13, 15)
                         + ":" + normalized.substring(15);
             }
