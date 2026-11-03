@@ -162,7 +162,8 @@ public final class RootArchivedNativeSourceReader {
 
     private static void requireWitness(Map<String, SourceWitness> witnesses, ExactRef source) {
         SourceWitness witness = witnesses.get(pathKey(source));
-        StrictJson.require(witness != null && sameFileReference(witness.source(), source),
+        StrictJson.require(witness != null && witness.source().bytes() == source.bytes()
+                && witness.source().sha256().equals(source.sha256()),
                 "archived source role lacks its actual persisted native witness");
     }
 
