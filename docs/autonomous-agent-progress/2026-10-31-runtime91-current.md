@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+2026-11-03 01:21:44.266961200Z实际1423 SAVE_CONFIRMED，1416 SETTLE，本局273日全部保存；saved date53152536/native805/public740/cycle39/pending=null，同Game77132／出生134380410301009189。Root已具名独验两冻结事件；保存帧805/740不混同cycle语义803/738。1380／265日23:06:03.785643500Z→1423／273日完整8140.481317700秒／新增8日＝1017.5601647125秒／日，包含全部失败、准备、冷恢复、UI／JFR和等待，10秒未达、非A/B。累计Root epoch102658.266961200／273＝376.03760791648…秒／日仅次指标，不替代本窗新增8分母。
+
+371旧stale门修复已实际越过；后继Native unavailable不意味着Game或AppMain为NULL。Root报告一次Game-only UI处理TheTide第一项关闭／Reckless后，Core／fresh恢复；focus、modal、time未隔离，不能归因单一UI动作。同host119020／出生134381255919633818的新8ff委托restart5于01:15:35.9118531Z进入LOOP，cold1008.417868秒，随后本次新增8日SAVE实证闭。原1410沿原件只读收束，无Game／DLL重启或ARM／resume／SAVE重放。后继68自动续行只是历史报告，不授未来健康或未确认保存。
+
+Writer reduced-tree followup、374和369B截至本SAVE仅正式软件、尚未实际采用；保存关闭后Root授权只合格Writer＋374无STOP方法体采用，不能把授权写成完成或收益。M7窄focus-only fallback两叶仍为源码实施，不授实装。G2最后完整验收仍6/8。见[1423保存与恢复来源](../maintenance/2026-11-03-quarkus-worker-save1423-recovery-sources.json)。保265及全部旧正文原字节；本次仅小份冻结metadata与算术，不读raw Save／Driver／canonical大体，不新增查询、GET、编测、部署或重载。
+
 2026-11-02 23:06:03.785643500Z实际1380 SAVE_CONFIRMED，1374 SETTLE，本局265日全部保存；saved date53152344/native775/public722/cycle38/pending=null，同Game77132／原birth。Root已具名独验冻结事件，保存帧775/722不混同cycle语义773/720。1341／258日22:24:21.646847Z→1380／265日完整2502.138796500秒／新增7日＝357.448399500秒／日，含359 GET、63零保存、监护失败恢复、采样、全部等待及64全链，10秒未达、非A/B；累计265仅另列次指标。
 
 359方法体官方更新与其后新增7日SAVE分别实证闭合，同119020／出生134381255919633818、188ed278委托、restart1@636a035e，无新增Game／Java重启或动作重控。源码／软件／正式／实际更新／后继SAVE各自记录；不授具体VIEW或其他分支、私有heap／thread对象、因果速度或未来健康。65续行只为运行owner历史交接，不计未确认保存。见[1380来源索引](../maintenance/2026-11-02-quarkus-worker-save1380-after-instrumentation359-sources.json)。旧全文逐字保留，只读冻结小metadata，不重复Save／Driver／canonical原件，不为文档编测或重载；JFR批次OBS／PLAN口径依独立后见勘误，不据此猜相位。

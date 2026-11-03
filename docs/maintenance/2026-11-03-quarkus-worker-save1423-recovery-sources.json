@@ -1,0 +1,116 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1423,
+  "SETTLE": 1416,
+  "confirmed_UTC": "2026-11-03T01:21:44.266961200Z",
+  "total_saved_days": 273,
+  "saved_frame": {
+    "date_raw": "53152536",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "805",
+    "played_character_id": "31254",
+    "revision": "740",
+    "snapshot_id": "native:805"
+  },
+  "completed_cycles": 39,
+  "pending_receipt": null,
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "main_window": {
+    "status": "INDEPENDENT_SAVED_FRONTIER_WINDOW",
+    "from_SAVE": 1380,
+    "to_SAVE": 1423,
+    "from_confirmed_at": "2026-11-02T23:06:03.785643500Z",
+    "to_confirmed_at": "2026-11-03T01:21:44.266961200Z",
+    "elapsed_seconds": "8140.481317700",
+    "new_SAVE_CONFIRMED_days": 8,
+    "seconds_per_new_saved_day": "1017.5601647125",
+    "cumulative_saved_days": 273,
+    "target_seconds_per_saved_day": 10,
+    "target_achieved": false,
+    "all_intervening_wall_time_included": true,
+    "limits": "All waiting, failures, preparation, recovery and zero-save batches in the endpoint interval remain counted. No A/B or source-specific speed claim; later actions/GET/waiting belong to the next window.",
+    "receipt_refs": [
+      {
+        "local_key": "root/save359641-verified.json",
+        "bytes": 1418,
+        "sha256": "4de3053f5cc83a006532b0d82b4ad3cd2b7723ca3185abd46c8ffa5a2183248f"
+      },
+      {
+        "local_key": "root/save371ui671-verified.json",
+        "bytes": 1423,
+        "sha256": "1f48ccbd198b67137d5fd23d58c0f647ac8efb45f9222e8fbef62ad51879b007"
+      }
+    ]
+  },
+  "secondary_cumulative_only": {
+    "root_epoch_UTC": "2026-11-01T20:50:46Z",
+    "root_epoch_seconds": "102658.266961200",
+    "denominator": 273,
+    "seconds_per_saved_day": "376.0376079164835164835164835",
+    "does_not_replace_main_new8_window": true,
+    "verifier_field_new_saved_days_is_epoch_total_not_window_delta": true
+  },
+  "recovery_owner_report": {
+    "qualification": "Root authorized frozen handoff report, not a new formal-writer live query or independent full lifecycle/UI reconstruction. SAVE and arithmetic independently compared only to the small named verifier/window/SUMMARY.",
+    "371_stale_ticket_gate_actual_passed": true,
+    "Native_unavailable_does_not_prove_Game_or_AppMain_NULL": true,
+    "Game_only_UI": "Root reports once Game-only UI handling of TheTide first option/closing and Reckless, followed by Core/fresh recovery. Focus, modal and time influences were not isolated; no single UI action is credited as proven cause.",
+    "same_host_pid": 119020,
+    "same_host_birth": "134381255919633818",
+    "delegate_prefix": "8ff",
+    "restart": 5,
+    "LOOP_UTC": "2026-11-03T01:15:35.9118531Z",
+    "cold_seconds": "1008.417868",
+    "Game_DLL_restart": 0,
+    "ARM_resume_SAVE_replay": 0,
+    "original_1410": "Read-only settlement of the original UNKNOWN; no resubmission or new deadline credit.",
+    "later_batch68": "Automatically continued historical handoff cutoff, not future health or extra saved-day credit."
+  },
+  "publication_vs_adoption_at_SAVE_cutoff": {
+    "Writer_reduced_tree_365_followup": "Formal/software only; not yet actually adopted at this SAVE cutoff.",
+    "374": "Formal/software only; not yet actually adopted at this SAVE cutoff.",
+    "369B": "Formal/software only; not yet actually adopted at this SAVE cutoff.",
+    "post_SAVE_authorization": "Root authorized only qualified no-STOP body adoption of Writer+374 after actual SAVE close. Authorization is not completion, adoption or speed evidence.",
+    "focus_only_fallback": "Two-leaf M7 source implementation pending; no adoption/behavior credit."
+  },
+  "G2_last_complete_acceptance": "6/8",
+  "sources": [
+    {
+      "local_key": "root/save371ui671-verified.json",
+      "bytes": 1423,
+      "sha256": "1f48ccbd198b67137d5fd23d58c0f647ac8efb45f9222e8fbef62ad51879b007"
+    },
+    {
+      "local_key": "root/save371ui671-window.json",
+      "bytes": 1113,
+      "sha256": "2d1a25c6df1a864821863c31637c571dc60e621c843c932f640c24f6aa5d1502"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed371ui671/SUMMARY.json",
+      "bytes": 6864,
+      "sha256": "cc55306334b439358c64bd3196a2074e4023efc4d228397794c93cb7c38ce9e0"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed371ui671/00001416.json",
+      "bytes": 99655,
+      "sha256": "dd9a03cf374912b97790a4c0200799300f142cf493da115f3eaec08fbace96eb",
+      "qualification": "Root independently read named frozen canonical event; formal writer compares only the small verifier/SUMMARY metadata and does not read event/body."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmed371ui671/00001423.json",
+      "bytes": 98642,
+      "sha256": "ef9b521ca948f4138bc502b7bd7cde8b0a5c67f20d7ac9ea7a98d7822b07b8c9",
+      "qualification": "Root independently read named frozen canonical event; formal writer compares only the small verifier/SUMMARY metadata and does not read event/body."
+    }
+  ],
+  "limits": [
+    "The1380->1423 endpoint interval includes every failure, preparation, cold recovery, UI/JFR and waiting window; no short子window or cumulative273 denominator substitutes for new8. Target10 not reached, not A/B or source-specific speed.",
+    "Saved805/740 is distinct from completed-cycle semantic803/738. No Root preparation helper/cycle frame is substituted for the saved pair.",
+    "All machine raw SAVE/Driver/canonical event bodies remain private and were not opened for this publication.",
+    "Newsource publication/software, actual adoption, actual branch use and SAVE remain separate. No future health, UI causality or actual loading inferred.",
+    "All previous AGENTS/runtime content bytes preserved via insertion-only inverse proof; no compilation, test, Game query, GET, restart, deployment or current source write performed."
+  ]
+}

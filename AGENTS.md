@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-03 实际保存切点：1423确认本局273日，同局恢复后新增保存
+
+- 1423于01:21:44.266961200Z真实SAVE_CONFIRMED，1416 SETTLE；本局累计273日全部保存，saved cycle39/date53152536/native805/public740、pending=null，同Game77132／出生134380410301009189。Root已具名独验两冻结事件。1380→1423完整8140.481317700秒／新增8保存日＝1017.5601647125秒／日，所有失败、冷恢复、UI／JFR及等待全计；10秒目标未达、非A/B。累计Root epoch102658.266961200秒／273＝376.03760791648…秒／日仅次指标，不替代新增8分母。
+- 371旧stale门修复已实际越过；后继Native unavailable不证明Game或AppMain为NULL。Root报告一次Game-only UI处理TheTide第一项关闭／Reckless后Core及fresh恢复，focus／modal／time影响未隔离；同host119020的新8ff委托restart5于01:15:35.9118531Z进入LOOP，冷恢复1008.417868秒后确认本次新增保存。无Game／DLL重启或ARM／resume／SAVE重放，原1410只读收束；68续行仅历史切点，不授未来健康。Writer、374、369B截至本SAVE尚未实际采用，保存后获准的Writer＋374无STOP方法体采用不能记为已完成。G2仍6/8；来源见[1423保存与恢复索引](docs/maintenance/2026-11-03-quarkus-worker-save1423-recovery-sources.json)。全部旧切点原字节保留，文档不触发编测或运行操作。
+
 ## 2026-11-02 实际保存切点：1380确认本局265日，359更新后新增保存闭环
 
 - 1380于23:06:03.785643500Z真实SAVE_CONFIRMED，1374 SETTLE；本局累计265日全部保存，saved cycle38/date53152344/native775/public722、pending=null，同Game77132／原birth。Root已具名独验两冻结事件。1341→1380完整2502.138796500秒／新增7保存日＝357.448399500秒／日，包含359 GET、63零保存、监护失败恢复、采样等待及64全链；10秒目标未达，非A/B，不用累计265替代新增7分母。
