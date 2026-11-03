@@ -1,0 +1,65 @@
+{
+  "schema": "ck3.actual-worker-loop-frontier.v1",
+  "LOOP_UTC": "2026-11-03T03:30:26.721503800Z",
+  "START_UTC": "2026-11-03T03:16:39.622828100Z",
+  "START_to_LOOP_seconds": "827.098675700",
+  "fixed_loop_evidence_cutoff_UTC": "2026-11-03T03:33:08.781832+00:00",
+  "same_host": {
+    "pid": 125308,
+    "birth": "134381493561057204"
+  },
+  "same_delegate": "e61fcf9a-c790-4f5d-9e9e-9f3d5af67bfc",
+  "same_Game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "next_sequence": 73,
+  "ordinary_batch_started_at_LOOP_record": false,
+  "total_saved_days": 281,
+  "last_confirmed_SAVE": 1460,
+  "new_SAVE_since1460": false,
+  "new_confirmed_saved_days_since1460": 0,
+  "source_count": 8,
+  "named_original_compiled_outputs": 86,
+  "previous_frozen_cutoff_preserved": {
+    "source_index": "docs/maintenance/2026-11-03-quarkus-worker-save1460-cpu4-sources.json",
+    "bytes": 8143,
+    "sha256": "83c2b7601fa643420892fe749dfc183b55330ce5c0c103bfd305fb29864d4291",
+    "BOOT_at_previous_cutoff": true,
+    "new_LOOP_is_later_evidence_not_backfill": true
+  },
+  "sources": [
+    {
+      "local_key": "root/loop399-verified.json",
+      "bytes": 1769,
+      "sha256": "695baba1903956aba0f7c4752646169fc32f93f247c6978776e9a1772deb5e01"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort399-post-end72-retry02/loop-evidence/ACTUAL-LOOP.json",
+      "bytes": 4175,
+      "sha256": "2b365ac26e5f34e52954b73ac31c2e51cd8c765debdd239f6a849c05c4f92cec"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort399-post-end72-retry02/loop-evidence/ACTUAL-LOOP.raw.json",
+      "bytes": 508,
+      "sha256": "b76e704503fd9b8bf8a4e2edc16cab45a158f35aca38e968745c199307848e0b"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/attempt10/LIFECYCLE-001.json",
+      "bytes": 792,
+      "sha256": "5594006d121cbd125bed3f06d742b0f79ccfe47aab49e4d8559cea216e35bce9"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort399-post-end72-retry02/loop-evidence/OWNER-LOOP.frozen.json",
+      "bytes": 1651,
+      "sha256": "526772aa8d6dc65e9015024bf8977615401289eb57b40cafd33972e7f337db92"
+    }
+  ],
+  "limits": [
+    "Frozen actual START and LOOP on the same host/delegate/Game only; no future health, new SAVE or finite seconds-per-new-saved-day credit.",
+    "Source adoption/LOOP do not establish individual method branch, cache hits, source-specific speed, A/B or hardware behavior.",
+    "827.098675700s recovery and all intervening waiting after1460 remain in1460-to-next-confirmation; no closed next window exists here.",
+    "Only four named small frozen receipts and Root small verifier read; HEAD95112/body/thread/Save/Driver were not read for this publication.",
+    "Prior281/273/265 documentation bytes preserved; no new compiler/Test/GET/Game/worker/reload or deployment action."
+  ]
+}
