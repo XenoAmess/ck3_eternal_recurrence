@@ -906,8 +906,12 @@ public final class SessionController {
             }
             if (checkpointsEnabled && dirty) {
                 Ready fresh = run.ready(true);
-                if (fresh.checkpointEligibility() == CheckpointEligibility.SAFE) run.save(fresh);
-                else { run.terminal = Terminal.CHECKPOINT_DEFERRED; run.detail = "dirty tail retained: " + fresh.checkpointEligibility(); }
+                // CK3 fixed-365 year: 24 raw ticks per day, measured from the last confirmed physical SAVE.
+                if (savedPair.isEmpty() || fresh.request().before().frame().identity().dateRaw()
+                        .subtract(savedPair.orElseThrow().frame().frame().identity().dateRaw()).compareTo(BigInteger.valueOf(8_760)) >= 0) {
+                    if (fresh.checkpointEligibility() == CheckpointEligibility.SAFE) run.save(fresh);
+                    else { run.terminal = Terminal.CHECKPOINT_DEFERRED; run.detail = "dirty tail retained: " + fresh.checkpointEligibility(); }
+                }
             }
         } catch (End end) { run.terminal = end.terminal; run.detail = end.getMessage(); }
         catch (InterruptedException interrupted) {
@@ -1147,8 +1151,10 @@ public final class SessionController {
             if(terminalConstraint.isPresent())throw new End(Terminal.ACTION_REJECTED,
                     "requested terminal operation requires its actual terminal decision; ordinary planning and SAVE were not entered");
             Ready ready=(Ready)current;
-            if(checkpointsEnabled&&dirty&&eligibleSinceSave>=limits.checkpointEveryEligibleAdvances()
-                    &&ready.checkpointEligibility()==CheckpointEligibility.SAFE)return new SaveRound(ready);
+            // Ordinary automatic SAVE uses elapsed game date, never the number of eligible Life actions.
+            if(checkpointsEnabled&&dirty&&ready.checkpointEligibility()==CheckpointEligibility.SAFE
+                    &&(savedPair.isEmpty()||ready.request().before().frame().identity().dateRaw()
+                    .subtract(savedPair.orElseThrow().frame().frame().identity().dateRaw()).compareTo(BigInteger.valueOf(8_760))>=0))return new SaveRound(ready);
             PlanningResult planned=measured(Phase.PLANNING,()->planner.plan(ready.request(),completion));lastPlan=Optional.of(planned.trace());
             StrictJson.require(planned.trace().before().equals(ready.request().before()),"planner result crossed current observation");
             requireTime();

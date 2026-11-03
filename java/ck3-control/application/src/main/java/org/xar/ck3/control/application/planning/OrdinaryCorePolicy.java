@@ -141,10 +141,6 @@ public final class OrdinaryCorePolicy implements OrdinaryPolicy {
         if (history.latest("save-checkpoint") == 0) return select(request, current, "baseline", "save-checkpoint",
                 "create a native CK3 recovery point before strategic mutations", empty(), Optional.empty());
 
-        int saved = history.latest("save-checkpoint"), disbanded = history.latestPrefix("disband-army-");
-        if (disbanded > saved && armies.isEmpty()) return select(request, current, "native_postwar_checkpoint", "save-checkpoint",
-                "persist verified peaceful postwar cleanup before long-term governance",
-                empty().with("postwar_disband_history_index", new IntegerValue(BigInteger.valueOf(disbanded))), Optional.empty());
 
         Decision councilDecision = Objects.requireNonNull(council.evaluate(request, current));
         if (councilDecision instanceof Annotate annotation) { requireAnnotation(current, annotation.retained()); current = annotation.retained(); }
@@ -210,13 +206,8 @@ public final class OrdinaryCorePolicy implements OrdinaryPolicy {
         int legacyDisband = history.latest("war-disband-armies");
         if (legacyDisband == 0 || legacyDisband < victory) return select(request, current, "postwar", "war-disband-armies",
                 "remove raised-army costs after confirmed victory", empty(), Optional.of(Domain.war));
-        int strategicChange = Math.max(victory, Math.max(legacyDisband, history.latest("marriage-confirm-response")));
-        if (saved < strategicChange) return select(request, current, "post_milestone_checkpoint", "save-checkpoint",
-                "persist the completed war and alliance milestones in a native save", empty(), Optional.empty());
-        long cycles = history.countSuccessfulAfter(saved, step -> isAdvance.test(step) || step.equals("economic-event-cycle"));
-        return cycles >= 3 ? select(request, current, "periodic_checkpoint", "save-checkpoint",
-                "three completed event cycles have elapsed since the last native save", empty(), Optional.empty())
-                : select(request, current, "current_life_loop", "life-advance",
+        // Ordinary annual SAVE scheduling belongs to Controller's last confirmed physical pair/date gate.
+        return select(request, current, "current_life_loop", "life-advance",
                 "advance to the next visible event and reassess the realm", empty(), Optional.empty());
     }
 
