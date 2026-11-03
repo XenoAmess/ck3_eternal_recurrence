@@ -172,7 +172,7 @@ public final class DriverPersistentPlanningState {
             ActionPorts.RecordedEvidenceVerifier evidence,WriterContracts.Head head,LifeAdvanceEvidence.BoundFrameVerifier lifeFrames,
             ActionPorts.OutcomeArchive archive) {
         if(!current.auxiliary().members().containsKey(COOLDOWN_STATE))return Optional.empty();
-        Obj aux=current.auxiliary();List<ExactRef> processed=new ArrayList<>(processed(aux,archive));
+        Obj aux=current.auxiliary();List<ExactRef> processed=new ArrayList<>(processed(aux,archive));Snapshot currentSnapshot=null;boolean snapshotMemoChecked=false;
         for(ActionReceipt receipt:canonical) {
             if(!(receipt.command().origin() instanceof CommandOrigin.Gameplay gameplay)
                     ||!gameplay.before().game().equals(frame.identity().game())
@@ -185,7 +185,7 @@ public final class DriverPersistentPlanningState {
             var result=new TurnResult(value.step().value(),AdvanceResult.progressStatus(value.progressStatus()),value.paused(),Optional.of(value.startDateRaw()),Optional.of(value.endDateRaw()));
             var outcome=new Outcome(true,Optional.of(value.step().value()),Optional.of(result));
             var reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,cooldownSnapshot(ending.semantic()),after);
-            reduced=DeclarationOpportunityCooldown.view(reduced.state(),cooldownSnapshot(frame.semantic()),DeclarationOpportunityCooldown.frame(frame));
+            State viewState=reduced.state();Snapshot observedSnapshot=currentSnapshot;if(observedSnapshot==null)observedSnapshot=cooldownSnapshot(frame.semantic());reduced=DeclarationOpportunityCooldown.view(viewState,observedSnapshot,DeclarationOpportunityCooldown.frame(frame));if(!snapshotMemoChecked){snapshotMemoChecked=true;if(snapshotProjectionSafe(frame.semantic(),0))currentSnapshot=observedSnapshot;}
             processed.add(original);require(processed.size()<=MAX_CHAIN,"finite persistent life receipt bound exceeded");
             RawJson endingSemantic=RawJson.fullMaterial(DriverJson.encode(ending.semantic()));
             ExactRef endingSemanticRef=archive.preserveMaterial(endingSemantic);
@@ -194,7 +194,7 @@ public final class DriverPersistentPlanningState {
                     "result",ref(value.originalResultRef())));
             var publication=persist(current,frame,aux,source(aux),"LIFE",input,reduced,processed,archive);aux=publication.auxiliary();
         }
-        State state=state(aux,frame);var reduced=DeclarationOpportunityCooldown.view(state,cooldownSnapshot(frame.semantic()),DeclarationOpportunityCooldown.frame(frame));
+        State state=state(aux,frame);var reduced=DeclarationOpportunityCooldown.view(state,currentSnapshot!=null?currentSnapshot:cooldownSnapshot(frame.semantic()),DeclarationOpportunityCooldown.frame(frame));
         Obj nextState=node(DeclarationOpportunityCooldown.encode(reduced.state())),nextView=node(DeclarationOpportunityCooldown.encodeView(reduced.view()));
         if(nextState.equals(aux.get(COOLDOWN_STATE))&&nextView.equals(aux.get(DeclarationOpportunityCooldown.VIEW_KEY)))
             return aux.equals(current.auxiliary())?Optional.empty():Optional.of(new Publication(current,aux,source(aux)));
