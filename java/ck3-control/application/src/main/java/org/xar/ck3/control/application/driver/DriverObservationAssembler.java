@@ -198,11 +198,15 @@ public final class DriverObservationAssembler {
     /** Private helper holds the existing canonical normalization body, receiving only state parsed in the same call. */
     private static OpportunityJson.Obj normalizeCanonicalState(OpportunityJson.Obj raw, ObservedFrame original) {
         // Preserve historical military's order and parser; contracts cannot depend on a military/application module.
-        OpportunityJson.Obj military=canonicalMilitaryState(raw);
+        Objects.requireNonNull(raw);
         var nativeTree=(com.fasterxml.jackson.databind.node.ObjectNode)DriverJson.toNode(raw);
+        var wars=NativeActiveWarsCodec.normalize(nativeTree.get("active_wars"));
+        var armies=ArmyStateProjection.playerArmiesFromState(wars,nativeTree.get("player_armies"));
+        Map<String,OpportunityJson.Value> fields=new LinkedHashMap<>(raw.members());
+        fields.put("active_wars",DriverJson.fromNode(NativeActiveWarsCodec.encode(wars)));
+        fields.put("player_armies",DriverJson.fromNode(NativeArmiesCodec.encode(armies)));
         var canonical=NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(nativeTree),
                 original.snapshotId(),original.nativeRevision()).semantic();
-        Map<String,OpportunityJson.Value> fields=new LinkedHashMap<>(military.members());
         // Untouched original fields retain their lexical JSON tokens; derived fields cross the explicit normalized bridge.
         for(String key:NativeSemanticNormalizer.ownedFields())
             if(canonical.has(key))fields.put(key,canonicalField(raw,key,canonical.get(key)));
