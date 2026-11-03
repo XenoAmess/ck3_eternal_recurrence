@@ -101,9 +101,9 @@ public final class DriverActionHistoryCodec {
     public static Source decode(RawJson raw) {
         Obj row=DriverJson.object(raw.bytes(),MAX_SOURCE_BYTES);
         boolean gift=new Text(GIFT_SCHEMA).equals(row.get("schema"));
-        var fields=new java.util.HashSet<>(Set.of("schema","action_id","body_sha256","durable_sequence","receipt","record","outcome",
-                "representation","recording","canonical_reason","result","error","evidence","producers"));
-        if(gift)fields.addAll(Set.of("gift_originals","receipt_result","submit_public_numbers","receipt_public_numbers"));
+        var fields=gift?Set.of("schema","action_id","body_sha256","durable_sequence","receipt","record","outcome",
+                "representation","recording","canonical_reason","result","error","evidence","producers","gift_originals","receipt_result","submit_public_numbers","receipt_public_numbers")
+                :Set.of("schema","action_id","body_sha256","durable_sequence","receipt","record","outcome","representation","recording","canonical_reason","result","error","evidence","producers");
         StrictJson.require(row.members().keySet().equals(fields),"closed original action history source fields required");
         StrictJson.require(gift||text(row.get("schema"),"schema").equals(SCHEMA),"original action history source schema required");
         var evidence=new ArrayList<Evidence>();for(Value value:array(row.get("evidence"),"evidence")) {
