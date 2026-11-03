@@ -1,6 +1,25 @@
 package org.xar.ck3.control.service.root;
 
 import static org.junit.jupiter.api.Assertions.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.math.BigInteger;
+import java.time.Instant;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.GuardEvidence;
+import org.xar.ck3.control.application.action.NativeRequest;
+import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.application.action.OperationKey;
+import org.xar.ck3.control.contracts.PythonOnlyUInt64;
+import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
+import org.xar.ck3.control.g2.common.G2Source;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.ByteBuffer;
 import java.nio.charset.CodingErrorAction;
@@ -125,7 +144,7 @@ final class RootDecisionDisplayTest {
         ObjectNode binding = StrictJson.object(StrictJson.parse(bindingBytes, 16_384), Set.of(
                 "schema", "status", "publication", "written_at_utc", "machine_id", "session_id", "game", "publisher",
                 "decision_text_file", "text_bytes", "text_sha256", "creates_desktop_window", "OBS_draw_ack", "screen_draw_verified"));
-        assertEquals("xar.java-root-decision-text/v1", StrictJson.text(binding.get("schema")));
+        assertEquals("xar.java-root-decision-text/v2", StrictJson.text(binding.get("schema")));
         assertEquals("TEXT_PUBLISHED", StrictJson.text(binding.get("status")));
         assertEquals(publication, StrictJson.integer(binding.get("publication"), 0, StrictJson.MAX_SAFE_INTEGER));
         assertEquals(DecisionDisplayTest.NOW.toString(), StrictJson.text(binding.get("written_at_utc")));
@@ -135,12 +154,18 @@ final class RootDecisionDisplayTest {
         assertTrue(binding.get("game").get("creation_filetime").isTextual());
         assertEquals(command.origin().game().creationFiletime().value().toString(),
                 StrictJson.text(binding.get("game").get("creation_filetime")));
-        ObjectNode publisher = StrictJson.object(binding.get("publisher"), Set.of("pid", "start_instant_utc", "executable"));
+        ObjectNode publisher = StrictJson.object(binding.get("publisher"), Set.of("pid", "start_instant_utc", "executable",
+                "instance_started_nano_time", "instance_started_at_utc", "instance_id"));
         ProcessHandle process = ProcessHandle.current();
         ProcessHandle.Info info = process.info();
         assertEquals(process.pid(), StrictJson.integer(publisher.get("pid"), 1, StrictJson.MAX_SAFE_INTEGER));
         assertEquals(info.startInstant().orElseThrow().toString(), StrictJson.text(publisher.get("start_instant_utc")));
         assertEquals(info.command().orElseThrow(), StrictJson.text(publisher.get("executable")));
+        String instanceId = StrictJson.text(publisher.get("instance_id"));
+        assertEquals(instanceId, UUID.fromString(instanceId).toString());
+        String instanceNano = StrictJson.text(publisher.get("instance_started_nano_time"));
+        assertEquals(instanceNano, Long.toString(Long.parseLong(instanceNano)));
+        assertEquals(DecisionDisplayTest.NOW.toString(), StrictJson.text(publisher.get("instance_started_at_utc")));
         assertEquals(textFile.toAbsolutePath().normalize().toString(), StrictJson.text(binding.get("decision_text_file")));
         assertEquals(textBytes.length, StrictJson.integer(binding.get("text_bytes"), 0, 32_768));
         assertEquals(HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(textBytes)),
@@ -163,4 +188,116 @@ final class RootDecisionDisplayTest {
         assertFalse(status.componentTextUpdated());
         assertFalse(status.screenDrawVerified());
     }
+    @TempDir Path root;
+    private static final Instant NOW = Instant.parse("2026-10-26T19:00:00Z");
+
+    private Clock clock() { return Clock.fixed(NOW, ZoneOffset.UTC); }
+    private static ActionCommand command(String id, String operation) {
+        var ref = new ExactRef("D:/display-software-vector/source.json", 1, "a".repeat(64));
+        var source = new G2Source("display-software-vector", NOW.toString(), "1.20.0.4", ref);
+        var game = new GameGeneration(123, new PythonOnlyUInt64(new BigInteger("134000000000000001")));
+        var before = new ProposalLifecycle.ObservationIdentity(source.machineId(), game,
+                new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(BigInteger.valueOf(29829),
+                        StrictJson.UINT64_MAX.subtract(BigInteger.ONE), BigInteger.valueOf(24000)),
+                        "display-vector", StrictJson.UINT64_MAX, "episode-display"), 1);
+        var expected = new ProposalLifecycle.ExpectedPostcondition(1, before, source, "display-vector/v1",
+                List.of(new ProposalLifecycle.ExpectedBoolean(new ProposalLifecycle.FieldKey("paused"), true)));
+        return new ActionCommand(id, before, source, "display-session", new OperationKey(operation),
+                new OpportunityJson.Obj(Map.of()), expected, new JointBudgetSelector.Claims(Set.of(), Set.of(), Set.of(), Set.of()),
+                NOW.plusSeconds(30));
+    }
+    private static ActionReceipt unknown(ActionCommand original, String request, long sequence) {
+        var evidence = original.source().sourceRef();
+        var guard = new GuardEvidence(original.before(), original.source(), original.sessionId(), BigInteger.ONE,
+                original.operation(), evidence, evidence, "display-vector", NOW, original.deadline());
+        var attempt = new ActionState.Attempt(request, NOW, guard, new NativeRequest(original.operation().value(),
+                Optional.empty(), new RawJson(new byte[]{'{','}'})));
+        return new ActionReceipt(1, sequence, original, ActionCodec.bodySha256(original),
+                new ActionState.Unknown(Optional.of(attempt), Optional.empty(), "software transport completion unknown", List.of(evidence)));
+    }
+    private JsonNode manifest() throws Exception {
+        return StrictJson.parse(Files.readAllBytes(root.resolve("decision-display/current.binding.json")));
+    }
+    private byte[] text() throws Exception { return Files.readAllBytes(root.resolve("decision-display/current.txt")); }
+
+    @Test void actualTypedBeforeAndUnknownPublishBoundUtf8TextWithoutDesktopOrDrawCredit() throws Exception {
+        try (var publisher = new RootDecisionDisplay(clock(), root)) {
+            var command = command("publisher-action", "pause-map");
+            publisher.feed().preparing(command, List::of, false);
+            String before = new String(text(), StandardCharsets.UTF_8);
+            assertTrue(before.contains("准备执行"));
+            assertTrue(before.contains("尚未确认提交"));
+            publisher.feed().returned(unknown(command, "original-native-request", 4));
+            byte[] bytes = text();
+            String after = new String(bytes, StandardCharsets.UTF_8);
+            assertTrue(after.startsWith(DecisionDisplayText.TITLE + "\n"));
+            assertTrue(after.contains("原操作结果仍待确认"));
+            assertTrue(after.contains("不能重复提交"));
+            assertTrue(after.contains("近期记录"));
+            assertFalse(after.contains("original-native-request"));
+            assertFalse(after.contains("134000000000000001"));
+            var binding = manifest();
+            assertEquals("xar.java-root-decision-text/v2", binding.path("schema").asText());
+            assertEquals("TEXT_PUBLISHED", binding.path("status").asText());
+            assertEquals(bytes.length, binding.path("text_bytes").intValue());
+            assertEquals(HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes)),
+                    binding.path("text_sha256").asText());
+            assertEquals(root.resolve("decision-display/current.txt").toString(), binding.path("decision_text_file").asText());
+            var game = StrictJson.object(binding.get("game"), Set.of("pid", "creation_filetime"));
+            assertEquals(command.before().game().pid(), StrictJson.integer(game.get("pid"), 1, 4_294_967_295L));
+            assertEquals(command.before().game().creationFiletime().value().toString(),
+                    StrictJson.text(game.get("creation_filetime")));
+            assertFalse(binding.path("creates_desktop_window").booleanValue());
+            assertFalse(binding.path("OBS_draw_ack").booleanValue());
+            assertFalse(binding.path("screen_draw_verified").booleanValue());
+            var process = binding.path("publisher");
+            assertEquals(ProcessHandle.current().pid(), process.path("pid").longValue());
+            assertEquals(process.path("instance_id").asText(), UUID.fromString(process.path("instance_id").asText()).toString());
+            Long.parseLong(process.path("instance_started_nano_time").asText());
+            StrictJson.utc(process.path("instance_started_at_utc").asText());
+            assertEquals(DecisionDisplay.Delivery.RENDERER_UPDATED, publisher.feed().snapshot().delivery());
+            assertFalse(publisher.status().showing());
+            assertFalse(publisher.status().alwaysOnTop());
+            assertFalse(publisher.status().componentTextUpdated());
+            assertFalse(publisher.status().screenDrawVerified());
+        }
+    }
+
+    @Test void serialObjectsInSameJvmHaveDistinctOrderedInstancesAndKeepTheirLocalCounters() throws Exception {
+        JsonNode before;
+        try (var first = new RootDecisionDisplay(clock(), root)) {
+            var command = command("first-publisher", "pause-map");
+            first.feed().preparing(command, List::of, false);
+            first.feed().returned(unknown(command, "first-request", 4));
+            before = manifest();
+            assertEquals(2, before.path("publication").longValue());
+        }
+        try (var second = new RootDecisionDisplay(clock(), root)) {
+            second.feed().preparing(command("second-publisher", "pause-map"), List::of, false);
+            var after = manifest();
+            assertEquals(1, after.path("publication").longValue());
+            assertEquals(before.path("game"), after.path("game"));
+            assertEquals(before.path("publisher").path("pid"), after.path("publisher").path("pid"));
+            assertEquals(before.path("publisher").path("start_instant_utc"), after.path("publisher").path("start_instant_utc"));
+            assertEquals(before.path("publisher").path("executable"), after.path("publisher").path("executable"));
+            assertNotEquals(before.path("publisher").path("instance_id"), after.path("publisher").path("instance_id"));
+            long earlier = Long.parseLong(before.path("publisher").path("instance_started_nano_time").asText());
+            long later = Long.parseLong(after.path("publisher").path("instance_started_nano_time").asText());
+            assertTrue(later - earlier > 0); // Same JVM, a bounded test interval; signed subtraction handles wrap.
+            assertEquals(before.path("publisher").path("instance_started_at_utc"), after.path("publisher").path("instance_started_at_utc"));
+        }
+    }
+
+    @Test void closedPublisherReportsUnavailableWithoutWritingOrReopening() throws Exception {
+        var publisher = new RootDecisionDisplay(clock(), root);
+        publisher.close();
+        publisher.feed().preparing(command("closed-publisher", "pause-map"), List::of, false);
+        assertEquals(DecisionDisplay.Delivery.UNAVAILABLE, publisher.feed().snapshot().delivery());
+        assertTrue(publisher.status().unavailable().orElseThrow().contains("closed"));
+        assertFalse(Files.exists(root.resolve("decision-display/current.txt")));
+        assertFalse(Files.exists(root.resolve("decision-display/current.binding.json")));
+        assertFalse(publisher.status().showing());
+        assertFalse(publisher.status().screenDrawVerified());
+    }
+
 }

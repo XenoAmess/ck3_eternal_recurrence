@@ -60,7 +60,7 @@ def decision_publisher_api():
 
 def read_java_decision_binding(path, *, game, expected=None, identity_reader=None, retry_seconds=2.0):
     """Read one bounded Java publication; publication does not prove OBS drawing."""
-    schema = "xar.java-root-decision-text/v1"
+    schemas = ("xar.java-root-decision-text/v1", "xar.java-root-decision-text/v2")
     if type(retry_seconds) not in (int, float) or not 0 <= retry_seconds <= 2.0:
         raise ValueError("Java decision binding retry must be finite and at most two seconds")
     binding_path = Path(path).resolve()
@@ -96,6 +96,25 @@ def read_java_decision_binding(path, *, game, expected=None, identity_reader=Non
             raise ValueError("Invalid Java decision UTC instant") from error
         return (elapsed.days * 86400 + elapsed.seconds) * 1000 + elapsed.microseconds // 1000
 
+    def signed_nano_time(value):
+        if not isinstance(value, str) or not value or len(value) > 20:
+            raise ValueError("Exact signed Java instance nanoTime string required")
+        try:
+            number = int(value)
+        except ValueError as error:
+            raise ValueError("Exact signed Java instance nanoTime string required") from error
+        if str(number) != value or not -(1 << 63) <= number < (1 << 63):
+            raise ValueError("Exact signed Java instance nanoTime string required")
+        return number
+
+    def instance_id(value):
+        if (not isinstance(value, str) or len(value) != 36
+                or any(value[index] != "-" for index in (8, 13, 18, 23))
+                or any(char not in "0123456789abcdef" for index, char in enumerate(value)
+                       if index not in (8, 13, 18, 23))):
+            raise ValueError("Canonical Java publisher instance UUID required")
+        return value
+
     def retry(error):
         remaining = deadline - time.monotonic()
         if remaining <= 0:
@@ -110,7 +129,7 @@ def read_java_decision_binding(path, *, game, expected=None, identity_reader=Non
             retry(error)
             continue
         manifest = json.loads(manifest_raw.decode("utf-8"))
-        if (not isinstance(manifest, dict) or manifest.get("schema") != schema
+        if (not isinstance(manifest, dict) or manifest.get("schema") not in schemas
                 or manifest.get("status") != "TEXT_PUBLISHED"
                 or manifest.get("creates_desktop_window") is not False
                 or manifest.get("OBS_draw_ack") is not False
@@ -118,6 +137,7 @@ def read_java_decision_binding(path, *, game, expected=None, identity_reader=Non
                 or any(not isinstance(manifest.get(key), str) or not manifest[key].strip()
                        for key in ("machine_id", "session_id"))):
             raise ValueError("Actual Java decision publication schema and identity are required")
+        schema = manifest["schema"]
         utc_milliseconds(manifest.get("written_at_utc"))
         manifest_game = manifest.get("game")
         if not isinstance(manifest_game, dict):
@@ -143,6 +163,11 @@ def read_java_decision_binding(path, *, game, expected=None, identity_reader=Non
                 or not Path(publisher["executable"]).is_absolute()):
             raise ValueError("Java decision publisher PID and executable are required")
         start_ms = utc_milliseconds(publisher.get("start_instant_utc"))
+        instance = None
+        if schema == schemas[1]:
+            instance = signed_nano_time(publisher.get("instance_started_nano_time"))
+            utc_milliseconds(publisher.get("instance_started_at_utc"))
+            instance_id(publisher.get("instance_id"))
         actual = identity_reader(publisher["pid"])
         if (not isinstance(actual, dict) or type(actual.get("pid")) is not int
                 or actual["pid"] != publisher["pid"]
@@ -159,11 +184,61 @@ def read_java_decision_binding(path, *, game, expected=None, identity_reader=Non
             "publisher": {key: actual[key] for key in ("pid", "creation_filetime", "executable")},
             "decision_text_file": str(text_path), "publication": manifest["publication"],
         }
+        if instance is not None:
+            normalized["publisher"].update(instance_started_nano_time=instance,
+                instance_started_at_utc=publisher["instance_started_at_utc"], instance_id=publisher["instance_id"])
+            normalized["retired_publisher_instances"] = []
         if expected is not None:
-            if (any(expected.get(key) != value for key, value in normalized.items() if key != "publication")
-                    or type(expected.get("publication")) is not int or expected["publication"] <= 0
-                    or normalized["publication"] < expected["publication"]):
+            if (any(expected.get(key) != value for key, value in normalized.items()
+                    if key not in ("publication", "publisher", "retired_publisher_instances"))
+                    or type(expected.get("publication")) is not int or expected["publication"] <= 0):
                 raise ValueError("Java decision publisher binding changed or publication regressed")
+            prior = expected.get("publisher")
+            if (not isinstance(prior, dict) or any(prior.get(key) != normalized["publisher"][key]
+                    for key in ("pid", "creation_filetime", "executable"))):
+                raise ValueError("Java decision publisher process changed")
+            if instance is None:
+                if prior != normalized["publisher"] or normalized["publication"] < expected["publication"]:
+                    raise ValueError("Java decision publisher binding changed or publication regressed")
+            else:
+                prior_instance = prior.get("instance_started_nano_time")
+                if type(prior_instance) is not int or not -(1 << 63) <= prior_instance < (1 << 63):
+                    raise ValueError("Expected Java publisher instance identity required")
+                utc_milliseconds(prior.get("instance_started_at_utc"))
+                prior_id = instance_id(prior.get("instance_id"))
+                retired = expected.get("retired_publisher_instances")
+                if not isinstance(retired, list) or len(retired) > 128:
+                    raise ValueError("Bounded recording publisher instance history required")
+                seen = {prior_id}
+                for entry in retired:
+                    if (not isinstance(entry, dict) or set(entry) != {"instance_id",
+                            "instance_started_nano_time", "instance_started_at_utc"}
+                            or type(entry["instance_started_nano_time"]) is not int
+                            or not -(1 << 63) <= entry["instance_started_nano_time"] < (1 << 63)):
+                        raise ValueError("Exact retired publisher instance identity required")
+                    retired_id = instance_id(entry["instance_id"])
+                    utc_milliseconds(entry["instance_started_at_utc"])
+                    if retired_id in seen:
+                        raise ValueError("Recording publisher instance identity was reused")
+                    seen.add(retired_id)
+                if publisher["instance_id"] in seen and publisher["instance_id"] != prior_id:
+                    raise ValueError("Retired Java publisher instance cannot return")
+                # nanoTime ordering is valid only inside the exact live Java birth above.
+                # Modular subtraction handles signed-long wrap; never order instances by wall time.
+                delta = (instance - prior_instance) & ((1 << 64) - 1)
+                if delta == 0:
+                    if (prior_id != publisher["instance_id"]
+                            or prior.get("instance_started_at_utc") != publisher["instance_started_at_utc"]
+                            or normalized["publication"] < expected["publication"]):
+                        raise ValueError("Java decision instance publication regressed")
+                elif delta >= (1 << 63) or prior_id == publisher["instance_id"]:
+                    raise ValueError("Java decision publisher instance regressed")
+                else:
+                    if len(retired) == 128:
+                        raise ValueError("Publisher instance history is full; explicit new recording binding required")
+                    retired = retired + [{key: prior[key] for key in ("instance_id",
+                        "instance_started_nano_time", "instance_started_at_utc")}]
+                normalized["retired_publisher_instances"] = [dict(entry) for entry in retired]
         try:
             raw = bounded_bytes(text_path, 32768)
         except PermissionError as error:
@@ -179,18 +254,18 @@ def read_java_decision_binding(path, *, game, expected=None, identity_reader=Non
 
 
 def _read_recording_decision_binding(job):
-    """Revalidate this recording's original publisher; Java publications may advance."""
+    """Revalidate this recording's original process; a later same-JVM feed may replace its instance."""
     game = {'pid': job['pid'], 'creation_filetime': job['game_creation_filetime'],
             'hwnd': job['hwnd'], 'desktop_id': job['desktop_id']}
     publisher = job['decision_text_publisher']
-    if publisher.get('schema') == 'xar.java-root-decision-text/v1':
+    if publisher.get('schema') in ('xar.java-root-decision-text/v1', 'xar.java-root-decision-text/v2'):
         reference = job['decision_text_publisher_receipt']
         if (reference.get('mutable_java_binding') is not True
                 or reference.get('path') != publisher['binding_path']):
             raise ValueError('Exact mutable Java decision binding reference required')
         current = read_java_decision_binding(reference['path'], game=game, expected=publisher)
-        # Advance only the successful in-memory observation, never the job file or identity.
-        publisher['publication'] = current['publication']
+        # Save the successful epoch and counter together. No job-file or OS-process rebind occurs.
+        publisher.update(current)
         return current
     return decision_publisher_api().read_text_binding(job['decision_text_publisher_receipt'], game=game)
 

@@ -43,6 +43,10 @@ public final class RootDecisionDisplay implements AutoCloseable {
 
     private final Clock clock;
     private final Path stateRoot;
+    // System.nanoTime has one origin across loaders in this exact JVM. Wall time is audit metadata.
+    private final long instanceStartedNanoTime;
+    private final String instanceStartedAtUtc;
+    private final String instanceId;
     private final DecisionDisplay feed;
     private final AtomicReference<UiStatus> status;
     private volatile boolean closed;
@@ -51,6 +55,9 @@ public final class RootDecisionDisplay implements AutoCloseable {
     public RootDecisionDisplay(Clock clock, Path stateRoot) {
         this.clock = Objects.requireNonNull(clock);
         this.stateRoot = Objects.requireNonNull(stateRoot);
+        this.instanceStartedNanoTime = System.nanoTime();
+        this.instanceStartedAtUtc = this.clock.instant().toString();
+        this.instanceId = java.util.UUID.randomUUID().toString();
         if (!this.stateRoot.isAbsolute() || !this.stateRoot.equals(this.stateRoot.normalize())) {
             throw new IllegalArgumentException("stateRoot must be absolute and normalized");
         }
@@ -99,7 +106,7 @@ public final class RootDecisionDisplay implements AutoCloseable {
 
         // 2. Build Manifest
         ObjectNode manifest = StrictJson.object();
-        manifest.put("schema", "xar.java-root-decision-text/v1");
+        manifest.put("schema", "xar.java-root-decision-text/v2");
         manifest.put("status", "TEXT_PUBLISHED");
         manifest.put("publication", actual.publication());
         manifest.put("written_at_utc", clock.instant().toString());
@@ -117,6 +124,9 @@ public final class RootDecisionDisplay implements AutoCloseable {
         publisher.put("pid", process.pid());
         publisher.put("start_instant_utc", info.startInstant().get().toString());
         publisher.put("executable", info.command().get());
+        publisher.put("instance_started_nano_time", Long.toString(instanceStartedNanoTime));
+        publisher.put("instance_started_at_utc", instanceStartedAtUtc);
+        publisher.put("instance_id", instanceId);
 
         // File Paths and Hashes
         Path textPath = stateRoot.resolve(TEXT_FILE);
