@@ -234,12 +234,19 @@ public final class FinanceRuntimeInstaller {
         }
     }
     private static Optional<FinanceStatePort.Checkpoint> checkpoint(RootRuntimeContext context,Session session)throws IOException {
-        return checkpointInternal(context.writer(),session,() -> context.savedSources(),() -> context.game().machineId());
+        return checkpointInternal(context.writer(),session,() -> context.savedSources(),() -> context.game().machineId(),context::archive);
     }
 
     static Optional<FinanceStatePort.Checkpoint> checkpointInternal(ContinuityWriter writer, Session session,
             java.util.function.Supplier<SavedAttachmentSourceStore> savedSources,
             java.util.function.Supplier<String> machineIdProvider) throws IOException {
+        return checkpointInternal(writer,session,savedSources,machineIdProvider,null);
+    }
+
+    private static Optional<FinanceStatePort.Checkpoint> checkpointInternal(ContinuityWriter writer, Session session,
+            java.util.function.Supplier<SavedAttachmentSourceStore> savedSources,
+            java.util.function.Supplier<String> machineIdProvider,
+            java.util.function.Supplier<ActionPorts.OutcomeArchive> historicalArchive) throws IOException {
         writer.requireSession(session);
         var head = session.head();
         var state = head.state().toJson();
@@ -252,10 +259,16 @@ public final class FinanceRuntimeInstaller {
             var source = OrdinaryCycleTransitions.sessionFromJson(saved.get("state").get("session"));
             evidence.requireSavedBranch(pair, source);
             session.requireHistoricalState(evidence.originalHeadSequence(), evidence.originalHeadDigest());
-            original = savedSources.get().loadRetainedOriginal(session, evidence.material(), pair);
+            original = historicalArchive == null ? savedSources.get().loadRetainedOriginal(session, evidence.material(), pair)
+                    : historicalArchive.get().inHistoricalReadScope(session,
+                            new ActionPorts.HistoricalReadLimits(4096,256L*1024*1024,8192),
+                            ignored -> savedSources.get().loadRetainedOriginal(session, evidence.material(), pair));
             evidence.requireMaterial(original);
         } else {
-            original = savedSources.get().load(pair);
+            original = historicalArchive == null ? savedSources.get().load(pair)
+                    : historicalArchive.get().inHistoricalReadScope(session,
+                            new ActionPorts.HistoricalReadLimits(4096,256L*1024*1024,8192),
+                            ignored -> savedSources.get().load(pair));
         }
         StrictJson.require(original.pair().equals(pair) && pair.frame().machineId().equals(machineIdProvider.get()),
                 "actual saved pair source belongs to another machine");
