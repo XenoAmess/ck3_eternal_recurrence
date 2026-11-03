@@ -2,6 +2,7 @@ package org.xar.ck3.control.application.driver;
 
 import static org.xar.ck3.control.contracts.StrictJson.require;
 import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
@@ -146,7 +147,7 @@ public final class DriverPersistentPlanningState {
             original=new Obj(Map.of("file",ref(actual.reference()),"identity",parse(StrictJson.canonical(actual.identity().toJson())),"archived",ref(archived)));
         } else require(files.observe(path).isEmpty(),"configured cooldown absence changed during actual capture");
         Frame identity=DeclarationOpportunityCooldown.frame(frame);State state=DeclarationOpportunityCooldown.decode(toNode(raw),identity);
-        Reduction reduced=DeclarationOpportunityCooldown.view(state,DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),identity);
+        Reduction reduced=DeclarationOpportunityCooldown.view(state,cooldownSnapshot(frame.semantic()),identity);
         Obj input=new Obj(Map.of("configured_path",new Text(path.toString()),"observed_at",new Text(Instant.now().toString()),"original",original,"saved",raw,
                 "baseline_receipts",new Arr(baseline.stream().map(value->(Value)ref(value)).toList())));
         return persist(current,frame,current.auxiliary(),null,"INITIAL",input,reduced,baseline,archive);
@@ -161,7 +162,7 @@ public final class DriverPersistentPlanningState {
                 &&read.request().source().equals(frame.source())&&read.request().sessionId().equals(frame.sessionId()),"completed DECL crossed current physical frame/source/session");
         Obj aux=current.auxiliary();State before=state(aux,frame);Frame identity=DeclarationOpportunityCooldown.frame(frame);
         var changed=DeclarationOpportunityCooldown.completed(before,identity,declaration.querySequence());
-        var reduced=DeclarationOpportunityCooldown.view(changed.state(),DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),identity);
+        var reduced=DeclarationOpportunityCooldown.view(changed.state(),cooldownSnapshot(frame.semantic()),identity);
         if(node(DeclarationOpportunityCooldown.encode(reduced.state())).equals(aux.get(COOLDOWN_STATE))
                 &&node(DeclarationOpportunityCooldown.encodeView(reduced.view())).equals(aux.get(DeclarationOpportunityCooldown.VIEW_KEY)))return new Publication(current,aux,source(aux));
         return persist(current,frame,aux,source(aux),"DECLARATION",ref(actual.originalReceipt()),reduced,processed(aux,archive),archive);
@@ -183,8 +184,8 @@ public final class DriverPersistentPlanningState {
             State state=DeclarationOpportunityCooldown.decode(toNode(aux.get(COOLDOWN_STATE)),before);
             var result=new TurnResult(value.step().value(),AdvanceResult.progressStatus(value.progressStatus()),value.paused(),Optional.of(value.startDateRaw()),Optional.of(value.endDateRaw()));
             var outcome=new Outcome(true,Optional.of(value.step().value()),Optional.of(result));
-            var reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,DeclarationOpportunityCooldown.snapshot(toNode(ending.semantic())),after);
-            reduced=DeclarationOpportunityCooldown.view(reduced.state(),DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),DeclarationOpportunityCooldown.frame(frame));
+            var reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,cooldownSnapshot(ending.semantic()),after);
+            reduced=DeclarationOpportunityCooldown.view(reduced.state(),cooldownSnapshot(frame.semantic()),DeclarationOpportunityCooldown.frame(frame));
             processed.add(original);require(processed.size()<=MAX_CHAIN,"finite persistent life receipt bound exceeded");
             RawJson endingSemantic=RawJson.fullMaterial(DriverJson.encode(ending.semantic()));
             ExactRef endingSemanticRef=archive.preserveMaterial(endingSemantic);
@@ -193,7 +194,7 @@ public final class DriverPersistentPlanningState {
                     "result",ref(value.originalResultRef())));
             var publication=persist(current,frame,aux,source(aux),"LIFE",input,reduced,processed,archive);aux=publication.auxiliary();
         }
-        State state=state(aux,frame);var reduced=DeclarationOpportunityCooldown.view(state,DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),DeclarationOpportunityCooldown.frame(frame));
+        State state=state(aux,frame);var reduced=DeclarationOpportunityCooldown.view(state,cooldownSnapshot(frame.semantic()),DeclarationOpportunityCooldown.frame(frame));
         Obj nextState=node(DeclarationOpportunityCooldown.encode(reduced.state())),nextView=node(DeclarationOpportunityCooldown.encodeView(reduced.view()));
         if(nextState.equals(aux.get(COOLDOWN_STATE))&&nextView.equals(aux.get(DeclarationOpportunityCooldown.VIEW_KEY)))
             return aux.equals(current.auxiliary())?Optional.empty():Optional.of(new Publication(current,aux,source(aux)));
@@ -239,7 +240,7 @@ public final class DriverPersistentPlanningState {
                     var fileIdentity=org.xar.ck3.control.contracts.FileStatIdentity.fromJson(toNode(original.get("identity")),org.xar.ck3.control.contracts.FileStatIdentity.SCHEMA);
                     require(Path.of(file.path()).equals(configured)&&fileIdentity.bytes().longValueExact()==file.bytes()&&bytes.length<=(64<<10)&&parse(bytes).equals(saved),"original cooldown file identity/content differs");}
                 else require(saved==Nil.INSTANCE,"absent cooldown file cannot supply saved content");
-                state=DeclarationOpportunityCooldown.decode(toNode(saved),identity);reduced=DeclarationOpportunityCooldown.view(state,DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),identity);
+                state=DeclarationOpportunityCooldown.decode(toNode(saved),identity);reduced=DeclarationOpportunityCooldown.view(state,cooldownSnapshot(frame.semantic()),identity);
             } else {
                 require(state!=null,"cooldown transition lacks its actual initial source");
                 if(mode.equals("DECLARATION")) {var read=archive.loadRead(reference(proof.get("input")));var declaration=declarations(frame,read);
@@ -260,9 +261,9 @@ public final class DriverPersistentPlanningState {
                     require(rebuilt.semantic().equals(body)&&rebuilt.identity().equals(value.endingFrame()),"life complete ending world differs");
                     var outcome=new Outcome(true,Optional.of(value.step().value()),Optional.of(new TurnResult(value.step().value(),AdvanceResult.progressStatus(value.progressStatus()),value.paused(),Optional.of(value.startDateRaw()),Optional.of(value.endDateRaw()))));
                     state=DeclarationOpportunityCooldown.decode(DeclarationOpportunityCooldown.encode(state),before);
-                    reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,DeclarationOpportunityCooldown.snapshot(toNode(ending)),after);
-                } else {require(mode.equals("VIEW"),"unknown cooldown source transition");require(proof.get("input")==Nil.INSTANCE,"view source has unexpected input");reduced=DeclarationOpportunityCooldown.view(state,DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),identity);}
-                if(!mode.equals("VIEW")) reduced=DeclarationOpportunityCooldown.view(reduced.state(),DeclarationOpportunityCooldown.snapshot(toNode(frame.semantic())),identity);
+                    reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,cooldownSnapshot(ending),after);
+                } else {require(mode.equals("VIEW"),"unknown cooldown source transition");require(proof.get("input")==Nil.INSTANCE,"view source has unexpected input");reduced=DeclarationOpportunityCooldown.view(state,cooldownSnapshot(frame.semantic()),identity);}
+                if(!mode.equals("VIEW")) reduced=DeclarationOpportunityCooldown.view(reduced.state(),cooldownSnapshot(frame.semantic()),identity);
             }
             require(node(DeclarationOpportunityCooldown.encode(reduced.state())).equals(proof.get("state"))&&node(DeclarationOpportunityCooldown.encodeView(reduced.view())).equals(proof.get("view")),"cooldown pure source replay differs");
             List<ExactRef> next=array(proof.get("processed"),"processed").stream().map(DriverPersistentPlanningState::reference).toList();
@@ -272,6 +273,63 @@ public final class DriverPersistentPlanningState {
         }
         require(finalProof!=null&&finalProof.get("state").equals(auxiliary.get(COOLDOWN_STATE))&&finalProof.get("view").equals(auxiliary.get(DeclarationOpportunityCooldown.VIEW_KEY)),"persistent cooldown auxiliary differs from its complete source chain");
     }
+    /** Pure DATA projection only; uncertain public typed graphs retain the original full conversion. */
+    static DeclarationOpportunityCooldown.Snapshot cooldownSnapshot(Obj semantic) {
+        if(!snapshotProjectionSafe(semantic,0))
+            return DeclarationOpportunityCooldown.snapshot(toNode(semantic));
+        Map<String,Value> selected=new LinkedHashMap<>();
+        for(var field:semantic.members().entrySet()) {
+            String name=field.getKey();
+            if(name.equals("paused")||name.equals("active_wars")
+                    ||name.equals("war_declaration_continuity_v1")||name.equals("active_event")
+                    ||name.equals("pending_character_interaction"))selected.put(name,field.getValue());
+        }
+        return DeclarationOpportunityCooldown.snapshot(toNode(new Obj(selected)));
+    }
+
+    private static boolean snapshotProjectionSafe(OpportunityJson.Value value, int depth) {
+        if (depth > 64) return false;
+        if (value == null) return false;
+        switch (value) {
+            case OpportunityJson.Obj object -> {
+                for (var entry : object.members().entrySet()) {
+                    if (entry.getKey() == null || entry.getValue() == null) return false;
+                    if (!snapshotProjectionSafe(entry.getValue(), depth + 1)) return false;
+                }
+                return true;
+            }
+            case OpportunityJson.Arr array -> {
+                for (var item : array.items()) {
+                    if (item == null) return false;
+                    if (!snapshotProjectionSafe(item, depth + 1)) return false;
+                }
+                return true;
+            }
+            case OpportunityJson.Text text -> {
+                if (text.value() == null) return false;
+                return true;
+            }
+            case OpportunityJson.IntegerValue integer -> {
+                if (integer.value() == null) return false;
+                if (integer.value().getClass() != BigInteger.class) return false;
+                return true;
+            }
+            case OpportunityJson.DecimalValue decimal -> {
+                if (decimal.token() == null) return false;
+                return true;
+            }
+            case OpportunityJson.Bool bool -> {
+                return true;
+            }
+            case OpportunityJson.Nil ignored -> {
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+
     /** Rebuild the existing DECL decoder scope from this original frame and receipt budget. */
     private static ArmyWarReadCodec.Declarations declarations(Complete frame,PlanningReadReceipt read) {
         var context=new ArmyTypes.Context(frame.identity(),frame.source(),frame.sessionId(),read.request().deadline());
