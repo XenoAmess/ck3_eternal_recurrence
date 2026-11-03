@@ -1,7 +1,7 @@
 package org.xar.ck3.control.application.effects;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -20,7 +20,7 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     private static final int MAX_COMPLETE_ENTRIES = 4;
     private static final long MAX_COMPLETE_ORIGINAL_BYTES = 64L * 1024 * 1024;
     private final ThreadLocal<ContinuityStorePort.Session> driverSession = new ThreadLocal<>();
-    private final ThreadLocal<LinkedHashMap<ByteBuffer, DriverStateSnapshot.Complete>> completeDrivers = new ThreadLocal<>();
+    private final ThreadLocal<LinkedHashMap<byte[], DriverStateSnapshot.Complete>> completeDrivers = new ThreadLocal<>();
     private final ThreadLocal<long[]> completeOriginalBytes = new ThreadLocal<>();
     private volatile Object driverOwner;
     private volatile Consumer<ContinuityStorePort.Session> driverOwnerGate;
@@ -50,7 +50,7 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         if (before != null && before != session)
             throw new IllegalStateException("different Sessions cannot share complete Driver DATA");
         if (before != null) return operation.read(archive);
-        var freshEntries = new LinkedHashMap<ByteBuffer, DriverStateSnapshot.Complete>(4, 0.75f, true);
+        var freshEntries = new LinkedHashMap<byte[], DriverStateSnapshot.Complete>(4, 0.75f, true);
         long[] freshBytes = new long[1];
         try {
             driverSession.set(session); completeDrivers.set(freshEntries); completeOriginalBytes.set(freshBytes);
@@ -68,19 +68,19 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         try {
             // Public entry never trusts a caller-owned array to stay unchanged during decode/keying.
             byte[] privateOriginal = Objects.requireNonNull(original).clone();
-            var lookup = ByteBuffer.wrap(privateOriginal).asReadOnlyBuffer();
-            var cached = entries.get(lookup);
-            if (cached != null) return cached;
+            byte[] matching = null;
+            for (byte[] key : entries.keySet()) if (Arrays.equals(key, privateOriginal)) { matching = key; break; }
+            if (matching != null) return entries.get(matching);
             DriverStateSnapshot.Complete decoded = DriverStateSnapshot.decodeComplete(privateOriginal);
             if (privateOriginal.length > MAX_COMPLETE_ORIGINAL_BYTES) return decoded;
             long[] retained = completeOriginalBytes.get();
             while (!entries.isEmpty() && (entries.size() >= MAX_COMPLETE_ENTRIES
                     || retained[0] + privateOriginal.length > MAX_COMPLETE_ORIGINAL_BYTES)) {
                 var oldest = entries.entrySet().iterator(); var removed = oldest.next();
-                retained[0] -= removed.getKey().remaining(); oldest.remove();
+                retained[0] -= removed.getKey().length; oldest.remove();
             }
-            // The map never exposes or changes this position/limit or private pre-decode cloned backing array.
-            entries.put(ByteBuffer.wrap(privateOriginal).asReadOnlyBuffer(), decoded); retained[0] += privateOriginal.length;
+            // The map never exposes or changes any private pre-decode cloned byte-array key.
+            entries.put(privateOriginal, decoded); retained[0] += privateOriginal.length;
             return decoded;
         } catch (RuntimeException | Error failure) {
             entries.clear(); completeOriginalBytes.get()[0] = 0; throw failure;
