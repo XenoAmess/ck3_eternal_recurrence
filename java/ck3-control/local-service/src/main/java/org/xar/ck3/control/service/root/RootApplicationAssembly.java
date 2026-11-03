@@ -1175,7 +1175,7 @@ public final class RootApplicationAssembly {
             return writer.locked(same->{
                 final DriverBootstrap.Adopted result;
                 try {
-                    result=DriverBootstrap.adoptSettledSameGame(data,same,actions,game.nativeTransport(),archive,
+                    result=DriverBootstrap.adoptSettledSameGameWithHistoricalReads(data,same,actions,game.nativeTransport(),archive,
                             writer::borrowedSession,retainedFrames,deadline);
                 }catch(InterruptedException interrupted){
                     Thread.currentThread().interrupt();

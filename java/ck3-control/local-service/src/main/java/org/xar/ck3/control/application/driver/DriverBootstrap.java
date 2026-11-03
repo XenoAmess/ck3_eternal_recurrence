@@ -1008,6 +1008,15 @@ public final class DriverBootstrap {
         return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,false);
     }
 
+    /** Explicit bounded historical-CAS profile; closes all read leases before the independent native READ. */
+    public static Adopted adoptSettledSameGameWithHistoricalReads(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline)
+            throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,false,true);
+    }
+
     /** Reattaches retained Life action or pending-cycle recovery with its latest Driver, without granting Ready. */
     public static Adopted adoptUnresolvedSameGame(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
@@ -1025,6 +1034,14 @@ public final class DriverBootstrap {
             ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
             ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
             boolean isolatedLife) throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,isolatedLife,false);
+    }
+
+    private static Adopted adoptSameGameHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
+            boolean isolatedLife,boolean historicalReads) throws IOException,InterruptedException {
         Objects.requireNonNull(data);Objects.requireNonNull(same);Objects.requireNonNull(actions);
         Objects.requireNonNull(transport);Objects.requireNonNull(archive);Objects.requireNonNull(currentSession);
         Objects.requireNonNull(deadline);
@@ -1038,38 +1055,7 @@ public final class DriverBootstrap {
                 &&retained.driver().session().bridgePid()==current.game().pid()
                 &&retained.driver().session().pipeName().equals(transport.pipeName()),
                 "settled retained Driver belongs to another physical Game or pipe");
-        var finalizationHead = same.head().state();
-        var pendingLifeCycle=isolatedLife?same.head().state().toJson()
-                .path(WriterContracts.ORDINARY_CYCLE_FIELD).get("pending_receipt"):null;
-        actions.withFrozen(same,lease->{
-            StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
-                    &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
-                    "same-Game continuation cannot replace its actual original history");
-            if (isolatedLife) {
-                var owner = new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(old.machineId(), old.game(), old.sessionId());
-                StrictJson.require(new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))
-                        && (org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
-                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                .readOnlySaveRecoveryRoot(lease.snapshot().actions()).isPresent()
-                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                .readOnlyPositiveAckCouncilRecoveryRoot(lease.snapshot().actions()).isPresent()
-                            || pendingCancelledLifeCycle(lease.snapshot().actions(),pendingLifeCycle,archive.withSession(same)).isPresent()
-                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                .readOnlySaveFinalizationRoot(finalizationHead,owner,lease.snapshot().actions(),archive.withSession(same)).isPresent()
-                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                .readOnlyPendingCompletedLifeCycle(finalizationHead,owner,lease.snapshot().actions(),archive.withSession(same)).isPresent()
-                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                .readOnlyKnownPendingRecoveryRoot(lease.snapshot().actions()).isPresent()
-                            || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                .readOnlyPendingKnownCompletionRoot(finalizationHead,owner,lease.snapshot().actions(),archive.withSession(same)).isPresent()),
-                        "read-only Life/SAVE adoption retains the complete canonical action set and exact pending recovery role");
-            } else {
-                StrictJson.require(lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),
-                        "settled continuation cannot replay an unresolved original action");
-            }
-            lease.assertCurrent();return null;
-        });
+        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads);
         var repository=new DriverFactsRepository(retained);
         var producer=new NativeDriverObservationProducer(repository,transport,data.source(),
                 wire->borrowedArchive(archive,currentSession).preserveMaterial(RawJson.fullMaterial(wire)));
@@ -1113,6 +1099,59 @@ public final class DriverBootstrap {
             producer.recordAdoptionObserved(current,data.source());
         }
         return adopted;
+    }
+
+    /** Only immutable canonical qualification is inside this optional scope; never a Native operation. */
+    private static void qualifySameGameActionHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,ActionPorts.OutcomeArchive archive,
+            boolean isolatedLife,boolean historicalReads) throws IOException {
+        var retained=data.retainedFacts();var old=data.previousTransport();
+        ActionPorts.CheckedArchiveRead<Void> qualification=originals->{
+            var finalizationHead = same.head().state();
+            var pendingLifeCycle=isolatedLife?same.head().state().toJson()
+                    .path(WriterContracts.ORDINARY_CYCLE_FIELD).get("pending_receipt"):null;
+            actions.withFrozen(same,lease->{
+                StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
+                        &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
+                        "same-Game continuation cannot replace its actual original history");
+                if (isolatedLife) {
+                    var owner = new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(old.machineId(), old.game(), old.sessionId());
+                    StrictJson.require(new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))
+                            && (org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                    .readOnlyLifeRecoveryRoot(lease.snapshot().actions()).isPresent()
+                                || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                    .readOnlySaveRecoveryRoot(lease.snapshot().actions()).isPresent()
+                                || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                    .readOnlyPositiveAckCouncilRecoveryRoot(lease.snapshot().actions()).isPresent()
+                                || pendingCancelledLifeCycle(lease.snapshot().actions(),pendingLifeCycle,originals.withSession(same)).isPresent()
+                                || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                    .readOnlySaveFinalizationRoot(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()
+                                || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                    .readOnlyPendingCompletedLifeCycle(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()
+                                || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                    .readOnlyKnownPendingRecoveryRoot(lease.snapshot().actions()).isPresent()
+                                || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                    .readOnlyPendingKnownCompletionRoot(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()),
+                            "read-only Life/SAVE adoption retains the complete canonical action set and exact pending recovery role");
+                } else {
+                    StrictJson.require(lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),
+                            "settled continuation cannot replay an unresolved original action");
+                }
+                lease.assertCurrent();return null;
+            });
+            return null;
+        };
+        runSameGameHistoryQualification(same,archive,historicalReads,qualification);
+    }
+
+    /** The opt-in leaves the legacy callback unchanged and preserves the archive's nested/poison contract. */
+    private static void runSameGameHistoryQualification(ContinuityStorePort.Session same,
+            ActionPorts.OutcomeArchive archive,boolean historicalReads,ActionPorts.CheckedArchiveRead<Void> qualification)
+            throws IOException {
+        if(historicalReads)archive.inHistoricalReadScope(same,
+                new ActionPorts.HistoricalReadLimits(4096,256L*1024*1024,8192),qualification);
+        else qualification.read(archive);
     }
 
     /** Resumes only the canonical first entry on this living Game; it neither starts nor initializes a campaign. */
