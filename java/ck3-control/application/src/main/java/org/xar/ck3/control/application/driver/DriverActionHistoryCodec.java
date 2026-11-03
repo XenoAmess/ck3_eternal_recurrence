@@ -287,12 +287,12 @@ public final class DriverActionHistoryCodec {
     private static Obj loadObject(ExactRef reference,ActionPorts.OutcomeArchive originals) {return DriverJson.object(load(reference,originals).bytes(),DriverJson.MAX_NATIVE_BYTES);}
     private static void exact(ExactRef reference,byte[] bytes) {StrictJson.require(reference.bytes()==bytes.length&&reference.sha256().equals(DriverJson.sha256(bytes)),"exact original history material bytes/SHA changed");}
     private static List<Evidence> checkedEvidence(List<Evidence> input) {
-        var items=List.copyOf(input);StrictJson.require(!items.isEmpty()&&items.size()<=128&&new java.util.HashSet<>(items).size()==items.size()
+        var items=List.copyOf(input);StrictJson.require(!items.isEmpty()&&items.size()<=128&&((items.size()==1&&((List<?>)items).get(0) instanceof Evidence)||new java.util.HashSet<>(items).size()==items.size())
                 &&items.stream().anyMatch(e->e.kind()!=EvidenceKind.ACTION_RECEIPT&&e.kind()!=EvidenceKind.ACTION_RECORD),
                 "independent original material is mandatory; a receipt/record alone is not Driver history material");return items;
     }
     private static List<ExactRef> checkedSources(List<ExactRef> input) {
-        var sources=List.copyOf(input);StrictJson.require(!sources.isEmpty()&&sources.size()<=64&&new java.util.HashSet<>(sources).size()==sources.size(),"finite exact original producer sources required");sources.forEach(DriverActionHistoryCodec::nonempty);return sources;
+        var sources=List.copyOf(input);StrictJson.require(!sources.isEmpty()&&sources.size()<=64&&((sources.size()==1&&((List<?>)sources).get(0) instanceof ExactRef)||new java.util.HashSet<>(sources).size()==sources.size()),"finite exact original producer sources required");sources.forEach(DriverActionHistoryCodec::nonempty);return sources;
     }
     private static void nonempty(ExactRef reference) {Objects.requireNonNull(reference);StrictJson.require(reference.bytes()>0,"nonempty original reference required");}
     private static Obj ref(ExactRef reference) {
