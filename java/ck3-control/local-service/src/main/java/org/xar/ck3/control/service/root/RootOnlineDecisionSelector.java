@@ -539,13 +539,15 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         try {
             if (!isPeacefulLifeCandidate(request, proposal)) return null;
             var original = request.observations().snapshot();
-            var members = new java.util.LinkedHashMap<>(original.members());
+            OpportunityJson.Obj modelSnapshot = original;
             var duplicate = original.get("native_command_history");
             if (duplicate instanceof OpportunityJson.Arr rows && rows.items().equals(request.observations().history())) {
+                var members = new java.util.LinkedHashMap<>(original.members());
                 members.remove("native_command_history");
+                modelSnapshot = new OpportunityJson.Obj(members);
             }
             // Retain all other current facts and unknown fields; a large fact triggers full fallback.
-            JsonNode snapshot = OpportunityJson.toNode(new OpportunityJson.Obj(members));
+            JsonNode snapshot = OpportunityJson.toNode(modelSnapshot);
             if (!hasCurrentCompleteRoot(snapshot, request)) return null;
             ObjectNode data = object();
             data.put("decision_context_schema", COMPACT_LIFE_SCHEMA);
@@ -876,7 +878,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         ObjectNode result = (ObjectNode) projected.get("result");
         ObjectNode root = (ObjectNode) result.get("campaign_root_context");
         JsonNode rootStamp = root.get("snapshot_revision"), heirStamp = root.get("player_heir_candidate_v1").get("snapshot_revision");
-        ObjectNode facts = root.deepCopy();
+        ObjectNode facts = root; // Private row copy; result replaces this node with ref below.
         facts.remove("snapshot_revision");
         ((ObjectNode) facts.get("player_heir_candidate_v1")).remove("snapshot_revision");
         int reference = 0;
