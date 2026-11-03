@@ -22,6 +22,7 @@ import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.EpisodeWindow;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions.SessionAuthority;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /**
@@ -218,10 +219,10 @@ public final class LifecycleEpisodeInputs {
         StrictJson.require(StrictJson.text(result.get("source_run_id")).equals(original.subject().episodeRunId())
                 && StrictJson.text(result.get("episode_run_id")).equals(current.frame().episodeRunId())
                 && !original.subject().episodeRunId().equals(current.frame().episodeRunId())
-                && StrictJson.integer(result.get("predecessor_character_id"), 1, 0xffff_fffeL)
-                        == original.subject().characterId().longValueExact()
-                && StrictJson.integer(result.get("actual_successor_character_id"), 1, 0xffff_fffeL)
-                        == current.frame().identity().player().longValueExact()
+                && NativeCharacterId.fromJson(result.get("predecessor_character_id")).asBigInteger()
+                        .equals(original.subject().characterId())
+                && NativeCharacterId.fromJson(result.get("actual_successor_character_id")).asBigInteger()
+                        .equals(current.frame().identity().player())
                 && !original.subject().characterId().equals(current.frame().identity().player()),
                 "current episode does not retain the actual admitted historical successor");
         StrictJson.require(recorded.predecessorDriverReference().equals(original.evidence().originalDriver())
@@ -360,12 +361,12 @@ public final class LifecycleEpisodeInputs {
                 "fresh episode SEM differs from the actual committed lifecycle result");
         String actor = proof instanceof LifecycleTransitionProof.ContinueSuccessor
                 ? "actual_successor_character_id" : "episode_character_id";
-        StrictJson.require(StrictJson.integer(result.get(actor), 1, 0xffff_fffeL)
-                == current.frame().identity().player().longValueExact(),
+        StrictJson.require(NativeCharacterId.fromJson(result.get(actor)).asBigInteger()
+                .equals(current.frame().identity().player()),
                 "fresh episode actor differs from the actual committed result");
         if (proof instanceof LifecycleTransitionProof.ContinueSuccessor)
-            StrictJson.require(StrictJson.integer(result.get("predecessor_character_id"), 1, 0xffff_fffeL)
-                    == predecessor.session().actorId().longValueExact(),
+            StrictJson.require(NativeCharacterId.fromJson(result.get("predecessor_character_id")).asBigInteger()
+                    .equals(predecessor.session().actorId()),
                     "natural successor result differs from its actually archived predecessor Driver subject");
         java.time.Instant committedAt = java.time.Instant.parse(StrictJson.utc(StrictJson.text(result.get("observed_at"))));
         StrictJson.require(semantic.observedAt().isAfter(committedAt),
