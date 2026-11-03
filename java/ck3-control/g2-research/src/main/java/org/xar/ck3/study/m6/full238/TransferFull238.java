@@ -10,6 +10,12 @@ public final class TransferFull238 {
         budget.before(0x21A5050L,entry.rspBits(),0L);
         Frame f=new Frame(entry,memory,calls,floating,budget,
                 child->execute(child,memory,calls,floating,budget));
+        return executePreparedFrame(f);
+    }
+
+    /** Same source body once, on the caller-prepared actual Frame; no entry budget or replay here. */
+    public static NormalReturn executePreparedFrame(Frame f) {
+        Memory memory=f.memory;
         var r=f.r;long s=f.entrySP;
         memory.writeQword(s+0x8L,r.rbx);
         memory.writeQword(s+0x10L,r.rbp);

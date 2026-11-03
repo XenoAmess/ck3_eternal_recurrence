@@ -9,10 +9,11 @@ public final class TransferGrowth238 {
     public static void run(Frame f) {
         var r=f.r;var m=f.memory;
         r.x0=new Bits128(Integer.toUnsignedLong((int)r.rax),0L);
-        r.x0=f.floating.convertSignedDwords(r.x0);
+        f.convertSignedDwords(0x21A5192L);
+        f.beforeInstruction(0x21A5195L);
         int multiplier=m.readDword(f.image+0x49F64F0L);
-        r.x0=f.floating.multiplyLowSingle(r.x0,multiplier);
-        r.rax=Integer.toUnsignedLong(f.floating.truncateLowSingle(r.x0));
+        f.multiplyLowSingle(0x21A5195L,multiplier);
+        f.truncateLowSingle(0x21A519DL);
         r.r13=Integer.toUnsignedLong((int)r.r15);
         if((int)r.r15<(int)r.rax) r.r13=r.rax;
         r.rax=m.readQword(r.rcx);

@@ -10,11 +10,12 @@ public final class MoveGrowth239 {
         var r=f.r;var m=f.memory;
         r.x0=new Bits128(Integer.toUnsignedLong((int)r.rax),0L);
         r.r8=Integer.toUnsignedLong((int)(r.rbp+0x4L));
-        r.x0=f.floating.convertSignedDwords(r.x0);
+        f.convertSignedDwords(0xB2EF7DL);
         r.rsi=Integer.toUnsignedLong((int)r.r13);
+        f.beforeInstruction(0xB2EF83L);
         int multiplier=m.readDword(f.image+0x49F64F0L);
-        r.x0=f.floating.multiplyLowSingle(r.x0,multiplier);
-        r.rax=Integer.toUnsignedLong(f.floating.truncateLowSingle(r.x0));
+        f.multiplyLowSingle(0xB2EF83L,multiplier);
+        f.truncateLowSingle(0xB2EF8BL);
         if((int)r.r13<(int)r.rax)r.rsi=r.rax;
         r.rax=m.readQword(r.rcx);r.rdx=Integer.toUnsignedLong((int)r.rsi);r.rdx<<=0x2;
         f.indirect(0xB2EF9EL,m.readQword(r.rax+0x8L));

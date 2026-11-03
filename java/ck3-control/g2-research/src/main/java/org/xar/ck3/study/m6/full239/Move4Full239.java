@@ -9,6 +9,12 @@ public final class Move4Full239 {
     public static NormalReturn execute(Entry entry,Memory memory,Calls calls,Floating floating,Budget budget) {
         budget.before(0xB2EEE0L,entry.rspBits(),0L);
         Frame f=new Frame(entry,memory,calls,floating,budget,child->Swap4Full239.execute(child,memory,calls,floating,budget));
+        return executePreparedFrame(f);
+    }
+
+    /** Same source body once, on the caller-prepared actual Frame; no entry budget or replay here. */
+    public static NormalReturn executePreparedFrame(Frame f) {
+        Memory memory=f.memory;
         var r=f.r;long s=f.entrySP;
         memory.writeQword(s-0x8L,r.rbp);memory.writeQword(s-0x10L,r.r14);memory.writeQword(s-0x18L,r.r15);
         r.rsp=s-0x48L;
