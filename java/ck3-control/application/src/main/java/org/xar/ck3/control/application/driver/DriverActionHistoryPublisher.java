@@ -208,11 +208,13 @@ public final class DriverActionHistoryPublisher implements WriterContracts.Trans
             DriverActionHistoryCodec.verifyCanonicalOnly(actual,source,originals);
             coverage=new DriverSnapshotFacts.ActionRow(actual.command().actionId(),actual.bodySha256(),actual.sequence(),new DriverSnapshotFacts.CanonicalOnly(source));
         }
-        ExactRef full=originals.preserveMaterial(RawJson.fullMaterial(replacement.encode()));
-        StrictJson.require(Arrays.equals(originals.loadFullMaterial(full).bytes(),replacement.encode()),"actual full Driver archive readback differs");
+        byte[] encodedReplacement=replacement.encode();
+        boolean exactActor=replacement.session().actorId().getClass()==java.math.BigInteger.class;
+        ExactRef full=originals.preserveMaterial(RawJson.fullMaterial(encodedReplacement));
+        StrictJson.require(Arrays.equals(originals.loadFullMaterial(full).bytes(),exactActor?encodedReplacement:replacement.encode()),"actual full Driver archive readback differs");
         StrictJson.require(same.head().digest().equals(head),"archival action material capture changed the canonical writer");
         var stamp=new DriverSnapshotFacts.Stamp(Math.addExact(before.stamp().driverVersion(),1),before.stamp().episodeEpoch(),before.stamp().game(),
-                before.stamp().episodeRunId(),DriverJson.sha256(replacement.encode()));
+                before.stamp().episodeRunId(),DriverJson.sha256(exactActor?encodedReplacement:replacement.encode()));
         ExactRef beforeDriver=originals.materialReferenceOf(RawJson.fullMaterial(before.driver().encode()));
         var data=new DriverActionHistoryState.Publication("driver-action:"+UUID.randomUUID(),actual.command(),actual.bodySha256(),actual.sequence(),head,
                 before.stamp().driverVersion(),stamp.driverVersion(),stamp.episodeEpoch(),beforeDriver,full,source,row);
