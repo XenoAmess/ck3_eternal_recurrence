@@ -261,7 +261,7 @@ public final class DriverPersistentPlanningState {
                     require(rebuilt.semantic().equals(body)&&rebuilt.identity().equals(value.endingFrame()),"life complete ending world differs");
                     var outcome=new Outcome(true,Optional.of(value.step().value()),Optional.of(new TurnResult(value.step().value(),AdvanceResult.progressStatus(value.progressStatus()),value.paused(),Optional.of(value.startDateRaw()),Optional.of(value.endDateRaw()))));
                     state=DeclarationOpportunityCooldown.decode(DeclarationOpportunityCooldown.encode(state),before);
-                    reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,cooldownSnapshot(ending),after);
+                    Map<String,Value> endingFields=new LinkedHashMap<>();for(var field:ending.members().entrySet()){String name=field.getKey();if(name.equals("paused")||name.equals("active_wars")||name.equals("war_declaration_continuity_v1")||name.equals("active_event")||name.equals("pending_character_interaction"))endingFields.put(name,field.getValue());}reduced=DeclarationOpportunityCooldown.afterTurn(state,before,outcome,DeclarationOpportunityCooldown.snapshot(OpportunityJson.toNode(new Obj(endingFields))),after);
                 } else {require(mode.equals("VIEW"),"unknown cooldown source transition");require(proof.get("input")==Nil.INSTANCE,"view source has unexpected input");reduced=DeclarationOpportunityCooldown.view(state,cooldownSnapshot(frame.semantic()),identity);}
                 if(!mode.equals("VIEW")) reduced=DeclarationOpportunityCooldown.view(reduced.state(),cooldownSnapshot(frame.semantic()),identity);
             }
