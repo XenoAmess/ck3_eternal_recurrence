@@ -1,0 +1,179 @@
+{
+  "schema": "ck3.actual-saved-frontier-temporary30m.v1",
+  "fixed_SAVE_CONFIRMED": 1556,
+  "fixed_SETTLE": 1550,
+  "confirmed_UTC": "2026-11-03T06:38:42.083899500Z",
+  "total_saved_days": 296,
+  "new_saved_days_since1498": 7,
+  "saved_frame": {
+    "date_raw": "53153088",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "881",
+    "played_character_id": "31254",
+    "revision": "821",
+    "snapshot_id": "native:881"
+  },
+  "saved_cycle": 42,
+  "pending_receipt": null,
+  "same_Game": {
+    "pid": 77132,
+    "creation_filetime": "134380410301009189"
+  },
+  "Root_independent_two_named_event_verification": {
+    "status": "INDEPENDENT_NAMED_CANONICAL_EVENT_VERIFIED",
+    "receipt_local_key": "root/savep030m801-verified.json",
+    "two_frozen_event_refs": [
+      {
+        "bytes": 99881,
+        "sha256": "86096140dc2a2824f762df92eca5e469b110452c91d845b35ecae47e4d848b53"
+      },
+      {
+        "bytes": 98876,
+        "sha256": "1f0cbcc29deaee2c0b86947b48937d6f361c925e98f0df4d1fb059d7b397e702"
+      }
+    ],
+    "writer_scope": "Cross-check verifier and frozen SUMMARY refs; do not reread raw event, Save or Driver bodies."
+  },
+  "main_window": {
+    "from_SAVE": 1498,
+    "from_saved_days": 289,
+    "from_confirmed_UTC": "2026-11-03T03:52:41.961565200Z",
+    "to_SAVE": 1556,
+    "to_saved_days": 296,
+    "to_confirmed_UTC": "2026-11-03T06:38:42.083899500Z",
+    "elapsed_seconds": "9960.122334300",
+    "new_SAVE_CONFIRMED_days": 7,
+    "seconds_per_new_saved_day": "1422.874619185714285714285714285714285714",
+    "subtracted_seconds": "0",
+    "target10_achieved": false,
+    "A_B": false,
+    "includes": "Entire interval without subtraction: batches74-79 zeroSAVE/realENDs/preparation/controlledhost release/newDev launches/allcold/bootstrap/wait/failedsamplecoordination/actual461attach+record/normal80Plan+ARM+resume+archive+SAVEfirstandsecondstableobservations/1554UNKNOWNsettlement. No old289days in denominator.",
+    "not_cumulative296_or_first80_subwindow_denominator": true
+  },
+  "temporary_cohort": {
+    "actual_host": {
+      "pid": 76092,
+      "birth": "134381592437332478"
+    },
+    "actual_delegate": {
+      "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:0@2555fff0@2555fff0",
+      "exit_code": null,
+      "failure_type": null,
+      "host_pid": "76092",
+      "instance_id": "3adb7d9f-d22c-4ee7-8265-d0e116e52cea",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-03T06:00:54.743343Z",
+      "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:0@2555fff0@2555fff0",
+      "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+      "status": "DELEGATE_STARTED",
+      "actual_process": {
+        "pid": 76092,
+        "birth": "134381592437332478",
+        "exit": 259,
+        "image": "C:\\jdk-21\\bin\\java.exe"
+      }
+    },
+    "actual_START_UTC": "2026-11-03T06:00:54.743343Z",
+    "actual_LOOP_UTC": "2026-11-03T06:16:01.824287600Z",
+    "START_to_LOOP_seconds": "907.080944600",
+    "five_source_adoption_unchanged": {
+      "source_count": 5,
+      "accepted_receipts": 96,
+      "source_projection_count": 78,
+      "named_original_outputs": 122,
+      "source_index": "docs/maintenance/2026-11-03-quarkus-worker-five-source-fresh-start-sources.json",
+      "source_index_bytes": 16603,
+      "source_index_sha256": "50b2af9994a450009d7e55931c04f6327882ea7bcc1039679571ce96ae7fb0d8",
+      "raw_vs_formal_relationships_still_separate": true
+    },
+    "new_source_compile_or_GET": 0,
+    "only_configuration_delta": {
+      "batch_wall_ms_before": 1200000,
+      "batch_wall_ms_after": 1800000,
+      "whole_forward_inverse_exact": true,
+      "all_other_JSON_fields_equal": true,
+      "each_new_batch_of_this_worker": true,
+      "global_normal_config_unchanged": true
+    },
+    "deadline_boundary": {
+      "new_parent_and_ARM1536_absolute_deadline_UTC": "2026-11-03T06:46:06.822774100Z",
+      "child_60s_means": "Downstream bounded execution/advance/read/RPC wait min caps, not a child-ticket absolute deadline. No old receipt deadline changed or replayed.",
+      "original_SOURCE_READY_and_early_addendum_preserved": true,
+      "correcting_local_key": "runtime/quarkus-dev307-runtime/temporary30m-post-end79/CHILD-DEADLINE-ACTUAL-ERRATUM.json"
+    },
+    "later_handoff_policy": "Root instructs review at the next natural necessary boundary; do not blindly restore20min and reproduce zero-action admission. This record changes no live configuration or runtime."
+  },
+  "later81_continuation": "Runtime reports same host continuing81 after this SAVE. Historical owner report only; no future health or unconfirmed SAVE credit.",
+  "prior_SAVE_index_preserved": {
+    "path": "docs/maintenance/2026-11-03-quarkus-worker-save1498-eight-source-sources.json",
+    "bytes": 5657,
+    "sha256": "9f951b097dced2acdf79acfd25c28d017a185c70f92694053e2c5216df600867"
+  },
+  "acceptance_boundary": {
+    "source_retained_START_LOOP_new7_SAVE_separately_recorded": true,
+    "specific_method_branch_or_cachehit_proved": false,
+    "speed_or_single_source_causal_credit": false,
+    "G2_last_complete_acceptance": "6/8",
+    "all_failure_cold_waiting_retained": true
+  },
+  "sources": [
+    {
+      "local_key": "root/savep030m801-verified.json",
+      "bytes": 1423,
+      "sha256": "4dad3c82d3b22e2f643943d4dc53dc9b71b0e4ede77e90eece78e93ae7e5b244"
+    },
+    {
+      "local_key": "root/savep030m801-window.json",
+      "bytes": 1130,
+      "sha256": "717a7197bbd3ccc5f61750864d80a340ade81ac9d29fc8e380f4d9b7cdad1163"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/savep030m801-window/SUMMARY.json",
+      "bytes": 1976,
+      "sha256": "b86b6842a1882fcfb131551f43466d660c4ebd9f1f0d32e29991e9c022c35661"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedp030m801/SUMMARY.json",
+      "bytes": 6864,
+      "sha256": "73425518489de9d752e2af12b7e21c4f74157781d59c22ee022faebcaad774c0"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/temporary30m-post-end79/ACTUAL-NEW-DELEGATE.json",
+      "bytes": 2540,
+      "sha256": "1420e4696caad853242827353c154fe6bb3cbff86ec3b0c5b801fd21ec76117e"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/temporary30m-post-end79/ACTUAL-LOOP-FROZEN.json",
+      "bytes": 2192,
+      "sha256": "34d26dfb68011c1048656179e16c2f10f9fca51c1f1e0b5e9a25941ebdb73405"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/temporary30m-post-end79/CHILD-DEADLINE-ACTUAL-ERRATUM.json",
+      "bytes": 1266,
+      "sha256": "94d44ca15ebe9c098e60d8b6fdbc2c07f8fb802c5f706945fc62339ba81ce553"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/future-batch-wall-qualification/SOURCE-READY-TEMPORARY30M.json",
+      "bytes": 1916,
+      "sha256": "0c9b61ff2c0ab4af9fa527fac6e601433132365f2452ae0638b3b822bd11be12"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/future-batch-wall-qualification/ADOPTION-TEMPORARY30M-DEADLINE-ADDENDUM.json",
+      "bytes": 3583,
+      "sha256": "b325f22721f9576fb3a2a070cf481debf278f41b76d6530c842cee765b2babcd"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/future-batch-wall-qualification/business-config-temporary30m.json",
+      "bytes": 1694,
+      "sha256": "a8e2ba9046108c80c0dcd2c5c462f4cad3739fdc3bb0e25c0f5182978c36dfcd"
+    }
+  ],
+  "limits": [
+    "Only named small frozen metadata and existing formal documentation were consumed; raw Save, Driver, event bodies and private machine originals remain local.",
+    "Five raw adopted sources remain separate from whole formal versions and previous temporary Writer expiry; this configuration-only cohort adds no source-adoption, schema or same-host capability claim.",
+    "The complete1498->1556 window retains zero-save batches, failed coordination, host release, cold starts, sampling, normal80 full chain and UNKNOWN settlement; no subtraction or cumulative411.067851 denominator.",
+    "No claim of full-phase profiling, precise method execution, cache hits, optimization or A/B;461 sampling and narrow format-tail followup stay independently qualified.",
+    "Old1498/281/273/265/START/BOOT text stays byteexact; early child60 language is preserved with explicit later correction.",
+    "Documentation does not compile/test/GET/query/deploy/reload/stop/launch/control anything. Later saved frontiers require separate evidence."
+  ]
+}

@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+2026-11-03 06:38:42.083899500Z实际1556 SAVE_CONFIRMED，1550 SETTLE，本局296日全部保存；saved date53153088/native881/public821/cycle42/actor31254/pending=null，同Game77132／出生134380410301009189。Root已独验两冻结事件，保存帧881/821不混同cycle语义879/819。1498／289日→1556／296日完整9960.122334300秒／新增7日＝1422.8746191857…秒／日，保留74—79零保存、失败协调、准备、宿主释放、所有冷启动／bootstrap、一次必要采样及等待、80的规划／ARM／resume／归档／SAVE稳定观察和1554 UNKNOWN结算。10秒目标未达、非A/B，不用累计411.067851…或首80短窗替代主指标。
+
+五源码保持原采用，0新编译／GET；临时cohort76092／出生134381592437332478、3adb7d9f-d22c-4ee7-8265-d0e116e52cea，06:00:54.743343Z START→06:16:01.824287600Z LOOP，完整冷恢复907.080944600秒。1694字节配置只一处batch_wall_ms1200000→1800000，其余字段与正常配置逐字保留，覆盖该worker每个新批而非仅首批；全局正常默认配置不改。新父与ARM1536的实际绝对deadline同为06:46:06.822774100Z；60秒保留为下游执行／advance／read／RPC的min等待上限，不是新子票据60秒截止。旧SOURCE_READY及初addendum原文保留，后到CHILD-DEADLINE-ACTUAL-ERRATUM单独更正，不刷新旧票据、不重放动作。
+
+这次功能恢复预算选择已取得START、LOOP及新增7日确认保存三个实际层次，不证明单叶提速、具体方法／cache命中或全phase采样；既有raw与wholeformal区别、所有旧START／BOOT及1498／281／273／265正文原字节保留。Runtime后见同host继续81只记历史，不授未来健康或未确认日；下一自然必要交接时按实际审预算，不能盲恢复20分钟再回到零动作，也不为背景候选停止健康游玩。见[1556保存与临时30分钟来源](../maintenance/2026-11-03-quarkus-worker-save1556-temporary30m-sources.json)。本次仅小冻结metadata与精确十进制算术，0raw Save／Driver／canonical事件大体读取、0新查询／GET／编测／部署或运行操作，G2仍6/8。
+
 2026-11-03 05:30:27.838710Z五源码采用后的新宿主委托实际START：92836／出生134381573824965282，fbadf072-0b4b-4b8a-b614-d7890bfa9ad2、restart0@70d2e40b。Collector412b＋Factoryf59e＋Store12ba＋Corebbc2＋ReadPublisher50a5采用冻结为96项接受回执／78项源码投影，五族122个具名原输出metadata计数独核，不等于122个新源或方法调用。原d191于04:50:50.712247600Z完成exit4，原77终态／失败等待不删；Runtime于05:28:09只处理exact125308／出生134381493561057204，非温和host结束4004，外层46788随后自然exit1，8099 TCP拒绝后才唯一新launch，无Game／keeper／其它进程控制。
 
 M0 native-transport结构依赖缺同宿主独立资格，本次采用必要fresh Quarkus-dev；不能改写为同JVM新增schema或class已经通过。旧delegate END→新START2377.126462400秒、其中至host清理前2239.113939400秒为包含准备和等待的墙钟，不能抹掉或作CPU／收益。05:30:32.014563Z冻结BOOT、loop=null，保存仍1498／289日；1498→该冻结5870.052997800秒／零新增确认保存，不用累计289日作本窗分母。源码采用→START已闭，个别方法／cache命中、LOOP、新SAVE与速度仍各待证；10秒未达。Factory／Core／ReadPublisher实际raw与正式whole独立差保，先前临时Writer到期元数据未延长，不据此宣实际off调用。见[五源码新宿主START来源](../maintenance/2026-11-03-quarkus-worker-five-source-fresh-start-sources.json)。旧四源码／1498／281／273／265全文原字节保，本次仅读小metadata／既有正式pin，0raw Save／Driver／现场查询或新编测／GET／运行操作，G2仍6/8。
