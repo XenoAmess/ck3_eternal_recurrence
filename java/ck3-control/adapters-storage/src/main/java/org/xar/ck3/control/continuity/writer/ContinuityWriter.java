@@ -961,7 +961,8 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             StrictJson.require(precondition.equals(prepared.preconditionDigest()), "actual domain preconditions changed inside original writer lock");
             ContinuityState reduced = selectedAuthority.reduce(actual.state(), request);
             validateReduction(actual.state(), reduced, request);
-            StrictJson.require(ContinuityJson.same(reduced.toJson(), prepared.reduced().toJson()), "same reducer result changed after preview");
+            ObjectNode reducedDocument = reduced.toJson();
+            StrictJson.require(ContinuityJson.same(reducedDocument, prepared.reduced().toJson()), "same reducer result changed after preview");
             // Re-read sources after actual validation/reduction, before durable mutation.
             for (Pin pin : prepared.sources()) LedgerFiles.verify(pin);
             for (Pin pin : prepared.evidence()) LedgerFiles.verify(pin);
@@ -970,7 +971,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             for (Pin pin : actual.documents()) LedgerFiles.verify(pin);
             for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
             long sequence = Math.addExact(actual.state().sequence(), 1);
-            ObjectNode after = reduced.toJson(); after.put("sequence", sequence);
+            ObjectNode after = reducedDocument.deepCopy(); after.put("sequence", sequence);
             String requestIdentity = request.identity();
             after.put("last_event_identity", requestIdentity);
             ContinuityState committed = ContinuityState.fromJson(after, layout.machineId());
@@ -983,7 +984,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             LedgerFiles.requireAbsent(layout.event(sequence));
             String requestSourceKey = request.sourceKey();
             LedgerFiles.requireAbsent(layout.sourceIndex(requestSourceKey));
-            boolean unchanged=ContinuityJson.same(actual.state().toJson(),reduced.toJson());
+            boolean unchanged=ContinuityJson.same(actual.state().toJson(),reducedDocument);
             List<LedgerFiles.AtomicWrite> recovery=store.recoveryWrites(actual);
             List<LedgerFiles.AtomicWrite> writes=new ArrayList<>(recovery);
             LedgerFiles.AtomicWrite eventWrite=LedgerFiles.prepareAtomic(layout.event(sequence),eventBytes,false,ContinuityJson.LEDGER_MAX_BYTES);
