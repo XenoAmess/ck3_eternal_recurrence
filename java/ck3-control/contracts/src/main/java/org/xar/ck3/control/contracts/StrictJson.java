@@ -286,11 +286,21 @@ public final class StrictJson {
 
     private static void quote(String value, StringBuilder output) {
         // Empty strings are valid JSON values; contracts decide whether they are allowed.
-        if (!value.isEmpty()) { text(value); }
+        if (!value.isEmpty()) {
+            require(value.length() <= 32_768 || value.codePointCount(0, value.length()) <= 32_768,
+                    "nonempty bounded text required");
+        }
         output.append('"');
         String hexadecimal = "0123456789abcdef";
         for (int index = 0; index < value.length(); index++) {
             char current = value.charAt(index);
+            if (Character.isHighSurrogate(current)) {
+                require(index + 1 < value.length() && Character.isLowSurrogate(value.charAt(index + 1)),
+                        "unpaired Unicode surrogate");
+                output.append(current).append(value.charAt(++index));
+                continue;
+            }
+            require(!Character.isLowSurrogate(current), "unpaired Unicode surrogate");
             switch (current) {
                 case '"' -> output.append("\\\"");
                 case '\\' -> output.append("\\\\");
