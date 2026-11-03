@@ -40,7 +40,7 @@ public final class RestoreCapabilityAdoption {
   Obj state=DriverJson.object(load(stateSource).bytes(),DriverJson.MAX_NATIVE_BYTES);
   ExactRef manifestSource=DriverObservationEvidenceReader.reference(exported.get("java_driver_facts_evidence"));RawJson manifest=load(manifestSource);
   require(DriverObservationEvidenceReader.currentDriverReference(manifestSource,manifest).equals(original.originalDriver()),"saved capability state differs from actual archived complete Driver");
-  RawJson fullDriver=load(original.originalDriver());require(Arrays.equals(fullDriver.bytes(),actuallySavedDriver.encode()),"capability replay cannot borrow another saved Driver");
+  RawJson fullDriver=load(original.originalDriver());require(fullDriver.contentEquals(actuallySavedDriver.encode()),"capability replay cannot borrow another saved Driver");
   var actual=DriverObservationEvidenceReader.nativeFrame(manifestSource,manifest,archive.loadNativeFrame(original.originalNativePacket()));
   var observation=DriverObservationEvidenceReader.decode(manifestSource,manifest,fullDriver,actual);
   var stamp=new DriverSnapshotFacts.Stamp(observation.driverVersion(),observation.episodeEpoch(),actual.session().game(),actuallySavedDriver.session().episodeRunId(),DriverJson.sha256(fullDriver.bytes()));
@@ -83,5 +83,5 @@ public final class RestoreCapabilityAdoption {
       &&DriverSemanticReadState.clearForCold(actualColdReducerAuxiliary).equals(actualColdReducerAuxiliary),"actual cold reducer must invalidate every fixed semantic read-cache slot");
   return actualColdReducerAuxiliary;
  }
- private RawJson load(ExactRef ref){RawJson value=archive.loadMaterial(ref);require(value.bytes().length==ref.bytes()&&DriverJson.sha256(value.bytes()).equals(ref.sha256()),"original restore capability material differs");return value;}
+ private RawJson load(ExactRef ref){RawJson value=archive.loadMaterial(ref);byte[] originalBytes=value.bytes();require(originalBytes.length==ref.bytes()&&DriverJson.sha256(originalBytes).equals(ref.sha256()),"original restore capability material differs");return value;}
 }
