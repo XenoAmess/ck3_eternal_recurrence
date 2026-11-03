@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.TreeSet;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
@@ -16,8 +17,11 @@ public final class PublicDataJson {
     private PublicDataJson() { }
 
     public static ObjectNode object(RawJson actual) {
-        var semantic = DriverJson.object(actual.bytes(), RawJson.MAXIMUM_BYTES);
-        return (ObjectNode) OpportunityJson.toNode(semantic);
+        var parsed = FullJsonTree.parse(actual.bytes(), RawJson.MAXIMUM_BYTES);
+        if (!(parsed instanceof ObjectNode result)) {
+            throw new IllegalArgumentException("full JSON must be an object");
+        }
+        return result;
     }
 
     /** Sorted object keys; JSON integer/decimal/string categories remain exact. No Java object maps cross this boundary. */
