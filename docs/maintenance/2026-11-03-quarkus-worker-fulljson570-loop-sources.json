@@ -1,0 +1,218 @@
+{
+  "schema": "ck3.actual-reloaded-loop.v1",
+  "historical_cutoff_UTC": "2026-11-03T11:36:10.551878+00:00",
+  "Root_verification_grade": "BOUNDED_ORIGINAL_LIFECYCLE_AND_ASSOCIATED_SAME_GAME_LOOP_VERIFIED",
+  "same_host": {
+    "pid": 76092,
+    "birth": "134381592437332478"
+  },
+  "same_Game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "old_clean_END": {
+    "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@61eaf99@61eaf99",
+    "exit_code": 0,
+    "failure_type": null,
+    "host_pid": "76092",
+    "instance_id": "0b689be2-e53c-4615-acd5-c9bf5f6519a2",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-03T11:10:09.129882300Z",
+    "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@61eaf99@61eaf99",
+    "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+    "status": "DELEGATE_COMPLETED"
+  },
+  "new_START": {
+    "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:2@32106408@32106408",
+    "exit_code": null,
+    "failure_type": null,
+    "host_pid": "76092",
+    "instance_id": "bb6b05c2-94e3-468e-a787-98bdbaa8feab",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-03T11:11:36.383134800Z",
+    "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:2@32106408@32106408",
+    "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+    "status": "DELEGATE_STARTED"
+  },
+  "actual_LOOP_raw": {
+    "game": {
+      "creation_filetime": "134380410301009189",
+      "pid": 77132
+    },
+    "life_budget_hint_status": "restored",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "next_sequence": "90",
+    "observed_at_utc": "2026-11-03T11:32:12.139992Z",
+    "ordinary_batch_started": false,
+    "schema": "xar.java-ordinary-worker-result/v1",
+    "status": "ORDINARY_WORKER_LOOP_START"
+  },
+  "LOOP_delegate_association": {
+    "raw_has_delegate_id": false,
+    "associated_delegate": "bb6b05c2-94e3-468e-a787-98bdbaa8feab",
+    "basis": "Exact frozen owner and ordered original cleanEND/newSTART lifecycle; raw LOOP itself has no delegate ID.",
+    "ordinary_batch_started_at_LOOP": false,
+    "future_health_not_inferred": true
+  },
+  "actual_adoption": {
+    "source_count": 1,
+    "source_relative": "contracts/src/main/java/org/xar/ck3/control/contracts/FullJsonTree.java",
+    "adopted_raw_bytes": 6865,
+    "adopted_raw_sha256": "914b08d99cc2c31ac3ba6da7a7bb311b3d58fac1daa7add4088dc3c644807653",
+    "formal_at_documentation": {
+      "path": "java/ck3-control/contracts/src/main/java/org/xar/ck3/control/contracts/FullJsonTree.java",
+      "bytes": 6755,
+      "sha256": "befd444e5fca5229ff94e48f97d9fbb65a09c8b07f9b7c4c11f34f00507262ec"
+    },
+    "raw_equals_whole_formal": false,
+    "official_changed_classes": [
+      "FullJsonTree$1.class",
+      "FullJsonTree.class"
+    ],
+    "new_host": false,
+    "STOP_request": 0,
+    "route": "normal Dev fullrestart/new runtime classloader restart2; not body instrumentation",
+    "standalone_class_equals_module": [
+      false,
+      false
+    ],
+    "loaded_class_definition_or_method_execution_not_proved": true
+  },
+  "timing_separate": {
+    "GET": {
+      "count": 1,
+      "HTTP": 200,
+      "begin_UTC": "2026-11-03T11:09:39.172596+00:00",
+      "end_UTC": "2026-11-03T11:11:36.397922+00:00",
+      "raw_elapsed_seconds": "117.22481630000402",
+      "reported_seconds": "117.2248163"
+    },
+    "START_to_LOOP_seconds": "1235.756857200",
+    "these_are_wall_time_not_CPU_or_saved_day_speed": true
+  },
+  "software_later_cutoff": {
+    "final23_actual_affected_methods_passed": 2,
+    "RUN_only_seconds": "0.7238934",
+    "source_or_Test_recompiled": false,
+    "prior16_evidence_not_rewritten": true,
+    "does_not_prove_module_class_equals_standalone": true
+  },
+  "saved_frontier": {
+    "SAVE_CONFIRMED": 1709,
+    "saved_days": 326,
+    "confirmed_UTC": "2026-11-03T11:07:10.644932600Z",
+    "predates_adoption": true,
+    "new_SAVE_after_adoption": null,
+    "saved_frame": {
+      "date_raw": "53153808",
+      "episode_run_id": "resume91_latest268_20261101_a02",
+      "native_revision": "972",
+      "played_character_id": "31254",
+      "revision": "913",
+      "snapshot_id": "native:972"
+    },
+    "cycle": 46
+  },
+  "open_window_at_LOOP": {
+    "from_SAVE": 1709,
+    "from_confirmed_UTC": "2026-11-03T11:07:10.644932600Z",
+    "to_LOOP_UTC": "2026-11-03T11:32:12.139992Z",
+    "elapsed_seconds": "1501.495059400",
+    "new_SAVE_CONFIRMED_days": 0,
+    "seconds_per_new_saved_day": null,
+    "target10_achieved": false,
+    "all_preparation_GET_cold_sampling_and_waits_retained": true
+  },
+  "prior_complete_window_unchanged": {
+    "from_SAVE": 1669,
+    "from_saved_days": 320,
+    "from_confirmed_UTC": "2026-11-03T10:14:51.110032Z",
+    "to_SAVE": 1709,
+    "to_saved_days": 326,
+    "elapsed_seconds": "3139.534900600",
+    "new_SAVE_CONFIRMED_days": 6,
+    "seconds_per_new_saved_day": "523.2558167666666666666666667",
+    "subtracted_seconds": "0",
+    "target10_achieved": false,
+    "A_B": false,
+    "all_intervening_wall_time_included": true,
+    "includes": "All zero-advance87, failures, preparation, waiting and confirmation. No wall time excluded.",
+    "Root_reported87_zero_advance_elapsed_seconds": "1469.401891",
+    "87_subwindow_is_not_primary_metric": true
+  },
+  "diagnostic_only": {
+    "existing587_actual_duration_seconds": "30.0997486",
+    "entirely_preLOOP": true,
+    "new_sampling_for_documentation": 0,
+    "CAS_scopes_separate_not_unique_files_or_wall_time": true,
+    "no_followup_source_adoption_or_speed_inference": true
+  },
+  "prior_SAVE_index_preserved": {
+    "path": "docs/maintenance/2026-11-03-quarkus-worker-save1709-sources.json",
+    "bytes": 3114,
+    "sha256": "a4923b7fa5ec6df21a839e868e112b1b20111d320e2e582818618a47872574cd"
+  },
+  "sources": [
+    {
+      "local_key": "root/fulljson570-loop-independent-v1.json",
+      "bytes": 3676,
+      "sha256": "099f14ecae9725abe1169f1b4cd7af4fccbc243c070a0c68caf4ca26af653e05"
+    },
+    {
+      "local_key": "runtime/fulljson570/summary",
+      "bytes": 3759,
+      "sha256": "7aebd2c9409f136ef38e51ce2db27f958724c18f73e73c0b015337a90ec4cdee"
+    },
+    {
+      "local_key": "runtime/fulljson570/owner_frozen",
+      "bytes": 1647,
+      "sha256": "991bd843348430f25e14f999b33021cf20687ac95a3b85b43cebb25187b30c94"
+    },
+    {
+      "local_key": "runtime/fulljson570/actual_LOOP_raw",
+      "bytes": 332,
+      "sha256": "d12324564ba27ce34818eff6a0bc03d6623b342064b153e06e7f38e809834021"
+    },
+    {
+      "local_key": "runtime/fulljson570/actual_reloaded_START",
+      "bytes": 4970,
+      "sha256": "5cec47f280dbf80b1ba9c991c14dc55af0f37e7a63d6f657d2ece575ac1a2f79"
+    },
+    {
+      "local_key": "runtime/fulljson570/official_oldEND_newSTART_reload",
+      "bytes": 2437,
+      "sha256": "3537b59fe165767c4a8fb2392b14b617f6ebfffefe37da7572b7a5da45a25642"
+    },
+    {
+      "local_key": "runtime/fulljson570/source_adopted",
+      "bytes": 1389,
+      "sha256": "c2a5d85d2a845613bbdd97226df07c19378b7d372f503d6499f0d3e2df38ff98"
+    },
+    {
+      "local_key": "runtime/fulljson570/GET_actual",
+      "bytes": 449,
+      "sha256": "ecce61d3fce18b575931c456cca3ff4113d59f71b559f997598fb503b4c9244e"
+    },
+    {
+      "local_key": "runtime/fulljson570/first_two_actualCAS",
+      "bytes": 3174,
+      "sha256": "3de8b19761b540edef00a1890642034f1dacaac891135561e274447c76d9d0f8"
+    },
+    {
+      "local_key": "runtime/final23-behavior-later572",
+      "bytes": 2209,
+      "sha256": "d11cef72a0907757f3ca26b9b5227d2a52f1fcb170157013b0f54c6de615fb7d"
+    },
+    {
+      "local_key": "native/profile587-closed",
+      "bytes": 2563,
+      "sha256": "d350adf93b90fb42283fc1d7de31afe34de3ebe199ce25a11886f67ed1de18f1"
+    }
+  ],
+  "limits": [
+    "No new SAVE or performance improvement is established by source adoption, actual restart or LOOP.",
+    "Original source/adoption/firstSTART receipts retain their pending LOOP cutoffs; this is an additive later record.",
+    "No raw Save/Driver/canonical-event bodies, live C source/classes, new JVM/Test/JFR/HTTP/GET/Game operations.",
+    "All earlier saved-day windows and failed/waiting time remain unchanged; G2still6/8."
+  ]
+}

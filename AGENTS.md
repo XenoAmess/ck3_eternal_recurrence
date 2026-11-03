@@ -1,5 +1,11 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-03 FullJsonTree Final23同宿主重载后进入LOOP：保存仍326日
+
+- 同Dev76092／出生134381592437332478，旧0b689be2委托于11:10:09.129882300Z真实clean END0，新bb6b05c2-94e3-468e-a787-98bdbaa8feab于11:11:36.383134800Z START，restart1→2@32106408；11:32:12.139992Z同Game77132／原birth进入LOOP／next90。Root已独核七份具名冻结引用。原LOOP行无delegate ID，关联来自冻结owner及有序原生命周期；该行ordinary_batch_started=false，不外推后继健康。
+- 本次仅采用FullJsonTree Final23原源914b08d9，官方两既有class重载与新loader有回执；不是body instrumentation。唯一GET HTTP200／117.2248163秒与START→LOOP完整1235.756857200秒分列。最终23的两个受影响方法已在572实际RUN-only通过，旧16软件切点不回写；模块输出与独立增编class字节不同，不授当前classloader逐方法执行、cache命中或提速。
+- 保存仍1709／326日，早于本次采用；1709→该LOOP完整1501.495059400秒／零新增确认保存，不报有限秒／日，准备、GET、冷恢复、采样和全部等待留在下一确认窗。原1669→1709的523.2558167666…秒／日与全部历史正文原字节保留，10秒目标仍未达，G2仍6/8。见[FullJson重载与LOOP来源](docs/maintenance/2026-11-03-quarkus-worker-fulljson570-loop-sources.json)。文档不触发新编测、JFR、查询、GET或现场操作，不作运行继续前置。
+
 ## 2026-11-03 实际保存切点：1709确认326日
 
 - 1709于11:07:10.644932600Z真实SAVE_CONFIRMED，1703 SETTLE；本局累计326日全部保存，saved cycle46/date53153808/native972/public913、actor31254、pending=null，同Game77132／原birth。Root已具名独验两冻结事件。1669／320日→1709／326日完整3139.534900600秒／新增6保存日＝523.2558167666…秒／日，87零推进、全部失败、准备、等待和保存确认全计；10秒目标未达、非A/B。全Root累计422.6522850693…秒／日仅次指标，不替代本窗。
