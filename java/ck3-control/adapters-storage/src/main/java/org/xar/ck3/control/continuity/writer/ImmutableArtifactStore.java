@@ -509,6 +509,29 @@ public final class ImmutableArtifactStore {
                     reads.acquisitionAttempts = HistoricalReads.nextCount(reads.acquisitionAttempts);
                     return acquirePublication(reads, expected, maximum);
                 }
+                // Attempt single-pair retirement if admission is blocked by entry or handle limits
+                // and the oldest entry can free enough bytes for the new request.
+                if (reads.entries.size() >= reads.maximumEntries || reads.entries.size() * 2 > reads.maximumHandles - 4) {
+                    if (!reads.entries.isEmpty()) {
+                        var oldestKey = reads.entries.keySet().iterator().next();
+                        var oldestLease = reads.entries.get(oldestKey);
+                        long freedBytes = oldestLease.metadata.retainedBytes() + oldestLease.data.retainedBytes();
+                        // Check if freeing the oldest entry allows the new request to fit
+                        if (expected.bytes() <= (reads.maximumBytes - (reads.bytes - freedBytes)) / 2) {
+                            // Close the lease first; failure poisons the scope and prevents removal
+                            oldestLease.close();
+                            // Remove from map and adjust accounting only after successful close
+                            reads.entries.remove(oldestKey);
+                            reads.bytes -= freedBytes;
+                            // Retry admission with updated state
+                            if (reads.entries.size() < reads.maximumEntries && reads.entries.size() * 2 <= reads.maximumHandles - 4
+                                    && expected.bytes() <= (reads.maximumBytes - reads.bytes) / 2) {
+                                reads.acquisitionAttempts = HistoricalReads.nextCount(reads.acquisitionAttempts);
+                                return acquirePublication(reads, expected, maximum);
+                            }
+                        }
+                    }
+                }
                 reads.recordFallback(expected);
             }
             LedgerFiles.Document metadata=LedgerFiles.read(commit(expected.sha256()),COMMIT_LIMIT);
