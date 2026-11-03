@@ -57,17 +57,17 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             var ack = RootNativeFreshStartup.observeBootstrapCore(attached, clock, clock.instant().plus(config.operationTimeout()));
             var frame = RootNativeFreshStartup.decodeCore(ack.originalResultToken().orElseThrow());
             var mapReady = RootNativeFreshStartup.isMapReady(frame);
-            if (mapReady) {
+            if ("resume".equals(mode)) {
+                Optional<CleanRestartTicket> pointer = Files.exists(ticketPath) ? Optional.of(readTicket(ticketPath)) : Optional.empty();
+                running = prepared.openExistingSameGameRecovery(attached, pointer, clock.instant().plus(config.operationTimeout()));
+            } else if (mapReady) {
                 Optional<CleanRestartTicket> pointer = Files.exists(ticketPath) ? Optional.of(readTicket(ticketPath)) : Optional.empty();
                 running = prepared.openSameGameBootstrap(attached, pointer, clock.instant().plus(config.operationTimeout()));
-            } else if ("fresh".equals(mode)) {
+            } else {
                 opened = prepared.open(attached);
                 var dayZero = RootNativeFreshStartup.startFreshRobert(attached, plan, prepared.initialPolicy().kind(),
                         prepared.initialPolicy().lifecycle(), clock, clock.instant().plus(plan.startupTimeout()));
                 running = opened.finishFresh(dayZero.startAck(), dayZero.read(), dayZero.produced(), clock.instant().plus(config.operationTimeout()));
-            } else {
-                var originalTicket = readTicket(ticketPath);
-                running = prepared.openCleanRestart(attached, originalTicket, clock.instant().plus(config.operationTimeout()));
             }
             var schedulingController = running.core().sessionAccess().current().controllerForPublication();
             var importedLifeHint = readLifeBudgetHint(config.stateDirectory().resolve("worker-batches.jsonl"), schedulingController.identity());

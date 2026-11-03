@@ -568,6 +568,15 @@ public final class RootOrdinaryRuntimeAssembly {
         }
 
 public Running openSameGameBootstrap(ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline) throws IOException, InterruptedException {
+    return openSameGameBootstrapInternal(actual, pointer, deadline, true);
+}
+
+/** Existing authoritative same-Game data only; this entry never creates an observed initial map. */
+public Running openExistingSameGameRecovery(ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline) throws IOException, InterruptedException {
+    return openSameGameBootstrapInternal(actual, pointer, deadline, false);
+}
+
+private Running openSameGameBootstrapInternal(ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline, boolean allowObservedInitial) throws IOException, InterruptedException {
     var opened = open(actual);
     if (pointer.isPresent() && opened.core().matchesCleanRestartHead(pointer.orElseThrow())) {
         var driver = runOperationPhase(clock,java.time.Duration.ofMinutes(10),phaseDeadline->
@@ -592,6 +601,9 @@ public Running openSameGameBootstrap(ManagedGameSession actual, Optional<Continu
     if (opened.core().hasCanonicalGameplayEntry()) {
         var driver = opened.core().adoptInitialRecovery(actual,config.retainedFrames(),cyclePolicy, () -> clock.instant().plus(config.operationTimeout()));
         return new Opened(this,driver.source()).finish(driver, Optional.empty(), deadline);
+    }
+    if (!allowObservedInitial) {
+        throw new IOException("existing same-Game recovery requires authoritative settled, unresolved or canonical initial data; fresh observed map initialization is not permitted");
     }
     var outcome = runOperationPhase(clock,config.operationTimeout(),actual.nativeTransport()::readFreshFullState);
     if (!(outcome instanceof NativeFreshSnapshotPort.Received)) {
