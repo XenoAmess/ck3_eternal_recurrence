@@ -122,6 +122,46 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     private static final long MAX_PARSED_BYTES = 64L * 1024 * 1024;
     private enum ParseProfile { PROTOCOL, FULL_MATERIAL }
     private final ThreadLocal<ParsedMaterialCache> parsedMaterialCache;
+    // Explicit dev diagnostics only; limits are per Archive class-loader generation, not across reloads.
+    private static final java.util.concurrent.atomic.AtomicBoolean NO_SCOPE_SEEN = new java.util.concurrent.atomic.AtomicBoolean();
+    private static final java.util.concurrent.atomic.AtomicInteger SCOPE_SUMMARY_COUNT = new java.util.concurrent.atomic.AtomicInteger();
+    private static boolean parsedDiagnosticsEnabled() {
+        try { return "true".equals(System.getProperty("ck3.dev.archiveParsedMaterialDiagnostics")); }
+        catch (RuntimeException | Error diagnosticFailure) { return false; }
+    }
+    private static void reportNoParsedScope() {
+        try {
+            if (parsedDiagnosticsEnabled() && NO_SCOPE_SEEN.compareAndSet(false, true))
+                System.err.println("ARCHIVE_PARSED_DIAGNOSTICS no_scope_seen=true count=UNKNOWN limit_scope=archive_class_generation");
+        } catch (RuntimeException | Error diagnosticFailure) { }
+    }
+    private static void reportParsedMaterialDiagnostics(ParsedMaterialCache cache, boolean completed) {
+        try {
+            if (!cache.diagnosticsEnabled) return;
+            int previous;
+            do {
+                previous = SCOPE_SUMMARY_COUNT.get();
+                if (previous >= 64) return;
+            } while (!SCOPE_SUMMARY_COUNT.compareAndSet(previous, previous + 1));
+            System.err.println("ARCHIVE_PARSED_DIAGNOSTICS scope_summary=true coverage=scoped_successful_reads limit_scope=archive_class_generation"
+                    + " protocol_hits=" + cache.protocolHits
+                    + " protocol_key_absent=" + cache.protocolKeyAbsent
+                    + " protocol_bytes_unequal=" + cache.protocolBytesUnequal
+                    + " full_material_hits=" + cache.fullMaterialHits
+                    + " full_material_key_absent=" + cache.fullMaterialKeyAbsent
+                    + " full_material_bytes_unequal=" + cache.fullMaterialBytesUnequal
+                    + " evictions=" + cache.evictions
+                    + " entry_evictions=" + cache.entryEvictions
+                    + " byte_evictions=" + cache.byteEvictions
+                    + " final_entries=" + cache.entries.size()
+                    + " peak_entries=" + cache.peakEntries
+                    + " final_retained_bytes=" + cache.totalBytes
+                    + " peak_retained_bytes=" + cache.peakBytes
+                    + " entry_headroom=" + (MAX_PARSED_ENTRIES - cache.entries.size())
+                    + " byte_headroom=" + (MAX_PARSED_BYTES - cache.totalBytes)
+                    + " completed=" + (completed ? 1 : 0) + " summary_slot=" + (previous + 1) + " summary_limit=64");
+        } catch (RuntimeException | Error diagnosticFailure) { }
+    }
     private final DriverFrameEvidenceLoader completeDriverDecoder;
     /** Finite collection budget only. Callers may omit an optional whole group for this
      * exception; missing, changed or invalid originals must continue to fail separately. */
@@ -286,13 +326,19 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         requireSession(session); ContinuityStorePort.Session before = current.get();
         ParsedMaterialCache cacheBefore = parsedMaterialCache.get();
         current.set(session);
-        if (cacheBefore == null) parsedMaterialCache.set(new ParsedMaterialCache());
+        ParsedMaterialCache cache = cacheBefore;
+        if (cacheBefore == null) { cache = new ParsedMaterialCache(); parsedMaterialCache.set(cache); }
+        boolean completed = false;
         try {
-            if (completeDriverDecoder == null) return operation.run();
-            return completeDriverDecoder.inCompleteDriverDecodeScope(owner, session, this, ignored -> operation.run());
+            T result;
+            if (completeDriverDecoder == null) result = operation.run();
+            else result = completeDriverDecoder.inCompleteDriverDecodeScope(owner, session, this, ignored -> operation.run());
+            completed = true;
+            return result;
         } finally {
             if (before == null) current.remove(); else current.set(before);
             if (cacheBefore == null) parsedMaterialCache.remove(); else parsedMaterialCache.set(cacheBefore);
+            if (cacheBefore == null) reportParsedMaterialDiagnostics(cache, completed);
         }
     }
     private void requireSession(ContinuityStorePort.Session session) throws IOException {
@@ -566,8 +612,9 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         ParsedMaterialCache cache = parsedMaterialCache.get();
         if (cache != null) {
             RawJson cached = cache.get(ref, ParseProfile.PROTOCOL);
-            if (cached != null && cached.contentEquals(bytes)) return cached;
-        }
+            if (cached != null && cached.contentEquals(bytes)) { cache.recordLookup(ParseProfile.PROTOCOL, 1); return cached; }
+            cache.recordLookup(ParseProfile.PROTOCOL, cached == null ? 0 : 2);
+        } else reportNoParsedScope();
         RawJson result = new RawJson(bytes);
         if (cache != null) cache.put(ref, ParseProfile.PROTOCOL, result, bytes.length);
         return result;
@@ -1568,6 +1615,25 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         private record Cached(RawJson value, int bytes) { }
         private final Map<Key, Cached> entries = new LinkedHashMap<>(16, 0.75f, true);
         private long totalBytes = 0;
+        private final boolean diagnosticsEnabled = parsedDiagnosticsEnabled();
+        private long protocolHits, protocolKeyAbsent, protocolBytesUnequal;
+        private long fullMaterialHits, fullMaterialKeyAbsent, fullMaterialBytesUnequal;
+        private long evictions, entryEvictions, byteEvictions;
+        private int peakEntries;
+        private long peakBytes;
+        private static long nextCount(long value) { return value == Long.MAX_VALUE ? value : value + 1; }
+        private void recordLookup(ParseProfile profile, int outcome) {
+            if (!diagnosticsEnabled) return;
+            if (profile == ParseProfile.PROTOCOL) {
+                if (outcome == 1) protocolHits = nextCount(protocolHits);
+                else if (outcome == 0) protocolKeyAbsent = nextCount(protocolKeyAbsent);
+                else protocolBytesUnequal = nextCount(protocolBytesUnequal);
+            } else {
+                if (outcome == 1) fullMaterialHits = nextCount(fullMaterialHits);
+                else if (outcome == 0) fullMaterialKeyAbsent = nextCount(fullMaterialKeyAbsent);
+                else fullMaterialBytesUnequal = nextCount(fullMaterialBytesUnequal);
+            }
+        }
         // Pure byte-decoded Gameplay DATA stays private to the owning archive scope.
         private ImmutableArtifactStore.HistoricalReads commandReads;
         private static final int MAX_COMMAND_ENTRIES = 16;
@@ -1609,6 +1675,11 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             Key actual = new Key(key, profile);
             if (entries.containsKey(actual) || bytes < 1 || bytes > MAX_PARSED_BYTES) return;
             while (entries.size() >= MAX_PARSED_ENTRIES || bytes > MAX_PARSED_BYTES - totalBytes) {
+                if (diagnosticsEnabled) {
+                    evictions = nextCount(evictions);
+                    if (entries.size() >= MAX_PARSED_ENTRIES) entryEvictions = nextCount(entryEvictions);
+                    if (bytes > MAX_PARSED_BYTES - totalBytes) byteEvictions = nextCount(byteEvictions);
+                }
                 var oldest = entries.entrySet().iterator();
                 Cached removed = oldest.next().getValue();
                 oldest.remove();
@@ -1616,6 +1687,10 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             }
             entries.put(actual, new Cached(value, bytes));
             totalBytes += bytes;
+            if (diagnosticsEnabled) {
+                peakEntries = Math.max(peakEntries, entries.size());
+                peakBytes = Math.max(peakBytes, totalBytes);
+            }
         }
     }
     /** Explicit complete Driver/auxiliary DATA only. Borrow the same writer and existing
@@ -1627,8 +1702,9 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             ParsedMaterialCache cache = parsedMaterialCache.get();
             if (cache != null) {
                 RawJson cached = cache.get(original, ParseProfile.FULL_MATERIAL);
-                if (cached != null && cached.contentEquals(bytes)) return cached;
-            }
+                if (cached != null && cached.contentEquals(bytes)) { cache.recordLookup(ParseProfile.FULL_MATERIAL, 1); return cached; }
+                cache.recordLookup(ParseProfile.FULL_MATERIAL, cached == null ? 0 : 2);
+            } else reportNoParsedScope();
             RawJson result = RawJson.fullMaterial(bytes);
             if (cache != null) cache.put(original, ParseProfile.FULL_MATERIAL, result, bytes.length);
             return result;
