@@ -63,13 +63,26 @@ public final class PublicDataJson {
         if (value instanceof OpportunityJson.Obj object) {
             var names = new TreeSet<>(object.members().keySet());
             var fields = new LinkedHashMap<String, OpportunityJson.Value>();
-            for (String name : names) fields.put(name, sorted(object.get(name), depth + 1));
-            return new OpportunityJson.Obj(fields);
+            java.util.Iterator<?> originalNames = object.members().keySet().iterator();
+            boolean unchanged = names.size() == object.members().size();
+            for (String name : names) {
+                var original = object.get(name);
+                var child = sorted(original, depth + 1);
+                fields.put(name, child);
+                unchanged &= name.equals(originalNames.next()) && child == original;
+            }
+            // Reuse only after the original sort and complete recursive checks.
+            return unchanged ? object : new OpportunityJson.Obj(fields);
         }
         if (value instanceof OpportunityJson.Arr array) {
             var rows = new ArrayList<OpportunityJson.Value>();
-            for (var row : array.items()) rows.add(sorted(row, depth + 1));
-            return new OpportunityJson.Arr(rows);
+            boolean unchanged = true;
+            for (var row : array.items()) {
+                var child = sorted(row, depth + 1);
+                rows.add(child);
+                unchanged &= child == row;
+            }
+            return unchanged ? array : new OpportunityJson.Arr(rows);
         }
         return value;
     }
@@ -91,22 +104,34 @@ public final class PublicDataJson {
         if(original instanceof OpportunityJson.DecimalValue decimal) {
             StrictJson.require(projected instanceof OpportunityJson.DecimalValue,"original decimal category changed at "+path);
             var after=(OpportunityJson.DecimalValue)projected;
-            StrictJson.require(new BigDecimal(decimal.token()).compareTo(new BigDecimal(after.token()))==0,
+            var originalValue=new BigDecimal(decimal.token());
+            StrictJson.require(originalValue.compareTo(
+                    decimal.token().equals(after.token()) ? originalValue : new BigDecimal(after.token()))==0,
                     "original decimal value changed at "+path);
             return decimal;
         }
         if(original instanceof OpportunityJson.Obj before&&projected instanceof OpportunityJson.Obj after) {
             var fields=new LinkedHashMap<String,OpportunityJson.Value>();
-            for(var entry:after.members().entrySet())fields.put(entry.getKey(),preserveDecimals(before.get(entry.getKey()),entry.getValue(),path+"/"+entry.getKey()));
+            boolean unchanged=true;
+            for(var entry:after.members().entrySet()) {
+                var child=preserveDecimals(before.get(entry.getKey()),entry.getValue(),path+"/"+entry.getKey());
+                fields.put(entry.getKey(),child);
+                unchanged &= child==entry.getValue();
+            }
             for(var entry:before.members().entrySet())if(!after.members().containsKey(entry.getKey()))
                 requireNoDecimal(entry.getValue(),path+"/"+entry.getKey());
-            return new OpportunityJson.Obj(fields);
+            return unchanged ? after : new OpportunityJson.Obj(fields);
         }
         if(original instanceof OpportunityJson.Arr before&&projected instanceof OpportunityJson.Arr after) {
             var rows=new ArrayList<OpportunityJson.Value>();
-            for(int index=0;index<after.items().size();index++)rows.add(preserveDecimals(index<before.items().size()?before.items().get(index):null,after.items().get(index),path+"/"+index));
+            boolean unchanged=true;
+            for(int index=0;index<after.items().size();index++) {
+                var child=preserveDecimals(index<before.items().size()?before.items().get(index):null,after.items().get(index),path+"/"+index);
+                rows.add(child);
+                unchanged &= child==after.items().get(index);
+            }
             for(int index=after.items().size();index<before.items().size();index++)requireNoDecimal(before.items().get(index),path+"/"+index);
-            return new OpportunityJson.Arr(rows);
+            return unchanged ? after : new OpportunityJson.Arr(rows);
         }
         requireNoDecimal(original,path);return projected;
     }
