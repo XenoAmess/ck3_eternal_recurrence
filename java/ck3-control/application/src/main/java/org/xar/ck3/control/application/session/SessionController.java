@@ -1165,11 +1165,10 @@ public final class SessionController {
         void deferUnissuedLifeIfBudgetInsufficient(Ready ready, ActionCommand selected, boolean checkpointsEnabled) {
             if (!checkpointsEnabled || terminalConstraint.isPresent() || pendingOnly
                     || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(selected.operation().value())
-                    || dirty || eligibleSinceSave != 0 || !unsavedGameplayActions.isEmpty() || savedPair.isEmpty()
+                    || savedPair.isEmpty()
                     || quarantined || localUnresolved || retired || cyclePending || journalUnknown || observedPendingAction
                     || pendingReadParent.isPresent() || publicCheckpointUnknown.isPresent() || pendingUi.isPresent()
-                    || checkpointAdoptionDeferred || !turns.isEmpty() || !reconciliations.isEmpty()
-                    || !lifecycleTurns.isEmpty() || !readReconciliations.isEmpty() || !revisionReplans.isEmpty()
+                    || checkpointAdoptionDeferred
                     || ready.request().observations().actionFacts().stream().anyMatch(fact -> fact.actionId().equals(selected.actionId()))) return;
             var now = clock.now();
             if (!now.utc().isBefore(selected.deadline())) return; // Preserve the original expired-command failure path.

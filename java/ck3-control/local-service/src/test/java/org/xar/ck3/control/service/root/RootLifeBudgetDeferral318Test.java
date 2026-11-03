@@ -35,7 +35,7 @@ final class RootLifeBudgetDeferral318Test {
     private static final SessionIdentity OWNER = new SessionIdentity("software-budget", GAME, "software-session");
     private static final ExactRef REF = new ExactRef("D:/software-data-not-opened/evidence", 1, "1".repeat(64));
 
-    @Test void onlyExactLifeCleanZeroDispatchReportGetsTheSingleFreshBatchOpportunity() {
+    @Test void onlyExactLifeUnissuedReportGetsTheSingleFreshBatchOpportunity() {
         var actual = report("life-advance", 10, 31, 1, "software-episode", BatchReport.Terminal.WALL_TIMEOUT, DEFER, false, true, List.of());
         var selected = actual.lastPlan().orElseThrow().finalPlan().orElseThrow().command().orElseThrow();
         byte[] original = ActionCodec.encodeCommand(selected);
@@ -49,7 +49,7 @@ final class RootLifeBudgetDeferral318Test {
             assertFalse(RootOrdinaryWorkerLoop.isUnissuedLifeBudgetDeferral(report(operation, 10, 31, 1, "software-episode", BatchReport.Terminal.WALL_TIMEOUT, DEFER, false, true, List.of())), operation);
         assertFalse(RootOrdinaryWorkerLoop.isUnissuedLifeBudgetDeferral(report("life-advance", 10, 31, 1, "software-episode", BatchReport.Terminal.CHECKPOINT_UNKNOWN, DEFER, false, true, List.of())));
         assertFalse(RootOrdinaryWorkerLoop.isUnissuedLifeBudgetDeferral(report("life-advance", 10, 31, 1, "software-episode", BatchReport.Terminal.WALL_TIMEOUT, "complete batch monotonic wall bound expired", false, true, List.of())));
-        assertFalse(RootOrdinaryWorkerLoop.isUnissuedLifeBudgetDeferral(report("life-advance", 10, 31, 1, "software-episode", BatchReport.Terminal.WALL_TIMEOUT, DEFER, true, true, List.of())));
+        assertTrue(RootOrdinaryWorkerLoop.isUnissuedLifeBudgetDeferral(report("life-advance", 10, 31, 1, "software-episode", BatchReport.Terminal.WALL_TIMEOUT, DEFER, true, true, List.of())));
         assertFalse(RootOrdinaryWorkerLoop.isUnissuedLifeBudgetDeferral(report("life-advance", 10, 31, 1, "software-episode", BatchReport.Terminal.WALL_TIMEOUT, DEFER, false, false, List.of())));
         var action = new BatchReport.PhaseSpan(BatchReport.Phase.ACTION, new SessionClock.Tick(999_000_000_000L, START.plusSeconds(999)),
                 new SessionClock.Tick(1_000_000_000_000L, START.plusSeconds(1000)), BatchReport.PhaseTerminal.RETURNED);
@@ -86,7 +86,10 @@ final class RootLifeBudgetDeferral318Test {
         var pair = new CheckpointPair(save, driver, observed, "software-lineage", 1, "software-prior-save", REF, START);
         return new BatchReport(OWNER, "software-budget-" + revision, terminal, detail,
                 new SessionClock.Tick(0, START), new SessionClock.Tick(1_000_000_000_000L, START.plusSeconds(1000)),
-                phases, List.of(), List.of(), List.of(), List.of(), List.of(), Optional.of(trace), Optional.empty(), Optional.empty(),
+                java.util.stream.Stream.concat(java.util.stream.Stream.of(new BatchReport.PhaseSpan(BatchReport.Phase.PLANNING,
+                        new SessionClock.Tick(998_000_000_000L, START.plusSeconds(998)), new SessionClock.Tick(999_000_000_000L, START.plusSeconds(999)),
+                        BatchReport.PhaseTerminal.RETURNED)), phases.stream()).toList(),
+                List.of(), List.of(), List.of(), List.of(), List.of(), Optional.of(trace), Optional.empty(), Optional.empty(),
                 retainPair ? Optional.of(pair) : Optional.empty(), Optional.of(REF), 0, 0, dirty, List.of(), List.of(), List.of());
     }
 }

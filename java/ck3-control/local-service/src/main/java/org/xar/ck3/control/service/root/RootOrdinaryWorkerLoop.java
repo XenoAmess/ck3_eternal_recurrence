@@ -170,6 +170,7 @@ public final class RootOrdinaryWorkerLoop {
                         && turn.receipt().command().origin().game().equals(report.session().game()))
                         || forwardDateAfterWarm(report, actualBoundary, unissuedWarmBoundary))) {
                 unissuedWarmUsed = false; unissuedWarmBoundary = Optional.empty();
+                previousReport = Optional.empty(); // Real completed progress breaks consecutive budget deferrals.
             }
             if (isUnissuedLifeBudgetDeferral(report)) {
                 if (currentSession.controller().isQuarantined() || currentSession.controller().isRetired()) {
@@ -463,17 +464,38 @@ public final class RootOrdinaryWorkerLoop {
                 && settled.execution().handlerId().equals(LifeAdvanceComposite.HANDLER);
     }
 
-    /** A private producer detail on the actual zero-dispatch report; no new action capability. */
+    /** A private producer detail before this selected Life is issued; prior settled work is retained. */
     static boolean isUnissuedLifeBudgetDeferral(BatchReport report) {
         if (report.terminal() != BatchReport.Terminal.WALL_TIMEOUT
                 || !report.detail().startsWith("PRE_INTENT_LIFE_BUDGET_DEFERRED: ")
-                || report.dirtySinceSave() || report.eligibleAdvancesSinceSave() != 0 || report.committedSavedDays() != 0
-                || report.lastSavedPair().isEmpty() || report.lastPlan().isEmpty()
-                || !report.turns().isEmpty() || !report.reconciliations().isEmpty() || !report.lifecycleTurns().isEmpty()
-                || !report.readPublicationReconciliations().isEmpty() || !report.revisionReplans().isEmpty()
-                || report.phases().stream().anyMatch(span -> span.phase() == BatchReport.Phase.ACTION
-                    || span.phase() == BatchReport.Phase.ACTION_RECONCILIATION || span.phase() == BatchReport.Phase.CHECKPOINT)) return false;
+                || report.committedSavedDays() != 0
+                || report.lastSavedPair().isEmpty() || report.lastPlan().isEmpty()) return false;
+        // Phase order distinguishes prior completed work from dispatch after the selected plan,
+        // including software clocks whose adjacent phase timestamps can be equal.
+        var phases = report.phases();
+        int lastPlanning = -1;
+        for (int index = 0; index < phases.size(); index++) {
+            var span = phases.get(index);
+            if (span.phase() == BatchReport.Phase.PLANNING)
+                lastPlanning = span.terminal() == BatchReport.PhaseTerminal.RETURNED ? index : -1;
+        }
+        if (lastPlanning < 0) return false;
+        for (int index = lastPlanning + 1; index < phases.size(); index++) {
+            var phase = phases.get(index).phase();
+            if (phase == BatchReport.Phase.ACTION || phase == BatchReport.Phase.ACTION_RECONCILIATION
+                    || phase == BatchReport.Phase.CHECKPOINT) return false;
+        }
         var selected = report.lastPlan().orElseThrow().finalPlan().flatMap(plan -> plan.command());
+        if (selected.isEmpty()) return false;
+        String selectedId = selected.orElseThrow().actionId();
+        for (var turn : report.turns())
+            if (!turn.receipt().settled() || turn.receipt().command().actionId().equals(selectedId)) return false;
+        for (var turn : report.reconciliations())
+            if (!turn.originalReceipt().settled() || turn.originalReceipt().command().actionId().equals(selectedId)) return false;
+        for (var turn : report.lifecycleTurns())
+            if (!turn.receipt().settled() || turn.receipt().command().actionId().equals(selectedId)) return false;
+        for (var turn : report.readPublicationReconciliations())
+            if (!turn.originalReceipt().settled() || turn.originalReceipt().command().actionId().equals(selectedId)) return false;
         return selected.filter(command -> command.origin() instanceof CommandOrigin.Gameplay
                 && LifeAdvanceComposite.accepts(command.operation().value())
                 && command.sessionId().equals(report.session().sessionId())
