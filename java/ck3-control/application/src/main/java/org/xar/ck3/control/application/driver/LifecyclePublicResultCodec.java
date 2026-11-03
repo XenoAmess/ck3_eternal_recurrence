@@ -136,10 +136,11 @@ public final class LifecyclePublicResultCodec {
                     "original lifecycle revision must be an exact nonnegative integer");
             parent.put(field, value.bigIntegerValue().toString());
         } else {
-            StrictJson.require(value.isTextual() && value.textValue().length() <= 4300
-                    && CANONICAL_DECIMAL_PATTERN.matcher(value.textValue()).matches(),
+            String decimal = null;
+            StrictJson.require(value.isTextual() && (decimal = value.textValue()).length() <= 4300
+                    && CANONICAL_DECIMAL_PATTERN.matcher(decimal).matches(),
                     "public lifecycle revision requires a canonical decimal string");
-            parent.put(field, new BigInteger(value.textValue()));
+            parent.put(field, new BigInteger(decimal));
         }
     }
     private static ObjectNode object(RawJson value) {
