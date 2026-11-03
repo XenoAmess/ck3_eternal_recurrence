@@ -294,7 +294,12 @@ public final class DriverReturnedPublicReadHistoryRowProducer {
     private static long decimal(Obj row,String field){String text=string(row,field);StrictJson.require(text.matches("0|[1-9][0-9]*"),"canonical decimal original field required");return new BigInteger(text).longValueExact();}
     private static ExactRef reference(Value value){return DriverObservationEvidenceReader.reference(value);}
     private static Optional<ExactRef> optionalReference(Value value){return value==null||value==Nil.INSTANCE?Optional.empty():Optional.of(reference(value));}
-    private static Obj ref(ExactRef value){return DriverJson.object(StrictJson.canonical(value.toJson()),DriverJson.MAX_NATIVE_BYTES);}
+    private static Obj ref(ExactRef value){
+        StrictJson.canonical(value.toJson());
+        var fields=new LinkedHashMap<String,Value>();
+        fields.put("bytes",number(value.bytes()));fields.put("path",new Text(value.path()));fields.put("sha256",new Text(value.sha256()));
+        return new Obj(fields);
+    }
     private static Arr array(List<ExactRef> values){return new Arr(values.stream().<Value>map(DriverReturnedPublicReadHistoryRowProducer::ref).toList());}
     private static List<ExactRef> readRefs(Value value,int min,int max){return references(OpportunityJson.array(value,"returned-read refs").stream().map(DriverReturnedPublicReadHistoryRowProducer::reference).toList(),min,max);}
     private static IntegerValue number(long value){return new IntegerValue(BigInteger.valueOf(value));}
