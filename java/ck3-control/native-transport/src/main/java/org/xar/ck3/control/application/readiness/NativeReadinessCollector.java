@@ -1375,8 +1375,13 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     private <T> T qualifyPhysical(ContinuityStorePort.Session borrowed, Instant ioDeadline, Instant scopeDeadline, String lockedHead,
             org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame actual, Known known,
             DriverObservationFacts facts, ExactRef original, PhysicalWork<T> work) throws IOException {
-        require(known.stamp().driverVersion() == facts.driverVersion() && known.stamp().episodeEpoch() == facts.episodeEpoch()
-                && Arrays.equals(known.driver().encode(), facts.driver().encode()), "physical originals crossed the actual frozen full Driver version");
+        {
+            require(known.stamp().driverVersion() == facts.driverVersion() && known.stamp().episodeEpoch() == facts.episodeEpoch(), "physical originals crossed the actual frozen full Driver version");
+            byte[] knownDriverBytes = known.driver().encode();
+            if (known.driver() != facts.driver() || known.driver().session().actorId().getClass() != BigInteger.class) {
+                require(Arrays.equals(knownDriverBytes, facts.driver().encode()), "physical originals crossed the actual frozen full Driver version");
+            }
+        }
         DriverObservationAssembler.Result assembled = assembler.assemble(actual, facts, original);
         require(assembled instanceof Complete, "actual native/Driver observation join is incomplete: " + assembled);
         Complete frame = (Complete) assembled;
