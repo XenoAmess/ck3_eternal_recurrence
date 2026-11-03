@@ -1,0 +1,82 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1709,
+  "fixed_SETTLE": 1703,
+  "confirmed_UTC": "2026-11-03T11:07:10.644932600Z",
+  "total_saved_days": 326,
+  "new_saved_days_since1669": 6,
+  "saved_frame": {
+    "date_raw": "53153808",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "972",
+    "played_character_id": "31254",
+    "revision": "913",
+    "snapshot_id": "native:972"
+  },
+  "saved_cycle": 46,
+  "pending_receipt": null,
+  "same_Game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "Root_independent_two_named_event_verification": {
+    "status": "INDEPENDENT_NAMED_CANONICAL_EVENT_VERIFIED",
+    "two_frozen_event_refs": [
+      {
+        "bytes": 99878,
+        "sha256": "64be2c1b61e4a50d48c24806d86d7f4e389dc4468578a2cc7a29df4f84197859"
+      },
+      {
+        "bytes": 98870,
+        "sha256": "6794b0b5cf9915de6e71b568d1309ca4b7b65e9d20ce054be62a55afacb1cb14"
+      }
+    ],
+    "writer_scope": "Root small frozen verifier/window and prior formal index only; no raw event or Save/Driverbody read."
+  },
+  "main_window": {
+    "from_SAVE": 1669,
+    "from_saved_days": 320,
+    "from_confirmed_UTC": "2026-11-03T10:14:51.110032Z",
+    "to_SAVE": 1709,
+    "to_saved_days": 326,
+    "elapsed_seconds": "3139.534900600",
+    "new_SAVE_CONFIRMED_days": 6,
+    "seconds_per_new_saved_day": "523.2558167666666666666666667",
+    "subtracted_seconds": "0",
+    "target10_achieved": false,
+    "A_B": false,
+    "all_intervening_wall_time_included": true,
+    "includes": "All zero-advance87, failures, preparation, waiting and confirmation. No wall time excluded.",
+    "Root_reported87_zero_advance_elapsed_seconds": "1469.401891",
+    "87_subwindow_is_not_primary_metric": true
+  },
+  "cumulative_secondary_only": {
+    "Root_epoch_seconds": "137784.644932600",
+    "saved_days": 326,
+    "seconds_per_saved_day": "422.6522850693251533742331288",
+    "not_primary_window_denominator": true
+  },
+  "subsequent_Root_report_not_new_runtime_verification": "FullJson only-source/GET began after this SAVE; old delegate cleanEND0 reported11:10:09. NewSTART/LOOP was not confirmed at that report. This historical SAVE grants no new-patch execution/speed credit.",
+  "prior_SAVE_index_preserved": {
+    "path": "docs/maintenance/2026-11-03-quarkus-worker-save1669-sources.json",
+    "bytes": 2843,
+    "sha256": "59b6acd37d586660623c9a3b3b82a3fa15cb02b2bea08d0fed9007c665db86e0"
+  },
+  "sources": [
+    {
+      "local_key": "root/savep0repair482e1-verified.json",
+      "bytes": 1433,
+      "sha256": "b1c6b56711e6c57565c5fd2e3dea77d8d2c31f2aa3e5c9da9ac538e2520d9ac3"
+    },
+    {
+      "local_key": "root/savep0repair482e1-window.json",
+      "bytes": 1136,
+      "sha256": "d852632e3877b8d9ab6fbed5a8727bcba34f5e0c018d61504a3fd20e25456602"
+    }
+  ],
+  "limits": [
+    "No A/B, individual method/cache hit or speed claim.",
+    "No new query, GET, compile/test or runtime operation for documentation.",
+    "Earlier320/312/304 and all source/software/formal/adoption/START/LOOP/SAVE cutoffs retained; G2still6/8."
+  ]
+}
