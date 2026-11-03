@@ -74,13 +74,17 @@ final class RawWindowNativeIo implements RawWindowCollector.Ports {
         // This public helper is the C23 addition and delegates the existing decoder with directory=true.
         if (!identity(SharedSourceFiles.nativeHeldDirectory(heldDirectory)).equals(request.outputRootIdentity())) throw new IOException("held output directory differs");
         journal = FileChannel.open(child("fallback.jsonl"), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
-        appendMetadata(first);
+        appendMetadata(first, true);
     }
     @Override public void append(Event event) throws IOException { appendMetadata(RawWindowCaptureJson.encode(event)); }
     void appendMetadata(byte[] exactOneLineJson) throws IOException {
+        appendMetadata(exactOneLineJson, false);
+    }
+    /** Only the same call's private metadataLine snapshot may skip its duplicate validation. */
+    private void appendMetadata(byte[] exactOneLineJson, boolean alreadyValidated) throws IOException {
         if (journal == null || poisoned) throw new IOException("durable fallback unavailable; no further native input");
         try {
-            byte[] encoded = metadataLine(exactOneLineJson);
+            byte[] encoded = alreadyValidated ? exactOneLineJson : metadataLine(exactOneLineJson);
             if (journalBytes + encoded.length + 1 > request.journalMaximumBytes())
                 throw new IOException("bounded fallback event/budget exceeded before further input");
             ByteBuffer bytes = ByteBuffer.allocate(encoded.length + 1).put(encoded).put((byte) '\n'); bytes.flip();
