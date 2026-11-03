@@ -48,10 +48,24 @@ final class DriverUnresolvedHistoryLineage {
                 &&facts.transport().sessionId().equals(action.command().sessionId()),"unresolved predecessor crossed original Game/source/session");
         var all=events(same,target);var selected=new ArrayList<Event>();ExactRef cursor=targetDriver;
         long maximum=target.state().sequence();long nextVersion=-1;long epoch=facts.episodeEpoch();
+        Map<ExactRef,List<Event>> historyByAfter=null;
         while(!cursor.equals(originalDriver)){
             ExactRef wanted=cursor;long limit=maximum;
-            var matches=all.stream().filter(e->e.sequence()<=limit&&WriterContracts.DRIVER_READ_HISTORY_KIND.equals(StrictJson.text(e.body().get("kind")))
-                    &&ExactRef.fromJson(e.body().get("details").get("after_driver")).equals(wanted)).toList();
+            List<Event> matches;
+            if(all.size()>512){
+                matches=all.stream().filter(e->e.sequence()<=limit&&WriterContracts.DRIVER_READ_HISTORY_KIND.equals(StrictJson.text(e.body().get("kind")))
+                        &&ExactRef.fromJson(e.body().get("details").get("after_driver")).equals(wanted)).toList();
+            }else{
+                if(historyByAfter==null){
+                    historyByAfter=new HashMap<>();
+                    // Preserve the first complete scan, including malformed unrelated history tails.
+                    for(var event:all)if(event.sequence()<=limit&&WriterContracts.DRIVER_READ_HISTORY_KIND.equals(StrictJson.text(event.body().get("kind")))){
+                        var after=ExactRef.fromJson(event.body().get("details").get("after_driver"));
+                        historyByAfter.computeIfAbsent(after,ignored->new ArrayList<>()).add(event);
+                    }
+                }
+                matches=historyByAfter.getOrDefault(wanted,List.of()).stream().filter(e->e.sequence()<=limit).toList();
+            }
             StrictJson.require(matches.size()==1&&selected.size()<128,"no unique finite canonical unresolved history predecessor");
             var event=matches.getFirst();var details=StrictJson.object(event.body().get("details"),DETAILS);
             StrictJson.require("xar.driver-read-publication/v1".equals(StrictJson.text(details.get("schema")))
