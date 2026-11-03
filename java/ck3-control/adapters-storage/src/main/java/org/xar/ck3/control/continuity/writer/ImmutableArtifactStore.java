@@ -186,8 +186,11 @@ public final class ImmutableArtifactStore {
             if (escaping != null) {
                 boolean alreadyCarried = false;
                 int causeDepth = 0;
-                for (Throwable cause = escaping; cause != null && causeDepth++ < 16; cause = cause.getCause()) {
+                Throwable cause = escaping;
+                while (cause != null && causeDepth++ < 16) {
                     if (cause == firstFailure) { alreadyCarried = true; break; }
+                    try { cause = cause.getCause(); }
+                    catch (Throwable diagnosticFailure) { break; }
                 }
                 if (firstFailure != null && !alreadyCarried) escaping.addSuppressed(firstFailure);
                 if (cleanup != null) escaping.addSuppressed(cleanup);
