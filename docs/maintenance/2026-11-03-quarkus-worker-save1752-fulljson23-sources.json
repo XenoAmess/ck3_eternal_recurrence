@@ -1,0 +1,146 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1752,
+  "fixed_SETTLE": 1746,
+  "confirmed_UTC": "2026-11-03T12:14:14.343413500Z",
+  "total_saved_days": 334,
+  "new_saved_days_since1709": 8,
+  "saved_frame": {
+    "date_raw": "53154000",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "998",
+    "played_character_id": "31254",
+    "revision": "940",
+    "snapshot_id": "native:998"
+  },
+  "saved_cycle": 47,
+  "pending_receipt": null,
+  "same_Game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "Root_independent_two_named_event_verification": {
+    "status": "INDEPENDENT_NAMED_CANONICAL_EVENT_VERIFIED",
+    "two_frozen_event_refs": [
+      {
+        "bytes": 99881,
+        "sha256": "0768362022290cc2ef952dab37edc4791c055f4dc458590b5291363a16f11acf"
+      },
+      {
+        "bytes": 98876,
+        "sha256": "9e5649a443143f9c2d2bc595e7e45d016120220cc4e146680958c03a7e8efac0"
+      }
+    ],
+    "writer_scope": "Small Root verifier/window and frozen Runtime SUMMARY, no raw canonical-event/Save/Driver bodies."
+  },
+  "main_window": {
+    "from_SAVE": 1709,
+    "from_saved_days": 326,
+    "from_confirmed_UTC": "2026-11-03T11:07:10.644932600Z",
+    "to_SAVE": 1752,
+    "to_saved_days": 334,
+    "to_confirmed_UTC": "2026-11-03T12:14:14.343413500Z",
+    "elapsed_seconds": "4023.698480900",
+    "new_SAVE_CONFIRMED_days": 8,
+    "seconds_per_new_saved_day": "502.9623101125",
+    "subtracted_seconds": "0",
+    "target10_achieved": false,
+    "A_B": false,
+    "all_intervening_wall_time_included": true,
+    "includes": "Every GET, cold recovery, zero-progress90, waiting/failures/preparation91 and confirmation. Subwindow durations are not added as independent CPU/IO.",
+    "Root_reported90_zero_progress_seconds": "937.1273424",
+    "zero_progress_subwindow_not_primary_metric": true
+  },
+  "cumulative_secondary_only": {
+    "Root_epoch_seconds": "141808.343413500",
+    "saved_days": 334,
+    "seconds_per_saved_day": "424.5758784835329341317365269",
+    "not_primary_window_denominator": true
+  },
+  "FullJson23_first_postreload_SAVE_observed": {
+    "source_and_actual_restart": {
+      "source_count": 1,
+      "source_relative": "contracts/src/main/java/org/xar/ck3/control/contracts/FullJsonTree.java",
+      "adopted_raw_bytes": 6865,
+      "adopted_raw_sha256": "914b08d99cc2c31ac3ba6da7a7bb311b3d58fac1daa7add4088dc3c644807653",
+      "formal_at_documentation": {
+        "path": "java/ck3-control/contracts/src/main/java/org/xar/ck3/control/contracts/FullJsonTree.java",
+        "bytes": 6755,
+        "sha256": "befd444e5fca5229ff94e48f97d9fbb65a09c8b07f9b7c4c11f34f00507262ec"
+      },
+      "raw_equals_whole_formal": false,
+      "official_changed_classes": [
+        "FullJsonTree$1.class",
+        "FullJsonTree.class"
+      ],
+      "new_host": false,
+      "STOP_request": 0,
+      "route": "normal Dev fullrestart/new runtime classloader restart2; not body instrumentation",
+      "standalone_class_equals_module": [
+        false,
+        false
+      ],
+      "loaded_class_definition_or_method_execution_not_proved": true
+    },
+    "same_host": {
+      "pid": 76092,
+      "birth": "134381592437332478"
+    },
+    "new_delegate": "bb6b05c2-94e3-468e-a787-98bdbaa8feab",
+    "restart": "2@32106408",
+    "LOOP_UTC": "2026-11-03T11:32:12.139992Z",
+    "raw_LOOP_has_delegate_id": false,
+    "LOOP_association_basis": "Exact frozen owner and ordered original cleanEND/newSTART lifecycle; raw LOOP itself has no delegate ID.",
+    "GET_seconds_separate": "117.2248163",
+    "START_to_LOOP_seconds": "1235.756857200",
+    "software_later_cutoff": {
+      "final23_actual_affected_methods_passed": 2,
+      "RUN_only_seconds": "0.7238934",
+      "source_or_Test_recompiled": false,
+      "prior16_evidence_not_rewritten": true,
+      "does_not_prove_module_class_equals_standalone": true
+    },
+    "source_restart_LOOP_and_new_SAVE_separately_evidenced": true,
+    "does_not_prove_per_method_execution_hit_or_speed": true,
+    "samehost_at_SAVE_association": "Root explicit saved-cutpoint report; sameGame checked against frozen Runtime SUMMARY and previous Root-verified lifecycle."
+  },
+  "other_formal_software_not_adopted_at_this_cutoff": {
+    "Bytekey4284": "Root explicitly reports NOT_ADOPTED at1752/334 and12:14:22 freeze. Publication/one software Test does not credit these saved days."
+  },
+  "later_frozen_head": {
+    "sequence": 1754,
+    "future_health_not_inferred": true
+  },
+  "prior_SAVE_index_preserved": {
+    "path": "docs/maintenance/2026-11-03-quarkus-worker-save1709-sources.json",
+    "bytes": 3114,
+    "sha256": "a4923b7fa5ec6df21a839e868e112b1b20111d320e2e582818618a47872574cd"
+  },
+  "prior_reload_LOOP_index_preserved": {
+    "path": "docs/maintenance/2026-11-03-quarkus-worker-fulljson570-loop-sources.json",
+    "bytes": 8504,
+    "sha256": "fbaa022f1a9fc3352aa93cf1d4e194a48dfdf126478a88c7893cae44275c90f2"
+  },
+  "sources": [
+    {
+      "local_key": "root/savep0tree570b1-verified.json",
+      "bytes": 1429,
+      "sha256": "311621ec885a11af7b9c5ad25535cb1805df30006143b04295b6a85d9fbb3184"
+    },
+    {
+      "local_key": "root/savep0tree570b1-window.json",
+      "bytes": 1122,
+      "sha256": "e7a9f1283e0bb708cc411d60593054674086947305f2a8a9a23623fe9b0af992"
+    },
+    {
+      "local_key": "runtime/save-confirmedp0tree570b1/SUMMARY.json",
+      "bytes": 6870,
+      "sha256": "ef5dfb0e1229dd3891016be06ac7e66004915d0b3aeca655a74506b3027c0b08"
+    }
+  ],
+  "limits": [
+    "No A/B, individual method/cache hit, source-specific speed, loaded-class hash or future health claim.",
+    "Prior source/software/formal/adoption/START/LOOP/SAVE cutoffs remain byteexact; G2still6/8.",
+    "No new query/HTTP/GET/compile/Test/JFR/runtime operation performed for documentation."
+  ]
+}

@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+2026-11-03 12:14:14.343413500Z实际1752 SAVE_CONFIRMED，1746 SETTLE，本局334日全部保存；saved date53154000/native998/public940/cycle47/actor31254/pending=null，同Game77132／出生134380410301009189，Root具名独验两冻结事件。保存帧998/940不混同cycle语义996/938。1709／326日→1752／334日完整4023.698480900秒／新增8日＝502.9623101125秒／日，包含全部GET117.2248163秒、冷恢复1235.756857200秒、90零推进937.1273424秒以及91等待、失败、准备和保存确认；不删任何窗口。10秒目标未达、非A/B；wholeRoot141808.343413500秒／334＝424.5758784835…秒／日只作次指标。
+
+FullJson Final23原源914b08d9采用、同Dev76092／出生134381592437332478的bb6b05c2-94e3-468e-a787-98bdbaa8feab restart2于11:32:12.139992Z进入LOOP，以及其后新增8日确认保存，现各有独立层次回执。原LOOP行无delegate ID，仍仅冻结owner与有序生命周期关联；原源与wholeformal及模块／独立class字节不同的限制不变，572两受影响方法实际2P也不等于当前loader内逐方法执行或提速。Bytekey4284截至本SAVE／12:14:22冻结切点尚未实际采用，不把这8日归给它。
+
+1754仅是冻结摘要后到head，不授当前或未来健康。见[1752保存与FullJson闭环来源](../maintenance/2026-11-03-quarkus-worker-save1752-fulljson23-sources.json)。旧326／320／312等保存、原零新增LOOP及全部正文原字节保留；仅读Root小verifier／完整window／冻结SUMMARY及既有正式索引，不读raw Save／Driver／canonical事件大体，0新HTTP／查询／GET／编测／JVM／JFR／部署／控制。文档不门正常继续，G2仍6/8。
+
 2026-11-03 FullJsonTree Final23热载后取得同局LOOP：同Dev76092／出生134381592437332478，旧0b689be2于11:10:09.129882300Z clean END0，新bb6b05c2-94e3-468e-a787-98bdbaa8feab于11:11:36.383134800Z START，restart1→2@32106408；11:32:12.139992Z同Game77132／出生134380410301009189进入LOOP／next90。Root独核七份具名冻结引用；原LOOP行无delegate ID，只有冻结owner与有序生命周期给出关联，ordinary_batch_started=false只属该历史切点。
 
 唯一GET HTTP200／117.2248163秒、START→LOOP完整1235.756857200秒分别记。采用原源914b08d9与官方FullJsonTree／$1两既有class重载有回执，非body instrumentation；实际模块class与独立增编输出字节不同，未据此授classloader内方法／分支、cache命中或速度。Final23两受影响方法另在572 RUN-only实际2P，原16的软件切点完整保留。587既有30.0997486秒采样全部在本LOOP之前；已完成的scope footer计数不是唯一文件数、耗时或收益，不据诊断授后继修复已采用。
