@@ -71,6 +71,27 @@ public final class M6SourceProducer {
         return new CampaignEvidence(source, episodes, ProjectionJson.object(raw, MAX_BYTES));
     }
 
+    /** Assesses one derived resolved projection, retaining its bytes separately from any full ledger.
+     * This does not establish ordinary planner origin or grant writer/submission authority. */
+    public static M6ServiceIntegration.Result assessResolvedProjection(byte[] raw, G2Source source,
+            M6TerminalSourceComposition.Inputs inputs, M6Research research) {
+        verify(raw, source.sourceRef());
+        require(BUILD.equals(source.exactBuild()), "M6 source build differs from the qualified source boundary");
+        JsonNode resolved = StrictJson.parse(raw, MAX_BYTES);
+        Episode episode = episode(resolved, true);
+        CampaignEvidence evidence = new CampaignEvidence(source, List.of(episode), ProjectionJson.object(raw, MAX_BYTES));
+        M6ServiceIntegration.Result result = M6ServiceIntegration.compose(evidence,
+                List.of(new M6ServiceIntegration.EpisodeSources(episode.identity().actionId(), inputs)), research);
+        JsonNode terminal = resolved.get("terminal_intervention");
+        if (terminal != null && !terminal.isNull() && bool(terminal, "terminal_cause_observed")) {
+            M6TerminalSourceComposition.Cause cause = result.compositions().getFirst().cause()
+                    .orElseThrow(() -> new IllegalArgumentException("derived terminal cause lacks copied causal proof"));
+            require(M6TerminalSourceComposition.parse(cause.observation()).equals(terminal.get("causal_observation")),
+                    "derived terminal causal observation differs from copied causal proof");
+        }
+        return result;
+    }
+
     /** Packet source binds the entire packet; nested pins bind decoded original bytes, never re-encoding. */
     public static CampaignEvidence fromEvidencePacket(byte[] packet, G2Source packetSource) {
         verify(packet, packetSource.sourceRef());
@@ -193,6 +214,10 @@ public final class M6SourceProducer {
     }
 
     private static Episode episode(JsonNode resolved) {
+        return episode(resolved, false);
+    }
+
+    private static Episode episode(JsonNode resolved, boolean deferDerivedCause) {
         object(resolved); equalText(resolved, "status", "applied");
         require(bool(resolved, "postcondition_verified"), "resolved instance is not independently applied");
         String action = text(resolved, "action_id");
@@ -262,8 +287,11 @@ public final class M6SourceProducer {
             require(Set.of("unobserved", "continue", "terminated_unattributed").contains(key), "unqualified terminal status key");
             TerminalCause cause = key.equals("terminated_unattributed") ? TerminalCause.TERMINATED_UNATTRIBUTED : TerminalCause.UNKNOWN;
             // Derived labels alone are not the existing qualified execute/end causal validator.
-            require(!attributed, "attributed source needs the qualified causal input path, not a derived ledger label");
-            equalText(item, "terminal_cause", "unknown");
+            require(!attributed || deferDerivedCause,
+                    "attributed source needs the qualified causal input path, not a derived ledger label");
+            if (attributed) require(observed && key.equals("terminated_unattributed"),
+                    "derived causal terminal needs an observed retained terminal");
+            equalText(item, "terminal_cause", attributed ? M6TerminalSourceComposition.COMPLETE : "unknown");
             Stamp observedStamp = stamp(item, "source_native_revision", "source_date_raw");
             boolean independentNatural = false;
             JsonNode copied = item.get("native_observation");
