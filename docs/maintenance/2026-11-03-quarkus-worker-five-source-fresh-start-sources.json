@@ -1,0 +1,325 @@
+{
+  "schema": "ck3.actual-five-source-fresh-dev-START-frontier.v1",
+  "fixed_cutoff_UTC": "2026-11-03T05:30:32.014563+00:00",
+  "actual_new_delegate_record_frozen_UTC": "2026-11-03T05:30:36.533099+00:00",
+  "source_adoption_before_START_cutoff": {
+    "UTC": "2026-11-03T05:28:11.427616+00:00",
+    "source_count": 5,
+    "current_source_exact_at_that_cutoff": true,
+    "original_loaded_flag": false,
+    "accepted_adoption_receipt_count": 96,
+    "source_projection_count": 78,
+    "original_named_output_count": 122,
+    "original_named_output_unique_count_checked_from_five_metadata_families": 122,
+    "counts_not_manual_javac_TUs_or_method_execution": true
+  },
+  "five_source_raw_vs_formal": [
+    {
+      "relative_path": "native-transport/src/main/java/org/xar/ck3/control/application/readiness/NativeReadinessCollector.java",
+      "adopted_raw": {
+        "bytes": 118882,
+        "sha256": "412b1c1f87de2ea2ea32461c3fc1fc3935dbda29a35abe219a258a8e1e68db3b"
+      },
+      "adopted_at_utc": "2026-11-03T05:28:11.126824+00:00",
+      "original_named_output_count": 38,
+      "formal_blob_at_documentation": {
+        "path": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/application/readiness/NativeReadinessCollector.java",
+        "bytes": 117406,
+        "sha256": "141be6d17259e5deb0264a4d075b9b1e0ae206ee7f8cff6f431c49a3b959a161"
+      },
+      "formal_publication_commit": "090f445e23241cc3c254ddcddf98eb47e2fc7643",
+      "whole_raw_equals_formal": false,
+      "relationship": "Runtime owner raw is separate from formal source. Existing outside-owned-hunk differences and formatting are preserved; no wholeformal source/adoption or combinedcompile claim."
+    },
+    {
+      "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootPlanningInputsFactory.java",
+      "adopted_raw": {
+        "bytes": 44007,
+        "sha256": "f59e12ff4377203dbc091801b47f3506f4e4c6b8db3d09621a4880cb286c941b"
+      },
+      "adopted_at_utc": "2026-11-03T05:28:11.142192+00:00",
+      "original_named_output_count": 16,
+      "formal_blob_at_documentation": {
+        "path": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootPlanningInputsFactory.java",
+        "bytes": 44237,
+        "sha256": "943ca761471cf003a8792ec5bba7f2bbfe3e3525c943a34ab9c20e3a0df00356"
+      },
+      "formal_publication_commit": "090f445e23241cc3c254ddcddf98eb47e2fc7643",
+      "whole_raw_equals_formal": false,
+      "relationship": "Runtime owner raw is separate from formal source. Existing outside-owned-hunk differences and formatting are preserved; no wholeformal source/adoption or combinedcompile claim."
+    },
+    {
+      "relative_path": "adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ImmutableArtifactStore.java",
+      "adopted_raw": {
+        "bytes": 45283,
+        "sha256": "12ba692f6035de0aa4ae2375e504a9f34ed4b9c6580d0c04e86f5965fd564795"
+      },
+      "adopted_at_utc": "2026-11-03T05:28:11.159276+00:00",
+      "original_named_output_count": 15,
+      "formal_blob_at_documentation": {
+        "path": "java/ck3-control/adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ImmutableArtifactStore.java",
+        "bytes": 44608,
+        "sha256": "d740ad7801871ca377e5ea9f32006ac0c8b023e0c6766bb1a17b36de7e88dd2c"
+      },
+      "formal_publication_commit": "58a9b900e5b03193c0cbb93b1550046edfb10b9a",
+      "whole_raw_equals_formal": false,
+      "relationship": "Runtime owner raw is separate from formal source. Existing outside-owned-hunk differences and formatting are preserved; no wholeformal source/adoption or combinedcompile claim."
+    },
+    {
+      "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+      "adopted_raw": {
+        "bytes": 247402,
+        "sha256": "bbc26f1603bb4b6b6ec981b9095557d5c8bc0376bea6c02c873e75a591bfdb3f"
+      },
+      "adopted_at_utc": "2026-11-03T05:28:11.174948+00:00",
+      "original_named_output_count": 30,
+      "formal_blob_at_documentation": {
+        "path": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+        "bytes": 254489,
+        "sha256": "6fac80d530b7fa203f423f55c3654d7fac1e5582cee55f214df5ffcc35a8da99"
+      },
+      "formal_publication_commit": "634fd6eeefbdb6db7bfede1adc3b3b205eff3d3e",
+      "whole_raw_equals_formal": false,
+      "relationship": "Runtime owner raw is separate from formal source. Existing outside-owned-hunk differences and formatting are preserved; no wholeformal source/adoption or combinedcompile claim."
+    },
+    {
+      "relative_path": "application/src/main/java/org/xar/ck3/control/application/driver/DriverReadHistoryPublisher.java",
+      "adopted_raw": {
+        "bytes": 123683,
+        "sha256": "50a52e6c44b97546c6e6899df017617ab14b849a3b7a0a5da8ef3315d02f3c53"
+      },
+      "adopted_at_utc": "2026-11-03T05:28:11.198702+00:00",
+      "original_named_output_count": 23,
+      "formal_blob_at_documentation": {
+        "path": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/driver/DriverReadHistoryPublisher.java",
+        "bytes": 122733,
+        "sha256": "a400ae3ed506ff8c3991c6eaf2ab4f8b2b04a7a4e37e7b2b7c5f934d6f0f740a"
+      },
+      "formal_publication_commit": "9ea45fae8bb6b7161c8a84a7f89688d0619b350b",
+      "whole_raw_equals_formal": false,
+      "relationship": "Runtime owner raw is separate from formal source. Existing outside-owned-hunk differences and formatting are preserved; no wholeformal source/adoption or combinedcompile claim."
+    }
+  ],
+  "lifecycle": {
+    "old_delegate_completed": {
+      "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@689091c3@689091c3",
+      "exit_code": 4,
+      "failure_type": null,
+      "host_pid": "125308",
+      "instance_id": "d19140aa-e357-44c4-bf0c-8c934044dc9b",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-03T04:50:50.712247600Z",
+      "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@689091c3@689091c3",
+      "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+      "status": "DELEGATE_COMPLETED"
+    },
+    "old_owner_status": "FAILED_DELEGATE",
+    "Root_Runtime_named_terminal": "END77/saved289 in prepared lifecycle decision; delegate completed exit4 is retained separately from host termination.",
+    "old_host_cleanup": {
+      "pid": 125308,
+      "birth": "134381493561057204",
+      "exit_code": 4004,
+      "began_at_utc": "2026-11-03T05:28:09.826187+00:00",
+      "ended_at_utc": "2026-11-03T05:28:09.970656+00:00",
+      "graceful_host_exit": false,
+      "delegate_already_ENDED": {
+        "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@689091c3@689091c3",
+        "exit_code": 4,
+        "failure_type": null,
+        "host_pid": "125308",
+        "instance_id": "d19140aa-e357-44c4-bf0c-8c934044dc9b",
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "observed_at_utc": "2026-11-03T04:50:50.712247600Z",
+        "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@689091c3@689091c3",
+        "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+        "status": "DELEGATE_COMPLETED"
+      },
+      "method": "Controlled exact-owned TerminateProcess; no process tree",
+      "Game_keeper_other_process_control": false
+    },
+    "old_outer_natural_exit": {
+      "pid": 46788,
+      "birth": "134381492605750226",
+      "exit_code": 1,
+      "at_utc": "2026-11-03T05:28:10.110727+00:00",
+      "method": "Natural exact old Maven exit after child ended; no outer termination"
+    },
+    "old_resources_frozen": {
+      "at_utc": "2026-11-03T05:28:11.112698+00:00",
+      "host": {
+        "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\cohort-observation-history400\\ACTUAL-HOST-END.json",
+        "bytes": 1040,
+        "sha256": "3d64fa17b152bd35b24c2af300606c82810fee2bb7e9595c9360a19fadf31986"
+      },
+      "outer": {
+        "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\cohort-observation-history400\\ACTUAL-OUTER-END.json",
+        "bytes": 209,
+        "sha256": "20f9b65ccf8a3b64ef719a45f20d4e6358e21f1a7354f809242d8e48a4d24ca9"
+      },
+      "port8099_TCP_refused": true,
+      "GET": 0,
+      "Game_query_or_action": false
+    },
+    "unique_new_launch_request": {
+      "at_utc": "2026-11-03T05:28:11.509275+00:00",
+      "supervisor_pid": 35976,
+      "launch": {
+        "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt11\\DEV-LAUNCH-READY307.json",
+        "bytes": 7838,
+        "sha256": "bc0f153ea3b52edb3cb2a98605152faecb9c03689a849b7146c1001232524493"
+      },
+      "single_start": true,
+      "automatic_retry": false,
+      "Game_query_or_action": false
+    },
+    "new_host": {
+      "pid": 92836,
+      "birth": "134381573824965282",
+      "exit": 259,
+      "image": "C:\\jdk-21\\bin\\java.exe",
+      "exit_filetime": "0"
+    },
+    "new_delegate": {
+      "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:0@70d2e40b@70d2e40b",
+      "exit_code": null,
+      "failure_type": null,
+      "host_pid": "92836",
+      "instance_id": "fbadf072-0b4b-4b8a-b614-d7890bfa9ad2",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-03T05:30:27.838710Z",
+      "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:0@70d2e40b@70d2e40b",
+      "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+      "status": "DELEGATE_STARTED",
+      "actual_process": {
+        "pid": 92836,
+        "birth": "134381573824965282",
+        "exit": 259,
+        "image": "C:\\jdk-21\\bin\\java.exe"
+      }
+    },
+    "new_owner_state": "BOOTSTRAP",
+    "new_owner_LOOP": null,
+    "command_unchanged_from_CPU4": true,
+    "samehost_capability_boundary": "New private M0 native-transport schema lacked independent same-host qualification, so one necessary fresh Quarkus-dev host was used. This is not a same-JVM new-schema/newclass capability acceptance.",
+    "old_or_current_flags_not_inferred_from_previous_host": true
+  },
+  "elapsed_intervals_seconds": {
+    "old_END77_delegate_to_new_START": "2377.126462400",
+    "old_delegate_END_to_exacthost_cleanup_begin": "2239.113939400",
+    "unique_launch_request_to_new_START": "136.329435",
+    "qualification": "Wall intervals retain software preparation, native/runtime resource scheduling, release, launch and waiting. Neither total nor any remainder is CPU time, A/B benefit, LOOP cold time or permission to discard failures."
+  },
+  "latest_confirmed_SAVE_preserved": {
+    "source_index": "docs/maintenance/2026-11-03-quarkus-worker-save1498-eight-source-sources.json",
+    "bytes": 5657,
+    "sha256": "9f951b097dced2acdf79acfd25c28d017a185c70f92694053e2c5216df600867",
+    "SAVE": 1498,
+    "saved_days": 289,
+    "confirmed_UTC": "2026-11-03T03:52:41.961565200Z",
+    "last_closed_seconds_per_new_saved_day": "681.179591600",
+    "target10_achieved": false
+  },
+  "open_since_SAVE1498_at_frozen_BOOT": {
+    "from_UTC": "2026-11-03T03:52:41.961565200Z",
+    "to_UTC": "2026-11-03T05:30:32.014563+00:00",
+    "elapsed_seconds": "5870.052997800",
+    "new_confirmed_saved_days": 0,
+    "seconds_per_new_saved_day": null,
+    "all_failure_preparation_cold_UI_waiting_retained": true,
+    "cumulative289_not_open_window_denominator": true
+  },
+  "acceptance_boundary": {
+    "actual_source_adoption": true,
+    "new_host_delegate_START": true,
+    "LOOP_proved": false,
+    "new_SAVE_proved": false,
+    "specific_method_branch_or_cachehit_proved": false,
+    "speed_or_functional_resolution_proved": false,
+    "same_Game_generation": "Root explicitly reports original Game77132 retained; this documentation performs no new Game query."
+  },
+  "existing_Writer_expiry_not_extended": "Existing source expiry1793683590813/05:26:30.813Z is unchanged and not extended; source entry gate does not itself prove a later actual off call.",
+  "sources": [
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/ACTUAL-SOURCE-ADOPTION.json",
+      "bytes": 1557,
+      "sha256": "d905d7eb88c449ea3ddb9cf5e21cee51ce8bec87f20b5b4028949d18e56d7344"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/ACTUAL-NEW-DELEGATE.json",
+      "bytes": 2013,
+      "sha256": "42f065983bfa6cf4777c83080f23b6152b8ec1f7e04cd34ce59bd2c585a70005"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/PREPARED.json",
+      "bytes": 111790,
+      "sha256": "9f411cf5d49a7867e094e837ee5235896f64266fa7f003dbcd93a85f6b142aed"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/OWNER-END.frozen.json",
+      "bytes": 1192,
+      "sha256": "502e181a023430c75eb620a27023a82600334d3cb53eadfb377e697b26eba0fa"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/OWNER-NEW.frozen.json",
+      "bytes": 1181,
+      "sha256": "d34969481d152fdb41656a6edbbd14a61f7777a4ad5277bab4c6b131d79731d7"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/ACTUAL-HOST-END.json",
+      "bytes": 1040,
+      "sha256": "3d64fa17b152bd35b24c2af300606c82810fee2bb7e9595c9360a19fadf31986"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/ACTUAL-OUTER-END.json",
+      "bytes": 209,
+      "sha256": "20f9b65ccf8a3b64ef719a45f20d4e6358e21f1a7354f809242d8e48a4d24ca9"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/OLD-RESOURCES-RELEASED.json",
+      "bytes": 627,
+      "sha256": "808cfd5520a77038bf149493cddfaa678dd8eb3df5dd87f6836b9fd2b74b7415"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/NEW-LAUNCH-REQUEST.json",
+      "bytes": 402,
+      "sha256": "038f4001d09992143789904892363bf1a9803345dd9d4c45737594153747b761"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/0-SOURCE-ADOPTED.json",
+      "bytes": 18535,
+      "sha256": "2272ddd789593d95223989e4780af5ae59e97557945ee152ae6a1189f54d24ed"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/1-SOURCE-ADOPTED.json",
+      "bytes": 8396,
+      "sha256": "7a52e3139961f3a1920e0e60a749c5c74f7a81d2cf753f242fa4833e2bba22ef"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/2-SOURCE-ADOPTED.json",
+      "bytes": 8254,
+      "sha256": "9c0e9a8b8f99945eb2627078edacd325d3042c99f617e5fe0738183cdb23253b"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/3-SOURCE-ADOPTED.json",
+      "bytes": 14698,
+      "sha256": "9e8579f2bb74f693b71832874b86749ee654e073e06ef8450bce989c46706652"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort-observation-history400/4-SOURCE-ADOPTED.json",
+      "bytes": 12181,
+      "sha256": "b537332dc88972307b84b2c240bfe94496fb8abb25f64be17aff8c87bf4657fe"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/attempt11/LIFECYCLE-001.json",
+      "bytes": 787,
+      "sha256": "0d5f17b8bdfcb871c098cf10c328b640de6cedd8556d54f38907d1d8c7966902"
+    }
+  ],
+  "limits": [
+    "Only small frozen metadata and existing formal publication pin receipts were consumed. No raw Save/Driver/currentC/class bodies, stdout stream, new live query or sample was read for this documentation.",
+    "Formal Core, Factory and ReadPublisher whole-source differences remain separate from adopted owner raw; previous temporary Writer and normal defaultoff formal distinction remains.",
+    "No new LOOP/SAVE is claimed at this frozenBOOT. Later evidence must append its own cutoff; older 1498/281/273/265 and four-sourceSTART text remain byteexact.",
+    "This documentation does not compile, test, GET, deploy, reload, terminate or launch anything; actual cleanup/launch above are historical Runtime receipts.",
+    "No future health, leaf benefit, cache-hit, hardware ABI or natural G2 capability credit."
+  ]
+}
