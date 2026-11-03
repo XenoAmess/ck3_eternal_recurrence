@@ -2126,22 +2126,33 @@ public final class RootApplicationAssembly {
                         "episode initialization changed an unadmitted domain: "+slot);
         }
         private record RestoredSourceMetadata(Optional<String> epoch,Optional<org.xar.ck3.control.contracts.ExactRef> executable) { }
-        /** Read the original FIRST material through its real store, then compare the actual newly published Driver before imports. */
+        /** Read actual original FIRST/ordinary material through its own store before restored domain imports. */
         void captureRestoredFirstKernel(RootApplicationSession successor,Instant deadline)throws IOException,InterruptedException {
             StrictJson.require(writer.activeSession().isEmpty(),"restore kernel comparison must precede the held domain-import writer scope");
             Staged stage;
             synchronized(this){stage=pendingRestore;StrictJson.require(stage!=null&&restoreCandidate==successor&&stage.restoration!=null,
                     "restore kernel comparison requires its actual private staged successor");}
-            var binding=stage.restoration.binding();
-            if(!(binding.savedMaterial() instanceof SavedFirstCheckpointMaterialStore.BaselinedMaterial material))return;
+            var binding=stage.restoration.binding();var material=binding.savedMaterial();
             if(stage.restoredKernel!=null)return;
-            if(!(savedCaptureFactory instanceof RootM7CheckpointCaptureFactory factory))throw new IOException("FIRST restore requires the original concrete M7 factory");
+            if(!(savedCaptureFactory instanceof RootM7CheckpointCaptureFactory factory))throw new IOException("restore requires the original concrete M7 factory");
             var actualSources=stage.restoration.previous().savedMaterials();actualSources.requireOwn(material);
             var inputs=factory.requireInputs(stage.checkpointPairs(),stage.driverCheckpoints(),stage.savedSources());
-            var reader=new RootM7HistoricalFirstCheckpointInputs(writer,writer::requireSession,archive,actualSources.firstStore(),inputs);
-            var saved=reader.recover(material.pair(),material.firstMaterial().witness());
-            StrictJson.require(saved.pair().equals(binding.pair())&&saved.materialWitness().equals(material.firstMaterial().witness()),
-                    "recovered FIRST kernel data crossed its original pair or first-material FileWitness");
+            org.xar.ck3.control.application.planning.campaign.M7CheckpointInputs.Saved saved;
+            CheckpointPair.FileWitness originalMaterial;
+            if(material instanceof SavedFirstCheckpointMaterialStore.BaselinedMaterial first) {
+                originalMaterial=first.firstMaterial().witness();
+                var reader=new RootM7HistoricalFirstCheckpointInputs(writer,writer::requireSession,archive,actualSources.firstStore(),inputs);
+                saved=reader.recover(first.pair(),originalMaterial);
+            } else if(material instanceof SavedAttachmentSourceStore.SavedMaterial ordinary) {
+                originalMaterial=ordinary.witness();
+                var reader=new RootM7HistoricalCheckpointInputs(writer,writer::requireSession,journal,archive,actualSources.ordinaryStore(),inputs);
+                saved=reader.recover(ordinary.pair(),originalMaterial);
+            } else throw new IOException("restore kernel requires its actual typed FIRST or ordinary material");
+            StrictJson.require(saved.pair().equals(binding.pair())&&saved.materialWitness().equals(originalMaterial)
+                    &&saved.kind()==(material.kind()==SavedCheckpointMaterial.Kind.FIRST_BASELINE
+                            ?org.xar.ck3.control.application.planning.campaign.M7CheckpointInputs.CheckpointKind.FIRST
+                            :org.xar.ck3.control.application.planning.campaign.M7CheckpointInputs.CheckpointKind.ORDINARY),
+                    "recovered kernel data crossed its original kind, pair or material FileWitness");
             var context=stage.restoration.runtime().catalog().context();
             RestoredSourceMetadata metadata=writer.locked(same->{
                 stage.restoration.service().requireRetainedOriginal(same,binding);var diagnostics=context.transport().diagnostics();
@@ -2152,9 +2163,11 @@ public final class RootApplicationAssembly {
                 return new RestoredSourceMetadata(qualified.map(RootNativeSourceAuthority.QualifiedMetadata::ownerSourceEpoch),
                         qualified.map(RootNativeSourceAuthority.QualifiedMetadata::gameExecutable));
             });
+            // The existing service revalidates this actual restore through its independent readonly window.
             var compared=inputs.restored(saved,stage.restoration.service(),binding,metadata.epoch(),metadata.executable(),Optional.empty(),deadline);
             synchronized(this){StrictJson.require(pendingRestore==stage&&restoreCandidate==successor,"restore kernel result lost its original private successor");
-                stage.firstSavedKernel=saved;stage.restoredKernel=compared;}
+                if(material.kind()==SavedCheckpointMaterial.Kind.FIRST_BASELINE)stage.firstSavedKernel=saved;
+                stage.restoredKernel=compared;}
         }
         /** One actual restored domain initialization after finish bound the true replacement session, before rebind/Host. */
         public List<DomainBodies.BodyRef> initializeRestoredDomains(ContinuityStorePort.Session same,
@@ -2601,7 +2614,9 @@ public final class RootApplicationAssembly {
         }
 
         public org.xar.ck3.control.application.planning.campaign.M7CheckpointInputs.Restored restoredFirstKernel(){
-            StrictJson.require(restoredKernel!=null,"actual FIRST restored kernel comparison has not been captured");return restoredKernel;
+            StrictJson.require(restoredKernel!=null
+                    &&restoredKernel.binding().savedMaterial().kind()==SavedCheckpointMaterial.Kind.FIRST_BASELINE,
+                    "actual FIRST restored kernel comparison has not been captured");return restoredKernel;
         }
         public void requireCheckpointFiles(CheckpointFiles actual) {
             StrictJson.require(files == Objects.requireNonNull(actual), "the actual Staged checkpoint files cannot be substituted");
