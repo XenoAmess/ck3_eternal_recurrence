@@ -285,7 +285,16 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     }
     private record Captured(LeaseSnapshot lease, ExecutableCapabilities capabilities, NativeReadiness.Assessment assessment,
             SourceQualification source, Optional<Pin> sourceProof, String lockedHead, Instant deadline, PhysicalCapture physical) { }
-    private record PlanningReadScope(ContinuityStorePort.Session borrowed, Captured captured) { }
+    private static final class PlanningReadScope {
+        private final ContinuityStorePort.Session borrowed;
+        private final Captured captured;
+        private List<Obj> parsedHistory;
+        private PlanningReadScope(ContinuityStorePort.Session borrowed, Captured captured) {
+            this.borrowed = borrowed; this.captured = captured;
+        }
+        private ContinuityStorePort.Session borrowed() { return borrowed; }
+        private Captured captured() { return captured; }
+    }
     private static final class PlanningRoundScope {
         private final ContinuityStorePort.Session borrowed;
         private Captured captured;
@@ -710,6 +719,24 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
                 && Arrays.equals(current.originalPacket(), original.originalPacket()), "public planning changed its actual held Native packet");
     }
 
+    /**
+     * Pure history DATA only. The first strict parse stays at the producer's original call site;
+     * only this collector's exact current scope/Session/Known may reuse its own parsed result.
+     * No supplied tree enters this slot, and unmatched or unscoped callers retain a fresh parse.
+     * This is not a source, writer, readiness or file qualification.
+     */
+    public List<Obj> planningHistory(ContinuityStorePort.Session borrowed, Known known) {
+        PlanningReadScope active = planningReadScope.get();
+        if (active == null || active.borrowed() != borrowed || active.captured().lease().driver() != known)
+            return parsePlanningHistory(known);
+        if (active.parsedHistory == null) active.parsedHistory = parsePlanningHistory(known);
+        return active.parsedHistory;
+    }
+    private static List<Obj> parsePlanningHistory(Known known) {
+        return known.driver().commandHistory().stream()
+                .map(row -> DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList();
+    }
+
     /** One scope covers the complete producer and its consumer; registered reads borrow this exact lease. */
     private <T> T inPlanningScope(ContinuityStorePort.Session borrowed, Captured captured, CaptureWork<T> work) throws IOException {
         require(planningReadScope.get() == null, "planning cannot replace another frozen observation scope");
@@ -738,8 +765,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
                 && inputs.bridgeCapabilities().equals(captured.capabilities().bridgeCapabilities())
                 && inputs.battleSpeedReadiness().equals(captured.capabilities().battleSpeedReadiness()),
                 "planning queries changed the fixed current executable-capability projection");
-        List<Obj> history = captured.lease().driver().driver().commandHistory().stream()
-                .map(row -> DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList();
+        List<Obj> history = planningHistory(borrowed, captured.lease().driver());
         Obj planningSnapshot=inputs.planningSnapshot(frame,captured.lease().driver());
         require(planningSnapshot.equals(frame.semantic()),"Core availability must refresh through the ordinary observation before Ready");
         PlanningObservation observations = new PlanningObservation(frame.semantic(), history, inputs.actionSteps(),

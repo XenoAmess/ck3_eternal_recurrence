@@ -175,8 +175,10 @@ public final class RootPlanningInputsFactory {
                         || opening.gate().dateRaw().equals(frame.identity().frame().identity().dateRaw())),
                     "actual opening lifecycle belongs to another episode or its pending date changed");
             boolean required = opening.gate().stage() != OpeningStage.COMPLETE;
-            List<OpportunityJson.Obj> history = known.driver().commandHistory().stream()
-                    .map(row -> DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList();
+            List<OpportunityJson.Obj> history = purpose == InputPurpose.ORDINARY_READY
+                    ? context.collector().planningHistory(borrowed, known)
+                    : known.driver().commandHistory().stream()
+                        .map(row -> DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList();
             PlanningRequest complete = new PlanningRequest(frame.identity(), frame.source(), frame.sessionId(), deadline,
                     new PlanningObservation(planningSnapshot, history, capabilities.actionSteps(), capabilities.bridgeCapabilities(),
                             capabilities.battleSpeedReadiness(), facts, goal, Optional.of(next), required));
