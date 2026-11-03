@@ -295,7 +295,12 @@ public final class DriverActionHistoryCodec {
         var sources=List.copyOf(input);StrictJson.require(!sources.isEmpty()&&sources.size()<=64&&new java.util.HashSet<>(sources).size()==sources.size(),"finite exact original producer sources required");sources.forEach(DriverActionHistoryCodec::nonempty);return sources;
     }
     private static void nonempty(ExactRef reference) {Objects.requireNonNull(reference);StrictJson.require(reference.bytes()>0,"nonempty original reference required");}
-    private static Obj ref(ExactRef reference) {return DriverJson.object(StrictJson.canonical(reference.toJson()),MAX_SOURCE_BYTES);}
+    private static Obj ref(ExactRef reference) {
+        // Retain the original canonical validation/budget before projecting its fixed three fields.
+        StrictJson.canonical(reference.toJson());
+        var row=new LinkedHashMap<String,Value>();row.put("bytes",number(reference.bytes()));
+        row.put("path",new Text(reference.path()));row.put("sha256",new Text(reference.sha256()));return new Obj(row);
+    }
     private static ExactRef reference(Value value) {return ExactRef.fromJson(DriverJson.toNode(object(value,"reference")));}
     private static Optional<ExactRef> nullableRef(Value value) {Objects.requireNonNull(value);return value==Nil.INSTANCE?Optional.empty():Optional.of(reference(value));}
     private static Optional<String> nullableText(Value value) {Objects.requireNonNull(value);return value==Nil.INSTANCE?Optional.empty():Optional.of(text(value,"original error"));}
