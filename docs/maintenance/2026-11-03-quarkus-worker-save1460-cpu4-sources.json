@@ -1,0 +1,153 @@
+{
+  "schema": "ck3.actual-saved-frontier.v1",
+  "fixed_SAVE_CONFIRMED": 1460,
+  "SETTLE": 1454,
+  "confirmed_UTC": "2026-11-03T02:21:52.524832400Z",
+  "total_saved_days": 281,
+  "saved_frame": {
+    "date_raw": "53152728",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "827",
+    "played_character_id": "31254",
+    "revision": "763",
+    "snapshot_id": "native:827"
+  },
+  "completed_cycles": 40,
+  "pending_receipt": null,
+  "same_game": {
+    "creation_filetime": "134380410301009189",
+    "pid": 77132
+  },
+  "main_window": {
+    "status": "INDEPENDENT_SAVED_FRONTIER_WINDOW",
+    "from_SAVE": 1423,
+    "to_SAVE": 1460,
+    "from_confirmed_at": "2026-11-03T01:21:44.266961200Z",
+    "to_confirmed_at": "2026-11-03T02:21:52.524832400Z",
+    "elapsed_seconds": "3608.257871200",
+    "new_SAVE_CONFIRMED_days": 8,
+    "seconds_per_new_saved_day": "451.032233900",
+    "cumulative_saved_days": 281,
+    "target_seconds_per_saved_day": 10,
+    "target_achieved": false,
+    "all_intervening_wall_time_included": true,
+    "limits": "All waiting, failures, preparation, recovery and zero-save batches in the endpoint interval remain counted. No A/B or source-specific speed claim; later actions/GET/waiting belong to the next window.",
+    "receipt_refs": [
+      {
+        "local_key": "root/save371ui671-verified.json",
+        "bytes": 1423,
+        "sha256": "1f48ccbd198b67137d5fd23d58c0f647ac8efb45f9222e8fbef62ad51879b007"
+      },
+      {
+        "local_key": "root/savecpu4r701-verified.json",
+        "bytes": 1423,
+        "sha256": "76664d71bcddf8d339a1b5d6a400f36cc3ae946d641055a6d4848d8527cf7113"
+      }
+    ]
+  },
+  "secondary_cumulative_only": {
+    "root_epoch_UTC": "2026-11-01T20:50:46Z",
+    "root_epoch_seconds": "106266.524832400",
+    "denominator": 281,
+    "seconds_per_saved_day": "378.1726862362989323843416370",
+    "does_not_replace_main_new8_window": true,
+    "verifier_field_new_saved_days_is_epoch_total_not_window_delta": true
+  },
+  "Root_authorized_report": {
+    "qualification": "Explicit Root authorized handoff in this session, not a new formal-writer live query or independent complete lifecycle/flags/trace reconstruction.",
+    "saved_host_pid": 106072,
+    "saved_host_birth": "134381440695103605",
+    "saved_delegate_prefix": "c929",
+    "CPU_recipe": 4,
+    "cold_to_LOOP_seconds": "753.690189",
+    "GC": "Root reports actual G1 after the CPU1-to4 transition; CPU and GC changed together, no isolated CPU A/B or causal speed claim.",
+    "source_at_SAVED_cutoff": "374 had already been actually body-adopted. Later Publisher/Writer/369B/focus eight-source cohort was not adopted at SAVE1460.",
+    "later_batches": "71 and72 deferred under the same budget; batch72 ended2026-11-03T02:35:31.9253231Z with0exception,head1471clean and281saved. This is a real terminal, not a claim it remained in healthy LOOP.",
+    "Council1466": "Publication identity independently checked by Root; content necessity is still research, not proof of a duplicate-publication bug."
+  },
+  "post_SAVE_startup_fixed_cutoff": {
+    "fixed_source_cutoff_UTC": "2026-11-03T03:19:19.403113+00:00",
+    "actual_host": {
+      "pid": 125308,
+      "birth": "134381493561057204"
+    },
+    "instance_id": "e61fcf9a-c790-4f5d-9e9e-9f3d5af67bfc",
+    "START_UTC": "2026-11-03T03:16:39.622828100Z",
+    "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:0@70d2e40b@70d2e40b",
+    "official_Quarkus_DEVELOPMENT": true,
+    "adopted_source_count": 8,
+    "source_cohort": "Publisher + reduced-tree Writer +369B four-source group +focus two-source group;374 retained from prior actual adoption.",
+    "named_original_compiled_outputs": 86,
+    "accepted_adoptions": 87,
+    "source_projection_entries": 75,
+    "qualification": "Actual source-adoption receipts and new Dev startup; individual source method execution or loaded helper paths are not established.86 named outputs and87 accepted adoptions are distinct counts, not eight manual javac TUs.",
+    "LOOP_proved": false,
+    "new_SAVE_proved": false,
+    "individual_eight_source_methods_proved_executed": false,
+    "speedup_proved": false,
+    "parameter_delta": 0,
+    "properties_delta": 0,
+    "manual_javac_or_old_Test_reruns": 0,
+    "compilation": "Existing Dev Maven startup performed its actual required module compilation; immutable compiler rows retained, not falsely counted as eight javac TUs.",
+    "launch_boundary": "CPU4_candidate in current recipe is the earlier APC1->4 decision provenance. This host transition changed zero argv/heap/GC-selection/instrumentation/index properties. The same apparent restart0 identity hash across separate PIDs is not object/loader continuity.",
+    "effective_flags_boundary": "Separate actual metadata; prior host flags not substituted.",
+    "window_boundary": "Batch72 terminal, intervening recovery/startup/waiting after1460 belong to1460-to-next-confirmation, not the closed1423-to1460 interval. Current frozen BOOT provides zero new confirmed saved days."
+  },
+  "G2_last_complete_acceptance": "6/8",
+  "sources": [
+    {
+      "local_key": "root/savecpu4r701-verified.json",
+      "bytes": 1423,
+      "sha256": "76664d71bcddf8d339a1b5d6a400f36cc3ae946d641055a6d4848d8527cf7113"
+    },
+    {
+      "local_key": "root/savecpu4r701-window.json",
+      "bytes": 1113,
+      "sha256": "aa5971665246a90b20a69524c45afb2b8ab5c99119e85846b7aad6f23fa030d5"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedcpu4r701/SUMMARY.json",
+      "bytes": 6865,
+      "sha256": "5b0cf0be961f6b9b4501bb7230df225877157ca38fcda294f18205ada9a28bd8"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort399-post-end72-retry02/STARTUP-SOURCE-FINAL.json",
+      "bytes": 4327,
+      "sha256": "cb623ff875bfef8088232ece720f892f9031498e374c7a3c40a06cabc5580c72"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort399-post-end72-retry02/ACTUAL-NEW-DELEGATE.json",
+      "bytes": 2017,
+      "sha256": "b8811485489b8861fbed76c17e0f82580135f71c9a1bd42a50439b770907e108"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort399-post-end72-retry02/ACTUAL-SOURCE-ADOPTION.json",
+      "bytes": 2293,
+      "sha256": "90112a0364d4ca5e7603f9301ca4b868c667f7628eac51d4021286e528bb302a"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/cohort399-post-end72-retry02/OFFICIAL-DEVELOPMENT-START.raw.log",
+      "bytes": 461,
+      "sha256": "f377dd57e30dfbfea2cbb2fa705b801fbe12945ab8f52bb97aa902f718f395b3"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedcpu4r701/00001454.json",
+      "bytes": 99881,
+      "sha256": "5c1da325323a9e160ee35b84710b6cb6c1a04c8b409b6f417ea17e8d9f8bfb83",
+      "qualification": "Root independently read named frozen event; formal writer checks only small verifier/SUMMARY metadata, not event or material body."
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedcpu4r701/00001460.json",
+      "bytes": 98876,
+      "sha256": "bbab48a903edc44ce664affbb13c7c162e8212ad9cd2e1a7b07aa858500168b7",
+      "qualification": "Root independently read named frozen event; formal writer checks only small verifier/SUMMARY metadata, not event or material body."
+    }
+  ],
+  "limits": [
+    "All failures, waiting, preparation, cold recovery and zero-save batches inside the endpoint interval remain counted.10-second target not reached, non-A/B, no source-specific speed.",
+    "Saved827/763 is distinct from completed-cycle semantic825/761; no cycle frame substituted for saved pair.",
+    "Only named small frozen metadata and official3line startup log were read; rawSave/Driver/canonicalevent bodies remain private/unopened for this publication.",
+    "Actual source adoption, DevSTART, individual method execution, LOOP and laterSAVE are separate grades. No future health or new saved-day credit.",
+    "Original273/265 and all older AGENTS/runtime bytes preserved by insertion-only inverse proof. No document-triggered compiler/Test/GET/Game/worker/deployment action."
+  ]
+}
