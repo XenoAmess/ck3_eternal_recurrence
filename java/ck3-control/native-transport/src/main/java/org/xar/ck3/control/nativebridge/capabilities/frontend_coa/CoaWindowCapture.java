@@ -79,6 +79,70 @@ public final class CoaWindowCapture {
         public Preflight {Objects.requireNonNull(game);Objects.requireNonNull(window);Objects.requireNonNull(foregroundRoot);Objects.requireNonNull(observedAt);}
         public FrontendWindowCaptureRequest.Window requestWindow(){return windowData(window);}
     }
+    /** Source-owned presentation only: same opaque Managed Game, no input or Native command permission. */
+    public static Preflight focusOwnedGame(org.xar.ck3.control.platform.ManagedGameSession actualGame,
+            Clock clock, Instant deadline) throws IOException {
+        if (actualGame == null || clock == null || deadline == null)
+            throw new IOException("owned Game focus requires its actual owner, clock and deadline");
+        if (!clock.instant().isBefore(deadline)) throw new IOException("owned Game focus deadline expired");
+        actualGame.verify();
+        var source = actualGame.presentationAccess();
+        source.requireOwner(actualGame);
+        var actualGuard = source.actualGuard();
+        actualGuard.verify(actualGame.generation());
+        var capture = new CoaWindowCapture(actualGame.generation(), actualGuard, clock);
+        source.requireOwner(actualGame);
+        try {
+            Preflight result = capture.focusOwnedWindowOnce(deadline);
+            source.requireOwner(actualGame);
+            actualGuard.verify(actualGame.generation());
+            actualGame.verify();
+            if (!clock.instant().isBefore(deadline)) throw new IOException("owned Game focus completed after deadline");
+            return result;
+        } catch (IOException | RuntimeException failure) {
+            try { source.requireOwner(actualGame); actualGame.verify(); }
+            catch (IOException | RuntimeException changed) { if (changed != failure) failure.addSuppressed(changed); }
+            throw failure;
+        }
+    }
+
+    /** Shared production operation; package-local software callbacks grant no actual Managed ownership. */
+    synchronized Preflight focusOwnedWindowOnce(Instant deadline) throws IOException {
+        WindowIdentity target = requireFocusWindow(null, deadline);
+        String foreground = rootId(windows.GetForegroundWindow());
+        if (!target.hwnd().equals(foreground)) {
+            HWND hwnd = handle(target.hwnd());
+            requireFocusWindow(target.hwnd(), deadline);
+            windows.ShowWindow(hwnd, 9);
+            requireFocusWindow(target.hwnd(), deadline);
+            windows.BringWindowToTop(hwnd);
+            requireFocusWindow(target.hwnd(), deadline);
+            windows.SetForegroundWindow(hwnd);
+        }
+        WindowIdentity after = requireFocusWindow(target.hwnd(), deadline);
+        String actualForeground = rootId(windows.GetForegroundWindow());
+        if (!target.hwnd().equals(actualForeground)) throw new IOException("owned Game focus did not obtain its actual foreground");
+        process.verify(game);
+        if (!clock.instant().isBefore(deadline)) throw new IOException("owned Game focus result deadline expired");
+        return new Preflight(game, after, actualForeground, clock.instant());
+    }
+
+    private WindowIdentity requireFocusWindow(String expectedHwnd, Instant deadline) throws IOException {
+        if (deadline == null || !clock.instant().isBefore(deadline)) throw new IOException("owned Game focus deadline expired");
+        process.verify(game);
+        WindowIdentity current = unique();
+        if (expectedHwnd != null && !expectedHwnd.equals(current.hwnd())) throw new IOException("owned Game focus window changed");
+        HWND hwnd = handle(current.hwnd());
+        IntByReference pid = new IntByReference();
+        windows.GetWindowThreadProcessId(hwnd, pid);
+        if (!windows.IsWindow(hwnd) || Integer.toUnsignedLong(pid.getValue()) != game.pid()
+                || !current.hwnd().equals(rootId(hwnd)))
+            throw new IOException("owned Game focus lost its original process window");
+        process.verify(game);
+        if (!clock.instant().isBefore(deadline)) throw new IOException("owned Game focus admission deadline expired");
+        return current;
+    }
+
     /** Reads the actual process birth, unique visible client and foreground; no presentation write. */
     public synchronized Preflight preflightReadOnly()throws IOException {
         process.verify(game);WindowIdentity actual=unique();String foreground=rootId(windows.GetForegroundWindow());process.verify(game);

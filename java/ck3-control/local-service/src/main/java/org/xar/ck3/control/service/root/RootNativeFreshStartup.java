@@ -146,15 +146,44 @@ public final class RootNativeFreshStartup {
         return frame instanceof CoreFrame.Partial && (!freshRobert || isCampaignReady(frame));
     }
 
+    @FunctionalInterface interface BootstrapCoreRead {
+        NativeActionPort.DispatchOutcome read(Instant deadline) throws IOException, InterruptedException;
+    }
+    @FunctionalInterface interface BootstrapWindowFocus { void focus(Instant deadline) throws IOException; }
+
     public static NativeActionPort.AckReceived observeBootstrapCore(ManagedGameSession actualGame, Clock clock, Instant deadline) throws IOException, InterruptedException {
         if (actualGame == null || clock == null || deadline == null) throw new IOException("observeBootstrapCore requires non-null actualGame, clock, deadline");
         var transport = actualGame.nativeTransport();
+        return observeBootstrapCore(until -> {
+            actualGame.verify();
+            var original = transport.readCoreFrame(until);
+            actualGame.verify();
+            return original;
+        }, until -> org.xar.ck3.control.nativebridge.capabilities.frontend_coa.CoaWindowCapture.focusOwnedGame(actualGame, clock, until), clock, deadline);
+    }
+
+    /** Same production branch, with controlled callbacks for finite DATA tests; not a public permission. */
+    static NativeActionPort.AckReceived observeBootstrapCore(BootstrapCoreRead actualRead, BootstrapWindowFocus actualFocus,
+            Clock clock, Instant deadline) throws IOException, InterruptedException {
+        if (actualRead == null || actualFocus == null || clock == null || deadline == null)
+            throw new IOException("bootstrap Core observation requires its actual callbacks, clock and deadline");
         String lastDetail = "No core frame observed";
         while (clock.instant().isBefore(deadline)) {
-            actualGame.verify();
-            var actual = transport.readCoreFrame(queryDeadline(clock, deadline));
+            var actual = actualRead.read(queryDeadline(clock, deadline));
             if (actual instanceof NativeActionPort.AckReceived ack && ack.nativeOk() && ack.originalResultToken().isPresent()) {
-                return ack;
+                CoreFrame decoded;
+                try { decoded = decodeCore(ack.originalResultToken().orElseThrow()); }
+                catch (IOException malformed) { return ack; } // Caller retains its original invalid-profile handling.
+                if (!(decoded instanceof CoreFrame.Unavailable)) return ack;
+                if (!clock.instant().isBefore(deadline)) throw new IOException("bootstrap Core deadline expired before owned Game focus");
+                actualFocus.focus(deadline);
+                if (!clock.instant().isBefore(deadline)) throw new IOException("bootstrap Core deadline expired after owned Game focus");
+                var retried = actualRead.read(queryDeadline(clock, deadline));
+                if (retried instanceof NativeActionPort.AckReceived retry && retry.nativeOk() && retry.originalResultToken().isPresent())
+                    return retry; // Including typed Unavailable: never focus or poll again after the one attempt.
+                String detail = retried instanceof NativeActionPort.AckReceived retry
+                        ? new String(retry.originalFrame().bytes(), java.nio.charset.StandardCharsets.UTF_8) : retried.toString();
+                throw new IOException("Native core frame unavailable after one owned Game focus: " + detail);
             }
             if (actual instanceof NativeActionPort.AckReceived ack) {
                 lastDetail = new String(ack.originalFrame().bytes(), java.nio.charset.StandardCharsets.UTF_8);
