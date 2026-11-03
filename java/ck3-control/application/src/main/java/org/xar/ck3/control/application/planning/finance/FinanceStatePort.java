@@ -120,7 +120,7 @@ public final class FinanceStatePort {
                     continue;
                 }
                 try {
-                    Obj row = decodeDocument(body.bytes());
+                    Obj row = decodeDocument(body.bytes);
                     Value pending = row.get("pending");
                     require(pending == Nil.INSTANCE || pending instanceof Obj, "explicit original pending field required");
                     Pending decoded = Objects.requireNonNull(decoder.reader().decode(body));
