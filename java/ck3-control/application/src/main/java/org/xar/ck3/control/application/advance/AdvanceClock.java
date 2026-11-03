@@ -148,7 +148,7 @@ public final class AdvanceClock {
         ProgressStatus progress = observedProgress ? ProgressStatus.POSTCONDITION : ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS;
         if (!observedProgress) require(end.compareTo(plan.startingDateRaw()) > 0, "bounded native timeline observed neither date change nor lawful progress");
         if (armed.isPresent()) {
-            ClockStatusRead.Observation read = statuses.observe(parent, current, bounded(parent, commandTimeout));
+            ClockStatusRead.Observation read = statuses.observe(parent, current, parent.deadline());
             nativeStopRead = Optional.of(read);
             Status status = read.status(); Status arm = armed.orElseThrow(); stopped = Optional.of(status);
             if (status.state() == State.ARMED && end.compareTo(plan.targetDateRaw()) < 0) {
@@ -160,7 +160,7 @@ public final class AdvanceClock {
                 canceled = true;
                 // Cancellation changes the control slot and need not publish a later semantic
                 // native revision. Read the slot, then independently acquire current SEM.
-                ClockStatusRead.Observation canceledRead = statuses.observe(parent, beforeCancel, bounded(parent, commandTimeout));
+                ClockStatusRead.Observation canceledRead = statuses.observe(parent, beforeCancel, parent.deadline());
                 validateCancellation(arm, canceledRead.status(), plan, end);
                 stopped = Optional.of(canceledRead.status()); nativeStopRead = Optional.of(canceledRead);
                 AdvanceObservationPort.Frame afterStatus = current(parent);
