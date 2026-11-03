@@ -672,8 +672,18 @@ public final class ImmutableArtifactStore {
     private static Stamp stamp(JsonNode value) {
         ObjectNode row = StrictJson.object(value, Set.of("volume", "file_id", "created"));
         Stamp result = new Stamp(text(row, "volume"), text(row, "file_id"), text(row, "created"));
-        for (String field : java.util.List.of(result.volume(), result.fileId(), result.created()))
-            StrictJson.require(field.matches("0|[1-9][0-9]*"), "canonical decimal native FileID required");
+        for (String field : java.util.List.of(result.volume(), result.fileId(), result.created())) {
+            boolean canonical = !field.isEmpty();
+            if (canonical) {
+                char first = field.charAt(0);
+                canonical = first == '0' ? field.length() == 1 : first >= '1' && first <= '9';
+                for (int index = 1; canonical && index < field.length(); index++) {
+                    char digit = field.charAt(index);
+                    canonical = digit >= '0' && digit <= '9';
+                }
+            }
+            StrictJson.require(canonical, "canonical decimal native FileID required");
+        }
         return result;
     }
     private static String text(ObjectNode row, String name) { return StrictJson.text(row.get(name)); }
