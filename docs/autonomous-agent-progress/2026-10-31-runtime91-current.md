@@ -1,5 +1,11 @@
 # runtime91 同局续行
 
+2026-11-03 08:59:23.059310100Z实际1605 SAVE_CONFIRMED，1599 SETTLE，本局304日全部保存；saved date53153280/native911/public852/cycle43/actor31254/pending=null，同Game77132／原birth。Root已独验两冻结事件，保存帧911/852不混同cycle语义909/850。1556／296日→1605／304日完整8440.975410600秒／新增8日＝1055.121926325秒／日，全部81／82零保存、后端故障与维修、准备协调、取消516、必要采用／GET、冷恢复及83规划／ARM／resume／归档／SETTLE／SAVE和等待全计。10秒目标未达、非A/B；wholeRoot累计428.016642…秒／日仅次指标。
+
+同76092／出生134381592437332478，新0b689be2-e53c-4615-acd5-c9bf5f6519a2／restart1@61eaf99，08:25:43.575203Z START→08:35:15.602344400Z LOOP，冷恢复572.027141400秒；本次五源与39现有具名模块输出metadata分列，101项接受／80项源码投影不等于方法运行次数或软件cache字节等同。唯一GET HTTP200、STOP0、无新host；首game model于08:37:58.565228900Z实际BEGIN，HTTP200／complete=true、3.236秒，后续ARM1588 CONTROL_APPLIED和新增8日保存各有回执。ARM append单调含嵌套56.451353700秒、提交至physicalwrite56.465735700秒与write至ACK0.121456900秒分别记，不叠加／不当CPU或纯IO，也不从不同材料和服务状态授组／单叶提速。
+
+维修期间只允许单一轻probe，真实game响应成功后才解除新未闭源码HTTP暂停；旧终态不重开，不据此证明代理是唯一根因。当前Runtime继续84只记owner历史，不授未来健康或未确认日；五份raw与wholeformal、各source／软件／采用／START／LOOP／SAVE仍分层。见[1605保存与模型维修恢复来源](../maintenance/2026-11-03-quarkus-worker-save1605-model-repair-sources.json)。本次只读现成小冻结metadata与十进制算术，0raw Save／Driver／事件大体或机器源码／class读取、0新HTTP／查询／GET／编测／部署／控制，旧296／289／281／273／265全文原字节保，G2仍6/8。
+
 2026-11-03 06:38:42.083899500Z实际1556 SAVE_CONFIRMED，1550 SETTLE，本局296日全部保存；saved date53153088/native881/public821/cycle42/actor31254/pending=null，同Game77132／出生134380410301009189。Root已独验两冻结事件，保存帧881/821不混同cycle语义879/819。1498／289日→1556／296日完整9960.122334300秒／新增7日＝1422.8746191857…秒／日，保留74—79零保存、失败协调、准备、宿主释放、所有冷启动／bootstrap、一次必要采样及等待、80的规划／ARM／resume／归档／SAVE稳定观察和1554 UNKNOWN结算。10秒目标未达、非A/B，不用累计411.067851…或首80短窗替代主指标。
 
 五源码保持原采用，0新编译／GET；临时cohort76092／出生134381592437332478、3adb7d9f-d22c-4ee7-8265-d0e116e52cea，06:00:54.743343Z START→06:16:01.824287600Z LOOP，完整冷恢复907.080944600秒。1694字节配置只一处batch_wall_ms1200000→1800000，其余字段与正常配置逐字保留，覆盖该worker每个新批而非仅首批；全局正常默认配置不改。新父与ARM1536的实际绝对deadline同为06:46:06.822774100Z；60秒保留为下游执行／advance／read／RPC的min等待上限，不是新子票据60秒截止。旧SOURCE_READY及初addendum原文保留，后到CHILD-DEADLINE-ACTUAL-ERRATUM单独更正，不刷新旧票据、不重放动作。

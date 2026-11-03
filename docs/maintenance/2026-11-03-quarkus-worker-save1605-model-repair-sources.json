@@ -1,0 +1,200 @@
+{
+  "schema": "ck3.actual-saved-frontier-model-route-repair.v1",
+  "fixed_SAVE_CONFIRMED": 1605,
+  "fixed_SETTLE": 1599,
+  "confirmed_UTC": "2026-11-03T08:59:23.059310100Z",
+  "total_saved_days": 304,
+  "new_saved_days_since1556": 8,
+  "saved_frame": {
+    "date_raw": "53153280",
+    "episode_run_id": "resume91_latest268_20261101_a02",
+    "native_revision": "911",
+    "played_character_id": "31254",
+    "revision": "852",
+    "snapshot_id": "native:911"
+  },
+  "saved_cycle": 43,
+  "pending_receipt": null,
+  "same_Game": {
+    "pid": 77132,
+    "creation_filetime": "134380410301009189"
+  },
+  "Root_independent_two_named_event_verification": {
+    "status": "INDEPENDENT_NAMED_CANONICAL_EVENT_VERIFIED",
+    "two_frozen_event_refs": [
+      {
+        "bytes": 99878,
+        "sha256": "7d5b60d73d394923750b3c37da36691359b4dfdc956ab3b2647a8ee44c57884a"
+      },
+      {
+        "bytes": 98873,
+        "sha256": "bc3a8a60dd7c5259347eafe4956ed1bc4e15c2d10202ae3088c233c6fffcb3d3"
+      }
+    ],
+    "writer_scope": "Only small frozen metadata; raw canonical event, Save, Driver and machine source/class bodies were not read."
+  },
+  "main_window": {
+    "from_SAVE": 1556,
+    "from_saved_days": 296,
+    "from_confirmed_UTC": "2026-11-03T06:38:42.083899500Z",
+    "to_SAVE": 1605,
+    "to_saved_days": 304,
+    "elapsed_seconds": "8440.975410600",
+    "new_SAVE_CONFIRMED_days": 8,
+    "seconds_per_new_saved_day": "1055.121926325",
+    "subtracted_seconds": "0",
+    "target10_achieved": false,
+    "A_B": false,
+    "includes": "All81/82 zeroSAVE batches, model queue/network failure and repair, coordination/metadata mistakes and canceled516, offline preparation/adoption, unique GET8.4417s, samehost cold572.0271414s, actual83 original ARM/resume/parent/SETTLE/SAVE and all waits. No elapsed excluded."
+  },
+  "cumulative_secondary_only": {
+    "Root_epoch_seconds": "130117.059310100",
+    "saved_days": 304,
+    "seconds_per_saved_day": "428.0166424674342105263157895",
+    "not_primary_window_denominator": true
+  },
+  "actual_recovery": {
+    "same_host": {
+      "pid": 76092,
+      "birth": "134381592437332478"
+    },
+    "delegate": {
+      "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@61eaf99@61eaf99",
+      "exit_code": null,
+      "failure_type": null,
+      "host_pid": "76092",
+      "instance_id": "0b689be2-e53c-4615-acd5-c9bf5f6519a2",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-03T08:25:43.575203Z",
+      "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:1@61eaf99@61eaf99",
+      "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+      "status": "DELEGATE_STARTED"
+    },
+    "actual_LOOP_UTC": "2026-11-03T08:35:15.602344400Z",
+    "START_to_LOOP_seconds": "572.027141400",
+    "five_sources_and39_existing_outputs_metadata": {
+      "source_count": 5,
+      "named_outputs": 39,
+      "accepted_receipts": 101,
+      "source_projections": 80,
+      "sources": [
+        {
+          "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootOnlineDecisionSelector.java",
+          "raw_bytes": 81318,
+          "raw_sha256": "a6d3ab42498fb4efbf0cb36b8c528caa37117f76dd3983657489caaad9e7beea"
+        },
+        {
+          "relative_path": "application/src/main/java/org/xar/ck3/control/application/driver/DriverPersistentPlanningState.java",
+          "raw_bytes": 36319,
+          "raw_sha256": "3520e3d83b506eac47bf0d26ae204ddf9fa92713a881760620e7535306645ffe"
+        },
+        {
+          "relative_path": "application/src/main/java/org/xar/ck3/control/application/action/ActionContinuityAuthority.java",
+          "raw_bytes": 9432,
+          "raw_sha256": "f0725143a1af226b5d3a4b40c748fbe4505d54b2c862787f7618e6f2e2fad91c"
+        },
+        {
+          "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+          "raw_bytes": 247420,
+          "raw_sha256": "bdf08030ae1bad4a91418803e7cd1660538079bf11723534fa99a7d6af68ee4c"
+        },
+        {
+          "relative_path": "application/src/main/java/org/xar/ck3/control/application/action/RawJson.java",
+          "raw_bytes": 5905,
+          "raw_sha256": "282031e86b7c6eaa1b7b90b3890b83ec4e306e11dba7e85af47cf917c9866d4b"
+        }
+      ]
+    },
+    "unique_GET": {
+      "began_UTC": "2026-11-03T08:25:35.166344+00:00",
+      "ended_UTC": "2026-11-03T08:25:43.607669+00:00",
+      "seconds_reported": 8.441320899990387,
+      "HTTP": 200,
+      "STOP": 0,
+      "new_host": false
+    },
+    "first_actual_game_model": {
+      "BEGIN_UTC": "2026-11-03T08:37:58.565228900Z",
+      "HTTP": 200,
+      "complete": true,
+      "total_ms": 3236,
+      "TTFT_ms": 2473,
+      "only_actual_response_not_proxy_sole_cause_proof": true
+    },
+    "first_ARM83": {
+      "settled_child_sequence": 1588,
+      "status": "CONTROL_APPLIED",
+      "append_inclusive_elapsed_ns": 56451353700,
+      "submitted_to_write_seconds": "56.465735700",
+      "write_to_ack_seconds": "0.121456900",
+      "not_CPU_pure_IO_Native_or_speed_credit": true
+    },
+    "new_host_or_Game_restart_for_this_group": false
+  },
+  "later84": "Runtime reports1607 BATCH_STARTED84 continuing samehost/delegate. Historical owner cutpoint only, not future health or another confirmed day.",
+  "prior_SAVE_index_preserved": {
+    "path": "docs/maintenance/2026-11-03-quarkus-worker-save1556-temporary30m-sources.json",
+    "bytes": 8561,
+    "sha256": "f5ff086dd53a3f7e624752a9169fddcc15ee827cf48f166f6f8d615cc1401cd4"
+  },
+  "sources": [
+    {
+      "local_key": "root/savep0repair4821-verified.json",
+      "bytes": 1431,
+      "sha256": "a0f33f038151544637c2200e40ee71e07b25c2929ba7a31f50fbc3bc6ac2ee1d"
+    },
+    {
+      "local_key": "root/savep0repair4821-window.json",
+      "bytes": 1118,
+      "sha256": "84269ead8038343a036a12c058c793c4fe3bf7879d448565bdf00a39ede123cc"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/savep0repair4821-window/SUMMARY.json",
+      "bytes": 2176,
+      "sha256": "c443304d6741fe1c1b3f876b7224b370cf6dead6429da5a7a26d9c3049e3199d"
+    },
+    {
+      "local_key": "runtime/current-resume268/save-confirmedp0repair4821/SUMMARY.json",
+      "bytes": 6872,
+      "sha256": "5d804e17c61a4caa2fd0d5fa77d132a13943d70ff94e86787ce32790b6262797"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/model-route-recovery482/actual-execution/ACTUAL-NEW-DELEGATE.json",
+      "bytes": 3129,
+      "sha256": "8a73fa10efd814caa44a65807f7067c694b3f8a1b16872a1e937cdb1443a4851"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/model-route-recovery482/actual-execution/ACTUAL-SOURCE-ADOPTION.json",
+      "bytes": 1582,
+      "sha256": "526183a9c59cf4d192151c07c4c4d1cd4d1faeebf231ad009bd8c7392a349dfa"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/model-route-recovery482/actual-execution/ACTUAL-SOURCE-AND-MODULE-OUTPUTS.json",
+      "bytes": 33367,
+      "sha256": "53f496471b8391edfddf851703e14f69cfe9f58a7a20379e8eb8b26adefe53a7"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/model-route-recovery482/actual-execution/TRIGGER-ACTUAL.json",
+      "bytes": 377,
+      "sha256": "b0f5260e0ab0ac8aa74b96b670190250bc644b645df67262bb63f897459f5d6a"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/model-route-recovery482/actual-execution/loop-and-first-model/SUMMARY.json",
+      "bytes": 4794,
+      "sha256": "396b1790805cea28dfb85d5223dc720e869279eabf6c08dcc14f528a3702f4db"
+    },
+    {
+      "local_key": "runtime/quarkus-dev307-runtime/model-route-recovery482/actual-execution/first-arm83/SUMMARY.json",
+      "bytes": 2497,
+      "sha256": "e757abad3a57a9be109719eb82c33409ab89fa4e1348eec1858eae7aacd58168"
+    }
+  ],
+  "limits": [
+    "Every81/82zero-save failure, service repair, coordination/preparation, uniqueGET, cold recovery and83fullchain remains inside mainwindow; no subtraction or cumulative428 denominator.",
+    "Five raw adopted sources and39 module outputs are metadata/source-adoption evidence, not all-methods/branches/cachehits or software-cache/live-class byteidentity. Wholeformal/currentraw remain separately qualified.",
+    "ExplicitDIRECT route and actual game-model success do not isolate proxy as the sole backend failure cause. Repair-only probe and later sourceHTTP resumption remain distinct operational cutpoints.",
+    "Actualsource adoption, START, LOOP, game model response, ARM CONTROL_APPLIED andnew8SAVE are separately recorded; no A/B or individual/group speed causality.",
+    "304saved is currentnamedfrontier only. Old296/289/281/273/265/BOOT/START text remains byteexact; G2 last complete acceptance6/8.",
+    "Documentation performs no compile/Test/HTTP/GET/Game/Native/control/deployment/launch or resource reservation."
+  ]
+}
