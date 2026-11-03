@@ -2030,9 +2030,9 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 &&StrictJson.text(result.get("episode_run_id")).equals(after.frame().episodeRunId())
                 &&!old.episodeRunId().equals(after.frame().episodeRunId()),"episode origin result changed its actual old or new episode");
         String actor=proof.kind()==LifecycleTransitionProof.Kind.CONTINUE_SUCCESSOR?"actual_successor_character_id":"episode_character_id";
-        StrictJson.require(StrictJson.integer(result.get(actor),1,0xffff_fffeL)==after.frame().identity().player().longValueExact(),"episode origin result changed its actual new actor");
+        StrictJson.require(org.xar.ck3.control.contracts.NativeCharacterId.fromJson(result.get(actor)).value()==after.frame().identity().player().longValueExact(),"episode origin result changed its actual new actor");
         if(proof.kind()==LifecycleTransitionProof.Kind.CONTINUE_SUCCESSOR)StrictJson.require(
-                StrictJson.integer(result.get("predecessor_character_id"),1,0xffff_fffeL)==old.actorId().longValueExact()
+                org.xar.ck3.control.contracts.NativeCharacterId.fromJson(result.get("predecessor_character_id")).value()==old.actorId().longValueExact()
                 &&!old.actorId().equals(after.frame().identity().player()),"episode origin lost the actual distinct predecessor Driver subject");
     }
     private CycleRecord load(ExactRef ref) { return CycleRecord.fromJson(ContinuityJson.parseObject(archive.loadMaterial(ref).bytes(), ContinuityJson.DOCUMENT_MAX_BYTES)); }
