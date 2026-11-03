@@ -37,6 +37,7 @@ import org.xar.ck3.control.application.routecontact.RouteContactCapabilities;
 import org.xar.ck3.control.application.routecontact.RouteContactCodec;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
+import org.xar.ck3.control.vanilla.schemesway.OrdinarySwayService;
 
 /**
  * Production gameplay capability calculation. A received hello is descriptive
@@ -291,6 +292,7 @@ public final class DynamicCapabilities {
             });
         });
         Set<String> composites = new TreeSet<>();
+        addOrdinarySwayCandidate(composites, semantic, installed);
         // Primitive availability is the real frozen installation intersection, before a composite is considered.
         Set<String> installedPrimitives = admitted(candidates,caps,installed,frame,purpose,actualInputs);
         if (waitSupported && installedPrimitives.containsAll(LIFE_PRIMITIVES) && !caps.contains("game.command.life-advance")) { composites.add("life-advance"); composites.add("life-advance-one-day"); }
@@ -374,6 +376,21 @@ public final class DynamicCapabilities {
         output.put("runtime_state_version",new Text(inputs.stateVersion().toString()));
         return new Projected(new CapabilitySnapshot(operations(admitted),caps,operations(composites),Optional.of(battle),independentReady,true,waitSupported,new Obj(output),inputs.originalFacts(),driver.stamp(),frame.fullBindingSha256()),gaps);
     }
+    static void addOrdinarySwayCandidate(Set<String> composites, Obj semantic, ExecutableStepBindings installed) {
+        if (!installed.frozen()) return;
+        if (!yes(semantic, "paused") || !yes(semantic, "map_ready")) return;
+        var described = installed.describeForPublicPlanning(new OperationKey(OrdinarySwayService.STEP));
+        if (described.isEmpty()) return;
+        var actual = described.orElseThrow();
+        var descriptor = actual.descriptor();
+        if (descriptor.operation().value().equals(OrdinarySwayService.STEP)
+                && descriptor.kind() == ExecutableStepBindings.Kind.COMPOSITE
+                && descriptor.guardMode() == ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP
+                && actual.archivedVerifierSource().isPresent()) {
+            composites.add(OrdinarySwayService.STEP);
+        }
+    }
+
     private static Set<String> exact(Set<String> candidates,Set<String> caps,ExecutableStepBindings installed,CommandOrigin.Gameplay actualOrigin) {
         Set<String> result = new TreeSet<>();
         for (String step : candidates) {
