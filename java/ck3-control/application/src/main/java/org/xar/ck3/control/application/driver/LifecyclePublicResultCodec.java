@@ -57,8 +57,8 @@ public final class LifecyclePublicResultCodec {
     /** Recognizes only the sole M3 available DTO; other unavailable/null DATA is not rewritten. */
     public static boolean isAvailableReconciliation(RawJson original) {
         ObjectNode value = object(original);
-        return value.path("schema").isTextual() && SuccessionModel.RECONCILIATION_SCHEMA.equals(value.get("schema").textValue())
-                && value.path("status").isTextual() && "available".equals(value.get("status").textValue());
+        JsonNode schema = value.path("schema"); if (!(schema.isTextual() && SuccessionModel.RECONCILIATION_SCHEMA.equals(schema.textValue()))) return false;
+        JsonNode status = value.path("status"); return status.isTextual() && "available".equals(status.textValue());
     }
 
     public static RawJson encodeReconciliation(RawJson original) {
