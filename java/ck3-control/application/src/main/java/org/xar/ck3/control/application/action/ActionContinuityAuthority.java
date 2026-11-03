@@ -18,6 +18,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
     private final String authorityId;
     private final java.time.Clock clock;
     private final ActionPorts.PreparationPort protocolIdentityPolicy;
+    private final java.util.function.Supplier<org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session> borrowedSessions;
     private volatile PhysicalActionRegistry physicalActions;
     public synchronized void bindPhysicalActions(PhysicalActionRegistry actual) {
         StrictJson.require(physicalActions == null, "actual physical registry is installed once on the same writer authority");
@@ -30,10 +31,17 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
     }
     public ActionContinuityAuthority(String authorityId, ActionPorts.OutcomeArchive archive, ActionPorts.GuardPort guard,
             ActionPorts.RecordedEvidenceVerifier evidenceVerifier, java.time.Clock clock, ActionPorts.PreparationPort actualProtocolIdentityPolicy) {
+        this(authorityId, archive, guard, evidenceVerifier, clock, actualProtocolIdentityPolicy, null);
+    }
+    /** Explicit opt-in; the supplier must borrow the identical writer's currently held Session. */
+    public ActionContinuityAuthority(String authorityId, ActionPorts.OutcomeArchive archive, ActionPorts.GuardPort guard,
+            ActionPorts.RecordedEvidenceVerifier evidenceVerifier, java.time.Clock clock, ActionPorts.PreparationPort actualProtocolIdentityPolicy,
+            java.util.function.Supplier<org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session> borrowedSessions) {
         this.protocolIdentityPolicy = java.util.Objects.requireNonNull(actualProtocolIdentityPolicy);
         this.archive = java.util.Objects.requireNonNull(archive); this.guard = java.util.Objects.requireNonNull(guard);
         this.evidenceVerifier = java.util.Objects.requireNonNull(evidenceVerifier);
         this.authorityId = StrictJson.text(authorityId); this.clock = java.util.Objects.requireNonNull(clock);
+        this.borrowedSessions = borrowedSessions;
     }
     @Override public String revalidate(ContinuityState predecessor, WriterContracts.Request request) {
         throw new IllegalStateException("action qualification requires the actual original writer Head under its held lock");
@@ -41,7 +49,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
     @Override public String revalidate(WriterContracts.Head actualLockedHead, WriterContracts.Request request) {
         ContinuityState predecessor = actualLockedHead.state();
         ActionReceipt receipt = receipt(request);
-        List<ActionReceipt> canonicalReceipts = ContinuityActionJournal.receipts(predecessor, archive);
+        List<ActionReceipt> canonicalReceipts = canonicalReceipts(predecessor);
         ProtocolIdentityAdmission.requireUnique(canonicalReceipts, receipt.command());
         Optional<ActionReceipt> existing = canonicalReceipts.stream().filter(r -> r.command().actionId().equals(receipt.command().actionId())).findFirst();
         ActionTransitions.validate(existing, receipt.command(), receipt.bodySha256(), receipt.state());
@@ -72,7 +80,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
     }
     @Override public ContinuityState reduce(ContinuityState predecessor, WriterContracts.Request request) {
         ActionReceipt receipt = receipt(request);
-        List<ActionReceipt> canonicalReceipts = ContinuityActionJournal.receipts(predecessor, archive);
+        List<ActionReceipt> canonicalReceipts = canonicalReceipts(predecessor);
         ProtocolIdentityAdmission.requireUnique(canonicalReceipts, receipt.command());
         StrictJson.require(receipt.sequence() == Math.addExact(predecessor.sequence(), 1), "action event must consume actual next writer sequence");
         StrictJson.require(receipt.command().origin().machineId().equals(predecessor.machineId()), "action machine must equal canonical writer machine");
@@ -84,6 +92,14 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         next.set(ContinuityActionJournal.STATE_FIELD, request.detailsObject().get("receipt_ref"));
         // The one writer assigns the sequence after pure reduction and validates it again at commit.
         return ContinuityState.fromJson(next, predecessor.machineId());
+    }
+    private List<ActionReceipt> canonicalReceipts(ContinuityState predecessor) {
+        if (borrowedSessions == null) return ContinuityActionJournal.receipts(predecessor, archive);
+        try {
+            var same = java.util.Objects.requireNonNull(borrowedSessions.get());
+            return archive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192),
+                    scoped -> ContinuityActionJournal.receipts(predecessor, scoped));
+        } catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
     }
     private ActionReceipt receipt(WriterContracts.Request request) {
         StrictJson.require(request.kind().equals(ContinuityActionJournal.KIND), "wrong reducer event kind");

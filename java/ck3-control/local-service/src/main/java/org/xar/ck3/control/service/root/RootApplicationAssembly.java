@@ -871,7 +871,7 @@ public final class RootApplicationAssembly {
             sole.bindPhysicalActions(physicalActions());
             sole.bindReconciliationObservation(initialReconciliation);
             ActionCoordinatorPort coordinator = scoped(sole, game.nativeTransport());
-            ActionContinuityAuthority action = new ActionContinuityAuthority(authorityId, archive, submissions, submissions, clock,bindings);
+            ActionContinuityAuthority action = new ActionContinuityAuthority(authorityId, archive, submissions, submissions, clock,bindings,borrowed);
             action.bindPhysicalActions(physicalActions());
             sealAuthorities(List.of(new RootAuthorityRouter.Binding(Set.of(ContinuityActionJournal.KIND), action),
                     new RootAuthorityRouter.Binding(Set.of(OrdinaryCycleTransitions.CYCLE_KIND, OrdinaryCycleTransitions.BATCH_KIND,
@@ -2817,7 +2817,7 @@ public final class RootApplicationAssembly {
                 };
                 if (!restoring&&!next) core.savedLoader.initial(actualLoader);
                 SavedAttachmentAuthority attachment = new SavedAttachmentAuthority(drivers, core.savedLoader);
-                ActionContinuityAuthority actionAuthority = new ActionContinuityAuthority(authorityId, core.archive, core.submissions, core.submissions, core.clock,bindings);
+                ActionContinuityAuthority actionAuthority = new ActionContinuityAuthority(authorityId, core.archive, core.submissions, core.submissions, core.clock,bindings,borrowed);
                 actionAuthority.bindPhysicalActions(core.physicalActions());
                 if (menu == null && !restoring&&!next) {
                     core.sealAuthorities(List.of(new RootAuthorityRouter.Binding(Set.of(ContinuityActionJournal.KIND), actionAuthority),
