@@ -35,6 +35,7 @@ final class WindowsJobProcessStartBeforeTest {
 
         Instant expired = Instant.EPOCH;
         try (var owner = WindowsJobProcess.startBefore(spec, WindowsJobProcess.ConsoleMode.NO_WINDOW, expired)) {
+            assertNotNull(owner);
             fail("startBefore must reject an expired original deadline");
         } catch (IOException failure) {
             assertNotNull(failure);

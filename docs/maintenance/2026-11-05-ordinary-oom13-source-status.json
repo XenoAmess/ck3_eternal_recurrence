@@ -1,0 +1,74 @@
+{
+  "schema": "ordinary-oom13-current-source-status/v1",
+  "at_utc": "2026-11-04T17:43:24.165873+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "task_state": "running",
+  "owner": "/root/java_continue",
+  "status": "OOM13 source implementation in progress, no bounded software/runtime success",
+  "observed_days": 508,
+  "eligible_days": 501,
+  "saved_days": 365,
+  "new_save_days": 0,
+  "C70_credited": false,
+  "ci": {
+    "official_run": 41864169952,
+    "status": "failure",
+    "cause": "old build-tools Test try resource unused under -Werror; full reactor not reached",
+    "source_fix": "one assertNotNull(owner) before existing unconditional fail",
+    "source_candidate_sha256": "c212c2e18f018d46f9701fe41f115e6f3817be1473d26d55cb97cc6c529a96d1",
+    "source_software_qualification": "not yet compiled locally or passed CI"
+  },
+  "normal_model": {
+    "id": "normal-append-live-scope-20261105-01",
+    "finish": "length",
+    "total_seconds": 76.6330145,
+    "ttft_seconds": 10.2259058,
+    "output_tokens": 12000,
+    "content_unread_discarded": true,
+    "code_adoption": 0,
+    "automatic_retry": false
+  },
+  "oom_task": {
+    "id": "oom-bounded-history-producer-20261105-01",
+    "target": "ContinuityStorePort + ContinuityWriter",
+    "consumer_owner": "/root/m6_continue",
+    "consumer": "actual BatchJournal dd983cbe",
+    "test_owner": "/root/p0_clean_restart_test",
+    "native_owner": "/root/native_continue",
+    "runtime_owner": "/root/runtime_continue",
+    "state": "source-only preparation / unique HTTP transferred; no future output pins"
+  },
+  "refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-root\\resume-after-vacation-20261104\\C69-INDEPENDENT-VERIFIED.json",
+      "bytes": 2509,
+      "sha256": "843f40737c30377370770426b038b218591795600ee9975196628e535002288d"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\resume-after-vacation-20261104\\OOM13-INDEPENDENT-PENDING-VERIFIED.json",
+      "bytes": 1928,
+      "sha256": "23101c18407a26dc0f45fb197aa608ea6ebef5a6a2388d9b9dbab5b2909d879b"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\actual-oom13\\FAILURE13.json",
+      "bytes": 4757,
+      "sha256": "7d2b8c862d0f8e3d4790c576fdda3d02056d1acd983608e35b3e11aac72f0107"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-native-integration\\dev307-restart13-action131-thread-once01\\RESULT01.json",
+      "bytes": 3236,
+      "sha256": "d3dca9edb302821ae76ae2b955be60f03ad42899f7aaf271bf1305726f359849"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-startbefore-warning01\\SOURCE-REVIEW01.json",
+      "bytes": 1295,
+      "sha256": "9eba5122f6de88349d2263ceaa594be5ca63894532c7361f8c78c302e6333994"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-bounded-history-producer01\\MODEL-INPUTS01.json",
+      "bytes": 3709,
+      "sha256": "f6b09ecae87bd8f0149c478a74b3ae4b552b279ed7c601dae04d1dd89de00933"
+    }
+  ],
+  "runtime_limit": "freshhost14 prepared, not started at this cut; original applied parent2455 retained, no command replay or deadline refresh; no Game, keeper, ledger or C mutation by source owner"
+}
