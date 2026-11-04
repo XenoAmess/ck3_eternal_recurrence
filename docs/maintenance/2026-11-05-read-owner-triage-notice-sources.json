@@ -1,0 +1,341 @@
+{
+  "schema": "xar.java-owner.read-owner-triage-notice-source-index/v1",
+  "at_utc": "2026-11-04T23:26:51.330714+00:00",
+  "base_commit": "f54f488597c581b38f24f68df4dbcd548c49d281",
+  "owner": "/root/java_continue",
+  "production_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\read-unavailable-owner-notice01\\SOURCE-READY-OWNER-BODY02.json",
+    "bytes": 4116,
+    "sha256": "794ae96d8e97422eb38cb75e638fc9f471c3c6bfd4c91c22d0d96cf13f8d8255"
+  },
+  "before": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-triage-eight-current24\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+    "bytes": 61284,
+    "sha256": "c21fe6d60b405f6b02a83472c64440fb5a57fd3dc748d4db3c22d24b1e1cb898"
+  },
+  "candidate": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\read-unavailable-owner-notice01\\owner-candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+    "bytes": 63854,
+    "sha256": "c1308a3f020665f95285f3f6f47d2d2f51c38657b195620867bc7167fbf9fe85"
+  },
+  "patch": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\read-unavailable-owner-notice01\\OWNER-FORWARD02.diff",
+    "bytes": 3477,
+    "sha256": "f66a86286831937999f5e9faede483215b977f7dd80753e6081167125bf6bac7"
+  },
+  "previous_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\read-unavailable-owner-notice01\\SOURCE-READY-OWNER-BODY01.json",
+    "bytes": 3174,
+    "sha256": "35e90448ade0ba7207a8543b4bf9d8383e9f6abcb29fba91c9b966622a59b54b"
+  },
+  "previous_first_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\read-unavailable-owner-notice01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 195545,
+    "sha256": "7459c3027b537d737ab86eb553754d91442c281a90ef95138c5751f52f471403"
+  },
+  "current_shape": {
+    "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 195241,
+    "sha256": "65c59d084c7e7a6a6aa4fc1f81df76de6b6653825bf27fea269ff24ed62fc5df"
+  },
+  "exact_Test_source": {
+    "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/local-service/src/test/java/org/xar/ck3/control/service/root/ReadOwnerTriageNoticeTest.java",
+    "bytes": 24209,
+    "sha256": "1a33beda19805bcd3dddb119299d9c5cc9887f8fb6aed07567aed4df4ad9d515"
+  },
+  "Test_source_ready": {
+    "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/SOURCE-READY01.json",
+    "bytes": 9378,
+    "sha256": "b839225bb79ad0a073c8eb902159eb71e6c5a7f8e0294e2e9b9402cc8530b8fd"
+  },
+  "Test_model_review": {
+    "path": "D:\\ck3-state\\resume91-root\\read-owner-notice-independent-test01\\owner-candidate01\\MODEL-REVIEW01.json",
+    "bytes": 3093,
+    "sha256": "3c1c2747d6af2423f8158362fabefcab87d06975f397a31419ab6e0229413bf8"
+  },
+  "native_cohort": {
+    "path": "D:\\ck3-state\\resume91-root\\read-owner-notice-independent-test01\\owner-candidate01\\QUALIFIED-COHORT01.json",
+    "bytes": 19816,
+    "sha256": "c95fe6532a85f57bdc48c6736f3656b5473a90b48b351da5e41ad2226e4bb86f"
+  },
+  "phases": {
+    "prod": {
+      "references": {
+        "actual": {
+          "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/actual/prod/ACTUAL.json",
+          "bytes": 1725,
+          "sha256": "357ff2350393b558311681848ea74c8dbcdc6cf83bc818d85f58ebd4c92f3a1b"
+        },
+        "terminal": {
+          "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/actual/prod/CHILD-TERMINAL.json",
+          "bytes": 725,
+          "sha256": "c97539e48463e5a8c61e7840d810499e507810d384b9b1e7234479e3cb87cff3"
+        },
+        "post": {
+          "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/actual/prod/POST.json",
+          "bytes": 405,
+          "sha256": "2aea1210b20517043fe39e4f9e2f0b83b8203e6594170e0c5edd4974ee1e8f5d"
+        },
+        "release_fence": {
+          "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/actual/prod/RELEASE-FENCE.json",
+          "bytes": 1126,
+          "sha256": "69ce2e928e53649e556813e649169c19c806b5ee7dbd4ebdbae876faba2fb153"
+        },
+        "managed_close": {
+          "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/actual/prod/MANAGED-CLOSE.json",
+          "bytes": 237,
+          "sha256": "1f49dc5e4bf58f66db6aea61cebb34768d291ff3947153ef54173dc62f713ad8"
+        },
+        "stdout": {
+          "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/actual/prod/stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/actual/prod/stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "operator": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/OPERATOR-TOTAL-prod.json",
+        "bytes": 942,
+        "sha256": "7acdd930253e3e3b28405599179ecb63e2e8f0e6e3768aac4a86fd57d6c7ede4"
+      },
+      "JVM_seconds": 6.223080400028266,
+      "output_manifest": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/read-unavailable-owner-notice01/native-first02/actual/prod/OUTPUTS.json",
+        "bytes": 48489,
+        "sha256": "e53138b3d286abde4f9791e089f9f4abec7f25082d02eed3f3db10fdc1189819"
+      },
+      "classes": 9
+    },
+    "test": {
+      "references": {
+        "actual": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/test/ACTUAL.json",
+          "bytes": 1685,
+          "sha256": "aec31f884292b8d484ba2583bfde242830ca0d7be2132b0a7f3ccbc11a75390a"
+        },
+        "terminal": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/test/CHILD-TERMINAL.json",
+          "bytes": 710,
+          "sha256": "703b90ffd005a4bccbf495916420e7b3c7bdbb69ca6ccc9dff59ff18bc9dc673"
+        },
+        "post": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/test/POST.json",
+          "bytes": 398,
+          "sha256": "22615ed99579bfc5e744d6e03f6748174df22d999d4b840f0b04b1dafa1de6e7"
+        },
+        "release_fence": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/test/RELEASE-FENCE.json",
+          "bytes": 1097,
+          "sha256": "34ed632073153b9090fcc9137fad1a981965706f4ad802a48a440d9e4695e0e9"
+        },
+        "managed_close": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/test/MANAGED-CLOSE.json",
+          "bytes": 237,
+          "sha256": "70e20f5af59e65ce5eaed010ee7b114217132b2959e0d2b06dc46281936bb91e"
+        },
+        "stdout": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/test/stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/test/stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "operator": {
+        "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/OPERATOR-TOTAL-test.json",
+        "bytes": 921,
+        "sha256": "ed8bcc2708d4cc0f05d9510e4ae98f70e28fac1d810b856de223f790638bf01f"
+      },
+      "JVM_seconds": 5.488867099978961,
+      "output_manifest": {
+        "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/test/OUTPUTS.json",
+        "bytes": 28839,
+        "sha256": "cb9c819856bd113067725bd83f7339a5586d24e6c6741c39fc258ee473922b83"
+      },
+      "classes": 8
+    },
+    "junit": {
+      "references": {
+        "actual": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/junit/ACTUAL.json",
+          "bytes": 1455,
+          "sha256": "5dda42ee4d09689ff7ac1884ece61146584c5f5683410b38c5bcd503778d8403"
+        },
+        "terminal": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/junit/CHILD-TERMINAL.json",
+          "bytes": 716,
+          "sha256": "cf99b7d1345b1dfed55c243601ce5cf3fbfd550acac9b2dbbcf82eceed846b44"
+        },
+        "post": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/junit/POST.json",
+          "bytes": 1374,
+          "sha256": "d6b1c41f4d2d3237d4cc38f963817de71948c101717d82de789989ad5ed5a42f"
+        },
+        "release_fence": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/junit/RELEASE-FENCE.json",
+          "bytes": 1103,
+          "sha256": "908676ae30425a7e97b6680de9ea5fa3912db8dcb4f93b1c1e61bdd336733d9e"
+        },
+        "managed_close": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/junit/MANAGED-CLOSE.json",
+          "bytes": 238,
+          "sha256": "41e5ec79fd120f7220deb029663417f24f710bcc63aac14b864b6c49e4faa3ce"
+        },
+        "stdout": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/junit/stdout.bin",
+          "bytes": 2882,
+          "sha256": "b7358bc7b8c97ccc929947ea648352cba6b5a38132d100d1aea3246e0ba08224"
+        },
+        "stderr": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/junit/stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "operator": {
+        "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/OPERATOR-TOTAL-junit.json",
+        "bytes": 923,
+        "sha256": "70bbadd47a47a5a641ad9b8a2a3b4b8b9c59db928aeca6e1a79bc3d9fb80c776"
+      },
+      "JVM_seconds": 4.142023799999151,
+      "Jupiter_XML": {
+        "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/reports-junit/TEST-junit-jupiter.xml",
+        "bytes": 42334,
+        "sha256": "3318b609096d5f9986dd55f8398c6a148c011f39d5e3bceca37ec6dda122d06b"
+      },
+      "exact_successful_methods": [
+        "org.xar.ck3.control.service.root.ReadOwnerTriageNoticeTest#archivePrimaryFailuresEscapeButDiagnosticSinkFailureAndBoundedErrorsKeepOriginalResults",
+        "org.xar.ck3.control.service.root.ReadOwnerTriageNoticeTest#realNegativeNoticeFollowsAllPreservationAndPrecedesNextReadonlyWriteOnce"
+      ]
+    },
+    "affected": {
+      "references": {
+        "actual": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/affected/ACTUAL.json",
+          "bytes": 1477,
+          "sha256": "e6007eee364fe7a5c1d726e7ea60acf736a2f46903cfd08f70b6ba10ad6db127"
+        },
+        "terminal": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/affected/CHILD-TERMINAL.json",
+          "bytes": 723,
+          "sha256": "5eca232c26ee2d98a056e3c54b3d55a53f65e1f236314513f02ca546c57612b6"
+        },
+        "post": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/affected/POST.json",
+          "bytes": 1537,
+          "sha256": "fffa7b437fe6ba2bd9b637fefe5bda1d18340a7f178b873f1aa9737014fb71b3"
+        },
+        "release_fence": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/affected/RELEASE-FENCE.json",
+          "bytes": 1115,
+          "sha256": "a4d63ca0a94e10ea9ec131fb6ed385f93fcbbae9f8fc5e48d0bb08b3285e6def"
+        },
+        "managed_close": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/affected/MANAGED-CLOSE.json",
+          "bytes": 241,
+          "sha256": "aab184aceac6bf8a2070b3b2bfe0dc05698247f6b9d20e57513eda8087a887fc"
+        },
+        "stdout": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/affected/stdout.bin",
+          "bytes": 10203,
+          "sha256": "5ff7d93a770c5ff8beb27dddc07821b5f18a89ac765f8339acb1fa16b4c90eb9"
+        },
+        "stderr": {
+          "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/actual/affected/stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "operator": {
+        "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/OPERATOR-TOTAL-affected.json",
+        "bytes": 933,
+        "sha256": "0a0ff1604af7b3371869b644b5237a298740be17a151211c30b3b03e326c2423"
+      },
+      "JVM_seconds": 4.491755799972452,
+      "Jupiter_XML": {
+        "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/reports-affected/TEST-junit-jupiter.xml",
+        "bytes": 43083,
+        "sha256": "f58bdc7b64019236f8fe2014a55449e664c1fe91beb4a5ebed94d5090e14beab"
+      },
+      "exact_successful_methods": [
+        "org.xar.ck3.control.service.root.PostAckFreshReadAvailabilityTest#exactNegativeAcksArePreservedBeforeNewReadonlyQueriesAndRealPausedFrameReturns",
+        "org.xar.ck3.control.service.root.PostAckFreshReadAvailabilityTest#originalDeadlineBoundArchiveFailureAndInterruptAreNeverRenewedOrRetried",
+        "org.xar.ck3.control.service.root.PostAckFreshReadAvailabilityTest#unknownCollectsOnlyItsOriginalAndOtherFailuresNeverBecomeAvailabilityRetry"
+      ]
+    }
+  },
+  "suites": {
+    "junit": {
+      "XML": {
+        "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/reports-junit/TEST-junit-jupiter.xml",
+        "bytes": 42334,
+        "sha256": "3318b609096d5f9986dd55f8398c6a148c011f39d5e3bceca37ec6dda122d06b"
+      },
+      "methods": [
+        "org.xar.ck3.control.service.root.ReadOwnerTriageNoticeTest#archivePrimaryFailuresEscapeButDiagnosticSinkFailureAndBoundedErrorsKeepOriginalResults",
+        "org.xar.ck3.control.service.root.ReadOwnerTriageNoticeTest#realNegativeNoticeFollowsAllPreservationAndPrecedesNextReadonlyWriteOnce"
+      ]
+    },
+    "affected": {
+      "XML": {
+        "path": "D:/ck3-state/resume91-root/read-owner-notice-independent-test01/owner-candidate01/native-first01/reports-affected/TEST-junit-jupiter.xml",
+        "bytes": 43083,
+        "sha256": "f58bdc7b64019236f8fe2014a55449e664c1fe91beb4a5ebed94d5090e14beab"
+      },
+      "methods": [
+        "org.xar.ck3.control.service.root.PostAckFreshReadAvailabilityTest#exactNegativeAcksArePreservedBeforeNewReadonlyQueriesAndRealPausedFrameReturns",
+        "org.xar.ck3.control.service.root.PostAckFreshReadAvailabilityTest#originalDeadlineBoundArchiveFailureAndInterruptAreNeverRenewedOrRetried",
+        "org.xar.ck3.control.service.root.PostAckFreshReadAvailabilityTest#unknownCollectsOnlyItsOriginalAndOtherFailuresNeverBecomeAvailabilityRetry"
+      ]
+    }
+  },
+  "qualification": {
+    "production02_new_TUs": 1,
+    "production02_classes": 9,
+    "production02_all9_structures_equal": true,
+    "new_Test_TUs": 1,
+    "new_Test_classes": 8,
+    "new_noarg_methods": 2,
+    "new_methods_passed": 2,
+    "old_postACK_affected_binary_methods_RUN_only": 3,
+    "old_affected_passed": 3,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "aborted": 0,
+    "production02_recompiled_for_Test": 0,
+    "old_Test_or_Support_recompiled": 0
+  },
+  "bounds": {
+    "CPU": 1,
+    "compile_Xmx_MiB": 192,
+    "RUN_Xmx_MiB": 64,
+    "child_seconds_each": 30,
+    "TOTAL_seconds_each_independent_phase": 120
+  },
+  "original_helper_outside_inverse_exact": true,
+  "formal_and_actual_software_source_bytes_exact": true,
+  "all9_structures_equal": true,
+  "actual_redefine_or_Runtime_notice_delivery": "NOT_HELD_AT_PUBLICATION_CUT",
+  "immutable_01_difference_not_a_VM_rejection": true,
+  "no_extra_Game_ACK_query_GET_or_control_for_validation": true,
+  "existing_JFR_scope_target_correction": {
+    "path": "D:\\ck3-state\\resume91-root\\normal24-jfr45-independent-review01\\REQUESTED-TARGET-COUNTS02.json",
+    "bytes": 10132,
+    "sha256": "a88f458f13b56abaaaa32a65d7f0a666812b7ad1addf2b9af36897ef59665bbd"
+  },
+  "rejected_new_READ_scope_source_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\read-publication-validation-scope01\\SOURCE-REVIEW01.json",
+    "bytes": 2673,
+    "sha256": "b1f2e16928f61f9622a5b549a67b1af3a5da9c934e0e4ae911ef33cee759c9cd"
+  },
+  "no_Reader_scope_implementation_or_JDK": true,
+  "task_state": "RUNNING"
+}

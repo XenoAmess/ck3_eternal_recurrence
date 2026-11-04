@@ -77,6 +77,42 @@ public final class RootAdvanceInfrastructureFactory {
             var outbound = NativeWire.decodeExecuteRequest(ack.outbound().orElseThrow().originalPacket());
             require(outbound.requestId().equals(ack.requestId()) && outbound.step().equals(NativeFreshSnapshotPort.STEP),
                     "actual fresh READ negative ACK crossed its original read-only request");
+            if (attempt == 0) {
+                // Diagnostics only, after both original-preservation callbacks have returned successfully.
+                try {
+                    var notice = StrictJson.object();
+                    notice.put("schema", "xar.root-read-owner-triage/v1");
+                    notice.put("status", "OWNER_UI_TRIAGE_REQUIRED");
+                    notice.put("read_request_id", ack.requestId());
+                    notice.put("observed_at_utc", clock.instant().toString());
+                    notice.put("observation_deadline_utc", deadline.toString());
+                    notice.put("maximum_attempts", maximumAttempts);
+                    notice.put("read_attempt", attempt + 1);
+                    var scopedAction = ActionScope.currentActionId();
+                    if (scopedAction.isPresent() && scopedAction.orElseThrow().length() <= 256)
+                        notice.put("action_scope_id", scopedAction.orElseThrow());
+                    else notice.putNull("action_scope_id");
+                    notice.put("command_deadline_status", "NOT_HELD_IN_THIS_READER");
+                    notice.put("artifact_refs_status", "PRESERVED_BY_CALLBACK_NOT_EXPOSED_TO_READER");
+                    notice.put("archive_callbacks_completed", true);
+                    notice.put("original_frame_present", unavailable.originalFrame().isPresent());
+                    notice.put("native_ok", false);
+                    notice.put("native_error_presence", original.error().presence().name());
+                    if (original.error().token().isPresent()) {
+                        byte[] errorToken = original.error().token().orElseThrow().value();
+                        notice.put("native_error_token_bytes", errorToken.length);
+                        if (errorToken.length <= 1024) notice.set("native_error", NativeWire.parse(errorToken));
+                        else notice.put("native_error_omitted_over_bound", true);
+                    }
+                    notice.put("ui_block_confirmed", false);
+                    notice.put("native_cause_confirmed", false);
+                    notice.put("diagnostic_only", true);
+                    byte[] line = StrictJson.canonical(notice);
+                    if (line.length <= 8192) System.out.println(new String(line, java.nio.charset.StandardCharsets.UTF_8));
+                } catch (IOException | RuntimeException diagnosticOnly) {
+                    // A failed diagnostic attempt cannot change the original observation/archive outcome.
+                }
+            }
             if (original.error().presence() != NativeWire.Presence.VALUE) return unavailable;
             var error = NativeWire.parse(original.error().token().orElseThrow().value());
             if (!error.isTextual() || !error.textValue().equals("fresh_full_state_native_read_unavailable")) return unavailable;
