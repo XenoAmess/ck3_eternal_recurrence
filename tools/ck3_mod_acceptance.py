@@ -1349,7 +1349,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--retire-pre-identity',type=Path,
         help='allocate only: append verified first pre-identity failure retirement before the actual first ID')
     parser.add_argument('--gui-review', type=Path,
-                        help='Direct review of the fresh Steam offline frame for the shared GUI-only runtime')
+                        help='Fresh background Steam offline probe receipt for the shared GUI-only runtime')
     args = parser.parse_args(argv)
     try:
         if args.retire_pre_identity and args.mode != 'allocate':

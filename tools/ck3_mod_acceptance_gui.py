@@ -21,7 +21,6 @@ import time
 import uuid
 
 from ck3_mod_acceptance_keeper import check_pin, pin, read_json, require, utc, write_new
-from ck3_mod_acceptance_launcher import check_fresh_frame, recent
 from ck3_mod_acceptance_prepare import _outer_from_inner, checked_copy
 
 
@@ -233,7 +232,9 @@ def workshop_cache_context(selection, output, state, inputs):
     root = selection.paths['repo_root']
     canonical = selection.products.get('product_inventory', str(root / 'workshop/products.json'))
     canonical = Path(canonical.replace('{repo_root}', str(root))).resolve()
-    return {'repo_root': str(root), 'output': str(output), 'state_dir': str(state),
+    return {'repo_root': str(root), 'shared_source_root': str(root),
+            'game_dir': str(selection.paths['game_dir']), 'shared_game': selection.manifest['game'],
+            'output': str(output), 'state_dir': str(state),
             'product': selection.args.product, 'case': 'workshop_cache',
             'product_spec': selection.product, 'canonical_products_path': str(canonical),
             'case_contract': read_json(root / 'tools/ck3_mod_acceptance_cases/workshop_cache.json'),
@@ -365,20 +366,14 @@ def allocate(selection):
 
 
 def validate_review(selection, reference):
-    review = read_json(reference)
-    require(review.get('run_id') == selection.context['run_id'] and
-            review.get('runtime_manifest') == selection.manifest_ref and
-            review.get('direct_image_review') is True and review.get('steam_offline_confirmed') is True and
-            isinstance(review.get('reviewer'), str) and review['reviewer'].strip(),
-            'Current direct Steam offline review bound to this run required')
-    reviewed = recent(review['reviewed_at_utc'])
-    check_pin(review['frame']); check_pin(review['image'])
-    frame, captured = check_fresh_frame(review['frame']['path'], review['image']['path'])
-    require(captured <= reviewed, 'Review predates its actual Steam frame')
-    import psutil
-    require(psutil.Process(frame['steam_pid']).name().lower() in ('steam.exe', 'steamwebhelper.exe'),
-            'Reviewed Steam process no longer exists')
-    return pin(reference)
+    # The common launch policy now qualifies Steam in the background.  GUI-only
+    # business review must not revive the retired window/screenshot admission.
+    from ck3_live_run_id import current_machine_id
+    from ck3_mod_acceptance_steam_gate import validate_receipt
+    from steam_offline_state_probe import WindowsReader
+    machine = current_machine_id()
+    require(selection.context['identity']['machine_id'] == machine, 'Frozen machine differs')
+    return validate_receipt(Path(reference), machine_id=machine, reader=WindowsReader())
 
 
 def request_window_close(pid):
@@ -442,7 +437,7 @@ def run(selection):
     require(context['prepared_case'] == pin(selection.args.prepared_case), 'Allocated prepared case differs')
     root = Path(context['run_dir'])
     require(not (root / 'game-started.json').exists(), 'Run already consumed')
-    require(getattr(selection.args, 'gui_review', None), 'run requires --gui-review')
+    require(getattr(selection.args, 'gui_review', None), 'run requires --gui-review background Steam receipt')
     checked = selection.preflight()
     require(checked['lease_head'] == context['lease_head'] and checked['source_head'] == context['source_head'],
             'Frozen checkout HEAD changed')
@@ -470,11 +465,15 @@ def run(selection):
                 if selection.prepared['case_inputs'].get('debug_mode', False):
                     argv.append('-debug_mode')
                 module.call_bus(source, bus, sha, 'poll', '--task', context['screen_task'], '--ack')
+                from ck3_mod_acceptance_steam_gate import recheck_before_popen
+                from steam_offline_state_probe import WindowsReader
+                recheck_before_popen(review, reader=WindowsReader())
                 with (root / 'stdout.log').open('xb') as stdout, (root / 'stderr.log').open('xb') as stderr:
                     child = subprocess.Popen(argv, cwd=selection.exe.parent, stdout=stdout, stderr=stderr)
                 write_new(root / 'game-started.json', {'at_utc': utc(), 'run_id': context['run_id'],
                     'pid': child.pid, 'argv': argv, 'retained_original_popen': True,
-                    'native_injection': False, 'language': 'simp_chinese', 'review': review})
+                    'native_injection': False, 'language': 'simp_chinese',
+                    'review': review['receipt'], 'background_offline_admission': review})
             def frozen_source():
                 require(module.checkout_head(repo) == context['lease_head'], 'Frozen lease checkout changed')
                 require(module.checkout_head(selection.paths['repo_root']) == context['source_head'],

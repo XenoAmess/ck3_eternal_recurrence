@@ -47,7 +47,7 @@ product 只声明 `runtime_mod_key`、`external_mod` 与 cases。每个 case 明
 
 `allocate` 检查本机 CK3 为0、总线无 screen owner、源码 clean、准备输入未消费，使用现有 `ck3_live_run_id.allocate_live_run_id()` 分配本机本mod唯一编号，并在总线注册唯一 screen task。注册后至 run 之间必须在600秒内完成离线审阅；这段期间尚未启动 keeper，不能无限等待或用普通 heartbeat恢复过期租约。
 
-`--gui-review` 指向 Root 直接审阅后的 JSON，要求 `run_id`、`runtime_manifest`、`reviewer`、`reviewed_at_utc`、`direct_image_review=true`、`steam_offline_confirmed=true`、`frame` pin、`image` pin。复用 `check_fresh_frame` 检查实际窗口位移、像素、时间、尺寸与来源，随后核 Steam PID 仍存在。工具不从旧图或进程存在推导离线。
+`--gui-review` 为兼容保留的参数名，现指向本机 `tools/steam_offline_state_probe.py --receipt <new-path>` 生成的新鲜后台离线回执。2026-10-21 用户要求后台确认 Steam，覆盖旧截图／窗口位移准入；不激活、移动或截图 Steam。GUI-only 与普通 runtime 复用 `ck3_mod_acceptance_steam_gate.validate_receipt()`：核分配身份的当前 `machine_id`、30 秒时效、资格化的实际来源及 Steam PID／出生时间；在原始 CK3 `Popen` 前再调用同一 gate 的 `recheck_before_popen()`。未知、过期或拒绝不降级到旧截图合同。实际 mod 业务画面和正常 Quit 仍须另外直接审阅。
 
 `run` 在同一进程保留 ScreenLeaseKeeper 与原始 CK3 Popen，复用 `exclusive_launch_lock`，CreateProcess 前再次核 CK3 为0及新鲜 CAS；使用独立 userdir，只有输入明确要求才开启 debug mode，无 native注入。Root 继续通过官方游戏UI执行用例与正常 Quit；模块不自动点击。运行期间每5秒核被冻结源码，180秒按既有 CAS keeper续租。原始 Popen.wait返回后记录实际退出码，停止 keeper后按最后 sequence精确释放 screen。
 
@@ -70,6 +70,8 @@ GUI-only runtime 的 `workshop_cache` case 继续遵守[两项缓存规则](work
 此 case 的输入沿用原公共 cache 格式：`state_dir` 与 `case_inputs`，后者只有 `cache_path/formal_manifest/native_download_receipt/plain_configuration`。四份普通配置须已为简体中文。可显式增加顶层 `debug_mode=true` 以保存引擎 `debug.log`；不挂 fixture、不载入存档、不复制 shader 输入。实际 SDK 下载由原发布入口完成。
 
 `prepare` 直接复用既有 `workshop_cache_adapter.prepare_case()`，逐文件核对真实下载与正式 tag 清单，只容许原有 descriptor 注入例外；新 profile 仍只有六份普通输入，`mod/product.mod` 直接指向实际 Steam cache，缓存内容不复制到 `mod-content`。准备与后续运行仍通过同一共享 GUI runtime、公用排他租约、新鲜离线审阅和保留的原始 Popen。
+
+GUI cache context 将同一 runtime 的 `repo_root/game_dir/game` 显式传为现有 producer 所需的 `shared_source_root/game_dir/shared_game`；仍由既有 `_engine()` 读取实际安装身份并与共同 manifest 核对，不使用产品自选引擎或绕过实际游戏检查。
 
 `verify` 读取本次实际 userdir 的 `logs/debug.log`，要求精确缓存路径的 `Mounted Data` 与目标 `名称|mod/product.mod|Enabled`，并核对实际启动命令绑定该 profile。日志已能证明加载时，不要求进入地图、创建战役、native 菜单查询或游戏内业务。Root 在实际正常 Quit 后写 `cache-review.json`：`run_id/case="workshop_cache"/reviewer/direct_image_review=true/passed=true/normal_gui_quit=true/normal_quit_evidence`，其中证据为真实截图等精确 pins。它只签收收尾，不要求额外业务事实。
 

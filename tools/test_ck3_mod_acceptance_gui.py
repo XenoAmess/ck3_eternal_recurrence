@@ -62,6 +62,16 @@ class GuiAcceptanceTests(unittest.TestCase):
     def prepare(self):
         self.args.mode = 'prepare'
         with patch.object(gui.GuiSelection, 'lease', return_value=(self.lease_module, None, None, None, self.root)):
+            if self.args.case == 'workshop_cache':
+                # Fake EXE fixtures cannot supply real Windows PE/Steam build
+                # metadata. Verify the shared selection passed to that producer.
+                def engine(context):
+                    self.assertEqual(context['shared_source_root'], str(self.root))
+                    self.assertEqual(context['game_dir'], str(self.game))
+                    self.assertEqual(context['shared_game'], gui.read_json(self.manifest)['game'])
+                    return None, {'game_version': 'fixture', 'exe_sha256': gui.pin(self.game / 'binaries/ck3.exe')['sha256']}
+                with patch('ck3_mod_acceptance_cases.workshop_cache_adapter._engine', side_effect=engine):
+                    return gui.dispatch(self.args)
             return gui.dispatch(self.args)
 
     def test_plan_does_not_select_native_or_claim_business(self):
@@ -305,6 +315,38 @@ class PublicRoutingTests(unittest.TestCase):
         self.assertEqual(code, 2)
         native.assert_not_called()
         official_gui.assert_called_once()
+
+
+class BackgroundSteamAdmissionTests(unittest.TestCase):
+    def test_gui_only_uses_current_shared_background_provider(self):
+        selection = types.SimpleNamespace(context={'identity': {'machine_id': 'fixture-machine'}})
+        receipt = Path('actual-background-receipt.json')
+        admission = {'receipt': {'path': str(receipt)}, 'background_only': True}
+        reader = object()
+        with patch('ck3_live_run_id.current_machine_id', return_value='fixture-machine'), \
+                patch('steam_offline_state_probe.WindowsReader', return_value=reader), \
+                patch('ck3_mod_acceptance_steam_gate.validate_receipt', return_value=admission) as validate:
+            self.assertIs(gui.validate_review(selection, receipt), admission)
+        validate.assert_called_once_with(receipt, machine_id='fixture-machine', reader=reader)
+
+    def test_gui_only_rejects_foreign_machine_before_provider(self):
+        selection = types.SimpleNamespace(context={'identity': {'machine_id': 'other-machine'}})
+        with patch('ck3_live_run_id.current_machine_id', return_value='fixture-machine'), \
+                patch('steam_offline_state_probe.WindowsReader') as reader, \
+                patch('ck3_mod_acceptance_steam_gate.validate_receipt') as validate:
+            with self.assertRaisesRegex(ValueError, 'Frozen machine differs'):
+                gui.validate_review(selection, Path('receipt.json'))
+        reader.assert_not_called()
+        validate.assert_not_called()
+
+    def test_gui_only_keeps_shared_background_refusal(self):
+        from ck3_mod_acceptance_steam_gate import BackgroundGateRefusal
+        selection = types.SimpleNamespace(context={'identity': {'machine_id': 'fixture-machine'}})
+        with patch('ck3_live_run_id.current_machine_id', return_value='fixture-machine'), \
+                patch('steam_offline_state_probe.WindowsReader'), \
+                patch('ck3_mod_acceptance_steam_gate.validate_receipt', side_effect=BackgroundGateRefusal('stale')):
+            with self.assertRaisesRegex(BackgroundGateRefusal, 'stale'):
+                gui.validate_review(selection, Path('receipt.json'))
 
 
 if __name__ == '__main__':
