@@ -105,6 +105,51 @@ public final class NativeCouncilReadPort implements GovernanceCouncilSupplier.Co
                     if (!pendingObserved && original instanceof NativeActionPort.AckReceived ack && !ack.nativeOk()) {
                         scope.complete(original); completed = true;
                     }
+                    if (original instanceof NativeActionPort.AckReceived ack && ack.nativeOk()) {
+                        boolean returnedTerminal = false;
+                        try {
+                            var packet = org.xar.ck3.control.nativebridge.NativeWire.decode(ack.originalPacket());
+                            StrictJson.require(packet instanceof org.xar.ck3.control.nativebridge.NativeWire.CommandResult,
+                                    "original Council terminal packet is not a command result");
+                            var received = (org.xar.ck3.control.nativebridge.NativeWire.CommandResult) packet;
+                            StrictJson.require(received.nativeOk() && received.requestId().equals(ack.requestId())
+                                    && java.util.Arrays.equals(received.payload().value(), ack.originalFrame().bytes())
+                                    && received.result().token().isPresent() && ack.originalResultToken().isPresent()
+                                    && java.util.Arrays.equals(received.result().token().orElseThrow().value(),
+                                            ack.originalResultToken().orElseThrow().bytes()),
+                                    "original Council terminal ACK changed its actual packet, frame or token");
+                            PrivateCouncilReads.requireOriginalWire(currentRequest, ack.requestId(),
+                                    ack.outbound().orElseThrow().originalPacket(), currentRequest.operation().value());
+                            var actual = ack.custody().orElseThrow(); actual.verify(ack);
+                            StrictJson.require(actual.session().machineId().equals(currentRequest.before().machineId())
+                                    && actual.session().game().equals(currentRequest.before().game())
+                                    && actual.session().sessionId().equals(currentRequest.sessionId()),
+                                    "original Council terminal crossed its actual request session");
+                            if (!originalReads.isEmpty()) {
+                                GovernanceReadChronology.requireOrderedReads(originalReads);
+                                GovernanceReadChronology.requireAfter(originalReads.getLast().original().custody().orElseThrow(), actual);
+                            }
+                            var decoded = CouncilPrivateCodec.decodeReply(ack.originalResultToken().orElseThrow().bytes(),
+                                    currentRequest.operation().value());
+                            if (decoded instanceof CouncilPrivateCodec.Terminal terminal) {
+                                var nativeFrame = PrivateCouncilReads.nativeFrame(firstRequest);
+                                CouncilPrivateCodec.requireTerminalBinding(terminal, CouncilPrivateCodec.GATES, nativeFrame);
+                                var normalized = CouncilPrivateCodec.normalize(terminal, CouncilPrivateCodec.GATES, nativeFrame,
+                                        GovernanceNativeReads.frame(firstRequest), CouncilModels.Position.exact(role.key()),
+                                        connectedVersion, connectedSha256);
+                                StrictJson.require(CouncilCodec.text(CouncilCodec.object(StrictJson.parse(normalized.bytes())),
+                                        "status").equals("available"), "original Council failed READ has no complete available terminal");
+                                CouncilSelection.decode(request, role, object(parse(normalized.bytes()), "original unavailable Council terminal"));
+                                returnedTerminal = true;
+                            }
+                        } catch (IOException | RuntimeException unqualifiedTerminal) {
+                            // Keep the original Unavailable and its unresolved custody when terminal proof is incomplete.
+                        }
+                        if (returnedTerminal) {
+                            // Native READ custody ends here; the missing planning after guard remains Unavailable.
+                            scope.complete(original); completed = true;
+                        }
+                    }
                 }
                 var failedRequest = currentRequest;
                 Optional<CouncilTechnicalReadFailure> technical = archive.inSession(borrowed, bound -> CouncilTechnicalReadFailures.observe(

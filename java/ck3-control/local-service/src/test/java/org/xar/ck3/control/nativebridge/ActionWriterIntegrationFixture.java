@@ -606,7 +606,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         reads = new PlanningReadCoordinator(catalog, journal, new PlanningReadCoordinator.ReadGuardPort() {
             @Override public <T> T withOriginalReadSource(WriterContracts.Head head,PlanningReadRequest request,
                     ReadContract<?> contract,java.util.function.Supplier<T> work) {
-                return decoratedReadGuards.withOriginalReadSource(head,request,contract,work);
+                return decoratedReadGuards.withOriginalReadSource(head,request,contract,
+                        () -> packets.withActualReadSource(contract,request,work));
             }
             @Override public PlanningReadGuard verify(WriterContracts.Head head,PlanningReadRequest request,ReadContract<?> contract) {
                 PlanningReadGuard verified;
@@ -1039,6 +1040,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
 
         private record GuardedRead(ReadContract<?> contract,PlanningReadRequest request,PlanningReadGuard guard) { }
         private final ThreadLocal<GuardedRead> guardedRead=new ThreadLocal<>();
+        private final ThreadLocal<GuardedRead> activeReadSource=new ThreadLocal<>();
         private enum ReadAckLoss { UNBOUND, ARMED, AWAITING_READ_FAILURE, HELD, RELEASED }
         private enum ReadRejection { UNBOUND, ARMED, REJECTED }
         private enum ReadRejectionKind { ORDINARY, STALE_REVISION }
@@ -1087,6 +1089,19 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                     &&guard.guardMode()==contract.guardMode()&&request.origin().acceptsGuard(guard.binding().origin()),
                     "software READ selection requires the identical issued contract and its actual original guard");
             guardedRead.set(new GuardedRead(contract,request,guard));
+        }
+        /** DATA routing only, inside the already-qualified original source callback. No guard or permit is created. */
+        <T> T withActualReadSource(ReadContract<?> contract,PlanningReadRequest request,java.util.function.Supplier<T> work) {
+            GuardedRead actual=guardedRead.get();
+            StrictJson.require(actual!=null&&actual.contract()==contract&&actual.request()==request,
+                    "software READ source callback lost its actual original guard-verified contract/request");
+            GuardedRead previous=activeReadSource.get();activeReadSource.set(actual);
+            try {return java.util.Objects.requireNonNull(work).get();}
+            finally {if(previous==null)activeReadSource.remove();else activeReadSource.set(previous);}
+        }
+        private boolean hasActualReadSource(String step) {
+            GuardedRead actual=activeReadSource.get();
+            return actual!=null&&actual.contract().operation().value().equals(step);
         }
         synchronized void loseReadAckOnce() throws IOException {
             StrictJson.require(scenario.isPresent()&&scenarioReadWrites==0&&readAckLoss==ReadAckLoss.UNBOUND
@@ -1204,7 +1219,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             SoftwareActionScenario selectedAction=matchingActions.isEmpty()?null:matchingActions.getFirst();
             Optional<String> defaultCapability=action.equals(COUNCIL)?Optional.empty():Optional.of("game.command.pause-map");
             boolean mutation=selectedAction!=null||actionScenarios.isEmpty()&&NativeStepDiscriminator.matchesRequest(action,ExecutableStepBindings.Kind.ACTION,new NativeRequest(step,defaultCapability,fields));
-            boolean continuation=step.equals(Stage.HELPER_STATUS.step());
+            boolean continuation=step.equals(Stage.HELPER_STATUS.step())&&!hasActualReadSource(step);
             RawJson extraResult = null; boolean scenarioRead=false;
             if (mutation && fresh179Mode != null) {
                 var kept = new ArrayDeque<byte[]>();
@@ -1277,7 +1292,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             }
             queue.addFirst(originalAck);
         }
-        @Override public void close() { guardedRead.remove(); }
+        @Override public void close() { guardedRead.remove(); activeReadSource.remove(); }
     }
     @Override public void close() throws IOException { transport.close(); }
     public final AtomicReference<RuntimeException> cause175RecordingFailure = new AtomicReference<>();
