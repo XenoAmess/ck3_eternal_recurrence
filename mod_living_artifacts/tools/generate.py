@@ -9,7 +9,7 @@ import re
 import sys
 
 from living_artifacts_model import Language, RuntimeInventory, SourcePatch
-from product import SOURCE, REPO, VERSION
+from product import SOURCE, REPO, VERSION, LANGUAGES
 
 sys.path.append(str(REPO / "tools"))
 from ck3_text_projection import blocks, normalize, project, recover
@@ -49,7 +49,7 @@ def merge_localization(*sources: dict[str, str]) -> dict[str, str]:
 def render_localization(language: str, entries: dict[str, str]) -> str:
     lines = [f"l_{language}:"]
     for key, value in sorted(entries.items()):
-        if not key.startswith(("xalw_", "xalw.", "rule_xalw_", "setting_xalw_")) or "\r" in value:
+        if (key != "ARTIFACT_EFFECT" and not key.startswith(("xalw_", "xalw.", "rule_xalw_", "setting_xalw_"))) or "\r" in value:
             raise ValueError(f"Invalid generated localization entry: {key}")
         escaped = value.replace('"', '\\"').replace("\n", "\\n")
         lines.append(f' {key}:0 "{escaped}"')
@@ -105,6 +105,13 @@ def render_files(game: Path) -> dict[str, bytes]:
     for typed_language in languages:
         entries = merge_localization(core.render_core_localization(typed_language), content.render_content_localization(typed_language))
         texts[f"localization/{typed_language}/xalw_l_{typed_language}.yml"] = render_localization(typed_language, entries)
+    # The vanilla tooltip already uses ARTIFACT_EFFECT. Keep its requirement
+    # prefix and numeric effects, adding the same live summary as the details UI.
+    # This token-only override is identical in every language; no translation.
+    for language in LANGUAGES:
+        texts[f"localization/replace/xalw_artifact_effects_l_{language}.yml"] = render_localization(language, {
+            "ARTIFACT_EFFECT": "[SelectLocalization( Artifact.HasCanBenefit, 'ARTIFACT_EFFECT_HAS_CAN_BENEFIT', '' )][Artifact.GetModifierEffects][Artifact.Custom('XalwEffects')]",
+        })
     texts["descriptor.mod"] = (
         f'version="{VERSION}"\n'
         'tags={ "Artifacts" "Events" "Gameplay" }\n'

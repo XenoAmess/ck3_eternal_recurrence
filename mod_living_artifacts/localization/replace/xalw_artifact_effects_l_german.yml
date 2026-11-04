@@ -1,0 +1,2 @@
+﻿l_german:
+ ARTIFACT_EFFECT:0 "[SelectLocalization( Artifact.HasCanBenefit, 'ARTIFACT_EFFECT_HAS_CAN_BENEFIT', '' )][Artifact.GetModifierEffects][Artifact.Custom('XalwEffects')]"

@@ -43,15 +43,16 @@ def _not_duplicate(kind: Literal["affix", "curse"], candidate: int) -> str:
 
 
 def get_core_patches(game: Path) -> tuple[SourcePatch, ...]:
-    """Return reviewed vanilla projections, currently none.
-
-    InventoryView equip/unequip methods are native functions, not overridable
-    scripted effects. A source patch is only added after a real source anchor
-    is established; an empty list does not certify immediate dynamic refresh.
-    """
+    """Append live slot descriptions to the vanilla artifact effects panel."""
     if not game.is_dir():
         raise ValueError("Game source directory does not exist")
-    return ()
+    before = 'text = "[Artifact.GetModifierEffects]"'
+    after = 'text = "[Artifact.GetModifierEffects][Artifact.Custom(\'XalwEffects\')]"'
+    return (SourcePatch(
+        "gui/window_artifact_details.gui",
+        "4628fce2891719759e4e52587a4decb781aac92178c02778cc944b8656505683",
+        ((before, after),),
+    ),)
 
 
 def _growth_choices(low_level: bool) -> str:
@@ -1031,20 +1032,29 @@ def render_core_localization(language: Language) -> dict[str, str]:
         result[f"xalw_hunger_{points}_modifier"] = f"活武器饥渴（{points}）" if chinese else f"Living Hunger ({points})"
     # Nested custom localization composes all six ordered slots, rather than
     # returning only the first matching entry in the artifact's random loadout.
-    result["xalw_affix_summary"] = "\\n".join(f"[ROOT.Artifact.Custom('XalwAffix{slot}')]" for slot in range(1, 7))
-    result["xalw_curse_summary"] = "\\n".join(f"[ROOT.Artifact.Custom('XalwCurse{slot}')]" for slot in (1, 2))
+    # Only populated slots own a separator. Joining empty slots with newlines
+    # used to leave five blank rows between the first power and the first curse.
+    result["xalw_affix_summary"] = "".join(f"[ROOT.Artifact.Custom('XalwAffix{slot}')]" for slot in range(1, 7))
+    result["xalw_curse_summary"] = "".join(f"[ROOT.Artifact.Custom('XalwCurse{slot}')]" for slot in (1, 2))
+    result["xalw_effects_summary"] = "$xalw_affix_summary$$xalw_curse_summary$"
+    result["xalw_effects_empty"] = ""
+    result["xalw.10.desc"] = result["xalw.10.desc"].replace(
+        "\\n\\n[xalw_artifact.Custom('XalwAffixes')]\\n[xalw_artifact.Custom('XalwCurses')]",
+        "\\n[xalw_artifact.Custom('XalwAffixes')][xalw_artifact.Custom('XalwCurses')]",
+    )
     for kind, slots, count in (("affix", 6, AFFIX_COUNT), ("curse", 2, CURSE_COUNT)):
         for slot in range(1, slots + 1):
             result[f"xalw_{kind}_{slot}_empty"] = ""
             for item in range(1, count + 1):
                 label = "异能" if kind == "affix" else "诅咒"
-                result[f"xalw_{kind}_{slot}_{item}_line"] = f"{label if chinese else kind.title()}：$xalw_{kind}_{item}_name$（[ROOT.Artifact.MakeScope.Var('xalw_{kind}_rank_{slot}').GetValue|0]）\\n$xalw_{kind}_{item}_desc$"
+                result[f"xalw_{kind}_{slot}_{item}_line"] = f"\\n{label if chinese else kind.title()}：$xalw_{kind}_{item}_name$（[ROOT.Artifact.MakeScope.Var('xalw_{kind}_rank_{slot}').GetValue|0]）\\n$xalw_{kind}_{item}_desc$"
     return result
 
 
 def render_core_custom_localization() -> str:
     """Return artifact-scoped dynamic summaries without replacing vanilla GUI."""
     blocks = [
+        _block("XalwEffects", "type = artifact\ntext = { trigger = { xalw_is_living_trigger = yes } localization_key = xalw_effects_summary }\ntext = { fallback = yes localization_key = xalw_effects_empty }"),
         _block("XalwAffixes", "type = artifact\ntext = { localization_key = xalw_affix_summary }"),
         _block("XalwCurses", "type = artifact\ntext = { localization_key = xalw_curse_summary }"),
     ]

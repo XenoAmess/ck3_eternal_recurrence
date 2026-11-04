@@ -1,4 +1,10 @@
-﻿XalwAffixes = {
+﻿XalwEffects = {
+	type = artifact
+	text = { trigger = { xalw_is_living_trigger = yes } localization_key = xalw_effects_summary }
+	text = { fallback = yes localization_key = xalw_effects_empty }
+}
+
+XalwAffixes = {
 	type = artifact
 	text = { localization_key = xalw_affix_summary }
 }
