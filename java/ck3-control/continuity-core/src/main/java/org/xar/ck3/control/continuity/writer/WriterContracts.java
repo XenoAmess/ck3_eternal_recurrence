@@ -224,6 +224,12 @@ public final class WriterContracts {
 
     /** The host installs one reviewed authority. Requests cannot supply reducers or acceptance booleans. */
     public interface TransitionAuthority {
+        /** Read-only same-head validation work; the configured authority may share one live original-read scope. */
+        default <T> T withReadValidation(Head actualLockedHead, Request request,
+                ContinuityStorePort.Session same, ContinuityStorePort.SessionWork<T> work) throws java.io.IOException {
+            Objects.requireNonNull(actualLockedHead); Objects.requireNonNull(request); Objects.requireNonNull(same);
+            return Objects.requireNonNull(work).run(same);
+        }
         /** Re-read actual domain preconditions. UNKNOWN must throw or remain unresolved without dispatch. */
         String revalidate(ContinuityState predecessor, Request request) throws java.io.IOException;
         /** Source-aware application authorities override this; callers receive the actual same-lock capture. */

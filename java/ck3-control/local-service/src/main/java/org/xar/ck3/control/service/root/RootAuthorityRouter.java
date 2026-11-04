@@ -51,6 +51,13 @@ public final class RootAuthorityRouter implements WriterContracts.TransitionAuth
         return selected(request).revalidate(actualLockedHead, request);
     }
 
+    @Override public <T> T withReadValidation(WriterContracts.Head actualLockedHead, WriterContracts.Request request,
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.SessionWork<T> work) throws IOException {
+        Objects.requireNonNull(actualLockedHead); Objects.requireNonNull(request); Objects.requireNonNull(same); Objects.requireNonNull(work);
+        return selected(request).withReadValidation(actualLockedHead, request, same, work);
+    }
+
     @Override public ContinuityState reduce(ContinuityState predecessor, WriterContracts.Request request) throws IOException {
         Objects.requireNonNull(predecessor); Objects.requireNonNull(request);
         return selected(request).reduce(predecessor, request);

@@ -1081,11 +1081,27 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     return duplicatePrepared;
                 }
                 phase = 5;
-                String precondition = selectedAuthority.revalidate(before, request); requireDigest(precondition);
-                if (diagnostics) { revalidateEnd = System.nanoTime(); completedPhase = phase; }
-                phase = 6;
-                ContinuityState reduced = selectedAuthority.reduce(before.state(), request);
-                if (diagnostics) { reduceEnd = System.nanoTime(); completedPhase = phase; }
+                final boolean validationDiagnostics = diagnostics;
+                final long[] validationTimes = {revalidateEnd, reduceEnd};
+                final int[] validationPhase = {phase, completedPhase};
+                java.util.Map.Entry<String,ContinuityState> qualified;
+                try {
+                    qualified = selectedAuthority.withReadValidation(before, request, this, borrowed -> {
+                        StrictJson.require(borrowed == this, "validation callback crossed its original writer Session");
+                        String digest = selectedAuthority.revalidate(before, request); requireDigest(digest);
+                        if (validationDiagnostics) { validationTimes[0] = System.nanoTime(); validationPhase[1] = 5; }
+                        validationPhase[0] = 6;
+                        ContinuityState value = selectedAuthority.reduce(before.state(), request);
+                        if (validationDiagnostics) { validationTimes[1] = System.nanoTime(); validationPhase[1] = 6; }
+                        return new java.util.AbstractMap.SimpleImmutableEntry<>(digest, value);
+                    });
+                    if (validationDiagnostics) validationTimes[1] = System.nanoTime(); // Include live read-scope close in reduction cost.
+                } finally {
+                    phase = validationPhase[0]; completedPhase = validationPhase[1];
+                    revalidateEnd = validationTimes[0]; reduceEnd = validationTimes[1];
+                }
+                String precondition = qualified.getKey();
+                ContinuityState reduced = qualified.getValue();
                 phase = 7;
                 validateReduction(before.state(), reduced, request);
                 Prepared result = new Prepared(before, request, actualSources, evidence, reduced, precondition);
@@ -1182,12 +1198,28 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 requireSameHead(prepared.predecessor(), actual);
                 if (diagnostics) { predecessorEnd = System.nanoTime(); completedPhase = phase; }
                 phase = 7;
-                String precondition = selectedAuthority.revalidate(actual, request); requireDigest(precondition);
-                StrictJson.require(precondition.equals(prepared.preconditionDigest()), "actual domain preconditions changed inside original writer lock");
-                if (diagnostics) { revalidateEnd = System.nanoTime(); completedPhase = phase; }
-                phase = 8;
-                ContinuityState reduced = selectedAuthority.reduce(actual.state(), request);
-                if (diagnostics) { reduceEnd = System.nanoTime(); completedPhase = phase; }
+                final boolean validationDiagnostics = diagnostics;
+                final long[] validationTimes = {revalidateEnd, reduceEnd};
+                final int[] validationPhase = {phase, completedPhase};
+                java.util.Map.Entry<String,ContinuityState> qualified;
+                try {
+                    qualified = selectedAuthority.withReadValidation(actual, request, this, borrowed -> {
+                        StrictJson.require(borrowed == this, "validation callback crossed its original writer Session");
+                        String digest = selectedAuthority.revalidate(actual, request); requireDigest(digest);
+                        StrictJson.require(digest.equals(prepared.preconditionDigest()), "actual domain preconditions changed inside original writer lock");
+                        if (validationDiagnostics) { validationTimes[0] = System.nanoTime(); validationPhase[1] = 7; }
+                        validationPhase[0] = 8;
+                        ContinuityState value = selectedAuthority.reduce(actual.state(), request);
+                        if (validationDiagnostics) { validationTimes[1] = System.nanoTime(); validationPhase[1] = 8; }
+                        return new java.util.AbstractMap.SimpleImmutableEntry<>(digest, value);
+                    });
+                    if (validationDiagnostics) validationTimes[1] = System.nanoTime(); // Include live read-scope close in reduction cost.
+                } finally {
+                    phase = validationPhase[0]; completedPhase = validationPhase[1];
+                    revalidateEnd = validationTimes[0]; reduceEnd = validationTimes[1];
+                }
+                String precondition = qualified.getKey();
+                ContinuityState reduced = qualified.getValue();
                 phase = 9;
                 validateReduction(actual.state(), reduced, request);
                 ObjectNode reducedDocument = reduced.toJson();

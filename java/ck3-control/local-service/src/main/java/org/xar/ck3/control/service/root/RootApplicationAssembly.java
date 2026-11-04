@@ -263,6 +263,10 @@ public final class RootApplicationAssembly {
                     return org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND.equals(request.kind())
                             ?confirmedSavedAuthority:router;
                 }
+                @Override public <T> T withReadValidation(WriterContracts.Head before,WriterContracts.Request request,
+                        ContinuityStorePort.Session same,ContinuityStorePort.SessionWork<T> work)throws IOException {
+                    return selected(request).withReadValidation(before,request,same,work);
+                }
                 @Override public String revalidate(org.xar.ck3.control.continuity.ContinuityState before,WriterContracts.Request request)throws IOException {
                     return selected(request).revalidate(before,request);
                 }

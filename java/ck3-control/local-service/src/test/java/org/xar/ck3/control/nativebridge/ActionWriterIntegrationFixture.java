@@ -150,6 +150,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     private final RootReadContractCatalog actualReadCatalog;
     private final RootExecutableBindings actualBindings;
     private final AtomicReference<ActionContinuityAuthority> actualActionAuthority = new AtomicReference<>();
+    public final org.xar.ck3.control.service.root.RootAuthorityRouter actionRouter = new org.xar.ck3.control.service.root.RootAuthorityRouter();
     private final AtomicReference<PhysicalActionRegistry> actualPhysicalActions = new AtomicReference<>();
     private final ActionPorts.GuardPort physicalSoftwareGuards;
     private final AtomicReference<PlanningReadCoordinator.ReadGuardPort> reconciliationReadGuard = new AtomicReference<>();
@@ -404,8 +405,12 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         AtomicReference<ActionContinuityAuthority> actualAuthority = actualActionAuthority;
         writer = new ContinuityWriter(layout, List.of(reviewed), new WriterContracts.TransitionAuthority() {
             @Override public String revalidate(ContinuityState previous, WriterContracts.Request request) { throw new AssertionError("detached Head is forbidden"); }
-            @Override public String revalidate(WriterContracts.Head head, WriterContracts.Request request) throws IOException { return extraAuthorities.getOrDefault(request.kind(), actualAuthority.get()).revalidate(head, request); }
-            @Override public ContinuityState reduce(ContinuityState previous, WriterContracts.Request request) throws IOException { return extraAuthorities.getOrDefault(request.kind(), actualAuthority.get()).reduce(previous, request); }
+            @Override public String revalidate(WriterContracts.Head head, WriterContracts.Request request) throws IOException { return (request.kind().equals(ContinuityActionJournal.KIND) ? actionRouter : extraAuthorities.getOrDefault(request.kind(), actualAuthority.get())).revalidate(head, request); }
+            @Override public ContinuityState reduce(ContinuityState previous, WriterContracts.Request request) throws IOException { return (request.kind().equals(ContinuityActionJournal.KIND) ? actionRouter : extraAuthorities.getOrDefault(request.kind(), actualAuthority.get())).reduce(previous, request); }
+            @Override public <T> T withReadValidation(WriterContracts.Head head, WriterContracts.Request request,
+                    ContinuityStorePort.Session same, ContinuityStorePort.SessionWork<T> work) throws IOException {
+                return (request.kind().equals(ContinuityActionJournal.KIND) ? actionRouter : extraAuthorities.getOrDefault(request.kind(), actualAuthority.get())).withReadValidation(head, request, same, work);
+            }
         }, Clock.systemUTC(), new ContinuityWriter.Extensions(withSoftwareDomains(council ? List.of(continuations.registration(seedAuthority)) : List.of()), Optional.of(artifacts), Optional.empty()),storageGuard);
         archive = new NativeOutcomeArchive(artifacts, writer); journal = new ContinuityActionJournal(writer, archive);
         var issuedReadCatalog=new AtomicReference<RootReadContractCatalog>();
@@ -650,7 +655,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                     : new NativeRecordedEvidenceVerifier(archive, journal::borrowedWriterSession, originals, actualFrameLoader, List.copyOf(extraVerifiers.values()), reconciliationVerifier);
             actual.verify(head, proposed);
         };
-        actualAuthority.set(new ActionContinuityAuthority(AUTHORITY, archive, trackedGuards, verifier, Clock.systemUTC(),bindings));
+        actualAuthority.set(new ActionContinuityAuthority(AUTHORITY, archive, trackedGuards, verifier, Clock.systemUTC(),bindings,journal::borrowedWriterSession));
+        actionRouter.seal(List.of(new org.xar.ck3.control.service.root.RootAuthorityRouter.Binding(Set.of(ContinuityActionJournal.KIND),actualAuthority.get())),Set.of(ContinuityActionJournal.KIND));
         continuations.bind(journal, archive, (same, head, parent, deadline) -> {
             // The software transport keeps this same actual push frame; this does not qualify a live runtime source.
             writer.requireSession(same); GuardEvidence held = ActionTransitions.attempt(parent.state()).orElseThrow().guard();

@@ -1,0 +1,48 @@
+{
+  "schema": "normal-live-read-validation-formal-sources/v1",
+  "at_utc": "2026-11-04T20:47:10.826244+00:00",
+  "refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\normal-append-live-scope01\\SOURCE-READY-BEHAVIOR-QUALIFIED03.json",
+      "bytes": 19171,
+      "sha256": "1d3b326edbf73f4dd63437bb42f466d486092ec345c58910f8d0a7ed3725013f"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\normal-append-live-scope01\\SOURCE-READY-FORMAL-TEST-NAMES04.json",
+      "bytes": 2212,
+      "sha256": "feea1273d0764ea5b55d2279962cb8de2a6f4ae623a44deb5f6ee2ee355803d5"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\normal-append-live-scope01\\formal-projection-preparation01\\PROJECTION-RESULT01.json",
+      "bytes": 19231,
+      "sha256": "b217aab48a5f4ee30ea53444fb501f2affecb9321e36f8e26536c4d834fa6968"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\normal-append-live-scope01\\native-prod-first01\\QUALIFIED-FIRST01.json",
+      "bytes": 8426,
+      "sha256": "029c66a08137e78dc2764123fe5483a6a666bef7a5caa6f2aa6c7489c7d3c8fc"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\normal-append-live-scope-independent-test01\\INDEPENDENT-RESULT04.json",
+      "bytes": 24064,
+      "sha256": "9b3000f050e0c0611f46c5835dad9ebef4e937686a13ecd463661e3b44589d97"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\normal-append-live-scope-independent-test01\\QUALIFIED-NORMAL-LIVE-SCOPE04.json",
+      "bytes": 16759,
+      "sha256": "132f0713c44ad1bf8cf54760f6b966b9f826ce28c9cba6176c4a0c94e65a3ac8"
+    }
+  ],
+  "formal_paths": [
+    "java/ck3-control/continuity-core/src/main/java/org/xar/ck3/control/continuity/writer/WriterContracts.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootAuthorityRouter.java",
+    "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/ActionContinuityAuthority.java",
+    "java/ck3-control/adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityWriter.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+    "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/nativebridge/ActionWriterIntegrationFixture.java",
+    "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/nativebridge/NormalAppendLiveReadScopeTest.java"
+  ],
+  "raw_qualification": "Exact current5TU57/necessaryFixture37/newTest04source5791 two-class compile0/3split1P; failed compiler7errors/input1error preserved.",
+  "formal_layer": "Only exactfive ownedproduction projections preservingformaloutside; fixture3spans originalb60exact; newTest naming-only variant e5b46f3a versus actualraw5791, assertions/business calls unchanged. No fullformal/Runtime credit.",
+  "sourceowner_new_JVM_Game_GET": 0
+}

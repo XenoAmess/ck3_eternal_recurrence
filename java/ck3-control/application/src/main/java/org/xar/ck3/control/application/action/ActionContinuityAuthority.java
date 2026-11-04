@@ -20,6 +20,9 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
     private final ActionPorts.PreparationPort protocolIdentityPolicy;
     private final java.util.function.Supplier<org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session> borrowedSessions;
     private volatile PhysicalActionRegistry physicalActions;
+    private final ThreadLocal<WriterContracts.Head> validationHead = new ThreadLocal<>();
+    private final ThreadLocal<org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session> validationSession = new ThreadLocal<>();
+    private final ThreadLocal<ActionPorts.OutcomeArchive> validationArchive = new ThreadLocal<>();
     public synchronized void bindPhysicalActions(PhysicalActionRegistry actual) {
         StrictJson.require(physicalActions == null, "actual physical registry is installed once on the same writer authority");
         physicalActions = java.util.Objects.requireNonNull(actual);
@@ -93,7 +96,58 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         // The one writer assigns the sequence after pure reduction and validates it again at commit.
         return ContinuityState.fromJson(next, predecessor.machineId());
     }
+    @Override public <T> T withReadValidation(WriterContracts.Head actualLockedHead, WriterContracts.Request request,
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.SessionWork<T> work) throws java.io.IOException {
+        java.util.Objects.requireNonNull(actualLockedHead); java.util.Objects.requireNonNull(request);
+        java.util.Objects.requireNonNull(same); java.util.Objects.requireNonNull(work);
+        if (borrowedSessions == null) return work.run(same);
+        ActionReceipt proposed = receipt(request);
+        PhysicalActionRegistry physical = physicalActions;
+        // Only the observed ordinary pre-dispatch path is widened. Terminal/domain/physical callbacks keep their old scopes.
+        if (!(proposed.state() instanceof ActionState.IntentDurable || proposed.state() instanceof ActionState.Submitting)
+                || proposed.command().expectation() instanceof CommandExpectation.OperatorRebind
+                || physical != null && physical.find(proposed.command().operation()).isPresent())
+            return work.run(same);
+        StrictJson.require(validationHead.get() == null && validationSession.get() == null && validationArchive.get() == null,
+                "read validation cannot nest a separate writer/head scope");
+        StrictJson.require(borrowedSessions.get() == same, "read validation must borrow the identical original writer Session");
+        requireValidationHead(actualLockedHead, same);
+        return archive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192), scoped -> {
+            try {
+                validationHead.set(actualLockedHead); validationSession.set(same); validationArchive.set(scoped);
+                requireValidationHead(actualLockedHead, same);
+                T result = work.run(same);
+                requireValidationHead(actualLockedHead, same);
+                return result;
+            } finally {
+                validationArchive.remove(); validationSession.remove(); validationHead.remove();
+            }
+        });
+    }
+    private static void requireValidationHead(WriterContracts.Head captured,
+            org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same) throws java.io.IOException {
+        WriterContracts.Head actual = same.head();
+        StrictJson.require(java.util.Arrays.equals(captured.state().canonicalBytes(), actual.state().canonicalBytes())
+                && captured.documents().equals(actual.documents()) && captured.absent().equals(actual.absent())
+                && captured.indexRepairs().equals(actual.indexRepairs())
+                && captured.snapshotNeedsRecovery() == actual.snapshotNeedsRecovery(),
+                "read validation left its exact original captured writer head");
+    }
     private List<ActionReceipt> canonicalReceipts(ContinuityState predecessor) {
+        WriterContracts.Head captured = validationHead.get();
+        if (captured != null) {
+            var same = validationSession.get();
+            var scoped = validationArchive.get();
+            StrictJson.require(same != null && scoped != null && borrowedSessions != null && borrowedSessions.get() == same,
+                    "canonical history requires the same live validation Session/archive");
+            try { requireValidationHead(captured, same); }
+            catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
+            StrictJson.require(java.util.Arrays.equals(predecessor.canonicalBytes(), captured.state().canonicalBytes()),
+                    "canonical history changed its validation predecessor");
+            // Re-run the complete original traversal and every mutable read check; only the still-live scope is shared.
+            return ContinuityActionJournal.receipts(predecessor, scoped);
+        }
         if (borrowedSessions == null) return ContinuityActionJournal.receipts(predecessor, archive);
         try {
             var same = java.util.Objects.requireNonNull(borrowedSessions.get());
