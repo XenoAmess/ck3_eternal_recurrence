@@ -807,6 +807,10 @@ public final class DriverBootstrap {
                     var stamp=new DriverSnapshotFacts.Stamp(seed.driverVersion(),seed.episodeEpoch(),seed.expectedSession().game(),
                             driver.session().episodeRunId(),DriverJson.sha256(driver.encode()));
                     List<DriverSnapshotFacts.ActionRow> rows=new ArrayList<>();List<String> gaps=new ArrayList<>();boolean unresolved=false;
+                    List<DriverSnapshotFacts.ActionRow> cleanRows=new ArrayList<>();
+                    List<ActionReceipt> cleanActuals=new ArrayList<>();
+                    List<DriverActionHistoryCodec.Source> cleanSources=new ArrayList<>();
+                    String coverageHead=cleanRestart.isPresent()?borrowed.head().digest():null;
                     for(var actual:lease.snapshot().actions()) {
                         if(!actual.settled()) { unresolved=true;gaps.add("unreconciled_action:"+actual.command().actionId());continue; }
                         if(actual.command().expectation() instanceof CommandExpectation.OperatorRebind operator) {
@@ -825,7 +829,22 @@ public final class DriverBootstrap {
                         if(!actual.command().before().game().equals(stamp.game())
                                 || !actual.command().before().frame().episodeRunId().equals(stamp.episodeRunId())) continue;
                         Optional<? extends ArchivedActionCoverage> original=coverage.originalFor(actual);
-                        if(original.isPresent()) rows.add(validateCoverage(borrowed,actual,original.orElseThrow(),driver,archive));
+                        if(original.isPresent()) {
+                            if(cleanRestart.isPresent()) {
+                                cleanRows.add(validateCoverage(borrowed,actual,original.orElseThrow(),driver,archive,
+                                        true,cleanActuals,cleanSources));
+                                StrictJson.require(borrowed.head().digest().equals(coverageHead),
+                                        "clean coverage writer changed during original verification");
+                            }else rows.add(validateCoverage(borrowed,actual,original.orElseThrow(),driver,archive));
+                        }
+                    }
+                    if(cleanRestart.isPresent()) {
+                        StrictJson.require(borrowed.head().digest().equals(coverageHead),
+                                "clean coverage writer changed before canonical membership");
+                        DriverActionHistoryCodec.requireCanonicalMemberships(borrowed,cleanActuals,cleanSources,archive);
+                        StrictJson.require(borrowed.head().digest().equals(coverageHead),
+                                "clean coverage writer changed during canonical membership");
+                        rows.addAll(cleanRows);
                     }
                     var known=new DriverSnapshotFacts.Known(driver,stamp,seed.originalHistoryBasis(),rows,seed.auxiliary(),seed.loop(),Optional.empty());
                     DriverStateSnapshot projected=DriverStateAssembler.project(known,lease.snapshot(),Optional.empty());
@@ -1294,12 +1313,24 @@ public final class DriverBootstrap {
 
     private static DriverSnapshotFacts.ActionRow validateCoverage(ContinuityStorePort.Session same,ActionReceipt actual,ArchivedActionCoverage proof,
             DriverStateSnapshot.Complete driver,ActionPorts.OutcomeArchive archive)throws IOException {
+        return validateCoverage(same,actual,proof,driver,archive,false,List.of(),List.of());
+    }
+    private static DriverSnapshotFacts.ActionRow validateCoverage(ContinuityStorePort.Session same,ActionReceipt actual,ArchivedActionCoverage proof,
+            DriverStateSnapshot.Complete driver,ActionPorts.OutcomeArchive archive,boolean batch,
+            List<ActionReceipt> batchActuals,List<DriverActionHistoryCodec.Source> batchSources)throws IOException {
         var receipt=archive.loadReceipt(proof.receipt());
         StrictJson.require(archive.receiptReferenceOf(receipt).equals(proof.receipt())
                 && Arrays.equals(ActionReceiptCodec.encodeReceipt(receipt,archive),ActionReceiptCodec.encodeReceipt(actual,archive)),
                 "coverage does not reference this actual canonical settled receipt");
         if(proof instanceof ArchivedCanonicalOnly canonical) {
-            DriverActionHistoryCodec.verifyCanonicalOnly(same,actual,canonical.originalSource(),archive);
+            if(batch) {
+                DriverActionHistoryCodec.verifyCanonicalOnly(actual,canonical.originalSource(),archive);
+                var original=archive.loadMaterial(canonical.originalSource());byte[] bytes=original.bytes();
+                StrictJson.require(canonical.originalSource().bytes()==bytes.length
+                        &&canonical.originalSource().sha256().equals(DriverJson.sha256(bytes)),
+                        "exact original history material bytes/SHA changed");
+                batchSources.add(DriverActionHistoryCodec.decode(original));batchActuals.add(actual);
+            }else DriverActionHistoryCodec.verifyCanonicalOnly(same,actual,canonical.originalSource(),archive);
             return new DriverSnapshotFacts.ActionRow(actual.command().actionId(),actual.bodySha256(),actual.sequence(),
                     new DriverSnapshotFacts.CanonicalOnly(canonical.originalSource()));
         }
@@ -1311,7 +1342,13 @@ public final class DriverBootstrap {
         var archived=DriverJson.object(original,DriverJson.MAX_NATIVE_BYTES);
         StrictJson.require(expected.equals(archived)&&OpportunityJson.text(archived.get("command"),"command").equals(actual.command().operation().value())
                 &&archived.get("ok") instanceof OpportunityJson.Bool,"complete original history row does not project the actual original command");
-        if(archived.members().containsKey(DriverActionHistoryCodec.SOURCE_FIELD))DriverActionHistoryCodec.verifyLegacy(same,actual,archived,archive);
+        if(archived.members().containsKey(DriverActionHistoryCodec.SOURCE_FIELD)) {
+            if(batch) {
+                DriverActionHistoryCodec.verifyLegacy(actual,archived,archive);
+                var sourceRow=OpportunityJson.object(archived.get(DriverActionHistoryCodec.SOURCE_FIELD),DriverActionHistoryCodec.SOURCE_FIELD);
+                batchSources.add(DriverActionHistoryCodec.decode(new RawJson(DriverJson.encode(sourceRow))));batchActuals.add(actual);
+            }else DriverActionHistoryCodec.verifyLegacy(same,actual,archived,archive);
+        }
         // Historical specialized SAVE/DEATH rows retain their original producer's boolean.
         // Python normal return (including proposal_submitted) is not globally equivalent to APPLIED_CONFIRMED.
         return new DriverSnapshotFacts.ActionRow(actual.command().actionId(),actual.bodySha256(),actual.sequence(),legacy.historyIndex(),legacy.originalRow());
