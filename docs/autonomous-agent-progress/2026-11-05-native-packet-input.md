@@ -6,6 +6,6 @@
 
 正式源码只精确投影这两叶的 owned spans。正式 Reader 原有五参 decode/archive 接口、Assembler 及类说明的额外当前内容完整保留，全部 outside 可逆回原正式前像。该正式组合尚未单独编测，不能把原始实际变体的2P＋3P授给组合整体。新 Test 原样采用 owner 最终源 `019fe1d5…`；生产原变体为 `b28cec90…`／`0ad854fa…`，正式组合及完整来源见[索引](../maintenance/2026-11-05-native-packet-input-sources.json)。
 
-生产模型首派 length，全文未读整弃、0代码采用且无R2；生产由 owner 接管。测试只部分机械复用既有合法 scaffold，其新增逻辑及修正由 owner 完成，完整分账保留在 M6 原件中。源码、软件通过、正式发表、实际装载及速度分开记录。
+生产模型首派 length，全文未读整弃、0代码采用且无R2；生产由 owner 接管。测试模型完整回包的整类被拒，词法方法有部分采用（131行逐字匹配，非整方法原样采用），owner 补修 guards／原件绑定／callback 前沿；metadata 方法由 owner 实现。首个发表只以 scaffold 概括测试采用不够准确，本句按原 MODEL-REVIEW01（9ecabc22…）纠正，真实2P＋3P及生产length0采用不变。源码、软件通过、正式发表、实际装载及速度分开记录。
 
 本单元引入新的实现类型，不具 body redefine 资格，也未证明当前 Quarkus 实例可加载这些新类型。当前健康普通游玩不为它重载；没有 Runtime 采用、实机收益、自然 M6 或新 V4 场景资格。当前45秒样本是另一普通 postappend／cycle／read-completion 窗口，不能用本单元的软件通过解释该窗口的实际耗时。首负 ACK 通知的必要新测试与 Runtime 正常运行继续优先。

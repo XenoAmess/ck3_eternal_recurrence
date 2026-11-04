@@ -518,5 +518,27 @@
   "body_redefine": false,
   "speed_or_natural_M6_or_new_V4_qualification": false,
   "task_state": "RUNNING",
-  "no_Game_or_GET_for_publication": true
+  "no_Game_or_GET_for_publication": true,
+  "exact_Test_model_adoption_review": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\replay-native-packet-input01\\owner-test01\\MODEL-REVIEW01.json",
+    "bytes": 3023,
+    "sha256": "9ecabc2288a12d57090d8193d059cd401c4f5db0506ebba68986b50962a02b28"
+  },
+  "later_Test_adoption_clarification": {
+    "whole_class_adopted": false,
+    "lexical_method_partially_adopted": true,
+    "verbatim_matching_lines": 131,
+    "unmodified_whole_method_adoption": false,
+    "owner_fixes": [
+      "fixture from separately pinned complete original309 input",
+      "complete metadata/state token/hash tests with rebound manifest and exact old/new callback oracle",
+      "BigInteger string constructor instead of invalid long",
+      "instrument both callback sequences and compare encoded semantics",
+      "actual null-input strict assembler fallback",
+      "fresh before-capture mutation scenario and post-return source/semantic retention"
+    ],
+    "metadata_method": "owner implementation",
+    "production_length_code_adopted": 0,
+    "raw_software_2P_plus_A3P_unchanged": true
+  }
 }

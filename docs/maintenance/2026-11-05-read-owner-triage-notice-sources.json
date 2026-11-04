@@ -337,5 +337,63 @@
     "sha256": "b1f2e16928f61f9622a5b549a67b1af3a5da9c934e0e4ae911ef33cee759c9cd"
   },
   "no_Reader_scope_implementation_or_JDK": true,
-  "task_state": "RUNNING"
+  "task_state": "RUNNING",
+  "later_actual_runtime25": {
+    "observed": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\notice-source-only25-body02\\ACTUAL-QUARKUS25-OBSERVED.json",
+      "bytes": 5140,
+      "sha256": "83200b1a4f77df31ef62524b3456cec808c29263ac14e728a219896592a6d0ba"
+    },
+    "independent": {
+      "path": "D:\\ck3-state\\resume91-root\\resume-after-vacation-20261104\\NOTICE25-INSTRUMENTATION-INDEPENDENT01.json",
+      "bytes": 2787,
+      "sha256": "7c602412f88017c0bd27c7cce9f81686b0e641420364c29efad9e7d63eef47a6"
+    },
+    "exact_GET": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\notice-source-only25-body02\\GET-ACTUAL25.json",
+      "bytes": 369,
+      "sha256": "3c0e1cfe684ac48ae3e6358de7afa03552086819d956645c8f36c4f4025b601f"
+    },
+    "source_adopted": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\notice-source-only25-body02\\SOURCE-ADOPTED25.json",
+      "bytes": 1876,
+      "sha256": "7806a849923bab0e9e6b15f94aba716adc4b625bfdfb167cb40169087e02b55b"
+    },
+    "selected_log": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\notice-source-only25-body02\\QUARKUS-SELECTED25.txt",
+      "bytes": 370,
+      "sha256": "a828e967787607c90cb9cb16622253e253199aa0d62e221da0151aee17210c39"
+    },
+    "properties_equal": true,
+    "same_delegate": {
+      "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:4@394ee884@394ee884",
+      "exit_code": null,
+      "failure_type": null,
+      "host_pid": "97584",
+      "instance_id": "b00c9deb-88cd-4f11-9942-82bb4e77f2b6",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-04T22:40:59.798948200Z",
+      "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:4@394ee884@394ee884",
+      "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+      "status": "DELEGATE_STARTED"
+    },
+    "same_owner_state": "LOOP",
+    "new_lifecycle_events": 0,
+    "first_real_notice_delivery": "NOT_HELD_NOT_TRIGGERED",
+    "continued_cycle16": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\notice-source-only25-body02\\first-natural-cycle16\\ACTUAL-POSITIVE-CYCLE16.json",
+      "bytes": 2326,
+      "sha256": "b98b4d19d6c5ac70e4408c6f269ecfe24d907c6a29d5da0db223a56038dbcd16"
+    },
+    "independent_cycle16": {
+      "path": "D:\\ck3-state\\resume91-root\\resume-after-vacation-20261104\\C16-POST-INSTRUMENTATION-INDEPENDENT01.json",
+      "bytes": 2370,
+      "sha256": "d908f74911cd6c30137e2864992aa755ef9b8c943d3dbd23969ab158f2517ea4"
+    },
+    "new_eligible_days": 7,
+    "whole_epoch_eligible_days": 122,
+    "whole_epoch_saved_days": 8,
+    "new_saved_days": 0,
+    "new_named_type_or_measured_speed_qualified": false
+  }
 }

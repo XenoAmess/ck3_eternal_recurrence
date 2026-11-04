@@ -13,3 +13,7 @@
 截至此发表切点，没有为验证通知制造实机负 ACK、UI输入、GET 或重启；实际 source 采用、Quarkus instrumentation／loader 行为及现场通知送达由唯一 Runtime owner 另验。正常24继续，不能用这2P＋3P宣称 modal 自动恢复、全 Native 可用或性能达标。
 
 新45秒热点调查仍区分路径：`finishPlanningReads` 是包含原 work 的上层包装。后到定向统计中 Publisher.flushActualReads／prepare、RootReadHistoryAuthority 与 unresolved-history 目标均无 captured presence；这不证明零调用，也不足将新 READ-scope 候选认作本窗热点。该任务唯一模型完整回包已源审拒收0采用，保成本、不R2、不送编测。下一源码调查沿实际出现的 ActionContinuityAuthority.reduce／canonicalReceipts 及原 live scope 的重复原件链，保动态身份／容量校验和 parser／hash／oldencode 冻结。
+
+
+后到实际 instrumentation 验收（不改前述软件发表切点）：Runtime 仅采用 Factory c130 单叶，properties逐字不变，未捆绑 UI／C1。唯一 GET 于23:27:45.039032→50.368503返回200／5.329477秒；原Quarkus日志本地07:27:48.724明确 replacing classes via instrumentation，48.784报告 no restart／3.715秒。同host97584／原birth、原b00c9deb委托／restart4保持LOOP，源码变更后没有Lifecycle END或新START。9个实际Maven产物由Runtime测量，outer含通知schema，未注入离线class。Root以原件SHA独核通过83200b1a／7c602412；此证据只授本次既有类／依赖及body替换，不外推新namedtype可载。
+后继自然parent380于23:29:01.048285300Z结算APPLIED，C16精确接C15，53160936→53161104新增7eligible，当前epoch122eligible／8confirmedSaved，本周期新SAVE0。该父开始早于替换、结算晚于替换，仅证明原委托继续正常行为；不据此补授新通知分支命中。原始负ACK通知自然送达仍NOT_HELD，没有造negative、重控制或为报告查询Game。实际包b98b4d19与Root独验d908f749分列保存；10秒／新增确认保存日目标未据此通过。

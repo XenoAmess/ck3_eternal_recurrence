@@ -15,6 +15,10 @@
 
 后到首保存及功能P0：新世界59于21:18:10.777188800Z实际SAVE_CONFIRMED，Root具名独核原46→49只读结算、52C1及59，新8日已保存（date53158176→53158368、native26／public14）；旧世界508／501／365及未确认C70不移入新计数。该保存后又实际出现ACK成功而fresh READ暂不可用，故首保存不作为任务完成或当前健康证明。已形成[精确负READ有界重试的软件单元](docs/autonomous-agent-progress/2026-11-05-post-ack-read-availability.md)：仅只读、原期限／次数双界、每negative先归档、UNKNOWN仅同ID collect，旧成功proof／Guard／语义不变；1TU9类及新3P分别验收，不授实际装载、控制结算或性能。Runtime独占正常清洁边界采用，旧动作不重放、不刷新deadline，文档与CI不作运行前置。
 
+后到实际原地热更新验收：2026-11-04T23:27:48.724Z／48.784Z，Quarkus明确 replacing classes via instrumentation／no restart，3.715秒；唯一source-only GET为5.329477秒200，仅Factory c130单叶，properties逐字不变。同host97584／原birth、原b00c委托／restart4保持LOOP，没有Lifecycle END／新START，未捆UI／C1或注入离线class。Root独核83200b1a／7c602412，具体[软件与实际来源](docs/autonomous-agent-progress/2026-11-05-read-owner-triage-notice.md)。只授本次既有类body／依赖的原地替换，不外推新类型可载、首次自然notice送达或任何后继候选可redefine。
+
+后继parent380在23:29:01.048285300Z结算APPLIED，C16接C15，date53160936→53161104新增7eligible，新epoch共122eligible／8saved、本周期新SAVE0；Root独核d908f749。原父开始早于热替换，结算晚于替换，只证明原委托继续正常行为，不补授新通知分支命中。正常游玩与必要P0继续，10秒／新增确认保存日目标仍未由这些事实通过；不为文档或离线候选重启健康Game／委托。
+
 ## 2026-11-05 用户最新：自行游玩，暂停自动实机
 
 用户最新明确：“你收尾ck3以及对ck3进程的操作，现在我想自己玩了。”本条覆盖下方自动实机续行授权；立即停止 Java 自动游玩，以及 Game／Native live 查询、动作、录制／捕获、现场采样、部署、装载、launch 和后继 GET。同一 Game 与 keeper 保留，不关闭、不重启、不触发 SAVE；不得重放旧动作、刷新旧 deadline 或清账本。只有用户后到明确恢复授权才可恢复自动实机。
