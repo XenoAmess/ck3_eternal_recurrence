@@ -46,7 +46,7 @@
 
 ## 本轮交付：时间预算接线修复
 
-第125批最后一次观测在10:28:47.6150425到达；Driver join后10:29:55.9444903校验，比该次readiness IO期限10:29:40.9215063晚15.022984秒，但原批scope期限10:30:14.3076572尚未到。这是接收后处理沿用了较短IO期限；不是原生RPC用了68秒。实际报告只有detail，源码caller链不冒充真实异常栈。
+第125批最后一次观测在10:28:47.6150425到达；Driver join后10:29:55.9444903校验，比该次readiness IO期限10:29:40.9215063晚15.022984秒，但原批scope期限10:30:14.3076572尚未到。这是接收后处理沿用了较短IO期限；68秒是观测到后续校验的间隔，不能直接当作原生RPC耗时。实际报告只有detail，源码caller链不冒充真实异常栈。
 
 `SessionController → RootSessionObservationPort → Collector` 已传入两份期限。修复仅补接 Collector：transport与观测接收保留原ioDeadline，接收后的进程、能力与来源处理使用原scopeDeadline，保非future、最终scope、全部physical/source及head检查。没有新造now+timeout或扩大预算。旧批当时只余18.363秒，修复也不能追认旧125整段后处理必过。
 
