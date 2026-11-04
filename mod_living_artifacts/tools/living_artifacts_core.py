@@ -12,6 +12,7 @@ from textwrap import dedent
 from typing import Literal
 
 from living_artifacts_model import AFFIX_IDS, CURSE_IDS, FEEDING_XP, LIVING_NAME_PREFIX, PERSONAL_TYPES, Language, SourcePatch
+from living_artifacts_display import brief_entry
 
 PERSONAL_SLOTS = PERSONAL_TYPES
 AFFIX_COUNT = len(AFFIX_IDS)
@@ -1047,7 +1048,8 @@ def render_core_localization(language: Language) -> dict[str, str]:
             result[f"xalw_{kind}_{slot}_empty"] = ""
             for item in range(1, count + 1):
                 label = "异能" if kind == "affix" else "诅咒"
-                result[f"xalw_{kind}_{slot}_{item}_line"] = f"\\n{label if chinese else kind.title()}：$xalw_{kind}_{item}_name$（[ROOT.Artifact.MakeScope.Var('xalw_{kind}_rank_{slot}').GetValue|0]）\\n$xalw_{kind}_{item}_desc$"
+                for rank in (1, 2, 3):
+                    result[f"xalw_{kind}_{slot}_{item}_rank_{rank}_line"] = brief_entry(kind, item, rank, f"{label if chinese else kind.title()}：")
     return result
 
 
@@ -1068,7 +1070,8 @@ def render_core_custom_localization() -> str:
         for slot in range(1, slots + 1):
             entries = ["type = artifact"]
             for item in range(1, count + 1):
-                entries.append(f"text = {{ trigger = {{ var:xalw_{kind}_{slot} ?= {item} }} localization_key = xalw_{kind}_{slot}_{item}_line }}")
+                for rank in (1, 2, 3):
+                    entries.append(f"text = {{ trigger = {{ var:xalw_{kind}_{slot} ?= {item} var:xalw_{kind}_rank_{slot} ?= {rank} }} localization_key = xalw_{kind}_{slot}_{item}_rank_{rank}_line }}")
             entries.append(f"text = {{ fallback = yes localization_key = xalw_{kind}_{slot}_empty }}")
             blocks.append(_block(f"Xalw{kind.title()}{slot}", "\n".join(entries)))
     return "\n".join(blocks)

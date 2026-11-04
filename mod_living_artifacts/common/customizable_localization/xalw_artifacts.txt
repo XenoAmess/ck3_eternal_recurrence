@@ -37,128 +37,304 @@ XalwDiet = {
 
 XalwAffix1 = {
 	type = artifact
-	text = { trigger = { var:xalw_affix_1 ?= 1 } localization_key = xalw_affix_1_1_line }
-	text = { trigger = { var:xalw_affix_1 ?= 2 } localization_key = xalw_affix_1_2_line }
-	text = { trigger = { var:xalw_affix_1 ?= 3 } localization_key = xalw_affix_1_3_line }
-	text = { trigger = { var:xalw_affix_1 ?= 4 } localization_key = xalw_affix_1_4_line }
-	text = { trigger = { var:xalw_affix_1 ?= 5 } localization_key = xalw_affix_1_5_line }
-	text = { trigger = { var:xalw_affix_1 ?= 6 } localization_key = xalw_affix_1_6_line }
-	text = { trigger = { var:xalw_affix_1 ?= 7 } localization_key = xalw_affix_1_7_line }
-	text = { trigger = { var:xalw_affix_1 ?= 8 } localization_key = xalw_affix_1_8_line }
-	text = { trigger = { var:xalw_affix_1 ?= 9 } localization_key = xalw_affix_1_9_line }
-	text = { trigger = { var:xalw_affix_1 ?= 10 } localization_key = xalw_affix_1_10_line }
-	text = { trigger = { var:xalw_affix_1 ?= 11 } localization_key = xalw_affix_1_11_line }
-	text = { trigger = { var:xalw_affix_1 ?= 12 } localization_key = xalw_affix_1_12_line }
+	text = { trigger = { var:xalw_affix_1 ?= 1 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_1_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 1 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_1_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 1 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_1_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 2 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_2_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 2 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_2_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 2 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_2_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 3 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_3_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 3 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_3_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 3 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_3_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 4 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_4_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 4 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_4_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 4 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_4_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 5 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_5_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 5 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_5_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 5 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_5_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 6 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_6_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 6 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_6_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 6 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_6_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 7 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_7_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 7 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_7_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 7 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_7_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 8 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_8_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 8 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_8_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 8 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_8_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 9 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_9_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 9 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_9_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 9 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_9_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 10 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_10_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 10 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_10_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 10 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_10_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 11 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_11_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 11 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_11_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 11 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_11_rank_3_line }
+	text = { trigger = { var:xalw_affix_1 ?= 12 var:xalw_affix_rank_1 ?= 1 } localization_key = xalw_affix_1_12_rank_1_line }
+	text = { trigger = { var:xalw_affix_1 ?= 12 var:xalw_affix_rank_1 ?= 2 } localization_key = xalw_affix_1_12_rank_2_line }
+	text = { trigger = { var:xalw_affix_1 ?= 12 var:xalw_affix_rank_1 ?= 3 } localization_key = xalw_affix_1_12_rank_3_line }
 	text = { fallback = yes localization_key = xalw_affix_1_empty }
 }
 
 XalwAffix2 = {
 	type = artifact
-	text = { trigger = { var:xalw_affix_2 ?= 1 } localization_key = xalw_affix_2_1_line }
-	text = { trigger = { var:xalw_affix_2 ?= 2 } localization_key = xalw_affix_2_2_line }
-	text = { trigger = { var:xalw_affix_2 ?= 3 } localization_key = xalw_affix_2_3_line }
-	text = { trigger = { var:xalw_affix_2 ?= 4 } localization_key = xalw_affix_2_4_line }
-	text = { trigger = { var:xalw_affix_2 ?= 5 } localization_key = xalw_affix_2_5_line }
-	text = { trigger = { var:xalw_affix_2 ?= 6 } localization_key = xalw_affix_2_6_line }
-	text = { trigger = { var:xalw_affix_2 ?= 7 } localization_key = xalw_affix_2_7_line }
-	text = { trigger = { var:xalw_affix_2 ?= 8 } localization_key = xalw_affix_2_8_line }
-	text = { trigger = { var:xalw_affix_2 ?= 9 } localization_key = xalw_affix_2_9_line }
-	text = { trigger = { var:xalw_affix_2 ?= 10 } localization_key = xalw_affix_2_10_line }
-	text = { trigger = { var:xalw_affix_2 ?= 11 } localization_key = xalw_affix_2_11_line }
-	text = { trigger = { var:xalw_affix_2 ?= 12 } localization_key = xalw_affix_2_12_line }
+	text = { trigger = { var:xalw_affix_2 ?= 1 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_1_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 1 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_1_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 1 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_1_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 2 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_2_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 2 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_2_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 2 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_2_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 3 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_3_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 3 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_3_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 3 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_3_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 4 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_4_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 4 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_4_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 4 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_4_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 5 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_5_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 5 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_5_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 5 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_5_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 6 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_6_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 6 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_6_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 6 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_6_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 7 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_7_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 7 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_7_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 7 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_7_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 8 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_8_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 8 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_8_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 8 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_8_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 9 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_9_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 9 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_9_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 9 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_9_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 10 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_10_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 10 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_10_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 10 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_10_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 11 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_11_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 11 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_11_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 11 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_11_rank_3_line }
+	text = { trigger = { var:xalw_affix_2 ?= 12 var:xalw_affix_rank_2 ?= 1 } localization_key = xalw_affix_2_12_rank_1_line }
+	text = { trigger = { var:xalw_affix_2 ?= 12 var:xalw_affix_rank_2 ?= 2 } localization_key = xalw_affix_2_12_rank_2_line }
+	text = { trigger = { var:xalw_affix_2 ?= 12 var:xalw_affix_rank_2 ?= 3 } localization_key = xalw_affix_2_12_rank_3_line }
 	text = { fallback = yes localization_key = xalw_affix_2_empty }
 }
 
 XalwAffix3 = {
 	type = artifact
-	text = { trigger = { var:xalw_affix_3 ?= 1 } localization_key = xalw_affix_3_1_line }
-	text = { trigger = { var:xalw_affix_3 ?= 2 } localization_key = xalw_affix_3_2_line }
-	text = { trigger = { var:xalw_affix_3 ?= 3 } localization_key = xalw_affix_3_3_line }
-	text = { trigger = { var:xalw_affix_3 ?= 4 } localization_key = xalw_affix_3_4_line }
-	text = { trigger = { var:xalw_affix_3 ?= 5 } localization_key = xalw_affix_3_5_line }
-	text = { trigger = { var:xalw_affix_3 ?= 6 } localization_key = xalw_affix_3_6_line }
-	text = { trigger = { var:xalw_affix_3 ?= 7 } localization_key = xalw_affix_3_7_line }
-	text = { trigger = { var:xalw_affix_3 ?= 8 } localization_key = xalw_affix_3_8_line }
-	text = { trigger = { var:xalw_affix_3 ?= 9 } localization_key = xalw_affix_3_9_line }
-	text = { trigger = { var:xalw_affix_3 ?= 10 } localization_key = xalw_affix_3_10_line }
-	text = { trigger = { var:xalw_affix_3 ?= 11 } localization_key = xalw_affix_3_11_line }
-	text = { trigger = { var:xalw_affix_3 ?= 12 } localization_key = xalw_affix_3_12_line }
+	text = { trigger = { var:xalw_affix_3 ?= 1 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_1_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 1 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_1_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 1 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_1_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 2 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_2_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 2 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_2_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 2 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_2_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 3 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_3_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 3 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_3_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 3 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_3_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 4 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_4_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 4 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_4_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 4 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_4_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 5 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_5_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 5 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_5_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 5 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_5_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 6 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_6_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 6 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_6_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 6 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_6_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 7 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_7_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 7 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_7_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 7 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_7_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 8 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_8_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 8 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_8_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 8 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_8_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 9 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_9_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 9 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_9_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 9 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_9_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 10 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_10_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 10 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_10_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 10 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_10_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 11 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_11_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 11 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_11_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 11 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_11_rank_3_line }
+	text = { trigger = { var:xalw_affix_3 ?= 12 var:xalw_affix_rank_3 ?= 1 } localization_key = xalw_affix_3_12_rank_1_line }
+	text = { trigger = { var:xalw_affix_3 ?= 12 var:xalw_affix_rank_3 ?= 2 } localization_key = xalw_affix_3_12_rank_2_line }
+	text = { trigger = { var:xalw_affix_3 ?= 12 var:xalw_affix_rank_3 ?= 3 } localization_key = xalw_affix_3_12_rank_3_line }
 	text = { fallback = yes localization_key = xalw_affix_3_empty }
 }
 
 XalwAffix4 = {
 	type = artifact
-	text = { trigger = { var:xalw_affix_4 ?= 1 } localization_key = xalw_affix_4_1_line }
-	text = { trigger = { var:xalw_affix_4 ?= 2 } localization_key = xalw_affix_4_2_line }
-	text = { trigger = { var:xalw_affix_4 ?= 3 } localization_key = xalw_affix_4_3_line }
-	text = { trigger = { var:xalw_affix_4 ?= 4 } localization_key = xalw_affix_4_4_line }
-	text = { trigger = { var:xalw_affix_4 ?= 5 } localization_key = xalw_affix_4_5_line }
-	text = { trigger = { var:xalw_affix_4 ?= 6 } localization_key = xalw_affix_4_6_line }
-	text = { trigger = { var:xalw_affix_4 ?= 7 } localization_key = xalw_affix_4_7_line }
-	text = { trigger = { var:xalw_affix_4 ?= 8 } localization_key = xalw_affix_4_8_line }
-	text = { trigger = { var:xalw_affix_4 ?= 9 } localization_key = xalw_affix_4_9_line }
-	text = { trigger = { var:xalw_affix_4 ?= 10 } localization_key = xalw_affix_4_10_line }
-	text = { trigger = { var:xalw_affix_4 ?= 11 } localization_key = xalw_affix_4_11_line }
-	text = { trigger = { var:xalw_affix_4 ?= 12 } localization_key = xalw_affix_4_12_line }
+	text = { trigger = { var:xalw_affix_4 ?= 1 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_1_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 1 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_1_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 1 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_1_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 2 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_2_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 2 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_2_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 2 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_2_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 3 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_3_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 3 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_3_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 3 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_3_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 4 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_4_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 4 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_4_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 4 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_4_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 5 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_5_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 5 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_5_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 5 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_5_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 6 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_6_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 6 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_6_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 6 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_6_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 7 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_7_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 7 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_7_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 7 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_7_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 8 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_8_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 8 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_8_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 8 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_8_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 9 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_9_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 9 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_9_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 9 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_9_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 10 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_10_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 10 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_10_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 10 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_10_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 11 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_11_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 11 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_11_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 11 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_11_rank_3_line }
+	text = { trigger = { var:xalw_affix_4 ?= 12 var:xalw_affix_rank_4 ?= 1 } localization_key = xalw_affix_4_12_rank_1_line }
+	text = { trigger = { var:xalw_affix_4 ?= 12 var:xalw_affix_rank_4 ?= 2 } localization_key = xalw_affix_4_12_rank_2_line }
+	text = { trigger = { var:xalw_affix_4 ?= 12 var:xalw_affix_rank_4 ?= 3 } localization_key = xalw_affix_4_12_rank_3_line }
 	text = { fallback = yes localization_key = xalw_affix_4_empty }
 }
 
 XalwAffix5 = {
 	type = artifact
-	text = { trigger = { var:xalw_affix_5 ?= 1 } localization_key = xalw_affix_5_1_line }
-	text = { trigger = { var:xalw_affix_5 ?= 2 } localization_key = xalw_affix_5_2_line }
-	text = { trigger = { var:xalw_affix_5 ?= 3 } localization_key = xalw_affix_5_3_line }
-	text = { trigger = { var:xalw_affix_5 ?= 4 } localization_key = xalw_affix_5_4_line }
-	text = { trigger = { var:xalw_affix_5 ?= 5 } localization_key = xalw_affix_5_5_line }
-	text = { trigger = { var:xalw_affix_5 ?= 6 } localization_key = xalw_affix_5_6_line }
-	text = { trigger = { var:xalw_affix_5 ?= 7 } localization_key = xalw_affix_5_7_line }
-	text = { trigger = { var:xalw_affix_5 ?= 8 } localization_key = xalw_affix_5_8_line }
-	text = { trigger = { var:xalw_affix_5 ?= 9 } localization_key = xalw_affix_5_9_line }
-	text = { trigger = { var:xalw_affix_5 ?= 10 } localization_key = xalw_affix_5_10_line }
-	text = { trigger = { var:xalw_affix_5 ?= 11 } localization_key = xalw_affix_5_11_line }
-	text = { trigger = { var:xalw_affix_5 ?= 12 } localization_key = xalw_affix_5_12_line }
+	text = { trigger = { var:xalw_affix_5 ?= 1 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_1_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 1 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_1_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 1 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_1_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 2 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_2_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 2 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_2_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 2 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_2_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 3 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_3_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 3 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_3_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 3 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_3_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 4 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_4_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 4 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_4_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 4 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_4_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 5 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_5_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 5 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_5_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 5 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_5_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 6 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_6_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 6 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_6_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 6 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_6_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 7 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_7_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 7 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_7_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 7 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_7_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 8 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_8_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 8 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_8_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 8 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_8_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 9 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_9_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 9 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_9_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 9 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_9_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 10 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_10_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 10 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_10_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 10 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_10_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 11 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_11_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 11 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_11_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 11 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_11_rank_3_line }
+	text = { trigger = { var:xalw_affix_5 ?= 12 var:xalw_affix_rank_5 ?= 1 } localization_key = xalw_affix_5_12_rank_1_line }
+	text = { trigger = { var:xalw_affix_5 ?= 12 var:xalw_affix_rank_5 ?= 2 } localization_key = xalw_affix_5_12_rank_2_line }
+	text = { trigger = { var:xalw_affix_5 ?= 12 var:xalw_affix_rank_5 ?= 3 } localization_key = xalw_affix_5_12_rank_3_line }
 	text = { fallback = yes localization_key = xalw_affix_5_empty }
 }
 
 XalwAffix6 = {
 	type = artifact
-	text = { trigger = { var:xalw_affix_6 ?= 1 } localization_key = xalw_affix_6_1_line }
-	text = { trigger = { var:xalw_affix_6 ?= 2 } localization_key = xalw_affix_6_2_line }
-	text = { trigger = { var:xalw_affix_6 ?= 3 } localization_key = xalw_affix_6_3_line }
-	text = { trigger = { var:xalw_affix_6 ?= 4 } localization_key = xalw_affix_6_4_line }
-	text = { trigger = { var:xalw_affix_6 ?= 5 } localization_key = xalw_affix_6_5_line }
-	text = { trigger = { var:xalw_affix_6 ?= 6 } localization_key = xalw_affix_6_6_line }
-	text = { trigger = { var:xalw_affix_6 ?= 7 } localization_key = xalw_affix_6_7_line }
-	text = { trigger = { var:xalw_affix_6 ?= 8 } localization_key = xalw_affix_6_8_line }
-	text = { trigger = { var:xalw_affix_6 ?= 9 } localization_key = xalw_affix_6_9_line }
-	text = { trigger = { var:xalw_affix_6 ?= 10 } localization_key = xalw_affix_6_10_line }
-	text = { trigger = { var:xalw_affix_6 ?= 11 } localization_key = xalw_affix_6_11_line }
-	text = { trigger = { var:xalw_affix_6 ?= 12 } localization_key = xalw_affix_6_12_line }
+	text = { trigger = { var:xalw_affix_6 ?= 1 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_1_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 1 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_1_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 1 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_1_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 2 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_2_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 2 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_2_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 2 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_2_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 3 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_3_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 3 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_3_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 3 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_3_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 4 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_4_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 4 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_4_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 4 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_4_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 5 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_5_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 5 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_5_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 5 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_5_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 6 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_6_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 6 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_6_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 6 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_6_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 7 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_7_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 7 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_7_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 7 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_7_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 8 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_8_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 8 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_8_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 8 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_8_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 9 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_9_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 9 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_9_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 9 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_9_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 10 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_10_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 10 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_10_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 10 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_10_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 11 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_11_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 11 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_11_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 11 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_11_rank_3_line }
+	text = { trigger = { var:xalw_affix_6 ?= 12 var:xalw_affix_rank_6 ?= 1 } localization_key = xalw_affix_6_12_rank_1_line }
+	text = { trigger = { var:xalw_affix_6 ?= 12 var:xalw_affix_rank_6 ?= 2 } localization_key = xalw_affix_6_12_rank_2_line }
+	text = { trigger = { var:xalw_affix_6 ?= 12 var:xalw_affix_rank_6 ?= 3 } localization_key = xalw_affix_6_12_rank_3_line }
 	text = { fallback = yes localization_key = xalw_affix_6_empty }
 }
 
 XalwCurse1 = {
 	type = artifact
-	text = { trigger = { var:xalw_curse_1 ?= 1 } localization_key = xalw_curse_1_1_line }
-	text = { trigger = { var:xalw_curse_1 ?= 2 } localization_key = xalw_curse_1_2_line }
-	text = { trigger = { var:xalw_curse_1 ?= 3 } localization_key = xalw_curse_1_3_line }
-	text = { trigger = { var:xalw_curse_1 ?= 4 } localization_key = xalw_curse_1_4_line }
-	text = { trigger = { var:xalw_curse_1 ?= 5 } localization_key = xalw_curse_1_5_line }
-	text = { trigger = { var:xalw_curse_1 ?= 6 } localization_key = xalw_curse_1_6_line }
-	text = { trigger = { var:xalw_curse_1 ?= 7 } localization_key = xalw_curse_1_7_line }
-	text = { trigger = { var:xalw_curse_1 ?= 8 } localization_key = xalw_curse_1_8_line }
+	text = { trigger = { var:xalw_curse_1 ?= 1 var:xalw_curse_rank_1 ?= 1 } localization_key = xalw_curse_1_1_rank_1_line }
+	text = { trigger = { var:xalw_curse_1 ?= 1 var:xalw_curse_rank_1 ?= 2 } localization_key = xalw_curse_1_1_rank_2_line }
+	text = { trigger = { var:xalw_curse_1 ?= 1 var:xalw_curse_rank_1 ?= 3 } localization_key = xalw_curse_1_1_rank_3_line }
+	text = { trigger = { var:xalw_curse_1 ?= 2 var:xalw_curse_rank_1 ?= 1 } localization_key = xalw_curse_1_2_rank_1_line }
+	text = { trigger = { var:xalw_curse_1 ?= 2 var:xalw_curse_rank_1 ?= 2 } localization_key = xalw_curse_1_2_rank_2_line }
+	text = { trigger = { var:xalw_curse_1 ?= 2 var:xalw_curse_rank_1 ?= 3 } localization_key = xalw_curse_1_2_rank_3_line }
+	text = { trigger = { var:xalw_curse_1 ?= 3 var:xalw_curse_rank_1 ?= 1 } localization_key = xalw_curse_1_3_rank_1_line }
+	text = { trigger = { var:xalw_curse_1 ?= 3 var:xalw_curse_rank_1 ?= 2 } localization_key = xalw_curse_1_3_rank_2_line }
+	text = { trigger = { var:xalw_curse_1 ?= 3 var:xalw_curse_rank_1 ?= 3 } localization_key = xalw_curse_1_3_rank_3_line }
+	text = { trigger = { var:xalw_curse_1 ?= 4 var:xalw_curse_rank_1 ?= 1 } localization_key = xalw_curse_1_4_rank_1_line }
+	text = { trigger = { var:xalw_curse_1 ?= 4 var:xalw_curse_rank_1 ?= 2 } localization_key = xalw_curse_1_4_rank_2_line }
+	text = { trigger = { var:xalw_curse_1 ?= 4 var:xalw_curse_rank_1 ?= 3 } localization_key = xalw_curse_1_4_rank_3_line }
+	text = { trigger = { var:xalw_curse_1 ?= 5 var:xalw_curse_rank_1 ?= 1 } localization_key = xalw_curse_1_5_rank_1_line }
+	text = { trigger = { var:xalw_curse_1 ?= 5 var:xalw_curse_rank_1 ?= 2 } localization_key = xalw_curse_1_5_rank_2_line }
+	text = { trigger = { var:xalw_curse_1 ?= 5 var:xalw_curse_rank_1 ?= 3 } localization_key = xalw_curse_1_5_rank_3_line }
+	text = { trigger = { var:xalw_curse_1 ?= 6 var:xalw_curse_rank_1 ?= 1 } localization_key = xalw_curse_1_6_rank_1_line }
+	text = { trigger = { var:xalw_curse_1 ?= 6 var:xalw_curse_rank_1 ?= 2 } localization_key = xalw_curse_1_6_rank_2_line }
+	text = { trigger = { var:xalw_curse_1 ?= 6 var:xalw_curse_rank_1 ?= 3 } localization_key = xalw_curse_1_6_rank_3_line }
+	text = { trigger = { var:xalw_curse_1 ?= 7 var:xalw_curse_rank_1 ?= 1 } localization_key = xalw_curse_1_7_rank_1_line }
+	text = { trigger = { var:xalw_curse_1 ?= 7 var:xalw_curse_rank_1 ?= 2 } localization_key = xalw_curse_1_7_rank_2_line }
+	text = { trigger = { var:xalw_curse_1 ?= 7 var:xalw_curse_rank_1 ?= 3 } localization_key = xalw_curse_1_7_rank_3_line }
+	text = { trigger = { var:xalw_curse_1 ?= 8 var:xalw_curse_rank_1 ?= 1 } localization_key = xalw_curse_1_8_rank_1_line }
+	text = { trigger = { var:xalw_curse_1 ?= 8 var:xalw_curse_rank_1 ?= 2 } localization_key = xalw_curse_1_8_rank_2_line }
+	text = { trigger = { var:xalw_curse_1 ?= 8 var:xalw_curse_rank_1 ?= 3 } localization_key = xalw_curse_1_8_rank_3_line }
 	text = { fallback = yes localization_key = xalw_curse_1_empty }
 }
 
 XalwCurse2 = {
 	type = artifact
-	text = { trigger = { var:xalw_curse_2 ?= 1 } localization_key = xalw_curse_2_1_line }
-	text = { trigger = { var:xalw_curse_2 ?= 2 } localization_key = xalw_curse_2_2_line }
-	text = { trigger = { var:xalw_curse_2 ?= 3 } localization_key = xalw_curse_2_3_line }
-	text = { trigger = { var:xalw_curse_2 ?= 4 } localization_key = xalw_curse_2_4_line }
-	text = { trigger = { var:xalw_curse_2 ?= 5 } localization_key = xalw_curse_2_5_line }
-	text = { trigger = { var:xalw_curse_2 ?= 6 } localization_key = xalw_curse_2_6_line }
-	text = { trigger = { var:xalw_curse_2 ?= 7 } localization_key = xalw_curse_2_7_line }
-	text = { trigger = { var:xalw_curse_2 ?= 8 } localization_key = xalw_curse_2_8_line }
+	text = { trigger = { var:xalw_curse_2 ?= 1 var:xalw_curse_rank_2 ?= 1 } localization_key = xalw_curse_2_1_rank_1_line }
+	text = { trigger = { var:xalw_curse_2 ?= 1 var:xalw_curse_rank_2 ?= 2 } localization_key = xalw_curse_2_1_rank_2_line }
+	text = { trigger = { var:xalw_curse_2 ?= 1 var:xalw_curse_rank_2 ?= 3 } localization_key = xalw_curse_2_1_rank_3_line }
+	text = { trigger = { var:xalw_curse_2 ?= 2 var:xalw_curse_rank_2 ?= 1 } localization_key = xalw_curse_2_2_rank_1_line }
+	text = { trigger = { var:xalw_curse_2 ?= 2 var:xalw_curse_rank_2 ?= 2 } localization_key = xalw_curse_2_2_rank_2_line }
+	text = { trigger = { var:xalw_curse_2 ?= 2 var:xalw_curse_rank_2 ?= 3 } localization_key = xalw_curse_2_2_rank_3_line }
+	text = { trigger = { var:xalw_curse_2 ?= 3 var:xalw_curse_rank_2 ?= 1 } localization_key = xalw_curse_2_3_rank_1_line }
+	text = { trigger = { var:xalw_curse_2 ?= 3 var:xalw_curse_rank_2 ?= 2 } localization_key = xalw_curse_2_3_rank_2_line }
+	text = { trigger = { var:xalw_curse_2 ?= 3 var:xalw_curse_rank_2 ?= 3 } localization_key = xalw_curse_2_3_rank_3_line }
+	text = { trigger = { var:xalw_curse_2 ?= 4 var:xalw_curse_rank_2 ?= 1 } localization_key = xalw_curse_2_4_rank_1_line }
+	text = { trigger = { var:xalw_curse_2 ?= 4 var:xalw_curse_rank_2 ?= 2 } localization_key = xalw_curse_2_4_rank_2_line }
+	text = { trigger = { var:xalw_curse_2 ?= 4 var:xalw_curse_rank_2 ?= 3 } localization_key = xalw_curse_2_4_rank_3_line }
+	text = { trigger = { var:xalw_curse_2 ?= 5 var:xalw_curse_rank_2 ?= 1 } localization_key = xalw_curse_2_5_rank_1_line }
+	text = { trigger = { var:xalw_curse_2 ?= 5 var:xalw_curse_rank_2 ?= 2 } localization_key = xalw_curse_2_5_rank_2_line }
+	text = { trigger = { var:xalw_curse_2 ?= 5 var:xalw_curse_rank_2 ?= 3 } localization_key = xalw_curse_2_5_rank_3_line }
+	text = { trigger = { var:xalw_curse_2 ?= 6 var:xalw_curse_rank_2 ?= 1 } localization_key = xalw_curse_2_6_rank_1_line }
+	text = { trigger = { var:xalw_curse_2 ?= 6 var:xalw_curse_rank_2 ?= 2 } localization_key = xalw_curse_2_6_rank_2_line }
+	text = { trigger = { var:xalw_curse_2 ?= 6 var:xalw_curse_rank_2 ?= 3 } localization_key = xalw_curse_2_6_rank_3_line }
+	text = { trigger = { var:xalw_curse_2 ?= 7 var:xalw_curse_rank_2 ?= 1 } localization_key = xalw_curse_2_7_rank_1_line }
+	text = { trigger = { var:xalw_curse_2 ?= 7 var:xalw_curse_rank_2 ?= 2 } localization_key = xalw_curse_2_7_rank_2_line }
+	text = { trigger = { var:xalw_curse_2 ?= 7 var:xalw_curse_rank_2 ?= 3 } localization_key = xalw_curse_2_7_rank_3_line }
+	text = { trigger = { var:xalw_curse_2 ?= 8 var:xalw_curse_rank_2 ?= 1 } localization_key = xalw_curse_2_8_rank_1_line }
+	text = { trigger = { var:xalw_curse_2 ?= 8 var:xalw_curse_rank_2 ?= 2 } localization_key = xalw_curse_2_8_rank_2_line }
+	text = { trigger = { var:xalw_curse_2 ?= 8 var:xalw_curse_rank_2 ?= 3 } localization_key = xalw_curse_2_8_rank_3_line }
 	text = { fallback = yes localization_key = xalw_curse_2_empty }
 }

@@ -749,10 +749,15 @@ def render_content_localization(language: Language) -> dict[str, str]:
     if language not in ("simp_chinese", "english"):
         raise ValueError(f"Unsupported content language: {language}")
     values: dict[str, str] = {}
+    from living_artifacts_display import hover_description, tooltip_key
     for definition in (*AFFIXES, *CURSES):
         prefix = f"xalw_{definition.kind}_{definition.number}"
         values[f"{prefix}_name"] = definition.chinese_name if language == "simp_chinese" else definition.english_name
         values[f"{prefix}_desc"] = definition.chinese_description if language == "simp_chinese" else definition.english_description
+        for rank in (1, 2, 3):
+            values[tooltip_key(definition.kind, definition.number, rank)] = hover_description(
+                definition.kind, definition.number, rank, values[f"{prefix}_desc"],
+            )
     for slot in range(1, 3):
         for rank in range(1, 4):
             for kind, chinese, english in (("blood", "鲜血什一税", "Blood Tithe"), ("control", "失眠之国", "Unquiet Realm"), ("secrecy", "大嘴巴", "Telltale"), ("spouse", "妒侣", "Jealous Lover")):

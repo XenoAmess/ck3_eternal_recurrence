@@ -23,3 +23,15 @@
 离线回归使用生成的真实字符串，覆盖首槽、末槽、跨空槽、多槽、满槽和无内容，并验证普通宝物的空回退及详情页保留数值文本。九语静态检查已通过。离线检查不等于游戏画面验证；实机结果和正式发布回执记录在对应 0.1.2 发布记录。
 
 本次确定性预验复用现有 brace/projection 与 localization parser。`open_kaishek` 对 CK3 GUI 的布局和原生动态文本渲染无覆盖，记为 not-applicable；不以字符串夹具代替引擎画面。
+
+## 后到要求：简短条目、悬停与当前阶数
+
+用户在发布前补充：条目只展示简要文本，悬停后展开描述；只展示当前阶数的效果，随阶数变化的数字用彩色文字。本次统一应用于异能和诅咒。
+
+每个槽的 custom localization 同时匹配能力 ID 与该槽阶数，选中具体的简短条目。条目使用原版同一 `ARTIFACT_EFFECT` 调用链已经使用的 `#TOOLTIP:localization_key #L 文本#!#!` 格式；对应的目标文本在生成时选好阶数，不包含 `ROOT.Artifact` 或保存 scope 的 getter。因此延迟悬停不依赖原宝物 scope 在 tooltip 切换后继续存在。
+
+原版依据为 `localization/english/inventory/inventory_l_english.yml` 的 `ARTIFACT_EFFECT_HAS_CAN_BENEFIT` → `ARTIFACT_EFFECT_REQUIREMENT_TT`；原文件17435B，SHA-256 `fd3bb294db01a6332970cecf646c7a1b7867134b300ef1b02d2c71d7b62ff63b`。源码依据不是新增悬停已经实机通过的证明。
+
+12个异能与8个诅咒在九语中各有33组数值三联值。`living_artifacts_display.py` 按原顺序选择当前阶数并用原版 `#V` 强调数字；支持 `-15/30/45` 的共同负号、`+5/10/15` 的共同正号及逗号小数，不转换浮点数或排序。固定的8压力、365日、12期等不被改写，也不因它们是数字而着色。七语仍复用原译文，只机械选择数值及添加引擎标记。
+
+本次新增悬停和阶数回归后，58项相关模块测试、九语发布静态及五个完整修改模块 strict mypy 均实际通过。最初全235项及官方CI通过的回执对应之前的展开式显示版本；本次新的悬停画面和发布另按新回执记录，不借用旧画面授予通过。

@@ -21,7 +21,7 @@ def resolve_summary(values: dict[str, str], powers: dict[int, int], curses: dict
         def slot(match: re.Match[str]) -> str:
             kind, number = match[1].lower(), int(match[2])
             chosen = (powers if kind == "affix" else curses).get(number)
-            return expand(values[f"xalw_{kind}_{number}_{chosen}_line"]) if chosen else ""
+            return expand(values[f"xalw_{kind}_{number}_{chosen}_rank_2_line"]) if chosen else ""
         value = re.sub(r"\[ROOT.Artifact.Custom\('Xalw(Affix|Curse)([1-6])'\)\]", slot, value)
         value = re.sub(r"\[ROOT.Artifact.MakeScope.Var\('xalw_(?:affix|curse)_rank_[1-6]'\).GetValue\|0\]", "2", value)
         return value.replace("\\n", "\n")
@@ -40,7 +40,7 @@ class EffectsDisplayTests(unittest.TestCase):
                 with self.subTest(language=language, powers=powers, curses=curses):
                     text = resolve_summary(values, powers, curses)
                     self.assertNotIn("\n\n", text)
-                    self.assertEqual(text.count("\n"), 2 * (len(powers) + len(curses)))
+                    self.assertEqual(text.count("\n"), len(powers) + len(curses))
                     self.assertNotIn("ROOT.", text)
                     for number in powers.values():
                         self.assertIn(values[f"xalw_affix_{number}_name"], text)
