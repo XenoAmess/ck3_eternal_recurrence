@@ -1,5 +1,13 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-05 用户后到明确：手玩结束，恢复 CK3 操作并继续任务
+
+用户最新明确已玩完，允许恢复对 CK3 的操作并继续执行任务。本条结束下方用户手玩造成的自动实机暂停；原 STOP 请求、精确进程退出、Game／keeper 保留及 GET15 的真实切点完整保留，不改写为当时已恢复成功。
+
+运行 owner `/root/runtime_continue` 先核对用户手玩后的实际 Game／world、keeper、continuity 与原停止文件，按真实当前状态受控恢复；不得按旧 capture、head2457、pending2455或累计游戏日回滚，不重放已执行、已结算或 UNKNOWN 动作，不刷新旧命令 deadline，不清账本，不因续行重启 Game／DLL。既有 Quarkus Dev 接入沿用，启动、源码采用、loader／委托 START、LOOP、周期结算与 SAVE 分别验收；GET15 曾到 START 但未验证捕获2370，不能据旧编译或新授权补授行为通过。
+
+唯一 owner 保持：Runtime 独占 Game／Native live、worker／keeper、账本、source307／build307、GET及实际采用；`/root/native_continue` 负责必要离线编测与资源；`/root/java_continue` 负责正式业务 Git／生产源码；`/root/models_continue` 负责模型 HTTP 运营及共享 Git。正常游玩及必要 P0 优先，Guard／parser／hash／oldencode 冻结边界继续适用，不恢复固定并发定额，不把文档发表、CI、候选 ACK 或研究编测设为同局恢复前置。
+
 ## 2026-11-05 用户最新：自行游玩，暂停自动实机
 
 用户最新明确：“你收尾ck3以及对ck3进程的操作，现在我想自己玩了。”本条覆盖下方自动实机续行授权；立即停止 Java 自动游玩，以及 Game／Native live 查询、动作、录制／捕获、现场采样、部署、装载、launch 和后继 GET。同一 Game 与 keeper 保留，不关闭、不重启、不触发 SAVE；不得重放旧动作、刷新旧 deadline 或清账本。只有用户后到明确恢复授权才可恢复自动实机。
