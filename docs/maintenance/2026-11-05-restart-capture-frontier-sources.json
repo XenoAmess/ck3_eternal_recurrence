@@ -1,0 +1,50 @@
+{
+  "schema": "restart-capture-frontier-source-index/v1",
+  "at_utc": "2026-11-04T19:44:08.104847+00:00",
+  "owner": "/root/java_continue",
+  "refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\restart-capture-completed-life-frontier01\\SOURCE-READY01.json",
+      "bytes": 4185,
+      "sha256": "2ee033d60ce24d9ac138c0107e5675e831bec491f1810aaa97fd4541621f8508"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\restart-capture-completed-life-frontier01\\SOURCE-READY-QUALIFIED02.json",
+      "bytes": 4652,
+      "sha256": "55268f9b62a6f87a52d41b321e31f7db464643430541dce217c47be4ecd97a9d"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\restart-capture-completed-life-frontier01\\SOURCE-READY-FORMAL-PROJECTION01.json",
+      "bytes": 1255,
+      "sha256": "38c9c324b181cf53d876298a89fbd5f808266c2cb7a291c46610478748044f29"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\restart-capture-completed-life-frontier01\\native-prod-first01\\QUALIFIED-FIRST-BRIEF01.json",
+      "bytes": 4720,
+      "sha256": "ede0a653b55344c1c9bfea13b78dae84b0672a0eff6110d389a20ba82d3bcfc6"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\restart-capture-completed-life-frontier01\\native-prod-first01\\QUALIFIED-FIRST-SHAPE01.json",
+      "bytes": 284864,
+      "sha256": "769dc8130df12837195e2b96dadd349ef16e31633ac6fa754d09e9726fc7f326"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\restart-capture-completed-life-frontier-independent-review01\\INDEPENDENT-REVIEW01.json",
+      "bytes": 7749,
+      "sha256": "532f70dc0cd58c4249999b2c5dfdd657de6751f935075e9920d7fdb27d84fc8c"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\fresh-host-recovery14\\actual-failure14\\FAILURE14.json",
+      "bytes": 3068,
+      "sha256": "84a41b2ad91805ff21defab3205c7a166ab95d36a4300e0a087f78e606d2fbe4"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\fresh-host-recovery14\\actual-failure14\\SOURCE-FRONTIER-GUARD-PROJECTION01.json",
+      "bytes": 4514,
+      "sha256": "54d3587d023480fd06a92c0524cf566d6da53d972b85e7ede4e982c957fdbfab"
+    }
+  ],
+  "scope": "raw1TU/20class compile and shape, strict source review; newbranch software fixture NOT_HELD; no Runtime credit",
+  "formal_projection": "single41line insert only; all formal outside preserved, rawwholecopyfalse; fullformal combination notcompiled",
+  "latest_authorization": "User now plays CK3 personally. Automatic Game/Native queries/actions/record/sampling/deploy/load/launch/laterGET stopped. Only alreadyBEGIN GET15 may settle; STOP request and actualEND separate. PureGit/lightoffline continue; no new runtime observation for this report."
+}

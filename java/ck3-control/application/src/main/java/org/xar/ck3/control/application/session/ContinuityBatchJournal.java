@@ -2897,6 +2897,47 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         }
                         // A live SAVE does not finish the Controller's open batch; an interrupted SAVE does not reopen it.
                     } else if(JournalKind.WORKER_RESTART_CAPTURE.name().equals(boundary)) {
+                        if(openBatch!=null) {
+                            StrictJson.require(savedPair.isPresent()&&i>0&&pending==null&&!used.isEmpty()
+                                    &&openBatch.equals(used.getLast())&&batchPrefix!=null,
+                                    "restart capture requires its actual completed open frontier");
+                            var previous=edges.get(i-1);
+                            var previousDetails=ContinuityJson.parseObject(previous.details(),ContinuityJson.LEDGER_MAX_BYTES);
+                            StrictJson.require(previous.kind().equals(OrdinaryCycleTransitions.CYCLE_KIND)
+                                    &&"SETTLE".equals(StrictJson.text(previousDetails.get("operation")))
+                                    &&previous.sequence()+1==edge.sequence()
+                                    &&previous.before().status()==ContinuityState.Status.RUNNING
+                                    &&previous.after().status()==ContinuityState.Status.RUNNING
+                                    &&ContinuityJson.same(previous.after().toJson(),edge.before().toJson())
+                                    &&OrdinaryCycleTransitions.sessionFromJson(previousDetails.get("session")).equals(owner),
+                                    "restart capture requires its immediately preceding canonical Life SETTLE");
+                            var oldBoundary=previous.before().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+                            StrictJson.require(JournalKind.BATCH_STARTED.name().equals(StrictJson.text(oldBoundary.get("boundary")))
+                                    &&openBatch.equals(StrictJson.text(oldBoundary.get("batch_id")))
+                                    &&OrdinaryCycleTransitions.sessionFromJson(oldBoundary.get("session")).equals(owner)
+                                    &&ContinuityJson.same(oldBoundary,previous.after().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)),
+                                    "restart capture changed its exact previous open batch");
+                            var previousActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(previous.before(),originals);
+                            var completed=readOnlyPendingCompletedLifeCycle(previous.before(),owner,previousActions,originals);
+                            StrictJson.require(completed.isPresent(),"restart capture lacks its exact completed pending Life original");
+                            var original=completed.orElseThrow();
+                            var receiptRef=ExactRef.fromJson(previousDetails.get("receipt_ref"));
+                            var beforeCycle=previous.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+                            var afterCycle=previous.after().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+                            StrictJson.require(actions.contains(original)&&receiptRef.equals(originals.receiptReferenceOf(original))&&cycleReceipts.contains(receiptRef)
+                                    &&receiptRef.equals(ExactRef.fromJson(beforeCycle.get("pending_receipt")))
+                                    &&afterCycle.get("pending_receipt").isNull()
+                                    &&StrictJson.integer(beforeCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)+1==completedCycles
+                                    &&StrictJson.integer(afterCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
+                                    &&lastCycleRef!=null&&lastCycleRef.equals(ExactRef.fromJson(afterCycle.get("head")))
+                                    &&lastCycleRef.equals(ExactRef.fromJson(previousDetails.get("cycle_record_ref"))),
+                                    "restart capture changed its exact completed cycle or original receipt");
+                            var replay=transitions.reduce(previous.before(),new WriterContracts.Request(previous.kind(),previous.details(),java.util.List.of())).toJson();
+                            replay.put("sequence",previous.sequence());replay.put("last_event_identity",previous.eventIdentity());
+                            StrictJson.require(ContinuityJson.same(replay,previous.after().toJson()),
+                                    "restart capture differs from the actual source-owned SETTLE edge");
+                            openBatch=null;
+                        }
                         StrictJson.require(openBatch==null&&pending==null&&batchPrefix!=null,
                                 "settled restart capture requires its actual idle batch frontier");
                         var manifest=CleanBatchRestart.decode(originals.loadMaterial(ExactRef.fromJson(details.get("restart_manifest"))).bytes());
