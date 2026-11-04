@@ -223,7 +223,11 @@ public final class RootInstalledCatalog {
         var authority=actual.fixtureAuthority(same);fixtureStage=actual;context.bindFixtureHistory(actual,authority);
         var created=new DriverCapabilityRuntime(authority,context.archive(),context.core().borrowedSessions(),bindings,files,retreatDomain());
         bindNativeCampaignCapabilitySource(created,authority,Optional.of(actual));
-        var history=new DriverReadHistoryPublisher(authority,context.archive(),bindings.readCatalog(),factory.sources().readHistoryProducers());
+        var history=new DriverReadHistoryPublisher(authority,context.archive(),bindings.readCatalog(),factory.sources().readHistoryProducers(),(readSession,archiveWork) -> {
+                    context.archive().inHistoricalReadScopeOrBorrow(readSession,
+                            new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(128,16L*1024*1024,32),
+                            ignored -> {archiveWork.read();return null;});
+                });
         created.bindReadHistoryPublisher(history);created.bindWindowAttempts(army.products().windowAttempts());
         context.bindFixtureCapabilities(actual,created);
         var materials=remaining.actionHistory(context,this);
@@ -253,7 +257,11 @@ public final class RootInstalledCatalog {
         if(fixtureProducts!=null)StrictJson.require(capabilities==actualCapabilities&&readHistory==fixtureProducts.readHistory(),"actual fixture adoption must retain its sole staged capability/history runtime");
         adopted=actual;capabilities=actualCapabilities;
         if(fixtureProducts==null) {
-            readHistory=new DriverReadHistoryPublisher(actual.authority(),context.archive(),bindings.readCatalog(),factory.sources().readHistoryProducers());
+            readHistory=new DriverReadHistoryPublisher(actual.authority(),context.archive(),bindings.readCatalog(),factory.sources().readHistoryProducers(),(readSession,archiveWork) -> {
+                    context.archive().inHistoricalReadScopeOrBorrow(readSession,
+                            new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(128,16L*1024*1024,32),
+                            ignored -> {archiveWork.read();return null;});
+                });
             actualCapabilities.bindReadHistoryPublisher(readHistory);actualCapabilities.bindWindowAttempts(army.products().windowAttempts());
         }
         context.bindCapabilities(actual,actualCapabilities);

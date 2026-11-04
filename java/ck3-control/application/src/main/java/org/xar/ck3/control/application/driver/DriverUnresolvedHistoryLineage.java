@@ -36,6 +36,60 @@ final class DriverUnresolvedHistoryLineage {
         requireUnknown(action);var opening=same.head();
         var target=same.requireHistoricalHead(requestedTarget.state().sequence(),requestedTarget.digest());
         StrictJson.require(target.digest().equals(requestedTarget.digest())&&target.state().toJson().equals(requestedTarget.state().toJson()),"unresolved history target is not its actual canonical Head");
+        return verifyCanonicalSuffix(same,action,originalDriver,targetDriver,target,opening,bound,catalog,returnedSource,returnedActionSource);
+    }
+    static Verified verify(Session same,ActionReceipt action,ExactRef originalDriver,ExactRef targetDriver,
+            WriterContracts.Head requestedTarget,OutcomeArchive bound,RootReadContractCatalog catalog,
+            DriverReturnedControlHistoryRowProducer.Source returnedSource,DriverReturnedActionHistoryRowProducer.Source returnedActionSource,
+            DriverReadHistoryPublisher.HistoricalReadScope scope)throws IOException {
+        if(scope==null)return verify(same,action,originalDriver,targetDriver,requestedTarget,bound,catalog,returnedSource,returnedActionSource);
+        requireUnknown(action);var opening=same.head();
+        var target=same.requireHistoricalHead(requestedTarget.state().sequence(),requestedTarget.digest());
+        StrictJson.require(target.digest().equals(requestedTarget.digest())&&target.state().toJson().equals(requestedTarget.state().toJson()),"unresolved history target is not its actual canonical Head");
+        var verified=verifyWithinScope(same,bound,scope,actual -> verifyCanonicalSuffix(same,action,originalDriver,targetDriver,target,opening,
+                actual,catalog,returnedSource,returnedActionSource));
+        StrictJson.require(same.head().digest().equals(opening.digest()),"unresolved writer changed while completing historical read scope");
+        return verified;
+    }
+    /** The scope supplies no result. Only this invocation's original work can produce it, after successful scope exit. */
+    static <T>T verifyWithinScope(Session same,OutcomeArchive bound,DriverReadHistoryPublisher.HistoricalReadScope scope,
+            ActionPorts.CheckedArchiveRead<T> work)throws IOException {
+        var owner=Thread.currentThread();
+        var closed=new java.util.concurrent.atomic.AtomicBoolean();
+        var started=new java.util.concurrent.atomic.AtomicBoolean();
+        var completed=new java.util.concurrent.atomic.AtomicBoolean();
+        var rejection=new java.util.concurrent.atomic.AtomicReference<IOException>();
+        var failure=new java.util.concurrent.atomic.AtomicReference<Throwable>();
+        var result=new java.util.concurrent.atomic.AtomicReference<T>();
+        Throwable scopeFailure=null;
+        try {
+            scope.read(same,() -> {
+                if(Thread.currentThread()!=owner||closed.get()||!started.compareAndSet(false,true)) {
+                    var denied=new IOException("historical verification work must run once, synchronously on its original thread");
+                    rejection.compareAndSet(null,denied);throw denied;
+                }
+                try {result.set(work.read(bound));completed.set(true);}
+                catch(IOException|RuntimeException|Error original){failure.compareAndSet(null,original);throw original;}
+            });
+        }catch(IOException|RuntimeException|Error original){scopeFailure=original;}
+        finally {closed.set(true);}
+        // Native historical reads deliberately wrap this missing original: keep it non-optional.
+        if(failure.get() instanceof java.nio.file.NoSuchFileException&&scopeFailure instanceof IOException
+                &&scopeFailure.getCause()==failure.get())throw (IOException)scopeFailure;
+        if(failure.get()!=null)throwOriginal(failure.get());
+        if(rejection.get()!=null)throw rejection.get();
+        if(scopeFailure!=null)throwOriginal(scopeFailure);
+        if(!completed.get())throw new IOException("historical scope returned without completing its original verification");
+        return result.get();
+    }
+    private static void throwOriginal(Throwable original)throws IOException {
+        if(original instanceof IOException failure)throw failure;
+        if(original instanceof RuntimeException failure)throw failure;
+        throw (Error)original;
+    }
+    private static Verified verifyCanonicalSuffix(Session same,ActionReceipt action,ExactRef originalDriver,ExactRef targetDriver,
+            WriterContracts.Head target,WriterContracts.Head opening,OutcomeArchive bound,RootReadContractCatalog catalog,
+            DriverReturnedControlHistoryRowProducer.Source returnedSource,DriverReturnedActionHistoryRowProducer.Source returnedActionSource)throws IOException {
         var record=ContinuityActionJournal.requireHistoricalReceipt(target.state(),action,bound);
         StrictJson.require(bound.loadRecord(record).receipt().equals(action)&&bound.loadReceipt(bound.receiptReferenceOf(action)).equals(action),"unresolved original lost canonical receipt/record custody");
         var attempt=((ActionState.Unknown)action.state()).attempt().orElseThrow();

@@ -183,6 +183,12 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
     private final ActionPorts.OutcomeArchive archive;
     private final RootReadContractCatalog catalog;
     private final List<ExactRef> sources;
+    private final HistoricalReadScope historicalReadScope;
+    /** Explicit installed-owner cooperation. No archive, verdict or replacement result crosses this boundary. */
+    @FunctionalInterface public interface HistoricalReadScope {
+        void read(ContinuityStorePort.Session same,CheckedHistoricalRead operation)throws IOException;
+    }
+    @FunctionalInterface public interface CheckedHistoricalRead { void read()throws IOException; }
     private final DriverPersistenceStatus persistenceStatus=new DriverPersistenceStatus(Optional.empty());
     private DriverReturnedPublicReadHistoryMaterial.Source returnedReadSource;
     private DriverReturnedActionHistoryRowProducer.Source returnedActionSource;
@@ -198,6 +204,15 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
         this.authority=Objects.requireNonNull(authority);this.archive=Objects.requireNonNull(archive);this.catalog=Objects.requireNonNull(catalog);
         sources=List.copyOf(actualProducerSources);StrictJson.require(!sources.isEmpty()&&sources.size()<=64
                 &&new LinkedHashSet<>(sources).size()==sources.size()&&sources.stream().allMatch(ref -> ref.bytes()>0),"actual finite read-publication sources required");
+        historicalReadScope=null;
+    }
+    /** Opt-in for the exact installed owner; the original four-argument constructor keeps its original route. */
+    public DriverReadHistoryPublisher(DriverStateAssembler authority,ActionPorts.OutcomeArchive archive,
+            RootReadContractCatalog catalog,List<ExactRef> actualProducerSources,HistoricalReadScope historicalReadScope) {
+        this.authority=Objects.requireNonNull(authority);this.archive=Objects.requireNonNull(archive);this.catalog=Objects.requireNonNull(catalog);
+        sources=List.copyOf(actualProducerSources);StrictJson.require(!sources.isEmpty()&&sources.size()<=64
+                &&new LinkedHashSet<>(sources).size()==sources.size()&&sources.stream().allMatch(ref -> ref.bytes()>0),"actual finite read-publication sources required");
+        this.historicalReadScope=Objects.requireNonNull(historicalReadScope);
     }
     public void requireOwner(DriverStateAssembler same,ActionPorts.OutcomeArchive originals,RootReadContractCatalog installed) {
         StrictJson.require(authority==same&&archive==originals&&catalog==installed,"read publisher crossed its exact Driver/archive/catalog owner");
@@ -288,7 +303,11 @@ public final class DriverReadHistoryPublisher implements WriterContracts.Transit
     }
     public HistoricalUnresolvedHistoryExtension requireHistoricalUnresolvedHistoryExtension(ContinuityStorePort.Session same,ActionReceipt actualOriginalUnknown,
             ExactRef originalBeforeDriver,ExactRef actualHistoricalCurrentDriver,WriterContracts.Head targetHead)throws IOException {
-        var verified=DriverUnresolvedHistoryLineage.verify(same,actualOriginalUnknown,originalBeforeDriver,actualHistoricalCurrentDriver,targetHead,archive.withSession(same),catalog,returnedControlSource,returnedActionSource);
+        var bound=archive.withSession(same);var installedCatalog=catalog;
+        var control=returnedControlSource;var action=returnedActionSource;
+        var scope=control==null&&action==null?historicalReadScope:null;
+        var verified=DriverUnresolvedHistoryLineage.verify(same,actualOriginalUnknown,originalBeforeDriver,actualHistoricalCurrentDriver,targetHead,
+                bound,installedCatalog,control,action,scope);
         return new HistoricalUnresolvedHistoryExtension(this,same,verified);
     }
     public DriverPublicExecuteFailureMaterial.Outcome enqueuePublicExecuteFailure(ContinuityStorePort.Session same,
