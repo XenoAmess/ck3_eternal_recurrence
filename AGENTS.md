@@ -12,6 +12,9 @@
 
 后到具名新切点：运行 owner 已受控建立 Game117900／出生134382986922161575及 keeper34052／出生134382986871091921，20:51只读原件确认 map_ready、actor31254、date53158176。新 epoch 以该日期为基线，自动 observed／eligible／confirmedSaved 均从0记；世界 UID 与旧 Goal 跨 Game 认证仍 NOT_HELD，旧508／501／365日、C69与2455回执只保历史，不补授C70或保存。Dev入口显式第三参 `current-map` 通过 Main 本次实际 Core READ 检查地图；地图未就绪即拒绝，不能转入新战役分支，两参默认 `resume` 保留。入口2TU编译／6类结构检查、Maven outer START、Host／LOOP及实际推进分别记账，详见[本次新地图入口及来源](docs/autonomous-agent-progress/2026-11-05-dev-current-map.md)。
 
+
+后到首保存及功能P0：新世界59于21:18:10.777188800Z实际SAVE_CONFIRMED，Root具名独核原46→49只读结算、52C1及59，新8日已保存（date53158176→53158368、native26／public14）；旧世界508／501／365及未确认C70不移入新计数。该保存后又实际出现ACK成功而fresh READ暂不可用，故首保存不作为任务完成或当前健康证明。已形成[精确负READ有界重试的软件单元](docs/autonomous-agent-progress/2026-11-05-post-ack-read-availability.md)：仅只读、原期限／次数双界、每negative先归档、UNKNOWN仅同ID collect，旧成功proof／Guard／语义不变；1TU9类及新3P分别验收，不授实际装载、控制结算或性能。Runtime独占正常清洁边界采用，旧动作不重放、不刷新deadline，文档与CI不作运行前置。
+
 ## 2026-11-05 用户最新：自行游玩，暂停自动实机
 
 用户最新明确：“你收尾ck3以及对ck3进程的操作，现在我想自己玩了。”本条覆盖下方自动实机续行授权；立即停止 Java 自动游玩，以及 Game／Native live 查询、动作、录制／捕获、现场采样、部署、装载、launch 和后继 GET。同一 Game 与 keeper 保留，不关闭、不重启、不触发 SAVE；不得重放旧动作、刷新旧 deadline 或清账本。只有用户后到明确恢复授权才可恢复自动实机。

@@ -39,6 +39,56 @@ public final class RootAdvanceInfrastructureFactory {
     public static final int TIMINGS_MAX_BYTES=4096;
     private RootAdvanceInfrastructureFactory() { }
 
+    /** A bounded new read-only query may follow only an archived, completed exact availability rejection. */
+    static NativeFreshSnapshotPort.Result readAvailableFreshSnapshot(NativeFreshSnapshotPort port,
+            Instant deadline, java.time.Clock clock, int maximumAttempts,
+            java.util.function.Consumer<NativeFreshSnapshotPort.Unavailable> preserveUnavailable)
+            throws IOException, InterruptedException {
+        Objects.requireNonNull(port); Objects.requireNonNull(deadline); Objects.requireNonNull(clock);
+        Objects.requireNonNull(preserveUnavailable);
+        require(maximumAttempts >= 1 && maximumAttempts <= 65536, "finite actual fresh READ attempt bound required");
+        NativeFreshSnapshotPort.Result last = null;
+        for (int attempt = 0; attempt < maximumAttempts; attempt++) {
+            if (Thread.currentThread().isInterrupted()) throw new InterruptedException("actual fresh READ interrupted");
+            if (!clock.instant().isBefore(deadline)) {
+                if (last != null) return last;
+                throw new IOException("actual fresh READ original deadline expired before dispatch");
+            }
+            NativeFreshSnapshotPort.Result fresh = port.readFreshFullState(deadline);
+            if (fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
+                preserveUnavailable.accept(unavailable);
+                if (unavailable.dispatch() instanceof NativeActionPort.Unknown) {
+                    if (!clock.instant().isBefore(deadline)) return unavailable;
+                    if (Thread.currentThread().isInterrupted()) throw new InterruptedException("actual fresh READ collection interrupted");
+                    fresh = port.collectFreshFullState(unavailable.dispatch().requestId(), deadline);
+                    if (fresh instanceof NativeFreshSnapshotPort.Unavailable collected) preserveUnavailable.accept(collected);
+                }
+            }
+            last = fresh;
+            if (!(fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable)) return fresh;
+            if (!(unavailable.dispatch() instanceof NativeActionPort.AckReceived ack) || ack.nativeOk()) return unavailable;
+            var decoded = NativeWire.decode(ack.originalPacket());
+            require(decoded instanceof NativeWire.CommandResult, "actual fresh READ ACK packet type changed");
+            var original = (NativeWire.CommandResult) decoded;
+            require(!original.nativeOk() && original.requestId().equals(ack.requestId())
+                    && java.util.Arrays.equals(original.payload().value(), ack.originalFrame().bytes()),
+                    "actual fresh READ ACK binding changed");
+            require(ack.outbound().isPresent(), "actual fresh READ negative ACK requires its retained outbound packet");
+            var outbound = NativeWire.decodeExecuteRequest(ack.outbound().orElseThrow().originalPacket());
+            require(outbound.requestId().equals(ack.requestId()) && outbound.step().equals(NativeFreshSnapshotPort.STEP),
+                    "actual fresh READ negative ACK crossed its original read-only request");
+            if (original.error().presence() != NativeWire.Presence.VALUE) return unavailable;
+            var error = NativeWire.parse(original.error().token().orElseThrow().value());
+            if (!error.isTextual() || !error.textValue().equals("fresh_full_state_native_read_unavailable")) return unavailable;
+            Instant now = clock.instant();
+            if (attempt + 1 >= maximumAttempts || !now.isBefore(deadline)) return unavailable;
+            Duration remaining = Duration.between(now, deadline);
+            Duration pause = remaining.compareTo(Duration.ofMillis(100)) < 0 ? remaining : Duration.ofMillis(100);
+            Thread.sleep(pause);
+        }
+        return Objects.requireNonNull(last);
+    }
+
     public record Sources(ExactRef primitiveProducer,ExactRef primitiveDecoder,ExactRef primitiveVerifier,
             ExactRef statusDefinition,ExactRef statusDecoder,ExactRef unknownStatusDecoder) {
         public Sources {
@@ -650,9 +700,10 @@ public final class RootAdvanceInfrastructureFactory {
             var archive=context.archive().withSession(same);
             NativeFreshSnapshotPort.Result fresh;
             try {
-                fresh=context.transport().readFreshFullState(deadline);
-                if(fresh instanceof NativeFreshSnapshotPort.Unavailable missing && missing.dispatch() instanceof NativeActionPort.Unknown)
-                    fresh=context.transport().collectFreshFullState(missing.dispatch().requestId(),deadline);
+                fresh=readAvailableFreshSnapshot(context.transport(),deadline,context.clock(),timings.maximumFrames(),unavailable->{
+                    archive.preserve(unavailable.dispatch());
+                    unavailable.originalFrame().ifPresent(archive::preserveNativeFrame);
+                });
             } catch(InterruptedException interrupted) {
                 Thread.currentThread().interrupt();var failure=new InterruptedIOException("actual fresh read interrupted; original action is not replayed");
                 failure.initCause(interrupted);throw failure;

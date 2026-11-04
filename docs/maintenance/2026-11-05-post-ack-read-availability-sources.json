@@ -1,0 +1,171 @@
+{
+  "schema": "xar.java-owner.post-ack-read-availability-source-index/v1",
+  "at_utc": "2026-11-04T22:03:09.552736+00:00",
+  "base_commit": "cbd7919a5480cbbdcbc542dd695557d78965ef77",
+  "owner": "/root/java_continue",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\life-post-ack-read-availability01\\SOURCE-READY-OWNER01.json",
+    "bytes": 6480,
+    "sha256": "d21fccf52d3691dcd8415231a2555ed9730d0da1c44e3b6e9fb4290f97b91c45"
+  },
+  "typed_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\life-post-ack-read-availability01\\SOURCE-READY-TYPED02.json",
+    "bytes": 7495,
+    "sha256": "a4067de0b08c79360f5c60eec9c177c1eb434083cb3987dbb6b53e0a4f5b5e97"
+  },
+  "behavior_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\life-post-ack-read-availability01\\SOURCE-READY-BEHAVIOR03.json",
+    "bytes": 16018,
+    "sha256": "3a016c90d2a4daf67ece43fc7516941326a1c919c28a452a91c09cc228e9d7e0"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\life-post-ack-read-availability01\\SOURCE-READY-FORMAL-PROJECTION02.json",
+    "bytes": 2309,
+    "sha256": "1eaea56c0c7e315f2a6929284369b0868f7e5cabf425da9fc3b471da2cfc2573"
+  },
+  "actual_formal_complete_before_after_same_bytes": true,
+  "before": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\repeated-negative-read-source18\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+    "bytes": 57421,
+    "sha256": "5dcc2bd0b3bbe877b5683581f0054c0b05cc8e1f39322d186c66cf33e60a7355"
+  },
+  "candidate": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\life-post-ack-read-availability01\\owner-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+    "bytes": 61284,
+    "sha256": "c21fe6d60b405f6b02a83472c64440fb5a57fd3dc748d4db3c22d24b1e1cb898"
+  },
+  "outside_inverse_exact": true,
+  "test_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\SOURCE-READY-TEST02.json",
+    "bytes": 10093,
+    "sha256": "02e942d29612646584325015846244ecd3fa410d15406c08edadd4cf5506fdde"
+  },
+  "test_source": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\candidate02\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\PostAckFreshReadAvailabilityTest.java",
+    "bytes": 19488,
+    "sha256": "b3e88f273e4906035f80a6c62724a969a3f825417a2a31b1256a54908f19a2fa"
+  },
+  "support_source": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\candidate01\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\PostAckReadTransportTestSupport.java",
+    "bytes": 526,
+    "sha256": "00ca212022a5d4cf88cbdcc123286858a3af4b8e28df7da51d9e5ff5b2177353"
+  },
+  "native_qualification": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\QUALIFIED-POST-ACK-READ-SOFTWARE02.json",
+    "bytes": 29539,
+    "sha256": "168e46a4dbf61fd22133cb53e0860ae0f36fff6924d2db4d3d1c2358e8bfcd9d"
+  },
+  "independent_result": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\INDEPENDENT-RESULT02.json",
+    "bytes": 16693,
+    "sha256": "9ccd1fab5360e83ce907c528f4ebd0d21b604dc87c4ad77f28013f7561ad4a43"
+  },
+  "test_XML": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\native-test02-first01\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 43074,
+    "sha256": "0c32dd1bb7c9565ebb02bd61924380a2cfdcf9beddea88cc1f0705e9a12cbdb6"
+  },
+  "new_test_methods": 3,
+  "new_tests_passed": 3,
+  "original_discovery_failure": {
+    "ACTUAL": {
+      "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\native-test-first01\\actual\\junit\\ACTUAL.json",
+      "bytes": 1442,
+      "sha256": "4df12c9b3fc254d7bf57666ac4d50638d1b6d18da12fed5c8e50e227983e34b1"
+    },
+    "XML": {
+      "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\native-test-first01\\reports-junit\\TEST-junit-jupiter.xml",
+      "bytes": 72209,
+      "sha256": "f80fd42d064af50557cbd8ef27dc6cbbe44f50593cfe0ef04918fb41e20bbf59"
+    },
+    "exit_code": 1,
+    "methods_started": 0,
+    "assertions_run": 0,
+    "error": "Original noarg MethodSelector does not name method with @TempDir Path parameter; discovery failed. NativeCLI metadata and source selector signature mismatch, not production or assertion red.",
+    "MANAGED_CLOSE": {
+      "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\native-test-first01\\actual\\junit\\MANAGED-CLOSE.json",
+      "bytes": 238,
+      "sha256": "19fec8fec1fc959b91ddf347af0ee348ed5dc96f3d5e1bc6e99bf1ca4b2923d4"
+    },
+    "FENCE": {
+      "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\native-test-first01\\actual\\junit\\RELEASE-FENCE.json",
+      "bytes": 1091,
+      "sha256": "5c61a77f7a99c5b72841499027e836f9d81463b3eb753ea1b3616f75854e160b"
+    }
+  },
+  "model_test_review": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\MODEL-REVIEW01.json",
+    "bytes": 2262,
+    "sha256": "0dc2c589d37b35d64a9bb22f4fa9686f2ef367ef249d2e101393939854c79177"
+  },
+  "model_production_result": "HTTP200 length8000/55.6047636s/TTFT10.9592573s; whole content unread; 0code/noR2; owner implementation",
+  "model_new_test_methods_adopted": 0,
+  "class_names_same": true,
+  "new_methods_and_synthetic_changes": true,
+  "body_redefine_qualified": false,
+  "first_save16_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\resume-after-vacation-20261104\\FIRST-SAVE16-INDEPENDENT-VERIFIED.json",
+    "bytes": 6575,
+    "sha256": "3c547e69ef4d5abc906345f693622e0e19bee401835cc8b82a3db7383ec8eaf5"
+  },
+  "new_epoch_first_confirmed_saved_days": 8,
+  "old_epoch_days_not_transferred": true,
+  "full_private_Root_or_actual_Game_behavior_granted_by_software": false,
+  "Runtime_adoption_and_settlement": "Separate Runtime receipts, not inferred from software qualification",
+  "performance_goal_accepted": false,
+  "task_state": "RUNNING",
+  "later_actual_evidence_at_utc": "2026-11-04T22:06:17.298429+00:00",
+  "later_C2_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\resume-after-vacation-20261104\\C2-CAPTURE85-INDEPENDENT-VERIFIED.json",
+    "bytes": 5889,
+    "sha256": "879a496208e7beb24b447c897fa854a0eb4c6893c17776a7efd21d295aff61ef"
+  },
+  "later_Runtime_clean_original78": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\cycle2-clean-hold19\\ACTUAL-CYCLE2-CLEAN-END19.json",
+    "bytes": 17019,
+    "sha256": "d78522fa1cd751aaca1b046ef152df1cde6cdc81d33dc7f4da2631b63bd5d440"
+  },
+  "actual_Runtime20_refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt20\\SOURCE-ADOPTED20.json",
+      "bytes": 9213,
+      "sha256": "9ef3e02965f91ca2a92f45054ca4748c8428ca2d5b01de72e5e1b819cf6fabbe"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt20\\OLD-JAVA-RELEASED20.json",
+      "bytes": 2656,
+      "sha256": "8cbdc64c64125bcc40df721862ff814990f02175d6d76f6fb8b8532ea1f02476"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt20\\OWN-HOLD-RELEASE-ACTUAL20.json",
+      "bytes": 373,
+      "sha256": "d254d88eee16688767405800aaf2d87e3fb06f58825f6e1393524d494c2cbc06"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt20\\FINAL-PRELAUNCH20.json",
+      "bytes": 1346,
+      "sha256": "9c59eff05ba5fa62eb3f4b1035901e08af679ca2efc4b4bb724842587916aadc"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt20\\DEV-LAUNCH-READY307.json",
+      "bytes": 10488,
+      "sha256": "85dc98f755973f1e126927cc12dfa1c2c41017f071af88aec4deb2dbabc99a33"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt20\\ACTUAL-START307.json",
+      "bytes": 2449,
+      "sha256": "c08e2f5aaf76e8eb6223de49ed20cf2e211f7ba7a4cf8c5babbf12918825a4de"
+    }
+  ],
+  "Runtime_relay_lifecycle": {
+    "host_pid": 97584,
+    "birth": "134383031688380897",
+    "HOST_START": "2026-11-04T21:59:52.6533204Z",
+    "LOOP": "2026-11-04T21:59:59.4024086Z",
+    "next_batch": 3,
+    "source": "Runtime owner message; outer ACTUAL-START does not independently establish inner lifecycle",
+    "actual_postsetter_P0_retry_branch": "NOT_YET_QUALIFIED",
+    "actual_new_SAVE_by_this_patch": false,
+    "natural_M7_credit": false
+  }
+}
