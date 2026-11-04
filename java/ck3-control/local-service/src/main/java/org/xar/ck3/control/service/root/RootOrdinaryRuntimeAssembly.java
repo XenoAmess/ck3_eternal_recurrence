@@ -580,7 +580,8 @@ private Running openSameGameBootstrapInternal(ManagedGameSession actual, Optiona
     var opened = open(actual);
     if (pointer.isPresent() && opened.core().matchesCleanRestartHead(pointer.orElseThrow())) {
         var driver = runOperationPhase(clock,java.time.Duration.ofMinutes(10),phaseDeadline->
-                opened.core().adoptCleanRestart(actual,pointer.orElseThrow(),config.retainedFrames(),cyclePolicy,phaseDeadline));
+                opened.core().adoptCleanRestart(actual,pointer.orElseThrow(),config.retainedFrames(),cyclePolicy,phaseDeadline,
+                        ()->clock.instant().plus(java.time.Duration.ofMinutes(10))));
         return new Opened(this, driver.source()).finish(driver, Optional.of(opened.core().cleanRestartAdmission(driver)), deadline);
     }
     var settled = opened.core().readSettledSameGame(actual,cyclePolicy);

@@ -1101,8 +1101,12 @@ public final class RootApplicationAssembly {
         }
 
         public synchronized DriverBootstrap.Adopted adoptCleanRestart(ManagedGameSession game, ContinuityBatchJournal.CleanRestartTicket ticket, int retainedFrames, OriginalWindowReducer.Policy cyclePolicy, Instant deadline) throws IOException, InterruptedException {
+            return adoptCleanRestart(game,ticket,retainedFrames,cyclePolicy,deadline,()->deadline);
+        }
+
+        public synchronized DriverBootstrap.Adopted adoptCleanRestart(ManagedGameSession game, ContinuityBatchJournal.CleanRestartTicket ticket, int retainedFrames, OriginalWindowReducer.Policy cyclePolicy, Instant deadline, java.util.function.Supplier<Instant> postPreparationIoDeadline) throws IOException, InterruptedException {
             StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty(), "clean restart binds once to the unused Core");
-            StrictJson.require(game != null && ticket != null && cyclePolicy != null && deadline != null, "clean restart requires non-null arguments");
+            StrictJson.require(game != null && ticket != null && cyclePolicy != null && deadline != null && postPreparationIoDeadline != null, "clean restart requires non-null arguments");
             return writer.locked(same -> {
             var cycles = new OrdinaryCycleTransitions(archive, semanticVerifier, checkpointVerifiers, cyclePolicy, writer::requireSession);
             cycles.bindTerminalFrameLoader(frames);
@@ -1110,7 +1114,7 @@ public final class RootApplicationAssembly {
             var admission = batches.admitCleanRestart(same, ticket);
             var source=admission.manifest().source();
             DriverBootstrap.Adopted result;
-            try { result = DriverBootstrap.adoptCleanRestart(admission, same, actions, game.nativeTransport(), source, archive, (ref, max) -> archive.readArtifact(same, ref, Math.min(max, ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES)), retainedFrames, deadline); }
+            try { result = DriverBootstrap.adoptCleanRestart(admission, same, actions, game.nativeTransport(), source, archive, (ref, max) -> archive.readArtifact(same, ref, Math.min(max, ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES)), retainedFrames, deadline, postPreparationIoDeadline); }
             catch(InterruptedException interrupted) {
                 Thread.currentThread().interrupt();
                 var failure=new java.io.InterruptedIOException("same-Game Driver adoption interrupted");
