@@ -28,3 +28,5 @@ Runtime已于14:13:10.166973Z实际采用11源，唯一必要GET于14:13:22.9054
 Java早先soft-qualified导航包的at_utc误继承candidate13:41:37，原件保留；最终behavior-qualified已将candidate_at_utc与实际qualified_packaged_at_utc14:24:38.550330Z分列。Java在后到运行事实未送达时未授Runtime采用，其后已以 `RUNTIME-FACTS-ADDENDUM01.json`补记实际更早的11源采用／START与hold消费，不覆盖旧回执。新IO phase仍是原每操作10分钟，初始phase与本地CPU另计，旧commands期限不变；当前新增确认保存仍0、10秒目标未达，G2仍6/8。
 
 后到实际终态：restart12于14:32:43.440378600Z因HistoricalReadScope的NoClassDefFoundError退出，完整1160.6108951秒、没有LOOP／新日／SAVE。调用已到finishObserved，确实越过旧817期限阻点；缺失类型本次已有Dev物理输出，新增类型可见性是独立故障。Runtime随后撤回整个缓存五源，保期限P0三源＋财政两源＋PublicData一源，于14:45:02.517987600Z同host实际启动restart13。其冻结切点仍BOOTSTRAP，不能授普通游玩恢复或性能通过；[类型边界、整组撤回与精确来源](2026-11-04-restart12-classloader-boundary.md)另记。历史3P和全部harness红保留，离线正规loader诊断不阻本轮六源恢复。
+
+后到同局验收：15:05:41.991189900Z，保留期限P0三源＋财政两源＋PublicData一源的restart13／bc4467bc在同host76092、同Game77132真实进入普通LOOP／next126，从START计1239.4732023秒。Java具名核对`rollback-five-recovery01/ACTUAL-LOOP.json`：life-budget-hint restored、C67／pending=null、saved365保持。这次clean bootstrap实际通过，旧817故障已在实机越过；新World、推进、周期结算、SAVE与速度仍各等实际回执，不从LOOP授新增保存或10秒达标，不为离线候选打断当前健康委托。
