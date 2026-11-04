@@ -112,27 +112,25 @@ public final class PublicDataJson {
             return decimal;
         }
         if(original instanceof OpportunityJson.Obj before&&projected instanceof OpportunityJson.Obj after) {
-            var fields=new LinkedHashMap<String,OpportunityJson.Value>();
-            boolean unchanged=true;
+            LinkedHashMap<String,OpportunityJson.Value> fields=null;
             for(var entry:after.members().entrySet()) {
                 var child=preserveDecimals(before.get(entry.getKey()),entry.getValue(),names,indexes,objectPath(names,depth,entry.getKey()));
-                fields.put(entry.getKey(),child);
-                unchanged &= child==entry.getValue();
+                if(fields==null && child!=entry.getValue())fields=new LinkedHashMap<>(after.members());
+                if(fields!=null)fields.put(entry.getKey(),child);
             }
             for(var entry:before.members().entrySet())if(!after.members().containsKey(entry.getKey()))
                 requireNoDecimal(entry.getValue(),names,indexes,objectPath(names,depth,entry.getKey()));
-            return unchanged ? after : new OpportunityJson.Obj(fields);
+            return fields==null ? after : new OpportunityJson.Obj(fields);
         }
         if(original instanceof OpportunityJson.Arr before&&projected instanceof OpportunityJson.Arr after) {
-            var rows=new ArrayList<OpportunityJson.Value>();
-            boolean unchanged=true;
+            ArrayList<OpportunityJson.Value> rows=null;
             for(int index=0;index<after.items().size();index++) {
                 var child=preserveDecimals(index<before.items().size()?before.items().get(index):null,after.items().get(index),names,indexes,arrayPath(names,indexes,depth,index));
-                rows.add(child);
-                unchanged &= child==after.items().get(index);
+                if(rows==null && child!=after.items().get(index))rows=new ArrayList<>(after.items());
+                if(rows!=null)rows.set(index,child);
             }
             for(int index=after.items().size();index<before.items().size();index++)requireNoDecimal(before.items().get(index),names,indexes,arrayPath(names,indexes,depth,index));
-            return unchanged ? after : new OpportunityJson.Arr(rows);
+            return rows==null ? after : new OpportunityJson.Arr(rows);
         }
         requireNoDecimal(original,names,indexes,depth);return projected;
     }
@@ -158,6 +156,7 @@ public final class PublicDataJson {
         StrictJson.require(value != null && depth <= 64, "bounded complete public DATA node required");
         if (value.isObject()) {
             var names = new TreeSet<String>(); value.fieldNames().forEachRemaining(names::add);
+            if (names.isEmpty()) return new OpportunityJson.Obj(java.util.Map.of());
             var fields = new LinkedHashMap<String, OpportunityJson.Value>();
             for (String name : names) fields.put(name, domain(value.get(name), depth + 1));
             return new OpportunityJson.Obj(fields);
