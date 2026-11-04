@@ -1,0 +1,36 @@
+{
+  "schema": "bootstrap-manifest-once-formal-sources/v1",
+  "at_utc": "2026-11-04T20:39:38.138622+00:00",
+  "owner": "/root/java_continue",
+  "refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\bootstrap-manifest-once-formal-source01\\SOURCE-READY-SOFTWARE-PROJECTION04.json",
+      "bytes": 6006,
+      "sha256": "1e64d7a2ab96d3c306d9a4febe4a4bebb58f7fb65853ec1feea725396997c8aa"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\bootstrap-manifest-once-formal-source01\\revision02\\SOURCE-READY-PROJECTION03.json",
+      "bytes": 7560,
+      "sha256": "c1907bb58db81263257b13e9257d2a98612572b779a11daa8fdddaa3c2b974d2"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\bootstrap-rebuild-manifest-once01\\QUALIFIED-COHORT01.json",
+      "bytes": 13447,
+      "sha256": "97864a310d6fc9b6f01c3579f8defd6c67e295cb82b2e7eeda4007c517cac420"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\bootstrap-manifest-once-independent-test01\\INDEPENDENT-RESULT01.json",
+      "bytes": 6050,
+      "sha256": "11cb7f269b162adbecf24fc9a6db96081b47bea643a4b3bdde156fd18c48b08f"
+    }
+  ],
+  "formal_paths": [
+    "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationEvidenceReader.java",
+    "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/driver/DriverPersistentPlanningState.java",
+    "java/ck3-control/application/src/test/java/org/xar/ck3/control/application/driver/DriverManifestOnceFrontierDataTest.java"
+  ],
+  "raw_qualification": "current actual2prod first0/3classes;newTestfirst0/3classes;exact3DATA3P0skip/error/fail",
+  "formal_layer": "Only ownedhunks, formalextra5arg/archiveoptin preserved, completeoutsideinverse. Not fullformal rawwholecopy/wholevariant qualification.",
+  "Runtime_credit": false,
+  "Game_query_GET_JVM_by_formal_owner": 0
+}

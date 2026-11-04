@@ -356,8 +356,8 @@ public final class DriverPersistentPlanningState {
         ExactRef manifest=reference(basis.get("manifest")),nativeRef=reference(basis.get("native"));
         RawJson body=archive.loadMaterial(manifest);
         byte[] nativeBytes=archive.loadNativeFrame(nativeRef);
-        var driver=archive.loadMaterial(DriverObservationEvidenceReader.currentDriverReference(manifest,body));
-        var result=DriverObservationEvidenceReader.replayOriginalsWithScopedDriverDecode(manifest,body,driver,nativeBytes,nativeRef,archive.scopedDriverDecoder());
+        var result=DriverObservationEvidenceReader.replayCapturedOriginals(manifest,body,nativeBytes,nativeRef,
+                archive::loadMaterial,archive::scopedDriverDecoder);
         require(result instanceof Complete,"persistent source full Driver/native replay unavailable");return (Complete)result;
     }
     private static ExactRef source(Obj auxiliary) {return reference(auxiliary.get(COOLDOWN_SOURCE));}

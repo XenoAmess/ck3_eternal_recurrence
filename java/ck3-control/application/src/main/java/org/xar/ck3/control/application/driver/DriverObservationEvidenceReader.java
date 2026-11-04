@@ -119,6 +119,26 @@ public final class DriverObservationEvidenceReader {
         return new DriverObservationAssembler().assemble(actual,facts,nativeReference);
     }
 
+    /** Same captured rebuild only: check the manifest once before the original Driver read.
+     * Both callbacks run once in the caller's original order and cannot supply a checked row or Complete.
+     */
+    static DriverObservationAssembler.Result replayCapturedOriginals(ExactRef manifestReference,RawJson manifest,
+            byte[] framedNative,ExactRef nativeReference,
+            java.util.function.Function<ExactRef,RawJson> originalDriver,
+            java.util.function.Supplier<org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader> decoder) {
+        var row=checkedManifest(manifestReference,manifest);
+        var fullDriver=originalDriver.apply(reference(row.get("driver_ref")));
+        // The original rebuild evaluates this getter after material load, even if fullDriver is null.
+        var actualDecoder=decoder.get();
+        Objects.requireNonNull(fullDriver);
+        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                "bounded archived original native frame required");
+        // Keep the original private copy after the callbacks and native bounds check.
+        var actual=nativeFrame(row,framedNative.clone());
+        var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
+        return new DriverObservationAssembler().assemble(actual,facts,nativeReference);
+    }
+
     /** Pure full projection also preserves death/unavailable scopes; the caller retains its production assembler. */
     public static DriverObservationAssembler.FullSnapshot projectOriginals(ExactRef manifestReference,RawJson manifest,
             RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,DriverObservationAssembler actualAssembler) {

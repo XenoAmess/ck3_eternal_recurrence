@@ -8,6 +8,8 @@
 
 唯一 owner 保持：Runtime 独占 Game／Native live、worker／keeper、账本、source307／build307、GET及实际采用；`/root/native_continue` 负责必要离线编测与资源；`/root/java_continue` 负责正式业务 Git／生产源码；`/root/models_continue` 负责模型 HTTP 运营及共享 Git。正常游玩及必要 P0 优先，Guard／parser／hash／oldencode 冻结边界继续适用，不恢复固定并发定额，不把文档发表、CI、候选 ACK 或研究编测设为同局恢复前置。
 
+后到现场事实（2026-11-04T20:25Z切点）：运行 owner 核实旧 Game77132 已 exit0，当前 CK3 进程清单为空；旧 keeper67152／host58200 的 PID 已复用，不能据 PID 相同认作旧对象。Root 按本次恢复授权安排必要的新 Game 受控启动，前提是先核最新真实手玩存档、旧 launch 与实际世界来源；当前没有活跃 Game，不将此称为重启现有 Game 或已同局恢复。不默认旧 saved365／head2457／原2455适用于新世界，不重放原动作、不清旧账本；旧 epoch／源码／回执完整保留，新 Game、epoch、world、LOOP及保存分别待真实回执。
+
 ## 2026-11-05 用户最新：自行游玩，暂停自动实机
 
 用户最新明确：“你收尾ck3以及对ck3进程的操作，现在我想自己玩了。”本条覆盖下方自动实机续行授权；立即停止 Java 自动游玩，以及 Game／Native live 查询、动作、录制／捕获、现场采样、部署、装载、launch 和后继 GET。同一 Game 与 keeper 保留，不关闭、不重启、不触发 SAVE；不得重放旧动作、刷新旧 deadline 或清账本。只有用户后到明确恢复授权才可恢复自动实机。
