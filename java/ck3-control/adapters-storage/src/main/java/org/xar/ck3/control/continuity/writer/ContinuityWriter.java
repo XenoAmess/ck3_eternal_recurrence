@@ -371,6 +371,151 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             for(Pin pin:actual.documents())LedgerFiles.verify(pin);
             requireSameHead(actual,store.head());return retained;
         }
+        @Override public <T> T withHistoricalTransitions(java.util.List<Pin> actualEvents,
+                ContinuityStorePort.HistoricalTransitionProjection<T> projection) throws IOException {
+            requireWriter(layout.lock());
+            final java.util.List<Pin> requested = java.util.List.copyOf(Objects.requireNonNull(actualEvents));
+            Objects.requireNonNull(projection);
+            StrictJson.require(!requested.isEmpty()
+                    && requested.size() <= org.xar.ck3.control.continuity.ContinuityHistory.maximumEvents(),
+                    "finite actual canonical event batch required");
+            Head captured;
+            try { captured = head(); }
+            catch (IOException changed) {
+                // No projection has begun: only this initial capture may be retried.
+                retainedHead = null;
+                captured = store.refreshHead();
+            }
+            final Head actual = captured;
+            final HistoryIndex index = new HistoryIndex(actual.documents(), layout.anchor());
+            final class ScopedHistory extends java.util.AbstractList<HistoricalTransition>
+                    implements java.util.RandomAccess {
+                private final java.util.LinkedHashMap<Pin,ObjectNode> documents = new java.util.LinkedHashMap<>();
+                private final java.util.LinkedHashMap<Long,ContinuityState> states = new java.util.LinkedHashMap<>();
+                private final java.util.BitSet visited = new java.util.BitSet(requested.size());
+                private ContinuityState anchored;
+                private volatile boolean active = true;
+                private volatile Throwable firstFailure;
+                private synchronized void failed(Throwable failure) {
+                    if (firstFailure == null) firstFailure = failure;
+                }
+                private void requireActive() throws IOException {
+                    if (!active || Thread.currentThread() != owner)
+                        throw new IOException("historical projection requires its live original owning-thread scope");
+                    requireWriter(layout.lock());
+                    Head observed = head();
+                    if (observed != actual) requireSameHead(actual, observed);
+                }
+                private ObjectNode document(Pin pin) throws IOException {
+                    ObjectNode value = documents.get(pin);
+                    if (value != null) return value;
+                    value = ContinuityJson.parseObject(readPinned(pin, ContinuityJson.LEDGER_MAX_BYTES), ContinuityJson.LEDGER_MAX_BYTES);
+                    StrictJson.object(value, java.util.Set.of("sequence", "at_utc", "kind", "details", "identity", "previous_sha256", "after"));
+                    long sequence = StrictJson.integer(value.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER);
+                    StrictJson.require(Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(layout.event(sequence)),
+                            "historical event must retain its actual canonical sequence path");
+                    documents.put(pin, value);
+                    if (documents.size() > 4) documents.remove(documents.keySet().iterator().next());
+                    return value;
+                }
+                private ObjectNode event(long sequence) throws IOException {
+                    return document(index.path(layout.event(sequence), "requested state is absent from the actual finite canonical history"));
+                }
+                private ContinuityState anchor() throws IOException {
+                    if (anchored == null) {
+                        Pin pin = index.anchor();
+                        anchored = ContinuityState.fromJson(ContinuityJson.parseObject(readPinned(pin, ContinuityJson.LEDGER_MAX_BYTES),
+                                ContinuityJson.LEDGER_MAX_BYTES), layout.machineId());
+                    }
+                    return anchored;
+                }
+                private ContinuityState state(long sequence) throws IOException {
+                    ContinuityState retained = states.get(sequence);
+                    if (retained != null) return retained;
+                    ContinuityState initial = anchor();
+                    if (sequence == initial.sequence()) return initial;
+                    StrictJson.require(sequence > initial.sequence() && sequence <= actual.state().sequence(),
+                            "requested historical state is outside the actual finite canonical chain");
+                    ObjectNode source = event(sequence);
+                    ContinuityState value = ContinuityState.fromJson(source.get("after"), layout.machineId());
+                    StrictJson.require(value.sequence() == sequence
+                            && StrictJson.text(value.toJson().get("last_event_identity")).equals(StrictJson.text(source.get("identity"))),
+                            "captured canonical event after state binding differs");
+                    states.put(sequence, value);
+                    if (states.size() > 4) states.remove(states.keySet().iterator().next());
+                    return value;
+                }
+                private HistoricalTransition edge(int position) throws IOException {
+                    try {
+                        requireActive();
+                        Objects.checkIndex(position, requested.size());
+                        Pin pin = index.pin(requested.get(position), "event pin is not in this actual captured canonical history");
+                        ObjectNode source = document(pin);
+                        long sequence = StrictJson.integer(source.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER);
+                        ContinuityState before = state(Math.subtractExact(sequence, 1)), after = state(sequence);
+                        StrictJson.require(StrictJson.text(source.get("previous_sha256")).equals(ContinuityJson.digest(before.toJson()))
+                                && ContinuityJson.same(source.get("after"), after.toJson()),
+                                "historical canonical edge predecessor/after differs");
+                        ObjectNode identity = StrictJson.object();
+                        identity.set("kind", source.get("kind")); identity.set("details", source.get("details"));
+                        String eventIdentity = StrictJson.text(source.get("identity"));
+                        StrictJson.require(ContinuityJson.digest(identity).equals(eventIdentity), "historical canonical event identity differs");
+                        HistoricalTransition result = new HistoricalTransition(sequence, StrictJson.text(source.get("kind")),
+                                ContinuityJson.canonical(source.get("details")), eventIdentity, before, after, pin);
+                        visited.set(position);
+                        return result;
+                    } catch (IOException | RuntimeException | Error failure) {
+                        failed(failure); throw failure;
+                    }
+                }
+                @Override public HistoricalTransition get(int position) {
+                    try { return edge(position); }
+                    catch (IOException failure) { throw new java.io.UncheckedIOException(failure); }
+                }
+                @Override public int size() {
+                    try { requireActive(); return requested.size(); }
+                    catch (IOException failure) { failed(failure); throw new java.io.UncheckedIOException(failure); }
+                    catch (RuntimeException | Error failure) { failed(failure); throw failure; }
+                }
+                private void requireSuccessful() throws IOException {
+                    Throwable failure = firstFailure;
+                    if (failure instanceof IOException io) throw io;
+                    if (failure instanceof RuntimeException runtime) throw runtime;
+                    if (failure instanceof Error error) throw error;
+                }
+                private void finish() throws IOException {
+                    requireSuccessful();
+                    for (int position = visited.nextClearBit(0); position < requested.size(); position = visited.nextClearBit(position + 1))
+                        edge(position);
+                    requireSuccessful();
+                }
+                private void close() {
+                    active = false; documents.clear(); states.clear(); anchored = null;
+                }
+            }
+            ScopedHistory history = new ScopedHistory();
+            Throwable primary = null;
+            try {
+                T result = projection.project(history);
+                history.finish();
+                return result;
+            } catch (IOException | RuntimeException | Error failure) {
+                primary = failure; throw failure;
+            } finally {
+                history.close();
+                Throwable readFailure = history.firstFailure;
+                if (primary != null && readFailure != null && readFailure != primary && readFailure != primary.getCause())
+                    primary.addSuppressed(readFailure);
+                try {
+                    for (Pin pin : actual.documents()) LedgerFiles.verify(pin);
+                    for (Path path : actual.absent()) LedgerFiles.requireAbsent(path);
+                    requireSameHead(actual, head());
+                } catch (IOException | RuntimeException | Error fence) {
+                    if (primary == null) throw fence;
+                    if (primary != fence) primary.addSuppressed(fence);
+                }
+            }
+        }
         @Override public java.util.List<HistoricalTransition> readHistoricalTransitions(java.util.List<Pin> actualEvents) throws IOException {
             requireWriter(layout.lock());
             actualEvents=java.util.List.copyOf(Objects.requireNonNull(actualEvents));

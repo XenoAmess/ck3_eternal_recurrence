@@ -79,7 +79,13 @@ public final class OrdinarySwayPolicy implements OrdinaryPolicy {
         } catch (OrdinarySwayService.Unavailable | IllegalArgumentException failure) {
             return new Keep("ordinary Sway optional inputs unavailable: " + failure.getMessage());
         }
-        if (result.staged().isEmpty()) return new Keep("ordinary Sway " + result.reason().name().toLowerCase(Locale.ROOT));
+        if (result.staged().isEmpty()) {
+            String reason = "ordinary Sway " + result.reason().name().toLowerCase(Locale.ROOT);
+            if (result.error().isPresent()) {
+                reason += ": " + result.error().orElseThrow();
+            }
+            return new Keep(reason);
+        }
         if (!request.observations().actionSteps().contains(OPERATION)) {
             return new Keep("ordinary Sway composite is not registered for this observed frame");
         }

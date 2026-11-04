@@ -30,26 +30,46 @@ final class ContinuityStore {
         List<Pin> pins = new ArrayList<>(List.of(anchor.pin(), snapshot.pin()));
         List<Path> absent = new ArrayList<>(); List<IndexRepair> repairs = new ArrayList<>();
         ContinuityState start = state(anchor.bytes()), stored = state(snapshot.bytes());
-        List<LedgerFiles.Document> captured = new ArrayList<>();
+        List<Pin> captured = new ArrayList<>();
         Path nextAbsent = null;
         for (int count = 0; count < ContinuityHistory.maximumEvents(); count++) {
             Path path = layout.event(Math.addExact(start.sequence(), Math.addExact((long) count, 1)));
             Optional<LedgerFiles.Document> document = LedgerFiles.optional(path, ContinuityJson.LEDGER_MAX_BYTES);
             if (document.isEmpty()) { LedgerFiles.requireAbsent(path); nextAbsent = path; break; }
             if (count == ContinuityHistory.maximumEvents() - 1) throw new IOException("finite continuity history exhausted");
-            captured.add(document.orElseThrow());
+            captured.add(document.orElseThrow().pin());
         }
-        // The pure projector decodes and validates every original edge exactly once, including
-        // its predecessor, full after state, unique source and exact earlier episode originals.
-        var projection = ContinuityHistory.preview(start, stored, captured.stream().map(LedgerFiles.Document::bytes).toList());
+        List<Pin> capturedEventPins = List.copyOf(captured);
+        // The pure projector retains metadata and a rolling head; this finite view rereads exact pins.
+        List<byte[]> documents = java.util.Collections.unmodifiableList(new java.util.AbstractList<byte[]>() {
+            @Override public byte[] get(int index) {
+                Pin original = capturedEventPins.get(index);
+                try {
+                    var document = LedgerFiles.read(Path.of(original.reference().path()), ContinuityJson.LEDGER_MAX_BYTES);
+                    if (!document.pin().equals(original))
+                        throw new IOException("captured continuity event changed during bounded projection");
+                    return document.bytes();
+                } catch (IOException failure) {
+                    throw new java.io.UncheckedIOException(failure);
+                }
+            }
+            @Override public int size() { return capturedEventPins.size(); }
+        });
+        ContinuityHistory.BoundedPreview projection;
+        try {
+            projection = ContinuityHistory.previewBounded(start, stored, documents);
+        } catch (java.io.UncheckedIOException failure) {
+            throw failure.getCause();
+        }
+        StrictJson.require(projection.events().size() == capturedEventPins.size(),
+                "bounded continuity projection must summarize every captured event");
         for (int index = 0; index < projection.events().size(); index++) {
-            ContinuityEvent event = projection.events().get(index);
-            if(org.xar.ck3.control.continuity.EpisodeWindow.BASELINE_KIND.equals(event.kind())){
-                var baseline=org.xar.ck3.control.continuity.EpisodeWindow.baseline(new Request(event.kind(),event.details(),List.of()));
-                StrictJson.require(pins.contains(baseline.begin().eventPin()),
+            ContinuityHistory.EventSummary event = projection.events().get(index);
+            if (event.baselineBeginPin().isPresent()) {
+                StrictJson.require(pins.contains(event.baselineBeginPin().orElseThrow()),
                         "BASELINE original BEGIN must retain its actual captured Win32 file identity, not only equal bytes");
             }
-            pins.add(captured.get(index).pin());
+            pins.add(capturedEventPins.get(index));
             Path indexPath = layout.sourceIndex(event.sourceKey());
             Optional<LedgerFiles.Document> sourceIndex = LedgerFiles.optional(indexPath);
             if (sourceIndex.isEmpty()) {
@@ -60,6 +80,7 @@ final class ContinuityStore {
             }
         }
         absent.add(java.util.Objects.requireNonNull(nextAbsent, "finite continuity next event absence required"));
+        for (Pin original : pins) LedgerFiles.verify(original);
         for (Path path : absent) LedgerFiles.requireAbsent(path);
         Head result = new Head(projection.head(), pins, absent, repairs, projection.snapshotNeedsRecovery());
         retainedHead = result;

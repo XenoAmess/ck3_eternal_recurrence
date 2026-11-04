@@ -17,6 +17,10 @@ public interface ContinuityStorePort {
         throw new IOException("actual original writer session authority is not installed");
     }
     @FunctionalInterface interface SessionWork<T> { T run(Session session) throws IOException; }
+    /** Projection lifetime is implementation-scoped; only the physical writer override is bounded. */
+    @FunctionalInterface interface HistoricalTransitionProjection<T> {
+        T project(java.util.List<HistoricalTransition> transitions) throws IOException;
+    }
     interface Session {
         /** No Game command is sent here; the installed private authority must revalidate actual custody. */
         default org.xar.ck3.control.continuity.EpisodeWindow.CommittedBegin beginEpisodeWindow(org.xar.ck3.control.continuity.EpisodeWindow.Begin begin) throws IOException {
@@ -59,6 +63,11 @@ public interface ContinuityStorePort {
                 results.add(readHistoricalTransition(pin));
             }
             return java.util.List.copyOf(results);
+        }
+        /** Compatibility fallback preserves old adapters; it does not claim bounded graph retention. */
+        default <T> T withHistoricalTransitions(java.util.List<Pin> actualEvents,
+                HistoricalTransitionProjection<T> projection) throws IOException {
+            return java.util.Objects.requireNonNull(projection).project(readHistoricalTransitions(actualEvents));
         }
         Pin capturePin(ExactRef reference, int maximumBytes) throws IOException;
         void verifyPin(Pin pin) throws IOException;

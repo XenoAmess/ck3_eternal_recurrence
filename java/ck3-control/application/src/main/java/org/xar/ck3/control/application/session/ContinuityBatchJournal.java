@@ -2694,7 +2694,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 StrictJson.require(pin!=null,"settled initial recovery requires its actual canonical event history");
                 requested.add(pin);
             }
-            var edges=same.readHistoricalTransitions(requested);
+            return same.<CheckedSameGameHistory>withHistoricalTransitions(requested, edges -> {
             var retained=new RetainedReadDriver(known,entry.fullDriver());
             var latestObserved=new ObservationIdentity(owner.machineId(),owner.game(),
                     new org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame(
@@ -3071,6 +3071,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             }
             return new CheckedSameGameHistory(data, isolated, confirmedSaves, retainedRecovery,
                     unfinishedReadOnlyBatch, capturedManifests);
+            });
             });
             var data = checkedHistory.data();
             StrictJson.require(same.head().state().sequence() == state.sequence() && same.head().digest().equals(head.digest()),

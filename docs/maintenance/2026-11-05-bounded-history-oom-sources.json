@@ -1,0 +1,357 @@
+{
+  "schema": "oom-bounded-five-source-software-qualified/v1",
+  "qualified_at_utc": "2026-11-04T18:21:00.785767+00:00",
+  "owner": "/root/java_continue",
+  "state": "ACTUAL_RAW_FIVE_SOURCE_MINIMUM_SOFTWARE_COHORT_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "production_sources": [
+    {
+      "relative": "continuity-core/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityStorePort.java",
+      "before": {
+        "relative": "continuity-core/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityStorePort.java",
+        "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\oom-store-contract01\\ContinuityStorePort.java",
+        "bytes": 8743,
+        "sha256": "1fb6b7f414f4213ff1d8b65ebf844158bf344bec16c27bd4c6daec3273264894"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-bounded-history-producer01\\candidate01\\continuity-core\\src\\main\\java\\org\\xar\\ck3\\control\\continuity\\writer\\ContinuityStorePort.java",
+        "bytes": 9414,
+        "sha256": "bfad267191ddc252decd545f224450a701623f45a92dbaf4cff94769b86c6f7f"
+      },
+      "outside_inverse_exact": true,
+      "owned_spans": 2
+    },
+    {
+      "relative": "adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityWriter.java",
+      "before": {
+        "relative": "adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityWriter.java",
+        "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\action-append-sources01\\source\\adapters-storage\\src\\main\\java\\org\\xar\\ck3\\control\\continuity\\writer\\ContinuityWriter.java",
+        "bytes": 113779,
+        "sha256": "0e7f22712afad37c0c6897a5886afff67341c1c3c6f2bf2ca691ce61619a0ed8"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-bounded-history-producer01\\candidate01\\adapters-storage\\src\\main\\java\\org\\xar\\ck3\\control\\continuity\\writer\\ContinuityWriter.java",
+        "bytes": 123614,
+        "sha256": "accd3ad46bbc3e66621e1498f32b7b19ace06908bb26e65009c3779e267810a6"
+      },
+      "outside_inverse_exact": true,
+      "owned_spans": 1
+    },
+    {
+      "relative": "application/src/main/java/org/xar/ck3/control/application/session/ContinuityBatchJournal.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\oom-and-named-callees01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 328741,
+        "sha256": "dd983cbe60205d0220facc5203ea0e7fe981d217128853ba3b9d1b1bbe8edadf"
+      },
+      "candidate": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/oom-bounded-history-consumer01/candidate01/application/src/main/java/org/xar/ck3/control/application/session/ContinuityBatchJournal.java",
+        "bytes": 328788,
+        "sha256": "ca6455046abb8e42398e90a8dee978fae41fe69491a992f7cac31af215460ffc"
+      },
+      "outside_inverse_exact": true,
+      "owned_spans": 2
+    },
+    {
+      "relative": "continuity-core/src/main/java/org/xar/ck3/control/continuity/ContinuityHistory.java",
+      "before": {
+        "relative": "continuity-core/src/main/java/org/xar/ck3/control/continuity/ContinuityHistory.java",
+        "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\cold-history-actual01\\ContinuityHistory.java",
+        "bytes": 5281,
+        "sha256": "bd51245b4eb52f0b137d9cf4e323d92290c05e8047a20794e6d987b9433cd0ff"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-cold-history-metadata-preview01\\candidate01\\continuity-core\\src\\main\\java\\org\\xar\\ck3\\control\\continuity\\ContinuityHistory.java",
+        "bytes": 11719,
+        "sha256": "3e7e093e6fbeff5f65cdf9ff9c3b21f0e4b7a4a6fdd39a0a124db085f2b66e3f"
+      },
+      "outside_inverse_exact": true,
+      "owned_spans": 1
+    },
+    {
+      "relative": "adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityStore.java",
+      "before": {
+        "path": "D:/ck3-state/resume91-runtime/ordinary-p0-20261104-1710/cold-history-actual01/ContinuityStore.java",
+        "bytes": 11379,
+        "sha256": "dcd040afb375b9c1e187393782d855fcc71d4bd5a6a983af4fb6cab2746c8d09"
+      },
+      "candidate": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/oom-cold-store-consumer01/candidate01/adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityStore.java",
+        "bytes": 12396,
+        "sha256": "efc60ea263e665440fc4d548fd5c91848b9573838d286ccd406afeb53921bc91"
+      },
+      "outside_inverse_exact": true,
+      "owned_spans": 5
+    }
+  ],
+  "production_source_ready": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-bounded-history-producer01\\SOURCE-READY-THREE-TU01.json",
+      "bytes": 4380,
+      "sha256": "6392e32e0e6a7d13f88264b6168ff085c51aa2ea9acde98ebe24f318a3ba306f"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-cold-history-metadata-preview01\\SOURCE-READY-TWO-TU01.json",
+      "bytes": 3439,
+      "sha256": "b41976b6d3b3ebd693f34fe4deaab756500061b96aedae6767c5335b2c5c9fb9"
+    }
+  ],
+  "compiler_classes": {
+    "first_three_TUs": 33,
+    "next_cold_two_TUs": 7,
+    "new_Test_only": 4,
+    "support_binary_reused": 2
+  },
+  "test_source": {
+    "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\candidate02\\org\\xar\\ck3\\control\\continuity\\writer\\OrdinaryHistoryOomRegressionTest.java",
+    "bytes": 15944,
+    "sha256": "4cf7fd956c9c0d6fb51832800d4bfb9f9b081af33789e1e5a91f973c713036a0"
+  },
+  "test_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\SOURCE-READY-TEST03.json",
+    "bytes": 6786,
+    "sha256": "88c5f3f818ea25e41087b82f69ba6b8c0c12001353b88d0515d8522cb33bae89"
+  },
+  "behavior": [
+    {
+      "phase": "positive",
+      "actual_seconds": 69.32464740000432,
+      "xml_seconds": "67.098",
+      "exact_case": {
+        "name": "realWriterProjectsLongFullStatesUnderFixedSmallHeapAndClosesItsView()",
+        "classname": "org.xar.ck3.control.continuity.writer.OrdinaryHistoryOomRegressionTest",
+        "time": "67.057"
+      },
+      "actual": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\actual\\positive\\ACTUAL.json",
+        "bytes": 1470,
+        "sha256": "98daab6b5fa29d057709c913c89f26d38eacefd55aaf604a0b6bc22060e314e9"
+      },
+      "post": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\actual\\positive\\POST.json",
+        "bytes": 1207,
+        "sha256": "a8fcdb43c9c314f107393233468219f29b4ce3161cf653bbbaa799ba4915cc87"
+      },
+      "release_fence": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\actual\\positive\\RELEASE-FENCE.json",
+        "bytes": 1076,
+        "sha256": "82df1d2c0ebff0851361b6c3f89ab254f8359e674c8b273810126dbd25b8a777"
+      },
+      "managed_close": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\actual\\positive\\MANAGED-CLOSE.json",
+        "bytes": 241,
+        "sha256": "07e891b1e10d688beba488877c9204f92df50c12ce42372c964e5e45c418ec0c"
+      },
+      "xml": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\reports-positive\\TEST-junit-jupiter.xml",
+        "bytes": 42099,
+        "sha256": "1e3bc103f601c3fb57ae40e823ade7629cae2639b8e1ccdcf2fafb8f3c8e5686"
+      },
+      "separate_phase_budget_seconds": 90,
+      "separate_TOTAL_budget_seconds": 120
+    },
+    {
+      "phase": "negative",
+      "actual_seconds": 29.152099999948405,
+      "xml_seconds": "23.021",
+      "exact_case": {
+        "name": "latePhysicalFailuresCaughtReadsAndChangedHeadCannotGrantAProjection()",
+        "classname": "org.xar.ck3.control.continuity.writer.OrdinaryHistoryOomRegressionTest",
+        "time": "22.988"
+      },
+      "actual": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\actual\\negative\\ACTUAL.json",
+        "bytes": 1471,
+        "sha256": "35665e8e21c9269b7fff88e84af03651159c6666509c9a4fe449be1202ce63b0"
+      },
+      "post": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\actual\\negative\\POST.json",
+        "bytes": 1207,
+        "sha256": "ad5ac15073d954c1053e846c180a53a4be3812612afc201a894d6df280a36c67"
+      },
+      "release_fence": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\actual\\negative\\RELEASE-FENCE.json",
+        "bytes": 1074,
+        "sha256": "01b65cb5d59ef57f71b3aca9593be83fea89ac5a42b57798ba0c43d8d79aec48"
+      },
+      "managed_close": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\actual\\negative\\MANAGED-CLOSE.json",
+        "bytes": 241,
+        "sha256": "6544faa934eae80f304719cc64be1759fc1cc44b71477d593915b0eacce78e56"
+      },
+      "xml": {
+        "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-fixed64-run02\\reports-negative\\TEST-junit-jupiter.xml",
+        "bytes": 42098,
+        "sha256": "342c8cf59689c96585641ac4f651c7e82de6edb0ba948e0c877d0813423f183a"
+      },
+      "separate_phase_budget_seconds": 90,
+      "separate_TOTAL_budget_seconds": 120
+    }
+  ],
+  "independent_refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-bounded-history-producer01\\native-prod-first01\\QUALIFIED-FIRST01.json",
+      "bytes": 5379,
+      "sha256": "df6ad112bca2f768269e61f8c9c0d7cf33c3f6c373db266f0f48f59730b7fc80"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-cold-history-metadata-preview01\\native-cold-first01\\QUALIFIED-FIRST01.json",
+      "bytes": 3486,
+      "sha256": "9f93440755b769725f9187c6367960732eec1835dc24f0675d835dd959de211a"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\native-test-first02\\QUALIFIED-FIRST01.json",
+      "bytes": 3240,
+      "sha256": "f152651a5b15804c96e69af516eb880c3c31eddd125a4125899df01d1e021f27"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\INDEPENDENT-RESULT03.json",
+      "bytes": 16104,
+      "sha256": "2171ccfe1b6e7cdf7a20ffff739af2d66dc8114b88d5a9002b92a0017842ef57"
+    }
+  ],
+  "scope": {
+    "physical_software": "128 real OriginalWindowReducer commits,112KiB complete opaque persistent state each, same writer warm then new actual Writer/Store cold summary equality;7 physical/sticky/head/absence/primary fault modes all fired, callback1/noresult",
+    "fixed_RUN_max_heap_bytes_observed": 64880640,
+    "RUN_Xmx_mib": 64,
+    "production_MaxHeap_gib_unchanged": 2,
+    "new_Game_GET": 0,
+    "support_or_old_production_recompiled_for_RUN": 0
+  },
+  "history": "initial256KiB+574 seed prebuild XML errors1/failures0 preserved; sourceJson DOC65536/LEDGER262144, v1 uses LEDGER; source correction only payload112 with seed115262; no old unbounded variant RUN/reproduction claim",
+  "limits": [
+    "actual raw source cohort and exact binary test CP only; formal outside preserved projections tracked separately",
+    "no Episode BEGIN/BASELINE multi-scene software qualification or Managed/private fullBatch capturedmanifest authority",
+    "no Runtime source adoption/loader/newclass visibility/LOOP/C70/Game/SAVE/performance qualification",
+    "Runtime alone may adopt these exact5sources in necessary freshhost14 path preserving Game/keeper/ledger and original applied parent2455; do not copy offlineclasses/replay controls/refresh immutable deadlines",
+    "positive/negative are separate90second phases each TOTAL120, not combined TOTAL120"
+  ],
+  "formal_projection_pending_Test_pin_update": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\formal-projection-preparation01\\SOURCE-READY-PROJECTION02.json",
+    "bytes": 6154,
+    "sha256": "96700badd959ff729f7d35866e8fd98681524198a3df556803dc81f30ace6e27"
+  },
+  "previous_preserved": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-bounded-history-producer01\\SOURCE-READY-FIVE-SOFTWARE-QUALIFIED01.json",
+    "bytes": 12719,
+    "sha256": "697ea7f82736e60d802dd2d0f65e6c8a75d73de1598acf1b7aeea8b05b76609d"
+  },
+  "native_complete_summary": {
+    "path": "D:\\ck3-state\\resume91-root\\ordinary-history-oom-independent-test01\\QUALIFIED-FIVE-SOURCE-FIXED64-03.json",
+    "bytes": 15633,
+    "sha256": "b1d67b505c1cbaf4fd4772db01c1911c00b3c91dec3e5fdb655815917d4fb35a"
+  },
+  "exact_compiled_cohort": {
+    "prod": {
+      "actual": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/oom-bounded-history-producer01/native-prod-first01/actual/prod/ACTUAL.json",
+        "bytes": 1779,
+        "sha256": "a0bc6ea6904387cd269549a3127ff588dcda17a4e4886282c91d25767c1916e3"
+      },
+      "config": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/oom-bounded-history-producer01/native-prod-first01/CONFIG.json",
+        "bytes": 90219,
+        "sha256": "1818f9fdd984899e26bd1f042830d4358df831646ce83cdba3d0b29d3e6d7f94"
+      },
+      "output_manifest": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/oom-bounded-history-producer01/native-prod-first01/actual/prod/OUTPUTS.json",
+        "bytes": 264774,
+        "sha256": "5f2903cdf13c7c6c60e141f2e0910fc8a50ec5992fd0fb5e28888a28eefe75aa"
+      },
+      "close": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/oom-bounded-history-producer01/native-prod-first01/actual/prod/MANAGED-CLOSE.json",
+        "bytes": 237,
+        "sha256": "1ab8e729d8814092bcd03ca37a441e606beb2620a6d8241e041647ab4d0b1f34"
+      },
+      "class_count": 33,
+      "compiler_seconds": 11.088705800008029
+    },
+    "cold": {
+      "actual": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/oom-cold-history-metadata-preview01/native-cold-first01/actual/cold/ACTUAL.json",
+        "bytes": 1829,
+        "sha256": "dae8f3b8eb878716b33bca6e200009a43b34ca2f0ddba9663f92d1754369f74d"
+      },
+      "config": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/oom-cold-history-metadata-preview01/native-cold-first01/CONFIG.json",
+        "bytes": 102949,
+        "sha256": "93efcde73390a45c459df244a4ea7974aa271aacf09cb47c9e169c898f8f87c4"
+      },
+      "output_manifest": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/oom-cold-history-metadata-preview01/native-cold-first01/actual/cold/OUTPUTS.json",
+        "bytes": 20941,
+        "sha256": "f2924a126ca4465e4519d7cf18319bf41f5df11419a26bdc043a6a431524793e"
+      },
+      "close": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/oom-cold-history-metadata-preview01/native-cold-first01/actual/cold/MANAGED-CLOSE.json",
+        "bytes": 237,
+        "sha256": "4fe428b03a09d2dd573277a76facad4566e760763d5674c5e96563720b489633"
+      },
+      "class_count": 7,
+      "compiler_seconds": 3.8658990999683738
+    },
+    "test": {
+      "actual": {
+        "path": "D:/ck3-state/resume91-root/ordinary-history-oom-independent-test01/native-test-first03/actual/test/ACTUAL.json",
+        "bytes": 1679,
+        "sha256": "f9d03c7aba1be1191ab7f9b7cea409ad599f6d02bd87ac6bcc6318133b7a7b44"
+      },
+      "config": {
+        "path": "D:/ck3-state/resume91-root/ordinary-history-oom-independent-test01/native-test-first03/CONFIG.json",
+        "bytes": 101135,
+        "sha256": "ab3c7d1f77583c10736822a91a8987f6bf3cfe21cde6ad41e101a448da8df3b8"
+      },
+      "output_manifest": {
+        "path": "D:/ck3-state/resume91-root/ordinary-history-oom-independent-test01/native-test-first03/actual/test/OUTPUTS.json",
+        "bytes": 14832,
+        "sha256": "f36546fe2a7ea461d1f2ea055ff0f47b5b12ec9d0216e5a25940c3ecb7b11719"
+      },
+      "close": {
+        "path": "D:/ck3-state/resume91-root/ordinary-history-oom-independent-test01/native-test-first03/actual/test/MANAGED-CLOSE.json",
+        "bytes": 237,
+        "sha256": "e37c2ed34c25bc862a195f2aa37680b983381c2e27825496ab184aedc22019ff"
+      },
+      "class_count": 4,
+      "compiler_seconds": 4.705319800006691
+    }
+  },
+  "final_formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\formal-projection-preparation01\\SOURCE-READY-PROJECTION03.json",
+    "bytes": 6187,
+    "sha256": "c3e6d7a04d00be5d01aeead6a0750812c172447d88861c9cfc39f2635f5cca9d"
+  },
+  "first_test_compile_in_refs_is_historical_payload256": "Native current corrected test compile is exact_compiled_cohort.test/native-test-first03; first02 retained only as original historical record",
+  "stdout_verified": {
+    "positive": {
+      "pin": {
+        "path": "D:/ck3-state/resume91-root/ordinary-history-oom-independent-test01/native-fixed64-run02/actual/positive/stdout.bin",
+        "bytes": 1986,
+        "sha256": "53ff440cb28e9fb1fb936879cccdf22bc986bd6bc01714167d8aee69ee18dec1"
+      },
+      "DATA": [
+        "SOFTWARE_BOUNDED_HISTORY edges=128 state_payload_bytes=114688 requested_payload_bytes=14680064 max_heap=64880640 warm_callbacks=1 cold_callbacks=1 no_read_writes=true"
+      ]
+    },
+    "negative": {
+      "pin": {
+        "path": "D:/ck3-state/resume91-root/ordinary-history-oom-independent-test01/native-fixed64-run02/actual/negative/stdout.bin",
+        "bytes": 2453,
+        "sha256": "9a02bcda5579f187f555d60088a4ef4f87a05b8b2024bc41b0f8fe7cfbf762d6"
+      },
+      "DATA": [
+        "SOFTWARE_HISTORY_FENCE mode=requested callbacks=1 fault_fired=true result_delivered=false",
+        "SOFTWARE_HISTORY_FENCE mode=unrequested callbacks=1 fault_fired=true result_delivered=false",
+        "SOFTWARE_HISTORY_FENCE mode=caught-restored callbacks=1 fault_fired=true result_delivered=false",
+        "SOFTWARE_HISTORY_FENCE mode=identity callbacks=1 fault_fired=true result_delivered=false",
+        "SOFTWARE_HISTORY_FENCE mode=head callbacks=1 fault_fired=true result_delivered=false",
+        "SOFTWARE_HISTORY_FENCE mode=absence callbacks=1 fault_fired=true result_delivered=false",
+        "SOFTWARE_HISTORY_FENCE mode=primary callbacks=1 fault_fired=true result_delivered=false"
+      ]
+    }
+  },
+  "machine_software_ready_copy": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-bounded-history-producer01\\SOURCE-READY-FIVE-SOFTWARE-QUALIFIED02.json",
+    "bytes": 19086,
+    "sha256": "a33776a8a06a81e5938a7aa4547d2ba2f51975c164fd992b993b14c52679445a"
+  },
+  "runtime_field_semantics": "Runtime false/NOT_RUNTIME_ADOPTED fields in software phase records mean no actual-runtime qualification granted by this source/software package; they do not override later Runtime owner source/host operations."
+}
