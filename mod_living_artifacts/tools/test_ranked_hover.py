@@ -12,29 +12,29 @@ from test_core_generation import Script
 class RankedHoverTests(unittest.TestCase):
     def test_current_values_keep_common_signs_decimals_and_fixed_numbers(self) -> None:
         for source, expected in (
-            ('金币10/20/30，控制2/3/4，固定8压力', '金币#V 20#!，控制#V 3#!，固定8压力'),
-            ('威望-15/30/45；恐怖+5/10/15', '威望#V -30#!；恐怖#V +10#!'),
-            ('health -0.4/-0.8/-1.2, 365 days', 'health #V -0.8#!, 365 days'),
-            ('santé -0,4/-0,8/-1,2, 12 mois', 'santé #V -0,8#!, 12 mois'),
-            ('75/50/25% sie/er', '#V 50#!% sie/er'),
+            ('金币10/20/30，控制2/3/4，固定8压力', '金币#M 20#!，控制#M 3#!，固定8压力'),
+            ('威望-15/30/45；恐怖+5/10/15', '威望#M -30#!；恐怖#M +10#!'),
+            ('health -0.4/-0.8/-1.2, 365 days', 'health #M -0.8#!, 365 days'),
+            ('santé -0,4/-0,8/-1,2, 12 mois', 'santé #M -0,8#!, 12 mois'),
+            ('75/50/25% sie/er', '#M 50#!% sie/er'),
         ):
             with self.subTest(source=source):
                 self.assertEqual(current_rank_text(source, 2), expected)
-        self.assertEqual(current_rank_text('90/80/70%', 1), '#V 90#!%')
-        self.assertEqual(current_rank_text('90/80/70%', 3), '#V 70#!%')
+        self.assertEqual(current_rank_text('90/80/70%', 1), '#M 90#!%')
+        self.assertEqual(current_rank_text('90/80/70%', 3), '#M 70#!%')
 
     def test_brief_entries_link_to_static_current_rank_descriptions(self) -> None:
         for language in ('simp_chinese', 'english'):
             values = {**core.render_core_localization(language), **render_content_localization(language)}
             line = values['xalw_affix_1_5_rank_2_line']
             self.assertIn('#TOOLTIP:xalw_affix_5_rank_2_desc', line)
-            self.assertIn('#V 2#!', line)
+            self.assertIn('#M 2#!', line)
             self.assertNotIn('10/20/30', line)
             self.assertNotIn('$xalw_affix_5_desc$', line)
             self.assertEqual(line.count('\\n'), 1)
             body = values['xalw_affix_5_rank_2_desc']
-            self.assertIn('#V 20#!', body)
-            self.assertIn('#V 3#!', body)
+            self.assertIn('#M 20#!', body)
+            self.assertIn('#M 3#!', body)
             self.assertNotIn('ROOT.', body)
             self.assertNotIn('MakeScope', body)
             self.assertIsNone(RANKED_NUMBERS.search(body))
@@ -62,7 +62,7 @@ class RankedHoverTests(unittest.TestCase):
                         body = values[f'xalw_{kind}_{item}_rank_{rank}_desc']
                         self.assertIsNone(RANKED_NUMBERS.search(body), body)
                         self.assertNotIn('ROOT.', body)
-                        self.assertIn(f'#V {rank}#!', body)
+                        self.assertIn(f'#M {rank}#!', body)
 
 
 if __name__ == '__main__':
