@@ -1,0 +1,457 @@
+{
+  "schema": "xar.java-g2-resume91-vacation-handoff-source-index/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "prepared_at_utc": "2026-11-04T11:42:32.405177+00:00",
+  "date_local": "2026-11-04",
+  "time_zone": "Asia/Shanghai",
+  "evidence_times": "UTC",
+  "latest_user_instruction": "你要去度假了，收尾手上的工作。输出交接文档到docs。",
+  "permission": {
+    "vacation_close": true,
+    "new_implementation_test_model_dispatch_Game_action": false,
+    "explicit_future_resume_required": true,
+    "fixed60_cancelled_before_vacation": true,
+    "Game_keeper_preserved": true
+  },
+  "navigation_only": true,
+  "hashes_not_Runtime_or_resume_permission": true,
+  "runtime_cut": {
+    "at_utc": "2026-11-04T11:37:37.358595+00:00",
+    "delegate": "1a63fe07-5cc5-4c21-ac4f-200df9c84302",
+    "restart": 10,
+    "state": "BOOTSTRAP",
+    "actual_LOOP": false,
+    "stop_requested": true,
+    "actual_stopped": false,
+    "identity": {
+      "Game": 77132,
+      "Game_birth": "134380410301009189",
+      "Java_host": 76092,
+      "host_birth": "134381592437332478",
+      "Game_and_host_last_Win32_alive": "2026-11-04T11:30:55Z",
+      "keeper_last_held_pid": 67152,
+      "keeper_birth_from_launch_manifest": "134380410271512825",
+      "Game_keeper_not_stopped_or_restarted": true
+    },
+    "frontier": {
+      "canonical_head": 2368,
+      "completed_cycles": 66,
+      "eligible_days": 477,
+      "observed_days": 485,
+      "saved_days": 365,
+      "eligible_unsaved": 112,
+      "observed_unsaved": 120,
+      "new_confirmed_saved_days": 0,
+      "last_confirmed_SAVE": 1901,
+      "last_saved_cycle": 51,
+      "saved_date_raw": 53154744,
+      "last_eligible_date_raw": 53157432,
+      "last_observed_parent_date_raw": 53157624,
+      "annual_raw_interval": 8760,
+      "annual_due": false
+    },
+    "pending_original": {
+      "parent_sequence": 2366,
+      "parent_SHA256": "f48cf134c06ee03f2d314da6580c97e1af3bde17c8ed4f138defda6472c9282e",
+      "outcome": "COMPOSITE_SETTLED/APPLIED",
+      "retained_at": 2368,
+      "cycle67_confirmed": false,
+      "ARM2358_and_resume2364": "both already settled; never replay",
+      "old_parent_deadline": "2026-11-04T10:30:14.307657200Z; unchanged"
+    },
+    "stop_path": "D:/ck3-state/ck3-java-resume91-business268/state/worker-stop.request",
+    "stop_sha256": "1d99d7f332d1be7c1908254069f1ff4b07b2c5889fb4bc0a8fc6744a8b19be83",
+    "single_GET": {
+      "GET_count": 1,
+      "began": "2026-11-04T11:28:36.836501Z",
+      "ended": "2026-11-04T11:30:12.385232Z",
+      "http_status": 200,
+      "seconds": "95.5487412",
+      "source": "single actual-current NativeReadinessCollector119955/5d34ff02 plus nonsemantic resource comment. Dev own compiler/newloader; no Native output class injection",
+      "functional_runtime_result": "START/BOOT proved; actual post-receive timing behavior/LOOP/SETTLE/SAVE not yet proved"
+    },
+    "watcher": {
+      "root": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\vacation-end-watcher",
+      "tool_session": 98798,
+      "max_seconds": 3600,
+      "poll_seconds": 5,
+      "HEAD_poll_seconds": 30,
+      "only_fixed_delegate_metadata": true,
+      "actual_END_file": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\vacation-end-watcher\\ACTUAL-DELEGATE-END.json",
+      "timeout_file": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\vacation-end-watcher\\BOUND-ENDED-STOP-NOT-CONFIRMED.json",
+      "no_Game_HTTP_GET_JVM_or_ledger_access": true
+    },
+    "next": [
+      "First read watcher actual-END versus timeout and its frozen OWNER/HEAD. Stop request alone does not prove actual stopped.",
+      "If still BOOT, leave original readonly recovery untouched and keep stop marker. Never issue second GET or replay original controls to hurry handoff.",
+      "If actual END and pending becomes null/C67, independently verify named canonical SETTLE event/old parent correspondence before adding8eligible; no SAVE credit.",
+      "Only a future explicit user resume may authorize reactivation. Then verify same actualGame/host/ledger/keeper and exact ownstop marker before any controlled removal or launch. Existing adoption scripts are consumed one-shot evidence: do not rerun them.",
+      "Current Quarkus host may remain alive with completed delegate. That is not active automatic gameplay. Game/keeper must remain preserved."
+    ]
+  },
+  "runtime_result_limit": "Source adopted / GET200 / actual restart10 START. No actual LOOP, C67, newSAVE, full loaded-method hit, speedup or actual STOP at this frozen cut.",
+  "native_cut": {
+    "at_utc": "2026-11-04T11:32:22Z",
+    "LIGHT1": null,
+    "LIGHT2": null,
+    "HEAVY": null,
+    "in_flight_owned_JVM": 0,
+    "975": "javac0, originalactor1 orderfailure preserved, later exact38set qualification",
+    "976": "one new Test compile0",
+    "977": "five new methods PASS; normalfence/SDKEND/released",
+    "finance974": "preSDK metadata carrier rejection, zerojavac",
+    "R03": "source only, DATA tests NOT_RUN, no R03Ready"
+  },
+  "models_cut": {
+    "at_utc": "2026-11-04T11:38:22.923849+00:00",
+    "Git": {
+      "checkout": "Z:\\workspace\\local-model-operations",
+      "branch": "main",
+      "HEAD": "55ae0b1dff63f27cf93e20f2f582b6457eda4a6d",
+      "independent_remote": "55ae0b1dff63f27cf93e20f2f582b6457eda4a6d\trefs/heads/main",
+      "published_readiness_commit": "dfd9eb4422dc72a41aa45f609c6d83dc1c9421a5",
+      "clean": true,
+      "published_unit_paths": [
+        "docs/capability-http.md",
+        "docs/evidence/2026-11-04-readiness-deadline-software-later975-977.json"
+      ],
+      "software_note_committed_raw_SHA256": "4cc43419195b517e385926d11870d1d1a28ce971e01c42571f3af8807fab04e2",
+      "source_only_note_unchanged_SHA256": "4db4c5fac715d63e49ee61038bd2e85483b03e27ff1221e7d5279b2dd7497665"
+    },
+    "actual_process_exit": {
+      "dispatcher": {
+        "mode": "dispatcher",
+        "at_utc": "2026-11-04T11:31:40.929091+00:00",
+        "state": "RETURNED_NORMALLY",
+        "returned": {
+          "launched": [],
+          "completed": [],
+          "deferred": [],
+          "conflict": [],
+          "unknown": [],
+          "cancelled_before_launch": [],
+          "stopped": true,
+          "history_full": false,
+          "lease_history_full": false,
+          "errors": []
+        }
+      },
+      "intake": {
+        "mode": "intake",
+        "at_utc": "2026-11-04T11:31:40.845731+00:00",
+        "state": "SYSTEMEXIT",
+        "exit_code": 0
+      },
+      "exec_sessions": {
+        "48826": "exit0",
+        "66534": "exit0"
+      },
+      "exact_named_PID_CIM_after_requests": "82920 and129668 filter returned no rows; no broad process enumeration, kill or service probe."
+    },
+    "owned_state_cut": {
+      "at_utc": "2026-11-04T11:33:20.751515+00:00",
+      "ready_rows": 9,
+      "current_ready_observed_POSTs": 9,
+      "current_ready_observed_ENDs": 9,
+      "unpaired_POSTs": 0,
+      "READY_nonterminal_carry_ids": [],
+      "dispatch_history": "423 COMPLETED rows retained",
+      "lease_history": "423 RELEASED rows retained; separate table, not846 cases",
+      "intake_tickets": 401,
+      "tickets_without_final_receipt": [],
+      "current_READY": {
+        "bytes": 5402,
+        "sha256": "9291223cbb13d1ec40dc958d6f9816f0c1208a555e78b99f0e466ff93b7557c8"
+      },
+      "whole_machine_service_Runtime_and_backend_state": "UNKNOWN"
+    },
+    "stop_requests": [
+      {
+        "control": "INTAKE-STOP.json",
+        "payload": {
+          "owner": "/root/models_continue",
+          "at_utc": "2026-11-04T11:31:40.676399+00:00",
+          "reason": "USER_VACATION_CLOSE_NO_NEW_SOURCE_OR_POST",
+          "scope": "Existing sole source intake and dispatcher at rolling02/g0004",
+          "existing_POSTs": "Natural completion; existing dispatcher drains owned handles. No kill or service/config change.",
+          "new_POST_credit": false
+        },
+        "pin": {
+          "path": "D:\\ck3-state\\resume91-root\\owner-pool-dispatcher\\rolling02\\INTAKE-STOP.json",
+          "bytes": 367,
+          "sha256": "951144782b2a88fb3be6794442192ad2aca011d94b63426ac417791aad026d66"
+        }
+      },
+      {
+        "control": "STOP-NEW-HTTP.json",
+        "payload": {
+          "owner": "/root/models_continue",
+          "at_utc": "2026-11-04T11:31:40.873808+00:00",
+          "reason": "USER_VACATION_CLOSE_NO_NEW_SOURCE_OR_POST",
+          "scope": "Existing sole source intake and dispatcher at rolling02/g0004",
+          "existing_POSTs": "Natural completion; existing dispatcher drains owned handles. No kill or service/config change.",
+          "new_POST_credit": false
+        },
+        "pin": {
+          "path": "D:\\ck3-state\\resume91-root\\owner-pool-dispatcher\\rolling02\\STOP-NEW-HTTP.json",
+          "bytes": 367,
+          "sha256": "1b40c00fd31e765ceedade631797973e0c53f450c24a505a13f232cfb484537e"
+        }
+      }
+    ],
+    "resume_navigation": {
+      "standing_metadata_only_protocol": "D:/ck3-state/resume91-root/MODELS-INTAKE-NAVIGATION-20261104-RESTORE05.json",
+      "intake_root": "D:\\ck3-state\\resume91-root\\owner-pool-dispatcher\\rolling02",
+      "generation": "g0004",
+      "reviewed_last_launcher_reference_only": "D:\\ck3-state\\resume91-root\\source-rolling-rollover08-20261104\\launch08.py",
+      "rule": "Do not remove STOP files, launch, publish or POST until explicit user resume. Then reconcile preserved exact IDs/receipts/DB before a fresh owner-reviewed immutable launcher handoff. Existing launch08 writes create-only LAUNCH/TERMINAL artifacts and must not be blindly rerun.",
+      "terminal_task_rule": "No completed ID is re-POSTed; preserve all claims, tombstones, prepared files, outputs and READY terminal rows."
+    },
+    "unfinished": [
+      {
+        "scope": "Actual process acquisition",
+        "status": "Owner source and three independent fake-DATA methods ready; matching actual first result NOT_HELD_BY_MODELS.",
+        "request": "D:/ck3-state/resume91-root/pool-liveness-operating-integration-next/independent-acquisition-test-owner/SOURCE-FIRST-REQUEST01.json"
+      },
+      {
+        "scope": "Operating snapshot liveness consumer",
+        "status": "Selected source and six DATA integration methods ready; actual first result NOT_HELD_BY_MODELS.",
+        "request": "D:/ck3-state/resume91-root/pool-liveness-operating-integration-next/independent-consumer-test-owner/NATIVE-FIRST-REQUEST01.json"
+      },
+      {
+        "scope": "Separate owned-process OS fixture",
+        "status": "Revision02 source only; matching three DATA methods and separate Native authorization are prerequisites. Do not execute during vacation.",
+        "request": "D:/ck3-state/resume91-root/pool-liveness-operating-integration-next/independent-acquisition-test-owner/native-owned-process-os-first01/revision02/NATIVE-OS-FIRST-REQUEST02.json"
+      }
+    ]
+  },
+  "business_Git_before_document_commit": {
+    "canonical": "D:/r64d",
+    "head": "ab659eb7a2d55d49cb4abaec59a635cb07e91f85",
+    "remoteMaster": "ab659eb7a2d55d49cb4abaec59a635cb07e91f85",
+    "worktreeClean": true,
+    "detachedIsIntentional": true,
+    "normalPush": "git push origin HEAD:master",
+    "ZDirtyHistory": "Not touched, reset, scanned or copied wholesale"
+  },
+  "source_ownership": {
+    "runtime": "/root/runtime_continue",
+    "offline_resources": "/root/native_continue",
+    "business_Git": "/root/java_continue",
+    "model_operations_Git": "/root/models_continue",
+    "names_not_live_status": true
+  },
+  "pending_init_interrupted_for_vacation": [
+    "/root/m1_continue",
+    "/root/concurrency_dispatch/registry_canonical_compatibility",
+    "/root/m3_continue/range262_foreign_test",
+    "/root/m6_continue/call_protocol264"
+  ],
+  "current_sources_vs_formal": {
+    "Collector_runtime_raw": "119955/5d34ff02c9694bb0e34d3f07eb4bad9054bdbf7bf61deb5e34b82c82e7a872a3",
+    "Collector_formal": "118467/3ef049fd; only matched two spans, outside preserved; combined formal whole not compiled",
+    "publicdata153_actual": "8506/c20b, pending 8999/60c4; formal e746 frozen6P not adopted",
+    "Finance": "raw c624/feb candidate; formal wrapper projection separate, no compile credit",
+    "cache5": "3newTU not compiled; originalArchive86414/GCA8724binary reuse only"
+  },
+  "performance_closed_window": {
+    "source": "failure125_closed_cost",
+    "added_eligible": 28,
+    "added_observed": 36,
+    "unsettled_observed": 8,
+    "new_SAVE_CONFIRMED_days": 0,
+    "start_to_end_seconds": "14162.5370547",
+    "seconds_per_eligible_day": "505.8048948107142857142857143",
+    "loop_to_end_seconds_per_eligible_day": "427.0947843107142857142857143",
+    "new_saved_day_rate": null,
+    "limit": "Closed oldba4 window excludes subsequent prep/GET/newbootstrap/shutdown wait. Do not present as current full rate or omit later overhead. Target10s not achieved."
+  },
+  "G2": {
+    "accepted_M": 6,
+    "total_M": 8,
+    "natural_M6_M7": "NOT_ACCEPTED",
+    "new_component_tests_not_fullG2": true
+  },
+  "long_term_local_models": {
+    "repo": "https://github.com/XenoAmess/local-model-operations",
+    "checkout": "Z:/workspace/local-model-operations",
+    "base_url": "http://192.168.1.11:8080/v1",
+    "model": "qwen38-coder",
+    "routing": "DIRECT",
+    "fallback": false,
+    "modes": [
+      "http-candidate",
+      "opencode-native-assistant-tool"
+    ],
+    "ongoing_capability_tracking": true,
+    "new_OpenCode_session_this_round": false,
+    "daily_cached_version": "1.19.5",
+    "HTTP_runtime_actions_separate": true,
+    "STOP_files_preserved_until_explicit_resume": true
+  },
+  "rejected_scopes_remain_frozen": [
+    "M3 parent and337 possiblecybersecurityrisk",
+    "M3 old313/320",
+    "M5 oldencode",
+    "M1 oldhash/parser",
+    "M2 old654"
+  ],
+  "paths_are_machine_local_not_cross_machine_prerequisites": true,
+  "artifacts": {
+    "runtime_handoff_pending": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\VACATION-HANDOFF-PENDING.json",
+      "bytes": 8156,
+      "sha256": "d5e1b8f110b4ab1dd5f5643ad2be6bdd236d2b3ec6a2d67288f5d62f3c305a89"
+    },
+    "source_adopted": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\SOURCE-ADOPTED.json",
+      "bytes": 1452,
+      "sha256": "8606f8b212281cad65d4aa52b0a550b4b27ad131572ee831d16b9efcd59236c9"
+    },
+    "GET_actual": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\TRIGGER-ACTUAL.json",
+      "bytes": 573,
+      "sha256": "d7087b41d413622d947ea75586dae3bbb5fd43b4a533d8304b5215eb416207df"
+    },
+    "new_delegate_START": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\ACTUAL-NEW-DELEGATE.json",
+      "bytes": 1618,
+      "sha256": "0d2c0a3b5c0cf52bf09d8bfc46274f25eb4a5f5db2ca081e95706ee2d6c78255"
+    },
+    "vacation_stop_request": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\VACATION-STOP-REQUEST.json",
+      "bytes": 1940,
+      "sha256": "851a9d39aaf47a9fdcc58bd973d7f9d5957256a36377dfeec515d01b0306447c"
+    },
+    "watcher_START": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\samehost-recovery125\\vacation-end-watcher\\START.json",
+      "bytes": 385,
+      "sha256": "0bbd2a870d2be01b946233b88ee7ec2d877f6a9bed65c53a2e62ac804c79890a"
+    },
+    "failure125": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\failure125-readiness-deadline\\SUMMARY.json",
+      "bytes": 7058,
+      "sha256": "5441e392c305da470c68634f7d180dd3874166183473f34d46b240d2fcf018ae"
+    },
+    "failure125_closed_cost": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\failure125-readiness-deadline\\FULL-COST-METRIC.json",
+      "bytes": 1165,
+      "sha256": "ed0a900be6ee0c384883c9eadf928fe4af47bc7a8025ab7e014af90f35e6433e"
+    },
+    "C66": {
+      "path": "D:\\ck3-state\\resume91-runtime\\restore117-20261104\\natural123-cycle66\\SUMMARY.json",
+      "bytes": 4794,
+      "sha256": "85f7d34b714f5189ea55130d9ea13bbf020e6e8e4a50a41bcca64e95d38980f7"
+    },
+    "collector_raw_source_ready": {
+      "path": "D:\\ck3-state\\resume91-root\\readiness-scope-deadline-fix01\\SOURCE-READY01.json",
+      "bytes": 2652,
+      "sha256": "dd5b658997ef772f20e05b66bf987fafacf819951a0cc14ad0408744a59a1eb7"
+    },
+    "collector975_qualified": {
+      "path": "D:\\ck3-state\\resume91-native-integration\\native-assist-readiness-scope-s1-first-next\\qualification975\\QUALIFIED-PRODUCTION975.json",
+      "bytes": 25140,
+      "sha256": "3f7bbf3e6057483cf4c54df0b3ab372a52c4f07d1a1119cdf75d014068001151"
+    },
+    "collector975_result": {
+      "path": "D:\\ck3-state\\resume91-native-integration\\native-assist-readiness-scope-s1-first-next\\qualification975\\OPERATOR-RESULT975.json",
+      "bytes": 2220,
+      "sha256": "e8eb2c0253ec47194d207214ded3172adf02043a55ee4ab1c4e21639c56fbcaa"
+    },
+    "test976_actual": {
+      "path": "D:\\ck3-state\\resume91-native-integration\\native-assist-readiness-scope-test-first-next\\actual\\ACTUAL.json",
+      "bytes": 6566,
+      "sha256": "cd1911dd2feb2bbe41e94569a3fd80cad663d71a237aacba6aec7276b87fd8fa"
+    },
+    "test977_actual": {
+      "path": "D:\\ck3-state\\resume91-native-integration\\native-assist-readiness-scope-test-first-next\\junit-five-first\\actual\\ACTUAL.json",
+      "bytes": 1746,
+      "sha256": "8bc54a31f5781eb5beb939482cd95dc4e1ea7ee44930b0de8e9fddfdd0af4f19"
+    },
+    "test977_operator": {
+      "path": "D:\\ck3-state\\resume91-native-integration\\native-assist-readiness-scope-test-first-next\\junit-five-first\\operator977\\OPERATOR-RESULT977.json",
+      "bytes": 6496,
+      "sha256": "9e9ae4078c5b17c3d44c54618d77865bbf40f25e2bfe86bcf93c9a37984b0e12"
+    },
+    "test977_independent": {
+      "path": "D:\\ck3-state\\resume91-root\\readiness-scope-deadline-fix01\\independent-public-test01\\DELIVERY-FINAL01.json",
+      "bytes": 4231,
+      "sha256": "d899540a9f9aa6ce5ba78323a64ae7ba29de540b2743e33b6aae30f40489b9b4"
+    },
+    "models_closed": {
+      "path": "D:\\ck3-state\\resume91-root\\models-vacation-close-20261104\\CLOSED-HANDOFF01.json",
+      "bytes": 7384,
+      "sha256": "f1b13dd7ee55473f8fb174b7035a9b747ea512e8892da879561da43b48702714"
+    },
+    "native_resource_cut": {
+      "path": "D:\\ck3-state\\resume91-root\\native-vacation-handoff-20261104\\RESOURCE-CUT.json",
+      "bytes": 1340,
+      "sha256": "30a9c10fae814fb309878cefb5c11b61f49eb2309695443d58b74f9f977085d7"
+    },
+    "native_handoff_ready": {
+      "path": "D:\\ck3-state\\resume91-root\\native-vacation-handoff-20261104\\HANDOFF-READY.json",
+      "bytes": 805,
+      "sha256": "040cfa710b6a25c2f345c94c9541f6e8d989904c8ff402fc2f8856bac12ea445"
+    },
+    "java_final": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\vacation-publication-next\\JAVA-FINAL-HANDOFF01.json",
+      "bytes": 6631,
+      "sha256": "924e935795e9ade5dc7be08b3966fc7094f46e1ea3b7e4afbe5a480613a9566e"
+    },
+    "collector_published": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\readiness-scope-deadline977\\PUBLISHED.json",
+      "bytes": 1281,
+      "sha256": "5c9a9b9e8505fc18b4ce94b55614b6a4810f4a0387ab8a9b76427ed97d85576e"
+    },
+    "publicdata153_published": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\publicdata153-lazy-private-containers969\\PUBLISHED.json",
+      "bytes": 1359,
+      "sha256": "98d64a7be93cafe60ec2ac5ff103e8457b98aa7c920b93fe5820dcb53f75ab74"
+    },
+    "current_five_source": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\planning-read-cache-actual-next\\SOURCE-READY-CURRENT-PROD01.json",
+      "bytes": 5866,
+      "sha256": "42422f6aa307da8050403b4a5c2ffd717d0c5a8a307ed76dcd2257aa1007dd79"
+    },
+    "current_five_recorder_R02": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\planning-read-cache-actual-next\\metadata-prep01\\observe-gate-revision02\\SOURCE-READY-OBSERVE-GATE01.json",
+      "bytes": 2961,
+      "sha256": "0551be9c55e405b1e6eeaa1b6915132180199f7ef1d77060731976932230cf58"
+    },
+    "canonical_lookup_test": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\scoped-canonical-lookup-public-case-next\\SOURCE-READY01.json",
+      "bytes": 5878,
+      "sha256": "8c36c9b08c57f754155ae92c0df20bdf09b8d5473d0ecbc4ca459f4559a06a3a"
+    },
+    "publicdata153_actual_variant": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\publicdata153-actual-current-variant01\\SOURCE-READY01.json",
+      "bytes": 1492,
+      "sha256": "3af8d8a74c435796093c8c3a5a3ab0055c9df3d47ac6e444c9ec0865c1b373fb"
+    },
+    "finance_candidate": {
+      "path": "D:\\ck3-state\\resume91-root\\finance-cold-handoff-fix01\\SOURCE-READY-CANDIDATE01.json",
+      "bytes": 3057,
+      "sha256": "05612449ef7d4702fd33a48d9e4d11beecc5ee493842e0f4785f34c124fa34e9"
+    },
+    "finance_formal_projection": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\finance-cold-handoff-p0-next\\revision03\\FORMAL-SOURCE-REVIEW03.json",
+      "bytes": 8263,
+      "sha256": "3c495e916ae1808d04d59d925dec0a4a1fcc5107f82907f83cd9cfcb4bc580f7"
+    },
+    "finance_independent_impact": {
+      "path": "D:\\ck3-state\\resume91-root\\finance-witness119-source-contract\\canonical-checkpoint-impact05\\CONCLUSION.json",
+      "bytes": 10386,
+      "sha256": "0c725ca9f7df4234314bc9a25bb53744ea7eef95dde07b5e583274800b7f8289"
+    },
+    "finance_test_source": {
+      "path": "D:\\ck3-state\\resume91-root\\finance-cold-handoff-fix01\\independent-public-test01\\SOURCE-READY-TEST01.json",
+      "bytes": 3552,
+      "sha256": "0c9f4d7ac20164084d9f4308e21bdc8c6b44de5fb76d089036003c0af774518f"
+    },
+    "cold_JFR_compact_analysis": {
+      "path": "D:\\ck3-state\\resume91-root\\p0-ba4-cold-jfr60s-analysis\\INTEGRATED-SUMMARY02-COMPACT.json",
+      "bytes": 5283,
+      "sha256": "53788eec77bb34089e07391bee59848865654e6387f06abf695e0c6e36e72703"
+    }
+  }
+}
