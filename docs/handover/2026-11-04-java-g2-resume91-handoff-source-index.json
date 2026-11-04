@@ -1,0 +1,883 @@
+{
+  "schema": "xar.java-g2-resume91-handoff-source-index/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "date_local": "2026-11-04",
+  "time_zone": "Asia/Shanghai",
+  "evidence_times": "UTC",
+  "purpose": "Existing-evidence handoff, not goal completion or a new vacation instruction.",
+  "navigation_only": true,
+  "hashes_are_not_runtime_qualification": true,
+  "latest_user_instructions": [
+    "Continue work",
+    "Write handoff docs under docs",
+    "Keep current cloud model and retry capacity failures",
+    "Yearly saving; playable automation/P0 first; target10s/newconfirmed savedday",
+    "60cloudagents and aggressive localmodel usage;report actual gaps"
+  ],
+  "roots": {
+    "workspace": "Z:/ck3_mod_rewrite",
+    "formal": "D:/r64d",
+    "runtime": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime",
+    "native": "D:/ck3-state/resume91-native-integration",
+    "root": "D:/ck3-state/resume91-root",
+    "java": "D:/ck3-state/resume91-java-delivery",
+    "m0": "D:/ck3-state/resume91-m0-native",
+    "m2": "D:/ck3-state/resume91-m2-native/pending-component180/page-reserve211",
+    "m3": "D:/ck3-state/resume91-m3-native",
+    "m5": "D:/ck3-state/resume91-m5-finance225",
+    "m6": "D:/ck3-state/resume91-m6-native/next-natural259",
+    "ops": "Z:/workspace/local-model-operations"
+  },
+  "runtime_last_verified": {
+    "captured_at_utc": "2026-11-04T02:38:06.862682Z",
+    "source": "runtime_thin",
+    "delegate_status": "FAILED_DELEGATE",
+    "delegate_id": "f6e15a21-ab3c-4960-afa1-5596a274c636",
+    "restart": 8,
+    "ended_at_utc": "2026-11-04T02:28:31.150875300Z",
+    "exit_code": 4,
+    "host": {
+      "pid": 76092,
+      "birth_filetime": "134381592437332478",
+      "status_basis": "OWNER observed exit259 only; not worker health or new process query"
+    },
+    "game": {
+      "pid": 77132,
+      "birth_filetime": "134380410301009189",
+      "status_basis": "ledger-bound identity and existing originals; no new Game/Win32query for docs"
+    },
+    "head_sequence": 2225,
+    "batch_boundary": "BATCH_DEFERRED117",
+    "completed_cycles": 62,
+    "pending_receipt": null,
+    "frame": {
+      "date_raw": 53156760,
+      "native_revision": 1291,
+      "public_revision": 1189
+    },
+    "eligible_days": 449,
+    "confirmed_saved_days": 365,
+    "unsaved_days": 84,
+    "ordinary_save_interval_raw": 8760,
+    "raw_since_last_confirmed_saved_pair": 2016,
+    "annual_save_due": false,
+    "current_window_new_SAVE_credit": 0,
+    "performance_target_met": false,
+    "next": "Resolve original mailbox custody/terminal using frozen117materials. Fallback0bytes does not release another original request. No control replay, clear or blindnewdelegate."
+  },
+  "ownership": {
+    "runtime": "/root/runtime_continue",
+    "offline_execution_resources": "/root/native_continue",
+    "business_Git": "/root/java_continue",
+    "shared_model_operations_Git": "/root/models_continue",
+    "dispatch": "/root/concurrency_dispatch",
+    "names_are_not_liveness_proof": true
+  },
+  "git_before_handoff": {
+    "business_checkout": "D:/r64d",
+    "head": "11aaa557101bbb0fb43b0f78bc3ad52af1edb06e",
+    "clean": true,
+    "workspace_dirty_preserved": true,
+    "publication_scope": "Only handoff.md and this source-index.json; document commit is a later SHA."
+  },
+  "concurrency_last_held": {
+    "cloud": {
+      "at_utc": "2026-11-04T02:23:18Z",
+      "selected": 65,
+      "running": 13,
+      "completed": 52,
+      "capacity_pending_known": 0,
+      "not_live_or_global_proof": true,
+      "target60_sustained_met": false
+    },
+    "local_registered_scope": {
+      "at_utc": "2026-11-04T02:40:18Z",
+      "post_begin": 202,
+      "end": 202,
+      "unpaired": 0,
+      "ready_rows": 104,
+      "ready_bytes": 63954,
+      "byte_cap": 65536,
+      "remaining_bytes": 1582,
+      "intake_tickets": 180,
+      "logical_ids": 174,
+      "receipt_count": 180,
+      "unregistered": 0,
+      "pending_receipts": 0,
+      "preparation_failures_historical": 6,
+      "global_direct_runtime_backend": "UNKNOWN_OR_SEPARATE",
+      "old_processes": "sessions99035/56153unknown;namedPID/commandchecksfoundno ownedloop;no restart or kill for docs"
+    }
+  },
+  "g2": {
+    "last_complete": 6,
+    "total": 8,
+    "natural_m6_m7": "OPEN;no artificial acceptance upgrade"
+  },
+  "guard_freezes": [
+    "M1 denied hash-collision/parser scope",
+    "M2 historical654;exact reason/timeUNKNOWN",
+    "M3 313 and320",
+    "M5 oldencode source research",
+    "Previously revoked bare-data execution actors"
+  ],
+  "validation": {
+    "checked_at_utc": "2026-11-04T02:55:22.566532+00:00",
+    "method": "Bounded read-only named-file metadata; <=1MiB hashes, JSON schema invariants and relative Markdown link check. No business tests or runtime operations.",
+    "entry_count": 80,
+    "missing_entries": [],
+    "over_1MiB_not_hashed": [],
+    "expected_hash_mismatches": [],
+    "broken_relative_links": [],
+    "external_evidence_contents_not_published": true,
+    "hashes_not_runtime_qualification": true
+  },
+  "entries": [
+    {
+      "id": "handoff",
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-11-04-java-g2-resume91-handoff.md",
+      "evidence_grade": "handoff",
+      "note": "Public summary; not a runtime action receipt.",
+      "bytes_at_doc_check": 19501,
+      "sha256_at_doc_check": "63287a731c407e05b6dde5b938859153803e2db44a24a9d1e95c72c4f537c12b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "runtime_thin",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/handoff-readonly-20261104T0236/THIN.json",
+      "evidence_grade": "frozen_existing_runtime_metadata",
+      "note": "02:38:06 cut: failed f6; HEAD2225/C62; 449 eligible/365 saved.",
+      "bytes_at_doc_check": 3720,
+      "sha256_at_doc_check": "bf8dc62b2ac6985285d2e6f71dd99ed72d137ce4ee2384ab641e342ae075475a",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "runtime_summary",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/handoff-readonly-20261104T0236/SUMMARY.json",
+      "evidence_grade": "frozen_existing_runtime_metadata",
+      "note": "Exact original report, terminal, cycle and historical recovery refs; no new Game query.",
+      "bytes_at_doc_check": 15072,
+      "sha256_at_doc_check": "4cac05eb218b676836ed882f57f56179f8c072299c034920d635e79245db72c5",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "runtime_batch116",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/handoff-readonly-20261104T0236/batch116.original.jsonl",
+      "evidence_grade": "original_report",
+      "note": "1813.6955895s WALL_TIMEOUT; one APPLIED; 0 SAVE.",
+      "bytes_at_doc_check": 42708,
+      "sha256_at_doc_check": "1ab78090d095b59b835342cfabbc4ceb099ff5603e69a3a38c40763498ccfbef",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "runtime_batch117",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/handoff-readonly-20261104T0236/batch117.original.jsonl",
+      "evidence_grade": "original_report",
+      "note": "OBSERVATION_UNAVAILABLE; 0 attempts; fallback before-write 0bytes; original mailbox custody unresolved.",
+      "bytes_at_doc_check": 5669,
+      "sha256_at_doc_check": "1e80b9f178064fa630ae1db540b1d4d5be1368ff2b183cbc0ecc5f408a4c15f0",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "runtime_owner",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/handoff-readonly-20261104T0236/OWNER.frozen.json",
+      "evidence_grade": "frozen_owner",
+      "note": "Current handoff snapshot, not a live-process proof beyond its observation.",
+      "bytes_at_doc_check": 1191,
+      "sha256_at_doc_check": "ce4f818df1087d62e567a62045f04e1529cbd9a43bddd64cf6ed6b1cb464055b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "runtime_cycle62",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/handoff-readonly-20261104T0236/CYCLE62.json",
+      "evidence_grade": "original_cycle",
+      "note": "date53156760/native1291/public1189.",
+      "bytes_at_doc_check": 2186,
+      "sha256_at_doc_check": "013df5ebe2182943e16935b70c2c27449c55e81b970f5d824ac5adbad532fca1",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "quarkus_normal_acceptance",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/ACCEPTANCE307.json",
+      "evidence_grade": "actual_normal_reload_and_SAVE",
+      "note": "Historical normal dev same-JVM reload/SAVE acceptance; not current health.",
+      "bytes_at_doc_check": 4629,
+      "sha256_at_doc_check": "e2ae7c7db25907c10a56e1ec8a3bd803aeae5e8e4dd43f18c463fd8b1ca5805e",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "quarkus_instrumentation_actual",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/persistent783-r2-runtime/ACTUAL-INSTRUMENTATION.json",
+      "evidence_grade": "actual_bounded_instrumentation",
+      "note": "3.120s, source99dd, same250f77/restart7/0newdelegate; not arbitrary type change, heap bytehash or speed claim.",
+      "bytes_at_doc_check": 4207,
+      "sha256_at_doc_check": "f68a6c22942515ba1c141d922f19aed905711212403671a1d7e167a5672fee29",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "runtime_readonly108_newdelegate",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/persistent783-r2-runtime/readonly-recovery108/ACTUAL-NEW-DELEGATE.json",
+      "evidence_grade": "actual_historical_new_delegate",
+      "note": "Properties comment intentionally chose normal reload; not the latest f6 liveness.",
+      "bytes_at_doc_check": 9832,
+      "sha256_at_doc_check": "3ce32d51fbbf400e9a26c241efc4be3bdad7d7338e926a23872921baa91798aa",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m0_persistent_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m0-private-replay783-limited01/PUBLISHED.json",
+      "evidence_grade": "formal",
+      "note": "39a06d1f; raw/formal/current runtime variants separate.",
+      "bytes_at_doc_check": 822,
+      "sha256_at_doc_check": "462f15cb2255d7f26c5e3a4059c404aec1d0ecbb55defde84707a78ae3dfb815",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m0_known_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m0-known-conservative04/PUBLISHED.json",
+      "evidence_grade": "formal_conservative",
+      "note": "4af48c28; 0fast/0perf.",
+      "bytes_at_doc_check": 1343,
+      "sha256_at_doc_check": "c5d8d03315a3f995fedab89651e2eac410e344178b8945c2dd1dee6bc9509db8",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m0_facts_wire",
+      "path": "D:/ck3-state/resume91-m0-native/offline-next-nov04/facts-original-wire-coherent-next/SOURCE-READY01.json",
+      "evidence_grade": "source_ready_first_NOT_HELD",
+      "note": "New encodeKnownOriginal wire fa057, not Snapshot.bytes or old fixed-set 5P.",
+      "bytes_at_doc_check": 5271,
+      "sha256_at_doc_check": "58e84c2fea8777c46d95d7bf879779f8a93a9363aee21b7e6bb8b5033fef60aa",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m0_gui_source",
+      "path": "D:/ck3-state/resume91-m0-native/offline-next-nov04/public-context-next-consumer-nov04/SOURCE-READY01.json",
+      "evidence_grade": "source_only",
+      "note": "One byte clone candidate; no runtime/window effect.",
+      "bytes_at_doc_check": 3769,
+      "sha256_at_doc_check": "0b389e42d6aa34e6db36a04a092095484d4842805f183661db9fb639a33c0ab5",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "snapshot829",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/persistent783-r2-runtime/readonly-recovery108/snapshot829-current-inputs-v2/SUMMARY.json",
+      "evidence_grade": "frozen_source",
+      "note": "Snapshot6ee9/FullTree914b; no new selected759implementation.",
+      "bytes_at_doc_check": 1771,
+      "sha256_at_doc_check": "5aa553512d52625ebc58bbe2c6799ab42f3491dab0deb14103724ecee0766da1",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "upper109",
+      "path": "D:/ck3-state/resume91-root/planning109-publication-p0/caller-inputs/upper-candidate01/UPPER-FINITE-DECISION05.json",
+      "evidence_grade": "strict_only_with_explicit_GAPs",
+      "note": "872typecheck; installedSource/strictHist/fullRoot fixture not qualified.",
+      "bytes_at_doc_check": 4868,
+      "sha256_at_doc_check": "cea1821a87bde078b1033e739def8c2ed8b960ffc1857848aed3900db890765f",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "publisher_orborrow_proposal",
+      "path": "D:/ck3-state/resume91-root/planning109-publication-p0/caller-inputs/publisher-null-sources-scope-proposal01/SOURCE-PROPOSAL01.json",
+      "evidence_grade": "source_proposal",
+      "note": "Root-owned dual Source-null route and issuer contract still open.",
+      "bytes_at_doc_check": 7106,
+      "sha256_at_doc_check": "b7d51b8c2bee7cf2564cbaa5246b5367b9fd8985258c0b3da31a36cfe1b15c9e",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "borrow_lower_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/p0-borrowed-history873-mature01/PUBLISHED.json",
+      "evidence_grade": "formal_limited_software",
+      "note": "2f6cb139;864strict/8733P; raw and combined formal differ.",
+      "bytes_at_doc_check": 1089,
+      "sha256_at_doc_check": "3b19effdeda1f6f4993707fddfcb9fed122eb938206ae226e5d31eacab4230ea",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "annual_budget_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/root-annual-dirty-reserve01/PUBLISHED.json",
+      "evidence_grade": "formal",
+      "note": "5146304b, two prod/two Test leaves.",
+      "bytes_at_doc_check": 1560,
+      "sha256_at_doc_check": "7bdce41f531f98b041e95f55cb83620d3ca21d199e2b319e5e9788941d46e97b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "annual_budget_acceptance",
+      "path": "D:/ck3-state/resume91-native-integration/ANNUAL-RESERVE-SOFTWARE-ACCEPTANCE782.json",
+      "evidence_grade": "software_9_distinct_across_two_runs",
+      "note": "7802P7F;781failed-only7P; no initial9P or physical authority.",
+      "bytes_at_doc_check": 8711,
+      "sha256_at_doc_check": "904c99661834b1ecc4b60e81ff121a76a629dd4ca4eb66f9548bd6f40f474371",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "boot_marker_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/root-boot771/PUBLISHED.json",
+      "evidence_grade": "formal_3_new_tests",
+      "note": "263b4783; original withFrozenFacts and other owned spans preserved.",
+      "bytes_at_doc_check": 1320,
+      "sha256_at_doc_check": "26e364e26aa8af9b9373ebbab3b7ab5d28c2cf2d0c8c37597305d5015eb8407d",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m2_662_inputs",
+      "path": "D:/ck3-state/resume91-m2-native/pending-component180/page-reserve211/upstream-finalize-callee-qualification662/producer-guided-correction-r2-preparation662/CURRENT-GUIDED-R2-SOURCE-INDEX662.json",
+      "evidence_grade": "actual_model_input_scope",
+      "note": "15whole/70713B prefix; not the later owner exercise/literal full index.",
+      "bytes_at_doc_check": 12320,
+      "sha256_at_doc_check": "ba78cff8643b47761930c21e9c0ce25a8db9bf59d06a162f8bc42c254a2f6dea",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m2_662_literal",
+      "path": "D:/ck3-state/resume91-m2-native/pending-component180/page-reserve211/upstream-finalize-callee-qualification662/owner-literal-projection662/SOURCE-READY-LITERAL-PROJECTION662.json",
+      "evidence_grade": "source_only",
+      "note": "Private oracle numeric content is not published here.",
+      "bytes_at_doc_check": 11674,
+      "sha256_at_doc_check": "c3e2582805a0c7720a07050a52d2f1eba921d5620c794887fc9650f441b1908b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m2_665_first_ready",
+      "path": "D:/ck3-state/resume91-m2-native/pending-component180/page-reserve211/whole394-partial-controls-stop665/finite-used-api-sdk665/final-source665/first665/SOURCE-READY-JAVAC_WITNESS665.json",
+      "evidence_grade": "source_ready_actual_NOT_HELD",
+      "note": "Four TU CP64 one new Stop scene; sole Native executor.",
+      "bytes_at_doc_check": 57556,
+      "sha256_at_doc_check": "972667785324134fb93494c369cf7bcbebf80fbfa282643dbe4608c6db82f57b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m2_659_managed_wrapper",
+      "path": "D:/ck3-state/resume91-native-integration/m2-wrapper659-managed-recorder-source-next/SOURCE-READY-MANAGED-WRAPPER659.json",
+      "evidence_grade": "source_ready_no_wrapper_first_held",
+      "note": "Original659software mature; wrapper is separate newfirst.",
+      "bytes_at_doc_check": 5374,
+      "sha256_at_doc_check": "72b20f0378af8d1d963e77a54480e91a82268d8ed0e3994d2cef246977d1ecb4",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m2_660_mature",
+      "path": "D:/ck3-state/resume91-native-integration/m2-whole660-source-framefix-next/run-after-literal891/readonly903/SOURCE-READY-MATURE-SAME-CASE660-AFTER903.json",
+      "evidence_grade": "software_mature_formal_NOT_HELD",
+      "note": "870RED preserved;891literal/903same original case PASS.",
+      "bytes_at_doc_check": 7613,
+      "sha256_at_doc_check": "da2da07d4c2af8d75762cb0d3ccba62672b21387d71ffdb5d43b14487b3e0c77",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m2_661_run_ready",
+      "path": "D:/ck3-state/resume91-native-integration/m2-661-child316-frame-source-delta-next/revision661/fixed-run661-raxfix02/SOURCE-READY-FIXED-STRONG-RUN661-RAXFIX02.json",
+      "evidence_grade": "strict_passed_RUN_NOT_HELD",
+      "note": "897strict; no reused green for RUN.",
+      "bytes_at_doc_check": 5228,
+      "sha256_at_doc_check": "47086863d84ac2a72a800b42dd8cf318fdc524803c9f325d055cf63397d52659",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m2_663_mature",
+      "path": "D:/ck3-state/resume91-native-integration/m2-shrink663-bomfix02-run-next/first-run893-consume/MATURE-SOURCE-STRICT879-FIRST-RUN893-READY663.json",
+      "evidence_grade": "software_mature_formal_NOT_HELD",
+      "note": "871BOM RED retained;879/893original scene PASS.",
+      "bytes_at_doc_check": 8116,
+      "sha256_at_doc_check": "294a03fcc87cc47b778ba1a35f6d5fd1e868a9f303a53c321f818c52dc542070",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m3_hash_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m3-hash309-311-with-api291/PUBLISHED.json",
+      "evidence_grade": "formal",
+      "note": "f5d3ded2be;309/310/311 and needed API291; no292impl.",
+      "bytes_at_doc_check": 1561,
+      "sha256_at_doc_check": "e7f7554c2a10fb429716ade564fc89596f6a7ac1d3dd13be6e6c9dbfecd353de",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m3_312_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m3-hash-manual312-mature01/PUBLISHED.json",
+      "evidence_grade": "formal",
+      "note": "012a54a751;two finite original cases.",
+      "bytes_at_doc_check": 825,
+      "sha256_at_doc_check": "61baf57ca91b26f5f000aaff5ff80332cd05eec6639a410c793e21659e926289",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m3_317_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m3-hash-manual317-mature01/PUBLISHED.json",
+      "evidence_grade": "formal",
+      "note": "88c7330047;two finite original cases.",
+      "bytes_at_doc_check": 799,
+      "sha256_at_doc_check": "0a7981731126a2484c22ea9f2033824e87fc863f8a24d4bf4effcf6cb5bf93a1",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m3_318_319_status",
+      "path": "D:/ck3-state/resume91-m3-native/M3-318-319-UNWRITTEN-STATUS-CHECK.json",
+      "evidence_grade": "frozen_source_status",
+      "note": "Both source bodies exist; next necessary first, no new author task.",
+      "bytes_at_doc_check": 3848,
+      "sha256_at_doc_check": "f4b3dbcb2607d8c40179e4e889f00dd3db39aebe6f77143f126e7afe9f71454a",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m3_320_guard",
+      "path": "D:/ck3-state/resume91-m3-native/hash-whole-vector-throw320/GUARD-FREEZE-LATER320.json",
+      "evidence_grade": "guard_freeze",
+      "note": "Do not retry/rephrase/transfer or embed refused scope elsewhere.",
+      "bytes_at_doc_check": 1770,
+      "sha256_at_doc_check": "38e9183c255eace0504d84ef17e9b3b43568b93561811a24ea19e4de2334f552",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m3_855f00_gap",
+      "path": "D:/ck3-state/resume91-m3-native/move855f00-fp321/source-owner/DELIVERY321.json",
+      "evidence_grade": "explicit_source_GAP",
+      "note": "Only scalar40L; whole ASM/end/SP/DF/FP not held.",
+      "bytes_at_doc_check": 2161,
+      "sha256_at_doc_check": "42e85525f989b6e3fb1ea0783774c61a5a1cce2d8e3e9fd7180394ba2659251c",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m5_typed135_disposition",
+      "path": "D:/ck3-state/resume91-m5-finance225/offline-json30/typed-driver117/owner-codec-revision130/OWNER-DISPOSITION135.json",
+      "evidence_grade": "software_passed_formal_paused",
+      "note": "130/131 fivePASS but legacy exception processor codec incompatible.",
+      "bytes_at_doc_check": 3042,
+      "sha256_at_doc_check": "aaad905f94b47d3133ed8834ffbf3d403b14a65f35f5a0926ad1f504edb7f936",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m5_typed136_source_first",
+      "path": "D:/ck3-state/resume91-m5-finance225/offline-json30/typed-driver117/owner-codec-revision130/legacy-processor-preserving136/native-source-first138/SOURCE-FIRST-READY138.json",
+      "evidence_grade": "software_2P_formal_paused",
+      "note": "825coherent2TUstrict0/7classes;compiled117affectedmethodRUNonly1P+new137first1P;old131fournotrerun;formalstillpaused/newtypesruntimeunknown.",
+      "bytes_at_doc_check": 12722,
+      "sha256_at_doc_check": "95dc97d33880876035fd9c7af9cad8a90ff908e5d0ba2bb94f6ec99294442318",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m5_strict114_negative",
+      "path": "D:/ck3-state/resume91-m5-finance225/offline-json30/next-source112/strict-utf8-parent/negative-final133/NEGATIVE-FINAL133.json",
+      "evidence_grade": "source_rejected_after_default_3P",
+      "note": "Legal InputDecorator Reader observation changes; no formal/adoption.",
+      "bytes_at_doc_check": 3276,
+      "sha256_at_doc_check": "1fffe405aae4b62b1173998af13745e96d191c39cbd40d3b94e39c1e02d6231b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m5_utc_formal_later",
+      "path": "D:/ck3-state/resume91-m5-finance225/offline-json30/next-source112/decision-metrics-time/publication-later133/PUBLICATION-LATER133.json",
+      "evidence_grade": "formal_software",
+      "note": "6a411c0058;new private helper, not body-only claim.",
+      "bytes_at_doc_check": 1187,
+      "sha256_at_doc_check": "a0a626694165c668eb5a4041d6eef011ef441017a7e2dd0ac4e48ab2542a4478",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m5_assembler_disposition",
+      "path": "D:/ck3-state/resume91-m5-finance225/offline-json30/next-source112/native-readiness-driver/publication-later133/PUBLICATION-LATER133.json",
+      "evidence_grade": "test_only_formal",
+      "note": "ac0615a80b Test only;standalone444e not adopted into formal inline implementation.",
+      "bytes_at_doc_check": 1597,
+      "sha256_at_doc_check": "01a361b05da3097cd5579ecfa6458e6b0dd1fe0937a71ae08c541e48987ef2ef",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m5_decimal124_source",
+      "path": "D:/ck3-state/resume91-m5-finance225/offline-json30/decisionmetrics-decimal-next121/owner-prototype124/SOURCE-READY124.json",
+      "evidence_grade": "source_ready_first_NOT_HELD",
+      "note": "Preserve published UTC changes in later formal composition.",
+      "bytes_at_doc_check": 2885,
+      "sha256_at_doc_check": "d15feaffe5e24a7aeb540757d2ce871d93ee6aaec8342d84b26662585ef6a8dc",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m5_sorted123_source",
+      "path": "D:/ck3-state/resume91-m5-finance225/offline-json30/publicdata/sorted-lazy-fields120/owner-prototype123/SOURCEONLY-PROTOTYPE-READY123.json",
+      "evidence_grade": "source_ready_first_NOT_HELD",
+      "note": "Preserve formal array116; no whole-copy old baseline.",
+      "bytes_at_doc_check": 1904,
+      "sha256_at_doc_check": "32c227cdd7b68cb4a92604345090ddcad76805e695071c0ccbb06eccb08c0505",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m6_whole266_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m6-whole266-mature853-rev04/PUBLISHED.json",
+      "evidence_grade": "formal_limited_3_scenes",
+      "note": "3dbc4e87b3;Data4diagnostic-label projection is not rerun/byteequivalent compiledraw.",
+      "bytes_at_doc_check": 1314,
+      "sha256_at_doc_check": "3c87765fc22ba301576d88a681459ec11e2701a991c0e3128b03d90958491d9e",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m6_guard264_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m6-guard264-mature01/PUBLISHED.json",
+      "evidence_grade": "formal_limited_software",
+      "note": "68ad2b4e37;not whole activity ABI/natural.",
+      "bytes_at_doc_check": 1070,
+      "sha256_at_doc_check": "9cd3cd982e46651487b8cacbdedea317332beb9dbd73ff6ca6eb217ba339e8a2",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m6_word265_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m6-word265-mature01/PUBLISHED.json",
+      "evidence_grade": "formal_limited_software",
+      "note": "8e372149eb;3finite scenes.",
+      "bytes_at_doc_check": 1051,
+      "sha256_at_doc_check": "f46dbe5d527d34c0dbc5dc016b10463c8c0d7ee617eb48a3b0d92c4f7a707edf",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m6_dynamic235_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m6-ordinary-sway235/PUBLISHED.json",
+      "evidence_grade": "formal_not_runtime_adopted_held",
+      "note": "62a1b91db8;9scenes29checks do not imply real nomination/capinstall.",
+      "bytes_at_doc_check": 1069,
+      "sha256_at_doc_check": "4129dcd28942b5574db1fad90de68dc69145093980e31b0c703ac4f3461e1615",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m6_generic259_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/m6-genericchild259-mature856/PUBLISHED.json",
+      "evidence_grade": "formal_limited_software",
+      "note": "d615775249;one finite scene.",
+      "bytes_at_doc_check": 816,
+      "sha256_at_doc_check": "c0d84da4945c1389a4c3163bdf69308ea86e65f2f4b80e7eb9671cbe71e81ca5",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m6_raw_gap901",
+      "path": "D:/ck3-state/resume91-native-integration/named-callee901-activity-child264-norf48/NATIVE-SOURCE-GAP901.json",
+      "evidence_grade": "exact_source_GAP",
+      "note": "48B;80F/811/81A open;only requested next32B[23FC810,23FC830), not executed for docs.",
+      "bytes_at_doc_check": 1867,
+      "sha256_at_doc_check": "796f3f2352c6925846e773cac4c141d6869b5f617f0ce7c1f3f9f5966f990b8b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m6_277_two_prod_ready",
+      "path": "D:/ck3-state/resume91-m6-native/next-natural259/scheme-gate263/timing-callee9dc3c0-277/firstcompile-two-prod277/SOURCE-READY-PREPARATION-TWO-PROD277.json",
+      "evidence_grade": "source_ready_first_NOT_HELD",
+      "note": "Unique conditional prod/Test preparation; no binder263API credit.",
+      "bytes_at_doc_check": 36434,
+      "sha256_at_doc_check": "04f129f6d3f61da8162c20427940e6e8e3acae31ea4d2475a99256edb9cbc0df",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m6_278_run_ready",
+      "path": "D:/ck3-state/resume91-m6-native/next-natural259/whole266-next-public-branch-qualification20261104/first-run-preparation278/build/run01/SOURCE-READY-RUN278.json",
+      "evidence_grade": "Test_strict_887_RUN_NOT_HELD",
+      "note": "Strong RUN recorder unique writer already assigned; do not prepare twice.",
+      "bytes_at_doc_check": 106707,
+      "sha256_at_doc_check": "038df128e38845749b70248b0f78040ae6e90955bb9c355d905cc3c63f593dfe",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m7_saved400_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-saved-kernel400/PUBLISHED.json",
+      "evidence_grade": "formal_limited_route",
+      "note": "634fd6ee;ORDINARY includes actual independent READ window, not zeroREAD DATA.",
+      "bytes_at_doc_check": 807,
+      "sha256_at_doc_check": "8881a6a91468cb1eb6cd9131e794ddfb7fd3522e2a2e615ea9bdff5c65598e85",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m7_instrumentation_delivery",
+      "path": "D:/ck3-state/resume91-root/quarkus-instrumentation-next/m7-parent-integration01/FINAL-OFFLINE-DELIVERY02.json",
+      "evidence_grade": "offline_source_research_complete",
+      "note": "Six source roles;not newfourhook RUN or arbitraryredefine.",
+      "bytes_at_doc_check": 7120,
+      "sha256_at_doc_check": "7b2f773e8f22b76601abe0c0a5f17412021a78c626affb260c23d803276947d4",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m7_harness_source",
+      "path": "D:/ck3-state/resume91-root/quarkus-instrumentation-next/m7-software-harness/source-integration-rev02/SOURCE-READY02.json",
+      "evidence_grade": "source_ready_artifact_GAP",
+      "note": "Four hooks, nineteen namedsource;not actual runnablePrepared.",
+      "bytes_at_doc_check": 2420,
+      "sha256_at_doc_check": "1d0f811f9967141a302966ffabaf6a363c0a62718bd74b827308006b65614221",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m7_artifact_plan",
+      "path": "D:/ck3-state/resume91-root/quarkus-instrumentation-next/dependency-acquisition-plan01/TRUSTED-ACQUISITION-PLAN02.json",
+      "evidence_grade": "plan_not_executed",
+      "note": "Install-plugin3.2.0 help/pluginrealm only;actualMaven/artifact/agent/classifier not held.",
+      "bytes_at_doc_check": 8829,
+      "sha256_at_doc_check": "869be271453c9e66e435ea546c7aba434e96525d9e45fabf03bdc15b275b6b16",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "native_checkpoint904",
+      "path": "D:/ck3-state/resume91-native-integration/NATIVE-CHECKPOINT904.json",
+      "evidence_grade": "software_checkpoint",
+      "note": "241successfulsoftwarephases since637/206since673;notGame milestones.",
+      "bytes_at_doc_check": 1795,
+      "sha256_at_doc_check": "ad3253d3646e10099c580d880a7e765d1c479960484fc68fa0e75fc589f68f85",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "native_resource_snapshot",
+      "path": "D:/ck3-state/resume91-native-integration/RESOURCE-LEASES-CURRENT.json",
+      "evidence_grade": "existing_ledger_cut",
+      "note": "Three nullslots at02:14:28;Main301 entries historical, notRuntimehealth.",
+      "bytes_at_doc_check": 322861,
+      "sha256_at_doc_check": "b1f710a02b58bd69fe882e140112fd94a37dc0e44f4204c86fc177672d009200",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "jfr817_closed",
+      "path": "D:/ck3-state/resume91-native-integration/dev307-persistent783-first-warmappend-once/CLOSED-FILE.json",
+      "evidence_grade": "closed_once_sample",
+      "note": "30.0920461s;do not start second sample for docs.",
+      "bytes_at_doc_check": 2592,
+      "sha256_at_doc_check": "35f02d2b8da2f222168ac8170bd38ff6cc5e646be95bdd4e4ff6528e510b4e8b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "jfr836_closed",
+      "path": "D:/ck3-state/resume91-native-integration/dev307-ordinary109-planning-once/CLOSED-FILE.json",
+      "evidence_grade": "closed_once_sample",
+      "note": "30.0940454s;events/GCnotwholewallpercent.",
+      "bytes_at_doc_check": 2554,
+      "sha256_at_doc_check": "ed22082de0c1c7dccbb2f4ce59969303e55e2f5f6f8cc48dd112513d3d02ddbf",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "dispatch_handoff",
+      "path": "D:/ck3-state/resume91-root/concurrency60-operations/DOCS-HANDOFF-THIN-20261104T022318Z.json",
+      "evidence_grade": "existing_owner_handoff",
+      "note": "Video/window and planner actual refs;next116 instruction superseded by fresh117cut.",
+      "bytes_at_doc_check": 9661,
+      "sha256_at_doc_check": "682de3fc58eff418bbb29d72d7bec382c224ca27fe76a7f4a2a35fcfd4f00990",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "cloud_cut28",
+      "path": "D:/ck3-state/resume91-root/concurrency60-operations/dispatch-inputs/ACTUAL-RUNNING-CUT28-20261104T022318Z.json",
+      "evidence_grade": "historical_tool_view",
+      "note": "Selected65:13RUNNING52COMPLETED at02:23:18;notcurrent/globalproof.",
+      "bytes_at_doc_check": 1980,
+      "sha256_at_doc_check": "529feb51f924cbcfa358d1c36635e9b8b2ead1784cc6f5a325f7f4208fafbe46",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "video_current_v1_acceptance",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/final-video-current-v1-runtime-preparation/FINAL-VIDEO-ACCEPTANCE02.json",
+      "evidence_grade": "actual_final_artifact_acceptance",
+      "note": "14.566s,4337136bps,real7s/12sframes;offlineencodeclosedmedia;notcontinuousrecording orR2.",
+      "bytes_at_doc_check": 3844,
+      "sha256_at_doc_check": "ad0862f5c8927109b3c49786490587fcc0640ae8044c9d0f24a07c92e6b85444",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "video_current_v1_feed",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/persistent783-r2-runtime/readonly-recovery108/final-video-current-v1-feed/SUMMARY.json",
+      "evidence_grade": "actual_v1_feed",
+      "note": "Actualcurrentv1 is separate from R2candidate.",
+      "bytes_at_doc_check": 1977,
+      "sha256_at_doc_check": "5b411e875a91a19724030c1ebe74aaadc2bd1590db10be528de7ce5dfbd956d8",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "video_r2_test02_source",
+      "path": "D:/ck3-state/resume91-root/concurrency60-operations/video-feed-routing-java-public-test02/SOURCE-READY.json",
+      "evidence_grade": "source_ready_first_NOT_HELD",
+      "note": "Onlyunrendered constructor/close DATA;typedcard/claimedgeneration/crossloaderremainGAP.",
+      "bytes_at_doc_check": 3592,
+      "sha256_at_doc_check": "1bfb44bb5e84b6c203ae178b30c3237ce5732203f06acdddd8f36141ca4c5782",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "screenfit_runtime",
+      "path": "D:/ck3-state/resume91-runtime/current-resume268/window-workarea-fit831-live01/SUMMARY.json",
+      "evidence_grade": "actual_one_owned_window",
+      "note": "2560x1440to2560x1392;HUDcomplete;callerawareness0/96DPIonly.",
+      "bytes_at_doc_check": 4475,
+      "sha256_at_doc_check": "aac7785a6bca6c9a78f58b76302251f0a93ee4b4a07852c625960069b223d73b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "screenfit_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/window-workarea-fit831-rev02/PUBLISHED.json",
+      "evidence_grade": "formal_and_11_DATA",
+      "note": "6cb3869ab9;runtime bounded separate entry.",
+      "bytes_at_doc_check": 1149,
+      "sha256_at_doc_check": "6211a065227e7308d5251f31b9dd31ce9f3e763b495cdc515171731df6468aec",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "bitrate_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/bitrate4400-source-first02/PUBLISHED.json",
+      "evidence_grade": "formal_source_only",
+      "note": "11aaa55710;only4800to4400;runtime package01/profile not adopted.",
+      "bytes_at_doc_check": 754,
+      "sha256_at_doc_check": "9e6b6b56077fcb5f5f46e0c027401bcac0e3677c214ae2f48488b971eb9d1b24",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "recipe_oneprod_formal",
+      "path": "D:/ck3-state/resume91-java-delivery/verification-recipe-one01/PUBLISHED.json",
+      "evidence_grade": "formal_software_and_real_first_use",
+      "note": "db97398f;4DATAplusreal1P1T3JUnit;noquantifiedowner-saving.",
+      "bytes_at_doc_check": 1328,
+      "sha256_at_doc_check": "43f8ba9d1918136d0f69a24d164ef12008b7c6c6c8de0b6f274b46b06de9cf3d",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "ops_agents",
+      "path": "Z:/workspace/local-model-operations/AGENTS.md",
+      "evidence_grade": "shared_policy",
+      "note": "Read after cleanmainfetch+ffonly;machineIDs/evidencepaths local.",
+      "bytes_at_doc_check": 8897,
+      "sha256_at_doc_check": "8f9bd1ed2e1bd9d2a2aebacf8ff76f8e53a8492a23107533fabce4eed1550cfd",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "ops_usage",
+      "path": "Z:/workspace/local-model-operations/docs/usage.md",
+      "evidence_grade": "shared_policy",
+      "note": "Current shared operations authority.",
+      "bytes_at_doc_check": 30686,
+      "sha256_at_doc_check": "1dec675b0c05e83b52bc812cd767cd90c27ab8754d54de8a8fbe799ad24744af",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "ops_executor",
+      "path": "Z:/workspace/local-model-operations/config/executor.json",
+      "evidence_grade": "shared_configuration",
+      "note": "192.168.1.11:8080/v1 qwen38-coderDIRECT;not automaticactiveprojection.",
+      "bytes_at_doc_check": 1862,
+      "sha256_at_doc_check": "75b5a92349193407aab1b8156849461d877a2e87adae4234cacc02850b60b1b9",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "ops_long_term_prompt",
+      "path": "Z:/workspace/local-model-operations/prompts/capability-operations.md",
+      "evidence_grade": "shared_long_term_policy",
+      "note": "HTTPandOpenCode tracked separately and continuously.",
+      "bytes_at_doc_check": 29336,
+      "sha256_at_doc_check": "6ed1bbd8f22b26a0b0d4d044d4570b121f369425875380939aaccd4ce4df8628",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "ops_http_boundaries",
+      "path": "Z:/workspace/local-model-operations/docs/capability-http.md",
+      "evidence_grade": "shared_capability_evidence",
+      "note": "Actualrequest/ownerfix/cost/outcome grades.",
+      "bytes_at_doc_check": 485458,
+      "sha256_at_doc_check": "f27f1e44c4f71c898bd61370ea09c35f6b34e3d8e9058f95f0d9ccb005a1dda5",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "ops_opencode_boundaries",
+      "path": "Z:/workspace/local-model-operations/docs/capability-opencode.md",
+      "evidence_grade": "shared_capability_evidence",
+      "note": "Nofixed12stepcap;toolloopnotautonomousdeliveryorprovensavings.",
+      "bytes_at_doc_check": 44602,
+      "sha256_at_doc_check": "37c22ace72daa55eaebb373710975678d72190fa14df9d4aee01a48ebf82395b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "ops_dispatch_plans",
+      "path": "Z:/workspace/local-model-operations/docs/authorized-dispatch-data-plan.md",
+      "evidence_grade": "shared_DATA_tool",
+      "note": "Noautomaticcollaboration/start/capture;manualactualrosterinput.",
+      "bytes_at_doc_check": 4285,
+      "sha256_at_doc_check": "1a915c19b95fdd58f75d78f1becce82de8d88220b70c0ad56e02faa8aebdcb9b",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "g2_contract",
+      "path": "Z:/ck3_mod_rewrite/docs/autonomous-agent-progress/g2-requirements-v1.json",
+      "evidence_grade": "last_complete_acceptance_contract",
+      "note": "Still6of8;finitecomponentPASSnotnaturalM6/M7.",
+      "bytes_at_doc_check": 132586,
+      "sha256_at_doc_check": "e007062f638e151685305db37f5f5a4496f25a83155b8d9d9ddbc0ead97ae9e3",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "models_handoff",
+      "path": "D:/ck3-state/resume91-root/MODELS-HANDOFF-CUT-20261104T0240Z.json",
+      "evidence_grade": "frozen_owner_handoff",
+      "note": "202owned terminal requests;pipelineprocessnotdetected;sharedmainff;no newPOST/probe/restart.",
+      "expected_sha256": "1b6bd7e6097a0c4e011fde40af43e547d07ffb40592177ff49c2a1845e4bdc48",
+      "bytes_at_doc_check": 11945,
+      "sha256_at_doc_check": "1b6bd7e6097a0c4e011fde40af43e547d07ffb40592177ff49c2a1845e4bdc48",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "model_registered_cut31",
+      "path": "D:/ck3-state/resume91-root/rolling-refill-20261104-wave01/ROLLING-ACTUAL-CUT31.json",
+      "evidence_grade": "bounded_registered_scope",
+      "note": "202POST/202END/0open;notglobal orbackend.",
+      "bytes_at_doc_check": 143100,
+      "sha256_at_doc_check": "0eedc20480fa2f5a8819bac0585041a5a9d386c2a3aed89306afd2225feb3f8d",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "model_intake_cut19",
+      "path": "D:/ck3-state/resume91-root/rolling-refill-20261104-wave01/INTAKE-ACTUAL-CUT19.json",
+      "evidence_grade": "bounded_intake_scope",
+      "note": "180tickets174logical180receipts;0unregistered;6historicalpreparationfailures.",
+      "bytes_at_doc_check": 114917,
+      "sha256_at_doc_check": "b3db7a56ad068af8ff998b52317f333a5ce5ea47ab0086ca742ec520b3b60d26",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "source_high_profile",
+      "path": "Z:/workspace/local-model-operations/config/source-high-concurrency-direct.json",
+      "evidence_grade": "shared_source_profile",
+      "note": "DIRECT600/2400distinctfromshared180/900default.",
+      "bytes_at_doc_check": 1863,
+      "sha256_at_doc_check": "97fb38b997dde3522f2310d06a229ab660db35f8bdc1a5d40eaa5c9e07e57e9a",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "opencode_daily_cache",
+      "path": "D:/ck3-state/local-model-client-state/opencode/daily.json",
+      "evidence_grade": "existing_cache_only",
+      "note": "1.19.5checked2026-11-04T00:28:01.979872+08:00;no newversion check fordocs.",
+      "bytes_at_doc_check": 517,
+      "sha256_at_doc_check": "c8792c74827a52534d8bb533f054c0e9c6240aa7fb3395c2954bafb035f3618e",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    },
+    {
+      "id": "m5_typed136_actual825",
+      "path": "D:/ck3-state/resume91-m5-finance225/offline-json30/typed-driver117/owner-codec-revision130/legacy-processor-preserving136/oracle136/after-candidate-review136/actual-consumer825/ACTUAL-CONSUMER825.json",
+      "evidence_grade": "actual_software_2P_formal_still_paused",
+      "note": "Cross-owner correction at docreview:825strictand2distinctPASS already held by Java, not globally pending.",
+      "expected_sha256": "0b6fe698bf6e6f140fd0269bc7dc0e5a181ede5b3c78a8530660373aa09b09e8",
+      "bytes_at_doc_check": 24777,
+      "sha256_at_doc_check": "0b6fe698bf6e6f140fd0269bc7dc0e5a181ede5b3c78a8530660373aa09b09e8",
+      "metadata_check": "EXISTS_HASHED_ONCE_NAVIGATION_ONLY"
+    }
+  ],
+  "shared_operations_last_verified": {
+    "at_utc": "2026-11-04T02:42:43Z",
+    "head": "be99677cd393dd2b46c565513eaa049c9206faba",
+    "branch": "main",
+    "clean": true,
+    "normal_ff": true,
+    "caller_switched": false,
+    "cloud_policy_commit": "5bc648c301079c460c9b64390d350582e1c53124",
+    "opencode": {
+      "version_from_existing_cache": "1.19.5",
+      "checked_at_local": "2026-11-04T00:28:01.979872+08:00",
+      "new_probe_for_docs": false
+    },
+    "source_profile": {
+      "network": "DIRECT",
+      "read_seconds": 600,
+      "total_seconds": 2400,
+      "max_transient_attempts": 6
+    },
+    "shared_default_timeouts": {
+      "read_seconds": 180,
+      "total_seconds": 900
+    }
+  }
+}
