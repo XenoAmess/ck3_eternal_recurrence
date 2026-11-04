@@ -35,9 +35,9 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
     }
 
     @Override public int run(String... args) throws Exception {
-        if (args.length != 3) throw new IllegalArgumentException("ordinary-worker requires owner.json, business configuration, and fresh|resume");
+        if (args.length != 3) throw new IllegalArgumentException("ordinary-worker requires owner.json, business configuration, and fresh|resume|current-map");
         String mode = args[2];
-        if (!"fresh".equals(mode) && !"resume".equals(mode)) throw new IllegalArgumentException("ordinary-worker mode must be fresh or resume");
+        if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode)) throw new IllegalArgumentException("ordinary-worker mode must be fresh, resume or current-map");
         Clock clock = Clock.systemUTC();
         RootOrdinaryRuntimeConfiguration config = RootOrdinaryRuntimeConfiguration.read(Path.of(args[1]));
         var descriptor = GameSupervisorControl.readDescriptor(Path.of(args[0]));
@@ -57,6 +57,8 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             var ack = RootNativeFreshStartup.observeBootstrapCore(attached, clock, clock.instant().plus(config.operationTimeout()));
             var frame = RootNativeFreshStartup.decodeCore(ack.originalResultToken().orElseThrow());
             var mapReady = RootNativeFreshStartup.isMapReady(frame);
+            if ("current-map".equals(mode) && !mapReady)
+                throw new IOException("current-map requires an actual ready map; new campaign startup is not permitted");
             if ("resume".equals(mode)) {
                 Optional<CleanRestartTicket> pointer = Files.exists(ticketPath) ? Optional.of(readTicket(ticketPath)) : Optional.empty();
                 running = prepared.openExistingSameGameRecovery(attached, pointer, clock.instant().plus(config.operationTimeout()));

@@ -1,0 +1,84 @@
+{
+  "schema": "dev-current-map-new-epoch-sources/v1",
+  "at_utc": "2026-11-04T21:09:44.943224+00:00",
+  "refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\dev-current-map-entry01\\SOURCE-READY-OWNER01.json",
+      "bytes": 6632,
+      "sha256": "76cdb7cfce72ab385c7d14d3a9f5f2f0373d4ab2e3bcaf3f1aadaf54fdd8aaea"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\dev-current-map-entry01\\SOURCE-READY-QUALIFIED02.json",
+      "bytes": 8111,
+      "sha256": "51369b5a358aea24f51760d32cfcd65a475f32fbdd74d38d31cc300e4bb60f81"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\dev-current-map-entry01\\native-first01\\QUALIFIED-FIRST-BRIEF01.json",
+      "bytes": 4455,
+      "sha256": "1acd03e65969f4a9142d28947b68da7572763272a6ec50b3376afd934a75ba0c"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\dev-current-map-entry01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+      "bytes": 40654,
+      "sha256": "1833c704fb53a473f8efe5a4d6e38219c088a4ee9b22f0953529d08495e97f27"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\NEW-EPOCH-TRANSITION16.json",
+      "bytes": 2130,
+      "sha256": "674208ec3c361d544c98e8686bdc7c4eda8f9bd8ebc5cbacba4b4ffba9f916df"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\world16-read01\\ACTUAL-BEGIN.json",
+      "bytes": 1618,
+      "sha256": "e2c7378db6cbb1211c9ab7e3d64a2c144dfcec780c334b2c6f4d8fcc6ea19056"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\world16-read01\\ACTUAL-END.json",
+      "bytes": 695,
+      "sha256": "3a47da45a9b6a99056b7e619dd5a4232f7a19294315e9998604e7c921eea5e4a"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\world16-read01\\originals\\summary.json",
+      "bytes": 10728,
+      "sha256": "774babe998f2304be60a43e628815c75e8b5fdd84e8a6cdc79ae3a9e042616d2"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\seven-source-adoption16\\SOURCE-ADOPTED16.json",
+      "bytes": 12863,
+      "sha256": "0b00839eee02970a53e788aa94e05ee6817ffdf4044f7f369d705167ef8acfed"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt16\\SOURCE-ADOPTED-ENTRY16.json",
+      "bytes": 6995,
+      "sha256": "0f388a88a10a04d32241cda0747f5252da7c59b93e2e0f74e97e178217ea144e"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt16\\DEV-LAUNCH-READY307.json",
+      "bytes": 10841,
+      "sha256": "193d4c1ababcffe073b5ebb550c484e6bf3df817402f114b1213a3fbd0d95729"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt16\\FINAL-PRELAUNCH16.json",
+      "bytes": 1199,
+      "sha256": "89a7d75a26648a5dfdbb692320748a737f94cf629e97c7865760cb39018a70d8"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\quarkus-dev307-runtime\\attempt16\\ACTUAL-START307.json",
+      "bytes": 2449,
+      "sha256": "ac5982874899bfc0613861c2e907ac62f8e32b8e3dcbb574ed92d2f9c07898cd"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\current-resume268\\user-return16-launch\\physical-owner16\\owner.json",
+      "bytes": 3591,
+      "sha256": "e5cd1aa0b454eab3433f2ccd5c607f2dccccad0a62b8f9401f618e7b7b4317b1"
+    }
+  ],
+  "formal_sources": [
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootOrdinaryWorkerDevMain.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootOrdinaryWorkerMain.java"
+  ],
+  "qualification": "Exact2TU first0/6classes, all6shapes equal, 8static controlflow conditions; no fakeRootTest/actualmap branch execution credited by these software records.",
+  "Runtime_cut": "Actual newGame+keeper and readonly snapshot held; oldepoch retained. 9rawsource adoption and realMavenouterSTART held, not a Host/LOOP witness.",
+  "new_epoch": "baseline53158176/actor31254; automationobserved/eligible/saved0. WorldUID and certifiedoldGoal import NOT_HELD. Old508/501/365/C69+pending2455 historicalonly.",
+  "sourceowner_live_query_JVM_C_GET": 0
+}

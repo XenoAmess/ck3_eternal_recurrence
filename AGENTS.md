@@ -10,6 +10,8 @@
 
 后到现场事实（2026-11-04T20:25Z切点）：运行 owner 核实旧 Game77132 已 exit0，当前 CK3 进程清单为空；旧 keeper67152／host58200 的 PID 已复用，不能据 PID 相同认作旧对象。Root 按本次恢复授权安排必要的新 Game 受控启动，前提是先核最新真实手玩存档、旧 launch 与实际世界来源；当前没有活跃 Game，不将此称为重启现有 Game 或已同局恢复。不默认旧 saved365／head2457／原2455适用于新世界，不重放原动作、不清旧账本；旧 epoch／源码／回执完整保留，新 Game、epoch、world、LOOP及保存分别待真实回执。
 
+后到具名新切点：运行 owner 已受控建立 Game117900／出生134382986922161575及 keeper34052／出生134382986871091921，20:51只读原件确认 map_ready、actor31254、date53158176。新 epoch 以该日期为基线，自动 observed／eligible／confirmedSaved 均从0记；世界 UID 与旧 Goal 跨 Game 认证仍 NOT_HELD，旧508／501／365日、C69与2455回执只保历史，不补授C70或保存。Dev入口显式第三参 `current-map` 通过 Main 本次实际 Core READ 检查地图；地图未就绪即拒绝，不能转入新战役分支，两参默认 `resume` 保留。入口2TU编译／6类结构检查、Maven outer START、Host／LOOP及实际推进分别记账，详见[本次新地图入口及来源](docs/autonomous-agent-progress/2026-11-05-dev-current-map.md)。
+
 ## 2026-11-05 用户最新：自行游玩，暂停自动实机
 
 用户最新明确：“你收尾ck3以及对ck3进程的操作，现在我想自己玩了。”本条覆盖下方自动实机续行授权；立即停止 Java 自动游玩，以及 Game／Native live 查询、动作、录制／捕获、现场采样、部署、装载、launch 和后继 GET。同一 Game 与 keeper 保留，不关闭、不重启、不触发 SAVE；不得重放旧动作、刷新旧 deadline 或清账本。只有用户后到明确恢复授权才可恢复自动实机。
