@@ -72,7 +72,7 @@ def main():
     if args.mode == "prepare":
         capture.prepare_profile(args.obs_root, args.profile, args.output_root,
             port=args.port, control_dependencies=args.control_dependencies,
-            deadline_utc=args.deadline_utc, max_output_bytes=args.max_output_bytes, bitrate_kbps=4800,
+            deadline_utc=args.deadline_utc, max_output_bytes=args.max_output_bytes, bitrate_kbps=4400,
             continuous=args.continuous, storage_admission=args.storage_admission)
         result = {"state": "PREPARED_NOT_RECORDED", "profile": str(args.profile.resolve()),
                   "deadline_utc": args.deadline_utc, "continuous": args.continuous,
