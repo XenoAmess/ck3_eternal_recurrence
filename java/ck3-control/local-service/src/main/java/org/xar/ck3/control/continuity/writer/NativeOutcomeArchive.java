@@ -256,6 +256,28 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }
     }
 
+    /** Optional historical read optimization; borrowing keeps the outer scope's limits and ownership. */
+    public <T> T inHistoricalReadScopeOrBorrow(ContinuityStorePort.Session session,
+            ActionPorts.HistoricalReadLimits ownScopeLimits, ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        ParsedMaterialCache commandCache = parsedMaterialCache.get();
+        var reads = commandCache == null ? null : commandCache.commandReads;
+        if (reads == null) return inHistoricalReadScope(session, ownScopeLimits, operation);
+        try {
+            Objects.requireNonNull(ownScopeLimits); Objects.requireNonNull(operation);
+            requireSession(session);
+            reads.requireActive();
+            T result = operation.read(new NativeOutcomeArchive(owner, session));
+            reads.requireActive();
+            return result;
+        } catch (IOException problem) {
+            IOException actual = problem instanceof java.nio.file.NoSuchFileException
+                    ? new IOException("historical original validation failed; not optional absence", problem) : problem;
+            reads.recordFailure(actual); throw actual;
+        } catch (RuntimeException | Error problem) {
+            reads.recordFailure(problem); throw problem;
+        }
+    }
+
     /** Root installs its identical per-Game catalog router and original-byte port under this writer.
      * This wiring creates no physical scope, authority, observation or read qualification. */
     public void bindPhysicalStatusOriginals(ContinuityStorePort.Session same, GameGeneration actualGame, RootExecutableBindings actualBindings,
