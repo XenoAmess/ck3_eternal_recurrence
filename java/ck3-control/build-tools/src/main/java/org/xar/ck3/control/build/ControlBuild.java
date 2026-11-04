@@ -1320,10 +1320,16 @@ public final class ControlBuild {
         java.util.Optional<LobbyVerifyTestInputs.Recorded> lobby = java.util.Optional.empty();
         if (consumeTestInputs && config.targetKind() == TargetKind.BUILD_TOOLS_RUNTIME
                 && config.sourceLimitProfile() == SourceLimitProfile.STANDARD_8_MIB
-                && LobbyVerifyTestInputs.selected(snapshot)) try {
-            lobby = java.util.Optional.of(LobbyVerifyTestInputs.fromEnvironment(environment, WindowsJobProcess.currentMachineId()));
-        } catch (IOException invalid) {
-            throw new IllegalArgumentException("Selected pinned lobby fixture inputs required", invalid);
+                && LobbyVerifyTestInputs.selected(snapshot)) {
+            boolean hasExternalKeys = environment.containsKey(LobbyVerifyTestInputs.ENV)
+                    || environment.containsKey(LobbyVerifyTestInputs.ENV + "_BYTES")
+                    || environment.containsKey(LobbyVerifyTestInputs.ENV + "_SHA256");
+            String softwareFrames = environment.get("XAR_FRONTEND_LOBBY_SOFTWARE_FRAMES");
+            if (hasExternalKeys || softwareFrames == null || softwareFrames.isBlank()) try {
+                lobby = java.util.Optional.of(LobbyVerifyTestInputs.fromEnvironment(environment, WindowsJobProcess.currentMachineId()));
+            } catch (IOException invalid) {
+                throw new IllegalArgumentException("Selected pinned lobby fixture inputs required", invalid);
+            }
         }
         String python = environment.get("XAR_ORACLE_PYTHON");
         if (python == null || python.isBlank() || !Path.of(python).isAbsolute()

@@ -1,0 +1,57 @@
+{
+  "schema": "xar.java-owner.ci-lobby-software-lane-published-source-index/v1",
+  "at_utc": "2026-11-04T21:52:59.326078+00:00",
+  "base_commit": "dac47955b7df1e824d963b939d5f0265d974142f",
+  "owner": "/root/java_continue",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-lobby-software-lane01\\SOURCE-READY-OWNER01.json",
+    "bytes": 2942,
+    "sha256": "c263c08c04c4ed9d55f2f5e83c01fe75c4fd4df33207d32de8eaee317db32f05"
+  },
+  "frozen_inputs": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-lobby-software-lane01\\SOURCE-READY-INPUTS01.json",
+    "bytes": 2579,
+    "sha256": "1e7d474207e6a462da42f62c0727648e4b69864a32c3b5be5c2c67baf154f690"
+  },
+  "contract": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-lobby-software-lane01\\IMPLEMENTATION-CONTRACT01.txt",
+    "bytes": 4422,
+    "sha256": "c82e7523046d98e6c27d67492a86d07b68a2136a9921536babf93ac8e985306a"
+  },
+  "model_raw_complete_reviewed": {
+    "path": "D:\\ck3-state\\resume91-root\\models-postack-test-and-ci-lobby-20261105-01\\ci-lobby01\\http-implementation01\\ATTEMPT1-CONTENT.txt",
+    "bytes": 8795,
+    "sha256": "62808191fbcfdaccf52628c63d6766eb4025e887370b9715d57c68301df4228a"
+  },
+  "before": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-lobby-software-lane01\\source\\java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ControlBuild.java",
+    "bytes": 229910,
+    "sha256": "9ee56ab04e13797a01d34f4d8d6d56e21d63fc13e2f1ce9191d8ac3fff4fdfc6"
+  },
+  "production": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-lobby-software-lane01\\owner-candidate01\\java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ControlBuild.java",
+    "bytes": 230377,
+    "sha256": "ab467e049cbc5f5700e07179811b1db9011af9e63c476c32952f367b72b70845"
+  },
+  "test": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-lobby-software-lane01\\owner-candidate01\\java\\ck3-control\\build-tools\\src\\test\\java\\org\\xar\\ck3\\control\\build\\ControlBuildLobbySoftwareLaneTest.java",
+    "bytes": 6712,
+    "sha256": "43d6217e63e689bc43cca67e1d45a27400554cca000bff164bebcfca93732054"
+  },
+  "production_inverse_exact": true,
+  "raw_model_diff_applied": false,
+  "model_adoption": "partial: exact external-three-key predicate and test structure reused; malformed diff/context not applied; owner null-safe software lookup, actual package-visible 5arg API binding, verify/no-skip and blank/tamper assertions added",
+  "official_failure": {
+    "run": 41900511164,
+    "job": 126821326688,
+    "error": "Selected pinned lobby fixture inputs required",
+    "maven_result": null,
+    "artifact_root": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/ci-a24-terminal01/artifact"
+  },
+  "new_tests": 4,
+  "local_compile": "NOT_RUN: current build-tools dependency suite not held; old Oct22 donor is not source-matched",
+  "CI_validation": "PENDING actual official run for this commit",
+  "Game_operation": false,
+  "P0_runtime_gate": false,
+  "task_state": "RUNNING"
+}
