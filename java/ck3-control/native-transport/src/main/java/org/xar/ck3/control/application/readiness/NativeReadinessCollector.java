@@ -1386,14 +1386,14 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         require(assembled instanceof Complete, "actual native/Driver observation join is incomplete: " + assembled);
         Complete frame = (Complete) assembled;
         Instant now = clock.instant();
-        require(now.isBefore(ioDeadline) && !frame.observedAt().isAfter(now) && !frame.observedAt().isAfter(ioDeadline), "actual native observation freshness/deadline failed: observed_at=" + frame.observedAt() + ", checked_at=" + now + ", deadline=" + ioDeadline);
-        GameLifecycle.Observation observed = lifecycle.inspect(identity.game(), ioDeadline);
+        requireObservationTiming(frame.observedAt(), now, ioDeadline, scopeDeadline);
+        GameLifecycle.Observation observed = lifecycle.inspect(identity.game(), scopeDeadline);
         require(observed instanceof GameLifecycle.Running, "actual Game is not independently measured Running");
         NativeGameTransport.TransportDiagnostics diagnostics = transport.diagnostics();
         RootNativeCapabilities.Projection received = RootNativeCapabilities.project(frame, known, diagnostics,
-                (GameLifecycle.Running) observed, now, ioDeadline, validity);
+                (GameLifecycle.Running) observed, now, scopeDeadline, validity);
         SourceQualification qualified = Objects.requireNonNull(sourceAuthority.verify(borrowed, identity, frame,
-                known, diagnostics, (GameLifecycle.Running) observed, ioDeadline), "actual source authority returned no qualification");
+                known, diagnostics, (GameLifecycle.Running) observed, scopeDeadline), "actual source authority returned no qualification");
         qualified.assertCurrent(borrowed);
         Optional<Pin> sourceProof = sourcePin(borrowed,qualified);
         Instant sourceCheckedAt = clock.instant();
@@ -1421,6 +1421,13 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         require(publishedAt.isBefore(validUntil) && publishedAt.isBefore(scopeDeadline), "readiness publication crossed its actual freshness/deadline: observed_at=" + frame.observedAt() + ", joined_at=" + now + ", source_done=" + sourceCheckedAt + ", originals_preserved_at=" + originalsPreservedAt + ", semantic_verified_at=" + semanticVerifiedAt + ", checked_at=" + publishedAt + ", valid_until=" + validUntil + ", deadline=" + scopeDeadline + ", qualified.proof().isPresent()=" + qualified.proof().isPresent());
         require(lockedHead.equals(borrowed.head().digest()), "writer changed inside observation-only readiness scope");
         return result;
+    }
+
+    /** Pure DATA predicate: separates the native IO receipt bound from the enclosing operation scope bound. */
+    static void requireObservationTiming(Instant observedAt, Instant checkedAt, Instant ioDeadline, Instant scopeDeadline) {
+        require(checkedAt.isBefore(scopeDeadline), "actual native observation freshness/deadline failed: observed_at=" + observedAt + ", checked_at=" + checkedAt + ", io_deadline=" + ioDeadline + ", scope_deadline=" + scopeDeadline);
+        require(!observedAt.isAfter(checkedAt), "actual native observation freshness/deadline failed: observed_at=" + observedAt + ", checked_at=" + checkedAt + ", io_deadline=" + ioDeadline + ", scope_deadline=" + scopeDeadline);
+        require(!observedAt.isAfter(ioDeadline), "actual native observation freshness/deadline failed: observed_at=" + observedAt + ", checked_at=" + checkedAt + ", io_deadline=" + ioDeadline + ", scope_deadline=" + scopeDeadline);
     }
     private static Optional<Pin> sourcePin(ContinuityStorePort.Session borrowed,SourceQualification source)throws IOException {
         if(source.proof().isEmpty())return Optional.empty();
