@@ -108,7 +108,8 @@ public final class CoaWindowCapture {
 
     /** Shared production operation; package-local software callbacks grant no actual Managed ownership. */
     synchronized Preflight focusOwnedWindowOnce(Instant deadline) throws IOException {
-        WindowIdentity target = requireFocusWindow(null, deadline);
+        String restoredHwnd = restoreIfIconic(deadline);
+        WindowIdentity target = requireFocusWindow(restoredHwnd, deadline);
         String foreground = rootId(windows.GetForegroundWindow());
         if (!target.hwnd().equals(foreground)) {
             HWND hwnd = handle(target.hwnd());
@@ -125,6 +126,48 @@ public final class CoaWindowCapture {
         process.verify(game);
         if (!clock.instant().isBefore(deadline)) throw new IOException("owned Game focus result deadline expired");
         return new Preflight(game, after, actualForeground, clock.instant());
+    }
+
+    /** Restore identity is admitted without geometry; every later focus/capture gate stays strict. */
+    private String restoreIfIconic(Instant deadline) throws IOException {
+        if (deadline == null || !clock.instant().isBefore(deadline)) throw new IOException("owned Game focus deadline expired");
+        process.verify(game);
+        String candidate = iconicOwnedRoot();
+        if (candidate == null) return null;
+        if (!clock.instant().isBefore(deadline)) throw new IOException("owned Game restore discovery deadline expired");
+        process.verify(game);
+        if (!candidate.equals(iconicOwnedRoot())) throw new IOException("owned Game restore window changed before presentation");
+        HWND hwnd = handle(candidate);
+        IntByReference pid = new IntByReference();
+        windows.GetWindowThreadProcessId(hwnd, pid);
+        if (!windows.IsWindow(hwnd) || !windows.IsWindowVisible(hwnd) || !windows.IsIconic(hwnd)
+                || Integer.toUnsignedLong(pid.getValue()) != game.pid() || !candidate.equals(rootId(hwnd)))
+            throw new IOException("owned Game restore lost its original process root window");
+        process.verify(game);
+        if (!clock.instant().isBefore(deadline)) throw new IOException("owned Game restore admission deadline expired");
+        windows.ShowWindow(hwnd, 9);
+        process.verify(game);
+        if (!clock.instant().isBefore(deadline)) throw new IOException("owned Game restore completed after deadline");
+        return candidate;
+    }
+
+    private String iconicOwnedRoot() {
+        List<String> owned = new ArrayList<>();
+        boolean[] iconic = {false}, changed = {false};
+        require(windows.EnumWindows((hwnd, data) -> {
+            IntByReference pid = new IntByReference();
+            windows.GetWindowThreadProcessId(hwnd, pid);
+            if (Integer.toUnsignedLong(pid.getValue()) == game.pid() && windows.IsWindowVisible(hwnd)) {
+                String actual = id(hwnd);
+                owned.add(actual);
+                iconic[0] |= windows.IsIconic(hwnd);
+                changed[0] |= !windows.IsWindow(hwnd) || !actual.equals(rootId(hwnd));
+            }
+            return true;
+        }, null), "EnumWindows failed");
+        if (!iconic[0]) return null;
+        require(!changed[0] && owned.size() == 1, "expected one unchanged exact-PID iconic root before restore");
+        return owned.get(0);
     }
 
     private WindowIdentity requireFocusWindow(String expectedHwnd, Instant deadline) throws IOException {

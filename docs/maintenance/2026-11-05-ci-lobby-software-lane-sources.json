@@ -50,8 +50,42 @@
   },
   "new_tests": 4,
   "local_compile": "NOT_RUN: current build-tools dependency suite not held; old Oct22 donor is not source-matched",
-  "CI_validation": "PENDING actual official run for this commit",
+  "CI_validation": "OFFICIAL41920385302 terminal failure after qualified-tools component green",
   "Game_operation": false,
   "P0_runtime_gate": false,
-  "task_state": "RUNNING"
+  "task_state": "RUNNING",
+  "original_publication_CI_cut": "PENDING actual official run for this commit",
+  "later_component_actual": {
+    "at_utc": "2026-11-04T23:05:45.170086+00:00",
+    "run": 41920385302,
+    "job": 126891000630,
+    "qualified_tools_receipt": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-cbd-terminal01\\artifact\\logs\\build-qualified-tools.json",
+      "bytes": 202267,
+      "sha256": "3a1da2ab067b5e8e14b36be5e51999dc3c580facfeec8683c674ccd4d5440d82"
+    },
+    "qualified_tools_stdout": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-cbd-terminal01\\artifact\\logs\\build-qualified-tools-verify.stdout.log",
+      "bytes": 66260,
+      "sha256": "ced996c6c2bcee818296f7ce06b2a48344c178b47eaf073b1ae6ddf470221c9e"
+    },
+    "Maven_exit": 0,
+    "Maven_seconds": 555.301976,
+    "total_Tools_tests_passed": 1199,
+    "new_lobby_methods_passed": 4,
+    "new_methods_seconds": 0.129,
+    "qualified_pipeline_log": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-cbd-terminal01\\artifact\\logs\\qualified-pipeline.log",
+      "bytes": 1001,
+      "sha256": "cadb179a3840b892fa08d3f5e81a7cc397625da47186abb9276dfa39632bf7b0"
+    },
+    "qualified_child_stderr": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-cbd-terminal01\\artifact\\logs\\qualified-control.stderr.log",
+      "bytes": 1432,
+      "sha256": "159e2b82aebe6064d48c54d248afd002db471f5fd26a1a7e8ccf311e58c09416"
+    },
+    "downstream_failure": "NoSuchFileException tools-postqualification/actual.json at ControlCi.runQualified1947",
+    "full_reactor_HTTP_pipeline_pass_granted": false,
+    "Game_operation": false
+  }
 }

@@ -1,0 +1,115 @@
+{
+  "schema": "xar.java-owner.owned-iconic-focus-source-index/v1",
+  "at_utc": "2026-11-04T23:01:31.242060+00:00",
+  "base_commit": "010cec200f1e588858cfb49c4b78330c739cd9ac",
+  "owner": "/root/java_continue",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\owned-focus-iconic-restore01\\SOURCE-READY-OWNER01.json",
+    "bytes": 3064,
+    "sha256": "887f4b1cdfefd75c16f9a08a238c02b66c4f10ceafe21709850ea8055614f2f4"
+  },
+  "software_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\owned-focus-iconic-restore01\\SOURCE-READY-SOFTWARE02.json",
+    "bytes": 12903,
+    "sha256": "d2b66ced27624eb8407968aabb1c33aba3b4e6eac1707896e49d608b95d6385d"
+  },
+  "before": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\owned-focus-source-pair21\\source\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\frontend_coa\\CoaWindowCapture.java",
+    "bytes": 23306,
+    "sha256": "0e64a13c8acf3e35cc1a2c39938ef68d9e0faf9cda2e15a4de439f49e93d2987"
+  },
+  "candidate": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\owned-focus-iconic-restore01\\owner-candidate01\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\frontend_coa\\CoaWindowCapture.java",
+    "bytes": 25788,
+    "sha256": "6f9d34975c17883096b9a75594bce2006a21099d262f1f44e509fb6f0d47d9d3"
+  },
+  "test_source": {
+    "path": "D:\\ck3-state\\resume91-root\\owned-iconic-focus-independent-test01\\candidate01\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\frontend_coa\\OwnedIconicFocusWindowTest.java",
+    "bytes": 11569,
+    "sha256": "1682160a021f5ce742f14cab877f340a5d235bac0153dd57fd187ac6c66fd602"
+  },
+  "actual_formal_source_bytes_same": true,
+  "outside_inverse_exact": true,
+  "native_qualification": {
+    "path": "D:\\ck3-state\\resume91-root\\owned-iconic-focus-independent-test01\\QUALIFIED-OWNED-ICONIC-FOCUS01.json",
+    "bytes": 27821,
+    "sha256": "52339c8f9689a6a489c3064f7267dbef9fb198edff9da05041b923d3fa73dabd"
+  },
+  "independent_result": {
+    "path": "D:\\ck3-state\\resume91-root\\owned-iconic-focus-independent-test01\\INDEPENDENT-RESULT01.json",
+    "bytes": 19385,
+    "sha256": "b8dfcd6a08d897b713e1bc75345e0b9a9babd6f4264e069327a6f596e22d8485"
+  },
+  "XML": {
+    "path": "D:\\ck3-state\\resume91-root\\owned-iconic-focus-independent-test01\\native-test-first01\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 43151,
+    "sha256": "cc18c33ea707ce59bea6f5146c72582aa44d8230752b0be567e75525be8e6b50"
+  },
+  "phases": {
+    "prod": {
+      "seconds": 4.883969700022135,
+      "exit_code": 0,
+      "closed_fenced_released": true
+    },
+    "test": {
+      "seconds": 4.511221599997953,
+      "exit_code": 0,
+      "closed_fenced_released": true
+    },
+    "junit": {
+      "seconds": 3.9824167999904603,
+      "exit_code": 0,
+      "closed_fenced_released": true
+    }
+  },
+  "tests": 3,
+  "passed": 3,
+  "original_strict_capture_input_permit_bodies_preserved": true,
+  "body_redefine_compatible": false,
+  "Runtime_UI_candidate_adoption": "NOT_HELD",
+  "actual_failure21": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\actual-host20-first-failure21\\FAILURE21.json",
+    "bytes": 10305,
+    "sha256": "a69275152b920a8e70740e5408ad99516f873e0e7017566b1dc9a51cc114ea8d"
+  },
+  "actual_80_unique_READ": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\actual-host20-first-failure21\\read-window\\BOUNDED-NEGATIVE-READ-COUNT21.json",
+    "bytes": 104193,
+    "sha256": "229eba3d40baf31c3eeeacde1bf189650ca75039daade4fc3237bdfa8679b14d"
+  },
+  "actual_timings": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\actual-host20-first-failure21\\actual-timings-caller\\SOURCE-READY-TIMINGS21.json",
+    "bytes": 2056,
+    "sha256": "a59391728a5a2fb174303a4d80a053bcfb5295598866fa11adbd01ee62027ac2"
+  },
+  "independent_budget_audit": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-read-availability-independent-test01\\HOST20-BUDGET-AUDIT02.json",
+    "bytes": 5298,
+    "sha256": "c7356336c2851391ecce03c4ef72e54ece3209047d14ae20232019269bbec9e4"
+  },
+  "actual_owned_window_before": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\unresolved140-core-recovery21\\OWNED-WINDOWS140.json",
+    "bytes": 1227,
+    "sha256": "a39d4580e29430f2fa09f0d85a28df75a04914f2428a052e78e97eafa1b92f6c"
+  },
+  "independent_operator_UI_once": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\owned-modal-event140-once\\UI-UNIT-ACTUAL.json",
+    "bytes": 862,
+    "sha256": "4de971572c24be3ae2a3e29bb15af8076151bc9a7d55b4e20502aaa47174879d"
+  },
+  "operator_insertion_semantics_not_Native_ACK": true,
+  "actual_full_read_after_operator_UI": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\post-owned-modal140-full-read01\\originals\\summary.json",
+    "bytes": 10961,
+    "sha256": "36c572699bbec1c9502733e89f28777de46a410416e06bd10022a08e71f11b0a"
+  },
+  "original140_C5_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\resume-after-vacation-20261104\\ORIGINAL140-C5-INDEPENDENT01.json",
+    "bytes": 6639,
+    "sha256": "1776d8d7bb3ea05d5b438f51fecfa84f8cfe19e8a3ab60c2108e0e7b42f44db2"
+  },
+  "this_candidate_not_attributed_to_Native_recovery": true,
+  "no_new_Game_GET_or_replay": true,
+  "source_software_Runtime_SAVE_performance_separate": true,
+  "task_state": "RUNNING"
+}

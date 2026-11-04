@@ -11,3 +11,8 @@
 模型首派4份完整源427041B及4422B合同，真实200／stop，36.1342182秒、TTFT21.2928455秒，prompt99428／completion2083。owner 部分采用精确外部三键谓词与测试结构；原 diff 的上下文／计数不能直接应用，测试又误调了 private 七参重载，已机械投影为真实包内五参 API，并补 null-safe、空白及篡改断言。没有R2。生产完整 outside 逆还原一致。
 
 本地仅持有2026-10-22旧构建工具 donor，不能拿它证明当前源码依赖匹配。没有为本单元读取实际 C、编译整工具或占用游戏／P0资源；本次新增源码及4个方法等待正式 Cloud CI 的真实首编／执行，尚未授编译、用例或 CI 通过。当前 ACK 后负 fresh READ 的实际功能修复仍优先，CI与文档不作为运行恢复前置。
+
+
+后到正式 CI 终态（41920385302）：本工具组件已真实通过，build-qualified-tools receipt为PASS、Maven exit0／555.301976秒，1199方法0error／failure／skip；新增ControlBuildLobbySoftwareLaneTest明确4P／0.129秒。旧“等待CI”是发表时切点，不能覆盖本次后到实际组件资格。
+
+整条Official仍failure：后续qualified child约1.63075秒即因 `artifacts/tools-postqualification/actual.json` 缺失，在ControlCi.runQualified1947读取前置资格文件时失败；本次未授完整reactor／实际HTTP链或wholeCI通过。不能制造该actual、跳过完整Own／原件／两个真实JUnit资格或以工具1199P代替此下游合同；后继只核已有producer／consumer的真实接线及缺输入边界，不为CI操作Game。
