@@ -1,0 +1,89 @@
+{
+  "schema": "user-personal-play-java-stop-source-index/v1",
+  "at_utc": "2026-11-04T19:48:07.043902+00:00",
+  "refs": [
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\user-manual-play-stop-20261105-after-recovery15\\STOP-REQUEST.json",
+      "bytes": 520,
+      "sha256": "587bedfcc664cccd7e60804ba88bc57c63503a0459583ab6ca606aabae8d2e01"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\user-manual-play-stop-20261105-after-recovery15\\ACTUAL-JAVA-STOPPED.json",
+      "bytes": 2865,
+      "sha256": "25374df5e4203260a776237e285119afde8c4c3370ccfd228d108d6174ba0d28"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\fresh-host-recovery14\\failed-delegate-recovery15\\TRIGGER-ACTUAL.json",
+      "bytes": 662,
+      "sha256": "99d8af912f5db93ee1cca0b5f597107946a3069193c5eed56d99e5d5716b337e"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\fresh-host-recovery14\\failed-delegate-recovery15\\ACTUAL-START15.json",
+      "bytes": 2915,
+      "sha256": "a097b33171daab8dfb8f36be0a3e6b28ecf6ca755e6a35b4457ba897e73c16df"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\fresh-host-recovery14\\failed-delegate-recovery15\\SOURCE-ADOPTED15.json",
+      "bytes": 4514,
+      "sha256": "6442f69c75c02da45f4fdfef57ddaabbc795d3d3c1fc569ae2a6a745351cee44"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-native-integration\\USER-PLAY-STOP-20261105-NATIVE01.json",
+      "bytes": 4056,
+      "sha256": "91e0e7299c4450f2f545995c087b5d8ba1716b822a780c7febe5e83136b391be"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\normal-append-live-scope-independent-test01\\SOURCE-ONLY-CLOSEOUT01.json",
+      "bytes": 5276,
+      "sha256": "97941859475c71f576573b0c1c541d13af911204795b1520024289faf91f6ca9"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\bootstrap-rebuild-manifest-once01\\USER-FOREGROUND-HOLD01.json",
+      "bytes": 2648,
+      "sha256": "5d62a5a62aaa5497191210863d90692041b0d23eb7f3fa1d95b695cb59787116"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\normal-append-live-scope01\\formal-projection-preparation01\\PROJECTION-RESULT01.json",
+      "bytes": 19231,
+      "sha256": "b217aab48a5f4ee30ea53444fb501f2affecb9321e36f8e26536c4d834fa6968"
+    }
+  ],
+  "source_owner_actions": "Read only existing D receipts, docs/Git; no new query/JVM/GET",
+  "task_status": "running-light-offline-source-Git-only; automaticlivepaused",
+  "CI_cut": {
+    "75e35487": {
+      "official": {
+        "id": 41899892615,
+        "status": "in_progress",
+        "conclusion": null
+      },
+      "linear": {
+        "id": 41899892739,
+        "status": "completed",
+        "conclusion": "success"
+      }
+    },
+    "cd15462a": {
+      "official": {
+        "id": 41898195044,
+        "status": "in_progress",
+        "conclusion": null
+      },
+      "linear": {
+        "id": 41898195040,
+        "status": "completed",
+        "conclusion": "success"
+      }
+    }
+  },
+  "no_credit": [
+    "capture2370 newbranch behavior",
+    "LOOP",
+    "C70",
+    "newSAVE",
+    "speed",
+    "normalTest behavior",
+    "M6A compile/behavior",
+    "naturalM7"
+  ]
+}
