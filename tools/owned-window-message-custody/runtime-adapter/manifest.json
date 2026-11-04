@@ -1,0 +1,26 @@
+{
+  "schema": "owned-window-runtime-adapter-source/v1",
+  "status": "REVIEWABLE_RAW_PROJECTION_ONLY",
+  "purpose": "Controlled Runtime-specific adapter source; no portable CLI or new execution authority",
+  "source_net_changes": [],
+  "files": [
+    {
+      "name": "post-owned-once108.py",
+      "bytes": 7990,
+      "sha256": "c07f82f2b3b198f93faa046532d760d669fbabbdeef0c0c692ce9a1be041c1e4"
+    },
+    {
+      "name": "test_owned_message_custody.py",
+      "bytes": 9132,
+      "sha256": "50f0fb9e71d08eaf44cb4812bce46b342e122260cac5edca3c5abb5d472d8490"
+    }
+  ],
+  "source_origin_ref": "D:/ck3-state/resume91-root/owned-window-message-custody-next/original-source-review/SOURCE-READY-CUSTODY-FIX02.json",
+  "original_qualification_ref": "D:/ck3-state/resume91-root/owned-window-message-custody-next/original-source-review/native-prepared-next/first835-receipt/DELIVERY-FIRST835.json",
+  "qualification": "Existing first835: three Python DATA methods on the exact source bytes; no new execution or relocated Test execution",
+  "external_dependencies_ref": "D:/ck3-state/resume91-root/owned-window-message-custody-next/formal-projection-owner01/CONSUMER-DEPENDENCIES.json",
+  "private_evidence_policy": "Original receipts and private preparation copies remain outside this formal payload; references preserve provenance",
+  "line_endings": "Local .gitattributes names only these two .py files as -text. Formal writer must still verify published raw bytes; other attribute/filter state is not asserted.",
+  "runtime_adoption": "NONE",
+  "new_execution_authority": "NONE"
+}
