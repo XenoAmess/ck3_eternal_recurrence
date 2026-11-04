@@ -1,0 +1,522 @@
+{
+  "schema": "xar.java-owner.native-packet-input-source-index/v1",
+  "at_utc": "2026-11-04T23:22:28.142018+00:00",
+  "base_commit": "81a9ed5440d2bb1c68199a0602925ef51a76b033",
+  "owner": "/root/java_continue",
+  "source_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-native-packet-input-formal01\\SOURCE-READY-PROJECTION01.json",
+    "bytes": 23177,
+    "sha256": "25c2932947c7cb5e782f1ce9e65c32e53610d6b330a01588c3f7cb13a4354694"
+  },
+  "production": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationEvidenceReader.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-native-packet-input-formal01\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationEvidenceReader.java",
+        "bytes": 20890,
+        "sha256": "ef2a5b1381648f29ebd674a5bb02b10fcb14f4c94eeb10113401bde52971c899"
+      },
+      "raw_before": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/bootstrap-rebuild-manifest-once01/owner-candidate01/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationEvidenceReader.java",
+        "bytes": 20499,
+        "sha256": "ca8f768897f04a8c8f4a6513e11e9c22be5c78b209910f8ef446c7171c5a6707"
+      },
+      "raw_candidate": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationEvidenceReader.java",
+        "bytes": 23317,
+        "sha256": "b28cec90fa279f572e0918b63735cf4df9397823b0747be363c521c47620f2f2"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-native-packet-input-formal01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationEvidenceReader.java",
+        "bytes": 23708,
+        "sha256": "07e4ad17955764e7a90b22e4e30181f9ca01acbe6d899783d3adacd136b6b0d2"
+      },
+      "patch": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-native-packet-input-formal01\\DriverObservationEvidenceReader.java.diff",
+        "bytes": 4310,
+        "sha256": "82664815377cf24288074cad54660b47b64bd57e90877f577946441786e45a78"
+      },
+      "owned_spans": 3,
+      "outside_raw_inverse_exact": true,
+      "edits": [
+        {
+          "begin": 136,
+          "end": 137,
+          "old": [
+            "        var actual=nativeFrame(row,framedNative.clone());"
+          ],
+          "new": [
+            "        var captured=capturedNativeFrame(row,framedNative.clone());",
+            "        var actual=captured.actual();"
+          ],
+          "raw_before_lines": [
+            133,
+            133
+          ],
+          "raw_after_lines": [
+            133,
+            134
+          ]
+        },
+        {
+          "begin": 138,
+          "end": 139,
+          "old": [
+            "        return new DriverObservationAssembler().assemble(actual,facts,nativeReference);"
+          ],
+          "new": [
+            "        return new DriverObservationAssembler().assembleWithNativePacket(actual,facts,nativeReference,captured.packetInput());"
+          ],
+          "raw_before_lines": [
+            135,
+            135
+          ],
+          "raw_after_lines": [
+            136,
+            136
+          ]
+        },
+        {
+          "begin": 203,
+          "end": 203,
+          "old": [],
+          "new": [
+            "    }",
+            "",
+            "    /** Pure parsed packet input. Only Reader's strict original-byte producer can construct it. */",
+            "    static final class NativePacketInput {",
+            "        private byte[] originalFramed;",
+            "        private OpportunityJson.Obj envelope;",
+            "        private NativePacketInput(byte[] originalFramed,OpportunityJson.Obj envelope) {",
+            "            this.originalFramed=originalFramed.clone();",
+            "            this.envelope=Objects.requireNonNull(envelope);",
+            "        }",
+            "        OpportunityJson.Obj matchingEnvelope(byte[] actualFramed) {",
+            "            return Arrays.equals(originalFramed,actualFramed)?envelope:null;",
+            "        }",
+            "        void clear() { originalFramed=null; envelope=null; }",
+            "    }",
+            "    private record NativeFrameInput(NativeObservationPort.ObservedFrame actual,NativePacketInput packetInput) { }",
+            "",
+            "    private static NativeFrameInput capturedNativeFrame(OpportunityJson.Obj row,byte[] framedNative) {",
+            "        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,",
+            "                \"bounded archived original native frame required\");",
+            "        int length=ByteBuffer.wrap(framedNative,0,4).order(ByteOrder.LITTLE_ENDIAN).getInt();",
+            "        StrictJson.require(length>0 && length==framedNative.length-4",
+            "                && framedNative.length==longInteger(row,\"native_packet_bytes\",1)",
+            "                && DriverJson.sha256(framedNative).equals(string(row,\"native_packet_sha256\")),\"archived native framing/manifest differs\");",
+            "        byte[] packet=Arrays.copyOfRange(framedNative,4,framedNative.length);",
+            "        var envelope=DriverJson.object(packet,DriverJson.MAX_NATIVE_BYTES);",
+            "        StrictJson.require(\"state_snapshot\".equals(string(envelope,\"type\"))",
+            "                && BigInteger.ONE.equals(OpportunityJson.integer(envelope.get(\"protocol_version\"),\"protocol_version\"))",
+            "                && string(envelope,\"snapshot_id\").equals(string(row,\"snapshot_id\"))",
+            "                && OpportunityJson.integer(envelope.get(\"revision\"),\"revision\").equals(OpportunityJson.integer(row.get(\"native_revision\"),\"native_revision\")),",
+            "                \"archived native envelope differs from semantic manifest\");",
+            "        byte[] state=stateToken(packet);",
+            "        StrictJson.require(DriverJson.sha256(state).equals(string(row,\"native_state_sha256\")),\"original native state token differs from manifest\");",
+            "        var packetInput = new NativePacketInput(framedNative,envelope);",
+            "        var actual = new NativeObservationPort.ObservedFrame(session(row.get(\"transport\")),string(row,\"snapshot_id\"),",
+            "                OpportunityJson.integer(row.get(\"native_revision\"),\"native_revision\"),new RawJson(state),framedNative,Instant.parse(string(row,\"observed_at\")));",
+            "        return new NativeFrameInput(actual,packetInput);"
+          ],
+          "raw_before_lines": [
+            200,
+            199
+          ],
+          "raw_after_lines": [
+            201,
+            237
+          ]
+        }
+      ]
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationAssembler.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-native-packet-input-formal01\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationAssembler.java",
+        "bytes": 21982,
+        "sha256": "7608d4b4369e79e856b6f8741fbc493f5b5abb35346c165d5770d2c3255d880f"
+      },
+      "raw_before": {
+        "path": "D:/ck3-state/resume91-runtime/ordinary-p0-20261104-1710/fresh-host-recovery14/bootstrap-rebuild-current-callees01/DriverObservationAssembler.java",
+        "bytes": 21653,
+        "sha256": "142270559dcb907c72cdff8bfb7eb6996ffd48f9a63a2e2ab6cca65f04427980"
+      },
+      "raw_candidate": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationAssembler.java",
+        "bytes": 32705,
+        "sha256": "0ad854fa44123d7ef12209bddbb908c3ca1027e3f08b03661409ec41ec449055"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-native-packet-input-formal01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationAssembler.java",
+        "bytes": 33034,
+        "sha256": "c3d3bb0ed3910411579ae0873aede89916419c46a9a07521ed448aac67cd84bf"
+      },
+      "patch": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-native-packet-input-formal01\\DriverObservationAssembler.java.diff",
+        "bytes": 11849,
+        "sha256": "cc6d061c64ce6f80b4031baae505e0d2fc0eae055b9c798117bdaea83bf60376"
+      },
+      "owned_spans": 1,
+      "outside_raw_inverse_exact": true,
+      "edits": [
+        {
+          "begin": 170,
+          "end": 170,
+          "old": [],
+          "new": [
+            "    /** Internal same-call input route; all strict guards and the public Complete constructor remain. */",
+            "    Result assembleWithNativePacket(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,",
+            "            DriverObservationEvidenceReader.NativePacketInput packetInput) {",
+            "        Objects.requireNonNull(actual); Objects.requireNonNull(evidence);",
+            "        if (facts == null) return new Incomplete(List.of(\"real_driver_and_public_revision_facts_unavailable\"));",
+            "        try {",
+            "            FullSnapshot full=projectFullWithNativePacket(actual,facts,evidence,packetInput);",
+            "            OpportunityJson.Obj semantic=full.semantic();",
+            "            var session=facts.driver().session();",
+            "            OpportunityJson.Obj player = OpportunityJson.object(semantic.get(\"played_character\"), \"played_character\");",
+            "            BigInteger actor = NativeCharacterId.of(OpportunityJson.integer(player.get(\"character_id\"), \"character_id\")).asBigInteger();",
+            "            StrictJson.require(actor.equals(session.actorId()), \"unreconciled played-character/episode transition\");",
+            "            OpportunityJson.bool(player.get(\"alive\"), \"alive\");",
+            "            BigInteger date = OpportunityJson.integer(semantic.get(\"date_raw\"), \"date_raw\");",
+            "            var frame = new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(actor, actual.nativeRevision(), date),",
+            "                    actual.snapshotId(),facts.publicRevision(),session.episodeRunId());",
+            "            ObservationIdentity identity = new ObservationIdentity(actual.session().machineId(),actual.session().game(),frame,facts.observationVersion());",
+            "            if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)NativeCalendarObservation.project(identity,facts.source(),semantic);",
+            "            return new Complete(identity,facts.source(),actual.session().sessionId(),actual.session().connectionGeneration(),semantic,",
+            "                    evidence,actual.observedAt(),full.fullBindingSha256(),facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION?Optional.of(full):Optional.empty());",
+            "        } catch (IllegalArgumentException | ArithmeticException failure) {",
+            "            return new Incomplete(List.of(\"native_driver_fact_join: \" + failure.getMessage()));",
+            "        }",
+            "    }",
+            "",
+            "    private FullSnapshot projectFullWithNativePacket(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,",
+            "            DriverObservationEvidenceReader.NativePacketInput packetInput) {",
+            "            Objects.requireNonNull(actual);Objects.requireNonNull(facts);Objects.requireNonNull(evidence);",
+            "            StrictJson.require(actual.session().equals(facts.transport()) && actual.snapshotId().equals(facts.snapshotId())",
+            "                    && actual.nativeRevision().equals(facts.nativeRevision())",
+            "                    && DriverJson.sha256(actual.state().bytes()).equals(facts.nativeStateSha256()), \"Driver facts crossed the native frame/session\");",
+            "            StrictJson.require(evidence.bytes() == actual.originalPacket().length",
+            "                    && evidence.sha256().equals(DriverJson.sha256(actual.originalPacket())), \"original native evidence differs\");",
+            "            OpportunityJson.Obj state=originalNativeStateWithNativePacket(actual,packetInput);",
+            "            Map<String,OpportunityJson.Value> fields = new LinkedHashMap<>(state.members());",
+            "            for (var entry : facts.originalSemanticFields().members().entrySet()) {",
+            "                OpportunityJson.Value prior = fields.putIfAbsent(entry.getKey(), entry.getValue());",
+            "                if(facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION&&\"episode_projection\".equals(entry.getKey())) {",
+            "                    StrictJson.require(new OpportunityJson.Text(NativeCampaignProjection.WIRE_MODE).equals(entry.getValue()),",
+            "                            \"explicit native campaign semantic projection required\");",
+            "                    fields.put(entry.getKey(),entry.getValue());continue;",
+            "                }",
+            "                if(\"diagnostics\".equals(entry.getKey()) && prior instanceof OpportunityJson.Obj nativeDiagnostics",
+            "                        && entry.getValue() instanceof OpportunityJson.Obj joinedDiagnostics) {",
+            "                    nativeDiagnostics.members().forEach((key,value) -> StrictJson.require(value.equals(joinedDiagnostics.get(key)),\"native diagnostic overwritten: \"+key));",
+            "                    fields.put(entry.getKey(),joinedDiagnostics);continue;",
+            "                }",
+            "                StrictJson.require(prior == null || prior.equals(entry.getValue()), \"semantic producer overwrote actual native field: \" + entry.getKey());",
+            "            }",
+            "            // Validate original extras against the raw packet before deriving canonical collections.",
+            "            switch(Math.toIntExact(facts.observationVersion())) {",
+            "                case 1 -> { /* Exact historical projection; never relabel an old manifest as v2. */ }",
+            "                case 2 -> {",
+            "                    OpportunityJson.Obj canonical=canonicalMilitaryState(state);",
+            "                    fields.put(\"active_wars\",canonical.get(\"active_wars\"));",
+            "                    fields.put(\"player_armies\",canonical.get(\"player_armies\"));",
+            "                }",
+            "                case 3,4 -> {",
+            "                    OpportunityJson.Obj canonical=normalizeCanonicalState(state, actual);",
+            "                    for(String key:NativeSemanticNormalizer.ownedFields())",
+            "                        if(canonical.members().containsKey(key))fields.put(key,canonical.get(key));",
+            "                    fields.put(\"active_wars\",canonical.get(\"active_wars\"));",
+            "                    fields.put(\"player_armies\",canonical.get(\"player_armies\"));",
+            "                }",
+            "                default -> throw new IllegalArgumentException(\"unsupported Driver observation semantic version\");",
+            "            }",
+            "            var session = facts.driver().session();",
+            "            StrictJson.require(session.bridgePid() == actual.session().game().pid()",
+            "                    && facts.source().machineId().equals(actual.session().machineId()), \"Driver Game/machine differs\");",
+            "            put(fields,\"format_version\",new OpportunityJson.IntegerValue(BigInteger.ONE));",
+            "            put(fields,\"snapshot_id\",new OpportunityJson.Text(actual.snapshotId()));",
+            "            put(fields,\"native_revision\",new OpportunityJson.IntegerValue(actual.nativeRevision()));",
+            "            put(fields,\"revision\",new OpportunityJson.IntegerValue(facts.publicRevision()));",
+            "            put(fields,\"episode_run_id\",new OpportunityJson.Text(session.episodeRunId()));",
+            "            put(fields,\"episode_character_id\",new OpportunityJson.IntegerValue(session.actorId()));",
+            "            StrictJson.require(!state.members().containsKey(\"java_driver_facts_evidence\"),\"native packet cannot supply the Java Driver evidence field\");",
+            "            fields.put(\"java_driver_facts_evidence\",DriverObservationEvidenceReader.reference(facts.semanticFactsEvidence()));",
+            "            fields.put(\"native_command_history\",new OpportunityJson.Arr(facts.driver().commandHistory().stream()",
+            "                    .map(row -> (OpportunityJson.Value) DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList()));",
+            "            if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)retain(fields,\"succession_lifecycle\",facts.driver().successionLifecycle());",
+            "            retain(fields,\"campaign_goal\",facts.driver().campaignGoal());",
+            "            retain(fields,\"native_rollback_war_failure\",facts.driver().rollbackWarFailure());",
+            "            retain(fields,\"native_rollback_war_failures\",facts.driver().rollbackWarFailures());",
+            "            OpportunityJson.Obj semantic = new OpportunityJson.Obj(fields);",
+            "            if(facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION) {",
+            "                StrictJson.require(facts.driver().successionLifecycle() instanceof DriverStateSnapshot.NullValue",
+            "                        &&new OpportunityJson.Text(NativeCampaignProjection.WIRE_MODE).equals(facts.originalSemanticFields().get(\"episode_projection\")),",
+            "                        \"native campaign profile requires its explicit null-lifecycle Driver projection\");",
+            "                semantic=NativeCampaignProjection.withOriginalEpisodeFields(actual,semantic);",
+            "            }",
+            "            OpportunityJson.bool(semantic.get(\"paused\"), \"paused\"); OpportunityJson.bool(semantic.get(\"map_ready\"), \"map_ready\");",
+            "            int speed = OpportunityJson.integer(semantic.get(\"speed\"), \"speed\").intValueExact();",
+            "            StrictJson.require(speed >= 1 && speed <= 5, \"actual native speed 1..5 required\");",
+            "            for (String key : facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION",
+            "                    ? List.of(\"active_event\",\"pending_character_interaction\") : List.of(\"active_event\",\"pending_character_interaction\",\"one_life_terminal_reason\"))",
+            "                StrictJson.require(semantic.members().containsKey(key), \"explicit semantic presence required: \" + key);",
+            "            OpportunityJson.array(semantic.get(\"active_wars\"), \"active_wars\"); OpportunityJson.array(semantic.get(\"player_armies\"), \"player_armies\");",
+            "            OpportunityJson.object(semantic.get(\"diagnostics\"), \"diagnostics\");",
+            "            OpportunityJson.integer(semantic.get(\"date_raw\"),\"date_raw\");",
+            "            return new FullSnapshot(actual,facts,semantic,evidence,bindingSha256(semantic));",
+            "    }",
+            "",
+            "    private static OpportunityJson.Obj originalNativeStateWithNativePacket(ObservedFrame actual,",
+            "            DriverObservationEvidenceReader.NativePacketInput packetInput) {",
+            "        if(packetInput==null)return originalNativeState(actual);",
+            "        try {",
+            "            Objects.requireNonNull(actual);",
+            "            byte[] framed=actual.originalPacket();",
+            "            StrictJson.require(framed.length>=5 && framed.length<=DriverJson.MAX_NATIVE_BYTES+4,\"bounded framed original native packet required\");",
+            "            int length=java.nio.ByteBuffer.wrap(framed,0,4).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt();",
+            "            StrictJson.require(length>0 && length<=DriverJson.MAX_NATIVE_BYTES && framed.length==length+4,\"exact original LE uint32 frame length required\");",
+            "            OpportunityJson.Obj packet = packetInput.matchingEnvelope(framed);",
+            "            if(packet==null)packet=DriverJson.object(java.util.Arrays.copyOfRange(framed,4,framed.length),DriverJson.MAX_NATIVE_BYTES);",
+            "            StrictJson.require(\"state_snapshot\".equals(OpportunityJson.text(packet.get(\"type\"), \"type\"))",
+            "                    && BigInteger.ONE.equals(OpportunityJson.integer(packet.get(\"protocol_version\"), \"protocol_version\"))",
+            "                    && actual.snapshotId().equals(OpportunityJson.text(packet.get(\"snapshot_id\"), \"snapshot_id\"))",
+            "                    && actual.nativeRevision().equals(OpportunityJson.integer(packet.get(\"revision\"), \"revision\")), \"original native envelope differs\");",
+            "            OpportunityJson.Obj state = DriverJson.object(actual.state().bytes(), DriverJson.MAX_NATIVE_BYTES);",
+            "            StrictJson.require(state.equals(OpportunityJson.object(packet.get(\"state\"), \"state\")), \"raw state differs from original native packet\");",
+            "            return state;",
+            "        } finally {",
+            "            packetInput.clear();",
+            "        }",
+            "    }",
+            ""
+          ],
+          "raw_before_lines": [
+            171,
+            170
+          ],
+          "raw_after_lines": [
+            171,
+            295
+          ]
+        }
+      ]
+    }
+  ],
+  "exact_Test_source": {
+    "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/application/src/test/java/org/xar/ck3/control/application/driver/DriverNativePacketInputDataTest.java",
+    "bytes": 20795,
+    "sha256": "019fe1d5e2a64a92dda7bbe2f83264f16a9ee82d0f9bcc10a509e9f66f0bc380"
+  },
+  "raw_software_qualification": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\replay-native-packet-input01\\QUALIFIED-COHORT01.json",
+    "bytes": 19811,
+    "sha256": "09197b32c3e9646aebb3aef5735e643c27b3880d055b20b5a678de56a8bab3ef"
+  },
+  "actual_phase_refs": {
+    "prod": {
+      "actual": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/native-prod-first01/actual/prod/ACTUAL.json",
+        "bytes": 1809,
+        "sha256": "ad4c11e10b70d19bfa9cdc30bed69610ccbf97962e86e41869f25d347128035a"
+      },
+      "terminal": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/native-prod-first01/actual/prod/CHILD-TERMINAL.json",
+        "bytes": 756,
+        "sha256": "3367d1d38326f37dbd8a653bb45b0a3b8b8035da634f27d0495f185251003b35"
+      },
+      "post": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/native-prod-first01/actual/prod/POST.json",
+        "bytes": 421,
+        "sha256": "8e0e120d08bd1de0bba6b79ca96d367b47ec0ac1e8fb6b7a1e1e2a0cfa8ef02a"
+      },
+      "release_fence": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/native-prod-first01/actual/prod/RELEASE-FENCE.json",
+        "bytes": 1163,
+        "sha256": "9425f5ff1bf1f456e714717b77a9fc09a42a34fd4d3c49da06b3019e97b91997"
+      },
+      "managed_close": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/native-prod-first01/actual/prod/MANAGED-CLOSE.json",
+        "bytes": 237,
+        "sha256": "c77a2476d77d12bb438e075e19c12491eefceaf119948373cf6b283fd18e654e"
+      },
+      "stdout": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/native-prod-first01/actual/prod/stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-candidate03/native-prod-first01/actual/prod/stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "test": {
+      "actual": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/test/ACTUAL.json",
+        "bytes": 1752,
+        "sha256": "2a95e73b8a4f4ffe1549a0ed0578fdeb2d8960c983b28436708fbd166fc404d1"
+      },
+      "terminal": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/test/CHILD-TERMINAL.json",
+        "bytes": 737,
+        "sha256": "c3e6ebfb68dd8b3c2d756f85c38d59017e447d931cf06896539adb4bae0e80bf"
+      },
+      "post": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/test/POST.json",
+        "bytes": 411,
+        "sha256": "cab2b5e5d7035431c56521314e1a39fb8dd3896efbf760ce910b40ae32bb91f5"
+      },
+      "release_fence": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/test/RELEASE-FENCE.json",
+        "bytes": 1139,
+        "sha256": "ba704791b30985f184c911198e9a8dffcb7e29762565487fc92ee2b7fb153317"
+      },
+      "managed_close": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/test/MANAGED-CLOSE.json",
+        "bytes": 237,
+        "sha256": "02db33df666c0aa30258d516e2f06164df0c74b495f2386167de699ae68c19f8"
+      },
+      "stdout": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/test/stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/test/stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "junit": {
+      "actual": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/junit/ACTUAL.json",
+        "bytes": 1510,
+        "sha256": "a9a57050f4515887c071e80edff6f113d2b12cb3cb95e3d24244dce9be7a6fc9"
+      },
+      "terminal": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/junit/CHILD-TERMINAL.json",
+        "bytes": 742,
+        "sha256": "72e71a535931124e5c7d9168145d07c8263b4319236e6115783e9d9d9e72cd5b"
+      },
+      "post": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/junit/POST.json",
+        "bytes": 1377,
+        "sha256": "48694970be8bccbb955b2c242eff35a597edca68e7b4ba2bb3c797b40da3054a"
+      },
+      "release_fence": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/junit/RELEASE-FENCE.json",
+        "bytes": 1144,
+        "sha256": "ee3edcbd9b1327f84875931e01b1f94862e51a4f828dada48119bbd199cd41b6"
+      },
+      "managed_close": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/junit/MANAGED-CLOSE.json",
+        "bytes": 238,
+        "sha256": "e62d060dcb755b9323ba149e798677ad4e48396b5f5019e206c0d90046e59f51"
+      },
+      "stdout": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/junit/stdout.bin",
+        "bytes": 2494,
+        "sha256": "0a66d37a01d4ee704d84e96a82936911b474f0ab951408de563ee747ffe73ab1"
+      },
+      "stderr": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/junit/stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "affected": {
+      "actual": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/affected/ACTUAL.json",
+        "bytes": 1526,
+        "sha256": "47b4a2ff2940f02ef36c89e89195a41de176971c98b603bcf601c9631fc063ed"
+      },
+      "terminal": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/affected/CHILD-TERMINAL.json",
+        "bytes": 747,
+        "sha256": "c8b4b875944e61a7ac61b95ac01569fe93dd9daf32bd3e37f0ad86927463606d"
+      },
+      "post": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/affected/POST.json",
+        "bytes": 1510,
+        "sha256": "b8b874215d0e3b4aa56ae6f9b6e2d00187bee8ef7259c24411ced0d3a05571f1"
+      },
+      "release_fence": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/affected/RELEASE-FENCE.json",
+        "bytes": 1155,
+        "sha256": "7b5ee56c990b597f268d2eafa97b75168aa25239e26d5046dbef8e26b98da258"
+      },
+      "managed_close": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/affected/MANAGED-CLOSE.json",
+        "bytes": 241,
+        "sha256": "02ecc8a176dd7627c3995397a3786bbf60bd4bad55f9628270bfb46e2b8dffb3"
+      },
+      "stdout": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/affected/stdout.bin",
+        "bytes": 3215,
+        "sha256": "d79dc36c92ab233f67001689c734596eb781c90cc4fdf28ca43da9344266e92d"
+      },
+      "stderr": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/actual/affected/stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "suites": {
+    "junit": {
+      "XML": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/reports-junit/TEST-junit-jupiter.xml",
+        "bytes": 42134,
+        "sha256": "92a52b36af0e7fa9a52161e41608dddece82b0ad8dbb73f2e66a1bac2f6cd5bb"
+      },
+      "cases": [
+        "org.xar.ck3.control.application.driver.DriverNativePacketInputDataTest#packetInputsKeepLexicalDataAndStrictFallback",
+        "org.xar.ck3.control.application.driver.DriverNativePacketInputDataTest#packetMetadataFailuresPrecedeStateTokenAndKeepCallbacks"
+      ]
+    },
+    "affected": {
+      "XML": {
+        "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/replay-native-packet-input01/owner-test01/native-first01/reports-affected/TEST-junit-jupiter.xml",
+        "bytes": 42765,
+        "sha256": "c5fc02e56326c54a48adab1ee0ac4255d485ed8c18923b71f25160e3ed590ad4"
+      },
+      "cases": [
+        "org.xar.ck3.control.application.driver.DriverManifestOnceFrontierDataTest#acceptedOriginalsAndCallbackCountsStayExact",
+        "org.xar.ck3.control.application.driver.DriverManifestOnceFrontierDataTest#changedOriginalsAndTheClonePointMatchTheOldReplay",
+        "org.xar.ck3.control.application.driver.DriverManifestOnceFrontierDataTest#originalFailuresKeepTheirCallbackFrontier"
+      ]
+    }
+  },
+  "qualification": {
+    "new_production_TUs": 2,
+    "new_production_classes": 9,
+    "new_Test_TUs": 1,
+    "Test_classes": 2,
+    "exact_new_DATA_methods": 2,
+    "new_passed": 2,
+    "affected_A_binary_methods_RUN_only": 3,
+    "affected_passed": 3,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "aborted": 0,
+    "old_A_prod_or_Test_or_Support_recompiled": 0,
+    "old309_RUN": 0
+  },
+  "complete_native_bounds": {
+    "CPU": 1,
+    "compile_Xmx_MiB": 192,
+    "RUN_Xmx_MiB": 64,
+    "each_child_seconds": 30,
+    "TOTAL_seconds_each_independent_phase": 120
+  },
+  "formal_outside_inverse_exact": true,
+  "formal_composed_variant_compiled": false,
+  "raw_variant_not_transferred_to_formal_composed_whole": true,
+  "Runtime_adoption": false,
+  "body_redefine": false,
+  "speed_or_natural_M6_or_new_V4_qualification": false,
+  "task_state": "RUNNING",
+  "no_Game_or_GET_for_publication": true
+}

@@ -134,9 +134,10 @@ public final class DriverObservationEvidenceReader {
         StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
                 "bounded archived original native frame required");
         // Keep the original private copy after the callbacks and native bounds check.
-        var actual=nativeFrame(row,framedNative.clone());
+        var captured=capturedNativeFrame(row,framedNative.clone());
+        var actual=captured.actual();
         var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
-        return new DriverObservationAssembler().assemble(actual,facts,nativeReference);
+        return new DriverObservationAssembler().assembleWithNativePacket(actual,facts,nativeReference,captured.packetInput());
     }
 
     /** Pure full projection also preserves death/unavailable scopes; the caller retains its production assembler. */
@@ -201,6 +202,43 @@ public final class DriverObservationEvidenceReader {
         StrictJson.require(DriverJson.sha256(state).equals(string(row,"native_state_sha256")),"original native state token differs from manifest");
         return new NativeObservationPort.ObservedFrame(session(row.get("transport")),string(row,"snapshot_id"),
                 OpportunityJson.integer(row.get("native_revision"),"native_revision"),new RawJson(state),framedNative,Instant.parse(string(row,"observed_at")));
+    }
+
+    /** Pure parsed packet input. Only Reader's strict original-byte producer can construct it. */
+    static final class NativePacketInput {
+        private byte[] originalFramed;
+        private OpportunityJson.Obj envelope;
+        private NativePacketInput(byte[] originalFramed,OpportunityJson.Obj envelope) {
+            this.originalFramed=originalFramed.clone();
+            this.envelope=Objects.requireNonNull(envelope);
+        }
+        OpportunityJson.Obj matchingEnvelope(byte[] actualFramed) {
+            return Arrays.equals(originalFramed,actualFramed)?envelope:null;
+        }
+        void clear() { originalFramed=null; envelope=null; }
+    }
+    private record NativeFrameInput(NativeObservationPort.ObservedFrame actual,NativePacketInput packetInput) { }
+
+    private static NativeFrameInput capturedNativeFrame(OpportunityJson.Obj row,byte[] framedNative) {
+        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                "bounded archived original native frame required");
+        int length=ByteBuffer.wrap(framedNative,0,4).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        StrictJson.require(length>0 && length==framedNative.length-4
+                && framedNative.length==longInteger(row,"native_packet_bytes",1)
+                && DriverJson.sha256(framedNative).equals(string(row,"native_packet_sha256")),"archived native framing/manifest differs");
+        byte[] packet=Arrays.copyOfRange(framedNative,4,framedNative.length);
+        var envelope=DriverJson.object(packet,DriverJson.MAX_NATIVE_BYTES);
+        StrictJson.require("state_snapshot".equals(string(envelope,"type"))
+                && BigInteger.ONE.equals(OpportunityJson.integer(envelope.get("protocol_version"),"protocol_version"))
+                && string(envelope,"snapshot_id").equals(string(row,"snapshot_id"))
+                && OpportunityJson.integer(envelope.get("revision"),"revision").equals(OpportunityJson.integer(row.get("native_revision"),"native_revision")),
+                "archived native envelope differs from semantic manifest");
+        byte[] state=stateToken(packet);
+        StrictJson.require(DriverJson.sha256(state).equals(string(row,"native_state_sha256")),"original native state token differs from manifest");
+        var packetInput = new NativePacketInput(framedNative,envelope);
+        var actual = new NativeObservationPort.ObservedFrame(session(row.get("transport")),string(row,"snapshot_id"),
+                OpportunityJson.integer(row.get("native_revision"),"native_revision"),new RawJson(state),framedNative,Instant.parse(string(row,"observed_at")));
+        return new NativeFrameInput(actual,packetInput);
     }
 
     public static ExactRef currentDriverReference(ExactRef manifestReference,RawJson manifest) {

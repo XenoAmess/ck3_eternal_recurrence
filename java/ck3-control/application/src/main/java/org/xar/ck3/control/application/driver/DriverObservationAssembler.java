@@ -168,6 +168,131 @@ public final class DriverObservationAssembler {
             OpportunityJson.integer(semantic.get("date_raw"),"date_raw");
             return new FullSnapshot(actual,facts,semantic,evidence,bindingSha256(semantic));
     }
+    /** Internal same-call input route; all strict guards and the public Complete constructor remain. */
+    Result assembleWithNativePacket(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
+            DriverObservationEvidenceReader.NativePacketInput packetInput) {
+        Objects.requireNonNull(actual); Objects.requireNonNull(evidence);
+        if (facts == null) return new Incomplete(List.of("real_driver_and_public_revision_facts_unavailable"));
+        try {
+            FullSnapshot full=projectFullWithNativePacket(actual,facts,evidence,packetInput);
+            OpportunityJson.Obj semantic=full.semantic();
+            var session=facts.driver().session();
+            OpportunityJson.Obj player = OpportunityJson.object(semantic.get("played_character"), "played_character");
+            BigInteger actor = NativeCharacterId.of(OpportunityJson.integer(player.get("character_id"), "character_id")).asBigInteger();
+            StrictJson.require(actor.equals(session.actorId()), "unreconciled played-character/episode transition");
+            OpportunityJson.bool(player.get("alive"), "alive");
+            BigInteger date = OpportunityJson.integer(semantic.get("date_raw"), "date_raw");
+            var frame = new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(actor, actual.nativeRevision(), date),
+                    actual.snapshotId(),facts.publicRevision(),session.episodeRunId());
+            ObservationIdentity identity = new ObservationIdentity(actual.session().machineId(),actual.session().game(),frame,facts.observationVersion());
+            if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)NativeCalendarObservation.project(identity,facts.source(),semantic);
+            return new Complete(identity,facts.source(),actual.session().sessionId(),actual.session().connectionGeneration(),semantic,
+                    evidence,actual.observedAt(),full.fullBindingSha256(),facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION?Optional.of(full):Optional.empty());
+        } catch (IllegalArgumentException | ArithmeticException failure) {
+            return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
+        }
+    }
+
+    private FullSnapshot projectFullWithNativePacket(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
+            DriverObservationEvidenceReader.NativePacketInput packetInput) {
+            Objects.requireNonNull(actual);Objects.requireNonNull(facts);Objects.requireNonNull(evidence);
+            StrictJson.require(actual.session().equals(facts.transport()) && actual.snapshotId().equals(facts.snapshotId())
+                    && actual.nativeRevision().equals(facts.nativeRevision())
+                    && DriverJson.sha256(actual.state().bytes()).equals(facts.nativeStateSha256()), "Driver facts crossed the native frame/session");
+            StrictJson.require(evidence.bytes() == actual.originalPacket().length
+                    && evidence.sha256().equals(DriverJson.sha256(actual.originalPacket())), "original native evidence differs");
+            OpportunityJson.Obj state=originalNativeStateWithNativePacket(actual,packetInput);
+            Map<String,OpportunityJson.Value> fields = new LinkedHashMap<>(state.members());
+            for (var entry : facts.originalSemanticFields().members().entrySet()) {
+                OpportunityJson.Value prior = fields.putIfAbsent(entry.getKey(), entry.getValue());
+                if(facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION&&"episode_projection".equals(entry.getKey())) {
+                    StrictJson.require(new OpportunityJson.Text(NativeCampaignProjection.WIRE_MODE).equals(entry.getValue()),
+                            "explicit native campaign semantic projection required");
+                    fields.put(entry.getKey(),entry.getValue());continue;
+                }
+                if("diagnostics".equals(entry.getKey()) && prior instanceof OpportunityJson.Obj nativeDiagnostics
+                        && entry.getValue() instanceof OpportunityJson.Obj joinedDiagnostics) {
+                    nativeDiagnostics.members().forEach((key,value) -> StrictJson.require(value.equals(joinedDiagnostics.get(key)),"native diagnostic overwritten: "+key));
+                    fields.put(entry.getKey(),joinedDiagnostics);continue;
+                }
+                StrictJson.require(prior == null || prior.equals(entry.getValue()), "semantic producer overwrote actual native field: " + entry.getKey());
+            }
+            // Validate original extras against the raw packet before deriving canonical collections.
+            switch(Math.toIntExact(facts.observationVersion())) {
+                case 1 -> { /* Exact historical projection; never relabel an old manifest as v2. */ }
+                case 2 -> {
+                    OpportunityJson.Obj canonical=canonicalMilitaryState(state);
+                    fields.put("active_wars",canonical.get("active_wars"));
+                    fields.put("player_armies",canonical.get("player_armies"));
+                }
+                case 3,4 -> {
+                    OpportunityJson.Obj canonical=normalizeCanonicalState(state, actual);
+                    for(String key:NativeSemanticNormalizer.ownedFields())
+                        if(canonical.members().containsKey(key))fields.put(key,canonical.get(key));
+                    fields.put("active_wars",canonical.get("active_wars"));
+                    fields.put("player_armies",canonical.get("player_armies"));
+                }
+                default -> throw new IllegalArgumentException("unsupported Driver observation semantic version");
+            }
+            var session = facts.driver().session();
+            StrictJson.require(session.bridgePid() == actual.session().game().pid()
+                    && facts.source().machineId().equals(actual.session().machineId()), "Driver Game/machine differs");
+            put(fields,"format_version",new OpportunityJson.IntegerValue(BigInteger.ONE));
+            put(fields,"snapshot_id",new OpportunityJson.Text(actual.snapshotId()));
+            put(fields,"native_revision",new OpportunityJson.IntegerValue(actual.nativeRevision()));
+            put(fields,"revision",new OpportunityJson.IntegerValue(facts.publicRevision()));
+            put(fields,"episode_run_id",new OpportunityJson.Text(session.episodeRunId()));
+            put(fields,"episode_character_id",new OpportunityJson.IntegerValue(session.actorId()));
+            StrictJson.require(!state.members().containsKey("java_driver_facts_evidence"),"native packet cannot supply the Java Driver evidence field");
+            fields.put("java_driver_facts_evidence",DriverObservationEvidenceReader.reference(facts.semanticFactsEvidence()));
+            fields.put("native_command_history",new OpportunityJson.Arr(facts.driver().commandHistory().stream()
+                    .map(row -> (OpportunityJson.Value) DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList()));
+            if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)retain(fields,"succession_lifecycle",facts.driver().successionLifecycle());
+            retain(fields,"campaign_goal",facts.driver().campaignGoal());
+            retain(fields,"native_rollback_war_failure",facts.driver().rollbackWarFailure());
+            retain(fields,"native_rollback_war_failures",facts.driver().rollbackWarFailures());
+            OpportunityJson.Obj semantic = new OpportunityJson.Obj(fields);
+            if(facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION) {
+                StrictJson.require(facts.driver().successionLifecycle() instanceof DriverStateSnapshot.NullValue
+                        &&new OpportunityJson.Text(NativeCampaignProjection.WIRE_MODE).equals(facts.originalSemanticFields().get("episode_projection")),
+                        "native campaign profile requires its explicit null-lifecycle Driver projection");
+                semantic=NativeCampaignProjection.withOriginalEpisodeFields(actual,semantic);
+            }
+            OpportunityJson.bool(semantic.get("paused"), "paused"); OpportunityJson.bool(semantic.get("map_ready"), "map_ready");
+            int speed = OpportunityJson.integer(semantic.get("speed"), "speed").intValueExact();
+            StrictJson.require(speed >= 1 && speed <= 5, "actual native speed 1..5 required");
+            for (String key : facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION
+                    ? List.of("active_event","pending_character_interaction") : List.of("active_event","pending_character_interaction","one_life_terminal_reason"))
+                StrictJson.require(semantic.members().containsKey(key), "explicit semantic presence required: " + key);
+            OpportunityJson.array(semantic.get("active_wars"), "active_wars"); OpportunityJson.array(semantic.get("player_armies"), "player_armies");
+            OpportunityJson.object(semantic.get("diagnostics"), "diagnostics");
+            OpportunityJson.integer(semantic.get("date_raw"),"date_raw");
+            return new FullSnapshot(actual,facts,semantic,evidence,bindingSha256(semantic));
+    }
+
+    private static OpportunityJson.Obj originalNativeStateWithNativePacket(ObservedFrame actual,
+            DriverObservationEvidenceReader.NativePacketInput packetInput) {
+        if(packetInput==null)return originalNativeState(actual);
+        try {
+            Objects.requireNonNull(actual);
+            byte[] framed=actual.originalPacket();
+            StrictJson.require(framed.length>=5 && framed.length<=DriverJson.MAX_NATIVE_BYTES+4,"bounded framed original native packet required");
+            int length=java.nio.ByteBuffer.wrap(framed,0,4).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt();
+            StrictJson.require(length>0 && length<=DriverJson.MAX_NATIVE_BYTES && framed.length==length+4,"exact original LE uint32 frame length required");
+            OpportunityJson.Obj packet = packetInput.matchingEnvelope(framed);
+            if(packet==null)packet=DriverJson.object(java.util.Arrays.copyOfRange(framed,4,framed.length),DriverJson.MAX_NATIVE_BYTES);
+            StrictJson.require("state_snapshot".equals(OpportunityJson.text(packet.get("type"), "type"))
+                    && BigInteger.ONE.equals(OpportunityJson.integer(packet.get("protocol_version"), "protocol_version"))
+                    && actual.snapshotId().equals(OpportunityJson.text(packet.get("snapshot_id"), "snapshot_id"))
+                    && actual.nativeRevision().equals(OpportunityJson.integer(packet.get("revision"), "revision")), "original native envelope differs");
+            OpportunityJson.Obj state = DriverJson.object(actual.state().bytes(), DriverJson.MAX_NATIVE_BYTES);
+            StrictJson.require(state.equals(OpportunityJson.object(packet.get("state"), "state")), "raw state differs from original native packet");
+            return state;
+        } finally {
+            packetInput.clear();
+        }
+    }
+
     /** Validates the actual framed packet without changing its original state or lexical representation. */
     public static OpportunityJson.Obj originalNativeState(ObservedFrame actual) {
         Objects.requireNonNull(actual);
