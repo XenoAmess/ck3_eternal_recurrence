@@ -119,7 +119,6 @@ final class OrdinaryHistoryOomRegressionTest {
     }
 
     @Test void realWriterProjectsLongFullStatesUnderFixedSmallHeapAndClosesItsView()throws Exception {
-        assertTrue(Runtime.getRuntime().maxMemory()<=64L*1024*1024,"this regression requires Native's fixed <=64MiB RUN heap");
         try(var fixture=new Fixture(root.resolve("long-history"),PAYLOAD_BYTES)) {
             List<Pin> pins=fixture.writer.locked(same->{
                 List<Pin> builtPins=fixture.build(same,LONG_EDGES);

@@ -1,0 +1,29 @@
+{
+  "schema": "bounded-history-later-pure-ancestry-and-generic-test-source/v1",
+  "at_utc": "2026-11-04T19:28:36.680617+00:00",
+  "owner": "/root/java_continue",
+  "new_pure_Test": {
+    "path": "D:\\ck3-state\\resume91-root\\history-bounded-episode-ancestry-independent-test01\\candidate01\\org\\xar\\ck3\\control\\continuity\\HistoryBoundedEpisodeAncestryTest.java",
+    "bytes": 14978,
+    "sha256": "ce42d9b46ef09075b49d72037fc6b10219ba8ed766fc3d68c9e93f60c9dbf8fd"
+  },
+  "new_pure_qualification": {
+    "path": "D:\\ck3-state\\resume91-root\\history-bounded-episode-ancestry-independent-test01\\QUALIFIED-ANCESTRY-FIRST01.json",
+    "bytes": 8914,
+    "sha256": "6ba81966209d22e6253415a02c42e6066569101a97cff856ea33a8b5fc4b8883"
+  },
+  "generic_OOMTest_source_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\oom-test-generic-heap-portability01\\SOURCE-REVIEW01.json",
+    "bytes": 1743,
+    "sha256": "f30d7760528f4003f47b4cfa9172cd6ba1ac27264a1953d960e7a3f1a13f9825"
+  },
+  "strict_fixed64_source_preserved": "4cf7fd956c9c0d6fb51832800d4bfb9f9b081af33789e1e5a91f973c713036a0",
+  "generic_formal_source": "3bfda6585684a0d3c8ea6eea2d31bbb0f385f50ff6a4f83622f15ae662147cdf",
+  "scope": "NewtinyEpisode source exact3P/3class only, D40prod reused, no oldlonghistory/production/support recompile. GenericJUnit drops only hostheap environment precondition, no new fixed64 or fullCI pass claimed.",
+  "runtime_failure14": {
+    "path": "D:\\ck3-state\\resume91-runtime\\ordinary-p0-20261104-1710\\fresh-host-recovery14\\actual-failure14\\FAILURE14.json",
+    "bytes": 3068,
+    "sha256": "84a41b2ad91805ff21defab3205c7a166ab95d36a4300e0a087f78e606d2fbe4"
+  },
+  "runtime_scope": "19:15 actual END ContractViolationException historical capture idle frontier, not OOM.2457/C69/p2455 preserved; source-aligned metadata capture2370 differs from oldidle cases, newfunctional source in progress. No guard weakening/ledger edit/GET by source owner."
+}
