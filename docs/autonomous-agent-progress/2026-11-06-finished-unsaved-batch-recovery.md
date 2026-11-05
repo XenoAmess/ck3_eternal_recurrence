@@ -1,0 +1,9 @@
+# Recover a finished batch with completed unsaved cycles
+
+The P055 recovery delegate stopped during same-Game bootstrap, before the Controller could consume its original offline-analysis tickets. Head728 was a real BATCH_FINISHED after OPERATOR_STOP, with cycle29 complete and no pending receipt, while the saved baseline remained cycle1. The frontier admitted interrupted dirty batches and fully saved finished batches, but omitted this finished dirty shape.
+
+A separate pure classifier now recognizes that exact finished shape. It requires the same owner, an actual saved pair, complete current and saved cycle heads, empty pending receipts, matching lineage/basis/origins, and current completed cycles beyond the saved baseline. Live admission additionally requires the existing private SavedSettledContext and its current full-history/head proof. The same profile is used by commit/preview and historical reducer replay. The old interrupted and fully saved classifiers, canonical action/cycle checks, native identity guards and no-credit reducer checks remain intact.
+
+The five owned spans passed independent source review and one necessary strict compile: 24 classes, 10.3754834 seconds, all resources released. No old production or test cohort was rerun. Model93 was read completely and its complete patch rejected because its header-only replacement left the original helper body dangling; no raw code was adopted or retried.
+
+This source qualification does not certify bootstrap passage, the original eight offline tasks, clean capture or P052 timing adoption. Three newly persisted offline failures have a separate after-index source error and must remain preserved. No batch is relabeled interrupted, no action is replayed, and no saved cycle or day is created by this administrative recovery. Unrelated formal source bytes are preserved; only the actual candidate has compiler credit.

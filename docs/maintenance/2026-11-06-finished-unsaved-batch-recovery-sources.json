@@ -1,0 +1,67 @@
+{
+  "schema": "xar.java-formal.finished-unsaved-recovery-index/v1",
+  "at_utc": "2026-11-05T18:58:38.659506+00:00",
+  "source": {
+    "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/OrdinaryCycleTransitions.java",
+    "formal_before": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\completed-finished-unsaved-recovery56\\formal01\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\OrdinaryCycleTransitions.java",
+      "bytes": 227752,
+      "sha256": "5d70577862a4a664ae6a5a3a9f46bda430d929d6377a7f675ef9dfe0d3503296"
+    },
+    "formal_candidate": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\completed-finished-unsaved-recovery56\\formal01\\candidate\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\OrdinaryCycleTransitions.java",
+      "bytes": 229789,
+      "sha256": "665ca75da66778d8f0970e19392ee0b2f3d584c6968ccd857e16cca1b12c8afb"
+    },
+    "qualified_actual_candidate": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\completed-finished-unsaved-recovery56\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\OrdinaryCycleTransitions.java",
+      "bytes": 223942,
+      "sha256": "4dd7854bf0851d59cf9584159d9086277dceed7c28ad94c3a4bab9c78c074bf2"
+    },
+    "owned_spans": [
+      {
+        "old": "                || isCompletedInterruptedSavedBatch(head, owner, branch)\n                || isFullySavedFinishedBatch(head, owner, branch))",
+        "new": "                || isCompletedInterruptedSavedBatch(head, owner, branch)\n                || isCompletedFinishedSavedBatch(head, owner, branch)\n                || isFullySavedFinishedBatch(head, owner, branch))",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "        StrictJson.require(!(isDeferredReadOnlyBatch(head) || isCompletedInterruptedSavedBatch(head, owner, branch)\n                || isFullySavedFinishedBatch(head, owner, branch)) || context != null,",
+        "new": "        StrictJson.require(!(isDeferredReadOnlyBatch(head) || isCompletedInterruptedSavedBatch(head, owner, branch)\n                || isCompletedFinishedSavedBatch(head, owner, branch)\n                || isFullySavedFinishedBatch(head, owner, branch)) || context != null,",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "    /** Pure fully saved, closed-batch DATA; live admission still requires the actual saved Journal role. */",
+        "new": "    /** Finished dirty-cycle DATA only; live admission still requires the actual saved Journal role. */\n    private static boolean isCompletedFinishedSavedBatch(ContinuityState current, SessionIdentity owner, CycleState branch) {\n        if (current.status() != ContinuityState.Status.RUNNING || branch.pending().isPresent() || branch.head().isEmpty()) return false;\n        var whole = current.toJson();\n        var boundary = whole.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);\n        var savedValue = whole.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD);\n        if (boundary == null || !boundary.isObject() || savedValue == null || !savedValue.isObject()\n                || !JournalKind.BATCH_FINISHED.name().equals(StrictJson.text(boundary.get(\"boundary\")))\n                || !sessionFromJson(boundary.get(\"session\")).equals(owner)) return false;\n        StrictJson.text(boundary.get(\"batch_id\"));\n        var saved = StrictJson.object(savedValue, Set.of(\"pair\", \"state\"));\n        if (saved.get(\"pair\") == null || !saved.get(\"pair\").isObject()) return false;\n        var baseline = parseState(saved.get(\"state\"));\n        return branch.session().equals(owner) && baseline.session().equals(owner)\n                && baseline.pending().isEmpty() && baseline.head().isPresent()\n                && baseline.completedCycles() == current.settledCycles()\n                && branch.completedCycles() > baseline.completedCycles()\n                && branch.basisCycles() == baseline.basisCycles()\n                && branch.retainedLegacyPendingDigest().equals(baseline.retainedLegacyPendingDigest())\n                && branch.originFrame().equals(baseline.originFrame()) && branch.episodeOrigin().equals(baseline.episodeOrigin());\n    }\n\n    /** Pure fully saved, closed-batch DATA; live admission still requires the actual saved Journal role. */",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "                || isCompletedInterruptedSavedBatch(predecessor, owner, branch)\n                || isFullySavedFinishedBatch(predecessor, owner, branch))\n                && ContinuityJson.digest(predecessor.toJson())",
+        "new": "                || isCompletedInterruptedSavedBatch(predecessor, owner, branch)\n                || isCompletedFinishedSavedBatch(predecessor, owner, branch)\n                || isFullySavedFinishedBatch(predecessor, owner, branch))\n                && ContinuityJson.digest(predecessor.toJson())",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "        if (isOpenReadOnlyBatch(predecessor) || isDeferredReadOnlyBatch(predecessor)\n                || isCompletedInterruptedSavedBatch(predecessor, owner, branch)\n                || isFullySavedFinishedBatch(predecessor, owner, branch)) {",
+        "new": "        if (isOpenReadOnlyBatch(predecessor) || isDeferredReadOnlyBatch(predecessor)\n                || isCompletedInterruptedSavedBatch(predecessor, owner, branch)\n                || isCompletedFinishedSavedBatch(predecessor, owner, branch)\n                || isFullySavedFinishedBatch(predecessor, owner, branch)) {",
+        "owned_eol_adapted": false
+      }
+    ],
+    "whole_outside_inverse_exact": true,
+    "same_whole_bytes_as_actual": false
+  },
+  "actual_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\completed-finished-unsaved-recovery56\\SOURCE-READY-OWNER01.json",
+    "bytes": 2341,
+    "sha256": "0f99518393090eebaee6a483f252992367d2079d921bc80362aafec2d5dce727"
+  },
+  "actual_qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\completed-finished-unsaved-recovery56\\native-first01\\QUALIFIED-PRODUCTION01.json",
+    "bytes": 436811,
+    "sha256": "a4fca6876c0f7a668acc4962b7788ee8f6c4b4931436f148451d944c95ab513b"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\completed-finished-unsaved-recovery56\\MODEL-REVIEW93-01.json",
+    "bytes": 1338,
+    "sha256": "a1e39990605a65308627a6d2378d3b735470aa9c645f1605d5a91ee606ac5719"
+  },
+  "runtime": "Source/software only. Actual fd6b bootstrap failed before original-eight Controller drain; three new offline failure terminals are independent and preserved. No clean ticket/P052 adoption."
+}
