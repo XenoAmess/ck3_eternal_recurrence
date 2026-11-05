@@ -1,0 +1,86 @@
+{
+  "schema": "xar.runtime-resume91-handoff44-source-index/v1",
+  "evidence_times": "UTC",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "runtime_owner": "/root/runtime_continue",
+  "permission_cut": {
+    "received_AGENTS_top": "Vacation close; no new implementation, tests, model dispatch, business worker or Game actions. Existing begun operations and docs only.",
+    "new_GET44": false,
+    "source44_adopted": false,
+    "business_delegate_already_ended": true,
+    "new_STOP_marker_written": false,
+    "Game_keeper_preserved": true,
+    "explicit_later_user_resume_required": true
+  },
+  "state": {
+    "delegate": "2ad92b89-a7e6-4756-82f3-eabe09abae74",
+    "actual_end_utc": "2026-11-05T10:04:24.696448Z",
+    "failure_type": "java.io.IOException",
+    "exit_code": null,
+    "head": 539,
+    "status": "repair_required",
+    "completed_cycles": 23,
+    "pending_receipt": null,
+    "Driver_ACTION_history": 527,
+    "original537_terminal": "539 COMPOSITE_SETTLED/COMPOSITE_NO_GAMEPLAY_WRITE",
+    "date_raw": 53162232,
+    "eligible_days": 169,
+    "confirmed_saved_days": 8,
+    "saved_date_raw": 53158368,
+    "new_confirmed_saved_days": 0,
+    "target10seconds_achieved": false
+  },
+  "artifacts": {
+    "runtime_frozen_cut": {
+      "path": "D:/ck3-state/resume91-runtime/resume-after-user-play-20261105/runtime-handoff44/RUNTIME-CUT44.json",
+      "bytes": 7502,
+      "sha256": "7deee7c698fb505d14607c68a4a8dec0d62073f044736fadb3b34004fb6b45c8"
+    },
+    "actual43": "D:/ck3-state/resume91-runtime/resume-after-user-play-20261105/sway-original-no-gameplay-recovery43/ACTUAL-LOADER43.json",
+    "original537_terminal539": "D:/ck3-state/resume91-runtime/resume-after-user-play-20261105/sway-original-no-gameplay-recovery43/ORIGINAL537-TERMINAL539.json",
+    "source44_final02": {
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/sway-no-gameplay-material-consumer01/SOURCE-READY-OWNER02.json",
+      "bytes": 2922,
+      "sha256": "a952c17397e869e57e30d0f20f7e02bb981b3dfe18cb1badcadc57ea010f8150"
+    },
+    "qualified44_final02": {
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/sway-no-gameplay-material-consumer01/QUALIFIED-COHORT02.json",
+      "bytes": 11082,
+      "sha256": "8ae11c1ad1a19a299c4a42b7cc8e7b19ccbc17aa8d93bb10c39e593b061c3b32"
+    },
+    "independent_source44_final02": {
+      "path": "D:/ck3-state/resume91-root/sway-no-gameplay-material-independent-review44/SOURCE-REVIEW02.json",
+      "bytes": 6237,
+      "sha256": "f75166dbaeb7c61a5d42b0a56e14543149c05b35f3ad73fe608c63717b0ac383"
+    }
+  },
+  "source44": {
+    "relative": "local-service/src/main/java/org/xar/ck3/control/service/root/RootActionHistoryMaterialSourceFactory.java",
+    "current_before": {
+      "bytes": 69288,
+      "sha256": "340de5f21bcd02af2950436bb7f11eb828bf402bee524987fc950fb30ef9c94a"
+    },
+    "candidate": {
+      "bytes": 72347,
+      "sha256": "b500b1d6dec8e2d035bd0c1b90adccf9d1c5ac84b8e0fb62d0d7180430090260"
+    },
+    "first_compiler_RED_retained": true,
+    "final02_javac_exit": 0,
+    "final02_javac_seconds": "8.3601222",
+    "final02_classes": 10,
+    "resources_released": true,
+    "normal_Quarkus_loader_required": true,
+    "private_Root_material_positive": "NOT_YET_VERIFIED"
+  },
+  "resume_constraints": [
+    "No automatic resume from source qualification or this document.",
+    "Never replay original521/527 or Sway537/539, rewrite their full command/ACK/deadline, manufacture pending, or clear the ledger.",
+    "Use a new single-source once adopter after explicit later user resume; never rerun consumed43 or prior once scripts.",
+    "Same Game/keeper/dev host must be checked before controlled loader; Native offline class outputs are not deployed directly.",
+    "After the unique GET, observe only small named OWNER/log at30seconds; report first receipt/END and release the corresponding Native churn hold immediately.",
+    "History consumption, bootstrap, LOOP, new days and SAVE each require actual evidence. No fake private-Root test or repeated old green is a prerequisite."
+  ],
+  "navigation_only_not_issuer_authority": true,
+  "prior_handoff": "docs/handover/2026-11-04-java-g2-resume91-vacation-handoff.md",
+  "publication": "Only these two named docs; canonical business Git owner is /root/java_continue at D:/r64d. Do not stage unrelated Z workspace changes."
+}
