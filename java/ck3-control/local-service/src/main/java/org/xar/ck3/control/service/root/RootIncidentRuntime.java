@@ -432,6 +432,38 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
             unchanged(original, head);
         } catch (IOException failure) { throw new UncheckedIOException(failure); }
     }
+    /** Reuses only an immutable historical EVENT proof; the current physical scope is never relabelled as that old observation. */
+    @Override public Optional<org.xar.ck3.control.application.effects.NativeEffectRegistry.Projected> replayExisting(ActionCommand command,ActionState.Attempt attempt,
+            org.xar.ck3.control.application.action.NativeActionPort.DispatchOutcome dispatch) {
+        if(!supports(command)||!command.operation().value().matches("select-event-option-[1-9][0-9]{0,8}")
+                ||!org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.EVENT_SCHEMA.equals(command.expected().observerSchema())
+                ||!org.xar.ck3.control.application.action.ActionReconciliationScope.activeFor(command))return Optional.empty();
+        try {
+            Session same=context.borrowedSession();requireCommandOrigin(same,command);String head=same.head().digest();
+            EpisodeIncidentJournal journal=installedForObservation(same,command,attempt);
+            if(!journal.legacyLookupRequired(command))return Optional.empty();
+            // This validates current canonical membership/ACK only. Its current guard is not substituted into the historical proof.
+            legacyCanonicalEvidence(same,command,attempt,List.of());
+            Optional<RawJson> existing=journal.existingLegacyAfter(command);
+            if(existing.isEmpty()){unchanged(same,head);return Optional.empty();}
+            ObjectNode envelope=StrictJson.object(StrictJson.parse(existing.orElseThrow().bytes(),MAX_BASIS),Set.of("schema","scan_ref","before_index","after_index","after"));
+            StrictJson.require("xar.episode-incident-existing-after/v1".equals(StrictJson.text(envelope.get("schema"))),"unregistered existing event original envelope");
+            ObjectNode index=read(ExactRef.fromJson(envelope.get("after_index")),MAX_BASIS);
+            StrictJson.require(ExactRef.fromJson(index.get("after_ref")).equals(ExactRef.fromJson(envelope.get("after"))),"existing after body changed its owned pin");
+            StrictJson.require(index.get("legacy_command_binding") instanceof ObjectNode,"existing after lost its original versioned proof");
+            ObjectNode proof=(ObjectNode)index.get("legacy_command_binding");
+            var bound=context.archive().withSession(same);var original=bound.loadReceipt(ExactRef.fromJson(proof.get("canonical_receipt_ref")));
+            StrictJson.require(java.util.Arrays.equals(org.xar.ck3.control.application.action.ActionCodec.encodeCommand(original.command()),org.xar.ck3.control.application.action.ActionCodec.encodeCommand(command))
+                    &&original.bodySha256().equals(org.xar.ck3.control.application.action.ActionCodec.bodySha256(command))
+                    &&org.xar.ck3.control.application.action.ActionTransitions.attempt(original.state()).filter(attempt::equals).isPresent()
+                    &&original.ack().filter(dispatch::equals).isPresent(),"existing after changed the complete current original command/Attempt/dispatch");
+            var replayed=verifyLegacyBinding(new RawJson(StrictJson.canonical(proof,MAX_BASIS)));
+            StrictJson.require(replayed.isPresent(),"existing after has no fully replayed original effect");
+            StrictJson.require(journal.existingLegacyAfter(command).filter(existing.orElseThrow()::equals).isPresent(),"existing event originals changed during Root replay");
+            unchanged(same,head);
+            return replayed;
+        } catch(IOException failure){throw new UncheckedIOException(failure);}
+    }
     @Override public void recordUnsettled(ActionCommand command,ActionState.Attempt attempt,NativeEventEffects.UnsettledObservation observed) {
         if(!supports(command))return;
         try {
@@ -568,7 +600,7 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         return new RawJson(StrictJson.canonical(row,MAX_BASIS));
     }
     /** Same verifier for live admission and cold side-evidence interpretation; the latter uses historical custody. */
-    private void verifyLegacyBinding(RawJson serialized) {
+    private Optional<org.xar.ck3.control.application.effects.NativeEffectRegistry.Projected> verifyLegacyBinding(RawJson serialized) {
         try {
             Session same=context.borrowedSession();context.writer().requireSession(same);String head=same.head().digest();
             ObjectNode row=(ObjectNode)StrictJson.parse(serialized.bytes(),MAX_BASIS);
@@ -597,17 +629,18 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
             var selected=scope(new Binding(command.before(),command.source(),command.sessionId()));
             var journal=EpisodeIncidentJournal.openOriginal(configuration(selected),EpisodeIncidentJournal.measure(selected.incidentRoot().resolve("EPISODE.json")));
             journal.verifyLegacyBindingData(serialized,command,before);
-            verifyLegacyEffectBasis(row,original,attempt,guard,before,after,bound);
+            var replayed=verifyLegacyEffectBasis(row,original,attempt,guard,before,after,bound);
             StrictJson.require(after.identity().equals(identity.factual())&&after.source().equals(command.source())&&after.sessionId().equals(command.sessionId()),
                     "legacy proof changed its actual historical physical after");
             verifyLegacyProducer(command,before,row);
             unchanged(same,head);
+            return replayed;
         } catch(IOException failure){throw new UncheckedIOException(failure);}
     }
-    private void verifyLegacyEffectBasis(ObjectNode proof,org.xar.ck3.control.application.action.ActionReceipt original,ActionState.Attempt attempt,
+    private Optional<org.xar.ck3.control.application.effects.NativeEffectRegistry.Projected> verifyLegacyEffectBasis(ObjectNode proof,org.xar.ck3.control.application.action.ActionReceipt original,ActionState.Attempt attempt,
             org.xar.ck3.control.application.action.GuardEvidence guard,Complete before,Complete after,ActionPorts.OutcomeArchive bound)throws IOException {
         JsonNode supports=proof.get("observation_supporting_refs");StrictJson.require(supports!=null&&supports.isArray()&&supports.size()<=1,"bounded explicit legacy observation supports required");
-        if(supports.isEmpty())return;
+        if(supports.isEmpty())return Optional.empty();
         ExactRef reference=ExactRef.fromJson(supports.get(0));RawJson raw=bound.loadMaterial(reference);
         StrictJson.require(raw.bytes().length==reference.bytes()&&DriverJson.sha256(raw.bytes()).equals(reference.sha256()),"legacy effect basis original changed");
         ObjectNode basis=(ObjectNode)StrictJson.parse(raw.bytes(),MAX_BASIS);
@@ -649,6 +682,7 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         verifier.verifier().verify(context.borrowedSession().head(),proposal,bound);
         var rebuilt=NativeEffectEvidence.load(proposal,bound,RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()));
         StrictJson.require(rebuilt.compatibleResult().equals(retained),"legacy semantic replay changed the complete original compatible result");
+        return Optional.of(new org.xar.ck3.control.application.effects.NativeEffectRegistry.Projected(new ActionPorts.EffectObserved(effect),Optional.of(retained)));
     }
     private void verifyLegacyProducer(ActionCommand command,Complete before,ObjectNode proof)throws IOException {
         ObjectNode captured=read(ExactRef.fromJson(proof.get("original_before")),MAX_BASIS);

@@ -1,0 +1,121 @@
+{
+  "schema": "xar.java-owner.existing-after-source-index/v1",
+  "at_utc": "2026-11-05T06:14:22.732642+00:00",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\SOURCE-READY-OWNER01.json",
+    "bytes": 3892,
+    "sha256": "47dd5918fbc84d82be9f0c339b504bc30c8b94dc0afe1db2799cd1b82188b9a9"
+  },
+  "formal_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 16702,
+    "sha256": "a1fabcbd2b4444c4512aab8b9b65125aa46ee7e218376b04fa34f8ba90209c7e"
+  },
+  "production_type": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 498855,
+    "sha256": "3ac5cdb113b5315c9f31789da096e055fc15ae1be5c19a2cee8c99fab02964bf"
+  },
+  "source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciliation-source-io-independent-review35\\SOURCE-REVIEW06-EXISTING-AFTER.json",
+    "bytes": 7447,
+    "sha256": "0c508b7b4fb08cedfd6041b5335d147b3366390dfa5456e7637ca54ef58daee9"
+  },
+  "test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\existing-event-after-data-independent-test01\\SOURCE-READY-TEST02.json",
+    "bytes": 7893,
+    "sha256": "d870d5c94875a33a188ae44df94e2356b67c6407172106aa21061f14513b56b1"
+  },
+  "new_test_qualified": {
+    "path": "D:\\ck3-state\\resume91-root\\existing-event-after-data-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 11451,
+    "sha256": "d48a8146590b73b3698d6e83ef360d8c8a72b32d810e4e02ca71962dfbc86bf5"
+  },
+  "independent_test_result": {
+    "path": "D:\\ck3-state\\resume91-root\\existing-event-after-data-independent-test01\\INDEPENDENT-RESULT01.json",
+    "bytes": 10775,
+    "sha256": "caca77248b7f6d64847bd5ab860e512973720d32ddcfb83355da5b0aec069f20"
+  },
+  "new_test_XML": {
+    "path": "D:\\ck3-state\\resume91-root\\existing-event-after-data-independent-test01\\native-first01\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 43405,
+    "sha256": "778fb7890c9ddf5c512a7231a39f2cc5cc092dcef9713ed93e020f4e7ee5552f"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\MODEL-REVIEW01.json",
+    "bytes": 310,
+    "sha256": "33f6126b36ed43f19b927b4f56eb220693f4d048e933135d101eeab547f31118"
+  },
+  "actual_loader35": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\reconciliation-source-io-diagnostic35\\ACTUAL-LOADER35.json",
+    "bytes": 13518,
+    "sha256": "6e4a7bfb89d0369c194e981cdf20b24acdf67fb043bb6067b219e05d3f37e35c"
+  },
+  "source_to_formal": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/effects/NativeEventEffects.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEventEffects.java",
+        "bytes": 24060,
+        "sha256": "948b695459877f548dcdcf9ba479c8f8d62d1c043623d049a1b8249fbfb8afca"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEventEffects.java",
+        "bytes": 24596,
+        "sha256": "0e2a4a289a19f84db6efc03c8e45b872f172a2e3e0cb5a628e8a8ff0750044ba"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEventEffects.java",
+        "bytes": 24596,
+        "sha256": "0e2a4a289a19f84db6efc03c8e45b872f172a2e3e0cb5a628e8a8ff0750044ba"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/EpisodeIncidentJournal.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 94912,
+        "sha256": "6857265f89632eb231202315c52b940717a62080712909a8b07d4acb453144c5"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 99291,
+        "sha256": "93ac2352156a4e6b1f0fe52fdf0a8966e3ec08315e614ec191435ce1d33b1f31"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 100041,
+        "sha256": "668deab0627f81f938fe2beac1356fdb11c7478c9330d8ca7f292a4f3fd0f0ad"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootIncidentRuntime.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 67003,
+        "sha256": "c3d31cf9d76ffae28d2894f03c378cd961be389bd15290b82fd45a2030a61e65"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 70967,
+        "sha256": "69db12a55cbb3e95d71509e07865d0afb4a2372dda0966f7785ba79dd036f106"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 70385,
+        "sha256": "9bfbd2f38bb867b7973202b44a4f4af148bf3d18b814472106c0562315391991"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "actual_private_archive_observer_scope": "passed to final Settled append preview; global default missing READ verifier blocks",
+  "canonical_head": 526,
+  "canonical_commit": false,
+  "new_controls_or_saved_days": 0,
+  "Hosted_source_or_payload_published": false
+}

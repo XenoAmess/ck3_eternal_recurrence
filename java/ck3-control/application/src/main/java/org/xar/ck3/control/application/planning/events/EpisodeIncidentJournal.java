@@ -697,6 +697,53 @@ public final class EpisodeIncidentJournal {
         for(ExactRef ref:pinned.originals())verifyExternal(ref);verifyExternal(pinned.indexRef());verifyEpisode();
         return result;
     }
+    /** Fully verified owned original DATA only; only the installed Root may reconstruct an archived effect from it. */
+    public Optional<RawJson> existingLegacyAfter(ActionCommand command)throws IOException {
+        if(!legacyPhase(command)||!legacyLookupRequired(command))return Optional.empty();
+        List<Path> inventory;try(var files=Files.list(configured.incidentRoot())){inventory=files.sorted().toList();}
+        require(inventory.size()<=1282,"bounded existing legacy incident inventory required");
+        Scan pinned=scan(new Binding(command.before(),command.source(),command.sessionId()));
+        List<ExactRef> candidates=new ArrayList<>();
+        for(ExactRef original:pinned.originals())if(original.path().endsWith(".before-index.json")) {
+            ObjectNode index=object(read(original));
+            if(command.actionId().equals(index.path("action_id").asText()))candidates.add(original);
+        }
+        require(candidates.size()==1,"one fully validated owned original event is required");
+        ExactRef beforeIndex=candidates.getFirst();ObjectNode original=object(read(beforeIndex));String id=text(original,"incident_id");
+        Path afterPath=configured.incidentRoot().resolve(id+".after.json"),indexPath=configured.incidentRoot().resolve(id+".after-index.json");
+        boolean hasAfter=Files.exists(afterPath,LinkOption.NOFOLLOW_LINKS),hasIndex=Files.exists(indexPath,LinkOption.NOFOLLOW_LINKS);
+        require(hasAfter==hasIndex,"partial existing event after requires reconciliation");
+        if(!hasAfter) {
+            for(ExactRef ref:pinned.originals())verifyExternal(ref);verifyExternal(pinned.indexRef());verifyEpisode();
+            verifyLegacyCandidateInventory(command,beforeIndex);
+            try(var files=Files.list(configured.incidentRoot())){require(files.sorted().toList().equals(inventory),"existing event inventory changed before absence");}
+            return Optional.empty();
+        }
+        ExactRef afterIndex=measure(indexPath),after=measure(afterPath);ObjectNode index=object(read(afterIndex));
+        require(pinned.originals().contains(beforeIndex)&&pinned.originals().contains(afterIndex)&&pinned.originals().contains(after)
+                &&LEGACY_RECOVERY_AFTER_SCHEMA.equals(text(index,"schema"))
+                &&after.equals(ExactRef.fromJson(index.get("after_ref")))
+                &&ExactRef.fromJson(original.get("before_ref")).equals(ExactRef.fromJson(index.get("before_ref"))),
+                "existing event after escaped its validated original inventory");
+        ObjectNode proof=object(index.get("legacy_command_binding"));
+        byte[] encoded=java.util.Base64.getDecoder().decode(text(proof,"canonical_command_base64"));
+        require(java.util.Arrays.equals(encoded,ActionCodec.encodeCommand(command))
+                &&ActionCodec.bodySha256(command).equals(text(proof,"canonical_command_sha256"))
+                &&beforeIndex.equals(ExactRef.fromJson(proof.get("original_index")))
+                &&ExactRef.fromJson(original.get("before_ref")).equals(ExactRef.fromJson(proof.get("original_before")))
+                &&index.path("supporting_refs").isArray()&&index.path("supporting_refs").size()==1
+                &&index.get("supporting_refs").equals(proof.get("observation_supporting_refs")),
+                "existing event after changed its complete original command or owned proof");
+        var basis=NativeEffectEvidence.reconciliationProvenance(new RawJson(read(ExactRef.fromJson(index.get("supporting_refs").get(0)))));
+        require(basis.isPresent(),"existing legacy event after requires its explicit original READ profile");
+        for(ExactRef ref:pinned.originals())verifyExternal(ref);verifyExternal(pinned.indexRef());verifyEpisode();
+        verifyLegacyCandidateInventory(command,beforeIndex);
+        try(var files=Files.list(configured.incidentRoot())){require(files.sorted().toList().equals(inventory),"existing event inventory changed during validation");}
+        ObjectNode result=StrictJson.object().put("schema","xar.episode-incident-existing-after/v1");
+        result.set("scan_ref",pinned.indexRef().toJson());result.set("before_index",beforeIndex.toJson());
+        result.set("after_index",afterIndex.toJson());result.set("after",after.toJson());
+        return Optional.of(new RawJson(StrictJson.canonical(result,MAX_METADATA)));
+    }
     /** Pure original DATA checking. It does not enter a reconciliation scope or issue an effect/permit. */
     public void verifyLegacyBindingData(RawJson serialized,ActionCommand command,
             org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete before)throws IOException {

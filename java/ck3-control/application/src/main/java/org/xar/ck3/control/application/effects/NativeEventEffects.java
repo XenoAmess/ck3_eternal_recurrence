@@ -53,6 +53,10 @@ public final class NativeEventEffects implements NativeEffectRegistry.Observer {
     public interface ObservedAfter {
         void record(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair actualPair,
                     NativeEffectRegistry.Projected actualWithEvidence);
+        /** Root may return only a fully reverified immutable original effect; the default grants no archived result. */
+        default Optional<NativeEffectRegistry.Projected> replayExisting(ActionCommand command,ActionState.Attempt attempt,NativeActionPort.DispatchOutcome dispatch) {
+            return Optional.empty();
+        }
         /** Actual diagnostic only. It is never an EffectObserved or permission to replay. */
         default void recordUnsettled(ActionCommand command,ActionState.Attempt attempt,UnsettledObservation actual) { }
         /** Explicitly disables incident journaling; this does not qualify an incident-collection deployment. */
@@ -87,6 +91,8 @@ public final class NativeEventEffects implements NativeEffectRegistry.Observer {
     }
     @Override public NativeEffectRegistry.Projected observe(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome dispatch) {
         StrictJson.require(supports(command.operation()), "exact event/pending action required");
+        Optional<NativeEffectRegistry.Projected> existing=Objects.requireNonNull(observedAfter.replayExisting(command,attempt,dispatch));
+        if(existing.isPresent())return existing.orElseThrow();
         NativeEffectSnapshots.Pair pair = snapshots.read(command, attempt);
         ObservationProvenance provenance = provenance(command, attempt, pair);
         // A material query is useful only after the original instance has actually advanced.
