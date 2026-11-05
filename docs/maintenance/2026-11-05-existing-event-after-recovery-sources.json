@@ -117,5 +117,10 @@
   "canonical_head": 526,
   "canonical_commit": false,
   "new_controls_or_saved_days": 0,
-  "Hosted_source_or_payload_published": false
+  "Hosted_source_or_payload_published": false,
+  "additive_actual_OUTPUTS_family_count_correction": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\existing-event-after-recovery01\\native-first01\\CLASS-COUNT-CORRECTION01.json",
+    "bytes": 10981,
+    "sha256": "a34d581ed97ce53aedd6eac286a29ae658367e6a1335b175c8e160bcbecba41c"
+  }
 }

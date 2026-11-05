@@ -1171,7 +1171,9 @@ public final class DriverBootstrap {
                                 || org.xar.ck3.control.application.session.ContinuityBatchJournal
                                     .readOnlyEventRecoveryRoot(lease.snapshot().actions()).isPresent()
                                 || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                    .readOnlyPendingKnownCompletionRoot(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()),
+                                    .readOnlyPendingKnownCompletionRoot(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()
+                                || org.xar.ck3.control.application.session.ContinuityBatchJournal
+                                    .readOnlyPendingEventCompletionRoot(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()),
                             "read-only isolated adoption retains the complete canonical action set and exact pending recovery role");
                 } else {
                     StrictJson.require(lease.snapshot().actions().stream().allMatch(ActionReceipt::settled),

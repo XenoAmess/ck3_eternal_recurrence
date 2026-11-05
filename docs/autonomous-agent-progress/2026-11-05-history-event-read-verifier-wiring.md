@@ -13,3 +13,6 @@ Model task60 returned HTTP200/DONE with finish_reason=length at the fixed 1200-t
 The previous global-wiring report and its newly appended paragraphs had been written with literal question marks by the owner's shell encoding path. This publication replaces only those owned text blocks with readable UTF-8 text. Source and machine JSON pins were unaffected. The official CI run41961042009 remains failed: bootstrap passed 1199 tests, while the qualified pipeline lacked tools-postqualification/actual.json. That separate failure neither qualifies the whole pipeline nor gates recovery37.
 
 The exact source, typed result, independent review, original527 comparison and publication limits are indexed in [the source index](../maintenance/2026-11-05-history-event-read-verifier-wiring-sources.json). Raw receipt payloads and hosted tests remain outside the public repository.
+
+
+Recovery37 installed this history argument but stopped before calling it: original527 was already APPLIED without an ordinary cycle. The [strict read-only completion follow-up](2026-11-05-event-applied-pending-history.md) retains that settlement and routes it through real history/cycle completion; the history callback still needs actual runtime acceptance.

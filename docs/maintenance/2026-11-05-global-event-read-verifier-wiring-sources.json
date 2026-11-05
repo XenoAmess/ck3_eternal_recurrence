@@ -86,5 +86,10 @@
     },
     "history_publication": "Separate downstream FrameLoader default rejection; actual37 not yet qualified",
     "new_controls_or_saved_days": 0
+  },
+  "additive_actual_OUTPUTS_family_count_correction": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\native-first01\\CLASS-COUNT-CORRECTION01.json",
+    "bytes": 13416,
+    "sha256": "2d1bbc4c093ba2e16efbe0a7653ed32644369253dd8539070152913941f66a9d"
   }
 }

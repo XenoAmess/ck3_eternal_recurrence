@@ -1,0 +1,163 @@
+{
+  "schema": "xar.java-owner.applied-event-pending-history-source-index/v1",
+  "at_utc": "2026-11-05T07:41:07.839851+00:00",
+  "production_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\SOURCE-READY-OWNER01.json",
+    "bytes": 4425,
+    "sha256": "7cd524fc932d9c546137cccc03196b03c4a4953179cc85e72e86e6b6a5347ef3"
+  },
+  "owner_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\OWNER-SPANS01.json",
+    "bytes": 16171,
+    "sha256": "30d731ac584429f80a269da7f170d724b946d7c5189a11337d2a6060a24a3a49"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 4068,
+    "sha256": "db75d64924c2bdee6803adbe5a7b2a126a891b25ad5ef3e463cf08048e8b49a6"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/ContinuityBatchJournal.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 338670,
+        "sha256": "6d54fe9d8e39b616ad614211c4afd0dc21b7c191c95abcf1d7ab40a869b4507a"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 348340,
+        "sha256": "4c7e1bf106f4ce91f3d1d4adb376f1b70cccc8ca2f871b35b8f62c754b853b27"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 347227,
+        "sha256": "3d4a08a3cd758f0dfe1bfc3595a3e0fb2e5085feb2cdb66cd029b8539090d95d"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 255411,
+        "sha256": "30cb79b11b961d2febb4f733798f7e8a7b215123ed3615567858fac4863d8595"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 255882,
+        "sha256": "436bf1ee0f56c37dbf7117208119f60f2c048c769a04a920f178c8645b63fe37"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 248795,
+        "sha256": "e503df278cd05fb78c5260a52b6a64e66d98876e64b5b7da28439398561144a9"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/application/driver/DriverBootstrap.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverBootstrap.java",
+        "bytes": 139893,
+        "sha256": "62550b99f2d94da0349c0ecacb9c045c15e223232401af24b158f833002d782a"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverBootstrap.java",
+        "bytes": 140156,
+        "sha256": "483b56f4c8f30dea27ebd2e49b04d1bfb32c348386a5bb471151fc7b9a21a368"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverBootstrap.java",
+        "bytes": 140156,
+        "sha256": "483b56f4c8f30dea27ebd2e49b04d1bfb32c348386a5bb471151fc7b9a21a368"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    }
+  ],
+  "production_type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 1686826,
+    "sha256": "21f0dd8ee0f5f486ec8cbaa1d2b4bedd8b69ade6aa6f1e1d2ada29748a116c51"
+  },
+  "owner_actual_exit_source_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\OWNER-EXIT-SOURCE-REVIEW01.json",
+    "bytes": 2871,
+    "sha256": "40d5a99e6becb4aa5a40eedb4e04098d4fdab3dd388f67073e134e51ad0f5879"
+  },
+  "production_model61": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-applied-pending-history-recovery01\\MODEL-REVIEW01.json",
+    "bytes": 546,
+    "sha256": "362e94c9aecaa8c7c7998d134f014d98602e02e30e50bd723e496285504fb805"
+  },
+  "Test_source02": {
+    "relative": "application/src/test/java/org/xar/ck3/control/application/session/PendingEventCompletionDataHostedTest.java",
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\candidate02\\application\\src\\test\\java\\org\\xar\\ck3\\control\\application\\session\\PendingEventCompletionDataHostedTest.java",
+    "bytes": 15736,
+    "sha256": "8d0402f042da372cca285b9a035033ad4b4ff6e57882c6dcdaa48e0b5af8551f"
+  },
+  "Test_runonly03_fixture": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\SOURCE-READY-TEST03-FIXTURE.json",
+    "bytes": 4286,
+    "sha256": "3e4bd46261f90d17badf5410d49a7abc78e8af016a99108814d250ad3dc895c3"
+  },
+  "Test_input_correction_and_model62": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\MODEL-AND-OWNER-REVIEW01.json",
+    "bytes": 2352,
+    "sha256": "7653b63a37718604c98346d8088f74547a77f3cc6d6c97e3a8795bd053b9b59b"
+  },
+  "Test_independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\INDEPENDENT-SOURCE-REVIEW01.json",
+    "bytes": 3899,
+    "sha256": "da3ade04cfef2307b3a5d30c98d186aca4228a3a203f29e48e3cfd78035045a9"
+  },
+  "Test_independent_final": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\INDEPENDENT-RESULT04.json",
+    "bytes": 15412,
+    "sha256": "798c42363960cc6cb5cca5f4f501f8f7d464f7c84ce303555c4b653990ad5944"
+  },
+  "Test_original_budget_error": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\INDEPENDENT-SETUP-ADDENDUM02.json",
+    "bytes": 4631,
+    "sha256": "fbde846373912e2047c58a9f6c65d160ad1c239c0abd3b822f7bc6bef6282090"
+  },
+  "Test_original_missing_codec_closure": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\INDEPENDENT-CLOSURE-ADDENDUM03.json",
+    "bytes": 7010,
+    "sha256": "7191f1b893439803abc8f643ce68de3045a34393b7f03d564a85211d1453001a"
+  },
+  "Test_final_XML": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\codec-closure-runonly03\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 42437,
+    "sha256": "15e1be027a6f00252e14143783e548efd98b21237a9d47e5d3b0b505e380b361"
+  },
+  "Test_final_actual": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\codec-closure-runonly03\\actual\\junit\\ACTUAL.json",
+    "bytes": 1453,
+    "sha256": "cd3227cf1fd18bcfc5ed06f8842139dc156ad030cf9e1ada9648f79f7af39ee1"
+  },
+  "Test_managed_close": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\codec-closure-runonly03\\actual\\junit\\MANAGED-CLOSE.json",
+    "bytes": 238,
+    "sha256": "2695cfa625f9865b9233c5542eac7db72f3f439d37c16b6edaaa4eceb96cbceb"
+  },
+  "Test_final_result": "exact2P/10directrejections/0errorsfailureskip; no compile on finalRUN",
+  "actual_recovery38": "NOT_QUALIFIED at source/software publication cut; Runtime owns actual loader/history/cycle/LOOP",
+  "new_control_days_SAVE": 0,
+  "whole_formal_reactor_qualified": false,
+  "raw_Test_payloads_public_Git": false,
+  "Native_final_test_cohort": {
+    "path": "D:\\ck3-state\\resume91-root\\event-applied-pending-data-independent-test01\\QUALIFIED-COHORT03.json",
+    "bytes": 52415,
+    "sha256": "d41d3a59433e3fd8529efd89667eee905f0dd760a7226f89fc4ad8f031f9ad17"
+  },
+  "runtime38_loader_only": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-applied-pending-history-recovery38\\ACTUAL-LOADER38.json",
+    "bytes": 25669,
+    "sha256": "8d4ad803869efc0a2e0293fb4fd8671550df8819f3daaad6457d463d4f53c285"
+  },
+  "runtime38_layer": "Source3 adopted; samehost97584 new81feba06 restart16@68804be3 START07:39:04.9825772. GET200/11.5972545s. History/Controller/LOOP/SAVE not yet qualified."
+}
