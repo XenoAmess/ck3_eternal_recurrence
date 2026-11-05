@@ -143,7 +143,7 @@ public final class EventPolicies {
             return switch (stage) {
                 case TERMINAL_AND_FOREGROUND_WINDOWS -> foreground(request, previous, sameSharedBinding, mandatorySources, incidentCapture, readContracts, overlays);
                 case EVENT_AND_INTERACTION_CONTINUATION -> continuation(request, previous, trusted, nativeObservations, contextValidator, incidentCapture);
-                case EVENT_MATERIAL_POSTCONDITION -> material(request, previous, nativeObservations);
+                case EVENT_MATERIAL_POSTCONDITION -> material(request, previous, nativeObservations, contextValidator);
                 default -> throw new IllegalStateException("event policy owns exactly three declared stages");
             };
         }
@@ -352,13 +352,13 @@ public final class EventPolicies {
         return new OrdinaryPolicy.Wait(reason);
     }
 
-    private static OrdinaryPolicy.Decision material(PlanningRequest request, OrdinaryPolicy.Draft previous, NativeExpectationPort observations) {
+    private static OrdinaryPolicy.Decision material(PlanningRequest request, OrdinaryPolicy.Draft previous, NativeExpectationPort observations, RegisteredEventCore.ContextValidator contextValidator) {
         if (previous.command().isEmpty() || !previous.command().orElseThrow().operation().value().startsWith("select-event-option-"))
             return new OrdinaryPolicy.NotApplicable("the selected ordinary action is not an event option");
         ObjectNode snapshot = snapshot(request); JsonNode event = snapshot.get("active_event");
         if (event == null || !event.isObject()) return incomplete("event material planning lost the active native instance");
-        Optional<ObjectNode> context = currentContext(request, EVENT_QUERY, "current_event_window_context", "current_event_instance_id", event.get("instance_id"));
-        if (context.isEmpty()) return incomplete("event material planning requires the same-frame native event context");
+        Optional<ObjectNode> context = RegisteredEventCore.currentContext(request, previous, contextValidator).map(value -> (ObjectNode) parse(RetainedJson.encode(value)));
+        if (context.isEmpty() || !"available".equals(context.orElseThrow().path("status").asText())) return incomplete("event material planning requires the same-frame native event context");
         String key = context.orElseThrow().path("event_definition_key").asText();
         if (!PoetTraitOutcome.EVENT.equals(key)) return new OrdinaryPolicy.Keep("retain the core producer's existing scalar or dedicated material postcondition");
         ActionCommand old = previous.command().orElseThrow(); int index = Integer.parseInt(old.operation().value().substring("select-event-option-".length())) - 1;

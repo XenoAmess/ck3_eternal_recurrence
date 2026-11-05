@@ -15,3 +15,6 @@ actual新1TU2类0／7.9964779秒，完整两类结构全同；受影响旧三方
 正式只同两hunk投影，保原formal EOL及所有outside，Test02122408原样；actual／formal字节变体的软件资格分开，不授wholeformal／privateRoot／KnownReceipt发行。原高层Core.collect私有真实READ producer仍不由这些组件用例证明，完整原件和出处保留。
 
 后到实际运行又发现独立material358拒绝：Runtime27单叶更新后已越过旧Wait、生成未dispatch的select-event-option-1，但outer history未带collector-local ctx，完整ctx／binding／原receipt仍在fallback.original_registry_decision，00:53:31新END4、attempt0／无INTENT／无新controls，C22／saved8。下一最小两叶修复仅保真传递这些已有原件并复用实际validator，完整decision／independent-owner guard继续；本单元不据软件或LOOP宣称实际链完成、SAVE／提速或G2完成。源任务和实际恢复继续RUNNING，Git不作运行门。
+
+
+后到material消费者投影已另成[保原件的两叶修复](2026-11-05-event-material-retained-context.md)：ctx／binding／原receipt从已有nested carrier按原validator读取，完整后置门和available限制保留；Hosted实际carrier historyempty三例补该边界，未发行私KnownReceipt或授实机恢复。原本页外history预置三例仍保其原切点，源码／软件／实际28验收分开。

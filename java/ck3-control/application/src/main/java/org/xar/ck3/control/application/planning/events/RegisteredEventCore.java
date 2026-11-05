@@ -234,7 +234,31 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
         if (detail.get("event_window_context") instanceof ObjectValue context
                 && binding(request).equals(detail.get("event_read_binding")) && sameFrame(snapshot,active,context))
             return normalized(request,active,context,validator);
-        return Optional.empty();
+        // A direct partial carrier must not be overridden by a nested shadow.
+        if (detail.contains("event_window_context") || detail.contains("event_read_binding")
+                || detail.contains("event_read_original_receipt")) return Optional.empty();
+        ObjectValue fromDetail = null;
+        if (detail.contains("unhandled_event_fallback")) {
+            if (!(detail.get("unhandled_event_fallback") instanceof ObjectValue fallback)
+                    || !(fallback.get("original_registry_decision") instanceof ObjectValue original)) return Optional.empty();
+            fromDetail = original;
+        }
+        ObjectValue fromCommand = null;
+        if (previous.command().isPresent()) {
+            ObjectValue arguments = retained(previous.command().orElseThrow().arguments());
+            if (arguments.contains("unhandled_event_fallback")) {
+                if (!(arguments.get("unhandled_event_fallback") instanceof ObjectValue fallback)
+                        || !(fallback.get("original_registry_decision") instanceof ObjectValue original)) return Optional.empty();
+                fromCommand = original;
+            }
+        }
+        if (fromDetail != null && fromCommand != null && !fromDetail.equals(fromCommand)) return Optional.empty();
+        ObjectValue original = fromDetail != null ? fromDetail : fromCommand;
+        if (original == null || !(original.get("event_window_context") instanceof ObjectValue context)
+                || !(original.get("event_read_binding") instanceof ObjectValue readBinding)
+                || !(original.get("event_read_original_receipt") instanceof ObjectValue)) return Optional.empty();
+        if (!binding(request).equals(readBinding) || !sameFrame(snapshot,active,context)) return Optional.empty();
+        return normalized(request,active,context,validator);
     }
     /** Same pure dedicated producer for ordinary AUTO and the public resolver; no additional read or dispatch. */
     static Optional<BookmarkRaiktorPolicy.Recommendation> dedicatedRecommendation(PlanningRequest actual,ObjectValue context){

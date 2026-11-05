@@ -1,0 +1,160 @@
+{
+  "schema": "xar.java-owner.event-material-context-published-source-index/v1",
+  "at_utc": "2026-11-05T01:24:36.312615+00:00",
+  "base_commit": "cc8569d1a4f401c8d1f8cef36fec3a7010d2d83d",
+  "source_ready_final02": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-material-retained-context01\\SOURCE-READY-OWNER02.json",
+    "bytes": 10698,
+    "sha256": "57053fce5c2f17a9994f74ed7091b152da390d9f53a8a3a6f799a9e859d4a117"
+  },
+  "source_ready_original01": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-material-retained-context01\\SOURCE-READY-OWNER01.json",
+    "bytes": 9116,
+    "sha256": "9282dc74f93425ab356399dd1ff40b2fcda85da173b380963a3a3b8170d9aa80"
+  },
+  "raw_sources": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-material-retained-context01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\RegisteredEventCore.java",
+      "bytes": 35969,
+      "sha256": "f70340e61e214e0bbf13fd0ab79caa131dd1ffaf3745c0b1203ecb618e25f920"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-material-retained-context01\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EventPolicies.java",
+      "bytes": 49023,
+      "sha256": "431adff7c5a5b6750c494da1fb6e5dcca6b90f7b6ec77ea8f1eab4493c2e13d0"
+    }
+  ],
+  "formal_sources": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-material-retained-context01\\formal-projection01\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\RegisteredEventCore.java",
+      "bytes": 35924,
+      "sha256": "7cfb06a09cb9f84bf79e5fc243d372c5708ad27f87809e8d85982481029587c2"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-material-retained-context01\\formal-projection02\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EventPolicies.java",
+      "bytes": 48880,
+      "sha256": "e09a960e8531704c64f99b63b7b40097fa34eb8a84db0a22104e160b0e2a1f1c"
+    }
+  ],
+  "formal_befores": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/RegisteredEventCore.java",
+      "bytes": 34118,
+      "sha256": "3a33b447d82d0abd01f462de6be075e476d9d7cd7315446d9570b78b942a37f0"
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/EventPolicies.java",
+      "bytes": 48728,
+      "sha256": "0f8af8850385778d1f4485efd6b1fa85e5fe7fc35dc4bb56e260436c6e8aecb2"
+    }
+  ],
+  "whole_formal_outside_inverse_exact": true,
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-material-retained-context01\\MODEL-SOURCE-REVIEW01.json",
+    "bytes": 1272,
+    "sha256": "bea182fabacf6f57bf4874aa2a69208ab8f294c5879835855915ed998cdac0bf"
+  },
+  "actual_failure": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-material-failure27\\FAILURE27.json",
+    "bytes": 34904,
+    "sha256": "96c8d4eb39e4206cbf30fb887aa1861ce217e10af7100652e4541497d54fc491"
+  },
+  "production_qualified": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-material-retained-context01\\QUALIFIED-PRODUCTION02.json",
+    "bytes": 74553,
+    "sha256": "1628a3c5a85f16648d3b71027e9386639a1558200f344593e9214f07ed697f06"
+  },
+  "Hosted_Test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\event-material-carrier-hosted-test01\\SOURCE-READY-TEST01.json",
+    "bytes": 4165,
+    "sha256": "c4d9f72bdd90e769060d4d168f70a6512e14b09095b7c792e22035b1e2484350"
+  },
+  "Hosted_Test_source": {
+    "path": "D:\\ck3-state\\resume91-root\\event-material-carrier-hosted-test01\\candidate01\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\events\\EventMaterialRetainedCarrierHostedTest.java",
+    "bytes": 20043,
+    "sha256": "6d639c2eea4569de180632129faf3c7981fc0d8ec200911ab611180c59236441"
+  },
+  "Hosted_source_not_published_to_generic_suite": true,
+  "Hosted_qualified": {
+    "path": "D:\\ck3-state\\resume91-root\\event-material-carrier-hosted-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 93118,
+    "sha256": "1981c62da61f008c56f7bbd51d771a5fc013f86f4c6f860f6dc48585fb9ae336"
+  },
+  "independent_Hosted_review": {
+    "path": "D:\\ck3-state\\resume91-root\\event-material-carrier-hosted-test01\\INDEPENDENT-RESULT01.json",
+    "bytes": 18066,
+    "sha256": "6ce9212756f8dc7153f5db3fa3f9b890930ceac86122410df5086d9da769c63f"
+  },
+  "exact_Hosted_XML": {
+    "path": "D:\\ck3-state\\resume91-root\\event-material-carrier-hosted-test01\\native-first01\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 43249,
+    "sha256": "c78e3ecffaea44b424a25033e1abe44255ee1921c14761ff7c09b524764fdbd5"
+  },
+  "exact_new_methods": [
+    "retainedActualCarrierReachesRealContinuationAndMaterialWithEmptyHistory",
+    "corruptedConflictingAndUnavailableCarriersRemainRejected",
+    "legacyHistoryAndDirectPathsRetainTheirExactBindings"
+  ],
+  "required_Hosted_DATA": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-material-failure27\\batch9-report.json",
+    "bytes": 35823,
+    "sha256": "1c414ea8a898ab63c3578a753dbe99a45888b191aae8d38bee72fde8415594e8"
+  },
+  "Hosted_property": {
+    "xar.event.material.witness": "D:/ck3-state/resume91-runtime/resume-after-user-play-20261105/event-material-failure27/batch9-report.json"
+  },
+  "raw_actual_payload_published": false,
+  "original_receipt_reference_opened": false,
+  "legacy_history_control": "synthetic schema-conforming DATA, not actual READ/ACK/issuer",
+  "local_named_refs_independently_rehashed": 49,
+  "metadata_or_opaque_refs_not_opened_count": 0,
+  "runtime_recovery": "not claimed by software/publication; Runtime28 normal loader only after actual ownership receipts",
+  "source_owner_operations": {
+    "JDK": 0,
+    "C_reads": 0,
+    "GET": 0,
+    "Game": 0
+  },
+  "G2": "6/8",
+  "task": "RUNNING",
+  "later_actual_loader28": {
+    "receipt": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-material-recovery28\\ACTUAL-LOADER28.json",
+      "bytes": 6646,
+      "sha256": "dbcc48fec6ac2d9e1c1d1beb3b11962c8d90c88d1e8009d692760e52de50d861"
+    },
+    "six_D_refs_rehashed": true,
+    "GET_actual": {
+      "begin_utc": "2026-11-05T01:22:05.854864+00:00",
+      "end_utc": "2026-11-05T01:23:21.471816+00:00",
+      "seconds": 75.6169518000097,
+      "http_status": 200,
+      "response_bytes": 31327,
+      "response_sha256": "aa9042453f9590313971be58e09f84aa6cf059dd268181844e07b3283d61cb83",
+      "actual_START_LOOP_SAVE_credit": false
+    },
+    "actual_new_START": {
+      "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:6@67a610ed@67a610ed",
+      "exit_code": null,
+      "failure_type": null,
+      "host_pid": "97584",
+      "instance_id": "3824e1fe-0f2a-4d78-b3dc-10f7886731f1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-05T01:23:21.457823500Z",
+      "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:6@67a610ed@67a610ed",
+      "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+      "status": "DELEGATE_STARTED",
+      "actual_process": {
+        "pid": 97584,
+        "birth": "134383031688380897",
+        "exit": 259,
+        "image": "C:\\jdk-21\\bin\\java.exe",
+        "exit_filetime": "0"
+      }
+    },
+    "actual_state_at_cut": "BOOTSTRAP",
+    "C_build_family13_metadata_only": true,
+    "source_owner_C_read": false,
+    "actual_action_cycle_SAVE": false
+  }
+}

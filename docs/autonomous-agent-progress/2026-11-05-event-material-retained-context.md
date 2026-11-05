@@ -1,0 +1,20 @@
+# 事件材料消费者接回已保留的原上下文
+
+Runtime27实际已从Core分类、原continuation生成未派发的select-event-option-1，但material358停止为INCOMPLETE_PRODUCTION_CHAIN：外层规划request history没有Core.collect局部读取的context，完整normalized ctx、原binding及5819B／691a…receipt引用仍保留在command args的fallback.original_registry_decision。faction_demand.0101／instance7未进入INTENT、attempt0，没有新控制；原508／506已APPLIED、C22／169eligible／saved8未变，2e75真实END4。旧Core／continuation三例虽也执行material，outer history预置，不能覆盖这次投影缺口。
+
+本次仅两个实际叶：RegisteredEventCore.currentContext保原成功history、direct-detail顺序及全部frame／binding／实际validator检查，仅再消费既有确切unhandled_event_fallback.original_registry_decision。direct出现不完整显式三元组时不被nested遮盖；detail及command同时保留原决定时必须完全一致；nested必须原ctx、binding、receipt对象齐全，经原sameFrame／binding(request)及实际normalizer。没有递归搜JSON、复制伪history、创建receipt／ref、重capture、I/O或新增许可；原receipt保持opaque，不打开原引用也不把它当新issuer。
+
+EventPolicies.material从现Policy透传原contextValidator，复用同一strict getter。保active-event、原available-only与missing-context拒绝，后续原source-bound decision366、dedicated route369、independent-owner372及solecommand结构全部不变。01切换getter时，源审补出旧private getter456隐含的available限制；02只在material原guard显式保此限制，防normalize合法unavailable分类后误当可用。actual faction_demand.0101不是PoetTraitOutcome.EVENT（trait_specific.9001），通过ctx门后原359–360直接Keep，不需改任何独立owner门。
+
+实际生产01两TU13类0／6.5149458秒；02仅改变EventPolicies，单TU7类0／4.7372031秒，原Registry6类复用，最终13类分别为f703／431a。唯一结构变化为EventPolicies方法集：private material三参变四参、新lambda及原pick编号顺移，其他十二类结构同；本次明确需要正常loader，不能授body redefine或用classfile patch保形。
+
+新Hosted测试仅放D本机，不加入通用Maven源码／不增加缺少私现场的CI强依赖。它强pin实际35823B／1c414…未派发command及完整原carrier，ActionCodec解码后通过实际continuation、material、getter及真实validator；outer history明确为空。只给typed planning envelope补无关synthetic空数组，实际before／source／binding／deadline／原receipt不动。没有执行private Core.collect／发行KnownReceipt／Root许可、Native查询或游戏动作，原引用未打开。
+
+Hosted新1TU4类0／4.7859127秒，新三方法真3P／JVM4.4226491秒，XMLc78e3ecf（suite2.478秒），0error／failure／skip。正例保原完整ctx／receipt及native0／rendered0／option1，command-only／detail-only均可读；十个缺失、frame、binding、codec、partialdirect与双carrier冲突及合法unavailable反例拒绝，unavailable先经真实codec接受、material仍拒。legacy history／direct及错revision是schema-conforming synthetic对照，不称真实READ／ACK；全部无读取／新capture，witness未变，各phase强终态／fence／close释放。没有重跑旧三例或source02补强。
+
+模型完整200／stop，12.3288001秒／TTFT6.2191090秒；只material传validator及调用语义部分采用，原getter新块Value／ObjectValue API错误且缺command／partialdirect／冲突边界，由owner实现；原hunk及invented no-op不能直接应用。Hosted测试模型完整稿新增方法0采用，owner写上述Data replay；没有R2或把原稿回授软件绿。原01／02来源及差异都保留，旧例不改记。
+
+正式仅两叶owned精确投影、报告和机器来源索引，不带raw actual witness或Hosted Test进入Git；formal的其它原逻辑／EOL逐字保留，actual与formal变体不互借wholeclass软件资格。实际28由Runtime按新normal loader独占恢复，SOURCE／编测／采用／LOOP／真实动作／SAVE逐项验，不以本页发表或Hosted3P宣称实机链完成、速度或G2完成。总任务继续RUNNING。
+
+
+后到实际28正常loader启动：Runtime唯一GET为HTTP200／75.6169518秒，原host97584／birth134383031688380897保留，已END4的2e75之后，restart6@67a610ed的新委托3824e1fe于01:23:21.457823500Z START。具名cut仍BOOT／head515／C22／saved8，未授LOOP、新事件派发、新日或SAVE。Java仅独核ACTUAL-LOADER28（6646B／dbcc48fe）及六份冻结D引用；13个Maven输出只据Runtime metadata，不读C class、不借离线字节授实际逐方法命中。实际恢复按后继回执继续，不为本次发表新增GET或查询。
