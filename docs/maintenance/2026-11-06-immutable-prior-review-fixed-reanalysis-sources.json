@@ -1,0 +1,155 @@
+{
+  "schema": "xar.java-formal.immutable-prior-review-fixed-v2-index/v1",
+  "at_utc": "2026-11-05T20:24:44.169806+00:00",
+  "sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/EpisodeIncidentJournal.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\formal01\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 101275,
+        "sha256": "410eaf59e4dd1e420cb8cccdde318a93c571e9f6f3d853fb1082a58b10fc5f62"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\formal01\\candidate\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 109264,
+        "sha256": "2d5d3a8ded79f666318817d9d2903a5fc8f4ee77d2c790cb813b167c69ffc89a"
+      },
+      "qualified_actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\episode-candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 110056,
+        "sha256": "bea9d8e84d70d42fdc000c5e3a07206f6875d871daccb461c4f50e56fffb488d"
+      },
+      "formal_owned_spans": [
+        {
+          "old": "                writeSame(configured.incidentRoot().resolve(id + \".review-index.json\"), encode(row));",
+          "new": "                Path reviewedPath=configured.incidentRoot().resolve(id + \".review-index.json\");\n                byte[] proposed=encode(row);\n                if(Files.exists(reviewedPath,LinkOption.NOFOLLOW_LINKS)) {\n                    ExactRef retained=measure(reviewedPath);\n                    if(!java.util.Arrays.equals(read(retained),proposed))\n                        requirePriorReview(retained,before,id,scanned,object(item),report,actualReport);\n                } else writeSame(reviewedPath,proposed);",
+          "owned_eol_adapted": false
+        },
+        {
+          "old": "    private static final Set<String> LEGACY_FIELDS=Set.of",
+          "new": "    /** An immutable first source-review is retained; later complete reports must prove their own original batch. */\n    private void requirePriorReview(ExactRef retained,ExactRef before,String id,Binding current,ObjectNode currentItem,\n            ObjectNode currentReport,ExactRef currentReportRef)throws IOException {\n        ObjectNode index=StrictJson.object(object(read(retained)),Set.of(\"schema\",\"origin\",\"source\",\"session_id\",\"incident_id\",\"before_ref\",\"report_ref\"));\n        require(\"xar.episode-incident-reviewed/v1\".equals(text(index,\"schema\"))&&id.equals(text(index,\"incident_id\"))\n                &&before.equals(ExactRef.fromJson(index.get(\"before_ref\"))),\"Prior source-review index changed its exact incident/before\");\n        Binding prior=decodeBinding(index);episode.requireEpisode(prior);\n        require(prior.source().equals(current.source())&&prior.sessionId().equals(current.sessionId()),\"Prior source-review crossed its source or session\");\n        ExactRef reportRef=ExactRef.fromJson(index.get(\"report_ref\"));ObjectNode report=object(read(reportRef));\n        ExactRef manifestRef=ExactRef.fromJson(report.get(\"manifest\"));\n        require(Path.of(manifestRef.path()).equals(configured.scanRoot().resolve(\"incidents-\"+manifestRef.sha256()+\".batch.json\")),\n                \"Prior review manifest lost its fixed original batch role\");\n        ObjectNode manifest=object(read(manifestRef));OfflineBatchBinding.ObservedScan observed=requireBatchManifest(manifest);\n        ObjectNode internal=observed.observation().toJson();((ObjectNode)internal.get(\"frame\")).put(\"played_character_id\",observed.observation().frame().playedCharacterId().decimal());\n        Binding actual=new Binding(ProposalLifecycleCodec.decodeObservation(internal),source(observed.source().toJson()),observed.sessionId());\n        require(actual.equals(prior),\"Prior source-review index crossed its own full manifest binding\");\n        try{OfflineBatchBinding.requireReport(report,observed,manifestRef);}\n        catch(IllegalArgumentException invalid){throw new IOException(\"Prior source-review report crossed its original manifest\",invalid);}\n        ExactRef scanRef=observed.indexRef();\n        require(Path.of(scanRef.path()).equals(configured.scanRoot().resolve(scanRef.sha256()+\".scan.json\")),\"Prior source-review scan lost its fixed original role\");\n        ObjectNode scan=object(read(scanRef));String schema=text(scan,\"schema\");boolean progress=\"xar.episode-incident-scan/v3\".equals(schema);\n        require((SCAN_SCHEMA.equals(schema)||progress)&&decodeBinding(scan).equals(prior)\n                &&episodeRef.equals(ExactRef.fromJson(scan.get(\"episode_ref\")))&&scan.path(\"original_refs\").isArray()\n                &&scan.get(\"original_refs\").size()<=1026,\"Prior source-review lost its exact original scan/episode\");\n        Set<Path> paths=new java.util.HashSet<>();boolean containsBefore=false,containsEpisode=false;long bytes=0;\n        ExactRef progressRef=progress?ExactRef.fromJson(scan.get(\"scan_observation_basis\")):null;boolean containsProgress=false;\n        for(JsonNode value:scan.get(\"original_refs\")) {\n            ExactRef ref=ExactRef.fromJson(value);require(paths.add(Path.of(ref.path())),\"Prior review scan repeats an original path\");\n            verifyExternal(ref);bytes=Math.addExact(bytes,ref.bytes());require(bytes<=MAX_SCAN_BYTES,\"Prior review scan exceeds its bound\");\n            containsBefore|=ref.equals(before);containsEpisode|=ref.equals(episodeRef);containsProgress|=ref.equals(progressRef);\n        }\n        require(containsBefore&&containsEpisode,\"Prior review scan lacks its exact before/episode originals\");\n        if(progress){require(containsProgress,\"Prior review progress is absent from its original scan\");requireProgress(prior,progressRef);}\n        require(manifest.path(\"new_incidents\").isArray()&&manifest.get(\"new_incidents\").size()<=256,\"Finite prior reviewed incidents required\");\n        int matched=0;\n        for(JsonNode value:manifest.get(\"new_incidents\")) {\n            ObjectNode item=StrictJson.object(value,Set.of(\"incident_id\",\"kind\",\"before\",\"before_sha256\",\"after\",\"after_sha256\"),\n                    Set.of(\"event_definition_key\",\"current_event_instance_id\",\"interaction_definition_key\"));\n            if(!id.equals(text(item,\"incident_id\")))continue;\n            matched++;require(before.path().equals(text(item,\"before\"))&&before.sha256().equals(text(item,\"before_sha256\"))\n                    &&item.get(\"kind\").equals(currentItem.get(\"kind\")),\"Prior source-review changed its captured incident\");\n            // An earlier source-only review may legitimately precede the later independent after.\n        }\n        require(matched==1,\"Prior review manifest must contain the exact incident once\");\n        ObjectNode oldEntry=completedSourceReviewEntry(report,id),newEntry=completedSourceReviewEntry(currentReport,id);\n        for(String field:List.of(\"event_definition_key\",\"fingerprint\"))require(text(oldEntry,field).equals(text(newEntry,field)),\"Prior/current review changed its source identity\");\n        require(text(oldEntry,\"fingerprint\").matches(\"[0-9a-f]{64}\"),\"Exact source-review fingerprint required\");\n        for(String field:List.of(\"published\",\"canonical_source_facts\")) {\n            ObjectNode oldRef=StrictJson.object(oldEntry.get(field),Set.of(\"path\",\"sha256\"),Set.of(\"bytes\"));\n            ObjectNode newRef=StrictJson.object(newEntry.get(field),Set.of(\"path\",\"sha256\"),Set.of(\"bytes\"));\n            require(text(oldRef,\"path\").equals(text(newRef,\"path\"))&&text(oldRef,\"sha256\").equals(text(newRef,\"sha256\")),\"Prior/current review changed its canonical source proof\");\n            ExactRef exact=measure(Path.of(text(oldRef,\"path\")));require(exact.sha256().equals(text(oldRef,\"sha256\"))\n                    &&(!oldRef.has(\"bytes\")||StrictJson.integer(oldRef.get(\"bytes\"),0,MAX_METADATA)==exact.bytes())\n                    &&(!newRef.has(\"bytes\")||StrictJson.integer(newRef.get(\"bytes\"),0,MAX_METADATA)==exact.bytes())\n                    &&exact.bytes()<=MAX_METADATA,\"Prior/current source proof lost its exact original bytes\");read(exact);\n        }\n        read(before);read(episodeRef);read(scanRef);read(manifestRef);read(reportRef);read(currentReportRef);read(retained);\n    }\n    private static ObjectNode completedSourceReviewEntry(ObjectNode report,String id)throws IOException {\n        require(\"xar.vanilla-event-offline-source-batch/v3\".equals(text(report,\"schema\"))\n                &&report.path(\"material_effects_verified\").isBoolean()&&!report.path(\"material_effects_verified\").booleanValue()\n                &&StrictJson.integer(report.get(\"Game_MCP_OBS_calls\"),0,0)==0,\"Source-review completion grants no material/game effect\");\n        require(report.path(\"unresolved\").isArray()&&report.get(\"unresolved\").size()<=256,\"Finite unresolved source review required\");\n        for(JsonNode row:report.get(\"unresolved\"))require(!id.equals(text(row,\"incident_id\")),\"Unresolved incident cannot reuse prior source completion\");\n        ObjectNode found=null;\n        for(String field:List.of(\"entries\",\"already_known\")) {\n            require(report.path(field).isArray()&&report.get(field).size()<=256,\"Finite complete source-review classification required\");\n            for(JsonNode row:report.get(field))if(id.equals(text(row,\"incident_id\"))) {\n                require(found==null,\"Source review repeats the classified incident\");found=object(row);\n            }\n        }\n        require(found!=null,\"Source review does not complete the exact incident\");return found;\n    }\n    private static final Set<String> LEGACY_FIELDS=Set.of",
+          "owned_eol_adapted": false
+        }
+      ],
+      "whole_outside_inverse_exact": true,
+      "same_whole_bytes_as_qualified_actual": false,
+      "same_lf_normalized_source_as_qualified_actual": true,
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\formal01\\diff\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.diff",
+        "bytes": 9169,
+        "sha256": "92f43ac97fca3bedb253fd5fe68415657dd23f86757637c58b5b4fcfd2b00695"
+      }
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/OfflineAnalysisWorker.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\formal01\\before\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+        "bytes": 36660,
+        "sha256": "207a4b6b76f43fec752a49851d44d791ddb00ae3f36295eb3efa48c799c07845"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\formal01\\candidate\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+        "bytes": 42701,
+        "sha256": "840dc0d0e8087e89e1c7e8e40864bfc39cb2bda7c2b3c3cd5bb781bddecef4ce"
+      },
+      "qualified_actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\worker-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+        "bytes": 43140,
+        "sha256": "2494cc475e395b812781ec8836ae110d6a96b8d49a54ab3fbbfe3c7bbe349aa5"
+      },
+      "formal_owned_spans": [
+        {
+          "old": "    private static final String REANALYSIS_REASON = \"Actual after index crossed its original before/after source\";",
+          "new": "    private static final String REANALYSIS_REASON = \"Actual after index crossed its original before/after source\";\n    private static final String REANALYSIS_SECOND=\"xar.offline-analysis-source-reanalysis/v2\";\n    private static final String REANALYSIS_SECOND_COMPLETE=\"source-reanalysis-v2-complete\";\n    private static final String REANALYSIS_SECOND_FAILURE=\"source-reanalysis-v2-failure\";\n    private static final String REANALYSIS_SECOND_REASON=\"Immutable scan/batch output differs\";",
+          "owned_eol_adapted": false
+        },
+        {
+          "old": "        ExactRef reanalysisOriginalFailure;",
+          "new": "        ExactRef reanalysisOriginalFailure;\n        ExactRef reanalysisPreviousFailure;",
+          "owned_eol_adapted": false
+        },
+        {
+          "old": "                    ||Files.exists(path(job.work,REANALYSIS_FAILURE),LinkOption.NOFOLLOW_LINKS)))",
+          "new": "                    ||Files.exists(path(job.work,REANALYSIS_FAILURE),LinkOption.NOFOLLOW_LINKS)\n                    ||Files.exists(path(job.work,REANALYSIS_SECOND_COMPLETE),LinkOption.NOFOLLOW_LINKS)\n                    ||Files.exists(path(job.work,REANALYSIS_SECOND_FAILURE),LinkOption.NOFOLLOW_LINKS)))",
+          "owned_eol_adapted": false
+        },
+        {
+          "old": "        if(completed&&rejected)throw new IOException(\"source reanalysis has conflicting terminal originals\");\n        boolean eligible",
+          "new": "        if(completed&&rejected)throw new IOException(\"source reanalysis has conflicting terminal originals\");\n        boolean secondPresent=Files.exists(path(job.work,REANALYSIS_SECOND_COMPLETE),LinkOption.NOFOLLOW_LINKS)\n                ||Files.exists(path(job.work,REANALYSIS_SECOND_FAILURE),LinkOption.NOFOLLOW_LINKS);\n        if(secondPresent&&!rejected)throw new IOException(\"second source reanalysis has no original first-version failure\");\n        boolean eligible",
+          "owned_eol_adapted": true
+        },
+        {
+          "old": "            if(completed||rejected)throw new IOException(\"source reanalysis selected an ineligible original failure\");",
+          "new": "            if(completed||rejected||secondPresent)throw new IOException(\"source reanalysis selected an ineligible original failure\");",
+          "owned_eol_adapted": false
+        },
+        {
+          "old": "            requireTerminal(nested,FAILED,job);\n            job.done.completeExceptionally(new AnalysisIncomplete(StrictJson.text(nested.get(\"reason\")),Optional.of(actual)));",
+          "new": "            requireTerminal(nested,FAILED,job);\n            if(REANALYSIS_SECOND_REASON.equals(StrictJson.text(nested.get(\"reason\")))&&nested.get(\"result_ref\").isNull()) {\n                job.reanalysisPreviousFailure=actual;restoreSecondReanalysis(engine,job);\n            } else {\n                if(secondPresent)throw new IOException(\"second source reanalysis selected an ineligible first-version failure\");\n                job.done.completeExceptionally(new AnalysisIncomplete(StrictJson.text(nested.get(\"reason\")),Optional.of(actual)));\n            }",
+          "owned_eol_adapted": true
+        },
+        {
+          "old": "    private byte[] encodeReanalysis(Job job,ObjectNode nested,String outcome)throws IOException {\n        requireReanalysisOriginal(job);",
+          "new": "    private byte[] encodeReanalysis(Job job,ObjectNode nested,String outcome)throws IOException {\n        if(job.reanalysisPreviousFailure!=null)return encodeSecondReanalysis(job,nested,outcome);\n        requireReanalysisOriginal(job);",
+          "owned_eol_adapted": true
+        },
+        {
+          "old": "    private void analyze(Engine engine,Job job) {",
+          "new": "    private void restoreSecondReanalysis(Engine engine,Job job)throws IOException {\n        requireSecondReanalysisOriginal(job);\n        Path complete=path(job.work,REANALYSIS_SECOND_COMPLETE),failed=path(job.work,REANALYSIS_SECOND_FAILURE);\n        boolean completed=Files.exists(complete,LinkOption.NOFOLLOW_LINKS),rejected=Files.exists(failed,LinkOption.NOFOLLOW_LINKS);\n        if(completed&&rejected)throw new IOException(\"second source reanalysis has conflicting terminal originals\");\n        if(completed) {\n            ExactRef actual=ref(complete);ObjectNode nested=readSecondReanalysis(job,readExact(actual,MAX),\"completed\");\n            var verified=readCompletion(job,encode(nested));requireSecondReanalysisOriginal(job);job.done.complete(verified);\n        } else if(rejected) {\n            ExactRef actual=ref(failed);ObjectNode nested=readSecondReanalysis(job,readExact(actual,MAX),\"failed\");\n            job.done.completeExceptionally(new AnalysisIncomplete(StrictJson.text(nested.get(\"reason\")),Optional.of(actual)));\n        } else submitOriginalAnalysis(engine,job);\n    }\n    private ObjectNode requireSecondReanalysisOriginal(Job job)throws IOException {\n        requireReanalysisOriginal(job);ExactRef previous=Objects.requireNonNull(job.reanalysisPreviousFailure);\n        if(!Path.of(previous.path()).equals(path(job.work,REANALYSIS_FAILURE)))throw new IOException(\"second source reanalysis crossed its first-version failed role\");\n        ObjectNode prior=OfflineEventAnalysisWire.parseMetadataObject(readExact(previous,MAX));\n        ObjectNode nested=readReanalysis(job,encode(prior),\"failed\");\n        if(!REANALYSIS_SECOND_REASON.equals(StrictJson.text(nested.get(\"reason\")))||!nested.get(\"result_ref\").isNull())\n            throw new IOException(\"second source reanalysis changed its exact first-version failed profile\");\n        return prior;\n    }\n    private byte[] encodeSecondReanalysis(Job job,ObjectNode nested,String outcome)throws IOException {\n        requireSecondReanalysisOriginal(job);\n        ObjectNode row=terminal(REANALYSIS_SECOND,job);row.put(\"outcome\",outcome);\n        row.set(\"original_failure_ref\",job.reanalysisOriginalFailure.toJson());\n        row.set(\"previous_reanalysis_failure_ref\",job.reanalysisPreviousFailure.toJson());row.set(\"terminal\",nested);\n        byte[] actual=encode(row);if(\"completed\".equals(outcome))readCompletion(job,encode(nested));\n        readSecondReanalysis(job,actual,outcome);return actual;\n    }\n    private ObjectNode readSecondReanalysis(Job job,byte[] raw,String outcome)throws IOException {\n        ObjectNode previous=requireSecondReanalysisOriginal(job);\n        ObjectNode row=StrictJson.object(OfflineEventAnalysisWire.parseMetadataObject(raw),\n                Set.of(\"schema\",\"machine_id\",\"batch_id\",\"request_ref\",\"observed_at_utc\",\"outcome\",\"original_failure_ref\",\"previous_reanalysis_failure_ref\",\"terminal\"));\n        requireTerminal(row,REANALYSIS_SECOND,job);\n        if(!outcome.equals(StrictJson.text(row.get(\"outcome\")))\n                ||!job.reanalysisOriginalFailure.equals(ExactRef.fromJson(row.get(\"original_failure_ref\")))\n                ||!job.reanalysisPreviousFailure.equals(ExactRef.fromJson(row.get(\"previous_reanalysis_failure_ref\"))))\n            throw new IOException(\"second source reanalysis crossed its complete original failure chain\");\n        ObjectNode nested=OfflineEventAnalysisWire.parseMetadataObject(encode(row.get(\"terminal\")));\n        requireTerminal(nested,\"completed\".equals(outcome)?DONE:FAILED,job);\n        Instant previousAt=Instant.parse(StrictJson.text(previous.get(\"observed_at_utc\")));\n        Instant nestedAt=Instant.parse(StrictJson.text(nested.get(\"observed_at_utc\")));\n        if(nestedAt.isBefore(previousAt)||Instant.parse(StrictJson.text(row.get(\"observed_at_utc\"))).isBefore(nestedAt))\n            throw new IOException(\"second source reanalysis predates its previous actual failure or new result\");\n        if(\"failed\".equals(outcome)) {\n            StrictJson.object(nested,Set.of(\"schema\",\"machine_id\",\"batch_id\",\"request_ref\",\"observed_at_utc\",\"reason\",\"result_ref\"));\n            StrictJson.text(nested.get(\"reason\"));ExactRef.optionalFromJson(nested.get(\"result_ref\"));\n        }\n        return nested;\n    }\n    private static String reanalysisCompletionRole(Job job){return job.reanalysisPreviousFailure==null?REANALYSIS_COMPLETE:REANALYSIS_SECOND_COMPLETE;}\n    private static String reanalysisFailureRole(Job job){return job.reanalysisPreviousFailure==null?REANALYSIS_FAILURE:REANALYSIS_SECOND_FAILURE;}\n    private void analyze(Engine engine,Job job) {",
+          "owned_eol_adapted": false
+        },
+        {
+          "old": "            else publish(path(job.work,REANALYSIS_COMPLETE),encodeReanalysis(job,",
+          "new": "            else publish(path(job.work,reanalysisCompletionRole(job)),encodeReanalysis(job,",
+          "owned_eol_adapted": false
+        },
+        {
+          "old": "                        :publish(path(job.work,REANALYSIS_FAILURE),encodeReanalysis(job,record,\"failed\"));",
+          "new": "                        :publish(path(job.work,reanalysisFailureRole(job)),encodeReanalysis(job,record,\"failed\"));",
+          "owned_eol_adapted": false
+        }
+      ],
+      "whole_outside_inverse_exact": true,
+      "same_whole_bytes_as_qualified_actual": false,
+      "same_lf_normalized_source_as_qualified_actual": true,
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\formal01\\diff\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.diff",
+        "bytes": 11473,
+        "sha256": "68e41324d05ee765fdf5232fe278d43125d31bf4e4e288c03d08acb96d80e523"
+      }
+    }
+  ],
+  "actual_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\SOURCE-READY-COHERENT02.json",
+    "bytes": 25933,
+    "sha256": "61760bfdd8b7b51ac960d96ba5df9ef42b873b50fce991385007cd63432bb8f1"
+  },
+  "qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\native-first02\\QUALIFIED-COHERENT02.json",
+    "bytes": 343989,
+    "sha256": "cf781987f508bbe6fefc8d6ffbc0b607e4e85bcc45ce684ef31f5ee9e349aae3"
+  },
+  "source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\offline-immutable-review-independent-review59\\FINAL-COHERENT02-SOURCE-REVIEW04.json",
+    "bytes": 12377,
+    "sha256": "baa9b7c4e28b35154be05dcab1a0b0b1e495a506f09129c48ecb8f4de62be89d"
+  },
+  "publication_caller_proof": {
+    "path": "D:\\ck3-state\\resume91-root\\offline-immutable-review-independent-review59\\EXISTING-PUBLICATION-CALLER03.json",
+    "bytes": 3435,
+    "sha256": "044a9ac12836f73b044dc3101489f5a995ec42a4f616ebc596e1e55005f85b4a"
+  },
+  "models": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\MODEL-REVIEW97-01.json",
+      "bytes": 1181,
+      "sha256": "f078952008952cab840d2d96950aa1e76d5fa7d16978d2a52cee7a6c6fd78291"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-idempotent-review-reanalysis59\\MODEL-REVIEW98-01.json",
+      "bytes": 1802,
+      "sha256": "cd6e7e7fa201c7de9c7e63d2cfb2da7aa846e2b7973875dc06e1067648b9c73e"
+    }
+  ],
+  "runtime": "Three actual v2 completion envelopes/results exist,base/v1failure andfirstreview unchanged. Wholequeue clean blocked by a separately identified historicaldirectbase failureoutsideoriginal8;P060 handlesit. No P052adoption/performance/fullqueue success. Wholeformalnotcompiled."
+}

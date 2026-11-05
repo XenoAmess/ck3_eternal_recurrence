@@ -48,6 +48,10 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
     private static final String REANALYSIS_COMPLETE = "source-reanalysis-v1-complete";
     private static final String REANALYSIS_FAILURE = "source-reanalysis-v1-failure";
     private static final String REANALYSIS_REASON = "Actual after index crossed its original before/after source";
+    private static final String REANALYSIS_SECOND="xar.offline-analysis-source-reanalysis/v2";
+    private static final String REANALYSIS_SECOND_COMPLETE="source-reanalysis-v2-complete";
+    private static final String REANALYSIS_SECOND_FAILURE="source-reanalysis-v2-failure";
+    private static final String REANALYSIS_SECOND_REASON="Immutable scan/batch output differs";
     public record Settings(Path workRoot, int queueCapacity, int retainedWorkMaximum) {
         public Settings {
             workRoot = fixed(workRoot);
@@ -84,6 +88,7 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
     private static final class Job {
         final Work work; final ExactRef durable; final CompletableFuture<SessionPorts.AnalysisCompletion> done=new CompletableFuture<>();
         ExactRef reanalysisOriginalFailure;
+        ExactRef reanalysisPreviousFailure;
         Job(Work work,ExactRef durable){this.work=work;this.durable=durable;}
         SessionPorts.AnalysisTicket ticket(){return new SessionPorts.AnalysisTicket(work.request().batchId(),done.minimalCompletionStage());}
     }
@@ -202,7 +207,9 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
             throw new IOException("offline work has conflicting terminal originals");
         if(!Files.exists(failed,LinkOption.NOFOLLOW_LINKS)
                 &&(Files.exists(path(job.work,REANALYSIS_COMPLETE),LinkOption.NOFOLLOW_LINKS)
-                    ||Files.exists(path(job.work,REANALYSIS_FAILURE),LinkOption.NOFOLLOW_LINKS)))
+                    ||Files.exists(path(job.work,REANALYSIS_FAILURE),LinkOption.NOFOLLOW_LINKS)
+                    ||Files.exists(path(job.work,REANALYSIS_SECOND_COMPLETE),LinkOption.NOFOLLOW_LINKS)
+                    ||Files.exists(path(job.work,REANALYSIS_SECOND_FAILURE),LinkOption.NOFOLLOW_LINKS)))
             throw new IOException("source reanalysis has no original failed terminal");
         if(Files.exists(done,LinkOption.NOFOLLOW_LINKS)) {
             try { job.done.complete(readCompletion(job,readPath(done,MAX))); }
@@ -233,9 +240,12 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         Path complete=path(job.work,REANALYSIS_COMPLETE),failed=path(job.work,REANALYSIS_FAILURE);
         boolean completed=Files.exists(complete,LinkOption.NOFOLLOW_LINKS),rejected=Files.exists(failed,LinkOption.NOFOLLOW_LINKS);
         if(completed&&rejected)throw new IOException("source reanalysis has conflicting terminal originals");
+        boolean secondPresent=Files.exists(path(job.work,REANALYSIS_SECOND_COMPLETE),LinkOption.NOFOLLOW_LINKS)
+                ||Files.exists(path(job.work,REANALYSIS_SECOND_FAILURE),LinkOption.NOFOLLOW_LINKS);
+        if(secondPresent&&!rejected)throw new IOException("second source reanalysis has no original first-version failure");
         boolean eligible=REANALYSIS_REASON.equals(StrictJson.text(failure.get("reason")))&&failure.get("result_ref").isNull();
         if(!eligible) {
-            if(completed||rejected)throw new IOException("source reanalysis selected an ineligible original failure");
+            if(completed||rejected||secondPresent)throw new IOException("source reanalysis selected an ineligible original failure");
             return false;
         }
         job.reanalysisOriginalFailure=originalFailure;
@@ -250,7 +260,12 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
             ExactRef actual=ref(failed);
             ObjectNode nested=readReanalysis(job,readExact(actual,MAX),"failed");
             requireTerminal(nested,FAILED,job);
-            job.done.completeExceptionally(new AnalysisIncomplete(StrictJson.text(nested.get("reason")),Optional.of(actual)));
+            if(REANALYSIS_SECOND_REASON.equals(StrictJson.text(nested.get("reason")))&&nested.get("result_ref").isNull()) {
+                job.reanalysisPreviousFailure=actual;restoreSecondReanalysis(engine,job);
+            } else {
+                if(secondPresent)throw new IOException("second source reanalysis selected an ineligible first-version failure");
+                job.done.completeExceptionally(new AnalysisIncomplete(StrictJson.text(nested.get("reason")),Optional.of(actual)));
+            }
         } else submitOriginalAnalysis(engine,job);
         return true;
     }
@@ -266,6 +281,7 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         return failure;
     }
     private byte[] encodeReanalysis(Job job,ObjectNode nested,String outcome)throws IOException {
+        if(job.reanalysisPreviousFailure!=null)return encodeSecondReanalysis(job,nested,outcome);
         requireReanalysisOriginal(job);
         ObjectNode row=terminal(REANALYSIS,job);row.put("outcome",outcome);
         row.set("original_failure_ref",job.reanalysisOriginalFailure.toJson());row.set("terminal",nested);
@@ -293,6 +309,59 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         }
         return nested;
     }
+    private void restoreSecondReanalysis(Engine engine,Job job)throws IOException {
+        requireSecondReanalysisOriginal(job);
+        Path complete=path(job.work,REANALYSIS_SECOND_COMPLETE),failed=path(job.work,REANALYSIS_SECOND_FAILURE);
+        boolean completed=Files.exists(complete,LinkOption.NOFOLLOW_LINKS),rejected=Files.exists(failed,LinkOption.NOFOLLOW_LINKS);
+        if(completed&&rejected)throw new IOException("second source reanalysis has conflicting terminal originals");
+        if(completed) {
+            ExactRef actual=ref(complete);ObjectNode nested=readSecondReanalysis(job,readExact(actual,MAX),"completed");
+            var verified=readCompletion(job,encode(nested));requireSecondReanalysisOriginal(job);job.done.complete(verified);
+        } else if(rejected) {
+            ExactRef actual=ref(failed);ObjectNode nested=readSecondReanalysis(job,readExact(actual,MAX),"failed");
+            job.done.completeExceptionally(new AnalysisIncomplete(StrictJson.text(nested.get("reason")),Optional.of(actual)));
+        } else submitOriginalAnalysis(engine,job);
+    }
+    private ObjectNode requireSecondReanalysisOriginal(Job job)throws IOException {
+        requireReanalysisOriginal(job);ExactRef previous=Objects.requireNonNull(job.reanalysisPreviousFailure);
+        if(!Path.of(previous.path()).equals(path(job.work,REANALYSIS_FAILURE)))throw new IOException("second source reanalysis crossed its first-version failed role");
+        ObjectNode prior=OfflineEventAnalysisWire.parseMetadataObject(readExact(previous,MAX));
+        ObjectNode nested=readReanalysis(job,encode(prior),"failed");
+        if(!REANALYSIS_SECOND_REASON.equals(StrictJson.text(nested.get("reason")))||!nested.get("result_ref").isNull())
+            throw new IOException("second source reanalysis changed its exact first-version failed profile");
+        return prior;
+    }
+    private byte[] encodeSecondReanalysis(Job job,ObjectNode nested,String outcome)throws IOException {
+        requireSecondReanalysisOriginal(job);
+        ObjectNode row=terminal(REANALYSIS_SECOND,job);row.put("outcome",outcome);
+        row.set("original_failure_ref",job.reanalysisOriginalFailure.toJson());
+        row.set("previous_reanalysis_failure_ref",job.reanalysisPreviousFailure.toJson());row.set("terminal",nested);
+        byte[] actual=encode(row);if("completed".equals(outcome))readCompletion(job,encode(nested));
+        readSecondReanalysis(job,actual,outcome);return actual;
+    }
+    private ObjectNode readSecondReanalysis(Job job,byte[] raw,String outcome)throws IOException {
+        ObjectNode previous=requireSecondReanalysisOriginal(job);
+        ObjectNode row=StrictJson.object(OfflineEventAnalysisWire.parseMetadataObject(raw),
+                Set.of("schema","machine_id","batch_id","request_ref","observed_at_utc","outcome","original_failure_ref","previous_reanalysis_failure_ref","terminal"));
+        requireTerminal(row,REANALYSIS_SECOND,job);
+        if(!outcome.equals(StrictJson.text(row.get("outcome")))
+                ||!job.reanalysisOriginalFailure.equals(ExactRef.fromJson(row.get("original_failure_ref")))
+                ||!job.reanalysisPreviousFailure.equals(ExactRef.fromJson(row.get("previous_reanalysis_failure_ref"))))
+            throw new IOException("second source reanalysis crossed its complete original failure chain");
+        ObjectNode nested=OfflineEventAnalysisWire.parseMetadataObject(encode(row.get("terminal")));
+        requireTerminal(nested,"completed".equals(outcome)?DONE:FAILED,job);
+        Instant previousAt=Instant.parse(StrictJson.text(previous.get("observed_at_utc")));
+        Instant nestedAt=Instant.parse(StrictJson.text(nested.get("observed_at_utc")));
+        if(nestedAt.isBefore(previousAt)||Instant.parse(StrictJson.text(row.get("observed_at_utc"))).isBefore(nestedAt))
+            throw new IOException("second source reanalysis predates its previous actual failure or new result");
+        if("failed".equals(outcome)) {
+            StrictJson.object(nested,Set.of("schema","machine_id","batch_id","request_ref","observed_at_utc","reason","result_ref"));
+            StrictJson.text(nested.get("reason"));ExactRef.optionalFromJson(nested.get("result_ref"));
+        }
+        return nested;
+    }
+    private static String reanalysisCompletionRole(Job job){return job.reanalysisPreviousFailure==null?REANALYSIS_COMPLETE:REANALYSIS_SECOND_COMPLETE;}
+    private static String reanalysisFailureRole(Job job){return job.reanalysisPreviousFailure==null?REANALYSIS_FAILURE:REANALYSIS_SECOND_FAILURE;}
     private void analyze(Engine engine,Job job) {
         ExactRef result=null;
         try {
@@ -312,7 +381,7 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
                     publish(path(job.work,"knowledge-"+actualPublication.sha256()),readExact(actualPublication,1_048_576))));
             var completion=new SessionPorts.AnalysisCompletion(job.work.request().batchId(),reviews,snapshot);
             if(job.reanalysisOriginalFailure==null)publish(path(job.work,"complete"),encodeCompletion(job,completion,result));
-            else publish(path(job.work,REANALYSIS_COMPLETE),encodeReanalysis(job,
+            else publish(path(job.work,reanalysisCompletionRole(job)),encodeReanalysis(job,
                     OfflineEventAnalysisWire.parseMetadataObject(encodeCompletion(job,completion,result)),"completed"));
             job.done.complete(completion);
         } catch(IOException|RuntimeException failure) {
@@ -322,7 +391,7 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
                 record.put("reason",reason.substring(0,Math.min(1024,reason.length())));
                 if(result==null)record.putNull("result_ref");else record.set("result_ref",result.toJson());
                 ExactRef evidence=job.reanalysisOriginalFailure==null?publish(path(job.work,"failure"),encode(record))
-                        :publish(path(job.work,REANALYSIS_FAILURE),encodeReanalysis(job,record,"failed"));
+                        :publish(path(job.work,reanalysisFailureRole(job)),encodeReanalysis(job,record,"failed"));
                 job.done.completeExceptionally(new AnalysisIncomplete(reason,Optional.of(evidence)));
             } catch(IOException|RuntimeException persistenceFailure) {
                 failure.addSuppressed(persistenceFailure);job.done.completeExceptionally(failure);

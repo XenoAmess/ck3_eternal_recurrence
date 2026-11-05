@@ -673,10 +673,89 @@ public final class EpisodeIncidentJournal {
                 beforeIndexRead(object(read(indexRef)));
                 ObjectNode row = binding(scanned); row.put("schema", "xar.episode-incident-reviewed/v1").put("incident_id", id);
                 row.set("before_ref", before.toJson()); row.set("report_ref", actualReport.toJson());
-                writeSame(configured.incidentRoot().resolve(id + ".review-index.json"), encode(row));
+                Path reviewedPath=configured.incidentRoot().resolve(id + ".review-index.json");
+                byte[] proposed=encode(row);
+                if(Files.exists(reviewedPath,LinkOption.NOFOLLOW_LINKS)) {
+                    ExactRef retained=measure(reviewedPath);
+                    if(!java.util.Arrays.equals(read(retained),proposed))
+                        requirePriorReview(retained,before,id,scanned,object(item),report,actualReport);
+                } else writeSame(reviewedPath,proposed);
             }
             return null;
         });
+    }
+    /** An immutable first source-review is retained; later complete reports must prove their own original batch. */
+    private void requirePriorReview(ExactRef retained,ExactRef before,String id,Binding current,ObjectNode currentItem,
+            ObjectNode currentReport,ExactRef currentReportRef)throws IOException {
+        ObjectNode index=StrictJson.object(object(read(retained)),Set.of("schema","origin","source","session_id","incident_id","before_ref","report_ref"));
+        require("xar.episode-incident-reviewed/v1".equals(text(index,"schema"))&&id.equals(text(index,"incident_id"))
+                &&before.equals(ExactRef.fromJson(index.get("before_ref"))),"Prior source-review index changed its exact incident/before");
+        Binding prior=decodeBinding(index);episode.requireEpisode(prior);
+        require(prior.source().equals(current.source())&&prior.sessionId().equals(current.sessionId()),"Prior source-review crossed its source or session");
+        ExactRef reportRef=ExactRef.fromJson(index.get("report_ref"));ObjectNode report=object(read(reportRef));
+        ExactRef manifestRef=ExactRef.fromJson(report.get("manifest"));
+        require(Path.of(manifestRef.path()).equals(configured.scanRoot().resolve("incidents-"+manifestRef.sha256()+".batch.json")),
+                "Prior review manifest lost its fixed original batch role");
+        ObjectNode manifest=object(read(manifestRef));OfflineBatchBinding.ObservedScan observed=requireBatchManifest(manifest);
+        ObjectNode internal=observed.observation().toJson();((ObjectNode)internal.get("frame")).put("played_character_id",observed.observation().frame().playedCharacterId().decimal());
+        Binding actual=new Binding(ProposalLifecycleCodec.decodeObservation(internal),source(observed.source().toJson()),observed.sessionId());
+        require(actual.equals(prior),"Prior source-review index crossed its own full manifest binding");
+        try{OfflineBatchBinding.requireReport(report,observed,manifestRef);}
+        catch(IllegalArgumentException invalid){throw new IOException("Prior source-review report crossed its original manifest",invalid);}
+        ExactRef scanRef=observed.indexRef();
+        require(Path.of(scanRef.path()).equals(configured.scanRoot().resolve(scanRef.sha256()+".scan.json")),"Prior source-review scan lost its fixed original role");
+        ObjectNode scan=object(read(scanRef));String schema=text(scan,"schema");boolean progress="xar.episode-incident-scan/v3".equals(schema);
+        require((SCAN_SCHEMA.equals(schema)||progress)&&decodeBinding(scan).equals(prior)
+                &&episodeRef.equals(ExactRef.fromJson(scan.get("episode_ref")))&&scan.path("original_refs").isArray()
+                &&scan.get("original_refs").size()<=1026,"Prior source-review lost its exact original scan/episode");
+        Set<Path> paths=new java.util.HashSet<>();boolean containsBefore=false,containsEpisode=false;long bytes=0;
+        ExactRef progressRef=progress?ExactRef.fromJson(scan.get("scan_observation_basis")):null;boolean containsProgress=false;
+        for(JsonNode value:scan.get("original_refs")) {
+            ExactRef ref=ExactRef.fromJson(value);require(paths.add(Path.of(ref.path())),"Prior review scan repeats an original path");
+            verifyExternal(ref);bytes=Math.addExact(bytes,ref.bytes());require(bytes<=MAX_SCAN_BYTES,"Prior review scan exceeds its bound");
+            containsBefore|=ref.equals(before);containsEpisode|=ref.equals(episodeRef);containsProgress|=ref.equals(progressRef);
+        }
+        require(containsBefore&&containsEpisode,"Prior review scan lacks its exact before/episode originals");
+        if(progress){require(containsProgress,"Prior review progress is absent from its original scan");requireProgress(prior,progressRef);}
+        require(manifest.path("new_incidents").isArray()&&manifest.get("new_incidents").size()<=256,"Finite prior reviewed incidents required");
+        int matched=0;
+        for(JsonNode value:manifest.get("new_incidents")) {
+            ObjectNode item=StrictJson.object(value,Set.of("incident_id","kind","before","before_sha256","after","after_sha256"),
+                    Set.of("event_definition_key","current_event_instance_id","interaction_definition_key"));
+            if(!id.equals(text(item,"incident_id")))continue;
+            matched++;require(before.path().equals(text(item,"before"))&&before.sha256().equals(text(item,"before_sha256"))
+                    &&item.get("kind").equals(currentItem.get("kind")),"Prior source-review changed its captured incident");
+            // An earlier source-only review may legitimately precede the later independent after.
+        }
+        require(matched==1,"Prior review manifest must contain the exact incident once");
+        ObjectNode oldEntry=completedSourceReviewEntry(report,id),newEntry=completedSourceReviewEntry(currentReport,id);
+        for(String field:List.of("event_definition_key","fingerprint"))require(text(oldEntry,field).equals(text(newEntry,field)),"Prior/current review changed its source identity");
+        require(text(oldEntry,"fingerprint").matches("[0-9a-f]{64}"),"Exact source-review fingerprint required");
+        for(String field:List.of("published","canonical_source_facts")) {
+            ObjectNode oldRef=StrictJson.object(oldEntry.get(field),Set.of("path","sha256"),Set.of("bytes"));
+            ObjectNode newRef=StrictJson.object(newEntry.get(field),Set.of("path","sha256"),Set.of("bytes"));
+            require(text(oldRef,"path").equals(text(newRef,"path"))&&text(oldRef,"sha256").equals(text(newRef,"sha256")),"Prior/current review changed its canonical source proof");
+            ExactRef exact=measure(Path.of(text(oldRef,"path")));require(exact.sha256().equals(text(oldRef,"sha256"))
+                    &&(!oldRef.has("bytes")||StrictJson.integer(oldRef.get("bytes"),0,MAX_METADATA)==exact.bytes())
+                    &&(!newRef.has("bytes")||StrictJson.integer(newRef.get("bytes"),0,MAX_METADATA)==exact.bytes())
+                    &&exact.bytes()<=MAX_METADATA,"Prior/current source proof lost its exact original bytes");read(exact);
+        }
+        read(before);read(episodeRef);read(scanRef);read(manifestRef);read(reportRef);read(currentReportRef);read(retained);
+    }
+    private static ObjectNode completedSourceReviewEntry(ObjectNode report,String id)throws IOException {
+        require("xar.vanilla-event-offline-source-batch/v3".equals(text(report,"schema"))
+                &&report.path("material_effects_verified").isBoolean()&&!report.path("material_effects_verified").booleanValue()
+                &&StrictJson.integer(report.get("Game_MCP_OBS_calls"),0,0)==0,"Source-review completion grants no material/game effect");
+        require(report.path("unresolved").isArray()&&report.get("unresolved").size()<=256,"Finite unresolved source review required");
+        for(JsonNode row:report.get("unresolved"))require(!id.equals(text(row,"incident_id")),"Unresolved incident cannot reuse prior source completion");
+        ObjectNode found=null;
+        for(String field:List.of("entries","already_known")) {
+            require(report.path(field).isArray()&&report.get(field).size()<=256,"Finite complete source-review classification required");
+            for(JsonNode row:report.get(field))if(id.equals(text(row,"incident_id"))) {
+                require(found==null,"Source review repeats the classified incident");found=object(row);
+            }
+        }
+        require(found!=null,"Source review does not complete the exact incident");return found;
     }
     private static final Set<String> LEGACY_FIELDS=Set.of("schema","episode_ref","scan_ref","original_index","original_before",
             "canonical_receipt_ref","canonical_record_ref","canonical_dispatch_ref","canonical_command_base64","canonical_command_sha256",
