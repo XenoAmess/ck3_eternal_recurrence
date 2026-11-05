@@ -70,5 +70,15 @@
   "authority": "Exact installedSway source/replay and fullcanonical historical no-write proof. Life branch unchanged; no new row/report/frame/cycle/Native action.",
   "new_or_old_Test_RUN": 0,
   "whole_formal_software_cohort": false,
-  "runtime44": "Not adopted/GET at this source-publication cut; actual post539 consumer/ordinary recovery remain separate."
+  "runtime44": "Not adopted/GET at this source-publication cut; actual post539 consumer/ordinary recovery remain separate.",
+  "subsequent_actual44_loop": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\ACTUAL44-LOOP-ACCEPTANCE01.json",
+    "bytes": 4243,
+    "sha256": "d15a0cb417d534843e4750a4483356e8bb855599fbdc0a4f8b1b9e948f08e3f6"
+  },
+  "subsequent_new545_failure": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-optional-stage-failure45\\FAILURE45.json",
+    "bytes": 21810,
+    "sha256": "162f1e03ae786a2a02cf4b1511093790817ea3a5a26c30461bbb76dc3bf1e1c1"
+  }
 }

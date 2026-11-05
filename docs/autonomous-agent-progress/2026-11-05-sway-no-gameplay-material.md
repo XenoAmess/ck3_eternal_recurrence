@@ -11,3 +11,8 @@ The corrected one-TU compile passed in8.3601222 seconds with ten family classes.
 Model70 hit length4000 in29.7249118 seconds, TTFT6.8572418, reported53337+4000 tokens. Its entire CONTENT/SSE stayed unread and unhashed, with zero adoption or retry. The task's incorrect declared return-type description is recorded as an owner input error rather than a model violation. The raw compiler failure, original source review and minimal fix remain preserved.
 
 Actual recovery44, full subsequent bootstrap qualifications, ordinary LOOP and new SAVE days remain separate. The source/type result does not manufacture a private terminal or issue replay permission. See [source and evidence pins](../maintenance/2026-11-05-sway-no-gameplay-material-sources.json).
+
+
+## Subsequent actual acceptance
+
+Recovery44 genuinely passed the mandatory539 material consumer and complete bootstrap, then entered ordinary LOOP at10:33:17.9130944Z. Its single timed-out GET was not retried; loader22 START arrived naturally. Frozen540/541 retain C23/pendingnull/history527, with no new SAVE credit. A different new parent545 later failed its staged-frame check, ending the healthy window. [Acceptance and next repair](2026-11-05-sway-held-planning.md).

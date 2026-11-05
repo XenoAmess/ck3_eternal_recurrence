@@ -91,7 +91,8 @@ public final class SwayRuntimeInstaller {
         }
     }
     private final RootRuntimeContext context; private final Prepared prepared; private final Supplier<OrdinaryPlanner> planner;
-    private SwayOrdinaryExecutor executor; private RootDomainInstallation installation;
+    private SwayOrdinaryExecutor executor;
+    private volatile PlanningRequest originalPlanning; private RootDomainInstallation installation;
     private SwayRootReads actualReads; private SwaySelectedFinish selectedFinish;private SwaySelectedJournal selectedJournal;private SwaySelectedObservation selectedObservation;
     private SwaySharedRoot sharedRoot;private SwaySelectedStart selectedStart;private SwayRootActions actualActions;
     public SwayRuntimeInstaller(RootRuntimeContext context, Prepared prepared, Supplier<OrdinaryPlanner> actualFullPlanner) {
@@ -161,11 +162,11 @@ public final class SwayRuntimeInstaller {
         selectedObservation=new SwaySelectedObservation(domain,context.archive(),context.reads(),nativeReads);
         SwaySessionInputs inputs = new SwaySessionInputs(domain, this::session);
         executor = new SwayOrdinaryExecutor(domain, context.archive(), context.reads(), sharedRoot, registered, nativeActions,
-                context::bindings, this::session, this::captureFresh, this::independentFinal, context::requireRestoration, planner);
+                context::bindings, this::session, this::captureCurrent, this::captureFresh, this::independentFinal, context::requireRestoration, planner);
         var composite = new SwayOrdinaryComposite(executor, domain, this::session);
         var parent = new RootExecutableBindings.CompositeBinding(composite, ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP, Optional.empty(), prepared.sources.composite(), prepared.sources.composite());
         OrdinarySwayPolicy policy = OrdinarySwayPolicyFactory.create(prepared.sources.policy(), context.reads(), sharedRoot, inputs,
-                request -> prepared.configuration.capabilities(), SwayOrdinaryComposite::expected);
+                request -> { originalPlanning = Objects.requireNonNull(request); return prepared.configuration.capabilities(); }, SwayOrdinaryComposite::expected);
         RootDomainIntentPreparation.Binding pending = new RootDomainIntentPreparation.Binding("sway-original-native-intent/v2", prepared.sources.pendingProducer(), command -> {
             return supportsPendingOperation(command.operation(), nativeActions.startFamily(), key -> context.bindings().actualFamily(key));
         }, lifecycle.pendingProducer());
@@ -398,6 +399,25 @@ public final class SwayRuntimeInstaller {
     }
     private ContinuityStorePort.Session session() { try { context.requireCurrent(context.clock().instant().plusSeconds(30)); return context.borrowedSession(); } catch (IOException failure) { throw new UncheckedIOException(failure); } }
     private PlanningRequest fresh(ActionCommand parent) { return captureFresh(parent).request(); }
+    /** Retained planning DATA becomes usable only under the actual current planning issuer. */
+    private SwayOrdinaryExecutor.Fresh captureCurrent(ActionCommand parent) {
+        try {
+            context.requireCurrent(parent.deadline());
+            PlanningRequest original = Objects.requireNonNull(originalPlanning, "actual original Sway planning request unavailable");
+            StrictJson.require(original.before().equals(parent.before()) && original.source().equals(parent.source())
+                    && original.sessionId().equals(parent.sessionId()), "retained Sway planning request differs from original parent");
+            var same = context.borrowedSession();
+            return context.currentPlanning(same, original, parent, parent.deadline(), (request, lease) -> {
+                var actual = lease.frame(); var basis = NativeEffectEvidence.basis(actual);
+                var rebuilt = context.frameLoader().load(basis, context.archive().withSession(same));
+                StrictJson.require(rebuilt.identity().equals(request.before()) && rebuilt.identity().equals(actual.identity())
+                        && rebuilt.source().equals(request.source()) && rebuilt.source().equals(actual.source())
+                        && rebuilt.sessionId().equals(request.sessionId()) && rebuilt.sessionId().equals(actual.sessionId())
+                        && rebuilt.observedAt().equals(actual.observedAt()), "held Sway planning native/Driver rebuild differs from its actual lease");
+                return new SwayOrdinaryExecutor.Fresh(request, basis);
+            });
+        } catch (IOException failure) { throw new OrdinarySwayService.Unavailable(failure.getMessage()); }
+    }
     private SwayOrdinaryExecutor.Fresh captureFresh(ActionCommand parent) {
         try {
             context.requireCurrent(parent.deadline()); var expected = new SessionPorts.SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId());

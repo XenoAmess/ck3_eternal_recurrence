@@ -1,0 +1,109 @@
+{
+  "schema": "xar.java-owner.sway-held-planning-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\SOURCE-READY-OWNER02.json",
+    "bytes": 4603,
+    "sha256": "ec564d5ed4d211b040a069a41f04739f0a50c28ca49325e2cee2806944cad19b"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\OWNER-SPANS02.json",
+    "bytes": 6942,
+    "sha256": "d9ec668fe1fd58b8e1d11788d02d5db5d7cb2eb347541ad13072aa6b6b0757b5"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\FORMAL-SOURCE-READY02.json",
+    "bytes": 8257,
+    "sha256": "ac7e7e668a77a7f72d83c860b44b5fccb1cad828f2181137d3b9783a3550e8db"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayOrdinaryExecutor.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\formal-before02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryExecutor.java",
+        "bytes": 31848,
+        "sha256": "98e3f23c54bb61588123a89f93abb00829a4647df2104162da526bffd9124e50"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\formal-candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryExecutor.java",
+        "bytes": 32917,
+        "sha256": "6f120b3610e84404282b827c79bd699863b56c5c1e8275462f2558f854c62fbf"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryExecutor.java",
+        "bytes": 32917,
+        "sha256": "6f120b3610e84404282b827c79bd699863b56c5c1e8275462f2558f854c62fbf"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/sway/SwayRuntimeInstaller.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\formal-before02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 43522,
+        "sha256": "7f394d6226ede64bbee6016f43997c3afe88f3858db581fa04bbd5e2ccf83295"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\formal-candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 45383,
+        "sha256": "d059896b7cd347014a95e3c3218bb3f61af00011f97bd798d4d822b1a76e2da8"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 45188,
+        "sha256": "b09ab24064eda49f4a1055f05777068b766fad7047e86aacf80ce20fca8b9a6f"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "corrected_type_actual": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\native-first02\\actual\\prod\\ACTUAL.json",
+    "bytes": 1723,
+    "sha256": "46d2dca0b49f0ef50e6dbb943e5bdc5e139ffc2ddb24722d6a0cde4fa4a4ea70"
+  },
+  "corrected_type_close": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\native-first02\\actual\\prod\\MANAGED-CLOSE.json",
+    "bytes": 237,
+    "sha256": "ee6fdd87ba8c256b6897a381d443af65029593538ed67eb244d6777e5ca15085"
+  },
+  "first_red_stderr": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\native-first01\\actual\\prod\\stderr.bin",
+    "bytes": 458,
+    "sha256": "d6e4e1baac336f9a1c03d576b2f9e96e2784f198e40383b2a9ff446291ed8f52"
+  },
+  "checked_exception_fix": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\CHECKED-EXCEPTION-FIX02.json",
+    "bytes": 1248,
+    "sha256": "61164b8f73c8ce9d825ff8dcde8b59abb975d745997a03701f5c322ba18aab1c"
+  },
+  "model71_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\MODEL-REVIEW01.json",
+    "bytes": 2307,
+    "sha256": "a8f4a51778395ef3413ec70ccf73a68be07f95256ed016731da3b3b346437935"
+  },
+  "actual44_loop_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\ACTUAL44-LOOP-ACCEPTANCE01.json",
+    "bytes": 4243,
+    "sha256": "d15a0cb417d534843e4750a4483356e8bb855599fbdc0a4f8b1b9e948f08e3f6"
+  },
+  "new_failure45": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-optional-stage-failure45\\FAILURE45.json",
+    "bytes": 21810,
+    "sha256": "162f1e03ae786a2a02cf4b1511093790817ea3a5a26c30461bbb76dc3bf1e1c1"
+  },
+  "whole_formal_software_cohort": false,
+  "new_or_old_Test_RUN": 0,
+  "runtime45": "Source/type result only. Original545 coldNoGameplay proof independent; no replay or refreshed deadline. Future anchored execution/private currentPlanning/LOOP/SAVE require actual Runtime evidence.",
+  "qualified_type_cohort": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\QUALIFIED-COHORT02.json",
+    "bytes": 19808,
+    "sha256": "21eac0f395b8027807afb8b6ab8a9d21b9e87a90b46094af9b6960ac3a900d7c"
+  },
+  "actual_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\native-first02\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 364378,
+    "sha256": "8300941984a128b60c0c27aeb22b056301d9cd4b6d57b8c54bde6aa4bd006cd1"
+  },
+  "shape_scope": "Same19names, newExecutor final callback/public overload and Installer volatile data/private current callback/synthetic/attrs; two record attributes remove FinancePacket. Existing non-synthetic signatures preserved, no new named class, normal Loader required; not redefine acceptance."
+}

@@ -47,6 +47,7 @@ public final class SwayOrdinaryExecutor {
     private final SwayRootActions actions;
     private final Supplier<RootExecutableBindings> inventory;
     private final Supplier<ContinuityStorePort.Session> sessions;
+    private final CurrentPlanning currentPlanning;
     private final CurrentPlanning fresh;
     private final IndependentFinal independentFinal;
     private final ActualRestoration restoration;
@@ -61,6 +62,14 @@ public final class SwayOrdinaryExecutor {
             SwaySharedRoot root,SwayActionLifecycle.RegisteredReads definitions,SwayRootActions actions,
             Supplier<RootExecutableBindings> inventory,Supplier<ContinuityStorePort.Session> sessions,CurrentPlanning fresh,
             IndependentFinal independentFinal,ActualRestoration restoration,Supplier<OrdinaryPlanner> planner) {
+        this(domain,archive,reads,root,definitions,actions,inventory,sessions,fresh,fresh,independentFinal,restoration,planner);
+    }
+    public SwayOrdinaryExecutor(SwayCanonicalDomain domain,ActionPorts.OutcomeArchive archive,PlanningReadPort reads,
+            SwaySharedRoot root,SwayActionLifecycle.RegisteredReads definitions,SwayRootActions actions,
+            Supplier<RootExecutableBindings> inventory,Supplier<ContinuityStorePort.Session> sessions,
+            CurrentPlanning currentPlanning,CurrentPlanning fresh,IndependentFinal independentFinal,
+            ActualRestoration restoration,Supplier<OrdinaryPlanner> planner) {
+        this.currentPlanning = Objects.requireNonNull(currentPlanning);
         this.domain = Objects.requireNonNull(domain); this.archive = Objects.requireNonNull(archive); this.reads = Objects.requireNonNull(reads); this.root = Objects.requireNonNull(root);
         this.definitions = Objects.requireNonNull(definitions); this.actions = Objects.requireNonNull(actions); this.inventory = Objects.requireNonNull(inventory); this.sessions = Objects.requireNonNull(sessions);
         this.fresh = Objects.requireNonNull(fresh); this.independentFinal = Objects.requireNonNull(independentFinal); this.restoration = Objects.requireNonNull(restoration); this.planner = Objects.requireNonNull(planner);
@@ -195,7 +204,7 @@ public final class SwayOrdinaryExecutor {
             var diagnostic = StrictJson.object(); diagnostic.put("schedule_window", "after_completed_ordinary_sway_start");
             diagnostic.put("submit_attempted", false); diagnostic.put("new_game_days", 0);
             try {
-                observePlanes(current(parent), applied, List.of(SwayObservationReads.Kind.COMPLETION, SwayObservationReads.Kind.OPINION));
+                observePlanes(fresh(parent).request(), applied, List.of(SwayObservationReads.Kind.COMPLETION, SwayObservationReads.Kind.OPINION));
                 diagnostic.put("status", "observed");
             } catch (ReadPublicationRequiredException required) { throw required; }
             catch (IOException | IllegalArgumentException | IllegalStateException | Unavailable failure) {
@@ -245,7 +254,7 @@ public final class SwayOrdinaryExecutor {
     }
     private ContinuityStorePort.Session session() { return Objects.requireNonNull(sessions.get(), "actual original Sway writer scope required"); }
     private Fresh fresh(ActionCommand parent) { Fresh value = Objects.requireNonNull(fresh.current(parent)); PlanningRequest request = value.request(); require(request.before().machineId().equals(parent.before().machineId()) && request.before().game().equals(parent.before().game()) && request.before().frame().episodeRunId().equals(parent.before().frame().episodeRunId()) && request.source().equals(parent.source()) && request.sessionId().equals(parent.sessionId()), "fresh ordinary source crossed original parent scope"); return value; }
-    private PlanningRequest current(ActionCommand parent) { return fresh(parent).request(); }
+    private PlanningRequest current(ActionCommand parent) { var value = Objects.requireNonNull(currentPlanning.current(parent)); var request = value.request(); require(request.before().equals(parent.before()) && request.source().equals(parent.source()) && request.sessionId().equals(parent.sessionId()), "current ordinary planning differs from the exact original parent"); return request; }
     private static CompositeExecution retained(ContinuityStorePort.Session session, ActionCommand parent, ActionPorts.OutcomeArchive originals) throws IOException {
         var receipt = ContinuityActionJournal.lookup(session.head().state(), parent.actionId(), originals).orElseThrow(() -> new IOException("actual Sway parent custody unavailable"));
         return switch(receipt.state()) { case ActionState.CompositeRunning value -> value.execution(); case ActionState.CompositeUnknown value -> value.execution(); case ActionState.CompositeSettled value -> value.execution(); default -> throw new IllegalArgumentException("Sway parent is outside actual composite custody"); };
