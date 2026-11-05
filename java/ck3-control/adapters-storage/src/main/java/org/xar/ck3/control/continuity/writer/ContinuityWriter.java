@@ -186,6 +186,8 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         requireSession(active);
         return java.util.Optional.of(active);
     }
+    /** Diagnostic suppression only: this is neither writer ownership nor a lock-release certificate. */
+    public boolean hasCurrentThreadWriterScope() { return ACTIVE_SESSION.get() != null; }
     /** Read old source DATA only, under its real mutex and the exact suspended mutable caller scope. */
     public <T> T readOnlyFrom(ContinuityStorePort.Session activeNewSame, SessionWork<T> work) throws IOException {
         if (!readOnly) throw new IOException("source-only reads require the actual readonly receiver");

@@ -22,9 +22,10 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     private final org.xar.ck3.control.application.readiness.NativeReadinessCollector collector;
     private static final class PlanningRound {
         private final ContinuityStorePort.Session session;private boolean flushFailed;
+        private final long[] timing;
         private Optional<Published> readPublication=Optional.empty();
         private PreparedSelection preparedSelection;
-        private PlanningRound(ContinuityStorePort.Session session){this.session=session;}
+        private PlanningRound(ContinuityStorePort.Session session,long[] timing){this.session=session;this.timing=timing;}
     }
     /** Same-round DATA only; a domain publication is not a Driver READ publication. */
     private record PreparedSelection(PlanningRequest request, PlanningDisposition actual) {
@@ -52,21 +53,32 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     }
     @Override public <T> ScopeResult<T> inPlanningScope(ScopeWork<T> work) throws IOException,InterruptedException {
         Objects.requireNonNull(work);StrictJson.require(round.get()==null,"one actual original-writer planning round per thread");
-        ScopeExit<T> actual=core.withBorrowed(()->{
-            ContinuityStorePort.Session borrowed=core.writer().borrowedSession();core.writer().requireSession(borrowed);
-            PlanningRound current=new PlanningRound(borrowed);round.set(current);
-            try { return new ScopeExit<T>(Optional.of(collector.withPlanningRound(borrowed,()->finishPlanningReads(()->{
-                current.readPublication=Optional.empty();
-                current.preparedSelection=null;
-                return finishOriginalWork(work,()->flushInSession(borrowed),()->current.flushFailed);
-            },()->current.readPublication.isPresent(),()->collector.prepareReadPublicationReplan(borrowed)))),Optional.empty()); }
-            catch(org.xar.ck3.control.application.planning.PlanningReadFailure failure) {
-                if(!org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(failure))throw failure;
-                return new ScopeExit<T>(Optional.empty(),Optional.of(failure));
-            }
-            finally{round.remove();}
-        });
-        return actual.released();
+        // A scope-presence bit only suppresses diagnostics; it never authorizes borrowing or proves unlock.
+        long[] timing=core.writer().hasCurrentThreadWriterScope()?null:new long[14];
+        long started=timing==null?0L:System.nanoTime();boolean coreReturned=false;
+        try {
+            ScopeExit<T> actual=core.withBorrowed(()->{
+                if(timing!=null)timing[1]=System.nanoTime()-started;
+                ContinuityStorePort.Session borrowed=core.writer().borrowedSession();core.writer().requireSession(borrowed);
+                PlanningRound current=new PlanningRound(borrowed,timing);round.set(current);
+                try { return new ScopeExit<T>(Optional.of(collector.withPlanningRound(borrowed,()->finishPlanningReads(()->{
+                    current.readPublication=Optional.empty();
+                    current.preparedSelection=null;
+                    return finishOriginalWork(()->timedPlanningWork(work,timing),()->flushInSession(borrowed),()->current.flushFailed);
+                },()->current.readPublication.isPresent(),()->timedReadReplan(borrowed,timing)))),Optional.empty()); }
+                catch(org.xar.ck3.control.application.planning.PlanningReadFailure failure) {
+                    if(!org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(failure))throw failure;
+                    return new ScopeExit<T>(Optional.empty(),Optional.of(failure));
+                }
+                finally{round.remove();}
+            });
+            coreReturned=true;
+            return actual.released();
+        } finally {
+            // Normal return of this own-scope Core call proves its Windows lock close succeeded.
+            // Core throws (including close failure), and inherited scopes, deliberately emit nothing.
+            if(timing!=null&&coreReturned){timing[0]=System.nanoTime()-started;logMethodTiming(timing);}
+        }
     }
     @FunctionalInterface interface PublicationFlush { Optional<Published> flush()throws IOException; }
     @FunctionalInterface interface ReadReplan { boolean prepare()throws IOException; }
@@ -101,6 +113,14 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     }
     /** Root public-query/action edges call this only after their original Driver freeze has exited. */
     public Optional<Published> flushInSession(ContinuityStorePort.Session borrowed) throws IOException {
+        PlanningRound current=round.get();
+        long[] timing=current!=null&&current.session==borrowed?current.timing:null;
+        if(timing==null)return flushOriginalInSession(borrowed);
+        timing[5]++;long started=System.nanoTime();
+        try {var result=flushOriginalInSession(borrowed);timing[6]++;return result;}
+        finally {timing[7]+=System.nanoTime()-started;}
+    }
+    private Optional<Published> flushOriginalInSession(ContinuityStorePort.Session borrowed) throws IOException {
         try {
             core.writer().requireSession(borrowed);
             Optional<Published> actual=reads.flushActualReads(borrowed).map(committed->new Published(committed.predecessor(),committed.actual()));
@@ -131,7 +151,12 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
             core.writer().requireSession(borrowed);
             StrictJson.require(current.readPublication.isEmpty()&&current.preparedSelection==null,
                     "pre-model preparation requires the completed READ barrier and one actual proposal");
-            SelectionDisposition actual=Objects.requireNonNull(downstream.beforeModel(original,proposed));
+            long[] timing=current.timing;long started=timing==null?0L:System.nanoTime();
+            if(timing!=null)timing[8]++;
+            SelectionDisposition raw;
+            try {raw=downstream.beforeModel(original,proposed);if(timing!=null)timing[9]++;}
+            finally {if(timing!=null)timing[10]+=System.nanoTime()-started;}
+            SelectionDisposition actual=Objects.requireNonNull(raw);
             if(actual instanceof Published published)current.preparedSelection=new PreparedSelection(original,published);
             else if(actual instanceof Blocked blocked)current.preparedSelection=new PreparedSelection(original,blocked);
             return actual;
@@ -160,6 +185,35 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
             logPlanningOperation("RETURN", original, planned, disposition);
             return disposition;
         }catch(IOException failure){throw new UncheckedIOException("actual read publication failed; original query is retained without replay",failure);}
+    }
+
+    private static <T> T timedPlanningWork(ScopeWork<T> work,long[] timing) throws IOException,InterruptedException {
+        if(timing==null)return work.run();
+        timing[2]++;long started=System.nanoTime();
+        try {T result=work.run();timing[3]++;return result;}
+        finally {timing[4]+=System.nanoTime()-started;}
+    }
+    private boolean timedReadReplan(ContinuityStorePort.Session borrowed,long[] timing) throws IOException {
+        if(timing==null)return collector.prepareReadPublicationReplan(borrowed);
+        timing[11]++;long started=System.nanoTime();
+        try {boolean result=collector.prepareReadPublicationReplan(borrowed);timing[12]++;return result;}
+        finally {timing[13]+=System.nanoTime()-started;}
+    }
+    /** Inclusive method wall times only; called once after a normally released own writer scope. */
+    private static void logMethodTiming(long[] timing) {
+        try {
+            ObjectNode row=StrictJson.object().put("schema","xar.java-planning-method-timing/v1")
+                    .put("emitted_at_epoch_ms",System.currentTimeMillis())
+                    .put("scope_elapsed_ns",timing[0]).put("pre_callback_elapsed_ns",timing[1])
+                    .put("work_enter_count",timing[2]).put("work_return_count",timing[3]).put("work_elapsed_ns",timing[4])
+                    .put("flush_enter_count",timing[5]).put("flush_return_count",timing[6]).put("flush_elapsed_ns",timing[7])
+                    .put("before_model_enter_count",timing[8]).put("before_model_return_count",timing[9]).put("before_model_elapsed_ns",timing[10])
+                    .put("replan_enter_count",timing[11]).put("replan_return_count",timing[12]).put("replan_elapsed_ns",timing[13]);
+            byte[] canonical=StrictJson.canonical(row,8192);
+            System.out.write(canonical);System.out.write(10);System.out.flush();
+        } catch(Throwable ignored) {
+            // Diagnostics never replace the original result/error or mutate interruption/suppression.
+        }
     }
 
     private void logPlanningOperation(String phase, PlanningRequest original, PlanningResult planned, PlanningDisposition... disposition) {

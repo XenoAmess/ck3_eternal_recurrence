@@ -1,0 +1,82 @@
+{
+  "schema": "xar.java.own-scope-planning-timing-sources/v1",
+  "prepared_at_utc": "2026-11-05T17:50:11.586705+00:00",
+  "date_local": "2026-11-06",
+  "artifacts": {
+    "source_ready": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-method-timing-own-scope52\\SOURCE-READY-OWNER01.json",
+      "bytes": 5798,
+      "sha256": "ca83a989529e7c21db62a34c58fbab48179f33ab6a5510156760dda4602ee927"
+    },
+    "writer_part": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-method-timing-own-scope52\\WRITER-PART01.json",
+      "bytes": 1469,
+      "sha256": "d45b095272875b296e0078acf41efd6154a587f2adfc6fcb1fa4a22a34323462"
+    },
+    "completion_part02": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-method-timing-own-scope52\\COMPLETION-PART02.json",
+      "bytes": 10765,
+      "sha256": "9685050ed943f3c40f2891f8f6506769e1882b76cdd6ac06b6bc5c06a09a269a"
+    },
+    "scope_proof": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-method-timing-own-scope52\\SCOPE-PROOF06.json",
+      "bytes": 3901,
+      "sha256": "88f09419358eb9d731009789d4feb16cd1ed13382236e53dd223833f37e2cad7"
+    },
+    "formal_projection": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-method-timing-own-scope52\\formal01\\FORMAL-SOURCE-READY01.json",
+      "bytes": 14012,
+      "sha256": "0ffdc6409bdffbdaa684408ee30ddafd7d6eebab78d50214eade25ddb9230f59"
+    },
+    "native_software": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-method-timing-own-scope52\\native-first01\\QUALIFIED-SOFTWARE01.json",
+      "bytes": 294620,
+      "sha256": "23e27265d61c58a8ff2891b91516389b3081085d0f89be084841a57c5c64d66a"
+    },
+    "independent_source": {
+      "path": "D:\\ck3-state\\resume91-root\\planning-method-timing-independent-review52\\SOURCE02-REVIEW02.json",
+      "bytes": 9952,
+      "sha256": "f1276603c07acdbd60d0453cd36b35b43a706a175da0a5e549df23141b656467"
+    },
+    "independent_writer_scope": {
+      "path": "D:\\ck3-state\\resume91-root\\planning-method-timing-independent-review52\\SCOPE-WRITER-REVIEW01.json",
+      "bytes": 6686,
+      "sha256": "7c718eb8781766ff0a2cf897b29db5a7d06920e01de2ae29a2aa1b0387d044f7"
+    },
+    "model_review90": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-method-timing-own-scope52\\MODEL-REVIEW90-01.json",
+      "bytes": 1946,
+      "sha256": "79396e6413401e490897c6e7bb24af563b67dfaa5afc65f34b808ba6f6790720"
+    }
+  },
+  "status": "SOURCE_AND_FIRST_TYPE_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "sources": {
+    "Writer": "126255/3b34f4187f462911bd24a2e478d631e60970a0ccd0c7a1d94c90bb02922660c2",
+    "Completion": "19910/9e82032ebfa8bb359f5b775823331465700c9e8c26fd601271b0ce6645885a81",
+    "owned_spans": 7,
+    "formal_outside_inverse": true,
+    "whole_formal_compiled": false
+  },
+  "software": "Onlynecessary2TU0/9.4838345s/15CF=Writer9+Completion6;12same-shape,3changed.Writerpurebool/metadataattribute;Rootprivatehelpers/synthetic andPlanningRoundarray/ctor.NoNewNamedClass.NoTest/oldgreenRUN/JFR.",
+  "scope": "Onlyentrynoanywriterscope + Core normalreturn proves ownedphysicalWindowslock release;normal actual.released failure afterCore maystill emit. Inherited/Corethrow/closefailure suppressed,not presented as returnedzero.",
+  "metrics": "Fixedschema withnumericcounts/nanoTime elapsed only;noSource/session/request/frame/payload/exception.No authority. Inclusive/overlapping,notsum-asCPU or fullOBS/PLAN.",
+  "unproved": [
+    "Runtimeadoption",
+    "Actualtimings/logs",
+    "Measuredimprovement",
+    "10seconds/newSAVEday",
+    "Wholeformalcomboexecution"
+  ],
+  "model90": {
+    "request": "6full543625/5completeactualJava+scopeproof;max9000 fixed3DIRECT",
+    "time_s": "35.2966276",
+    "TTFT_s": "13.6754984",
+    "reported": "105835+3813",
+    "complete_method_adoption": 0,
+    "literal_bytes": 0,
+    "raw_JVM": 0,
+    "R2": 0,
+    "reason": "Proposedstatic method uses instance round,changes original loop/nullbehavior;timedWork nevercalled;no requestedcounts/aggregateddeltas;loggerError/flushscope gaps."
+  },
+  "no_C_GET_stophealthyworker_GameQuery_or_sampling_for_unit": true
+}
