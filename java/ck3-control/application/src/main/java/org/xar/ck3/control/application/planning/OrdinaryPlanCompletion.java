@@ -17,6 +17,9 @@ import org.xar.ck3.control.contracts.StrictJson;
  * The planner and loop never infer a ledger write from an annotation or ACK.
  */
 public interface OrdinaryPlanCompletion {
+    /** Numeric method diagnostics only; no publication, Session, or gameplay authority.
+     * The ordinal is the current PlanningStage ordinal; returned means the raw evaluate call returned, even null. */
+    default void policyEvaluationTiming(int stageOrdinal,long elapsedNanos,boolean returned) { }
     /** Real READ publication barrier before online selection; an unchanged adapter has no work here. */
     default Optional<Published> beforeSelection(PlanningRequest original, PlanningResult.ActionSelected proposed) {
         return Optional.empty();

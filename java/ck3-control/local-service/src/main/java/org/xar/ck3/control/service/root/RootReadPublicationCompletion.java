@@ -54,7 +54,8 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     @Override public <T> ScopeResult<T> inPlanningScope(ScopeWork<T> work) throws IOException,InterruptedException {
         Objects.requireNonNull(work);StrictJson.require(round.get()==null,"one actual original-writer planning round per thread");
         // A scope-presence bit only suppresses diagnostics; it never authorizes borrowing or proves unlock.
-        long[] timing=core.writer().hasCurrentThreadWriterScope()?null:new long[14];
+        long[] timing=core.writer().hasCurrentThreadWriterScope()?null:
+                new long[14+3*org.xar.ck3.control.application.planning.PlanningStage.values().length];
         long started=timing==null?0L:System.nanoTime();boolean coreReturned=false;
         try {
             ScopeExit<T> actual=core.withBorrowed(()->{
@@ -187,6 +188,14 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         }catch(IOException failure){throw new UncheckedIOException("actual read publication failed; original query is retained without replay",failure);}
     }
 
+    @Override public void policyEvaluationTiming(int stageOrdinal,long elapsedNanos,boolean returned) {
+        PlanningRound current=round.get();long[] timing=current==null?null:current.timing;
+        if(timing==null||stageOrdinal<0||stageOrdinal>=(timing.length-14)/3||elapsedNanos<0)return;
+        int offset=14+stageOrdinal*3;timing[offset]++;
+        if(returned)timing[offset+1]++;
+        timing[offset+2]+=elapsedNanos;
+    }
+
     private static <T> T timedPlanningWork(ScopeWork<T> work,long[] timing) throws IOException,InterruptedException {
         if(timing==null)return work.run();
         timing[2]++;long started=System.nanoTime();
@@ -209,6 +218,13 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
                     .put("flush_enter_count",timing[5]).put("flush_return_count",timing[6]).put("flush_elapsed_ns",timing[7])
                     .put("before_model_enter_count",timing[8]).put("before_model_return_count",timing[9]).put("before_model_elapsed_ns",timing[10])
                     .put("replan_enter_count",timing[11]).put("replan_return_count",timing[12]).put("replan_elapsed_ns",timing[13]);
+            var policies=row.putArray("policy_evaluations");
+            for(int offset=14;offset<timing.length;offset+=3) {
+                if(timing[offset]==0)continue;
+                policies.addObject().put("stage_ordinal",(offset-14)/3)
+                        .put("enter_count",timing[offset]).put("return_count",timing[offset+1])
+                        .put("failed_count",timing[offset]-timing[offset+1]).put("elapsed_ns",timing[offset+2]);
+            }
             byte[] canonical=StrictJson.canonical(row,8192);
             System.out.write(canonical);System.out.write(10);System.out.flush();
         } catch(Throwable ignored) {

@@ -1,0 +1,274 @@
+{
+  "schema": "xar.p068-policy-method-numeric-timing-sources/v1",
+  "at_utc": "2026-11-05T22:46:42.670079+00:00",
+  "formal_sources": [
+    {
+      "relative_path": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanner.java",
+      "source": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+        "bytes": 23247,
+        "sha256": "3d1d8b0ef6574c3912e9410ee03cbb3726b24e8638491ffd8aa3b62e45dc496b"
+      }
+    },
+    {
+      "relative_path": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanCompletion.java",
+      "source": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanCompletion.java",
+        "bytes": 5087,
+        "sha256": "e1a655feb7b51baaa555e4544356c598566d4d5aa8a0440af0e2a97e52448395"
+      }
+    },
+    {
+      "relative_path": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootReadPublicationCompletion.java",
+      "source": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootReadPublicationCompletion.java",
+        "bytes": 20767,
+        "sha256": "46713c9314508406e59ebf2846088e7da0e50670d5f8110517e5265f1c04c43f"
+      }
+    }
+  ],
+  "actual_sources": [
+    {
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\ordinary-planner-current68\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+        "bytes": 22346,
+        "sha256": "f07fb0fe2622fa1f00b9dd9fbc3f9e9a920ec86f7dc9ad7e45a21b1bfe19d063"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+        "bytes": 23276,
+        "sha256": "3e627fd9abc6916eedfb02f284a9588fc96418d68fe26cc0987fd4d7d05e495d"
+      },
+      "relative_path": "application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanner.java"
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\planning-completion-api-current68\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanCompletion.java",
+        "bytes": 4866,
+        "sha256": "10b45fc99df5584d3db74ef47013281934b6b9d2c9be0a688f92e66c7e298cc8"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanCompletion.java",
+        "bytes": 5173,
+        "sha256": "d7f5c9321b61a33cb45cc696ffbc1cb397b4d888841c495bfeb8b71ad5c06d95"
+      },
+      "relative_path": "application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanCompletion.java"
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-method-timing-own-scope52\\candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootReadPublicationCompletion.java",
+        "bytes": 19910,
+        "sha256": "9e82032ebfa8bb359f5b775823331465700c9e8c26fd601271b0ce6645885a81"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootReadPublicationCompletion.java",
+        "bytes": 20904,
+        "sha256": "4845b7b196ed8448408ce76bfeea829cd34b06c4c80128e76da248e886f46f38"
+      },
+      "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootReadPublicationCompletion.java"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\SOURCE-READY-COHERENT01.json",
+      "bytes": 5635,
+      "sha256": "6ef2328b575bde422c5a2448793d5888b449868d3ab2d2d981c7371cec796599"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\SOURCE-PART01.json",
+      "bytes": 8811,
+      "sha256": "3757e8a8c79f4718ccfa46effaed692731f8eead8a76c402c77cba5c1da0ef1b"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\STAGE-MAPPING-AND-BUDGET01.json",
+      "bytes": 3663,
+      "sha256": "112016998e50400f95293f6b57f1b87a310aade879fb5b67f1af8c99cb69d418"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\FORMAL-SOURCE-READY02.json",
+      "bytes": 9023,
+      "sha256": "1a7a71ec0b080471f490fc8f0f28f0a84eeb01da84d458f423f08721fa2cf5d1"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\native-first01\\actual\\prod\\ACTUAL.json",
+      "bytes": 1761,
+      "sha256": "de1a8c29967f78482cacb6f0ad6120964471a61a90fcef0742bf7df96a238927"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\native-first01\\actual\\prod\\OUTPUTS.json",
+      "bytes": 54696,
+      "sha256": "c8ce7ed96ac9d3113d34c5bdd7c80862761a0e65db3278593a6c16ea4366203f"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\MODEL-REVIEW102-01.json",
+      "bytes": 4174,
+      "sha256": "41a0c02a4c2a948fc0289d6915cc94e66f112228211c557aeea402e623d81ecf"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\ordinary-policy-method-timing-independent-review68\\COHERENT01-SOURCE-REVIEW01.json",
+      "bytes": 7500,
+      "sha256": "3251814feeee0cc77e88c31d8ef93c1b2822d892d0bed3c1a11d48640ab99a08"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-policy-method-timing68\\native-first01\\QUALIFIED-SOFTWARE01.json",
+      "bytes": 231807,
+      "sha256": "440e2c76d6ead0b8c1816496b38bd36e9bdc44fa0994ad5e6c4906ccec5b3848"
+    }
+  ],
+  "actual_software": {
+    "changed_TUs": 3,
+    "exit_code": 0,
+    "class_count": 20,
+    "seconds": 5.668804099957924,
+    "tests_RUN": 0,
+    "old_TUs_recompiled": 0,
+    "Writer_or_Controller_changed": false
+  },
+  "stage_ordinal_mapping": [
+    {
+      "stage_ordinal": 0,
+      "stage": "SUCCESSION_PREFLIGHT"
+    },
+    {
+      "stage_ordinal": 1,
+      "stage": "PENDING_MATERIAL_PUBLICATION"
+    },
+    {
+      "stage_ordinal": 2,
+      "stage": "TERMINAL_AND_FOREGROUND_WINDOWS"
+    },
+    {
+      "stage_ordinal": 3,
+      "stage": "OPENING_LIFESTYLE_FOCUS"
+    },
+    {
+      "stage_ordinal": 4,
+      "stage": "ORDINARY_CORE"
+    },
+    {
+      "stage_ordinal": 5,
+      "stage": "THREE_WAY_WAR_EXIT"
+    },
+    {
+      "stage_ordinal": 6,
+      "stage": "EVENT_AND_INTERACTION_CONTINUATION"
+    },
+    {
+      "stage_ordinal": 7,
+      "stage": "WAR_RENDEZVOUS"
+    },
+    {
+      "stage_ordinal": 8,
+      "stage": "SIEGE_AND_BATTLE_FORECAST"
+    },
+    {
+      "stage_ordinal": 9,
+      "stage": "ROUTE_ORIGIN_EXPOSURE"
+    },
+    {
+      "stage_ordinal": 10,
+      "stage": "ACTIVE_COMBAT_AND_DATE_GUARDS"
+    },
+    {
+      "stage_ordinal": 11,
+      "stage": "ORDINARY_RETREAT"
+    },
+    {
+      "stage_ordinal": 12,
+      "stage": "WAR_MERCENARY_CURRENT_CASH"
+    },
+    {
+      "stage_ordinal": 13,
+      "stage": "PRISONER_RELEASE_DISCOVERY"
+    },
+    {
+      "stage_ordinal": 14,
+      "stage": "HOLY_ORDER_REINFORCEMENT"
+    },
+    {
+      "stage_ordinal": 15,
+      "stage": "COMMANDER_QUALITY"
+    },
+    {
+      "stage_ordinal": 16,
+      "stage": "M5_JOINT_PEACETIME"
+    },
+    {
+      "stage_ordinal": 17,
+      "stage": "LIFESTYLE"
+    },
+    {
+      "stage_ordinal": 18,
+      "stage": "FACTION_GIFT"
+    },
+    {
+      "stage_ordinal": 19,
+      "stage": "CONSTRUCTION"
+    },
+    {
+      "stage_ordinal": 20,
+      "stage": "FAMILY_AND_EDUCATION"
+    },
+    {
+      "stage_ordinal": 21,
+      "stage": "PRISONER_RANSOM"
+    },
+    {
+      "stage_ordinal": 22,
+      "stage": "PRISONER_RELEASE"
+    },
+    {
+      "stage_ordinal": 23,
+      "stage": "M5_WARTIME_OBSERVATION"
+    },
+    {
+      "stage_ordinal": 24,
+      "stage": "COUNCIL"
+    },
+    {
+      "stage_ordinal": 25,
+      "stage": "CROWN_AUTHORITY"
+    },
+    {
+      "stage_ordinal": 26,
+      "stage": "FEAST"
+    },
+    {
+      "stage_ordinal": 27,
+      "stage": "DEFERRED_SUCCESSION_ROOT"
+    },
+    {
+      "stage_ordinal": 28,
+      "stage": "HOLY_WAR_DEFENDER_OBSERVATION"
+    },
+    {
+      "stage_ordinal": 29,
+      "stage": "PREWAR_FORCE_COALITION"
+    },
+    {
+      "stage_ordinal": 30,
+      "stage": "ORDINARY_SWAY"
+    },
+    {
+      "stage_ordinal": 31,
+      "stage": "EVENT_MATERIAL_POSTCONDITION"
+    },
+    {
+      "stage_ordinal": 32,
+      "stage": "CAMPAIGN_ADVANCE_CAP"
+    },
+    {
+      "stage_ordinal": 33,
+      "stage": "REALM_MEMBERSHIP_PUBLICATION"
+    }
+  ],
+  "state": "SOFTWARE_CANDIDATE_NOT_ADOPTED_NO_ACTUAL_STAGE_TIMINGS_OR_SPEEDUP",
+  "P067": "Original753/754 UNKNOWN and current Game/ledger are untouched. No new GET, pause, read issuer or deployment is implied.",
+  "normal_loader_boundary": {
+    "same_named_class_family": 20,
+    "whole_shape_unchanged": 16,
+    "new_named_types": 0,
+    "body_redefine_authorized": false,
+    "changed_shapes": "Default/override numeric callback, private planBound signature, and existing State completion field/constructor/helper."
+  }
+}

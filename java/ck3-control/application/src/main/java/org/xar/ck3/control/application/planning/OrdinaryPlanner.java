@@ -87,7 +87,7 @@ public final class OrdinaryPlanner {
         Objects.requireNonNull(request);
         RealmLifecycle.Scope scope = realmLifecycle.begin(request);
         try {
-            PlanningResult result = planBound(request, completedOptional);
+            PlanningResult result = planBound(request, completedOptional, completion);
             if (result instanceof ActionSelected selected) {
                 Optional<OrdinaryPlanCompletion.Published> published = completion.flatMap(value -> value.beforeSelection(request, selected));
                 if (published.isPresent()) {
@@ -158,7 +158,8 @@ public final class OrdinaryPlanner {
         return new ReadOnlyWait(request.before(), reason, new PlanTrace(proposed.trace().before(), visits, Optional.of(waiting)));
     }
 
-    private PlanningResult planBound(PlanningRequest request, Optional<PlanningStage> completedOptional) {
+    private PlanningResult planBound(PlanningRequest request, Optional<PlanningStage> completedOptional,
+            Optional<OrdinaryPlanCompletion> completion) {
         List<StageVisit> visits = new ArrayList<>();
         List<PlanningStage> missing = missingStages();
         if (!missing.isEmpty()) {
@@ -166,7 +167,7 @@ public final class OrdinaryPlanner {
                     "the actual Java ordinary producer is not installed", Optional.empty(), Optional.empty()));
             return new IncompleteMigration(request.before(), missing, new PlanTrace(request.before(), visits, Optional.empty()));
         }
-        State state = new State(request, visits, completedOptional);
+        State state = new State(request, visits, completedOptional, completion);
         state.run(PlanningStage.SUCCESSION_PREFLIGHT);
         state.run(PlanningStage.PENDING_MATERIAL_PUBLICATION);
         state.run(PlanningStage.TERMINAL_AND_FOREGROUND_WINDOWS);
@@ -260,13 +261,27 @@ public final class OrdinaryPlanner {
         private final PlanningRequest request;
         private final List<StageVisit> visits;
         private final Optional<PlanningStage> completedOptional;
+        private final Optional<OrdinaryPlanCompletion> completion;
         private Draft draft = Draft.empty();
         private PlanningResult result;
-        private State(PlanningRequest request, List<StageVisit> visits, Optional<PlanningStage> completedOptional) {
-            this.request = request; this.visits = visits; this.completedOptional = completedOptional;
+        private State(PlanningRequest request, List<StageVisit> visits, Optional<PlanningStage> completedOptional,
+                Optional<OrdinaryPlanCompletion> completion) {
+            this.request = request; this.visits = visits; this.completedOptional = completedOptional;this.completion=completion;
         }
         private PlanTrace trace() { return new PlanTrace(request.before(), visits, Optional.of(draft)); }
         private Stopped stop(StopReason reason, String detail) { return new Stopped(request.before(), reason, detail, trace()); }
+        private Decision evaluate(OrdinaryPolicy policy,PlanningStage stage) {
+            if(completion.isEmpty())return policy.evaluate(request,draft);
+            long started=System.nanoTime();boolean returned=false;
+            try {Decision raw=policy.evaluate(request,draft);returned=true;return raw;}
+            finally {
+                long elapsed=System.nanoTime()-started;
+                try {completion.orElseThrow().policyEvaluationTiming(stage.ordinal(),elapsed,returned);}
+                catch(Throwable ignored) {
+                    // Numeric diagnostics never replace the original policy result/error or mutate interruption/suppression.
+                }
+            }
+        }
         private void run(PlanningStage stage) {
             if (result != null) return;
             if (!clock.instant().isBefore(request.deadline())) { result = stop(StopReason.DEADLINE, "ordinary planning deadline expired"); return; }
@@ -280,7 +295,7 @@ public final class OrdinaryPlanner {
                         "this optional stage already completed before the actual fresh ordinary continuation"));
                 return;
             }
-            Decision decision = Objects.requireNonNull(policy.evaluate(request, draft), "typed Java policy result required");
+            Decision decision = Objects.requireNonNull(evaluate(policy,stage), "typed Java policy result required");
             Outcome outcome;
             switch (decision) {
                 case Keep ignored -> outcome = Outcome.KEPT;
