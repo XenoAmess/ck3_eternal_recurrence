@@ -1,0 +1,13 @@
+# Driver资格接入同一严格EVENT恢复角色
+
+Runtime30已越旧FOCUS1858，完整历史读取记finish_succeeded1／validation_failed0；随后03:31:56.645726900Z在DriverBootstrap.qualifySameGameActionHistory停出。该私有资格门保完整canonical action集合等式，其内部Life／SAVE／Council／known角色表漏了已在Batch层严格识别的原EVENT521。没有到legacy v1 Root回调，head522及原UNKNOWN不变。
+
+本次仅在原outer HashSet全集合等式AND内部的OR列表，加入readOnlyEventRecoveryRoot(lease.snapshot().actions())。输入仍为完整原canonical集合，原Life／SAVE等全部角色、originalHistory基线、lease.assertCurrent、同Game／新HELLO、独立Native读取、actor／episode／source／revision校验及READ_ONLY_UNRESOLVED保留；不设置settledSameGame或recordAdoptionObserved，不授Ready或重发许可。诊断字符串改为isolated以描述现有各角色，不改任何API、field、method或type。
+
+actual单TU18类首编0，6.5178033秒；18个实际类的fields／methods／synthetic／Nest等完整结构全等，资源已释放。formal原Driver源码与actual前像16784318整文件同SHA，改后也同62550b99；两个owned span逆回原文件完全相同。它不代表全formal依赖cohort或实际私Driver门已经通过。
+
+原两个selector测试2P／八类拒绝继续引用：它们调用未变的Batch helper，没有触发此次私Driver门，因此本次不重复RUN，也不把原绿改记为Driver coverage。p0源码独审bf6ffbcf保完整集合AND及全部旧边界；私门的合法完整正例留给Runtime31原521受控readonly，不造private Session或镜像predicate。
+
+模型完整stop15.3526583秒／TTFT12.2954339秒，新增两OR行原文语义采用；原hunk虚构上下文顺序且行数不合，owner按实际唯一位置机械修正，诊断词由owner修。无R2或半稿回授。旧a915委托已END，结构相同也不会自动复活旧委托；Runtime以正常loader启动后续唯一只读恢复，文档／Git不作前置。
+
+本页切点521仍UNKNOWN，原ACK／command／deadline保持，C22／169eligible／8saved不混计。正常loader、完整Driver采用、v1 Root、SETTLE和SAVE分别待实际回执，任务继续RUNNING，不为发表新增GET。

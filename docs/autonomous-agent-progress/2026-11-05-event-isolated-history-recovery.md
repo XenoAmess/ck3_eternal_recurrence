@@ -13,3 +13,5 @@ actual新单TU20类首编0，9.9391552秒；所有类名与原20族相同，仅B
 模型完整stop26.5336036秒、TTFT10.3280988秒。两个DATA选择／保存shape helper原文采用；classifier漏expected绑定、裸类型缺import、catch语法及补丁hunk／位置问题由owner修正，未应用整份patch。独立测试模型length6000整份未读未hash、0采用、无R2；owner接管两个必要用例，最初compound var源审拆分为02，未记为编译失败。
 
 formal只投影七个owned span，其余原字节完全逆还原；actual与formal变体不同，actual2P不授wholeformal组合绿。源码／编测／正常loader／完整历史／Root／SETTLE／SAVE逐层验收。本文切点原521仍UNKNOWN、head522、C22，169eligible／8saved，任务继续RUNNING；不为发表新增GET。
+
+后到Runtime30实际越1858且完整历史验证finish1／failed0，随后因Driver私有资格角色漏EVENT停出，未进v1。已另形成[Driver角色补接](2026-11-05-event-driver-history-role.md)的单TU18类首0／全结构同；不将本页原DTO2P改称Driver或Root行为通过。

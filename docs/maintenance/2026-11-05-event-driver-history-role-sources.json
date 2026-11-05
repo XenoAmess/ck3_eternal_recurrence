@@ -1,0 +1,61 @@
+{
+  "schema": "xar.java-owner.driver-event-role-published-index/v1",
+  "at_utc": "2026-11-05T03:43:39.067193+00:00",
+  "base_commit": "e7825e86c4a423395c5058ef32d8c40546cb6a14",
+  "actual_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-driver-history-role01\\SOURCE-READY-OWNER01.json",
+    "bytes": 2300,
+    "sha256": "c82c645afcdf5f8d13057ad9b86bb3c1123371842d79af6076b3434640227ef0"
+  },
+  "formal_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-driver-history-role01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 1833,
+    "sha256": "48f6187ff49ae06f47eccf19017abbceadcb9f8b0c12587539509adb9e16298e"
+  },
+  "formal_source": {
+    "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverBootstrap.java",
+    "bytes": 139893,
+    "sha256": "62550b99f2d94da0349c0ecacb9c045c15e223232401af24b158f833002d782a"
+  },
+  "actual_and_formal_source_byte_exact": true,
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-driver-history-role01\\MODEL-REVIEW01.json",
+    "bytes": 723,
+    "sha256": "cdec36283389cef41c1ef5e26ec52b105e0e8b57805d78de51bbbcffe904f754"
+  },
+  "actual_first": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-driver-history-role01\\native-first01\\actual\\prod\\ACTUAL.json",
+    "bytes": 1696,
+    "sha256": "6a2e565ee283d27e85b33adfd7cf1215953e31d6b709c7401020fb6fe40f7e4d"
+  },
+  "actual_close": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-driver-history-role01\\native-first01\\actual\\prod\\MANAGED-CLOSE.json",
+    "bytes": 237,
+    "sha256": "e2da925994e7a861331dfd3d4e1fdab09fa54ce7504daa057a67e7213b5847f2"
+  },
+  "actual_fence": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-driver-history-role01\\native-first01\\actual\\prod\\RELEASE-FENCE.json",
+    "bytes": 1101,
+    "sha256": "6e3aeac944d94a105ecff30ee5451b21b988765bfc0777bd4ee5b6d41d3d6b64"
+  },
+  "full18shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-driver-history-role01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 346885,
+    "sha256": "43f2a572a6c365c1f43c6b245fc3e03b334317012620c7ebd8b1650f2cf09380"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\driver-event-role-independent-review31\\SOURCE-REVIEW01.json",
+    "bytes": 5429,
+    "sha256": "bf6ffbcfe434e9f2ca891cd364c73aca4d3266e31c265c91f68e065f8d6869a0"
+  },
+  "unchanged_selector_2P_reference": {
+    "path": "D:\\ck3-state\\resume91-root\\batch-event-isolated-selector-independent-test01\\QUALIFIED-COHORT02.json",
+    "bytes": 211462,
+    "sha256": "d2f1ce0bff91c7501c42216d723dba71090ca7c253e5de61ae47712206950b78"
+  },
+  "old_selector_tests_RUN_this_scope": 0,
+  "new_JUnit_or_private_Driver_positive": false,
+  "formal_whole_cohort_qualification": false,
+  "original521_settled": false,
+  "no_control_replay_or_deadline_change": true
+}
