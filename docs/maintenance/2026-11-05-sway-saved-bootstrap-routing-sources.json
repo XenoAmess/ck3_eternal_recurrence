@@ -74,5 +74,15 @@
   },
   "new_Test_compile_or_RUN": 0,
   "whole_formal_software_cohort": false,
-  "runtime48": "PrivateRoot/current canonical/LOOP acceptance remains actualRuntime. Original563/564 unchanged, captured zero guard preserved."
+  "runtime48": "PrivateRoot/current canonical/LOOP acceptance remains actualRuntime. Original563/564 unchanged, captured zero guard preserved.",
+  "actual48_original564_to565": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-bootstrap-recovery48\\ORIGINAL564-NEXT565.json",
+    "bytes": 4105,
+    "sha256": "ec30c84818619f8ebb5ebb54d1c45d73d1548f7836f5803db6072c9a8108c0cd"
+  },
+  "actual49_original564_to566": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\ACTUAL564-TERMINAL566-REVIEW01.json",
+    "bytes": 2336,
+    "sha256": "55b8c789379aa1b1a33878cc9cd855642d1e8ad7ec8cf9f0ae8cdd7156bf0923"
+  }
 }

@@ -13,3 +13,6 @@ The independent reviewer accepted all four literal spans and their complete raw 
 Model80 completed one finite request in24.6699466 seconds, TTFT23.0575882, reported179470+298. Its whole patch only adds the helper to legacyPending, which was already true, leaving the real RUNNING gate unchanged; it was rejected with zero literal adoption or model JVM. Owner spans were independently authored and typed before the raw response was opened. [Source and evidence pins](../maintenance/2026-11-05-sway-saved-bootstrap-routing-sources.json).
 
 Actual original564 observer, canonical terminal, read-history flush, full bootstrap, later ordinary LOOP and SAVE remain Runtime acceptance, separate from this source cut. No new saved-day or performance rate is assigned.
+
+
+Actual48 follow-up: the running admission passed and original564 was retained as565 UNKNOWN with the same complete command/body/execution/deadline. Ordinary canonical-history capture correctly refused that still-unreconciled parent. A separate exact read-only Saved metadata NoGameplay profile then really appended566 without replay. [Next acceptance](2026-11-05-sway-saved-no-gameplay.md).

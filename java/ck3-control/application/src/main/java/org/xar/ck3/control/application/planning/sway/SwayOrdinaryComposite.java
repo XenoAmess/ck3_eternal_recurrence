@@ -63,13 +63,18 @@ public final class SwayOrdinaryComposite implements CompositeActionPort.ZeroGame
     @Override public ActionPorts.PostconditionResult observe(ActionCommand parent, CompositeExecution retained) {
         validate(parent);
         try {
+            var decision=StrictJson.parse(ActionCodec.encodeCommand(parent),ActionCodec.MAX_COMMAND_BYTES).path("arguments").path("decision");
+            if(retained.children().isEmpty()&&"query_selected_target".equals(decision.path("job").asText())
+                    &&decision.path("submit_allowed").isBoolean()&&!decision.path("submit_allowed").booleanValue()
+                    &&domain.hasFailedReadOnlySavedScheduler(Objects.requireNonNull(sessions.get()),parent,retained))
+                return new ActionPorts.CompositeNoGameplayWriteObserved(new CompositeNoGameplayWriteObservation(parent.actionId(),ActionCodec.bodySha256(parent),retained));
             var completed=executor.observe(parent,retained);
             if(completed.isPresent())return new ActionPorts.SwaySchedulerObserved(completed.orElseThrow());
             requireNoGameplayWrite(parent,retained);
             return new ActionPorts.CompositeNoGameplayWriteObserved(new CompositeNoGameplayWriteObservation(parent.actionId(),ActionCodec.bodySha256(parent),retained));
         }
         catch (ReadPublicationRequiredException required) { throw required; }
-        catch (OrdinarySwayService.Unavailable | IllegalArgumentException | IllegalStateException failure) { return new ActionPorts.Pending(message(failure), List.of()); }
+        catch (IOException | OrdinarySwayService.Unavailable | IllegalArgumentException | IllegalStateException failure) { return new ActionPorts.Pending(message(failure), List.of()); }
     }
     public NativeRecordedEvidenceVerifier.Binding recorded(ExactRef implementation) {
         return new NativeRecordedEvidenceVerifier.Binding(OrdinarySwayPolicy.OPERATION, implementation, (head, proposed, sameArchive) -> {

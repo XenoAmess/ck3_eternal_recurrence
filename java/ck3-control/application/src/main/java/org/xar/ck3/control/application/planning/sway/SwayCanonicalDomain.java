@@ -241,7 +241,7 @@ public final class SwayCanonicalDomain {
             require(terminal.execution().equals(retained)&&terminal.settlement() instanceof ActionState.CompositeNoGameplayWrite,"another terminal is not a no-write Sway proof");
             ((ActionState.CompositeNoGameplayWrite)terminal.settlement()).observation().validate(parent,retained);
         }
-        require(savedScheduler(borrowed,parent).isEmpty(),"a real SchedulerSaved publication cannot be replaced by a no-write terminal");
+        var recordedScheduler=savedScheduler(borrowed,parent);
         ActionReceipt firstUnknown=null;ExactRef firstRecord=null;
         var cursor=ContinuityActionJournal.recordHead(head.state());long maximum=head.state().sequence();
         var seen=new java.util.HashSet<ExactRef>();
@@ -268,11 +268,12 @@ public final class SwayCanonicalDomain {
         var intentRef=runningRecord.previous().orElseThrow(()->new IOException("unstarted Sway has no canonical Intent predecessor"));
         var intent=originals.loadRecord(intentRef).receipt();
         boolean recordedStageOnly=unknownReceipt.sequence()==Math.addExact(running.sequence(),2);
+        boolean recordedSchedulerOnly=recordedScheduler.isPresent()&&unknownReceipt.sequence()==Math.addExact(running.sequence(),3);
         require(running.state() instanceof ActionState.CompositeRunning&&intent.state() instanceof ActionState.IntentDurable
                 &&((ActionState.CompositeRunning)running.state()).execution().equals(retained)
                 &&running.sequence()==Math.addExact(intent.sequence(),1)
-                &&(unknownReceipt.sequence()==Math.addExact(running.sequence(),1)||recordedStageOnly),
-                "no-write Sway requires its real Intent/Running and adjacent UNKNOWN or exact recorded-stage edge");
+                &&(unknownReceipt.sequence()==Math.addExact(running.sequence(),1)||recordedStageOnly||recordedSchedulerOnly),
+                "no-write Sway requires its exact original no-write metadata publication edge");
         for(var receipt:List.of(intent,running,unknownReceipt)) {
             require(Arrays.equals(ActionCodec.encodeCommand(receipt.command()),ActionCodec.encodeCommand(parent))
                     &&receipt.bodySha256().equals(ActionCodec.bodySha256(parent)),"unstarted Sway predecessor changed the complete command/body");
@@ -294,6 +295,11 @@ public final class SwayCanonicalDomain {
         var oldBody=DomainBodies.reference(originalBefore,DomainBodies.Slot.SWAY).orElseThrow(()->new IOException("original Sway body is unavailable"));
         var body=DomainBodies.reference(originalAfter,DomainBodies.Slot.SWAY).orElseThrow(()->new IOException("original Sway UNKNOWN body is unavailable"));
         require(oldBody.equals(body)&&body.contractSchema().equals(SCHEMA),"unstarted Sway changed its actual domain before UNKNOWN");
+        if(recordedScheduler.isPresent()) {
+            require(recordedSchedulerOnly,"saved no-gameplay metadata requires the exact two-import original edge");
+            requireRecordedSavedOnly(borrowed,parent,running,unknownReceipt,originalBefore,body,runningRef,
+                    recordedScheduler.orElseThrow(),originals);
+        } else {
         byte[] bytes=recordedStageOnly
                 ? requireRecordedStageOnly(borrowed,parent,running,unknownReceipt,originalBefore,body,runningRef,originals)
                 : originals.loadMaterial(body.payload()).bytes();
@@ -303,10 +309,86 @@ public final class SwayCanonicalDomain {
                 "unstarted Sway domain is not the same original initial episode");
         for(String field:List.of("active_stage","pending","resolved","scheduler","imported_legacy"))
             require(raw.get(field)!=null&&raw.get(field).isNull(),"unstarted Sway already has native lifecycle/stage/scheduler state");
+        }
         borrowed.verifyPin(pin);borrowed.requireWriter(originalLock);var after=borrowed.head();
         require(after.digest().equals(head.digest())&&after.documents().equals(head.documents())&&after.absent().equals(head.absent())
                 &&after.indexRepairs().equals(head.indexRepairs())&&after.snapshotNeedsRecovery()==head.snapshotNeedsRecovery(),
                 "Sway no-write proof changed its original writer head/inventory");
+    }
+    /** Source qualification only: no Ready or dedicated SchedulerCompleted is created by this branch. */
+    public boolean hasFailedReadOnlySavedScheduler(ContinuityStorePort.Session borrowed,ActionCommand parent,
+            CompositeExecution retained) throws IOException {
+        borrowed.requireWriter(originalLock);var saved=savedScheduler(borrowed,parent);
+        if(saved.isEmpty())return false;
+        var originals=archive.withSession(borrowed);
+        var run=SwaySchedulerReplay.decodeRun(originals.loadMaterial(saved.orElseThrow().originalRun()).bytes());
+        if(!(run.result() instanceof org.xar.ck3.control.vanilla.schemesway.OrdinarySwayService.LocalResult local)
+                ||local.status()!=org.xar.ck3.control.vanilla.schemesway.OrdinarySwayService.LocalStatus.UNAVAILABLE
+                ||!run.reads().isEmpty()||run.child().isPresent())return false;
+        requireUnstartedScheduler(borrowed,parent,retained);
+        return true;
+    }
+    /** Replays only the real Stage/Scheduler metadata before the first UNKNOWN, never a future live body. */
+    private void requireRecordedSavedOnly(ContinuityStorePort.Session borrowed,ActionCommand parent,
+            ActionReceipt running,ActionReceipt unknown,ContinuityState beforeUnknown,DomainBodies.BodyRef savedBody,
+            ExactRef runningRecord,SavedScheduler saved,ActionPorts.OutcomeArchive originals) throws IOException {
+        require(saved.witness().sequence()==Math.addExact(running.sequence(),2)
+                &&unknown.sequence()==Math.addExact(running.sequence(),3),"saved metadata original edge differs");
+        var run=SwaySchedulerReplay.decodeRun(originals.loadMaterial(saved.originalRun()).bytes());
+        require(run.result() instanceof org.xar.ck3.control.vanilla.schemesway.OrdinarySwayService.LocalResult local
+                &&local.status()==org.xar.ck3.control.vanilla.schemesway.OrdinarySwayService.LocalStatus.UNAVAILABLE
+                &&run.reads().isEmpty()&&run.child().isEmpty(),"no-gameplay saved profile requires its original local unavailable execution");
+        var head=borrowed.head();ContinuityState last=null;
+        for(int offset=1;offset<=2;offset++) {
+            long sequence=Math.addExact(running.sequence(),offset);var path=eventPath(sequence);
+            var pins=head.documents().stream().filter(value->Path.of(value.reference().path()).toAbsolutePath().normalize().equals(path)).toList();
+            require(pins.size()==1,"saved metadata requires each unique actual canonical import");
+            var pin=pins.getFirst();var actual=event(borrowed,pin);
+            require(DomainBodies.IMPORT_KIND.equals(StrictJson.text(actual.get("kind")))
+                    &&StrictJson.integer(actual.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER)==sequence,
+                    "saved metadata original import sequence/kind differs");
+            String previous=StrictJson.text(actual.get("previous_sha256"));
+            var predecessor=borrowed.requireHistoricalState(sequence-1,previous);
+            var declared=ContinuityState.fromJson(actual.get("after"),head.state().machineId());
+            var after=borrowed.requireHistoricalState(sequence,org.xar.ck3.control.continuity.ContinuityJson.digest(declared.toJson()));
+            require(Arrays.equals(after.canonicalBytes(),declared.canonicalBytes())
+                    &&ContinuityActionJournal.recordHead(predecessor).filter(runningRecord::equals).isPresent()
+                    &&ContinuityActionJournal.recordHead(after).filter(runningRecord::equals).isPresent()
+                    &&(last==null||Arrays.equals(last.canonicalBytes(),predecessor.canonicalBytes())),
+                    "saved metadata changed original Running custody or real adjacent states");
+            var beforeBody=DomainBodies.reference(predecessor,DomainBodies.Slot.SWAY).orElseThrow();
+            var result=DomainBodies.reference(after,DomainBodies.Slot.SWAY).orElseThrow();
+            var inputRef=ExactRef.fromJson(actual.get("details").get("source").get("producer_input"));
+            var witness=new PublicationWitness(pin.reference(),beforeBody,result,inputRef,sequence,
+                    StrictJson.text(actual.get("identity")),previous);
+            var input=verifyPublication(borrowed,witness,originals,false);
+            var ledger=SwayFormalCodec.decode(originals.loadMaterial(result.payload()).bytes());
+            var raw=StrictJson.parse(SwayFormalCodec.encode(ledger),SwayFormalCodec.MAX);
+            require(ledger.machineId().equals(parent.before().machineId())&&ledger.episodeRunId().equals(parent.sessionId())
+                    &&raw.path("previous").isArray()&&raw.path("previous").size()==0,
+                    "saved metadata crossed its real initial episode");
+            for(String field:List.of("pending","resolved","imported_legacy"))
+                require(raw.get(field)!=null&&raw.get(field).isNull(),"saved metadata contains unrelated lifecycle business");
+            if(offset==1) {
+                require(input.change() instanceof StageRecorded&&((StageRecorded)input.change()).basis().equals(run.stage())
+                        &&ledger.activeStage().filter(run.stage()::equals).isPresent(),"saved original stage basis differs");
+                var stage=SwaySchedulerReplay.decodeStage(originals.loadMaterial(run.stage()).bytes());
+                require(stage.inputDomain().equals(beforeBody.payload())
+                        &&Arrays.equals(ActionCodec.encodeCommand(stage.command()),ActionCodec.encodeCommand(parent)),
+                        "saved original stage complete parent/input domain differs");
+            } else {
+                require(witness.equals(saved.witness())&&input.change() instanceof SchedulerSaved
+                        &&((SchedulerSaved)input.change()).replay().equals(saved.originalRun())
+                        &&ledger.activeStage().filter(run.stage()::equals).isPresent()
+                        &&ledger.schedule().filter(((SchedulerSaved)input.change()).state()::equals).isPresent()
+                        &&result.equals(savedBody)&&Arrays.equals(after.canonicalBytes(),beforeUnknown.canonicalBytes()),
+                        "saved original publication/result differs from actual UNKNOWN predecessor");
+                var before=SwayFormalCodec.decode(originals.loadMaterial(beforeBody.payload()).bytes());
+                require(scheduler.verify(predecessor,before,(SchedulerSaved)input.change(),input.proofs(),originals)==saved.continuation(),
+                        "saved original local execution/service continuation differs");
+            }
+            borrowed.verifyPin(pin);last=after;
+        }
     }
     /** Verifies the one real stage publication between Running and UNKNOWN; it never executes or erases it. */
     private byte[] requireRecordedStageOnly(ContinuityStorePort.Session borrowed,ActionCommand parent,

@@ -1,0 +1,114 @@
+{
+  "schema": "xar.java-owner.sway-saved-no-gameplay-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\SOURCE-READY-OWNER01.json",
+    "bytes": 5158,
+    "sha256": "7cbf567458e9aec1ff538c4e29b00adaa072dfe11d75dba003c4b7044f927899"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\OWNER-SPANS-COHERENT01.json",
+    "bytes": 14349,
+    "sha256": "8e7885686e574befbca6b24160c14edc9d8e0b3c263f697a885a73a858f1279e"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 15681,
+    "sha256": "b7dc085a7cdeefcd5dd2a7f3362c10ea1a6b2bb9f8a31a6acfc0e380b69411fd"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayCanonicalDomain.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 65480,
+        "sha256": "85e920cef61327e0a427762e9420a7ecdcdc1b1829ea4ff7749b6694f6d4fe2c"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 72602,
+        "sha256": "58d1c3ee7d54eb4660cadb7d09652fa402677b16f348f3948167eda09a22fc6a"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 72153,
+        "sha256": "d74b690227d5aec8f356f3471e5031cb44af386b1c0678201c3a83a51d2cbae5"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayOrdinaryComposite.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryComposite.java",
+        "bytes": 8570,
+        "sha256": "aa5881610ab2afad89b5fad8510f50209f375d34e9be8f8090baae29abf01c6b"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryComposite.java",
+        "bytes": 9241,
+        "sha256": "8b35a7c42beee9766bede8f484268c65b8fd12567f84db78287bb9b34eb9de87"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryComposite.java",
+        "bytes": 9241,
+        "sha256": "8b35a7c42beee9766bede8f484268c65b8fd12567f84db78287bb9b34eb9de87"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    }
+  ],
+  "production": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\QUALIFIED-PRODUCTION01.json",
+    "bytes": 15515,
+    "sha256": "948b30f1f9e8406345607cc004a5466a4fbc2a647bbc5b89b32ecb3652b3df60"
+  },
+  "source_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-independent-final-independent-review49\\SOURCE-REVIEW03.json",
+    "bytes": 10418,
+    "sha256": "e7e9ed0614566fc86c96c88c6f2d7be906d0080a24bc39b9553616c29ebc4b3d"
+  },
+  "contract_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-independent-final-independent-review49\\CONTRACT-REVIEW02.json",
+    "bytes": 6838,
+    "sha256": "e26f5d97e5d0033131bd157623664c976f6b4ea3c0e1ba71206117593feb2b7e"
+  },
+  "actual_diagnosis_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-independent-final-independent-review49\\DIAGNOSIS-REVIEW01.json",
+    "bytes": 9660,
+    "sha256": "43288790f62e085ac90ba18bd86102a7da0f8348f7d791957707a81922497585"
+  },
+  "model81": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\MODEL-REVIEW01.json",
+    "bytes": 2071,
+    "sha256": "c5fc42f2371ef45a93b0d1a14e5729ce520c87dc8a7487d9b5161dbcbf450321"
+  },
+  "actual564_to565": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-bootstrap-recovery48\\ORIGINAL564-NEXT565.json",
+    "bytes": 4105,
+    "sha256": "ec30c84818619f8ebb5ebb54d1c45d73d1548f7836f5803db6072c9a8108c0cd"
+  },
+  "actual564_to566": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\ACTUAL564-TERMINAL566-REVIEW01.json",
+    "bytes": 2336,
+    "sha256": "55b8c789379aa1b1a33878cc9cd855642d1e8ad7ec8cf9f0ae8cdd7156bf0923"
+  },
+  "runtime_original_packet": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-no-gameplay-recovery49\\ORIGINAL564-NEXT566.json",
+    "bytes": 7002,
+    "sha256": "ed733f0ed412b52615200ab86db53c73b3ae3abcc3899049e2afff50e58e0eaf"
+  },
+  "new_test_compile_or_RUN": 0,
+  "old_Test79_reused": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-saved-scheduler-data-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 11979,
+    "sha256": "acfd7a6058ae006de4b0df058134f03c06624d2df31d8e66539e4acbcdb7559e"
+  },
+  "whole_formal_software_cohort": false,
+  "actual_scope": "ActualNoGameplay566 only. No schedulerfullplancompletion/Ready/allNativezero/gameplay/day/SAVE or laterLOOP claimed.",
+  "runtime49": "Original private metadata proof and canonical terminal reached. History/Controller/fullBOOT/ordinaryLOOP still inprogress at cut, no secondGET or originalexecute.",
+  "actual_and_typed_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-independent-final-independent-review49\\ACTUAL-AND-TYPED-RESULT04.json",
+    "bytes": 16427,
+    "sha256": "a4baba92c95ea9ea53b3c12db0961dce0c0605b9b455b0d0e66879fcd4e890a2"
+  }
+}
