@@ -105,7 +105,9 @@ public final class OrdinarySwaySchedule {
         public Request {
             Objects.requireNonNull(source); Objects.requireNonNull(frame); Objects.requireNonNull(selectedStep);
             Objects.requireNonNull(root); Objects.requireNonNull(ledger); Objects.requireNonNull(state);
-            require(source.exactBuild().equals("1.20.0.4"), "scheduler source must identify exact supported build");
+            var supported = org.xar.ck3.control.contracts.ExactCk3Build.CK3_12004;
+            String originalBuild = source.exactBuild();
+            require(supported.version().equals(originalBuild) || supported.matches(supported.version(), originalBuild), "scheduler source must identify exact supported build");
         }
     }
 

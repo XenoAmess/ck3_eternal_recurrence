@@ -1,0 +1,67 @@
+{
+  "schema": "xar.java-owner.sway-build-published-source-index/v1",
+  "at_utc": "2026-11-05T00:22:09.895259+00:00",
+  "base_commit": "00a085aa51298c5298fecc61c9f74c318e0eac7f",
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-build-identity-formal01\\SOURCE-READY-PROJECTION01.json",
+    "bytes": 2737,
+    "sha256": "2a1dc1314ecc49dbca675d431aceb6806faeb5e61eb044b0feaccbb6a524d07f"
+  },
+  "formal_after": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-build-identity-formal01\\candidate01\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\vanilla\\schemesway\\OrdinarySwaySchedule.java",
+    "bytes": 15670,
+    "sha256": "c68966bce0be09dd821fc1187d5b538fbe9e8fd3a167e91c981fe30f1dc5986c"
+  },
+  "formal_before": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-build-identity-formal01\\before01\\java\\ck3-control\\g2-research\\src\\main\\java\\org\\xar\\ck3\\control\\vanilla\\schemesway\\OrdinarySwaySchedule.java",
+    "bytes": 15471,
+    "sha256": "1c9405e12dff280af5fbd7037bf49fe502f9796d2bba0a93adc5ddd4dd2a0f2a"
+  },
+  "whole_formal_outside_inverse_exact": true,
+  "raw_qualified_cohort": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\sway-scheduler-build-identity01\\QUALIFIED-COHORT01.json",
+    "bytes": 13866,
+    "sha256": "87526be6fb50331952990848e7376ab4f33899cf3a0911dd547d5928cb5b0c85"
+  },
+  "raw_production": {
+    "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/sway-scheduler-build-identity01/owner-candidate01/g2-research/src/main/java/org/xar/ck3/control/vanilla/schemesway/OrdinarySwaySchedule.java",
+    "bytes": 15749,
+    "sha256": "13ffcf8547f30bfe4f4a621c13b9f605f17ce077ef33ced0e003c7ca498d5f7b"
+  },
+  "raw_Test": {
+    "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/sway-scheduler-build-identity01/owner-test01/g2-research/src/test/java/org/xar/ck3/control/vanilla/schemesway/OrdinarySwayBuildSourceDataTest.java",
+    "bytes": 7636,
+    "sha256": "7658de888da30154ab7af79185cecafb5463217a5307c291fa0569d8375027c2"
+  },
+  "raw_model_reviews": {
+    "production": {
+      "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\sway-scheduler-build-identity01\\owner-candidate01\\MODEL-REVIEW01.json",
+      "bytes": 1725,
+      "sha256": "fe0a9984812ee2cbfbb7e6c9875de8383ba42d64eca20f1226aae1b720a55959"
+    },
+    "Test": {
+      "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/sway-scheduler-build-identity01/owner-test01/MODEL-REVIEW01.json",
+      "bytes": 4321,
+      "sha256": "f7d4b1751334135b6b0529c285088f826bb9a4c854a4743aa00b25f18b0da6d1"
+    }
+  },
+  "actual_XML": {
+    "path": "D:/ck3-state/resume91-m6-native/ordinary-p0-20261105/sway-scheduler-build-identity01/owner-test01/native-first01/reports-junit/TEST-junit-jupiter.xml",
+    "bytes": 42258,
+    "sha256": "05d74791e18b0c6500cf24022934c3fe78bc316a457f1d1a8e5e59e9ef875e13"
+  },
+  "exact_methods": [
+    "unknownAndUnsupportedBuildsKeepTheOriginalGuardAndNoStagedJob()",
+    "supportedBuildLabelsAndRuntimeFingerprintKeepOriginalSourceAndStage()"
+  ],
+  "all_named_qualified_references_rehashed": 39,
+  "raw_software": "1prodTU14class0 + 1TestTU2class0 + exact2P; no old green rerun",
+  "formal_combination": "NOT_RUN; preserve actor/target/import outside variant",
+  "Runtime_adopted": "NOT_HELD at publication cut",
+  "natural_M6": false,
+  "G2": "6/8",
+  "Game": 0,
+  "C_reads": 0,
+  "GET": 0,
+  "task": "RUNNING"
+}
