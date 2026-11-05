@@ -1,0 +1,90 @@
+{
+  "schema": "xar.java-owner.event-read-catalog-recovery-published-index/v1",
+  "at_utc": "2026-11-05T04:20:18.284702+00:00",
+  "base_commit": "5c71de88f13daa81035f5d720b5404ff678be8ab",
+  "projected_sources": [
+    {
+      "ready": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-read-reconciliation-role01\\FORMAL-SOURCE-READY01.json",
+        "bytes": 2414,
+        "sha256": "79849cffced8c36a85461e0c7f3fc5a1a58e94d7d1583eec06da1dade9886591"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-read-reconciliation-role01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootReconciliationAuthority.java",
+        "bytes": 74412,
+        "sha256": "5aa6ea2c4f00811451f440d7b8b9c2b57175d0be632950d92c13e68f2c6a1e50"
+      },
+      "actual_ready": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-read-reconciliation-role01\\SOURCE-READY-OWNER01.json",
+        "bytes": 2313,
+        "sha256": "a18f85dfc3cb350a2290143005577cd8f91c260acdca4a4c9c697568dfa2afb6"
+      },
+      "actual_shape": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-read-reconciliation-role01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+        "bytes": 180884,
+        "sha256": "9e0b268e1e6eaecb19d5a2bd57dbad14b6009e261b73be175c07883af09d5134"
+      }
+    },
+    {
+      "ready": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-family-recovery-decoder01\\FORMAL-SOURCE-READY01.json",
+        "bytes": 1472,
+        "sha256": "cfa01f7e64f70fc010a887af61c1e7d6399c5fdb7eba52eaa15f2ea18ae501dd"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-family-recovery-decoder01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\EventRuntimeInstaller.java",
+        "bytes": 74924,
+        "sha256": "7aad3f60fce3966e352093264210a15767e8c760d9a5726c227a95499e045374"
+      },
+      "actual_ready": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-family-recovery-decoder01\\SOURCE-READY-OWNER01.json",
+        "bytes": 2732,
+        "sha256": "f30e562dbf371e273776746b6a105091f0d21f499dd575efb521324e265c9f9b"
+      },
+      "actual_shape": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-family-recovery-decoder01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+        "bytes": 283733,
+        "sha256": "bd1506c5f8acf40772e5f8ef52cf26aeb1807f23495eab4f4c9c31d92f67611b"
+      }
+    }
+  ],
+  "formal_sources": [
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootReconciliationAuthority.java",
+      "bytes": 74412,
+      "sha256": "5aa6ea2c4f00811451f440d7b8b9c2b57175d0be632950d92c13e68f2c6a1e50"
+    },
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\EventRuntimeInstaller.java",
+      "bytes": 74924,
+      "sha256": "7aad3f60fce3966e352093264210a15767e8c760d9a5726c227a95499e045374"
+    }
+  ],
+  "RA_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\event-read-provenance-independent-review32\\SOURCE-REVIEW02.json",
+    "bytes": 4664,
+    "sha256": "9b90e8f8f55c8f00e949cd5784f85774a86d4ff42cf5e7832685cf9e61b257f8"
+  },
+  "family_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\event-binding-recovery-independent-review33\\SOURCE-REVIEW03.json",
+    "bytes": 4936,
+    "sha256": "6fc87b9650f8aa21333578ab18474b66c4952131ef1508b44738b4be076b6903"
+  },
+  "new_JUnit_RUN": 0,
+  "fake_Root_Family_fixture": false,
+  "Root_cold_v1_positive_or_settlement": false,
+  "formal_whole_reactor_qualification": false,
+  "actual33_loader": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-effect-binding-recovery33\\ACTUAL-LOADER33.json",
+    "bytes": 7198,
+    "sha256": "71412ad22b810a8b80dfc8155491fbaf33606746da8e2fba972b3fdba448b481"
+  },
+  "actual33_cut": "BOOT/head524",
+  "raw_actual_payload_committed": false,
+  "actual33_later_UNKNOWN525": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-effect-binding-recovery33\\FAILURE33-UNKNOWN525.json",
+    "bytes": 1671,
+    "sha256": "bfef24125bf6c3aa79b8153166df633c919688383081fde50a87c4c7ab6a6e15"
+  },
+  "actual33_observer_facts_pending_no_effect_credit": true
+}

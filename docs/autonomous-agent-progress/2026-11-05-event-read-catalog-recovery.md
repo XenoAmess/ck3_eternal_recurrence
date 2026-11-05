@@ -1,0 +1,15 @@
+# 恢复原EVENT的真实READ与已安装reader
+
+原事件521经过同命令的后继523／524仍UNKNOWN，完整command／body／deadline不改、0控制重发。Runtime31已越完整历史与Driver资格，后继523报READ不能重标Push；actual源码把literal锁在RootReconciliationAuthority.withObserved的lease发行前。freshRead与freshAfterAck入口只识别SAVE／resume／known pending，漏EVENT，不能先把此错误归给v1 cold回调。
+
+RA32仅在这两个角色组加入已部署strictEventRecovery(original)，保原正ACK／未结算限制和完整READ请求、响应、snapshot、custody、原ACK、跨连接时序及归档校验。Push禁止重标门和所有冷代码不变。单TU11类0／6.5886012秒，完整11结构全同；源码三span逆回原c40，独审9b90e8f8。没有新增privateRA软件fixture或重跑未触及的旧helper测试。
+
+Runtime32实际正常loader启动后，524的新精确reason变为no installed independent Native effect reader。actualRegistry.observe102在binding(op)==null直接Pending，还未调用observer。Root catalog的EVENT Family确已注册，但使用不带OperationDecoder的旧constructor：正常规划通过expectations显式issue，冷恢复没有该步，且active_event已null，不能靠重新规划／当前optioncount补binding。
+
+Installer33只给这个原Family补已有OperationDecoder overload，调用原EventActionPreparation.option严格语法，非法／无关操作返回empty。原source、preparer、同RootContext的NativeEventEffects和archived verifier工厂逐字保；不改Registry默认、不重装整个Installer、不查询当前窗口或重发选择，也不制造reader权限。单TU9类0／7.0956916秒；9类名／field／type不变，outer新增lambda及外部InnerClasses属性变化，其余8结构同，正常loader验收。独审6fc87b96；真Root构造短fixture NOT_HELD，不用generic假Family或镜像predicate补绿。
+
+两模型均完整stop：RA52为15.5497666秒／TTFT10.7734463秒，两个角色语义采纳、hunk位置机械修，诊断由owner补；Family53为8.3810458秒／TTFT4.8266825秒，decoder语义采用，raw catch缺变量及hunk计数由owner修。原稿没有借最终编译回授软件绿，无R2。formal两叶仅owned精确投影，保其它字节；actual／formal／完整reactor资格分开。
+
+actual32仅RA、actual33仅Installer分别由Runtime采用；33唯一GET200／5.6710018秒，同host97584，04:18:24.768284900Z新8c827235／restart11@36024b66 START，cut仅BOOT／head524。此次没有新控制、日或SAVE；原169eligible与8saved不混计。真实family lookup、NativeEventEffects、v1 Root、原事件SETTLE逐层待回执。后续live／archived provenance仍按真实Source API收束，不能以此两叶宣称全链已恢复；不为文档新增GET。
+
+后到实际33越bindingnull并进入真实NativeEventEffects的facts分支：04:20:36.048268900Z停出，canonical525仍UNKNOWN，reason为old event/pending instance remains or its later binding is unavailable。原command／body／deadline全同521，新证据为真实READ后态native383／date53162232／actor31254、active_event与pending均null。合并reason不证明旧event还在；完整Complete／semantic绑定的具体失败项仍待原件核定，不能仅凭null授APPLIED。Root v1 record／完整效果／SETTLE尚未通过，0控制／日／SAVE。

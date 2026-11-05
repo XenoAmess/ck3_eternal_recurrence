@@ -11,3 +11,5 @@ actual单TU18类首编0，6.5178033秒；18个实际类的fields／methods／syn
 模型完整stop15.3526583秒／TTFT12.2954339秒，新增两OR行原文语义采用；原hunk虚构上下文顺序且行数不合，owner按实际唯一位置机械修正，诊断词由owner修。无R2或半稿回授。旧a915委托已END，结构相同也不会自动复活旧委托；Runtime以正常loader启动后续唯一只读恢复，文档／Git不作前置。
 
 本页切点521仍UNKNOWN，原ACK／command／deadline保持，C22／169eligible／8saved不混计。正常loader、完整Driver采用、v1 Root、SETTLE和SAVE分别待实际回执，任务继续RUNNING，不为发表新增GET。
+
+后到实际31已越Driver私门，先在READ角色被拒；32越该literal后因已注册Family缺operation decoder而缺reader。两处最小源补及33正常loader切点见[READ／catalog恢复](2026-11-05-event-read-catalog-recovery.md)。这些后继不改本页原typed cut，Root／结算仍待实际。

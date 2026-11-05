@@ -157,6 +157,9 @@ public final class EventRuntimeInstaller {
                     var action=new RootExecutableBindings.ActionBinding(binding,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,
                             Optional.of(EventActionPreparation.EVENT_CAPABILITY),sources.nativeEffectsDecoder());
                     return new RootExecutableBindings.IssuedAction(action,NativeEventEffects.archivedVerifier(operation,sources.nativeEffects(),context.frameLoader(),material));
+                },operation->{
+                    try { return Optional.of(EventActionPreparation.option(operation)); }
+                    catch (IllegalArgumentException unrelated) { return Optional.empty(); }
                 });
         expectations=(request,operation,plan,trait)-> {
             StrictJson.require(NativeEventEffects.supports(operation),"non-event operations must use the actual shared command preparer, not event expected-value reconstruction");
