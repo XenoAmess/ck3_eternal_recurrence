@@ -1,0 +1,118 @@
+{
+  "schema": "xar.java-owner.event-readonly-cycle-replay-source-index/v1",
+  "at_utc": "2026-11-05T08:38:55.325143+00:00",
+  "production_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\SOURCE-READY-OWNER01.json",
+    "bytes": 2525,
+    "sha256": "a5bbc218975ce0b6b1d521b68d632464aff2d4cf8e579170ddfa92728b4cbc54"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\OWNER-SPANS01.json",
+    "bytes": 9977,
+    "sha256": "ff07f410266fd636d1d4884e51970a1c2cd2f355882ce37453f846459f8e7295"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 10629,
+    "sha256": "27454f61357158c6c4cac6372d5dee71efccb1f7dbea9a5cfe3db44f484a5a68"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/ContinuityBatchJournal.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 348340,
+        "sha256": "4c7e1bf106f4ce91f3d1d4adb376f1b70cccc8ca2f871b35b8f62c754b853b27"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 356449,
+        "sha256": "dc279c4b44eb040cbe71d2656740aa0f7bea3c27bf02eb5f40de2984ddfd92b0"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 355336,
+        "sha256": "928142c37dbe0cbff61e1cd357acaf181376d17c0946a313ae78d51e1bd76509"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "production_type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 558633,
+    "sha256": "6e82082a629af0cdd328d546b5d3abbc77fbb3779a510ebada0ef873c2d551c8"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\event-cycle-cold-replay-independent-review41\\SOURCE-REVIEW03.json",
+    "bytes": 5219,
+    "sha256": "00fcdc6d39c6638661b7121e191500a26be6abd0d846603c3a6be73b001e8957"
+  },
+  "model65_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\MODEL-REVIEW01.json",
+    "bytes": 565,
+    "sha256": "07252e5230bf99c1c8ff9fab394fcb830b8b41663f988aa58d344da7dec66151"
+  },
+  "new_test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\event-readonly-cycle-data-independent-test01\\SOURCE-READY-TEST01.json",
+    "bytes": 4232,
+    "sha256": "3fdcdb9bdbb5b239026e5a868eae59ffb3cad8c452540fa62f877d84a645d43d"
+  },
+  "test_source": {
+    "relative": "application/src/test/java/org/xar/ck3/control/application/session/PendingEventCompletionDataHostedTest.java",
+    "path": "D:\\ck3-state\\resume91-root\\event-readonly-cycle-data-independent-test01\\candidate01\\application\\src\\test\\java\\org\\xar\\ck3\\control\\application\\session\\PendingEventCompletionDataHostedTest.java",
+    "bytes": 22417,
+    "sha256": "ac440bb5dc322314dead4e13c1876f9a2a766b5c5aef11db3e8bd5dd6a4c3bd0"
+  },
+  "test_added_block": {
+    "path": "D:\\ck3-state\\resume91-root\\event-readonly-cycle-data-independent-test01\\OWNER-NEW-METHODS01.txt",
+    "bytes": 6681,
+    "sha256": "feb554ac200eb6ee470452b65be1293b122c6a1e86ac006a2668a17cb31004b5"
+  },
+  "actual_events": [
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-history-family-order-recovery39\\528-event.json",
+      "bytes": 91733,
+      "sha256": "994318eea481200178d2ceb0b088b0e4e93b9967ff9b7265300ff99f3e0ade63"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-history-family-order-recovery39\\529-event.json",
+      "bytes": 90622,
+      "sha256": "665576448299fd394829e4263ddff1903c873f185198ad6532a4800c432ab144"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-history-family-order-recovery39\\530-event.json",
+      "bytes": 94295,
+      "sha256": "f52e48916b729cea7a5d73b2600c02f832c33c25c9baa5e4a90274c7d4e682a7"
+    }
+  ],
+  "frozen_archive": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\settled-event38-data-originals\\CODEC-CLOSURE-MANIFEST38.json",
+    "bytes": 790854,
+    "sha256": "1e347bcf9ec8bb23b224771f6e2b82ff86d6cd1404f6fcb738ad103a3a002577"
+  },
+  "test_qualification": {
+    "path": "D:\\ck3-state\\resume91-root\\event-readonly-cycle-data-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 13353,
+    "sha256": "99a680c731ce8682bd4453e5f568d9ead53adf6287d266dc76e556fbd5e91bb6"
+  },
+  "test_independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\event-readonly-cycle-data-independent-test01\\INDEPENDENT-SOURCE-REVIEW01.json",
+    "bytes": 6310,
+    "sha256": "1c61c77d7fab1dbd048afac878ea79f5f5ed7a63b2851c6e59349660db3d3239"
+  },
+  "test_independent_result": {
+    "path": "D:\\ck3-state\\resume91-root\\event-readonly-cycle-data-independent-test01\\INDEPENDENT-RESULT02.json",
+    "bytes": 11733,
+    "sha256": "d1419ff31eafffced77a2ef19aeab6c600e6e44474da0cd591a802b393eec725"
+  },
+  "model66_review": {
+    "path": "D:\\ck3-state\\resume91-root\\event-readonly-cycle-data-independent-test01\\MODEL-AND-OWNER-REVIEW01.json",
+    "bytes": 2289,
+    "sha256": "5d0b51a989d9770056c05cae9217b23bf8fe7526a859679b2c0eb365b7dbf3eb"
+  },
+  "qualification": "Necessary1productionTU20classes0; newchangedTestTU3classes0/onlynew1P11negative,old2RUN0. Unissued staticDATA consumer only; private reducer/fullSEM/Root acceptance remains runtime.",
+  "formal_whole_source_software_cohort": false,
+  "actual41": "Runtime source adoption and actual same-game recovery are separate. No LOOP/SAVE acceptance at this publication cut.",
+  "new_control_saved_days": 0
+}
