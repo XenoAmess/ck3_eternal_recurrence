@@ -11,3 +11,6 @@ The first necessary two-TU compile failed because the newly added held callback 
 Model71 returned a complete response in19.9048527 seconds, TTFT7.2428865, reported54712+2299 tokens. Its new method used a one-argument lambda for the actual two-argument PlanningWork API and was rejected whole. The owner implementation was written before POST and uses the real two-argument callback; zero model method or literal text was adopted. The complete actual prefix contained the API; an initial message's task-size/hash navigation typo was corrected by the immutable canonical manifest and was not a model input error.
 
 Source, corrected typing and the formal source projection do not certify private planning use, original545 terminal, later LOOP or SAVE. Those remain Runtime's actual acceptance. Original commands, deadlines, canonical files and all historical frozen guards remain unchanged. See [exact sources and evidence](../maintenance/2026-11-05-sway-held-planning-sources.json).
+
+
+The final independent review03 confirms the exact final02 catch correction, both whole-source inverses and the original fresh interruption handling. It explicitly retains the earlier source-review miss and compiler failure. The bare corrected-source acceptance preceded Runtime45 adoption; the immutable detailed report followed and is indexed separately.

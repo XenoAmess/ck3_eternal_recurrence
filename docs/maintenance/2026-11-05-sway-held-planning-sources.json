@@ -105,5 +105,11 @@
     "bytes": 364378,
     "sha256": "8300941984a128b60c0c27aeb22b056301d9cd4b6d57b8c54bde6aa4bd006cd1"
   },
-  "shape_scope": "Same19names, newExecutor final callback/public overload and Installer volatile data/private current callback/synthetic/attrs; two record attributes remove FinancePacket. Existing non-synthetic signatures preserved, no new named class, normal Loader required; not redefine acceptance."
+  "shape_scope": "Same19names, newExecutor final callback/public overload and Installer volatile data/private current callback/synthetic/attrs; two record attributes remove FinancePacket. Existing non-synthetic signatures preserved, no new named class, normal Loader required; not redefine acceptance.",
+  "final_independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-held-planning-independent-review45\\SOURCE-REVIEW03.json",
+    "bytes": 8023,
+    "sha256": "0c32a702755b48678fbd6f852b01e1722584865d81fbbefd811caf023ce9357e"
+  },
+  "first_source_review_miss": "Original01 sourcePASS missed checked-exception legality. Final03 preserves that earlier cut and compilerRED, validates only the explicit new-catch removal plus whole2source inverses, actual IOException signatures, original fresh interruption handling and coherent19class first0."
 }
