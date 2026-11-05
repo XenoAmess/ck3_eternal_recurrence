@@ -421,7 +421,15 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         if (!supports(command)) return;
         try {
             Session original = context.borrowedSession(); requireCommandOrigin(original, command); String head = original.head().digest();
-            installed(command).observedAfter(command, attempt, pair, projected); unchanged(original, head);
+            EpisodeIncidentJournal journal=installedForObservation(original,command,attempt);
+            if(journal.legacyLookupRequired(command)) {
+                StrictJson.require(projected.result() instanceof ActionPorts.EffectObserved,"legacy after requires its real observed effect");
+                var observed=((ActionPorts.EffectObserved)projected.result()).observation();
+                StrictJson.require(observed.supportingEvidence().size()==1,"legacy first-rendered after requires its exact sole original effect basis");
+                RawJson proof=journal.prepareLegacyBinding(command,attempt,pair.before(),legacyCanonicalEvidence(original,command,attempt,observed.supportingEvidence()));
+                journal.observedAfterLegacy(command,attempt,pair,projected,proof);
+            } else journal.observedAfter(command, attempt, pair, projected);
+            unchanged(original, head);
         } catch (IOException failure) { throw new UncheckedIOException(failure); }
     }
     @Override public void recordUnsettled(ActionCommand command,ActionState.Attempt attempt,NativeEventEffects.UnsettledObservation observed) {
@@ -430,7 +438,12 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
             Session original=context.borrowedSession();requireCommandOrigin(original,command);String head=original.head().digest();
             // The sole coordinator archived this original ACK/UNKNOWN before invoking its observer.
             ExactRef dispatch=context.archive().withSession(original).referenceOf(observed.dispatch());
-            installed(command).observedUnsettled(command,attempt,observed,dispatch);unchanged(original,head);
+            EpisodeIncidentJournal journal=installedForObservation(original,command,attempt);
+            if(journal.legacyLookupRequired(command)) {
+                RawJson proof=journal.prepareLegacyBinding(command,attempt,observed.frames().before(),legacyCanonicalEvidence(original,command,attempt,List.of()));
+                journal.observedUnsettledLegacy(command,attempt,observed,dispatch,proof);
+            } else journal.observedUnsettled(command,attempt,observed,dispatch);
+            unchanged(original,head);
         } catch(IOException failure){throw new UncheckedIOException(failure);}
     }
 
@@ -516,6 +529,155 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         if (result == null) throw new IOException("Actual current full-frame incident scan has not initialized this physical Game");
         result.origin().requireEpisode(new Binding(command.before(), command.source(), command.sessionId())); return result;
     }
+    /** Opens only an existing same-episode original during the coordinator's issued read-only callback. */
+    private EpisodeIncidentJournal installedForObservation(Session same,ActionCommand command,ActionState.Attempt attempt)throws IOException {
+        synchronized(this){if(current!=null)return installed(command);}
+        org.xar.ck3.control.application.action.ActionReconciliationScope.requireIdentity(command,attempt);
+        requireCommandOrigin(same,command);var selected=scope(new Binding(command.before(),command.source(),command.sessionId()));
+        plainDirectory(selected.incidentRoot());plainDirectory(selected.scanRoot());
+        EpisodeIncidentJournal opened=EpisodeIncidentJournal.openOriginal(configuration(selected),EpisodeIncidentJournal.measure(selected.incidentRoot().resolve("EPISODE.json")));
+        opened.origin().requireEpisode(new Binding(command.before(),command.source(),command.sessionId()));replay(same,opened);
+        synchronized(this){if(current==null)current=opened;return installed(command);}
+    }
+    /** This JSON is DATA. Authority comes from the already active sole-coordinator reconciliation scope. */
+    private RawJson legacyCanonicalEvidence(Session same,ActionCommand command,ActionState.Attempt attempt,List<ExactRef> supports)throws IOException {
+        var identity=org.xar.ck3.control.application.action.ActionReconciliationScope.requireIdentity(command,attempt);
+        var guard=org.xar.ck3.control.application.action.ActionReconciliationScope.requireObservationGuard(command,attempt);
+        StrictJson.require(identity.driverRelation()==org.xar.ck3.control.application.action.ReconciliationIdentity.DriverRelation.EXACT,
+                "legacy EVENT recovery does not authorize a Driver history append");
+        var bound=context.archive().withSession(same);var original=bound.loadReceipt(identity.pending().originalReceipt());
+        var record=org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(same.head().state(),original,bound);
+        StrictJson.require(original.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown
+                &&java.util.Arrays.equals(org.xar.ck3.control.application.action.ActionCodec.encodeCommand(original.command()),org.xar.ck3.control.application.action.ActionCodec.encodeCommand(command))
+                &&org.xar.ck3.control.application.action.ActionTransitions.attempt(original.state()).filter(attempt::equals).isPresent(),
+                "legacy recovery requires its complete actual original UNKNOWN and Attempt");
+        var ack=original.ack().filter(org.xar.ck3.control.application.action.NativeActionPort.AckReceived::nativeOk)
+                .orElseThrow(()->new IOException("legacy EVENT recovery requires its retained actual accepted ACK"));
+        StrictJson.require(ack.outbound().isPresent()&&ack.requestId().equals(attempt.requestId()),"legacy recovery lost original outbound/ACK custody");
+        ack.custody().orElseThrow(()->new IOException("legacy recovery lacks actual ACK custody")).verify(ack,attempt.guard());
+        byte[] commandBytes=org.xar.ck3.control.application.action.ActionCodec.encodeCommand(command);
+        var canonical=org.xar.ck3.control.application.action.ActionCodec.decodeCommand(commandBytes);
+        ObjectNode row=StrictJson.object().put("schema",EpisodeIncidentJournal.LEGACY_BINDING_SCHEMA);
+        row.set("canonical_receipt_ref",identity.pending().originalReceipt().toJson());row.set("canonical_record_ref",record.toJson());
+        row.set("canonical_dispatch_ref",bound.referenceOf(ack).toJson());
+        row.put("canonical_command_base64",java.util.Base64.getEncoder().encodeToString(commandBytes));
+        row.put("canonical_command_sha256",original.bodySha256());row.put("canonical_arguments_sha256",DriverJson.sha256(DriverJson.encode(canonical.arguments())));
+        row.set("reconciliation_guard",org.xar.ck3.control.application.action.CommandOriginCodec.guard(guard));
+        StrictJson.require(supports.size()<=1,"legacy first-rendered observation has an unexpected material branch");
+        var evidence=row.putArray("observation_supporting_refs");supports.forEach(ref->evidence.add(ref.toJson()));
+        return new RawJson(StrictJson.canonical(row,MAX_BASIS));
+    }
+    /** Same verifier for live admission and cold side-evidence interpretation; the latter uses historical custody. */
+    private void verifyLegacyBinding(RawJson serialized) {
+        try {
+            Session same=context.borrowedSession();context.writer().requireSession(same);String head=same.head().digest();
+            ObjectNode row=(ObjectNode)StrictJson.parse(serialized.bytes(),MAX_BASIS);
+            var bound=context.archive().withSession(same);ExactRef receiptRef=ExactRef.fromJson(row.get("canonical_receipt_ref"));
+            var original=bound.loadReceipt(receiptRef);ActionCommand command=original.command();requireCommandOrigin(same,command);
+            var record=org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(same.head().state(),original,bound);
+            StrictJson.require(record.equals(ExactRef.fromJson(row.get("canonical_record_ref")))
+                    &&original.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown,
+                    "legacy proof is not its exact historical canonical UNKNOWN record");
+            var attempt=org.xar.ck3.control.application.action.ActionTransitions.attempt(original.state()).orElseThrow();
+            var ack=original.ack().filter(org.xar.ck3.control.application.action.NativeActionPort.AckReceived::nativeOk)
+                    .orElseThrow(()->new IOException("legacy proof lacks its actual accepted ACK"));
+            StrictJson.require(ack.outbound().isPresent()&&ack.requestId().equals(attempt.requestId())
+                    &&bound.referenceOf(ack).equals(ExactRef.fromJson(row.get("canonical_dispatch_ref"))),"legacy proof changed actual original dispatch/ACK");
+            ack.custody().orElseThrow(()->new IOException("legacy proof lacks actual ACK custody")).verify(ack,attempt.guard());
+            var guard=org.xar.ck3.control.application.action.CommandOriginCodec.guard(row.get("reconciliation_guard"));
+            StrictJson.require(guard.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Reconciliation,"actual reconciliation guard required");
+            var identity=guard.origin().requireReconciliation();
+            StrictJson.require(identity.driverRelation()==org.xar.ck3.control.application.action.ReconciliationIdentity.DriverRelation.EXACT
+                    &&identity.pending().originalReceipt().equals(receiptRef)&&identity.pending().actionId().equals(command.actionId())
+                    &&identity.pending().bodySha256().equals(original.bodySha256())&&identity.pending().requestId().equals(attempt.requestId()),
+                    "legacy proof changed its actual original pending identity");
+            // Live admission is checked by Journal.requireLegacyLive; stored proofs retain their own historical guard.
+            var after=context.reconciliation().verifyArchived(guard,bound,same,context.originals());
+            var before=org.xar.ck3.control.application.effects.RootGuardEvidence.loadFrame(attempt.guard(),bound,context.frameLoader());
+            var selected=scope(new Binding(command.before(),command.source(),command.sessionId()));
+            var journal=EpisodeIncidentJournal.openOriginal(configuration(selected),EpisodeIncidentJournal.measure(selected.incidentRoot().resolve("EPISODE.json")));
+            journal.verifyLegacyBindingData(serialized,command,before);
+            verifyLegacyEffectBasis(row,original,attempt,guard,before,after,bound);
+            StrictJson.require(after.identity().equals(identity.factual())&&after.source().equals(command.source())&&after.sessionId().equals(command.sessionId()),
+                    "legacy proof changed its actual historical physical after");
+            verifyLegacyProducer(command,before,row);
+            unchanged(same,head);
+        } catch(IOException failure){throw new UncheckedIOException(failure);}
+    }
+    private void verifyLegacyEffectBasis(ObjectNode proof,org.xar.ck3.control.application.action.ActionReceipt original,ActionState.Attempt attempt,
+            org.xar.ck3.control.application.action.GuardEvidence guard,Complete before,Complete after,ActionPorts.OutcomeArchive bound)throws IOException {
+        JsonNode supports=proof.get("observation_supporting_refs");StrictJson.require(supports!=null&&supports.isArray()&&supports.size()<=1,"bounded explicit legacy observation supports required");
+        if(supports.isEmpty())return;
+        ExactRef reference=ExactRef.fromJson(supports.get(0));RawJson raw=bound.loadMaterial(reference);
+        StrictJson.require(raw.bytes().length==reference.bytes()&&DriverJson.sha256(raw.bytes()).equals(reference.sha256()),"legacy effect basis original changed");
+        ObjectNode basis=(ObjectNode)StrictJson.parse(raw.bytes(),MAX_BASIS);
+        StrictJson.require(NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(basis.path("schema").asText())
+                &&original.bodySha256().equals(basis.path("command_body_sha256").asText())&&attempt.requestId().equals(basis.path("request_id").asText())
+                &&org.xar.ck3.control.application.action.CommandOriginCodec.guard(basis.get("reconciliation_guard")).equals(guard),"legacy effect basis changed canonical command/request/guard");
+        var initial=NativeEffectEvidence.basis(before);var ending=NativeEffectEvidence.basis(after);
+        StrictJson.require(initial.nativeFrame().equals(ExactRef.fromJson(basis.path("before").get("native_frame")))
+                &&initial.driverFacts().equals(ExactRef.fromJson(basis.path("before").get("driver_facts")))
+                &&ending.nativeFrame().equals(ExactRef.fromJson(basis.path("after").get("native_frame")))
+                &&ending.driverFacts().equals(ExactRef.fromJson(basis.path("after").get("driver_facts")))
+                &&basis.path("independent_reads").isArray()&&basis.path("independent_reads").isEmpty()
+                &&basis.path("supporting_materials").isArray()&&basis.path("supporting_materials").isEmpty(),"legacy first-rendered basis changed original frames or gained a material-query branch");
+        ExactRef compatible=ExactRef.fromJson(basis.get("compatible_material"));RawJson retained=bound.loadMaterial(compatible);
+        StrictJson.require(retained.bytes().length==compatible.bytes()&&DriverJson.sha256(retained.bytes()).equals(compatible.sha256()),"legacy original compatible result changed");
+        // Verification-only proposal DATA. It is never appended, published, or treated as a canonical settlement.
+        var command=original.command();
+        var provenance=new org.xar.ck3.control.application.action.ObservationProvenance.Push(after.identity().frame().snapshotId(),
+                after.identity().frame().identity().nativeRevision(),after.originalEvidence());
+        var snapshot=new org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.BoundSnapshot(
+                after.identity(),after.source(),after.sessionId(),after.semantic(),provenance,after.observedAt(),after.originalEvidence());
+        var actual=org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.project(command.before(),command.source(),command.sessionId(),
+                command.expected(),command.arguments(),snapshot).orElseThrow(()->new IOException("legacy actual after does not prove the original complete event postcondition"));
+        var effect=new ActionState.EffectObservation(after.identity(),after.source(),after.sessionId(),command.expected().observerSchema(),actual,
+                provenance,after.observedAt(),after.originalEvidence(),List.of(reference));
+        var applied=new ActionState.Applied(effect);var ack=original.ack().orElseThrow();
+        org.xar.ck3.control.application.action.ActionEffects.validate(command,attempt,ack,applied);
+        var proposal=new org.xar.ck3.control.application.action.ActionReceipt(original.version(),original.sequence(),command,original.bodySha256(),
+                new ActionState.Settled(attempt,ack,applied));
+        var verifier=context.bindings().actualArchivedVerifier(command.operation())
+                .orElseThrow(()->new IOException("legacy original event has no actual installed archive semantic verifier"));
+        // This installed verifier replays NativeEventEffects, all actual scalar fields, and whole compatible bytes.
+        verifier.verifier().verify(context.borrowedSession().head(),proposal,bound);
+        var rebuilt=NativeEffectEvidence.load(proposal,bound,context.frameLoader());
+        StrictJson.require(rebuilt.compatibleResult().equals(retained),"legacy semantic replay changed the complete original compatible result");
+    }
+    private void verifyLegacyProducer(ActionCommand command,Complete before,ObjectNode proof)throws IOException {
+        ObjectNode captured=read(ExactRef.fromJson(proof.get("original_before")),MAX_BASIS);
+        ObjectNode core=(ObjectNode)captured.get("original_registry_decision");
+        StrictJson.require(core!=null&&core.isObject()&&core.get("active_event") instanceof ObjectNode,"legacy capture lost its complete original registry decision");
+        ObjectNode snapshot=(ObjectNode)DriverJson.toNode(before.semantic());
+        ObjectNode originalArguments=(ObjectNode)DriverJson.toNode(command.arguments());
+        StrictJson.require(originalArguments.get("active_event") instanceof ObjectNode&&snapshot.get("active_event") instanceof ObjectNode,
+                "legacy original normalized full frame lost its native event summary");
+        ObjectNode summary=((ObjectNode)originalArguments.get("active_event")).deepCopy();
+        summary.remove(List.of("selected_option_number","selected_native_option_index","selected_rendered_index","semantic_optimal","source_registry_known","source_knowledge_status"));
+        StrictJson.require(summary.equals(snapshot.get("active_event")),"legacy original normalized native summary differs from its complete producer input");
+        var frame=before.identity().frame();
+        snapshot.put("snapshot_id",frame.snapshotId()).put("revision",frame.revision()).put("native_revision",frame.identity().nativeRevision())
+                .put("date_raw",frame.identity().dateRaw()).put("episode_run_id",frame.episodeRunId());
+        ObjectNode diagnostics=snapshot.get("diagnostics") instanceof ObjectNode node?node:snapshot.putObject("diagnostics");
+        diagnostics.put("bridge_pid",before.identity().game().pid()).put("connection_generation",before.connectionGeneration());
+        var observations=new org.xar.ck3.control.application.planning.PlanningObservation(
+                OpportunityJson.object(DriverJson.fromNode(snapshot),"actual legacy original planning snapshot"),List.of(),
+                Set.of(command.operation(),new org.xar.ck3.control.application.action.OperationKey(org.xar.ck3.control.application.planning.events.RegisteredEventCore.EVENT_QUERY)),
+                Set.of(),Optional.empty(),List.of(),Optional.empty(),Optional.empty(),false);
+        var request=new org.xar.ck3.control.application.planning.PlanningRequest(command.before(),command.source(),command.sessionId(),command.deadline(),observations);
+        var previous=new org.xar.ck3.control.application.planning.OrdinaryPolicy.Draft(core.path("policy").asText(),core.path("phase").asText(),core.path("reason").asText(),
+                org.xar.ck3.control.application.planning.OrdinaryPolicy.Kind.FOREGROUND,Optional.empty(),org.xar.ck3.control.application.planning.OrdinaryPolicy.Purpose.READ_ONLY,
+                Optional.empty(),OpportunityJson.object(DriverJson.fromNode(core),"original captured registry decision"));
+        var validator=org.xar.ck3.control.nativebridge.capabilities.events.EventWindowService.validator(
+                ignored->org.xar.ck3.control.nativebridge.capabilities.events.EventWindowModels.Build.CROZIER4);
+        var produced=org.xar.ck3.control.application.planning.events.EventPolicies.replayLegacyFirstDisplayed(request,previous,
+                prepared.baseConfiguration().trustedInteractions(),validator,command.expected());
+        StrictJson.require(produced.arguments().equals(command.arguments()),"legacy complete producer arguments differ from canonical original");
+        var producedBody=DriverJson.object(org.xar.ck3.control.application.action.ActionCodec.encodeCommand(produced),org.xar.ck3.control.application.action.ActionCodec.MAX_COMMAND_BYTES)
+                .with("action_id",new OpportunityJson.Text(command.actionId()));
+        StrictJson.require(java.util.Arrays.equals(org.xar.ck3.control.application.driver.PublicDataJson.encodeTyped(producedBody).bytes(),
+                org.xar.ck3.control.application.action.ActionCodec.encodeCommand(command)),"legacy complete producer command projection differs from canonical original");
+    }
     private static boolean supports(ActionCommand command) {
         boolean event = command.arguments().get("unhandled_event_fallback") instanceof OpportunityJson.Obj;
         boolean interaction = command.arguments().get("unhandled_interaction_fallback") instanceof OpportunityJson.Obj;
@@ -553,7 +715,7 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
     }
     private EpisodeIncidentJournal.Configuration configuration(IncidentJournalLayout.Scope scope) {
         return new EpisodeIncidentJournal.Configuration(scope.incidentRoot(), scope.scanRoot(), context.clock(),
-                prepared.baseConfiguration().io(), prepared.baseConfiguration().trustedInteractions());
+                prepared.baseConfiguration().io(), prepared.baseConfiguration().trustedInteractions(), Optional.of(this::verifyLegacyBinding));
     }
     private void createScope(IncidentJournalLayout.Scope scope) throws IOException {
         for (Path path : List.of(scope.incidentRoot(), scope.scanRoot())) {

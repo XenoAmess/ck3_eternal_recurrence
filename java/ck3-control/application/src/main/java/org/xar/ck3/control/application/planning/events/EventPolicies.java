@@ -412,6 +412,21 @@ public final class EventPolicies {
         plan.put("option_number", number); plan.put("native_option_index", nativeIndex); plan.put("rendered_index", rendered);
         return plan;
     }
+    /** Pure replay of an already issued command's complete first-rendered arguments. No read or dispatch authority. */
+    public static ActionCommand replayLegacyFirstDisplayed(PlanningRequest request, OrdinaryPolicy.Draft previous,
+            Optional<TrustedEventSourceContext> trusted, RegisteredEventCore.ContextValidator validator, ExpectedPostcondition originalExpected) {
+        StrictJson.require(trusted.isPresent(), "legacy event replay requires the actual trusted stock context");
+        trusted.orElseThrow().verifyCurrentRoots();
+        OrdinaryPolicy.Decision result = continuation(request, previous, trusted,
+                (actual, operation, plan, material) -> {
+                    StrictJson.require(originalExpected.before().equals(actual.before()) && originalExpected.source().equals(actual.source())
+                            && material.isEmpty(), "legacy replay cannot create another original postcondition");
+                    return Optional.of(originalExpected);
+                }, validator, (actual, plan) -> { throw new IllegalArgumentException("legacy replay cannot issue another capture"); });
+        StrictJson.require(result instanceof OrdinaryPolicy.Replace && ((OrdinaryPolicy.Replace)result).draft().command().isPresent(),
+                "legacy replay did not reproduce one complete existing command");
+        return ((OrdinaryPolicy.Replace)result).draft().command().orElseThrow();
+    }
     private static OrdinaryPolicy.Decision propose(PlanningRequest request, JsonNode rawPlan, NativeExpectationPort observations,
             Optional<PoetTraitOutcome.Expectation> material, EventIncidentCapturePort incidentCapture) {
         if (!rawPlan.isObject()) return incomplete("domain producer returned no object proposal");

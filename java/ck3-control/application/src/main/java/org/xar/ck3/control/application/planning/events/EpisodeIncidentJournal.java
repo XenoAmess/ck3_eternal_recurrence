@@ -63,6 +63,9 @@ public final class EpisodeIncidentJournal {
     private static final String AFTER_INDEX_SCHEMA = "xar.episode-incident-after-index/v2";
     private static final String LEGACY_AFTER_INDEX_SCHEMA = "xar.episode-incident-after-index/v1";
     private static final String UNSETTLED_SCHEMA = "xar.episode-incident-unsettled-observation/v1";
+    public static final String LEGACY_BINDING_SCHEMA = "xar.episode-incident-legacy-command-binding/v1";
+    private static final String LEGACY_RECOVERY_AFTER_SCHEMA = "xar.episode-incident-after-index/v3";
+    private static final String LEGACY_RECOVERY_UNSETTLED_SCHEMA = "xar.episode-incident-unsettled-observation/v2";
     private static final int MAX_METADATA = 1 << 20;
     // Complete incident bodies stay within the existing material cap; scan inventory remains separately bounded.
     private static final int MAX_BODY = FullJsonTree.MAXIMUM_BYTES;
@@ -74,10 +77,13 @@ public final class EpisodeIncidentJournal {
     @FunctionalInterface public interface IoGuard { void require(long pendingBytes) throws IOException; }
     @FunctionalInterface public interface ProgressOriginal { ExactRef preserve() throws IOException; }
     public record Configuration(Path incidentRoot, Path scanRoot, Clock clock, IoGuard io,
-            Optional<TrustedEventSourceContext> trustedInteractions) {
+            Optional<TrustedEventSourceContext> trustedInteractions, Optional<java.util.function.Consumer<RawJson>> legacyVerifier) {
+        public Configuration(Path incidentRoot, Path scanRoot, Clock clock, IoGuard io, Optional<TrustedEventSourceContext> trustedInteractions) {
+            this(incidentRoot,scanRoot,clock,io,trustedInteractions,Optional.empty());
+        }
         public Configuration {
             incidentRoot = absolute(incidentRoot); scanRoot = absolute(scanRoot);
-            Objects.requireNonNull(clock); Objects.requireNonNull(io); Objects.requireNonNull(trustedInteractions);
+            Objects.requireNonNull(clock); Objects.requireNonNull(io); Objects.requireNonNull(trustedInteractions);Objects.requireNonNull(legacyVerifier);
             if (incidentRoot.equals(scanRoot) || scanRoot.startsWith(incidentRoot) || incidentRoot.startsWith(scanRoot))
                 throw new IllegalArgumentException("Distinct configured incident and scan roots required");
         }
@@ -299,6 +305,19 @@ public final class EpisodeIncidentJournal {
     /** Called only by the actual observer after independent evidence has been durably archived. It performs no native query. */
     public void observedAfter(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
             NativeEffectRegistry.Projected projected) {
+        observedAfterBound(command,attempt,pair,projected,Optional.empty());
+    }
+    public void observedAfterLegacy(ActionCommand command,ActionState.Attempt attempt,NativeEffectSnapshots.Pair pair,
+            NativeEffectRegistry.Projected projected,RawJson proof)throws IOException {
+        requireLegacyLive(command,attempt,pair,proof);
+        ObjectNode data=object(StrictJson.parse(proof.bytes(),MAX_METADATA));var supports=new ArrayList<ExactRef>();
+        for(JsonNode ref:data.get("observation_supporting_refs"))supports.add(ExactRef.fromJson(ref));
+        require(projected.result() instanceof ActionPorts.EffectObserved&&supports.size()==1
+                &&((ActionPorts.EffectObserved)projected.result()).observation().supportingEvidence().equals(supports),"legacy proof changed the actual effect supporting closure");
+        observedAfterBound(command,attempt,pair,projected,Optional.of(proof));
+    }
+    private void observedAfterBound(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair,
+            NativeEffectRegistry.Projected projected, Optional<RawJson> legacy) {
         if (!handles(command)) return;
         try {
             StrictJson.require(projected.result() instanceof ActionPorts.EffectObserved && projected.compatibleResult().isPresent(), "Independent observed effect required for incident after");
@@ -308,7 +327,7 @@ public final class EpisodeIncidentJournal {
                     && pair.after().sessionId().equals(command.sessionId()) && !effect.supportingEvidence().isEmpty(), "Incident after lost original frame/evidence binding");
             for (ExactRef source : effect.supportingEvidence()) verifyExternal(source);
             verifyExternal(pair.after().originalEvidence());
-            Ticket ticket = existing(command);
+            Ticket ticket = legacy.isPresent()?legacyTicket(legacy.orElseThrow(),command):existing(command);
             locked(() -> {
                 Path afterIndex = configured.incidentRoot().resolve(ticket.incidentId() + ".after-index.json");
                 if (Files.exists(afterIndex, LinkOption.NOFOLLOW_LINKS)) {
@@ -344,12 +363,13 @@ public final class EpisodeIncidentJournal {
                     raw = InteractionHostJson.encodeReceipt(InteractionHostJson.projectReceipt(input));
                 }
                 ExactRef after = write(configured, configured.incidentRoot().resolve(ticket.incidentId() + ".after.json"), raw);
-                ObjectNode index = binding(ticket.origin()); index.put("schema", AFTER_INDEX_SCHEMA).put("incident_id", ticket.incidentId())
+                ObjectNode index = binding(ticket.origin()); index.put("schema", legacy.isPresent()?LEGACY_RECOVERY_AFTER_SCHEMA:AFTER_INDEX_SCHEMA).put("incident_id", ticket.incidentId())
                         .put("independent_postcondition_verified", true).put("legacy_body_scope", "original_reply_ack_and_response_assessment");
                 index.set("before_ref", ticket.before().toJson()); index.set("after_ref", after.toJson());
                 index.set("after_observation", ProposalLifecycleCodec.observation(pair.after().identity())); index.set("after_frame", pair.after().originalEvidence().toJson());
                 var evidence = index.putArray("supporting_refs"); effect.supportingEvidence().forEach(ref -> evidence.add(ref.toJson()));
-                Optional<RawJson> policyInput=EventIncidentReceipt.prepare(indexedArguments(command,object(read(ticket.index()))),projected.compatibleResult().orElseThrow(),ticket.before(),after,new RawJson(raw));
+                Optional<RawJson> policyInput=legacy.isPresent()?Optional.empty():EventIncidentReceipt.prepare(indexedArguments(command,object(read(ticket.index()))),projected.compatibleResult().orElseThrow(),ticket.before(),after,new RawJson(raw));
+                if(legacy.isPresent())index.set("legacy_command_binding",StrictJson.parse(legacy.orElseThrow().bytes(),MAX_METADATA));
                 if(policyInput.isPresent())index.set("policy_receipt_input",StrictJson.parse(policyInput.orElseThrow().bytes(),MAX_METADATA));else index.putNull("policy_receipt_input");
                 // A mismatch must remain inspectable and unresolved. The coordinator already converts
                 // this verifier's failure into UNKNOWN; no event selection is submitted again.
@@ -362,6 +382,18 @@ public final class EpisodeIncidentJournal {
      */
     public ExactRef observedUnsettled(ActionCommand command,ActionState.Attempt attempt,
             NativeEventEffects.UnsettledObservation actual,ExactRef originalDispatch)throws IOException {
+        return observedUnsettledBound(command,attempt,actual,originalDispatch,Optional.empty());
+    }
+    public ExactRef observedUnsettledLegacy(ActionCommand command,ActionState.Attempt attempt,
+            NativeEventEffects.UnsettledObservation actual,ExactRef originalDispatch,RawJson proof)throws IOException {
+        requireLegacyLive(command,attempt,actual.frames(),proof);
+        ObjectNode data=object(StrictJson.parse(proof.bytes(),MAX_METADATA));
+        require(data.path("observation_supporting_refs").isArray()&&data.path("observation_supporting_refs").isEmpty()
+                &&originalDispatch.equals(ExactRef.fromJson(data.get("canonical_dispatch_ref"))),"legacy unsettled diagnostic changed its original dispatch or gained effect support");
+        return observedUnsettledBound(command,attempt,actual,originalDispatch,Optional.of(proof));
+    }
+    private ExactRef observedUnsettledBound(ActionCommand command,ActionState.Attempt attempt,
+            NativeEventEffects.UnsettledObservation actual,ExactRef originalDispatch,Optional<RawJson> legacy)throws IOException {
         require(handles(command),"actual captured event/interaction required");
         var pair=actual.frames();require(actual.dispatch().requestId().equals(attempt.requestId())
                 &&pair.before().identity().equals(command.before())&&pair.before().source().equals(command.source())
@@ -371,7 +403,7 @@ public final class EpisodeIncidentJournal {
                 &&pair.after().source().equals(command.source())&&pair.after().sessionId().equals(command.sessionId()),"unsettled observation crossed its actual original command/Game/source");
         verifyExternal(originalDispatch);var initial=NativeEffectEvidence.basis(pair.before());var ending=NativeEffectEvidence.basis(pair.after());
         for(ExactRef ref:List.of(initial.nativeFrame(),initial.driverFacts(),ending.nativeFrame(),ending.driverFacts()))verifyExternal(ref);
-        Ticket ticket=existing(command);
+        Ticket ticket=legacy.isPresent()?legacyTicket(legacy.orElseThrow(),command):existing(command);
         return locked(()->{
             Path path=configured.incidentRoot().resolve(ticket.incidentId()+".unsettled.json");
             ObjectNode beforeIndex=object(read(ticket.index()));
@@ -383,8 +415,8 @@ public final class EpisodeIncidentJournal {
             ObjectNode old=object(object(DriverJson.toNode(pair.before().semantic(), DriverJson.MAX_NATIVE_BYTES)).get(field));
             JsonNode oldId=old.get("instance_id"),next=object(DriverJson.toNode(pair.after().semantic(), DriverJson.MAX_NATIVE_BYTES)).get(field);
             require(oldId!=null&&oldId.isIntegralNumber(),"original full native instance required");
-            ObjectNode row=binding(ticket.origin());row.put("schema",UNSETTLED_SCHEMA).put("incident_id",ticket.incidentId()).put("kind",ticket.kind().name())
-                    .put("action_id",command.actionId()).put("arguments_sha256",digest(DriverJson.encode(indexedArguments(command,beforeIndex))))
+            ObjectNode row=binding(ticket.origin());row.put("schema",legacy.isPresent()?LEGACY_RECOVERY_UNSETTLED_SCHEMA:UNSETTLED_SCHEMA).put("incident_id",ticket.incidentId()).put("kind",ticket.kind().name())
+                    .put("action_id",command.actionId()).put("arguments_sha256",legacy.isPresent()?text(beforeIndex,"arguments_sha256"):digest(DriverJson.encode(indexedArguments(command,beforeIndex))))
                     .put("request_id",attempt.requestId()).put("observation_status","UNSETTLED").put("reason",actual.reason())
                     .put("independent_postcondition_verified",false).put("replay_allowed",false).put("observed_at_utc",pair.after().observedAt().toString());
             row.set("before_ref",ticket.before().toJson());row.set("before_frame",initial.nativeFrame().toJson());row.set("before_driver_facts",initial.driverFacts().toJson());
@@ -397,16 +429,19 @@ public final class EpisodeIncidentJournal {
             if(actual.dispatch() instanceof NativeActionPort.AckReceived ack) {
                 row.put("dispatch_kind","ACK_RECEIVED").put("native_ok",ack.nativeOk());
             } else row.put("dispatch_kind",actual.dispatch() instanceof NativeActionPort.Unknown?"UNKNOWN":"REJECTED_BEFORE_DISPATCH");
+            if(legacy.isPresent())row.set("legacy_command_binding",StrictJson.parse(legacy.orElseThrow().bytes(),MAX_METADATA));
             validateUnsettled(row,beforeIndex,ticket.before(),ticket.incidentId());return write(configured,path,encode(row));
         });
     }
     private void validateUnsettled(ObjectNode row,ObjectNode beforeIndex,ExactRef before,String id)throws IOException {
-        StrictJson.object(row,Set.of("session_id","origin","source","schema","incident_id","kind","action_id","arguments_sha256","request_id","observation_status","reason",
+        boolean legacy=LEGACY_RECOVERY_UNSETTLED_SCHEMA.equals(text(row,"schema"));
+        var fields=new java.util.HashSet<>(Set.of("session_id","origin","source","schema","incident_id","kind","action_id","arguments_sha256","request_id","observation_status","reason",
                 "independent_postcondition_verified","replay_allowed","observed_at_utc","before_ref","before_frame","before_driver_facts","after_frame","after_driver_facts",
                 "after_observation","original_dispatch_ref","original_instance_id","original_instance_present","native_ok","dispatch_kind"));
+        if(legacy)fields.add("legacy_command_binding");StrictJson.object(row,fields);
         StrictJson.require(row.get("independent_postcondition_verified").isBoolean()&&!row.get("independent_postcondition_verified").booleanValue()
                 &&row.get("replay_allowed").isBoolean()&&!row.get("replay_allowed").booleanValue(), "unsettled diagnostic changed or gained effect/replay credit");
-        require(UNSETTLED_SCHEMA.equals(text(row,"schema"))&&id.equals(text(row,"incident_id"))&&"UNSETTLED".equals(text(row,"observation_status"))
+        require((legacy||UNSETTLED_SCHEMA.equals(text(row,"schema")))&&id.equals(text(row,"incident_id"))&&"UNSETTLED".equals(text(row,"observation_status"))
                 &&ExactRef.fromJson(row.get("before_ref")).equals(before)&&text(row,"action_id").equals(text(beforeIndex,"action_id"))
                 &&text(row,"arguments_sha256").equals(text(beforeIndex,"arguments_sha256"))&&text(row,"kind").equals(text(beforeIndex,"kind")),"unsettled diagnostic changed or gained effect/replay credit");
         episode.requireEpisode(decodeBinding(row));StrictJson.text(row.get("request_id"));StrictJson.text(row.get("reason"));StrictJson.utc(text(row,"observed_at_utc"));
@@ -418,6 +453,7 @@ public final class EpisodeIncidentJournal {
         require(after.machineId().equals(origin.before().machineId())&&after.game().equals(origin.before().game())
                 &&after.frame().episodeRunId().equals(origin.before().frame().episodeRunId()),"unsettled actual after crossed Game/episode");
         for(String key:List.of("before_frame","before_driver_facts","after_frame","after_driver_facts","original_dispatch_ref"))verifyExternal(ExactRef.fromJson(row.get(key)));
+        if(legacy)verifyStoredLegacy(row,beforeIndex,before,"after_frame");
     }
     /** Reads actual incident originals; no Driver history or absent directory is an empty scan. */
     public Scan scan(Binding actual) throws IOException { return scan(actual, Optional.empty()); }
@@ -617,6 +653,157 @@ public final class EpisodeIncidentJournal {
             return null;
         });
     }
+    private static final Set<String> LEGACY_FIELDS=Set.of("schema","episode_ref","scan_ref","original_index","original_before",
+            "canonical_receipt_ref","canonical_record_ref","canonical_dispatch_ref","canonical_command_base64","canonical_command_sha256",
+            "canonical_arguments_sha256","recorded_arguments_sha256","reconciliation_guard","observation_supporting_refs");
+    private static boolean legacyPhase(ActionCommand command) {
+        if(!(command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay)
+                ||!new OpportunityJson.Text("active_event_unhandled_first_rendered_option").equals(command.arguments().get("phase"))
+                ||!command.operation().value().matches("select-event-option-[1-9][0-9]{0,8}"))return false;
+        if(!(command.arguments().get("unhandled_event_fallback") instanceof OpportunityJson.Obj capture))return false;
+        return new OpportunityJson.Text("user-authorized-capture-then-first-rendered-option").equals(capture.get("policy"))
+                &&new OpportunityJson.Bool(false).equals(capture.get("registry_known"))
+                &&capture.get("source_knowledge") instanceof OpportunityJson.Obj knowledge
+                &&new OpportunityJson.Text("unknown").equals(knowledge.get("status"));
+    }
+    /** Absence only: corrupt/ambiguous existing paths never enter semantic compatibility. */
+    public boolean legacyLookupRequired(ActionCommand command)throws IOException {
+        if(!legacyPhase(command))return false;
+        var canonical=incidentArguments(command);Path selected=originalIndexPath(command,canonical);
+        return Files.notExists(selected,LinkOption.NOFOLLOW_LINKS)
+                &&Files.notExists(configured.incidentRoot().resolve(incidentId(command.actionId(),digest(DriverJson.encode(command.arguments())))+".before-index.json"),LinkOption.NOFOLLOW_LINKS);
+    }
+    public RawJson prepareLegacyBinding(ActionCommand command,ActionState.Attempt attempt,
+            org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete before,RawJson canonicalEvidence)throws IOException {
+        require(legacyPhase(command)&&legacyLookupRequired(command),"legacy compatibility is restricted to an absent exact unhandled EVENT original");
+        var identity=org.xar.ck3.control.application.action.ActionReconciliationScope.requireIdentity(command,attempt);
+        var guard=org.xar.ck3.control.application.action.ActionReconciliationScope.requireObservationGuard(command,attempt);
+        require(identity.driverRelation()==org.xar.ck3.control.application.action.ReconciliationIdentity.DriverRelation.EXACT,"legacy EVENT history append is not authorized");
+        ObjectNode proof=object(StrictJson.parse(canonicalEvidence.bytes(),MAX_METADATA));
+        require(ExactRef.fromJson(proof.get("canonical_receipt_ref")).equals(identity.pending().originalReceipt())
+                &&org.xar.ck3.control.application.action.CommandOriginCodec.guard(proof.get("reconciliation_guard")).equals(guard),"legacy canonical evidence did not come from this issued observation");
+        Scan pinned=scan(new Binding(command.before(),command.source(),command.sessionId()));
+        List<ExactRef> candidates=new ArrayList<>();
+        for(ExactRef ref:pinned.originals())if(ref.path().endsWith(".before-index.json")) {
+            ObjectNode row=object(read(ref));
+            if(command.actionId().equals(row.path("action_id").asText()))candidates.add(ref);
+        }
+        require(candidates.size()==1,"one exact original in the fully pinned legacy scan required");
+        ExactRef index=candidates.getFirst();ObjectNode row=object(read(index));ExactRef oldBefore=ExactRef.fromJson(row.get("before_ref"));
+        proof.set("episode_ref",episodeRef.toJson());proof.set("scan_ref",pinned.indexRef().toJson());
+        proof.set("original_index",index.toJson());proof.set("original_before",oldBefore.toJson());proof.put("recorded_arguments_sha256",text(row,"arguments_sha256"));
+        RawJson result=new RawJson(StrictJson.canonical(proof,MAX_METADATA));
+        verifyLegacyBindingData(result,command,before);verifyLegacyAuthority(result);
+        for(ExactRef ref:pinned.originals())verifyExternal(ref);verifyExternal(pinned.indexRef());verifyEpisode();
+        return result;
+    }
+    /** Pure original DATA checking. It does not enter a reconciliation scope or issue an effect/permit. */
+    public void verifyLegacyBindingData(RawJson serialized,ActionCommand command,
+            org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete before)throws IOException {
+        require(legacyPhase(command),"legacy recovery is not a dedicated policy, interaction or mandatory receipt exemption");
+        ObjectNode proof=StrictJson.object(StrictJson.parse(serialized.bytes(),MAX_METADATA),LEGACY_FIELDS);
+        require(LEGACY_BINDING_SCHEMA.equals(text(proof,"schema")),"versioned legacy compatibility proof required");
+        byte[] encoded=java.util.Base64.getDecoder().decode(text(proof,"canonical_command_base64"));
+        require(encoded.length>0&&encoded.length<=ActionCodec.MAX_COMMAND_BYTES
+                &&java.util.Base64.getEncoder().encodeToString(encoded).equals(text(proof,"canonical_command_base64"))
+                &&java.util.Arrays.equals(encoded,ActionCodec.encodeCommand(command))
+                &&digest(encoded).equals(text(proof,"canonical_command_sha256"))
+                &&digest(DriverJson.encode(incidentArguments(command))).equals(text(proof,"canonical_arguments_sha256")),"legacy proof changed the complete canonical original command");
+        require(before.identity().equals(command.before())&&before.source().equals(command.source())&&before.sessionId().equals(command.sessionId()),"legacy actual before differs from canonical original");
+        for(String field:List.of("canonical_receipt_ref","canonical_record_ref","canonical_dispatch_ref"))verifyExternal(ExactRef.fromJson(proof.get(field)));
+        require(proof.path("observation_supporting_refs").isArray()&&proof.path("observation_supporting_refs").size()<=1,"bounded explicit legacy observation supports required");
+        for(JsonNode ref:proof.get("observation_supporting_refs"))verifyExternal(ExactRef.fromJson(ref));
+        require(episodeRef.equals(ExactRef.fromJson(proof.get("episode_ref"))),"legacy proof crossed the exact original episode");verifyEpisode();
+        ExactRef scanRef=ExactRef.fromJson(proof.get("scan_ref"));
+        require(Path.of(scanRef.path()).getParent().equals(configured.scanRoot()),"legacy scan escaped configured scan root");
+        ObjectNode scan=object(read(scanRef));episode.requireEpisode(decodeBinding(scan));
+        require(Set.of(SCAN_SCHEMA,"xar.episode-incident-scan/v3").contains(text(scan,"schema"))
+                &&episodeRef.equals(ExactRef.fromJson(scan.get("episode_ref")))&&scan.path("original_refs").isArray(),"legacy proof lacks its exact original validated scan");
+        ExactRef index=ExactRef.fromJson(proof.get("original_index")),oldBefore=ExactRef.fromJson(proof.get("original_before"));
+        boolean hasIndex=false,hasBefore=false;long total=0;int count=0;
+        for(JsonNode value:scan.get("original_refs")) {
+            require(++count<=4096,"bounded legacy scan inventory required");ExactRef ref=ExactRef.fromJson(value);verifyExternal(ref);
+            total=Math.addExact(total,ref.bytes());require(total<=MAX_SCAN_BYTES,"legacy original scan byte limit exceeded");
+            hasIndex|=ref.equals(index);hasBefore|=ref.equals(oldBefore);
+        }
+        require(hasIndex&&hasBefore,"legacy selected originals are absent from its pinned complete scan");
+        verifyLegacyCandidateInventory(command,index);
+        ObjectNode old=object(read(index));require(beforeIndexRead(old)==NoRead.INSTANCE,"legacy EVENT cannot change its original query role");
+        String recorded=text(proof,"recorded_arguments_sha256");require(recorded.matches("[0-9a-f]{64}")&&recorded.equals(text(old,"arguments_sha256")),"legacy recorded commitment changed");
+        String id=incidentId(command.actionId(),recorded);
+        require("EVENT".equals(text(old,"kind"))&&command.actionId().equals(text(old,"action_id"))
+                &&decodeBinding(old).equals(new Binding(command.before(),command.source(),command.sessionId()))
+                &&id.equals(text(old,"incident_id"))&&Path.of(index.path()).equals(configured.incidentRoot().resolve(id+".before-index.json"))
+                &&oldBefore.equals(ExactRef.fromJson(old.get("before_ref")))&&Path.of(oldBefore.path()).equals(configured.incidentRoot().resolve(id+".before.json")),"legacy original index/before/source identity differs");
+        ObjectNode body=object(read(oldBefore));ObjectNode capture=object(DriverJson.toNode(command.arguments()).get("unhandled_event_fallback"));
+        validateCaptureBinding(command.before(),capture);
+        capture.properties().forEach(field->StrictJson.require(java.util.Objects.equals(field.getValue(),body.get(field.getKey())),"legacy original capture field changed: "+field.getKey()));
+        var extra=Set.of("incident_id","stage","captured_at_utc","dispatch_attempted");
+        body.properties().forEach(field->StrictJson.require(capture.has(field.getKey())||extra.contains(field.getKey()),"legacy original capture gained an unknown field"));
+        require(id.equals(text(body,"incident_id"))&&"before_submission".equals(text(body,"stage"))&&body.path("dispatch_attempted").isBoolean()
+                &&!body.path("dispatch_attempted").booleanValue(),"legacy before envelope changed its original dispatch role");StrictJson.utc(text(body,"captured_at_utc"));
+        var guard=org.xar.ck3.control.application.action.CommandOriginCodec.guard(proof.get("reconciliation_guard"));
+        require(guard.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Reconciliation,"legacy proof requires an actual reconciliation guard");
+        var identity=guard.origin().requireReconciliation();
+        require(identity.driverRelation()==org.xar.ck3.control.application.action.ReconciliationIdentity.DriverRelation.EXACT
+                &&identity.pending().actionId().equals(command.actionId())&&identity.pending().bodySha256().equals(text(proof,"canonical_command_sha256"))
+                &&identity.pending().originalReceipt().equals(ExactRef.fromJson(proof.get("canonical_receipt_ref")))
+                &&identity.pending().originalBefore().equals(command.before())&&identity.source().equals(command.source())&&identity.sessionId().equals(command.sessionId()),"legacy guard changed its canonical original role");
+        verifyExternal(index);verifyExternal(oldBefore);verifyExternal(scanRef);verifyEpisode();verifyLegacyCandidateInventory(command,index);
+    }
+    private void verifyLegacyAuthority(RawJson proof)throws IOException {
+        var verifier=configured.legacyVerifier().orElseThrow(()->new IOException("legacy compatibility requires the installed actual Root verifier"));
+        verifier.accept(proof);
+    }
+    private Ticket legacyTicket(RawJson serialized,ActionCommand command)throws IOException {
+        ObjectNode proof=object(StrictJson.parse(serialized.bytes(),MAX_METADATA));ExactRef index=ExactRef.fromJson(proof.get("original_index"));
+        ObjectNode row=object(read(index));return new Ticket(text(row,"incident_id"),Kind.EVENT,ExactRef.fromJson(proof.get("original_before")),index,new Binding(command.before(),command.source(),command.sessionId()));
+    }
+    private void requireLegacyLive(ActionCommand command,ActionState.Attempt attempt,NativeEffectSnapshots.Pair pair,RawJson proof)throws IOException {
+        var identity=org.xar.ck3.control.application.action.ActionReconciliationScope.requireIdentity(command,attempt);
+        var guard=org.xar.ck3.control.application.action.ActionReconciliationScope.requireObservationGuard(command,attempt);
+        ObjectNode row=object(StrictJson.parse(proof.bytes(),MAX_METADATA));
+        require(org.xar.ck3.control.application.action.CommandOriginCodec.guard(row.get("reconciliation_guard")).equals(guard)
+                &&pair.after().identity().equals(identity.factual())&&pair.after().originalEvidence().equals(identity.nativeEvidence())
+                &&pair.after().source().equals(identity.source())&&pair.after().sessionId().equals(identity.sessionId()),"legacy observer escaped its exact issued actual frame/guard");
+        verifyLegacyBindingData(proof,command,pair.before());verifyLegacyAuthority(proof);
+    }
+    private void verifyStoredLegacy(ObjectNode row,ObjectNode beforeIndex,ExactRef before,String afterFrameField)throws IOException {
+        require(row.get("legacy_command_binding") instanceof ObjectNode,"versioned legacy original proof required");
+        RawJson proof=new RawJson(StrictJson.canonical(row.get("legacy_command_binding"),MAX_METADATA));ObjectNode data=object(StrictJson.parse(proof.bytes(),MAX_METADATA));
+        var command=ActionCodec.decodeCommand(java.util.Base64.getDecoder().decode(text(data,"canonical_command_base64")));
+        require(legacyPhase(command)&&before.equals(ExactRef.fromJson(data.get("original_before")))
+                &&object(read(ExactRef.fromJson(data.get("original_index")))).equals(beforeIndex),"stored legacy proof changed its exact original before/index");
+        var guard=org.xar.ck3.control.application.action.CommandOriginCodec.guard(data.get("reconciliation_guard"));
+        require(guard.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Reconciliation
+                &&guard.origin().requireReconciliation().factual().equals(ProposalLifecycleCodec.decodeObservation(row.get("after_observation")))
+                &&guard.nativeEvidence().equals(ExactRef.fromJson(row.get(afterFrameField))),"stored legacy proof changed its actual qualified after");
+        if(LEGACY_RECOVERY_AFTER_SCHEMA.equals(text(row,"schema"))) {
+            require(row.path("supporting_refs").isArray()&&row.path("supporting_refs").size()==1
+                    &&row.get("supporting_refs").equals(data.get("observation_supporting_refs")),"stored legacy after changed its qualified effect closure");
+        } else {
+            require(data.path("observation_supporting_refs").isArray()&&data.path("observation_supporting_refs").isEmpty()
+                    &&ExactRef.fromJson(row.get("original_dispatch_ref")).equals(ExactRef.fromJson(data.get("canonical_dispatch_ref"))),"stored legacy unsettled changed its original dispatch or gained effect credit");
+        }
+        verifyLegacyAuthority(proof);
+    }
+    /** A negative ambiguity fence over the bounded current inventory, never an accepting id-only lookup. */
+    private void verifyLegacyCandidateInventory(ActionCommand command,ExactRef selected)throws IOException {
+        List<Path> paths;try(var files=Files.list(configured.incidentRoot())){paths=files.sorted().toList();}
+        require(paths.size()<=1026,"bounded current legacy inventory required");List<ExactRef> pins=new ArrayList<>();long bytes=0;int candidates=0;
+        for(Path path:paths) {
+            plain(path);require(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS),"legacy inventory contains a non-original entry");String name=path.getFileName().toString();
+            if(name.equals(".incident.lock")||name.matches("incidents-[0-9a-f]{64}[.]batch[.]json"))continue;
+            require(name.equals("EPISODE.json")||name.matches("[0-9a-f]{32}[.](?:before|after|before-index|after-index|review-index|unsettled)[.]json"),"legacy inventory contains an unknown entry");
+            ExactRef pin=measure(path);pins.add(pin);bytes=Math.addExact(bytes,pin.bytes());require(bytes<=MAX_SCAN_BYTES,"legacy inventory byte limit exceeded");
+            if(name.endsWith(".before-index.json")) {
+                ObjectNode row=object(read(pin));episode.requireEpisode(decodeBinding(row));
+                if(command.actionId().equals(row.path("action_id").asText())) {candidates++;require(pin.equals(selected),"another current legacy candidate conflicts with the selected exact original");}
+            }
+        }
+        require(candidates==1,"one unchanged explicit legacy original required");for(ExactRef pin:pins)verifyExternal(pin);
+        try(var files=Files.list(configured.incidentRoot())){require(files.sorted().toList().equals(paths),"legacy inventory changed during verification");}
+    }
     private Ticket existing(ActionCommand command) throws IOException {
         require(handles(command), "Actual original fallback command required");
         return readTicket(command, originalIndexPath(command, incidentArguments(command)));
@@ -677,8 +864,13 @@ public final class EpisodeIncidentJournal {
                 && b.path("paused").isBoolean() && b.path("paused").booleanValue() && b.path("map_ready").isBoolean() && b.path("map_ready").booleanValue()
                 && capture.path("selection").isObject(), "Fallback capture crossed its actual command frame/actor");
     }
-    private static void verifyPolicyReceipt(ObjectNode afterIndex,ObjectNode beforeIndex,byte[] actualBeforeBody,byte[] actualAfterBody) {
+    private void verifyPolicyReceipt(ObjectNode afterIndex,ObjectNode beforeIndex,byte[] actualBeforeBody,byte[] actualAfterBody)throws IOException {
         String schema=text(afterIndex,"schema");
+        if(LEGACY_RECOVERY_AFTER_SCHEMA.equals(schema)) {
+            require(afterIndex.has("policy_receipt_input")&&afterIndex.get("policy_receipt_input").isNull(),"legacy first-rendered proof cannot bypass a policy receipt");
+            verifyLegacyAfterBody(afterIndex,actualBeforeBody,actualAfterBody);
+            verifyStoredLegacy(afterIndex,beforeIndex,ExactRef.fromJson(afterIndex.get("before_ref")),"after_frame");return;
+        }
         if(LEGACY_AFTER_INDEX_SCHEMA.equals(schema)) {
             StrictJson.require(!afterIndex.has("policy_receipt_input"),"legacy after index cannot claim a new policy receipt comparison");return;
         }
@@ -689,6 +881,30 @@ public final class EpisodeIncidentJournal {
         }
         EventIncidentReceipt.verify(new RawJson(StrictJson.canonical(input,MAX_METADATA)),text(beforeIndex,"arguments_sha256"),
             ExactRef.fromJson(afterIndex.get("before_ref")),ExactRef.fromJson(afterIndex.get("after_ref")),new RawJson(actualBeforeBody),new RawJson(actualAfterBody));
+    }
+    /** Reuses the actual original after producer; no subset of stored result flags can substitute for its output. */
+    private void verifyLegacyAfterBody(ObjectNode afterIndex,byte[] actualBeforeBody,byte[] actualAfterBody)throws IOException {
+        ObjectNode proof=object(afterIndex.get("legacy_command_binding"));
+        require(proof.path("observation_supporting_refs").isArray()&&proof.path("observation_supporting_refs").size()==1,
+                "legacy after requires its explicit sole original native-effect basis");
+        ObjectNode basis=object(read(ExactRef.fromJson(proof.get("observation_supporting_refs").get(0))));
+        require(NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(text(basis,"schema"))
+                &&text(proof,"canonical_command_sha256").equals(text(basis,"command_body_sha256")),"legacy after material crossed its original effect command");
+        RawJson compatible=new RawJson(read(ExactRef.fromJson(basis.get("compatible_material"))));
+        ObjectNode before=object(actualBeforeBody),stored=object(actualAfterBody);
+        ExactRef beforeRef=ExactRef.fromJson(afterIndex.get("before_ref"));
+        ObjectNode ticket=StrictJson.object().put("incident_id",text(before,"incident_id"));ticket.set("before",beforeRef.toJson());
+        ticket.set("current_event_instance_id",before.get("current_event_instance_id"));ticket.set("selected_native_option_index",before.path("selection").get("native_option_index"));
+        ObjectNode outcome=StrictJson.object().put("status","independent_effect_observed");outcome.set("result",StrictJson.parse(compatible.bytes(),MAX_METADATA));
+        String captured=text(stored,"captured_at_utc");StrictJson.utc(captured);
+        var guard=org.xar.ck3.control.application.action.CommandOriginCodec.guard(proof.get("reconciliation_guard"));
+        java.time.Instant capturedAt=java.time.Instant.parse(captured);
+        require(!capturedAt.isBefore(guard.observedAt())&&capturedAt.isBefore(guard.validUntil()),"legacy recorded capture time escaped its original observation window");
+        var regenerated=UnhandledEventEvidenceJson.after(new UnhandledEventEvidenceJson.AfterInput(Optional.of(retained(ticket)),
+                Optional.of(retained(outcome)),RetainedJson.NULL,captured));
+        byte[] expected=UnhandledEventEvidenceJson.encodeBody(regenerated);
+        require(object(expected).equals(stored),"legacy complete after body differs from the actual original compatible-result producer");
+        verifyExternal(beforeRef);verifyExternal(ExactRef.fromJson(afterIndex.get("after_ref")));
     }
     private static void requireProgress(Binding actual, ExactRef original) throws IOException {
         ObjectNode basis = object(read(original));

@@ -13,3 +13,5 @@ actual 变体 d1f9 为单TU14类编译0，5.5592701秒；新增Test单TU3类编�
 此单元只能修复未来capture及两个精确表示的已有原件，不能恢复旧521记录的eae59原commitment。严格真实producer诊断仍1F；去掉action_id后的完整canonical字节相等，未重排字段或替换原ID。旧521保留UNKNOWN。另一个显式v1恢复单元由Runtime在真实只读issued scope验收，不能借本6P授其通过。
 
 后到切点：v1最终05已完成类型、四个公开DATA／拒绝用例和独审，Runtime29已正常loader启动；在进入v1回调前，批次恢复错误落到FOCUS-only路由，正常B4 RETAIN170被phase3门拒。原521／ACK／deadline／head522均保留，正在补严格EVENT隔离路径，未授结算、新动作或保存。新epoch169eligible／8saved仍分开，任务继续RUNNING。
+
+显式v1的完整命令／原件／冷效果闭包及Runtime29真实切点已另见[legacy恢复单元](2026-11-05-incident-legacy-v1-recovery.md)，不改本future组件的6P或旧521资格。

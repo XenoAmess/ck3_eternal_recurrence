@@ -1,0 +1,67 @@
+{
+  "schema": "xar.java-owner.legacy-v1-published-source-index/v1",
+  "at_utc": "2026-11-05T03:20:32.486256+00:00",
+  "base_commit": "807303ede557503b45a813abe73aade433ef063f",
+  "formal_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\legacy-incident-v1-recovery01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 68209,
+    "sha256": "3499332f0cd5533ee9d06af624eb6f4959407dcc3d218275fc99e5cc2eb23c8b"
+  },
+  "formal_sources": [
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+      "bytes": 94600,
+      "sha256": "a45bb937ee321c6f2ef887e38bacb973025e9ae7095dd4db7f60e599f54f5b12"
+    },
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+      "bytes": 66247,
+      "sha256": "ea49e9ba42da6abdc87c53a0f5e6697767b0db5cb6964b19a8548672bd60e961"
+    },
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EventPolicies.java",
+      "bytes": 50321,
+      "sha256": "b9ffa942b7be0795cd88280c48875a7f24b1f61d2530a61f882cf4a848f58a8e"
+    }
+  ],
+  "runtime_source_ready05": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\legacy-incident-v1-recovery01\\SOURCE-READY-RUNTIME-THREE05.json",
+    "bytes": 10525,
+    "sha256": "a017163bab50d33385e2558c0e39443231724f773cc625c6dbb048551c9b5d3c"
+  },
+  "actual_typed_final26": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\legacy-incident-v1-recovery01\\QUALIFIED-FINAL26-05.json",
+    "bytes": 161226,
+    "sha256": "45ca942975d85ab090bda215ac82af47e891377ea8d0b915cd8b0253baabb8f2"
+  },
+  "public_DATA_final4P": {
+    "path": "D:\\ck3-state\\resume91-root\\legacy-incident-v1-data-independent-test01\\QUALIFIED-COHORT02.json",
+    "bytes": 189088,
+    "sha256": "85b26170caaeb9a89cc161341fe18cbef919025db82fdda4cab4f46ebbcb48c2"
+  },
+  "independent_result02": {
+    "path": "D:\\ck3-state\\resume91-root\\legacy-incident-v1-data-independent-test01\\INDEPENDENT-RESULT02.json",
+    "bytes": 15509,
+    "sha256": "849383983345a8a6d685026152354977e4a242d04fa90db041d7539680af1c23"
+  },
+  "independent_source02": {
+    "path": "D:\\ck3-state\\resume91-root\\legacy-incident-v1-data-independent-test01\\SOURCE-REVIEW02.json",
+    "bytes": 7933,
+    "sha256": "cfea3aee8e2f76267555925865a5c3e3f19ab19bc33d70d328edb9feeaf76a6f"
+  },
+  "strict_producer_diagnostic": {
+    "path": "D:\\ck3-state\\resume91-root\\incident521-replay-diagnostic01\\RESULT-STRICT-RED03.json",
+    "bytes": 18980,
+    "sha256": "f3457e55d4b3d6997a2f3625fdee840d3ccb2e9538546e5e6139dbd289283ac0"
+  },
+  "private_Root_positive": false,
+  "original521_settled": false,
+  "formal_whole_software_qualification": false,
+  "Runtime29_loader_actual": true,
+  "Runtime29_failure_before_legacy_callback": true,
+  "hosted_sources_or_actual_payload_in_repo": false,
+  "proof_schema": "xar.episode-incident-legacy-command-binding/v1",
+  "proof_exact_fields": 14,
+  "first_scope": "currentGame/EXACT/unknown first-rendered EVENT only",
+  "OfflineScanSource_is_separate_DATA_consumer": true
+}
