@@ -240,6 +240,37 @@ public final class RootActionHistoryMaterialSourceFactory {
                     &&actual.command().before().game().equals(context.game().generation())&&actual.command().source().equals(context.source())
                     &&actual.command().sessionId().equals(context.game().sessionId()),
                     "no-gameplay-write consumption crossed its actual settled Game/source/session");
+            if(actual.command().operation().equals(org.xar.ck3.control.application.planning.sway.OrdinarySwayPolicy.OPERATION)) {
+                var before=same.head();
+                var matches=catalog.bindings().compositeBindings().stream()
+                        .filter(binding->binding.handler().supports(actual.command().operation())).toList();
+                require(matches.size()==1,"Sway no-write consumption requires its unique installed composite");
+                var installed=matches.getFirst();
+                require(installed.handler() instanceof org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite
+                        &&installed.handler() instanceof CompositeActionPort.ZeroGameplayBeforeChildren
+                        &&installed.handler().handlerId().equals(org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.HANDLER),
+                        "Sway no-write consumption requires its real registered zero-gameplay producer");
+                var replay=catalog.bindings().actualArchivedVerifier(actual.command().operation())
+                        .orElseThrow(()->new Missing(MissingReason.UNINSTALLED_OPERATION,actual.command().operation()));
+                if(!(context.actions() instanceof RootApplicationSession owner))
+                    throw new IllegalArgumentException("Sway no-write consumption requires the actual bound Root session");
+                var sway=catalog.remainingDomains().sway();sway.requireOwner(owner);
+                require(sway.retainedArchived(actual).filter(binding->binding==replay).isPresent()
+                        &&installed.implementationSource().equals(replay.definitionSource())
+                        &&installed.decoderSource().equals(replay.definitionSource()),
+                        "Sway no-write consumption lost its identical installed producer/decoder/replay source tuple");
+                var settled=(ActionState.CompositeSettled)actual.state();
+                ((ActionState.CompositeNoGameplayWrite)settled.settlement()).observation().validate(actual.command(),settled.execution());
+                ContinuityActionJournal.requireHistoricalReceipt(same.head().state(),actual,originals);
+                ((CompositeActionPort.ZeroGameplayBeforeChildren)installed.handler()).requireNoGameplayWrite(actual.command(),settled.execution());
+                replay.verifier().verify(same.head(),actual,originals);
+                context.writer().requireSession(same);var after=same.head();
+                require(after.digest().equals(before.digest())&&after.documents().equals(before.documents())
+                        &&after.absent().equals(before.absent())&&after.indexRepairs().equals(before.indexRepairs())
+                        &&after.snapshotNeedsRecovery()==before.snapshotNeedsRecovery(),
+                        "Sway no-write consumption changed its original writer head/inventory");
+                return; // No original Advance report, after-frame, material or Driver row exists for this terminal.
+            }
             var life=catalog.remainingDomains().life();
             var composite=catalog.bindings().compositeBindings().stream().filter(binding->binding.handler().supports(actual.command().operation())).toList();
             require(composite.size()==1&&life.installation().composites().stream().anyMatch(binding->binding==composite.getFirst()),

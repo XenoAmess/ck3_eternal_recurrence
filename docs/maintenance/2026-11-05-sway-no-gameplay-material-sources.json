@@ -1,0 +1,74 @@
+{
+  "schema": "xar.java-owner.sway-no-gameplay-material-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\SOURCE-READY-OWNER02.json",
+    "bytes": 2922,
+    "sha256": "a952c17397e869e57e30d0f20f7e02bb981b3dfe18cb1badcadc57ea010f8150"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\OWNER-SPANS02.json",
+    "bytes": 5670,
+    "sha256": "fc17139f5a97272bfaed077683d732de8ee5619f70a6f2dab976b825b1863093"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\FORMAL-SOURCE-READY02.json",
+    "bytes": 9802,
+    "sha256": "c69450b1e08ee6c15afd2d926dc01ecfdf0176ad0840c75e202f434d77c5bcf6"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootActionHistoryMaterialSourceFactory.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\formal-before02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 69000,
+        "sha256": "c851f70a4be830f4596ac26405f58a5bf149c3228f1903e39295b8919c4f59df"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\formal-candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 72059,
+        "sha256": "fa894f8a7746df25f88e364092875fb4294ccb28e67cdab569a6455079569279"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 72347,
+        "sha256": "b500b1d6dec8e2d035bd0c1b90adccf9d1c5ac84b8e0fb62d0d7180430090260"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "actual_type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\native-first02\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 230819,
+    "sha256": "c852093ae632d9ecd254ffefd8d9cd2072e5e7492104d4e2ee7e9e14794f2780"
+  },
+  "qualified_software": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\QUALIFIED-COHORT02.json",
+    "bytes": 11082,
+    "sha256": "8ae11c1ad1a19a299c4a42b7cc8e7b19ccbc17aa8d93bb10c39e593b061c3b32"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-no-gameplay-material-independent-review44\\SOURCE-REVIEW02.json",
+    "bytes": 6237,
+    "sha256": "f75166dbaeb7c61a5d42b0a56e14543149c05b35f3ad73fe608c63717b0ac383"
+  },
+  "compiler_RED01": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\FIRST-COMPILE-RED01.json",
+    "bytes": 3910,
+    "sha256": "ac67fce3c95279eb57ab6942ab945e77d4117fe5e028b8a6db85e0a7430707d2"
+  },
+  "bound_root_type_fix": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\BOUND-ROOT-TYPE-FIX02.json",
+    "bytes": 2053,
+    "sha256": "9e31301a57cf6b980deffa055960ef3edf02f8ac1132e9df34fd85003c42062a"
+  },
+  "model70_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-gameplay-material-consumer01\\MODEL-REVIEW01.json",
+    "bytes": 887,
+    "sha256": "b39d55e281b31d0ac092ac5af8251e94717d37f97b6a5fce16b39cf573f3d9b4"
+  },
+  "authority": "Exact installedSway source/replay and fullcanonical historical no-write proof. Life branch unchanged; no new row/report/frame/cycle/Native action.",
+  "new_or_old_Test_RUN": 0,
+  "whole_formal_software_cohort": false,
+  "runtime44": "Not adopted/GET at this source-publication cut; actual post539 consumer/ordinary recovery remain separate."
+}
