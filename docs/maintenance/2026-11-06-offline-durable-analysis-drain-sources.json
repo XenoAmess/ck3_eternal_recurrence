@@ -1,0 +1,202 @@
+{
+  "schema": "xar.java-formal.offline-durable-drain-source-index/v1",
+  "at_utc": "2026-11-05T18:45:19.058687+00:00",
+  "sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/SessionController.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionController.java",
+        "bytes": 129485,
+        "sha256": "caa2cd7110b62cbbd98b68fe483b30ccdae233ff2d7ecde8589d6c3f2af5d172"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\candidate\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionController.java",
+        "bytes": 134334,
+        "sha256": "b10d81b7c323b524947a781ce98fc38078de43d20c23373a4021b43baad58103"
+      },
+      "qualified_actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\candidate06\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionController.java",
+        "bytes": 134334,
+        "sha256": "b10d81b7c323b524947a781ce98fc38078de43d20c23373a4021b43baad58103"
+      },
+      "whole_outside_inverse_exact": true,
+      "same_whole_bytes_as_qualified_actual": true,
+      "owned_span_count": 4,
+      "formal_projection_spans": [
+        {
+          "old": "            try {\n                AnalysisCompletion complete = result.join();\n                StrictJson.require(complete.batchId().equals(item.getKey()), \"offline analysis completion crossed batch\");\n                StrictJson.require(completedAnalysisIds.size() < 65_536, \"bounded completed analysis inventory\");\n                completedAnalyses.add(complete); completedAnalysisIds.add(complete.batchId());\n            } catch (RuntimeException failure) { failedAnalyses.add(item.getKey()); }",
+          "new": "            int phase=0;\n            try {\n                AnalysisCompletion complete = result.join();phase=1;\n                StrictJson.require(complete.batchId().equals(item.getKey()), \"offline analysis completion crossed batch\");phase=2;\n                StrictJson.require(completedAnalysisIds.size() < 65_536, \"bounded completed analysis inventory\");phase=3;\n                completedAnalyses.add(complete);phase=4; completedAnalysisIds.add(complete.batchId());\n            } catch (RuntimeException failure) {\n                failedAnalyses.add(item.getKey());\n                logAnalysisReapFailure(item.getKey(),phase,failure);\n            }",
+          "actual_span_eol_adapted_inside_owned_region": false
+        },
+        {
+          "old": "    private static final class End extends RuntimeException {",
+          "new": "    /** Bounded diagnostics only; the original queue verdict, removals and clean-restart guard stay unchanged. */\n    private static void logAnalysisReapFailure(String batchId,int phase,RuntimeException failure) {\n        try {\n            var row=StrictJson.object().put(\"schema\",\"xar.java-offline-analysis-reap-failure/v1\")\n                    .put(\"observed_at_epoch_ms\",System.currentTimeMillis())\n                    .put(\"batch_id\",batchId.substring(0,Math.min(128,batchId.length())))\n                    .put(\"batch_id_truncated\",batchId.length()>128).put(\"reap_phase\",phase);\n            var values=new ArrayList<Throwable>();var parents=new ArrayList<Integer>();var relations=new ArrayList<String>();\n            values.add(failure);parents.add(-1);relations.add(\"root\");\n            var nodes=row.putArray(\"failures\");\n            for(int index=0;index<values.size()&&index<4;index++) {\n                Throwable actual=values.get(index);\n                String type=actual.getClass().getName();\n                var node=nodes.addObject().put(\"index\",index).put(\"parent\",parents.get(index).intValue())\n                        .put(\"relation\",relations.get(index)).put(\"type\",type.substring(0,Math.min(96,type.length())))\n                        .put(\"type_truncated\",type.length()>96);\n                String message=actual.getMessage();\n                if(message==null)node.putNull(\"message\");\n                else node.put(\"message\",message.substring(0,Math.min(128,message.length())));\n                node.put(\"message_truncated\",message!=null&&message.length()>128);\n                var frames=node.putArray(\"stack\");StackTraceElement[] trace=actual.getStackTrace();\n                boolean truncated=trace.length>4;\n                for(int at=0;at<Math.min(4,trace.length);at++) {\n                    String frame=trace[at].toString();frames.add(frame.substring(0,Math.min(64,frame.length())));\n                    truncated|=frame.length()>64;\n                }\n                node.put(\"stack_truncated\",truncated);\n                Throwable cause=actual.getCause();\n                if(cause!=null&&values.size()<4&&!containsAnalysisFailure(values,cause)) {\n                    values.add(cause);parents.add(index);relations.add(\"cause\");\n                }\n                for(Throwable suppressed:actual.getSuppressed()) {\n                    if(values.size()>=4)break;\n                    if(!containsAnalysisFailure(values,suppressed)) {\n                        values.add(suppressed);parents.add(index);relations.add(\"suppressed\");\n                    }\n                }\n            }\n            byte[] canonical=StrictJson.canonical(row,16384);\n            System.err.write(canonical);System.err.write(10);System.err.flush();\n        } catch(Throwable ignored) {\n            // Diagnostic failure never changes the original analysis failure or interruption state.\n        }\n    }\n    private static boolean containsAnalysisFailure(List<Throwable> values,Throwable candidate) {\n        for(Throwable actual:values)if(actual==candidate)return true;\n        return false;\n    }\n    private static final class End extends RuntimeException {",
+          "actual_span_eol_adapted_inside_owned_region": false
+        },
+        {
+          "old": "            for(var ticket:List.copyOf(pendingAnalyses.values())) {\n                long nanos=java.time.Duration.between(clock.now().utc(),deadline).toNanos();\n                if(nanos<=0)throw new IOException(\"offline analysis drain exceeded its actual restart deadline\");\n                try {ticket.completion().toCompletableFuture().get(nanos,java.util.concurrent.TimeUnit.NANOSECONDS);}\n                catch(java.util.concurrent.TimeoutException failure){throw new IOException(\"offline analysis remains pending at clean restart\",failure);}\n                catch(java.util.concurrent.ExecutionException failure){throw new IOException(\"offline analysis failed before clean restart\",failure);}\n            }\n            reapAnalyses();",
+          "new": "            for(var ticket:List.copyOf(pendingAnalyses.values())) awaitAnalysisForRestart(ticket,deadline);\n            reapAnalyses();\n            List<BatchRequest> originals=List.copyOf(Objects.requireNonNull(analyses.retainedOriginals()));\n            StrictJson.require(originals.size()<=4096,\"bounded durable offline originals required before clean restart\");\n            var seen=new LinkedHashMap<String,BatchRequest>();\n            for(BatchRequest work:originals) {\n                BatchRequest duplicate=seen.putIfAbsent(work.batchId(),work);\n                StrictJson.require(duplicate==null||duplicate.equals(work),\"durable offline batch ID changed captured originals\");\n                if(duplicate!=null||completedAnalysisIds.contains(work.batchId()))continue;\n                if(!retainedAnalysisInputs.containsKey(work.batchId())&&retainedAnalysisInputs.size()>=32)\n                    throw new IOException(\"bounded unaccepted offline backlog retains its original inputs for a later batch\");\n                mergeAnalysisInput(retainedAnalysisInputs,work);\n                StrictJson.require(pendingAnalyses.size()<32,\"bounded offline analysis backlog requires completion before more batches\");\n                AnalysisTicket ticket=analyses.enqueue(work);\n                StrictJson.require(ticket.batchId().equals(work.batchId()),\"offline analyzer returned another captured batch\");\n                pendingAnalyses.put(ticket.batchId(),ticket);retainedAnalysisInputs.remove(work.batchId());\n                awaitAnalysisForRestart(ticket,deadline);\n                reapAnalyses();\n            }",
+          "actual_span_eol_adapted_inside_owned_region": false
+        },
+        {
+          "old": "    /** Captures dirty and unsaved state without requesting SAVE, advancing a day or retrying an action. */",
+          "new": "    private void awaitAnalysisForRestart(AnalysisTicket ticket,Instant deadline)throws IOException,InterruptedException {\n        long nanos=java.time.Duration.between(clock.now().utc(),deadline).toNanos();\n        if(nanos<=0)throw new IOException(\"offline analysis drain exceeded its actual restart deadline\");\n        try {ticket.completion().toCompletableFuture().get(nanos,java.util.concurrent.TimeUnit.NANOSECONDS);}\n        catch(java.util.concurrent.TimeoutException failure){throw new IOException(\"offline analysis remains pending at clean restart\",failure);}\n        catch(java.util.concurrent.ExecutionException failure){throw new IOException(\"offline analysis failed before clean restart\",failure);}\n    }\n    /** Captures dirty and unsaved state without requesting SAVE, advancing a day or retrying an action. */",
+          "actual_span_eol_adapted_inside_owned_region": false
+        }
+      ],
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\diff\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionController.diff",
+        "bytes": 8880,
+        "sha256": "835b1171031f47bcd234acf0231e6e6fab95f8bac79909f693f499b565cd5132"
+      }
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/SessionPorts.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionPorts.java",
+        "bytes": 23260,
+        "sha256": "ba4718b852f9c131fcb07b23abbf7dc0cf1c3b57b24e510f72694b5bed56bd46"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\candidate\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionPorts.java",
+        "bytes": 23467,
+        "sha256": "87bcad5cbd3869685e354f33c6b00b686fa1fc92c67a63ccef85c80d771d1774"
+      },
+      "qualified_actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\candidate06\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionPorts.java",
+        "bytes": 23739,
+        "sha256": "4f71dbe0e2da0f56918232a16c6051c3a39d8d6c30f03ce1a3fe24323a216c77"
+      },
+      "whole_outside_inverse_exact": true,
+      "same_whole_bytes_as_qualified_actual": false,
+      "owned_span_count": 1,
+      "formal_projection_spans": [
+        {
+          "old": "        AnalysisTicket enqueue(BatchRequest captured) throws IOException;",
+          "new": "        AnalysisTicket enqueue(BatchRequest captured) throws IOException;\n        /** Fixed-binding durable DATA only; actual persistent producers override this compatibility default. */\n        default List<BatchRequest> retainedOriginals() throws IOException {return List.of();}",
+          "actual_span_eol_adapted_inside_owned_region": false
+        }
+      ],
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\diff\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionPorts.diff",
+        "bytes": 966,
+        "sha256": "30949b668094047264f0c7927bad428b28324fd5213f8b4a19ad03bc91a9e535"
+      }
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/OfflineAnalysisWorker.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\before\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+        "bytes": 28810,
+        "sha256": "7e19e2d6cdda280deeee2214b93d9b5adae4a51aeabe1cd5aadc212fc496d9ec"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\candidate\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+        "bytes": 30760,
+        "sha256": "990eafe11505833d54fa7d5d1334512eade9faa53acc2c44127929c6ed2e0d7c"
+      },
+      "qualified_actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\candidate06\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+        "bytes": 31122,
+        "sha256": "0c8b1ad538315f1871c3b460f8255b65d4e16d020d4151e93a18acec7c78624d"
+      },
+      "whole_outside_inverse_exact": true,
+      "same_whole_bytes_as_qualified_actual": false,
+      "owned_span_count": 2,
+      "formal_projection_spans": [
+        {
+          "old": "    private synchronized SessionPorts.AnalysisTicket enqueue(Engine engine,BatchRequest original) throws IOException {",
+          "new": "    /** Same fixed source binding and original immutable work, without submitting or replacing any Job. */\n    public synchronized List<BatchRequest> retainedOriginals(Binding actual) throws IOException {\n        requireOpen();Objects.requireNonNull(actual);\n        List<Path> originals;\n        try(var entries=Files.list(settings.workRoot())) {\n            originals=entries.filter(path->path.getFileName().toString().endsWith(\".request.json\"))\n                    .limit((long)settings.retainedWorkMaximum()+1).sorted().toList();\n        }\n        if(originals.size()>settings.retainedWorkMaximum())throw new IOException(\"retained offline originals exceed the admitted bound; review retention before enqueue\");\n        List<BatchRequest> result=new ArrayList<>();\n        for(Path path:originals) {\n            ExactRef durable=ref(path);Work work=decodeWork(readExact(durable,MAX));\n            if(!path.equals(path(work,\"request\")))throw new IOException(\"offline original filename does not bind its exact typed work\");\n            if(!work.binding().equals(actual))continue;\n            if(!key(new Work(actual,work.request())).equals(key(work)))throw new IOException(\"offline retained original binding changed its durable key\");\n            Job retained=jobs.get(key(work));\n            if(retained!=null&&!retained.work.equals(work))throw new IOException(\"offline batch ID already binds different captured originals\");\n            result.add(work.request());\n        }\n        return List.copyOf(result);\n    }\n    private synchronized SessionPorts.AnalysisTicket enqueue(Engine engine,BatchRequest original) throws IOException {",
+          "actual_span_eol_adapted_inside_owned_region": false
+        },
+        {
+          "old": "        private final Optional<ExactRef> evidence;\n        AnalysisIncomplete(String message, Optional<ExactRef> evidence) { super(message); this.evidence=evidence; }\n        public Optional<ExactRef> evidence() { return evidence; }",
+          "new": "        private final String evidencePath;\n        private final long evidenceBytes;\n        private final String evidenceSha256;\n        AnalysisIncomplete(String message, Optional<ExactRef> evidence) {\n            super(message);ExactRef original=Objects.requireNonNull(evidence).orElse(null);\n            evidencePath=original==null?null:original.path();evidenceBytes=original==null?0:original.bytes();\n            evidenceSha256=original==null?null:original.sha256();\n        }\n        public Optional<ExactRef> evidence() {\n            return evidencePath==null?Optional.empty():Optional.of(new ExactRef(evidencePath,evidenceBytes,evidenceSha256));\n        }",
+          "actual_span_eol_adapted_inside_owned_region": true
+        }
+      ],
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\diff\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.diff",
+        "bytes": 3364,
+        "sha256": "dffc9587ecd72f25dd1f199fbeecaadbc6ca2026f33627965efb314a580e9862"
+      }
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootOfflineAnalysisWorker.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\before\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootOfflineAnalysisWorker.java",
+        "bytes": 12329,
+        "sha256": "ff72970cd07872600e31dd04ef33254623a7d6bfbd96b999752e322859bf26a8"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\candidate\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootOfflineAnalysisWorker.java",
+        "bytes": 13022,
+        "sha256": "9d1614a9f9c4f2ede83c723d1da9455426b1a703d449b00b71a7ca2a991dfb7b"
+      },
+      "qualified_actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\candidate06\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootOfflineAnalysisWorker.java",
+        "bytes": 13022,
+        "sha256": "9d1614a9f9c4f2ede83c723d1da9455426b1a703d449b00b71a7ca2a991dfb7b"
+      },
+      "whole_outside_inverse_exact": true,
+      "same_whole_bytes_as_qualified_actual": true,
+      "owned_span_count": 4,
+      "formal_projection_spans": [
+        {
+          "old": "            current=new Installed(this,actual,context,incident,actualSources,host,port);return current;",
+          "new": "            current=new Installed(this,actual,context,incident,actualSources,host,port,binding);return current;",
+          "actual_span_eol_adapted_inside_owned_region": false
+        },
+        {
+          "old": "    public static final class Installed implements AutoCloseable {",
+          "new": "    public static final class Installed implements AutoCloseable,SessionPorts.OfflineAnalysisPort {",
+          "actual_span_eol_adapted_inside_owned_region": false
+        },
+        {
+          "old": "        private final SessionPorts.OfflineAnalysisPort exposed;",
+          "new": "        private final SessionPorts.OfflineAnalysisPort exposed;\n        private final OfflineAnalysisWorker.Binding binding;",
+          "actual_span_eol_adapted_inside_owned_region": false
+        },
+        {
+          "old": "                EventSourceReadContext sources,OfflineEventAnalysisHost host,SessionPorts.OfflineAnalysisPort actual) {\n            this.owner=owner;this.catalog=catalog;this.context=context;this.incidents=incidents;this.sources=sources;this.host=host;this.actual=actual;\n            exposed=captured->{\n                synchronized(this){if(retired)throw new IOException(\"retired per-Game offline port cannot enqueue new captured originals\");}\n                return this.actual.enqueue(captured);\n            };\n        }",
+          "new": "                EventSourceReadContext sources,OfflineEventAnalysisHost host,SessionPorts.OfflineAnalysisPort actual,OfflineAnalysisWorker.Binding binding) {\n            this.owner=owner;this.catalog=catalog;this.context=context;this.incidents=incidents;this.sources=sources;this.host=host;this.actual=actual;\n            this.binding=Objects.requireNonNull(binding);exposed=this;\n        }\n        @Override public SessionPorts.AnalysisTicket enqueue(org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest captured)throws IOException {\n            synchronized(this){if(retired)throw new IOException(\"retired per-Game offline port cannot enqueue new captured originals\");}\n            return this.actual.enqueue(captured);\n        }\n        @Override public List<org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest> retainedOriginals()throws IOException {\n            synchronized(this){if(retired)throw new IOException(\"retired per-Game offline port cannot enumerate captured originals\");}\n            return owner.worker.retainedOriginals(binding);\n        }",
+          "actual_span_eol_adapted_inside_owned_region": false
+        }
+      ],
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\formal01\\diff\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootOfflineAnalysisWorker.diff",
+        "bytes": 3436,
+        "sha256": "b8c53e1de7cfb633b082461734615a1909d90785d3086826ff62a1f09b25b58b"
+      }
+    }
+  ],
+  "actual_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\SOURCE-READY-CONSUMER06.json",
+    "bytes": 31104,
+    "sha256": "f7d02461c161d8b790817745a3eb2c9ab2ab0a445689b832154330995e2a9ec0"
+  },
+  "actual_software": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\native-consumer-first02\\QUALIFIED-CONSUMER06.json",
+    "bytes": 782786,
+    "sha256": "319f71f9e403718e57b27d1be9692a6472fd79021a81dbedc8a3bdff3aa8dfcc"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\DURABLE-CONSUMER-PART06.json",
+    "bytes": 29203,
+    "sha256": "77a87dbcd0b55d807a1d9c87c44d8905db9060d58cb77f1c38616002a886fd88"
+  },
+  "models": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\MODEL-REVIEW91-01.json",
+      "bytes": 1554,
+      "sha256": "7f986a0ef7733cb32eaa76ac6fb21657319bf6411c9fc4ac01319f953e9b91a5"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-analysis-drain-failure55\\MODEL-REVIEW92-01.json",
+      "bytes": 2011,
+      "sha256": "ec1a9d239545cac4c9d4debfc2a24267c470dbed1a7ebea6430b6b65d4ca2d60"
+    }
+  ],
+  "qualified_actual": "Only actual candidate06 coherent4TU has compiler credit (exit0/60CF/9.5171142s). Formal Ports/Worker outside-owned bytes and original EOL are preserved; whole formal tree not compiled. No old Test/P052/JFR/Game/CGET.",
+  "runtime": "Pending separate controlled samebinding original-request recovery; source/type/formal does not certify eight completions, clean restart or P052 adoption."
+}

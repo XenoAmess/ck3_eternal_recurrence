@@ -80,7 +80,7 @@ public final class RootOfflineAnalysisWorker {
                     incident.incidentBase(),incident.scanBase(),settings.knowledgeRoot(),settings.grantsManifest());
             SessionPorts.OfflineAnalysisPort port=worker.bind(host,binding,io);
             if(current!=null)current.close();
-            current=new Installed(this,actual,context,incident,actualSources,host,port);return current;
+            current=new Installed(this,actual,context,incident,actualSources,host,port,binding);return current;
         }
         private OfflineAnalysisFiles.Port files(List<Path> roots)throws IOException {
             var legacy=storage.incidentGuard(roots);
@@ -128,7 +128,7 @@ public final class RootOfflineAnalysisWorker {
         }
         public synchronized boolean isTerminated(){return worker==null||worker.isTerminated();}
     }
-    public static final class Installed implements AutoCloseable {
+    public static final class Installed implements AutoCloseable,SessionPorts.OfflineAnalysisPort {
         private final Prepared owner;
         private final RootInstalledCatalog catalog;
         private final RootRuntimeContext context;
@@ -137,14 +137,20 @@ public final class RootOfflineAnalysisWorker {
         private final OfflineEventAnalysisHost host;
         private final SessionPorts.OfflineAnalysisPort actual;
         private final SessionPorts.OfflineAnalysisPort exposed;
+        private final OfflineAnalysisWorker.Binding binding;
         private boolean retired;
         private Installed(Prepared owner,RootInstalledCatalog catalog,RootRuntimeContext context,RootIncidentRuntime incidents,
-                EventSourceReadContext sources,OfflineEventAnalysisHost host,SessionPorts.OfflineAnalysisPort actual) {
+                EventSourceReadContext sources,OfflineEventAnalysisHost host,SessionPorts.OfflineAnalysisPort actual,OfflineAnalysisWorker.Binding binding) {
             this.owner=owner;this.catalog=catalog;this.context=context;this.incidents=incidents;this.sources=sources;this.host=host;this.actual=actual;
-            exposed=captured->{
-                synchronized(this){if(retired)throw new IOException("retired per-Game offline port cannot enqueue new captured originals");}
-                return this.actual.enqueue(captured);
-            };
+            this.binding=Objects.requireNonNull(binding);exposed=this;
+        }
+        @Override public SessionPorts.AnalysisTicket enqueue(org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest captured)throws IOException {
+            synchronized(this){if(retired)throw new IOException("retired per-Game offline port cannot enqueue new captured originals");}
+            return this.actual.enqueue(captured);
+        }
+        @Override public List<org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest> retainedOriginals()throws IOException {
+            synchronized(this){if(retired)throw new IOException("retired per-Game offline port cannot enumerate captured originals");}
+            return owner.worker.retainedOriginals(binding);
         }
         public void requireContext(RootInstalledCatalog same)throws IOException {
             if(same!=catalog||same.context()!=context||same.offline()!=incidents||same.context().core()!=owner.core)

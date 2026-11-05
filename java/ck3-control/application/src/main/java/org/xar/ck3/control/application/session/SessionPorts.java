@@ -224,6 +224,8 @@ public final class SessionPorts {
     @FunctionalInterface public interface OfflineAnalysisPort {
         /** Persist work before queue ACK; bounded executor uses the original analyzer and completes only after durable knowledge publication. */
         AnalysisTicket enqueue(BatchRequest captured) throws IOException;
+        /** Fixed-binding durable DATA only; actual persistent producers override this compatibility default. */
+        default List<BatchRequest> retainedOriginals() throws IOException {return List.of();}
     }
     public enum JournalKind { BATCH_STARTED, SAVE_CONFIRMED, BATCH_DEFERRED, BATCH_INTERRUPTED, BATCH_FINISHED, WORKER_RESTART_CAPTURE }
     public record JournalInput(SessionIdentity session, String batchId, JournalKind kind,

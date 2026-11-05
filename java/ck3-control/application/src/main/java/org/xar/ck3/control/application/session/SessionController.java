@@ -274,17 +274,35 @@ public final class SessionController {
         Objects.requireNonNull(deadline);StrictJson.require(running.compareAndSet(false,true),"clean restart requires an idle Controller");
         try {
             requireCleanRestartIdle();
-            for(var ticket:List.copyOf(pendingAnalyses.values())) {
-                long nanos=java.time.Duration.between(clock.now().utc(),deadline).toNanos();
-                if(nanos<=0)throw new IOException("offline analysis drain exceeded its actual restart deadline");
-                try {ticket.completion().toCompletableFuture().get(nanos,java.util.concurrent.TimeUnit.NANOSECONDS);}
-                catch(java.util.concurrent.TimeoutException failure){throw new IOException("offline analysis remains pending at clean restart",failure);}
-                catch(java.util.concurrent.ExecutionException failure){throw new IOException("offline analysis failed before clean restart",failure);}
-            }
+            for(var ticket:List.copyOf(pendingAnalyses.values())) awaitAnalysisForRestart(ticket,deadline);
             reapAnalyses();
+            List<BatchRequest> originals=List.copyOf(Objects.requireNonNull(analyses.retainedOriginals()));
+            StrictJson.require(originals.size()<=4096,"bounded durable offline originals required before clean restart");
+            var seen=new LinkedHashMap<String,BatchRequest>();
+            for(BatchRequest work:originals) {
+                BatchRequest duplicate=seen.putIfAbsent(work.batchId(),work);
+                StrictJson.require(duplicate==null||duplicate.equals(work),"durable offline batch ID changed captured originals");
+                if(duplicate!=null||completedAnalysisIds.contains(work.batchId()))continue;
+                if(!retainedAnalysisInputs.containsKey(work.batchId())&&retainedAnalysisInputs.size()>=32)
+                    throw new IOException("bounded unaccepted offline backlog retains its original inputs for a later batch");
+                mergeAnalysisInput(retainedAnalysisInputs,work);
+                StrictJson.require(pendingAnalyses.size()<32,"bounded offline analysis backlog requires completion before more batches");
+                AnalysisTicket ticket=analyses.enqueue(work);
+                StrictJson.require(ticket.batchId().equals(work.batchId()),"offline analyzer returned another captured batch");
+                pendingAnalyses.put(ticket.batchId(),ticket);retainedAnalysisInputs.remove(work.batchId());
+                awaitAnalysisForRestart(ticket,deadline);
+                reapAnalyses();
+            }
             StrictJson.require(pendingAnalyses.isEmpty()&&retainedAnalysisInputs.isEmpty()&&failedAnalyses.isEmpty()
                     &&lastReport.map(report->report.failedAnalysisBatchIds().isEmpty()).orElse(true),"clean restart requires the actual offline queue to drain successfully");
         } finally {running.set(false);}
+    }
+    private void awaitAnalysisForRestart(AnalysisTicket ticket,Instant deadline)throws IOException,InterruptedException {
+        long nanos=java.time.Duration.between(clock.now().utc(),deadline).toNanos();
+        if(nanos<=0)throw new IOException("offline analysis drain exceeded its actual restart deadline");
+        try {ticket.completion().toCompletableFuture().get(nanos,java.util.concurrent.TimeUnit.NANOSECONDS);}
+        catch(java.util.concurrent.TimeoutException failure){throw new IOException("offline analysis remains pending at clean restart",failure);}
+        catch(java.util.concurrent.ExecutionException failure){throw new IOException("offline analysis failed before clean restart",failure);}
     }
     /** Captures dirty and unsaved state without requesting SAVE, advancing a day or retrying an action. */
     public ContinuityBatchJournal.CleanRestartTicket captureCleanRestart(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
@@ -1566,15 +1584,67 @@ public final class SessionController {
         while (iterator.hasNext()) {
             var item = iterator.next(); var result = item.getValue().completion().toCompletableFuture();
             if (!result.isDone()) continue;
+            int phase=0;
             try {
-                AnalysisCompletion complete = result.join();
-                StrictJson.require(complete.batchId().equals(item.getKey()), "offline analysis completion crossed batch");
-                StrictJson.require(completedAnalysisIds.size() < 65_536, "bounded completed analysis inventory");
-                completedAnalyses.add(complete); completedAnalysisIds.add(complete.batchId());
-            } catch (RuntimeException failure) { failedAnalyses.add(item.getKey()); }
+                AnalysisCompletion complete = result.join();phase=1;
+                StrictJson.require(complete.batchId().equals(item.getKey()), "offline analysis completion crossed batch");phase=2;
+                StrictJson.require(completedAnalysisIds.size() < 65_536, "bounded completed analysis inventory");phase=3;
+                completedAnalyses.add(complete);phase=4; completedAnalysisIds.add(complete.batchId());
+            } catch (RuntimeException failure) {
+                failedAnalyses.add(item.getKey());
+                logAnalysisReapFailure(item.getKey(),phase,failure);
+            }
             retainedAnalysisInputs.remove(item.getKey());
             iterator.remove();
         }
+    }
+    /** Bounded diagnostics only; the original queue verdict, removals and clean-restart guard stay unchanged. */
+    private static void logAnalysisReapFailure(String batchId,int phase,RuntimeException failure) {
+        try {
+            var row=StrictJson.object().put("schema","xar.java-offline-analysis-reap-failure/v1")
+                    .put("observed_at_epoch_ms",System.currentTimeMillis())
+                    .put("batch_id",batchId.substring(0,Math.min(128,batchId.length())))
+                    .put("batch_id_truncated",batchId.length()>128).put("reap_phase",phase);
+            var values=new ArrayList<Throwable>();var parents=new ArrayList<Integer>();var relations=new ArrayList<String>();
+            values.add(failure);parents.add(-1);relations.add("root");
+            var nodes=row.putArray("failures");
+            for(int index=0;index<values.size()&&index<4;index++) {
+                Throwable actual=values.get(index);
+                String type=actual.getClass().getName();
+                var node=nodes.addObject().put("index",index).put("parent",parents.get(index).intValue())
+                        .put("relation",relations.get(index)).put("type",type.substring(0,Math.min(96,type.length())))
+                        .put("type_truncated",type.length()>96);
+                String message=actual.getMessage();
+                if(message==null)node.putNull("message");
+                else node.put("message",message.substring(0,Math.min(128,message.length())));
+                node.put("message_truncated",message!=null&&message.length()>128);
+                var frames=node.putArray("stack");StackTraceElement[] trace=actual.getStackTrace();
+                boolean truncated=trace.length>4;
+                for(int at=0;at<Math.min(4,trace.length);at++) {
+                    String frame=trace[at].toString();frames.add(frame.substring(0,Math.min(64,frame.length())));
+                    truncated|=frame.length()>64;
+                }
+                node.put("stack_truncated",truncated);
+                Throwable cause=actual.getCause();
+                if(cause!=null&&values.size()<4&&!containsAnalysisFailure(values,cause)) {
+                    values.add(cause);parents.add(index);relations.add("cause");
+                }
+                for(Throwable suppressed:actual.getSuppressed()) {
+                    if(values.size()>=4)break;
+                    if(!containsAnalysisFailure(values,suppressed)) {
+                        values.add(suppressed);parents.add(index);relations.add("suppressed");
+                    }
+                }
+            }
+            byte[] canonical=StrictJson.canonical(row,16384);
+            System.err.write(canonical);System.err.write(10);System.err.flush();
+        } catch(Throwable ignored) {
+            // Diagnostic failure never changes the original analysis failure or interruption state.
+        }
+    }
+    private static boolean containsAnalysisFailure(List<Throwable> values,Throwable candidate) {
+        for(Throwable actual:values)if(actual==candidate)return true;
+        return false;
     }
     private static final class End extends RuntimeException {
         private static final long serialVersionUID = 1L; final Terminal terminal;

@@ -63,9 +63,17 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
     }
     public static final class AnalysisIncomplete extends IOException {
         private static final long serialVersionUID = 1L;
-        private final Optional<ExactRef> evidence;
-        AnalysisIncomplete(String message, Optional<ExactRef> evidence) { super(message); this.evidence=evidence; }
-        public Optional<ExactRef> evidence() { return evidence; }
+        private final String evidencePath;
+        private final long evidenceBytes;
+        private final String evidenceSha256;
+        AnalysisIncomplete(String message, Optional<ExactRef> evidence) {
+            super(message);ExactRef original=Objects.requireNonNull(evidence).orElse(null);
+            evidencePath=original==null?null:original.path();evidenceBytes=original==null?0:original.bytes();
+            evidenceSha256=original==null?null:original.sha256();
+        }
+        public Optional<ExactRef> evidence() {
+            return evidencePath==null?Optional.empty():Optional.of(new ExactRef(evidencePath,evidenceBytes,evidenceSha256));
+        }
     }
     private record Engine(OfflineEventAnalysisHost host, Binding binding, OfflineAnalysisFiles.Port io) { }
     private record Work(Binding binding, BatchRequest request) { }
@@ -146,6 +154,27 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         return request->enqueue(engine,request);
     }
 
+    /** Same fixed source binding and original immutable work, without submitting or replacing any Job. */
+    public synchronized List<BatchRequest> retainedOriginals(Binding actual) throws IOException {
+        requireOpen();Objects.requireNonNull(actual);
+        List<Path> originals;
+        try(var entries=Files.list(settings.workRoot())) {
+            originals=entries.filter(path->path.getFileName().toString().endsWith(".request.json"))
+                    .limit((long)settings.retainedWorkMaximum()+1).sorted().toList();
+        }
+        if(originals.size()>settings.retainedWorkMaximum())throw new IOException("retained offline originals exceed the admitted bound; review retention before enqueue");
+        List<BatchRequest> result=new ArrayList<>();
+        for(Path path:originals) {
+            ExactRef durable=ref(path);Work work=decodeWork(readExact(durable,MAX));
+            if(!path.equals(path(work,"request")))throw new IOException("offline original filename does not bind its exact typed work");
+            if(!work.binding().equals(actual))continue;
+            if(!key(new Work(actual,work.request())).equals(key(work)))throw new IOException("offline retained original binding changed its durable key");
+            Job retained=jobs.get(key(work));
+            if(retained!=null&&!retained.work.equals(work))throw new IOException("offline batch ID already binds different captured originals");
+            result.add(work.request());
+        }
+        return List.copyOf(result);
+    }
     private synchronized SessionPorts.AnalysisTicket enqueue(Engine engine,BatchRequest original) throws IOException {
         requireOpen();Objects.requireNonNull(original);Work work=new Work(engine.binding(),original);String key=key(work);
         Job retained=jobs.get(key);
