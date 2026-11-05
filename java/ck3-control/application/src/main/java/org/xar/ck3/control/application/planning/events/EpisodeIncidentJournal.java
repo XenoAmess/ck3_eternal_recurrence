@@ -623,10 +623,35 @@ public final class EpisodeIncidentJournal {
         ObjectNode internal=observed.observation().toJson();((ObjectNode)internal.get("frame")).put("played_character_id",observed.observation().frame().playedCharacterId().decimal());
         Binding scanned=new Binding(ProposalLifecycleCodec.decodeObservation(internal),source(observed.source().toJson()),observed.sessionId());episode.requireEpisode(scanned);
         ObjectNode retainedScan = object(read(observed.indexRef()));
-        require(Set.of(SCAN_SCHEMA, "xar.episode-incident-scan/v3").contains(text(retainedScan, "schema")) && retainedScan.path("original_refs").isArray(), "Original observed scan required at source-review completion");
+        boolean progress="xar.episode-incident-scan/v3".equals(text(retainedScan,"schema"));
+        require((SCAN_SCHEMA.equals(text(retainedScan, "schema"))||progress) && retainedScan.path("original_refs").isArray(), "Original observed scan required at source-review completion");
+        ExactRef progressOriginal=null;
+        if(progress) {
+            StrictJson.object(retainedScan,Set.of("schema","origin","source","session_id","incidents","captured_incidents",
+                    "incomplete_after","diagnostic_only","episode_ref","original_refs","scan_observation_basis"));
+            require(decodeBinding(retainedScan).equals(scanned)&&episodeRef.equals(ExactRef.fromJson(retainedScan.get("episode_ref"))),
+                    "Reviewed progress scan crossed its exact observed binding or episode");
+            long captured=StrictJson.integer(retainedScan.get("captured_incidents"),0,256);
+            require(StrictJson.integer(retainedScan.get("incidents"),0,256)<=captured
+                    &&StrictJson.integer(retainedScan.get("incomplete_after"),0,256)<=captured
+                    &&StrictJson.integer(retainedScan.get("diagnostic_only"),0,256)<=captured
+                    &&retainedScan.get("original_refs").size()<=1026,"Finite complete reviewed progress inventory required");
+            progressOriginal=ExactRef.fromJson(retainedScan.get("scan_observation_basis"));
+            require(progressOriginal.bytes()>0&&progressOriginal.bytes()<=MAX_METADATA,"Finite original scan progress basis required");
+            requireProgress(scanned,progressOriginal);
+        }
         List<ExactRef> originalRefs = new ArrayList<>();
         for (JsonNode value : retainedScan.get("original_refs")) {
             ExactRef ref = ExactRef.fromJson(value); verifyExternal(ref); originalRefs.add(ref);
+        }
+        if(progress) {
+            require(originalRefs.contains(progressOriginal),"Reviewed progress basis is absent from its complete original inventory");
+            Set<Path> paths=new java.util.HashSet<>();long bytes=0;
+            for(ExactRef ref:originalRefs) {
+                require(paths.add(Path.of(ref.path())),"Reviewed progress inventory repeats an original path");
+                bytes=Math.addExact(bytes,ref.bytes());require(bytes<=MAX_SCAN_BYTES,"Reviewed progress inventory exceeds its actual bound");
+            }
+            requireProgress(scanned,progressOriginal);
         }
         ObjectNode report = object(read(actualReport));
         try{OfflineBatchBinding.requireReport(report,observed,original.manifestRef());}

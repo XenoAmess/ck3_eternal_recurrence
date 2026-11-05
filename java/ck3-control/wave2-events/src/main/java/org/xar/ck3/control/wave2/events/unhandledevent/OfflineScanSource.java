@@ -185,15 +185,169 @@ public final class OfflineScanSource {
                 ExactRef afterIndexRef = originals.get(incidentRoot.resolve(id + ".after-index.json"));
                 require(afterIndexRef != null, "Actual after body lacks its original producer index");
                 ObjectNode afterIndex = json(read(incidentRoot, afterIndexRef)); sameEpisode(actual, afterIndex);
+                if ("xar.episode-incident-after-index/v3".equals(text(afterIndex,"schema"))) {
+                    verifyLegacyAfter(afterIndex,origin,originRef,before,beforeBody,after,kind,id,
+                            incidentRoot,scans,episodeRef,actual,originals,external,diagnosticBeforeRefs);
+                } else {
                 String afterSchema=text(afterIndex,"schema");boolean version2="xar.episode-incident-after-index/v2".equals(afterSchema);
                 require((version2?afterIndex.has("policy_receipt_input")&&(afterIndex.get("policy_receipt_input").isNull()||afterIndex.get("policy_receipt_input").isObject()):"xar.episode-incident-after-index/v1".equals(afterSchema)&&!afterIndex.has("policy_receipt_input")) && id.equals(text(afterIndex, "incident_id"))
                         && before.equals(ExactRef.fromJson(afterIndex.get("before_ref"))) && after.equals(ExactRef.fromJson(afterIndex.get("after_ref"))), "Actual after index crossed its original before/after source");
+                }
             }
         }
         require(used.equals(supplied), "Captured inventory must be exactly the actual batch's before/after originals");
         require(StrictJson.integer(index.get("incomplete_after"), 0, 1026) >= incomplete, "Actual scan lost incomplete-after diagnostics");
         read(scans, actual.indexRef()); read(scans, manifest);
         return new Loaded(binding, raw, originals.entrySet().stream().filter(entry -> !external.containsKey(entry.getKey())).map(Map.Entry::getValue).toList(), List.copyOf(external.values()), diagnosticBeforeRefs);
+    }
+
+    /** V3 side-evidence DATA only. Issued reconciliation/effect authority remains in Journal/Root. */
+    private static void verifyLegacyAfter(ObjectNode afterIndex,ObjectNode origin,ExactRef originRef,
+            ExactRef before,ObjectNode beforeBody,ExactRef after,String kind,String id,
+            Path incidentRoot,Path scans,ExactRef episodeRef,ObservedScan actual,
+            Map<Path,ExactRef> originals,Map<Path,ExternalOriginal> external,Set<ExactRef> diagnosticBeforeRefs) throws IOException {
+        StrictJson.object(afterIndex,Set.of("schema","origin","source","session_id","incident_id",
+                "independent_postcondition_verified","legacy_body_scope","before_ref","after_ref",
+                "after_observation","after_frame","supporting_refs","policy_receipt_input","legacy_command_binding"));
+        require("unhandled_event".equals(kind)&&"EVENT".equals(text(origin,"kind"))&&!origin.has("capture_stage")
+                &&"before_submission".equals(text(beforeBody,"stage"))&&beforeBody.path("dispatch_attempted").isBoolean()
+                &&!beforeBody.path("dispatch_attempted").booleanValue(),"V3 legacy side-evidence requires the original submitted EVENT capture");
+        require(id.equals(text(afterIndex,"incident_id"))&&before.equals(ExactRef.fromJson(afterIndex.get("before_ref")))
+                &&after.equals(ExactRef.fromJson(afterIndex.get("after_ref")))&&afterIndex.get("policy_receipt_input").isNull()
+                &&afterIndex.path("independent_postcondition_verified").isBoolean()&&afterIndex.path("independent_postcondition_verified").booleanValue()
+                &&"original_reply_ack_and_response_assessment".equals(text(afterIndex,"legacy_body_scope")),"V3 legacy after changed its exact originals or policy-receipt role");
+        ObjectNode proof=StrictJson.object(afterIndex.get("legacy_command_binding"),Set.of("schema","episode_ref","scan_ref",
+                "original_index","original_before","canonical_receipt_ref","canonical_record_ref","canonical_dispatch_ref",
+                "canonical_command_base64","canonical_command_sha256","canonical_arguments_sha256","recorded_arguments_sha256",
+                "reconciliation_guard","observation_supporting_refs"));
+        require("xar.episode-incident-legacy-command-binding/v1".equals(text(proof,"schema"))
+                &&originRef.equals(ExactRef.fromJson(proof.get("original_index")))&&before.equals(ExactRef.fromJson(proof.get("original_before")))
+                &&episodeRef.equals(ExactRef.fromJson(proof.get("episode_ref"))),"Legacy proof changed its exact episode/index/before references");
+        String recorded=text(proof,"recorded_arguments_sha256"),commandSha=text(proof,"canonical_command_sha256");
+        require(recorded.matches("[0-9a-f]{64}")&&recorded.equals(text(origin,"arguments_sha256"))
+                &&SourceReviewJson.sha((text(origin,"action_id")+"|"+recorded).getBytes(java.nio.charset.StandardCharsets.UTF_8)).substring(0,32).equals(id)
+                &&commandSha.matches("[0-9a-f]{64}")&&text(proof,"canonical_arguments_sha256").matches("[0-9a-f]{64}"),"Legacy proof changed its recorded incident commitment or canonical SHA roles");
+        String token=text(proof,"canonical_command_base64");
+        require(token.length()<=((FILE_MAX+2)/3)*4,"Bounded complete canonical command base64 required");
+        byte[] bytes=java.util.Base64.getDecoder().decode(token);
+        require(bytes.length>0&&bytes.length<=FILE_MAX&&java.util.Base64.getEncoder().encodeToString(bytes).equals(token)
+                &&SourceReviewJson.sha(bytes).equals(commandSha),"Canonical command bytes/base64/SHA differ");
+        ObjectNode command=object(FullJsonTree.parse(bytes,FILE_MAX));String commandSchema=text(command,"schema");
+        boolean explicit="xar.java-action-command/v4".equals(commandSchema);
+        require(explicit||"xar.java-action-command/v1".equals(commandSchema),"Legacy EVENT proof requires its existing gameplay command codec");
+        StrictJson.object(command,explicit?Set.of("schema","action_id","before","source","session_id","operation","arguments","expected","claims","deadline","protocol_identity")
+                :Set.of("schema","action_id","before","source","session_id","operation","arguments","expected","claims","deadline"));
+        require(text(origin,"action_id").equals(text(command,"action_id"))
+                &&journalObservation(actual,origin.get("origin")).equals(journalObservation(actual,command.get("before")))
+                &&OfflineBatchBinding.source(origin.get("source")).equals(OfflineBatchBinding.source(command.get("source")))
+                &&text(origin,"session_id").equals(text(command,"session_id"))
+                &&text(command,"operation").matches("select-event-option-[1-9][0-9]{0,8}"),"Canonical command crossed its complete original binding");
+        object(command.get("expected"));object(command.get("claims"));StrictJson.utc(text(command,"deadline"));
+        ObjectNode arguments=object(command.get("arguments")),capture=object(arguments.get("unhandled_event_fallback"));
+        require("active_event_unhandled_first_rendered_option".equals(text(arguments,"phase"))
+                &&"user-authorized-capture-then-first-rendered-option".equals(text(capture,"policy"))
+                &&capture.path("registry_known").isBoolean()&&!capture.path("registry_known").booleanValue()
+                &&"unknown".equals(text(object(capture.get("source_knowledge")),"status"))
+                &&capture.get("policy").equals(beforeBody.get("policy"))&&capture.get("registry_known").equals(beforeBody.get("registry_known"))
+                &&"unknown".equals(text(object(beforeBody.get("source_knowledge")),"status")),"Legacy proof cannot admit a dedicated, Populist or known-source policy");
+        ExactRef scanRef=legacyRef(proof.get("scan_ref"),FILE_MAX);
+        require(absolute(scanRef.path()).equals(scans.resolve(scanRef.sha256()+".scan.json")),"Legacy proof scan lost its fixed root/digest filename");
+        ObjectNode selectedScan=json(loadLegacyOriginal(incidentRoot,originals,external,scanRef,FILE_MAX));
+        sameEpisode(actual,selectedScan);String scanSchema=text(selectedScan,"schema");boolean progress="xar.episode-incident-scan/v3".equals(scanSchema);
+        require(progress||"xar.episode-incident-scan/v2".equals(scanSchema),"Legacy proof requires its original complete versioned scan");
+        StrictJson.object(selectedScan,progress?Set.of("schema","origin","source","session_id","incidents","captured_incidents","incomplete_after","diagnostic_only","episode_ref","original_refs","scan_observation_basis")
+                :Set.of("schema","origin","source","session_id","incidents","captured_incidents","incomplete_after","diagnostic_only","episode_ref","original_refs"));
+        require(episodeRef.equals(ExactRef.fromJson(selectedScan.get("episode_ref")))&&selectedScan.path("original_refs").isArray()
+                &&selectedScan.path("original_refs").size()<=1026,"Legacy proof scan changed its original episode/inventory");
+        ExactRef oldProgress=progress?legacyRef(selectedScan.get("scan_observation_basis"),FILE_MAX):null;
+        Set<Path> selectedPaths=new HashSet<>();boolean hasIndex=false,hasBefore=false,hasEpisode=false;long selectedBytes=0;
+        for(JsonNode value:selectedScan.get("original_refs")) {
+            ExactRef ref=ExactRef.fromJson(value);Path path=absolute(ref.path());
+            require(selectedPaths.add(path)&&ref.bytes()>0,"Distinct positive legacy scan originals required");
+            selectedBytes=Math.addExact(selectedBytes,ref.bytes());require(selectedBytes<=TOTAL_INVENTORY_MAX,"Legacy proof scan inventory exceeds its finite bound");
+            int maximum;
+            if(path.startsWith(incidentRoot)) {
+                require(ref.equals(originals.get(path)),"Legacy scan internal original differs from the complete current inventory");
+                maximum=diagnosticBeforeRefs.contains(ref)?CAPTURED_DIAGNOSTIC_MAXIMUM:FILE_MAX;
+            } else {
+                ExternalOriginal known=external.get(path);
+                require(ref.equals(oldProgress)||known!=null&&known.source().equals(ref),"Legacy scan external original has no declared bounded role");
+                maximum=known==null?FILE_MAX:Math.toIntExact(known.maximumBytes());
+            }
+            loadLegacyOriginal(incidentRoot,originals,external,ref,maximum);
+            hasIndex|=ref.equals(originRef);hasBefore|=ref.equals(before);hasEpisode|=ref.equals(episodeRef);
+        }
+        require(hasIndex&&hasBefore&&hasEpisode&&(oldProgress==null||selectedPaths.contains(absolute(oldProgress.path()))),"Legacy selected originals are absent from the complete pinned scan");
+        if(oldProgress!=null) {
+            ObjectNode basis=json(loadLegacyOriginal(incidentRoot,originals,external,oldProgress,FILE_MAX));
+            require("xar.java.incident-observation-original/v1".equals(text(basis,"schema"))
+                    &&selectedScan.get("origin").equals(basis.get("origin"))&&selectedScan.get("source").equals(basis.get("source"))
+                    &&selectedScan.get("session_id").equals(basis.get("session_id")),"Legacy scan progress lost its original full-frame binding");
+        }
+        for(String field:List.of("canonical_receipt_ref","canonical_record_ref","canonical_dispatch_ref"))
+            loadLegacyOriginal(incidentRoot,originals,external,legacyRef(proof.get(field),FILE_MAX),FILE_MAX);
+        require(afterIndex.path("supporting_refs").isArray()&&afterIndex.path("supporting_refs").size()==1
+                &&afterIndex.get("supporting_refs").equals(proof.get("observation_supporting_refs")),"Legacy after changed its sole observation support basis");
+        loadLegacyOriginal(incidentRoot,originals,external,legacyRef(proof.get("observation_supporting_refs").get(0),FILE_MAX),FILE_MAX);
+        verifyLegacyGuard(object(proof.get("reconciliation_guard")),command,proof,afterIndex,actual);
+        // Repeat immutable source verification after parsing and all nested DATA checks.
+        read(incidentRoot,originRef);read(incidentRoot,before);read(incidentRoot,episodeRef);read(scans,scanRef);
+        long closure=0;Set<Path> closurePaths=new HashSet<>();
+        for(var entry:originals.entrySet()){closurePaths.add(entry.getKey());closure=Math.addExact(closure,entry.getValue().bytes());}
+        for(var entry:external.entrySet())if(closurePaths.add(entry.getKey()))closure=Math.addExact(closure,entry.getValue().source().bytes());
+        require(closure<=TOTAL_INVENTORY_MAX,"Complete legacy side-evidence closure exceeds its finite inventory bound");
+    }
+    private static void verifyLegacyGuard(ObjectNode guard,ObjectNode command,ObjectNode proof,ObjectNode afterIndex,ObservedScan actual) {
+        StrictJson.object(guard,Set.of("schema","origin","source","session_id","connection_generation","operation","native_evidence",
+                "capability_evidence","authority_id","observed_at","valid_until","supporting_evidence"));
+        require("xar.command-guard/v2".equals(text(guard,"schema"))&&guard.path("supporting_evidence").isArray()
+                &&guard.path("supporting_evidence").size()>0&&guard.path("supporting_evidence").size()<=64,"Exact bounded reconciliation guard DATA required");
+        ObjectNode origin=StrictJson.object(guard.get("origin"),Set.of("schema","kind","identity"));
+        require("xar.command-origin/v3".equals(text(origin,"schema"))&&"RECONCILIATION".equals(text(origin,"kind")),"Legacy guard must retain its reconciliation origin");
+        ObjectNode identity=StrictJson.object(origin.get("identity"),Set.of("schema","factual","source","session_id","connection_generation","pending","evidence","observed_at"));
+        require("xar.java.reconciliation-identity/v1".equals(text(identity,"schema")),"Legacy DATA requires the EXACT relation, never HISTORY_APPEND");
+        ObjectNode pending=StrictJson.object(identity.get("pending"),Set.of("action_id","body_sha256","request_id","original_before","original_receipt","original_before_driver"));
+        ObjectNode evidence=StrictJson.object(identity.get("evidence"),Set.of("actual_native_packet","actual_hello","original_heartbeat","observation_manifest","current_original_driver"),Set.of("complete_source_qualification"));
+        require(identity.get("factual").equals(afterIndex.get("after_observation"))
+                &&OfflineBatchBinding.source(identity.get("source")).equals(OfflineBatchBinding.source(command.get("source")))
+                &&identity.get("session_id").equals(command.get("session_id"))&&guard.get("source").equals(identity.get("source"))
+                &&guard.get("session_id").equals(identity.get("session_id"))&&guard.get("connection_generation").equals(identity.get("connection_generation"))
+                &&guard.get("operation").equals(command.get("operation")),"Reconciliation guard crossed its actual after/source/session/operation");
+        require(command.get("action_id").equals(pending.get("action_id"))&&proof.get("canonical_command_sha256").equals(pending.get("body_sha256"))
+                &&journalObservation(actual,command.get("before")).equals(journalObservation(actual,pending.get("original_before")))
+                &&ExactRef.fromJson(proof.get("canonical_receipt_ref")).equals(ExactRef.fromJson(pending.get("original_receipt"))),"Reconciliation pending changed its original complete command/receipt");
+        ExactRef nativeAfter=legacyRef(afterIndex.get("after_frame"),(64L<<20)+4);
+        require(nativeAfter.equals(legacyRef(guard.get("native_evidence"),(64L<<20)+4))
+                &&nativeAfter.equals(legacyRef(evidence.get("actual_native_packet"),(64L<<20)+4)),"Reconciliation guard changed its original after frame");
+        legacyRef(guard.get("capability_evidence"),FILE_MAX);legacyRef(pending.get("original_before_driver"),FullJsonTree.MAXIMUM_DRIVER_BYTES);
+        for(String field:List.of("actual_hello","original_heartbeat","observation_manifest"))legacyRef(evidence.get(field),FILE_MAX);
+        legacyRef(evidence.get("current_original_driver"),FullJsonTree.MAXIMUM_DRIVER_BYTES);
+        if(evidence.has("complete_source_qualification")&&!evidence.get("complete_source_qualification").isNull())legacyRef(evidence.get("complete_source_qualification"),FILE_MAX);
+        for(JsonNode ref:guard.get("supporting_evidence"))legacyRef(ref,FullJsonTree.MAXIMUM_DRIVER_BYTES);
+        text(guard,"authority_id");text(pending,"request_id");
+        var generation=new org.xar.ck3.control.contracts.CrossJsDecimalUInt64(text(guard,"connection_generation"));
+        require(new java.math.BigInteger(generation.decimal()).signum()>0,"Positive original reconciliation generation required");
+        StrictJson.utc(text(guard,"observed_at"));StrictJson.utc(text(guard,"valid_until"));StrictJson.utc(text(identity,"observed_at"));
+        var factual=journalObservation(actual,identity.get("factual"));
+        require(actual.observation().machineId().equals(factual.machineId())&&actual.observation().game().equals(factual.game())
+                &&actual.observation().frame().episodeRunId().equals(factual.frame().episodeRunId()),"Legacy after observation crossed its original physical episode");
+    }
+    private static ExactRef legacyRef(JsonNode value,long maximum) {
+        ExactRef ref=ExactRef.fromJson(value);absolute(ref.path());require(ref.bytes()>0&&ref.bytes()<=maximum,"Positive finite legacy original reference required");return ref;
+    }
+    /** Only exact fields of the recognized proof may declare new bounded nested originals. */
+    private static byte[] loadLegacyOriginal(Path incidentRoot,Map<Path,ExactRef> originals,Map<Path,ExternalOriginal> external,
+            ExactRef ref,int maximum) throws IOException {
+        Path path=absolute(ref.path());require(ref.bytes()>0&&ref.bytes()<=maximum,"Finite legacy original role required");
+        ExactRef existing=originals.get(path);require(existing==null||existing.equals(ref),"Legacy original conflicts with current inventory pin");
+        if(path.startsWith(incidentRoot)) {
+            require(ref.equals(existing),"Legacy internal original is absent from the complete inventory");return read(incidentRoot,ref,maximum);
+        }
+        ExternalOriginal old=external.putIfAbsent(path,new ExternalOriginal(ref,maximum));
+        require(old==null||old.source().equals(ref),"Conflicting legacy nested original");
+        if(old!=null&&maximum<old.maximumBytes())external.put(path,new ExternalOriginal(ref,maximum));
+        verifyExternal(ref,maximum);byte[] raw=EvidenceGrantManifestPublisher.readStable(path,maximum);
+        require(raw.length==ref.bytes()&&SourceReviewJson.sha(raw).equals(ref.sha256()),"Legacy nested original bytes/SHA changed");verifyExternal(ref,maximum);return raw;
     }
 
     private static boolean qualifiesNativeDiagnostic(Path root, ExactRef before, ObjectNode origin) throws IOException {
