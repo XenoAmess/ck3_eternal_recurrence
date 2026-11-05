@@ -1,0 +1,59 @@
+{
+  "schema": "xar.java-owner.incident-codec-published-source-index/v1",
+  "at_utc": "2026-11-05T03:14:45.606302+00:00",
+  "base_commit": "35df84771ad02ef2e4d16649949b98db01fd54f7",
+  "formal_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\incident-command-codec-consistency01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 10014,
+    "sha256": "830f344f937e5232e93ea74f42679b956494c2e7e33b18e3b3be246f2a95241a"
+  },
+  "formal_sources": [
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+      "bytes": 71164,
+      "sha256": "ad2efcd5c95813a907d0b90ac9992475395b94dcb965d0479ed7fcfadb93733c"
+    },
+    {
+      "path": "D:\\r64d\\java\\ck3-control\\application\\src\\test\\java\\org\\xar\\ck3\\control\\application\\planning\\EventIncidentReceiptIntegrationTest.java",
+      "bytes": 29005,
+      "sha256": "e11cc6610b0c7fef5b27cf16b35bf7b31baa80e04e725674136b8f83810146bf"
+    }
+  ],
+  "actual_prod_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\incident-command-codec-consistency01\\SOURCE-READY-OWNER02.json",
+    "bytes": 2811,
+    "sha256": "73cc711ac6cf3263c1b4819b0fea1d180ad557ac254638b9c175f57acb91e3dc"
+  },
+  "actual_prod_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\incident-command-codec-consistency01\\native-first02\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 193071,
+    "sha256": "85e6b4a9c415790c9e7a1c66ac3518280c06af73608e13ba2eb4d79008f66a2b"
+  },
+  "test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\incident-canonical-future-test01\\owner-candidate01\\SOURCE-READY01.json",
+    "bytes": 10513,
+    "sha256": "8d28260ee977fd7b81fa04dfc7c36061d1ee4a9dc3aaa4f7280109a6d0d4879c"
+  },
+  "qualified": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\incident-canonical-future-test01\\owner-candidate01\\QUALIFIED-COHORT01.json",
+    "bytes": 97150,
+    "sha256": "f51fb2ada6a023c88bc7c4894cfcfafbdb0e96647065278475827e60807b0c82"
+  },
+  "test_inverse": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\incident-canonical-future-test01\\owner-candidate01\\INVERSE01.json",
+    "bytes": 1871,
+    "sha256": "a455cda6cb83b4b5a97131ec365d3797cd8925c9fab8f65dd53863be3b765201"
+  },
+  "test_model_review": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261105\\incident-canonical-future-test01\\owner-candidate01\\MODEL-REVIEW01.json",
+    "bytes": 2579,
+    "sha256": "e042f281aec89e40c99b8035894ce06774dd39bdfda485ab97a755faf9f8482b"
+  },
+  "full_formal_qualification": false,
+  "original521_recovered": false,
+  "runtime_adoption_this_future_variant": false,
+  "new_cases": 2,
+  "affected_cases": 4,
+  "all_six_passed": true,
+  "raw_actual_payload_committed": false
+}

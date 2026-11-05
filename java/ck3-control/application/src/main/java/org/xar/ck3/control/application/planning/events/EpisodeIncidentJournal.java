@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.NativeActionPort;
@@ -252,15 +253,13 @@ public final class EpisodeIncidentJournal {
         verifyEpisode();
         Kind kind = command.arguments().get("unknown_mandatory_choice_v1") instanceof OpportunityJson.Obj ? Kind.MANDATORY
                 : command.arguments().get("unhandled_event_fallback") instanceof OpportunityJson.Obj ? Kind.EVENT : Kind.INTERACTION;
-        String id = digest((command.actionId() + "|" + digest(DriverJson.encode(command.arguments()))).getBytes(java.nio.charset.StandardCharsets.UTF_8)).substring(0, 32);
+        OpportunityJson.Obj capturedArguments = incidentArguments(command);
+        String id = incidentId(command.actionId(), digest(DriverJson.encode(capturedArguments)));
         return locked(() -> {
-            Path indexPath = configured.incidentRoot().resolve(id + ".before-index.json");
-            if (Files.exists(indexPath, LinkOption.NOFOLLOW_LINKS)) {
-                var index = measure(indexPath); ObjectNode row = object(read(index)); validateIndex(row, actual, command, kind);
-                ExactRef before = ExactRef.fromJson(row.get("before_ref")); read(before); return Optional.of(new Ticket(id, kind, before, index, actual));
-            }
+            Path indexPath = originalIndexPath(command, capturedArguments);
+            if (Files.exists(indexPath, LinkOption.NOFOLLOW_LINKS)) return Optional.of(readTicket(command, indexPath));
             ObjectNode planned = StrictJson.object().put("snapshot_id", command.before().frame().snapshotId()).put("revision", command.before().frame().revision());
-            planned.set("plan", StrictJson.parse(DriverJson.encode(command.arguments())));
+            planned.set("plan", StrictJson.parse(DriverJson.encode(capturedArguments)));
             String now = configured.clock().instant().toString(); byte[] raw;
             ObjectNode capture = object(planned.path("plan").get(kind == Kind.MANDATORY ? "unknown_mandatory_choice_v1"
                     : kind == Kind.EVENT ? "unhandled_event_fallback" : "unhandled_interaction_fallback"));
@@ -290,7 +289,7 @@ public final class EpisodeIncidentJournal {
             }
             ExactRef before = write(configured, configured.incidentRoot().resolve(id + ".before.json"), raw);
             ObjectNode index = binding(actual); index.put("schema", "xar.episode-incident-before-index/v1").put("incident_id", id)
-                    .put("kind", kind.name()).put("action_id", command.actionId()).put("arguments_sha256", digest(DriverJson.encode(command.arguments())));
+                    .put("kind", kind.name()).put("action_id", command.actionId()).put("arguments_sha256", digest(DriverJson.encode(capturedArguments)));
             index.set("before_ref", before.toJson());
             if (kind == Kind.MANDATORY) index = IncidentReadIndex.encode(new IncidentReadIndex.KnownReceipt(
                     ExactRef.fromJson(planned.path("plan").get("mandatory_choice_original_read"))), index);
@@ -350,7 +349,7 @@ public final class EpisodeIncidentJournal {
                 index.set("before_ref", ticket.before().toJson()); index.set("after_ref", after.toJson());
                 index.set("after_observation", ProposalLifecycleCodec.observation(pair.after().identity())); index.set("after_frame", pair.after().originalEvidence().toJson());
                 var evidence = index.putArray("supporting_refs"); effect.supportingEvidence().forEach(ref -> evidence.add(ref.toJson()));
-                Optional<RawJson> policyInput=EventIncidentReceipt.prepare(command.arguments(),projected.compatibleResult().orElseThrow(),ticket.before(),after,new RawJson(raw));
+                Optional<RawJson> policyInput=EventIncidentReceipt.prepare(indexedArguments(command,object(read(ticket.index()))),projected.compatibleResult().orElseThrow(),ticket.before(),after,new RawJson(raw));
                 if(policyInput.isPresent())index.set("policy_receipt_input",StrictJson.parse(policyInput.orElseThrow().bytes(),MAX_METADATA));else index.putNull("policy_receipt_input");
                 // A mismatch must remain inspectable and unresolved. The coordinator already converts
                 // this verifier's failure into UNKNOWN; no event selection is submitted again.
@@ -385,7 +384,7 @@ public final class EpisodeIncidentJournal {
             JsonNode oldId=old.get("instance_id"),next=object(DriverJson.toNode(pair.after().semantic(), DriverJson.MAX_NATIVE_BYTES)).get(field);
             require(oldId!=null&&oldId.isIntegralNumber(),"original full native instance required");
             ObjectNode row=binding(ticket.origin());row.put("schema",UNSETTLED_SCHEMA).put("incident_id",ticket.incidentId()).put("kind",ticket.kind().name())
-                    .put("action_id",command.actionId()).put("arguments_sha256",digest(DriverJson.encode(command.arguments())))
+                    .put("action_id",command.actionId()).put("arguments_sha256",digest(DriverJson.encode(indexedArguments(command,beforeIndex))))
                     .put("request_id",attempt.requestId()).put("observation_status","UNSETTLED").put("reason",actual.reason())
                     .put("independent_postcondition_verified",false).put("replay_allowed",false).put("observed_at_utc",pair.after().observedAt().toString());
             row.set("before_ref",ticket.before().toJson());row.set("before_frame",initial.nativeFrame().toJson());row.set("before_driver_facts",initial.driverFacts().toJson());
@@ -620,18 +619,52 @@ public final class EpisodeIncidentJournal {
     }
     private Ticket existing(ActionCommand command) throws IOException {
         require(handles(command), "Actual original fallback command required");
-        String id = digest((command.actionId() + "|" + digest(DriverJson.encode(command.arguments()))).getBytes(java.nio.charset.StandardCharsets.UTF_8)).substring(0, 32);
-        ExactRef index = measure(configured.incidentRoot().resolve(id + ".before-index.json")); ObjectNode body = object(read(index));
-        Kind kind = Kind.valueOf(text(body, "kind")); Binding origin = new Binding(command.before(), command.source(), command.sessionId());
-        validateIndex(body, origin, command, kind); return new Ticket(id, kind, ExactRef.fromJson(body.get("before_ref")), index, origin);
+        return readTicket(command, originalIndexPath(command, incidentArguments(command)));
+    }
+    /** The command codec already owns its persistent argument representation; no hash or parser is changed. */
+    private static OpportunityJson.Obj incidentArguments(ActionCommand command) {
+        var arguments = OpportunityJson.object(DriverJson.object(ActionCodec.encodeCommand(command), ActionCodec.MAX_COMMAND_BYTES).get("arguments"), "original incident command arguments");
+        StrictJson.require(arguments.equals(command.arguments()), "Incident command codec changed typed arguments");
+        return arguments;
+    }
+    private static String incidentId(String actionId, String argumentsHash) {
+        return digest((actionId + "|" + argumentsHash).getBytes(java.nio.charset.StandardCharsets.UTF_8)).substring(0, 32);
+    }
+    /** Only the exact original raw lane and the existing command-codec lane may name an original. */
+    private Path originalIndexPath(ActionCommand command, OpportunityJson.Obj canonical) throws IOException {
+        Path raw = configured.incidentRoot().resolve(incidentId(command.actionId(), digest(DriverJson.encode(command.arguments()))) + ".before-index.json");
+        Path stable = configured.incidentRoot().resolve(incidentId(command.actionId(), digest(DriverJson.encode(canonical))) + ".before-index.json");
+        boolean rawExists = Files.exists(raw, LinkOption.NOFOLLOW_LINKS);
+        require(raw.equals(stable) || !rawExists || !Files.exists(stable, LinkOption.NOFOLLOW_LINKS), "Conflicting exact incident originals require reconciliation");
+        return rawExists ? raw : stable;
+    }
+    private Ticket readTicket(ActionCommand command, Path indexPath) throws IOException {
+        ExactRef index = measure(indexPath); ObjectNode body = object(read(index));
+        Kind kind = command.arguments().get("unknown_mandatory_choice_v1") instanceof OpportunityJson.Obj ? Kind.MANDATORY
+                : command.arguments().get("unhandled_event_fallback") instanceof OpportunityJson.Obj ? Kind.EVENT : Kind.INTERACTION;
+        Binding origin = new Binding(command.before(), command.source(), command.sessionId());
+        validateIndex(body, origin, command, kind);
+        String id = incidentId(command.actionId(), text(body, "arguments_sha256"));
+        require(id.equals(text(body, "incident_id")) && indexPath.equals(configured.incidentRoot().resolve(id + ".before-index.json")), "Original incident index identity differs");
+        ExactRef before = ExactRef.fromJson(body.get("before_ref"));
+        require(Path.of(before.path()).equals(configured.incidentRoot().resolve(id + ".before.json")), "Original before escaped the episode root");
+        read(before); return new Ticket(id, kind, before, index, origin);
+    }
+    private static OpportunityJson.Obj indexedArguments(ActionCommand command, ObjectNode index) throws IOException {
+        String retained = text(index, "arguments_sha256");
+        if (retained.equals(digest(DriverJson.encode(command.arguments())))) return command.arguments();
+        OpportunityJson.Obj canonical = incidentArguments(command);
+        require(retained.equals(digest(DriverJson.encode(canonical))), "Original incident command arguments differ in both exact representations");
+        return canonical;
     }
     private void validateIndex(ObjectNode row, Binding actual, ActionCommand command, Kind kind) throws IOException {
         ReadOriginals originalRead = beforeIndexRead(row);
         require(kind == Kind.MANDATORY ? originalRead instanceof KnownRead known && known.original().equals(
                 ExactRef.fromJson(StrictJson.parse(DriverJson.encode(command.arguments())).get("mandatory_choice_original_read")))
                 : originalRead == NoRead.INSTANCE, "Action incident lost its exact original query role");
+        OpportunityJson.Obj originalArguments = indexedArguments(command, row);
         require(decodeBinding(row).equals(actual) && text(row, "action_id").equals(command.actionId()) && text(row, "kind").equals(kind.name())
-                && text(row, "arguments_sha256").equals(digest(DriverJson.encode(command.arguments()))), "Original incident command/source binding differs");
+                && text(row, "arguments_sha256").equals(digest(DriverJson.encode(originalArguments))), "Original incident command/source binding differs");
     }
     private static void validateCaptureBinding(ObservationIdentity observed, ObjectNode capture) {
         JsonNode b = capture.get("binding"); StrictJson.require(b != null && b.isObject(), "Actual fallback binding required");

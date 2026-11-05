@@ -44,7 +44,7 @@ final class EventIncidentReceiptIntegrationTest {
         JsonNode index=StrictJson.parse(Files.readAllBytes(indexPath),1<<20);
         assertEquals("xar.episode-incident-after-index/v2",index.get("schema").textValue());
         assertTrue(index.get("policy_receipt_input").isObject());
-        assertArrayEquals(DriverJson.encode(f.command().arguments()),java.util.Base64.getDecoder().decode(index.path("policy_receipt_input").path("original_arguments_base64").textValue()),
+        assertArrayEquals(DriverJson.encode(ActionCodec.decodeCommand(ActionCodec.encodeCommand(f.command())).arguments()),java.util.Base64.getDecoder().decode(index.path("policy_receipt_input").path("original_arguments_base64").textValue()),
             "canonical JSON persistence preserves the actual command encoding as well as its JSON-domain content");
         var reopened=EpisodeIncidentJournal.openOriginal(f.configuration(),f.journal().episodeReference());
         assertEquals(1,reopened.scan(new EpisodeIncidentJournal.Binding(f.command().before(),f.command().source(),f.command().sessionId())).capturedIncidents());
@@ -72,7 +72,7 @@ final class EventIncidentReceiptIntegrationTest {
         ExactRef after=ExactRef.fromJson(index.get("after_ref"));RawJson afterRaw=new RawJson(Files.readAllBytes(Path.of(after.path())));
         RawJson beforeRaw=new RawJson(Files.readAllBytes(Path.of(ticket.before().path())));
         RawJson input=new RawJson(StrictJson.canonical(index.get("policy_receipt_input"),1<<20));
-        String argumentsHash=DriverJson.sha256(DriverJson.encode(f.command().arguments()));
+        String argumentsHash=DriverJson.sha256(DriverJson.encode(ActionCodec.decodeCommand(ActionCodec.encodeCommand(f.command())).arguments()));
         var credit=EventIncidentReceipt.verify(input,argumentsHash,ticket.before(),after,beforeRaw,afterRaw).orElseThrow();
         assertEquals(new org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.BooleanValue(false),credit.get("war_started_verified"));
         assertEquals(new org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.BooleanValue(false),credit.get("title_retention_verified"));
@@ -93,6 +93,168 @@ final class EventIncidentReceiptIntegrationTest {
         index.putNull("policy_receipt_input");Files.write(path,StrictJson.canonical(index,1<<20));
         assertThrows(IllegalArgumentException.class,()->f.journal().scan(binding),"legacy data cannot claim a new comparison by adding null");
     }
+    @Test void codecRoundtripKeepsOneCanonicalIncidentAndQualifiedPolicyReceipt() throws Exception {
+        Fixture f=fixture(false);
+        ActionCommand decoded=ActionCodec.decodeCommand(ActionCodec.encodeCommand(f.command()));
+        byte[] rawArguments=DriverJson.encode(f.command().arguments());
+        byte[] canonicalArguments=DriverJson.encode(decoded.arguments());
+        assertFalse(java.util.Arrays.equals(rawArguments,canonicalArguments));
+        assertEquals(f.command().arguments(),decoded.arguments());
+        assertEquals(ActionCodec.bodySha256(f.command()),ActionCodec.bodySha256(decoded));
+        var ticket=f.journal().before(f.command()).orElseThrow();
+        byte[] beforeBytes=Files.readAllBytes(Path.of(ticket.before().path()));
+        byte[] indexBytes=Files.readAllBytes(Path.of(ticket.index().path()));
+        String canonicalHash=DriverJson.sha256(canonicalArguments);
+        assertEquals(authoredIncidentId(f.command(),canonicalHash),ticket.incidentId());
+        ObjectNode index=(ObjectNode)StrictJson.parse(indexBytes,1<<20);
+        assertEquals(canonicalHash,index.get("arguments_sha256").textValue());
+        assertEquals(ticket.before(),ExactRef.fromJson(index.get("before_ref")));
+        var reopened=EpisodeIncidentJournal.openOriginal(f.configuration(),f.journal().episodeReference());
+        assertEquals(ticket,reopened.before(decoded).orElseThrow());
+        assertEquals(1,incidentFileCount(f.journal(),".before-index.json"));
+        assertEquals(1,incidentFileCount(f.journal(),".before.json"));
+        assertArrayEquals(beforeBytes,Files.readAllBytes(Path.of(ticket.before().path())));
+        assertArrayEquals(indexBytes,Files.readAllBytes(Path.of(ticket.index().path())));
+        reopened.observedAfter(decoded,f.attempt(),f.pair(),f.projected());
+        Path afterIndex=f.configuration().incidentRoot().resolve(ticket.incidentId()+".after-index.json");
+        byte[] afterIndexBytes=Files.readAllBytes(afterIndex);
+        ObjectNode after=(ObjectNode)StrictJson.parse(afterIndexBytes,1<<20);
+        assertEquals("xar.episode-incident-after-index/v2",after.get("schema").textValue());
+        assertTrue(after.get("policy_receipt_input").isObject());
+        ExactRef afterRef=ExactRef.fromJson(after.get("after_ref"));
+        byte[] afterBytes=Files.readAllBytes(Path.of(afterRef.path()));
+        assertArrayEquals(canonicalArguments,java.util.Base64.getDecoder().decode(after.path("policy_receipt_input").path("original_arguments_base64").textValue()));
+        assertEquals(originalExpectedCredit(),EventIncidentReceipt.verify(
+            new RawJson(StrictJson.canonical(after.get("policy_receipt_input"),1<<20)),canonicalHash,
+            ticket.before(),afterRef,new RawJson(beforeBytes),new RawJson(afterBytes)).orElseThrow());
+        var cold=EpisodeIncidentJournal.openOriginal(f.configuration(),f.journal().episodeReference());
+        var scan=cold.scan(new EpisodeIncidentJournal.Binding(decoded.before(),decoded.source(),decoded.sessionId()));
+        assertEquals(1,scan.capturedIncidents());assertEquals(0,scan.incompleteAfter());
+        assertTrue(scan.originals().containsAll(List.of(ticket.before(),ticket.index(),afterRef,EpisodeIncidentJournal.measure(afterIndex))));
+        cold.observedAfter(decoded,f.attempt(),f.pair(),f.projected());
+        assertEquals(ticket,cold.before(f.command()).orElseThrow());
+        assertArrayEquals(beforeBytes,Files.readAllBytes(Path.of(ticket.before().path())));
+        assertArrayEquals(indexBytes,Files.readAllBytes(Path.of(ticket.index().path())));
+        assertArrayEquals(afterIndexBytes,Files.readAllBytes(afterIndex));
+        assertArrayEquals(afterBytes,Files.readAllBytes(Path.of(afterRef.path())));
+    }
+
+    @Test void legacyRawIndexRemainsExactAndConflictingOrTamperedOriginalsReject() throws Exception {
+        Fixture f=fixture(false);
+        ActionCommand decoded=ActionCodec.decodeCommand(ActionCodec.encodeCommand(f.command()));
+        AuthoredLegacy legacy=authoredLegacy(f,"legacy-good");
+        var journal=legacy.journal();var rawTicket=legacy.raw();
+        byte[] beforeBytes=Files.readAllBytes(Path.of(rawTicket.before().path()));
+        byte[] indexBytes=Files.readAllBytes(Path.of(rawTicket.index().path()));
+        String rawHash=DriverJson.sha256(DriverJson.encode(f.command().arguments()));
+        assertEquals(rawTicket,journal.before(f.command()).orElseThrow());
+        assertEquals(rawHash,StrictJson.parse(indexBytes,1<<20).get("arguments_sha256").textValue());
+        // A codec-decoded observer has no exact raw argument hash and may not create its own after.
+        var missing=assertThrows(java.io.UncheckedIOException.class,()->journal.observedAfter(decoded,f.attempt(),f.pair(),f.projected()));
+        assertInstanceOf(java.io.IOException.class,missing.getCause());
+        assertNoIncidentAfter(journal);
+        assertFalse(Files.exists(Path.of(legacy.seed().index().path())));
+        journal.observedAfter(f.command(),f.attempt(),f.pair(),f.projected());
+        Path afterIndex=journal.configuration().incidentRoot().resolve(rawTicket.incidentId()+".after-index.json");
+        byte[] afterIndexBytes=Files.readAllBytes(afterIndex);
+        ObjectNode after=(ObjectNode)StrictJson.parse(afterIndexBytes,1<<20);
+        ExactRef afterRef=ExactRef.fromJson(after.get("after_ref"));
+        byte[] afterBytes=Files.readAllBytes(Path.of(afterRef.path()));
+        assertArrayEquals(DriverJson.encode(f.command().arguments()),java.util.Base64.getDecoder().decode(
+            after.path("policy_receipt_input").path("original_arguments_base64").textValue()));
+        assertEquals(originalExpectedCredit(),EventIncidentReceipt.verify(
+            new RawJson(StrictJson.canonical(after.get("policy_receipt_input"),1<<20)),rawHash,
+            rawTicket.before(),afterRef,new RawJson(beforeBytes),new RawJson(afterBytes)).orElseThrow());
+        var cold=EpisodeIncidentJournal.openOriginal(journal.configuration(),journal.episodeReference());
+        var scan=cold.scan(new EpisodeIncidentJournal.Binding(f.command().before(),f.command().source(),f.command().sessionId()));
+        assertEquals(1,scan.capturedIncidents());assertEquals(0,scan.incompleteAfter());
+        assertTrue(scan.originals().containsAll(List.of(rawTicket.before(),rawTicket.index(),afterRef)));
+        cold.observedAfter(f.command(),f.attempt(),f.pair(),f.projected());
+        assertEquals(rawTicket,cold.before(f.command()).orElseThrow());
+        assertEquals(1,incidentFileCount(journal,".before-index.json"));assertEquals(1,incidentFileCount(journal,".before.json"));
+        assertFalse(Files.exists(Path.of(legacy.seed().index().path())));
+        assertArrayEquals(beforeBytes,Files.readAllBytes(Path.of(rawTicket.before().path())));
+        assertArrayEquals(indexBytes,Files.readAllBytes(Path.of(rawTicket.index().path())));
+        assertArrayEquals(afterIndexBytes,Files.readAllBytes(afterIndex));assertArrayEquals(afterBytes,Files.readAllBytes(Path.of(afterRef.path())));
+        for(String corruption:List.of("hash","kind","source","before-bytes")) {
+            AuthoredLegacy bad=authoredLegacy(f,"bad-"+corruption);
+            var badJournal=bad.journal();var ticket=bad.raw();
+            ObjectNode badIndex=(ObjectNode)StrictJson.parse(Files.readAllBytes(Path.of(ticket.index().path())),1<<20);
+            if(corruption.equals("hash"))badIndex.put("arguments_sha256","0".repeat(64));
+            else if(corruption.equals("kind"))badIndex.put("kind","INTERACTION");
+            else if(corruption.equals("source"))((ObjectNode)badIndex.get("source")).put("observed_at_utc",NOW.plusSeconds(3).toString());
+            else Files.writeString(Path.of(ticket.before().path()),"{\"tampered\":true}");
+            byte[] corruptIndex=corruption.equals("before-bytes")?Files.readAllBytes(Path.of(ticket.index().path())):StrictJson.canonical(badIndex,1<<20);
+            if(!corruption.equals("before-bytes"))Files.write(Path.of(ticket.index().path()),corruptIndex);
+            assertNoIncidentAfter(badJournal);
+            assertThrows(java.io.IOException.class,()->badJournal.before(f.command()),corruption);
+            var failure=assertThrows(java.io.UncheckedIOException.class,()->badJournal.observedAfter(f.command(),f.attempt(),f.pair(),f.projected()),corruption);
+            assertInstanceOf(java.io.IOException.class,failure.getCause());
+            assertNoIncidentAfter(badJournal);
+            assertArrayEquals(corruptIndex,Files.readAllBytes(Path.of(ticket.index().path())));
+        }
+        AuthoredLegacy conflict=authoredLegacy(f,"two-exact-originals");
+        assertEquals(conflict.raw(),conflict.journal().before(f.command()).orElseThrow());
+        // Both complete lanes were independently qualified by public before(); restore the exact seed pair.
+        Files.write(Path.of(conflict.seed().before().path()),conflict.seedBefore());
+        Files.write(Path.of(conflict.seed().index().path()),conflict.seedIndex());
+        assertEquals(2,incidentFileCount(conflict.journal(),".before-index.json"));
+        assertEquals(2,incidentFileCount(conflict.journal(),".before.json"));
+        var ambiguity=assertThrows(java.io.IOException.class,()->conflict.journal().before(f.command()));
+        assertEquals("Conflicting exact incident originals require reconciliation",ambiguity.getMessage());
+        var ambiguityAfter=assertThrows(java.io.UncheckedIOException.class,()->conflict.journal().observedAfter(f.command(),f.attempt(),f.pair(),f.projected()));
+        assertEquals(ambiguity.getMessage(),ambiguityAfter.getCause().getMessage());assertNoIncidentAfter(conflict.journal());
+    }
+
+    /** Authored schema DATA for exact legacy compatibility; never a historical producer/521 execution. */
+    private record AuthoredLegacy(EpisodeIncidentJournal journal,EpisodeIncidentJournal.Ticket raw,
+        EpisodeIncidentJournal.Ticket seed,byte[] seedBefore,byte[] seedIndex) { }
+    private AuthoredLegacy authoredLegacy(Fixture f,String name) throws Exception {
+        Path directory=Files.createDirectory(temporary.resolve(name));
+        Path incidents=Files.createDirectory(directory.resolve("incidents"));Path scans=Files.createDirectory(directory.resolve("scans"));
+        var configuration=new EpisodeIncidentJournal.Configuration(incidents,scans,f.configuration().clock(),f.configuration().io(),f.configuration().trustedInteractions());
+        var journal=EpisodeIncidentJournal.initialize(configuration,new EpisodeIncidentJournal.Binding(f.command().before(),f.command().source(),f.command().sessionId()));
+        var seed=journal.before(f.command()).orElseThrow();
+        byte[] seedBefore=Files.readAllBytes(Path.of(seed.before().path()));byte[] seedIndex=Files.readAllBytes(Path.of(seed.index().path()));
+        String rawHash=DriverJson.sha256(DriverJson.encode(f.command().arguments()));String rawId=authoredIncidentId(f.command(),rawHash);
+        assertNotEquals(rawId,seed.incidentId(),"the fixture must exercise distinct complete raw and codec lanes");
+        String seedText=new String(seedBefore,java.nio.charset.StandardCharsets.UTF_8);
+        int at=seedText.indexOf(seed.incidentId());assertTrue(at>=0);assertEquals(at,seedText.lastIndexOf(seed.incidentId()));
+        // Replace only generated ID bytes, retaining every original before-body numeric/string token.
+        byte[] rawBefore=(seedText.substring(0,at)+rawId+seedText.substring(at+seed.incidentId().length())).getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        Path beforePath=incidents.resolve(rawId+".before.json");Files.write(beforePath,rawBefore);ExactRef beforeRef=EpisodeIncidentJournal.measure(beforePath);
+        ObjectNode rawIndex=(ObjectNode)StrictJson.parse(seedIndex,1<<20);
+        rawIndex.put("incident_id",rawId).put("arguments_sha256",rawHash);rawIndex.set("before_ref",beforeRef.toJson());
+        Files.write(incidents.resolve(rawId+".before-index.json"),StrictJson.canonical(rawIndex,1<<20));
+        // Remove only the two files this fixture's public seed call created; EPISODE/source/effect originals remain.
+        Files.delete(Path.of(seed.index().path()));Files.delete(Path.of(seed.before().path()));
+        var raw=journal.before(f.command()).orElseThrow();assertEquals(rawId,raw.incidentId());assertEquals(beforeRef,raw.before());
+        assertEquals(rawId,StrictJson.parse(Files.readAllBytes(beforePath),1<<20).get("incident_id").textValue());
+        assertEquals(1,incidentFileCount(journal,".before-index.json"));assertEquals(1,incidentFileCount(journal,".before.json"));
+        return new AuthoredLegacy(journal,raw,seed,seedBefore,seedIndex);
+    }
+    private static String authoredIncidentId(ActionCommand command,String argumentsHash) {
+        return DriverJson.sha256((command.actionId()+"|"+argumentsHash).getBytes(java.nio.charset.StandardCharsets.UTF_8)).substring(0,32);
+    }
+    private static long incidentFileCount(EpisodeIncidentJournal journal,String suffix) throws Exception {
+        try(var files=Files.list(journal.configuration().incidentRoot())) {return files.filter(path->path.getFileName().toString().endsWith(suffix)).count();}
+    }
+    private static void assertNoIncidentAfter(EpisodeIncidentJournal journal) throws Exception {
+        assertEquals(0,incidentFileCount(journal,".after.json"));assertEquals(0,incidentFileCount(journal,".after-index.json"));
+        assertEquals(0,incidentFileCount(journal,".unsettled.json"));
+    }
+    private static org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.ObjectValue originalExpectedCredit() throws Exception {
+        try(InputStream raw=EventIncidentReceiptIntegrationTest.class.getResourceAsStream("/eventregistry/source-reviewed-populist-receipt-golden-v1.json.gz")) {
+            assertNotNull(raw,"the unmodified original Python golden remains the independent expected credit");
+            try(InputStream gzip=new GZIPInputStream(raw)) {
+                byte[] bytes=gzip.readNBytes((1<<20)+1);assertTrue(bytes.length<=(1<<20));
+                JsonNode expected=StrictJson.parse(bytes,1<<20).path("cases").get(0).get("expected");
+                return org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.object(
+                    org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.parse(StrictJson.canonical(expected,1<<20)));
+            }
+        }
+    }
+
     private Fixture fixture(boolean badIndex) throws Exception {
         ObjectNode body=originalBody(),plan=(ObjectNode)body.get("plan"),result=((ObjectNode)body.get("result")).deepCopy();
         if(badIndex)result.put("option_index",2);
