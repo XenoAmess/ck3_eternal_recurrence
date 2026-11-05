@@ -114,5 +114,17 @@
   "qualification": "Necessary1productionTU20classes0; newchangedTestTU3classes0/onlynew1P11negative,old2RUN0. Unissued staticDATA consumer only; private reducer/fullSEM/Root acceptance remains runtime.",
   "formal_whole_source_software_cohort": false,
   "actual41": "Runtime source adoption and actual same-game recovery are separate. No LOOP/SAVE acceptance at this publication cut.",
-  "new_control_saved_days": 0
+  "new_control_saved_days": 0,
+  "later_actual41_42": {
+    "owner_named_frozen_review": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-readonly-cycle-history-replay01\\ACTUAL41-CLEAN42-LOOP-REVIEW01.json",
+      "bytes": 4080,
+      "sha256": "17313b354809ba07d08fcedd41dfc0964409e9bea5b27f3e38a1f6eca3385486"
+    },
+    "actual41": "LOOP_START08:33:24.2980901; ownhold OPERATOR_STOP; clean END08:33:34.5210618 exit0/failure null; head532.",
+    "actual42": "LOOP_START08:40:39.9654384 samehost97584/restart20 instance6c975ec5; frozen windowhead534/history527/C23/pendingnull.",
+    "original_action_head_cycle_saved_state_unchanged": true,
+    "new_saved_days": 0,
+    "future_health_not_inferred": true
+  }
 }

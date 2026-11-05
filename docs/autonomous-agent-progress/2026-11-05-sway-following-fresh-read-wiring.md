@@ -9,3 +9,5 @@ Necessary typing compiled two production TUs successfully in10.2772078 seconds, 
 Model64 supplied a complete proposal in10.5098960 seconds, TTFT4.7112361, reported36170+1004 tokens. Its three narrow changes were accepted semantically. The owner had independently completed the candidate before consuming the full response; zero literal model lines were copied, and no raw patch was compiled or retried.
 
 Recovery40 actually adopted these two sources in a normal loader, then stopped during historical cycle replay before reaching the changed Sway consumer. The real529/530 originals remain unchanged. Sway business consumption, clearing quarantine, ordinary LOOP and new SAVE days require later runtime evidence. See [source and evidence pins](../maintenance/2026-11-05-sway-following-fresh-read-wiring-sources.json).
+
+Later recovery41 completed the full ordinary completion path, reached LOOP and exited cleanly under its own hold; recovery42 then resumed normal LOOP. This closes the incident recovery path, while distinct Sway domain business and new SAVE acceptance remain separate. See the [frozen41/42 acceptance record](2026-11-05-event-readonly-cycle-replay.md).
