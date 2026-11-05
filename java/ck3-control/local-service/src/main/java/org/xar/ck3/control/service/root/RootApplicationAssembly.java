@@ -1206,7 +1206,7 @@ public final class RootApplicationAssembly {
                 var finalizationHead = same.head().state();
                 var identity = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
                 var originals = archive.withSession(same);
-                record PendingRole(boolean legacyPending, boolean completedLife, boolean saveFinalization) { }
+                record PendingRole(boolean legacyPending, boolean completedLife, boolean saveFinalization, boolean runningSavedSway) { }
                 var snapshot = actions.withFrozen(same, lease -> {
                     var actionsList = lease.snapshot().actions();
                     var saveFinalization = ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, identity, actionsList, originals).isPresent();
@@ -1217,14 +1217,16 @@ public final class RootApplicationAssembly {
                             || ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(finalizationHead, identity, actionsList, originals).isPresent()
                             || ContinuityBatchJournal.readOnlyPendingEventCompletionRoot(finalizationHead, identity, actionsList, originals).isPresent();
                     var completedLife = ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(finalizationHead, identity, actionsList, originals).isPresent();
+                    var runningSavedSway = finalizationHead.status() == org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING
+                            && ContinuityBatchJournal.readOnlyUnstartedSwayRecoveryRoot(finalizationHead, identity, actionsList, originals).isPresent();
                     lease.assertCurrent();
-                    return new PendingRole(legacyPending, completedLife, saveFinalization);
+                    return new PendingRole(legacyPending, completedLife, saveFinalization, runningSavedSway);
                 });
                 var status = finalizationHead.status();
                 if ((!snapshot.legacyPending() && !snapshot.completedLife())
                         || (status != org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED
                             && !(status == org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING
-                                && (snapshot.completedLife() || snapshot.saveFinalization()))))
+                                && (snapshot.completedLife() || snapshot.saveFinalization() || snapshot.runningSavedSway()))))
                     return Optional.empty();
                 var cycles = new OrdinaryCycleTransitions(archive, semanticVerifier, checkpointVerifiers, cyclePolicy, writer::requireSession);
                 cycles.bindTerminalFrameLoader(frames);

@@ -1,0 +1,78 @@
+{
+  "schema": "xar.java-owner.sway-saved-bootstrap-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-bootstrap-routing01\\SOURCE-READY-OWNER01.json",
+    "bytes": 3233,
+    "sha256": "c9e6af70b221c8ec392e1cfa5c59f5a0de6402c146a94dff07c477b378d9d642"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-bootstrap-routing01\\OWNER-SPANS-PART01.json",
+    "bytes": 2866,
+    "sha256": "e0ed3db5515c72bdfb53674cee4df8d4a293d68b6245a6e0b18ad7b3a6a9427d"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-bootstrap-routing01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 3368,
+    "sha256": "3b3b5261bf5abe7485998618b243c5054854eb32610050add1c574acf54eb736"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-bootstrap-routing01\\formal-before01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 255882,
+        "sha256": "436bf1ee0f56c37dbf7117208119f60f2c048c769a04a920f178c8645b63fe37"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-bootstrap-routing01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 256244,
+        "sha256": "e72d7eabb14662214d5cf2d422282c653e4ec19f9ea5202ce9c2a4054d76ccf2"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-bootstrap-routing01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 249157,
+        "sha256": "510d90ad632be9b0ea72573ec1aaa63a03218d71f03117efe0aa37175c419a30"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "production": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-bootstrap-routing01\\QUALIFIED-PRODUCTION01.json",
+    "bytes": 18200,
+    "sha256": "d88ae8e7580535a1264deeea7411023ce8f24f9615c5a3a56ac71dd16d0cdca6"
+  },
+  "source_independent_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-saved-bootstrap-independent-review48\\SOURCE-REVIEW01.json",
+    "bytes": 21695,
+    "sha256": "f94769e208a26544b272965784d393c9d05dd12326fa6c23da6fb8abf73a5787"
+  },
+  "actual_prior_loader47": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-scheduler-recovery47\\ACTUAL-LOADER47.json",
+    "bytes": 46435,
+    "sha256": "e166f70b1faaa8004b0cf40a48ce49e9b2790f4be4d52ca7853a6dea95b12657"
+  },
+  "actual_failure48_tail": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-scheduler-recovery47\\FAILURE4702-stdout.tail64k.bin",
+    "bytes": 65536,
+    "sha256": "1445a7cd92dae08793429f9ebc5d5295b7eea9862f8d12383f7388bb7e87ef7e"
+  },
+  "unchanged_original_HEAD564": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-final-root-failure47\\HEAD564.json",
+    "bytes": 89467,
+    "sha256": "538990caaa296255a60372a27076617ce47fa1abffbe0408a8da7e029933a6c4"
+  },
+  "reused_strict_saved_DATA": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-saved-scheduler-data-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 11979,
+    "sha256": "acfd7a6058ae006de4b0df058134f03c06624d2df31d8e66539e4acbcdb7559e"
+  },
+  "model80": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-bootstrap-routing01\\MODEL-REVIEW01.json",
+    "bytes": 1699,
+    "sha256": "fe686a9f27309f46d0ee615501d1b95b86a1d1b43327d6cf1854e9a3d51a8370"
+  },
+  "new_Test_compile_or_RUN": 0,
+  "whole_formal_software_cohort": false,
+  "runtime48": "PrivateRoot/current canonical/LOOP acceptance remains actualRuntime. Original563/564 unchanged, captured zero guard preserved."
+}

@@ -176,5 +176,15 @@
   ],
   "whole_formal_software_cohort": false,
   "runtime47": "Actual Runtime canonical observation/terminal/fullbootstrap/read-history and warm continuation are separate acceptance. Software qualification authorizes no original564 replay or command refresh.",
-  "new_confirmed_saved_days": 0
+  "new_confirmed_saved_days": 0,
+  "actual47_loader_after_source_cut": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-scheduler-recovery47\\ACTUAL-LOADER47.json",
+    "bytes": 46435,
+    "sha256": "e166f70b1faaa8004b0cf40a48ce49e9b2790f4be4d52ca7853a6dea95b12657"
+  },
+  "actual48_before_observer_failure": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-scheduler-recovery47\\FAILURE4702-stdout.tail64k.bin",
+    "bytes": 65536,
+    "sha256": "1445a7cd92dae08793429f9ebc5d5295b7eea9862f8d12383f7388bb7e87ef7e"
+  }
 }
