@@ -14,3 +14,8 @@ Source, corrected typing and the formal source projection do not certify private
 
 
 The final independent review03 confirms the exact final02 catch correction, both whole-source inverses and the original fresh interruption handling. It explicitly retains the earlier source-review miss and compiler failure. The bare corrected-source acceptance preceded Runtime45 adoption; the immutable detailed report followed and is indexed separately.
+
+
+## Subsequent actual qualification
+
+Recovery45 actually closed original545 as547 NoGameplay and returned to ordinary LOOP. The next new parent passed currentPlanning/original-frame checks and its guarded Root read, committing553 StageRecorded before a distinct publication-closure guard failed. This qualifies the initial anchored role through that stage boundary, without claiming the later service/fresh-continuation or new SAVE. [Next exact-stage recovery](2026-11-05-sway-recorded-stage-recovery.md).

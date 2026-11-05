@@ -1570,10 +1570,26 @@ public final class ContinuityBatchJournal implements BatchJournal {
             if(!body.isObject()||!owner.machineId().equals(StrictJson.text(body.get("machine_id")))
                     ||!owner.sessionId().equals(StrictJson.text(body.get("episode_run_id")))
                     ||!body.path("previous").isArray()||body.path("previous").size()!=0)return Optional.empty();
-            for(String field:java.util.List.of("active_stage","pending","resolved","scheduler","imported_legacy"))
+            for(String field:java.util.List.of("pending","resolved","scheduler","imported_legacy"))
                 if(body.get(field)==null||!body.get(field).isNull())return Optional.empty();
-            // This current-body gate only selects isolated DATA. Installed Sway source independently proves
-            // the real original writerpoint/history and no publication before any zero-write settlement.
+            if(body.get("active_stage")==null)return Optional.empty();
+            if(!body.get("active_stage").isNull()) {
+                var stageRef=ExactRef.fromJson(body.get("active_stage"));
+                var stage=org.xar.ck3.control.application.planning.sway.SwaySchedulerReplay.decodeStage(originals.loadMaterial(stageRef).bytes());
+                if(!java.util.Arrays.equals(ActionCodec.encodeCommand(stage.command()),ActionCodec.encodeCommand(command)))return Optional.empty();
+                byte[] priorBytes=originals.loadMaterial(stage.inputDomain()).bytes();
+                var prior=org.xar.ck3.control.application.planning.sway.SwayFormalCodec.decode(priorBytes);
+                var priorJson=StrictJson.parse(priorBytes,org.xar.ck3.control.application.planning.sway.SwayFormalCodec.MAX);
+                if(!prior.machineId().equals(owner.machineId())||!prior.episodeRunId().equals(owner.sessionId())
+                        ||!priorJson.path("previous").isArray()||priorJson.path("previous").size()!=0)return Optional.empty();
+                for(String field:java.util.List.of("active_stage","pending","resolved","scheduler","imported_legacy"))
+                    if(priorJson.get(field)==null||!priorJson.get(field).isNull())return Optional.empty();
+                var reduced=org.xar.ck3.control.application.planning.sway.SwayFormalState.reduce(prior,
+                        new org.xar.ck3.control.application.planning.sway.SwayFormalState.StageRecorded(stageRef));
+                if(!java.util.Arrays.equals(org.xar.ck3.control.application.planning.sway.SwayFormalCodec.encode(reduced),bodyBytes))return Optional.empty();
+            }
+            // Isolated DATA only. Installed Sway source independently proves the real original writerpoint,
+            // canonical publication/complete stage/Root read/reducer before any no-gameplay settlement.
             return Optional.of(original);
         } catch(RuntimeException rejected) {return Optional.empty();}
     }

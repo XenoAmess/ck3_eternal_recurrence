@@ -112,14 +112,14 @@ public final class SwayCanonicalDomain {
         var pin = head.documents().stream().filter(value -> Path.of(value.reference().path()).toAbsolutePath().normalize().equals(path)).findFirst().orElseThrow(() -> new IOException("actual domain publication event is absent from captured writer chain"));
         JsonNode event = event(borrowed, pin); JsonNode source = event.get("details").get("source");
         var witness = new PublicationWitness(pin.reference(), before.original().reference(), after.original().reference(), ExactRef.fromJson(source.get("producer_input")), receipt.head().sequence(), receipt.eventIdentity(), prepared.predecessor().digest());
-        verifyPublication(borrowed, witness, scoped); return new Publication(after.ledger(), witness, receipt);
+        verifyPublication(borrowed, witness, scoped, true); return new Publication(after.ledger(), witness, receipt);
     }
     private Path eventPath(long sequence) { return originalLock.resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS").resolve(String.format(java.util.Locale.ROOT, "%08d.json", sequence)).toAbsolutePath().normalize(); }
     private JsonNode event(ContinuityStorePort.Session borrowed, WriterContracts.Pin pin) throws IOException {
         JsonNode value = StrictJson.object(StrictJson.parse(borrowed.readPinned(pin, org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES), org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES), java.util.Set.of("sequence", "at_utc", "kind", "details", "identity", "previous_sha256", "after"));
         java.time.Instant.parse(StrictJson.text(value.get("at_utc"))); borrowed.verifyPin(pin); return value;
     }
-    private SwayTransitionCodec.Input verifyPublication(ContinuityStorePort.Session borrowed, PublicationWitness witness, ActionPorts.OutcomeArchive originals) throws IOException {
+    private SwayTransitionCodec.Input verifyPublication(ContinuityStorePort.Session borrowed, PublicationWitness witness, ActionPorts.OutcomeArchive originals, boolean currentPublication) throws IOException {
         var head = borrowed.head(); var pin = head.documents().stream().filter(value -> value.reference().equals(witness.event())).findFirst().orElseThrow(() -> new IOException("Sway publication is outside actual canonical writer chain"));
         require(Path.of(witness.event().path()).toAbsolutePath().normalize().equals(eventPath(witness.sequence())) && witness.sequence() <= head.state().sequence(), "Sway publication event path/sequence differs");
         JsonNode event = event(borrowed, pin);
@@ -131,7 +131,11 @@ public final class SwayCanonicalDomain {
         var after = ContinuityState.fromJson(event.get("after"), head.state().machineId());
         require(after.sequence() == witness.sequence() && DomainBodies.reference(after, DomainBodies.Slot.SWAY).equals(Optional.of(witness.result())) && StrictJson.text(after.toJson().get("last_event_identity")).equals(witness.eventIdentity()), "Sway actual event after-state differs");
         JsonNode source = StrictJson.object(details.get("source"), java.util.Set.of("original_body", "producer_input", "producer_sources", "evidence"));
-        require(ExactRef.fromJson(source.get("producer_input")).equals(witness.producerInput()) && refs(source.get("producer_sources")).equals(producerSources) && witness.result().producerSources().equals(producerSources) && witness.predecessor().producerSources().equals(producerSources), "Sway actual publication producer closure differs");
+        var publishedSources = refs(source.get("producer_sources"));
+        // Historical predecessor sources belong to its exact canonical BodyRef above, not to current code.
+        require(ExactRef.fromJson(source.get("producer_input")).equals(witness.producerInput())
+                && publishedSources.equals(witness.result().producerSources()), "Sway actual publication producer closure differs");
+        require(!currentPublication || publishedSources.equals(producerSources), "Sway current publication differs from its installed producer closure");
         byte[] inputBytes = originals.loadMaterial(witness.producerInput()).bytes(); Ledger before = SwayFormalCodec.decode(originals.loadMaterial(witness.predecessor().payload()).bytes());
         var input = SwayTransitionCodec.decode(inputBytes, before);
         require(input.predecessor().equals(witness.predecessor().payload()) && refs(source.get("evidence")).equals(input.proofs().all()) && StrictJson.text(details.get("precondition_digest")).equals(ActionCodec.sha256(inputBytes)) && StrictJson.text(details.get("evidence_id")).equals("domain-body:SWAY:sway-" + ActionCodec.sha256(inputBytes)), "Sway original publication input/evidence differs");
@@ -200,7 +204,7 @@ public final class SwayCanonicalDomain {
         require(canonical.bodySha256().equals(completion.bodySha256()) && Arrays.equals(ActionCodec.encodeCommand(canonical.command()), ActionCodec.encodeCommand(parent)), "scheduler parent differs from actual canonical command");
         CompositeExecution actual = switch(canonical.state()) { case ActionState.CompositeRunning value -> value.execution(); case ActionState.CompositeUnknown value -> value.execution(); case ActionState.CompositeSettled value -> value.execution(); default -> throw new IllegalArgumentException("actual Sway parent has no canonical composite child custody"); };
         require(actual.equals(retained), "retained Sway parent child history differs from actual canonical custody");
-        var input = verifyPublication(borrowed, completion.witness(), originals);
+        var input = verifyPublication(borrowed, completion.witness(), originals, false);
         require(input.change() instanceof SchedulerSaved saved && saved.replay().equals(completion.originalRun()), "actual published domain input is not this SchedulerSaved execution");
         var publicationBefore = SwayFormalCodec.decode(originals.loadMaterial(completion.witness().predecessor().payload()).bytes());
         require(scheduler.verify(head.state(), publicationBefore, (SchedulerSaved)input.change(), input.proofs(), originals) == completion.continuation(), "scheduler continuation branch differs from actual service replay");
@@ -262,10 +266,12 @@ public final class SwayCanonicalDomain {
         var runningRecord=originals.loadRecord(runningRef);var running=runningRecord.receipt();
         var intentRef=runningRecord.previous().orElseThrow(()->new IOException("unstarted Sway has no canonical Intent predecessor"));
         var intent=originals.loadRecord(intentRef).receipt();
+        boolean recordedStageOnly=unknownReceipt.sequence()==Math.addExact(running.sequence(),2);
         require(running.state() instanceof ActionState.CompositeRunning&&intent.state() instanceof ActionState.IntentDurable
                 &&((ActionState.CompositeRunning)running.state()).execution().equals(retained)
-                &&running.sequence()==Math.addExact(intent.sequence(),1)&&unknownReceipt.sequence()==Math.addExact(running.sequence(),1),
-                "unstarted Sway requires its real contiguous Intent/Running/UNKNOWN before any domain publication");
+                &&running.sequence()==Math.addExact(intent.sequence(),1)
+                &&(unknownReceipt.sequence()==Math.addExact(running.sequence(),1)||recordedStageOnly),
+                "no-write Sway requires its real Intent/Running and adjacent UNKNOWN or exact recorded-stage edge");
         for(var receipt:List.of(intent,running,unknownReceipt)) {
             require(Arrays.equals(ActionCodec.encodeCommand(receipt.command()),ActionCodec.encodeCommand(parent))
                     &&receipt.bodySha256().equals(ActionCodec.bodySha256(parent)),"unstarted Sway predecessor changed the complete command/body");
@@ -287,7 +293,10 @@ public final class SwayCanonicalDomain {
         var oldBody=DomainBodies.reference(originalBefore,DomainBodies.Slot.SWAY).orElseThrow(()->new IOException("original Sway body is unavailable"));
         var body=DomainBodies.reference(originalAfter,DomainBodies.Slot.SWAY).orElseThrow(()->new IOException("original Sway UNKNOWN body is unavailable"));
         require(oldBody.equals(body)&&body.contractSchema().equals(SCHEMA),"unstarted Sway changed its actual domain before UNKNOWN");
-        byte[] bytes=originals.loadMaterial(body.payload()).bytes();var ledger=SwayFormalCodec.decode(bytes);var raw=StrictJson.parse(bytes,SwayFormalCodec.MAX);
+        byte[] bytes=recordedStageOnly
+                ? requireRecordedStageOnly(borrowed,parent,running,unknownReceipt,originalBefore,body,runningRef,originals)
+                : originals.loadMaterial(body.payload()).bytes();
+        var ledger=SwayFormalCodec.decode(bytes);var raw=StrictJson.parse(bytes,SwayFormalCodec.MAX);
         require(ledger.machineId().equals(parent.before().machineId())&&ledger.episodeRunId().equals(parent.before().frame().episodeRunId())
                 &&ledger.episodeRunId().equals(parent.sessionId())&&raw.path("previous").isArray()&&raw.path("previous").size()==0,
                 "unstarted Sway domain is not the same original initial episode");
@@ -297,6 +306,48 @@ public final class SwayCanonicalDomain {
         require(after.digest().equals(head.digest())&&after.documents().equals(head.documents())&&after.absent().equals(head.absent())
                 &&after.indexRepairs().equals(head.indexRepairs())&&after.snapshotNeedsRecovery()==head.snapshotNeedsRecovery(),
                 "Sway no-write proof changed its original writer head/inventory");
+    }
+    /** Verifies the one real stage publication between Running and UNKNOWN; it never executes or erases it. */
+    private byte[] requireRecordedStageOnly(ContinuityStorePort.Session borrowed,ActionCommand parent,
+            ActionReceipt running,ActionReceipt unknown,ContinuityState beforeUnknown,DomainBodies.BodyRef stagedBody,
+            ExactRef runningRecord,ActionPorts.OutcomeArchive originals) throws IOException {
+        long sequence=Math.addExact(running.sequence(),1);
+        require(sequence==unknown.sequence()-1,"recorded-stage no-write edge is not exactly adjacent");
+        var path=eventPath(sequence);var head=borrowed.head();
+        var pins=head.documents().stream().filter(value->Path.of(value.reference().path()).toAbsolutePath().normalize().equals(path)).toList();
+        require(pins.size()==1,"recorded-stage no-write needs one actual canonical import event");
+        var pin=pins.getFirst();var actual=event(borrowed,pin);
+        require(StrictJson.integer(actual.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER)==sequence
+                &&DomainBodies.IMPORT_KIND.equals(StrictJson.text(actual.get("kind"))),"recorded-stage no-write canonical event differs");
+        String previous=StrictJson.text(actual.get("previous_sha256"));
+        var predecessor=borrowed.requireHistoricalState(sequence-1,previous);
+        var declaredAfter=ContinuityState.fromJson(actual.get("after"),head.state().machineId());
+        var after=borrowed.requireHistoricalState(sequence,org.xar.ck3.control.continuity.ContinuityJson.digest(declaredAfter.toJson()));
+        require(predecessor.sequence()==running.sequence()&&after.sequence()==sequence
+                &&Arrays.equals(after.canonicalBytes(),declaredAfter.canonicalBytes())
+                &&Arrays.equals(after.canonicalBytes(),beforeUnknown.canonicalBytes())
+                &&ContinuityActionJournal.recordHead(predecessor).filter(runningRecord::equals).isPresent()
+                &&ContinuityActionJournal.recordHead(after).filter(runningRecord::equals).isPresent(),
+                "recorded-stage no-write changed the original Running custody or historical UNKNOWN predecessor");
+        var beforeBody=DomainBodies.reference(predecessor,DomainBodies.Slot.SWAY)
+                .orElseThrow(()->new IOException("recorded-stage original predecessor body unavailable"));
+        var result=DomainBodies.reference(after,DomainBodies.Slot.SWAY)
+                .orElseThrow(()->new IOException("recorded-stage original result body unavailable"));
+        require(result.equals(stagedBody),"recorded-stage body differs from original UNKNOWN domain");
+        var source=actual.get("details").get("source");var inputRef=ExactRef.fromJson(source.get("producer_input"));
+        var witness=new PublicationWitness(pin.reference(),beforeBody,result,inputRef,sequence,
+                StrictJson.text(actual.get("identity")),previous);
+        var input=verifyPublication(borrowed,witness,originals,false);
+        require(input.change() instanceof StageRecorded,"recorded-stage no-write event is another Sway change");
+        var basis=((StageRecorded)input.change()).basis();
+        var stage=SwaySchedulerReplay.decodeStage(originals.loadMaterial(basis).bytes());
+        var ledger=SwayFormalCodec.decode(originals.loadMaterial(result.payload()).bytes());
+        require(ledger.activeStage().filter(basis::equals).isPresent()
+                &&stage.inputDomain().equals(beforeBody.payload())
+                &&Arrays.equals(ActionCodec.encodeCommand(stage.command()),ActionCodec.encodeCommand(parent)),
+                "recorded-stage no-write original stage/parent/input domain differs");
+        borrowed.verifyPin(pin);
+        return originals.loadMaterial(beforeBody.payload()).bytes();
     }
     /** Read-only cold lookup of this parent's actual domain publication. No event means no completion or retry authority. */
     public Optional<SavedScheduler> savedScheduler(ContinuityStorePort.Session borrowed, ActionCommand parent) throws IOException {
@@ -313,7 +364,7 @@ public final class SwayCanonicalDomain {
             require(Arrays.equals(ActionCodec.encodeCommand(stage.command()), ActionCodec.encodeCommand(parent)), "retained scheduler publication changed this parent's exact body");
             long sequence = StrictJson.integer(event.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER); String previousSha = StrictJson.text(event.get("previous_sha256"));
             var previous = borrowed.requireHistoricalState(sequence - 1, previousSha); var predecessor = DomainBodies.reference(previous, DomainBodies.Slot.SWAY).orElseThrow(() -> new IOException("published scheduler has no actual canonical predecessor body"));
-            var witness = new PublicationWitness(pin.reference(), predecessor, result, inputRef, sequence, StrictJson.text(event.get("identity")), previousSha); var input = verifyPublication(borrowed, witness, originals);
+            var witness = new PublicationWitness(pin.reference(), predecessor, result, inputRef, sequence, StrictJson.text(event.get("identity")), previousSha); var input = verifyPublication(borrowed, witness, originals, false);
             var before = SwayFormalCodec.decode(originals.loadMaterial(predecessor.payload()).bytes()); var continuation = scheduler.verify(previous, before, (SchedulerSaved)input.change(), input.proofs(), originals);
             return Optional.of(new SavedScheduler(witness, runRef, continuation));
         }

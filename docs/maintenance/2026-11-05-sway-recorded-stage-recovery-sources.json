@@ -1,0 +1,113 @@
+{
+  "schema": "xar.java-owner.sway-recorded-stage-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\SOURCE-READY-OWNER01.json",
+    "bytes": 4419,
+    "sha256": "42b0cda9b726fadfe5b442e1b41391d7752d769460e6960837b4051edbc48f56"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\OWNER-SPANS01.json",
+    "bytes": 12477,
+    "sha256": "1e08f60358207f04f0ffc8ecb31488dc90fb01762b8b0dadfaed1e810e32f64e"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 13815,
+    "sha256": "f83ccf66af583931eb0256490e783f38779dcf6b94febd93e4ba76a344313b87"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayCanonicalDomain.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 61061,
+        "sha256": "286bafa9ebe4bafd7314c7d9ed89dd3886d67fa1379590fac566eb548e2b8ead"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 65419,
+        "sha256": "bf87022517346a13c46ab54d2d8d3aa5ae01db55aa6528d3ea4945ea68d9ae26"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 64970,
+        "sha256": "277131b3076ddfb9b33a45c7eb08bd2700373db2ade7519bcf2bbe16203ffc89"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/ContinuityBatchJournal.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 363278,
+        "sha256": "2eb6a2524c2d320ded6343a3e36bea9b42eceb54779518036860725d719b0cf2"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 364934,
+        "sha256": "cbd17c5c2d10de7696019e74b876126d4aacc8fcfbea9559ac13e83562aeb407"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 363821,
+        "sha256": "873eb8890b14dc496a240663994accf717fded4ef5df386e3598daad38b82f88"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "production_cohort": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\QUALIFIED-PRODUCTION01.json",
+    "bytes": 22640,
+    "sha256": "531f4ecf8e3e7d5d39e5ba7602c1ecb7fa59c6460216d21d39bd7d4c8fedd6e0"
+  },
+  "source_independent_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-publication-independent-review46\\SOURCE-REVIEW03.json",
+    "bytes": 11142,
+    "sha256": "eb6d837639bc1fe83dd6baf5cd7ac01c1e1b65e6a4b6829be09b726cf4cc0286"
+  },
+  "test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-recorded-stage-data-independent-test01\\SOURCE-READY-TEST01.json",
+    "bytes": 3648,
+    "sha256": "afd56d54bb074a62fa63d8996eade8b5e794810c27d4ab810f7daeb6d79ab686"
+  },
+  "test_cohort": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-recorded-stage-data-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 11831,
+    "sha256": "f20c75dede785ea4e3d66c3633eab723e76a0b2d553b2dacd2d1bf9acf55c982"
+  },
+  "test_scope": "Only one new public DATA consumer method; 9rejections and causal oldempty-profile control. No old Test method RUN, no privateRoot/native identity acceptance.",
+  "actual_failure46": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-publication-closure-failure46\\FAILURE46.json",
+    "bytes": 62347,
+    "sha256": "1397c19f41f9d5d887a838efad02fdfce334aecd58d0b72bc4f97ed5c051b833"
+  },
+  "actual_prior545_terminal547": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\ACTUAL545-TERMINAL547-REVIEW01.json",
+    "bytes": 2722,
+    "sha256": "d984cdd8f835060ce53f6a823fdd0aecee86c30085384e96485a90884b6c3b2e"
+  },
+  "model72_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-publication-closure01\\MODEL-REVIEW01.json",
+    "bytes": 1669,
+    "sha256": "1bff523842ce4ebb83405d72988b7c74badab2fe92fc8b53b90b350fb4f4f5a8"
+  },
+  "model73_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\MODEL-REVIEW01.json",
+    "bytes": 1487,
+    "sha256": "578a7b6ca22b31d7555e089751dc8ce2cfecfc5c36b7aaa7fce4c0e1675a1d76"
+  },
+  "model74_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-recorded-stage-data-independent-test01\\MODEL-AND-OWNER-REVIEW01.json",
+    "bytes": 1393,
+    "sha256": "31edd957e5897ca167b29e6dfbdad98cac0655ce22ba92039d2613d554a25af7"
+  },
+  "whole_formal_software_cohort": false,
+  "runtime46": "Private sourceStage replay/Root/current canonical terminal/ordinaryLOOP/new saved days remain separate actual Runtime acceptance. No GET from source author.",
+  "test_independent_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-recorded-stage-data-independent-test01\\INDEPENDENT-RESULT01.json",
+    "bytes": 13922,
+    "sha256": "5bdf01352ee50a090b7925f972049de5c851e590f8ac814d1459dab302f26ca3"
+  }
+}

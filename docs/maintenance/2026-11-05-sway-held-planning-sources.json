@@ -111,5 +111,15 @@
     "bytes": 8023,
     "sha256": "0c32a702755b48678fbd6f852b01e1722584865d81fbbefd811caf023ce9357e"
   },
-  "first_source_review_miss": "Original01 sourcePASS missed checked-exception legality. Final03 preserves that earlier cut and compilerRED, validates only the explicit new-catch removal plus whole2source inverses, actual IOException signatures, original fresh interruption handling and coherent19class first0."
+  "first_source_review_miss": "Original01 sourcePASS missed checked-exception legality. Final03 preserves that earlier cut and compilerRED, validates only the explicit new-catch removal plus whole2source inverses, actual IOException signatures, original fresh interruption handling and coherent19class first0.",
+  "subsequent_actual545_terminal547": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-anchored-planning-stage01\\ACTUAL545-TERMINAL547-REVIEW01.json",
+    "bytes": 2722,
+    "sha256": "d984cdd8f835060ce53f6a823fdd0aecee86c30085384e96485a90884b6c3b2e"
+  },
+  "subsequent_actual_newparent_stage553_failure": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-publication-closure-failure46\\FAILURE46.json",
+    "bytes": 62347,
+    "sha256": "1397c19f41f9d5d887a838efad02fdfce334aecd58d0b72bc4f97ed5c051b833"
+  }
 }
