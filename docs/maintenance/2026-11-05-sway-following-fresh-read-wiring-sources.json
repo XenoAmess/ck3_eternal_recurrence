@@ -1,0 +1,85 @@
+{
+  "schema": "xar.java-owner.sway-following-fresh-verifier-source-index/v1",
+  "at_utc": "2026-11-05T08:37:17.010881+00:00",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\SOURCE-READY-OWNER01.json",
+    "bytes": 3371,
+    "sha256": "a8580bffb73da2c30d0b3beb85a072b9530e180807ee410592d222eff58d8a19"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\OWNER-SPANS01.json",
+    "bytes": 3905,
+    "sha256": "570043bfd789a72d6bea1e0babab5ca6e38d3f5c0f7c4b12038ce95324a46bd0"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 6238,
+    "sha256": "40f379d8994aa822b82b891527c2d69307cccbbf8bdb9514cf921e9ae763cb06"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\formal-before01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+        "bytes": 64172,
+        "sha256": "3866d7949b2166f72dbe7a217260e9548a6181f2b1d6048848feb0dc7081776e"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+        "bytes": 64179,
+        "sha256": "605caa3ea53dbf263095aa17aa24fc9b0a9035264013c26fae56c5a29a3a1379"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+        "bytes": 64179,
+        "sha256": "605caa3ea53dbf263095aa17aa24fc9b0a9035264013c26fae56c5a29a3a1379"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/sway/SwayRuntimeInstaller.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\formal-before01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 43327,
+        "sha256": "5498bc8b8dee993ceb09485dfce72c264c6fbf8fae769746b842451b5d212aee"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 43495,
+        "sha256": "e8cb13eceeb26e2e6328b5222ae652709b3542ef57f62da4717d7db48b7c0b7c"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 43300,
+        "sha256": "ddee6ddfce756df040cf3c049d6c6c53fa2e3a1ec51d732c5fb1b883f82a0459"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "Native_type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 391266,
+    "sha256": "f5c4337bceaababbd54aa1b3781a85d0a50f34abc75f23d3e4cb20b2aaaf7115"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-following-fresh-verifier-independent-review40\\SOURCE-REVIEW02.json",
+    "bytes": 5933,
+    "sha256": "cb0e820b5c2c03fc8be9350a345c58a1a79d3de5c0194ca9bc875d5ff51e7f84"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-following-fresh-read-wiring01\\MODEL-REVIEW01.json",
+    "bytes": 1356,
+    "sha256": "637aebe7d83e4f4ee45ebcd072660146dda1b2fe8506f32dcef0968518f017ab"
+  },
+  "actual40_failure": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-following-read-recovery40\\FAILURE40-stdout.tail64k.bin",
+    "bytes": 65536,
+    "sha256": "dc8a73a9b1167a05191a53c0644f890cd26bd24bc42dcd92ca8ebe0f6b7a97d6"
+  },
+  "qualification": "2TU19classes type0;16 structures equal,3 changed: public method flag and two unrelated InnerClasses metadata removals. No newTest/old62RUN. Formal Sway outside preserved; whole formal source cohort not software-qualified.",
+  "actual39": "Original527 alreadyAPPLIED; ACTION528/RETAIN529/SETTLE530 actually committed. C23/pendingnull/history527. Completion was blocked before quarantine clear.",
+  "actual40": "Two-source normal-loader adoption occurred. Historical cycle replay failed before the new Sway consumer. No Sway business/LOOP/SAVE acceptance.",
+  "new_control_or_saved_days": 0
+}

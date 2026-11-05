@@ -407,7 +407,7 @@ public final class RootAdvanceInfrastructureFactory {
     }
     /** The same final held producer is resolved at invocation, after actual adoption. Absence never becomes an empty frame. */
     /** Replays actual fresh READ originals; the delegate remains the sole full Driver decoder. */
-    static NativeEffectEvidence.FrameLoader freshFrameLoader(NativeEffectEvidence.FrameLoader actual) {
+    public static NativeEffectEvidence.FrameLoader freshFrameLoader(NativeEffectEvidence.FrameLoader actual) {
         Objects.requireNonNull(actual);
         return new NativeEffectEvidence.FrameLoader() {
             @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis,

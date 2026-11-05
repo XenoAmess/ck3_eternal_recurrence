@@ -1,0 +1,11 @@
+# Connect the real READ verifier in Sway completion (2026-11-05)
+
+Original527 was already SETTLED/APPLIED. Recovery39 then actually published ACTION528, retained529 and settled530, completing zero additional eligible days. Controller completion remained blocked before clearing quarantine: the Sway following-turn consumer validated the canonical receipt with a bare frame loader whose fresh READ verifier rejects by default.
+
+The existing real freshFrameLoader factory is now public so the Sway package can use it. Both frame-loader arguments in the actual following-consumption call use this wrapper. The guarded NativeRecordedEvidenceVerifier factory and its mandatory verifyArchived callback remain unchanged, as do the whole receipt/domain checks and Controller completion gate. The wrapper still verifies the original READ ACK, request, archived snapshot, original event receipt, custody and separate connection roles; it does not issue Root, Native or Writer authority.
+
+Necessary typing compiled two production TUs successfully in10.2772078 seconds, producing19 family classes with the same names. Sixteen complete structures match; the factory changes only method visibility, and two Sway record classes lose an unused external InnerClasses metadata entry. No new fixture, old62 rerun or Native control was needed. Independent review verified both whole-source inverses. Formal Sway outside bytes are preserved separately and are not claimed to be the complete runtime-qualified source cohort.
+
+Model64 supplied a complete proposal in10.5098960 seconds, TTFT4.7112361, reported36170+1004 tokens. Its three narrow changes were accepted semantically. The owner had independently completed the candidate before consuming the full response; zero literal model lines were copied, and no raw patch was compiled or retried.
+
+Recovery40 actually adopted these two sources in a normal loader, then stopped during historical cycle replay before reaching the changed Sway consumer. The real529/530 originals remain unchanged. Sway business consumption, clearing quarantine, ordinary LOOP and new SAVE days require later runtime evidence. See [source and evidence pins](../maintenance/2026-11-05-sway-following-fresh-read-wiring-sources.json).

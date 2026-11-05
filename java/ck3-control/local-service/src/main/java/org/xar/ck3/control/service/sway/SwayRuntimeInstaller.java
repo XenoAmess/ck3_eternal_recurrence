@@ -384,8 +384,8 @@ public final class SwayRuntimeInstaller {
     /** Shared ordinary completion invokes this for every genuinely confirmed gameplay result, including Root's continuation. */
     public OrdinaryPlanCompletion.ExecutionDisposition consumeFollowing(ActionReceipt actual) {
         if (!actual.settled() || !actual.visibleGameplay()) return new OrdinaryPlanCompletion.Unchanged("actual gameplay result required before consuming Sway observations");
-        try { return context.withSession(session -> SwayFollowingConsumption.consume(session, prepared.domain(), context.archive(), context.game().generation(), context.frameLoader(), actual,
-                (same, canonical) -> NativeRecordedEvidenceVerifier.withReconciliationGuard(context.archive(), this::session, context.originals(), context.frameLoader(), context.bindings(),
+        try { return context.withSession(session -> SwayFollowingConsumption.consume(session, prepared.domain(), context.archive(), context.game().generation(), org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), actual,
+                (same, canonical) -> NativeRecordedEvidenceVerifier.withReconciliationGuard(context.archive(), this::session, context.originals(), org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), context.bindings(),
                         (guard, originals, borrowed, physicalOriginals) -> context.reconciliation().verifyArchived(guard, originals, borrowed, physicalOriginals)).verify(same.head(), canonical),
                 this::independentFinal)); } catch (ReadPublicationRequiredException required) { throw required; }
         catch (IOException | UncheckedIOException | IllegalArgumentException | IllegalStateException | OrdinarySwayService.Unavailable failure) { return new OrdinaryPlanCompletion.Blocked("actual Sway following-turn consumption unavailable: " + failure.getMessage(), List.of()); }
