@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.planning.campaign.M7CampaignPolicies.RealmLifecycle;
@@ -20,6 +21,155 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.xar.ck3.control.application.planning.PlanningFixtures.*;
 
 final class OrdinaryPlannerProductionAssemblyTest {
+    @Test void lateCoreExclusiveRetainsTheExactCommandAndStillRunsFinish() {
+        var operation=new OperationKey("software-exclusive");var other=new OperationKey("software-lower");
+        var current=request(snapshot(),List.of(),Set.of(operation,other));var chosen=command(current,operation,empty());
+        var replacement=command(current,other,empty());assertNotEquals(ActionCodec.bodySha256(chosen),ActionCodec.bodySha256(replacement));
+        var finishStages=List.of(PlanningStage.M5_WARTIME_OBSERVATION,PlanningStage.DEFERRED_SUCCESSION_ROOT,
+                PlanningStage.HOLY_WAR_DEFENDER_OBSERVATION,PlanningStage.PREWAR_FORCE_COALITION,PlanningStage.ORDINARY_SWAY,
+                PlanningStage.EVENT_MATERIAL_POSTCONDITION,PlanningStage.CAMPAIGN_ADVANCE_CAP,PlanningStage.REALM_MEMBERSHIP_PUBLICATION);
+        for(var kind:List.of(OrdinaryPolicy.Kind.FOREGROUND,OrdinaryPolicy.Kind.OPENING_FOCUS,OrdinaryPolicy.Kind.MATERIAL_RECEIPT)) {
+            var producers=new EnumMap<PlanningStage,OrdinaryPolicy>(PlanningStage.class);
+            for(var stage:PlanningStage.values())producers.put(stage,keep(stage));
+            var lowerCalls=new AtomicInteger();var coreCalls=new AtomicInteger();var events=new ArrayList<String>();
+            producers.put(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,dispatchPolicy(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,(input,previous)->{
+                lowerCalls.incrementAndGet();return new OrdinaryPolicy.Replace(dispatchDraft(Optional.of(replacement),OrdinaryPolicy.Kind.ORDINARY),"lower replacement");
+            }));
+            producers.put(PlanningStage.M5_WARTIME_OBSERVATION,dispatchPolicy(PlanningStage.M5_WARTIME_OBSERVATION,(input,previous)->{
+                events.add("finish-m5");return new OrdinaryPolicy.Annotate(new OrdinaryPolicy.Draft(previous.policy(),previous.phase(),previous.reason(),
+                        previous.kind(),previous.command(),previous.purpose(),previous.domain(),previous.detail().with("finish_annotation",new OpportunityJson.Bool(true))),"read-only annotation");
+            }));
+            OrdinaryPolicy.Draft original=dispatchDraft(Optional.of(chosen),kind);
+            var actualCore=core((input,previous)->{coreCalls.incrementAndGet();return new OrdinaryPolicy.Replace(original,"late core exclusive");});
+            var realm=new RealmLifecycle(SOURCE);var planner=pipeline(producers,actualCore.core(),realm).create(Clock.fixed(NOW,ZoneOffset.UTC));
+            var completion=new OrdinaryPlanCompletion() {
+                @Override public Optional<Published> beforeSelection(PlanningRequest input,PlanningResult.ActionSelected proposed) {
+                    events.add("beforeSelection");assertSame(current,input);assertSame(chosen,proposed.command());
+                    assertEquals(PlanningStage.REALM_MEMBERSHIP_PUBLICATION,proposed.trace().visits().getLast().stage());return Optional.empty();
+                }
+                @Override public SelectionDisposition beforeModel(PlanningRequest input,PlanningResult.ActionSelected proposed) {
+                    events.add("beforeModel");assertSame(current,input);assertSame(chosen,proposed.command());return new Unchanged("no publication");
+                }
+                @Override public PlanningDisposition afterPlanning(PlanningRequest input,PlanningResult planned) {throw new AssertionError("planner must not publish afterPlanning");}
+                @Override public ExecutionDisposition afterExecution(ActionReceipt receipt) {throw new AssertionError("no action execution in planner");}
+            };
+            planner.bindSelector((input,proposed)->{
+                events.add("selector");assertSame(current,input);assertSame(chosen,proposed.command());
+                return new OrdinaryDecisionSelector.Selection(OrdinaryDecisionSelector.Choice.ACCEPT,"keep exact proposal",Optional.empty());
+            });
+            var selected=assertInstanceOf(PlanningResult.ActionSelected.class,planner.plan(current,completion));
+            assertEquals(1,coreCalls.get());assertEquals(0,lowerCalls.get());assertSame(chosen,selected.command());
+            assertEquals(ActionCodec.bodySha256(chosen),ActionCodec.bodySha256(selected.command()));
+            var retained=selected.trace().finalPlan().orElseThrow();
+            assertEquals(original.kind(),retained.kind());assertEquals(original.policy(),retained.policy());assertEquals(original.phase(),retained.phase());
+            assertEquals(original.reason(),retained.reason());assertEquals(original.purpose(),retained.purpose());assertEquals(original.domain(),retained.domain());
+            assertEquals(original.command(),retained.command());assertEquals(original.detail().with("finish_annotation",new OpportunityJson.Bool(true)),retained.detail());
+            var stages=selected.trace().visits().stream().map(PlanTrace.StageVisit::stage).toList();
+            assertFalse(stages.contains(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION));
+            assertEquals(finishStages,stages.subList(stages.size()-finishStages.size(),stages.size()));
+            assertEquals(stages.size(),new java.util.HashSet<>(stages).size());
+            assertEquals(List.of("finish-m5","beforeSelection","beforeModel","selector"),events);
+            assertEquals(current.before(),selected.command().before());assertEquals(current.source(),selected.command().source());
+            assertEquals(current.sessionId(),selected.command().sessionId());assertEquals(current.deadline(),selected.command().deadline());
+        }
+        System.out.println("SOFTWARE_EXCLUSIVE_CORE protected_kinds=3 actual_core=true lower_calls=0 finish_order=true completion_selector_once=true exact_command=true");
+    }
+
+    @Test void lateContinuationExclusiveAndOrdinaryEnrichmentUseTheirOriginalRoutes() {
+        var first=new OperationKey("software-first");var second=new OperationKey("software-enriched");
+        var current=request(snapshot(),List.of(),Set.of(first,second));var commandA=command(current,first,empty());var commandB=command(current,second,empty());
+        assertNotEquals(ActionCodec.bodySha256(commandA),ActionCodec.bodySha256(commandB));
+        var finishTail=List.of(PlanningStage.DEFERRED_SUCCESSION_ROOT,PlanningStage.HOLY_WAR_DEFENDER_OBSERVATION,
+                PlanningStage.PREWAR_FORCE_COALITION,PlanningStage.ORDINARY_SWAY,PlanningStage.EVENT_MATERIAL_POSTCONDITION,
+                PlanningStage.CAMPAIGN_ADVANCE_CAP,PlanningStage.REALM_MEMBERSHIP_PUBLICATION);
+        for(var kind:List.of(OrdinaryPolicy.Kind.FOREGROUND,OrdinaryPolicy.Kind.ORDINARY,OrdinaryPolicy.Kind.MATERIAL_RECEIPT)) {
+            boolean emptyChoice=kind==OrdinaryPolicy.Kind.MATERIAL_RECEIPT;
+            var producers=new EnumMap<PlanningStage,OrdinaryPolicy>(PlanningStage.class);
+            for(var stage:PlanningStage.values())producers.put(stage,keep(stage));
+            var continuationCalls=new AtomicInteger();var lowerCalls=new AtomicInteger();var selectors=new AtomicInteger();
+            OrdinaryPolicy.Draft later=dispatchDraft(emptyChoice?Optional.empty():Optional.of(commandB),kind);
+            producers.put(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,dispatchPolicy(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,(input,previous)->{
+                continuationCalls.incrementAndGet();assertEquals(Optional.of(commandA),previous.command());
+                return new OrdinaryPolicy.Replace(later,"later typed selection");
+            }));
+            producers.put(PlanningStage.WAR_RENDEZVOUS,dispatchPolicy(PlanningStage.WAR_RENDEZVOUS,(input,previous)->{
+                lowerCalls.incrementAndGet();assertEquals(Optional.of(commandB),previous.command());return new OrdinaryPolicy.Keep("ordinary enrichment retained");
+            }));
+            var actualCore=core((input,previous)->new OrdinaryPolicy.Replace(dispatchDraft(Optional.of(commandA),OrdinaryPolicy.Kind.ORDINARY),"ordinary core selection"));
+            var planner=pipeline(producers,actualCore.core(),new RealmLifecycle(SOURCE)).create(Clock.fixed(NOW,ZoneOffset.UTC));
+            planner.bindSelector((input,proposed)->{selectors.incrementAndGet();return new OrdinaryDecisionSelector.Selection(OrdinaryDecisionSelector.Choice.ACCEPT,"accept exact proposal",Optional.empty());});
+            PlanningResult evaluated=planner.plan(current);assertEquals(1,continuationCalls.get());
+            if(emptyChoice) {
+                var waiting=assertInstanceOf(PlanningResult.ReadOnlyWait.class,evaluated);assertTrue(waiting.trace().finalPlan().orElseThrow().command().isEmpty());
+                assertEquals(OrdinaryPolicy.Kind.MATERIAL_RECEIPT,waiting.trace().finalPlan().orElseThrow().kind());assertEquals(0,selectors.get());
+            } else {
+                var selected=assertInstanceOf(PlanningResult.ActionSelected.class,evaluated);assertSame(commandB,selected.command());
+                assertEquals(ActionCodec.bodySha256(commandB),ActionCodec.bodySha256(selected.command()));assertEquals(1,selectors.get());
+            }
+            var stages=evaluated.trace().visits().stream().map(PlanTrace.StageVisit::stage).toList();
+            assertEquals(stages.indexOf(PlanningStage.ORDINARY_CORE)+1,stages.indexOf(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION));
+            assertEquals(finishTail,stages.subList(stages.size()-finishTail.size(),stages.size()));
+            assertEquals(stages.size(),new java.util.HashSet<>(stages).size());
+            if(kind==OrdinaryPolicy.Kind.ORDINARY) {
+                assertEquals(1,lowerCalls.get());assertTrue(stages.contains(PlanningStage.FEAST));
+                assertTrue(stages.indexOf(PlanningStage.M5_WARTIME_OBSERVATION)<stages.indexOf(PlanningStage.FEAST));
+            } else {
+                assertEquals(0,lowerCalls.get());assertFalse(stages.contains(PlanningStage.WAR_RENDEZVOUS));assertFalse(stages.contains(PlanningStage.FEAST));
+                assertEquals(PlanningStage.M5_WARTIME_OBSERVATION,stages.get(stages.size()-finishTail.size()-1));
+            }
+        }
+        System.out.println("SOFTWARE_EXCLUSIVE_CONTINUATION late_exclusive=true ordinary_lower_enrichment=true empty_exclusive_wait=true finish_order=true distinct_bodies=true");
+    }
+
+    @Test void exclusiveDispatchStillEnforcesFinishAndReplacementGuards() {
+        var operation=new OperationKey("software-exclusive");var other=new OperationKey("software-illegal-replacement");
+        var current=request(snapshot(),List.of(),Set.of(operation,other));var chosen=command(current,operation,empty());var changed=command(current,other,empty());
+        assertNotEquals(ActionCodec.bodySha256(chosen),ActionCodec.bodySha256(changed));
+        var producers=new EnumMap<PlanningStage,OrdinaryPolicy>(PlanningStage.class);
+        for(var stage:PlanningStage.values())producers.put(stage,keep(stage));
+        var hostile=new java.util.concurrent.atomic.AtomicBoolean(true);var finishCalls=new AtomicInteger();
+        producers.put(PlanningStage.EVENT_MATERIAL_POSTCONDITION,dispatchPolicy(PlanningStage.EVENT_MATERIAL_POSTCONDITION,(input,previous)->{
+            finishCalls.incrementAndGet();return hostile.get()?new OrdinaryPolicy.Replace(dispatchDraft(Optional.of(changed),OrdinaryPolicy.Kind.ORDINARY),"illegal finish replacement")
+                    :new OrdinaryPolicy.Keep("original finish retains exact selection");
+        }));
+        var actualCore=core((input,previous)->new OrdinaryPolicy.Replace(dispatchDraft(Optional.of(chosen),OrdinaryPolicy.Kind.FOREGROUND),"core exclusive"));
+        var realm=new RealmLifecycle(SOURCE);var planner=pipeline(producers,actualCore.core(),realm).create(Clock.fixed(NOW,ZoneOffset.UTC));
+        var rejected=assertThrows(IllegalArgumentException.class,()->planner.plan(current));
+        assertTrue(rejected.getMessage().contains("lower-priority policy replaced exclusive ordinary work"));assertEquals(1,finishCalls.get());
+        hostile.set(false);var selected=assertInstanceOf(PlanningResult.ActionSelected.class,planner.plan(current));
+        assertSame(chosen,selected.command());assertEquals(2,finishCalls.get());
+        var unsupported=request(snapshot(),List.of(),Set.of(other));
+        var unsupportedResult=assertInstanceOf(PlanningResult.Stopped.class,planner.plan(unsupported));
+        assertEquals(PlanningResult.StopReason.UNSUPPORTED_ACTION,unsupportedResult.reason());
+        var unknown=withFacts(current,List.of(fact(chosen,org.xar.ck3.control.g2.planning.ProposalLifecycle.ExternalState.UNKNOWN)));
+        var unknownResult=assertInstanceOf(PlanningResult.Stopped.class,planner.plan(unknown));
+        assertEquals(PlanningResult.StopReason.UNKNOWN_ACTION_UNRESOLVED,unknownResult.reason());
+        var otherBody=command(current,operation,new OpportunityJson.Obj(Map.of("body_variant",integer(1))));
+        assertEquals(chosen.actionId(),otherBody.actionId());assertNotEquals(ActionCodec.bodySha256(chosen),ActionCodec.bodySha256(otherBody));
+        var hostileFacts=withFacts(current,List.of(fact(otherBody,org.xar.ck3.control.g2.planning.ProposalLifecycle.ExternalState.UNKNOWN)));
+        var bodyRejected=assertThrows(IllegalArgumentException.class,()->planner.plan(hostileFacts));
+        assertTrue(bodyRejected.getMessage().contains("same action ID has a different exact body"));
+        ActionCommand extended=new ActionCommand(chosen.actionId(),chosen.origin(),chosen.source(),chosen.sessionId(),chosen.operation(),chosen.arguments(),
+                chosen.expectation(),chosen.claims(),current.deadline().plusSeconds(1),chosen.protocolIdentity());
+        var invalidCore=core((input,previous)->new OrdinaryPolicy.Replace(dispatchDraft(Optional.of(extended),OrdinaryPolicy.Kind.FOREGROUND),"invalid deadline binding"));
+        var invalid=pipeline(producers,invalidCore.core(),new RealmLifecycle(SOURCE)).create(Clock.fixed(NOW,ZoneOffset.UTC));
+        var bindingRejected=assertThrows(IllegalArgumentException.class,()->invalid.plan(current));
+        assertTrue(bindingRejected.getMessage().contains("domain producer crossed the complete Game/session/frame/source/deadline binding"));
+        System.out.println("SOFTWARE_EXCLUSIVE_GUARDS illegal_finish_replacement_rejected=true same_planner_after_cancel=true unsupported_stopped=true unknown_stopped=true body_and_deadline_rejected=true");
+    }
+
+    private static OrdinaryPolicy dispatchPolicy(PlanningStage stage,java.util.function.BiFunction<PlanningRequest,OrdinaryPolicy.Draft,OrdinaryPolicy.Decision> producer) {
+        return new OrdinaryPolicy() {
+            @Override public PlanningStage stage() {return stage;}
+            @Override public ExactRef implementationSource() {return SOURCE;}
+            @Override public Decision evaluate(PlanningRequest request,Draft previous) {return producer.apply(request,previous);}
+        };
+    }
+    private static OrdinaryPolicy.Draft dispatchDraft(Optional<ActionCommand> command,OrdinaryPolicy.Kind kind) {
+        return new OrdinaryPolicy.Draft("software-typed-dispatch","late-choice","explicit typed planning input",kind,command,
+                command.isPresent()?OrdinaryPolicy.Purpose.WORLD_ACTION:OrdinaryPolicy.Purpose.READ_ONLY,Optional.empty(),empty());
+    }
+
     @Test void missingOptionalFamilyReadPreservesPeacefulAdvanceAndLaterStages() {
         var operation = new OperationKey("life-advance");
         var current = request(snapshot(), List.of(), Set.of(operation));

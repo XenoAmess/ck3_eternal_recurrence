@@ -207,7 +207,12 @@ public final class OrdinaryPlanner {
                 PlanningStage.M5_WARTIME_OBSERVATION,
                 PlanningStage.COUNCIL,
                 PlanningStage.CROWN_AUTHORITY,
-                PlanningStage.FEAST)) state.run(stage);
+                PlanningStage.FEAST)) {
+            state.run(stage);
+            if (state.result != null || state.draft.kind() == Kind.FOREGROUND
+                    || state.draft.kind() == Kind.OPENING_FOCUS || state.draft.kind() == Kind.MATERIAL_RECEIPT)
+                return finish(state);
+        }
         return finish(state);
     }
 

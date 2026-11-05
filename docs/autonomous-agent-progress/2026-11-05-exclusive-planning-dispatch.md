@@ -1,0 +1,18 @@
+# 普通规划中途选出独占工作后的调度
+
+实际b00c委托于2026-11-05T00:07:13Z退出4：普通Planner.State.run304拒绝低优先级策略替换独占工作，调用点是planBound210的普通for-loop。B8实耗415.9982126秒，父508／resume506已APPLIED、C22／pending=null，未重控制。210是共用循环调用点，具体出错策略仍NOT_HELD，不能据列表末行猜FEAST，也不能把问题归到finish中的Event.material。
+
+完整current源码说明可达缺口：早期独占工作已有直接finish路由，但CorePolicy可透传注册事件的FOREGROUND决定，后续continuation也能新产独占工作；普通循环仍继续调用低优先级producer，最终正确触发原替换保护。本次只在原普通loop加braces，每个stage执行后若已有result，或新draft属于既有三种受保护的FOREGROUND／OPENING_FOCUS／MATERIAL_RECEIPT，就进入原finish。普通draft仍走全部原stage顺序，空command沿原ReadOnlyWait出口；没有改策略选择、降级非法Replace、吞异常或移除304。
+
+完整finish和State.run／validateCommand逐字保留，继续独立M5 wartime注释、succession／postcondition／campaign／realm处理，以及原frame／source／session／deadline、capability、已有UNKNOWN和同ID不同body检查。completion／selector、Realm生命周期与取消清理保持原公共链，没有新字段、方法、类型、lambda或API。
+
+actual单生产TU2类首编0／4.0341194秒，两类完整字段／方法／synthetic／Nest／Inner等结构全同。必要PlanningFixtures首次1类＋changedTest12类合计2TU13类0／6.1196627秒；仅新三方法真实3P／JVM3.5799079秒，XMLf176b0ba（suite1.744秒），0error／failure／skip，旧方法未RUN、未重编其它production／旧已绿support。所有phase原件／terminal／post／fence／close已独核释放。
+
+公共typed组件用例覆盖late Core三种exclusive、late continuation、空exclusive Wait及普通lower enrichment；完整finish顺序、原command／source及completion／selector次数；恶意finish更换不同body仍触304、取消后同Planner可再规划，unsupported／UNKNOWN／同ID不同body／超期绑定继续拒绝。输入是可控typed政策，通过真实Core／pipeline／Planner／Realm及公共出口，未伪造Root许可、实际故障策略或Game动作。
+
+模型实现完整200／stop，9.3304208秒／TTFT4.1174357秒；其谓词和理由部分采用，但原diff把if放在未加braces的整个loop之后，不能修复控制流，owner实际修正位置与循环结构；hunk计数亦不直接可用。独立测试模型完整stop后新增方法全拒，owner写三方法及两个只构造typed输入的小helper，没有R2或把原稿授编测绿。Native准备器一次全CRLF假设在0JVM时拒绝，改按Ready literal匹配混合EOL，候选源码未变，不记compiler红。
+
+正式生产前像66df与actualbd5只有原有29行EOL差异；只同一loop投影、全部outside保留，新Test前像cf54及原有私helpers逐字保留，正式加入完整f616变体。actual2类结构／3P与formal字节变体分别记录，未另授整个formal组合的JVM资格。Runtime已取得真实原件自主恢复，装载／新START／LOOP／实际普通行为与SAVE另据具名回执；正式发表不作运行门，也不把本次软件通过称为恢复、具体offender确认、提速或G2完成。任务继续RUNNING。
+
+
+后到实际Runtime26采用（source软件cut之后）：仅Planner3311758f＋Schedule13ff两功能源，原host97584／birth保留，唯一GET00:25:34.549981→40.783833／HTTP200／6.2338479秒；正常Quarkus restart5@23b6f3f2的新委托2e75于00:25:40.767521700Z START，当前具名切点仍BOOT，未授LOOP／新日／SAVE或Sway实际stage。D回执ACTUAL-LOADER26（9874B／721847d3）及六份冻结refs已核byte／SHA；16个Maven输出仅据Runtime metadata，不读C class、不授逐方法命中，非body instrumentation复活已END4的b00c。正常恢复继续，不为正式Git再查Game／GET。

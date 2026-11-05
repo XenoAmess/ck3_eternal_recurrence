@@ -1,0 +1,144 @@
+{
+  "schema": "xar.java-owner.exclusive-dispatch-published-source-index/v1",
+  "at_utc": "2026-11-05T00:27:21.381394+00:00",
+  "base_commit": "2f59b092a69bfdb14c29315cb16bfc5b59da4c68",
+  "actual_failure": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\failure26\\FAILURE26.json",
+    "bytes": 57722,
+    "sha256": "94f63d481a7b6e861bc5d071cc0071bd6b257e7416346f56ac1a6893adcc07de"
+  },
+  "actual_source_manifest": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\exclusive-planning-current26\\SOURCE-READY26.json",
+    "bytes": 7752,
+    "sha256": "917450849871e41449e77c439722520974f0438ea71eb791150345566f1d25b4"
+  },
+  "actual_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\exclusive-planning-dispatch01\\SOURCE-READY-OWNER01.json",
+    "bytes": 3322,
+    "sha256": "eba80261b8e2492c80be0a8bb8e3c5fc46331d4975f94d2896107b60a6d04624"
+  },
+  "model_source_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\exclusive-planning-dispatch01\\MODEL-SOURCE-REVIEW01.json",
+    "bytes": 1889,
+    "sha256": "f08a8af064a38f09a9cdbca7dd880d2d7dfe683d4395c45d19b488f95c6578fd"
+  },
+  "formal_production_before": {
+    "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanner.java",
+    "bytes": 21302,
+    "sha256": "66df2e8bf677ddc471e595068bedcb673e7a05d7c0b8368d304d73aa0755532b"
+  },
+  "formal_production_after": {
+    "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+    "bytes": 21554,
+    "sha256": "6cc119c5763882d29c642cb7dfa6ceae7eb2b0cc79c213f49dfc094eb9d04f70"
+  },
+  "raw_production": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\exclusive-planning-dispatch01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+    "bytes": 21583,
+    "sha256": "3311758fa75d091eead95a6c8af98b3f0dd13e79ef90b2065cf92463a781439c"
+  },
+  "formal_projection_whole_outside_inverse_exact": true,
+  "formal_vs_actual": "only existing EOL difference,29CRLF actual; no outside logic replaced",
+  "Test_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\exclusive-planning-independent-test01\\SOURCE-READY-TEST01.json",
+    "bytes": 4561,
+    "sha256": "cb08ad56befdbbb2a31c6499dd8d869b93c3e68927749b88657c0f2880daa184"
+  },
+  "Test_before": {
+    "path": "D:\\ck3-state\\resume91-root\\exclusive-planning-independent-test01\\input\\OrdinaryPlannerProductionAssemblyTest.java",
+    "bytes": 38595,
+    "sha256": "cf54c3c4bcdcc6cf927a5b0907c7a768e31f611dce42d073f7c9a85ed0e10303"
+  },
+  "Test_after": {
+    "path": "D:\\ck3-state\\resume91-root\\exclusive-planning-independent-test01\\candidate01\\application\\src\\test\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlannerProductionAssemblyTest.java",
+    "bytes": 53892,
+    "sha256": "f61651898696f1acc62ac3700aee463e99508df3a52ada5cef07e06ef043e5b3"
+  },
+  "all_existing_Test_source_inverse_exact": true,
+  "only_new_Test_methods_RUN": [
+    "lateContinuationExclusiveAndOrdinaryEnrichmentUseTheirOriginalRoutes",
+    "lateCoreExclusiveRetainsTheExactCommandAndStillRunsFinish",
+    "exclusiveDispatchStillEnforcesFinishAndReplacementGuards"
+  ],
+  "support_first": {
+    "path": "D:\\ck3-state\\resume91-root\\exclusive-planning-independent-test01\\input\\PlanningFixtures.java",
+    "bytes": 3341,
+    "sha256": "3aaf0a2720dbd8e777f1652ec0e8039d7311ca9b01e1e0e6cea34592be4e38fa"
+  },
+  "raw_native_qualified": {
+    "path": "D:\\ck3-state\\resume91-root\\exclusive-planning-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 14683,
+    "sha256": "1601efa1d5907b5497a267a929eced44f6b6f39e652308103193d1f08365d300"
+  },
+  "production_typed_owner_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\exclusive-planning-dispatch01\\SOURCE-READY-TYPED02.json",
+    "bytes": 1632,
+    "sha256": "7849ed4b19046b254d48b8462bb8242e321f5dcbd5ee15f769441c6fee7cb59b"
+  },
+  "independently_rehashed_qualified_refs": 40,
+  "actual_Test_SourceFile_families": {
+    "OrdinaryPlannerProductionAssemblyTest.java": 12,
+    "PlanningFixtures.java": 1
+  },
+  "JUnit_XML": {
+    "path": "D:\\ck3-state\\resume91-root\\exclusive-planning-independent-test01\\native-first01\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 42862,
+    "sha256": "f176b0ba3b253cefaf3dc570de996cd2cccacc19a845d3ccf546db7e45c947f7"
+  },
+  "runtime_recovery": "Later Runtime26 normal restart/start held at this explicit D-metadata cut; LOOP/actions/SAVE and actual Sway stage still not held",
+  "actual_specific_offending_policy": "NOT_HELD",
+  "formal_combination_JVM": "NOT_RUN independently; raw current byte variant qualified",
+  "source_owner_operations": {
+    "JDK": 0,
+    "C_reads": 0,
+    "Game": 0,
+    "GET": 0
+  },
+  "G2": "6/8",
+  "task": "RUNNING",
+  "later_actual_loader26": {
+    "receipt": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\exclusive-recovery26\\ACTUAL-LOADER26.json",
+      "bytes": 9874,
+      "sha256": "721847d329b96875c4a4e2b751f4f4b14abfa8426d996006b79bb47b75dde83c"
+    },
+    "six_frozen_refs_rehashed": true,
+    "source_adoption": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\exclusive-recovery26\\SOURCE-ADOPTED26.json",
+      "bytes": 3895,
+      "sha256": "1f7f14a640b76ecbe4e180922de07f68dc222801dd3960100052f9c44e34a9a7"
+    },
+    "GET": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\exclusive-recovery26\\GET-ACTUAL26.json",
+      "bytes": 322,
+      "sha256": "abb81349b0b9fad1a2086105402c40fe810df2b9dfcfc780ae6e15146084d515"
+    },
+    "new_delegate": {
+      "business_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:5@23b6f3f2@23b6f3f2",
+      "exit_code": null,
+      "failure_type": null,
+      "host_pid": "97584",
+      "instance_id": "2e75e771-9342-4f70-a71c-1e85f6ac62e9",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-05T00:25:40.767521700Z",
+      "runtime_classloader": "QuarkusClassLoader:Quarkus Runtime ClassLoader: DEV for ck3-control-local-service-0.1.0-SNAPSHOT restart no:5@23b6f3f2@23b6f3f2",
+      "schema": "xar.java-ordinary-worker-dev-lifecycle/v1",
+      "status": "DELEGATE_STARTED",
+      "actual_process": {
+        "pid": 97584,
+        "birth": "134383031688380897",
+        "exit": 259,
+        "image": "C:\\jdk-21\\bin\\java.exe",
+        "exit_filetime": "0"
+      }
+    },
+    "actual_build_family_count_from_Runtime_metadata": 16,
+    "C_classfiles_read_by_source_owner": 0,
+    "LOOP_or_new_day_or_SAVE_claim": false
+  },
+  "independent_Test_review": {
+    "path": "D:\\ck3-state\\resume91-root\\exclusive-planning-independent-test01\\INDEPENDENT-RESULT01.json",
+    "bytes": 17108,
+    "sha256": "9fd9993906f7eb33e02661e3466f0fa3cf0856a6b199ba6223cbc9e40e999760"
+  }
+}
