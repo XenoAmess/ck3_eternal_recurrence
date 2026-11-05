@@ -1,0 +1,201 @@
+{
+  "schema": "xar.owner.historical-unknown-replay-publication-index/v1",
+  "at_utc": "2026-11-05T21:27:04.747735+00:00",
+  "actual_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\SOURCE-READY-COHERENT01.json",
+    "bytes": 6033,
+    "sha256": "7f3ac0639c342064c333096149585263abeee40ba59c9c5a1b508da97aadb8b0"
+  },
+  "actual_sources": [
+    {
+      "relative": "wave2-events/src/main/java/org/xar/ck3/control/wave2/events/unhandledevent/SourceReviewedEventConsumer.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\source-reviewed-event-consumer-current64\\source\\wave2-events\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\SourceReviewedEventConsumer.java",
+        "bytes": 29764,
+        "sha256": "e566b1e3f7d92c9004369d8781b1df408efd50a55600cb5b43ef76830cc0160f"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\consumer-candidate01\\wave2-events\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\SourceReviewedEventConsumer.java",
+        "bytes": 32135,
+        "sha256": "3e217fd25187dff5d7510c98241f87d0f28f1e6f141a8802840ce778192b5cbf"
+      },
+      "part": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\CONSUMER-PART01.json",
+        "bytes": 10132,
+        "sha256": "c7523cffe1f307f2e6fa51970c0507dba6d249a9e2ad449f92f0c6421f7303b8"
+      },
+      "owned_spans": 2,
+      "whole_outside_inverse_exact": true
+    },
+    {
+      "relative": "application/src/main/java/org/xar/ck3/control/application/planning/events/EventPolicies.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-policies-current64\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EventPolicies.java",
+        "bytes": 50479,
+        "sha256": "eb9dc4512b7e43b2524ee8365c55285ac3cb0bd6a547f053a20640fabc4e9ab4"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\events-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EventPolicies.java",
+        "bytes": 53620,
+        "sha256": "5e5973ddd066ea92f32364e7da9560aa47b6655131c2946f55081e12e32fccca"
+      },
+      "part": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\EVENTS-PART01.json",
+        "bytes": 6938,
+        "sha256": "338720b6cb9a35b97ebe8b7d38ddb4fe992f1baaf80b2fa7b83623aa72a07d4d"
+      },
+      "owned_spans": 5,
+      "whole_outside_inverse_exact": true
+    },
+    {
+      "relative": "local-service/src/main/java/org/xar/ck3/control/service/root/RootIncidentRuntime.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\offline-preserved-failure-recovery57\\RootIncidentRuntime.current57.java",
+        "bytes": 70385,
+        "sha256": "9bfbd2f38bb867b7973202b44a4f4af148bf3d18b814472106c0562315391991"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\root-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 71460,
+        "sha256": "a9027841fce459756525e5909ddd3cae55ff06bebe913fd67c50bc2a808db684"
+      },
+      "part": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\ROOT-PART01.json",
+        "bytes": 2968,
+        "sha256": "c65ae1c25f97097fa7b513ae752ba5de38aaa9db4201b105abb2fd499e9b657b"
+      },
+      "owned_spans": 1,
+      "whole_outside_inverse_exact": true
+    }
+  ],
+  "formal_projection": [
+    {
+      "relative": "java/ck3-control/wave2-events/src/main/java/org/xar/ck3/control/wave2/events/unhandledevent/SourceReviewedEventConsumer.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\formal02\\before\\wave2-events\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\SourceReviewedEventConsumer.java",
+        "bytes": 29494,
+        "sha256": "6fd27d70e112c4a9c5aca3b62506024d047e1ea135b4a3d54ad25a5d3e257824"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\formal02\\candidate\\wave2-events\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\SourceReviewedEventConsumer.java",
+        "bytes": 31865,
+        "sha256": "15b93c9324d5b74f942e63632edf04f0c7ca439aabcc8eb078c8a18baa366f09"
+      },
+      "actual_qualified_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\consumer-candidate01\\wave2-events\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\SourceReviewedEventConsumer.java",
+        "bytes": 32135,
+        "sha256": "3e217fd25187dff5d7510c98241f87d0f28f1e6f141a8802840ce778192b5cbf"
+      },
+      "formal_owned_spans": [
+        {
+          "old": "    private static ReviewedPlan annotate(ObjectValue plan, Path stateDirectory, TrustedEventSourceContext trusted) {\n        ObjectValue capture = o(plan, \"unhandled_event_fallback\");\n        if (capture == null || stateDirectory == null) return new ReviewedPlan(plan, KnowledgeStatus.NOT_REQUESTED);\n        Knowledge knowledge = load(stateDirectory, capture, trusted);\n        boolean known = knowledge.known() != null;\n        ObjectValue nextCapture = put(capture, f(\"registry_known\", b(known)), f(\"offline_followup_required\", b(!known)), f(\"source_knowledge\", knowledge.audit()));\n        ObjectValue decision = o(plan, \"event_decision\"); ObjectValue summary = o(plan, \"active_event\");\n        require(decision != null && summary != null, \"source-review plan decision/summary objects required\");\n        String classification = known ? text(knowledge.known().entry(), \"classification\") : null;\n        decision = put(decision, f(\"source_registry_known\", b(known)), f(\"source_classification\", s(classification)),\n            f(\"registry_contract_accepted\", b(false)), f(\"material_effects_verified\", b(false)));\n        summary = put(summary, f(\"source_registry_known\", b(known)), f(\"source_knowledge_status\", s(known ? \"source_reviewed_known\" : \"unknown\")));\n        ObjectValue result = put(plan, f(\"unhandled_event_fallback\", nextCapture), f(\"event_decision\", decision), f(\"active_event\", summary));\n        if (known) {\n            decision = put(decision, f(\"status\", s(\"source_reviewed_known\")), f(\"registry_known\", b(true)), f(\"classification\", s(classification)));\n            String phase = text(plan, \"phase\"); require(phase != null, \"event phase required\");\n            result = put(result, f(\"event_decision\", decision), f(\"phase\", s(phase.replace(\"active_event_unhandled_\", \"active_event_source_reviewed_\"))));\n            if (v(plan, \"selected_step\") instanceof NullValue) {\n                result = result.with(\"reason\", s(!EventOptionAvailability.selectionAllowed(o(capture,\"window_context\"),o(capture,\"selection\"))\n                    ? eq(o(capture, \"selection\"), \"selection_order\", s(UnhandledEventFallback.DisplayPolicy.FIRST_DISPLAYED.wire()))\n                        ? \"Source-reviewed event: the first displayed native option is disabled.\"\n                        : \"Source-reviewed event: no shown native option is enabled.\"\n                    : \"Source-reviewed event: its first shown enabled option lacks an advertised native selection step.\"));\n            } else {\n                result = put(result, f(\"phase\", s(\"active_event_source_reviewed_first_rendered_option\")),\n                    f(\"reason\", s(\"Source-reviewed event: choose its current first shown enabled option under the owner's policy; material effects remain unverified.\")));\n            }\n        }\n        return new ReviewedPlan(result, known ? KnowledgeStatus.SOURCE_REVIEWED : KnowledgeStatus.UNKNOWN);\n    }\n",
+          "new": "    private static ReviewedPlan annotate(ObjectValue plan, Path stateDirectory, TrustedEventSourceContext trusted) {\n        ObjectValue capture = o(plan, \"unhandled_event_fallback\");\n        if (capture == null || stateDirectory == null) return new ReviewedPlan(plan, KnowledgeStatus.NOT_REQUESTED);\n        Knowledge knowledge = load(stateDirectory, capture, trusted);\n        return annotateKnowledge(plan, capture, knowledge);\n    }\n    private static ReviewedPlan annotateKnowledge(ObjectValue plan, ObjectValue capture, Knowledge knowledge) {\n        boolean known = knowledge.known() != null;\n        ObjectValue nextCapture = put(capture, f(\"registry_known\", b(known)), f(\"offline_followup_required\", b(!known)), f(\"source_knowledge\", knowledge.audit()));\n        ObjectValue decision = o(plan, \"event_decision\"); ObjectValue summary = o(plan, \"active_event\");\n        require(decision != null && summary != null, \"source-review plan decision/summary objects required\");\n        String classification = known ? text(knowledge.known().entry(), \"classification\") : null;\n        decision = put(decision, f(\"source_registry_known\", b(known)), f(\"source_classification\", s(classification)),\n            f(\"registry_contract_accepted\", b(false)), f(\"material_effects_verified\", b(false)));\n        summary = put(summary, f(\"source_registry_known\", b(known)), f(\"source_knowledge_status\", s(known ? \"source_reviewed_known\" : \"unknown\")));\n        ObjectValue result = put(plan, f(\"unhandled_event_fallback\", nextCapture), f(\"event_decision\", decision), f(\"active_event\", summary));\n        if (known) {\n            decision = put(decision, f(\"status\", s(\"source_reviewed_known\")), f(\"registry_known\", b(true)), f(\"classification\", s(classification)));\n            String phase = text(plan, \"phase\"); require(phase != null, \"event phase required\");\n            result = put(result, f(\"event_decision\", decision), f(\"phase\", s(phase.replace(\"active_event_unhandled_\", \"active_event_source_reviewed_\"))));\n            if (v(plan, \"selected_step\") instanceof NullValue) {\n                result = result.with(\"reason\", s(!EventOptionAvailability.selectionAllowed(o(capture,\"window_context\"),o(capture,\"selection\"))\n                    ? eq(o(capture, \"selection\"), \"selection_order\", s(UnhandledEventFallback.DisplayPolicy.FIRST_DISPLAYED.wire()))\n                        ? \"Source-reviewed event: the first displayed native option is disabled.\"\n                        : \"Source-reviewed event: no shown native option is enabled.\"\n                    : \"Source-reviewed event: its first shown enabled option lacks an advertised native selection step.\"));\n            } else {\n                result = put(result, f(\"phase\", s(\"active_event_source_reviewed_first_rendered_option\")),\n                    f(\"reason\", s(\"Source-reviewed event: choose its current first shown enabled option under the owner's policy; material effects remain unverified.\")));\n            }\n        }\n        return new ReviewedPlan(result, known ? KnowledgeStatus.SOURCE_REVIEWED : KnowledgeStatus.UNKNOWN);\n    }\n",
+          "adaptation": "Preserve existing formal selected-null reason using EventOptionAvailability rather than older actual yes(enabled), while moving the whole formal projection body unchanged. Actual qualified source remains independently pinned."
+        },
+        {
+          "old": "    private static ReviewedPlan annotate(ObjectValue plan, Path stateDirectory) {",
+          "new": "    /** Historical DATA replay only: the pinned original UNKNOWN audit is not a current registry lookup. */\n    public static ReviewedPlan continueWithRecordedUnknownPlan(ObjectValue plan, ObjectValue snapshot,\n            List<String> actionSteps, TrustedEventSourceContext trusted, ObjectValue recordedCapture) {\n        Objects.requireNonNull(plan, \"existing historical plan\");Objects.requireNonNull(snapshot, \"original snapshot\");\n        Objects.requireNonNull(actionSteps, \"original action steps\");Objects.requireNonNull(trusted, \"trusted source context\");\n        Objects.requireNonNull(recordedCapture, \"recorded original fallback\");trusted.verifyCurrentRoots();\n        ObjectValue audit=o(recordedCapture,\"source_knowledge\"),capture=o(plan,\"unhandled_event_fallback\");\n        require(eq(recordedCapture,\"schema\",s(\"xar.unhandled-event-first-rendered/v1\"))\n                &&eq(recordedCapture,\"registry_known\",b(false))&&eq(recordedCapture,\"offline_followup_required\",b(true))\n                &&eq(recordedCapture,\"semantic_optimal\",b(false))&&eq(recordedCapture,\"native_ai_equivalent\",b(false))\n                &&audit!=null&&audit.fields().keySet().equals(Set.of(\"status\",\"rejected_entries\"))\n                &&eq(audit,\"status\",s(\"unknown\"))&&eq(audit,\"rejected_entries\",new ArrayValue(List.of())),\n                \"historical first-display replay requires its complete original UNKNOWN audit\");\n        require(capture!=null,\"historical first-display producer lost its complete fallback\");\n        NativeBinding actual=nativeBinding(capture);trusted.requireBuild(actual.build());\n        require(actual.equals(nativeBinding(recordedCapture)),\"historical first-display native source binding differs\");\n        ReviewedPlan annotated=annotateKnowledge(plan,capture,new Knowledge(null,audit));\n        ObjectValue result=ExistingFactionEventPolicies.choose(annotated.plan(),snapshot,List.copyOf(actionSteps));\n        require(recordedCapture.equals(o(result,\"unhandled_event_fallback\")),\n                \"historical first-display producer changed its complete original fallback\");\n        trusted.verifyCurrentRoots();return new ReviewedPlan(result,KnowledgeStatus.UNKNOWN);\n    }\n    private static ReviewedPlan annotate(ObjectValue plan, Path stateDirectory) {",
+          "adaptation": "exact"
+        }
+      ],
+      "whole_outside_inverse_exact": true,
+      "same_lf_normalized_source_as_actual": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/EventPolicies.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\formal02\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EventPolicies.java",
+        "bytes": 50321,
+        "sha256": "b9ffa942b7be0795cd88280c48875a7f24b1f61d2530a61f882cf4a848f58a8e"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\formal02\\candidate\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EventPolicies.java",
+        "bytes": 53465,
+        "sha256": "0d0b65431aa3ec88951baaa612455d3e6ab0eb4d90ca4069c94696b8c2b88340"
+      },
+      "actual_qualified_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\events-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EventPolicies.java",
+        "bytes": 53620,
+        "sha256": "5e5973ddd066ea92f32364e7da9560aa47b6655131c2946f55081e12e32fccca"
+      },
+      "formal_owned_spans": [
+        {
+          "old": "    private static Optional<FirstDisplayed> firstDisplayedPlan(EventDecisionInput request,OrdinaryPolicy.Draft previous,\n            ObjectNode currentContext,Optional<TrustedEventSourceContext> trusted,BlockedSourceFailureCapture failureCapture){\n",
+          "new": "    private static Optional<FirstDisplayed> firstDisplayedPlan(EventDecisionInput request,OrdinaryPolicy.Draft previous,\n            ObjectNode currentContext,Optional<TrustedEventSourceContext> trusted,BlockedSourceFailureCapture failureCapture){\n        return firstDisplayedPlan(request,previous,currentContext,trusted,failureCapture,Optional.empty());\n    }\n    private static Optional<FirstDisplayed> firstDisplayedPlan(EventDecisionInput request,OrdinaryPolicy.Draft previous,\n            ObjectNode currentContext,Optional<TrustedEventSourceContext> trusted,BlockedSourceFailureCapture failureCapture,\n            Optional<RetainedJson.ObjectValue> historicalCapture){\n",
+          "adaptation": "owned EOL only"
+        },
+        {
+          "old": "                var reviewed = SourceReviewedEventConsumer.continueWithExistingPlan(retained(fallbackPlan), retainedSnapshot(snapshot), steps(request), trusted.orElseThrow());\n",
+          "new": "                var reviewed = historicalCapture.isPresent()\n                    ? SourceReviewedEventConsumer.continueWithRecordedUnknownPlan(retained(fallbackPlan),retainedSnapshot(snapshot),steps(request),trusted.orElseThrow(),historicalCapture.orElseThrow())\n                    : SourceReviewedEventConsumer.continueWithExistingPlan(retained(fallbackPlan), retainedSnapshot(snapshot), steps(request), trusted.orElseThrow());\n",
+          "adaptation": "owned EOL only"
+        },
+        {
+          "old": "    private static OrdinaryPolicy.Decision continuation(PlanningRequest request, OrdinaryPolicy.Draft previous,\n            Optional<TrustedEventSourceContext> trusted, NativeExpectationPort observations, RegisteredEventCore.ContextValidator contextValidator,\n            EventIncidentCapturePort incidentCapture) {\n",
+          "new": "    private static OrdinaryPolicy.Decision continuation(PlanningRequest request, OrdinaryPolicy.Draft previous,\n            Optional<TrustedEventSourceContext> trusted, NativeExpectationPort observations, RegisteredEventCore.ContextValidator contextValidator,\n            EventIncidentCapturePort incidentCapture) {\n        return continuation(request,previous,trusted,observations,contextValidator,incidentCapture,Optional.empty());\n    }\n    private static OrdinaryPolicy.Decision continuation(PlanningRequest request, OrdinaryPolicy.Draft previous,\n            Optional<TrustedEventSourceContext> trusted, NativeExpectationPort observations, RegisteredEventCore.ContextValidator contextValidator,\n            EventIncidentCapturePort incidentCapture, Optional<RetainedJson.ObjectValue> historicalCapture) {\n",
+          "adaptation": "owned EOL only"
+        },
+        {
+          "old": "            Optional<FirstDisplayed> fallback = firstDisplayedPlan(request, previous, context.orElseThrow(), trusted,\n                    originalPlan -> incidentCapture.captureBlocked(request, originalPlan));\n",
+          "new": "            Optional<FirstDisplayed> fallback = historicalCapture.isEmpty()\n                ? firstDisplayedPlan(request, previous, context.orElseThrow(), trusted,\n                    originalPlan -> incidentCapture.captureBlocked(request, originalPlan))\n                : firstDisplayedPlan(EventDecisionInput.ordinary(request,retained(context.orElseThrow())),previous,context.orElseThrow(),trusted,\n                    originalPlan -> incidentCapture.captureBlocked(request, originalPlan),historicalCapture);\n",
+          "adaptation": "owned EOL only"
+        },
+        {
+          "old": "    private static OrdinaryPolicy.Decision propose(PlanningRequest request, JsonNode rawPlan, NativeExpectationPort observations,",
+          "new": "    /** Reproduce the pinned source-unknown historical producer; this does not authorize a new action. */\n    public static ActionCommand replayLegacyFirstDisplayed(PlanningRequest request, OrdinaryPolicy.Draft previous,\n            Optional<TrustedEventSourceContext> trusted, RegisteredEventCore.ContextValidator validator, ExpectedPostcondition originalExpected,\n            OpportunityJson.Obj recordedCapture) {\n        StrictJson.require(trusted.isPresent(), \"legacy event replay requires the actual trusted stock context\");\n        trusted.orElseThrow().verifyCurrentRoots();\n        RetainedJson.ObjectValue historical=retained((ObjectNode)parse(OpportunityJson.encode(Objects.requireNonNull(recordedCapture,\"recorded original fallback\"))));\n        OrdinaryPolicy.Decision result = continuation(request, previous, trusted,\n                (actual, operation, plan, material) -> {\n                    StrictJson.require(originalExpected.before().equals(actual.before()) && originalExpected.source().equals(actual.source())\n                            && material.isEmpty(), \"legacy replay cannot create another original postcondition\");\n                    return Optional.of(originalExpected);\n                }, validator, (actual, plan) -> { throw new IllegalArgumentException(\"legacy replay cannot issue another capture\"); },Optional.of(historical));\n        StrictJson.require(result instanceof OrdinaryPolicy.Replace && ((OrdinaryPolicy.Replace)result).draft().command().isPresent(),\n                \"legacy replay did not reproduce one complete existing command\");\n        return ((OrdinaryPolicy.Replace)result).draft().command().orElseThrow();\n    }\n    private static OrdinaryPolicy.Decision propose(PlanningRequest request, JsonNode rawPlan, NativeExpectationPort observations,",
+          "adaptation": "exact"
+        }
+      ],
+      "whole_outside_inverse_exact": true,
+      "same_lf_normalized_source_as_actual": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootIncidentRuntime.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\formal02\\before\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 70967,
+        "sha256": "69db12a55cbb3e95d71509e07865d0afb4a2372dda0966f7785ba79dd036f106"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\formal02\\candidate\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 72042,
+        "sha256": "3c9c0931fa0c7746d49c8c235931bb7891b4c8e95582efa5fdf325765ca98ed4"
+      },
+      "actual_qualified_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\root-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 71460,
+        "sha256": "a9027841fce459756525e5909ddd3cae55ff06bebe913fd67c50bc2a808db684"
+      },
+      "formal_owned_spans": [
+        {
+          "old": "        var produced=org.xar.ck3.control.application.planning.events.EventPolicies.replayLegacyFirstDisplayed(request,previous,\r\n                prepared.baseConfiguration().trustedInteractions(),validator,command.expected());\r\n",
+          "new": "        ActionCommand produced;\n        if(\"unknown\".equals(captured.path(\"source_knowledge\").path(\"status\").asText())) {\n            StrictJson.require(\"before_submission\".equals(captured.path(\"stage\").asText())\n                    &&captured.path(\"dispatch_attempted\").isBoolean()&&!captured.path(\"dispatch_attempted\").booleanValue(),\n                    \"historical unknown producer requires its original unsubmitted before capture\");\n            // A public producer input copy only; never a frame, guard, Session or canonical output substitute.\n            ObjectNode recorded=captured.deepCopy();\n            recorded.remove(List.of(\"incident_id\",\"stage\",\"captured_at_utc\",\"dispatch_attempted\"));\n            produced=org.xar.ck3.control.application.planning.events.EventPolicies.replayLegacyFirstDisplayed(request,previous,\n                    prepared.baseConfiguration().trustedInteractions(),validator,command.expected(),\n                    OpportunityJson.object(DriverJson.fromNode(recorded),\"original pinned historical fallback\"));\n        } else {\n            produced=org.xar.ck3.control.application.planning.events.EventPolicies.replayLegacyFirstDisplayed(request,previous,\n                    prepared.baseConfiguration().trustedInteractions(),validator,command.expected());\n        }\n",
+          "adaptation": "exact"
+        }
+      ],
+      "whole_outside_inverse_exact": true,
+      "same_lf_normalized_source_as_actual": true
+    }
+  ],
+  "native_qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\native-first01\\QUALIFIED-COHERENT01.json",
+    "bytes": 441045,
+    "sha256": "9ef05d99cf83b661fbcf64f85cc27b35bd574de91c4725d5bc13598e1b695086"
+  },
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\legacy-event-producer-independent-review64\\THREE-PART-SOURCE-REVIEW03.json",
+    "bytes": 9334,
+    "sha256": "6c8869212e4e3f273880786bc7e4faeea50f10d98be881b9e3748009208319f2"
+  },
+  "model100_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\MODEL-REVIEW100-01.json",
+    "bytes": 3117,
+    "sha256": "174388ddde0192d1d97461d03d063ffa1b4ace1af067c23dbd116a4ab17bcf47"
+  },
+  "draft": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\DRAFT01.txt",
+    "bytes": 2457,
+    "sha256": "2b61b4de5bf80d257ce0ba6606a0165772136f1285788c5fa225626c16188a15"
+  },
+  "source_formal_whole_tree_compiled": false,
+  "boundary": "Known frozen UNKNOWN capture and mutable historical source-knowledge dependency are source/DATA evidence. Actual B21 produced vector/unique callback proof not held. Full fallback/arguments/command checks, private source/authority, original evidence and live current lookup retained. Runtime P064 loaded and ordinary batch in progress; OBS return/timing/gameplay/SAVE not yet verified."
+}

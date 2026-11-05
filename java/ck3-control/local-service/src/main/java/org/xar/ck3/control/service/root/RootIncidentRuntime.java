@@ -710,8 +710,21 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
                 Optional.empty(),OpportunityJson.object(DriverJson.fromNode(core),"original captured registry decision"));
         var validator=org.xar.ck3.control.nativebridge.capabilities.events.EventWindowService.validator(
                 ignored->org.xar.ck3.control.nativebridge.capabilities.events.EventWindowModels.Build.CROZIER4);
-        var produced=org.xar.ck3.control.application.planning.events.EventPolicies.replayLegacyFirstDisplayed(request,previous,
-                prepared.baseConfiguration().trustedInteractions(),validator,command.expected());
+        ActionCommand produced;
+        if("unknown".equals(captured.path("source_knowledge").path("status").asText())) {
+            StrictJson.require("before_submission".equals(captured.path("stage").asText())
+                    &&captured.path("dispatch_attempted").isBoolean()&&!captured.path("dispatch_attempted").booleanValue(),
+                    "historical unknown producer requires its original unsubmitted before capture");
+            // A public producer input copy only; never a frame, guard, Session or canonical output substitute.
+            ObjectNode recorded=captured.deepCopy();
+            recorded.remove(List.of("incident_id","stage","captured_at_utc","dispatch_attempted"));
+            produced=org.xar.ck3.control.application.planning.events.EventPolicies.replayLegacyFirstDisplayed(request,previous,
+                    prepared.baseConfiguration().trustedInteractions(),validator,command.expected(),
+                    OpportunityJson.object(DriverJson.fromNode(recorded),"original pinned historical fallback"));
+        } else {
+            produced=org.xar.ck3.control.application.planning.events.EventPolicies.replayLegacyFirstDisplayed(request,previous,
+                    prepared.baseConfiguration().trustedInteractions(),validator,command.expected());
+        }
         StrictJson.require(produced.arguments().equals(command.arguments()),"legacy complete producer arguments differ from canonical original");
         var producedBody=DriverJson.object(org.xar.ck3.control.application.action.ActionCodec.encodeCommand(produced),org.xar.ck3.control.application.action.ActionCodec.MAX_COMMAND_BYTES)
                 .with("action_id",new OpportunityJson.Text(command.actionId()));

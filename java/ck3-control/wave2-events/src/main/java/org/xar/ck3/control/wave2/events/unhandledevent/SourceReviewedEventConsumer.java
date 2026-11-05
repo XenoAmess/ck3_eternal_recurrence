@@ -134,6 +134,28 @@ public final class SourceReviewedEventConsumer {
         trusted.verifyCurrentRoots();
         return new ReviewedPlan(result, status);
     }
+    /** Historical DATA replay only: the pinned original UNKNOWN audit is not a current registry lookup. */
+    public static ReviewedPlan continueWithRecordedUnknownPlan(ObjectValue plan, ObjectValue snapshot,
+            List<String> actionSteps, TrustedEventSourceContext trusted, ObjectValue recordedCapture) {
+        Objects.requireNonNull(plan, "existing historical plan");Objects.requireNonNull(snapshot, "original snapshot");
+        Objects.requireNonNull(actionSteps, "original action steps");Objects.requireNonNull(trusted, "trusted source context");
+        Objects.requireNonNull(recordedCapture, "recorded original fallback");trusted.verifyCurrentRoots();
+        ObjectValue audit=o(recordedCapture,"source_knowledge"),capture=o(plan,"unhandled_event_fallback");
+        require(eq(recordedCapture,"schema",s("xar.unhandled-event-first-rendered/v1"))
+                &&eq(recordedCapture,"registry_known",b(false))&&eq(recordedCapture,"offline_followup_required",b(true))
+                &&eq(recordedCapture,"semantic_optimal",b(false))&&eq(recordedCapture,"native_ai_equivalent",b(false))
+                &&audit!=null&&audit.fields().keySet().equals(Set.of("status","rejected_entries"))
+                &&eq(audit,"status",s("unknown"))&&eq(audit,"rejected_entries",new ArrayValue(List.of())),
+                "historical first-display replay requires its complete original UNKNOWN audit");
+        require(capture!=null,"historical first-display producer lost its complete fallback");
+        NativeBinding actual=nativeBinding(capture);trusted.requireBuild(actual.build());
+        require(actual.equals(nativeBinding(recordedCapture)),"historical first-display native source binding differs");
+        ReviewedPlan annotated=annotateKnowledge(plan,capture,new Knowledge(null,audit));
+        ObjectValue result=ExistingFactionEventPolicies.choose(annotated.plan(),snapshot,List.copyOf(actionSteps));
+        require(recordedCapture.equals(o(result,"unhandled_event_fallback")),
+                "historical first-display producer changed its complete original fallback");
+        trusted.verifyCurrentRoots();return new ReviewedPlan(result,KnowledgeStatus.UNKNOWN);
+    }
     private static ReviewedPlan annotate(ObjectValue plan, Path stateDirectory) {
         return annotate(plan, stateDirectory, null);
     }
@@ -141,6 +163,9 @@ public final class SourceReviewedEventConsumer {
         ObjectValue capture = o(plan, "unhandled_event_fallback");
         if (capture == null || stateDirectory == null) return new ReviewedPlan(plan, KnowledgeStatus.NOT_REQUESTED);
         Knowledge knowledge = load(stateDirectory, capture, trusted);
+        return annotateKnowledge(plan, capture, knowledge);
+    }
+    private static ReviewedPlan annotateKnowledge(ObjectValue plan, ObjectValue capture, Knowledge knowledge) {
         boolean known = knowledge.known() != null;
         ObjectValue nextCapture = put(capture, f("registry_known", b(known)), f("offline_followup_required", b(!known)), f("source_knowledge", knowledge.audit()));
         ObjectValue decision = o(plan, "event_decision"); ObjectValue summary = o(plan, "active_event");

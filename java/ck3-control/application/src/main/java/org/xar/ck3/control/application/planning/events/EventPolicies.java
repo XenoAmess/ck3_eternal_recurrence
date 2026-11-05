@@ -253,6 +253,11 @@ public final class EventPolicies {
     }
     private static Optional<FirstDisplayed> firstDisplayedPlan(EventDecisionInput request,OrdinaryPolicy.Draft previous,
             ObjectNode currentContext,Optional<TrustedEventSourceContext> trusted,BlockedSourceFailureCapture failureCapture){
+        return firstDisplayedPlan(request,previous,currentContext,trusted,failureCapture,Optional.empty());
+    }
+    private static Optional<FirstDisplayed> firstDisplayedPlan(EventDecisionInput request,OrdinaryPolicy.Draft previous,
+            ObjectNode currentContext,Optional<TrustedEventSourceContext> trusted,BlockedSourceFailureCapture failureCapture,
+            Optional<RetainedJson.ObjectValue> historicalCapture){
         ObjectNode snapshot = (ObjectNode) parse(OpportunityJson.encode(request.snapshot())); JsonNode event = snapshot.get("active_event");
         Optional<ObjectNode> context = Optional.of(currentContext);
         ObjectNode frame = frame(snapshot); var options = new ArrayList<UnhandledEventFallback.Option>();
@@ -276,7 +281,9 @@ public final class EventPolicies {
         ObjectNode fallbackPlan = (ObjectNode) parse(UnhandledEventCodec.encode(fallback));
         if (trusted.isPresent()) {
             try {
-                var reviewed = SourceReviewedEventConsumer.continueWithExistingPlan(retained(fallbackPlan), retainedSnapshot(snapshot), steps(request), trusted.orElseThrow());
+                var reviewed = historicalCapture.isPresent()
+                    ? SourceReviewedEventConsumer.continueWithRecordedUnknownPlan(retained(fallbackPlan),retainedSnapshot(snapshot),steps(request),trusted.orElseThrow(),historicalCapture.orElseThrow())
+                    : SourceReviewedEventConsumer.continueWithExistingPlan(retained(fallbackPlan), retainedSnapshot(snapshot), steps(request), trusted.orElseThrow());
                 return Optional.of(new FirstDisplayed(opportunityPlan(nativeEventArguments((ObjectNode) parse(reviewed.encode()), context.orElseThrow())), Optional.of(reviewed.status())));
             } catch (TrustedEventSourceContext.UnavailableException unavailable) {
                 if (fallback.orElseThrow().selectedStep() == null) {
@@ -299,6 +306,11 @@ public final class EventPolicies {
     private static OrdinaryPolicy.Decision continuation(PlanningRequest request, OrdinaryPolicy.Draft previous,
             Optional<TrustedEventSourceContext> trusted, NativeExpectationPort observations, RegisteredEventCore.ContextValidator contextValidator,
             EventIncidentCapturePort incidentCapture) {
+        return continuation(request,previous,trusted,observations,contextValidator,incidentCapture,Optional.empty());
+    }
+    private static OrdinaryPolicy.Decision continuation(PlanningRequest request, OrdinaryPolicy.Draft previous,
+            Optional<TrustedEventSourceContext> trusted, NativeExpectationPort observations, RegisteredEventCore.ContextValidator contextValidator,
+            EventIncidentCapturePort incidentCapture, Optional<RetainedJson.ObjectValue> historicalCapture) {
         if (previous.command().isPresent()) return new OrdinaryPolicy.Keep("the existing dedicated selected action has priority");
         ObjectNode snapshot = snapshot(request); JsonNode event = snapshot.get("active_event"), pending = snapshot.get("pending_character_interaction");
         if (event != null && event.isObject()) {
@@ -314,8 +326,11 @@ public final class EventPolicies {
                 try { if(diagnostic.isPresent())incidentCapture.captureBlocked(request,diagnostic.orElseThrow()); }
                 catch(IOException failure){return incomplete("registered material diagnosis capture failed: "+failure.getMessage());}
             }
-            Optional<FirstDisplayed> fallback = firstDisplayedPlan(request, previous, context.orElseThrow(), trusted,
-                    originalPlan -> incidentCapture.captureBlocked(request, originalPlan));
+            Optional<FirstDisplayed> fallback = historicalCapture.isEmpty()
+                ? firstDisplayedPlan(request, previous, context.orElseThrow(), trusted,
+                    originalPlan -> incidentCapture.captureBlocked(request, originalPlan))
+                : firstDisplayedPlan(EventDecisionInput.ordinary(request,retained(context.orElseThrow())),previous,context.orElseThrow(),trusted,
+                    originalPlan -> incidentCapture.captureBlocked(request, originalPlan),historicalCapture);
             if (fallback.isEmpty()) return diagnosticWait(request, context.orElseThrow(), "same-frame event/native option projection unavailable", incidentCapture);
             return propose(request, parse(OpportunityJson.encode(fallback.orElseThrow().plan())), observations, Optional.empty(), incidentCapture);
         }
@@ -423,6 +438,23 @@ public final class EventPolicies {
                             && material.isEmpty(), "legacy replay cannot create another original postcondition");
                     return Optional.of(originalExpected);
                 }, validator, (actual, plan) -> { throw new IllegalArgumentException("legacy replay cannot issue another capture"); });
+        StrictJson.require(result instanceof OrdinaryPolicy.Replace && ((OrdinaryPolicy.Replace)result).draft().command().isPresent(),
+                "legacy replay did not reproduce one complete existing command");
+        return ((OrdinaryPolicy.Replace)result).draft().command().orElseThrow();
+    }
+    /** Reproduce the pinned source-unknown historical producer; this does not authorize a new action. */
+    public static ActionCommand replayLegacyFirstDisplayed(PlanningRequest request, OrdinaryPolicy.Draft previous,
+            Optional<TrustedEventSourceContext> trusted, RegisteredEventCore.ContextValidator validator, ExpectedPostcondition originalExpected,
+            OpportunityJson.Obj recordedCapture) {
+        StrictJson.require(trusted.isPresent(), "legacy event replay requires the actual trusted stock context");
+        trusted.orElseThrow().verifyCurrentRoots();
+        RetainedJson.ObjectValue historical=retained((ObjectNode)parse(OpportunityJson.encode(Objects.requireNonNull(recordedCapture,"recorded original fallback"))));
+        OrdinaryPolicy.Decision result = continuation(request, previous, trusted,
+                (actual, operation, plan, material) -> {
+                    StrictJson.require(originalExpected.before().equals(actual.before()) && originalExpected.source().equals(actual.source())
+                            && material.isEmpty(), "legacy replay cannot create another original postcondition");
+                    return Optional.of(originalExpected);
+                }, validator, (actual, plan) -> { throw new IllegalArgumentException("legacy replay cannot issue another capture"); },Optional.of(historical));
         StrictJson.require(result instanceof OrdinaryPolicy.Replace && ((OrdinaryPolicy.Replace)result).draft().command().isPresent(),
                 "legacy replay did not reproduce one complete existing command");
         return ((OrdinaryPolicy.Replace)result).draft().command().orElseThrow();
