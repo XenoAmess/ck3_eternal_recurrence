@@ -16,3 +16,10 @@
 后到正式 CI 终态（41920385302）：本工具组件已真实通过，build-qualified-tools receipt为PASS、Maven exit0／555.301976秒，1199方法0error／failure／skip；新增ControlBuildLobbySoftwareLaneTest明确4P／0.129秒。旧“等待CI”是发表时切点，不能覆盖本次后到实际组件资格。
 
 整条Official仍failure：后续qualified child约1.63075秒即因 `artifacts/tools-postqualification/actual.json` 缺失，在ControlCi.runQualified1947读取前置资格文件时失败；本次未授完整reactor／实际HTTP链或wholeCI通过。不能制造该actual、跳过完整Own／原件／两个真实JUnit资格或以工具1199P代替此下游合同；后继只核已有producer／consumer的真实接线及缺输入边界，不为CI操作Game。
+
+
+后到独立 Official 41922443393（010cec200f1e，2026-11-04T23:56:03Z终态）同样是工具组件通过、整链失败：qualified Tools Maven exit0／1040.4439083秒，实际1199方法0error／failure／skip，lobby新4方法通过；之后qualified child运行3.1196564秒，在相同 `ControlCi.runQualified1947` 因 `artifacts/tools-postqualification/actual.json` 缺失退出1。只下载该run唯一指定的1.10MB Java证据，没有重跑CI或本地JDK。来源为 `ci-010-terminal01/OFFICIAL-TERMINAL01.json`（4869B／64748bca…），不是新Factory、完整reactor或HTTP链通过。
+
+有限接线审查确认：现有ControlCi.qualify构建并验证Tools后启动qualified child，但没有调用已有ToolsPostqualificationInputProducer41／postqualifyTools；runQualified首先读取上述实际资格。已有producer要求同一次完整Tools来源匹配的七类真实原件：固定完整producer源码、实际Host＋Tools materialization map、历史已完成receipt、真实historical capture、原quota lease／rejection／source map；还需要原实际bulk材料及JUnit依赖，随后实际fullOwn与两个JUnit输出才能产生actual.json。当前审查未持这些输入或该调用接线，记录为NOT_HELD，不断言世界上不存在合法原件。
+
+合法后继只能沿现有Hosted DATA合同提供并验证这些原件及实际执行证明；不能把缺失占位、旧1199P、伪receipt／map／quota、手写PASS或跳门当成资格。精确来源清单为 `ci-cbd-terminal01/MISSING-POSTQUALIFICATION-INPUTS02.json`（四份完整Git源码对照），暂不扩大现场、上传私有原件或降低gate。两条Official各自真实失败与耗时保留，普通运行和必要功能／性能源工作继续RUNNING，不以CI作游玩前置。

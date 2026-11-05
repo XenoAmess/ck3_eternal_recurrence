@@ -50,7 +50,7 @@
   },
   "new_tests": 4,
   "local_compile": "NOT_RUN: current build-tools dependency suite not held; old Oct22 donor is not source-matched",
-  "CI_validation": "OFFICIAL41920385302 terminal failure after qualified-tools component green",
+  "CI_validation": "OFFICIAL41920385302 and OFFICIAL41922443393 each terminal failure after qualified-tools1199P/lobby4P; actual postqualification input/proof gap retained",
   "Game_operation": false,
   "P0_runtime_gate": false,
   "task_state": "RUNNING",
@@ -87,5 +87,132 @@
     "downstream_failure": "NoSuchFileException tools-postqualification/actual.json at ControlCi.runQualified1947",
     "full_reactor_HTTP_pipeline_pass_granted": false,
     "Game_operation": false
+  },
+  "additional_official_terminal": {
+    "schema": "xar.java-owner.official-terminal/v1",
+    "at_utc": "2026-11-05T00:07:13.751281+00:00",
+    "run": {
+      "id": 41922443393,
+      "commit": "010cec200f1e588858cfb49c4b78330c739cd9ac",
+      "status": "completed",
+      "conclusion": "failure",
+      "updated_at_utc": "2026-11-04T23:56:03Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/41922443393"
+    },
+    "artifact": {
+      "id": 13374757408,
+      "name": "java-control-ci-evidence",
+      "downloaded_bytes": 1102224,
+      "published_digest": "sha256:082d789a7eb6a5d62241d511b52d846a926586a7a9aea9613792fd28f7d3f7c6",
+      "download_mode": "only named existing GitHub artifact; no rerun"
+    },
+    "tools": {
+      "maven_result": {
+        "identity": {
+          "pid": 1536,
+          "creation_filetime_decimal": "134383090906273237",
+          "executable": "C:\\Windows\\System32\\cmd.exe"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 1040.4439083,
+        "accounting": {
+          "peak_job_memory_bytes": 1064407040,
+          "active_processes": 0,
+          "memory_limit_bytes": 2147483648,
+          "limit_flags": 8704
+        },
+        "stop_reason": null
+      },
+      "tests": {
+        "tests": 1199,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "lobby_xml": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-010-terminal01\\artifact\\build\\qualified-tools\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.ControlBuildLobbySoftwareLaneTest.xml",
+        "bytes": 12216,
+        "sha256": "b24da3ac565706a32eb908257e8753231ec55fda6ea6d26708f46af77216e63c"
+      },
+      "lobby_cases": [
+        "softwareLaneWithoutExternalKeysLeavesLobbyEmpty",
+        "validExternalMetadataAlongsideSoftwareProducesPinnedFragment",
+        "absentSoftwareWithNoExternalKeysThrows",
+        "partialExternalKeysAlongsideSoftwareStillThrow"
+      ]
+    },
+    "qualified_child": {
+      "identity": {
+        "pid": 6576,
+        "creation_filetime_decimal": "134383101437169532",
+        "executable": "C:\\hostedtoolcache\\windows\\Java_Temurin-Hotspot_jdk\\21.0.13-9.0\\x64\\bin\\java.exe"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 3.1196564,
+      "accounting": {
+        "peak_job_memory_bytes": 154390528,
+        "active_processes": 0,
+        "memory_limit_bytes": 2147483648,
+        "limit_flags": 8704
+      },
+      "stop_reason": null
+    },
+    "actual_failure": "NoSuchFileException artifacts/tools-postqualification/actual.json at ControlCi.runQualified1947, before full reactor/HTTP consumer qualification",
+    "proof_gap": "Existing genuine fullOwn input/proof requirement remains unchanged. No fake actual.json, receipt, source map, quota proof, skip, or gate downgrade. See earlier MISSING-POSTQUALIFICATION-INPUTS02.json; source audit availability is NOT_HELD, not global nonexistence.",
+    "originals": [
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-010-terminal01\\artifact\\logs\\control-ci-bootstrap-terminal.json",
+        "bytes": 455,
+        "sha256": "b97a11bc26f4e164f8371b03092f3b4a11b3a74469cbd1223fa2c4399d42d843"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-010-terminal01\\artifact\\logs\\build-qualified-tools.json",
+        "bytes": 202270,
+        "sha256": "e3d24799c5f1f79c3c869b599b34404a9495409e84cd52bb3eb49a61b74a784c"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-010-terminal01\\artifact\\logs\\qualified-control.stderr.log",
+        "bytes": 1432,
+        "sha256": "159e2b82aebe6064d48c54d248afd002db471f5fd26a1a7e8ccf311e58c09416"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-010-terminal01\\artifact\\logs\\qualified-control.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-010-terminal01\\artifact\\logs\\qualified-pipeline.log",
+        "bytes": 1001,
+        "sha256": "778e42ab4822a28c14870e19bf929b3d3888b8dad0716d93580d7d3280b398da"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-010-terminal01\\artifact\\logs\\qualified-control-invocation.json",
+        "bytes": 846,
+        "sha256": "196c9c2a6525607abef789e13b0fb938a2aad22f896964c2bc9ac44d426310ec"
+      }
+    ],
+    "local_actions": {
+      "JDK": 0,
+      "SDK": 0,
+      "Game": 0,
+      "C_reads": 0,
+      "GET": 0,
+      "CI_rerun": 0
+    },
+    "limitations": [
+      "Tools1199P/lobby4P are component results, not whole Official CI success.",
+      "No actual P0 Factory runtime or saved-game credit from this hosted workflow.",
+      "Normal gameplay and source task remain running."
+    ],
+    "owner_record": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-010-terminal01\\OFFICIAL-TERMINAL01.json",
+      "bytes": 4869,
+      "sha256": "64748bcada564db1ef3855623ea3188bf3072af9a8b7e001b8a8f46f9c966709"
+    }
+  },
+  "postqualification_source_gap": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ci-cbd-terminal01\\MISSING-POSTQUALIFICATION-INPUTS02.json",
+    "bytes": 5854,
+    "sha256": "2b14826b6612b472ec1b7f858043c29cf4890d73193ef6fc156163ee4b9a3b8b"
   }
 }
