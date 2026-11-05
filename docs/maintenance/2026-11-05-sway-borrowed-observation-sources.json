@@ -1,0 +1,64 @@
+{
+  "schema": "xar.java-owner.sway-borrowed-observation-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-fresh-observation-session01\\SOURCE-READY-OWNER01.json",
+    "bytes": 2460,
+    "sha256": "27969475f6df99e201628080d4d450dce308ebea5af54c5415dc96961d64e03b"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-fresh-observation-session01\\OWNER-SPANS01.json",
+    "bytes": 1240,
+    "sha256": "014393058bb9e4b6d814bd14feb4b239d9d5ada34c223d8b5fd2b9c1bc234b4f"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-fresh-observation-session01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 1860,
+    "sha256": "aa7bab7e7d1b0b13afbb9accd97b0f8325d83cad33fa85bc6389e74522b953e9"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/sway/SwayRuntimeInstaller.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-fresh-observation-session01\\formal-before01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 43495,
+        "sha256": "e8cb13eceeb26e2e6328b5222ae652709b3542ef57f62da4717d7db48b7c0b7c"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-fresh-observation-session01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 43522,
+        "sha256": "7f394d6226ede64bbee6016f43997c3afe88f3858db581fa04bbd5e2ccf83295"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-fresh-observation-session01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 43327,
+        "sha256": "432cf2de9c2237bed6b668a01f68d7889710df4b629a2ec64b3fd64173f7e3a1"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-fresh-observation-session01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 199559,
+    "sha256": "b8d6905291ba500514bfaa0e34bd7b25cee1d91311a7a6fdc240c501dae722f9"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-borrowed-observation-independent-review43\\SOURCE-REVIEW01.json",
+    "bytes": 10245,
+    "sha256": "f53ef125b19724fb0f70542b532ae95e962a38483ff0f538ef49dc196b4528ed"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-fresh-observation-session01\\MODEL-REVIEW01.json",
+    "bytes": 1191,
+    "sha256": "925a7ffd941d0e8aff650f1ccf8b09c6c7bdc384b6e246c377b7e1dfc3daea36"
+  },
+  "actual42_cause": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\ordinary-resume-after-incident42\\SWAY537-CAUSE42.json",
+    "bytes": 8391,
+    "sha256": "2dc56d1c2f25b2cded0f4a9ff3f08a5be312f2d84b9b3b56abfafa7727db5551"
+  },
+  "scope": "Futureexecution wiring only; original537 UNKNOWN observe requires actual historical proof, no retry or terminal is granted by this call fix.",
+  "new_Test_RUN": 0,
+  "new_control_GET_by_owner": 0,
+  "whole_formal_software_cohort": false
+}

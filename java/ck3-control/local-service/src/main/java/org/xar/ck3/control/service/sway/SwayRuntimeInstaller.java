@@ -401,7 +401,7 @@ public final class SwayRuntimeInstaller {
     private SwayOrdinaryExecutor.Fresh captureFresh(ActionCommand parent) {
         try {
             context.requireCurrent(parent.deadline()); var expected = new SessionPorts.SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId());
-            SessionPorts.Observation observed = context.collector().observe(expected, parent.deadline());
+            SessionPorts.Observation observed = context.collector().observe(context.borrowedSession(), expected, parent.deadline());
             if (!(observed instanceof SessionPorts.Ready ready)) throw new OrdinarySwayService.Unavailable("actual fresh ordinary readiness unavailable: " + observed.getClass().getSimpleName());
             PlanningRequest request = ready.request(); StrictJson.require(request.before().game().equals(context.game().generation()) && request.sessionId().equals(context.game().sessionId()) && request.source().equals(context.source()), "fresh ordinary request crossed current managed Game");
             var evidence = ready.semanticEvidence().orElseThrow(() -> new OrdinarySwayService.Unavailable("actual complete final SEM evidence unavailable")); var originals = context.archive().withSession(context.borrowedSession());
