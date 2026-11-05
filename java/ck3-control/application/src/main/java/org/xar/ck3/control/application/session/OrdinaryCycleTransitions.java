@@ -548,12 +548,19 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(anchored.equals(latest)&&latest.sequence()<=current.sequence()
                 &&latest.command().source().equals(data.source())
                 &&latest.bodySha256().equals(ActionCodec.bodySha256(latest.command()))
-                &&latest.state() instanceof ActionState.CompositeSettled
-                &&((ActionState.CompositeSettled)latest.state()).settlement() instanceof ActionState.CompositeNoGameplayWrite,
-                "saved open recovery requires its exact latest source-owned no-gameplay canonical original");
+                &&latest.state() instanceof ActionState.CompositeSettled,
+                "saved open recovery requires its exact latest source-owned canonical original");
         var settled=(ActionState.CompositeSettled)latest.state();
+        if(settled.settlement() instanceof ActionState.SwaySchedulerCompleted) {
+            var canonical=canonicalReceipt(current,bound.receiptReferenceOf(latest),owner);
+            StrictJson.require(canonical.equals(latest)&&matchesRecordedSwayReadContinuation(same,same.head(),branch,canonical),
+                    "saved open recovery requires its actual no-new-business Sway original ROOT read");
+        } else {
+            StrictJson.require(settled.settlement() instanceof ActionState.CompositeNoGameplayWrite,
+                    "saved open recovery requires its exact latest source-owned no-gameplay canonical original");
         org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.requireNoGameplayWriteData(latest.command(),settled.execution());
         ((ActionState.CompositeNoGameplayWrite)settled.settlement()).observation().validate(latest.command(),settled.execution());
+        }
         ContinuityActionJournal.requireHistoricalReceipt(current,latest,bound);
         // Role/current-head equality covers all original fields, including saved credit and the closed cycle.
         // The reducer below separately proves that neither credit nor that cycle changes during this admin recovery.
@@ -686,7 +693,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 StrictJson.require(state.pending().isEmpty() || state.pending().orElseThrow().equals(receiptRef), "another AUTO already awaits its fresh SEM");
                 StrictJson.require(find(state, receiptRef).isEmpty(), "a canonical AUTO already completed in this cycle branch cannot be counted again");
                 if (!matchesSettledActionContinuation(state, receipt)
-                        && !matchesRecordedKnownCompletion(session, actualHead, state, receipt))
+                        && !matchesRecordedKnownCompletion(session, actualHead, state, receipt)
+                        && !matchesRecordedSwayReadContinuation(session, actualHead, state, receipt))
                     requireCurrentFrame(actualHead.state(), state, receipt.command().before());
             } else {
                 StrictJson.require(operation.equals("SETTLE"), "unknown ordinary cycle operation");
@@ -2176,6 +2184,78 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 && !((ActionState.Settled) receipt.state()).attempt().guard().observedAt().isBefore(retained.observedAt()),
                 "confirmed reply predates or regresses its retained cycle observation");
         StrictJson.require(head.digest().equals(same.head().digest()), "confirmed reply retention changed its actual writer head");
+        return true;
+    }
+
+    /** Only RETAIN of this canonical scheduler terminal may recover its original pre-action READ. */
+    private boolean matchesRecordedSwayReadContinuation(ContinuityStorePort.Session same, WriterContracts.Head head,
+            CycleState branch, ActionReceipt receipt) throws IOException {
+        if (!(receipt.state() instanceof ActionState.CompositeSettled settled)
+                || !(settled.settlement() instanceof ActionState.SwaySchedulerCompleted completed)
+                || !(completed.proof().business() instanceof org.xar.ck3.control.application.planning.sway.SwaySchedulerCompletion.NoNewBusiness)
+                || branch.head().isEmpty()) return false;
+        StrictJson.require(settled.execution().children().isEmpty() && completed.proof().childReceiptRefs().isEmpty()
+                && !receipt.visibleGameplay() && !receipt.eligibleAdvance(),
+                "Sway no-new-business retention changed its canonical child custody or effect classification");
+        var originals = archive.withSession(same);
+        var command = receipt.command(); var before = command.before(); var completion = completed.proof();
+        completion.validateParent(command);
+        StrictJson.require(head.digest().equals(same.head().digest()), "Sway READ retention requires its exact actual writer head");
+        var run = org.xar.ck3.control.application.planning.sway.SwaySchedulerReplay.decodeRun(originals.loadMaterial(completion.originalRun()).bytes());
+        var stage = org.xar.ck3.control.application.planning.sway.SwaySchedulerReplay.decodeStage(originals.loadMaterial(run.stage()).bytes());
+        StrictJson.require(stage.command().equals(command) && run.child().isEmpty(),
+                "Sway READ retention crossed its complete original stage/parent or child custody");
+        var read = originals.loadRead(stage.rootRead());
+        var terminal = terminal(receipt);
+        NativeEffectEvidence.FrameLoader actualLoader = terminalFrames;
+        StrictJson.require(actualLoader != null, "Sway READ retention requires the actual Root frame loader");
+        org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(read, originals);
+        org.xar.ck3.control.application.planning.sway.SwaySharedRoot.requirePublicCapture(read);
+        StrictJson.require(stage.rootRead().equals(originals.readReferenceOf(read))
+                && read.request().operation().equals(org.xar.ck3.control.application.planning.sway.OrdinarySwayReadSource.ROOT)
+                && read.request().origin() instanceof CommandOrigin.Gameplay
+                && read.request().before().equals(before) && read.request().source().equals(command.source())
+                && read.request().sessionId().equals(command.sessionId()) && read.request().deadline().equals(command.deadline())
+                && read.before().paused() && read.after().paused() && read.before().mapReady() && read.after().mapReady()
+                && read.before().playerAlive() && read.after().playerAlive(),
+                "Sway original ROOT read changed its exact source, parent frame, deadline or guarded map");
+        var retained = load(branch.head().orElseThrow()).semantic();
+        for (var guard : List.of(read.before().binding(), read.after().binding())) {
+            var rebuilt = org.xar.ck3.control.application.effects.RootGuardEvidence.loadFrame(guard, originals, actualLoader);
+            org.xar.ck3.control.application.effects.RootGuardEvidence.requireHistory(guard, originals, same);
+            StrictJson.require(guard.origin().equals(command.origin()) && guard.source().equals(command.source())
+                    && guard.sessionId().equals(command.sessionId()) && sameIdentity(rebuilt.identity(), before)
+                    && rebuilt.identity().frame().revision().equals(before.frame().revision())
+                    && !guard.observedAt().isBefore(retained.observedAt()) && !guard.observedAt().isAfter(terminal.observedAt()),
+                    "Sway original ROOT guard crossed its actual frame, owner or retained/terminal time");
+        }
+        StrictJson.require(completion.finalReads().size() == 1, "Sway retention requires its one actual final ROOT read");
+        var finalRef = completion.finalReads().getFirst(); var finalRead = originals.loadRead(finalRef);
+        org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(finalRead, originals);
+        org.xar.ck3.control.application.planning.sway.SwaySharedRoot.requirePublicCapture(finalRead);
+        StrictJson.require(finalRef.equals(originals.readReferenceOf(finalRead)) && finalRead.contractId().equals(read.contractId())
+                && finalRead.request().operation().equals(read.request().operation()) && finalRead.request().before().equals(terminal.frame())
+                && finalRead.request().source().equals(command.source()) && finalRead.request().sessionId().equals(command.sessionId())
+                && sameIdentity(finalRead.after().binding().observed(), terminal.frame())
+                && finalRead.before().paused() && finalRead.after().paused() && finalRead.before().mapReady() && finalRead.after().mapReady()
+                && finalRead.before().playerAlive() && finalRead.after().playerAlive(),
+                "Sway retention final ROOT read differs from its canonical actual terminal frame");
+        for (var guard : List.of(finalRead.before().binding(), finalRead.after().binding())) {
+            var rebuilt = org.xar.ck3.control.application.effects.RootGuardEvidence.loadFrame(guard, originals, actualLoader);
+            org.xar.ck3.control.application.effects.RootGuardEvidence.requireHistory(guard, originals, same);
+            StrictJson.require(rebuilt.identity().equals(terminal.frame()) && guard.source().equals(command.source())
+                    && guard.sessionId().equals(command.sessionId()) && !guard.observedAt().isBefore(read.after().binding().observedAt()),
+                    "Sway final ROOT guard crossed its exact terminal frame, source or original READ time");
+        }
+        requireObservedBindingNotRegressed(head.state(), before);
+        requireObservedContinuation(retained.frame(), before); requireObservedContinuation(before, terminal.frame());
+        StrictJson.require(before.frame().identity().dateRaw().equals(retained.frame().frame().identity().dateRaw())
+                && terminal.frame().frame().identity().dateRaw().equals(before.frame().identity().dateRaw())
+                && before.frame().revision().compareTo(retained.frame().frame().revision()) >= 0
+                && terminal.frame().frame().revision().compareTo(before.frame().revision()) >= 0
+                && before.frame().revision().compareTo(StrictJson.integer(head.state().toJson().get("latest_binding").get("revision"), BigInteger.ZERO, StrictJson.UINT64_MAX)) >= 0,
+                "Sway original READ continuation changed its retained date or regressed native/public revision");
+        StrictJson.require(head.digest().equals(same.head().digest()), "Sway original READ retention changed its actual writer head");
         return true;
     }
 

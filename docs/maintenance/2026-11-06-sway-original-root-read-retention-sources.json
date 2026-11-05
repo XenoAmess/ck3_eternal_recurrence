@@ -1,0 +1,118 @@
+{
+  "schema": "xar.java.sway-original-root-read-retention-sources/v1",
+  "prepared_at_utc": "2026-11-05T17:23:27.648554+00:00",
+  "date_local": "2026-11-06",
+  "artifacts": {
+    "source_ready03": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-scheduler-original-read-retention54\\SOURCE-READY-OWNER03.json",
+      "bytes": 3156,
+      "sha256": "5c94d730f10d81e6d7a4c13431d491bf6919ff0ba77abb1d85d901e2044e9730"
+    },
+    "owner_spans03": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-scheduler-original-read-retention54\\SOURCE-PART03.json",
+      "bytes": 11929,
+      "sha256": "f0e086374b209c2f1c9e451dfbb388f548b98177b39c0fa1656b6bf232719b3f"
+    },
+    "formal_projection": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-scheduler-original-read-retention54\\formal01\\FORMAL-SOURCE-READY01.json",
+      "bytes": 2730,
+      "sha256": "66b22377cef8c04786e01bdd9016f7f950038891afad006922c8177ffb2ed949"
+    },
+    "native_final03": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-scheduler-original-read-retention54\\native-first02\\QUALIFIED-PRODUCTION03.json",
+      "bytes": 657073,
+      "sha256": "2bc5a97245603f744d8dda1ebcbd413d0c2ebcf7a50b8df248c3fbd5c8d76370"
+    },
+    "independent_source03": {
+      "path": "D:\\ck3-state\\resume91-root\\sway-scheduler-identity-independent-review54\\SOURCE03-REVIEW03.json",
+      "bytes": 13188,
+      "sha256": "89be2178169d2eae4d8aac1a733431c5e36998ad27d4b921c6b2aaf55c13fa74"
+    },
+    "diagnosis": {
+      "path": "D:\\ck3-state\\resume91-root\\sway-scheduler-identity-independent-review54\\DIAGNOSIS-REVIEW02.json",
+      "bytes": 8213,
+      "sha256": "e25150671786c83219239f570a15a7d4331b42e15c53a18fdf99844b1b9a7755"
+    },
+    "original_failure": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-scheduler-identity-failure54\\FAILURE54.json",
+      "bytes": 14669,
+      "sha256": "f2b50e740daabebdab6e8155a1fe9c4a5b9d37f4475aecfad6a5460f5bda63aa"
+    },
+    "original_stage": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-scheduler-identity-failure54\\675-original-stage.json",
+      "bytes": 3330,
+      "sha256": "0c33ead9db915efc63479dee34f56f147e89cc0c4d6d144004739928cd95a3f2"
+    },
+    "original_root_read": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-scheduler-identity-failure54\\675-stage-root-read.json",
+      "bytes": 5808,
+      "sha256": "45224d2eac17ab17d89db20f7c3250a017f4759f56ceb27100c7a066ce0dc36a"
+    },
+    "actual_loader54": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-original-read-retention-recovery54\\ACTUAL-LOADER54.json",
+      "bytes": 23618,
+      "sha256": "fda99c23426a77f2823a3d82cb7f0019decb74c33a6bf3c9b23db83dc9138801"
+    },
+    "normal_loop54": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-original-read-retention-recovery54\\NORMAL-LOOP54.json",
+      "bytes": 12957,
+      "sha256": "c15cc234382dc87a15a2a6bb9085880806114f0d5ffd569c5f53d71032bb61df"
+    },
+    "model88_review": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-scheduler-original-read-retention54\\MODEL-REVIEW88-01.json",
+      "bytes": 1735,
+      "sha256": "cc284228ae40e795d2c31fc2abb81abc92d7bacdc253e4dec193fcdc36332b68"
+    },
+    "model89_review": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-scheduler-original-read-retention54\\MODEL-REVIEW89-01.json",
+      "bytes": 1077,
+      "sha256": "b737ed0573588a12fab3fb70b553c9be4e0feef30234183142e12915d6b27da0"
+    }
+  },
+  "identity_vectors": {
+    "retained_cycle27": "native483/public396",
+    "old_latest_binding": "native486/public400",
+    "original_parent675_before": "native487/public401",
+    "original_stage_ROOT": "native487/public401",
+    "terminal_and_latest_final_ROOT": "native488/public402",
+    "recovery_fresh_semantic": "native490/public405",
+    "same_actor": 31254,
+    "same_date_raw": 53162952
+  },
+  "source_scope": {
+    "only_target": "OrdinaryCycleTransitions.java",
+    "runtime_source03": "8ced9b2f134f494202146165fc9886add7ed4c7e51ae3f1f7d8f34771befdbf5",
+    "owned_spans": 3,
+    "unchanged": [
+      "generic requireSameIdentity",
+      "requireCurrentFrame",
+      "retainedCycleProof803",
+      "SETTLE freshAfter",
+      "classification/reducer",
+      "oldNoGame privatebranch insideelse",
+      "privatecurrentSavedRole/fullhead/fullset/BSTART/owner/source/history/footerfences"
+    ]
+  },
+  "qualification": {
+    "source": "p0 independent sourcePASS,rawactualinverse exact3spans. Formal outside differences preserved,wholeformal production notcompiled.",
+    "initial02": "Actualnecessary1TU0/24CF/9.3710297s,notfinaladoption. Adjacentcoldconsumergap found and final03 separateimmutable built.",
+    "final03": "OnlychangedTransitions1TU0/24CF/9.0667159s,post/fence/close0released;23familyshapessame,top adds1privatehelper+4externalInnerClasses,no newnamedtype/field. NormalLoader. No newTest/oldgreenRUN.",
+    "actual": "Final03 actualGET200/8.7091404s/newrestart30;fullBOOT->LOOP17:18:39.6640189,677B18Recovery678B19Start. ColdSavedOpen has passedactualprivateproof.",
+    "not_proved": [
+      "newliveRETAINbranch hit",
+      "new gameplayday or SAVE",
+      "speedup or10sgoal",
+      "actualJava exceptionstack beforefix"
+    ],
+    "no_replay": "675 SchedulerCompleted/676history and665NoGame unchanged;no action/expiry/state/oldFrame rewriting."
+  },
+  "models": {
+    "88": "Complete23.0553712s/TTFT11.5800467/reported89667+2030;patchrejected actualRootGuard/history and exactbinding omitted,unresolvednames and invalidobservedAt getter.",
+    "89": "Complete22.2307543s/TTFT17.8412035/reported138115+794;singlecoldspan semanticsaccepted but independent owner03 alreadysealed before rawread.",
+    "complete_method_adoption": 0,
+    "literal_bytes": 0,
+    "raw_JVM": 0,
+    "R2": 0
+  },
+  "publication_no_new_JDK_C_GET_Game_action": true
+}
