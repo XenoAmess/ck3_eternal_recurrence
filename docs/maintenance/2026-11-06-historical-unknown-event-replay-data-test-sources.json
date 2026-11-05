@@ -1,0 +1,65 @@
+{
+  "schema": "xar.p064-historical-unknown-event-public-data-test-sources/v1",
+  "at_utc": "2026-11-05T22:36:23.027558+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\test-candidate02\\application\\src\\test\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\HistoricalUnknownEventReplayDataTest.java",
+    "bytes": 12246,
+    "sha256": "62ac4b7d329ae860f682911e86e82888123516187ba33d110c24b2194f371e84"
+  },
+  "formal_relative_path": "java/ck3-control/application/src/test/java/org/xar/ck3/control/application/planning/events/HistoricalUnknownEventReplayDataTest.java",
+  "production_commit": "cf46f99926feb06ad067905aa366b37c5253adfa",
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\TEST-SOURCE-READY02.json",
+      "bytes": 5224,
+      "sha256": "6f0e645be65e3b25c69def89ef664c73454e3ca5482a867a1f8f91fe72485a53"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\TEST-PART02.json",
+      "bytes": 2619,
+      "sha256": "842c7c634985349a2201c63dd807e31fb60fc16f7b22c59327698a747b3b63bb"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\native-test-first01\\FIRST-RESULT01.json",
+      "bytes": 11559,
+      "sha256": "aafcef8fcde4837d357747ed409bfeb6cb0ff219375b84b49a6459da3b40fc6f"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\native-test-first02\\QUALIFIED-PUBLIC-DATA01.json",
+      "bytes": 24544,
+      "sha256": "19ae7930d2ef22a956be7b2228eafa0e492fd5232e74b27b81a94bfebceb7e2c"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\native-test-first02\\reports-junit\\TEST-junit-jupiter.xml",
+      "bytes": 40039,
+      "sha256": "2c10291b88596cb10178366a0554565b3f0d5562147901dc935472fdb42b7969"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\historical-first-display-knowledge-replay64\\native-test-first02\\actual\\junit\\stdout.bin",
+      "bytes": 3208,
+      "sha256": "01baa073ff387e7442f28d4a46520fceb3c0df91e54e80c21df14cc50d77a4c1"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\legacy-event-producer-independent-review64\\PUBLIC-DATA-TEST02-FIXTURE-DELTA06.json",
+      "bytes": 3469,
+      "sha256": "c369b2ae1c648c8ec8aa56dc70918dfd6676f320121cc119c9ebcb779e696f7a"
+    }
+  ],
+  "actual": {
+    "compile_TUs": 1,
+    "test_classes": 1,
+    "compile_exit": 0,
+    "compile_seconds": 4.4918288,
+    "selected_methods_RUN": 1,
+    "tests_passed": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "run_seconds": 7.352654,
+    "production_recompiled": 0,
+    "old_methods_RUN": 0,
+    "Game_or_Native_calls": 0,
+    "first_fixture_failure_preserved": true
+  },
+  "scope": "Public producer DATA only: full canonical command after only the actual Root action_id projection; no private Root/session issuer, actual B21 produced vector, live Game action, SAVE or timing/performance equivalence."
+}
