@@ -17,7 +17,7 @@
     "sha256": "c165b53ed909082ff4024a8575e579f070c3420239ce22b9e0425ca07187a485"
   },
   "native_actual_family_classes": 10,
-  "native_summary_top_count_108": "Known indexing inconsistency reported to Native; use SourceFile family and actual output pins, no new JVM required. Additive correction pending.",
+  "native_summary_top_count_108": "Original summary inherited an incorrect count108. Actual OUTPUTS length, SourceFile family and complete shape family are all10; original summary retained. See additive correction.",
   "independent_source": {
     "path": "D:\\ck3-state\\resume91-root\\history-material-fresh-read-independent-review37\\SOURCE-REVIEW01.json",
     "bytes": 7723,
@@ -64,5 +64,10 @@
   "history_publication_qualified": false,
   "new_Test_or_old58_RUN": false,
   "new_Game_control_or_saved_days": 0,
-  "whole_formal_reactor_qualification": false
+  "whole_formal_reactor_qualification": false,
+  "native_class_count_correction": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\native-first01\\CLASS-COUNT-CORRECTION01.json",
+    "bytes": 4899,
+    "sha256": "87b58ed9cf6a10c3109ade73007ba9ecc4d6ebecc0c6d09b46233ca38aaddca7"
+  }
 }
