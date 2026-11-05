@@ -495,6 +495,10 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
 
     private void requireOpenReadOnlyRecovery(ContinuityStorePort.Session same, ContinuityState current,
             SessionIdentity owner, CycleState branch) throws IOException {
+        if(savedSettledContext.get()!=null) {
+            requireSavedOpenReadOnlyRecovery(same,current,owner,branch);
+            return;
+        }
         var anchor = openReadOnlyRecovery.get();
         StrictJson.require(anchor != null && isOpenReadOnlyBatch(current),
                 "unfinished batch requires this actual recovery producer and its retained canonical anchor");
@@ -510,6 +514,52 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 "unfinished read-only batch changed original actions, completed cycles or saved credit");
     }
 
+    /** Only the actual saved-reader context may combine its current canonical anchor with an open batch. */
+    private void requireSavedOpenReadOnlyRecovery(ContinuityStorePort.Session same,ContinuityState current,
+            SessionIdentity owner,CycleState branch) throws IOException {
+        var context=savedSettledContext.get();
+        StrictJson.require(context!=null&&context.same()==same&&active.get()==same&&isOpenReadOnlyBatch(current),
+                "saved open recovery lost its actual producer/writer/batch");
+        var data=context.data();context.role().requireCurrent(same,data);
+        StrictJson.require(data.controller().owner().equals(owner)&&data.controller().savedPair().isPresent()
+                &&!context.role().confirmedSaveReceipts().isEmpty()
+                &&data.canonicalSequence()==current.sequence()
+                &&data.canonicalHeadDigest().equals(ContinuityJson.digest(current.toJson()))
+                &&same.head().state().sequence()==current.sequence()
+                &&same.head().digest().equals(data.canonicalHeadDigest()),
+                "saved open recovery changed its actual current full-history anchor");
+        var boundary=StrictJson.object(current.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD),
+                Set.of("evidence_id","session","batch_id","boundary"));
+        String batch=text(boundary,"batch_id");
+        StrictJson.require(JournalKind.BATCH_STARTED.name().equals(text(boundary,"boundary"))
+                &&sessionFromJson(boundary.get("session")).equals(owner)
+                &&text(boundary,"evidence_id").equals(batch+":"+JournalKind.BATCH_STARTED.name())
+                &&batch.equals(data.controller().batchPrefix()+"-"+(data.controller().nextBatchSequence()-1))
+                &&data.controller().usedBatches().contains(batch)
+                &&branch.session().equals(owner)&&branch.pending().isEmpty()&&branch.head().isPresent(),
+                "saved open recovery changed its real retained batch/owner/completed-cycle frontier");
+        var bound=archive.withSession(same);var actions=ContinuityActionJournal.receipts(current,bound);
+        StrictJson.require(!actions.isEmpty()&&actions.stream().allMatch(ActionReceipt::settled)
+                &&actions.size()==data.settledActions().size()
+                &&new HashSet<>(actions).equals(new HashSet<>(data.settledActions())),
+                "saved open recovery changed its complete actual canonical action set");
+        var latest=actions.stream().max(java.util.Comparator.comparingLong(ActionReceipt::sequence)).orElseThrow();
+        var anchored=bound.loadRecord(ContinuityActionJournal.recordHead(current).orElseThrow()).receipt();
+        StrictJson.require(anchored.equals(latest)&&latest.sequence()<=current.sequence()
+                &&latest.command().source().equals(data.source())
+                &&latest.bodySha256().equals(ActionCodec.bodySha256(latest.command()))
+                &&latest.state() instanceof ActionState.CompositeSettled
+                &&((ActionState.CompositeSettled)latest.state()).settlement() instanceof ActionState.CompositeNoGameplayWrite,
+                "saved open recovery requires its exact latest source-owned no-gameplay canonical original");
+        var settled=(ActionState.CompositeSettled)latest.state();
+        org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.requireNoGameplayWriteData(latest.command(),settled.execution());
+        ((ActionState.CompositeNoGameplayWrite)settled.settlement()).observation().validate(latest.command(),settled.execution());
+        ContinuityActionJournal.requireHistoricalReceipt(current,latest,bound);
+        // Role/current-head equality covers all original fields, including saved credit and the closed cycle.
+        // The reducer below separately proves that neither credit nor that cycle changes during this admin recovery.
+        context.role().requireCurrent(same,data);
+        StrictJson.require(same.head().digest().equals(data.canonicalHeadDigest()),"saved open recovery changed during original validation");
+    }
     private ContinuityState reduceSettledSameGameRecovery(ContinuityState predecessor, ObjectNode details) {
         strictSettledSameGameRecovery(details);
         var owner = sessionFromJson(details.get("session"));

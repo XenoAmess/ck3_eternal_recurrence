@@ -1,0 +1,93 @@
+{
+  "schema": "xar.java-owner.sway-saved-open-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\SOURCE-READY-OWNER01.json",
+    "bytes": 3695,
+    "sha256": "6d4e52e28eb343c465467c3ab6d723ffb5d4d6087a06e20fb076d9f02e317a49"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\OWNER-SPANS-PART01.json",
+    "bytes": 6868,
+    "sha256": "bcd407f471e7fdc48d8511b1c0c54b5d4994420c67092b3d0cb96df8c307a66a"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 7013,
+    "sha256": "568e916b27255d7ddbcf60deb41dd0d6fcdd23a0434c790b6e04dd317707ed3a"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/OrdinaryCycleTransitions.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\OrdinaryCycleTransitions.java",
+        "bytes": 215749,
+        "sha256": "256b726aca59aefa5ce2260565a8375282d94ece2f568e8b5547a530b2e6910d"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\OrdinaryCycleTransitions.java",
+        "bytes": 220008,
+        "sha256": "90b58ea80d3a8fea3a39c368136eb5484ae9e087b4ebe9dd92f78d2fb753f6c6"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\OrdinaryCycleTransitions.java",
+        "bytes": 214161,
+        "sha256": "e0633d777cc1435ccbed3f0ed00f0d74487bea1a28885a33d3120055378db8d0"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "production": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\QUALIFIED-PRODUCTION01.json",
+    "bytes": 16424,
+    "sha256": "0e4c1d191a6fe0fed83f4e3c5a28358af17c005ada3dce2061a03a1e718125c1"
+  },
+  "source_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-open-batch-independent-review50\\SOURCE-REVIEW03.json",
+    "bytes": 8241,
+    "sha256": "f31ad15e8ac78295cad7a79b6d7ea85b6a7edfdc7ccb73655070e45a38e7bb9a"
+  },
+  "diagnosis_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-open-batch-independent-review50\\DIAGNOSIS-REVIEW01.json",
+    "bytes": 9043,
+    "sha256": "988a6069bbe7e95b0c0e5196b0f54720152aef4d969c1d937b6d54ec4daa53fd"
+  },
+  "contract_independent": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-open-batch-independent-review50\\CONTRACT-COLD-ROUTE-REVIEW02.json",
+    "bytes": 4794,
+    "sha256": "dd1bb272a85ed0c84766de19a62bac0600d03e6b54b5c794dad584999db947b4"
+  },
+  "model82": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\MODEL-REVIEW01.json",
+    "bytes": 2623,
+    "sha256": "da328893dc4d98ccf344cdf8b591f9dca9a7f02312004a2c6d44bb8f15eb4df0"
+  },
+  "owner_addendum": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\IMPLEMENTATION-ADDENDUM01.txt",
+    "bytes": 640,
+    "sha256": "c490492faebd1d180751f49c314dd01cd6358247dc7453638714bd93c1284886"
+  },
+  "real_B14_START": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-open-batch-recovery50-originals\\558-event.json",
+    "bytes": 90127,
+    "sha256": "d6bbc65d8dbf8fd29ffbc925e80ed9fc2b4ba9c5d8ea574c1cadd37c425bc522"
+  },
+  "actual_previous_NoGame566": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-readonly-no-gameplay01\\ACTUAL564-TERMINAL566-REVIEW01.json",
+    "bytes": 2336,
+    "sha256": "55b8c789379aa1b1a33878cc9cd855642d1e8ad7ec8cf9f0ae8cdd7156bf0923"
+  },
+  "actual_failure50_tail": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-no-gameplay-recovery49\\FAILURE49-stdout.tail64k.bin",
+    "bytes": 65536,
+    "sha256": "20e1dedcee8d451838373a895441f418e60817a13ca160656fbe10800c7c835a"
+  },
+  "new_test_compile_or_RUN": 0,
+  "whole_formal_software_cohort": false,
+  "runtime50": "Actual567 B14 recovery and568 B15START/ordinaryLOOP14:20:12.927715300 verified from frozenD; laterhead569 includes naturalREADpub. Original566/Stage/Saved/C23/DriverACTION unchanged. No newday/SAVE or futurehealth credit.",
+  "actual50_loop": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-open-batch-recovery01\\ACTUAL50-LOOP-REVIEW01.json",
+    "bytes": 4125,
+    "sha256": "c3800a44d84840ae15497b2b805838102b0686658981b5ccdd3c837358b69795"
+  }
+}

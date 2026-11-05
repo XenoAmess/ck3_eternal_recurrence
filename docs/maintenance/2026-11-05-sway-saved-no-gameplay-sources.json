@@ -110,5 +110,10 @@
     "path": "D:\\ck3-state\\resume91-root\\sway-independent-final-independent-review49\\ACTUAL-AND-TYPED-RESULT04.json",
     "bytes": 16427,
     "sha256": "a4baba92c95ea9ea53b3c12db0961dce0c0605b9b455b0d0e66879fcd4e890a2"
+  },
+  "next_open_batch_failure50": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-saved-no-gameplay-recovery49\\FAILURE49-stdout.tail64k.bin",
+    "bytes": 65536,
+    "sha256": "20e1dedcee8d451838373a895441f418e60817a13ca160656fbe10800c7c835a"
   }
 }
