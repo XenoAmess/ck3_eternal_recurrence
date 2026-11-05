@@ -269,10 +269,11 @@ public final class SwayCanonicalDomain {
         var intent=originals.loadRecord(intentRef).receipt();
         boolean recordedStageOnly=unknownReceipt.sequence()==Math.addExact(running.sequence(),2);
         boolean recordedSchedulerOnly=recordedScheduler.isPresent()&&unknownReceipt.sequence()==Math.addExact(running.sequence(),3);
+        boolean recordedReadStageOnly=recordedScheduler.isEmpty()&&unknownReceipt.sequence()==Math.addExact(running.sequence(),3);
         require(running.state() instanceof ActionState.CompositeRunning&&intent.state() instanceof ActionState.IntentDurable
                 &&((ActionState.CompositeRunning)running.state()).execution().equals(retained)
                 &&running.sequence()==Math.addExact(intent.sequence(),1)
-                &&(unknownReceipt.sequence()==Math.addExact(running.sequence(),1)||recordedStageOnly||recordedSchedulerOnly),
+                &&(unknownReceipt.sequence()==Math.addExact(running.sequence(),1)||recordedStageOnly||recordedSchedulerOnly||recordedReadStageOnly),
                 "no-write Sway requires its exact original no-write metadata publication edge");
         for(var receipt:List.of(intent,running,unknownReceipt)) {
             require(Arrays.equals(ActionCodec.encodeCommand(receipt.command()),ActionCodec.encodeCommand(parent))
@@ -299,6 +300,8 @@ public final class SwayCanonicalDomain {
             require(recordedSchedulerOnly,"saved no-gameplay metadata requires the exact two-import original edge");
             requireRecordedSavedOnly(borrowed,parent,running,unknownReceipt,originalBefore,body,runningRef,
                     recordedScheduler.orElseThrow(),originals);
+        } else if(recordedReadStageOnly) {
+            requireRetainedStageAfterRootRead(borrowed,parent,running,unknownReceipt,originalBefore,body,runningRef,originals);
         } else {
         byte[] bytes=recordedStageOnly
                 ? requireRecordedStageOnly(borrowed,parent,running,unknownReceipt,originalBefore,body,runningRef,originals)
@@ -391,6 +394,98 @@ public final class SwayCanonicalDomain {
         }
     }
     /** Verifies the one real stage publication between Running and UNKNOWN; it never executes or erases it. */
+    /** One real ROOT READ then Stage, retaining a different already-settled original's metadata. */
+    private void requireRetainedStageAfterRootRead(ContinuityStorePort.Session borrowed,ActionCommand parent,
+            ActionReceipt running,ActionReceipt unknown,ContinuityState beforeUnknown,DomainBodies.BodyRef stagedBody,
+            ExactRef runningRecord,ActionPorts.OutcomeArchive originals) throws IOException {
+        long readSequence=Math.addExact(running.sequence(),1),stageSequence=Math.addExact(running.sequence(),2);
+        require(unknown.sequence()==Math.addExact(running.sequence(),3),"retained-stage requires exact READ/Stage/UNKNOWN adjacency");
+        var head=borrowed.head();var readPath=eventPath(readSequence);var stagePath=eventPath(stageSequence);
+        var readPins=head.documents().stream().filter(value->Path.of(value.reference().path()).toAbsolutePath().normalize().equals(readPath)).toList();
+        var stagePins=head.documents().stream().filter(value->Path.of(value.reference().path()).toAbsolutePath().normalize().equals(stagePath)).toList();
+        require(readPins.size()==1&&stagePins.size()==1,"retained-stage needs unique actual READ and Stage documents");
+        var readPin=readPins.getFirst();var stagePin=stagePins.getFirst();var readEvent=event(borrowed,readPin);var stageEvent=event(borrowed,stagePin);
+        require(StrictJson.integer(readEvent.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER)==readSequence
+                &&"JAVA_DRIVER_READ_HISTORY_V1".equals(StrictJson.text(readEvent.get("kind")))
+                &&StrictJson.integer(stageEvent.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER)==stageSequence
+                &&DomainBodies.IMPORT_KIND.equals(StrictJson.text(stageEvent.get("kind"))),"retained-stage actual event kinds differ");
+        String readPrevious=StrictJson.text(readEvent.get("previous_sha256"));
+        var readBefore=borrowed.requireHistoricalState(running.sequence(),readPrevious);
+        var readDeclared=ContinuityState.fromJson(readEvent.get("after"),head.state().machineId());
+        var readAfter=borrowed.requireHistoricalState(readSequence,org.xar.ck3.control.continuity.ContinuityJson.digest(readDeclared.toJson()));
+        String stagePrevious=StrictJson.text(stageEvent.get("previous_sha256"));
+        var stageBefore=borrowed.requireHistoricalState(readSequence,stagePrevious);
+        var stageDeclared=ContinuityState.fromJson(stageEvent.get("after"),head.state().machineId());
+        var stageAfter=borrowed.requireHistoricalState(stageSequence,org.xar.ck3.control.continuity.ContinuityJson.digest(stageDeclared.toJson()));
+        require(Arrays.equals(readAfter.canonicalBytes(),readDeclared.canonicalBytes())
+                &&Arrays.equals(stageAfter.canonicalBytes(),stageDeclared.canonicalBytes())
+                &&Arrays.equals(readAfter.canonicalBytes(),stageBefore.canonicalBytes())
+                &&Arrays.equals(stageAfter.canonicalBytes(),beforeUnknown.canonicalBytes()),"retained-stage actual historical edge differs");
+        for(var state:List.of(readBefore,readAfter,stageBefore,stageAfter))
+            require(ContinuityActionJournal.recordHead(state).filter(runningRecord::equals).isPresent(),"retained-stage crossed a canonical child/action reservation");
+        var details=readEvent.get("details");var oldReadHistory=readBefore.toJson().get("java_driver_read_history");
+        require(details!=null&&details.isObject()&&oldReadHistory!=null&&oldReadHistory.isObject()
+                &&"xar.driver-read-publication/v1".equals(StrictJson.text(details.get("schema")))
+                &&details.equals(readAfter.toJson().get("java_driver_read_history"))
+                &&StrictJson.text(details.get("predecessor_head_sha256")).equals(readPrevious)
+                &&StrictJson.text(details.get("read_head_sha256")).equals(readPrevious)
+                &&StrictJson.integer(details.get("read_head_sequence"),1,StrictJson.MAX_SAFE_INTEGER)==running.sequence()
+                &&details.get("before_driver").equals(oldReadHistory.get("after_driver"))
+                &&StrictJson.integer(details.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER)==StrictJson.integer(oldReadHistory.get("after_version"),0,StrictJson.MAX_SAFE_INTEGER)
+                &&StrictJson.integer(details.get("after_version"),0,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(StrictJson.integer(details.get("before_version"),0,StrictJson.MAX_SAFE_INTEGER),1)
+                &&StrictJson.integer(details.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER)==StrictJson.integer(oldReadHistory.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER),
+                "retained-stage ROOT READ changed its actual Driver/head lineage");
+        var rows=details.get("read_rows");require(rows!=null&&rows.isArray()&&rows.size()==1,"retained-stage needs one ROOT READ row");
+        var row=rows.get(0);require("ordinary-finance-read:ROOT/v2".equals(StrictJson.text(row.get("contract_id"))),"retained-stage READ is not the installed ROOT contract");
+        var readRef=ExactRef.fromJson(row.get("read"));
+        var left=readBefore.toJson().deepCopy();var right=readAfter.toJson().deepCopy();
+        for(String field:List.of("sequence","last_event_identity","java_driver_read_history")){left.remove(field);right.remove(field);}
+        require(Arrays.equals(org.xar.ck3.control.contracts.FullJsonTree.encode(left,org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES),
+                org.xar.ck3.control.contracts.FullJsonTree.encode(right,org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES)),
+                "retained-stage READ changed captured business/cycle/save state");
+        var beforeBody=DomainBodies.reference(stageBefore,DomainBodies.Slot.SWAY).orElseThrow(()->new IOException("retained-stage prior SWAY body unavailable"));
+        var result=DomainBodies.reference(stageAfter,DomainBodies.Slot.SWAY).orElseThrow(()->new IOException("retained-stage result SWAY body unavailable"));
+        require(result.equals(stagedBody),"retained-stage result differs from original UNKNOWN domain");
+        var inputRef=ExactRef.fromJson(stageEvent.get("details").get("source").get("producer_input"));
+        var witness=new PublicationWitness(stagePin.reference(),beforeBody,result,inputRef,stageSequence,StrictJson.text(stageEvent.get("identity")),stagePrevious);
+        var input=verifyPublication(borrowed,witness,originals,false);
+        require(input.change() instanceof StageRecorded,"retained-stage original import is another operation");
+        var basis=((StageRecorded)input.change()).basis();var stage=SwaySchedulerReplay.decodeStage(originals.loadMaterial(basis).bytes());
+        var ledger=SwayFormalCodec.decode(originals.loadMaterial(result.payload()).bytes());
+        require(ledger.activeStage().filter(basis::equals).isPresent()&&stage.inputDomain().equals(beforeBody.payload())
+                &&stage.rootRead().equals(readRef)&&Arrays.equals(ActionCodec.encodeCommand(stage.command()),ActionCodec.encodeCommand(parent)),
+                "retained-stage complete parent/ROOT/input body differs");
+        // Comparison copies are never submitted as historical states or passed into proof/reducer APIs.
+        left=stageBefore.toJson().deepCopy();right=stageAfter.toJson().deepCopy();
+        var beforeEntries=left.path("java_domain_bodies_v1").path("entries");var afterEntries=right.path("java_domain_bodies_v1").path("entries");
+        require(beforeEntries.isObject()&&afterEntries.isObject()&&beforeEntries.get("SWAY")!=null&&afterEntries.get("SWAY")!=null,"retained-stage domain inventory differs");
+        ((ObjectNode)afterEntries).set("SWAY",beforeEntries.get("SWAY"));
+        for(String field:List.of("sequence","last_event_identity")){left.remove(field);right.remove(field);}
+        require(Arrays.equals(org.xar.ck3.control.contracts.FullJsonTree.encode(left,org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES),
+                org.xar.ck3.control.contracts.FullJsonTree.encode(right,org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES)),
+                "retained-stage changed another domain/business/cycle/save field");
+        byte[] priorBytes=originals.loadMaterial(beforeBody.payload()).bytes();var prior=SwayFormalCodec.decode(priorBytes);var raw=StrictJson.parse(priorBytes,SwayFormalCodec.MAX);
+        require(prior.machineId().equals(parent.before().machineId())&&prior.episodeRunId().equals(parent.sessionId())
+                &&prior.episodeRunId().equals(parent.before().frame().episodeRunId())&&raw.path("previous").isArray()&&raw.path("previous").size()==0
+                &&prior.activeStage().isPresent()&&prior.schedule().isPresent(),"retained-stage has no exact old metadata frontier");
+        for(String field:List.of("pending","resolved","imported_legacy"))require(raw.get(field)!=null&&raw.get(field).isNull(),"retained-stage contains a native lifecycle frontier");
+        var oldStage=SwaySchedulerReplay.decodeStage(originals.loadMaterial(prior.activeStage().orElseThrow()).bytes());var oldCommand=oldStage.command();
+        require(!oldCommand.actionId().equals(parent.actionId())&&oldCommand.source().equals(parent.source())&&oldCommand.sessionId().equals(parent.sessionId())
+                &&oldCommand.before().machineId().equals(parent.before().machineId())&&oldCommand.before().game().equals(parent.before().game())
+                &&oldCommand.before().frame().episodeRunId().equals(parent.before().frame().episodeRunId())
+                &&oldCommand.before().frame().identity().player().equals(parent.before().frame().identity().player())
+                &&oldCommand.before().frame().identity().dateRaw().compareTo(parent.before().frame().identity().dateRaw())<=0,"retained-stage old original crossed current owner scope");
+        var oldCanonical=ContinuityActionJournal.lookup(head.state(),oldCommand.actionId(),originals).orElseThrow(()->new IOException("retained-stage old canonical original unavailable"));
+        require(Arrays.equals(ActionCodec.encodeCommand(oldCanonical.command()),ActionCodec.encodeCommand(oldCommand))
+                &&oldCanonical.bodySha256().equals(ActionCodec.bodySha256(oldCommand))&&oldCanonical.state() instanceof ActionState.CompositeSettled,
+                "retained-stage old canonical body/terminal differs");
+        var oldTerminal=(ActionState.CompositeSettled)oldCanonical.state();require(oldTerminal.settlement() instanceof ActionState.CompositeNoGameplayWrite,"retained-stage old metadata is not its settled no-write original");
+        SwayOrdinaryComposite.requireNoGameplayWriteData(oldCommand,oldTerminal.execution());
+        ((ActionState.CompositeNoGameplayWrite)oldTerminal.settlement()).observation().validate(oldCommand,oldTerminal.execution());
+        ContinuityActionJournal.requireHistoricalReceipt(head.state(),oldCanonical,originals);
+        borrowed.verifyPin(readPin);borrowed.verifyPin(stagePin);
+    }
+
     private byte[] requireRecordedStageOnly(ContinuityStorePort.Session borrowed,ActionCommand parent,
             ActionReceipt running,ActionReceipt unknown,ContinuityState beforeUnknown,DomainBodies.BodyRef stagedBody,
             ExactRef runningRecord,ActionPorts.OutcomeArchive originals) throws IOException {

@@ -1589,6 +1589,33 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         ||!priorJson.path("previous").isArray()||priorJson.path("previous").size()!=0)return Optional.empty();
                 if(savedScheduler) {
                     if(!prior.originalMigrationInput().equals(ExactRef.fromJson(body.get("original_migration_input"))))return Optional.empty();
+                    if(!activeBatch&&prior.activeStage().isPresent()&&prior.schedule().isPresent()) {
+                        var stageOnly=org.xar.ck3.control.application.planning.sway.SwayFormalState.reduce(prior,
+                                new org.xar.ck3.control.application.planning.sway.SwayFormalState.StageRecorded(stageRef));
+                        if(java.util.Arrays.equals(org.xar.ck3.control.application.planning.sway.SwayFormalCodec.encode(stageOnly),bodyBytes)) {
+                            // Only Stage DATA changed; old scheduler is retained, not this parent's Saved proof.
+                            for(String field:java.util.List.of("pending","resolved","imported_legacy"))
+                                if(priorJson.get(field)==null||!priorJson.get(field).isNull())return Optional.empty();
+                            var oldStage=org.xar.ck3.control.application.planning.sway.SwaySchedulerReplay.decodeStage(
+                                    originals.loadMaterial(prior.activeStage().orElseThrow()).bytes());
+                            var oldCommand=oldStage.command();
+                            if(oldCommand.actionId().equals(command.actionId())||!oldCommand.source().equals(command.source())
+                                    ||!oldCommand.sessionId().equals(command.sessionId())||!oldCommand.before().machineId().equals(owner.machineId())
+                                    ||!oldCommand.before().game().equals(command.before().game())
+                                    ||!oldCommand.before().frame().episodeRunId().equals(owner.sessionId())
+                                    ||!oldCommand.before().frame().identity().player().equals(command.before().frame().identity().player())
+                                    ||oldCommand.before().frame().identity().dateRaw().compareTo(command.before().frame().identity().dateRaw())>0)return Optional.empty();
+                            var oldCanonical=canonicalActions.stream().filter(a->a.command().actionId().equals(oldCommand.actionId())).findFirst().orElseThrow();
+                            if(!java.util.Arrays.equals(ActionCodec.encodeCommand(oldCanonical.command()),ActionCodec.encodeCommand(oldCommand))
+                                    ||!oldCanonical.bodySha256().equals(ActionCodec.bodySha256(oldCommand))
+                                    ||!(oldCanonical.state() instanceof ActionState.CompositeSettled settled)
+                                    ||!(settled.settlement() instanceof ActionState.CompositeNoGameplayWrite noWrite))return Optional.empty();
+                            org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.requireNoGameplayWriteData(oldCommand,settled.execution());
+                            noWrite.observation().validate(oldCommand,settled.execution());
+                            org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(current,oldCanonical,originals);
+                            return Optional.of(original); // Unissued routing only; private historical proof is mandatory.
+                        }
+                    }
                     var schedule=body.get("scheduler");
                     if(!schedule.isObject()||StrictJson.integer(schedule.get("actor_character_id"),1,StrictJson.MAX_SAFE_INTEGER)!=command.before().frame().identity().player().longValueExact()
                             ||StrictJson.integer(schedule.get("last_check_date_raw"),0,StrictJson.MAX_SAFE_INTEGER)!=command.before().frame().identity().dateRaw().longValueExact()

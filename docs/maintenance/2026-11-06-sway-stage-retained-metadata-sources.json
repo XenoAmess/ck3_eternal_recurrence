@@ -1,0 +1,101 @@
+{
+  "schema": "xar.java.sway-retained-stage-recovery-sources/v1",
+  "prepared_at_utc": "2026-11-05T17:14:36.310329+00:00",
+  "date_local": "2026-11-06",
+  "evidence_times": "UTC;existing Nov05 artifact names preserved",
+  "formal_base": "244f7f60cdd62e973e7060a96b00fddc9192c839",
+  "artifacts": {
+    "coherent_source": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-stage-retained-metadata-recovery53\\SOURCE-READY-COHERENT01.json",
+      "bytes": 6273,
+      "sha256": "7ed5b1985f3b2ed740c8dfaf86a3c17b54a069b637c8d11f4206ced455cf1b87"
+    },
+    "formal_projection": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-stage-retained-metadata-recovery53\\formal01\\FORMAL-SOURCE-READY01.json",
+      "bytes": 7539,
+      "sha256": "ba504c73b8ed73ca53a41f56aee1ac3921c2193283d968fbe8c1c2099501b5cf"
+    },
+    "production40": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-stage-retained-metadata-recovery53\\QUALIFIED-COHERENT40-01.json",
+      "bytes": 28624,
+      "sha256": "04f1a31d2bcac727c54712683d5834fc9f49cf471dd54b137d4f92df7bacfc4c"
+    },
+    "executor85_production": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-query-unavailable-result53\\QUALIFIED-PRODUCTION01.json",
+      "bytes": 9885,
+      "sha256": "fccec6c790bc5c0bbd2752b6cb472a62050af167ebec2125f110e6499cc391d0"
+    },
+    "public_test87": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-retained-stage-data-test53\\QUALIFIED-COHORT01.json",
+      "bytes": 13212,
+      "sha256": "63ebe58da6196db0bf6b05db1743f01ec7b03a19bd87be351593194428664a79"
+    },
+    "independent_source_test": {
+      "path": "D:\\ck3-state\\resume91-root\\sway-service-replay-independent-review53\\SOURCE86-TEST87-RESULT03.json",
+      "bytes": 37818,
+      "sha256": "136739616833be095064ed9892d49b33c9fa6720b8e74814d8a53b101e511ad1"
+    },
+    "independent_actual665": {
+      "path": "D:\\ck3-state\\resume91-root\\sway-service-replay-independent-review53\\ACTUAL665-RESULT04.json",
+      "bytes": 4642,
+      "sha256": "8748267f919015e478467360b91f66530e7348b63083affdd4ee4c19d34786ab"
+    },
+    "original_failure": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-service-replay-failure53\\FAILURE53.json",
+      "bytes": 27185,
+      "sha256": "3edd363026a014c0d1da29f9ef8a683e72b21b64c624b02d4b4e85909b9b99a0"
+    },
+    "actual_loader": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-stage-retained-recovery53\\ACTUAL-LOADER53.json",
+      "bytes": 38107,
+      "sha256": "a5613440078656b53a0af101c202c1cf007478ff7c02ff3b7300e4d3ba186655"
+    },
+    "original663_terminal665": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-stage-retained-recovery53\\ORIGINAL663-TERMINAL665.json",
+      "bytes": 3170,
+      "sha256": "83c85b70bc6fe142edc986083c09a946687d9d5c8155e8a5d4ca8704779cefe3"
+    },
+    "normal_loop53": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-stage-retained-recovery53\\NORMAL-LOOP53.json",
+      "bytes": 10584,
+      "sha256": "a1e326ba1eac42e41460ffd52ba3d7487fb7ce59d68a4abbe368fedf06ad20f2"
+    },
+    "model85_review": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-query-unavailable-result53\\MODEL-REVIEW85-01.json",
+      "bytes": 1524,
+      "sha256": "18ca88fe62ab542142a6c14cc28f72dceccfb2b8fc6edde6f9e39f85cbcee78f"
+    },
+    "model86_review": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-stage-retained-metadata-recovery53\\MODEL-REVIEW86-01.json",
+      "bytes": 2610,
+      "sha256": "2ccd2591cc29626dc897cfa3f504190fd16bb0a63f17ed0305f6ee61ced2ee69"
+    },
+    "model87_review": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-retained-stage-data-test53\\MODEL-REVIEW87-01.json",
+      "bytes": 1355,
+      "sha256": "64937cade6df97c08962c1883ecd348cf2e10a25f800fd2b165e23dde74a8caa"
+    },
+    "new_failure54": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-scheduler-identity-failure54\\FAILURE54.json",
+      "bytes": 14669,
+      "sha256": "f2b50e740daabebdab6e8155a1fe9c4a5b9d37f4475aecfad6a5460f5bda63aa"
+    }
+  },
+  "qualification": {
+    "runtime_source": "Executor93d6+Domain e3b1+Batch256f, six owned spans",
+    "compile": "Executor85 oneTU9CF first0/5.4993678;laterDomain+Batch2TU31CF first0/12.8389681;Executor9 exactreuse,final40",
+    "test": "New Test oneTU3CF0/5.3472259;sole actual663RetainsOldSchedulerAsStageOnlyDataWithoutReplay 1P/10.9303238,85canonical8denials+restored.0oldRUN",
+    "formal": "Production owned spans only;wholeformal production variants not compiled. New test class exact actual compiled cohort, frozenbaseline old2 notRUN.",
+    "actual": "Original663->665NoGameplay wholecommand/body/execution/deadline preserved;real fullBOOT/LOOP16:22:03.5682264. No action replay,oldSaved retained;not Native0/newday/SAVE proof.",
+    "later54": "Differentnewparent675 SchedulerCompleted,history676,postJOURNALnativeidentityfailure;not old663 recurrence. P054 source/type/runtime handled separately."
+  },
+  "models": {
+    "85": "Complete7.9034198s/TTFT3.9973924/reported29916+576;semantic direction accepted,owner independent0code",
+    "86": "Complete73.3134093s/TTFT34.9496509/reported268617+6886;fullpatch rejected for overlapping spans/guard omissions,0code",
+    "87": "Complete43.5994384s/TTFT21.2071136/reported165842+3824;method rejected for wrong oldStage re-reduction expectation,0code",
+    "literal_copy_bytes": 0,
+    "raw_JVM": 0,
+    "R2": 0
+  },
+  "no_new_GET_or_compilation_for_publication": true
+}

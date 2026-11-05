@@ -167,7 +167,7 @@ public final class SwayOrdinaryExecutor {
                     return formal(FormalStatus.APPLIED, true, Optional.of(actionId), Optional.empty(), earlyBaseline(ledger.resolved().orElseThrow()));
                 var pending = ledger.pending().orElseThrow(); return formal(switch(pending.stage()) { case SUBMISSION_UNRESOLVED -> FormalStatus.SUBMISSION_UNRESOLVED; case RECEIPT_PENDING -> FormalStatus.RECEIPT_PENDING; case POSTCONDITION_PENDING -> FormalStatus.POSTCONDITION_PENDING; }, false, Optional.of(actionId), Optional.empty(), pending.original().body());
             } catch (ReadPublicationRequiredException required) { throw required; }
-            catch (IOException | IllegalArgumentException | IllegalStateException failure) { throw unavailable(failure); }
+            catch (IOException | IllegalArgumentException | IllegalStateException | Unavailable failure) { throw unavailable(failure); }
         }
         @Override public LifecycleResult observeLifecycle(OrdinarySwaySchedule.Frame expected) {
             try {
