@@ -36,4 +36,6 @@
 
 本次新增悬停和阶数回归后，58项相关模块测试、九语发布静态及五个完整修改模块 strict mypy 均实际通过。新源 `a509ed8665a9a6ba6de113651b8b09786d51e7db` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/41916912032)进一步完成239项产品测试、6个完整源码 strict 检查及9项、8项共享回归。最初235项及旧画面对应先前展开式版本；本次悬停画面和发布按新回执记录，不借用旧画面授予通过。
 
-R0002实机015确认简短条目，016确认二级悬停只含50与5；同时发现初选 `#V` 只是变亮，没有明确色彩，因此颜色验收不通过。安装版 `gui/preload/textformatting.gui`（8892B，SHA-256 `44a3801dace9610ce5d9d5a463bc7e8184252ee7f974af7945e78d3be24bfc8a`）的223–274行明确 `V → value → color_white`，`M → mixed_value → color_yellow`。后继改用 `#M`，统一黄色只表达阶数相关数值，不按正负号猜测机制的利弊。原失败包没有上传；新色彩的实际画面另行验收。
+R0002实机015确认简短条目，016确认二级悬停只含50与5；同时发现初选 `#V` 只是变亮，没有明确色彩，因此颜色验收不通过。安装版 `gui/preload/textformatting.gui`（8892B，SHA-256 `44a3801dace9610ce5d9d5a463bc7e8184252ee7f974af7945e78d3be24bfc8a`）的223–274行明确 `V → value → color_white`，`M → mixed_value → color_yellow`。后继改用 `#M`，统一黄色只表达阶数相关数值，不按正负号猜测机制的利弊。原失败包没有上传。
+
+最终源码 `be9abc9928598b543bf10e0c4be8890cf337ad28` 的[官方CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/41925238206)完成239项产品测试、6个完整源码 strict 及后续9项、8项共享回归。R0003的014–016实际画面由Root直接审阅：原生效果旁保留简短条目，二级异能只显示黄色50与5，一级诅咒只显示黄色-0.4与+15，固定十二期保留。原Popen正常返回0，公共GUI-only verify退出0，业务及case通过；该窄UI合同不授予全玩法或Native资格。画面、正常退出、工坊上传与真实下载证据见[0.1.2发布记录](../../docs/release-changelogs/living-artifacts/0.1.2.md)。
