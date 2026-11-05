@@ -23,3 +23,6 @@ Hosted正例是明确未发行的结构DATA。它保留真实原命令/ACK与后
 正式八叶仅移植对应owned spans，全部outside逆还原精确；其中四叶与实测actual全体相同，另四叶保留各自既有formal outside，不授整个formal reactor软件通过。原SHA/hash/parser与冻结Guard主题未改，原期限01:55:03.894579600Z不刷新，连接19/25均未伪写。首版仍限定当前Game/EXACT，跨Game及新历史关系不扩张。
 
 实际最后已持33切点为原525 UNKNOWN、C22、169 eligible/8 saved；本单元不新增确认保存日，不报告有限秒/保存日或达成10秒目标。后到34装载和原动作结果另据真实回执补记。机器来源与精确SHA见[源码与证据索引](../maintenance/2026-11-05-event-reconciled-read-postcondition-sources.json)。
+
+
+??34?????after/v3?v4 proof??526?UNKNOWN????checked IO???Assembler??????[????](2026-11-05-reconciliation-source-io-diagnostic.md)????????postwrite?Scope???canonical???

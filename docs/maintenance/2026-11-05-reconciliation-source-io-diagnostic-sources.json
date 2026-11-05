@@ -1,0 +1,46 @@
+{
+  "schema": "xar.java-owner.reconciliation-io-source-index/v1",
+  "at_utc": "2026-11-05T05:56:41.168459+00:00",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\reconciliation-source-io-diagnostic01\\SOURCE-READY-OWNER01.json",
+    "bytes": 1820,
+    "sha256": "5f7d4370fa1eeb7dad1347743f07dce68c5ccef67c4455e88335060d6b5afc2a"
+  },
+  "formal_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\reconciliation-source-io-diagnostic01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 3707,
+    "sha256": "0a82e979e0e82a6f7f79e067ef852f12b7e6bee31b9017c23ee8fb72872a7ae7"
+  },
+  "actual_type": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\reconciliation-source-io-diagnostic01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 129575,
+    "sha256": "54a1e1ba346eca3c8e0072fd16ca23bef270441c14a249688ef5f9b64a36a81c"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciliation-source-io-independent-review35\\SOURCE-REVIEW02.json",
+    "bytes": 3480,
+    "sha256": "1e32a5043fbb3b963237146a6da3fbe5fccd89ca227e5303761d3bb7ecee051d"
+  },
+  "actual_after_boundary": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciliation-source-io-independent-review35\\AFTER-WRITE-BOUNDARY03.json",
+    "bytes": 8012,
+    "sha256": "27f6bc29d18cf92f2ffafbe2f6acdb598fa321b1597184fe1277bb586a9aa72d"
+  },
+  "archived_effect_callers": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciliation-source-io-independent-review35\\ARCHIVED-EFFECT-CALLER04.json",
+    "bytes": 4969,
+    "sha256": "e81a6eb05ae5a64d7e81609c0c7cec903f0c989128227f8f1e59acf4c0014ac2"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\reconciliation-source-io-diagnostic01\\MODEL-REVIEW01.json",
+    "bytes": 1608,
+    "sha256": "e23f896cb84299ab787a3586a7dbd9e4a43d9407410cadd8ae70f877cbc4b0d5"
+  },
+  "new_stdout_diagnostic": true,
+  "new_file_Native_network_or_ledger_API": false,
+  "source_ready_historical_field_note": "new_method_field_type_thread_or_IO_API=false excludes the expressly permitted stdout diagnostics; use the explicit fields in this index",
+  "current_canonical": 526,
+  "canonical_settlement": false,
+  "real_diagnostic_output": false,
+  "new_GET_or_controls": false
+}

@@ -473,6 +473,31 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             try { return append(locked, command, digest, unknown(attempt, Optional.of(dispatch), "read-only reconciliation interrupted; original request retained, no replay")); }
             finally { Thread.currentThread().interrupt(); }
         } catch (java.io.IOException failure) {
+            try {
+                var entry = StrictJson.object().put("schema", "xar.action.reconciliation-io-diagnostic/v1")
+                        .put("action_id", command.actionId()).put("operation", command.operation().value())
+                        .put("request_id", attempt.requestId()).put("command_body_sha256", digest);
+                var causes = entry.putArray("causes");
+                Throwable currentCause = failure;
+                for (int i = 0; i < 3 && currentCause != null; i++) {
+                    String cls = currentCause.getClass().getName();
+                    if (cls.length() > 96) cls = cls.substring(0, 96);
+                    String msg = String.valueOf(currentCause.getMessage());
+                    if (msg.length() > 192) msg = msg.substring(0, 192);
+                    java.util.List<String> stack = new java.util.ArrayList<>();
+                    for (java.lang.StackTraceElement el : currentCause.getStackTrace()) {
+                        if (stack.size() >= 4) break;
+                        String s = el.toString();
+                        if (s.length() > 160) s = s.substring(s.length() - 160);
+                        stack.add(s);
+                    }
+                    var cause = causes.addObject().put("class", cls).put("message", msg);
+                    var frames = cause.putArray("stack");
+                    for (String frame : stack) frames.add(frame);
+                    currentCause = currentCause.getCause();
+                }
+                System.out.println(new String(StrictJson.canonical(entry, 16_384), java.nio.charset.StandardCharsets.UTF_8));
+            } catch (RuntimeException diagnosticFailure) { /* Diagnostics cannot replace the original UNKNOWN. */ }
             return append(locked, command, digest, unknown(attempt, Optional.of(dispatch), "read-only reconciliation source unavailable:" + failure.getClass().getName() + "; no replay"));
         }
         catch (RuntimeException failure) { return append(locked, command, digest, unknown(attempt, Optional.of(dispatch), diagnostic("postcondition unavailable", failure))); }
