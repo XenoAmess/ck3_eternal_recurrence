@@ -1525,6 +1525,59 @@ public final class ContinuityBatchJournal implements BatchJournal {
         } catch (RuntimeException rejected) { return Optional.empty(); }
     }
 
+    /** Strict unissued DATA route for one unstarted read-only Sway original. No terminal or submit authority. */
+    public static Optional<ActionReceipt> readOnlyUnstartedSwayRecoveryRoot(ContinuityState current, SessionIdentity owner,
+            java.util.List<ActionReceipt> canonicalActions,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        if(current==null||owner==null||canonicalActions==null||originals==null
+                ||current.status()!=ContinuityState.Status.REPAIR_REQUIRED
+                ||!current.machineId().equals(owner.machineId()))return Optional.empty();
+        try {
+            var whole=current.toJson();var boundary=whole.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+            var interruption=whole.path("interruption");var cycle=whole.path(WriterContracts.ORDINARY_CYCLE_FIELD);
+            if(!boundary.isObject()||!JournalKind.BATCH_INTERRUPTED.name().equals(StrictJson.text(boundary.get("boundary")))
+                    ||!OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
+                    ||!interruption.isObject()||!"java-ordinary-batch-interruption/v2".equals(StrictJson.text(interruption.get("source")))
+                    ||!StrictJson.text(interruption.get("evidence_id")).equals(StrictJson.text(boundary.get("evidence_id")))
+                    ||!cycle.isObject()||!OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
+                    ||cycle.get("head")==null||cycle.get("head").isNull()
+                    ||cycle.get("pending_receipt")==null||!cycle.get("pending_receipt").isNull())return Optional.empty();
+            StrictJson.text(boundary.get("batch_id"));
+            StrictJson.integer(cycle.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER);
+            canonicalActions=java.util.List.copyOf(canonicalActions);
+            if(canonicalActions.isEmpty()||canonicalActions.stream().map(a->a.command().actionId()).distinct().count()!=canonicalActions.size())return Optional.empty();
+            var actualActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(current,originals);
+            if(actualActions.size()!=canonicalActions.size()||!new java.util.HashSet<>(actualActions).equals(new java.util.HashSet<>(canonicalActions)))return Optional.empty();
+            var unresolved=canonicalActions.stream().filter(a->!a.settled()).toList();
+            if(unresolved.size()!=1)return Optional.empty();var original=unresolved.getFirst();
+            var latest=canonicalActions.stream().max(java.util.Comparator.comparingLong(ActionReceipt::sequence)).orElseThrow();
+            if(!original.equals(latest)||original.sequence()>current.sequence()
+                    ||!originals.loadRecord(org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(current).orElseThrow()).receipt().equals(original)
+                    ||!(original.state() instanceof ActionState.CompositeUnknown unknown))return Optional.empty();
+            var command=original.command();
+            if(!command.before().machineId().equals(owner.machineId())||!command.before().game().equals(owner.game())
+                    ||!command.sessionId().equals(owner.sessionId())||!command.source().machineId().equals(owner.machineId())
+                    ||!command.before().frame().episodeRunId().equals(owner.sessionId())
+                    ||!original.bodySha256().equals(ActionCodec.bodySha256(command)))return Optional.empty();
+            org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.requireNoGameplayWriteData(command,unknown.execution());
+            org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(current,original,originals);
+            var bodyRef=org.xar.ck3.control.continuity.writer.DomainBodies.reference(current,
+                    org.xar.ck3.control.continuity.writer.DomainBodies.Slot.SWAY).orElseThrow();
+            byte[] bodyBytes=originals.loadMaterial(bodyRef.payload()).bytes();
+            org.xar.ck3.control.application.planning.sway.SwayFormalCodec.decode(bodyBytes);
+            var body=StrictJson.parse(bodyBytes,org.xar.ck3.control.application.planning.sway.SwayFormalCodec.MAX);
+            if(!bodyRef.contractSchema().equals(StrictJson.text(body.get("schema"))))return Optional.empty();
+            if(!body.isObject()||!owner.machineId().equals(StrictJson.text(body.get("machine_id")))
+                    ||!owner.sessionId().equals(StrictJson.text(body.get("episode_run_id")))
+                    ||!body.path("previous").isArray()||body.path("previous").size()!=0)return Optional.empty();
+            for(String field:java.util.List.of("active_stage","pending","resolved","scheduler","imported_legacy"))
+                if(body.get(field)==null||!body.get(field).isNull())return Optional.empty();
+            // This current-body gate only selects isolated DATA. Installed Sway source independently proves
+            // the real original writerpoint/history and no publication before any zero-write settlement.
+            return Optional.of(original);
+        } catch(RuntimeException rejected) {return Optional.empty();}
+    }
+
     /** DATA-only completion of one already-applied zero-day EVENT; no submit or cycle credit. */
     public static Optional<ActionReceipt> readOnlyPendingEventCompletionRoot(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> canonicalActions,
@@ -1741,7 +1794,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         || savedIsolatedLifeData(retained,unresolvedActions)
                         || savedIsolatedCouncilData(retained,unresolvedActions)
                         || savedIsolatedSaveData(retained,unresolvedActions)
-                         || savedPendingEventCompletionData(retained,unresolvedActions)),
+                         || savedPendingEventCompletionData(retained,unresolvedActions) || savedIsolatedSwayData(retained,unresolvedActions)),
                     "an absent restart capture requires its actual isolated CurrentMap or saved pending Life history");
         }
         public CleanBatchRestart capturedManifest() {
@@ -1827,6 +1880,21 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
 
     /** Shape-only DATA; the current canonical completion helper and full history still authenticate this role. */
+    private static boolean savedIsolatedSwayData(SettledSameGameData history,java.util.List<ActionReceipt> isolated) {
+        if(!(history.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap)
+                ||history.cycleSemantic().isEmpty()||history.controller().savedPair().isEmpty()||isolated.size()!=1)return false;
+        try {
+            var actual=isolated.getFirst();var command=actual.command();var owner=history.controller().owner();
+            if(!history.settledActions().contains(actual)||actual.sequence()>history.canonicalSequence()
+                    ||!(actual.state() instanceof ActionState.CompositeUnknown unknown)
+                    ||!command.source().equals(history.source())||!command.before().machineId().equals(owner.machineId())
+                    ||!command.before().game().equals(owner.game())||!command.sessionId().equals(owner.sessionId())
+                    ||!actual.bodySha256().equals(ActionCodec.bodySha256(command)))return false;
+            org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.requireNoGameplayWriteData(command,unknown.execution());
+            return true;
+        } catch(RuntimeException rejected) {return false;}
+    }
+
     private static boolean savedPendingEventCompletionData(SettledSameGameData history,java.util.List<ActionReceipt> isolated) {
         if (!(history.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap)
                 || history.cycleSemantic().isEmpty() || history.controller().savedPair().isEmpty() || isolated.size()!=1) return false;
@@ -1881,7 +1949,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     .or(() -> readOnlyEventRecoveryRoot(actions))
                     .or(() -> readOnlyPositiveAckCouncilRecoveryRoot(actions))
                     .or(() -> readOnlyPendingKnownCompletionRoot(current, owner, actions, originals))
-                    .or(() -> readOnlyPendingEventCompletionRoot(current, owner, actions, originals)).or(() -> finalization)
+                    .or(() -> readOnlyPendingEventCompletionRoot(current, owner, actions, originals))
+                    .or(() -> readOnlyUnstartedSwayRecoveryRoot(current, owner, actions, originals)).or(() -> finalization)
                     .map(java.util.List::of).orElseGet(java.util.List::of);
         });
         if (!isolated.isEmpty()) {
@@ -1892,7 +1961,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty();
             StrictJson.require(captured.get() != null || initialCurrentMap || savedIsolatedLifeData(retained,isolated)
                     || savedIsolatedCouncilData(retained,isolated) || savedIsolatedSaveData(retained,isolated)
-                    || savedIsolatedEventData(retained,isolated) || savedPendingEventCompletionData(retained,isolated),
+                    || savedIsolatedEventData(retained,isolated) || savedPendingEventCompletionData(retained,isolated) || savedIsolatedSwayData(retained,isolated),
                     "isolated recovery retains its actual restart capture or fully verified initial/saved CurrentMap Life history");
             return new UnresolvedSameGameData(Optional.ofNullable(captured.get()), retained.controller(), retained.retainedFacts(),
                     retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
@@ -2861,13 +2930,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var pendingEventCompletion = readOnlyPendingEventCompletionRoot(state, owner, actions, originals);
             boolean isolatedKnown = readOnlyKnownPendingRecoveryRoot(actions).isPresent();
             boolean isolatedEvent = readOnlyEventRecoveryRoot(actions).isPresent();
+            boolean isolatedSway = readOnlyUnstartedSwayRecoveryRoot(state,owner,actions,originals).isPresent();
             boolean isolatedCouncil = readOnlyPositiveAckCouncilRecoveryRoot(actions).isPresent();
             boolean isolatedSave = readOnlySaveRecoveryRoot(actions).isPresent() || finalizationSave.isPresent();
             if (isolatedLife) {
                 StrictJson.require(readOnlyLifeRecoveryRoot(actions).isPresent(),
                         "isolated recovery retains one exact Life original and its canonical control prefix");
             } else {
-                StrictJson.require(!actions.isEmpty()&&(actions.stream().allMatch(ActionReceipt::settled) || isolatedSave || isolatedKnown || isolatedCouncil || isolatedEvent),
+                StrictJson.require(!actions.isEmpty()&&(actions.stream().allMatch(ActionReceipt::settled) || isolatedSave || isolatedKnown || isolatedCouncil || isolatedEvent || isolatedSway),
                         "settled recovery cannot discard an unresolved action outside its exact positive-ACK SAVE or known pending");
             }
             if (pendingControl.isPresent()) {
@@ -3351,7 +3421,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "settled canonical recovery head changed during read");
             var data=new SettledSameGameData(entry,controller,retained.facts(),retained.fullDriver(),previousTransport,
                     source,Optional.ofNullable(latest),latestObserved,actions,state.sequence(),head.digest(),history);
-            boolean isolated = isolatedLife || isolatedSave || isolatedKnown || isolatedCouncil || isolatedEvent || pendingControl.isPresent() || pendingKnownCompletion.isPresent() || pendingEventCompletion.isPresent();
+            boolean isolated = isolatedLife || isolatedSave || isolatedKnown || isolatedCouncil || isolatedEvent || isolatedSway || pendingControl.isPresent() || pendingKnownCompletion.isPresent() || pendingEventCompletion.isPresent();
             if (!isolated && savedPair.isPresent()) {
                 StrictJson.require(pending==null&&cycle.get("pending_receipt").isNull()
                         &&actions.stream().allMatch(ActionReceipt::settled)&&!confirmedSaves.isEmpty(),

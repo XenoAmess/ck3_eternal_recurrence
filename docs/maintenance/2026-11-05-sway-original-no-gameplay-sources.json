@@ -1,0 +1,159 @@
+{
+  "schema": "xar.java-owner.sway-original-no-gameplay-source-index/v1",
+  "production_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\SOURCE-READY-OWNER05.json",
+    "bytes": 6504,
+    "sha256": "7f76d808ab760bee44eee41cd7e7b0ecdeed8cd4af74538f19b5c47e390d2d82"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\OWNER-SPANS05.json",
+    "bytes": 44059,
+    "sha256": "18bd6c96c185e084abf160759ad7f1dd1e2904d34db65d0d037312bb547a741a"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\FORMAL-SOURCE-READY05.json",
+    "bytes": 43978,
+    "sha256": "a853b7310bf33a8d1bee903e3094eb76daa320cdb18905d507288ae6df146b8a"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/ContinuityBatchJournal.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\formal-before05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 356449,
+        "sha256": "dc279c4b44eb040cbe71d2656740aa0f7bea3c27bf02eb5f40de2984ddfd92b0"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\formal-candidate05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 363278,
+        "sha256": "2eb6a2524c2d320ded6343a3e36bea9b42eceb54779518036860725d719b0cf2"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\candidate05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 362165,
+        "sha256": "7ed916edebe9218a64d96e7ce4e825be564e8cd9ff621b0224a0645c38370b27"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/application/driver/DriverBootstrap.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\formal-before05\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverBootstrap.java",
+        "bytes": 140156,
+        "sha256": "483b56f4c8f30dea27ebd2e49b04d1bfb32c348386a5bb471151fc7b9a21a368"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\formal-candidate05\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverBootstrap.java",
+        "bytes": 140379,
+        "sha256": "8aba3543aa2da831aff18e851460a89534f24302abec3484e96fc3f30455818f"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\candidate05\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverBootstrap.java",
+        "bytes": 140379,
+        "sha256": "8aba3543aa2da831aff18e851460a89534f24302abec3484e96fc3f30455818f"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayOrdinaryComposite.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\formal-before05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryComposite.java",
+        "bytes": 5163,
+        "sha256": "e37af905dae5b8b1fadd54f792e1625a484e5a36646f38e6a15e1b3e6de0db81"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\formal-candidate05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryComposite.java",
+        "bytes": 8570,
+        "sha256": "aa5881610ab2afad89b5fad8510f50209f375d34e9be8f8090baae29abf01c6b"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\candidate05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryComposite.java",
+        "bytes": 8570,
+        "sha256": "aa5881610ab2afad89b5fad8510f50209f375d34e9be8f8090baae29abf01c6b"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayCanonicalDomain.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\formal-before05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 52537,
+        "sha256": "00c69426d02109431e7fe01060ba63aa8e614ed702b3d4a7c9073e4b3a5431f8"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\formal-candidate05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 61061,
+        "sha256": "286bafa9ebe4bafd7314c7d9ed89dd3886d67fa1379590fac566eb548e2b8ead"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\candidate05\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 60612,
+        "sha256": "1f44436583cb736ec94f2c3ed13b768c033131d86a783e09e640c65a1f6c73e0"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "actual4TU_firstgreen": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\native-first04\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 1104641,
+    "sha256": "71c5b2f9bc4274870e39f63639bcc027990bbbccf00e81958b895719bcf6a102"
+  },
+  "necessaryDomain05": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\native-domain-first05\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 180911,
+    "sha256": "e1a7ae91fddf87839fc3f0da9cfeb6b686a37ac545e11a17a4beda53231f2013"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-no-gameplay-source-independent-review43\\SOURCE-REVIEW05.json",
+    "bytes": 12772,
+    "sha256": "5279deaf0fbfba696820ecbb59855ad0ae55059478cc0c5f4209716814d3fbb7"
+  },
+  "model68_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\MODEL-REVIEW01.json",
+    "bytes": 1050,
+    "sha256": "39857f88faf6e0783ee74e33ed1b5d63674131e8aa37c97e620c8f7cb61d62e7"
+  },
+  "checked_IO_fix": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\CHECKED-IO-FIX04.json",
+    "bytes": 1303,
+    "sha256": "3f23d8e3c4659e97ac3ed5c6a41ec07f4905d5774fdd29fee25c6e5f76011d82"
+  },
+  "ledger_event_profile_fix": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\LEDGER-EVENT-BUDGET-FIX05.json",
+    "bytes": 1244,
+    "sha256": "b252a15ad64495227589e7fdd9b9a188a23d20f08cfaf325e855bdb64b1e9f9f"
+  },
+  "new_Test_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-no-gameplay-data-independent-test01\\SOURCE-READY-TEST01.json",
+    "bytes": 3382,
+    "sha256": "6096444ea30d51139d012e7c16c87a38766e5fb9e8a938a33b27dffe5d14f5d9"
+  },
+  "new_Test_qualified": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-no-gameplay-data-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 12029,
+    "sha256": "45c07ad9f69975f6b730553edf1d5c54de6f98dc068e7d21b16704eb48816d28"
+  },
+  "new_Test_independent_result": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-no-gameplay-data-independent-test01\\INDEPENDENT-RESULT01.json",
+    "bytes": 11581,
+    "sha256": "162cd70e9df403d16df3b4583b85178d80f206a3c5f76957b0abc4a43eba6c4f"
+  },
+  "model69_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-no-gameplay-data-independent-test01\\MODEL-AND-OWNER-REVIEW01.json",
+    "bytes": 1441,
+    "sha256": "9199eedb644db5f370fa3579b88cfaaf7db028dbee8aa821d0d82e798729b76a"
+  },
+  "authority_scope": "Public DATA1P12rejections is UNISSUED. Actual Root terminal separately reported539NoGameplay, notApplied; later materialconsumerLife-only failure is separate.",
+  "new_control_or_original537_retry": 0,
+  "whole_formal_software_cohort": false,
+  "class_loader": "50actualfamily names unchanged; newexistingZeroGameplayinterface andmethod changes require normalLoader, not redefine.",
+  "actual539_independent_frozen_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-pre-effect-reconciliation01\\ACTUAL-ORIGINAL537-TERMINAL539-REVIEW01.json",
+    "bytes": 1281,
+    "sha256": "80f4921e038607be8c086b239bb45ea9cc93167b1f109b4b17d3d27b1cf639fb"
+  }
+}

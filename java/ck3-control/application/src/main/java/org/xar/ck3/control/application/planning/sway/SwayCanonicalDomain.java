@@ -116,7 +116,7 @@ public final class SwayCanonicalDomain {
     }
     private Path eventPath(long sequence) { return originalLock.resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS").resolve(String.format(java.util.Locale.ROOT, "%08d.json", sequence)).toAbsolutePath().normalize(); }
     private JsonNode event(ContinuityStorePort.Session borrowed, WriterContracts.Pin pin) throws IOException {
-        JsonNode value = StrictJson.object(StrictJson.parse(borrowed.readPinned(pin, org.xar.ck3.control.continuity.ContinuityJson.DOCUMENT_MAX_BYTES), org.xar.ck3.control.continuity.ContinuityJson.DOCUMENT_MAX_BYTES), java.util.Set.of("sequence", "at_utc", "kind", "details", "identity", "previous_sha256", "after"));
+        JsonNode value = StrictJson.object(StrictJson.parse(borrowed.readPinned(pin, org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES), org.xar.ck3.control.continuity.ContinuityJson.LEDGER_MAX_BYTES), java.util.Set.of("sequence", "at_utc", "kind", "details", "identity", "previous_sha256", "after"));
         java.time.Instant.parse(StrictJson.text(value.get("at_utc"))); borrowed.verifyPin(pin); return value;
     }
     private SwayTransitionCodec.Input verifyPublication(ContinuityStorePort.Session borrowed, PublicationWitness witness, ActionPorts.OutcomeArchive originals) throws IOException {
@@ -220,6 +220,83 @@ public final class SwayCanonicalDomain {
             }
         }
         require(classified.equals(completion.business()), "scheduler business classification differs from actual canonical child/native replay");
+    }
+    /** Actual original-writer proof, replayed at the real first UNKNOWN point rather than a future current body. */
+    public void requireUnstartedScheduler(ContinuityStorePort.Session borrowed,ActionCommand parent,CompositeExecution retained) throws IOException {
+        SwayOrdinaryComposite.requireNoGameplayWriteData(parent,retained);
+        borrowed.requireWriter(originalLock);var head=borrowed.head();var originals=archive.withSession(borrowed);
+        var canonical=ContinuityActionJournal.lookup(head.state(),parent.actionId(),originals)
+                .orElseThrow(()->new IOException("actual unstarted Sway parent is absent from the canonical writer"));
+        require(Arrays.equals(ActionCodec.encodeCommand(canonical.command()),ActionCodec.encodeCommand(parent))
+                &&canonical.bodySha256().equals(ActionCodec.bodySha256(parent)),"unstarted Sway changed its complete canonical command/body");
+        if(canonical.state() instanceof ActionState.CompositeUnknown unknown)require(unknown.execution().equals(retained),"unstarted Sway canonical execution changed");
+        else {
+            require(canonical.state() instanceof ActionState.CompositeSettled,"unstarted Sway requires canonical UNKNOWN or its exact no-write terminal");
+            var terminal=(ActionState.CompositeSettled)canonical.state();
+            require(terminal.execution().equals(retained)&&terminal.settlement() instanceof ActionState.CompositeNoGameplayWrite,"another terminal is not a no-write Sway proof");
+            ((ActionState.CompositeNoGameplayWrite)terminal.settlement()).observation().validate(parent,retained);
+        }
+        require(savedScheduler(borrowed,parent).isEmpty(),"a real SchedulerSaved publication cannot be replaced by a no-write terminal");
+        ActionReceipt firstUnknown=null;ExactRef firstRecord=null;
+        var cursor=ContinuityActionJournal.recordHead(head.state());long maximum=head.state().sequence();
+        var seen=new java.util.HashSet<ExactRef>();
+        while(cursor.isPresent()) {
+            var reference=cursor.orElseThrow();require(seen.add(reference)&&seen.size()<=100_000,"Sway no-write canonical chain is cyclic or exceeds its existing read budget");
+            var record=originals.loadRecord(reference);var receipt=record.receipt();
+            require(receipt.sequence()<=maximum&&receipt.command().origin().machineId().equals(head.state().machineId()),"Sway no-write canonical sequence/machine changed");
+            maximum=receipt.sequence()-1;cursor=record.previous();
+            if(!receipt.command().actionId().equals(parent.actionId()))continue;
+            require(Arrays.equals(ActionCodec.encodeCommand(receipt.command()),ActionCodec.encodeCommand(parent))
+                    &&receipt.bodySha256().equals(ActionCodec.bodySha256(parent)),"Sway historical parent changed its complete body");
+            if(receipt.state() instanceof ActionState.CompositeUnknown unknown) {
+                require(unknown.execution().equals(retained),"Sway UNKNOWN contains another child reservation/execution");firstUnknown=receipt;firstRecord=reference;
+            } else if(receipt.state() instanceof ActionState.CompositeRunning running)require(running.execution().equals(retained),"Sway Running contains another child reservation/execution");
+            else if(receipt.state() instanceof ActionState.CompositeSettled settled) {
+                require(settled.execution().equals(retained)&&settled.settlement() instanceof ActionState.CompositeNoGameplayWrite,"Sway history contains a different terminal");
+                ((ActionState.CompositeNoGameplayWrite)settled.settlement()).observation().validate(parent,retained);
+            } else require(receipt.state() instanceof ActionState.IntentDurable,"Sway no-write history contains a primitive dispatch/other state");
+        }
+        require(firstUnknown!=null&&firstRecord!=null,"actual first Sway UNKNOWN original is required");
+        var unknownReceipt=Objects.requireNonNull(firstUnknown);var unknownRecord=Objects.requireNonNull(firstRecord);
+        var runningRef=originals.loadRecord(unknownRecord).previous().orElseThrow(()->new IOException("unstarted Sway has no canonical Running predecessor"));
+        var runningRecord=originals.loadRecord(runningRef);var running=runningRecord.receipt();
+        var intentRef=runningRecord.previous().orElseThrow(()->new IOException("unstarted Sway has no canonical Intent predecessor"));
+        var intent=originals.loadRecord(intentRef).receipt();
+        require(running.state() instanceof ActionState.CompositeRunning&&intent.state() instanceof ActionState.IntentDurable
+                &&((ActionState.CompositeRunning)running.state()).execution().equals(retained)
+                &&running.sequence()==Math.addExact(intent.sequence(),1)&&unknownReceipt.sequence()==Math.addExact(running.sequence(),1),
+                "unstarted Sway requires its real contiguous Intent/Running/UNKNOWN before any domain publication");
+        for(var receipt:List.of(intent,running,unknownReceipt)) {
+            require(Arrays.equals(ActionCodec.encodeCommand(receipt.command()),ActionCodec.encodeCommand(parent))
+                    &&receipt.bodySha256().equals(ActionCodec.bodySha256(parent)),"unstarted Sway predecessor changed the complete command/body");
+            ContinuityActionJournal.requireHistoricalReceipt(head.state(),receipt,originals);
+        }
+        var expectedPath=eventPath(unknownReceipt.sequence());
+        var pins=head.documents().stream().filter(pin->Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(expectedPath)).toList();
+        require(pins.size()==1,"unstarted Sway UNKNOWN event must be an exact unique canonical writer document");
+        var pin=pins.getFirst();var actualEvent=event(borrowed,pin);
+        long sequence=StrictJson.integer(actualEvent.get("sequence"),1,StrictJson.MAX_SAFE_INTEGER);
+        require(sequence==unknownReceipt.sequence(),"unstarted Sway UNKNOWN event sequence changed");
+        var declaredAfter=ContinuityState.fromJson(actualEvent.get("after"),head.state().machineId());
+        var originalAfter=borrowed.requireHistoricalState(sequence,org.xar.ck3.control.continuity.ContinuityJson.digest(declaredAfter.toJson()));
+        var originalBefore=borrowed.requireHistoricalState(sequence-1,StrictJson.text(actualEvent.get("previous_sha256")));
+        require(Arrays.equals(originalAfter.canonicalBytes(),declaredAfter.canonicalBytes())
+                &&ContinuityActionJournal.recordHead(originalAfter).filter(unknownRecord::equals).isPresent()
+                &&ContinuityActionJournal.recordHead(originalBefore).filter(runningRef::equals).isPresent()
+                &&originals.loadRecord(unknownRecord).receipt().equals(unknownReceipt),"unstarted Sway event changed its real historical canonical original");
+        var oldBody=DomainBodies.reference(originalBefore,DomainBodies.Slot.SWAY).orElseThrow(()->new IOException("original Sway body is unavailable"));
+        var body=DomainBodies.reference(originalAfter,DomainBodies.Slot.SWAY).orElseThrow(()->new IOException("original Sway UNKNOWN body is unavailable"));
+        require(oldBody.equals(body)&&body.contractSchema().equals(SCHEMA),"unstarted Sway changed its actual domain before UNKNOWN");
+        byte[] bytes=originals.loadMaterial(body.payload()).bytes();var ledger=SwayFormalCodec.decode(bytes);var raw=StrictJson.parse(bytes,SwayFormalCodec.MAX);
+        require(ledger.machineId().equals(parent.before().machineId())&&ledger.episodeRunId().equals(parent.before().frame().episodeRunId())
+                &&ledger.episodeRunId().equals(parent.sessionId())&&raw.path("previous").isArray()&&raw.path("previous").size()==0,
+                "unstarted Sway domain is not the same original initial episode");
+        for(String field:List.of("active_stage","pending","resolved","scheduler","imported_legacy"))
+            require(raw.get(field)!=null&&raw.get(field).isNull(),"unstarted Sway already has native lifecycle/stage/scheduler state");
+        borrowed.verifyPin(pin);borrowed.requireWriter(originalLock);var after=borrowed.head();
+        require(after.digest().equals(head.digest())&&after.documents().equals(head.documents())&&after.absent().equals(head.absent())
+                &&after.indexRepairs().equals(head.indexRepairs())&&after.snapshotNeedsRecovery()==head.snapshotNeedsRecovery(),
+                "Sway no-write proof changed its original writer head/inventory");
     }
     /** Read-only cold lookup of this parent's actual domain publication. No event means no completion or retry authority. */
     public Optional<SavedScheduler> savedScheduler(ContinuityStorePort.Session borrowed, ActionCommand parent) throws IOException {
