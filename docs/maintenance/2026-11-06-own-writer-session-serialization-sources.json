@@ -1,0 +1,64 @@
+{
+  "schema": "xar.java-formal.own-writer-serialization-index/v1",
+  "at_utc": "2026-11-05T20:08:40.203908+00:00",
+  "source": {
+    "relative": "java/ck3-control/adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityWriter.java",
+    "formal_before": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\own-writer-session-serialization58\\formal01\\before\\adapters-storage\\src\\main\\java\\org\\xar\\ck3\\control\\continuity\\writer\\ContinuityWriter.java",
+      "bytes": 124724,
+      "sha256": "8d274d4ec022296ae3950d1884e29d23c4cc1b4c888bcafe94eae0d2ebbbb85c"
+    },
+    "formal_candidate": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\own-writer-session-serialization58\\formal01\\candidate\\adapters-storage\\src\\main\\java\\org\\xar\\ck3\\control\\continuity\\writer\\ContinuityWriter.java",
+      "bytes": 125055,
+      "sha256": "a6ba1b74af85a6f1f68dd8e63c08311a1f58e70b1d7918c1407671b3bb0aa546"
+    },
+    "actual_qualified_candidate": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\own-writer-session-serialization58\\candidate01\\adapters-storage\\src\\main\\java\\org\\xar\\ck3\\control\\continuity\\writer\\ContinuityWriter.java",
+      "bytes": 126394,
+      "sha256": "59591a4ef8c49826b89823d6bbc92dee79030edb0668c58fd80a6e171db135f8"
+    },
+    "formal_owned_spans": [
+      {
+        "old": "    private final ContinuityStore store;",
+        "new": "    private final ContinuityStore store;\n    /** Scheduling for this owner instance only; the original Windows lock still excludes other writers/processes. */\n    private final java.util.concurrent.locks.ReentrantLock sessionSerial=new java.util.concurrent.locks.ReentrantLock(true);",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "    public <T> T locked(SessionWork<T> work) throws IOException {\n        if(readOnly) StorageWriteGuard.requireNoWritesOpen(storageGuard);\n        Objects.requireNonNull(work);\n        if (ACTIVE_SESSION.get() != null) throw new IOException(\"nested original writer sessions are not permitted; borrow the active session\");\n        try (WindowsLedgerLock ignored = WindowsLedgerLock.acquire(layout.lock())) {\n            Session session = new Session();\n            ACTIVE_SESSION.set(session);\n            try { return work.run(session); }\n            finally { session.open = false; ACTIVE_SESSION.remove(); }\n        }\n    }",
+        "new": "    public <T> T locked(SessionWork<T> work) throws IOException {\n        if(readOnly) StorageWriteGuard.requireNoWritesOpen(storageGuard);\n        Objects.requireNonNull(work);\n        if (ACTIVE_SESSION.get() != null) throw new IOException(\"nested original writer sessions are not permitted; borrow the active session\");\n        sessionSerial.lock();\n        try {\n        try (WindowsLedgerLock ignored = WindowsLedgerLock.acquire(layout.lock())) {\n            Session session = new Session();\n            ACTIVE_SESSION.set(session);\n            try { return work.run(session); }\n            finally { session.open = false; ACTIVE_SESSION.remove(); }\n        }\n        } finally {sessionSerial.unlock();}\n    }",
+        "owned_eol_adapted": true
+      }
+    ],
+    "whole_outside_inverse_exact": true,
+    "formal_contains_previous_unadopted_P052_getter": true,
+    "actual_P058_contains_P052_getter": false,
+    "same_whole_bytes_as_qualified_actual": false
+  },
+  "actual_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\own-writer-session-serialization58\\SOURCE-READY-OWNER01.json",
+    "bytes": 2227,
+    "sha256": "cf9f048633b5b3cc1d3967705c0cfd9a62190deddbda23e59869f105475fa5ec"
+  },
+  "actual_qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\own-writer-session-serialization58\\native-first01\\QUALIFIED-PRODUCTION01.json",
+    "bytes": 221489,
+    "sha256": "482c4e1cf542503f52c1c46b3d3e661e4423a6e8b9dac17b4bfb2848ebba8158"
+  },
+  "scope_proof": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\own-writer-session-serialization58\\SCOPE-PROOF01.json",
+    "bytes": 2061,
+    "sha256": "7ba626524ee7b3c09b53009f116a2e46f294e5b41f812600ecf67c122c97d77a"
+  },
+  "source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\offline-writer-contention-independent-review58\\CANDIDATE01-SOURCE-REVIEW02.json",
+    "bytes": 9243,
+    "sha256": "b1511b42124f9ae56748f8e4cc3bce07f0234ac5f5e273daec15b28e2106cfb1"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\own-writer-session-serialization58\\MODEL-REVIEW96-01.json",
+    "bytes": 1147,
+    "sha256": "a54888f03e4c2703d0f63269a68aae3ceeea1d675b84e8d5a4ea1f0912da6dba"
+  },
+  "runtime": "Only actualWriter59591 adopted;P052scopegetter and Completion notadopted. LaterImmutableReviewConflict/old8clean separate. Formalgetter retainedoutsideownedspans;neverdeploywholeformalfile to overwrite actual59591."
+}

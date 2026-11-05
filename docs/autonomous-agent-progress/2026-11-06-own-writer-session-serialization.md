@@ -1,0 +1,11 @@
+# Serialize sessions owned by the same Writer
+
+P058 exposed a real background immutable-publication failure: Windows writer acquisition returned Win32=33, and publishing its failure evidence encountered the same lock rejection. The source permits offline work to start during the Core's startup writer scope. ThreadLocal sessions identify the calling thread; they do not serialize those two threads. The specific holder in that attempt was not directly sampled, and a lock leak was not established.
+
+A private fair ReentrantLock now queues locked(SessionWork) calls on the same Writer instance. Original readonly/null/nested checks run before waiting. The original Windows acquire, work, ThreadLocal cleanup and actual try-with-resources close are unchanged; the scheduling lock releases only afterwards. No Session is transferred across threads, no Win32 error is swallowed, and original exception/suppression behavior is preserved. Separate Writer instances/processes and the original readOnlyFrom/static initialization paths still face the unchanged native exclusion policy.
+
+The two owned spans passed independent source review and one necessary strict compile: nine classes, 6.5798683 seconds, with all managed resources released. Model96's direction was acceptable, but the owner source already existed independently; no raw patch, method or literal was adopted and no duplicate raw JVM was run.
+
+Runtime adopted only the actual Writer59591 candidate. Its next attempt reached a different immutable review-index conflict; neither that observation nor software qualification proves all lock contention solved, eight analysis completions, clean capture or measured speedup. No Game action was replayed and P052 timing was not bundled.
+
+The formal checkout already contains the earlier unadopted P052 pure scope getter, which this projection preserves outside its owned spans. The actual P058 file does not contain that getter. P052 has a separate D-only rebase onto59591; it needs its own necessary qualification after a real clean boundary. Never copy the old whole P052 Writer over the current serializer or use this formal file as the actual deployment image. Only the actual candidate has compiler credit; the entire formal checkout was not compiled.

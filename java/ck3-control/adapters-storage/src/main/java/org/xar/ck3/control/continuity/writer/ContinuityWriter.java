@@ -39,6 +39,8 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
     private final boolean readOnly;
     /** One captured history cache is reused across same-process writer sessions. */
     private final ContinuityStore store;
+    /** Scheduling for this owner instance only; the original Windows lock still excludes other writers/processes. */
+    private final java.util.concurrent.locks.ReentrantLock sessionSerial=new java.util.concurrent.locks.ReentrantLock(true);
     /** Exact physical outputs only; this is neither Game admission nor an observed initial window. */
     public record Initialized(Layout layout,Pin anchor,Pin snapshot,Pin lock,Head initialHead) {
         public Initialized {Objects.requireNonNull(layout);Objects.requireNonNull(anchor);Objects.requireNonNull(snapshot);
@@ -272,12 +274,15 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         if(readOnly) StorageWriteGuard.requireNoWritesOpen(storageGuard);
         Objects.requireNonNull(work);
         if (ACTIVE_SESSION.get() != null) throw new IOException("nested original writer sessions are not permitted; borrow the active session");
+        sessionSerial.lock();
+        try {
         try (WindowsLedgerLock ignored = WindowsLedgerLock.acquire(layout.lock())) {
             Session session = new Session();
             ACTIVE_SESSION.set(session);
             try { return work.run(session); }
             finally { session.open = false; ACTIVE_SESSION.remove(); }
         }
+        } finally {sessionSerial.unlock();}
     }
     public final class Session implements ContinuityStorePort.Session {
         private final ContinuityStore store = ContinuityWriter.this.store;
