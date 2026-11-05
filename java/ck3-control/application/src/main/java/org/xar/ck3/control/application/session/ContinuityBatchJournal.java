@@ -1525,20 +1525,22 @@ public final class ContinuityBatchJournal implements BatchJournal {
         } catch (RuntimeException rejected) { return Optional.empty(); }
     }
 
-    /** Strict unissued DATA route for one unstarted read-only Sway original. No terminal or submit authority. */
+    /** Isolated DATA for one original Sway stage or exact pending saved scheduler; no terminal/submit authority. */
     public static Optional<ActionReceipt> readOnlyUnstartedSwayRecoveryRoot(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> canonicalActions,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
         if(current==null||owner==null||canonicalActions==null||originals==null
-                ||current.status()!=ContinuityState.Status.REPAIR_REQUIRED
+                ||(current.status()!=ContinuityState.Status.REPAIR_REQUIRED&&current.status()!=ContinuityState.Status.RUNNING)
                 ||!current.machineId().equals(owner.machineId()))return Optional.empty();
         try {
+            boolean activeBatch=current.status()==ContinuityState.Status.RUNNING;
             var whole=current.toJson();var boundary=whole.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
             var interruption=whole.path("interruption");var cycle=whole.path(WriterContracts.ORDINARY_CYCLE_FIELD);
-            if(!boundary.isObject()||!JournalKind.BATCH_INTERRUPTED.name().equals(StrictJson.text(boundary.get("boundary")))
+            if(!boundary.isObject()||!(activeBatch?JournalKind.BATCH_STARTED:JournalKind.BATCH_INTERRUPTED).name().equals(StrictJson.text(boundary.get("boundary")))
                     ||!OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
-                    ||!interruption.isObject()||!"java-ordinary-batch-interruption/v2".equals(StrictJson.text(interruption.get("source")))
-                    ||!StrictJson.text(interruption.get("evidence_id")).equals(StrictJson.text(boundary.get("evidence_id")))
+                    ||(!activeBatch&&(!interruption.isObject()||!"java-ordinary-batch-interruption/v2".equals(StrictJson.text(interruption.get("source")))
+                        ||!StrictJson.text(interruption.get("evidence_id")).equals(StrictJson.text(boundary.get("evidence_id")))))
+                    ||(activeBatch&&!StrictJson.text(boundary.get("evidence_id")).equals(StrictJson.text(boundary.get("batch_id"))+":"+JournalKind.BATCH_STARTED.name()))
                     ||!cycle.isObject()||!OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
                     ||cycle.get("head")==null||cycle.get("head").isNull()
                     ||cycle.get("pending_receipt")==null||!cycle.get("pending_receipt").isNull())return Optional.empty();
@@ -1570,9 +1572,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
             if(!body.isObject()||!owner.machineId().equals(StrictJson.text(body.get("machine_id")))
                     ||!owner.sessionId().equals(StrictJson.text(body.get("episode_run_id")))
                     ||!body.path("previous").isArray()||body.path("previous").size()!=0)return Optional.empty();
-            for(String field:java.util.List.of("pending","resolved","scheduler","imported_legacy"))
+            for(String field:java.util.List.of("pending","resolved","imported_legacy"))
                 if(body.get(field)==null||!body.get(field).isNull())return Optional.empty();
-            if(body.get("active_stage")==null)return Optional.empty();
+            if(body.get("scheduler")==null||body.get("active_stage")==null)return Optional.empty();
+            boolean savedScheduler=!body.get("scheduler").isNull();
+            if(activeBatch&&!savedScheduler)return Optional.empty();
+            if(savedScheduler&&body.get("active_stage").isNull())return Optional.empty();
             if(!body.get("active_stage").isNull()) {
                 var stageRef=ExactRef.fromJson(body.get("active_stage"));
                 var stage=org.xar.ck3.control.application.planning.sway.SwaySchedulerReplay.decodeStage(originals.loadMaterial(stageRef).bytes());
@@ -1582,11 +1587,21 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 var priorJson=StrictJson.parse(priorBytes,org.xar.ck3.control.application.planning.sway.SwayFormalCodec.MAX);
                 if(!prior.machineId().equals(owner.machineId())||!prior.episodeRunId().equals(owner.sessionId())
                         ||!priorJson.path("previous").isArray()||priorJson.path("previous").size()!=0)return Optional.empty();
-                for(String field:java.util.List.of("active_stage","pending","resolved","scheduler","imported_legacy"))
-                    if(priorJson.get(field)==null||!priorJson.get(field).isNull())return Optional.empty();
-                var reduced=org.xar.ck3.control.application.planning.sway.SwayFormalState.reduce(prior,
-                        new org.xar.ck3.control.application.planning.sway.SwayFormalState.StageRecorded(stageRef));
-                if(!java.util.Arrays.equals(org.xar.ck3.control.application.planning.sway.SwayFormalCodec.encode(reduced),bodyBytes))return Optional.empty();
+                if(savedScheduler) {
+                    if(!prior.originalMigrationInput().equals(ExactRef.fromJson(body.get("original_migration_input"))))return Optional.empty();
+                    var schedule=body.get("scheduler");
+                    if(!schedule.isObject()||StrictJson.integer(schedule.get("actor_character_id"),1,StrictJson.MAX_SAFE_INTEGER)!=command.before().frame().identity().player().longValueExact()
+                            ||StrictJson.integer(schedule.get("last_check_date_raw"),0,StrictJson.MAX_SAFE_INTEGER)!=command.before().frame().identity().dateRaw().longValueExact()
+                            ||!StrictJson.text(schedule.get("last_job_kind")).equals(StrictJson.text(org.xar.ck3.control.planning.opportunity.OpportunityJson.toNode(command.arguments()).get("decision").get("job"))))return Optional.empty();
+                    // DATA only: the actual Domain.savedScheduler proof must locate and replay the real
+                    // canonical SchedulerSaved/Run/Stage; presence is never a no-gameplay or submit permit.
+                } else {
+                    for(String field:java.util.List.of("active_stage","pending","resolved","scheduler","imported_legacy"))
+                        if(priorJson.get(field)==null||!priorJson.get(field).isNull())return Optional.empty();
+                    var reduced=org.xar.ck3.control.application.planning.sway.SwayFormalState.reduce(prior,
+                            new org.xar.ck3.control.application.planning.sway.SwayFormalState.StageRecorded(stageRef));
+                    if(!java.util.Arrays.equals(org.xar.ck3.control.application.planning.sway.SwayFormalCodec.encode(reduced),bodyBytes))return Optional.empty();
+                }
             }
             // Isolated DATA only. Installed Sway source independently proves the real original writerpoint,
             // canonical publication/complete stage/Root read/reducer before any no-gameplay settlement.

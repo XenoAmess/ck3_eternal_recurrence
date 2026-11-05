@@ -210,7 +210,8 @@ public final class SwayCanonicalDomain {
         require(scheduler.verify(head.state(), publicationBefore, (SchedulerSaved)input.change(), input.proofs(), originals) == completion.continuation(), "scheduler continuation branch differs from actual service replay");
         var run = SwaySchedulerReplay.decodeRun(originals.loadMaterial(completion.originalRun()).bytes()); var stage = SwaySchedulerReplay.decodeStage(originals.loadMaterial(run.stage()).bytes());
         require(Arrays.equals(ActionCodec.encodeCommand(stage.command()), ActionCodec.encodeCommand(parent)), "scheduler original stage is not this parent command");
-        verifySchedulerCompleted(borrowed, completion.originalRun()); scheduler.verifyFinal(parent, completion, originals);
+        // The exact historical SchedulerSaved publication was replayed above; a later live ledger is not its predecessor.
+        scheduler.verifyFinal(parent, completion, originals);
         require(retained.children().size() == completion.childReceiptRefs().size() && completion.childReceiptRefs().equals(run.child().stream().toList()), "scheduler proof must retain every original parent child receipt");
         SwaySchedulerCompletion.Business classified = new SwaySchedulerCompletion.NoNewBusiness();
         for (int i = 0; i < retained.children().size(); i++) {

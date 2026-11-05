@@ -32,7 +32,7 @@ import org.xar.ck3.control.vanilla.schemesway.OrdinarySwayService;
 public final class SwayOrdinaryExecutor {
     public record Fresh(PlanningRequest request, NativeEffectEvidence.FrameBasis originalFrame) { public Fresh { Objects.requireNonNull(request); Objects.requireNonNull(originalFrame); } }
     public record FinalRead(NativeEffectEvidence.FrameBasis originalFrame, ExactRef independentRootRead) { public FinalRead { Objects.requireNonNull(originalFrame); Objects.requireNonNull(independentRootRead); } }
-    @FunctionalInterface public interface CurrentPlanning { Fresh current(ActionCommand parent); }
+    @FunctionalInterface public interface CurrentPlanning { Fresh current(ActionCommand parent); default <T> T withCurrent(ActionCommand parent, java.util.function.Function<Fresh,T> work) { return Objects.requireNonNull(work).apply(current(parent)); } default void publishReads(ActionCommand parent) throws IOException { } }
     @FunctionalInterface public interface IndependentFinal { FinalRead current(ActionCommand parent); }
     @FunctionalInterface public interface ActualRestoration { RestoreCheckpointService.RestoreBinding requireCurrent(Instant deadline) throws IOException, InterruptedException; }
     public record Execution(OrdinarySwayService.Execution result, ExactRef originalStage, Optional<ExactRef> originalRun,
@@ -92,6 +92,7 @@ public final class SwayOrdinaryExecutor {
             require(current.before().equals(parent.before()), "optional stage frame changed before execution");
             var rootResult = rootRead(session,current);
             if (!(rootResult instanceof PlanningReadResult.Known<OpportunityJson.Obj> known)) throw new Unavailable("current original campaign-root read unavailable");
+            fresh.publishReads(parent);
             var loaded = domain.load(session); ExactRef rootRef = originals.readReferenceOf(known.receipt());
             Optional<RestoreCheckpointService.RestoreBinding> restored = Optional.empty(); Optional<String> restoreFailure = Optional.empty();
             boolean historical = loaded.ledger().resolved().isEmpty() && loaded.ledger().imported().stream().anyMatch(value -> value.pending().isPresent() || value.resolved().isPresent());
@@ -105,11 +106,11 @@ public final class SwayOrdinaryExecutor {
             }
             ExactRef stage = originals.preserveMaterial(new RawJson(SwaySchedulerReplay.encodeStage(new SwaySchedulerReplay.Stage(parent, loaded.original().reference().payload(), rootRef))));
             domain.commit(session, new StageRecorded(stage), new SwayTransitionCodec.Proofs(List.of(rootRef), Optional.empty(), Optional.empty(), List.of(stage)));
-            Port port = new Port(parent, custody, session, originals, stage, restored, restoreFailure);
+            Port port = new Port(parent, custody, session, originals, stage, current, restored, restoreFailure);
             var executed = new OrdinarySwayService().execute(OrdinarySwayPolicy.restoreStaged(parent), port);
             Optional<SwaySchedulerCompletion> completion = Optional.empty();
             if (port.publication.isPresent() && port.run.isPresent()) {
-                if (port.finalSource.isEmpty()) port.captureFinal(fresh(parent));
+                if (port.finalSource.isEmpty()) withFresh(parent, source -> { port.captureFinal(source); return null; });
                 var business = business(session, originals, port.childRefs);
                 var proof = new SwaySchedulerCompletion(parent.actionId(), ActionCodec.bodySha256(parent), port.run.orElseThrow(), port.publication.orElseThrow(), port.finalSource.orElseThrow().originalFrame(), port.finalReads, port.childRefs, port.selected, port.fullPlan, SwaySchedulerReplay.continuation(executed), business);
                 domain.verifySchedulerCompleted(session, parent, retained(session, parent, originals), proof); completion = Optional.of(proof);
@@ -120,20 +121,21 @@ public final class SwayOrdinaryExecutor {
     private final class Port implements ExecutionPort {
         private final ActionCommand parent; private final CompositeActionPort.Children custody; private final ContinuityStorePort.Session session;
         private final ActionPorts.OutcomeArchive originals; private final ExactRef stage;
+        private final PlanningRequest stagedRequest;
         private final List<ExactRef> resultReads = new ArrayList<>(), childRefs = new ArrayList<>();
         private CheckResult result; private Optional<ExactRef> run = Optional.empty(); private Optional<ExactRef> startChild = Optional.empty();
         private Optional<SwayCanonicalDomain.PublicationWitness> publication = Optional.empty();
         private Optional<Fresh> finalSource = Optional.empty(); private final List<ExactRef> finalReads = new ArrayList<>();
         private Optional<ActionCommand> selected = Optional.empty(); private Optional<SwaySchedulerCompletion.FullPlanOriginals> fullPlan = Optional.empty();
         private final Optional<RestoreCheckpointService.RestoreBinding> restored; private final Optional<String> restoreFailure;
-        private Port(ActionCommand parent, CompositeActionPort.Children custody, ContinuityStorePort.Session session, ActionPorts.OutcomeArchive originals, ExactRef stage, Optional<RestoreCheckpointService.RestoreBinding> restored, Optional<String> restoreFailure) { this.parent = parent; this.custody = custody; this.session = session; this.originals = originals; this.stage = stage; this.restored = restored; this.restoreFailure = restoreFailure; }
+        private Port(ActionCommand parent, CompositeActionPort.Children custody, ContinuityStorePort.Session session, ActionPorts.OutcomeArchive originals, ExactRef stage, PlanningRequest stagedRequest, Optional<RestoreCheckpointService.RestoreBinding> restored, Optional<String> restoreFailure) { this.parent = parent; this.custody = custody; this.session = session; this.originals = originals; this.stage = stage; this.stagedRequest = Objects.requireNonNull(stagedRequest); require(stagedRequest.before().equals(parent.before()) && stagedRequest.source().equals(parent.source()) && stagedRequest.sessionId().equals(parent.sessionId()), "staged READ origin differs from actual original parent"); this.restored = restored; this.restoreFailure = restoreFailure; }
         @Override public Optional<Inputs> loadInputs() {
             try { return Optional.of(SwaySessionInputs.project(domain.load(session).ledger(), parent.before())); }
             catch (IOException failure) { throw unavailable(failure); }
         }
         @Override public FormalResult queryAndConsume(OrdinarySwaySchedule.Frame expected, long target) {
             try {
-                var request = current(parent); requireFrame(expected, request); Ledger ledger = domain.load(session).ledger();
+                var request = stagedRequest; requireFrame(expected, request); Ledger ledger = domain.load(session).ledger();
                 var known = target(request, target); SwayNativeWire.TargetRead read = known.value();
                 if (ledger.pending().isPresent()) {
                     require(ledger.pending().orElseThrow().original().target() == target, "retained pending belongs to another selected target");
@@ -141,6 +143,7 @@ public final class SwayOrdinaryExecutor {
                     if (!ledger.pending().orElseThrow().original().binding().before().game().equals(read.binding().before().game())) {
                         var actual = restored.orElseThrow(() -> new Unavailable(restoreFailure.orElse("actual cross-Game pending restore source unavailable"))); SwayRestorationProof.requireBinding(actual, session.head().state(), read, originals); restoreSources = List.of(SwayRestorationProof.material(session.head().state()));
                     }
+                    fresh.publishReads(parent);
                     ledger = domain.commit(session, new Recovered(read), new SwayTransitionCodec.Proofs(List.of(originals.readReferenceOf(known.receipt())), Optional.empty(), Optional.empty(), restoreSources));
                     return formal(FormalStatus.APPLIED, true, ledger.resolved().map(value -> value.identity().actionId()), Optional.empty(), SwayNativeWire.json(SwayFormalCodec.originalResolved(ledger.resolved().orElseThrow())));
                 }
@@ -157,6 +160,7 @@ public final class SwayOrdinaryExecutor {
                 String actionId = custody.nextActionId(operation); SwayNativeWire.action(actionId, false);
                 ObjectNode arguments = StrictJson.object(); arguments.put("schema", SwayNativeBindings.START_ARGUMENTS); arguments.put("target_character_id", target); arguments.set("original_target_read", originals.readReferenceOf(known.receipt()).toJson());
                 var command = new ActionCommand(actionId, request.before(), request.source(), request.sessionId(), operation, arguments(arguments), expected(request, actionId, target), parent.claims(), parent.deadline());
+                fresh.publishReads(parent);
                 ActionReceipt child = custody.submit(command); ExactRef childRef = originals.receiptReferenceOf(child); childRefs.add(childRef); startChild = Optional.of(childRef);
                 ledger = domain.load(session).ledger();
                 if (NativeRecordedEvidenceVerifier.settlement(child.state()) instanceof ActionState.Applied && ledger.resolved().filter(value -> value.identity().actionId().equals(actionId)).isPresent())
@@ -167,7 +171,7 @@ public final class SwayOrdinaryExecutor {
         }
         @Override public LifecycleResult observeLifecycle(OrdinarySwaySchedule.Frame expected) {
             try {
-                PlanningRequest request = current(parent); requireFrame(expected, request); Ledger ledger = domain.load(session).ledger();
+                PlanningRequest request = stagedRequest; requireFrame(expected, request); Ledger ledger = domain.load(session).ledger();
                 if (ledger.resolved().isEmpty()) {
                     var historical = ledger.imported().flatMap(SwayLegacyImport.Imported::resolved).orElseThrow(() -> new Unavailable("historical lifecycle identity unavailable"));
                     ledger = attach(target(request, historical.identity().targetCharacterId()));
@@ -191,9 +195,11 @@ public final class SwayOrdinaryExecutor {
                 if (!episode.lifecycle().origin().game().equals(request.before().game())) {
                     var actual = restored.orElseThrow(() -> new Unavailable(restoreFailure.orElse("actual cross-Game lifecycle restore source unavailable")));
                     SwayRestorationProof.requireBinding(actual, session.head().state(), request.before(), request.sessionId(), originals); ExactRef material = SwayRestorationProof.material(session.head().state());
+                    fresh.publishReads(parent);
                     var ledger = domain.commit(session, new ScopeRebound(request.before(), material), new SwayTransitionCodec.Proofs(List.of(refs.getFirst()), Optional.empty(), Optional.empty(), List.of(material))); episode = ledger.resolved().orElseThrow();
                 }
                 SwayLifecycle.State observed = SwayLifecycle.observe(episode.lifecycle(), SwayFormalCodec.m6Episode(episode), new M6TerminalSourceComposition.Inputs(Optional.ofNullable(planes.get(SwayObservationReads.Kind.COMPLETION)), Optional.ofNullable(planes.get(SwayObservationReads.Kind.EXECUTION)), Optional.ofNullable(planes.get(SwayObservationReads.Kind.TERMINATION)), Optional.ofNullable(planes.get(SwayObservationReads.Kind.OPINION))), request.before());
+                fresh.publishReads(parent);
                 var ledger = domain.commit(session, episode.stop().isPresent() ? new StopObserved(observed, request.before()) : new LifecycleObserved(observed), proofs(refs));
                 episode = ledger.resolved().orElseThrow();
             }
@@ -220,11 +226,13 @@ public final class SwayOrdinaryExecutor {
                 if (result == null) result = new LocalResult(LocalStatus.KNOWN_EMPTY_RELATION_FRONTIER, Optional.empty());
                 var original = new SwaySchedulerReplay.Run(stage, result, resultReads, startChild); ExactRef ref = originals.preserveMaterial(new RawJson(SwaySchedulerReplay.encodeRun(original)));
                 List<ExactRef> materials = new ArrayList<>(List.of(stage, ref)); startChild.ifPresent(materials::add);
+                fresh.publishReads(parent);
                 var committed = domain.commitPublication(session, new SchedulerSaved(state, ref), new SwayTransitionCodec.Proofs(resultReads, Optional.empty(), Optional.empty(), materials)); publication = Optional.of(committed.witness()); run = Optional.of(ref); return Optional.empty();
             } catch (IOException failure) { return Optional.of("actual canonical Sway scheduler not committed: " + failure.getMessage()); }
         }
         @Override public OrdinaryContinuation executeFreshOrdinary() {
-            Fresh source = fresh(parent); captureFinal(source); PlanningRequest request = source.request(); PlanningResult planned = Objects.requireNonNull(planner.get()).planAfterOptional(request, PlanningStage.ORDINARY_SWAY);
+            return withFresh(parent, source -> {
+            captureFinal(source); PlanningRequest request = source.request(); PlanningResult planned = Objects.requireNonNull(planner.get()).planAfterOptional(request, PlanningStage.ORDINARY_SWAY);
             fullPlan = Optional.of(new SwaySchedulerCompletion.FullPlanOriginals(originals.preserveMaterial(new RawJson(PlanningWire.encodeRequest(request))), originals.preserveMaterial(new RawJson(PlanningWire.encodeResult(planned)))));
             ObjectNode following = StrictJson.object(); following.put("planning_result", planned.getClass().getSimpleName()); ObjectNode outcome = StrictJson.object();
             if (planned instanceof PlanningResult.ActionSelected selection) {
@@ -234,10 +242,11 @@ public final class SwayOrdinaryExecutor {
                 outcome.put("status", "existing_action_requires_root_reconciliation");
             } else outcome.put("status", "no_action_selected");
             return new OrdinaryContinuation(SwayNativeWire.json(outcome), SwayNativeWire.json(following));
+            });
         }
         private void captureFinal(Fresh source) {
             var value = rootRead(session,source.request());
-            if (!(value instanceof PlanningReadResult.Known<OpportunityJson.Obj> known)) throw new Unavailable("independent final root read unavailable; scheduler state remains committed without synthetic parent completion");
+            if (!(value instanceof PlanningReadResult.Known<OpportunityJson.Obj> known)) { String reason=((PlanningReadResult.Unavailable<?>)value).reason(); throw new Unavailable("independent final root read unavailable; scheduler state remains committed without synthetic parent completion; reason="+reason.substring(0,Math.min(reason.length(),1024))); }
             finalSource = Optional.of(source); finalReads.clear(); finalReads.add(originals.readReferenceOf(known.receipt()));
         }
         private PlanningReadResult.Known<SwayNativeWire.TargetRead> target(PlanningRequest request, long target) {
@@ -247,6 +256,7 @@ public final class SwayOrdinaryExecutor {
         private Ledger attach(PlanningReadResult.Known<SwayNativeWire.TargetRead> known) throws IOException {
             RestoreCheckpointService.RestoreBinding actual = restored.orElseThrow(() -> new Unavailable(restoreFailure.orElse("actual source-bound restoration was not issued before this stage")));
             SwayRestorationProof.requireBinding(actual, session.head().state(), known.value(), originals); ExactRef material = SwayRestorationProof.material(session.head().state());
+            fresh.publishReads(parent);
             return domain.commit(session, new HistoricalAttached(known.value(), material), new SwayTransitionCodec.Proofs(List.of(originals.readReferenceOf(known.receipt())), Optional.empty(), Optional.empty(), List.of(material)));
         }
         private FormalResult formal(FormalStatus status, boolean verified, Optional<String> action, Optional<Followup> followup, ProjectionJson evidence) { result = new FormalResult(status, verified, action, followup, evidence); return (FormalResult)result; }
@@ -254,6 +264,17 @@ public final class SwayOrdinaryExecutor {
     }
     private ContinuityStorePort.Session session() { return Objects.requireNonNull(sessions.get(), "actual original Sway writer scope required"); }
     private Fresh fresh(ActionCommand parent) { Fresh value = Objects.requireNonNull(fresh.current(parent)); PlanningRequest request = value.request(); require(request.before().machineId().equals(parent.before().machineId()) && request.before().game().equals(parent.before().game()) && request.before().frame().episodeRunId().equals(parent.before().frame().episodeRunId()) && request.source().equals(parent.source()) && request.sessionId().equals(parent.sessionId()), "fresh ordinary source crossed original parent scope"); return value; }
+    private <T> T withFresh(ActionCommand parent,java.util.function.Function<Fresh,T> work) {
+        Objects.requireNonNull(work);
+        return fresh.withCurrent(parent, value -> {
+            PlanningRequest request=Objects.requireNonNull(value).request();
+            require(request.before().machineId().equals(parent.before().machineId())&&request.before().game().equals(parent.before().game())
+                    &&request.before().frame().episodeRunId().equals(parent.before().frame().episodeRunId())
+                    &&request.source().equals(parent.source())&&request.sessionId().equals(parent.sessionId()),
+                    "scoped fresh ordinary source crossed original parent scope");
+            return work.apply(value);
+        });
+    }
     private PlanningRequest current(ActionCommand parent) { var value = Objects.requireNonNull(currentPlanning.current(parent)); var request = value.request(); require(request.before().equals(parent.before()) && request.source().equals(parent.source()) && request.sessionId().equals(parent.sessionId()), "current ordinary planning differs from the exact original parent"); return request; }
     private static CompositeExecution retained(ContinuityStorePort.Session session, ActionCommand parent, ActionPorts.OutcomeArchive originals) throws IOException {
         var receipt = ContinuityActionJournal.lookup(session.head().state(), parent.actionId(), originals).orElseThrow(() -> new IOException("actual Sway parent custody unavailable"));

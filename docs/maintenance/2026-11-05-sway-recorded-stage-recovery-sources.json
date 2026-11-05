@@ -109,5 +109,15 @@
     "path": "D:\\ck3-state\\resume91-root\\sway-recorded-stage-data-independent-test01\\INDEPENDENT-RESULT01.json",
     "bytes": 13922,
     "sha256": "5bdf01352ee50a090b7925f972049de5c851e590f8ac814d1459dab302f26ca3"
+  },
+  "actual46_after_source_cut": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\ACTUAL554-TERMINAL556-REVIEW01.json",
+    "bytes": 2753,
+    "sha256": "8503021f9e824b6da6dffe11d60326898565be759649934999d2f2a33bd29085"
+  },
+  "next47_failure": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-final-root-failure47\\FAILURE47.json",
+    "bytes": 25791,
+    "sha256": "df54b545e9111ba84a2a8c219d54715b3aa74f278b443b55751fc635073350a7"
   }
 }

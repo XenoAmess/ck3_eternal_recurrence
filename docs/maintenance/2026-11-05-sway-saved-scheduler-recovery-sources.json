@@ -1,0 +1,180 @@
+{
+  "schema": "xar.java-owner.sway-saved-scheduler-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\SOURCE-READY-OWNER01.json",
+    "bytes": 7916,
+    "sha256": "7102f8e935aa197b40ad743d1da5efd751cc57c654f5be063008328bdcd76e15"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\OWNER-SPANS-COHERENT01.json",
+    "bytes": 25994,
+    "sha256": "6c69e97889055abfcc73471da31dfeb20c6cb5be920beedeb4058e0a2f84f2bf"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 25838,
+    "sha256": "ad3aa5117bd66fabef37609f69b7db56b06b27aed58d2a0e88e97841e477cc9f"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayOrdinaryExecutor.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryExecutor.java",
+        "bytes": 32917,
+        "sha256": "6f120b3610e84404282b827c79bd699863b56c5c1e8275462f2558f854c62fbf"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryExecutor.java",
+        "bytes": 34789,
+        "sha256": "f78209ac3d3ac979b6e719642d2757ec0c94d8b549fcf469cc9ff433bd78e211"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\coherent01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayOrdinaryExecutor.java",
+        "bytes": 34789,
+        "sha256": "f78209ac3d3ac979b6e719642d2757ec0c94d8b549fcf469cc9ff433bd78e211"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/sway/SwayRuntimeInstaller.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\formal-before01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 45383,
+        "sha256": "d059896b7cd347014a95e3c3218bb3f61af00011f97bd798d4d822b1a76e2da8"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 47557,
+        "sha256": "79d4333915bdde4c7a04bfe72fb2804a957355f4f4ff6b5575e8b21bc610f298"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\coherent01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\sway\\SwayRuntimeInstaller.java",
+        "bytes": 47364,
+        "sha256": "ffed74db3ef089f02dd59fd1bd418484c75a3cc37c3e2072111186f5ac251491"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/session/ContinuityBatchJournal.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 364934,
+        "sha256": "cbd17c5c2d10de7696019e74b876126d4aacc8fcfbea9559ac13e83562aeb407"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 366674,
+        "sha256": "12dc60d5671cd285daf968444dbac9a90b05741fe480fb9542e1605ff28c0de0"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\coherent01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+        "bytes": 365561,
+        "sha256": "9b5e0e08f8f955b800c9b2d497281ee87147c44c9a57ccb86ac4105b2f18cdf0"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayCanonicalDomain.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 65419,
+        "sha256": "bf87022517346a13c46ab54d2d8d3aa5ae01db55aa6528d3ea4945ea68d9ae26"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\formal-candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 65480,
+        "sha256": "85e920cef61327e0a427762e9420a7ecdcdc1b1829ea4ff7749b6694f6d4fe2c"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\coherent01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\sway\\SwayCanonicalDomain.java",
+        "bytes": 65031,
+        "sha256": "cd69796f0225278a0e626e9644170712dd920811b8193f1055f34d053b955f49"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "production_cohort": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\QUALIFIED-PRODUCTION01.json",
+    "bytes": 37421,
+    "sha256": "29414030d4a5c75599ac5ac9af02ab04a9287365b2e21c9c65b34af1fb4913a0"
+  },
+  "test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-saved-scheduler-data-independent-test01\\SOURCE-READY-TEST01.json",
+    "bytes": 3616,
+    "sha256": "0d9fd65e805c1a09cab3f2f0ca224efae1017474571adc2b5a220ad9e9b05272"
+  },
+  "test_cohort": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-saved-scheduler-data-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 11979,
+    "sha256": "acfd7a6058ae006de4b0df058134f03c06624d2df31d8e66539e4acbcdb7559e"
+  },
+  "fixture": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\settled-event38-data-originals\\SWAY563-SAVED-CODEC-MANIFEST47.json",
+    "bytes": 1008039,
+    "sha256": "53af9b0e104ab700acf671a98f2d34d9156025a59c103f3257fb53828ec10a8e"
+  },
+  "actual_failure47": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-final-root-failure47\\FAILURE47.json",
+    "bytes": 25791,
+    "sha256": "df54b545e9111ba84a2a8c219d54715b3aa74f278b443b55751fc635073350a7"
+  },
+  "actual_full_batch_WRITER_UNKNOWN": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-recorded-stage-recovery46\\NORMAL14-FAILED-PROGRESS.json",
+    "bytes": 43983,
+    "sha256": "8d4577966a14506814a9625c033383ffc313c869614108daeb16e2576e043e86"
+  },
+  "actual_previous554_terminal556": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-recorded-stage-no-gameplay01\\ACTUAL554-TERMINAL556-REVIEW01.json",
+    "bytes": 2753,
+    "sha256": "8503021f9e824b6da6dffe11d60326898565be759649934999d2f2a33bd29085"
+  },
+  "source_parts_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-final-root-independent-review47\\PARTS-REVIEW02.json",
+    "bytes": 10914,
+    "sha256": "f7b8a4bee588cd14c052991b09a107aa05b9159ee33dfa9b8a163e99a35ed9a9"
+  },
+  "source_final_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-final-root-independent-review47\\SOURCE-REVIEW03.json",
+    "bytes": 11210,
+    "sha256": "33c751ff902273cfb7e7c0b77520a081f22cfa275f9aafcb5b19ff8d4191336d"
+  },
+  "test_final_review": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-saved-scheduler-data-independent-test01\\INDEPENDENT-RESULT01.json",
+    "bytes": 12838,
+    "sha256": "127390a2ce2edc91044021894e02dd599812476b29c45144a6b85350d41e1b46"
+  },
+  "model_reviews": [
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-final-root-read01\\MODEL-REVIEW01.json",
+      "bytes": 1774,
+      "sha256": "8ae7d6e1f6d42142cfeca21e4f702ec9eee935cf9e70fb5fdb26e4ac2355f230"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-qualified-final-planning01\\MODEL-REVIEW01.json",
+      "bytes": 2047,
+      "sha256": "7b093418613157b908a4ccdfdd709cfdda1564da6e3a5597bc10088ad4939984"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-saved-scheduler-recovery01\\MODEL-REVIEW77-02.json",
+      "bytes": 2723,
+      "sha256": "b9e22f367e3c5f23e5d7329ebd2b23c8e05408f99f59d151bf7e8ceae9518794"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-read-publication-boundaries01\\MODEL-REVIEW01.json",
+      "bytes": 2323,
+      "sha256": "c3f111db90e885cb227b7adf0565dee3e34967662c2e6af9f08e99a1756b683d"
+    },
+    {
+      "path": "D:\\ck3-state\\resume91-root\\sway-saved-scheduler-data-independent-test01\\MODEL-AND-OWNER-REVIEW01.json",
+      "bytes": 2446,
+      "sha256": "4960ecc91c771c438a4b6e21b4c8b02ced3ffed2db810e17daf1487a99798741"
+    }
+  ],
+  "whole_formal_software_cohort": false,
+  "runtime47": "Actual Runtime canonical observation/terminal/fullbootstrap/read-history and warm continuation are separate acceptance. Software qualification authorizes no original564 replay or command refresh.",
+  "new_confirmed_saved_days": 0
+}

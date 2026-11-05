@@ -25,7 +25,7 @@ import org.xar.ck3.control.vanilla.schemesway.OrdinarySwayService;
 import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
 
 /** Concrete per-Game Sway products. Prepared retains only the one Core, never a Game or borrowed Session. */
-public final class SwayRuntimeInstaller {
+public final class SwayRuntimeInstaller implements SwayOrdinaryExecutor.CurrentPlanning {
     public record SharedRootSelection(String contractId,org.xar.ck3.control.application.planning.finance.FinanceReadContracts.Registration registration) {
         public SharedRootSelection {StrictJson.require(org.xar.ck3.control.application.planning.finance.FinanceReadContracts.ROOT_CONTRACT_ID.equals(contractId),"exact Finance ROOT contract ID required");Objects.requireNonNull(registration);}
         public SwaySharedRoot resolve(org.xar.ck3.control.application.planning.finance.FinanceRuntimeServices actual) {
@@ -162,7 +162,7 @@ public final class SwayRuntimeInstaller {
         selectedObservation=new SwaySelectedObservation(domain,context.archive(),context.reads(),nativeReads);
         SwaySessionInputs inputs = new SwaySessionInputs(domain, this::session);
         executor = new SwayOrdinaryExecutor(domain, context.archive(), context.reads(), sharedRoot, registered, nativeActions,
-                context::bindings, this::session, this::captureCurrent, this::captureFresh, this::independentFinal, context::requireRestoration, planner);
+                context::bindings, this::session, this::captureCurrent, this, this::independentFinal, context::requireRestoration, planner);
         var composite = new SwayOrdinaryComposite(executor, domain, this::session);
         var parent = new RootExecutableBindings.CompositeBinding(composite, ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP, Optional.empty(), prepared.sources.composite(), prepared.sources.composite());
         OrdinarySwayPolicy policy = OrdinarySwayPolicyFactory.create(prepared.sources.policy(), context.reads(), sharedRoot, inputs,
@@ -374,12 +374,14 @@ public final class SwayRuntimeInstaller {
         try {
             context.requireCurrent(context.clock().instant().plusSeconds(30)); var session = context.borrowedSession();
             var physical = new SessionPorts.SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId()); var deadline = context.clock().instant().plusSeconds(30);
-            return context.collector().currentOwned(session, physical, deadline, lease -> {
+            var result = context.collector().currentOwned(session, physical, deadline, lease -> {
                 var frame = lease.frame(); var root = Objects.requireNonNull(sharedRoot);var arguments=root.arguments();
                 var observed = root.read(context.reads(),session,new PlanningReadRequest(frame.identity(), frame.source(), frame.sessionId(), root.operation(), arguments, deadline));
-                if (!(observed instanceof PlanningReadResult.Known<OpportunityJson.Obj> known)) throw new IOException("actual independently guarded final root read unavailable");
+                if (!(observed instanceof PlanningReadResult.Known<OpportunityJson.Obj> known)) { String reason=((PlanningReadResult.Unavailable<?>)observed).reason(); throw new IOException("actual independently guarded final root read unavailable; reason="+reason.substring(0,Math.min(reason.length(),1024))); }
                 return new SwayOrdinaryExecutor.FinalRead(NativeEffectEvidence.basis(frame), context.archive().withSession(session).readReferenceOf(known.receipt()));
             });
+            context.readHistoryPublisher().flushActualReads(session);
+            return result;
         } catch (IOException failure) { throw new OrdinarySwayService.Unavailable(failure.getMessage()); }
     }
     /** Shared ordinary completion invokes this for every genuinely confirmed gameplay result, including Root's continuation. */
@@ -418,9 +420,33 @@ public final class SwayRuntimeInstaller {
             });
         } catch (IOException failure) { throw new OrdinarySwayService.Unavailable(failure.getMessage()); }
     }
+    /** Actual production adapter; the functional legacy default never grants this issuer's authority. */
+    @Override public SwayOrdinaryExecutor.Fresh current(ActionCommand parent) { return captureFresh(parent); }
+    @Override public <T> T withCurrent(ActionCommand parent,java.util.function.Function<SwayOrdinaryExecutor.Fresh,T> work) {
+        Objects.requireNonNull(work);var original=captureFresh(parent);
+        try {
+            context.requireCurrent(parent.deadline());var same=context.borrowedSession();
+            T result=context.collector().currentPlanning(same,original.request(),parent.deadline(),(request,lease)->{
+                var frame=lease.frame();var basis=NativeEffectEvidence.basis(frame);
+                var rebuilt=context.frameLoader().load(basis,context.archive().withSession(same));
+                StrictJson.require(rebuilt.identity().equals(request.before())&&rebuilt.identity().equals(frame.identity())
+                        &&rebuilt.source().equals(request.source())&&rebuilt.source().equals(frame.source())
+                        &&rebuilt.sessionId().equals(request.sessionId())&&rebuilt.sessionId().equals(frame.sessionId())
+                        &&rebuilt.observedAt().equals(frame.observedAt()),"scoped final planning basis differs from actual held source");
+                return work.apply(new SwayOrdinaryExecutor.Fresh(request,basis));
+            });
+            publishReads(parent);
+            return result;
+        } catch(IOException failure) {throw new OrdinarySwayService.Unavailable("actual scoped fresh planning unavailable: "+failure.getMessage());}
+    }
+    @Override public void publishReads(ActionCommand parent) throws IOException {
+        context.requireCurrent(parent.deadline());
+        context.readHistoryPublisher().flushActualReads(context.borrowedSession());
+    }
     private SwayOrdinaryExecutor.Fresh captureFresh(ActionCommand parent) {
         try {
             context.requireCurrent(parent.deadline()); var expected = new SessionPorts.SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId());
+            publishReads(parent);
             SessionPorts.Observation observed = context.collector().observe(context.borrowedSession(), expected, parent.deadline());
             if (!(observed instanceof SessionPorts.Ready ready)) throw new OrdinarySwayService.Unavailable("actual fresh ordinary readiness unavailable: " + observed.getClass().getSimpleName());
             PlanningRequest request = ready.request(); StrictJson.require(request.before().game().equals(context.game().generation()) && request.sessionId().equals(context.game().sessionId()) && request.source().equals(context.source()), "fresh ordinary request crossed current managed Game");
