@@ -1,0 +1,313 @@
+{
+  "schema": "xar.java-owner.event-reconciled-read-source-index/v1",
+  "at_utc": "2026-11-05T05:08:56.985260+00:00",
+  "navigation_only": true,
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\SOURCE-READY-OWNER03.json",
+    "bytes": 8699,
+    "sha256": "62eafa87684ae675cb57ff0e75ae08a8bcddea1a0c3125dffd178c6d4468090b"
+  },
+  "formal_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\FORMAL-SOURCE-READY03.json",
+    "bytes": 39871,
+    "sha256": "eff7ebc10190718483460fca47522d1e0ba3c445ed32da2534070ed4fa70f236"
+  },
+  "production_qualified": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\QUALIFIED-FINAL56-03.json",
+    "bytes": 45623,
+    "sha256": "dda9a91b3a638a0fa4f13f70362600c6116ff8413e0e0f18c502dbe7cbefb33a"
+  },
+  "source_review02_cut": {
+    "path": "D:\\ck3-state\\resume91-root\\event-postcondition-reconciliation-independent-review34\\SOURCE-REVIEW04.json",
+    "bytes": 12412,
+    "sha256": "2adb6194d0cf0ef64a020de2f5f5728631520960c8ac1a9c9d8723f529e28cc1"
+  },
+  "source_review_final03": {
+    "path": "D:\\ck3-state\\resume91-root\\event-postcondition-reconciliation-independent-review34\\SOURCE-REVIEW05-FINAL03.json",
+    "bytes": 3574,
+    "sha256": "b35065dab01ba9c8afb4f9585cfa86973bdc5fb58d386bb3b4477e52c1972907"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\MODEL-REVIEW01.json",
+    "bytes": 1080,
+    "sha256": "25d646775aa2888ed8aa0864b29efc7cf83531b565c7b75b00bf7bbdaff411de"
+  },
+  "test_model_owner_review": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciled-event-read-data-independent-test01\\MODEL-AND-OWNER-REVIEW01.json",
+    "bytes": 2493,
+    "sha256": "0fce2509836b579b0956b72dde51c85b1c3e14e0898e3a934ab45ca676bdb476"
+  },
+  "test_final_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciled-event-read-data-independent-test01\\TEST-SOURCE-READY02.json",
+    "bytes": 6983,
+    "sha256": "fb96454fe2b4150b58f2e53b6b838bcb919eec60ef21102f2dca4b6e6cb04663"
+  },
+  "new_DATA_qualified": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciled-event-read-data-independent-test01\\QUALIFIED-COHORT02.json",
+    "bytes": 12007,
+    "sha256": "7e02817d4f927b4df06c8143fdb4d61a0581398311f6b4430cca7ec1429a7d4d"
+  },
+  "new_DATA_XML": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciled-event-read-data-independent-test01\\native-first02\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 42947,
+    "sha256": "613d659d50719d42b8a2001117b5bfbdcec173f5f5b4d25255219623f3120ec7"
+  },
+  "new_DATA_methods": [
+    "actualReconciledDataKeepsOriginalAndCurrentConnectionRoles",
+    "reconciledDataRejectsMismatchedPendingSourceAndTypedFields",
+    "versionedColdDataRejectsFalseReadAuthority"
+  ],
+  "causal_v3_affected": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\QUALIFIED-V3-AFFECTED1-03.json",
+    "bytes": 6089,
+    "sha256": "b8d9e5610c0705c24cdafb6422d8f595e571acf55d8b9a24803660ce14124a83"
+  },
+  "first_test_setup_red": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciled-event-read-data-independent-test01\\FIRST-SETUP-RED01.json",
+    "bytes": 6885,
+    "sha256": "f8464dce2d336a0a8b83f64b6df387dc4681aa229f62a448204b4fbe2389fe9c"
+  },
+  "test_narrow_revision": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciled-event-read-data-independent-test01\\NARROW-SOURCE-REVISION02.json",
+    "bytes": 1866,
+    "sha256": "ddbfb8003aff44435927a8658f0bafb552c6e31c7316689c346ea8a703b7e0a5"
+  },
+  "actual_unsettled_boundary": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\ACTUAL-UNSETTLED525-BOUNDARY01.json",
+    "bytes": 1986,
+    "sha256": "98c7c21e74fa26e935a02e52198ee973012381ddda1c6f47303649b37dc4c406"
+  },
+  "formal_source_whole_equal_count": 4,
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/effects/NativeEffectEvidence.java",
+      "formal_before": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEffectEvidence.java",
+        "bytes": 19869,
+        "sha256": "3fbc1b27497c0ed4d5e4e39354a5293740dd46bf862bd3128ef2793ca8b5d66e"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\formal-candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEffectEvidence.java",
+        "bytes": 25152,
+        "sha256": "fbdc19c9d5b34a1f990d2a75cefbf0570cbf4490a67356b7b284917a98a37a15"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEffectEvidence.java",
+        "bytes": 25152,
+        "sha256": "fbdc19c9d5b34a1f990d2a75cefbf0570cbf4490a67356b7b284917a98a37a15"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/effects/NativeEventEffects.java",
+      "formal_before": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEventEffects.java",
+        "bytes": 22979,
+        "sha256": "510dd40ee0b08d0f6b00e2ab47c80a07309b4b4f55e2f6a18b45dad9d1ec7c04"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\formal-candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEventEffects.java",
+        "bytes": 24060,
+        "sha256": "948b695459877f548dcdcf9ba479c8f8d62d1c043623d049a1b8249fbfb8afca"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\effects\\NativeEventEffects.java",
+        "bytes": 24060,
+        "sha256": "948b695459877f548dcdcf9ba479c8f8d62d1c043623d049a1b8249fbfb8afca"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory.java",
+      "formal_before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+        "bytes": 63854,
+        "sha256": "c1308a3f020665f95285f3f6f47d2d2f51c38657b195620867bc7167fbf9fe85"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\formal-candidate03\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+        "bytes": 64172,
+        "sha256": "3866d7949b2166f72dbe7a217260e9548a6181f2b1d6048848feb0dc7081776e"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootAdvanceInfrastructureFactory.java",
+        "bytes": 64172,
+        "sha256": "3866d7949b2166f72dbe7a217260e9548a6181f2b1d6048848feb0dc7081776e"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/EventRuntimeInstaller.java",
+      "formal_before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\EventRuntimeInstaller.java",
+        "bytes": 74924,
+        "sha256": "7aad3f60fce3966e352093264210a15767e8c760d9a5726c227a95499e045374"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\formal-candidate03\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\EventRuntimeInstaller.java",
+        "bytes": 75026,
+        "sha256": "500cecae8dcce69d3564b9d1024ccbe764d6535811e63e6a8d0a0371ec647888"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\EventRuntimeInstaller.java",
+        "bytes": 75334,
+        "sha256": "ea82ab7567aaaa5d1bff779cf23f8a3e39c76138f4156f83981d3f8fa24c5e21"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootIncidentRuntime.java",
+      "formal_before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 66247,
+        "sha256": "ea49e9ba42da6abdc87c53a0f5e6697767b0db5cb6964b19a8548672bd60e961"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\formal-candidate03\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 67003,
+        "sha256": "c3d31cf9d76ffae28d2894f03c378cd961be389bd15290b82fd45a2030a61e65"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootIncidentRuntime.java",
+        "bytes": 66421,
+        "sha256": "e73f47eb86050a8b4c8e34d6333ef0e72bc2ccfc3a677dcab69b62aa4484a0ec"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/EpisodeIncidentJournal.java",
+      "formal_before": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 94600,
+        "sha256": "a45bb937ee321c6f2ef887e38bacb973025e9ae7095dd4db7f60e599f54f5b12"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\formal-candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 94912,
+        "sha256": "6857265f89632eb231202315c52b940717a62080712909a8b07d4acb453144c5"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\EpisodeIncidentJournal.java",
+        "bytes": 95662,
+        "sha256": "2c1342f235f675698512722bf33fccae01a03c85e13abc394403d557bb19a49f"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/NativeEventPostconditionPort.java",
+      "formal_before": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\NativeEventPostconditionPort.java",
+        "bytes": 15942,
+        "sha256": "2aaedf2fd5ea5cec558f9c5ee52a3700b50e03d2ac48de3cf754c7c23ddc3585"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\formal-candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\NativeEventPostconditionPort.java",
+        "bytes": 22003,
+        "sha256": "7dfa6d43528e25fa68a3b93d5d4b4fdf6b2257d21687963ac743ed52f8e47582"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\events\\NativeEventPostconditionPort.java",
+        "bytes": 21970,
+        "sha256": "9260e53eeb2468b52bd28289b433c04e25d035cdc1e74762d05b5a63cf7d6b11"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/ActionEffects.java",
+      "formal_before": {
+        "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\action\\ActionEffects.java",
+        "bytes": 43472,
+        "sha256": "3400818a1a9bb424b035ceb6bef188358102168c62b341194f5baa403d67434e"
+      },
+      "formal_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\formal-candidate03\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\action\\ActionEffects.java",
+        "bytes": 43738,
+        "sha256": "03432d732d42971c593fdd267f2c893511b0e675d1c00d09f00740644a57cb00"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-reconciled-read-postcondition01\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\action\\ActionEffects.java",
+        "bytes": 43738,
+        "sha256": "03432d732d42971c593fdd267f2c893511b0e675d1c00d09f00740644a57cb00"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    }
+  ],
+  "original_command_deadline": "2026-11-05T01:55:03.894579600Z unchanged",
+  "old_expected_connection": "19 unchanged",
+  "actual525_connection": "25 unchanged",
+  "actual_private_Root_READ_custody_positive": "NOT_PROVED by this software unit; Runtime-only actual readonly recovery",
+  "new_confirmed_saved_days": 0,
+  "Hosted_sources_and_private_JSON_published": false,
+  "new_Game_GET_controls_Java_owner": 0,
+  "normalLoader_required": true,
+  "independent_DATA_result": {
+    "path": "D:\\ck3-state\\resume91-root\\reconciled-event-read-data-independent-test01\\INDEPENDENT-RESULT02.json",
+    "bytes": 20314,
+    "sha256": "d56e544fbe3e648e10441213f0fdf9562d88c9acb374d9209c2a27e3cdb9a226"
+  },
+  "actual_loader34": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-provenance-recovery34\\ACTUAL-LOADER34.json",
+    "bytes": 21457,
+    "sha256": "7ab8dd1119e85cd3959ab177d6be46293c5313afbc6d7a5f2d51da35e4ac7d44"
+  },
+  "actual_loader34_result": "GET200/6.9018239s, newf0dd START05:07:21.4450643Z, normalrestart12/same97584, initialBOOT/head525; no private effect/settlement credit",
+  "formal_committed_source_blob_representation": [
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/effects/NativeEffectEvidence.java",
+      "bytes": 24902,
+      "sha256": "cfad92ebf0053a777087e669ebb25326120647eea262e94bf78542c33bf57ef3",
+      "Git_LF_normalization_only": true
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/effects/NativeEventEffects.java",
+      "bytes": 24060,
+      "sha256": "948b695459877f548dcdcf9ba479c8f8d62d1c043623d049a1b8249fbfb8afca",
+      "Git_LF_normalization_only": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory.java",
+      "bytes": 64172,
+      "sha256": "3866d7949b2166f72dbe7a217260e9548a6181f2b1d6048848feb0dc7081776e",
+      "Git_LF_normalization_only": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/EventRuntimeInstaller.java",
+      "bytes": 75026,
+      "sha256": "500cecae8dcce69d3564b9d1024ccbe764d6535811e63e6a8d0a0371ec647888",
+      "Git_LF_normalization_only": false
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootIncidentRuntime.java",
+      "bytes": 66253,
+      "sha256": "f663abf33a238f0201cdc6f38a2ba1f08962a731476268ce53aeff0ad0bafad9",
+      "Git_LF_normalization_only": true
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/EpisodeIncidentJournal.java",
+      "bytes": 94725,
+      "sha256": "48b341e4b0863f8eda41aba4e8177e3288df3bb448da899a2948c8996858eb32",
+      "Git_LF_normalization_only": true
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/events/NativeEventPostconditionPort.java",
+      "bytes": 22003,
+      "sha256": "7dfa6d43528e25fa68a3b93d5d4b4fdf6b2257d21687963ac743ed52f8e47582",
+      "Git_LF_normalization_only": false
+    },
+    {
+      "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/ActionEffects.java",
+      "bytes": 43277,
+      "sha256": "ccf83fb349af40bb9c4e1c8213b30fbeecabe07760d8944129b69c0fa6a9ef70",
+      "Git_LF_normalization_only": true
+    }
+  ],
+  "Git_EOL_rule": "index normalizes CRLF to LF; candidate/actual raw-source pins remain separately named. No compiler or behavioral credit is inferred from normalization."
+}

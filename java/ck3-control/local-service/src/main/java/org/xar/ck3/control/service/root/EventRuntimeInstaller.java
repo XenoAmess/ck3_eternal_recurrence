@@ -156,7 +156,7 @@ public final class EventRuntimeInstaller {
                     var binding=new NativeEffectRegistry.Binding(operation,sources.actionPreparation(),EventActionPreparation::prepare,effects);
                     var action=new RootExecutableBindings.ActionBinding(binding,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,
                             Optional.of(EventActionPreparation.EVENT_CAPABILITY),sources.nativeEffectsDecoder());
-                    return new RootExecutableBindings.IssuedAction(action,NativeEventEffects.archivedVerifier(operation,sources.nativeEffects(),context.frameLoader(),material));
+                    return new RootExecutableBindings.IssuedAction(action,NativeEventEffects.archivedVerifier(operation,sources.nativeEffects(),RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()),material));
                 },operation->{
                     try { return Optional.of(EventActionPreparation.option(operation)); }
                     catch (IllegalArgumentException unrelated) { return Optional.empty(); }
@@ -683,7 +683,7 @@ public final class EventRuntimeInstaller {
             StrictJson.require(archive.loadReceipt(reference).equals(original),"public event material must use its actual canonical archived receipt");
             var actualVerifier=context.bindings().actualArchivedVerifier(command.operation()).orElseThrow(()->new IllegalStateException("the exact event action has no installed original-evidence verifier"));
             actualVerifier.verifier().verify(same.head(),original,archive);
-            return Optional.of(EventSelectionPublicResult.encode(original,NativeEffectEvidence.load(original,archive,context.frameLoader())));
+            return Optional.of(EventSelectionPublicResult.encode(original,NativeEffectEvidence.load(original,archive,RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()))));
         });
     }
     private static Claims foregroundClaims(PlanningRequest request) {

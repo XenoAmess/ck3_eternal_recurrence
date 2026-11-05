@@ -15,6 +15,8 @@ import org.xar.ck3.control.contracts.StrictJson;
 public final class NativeEffectEvidence {
     public static final String SCHEMA = "xar.java.native-effect-original-basis/v2";
     public static final String RECONCILIATION_SCHEMA = "xar.java.native-effect-original-basis/v3";
+    public static final String RECONCILED_EVENT_READ_SCHEMA = "xar.java.native-effect-original-basis/v4";
+    public static final String RECONCILED_EVENT_READ_PROFILE = "xar.ck3.reconciled-event-read-postcondition/v1";
     private static final Set<String> V2_FIELDS = Set.of("schema", "command_body_sha256", "request_id", "before", "after", "compatible_material", "independent_reads", "supporting_materials");
     private NativeEffectEvidence() { }
     public record FrameBasis(ExactRef nativeFrame, ExactRef driverFacts) {
@@ -61,8 +63,26 @@ public final class NativeEffectEvidence {
         }
         ExactRef material = archive.preserveMaterial(compatible);
         StrictJson.require(compatible.equals(archive.loadMaterial(material)), "actual compatible result archive changed");
-        ObjectNode row = StrictJson.object(); row.put("schema", reconciliation.isPresent() ? RECONCILIATION_SCHEMA : SCHEMA); row.put("command_body_sha256", ActionCodec.bodySha256(command)); row.put("request_id", attempt.requestId());
+        java.util.Optional<ObservationProvenance.FreshSnapshotQuery> eventRead = java.util.Optional.empty();
+        if (reconciliation.isPresent() && command.operation().value().matches("select-event-option-[1-9][0-9]{0,8}")
+                && command.expected().observerSchema().equals(org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.EVENT_SCHEMA)) {
+            ObservationProvenance actual;
+            try { actual = ActionReconciliationScope.requireProvenance(command, attempt); }
+            catch (java.io.IOException unavailable) { throw new java.io.UncheckedIOException(unavailable); }
+            StrictJson.require(actual instanceof ObservationProvenance.FreshSnapshotQuery
+                    && ((ObservationProvenance.FreshSnapshotQuery)actual).basis() instanceof ObservationProvenance.ColdAfterAcknowledgement,
+                    "reconciled event requires its actual independent cold READ provenance");
+            var query = (ObservationProvenance.FreshSnapshotQuery)actual;
+            var identity = reconciliation.orElseThrow().origin().requireReconciliation();
+            StrictJson.require(((ObservationProvenance.ColdAfterAcknowledgement)query.basis()).originalReceipt().equals(identity.pending().originalReceipt()),
+                    "reconciled event READ changed its exact original pending receipt");
+            query.validate(frames.after().identity(), frames.after().originalEvidence());
+            eventRead = java.util.Optional.of(query);
+        }
+        ObjectNode row = StrictJson.object(); row.put("schema", eventRead.isPresent() ? RECONCILED_EVENT_READ_SCHEMA : reconciliation.isPresent() ? RECONCILIATION_SCHEMA : SCHEMA);
+        row.put("command_body_sha256", ActionCodec.bodySha256(command)); row.put("request_id", attempt.requestId());
         reconciliation.ifPresent(guard -> row.set("reconciliation_guard", CommandOriginCodec.guard(guard)));
+        eventRead.ifPresent(query -> { row.put("semantic_profile", RECONCILED_EVENT_READ_PROFILE); row.set("observation_provenance", ObservationProvenanceCodec.encode(query)); });
         row.set("before", json(before)); row.set("after", json(after)); row.set("compatible_material", material.toJson());
         var array = row.putArray("independent_reads"); var requestIds = new java.util.HashSet<String>();
         for (PlanningReadReceipt read : List.copyOf(reads)) {
@@ -86,7 +106,7 @@ public final class NativeEffectEvidence {
         ExactRef reference = applied.observation().supportingEvidence().getFirst();
         RawJson body = archive.loadMaterial(reference); RootGuardChecks.exact(reference, body.bytes());
         var schema = EffectJson.parse(body).get("schema");
-        if (schema == null || !schema.isTextual() || !(SCHEMA.equals(schema.textValue()) || RECONCILIATION_SCHEMA.equals(schema.textValue()))) return java.util.Optional.empty();
+        if (schema == null || !schema.isTextual() || !(SCHEMA.equals(schema.textValue()) || RECONCILIATION_SCHEMA.equals(schema.textValue()) || RECONCILED_EVENT_READ_SCHEMA.equals(schema.textValue()))) return java.util.Optional.empty();
         return java.util.Optional.of(load(receipt, archive, frames));
     }
     public static Original load(ActionReceipt receipt, ActionPorts.OutcomeArchive archive, FrameLoader frames) {
@@ -101,6 +121,21 @@ public final class NativeEffectEvidence {
         reconciliation.ifPresent(guard -> { requireReconciliation(receipt.command(), settled.attempt(), after, guard);
             guard.origin().requireReconciliation().requireOriginalConnection(settled.attempt().guard()); });
         var pair = new NativeEffectSnapshots.Pair(before, after, reconciliation.map(guard -> guard.origin().requireReconciliation()));
+        var eventRead = reconciliationProvenance(EffectJson.raw(row));
+        if (eventRead.isPresent()) {
+            var query = eventRead.orElseThrow();
+            var identity = reconciliation.orElseThrow(() -> new IllegalArgumentException("reconciled event READ lost its actual Root guard")).origin().requireReconciliation();
+            StrictJson.require(effect.provenance().equals(query)
+                    && ((ObservationProvenance.ColdAfterAcknowledgement)query.basis()).originalReceipt().equals(identity.pending().originalReceipt())
+                    && org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.reconciledFieldsMatch(receipt.command(), settled.attempt(),
+                        effect.after(), effect.source(), effect.observerSchema(), effect.actual(), query),
+                    "reconciled event basis changed its original pending READ or structural connection roles");
+            frames.verifyFreshSnapshotQuery(query, after, archive);
+        } else {
+            StrictJson.require(!(effect.provenance() instanceof ObservationProvenance.FreshSnapshotQuery
+                    && receipt.command().expected().observerSchema().equals(org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.EVENT_SCHEMA)),
+                    "event fresh READ cannot borrow a legacy Push effect basis");
+        }
         return new Original(pair, archived.reads(), archived.compatible(), archived.retained(), reconciliation);
     }
     /** Exact archived DATA only. This retains the same basis, read and material closure checks as load;
@@ -152,7 +187,7 @@ public final class NativeEffectEvidence {
         if (effect.supportingEvidence().isEmpty()) return java.util.Optional.empty();
         ExactRef reference = effect.supportingEvidence().getFirst(); RawJson body = archive.loadMaterial(reference);
         RootGuardChecks.exact(reference, body.bytes()); var value = EffectJson.parse(body); var schema = value.get("schema");
-        if (schema == null || !schema.isTextual() || !RECONCILIATION_SCHEMA.equals(schema.textValue())) return java.util.Optional.empty();
+        if (schema == null || !schema.isTextual() || !(RECONCILIATION_SCHEMA.equals(schema.textValue()) || RECONCILED_EVENT_READ_SCHEMA.equals(schema.textValue()))) return java.util.Optional.empty();
         ObjectNode row = decodeBasis(body); GuardEvidence guard = CommandOriginCodec.guard(row.get("reconciliation_guard"));
         StrictJson.require(guard.origin() instanceof CommandOrigin.Reconciliation && guard.nativeEvidence().equals(effect.originalEvidence())
                 && guard.origin().requireReconciliation().factual().equals(effect.after()) && guard.source().equals(effect.source())
@@ -167,14 +202,34 @@ public final class NativeEffectEvidence {
         var references = new java.util.LinkedHashSet<ExactRef>();
         references.add(original.nativeEvidence()); references.add(original.capabilityEvidence()); references.addAll(original.supportingEvidence());
         references.addAll(identity.evidence().originals()); references.add(identity.pending().originalReceipt()); references.add(identity.pending().originalBeforeDriver());
+        RawJson basis = archive.loadMaterial(effect.supportingEvidence().getFirst());
+        reconciliationProvenance(basis).ifPresent(query -> {
+            references.add(query.readAcknowledgement());
+            references.add(((ObservationProvenance.ColdAfterAcknowledgement)query.basis()).originalReceipt());
+        });
         return List.copyOf(references);
     }
     private static ObjectNode decodeBasis(RawJson body) {
         var value = EffectJson.parse(body); String schema = StrictJson.text(value.get("schema"));
         if (SCHEMA.equals(schema)) return StrictJson.object(value, V2_FIELDS);
-        StrictJson.require(RECONCILIATION_SCHEMA.equals(schema), "unregistered native effect basis schema");
+        StrictJson.require(RECONCILIATION_SCHEMA.equals(schema) || RECONCILED_EVENT_READ_SCHEMA.equals(schema), "unregistered native effect basis schema");
         var fields = new java.util.HashSet<>(V2_FIELDS); fields.add("reconciliation_guard");
-        return StrictJson.object(value, Set.copyOf(fields));
+        if (RECONCILED_EVENT_READ_SCHEMA.equals(schema)) { fields.add("semantic_profile"); fields.add("observation_provenance"); }
+        ObjectNode row = StrictJson.object(value, Set.copyOf(fields));
+        if (RECONCILED_EVENT_READ_SCHEMA.equals(schema)) {
+            StrictJson.require(RECONCILED_EVENT_READ_PROFILE.equals(StrictJson.text(row.get("semantic_profile"))), "unregistered reconciled event semantic profile");
+            var provenance = ObservationProvenanceCodec.decode(row.get("observation_provenance"));
+            StrictJson.require(provenance instanceof ObservationProvenance.FreshSnapshotQuery
+                    && ((ObservationProvenance.FreshSnapshotQuery)provenance).basis() instanceof ObservationProvenance.ColdAfterAcknowledgement,
+                    "reconciled event basis requires its original cold READ provenance");
+        }
+        return row;
+    }
+    /** Exact versioned DATA extraction only. The installed physical verifier must authenticate the READ originals. */
+    public static java.util.Optional<ObservationProvenance.FreshSnapshotQuery> reconciliationProvenance(RawJson basis) {
+        ObjectNode row = decodeBasis(basis);
+        if (!RECONCILED_EVENT_READ_SCHEMA.equals(StrictJson.text(row.get("schema")))) return java.util.Optional.empty();
+        return java.util.Optional.of((ObservationProvenance.FreshSnapshotQuery)ObservationProvenanceCodec.decode(row.get("observation_provenance")));
     }
     private static void requireReconciliation(ActionCommand command, ActionState.Attempt attempt, Complete after, GuardEvidence guard) {
         StrictJson.require(guard.origin() instanceof CommandOrigin.Reconciliation, "actual pending push guard is required");

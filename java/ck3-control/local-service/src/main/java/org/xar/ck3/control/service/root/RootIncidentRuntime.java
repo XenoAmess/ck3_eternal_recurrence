@@ -611,7 +611,8 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         ExactRef reference=ExactRef.fromJson(supports.get(0));RawJson raw=bound.loadMaterial(reference);
         StrictJson.require(raw.bytes().length==reference.bytes()&&DriverJson.sha256(raw.bytes()).equals(reference.sha256()),"legacy effect basis original changed");
         ObjectNode basis=(ObjectNode)StrictJson.parse(raw.bytes(),MAX_BASIS);
-        StrictJson.require(NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(basis.path("schema").asText())
+        StrictJson.require((NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(basis.path("schema").asText())
+                ||NativeEffectEvidence.RECONCILED_EVENT_READ_SCHEMA.equals(basis.path("schema").asText()))
                 &&original.bodySha256().equals(basis.path("command_body_sha256").asText())&&attempt.requestId().equals(basis.path("request_id").asText())
                 &&org.xar.ck3.control.application.action.CommandOriginCodec.guard(basis.get("reconciliation_guard")).equals(guard),"legacy effect basis changed canonical command/request/guard");
         var initial=NativeEffectEvidence.basis(before);var ending=NativeEffectEvidence.basis(after);
@@ -625,12 +626,17 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         StrictJson.require(retained.bytes().length==compatible.bytes()&&DriverJson.sha256(retained.bytes()).equals(compatible.sha256()),"legacy original compatible result changed");
         // Verification-only proposal DATA. It is never appended, published, or treated as a canonical settlement.
         var command=original.command();
-        var provenance=new org.xar.ck3.control.application.action.ObservationProvenance.Push(after.identity().frame().snapshotId(),
-                after.identity().frame().identity().nativeRevision(),after.originalEvidence());
+        var fresh=NativeEffectEvidence.reconciliationProvenance(raw);
+        org.xar.ck3.control.application.action.ObservationProvenance provenance=fresh.<org.xar.ck3.control.application.action.ObservationProvenance>map(value->value)
+                .orElseGet(()->new org.xar.ck3.control.application.action.ObservationProvenance.Push(after.identity().frame().snapshotId(),
+                        after.identity().frame().identity().nativeRevision(),after.originalEvidence()));
+        fresh.ifPresent(query->RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(query,after,bound));
         var snapshot=new org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.BoundSnapshot(
                 after.identity(),after.source(),after.sessionId(),after.semantic(),provenance,after.observedAt(),after.originalEvidence());
-        var actual=org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.project(command.before(),command.source(),command.sessionId(),
-                command.expected(),command.arguments(),snapshot).orElseThrow(()->new IOException("legacy actual after does not prove the original complete event postcondition"));
+        var projected=fresh.isPresent()
+                ?org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.projectReconciled(command,attempt,guard.origin().requireReconciliation(),snapshot)
+                :org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.project(command.before(),command.source(),command.sessionId(),command.expected(),command.arguments(),snapshot);
+        var actual=projected.orElseThrow(()->new IOException("legacy actual after does not prove the original complete event postcondition"));
         var effect=new ActionState.EffectObservation(after.identity(),after.source(),after.sessionId(),command.expected().observerSchema(),actual,
                 provenance,after.observedAt(),after.originalEvidence(),List.of(reference));
         var applied=new ActionState.Applied(effect);var ack=original.ack().orElseThrow();
@@ -641,7 +647,7 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
                 .orElseThrow(()->new IOException("legacy original event has no actual installed archive semantic verifier"));
         // This installed verifier replays NativeEventEffects, all actual scalar fields, and whole compatible bytes.
         verifier.verifier().verify(context.borrowedSession().head(),proposal,bound);
-        var rebuilt=NativeEffectEvidence.load(proposal,bound,context.frameLoader());
+        var rebuilt=NativeEffectEvidence.load(proposal,bound,RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()));
         StrictJson.require(rebuilt.compatibleResult().equals(retained),"legacy semantic replay changed the complete original compatible result");
     }
     private void verifyLegacyProducer(ActionCommand command,Complete before,ObjectNode proof)throws IOException {

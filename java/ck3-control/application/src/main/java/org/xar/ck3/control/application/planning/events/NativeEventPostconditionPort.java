@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.CommandOrigin;
+import org.xar.ck3.control.application.action.CommandExpectation;
+import org.xar.ck3.control.application.action.ReconciliationIdentity;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.NativeActionPort;
@@ -97,6 +101,11 @@ public final class NativeEventPostconditionPort implements EventPolicies.NativeE
     /** No currently missing effect produces a rejection, and no observation ever requests another selection. */
     public static Optional<List<ExpectedValue>> project(ObservationIdentity before, G2Source source, String session,
             ExpectedPostcondition expected, OpportunityJson.Obj arguments, BoundSnapshot after) {
+        return project(before,source,session,expected,arguments,after,Optional.empty());
+    }
+    private static Optional<List<ExpectedValue>> project(ObservationIdentity before, G2Source source, String session,
+            ExpectedPostcondition expected, OpportunityJson.Obj arguments, BoundSnapshot after,
+            Optional<java.util.function.Predicate<List<ExpectedValue>>> reconciledComparison) {
         if (!before.equals(expected.before()) || !source.equals(expected.source()) || !source.equals(after.source()) || !session.equals(after.sessionId())
                 || !before.machineId().equals(after.after().machineId()) || !before.game().equals(after.after().game())
                 || !before.frame().episodeRunId().equals(after.after().frame().episodeRunId())
@@ -149,9 +158,63 @@ public final class NativeEventPostconditionPort implements EventPolicies.NativeE
             traitObserved = true;
         }
         if (traitObserved) actual.add(new ExpectedInteger(new FieldKey("event_effect_native_index"), BigInteger.valueOf(phases.orElseThrow().nativeIndex())));
-        if (ProposalLifecycle.compare(expected, after.after(), after.source(), expected.observerSchema(), actual)
-            != ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH) return Optional.empty();
+        boolean matches=reconciledComparison.isPresent()?reconciledComparison.orElseThrow().test(actual)
+                :ProposalLifecycle.compare(expected,after.after(),after.source(),expected.observerSchema(),actual)
+                    ==ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH;
+        if (!matches) return Optional.empty();
         return Optional.of(List.copyOf(actual));
+    }
+    /** Explicit pending EVENT DATA only. Actual Root scope and archived READ custody remain mandatory outside this projection. */
+    public static Optional<List<ExpectedValue>> projectReconciled(ActionCommand command,ActionState.Attempt attempt,
+            ReconciliationIdentity identity,BoundSnapshot after) {
+        Objects.requireNonNull(command);Objects.requireNonNull(attempt);Objects.requireNonNull(identity);Objects.requireNonNull(after);
+        if (!(after.provenance() instanceof ObservationProvenance.FreshSnapshotQuery query)
+                || !(query.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold)) return Optional.empty();
+        var pending=identity.pending();
+        if (identity.driverRelation()!=ReconciliationIdentity.DriverRelation.EXACT
+                || !pending.actionId().equals(command.actionId()) || !pending.bodySha256().equals(ActionCodec.bodySha256(command))
+                || !pending.requestId().equals(attempt.requestId()) || !pending.originalBefore().equals(command.before())
+                || !cold.originalReceipt().equals(pending.originalReceipt())
+                || !identity.source().equals(command.source()) || !identity.source().equals(after.source())
+                || !identity.sessionId().equals(command.sessionId()) || !identity.sessionId().equals(after.sessionId())
+                || !identity.factual().equals(after.after()) || !identity.nativeEvidence().equals(after.originalEvidence())
+                || !identity.observedAt().equals(after.observedAt()) || after.observedAt().isBefore(attempt.submittedAt())
+                || !identity.connectionGeneration().equals(integer(object(after.snapshot().get("diagnostics")).get("connection_generation")))) return Optional.empty();
+        identity.requireOriginalConnection(attempt.guard());
+        return project(command.before(),command.source(),command.sessionId(),command.expected(),command.arguments(),after,
+                Optional.of(actual->reconciledFieldsMatch(command,attempt,after.after(),after.source(),command.expected().observerSchema(),actual,query)));
+    }
+    /** Pure structural DATA comparison. Neither a FreshSnapshotQuery DTO nor this result issues canonical/physical authority. */
+    public static boolean reconciledFieldsMatch(ActionCommand command,ActionState.Attempt attempt,ObservationIdentity after,G2Source source,
+            String observerSchema,List<ExpectedValue> actual,ObservationProvenance provenance) {
+        Objects.requireNonNull(command);Objects.requireNonNull(attempt);Objects.requireNonNull(after);Objects.requireNonNull(source);Objects.requireNonNull(actual);
+        if (!(command.origin() instanceof CommandOrigin.Gameplay) || !(command.expectation() instanceof CommandExpectation.Gameplay)
+                || !command.operation().value().matches("select-event-option-[1-9][0-9]{0,8}")
+                || !EVENT_SCHEMA.equals(command.expected().observerSchema()) || !EVENT_SCHEMA.equals(observerSchema)
+                || !(provenance instanceof ObservationProvenance.FreshSnapshotQuery query)
+                || !(query.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement)
+                || !query.independentOf(attempt.requestId())) return false;
+        var guard=attempt.guard();
+        if (!(guard.origin() instanceof CommandOrigin.Gameplay) || !guard.observed().equals(command.before())
+                || !guard.source().equals(command.source()) || !guard.sessionId().equals(command.sessionId())
+                || !guard.operation().equals(command.operation())) return false;
+        var originalConnection=connection(command.expected().values());var currentConnection=connection(actual);
+        if (originalConnection.isEmpty() || currentConnection.isEmpty()
+                || !originalConnection.orElseThrow().equals(guard.connectionGeneration())
+                || currentConnection.orElseThrow().compareTo(originalConnection.orElseThrow())<0) return false;
+        // The original expected field names its original guard, while actual retains its real current READ connection.
+        // Every other field, including trait material fields, remains in the unchanged generic comparator.
+        List<ExpectedValue> remaining=command.expected().values().stream()
+                .filter(value->!value.field().value().equals("connection_generation_decimal")).toList();
+        if (remaining.isEmpty()) return false;
+        var expected=new ExpectedPostcondition(command.expected().version(),command.expected().before(),command.expected().source(),
+                command.expected().observerSchema(),remaining);
+        return ProposalLifecycle.compare(expected,after,source,observerSchema,actual)==ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH;
+    }
+    private static Optional<BigInteger> connection(List<ExpectedValue> values) {
+        var matches=values.stream().filter(value->value.field().value().equals("connection_generation_decimal")).toList();
+        if (matches.size()!=1 || !(matches.getFirst() instanceof ExpectedText text) || !text.value().matches("[1-9][0-9]{0,19}")) return Optional.empty();
+        BigInteger value=new BigInteger(text.value());return value.bitLength()<=64?Optional.of(value):Optional.empty();
     }
     private static String schema(String step) {
         if (step.startsWith("select-event-option-")) return EVENT_SCHEMA;

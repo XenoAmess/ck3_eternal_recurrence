@@ -887,9 +887,13 @@ public final class EpisodeIncidentJournal {
         ObjectNode proof=object(afterIndex.get("legacy_command_binding"));
         require(proof.path("observation_supporting_refs").isArray()&&proof.path("observation_supporting_refs").size()==1,
                 "legacy after requires its explicit sole original native-effect basis");
-        ObjectNode basis=object(read(ExactRef.fromJson(proof.get("observation_supporting_refs").get(0))));
-        require(NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(text(basis,"schema"))
+        byte[] basisBody=read(ExactRef.fromJson(proof.get("observation_supporting_refs").get(0)));
+        ObjectNode basis=object(basisBody);
+        require((NativeEffectEvidence.RECONCILIATION_SCHEMA.equals(text(basis,"schema"))
+                ||NativeEffectEvidence.RECONCILED_EVENT_READ_SCHEMA.equals(text(basis,"schema")))
                 &&text(proof,"canonical_command_sha256").equals(text(basis,"command_body_sha256")),"legacy after material crossed its original effect command");
+        if(NativeEffectEvidence.RECONCILED_EVENT_READ_SCHEMA.equals(text(basis,"schema")))
+            NativeEffectEvidence.reconciliationProvenance(new RawJson(basisBody));
         RawJson compatible=new RawJson(read(ExactRef.fromJson(basis.get("compatible_material"))));
         ObjectNode before=object(actualBeforeBody),stored=object(actualAfterBody);
         ExactRef beforeRef=ExactRef.fromJson(afterIndex.get("before_ref"));

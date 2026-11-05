@@ -459,9 +459,11 @@ public final class RootAdvanceInfrastructureFactory {
                 var knownPending = org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(originalReceipt);
                 var councilPending=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyPositiveAckCouncilRecoveryRoot(List.of(originalReceipt))
                         .filter(originalReceipt::equals).isPresent();
+                var eventPending=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyEventRecoveryRoot(List.of(originalReceipt))
+                        .filter(originalReceipt::equals).isPresent();
                 require((command.origin() instanceof CommandOrigin.Gameplay && command.operation().value().equals("resume-map")
-                        && command.arguments().members().isEmpty()) || knownPending || councilPending,
-                        "cold original requires exact resume-map, known-pending or original positive-ACK Council recovery primitive");
+                        && command.arguments().members().isEmpty()) || knownPending || councilPending || eventPending,
+                        "cold original requires exact resume-map, known-pending or original positive-ACK Council/EVENT recovery primitive");
                 requireFrameBinding(command,complete);
                 var attempt=ActionTransitions.attempt(originalReceipt.state()).orElseThrow();
                 var dispatch=ActionTransitions.dispatch(originalReceipt.state()).orElseThrow();
@@ -475,6 +477,7 @@ public final class RootAdvanceInfrastructureFactory {
                 var base=councilPending?new NativeRequest(command.operation().value(),Optional.empty(),
                         new RawJson(org.xar.ck3.control.contracts.StrictJson.canonical(org.xar.ck3.control.governance.council.CouncilActionCodec.wireFields(
                                 org.xar.ck3.control.nativebridge.capabilities.governance.GovernanceActionPreparation.councilRequest(command,attempt.requestId()),true))))
+                        :eventPending?EventActionPreparation.prepare(command)
                         :knownPending?org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionEffects.preparation().prepare(command):AdvancePrimitives.prepareRequest(command);
                 if(councilPending)org.xar.ck3.control.nativebridge.capabilities.governance.CouncilContinuationPolicy.requireOriginalPending(command,attempt,ack);
                 require(prepared.step().equals(base.step()) && prepared.requiredCapability().equals(base.requiredCapability())

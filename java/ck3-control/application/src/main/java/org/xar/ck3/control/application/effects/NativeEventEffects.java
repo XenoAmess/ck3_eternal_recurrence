@@ -88,8 +88,9 @@ public final class NativeEventEffects implements NativeEffectRegistry.Observer {
     @Override public NativeEffectRegistry.Projected observe(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome dispatch) {
         StrictJson.require(supports(command.operation()), "exact event/pending action required");
         NativeEffectSnapshots.Pair pair = snapshots.read(command, attempt);
+        ObservationProvenance provenance = provenance(command, attempt, pair);
         // A material query is useful only after the original instance has actually advanced.
-        if (facts(command, pair.after()).isEmpty()) {
+        if (facts(command, attempt, pair, provenance).isEmpty()) {
             String reason="old event/pending instance remains or its later binding is unavailable";
             observedAfter.recordUnsettled(command,attempt,new UnsettledObservation(pair,dispatch,reason));
             return NativeEffectRegistry.Projected.pending(reason,List.of(pair.after().originalEvidence()));
@@ -101,7 +102,7 @@ public final class NativeEventEffects implements NativeEffectRegistry.Observer {
             for (ReadValue read : material) read.resolved().replayContext().ifPresent(ref -> requireContext(archive, ref));
             return null;
         });
-        NativeEffectRegistry.Projected projected = project(command, attempt, dispatch, pair, selected, material,EventResultVersion.ACTUAL_AFTER_V3);
+        NativeEffectRegistry.Projected projected = project(command, attempt, dispatch, pair, selected, material,EventResultVersion.ACTUAL_AFTER_V3,provenance);
         if (!(projected.result() instanceof ActionPorts.EffectObserved)) return projected;
         List<ExactRef> contexts = material.stream().flatMap(read -> read.resolved().replayContext().stream()).toList();
         ExactRef basis = snapshots.evidence(command, attempt, pair, material.stream().map(ReadValue::receipt).toList(), projected.compatibleResult().orElseThrow(), contexts);
@@ -129,18 +130,31 @@ public final class NativeEventEffects implements NativeEffectRegistry.Observer {
         if (!(result instanceof PlanningReadResult.Known<T> known)) return Optional.empty();
         return Optional.of(new ReadValue(known.receipt(), Objects.requireNonNull(resolved.encode().apply(known.value())), resolved, Interpretation.LIVE));
     }
-    private static Optional<List<org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedValue>> facts(ActionCommand command, Complete after) {
-        var provenance = new ObservationProvenance.Push(after.identity().frame().snapshotId(), after.identity().frame().identity().nativeRevision(), after.originalEvidence());
+    private static ObservationProvenance provenance(ActionCommand command, ActionState.Attempt attempt, NativeEffectSnapshots.Pair pair) {
+        var after = pair.after();
+        if (pair.reconciliation().isPresent() && command.operation().value().matches("select-event-option-[1-9][0-9]{0,8}")) {
+            try { return ActionReconciliationScope.requireProvenance(command, attempt); }
+            catch (java.io.IOException unavailable) { throw new java.io.UncheckedIOException(unavailable); }
+        }
+        return new ObservationProvenance.Push(after.identity().frame().snapshotId(), after.identity().frame().identity().nativeRevision(), after.originalEvidence());
+    }
+    private static Optional<List<org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedValue>> facts(ActionCommand command, ActionState.Attempt attempt,
+            NativeEffectSnapshots.Pair pair, ObservationProvenance provenance) {
+        var after = pair.after();
         var bound = new NativeEventPostconditionPort.BoundSnapshot(after.identity(), after.source(), after.sessionId(), after.semantic(),
             provenance, after.observedAt(), after.originalEvidence());
+        if (provenance instanceof ObservationProvenance.FreshSnapshotQuery) {
+            return NativeEventPostconditionPort.projectReconciled(command, attempt,
+                    pair.reconciliation().orElseThrow(() -> new IllegalArgumentException("event READ escaped its actual pending identity")), bound);
+        }
         return NativeEventPostconditionPort.project(command.before(), command.source(), command.sessionId(), command.expected(), command.arguments(), bound);
     }
     private static NativeEffectRegistry.Projected project(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome dispatch,
-            NativeEffectSnapshots.Pair pair, Optional<EventMaterialQuerySource<?>> selected, List<ReadValue> material,EventResultVersion eventResultVersion) {
+            NativeEffectSnapshots.Pair pair, Optional<EventMaterialQuerySource<?>> selected, List<ReadValue> material,EventResultVersion eventResultVersion, ObservationProvenance provenance) {
         StrictJson.require(supports(command.operation()) && material.size() <= 1, "one source-bound event material read at most");
         StrictJson.require(pair.before().identity().equals(command.before()) && pair.before().source().equals(command.source())
             && pair.before().sessionId().equals(command.sessionId()) && pair.before().originalEvidence().equals(attempt.guard().nativeEvidence()), "original event before frame differs");
-        var actual = facts(command, pair.after());
+        var actual = facts(command, attempt, pair, provenance);
         if (actual.isEmpty()) return NativeEffectRegistry.Projected.pending("independent event instance/material not observed", List.of(pair.after().originalEvidence()));
         JsonNode additional = null;
         if (!material.isEmpty()) {
@@ -206,8 +220,7 @@ public final class NativeEventEffects implements NativeEffectRegistry.Observer {
         }
         var after = pair.after();
         var proof = new ActionState.EffectObservation(after.identity(), after.source(), after.sessionId(), command.expected().observerSchema(), actual.orElseThrow(),
-            new ObservationProvenance.Push(after.identity().frame().snapshotId(), after.identity().frame().identity().nativeRevision(), after.originalEvidence()),
-            after.observedAt(), after.originalEvidence(), List.of());
+            provenance, after.observedAt(), after.originalEvidence(), List.of());
         ActionEffects.validate(command, attempt, new ActionState.Applied(proof));
         return new NativeEffectRegistry.Projected(new ActionPorts.EffectObserved(proof), Optional.of(EffectJson.raw(compatible)));
     }
@@ -253,7 +266,8 @@ public final class NativeEventEffects implements NativeEffectRegistry.Observer {
                 context(original.compatibleResult(), read), archive)).toList();
             StrictJson.require(original.supportingMaterials().equals(material.stream().flatMap(read -> read.resolved().replayContext().stream()).toList()),
                 "event material context differs from its explicit original basis closure");
-            NativeEffectRegistry.Projected replayed = project(receipt.command(), settled.attempt(), settled.dispatch(), original.frames(), selected, material,eventResultVersion(original.compatibleResult()));
+            ObservationProvenance provenance = ((ActionState.Applied)settled.settlement()).observation().provenance();
+            NativeEffectRegistry.Projected replayed = project(receipt.command(), settled.attempt(), settled.dispatch(), original.frames(), selected, material,eventResultVersion(original.compatibleResult()),provenance);
             replayed = NativeEffectSnapshots.withEvidence(replayed, ((ActionState.Applied) settled.settlement()).observation().supportingEvidence());
             NativeEffectEvidence.requireSame(settled.settlement(), replayed, original.compatibleResult());
         });

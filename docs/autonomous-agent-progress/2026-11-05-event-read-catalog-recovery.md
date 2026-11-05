@@ -13,3 +13,6 @@ Installer33只给这个原Family补已有OperationDecoder overload，调用原Ev
 actual32仅RA、actual33仅Installer分别由Runtime采用；33唯一GET200／5.6710018秒，同host97584，04:18:24.768284900Z新8c827235／restart11@36024b66 START，cut仅BOOT／head524。此次没有新控制、日或SAVE；原169eligible与8saved不混计。真实family lookup、NativeEventEffects、v1 Root、原事件SETTLE逐层待回执。后续live／archived provenance仍按真实Source API收束，不能以此两叶宣称全链已恢复；不为文档新增GET。
 
 后到实际33越bindingnull并进入真实NativeEventEffects的facts分支：04:20:36.048268900Z停出，canonical525仍UNKNOWN，reason为old event/pending instance remains or its later binding is unavailable。原command／body／deadline全同521，新证据为真实READ后态native383／date53162232／actor31254、active_event与pending均null。合并reason不证明旧event还在；完整Complete／semantic绑定的具体失败项仍待原件核定，不能仅凭null授APPLIED。Root v1 record／完整效果／SETTLE尚未通过，0控制／日／SAVE。
+
+
+后继34已完成显式连接角色与真实READ冷证明的软件单元，见[业务记录](2026-11-05-event-reconciled-read-postcondition.md)。原33诊断文件的持久化只证明诊断lane，完整效果与实际结算仍按新回执分层。

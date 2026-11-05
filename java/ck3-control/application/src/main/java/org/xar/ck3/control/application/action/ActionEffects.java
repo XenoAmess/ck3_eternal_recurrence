@@ -145,7 +145,10 @@ public final class ActionEffects {
                     "effect needs an independent later native frame");
         }
         StrictJson.require(ProposalLifecycle.compare(command.expected(), effect.after(), effect.source(), effect.observerSchema(), effect.actual())
-                == ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH, "fresh independent postcondition did not match");
+                == ProposalLifecycle.ObservationComparison.EXPECTED_FIELDS_MATCH
+                || org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.reconciledFieldsMatch(command,attempt,
+                    effect.after(),effect.source(),effect.observerSchema(),effect.actual(),effect.provenance()),
+                "fresh independent postcondition did not match");
     }
     public static void validateComposite(ActionCommand command, CompositeExecution execution, ActionState.Settlement settlement) {
         if(settlement instanceof ActionState.FixtureBusinessCompleted completed){
